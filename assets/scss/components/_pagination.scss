@@ -1,0 +1,36 @@
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin: 20px auto;
+  list-style: none;
+  li {
+    margin-right: 5px;
+    button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 30px;
+      height: 30px;
+      color: $dark-blue-1;
+      font-size: 14px;
+      font-weight: bold;
+      text-transform: uppercase;
+      border-radius: 2px;
+      border: 1px solid #E6E8F2;
+      &:focus {
+        color: $dark-blue-2;
+        border-color: #B8C0E6;
+      }
+    }
+    &.active button {
+      color: #fff;
+      background-color: $dark-blue-1;
+      border-color: transparent;
+      pointer-events: none;
+    }
+    &.disabled button {
+      color: #E7E9F2;
+      pointer-events: none;
+    }
+  }
+}

@@ -1,0 +1,39 @@
+.form-group {
+
+}
+
+.newsletter {
+  form {
+    display: flex;
+    max-width: 420px;
+  }
+  input {
+    font: inherit;
+    color: $dark-blue-1;
+    display: block;
+    appearance: none;
+    border: 2px solid $white;
+    border-radius: 4px;
+    height: 34px;
+    padding: 7px 15px 6px;
+    line-height: 17px;
+    font-weight: 500;
+    margin-right: 20px;
+    width: 100%;
+    max-width: 280px;
+    &::placeholder {
+      font: inherit;
+      color: inherit;
+      opacity: 1;
+    }
+    &:focus {
+      outline: none;
+    }
+    &.invalid {
+      border-color: $red-1;
+    }
+  }
+  button {
+    flex-shrink: 0;
+  }
+}
