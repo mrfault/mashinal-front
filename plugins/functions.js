@@ -18,4 +18,8 @@ export default function({ app, route, store }, inject) {
   inject('queryParams', (params) => {
     return '?' + Object.keys(params).map(key => `${key}=${params[key]}`).join('&');
   });
+  // validators
+  inject('isPhoneNumber', (value) => {
+    return value.match(/^[+]994[ ][(][0-9]{2}[)][ ][0-9]{3}[-][0-9]{2}[-][0-9]{2}$/) !== null;
+  });
 }

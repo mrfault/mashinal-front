@@ -1,18 +1,25 @@
-@mixin btn-style($color: $white, $bg-color: $dark-blue-1, $bg-hover: $dark-blue-2, $outline: false) {
+@mixin btn-style($color: $white, $bg-color: $dark-blue-1, $bg-hover: $dark-blue-2, $border-color: false, $outline: false, ) {
   @if ($outline) {
     color: $bg-color;
-    border: 1px solid $bg-color;
     background-color: transparent;
+    @if ($border-color) {
+      border: 1px solid $border-color;
+    } @else {
+      border: 1px solid $bg-color;
+    }
     &:hover {
       color: $white;
       background-color: $bg-color;
+      border-color: $bg-color;
     }
   } @else {
     color: $color;
     background-color: $bg-color;
+    border: 1px solid $bg-color;
     &:hover {
       color: $white;
       background-color: $bg-hover;
+      border-color: $bg-hover;
     }
   }
 }
@@ -34,21 +41,24 @@
     @include btn-style($bg-color: $dark-blue-1, $outline: true);
   }
   &--green {
-    @include btn-style($bg-color: $green-1, $bg-hover: $green-3);
+    @include btn-style($bg-color: $green-1, $bg-hover: $green-2);
   }
   &--green-outline {
     @include btn-style($bg-color: $green-1, $outline: true);
   }
   &--red {
-    @include btn-style($bg-color: $red-1, $bg-hover: $red-3);
+    @include btn-style($bg-color: $red-1, $bg-hover: $red-2);
   }
   &--red-outline {
     @include btn-style($bg-color: $red-1, $outline: true);
   }
   &--pale-green {
-    @include btn-style($color: $green-1, $bg-color: $green-2, $bg-hover: $green-1);
+    @include btn-style($color: $green-1, $bg-color: $green-3, $bg-hover: $green-1);
   }
   &--pale-red {
-    @include btn-style($color: $red-1, $bg-color: $red-2, $bg-hover: $red-1);
+    @include btn-style($color: $red-1, $bg-color: $red-3, $bg-hover: $red-1);
+  }
+  &--pale-red-outline {
+    @include btn-style($bg-color: $red-1, $border-color: $red-4, $outline: true);
   }
 }

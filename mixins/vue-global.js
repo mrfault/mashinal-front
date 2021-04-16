@@ -34,9 +34,23 @@ Vue.use({
             if(!this.$gtag) console.warn('gtag not setted');
             else this.$gtag('event', 'conversion', { send_to: eventKey });
           }
-        }
+        },
+        // masks
+        maskPhone(inline = false) {
+          let mask = '+\\9\\94 (99) 999-99-99';
+          return inline ? mask : { mask, showMaskOnHover: false };
+        },
+        maskEmail() {
+          return {
+            alias: 'email',
+            showMaskOnHover: false, 
+            showMaskOnFocus: false
+          }
+        },
       },
       computed: {
+        ...mapState(['loggedIn', 'user']),
+
         routeName() {
           return this.getRouteBaseName();
         },

@@ -11,8 +11,8 @@
 <script>
   import { LayoutMixin } from '~/mixins/layout';
 
-  const PageHeader = () => import('~/components/elements/layout/PageHeader');
-  const PageFooter = () => import('~/components/elements/layout/PageFooter');
+  import PageHeader from '~/components/layout/PageHeader';
+  import PageFooter from '~/components/layout/PageFooter';
 
   export default {
     mixins: [LayoutMixin],

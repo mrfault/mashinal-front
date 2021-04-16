@@ -8,6 +8,7 @@ Vue.use({
   install: function(Vue, options) {
     Vue.directive('mask', {
       bind: function(el, binding) {
+        if(!binding.value) return;
         Inputmask(binding.value).mask(el);
       }
     });

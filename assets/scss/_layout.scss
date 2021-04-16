@@ -15,8 +15,17 @@ a {
   }
 }
 
+h1 {
+  font-size: 30px;
+  font-weight: 500;
+}
+
 .cursor-pointer {
   cursor: pointer;
+}
+
+.pointer-events-none {
+  pointer-events: none;
 }
 
 .layout {
@@ -34,6 +43,21 @@ a {
   border-radius: 4px;
   padding: 25px;
   margin: 30px 0;
+  &.no-pd {
+    padding: 0;
+  }
+}
+
+
+.info-text {
+  position: relative;
+  padding-left: 40px;
+  max-width: 250px;
+  .icon-info-circle {
+    position: absolute;
+    top: 1px;
+    left: 16px;
+  }
 }
 
 .menu,

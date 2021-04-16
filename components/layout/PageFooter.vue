@@ -10,7 +10,7 @@
           <newsletter />
           <div class="socials">
             <a v-for="(link, key) in socialLinks" :key="key" :href="link" rel="noopener" target="_blank">
-              <i :class="'icon-'+key"></i>
+              <icon :name="key" />
             </a>
           </div>
           <mark>&copy; {{ currentYear }} Mashin.al Developed by 
