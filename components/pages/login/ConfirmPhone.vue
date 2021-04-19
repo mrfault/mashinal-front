@@ -9,15 +9,17 @@
       />
     </div>
     <p class="info-text"><icon name="info-circle" /> {{ $t('enter_the_code_sent_to_your_number')}}</p>
-    <button class="btn btn--green" type="submit">{{ actionText || $t('confirm')}}</button>
     <p v-if="showResend || codeSent || askToCallSupport"> 
       <span v-if="showResend && resendSmsAfterSecond === 0" class="cursor-pointer" @click="resendCode">{{ $t('resend_code') }}</span>
-      <span v-else-if="showResend && resendSmsAfterSecond > 0">{{ $t('resend_code_after') }}:
+      <span v-else-if="showResend && resendSmsAfterSecond > 0">
+        <template v-if="locale === 'ru'">{{ $t('resend_code_after') }} </template>
         <timer format="i:s" :duration="resendSmsAfterSecond" @timeOver="resendSmsAfterSecond = 0" />
+        <template v-if="locale === 'az'"> {{ $t('resend_code_after') }}</template>
       </span>
       <span v-else-if="codeSent">{{ $t('code_has_been_sent') }}</span>
       <span v-else-if="askToCallSupport">{{ $t('please_call_to_support') }}</span>
     </p>
+    <button class="btn btn--green" type="submit">{{ actionText || $t('confirm')}}</button>
   </form>
 </template>
 

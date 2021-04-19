@@ -71,6 +71,10 @@ export const LayoutMixin = {
       document.documentElement.style.setProperty('--vh', `${vh}px`);
       this.vhVariableSet = true;
     },
+    handleScroll() {
+      let headerEl = document.getElementsByClassName('page-header')[0];
+      headerEl.classList[window.scrollY > 10 ? 'add' : 'remove']('has-shadow');
+    },
     showUnreadMessagesToast() {
       if(!this.routeName === 'profile-messages' && this.unreadMessageGroupCount > 0) {
         this.$toasted.success(this.$t('you_have_got_a_message'), { 
@@ -101,7 +105,10 @@ export const LayoutMixin = {
     ].some(os => navigator.userAgent.match(os));
 
     this.handleResize();
+    this.handleScroll();
     window.addEventListener('resize', this.handleResize);
+    window.addEventListener('scroll', this.handleResize);
+    window.addEventListener('scroll', this.handleScroll);
     if (this.userLoggedIn) {
       this.toggleEchoListening(true);
       await this.getUserData();
@@ -110,5 +117,7 @@ export const LayoutMixin = {
   beforeDestroy() {
     this.toggleEchoListening(false);
     window.removeEventListener('resize', this.handleResize);
+    window.removeEventListener('scroll', this.handleResize);
+    window.removeEventListener('scroll', this.handleScroll);
   }
 }
