@@ -9,12 +9,21 @@ export const MenusDataMixin = {
         { title: 'templates', route: '/my/templates', icon: 'template' },
         { title: 'messages', route: '/profile/messages', icon: 'chat' }
       ],
+      bottomMenus: [
+        { title: 'search', route: '/', icon: 'search' },
+        { title: 'favorites', route: '/my/favorites', icon: 'star' },
+        { title: 'new_announce', route: '/sell', icon: 'plus' },
+        { title: 'messages', route: '/profile/messages', icon: 'chat' },
+        { title: 'my_account', route: '/profile/settings', icon: 'user', hide: !this.loggedIn || this.user?.autosalon },
+        { title: 'dashboard', route: '/profile/dashboard', icon: 'user', hide: !this.loggedIn || !this.user?.autosalon },
+        { title: 'login', route: '/login', icon: 'user', hide: this.loggedIn }
+      ],
       userMenus: [
         { title: 'settings', route: '/profile/settings' },
         { title: 'my_announcements', route: '/my/announcements' },
         { title: 'comparisons', route: '/comparison' },
         { title: 'messages', route: '/profile/messages' },
-        { title: 'payments', route: '/profile/payments' },
+        { title: 'payments', route: '/profile/payments' }
       ],
       autosalonMenus: [
         { title: 'dashboard', route: '/profile/dashboard' },

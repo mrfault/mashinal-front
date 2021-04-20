@@ -843,6 +843,7 @@ export default {
 	"mount_system": "Система крепления",
 	"move_detector": "Датчик движения",
 	"my_announcements": "Мои объявления",
+	"my_account": "Профиль",
 	"templates": "Шаблоны",
 	"favorites": "Избранные",
 	"my_favorites": "Мои избранные",
@@ -1436,7 +1437,7 @@ export default {
   "buy_package": "Купить пакет",
   "views_count": "Просмотры",
   "most_viewed_announcements": "Самые просматриваемые",
-  "new_announce": "Новое объявление",
+  "new_announce": "Продать",
   "you_can_create_announcement": "Вы можете разместить <strong>{left}</strong> объявлений.",
   "no_announcements_on_balance": "Вы превысили лимит размещения объявления.",
   "please_make_a_payment": "Пожалуйста, пополните свой баланс.",
@@ -1499,5 +1500,6 @@ export default {
 
 	"phone_call_count": "Число звонков",
   "phone_visited_n_times": "С объявлений на Ваш номер перешли {count}",
-	"comparisons": "Сравнения"
+	"comparisons": "Сравнения",
+	"search": "Поиск"
 }

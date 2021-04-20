@@ -73,7 +73,10 @@ export const LayoutMixin = {
     },
     handleScroll() {
       let headerEl = document.getElementsByClassName('page-header')[0];
-      headerEl.classList[window.scrollY > 10 ? 'add' : 'remove']('has-shadow');
+      let menuHeaderEl = document.getElementsByClassName('menu-header')[0];
+      [headerEl, menuHeaderEl].map(el => {
+        el.classList[window.scrollY > 10 ? 'add' : 'remove']('has-shadow');
+      });
     },
     showUnreadMessagesToast() {
       if(!this.routeName === 'profile-messages' && this.unreadMessageGroupCount > 0) {

@@ -843,6 +843,7 @@ export default {
 	"mount_system": "Bərkitmə sistemi",
 	"move_detector": "Hərəkət sensoru",
 	"my_announcements": "Mənim elanlarım",
+	"my_account": "Hesabım",
 	"templates": "Şablonlar",
 	"favorites": "Seçilmişlər",
 	"my_favorites": "Seçilmişlər",
@@ -1509,5 +1510,6 @@ export default {
 	"models_comparison_to_use": "Müqayisə edə bilmək üçün model əlavə edin.",
 	"go_to_announcements": "Elanlara keç",
 	"add_car_model": "Model əlavə et",
-	"comparisons": "Müqayisələr"
+	"comparisons": "Müqayisələr",
+	"search": "Axtarış"
 }

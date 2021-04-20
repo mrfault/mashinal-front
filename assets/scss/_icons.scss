@@ -146,6 +146,7 @@
 }
 .icon-options:before {
   content: "\e922";
+  font-size: 18px;
 }
 .icon-percent:before {
   content: "\e923";
@@ -210,4 +211,7 @@
 .icon-chevron-right:before {
   content: "\e93a";
   font-size: 10px;
+}
+.icon-plus:before {
+  content: "\e93c";
 }

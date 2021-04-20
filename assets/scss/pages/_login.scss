@@ -92,7 +92,9 @@
 
 @include media-max-width('lg') {
   .pages-login {
-    background-color: $red-1;
+    @include calc-vh(min-height, calc(100vh - 60px));
+    background: linear-gradient(180deg, $red-1 379px, $white 50%);
+    padding: 0;
     .tab-info {
       height: 354px;
       padding: 50px 0;
@@ -103,6 +105,7 @@
     }
     .tab-form {
       border-radius: 4px;
+      margin: 0 -25px;
     }
     .tab-bg {
       right: -54px;
@@ -112,8 +115,23 @@
     }
   }
   .login-forms {
-    height: 354px;
+    height: auto;
     width: 100%;
-    padding: 0 20px;
+    padding: 25px;
+    .form {
+      height: auto;
+      .form-part {
+        & + button,
+        & + p {
+          margin: 0 0 20px;
+          &.info-text {
+            margin: 0 0 20px;
+          }
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
   }
 }
