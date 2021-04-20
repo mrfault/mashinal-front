@@ -1143,7 +1143,7 @@ export default {
 	"series": "серия",
 	"server_error": "Ошибка сервера",
 	"services": "Сервисы",
-	"settings": "Настройки",
+	"settings": "Настройки пользователя",
 	"share": "Поделиться",
 	"shiny": "Шины и диски",
 	"shirina": "Ширина",

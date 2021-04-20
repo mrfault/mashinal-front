@@ -12,6 +12,7 @@
 
 [class^="icon-"], [class*=" icon-"] {
   display: inline-flex;
+  flex-shrink: 0;
   font-family: 'icomoon' !important;
   speak: never;
   font-style: normal;

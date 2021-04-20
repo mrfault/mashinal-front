@@ -1142,7 +1142,7 @@ export default {
 	"class": "klass",
 	"server_error": "Server xətası",
 	"services": "Xidmətlər",
-	"settings": "Parametrlər",
+	"settings": "İstifadəçi parametrləri",
 	"share": "Paylaş",
 	"shiny": "Şinlər və disklər",
 	"shirina": "Eni",

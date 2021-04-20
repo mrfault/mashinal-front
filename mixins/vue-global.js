@@ -1,6 +1,6 @@
 import Vue from 'vue';
 
-import { mapState } from 'vuex';
+import { mapGetters } from 'vuex';
 
 Vue.use({
   install(Vue) {
@@ -49,7 +49,7 @@ Vue.use({
         },
       },
       computed: {
-        ...mapState(['loggedIn', 'user']),
+        ...mapGetters(['loggedIn', 'user']),
 
         routeName() {
           return this.getRouteBaseName();

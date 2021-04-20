@@ -40,6 +40,7 @@
     />
     <sign-up-form
       @updateTab="updateTab"
+      @reset="resetForm"
       v-else-if="action === 'sign-up'"
       :form="form"
       :validator="$v.form"

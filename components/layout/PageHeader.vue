@@ -1,5 +1,5 @@
 <template>
-  <header class="page-header">
+  <header class="page-header d-none d-lg-block">
     <div class="topbar">
       <div class="container">
         <nuxt-link class="logo" :to="$localePath('/')">
@@ -7,20 +7,37 @@
         </nuxt-link>
         <nav>
           <ul class="menu">
-            <li v-for="item in topbarMenus" :key="item.title">
-              <nuxt-link event="" :to="$localePath(item.route)" @click.native.prevent="handleMenuItem(item)">
-                <i :class="item.icon"></i>
-                {{ $t(item.title) }}
-              </nuxt-link>
+            <li v-for="menu in topbarMenus" :key="menu.title">
+              <a :href="$localePath(menu.route)" @click.prevent="handleMenuItem(menu)">
+                <i :class="menu.icon"></i>
+                {{ $t(menu.title) }}
+              </a>
             </li>
           </ul>
-          <div class="user-menu btn btn--dark-blue-outline" @click="handleUserMenuClick">
-            <icon name="user" />
-            <div class="user-menu_list" v-if="loggedIn">
-              <div class="user-menu_list-inner">
+          <nuxt-link custom :to="getUserSettingsLink" v-slot="{ navigate }">
+            <div class="user-menu btn btn--dark-blue-outline" @click="navigate">
+              <icon name="user" />
+              <div class="user-menu_list" v-if="loggedIn">
+                <div class="user-menu_list-inner">
+                  <nuxt-link :to="getUserSettingsLink" class="d-inline-flex align-items-center align-top">
+                    <img :src="getUserAvatar" :alt="user.full_name" />
+                    <span class="text-truncate">{{ user.full_name }}</span>
+                  </nuxt-link>
+                  <hr/>
+                  <ul>
+                    <li v-for="menu in getUserMenus" :key="menu.title">
+                      <a :href="$localePath(menu.route)" @click.prevent="handleMenuItem(menu)">
+                        {{ $t(menu.title) }}
+                      </a>
+                    </li>
+                    <li key="logout">
+                      <a href="#0" @click.prevent="logout">{{ $t('output') }}</a>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
-          </div>
+          </nuxt-link>
           <div class="langs-menu btn btn--dark-blue-outline">
             <span>{{ locale }}</span>
             <icon name="chevron-down" />
@@ -38,18 +55,18 @@
         <nav>
           <ul class="menu">
             <li v-for="menu in navbarMenus" :key="menu.id" :class="{'dropdown': hasDropdown(menu)}">
-              <nuxt-link event="" :to="$localePath(menu.url)" @click.native.prevent="handleMenuItem(menu)">
+              <a :href="$localePath(menu.url)" @click.prevent="handleMenuItem(menu)">
                 {{ menu.name[locale] }}
                 <icon name="chevron-down" v-if="hasDropdown(menu)" />
-              </nuxt-link>
+              </a>
               <div class="dropdown-content" v-if="hasDropdown(menu)">
                 <div class="container">
                   <ul class="dropdown-menu row">
                     <li class="col-3" v-for="submenu in menu.children" :key="submenu.id">
-                      <nuxt-link event="" :to="$localePath(submenu.url)" @click.native.prevent="handleMenuItem(submenu)">
+                      <a :href="$localePath(submenu.url)" @click.prevent="handleMenuItem(submenu)">
                         <icon :name="getIconBase(menu)+submenu.order" />
                         {{ submenu.name[locale] }}
-                      </nuxt-link>
+                      </a>
                     </li>
                   </ul>
                 </div>
@@ -64,31 +81,16 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapActions } from 'vuex';
+
+import { MenusDataMixin } from '~/mixins/menus-data';
+import { UserDataMixin } from '~/mixins/user-data';
 
 export default {
-  data(){
-    return {
-      topbarMenus: [
-        { title: 'comparisons', route: '/comparison', icon: 'compare' },
-        { title: 'favorites', route: '/profile/favorites', icon: 'star' },
-        { title: 'templates', route: '/profile/templates', icon: 'template' },
-        { title: 'messages', route: '/profile/messages', icon: 'chat' }
-      ]
-    }
-  },
-  computed: {
-    ...mapGetters(['navbarMenus'])
-  },
+  mixins: [MenusDataMixin, UserDataMixin],
   methods: {
     ...mapActions(['changeLocale']),
 
-    handleUserMenuClick() {
-      let path = this.loggedIn 
-        ? (this.user.autosalon ? '/profile/dashboard' : '/profile') 
-        : '/login';
-      this.$router.push(this.$localePath(path));
-    },
     handleMenuItem(item) {
       if(item.route === '#0') return;
       this.$router.push(this.$localePath(item.route))

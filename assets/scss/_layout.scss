@@ -15,9 +15,21 @@ a {
   }
 }
 
+img {
+  display: block;
+  flex-shrink: 0;
+}
+
 h1 {
   font-size: 30px;
   font-weight: 500;
+}
+
+hr {
+  height: 1px;
+  background-color: $grayish-blue-3;
+  border: 0;
+  margin: 20px 0;
 }
 
 .cursor-pointer {
@@ -42,6 +54,10 @@ main {
   overflow: hidden;
 }
 
+[class^=pages-] {
+  padding-bottom: 30px;
+}
+
 .container {
   padding: 0 25px;
 }
@@ -50,23 +66,12 @@ main {
   background-color: $white;
   border-radius: 4px;
   padding: 25px;
-  margin: 30px 0;
   &.no-bg {
     background-color: transparent;
   }
   &.no-pd {
     padding: 0;
   }
-  &.no-mt {
-    margin-top: 0;
-  }
-  &.no-mb {
-    margin-bottom: 0;
-  }
-}
-
-.text-center {
-  text-align: center;
 }
 
 .info-text {
@@ -130,12 +135,36 @@ main {
         visibility: hidden;
         opacity: 0;
         padding-top: 10px;
+        cursor: default;
         &-inner {
+          color: $dark-blue-1;
           background-color: $white;
           box-shadow: 0px 0px 15px rgba(8, 26, 62, 0.15);
           padding: 25px 25px 20px;
           border-radius: 4px;
           overflow: hidden;
+          a {
+            color: $dark-blue-1;
+            font-size: 15px;
+            font-weight: 500;
+            &:hover {
+              color: $red-1;
+            }
+          }
+          ul {
+            list-style: none;
+            margin: 0 0 -10px;
+            padding: 0;
+            li {
+              margin-bottom: 10px;
+            }
+          }
+          img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+          }
         }
       }
       &:hover {
@@ -494,9 +523,5 @@ main {
 /** Responsive */
 
 @include media-max-width('lg') {
-  .page-header,
-  .page-footer,
-  .breadcrumbs {
-    display: none;
-  }
+  
 }

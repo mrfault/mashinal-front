@@ -73,6 +73,9 @@
           this.pending = false;
         });
       }
+    },
+    created() {
+      this.$emit('reset');
     }
   }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <nav class="breadcrumbs" aria-label="breadcrumb">
+  <nav class="breadcrumbs d-none d-lg-block" aria-label="breadcrumb">
     <ul>
       <li :key="-1">
         <nuxt-link :to="$localePath('/')"><icon name="home" /></nuxt-link>
