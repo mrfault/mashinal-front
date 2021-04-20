@@ -13,6 +13,7 @@ import { required, email } from 'vuelidate/lib/validators';
 export default {
   data() {
     return {
+      pending: false,
       form: {
         email: ''
       }
@@ -26,11 +27,16 @@ export default {
   methods: {
     async subscribe() {
       this.$v.$touch();
-      if (this.$v.$pending || this.$v.$error) return;
-      const res = await this.$axios.$post('/subscribe', this.form);
-      this.$toasted.success(res.message);
-      this.$v.$reset();
-      this.form.email = '';
+      if (this.pending || this.$v.$pending || this.$v.$error) return;
+      this.pending = true;
+      this.$axios.$post('/subscribe', this.form).then((res) => {
+        this.pending = false;
+        this.$toasted.success(res.message);
+        this.$v.$reset();
+        this.form.email = '';
+      }).catch((err) => {
+        this.pending = false;
+      });
     }
   }
 }

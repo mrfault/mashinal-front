@@ -35,19 +35,26 @@
       form: {},
       validator: {}
     },
+    data() {
+      return {
+        pending: false
+      }
+    },
     methods: {
       submit() {
         this.validator.$touch();
-        if (this.validator.$pending || this.validator.$error) return;
-        this.$nuxt.$emit('loading', true);
+        if (this.pending || this.validator.$pending || this.validator.$error) return;
+        this.pending = true;
         this.$axios.$post('/reset/password', {
           phone: this.form.phone.replace(/[^0-9]+/g, ''),
           code: this.form.code,
           password: this.form.password,
           password_confirmation: this.form.passwordConfirm
         }).then(() => {
-          this.$nuxt.$emit('loading', false);
+          this.pending = false;
           this.$emit('updateTab','sign-in');
+        }).catch((err) => {
+          this.pending = false;
         });
       }
     }

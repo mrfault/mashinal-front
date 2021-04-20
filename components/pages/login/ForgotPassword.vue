@@ -29,17 +29,23 @@
     computed: {
       ...mapState(['sell_phone'])
     },
+    data() {
+      return {
+        pending: false
+      }
+    },
     methods: {
       submit() {
-        // form submit handler
         this.validator.$touch();
-        if (this.validator.$pending || this.validator.$error) return;
-        this.$nuxt.$emit('loading', true);
+        if (this.pending || this.validator.$pending || this.validator.$error) return;
+        this.pending = true;
         this.$axios.$post('/forgot', {
           phone: this.form.phone.replace(/[^0-9]+/g, '')
         }).then(() => {
-          this.$nuxt.$emit('loading', false);
+          this.pending = false;
           this.$emit('updateTab','sign-in','reset');
+        }).catch((err) => {
+          this.pending = false;
         });
       }
     }

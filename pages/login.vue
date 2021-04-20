@@ -3,7 +3,7 @@
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
       <div class="login-card card no-pd no-mt">
-        <div class="row">
+        <div class="row no-gutters">
           <div class="col-12 col-lg-6">
             <div class="tab-info">
               <h1 v-html="$t(tab)"></h1>

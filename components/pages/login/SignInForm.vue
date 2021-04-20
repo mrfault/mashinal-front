@@ -38,6 +38,7 @@
     },
     data() {
       return {
+        pending: false,
         passwordWrong: this.form.passwordWrong
       }
     },  
@@ -48,15 +49,18 @@
       submit() {
         // form submit handler
         this.validator.$touch();
-        if (this.validator.$pending || this.validator.$error) return;
+        if (this.pending || this.validator.$pending || this.validator.$error) return;
+        this.pending = true;
         this.$auth.loginWith('laravelJWT', {
           data: {
             phone: this.form.phone.replace(/[^0-9]+/g, ''),
             password: this.form.password
           }
         }).then(()=>{
+          this.pending = false;
           this.$emit('login');
         }).catch(({response}) => {
+          this.pending = false;
           if(response.status === 401) {
             this.passwordWrong = true;
           } else if(response.status === 406) {

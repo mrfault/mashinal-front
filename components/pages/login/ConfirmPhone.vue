@@ -36,6 +36,7 @@
     },
     data() {
       return {
+        pending: false,
         showResend: this.resendData.showResend || true,
         resendSmsAfterSecond: this.resendData.resendSmsAfterSecond || 30,
         codeSent: this.resendData.showResend === undefined || false,
@@ -45,18 +46,16 @@
     methods: {
       resendCode() {
         this.showResend = false;
-        this.$nuxt.$emit('loading', true);
         this.$axios.$post('/resend/code', {
           phone: this.form.phone.replace(/[^0-9]+/g, ''),
         }).then((res) => {
           this.codeSent = true;
-          this.$nuxt.$emit('loading', false);
         });
       },
       submit() {
         this.validator.$touch();
-        if (this.validator.$pending || this.validator.$error) return;
-        this.$nuxt.$emit('loading', true);
+        if (this.pending || this.validator.$pending || this.validator.$error) return;
+        this.pending = true;
         this.$axios.$post('/confirm/phone', {
           phone: this.form.phone.replace(/[^0-9]+/g, ''),
           code: this.form.code
@@ -65,7 +64,6 @@
           this.fbTrack('Complete Registration Api');
           this.gtagTrack('AW-600951956/-O6CCJGB2fIBEJSZx54C');
           // move to login
-          this.$nuxt.$emit('loading', false);
           if(this.skipSignIn) {
             this.$auth.loginWith('laravelJWT', {
               data: {
@@ -73,11 +71,17 @@
                 password: this.form.password || this.form.code
               }
             }).then(()=>{
+              this.pending = false;
               this.$emit('login');
+            }).catch((err) => {
+              this.pending = false;
             });
           } else {
+            this.pending = false;
             this.$emit('updateTab','sign-in');
           }
+        }).catch((err) => {
+          this.pending = false;
         });
       }
     }

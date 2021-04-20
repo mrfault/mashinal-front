@@ -48,23 +48,29 @@
       validator: {},
       actionText: String
     },
+    data() {
+      return {
+        pending: false
+      }
+    },
     computed: {
       ...mapState(['sell_phone'])
     },
     methods: {
       submit() {
-        // form submit handler
         this.validator.$touch();
-        if (this.validator.$pending || this.validator.$error) return;
-        this.$nuxt.$emit('loading', true);
+        if (this.pending || this.validator.$pending || this.validator.$error) return;
+        this.pending = true;
         this.$axios.$post('/register', {
           name: this.form.name,
           phone: this.form.phone.replace(/[^0-9]+/g, ''),
           password: this.form.password,
           password_confirmation: this.form.passwordConfirm
         }).then(() => {
-          this.$nuxt.$emit('loading', false);
+          this.pending = false;
           this.$emit('updateTab','sign-up','sms');
+        }).catch((err) => {
+          this.pending = false;
         });
       }
     }

@@ -338,6 +338,48 @@ main {
   }
 }
 
+/** Toasts */
+
+.toasted-container.top-right {
+  top: 8px !important;
+  right: 18px !important;
+  .toasted.toasted-primary {
+    position: relative;
+    width: 440px;
+    max-width: 100%;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    line-height: 18px !important;
+    padding: 8px 25px !important;
+    padding-left: 46px !important;
+    box-shadow: none !important;
+    border-radius: 4px !important;
+    min-height: 34px !important;
+    &::after {
+      position: absolute;
+      top: 11px;
+      left: 26px;
+      font-size: 12px;
+      font-weight: bold;
+      @extend [class^="icon-"];
+    }
+    &.success {
+      color: $green-1;
+      background-color: $green-3;
+      &::after {
+        content: '\e93b';
+      }
+    }
+    &.error {
+      color: $red-1;
+      background-color: $red-3;
+      &::after {
+        content: '\e91e';
+      }
+    }
+  }
+}
+
 /** Breadcrumbs */
 
 .breadcrumbs {
