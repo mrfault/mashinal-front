@@ -3,7 +3,7 @@
     <div class="topbar">
       <div class="container">
         <nuxt-link class="logo" :to="$localePath('/')">
-          <img src="/img/logo.svg" alt="logo" />
+          <img :src="`/img/${theme === 'dark' ? 'logo-white' : 'logo'}.svg`" alt="logo" />
         </nuxt-link>
         <nav>
           <ul class="menu">
@@ -25,13 +25,13 @@
                   </nuxt-link>
                   <hr/>
                   <ul>
-                    <li v-for="menu in getUserMenus" :key="menu.title">
+                    <li v-for="menu in userMenus" :key="menu.title">
                       <a :href="$localePath(menu.route)" @click.prevent="handleMenuItem(menu)">
                         {{ $t(menu.title) }}
                       </a>
                     </li>
                     <li key="logout">
-                      <a href="#0" @click.prevent="logout">{{ $t('output') }}</a>
+                      <a href="javascript:void(0);" @click="logout">{{ $t('output') }}</a>
                     </li>
                   </ul>
                 </div>
@@ -43,7 +43,7 @@
             <icon name="chevron-down" />
             <div class="langs-menu_list">
               <div class="langs-menu_list-inner">
-                <span v-for="code in locales" :key="code" @click="changeLocale(code)">{{ code }}</span>
+                <span class="cursor-pointer" v-for="code in locales" :key="code" @click="changeLocale(code)">{{ code }}</span>
               </div>
             </div>
           </div>
@@ -92,7 +92,7 @@ export default {
     ...mapActions(['changeLocale']),
 
     handleMenuItem(item) {
-      if(item.route === '#0') return;
+      if(item.route === 'javascript:void(0);') return;
       this.$router.push(this.$localePath(item.route))
     },
     hasDropdown(menu) {

@@ -90,6 +90,17 @@
   }
 }
 
+.dark-mode {
+  .pages-login {
+    .tab-info {
+      background-color: $dark-3;
+    }
+    .tab-form {
+      background-color: $dark-2;
+    }
+  }
+}
+
 @include media-max-width('lg') {
   .pages-login {
     @include calc-vh(min-height, calc(100vh - 60px));
@@ -114,6 +125,7 @@
       background-color: transparent;
     }
   }
+  
   .login-forms {
     height: auto;
     width: 100%;
@@ -132,6 +144,12 @@
           }
         }
       }
+    }
+  }
+
+  .dark-mode {
+    .pages-login {
+      background: linear-gradient(180deg, $dark-3 379px, $dark-2 50%);
     }
   }
 }

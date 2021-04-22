@@ -1,12 +1,20 @@
 <template>
-  <div class="layout">
-    <mobile-menu />
-    <page-header />
-    <main>
-      <nuxt />
-    </main>
-    <page-footer />
-    <mobile-nav />
+  <div :class="['wrapper', {loading}, `${theme}-mode`]">
+    <transition name="fade">
+      <div class="layout" v-show="!loading">
+        <mobile-menu>
+          <theme-switch />
+        </mobile-menu>
+        <page-header />
+        <main>
+          <nuxt />
+          <theme-switch :floating="true" />
+          <scroll-top />
+        </main>
+        <page-footer />
+        <mobile-nav />
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -17,6 +25,8 @@
   import PageFooter from '~/components/layout/PageFooter';
   import MobileMenu from '~/components/layout/MobileMenu';
   import MobileNav from '~/components/layout/MobileNav';
+  import ThemeSwitch from '~/components/elements/ThemeSwitch';
+  import ScrollTop from '~/components/elements/ScrollTop';
 
   export default {
     mixins: [LayoutMixin],
@@ -24,7 +34,9 @@
       PageHeader,
       PageFooter,
       MobileMenu,
-      MobileNav
+      MobileNav,
+      ThemeSwitch,
+      ScrollTop
     }
   }
 </script>

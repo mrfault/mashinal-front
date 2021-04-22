@@ -1,14 +1,24 @@
 import Echo from 'laravel-echo';
 import Pusher from 'pusher-js';
 
+import { mapGetters, mapActions } from 'vuex';
+
+import { ColorThemeMixin } from '~/mixins/color-theme';
+
 export const LayoutMixin = {
+  mixins: [ColorThemeMixin],
   data() {
     return {
       isMobileDevice: false,
       vhVariableSet: false
     }
   },
+  computed: {
+    ...mapGetters(['loading'])
+  },
   methods: {
+    ...mapActions(['toggleLoading']),
+
     configSocket() {
       window.Pusher = Pusher;
       window.Echo = new Echo({
@@ -72,11 +82,18 @@ export const LayoutMixin = {
       this.vhVariableSet = true;
     },
     handleScroll() {
-      let headerEl = document.getElementsByClassName('page-header')[0];
-      let menuHeaderEl = document.getElementsByClassName('menu-header')[0];
+      let layout = document.querySelector('.layout');
+      // header
+      let headerEl = document.querySelector('.page-header');
+      let menuHeaderEl = document.querySelector('.menu-header');
       [headerEl, menuHeaderEl].map(el => {
         el.classList[window.scrollY > 10 ? 'add' : 'remove']('has-shadow');
       });
+      // footer
+      let footerEl = document.querySelector('.page-footer');
+      let reachedFooter = (window.pageYOffset + window.innerHeight) >= footerEl.offsetTop;
+      layout.classList[reachedFooter ? 'add' : 'remove']('reached-footer');
+      layout.classList[window.scrollY > 10 ? 'add' : 'remove']('scrolled');
     },
     showUnreadMessagesToast() {
       if(!this.routeName === 'profile-messages' && this.unreadMessageGroupCount > 0) {
@@ -93,7 +110,7 @@ export const LayoutMixin = {
     }
   },
   watch: {
-    async userLoggedIn(auth) {
+    async loggedIn(auth) {
       this.toggleEchoListening(auth);
       if(auth) {
         await this.getUserData();
@@ -101,26 +118,33 @@ export const LayoutMixin = {
       }
     }
   },
-  async mounted() {
+  mounted() {
     this.isMobileDevice = [
       /iPhone/i,/iPad/i,/iPod/i,
       /Android/i,/BlackBerry/i,/Windows Phone/i
     ].some(os => navigator.userAgent.match(os));
 
-    this.handleResize();
-    this.handleScroll();
     window.addEventListener('resize', this.handleResize);
-    window.addEventListener('scroll', this.handleResize);
+    window.addEventListener('resize', this.handleScroll);
     window.addEventListener('scroll', this.handleScroll);
-    if (this.userLoggedIn) {
+
+    setTimeout(() => {
+      this.handleResize();
+      this.handleScroll();
+    }, 0);
+
+    this.pickColorTheme();
+    this.toggleLoading(false);
+
+    if (this.loggedIn) {
       this.toggleEchoListening(true);
-      await this.getUserData();
+      this.getUserData();
     }
   },
   beforeDestroy() {
     this.toggleEchoListening(false);
     window.removeEventListener('resize', this.handleResize);
-    window.removeEventListener('scroll', this.handleResize);
+    window.removeEventListener('resize', this.handleScroll);
     window.removeEventListener('scroll', this.handleScroll);
   }
 }

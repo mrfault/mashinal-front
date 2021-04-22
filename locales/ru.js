@@ -804,7 +804,7 @@ export default {
 	"meta-title_catalog-car": "{word} {car}",
 	"meta-title_comparison": "Сравнивайте машины",
 	"meta-title_comparison-announcements": "Сравнивайте объявления",
-	"meta-title_login": "Войдите",
+	"meta-title_login": "Войти/Регистрация",
 	"meta-title_main-page": "Официальный авторынок | Объявления и цены на машины",
 	"meta-title_moto": "Объявления о продаже {type} | Цены {type}",
 	"meta-title_moto-sell": "Продать мотоцикл на официальном авторынке",

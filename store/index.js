@@ -1,9 +1,9 @@
 const getInitialState = () =>({
-  ui_scale: 1,
-  loading: false,
-  loggedIn: false,
+  loading: true,
+  theme: 'light',
+  uiScale: 1,
   navbarMenus: [],
-  staticPages: {},
+  staticPages: [],
   // axios cancellation
   CancelToken: null,
   cancel: null,
@@ -167,12 +167,13 @@ const getInitialState = () =>({
 export const state = () => (getInitialState());
 
 export const getters = {
-  ui_scale: s => s.ui_scale,
   loading: s => s.loading,
+  theme: s => s.theme,
+  uiScale: s => s.uiScale,
   loggedIn: s => s.auth.loggedIn,
+  user: s => s.auth.user,
   navbarMenus: s => s.navbarMenus,
   staticPages: s => s.staticPages,
-  user: s => s.auth.user,
   // profile
   messages: s => s.messages,
   suggested_messages: s => s.suggested_messages,
@@ -315,6 +316,10 @@ export const actions = {
   // Loading
   toggleLoading({ commit }, toggle) {
     commit('mutate', { property: 'loading', value: toggle })
+  },
+  // Dark/Light theme
+  toggleColorTheme({ commit }, theme) {
+    commit('mutate', { property: 'theme', value: theme });
   },
   // Localization
   async changeLocale({ dispatch }, locale) {

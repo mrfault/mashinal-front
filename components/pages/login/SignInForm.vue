@@ -13,7 +13,7 @@
       />
       <input-text
         type="password"
-        autocomplete="current-password" 
+        autocomplete="new-password" 
         :maxlength="255"
         :placeholder="$t('password')" 
         :invalid="validator.password.$error || passwordWrong" 

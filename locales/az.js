@@ -803,7 +803,7 @@ export default {
 	"meta-title_catalog-car": "{car} {word}",
 	"meta-title_comparison": "Maşınları müqayisə et",
 	"meta-title_comparison-announcements": "Elanları müqayisə et",
-	"meta-title_login": "Daxil ol",
+	"meta-title_login": "Daxil ol/Qeydiyyat",
 	"meta-title_main-page": "Onlayn Maşın Bazarı | Maşın Elanları Və Qiymətləri",
 	"meta-title_moto": "{type} Elanları | {type} Qiymətləri",
 	"meta-title_moto-sell": "Motosikleti Onlayn Maşın Bazarında Sat",
