@@ -138,8 +138,7 @@
     },
     mounted() {
       if(this.modal) {
-        document.documentElement.style.overflow = 'hidden';
-        document.getElementsByTagName('body')[0].classList.add('modal-open');
+        document.querySelector('body').style.overflow = 'hidden';
         document.addEventListener('click', (e) => {
           if(e.target.classList.contains('login-forms')) this.$emit('hide');
         });
@@ -147,8 +146,7 @@
     },
     beforeDestroy() {
       if(this.modal) {
-        document.documentElement.style.overflow = 'auto';
-        document.getElementsByTagName('body')[0].classList.remove('modal-open');
+        document.querySelector('body').style.overflow = 'scroll';
       }
     }
   }

@@ -3,10 +3,10 @@ import Pusher from 'pusher-js';
 
 import { mapGetters, mapActions } from 'vuex';
 
-import { ColorThemeMixin } from '~/mixins/color-theme';
+import { ColorModeMixin } from '~/mixins/color-mode';
 
 export const LayoutMixin = {
-  mixins: [ColorThemeMixin],
+  mixins: [ColorModeMixin],
   data() {
     return {
       isMobileDevice: false,
@@ -17,7 +17,7 @@ export const LayoutMixin = {
     ...mapGetters(['loading'])
   },
   methods: {
-    ...mapActions(['toggleLoading']),
+    ...mapActions(['setLoading','setGridBreakpoint']),
 
     configSocket() {
       window.Pusher = Pusher;
@@ -76,7 +76,19 @@ export const LayoutMixin = {
       await this.$store.dispatch('getSavedAnnouncements');
     },
     handleResize() {
-      if(this.vhVariableSet && this.isMobileDevice) return;
+      // update grid breakpoint
+      let breakpoint = false;
+      ['xs', 'sm', 'md', 'lg', 'xl'].map(name => {
+        let value = window.getComputedStyle(document.documentElement).getPropertyValue('--breakpoint-' + name);
+        if (window.matchMedia('(min-width: ' + value + ')').matches) {
+          breakpoint = name;
+        }
+      });
+      if (breakpoint !== this.breakpoint) {
+        this.setGridBreakpoint(breakpoint);
+      }
+      // set calculated vh variable
+      if (this.vhVariableSet && this.isMobileDevice) return;
       let vh = window.innerHeight * 0.01;
       document.documentElement.style.setProperty('--vh', `${vh}px`);
       this.vhVariableSet = true;
@@ -133,8 +145,8 @@ export const LayoutMixin = {
       this.handleScroll();
     }, 0);
 
-    this.pickColorTheme();
-    this.toggleLoading(false);
+    this.pickColorMode();
+    this.setLoading(false);
 
     if (this.loggedIn) {
       this.toggleEchoListening(true);

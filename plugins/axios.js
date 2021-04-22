@@ -10,7 +10,7 @@ export default function ({ app, error, $axios }) {
     // console.log(err.response.data.line);
     
     if (process.client) {
-      app.store.dispatch('toggleLoading', false);
+      app.store.dispatch('setLoading', false);
     }
 
     const code = parseInt(err.response && err.response.status);

@@ -1,26 +1,26 @@
 <template>
-  <div :class="['theme-switch',{'floating d-none d-lg-block': floating, 'mobile': !floating}]" @click="switchColorTheme">
+  <div :class="['theme-switch',{'floating d-none d-lg-block': floating, 'mobile': !floating}]" @click="switchColorMode">
     <div class="theme-switch_icons">
-      <span v-if="!floating || theme === 'light'" :class="{'active': theme === 'dark'}"><icon name="moon" /></span>
-      <span v-if="!floating || theme === 'dark'" :class="{'active': theme === 'light'}"><icon name="sun" /></span>
+      <span v-if="!floating || colorMode === 'light'" :class="{'active': colorMode === 'dark'}"><icon name="moon" /></span>
+      <span v-if="!floating || colorMode === 'dark'" :class="{'active': colorMode === 'light'}"><icon name="sun" /></span>
     </div>
   </div>
 </template>
 
 <script>
-import { ColorThemeMixin } from '~/mixins/color-theme';
+import { ColorModeMixin } from '~/mixins/color-mode';
 
 export default {
   props: {
     floating: Boolean
   },
-  mixins: [ColorThemeMixin],
+  mixins: [ColorModeMixin],
   methods: {
-    switchColorTheme() {
-      let theme = this.theme == 'dark' ? 'light' : 'dark';
-      this.toggleColorTheme(theme);
-      this.$cookies.set('color-theme', theme);
-      document.documentElement.setAttribute('data-theme', this.theme);
+    switchColorMode() {
+      let colorMode = this.colorMode == 'dark' ? 'light' : 'dark';
+      this.setColorMode(colorMode);
+      this.$cookies.set('color-mode', colorMode);
+      document.documentElement.setAttribute('data-color-mode', this.colorMode);
     }
   }
 }

@@ -44,9 +44,17 @@ hr {
 .wrapper {
   color: $dark-blue-1;
   background-color: $grayish-blue-1;
+  @include calc-vh(min-height, calc(100vh));
   &.dark-mode {
     color: $white;
     background-color: $dark-1;
+  }
+  &.loading {
+    background-color: $red-1;
+    background-image: url('/img/logo-white.svg');
+    background-size: 200px;
+    background-position: center;
+    background-repeat: no-repeat;
   }
 }
 
@@ -507,6 +515,12 @@ main {
         width: 60px;
         a {
           color: $green-1;
+          &.exact-active {
+            color: $green-2;
+            i {
+              background-color: $green-2;
+            }
+          }
         }
         i {
           align-items: center;
@@ -684,9 +698,6 @@ main {
             background-color: $grey-1;
           }
         }
-      }
-      hr {
-        background-color: $dark-1;
       }
     }
   }
@@ -934,7 +945,7 @@ main {
   }
 }
 
-[data-theme=dark] .toasted-container.top-right {
+[data-color-mode=dark] .toasted-container.top-right {
   .toasted.toasted-primary.success,
   .toasted.toasted-primary.error {
     background-color: $dark-3;

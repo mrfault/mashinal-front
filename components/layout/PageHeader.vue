@@ -3,7 +3,7 @@
     <div class="topbar">
       <div class="container">
         <nuxt-link class="logo" :to="$localePath('/')">
-          <img :src="`/img/${theme === 'dark' ? 'logo-white' : 'logo'}.svg`" alt="logo" />
+          <img :src="`/img/${colorMode === 'dark' ? 'logo-white' : 'logo'}.svg`" alt="logo" />
         </nuxt-link>
         <nav>
           <ul class="menu">
@@ -74,7 +74,7 @@
             </li>
           </ul>
         </nav>
-        <nuxt-link class="btn btn--pale-green" :to="$localePath('/sell')" v-html="$t('place_an_ad')" />
+        <nuxt-link class="btn btn--pale-green" :to="$localePath('/sell')" v-html="$t('to_sell')" />
       </div>
     </div>
   </header>

@@ -49,7 +49,7 @@ Vue.use({
         },
       },
       computed: {
-        ...mapGetters(['loggedIn', 'user', 'theme']),
+        ...mapGetters(['loggedIn', 'user', 'colorMode', 'breakpoint']),
 
         routeName() {
           return this.getRouteBaseName();

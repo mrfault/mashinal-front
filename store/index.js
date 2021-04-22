@@ -1,6 +1,7 @@
 const getInitialState = () =>({
   loading: true,
-  theme: 'light',
+  colorMode: 'light',
+  breakpoint: null,
   uiScale: 1,
   navbarMenus: [],
   staticPages: [],
@@ -168,8 +169,9 @@ export const state = () => (getInitialState());
 
 export const getters = {
   loading: s => s.loading,
-  theme: s => s.theme,
+  colorMode: s => s.colorMode,
   uiScale: s => s.uiScale,
+  breakpoint: s => s.breakpoint,
   loggedIn: s => s.auth.loggedIn,
   user: s => s.auth.user,
   navbarMenus: s => s.navbarMenus,
@@ -314,12 +316,16 @@ export const actions = {
     ]);
   },
   // Loading
-  toggleLoading({ commit }, toggle) {
-    commit('mutate', { property: 'loading', value: toggle })
+  setLoading({ commit }, loading) {
+    commit('mutate', { property: 'loading', value: loading })
   },
   // Dark/Light theme
-  toggleColorTheme({ commit }, theme) {
-    commit('mutate', { property: 'theme', value: theme });
+  setColorMode({ commit }, theme) {
+    commit('mutate', { property: 'colorMode', value: theme });
+  },
+  // Grid
+  setGridBreakpoint({ commit }, breakpoint) {
+    commit('mutate', { property: 'breakpoint', value: breakpoint });
   },
   // Localization
   async changeLocale({ dispatch }, locale) {

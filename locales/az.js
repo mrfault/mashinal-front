@@ -1244,7 +1244,7 @@ export default {
 	"to_add_an_advert": "Elanı əlavə et",
 	"to_pay": "Ödəniş et",
 	"to_plug": "Qoşmaq",
-	"to_sell": "Satmaq",
+	"to_sell": "Elan yerləşdir",
 	"toplivo": "Yanacaq",
 	"torque_of_electric_motors": "Крутящий момент электродвигателей",
 	"torsionnaya": "Torsion barlı",

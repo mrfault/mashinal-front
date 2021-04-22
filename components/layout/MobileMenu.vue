@@ -6,7 +6,7 @@
           <icon name="burger" />
         </span>
         <nuxt-link class="logo" :to="$localePath('/')">
-          <img :src="`/img/${theme === 'dark' ? 'logo-white' : 'logo'}.svg`" alt="logo" />
+          <img :src="`/img/${colorMode === 'dark' ? 'logo-white' : 'logo'}.svg`" alt="logo" />
         </nuxt-link>
         <span class="cursor-pointer" @click.stop>
           <icon name="options" />
@@ -14,7 +14,7 @@
       </div>
     </div>
     <div class="menu-backdrop" v-if="showSidebar" @click="toggleSidebarMenu(false)"></div>
-    <div :class="['menu-sidebar', {'show': showSidebar}]" v-if="initSidebar">
+    <div :class="['menu-sidebar', {'show': showSidebar}]">
       <div class="menu-sidebar_content">
         <div class="d-flex align-items-center justify-content-between">
           <div class="langs-menu">
@@ -70,8 +70,6 @@ export default {
   mixins: [MenusDataMixin, UserDataMixin],
   data() {
     return {
-      initSidebar: true, // ->
-      // set to "false" if bug appears on first load
       showSidebar: false
     }
   },
@@ -79,7 +77,6 @@ export default {
     ...mapActions(['changeLocale']),
 
     toggleSidebarMenu(toggle) {
-      if(!this.initSidebar) return;
       this.showSidebar = toggle;
     },
     handleLink(menu = false) {
@@ -89,11 +86,13 @@ export default {
   },
   watch: {
     showSidebar(show) {
-      document.getElementsByTagName('body')[0].style.overflow = show ? 'hidden' : 'auto';
+      document.querySelector('body').style.overflow = show ? 'hidden' : 'scroll';
+    },
+    breakpoint(breakpoint) {
+      if(breakpoint === 'lg') {
+        this.showSidebar = false;
+      }
     }
-  },
-  moutned() {
-    this.initSidebar = true;
   }
 }
 </script>
