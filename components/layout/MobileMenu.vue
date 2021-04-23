@@ -86,7 +86,7 @@ export default {
   },
   watch: {
     showSidebar(show) {
-      document.querySelector('body').style.overflow = show ? 'hidden' : 'scroll';
+      document.querySelector('body').style.overflowY = show ? 'hidden' : 'scroll';
     },
     breakpoint(breakpoint) {
       if(breakpoint === 'lg') {

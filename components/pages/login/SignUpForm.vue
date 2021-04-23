@@ -4,13 +4,13 @@
       <p v-if="form.staticPhone">
         <span v-mask="maskPhone(true)">{{ sell_phone }}</span>
       </p>
-      <input-text  
+      <form-text-input  
         :placeholder="$t('name')" 
         :maxlength="30"
         :invalid="validator.name.$error" 
         v-model="form.name"
       />
-      <input-text  
+      <form-text-input  
         v-if="!form.staticPhone"
         autocomplete="tel" 
         :placeholder="$t('mobile_number')" 
@@ -18,7 +18,7 @@
         :mask="maskPhone()"  
         v-model="form.phone"
       />
-      <input-text
+      <form-text-input
         type="password"
         autocomplete="new-password" 
         :maxlength="255"
@@ -26,7 +26,7 @@
         :invalid="validator.password.$error" 
         v-model="form.password"
       />
-      <input-text
+      <form-text-input
         type="password"
         autocomplete="new-password" 
         :maxlength="255"

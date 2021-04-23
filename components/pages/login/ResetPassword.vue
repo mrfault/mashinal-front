@@ -1,13 +1,13 @@
 <template>
   <form class="form reset-password" @submit.prevent="submit" novalidate>
     <div class="form-part">
-      <input-text
+      <form-text-input
         :placeholder="$t('enter_the_code')" 
         :mask="'99999'"
         :invalid="validator.code.$error" 
         v-model="form.code"
       />
-      <input-text
+      <form-text-input
         type="password"
         autocomplete="new-password" 
         :maxlength="255"
@@ -15,7 +15,7 @@
         :invalid="validator.password.$error" 
         v-model="form.password"
       />
-      <input-text
+      <form-text-input
         type="password"
         autocomplete="new-password" 
         :maxlength="255"

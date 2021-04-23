@@ -6,7 +6,9 @@ import Breadcrumbs from '~/components/elements/Breadcrumbs';
 import Paginate from '~/components/elements/Paginate';
 import LoginTabs from '~/components/elements/LoginTabs';
 // forms
-import InputText from '~/components/forms/InputText';
+import FormTextInput from '~/components/forms/FormTextInput';
+import FormCheckbox from '~/components/forms/FormCheckbox';
+import FormSelect from '~/components/forms/FormSelect';
 // transitions
 import TransitionExpand from '~/components/transitions/TransitionExpand';
 // packages
@@ -20,6 +22,8 @@ Vue.component('login-tabs', LoginTabs);
 // ***
 Vue.component('transition-expand', TransitionExpand);
 // ***
-Vue.component('input-text', InputText);
+Vue.component('form-text-input', FormTextInput);
+Vue.component('form-checkbox', FormCheckbox);
+Vue.component('form-select', FormSelect);
 // ***
 Vue.component('stack-modal', StackModal);

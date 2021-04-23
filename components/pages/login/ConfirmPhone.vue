@@ -1,7 +1,7 @@
 <template>
   <form class="form confirm-sms-code" @submit.prevent="submit" novalidate>
     <div class="form-part">
-      <input-text
+      <form-text-input
         :placeholder="$t('enter_the_code')" 
         :mask="'99999'"
         :invalid="validator.code.$error" 

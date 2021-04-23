@@ -43,6 +43,56 @@ textarea {
   }
 }
 
+.checkbox-input {
+  display: flex;
+  align-items: center;
+  user-select: none;
+  label {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    width: 100%;
+    background-color: $grayish-blue-2;
+    border-radius: 4px;
+    height: 34px;
+    padding: 7px 10px 6px;
+  }
+  .checkbox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-right: 10px;
+    border: 1px solid $grayish-blue-5;
+    border-radius: 4px;
+    width: 17px;
+    height: 17px;
+    &-icon {
+      font-size: 12px;
+      margin-right: 8px;
+      margin-left: 3px;
+    }
+    i {
+      color: $white;
+      font-size: 6px;
+      font-weight: bold;
+      opacity: 0;
+      transform: scale(.7);
+      transition: transform .3s ease-out, opacity .3s ease-out;
+    }
+  }
+  input:checked ~ label {
+    .checkbox {
+      border-color: $green-1;
+      background-color: $green-1;
+      i {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+  }
+}
+
 .newsletter {
   color: $dark-blue-1;
   form {
@@ -71,10 +121,13 @@ textarea {
 }
 
 .dark-mode {
-  .text-input {
-    input {
-      background-color: $dark-1;
-    }
+  .text-input input,
+  .checkbox-input label {
+    background-color: $dark-1;
+  }
+
+  .checkbox-input .checkbox {
+    border-color: $grey-1;
   }
 
   .newsletter {

@@ -136,7 +136,7 @@
     },
     mounted() {
       if(this.modal) {
-        document.querySelector('body').style.overflow = 'hidden';
+        document.querySelector('body').style.overflowY = 'hidden';
         document.addEventListener('click', (e) => {
           if(e.target.classList.contains('login-forms')) this.$emit('hide');
         });
@@ -144,7 +144,7 @@
     },
     beforeDestroy() {
       if(this.modal) {
-        document.querySelector('body').style.overflow = 'scroll';
+        document.querySelector('body').style.overflowY = 'scroll';
       }
     }
   }

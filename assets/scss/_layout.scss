@@ -494,7 +494,9 @@ main {
         margin-top: 6px;
       }
       i {
-        font-size: 18px;
+        &::before {
+          font-size: 18px;
+        }
         &.icon-star,
         &.icon-chat,
         &.icon-user {
