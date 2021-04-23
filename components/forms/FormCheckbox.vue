@@ -18,7 +18,7 @@
           <icon name="check" />
         </span>
         <icon class="checkbox-icon" :name="iconName" v-if="iconName" />
-        <span>{{ label }}</span>
+        <span class="text-truncate">{{ label }}</span>
       </label>
     </div>
   </div>
