@@ -17,7 +17,7 @@
           <nuxt-link custom :to="getUserSettingsLink" v-slot="{ navigate }">
             <div class="user-menu btn btn--dark-blue-outline" @click="navigate">
               <icon name="user" />
-              <div class="user-menu_list" v-if="loggedIn">
+              <div class="user-menu_list" v-if="loggedIn" @click.stop>
                 <div class="user-menu_list-inner">
                   <nuxt-link :to="getUserSettingsLink" class="d-inline-flex align-items-center align-top">
                     <img :src="getUserAvatar" :alt="user.full_name" />

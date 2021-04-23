@@ -72,7 +72,7 @@
               }
             }).then(()=>{
               this.pending = false;
-              this.$emit('login');
+              this.$nuxt.$emit('login', true);
             }).catch((err) => {
               this.pending = false;
             });

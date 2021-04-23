@@ -58,7 +58,7 @@
           }
         }).then(()=>{
           this.pending = false;
-          this.$emit('login');
+          this.$nuxt.$emit('login', true);
         }).catch(({response}) => {
           this.pending = false;
           if(response.status === 401) {

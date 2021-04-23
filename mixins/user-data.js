@@ -16,6 +16,7 @@ export const UserDataMixin = {
   methods: {
     async logout() {
       await this.$auth.logout();
+      this.$nuxt.$emit('login', false);
     }
-  }
+  },
 }

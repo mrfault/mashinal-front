@@ -20,7 +20,6 @@
     </div>
     <sign-in-form 
       @updateTab="updateTab" 
-      @login="$emit('login')" 
       v-if="action === 'sign-in'" 
       :form="form" 
       :validator="$v.form" 
@@ -48,7 +47,6 @@
     />
     <confirm-phone 
       @updateTab="updateTab" 
-      @login="$emit('login')" 
       v-else-if="action === 'sms'" 
       :form="form" 
       :validator="$v.form" 

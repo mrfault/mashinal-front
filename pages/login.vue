@@ -18,10 +18,7 @@
           </div>
           <div class="col-12 col-lg-6">
             <div class="tab-form">
-              <login-tabs 
-                @login="handleAfterLogin" 
-                @updateTab="tab = $event" 
-              />
+              <login-tabs @updateTab="tab = $event" />
             </div>
           </div>
         </div>
@@ -31,6 +28,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
   middleware: 'guest',
   nuxtI18n: {
@@ -53,12 +52,21 @@ export default {
     }
   },
   methods: {
-    handleAfterLogin() {
-      this.$store.dispatch('resetSellTokens');
-      let path = this.loggedIn && this.user.autosalon ? 'profile-dashboard' : '/';
+    ...mapActions(['resetSellTokens']),
+    
+    handleLogin(auth) {
+      if (!auth) return;
+      this.resetSellTokens();
+      let path = this.loggedIn && this.user.autosalon ? '/profile/dashboard' : '/';
       if (this.$route.query.ref) path = this.$route.query.ref;
       this.$router.push(this.$localePath(path));
     }
+  },
+  created() {
+    this.$nuxt.$on('login', this.handleLogin);
+  },
+  beforeDestroy() {
+    this.$nuxt.$off('login', this.handleLogin);
   }
 }
 </script>

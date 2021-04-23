@@ -6,9 +6,6 @@ Vue.use({
   install(Vue) {
     Vue.mixin({
       methods: {
-        connectEcho(channel = false) {
-          return window.Echo.private(channel || ('user.'+ this.$auth.user.id));
-        },
         // messages
         async createMessagesGroup(recipientId = false, announce = false){
           if (!recipientId && !announce) return;
