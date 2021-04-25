@@ -8,6 +8,11 @@ body {
   overflow-y: scroll;
 }
 
+[data-color-mode=dark] body {
+  color: $white;
+  background-color: $dark-1;
+}
+
 a {
   color: $dark-blue-2;
   text-decoration: none;
@@ -42,13 +47,7 @@ hr {
 }
 
 .wrapper {
-  color: $dark-blue-1;
-  background-color: $grayish-blue-1;
   @include calc-vh(min-height, calc(100vh));
-  &.dark-mode {
-    color: $white;
-    background-color: $dark-1;
-  }
   &.loading {
     background-color: $red-1;
     background-image: url('/img/logo-white.svg');
@@ -1029,6 +1028,10 @@ main {
     @include calc-vh(min-height, calc(100vh - 120px));
   }
 
+  .container {
+    max-width: 540px;
+  }
+
   .toasted-container.top-right {
     right: auto !important;
     left: calc(50% - 270px + 25px) !important;
@@ -1036,5 +1039,12 @@ main {
       max-width: calc(100% - 50px);
       top: 30px;
     }
+  }
+}
+
+@include media-min-width('lg') {
+  .layout,
+  .container {
+    min-width: 1250px;
   }
 }

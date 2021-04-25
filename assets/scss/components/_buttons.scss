@@ -47,9 +47,8 @@
   height: 34px;
   border-radius: 4px;
   transition: .1s ease-out;
-  &-submit {
+  &.full-width {
     width: 100%;
-    margin: 20px 0;
   }
   i {
     margin-right: 6px;

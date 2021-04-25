@@ -1,6 +1,6 @@
-@import '~bootstrap/scss/functions';
+/** Bootstrap */
 
-// override variables
+// override default variables
 
 $container-max-widths: (
   sm: 540px,
@@ -19,13 +19,21 @@ $grid-breakpoints: (
 
 $grid-gutter-width: 20px;
 
+$spacers: (
+  0: 0,
+  1: 1rem * 0.625,
+  2: 1rem * 0.9375,
+  3: 1rem * 1.25,
+  4: 1rem * 1.5625
+);
 
+
+@import '~bootstrap/scss/functions';
 @import '~bootstrap/scss/variables';
 @import '~bootstrap/scss/mixins';
 @import '~bootstrap/scss/root';
 @import '~bootstrap/scss/reboot';
 @import '~bootstrap/scss/grid';
-
 
 @import '~bootstrap/scss/utilities/align';
 @import '~bootstrap/scss/utilities/clearfix';
@@ -34,6 +42,7 @@ $grid-gutter-width: 20px;
 @import '~bootstrap/scss/utilities/screenreaders';
 @import '~bootstrap/scss/utilities/text';
 @import '~bootstrap/scss/utilities/visibility';
+@import '~bootstrap/scss/utilities/spacing';
 
 // @import '~bootstrap/scss/utilities';
 // @import '~bootstrap/scss/type';

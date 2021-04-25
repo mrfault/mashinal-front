@@ -67,6 +67,9 @@
     flex-direction: column;
     margin: -20px 0 0;
     height: 280px;
+    .form-group {
+      margin: 20px 0;
+    }
     .form-part {
       flex-shrink: 0;
       p {

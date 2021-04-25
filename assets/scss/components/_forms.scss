@@ -13,8 +13,13 @@ textarea {
   }
 }
 
+.form-row {
+  .form-group {
+    margin-top: 0;
+  }
+}
+
 .form-group {
-  margin: 20px 0;
   width: 100%;
 }
 
