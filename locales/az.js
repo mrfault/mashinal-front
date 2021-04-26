@@ -551,6 +551,7 @@ export default {
 	"detail": "Ətraflı",
 	"detail_report": "Ətraflı hesabat",
 	"detailed_search": "Ətraflı axtarış",
+	"helper_search": "Bələdçi",
 	"detect_radar_type": "Radar detektorların növləri",
 	"diametr-tsilindra-i-khod-porshnya-mm": "Silindr diametri və piston hərəkatətı, mm",
 	"diesel_plus_gas": "Dizel+qaz",

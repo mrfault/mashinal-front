@@ -3,7 +3,7 @@
     <div class="tabs row">
       <div class="col">
         <button 
-          :class="['btn', tab === 'sign-in' ? 'btn--red pointer-events-none' : 'btn--pale-red-outline']" 
+          :class="['btn', 'btn--pale-red-outline', {'active': tab === 'sign-in'}]" 
           @click="updateTab('sign-in')"
           v-if="!forceSellPhone || tab === 'sign-in'"
           v-html="$t('login')"
@@ -11,7 +11,7 @@
       </div>
       <div class="col">
         <button 
-          :class="['btn', tab === 'sign-up' ? 'btn--red pointer-events-none' : 'btn--pale-red-outline']" 
+          :class="['btn', 'btn--pale-red-outline', {'active': tab === 'sign-up'}]"
           @click="updateTab('sign-up')"
           v-if="!forceSellPhone || tab === 'sign-up'"
           v-html="$t('registration')"

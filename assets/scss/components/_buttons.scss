@@ -3,6 +3,8 @@
   $color-hover: $white, 
   $bg-color: $dark-blue-1, 
   $bg-hover: $dark-blue-2, 
+  $active-color: $white, 
+  $active-bg: false, 
   $border-color: false, 
   $outline: false, 
   $override: true
@@ -33,6 +35,14 @@
       color: $color-hover;
       background-color: $bg-hover;
       border-color: $bg-hover;
+    }
+  }
+  &.active,
+  &.active:hover {
+    @if ($active-bg) {
+      color: $active-color;
+      background-color: $active-bg;
+      border-color: $active-bg;
     }
   }
 }
@@ -78,7 +88,7 @@
     @include btn-style($color: $red-1, $bg-color: $red-3, $bg-hover: $red-1);
   }
   &--pale-red-outline {
-    @include btn-style($bg-color: $red-1, $border-color: $red-4, $outline: true);
+    @include btn-style($bg-color: $red-2, $border-color: $red-4, $active-bg: $red-1, $outline: true);
   }
 }
 
@@ -95,11 +105,11 @@
     }
     &--red,
     &--pale-red {
-      @include btn-style($color: $dark-2, $bg-color: $white, $bg-hover: $grey-1);
+      @include btn-style($bg-color: $grey-2, $bg-hover: $grey-1);
     }
     &--red-outline,
     &--pale-red-outline {
-      @include btn-style($bg-color: $grey-1, $border-color: $grey-1, $outline: true, $override: false);
+      @include btn-style($bg-color: $grey-1, $border-color: $grey-1, $active-bg: $white, $active-color: $dark-1, $outline: true, $override: false);
     }
   }
 }

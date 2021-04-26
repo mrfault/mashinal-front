@@ -552,6 +552,7 @@ export default {
 	"detail": "Полный",
 	"detail_report": "Полный отчет",
 	"detailed_search": "Детальный поиск",
+	"helper_search": "Помощник",
 	"detect_radar_type": "Виды определяемых радаров",
 	"diametr-tsilindra-i-khod-porshnya-mm": "Диаметр цилиндра и ход поршня, мм",
 	"diesel_plus_gas": "Дизель+газ",

@@ -1,21 +1,32 @@
 <template>
   <form class="form" @submit.prevent="submitForm" novalidate>
     <div class="row">
-      <div class="col-lg-4"></div>
-      <div class="col-lg-4">
-        <div class="row mb-3">
-          <div class="col-6"></div>
+      <div class="col-lg-4 mb-2 mb-lg-3">
+        <form-buttons :options="getMileageOptions" v-model="form.announce_type" :group-by="3" />
+      </div>
+      <div class="col-lg-4 offset-md-4 mb-2 mb-lg-3 d-none d-lg-block">
+        <div class="row">
           <div class="col-6">
-            <form-checkbox :label="$t('barter')" input-name="exchange_possible" icon-name="barter" v-model="form.exchange_possible" />
+            <nuxt-link class="btn btn--pale-red full-width" :to="$localePath('/')">
+              <icon name="options" /> {{ $t('detailed_search') }}
+            </nuxt-link>
+          </div>
+          <div class="col-6">
+            <nuxt-link class="btn btn--pale-red full-width" :to="$localePath('/')">
+              <icon name="flag" /> {{ $t('helper_search') }}
+            </nuxt-link>
           </div>
         </div>
       </div>
-      <div class="col-lg-4">
-        <div class="row mb-3">
-          <div class="col-6">
-            <form-checkbox :label="$t('credit')" input-name="credit" icon-name="percent" v-model="form.credit" />
-          </div>
-          <div class="col-6"></div>
+      <div class="col-6 col-lg-2 mb-2 mb-lg-3">
+        <form-checkbox :label="$t('barter')" input-name="exchange_possible" icon-name="barter" v-model="form.exchange_possible" />
+      </div>
+      <div class="col-6 col-lg-2 mb-2 mb-lg-3">
+        <form-checkbox :label="$t('credit')" input-name="credit" icon-name="percent" v-model="form.credit" />
+      </div>
+      <div class="col-6 col-lg-2 mb-2 mb-lg-3 d-none d-lg-block">
+        <div class="form-info text-green">
+          {{ $readPlural(totalCount, $t('plural_forms_announcements')) }}
         </div>
       </div>
       <div class="col-lg-8">
@@ -41,6 +52,12 @@ import { SearchMixin } from '~/mixins/search';
 
 export default {
   mixins: [SearchMixin],
+  props: {
+    totalCount: {
+      type: Number,
+      default: 0
+    }
+  },
   data() {
     let brand = { 
       brand: '', 

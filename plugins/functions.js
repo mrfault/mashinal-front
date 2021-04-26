@@ -22,4 +22,13 @@ export default function({ app, route, store }, inject) {
   inject('isPhoneNumber', (value) => {
     return value.match(/^[+]994[ ][(][0-9]{2}[)][ ][0-9]{3}[-][0-9]{2}[-][0-9]{2}$/) !== null;
   });
+  // helpers
+  inject('notUndefined', (...values) => {
+    for(let i in values)
+      if(values[i] !== undefined) return values[i];
+    return values[0];
+  });
+  inject('readPlural', (n, forms, count = true) => {
+    return (count ? `${n} ` : '') + forms[(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2) ];
+  });
 }

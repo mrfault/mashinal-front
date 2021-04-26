@@ -25,11 +25,12 @@ export const SearchMixin = {
         let value = form[property];
         this.$set(this.form, property, value);
       }
-    },
-    // options
-    getYearOptions(year = 1886) {
+    }
+  },
+  computed: {
+    getYearOptions() {
       let years = [], j = 0;
-      for (let i = this.currentYear; i >= year; i--) {
+      for (let i = this.currentYear; i >= 1886; i--) {
         years[j] = { name: i, key: i }; j++;
       }
       return years;

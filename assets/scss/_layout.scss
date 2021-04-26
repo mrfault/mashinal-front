@@ -112,6 +112,18 @@ main {
   }
 }
 
+.text-green {
+  color: $green-1;
+}
+
+.text-red {
+  color: $red-1;
+}
+
+.text-yellow {
+  color: $yellow-1;
+}
+
 .menu,
 .dropdown-menu {
   padding: 0;
@@ -555,9 +567,14 @@ main {
     span {
       &:first-of-type {
         color: $red-1;
+        i {
+          font-size: 16px;
+        }
       }
-      i {
-        font-size: 16px;
+      &:last-of-type {
+        i {
+          font-size: 18px;
+        }
       }
     }
     &.has-shadow {
@@ -1026,10 +1043,29 @@ main {
 @include media-max-width('lg') {
   [class^=pages-] {
     @include calc-vh(min-height, calc(100vh - 120px));
+    padding: 0 0 30px;
   }
 
   .container {
     max-width: 540px;
+  }
+
+  .row:not(.no-gutters) {
+    margin-right: -$grid-gutter-width * .375;
+    margin-left: -$grid-gutter-width * .375;
+    & > .col,
+    & > [class*="col-"] {
+      padding-right: $grid-gutter-width * .375;
+      padding-left: $grid-gutter-width * .375;
+    }
+  }
+
+  .card {
+    margin: 0 -25px;
+    &.pt-0.pt-lg-3 {
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
   }
 
   .toasted-container.top-right {

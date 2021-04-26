@@ -50,14 +50,24 @@
         default: false
       }
     },
+    data() {
+      return {
+        prevValue: this.value
+      }
+    },
     computed: {
       inputValue: {
         get() {
           return this.value;
         },
         set(value) {
-          value = (this.disabled || (this.value.length > this.maxlength)) ? this.value : value
+          value = (this.disabled || (this.value.length > this.maxlength)) ? this.value : value;
           this.$emit('input', value);
+          // check if value was changed
+          if(value !== this.prevValue) {
+            this.$emit('change', value);
+            this.prevValue = value;
+          }
         }
       }
     }

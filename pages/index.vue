@@ -1,7 +1,7 @@
 <template>
   <div class="pages-index">
     <div class="container">
-      <div class="card">
+      <div class="card pt-0 pt-lg-3">
         <cars-search-form />
       </div>
     </div>

@@ -59,6 +59,14 @@ Vue.use({
         },
         currentYear() {
           return new Date().getFullYear();
+        },
+        isMobileBreakpoint() {
+          ['xs', 'sm', 'md'].includes(this.breakpoint);
+        },
+        isMobileDevice() {
+          if(!navigator.userAgent) return false;
+          return [/iPhone/i,/iPad/i,/iPod/i,/Android/i,/BlackBerry/i,/Windows Phone/i]
+            .some(os => navigator.userAgent.match(os));
         }
       },
       filters: {

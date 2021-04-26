@@ -107,22 +107,22 @@
 @include media-max-width('lg') {
   .pages-login {
     @include calc-vh(min-height, calc(100vh - 60px));
-    background: linear-gradient(180deg, $red-1 379px, $white 50%);
+    background: linear-gradient(180deg, $red-1 379px, $white 379px);
     padding: 0;
     .tab-info {
       height: 354px;
-      padding: 50px 0;
+      padding: 50px 25px;
       border-radius: 4px 4px 0 0;
       img {
-        right: 0;
+        right: 25px;
       }
     }
     .tab-form {
       border-radius: 4px;
-      margin: 0 -25px;
+      // margin: 0 -25px;
     }
     .tab-bg {
-      right: -54px;
+      right: -29px;
     }
     .login-card {
       background-color: transparent;

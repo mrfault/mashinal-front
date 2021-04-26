@@ -7,7 +7,6 @@ export const LayoutMixin = {
   mixins: [ColorModeMixin, MessagesMixin],
   data() {
     return {
-      isMobileDevice: false,
       vhVariableSet: false
     }
   },
@@ -35,6 +34,7 @@ export const LayoutMixin = {
         this.setGridBreakpoint(breakpoint);
       }
       // set calculated vh variable
+      console.log(this.isMobileDevice)
       if (this.vhVariableSet && this.isMobileDevice) return;
       let vh = window.innerHeight * 0.01;
       document.documentElement.style.setProperty('--vh', `${vh}px`);
@@ -46,13 +46,13 @@ export const LayoutMixin = {
       let headerEl = document.querySelector('.page-header');
       let menuHeaderEl = document.querySelector('.menu-header');
       [headerEl, menuHeaderEl].map(el => {
-        el.classList[window.scrollY > 10 ? 'add' : 'remove']('has-shadow');
+        el.classList[window.scrollY > 0 ? 'add' : 'remove']('has-shadow');
       });
       // footer
       let footerEl = document.querySelector('.page-footer');
       let reachedFooter = (window.pageYOffset + window.innerHeight) >= footerEl.offsetTop;
       layout.classList[reachedFooter ? 'add' : 'remove']('reached-footer');
-      layout.classList[window.scrollY > 10 ? 'add' : 'remove']('scrolled');
+      layout.classList[window.scrollY > 0 ? 'add' : 'remove']('scrolled');
     },
     
   },
@@ -76,11 +76,6 @@ export const LayoutMixin = {
       if (auth) this.configSocket();
       this.toggleEchoListening(auth);
     });
-
-    this.isMobileDevice = [
-      /iPhone/i,/iPad/i,/iPod/i,
-      /Android/i,/BlackBerry/i,/Windows Phone/i
-    ].some(os => navigator.userAgent.match(os));
 
     window.addEventListener('resize', this.handleResize);
     window.addEventListener('resize', this.handleScroll);

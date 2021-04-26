@@ -9,6 +9,7 @@ import LoginTabs from '~/components/elements/LoginTabs';
 import FormTextInput from '~/components/forms/FormTextInput';
 import FormCheckbox from '~/components/forms/FormCheckbox';
 import FormSelect from '~/components/forms/FormSelect';
+import FormButtons from '~/components/forms/FormButtons';
 // transitions
 import TransitionExpand from '~/components/transitions/TransitionExpand';
 // packages
@@ -25,5 +26,6 @@ Vue.component('transition-expand', TransitionExpand);
 Vue.component('form-text-input', FormTextInput);
 Vue.component('form-checkbox', FormCheckbox);
 Vue.component('form-select', FormSelect);
+Vue.component('form-buttons', FormButtons);
 // ***
 Vue.component('stack-modal', StackModal);
