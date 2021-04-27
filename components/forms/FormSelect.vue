@@ -184,7 +184,7 @@
           let read = this.values.read !== false;
           if (this.values.from && this.values.to) value = `${this.$readNumber(this.values.from, read)} - ${this.$readNumber(this.values.to, read)}`;
           else if (this.values.from || this.values.to) value = `${this.$t(!this.values.from ? 'to' : 'from')} ${this.$readNumber(this.values.from || this.values.to, read)}`;
-          else if (this.values.from === 0 || this.values.to === 0) value = '0';
+          else if (this.values.from === 0 || this.values.to === 0) value = `${this.$t(this.values.to === 0 ? 'to' : 'from')} 0`;
           if (value && this.values.suffix) value += ` ${this.values.suffix}`;
           return value || this.label;
         }
