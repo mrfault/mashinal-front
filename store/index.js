@@ -73,6 +73,7 @@ const getInitialState = () =>({
   colors: [],
   complaint_options: [],
   badges: [],
+  options_to_reset: [],
   // commercial
   com_types: [],
   com_all_options: [],
@@ -306,7 +307,14 @@ export const getters = {
   comparison_models: s => s.comparison_models
 };
 
-const objectNotEmpty = (o) => typeof o === 'object' && Object.keys(o).length > 0;
+const objectNotEmpty = (state, commit, property) => {
+  if(state['options_to_reset'].includes(property)) {
+    let arr = state['options_to_reset'].filter(p => p !== property);
+    commit('mutate', { property: 'options_to_reset', value: arr }); 
+    return false;
+  }
+  return typeof state[property] === 'object' && Object.keys(state[property]).length > 0;
+};
 
 export const actions = {
   async nuxtServerInit({ dispatch }) {
@@ -430,7 +438,7 @@ export const actions = {
   },
   // Brands
   async getBrands({ commit, state }) {
-    if (objectNotEmpty(state['brands'])) return;
+    if (objectNotEmpty(state, commit, 'brands')) return;
     const res = await this.$axios.$get('/brands');
     commit('mutate', { property: 'brands', value: res });
   },
@@ -517,57 +525,61 @@ export const actions = {
   },
   // Options
   async getOptions({ state, commit }) {
-    if (objectNotEmpty(state['sell_options'])) return;
+    if (objectNotEmpty(state, commit, 'sell_options')) return;
     const res = await this.$axios.$get('/config/get_options');
     commit('mutate', { property: 'sell_options', value: res });
   },
   async getAllOtherOptions({ state, commit }, suffix = '') {
-    if (objectNotEmpty(state['all_sell_options' + suffix])) return;
+    if (objectNotEmpty(state, commit, 'all_sell_options' + suffix)) return;
     const res = await this.$axios.$get('/config/get_all_options' + suffix);
     commit('mutate', { property: 'all_sell_options' + suffix, value: res });
   },
   async getPopularOptions({ state, commit }) {
-    if (objectNotEmpty(state['popular_options'])) return;
+    if (objectNotEmpty(state, commit, 'popular_options')) return;
     const res = await this.$axios.$get('/config/get_popular_options');
     commit('mutate', { property: 'popular_options', value: res });
   },
   async getBodyOptions({ state, commit }) {
-    if (objectNotEmpty(state['body_options'])) return;
+    if (objectNotEmpty(state, commit, 'body_options')) return;
     const res = await this.$axios.$get('/get_body_options');
     commit('mutate', { property: 'body_options', value: res });
   },
   async getMotoOptions({ state, commit }) {
-    if (objectNotEmpty(state['moto_options'])) return;
+    if (objectNotEmpty(state, commit, 'moto_options')) return;
     const res = await this.$axios.$get(`/moto/search_options`);
     commit('mutate', { property: 'moto_options', value: res });
   },
   async getColors({ state, commit }) {
-    if (objectNotEmpty(state['colors'])) return;
+    if (objectNotEmpty(state, commit, 'colors')) return;
     const res = await this.$axios.$get(`/config/get_colors?formatted=false`);
     commit('mutate', { property: 'colors', value: res });
   },
   async getComplaintOptions({ state, commit }) {
-    if (objectNotEmpty(state['complaint_options'])) return;
+    if (objectNotEmpty(state, commit, 'complaint_options')) return;
     const res = await this.$axios.$get(`/complaint-options`);
     commit('mutate', { property: 'complaint_options', value: res.data });
   },
   async getBadges({ state, commit }) {
-    if (objectNotEmpty(state['badges'])) return;
+    if (objectNotEmpty(state, commit, 'badges')) return;
     const res = await this.$axios.$get(`/additional/get_badges`);
     commit('mutate', { property: 'badges', value: res });
   },
-  resetOptions({ commit }) {
-    ['sell_options','all_sell_options2','body_options'].map(property => {
-      commit('mutate', { property, value: {} });
-    });
-    ['colors','complaint_options','badges','brands','popular_options','all_sell_options',
-     'moto_options','com_all_options','com_types'].map(property => {
-      commit('mutate', { property, value: [] });
-    });
+  resetOptions({ state, commit }, property = false) {
+    let arr = [
+      'sell_options','all_sell_options2','body_options',
+      'colors','complaint_options','badges','brands','popular_options','all_sell_options',
+      'moto_options','com_all_options','com_types'
+    ];
+    if (property) {
+      arr = state['options_to_reset'].filter(p => p !== property);
+      commit('mutate', { property: 'options_to_reset', value: arr });
+    } else {
+      commit('mutate', { property: 'options_to_reset', value: arr });
+    }
   },
   // Commercial
   async getComAllOptions({ state, commit }) {
-    if (objectNotEmpty(state['com_all_options'])) return;
+    if (objectNotEmpty(state, commit, 'com_all_options')) return;
     const res = await this.$axios.$get(`/commercial/get_all_options`);
     commit('mutate', { property: 'com_all_options', value: res });
   },
@@ -580,7 +592,7 @@ export const actions = {
     commit('mutate', { property: 'com_search_filters', value: res });
   },
   async getComTypes({ state, commit }) {
-    if (objectNotEmpty(state['com_types'])) return;
+    if (objectNotEmpty(state, commit, 'com_types')) return;
     const res = await this.$axios.$get('/commercial/all_types');
     commit('mutate', { property: 'com_types', value: res });
   },

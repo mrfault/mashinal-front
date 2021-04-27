@@ -2,7 +2,7 @@
   <form class="form" @submit.prevent="submitForm" novalidate>
     <div class="row">
       <div class="col-lg-4 mb-2 mb-lg-3">
-        <form-buttons :options="getMileageOptions" v-model="form.announce_type" :group-by="3" />
+        <form-buttons :options="getMileageOptions" :group-by="3" v-model="form.announce_type" />
       </div>
       <div class="col-lg-4 offset-md-4 mb-2 mb-lg-3 d-none d-lg-block">
         <div class="row">
@@ -19,10 +19,42 @@
         </div>
       </div>
       <div class="col-6 col-lg-2 mb-2 mb-lg-3">
-        <form-checkbox :label="$t('barter')" input-name="exchange_possible" icon-name="barter" v-model="form.exchange_possible" />
+        <form-select :label="$t('years')" custom 
+          :values="{from: form.min_year, to: form.max_year, read: false }"
+          @clear="form.min_year = '', form.max_year = ''"
+        >
+          <div class="form-merged">
+            <form-select :label="$t('from')" :options="getYearOptions" v-model="form.min_year" 
+              :show-label-on-select="false" />
+            <form-select :label="$t('to')" :options="getYearOptions" v-model="form.max_year"
+              :show-label-on-select="false" />
+          </div>
+        </form-select>
       </div>
       <div class="col-6 col-lg-2 mb-2 mb-lg-3">
-        <form-checkbox :label="$t('credit')" input-name="credit" icon-name="percent" v-model="form.credit" />
+        <form-select :label="$t('price')" custom 
+          :values="{from: form.price_from, to: form.price_to, suffix: getOptionValue('Currency', form.currency) }"
+          @clear="form.price_from = '', form.price_to = ''"
+        >
+          <div class="form-merged">
+            <form-numeric-input :placeholder="$t('from')" v-model="form.price_from" />
+            <form-numeric-input :placeholder="$t('to')" v-model="form.price_to" />
+            <form-select :label="'AZN'" :options="getCurrencyOptions" v-model="form.currency"
+              :allow-clear="false" />
+          </div>
+        </form-select>
+      </div>
+      <div class="col-6 col-lg-2 mb-2 mb-lg-3">
+        <form-select :label="$t('city')" :options="sell_options.regions" v-model="form.region"
+          :clear-option="true" />
+      </div>
+      <div class="col-6 col-lg-2 mb-2 mb-lg-3">
+        <form-checkbox :label="$t('barter')" v-model="form.exchange_possible" 
+          input-name="exchange_possible" icon-name="barter" />
+      </div>
+      <div class="col-6 col-lg-2 mb-2 mb-lg-3">
+        <form-checkbox :label="$t('credit')" v-model="form.credit" 
+          input-name="credit" icon-name="percent" />
       </div>
       <div class="col-6 col-lg-2 mb-2 mb-lg-3 d-none d-lg-block">
         <div class="form-info text-green">
@@ -33,7 +65,11 @@
       </div>
       <div class="col-lg-4">
         <div class="row">
-          <div class="col-6"></div>
+          <div class="col-6">
+            <button type="submit" class="btn full-width btn--red">
+              <icon name="reset" /> {{ $t('clear_search') }}
+            </button>
+          </div>
           <div class="col-6">
             <button type="submit" class="btn full-width btn--green">
               <icon name="search" /> {{ $t('find') }}
@@ -67,7 +103,11 @@ export default {
       generation: '' 
     };
     return {
-      searchType: 'cars',
+      meta: {
+        type: 'cars',
+        path: '/cars',
+        param: 'car_filter'
+      },
       form: {
         sorting: 'created_at_desc',
         additional_brands: {
@@ -107,24 +147,6 @@ export default {
   },
   computed: {
     ...mapGetters(['brands', 'body_options', 'array_models', 'array_generations', 'sell_options', 'all_sell_options2', 'colors'])
-  },
-  methods: {
-    resetForm() {
-      this.setFormData({});
-      this.submitForm();
-    },
-    submitForm() {
-      // tracking
-      this.fbTrack('Search Api');
-      this.gtagTrack('AW-600951956/Qeu4CILAyPIBEJSZx54C');
-      // update route query params and search announcements
-      let queryUrl = `${this.$localePath('/cars')}?car_filter=${encodeURI(JSON.stringify(this.getFormData()))}`;
-      this.$router.push(queryUrl);
-      this.$emit('submit');
-    }
-  },
-  created() {
-    this.setFormData(JSON.parse(this.$route.query.car_filter || '{}'));
   }
 }
 </script>

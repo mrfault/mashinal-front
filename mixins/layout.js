@@ -34,7 +34,6 @@ export const LayoutMixin = {
         this.setGridBreakpoint(breakpoint);
       }
       // set calculated vh variable
-      console.log(this.isMobileDevice)
       if (this.vhVariableSet && this.isMobileDevice) return;
       let vh = window.innerHeight * 0.01;
       document.documentElement.style.setProperty('--vh', `${vh}px`);

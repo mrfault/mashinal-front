@@ -6,6 +6,7 @@ import Breadcrumbs from '~/components/elements/Breadcrumbs';
 import Paginate from '~/components/elements/Paginate';
 import LoginTabs from '~/components/elements/LoginTabs';
 // forms
+import FormNumericInput from '~/components/forms/FormNumericInput';
 import FormTextInput from '~/components/forms/FormTextInput';
 import FormCheckbox from '~/components/forms/FormCheckbox';
 import FormSelect from '~/components/forms/FormSelect';
@@ -23,6 +24,7 @@ Vue.component('login-tabs', LoginTabs);
 // ***
 Vue.component('transition-expand', TransitionExpand);
 // ***
+Vue.component('form-numeric-input', FormNumericInput);
 Vue.component('form-text-input', FormTextInput);
 Vue.component('form-checkbox', FormCheckbox);
 Vue.component('form-select', FormSelect);

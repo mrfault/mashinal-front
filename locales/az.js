@@ -290,7 +290,6 @@ export default {
 	"announcements_not_found": "Elan tapılmayıb",
 	"announcement_not_found": "Elan tapılmayıb",
 	"any": "İstənilən",
-	"any_2": "İstənilən",
 	"application_for_a_loan_to_buy_a_car_on_mashinal": "Avtomobil almaq üçün kredit müraciətləri",
 	"applying_filter": "Boya tətbiq etmə üsulu",
 	"appointment": "Təyinat",

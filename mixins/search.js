@@ -2,7 +2,7 @@ export const SearchMixin = {
   methods: {
     getFormData() {
       let requiredKeys = ['additional_brands'];
-      if (this.type === 'cars') requiredKeys.push('all_options');
+      if (this.meta.type === 'cars') requiredKeys.push('all_options');
 
       let form = {};
       for (let property in this.form) {
@@ -25,6 +25,22 @@ export const SearchMixin = {
         let value = form[property];
         this.$set(this.form, property, value);
       }
+    },
+    submitForm() {
+      // tracking
+      this.fbTrack('Search Api');
+      this.gtagTrack('AW-600951956/Qeu4CILAyPIBEJSZx54C');
+      // update route query params and search announcements
+      let queryUrl = `${this.$localePath(this.meta.path)}?${this.meta.param}=${encodeURI(JSON.stringify(this.getFormData()))}`;
+      this.$router.push(queryUrl);
+      this.$emit('submit');
+    },
+    resetForm() {
+      this.setFormData({});
+      this.submitForm();
+    },
+    getOptionValue(name, key) {
+      return this[`get${name}Options`].find(option => option.key === key)?.name || '';
     }
   },
   computed: {
@@ -36,7 +52,7 @@ export const SearchMixin = {
       return years;
     },
     getMileageOptions() {
-      let zeroFirst = this.type !== 'cars';
+      let zeroFirst = this.meta.type !== 'cars';
       return [
         { name: this.$t('all'), key: zeroFirst ? 0 : 1 },
         { name: this.$t('new'), key: zeroFirst ? 1 : 2 },
@@ -82,5 +98,8 @@ export const SearchMixin = {
         this.$t('accordeon_other')
       ]
     }
+  },
+  created() {
+    this.setFormData(JSON.parse(this.$route.query.car_filter || '{}'));
   }
 }

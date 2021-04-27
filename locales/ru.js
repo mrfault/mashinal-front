@@ -290,7 +290,6 @@ export default {
 	"announcements_not_found": "Объявлений не найдено",
 	"announcement_not_found": "Объявление не найдено",
 	"any": "Любой",
-	"any_2": "Любой",
 	"application_for_a_loan_to_buy_a_car_on_mashinal": "Заявки на кредит для покупки автомобиля на Mashin.al",
 	"applying_filter": "Способ нанесения краски",
 	"appointment": "Назначение",

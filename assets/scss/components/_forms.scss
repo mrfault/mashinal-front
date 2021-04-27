@@ -31,7 +31,7 @@ textarea {
   text-align: center;
   background-color: $grayish-blue-2;
   height: 34px;
-  padding: 7px 10px 6px;
+  padding: 7px 15px;
   border-radius: 4px;
 }
 
@@ -43,7 +43,7 @@ textarea {
     border: 0;
     background-color: $grayish-blue-2;
     height: 34px;
-    padding: 7px 10px 6px;
+    padding: 7px 15px;
     border-radius: 4px;
     &.invalid {
       color: $red-1;
@@ -119,7 +119,7 @@ textarea {
     border: 0;
     border-radius: 4px;
     height: 34px;
-    padding: 7px 15px 6px;
+    padding: 7px 15px;
     line-height: 17px;
     font-weight: 500;
     margin-right: 20px;
@@ -132,6 +132,97 @@ textarea {
   }
   button {
     flex-shrink: 0;
+  }
+}
+
+.select-menu {
+  position: relative;
+  &_triangle {
+    position: absolute;
+    bottom: -10px;
+    left: 15px;
+    color: $grayish-blue-2;
+  }
+  &_label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    font-weight: 500;
+    background-color: $grayish-blue-2;
+    height: 34px;
+    padding: 7px 15px;
+    border-radius: 4px;
+    user-select: none;
+    &.selected,
+    &.active {
+      color: $dark-blue-2;
+    }
+    &.active .icon-chevron-down {
+      transform: scaleY(-1);
+    }
+    .icon-cross {
+      font-size: 11px;
+      margin-left: 4px;
+    }
+    .counter {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      font-size: 12px;
+      border-radius: 4px;
+      background-color: $white;
+      margin: 0 auto 0 10px;
+    }
+  }
+  &_dropdown {
+    position: absolute;
+    width: 100%;
+    z-index: 2;
+    visibility: hidden;
+    opacity: 0;
+    background-color: $grayish-blue-2;
+    border-radius: 4px;
+    box-shadow: $shadow-light-5;
+    margin-top: 15px;
+    padding: 7px 0;
+    &.custom {
+      padding: 0;
+      width: auto;
+    }
+    &.show {
+      visibility: visible;
+      opacity: 1;
+    }
+    &-option {
+      display: flex;
+      align-items: center;
+      padding: 0 15px;
+      height: 34px;
+      user-select: none;
+      &.selected {
+        color: $dark-blue-2;
+      }
+      &:hover {
+        background-color: darken($grayish-blue-2, 2%);
+      }
+    }
+  }
+}
+
+.form-merged {
+  display: flex;
+  align-items: center;
+  .form-group:not(:last-child) {
+    border-right: 1px solid $grayish-blue-6;
+  }
+  .text-input {
+    width: 140px;
+  }
+  .select-menu {
+    width: 90px;
   }
 }
 

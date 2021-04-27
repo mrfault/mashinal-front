@@ -62,11 +62,11 @@ hr {
   flex-direction: column;
   @include calc-vh(min-height, calc(100vh));
   min-width: 320px;
+  overflow: hidden;
 }
 
 main {
   position: relative;
-  overflow: hidden;
 }
 
 [class^=pages-] {
@@ -135,7 +135,7 @@ main {
 .page-header {
   background-color: $white;
   position: sticky;
-  z-index: 2;
+  z-index: 10;
   top: 0;
   left: 0;
   transition: box-shadow .1s ease-out;
@@ -591,7 +591,7 @@ main {
     overflow: auto;
     transform: translate(-101%);
     transition: transform .3s ease;
-    background-color: $red-5;
+    background-color: rgba($red-5, 0.9);
     min-width: 260px;
     width: 315px;
     width: calc(50% + 270px - 60px);
@@ -705,7 +705,7 @@ main {
       @include backdrop-filter($dark-1);
     }
     .menu-sidebar {
-      background-color: $dark-2;
+      background-color: rgba($dark-2, .9);
       .langs-menu {
         .btn {
           border-color: $grey-1;

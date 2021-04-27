@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueAwesomeSwiper from 'vue-awesome-swiper';
 import Inputmask from 'inputmask';
+import vuescroll from 'vuescroll';
 
 Vue.use(VueAwesomeSwiper);
 
@@ -12,5 +13,25 @@ Vue.use({
         Inputmask(binding.value).mask(el);
       }
     });
+  }
+});
+
+Vue.use(vuescroll, {
+  ops: {
+    rail: {
+      background: '#ffffff ',
+      opacity: 0,
+      size: '11px',
+      gutterOfSide: '2px',
+    },
+    bar: {
+      onlyShowBarOnScroll: false,
+      size: '7px',
+      minSize: 0.1,
+      keepShow: true,
+      background: '#ffffff',
+      opacity: 1,
+      specifyBorderRadius: '4px',
+    }
   }
 });
