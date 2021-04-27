@@ -13,7 +13,7 @@
         :false-value="typeof inputValue === 'number' ? 0 : false"
         v-model="inputValue"
       />
-      <label :for="id || inputName">
+      <label :for="id || inputName" :class="{transparent}">
         <span class="checkbox">
           <icon name="check" />
         </span>
@@ -55,6 +55,10 @@
       iconName: {
         type: String,
         default: ''
+      },
+      transparent: {
+        type: Boolean,
+        default: false
       }
     },
     data() {

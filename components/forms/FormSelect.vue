@@ -164,7 +164,7 @@
               return;
             } else {
               value = this.isSelected(option) 
-                ? (this.multiple ? (this.value || []).filter((v) => this.getKey(v) !== this.getKey(value)) : '')
+                ? (this.multiple ? (this.value || []).filter((v) => this.getKey(v) !== this.getKey(value)) : value)
                 : (this.multiple ? [...(this.value || []), value] : value);
             }
           }
@@ -211,6 +211,9 @@
           scrollPanel: {
             scrollingX: false,
             maxHeight: 238
+          },
+          bar: {
+            background: this.colorMode === 'dark' ? '#606061' : '#ffffff'
           }
         }
       }

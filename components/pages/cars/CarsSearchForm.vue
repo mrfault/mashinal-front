@@ -62,11 +62,16 @@
         </div>
       </div>
       <div class="col-lg-8">
+        <div class="row">
+          <div class="col-lg-4 mb-2 mb-lg-0">
+            <form-checkbox :label="$t('search_save' + (saved ? 'd' : ''))" v-model="saved" input-name="saved" transparent />
+          </div>
+        </div>
       </div>
       <div class="col-lg-4">
         <div class="row">
           <div class="col-6">
-            <button type="submit" class="btn full-width btn--red">
+            <button type="submit" class="btn full-width btn--red-outline">
               <icon name="reset" /> {{ $t('clear_search') }}
             </button>
           </div>
@@ -108,6 +113,7 @@ export default {
         path: '/cars',
         param: 'car_filter'
       },
+      saved: false,
       form: {
         sorting: 'created_at_desc',
         additional_brands: {

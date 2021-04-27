@@ -71,6 +71,9 @@ textarea {
     border-radius: 4px;
     height: 34px;
     padding: 0 15px;
+    &.transparent {
+      background: transparent !important;
+    }
   }
   .checkbox {
     display: flex;
@@ -222,7 +225,7 @@ textarea {
     width: 140px;
   }
   .select-menu {
-    width: 90px;
+    width: 89px;
   }
 }
 
@@ -237,10 +240,50 @@ textarea {
     border-color: $grey-1;
   }
 
+  .form-info {
+    &.text-green {
+      color: $white;
+    }
+  }
+
   .newsletter {
     color: $white;
     input {
       background-color: $dark-1;
+    }
+  }
+
+  .select-menu {
+    &_triangle {
+      color: $dark-1;
+    }
+    &_label {
+      background-color: $dark-1;
+      &.selected,
+      &.active {
+        color: $yellow-1;
+      }
+      .counter {
+        background-color: transparent;
+      }
+    }
+    &_dropdown {
+      background-color: $dark-1;
+      box-shadow: $shadow-dark-5;
+      &-option {
+        &.selected {
+          color: $yellow-1;
+        }
+        &:hover {
+          background-color: lighten($dark-1, 2%);
+        }
+      }
+    }
+  }
+  
+  .form-merged {
+    .form-group:not(:last-child) {
+      border-right-color: $dark-2;
     }
   }
 }

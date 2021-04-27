@@ -456,7 +456,7 @@ export default {
 	"class": "класс",
 	"classification": "Классификация",
 	"classto": "Класс ТО",
-	"clear_search": "Очистить поиск",
+	"clear_search": "Очистить",
 	"cleared": "Растаможен",
 	"co2_emissions": "Выбросы CO2 г/км",
 	"code_has_been_sent": "Код отправлен",
