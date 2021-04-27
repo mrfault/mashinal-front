@@ -22,7 +22,7 @@ Vue.use(vuescroll, {
       background: '#ffffff ',
       opacity: 0,
       size: '11px',
-      gutterOfSide: '2px',
+      gutterOfSide: '0px',
     },
     bar: {
       onlyShowBarOnScroll: false,

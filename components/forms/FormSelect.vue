@@ -9,16 +9,19 @@
         <icon :name="iconName" v-else />
       </span>
       <icon class="select-menu_triangle" name="triangle" v-if="showOptions"/>
-      <div :class="['select-menu_dropdown', {'show': showOptions, custom}]" ref="dropdownOptions">
-        <slot v-if="custom" />
-        <vue-scroll :ops="scrollOps" ref="vs" v-else-if="showOptions">
-          <div :class="['select-menu_dropdown-option', {'selected': isSelected(option)}]" v-for="(option, index) in getOptions" :key="index"
-               @click.stop="selectValue = option">
-            <div class="text-truncate">
-              <span>{{ $translateHard(option.name[locale]) || (translateOptions ? $t(option.name) : $translateHard(option.name)) }}{{ suffix ? ' ' + suffix : '' }}</span>
+      <go-back :title="label" v-if="showOptions && isMobileBreakpoint && !inSelectMenu" @go="showOptions = false" />
+      <div :class="['select-menu_dropdown', {'show': showOptions, custom, 'responsive': isMobileBreakpoint}]" ref="dropdownOptions">
+        <div :class="{'container': isMobileBreakpoint}">
+          <slot v-if="custom" />
+          <vue-scroll :ops="scrollOps" ref="vs" v-else-if="showOptions">
+            <div :class="['select-menu_dropdown-option', {'selected': isSelected(option)}]" v-for="(option, index) in getOptions" :key="index"
+                @click.stop="selectValue = option">
+              <div class="text-truncate">
+                <span>{{ $translateHard(option.name[locale]) || (translateOptions ? $t(option.name) : $translateHard(option.name)) }}{{ suffix ? ' ' + suffix : '' }}</span>
+              </div>
             </div>
-          </div>
-        </vue-scroll>
+          </vue-scroll>
+        </div>
       </div>
     </div>
   </div>
@@ -104,6 +107,10 @@
       showLabelOnSelect: {
         type: Boolean,
         default: true
+      },
+      inSelectMenu: {
+        type: Boolean,
+        default: false
       }
     },
     data() {
@@ -210,15 +217,22 @@
         return {
           scrollPanel: {
             scrollingX: false,
-            maxHeight: 238
+            maxHeight: this.isMobileBreakpoint ? undefined : 238
+          },
+          rail: {
+            background: this.colorMode === 'dark' ? '#1C1C1E' : (this.isMobileBreakpoint ? '#FFFFFF' : '#ECF2F9'),
+            opacity: 1,
           },
           bar: {
-            background: this.colorMode === 'dark' ? '#606061' : '#ffffff'
+            background: this.colorMode === 'dark' ? '#606061' : (this.isMobileBreakpoint ? '#ECF2F9' : '#FFFFFF')
           }
         }
       }
     },
     watch: {
+      breakpoint(breakpoint) {
+        this.showOptions = false;
+      },
       disabled(disabled) {
         if(disabled && this.clearOnDisable) this.clearSelect();
       },
@@ -233,11 +247,16 @@
             this.blockClick = false;
           }, 0);
           // scroll to the selected option
-          if(this.$refs.vs && !this.hasNoValue) {
+          if(!this.hasNoValue) {
             this.$nextTick(() => {
+              if(!this.$refs.vs) return;
               this.$refs.vs.scrollIntoView('.select-menu_dropdown-option.selected', 0);
             });
           }
+        }
+        // hide overflow when selected
+        if(!this.inSelectMenu) {
+          document.querySelector('body').classList[val ? 'add' : 'remove']('select-menu-open');
         }
       }
     },

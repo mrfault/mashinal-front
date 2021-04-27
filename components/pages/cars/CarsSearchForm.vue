@@ -25,9 +25,9 @@
         >
           <div class="form-merged">
             <form-select :label="$t('from')" :options="getYearOptions" v-model="form.min_year" 
-              :show-label-on-select="false" />
+              :show-label-on-select="false" :in-select-menu="true" />
             <form-select :label="$t('to')" :options="getYearOptions" v-model="form.max_year"
-              :show-label-on-select="false" />
+              :show-label-on-select="false" :in-select-menu="true" />
           </div>
         </form-select>
       </div>
@@ -40,7 +40,7 @@
             <form-numeric-input :placeholder="$t('from')" v-model="form.price_from" />
             <form-numeric-input :placeholder="$t('to')" v-model="form.price_to" />
             <form-select :label="'AZN'" :options="getCurrencyOptions" v-model="form.currency"
-              :allow-clear="false" />
+              :allow-clear="false" :in-select-menu="true" />
           </div>
         </form-select>
       </div>

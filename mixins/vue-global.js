@@ -61,7 +61,7 @@ Vue.use({
           return new Date().getFullYear();
         },
         isMobileBreakpoint() {
-          ['xs', 'sm', 'md'].includes(this.breakpoint);
+          return ['xs', 'sm', 'md'].includes(this.breakpoint);
         },
         isMobileDevice() {
           if(!navigator.userAgent) return false;

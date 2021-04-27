@@ -75,6 +75,7 @@ main {
 
 .container {
   padding: 0 25px;
+  min-width: 320px;
 }
 
 .card {
@@ -901,6 +902,32 @@ main {
   }
 }
 
+.go-back {
+  position: fixed;
+  touch-action: none;
+  pointer-events: none;
+  z-index: 20;
+  left: 0;
+  top: 0;
+  width: 100%;
+  background-color: $white;
+  border-bottom: 1px solid $grayish-blue-2;
+  .d-flex {
+    height: 60px;
+  }
+  span {
+    font-size: 15px;
+    margin: 0 auto;
+  }
+  i {
+    width: 30px;
+    height: 60px;
+    align-items: center;
+    pointer-events: all;
+    margin-right: -30px;
+  }
+}
+
 .dark-mode {
   .theme-switch.floating,
   .scroll-top {
@@ -915,6 +942,10 @@ main {
     .theme-switch_icons span.active {
       background-color: $dark-2;
     }
+  }
+  .go-back {
+    background-color: $dark-2;
+    border-bottom-color: $dark-1;
   }
 }
 
@@ -1075,6 +1106,10 @@ main {
       max-width: calc(100% - 50px);
       top: 30px;
     }
+  }
+
+  body.select-menu-open {
+    overflow-y: hidden;
   }
 }
 
