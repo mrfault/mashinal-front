@@ -1,8 +1,8 @@
 <template>
   <div :class="['theme-switch',{'floating d-none d-lg-block': floating, 'mobile': !floating}]" @click="switchColorMode">
     <div class="theme-switch_icons">
-      <span v-if="!floating || colorMode === 'light'" :class="{'active': colorMode === 'dark'}"><icon name="moon" /></span>
-      <span v-if="!floating || colorMode === 'dark'" :class="{'active': colorMode === 'light'}"><icon name="sun" /></span>
+      <span v-if="!floating || !isDarkMode" :class="{'active': isDarkMode}"><icon name="moon" /></span>
+      <span v-if="!floating || isDarkMode" :class="{'active': !isDarkMode}"><icon name="sun" /></span>
     </div>
   </div>
 </template>

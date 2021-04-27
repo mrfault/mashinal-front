@@ -9,7 +9,13 @@
         <icon :name="iconName" v-else />
       </span>
       <icon class="select-menu_triangle" name="triangle" v-if="showOptions"/>
-      <go-back :title="label" v-if="showOptions && isMobileBreakpoint && !inSelectMenu" @go="showOptions = false" />
+      <action-bar 
+        :title="label"
+        v-if="showOptions && isMobileBreakpoint && !inSelectMenu" 
+        @back="showOptions = false" 
+        @accept="showOptions = false"
+        :show-check="custom"
+      />
       <div :class="['select-menu_dropdown', {'show': showOptions, custom, 'responsive': isMobileBreakpoint}]" ref="dropdownOptions">
         <div :class="{'container': isMobileBreakpoint}">
           <slot v-if="custom" />
@@ -214,17 +220,9 @@
         return !this.hasNoValue && !this.skipSelect && !(this.skipSelectFirst && this.getKey(this.selectValue) === -1);
       },
       scrollOps() {
-        return {
+        return  {
           scrollPanel: {
-            scrollingX: false,
             maxHeight: this.isMobileBreakpoint ? undefined : 238
-          },
-          rail: {
-            background: this.colorMode === 'dark' ? '#1C1C1E' : (this.isMobileBreakpoint ? '#FFFFFF' : '#ECF2F9'),
-            opacity: 1,
-          },
-          bar: {
-            background: this.colorMode === 'dark' ? '#606061' : (this.isMobileBreakpoint ? '#ECF2F9' : '#FFFFFF')
           }
         }
       }

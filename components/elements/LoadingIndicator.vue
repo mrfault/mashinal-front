@@ -139,7 +139,7 @@ export default {
         staticClass: 'loading-indicator',
         class: {
           'loading-indicator-notransition': this.skipTimerCount > 0,
-          'loading-indicator-dark-mode': this.colorMode === 'dark',
+          'loading-indicator-dark-mode': this.isDarkMode,
           'loading-indicator-failed': !this.canSucceed
         },
         style: {

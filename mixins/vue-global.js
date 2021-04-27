@@ -67,6 +67,9 @@ Vue.use({
           if(!navigator.userAgent) return false;
           return [/iPhone/i,/iPad/i,/iPod/i,/Android/i,/BlackBerry/i,/Windows Phone/i]
             .some(os => navigator.userAgent.match(os));
+        },
+        isDarkMode() {
+          return this.colorMode === 'dark';
         }
       },
       filters: {

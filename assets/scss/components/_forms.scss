@@ -31,7 +31,7 @@ textarea {
   text-align: center;
   background-color: $grayish-blue-2;
   height: 34px;
-  padding: 7px 15px;
+  padding: 8px 15px;
   border-radius: 4px;
 }
 
@@ -43,7 +43,7 @@ textarea {
     border: 0;
     background-color: $grayish-blue-2;
     height: 34px;
-    padding: 7px 15px;
+    padding: 8px 15px;
     border-radius: 4px;
     &.invalid {
       color: $red-1;
@@ -122,7 +122,7 @@ textarea {
     border: 0;
     border-radius: 4px;
     height: 34px;
-    padding: 7px 15px;
+    padding: 8px 15px;
     line-height: 17px;
     font-weight: 500;
     margin-right: 20px;
@@ -154,7 +154,7 @@ textarea {
     font-weight: 500;
     background-color: $grayish-blue-2;
     height: 34px;
-    padding: 7px 15px;
+    padding: 8px 15px;
     border-radius: 4px;
     user-select: none;
     &.selected,
@@ -191,7 +191,7 @@ textarea {
     background-color: $grayish-blue-2;
     border-radius: 4px;
     box-shadow: $shadow-light-5;
-    padding: 7px 0;
+    padding: 8px 0;
     .container {
       height: 100%;
     }
@@ -318,8 +318,20 @@ textarea {
           background-color: lighten($dark-1, 2%);
         }
       }
-      &.responsive .select-menu_dropdown-option {
-        border-top-color: $dark-2;
+      &.responsive {
+        .select-menu_dropdown-option {
+          border-top-color: $dark-2;
+        }
+        .form-merged {
+          background-color: $dark-2;
+          .form-group:not(:last-child) {
+            border-right-color: $dark-1;
+          }
+          .select-menu_label,
+          .text-input input {
+            background-color: $dark-2;
+          }
+        }
       }
     }
   }

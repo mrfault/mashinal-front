@@ -5,7 +5,7 @@ import Timer from '~/components/elements/Timer';
 import Breadcrumbs from '~/components/elements/Breadcrumbs';
 import Paginate from '~/components/elements/Paginate';
 import LoginTabs from '~/components/elements/LoginTabs';
-import GoBack from '~/components/elements/GoBack';
+import ActionBar from '~/components/elements/ActionBar';
 // forms
 import FormNumericInput from '~/components/forms/FormNumericInput';
 import FormTextInput from '~/components/forms/FormTextInput';
@@ -22,7 +22,7 @@ Vue.component('timer', Timer);
 Vue.component('breadcrumbs', Breadcrumbs);
 Vue.component('paginate', Paginate);
 Vue.component('login-tabs', LoginTabs);
-Vue.component('go-back', GoBack);
+Vue.component('action-bar', ActionBar);
 // ***
 Vue.component('transition-expand', TransitionExpand);
 // ***

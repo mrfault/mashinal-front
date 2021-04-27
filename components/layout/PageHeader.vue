@@ -3,7 +3,7 @@
     <div class="topbar">
       <div class="container">
         <nuxt-link class="logo" :to="$localePath('/')">
-          <img :src="`/img/${colorMode === 'dark' ? 'logo-white' : 'logo'}.svg`" alt="logo" />
+          <img :src="`/img/${isDarkMode ? 'logo-white' : 'logo'}.svg`" alt="logo" />
         </nuxt-link>
         <nav>
           <ul class="menu">

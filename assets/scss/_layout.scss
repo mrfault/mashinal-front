@@ -655,7 +655,7 @@ main {
     ul {
       list-style: none;
       margin: 0 0 -10px;
-      padding: 0;
+      padding: 0 0 15px;
       li {
         margin-bottom: 25px;
         &.login {
@@ -902,7 +902,7 @@ main {
   }
 }
 
-.go-back {
+.action-bar {
   position: fixed;
   touch-action: none;
   pointer-events: none;
@@ -924,7 +924,18 @@ main {
     height: 60px;
     align-items: center;
     pointer-events: all;
-    margin-right: -30px;
+    &:first-of-type {
+      margin-right: -30px;
+      justify-content: flex-start;
+    }
+    &:last-of-type {
+      margin-left: -30px;
+      justify-content: flex-end;
+    }
+    &.icon-check {
+      font-weight: bold;
+      font-size: 8px;
+    }
   }
 }
 
@@ -1069,6 +1080,42 @@ main {
   transform: translateX(25px);
 }
 
+/** VueScroll */
+
+.__rail-is-vertical {
+  background: $white !important;
+  .__bar-is-vertical {
+    background: $grayish-blue-2 !important;
+  }
+}
+
+.dark-mode {
+  .__rail-is-vertical {
+    background: $dark-1 !important;
+    .__bar-is-vertical {
+      background: $grey-1 !important;
+    }
+  }
+}
+
+@include media-min-width('lg') {
+  .__rail-is-vertical {
+    background: transparent !important;
+    .__bar-is-vertical {
+      background: $white !important;
+    }
+  }
+  
+  .dark-mode {
+    .__rail-is-vertical {
+      background: transparent !important;
+      .__bar-is-vertical {
+        background: $grey-1 !important;
+      }
+    }
+  }
+}
+
 /** Responsive */
 
 @include media-max-width('lg') {
@@ -1089,6 +1136,10 @@ main {
       padding-right: $grid-gutter-width * .375;
       padding-left: $grid-gutter-width * .375;
     }
+  }
+
+  .__panel {
+    margin-right: 0;
   }
 
   .card {

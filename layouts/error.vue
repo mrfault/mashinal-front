@@ -3,7 +3,7 @@
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
       <div class="info-404 text-center">
-        <img :src="`/img/404${colorMode === 'dark' ? '-dark-mode' : ''}.svg`" :alt="errorTitle" />
+        <img :src="`/img/404${isDarkMode ? '-dark-mode' : ''}.svg`" :alt="errorTitle" />
         <h1>{{ errorTitle }}</h1>
         <button class="btn btn--green" @click="$router.back()">
           <icon name="arrow-left" /> {{ $t('return_back') }}

@@ -1,9 +1,10 @@
 <template>
-  <div class="go-back d-lg-none">
+  <div class="action-bar d-lg-none">
     <div class="container">
       <div class="d-flex align-items-center justify-space-between">
-        <icon name="chevron-left" @click="$emit('go')" class="cursor-pointer" />
+        <icon name="chevron-left" @click="$emit('back')" class="cursor-pointer" />
         <span>{{ title || $t('return_back') }}</span>
+        <icon name="check" @click="$emit('accept')" class="cursor-pointer" v-if="showCheck" />
       </div>
     </div>
   </div>
@@ -13,6 +14,7 @@
 export default {
   props: {
     title: String,
+    showCheck: Boolean
   }
 }
 </script>
