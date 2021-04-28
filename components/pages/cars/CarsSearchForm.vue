@@ -72,9 +72,9 @@
         >
           <div class="form-merged">
             <form-select :label="$t('from')" :options="getYearOptions" v-model="form.min_year" 
-              :show-label-on-select="false" :in-select-menu="true" />
+              :show-label-on-select="false" :in-select-menu="true" :clear-option="false" />
             <form-select :label="$t('to')" :options="getYearOptions" v-model="form.max_year"
-              :show-label-on-select="false" :in-select-menu="true" />
+              :show-label-on-select="false" :in-select-menu="true" :clear-option="false" />
           </div>
         </form-select>
       </div>
@@ -87,13 +87,12 @@
             <form-numeric-input :placeholder="$t('from')" v-model="form.price_from" />
             <form-numeric-input :placeholder="$t('to')" v-model="form.price_to" />
             <form-select :label="'AZN'" :options="getCurrencyOptions" v-model="form.currency"
-              :allow-clear="false" :in-select-menu="true" />
+              :allow-clear="false" :in-select-menu="true" :clear-option="false" />
           </div>
         </form-select>
       </div>
       <div class="col-6 col-lg-2 mb-2 mb-lg-3">
-        <form-select :label="$t('city')" :options="sell_options.regions" v-model="form.region"
-          :clear-option="true" />
+        <form-select :label="$t('city')" :options="sell_options.regions" v-model="form.region" />
       </div>
       <div class="col-6 col-lg-2 mb-2 mb-lg-3">
         <form-checkbox :label="$t('barter')" v-model="form.exchange_possible" 

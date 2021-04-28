@@ -74,7 +74,7 @@
       },
       clearOption: {
         type: Boolean,
-        default: false
+        default: true
       },
       nameInValue: {
         type: Boolean,
