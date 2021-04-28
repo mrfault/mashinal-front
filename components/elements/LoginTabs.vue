@@ -63,11 +63,11 @@
   import { required, requiredIf, numeric } from 'vuelidate/lib/validators';
   import { isPhoneNumber } from '~/lib/validators';
 
-  import SignInForm  from '~/components/pages/login/SignInForm';
-  import ForgotPassword  from '~/components/pages/login/ForgotPassword';
-  import ResetPassword  from '~/components/pages/login/ResetPassword';
-  import SignUpForm  from '~/components/pages/login/SignUpForm';
-  import ConfirmPhone  from '~/components/pages/login/ConfirmPhone';
+  import SignInForm  from '~/components/login/SignInForm';
+  import ForgotPassword  from '~/components/login/ForgotPassword';
+  import ResetPassword  from '~/components/login/ResetPassword';
+  import SignUpForm  from '~/components/login/SignUpForm';
+  import ConfirmPhone  from '~/components/login/ConfirmPhone';
 
   export default {
     components: {

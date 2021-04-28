@@ -3,7 +3,7 @@ import Vue from 'vue';
 import Icon from '~/components/elements/Icon';
 import Timer from '~/components/elements/Timer';
 import Breadcrumbs from '~/components/elements/Breadcrumbs';
-import Paginate from '~/components/elements/Paginate';
+import Pagination from '~/components/elements/Pagination';
 import LoginTabs from '~/components/elements/LoginTabs';
 import ActionBar from '~/components/elements/ActionBar';
 // forms
@@ -20,7 +20,7 @@ import StackModal from '@innologica/vue-stackable-modal';
 Vue.component('icon', Icon);
 Vue.component('timer', Timer);
 Vue.component('breadcrumbs', Breadcrumbs);
-Vue.component('paginate', Paginate);
+Vue.component('pagination', Pagination);
 Vue.component('login-tabs', LoginTabs);
 Vue.component('action-bar', ActionBar);
 // ***

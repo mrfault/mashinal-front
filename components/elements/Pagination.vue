@@ -1,10 +1,12 @@
 <template>
   <ul class="pagination">
-    <li key="prev" :class="[firstPageSelected() ? 'disabled' : '']">
-      <button @click="prevPage()" tabindex="0" v-html="'&lt;'"></button>
+    <li key="prev" :class="['prev', firstPageSelected() ? 'disabled' : '']">
+      <button @click="prevPage()">
+        <icon name="chevron-left" />
+      </button>
     </li>
     <template v-for="page in pages">
-      <li :key="page.index" v-if="page.breakView" :class="[page.disabled ? 'disabled' : '']">
+      <li :key="page.index" v-if="page.breakView" :class="['pointer-events-none']">
         <button>...</button>
       </li>
       <li :key="page.index" v-else-if="page.disabled" :class="[page.selected ? 'active' : '', 'disabled']">
@@ -14,8 +16,10 @@
         <button @click="handlePageSelected(page.index + 1)">{{ page.content }}</button>
       </li>
     </template>
-    <li key="next" :class="[lastPageSelected() ? 'disabled' : '']">
-      <button @click="nextPage()" tabindex="0" v-html="'&gt;'"></button>
+    <li key="next" :class="['next', lastPageSelected() ? 'disabled' : '']">
+      <button @click="nextPage()">
+        <icon name="chevron-right" />
+      </button>
     </li>
   </ul>
 </template>
@@ -35,7 +39,7 @@
       },
       pageRange: {
         type: Number,
-        default: 3
+        default: 4
       },
       marginPages: {
         type: Number,

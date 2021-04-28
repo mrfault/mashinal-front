@@ -23,7 +23,7 @@
     </div>
     <p class="info-text" v-if="form.staticPhone"><icon name="info-circle" /> {{ $t('login_before_announce') }}</p>
     <p><span class="cursor-pointer" @click="$emit('updateTab','sign-in','forgot')">{{ $t('forgot_your_password')}}</span></p>
-    <button class="btn btn--green" type="submit">{{ actionText || $t('login') }}</button>
+    <button type="submit" class="btn btn--green">{{ actionText || $t('login') }}</button>
   </form>
 </template>
 

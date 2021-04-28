@@ -62,7 +62,6 @@ hr {
   flex-direction: column;
   @include calc-vh(min-height, calc(100vh));
   min-width: 320px;
-  overflow: hidden;
 }
 
 main {
@@ -778,36 +777,73 @@ main {
 .pagination {
   display: flex;
   justify-content: center;
-  margin: 20px auto;
+  margin: 30px auto;
   list-style: none;
   li {
-    margin-right: 5px;
+    position: relative;
     button {
       display: flex;
       justify-content: center;
       align-items: center;
-      width: 30px;
-      height: 30px;
+      width: 34px;
+      height: 34px;
       color: $dark-blue-1;
       font-size: 14px;
-      font-weight: bold;
+      font-weight: 500;
+      background-color: $white;
       text-transform: uppercase;
-      border-radius: 2px;
-      border: 1px solid #E6E8F2;
-      &:focus {
-        color: $dark-blue-2;
-        border-color: #B8C0E6;
+      border: 0;
+      &:hover {
+        color: $red-1;
       }
     }
     &.active button {
-      color: #fff;
-      background-color: $dark-blue-1;
-      border-color: transparent;
+      color: $white;
+      color: $red-1;
       pointer-events: none;
+      &::after {
+        content: '';
+        position: absolute;
+        width: 50%;
+        left: 25%;
+        bottom: 0;
+        height: 1px;
+        border-radius: 1px;
+        background-color: $red-1;
+      }
     }
     &.disabled button {
-      color: #E7E9F2;
+      color: $grey-3;
       pointer-events: none;
+    }
+    &.prev button {
+      border-radius: 4px 0 0 4px;
+    }
+    &.next button {
+      border-radius: 0 4px 4px 0;
+    }
+  }
+}
+
+.dark-mode {
+  .pagination {
+    li {
+      button {
+        color: $white;
+        background-color: $dark-2;
+        &:hover {
+          color: $yellow-1;
+        }
+      }
+      &.active button {
+        color: $yellow-1;
+        &::after {
+          background-color: $yellow-1;
+        }
+      }
+      &.disabled button {
+        color: $grey-1;
+      }
     }
   }
 }

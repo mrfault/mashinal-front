@@ -116,12 +116,12 @@
       </div>
       <div class="col-lg-4">
         <div class="row">
-          <div class="col-6">
-            <button type="submit" class="btn full-width btn--red-outline">
+          <div class="col-6" v-if="filtersApplied">
+            <button type="button" class="btn full-width btn--red-outline" @click="resetForm">
               <icon name="reset" /> {{ $t('clear_search') }}
             </button>
           </div>
-          <div class="col-6">
+          <div :class="['col-6', {'offset-6': !filtersApplied}]">
             <button type="submit" class="btn full-width btn--green">
               <icon name="search" /> {{ $t('find') }}
             </button>

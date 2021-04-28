@@ -19,7 +19,7 @@
       <span v-else-if="codeSent">{{ $t('code_has_been_sent') }}</span>
       <span v-else-if="askToCallSupport">{{ $t('please_call_to_support') }}</span>
     </p>
-    <button class="btn btn--green" type="submit">{{ actionText || $t('confirm')}}</button>
+    <button type="submit" class="btn btn--green">{{ actionText || $t('confirm')}}</button>
   </form>
 </template>
 

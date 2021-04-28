@@ -32,8 +32,9 @@ export const SearchMixin = {
       this.gtagTrack('AW-600951956/Qeu4CILAyPIBEJSZx54C');
       // update route query params and search announcements
       let queryUrl = `${this.$localePath(this.meta.path)}?${this.meta.param}=${encodeURI(JSON.stringify(this.getFormData()))}`;
-      this.$router.push(queryUrl);
-      this.$emit('submit');
+      this.$router.push(queryUrl, () => {
+        this.$emit('submit');
+      });
     },
     resetForm() {
       this.setFormData({});
@@ -56,6 +57,13 @@ export const SearchMixin = {
     }
   },
   computed: {
+    filtersApplied() {
+      let hasBrand = this.counter.filter(key => this.form.additional_brands[key].brand).length;
+      let hasAllOptions = Object.keys(this.form.all_options).length;
+      let hasOptions = Object.keys(this.getFormData()).length > 5 || (this.form.announce_type !== 1);
+      return !!(hasBrand || hasAllOptions || hasOptions);
+    },
+    // static data
     getYearOptions() {
       let years = [], j = 0;
       for (let i = this.currentYear; i >= 1886; i--) {
@@ -113,5 +121,7 @@ export const SearchMixin = {
   },
   created() {
     this.setFormData(JSON.parse(this.$route.query.car_filter || '{}'));
+    let keys = Object.keys(this.form.additional_brands).filter(key => this.form.additional_brands[key].brand);
+    if(keys.length) this.counter = [...keys];
   }
 }

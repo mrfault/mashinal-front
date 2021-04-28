@@ -2,7 +2,7 @@
   <div class="newsletter">
     <form class="form" @submit.prevent="subscribe">
       <input type="text" v-model="form.email" :placeholder="$t('email')" :class="{'invalid': $v.form.email.$error }" />
-      <button class="btn btn--green" type="submit">{{ $t('subscribe') }}</button>
+      <button type="submit" class="btn btn--green">{{ $t('subscribe') }}</button>
     </form>
   </div>
 </template>

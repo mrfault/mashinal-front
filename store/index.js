@@ -11,8 +11,6 @@ const getInitialState = () =>({
   // profile
   messages: [],
   suggested_messages: [],
-  transactions: {},
-  transactions_loaded: [],
   saved_search: [],
   single_saved_search: {},
   saved: {
@@ -25,19 +23,14 @@ const getInitialState = () =>({
   },
   actives: [],
   // announcements
-  my_announcements: {},
-  main_announcements: {},
-  announcements: [],
-  announcements_loaded: [],
-  moto_announcements: [],
-  moto_announcements_loaded: [],
-  com_announcements: [],
-  com_announcements_loaded: [],
-  search_total: 0,
-  single_announcement: {},
-  relative_announcements: [],
-  restore_announcement: {},
-  single_part: {},
+  myAnnouncements: {},
+  mainAnnouncements: {},
+  carsAnnouncements: [],
+  motoAnnouncements: [],
+  commercialAnnouncements: [],
+  promotedAnnouncements: [],
+  announcement: {},
+  relativeAnnouncements: [],
   // catalog
   catalog_total: 0,
   catalog_items: {},
@@ -79,32 +72,6 @@ const getInitialState = () =>({
   com_all_options: [],
   com_filters: [],
   com_search_filters: [],
-  // parts
-  parts: [],
-  parts_loaded: [],
-  parts_latest: [],
-  part_categories: [],
-  part_selected_category: '',
-  part_parent_categories: [],
-  part_filters: [],
-  part_creators: [],
-  parts_form: {},
-  part_search: [],
-  // credits
-  credit_form: {},
-  // feedbacks
-  feedbacks: [],
-  feedback: {},
-  grouped_popular_features: [],
-  related_cars_by_generation: [],
-  related_moto_by_model: [],
-  // articles
-  articles: [],
-  articles_puzzle: [],
-  articles_loaded: [],
-  article: [],
-  article_questions: {},
-  related_articles: [],
   // sell
   sell_tokens: false,
   sell_phone: '',
@@ -142,15 +109,6 @@ const getInitialState = () =>({
   my_services: [],
   my_service_options: [],
   my_service_history: [],
-  banners: [],
-  // premium / vip
-  promoted_cars: [],
-  promoted_cars_loaded: [],
-  // other
-  announcement_reports: {},
-  my_announcement_user_reports: [],
-  my_reports: [],
-  my_single_report: {},
   // autosalons
   autosalonsList: [],
   autosalonsInBounds: false,
@@ -161,9 +119,6 @@ const getInitialState = () =>({
   myAnnouncementCalls: {},
   myAnnouncementStats: {},
   myPackageStats: {},
-  // comparison
-  comparison_announcements: [],
-  comparison_models: []
 });
 
 export const state = () => (getInitialState());
@@ -180,26 +135,19 @@ export const getters = {
   // profile
   messages: s => s.messages,
   suggested_messages: s => s.suggested_messages,
-  transactions: s => s.transactions,
-  transactions_loaded: s => s.transactions_loaded,
   saved_search: s => s.saved_search,
   single_saved_search: s => s.single_saved_search,
   saved: s => s.saved,
   actives: s => s.actives,
   // announcements
-  my_announcements: s => s.my_announcements,
-  announcements: s => s.announcements,
-  announcement_loaded: s => s.announcement_loaded,
-  moto_announcements: s => s.moto_announcements,
-  moto_announcement_loaded: s => s.moto_announcement_loaded,
-  com_announcements: s => s.com_announcements,
-  com_announcement_loaded: s => s.com_announcement_loaded,
-  main_announcements: s => s.main_announcements,
-  search_total: s => s.search_total,
-  single_announcement: s => s.single_announcement,
-  single_part: s => s.single_part,
-  restore_announcement: s => s.restore_announcement,
-  relative_announcements: s => s.relative_announcements,
+  announcement: s => s.announcement,
+  carsAnnouncements: s => s.carsAnnouncements,
+  motoAnnouncements: s => s.motoAnnouncements,
+  commercialAnnouncements: s => s.commercialAnnouncements,
+  promotedAnnouncements: s => s.promotedAnnouncements,
+  mainAnnouncements: s => s.mainAnnouncements,
+  myAnnouncements: s => s.myAnnouncements,
+  relativeAnnouncements: s => s.relativeAnnouncements,
   // catalog
   catalog_items: s => s.catalog_items,
   catalog_total: s => s.catalog_total,
@@ -233,38 +181,11 @@ export const getters = {
   moto_options: s => s.moto_options,
   colors: s => s.colors,
   complaint_options: s => s.complaint_options,
-  badges: s => s.badges,
   // commercial
   com_types: s => s.com_types,
   com_all_options: s => s.com_all_options,
   com_filters: s => s.com_filters,
   com_search_filters: s => s.com_search_filters,
-  // parts
-  parts: s => s.parts,
-  parts_loaded: s => s.parts_loaded,
-  parts_latest: s => s.parts_latest,
-  part_categories: s => s.part_categories,
-  part_selected_category: s => s.part_selected_category,
-  part_parent_categories: s => s.part_parent_categories,
-  part_filters: s => s.part_filters,
-  part_creators: s => s.part_creators,
-  parts_form: s => s.parts_form,
-  part_search: s => s.part_search,
-  // credits
-  credit_form: s => s.credit_form,
-  // feedbacks
-  feedbacks: s => s.feedbacks,
-  feedback: s => s.feedback,
-  grouped_popular_features: s => s.grouped_popular_features,
-  related_cars_by_generation: s => s.related_cars_by_generation,
-  related_moto_by_model: s => s.related_moto_by_model,
-  // articles
-  articles: s => s.articles,
-  articles_loaded: s => s.articles_loaded,
-  articles_puzzle: s => s.articles_puzzle,
-  article: s => s.article,
-  article_questions: s => s.article_questions,
-  related_articles: s => s.related_articles,
   // sell
   sell_tokens: s => s.sell_tokens,
   sell_phone: s => s.sell_phone,
@@ -284,15 +205,6 @@ export const getters = {
   my_services: s => s.my_services,
   my_service_options: s => s.my_service_options,
   my_service_history: s => s.my_service_history,
-  banners: s => s.banners,
-  // premium / vip
-  promoted_cars: s => s.promoted_cars,
-  promoted_cars_loaded: s => s.promoted_cars_loaded,
-  // other
-  announcement_reports: s => s.announcement_reports,
-  my_announcement_user_reports: s => s.my_announcement_user_reports,
-  my_reports: s => s.my_reports,
-  my_single_report: s => s.my_single_report,
   // autosalons
   autosalonsList: s => s.autosalonsList,
   autosalonsInBounds: s => s.autosalonsInBounds,
@@ -301,10 +213,7 @@ export const getters = {
   myAutosalon: s => s.myAutosalon,
   myAnnouncementCalls: s => s.myAnnouncementCalls,
   myAnnouncementStats: s => s.myAnnouncementStats,
-  myPackageStats: s => s.myPackageStats,
-  // comparison
-  comparison_announcements: s => s.comparison_announcements,
-  comparison_models: s => s.comparison_models
+  myPackageStats: s => s.myPackageStats
 };
 
 const objectNotEmpty = (state, commit, property) => {
@@ -596,74 +505,33 @@ export const actions = {
     const res = await this.$axios.$get('/commercial/all_types');
     commit('mutate', { property: 'com_types', value: res });
   },
-  // Parts
-  setPartsForm({commit, state}, route) {
-    commit('mutate', { property: 'parts_form', value: { 
-      ...state.parts_form,
-      params: route.params,
-      toggle: route.query.toggle || 'all',
-      min: route.query.min || 0,
-      max: route.query.max || 0,
-    } });
-  },
-  async getAllPartsWithHandlingChanges({ commit, state }, data) {
-    const res = await this.$axios.$post(`/parts/search?page=${data.page || 1}`, { values: state.parts_form });
-    commit('mutate', { property: 'parts', value: res.result });
-    if(data.update_loaded) commit('mutate', { property: 'parts_loaded', value: res.result.data });
-  },
-  async getLatestParts({ commit }) {
-    const res = await this.$axios.$get('/parts/get_last');
-    commit('mutate', { property: 'parts_latest', value: res.parts });
-  },
-  async getPartChildCategories({ commit, dispatch }, params) {
-    await dispatch('getPartSelectedCategory', params.partname);
-    const res = await this.$axios.$get(`/parts/parent_category/${params.partname}/categories`);
-    commit('mutate', { property: 'part_categories', value: res });
-  },
-  async getPartSelectedCategory({ commit }, slug) {
-    const res = await this.$axios.$get(`/parts/parent_category/${slug}/single`)
-    commit('mutate', { property: 'part_selected_category', value: res });
-  },
-  async getPartParentCategories({ commit }) {
-    const res = await this.$axios.$get('/parts/parent_categories');
-    commit('mutate', { property: 'part_parent_categories', value: res });
-  },
-  async getPartSearch({ commit }, data) {
-    const res = await this.$axios.$get(`/parts/search/category?text=${data.search}&lang=${data.lang}`);
-    commit('mutate', { property: 'part_search', value: res });
-  },
-  async getPartFilters({ commit }, slug) {
-    const res = await this.$axios.$get(`/parts/category/${slug}/filters`);
-    commit('mutate', { property: 'part_filters', value: res });
-  },
-  async getPartCreators({ commit }, slug) {
-    const res = await this.$axios.$get(`/parts/category/${slug}/creators`);
-    commit('mutate', { property: 'part_creators', value: res });
-  },
-  async getSinglePart({ commit }, slug) {
-    const data = await this.$axios.$get(`/parts/get_single_part/${slug}`)
-    commit('mutate', { property: 'single_part', value: data });
-  },
   // Announcements
-  async getAnnouncementMain({ commit }, data) {
+  async getMainSearch({ commit }, data) {
     const res = await this.$axios.$get(data.url);
-    commit('mutate', { property: 'main_announcements', value: res });
-  },
-  async getAnnouncementSearch({ commit }, data) {
-    if(!data.get_items) commit('mutate', { property: 'search_total', value: -1 });
-    const url = data.url || '/announcement_search', prefix = data.prefix || '';
-    const res = await this.$axios.$post(`${url}${data.get_items ? `?get_items=true&page=${data.page || 1}` : ''}`, data.post);
-    if(data.get_items) commit('mutate', { property: prefix + 'announcements', value: res });
-    commit('mutate', { property: 'search_total', value: data.get_items ? res.total : res });
+    commit('mutate', { property: 'mainAnnouncements', value: res });
+    // hard-code pagination
+    if(res.standard_count) {
+      let paginate = {
+        current_page: 1,
+        last_page: Math.ceil(res.standard_count / 40),
+        total: res.standard_count
+      }
+      commit('mutate', { property: 'mainAnnouncements', key: 'paginate', value: paginate });
+    }
   },
   async getGridSearch({ commit }, data) {
-    const url = data.url || '/grid/cars', prefix = data.prefix || '';
+    const url = data.url, prefix = data.prefix;
     const res = await this.$axios.$post(`${url}?page=${data.page || 1}`, data.post);
-    commit('mutate', { property: prefix + 'announcements', value: res });
+    commit('mutate', { property: prefix + 'Announcements', value: res });
+  },
+  // Premium / VIP
+  async getPromotedSearch({ commit }, data) {
+    const res = await this.$axios.$get(`/${data.type}/cars?page=${data.page || 1}`);
+    commit('mutate', { property: 'promotedAnnouncements', value: res });
   },
   async getMyAllAnnouncements({ commit }) {
     const res = await this.$axios.$get('/my/all-announce');
-    commit('mutate', { property: 'my_announcements', value: res });
+    commit('mutate', { property: 'myAnnouncements', value: res });
   },
   async deleteAnnounement({ commit }, data) {
     await this.$axios.$post('/' + data.type + '/' + data.id + '/delete');
@@ -672,39 +540,35 @@ export const actions = {
     commit('mutate', { property: 'restore_announcement', value: data });
   },
   // Car announcements
-  async getAnnouncements({ commit }) {
-    const res = await this.$axios.$get('/announcements');
-    commit('mutate', { property: 'announcements', value: res });
-  },
   async getSingleAnnouncement({ commit }, data) {
     const res = await this.$axios.$get(`/announcement/${data.id}`);
-    commit('mutate', { property: 'single_announcement', value: res });
+    commit('mutate', { property: 'announcement', value: res });
   },
   async getMyAnnouncement({ commit }, id) {
     const res = await this.$axios.$get(`/edit_announce/${id}`);
-    commit('mutate', { property: 'single_announcement', value: res });
+    commit('mutate', { property: 'announcement', value: res });
   },
   async getRelativeAnnouncements({ commit }, id) {
     const res = await this.$axios.$get(`/grid/same/announcements/${id}`);
-    commit('mutate', { property: 'relative_announcements', value: res });
+    commit('mutate', { property: 'relativeAnnouncements', value: res });
   },
   // Commercial Announcements
   async getSingleComAnnouncement({ commit }, data) {
     const res = await this.$axios.$get(`/commercial/get_single_announce/${data.id}`);
-    commit('mutate', { property: 'single_announcement', value: res });
+    commit('mutate', { property: 'announcement', value: res });
   },
   async getMyComAnnouncement({ commit }, id) {
     const res = await this.$axios.$get(`/commercial/edit_announce/${id}`);
-    commit('mutate', { property: 'single_announcement', value: res });
+    commit('mutate', { property: 'announcement', value: res });
   },
   // Moto Announcements
   async getSingleMotoAnnouncement({ commit }, data) {
     const res = await this.$axios.$get(`${data.path}/get_announce/${data.id}`);
-    commit('mutate', { property: 'single_announcement', value: res });
+    commit('mutate', { property: 'announcement', value: res });
   },
   async getMyMotoAnnouncement({ commit }, data) {
     const res = await this.$axios.$get(`/moto/edit_announce/${data.id}?type=${data.type}`);
-    commit('mutate', { property: 'single_announcement', value: res });
+    commit('mutate', { property: 'announcement', value: res });
   },
   // Catalog
   async getCatalogSearch({commit, state}, data) {
@@ -719,69 +583,6 @@ export const actions = {
       if(data.get_items) commit('mutate', { property: 'catalog_items', value: res.items });
       commit('mutate', { property: 'catalog_total', value: res.total });
     } catch(e) {}
-  },
-  // Feedback
-  async getFeedbacksByType({ commit }, type) {
-    const res = await this.$axios.$get(`/type/${type}/get_feedbacks`);
-    commit('mutate', { property: 'feedbacks', value: res });
-  },
-  async getFeedbacksByCategory({ commit }, category) {
-    const res = await this.$axios.$get(`/category/${category}/get_feedbacks`);
-    commit('mutate', { property: 'feedbacks', value: res });
-  },
-  async getFeedbacksByBrand({ commit }, params) {
-    const res = await this.$axios.$get(`/brand_table/${params.brand_table}/brand_slug/${params.brand_slug}/get_feedbacks`);
-    commit('mutate', { property: 'feedbacks', value: res });
-  },
-  async getFeedbacksByModel({ commit }, params) {
-    const res = await this.$axios.$get(`/model_table/${params.model_table}/model_slug/${params.model_slug}/get_feedbacks?limit=${params.limit || 0}`);
-    commit('mutate', { property: 'feedbacks', value: res });
-  },
-  async getFeedbacksByGeneration({ commit }, params) {
-    const res = await this.$axios.$get(`/brand_slug/${params.brand_slug}/model_slug/${params.model_slug}/generation_id/${params.generation_id}/get_feedbacks?limit=${params.limit|| 0}`);
-    commit('mutate', { property: 'feedbacks', value: res });
-  },
-  async getGroupedPopularFeaturesByGeneration({ commit }, generation) {
-    const res = await this.$axios.$get(`/generation/${generation}/popular_features_by_generation`);
-    commit('mutate', { property: 'grouped_popular_features', value: res.data });
-  },
-  async getGroupedPopularFeaturesByModel({ commit }, params) {
-    const res = await this.$axios.$get(`/model_table/${params.model_table}/model_id/${params.model_id}/popular_features_by_model`);
-    commit('mutate', { property: 'grouped_popular_features', value: res.data });
-  },
-  // Related Cars
-  async getRelatedCarsByGenerationCount({ commit }, generation) {
-    const res = await this.$axios.$get(`/generation/${generation}/related_cars_by_generation_count`);
-    commit('mutate', { property: 'related_cars_by_generation', value: res.data });
-  },
-  async getRelatedMotoByModelCount({ commit }, params) {
-    const res = await this.$axios.$get(`/model_table/${params.model_table}/model_id/${params.model_id}/related_moto_by_model_count`);
-    commit('mutate', { property: 'related_moto_by_model', value: res.data });
-  },
-  // Articles
-  async getArticlesList({ commit }, url) {
-    const res = await this.$axios.$get(url || '/get_articles_list?page=1');
-    commit('mutate', { property: 'articles', value: res });
-  },
-  async getArticlesPuzzle({ commit }) {
-    const res = await this.$axios.$get('/get_articles_for_puzzle');
-    commit('mutate', { property: 'articles_puzzle', value: res });
-  },
-  async getArticle({ commit }, articleSlug) {
-    const res = await this.$axios.$get(`/article/${articleSlug}/data`);
-    commit('mutate', { property: 'article', value: res });
-  },
-  async getRelatedArticles({ commit }, article) {
-    const res = await this.$axios.$get(`/related_articles/${article.category.id}/${article.id}/data`);
-    commit('mutate', { property: 'related_articles', value: res });
-  },
-  async getArticleQuestions({ commit }, id) {
-    const res = await this.$axios.$get(`/article_questions/${id}`);
-    commit('mutate', { property: 'article_questions', value: res });
-  },
-  async answerQuestion({ commit }, option) {
-    const res = await this.$axios.$post(`/vote/option`, { optionId: option.id });
-    commit('mutate', { property: 'article_questions', value: res });
   },
   // Sell
   setSellSavedOptions({commit, state}) {
@@ -868,39 +669,6 @@ export const actions = {
     const res = await this.$axios.$get(`/my/actives/history`);
     commit('mutate', { property: 'my_service_history', value: res });
   },
-  // Banners
-  async getBanners({ commit }){
-    const res = await this.$axios.$get('/banners');
-    commit('mutate', { property: 'banners', value: res });
-  },
-  async setBannerClicked({}, id){
-    await this.$axios.$post('/banners/clicked', {id});
-  },
-  async setBannerShowed({}, id){
-    await this.$axios.$post('/banners/showed', {id});
-  },
-  // Premium / VIP
-  async getPromotedCars({ commit }, data) {
-    const res = await this.$axios.$get(`/${data.type}/cars?page=${data.page || 1}`);
-    commit('mutate', { property: 'promoted_cars', value: res });
-  },
-  // Other
-  async getAnnouncementReports({ commit }) {
-    const res = await this.$axios.$get('/get-report-options');
-    commit('mutate', { property: 'announcement_reports', value: res });
-  },
-  async getAnnouncementUserReports({ commit }, id) {
-    const res = await this.$axios.$get('/my/get-announce-user-reports/' + id);
-    commit('mutate', { property: 'my_announcement_user_reports', value: res.data });
-  },
-  async getMyReports({commit}){
-    const res = await this.$axios.$get('/my/get-my-reports');
-    commit('mutate', { property: 'my_reports', value: res.data });
-  },
-  async getSingleUserReport({commit}, id){
-    const res = await this.$axios.$get('/my/get-single-user-report/' + id);
-    commit('mutate', { property: 'my_single_report', value: res.data });
-  },
   // Autosalons
   async getAutoSalonsList({commit}, params) {
     const data = await this.$axios.$get('/auto_salon_list' + (params ? ('?' + params) : ''));
@@ -938,16 +706,7 @@ export const actions = {
   },
   updateAutosalonsSelected({commit}, list) {
     commit('mutate', { property: 'autosalonsSelected', value: list });
-  },
-  // Comparison
-  async getComparisonAnnouncements({ commit }) {
-    const res = await this.$axios.$get('/comparison/announcements');
-    commit('mutate', { property: 'comparison_announcements', value: res.data });
-  },
-  async getComparisonModels({ commit }) {
-    const res = await this.$axios.$get('/comparison/models');
-    commit('mutate', { property: 'comparison_models', value: res.data });
-  } 
+  }
 }
 
 export const mutations = {

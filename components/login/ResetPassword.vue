@@ -1,22 +1,11 @@
 <template>
-  <form class="form sign-up" @submit.prevent="submit" novalidate>
+  <form class="form reset-password" @submit.prevent="submit" novalidate>
     <div class="form-part">
-      <p v-if="form.staticPhone">
-        <span v-mask="maskPhone(true)">{{ sell_phone }}</span>
-      </p>
-      <form-text-input  
-        :placeholder="$t('name')" 
-        :maxlength="30"
-        :invalid="validator.name.$error" 
-        v-model="form.name"
-      />
-      <form-text-input  
-        v-if="!form.staticPhone"
-        autocomplete="tel" 
-        :placeholder="$t('mobile_number')" 
-        :invalid="validator.phone.$error" 
-        :mask="maskPhone()"  
-        v-model="form.phone"
+      <form-text-input
+        :placeholder="$t('enter_the_code')" 
+        :mask="'99999'"
+        :invalid="validator.code.$error" 
+        v-model="form.code"
       />
       <form-text-input
         type="password"
@@ -35,47 +24,39 @@
         v-model="form.passwordConfirm"
       />
     </div>
-    <button class="btn btn--green" type="submit">{{ actionText || $t('register')}}</button>
+    <p class="info-text"><icon name="info-circle" /> {{ $t('enter_the_code_sent_to_your_number')}}</p>
+    <button type="submit" class="btn btn--green">{{$t('restore_password')}}</button>
   </form>
 </template>
 
 <script>
-  import { mapState } from 'vuex';
-
   export default {
     props: {
       form: {},
-      validator: {},
-      actionText: String
+      validator: {}
     },
     data() {
       return {
         pending: false
       }
     },
-    computed: {
-      ...mapState(['sell_phone'])
-    },
     methods: {
       submit() {
         this.validator.$touch();
         if (this.pending || this.validator.$pending || this.validator.$error) return;
         this.pending = true;
-        this.$axios.$post('/register', {
-          name: this.form.name,
+        this.$axios.$post('/reset/password', {
           phone: this.form.phone.replace(/[^0-9]+/g, ''),
+          code: this.form.code,
           password: this.form.password,
           password_confirmation: this.form.passwordConfirm
         }).then(() => {
           this.pending = false;
-          this.$emit('updateTab','sign-up','sms');
+          this.$emit('updateTab','sign-in');
         }).catch((err) => {
           this.pending = false;
         });
       }
-    },
-    created() {
-      this.$emit('reset');
     }
   }
 </script>
