@@ -2,7 +2,7 @@
   <header class="page-header d-none d-lg-block">
     <div class="topbar">
       <div class="container">
-        <nuxt-link class="logo" :to="$localePath('/')">
+        <nuxt-link class="logo" :to="$localePath('/')" @click.native="$nuxt.$emit('logo-click')">
           <img :src="`/img/${isDarkMode ? 'logo-white' : 'logo'}.svg`" alt="logo" />
         </nuxt-link>
         <nav>

@@ -1,10 +1,12 @@
 <template>
   <div class="pages-cars">
     <div class="container">
-      <div class="card">
+      <div class="card pt-0 pt-lg-4">
         <cars-search-form 
-          @submit="searchCars" 
           :total-count="carsAnnouncements.paginate.total"
+          :pending="pending"
+          @pending="pending = true"
+          @submit="searchCars" 
         />
       </div>
       <grid 
@@ -13,11 +15,13 @@
         :title="$t('vip_announcements')"
         :show-all="$localePath('/vip')"
         :icon-name="'vip'"
+        :pending="pending"
       />
       <grid 
         :announcements="carsAnnouncements.standard" 
         :paginate="carsAnnouncements.paginate"
         :title="$t('recent_uploads')"
+        :pending="pending"
         @changePage="searchCars"
       />
       <grid 
@@ -26,6 +30,7 @@
         :title="$t('premium_announcements')"
         :show-all="$localePath('/premium')"
         :icon-name="'premium'"
+        :pending="pending"
       />
     </div>
   </div>
@@ -89,15 +94,21 @@ export default {
       });
     }
 
-    return { searchParams }
+    return { 
+      searchParams,
+      pending: false
+    }
   },
   methods: {
     ...mapActions(['getGridSearch']),
 
-    searchCars() {
+    async searchCars() {
       let post = JSON.parse(this.$route.query.car_filter || '{}');
       let page = this.$route.query.page || 1;
-      this.getGridSearch({ ...this.searchParams, post, page });
+      this.pending = true;
+      await this.getGridSearch({ ...this.searchParams, post, page });
+      this.pending = false;
+      this.scrollTo('.announcements-grid', -30);
     }
   },
   computed: {

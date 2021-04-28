@@ -1,5 +1,9 @@
 .announcements-grid {
   margin: 30px 0;
+  &.loading-content {
+    opacity: .4;
+    pointer-events: none;
+  }
   .title {
     display: flex;
     align-items: center;
@@ -29,6 +33,8 @@
       vertical-align: top;
       align-items: center;
       color: $white;
+      font-size: 15px;
+      font-weight: 500;
       &:hover {
         color: $yellow-1;
       }
@@ -43,6 +49,28 @@
   .announcements-grid {
     .title {
       background-color: $dark-2;
+    }
+  }
+}
+
+@include media-max-width('lg') {
+  .announcements-grid {
+    .title {
+      height: 34px;
+      padding: 0 15px;
+      h2 {
+        span {
+          font-size: 14px;
+        }
+        i {
+          font-size: 14px;
+          margin-left: 0;
+        }
+      }
+      a {
+        font-size: 13px;
+        font-weight: normal;
+      }
     }
   }
 }

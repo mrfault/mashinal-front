@@ -15,7 +15,7 @@ export const SearchMixin = {
       }
       return form;
     },
-    setFormData(form) {
+    setFormData(form = {}) {
       // set initial data
       Object.assign(this.$data, this.$options.data.apply(this));
       // get values from route query
@@ -31,10 +31,21 @@ export const SearchMixin = {
       this.fbTrack('Search Api');
       this.gtagTrack('AW-600951956/Qeu4CILAyPIBEJSZx54C');
       // update route query params and search announcements
-      let queryUrl = `${this.$localePath(this.meta.path)}?${this.meta.param}=${encodeURI(JSON.stringify(this.getFormData()))}`;
-      this.$router.push(queryUrl, () => {
+      let searchUrl = `${this.$localePath(this.meta.path)}?${this.meta.param}=${encodeURI(JSON.stringify(this.getFormData()))}`;
+      let searchSame = decodeURIComponent(searchUrl) === decodeURIComponent(this.$route.fullPath);
+      this.$emit('pending');
+      if(searchSame) {
         this.$emit('submit');
-      });
+      } else {
+        let prevRouteName = this.routeName;
+        this.$router.push(searchUrl, () => {
+          this.$emit('submit');
+          // for ex. when routing from / to /cars
+          if(this.routeName !== prevRouteName) {
+            this.scrollTo('.announcements-grid', -30);
+          }
+        });
+      }
     },
     resetForm() {
       this.setFormData({});

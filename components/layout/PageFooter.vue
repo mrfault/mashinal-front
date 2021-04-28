@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row">
         <div class="col-6">
-          <nuxt-link class="logo" :to="$localePath('/')">
+          <nuxt-link class="logo" :to="$localePath('/')" @click.native="$nuxt.$emit('logo-click')">
             <img src="/img/logo-white.svg" alt="logo" />
           </nuxt-link>
           <p>{{ $t('learn_about_emerging_product_text') }}</p>

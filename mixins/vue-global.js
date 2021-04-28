@@ -44,6 +44,11 @@ Vue.use({
             showMaskOnFocus: false
           }
         },
+        // other
+        scrollTo(el, offset = 0, duration = 500) {
+          offset += (this.isMobileBreakpoint ? -60 : -141);
+          this.$scrollTo(el, duration, { offset });
+        }
       },
       computed: {
         ...mapGetters(['loggedIn', 'user', 'colorMode', 'breakpoint']),

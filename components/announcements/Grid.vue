@@ -1,5 +1,5 @@
 <template>
-  <div class="announcements-grid">
+  <div :class="['announcements-grid', {'loading-content': pending}]">
     <div class="title" v-if="title">
       <h2>
         <icon :name="iconName" v-if="iconName" />
@@ -36,7 +36,8 @@ export default {
     title: String,
     iconName: String,
     showAll: String,
-    paginate: {}
+    paginate: {},
+    pending: Boolean
   },
   components: {
     GridItem

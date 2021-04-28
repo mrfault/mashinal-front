@@ -117,12 +117,12 @@
       <div class="col-lg-4">
         <div class="row">
           <div class="col-6" v-if="filtersApplied">
-            <button type="button" class="btn full-width btn--red-outline" @click="resetForm">
+            <button type="button" :class="['btn','full-width','btn--red-outline',{'pointer-events-none': pending}]" @click="resetForm">
               <icon name="reset" /> {{ $t('clear_search') }}
             </button>
           </div>
           <div :class="['col-6', {'offset-6': !filtersApplied}]">
-            <button type="submit" class="btn full-width btn--green">
+            <button type="submit" :class="['btn','full-width','btn--green',{'loading': pending}]">
               <icon name="search" /> {{ $t('find') }}
             </button>
           </div>
@@ -143,7 +143,8 @@ export default {
     totalCount: {
       type: Number,
       default: 0
-    }
+    },
+    pending: Boolean
   },
   data() {
     let brand = { 
@@ -221,6 +222,14 @@ export default {
       this.$set(this.form.additional_brands[index], 'generation', '');
       await this.getModelGenerationsArray({ value: slug, brand_slug, index });
     }
+  },
+  created() {
+    if(this.routeName === 'index') 
+      this.$nuxt.$on('logo-click', this.setFormData);
+  },
+  beforeDestroy() {
+    if(this.routeName === 'index') 
+      this.$nuxt.$off('logo-click', this.setFormData);
   }
 }
 </script>

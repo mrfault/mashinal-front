@@ -5,7 +5,7 @@
         <span class="cursor-pointer" @click="toggleSidebarMenu(true)">
           <icon name="burger" />
         </span>
-        <nuxt-link class="logo" :to="$localePath('/')">
+        <nuxt-link class="logo" :to="$localePath('/')" @click.native="$nuxt.$emit('logo-click')">
           <img :src="`/img/${isDarkMode ? 'logo-white' : 'logo'}.svg`" alt="logo" />
         </nuxt-link>
         <span class="cursor-pointer" @click.stop>

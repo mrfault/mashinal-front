@@ -1,9 +1,11 @@
 <template>
   <div class="pages-index">
     <div class="container">
-      <div class="card pt-0 pt-lg-3">
+      <div class="card pt-0 pt-lg-4">
         <cars-search-form 
           :total-count="mainAnnouncements.paginate.total"
+          :pending="pending"
+          @pending="pending = true"
         />
       </div>
       <grid 
@@ -12,18 +14,21 @@
         :title="$t('vip_announcements')"
         :show-all="$localePath('/vip')"
         :icon-name="'vip'"
+        :pending="pending"
       />
       <grid 
         :announcements="mainAnnouncements.standard" 
         :paginate="mainAnnouncements.paginate"
         :title="$t('recent_uploads')"
         :show-all="$localePath('/cars')"
+        :pending="pending"
       />
       <grid 
         v-if="mainAnnouncements.random_moto.length"
         :announcements="mainAnnouncements.random_moto" 
         :title="$t('type_motos')"
         :show-all="$localePath('/motorcycles')"
+        :pending="pending"
       />
       <grid 
         v-if="mainAnnouncements.premium.length"
@@ -31,6 +36,7 @@
         :title="$t('premium_announcements')"
         :show-all="$localePath('/premium')"
         :icon-name="'premium'"
+        :pending="pending"
       />
     </div>
   </div>
@@ -63,6 +69,10 @@ export default {
       store.dispatch('getMainSearch', { url: '/home_page_cars' }),
       store.dispatch('clearSavedSearch')
     ]);
+
+    return {
+      pending: false
+    }
   },
   computed: {
     ...mapGetters(['mainAnnouncements'])
