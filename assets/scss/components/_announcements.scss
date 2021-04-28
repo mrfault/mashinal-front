@@ -45,6 +45,20 @@
   }
 }
 
+.no-results {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin: 100px 0 70px;
+  span {
+    font-size: 18px;
+    font-weight: 500;
+    margin-top: 22px;
+  }
+}
+
 .dark-mode {
   .announcements-grid {
     .title {
@@ -71,6 +85,15 @@
         font-size: 13px;
         font-weight: normal;
       }
+    }
+  }
+
+  .no-results {
+    span {
+      font-size: 16px;
+    }
+    img {
+      width: 50px;
     }
   }
 }

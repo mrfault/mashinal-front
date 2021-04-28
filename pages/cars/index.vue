@@ -18,12 +18,14 @@
         :pending="pending"
       />
       <grid 
+        v-if="carsAnnouncements.standard.length"
         :announcements="carsAnnouncements.standard" 
         :paginate="carsAnnouncements.paginate"
         :title="$t('recent_uploads')"
         :pending="pending"
         @changePage="searchCars"
       />
+      <no-results v-else />
       <grid 
         v-if="carsAnnouncements.premium.length"
         :announcements="carsAnnouncements.premium" 
@@ -41,11 +43,13 @@ import { mapGetters, mapActions } from 'vuex';
 
 import CarsSearchForm from '~/components/cars/CarsSearchForm';
 import Grid from '~/components/announcements/Grid';
+import NoResults from '~/components/elements/NoResults';
 
 export default {
   components: {
     CarsSearchForm,
-    Grid
+    Grid,
+    NoResults
   },
   nuxtI18n: {
     paths: {
