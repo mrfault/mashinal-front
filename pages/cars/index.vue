@@ -106,13 +106,13 @@ export default {
   methods: {
     ...mapActions(['getGridSearch']),
 
-    async searchCars() {
+    async searchCars(page = 1) {
+      page = this.$route.query.page || 1;
       let post = JSON.parse(this.$route.query.car_filter || '{}');
-      let page = this.$route.query.page || 1;
       this.pending = true;
       await this.getGridSearch({ ...this.searchParams, post, page });
       this.pending = false;
-      this.scrollTo('.announcements-grid', -30);
+      this.scrollTo(page === 1 ? '.announcements-grid' : '.paginated', -30);
     }
   },
   computed: {
