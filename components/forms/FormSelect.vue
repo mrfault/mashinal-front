@@ -17,17 +17,19 @@
         :show-check="custom"
       />
       <div :class="['select-menu_dropdown', {'show': showOptions, custom, 'responsive': isMobileBreakpoint}]" ref="dropdownOptions">
-        <div :class="{'container': isMobileBreakpoint}">
-          <slot v-if="custom" />
-          <vue-scroll :ops="scrollOps" ref="vs" v-else-if="showOptions">
+        <div :class="{'container': isMobileBreakpoint}" v-if="custom">
+          <slot />
+        </div>
+        <vue-scroll :ops="scrollOps" ref="vs" v-else-if="showOptions">
+          <div :class="{'container': isMobileBreakpoint}">
             <div :class="['select-menu_dropdown-option', {'selected': isSelected(option)}]" v-for="(option, index) in getOptions" :key="index"
                 @click.stop="selectValue = option">
               <div class="text-truncate">
                 <span>{{ $translateHard(option.name[locale]) || (translateOptions ? $t(option.name) : $translateHard(option.name)) }}{{ suffix ? ' ' + suffix : '' }}</span>
               </div>
             </div>
-          </vue-scroll>
-        </div>
+          </div>
+        </vue-scroll>
       </div>
     </div>
   </div>
