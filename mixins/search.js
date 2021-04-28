@@ -41,6 +41,18 @@ export const SearchMixin = {
     },
     getOptionValue(name, key) {
       return this[`get${name}Options`].find(option => option.key === key)?.name || '';
+    },
+    addSearchRow(key) {
+      if (this.counter.length === 5) return;
+      let keys = Object.keys(this.form.additional_brands);
+      let index = this.counter.indexOf(key);
+      this.counter.splice(index + 1, 0, keys.filter(key => this.counter.indexOf(key) === -1)[0]);
+    },
+    removeSearchRow(key) {
+      if (this.counter.length === 1) return;
+      let index = this.counter.indexOf(key);
+      this.setBrand('', key);
+      this.counter.splice(index, 1);
     }
   },
   computed: {

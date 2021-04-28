@@ -18,6 +18,53 @@
           </div>
         </div>
       </div>
+      <template v-if="isMobileBreakpoint">
+        <div class="col-6 mb-2">
+          <form-select :label="$t('mark')" :options="brands" v-model="form.additional_brands[counter[0]]['brand']"
+            @change="setBrand($event, counter[0])" />
+        </div>
+        <div class="col-6 mb-2">
+          <form-select :label="$t('model')" :options="array_models[counter[0]]" v-model="form.additional_brands[counter[0]]['model']"
+            :disabled="form.additional_brands[counter[0]]['brand'] && !array_models[counter[0]].length" @change="setModel($event, counter[0])" />
+        </div>
+        <div class="col-6 mb-2">
+          <form-select :label="$t('generation')" :options="array_generations[counter[0]]" v-model="form.additional_brands[counter[0]]['generation']"
+            :disabled="form.additional_brands[counter[0]]['model'] && !array_generations[counter[0]].length" />
+        </div>
+      </template>
+      <template v-else>
+        <div class="col-12 mb-3" v-for="(key, index) in counter" :key="key">
+          <div class="row">
+            <div class="col-4">
+              <form-select :label="$t('mark')" :options="brands" v-model="form.additional_brands[key]['brand']"
+                @change="setBrand($event, key)" />
+            </div>
+            <div class="col-4">
+              <form-select :label="$t('model')" :options="array_models[key]" v-model="form.additional_brands[key]['model']"
+                :disabled="form.additional_brands[key]['brand'] && !array_models[key].length" @change="setModel($event, key)" />
+            </div>
+            <div class="col-4">
+              <div class="row">
+                <div class="col">
+                  <form-select :label="$t('generation')" :options="array_generations[key]" v-model="form.additional_brands[key]['generation']"
+                    :disabled="form.additional_brands[key]['model'] && !array_generations[key].length" />
+                </div>
+                <div class="col-auto">
+                  <div class="form-counter">
+                    <div class="form-info" v-if="counter.length < 5 && index === counter.length - 1" @click="addSearchRow(key)">
+                      <icon name="plus" />
+                    </div>
+                    <div class="form-info" v-if="counter.length > 1" @click="removeSearchRow(key)">
+                      <icon name="minus" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+      </template>
       <div class="col-6 col-lg-2 mb-2 mb-lg-3">
         <form-select :label="$t('years')" custom 
           :values="{from: form.min_year, to: form.max_year, read: false }"
@@ -114,6 +161,7 @@ export default {
         param: 'car_filter'
       },
       saved: false,
+      counter: ['0'],
       form: {
         sorting: 'created_at_desc',
         additional_brands: {
@@ -153,6 +201,27 @@ export default {
   },
   computed: {
     ...mapGetters(['brands', 'body_options', 'array_models', 'array_generations', 'sell_options', 'all_sell_options2', 'colors'])
+  },
+  methods: {
+    ...mapActions(['getModelsArray', 'getModelGenerationsArray']),
+
+    async setBrand(id, index) {
+      let slug = this.brands.find(option => option.id == id)?.slug || '';
+      this.$set(this.form.additional_brands[index], 'brand', id);
+      this.$set(this.form.additional_brands[index], 'brand_slug', slug);
+      this.$set(this.form.additional_brands[index], 'model', '');
+      this.$set(this.form.additional_brands[index], 'model_slug', '');
+      this.$set(this.form.additional_brands[index], 'generation', '');
+      await this.getModelsArray({ value: slug, index });
+    },
+    async setModel(id, index) {
+      let slug = this.array_models[index].find(option => option.id == id)?.slug || '';
+      let brand_slug = this.form.additional_brands[index].brand_slug
+      this.$set(this.form.additional_brands[index], 'model', id);
+      this.$set(this.form.additional_brands[index], 'model_slug', slug);
+      this.$set(this.form.additional_brands[index], 'generation', '');
+      await this.getModelGenerationsArray({ value: slug, brand_slug, index });
+    }
   }
 }
 </script>

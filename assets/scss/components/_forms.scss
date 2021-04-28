@@ -35,6 +35,26 @@ textarea {
   border-radius: 4px;
 }
 
+.form-counter {
+  display: flex;
+  align-items: center;
+  width: auto;
+  .form-info {
+    width: 34px;
+    cursor: pointer;
+    &:not(:last-child) {
+      margin-right: 1px;
+      border-radius: 4px 0 0 4px;
+    }
+    &:not(:first-child) {
+      border-radius: 0 4px 4px 0 ;
+    }
+    &:hover {
+      color: $dark-blue-2;
+    }
+  }
+}
+
 .text-input {
   position: relative;
   width: 100%;
@@ -48,6 +68,9 @@ textarea {
     &.invalid {
       color: $red-1;
       padding-right: 34px;
+    }
+    &.disabled {
+      color: $grey-3;
     }
   }
   .icon-info-circle {
@@ -165,6 +188,9 @@ textarea {
     &.active .icon-chevron-down {
       transform: scaleY(-1);
     }
+    &.disabled {
+      color: $grey-3;
+    }
     .icon-cross {
       font-size: 11px;
       margin-left: 4px;
@@ -189,6 +215,7 @@ textarea {
     top: 49px;
     left: 0;
     width: 100%;
+    width: calc(100% + 1px);
     z-index: 2;
     visibility: hidden;
     opacity: 0;
@@ -280,6 +307,11 @@ textarea {
     background-color: $dark-1;
   }
 
+  .text-input input.disabled,
+  .select-menu_label.disabled {
+    color: $grey-1;
+  }
+
   .checkbox-input .checkbox {
     border-color: $grey-1;
   }
@@ -343,6 +375,12 @@ textarea {
   .form-merged {
     .form-group:not(:last-child) {
       border-right-color: $dark-2;
+    }
+  }
+
+  .form-counter {
+    .form-info:hover {
+      color: $yellow-1;
     }
   }
 }

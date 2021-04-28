@@ -18,6 +18,9 @@ Vue.use({
 
 Vue.use(vuescroll, {
   ops: {
+    scrollPanel: {
+      scrollingX: false
+    },
     rail: {
       background: '#ffffff ',
       opacity: 0,

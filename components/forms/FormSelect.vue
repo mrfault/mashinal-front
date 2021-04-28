@@ -2,7 +2,7 @@
   <div class="form-group">
     <div class="select-menu">
       <span :class="['select-menu_label', {'selected': hasSelectedValue, 'disabled': disabled, 'active': showOptions}]" 
-        @click="showOptions = !showOptions">
+        @click="showOptions = disabled ? false : !showOptions">
         <span class="text-truncate">{{ getLabelText }}</span>
         <span class="counter" v-if="multiple && selectValue.length > 1">{{ selectValue.length }}</span>
         <icon name="cross" v-if="allowClear && !hasNoValue" @click.native.stop="clearSelect"/>
@@ -25,7 +25,7 @@
             <div :class="['select-menu_dropdown-option', {'selected': isSelected(option)}]" v-for="(option, index) in getOptions" :key="index"
                 @click.stop="selectValue = option">
               <div class="text-truncate">
-                <span>{{ $translateHard(option.name[locale]) || (translateOptions ? $t(option.name) : $translateHard(option.name)) }}{{ suffix ? ' ' + suffix : '' }}</span>
+                <span>{{ getOptionName(option) }}</span>
               </div>
             </div>
           </div>
@@ -230,7 +230,7 @@
       }
     },
     watch: {
-      breakpoint(breakpoint) {
+      breakpoint() {
         this.showOptions = false;
       },
       disabled(disabled) {
