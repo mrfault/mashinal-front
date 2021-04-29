@@ -107,24 +107,29 @@
           {{ $readPlural(totalCount, $t('plural_forms_announcements')) }}
         </div>
       </div>
-      <div class="col-lg-8">
-        <div class="row">
-          <div class="col-lg-4 mb-2 mb-lg-0">
-            <form-checkbox :label="$t('search_save' + (saved ? 'd' : ''))" v-model="saved" input-name="saved" transparent />
+      <div class="col-12">
+        <div class="row flex-column-reverse flex-lg-row">
+          <div class="col-lg-8">
+            <div class="row">
+              <div class="col-lg-4 mt-2 mt-lg-0" v-if="searchApplied">
+                <form-checkbox :label="$t('search_save' + (savedSearch ? 'd' : ''))" v-model="savedSearch" 
+                  input-name="savedSearch" transparent :disabled="!loggedIn" @try="$nuxt.$emit('login-popup', 'saved-search')" />
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      <div class="col-lg-4">
-        <div class="row">
-          <div class="col-6" v-if="filtersApplied">
-            <button type="button" :class="['btn','full-width','btn--red-outline',{'pointer-events-none': pending}]" @click="resetForm">
-              <icon name="reset" /> {{ $t('clear_search') }}
-            </button>
-          </div>
-          <div :class="['col-6', {'offset-6': !filtersApplied}]">
-            <button type="submit" :class="['btn','full-width','btn--green',{'loading': pending}]">
-              <icon name="search" /> {{ $t('find') }}
-            </button>
+          <div class="col-lg-4">
+            <div class="row">
+              <div class="col-6">
+                <button type="button" :class="['btn','full-width','btn--red-outline',{'pointer-events-none': pending}]" @click="resetForm">
+                  <icon name="reset" /> {{ $t('clear_search') }}
+                </button>
+              </div>
+              <div class="col-6">
+                <button type="submit" :class="['btn','full-width','btn--green',{'loading': pending}]">
+                  <icon name="search" /> {{ $t('find') }}
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -160,7 +165,6 @@ export default {
         path: '/cars',
         param: 'car_filter'
       },
-      saved: false,
       counter: ['0'],
       form: {
         sorting: 'created_at_desc',

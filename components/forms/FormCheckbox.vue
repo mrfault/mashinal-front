@@ -13,7 +13,7 @@
         :false-value="typeof inputValue === 'number' ? 0 : false"
         v-model="inputValue"
       />
-      <label :for="id || inputName" :class="{transparent}">
+      <label :for="id || inputName" :class="{transparent}" @click="handleClick">
         <span class="checkbox">
           <icon name="check" />
         </span>
@@ -80,6 +80,11 @@
             this.prevValue = value;
           }
         }
+      }
+    },
+    methods: {
+      handleClick() {
+        if (this.disabled) this.$emit('try');
       }
     }
   }

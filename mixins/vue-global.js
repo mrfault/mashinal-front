@@ -46,6 +46,7 @@ Vue.use({
         },
         // other
         scrollTo(el, offset = 0, duration = 500) {
+          if(el === 0) el = 'body';
           if(typeof el === 'string' && !document.querySelector(el)) return;
           offset += (this.isMobileBreakpoint ? -60 : -141);
           this.$scrollTo(el, duration, { offset });

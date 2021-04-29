@@ -79,14 +79,12 @@ export default {
         .filter(key => post?.additional_brands?.[key]?.brand)
         .map((key) => {
           let row = post.additional_brands[key];
-          console.log('model', key)
           return store.dispatch('getModelsArray', { value: row.brand_slug, index: key })
         }),
       // get generation options for models
       ...Object.keys(post?.additional_brands || {})
         .filter(key => post?.additional_brands?.[key]?.model)
         .map((key) => {
-          console.log('generation', key)
           let row = post.additional_brands[key];
           return store.dispatch('getModelGenerationsArray', { value: row.model_slug, brand_slug: row.brand_slug, index: key })
         }),
@@ -94,7 +92,7 @@ export default {
 
     if($auth.loggedIn) {
       await store.dispatch('fetchSavedSearch', { 
-        search_url: `/cars?car_filter=${encodeURI(route.query.car_filter)}` 
+        search_url: `/cars?car_filter=${encodeURI(JSON.stringify(post))}`
       });
     }
 

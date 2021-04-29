@@ -1,5 +1,9 @@
+import { mapGetters, mapActions } from 'vuex';
+
 export const SearchMixin = {
   methods: {
+    ...mapActions(['fetchSavedSearch', 'createSavedSearch', 'deleteSavedSearch']),
+
     getFormData() {
       let requiredKeys = ['additional_brands'];
       if (this.meta.type === 'cars') requiredKeys.push('all_options');
@@ -44,6 +48,12 @@ export const SearchMixin = {
           if(this.routeName !== prevRouteName) {
             this.scrollTo('.announcements-grid', -30);
           }
+          // look for a saved search
+          if(this.meta.type === 'cars') {
+            this.fetchSavedSearch({ 
+              search_url: `${this.meta.path}?${this.meta.param}=${encodeURI(JSON.stringify(this.getFormData()))}`
+            });
+          } 
         });
       }
     },
@@ -65,14 +75,50 @@ export const SearchMixin = {
       let index = this.counter.indexOf(key);
       this.setBrand('', key);
       this.counter.splice(index, 1);
+    },
+    parseFormFromRoute() {
+      this.setFormData(JSON.parse(this.$route.query.car_filter || '{}'));
+      let keys = Object.keys(this.form.additional_brands).filter(key => this.form.additional_brands[key].brand);
+      if(keys.length) this.counter = [...keys];
+    },
+    async handlePopState() {
+      // refresh page's async data
+      await this.$nuxt.refresh();
+      // update form
+      this.parseFormFromRoute();
+      this.scrollTo(0);
     }
   },
   computed: {
+    ...mapGetters(['singleSavedSearch']),
+
+    savedSearch: {
+      get() {
+        return !!this.singleSavedSearch.id;
+      },
+      async set() {
+        if(!this.loggedIn) return;
+        if(this.singleSavedSearch.id) {
+          this.deleteSavedSearch(this.singleSavedSearch.id);
+        } else {
+          this.createSavedSearch({
+            search_type: this.meta.type,
+            search_key: this.meta.param,
+            search_filter: JSON.stringify(this.getFormData()),
+            search_url: `${this.meta.path}?${this.meta.param}=${encodeURI(JSON.stringify(this.getFormData()))}`,
+            lang: this.locale
+          });
+        }
+      }
+    },
     filtersApplied() {
       let hasBrand = this.counter.filter(key => this.form.additional_brands[key].brand).length;
       let hasAllOptions = Object.keys(this.form.all_options).length;
       let hasOptions = Object.keys(this.getFormData()).length > 5 || (this.form.announce_type !== 1);
       return !!(hasBrand || hasAllOptions || hasOptions);
+    },
+    searchApplied() {
+      return !!(this.$route.query[this.meta.param] && this.$route.path === this.$localePath(this.meta.path));
     },
     // static data
     getYearOptions() {
@@ -131,8 +177,12 @@ export const SearchMixin = {
     }
   },
   created() {
-    this.setFormData(JSON.parse(this.$route.query.car_filter || '{}'));
-    let keys = Object.keys(this.form.additional_brands).filter(key => this.form.additional_brands[key].brand);
-    if(keys.length) this.counter = [...keys];
+    this.parseFormFromRoute();
+  },
+  mounted() {
+    window.addEventListener('popstate', this.handlePopState);
+  },
+  beforeDestroy() {
+    window.removeEventListener('popstate', this.handlePopState);
   }
 }
