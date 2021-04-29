@@ -1,5 +1,5 @@
 @font-face {
-  font-family: 'icomoon';
+  font-family: 'icons';
   src:  url('../fonts/icons/icomoon.eot?ssadd');
   src:  url('../fonts/icons/icomoon.eot?ssadd#iefix') format('embedded-opentype'),
     url('../fonts/icons/icomoon.ttf?ssadd') format('truetype'),
@@ -13,7 +13,7 @@
 [class^="icon-"], [class*=" icon-"] {
   display: inline-flex;
   flex-shrink: 0;
-  font-family: 'icomoon' !important;
+  font-family: 'icons' !important;
   speak: never;
   font-style: normal;
   font-weight: normal;

@@ -12,16 +12,17 @@
         v-if="mainAnnouncements.vip.length"
         :announcements="mainAnnouncements.vip" 
         :title="$t('vip_announcements')"
-        :show-all="$localePath('/vip')"
+        :show-all="$localePath('/cars/vip')"
         :icon-name="'vip'"
         :pending="pending"
       />
       <grid 
         :announcements="mainAnnouncements.standard" 
-        :paginate="mainAnnouncements.paginate"
+        :paginate="$paginate(mainAnnouncements)"
         :title="$t('recent_uploads')"
         :show-all="$localePath('/cars')"
         :pending="pending"
+        @pending="pending = true"
       />
       <grid 
         v-if="mainAnnouncements.random_moto.length"
@@ -34,7 +35,7 @@
         v-if="mainAnnouncements.premium.length"
         :announcements="mainAnnouncements.premium" 
         :title="$t('premium_announcements')"
-        :show-all="$localePath('/premium')"
+        :show-all="$localePath('/cars/premium')"
         :icon-name="'premium'"
         :pending="pending"
       />

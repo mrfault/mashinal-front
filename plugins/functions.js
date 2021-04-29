@@ -51,6 +51,13 @@ export default function({ app, route, store }, inject) {
     return (count ? `${n} ` : '') + forms[(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2) ];
   });
   // helpers
+  inject('paginate', (data) => {
+    return {
+      current_page: data.current_page || 1,
+      last_page: data.standard_count ? Math.ceil(data.standard_count / 40) : data.last_page,
+      total: data.standard_count || data.total
+    }
+  });
   inject('notUndefined', (...values) => {
     for(let i in values)
       if(values[i] !== undefined) return values[i];

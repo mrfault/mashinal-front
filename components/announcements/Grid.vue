@@ -45,7 +45,10 @@ export default {
   methods: {
     changePage(page) {
       if(this.showAll) {
-        this.$router.push({ path: this.showAll, query: { page } });
+        this.$emit('pending');
+        this.$router.push({ path: this.showAll, query: { page } }, () => {
+          this.scrollTo('.announcements-grid', -30);
+        });
       } else {
         this.$router.push({ query: { ...this.$route.query, page } }, () => {
           this.$emit('changePage', page);

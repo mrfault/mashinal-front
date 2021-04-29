@@ -19,6 +19,10 @@ a {
   &:hover {
     text-decoration: none;
   }
+  &.abs-link {
+    @include abs-zero;
+    z-index: 0;
+  }
 }
 
 img {
@@ -802,14 +806,12 @@ main {
       color: $red-1;
       pointer-events: none;
       &::after {
-        content: '';
+        content: '\e941';
+        font-family: 'icons';
         position: absolute;
         width: 50%;
         left: 25%;
-        bottom: 0;
-        height: 1px;
-        border-radius: 1px;
-        background-color: $red-1;
+        bottom: -8px;
       }
     }
     &.disabled button {
@@ -837,9 +839,6 @@ main {
       }
       &.active button {
         color: $yellow-1;
-        &::after {
-          background-color: $yellow-1;
-        }
       }
       &.disabled button {
         color: $grey-1;

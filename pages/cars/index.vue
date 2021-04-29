@@ -13,7 +13,7 @@
         v-if="carsAnnouncements.vip.length"
         :announcements="carsAnnouncements.vip" 
         :title="$t('vip_announcements')"
-        :show-all="$localePath('/vip')"
+        :show-all="$localePath('/cars/vip')"
         :icon-name="'vip'"
         :pending="pending"
       />
@@ -30,7 +30,7 @@
         v-if="carsAnnouncements.premium.length"
         :announcements="carsAnnouncements.premium" 
         :title="$t('premium_announcements')"
-        :show-all="$localePath('/premium')"
+        :show-all="$localePath('/cars/premium')"
         :icon-name="'premium'"
         :pending="pending"
       />

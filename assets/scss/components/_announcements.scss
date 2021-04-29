@@ -1,5 +1,8 @@
 .announcements-grid {
   margin: 30px 0;
+  &:first-child {
+    margin-top: 0;
+  }
   &.loading-content {
     opacity: .4;
     pointer-events: none;
@@ -44,7 +47,7 @@
     }
   }
   &_item {
-    overflow: hidden;
+    position: relative;
     background-color: $white;
     border-radius: 4px;
     transition: box-shadow .2s ease-out;
@@ -57,9 +60,10 @@
       padding-bottom: 76.78%;
       background-position: center;
       background-size: cover;
+      border-radius: 4px 4px 0 0;
+      background-color: $grayish-blue-3;
     }
     .item-details {
-      display: block;
       padding: 15px 15px 10px;
       h3 {
         font-size: 15px;
@@ -67,6 +71,7 @@
         margin: 0 0 4px;
       }
       .item-info {
+        display: block;
         color: $grayish-blue-7;
       }
     }
@@ -84,6 +89,49 @@
       i {
         margin-left: 15px;
       }
+    }
+    .item-overlay {
+      @include abs-zero;
+      z-index: 1;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 12px;
+      .btn-sq {
+        pointer-events: all;
+        margin-right: auto;
+      }
+      .badge {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: $white;
+        font-weight: 500;
+        height: 25px;
+        min-width: 62px;
+        border-radius: 4px;
+        background-color: rgba($dark-blue-1, .35);
+        padding: 0 8px;
+        i {
+          font-size: 12px;
+        }
+        &:not(:last-child) {
+          margin-right: 12px;
+        }
+        &.squared {
+          min-width: 25px;
+          padding: 0;
+        }
+      }
+      &_top,
+      &_bottom {
+        display: flex;
+
+      }
+    }
+    a.abs-link {
+      z-index: 1;
     }
   }
 }
@@ -111,6 +159,9 @@
       background-color: $dark-2;
       &:hover {
         box-shadow: $shadow-dark-6;
+      }
+      .item-bg {
+        background-color: $dark-3;
       }
       .item-details .item-info {
         color: $grey-4;

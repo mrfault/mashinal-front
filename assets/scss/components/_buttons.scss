@@ -47,6 +47,38 @@
   }
 }
 
+.btn-sq {
+  border: 0;
+  display: inline-flex;
+  vertical-align: top;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  height: 25px;
+  width: 25px;
+  padding: 0;
+  border-radius: 4px;
+  transition: .1s ease-out;
+  &--color-dark-blue {
+    background-color: $white;
+    color: $dark-blue-1;
+    &:hover,
+    &.active {
+      color: $white;
+      background-color: $dark-blue-1;
+    }
+  }
+  &--color-red {
+    background-color: $white;
+    color: $red-1;
+    &:hover,
+    &.active {
+      color: $white;
+      background-color: $red-1;
+    }
+  }
+}
+
 .btn {
   border: 0;
   display: inline-flex;
