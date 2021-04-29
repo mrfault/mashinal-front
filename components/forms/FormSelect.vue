@@ -10,26 +10,28 @@
       </span>
       <icon class="select-menu_triangle" name="triangle" v-if="showOptions"/>
       <action-bar 
-        :title="label"
+        :title="getLabelText"
         v-if="showOptions && isMobileBreakpoint && !inSelectMenu" 
         @back="showOptions = false" 
         @accept="showOptions = false"
         :show-check="custom"
       />
       <div :class="['select-menu_dropdown', {'show': showOptions, custom, 'responsive': isMobileBreakpoint}]" ref="dropdownOptions">
-        <div :class="{'container': isMobileBreakpoint}" v-if="custom">
-          <slot />
-        </div>
-        <vue-scroll :ops="scrollOps" ref="vs" v-else-if="showOptions">
-          <div :class="{'container': isMobileBreakpoint}">
-            <div :class="['select-menu_dropdown-option', {'selected': isSelected(option)}]" v-for="(option, index) in getOptions" :key="index"
-                @click.stop="selectValue = option">
-              <div class="text-truncate">
-                <span>{{ getOptionName(option) }}</span>
+        <template v-if="showOptions">
+          <div :class="{'container': isMobileBreakpoint}" v-if="custom">
+            <slot />
+          </div>
+          <vue-scroll :ops="scrollOps" ref="vs" v-else>
+            <div :class="{'container': isMobileBreakpoint}">
+              <div :class="['select-menu_dropdown-option', {'selected': isSelected(option)}]" v-for="(option, index) in getOptions" :key="index"
+                  @click.stop="selectValue = option">
+                <div class="text-truncate">
+                  <span>{{ getOptionName(option) }}</span>
+                </div>
               </div>
             </div>
-          </div>
-        </vue-scroll>
+          </vue-scroll>
+        </template>
       </div>
     </div>
   </div>
@@ -246,13 +248,17 @@
           setTimeout(() => {
             this.blockClick = false;
           }, 0);
-          // scroll to the selected option
-          if(!this.hasNoValue) {
-            this.$nextTick(() => {
+          this.$nextTick(() => {
+            // scroll to the selected option
+            if(!this.hasNoValue) {
               if(!this.$refs.vs) return;
               this.$refs.vs.scrollIntoView('.select-menu_dropdown-option.selected', 0);
-            });
-          }
+            }
+            // focus on first input
+            if(this.custom) {
+              this.$el.querySelector('.text-input input')?.focus();
+            }
+          });
         }
         // hide overflow when selected
         if(!this.inSelectMenu) {

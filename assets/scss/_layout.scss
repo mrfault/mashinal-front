@@ -74,6 +74,7 @@ main {
 
 [class^=pages-] {
   padding: 30px 0;
+  overflow: hidden;
 }
 
 .container {
@@ -477,6 +478,7 @@ main {
 
 .mobile-nav {
   position: sticky;
+  z-index: 1;
   bottom: 0;
   left: 0;
   background-color: $white;
@@ -995,6 +997,19 @@ main {
   }
 }
 
+/** Backdrop */
+
+.backdrop {
+  @include abs-zero(fixed, 999);
+  @include backdrop-filter;
+}
+
+.dark-mode {
+  .backdrop {
+    @include backdrop-filter($dark-1);
+  }
+}
+
 /** Toasts */
 
 .toasted-container.top-right {
@@ -1195,7 +1210,7 @@ main {
   }
 
   body.select-menu-open {
-    overflow-y: hidden;
+    overflow-y: hidden !important;
   }
 }
 

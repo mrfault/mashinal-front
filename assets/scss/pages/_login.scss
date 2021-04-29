@@ -52,11 +52,17 @@
   height: 423px;
   width: 288px;
   margin: 0 auto;
-  &--modal {
-    height: 354px;
+  &--popup {
+    @include abs-middle(fixed, 999);
+    height: 364px;
+    width: 338px;
+    max-width: 100%;
+    padding: 0 25px;
+    background-color: $white;
+    border-radius: 4px;
   }
   .tabs {
-    margin: 0 -10px 20px;
+    margin: 0 -7.5px 20px;
     .btn {
       width: 100%;
       padding: 0 10px;
@@ -80,6 +86,9 @@
         margin: auto 0 20px;
         &.info-text {
           margin: 0 0 auto;
+          & + p:not(:last-child) {
+            margin-bottom: 20px;
+          }
         }
         &:last-child {
           margin-bottom: 0;
@@ -99,6 +108,11 @@
       background-color: $dark-3;
     }
     .tab-form {
+      background-color: $dark-2;
+    }
+  }
+  .login-forms {
+    &--popup {
       background-color: $dark-2;
     }
   }
@@ -127,25 +141,45 @@
     .login-card {
       background-color: transparent;
     }
-  }
-  
-  .login-forms {
-    height: auto;
-    width: 100%;
-    padding: 25px;
-    .form {
+    .login-forms {
       height: auto;
-      .form-part {
-        & + button,
-        & + p {
-          margin: 0 0 20px;
-          &.info-text {
+      width: 100%;
+      padding: 25px;
+      .form {
+        height: auto;
+        .form-part {
+          & + button,
+          & + p {
             margin: 0 0 20px;
-          }
-          &:last-child {
-            margin-bottom: 0;
+            &.info-text {
+              margin: 0 0 20px;
+            }
+            &:last-child {
+              margin-bottom: 0;
+            }
           }
         }
+      }
+    }
+  }
+
+  .login-forms {
+    &--popup {
+      width: 100%;
+      max-width: 540px;
+      bottom: 0px;
+      top: auto;
+      transform: translate(-50%, 0px);
+      border-radius: 4px 4px 0 0;
+      &.translate-fade-enter-active {
+        transform: translate(-50%, 0);
+      }
+      &.translate-fade-enter {
+        transform: translate(-50%, 50px);
+      }
+      &.translate-fade-enter-active, 
+      &.translate-fade-leave-active {
+        transition: transform .3s ease-out, opacity .2s cubic-bezier(.53,2,.36,.85);
       }
     }
   }

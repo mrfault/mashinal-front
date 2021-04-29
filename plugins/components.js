@@ -6,6 +6,7 @@ import Breadcrumbs from '~/components/elements/Breadcrumbs';
 import Pagination from '~/components/elements/Pagination';
 import LoginTabs from '~/components/elements/LoginTabs';
 import ActionBar from '~/components/elements/ActionBar';
+import Backdrop from '~/components/elements/Backdrop';
 // forms
 import FormNumericInput from '~/components/forms/FormNumericInput';
 import FormTextInput from '~/components/forms/FormTextInput';
@@ -23,6 +24,7 @@ Vue.component('breadcrumbs', Breadcrumbs);
 Vue.component('pagination', Pagination);
 Vue.component('login-tabs', LoginTabs);
 Vue.component('action-bar', ActionBar);
+Vue.component('backdrop', Backdrop);
 // ***
 Vue.component('transition-expand', TransitionExpand);
 // ***

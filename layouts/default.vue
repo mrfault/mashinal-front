@@ -12,6 +12,13 @@
           <scroll-top />
         </main>
         <page-footer />
+        <backdrop @click="closeLogin" v-if="showLoginPopup">
+          <template #default="{ show }">
+            <transition name="translate-fade">
+                <login-tabs :popup="true" :skip-sign-in="true" v-if="show" />
+            </transition>
+          </template>
+        </backdrop>
         <mobile-nav />
       </div>
     </transition>

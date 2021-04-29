@@ -35,7 +35,7 @@
         v-model="form.passwordConfirm"
       />
     </div>
-    <button type="submit" class="btn btn--green">{{ actionText || $t('register')}}</button>
+    <button type="submit" :class="['btn','btn--green',{pending}]">{{ actionText || $t('register')}}</button>
   </form>
 </template>
 

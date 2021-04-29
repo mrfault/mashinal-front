@@ -7,20 +7,17 @@ export const LayoutMixin = {
   mixins: [ColorModeMixin, MessagesMixin],
   data() {
     return {
-      vhVariableSet: false
+      vhVariableSet: false,
+      showLoginPopup: false,
+      loginActionKey: ''
     }
   },
   computed: {
     ...mapGetters(['loading', 'messages'])
   },
   methods: {
-    ...mapActions(['setLoading','setGridBreakpoint','getMessages','getSavedAnnouncements']),
+    ...mapActions(['setLoading','setGridBreakpoint','getMessages','getSavedAnnouncements','resetSellTokens']),
 
-    async getUserData() {
-      if(!this.loggedIn) return;
-      if(!this.messages.length) await this.getMessages();
-      await this.getSavedAnnouncements();
-    },
     handleResize() {
       // update grid breakpoint
       let breakpoint = false;
@@ -53,7 +50,22 @@ export const LayoutMixin = {
       layout.classList[reachedFooter ? 'add' : 'remove']('reached-footer');
       layout.classList[window.scrollY > 0 ? 'add' : 'remove']('scrolled');
     },
-    
+    // login
+    async getUserData() {
+      if(!this.loggedIn) return;
+      if(!this.messages.length) await this.getMessages();
+      await this.getSavedAnnouncements();
+    },
+    closeLogin() {
+      this.showLoginPopup = false;
+      this.loginActionKey = '';
+    },
+    afterLogin() {
+      let key = this.loginActionKey;
+      this.closeLogin();
+      this.resetSellTokens();
+      if(key) this.$nuxt.$emit('after-login', key);
+    }
   },
   created() {
     this.getUserData();
@@ -72,8 +84,17 @@ export const LayoutMixin = {
     }
 
     this.$nuxt.$on('login', (auth) => {
-      if (auth) this.configSocket();
+      if (auth) {
+        this.configSocket();
+        this.afterLogin();
+      }
       this.toggleEchoListening(auth);
+    });
+
+    this.$nuxt.$on('login-popup', (key) => {
+      if (this.loggedIn) return;
+      this.showLoginPopup = true;
+      this.loginActionKey = key;
     });
 
     window.addEventListener('resize', this.handleResize);
@@ -91,7 +112,7 @@ export const LayoutMixin = {
   beforeDestroy() {
     this.toggleEchoListening(false);
 
-    this.$nuxt.$off('login');
+    this.$nuxt.$off(['login', 'login-popup']);
 
     window.removeEventListener('resize', this.handleResize);
     window.removeEventListener('resize', this.handleScroll);

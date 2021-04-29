@@ -25,7 +25,7 @@
       />
     </div>
     <p class="info-text"><icon name="info-circle" /> {{ $t('enter_the_code_sent_to_your_number')}}</p>
-    <button type="submit" class="btn btn--green">{{$t('restore_password')}}</button>
+    <button type="submit" :class="['btn','btn--green',{pending}]">{{$t('restore_password')}}</button>
   </form>
 </template>
 

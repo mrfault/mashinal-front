@@ -30,12 +30,18 @@ export const SearchMixin = {
         this.$set(this.form, property, value);
       }
     },
+    parseFormData() {
+      this.setFormData(JSON.parse(this.$route.query.car_filter || '{}'));
+      let keys = Object.keys(this.form.additional_brands).filter(key => this.form.additional_brands[key].brand);
+      if(keys.length) this.counter = [...keys];
+    },
     submitForm() {
       // tracking
       this.fbTrack('Search Api');
       this.gtagTrack('AW-600951956/Qeu4CILAyPIBEJSZx54C');
       // update route query params and search announcements
-      let searchUrl = `${this.$localePath(this.meta.path)}?${this.meta.param}=${encodeURI(JSON.stringify(this.getFormData()))}`;
+      let searchQuery = `${this.meta.param}=${encodeURI(JSON.stringify(this.getFormData()))}`;
+      let searchUrl = `${this.$localePath(this.meta.path)}?${searchQuery}`;
       let searchSame = decodeURIComponent(searchUrl) === decodeURIComponent(this.$route.fullPath);
       this.$emit('pending');
       if(searchSame) {
@@ -49,10 +55,8 @@ export const SearchMixin = {
             this.scrollTo('.announcements-grid', -30);
           }
           // look for a saved search
-          if(this.meta.type === 'cars') {
-            this.fetchSavedSearch({ 
-              search_url: `${this.meta.path}?${this.meta.param}=${encodeURI(JSON.stringify(this.getFormData()))}`
-            });
+          if(this.loggedIn && this.meta.type === 'cars') {
+            this.fetchSavedSearch({ search_url: `${this.meta.path}?${searchQuery}` });
           } 
         });
       }
@@ -76,17 +80,17 @@ export const SearchMixin = {
       this.setBrand('', key);
       this.counter.splice(index, 1);
     },
-    parseFormFromRoute() {
-      this.setFormData(JSON.parse(this.$route.query.car_filter || '{}'));
-      let keys = Object.keys(this.form.additional_brands).filter(key => this.form.additional_brands[key].brand);
-      if(keys.length) this.counter = [...keys];
-    },
     async handlePopState() {
       // refresh page's async data
       await this.$nuxt.refresh();
       // update form
-      this.parseFormFromRoute();
+      this.parseFormData();
       this.scrollTo(0);
+    },
+    async handleAfterLogin(key) {
+      if (key === 'saved-search' && this.meta.type === 'cars') {
+        this.savedSearch = true;
+      }
     }
   },
   computed: {
@@ -101,11 +105,13 @@ export const SearchMixin = {
         if(this.singleSavedSearch.id) {
           this.deleteSavedSearch(this.singleSavedSearch.id);
         } else {
+          let searchFilter = JSON.stringify(this.getFormData());
+          // save search
           this.createSavedSearch({
             search_type: this.meta.type,
             search_key: this.meta.param,
-            search_filter: JSON.stringify(this.getFormData()),
-            search_url: `${this.meta.path}?${this.meta.param}=${encodeURI(JSON.stringify(this.getFormData()))}`,
+            search_filter: searchFilter,
+            search_url: `${this.meta.path}?${this.meta.param}=${encodeURI(searchFilter)}`,
             lang: this.locale
           });
         }
@@ -177,12 +183,16 @@ export const SearchMixin = {
     }
   },
   created() {
-    this.parseFormFromRoute();
+    this.parseFormData();
   },
   mounted() {
+    this.$nuxt.$on('after-login', this.handleAfterLogin);
+    // history (back/forward)
     window.addEventListener('popstate', this.handlePopState);
   },
   beforeDestroy() {
+    this.$nuxt.$off('after-login', this.handleAfterLogin);
+    // history (back/forward)
     window.removeEventListener('popstate', this.handlePopState);
   }
 }

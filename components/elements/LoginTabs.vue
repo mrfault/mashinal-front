@@ -1,66 +1,68 @@
 <template>
-  <div :class="['login-forms', {'login-forms--modal': modal}]">
-    <div class="tabs row">
-      <div class="col">
-        <button 
-          :class="['btn', 'btn--pale-red-outline', {'active': tab === 'sign-in'}]" 
-          @click="updateTab('sign-in')"
-          v-if="!forceSellPhone || tab === 'sign-in'"
-          v-html="$t('login')"
-        />
+  <div :class="['login-forms', {'login-forms--popup': popup}]" @click.stop>
+    <div>
+      <div class="tabs row">
+        <div class="col">
+          <button 
+            :class="['btn', 'btn--pale-red-outline', {'active': tab === 'sign-in'}]" 
+            @click="updateTab('sign-in')"
+            v-if="!forceSellPhone || tab === 'sign-in'"
+            v-html="$t('login')"
+          />
+        </div>
+        <div class="col">
+          <button 
+            :class="['btn', 'btn--pale-red-outline', {'active': tab === 'sign-up'}]"
+            @click="updateTab('sign-up')"
+            v-if="!forceSellPhone || tab === 'sign-up'"
+            v-html="$t('registration')"
+          />
+        </div>
       </div>
-      <div class="col">
-        <button 
-          :class="['btn', 'btn--pale-red-outline', {'active': tab === 'sign-up'}]"
-          @click="updateTab('sign-up')"
-          v-if="!forceSellPhone || tab === 'sign-up'"
-          v-html="$t('registration')"
-        />
-      </div>
+      <sign-in-form 
+        @updateTab="updateTab" 
+        v-if="action === 'sign-in'" 
+        :form="form" 
+        :validator="$v.form" 
+        :action-text="actionText && actionText.login" 
+      />
+      <forgot-password 
+        @updateTab="updateTab"
+        v-else-if="action === 'forgot'" 
+        :form="form" 
+        :validator="$v.form" 
+      />
+      <reset-password 
+        @updateTab="updateTab" 
+        v-else-if="action === 'reset'" 
+        :form="form" 
+        :validator="$v.form" 
+      />
+      <sign-up-form
+        @updateTab="updateTab"
+        @reset="resetForm"
+        v-else-if="action === 'sign-up'"
+        :form="form"
+        :validator="$v.form"
+        :action-text="actionText && actionText.register" 
+      />
+      <confirm-phone 
+        @updateTab="updateTab" 
+        v-else-if="action === 'sms'" 
+        :form="form" 
+        :validator="$v.form" 
+        :action-text="actionText && actionText.confirm" 
+        :skip-sign-in="skipSignIn" 
+        :resend-data="resendData" 
+      />
     </div>
-    <sign-in-form 
-      @updateTab="updateTab" 
-      v-if="action === 'sign-in'" 
-      :form="form" 
-      :validator="$v.form" 
-      :action-text="actionText && actionText.login" 
-    />
-    <forgot-password 
-      @updateTab="updateTab"
-      v-else-if="action === 'forgot'" 
-      :form="form" 
-      :validator="$v.form" 
-    />
-    <reset-password 
-      @updateTab="updateTab" 
-      v-else-if="action === 'reset'" 
-      :form="form" 
-      :validator="$v.form" 
-    />
-    <sign-up-form
-      @updateTab="updateTab"
-      @reset="resetForm"
-      v-else-if="action === 'sign-up'"
-      :form="form"
-      :validator="$v.form"
-      :action-text="actionText && actionText.register" 
-    />
-    <confirm-phone 
-      @updateTab="updateTab" 
-      v-else-if="action === 'sms'" 
-      :form="form" 
-      :validator="$v.form" 
-      :action-text="actionText && actionText.confirm" 
-      :skip-sign-in="skipSignIn" 
-      :resend-data="resendData" 
-    />
   </div>
 </template>
 
 <script>
   import { mapState } from 'vuex';
   
-  import { required, requiredIf, numeric } from 'vuelidate/lib/validators';
+  import { requiredIf, numeric } from 'vuelidate/lib/validators';
   import { isPhoneNumber } from '~/lib/validators';
 
   import SignInForm  from '~/components/login/SignInForm';
@@ -78,11 +80,7 @@
       ConfirmPhone
     },
     props: {
-      show: {
-        type: Boolean,
-        default: true
-      },
-      modal: Boolean,
+      popup: Boolean,
       skipSignIn: Boolean,
       forceSellPhone: Boolean,
       actionText: {}
@@ -132,19 +130,6 @@
       this.resetForm();
       if(this.forceSellPhone && !this.sell_phone_auth) {
         this.updateTab('sign-up');
-      }
-    },
-    mounted() {
-      if(this.modal) {
-        document.querySelector('body').style.overflowY = 'hidden';
-        document.addEventListener('click', (e) => {
-          if(e.target.classList.contains('login-forms')) this.$emit('hide');
-        });
-      }
-    },
-    beforeDestroy() {
-      if(this.modal) {
-        document.querySelector('body').style.overflowY = 'scroll';
       }
     }
   }

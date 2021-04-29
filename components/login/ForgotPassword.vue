@@ -14,7 +14,7 @@
     </div>
     <p class="info-text"><icon name="info-circle" /> {{ $t('password_will_be_sent_by_email') }}</p>
     <p><span class="cursor-pointer" @click="$emit('updateTab','sign-in')"><icon name="arrow-left" /> {{ $t('remember_your_password')}}</span></p>
-    <button type="submit" class="btn btn--green">{{ $t('send_the_code')}}</button>
+    <button type="submit" :class="['btn','btn--green',{pending}]">{{ $t('send_the_code')}}</button>
   </form>
 </template>
 

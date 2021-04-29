@@ -125,7 +125,7 @@
                 </button>
               </div>
               <div class="col-6">
-                <button type="submit" :class="['btn','full-width','btn--green',{'loading': pending}]">
+                <button type="submit" :class="['btn','full-width','btn--green',{pending}]">
                   <icon name="search" /> {{ $t('find') }}
                 </button>
               </div>
