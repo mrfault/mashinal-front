@@ -1,0 +1,193 @@
+@mixin btn-style(
+  $color: $white, 
+  $color-hover: $white, 
+  $bg-color: $dark-blue-1, 
+  $bg-hover: $dark-blue-2, 
+  $active-color: $white, 
+  $active-bg: false, 
+  $border-color: false, 
+  $outline: false, 
+  $override: true
+) {
+
+  @if ($outline) {
+    @if ($override) {
+      color: $bg-color;
+    } @else {
+      color: $color;
+    }
+    background-color: transparent;
+    @if ($border-color) {
+      border: 1px solid $border-color;
+    } @else {
+      border: 1px solid $bg-color;
+    }
+    &:hover {
+      color: $color-hover;
+      background-color: $bg-color;
+      border-color: $bg-color;
+    }
+  } @else {
+    color: $color;
+    background-color: $bg-color;
+    border: 1px solid $bg-color;
+    &:hover {
+      color: $color-hover;
+      background-color: $bg-hover;
+      border-color: $bg-hover;
+    }
+  }
+  &.active,
+  &.active:hover {
+    @if ($active-bg) {
+      color: $active-color;
+      background-color: $active-bg;
+      border-color: $active-bg;
+    }
+  }
+}
+
+.btn-sq {
+  border: 0;
+  display: inline-flex;
+  vertical-align: top;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  height: 25px;
+  width: 25px;
+  padding: 0;
+  border-radius: 4px;
+  transition: .1s ease-out;
+  &--color-dark-blue {
+    background-color: $white;
+    color: $dark-blue-1;
+    &:hover,
+    &.active {
+      color: $white;
+      background-color: $dark-blue-1;
+    }
+  }
+  &--color-red {
+    background-color: $white;
+    color: $red-1;
+    &:hover,
+    &.active {
+      color: $white;
+      background-color: $red-1;
+    }
+  }
+}
+
+.btn {
+  border: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  padding: 9px 25px 7px;
+  height: 34px;
+  border-radius: 4px;
+  transition: .1s ease-out;
+  cursor: pointer;
+  &.full-width {
+    width: 100%;
+  }
+  i {
+    margin-right: 8px;
+    margin-bottom: 1px;
+  }
+  &--dark-blue {
+    @include btn-style($bg-color: $dark-blue-1, $bg-hover: $dark-blue-2);
+  }
+  &--dark-blue-outline {
+    @include btn-style($bg-color: $dark-blue-1, $outline: true);
+  }
+  &--green {
+    @include btn-style($bg-color: $green-1, $bg-hover: $green-2);
+  }
+  &--green-outline {
+    @include btn-style($bg-color: $green-1, $outline: true);
+  }
+  &--pale-green {
+    @include btn-style($color: $green-1, $bg-color: $green-3, $bg-hover: $green-1);
+  }
+  &--red {
+    @include btn-style($bg-color: $red-1, $bg-hover: $red-2);
+  }
+  &--red-outline {
+    @include btn-style($bg-color: $red-1, $outline: true);
+  }
+  &--pale-red {
+    @include btn-style($color: $red-1, $bg-color: $red-3, $bg-hover: $red-1);
+  }
+  &--pale-red-outline {
+    @include btn-style($bg-color: $red-2, $border-color: $red-4, $active-bg: $red-1, $outline: true);
+  }
+}
+
+.btn.btn-circle {
+  padding: 0;
+  width: 34px;
+  border-radius: 50%;
+}
+
+.dark-mode {
+  .btn {
+    &--dark-blue {
+      @include btn-style($bg-color: $dark-1, $bg-hover: $dark-2);
+    }
+    &--dark-blue-outline {
+      @include btn-style($bg-color: $white, $color-hover: $dark-1, $border-color: $white, $outline: true, $override: false);
+    }
+    &--pale-green {
+      @include btn-style($bg-color: $green-1, $bg-hover: $green-2);
+    }
+    &--red,
+    &--pale-red {
+      @include btn-style($bg-color: $grey-2, $bg-hover: $grey-1);
+    }
+    &--red-outline,
+    &--pale-red-outline {
+      @include btn-style($bg-color: $grey-1, $border-color: $grey-1, $active-bg: $white, $active-color: $dark-1, $outline: true, $override: false);
+    }
+  }
+}
+
+.btn.pending {
+  pointer-events: none;
+  position: relative;
+  user-select: none; 
+  color: transparent !important;
+  * {
+    color: transparent !important;
+  }
+  &::after {
+    content: '';
+    position: absolute;
+    left: -9999px;
+    top: 50%;
+    margin-top: -5px;
+    margin-left: calc(50% - 5px);
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 1);
+    color: rgba(255, 255, 255, 1);
+    box-shadow: 9984px 0 0 0 rgba(255, 255, 255, 1), 9999px 0 0 0 rgba(255, 255, 255, 1), 10014px 0 0 0 rgba(255, 255, 255, 1);
+    animation: button-loading 1s infinite linear;
+  }
+}
+
+@keyframes button-loading {
+  100%,
+  0% {
+    box-shadow: 9984px 0px 0 0  rgba(255,255,255,0.33), 9999px 0 0 0  rgba(255,255,255,0.66), 10014px 0 0 0  rgba(255,255,255,1);
+  }
+  33% {
+    box-shadow: 9984px 0 0 0  rgba(255,255,255,0.66), 9999px 0px 0 0  rgba(255,255,255,0.33), 10014px 0 0 0  rgba(255,255,255,1);
+  }
+  66% {
+    box-shadow: 9984px 0 0 0  rgba(255,255,255,1), 9999px 0 0 0  rgba(255,255,255,0.66), 10014px 0px 0 0  rgba(255,255,255,0.33);
+  }
+}

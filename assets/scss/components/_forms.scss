@@ -1,0 +1,386 @@
+input,
+textarea {
+  font: inherit;
+  color: inherit;
+  appearance: none;
+  &::placeholder {
+    font: inherit;
+    color: inherit;
+    opacity: 1;
+  }
+  &:focus {
+    outline: none;
+  }
+}
+
+.form-row {
+  .form-group {
+    margin-top: 0;
+  }
+}
+
+.form-group {
+  width: 100%;
+}
+
+.form-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  text-align: center;
+  background-color: $grayish-blue-2;
+  height: 34px;
+  padding: 9px 15px 7px;
+  border-radius: 4px;
+}
+
+.form-counter {
+  display: flex;
+  align-items: center;
+  width: auto;
+  .form-info {
+    width: 34px;
+    cursor: pointer;
+    &:not(:last-child) {
+      margin-right: 1px;
+      border-radius: 4px 0 0 4px;
+    }
+    &:not(:first-child) {
+      border-radius: 0 4px 4px 0 ;
+    }
+    &:hover {
+      color: $dark-blue-2;
+    }
+  }
+}
+
+.text-input {
+  position: relative;
+  width: 100%;
+  input {
+    width: 100%;
+    border: 0;
+    background-color: $grayish-blue-2;
+    height: 34px;
+    padding: 9px 15px 7px;
+    border-radius: 4px;
+    &.invalid {
+      color: $red-1;
+      padding-right: 34px;
+    }
+    &.disabled {
+      color: $grey-3;
+    }
+  }
+  .icon-info-circle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translate(0, -50%);
+    color: $red-1;
+    pointer-events: none;
+  }
+}
+
+.checkbox-input {
+  user-select: none;
+  label {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    width: 100%;
+    background-color: $grayish-blue-2;
+    border-radius: 4px;
+    height: 34px;
+    padding: 0 15px;
+    &.transparent {
+      background: transparent !important;
+    }
+    .text-truncate {
+      margin-bottom: -1px;
+    }
+  }
+  .checkbox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-right: 10px;
+    border: 1px solid $grayish-blue-5;
+    border-radius: 4px;
+    width: 18px;
+    height: 18px;
+    &-icon {
+      font-size: 12px;
+      margin-right: 8px;
+      margin-left: 3px;
+    }
+    i {
+      color: $white;
+      font-size: 6px;
+      font-weight: bold;
+      opacity: 0;
+      transition: opacity .2s ease-out;
+    }
+  }
+  input:checked ~ label {
+    .checkbox {
+      border-color: $green-1;
+      background-color: $green-1;
+      i {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+.newsletter {
+  color: $dark-blue-1;
+  form {
+    display: flex;
+    max-width: 420px;
+  }
+  input {
+    display: block;
+    border: 0;
+    border-radius: 4px;
+    height: 34px;
+    padding: 9px 15px 7px;
+    line-height: 17px;
+    font-weight: 500;
+    margin-right: 20px;
+    width: 100%;
+    max-width: 280px;
+    background-color: $white;
+    &.invalid {
+      color: $red-1 !important;
+    }
+  }
+  button {
+    flex-shrink: 0;
+  }
+}
+
+.select-menu {
+  position: relative;
+  &_triangle {
+    position: absolute;
+    bottom: -10px;
+    left: 15px;
+    color: $grayish-blue-2;
+  }
+  &_label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    font-weight: 500;
+    background-color: $grayish-blue-2;
+    height: 34px;
+    padding: 8px 15px;
+    border-radius: 4px;
+    user-select: none;
+    &.selected,
+    &.active {
+      color: $dark-blue-2;
+    }
+    &.active .icon-chevron-down {
+      transform: scaleY(-1);
+    }
+    &.disabled {
+      color: $grey-3;
+    }
+    .icon-cross {
+      font-size: 11px;
+      margin-left: 4px;
+    }
+    .counter {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      font-size: 12px;
+      border-radius: 4px;
+      background-color: $white;
+      margin: 0 auto 0 10px;
+    }
+    .text-truncate {
+      margin-bottom: -1px;
+    }
+  }
+  &_dropdown {
+    position: absolute;
+    top: 49px;
+    left: 0;
+    width: 100%;
+    width: calc(100% + 1px);
+    z-index: 2;
+    visibility: hidden;
+    opacity: 0;
+    background-color: $grayish-blue-2;
+    border-radius: 4px;
+    box-shadow: $shadow-light-5;
+    padding: 7px 0;
+    .container {
+      height: 100%;
+    }
+    &.custom {
+      padding: 0;
+      width: auto;
+    }
+    &.show {
+      visibility: visible;
+      opacity: 1;
+    }
+    &-option {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      padding: 0 15px;
+      height: 34px;
+      user-select: none;
+      &.selected {
+        color: $dark-blue-2;
+      }
+      &:hover {
+        background-color: darken($grayish-blue-2, 2%);
+      }
+    }
+    &.responsive {
+      position: fixed;
+      padding: 60px 0 0;
+      width: 100%;
+      height: 100%;
+      left: 0;
+      top: 0;
+      background-color: $white;
+      .form-merged {
+        background-color: $grayish-blue-2;
+        border-radius: 4px;
+        margin: 20px 0;
+        .form-group {
+          width: 100%;
+          .select-menu,
+          .text-input {
+            width: 100%;
+          }
+          &:nth-child(3) {
+            max-width: 87px;
+          }
+        }
+      }
+    }
+    &.responsive &-option {
+      height: 50px;
+      padding: 0;
+      border-top: 1px solid $grayish-blue-2;
+      &:first-child {
+        border-top: 0;
+      }
+      &:hover {
+        background-color: transparent !important;
+      }
+    }
+  }
+}
+
+.form-merged {
+  display: flex;
+  align-items: center;
+  .form-group:not(:last-child) {
+    border-right: 1px solid $grayish-blue-6;
+  }
+  .text-input {
+    width: 140.5px;
+  }
+  .select-menu {
+    width: 87px;
+  }
+}
+
+.dark-mode {
+  .text-input input,
+  .checkbox-input label,
+  .form-info {
+    background-color: $dark-1;
+  }
+
+  .text-input input.disabled,
+  .select-menu_label.disabled {
+    color: $grey-1;
+  }
+
+  .checkbox-input .checkbox {
+    border-color: $grey-1;
+  }
+
+  .form-info {
+    &.text-green {
+      color: $white;
+    }
+  }
+
+  .newsletter {
+    color: $white;
+    input {
+      background-color: $dark-1;
+    }
+  }
+
+  .select-menu {
+    &_triangle {
+      color: $dark-1;
+    }
+    &_label {
+      background-color: $dark-1;
+      &.selected,
+      &.active {
+        color: $yellow-1;
+      }
+      .counter {
+        background-color: transparent;
+      }
+    }
+    &_dropdown {
+      background-color: $dark-1;
+      box-shadow: $shadow-dark-5;
+      &-option {
+        &.selected {
+          color: $yellow-1;
+        }
+        &:hover {
+          background-color: lighten($dark-1, 2%);
+        }
+      }
+      &.responsive {
+        .select-menu_dropdown-option {
+          border-top-color: $dark-2;
+        }
+        .form-merged {
+          background-color: $dark-2;
+          .form-group:not(:last-child) {
+            border-right-color: $dark-1;
+          }
+          .select-menu_label,
+          .text-input input {
+            background-color: $dark-2;
+          }
+        }
+      }
+    }
+  }
+  
+  .form-merged {
+    .form-group:not(:last-child) {
+      border-right-color: $dark-2;
+    }
+  }
+
+  .form-counter {
+    .form-info:hover {
+      color: $yellow-1;
+    }
+  }
+}

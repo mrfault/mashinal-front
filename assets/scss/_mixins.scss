@@ -1,0 +1,50 @@
+@mixin media-max-width($breakpoint) {
+  @media (max-width: map-get($grid-breakpoints, $breakpoint) - 0.02px) {
+    @content;
+  }
+}
+
+@mixin media-min-width($breakpoint) {
+  @media (min-width: map-get($grid-breakpoints, $breakpoint)) {
+    @content;
+  }
+}
+
+@function str-replace($string, $search, $replace: '') {
+  $index: str-index($string, $search);
+  @if $index {
+    @return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+  }
+  @return $string;
+}
+
+@mixin calc-vh($property: min-height, $expression: calc(100vh)) {
+  #{$property}: $expression;
+  #{$property}: #{str-replace(quote($expression), '100vh','(var(--vh, 1vh) * 100)')};
+}
+
+@mixin backdrop-filter($bg-color: $dark-blue-1, $alpha: .5) {
+  background: rgba($bg-color, $alpha);
+  backdrop-filter: blur(5px);
+}
+
+@mixin abs-zero($pos: absolute, $zIndex: false) {
+  position: $pos;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  @if $zIndex {
+    z-index: $zIndex;
+  }
+}
+
+@mixin abs-middle($pos: absolute, $zIndex: false) {
+  position: $pos;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  @if $zIndex {
+    z-index: $zIndex;
+  }
+}
