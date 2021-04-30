@@ -58,7 +58,7 @@ export const SearchMixin = {
           // for ex. when routing from / to /cars
           if(this.routeName !== prevRouteName) {
             setTimeout(() => {
-              this.scrollTo('.announcements-grid', [-20, -30]);
+              this.scrollTo('.announcements-grid', [-15, -20]);
             }, 100);
           }
           // look for a saved search
@@ -127,6 +127,9 @@ export const SearchMixin = {
         }
       }
     },
+    isStarterPage() {
+      return ['/', '/moto', '/commercial'].map(path => this.$localePath(path)).includes(this.$route.path);
+    },
     filtersApplied() {
       let hasBrand = this.counter.filter(key => this.form.additional_brands[key].brand).length;
       let hasAllOptions = Object.keys(this.form.all_options).length;
@@ -134,7 +137,7 @@ export const SearchMixin = {
       return !!(hasBrand || hasAllOptions || hasOptions);
     },
     searchApplied() {
-      return !!(this.$route.query[this.meta.param] && this.$route.path === this.$localePath(this.meta.path));
+      return !this.isStarterPage && !!this.$route.query[this.meta.param];
     },
     // static data
     getYearOptions() {

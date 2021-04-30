@@ -1,149 +1,164 @@
 <template>
   <form class="form" @submit.prevent="submitForm" novalidate>
-    <div class="row">
-      <div class="col-lg-4 mb-2 mb-lg-3">
-        <form-buttons :options="getMileageOptions" :group-by="3" v-model="form.announce_type" />
-      </div>
-      <div class="col-lg-4 offset-md-4 mb-2 mb-lg-3 d-none d-lg-block">
-        <div class="row">
-          <div class="col-6">
-            <nuxt-link class="btn btn--pale-red full-width" :to="$localePath('/')">
-              <icon name="options" /> {{ $t('detailed_search') }}
-            </nuxt-link>
-          </div>
-          <div class="col-6">
-            <nuxt-link class="btn btn--pale-red full-width" :to="$localePath('/')">
-              <icon name="flag" /> {{ $t('helper_search') }}
-            </nuxt-link>
-          </div>
+    <div class="card pt-0 pt-lg-4">
+      <div class="row">
+        <div class="col-lg-4 mb-2 mb-lg-3">
+          <form-buttons :options="getMileageOptions" :group-by="3" v-model="form.announce_type" />
         </div>
-      </div>
-      <template v-if="isMobileBreakpoint">
-        <div class="col-6 mb-2">
-          <form-select :label="$t('mark')" :options="brands" v-model="form.additional_brands[counter[0]]['brand']"
-            @change="setBrand($event, counter[0])" />
-        </div>
-        <div class="col-6 mb-2">
-          <form-select :label="$t('model')" :options="array_models[counter[0]]" v-model="form.additional_brands[counter[0]]['model']"
-            :disabled="form.additional_brands[counter[0]]['brand'] && !array_models[counter[0]].length" @change="setModel($event, counter[0])" />
-        </div>
-        <div class="col-6 mb-2">
-          <form-select :label="$t('generation')" :options="array_generations[counter[0]]" v-model="form.additional_brands[counter[0]]['generation']"
-            :disabled="form.additional_brands[counter[0]]['model'] && !array_generations[counter[0]].length" />
-        </div>
-      </template>
-      <template v-else>
-        <div class="col-12 mb-3" v-for="(key, index) in counter" :key="key">
+        <div class="col-lg-4 offset-md-4 mb-2 mb-lg-3 d-none d-lg-block">
           <div class="row">
-            <div class="col-4">
-              <form-select :label="$t('mark')" :options="brands" v-model="form.additional_brands[key]['brand']"
-                @change="setBrand($event, key)" />
+            <div class="col-6">
+              <nuxt-link class="btn btn--pale-red full-width" :to="$localePath('/')">
+                <icon name="options" /> {{ $t('detailed_search') }}
+              </nuxt-link>
             </div>
-            <div class="col-4">
-              <form-select :label="$t('model')" :options="array_models[key]" v-model="form.additional_brands[key]['model']"
-                :disabled="form.additional_brands[key]['brand'] && !array_models[key].length" @change="setModel($event, key)" />
+            <div class="col-6">
+              <nuxt-link class="btn btn--pale-red full-width" :to="$localePath('/')">
+                <icon name="flag" /> {{ $t('helper_search') }}
+              </nuxt-link>
             </div>
-            <div class="col-4">
-              <div class="row">
-                <div class="col">
-                  <form-select :label="$t('generation')" :options="array_generations[key]" v-model="form.additional_brands[key]['generation']"
-                    :disabled="form.additional_brands[key]['model'] && !array_generations[key].length" />
-                </div>
-                <div class="col-auto">
-                  <div class="form-counter">
-                    <div class="form-info" v-if="counter.length < 5 && index === counter.length - 1" @click="addSearchRow(key)">
-                      <icon name="plus" />
-                    </div>
-                    <div class="form-info" v-if="counter.length > 1" @click="removeSearchRow(key)">
-                      <icon name="minus" />
+          </div>
+        </div>
+        <template v-if="isMobileBreakpoint">
+          <div class="col-6 mb-2">
+            <form-select :label="$t('mark')" :options="brands" v-model="form.additional_brands[counter[0]]['brand']"
+              @change="setBrand($event, counter[0])" />
+          </div>
+          <div class="col-6 mb-2">
+            <form-select :label="$t('model')" :options="array_models[counter[0]]" v-model="form.additional_brands[counter[0]]['model']"
+              :disabled="form.additional_brands[counter[0]]['brand'] && !array_models[counter[0]].length" @change="setModel($event, counter[0])" />
+          </div>
+          <div class="col-6 mb-2">
+            <form-select :label="$t('generation')" :options="array_generations[counter[0]]" v-model="form.additional_brands[counter[0]]['generation']"
+              :disabled="form.additional_brands[counter[0]]['model'] && !array_generations[counter[0]].length" />
+          </div>
+        </template>
+        <template v-else>
+          <div class="col-12 mb-3" v-for="(key, index) in counter" :key="key">
+            <div class="row">
+              <div class="col-4">
+                <form-select :label="$t('mark')" :options="brands" v-model="form.additional_brands[key]['brand']"
+                  @change="setBrand($event, key)" />
+              </div>
+              <div class="col-4">
+                <form-select :label="$t('model')" :options="array_models[key]" v-model="form.additional_brands[key]['model']"
+                  :disabled="form.additional_brands[key]['brand'] && !array_models[key].length" @change="setModel($event, key)" />
+              </div>
+              <div class="col-4">
+                <div class="row">
+                  <div class="col">
+                    <form-select :label="$t('generation')" :options="array_generations[key]" v-model="form.additional_brands[key]['generation']"
+                      :disabled="form.additional_brands[key]['model'] && !array_generations[key].length" />
+                  </div>
+                  <div class="col-auto">
+                    <div class="form-counter">
+                      <div class="form-info" v-if="counter.length < 5 && index === counter.length - 1" @click="addSearchRow(key)">
+                        <icon name="plus" />
+                      </div>
+                      <div class="form-info" v-if="counter.length > 1" @click="removeSearchRow(key)">
+                        <icon name="minus" />
+                      </div>
                     </div>
                   </div>
                 </div>
+                
               </div>
-              
             </div>
           </div>
+        </template>
+        <div class="col-6 col-lg-2 mb-2 mb-lg-3">
+          <form-select :label="$t('years')" custom 
+            :values="{from: form.min_year, to: form.max_year, read: false }"
+            @clear="form.min_year = '', form.max_year = ''"
+          >
+            <div class="form-merged">
+              <form-select :label="$t('from')" :options="getYearOptions" v-model="form.min_year" 
+                :show-label-on-select="false" :in-select-menu="true" :clear-option="false" />
+              <form-select :label="$t('to')" :options="getYearOptions" v-model="form.max_year"
+                :show-label-on-select="false" :in-select-menu="true" :clear-option="false" />
+            </div>
+          </form-select>
         </div>
-      </template>
-      <div class="col-6 col-lg-2 mb-2 mb-lg-3">
-        <form-select :label="$t('years')" custom 
-          :values="{from: form.min_year, to: form.max_year, read: false }"
-          @clear="form.min_year = '', form.max_year = ''"
-        >
-          <div class="form-merged">
-            <form-select :label="$t('from')" :options="getYearOptions" v-model="form.min_year" 
-              :show-label-on-select="false" :in-select-menu="true" :clear-option="false" />
-            <form-select :label="$t('to')" :options="getYearOptions" v-model="form.max_year"
-              :show-label-on-select="false" :in-select-menu="true" :clear-option="false" />
+        <div class="col-12 col-lg-8">
+          <component :is="isMobileBreakpoint ? 'transition-expand' : 'div'">
+            <div class="row" v-if="!isMobileBreakpoint || !collapsed">
+              <div class="col-6 col-lg-3 mb-2 mb-lg-3">
+                <form-select :label="$t('price')" custom 
+                  :values="{from: form.price_from, to: form.price_to, suffix: getOptionValue('Currency', form.currency) }"
+                  @clear="form.price_from = '', form.price_to = ''"
+                >
+                  <div class="form-merged">
+                    <form-numeric-input :placeholder="$t('from')" v-model="form.price_from" />
+                    <form-numeric-input :placeholder="$t('to')" v-model="form.price_to" />
+                    <form-select :label="'AZN'" :options="getCurrencyOptions" v-model="form.currency"
+                      :allow-clear="false" :in-select-menu="true" :clear-option="false" />
+                  </div>
+                </form-select>
+              </div>
+              <div class="col-6 col-lg-3 mb-2 mb-lg-3">
+                <form-select :label="$t('city')" :options="sell_options.regions" v-model="form.region" />
+              </div>
+              <div class="col-6 col-lg-3 mb-2 mb-lg-3">
+                <form-checkbox :label="$t('barter')" v-model="form.exchange_possible" 
+                  input-name="exchange_possible" icon-name="barter" />
+              </div>
+              <div class="col-6 col-lg-3 mb-2 mb-lg-3">
+                <form-checkbox :label="$t('credit')" v-model="form.credit" 
+                  input-name="credit" icon-name="percent" />
+              </div>
+            </div>
+          </component>
+        </div>
+        <div class="col-6 col-lg-2 mb-2 mb-lg-3 d-none d-lg-block">
+          <div class="form-info text-green">
+            {{ $readPlural(totalCount, $t('plural_forms_announcements')) }}
           </div>
-        </form-select>
-      </div>
-      <div class="col-12 col-lg-8">
-        <component :is="isMobileBreakpoint ? 'transition-expand' : 'div'">
-          <div class="row" v-if="!isMobileBreakpoint || !collapsed">
-            <div class="col-6 col-lg-3 mb-2 mb-lg-3">
-              <form-select :label="$t('price')" custom 
-                :values="{from: form.price_from, to: form.price_to, suffix: getOptionValue('Currency', form.currency) }"
-                @clear="form.price_from = '', form.price_to = ''"
-              >
-                <div class="form-merged">
-                  <form-numeric-input :placeholder="$t('from')" v-model="form.price_from" />
-                  <form-numeric-input :placeholder="$t('to')" v-model="form.price_to" />
-                  <form-select :label="'AZN'" :options="getCurrencyOptions" v-model="form.currency"
-                    :allow-clear="false" :in-select-menu="true" :clear-option="false" />
+        </div>
+        <div class="col-12">
+          <div class="row flex-column-reverse flex-lg-row">
+            <div class="col-lg-8">
+              <div class="row" v-show="searchApplied">
+                <div class="col-lg-4 mt-2 mt-lg-0">
+                  <form-checkbox :label="$t('search_save' + (savedSearch ? 'd' : ''))" v-model="savedSearch" 
+                    input-name="savedSearch" transparent :disabled="!loggedIn" @try="$nuxt.$emit('login-popup', 'saved-search')" />
                 </div>
-              </form-select>
-            </div>
-            <div class="col-6 col-lg-3 mb-2 mb-lg-3">
-              <form-select :label="$t('city')" :options="sell_options.regions" v-model="form.region" />
-            </div>
-            <div class="col-6 col-lg-3 mb-2 mb-lg-3">
-              <form-checkbox :label="$t('barter')" v-model="form.exchange_possible" 
-                input-name="exchange_possible" icon-name="barter" />
-            </div>
-            <div class="col-6 col-lg-3 mb-2 mb-lg-3">
-              <form-checkbox :label="$t('credit')" v-model="form.credit" 
-                input-name="credit" icon-name="percent" />
-            </div>
-          </div>
-        </component>
-      </div>
-      <div class="col-6 col-lg-2 mb-2 mb-lg-3 d-none d-lg-block">
-        <div class="form-info text-green">
-          {{ $readPlural(totalCount, $t('plural_forms_announcements')) }}
-        </div>
-      </div>
-      <div class="col-12">
-        <div class="row flex-column-reverse flex-lg-row">
-          <div class="col-lg-8">
-            <div class="row" v-show="searchApplied">
-              <div class="col-lg-4 mt-2 mt-lg-0">
-                <form-checkbox :label="$t('search_save' + (savedSearch ? 'd' : ''))" v-model="savedSearch" 
-                  input-name="savedSearch" transparent :disabled="!loggedIn" @try="$nuxt.$emit('login-popup', 'saved-search')" />
               </div>
             </div>
-          </div>
-          <div class="col-lg-4">
-            <div :class="['row', {'mb-1 mb-lg-0': !searchApplied}]">
-              <div class="col-6">
-                <button type="button" :class="['btn','full-width','btn--red-outline',{'pointer-events-none': pending}]" @click="resetForm">
-                  <icon name="reset" /> {{ $t('clear_search') }}
-                </button>
-              </div>
-              <div class="col-6">
-                <button type="submit" :class="['btn','full-width','btn--green',{pending}]">
-                  <icon name="search" /> {{ $t('find') }}
-                </button>
+            <div class="col-lg-4">
+              <div :class="['row', {'mb-1 mb-lg-0': !searchApplied}]">
+                <div class="col-6">
+                  <button type="button" :class="['btn','full-width','btn--red-outline',{'pointer-events-none': pending}]" @click="resetForm">
+                    <icon name="reset" /> {{ $t('clear_search') }}
+                  </button>
+                </div>
+                <div class="col-6">
+                  <button type="submit" :class="['btn','full-width','btn--green',{pending}]">
+                    <icon name="search" /> {{ $t('find') }}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
+      </div>
+      <div class="collapse-toggle" v-if="isMobileBreakpoint">
+        <button type="button" class="btn btn-circle" @click="collapsed = !collapsed">
+          <icon :name="`chevron-${collapsed ? 'down' : 'up'}`" />
+        </button>
       </div>
     </div>
-    <div class="collapse-toggle" v-if="isMobileBreakpoint">
-      <button type="button" class="btn btn-circle" @click="collapsed = !collapsed">
-        <icon :name="`chevron-${collapsed ? 'down' : 'up'}`" />
-      </button>
+    <div class="form-sorting" v-if="!isStarterPage">
+      <div class="row">
+        <div class="col-6 col-lg-auto mt-3 mt-lg-5 mb-n6 mb-lg-n1">
+          <div class="form-info no-bg text-green" v-if="isMobileBreakpoint">
+            {{ $readPlural(totalCount, $t('plural_forms_announcements')) }}
+          </div>
+        </div>
+        <div class="col-6 col-lg-auto mt-3 mt-lg-5 mb-n6 mb-lg-n1">
+          <form-select :label="$t('sorting')" :options="getSortingOptions" v-model="form.sorting" @change="submitForm"
+            :allow-clear="false" :skip-select-first="true" :clear-option="false" has-no-bg />
+        </div>
+      </div>
     </div>
   </form>
 </template>

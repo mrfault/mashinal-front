@@ -300,11 +300,44 @@ textarea {
   }
 }
 
+.text-input.no-bg input,
+.checkbox-input.no-bg label,
+.form-info.no-bg{
+  background-color: $white;
+}
+
+.select-menu {
+  &.no-bg {
+    .select-menu {
+      &_label {
+        background-color: $white;
+      }
+      &_triangle {
+        color: $white;
+      }
+      &_dropdown {
+        background-color: $white;
+        &-option {
+          &:hover {
+            background-color: darken($white, 2%);
+          }
+        }
+      }
+    }
+  }
+}
+
 .dark-mode {
   .text-input input,
   .checkbox-input label,
   .form-info {
     background-color: $dark-1;
+  }
+
+  .text-input.no-bg input,
+  .checkbox-input.no-bg label,
+  .form-info.no-bg {
+    background-color: $dark-2;
   }
 
   .text-input input.disabled,
@@ -366,6 +399,24 @@ textarea {
           .select-menu_label,
           .text-input input {
             background-color: $dark-2;
+          }
+        }
+      }
+    }
+    &.no-bg {
+      .select-menu {
+        &_label {
+          background-color: $dark-2;
+        }
+        &_triangle {
+          color: $dark-2;
+        }
+        &_dropdown {
+          background-color: $dark-2;
+          &-option {
+            &:hover {
+              background-color: lighten($dark-2, 2%);
+            }
           }
         }
       }

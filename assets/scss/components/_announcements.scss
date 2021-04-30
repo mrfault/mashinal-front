@@ -194,6 +194,13 @@
       }
     }
   }
+
+  .collapse-toggle {
+    .btn-circle {
+      color: $white;
+      background-color: $dark-1;
+    }
+  }
 }
 
 @include media-max-width('lg') {
@@ -270,6 +277,10 @@
       width: 50px;
     }
   }
+
+  .form-sorting {
+    margin: 0 -10px;
+  }
 }
 
 @include media-min-width('lg') {
@@ -278,6 +289,15 @@
       margin-top: 0;
     }
     .col-lg-auto {
+      width: 20%;
+    }
+  }
+
+  .form-sorting {
+    .col-lg-auto:first-child {
+      width: 80%;
+    }
+    .col-lg-auto:last-child {
       width: 20%;
     }
   }

@@ -1,13 +1,11 @@
 <template>
   <div class="pages-index">
     <div class="container">
-      <div class="card pt-0 pt-lg-4">
-        <cars-search-form 
-          :total-count="mainAnnouncements.paginate.total"
-          :pending="pending"
-          @pending="pending = true"
-        />
-      </div>
+      <cars-search-form 
+        :total-count="mainAnnouncements.paginate.total"
+        :pending="pending"
+        @pending="pending = true"
+      />
       <grid 
         v-if="mainAnnouncements.vip.length"
         :announcements="mainAnnouncements.vip" 

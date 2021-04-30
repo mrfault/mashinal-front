@@ -1,6 +1,6 @@
 <template>
   <div class="form-group">
-    <div class="select-menu">
+    <div :class="['select-menu',{'no-bg': hasNoBg}]">
       <span :class="['select-menu_label', {'selected': hasSelectedValue, 'disabled': disabled, 'active': showOptions}]" 
         @click="showOptions = disabled ? false : !showOptions">
         <span class="text-truncate">{{ getLabelText }}</span>
@@ -119,6 +119,10 @@
         default: true
       },
       inSelectMenu: {
+        type: Boolean,
+        default: false
+      },
+      hasNoBg: {
         type: Boolean,
         default: false
       }

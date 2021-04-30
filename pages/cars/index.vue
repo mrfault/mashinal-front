@@ -1,14 +1,12 @@
 <template>
   <div class="pages-cars">
-    <div class="container">
-      <div class="card pt-0 pt-lg-4">
-        <cars-search-form 
-          :total-count="carsAnnouncements.paginate.total"
-          :pending="pending"
-          @pending="pending = true"
-          @submit="searchCars" 
-        />
-      </div>
+    <div class="container"> 
+      <cars-search-form 
+        :total-count="carsAnnouncements.paginate.total"
+        :pending="pending"
+        @pending="pending = true"
+        @submit="searchCars" 
+      />
       <grid 
         v-if="carsAnnouncements.vip.length"
         :announcements="carsAnnouncements.vip" 
@@ -110,7 +108,7 @@ export default {
       this.pending = true;
       await this.getGridSearch({ ...this.searchParams, post, page });
       this.pending = false;
-      this.scrollTo(page === 1 ? '.announcements-grid' : '.paginated', [-20, -30]);
+      this.scrollTo(page === 1 ? '.announcements-grid' : '.paginated', [-15, -20]);
     }
   },
   computed: {
