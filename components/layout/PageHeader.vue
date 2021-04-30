@@ -9,7 +9,7 @@
           <ul class="menu">
             <li v-for="menu in topbarMenus" :key="menu.title">
               <a :href="$localePath(menu.route)" @click.prevent="handleMenuItem(menu)">
-                <i :class="menu.icon"></i>
+                <icon :name="menu.icon" />
                 {{ $t(menu.title) }}
               </a>
             </li>
