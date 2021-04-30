@@ -783,8 +783,9 @@ main {
 .pagination {
   display: flex;
   justify-content: center;
-  margin: 30px auto;
+  margin: 20px auto 30px;
   list-style: none;
+  padding: 0;
   li {
     position: relative;
     button {
@@ -1020,8 +1021,7 @@ main {
       display: none !important;
     }
     position: relative;
-    width: 440px;
-    max-width: 100%;
+    max-width: 440px;
     font-size: 14px !important;
     font-weight: 500 !important;
     line-height: 18px !important;
@@ -1148,24 +1148,6 @@ main {
   }
 }
 
-@include media-min-width('lg') {
-  .__rail-is-vertical {
-    background: transparent !important;
-    .__bar-is-vertical {
-      background: $white !important;
-    }
-  }
-  
-  .dark-mode {
-    .__rail-is-vertical {
-      background: transparent !important;
-      .__bar-is-vertical {
-        background: $grey-1 !important;
-      }
-    }
-  }
-}
-
 /** Responsive */
 
 @include media-max-width('lg') {
@@ -1193,6 +1175,7 @@ main {
   }
 
   .card {
+    position: relative;
     margin: 0 -25px;
     &.pt-0.pt-lg-4 {
       border-top-left-radius: 0;
@@ -1202,15 +1185,32 @@ main {
 
   .toasted-container.top-right {
     right: auto !important;
-    left: calc(50% - 270px + 25px) !important;
+    left: calc(50% - 270px + 24px) !important;
+    min-width: 0px !important;
     .toasted.toasted-primary {
-      max-width: calc(100% - 50px);
+      width: 540px;
+      max-width: calc(100% - 49px);
       top: 30px;
+      margin-top: 10px;
     }
   }
 
   body.select-menu-open {
     overflow-y: hidden !important;
+  }
+
+  .pagination {
+    margin: 15px auto 20px;
+  }
+}
+
+@include media-max-width('sm') {
+  .toasted-container.top-right {
+    left: 24px !important;
+    width: calc(100% - 49px) !important;
+    .toasted.toasted-primary {
+      max-width: 100%;
+    }
   }
 }
 
@@ -1218,5 +1218,23 @@ main {
   .layout,
   .container {
     min-width: 1250px;
+  }
+
+  /** VueScroll */
+
+  .__rail-is-vertical {
+    background: transparent !important;
+    .__bar-is-vertical {
+      background: $white !important;
+    }
+  }
+  
+  .dark-mode {
+    .__rail-is-vertical {
+      background: transparent !important;
+      .__bar-is-vertical {
+        background: $grey-1 !important;
+      }
+    }
   }
 }

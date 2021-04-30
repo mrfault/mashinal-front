@@ -5,26 +5,27 @@
     </a>
     <div class="item-bg" role="img" :aria-label="getTitle" v-lazy:background-image="getImage">
       <div class="item-overlay">
-        <div class="item-overlay_top">
-          <button class="btn-sq btn-sq--color-dark-blue" @click.stop>
-            <icon name="star" />
-          </button>
-          <div class="d-flex">
+        <div class="item-overlay_top d-flex">
+          <span class="badge from-border" v-if="announcement.is_autosalon">{{ $t('is_autosalon') }}</span>
+          <span class="d-flex">
             <span class="badge squared" v-if="announcement.type[1]">
               <icon name="vip" />
             </span>
             <span class="badge squared" v-if="announcement.type[2]">
               <icon name="premium" />
             </span>
-          </div>
+          </span>
         </div>
-        <div class="item-overlay_bottom">
-          <button class="btn-sq btn-sq--color-red" @click.stop>
-            <icon name="compare" />
-          </button>
-          <div class="d-flex">
-            <span class="badge">{{ announcement.humanize_created_at }}</span>
-          </div>
+        <div class="item-overlay_bottom d-flex">
+          <span class="d-flex">
+            <button class="btn-sq btn-sq--color-red" @click.stop>
+              <icon name="compare" />
+            </button>
+            <button class="btn-sq btn-sq--color-dark-blue" @click.stop>
+              <icon name="star" />
+            </button>
+          </span>
+          <span class="badge">{{ announcement.humanize_created_at }}</span>
         </div>
       </div>
     </div>

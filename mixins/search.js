@@ -1,6 +1,11 @@
 import { mapGetters, mapActions } from 'vuex';
 
 export const SearchMixin = {
+  data() {
+    return {
+      collapsed: true
+    }
+  },
   methods: {
     ...mapActions(['fetchSavedSearch', 'createSavedSearch', 'deleteSavedSearch']),
 
@@ -52,7 +57,9 @@ export const SearchMixin = {
           this.$emit('submit');
           // for ex. when routing from / to /cars
           if(this.routeName !== prevRouteName) {
-            this.scrollTo('.announcements-grid', -30);
+            setTimeout(() => {
+              this.scrollTo('.announcements-grid', [-20, -30]);
+            }, 100);
           }
           // look for a saved search
           if(this.loggedIn && this.meta.type === 'cars') {
@@ -91,6 +98,7 @@ export const SearchMixin = {
       if (key === 'saved-search' && this.meta.type === 'cars') {
         this.savedSearch = true;
       }
+      this.scrollTo(0);
     }
   },
   computed: {
@@ -100,7 +108,7 @@ export const SearchMixin = {
       get() {
         return !!this.singleSavedSearch.id;
       },
-      async set() {
+      set() {
         if(!this.loggedIn) return;
         if(this.singleSavedSearch.id) {
           this.deleteSavedSearch(this.singleSavedSearch.id);
@@ -113,6 +121,8 @@ export const SearchMixin = {
             search_filter: searchFilter,
             search_url: `${this.meta.path}?${this.meta.param}=${encodeURI(searchFilter)}`,
             lang: this.locale
+          }).then(() => {
+            this.$toasted.success(this.$t('search_saved'));
           });
         }
       }

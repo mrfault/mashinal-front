@@ -89,6 +89,7 @@
   height: 34px;
   border-radius: 4px;
   transition: .1s ease-out;
+  cursor: pointer;
   &.full-width {
     width: 100%;
   }
@@ -123,6 +124,12 @@
   &--pale-red-outline {
     @include btn-style($bg-color: $red-2, $border-color: $red-4, $active-bg: $red-1, $outline: true);
   }
+}
+
+.btn.btn-circle {
+  padding: 0;
+  width: 34px;
+  border-radius: 50%;
 }
 
 .dark-mode {

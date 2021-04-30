@@ -78,29 +78,35 @@
           </div>
         </form-select>
       </div>
-      <div class="col-6 col-lg-2 mb-2 mb-lg-3">
-        <form-select :label="$t('price')" custom 
-          :values="{from: form.price_from, to: form.price_to, suffix: getOptionValue('Currency', form.currency) }"
-          @clear="form.price_from = '', form.price_to = ''"
-        >
-          <div class="form-merged">
-            <form-numeric-input :placeholder="$t('from')" v-model="form.price_from" />
-            <form-numeric-input :placeholder="$t('to')" v-model="form.price_to" />
-            <form-select :label="'AZN'" :options="getCurrencyOptions" v-model="form.currency"
-              :allow-clear="false" :in-select-menu="true" :clear-option="false" />
+      <div class="col-12 col-lg-8">
+        <component :is="isMobileBreakpoint ? 'transition-expand' : 'div'">
+          <div class="row" v-if="!isMobileBreakpoint || !collapsed">
+            <div class="col-6 col-lg-3 mb-2 mb-lg-3">
+              <form-select :label="$t('price')" custom 
+                :values="{from: form.price_from, to: form.price_to, suffix: getOptionValue('Currency', form.currency) }"
+                @clear="form.price_from = '', form.price_to = ''"
+              >
+                <div class="form-merged">
+                  <form-numeric-input :placeholder="$t('from')" v-model="form.price_from" />
+                  <form-numeric-input :placeholder="$t('to')" v-model="form.price_to" />
+                  <form-select :label="'AZN'" :options="getCurrencyOptions" v-model="form.currency"
+                    :allow-clear="false" :in-select-menu="true" :clear-option="false" />
+                </div>
+              </form-select>
+            </div>
+            <div class="col-6 col-lg-3 mb-2 mb-lg-3">
+              <form-select :label="$t('city')" :options="sell_options.regions" v-model="form.region" />
+            </div>
+            <div class="col-6 col-lg-3 mb-2 mb-lg-3">
+              <form-checkbox :label="$t('barter')" v-model="form.exchange_possible" 
+                input-name="exchange_possible" icon-name="barter" />
+            </div>
+            <div class="col-6 col-lg-3 mb-2 mb-lg-3">
+              <form-checkbox :label="$t('credit')" v-model="form.credit" 
+                input-name="credit" icon-name="percent" />
+            </div>
           </div>
-        </form-select>
-      </div>
-      <div class="col-6 col-lg-2 mb-2 mb-lg-3">
-        <form-select :label="$t('city')" :options="sell_options.regions" v-model="form.region" />
-      </div>
-      <div class="col-6 col-lg-2 mb-2 mb-lg-3">
-        <form-checkbox :label="$t('barter')" v-model="form.exchange_possible" 
-          input-name="exchange_possible" icon-name="barter" />
-      </div>
-      <div class="col-6 col-lg-2 mb-2 mb-lg-3">
-        <form-checkbox :label="$t('credit')" v-model="form.credit" 
-          input-name="credit" icon-name="percent" />
+        </component>
       </div>
       <div class="col-6 col-lg-2 mb-2 mb-lg-3 d-none d-lg-block">
         <div class="form-info text-green">
@@ -110,15 +116,15 @@
       <div class="col-12">
         <div class="row flex-column-reverse flex-lg-row">
           <div class="col-lg-8">
-            <div class="row">
-              <div class="col-lg-4 mt-2 mt-lg-0" v-if="searchApplied">
+            <div class="row" v-show="searchApplied">
+              <div class="col-lg-4 mt-2 mt-lg-0">
                 <form-checkbox :label="$t('search_save' + (savedSearch ? 'd' : ''))" v-model="savedSearch" 
                   input-name="savedSearch" transparent :disabled="!loggedIn" @try="$nuxt.$emit('login-popup', 'saved-search')" />
               </div>
             </div>
           </div>
           <div class="col-lg-4">
-            <div class="row">
+            <div :class="['row', {'mb-1 mb-lg-0': !searchApplied}]">
               <div class="col-6">
                 <button type="button" :class="['btn','full-width','btn--red-outline',{'pointer-events-none': pending}]" @click="resetForm">
                   <icon name="reset" /> {{ $t('clear_search') }}
@@ -134,6 +140,11 @@
         </div>
       </div>
     </div>
+    <div class="collapse-toggle" v-if="isMobileBreakpoint">
+      <button type="button" class="btn btn-circle" @click="collapsed = !collapsed">
+        <icon :name="`chevron-${collapsed ? 'down' : 'up'}`" />
+      </button>
+    </div>
   </form>
 </template>
 
@@ -141,8 +152,10 @@
 import { mapGetters, mapActions } from 'vuex';
 
 import { SearchMixin } from '~/mixins/search';
+import TransitionExpand from '../transitions/TransitionExpand.vue';
 
 export default {
+  components: { TransitionExpand },
   mixins: [SearchMixin],
   props: {
     totalCount: {

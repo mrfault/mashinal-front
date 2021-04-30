@@ -110,7 +110,7 @@ export default {
       this.pending = true;
       await this.getGridSearch({ ...this.searchParams, post, page });
       this.pending = false;
-      this.scrollTo(page === 1 ? '.announcements-grid' : '.paginated', -30);
+      this.scrollTo(page === 1 ? '.announcements-grid' : '.paginated', [-20, -30]);
     }
   },
   computed: {

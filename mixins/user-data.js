@@ -16,8 +16,9 @@ export const UserDataMixin = {
   methods: {
     async logout() {
       await this.$auth.logout();
-      this.$nuxt.$emit('login', false);
-      this.$router.push(this.$localePath('/'));
+      this.$router.push(this.$localePath('/'), () => {
+        this.$nuxt.$emit('login', false);
+      });
     }
   },
 }
