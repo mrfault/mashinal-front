@@ -111,7 +111,10 @@ export const SearchMixin = {
       set() {
         if(!this.loggedIn) return;
         if(this.singleSavedSearch.id) {
-          this.deleteSavedSearch(this.singleSavedSearch.id);
+          this.deleteSavedSearch(this.singleSavedSearch.id)
+            .then(() => {
+              this.$toasted.success(this.$t('my_templates_removed'));
+            });
         } else {
           let searchFilter = JSON.stringify(this.getFormData());
           // save search

@@ -849,6 +849,7 @@ export default {
 	"my_favorites": "Seçilmişlər",
 	"my_favorites_added": "Seçilmişlərə əlavə edildi",
 	"my_favorites_removed": "Seçilmişlərdən silindi",
+	"my_templates_removed": "Axtarış şablonlardan silindi",
 	"my_reports": "Hesabatlarım",
 	"my_searches": "Axtarış şablonları",
 	"my_all_searches": "Bütün axtarış şablonları göstər",

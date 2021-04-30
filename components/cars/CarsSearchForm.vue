@@ -147,7 +147,7 @@
         </button>
       </div>
     </div>
-    <div class="form-sorting" v-if="!isStarterPage">
+    <div class="form-sorting" v-if="!isStarterPage && totalCount">
       <div class="row">
         <div class="col-6 col-lg-auto mt-3 mt-lg-5 mb-n6 mb-lg-n1">
           <div class="form-info no-bg text-green" v-if="isMobileBreakpoint">

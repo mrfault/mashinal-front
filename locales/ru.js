@@ -849,6 +849,7 @@ export default {
 	"my_favorites": "Мои избранные",
 	"my_favorites_added": "Добавлено в избранные",
 	"my_favorites_removed": "Удалено из избранных",
+	"my_templates_removed": "Удалено из сохраненных поисков",
 	"my_reports": "Мои отчеты",
 	"my_searches": "Сохраненные поиски",
 	"my_all_searches": "Показать все сохраненные поиски",
