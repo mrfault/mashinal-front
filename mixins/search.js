@@ -87,6 +87,9 @@ export const SearchMixin = {
       this.setBrand('', key);
       this.rows.splice(index, 1);
     },
+    goToSearch(path) {
+      this.$router.push(`${path}?${this.meta.param}=${encodeURI(JSON.stringify(this.getFormData()))}`);
+    },
     async handlePopState() {
       // refresh page's async data
       await this.$nuxt.refresh();
@@ -199,7 +202,9 @@ export const SearchMixin = {
     }
   },
   created() {
-    this.parseFormData();
+    if(!this.isStarterPage) {
+      this.parseFormData();
+    }
   },
   mounted() {
     this.$nuxt.$on('after-login', this.handleAfterLogin);

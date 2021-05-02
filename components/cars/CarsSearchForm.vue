@@ -8,12 +8,14 @@
         <div class="col-lg-4 offset-md-4 mb-2 mb-lg-3 d-none d-lg-block">
           <div class="row">
             <div class="col-6">
-              <nuxt-link class="btn btn--pale-red full-width" :to="$localePath('/')">
-                <icon name="options" /> {{ $t('detailed_search') }}
+              <nuxt-link custom :to="$localePath('/cars/advanced-search')" v-slot="{ href, isActive }">
+                <a :href="href" class="btn btn--pale-red full-width" :class="{'active': isActive}" @click.prevent="goToSearch(href)">
+                  <icon name="options" /> {{ $t('advanced_search') }}
+                </a>
               </nuxt-link>
             </div>
             <div class="col-6">
-              <nuxt-link class="btn btn--pale-red full-width" :to="$localePath('/')">
+              <nuxt-link class="btn btn--pale-red full-width" :to="$localePath('/cars/assistant')">
                 <icon name="flag" /> {{ $t('helper_search') }}
               </nuxt-link>
             </div>
@@ -79,8 +81,8 @@
           </form-select>
         </div>
         <div class="col-12 col-lg-8">
-          <component :is="isMobileBreakpoint ? 'transition-expand' : 'div'">
-            <div class="row" v-if="!isMobileBreakpoint || !collapsed">
+          <component :is="isMobileBreakpoint && !advanced ? 'transition-expand' : 'div'">
+            <div class="row" v-if="!isMobileBreakpoint || advanced || !collapsed">
               <div class="col-6 col-lg-3 mb-2 mb-lg-3">
                 <form-select :label="$t('price')" custom 
                   :values="{from: form.price_from, to: form.price_to, suffix: getOptionValue('Currency', form.currency) }"
@@ -108,7 +110,7 @@
             </div>
           </component>
         </div>
-        <div class="col-6 col-lg-2 mb-2 mb-lg-3 d-none d-lg-block">
+        <div class="col-6 col-lg-2 mb-2 mb-lg-3 d-none d-lg-block" v-if="!advanced && !assistant">
           <div class="form-info text-green">
             {{ $readPlural(totalCount, $t('plural_forms_announcements')) }}
           </div>
@@ -118,13 +120,13 @@
             <div class="col-lg-8">
               <div class="row" v-show="searchApplied">
                 <div class="col-lg-4 mt-2 mt-lg-0">
-                  <form-checkbox :label="$t('search_save' + (savedSearch ? 'd' : ''))" v-model="savedSearch" 
+                  <form-checkbox :label="$t('search_save')" v-model="savedSearch" 
                     input-name="savedSearch" transparent :disabled="!loggedIn" @try="$nuxt.$emit('login-popup', 'saved-search')" />
                 </div>
               </div>
             </div>
             <div class="col-lg-4">
-              <div :class="['row', {'mb-1 mb-lg-0': !searchApplied}]">
+              <div :class="['row', {'mb-1 mb-lg-0': !searchApplied && !(advanced || assistant)}]">
                 <div class="col-6">
                   <button type="button" :class="['btn','full-width','btn--red-outline',{'pointer-events-none': pending}]" @click="resetForm">
                     <icon name="reset" /> {{ $t('clear_search') }}
@@ -140,13 +142,13 @@
           </div>
         </div>
       </div>
-      <div class="collapse-toggle" v-if="isMobileBreakpoint">
+      <div class="collapse-toggle" v-if="isMobileBreakpoint && !(advanced || assistant)">
         <button type="button" class="btn btn-circle" @click="collapsed = !collapsed">
           <icon :name="`chevron-${collapsed ? 'down' : 'up'}`" />
         </button>
       </div>
     </div>
-    <div class="announcements-sorting" v-show="!isStarterPage && totalCount">
+    <div class="announcements-sorting" v-show="!isStarterPage && totalCount && !(advanced || assistant)">
       <div class="row">
         <div class="col-6 col-lg-auto mt-3 mt-lg-5 mb-n6 mb-lg-n1">
           <div class="form-info no-bg text-green" v-if="isMobileBreakpoint">
@@ -176,7 +178,9 @@ export default {
       type: Number,
       default: 0
     },
-    pending: Boolean
+    pending: Boolean,
+    advanced: Boolean,
+    assistant: Boolean
   },
   data() {
     let brand = { 

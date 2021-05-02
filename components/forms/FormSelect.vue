@@ -18,7 +18,7 @@
       </span>
       <icon class="select-menu_triangle" name="triangle" v-if="showOptions"/>
       <action-bar 
-        :title="getLabelText"
+        :title="getActionBarText"
         v-if="showOptions && isMobileBreakpoint && !inSelectMenu" 
         @back="showOptions = false" 
         @accept="showOptions = false"
@@ -206,6 +206,9 @@
         return selected.length === 1
           ? `${(this.showLabelOnSelect && this.allowClear) ? this.label + ': ' : ''}${this.getOptionName(selected[0])}`
           : this.label;
+      },
+      getActionBarText() {
+        return `${(this.showLabelOnSelect && this.allowClear) ? '' : this.label + ': '}${this.getLabelText}`;
       },
       hasNoValue() {
         if(this.custom) 

@@ -22,6 +22,7 @@ import Grid from '~/components/announcements/Grid';
 import NoResults from '~/components/elements/NoResults';
 
 export default {
+  name: 'pages-cars-premium',
   components: {
     Grid,
     NoResults

@@ -8,9 +8,11 @@
         <nuxt-link class="logo" :to="$localePath('/')" @click.native="$nuxt.$emit('logo-click')">
           <img :src="`/img/${isDarkMode ? 'logo-white' : 'logo'}.svg`" alt="logo" />
         </nuxt-link>
-        <span class="cursor-pointer" @click.stop>
-          <icon name="options" />
-        </span>
+        <nuxt-link custom :to="$localePath('/cars/advanced-search')" v-slot="{ navigate }">
+          <span class="cursor-pointer" @click="navigate">
+            <icon name="options" />
+          </span>
+        </nuxt-link>
       </div>
     </div>
     <div class="menu-backdrop" v-if="showSidebar" @click="toggleSidebarMenu(false)"></div>

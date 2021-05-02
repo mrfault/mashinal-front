@@ -119,7 +119,7 @@
     @include btn-style($bg-color: $red-1, $outline: true);
   }
   &--pale-red {
-    @include btn-style($color: $red-1, $bg-color: $red-3, $bg-hover: $red-1);
+    @include btn-style($color: $red-1, $bg-color: $red-3, $bg-hover: $red-1, $active-bg: $red-1);
   }
   &--pale-red-outline {
     @include btn-style($bg-color: $red-2, $border-color: $red-4, $active-bg: $red-1, $outline: true);
@@ -145,7 +145,7 @@
     }
     &--red,
     &--pale-red {
-      @include btn-style($bg-color: $grey-2, $bg-hover: $grey-1);
+      @include btn-style($bg-color: $grey-2, $bg-hover: $grey-1, $active-bg: $white, $active-color: $dark-1);
     }
     &--red-outline,
     &--pale-red-outline {

@@ -44,6 +44,7 @@ import Grid from '~/components/announcements/Grid';
 import NoResults from '~/components/elements/NoResults';
 
 export default {
+  name: 'pages-cars-index',
   components: {
     CarsSearchForm,
     Grid,
@@ -67,10 +68,7 @@ export default {
 
     await Promise.all([
       store.dispatch('getBrands'),
-      store.dispatch('getBodyOptions'),
       store.dispatch('getOptions'),
-      store.dispatch('getAllOtherOptions', '2'),
-      store.dispatch('getColors'),
       store.dispatch('getGridSearch', { ...searchParams, post, page }),
       // get model options for brands
       ...Object.keys(post?.additional_brands || {})

@@ -48,6 +48,7 @@ import CarsSearchForm from '~/components/cars/CarsSearchForm';
 import Grid from '~/components/announcements/Grid';
 
 export default {
+  name: 'pages-index',
   components: {
     CarsSearchForm,
     Grid
