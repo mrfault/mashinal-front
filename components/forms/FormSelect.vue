@@ -3,7 +3,7 @@
     <div :class="['select-menu',{'no-bg': hasNoBg}]">
       <span :class="['select-menu_label', {'selected': hasSelectedValue, 'disabled': disabled, 'active': showOptions}]" 
         @click="showOptions = disabled ? false : !showOptions">
-        <span class="text-truncate">
+        <span :class="['text-truncate', {'full-width': hasSearch}]">
           <template v-if="hasSearch && showOptions && !isMobileBreakpoint">
             <span class="search-input">
               <span class="placeholder">{{ label }}: </span>
@@ -13,10 +13,10 @@
           <template v-else>{{ getLabelText }}</template>
         </span>
         <span class="counter" v-if="multiple && selectValue.length > 1">{{ selectValue.length }}</span>
-        <icon name="cross" v-if="allowClear && !hasNoValue" @click.native.stop="clearSelect"/>
+        <icon name="cross" v-if="allowClear && !hasNoValue" @click.native.stop="clearSelect" class="cursor-pointer" />
         <icon :name="iconName" v-else />
       </span>
-      <icon class="select-menu_triangle" name="triangle" v-if="showOptions"/>
+      <icon :class="['select-menu_triangle', `anchor-${anchor}`]" name="triangle" v-if="showOptions"/>
       <action-bar 
         :title="getActionBarText"
         v-if="showOptions && isMobileBreakpoint && !inSelectMenu" 
@@ -24,7 +24,7 @@
         @accept="showOptions = false"
         :show-check="custom"
       />
-      <div :class="['select-menu_dropdown', {'show': showOptions, custom, 'responsive': isMobileBreakpoint}]" ref="dropdownOptions">
+      <div :class="['select-menu_dropdown', `anchor-${anchor}`, {'show': showOptions, custom, 'responsive': isMobileBreakpoint}]" ref="dropdownOptions">
         <template v-if="showOptions">
           <div class="mt-3" v-if="hasSearch && isMobileBreakpoint" @click.stop>
             <div class="container">
@@ -36,12 +36,15 @@
           </div>
           <vue-scroll :ops="scrollOps" ref="vs" v-else :key="vsKey">
             <div :class="{'container': isMobileBreakpoint}">
-              <div :class="['select-menu_dropdown-option', {'selected': isSelected(option)}]" v-for="(option, index) in getFilteredOptions" :key="index"
-                  @click.stop="selectValue = option">
-                <div class="text-truncate">
-                  <span>{{ getOptionName(option) }}</span>
+              <template v-for="(option, index) in getFilteredOptions">
+                <div :key="index" :class="['select-menu_dropdown-option', {'selected': isSelected(option), 'anchor': isAnchor(index)}]" 
+                    @click.stop="selectValue = option">
+                  <div class="text-truncate">
+                    <span>{{ getOptionName(option) }}</span>
+                  </div>
+                  <icon name="check" v-if="isSelected(option)" />
                 </div>
-              </div>
+              </template>
               <div class="select-menu_dropdown-option disabled" v-if="!getFilteredOptions.length">
                 <div class="text-truncate">
                   <span>{{ $t('no_results_found') }}</span>
@@ -69,6 +72,10 @@
         default: () => ([])
       },
       custom: Boolean,
+      anchor: {
+        type: String,
+        default: 'left'
+      },
       multiple: Boolean,
       disabled: Boolean,
       label: {
@@ -145,6 +152,9 @@
         const hasSameObj = this.selectValue instanceof Array && (this.nameInValue ? this.selectValue.findIndex(val => val && val.key == value.key) !== -1 : this.selectValue.includes(value));
         return hasSameKey || hasSameObj;
       },
+      isAnchor(index) {
+        return this.isSelected(this.getFilteredOptions[(index !== this.getFilteredOptions.length - 1) ? (index + 1) : index]);
+      },
       clearSelect() {
         this.selectValue = undefined;
         this.showOptions = false;
@@ -200,7 +210,7 @@
           else if (this.values.from || this.values.to) value = `${this.$t(!this.values.from ? 'to' : 'from')} ${this.$readNumber(this.values.from || this.values.to, read)}`;
           else if (this.values.from === 0 || this.values.to === 0) value = `${this.$t(this.values.to === 0 ? 'to' : 'from')} 0`;
           if (value && this.values.suffix) value += ` ${this.values.suffix}`;
-          return value || this.label;
+          return value && this.values.showLabel ? `${this.label}: ${value}` : (value || this.label);
         }
         let selected = this.options.filter(this.isSelected);
         return selected.length === 1
@@ -208,7 +218,7 @@
           : this.label;
       },
       getActionBarText() {
-        return `${(this.showLabelOnSelect && this.allowClear) ? '' : this.label + ': '}${this.getLabelText}`;
+        return `${(this.showLabelOnSelect && this.allowClear && !this.custom && !this.values.showLabel) ? '' : this.label + ': '}${this.getLabelText}`;
       },
       hasNoValue() {
         if(this.custom) 
@@ -255,7 +265,7 @@
             // scroll to the selected option
             if(!this.hasNoValue && !this.isMobileBreakpoint) {
               if(!this.$refs.vs) return;
-              this.$refs.vs.scrollIntoView('.select-menu_dropdown-option.selected', 0);
+              this.$refs.vs.scrollIntoView('.select-menu_dropdown-option.anchor', 0);
             }
             // focus on first input
             if(this.custom) {

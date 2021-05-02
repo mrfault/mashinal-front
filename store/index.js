@@ -8,18 +8,25 @@ const getInitialState = () =>({
   // axios cancellation
   CancelToken: null,
   cancel: null,
-  // profile
-  messages: [],
-  suggested_messages: [],
-  saved: {
+  // saved search & favorites
+  savedSearchList: [],
+  singleSavedSearch: {},
+  favorites: {
     cars: [],
     motorcycles: [],
     scooters: [],
-    motoAtv: [],
-    commercial: [],
-    parts: [],
+    atvs: [],
+    commercial: []
   },
+  // messages
+  messages: [],
+  suggestedMessages: [],
+  // services
+  services: [],
   actives: [],
+  myServices: [],
+  myServiceOptions: [],
+  myServiceHistory: [],
   // announcements
   myAnnouncements: {},
   mainAnnouncements: {},
@@ -29,56 +36,52 @@ const getInitialState = () =>({
   promotedAnnouncements: [],
   announcement: {},
   relativeAnnouncements: [],
-  // saved search
-  savedSearchList: [],
-  singleSavedSearch: {},
   // catalog
-  catalog_total: 0,
-  catalog_items: {},
-  catalog_form: {},
+  catalogTotal: 0,
+  catalogItems: {},
+  catalogForm: {},
   // brands
   brands: [],
-  com_brands: [],
+  commercialBrands: [],
   // models
   models: [],
-  moto_atv_models: { 0:[], 1:[], 2:[], 3:[], 4:[] },
-  moto_models: { 0:[], 1:[], 2:[], 3:[], 4:[] },
-  com_models: { 0:[], 1:[], 2:[], 3:[], 4:[] },
-  scooter_models: { 0:[], 1:[], 2:[], 3:[], 4:[] },
-  array_models: { 0:[], 1:[], 2:[], 3:[], 4:[] },
-  model_description: false,
+  atvModels: { 0:[], 1:[], 2:[], 3:[], 4:[] },
+  motorcycleModels: { 0:[], 1:[], 2:[], 3:[], 4:[] },
+  commercialModels: { 0:[], 1:[], 2:[], 3:[], 4:[] },
+  scooterModels: { 0:[], 1:[], 2:[], 3:[], 4:[] },
+  carModels: { 0:[], 1:[], 2:[], 3:[], 4:[] },
+  modelDescription: false,
   // generations
   generations: [],
-  generation_types: [],
-  car_type_name: {},
-  array_generations: { 0:[], 1:[], 2:[], 3:[], 4:[] },
-  specifications_list: [],
-  specifications_raw_list: [],
-  equipments_list: [],
-  first_generation: false,
-  first_generation_equipments: [],
+  generationTypes: [],
+  carGenerations: { 0:[], 1:[], 2:[], 3:[], 4:[] },
+  carTypeName: {},
+  firstGeneration: false,
+  firstGenerationEquipments: [],
+  specificationsList: [],
+  equipmentsList: [],
   // options
-  sell_options: {},
-  all_sell_options: [],
-  all_sell_options2: {},
-  popular_options: [],
-  body_options: {},
-  moto_options: [],
   colors: [],
-  complaint_options: [],
+  sellOptions: {},
+  allSellOptions: [],
+  allSellOptions2: {},
+  popularOptions: [],
+  bodyOptions: {},
+  motoOptions: [],
+  complaintOptions: [],
   badges: [],
-  options_to_reset: [],
+  needResetOptions: [],
   // commercial
-  com_types: [],
-  com_all_options: [],
-  com_filters: [],
-  com_search_filters: [],
+  commercialTypes: [],
+  commercialAllOptions: [],
+  commercialFilters: [],
+  commercialSearchFilters: [],
   // sell
-  sell_tokens: false,
-  sell_phone: '',
-  sell_phone_auth: false,
-  sell_autosalon_auth: false,
-  sell_cookies: {
+  sellTokens: false,
+  sellPhoneEntered: '',
+  sellPhoneRegistered: false,
+  sellAutosalonRights: false,
+  sellCookies: {
     brand: '',
     model: '',
     years: '',
@@ -92,24 +95,13 @@ const getInitialState = () =>({
     capacity: '',
     box: ''
   },
-  sell_generations: [],
-  sell_engines: [],
-  sell_years: [],
-  sell_gearing: [],
-  sell_modifications: [],
-  sell_transmissions: [],
-  sell_body: [],
-  // services
-  services: [],
-  packages: [],
-  all_type_packages: {
-    cars: [],
-    moto: [],
-    commercial: []
-  },
-  my_services: [],
-  my_service_options: [],
-  my_service_history: [],
+  sellGenerations: [],
+  sellEngines: [],
+  sellYears: [],
+  sellGearing: [],
+  sellModifications: [],
+  sellTransmissions: [],
+  sellBody: [],
   // autosalons
   autosalonsList: [],
   autosalonsInBounds: false,
@@ -133,13 +125,19 @@ export const getters = {
   user: s => s.auth.user,
   navbarMenus: s => s.navbarMenus,
   staticPages: s => s.staticPages,
+  // saved search & favorites
+  savedSearchList: s => s.favoritesSearchList,
+  singleSavedSearch: s => s.singleSavedSearch,
+  favorites: s => s.favorites,
   // profile
   messages: s => s.messages,
-  suggested_messages: s => s.suggested_messages,
-  savedSearchList: s => s.savedSearchList,
-  singleSavedSearch: s => s.singleSavedSearch,
-  saved: s => s.saved,
+  suggestedMessages: s => s.suggestedMessages,
+  // services
+  services: s => s.services,
   actives: s => s.actives,
+  myServices: s => s.myServices,
+  myServiceOptions: s => s.myServiceOptions,
+  myServiceHistory: s => s.myServiceHistory,
   // announcements
   announcement: s => s.announcement,
   carsAnnouncements: s => s.carsAnnouncements,
@@ -150,62 +148,54 @@ export const getters = {
   myAnnouncements: s => s.myAnnouncements,
   relativeAnnouncements: s => s.relativeAnnouncements,
   // catalog
-  catalog_items: s => s.catalog_items,
-  catalog_total: s => s.catalog_total,
-  catalog_form: s => s.catalog_form,
+  catalogItems: s => s.catalogItems,
+  catalogTotal: s => s.catalogTotal,
+  catalogForm: s => s.catalogForm,
   // brands
   brands: s => s.brands,
-  com_brands: s => s.com_brands,
+  commercialBrands: s => s.commercialBrands,
   // models
   models: s => s.models,
-  moto_atv_models: s => s.moto_atv_models,
-  moto_models: s => s.moto_models,
-  com_models: s => s.com_models,
-  scooter_models: s => s.scooter_models,
-  array_models: s => s.array_models,
+  atvModels: s => s.atvModels,
+  motorcycleModels: s => s.motorcycleModels,
+  commercialModels: s => s.commercialModels,
+  scooterModels: s => s.scooterModels,
+  carModels: s => s.carModels,
   // generations
   generations: s => s.generations,
-  generation_types: s => s.generation_types,
-  car_type_name: s => s.car_type_name,
-  array_generations: s => s.array_generations,
-  first_generation: s => s.first_generation,
-  first_generation_equipments: s => s.first_generation_equipments,
-  specifications_list: s => s.specifications_list,
-  specifications_raw_list: s => s.specifications_raw_list,
-  equipments_list: s => s.equipments_list,
+  generationTypes: s => s.generationTypes,
+  carGenerations: s => s.carGenerations,
+  carTypeName: s => s.carTypeName,
+  firstGeneration: s => s.firstGeneration,
+  firstGenerationEquipments: s => s.firstGenerationEquipments,
+  specificationsList: s => s.specificationsList,
+  equipmentsList: s => s.equipmentsList,
   // options
-  sell_options: s => s.sell_options,
-  all_sell_options: s => s.all_sell_options,
-  all_sell_options2: s => s.all_sell_options2,
-  popular_options: s => s.popular_options,
-  body_options: s => s.body_options,
-  moto_options: s => s.moto_options,
   colors: s => s.colors,
-  complaint_options: s => s.complaint_options,
+  sellOptions: s => s.sellOptions,
+  allSellOptions: s => s.allSellOptions,
+  allSellOptions2: s => s.allSellOptions2,
+  popularOptions: s => s.popularOptions,
+  bodyOptions: s => s.bodyOptions,
+  motoOptions: s => s.motoOptions,
+  complaintOptions: s => s.complaintOptions,
   // commercial
-  com_types: s => s.com_types,
-  com_all_options: s => s.com_all_options,
-  com_filters: s => s.com_filters,
-  com_search_filters: s => s.com_search_filters,
+  commercialTypes: s => s.commercialTypes,
+  commercialAllOptions: s => s.commercialAllOptions,
+  commercialFilters: s => s.commercialFilters,
+  commercialSearchFilters: s => s.commercialSearchFilters,
   // sell
-  sell_tokens: s => s.sell_tokens,
-  sell_phone: s => s.sell_phone,
-  sell_phone_auth: s => s.sell_phone_auth,
-  sell_autosalon_auth: s => s.sell_autosalon_auth,
-  sell_cookies: s => s.sell_cookies,
-  sell_generations: s => s.sell_generations,
-  sell_engines: s => s.sell_engines,
-  sell_years: s => s.sell_years,
-  sell_gearing: s => s.sell_gearing,
-  sell_modifications: s => s.sell_modifications,
-  sell_transmissions: s => s.sell_transmissions,
-  // services
-  services: s => s.services,
-  packages: s => s.packages,
-  all_type_packages: s => s.all_type_packages,
-  my_services: s => s.my_services,
-  my_service_options: s => s.my_service_options,
-  my_service_history: s => s.my_service_history,
+  sellTokens: s => s.sellTokens,
+  sellPhoneEntered: s => s.sellPhoneEntered,
+  sellPhoneRegistered: s => s.sellPhoneRegistered,
+  sellAutosalonRights: s => s.sellAutosalonRights,
+  sellCookies: s => s.sellCookies,
+  sellGenerations: s => s.sellGenerations,
+  sellEngines: s => s.sellEngines,
+  sellYears: s => s.sellYears,
+  sellGearing: s => s.sellGearing,
+  sellModifications: s => s.sellModifications,
+  sellTransmissions: s => s.sellTransmissions,
   // autosalons
   autosalonsList: s => s.autosalonsList,
   autosalonsInBounds: s => s.autosalonsInBounds,
@@ -218,9 +208,9 @@ export const getters = {
 };
 
 const objectNotEmpty = (state, commit, property) => {
-  if(state['options_to_reset'].includes(property)) {
-    let arr = state['options_to_reset'].filter(p => p !== property);
-    commit('mutate', { property: 'options_to_reset', value: arr }); 
+  if(state['needResetOptions'].includes(property)) {
+    let arr = state['needResetOptions'].filter(p => p !== property);
+    commit('mutate', { property: 'needResetOptions', value: arr }); 
     return false;
   }
   return typeof state[property] === 'object' && Object.keys(state[property]).length > 0;
@@ -279,7 +269,7 @@ export const actions = {
   },
   async getSuggestedMessages({ commit }) {
     const res = await this.$axios.$get('/profile/suggestedMessages');
-    commit('mutate', { property: 'suggested_messages', value: res })
+    commit('mutate', { property: 'suggestedMessages', value: res })
   },
   async sendMessage({ commit }, data) {
     const res = await this.$axios.$post('/profile/messages', data.form);
@@ -307,13 +297,13 @@ export const actions = {
     commit('mutate', { property: 'transactions', value: res });
   },
   // Saved announces
-  announceSaveOrDelete({ commit }, data) {
+  async addToFavorites({ commit }, data) {
     this.$axios.$post('/announce/save', {id: data.id, type: data.type});
-    commit('announceSaveOrDelete', {id: data.id, type: data.type});
+    commit('addToFavorites', {id: data.id, type: data.type});
   },
-  async getSavedAnnouncements({ commit }) {
+  async getFavorites({ commit }) {
     const res = await this.$axios.$get('/announce/saved');
-    commit('loadSavedAnnouncements', res);
+    commit('loadFavorites', res);
   },
   // Saved search
   async getSavedSearch({ commit }){
@@ -330,7 +320,7 @@ export const actions = {
   },
   async deleteSavedSearch({ commit, state }, id){
     await this.$axios.$delete(`/saved-search/${id}`);
-    const rest_search = state.savedSearchList.filter(search => search.id !== id);
+    const rest_search = state.favoritesSearchList.filter(search => search.id !== id);
     commit('mutate', { property: 'savedSearchList', value: rest_search });
     commit('mutate', { property: 'singleSavedSearch', value: {} });
   },
@@ -354,39 +344,39 @@ export const actions = {
   },
   async getComBrands({ commit }, type) {
     const res = await this.$axios.$get(`/commercial/get_brands/${type}`);
-    commit('mutate', { property: 'com_brands', value: res });
+    commit('mutate', { property: 'commercialBrands', value: res });
   },
   // Models
   async getModels({ commit }, name) {
     const res = await this.$axios.$get(`/brand/${name}/models`);
     commit('mutate', { property:'models', value: res });
   },
-  async getComModels({ commit }, data) {
+  async getCommercialModels({ commit }, data) {
     const res = await this.$axios.$get(`/commercial/type/${data.type}/brand/${data.id}/models`);
-    commit('mutate', { property: 'com_models', value: res, key: data.index })
+    commit('mutate', { property: 'commercialModels', value: res, key: data.index })
   },
-  async getMotoModels({ commit }, data) {
+  async getMotorcycleModels({ commit }, data) {
     const res = await this.$axios.$get(`/moto/brand/${data.id}/models`);
-    commit('mutate', { property: 'moto_models', value: res, key: data.index });
+    commit('mutate', { property: 'motorcycleModels', value: res, key: data.index });
   },
-  async getMotoAtvModels({ commit }, data) {
+  async getAtvModels({ commit }, data) {
     const res = await this.$axios.$get(`/moto/atv/brand/${data.id}/models`);
-    commit('mutate', { property: 'moto_atv_models', value: res, key: data.index });
+    commit('mutate', { property: 'atvModels', value: res, key: data.index });
   },
   async getScooterModels({ commit }, data) {
     const res = await this.$axios.$get(`/moto/scooter/brand/${data.id}/models`);
-    commit('mutate', { property: 'scooter_models', value: res, key: data.index });
+    commit('mutate', { property: 'scooterModels', value: res, key: data.index });
   },
   // Generations
   async getGenerations({ commit }, data) {
     const res = await this.$axios.$get(`/brand/${data.params.name}/model/${data.params.model}/generations`);
     commit('mutate', { property: 'generations', value: res.generations });
-    commit('mutate', { property: 'model_description', value: res.model.description });
-    if (!data.onlyGeneration) commit('mutate', { property: 'first_generation', value: res.first_generation });
+    commit('mutate', { property: 'modelDescription', value: res.model.description });
+    if (!data.onlyGeneration) commit('mutate', { property: 'firstGeneration', value: res.firstGeneration });
   },
   async getFirstGeneration({ commit }, params) {
     const res = await this.$axios.$get(`/brand/${params.name}/model/${params.model}/generation/${params.generation}`);
-    commit('mutate', { property: 'first_generation', value: res });
+    commit('mutate', { property: 'firstGeneration', value: res });
   },
   async getModelGenerations({ commit }, slug) {
     const res = await this.$axios.$get(`/model/${slug}/generations`);
@@ -394,70 +384,66 @@ export const actions = {
   },
   async getModelsArray({ commit }, data) {
     const res = data.value ? await this.$axios.$get(`/brand/${data.value}/models`) : [];
-    commit('mutate', { property: 'array_models', value: res || [], key: data.index })
+    commit('mutate', { property: 'carModels', value: res || [], key: data.index })
   },
   async getModelGenerationsArray({ commit }, data) {
     const res = data.value ? await this.$axios.$get(`/brand/${data.brand_slug}/model/${data.value}/generations`) : [];
-    commit('mutate', { property: 'array_generations', value: res.generations || [], key: data.index })
+    commit('mutate', { property: 'carGenerations', value: res.generations || [], key: data.index })
   },
   async getGenerationTypes({ commit }, params) {
     const res = await this.$axios.$get(`/brand/${params.name}/model/${params.model}/generation/${params.generation}/get_types`);
-    commit('mutate', { property: 'generation_types', value: res });
+    commit('mutate', { property: 'generationTypes', value: res });
   },
   async getCarTypeName({ commit }, id) {
     const res = await this.$axios.$get(`/car_type_id/${id}`);
-    commit('mutate', { property: 'car_type_name', value: res });
+    commit('mutate', { property: 'carTypeName', value: res });
   },
   // Body
   async getBody({ commit }, params) {
     const res = await this.$axios.$get(`/brand/${params.name}/model/${params.model}/generation/${params.generation}/body/${params.body}`);
-    commit('mutate', { property: 'first_generation', value: res });
+    commit('mutate', { property: 'firstGeneration', value: res });
   },
   async getSpecificationsList({ commit }, params) {
     const res = await this.$axios.$get(`/brand/${params.name}/model/${params.model}/generation/${params.generation}/get_type/${params.body}`);
-    commit('mutate', { property: 'specifications_list', value: res });
-  },
-  async getRawSpecificationsList({ commit }, params) {
-    const res = await this.$axios.$get(`/brand/${params.name}/model/${params.model}/generation/${params.generation}/get_type/${params.body}/raw`);
-    commit('mutate', { property: 'specifications_raw_list', value: res });
+    commit('mutate', { property: 'specificationsList', value: res });
   },
   async getEquipmentsList({ commit }, params) {
     const res = await this.$axios.$get(`/brand/${params.name}/model/${params.model}/generation/${params.generation}/get_type/${params.body}/equipments`);
-    commit('mutate', { property: 'equipments_list', value: res });
+    commit('mutate', { property: 'equipmentsList', value: res });
   },
   async getCatalogSpecifications({ commit }, params) {
     const res = await this.$axios.$get(`/brand/${params.name}/model/${params.model}/generation/${params.generation}/body/${params.body}/catalog/${params.specification || params.equipment}`);
-    commit('mutate', { property: 'first_generation', value: res });
+    commit('mutate', { property: 'firstGeneration', value: res });
   },
   async getCatalogEquipments({ commit }, params) {
     const res = await this.$axios.$get(`/brand/${params.name}/model/${params.model}/generation/${params.generation}/body/${params.body}/catalog/${params.equipment}/equipments`);
-    commit('mutate', { property: 'first_generation_equipments',  value: res });
+    commit('mutate', { property: 'firstGenerationEquipments',  value: res });
   },
   // Options
   async getOptions({ state, commit }) {
-    if (objectNotEmpty(state, commit, 'sell_options')) return;
+    if (objectNotEmpty(state, commit, 'sellOptions')) return;
     const res = await this.$axios.$get('/config/get_options');
-    commit('mutate', { property: 'sell_options', value: res });
+    commit('mutate', { property: 'sellOptions', value: res });
   },
   async getAllOtherOptions({ state, commit }, suffix = '') {
-    if (objectNotEmpty(state, commit, 'all_sell_options' + suffix)) return;
+    if (objectNotEmpty(state, commit, 'allSellOptions' + suffix)) return;
     const res = await this.$axios.$get('/config/get_all_options' + suffix);
-    commit('mutate', { property: 'all_sell_options' + suffix, value: res });
+    commit('mutate', { property: 'allSellOptions' + suffix, value: res });
   },
   async getPopularOptions({ state, commit }) {
-    if (objectNotEmpty(state, commit, 'popular_options')) return;
+    if (objectNotEmpty(state, commit, 'popularOptions')) return;
     const res = await this.$axios.$get('/config/get_popular_options');
-    commit('mutate', { property: 'popular_options', value: res });
+    commit('mutate', { property: 'popularOptions', value: res });
   },
   async getBodyOptions({ state, commit }) {
-    if (objectNotEmpty(state, commit, 'body_options')) return;
+    if (objectNotEmpty(state, commit, 'bodyOptions')) return;
     const res = await this.$axios.$get('/get_body_options');
-    commit('mutate', { property: 'body_options', value: res });
+    commit('mutate', { property: 'bodyOptions', value: res });
   },
   async getMotoOptions({ state, commit }) {
-    if (objectNotEmpty(state, commit, 'moto_options')) return;
+    if (objectNotEmpty(state, commit, 'motoOptions')) return;
     const res = await this.$axios.$get(`/moto/search_options`);
-    commit('mutate', { property: 'moto_options', value: res });
+    commit('mutate', { property: 'motoOptions', value: res });
   },
   async getColors({ state, commit }) {
     if (objectNotEmpty(state, commit, 'colors')) return;
@@ -465,9 +451,9 @@ export const actions = {
     commit('mutate', { property: 'colors', value: res });
   },
   async getComplaintOptions({ state, commit }) {
-    if (objectNotEmpty(state, commit, 'complaint_options')) return;
+    if (objectNotEmpty(state, commit, 'complaintOptions')) return;
     const res = await this.$axios.$get(`/complaint-options`);
-    commit('mutate', { property: 'complaint_options', value: res.data });
+    commit('mutate', { property: 'complaintOptions', value: res.data });
   },
   async getBadges({ state, commit }) {
     if (objectNotEmpty(state, commit, 'badges')) return;
@@ -476,35 +462,35 @@ export const actions = {
   },
   resetOptions({ state, commit }, property = false) {
     let arr = [
-      'sell_options','all_sell_options2','body_options',
-      'colors','complaint_options','badges','brands','popular_options','all_sell_options',
-      'moto_options','com_all_options','com_types'
+      'sellOptions','allSellOptions2','bodyOptions',
+      'colors','complaintOptions','badges','brands','popularOptions','allSellOptions',
+      'motoOptions','commercialAllOptions','commercialTypes'
     ];
     if (property) {
-      arr = state['options_to_reset'].filter(p => p !== property);
-      commit('mutate', { property: 'options_to_reset', value: arr });
+      arr = state['needResetOptions'].filter(p => p !== property);
+      commit('mutate', { property: 'needResetOptions', value: arr });
     } else {
-      commit('mutate', { property: 'options_to_reset', value: arr });
+      commit('mutate', { property: 'needResetOptions', value: arr });
     }
   },
   // Commercial
   async getComAllOptions({ state, commit }) {
-    if (objectNotEmpty(state, commit, 'com_all_options')) return;
+    if (objectNotEmpty(state, commit, 'commercialAllOptions')) return;
     const res = await this.$axios.$get(`/commercial/get_all_options`);
-    commit('mutate', { property: 'com_all_options', value: res });
+    commit('mutate', { property: 'commercialAllOptions', value: res });
   },
   async getComFilters({ commit }, id) {
     const res = await this.$axios.$get(`/commercial/type/${id}/get_filters`);
-    commit('mutate', { property: 'com_filters', value: res });
+    commit('mutate', { property: 'commercialFilters', value: res });
   },
   async getComSearchFilters({ commit }, id) {
     const res = await this.$axios.$get(`/commercial/type/${id}/get_search_filters`);
-    commit('mutate', { property: 'com_search_filters', value: res });
+    commit('mutate', { property: 'commercialSearchFilters', value: res });
   },
   async getComTypes({ state, commit }) {
-    if (objectNotEmpty(state, commit, 'com_types')) return;
+    if (objectNotEmpty(state, commit, 'commercialTypes')) return;
     const res = await this.$axios.$get('/commercial/all_types');
-    commit('mutate', { property: 'com_types', value: res });
+    commit('mutate', { property: 'commercialTypes', value: res });
   },
   // Announcements
   async getMainSearch({ commit }, data) {
@@ -576,99 +562,89 @@ export const actions = {
     try {
       commit('mutate', { property: 'CancelToken', value: this.$axios.CancelToken });
       if(typeof state.cancel == 'function') state.cancel('operation cancelled');
-      const res = await this.$axios.$post(`/search_catalog?page=${data.query.page || 1}`, { filteredData: state.catalog_form, params: data.params }, {
+      const res = await this.$axios.$post(`/search_catalog?page=${data.query.page || 1}`, { filteredData: state.catalogForm, params: data.params }, {
         cancelToken: new state.CancelToken(function executor(c) { 
           commit('mutate', { property: 'cancel', value: c });
         }),
       });
-      if(data.get_items) commit('mutate', { property: 'catalog_items', value: res.items });
-      commit('mutate', { property: 'catalog_total', value: res.total });
+      if(data.get_items) commit('mutate', { property: 'catalogItems', value: res.items });
+      commit('mutate', { property: 'catalogTotal', value: res.total });
     } catch(e) {}
   },
   // Sell
   setSellSavedOptions({commit, state}) {
-    for(let key in state.sell_cookies) {
-      commit('mutate', { property: 'sell_cookies', value: this.$cookies.get(`sell_${key}`), key: key });
+    for(let key in state.sellCookies) {
+      commit('mutate', { property: 'sellCookies', value: this.$cookies.get(`sell_${key}`), key: key });
     }
   },
   removeSellSavedOptions({commit, state}, options = false) {
-    let cookies = options || state.sell_cookies;
+    let cookies = options || state.sellCookies;
     for(let key in cookies) {
       key = options ? cookies[key] : key;
       this.$cookies.remove(`sell_${key}`);
-      if(state.sell_cookies[key] !== '')
-        commit('mutate', { property: 'sell_cookies', value: '', key: key });
+      if(state.sellCookies[key] !== '')
+        commit('mutate', { property: 'sellCookies', value: '', key: key });
       if(state.hasOwnProperty(`sell_${key}`) && Object.keys(state[`sell_${key}`]).length)
         commit('mutate', { property: `sell_${key}`, value: [] });
     }
   },
   async checkSellTokens({ commit }, phone) {
     const res = await this.$axios.$post('/check/user/by/phone', { phone });
-    commit('mutate', { property: 'sell_tokens', value: res.data && res.data.announce_count });
-    commit('mutate', { property: 'sell_phone_auth', value: res.data && res.data.have_account });
-    commit('mutate', { property: 'sell_autosalon_auth', value: res.data && res.data.is_autosalon });
+    commit('mutate', { property: 'sellTokens', value: res.data && res.data.announce_count });
+    commit('mutate', { property: 'sellPhoneRegistered', value: res.data && res.data.have_account });
+    commit('mutate', { property: 'sellAutosalonRights', value: res.data && res.data.is_autosalon });
   },
   resetSellTokens({ commit }) {
-    commit('mutate', { property: 'sell_tokens', value: false });
-    commit('mutate', { property: 'sell_phone_auth', value: false });
-    commit('mutate', { property: 'sell_autosalon_auth', value: false });
-    commit('mutate', { property: 'sell_phone', value: '' });
+    commit('mutate', { property: 'sellTokens', value: false });
+    commit('mutate', { property: 'sellPhoneRegistered', value: false });
+    commit('mutate', { property: 'sellAutosalonRights', value: false });
+    commit('mutate', { property: 'sellPhoneEntered', value: '' });
   },
   // Sell Options
   async getSellYears({ commit }, params) {
     const res = await this.$axios.$get(`/sell/${params.brand}/${params.model}/get_years`);
-    commit('mutate', { property: 'sell_years', value: res });
+    commit('mutate', { property: 'sellYears', value: res });
   },
   async getSellBody({ commit }, params) {
     const res = await this.$axios.$get(`/sell/${params.brand}/${params.model}/year/${params.year}`);
-    commit('mutate', { property: 'sell_body', value: res });
+    commit('mutate', { property: 'sellBody', value: res });
   },
   async getSellGenerations({ commit }, params) {
     const res = await this.$axios.$get(`/sell/${params.brand}/${params.model}/year/${params.year}/body/${params.body}/generations`);
-    commit('mutate', { property: 'sell_generations', value: res });
+    commit('mutate', { property: 'sellGenerations', value: res });
   },
   async getSellEngines({ commit }, params) {
     const res = await this.$axios.$get(`/sell/${params.brand}/${params.model}/year/${params.year}/body/${params.body}/generation/${params.generation}/engines`);
-    commit('mutate', { property: 'sell_engines', value: res });
+    commit('mutate', { property: 'sellEngines', value: res });
   },
   async getSellGearing({ commit }, params) {
     const res = await this.$axios.$get(`/sell/${params.brand}/${params.model}/body/${params.body}/generation/${params.generation}/engine/${params.engine}/gearing`);
-    commit('mutate', { property: 'sell_gearing', value: res });
+    commit('mutate', { property: 'sellGearing', value: res });
   },
   async getSellTransmissions({ commit }, params) {
     const res = await this.$axios.$get(`/sell/${params.brand}/${params.model}/body/${params.body}/generation/${params.generation}/engine/${params.engine}/gearing/${params.gearing}/transmissions`);
-    commit('mutate', { property: 'sell_transmissions', value: res });
+    commit('mutate', { property: 'sellTransmissions', value: res });
   },
   async getSellModifications({ commit }, params) {
     const res = await this.$axios.$get(`/sell/${params.brand}/${params.model}/body/${params.body}/generation/${params.generation}/engine/${params.engine}/gearing/${params.gearing}/trns/${params.transmission}/modifications`);
-    commit('mutate', { property: 'sell_modifications', value: res });
+    commit('mutate', { property: 'sellModifications', value: res });
   },
   // Services
-  async getPackages({ commit }, id) {
-    const res = await this.$axios.$get(`/marketing/getPackages/${id}`);
-    commit('mutate', { property: 'packages', value: res });
-  },
-  async getAllTypePackages({ commit }) {
-    ['cars', 'moto', 'commercial'].map(async (type, i) => {
-      const res = await this.$axios.$get(`/marketing/getPackages/${i + 1}`);
-      commit('mutate', { property: 'all_type_packages', value: res, key: type });
-    })
-  },
   async getServices({ commit }) {
     const res = await this.$axios.$get(`/marketing/getServices`);
     commit('mutate', { property: 'services', value: res });
   },
   async getMyServices({ commit }) {
     const res = await this.$axios.$get(`/my/actives`);
-    commit('mutate', { property: 'my_services', value: res });
+    commit('mutate', { property: 'myServices', value: res });
   },
   async getMyServiceOptions({ commit }, type) {
     const res = await this.$axios.$get(`/my/actives/${type}`);
-    commit('mutate', { property: 'my_service_options', value: res });
+    commit('mutate', { property: 'myServiceOptions', value: res });
   },
   async getMyServiceHistory({ commit }) {
     const res = await this.$axios.$get(`/my/actives/history`);
-    commit('mutate', { property: 'my_service_history', value: res });
+    commit('mutate', { property: 'myServiceHistory', value: res });
   },
   // Autosalons
   async getAutoSalonsList({commit}, params) {
@@ -777,16 +753,16 @@ export const mutations = {
     }
   },
   // saved
-  announceSaveOrDelete(state, payload) {
-    let type = state.saved[payload.type];
+  addToFavorites(state, payload) {
+    let type = state.favorites[payload.type];
     let index = type.indexOf(payload.id);
     if (index >= 0) type.splice(index,1);
     else type.push(payload.id);
   },
-  loadSavedAnnouncements(state, payload) {
-    for (var key in state.saved) {
+  loadFavorites(state, payload) {
+    for (var key in state.favorites) {
       if (payload[key] !== undefined){
-        state.saved[key] = payload[key];
+        state.favorites[key] = payload[key];
       }
     }
   },

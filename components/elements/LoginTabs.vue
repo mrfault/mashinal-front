@@ -103,13 +103,13 @@
       }
     },
     computed: {
-      ...mapState(['sell_phone','sell_phone_auth'])
+      ...mapState(['sellPhoneEntered','sellPhoneRegistered'])
     },
     methods: {
       resetForm() {
         this.form = {
           name: '',
-          phone: this.forceSellPhone ? this.sell_phone : '',
+          phone: this.forceSellPhone ? this.sellPhoneEntered : '',
           code: '',
           password: '',
           passwordConfirm: '',
@@ -128,7 +128,7 @@
     },
     created() {
       this.resetForm();
-      if(this.forceSellPhone && !this.sell_phone_auth) {
+      if(this.forceSellPhone && !this.sellPhoneRegistered) {
         this.updateTab('sign-up');
       }
     }

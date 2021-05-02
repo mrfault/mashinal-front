@@ -409,7 +409,7 @@ export default {
 	"car_tool": "Avtomobil aləti",
 	"carbonic": "Karbon",
 	"carcase": "Ban növü",
-	"cars": "maşın",
+	"cars": "Avtomobillər",
 	"catalog": "Kataloq",
 	"catalog_model_specifications": "Kataloqda modelin xüsusiyyətləri",
 	"category": "Kateqoriya",

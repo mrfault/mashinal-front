@@ -51,6 +51,9 @@ Vue.use({
           if (typeof offset === 'object') offset = this.isMobileBreakpoint ? offset[0] : offset[1];
           offset += (this.isMobileBreakpoint ? -60 : -141);
           this.$scrollTo(el, duration, { offset });
+        },
+        setBodyOverflow(value = 'auto') {
+          document.querySelector('body').style.overflowY = value;
         }
       },
       computed: {

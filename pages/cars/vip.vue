@@ -1,6 +1,7 @@
 <template>
   <div class="pages-vip">
     <div class="container">
+      <breadcrumbs :crumbs="crumbs" />
       <grid 
         v-if="promotedAnnouncements.data.length"
         :announcements="promotedAnnouncements.data" 
@@ -56,7 +57,14 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['promotedAnnouncements'])
+    ...mapGetters(['promotedAnnouncements']),
+    
+    crumbs() {
+      return [
+        { name: this.$t('cars'), route: '/cars' },
+        { name: this.$t('vip_announcements') }
+      ]
+    }
   }
 }
 </script>

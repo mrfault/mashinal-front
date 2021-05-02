@@ -2,7 +2,7 @@
   <form class="form sign-up" @submit.prevent="submit" novalidate>
     <div class="form-part">
       <p v-if="form.staticPhone">
-        <span v-mask="maskPhone(true)">{{ sell_phone }}</span>
+        <span v-mask="maskPhone(true)">{{ sellPhoneEntered }}</span>
       </p>
       <form-text-input  
         :placeholder="$t('name')" 
@@ -54,7 +54,7 @@
       }
     },
     computed: {
-      ...mapState(['sell_phone'])
+      ...mapState(['sellPhoneEntered'])
     },
     methods: {
       submit() {

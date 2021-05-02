@@ -1,6 +1,7 @@
 <template>
   <div class="pages-cars">
     <div class="container"> 
+      <breadcrumbs :crumbs="crumbs" />
       <cars-search-form 
         :total-count="carsAnnouncements.paginate.total"
         :pending="pending"
@@ -114,7 +115,13 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['carsAnnouncements'])
+    ...mapGetters(['carsAnnouncements']),
+    
+    crumbs() {
+      return [
+        { name: this.$t('cars') }
+      ]
+    }
   }
 }
 </script>

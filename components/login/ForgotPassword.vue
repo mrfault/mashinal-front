@@ -2,7 +2,7 @@
   <form class="form forgot-password" @submit.prevent="submit" novalidate>
     <div class="form-part">
       <p v-if="form.staticPhone">
-        <span v-mask="maskPhone(true)">{{ sell_phone }}</span>
+        <span v-mask="maskPhone(true)">{{ sellPhoneEntered }}</span>
       </p>
       <form-text-input v-else
         autocomplete="tel" 
@@ -27,7 +27,7 @@
       validator: {}
     },
     computed: {
-      ...mapState(['sell_phone'])
+      ...mapState(['sellPhoneEntered'])
     },
     data() {
       return {

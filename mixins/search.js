@@ -68,9 +68,9 @@ export const SearchMixin = {
         });
       }
     },
-    resetForm() {
+    resetForm(submit = true) {
       this.setFormData({});
-      this.submitForm();
+      if (submit) this.submitForm();
     },
     getOptionValue(name, key) {
       return this[`get${name}Options`].find(option => option.key === key)?.name || '';

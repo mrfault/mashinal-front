@@ -1,5 +1,5 @@
 <template>
-  <form class="form" @submit.prevent="submitForm" novalidate>
+  <div class="form">
     <div class="card pt-0 pt-lg-4">
       <div class="row">
         <div class="col-lg-4 mb-2 mb-lg-3">
@@ -27,12 +27,12 @@
               @change="setBrand($event, rows[0])" has-search/>
           </div>
           <div class="col-6 mb-2">
-            <form-select :label="$t('model')" :options="array_models[rows[0]]" v-model="form.additional_brands[rows[0]]['model']"
-              :disabled="form.additional_brands[rows[0]]['brand'] && !array_models[rows[0]].length" @change="setModel($event, rows[0])" has-search />
+            <form-select :label="$t('model')" :options="carModels[rows[0]]" v-model="form.additional_brands[rows[0]]['model']"
+              :disabled="form.additional_brands[rows[0]]['brand'] && !carModels[rows[0]].length" @change="setModel($event, rows[0])" has-search />
           </div>
           <div class="col-6 mb-2">
-            <form-select :label="$t('generation')" :options="array_generations[rows[0]]" v-model="form.additional_brands[rows[0]]['generation']"
-              :disabled="form.additional_brands[rows[0]]['model'] && !array_generations[rows[0]].length" has-search />
+            <form-select :label="$t('generation')" :options="carGenerations[rows[0]]" v-model="form.additional_brands[rows[0]]['generation']"
+              :disabled="form.additional_brands[rows[0]]['model'] && !carGenerations[rows[0]].length" has-search />
           </div>
         </template>
         <template v-else>
@@ -43,14 +43,14 @@
                   @change="setBrand($event, key)" has-search />
               </div>
               <div class="col-4">
-                <form-select :label="$t('model')" :options="array_models[key]" v-model="form.additional_brands[key]['model']"
-                  :disabled="form.additional_brands[key]['brand'] && !array_models[key].length" @change="setModel($event, key)" has-search />
+                <form-select :label="$t('model')" :options="carModels[key]" v-model="form.additional_brands[key]['model']"
+                  :disabled="form.additional_brands[key]['brand'] && !carModels[key].length" @change="setModel($event, key)" has-search />
               </div>
               <div class="col-4">
                 <div class="row">
                   <div class="col">
-                    <form-select :label="$t('generation')" :options="array_generations[key]" v-model="form.additional_brands[key]['generation']"
-                      :disabled="form.additional_brands[key]['model'] && !array_generations[key].length" has-search />
+                    <form-select :label="$t('generation')" :options="carGenerations[key]" v-model="form.additional_brands[key]['generation']"
+                      :disabled="form.additional_brands[key]['model'] && !carGenerations[key].length" has-search />
                   </div>
                   <div class="col-auto">
                     <div class="form-counter">
@@ -97,7 +97,7 @@
                 </form-select>
               </div>
               <div class="col-6 col-lg-3 mb-2 mb-lg-3">
-                <form-select :label="$t('city')" :options="sell_options.regions" v-model="form.region" />
+                <form-select :label="$t('city')" :options="sellOptions.regions" v-model="form.region" />
               </div>
               <div class="col-6 col-lg-3 mb-2 mb-lg-3">
                 <form-checkbox :label="$t('barter')" v-model="form.exchange_possible" 
@@ -110,6 +110,74 @@
             </div>
           </component>
         </div>
+        <template v-if="advanced">
+          <div class="col-6 col-lg-2 mb-2 mb-lg-3">
+            <form-select :label="$t('mileage')" custom anchor="right"
+              :values="{from: form.mileage_from, to: form.mileage_to, suffix: $t('char_kilometre') }"
+              @clear="form.mileage_from = '', form.mileage_to = ''"
+            >
+              <div class="form-merged">
+                <form-numeric-input :placeholder="$t('from')" v-model="form.price_from" :suffix="$t('char_kilometre')" />
+                <form-numeric-input :placeholder="$t('to')" v-model="form.price_to" :suffix="$t('char_kilometre')" />
+              </div>
+            </form-select>
+          </div>
+          <div class="col-6 col-lg-2 mb-2 mb-lg-3">
+            <form-select :label="$t('dvigatel')" v-model="form.engine_type" 
+              :options="bodyOptions.main.default_options['tip-dvigatelya'].values"
+              multiple name-in-value translate-options />
+          </div>
+          <div class="col-6 col-lg-2 mb-2 mb-lg-3">
+            <form-select :label="$t('korobka')" v-model="form.korobka" 
+              :options="bodyOptions.main.default_options['korobka'].values"
+              multiple name-in-value translate-options />
+          </div>
+          <div class="col-6 col-lg-2 mb-2 mb-lg-3">
+            <form-select :label="$t('carcase')" v-model="form.body" 
+              :options="bodyOptions.main.default_options['body'].values"
+              multiple name-in-value translate-options />
+          </div>
+          <div class="col-6 col-lg-2 mb-2 mb-lg-3">
+            <form-select :label="$t('privod')" v-model="form.gearing" 
+              :options="bodyOptions.main.default_options['privod'].values"
+              multiple name-in-value translate-options />
+          </div>
+          <div class="col-6 col-lg-2 mb-2 mb-lg-3">
+            <form-select :label="$t('damage')" v-model="form.damage" :options="getDamageOptions"
+              :show-label-on-select="false" />
+          </div>
+          <div class="col-6 col-lg-2 mb-2 mb-lg-3">
+            <form-select :label="$t('customs')" v-model="form.customs" :options="getCustomsOptions"
+              :show-label-on-select="false" />
+          </div>
+          <div class="col-6 col-lg-2 mb-2 mb-lg-3">
+            <form-select :label="$t('capacity')" custom 
+              :values="{from: form.min_capacity, to: form.max_capacity, suffix: $t('char_litre'), showLabel: true }"
+              @clear="form.min_capacity = '', form.max_capacity = ''"
+            >
+              <div class="form-merged">
+                <form-select :label="$t('from')" v-model="form.min_capacity" 
+                  :options="bodyOptions.main.custom_options['capacity'].values" 
+                  :show-label-on-select="false" :clear-option="false" in-select-menu :suffix="$t('char_litre')" />
+                <form-select :label="$t('to')" v-model="form.max_capacity"
+                  :options="bodyOptions.main.custom_options['capacity'].values" 
+                  :show-label-on-select="false" :clear-option="false" in-select-menu :suffix="$t('char_litre')" />
+              </div>
+            </form-select>
+          </div>
+          <div class="col-6 col-lg-2 mb-2 mb-lg-3">
+            <form-select :label="$t(allSellOptions2.n_of_seats.placeholder)" v-model="form.n_of_seats" 
+              multiple name-in-value translate-options :options="allSellOptions2.n_of_seats.options" />
+          </div>
+          <div class="col-6 col-lg-2 mb-2 mb-lg-3">
+            <form-checkbox :label="$t('in_garanty')" v-model="form.in_garanty" 
+              input-name="in_garanty" />
+          </div>
+          <div class="col-6 col-lg-2 mb-2 mb-lg-3">
+            <form-checkbox :label="$t('with_video')" v-model="form.with_video" 
+              input-name="with_video" />
+          </div>
+        </template>
         <div class="col-6 col-lg-2 mb-2 mb-lg-3 d-none d-lg-block" v-if="!advanced && !assistant">
           <div class="form-info text-green">
             {{ $readPlural(totalCount, $t('plural_forms_announcements')) }}
@@ -128,12 +196,12 @@
             <div class="col-lg-4">
               <div :class="['row', {'mb-1 mb-lg-0': !searchApplied && !(advanced || assistant)}]">
                 <div class="col-6">
-                  <button type="button" :class="['btn','full-width','btn--red-outline',{'pointer-events-none': pending}]" @click="resetForm">
+                  <button type="button" :class="['btn','full-width','btn--red-outline',{'pointer-events-none': pending}]" @click="resetForm(!(advanced || assistant))">
                     <icon name="reset" /> {{ $t('clear_search') }}
                   </button>
                 </div>
                 <div class="col-6">
-                  <button type="submit" :class="['btn','full-width','btn--green',{pending}]">
+                  <button type="button" :class="['btn','full-width','btn--green',{pending}]" @click="submitForm">
                     <icon name="search" /> {{ $t('find') }}
                   </button>
                 </div>
@@ -161,7 +229,7 @@
         </div>
       </div>
     </div>
-  </form>
+  </div>
 </template>
 
 <script>
@@ -235,7 +303,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['brands', 'body_options', 'array_models', 'array_generations', 'sell_options', 'all_sell_options2', 'colors'])
+    ...mapGetters(['brands', 'bodyOptions', 'carModels', 'carGenerations', 'sellOptions', 'allSellOptions2', 'colors'])
   },
   methods: {
     ...mapActions(['getModelsArray', 'getModelGenerationsArray']),
@@ -250,7 +318,7 @@ export default {
       await this.getModelsArray({ value: slug, index });
     },
     async setModel(id, index) {
-      let slug = this.array_models[index].find(option => option.id == id)?.slug || '';
+      let slug = this.carModels[index].find(option => option.id == id)?.slug || '';
       let brand_slug = this.form.additional_brands[index].brand_slug
       this.$set(this.form.additional_brands[index], 'model', id);
       this.$set(this.form.additional_brands[index], 'model_slug', slug);

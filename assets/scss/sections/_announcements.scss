@@ -291,12 +291,13 @@
 
 @include media-min-width('lg') {
   .announcements-grid {
-    &:first-child {
-      margin-top: 0;
-    }
     .col-lg-auto {
       width: 20%;
     }
+  }
+
+  .breadcrumbs + .announcements-grid {
+    margin-top: 0;
   }
 
   .announcements-sorting {

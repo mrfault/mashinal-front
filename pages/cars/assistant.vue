@@ -1,6 +1,7 @@
 <template>
   <div class="pages-advanced-search">
     <div class="container"> 
+      <breadcrumbs :crumbs="crumbs" />
       <cars-search-form 
         :assistant="true"
         :pending="pending"
@@ -31,6 +32,7 @@ export default {
   computed: {
     crumbs() {
       return [
+        { name: this.$t('cars'), route: '/cars' },
         { name: this.$t('helper_search') }
       ]
     }
