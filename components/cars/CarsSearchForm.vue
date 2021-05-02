@@ -21,47 +21,46 @@
         </div>
         <template v-if="isMobileBreakpoint">
           <div class="col-6 mb-2">
-            <form-select :label="$t('mark')" :options="brands" v-model="form.additional_brands[counter[0]]['brand']"
-              @change="setBrand($event, counter[0])" />
+            <form-select :label="$t('mark')" :options="brands" v-model="form.additional_brands[rows[0]]['brand']"
+              @change="setBrand($event, rows[0])" has-search/>
           </div>
           <div class="col-6 mb-2">
-            <form-select :label="$t('model')" :options="array_models[counter[0]]" v-model="form.additional_brands[counter[0]]['model']"
-              :disabled="form.additional_brands[counter[0]]['brand'] && !array_models[counter[0]].length" @change="setModel($event, counter[0])" />
+            <form-select :label="$t('model')" :options="array_models[rows[0]]" v-model="form.additional_brands[rows[0]]['model']"
+              :disabled="form.additional_brands[rows[0]]['brand'] && !array_models[rows[0]].length" @change="setModel($event, rows[0])" has-search />
           </div>
           <div class="col-6 mb-2">
-            <form-select :label="$t('generation')" :options="array_generations[counter[0]]" v-model="form.additional_brands[counter[0]]['generation']"
-              :disabled="form.additional_brands[counter[0]]['model'] && !array_generations[counter[0]].length" />
+            <form-select :label="$t('generation')" :options="array_generations[rows[0]]" v-model="form.additional_brands[rows[0]]['generation']"
+              :disabled="form.additional_brands[rows[0]]['model'] && !array_generations[rows[0]].length" has-search />
           </div>
         </template>
         <template v-else>
-          <div class="col-12 mb-3" v-for="(key, index) in counter" :key="key">
+          <div class="col-12 mb-3" v-for="(key, index) in rows" :key="key">
             <div class="row">
               <div class="col-4">
                 <form-select :label="$t('mark')" :options="brands" v-model="form.additional_brands[key]['brand']"
-                  @change="setBrand($event, key)" />
+                  @change="setBrand($event, key)" has-search />
               </div>
               <div class="col-4">
                 <form-select :label="$t('model')" :options="array_models[key]" v-model="form.additional_brands[key]['model']"
-                  :disabled="form.additional_brands[key]['brand'] && !array_models[key].length" @change="setModel($event, key)" />
+                  :disabled="form.additional_brands[key]['brand'] && !array_models[key].length" @change="setModel($event, key)" has-search />
               </div>
               <div class="col-4">
                 <div class="row">
                   <div class="col">
                     <form-select :label="$t('generation')" :options="array_generations[key]" v-model="form.additional_brands[key]['generation']"
-                      :disabled="form.additional_brands[key]['model'] && !array_generations[key].length" />
+                      :disabled="form.additional_brands[key]['model'] && !array_generations[key].length" has-search />
                   </div>
                   <div class="col-auto">
                     <div class="form-counter">
-                      <div class="form-info" v-if="counter.length < 5 && index === counter.length - 1" @click="addSearchRow(key)">
+                      <div class="form-info" v-if="rows.length < 5 && index === rows.length - 1" @click="addSearchRow(key)">
                         <icon name="plus" />
                       </div>
-                      <div class="form-info" v-if="counter.length > 1" @click="removeSearchRow(key)">
+                      <div class="form-info" v-if="rows.length > 1" @click="removeSearchRow(key)">
                         <icon name="minus" />
                       </div>
                     </div>
                   </div>
                 </div>
-                
               </div>
             </div>
           </div>
@@ -73,9 +72,9 @@
           >
             <div class="form-merged">
               <form-select :label="$t('from')" :options="getYearOptions" v-model="form.min_year" 
-                :show-label-on-select="false" :in-select-menu="true" :clear-option="false" />
+                :show-label-on-select="false" :clear-option="false" in-select-menu />
               <form-select :label="$t('to')" :options="getYearOptions" v-model="form.max_year"
-                :show-label-on-select="false" :in-select-menu="true" :clear-option="false" />
+                :show-label-on-select="false" :clear-option="false" in-select-menu />
             </div>
           </form-select>
         </div>
@@ -91,7 +90,7 @@
                     <form-numeric-input :placeholder="$t('from')" v-model="form.price_from" />
                     <form-numeric-input :placeholder="$t('to')" v-model="form.price_to" />
                     <form-select :label="'AZN'" :options="getCurrencyOptions" v-model="form.currency"
-                      :allow-clear="false" :in-select-menu="true" :clear-option="false" />
+                      :allow-clear="false" :clear-option="false" in-select-menu />
                   </div>
                 </form-select>
               </div>
@@ -147,7 +146,7 @@
         </button>
       </div>
     </div>
-    <div class="form-sorting" v-if="!isStarterPage && totalCount">
+    <div class="announcements-sorting" v-show="!isStarterPage && totalCount">
       <div class="row">
         <div class="col-6 col-lg-auto mt-3 mt-lg-5 mb-n6 mb-lg-n1">
           <div class="form-info no-bg text-green" v-if="isMobileBreakpoint">
@@ -155,8 +154,8 @@
           </div>
         </div>
         <div class="col-6 col-lg-auto mt-3 mt-lg-5 mb-n6 mb-lg-n1">
-          <form-select :label="$t('sorting')" :options="getSortingOptions" v-model="form.sorting" @change="submitForm"
-            :allow-clear="false" :skip-select-first="true" :clear-option="false" has-no-bg />
+          <form-select :label="$t('sorting')" :options="getSortingOptions" v-model="form.sorting"
+            @change="submitForm" :allow-clear="false" :clear-option="false" skip-select-first has-no-bg />
         </div>
       </div>
     </div>
@@ -193,7 +192,7 @@ export default {
         path: '/cars',
         param: 'car_filter'
       },
-      counter: ['0'],
+      rows: ['0'],
       form: {
         sorting: 'created_at_desc',
         additional_brands: {

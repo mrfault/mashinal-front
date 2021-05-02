@@ -38,7 +38,7 @@ export const SearchMixin = {
     parseFormData() {
       this.setFormData(JSON.parse(this.$route.query.car_filter || '{}'));
       let keys = Object.keys(this.form.additional_brands).filter(key => this.form.additional_brands[key].brand);
-      if(keys.length) this.counter = [...keys];
+      if(keys.length) this.rows = [...keys];
     },
     submitForm() {
       // tracking
@@ -58,7 +58,7 @@ export const SearchMixin = {
           // for ex. when routing from / to /cars
           if(this.routeName !== prevRouteName) {
             setTimeout(() => {
-              this.scrollTo('.announcements-grid', [-15, -20]);
+              this.scrollTo('.announcements-sorting');
             }, 100);
           }
           // look for a saved search
@@ -76,16 +76,16 @@ export const SearchMixin = {
       return this[`get${name}Options`].find(option => option.key === key)?.name || '';
     },
     addSearchRow(key) {
-      if (this.counter.length === 5) return;
+      if (this.rows.length === 5) return;
       let keys = Object.keys(this.form.additional_brands);
-      let index = this.counter.indexOf(key);
-      this.counter.splice(index + 1, 0, keys.filter(key => this.counter.indexOf(key) === -1)[0]);
+      let index = this.rows.indexOf(key);
+      this.rows.splice(index + 1, 0, keys.filter(key => this.rows.indexOf(key) === -1)[0]);
     },
     removeSearchRow(key) {
-      if (this.counter.length === 1) return;
-      let index = this.counter.indexOf(key);
+      if (this.rows.length === 1) return;
+      let index = this.rows.indexOf(key);
       this.setBrand('', key);
-      this.counter.splice(index, 1);
+      this.rows.splice(index, 1);
     },
     async handlePopState() {
       // refresh page's async data
@@ -134,7 +134,7 @@ export const SearchMixin = {
       return ['/', '/moto', '/commercial'].map(path => this.$localePath(path)).includes(this.$route.path);
     },
     filtersApplied() {
-      let hasBrand = this.counter.filter(key => this.form.additional_brands[key].brand).length;
+      let hasBrand = this.rows.filter(key => this.form.additional_brands[key].brand).length;
       let hasAllOptions = Object.keys(this.form.all_options).length;
       let hasOptions = Object.keys(this.getFormData()).length > 5 || (this.form.announce_type !== 1);
       return !!(hasBrand || hasAllOptions || hasOptions);

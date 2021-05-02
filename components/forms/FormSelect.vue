@@ -3,7 +3,15 @@
     <div :class="['select-menu',{'no-bg': hasNoBg}]">
       <span :class="['select-menu_label', {'selected': hasSelectedValue, 'disabled': disabled, 'active': showOptions}]" 
         @click="showOptions = disabled ? false : !showOptions">
-        <span class="text-truncate">{{ getLabelText }}</span>
+        <span class="text-truncate">
+          <template v-if="hasSearch && showOptions && !isMobileBreakpoint">
+            <span class="search-input">
+              <span class="placeholder">{{ label }}: </span>
+              <input type="text" @click.stop v-model="search" ref="searchInput" />
+            </span>
+          </template>
+          <template v-else>{{ getLabelText }}</template>
+        </span>
         <span class="counter" v-if="multiple && selectValue.length > 1">{{ selectValue.length }}</span>
         <icon name="cross" v-if="allowClear && !hasNoValue" @click.native.stop="clearSelect"/>
         <icon :name="iconName" v-else />
@@ -18,15 +26,25 @@
       />
       <div :class="['select-menu_dropdown', {'show': showOptions, custom, 'responsive': isMobileBreakpoint}]" ref="dropdownOptions">
         <template v-if="showOptions">
+          <div class="mt-3" v-if="hasSearch && isMobileBreakpoint" @click.stop>
+            <div class="container">
+              <form-text-input :placeholder="$t('search')" iconName="search" v-model="search"/>
+            </div>
+          </div>
           <div :class="{'container': isMobileBreakpoint}" v-if="custom">
             <slot />
           </div>
-          <vue-scroll :ops="scrollOps" ref="vs" v-else>
+          <vue-scroll :ops="scrollOps" ref="vs" v-else :key="vsKey">
             <div :class="{'container': isMobileBreakpoint}">
-              <div :class="['select-menu_dropdown-option', {'selected': isSelected(option)}]" v-for="(option, index) in getOptions" :key="index"
+              <div :class="['select-menu_dropdown-option', {'selected': isSelected(option)}]" v-for="(option, index) in getFilteredOptions" :key="index"
                   @click.stop="selectValue = option">
                 <div class="text-truncate">
                   <span>{{ getOptionName(option) }}</span>
+                </div>
+              </div>
+              <div class="select-menu_dropdown-option disabled" v-if="!getFilteredOptions.length">
+                <div class="text-truncate">
+                  <span>{{ $t('no_results_found') }}</span>
                 </div>
               </div>
             </div>
@@ -50,18 +68,9 @@
         type: Array,
         default: () => ([])
       },
-      custom: {
-        type: Boolean,
-        default: false
-      },
-      multiple: {
-        type: Boolean,
-        default: false
-      },
-      disabled: {
-        type: Boolean,
-        default: false
-      },
+      custom: Boolean,
+      multiple: Boolean,
+      disabled: Boolean,
       label: {
         type: String,
         default: ''
@@ -78,30 +87,12 @@
         type: Boolean,
         default: true
       },
-      nameInValue: {
-        type: Boolean,
-        default: false
-      },
-      objectInValue: {
-        type: Boolean,
-        default: false
-      },
-      slugInValue: {
-        type: Boolean,
-        default: false
-      },
-      skipSelect: {
-        type: Boolean,
-        default: false
-      },
-      skipSelectFirst: {
-        type: Boolean,
-        default: false
-      },
-      translateOptions: {
-        type: Boolean,
-        default: false
-      },
+      nameInValue: Boolean,
+      objectInValue: Boolean,
+      slugInValue: Boolean,
+      skipSelect: Boolean,
+      skipSelectFirst: Boolean,
+      translateOptions: Boolean,
       clearOnDisable: {
         type: Boolean,
         default: true
@@ -110,27 +101,21 @@
         type: String,
         default: ''
       },
-      hideOptions: {
-        type: Boolean,
-        default: false
-      },
+      hideOptions: Boolean,
       showLabelOnSelect: {
         type: Boolean,
         default: true
       },
-      inSelectMenu: {
-        type: Boolean,
-        default: false
-      },
-      hasNoBg: {
-        type: Boolean,
-        default: false
-      }
+      inSelectMenu: Boolean,
+      hasSearch: Boolean,
+      hasNoBg: Boolean
     },
     data() {
       return {
+        search: '',
         blockClick: false,
-        showOptions: false
+        showOptions: false,
+        vsKey: 0
       }
     },
     methods: {
@@ -149,6 +134,10 @@
       },
       getOptionName(option) {
         return `${this.$translateHard(option.name?.[this.locale]) || (this.translateOptions ? this.$t(option.name) : this.$translateHard(option.name))}${this.suffix ? ' ' + this.suffix : ''}`;
+      },
+      getOptionKey(option) {
+        const value = this.getValue(option);
+        return this.getKey(value);
       },
       isSelected(option) {
         const value = this.getValue(option);
@@ -199,6 +188,10 @@
         let addons = this.clearOption ? [{ key: -1, name: this.$t('any') }] : []
         return [...addons, ...this.options];
       },
+      getFilteredOptions() {
+        if(!this.search || !this.hasSearch) return this.getOptions;
+        return this.options.filter(option => this.$search(option.name, this.search));
+      },
       getLabelText() {
         if(this.custom) {
           let value;
@@ -225,7 +218,7 @@
         } else return this.selectValue === '' || this.selectValue === null;
       },
       hasSelectedValue() {
-        return !this.hasNoValue && !this.skipSelect && !(this.skipSelectFirst && this.getKey(this.selectValue) === -1);
+        return !this.hasNoValue && !this.skipSelect && !(this.skipSelectFirst && (this.getKey(this.selectValue) === this.getOptionKey(this.getOptions[0])));
       },
       scrollOps() {
         return  {
@@ -253,8 +246,11 @@
             this.blockClick = false;
           }, 0);
           this.$nextTick(() => {
+            if(this.hasSearch && !this.isMobileBreakpoint) {
+              this.$refs.searchInput?.focus();
+            }
             // scroll to the selected option
-            if(!this.hasNoValue) {
+            if(!this.hasNoValue && !this.isMobileBreakpoint) {
               if(!this.$refs.vs) return;
               this.$refs.vs.scrollIntoView('.select-menu_dropdown-option.selected', 0);
             }
@@ -263,11 +259,16 @@
               this.$el.querySelector('.text-input input')?.focus();
             }
           });
+        } else {
+          this.search = '';
         }
         // hide overflow when selected
         if(!this.inSelectMenu) {
           document.querySelector('body').classList[val ? 'add' : 'remove']('select-menu-open');
         }
+      },
+      getFilteredOptions() {
+        this.vsKey++;
       }
     },
     mounted() {

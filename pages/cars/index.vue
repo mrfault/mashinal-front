@@ -108,7 +108,11 @@ export default {
       this.pending = true;
       await this.getGridSearch({ ...this.searchParams, post, page });
       this.pending = false;
-      this.scrollTo(page === 1 ? '.announcements-grid' : '.paginated', [-15, -20]);
+      if(page === 1) {
+        this.scrollTo('.announcements-sorting');
+      } else {
+        this.scrollTo('.announcements-grid.paginated', [-15, -20]);
+      }
     }
   },
   computed: {
