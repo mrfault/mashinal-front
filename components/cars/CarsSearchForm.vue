@@ -277,11 +277,6 @@ export default {
         all_options: {},
         announce_type: 1,
         currency: 1,
-        body: [],
-        korobka: [],
-        engine_type: [],
-        gearing: [],
-        n_of_seats: [],
         min_capacity: '',
         max_capacity: '',
         min_year: '',
@@ -293,6 +288,11 @@ export default {
         region: '',
         damage: '',
         customs: '',
+        body: [],
+        korobka: [],
+        engine_type: [],
+        gearing: [],
+        n_of_seats: [],
         colors: [],
         is_matte: false,
         in_garanty: false,
@@ -328,11 +328,21 @@ export default {
   },
   created() {
     if(this.routeName === 'index') 
-      this.$nuxt.$on('logo-click', this.setFormData);
+      this.$nuxt.$on('logo-click', this.resetForm);
+    if(!this.advanced) {
+      ['min_capacity','max_capacity','mileage_from','mileage_to','damage','customs']
+        .map(key => { this.$set(this.form, key, ''); });
+      ['body','korobka','engine_type','gearing','n_of_seats','colors']
+        .map(key => { this.$set(this.form, key, []); });
+      ['is_matte','in_garanty','with_video']
+        .map(key => { this.$set(this.form, key, false); });
+      ['all_options']
+        .map(key => { this.$set(this.form, key, {}); });
+    }
   },
   beforeDestroy() {
     if(this.routeName === 'index') 
-      this.$nuxt.$off('logo-click', this.setFormData);
+      this.$nuxt.$off('logo-click', this.resetForm);
   }
 }
 </script>

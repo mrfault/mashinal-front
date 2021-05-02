@@ -68,7 +68,7 @@ export const SearchMixin = {
         });
       }
     },
-    resetForm(submit = true) {
+    resetForm(submit = false) {
       this.setFormData({});
       if (submit) this.submitForm();
     },
