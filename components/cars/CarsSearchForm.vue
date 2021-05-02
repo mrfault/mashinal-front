@@ -177,6 +177,9 @@
             <form-checkbox :label="$t('with_video')" v-model="form.with_video" 
               input-name="with_video" />
           </div>
+          <div class="col-12">
+            <color-options v-model="form.colors" :matt="form.is_matte" @changeMatt="form.is_matte = $event" />
+          </div>
         </template>
         <div class="col-6 col-lg-2 mb-2 mb-lg-3 d-none d-lg-block" v-if="!advanced && !assistant">
           <div class="form-info text-green">
@@ -236,10 +239,13 @@
 import { mapGetters, mapActions } from 'vuex';
 
 import { SearchMixin } from '~/mixins/search';
-import TransitionExpand from '../transitions/TransitionExpand.vue';
+
+import ColorOptions from '~/components/options/ColorOptions';
 
 export default {
-  components: { TransitionExpand },
+  components: { 
+    ColorOptions
+  },
   mixins: [SearchMixin],
   props: {
     totalCount: {
@@ -303,7 +309,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['brands', 'bodyOptions', 'carModels', 'carGenerations', 'sellOptions', 'allSellOptions2', 'colors'])
+    ...mapGetters(['brands', 'carModels', 'carGenerations', 'bodyOptions', 'sellOptions', 'allSellOptions2'])
   },
   methods: {
     ...mapActions(['getModelsArray', 'getModelGenerationsArray']),
