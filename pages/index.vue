@@ -1,7 +1,7 @@
 <template>
   <div class="pages-index">
     <div class="container">
-      <cars-search-form 
+      <car-search-form 
         :total-count="mainAnnouncements.paginate.total"
         :pending="pending"
         @pending="pending = true"
@@ -44,13 +44,13 @@
 <script>
 import { mapGetters } from 'vuex';
 
-import CarsSearchForm from '~/components/cars/CarsSearchForm';
+import CarSearchForm from '~/components/cars/CarSearchForm';
 import Grid from '~/components/announcements/Grid';
 
 export default {
   name: 'pages-index',
   components: {
-    CarsSearchForm,
+    CarSearchForm,
     Grid
   },
   head() {

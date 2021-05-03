@@ -2,7 +2,7 @@
   <div class="pages-advanced-search">
     <div class="container"> 
       <breadcrumbs :crumbs="crumbs" />
-      <cars-search-form 
+      <car-search-form 
         :assistant="true"
         :pending="pending"
         @pending="pending = true"
@@ -12,12 +12,12 @@
 </template>
 
 <script>
-import CarsSearchForm from '~/components/cars/CarsSearchForm';
+import CarSearchForm from '~/components/cars/CarSearchForm';
 
 export default {
   name: 'pages-cars-assistant',
   components: {
-    CarsSearchForm
+    CarSearchForm
   },
   nuxtI18n: {
     paths: {
