@@ -391,7 +391,7 @@ textarea {
 .range-slider {
   position: relative;
   z-index: 0;
-  padding-top: 10px;
+  padding: 10px 8px 0;
   .vue-slider {
     height: 2px;
     &-rail {
@@ -400,10 +400,22 @@ textarea {
     &-process {
       background-color: $dark-blue-1;
     }
+    &-dot {
+      width: 16px;
+      height: 16px;
+      &:nth-child(2){
+        margin-left: -8px;
+      }
+      &:nth-child(3){
+        margin-left: 8px;
+      }
+    }
     &-dot-tooltip {
       font-size: 13px;
       font-weight: 500;
       top: -5px;
+      background-color: $white;
+      border-radius: 4px;
     }
     &-dot-handle {
       box-shadow: none;
@@ -533,6 +545,9 @@ textarea {
       &-dot-handle {
         border: 2px solid $white;
         box-shadow: 0 0 0 2px $dark-2;
+        background-color: $dark-2;
+      }
+      &-dot-tooltip {
         background-color: $dark-2;
       }
     }

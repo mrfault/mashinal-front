@@ -8,6 +8,7 @@
         :interval="step" 
         :enable-cross="false"
         :tooltip="'always'"
+        :min-range="step"
       >
         <template v-slot:tooltip="{ value }">
           <div class="tooltip">
