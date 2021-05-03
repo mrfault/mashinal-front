@@ -38,9 +38,28 @@ export const SearchMixin = {
     parseFormData() {
       this.setFormData(JSON.parse(this.$route.query.car_filter || '{}'));
       let keys = Object.keys(this.form.additional_brands).filter(key => this.form.additional_brands[key].brand);
-      if(keys.length) this.rows = [...keys];
+      if( keys.length) this.rows = [...keys];
+    },
+    beforeSubmitForm() {
+      if (['cars-assistant'].includes(this.routeName)) {
+        this.$set(this.form, 'currency', 1);
+        // reset brands
+        this.rows.map(this.removeSearchRow);
+        this.setBrand('', this.rows[0]);
+        // reset other options
+        ['min_year','max_year','price_from','price_to','region',
+         'min_capacity','max_capacity','mileage_from','mileage_to','damage','customs']
+          .map(key => { this.$set(this.form, key, ''); });
+        ['body','korobka','engine_type','gearing','n_of_seats','colors']
+          .map(key => { this.$set(this.form, key, []); });
+        ['credit','exchange_possible','is_matte','in_garanty','with_video']
+          .map(key => { this.$set(this.form, key, false); });
+        ['all_options']
+          .map(key => { this.$set(this.form, key, {}); });
+      }
     },
     submitForm() {
+      this.beforeSubmitForm();
       // tracking
       this.fbTrack('Search Api');
       this.gtagTrack('AW-600951956/Qeu4CILAyPIBEJSZx54C');
@@ -134,7 +153,7 @@ export const SearchMixin = {
       }
     },
     isStarterPage() {
-      return ['/', '/moto', '/commercial'].map(path => this.$localePath(path)).includes(this.$route.path);
+      return ['index', 'moto', 'commercial'].includes(this.routeName);
     },
     filtersApplied() {
       let hasBrand = this.rows.filter(key => this.form.additional_brands[key].brand).length;

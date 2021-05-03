@@ -21,13 +21,24 @@ export default {
   },
   nuxtI18n: {
     paths: {
-      az: '/masinlar/yardimci'
+      az: '/masinlar/beledci'
     }
   },
   head() {
     return this.$headMeta({
       title: this.$t('helper_search')
     });
+  },
+  async asyncData({ store }) {
+    await Promise.all([
+      store.dispatch('getBodyOptions'),
+      store.dispatch('getOptions'),
+      store.dispatch('getAllOtherOptions', '2'),
+    ]);
+
+    return {
+      pending: false
+    }
   },
   computed: {
     crumbs() {
