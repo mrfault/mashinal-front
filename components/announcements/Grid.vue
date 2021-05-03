@@ -19,7 +19,7 @@
       v-if="paginate && paginate.last_page > 1"
       :page-count="paginate.last_page"
       :value="paginate.current_page"
-      @changePage="changePage"
+      @change-page="changePage"
     />
   </div>
 </template>
@@ -51,7 +51,7 @@ export default {
         });
       } else {
         this.$router.push({ query: { ...this.$route.query, page } }, () => {
-          this.$emit('changePage', page);
+          this.$emit('change-page', page);
         });
       }
     }

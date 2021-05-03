@@ -187,18 +187,6 @@ export const SearchMixin = {
         { name: this.$t('show_by_mileage'), key: 'mileage_asc' },
         { name: this.$t('show_by_year'), key: 'year_desc' }
       ];
-    },
-    getGroupTitles() {
-      return [
-        this.$t('accordeon_view'),
-        this.$t('accordeon_exterior_elements'),
-        this.$t('accordeon_theft_protection'),
-        this.$t('accordeon_multimedia'),
-        this.$t('accordeon_cabin'),
-        this.$t('accordeon_comfort'),
-        this.$t('accordeon_security'),
-        this.$t('accordeon_other')
-      ]
     }
   },
   created() {

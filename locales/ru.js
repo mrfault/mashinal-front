@@ -681,6 +681,7 @@ export default {
 		"АИ-92"
 	],
 	"gas": "Газ",
+	"gas-turbine": "Газовая турбина",
 	"gas_distribution_system": "Система газораспределения",
 	"gas_equipment": "Газобаллонное оборудование",
 	"gaz": "Газ",

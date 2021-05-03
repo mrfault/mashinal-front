@@ -1,5 +1,5 @@
 <template>
-  <div class="form">
+  <div class="cars-search-form form">
     <div class="card pt-0 pt-lg-4">
       <div class="row">
         <div class="col-lg-4 mb-2 mb-lg-3">
@@ -178,7 +178,10 @@
               input-name="with_video" />
           </div>
           <div class="col-12">
-            <color-options v-model="form.colors" :matt="form.is_matte" @changeMatt="form.is_matte = $event" />
+            <color-options v-model="form.colors" :matt="form.is_matte" @change-matt="form.is_matte = $event" />
+          </div>
+          <div class="col-12">
+            <car-options :values="form.all_options" name-in-value @change-option="setCarOption" />
           </div>
         </template>
         <div class="col-6 col-lg-2 mb-2 mb-lg-3 d-none d-lg-block" v-if="!advanced && !assistant">
@@ -186,6 +189,8 @@
             {{ $readPlural(totalCount, $t('plural_forms_announcements')) }}
           </div>
         </div>
+      </div>
+      <div :class="['row', {'stick-to-bottom pt-2 pt-lg-3 pb-2 pb-lg-3 mb-n2 mb-lg-n3': advanced}]">
         <div class="col-12">
           <div class="row flex-column-reverse flex-lg-row">
             <div class="col-lg-8">
@@ -241,10 +246,12 @@ import { mapGetters, mapActions } from 'vuex';
 import { SearchMixin } from '~/mixins/search';
 
 import ColorOptions from '~/components/options/ColorOptions';
+import CarOptions from '~/components/options/CarOptions';
 
 export default {
   components: { 
-    ColorOptions
+    ColorOptions,
+    CarOptions
   },
   mixins: [SearchMixin],
   props: {
@@ -330,9 +337,15 @@ export default {
       this.$set(this.form.additional_brands[index], 'model_slug', slug);
       this.$set(this.form.additional_brands[index], 'generation', '');
       await this.getModelGenerationsArray({ value: slug, brand_slug, index });
+    },
+    setCarOption(key, value) {
+      if(value === false || value === '' || (typeof value === 'object' && !Object.keys(value).length))
+        this.$delete(this.form.all_options, key);
+      else this.$set(this.form.all_options, key, value);
     }
   },
   created() {
+    this.$nuxt.$on('go-to-search', this.goToSearch);
     if(this.routeName === 'index') 
       this.$nuxt.$on('logo-click', this.resetForm);
     if(!this.advanced) {
@@ -347,6 +360,7 @@ export default {
     }
   },
   beforeDestroy() {
+    this.$nuxt.$off('go-to-search', this.goToSearch);
     if(this.routeName === 'index') 
       this.$nuxt.$off('logo-click', this.resetForm);
   }

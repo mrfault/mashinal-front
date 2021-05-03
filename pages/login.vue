@@ -18,7 +18,7 @@
           </div>
           <div class="col-12 col-lg-6">
             <div class="tab-form">
-              <login-tabs @updateTab="tab = $event" />
+              <login-tabs @update-tab="tab = $event" />
             </div>
           </div>
         </div>

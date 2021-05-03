@@ -62,10 +62,7 @@ export default {
   async asyncData({ store }) {
     await Promise.all([
       store.dispatch('getBrands'),
-      store.dispatch('getBodyOptions'),
       store.dispatch('getOptions'),
-      store.dispatch('getAllOtherOptions', '2'),
-      store.dispatch('getColors'),
       store.dispatch('getMainSearch', { url: '/home_page_cars' }),
       store.dispatch('clearSavedSearch')
     ]);

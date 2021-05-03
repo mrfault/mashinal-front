@@ -680,6 +680,7 @@ export default {
 		"AI-92"
 	],
 	"gas": "Qaz",
+	"gas-turbine": "Turbin mühərrik",
 	"gas_distribution_system": "Система газораспределения",
 	"gas_equipment": "Qaz-balon avadanlıqları",
 	"gaz": "Gaz",

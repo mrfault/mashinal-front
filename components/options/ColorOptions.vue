@@ -7,7 +7,7 @@
       </span>
     </div>
     <div class="col-2 col-lg-auto mb-2 mb-lg-3" key="matt">
-      <span :class="['color','matt', {'selected': matt}]" @click="$emit('changeMatt', !matt)">
+      <span :class="['color','matt', {'selected': matt}]" @click="$emit('change-matt', !matt)">
         <span>{{ $t('matt').slice(0,3) }}</span>
       </span>
     </div>

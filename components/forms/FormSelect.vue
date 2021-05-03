@@ -22,7 +22,7 @@
         v-if="showOptions && isMobileBreakpoint && !inSelectMenu" 
         @back="showOptions = false" 
         @accept="showOptions = false"
-        :show-check="custom"
+        :show-check="(custom || multiple) && !hasNoValue"
       />
       <div :class="['select-menu_dropdown', `anchor-${anchor}`, {'show': showOptions, custom, 'responsive': isMobileBreakpoint}]" ref="dropdownOptions">
         <template v-if="showOptions">
@@ -218,7 +218,9 @@
           : this.label;
       },
       getActionBarText() {
-        return `${(this.showLabelOnSelect && this.allowClear && !this.custom && !this.values.showLabel) ? '' : this.label + ': '}${this.getLabelText}`;
+        if (this.hasNoValue) return this.label;
+        else if (this.multiple) return this.value.length > 1 ? `${this.label} (${this.value.length})` : this.getLabelText;
+        return `${(this.showLabelOnSelect && this.allowClear && !(this.custom && !this.values.showLabel)) ? '' : this.label + ': '}${this.getLabelText}`;
       },
       hasNoValue() {
         if(this.custom) 

@@ -68,7 +68,7 @@
           password_confirmation: this.form.passwordConfirm
         }).then(() => {
           this.pending = false;
-          this.$emit('updateTab','sign-up','sms');
+          this.$emit('update-tab','sign-up','sms');
         }).catch((err) => {
           this.pending = false;
         });

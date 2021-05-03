@@ -35,6 +35,37 @@ h1 {
   font-weight: 500;
 }
 
+h2 {
+  &.title-with-line {
+    position: relative;
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0 0 20px;
+    span {
+      display: inline-block;
+      position: relative;
+      background-color: $white;
+      padding-right: 25px;
+      max-width: 90%;
+    }
+    &::before {
+      content: '';
+      @include abs-middle;
+      top: 12px;
+      width: 100%;
+      border-bottom: 1px solid;
+    }
+  }
+}
+
+.dark-mode {
+  h2.title-with-line {
+    span {
+      background-color: $dark-2;
+    }
+  }
+}
+
 hr {
   height: 1px;
   background-color: $grayish-blue-3;
@@ -48,6 +79,10 @@ hr {
 
 .pointer-events-none {
   pointer-events: none;
+}
+
+.opacity-0 {
+  opacity: 0;
 }
 
 .wrapper {

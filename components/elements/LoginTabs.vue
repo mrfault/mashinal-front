@@ -20,26 +20,26 @@
         </div>
       </div>
       <sign-in-form 
-        @updateTab="updateTab" 
+        @update-tab="updateTab" 
         v-if="action === 'sign-in'" 
         :form="form" 
         :validator="$v.form" 
         :action-text="actionText && actionText.login" 
       />
       <forgot-password 
-        @updateTab="updateTab"
+        @update-tab="updateTab"
         v-else-if="action === 'forgot'" 
         :form="form" 
         :validator="$v.form" 
       />
       <reset-password 
-        @updateTab="updateTab" 
+        @update-tab="updateTab" 
         v-else-if="action === 'reset'" 
         :form="form" 
         :validator="$v.form" 
       />
       <sign-up-form
-        @updateTab="updateTab"
+        @update-tab="updateTab"
         @reset="resetForm"
         v-else-if="action === 'sign-up'"
         :form="form"
@@ -47,7 +47,7 @@
         :action-text="actionText && actionText.register" 
       />
       <confirm-phone 
-        @updateTab="updateTab" 
+        @update-tab="updateTab" 
         v-else-if="action === 'sms'" 
         :form="form" 
         :validator="$v.form" 
@@ -123,7 +123,7 @@
         this.tab = tab;
         this.action = action !== '' ? action : tab;
         if(action === 'sms') this.resendData = data;
-        this.$emit('updateTab', tab);
+        this.$emit('update-tab', tab);
       }
     },
     created() {

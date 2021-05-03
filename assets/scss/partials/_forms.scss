@@ -251,7 +251,7 @@ textarea {
   }
   &_dropdown {
     position: absolute;
-    top: 49px;
+    top: 54px;
     width: 100%;
     width: calc(100% + 1px);
     z-index: 2;
@@ -262,10 +262,10 @@ textarea {
     box-shadow: $shadow-light-5;
     padding: 7px 0;
     &.anchor-left {
-      left: -1px;
+      left: 0;
     }
     &.anchor-right {
-      right: -1px;
+      right: 0;
     }
     & > .container {
       height: 100%;

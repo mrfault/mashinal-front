@@ -22,7 +22,7 @@
         :paginate="carsAnnouncements.paginate"
         :title="$t('recent_uploads')"
         :pending="pending"
-        @changePage="searchCars"
+        @change-page="searchCars"
       />
       <no-results v-else />
       <grid 

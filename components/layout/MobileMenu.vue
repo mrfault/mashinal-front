@@ -8,8 +8,8 @@
         <nuxt-link class="logo" :to="$localePath('/')" @click.native="$nuxt.$emit('logo-click')">
           <img :src="`/img/${isDarkMode ? 'logo-white' : 'logo'}.svg`" alt="logo" />
         </nuxt-link>
-        <nuxt-link custom :to="$localePath('/cars/advanced-search')" v-slot="{ navigate }">
-          <span class="cursor-pointer" @click="navigate">
+        <nuxt-link custom :to="$localePath('/cars/advanced-search')" v-slot="{ href }">
+          <span class="cursor-pointer" @click="goToSearch(href)">
             <icon name="options" />
           </span>
         </nuxt-link>
@@ -84,6 +84,9 @@ export default {
     handleLink(menu = false) {
       this.toggleSidebarMenu(false);
       if(!menu) return;
+    },
+    goToSearch(path) {
+      this.$nuxt.$emit('go-to-search', path);
     }
   },
   watch: {

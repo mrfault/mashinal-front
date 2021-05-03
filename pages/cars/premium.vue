@@ -9,7 +9,7 @@
         :paginate="$paginate(promotedAnnouncements)"
         :icon-name="'premium'"
         :pending="pending"
-        @changePage="searchCars"
+        @change-page="searchCars"
       />
       <no-results v-else />
     </div>
