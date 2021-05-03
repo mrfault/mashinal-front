@@ -194,6 +194,19 @@
       }
     }
   }
+
+  .no-results {
+    span {
+      color: $grey-5;
+    }
+  }
+
+  .collapse-toggle {
+    .btn-circle {
+      color: $white;
+      background-color: $dark-1;
+    }
+  }
 }
 
 @include media-max-width('lg') {
@@ -262,7 +275,7 @@
   }
 
   .no-results {
-    margin: 90px 0 60px;
+    margin: 80px 0 50px;
     span {
       font-size: 16px;
     }
@@ -270,14 +283,28 @@
       width: 50px;
     }
   }
+
+  .announcements-sorting {
+    margin: 0 -10px;
+  }
 }
 
 @include media-min-width('lg') {
   .announcements-grid {
-    &:first-child {
-      margin-top: 0;
-    }
     .col-lg-auto {
+      width: 20%;
+    }
+  }
+
+  .breadcrumbs + .announcements-grid {
+    margin-top: 0;
+  }
+
+  .announcements-sorting {
+    .col-lg-auto:first-child {
+      width: 80%;
+    }
+    .col-lg-auto:last-child {
       width: 20%;
     }
   }

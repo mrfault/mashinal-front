@@ -1,14 +1,13 @@
 <template>
   <div class="pages-cars">
-    <div class="container">
-      <div class="card pt-0 pt-lg-4">
-        <cars-search-form 
-          :total-count="carsAnnouncements.paginate.total"
-          :pending="pending"
-          @pending="pending = true"
-          @submit="searchCars" 
-        />
-      </div>
+    <div class="container"> 
+      <breadcrumbs :crumbs="crumbs" />
+      <cars-search-form 
+        :total-count="carsAnnouncements.paginate.total"
+        :pending="pending"
+        @pending="pending = true"
+        @submit="searchCars" 
+      />
       <grid 
         v-if="carsAnnouncements.vip.length"
         :announcements="carsAnnouncements.vip" 
@@ -23,7 +22,7 @@
         :paginate="carsAnnouncements.paginate"
         :title="$t('recent_uploads')"
         :pending="pending"
-        @changePage="searchCars"
+        @change-page="searchCars"
       />
       <no-results v-else />
       <grid 
@@ -46,6 +45,7 @@ import Grid from '~/components/announcements/Grid';
 import NoResults from '~/components/elements/NoResults';
 
 export default {
+  name: 'pages-cars-index',
   components: {
     CarsSearchForm,
     Grid,
@@ -69,10 +69,7 @@ export default {
 
     await Promise.all([
       store.dispatch('getBrands'),
-      store.dispatch('getBodyOptions'),
       store.dispatch('getOptions'),
-      store.dispatch('getAllOtherOptions', '2'),
-      store.dispatch('getColors'),
       store.dispatch('getGridSearch', { ...searchParams, post, page }),
       // get model options for brands
       ...Object.keys(post?.additional_brands || {})
@@ -110,11 +107,21 @@ export default {
       this.pending = true;
       await this.getGridSearch({ ...this.searchParams, post, page });
       this.pending = false;
-      this.scrollTo(page === 1 ? '.announcements-grid' : '.paginated', [-20, -30]);
+      if(page === 1) {
+        this.scrollTo('.announcements-sorting');
+      } else {
+        this.scrollTo('.announcements-grid.paginated', [-15, -20]);
+      }
     }
   },
   computed: {
-    ...mapGetters(['carsAnnouncements'])
+    ...mapGetters(['carsAnnouncements']),
+    
+    crumbs() {
+      return [
+        { name: this.$t('cars') }
+      ]
+    }
   }
 }
 </script>

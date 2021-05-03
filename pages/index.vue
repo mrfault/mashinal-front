@@ -1,13 +1,11 @@
 <template>
   <div class="pages-index">
     <div class="container">
-      <div class="card pt-0 pt-lg-4">
-        <cars-search-form 
-          :total-count="mainAnnouncements.paginate.total"
-          :pending="pending"
-          @pending="pending = true"
-        />
-      </div>
+      <cars-search-form 
+        :total-count="mainAnnouncements.paginate.total"
+        :pending="pending"
+        @pending="pending = true"
+      />
       <grid 
         v-if="mainAnnouncements.vip.length"
         :announcements="mainAnnouncements.vip" 
@@ -50,6 +48,7 @@ import CarsSearchForm from '~/components/cars/CarsSearchForm';
 import Grid from '~/components/announcements/Grid';
 
 export default {
+  name: 'pages-index',
   components: {
     CarsSearchForm,
     Grid
@@ -63,10 +62,7 @@ export default {
   async asyncData({ store }) {
     await Promise.all([
       store.dispatch('getBrands'),
-      store.dispatch('getBodyOptions'),
       store.dispatch('getOptions'),
-      store.dispatch('getAllOtherOptions', '2'),
-      store.dispatch('getColors'),
       store.dispatch('getMainSearch', { url: '/home_page_cars' }),
       store.dispatch('clearSavedSearch')
     ]);

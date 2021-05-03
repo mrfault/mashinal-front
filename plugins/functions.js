@@ -71,6 +71,9 @@ export default function({ app, route, store }, inject) {
       .replace('класс', app.i18n.t('class'))
       .replace(/( – 0)|( – н\.в\.)/g, name.toString().includes(`${year}`) ? '' : ` – ${year}`);
   });
+  inject('search', (str, keyword) => {
+    return str.toLowerCase().search(keyword.toLowerCase()) !== -1;
+  });
   // underscore
   inject('clone', _.clone);
 }

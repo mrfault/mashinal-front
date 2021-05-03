@@ -1,0 +1,46 @@
+.color-options {
+  .color {
+    display: block;
+    cursor: pointer;
+    width: 100%;
+    padding-bottom: 100%;
+    border: 1px solid $grayish-blue-4;
+    border-radius: 4px;
+    span:not(.sr-only), i {
+      @include abs-middle;
+      font-size: 13px;
+      font-weight: 500;
+    }
+    &.selected {
+      color: #296FD4 !important;
+      border-color: #296FD4 !important;
+      &.contrast {
+        color: #FFCE00 !important;
+        border-color: #FFCE00 !important;
+      }
+    }
+  }
+}
+
+.car-options {
+  &_row > .d-flex {
+    h2 {
+      width: 100%;
+      margin: 0;
+      user-select: none;
+    }
+    & > i::before {
+      font-size: 12px;
+      margin-left: 25px;
+      margin-top: 6px;
+    }
+  }
+}
+
+@include media-min-width('lg') {
+  .color-options {
+    .col-lg-auto {
+      width: 65px;
+    }
+  }
+}

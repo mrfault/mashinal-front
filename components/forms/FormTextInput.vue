@@ -1,6 +1,7 @@
 <template>
   <div class="form-group">
     <div class="text-input">
+      <icon :name="iconName" v-if="iconName" />
       <input 
         :id="id"
         :type="type"
@@ -22,6 +23,7 @@
     props: {
       value: {},
       id: String,
+      iconName: String,
       type: {
         type: String,
         default: 'text'

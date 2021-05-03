@@ -18,7 +18,7 @@
           </div>
           <div class="col-12 col-lg-6">
             <div class="tab-form">
-              <login-tabs @updateTab="tab = $event" />
+              <login-tabs @update-tab="tab = $event" />
             </div>
           </div>
         </div>
@@ -31,6 +31,7 @@
 import { mapActions } from 'vuex';
 
 export default {
+  name: 'pages-login',
   middleware: 'guest',
   nuxtI18n: {
     paths: {
@@ -45,9 +46,13 @@ export default {
   },
   data() {
     return {
-      tab: 'sign-in',
-      crumbs: [
-        { name: 'login_or_register', route: '/login' }
+      tab: 'sign-in'
+    }
+  },
+  computed: {
+    crumbs() {
+      return [
+        { name: this.$t('login_or_register') }
       ]
     }
   },

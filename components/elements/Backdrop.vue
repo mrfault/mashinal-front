@@ -14,12 +14,12 @@ export default {
     }
   },
   mounted() {
-    document.querySelector('body').style.overflowY = 'hidden';
+    this.setBodyOverflow('hidden');
     this.show = true;
   },
   beforeDestroy() {
     this.show = false;
-    document.querySelector('body').style.overflowY = 'scroll';
+    this.setBodyOverflow('scroll');
   }
 }
 </script>

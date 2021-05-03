@@ -2,7 +2,7 @@
   <form class="form sign-in" @submit.prevent="submit" novalidate>
     <div class="form-part">
       <p v-if="form.staticPhone">
-        <span v-mask="maskPhone(true)">{{ sell_phone }}</span>
+        <span v-mask="maskPhone(true)">{{ sellPhoneEntered }}</span>
       </p>
       <form-text-input v-else
         autocomplete="tel" 
@@ -22,7 +22,7 @@
       />
     </div>
     <p class="info-text" v-if="form.staticPhone"><icon name="info-circle" /> {{ $t('login_before_announce') }}</p>
-    <p><span class="cursor-pointer" @click="$emit('updateTab','sign-in','forgot')">{{ $t('forgot_your_password')}}</span></p>
+    <p><span class="cursor-pointer" @click="$emit('update-tab','sign-in','forgot')">{{ $t('forgot_your_password')}}</span></p>
     <button type="submit" :class="['btn','btn--green',{pending}]">{{ actionText || $t('login') }}</button>
   </form>
 </template>
@@ -43,7 +43,7 @@
       }
     },  
     computed: {
-      ...mapState(['sell_phone'])
+      ...mapState(['sellPhoneEntered'])
     },
     methods: {
       submit() {
@@ -64,7 +64,7 @@
           if(response.status === 401) {
             this.passwordWrong = true;
           } else if(response.status === 406) {
-            this.$emit('updateTab','sign-up','sms', response.data.data);
+            this.$emit('update-tab','sign-up','sms', response.data.data);
           }
         });
       }

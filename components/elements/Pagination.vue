@@ -144,7 +144,7 @@
 
         this.innerValue = selected
         this.$emit('input', selected)
-        this.$emit('changePage', selected)
+        this.$emit('change-page', selected)
       },
       prevPage() {
         if (this.selected <= 1) return

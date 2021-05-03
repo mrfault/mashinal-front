@@ -78,7 +78,7 @@
             });
           } else {
             this.pending = false;
-            this.$emit('updateTab','sign-in');
+            this.$emit('update-tab','sign-in');
           }
         }).catch((err) => {
           this.pending = false;

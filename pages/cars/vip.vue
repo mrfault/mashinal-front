@@ -1,6 +1,7 @@
 <template>
   <div class="pages-vip">
     <div class="container">
+      <breadcrumbs :crumbs="crumbs" />
       <grid 
         v-if="promotedAnnouncements.data.length"
         :announcements="promotedAnnouncements.data" 
@@ -8,7 +9,7 @@
         :paginate="$paginate(promotedAnnouncements)"
         :icon-name="'vip'"
         :pending="pending"
-        @changePage="searchCars"
+        @change-page="searchCars"
       />
       <no-results v-else />
     </div>
@@ -22,6 +23,7 @@ import Grid from '~/components/announcements/Grid';
 import NoResults from '~/components/elements/NoResults';
 
 export default {
+  name: 'pages-cars-vip',
   components: {
     Grid,
     NoResults
@@ -55,7 +57,14 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['promotedAnnouncements'])
+    ...mapGetters(['promotedAnnouncements']),
+    
+    crumbs() {
+      return [
+        { name: this.$t('cars'), route: '/cars' },
+        { name: this.$t('vip_announcements') }
+      ]
+    }
   }
 }
 </script>

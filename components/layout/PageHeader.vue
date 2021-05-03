@@ -8,8 +8,8 @@
         <nav>
           <ul class="menu">
             <li v-for="menu in topbarMenus" :key="menu.title">
-              <a :href="$localePath(menu.route)" @click.prevent="handleMenuItem(menu)">
-                <i :class="menu.icon"></i>
+              <a :href="getMenuLink(menu)" @click.prevent="handleMenuItem(menu)">
+                <icon :name="menu.icon" />
                 {{ $t(menu.title) }}
               </a>
             </li>
@@ -26,7 +26,7 @@
                   <hr/>
                   <ul>
                     <li v-for="menu in userMenus" :key="menu.title">
-                      <a :href="$localePath(menu.route)" @click.prevent="handleMenuItem(menu)">
+                      <a :href="getMenuLink(menu)" @click.prevent="handleMenuItem(menu)">
                         {{ $t(menu.title) }}
                       </a>
                     </li>
@@ -55,15 +55,17 @@
         <nav>
           <ul class="menu">
             <li v-for="menu in navbarMenus" :key="menu.id" :class="{'dropdown': hasDropdown(menu)}">
-              <a :href="$localePath(menu.url)" @click.prevent="handleMenuItem(menu)">
-                {{ menu.name[locale] }}
-                <icon name="chevron-down" v-if="hasDropdown(menu)" />
-              </a>
+              <nuxt-link custom :to="getMenuLink(menu)" v-slot="{ href, isActive }">
+                <a :href="href" @click.prevent="handleMenuItem(menu)" :class="{'active': isActive}">
+                  {{ menu.name[locale] }}
+                  <icon name="chevron-down" v-if="hasDropdown(menu)" />
+                </a>
+              </nuxt-link>
               <div class="dropdown-content" v-if="hasDropdown(menu)">
                 <div class="container">
                   <ul class="dropdown-menu row">
                     <li class="col-3" v-for="submenu in menu.children" :key="submenu.id">
-                      <a :href="$localePath(submenu.url)" @click.prevent="handleMenuItem(submenu)">
+                      <a :href="getMenuLink(submenu)" @click.prevent="handleMenuItem(submenu)">
                         <icon :name="getIconBase(menu)+submenu.order" />
                         {{ submenu.name[locale] }}
                       </a>
@@ -91,9 +93,12 @@ export default {
   methods: {
     ...mapActions(['changeLocale']),
 
+    getMenuLink(item) {
+      return this.$localePath(item.route || item.url);
+    },
     handleMenuItem(item) {
       if(item.route === 'javascript:void(0);') return;
-      this.$router.push(this.$localePath(item.route))
+      this.$router.push(this.getMenuLink(item))
     },
     hasDropdown(menu) {
       return [5,7].includes(menu.id) && menu.children.length;

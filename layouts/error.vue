@@ -19,6 +19,7 @@ import { LayoutMixin } from '~/mixins/layout';
 export default {
   props: ['error'],
   mixins: [LayoutMixin],
+  scrollToTop: true,
   head() {
     return this.$headMeta({
       title: this.errorTitle

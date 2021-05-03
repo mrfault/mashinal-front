@@ -2,7 +2,7 @@
   <form class="form forgot-password" @submit.prevent="submit" novalidate>
     <div class="form-part">
       <p v-if="form.staticPhone">
-        <span v-mask="maskPhone(true)">{{ sell_phone }}</span>
+        <span v-mask="maskPhone(true)">{{ sellPhoneEntered }}</span>
       </p>
       <form-text-input v-else
         autocomplete="tel" 
@@ -13,7 +13,7 @@
       />  
     </div>
     <p class="info-text"><icon name="info-circle" /> {{ $t('password_will_be_sent_by_email') }}</p>
-    <p><span class="cursor-pointer" @click="$emit('updateTab','sign-in')"><icon name="arrow-left" /> {{ $t('remember_your_password')}}</span></p>
+    <p><span class="cursor-pointer" @click="$emit('update-tab','sign-in')"><icon name="arrow-left" /> {{ $t('remember_your_password')}}</span></p>
     <button type="submit" :class="['btn','btn--green',{pending}]">{{ $t('send_the_code')}}</button>
   </form>
 </template>
@@ -27,7 +27,7 @@
       validator: {}
     },
     computed: {
-      ...mapState(['sell_phone'])
+      ...mapState(['sellPhoneEntered'])
     },
     data() {
       return {
@@ -43,7 +43,7 @@
           phone: this.form.phone.replace(/[^0-9]+/g, '')
         }).then(() => {
           this.pending = false;
-          this.$emit('updateTab','sign-in','reset');
+          this.$emit('update-tab','sign-in','reset');
         }).catch((err) => {
           this.pending = false;
         });

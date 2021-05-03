@@ -8,9 +8,11 @@
         <nuxt-link class="logo" :to="$localePath('/')" @click.native="$nuxt.$emit('logo-click')">
           <img :src="`/img/${isDarkMode ? 'logo-white' : 'logo'}.svg`" alt="logo" />
         </nuxt-link>
-        <span class="cursor-pointer" @click.stop>
-          <icon name="options" />
-        </span>
+        <nuxt-link custom :to="$localePath('/cars/advanced-search')" v-slot="{ href }">
+          <span class="cursor-pointer" @click="goToSearch(href)">
+            <icon name="options" />
+          </span>
+        </nuxt-link>
       </div>
     </div>
     <div class="menu-backdrop" v-if="showSidebar" @click="toggleSidebarMenu(false)"></div>
@@ -82,11 +84,14 @@ export default {
     handleLink(menu = false) {
       this.toggleSidebarMenu(false);
       if(!menu) return;
+    },
+    goToSearch(path) {
+      this.$nuxt.$emit('go-to-search', path);
     }
   },
   watch: {
     showSidebar(show) {
-      document.querySelector('body').style.overflowY = show ? 'hidden' : 'scroll';
+      this.setBodyOverflow(show ? 'hidden' : 'scroll');
     },
     breakpoint(breakpoint) {
       if(breakpoint === 'lg') {

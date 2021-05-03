@@ -38,7 +38,7 @@ export const SearchMixin = {
     parseFormData() {
       this.setFormData(JSON.parse(this.$route.query.car_filter || '{}'));
       let keys = Object.keys(this.form.additional_brands).filter(key => this.form.additional_brands[key].brand);
-      if(keys.length) this.counter = [...keys];
+      if(keys.length) this.rows = [...keys];
     },
     submitForm() {
       // tracking
@@ -58,7 +58,7 @@ export const SearchMixin = {
           // for ex. when routing from / to /cars
           if(this.routeName !== prevRouteName) {
             setTimeout(() => {
-              this.scrollTo('.announcements-grid', [-20, -30]);
+              this.scrollTo('.announcements-sorting');
             }, 100);
           }
           // look for a saved search
@@ -68,24 +68,27 @@ export const SearchMixin = {
         });
       }
     },
-    resetForm() {
+    resetForm(submit = false) {
       this.setFormData({});
-      this.submitForm();
+      if (submit) this.submitForm();
     },
     getOptionValue(name, key) {
       return this[`get${name}Options`].find(option => option.key === key)?.name || '';
     },
     addSearchRow(key) {
-      if (this.counter.length === 5) return;
+      if (this.rows.length === 5) return;
       let keys = Object.keys(this.form.additional_brands);
-      let index = this.counter.indexOf(key);
-      this.counter.splice(index + 1, 0, keys.filter(key => this.counter.indexOf(key) === -1)[0]);
+      let index = this.rows.indexOf(key);
+      this.rows.splice(index + 1, 0, keys.filter(key => this.rows.indexOf(key) === -1)[0]);
     },
     removeSearchRow(key) {
-      if (this.counter.length === 1) return;
-      let index = this.counter.indexOf(key);
+      if (this.rows.length === 1) return;
+      let index = this.rows.indexOf(key);
       this.setBrand('', key);
-      this.counter.splice(index, 1);
+      this.rows.splice(index, 1);
+    },
+    goToSearch(path) {
+      this.$router.push(`${path}?${this.meta.param}=${encodeURI(JSON.stringify(this.getFormData()))}`);
     },
     async handlePopState() {
       // refresh page's async data
@@ -111,7 +114,10 @@ export const SearchMixin = {
       set() {
         if(!this.loggedIn) return;
         if(this.singleSavedSearch.id) {
-          this.deleteSavedSearch(this.singleSavedSearch.id);
+          this.deleteSavedSearch(this.singleSavedSearch.id)
+            .then(() => {
+              this.$toasted.success(this.$t('my_templates_removed'));
+            });
         } else {
           let searchFilter = JSON.stringify(this.getFormData());
           // save search
@@ -127,14 +133,17 @@ export const SearchMixin = {
         }
       }
     },
+    isStarterPage() {
+      return ['/', '/moto', '/commercial'].map(path => this.$localePath(path)).includes(this.$route.path);
+    },
     filtersApplied() {
-      let hasBrand = this.counter.filter(key => this.form.additional_brands[key].brand).length;
+      let hasBrand = this.rows.filter(key => this.form.additional_brands[key].brand).length;
       let hasAllOptions = Object.keys(this.form.all_options).length;
       let hasOptions = Object.keys(this.getFormData()).length > 5 || (this.form.announce_type !== 1);
       return !!(hasBrand || hasAllOptions || hasOptions);
     },
     searchApplied() {
-      return !!(this.$route.query[this.meta.param] && this.$route.path === this.$localePath(this.meta.path));
+      return !this.isStarterPage && !!this.$route.query[this.meta.param];
     },
     // static data
     getYearOptions() {
@@ -178,22 +187,12 @@ export const SearchMixin = {
         { name: this.$t('show_by_mileage'), key: 'mileage_asc' },
         { name: this.$t('show_by_year'), key: 'year_desc' }
       ];
-    },
-    getGroupTitles() {
-      return [
-        this.$t('accordeon_view'),
-        this.$t('accordeon_exterior_elements'),
-        this.$t('accordeon_theft_protection'),
-        this.$t('accordeon_multimedia'),
-        this.$t('accordeon_cabin'),
-        this.$t('accordeon_comfort'),
-        this.$t('accordeon_security'),
-        this.$t('accordeon_other')
-      ]
     }
   },
   created() {
-    this.parseFormData();
+    if(!this.isStarterPage) {
+      this.parseFormData();
+    }
   },
   mounted() {
     this.$nuxt.$on('after-login', this.handleAfterLogin);
