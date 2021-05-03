@@ -56,6 +56,33 @@ export const SearchMixin = {
           .map(key => { this.$set(this.form, key, false); });
         ['all_options']
           .map(key => { this.$set(this.form, key, {}); });
+        // update price range
+        this.$set(this.form, 'price_from', this.formAssistant.price[0]);
+        this.$set(this.form, 'price_to', this.formAssistant.price[1]);
+        // update body options
+        let bodyValues = [];
+        for (let i in this.formAssistant.body)
+          bodyValues = [...bodyValues, ...this.formAssistant.body[i]];
+        let bodyOptions = this.bodyOptions.main.default_options.body.values
+          .filter(item => bodyValues.includes(item.key));
+        this.$set(this.form, 'body', bodyOptions);
+        // update pack options
+        let packsOptions = [{
+          trunk_volume_from: 500,
+          n_of_seats: this.allSellOptions2.n_of_seats.options.filter(option => [3,4,5,6,7].includes(option.key))
+        }, {
+          clearance_from: 20,
+          gearing: this.bodyOptions.main.default_options['privod'].values.filter(option => [3].includes(option.key))
+        }, {
+          fuel_rate_to: 7
+        }, {
+          acceleration_to: 7
+        }];
+        this.formAssistant.packs.map(i => {
+          Object.keys(packsOptions[i]).map(key => {
+            this.$set(this.form, key, packsOptions[i][key]);
+          });
+        })
       }
     },
     submitForm() {

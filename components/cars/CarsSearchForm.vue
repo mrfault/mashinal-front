@@ -24,7 +24,12 @@
           </div>
         </div>
         <template v-if="assistant">
-          
+          <div class="col-12">
+            <car-body-shortcuts v-model="formAssistant.body" />
+          </div>
+          <div class="col-12">
+            <car-option-packs v-model="formAssistant.packs" />
+          </div>
         </template>
         <template v-else>
           <template v-if="isMobileBreakpoint">
@@ -91,7 +96,7 @@
               <div class="row" v-if="!isMobileBreakpoint || advanced || !collapsed">
                 <div class="col-6 col-lg-3 mb-2 mb-lg-3">
                   <form-select :label="$t('price')" custom 
-                    :values="{from: form.price_from, to: form.price_to, suffix: getOptionValue('Currency', form.currency) }"
+                    :values="{from: form.price_from, to: form.price_to, suffix: form.currency === 2 ? '$' : '₼' }"
                     @clear="form.price_from = '', form.price_to = ''"
                   >
                     <div class="form-merged">
@@ -199,8 +204,20 @@
       </div>
       <div :class="['row', {'stick-to-bottom pt-2 pt-lg-3 pb-2 pb-lg-3 mb-n2 mb-lg-n3': advanced}]">
         <div class="col-12">
-          <div class="row flex-column-reverse flex-lg-row">
-            <div class="col-lg-8" v-if="!assistant">
+          <div :class="['row', {'flex-column-reverse flex-lg-row': !assistant, 'align-items-end': assistant}]">
+            <div class="col-lg-6" v-if="assistant">
+              <form-range v-model="formAssistant.price">
+                <div class="row mt-2 mt-lg-3 mb-2 mb-lg-0">
+                  <div class="col-6">
+                    <div class="form-info">{{ formAssistant.price[0] }} ₼</div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-info">{{ formAssistant.price[1] }} ₼</div>
+                  </div>
+                </div>
+              </form-range>
+            </div>
+            <div class="col-lg-8" v-else>
               <div class="row" v-show="searchApplied">
                 <div class="col-lg-4 mt-2 mt-lg-0">
                   <form-checkbox :label="$t('search_save')" v-model="savedSearch" 
@@ -254,11 +271,15 @@ import { SearchMixin } from '~/mixins/search';
 
 import ColorOptions from '~/components/options/ColorOptions';
 import CarOptions from '~/components/options/CarOptions';
+import CarBodyShortcuts from '~/components/cars/CarBodyShortcuts';
+import CarOptionPacks from '~/components/cars/CarOptionPacks';
 
 export default {
   components: { 
     ColorOptions,
-    CarOptions
+    CarOptions,
+    CarBodyShortcuts,
+    CarOptionPacks
   },
   mixins: [SearchMixin],
   props: {
@@ -319,6 +340,11 @@ export default {
         with_video: false,
         exchange_possible: false,
         credit: false
+      },
+      formAssistant: {
+        body: {},
+        packs: [],
+        price: [1000, 500000]
       }
     }
   },

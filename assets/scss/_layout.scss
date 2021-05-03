@@ -509,6 +509,9 @@ main {
     .socials a:hover {
       color: $dark-1;
     }
+    .logo + p {
+      color: $grey-3;
+    }
   }
 }
 

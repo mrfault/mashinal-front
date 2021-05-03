@@ -28,6 +28,7 @@ textarea {
 }
 
 .form-info {
+  user-select: none;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -387,6 +388,31 @@ textarea {
   }
 }
 
+.range-slider {
+  position: relative;
+  z-index: 0;
+  padding-top: 10px;
+  .vue-slider {
+    height: 2px;
+    &-rail {
+      background-color: $grayish-blue-7;
+    }
+    &-process {
+      background-color: $dark-blue-1;
+    }
+    &-dot-tooltip {
+      font-size: 13px;
+      font-weight: 500;
+      top: -5px;
+    }
+    &-dot-handle {
+      box-shadow: none;
+      border: 2px solid $dark-blue-1;
+      box-shadow: 0 0 0 2px $white;
+    }
+  }
+}
+
 .dark-mode {
   .text-input input,
   .checkbox-input label,
@@ -492,6 +518,23 @@ textarea {
   .form-counter {
     .form-info:hover {
       color: $yellow-1;
+    }
+  }
+
+  .range-slider {
+    .vue-slider {
+      height: 2px;
+      &-rail {
+        background-color: $grey-1;
+      }
+      &-process {
+        background-color: $white;
+      }
+      &-dot-handle {
+        border: 2px solid $white;
+        box-shadow: 0 0 0 2px $dark-2;
+        background-color: $dark-2;
+      }
     }
   }
 }
