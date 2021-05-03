@@ -97,13 +97,12 @@ export default {
       });
     }
   },
-  watch: {
-    values() {
-      this.setValues();
-    }
-  },
   created() {
     this.setValues();
+    this.$nuxt.$on('change-car-options', this.setValues);
+  },
+  beforeDestroy() {
+    this.$nuxt.$off('change-car-options', this.setValues);
   }
 }
 </script>

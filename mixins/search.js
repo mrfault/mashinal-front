@@ -34,6 +34,12 @@ export const SearchMixin = {
         let value = form[property];
         this.$set(this.form, property, value);
       }
+      // update car options
+      if (this.meta.type === 'cars') {
+        this.$nextTick(() => {
+          this.$nuxt.$emit('change-car-options');
+        });
+      }
     },
     parseFormData() {
       this.setFormData(JSON.parse(this.$route.query.car_filter || '{}'));
