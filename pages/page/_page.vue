@@ -25,7 +25,10 @@
     },
     async asyncData({ store, route, app }) {
       let page = store.state.staticPages.find(page => page.slug[app.i18n.locale] === route.params.page);
-      await store.dispatch('i18n/setRouteParams', { az: { page: page.slug.az }, ru: { page: page.slug.ru } });
+      await store.dispatch('i18n/setRouteParams', { 
+        az: { page: page.slug.az }, 
+        ru: { page: page.slug.ru } 
+      });
       return { page }
     },
     computed: {

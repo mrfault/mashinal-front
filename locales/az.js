@@ -399,7 +399,7 @@ export default {
 	"cabinet": "Kabinet",
 	"call_or_chat": "Zəng edin və yaxud çatda əlaqə saxlayın",
 	"cancel": "Ləğv et",
-	"capacity": "Tutum",
+	"capacity": "Mühərrik həcmi",
 	"capacity_from_l": "Mühərrik həcmi min., l",
 	"capacity_from_sm3": "Mühərrik həcmi min., sm³",
 	"car": "Avtomobil",
@@ -837,6 +837,7 @@ export default {
 	"more": "daha çox",
 	"moshchnost": "Mühərrik gücü",
 	"moshchnost_ls": "Mühərrik gücü, a.g.",
+	"motorcycles": "Motosikletlər",
 	"moto_tire_diameter": "Diametr",
 	"moto_tire_height": "Hündürlük",
 	"moto_tire_width": "Eni",
@@ -1270,7 +1271,7 @@ export default {
 	"type_cars": "Minik ",
 	"type_cars_commercial": "Yüngül yük maşınları",
 	"type_discussed": "Müzakirə olunan",
-	"type_moto": "Motosikletlər",
+	"type_moto": "Moto",
 	"type_motos": "Motosikletlər",
 	"type_of_atvs": "Xizəkli-tırtıllı motosiklet növü",
 	"type_of_boost": "Təkan növü",
@@ -1478,7 +1479,7 @@ export default {
 	"pay": "Ödəniş et",
 	"error": "Xəta",
 	"info_service_is_already_active": "Elanda <strong>{date}</strong> tarixinə qədər <strong>{service}</strong> servisi artıq aktivdir.",
-	"info_service_once_in_24_hours": "<strong>{service}</strong> servisi 24 saat ərzində bir dəfə istifadə edilə bilər.",
+	"info_service_once_in_5_mins": "<strong>{service}</strong> servisi 5 dəqiqəden bir dəfə istifadə edilə bilər.",
 	"error_payment": "Uğursuz əməliyyat!",
 	"error_payment_msg": "Sizin ödəməniz həyata keçmədi.",
 	"success_payment": "Ödəmə tamamlandı!",
@@ -1531,4 +1532,8 @@ export default {
 	"economic_info": "Yanacaq sərfi 7 l.-<br/>dək, qarışıq dövr",
 	"fast": "Sürətli",
 	"fast_info": "7 saniyədən tez<br/>(100 km/s-dək)",
+
+	"slug_motorcycles": "motosikletler",
+	"slug_atvs": "atvler",
+	"slug_scooters": "skuterler"
 }

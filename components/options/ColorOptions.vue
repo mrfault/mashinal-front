@@ -6,7 +6,7 @@
         <icon name="check" v-if="isSelected(color.id)" />
       </span>
     </div>
-    <div class="col-2 col-lg-auto mb-2 mb-lg-3" key="matt">
+    <div class="col-2 col-lg-auto mb-2 mb-lg-3" key="matt" v-if="!hideMatt">
       <span :class="['color','matt', {'selected': matt}]" @click="$emit('change-matt', !matt)">
         <span>{{ $t('matt').slice(0,3) }}</span>
       </span>
@@ -25,7 +25,8 @@ export default {
       type: Boolean,
       default: true
     },
-    limit: Number
+    limit: Number,
+    hideMatt: Boolean
   },
   computed: {
     ...mapGetters(['colors']),

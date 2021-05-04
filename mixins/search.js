@@ -26,7 +26,9 @@ export const SearchMixin = {
     },
     setFormData(form = {}) {
       // set initial data
+      let collapsed = this.collapsed;
       Object.assign(this.$data, this.$options.data.apply(this));
+      this.collapsed = collapsed;
       // get values from route query
       for (let property in this.form) {
         if (!form.hasOwnProperty(property)) 
@@ -42,9 +44,9 @@ export const SearchMixin = {
       }
     },
     parseFormData() {
-      this.setFormData(JSON.parse(this.$route.query.car_filter || '{}'));
+      this.setFormData(JSON.parse(this.$route.query[this.meta.param] || '{}'));
       let keys = Object.keys(this.form.additional_brands).filter(key => this.form.additional_brands[key].brand);
-      if( keys.length) this.rows = [...keys];
+      if(keys.length) this.rows = [...keys];
     },
     beforeSubmitForm() {
       if (['cars-assistant'].includes(this.routeName)) {

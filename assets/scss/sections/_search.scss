@@ -1,6 +1,7 @@
 .cars-search-form {
   .stick-to-bottom {
     position: sticky;
+    z-index: 2;
     bottom: 0;
     left: 0;
     background-color: $white;

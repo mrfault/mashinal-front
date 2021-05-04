@@ -263,7 +263,7 @@ textarea {
     box-shadow: $shadow-light-5;
     padding: 7px 0;
     &.anchor-left {
-      left: 0;
+      left: -1px;
     }
     &.anchor-right {
       right: 0;

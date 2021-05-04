@@ -837,6 +837,7 @@ export default {
 	"monthly_payment": "Ежемесячный платеж",
 	"more": "Еще",
 	"moshchnost": "Мощность",
+	"motorcycles": "Мотоциклы",
 	"moto_tire_diameter": "Диаметр",
 	"moto_tire_height": "Высота",
 	"moto_tire_width": "Ширина",
@@ -1476,7 +1477,7 @@ export default {
 	"pay": "Оплатить",
 	"error": "Ошибка",
 	"info_service_is_already_active": "В этом объявлении сервис <strong>{service}</strong> активен до <strong>{date}</strong> числа.",
-	"info_service_once_in_24_hours": "Сервис <strong>{service}</strong> можно использовать раз в 24 часа.",
+	"info_service_once_in_5_mins": "Сервис <strong>{service}</strong> можно использовать в 5 минут.",
 	"error_payment": "Неудачная операция!",
 	"error_payment_msg": "Оплата не осуществлена.",
 	"success_payment": "Оплата удачно завершена!",
@@ -1536,4 +1537,8 @@ export default {
 	"economic_info": "Расход до 7 л<br/>в смешанном цикле",
 	"fast": "Быстрый",
 	"fast_info": "Менее 7 секунд<br/>до 100 км/ч",
+
+	"slug_motorcycles": "motorcycles",
+	"slug_atvs": "atvs",
+	"slug_scooters": "scooters"
 }

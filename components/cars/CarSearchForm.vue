@@ -95,7 +95,7 @@
             <component :is="isMobileBreakpoint && !advanced ? 'transition-expand' : 'div'">
               <div class="row" v-if="!isMobileBreakpoint || advanced || !collapsed">
                 <div class="col-6 col-lg-3 mb-2 mb-lg-3">
-                  <form-select :label="$t('price')" custom 
+                  <form-select :label="$t('price')" custom :suffix="getOptionValue('Currency', form.currency)"
                     :values="{from: form.price_from, to: form.price_to, suffix: form.currency === 2 ? '$' : '₼' }"
                     @clear="form.price_from = '', form.price_to = ''"
                   >
@@ -123,13 +123,13 @@
           </div>
           <template v-if="advanced">
             <div class="col-6 col-lg-2 mb-2 mb-lg-3">
-              <form-select :label="$t('mileage')" custom anchor="right"
-                :values="{from: form.mileage_from, to: form.mileage_to, suffix: $t('char_kilometre') }"
+              <form-select :label="$t('mileage')" custom anchor="right" :suffix="$t('char_kilometre')"
+                :values="{from: form.mileage_from, to: form.mileage_to }"
                 @clear="form.mileage_from = '', form.mileage_to = ''"
               >
                 <div class="form-merged">
-                  <form-numeric-input :placeholder="$t('from')" v-model="form.price_from" :suffix="$t('char_kilometre')" />
-                  <form-numeric-input :placeholder="$t('to')" v-model="form.price_to" :suffix="$t('char_kilometre')" />
+                  <form-numeric-input :placeholder="$t('from')" v-model="form.mileage_from" :suffix="$t('char_kilometre')" />
+                  <form-numeric-input :placeholder="$t('to')" v-model="form.mileage_to" :suffix="$t('char_kilometre')" />
                 </div>
               </form-select>
             </div>
@@ -162,8 +162,8 @@
                 :show-label-on-select="false" />
             </div>
             <div class="col-6 col-lg-2 mb-2 mb-lg-3">
-              <form-select :label="$t('capacity')" custom 
-                :values="{from: form.min_capacity, to: form.max_capacity, suffix: $t('char_litre'), showLabel: true }"
+              <form-select :label="$t('capacity')" custom :suffix="$t('char_litre')"
+                :values="{from: form.min_capacity, to: form.max_capacity }"
                 @clear="form.min_capacity = '', form.max_capacity = ''"
               >
                 <div class="form-merged">
@@ -361,7 +361,7 @@ export default {
       this.$set(this.form.additional_brands[index], 'model', '');
       this.$set(this.form.additional_brands[index], 'model_slug', '');
       this.$set(this.form.additional_brands[index], 'generation', '');
-      await this.getModelsArray({ value: slug, index });
+      if (id) await this.getModelsArray({ value: slug, index });
     },
     async setModel(id, index) {
       let slug = this.carModels[index].find(option => option.id == id)?.slug || '';
@@ -369,7 +369,7 @@ export default {
       this.$set(this.form.additional_brands[index], 'model', id);
       this.$set(this.form.additional_brands[index], 'model_slug', slug);
       this.$set(this.form.additional_brands[index], 'generation', '');
-      await this.getModelGenerationsArray({ value: slug, brand_slug, index });
+      if (id) await this.getModelGenerationsArray({ value: slug, brand_slug, index });
     },
     setCarOption(key, value) {
       if(value === false || value === '' || (typeof value === 'object' && !Object.keys(value).length))

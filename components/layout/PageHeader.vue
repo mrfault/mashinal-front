@@ -65,10 +65,12 @@
                 <div class="container">
                   <ul class="dropdown-menu row">
                     <li class="col-3" v-for="submenu in menu.children" :key="submenu.id">
-                      <a :href="getMenuLink(submenu)" @click.prevent="handleMenuItem(submenu)">
-                        <icon :name="getIconBase(menu)+submenu.order" />
-                        {{ submenu.name[locale] }}
-                      </a>
+                      <nuxt-link custom :to="getMenuLink(submenu)" v-slot="{ href, isActive }">
+                        <a :href="href" @click.prevent="handleMenuItem(submenu)" :class="{'active': isActive}">
+                          <icon :name="getIconBase(menu)+submenu.order" />
+                          {{ submenu.name[locale] }}
+                        </a>
+                      </nuxt-link>
                     </li>
                   </ul>
                 </div>

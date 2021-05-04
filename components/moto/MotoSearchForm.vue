@@ -1,0 +1,291 @@
+<template>
+  <div class="cars-search-form form">
+    <div class="card pt-0 pt-lg-4">
+      <div class="row">
+        <div class="col-lg-4 mb-2 mb-lg-3">
+          <form-buttons :options="getMileageOptions" :group-by="3" v-model="form.announce_type" />
+        </div>
+      </div>
+      <div class="row" v-for="(key, index) in rows" :key="key">
+        <div class="col-6 col-lg-4 mb-2">
+          <form-select :label="$t('mark')" :options="brands" v-model="form.additional_brands[key]['brand']"
+            @change="setBrand($event, key)" has-search/>
+        </div>
+        <div class="col-6 col-lg-4 mb-2">
+          <div class="row">
+            <div :class="['col', {'col-12': isMobileBreakpoint}]">
+              <form-select :label="$t('model')" :options="models[key]" v-model="form.additional_brands[key]['model']"
+                :disabled="form.additional_brands[key]['brand'] && !models[key].length" has-search />
+            </div>
+            <div class="col-auto" v-if="!isMobileBreakpoint">
+              <div class="form-counter">
+                <div class="form-info" v-if="rows.length < 5 && index === rows.length - 1" @click="addSearchRow(key)">
+                  <icon name="plus" />
+                </div>
+                <div class="form-info" v-if="rows.length > 1" @click="removeSearchRow(key)">
+                  <icon name="minus" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <component :is="isMobileBreakpoint ? 'transition-expand' : 'div'">
+        <div class="row" v-if="!isMobileBreakpoint || !collapsed">
+          <div class="col-6 col-lg-2 mb-2 mb-lg-3">
+            <form-select :label="$t('years')" custom 
+              :values="{from: form.min_year, to: form.max_year, read: false }"
+              @clear="form.min_year = '', form.max_year = ''"
+            >
+              <div class="form-merged">
+                <form-select :label="$t('from')" :options="getYearOptions" v-model="form.min_year" 
+                  :show-label-on-select="false" :clear-option="false" in-select-menu />
+                <form-select :label="$t('to')" :options="getYearOptions" v-model="form.max_year"
+                  :show-label-on-select="false" :clear-option="false" in-select-menu />
+              </div>
+            </form-select>
+          </div>
+          <div class="col-6 col-lg-2 mb-2 mb-lg-3">
+            <form-select :label="$t('price')" custom :suffix="getOptionValue('Currency', form.currency)"
+              :values="{from: form.price_from, to: form.price_to, suffix: form.currency === 2 ? '$' : '₼' }"
+              @clear="form.price_from = '', form.price_to = ''"
+            >
+              <div class="form-merged">
+                <form-numeric-input :placeholder="$t('from')" v-model="form.price_from" />
+                <form-numeric-input :placeholder="$t('to')" v-model="form.price_to" />
+                <form-select :label="'AZN'" :options="getCurrencyOptions" v-model="form.currency"
+                  :allow-clear="false" :clear-option="false" in-select-menu />
+              </div>
+            </form-select>
+          </div>
+          <div class="col-6 col-lg-2 mb-2 mb-lg-3">
+            <form-checkbox :label="$t('barter')" v-model="form.exchange_possible" 
+              input-name="exchange_possible" icon-name="barter" />
+          </div>
+          <div class="col-6 col-lg-2 mb-2 mb-lg-3">
+            <form-checkbox :label="$t('credit')" v-model="form.credit" 
+              input-name="credit" icon-name="percent" />
+          </div>
+          <div class="col-6 col-lg-2 mb-2 mb-lg-3">
+            <form-select :label="$t('mileage')" custom anchor="right" :suffix="$t('char_kilometre')"
+              :values="{from: form.mileage_from, to: form.mileage_to }"
+              @clear="form.mileage_from = '', form.mileage_to = ''"
+            >
+              <div class="form-merged">
+                <form-numeric-input :placeholder="$t('from')" v-model="form.mileage_from" :suffix="$t('char_kilometre')" />
+                <form-numeric-input :placeholder="$t('to')" v-model="form.mileage_to" :suffix="$t('char_kilometre')" />
+              </div>
+            </form-select>
+          </div>
+          <div class="col-6 col-lg-2 mb-2 mb-lg-3">
+            <form-select :label="$t('capacity')" custom :suffix="$t('char_sm_cube')"
+              :values="{ from: getOptionValue('MotoCapacity', form.capacity_from), to: getOptionValue('MotoCapacity', form.capacity_to) }"
+              @clear="form.capacity_from = '', form.capacity_to = ''"
+            >
+              <div class="form-merged">
+                <form-select :label="$t('from')" v-model="form.capacity_from" 
+                  :options="getMotoCapacityOptions" 
+                  :show-label-on-select="false" :clear-option="false" in-select-menu />
+                <form-select :label="$t('to')" v-model="form.capacity_to"
+                  :options="getMotoCapacityOptions" 
+                  :show-label-on-select="false" :clear-option="false" in-select-menu />
+              </div>
+            </form-select>
+          </div>
+          <component :is="!isMobileBreakpoint ? 'transition-expand' : 'div'">
+            <div class="col-12" v-if="isMobileBreakpoint || !collapsed">
+              <div class="row">
+                <div class="col-6 col-lg-2 mb-2 mb-lg-3">
+                  <form-select :label="$t('power')" custom :suffix="$t('char_h_power')"
+                    :values="{from: form.power_from, to: form.power_to }"
+                    @clear="form.power_from = '', form.power_to = ''"
+                  >
+                    <div class="form-merged">
+                      <form-numeric-input :placeholder="$t('from')" v-model="form.power_from" :suffix="$t('char_h_power')" />
+                      <form-numeric-input :placeholder="$t('to')" v-model="form.power_to" :suffix="$t('char_h_power')" />
+                    </div>
+                  </form-select>
+                </div>
+                <div class="col-6 col-lg-2 mb-2 mb-lg-3" v-for="(select, key) in getMotoSelectGroup" :key="key">
+                  <form-select
+                    v-model="form[key]" 
+                    :options="motoOptions.config[select].values.filter(value => value.key !== 0)" 
+                    :multiple="motoOptions.config[select].multiple && !motoOptions.config[select].not_foreach && key !== 'tacts'" 
+                    :name-in-value="motoOptions.config[select].multiple && !motoOptions.config[select].not_foreach && key !== 'tacts'"
+                    :label="$t(motoOptions.config[select].placeholder.replace('cleared','customs'))" 
+                    :translate-options="true"
+                  />
+                </div>
+                <div class="col-12 mb-2 mb-lg-3">
+                  <color-options v-model="form.colors" hide-matt />
+                </div>
+              </div>
+            </div>
+          </component>
+        </div>
+      </component>
+      <div class="row mb-1 mb-lg-0">
+        <div class="col-12">
+          <div class="row">
+            <div class="col-lg-4 offset-lg-8">
+              <div class="row">
+                <div class="col-6">
+                  <button type="button" :class="['btn','full-width','btn--red-outline',{'pointer-events-none': pending}]" @click="resetForm(true)">
+                    <icon name="reset" /> {{ $t('clear_search') }}
+                  </button>
+                </div>
+                <div class="col-6">
+                  <button type="button" :class="['btn','full-width','btn--green',{pending}]" @click="submitForm">
+                    <icon name="search" /> {{ $t('find') }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="collapse-toggle">
+        <button type="button" class="btn btn-circle" @click="collapsed = !collapsed">
+          <icon :name="`chevron-${collapsed ? 'down' : 'up'}`" />
+        </button>
+      </div>
+    </div>
+    <div class="announcements-sorting" v-show="!isStarterPage && totalCount">
+      <div class="row">
+        <div class="col-6 col-lg-auto mt-3 mt-lg-5 mb-n6 mb-lg-n1">
+          <div class="form-info no-bg text-green" v-if="isMobileBreakpoint">
+            {{ $readPlural(totalCount, $t('plural_forms_announcements')) }}
+          </div>
+        </div>
+        <div class="col-6 col-lg-auto mt-3 mt-lg-5 mb-n6 mb-lg-n1">
+          <form-select :label="$t('sorting')" :options="getSortingOptions" v-model="form.sorting"
+            @change="submitForm" :allow-clear="false" :clear-option="false" skip-select-first has-no-bg />
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import { mapGetters, mapActions } from 'vuex';
+
+import { SearchMixin } from '~/mixins/search';
+
+import ColorOptions from '~/components/options/ColorOptions';
+
+export default {
+  components: { 
+    ColorOptions
+  },
+  mixins: [SearchMixin],
+  props: {
+    totalCount: {
+      type: Number,
+      default: 0
+    },
+    pending: Boolean,
+    category: {}
+  },
+  data() {
+    let brand = { 
+      brand: '', 
+      model: ''
+    };
+    return {
+      meta: {
+        type: 'moto',
+        path: '/moto/'+this.category.type,
+        param: 'filter'
+      },
+      rows: ['0'],
+      form: {
+        sorting: 'created_at_desc',
+        additional_brands: {
+          0: {...brand}, 
+          1: {...brand}, 
+          2: {...brand}, 
+          3: {...brand}, 
+          4: {...brand}
+        },
+        announce_type: 0,
+        currency: 1,
+        box: [],
+        engine: [],
+        drive: [],
+        capacity_from: '',
+        capacity_to: '',
+        min_year: '',
+        max_year: '',
+        price_from: '',
+        price_to: '',
+        mileage_from: '',
+        mileage_to: '',
+        power_to: '',
+        power_from: '',
+        status: '',
+        owner: 0,
+        customs: '',
+        colors: [],
+        cylinders: [],
+        sum_cylinders: [],
+        tacts: [],
+        type: [],
+        exchange_possible: false,
+        credit: false
+      }
+    }
+  },
+  computed: {
+    ...mapGetters(['motoOptions', 'motorcycleModels', 'scooterModels', 'atvModels']),
+
+    brands() {
+      return {
+        1: this.motoOptions.brands,
+        2: this.motoOptions.scooter_brands,
+        3: this.motoOptions.atv_brands
+      }[this.category.id];
+    },
+    models() {
+      return {
+        1: this.motorcycleModels,
+        2: this.scooterModels,
+        3: this.atvModels
+      }[this.category.id];
+    },
+    // static data
+    getMotoSelectGroup() {
+      let group = { 
+        engine: 'engine', 
+        box: 'box',
+        drive: 'drive', 
+        tacts: 'number_of_vehicles', 
+        sum_cylinders: 'cylinders', 
+        cylinders: 'cylinder_placement', 
+        status: 'used_ones', 
+        customs: 'customed_ones' 
+      }
+      for(let key in group) {
+        let categories = this.motoOptions.config[group[key]].category;
+        if(categories && categories[0] && categories.indexOf(this.category.id) === -1) 
+          delete group[key];
+      }
+      return group;
+    },
+    getMotoCapacityOptions() {
+      return this.motoOptions?.config.volume.values.map(o => ({
+        key: o.key, 
+        name: o.name.replace(' см³', '')
+      }));
+    }
+  },
+  methods: {
+    ...mapActions(['getMotorcycleModels', 'getScooterModels', 'getAtvModels']),
+
+    async setBrand(id, index) {
+      this.$set(this.form.additional_brands[index], 'brand', id);
+      this.$set(this.form.additional_brands[index], 'model', '');
+      if (id) await this[this.category.modelsAction]({ id, index });
+    }
+  }
+}
+</script>

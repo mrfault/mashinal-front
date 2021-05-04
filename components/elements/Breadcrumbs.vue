@@ -7,7 +7,7 @@
       </li>
       <template v-for="(crumb, index) in crumbs">
         <li v-if="index !== crumbs.length - 1" :key="index">
-          <nuxt-link :to="$localePath(crumb.route)">{{ crumb.name }}</nuxt-link>
+          <nuxt-link :to="$localePath(crumb.route || '/')">{{ crumb.name }}</nuxt-link>
           <icon name="chevron-right" />
         </li>
         <li v-else :key="index" class="active" aria-current="page">

@@ -1,6 +1,8 @@
 import _ from '~/lib/underscore';
 import { generateMetaInfo } from '~/plugins/head-meta';
 
+import { redirects } from '~/middleware/redirects';
+
 export default function({ app, route, store }, inject) {
   // generate meta tags for seo
   inject('headMeta', ({ title, description, image }, product = false) => {
@@ -13,8 +15,23 @@ export default function({ app, route, store }, inject) {
   });
   // routing
   inject('localePath', (path, locale) => {
-    path = '/ru'+(path === '/' ? '' : path);
-    return app.localePath(path, locale || app.i18n.locale);
+    redirects.map((redirect) => {
+      if (redirect.from === path) path = redirect.to;
+    });
+
+    let routeName = app.getRouteBaseName(app.localeRoute({ path }));
+    
+    if(['moto-moto'].includes(routeName)) {
+      let pathParts = path.split('/');
+      let routeParam = pathParts.pop();
+      pathParts.push(app.i18n.t('slug_'+routeParam))
+      path = pathParts.join('/');
+    }
+    
+    return app.localePath(
+      ('/ru'+(path === '/' ? '' : path)), 
+      locale || app.i18n.locale
+    );
   });
   inject('queryParams', (params) => {
     return '?' + Object.keys(params).map(key => `${key}=${params[key]}`).join('&');
