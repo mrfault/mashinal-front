@@ -520,7 +520,7 @@ main {
 
 .mobile-nav {
   position: sticky;
-  z-index: 1;
+  z-index: 9;
   bottom: 0;
   left: 0;
   background-color: $white;
@@ -601,7 +601,7 @@ main {
 
 .mobile-menu {
   position: sticky;
-  z-index: 2;
+  z-index: 10;
   top: 0;
   left: 0;
   .menu-header {
@@ -898,7 +898,7 @@ main {
   cursor: pointer;
   &.floating {
     position: fixed;
-    z-index: 1;
+    z-index: 60;
     bottom: 30px;
     left: 30px;
     width: 60px;
@@ -946,7 +946,7 @@ main {
   transition: visibility 0 .3s ease-out, opacity .3s ease-out;
   cursor: pointer;
   position: fixed;
-  z-index: 1;
+  z-index: 60;
   bottom: 30px;
   right: 30px;
   width: 60px;
@@ -986,7 +986,7 @@ main {
   position: fixed;
   touch-action: none;
   pointer-events: none;
-  z-index: 20;
+  z-index: 40;
   left: 0;
   top: 0;
   width: 100%;
