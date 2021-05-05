@@ -195,7 +195,7 @@
               <car-options :values="form.all_options" name-in-value @change-option="setCarOption" />
             </div>
           </template>
-          <div class="col-6 col-lg-2 mb-2 mb-lg-3 d-none d-lg-block" v-if="!advanced && !assistant">
+          <div class="col-6 col-lg-2 mb-2 mb-lg-3" v-if="!isMobileBreakpoint">
             <div class="form-info text-green">
               {{ $readPlural(totalCount, $t('plural_forms_announcements')) }}
             </div>

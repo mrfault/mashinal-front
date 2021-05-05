@@ -341,7 +341,7 @@ export const actions = {
     const res = await this.$axios.$get('/brands');
     commit('mutate', { property: 'brands', value: res });
   },
-  async getComBrands({ commit }, type) {
+  async getCommercialBrands({ commit }, type) {
     const res = await this.$axios.$get(`/commercial/get_brands/${type}`);
     commit('mutate', { property: 'commercialBrands', value: res });
   },

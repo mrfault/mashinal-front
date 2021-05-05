@@ -11,6 +11,7 @@
         :pending="pending"
         @change-page="searchCommercial"
       />
+      <no-results v-else />
     </div>
   </div>
 </template>
@@ -20,12 +21,14 @@ import { mapGetters, mapActions } from 'vuex';
 
 import SearchNav from '~/components/layout/SearchNav';
 import Grid from '~/components/announcements/Grid';
+import NoResults from '~/components/elements/NoResults';
 
 export default {
   name: 'pages-commercial-index',
   components: {
     SearchNav,
-    Grid
+    Grid,
+    NoResults
   },
   nuxtI18n: {
     paths: {
@@ -56,8 +59,9 @@ export default {
 
     async searchCommercial(page = 1) {
       page = this.$route.query.page || 1;
+      let post = JSON.parse(this.$route.query.filter || '{}');
       this.pending = true;
-      await this.getGridSearch({ ...this.searchParams, page });
+      await this.getGridSearch({ ...this.searchParams, post, page });
       this.pending = false;
       this.scrollTo('.announcements-grid.paginated', [-15, -20]);
     }

@@ -3,6 +3,13 @@
     <search-nav v-if="isMobileBreakpoint" />
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
+      <commercial-search-form 
+        :total-count="commercialAnnouncements.paginate.total"
+        :pending="pending"
+        :category="category"
+        @pending="pending = true"
+        @submit="searchCommercial"
+      />
       <grid 
         v-if="commercialAnnouncements.standard.length"
         :announcements="commercialAnnouncements.standard" 
@@ -20,6 +27,7 @@
 import { mapGetters, mapActions } from 'vuex';
 
 import SearchNav from '~/components/layout/SearchNav';
+import CommercialSearchForm from '~/components/commercial/CommercialSearchForm';
 import Grid from '~/components/announcements/Grid';
 import NoResults from '~/components/elements/NoResults';
 
@@ -27,6 +35,7 @@ export default {
   name: 'pages-commercial',
   components: {
     SearchNav,
+    CommercialSearchForm,
     Grid,
     NoResults
   },
@@ -113,8 +122,9 @@ export default {
 
     async searchCommercial(page = 1) {
       page = this.$route.query.page || 1;
+      let post = {...JSON.parse(this.$route.query.filter || '{}'), com_type: this.category.id};
       this.pending = true;
-      await this.getGridSearch({ ...this.searchParams, page });
+      await this.getGridSearch({ ...this.searchParams, post, page });
       this.pending = false;
       if(page === 1) {
         this.scrollTo('.announcements-sorting');

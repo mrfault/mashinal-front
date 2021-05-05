@@ -1,5 +1,5 @@
 <template>
-  <div class="cars-search-form form">
+  <div class="moto-search-form form">
     <div class="card pt-2 pt-lg-4">
       <div class="row">
         <div class="col-lg-4 mb-2 mb-lg-3">
@@ -66,35 +66,40 @@
             <form-checkbox :label="$t('credit')" v-model="form.credit" 
               input-name="credit" icon-name="percent" />
           </div>
-          <div class="col-6 col-lg-2 mb-2 mb-lg-3">
-            <form-select :label="$t('mileage')" custom anchor="right" :suffix="$t('char_kilometre')"
-              :values="{from: form.mileage_from, to: form.mileage_to }"
-              @clear="form.mileage_from = '', form.mileage_to = ''"
-            >
-              <div class="form-merged">
-                <form-numeric-input :placeholder="$t('from')" v-model="form.mileage_from" :suffix="$t('char_kilometre')" />
-                <form-numeric-input :placeholder="$t('to')" v-model="form.mileage_to" :suffix="$t('char_kilometre')" />
-              </div>
-            </form-select>
+          <div class="col-6 col-lg-2 mb-2 mb-lg-3" v-if="!isMobileBreakpoint">
+            <div class="form-info text-green">
+              {{ $readPlural(totalCount, $t('plural_forms_announcements')) }}
+            </div>
           </div>
-          <div class="col-6 col-lg-2 mb-2 mb-lg-3">
-            <form-select :label="$t('capacity')" custom :suffix="$t('char_sm_cube')"
-              :values="{ from: getOptionValue('MotoCapacity', form.capacity_from), to: getOptionValue('MotoCapacity', form.capacity_to) }"
-              @clear="form.capacity_from = '', form.capacity_to = ''"
-            >
-              <div class="form-merged">
-                <form-select :label="$t('from')" v-model="form.capacity_from" 
-                  :options="getMotoCapacityOptions" 
-                  :show-label-on-select="false" :clear-option="false" in-select-menu />
-                <form-select :label="$t('to')" v-model="form.capacity_to"
-                  :options="getMotoCapacityOptions" 
-                  :show-label-on-select="false" :clear-option="false" in-select-menu />
-              </div>
-            </form-select>
-          </div>
-          <component :is="!isMobileBreakpoint ? 'transition-expand' : 'div'">
-            <div class="col-12" v-if="isMobileBreakpoint || !collapsed">
-              <div class="row">
+          <div class="col-12" >
+            <component :is="!isMobileBreakpoint ? 'transition-expand' : 'div'">
+              <div class="row" v-if="isMobileBreakpoint || !collapsed">
+                <div class="col-6 col-lg-2 mb-2 mb-lg-3">
+                  <form-select :label="$t('mileage')" custom anchor="right" :suffix="$t('char_kilometre')"
+                    :values="{from: form.mileage_from, to: form.mileage_to }"
+                    @clear="form.mileage_from = '', form.mileage_to = ''"
+                  >
+                    <div class="form-merged">
+                      <form-numeric-input :placeholder="$t('from')" v-model="form.mileage_from" :suffix="$t('char_kilometre')" />
+                      <form-numeric-input :placeholder="$t('to')" v-model="form.mileage_to" :suffix="$t('char_kilometre')" />
+                    </div>
+                  </form-select>
+                </div>
+                <div class="col-6 col-lg-2 mb-2 mb-lg-3">
+                  <form-select :label="$t('capacity')" custom :suffix="$t('char_sm_cube')"
+                    :values="{ from: getOptionValue('MotoCapacity', form.capacity_from), to: getOptionValue('MotoCapacity', form.capacity_to) }"
+                    @clear="form.capacity_from = '', form.capacity_to = ''"
+                  >
+                    <div class="form-merged">
+                      <form-select :label="$t('from')" v-model="form.capacity_from" 
+                        :options="getMotoCapacityOptions" 
+                        :show-label-on-select="false" :clear-option="false" in-select-menu />
+                      <form-select :label="$t('to')" v-model="form.capacity_to"
+                        :options="getMotoCapacityOptions" 
+                        :show-label-on-select="false" :clear-option="false" in-select-menu />
+                    </div>
+                  </form-select>
+                </div>
                 <div class="col-6 col-lg-2 mb-2 mb-lg-3">
                   <form-select :label="$t('power')" custom :suffix="$t('char_h_power')"
                     :values="{from: form.power_from, to: form.power_to }"
@@ -106,7 +111,7 @@
                     </div>
                   </form-select>
                 </div>
-                <div class="col-6 col-lg-2 mb-2 mb-lg-3" v-for="(select, key) in getMotoSelectGroup" :key="key">
+                <div :class="['col-6 mb-2 mb-lg-3', ['cylinders','sum_cylinders'].includes(key) ? 'col-lg-3' : 'col-lg-2']"  v-for="(select, key) in getMotoSelectGroup" :key="key">
                   <form-select
                     v-model="form[key]" 
                     :options="motoOptions.config[select].values.filter(value => value.key !== 0)" 
@@ -116,12 +121,12 @@
                     :translate-options="true"
                   />
                 </div>
-                <div class="col-12 mb-2 mb-lg-3">
+                <div class="col-12 mb-2 mb-lg-0">
                   <color-options v-model="form.colors" hide-matt />
                 </div>
               </div>
-            </div>
-          </component>
+            </component>
+          </div>
         </div>
       </component>
       <div class="row mb-1 mb-lg-0">
@@ -223,7 +228,6 @@ export default {
         power_to: '',
         power_from: '',
         status: '',
-        owner: 0,
         customs: '',
         colors: [],
         cylinders: [],
