@@ -1,5 +1,6 @@
 <template>
   <div class="pages-moto">
+    <search-nav v-if="isMobileBreakpoint" />
     <div class="container"> 
       <breadcrumbs :crumbs="crumbs" />
       <moto-search-form 
@@ -25,13 +26,15 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 
+import SearchNav from '~/components/layout/SearchNav';
 import MotoSearchForm from '~/components/moto/MotoSearchForm';
 import Grid from '~/components/announcements/Grid';
 import NoResults from '~/components/elements/NoResults';
 
 export default {
-  name: 'pages-moto-moto',
+  name: 'pages-moto',
   components: {
+    SearchNav,
     MotoSearchForm,
     Grid,
     NoResults
@@ -114,7 +117,7 @@ export default {
     
     crumbs() {
       return [
-        { name: this.$t('type_moto'), route: '/moto/'+this.$t('slug_motorcycles') },
+        { name: this.$t('moto'), route: '/moto' },
         { name: this.$t(this.category.type) }
       ]
     }

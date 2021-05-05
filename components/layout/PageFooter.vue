@@ -20,8 +20,8 @@
         <div class="col-3">
           <h4>{{ $t('site_map') }}</h4>
           <ul class="menu">
-            <li v-for="menu in navbarMenus" :key="menu.url">
-              <nuxt-link :to="$localePath(menu.url)">{{ menu.name[locale] }}</nuxt-link>
+            <li v-for="menu in navbarMenus" :key="menu.title">
+              <nuxt-link :to="$localePath(menu.route)">{{ $t(menu.title) }}</nuxt-link>
             </li>
           </ul>
         </div>
@@ -41,14 +41,17 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 
+import { MenusDataMixin } from '~/mixins/menus-data';
+
 import Newsletter from '~/components/elements/Newsletter';
 
 export default {
   components: {
     Newsletter
   },
+  mixins: [MenusDataMixin],
   computed: {
-    ...mapGetters(['navbarMenus', 'staticPages']),
+    ...mapGetters(['staticPages']),
 
     pageMenus() {
       return [{

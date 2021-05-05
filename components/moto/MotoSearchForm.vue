@@ -1,6 +1,6 @@
 <template>
   <div class="cars-search-form form">
-    <div class="card pt-0 pt-lg-4">
+    <div class="card pt-2 pt-lg-4">
       <div class="row">
         <div class="col-lg-4 mb-2 mb-lg-3">
           <form-buttons :options="getMileageOptions" :group-by="3" v-model="form.announce_type" />
@@ -11,7 +11,7 @@
           <form-select :label="$t('mark')" :options="brands" v-model="form.additional_brands[key]['brand']"
             @change="setBrand($event, key)" has-search/>
         </div>
-        <div class="col-6 col-lg-4 mb-2">
+        <div class="col-6 col-lg-4 mb-2 mb-lg-3">
           <div class="row">
             <div :class="['col', {'col-12': isMobileBreakpoint}]">
               <form-select :label="$t('model')" :options="models[key]" v-model="form.additional_brands[key]['model']"
@@ -194,7 +194,7 @@ export default {
     return {
       meta: {
         type: 'moto',
-        path: '/moto/'+this.category.type,
+        path: '/moto/'+this.$t('slug_'+this.category.type),
         param: 'filter'
       },
       rows: ['0'],

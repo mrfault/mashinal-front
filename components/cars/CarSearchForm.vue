@@ -1,6 +1,6 @@
 <template>
   <div class="cars-search-form form">
-    <div class="card pt-0 pt-lg-4">
+    <div class="card pt-2 pt-lg-4">
       <div class="row">
         <div class="col-lg-4 mb-2 mb-lg-3">
           <form-buttons :options="getMileageOptions" :group-by="3" v-model="form.announce_type" />

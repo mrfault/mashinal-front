@@ -220,7 +220,7 @@
           : this.label;
       },
       getActionBarText() {
-        if (this.hasNoValue) return this.label;
+        if (this.hasNoValue) return this.getLabelText;
         else if (this.multiple) return this.value.length > 1 ? `${this.label} (${this.value.length})` : this.getLabelText;
         return `${(this.showLabelOnSelect && this.allowClear && !(this.custom && !this.values.showLabel)) ? '' : this.label + ': '}${this.getLabelText}`;
       },

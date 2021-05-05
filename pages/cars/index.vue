@@ -1,5 +1,6 @@
 <template>
-  <div class="pages-cars">
+  <div class="pages-cars-index">
+    <search-nav v-if="isMobileBreakpoint" />
     <div class="container"> 
       <breadcrumbs :crumbs="crumbs" />
       <car-search-form 
@@ -40,6 +41,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 
+import SearchNav from '~/components/layout/SearchNav';
 import CarSearchForm from '~/components/cars/CarSearchForm';
 import Grid from '~/components/announcements/Grid';
 import NoResults from '~/components/elements/NoResults';
@@ -47,6 +49,7 @@ import NoResults from '~/components/elements/NoResults';
 export default {
   name: 'pages-cars-index',
   components: {
+    SearchNav,
     CarSearchForm,
     Grid,
     NoResults

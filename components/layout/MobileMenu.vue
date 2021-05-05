@@ -86,7 +86,9 @@ export default {
       if(!menu) return;
     },
     goToSearch(path) {
-      this.$nuxt.$emit('go-to-search', path);
+      if (['cars', 'index', 'cars-assistant', 'cars-advanced-search'].includes(this.routeName))
+        this.$nuxt.$emit('go-to-search', path);
+      else this.$router.push(path);
     }
   },
   watch: {

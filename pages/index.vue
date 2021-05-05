@@ -1,5 +1,6 @@
 <template>
   <div class="pages-index">
+    <search-nav v-if="isMobileBreakpoint" />
     <div class="container">
       <car-search-form 
         :total-count="mainAnnouncements.paginate.total"
@@ -25,7 +26,7 @@
       <grid 
         v-if="mainAnnouncements.random_moto.length"
         :announcements="mainAnnouncements.random_moto" 
-        :title="$t('type_motos')"
+        :title="$t('moto')"
         :show-all="$localePath('/motorcycles')"
         :pending="pending"
       />
@@ -44,12 +45,14 @@
 <script>
 import { mapGetters } from 'vuex';
 
+import SearchNav from '~/components/layout/SearchNav';
 import CarSearchForm from '~/components/cars/CarSearchForm';
 import Grid from '~/components/announcements/Grid';
 
 export default {
   name: 'pages-index',
   components: {
+    SearchNav,
     CarSearchForm,
     Grid
   },

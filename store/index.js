@@ -3,7 +3,7 @@ const getInitialState = () =>({
   colorMode: 'light',
   breakpoint: null,
   uiScale: 1,
-  navbarMenus: [],
+  menus: [],
   staticPages: [],
   // axios cancellation
   CancelToken: null,
@@ -123,7 +123,7 @@ export const getters = {
   breakpoint: s => s.breakpoint,
   loggedIn: s => s.auth.loggedIn,
   user: s => s.auth.user,
-  navbarMenus: s => s.navbarMenus,
+  menus: s => s.menus,
   staticPages: s => s.staticPages,
   // saved search & favorites
   savedSearchList: s => s.favoritesSearchList,
@@ -219,7 +219,6 @@ const objectNotEmpty = (state, commit, property) => {
 export const actions = {
   async nuxtServerInit({ dispatch }) {
     await Promise.all([
-      dispatch('getMenus'),
       dispatch('getStaticPages')
     ]);
   },
@@ -245,7 +244,7 @@ export const actions = {
   // Pages
   async getMenus({ commit }) {
     const res = await this.$axios.$get('/menus');
-    commit('mutate', { property: 'navbarMenus', value: res });
+    commit('mutate', { property: 'menus', value: res });
   },
   async getStaticPages({ commit }) {
     const res = await this.$axios.$get('/get_static_pages');
@@ -474,20 +473,20 @@ export const actions = {
     }
   },
   // Commercial
-  async getComAllOptions({ state, commit }) {
+  async getCommercialAllOptions({ state, commit }) {
     if (objectNotEmpty(state, commit, 'commercialAllOptions')) return;
     const res = await this.$axios.$get(`/commercial/get_all_options`);
     commit('mutate', { property: 'commercialAllOptions', value: res });
   },
-  async getComFilters({ commit }, id) {
+  async getCommercialFilters({ commit }, id) {
     const res = await this.$axios.$get(`/commercial/type/${id}/get_filters`);
     commit('mutate', { property: 'commercialFilters', value: res });
   },
-  async getComSearchFilters({ commit }, id) {
+  async getCommercialSearchFilters({ commit }, id) {
     const res = await this.$axios.$get(`/commercial/type/${id}/get_search_filters`);
     commit('mutate', { property: 'commercialSearchFilters', value: res });
   },
-  async getComTypes({ state, commit }) {
+  async getCommercialTypes({ state, commit }) {
     if (objectNotEmpty(state, commit, 'commercialTypes')) return;
     const res = await this.$axios.$get('/commercial/all_types');
     commit('mutate', { property: 'commercialTypes', value: res });

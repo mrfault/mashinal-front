@@ -1,5 +1,6 @@
 <template>
-  <div class="pages-premium">
+  <div class="pages-cars-premium">
+    <search-nav v-if="isMobileBreakpoint" />
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
       <grid 
@@ -19,12 +20,14 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 
+import SearchNav from '~/components/layout/SearchNav';
 import Grid from '~/components/announcements/Grid';
 import NoResults from '~/components/elements/NoResults';
 
 export default {
   name: 'pages-cars-premium',
   components: {
+    SearchNav,
     Grid,
     NoResults
   },

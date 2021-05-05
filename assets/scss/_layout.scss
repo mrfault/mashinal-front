@@ -387,7 +387,7 @@ main {
         padding-bottom: 10px;
         i {
           width: 60px;
-          font-size: 40px;
+          font-size: 45px;
         }
       }
     }
@@ -546,6 +546,7 @@ main {
       font-size: 11px;
       font-weight: 500;
       text-align: center;
+      &.pseudo-active,
       &.exact-active {
         color: $red-1;
       }
@@ -723,6 +724,76 @@ main {
   }
 }
 
+.search-nav {
+  background-color: $white;
+  .search-types,
+  .search-categories {
+    border-bottom: 1px solid $grayish-blue-1;
+    ul {
+      display: flex;
+      list-style: none;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    a {
+      color: inherit;
+      &.active {
+        color: $red-1;
+      }
+    }
+  }
+  .search-types ul {
+    height: 60px;
+    align-items: center;
+    justify-content: space-between;
+    li {
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+      position: relative;
+      height: 58px;
+      font-size: 13px;
+      font-weight: 500;
+      text-align: center;
+      width: 30%;
+    }
+    a {
+      &.active::before {
+        content: '';
+        position: absolute;
+        bottom: -1px;
+        border-bottom: 3px solid;
+        border-radius: 1px;
+        width: 20px;
+        left: 50%;
+        transform: translate(-50%);
+      }
+    }
+  }
+  .search-categories ul {
+    height: 90px;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding-top: 15px;
+    li {
+      font-size: 12px;
+      text-align: center;
+      width: 95px;
+      a {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+      }
+      i {
+        font-size: 40px;
+        margin-bottom: 6px;
+      }
+    }
+  }
+}
+
 .dark-mode {
   .mobile-nav {
     background-color: $dark-2;
@@ -730,6 +801,7 @@ main {
     ul {
       a {
         color: $white;
+        &.pseudo-active,
         &.exact-active {
           color: $yellow-1;
         }
@@ -765,6 +837,17 @@ main {
           }
         }
       }
+    }
+  }
+
+  .search-nav {
+    background-color: $dark-2;
+    .search-types,
+    .search-categories {
+      border-bottom-color: $dark-1;
+    }
+    a.active {
+      color: $yellow-1;
     }
   }
 }
@@ -1193,6 +1276,10 @@ main {
 /** Responsive */
 
 @include media-max-width('lg') {
+  body {
+    font-size: 13px;
+  }
+
   [class^=pages-] {
     @include calc-vh(min-height, calc(100vh - 120px));
     padding: 0 0 30px;
@@ -1218,7 +1305,7 @@ main {
 
   .card {
     margin: 0 -25px;
-    &.pt-0.pt-lg-4 {
+    &.pt-2.pt-lg-4 {
       border-top-left-radius: 0;
       border-top-right-radius: 0;
     }

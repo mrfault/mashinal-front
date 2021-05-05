@@ -8,10 +8,10 @@
         <nav>
           <ul class="menu">
             <li v-for="menu in topbarMenus" :key="menu.title">
-              <a :href="getMenuLink(menu)" @click.prevent="handleMenuItem(menu)">
+              <nuxt-link :to="$localePath(menu.route)">
                 <icon :name="menu.icon" />
                 {{ $t(menu.title) }}
-              </a>
+              </nuxt-link>
             </li>
           </ul>
           <nuxt-link custom :to="getUserSettingsLink" v-slot="{ navigate }">
@@ -26,9 +26,7 @@
                   <hr/>
                   <ul>
                     <li v-for="menu in userMenus" :key="menu.title">
-                      <a :href="getMenuLink(menu)" @click.prevent="handleMenuItem(menu)">
-                        {{ $t(menu.title) }}
-                      </a>
+                      <nuxt-link :to="$localePath(menu.route)">{{ $t(menu.title) }}</nuxt-link>
                     </li>
                     <li key="logout">
                       <a href="javascript:void(0);" @click="logout">{{ $t('output') }}</a>
@@ -54,22 +52,18 @@
       <div class="container">
         <nav>
           <ul class="menu">
-            <li v-for="menu in navbarMenus" :key="menu.id" :class="{'dropdown': hasDropdown(menu)}">
-              <nuxt-link custom :to="getMenuLink(menu)" v-slot="{ href, isActive }">
-                <a :href="href" @click.prevent="handleMenuItem(menu)" :class="{'active': isActive}">
-                  {{ menu.name[locale] }}
-                  <icon name="chevron-down" v-if="hasDropdown(menu)" />
-                </a>
+            <li v-for="menu in navbarMenus" :key="menu.title" :class="{'dropdown': menu.children}">
+              <nuxt-link :to="$localePath(menu.route)">
+                {{ $t(menu.title) }}
+                <icon name="chevron-down" v-if="menu.children" />
               </nuxt-link>
-              <div class="dropdown-content" v-if="hasDropdown(menu)">
+              <div class="dropdown-content" v-if="menu.children">
                 <div class="container">
                   <ul class="dropdown-menu row">
-                    <li class="col-3" v-for="submenu in menu.children" :key="submenu.id">
-                      <nuxt-link custom :to="getMenuLink(submenu)" v-slot="{ href, isActive }">
-                        <a :href="href" @click.prevent="handleMenuItem(submenu)" :class="{'active': isActive}">
-                          <icon :name="getIconBase(menu)+submenu.order" />
-                          {{ submenu.name[locale] }}
-                        </a>
+                    <li class="col-3" v-for="submenu in menu.children" :key="submenu.title">
+                      <nuxt-link :to="$localePath(submenu.route)">
+                        <icon :name="submenu.icon" />
+                        {{ $t(submenu.title) }}
                       </nuxt-link>
                     </li>
                   </ul>
@@ -93,22 +87,7 @@ import { UserDataMixin } from '~/mixins/user-data';
 export default {
   mixins: [MenusDataMixin, UserDataMixin],
   methods: {
-    ...mapActions(['changeLocale']),
-
-    getMenuLink(item) {
-      return this.$localePath(item.route || item.url);
-    },
-    handleMenuItem(item) {
-      if(item.route === 'javascript:void(0);') return;
-      this.$router.push(this.getMenuLink(item))
-    },
-    hasDropdown(menu) {
-      return [5,7].includes(menu.id) && menu.children.length;
-    },
-    getIconBase(menu) {
-      if (menu.id === 5) return 'moto-';
-      else if (menu.id === 7) return 'commercial-';
-    }
+    ...mapActions(['changeLocale'])
   }
 }
 </script>
