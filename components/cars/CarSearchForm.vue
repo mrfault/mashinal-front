@@ -192,7 +192,7 @@
               <color-options v-model="form.colors" :matt="form.is_matte" @change-matt="form.is_matte = $event" />
             </div>
             <div class="col-12">
-              <car-options :values="form.all_options" name-in-value @change-option="setCarOption" />
+              <car-filters :values="form.all_options" name-in-value @change-filter="setCarFilter" />
             </div>
           </template>
           <div class="col-6 col-lg-2 mb-2 mb-lg-3" v-if="!isMobileBreakpoint">
@@ -270,14 +270,14 @@ import { mapGetters, mapActions } from 'vuex';
 import { SearchMixin } from '~/mixins/search';
 
 import ColorOptions from '~/components/options/ColorOptions';
-import CarOptions from '~/components/options/CarOptions';
+import CarFilters from '~/components/cars/CarFilters';
 import CarBodyShortcuts from '~/components/cars/CarBodyShortcuts';
 import CarOptionPacks from '~/components/cars/CarOptionPacks';
 
 export default {
   components: { 
     ColorOptions,
-    CarOptions,
+    CarFilters,
     CarBodyShortcuts,
     CarOptionPacks
   },
@@ -371,7 +371,7 @@ export default {
       this.$set(this.form.additional_brands[index], 'generation', '');
       if (id) await this.getModelGenerationsArray({ value: slug, brand_slug, index });
     },
-    setCarOption(key, value) {
+    setCarFilter(key, value) {
       if(value === false || value === '' || (typeof value === 'object' && !Object.keys(value).length))
         this.$delete(this.form.all_options, key);
       else this.$set(this.form.all_options, key, value);

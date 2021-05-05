@@ -74,6 +74,9 @@
           <div class="col-12">
             <component :is="!isMobileBreakpoint ? 'transition-expand' : 'div'">
               <div class="row" v-if="isMobileBreakpoint || !collapsed">
+                <div class="col-12">
+                  <commercial-filters :values="form" @change-filter="setCommercialFilter" />
+                </div>
                 <div class="col-12 mb-2 mb-lg-0">
                   <color-options v-model="form.colors" hide-matt />
                 </div>
@@ -129,10 +132,12 @@ import { mapGetters, mapActions } from 'vuex';
 
 import { SearchMixin } from '~/mixins/search';
 
+import CommercialFilter from '~/components/commercial/CommercialFilter';
 import ColorOptions from '~/components/options/ColorOptions';
 
 export default {
   components: { 
+    CommercialFilter,
     ColorOptions
   },
   mixins: [SearchMixin],
@@ -181,7 +186,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['commercialBrands', 'commercialModels', 'commercialSearchFilters']),
+    ...mapGetters(['commercialBrands', 'commercialModels']),
   },
   methods: {
     ...mapActions(['getCommercialModels']),
@@ -190,6 +195,11 @@ export default {
       this.$set(this.form.additional_brands[index], 'brand', id);
       this.$set(this.form.additional_brands[index], 'model', '');
       if (id) await this.getCommercialModels({ type: this.category.id, id, index });
+    },
+    setCommercialFilter(key, value) {
+      if(value === false || value === '' || (typeof value === 'object' && !Object.keys(value).length)) {
+        this.$delete(this.form, key);
+      } else this.$set(this.form, key, value);
     }
   }
 }

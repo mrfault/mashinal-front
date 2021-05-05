@@ -1,6 +1,6 @@
 <template>
-  <div class="car-options">
-    <div class="car-options_row" v-for="(options, index) in allSellOptions2.detailed" :key="index">
+  <div class="car-filters">
+    <div class="car-filters_row" v-for="(options, index) in allSellOptions2.detailed" :key="index">
       <div class="d-flex mb-2 mb-lg-3" @click="$set(collapsed, index, !collapsed[index])">
         <h2 class="title-with-line full-width">
           <span>{{ titles[index] || '' }}</span>
@@ -19,7 +19,7 @@
                 :multiple="isMultiple(input)" 
                 :name-in-value="isMultiple(input) && !!nameInValue"
                 :translate-options="true"
-                @change="changeOption(input.name, $event)"
+                @change="changeFilter(input.name, $event)"
               />
               <form-checkbox  
                 v-else-if="input.type === 'checkbox'"
@@ -27,7 +27,7 @@
                 :label="$t(input.label)"
                 :id="`${input.name}${input.selected_key || ''}`"
                 :input-name="input.name"  
-                @change="changeOption(input.name, $event, input.selected_key)"
+                @change="changeFilter(input.name, $event, input.selected_key)"
               />
             </template>
           </div>
@@ -77,7 +77,7 @@ export default {
         ? (input.selected_key ? (this.isMultiple(input) ? values[[input.name]].includes(input.selected_key) : input.selected_key == values[[input.name]]) : values[[input.name]])
         : (input.selected_key ? false : (this.isMultiple(input) ? [] : (input.type === 'select' ? '' : false)));
     },
-    changeOption(key, value, selected_key) {
+    changeFilter(key, value, selected_key) {
       if(selected_key) {
         if(this.selectMultiple.includes(key)) {
           let selected = this.values[key] || [];
@@ -87,7 +87,7 @@ export default {
           value = value ? selected_key : '';
         }
       }
-      this.$emit('change-option', key, value);
+      this.$emit('change-filter', key, value);
     },
     setValues() {
       this.allSellOptions2.detailed.map(options => {
@@ -99,10 +99,10 @@ export default {
   },
   created() {
     this.setValues();
-    this.$nuxt.$on('change-car-options', this.setValues);
+    this.$nuxt.$on('change-car-filters', this.setValues);
   },
   beforeDestroy() {
-    this.$nuxt.$off('change-car-options', this.setValues);
+    this.$nuxt.$off('change-car-filters', this.setValues);
   }
 }
 </script>

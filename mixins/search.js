@@ -36,12 +36,14 @@ export const SearchMixin = {
         let value = form[property];
         this.$set(this.form, property, value);
       }
-      // update car options
-      if (this.meta.type === 'cars') {
-        this.$nextTick(() => {
-          this.$nuxt.$emit('change-car-options');
-        });
-      }
+      // update dynamic filter values
+      this.$nextTick(() => {
+        if (this.meta.type === 'cars') {
+          this.$nuxt.$emit('change-car-filters');
+        } else if (this.meta.type === 'commercial') {
+          this.$nuxt.$emit('change-commercial-filters');
+        }
+      });
     },
     parseFormData() {
       this.setFormData(JSON.parse(this.$route.query[this.meta.param] || '{}'));
