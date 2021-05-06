@@ -132,12 +132,12 @@ import { mapGetters, mapActions } from 'vuex';
 
 import { SearchMixin } from '~/mixins/search';
 
-import CommercialFilter from '~/components/commercial/CommercialFilter';
+import CommercialFilters from '~/components/commercial/CommercialFilters';
 import ColorOptions from '~/components/options/ColorOptions';
 
 export default {
   components: { 
-    CommercialFilter,
+    CommercialFilters,
     ColorOptions
   },
   mixins: [SearchMixin],

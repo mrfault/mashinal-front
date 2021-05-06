@@ -12,7 +12,7 @@
 
 <script>
   export default {
-    name: 'pages-page',
+    name: 'pages-page-slug',
     nuxtI18n: {
       paths: {
         az: '/sehfe/:page'

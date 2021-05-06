@@ -1,6 +1,6 @@
 <template>
   <div class="pages-commercial">
-    <search-nav v-if="isMobileBreakpoint" />
+    <slot name="search-nav" />
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
       <commercial-search-form 
@@ -32,7 +32,7 @@ import Grid from '~/components/announcements/Grid';
 import NoResults from '~/components/elements/NoResults';
 
 export default {
-  name: 'pages-commercial',
+  name: 'pages-commercial-slug',
   components: {
     SearchNav,
     CommercialSearchForm,
@@ -78,11 +78,10 @@ export default {
       'kommunal': 'utilities'
     })[route.params.commercial];
 
-
     await store.dispatch('getCommercialTypes');
 
     const category = {
-      id: store.getters.commercialTypes.find(type => type.param === slug)?.id,
+      id: store.getters.commercialTypes.find(type => type.param.replace('escalators', 'excavators') === slug)?.id,
       type: slug
     };
 

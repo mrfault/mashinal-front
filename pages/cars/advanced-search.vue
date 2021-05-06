@@ -1,6 +1,6 @@
 <template>
-  <div class="pages-cars=advanced-search">
-    <search-nav v-if="isMobileBreakpoint" />
+  <div class="pages-cars-advanced-search">
+    <slot name="search-nav" />
     <div class="container"> 
       <breadcrumbs :crumbs="crumbs" />
       <car-search-form 
@@ -13,13 +13,11 @@
 </template>
 
 <script>
-import SearchNav from '~/components/layout/SearchNav';
 import CarSearchForm from '~/components/cars/CarSearchForm';
 
 export default {
   name: 'pages-cars-advanced-search',
   components: {
-    SearchNav,
     CarSearchForm
   },
   nuxtI18n: {

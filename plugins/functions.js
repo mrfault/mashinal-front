@@ -13,11 +13,11 @@ export default function({ app, route, store }, inject) {
   });
   // routing
   inject('localePath', (path, locale) => {
-    
-    return app.localePath(
+    let localePath = app.localePath(
       ('/ru'+(path === '/' ? '' : path)), 
       locale || app.i18n.locale
     );
+    return localePath.replace(/\/+$/, '');
   });
   inject('queryParams', (params) => {
     return '?' + Object.keys(params).map(key => `${key}=${params[key]}`).join('&');

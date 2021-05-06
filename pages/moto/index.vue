@@ -1,6 +1,6 @@
 <template>
   <div class="pages-moto-index">
-    <search-nav v-if="isMobileBreakpoint" />
+    <slot name="search-nav" />
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
       <grid 
@@ -31,13 +31,11 @@
 <script>
 import { mapGetters } from 'vuex';
 
-import SearchNav from '~/components/layout/SearchNav';
 import Grid from '~/components/announcements/Grid';
 
 export default {
   name: 'pages-moto-index',
   components: {
-    SearchNav,
     Grid
   },
   head() {

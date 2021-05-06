@@ -22,21 +22,6 @@
   }
 }
 
-.car-filters {
-  &_row > .d-flex {
-    h2 {
-      width: 100%;
-      margin: 0;
-      user-select: none;
-    }
-    & > i::before {
-      font-size: 12px;
-      margin-left: 25px;
-      margin-top: 6px;
-    }
-  }
-}
-
 @include media-min-width('lg') {
   .color-options {
     .col-lg-auto {
