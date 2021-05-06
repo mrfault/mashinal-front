@@ -1,6 +1,5 @@
 <template>
   <div class="pages-cars-assistant">
-    <slot name="search-nav" />
     <div class="container"> 
       <breadcrumbs :crumbs="crumbs" />
       <car-search-form 

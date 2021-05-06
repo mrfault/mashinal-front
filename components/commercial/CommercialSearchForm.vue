@@ -58,6 +58,9 @@
               </div>
             </form-select>
           </div>
+          <div class="col-6 col-lg-2 mb-2 mb-lg-3" v-if="!isMobileBreakpoint">
+            <form-select :label="$t('city')" :options="sellOptions.regions" v-model="form.region" />
+          </div>
           <div class="col-6 col-lg-2 mb-2 mb-lg-3">
             <form-checkbox :label="$t('barter')" v-model="form.exchange_possible" 
               input-name="exchange_possible" icon-name="barter" />
@@ -75,7 +78,11 @@
             <component :is="!isMobileBreakpoint ? 'transition-expand' : 'div'">
               <div class="row" v-if="isMobileBreakpoint || !collapsed">
                 <div class="col-12">
-                  <commercial-filters :values="form" @change-filter="setCommercialFilter" />
+                  <commercial-filters :values="form" @change-filter="setCommercialFilter">
+                    <div class="col-6 col-lg-2 mb-2 mb-lg-3" v-if="isMobileBreakpoint">
+                      <form-select :label="$t('city')" :options="sellOptions.regions" v-model="form.region" />
+                    </div>
+                  </commercial-filters>
                 </div>
                 <div class="col-12 mb-2 mb-lg-0">
                   <color-options v-model="form.colors" hide-matt />
@@ -155,11 +162,6 @@ export default {
       model: ''
     };
     return {
-      meta: {
-        type: 'commercial',
-        path: '/commercial/'+this.$t('slug_'+this.category.type),
-        param: 'filter'
-      },
       rows: ['0'],
       form: {
         sorting: 'created_at_desc',
@@ -180,13 +182,23 @@ export default {
         colors: [],
         customs: '',
         status: '',
+        region: '',
         exchange_possible: false,
         credit: false
       }
     }
   },
   computed: {
-    ...mapGetters(['commercialBrands', 'commercialModels']),
+    ...mapGetters(['commercialBrands', 'commercialModels', 'sellOptions']),
+
+    // meta data
+    meta() {
+      return {
+        type: 'commercial',
+        path: '/commercial/'+this.$t('slug_'+this.category.type),
+        param: 'filter'
+      }
+    }
   },
   methods: {
     ...mapActions(['getCommercialModels']),

@@ -1,6 +1,5 @@
 <template>
   <div class="pages-moto">
-    <slot name="search-nav" />
     <div class="container"> 
       <breadcrumbs :crumbs="crumbs" />
       <moto-search-form 
@@ -76,6 +75,7 @@ export default {
     let searchParams = { url: category.url, prefix: 'moto' }
 
     await Promise.all([
+      store.dispatch('getOptions'),
       store.dispatch('getColors'),
       store.dispatch('getMotoOptions'),
       store.dispatch('getGridSearch', { ...searchParams, post, page }),

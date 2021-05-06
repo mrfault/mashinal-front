@@ -1,6 +1,5 @@
 <template>
   <div class="pages-moto-index">
-    <slot name="search-nav" />
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
       <grid 

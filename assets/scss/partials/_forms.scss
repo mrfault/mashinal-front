@@ -220,6 +220,8 @@ textarea {
       margin-left: 4px;
     }
     .counter {
+      position: relative;
+      right: 2px;
       display: flex;
       align-items: center;
       justify-content: center;

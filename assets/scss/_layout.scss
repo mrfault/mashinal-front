@@ -1200,7 +1200,6 @@ main {
   }
 
   [class^=pages-] {
-    @include calc-vh(min-height, calc(100vh - 120px));
     padding: 0 0 30px;
   }
 

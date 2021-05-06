@@ -216,7 +216,7 @@
         }
         let selected = this.options.filter(this.isSelected);
         return selected.length === 1
-          ? `${(this.showLabelOnSelect && this.allowClear) ? this.label + ': ' : (this.suffix ? (', '+this.suffix) : '')}${this.getOptionName(selected[0])}`
+          ? `${(this.showLabelOnSelect && this.allowClear) ? (this.label + ': ' + (this.suffix ? (', '+this.suffix) : '')) : ''}${this.getOptionName(selected[0])}`
           : this.label;
       },
       getActionBarText() {

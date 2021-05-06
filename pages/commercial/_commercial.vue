@@ -1,6 +1,5 @@
 <template>
   <div class="pages-commercial">
-    <slot name="search-nav" />
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
       <commercial-search-form 
@@ -97,9 +96,10 @@ export default {
     let searchParams = { url: '/grid/commercial', prefix: 'commercial' }
 
     await Promise.all([
+      store.dispatch('getOptions'),
+      store.dispatch('getColors'),
       store.dispatch('getCommercialSearchFilters', category.id),
       store.dispatch('getCommercialBrands', category.id),
-      store.dispatch('getColors'),
       store.dispatch('getGridSearch', { ...searchParams, post, page }),
       // get model options for brands
       ...Object.keys(post?.additional_brands || {})

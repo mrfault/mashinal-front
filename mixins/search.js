@@ -194,7 +194,7 @@ export const SearchMixin = {
     },
     filtersApplied() {
       let hasBrand = this.rows.filter(key => this.form.additional_brands[key].brand).length;
-      let hasAllOptions = Object.keys(this.form.all_options).length;
+      let hasAllOptions = this.form.all_options && Object.keys(this.form.all_options).length;
       let hasOptions = Object.keys(this.getFormData()).length > 5 || (this.form.announce_type !== 1);
       return !!(hasBrand || hasAllOptions || hasOptions);
     },

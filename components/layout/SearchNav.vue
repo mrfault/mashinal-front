@@ -47,15 +47,12 @@ export default {
     return {
       swiperOps: {
         slidesPerView: 'auto',
-        roundLengths: true,
         centeredSlides: true,
-        centeredSlidesBounds: true
+        centeredSlidesBounds: true,
+        slideToClickedSlide: true,
+        roundLengths: true
       }
     }
-  },
-  fetch() {
-    // if (this.activeSlide) 
-    //   this.swiperOps.initialSlide = this.activeSlide;
   },
   computed: {
     activeType() {
@@ -65,21 +62,20 @@ export default {
     },
     activeMenu() {
       return this.searchMenus.find(menu => menu.title === this.activeType);
-    },
-    activeSlide() {
-      return this.activeMenu?.children?.findIndex(menu => this.$localePath(menu.route) === this.$route.path);
     }
   },
-  watch: {
-    $route() {
-      this.$nextTick(() => {
-        this.searchNavSwiper?.slideTo(this.activeSlide);
-      })
-        
+  methods: {
+    slideToCategory() {
+      if (this.routeName !== 'commercial-commercial') return false;
+      let slide = this.activeMenu?.children?.findIndex(menu => this.$localePath(menu.route) === this.$route.path);
+      if (slide) this.searchNavSwiper?.slideTo(slide);
     }
   },
   mounted() {
-    this.searchNavSwiper?.slideTo(this.activeSlide);
+    this.slideToCategory();
+  },
+  updated() {
+    this.slideToCategory();
   }
 }
 </script>

@@ -58,6 +58,9 @@
               </div>
             </form-select>
           </div>
+          <div class="col-6 col-lg-2 mb-2 mb-lg-3" v-if="!isMobileBreakpoint">
+            <form-select :label="$t('city')" :options="sellOptions.regions" v-model="form.region" />
+          </div>
           <div class="col-6 col-lg-2 mb-2 mb-lg-3">
             <form-checkbox :label="$t('barter')" v-model="form.exchange_possible" 
               input-name="exchange_possible" icon-name="barter" />
@@ -74,6 +77,9 @@
           <div class="col-12" >
             <component :is="!isMobileBreakpoint ? 'transition-expand' : 'div'">
               <div class="row" v-if="isMobileBreakpoint || !collapsed">
+                <div class="col-6 col-lg-2 mb-2 mb-lg-3" v-if="isMobileBreakpoint">
+                  <form-select :label="$t('city')" :options="sellOptions.regions" v-model="form.region" />
+                </div>
                 <div class="col-6 col-lg-2 mb-2 mb-lg-3">
                   <form-select :label="$t('mileage')" custom anchor="right" :suffix="$t('char_kilometre')"
                     :values="{from: form.mileage_from, to: form.mileage_to }"
@@ -197,11 +203,6 @@ export default {
       model: ''
     };
     return {
-      meta: {
-        type: 'moto',
-        path: '/moto/'+this.$t('slug_'+this.category.type),
-        param: 'filter'
-      },
       rows: ['0'],
       form: {
         sorting: 'created_at_desc',
@@ -217,6 +218,11 @@ export default {
         box: [],
         engine: [],
         drive: [],
+        colors: [],
+        cylinders: [],
+        sum_cylinders: [],
+        tacts: [],
+        type: [],
         capacity_from: '',
         capacity_to: '',
         min_year: '',
@@ -229,19 +235,24 @@ export default {
         power_from: '',
         status: '',
         customs: '',
-        colors: [],
-        cylinders: [],
-        sum_cylinders: [],
-        tacts: [],
-        type: [],
+        region: '',
         exchange_possible: false,
         credit: false
       }
     }
   },
   computed: {
-    ...mapGetters(['motoOptions', 'motorcycleModels', 'scooterModels', 'atvModels']),
+    ...mapGetters(['motoOptions', 'motorcycleModels', 'scooterModels', 'atvModels', 'sellOptions']),
 
+    // meta data
+    meta() {
+      return {
+        type: 'moto',
+        path: '/moto/'+this.$t('slug_'+this.category.type),
+        param: 'filter'
+      }
+    },
+    // options
     brands() {
       return {
         1: this.motoOptions.brands,

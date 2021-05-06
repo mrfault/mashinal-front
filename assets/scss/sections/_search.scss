@@ -2,6 +2,7 @@
 
 .search-nav {
   background-color: $white;
+  overflow: hidden;
   .search-types,
   .search-categories {
     border-bottom: 1px solid $grayish-blue-1;

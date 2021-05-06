@@ -300,11 +300,6 @@ export default {
       generation: '' 
     };
     return {
-      meta: {
-        type: 'cars',
-        path: '/cars',
-        param: 'car_filter'
-      },
       rows: ['0'],
       form: {
         sorting: 'created_at_desc',
@@ -349,7 +344,16 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['brands', 'carModels', 'carGenerations', 'bodyOptions', 'sellOptions', 'allSellOptions2'])
+    ...mapGetters(['brands', 'carModels', 'carGenerations', 'bodyOptions', 'sellOptions', 'allSellOptions2']),
+
+    // meta data
+    meta() {
+      return {
+        type: 'cars',
+        path: '/cars',
+        param: 'car_filter'
+      }
+    }
   },
   methods: {
     ...mapActions(['getModelsArray', 'getModelGenerationsArray']),

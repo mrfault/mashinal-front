@@ -13,7 +13,15 @@ export const LayoutMixin = {
     }
   },
   computed: {
-    ...mapGetters(['loading', 'messages'])
+    ...mapGetters(['loading', 'messages']),
+
+    showSearchNav() {
+      let searchPages = [
+        'cars','cars-advanced-search','cars-assistant','cars-vip','cars-premium',
+        'moto','moto-moto','commercial','commercial-commercial'
+      ];
+      return searchPages.includes(this.routeName);
+    }
   },
   methods: {
     ...mapActions(['setLoading','setGridBreakpoint','getMessages','getSavedAnnouncements','resetSellTokens']),

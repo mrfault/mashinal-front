@@ -6,6 +6,7 @@
           <theme-switch />
         </mobile-menu>
         <page-header v-else />
+        <search-nav v-if="isMobileBreakpoint && showSearchNav" />
         <main>
           <nuxt />
           <theme-switch :floating="true" v-if="!isMobileBreakpoint" />
