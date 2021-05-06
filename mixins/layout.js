@@ -13,15 +13,7 @@ export const LayoutMixin = {
     }
   },
   computed: {
-    ...mapGetters(['loading', 'messages']),
-
-    showSearchNav() {
-      let searchPages = [
-        'cars','cars-advanced-search','cars-assistant','cars-vip','cars-premium',
-        'moto','moto-moto','commercial','commercial-commercial'
-      ];
-      return searchPages.includes(this.routeName);
-    }
+    ...mapGetters(['loading', 'messages'])
   },
   methods: {
     ...mapActions(['setLoading','setGridBreakpoint','getMessages','getSavedAnnouncements','resetSellTokens']),

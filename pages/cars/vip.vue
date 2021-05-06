@@ -24,6 +24,7 @@ import NoResults from '~/components/elements/NoResults';
 
 export default {
   name: 'pages-cars-vip',
+  layout: 'search',
   components: {
     Grid,
     NoResults

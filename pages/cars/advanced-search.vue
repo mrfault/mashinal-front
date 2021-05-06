@@ -16,6 +16,7 @@ import CarSearchForm from '~/components/cars/CarSearchForm';
 
 export default {
   name: 'pages-cars-advanced-search',
+  layout: 'search',
   components: {
     CarSearchForm
   },

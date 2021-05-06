@@ -1,5 +1,5 @@
 <template>
-  <div class="pages-page-page">
+  <div class="pages-page-page pt-5">
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
       <div class="card">

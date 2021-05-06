@@ -46,6 +46,7 @@ import NoResults from '~/components/elements/NoResults';
 
 export default {
   name: 'pages-cars-index',
+  layout: 'search',
   components: {
     CarSearchForm,
     Grid,

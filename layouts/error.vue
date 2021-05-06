@@ -17,6 +17,7 @@
 import { LayoutMixin } from '~/mixins/layout';
 
 export default {
+  name: 'layout-error',
   props: ['error'],
   mixins: [LayoutMixin],
   scrollToTop: true,

@@ -32,6 +32,7 @@ import NoResults from '~/components/elements/NoResults';
 
 export default {
   name: 'pages-commercial-slug',
+  layout: 'search',
   components: {
     SearchNav,
     CommercialSearchForm,

@@ -31,6 +31,7 @@ import NoResults from '~/components/elements/NoResults';
 
 export default {
   name: 'pages-moto-slug',
+  layout: 'search',
   components: {
     MotoSearchForm,
     Grid,

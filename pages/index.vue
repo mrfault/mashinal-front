@@ -1,6 +1,5 @@
 <template>
   <div class="pages-index">
-    <search-nav v-if="isMobileBreakpoint" />
     <div class="container">
       <car-search-form 
         :total-count="mainAnnouncements.paginate.total"
@@ -45,14 +44,13 @@
 <script>
 import { mapGetters } from 'vuex';
 
-import SearchNav from '~/components/layout/SearchNav';
 import CarSearchForm from '~/components/cars/CarSearchForm';
 import Grid from '~/components/announcements/Grid';
 
 export default {
   name: 'pages-index',
+  layout: 'search',
   components: {
-    SearchNav,
     CarSearchForm,
     Grid
   },

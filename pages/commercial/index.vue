@@ -23,6 +23,7 @@ import NoResults from '~/components/elements/NoResults';
 
 export default {
   name: 'pages-commercial-index',
+  layout: 'search',
   components: {
     Grid,
     NoResults

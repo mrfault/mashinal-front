@@ -34,6 +34,7 @@ import Grid from '~/components/announcements/Grid';
 
 export default {
   name: 'pages-moto-index',
+  layout: 'search',
   components: {
     Grid
   },

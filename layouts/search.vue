@@ -1,5 +1,8 @@
 <template>
   <page-layout>
+    <template #after-header>
+      <search-nav v-if="isMobileBreakpoint" />
+    </template>
     <template #nuxt>
       <nuxt />
     </template>
@@ -8,11 +11,13 @@
 
 <script>
 import PageLayout from '~/components/layout/PageLayout';
+import SearchNav from '~/components/layout/SearchNav';
 
 export default {
-  name: 'layout-default',
+  name: 'layout-search',
   components: {
-    PageLayout
+    PageLayout,
+    SearchNav
   }
 }
 </script>
