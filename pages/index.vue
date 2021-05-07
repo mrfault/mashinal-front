@@ -1,8 +1,8 @@
 <template>
   <div class="pages-index">
     <div class="container">
-      <cars-search-form 
-        :total-count="mainAnnouncements.paginate.total"
+      <car-search-form 
+        :total-count="$paginate(mainAnnouncements).total"
         :pending="pending"
         @pending="pending = true"
       />
@@ -25,7 +25,7 @@
       <grid 
         v-if="mainAnnouncements.random_moto.length"
         :announcements="mainAnnouncements.random_moto" 
-        :title="$t('type_motos')"
+        :title="$t('moto')"
         :show-all="$localePath('/motorcycles')"
         :pending="pending"
       />
@@ -44,13 +44,14 @@
 <script>
 import { mapGetters } from 'vuex';
 
-import CarsSearchForm from '~/components/cars/CarsSearchForm';
+import CarSearchForm from '~/components/cars/CarSearchForm';
 import Grid from '~/components/announcements/Grid';
 
 export default {
   name: 'pages-index',
+  layout: 'search',
   components: {
-    CarsSearchForm,
+    CarSearchForm,
     Grid
   },
   head() {
@@ -73,6 +74,10 @@ export default {
   },
   computed: {
     ...mapGetters(['mainAnnouncements'])
+  },
+  beforeRouteLeave(to, from, next) {
+    this.$nuxt.$emit('prevent-popstate');
+    next();
   }
 }
 </script>

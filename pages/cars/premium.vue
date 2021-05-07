@@ -1,5 +1,5 @@
 <template>
-  <div class="pages-premium">
+  <div class="pages-cars-premium">
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
       <grid 
@@ -24,6 +24,7 @@ import NoResults from '~/components/elements/NoResults';
 
 export default {
   name: 'pages-cars-premium',
+  layout: 'search',
   components: {
     Grid,
     NoResults

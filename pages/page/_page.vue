@@ -1,5 +1,5 @@
 <template>
-  <div class="pages-index">
+  <div class="pages-page-page pt-5">
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
       <div class="card">
@@ -12,7 +12,7 @@
 
 <script>
   export default {
-    name: 'page',
+    name: 'pages-page-slug',
     nuxtI18n: {
       paths: {
         az: '/sehfe/:page'
@@ -24,8 +24,11 @@
       });
     },
     async asyncData({ store, route, app }) {
-      let page = store.state.staticPages.find(page => page.slug[app.i18n.locale] === route.params.page);
-      await store.dispatch('i18n/setRouteParams', { az: { page: page.slug.az }, ru: { page: page.slug.ru } });
+      let page = store.getters.staticPages.find(page => page.slug[app.i18n.locale] === route.params.page);
+      await store.dispatch('i18n/setRouteParams', { 
+        az: { page: page.slug.az }, 
+        ru: { page: page.slug.ru } 
+      });
       return { page }
     },
     computed: {

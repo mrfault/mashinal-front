@@ -42,13 +42,15 @@ export const LayoutMixin = {
       let headerEl = document.querySelector('.page-header');
       let menuHeaderEl = document.querySelector('.menu-header');
       [headerEl, menuHeaderEl].map(el => {
-        el.classList[window.scrollY > 0 ? 'add' : 'remove']('has-shadow');
+        el?.classList[window.scrollY > 0 ? 'add' : 'remove']('has-shadow');
       });
       // footer
       let footerEl = document.querySelector('.page-footer');
-      let reachedFooter = (window.pageYOffset + window.innerHeight) >= footerEl.offsetTop;
-      layout.classList[reachedFooter ? 'add' : 'remove']('reached-footer');
-      layout.classList[window.scrollY > 0 ? 'add' : 'remove']('scrolled');
+      if (footerEl) {
+        let reachedFooter = (window.pageYOffset + window.innerHeight) >= footerEl.offsetTop;
+        layout.classList[reachedFooter ? 'add' : 'remove']('reached-footer');
+        layout.classList[window.scrollY > 0 ? 'add' : 'remove']('scrolled');
+      }
     },
     // login
     async getUserData() {

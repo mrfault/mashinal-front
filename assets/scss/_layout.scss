@@ -117,6 +117,7 @@ main {
 }
 
 .card {
+  position: relative;
   background-color: $white;
   border-radius: 4px;
   padding: 25px;
@@ -386,7 +387,7 @@ main {
         padding-bottom: 10px;
         i {
           width: 60px;
-          font-size: 40px;
+          font-size: 45px;
         }
       }
     }
@@ -509,6 +510,9 @@ main {
     .socials a:hover {
       color: $dark-1;
     }
+    .logo + p {
+      color: $grey-3;
+    }
   }
 }
 
@@ -516,7 +520,7 @@ main {
 
 .mobile-nav {
   position: sticky;
-  z-index: 1;
+  z-index: 9;
   bottom: 0;
   left: 0;
   background-color: $white;
@@ -542,6 +546,7 @@ main {
       font-size: 11px;
       font-weight: 500;
       text-align: center;
+      &.pseudo-active,
       &.exact-active {
         color: $red-1;
       }
@@ -597,7 +602,7 @@ main {
 
 .mobile-menu {
   position: sticky;
-  z-index: 2;
+  z-index: 10;
   top: 0;
   left: 0;
   .menu-header {
@@ -726,6 +731,7 @@ main {
     ul {
       a {
         color: $white;
+        &.pseudo-active,
         &.exact-active {
           color: $yellow-1;
         }
@@ -894,7 +900,7 @@ main {
   cursor: pointer;
   &.floating {
     position: fixed;
-    z-index: 1;
+    z-index: 60;
     bottom: 30px;
     left: 30px;
     width: 60px;
@@ -942,7 +948,7 @@ main {
   transition: visibility 0 .3s ease-out, opacity .3s ease-out;
   cursor: pointer;
   position: fixed;
-  z-index: 1;
+  z-index: 60;
   bottom: 30px;
   right: 30px;
   width: 60px;
@@ -982,7 +988,7 @@ main {
   position: fixed;
   touch-action: none;
   pointer-events: none;
-  z-index: 20;
+  z-index: 40;
   left: 0;
   top: 0;
   width: 100%;
@@ -1189,8 +1195,11 @@ main {
 /** Responsive */
 
 @include media-max-width('lg') {
+  body {
+    font-size: 13px;
+  }
+
   [class^=pages-] {
-    @include calc-vh(min-height, calc(100vh - 120px));
     padding: 0 0 30px;
   }
 
@@ -1213,9 +1222,8 @@ main {
   }
 
   .card {
-    position: relative;
     margin: 0 -25px;
-    &.pt-0.pt-lg-4 {
+    &.pt-2.pt-lg-4 {
       border-top-left-radius: 0;
       border-top-right-radius: 0;
     }

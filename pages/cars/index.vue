@@ -1,8 +1,8 @@
 <template>
-  <div class="pages-cars">
+  <div class="pages-cars-index">
     <div class="container"> 
       <breadcrumbs :crumbs="crumbs" />
-      <cars-search-form 
+      <car-search-form 
         :total-count="carsAnnouncements.paginate.total"
         :pending="pending"
         @pending="pending = true"
@@ -40,14 +40,15 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 
-import CarsSearchForm from '~/components/cars/CarsSearchForm';
+import CarSearchForm from '~/components/cars/CarSearchForm';
 import Grid from '~/components/announcements/Grid';
 import NoResults from '~/components/elements/NoResults';
 
 export default {
   name: 'pages-cars-index',
+  layout: 'search',
   components: {
-    CarsSearchForm,
+    CarSearchForm,
     Grid,
     NoResults
   },
@@ -122,6 +123,10 @@ export default {
         { name: this.$t('cars') }
       ]
     }
+  },
+  beforeRouteLeave(to, from, next) {
+    this.$nuxt.$emit('prevent-popstate');
+    next();
   }
 }
 </script>

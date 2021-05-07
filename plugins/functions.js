@@ -13,8 +13,10 @@ export default function({ app, route, store }, inject) {
   });
   // routing
   inject('localePath', (path, locale) => {
-    path = '/ru'+(path === '/' ? '' : path);
-    return app.localePath(path, locale || app.i18n.locale);
+    if(path === '/')  
+      return app.localePath('index');
+    return app.localePath(('/ru'+(path === '/' ? '' : path)), locale || app.i18n.locale)
+      .replace(/\/+$/, '');
   });
   inject('queryParams', (params) => {
     return '?' + Object.keys(params).map(key => `${key}=${params[key]}`).join('&');
@@ -52,11 +54,11 @@ export default function({ app, route, store }, inject) {
   });
   // helpers
   inject('paginate', (data) => {
-    return {
+    return data ? {
       current_page: data.current_page || 1,
       last_page: data.standard_count ? Math.ceil(data.standard_count / 40) : data.last_page,
       total: data.standard_count || data.total
-    }
+    } : {}
   });
   inject('notUndefined', (...values) => {
     for(let i in values)

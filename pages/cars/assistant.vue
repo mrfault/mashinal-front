@@ -1,8 +1,8 @@
 <template>
-  <div class="pages-advanced-search">
+  <div class="pages-cars-assistant">
     <div class="container"> 
       <breadcrumbs :crumbs="crumbs" />
-      <cars-search-form 
+      <car-search-form 
         :assistant="true"
         :pending="pending"
         @pending="pending = true"
@@ -12,22 +12,34 @@
 </template>
 
 <script>
-import CarsSearchForm from '~/components/cars/CarsSearchForm';
+import CarSearchForm from '~/components/cars/CarSearchForm';
 
 export default {
   name: 'pages-cars-assistant',
+  layout: 'search',
   components: {
-    CarsSearchForm
+    CarSearchForm
   },
   nuxtI18n: {
     paths: {
-      az: '/masinlar/yardimci'
+      az: '/masinlar/beledci'
     }
   },
   head() {
     return this.$headMeta({
       title: this.$t('helper_search')
     });
+  },
+  async asyncData({ store }) {
+    await Promise.all([
+      store.dispatch('getBodyOptions'),
+      store.dispatch('getOptions'),
+      store.dispatch('getAllOtherOptions', '2'),
+    ]);
+
+    return {
+      pending: false
+    }
   },
   computed: {
     crumbs() {
@@ -36,6 +48,10 @@ export default {
         { name: this.$t('helper_search') }
       ]
     }
+  },
+  beforeRouteLeave(to, from, next) {
+    this.$nuxt.$emit('prevent-popstate');
+    next();
   }
 }
 </script>

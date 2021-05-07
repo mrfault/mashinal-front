@@ -1,8 +1,8 @@
 <template>
-  <div class="pages-advanced-search">
+  <div class="pages-cars-advanced-search">
     <div class="container"> 
       <breadcrumbs :crumbs="crumbs" />
-      <cars-search-form 
+      <car-search-form 
         :advanced="true"
         :pending="pending"
         @pending="pending = true"
@@ -12,12 +12,13 @@
 </template>
 
 <script>
-import CarsSearchForm from '~/components/cars/CarsSearchForm';
+import CarSearchForm from '~/components/cars/CarSearchForm';
 
 export default {
   name: 'pages-cars-advanced-search',
+  layout: 'search',
   components: {
-    CarsSearchForm
+    CarSearchForm
   },
   nuxtI18n: {
     paths: {
@@ -71,6 +72,10 @@ export default {
         { name: this.$t('advanced_search') }
       ]
     }
+  },
+  beforeRouteLeave(to, from, next) {
+    this.$nuxt.$emit('prevent-popstate');
+    next();
   }
 }
 </script>

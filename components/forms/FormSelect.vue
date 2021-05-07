@@ -209,22 +209,24 @@
           if (this.values.from && this.values.to) value = `${this.$readNumber(this.values.from, read)} - ${this.$readNumber(this.values.to, read)}`;
           else if (this.values.from || this.values.to) value = `${this.$t(!this.values.from ? 'to' : 'from')} ${this.$readNumber(this.values.from || this.values.to, read)}`;
           else if (this.values.from === 0 || this.values.to === 0) value = `${this.$t(this.values.to === 0 ? 'to' : 'from')} 0`;
-          if (value && this.values.suffix) value += ` ${this.values.suffix}`;
-          return value && this.values.showLabel ? `${this.label}: ${value}` : (value || this.label);
+          let suffix = this.values.suffix || this.suffix;
+          if (value && suffix) value += ` ${suffix}`;
+          else suffix = this.suffix || this.values.suffix;
+          return value && this.values.showLabel ? `${this.label}: ${value}` : (value || `${this.label}${suffix ? (', '+suffix) : ''}`);
         }
         let selected = this.options.filter(this.isSelected);
         return selected.length === 1
-          ? `${(this.showLabelOnSelect && this.allowClear) ? this.label + ': ' : ''}${this.getOptionName(selected[0])}`
+          ? `${(this.showLabelOnSelect && this.allowClear) ? (this.label + ': ' + (this.suffix ? (', '+this.suffix) : '')) : ''}${this.getOptionName(selected[0])}`
           : this.label;
       },
       getActionBarText() {
-        if (this.hasNoValue) return this.label;
+        if (this.hasNoValue) return this.getLabelText;
         else if (this.multiple) return this.value.length > 1 ? `${this.label} (${this.value.length})` : this.getLabelText;
         return `${(this.showLabelOnSelect && this.allowClear && !(this.custom && !this.values.showLabel)) ? '' : this.label + ': '}${this.getLabelText}`;
       },
       hasNoValue() {
         if(this.custom) 
-          return this.label === this.getLabelText;
+          return this.label === this.getLabelText.replace(`, ${this.suffix}`, '');
         if(this.selectValue instanceof Array) {
           for(let i in this.selectValue)
             if(this.options.map(option => this.getValue(option, true)).indexOf(this.getKey(this.selectValue[i])) !== -1)

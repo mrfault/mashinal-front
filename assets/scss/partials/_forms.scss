@@ -28,6 +28,7 @@ textarea {
 }
 
 .form-info {
+  user-select: none;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -219,6 +220,8 @@ textarea {
       margin-left: 4px;
     }
     .counter {
+      position: relative;
+      right: 2px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -262,7 +265,7 @@ textarea {
     box-shadow: $shadow-light-5;
     padding: 7px 0;
     &.anchor-left {
-      left: 0;
+      left: -1px;
     }
     &.anchor-right {
       right: 0;
@@ -307,6 +310,7 @@ textarea {
       display: flex;
       flex-direction: column;
       position: fixed;
+      z-index: 20;
       padding: 60px 0 0;
       width: 100%;
       height: 100%;
@@ -383,6 +387,43 @@ textarea {
           }
         }
       }
+    }
+  }
+}
+
+.range-slider {
+  position: relative;
+  z-index: 0;
+  padding: 10px 8px 0;
+  .vue-slider {
+    height: 2px;
+    &-rail {
+      background-color: $grayish-blue-7;
+    }
+    &-process {
+      background-color: $dark-blue-1;
+    }
+    &-dot {
+      width: 16px;
+      height: 16px;
+      &:nth-child(2){
+        margin-left: -8px;
+      }
+      &:nth-child(3){
+        margin-left: 8px;
+      }
+    }
+    &-dot-tooltip {
+      font-size: 13px;
+      font-weight: 500;
+      top: -5px;
+      background-color: $white;
+      border-radius: 4px;
+    }
+    &-dot-handle {
+      box-shadow: none;
+      border: 2px solid $dark-blue-1;
+      box-shadow: 0 0 0 2px $white;
     }
   }
 }
@@ -492,6 +533,26 @@ textarea {
   .form-counter {
     .form-info:hover {
       color: $yellow-1;
+    }
+  }
+
+  .range-slider {
+    .vue-slider {
+      height: 2px;
+      &-rail {
+        background-color: $grey-1;
+      }
+      &-process {
+        background-color: $white;
+      }
+      &-dot-handle {
+        border: 2px solid $white;
+        box-shadow: 0 0 0 2px $dark-2;
+        background-color: $dark-2;
+      }
+      &-dot-tooltip {
+        background-color: $dark-2;
+      }
     }
   }
 }

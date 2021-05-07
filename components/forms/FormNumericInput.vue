@@ -71,12 +71,18 @@
         this.numericValue = this.validateValue(this.value);
         let isSame = this.prevValue === this.value;
         this.prevValue = this.value;
-        if(!isSame) this.$emit('change');
+        if(!isSame) this.$emit('change', this.getValue(this.value));
       },
       validateValue(value) {
         if((this.minValue > 0 && value === 0) || (!value && value !== 0)) return '';
         value = value < this.minValue ? this.minValue : value;
         value = value > this.maxValue ? this.maxValue : value;
+        return value;
+      },
+      getValue(value) {
+        let maxlength = this.readValue(this.maxValue).length;
+        let parsedValue = this.$parseNumber(this.readValue(value).slice(0, maxlength));
+        value = isNaN(parsedValue) ? '' : parsedValue;
         return value;
       },
       readValue(value) {
@@ -101,10 +107,7 @@
           return this.readValue(this.value) + suffix;
         },
         set(value) {
-          let maxlength = this.readValue(this.maxValue).length;
-          let parsedValue = this.$parseNumber(this.readValue(value).slice(0, maxlength));
-          value = isNaN(parsedValue) ? '' : parsedValue;
-          this.$emit('input', value);
+          this.$emit('input', this.getValue(value));
         }
       }
     }

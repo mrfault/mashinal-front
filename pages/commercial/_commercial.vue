@@ -1,0 +1,151 @@
+<template>
+  <div class="pages-commercial">
+    <div class="container">
+      <breadcrumbs :crumbs="crumbs" />
+      <commercial-search-form 
+        :total-count="commercialAnnouncements.paginate.total"
+        :pending="pending"
+        :category="category"
+        @pending="pending = true"
+        @submit="searchCommercial"
+      />
+      <grid 
+        v-if="commercialAnnouncements.standard.length"
+        :announcements="commercialAnnouncements.standard" 
+        :paginate="commercialAnnouncements.paginate"
+        :title="$t('recent_uploads')"
+        :pending="pending"
+        @change-page="searchCommercial"
+      />
+      <no-results v-else />
+    </div>
+  </div>
+</template>
+
+<script>
+import { mapGetters, mapActions } from 'vuex';
+
+import SearchNav from '~/components/layout/SearchNav';
+import CommercialSearchForm from '~/components/commercial/CommercialSearchForm';
+import Grid from '~/components/announcements/Grid';
+import NoResults from '~/components/elements/NoResults';
+
+export default {
+  name: 'pages-commercial-slug',
+  layout: 'search',
+  components: {
+    SearchNav,
+    CommercialSearchForm,
+    Grid,
+    NoResults
+  },
+  nuxtI18n: {
+    paths: {
+      az: '/ticari-avtomobiller/:commercial'
+    }
+  },
+  head() {
+    return this.$headMeta({
+      title: this.$t('meta-title_commercial', { type: this.$t('meta-words_commercial-types')[0] }),
+      description: this.$t('meta-descr_commercial', { type: this.$t('meta-words_commercial-types')[0] })
+    });
+  },
+  async asyncData({ store, route, app, error }) {
+    const slug = ({
+      'light': 'light',
+      'trucks': 'trucks',
+      'tractors': 'tractors',
+      'bus': 'bus',
+      'trailers': 'trailers',
+      'agricultural': 'agricultural',
+      'building': 'building',
+      'autoloader': 'autoloader',
+      'cranes': 'cranes',
+      'excavators': 'excavators',
+      'bulldozers': 'bulldozers',
+      'utilities': 'utilities',
+      'yungul': 'light',
+      'yuk': 'trucks',
+      'traktorlar': 'tractors',
+      'avtobuslar': 'bus',
+      'qosqulu-ve-yarı-qosqulu': 'trailers',
+      'kend-teserrufati': 'agricultural',
+      'tikinti-ve-yol': 'building',
+      'yukleyiciler': 'autoloader',
+      'kranlar': 'cranes',
+      'ekskavatorlar': 'excavators',
+      'buldozerler': 'bulldozers',
+      'kommunal': 'utilities'
+    })[route.params.commercial];
+
+    await store.dispatch('getCommercialTypes');
+
+    const category = {
+      id: store.getters.commercialTypes.find(type => type.param.replace('escalators', 'excavators') === slug)?.id,
+      type: slug
+    };
+
+    if (!category.type) return error({ statusCode: 404 });
+
+    await store.dispatch('i18n/setRouteParams', { 
+      az: { commercial: app.i18n.t('slug_'+slug, 'az') }, 
+      ru: { commercial: app.i18n.t('slug_'+slug, 'ru') } 
+    });
+
+    let post = {...JSON.parse(route.query.filter || '{}'), com_type: category.id };
+    let page = route.query.page || 1;
+    let searchParams = { url: '/grid/commercial', prefix: 'commercial' }
+
+    await Promise.all([
+      store.dispatch('getOptions'),
+      store.dispatch('getColors'),
+      store.dispatch('getCommercialSearchFilters', category.id),
+      store.dispatch('getCommercialBrands', category.id),
+      store.dispatch('getGridSearch', { ...searchParams, post, page }),
+      // get model options for brands
+      ...Object.keys(post?.additional_brands || {})
+        .filter(key => post?.additional_brands?.[key]?.brand)
+        .map((key) => {
+          let row = post.additional_brands[key];
+          return store.dispatch('getCommercialModels', { type: category.id, id: row.brand, index: key })
+        }),
+    ]);
+
+    return {
+      category,
+      searchParams,
+      pending: false
+    }
+  },
+  methods: {
+    ...mapActions(['getGridSearch']),
+
+    async searchCommercial(page = 1) {
+      page = this.$route.query.page || 1;
+      let post = {...JSON.parse(this.$route.query.filter || '{}'), com_type: this.category.id};
+      this.pending = true;
+      await this.getGridSearch({ ...this.searchParams, post, page });
+      this.pending = false;
+      if(page === 1) {
+        this.scrollTo('.announcements-sorting');
+      } else {
+        this.scrollTo('.announcements-grid.paginated', [-15, -20]);
+      }
+    }
+  },
+  computed: {
+    ...mapGetters(['commercialAnnouncements']),
+
+    crumbs() {
+      return [
+        { name: this.$t('commercial'), route: '/commercial' },
+        { name: this.$t('commercial_'+this.category.type) }
+      ]
+    }
+  },
+  beforeRouteLeave(to, from, next) {
+    this.$nuxt.$emit('prevent-popstate');
+    next();
+  }
+}
+</script>
