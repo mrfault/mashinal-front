@@ -28,7 +28,7 @@
           </span>
         </div>
         <div class="user-menu" v-if="loggedIn">
-          <nuxt-link :to="getUserSettingsLink" @click.native="handleLink" class="d-inline-flex align-items-center align-top">
+          <nuxt-link :to="getUserSettingsLink" @click.native="toggleSidebarMenu(false)" class="d-inline-flex align-items-center align-top">
             <img :src="getUserAvatar" :alt="user.full_name" />
             <span class="text-truncate">{{ user.full_name }}</span>
           </nuxt-link>
@@ -36,22 +36,22 @@
         </div>
         <ul>
           <li class="login" key="login" v-if="!loggedIn">
-            <nuxt-link :to="$localePath('/login')" @click.native="handleLink">
+            <nuxt-link :to="$localePath('/login')" @click.native="toggleSidebarMenu(false)">
               <icon name="user" />
               <span>{{ $t('login_or_register') }}</span>
             </nuxt-link>
             <hr/>
           </li>
-          <li v-for="menu in sidebarMenus" :key="menu.id || menu.title">
-            <nuxt-link :to="$localePath(menu.route || menu.url)" @click.native="handleLink(menu)">
-              <span>{{ menu.name ? menu.name[locale] : $t(menu.title) }}</span>
+          <li v-for="menu in sidebarMenus" :key="menu.title[locale] || menu.title">
+            <nuxt-link :to="$localePath(menu.route)" @click.native="toggleSidebarMenu(false)">
+              <span>{{ menu.title[locale] || $t(menu.title) }}</span>
             </nuxt-link>
           </li>
           <li>
             <slot />
           </li>
           <li class="logout" key="logout" v-if="loggedIn">
-            <a href="javascript:void(0);" @click="logout(), handleLink()">
+            <a href="javascript:void(0);" @click="logout(), toggleSidebarMenu(false)">
               <icon name="logout" />
               <span>{{ $t('output') }}</span>
             </a>
@@ -80,10 +80,6 @@ export default {
 
     toggleSidebarMenu(toggle) {
       this.showSidebar = toggle;
-    },
-    handleLink(menu = false) {
-      this.toggleSidebarMenu(false);
-      if(!menu) return;
     },
     goToSearch(path) {
       if (['cars', 'index', 'cars-assistant', 'cars-advanced-search'].includes(this.routeName))

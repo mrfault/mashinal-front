@@ -1,11 +1,25 @@
+import { mapGetters } from 'vuex';
+
 export const MenusDataMixin = {
   computed: {
+    ...mapGetters(['staticPages']),
+
     searchMenus() {
       return [
         { title: 'cars', route: '/cars' },
         { title: 'moto', route: '/moto', children: this.motoMenus },
         { title: 'commercial', route: '/commercial', children: this.commercialMenus }
       ]
+    },
+
+    pageMenus() {
+      return [{
+        title: 'contact_us',
+        route: '/contact-us'
+      }].concat(this.staticPages.map(page => ({
+        title: page.title, 
+        route: '/page/'+page.slug[this.locale]
+      })));
     },
 
     navbarMenus() {
@@ -57,7 +71,7 @@ export const MenusDataMixin = {
 
     sidebarMenus() {
       return [
-        ...this.navbarMenus
+        ...this.pageMenus
       ]
     },
 
