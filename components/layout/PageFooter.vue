@@ -29,7 +29,7 @@
           <h4>{{ $t('useful_links') }}</h4>
           <ul class="menu">
             <li v-for="menu in pageMenus" :key="menu.url">
-              <nuxt-link :to="menu.url">{{ menu.name }}</nuxt-link>
+              <nuxt-link :to="$localePath(menu.route)">{{ menu.title[locale] || $t(menu.title) }}</nuxt-link>
             </li>
           </ul>
         </div>
@@ -39,8 +39,6 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-
 import { MenusDataMixin } from '~/mixins/menus-data';
 
 import Newsletter from '~/components/elements/Newsletter';
@@ -51,26 +49,12 @@ export default {
   },
   mixins: [MenusDataMixin],
   computed: {
-    ...mapGetters(['staticPages']),
-
-    pageMenus() {
-      return [{
-        name: this.$t('contact_us'),
-        url: this.$localePath('/contact-us')
-      }].concat(this.staticPages.map(page => ({
-        name: page.title[this.locale], 
-        url: this.$localePath('/page/:page').replace(':page', page.slug[this.locale])
-      })));
-    },
     socialLinks() {
       return {
         facebook: 'https://facebook.com/mashinal',
         instagram: 'https://instagram.com/mashin.al'
       }
     }
-  },
-  methods: {
-    ...mapActions([])
   }
 }
 </script>
