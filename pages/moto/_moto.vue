@@ -77,8 +77,8 @@ export default {
 
     await Promise.all([
       store.dispatch('getOptions'),
-      store.dispatch('getColors'),
       store.dispatch('getMotoOptions'),
+      store.dispatch('getColors'),
       store.dispatch('getGridSearch', { ...searchParams, post, page }),
       // get model options for brands
       ...Object.keys(post?.additional_brands || {})
@@ -120,6 +120,10 @@ export default {
         { name: this.$t(this.category.type) }
       ]
     }
+  },
+  beforeRouteLeave(to, from, next) {
+    this.$nuxt.$emit('prevent-popstate');
+    next();
   }
 }
 </script>

@@ -48,6 +48,10 @@ export default {
         { name: this.$t('helper_search') }
       ]
     }
+  },
+  beforeRouteLeave(to, from, next) {
+    this.$nuxt.$emit('prevent-popstate');
+    next();
   }
 }
 </script>

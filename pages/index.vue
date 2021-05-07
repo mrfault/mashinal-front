@@ -2,7 +2,7 @@
   <div class="pages-index">
     <div class="container">
       <car-search-form 
-        :total-count="mainAnnouncements.paginate.total"
+        :total-count="$paginate(mainAnnouncements).total"
         :pending="pending"
         @pending="pending = true"
       />
@@ -74,6 +74,10 @@ export default {
   },
   computed: {
     ...mapGetters(['mainAnnouncements'])
+  },
+  beforeRouteLeave(to, from, next) {
+    this.$nuxt.$emit('prevent-popstate');
+    next();
   }
 }
 </script>

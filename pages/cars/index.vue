@@ -123,6 +123,10 @@ export default {
         { name: this.$t('cars') }
       ]
     }
+  },
+  beforeRouteLeave(to, from, next) {
+    this.$nuxt.$emit('prevent-popstate');
+    next();
   }
 }
 </script>

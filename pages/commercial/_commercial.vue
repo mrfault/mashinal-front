@@ -142,6 +142,10 @@ export default {
         { name: this.$t('commercial_'+this.category.type) }
       ]
     }
+  },
+  beforeRouteLeave(to, from, next) {
+    this.$nuxt.$emit('prevent-popstate');
+    next();
   }
 }
 </script>

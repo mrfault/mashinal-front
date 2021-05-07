@@ -72,6 +72,10 @@ export default {
         { name: this.$t('advanced_search') }
       ]
     }
+  },
+  beforeRouteLeave(to, from, next) {
+    this.$nuxt.$emit('prevent-popstate');
+    next();
   }
 }
 </script>

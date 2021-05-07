@@ -495,15 +495,6 @@ export const actions = {
   async getMainSearch({ commit }, data) {
     const res = await this.$axios.$get(data.url);
     commit('mutate', { property: 'mainAnnouncements', value: res });
-    // hard-code pagination
-    if(res.standard_count) {
-      let paginate = {
-        current_page: 1,
-        last_page: Math.ceil(res.standard_count / 40),
-        total: res.standard_count
-      }
-      commit('mutate', { property: 'mainAnnouncements', key: 'paginate', value: paginate });
-    }
   },
   async getGridSearch({ commit }, data) {
     const url = data.url, prefix = data.prefix;

@@ -146,6 +146,12 @@ export const SearchMixin = {
     goToSearch(path) {
       this.$router.push(`${path}?${this.meta.param}=${encodeURI(JSON.stringify(this.getFormData()))}`);
     },
+    async handleAfterLogin(key) {
+      if (key === 'saved-search' && this.meta.type === 'cars') {
+        this.savedSearch = true;
+      }
+      this.scrollTo(0);
+    },
     async handlePopState() {
       // refresh page's async data
       await this.$nuxt.refresh();
@@ -153,11 +159,9 @@ export const SearchMixin = {
       this.parseFormData();
       this.scrollTo(0);
     },
-    async handleAfterLogin(key) {
-      if (key === 'saved-search' && this.meta.type === 'cars') {
-        this.savedSearch = true;
-      }
-      this.scrollTo(0);
+    togglePopStateListener(listen = false) {
+      if (listen) window.addEventListener('popstate', this.handlePopState);
+      else window.removeEventListener('popstate', this.handlePopState);
     }
   },
   computed: {
@@ -251,13 +255,13 @@ export const SearchMixin = {
     }
   },
   mounted() {
+    this.togglePopStateListener(true);
+    this.$nuxt.$on('prevent-popstate', this.togglePopStateListener);
     this.$nuxt.$on('after-login', this.handleAfterLogin);
-    // history (back/forward)
-    window.addEventListener('popstate', this.handlePopState);
   },
   beforeDestroy() {
+    this.togglePopStateListener(false);
+    this.$nuxt.$off('prevent-popstate', this.togglePopStateListener);
     this.$nuxt.$off('after-login', this.handleAfterLogin);
-    // history (back/forward)
-    window.removeEventListener('popstate', this.handlePopState);
   }
 }
