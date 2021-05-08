@@ -16,7 +16,7 @@ export default function({ app, route, store }, inject) {
     if (!path) return '#0';
     // do some magic
     if (path === '/')  
-      path = app.localePath('index');
+      return app.localePath('index');
     else 
       path = app.localePath(('/ru'+(path === '/' ? '' : path)), locale || app.i18n.locale);
     // check if the right locale in path
@@ -80,6 +80,9 @@ export default function({ app, route, store }, inject) {
       .replace('класс', app.i18n.t('class'))
       .replace(/( – 0)|( – н\.в\.)/g, name.toString().includes(`${year}`) ? '' : ` – ${year}`);
   });
+  inject('translateSoft', (name) => {
+    return name[app.i18n.locale] || name.ru || name || '';
+  })
   inject('search', (str, keyword) => {
     return str.toLowerCase().search(keyword.toLowerCase()) !== -1;
   });

@@ -60,7 +60,11 @@ export default {
       return 'Car';
     },
     getLink() {
-      return '#0';
+      let type = 'cars';
+      if (['Motorcycle','Scooter','Atv'].includes(this.getType)) type = 'moto';
+      else if (['Commercial'].includes(this.getType)) type = 'commercial';
+      let path = `/${type}/announcement/${this.announcement.id_unique}`;
+      return this.$localePath(path);
     },
     getTitle() {
       let item = this.announcement;

@@ -22,20 +22,15 @@
     } @else {
       border: 1px solid $bg-color;
     }
-    &:hover {
-      color: $color-hover;
-      background-color: $bg-color;
-      border-color: $bg-color;
-    }
   } @else {
     color: $color;
     background-color: $bg-color;
     border: 1px solid $bg-color;
-    &:hover {
-      color: $color-hover;
-      background-color: $bg-hover;
-      border-color: $bg-hover;
-    }
+  }
+  &:hover {
+    color: $color-hover;
+    background-color: $bg-hover;
+    border-color: $bg-hover;
   }
   &.active,
   &.active:hover {
@@ -85,11 +80,12 @@
   align-items: center;
   justify-content: center;
   white-space: nowrap;
-  padding: 9px 25px 7px;
+  padding: 9px 14px 7px;
   height: 34px;
   border-radius: 4px;
   transition: .1s ease-out;
   cursor: pointer;
+  font-weight: 500;
   &.full-width {
     width: 100%;
   }
@@ -98,31 +94,34 @@
     margin-bottom: 1px;
   }
   &--dark-blue {
-    @include btn-style($bg-color: $dark-blue-1, $bg-hover: $dark-blue-2);
+    @include btn-style($bg-color: $dark-blue-1, $bg-hover: $dark-blue-4);
   }
   &--dark-blue-outline {
-    @include btn-style($bg-color: $dark-blue-1, $outline: true);
+    @include btn-style($bg-color: $dark-blue-1, $bg-hover: $dark-blue-4, $outline: true);
+  }
+  &--dark-blue-2-outline {
+    @include btn-style($bg-color: $dark-blue-2, $bg-hover: $dark-blue-2, $outline: true);
   }
   &--green {
     @include btn-style($bg-color: $green-1, $bg-hover: $green-2);
   }
   &--green-outline {
-    @include btn-style($bg-color: $green-1, $outline: true);
+    @include btn-style($bg-color: $green-1, $bg-hover: $green-2, $outline: true);
   }
   &--pale-green {
-    @include btn-style($color: $green-1, $bg-color: $green-3, $bg-hover: $green-1);
+    @include btn-style($color: $green-1, $bg-color: $green-3, $bg-hover: $green-2);
   }
   &--red {
     @include btn-style($bg-color: $red-1, $bg-hover: $red-2);
   }
   &--red-outline {
-    @include btn-style($bg-color: $red-1, $outline: true);
+    @include btn-style($bg-color: $red-1, $bg-hover: $red-2, $outline: true);
   }
   &--pale-red {
-    @include btn-style($color: $red-1, $bg-color: $red-3, $bg-hover: $red-1, $active-bg: $red-1);
+    @include btn-style($color: $red-1, $bg-color: $red-3, $bg-hover: $red-2, $active-bg: $red-2);
   }
   &--pale-red-outline {
-    @include btn-style($bg-color: $red-2, $border-color: $red-4, $active-bg: $red-1, $outline: true);
+    @include btn-style($bg-color: $red-2, $bg-hover: $red-2, $border-color: $red-4, $active-bg: $red-2, $outline: true);
   }
 }
 
@@ -136,10 +135,11 @@
 .dark-mode {
   .btn {
     &--dark-blue {
-      @include btn-style($bg-color: $dark-1, $bg-hover: $dark-2);
+      @include btn-style($bg-color: $grey-2, $bg-hover: $grey-1);
     }
+    &--dark-blue-2-outline,
     &--dark-blue-outline {
-      @include btn-style($bg-color: $white, $color-hover: $dark-1, $border-color: $white, $outline: true, $override: false);
+      @include btn-style($bg-color: $grey-1, $bg-hover: $grey-1, $border-color: $grey-1, $outline: true, $override: false);
     }
     &--pale-green {
       @include btn-style($bg-color: $green-1, $bg-hover: $green-2);
@@ -150,7 +150,7 @@
     }
     &--red-outline,
     &--pale-red-outline {
-      @include btn-style($bg-color: $grey-1, $border-color: $grey-1, $active-bg: $white, $active-color: $dark-1, $outline: true, $override: false);
+      @include btn-style($bg-color: $grey-1, $bg-hover: $grey-1, $border-color: $grey-1, $active-bg: $white, $active-color: $dark-1, $outline: true, $override: false);
     }
   }
 }

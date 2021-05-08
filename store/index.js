@@ -459,20 +459,7 @@ export const actions = {
     const res = await this.$axios.$get(`/additional/get_badges`);
     commit('mutate', { property: 'badges', value: res });
   },
-  resetOptions({ state, commit }, property = false) {
-    let arr = [
-      'sellOptions','allSellOptions2','bodyOptions',
-      'colors','complaintOptions','badges','brands','popularOptions','allSellOptions',
-      'motoOptions','commercialAllOptions','commercialTypes'
-    ];
-    if (property) {
-      arr = state['needResetOptions'].filter(p => p !== property);
-      commit('mutate', { property: 'needResetOptions', value: arr });
-    } else {
-      commit('mutate', { property: 'needResetOptions', value: arr });
-    }
-  },
-  // Commercial
+  // Commercial Options
   async getCommercialAllOptions({ state, commit }) {
     if (objectNotEmpty(state, commit, 'commercialAllOptions')) return;
     const res = await this.$axios.$get(`/commercial/get_all_options`);
@@ -491,7 +478,21 @@ export const actions = {
     const res = await this.$axios.$get('/commercial/all_types');
     commit('mutate', { property: 'commercialTypes', value: res });
   },
-  // Announcements
+  // Reset Options
+  resetOptions({ state, commit }, property = false) {
+    let arr = [
+      'sellOptions','allSellOptions2','bodyOptions',
+      'colors','complaintOptions','badges','brands','popularOptions','allSellOptions',
+      'motoOptions','commercialAllOptions','commercialTypes'
+    ];
+    if (property) {
+      arr = state['needResetOptions'].filter(p => p !== property);
+      commit('mutate', { property: 'needResetOptions', value: arr });
+    } else {
+      commit('mutate', { property: 'needResetOptions', value: arr });
+    }
+  },
+  // Search
   async getMainSearch({ commit }, data) {
     const res = await this.$axios.$get(data.url);
     commit('mutate', { property: 'mainAnnouncements', value: res });
@@ -501,10 +502,14 @@ export const actions = {
     const res = await this.$axios.$post(`${url}?page=${data.page || 1}`, data.post);
     commit('mutate', { property: prefix + 'Announcements', value: res });
   },
-  // Premium / VIP
   async getPromotedSearch({ commit }, data) {
     const res = await this.$axios.$get(`/${data.type}/cars?page=${data.page || 1}`);
     commit('mutate', { property: 'promotedAnnouncements', value: res });
+  },
+  // Announcements
+  async getRelativeAnnouncements({ commit }, id) {
+    const res = await this.$axios.$get(`/grid/same/announcements/${id}`);
+    commit('mutate', { property: 'relativeAnnouncements', value: res });
   },
   async getMyAllAnnouncements({ commit }) {
     const res = await this.$axios.$get('/my/all-announce');
@@ -513,33 +518,26 @@ export const actions = {
   async deleteAnnounement({ commit }, data) {
     await this.$axios.$post('/' + data.type + '/' + data.id + '/delete');
   },
-  setRestoreOptions({commit}, data){
-    commit('mutate', { property: 'restore_announcement', value: data });
-  },
   // Car announcements
-  async getSingleAnnouncement({ commit }, data) {
+  async getCarAnnouncement({ commit }, data) {
     const res = await this.$axios.$get(`/announcement/${data.id}`);
     commit('mutate', { property: 'announcement', value: res });
   },
-  async getMyAnnouncement({ commit }, id) {
+  async getMyCarAnnouncement({ commit }, id) {
     const res = await this.$axios.$get(`/edit_announce/${id}`);
     commit('mutate', { property: 'announcement', value: res });
   },
-  async getRelativeAnnouncements({ commit }, id) {
-    const res = await this.$axios.$get(`/grid/same/announcements/${id}`);
-    commit('mutate', { property: 'relativeAnnouncements', value: res });
-  },
   // Commercial Announcements
-  async getSingleComAnnouncement({ commit }, data) {
+  async getCommercialAnnouncement({ commit }, data) {
     const res = await this.$axios.$get(`/commercial/get_single_announce/${data.id}`);
     commit('mutate', { property: 'announcement', value: res });
   },
-  async getMyComAnnouncement({ commit }, id) {
+  async getMyCommercialAnnouncement({ commit }, id) {
     const res = await this.$axios.$get(`/commercial/edit_announce/${id}`);
     commit('mutate', { property: 'announcement', value: res });
   },
   // Moto Announcements
-  async getSingleMotoAnnouncement({ commit }, data) {
+  async getMotoAnnouncement({ commit }, data) {
     const res = await this.$axios.$get(`${data.path}/get_announce/${data.id}`);
     commit('mutate', { property: 'announcement', value: res });
   },

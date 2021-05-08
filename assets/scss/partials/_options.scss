@@ -22,6 +22,22 @@
   }
 }
 
+.dark-mode {
+  .color-options {
+    .color {
+      border-color: $grayish-blue-4;
+      &.selected {
+        color: $grey-1 !important;
+        border-color: $grey-1 !important;
+        &.contrast {
+          color: #FFCE00 !important;
+          border-color: #FFCE00 !important;
+        }
+      }
+    }
+  }
+}
+
 @include media-min-width('lg') {
   .color-options {
     .col-lg-auto {

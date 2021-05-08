@@ -1342,7 +1342,7 @@ export default {
 	"working_hours": "İş saatı",
 	"worldwide_search": "Beynəlxalq axtarış",
 	"wrap_size": "Başlıq ölçüsü",
-	"write": "Yazmaq",
+	"write": "Mesaj yaz",
 	"year": "İl",
 	"year_from": "Buraxılış ili min.",
 	"years": "Buraxılış ili",
