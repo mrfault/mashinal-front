@@ -4,18 +4,30 @@
       <div class="announcements-inner">
         <breadcrumbs :crumbs="crumbs">
           <share-it type="publish" />
-          <span class="date">
+          <span class="text-data">
+            <icon name="eye" />
+            {{ announcement.open_count }}
+          </span>
+          <span class="text-data">
             <icon name="calendar" />
             {{ announcement.humanize_created_at }}
           </span>
         </breadcrumbs>
-        <div class="row flex-column flex-lg-row">
+        <div class="row flex-column-reverse flex-lg-row">
           <div class="col-auto">
             <gallery />
+            <comment :comment="announcement.comment" v-if="!isMobileBreakpoint">
+              <hr v-if="announcement.comment" />
+              <car-complects :options="announcement.options" />
+            </comment>
           </div>
           <div class="col-auto">
             <quick-info />
-            <specs />
+            <vehicle-specs type="cars" />
+            <comment :comment="announcement.comment" v-if="isMobileBreakpoint">
+              <hr v-if="announcement.comment" />
+              <car-complects :options="announcement.options" />
+            </comment>
           </div>
         </div>
       </div>
@@ -29,13 +41,17 @@ import { mapGetters } from 'vuex';
 import QuickInfo from '~/components/announcements/inner/QuickInfo';
 import VehicleSpecs from '~/components/announcements/inner/VehicleSpecs';
 import Gallery from '~/components/announcements/inner/Gallery';
+import Comment from '~/components/announcements/inner/Comment';
+import CarComplects from '~/components/announcements/inner/CarComplects';
 
 export default {
   name: 'pages-cars-id',
   components: {
     QuickInfo,
     VehicleSpecs,
-    Gallery
+    Gallery,
+    Comment,
+    CarComplects
   },
   nuxtI18n: {
     paths: {
@@ -43,17 +59,16 @@ export default {
     }
   },
   head() {
-    let catalog = this.announcement.car_catalog;
-    let announcementTitle = `${catalog.brand.name} ${this.$translateHard(catalog.model.name)}`;
+    let announcementTitle = `${this.catalog.brand.name} ${this.$translateHard(this.catalog.model.name)}`;
     let title = `${this.$t(`meta-title_announcement-${this.announcement.is_new ? 'new' : 'used'}`, { announce: `${announcementTitle}, ${this.announcement.year}` })}`;
-    let description = `${announcementTitle}, ${this.$t('meta-descr_announcement', { announce: `${catalog.car_type.name[this.locale]}, ${this.announcement.price}` })}`;
+    let description = `${announcementTitle}, ${this.$t('meta-descr_announcement', { announce: `${this.catalog.car_type.name[this.locale]}, ${this.announcement.price}` })}`;
     let image = this.announcement.media.main_inner ? this.announcement.media.main_inner[0] : this.announcement.media[Object.keys(this.announcement.media)[0]][0];
     return this.$headMeta({ title, description, image }, {
       category: 'Car',
       id: this.announcement.id_unique,
       autosalon: this.announcement.user.autosalon,
-      brand: catalog.brand.name,
-      model: catalog.model.name.replace('серия', 'seriya').replace('класс', 'klass'),
+      brand: this.catalog.brand.name,
+      model: this.catalog.model.name.replace('серия', 'seriya').replace('класс', 'klass'),
       year: this.announcement.year,
       price: { amount: this.announcement.price_int, currency: this.announcement.currency_id },
       services: this.announcement.type,
@@ -83,29 +98,27 @@ export default {
         currency: 1
       }
       // insert announcement data into form
-      let catalog = this.announcement.car_catalog
       if (type.includes('brand')) {
-        form.additional_brands[0].brand = catalog.brand.id;
-        form.additional_brands[0].brand_slug = catalog.brand.slug;
+        form.additional_brands[0].brand = this.catalog.brand.id;
+        form.additional_brands[0].brand_slug = this.catalog.brand.slug;
       }
       if (type.includes('model')) {
-        form.additional_brands[0].model = catalog.model.id;
-        form.additional_brands[0].model_slug = catalog.model.slug;
+        form.additional_brands[0].model = this.catalog.model.id;
+        form.additional_brands[0].model_slug = this.catalog.model.slug;
       }
       
       return `/cars?car_filter=${encodeURI(JSON.stringify(form))}`
     }
   },
   computed: {
-    ...mapGetters(['announcement']),
+    ...mapGetters(['announcement', 'catalog']),
 
     crumbs() {
-      let catalog = this.announcement.car_catalog;
-
       return [
         { name: this.$t('cars'), route: '/cars' },
-        { name: catalog.brand.name, route: this.getFilterLink('brand') },
-        { name: catalog.model.name, route: this.getFilterLink('brand-model') }
+        { name: this.catalog.brand.name, route: this.getFilterLink('brand') },
+        { name: this.catalog.model.name, route: this.getFilterLink('brand-model') },
+        { name: '#'+this.announcement.id_unique }
       ]
     }
   },

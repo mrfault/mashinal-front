@@ -1,0 +1,37 @@
+.collapse-content {
+  h3 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: $dark-blue-2;
+    font-weight: 500;
+    font-size: 16px;
+    width: 100%;
+    user-select: none;
+    cursor: pointer;
+  }
+  p {
+    font-size: 15px;
+    margin-bottom: .5rem;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.dark-mode {
+  .collapse-content h3 {
+    color: $grey-4;
+  }
+}
+
+@include media-max-width('lg') {
+  .collapse-content {
+    h3 {
+      font-size: 14px;
+    }
+    p {
+      font-size: 13px;
+    }
+  }
+}

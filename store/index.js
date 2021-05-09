@@ -140,6 +140,7 @@ export const getters = {
   myServiceHistory: s => s.myServiceHistory,
   // announcements
   announcement: s => s.announcement,
+  catalog: s => s.announcement.car_catalog,
   carsAnnouncements: s => s.carsAnnouncements,
   motoAnnouncements: s => s.motoAnnouncements,
   commercialAnnouncements: s => s.commercialAnnouncements,

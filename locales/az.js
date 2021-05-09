@@ -1367,6 +1367,7 @@ export default {
 	"Еще": "Daha çox",
 	"Комплектация": "Təhcizat",
 	"Регион": "Bölgə",
+	"region": "Bölgə",
 	"Смотреть отчет": "Hesabata baxmaq",
 	"Стандарт": "Standart",
 	"бензин": "Benzin",

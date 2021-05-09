@@ -1,5 +1,5 @@
 <template>
-  <div class="quick-info card mb-2 mb-lg-3">
+  <div class="quick-info card mb-2 mb-lg-3 mt-2 mt-lg-0">
     <h1>{{ title }}</h1>
     <div class="price">
       <span>{{ announcement.price }}</span>
@@ -17,21 +17,19 @@
     </div>
     <div class="row">
       <div class="col">
-        <div class="btn btn--dark-blue full-width">
+        <button class="btn btn--dark-blue full-width">
           <icon name="placeholder" /> {{ $t('map') }}
-        </div>
+        </button>
       </div>
       <div class="col">
-        <div class="btn btn--dark-blue-2-outline full-width">
+        <button class="btn btn--dark-blue-2-outline full-width">
           <icon name="chat" /> {{ $t('write') }}
-        </div>
+        </button>
       </div>
     </div>
     <div class="row mt-2 mt-lg-3">
       <div class="col">
-        <div class="btn btn--pale-green full-width justify-content-between">
-          {{ $t('show_number') }} <icon name="eye" />
-        </div>
+        <call-button :phone="contact.phone" />
       </div>
     </div>
   </div>
@@ -40,7 +38,12 @@
 <script>
 import { mapGetters } from 'vuex';
 
+import CallButton from '~/components/announcements/inner/CallButton';
+
 export default {
+  components: {
+    CallButton
+  },
   computed: {
     ...mapGetters(['announcement']),
 
@@ -65,7 +68,7 @@ export default {
         user: this.announcement.user,
         id: this.announcement.user.id,
         name: this.announcement.user.full_name,
-        phones: [this.announcement.user.phone],
+        phone: this.announcement.user.phone,
         address: this.announcement.address,
         img: this.announcement.user.avatar ? `${this.$env.baseUrl}/storage/${this.announcement.user.avatar}` : '',
         lat: this.announcement.latitude ? parseFloat(this.announcement.latitude) : 0,

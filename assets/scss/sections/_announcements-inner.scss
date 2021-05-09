@@ -1,8 +1,17 @@
 .announcements-inner {
-  .date {
+  .text-data {
+    display: inline-flex;
+    vertical-align: top;
+    align-items: center;
     color: $dark-blue-3;
+    &:not(:last-child) {
+      margin-right: 15px;
+    }
     i {
-      margin-right: 4px;
+      margin-right: 5px;
+      &.icon-eye {
+        font-size: 18px;
+      }
     }
   }
   .breadcrumbs {
@@ -22,7 +31,7 @@
   .quick-info {
     h1,
     .price {
-      font-size: 20px;
+      font-size: 16px;
       font-weight: 500;
     }
     .price {
@@ -61,6 +70,49 @@
       }
     }
   }
+  .vehicle-specs {
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    li {
+      color: $grey-8;
+      padding: 1em 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid $grayish-blue-3;
+      &:first-child {
+        padding-top: 0;
+      }
+      &:last-child {
+        border-bottom: 0;
+        padding-bottom: 0;
+      }
+      span {
+        display: inline-flex;
+        align-items: center;
+        vertical-align: top;
+        &:first-child {
+          flex-shrink: 0;
+          width: 130px;
+          color: $dark-blue-3;
+          padding-right: 5px;
+        }
+        &:last-child {
+          padding-left: 5px;
+          text-align: right;
+        }
+        i {
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+  .comment {
+    white-space: pre-line;
+  }
 }
 
 
@@ -70,7 +122,8 @@
       color: $white;
     }
     .price span:last-child,
-    .date {
+    .vehicle-specs span:first-child,
+    .text-data {
       color: $grey-7;
     }
     .breadcrumbs .socials a {
@@ -82,6 +135,10 @@
     .contact address {
       color: $grey-4;
     }
+    .vehicle-specs li {
+      color: $white;
+      border-color: $dark-1;
+    }
   }
 }
 
@@ -91,6 +148,12 @@
       .col-auto:last-child {
         flex-shrink: 0;
         width: 366px;
+      }
+    }
+    .quick-info {
+      h1,
+      .price {
+        font-size: 20px;
       }
     }
   }
