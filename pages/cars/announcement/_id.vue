@@ -61,7 +61,7 @@ export default {
   head() {
     let announcementTitle = `${this.catalog.brand.name} ${this.$translateHard(this.catalog.model.name)}`;
     let title = `${this.$t(`meta-title_announcement-${this.announcement.is_new ? 'new' : 'used'}`, { announce: `${announcementTitle}, ${this.announcement.year}` })}`;
-    let description = `${announcementTitle}, ${this.$t('meta-descr_announcement', { announce: `${this.catalog.car_type.name[this.locale]}, ${this.announcement.price}` })}`;
+    let description = `${announcementTitle}, ${this.$t('meta-descr_announcement', { announce: `${this.announcement.price}` })}`;
     let image = this.announcement.media.main_inner ? this.announcement.media.main_inner[0] : this.announcement.media[Object.keys(this.announcement.media)[0]][0];
     return this.$headMeta({ title, description, image }, {
       category: 'Car',
@@ -106,6 +106,9 @@ export default {
         form.additional_brands[0].model = this.catalog.model.id;
         form.additional_brands[0].model_slug = this.catalog.model.slug;
       }
+      if (type.includes('generation')) {
+        form.additional_brands[0].generation = this.catalog.generation.id;
+      }
       
       return `/cars?car_filter=${encodeURI(JSON.stringify(form))}`
     }
@@ -118,6 +121,7 @@ export default {
         { name: this.$t('cars'), route: '/cars' },
         { name: this.catalog.brand.name, route: this.getFilterLink('brand') },
         { name: this.catalog.model.name, route: this.getFilterLink('brand-model') },
+        { name: this.$translateHard(this.catalog.generation.name[this.locale]), route: this.getFilterLink('brand-model-generation') },
         { name: '#'+this.announcement.id_unique }
       ]
     }

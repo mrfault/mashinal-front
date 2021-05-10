@@ -634,7 +634,7 @@ export default {
 	"fines_count": "Nəqliyyat vasitəsinə dair cərimələrin sayı:",
 	"fines_info": "Cərimələr haqqında ətraflı məlumat",
 	"first": "Birinci",
-	"first_owner": "İlk sahibisən?",
+	"first_owner": "İlk sahibi",
 	"first_sticker": "Birinci stiker",
 	"forgot_your_password": "Şifrəni bərpa et",
 	"password_will_be_sent_by_email": "Şifrənizin dəyişdirilməsi ilə bağlı olan məktub göstərdiyiniz email-ə göndəriləcək.",

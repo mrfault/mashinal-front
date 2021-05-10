@@ -112,6 +112,9 @@
   }
   .comment {
     white-space: pre-line;
+    &:last-child p:last-child {
+      margin-bottom: 0;
+    }
   }
 }
 

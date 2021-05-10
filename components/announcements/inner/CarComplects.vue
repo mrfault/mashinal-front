@@ -13,7 +13,7 @@
           {{ getOptionValue(option, chosenOptions[option.name]) }}
         </p>
       </collapse-content>
-      <hr v-if="index !== filteredSellOptions.length - 1" :key="index" />
+      <hr v-if="index !== filteredSellOptions.length - 1" :key="'hr-'+index" />
     </template>
   </div>
 </template>

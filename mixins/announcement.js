@@ -21,10 +21,10 @@ export const AnnouncementDataMixin = {
     },
     color() {
       let color = this.announcement.colors || this.announcement.color || {};
-      if(!color.length && !color.id) return false;
+      if(!color.length && !color.id) return ' ';
       return color instanceof Array
-        ? color.filter(color => color.name).map(color => color.name[this.locale]).join(', ')
-        : color.name && color.name[this.locale];
+        ? color.filter(color => color.name).map(color => color.name[this.locale]).join(', ') || ' '
+        : color.name?.[this.locale] || ' ';
     },
     box() {
       switch(this.announcement.announcement_type) {
@@ -141,6 +141,30 @@ export const AnnouncementDataMixin = {
         {name: '8x8', key: 10},
       ]);
     },
+    exhaustClass() {
+      return getName(this.announcement.exhaust_class, [
+        { name: '0', key: 1 },
+        { name: '1', key: 2 },
+        { name: '2', key: 3 },
+        { name: '3', key: 4 },
+        { name: '4', key: 5 },
+        { name: '5', key: 6 },
+        { name: this.$t('green_sert'), key: 7 },
+      ]);
+    },
+    cabinSuspension() {
+      return getName(this.announcement.cab_suspension_id, [
+        { name: this.$t('mechanical'), key: 1 },
+        { name: this.$t('pnevma'), key: 2 },
+      ]);
+    },
+    chassisSuspension() {
+      return getName(this.announcement.chassis_suspension_id, [
+        { name: this.$t('resora_resora'), key: 1 },
+        { name: this.$t('resora_pnevmo'), key: 2 },
+        { name: this.$t('pnevmo_pnevmo'), key: 4 },
+      ]);
+    },
     brakeType() {
       return getName(this.announcement.brake_type_id, [
         {name: this.$t('tympanic'), key: 1},
@@ -166,7 +190,7 @@ export const AnnouncementDataMixin = {
     mileage() {
       return `${this.announcement.humanize_mileage} ${this.$t('char_kilometre')}`;
     },
-    numberOfAxles() {
+    numberOfAxes() {
       return this.announcement.number_of_axles && `${this.announcement.number_of_axles} ${this.$t('axles')}`;
     }
   }
