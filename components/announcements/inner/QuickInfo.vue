@@ -17,9 +17,7 @@
     </div>
     <div class="row">
       <div class="col">
-        <button class="btn btn--dark-blue full-width">
-          <icon name="placeholder" /> {{ $t('map') }}
-        </button>
+        <show-map-button :lat="contact.lat" :lng="contact.lng" /> 
       </div>
       <div class="col">
         <button class="btn btn--dark-blue-2-outline full-width">
@@ -39,10 +37,12 @@
 import { mapGetters } from 'vuex';
 
 import CallButton from '~/components/announcements/inner/CallButton';
+import ShowMapButton from '~/components/elements/ShowMapButton';
 
 export default {
   components: {
-    CallButton
+    CallButton,
+    ShowMapButton
   },
   computed: {
     ...mapGetters(['announcement']),
@@ -70,7 +70,7 @@ export default {
         name: this.announcement.user.full_name,
         phone: this.announcement.user.phone,
         address: this.announcement.address,
-        img: this.announcement.user.avatar ? `${this.$env.baseUrl}/storage/${this.announcement.user.avatar}` : '',
+        img: this.announcement.user.avatar ? `${this.$env.BASE_URL}/storage/${this.announcement.user.avatar}` : '',
         lat: this.announcement.latitude ? parseFloat(this.announcement.latitude) : 0,
         lng: this.announcement.longitude ? parseFloat(this.announcement.longitude) : 0,
         link: this.announcement.is_autosalon ? this.$localePath(`/salons/${this.announcement.user.autosalon.id}`) : false

@@ -9,13 +9,13 @@ export const MessagesMixin = {
       window.Echo = new Echo({
         broadcaster: 'pusher',
         key: 'any',
-        wsHost: this.$env.socketIp,
+        wsHost: this.$env.WS_HOST,
         wsPort: 6001,
         wssPort: 6001,
         disableStats: true,
         enabledTransports: ['ws', 'wss'],
         forceTLS: true,
-        authEndpoint: this.$env.broadcastUrl,
+        authEndpoint: this.$env.BROADCAST_URL,
         auth: {
           headers: {
             Authorization: this.$auth.$storage.getUniversal('_token.laravelJWT')

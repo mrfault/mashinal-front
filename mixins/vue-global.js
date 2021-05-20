@@ -15,7 +15,7 @@ Vue.use({
         },
         // tracking events with fb pixel
         fbTrack(eventName, options) {
-          if(this.$env.isDev) {
+          if(this.$env.DEV) {
             console.log('fb pixel track "' + eventName + '"', options ? JSON.stringify(options) : '');
           } else {
             if(!this.$fb) console.warn('fb pixel not setted');
@@ -25,7 +25,7 @@ Vue.use({
         },
         // tracking events with gtag manager
         gtagTrack(eventKey) {
-          if(this.$env.isDev) {
+          if(this.$env.DEV) {
             console.log('gtag track "' + eventKey + '"');
           } else {
             if(!this.$gtag) console.warn('gtag not setted');
@@ -53,7 +53,10 @@ Vue.use({
           this.$scrollTo(el, duration, { offset });
         },
         setBodyOverflow(value = 'auto') {
-          document.querySelector('body').style.overflowY = value;
+          let bodyEl = document.querySelector('body');
+          let scrollBarWidth = window.innerWidth - bodyEl.clientWidth;
+          bodyEl.style.paddingRight = `${value === 'hidden' ? scrollBarWidth : 0}px`;
+          bodyEl.style.overflowY = value;
         }
       },
       computed: {

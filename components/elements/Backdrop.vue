@@ -15,6 +15,7 @@ export default {
   },
   mounted() {
     this.setBodyOverflow('hidden');
+    this.$emit('mount');
     this.show = true;
   },
   beforeDestroy() {

@@ -1,6 +1,6 @@
 <template>
   <div class="announcements-grid_item" @click="goToAnnouncement">
-    <a v-if="!isMobileBreakpoint" target="_blank" :href="getLink" class="abs-link" @click.stop>
+    <a v-if="!isMobileBreakpoint && !$env.DEV" target="_blank" :href="getLink" class="abs-link" @click.stop>
       <span class="sr-only">{{ getTitle }}</span>
     </a>
     <div class="item-bg" role="img" :aria-label="getTitle" v-lazy:background-image="getImage">
@@ -81,9 +81,9 @@ export default {
     getImage() {
       let item = this.announcement;
       if(item.media && item.media.thumb && item.media.thumb.length)
-        return this.$env.baseUrl + item.media.thumb[0];  
+        return this.$env.BASE_URL + item.media.thumb[0];  
       else if(item.media && item.media.length)
-        return this.$env.baseUrl + (item.media[0].thumb || item.media[0]);
+        return this.$env.BASE_URL + (item.media[0].thumb || item.media[0]);
       return false;
     },
     getCapacity() {
@@ -106,7 +106,7 @@ export default {
         content_name: this.getTitle + ', ' + this.announcement.year
       });
       
-      if (!this.isMobileBreakpoint) return;
+      if (!this.isMobileBreakpoint && !this.$env.DEV) return;
       this.$router.push(this.getLink);
     }
   }

@@ -12,6 +12,13 @@ export const LayoutMixin = {
       loginActionKey: ''
     }
   },
+  head() {
+    return {
+      script: [
+        { hid: 'maps', src: `https://api-maps.yandex.ru/2.1/?apikey=${this.$env.YANDEX_MAPS_API}&lang=${this.locale === 'az' ? 'tr_TR' : 'ru_RU'}` }
+      ]
+    }
+  },
   computed: {
     ...mapGetters(['loading', 'messages'])
   },
