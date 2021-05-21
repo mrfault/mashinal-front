@@ -16,7 +16,11 @@
         <div class="row flex-column-reverse flex-lg-row">
           <div class="col-auto">
             <gallery />
-            <comment :comment="announcement.comment" v-if="!isMobileBreakpoint" />
+            <comment :comment="announcement.comment" v-if="!isMobileBreakpoint">
+              <template #before>
+                <thumbs-gallery />
+              </template>
+            </comment>
           </div>
           <div class="col-auto">
             <quick-info />
@@ -35,6 +39,7 @@ import { mapGetters } from 'vuex';
 import QuickInfo from '~/components/announcements/inner/QuickInfo';
 import VehicleSpecs from '~/components/announcements/inner/VehicleSpecs';
 import Gallery from '~/components/announcements/inner/Gallery';
+import ThumbsGallery from '~/components/announcements/inner/ThumbsGallery';
 import Comment from '~/components/announcements/inner/Comment';
 
 export default {
@@ -43,6 +48,7 @@ export default {
     QuickInfo,
     VehicleSpecs,
     Gallery,
+    ThumbsGallery,
     Comment
   },
   nuxtI18n: {

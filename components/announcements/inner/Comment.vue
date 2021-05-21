@@ -1,5 +1,6 @@
 <template>
   <div class="card">
+    <slot name="before" />
     <template v-if="comment">
       <h2 class="title-with-line full-width">
         <span>{{ $t('seller_comment') }}</span>
@@ -8,7 +9,7 @@
         <p>{{ comment.trim() }}</p>
       </div>
     </template>
-    <slot />
+    <slot name="after" />
   </div>
 </template>
 

@@ -17,16 +17,23 @@
           <div class="col-auto">
             <gallery />
             <comment :comment="announcement.comment" v-if="!isMobileBreakpoint">
-              <hr v-if="announcement.comment" />
-              <car-complects :options="announcement.options" />
+              <template #before>
+                <thumbs-gallery />
+              </template>
+              <template #after>
+                <hr v-if="announcement.comment" />
+                <car-complects :options="announcement.options" />
+              </template>
             </comment>
           </div>
           <div class="col-auto">
             <quick-info />
             <vehicle-specs type="cars" />
             <comment :comment="announcement.comment" v-if="isMobileBreakpoint">
-              <hr v-if="announcement.comment" />
-              <car-complects :options="announcement.options" />
+              <template #after>
+                <hr v-if="announcement.comment" />
+                <car-complects :options="announcement.options" />
+              </template>
             </comment>
           </div>
         </div>
@@ -41,6 +48,7 @@ import { mapGetters } from 'vuex';
 import QuickInfo from '~/components/announcements/inner/QuickInfo';
 import VehicleSpecs from '~/components/announcements/inner/VehicleSpecs';
 import Gallery from '~/components/announcements/inner/Gallery';
+import ThumbsGallery from '~/components/announcements/inner/ThumbsGallery';
 import Comment from '~/components/announcements/inner/Comment';
 import CarComplects from '~/components/announcements/inner/CarComplects';
 
@@ -51,7 +59,8 @@ export default {
     VehicleSpecs,
     Gallery,
     Comment,
-    CarComplects
+    CarComplects,
+    ThumbsGallery
   },
   nuxtI18n: {
     paths: {

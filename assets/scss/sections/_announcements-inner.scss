@@ -116,8 +116,27 @@
       margin-bottom: 0;
     }
   }
+  .card {
+    overflow: hidden;
+  }
 }
 
+.inner-thumbs-gallery {
+  margin-bottom: 25px;
+  .swiper-container {
+    overflow: visible;
+  }
+  .swiper-slide {
+    width: 130px;
+    margin-right: 20px;
+    &-bg {
+      width: 100%;
+      padding-bottom: 59.23%;
+      background-size: cover;
+      background-position: center;
+    }
+  }
+}
 
 .dark-mode {
   .announcements-inner {
@@ -148,6 +167,9 @@
 @include media-min-width('lg') {
   .announcements-inner {
     & > .row {
+      .col-auto:first-child {
+        width: calc(100% - 366px);
+      }
       .col-auto:last-child {
         flex-shrink: 0;
         width: 366px;
