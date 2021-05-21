@@ -128,12 +128,86 @@
   }
   .swiper-slide {
     width: 130px;
-    margin-right: 20px;
+    // margin-right: 20px;
     &-bg {
       width: 100%;
       padding-bottom: 59.23%;
       background-size: cover;
       background-position: center;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: filter .3s;
+      filter: brightness(0.8);
+      &:hover {
+        filter: brightness(1);
+      }
+    }
+  }
+}
+
+.inner-gallery {
+  margin-bottom: 25px;
+  .swiper-slide {
+    &-bg {
+      width: 100%;
+      padding-bottom: 59.23%;
+      background-size: cover;
+      background-position: center;
+      border-radius: 4px;
+      cursor: pointer;
+      background-color: $grayish-blue-3;
+    }
+  }
+  .gallery-overlay {
+    @include abs-zero;
+    z-index: 1;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+    .btn-sq {
+      pointer-events: all;
+      width: 40px;
+      height: 40px;
+      font-size: 20px;
+      &:not(:last-child) {
+        margin-right: 20px;
+      }
+    }
+    .badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+      height: 40px;
+      min-width: 76px;
+      border-radius: 4px;
+      background-color: rgba($white, .15);
+      padding: 0 14px;
+      i {
+        font-size: 17px;
+      }
+      &:not(:last-child) {
+        margin-right: 20px;
+      }
+      &.squared {
+        color: $white;
+        background-color: rgba($dark-blue-1, .35);
+        min-width: 40px;
+        padding: 0;
+      }
+    }
+    &_top {
+      .d-flex {
+        margin-left: auto;
+      }
+
+    }
+    &_bottom {
+      .d-flex {
+        margin-right: auto;
+      }
     }
   }
 }
@@ -160,6 +234,13 @@
     .vehicle-specs li {
       color: $white;
       border-color: $dark-1;
+    }
+  }
+  .inner-gallery {
+    .swiper-slide {
+      &-bg {
+        background-color: $dark-3;
+      }
     }
   }
 }

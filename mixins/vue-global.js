@@ -56,6 +56,7 @@ Vue.use({
           let bodyEl = document.querySelector('body');
           let scrollBarWidth = window.innerWidth - bodyEl.clientWidth;
           bodyEl.style.paddingRight = `${value === 'hidden' ? scrollBarWidth : 0}px`;
+          bodyEl.style.overflowX = value === 'scroll' ? 'auto' : value;
           bodyEl.style.overflowY = value;
         }
       },

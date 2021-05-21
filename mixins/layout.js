@@ -44,6 +44,7 @@ export const LayoutMixin = {
       this.vhVariableSet = true;
     },
     handleScroll() {
+      let scrolled = window.scrollY;
       let layout = document.querySelector('.layout');
       // header
       let headerEl = document.querySelector('.page-header');
@@ -55,8 +56,8 @@ export const LayoutMixin = {
       let footerEl = document.querySelector('.page-footer');
       if (footerEl) {
         let reachedFooter = (window.pageYOffset + window.innerHeight) >= footerEl.offsetTop;
-        layout.classList[reachedFooter ? 'add' : 'remove']('reached-footer');
-        layout.classList[window.scrollY > 0 ? 'add' : 'remove']('scrolled');
+        layout.classList[scrolled > 0 && reachedFooter ? 'add' : 'remove']('reached-footer');
+        layout.classList[scrolled > 0 ? 'add' : 'remove']('scrolled');
       }
     },
     // login

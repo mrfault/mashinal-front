@@ -9,7 +9,7 @@
         <slot name="after-header" />
         <main>
           <slot name="nuxt" />
-          <theme-switch :floating="true" v-if="!isMobileBreakpoint" />
+          <theme-switch :floating="true" />
           <scroll-top />
         </main>
         <slot name="before-header" />

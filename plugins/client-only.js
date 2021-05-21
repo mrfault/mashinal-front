@@ -1,11 +1,12 @@
 import Vue from 'vue';
+import Vue2TouchEvents from 'vue2-touch-events'
 import VueAwesomeSwiper from 'vue-awesome-swiper';
 import VueLazyload from 'vue-lazyload';
 import Inputmask from 'inputmask';
 import vuescroll from 'vuescroll';
 
+Vue.use(Vue2TouchEvents)
 Vue.use(VueAwesomeSwiper);
-
 Vue.use(VueLazyload);
 
 Vue.use({
