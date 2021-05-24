@@ -93,7 +93,7 @@
   position: fixed;
   top: 0;
   left: 0;
-  background: $black;
+  background: rgba($dark-blue-1, 0.3);
   z-index: 1000000000;
   touch-action: none;
   -webkit-user-select: none;
@@ -196,7 +196,7 @@
 }
 .fslightbox-toolbar-button {
   height: 100%;
-  width: 65px;
+  width: 42px;
   cursor: pointer;
 }
 .fslightbox-toolbar-button:hover .fslightbox-svg-path {
@@ -213,32 +213,20 @@
   transform: translateY(-50%);
   transition: opacity 0.3s;
 }
-@media (min-width: 476px) {
-  .fslightbox-slide-btn-container {
-      padding: 22px 22px 22px 6px;
-  }
-}
-@media (min-width: 768px) {
-  .fslightbox-slide-btn-container {
-      padding: 30px 30px 30px 6px;
-  }
-}
 .fslightbox-slide-btn-container:hover .fslightbox-svg-path {
   fill: #f1f1f1;
 }
 .fslightbox-slide-btn {
-  padding: 9px;
-  font-size: 26px;
-  background: rgba(35, 35, 35, 0.65);
-}
-@media (min-width: 768px) {
-  .fslightbox-slide-btn {
-      padding: 10px;
-  }
-}
-@media (min-width: 1600px) {
-  .fslightbox-slide-btn {
-      padding: 11px;
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba($dark-blue-1, 0.15);
+  transition: .3s background;
+  &:hover {
+    background: rgba($dark-blue-1, 0.3);
   }
 }
 .fslightbox-slide-btn-container-previous {
@@ -281,7 +269,7 @@
   height: 2px;
   z-index: 4;
   opacity: 0;
-  background: #fff;
+  background: $red-1;
   transition: opacity 0.4s;
 }
 .fslightbox-invalid-file-wrapper {
@@ -324,7 +312,7 @@
   padding: 0 5px 12px 5px;
   height: 114px;
 }
-@media (min-width: 992px) {
+@media (min-width: 1025px) {
   .fslightbox-thumbs {
       padding-bottom: 13px;
       height: 120px;
@@ -381,7 +369,7 @@
   border: 2px solid transparent;
 }
 .fslightbox-thumb-active {
-  border: 2px solid #fff !important;
+  border: 2px solid $red-1 !important;
 }
 .fslightbox-thumb-invalid {
   background: linear-gradient(to bottom, #0f0f0f, rgba(15, 15, 15, 0.5));
@@ -418,4 +406,27 @@
 .fslightbox-caption-active {
   opacity: 1;
   z-index: 3;
+}
+
+.fslightbox-blur-bg {
+  position: fixed;
+  z-index: 999999999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+  pointer-events: none;
+  background-color: $black;
+  img {
+    position: absolute;
+    top: -10%;
+    left: -10%;
+    width: 120%;
+    height: 120%;
+    object-fit: cover;
+    filter: blur(15px);
+  }
 }

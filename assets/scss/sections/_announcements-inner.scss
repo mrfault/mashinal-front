@@ -183,7 +183,8 @@
       height: 40px;
       min-width: 76px;
       border-radius: 4px;
-      background-color: rgba($white, .15);
+      color: $white;
+      background-color: rgba($dark-blue-1, .35);
       padding: 0 14px;
       i {
         font-size: 17px;
@@ -207,6 +208,23 @@
     &_bottom {
       .d-flex {
         margin-right: auto;
+      }
+    }
+    &_middle {
+      .d-flex {
+        width: 100%;
+      }
+      .btn-sq {
+        background-color: rgba($dark-blue-1, .15);
+        color: $white;
+        i::before {
+          font-size: 14px;
+        }
+        &:hover,
+        &.active {
+          color: $white;
+          background-color: rgba($dark-blue-1, .3);
+        }
       }
     }
   }
@@ -261,6 +279,45 @@
       .price {
         font-size: 20px;
       }
+    }
+  }
+}
+
+@include media-max-width('lg') {
+  .inner-gallery {
+    margin: 0 -25px -15px;
+    .swiper-slide-bg {
+      border-radius: 0;
+    }
+    .gallery-overlay {
+      .btn-sq {
+        width: 34px;
+        height: 34px;
+        font-size: 17px;
+        &:not(:last-child) {
+          margin-right: 10px;
+        }
+      }
+      .badge {
+        height: 34px;
+        color: $white;
+        background-color: rgba($dark-blue-1, .35);
+        padding: 0 10px;
+        i {
+          font-size: 15px;
+        }
+        &:not(:last-child) {
+          margin-right: 10px;
+        }
+        &.squared {
+          min-width: 34px;
+        }
+      }
+    }
+  }
+  .announcements-inner {
+    .quick-info {
+      border-radius: 0 0 4px 4px;
     }
   }
 }

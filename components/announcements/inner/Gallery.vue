@@ -25,6 +25,16 @@
             </span>
           </span>
         </div>
+        <div class="gallery-overlay_middle">
+          <span class="d-flex justify-content-between">
+            <button id="gallery-prev" class="btn-sq" @click.stop="slidePrev">
+              <icon name="chevron-left" />
+            </button>
+            <button id="gallery-next" class="btn-sq" @click.stop="slideNext">
+              <icon name="chevron-right" />
+            </button>
+          </span>
+        </div>
         <div class="gallery-overlay_bottom d-flex">
           <span class="d-flex">
             <button class="btn-sq btn-sq--color-red" @click.stop>
@@ -48,7 +58,15 @@
           :key="lightboxKey"
           :onClose="refreshLightbox"
           :onBeforeClose="onBeforeClose"
+          :showThumbsOnMount="!isMobileBreakpoint"
+          :disableThumbs="isMobileBreakpoint"
+          :onSlideChange="changeLightboxSlide"
         />
+        <transition name="fade">
+          <div v-if="showLightbox" class="fslightbox-blur-bg">
+            <img :src="$env.BASE_URL + slides.main[currentSlide]" alt="" />
+          </div>
+        </transition>
       </div>
     </div>
   </div>
@@ -105,6 +123,16 @@ export default {
     changeSlide(index) {
       this.gallerySwiper.slideTo(index + 1, 0);
     },
+    slidePrev() {
+      this.gallerySwiper.slidePrev();
+    },
+    slideNext() {
+      this.gallerySwiper.slideNext();
+    },
+    changeLightboxSlide(fsBox) {
+      this.currentSlide = fsBox.stageIndexes.current;
+      this.changeSlide(this.currentSlide);
+    },
     getMediaByKey(media, key) {
       key = media[key] ? key : Object.keys(media)[0];
       return media[key] instanceof Array ? media[key].map(item => `${this.$env.BASE_URL}${item}`) : [];
@@ -135,6 +163,11 @@ export default {
         types.splice(1, 0, 'youtube');
       }
       return { thumbs, main, types };
+    }
+  },
+  watch: {
+    breakpoint() {
+      this.refreshLightbox();
     }
   },
   mounted() {
