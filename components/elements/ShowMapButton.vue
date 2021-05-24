@@ -54,6 +54,16 @@ export default {
         zoom: 15,
         controls: ['zoomControl','geolocationControl']
       });
+
+      let markOps = {
+        iconLayout: 'default#image',
+        iconImageHref: '/icons/maps-placeholder.svg',
+        iconImageSize: [28, 40],
+        // iconImageOffset: [-5, -38]
+      }
+      
+      this.map.geoObjects
+        .add(new ymaps.Placemark(this.map.getCenter(), {}, markOps));
     },
     handleMount() {
       if (this.isStatic) return;

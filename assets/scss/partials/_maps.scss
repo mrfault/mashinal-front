@@ -3,15 +3,15 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  @include calc-vh(min-height, calc(100vh));
+  @include calc-vh(height, calc(100vh));
   .static-map {
     max-width: 100%;
-    margin: 0 auto;
   }
   .map {
     position: relative;
-    width: 100%;
-    max-width: 1200px;
+    width: 1200px;
+    height: 816px;
+    max-width: 100%;
     @include calc-vh(height, calc(100vh - 50px));
     overflow: hidden;
     #map {
@@ -24,5 +24,9 @@
 }
 
 @include media-max-width('lg') {
-  
+  .map-wrapper {
+    .map {
+      max-height: 75vh;
+    }
+  }
 }
