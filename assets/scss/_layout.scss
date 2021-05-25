@@ -1190,6 +1190,7 @@ main {
 
 .__rail-is-vertical {
   background: $white !important;
+  border-radius: 0 !important;
   .__bar-is-vertical {
     background: $grayish-blue-2 !important;
   }

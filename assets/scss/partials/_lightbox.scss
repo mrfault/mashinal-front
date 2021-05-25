@@ -413,6 +413,12 @@
   }
 }
 
+.dark-mode {
+  .fslightbox-blur-bg {
+    background-color: $dark-2;
+  }
+}
+
 .fslightbox-footer {
   position: fixed;
   bottom: 0;

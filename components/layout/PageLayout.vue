@@ -20,6 +20,7 @@
             </transition>
           </template>
         </backdrop>
+        <portal-target name="modals" />
         <mobile-nav />
         <page-footer />
       </div>

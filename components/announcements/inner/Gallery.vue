@@ -37,16 +37,10 @@
         </div>
         <div class="gallery-overlay_bottom d-flex">
           <span class="d-flex">
-            <button class="btn-sq btn-sq--color-red" @click.stop>
-              <icon name="compare" />
-            </button>
-            <button class="btn-sq btn-sq--color-dark-blue" @click.stop>
-              <icon name="star" />
-            </button>
+            <add-comparison />
+            <add-favorite />
           </span>
-          <button class="btn-sq btn-sq--color-dark-blue" @click.stop>
-            <icon name="alert" />
-          </button>
+          <add-complaint :announcement="announcement" />
         </div>
       </div>
       <div class="announcement-lightbox" v-touch:swipe.top="handleSwipeTop">
@@ -90,14 +84,20 @@
 import { mapGetters } from 'vuex';
 
 import FsLightbox from 'fslightbox-vue';
-import CallButton from '~/components/announcements/inner/CallButton';
-import ChatButton from '~/components/announcements/inner/ChatButton';
+import CallButton from '~/components/announcements/CallButton';
+import ChatButton from '~/components/announcements/ChatButton';
+import AddFavorite from '~/components/announcements/AddFavorite';
+import AddComparison from '~/components/announcements/AddComparison';
+import AddComplaint from '~/components/announcements/AddComplaint';
 
 export default {
   components: {
     FsLightbox,
     CallButton,
-    ChatButton
+    ChatButton,
+    AddFavorite,
+    AddComparison,
+    AddComplaint
   },
   data() {
     return {

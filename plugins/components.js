@@ -6,6 +6,7 @@ import Breadcrumbs from '~/components/elements/Breadcrumbs';
 import Pagination from '~/components/elements/Pagination';
 import LoginTabs from '~/components/elements/LoginTabs';
 import ActionBar from '~/components/elements/ActionBar';
+import ModalPopup from '~/components/elements/ModalPopup';
 import Backdrop from '~/components/elements/Backdrop';
 import ShareIt from '~/components/elements/ShareIt';
 // forms
@@ -17,8 +18,6 @@ import FormButtons from '~/components/forms/FormButtons';
 import FormRange from '~/components/forms/FormRange';
 // transitions
 import TransitionExpand from '~/components/transitions/TransitionExpand';
-// packages
-import StackModal from '@innologica/vue-stackable-modal';
 // ***
 Vue.component('icon', Icon);
 Vue.component('timer', Timer);
@@ -27,6 +26,7 @@ Vue.component('pagination', Pagination);
 Vue.component('login-tabs', LoginTabs);
 Vue.component('action-bar', ActionBar);
 Vue.component('backdrop', Backdrop);
+Vue.component('modal-popup', ModalPopup);
 Vue.component('share-it', ShareIt);
 // ***
 Vue.component('transition-expand', TransitionExpand);
@@ -37,5 +37,3 @@ Vue.component('form-checkbox', FormCheckbox);
 Vue.component('form-select', FormSelect);
 Vue.component('form-buttons', FormButtons);
 Vue.component('form-range', FormRange);
-// ***
-Vue.component('stack-modal', StackModal);

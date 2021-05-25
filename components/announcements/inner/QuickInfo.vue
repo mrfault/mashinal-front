@@ -32,8 +32,8 @@
 <script>
 import { mapGetters } from 'vuex';
 
-import ChatButton from '~/components/announcements/inner/ChatButton';
-import CallButton from '~/components/announcements/inner/CallButton';
+import ChatButton from '~/components/announcements/ChatButton';
+import CallButton from '~/components/announcements/CallButton';
 import ShowMapButton from '~/components/elements/ShowMapButton';
 
 export default {

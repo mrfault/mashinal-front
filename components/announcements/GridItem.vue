@@ -1,9 +1,9 @@
 <template>
   <div class="announcements-grid_item" @click="goToAnnouncement">
     <a v-if="!isMobileBreakpoint && !$env.DEV" target="_blank" :href="getLink" class="abs-link" @click.stop>
-      <span class="sr-only">{{ getTitle }}</span>
+      <span class="sr-only">{{ getAnnouncementTitle(announcement) }}</span>
     </a>
-    <div class="item-bg" role="img" :aria-label="getTitle" v-lazy:background-image="getImage">
+    <div class="item-bg" role="img" :aria-label="getAnnouncementTitle(announcement)" v-lazy:background-image="getImage">
       <div class="item-overlay">
         <div class="item-overlay_top d-flex">
           <span class="badge from-border" v-if="announcement.is_autosalon">{{ $t('is_autosalon') }}</span>
@@ -18,12 +18,8 @@
         </div>
         <div class="item-overlay_bottom d-flex">
           <span class="d-flex">
-            <button class="btn-sq btn-sq--color-red" @click.stop>
-              <icon name="compare" />
-            </button>
-            <button class="btn-sq btn-sq--color-dark-blue" @click.stop>
-              <icon name="star" />
-            </button>
+            <add-comparison />
+            <add-favorite />
           </span>
           <span class="badge">{{ announcement.humanize_created_at }}</span>
         </div>
@@ -31,7 +27,7 @@
     </div>
     <div class="item-details">
       <h3 class="text-truncate">
-        <span>{{ getTitle }}</span>
+        <span>{{ getAnnouncementTitle(announcement) }}</span>
       </h3>
       <span class="item-info text-truncate">
         <span>{{ getTextLine }}</span>
@@ -46,9 +42,16 @@
 </template>
 
 <script>
+import AddFavorite from '~/components/announcements/AddFavorite';
+import AddComparison from '~/components/announcements/AddComparison';
+
 export default {
   props: {
     announcement: {}
+  },
+  components: {
+    AddFavorite,
+    AddComparison
   },
   computed: {
     getType() {
@@ -65,12 +68,6 @@ export default {
       else if (['Commercial'].includes(this.getType)) type = 'commercial';
       let path = `/${type}/announcement/${this.announcement.id_unique}`;
       return this.$localePath(path);
-    },
-    getTitle() {
-      let item = this.announcement;
-      const brand = item.brand || item.commercial_brand || item.moto_brand || item.scooter_brand || item.moto_atv_brand;
-      const model = item.model || item.commercial_model || item.moto_model || item.scooter_model || item.moto_atv_model;
-      return `${brand.name[this.locale] || brand.name} ${model.name[this.locale] || this.$translateHard(model.name)}`;
     },
     getTextLine() {
       let text = `${this.announcement.year} ${this.$t('plural_forms_year')[0]}`;
@@ -103,7 +100,7 @@ export default {
         content_type: 'product',
         content_category: this.getType,
         content_ids: [this.announcement.id_unique],
-        content_name: this.getTitle + ', ' + this.announcement.year
+        content_name: this.getAnnouncementTitle(this.announcement) + ', ' + this.announcement.year
       });
       
       if (!this.isMobileBreakpoint && !this.$env.DEV) return;

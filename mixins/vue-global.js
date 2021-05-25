@@ -61,7 +61,7 @@ Vue.use({
         },
         getAnnouncementTitle(item) {
           if (item.car_catalog)
-            return item.car_catalog.brand.name + ' ' + this.$translateHard(item.car_catalog.model.name);
+            return (item.car_catalog.brand || item.brand).name + ' ' + this.$translateHard((item.car_catalog.model || item.model).name);
           else if (item.scooter_brand)
             return item.scooter_brand.name + ' ' + item.scooter_model.name;
           else if (item.moto_atv_brand)
