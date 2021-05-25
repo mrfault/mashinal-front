@@ -1,8 +1,9 @@
 <template>
-  <button :class="['btn btn--pale-green full-width', {'justify-content-between': !showPhone}]" @click="handleClick">
-    <template v-if="showPhone">
+  <button :class="['btn full-width', `btn--${callAtOnce ? '' : 'pale-'}green`, {'justify-content-between': !callAtOnce}]" @click.stop="handleClick">
+    <template v-if="callAtOnce">
       <icon name="phone-call" /> 
-      <span v-mask="maskPhone(true)">+{{ phone }}</span>
+      <span v-mask="maskPhone(true)" v-if="!isMobileBreakpoint">+{{ phone }}</span>
+      <span v-else>{{ $t('make_a_call') }}</span>
     </template>
     <template v-else>
       {{ $t('show_number') }} <icon name="eye" />
@@ -20,14 +21,19 @@ export default {
       showPhone: false
     }
   },
+  computed: {
+    callAtOnce() {
+      return this.showPhone || this.isMobileBreakpoint;
+    }
+  },
   methods: {
     handleClick() {
-      if (!this.showPhone) {
-        this.showPhone = true;
-        this.trackCall(1);
-      } else {
+      if (this.callAtOnce) {
         window.location.href = `tel:+${this.phone}`;
         this.trackCall(2);
+      } else {
+        this.showPhone = true;
+        this.trackCall(1);
       }
     },
     trackCall(n) {

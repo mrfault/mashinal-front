@@ -13,7 +13,7 @@
             {{ announcement.humanize_created_at }}
           </span>
         </breadcrumbs>
-        <div class="row flex-column-reverse flex-lg-row">
+        <div class="row flex-column flex-lg-row">
           <div class="col-auto">
             <gallery />
             <comment :comment="announcement.comment" v-if="!isMobileBreakpoint">

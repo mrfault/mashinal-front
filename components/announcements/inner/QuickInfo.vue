@@ -1,6 +1,6 @@
 <template>
   <div class="quick-info card mb-2 mb-lg-3 mt-2 mt-lg-0">
-    <h1>{{ title }}</h1>
+    <h1>{{ getAnnouncementTitle(announcement) }}</h1>
     <div class="price">
       <span>{{ announcement.price }}</span>
       <span><icon name="exchange" /> {{ announcement.price_converted }}</span>
@@ -16,18 +16,14 @@
       </div>
     </div>
     <div class="row">
-      <div class="col">
-        <show-map-button :lat="contact.lat" :lng="contact.lng" /> 
+      <div class="col order-lg-2" v-if="canSendMessage(announcement)">
+        <chat-button :announcement="announcement" has-after-login />
       </div>
-      <div class="col">
-        <button class="btn btn--dark-blue-2-outline full-width">
-          <icon name="chat" /> {{ $t('write') }}
-        </button>
-      </div>
-    </div>
-    <div class="row mt-2 mt-lg-3">
-      <div class="col">
+      <div class="col col-lg-12 order-lg-3 mt-lg-3">
         <call-button :phone="contact.phone" />
+      </div>
+      <div class="col-12 col-lg order-lg-1 mt-2 mt-lg-0">
+        <show-map-button :lat="contact.lat" :lng="contact.lng" /> 
       </div>
     </div>
   </div>
@@ -36,32 +32,19 @@
 <script>
 import { mapGetters } from 'vuex';
 
+import ChatButton from '~/components/announcements/inner/ChatButton';
 import CallButton from '~/components/announcements/inner/CallButton';
 import ShowMapButton from '~/components/elements/ShowMapButton';
 
 export default {
   components: {
+    ChatButton,
     CallButton,
     ShowMapButton
   },
   computed: {
     ...mapGetters(['announcement']),
-
-    title() {
-      if (this.announcement.car_catalog)
-        return this.announcement.car_catalog.brand.name + ' ' + this.$translateHard(this.announcement.car_catalog.model.name);
-      else if (this.announcement.scooter_brand)
-        return this.announcement.scooter_brand.name + ' ' + this.announcement.scooter_model.name;
-      else if (this.announcement.moto_atv_brand)
-        return this.announcement.moto_atv_brand.name + ' ' + this.announcement.moto_atv_model.name;
-      else if (this.announcement.moto_brand)
-        return this.announcement.moto_brand.name + ' ' + this.announcement.moto_model.name;
-      else if (this.announcement.commercial_brand)
-        return this.$translateSoft(this.announcement.commercial_brand.name) + ' ' + this.$translateSoft(this.announcement.commercial_model.name);
-      else if (this.announcement.part_category?.name)
-        return this.$translateSoft(this.announcement.part_category.name);
-      return '';
-    },
+    
     contact() {
       return {
         type: 'user',

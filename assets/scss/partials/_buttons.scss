@@ -93,6 +93,9 @@
     margin-right: 8px;
     margin-bottom: 1px;
   }
+  &--white-outline {
+    @include btn-style($bg-color: $white, $bg-hover: $white, $color-hover: $dark-blue-1, $outline: true);
+  }
   &--dark-blue {
     @include btn-style($bg-color: $dark-blue-1, $bg-hover: $dark-blue-4);
   }

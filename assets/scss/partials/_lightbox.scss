@@ -94,7 +94,7 @@
   top: 0;
   left: 0;
   background: rgba($dark-blue-1, 0.3);
-  z-index: 1000000000;
+  z-index: 800;
   touch-action: none;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -161,18 +161,19 @@
   height: 65px;
   width: 100%;
   transition: opacity 0.3s;
+  opacity: 1 !important;
 }
 .fslightbox-slide-number-container {
+  padding-left: 15px;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   position: relative;
+  z-index: 3;
   height: 100%;
   font-size: 17px;
   font-weight: 500;
   color: #fff;
-  z-index: 0;
-  max-width: 55px;
   text-align: left;
 }
 .fslightbox-slide-number-container .fslightbox-flex-centered {
@@ -188,7 +189,7 @@
 }
 .fslightbox-toolbar {
   position: absolute;
-  z-index: 3;
+  z-index: 4;
   right: 0;
   top: 0;
   height: 65px;
@@ -212,6 +213,7 @@
   z-index: 3;
   transform: translateY(-50%);
   transition: opacity 0.3s;
+  opacity: 1 !important;
 }
 .fslightbox-slide-btn-container:hover .fslightbox-svg-path {
   fill: #f1f1f1;
@@ -231,31 +233,11 @@
 }
 .fslightbox-slide-btn-container-previous {
   left: 0;
-}
-@media (max-width: 475.99px) {
-  .fslightbox-slide-btn-container-previous {
-      padding-left: 3px;
-  }
+  padding-left: 15px;
 }
 .fslightbox-slide-btn-container-next {
   right: 0;
-  padding-left: 12px;
-  padding-right: 3px;
-}
-@media (min-width: 476px) {
-  .fslightbox-slide-btn-container-next {
-      padding-left: 22px;
-  }
-}
-@media (min-width: 768px) {
-  .fslightbox-slide-btn-container-next {
-      padding-left: 30px;
-  }
-}
-@media (min-width: 476px) {
-  .fslightbox-slide-btn-container-next {
-      padding-right: 6px;
-  }
+  padding-right: 15px;
 }
 .fslightbox-down-event-detector {
   position: absolute;
@@ -410,7 +392,7 @@
 
 .fslightbox-blur-bg {
   position: fixed;
-  z-index: 999999999;
+  z-index: 799;
   top: 0;
   left: 0;
   width: 100%;
@@ -419,7 +401,7 @@
   background-position: center;
   overflow: hidden;
   pointer-events: none;
-  background-color: $black;
+  background-color: $grey-8;
   img {
     position: absolute;
     top: -10%;
@@ -428,5 +410,37 @@
     height: 120%;
     object-fit: cover;
     filter: blur(15px);
+  }
+}
+
+.fslightbox-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 801;
+  pointer-events: none;
+  .btn {
+    pointer-events: all;
+  }
+}
+
+@include media-max-width('lg') {
+  .fslightbox-blur-bg {
+    img {
+      display: none;
+    }
+  }
+
+  .fslightbox-source {
+    border-radius: 4px;
+  }
+
+  .fslightbox-slide-btn-container-previous {
+    padding-left: 30px;
+  }
+
+  .fslightbox-slide-btn-container-next {
+    padding-right: 30px;
   }
 }

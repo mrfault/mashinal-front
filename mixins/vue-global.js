@@ -58,6 +58,24 @@ Vue.use({
           bodyEl.style.paddingRight = `${value === 'hidden' ? scrollBarWidth : 0}px`;
           bodyEl.style.overflowX = value === 'scroll' ? 'auto' : value;
           bodyEl.style.overflowY = value;
+        },
+        getAnnouncementTitle(item) {
+          if (item.car_catalog)
+            return item.car_catalog.brand.name + ' ' + this.$translateHard(item.car_catalog.model.name);
+          else if (item.scooter_brand)
+            return item.scooter_brand.name + ' ' + item.scooter_model.name;
+          else if (item.moto_atv_brand)
+            return item.moto_atv_brand.name + ' ' + item.moto_atv_model.name;
+          else if (item.moto_brand)
+            return item.moto_brand.name + ' ' + item.moto_model.name;
+          else if (item.commercial_brand)
+            return this.$translateSoft(item.commercial_brand.name) + ' ' + this.$translateSoft(item.commercial_model.name);
+          else if (item.part_category?.name)
+            return this.$translateSoft(item.part_category.name);
+          return '';
+        },
+        canSendMessage(item) {
+          return !this.loggedIn || (item.user.id === this.user.id);
         }
       },
       computed: {

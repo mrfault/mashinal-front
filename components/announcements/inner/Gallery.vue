@@ -49,7 +49,7 @@
           </button>
         </div>
       </div>
-      <div v-touch:swipe.top="handleSwipeTop">
+      <div class="announcement-lightbox" v-touch:swipe.top="handleSwipeTop">
         <FsLightbox
           :toggler="toggleFsLightbox"
           :sources="slides.main"
@@ -62,11 +62,25 @@
           :disableThumbs="isMobileBreakpoint"
           :onSlideChange="changeLightboxSlide"
         />
-        <transition name="fade">
-          <div v-if="showLightbox" class="fslightbox-blur-bg">
+        <transition-group name="fade">
+          <div v-if="showLightbox" class="fslightbox-blur-bg" :key="0">
             <img :src="$env.BASE_URL + slides.main[currentSlide]" alt="" />
           </div>
-        </transition>
+          <div v-if="showLightbox" class="fslightbox-footer d-lg-none" :key="1">
+            <div class="announcement-lightbox-footer">
+              <h3>{{ getAnnouncementTitle(announcement) }}</h3>
+              <h4>{{ announcement.price }}</h4>
+              <div class="row">
+                <div class="col" v-if="canSendMessage(announcement)">
+                  <chat-button :announcement="announcement" :className="'white-outline'" />
+                </div>
+                <div class="col">
+                  <call-button :phone="announcement.user.phone" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </transition-group>
       </div>
     </div>
   </div>
@@ -76,10 +90,14 @@
 import { mapGetters } from 'vuex';
 
 import FsLightbox from 'fslightbox-vue';
+import CallButton from '~/components/announcements/inner/CallButton';
+import ChatButton from '~/components/announcements/inner/ChatButton';
 
 export default {
   components: {
-    FsLightbox
+    FsLightbox,
+    CallButton,
+    ChatButton
   },
   data() {
     return {

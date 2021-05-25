@@ -230,6 +230,22 @@
   }
 }
 
+.announcement-lightbox {
+  height: 0;
+  &-footer {
+    padding: 15px 15px 25px;
+    color: $white;
+    h3 {
+      font-size: 16px;
+      font-weight: 500;
+    }
+    h4 {
+      font-size: 17px;
+      font-weight: 500;
+    }
+  }
+}
+
 .dark-mode {
   .announcements-inner {
     .price span:first-child {
