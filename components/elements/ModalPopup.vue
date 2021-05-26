@@ -5,7 +5,7 @@
         <transition name="translate-fade">
           <div class="modal-popup" v-if="show" @click.stop>
             <div class="modal-popup_content">
-              <div class="title d-flex align-content-center">
+              <div class="title d-flex align-items-center">
                 <h4 v-if="title">{{ title }}</h4>
                 <span class="cursor-pointer close" @click="$emit('close')">
                   <icon name="cross" />

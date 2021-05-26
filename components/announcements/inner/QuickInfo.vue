@@ -5,6 +5,27 @@
       <span>{{ announcement.price }}</span>
       <span><icon name="exchange" /> {{ announcement.price_converted }}</span>
     </div>
+    <template v-if="isMobileBreakpoint">
+      <div class="more-data d-flex">
+        <span class="text-data">
+          № {{ announcement.id_unique }}
+        </span>
+        <span class="text-data">
+          <icon name="eye" />
+          {{ announcement.open_count }}
+        </span>
+        <span class="text-data">
+          <icon name="calendar" />
+          {{ announcement.humanize_created_at }}
+        </span>
+      </div>
+      <div class="d-flex">
+        <share-it type="publish" />
+        <button class="btn btn--dark-blue-2-outline full-width" @click.stop="copyToClipboard($env.WEBSITE_URL + $route.path)">
+          <icon name="link" /> {{ $t('copy_to_clipboard') }}
+        </button>
+      </div>
+    </template>
     <hr />
     <div class="contact">
       <div class="img">
@@ -58,6 +79,29 @@ export default {
         lng: this.announcement.longitude ? parseFloat(this.announcement.longitude) : 0,
         link: this.announcement.is_autosalon ? this.$localePath(`/salons/${this.announcement.user.autosalon.id}`) : false
       };
+    }
+  },
+  methods: {
+    // copy text to clipboard
+    copyToClipboard(text) {
+      try {
+        navigator.clipboard.writeText(text);
+        this.$toasted.success(this.$t('copied_to_clipboard'));
+      } catch(error) {
+        console.error(error);
+        try {
+          let tempInput = document.createElement('input');
+          tempInput.type = 'text';
+          tempInput.value = text;
+          document.body.appendChild(tempInput);
+          tempInput.select();
+          document.execCommand('Copy');
+          document.body.removeChild(tempInput);
+          this.$toasted.success(this.$t('copied_to_clipboard'));
+        } catch(error) {
+          console.error(error);
+        }
+      }
     }
   }
 }

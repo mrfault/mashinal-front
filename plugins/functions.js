@@ -84,7 +84,7 @@ export default function({ app, route, store }, inject) {
     return name[app.i18n.locale] || name.ru || name || '';
   });
   inject('search', (str, keyword) => {
-    return str.toLowerCase().search(keyword.toLowerCase()) !== -1;
+    return str.toString().toLowerCase().search(keyword.toLowerCase()) !== -1;
   });
   inject('expireDate', (days = 30) => {
     return new Date(new Date().getTime() + (days * 24 * 3600 * 1000));

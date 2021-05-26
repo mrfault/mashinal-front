@@ -1569,5 +1569,8 @@ export default {
 	"slug_cranes": "kranlar", 
 	"slug_excavators": "ekskavatorlar", 
 	"slug_bulldozers": "buldozerler", 
-	"slug_utilities": "kommunal"
+	"slug_utilities": "kommunal",
+
+	"copy_to_clipboard": "Linki kopyala",
+	"copied_to_clipboard": "Kopyalandı"
 }

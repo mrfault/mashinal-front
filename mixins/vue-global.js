@@ -7,10 +7,9 @@ Vue.use({
     Vue.mixin({
       methods: {
         // messages
-        async createMessagesGroup(recipientId = false, announce = false){
-          if (!recipientId && !announce) return;
-          if (!announce.announceType && !announce.announceSecondType && !announce.announceId) return;
-          let data = await this.$store.dispatch('createMessagesGroup', { recipientId, announce });
+        async createMessagesGroup(recipientId = false, announceId = false){
+          if (!recipientId && !announceId) return;
+          let data = await this.$store.dispatch('createMessagesGroup', { recipientId, announceId });
           this.$router.push(this.$localePath('profile-messages') + '?group=' + data.id);
         },
         // tracking events with fb pixel
@@ -75,7 +74,7 @@ Vue.use({
           return '';
         },
         canSendMessage(item) {
-          return !this.loggedIn || (item.user.id === this.user.id);
+          return !this.loggedIn || (item.user.id !== this.user.id);
         }
       },
       computed: {

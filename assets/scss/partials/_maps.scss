@@ -23,6 +23,16 @@
   }
 }
 
+.dark-mode {
+  .map-wrapper {
+    .map {
+      [class*=ground-pane] {
+        filter: brightness(0.7);
+      }
+    }
+  }
+}
+
 @include media-max-width('lg') {
   .map-wrapper {
     .map {

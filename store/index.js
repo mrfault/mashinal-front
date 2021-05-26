@@ -11,13 +11,7 @@ const getInitialState = () =>({
   // saved search & favorites
   savedSearchList: [],
   singleSavedSearch: {},
-  favorites: {
-    cars: [],
-    motorcycles: [],
-    scooters: [],
-    atvs: [],
-    commercial: []
-  },
+  favorites: [],
   // messages
   messages: [],
   suggestedMessages: [],
@@ -276,7 +270,7 @@ export const actions = {
     commit('appendToMessage', { group: data.activeGroup, message: res });
   },
   async createMessagesGroup({ commit }, data) {
-    const res = await this.$axios.$post('/profile/messages/'+ data.recipientId, data.announce);
+    const res = await this.$axios.$post('/profile/messages/'+ data.recipientId, { id_unique: data.announceId });
     commit('appendMessageToGroup', { group: res });
     return res;
   },
@@ -296,14 +290,14 @@ export const actions = {
     const res = await this.$axios.$get(`/payment/getHistory?page=${data.page || 1}`);
     commit('mutate', { property: 'transactions', value: res });
   },
-  // Saved announces
-  async addToFavorites({ commit }, data) {
-    this.$axios.$post('/announce/save', {id: data.id, type: data.type});
-    commit('addToFavorites', {id: data.id, type: data.type});
-  },
+  // Favorites
   async getFavorites({ commit }) {
-    const res = await this.$axios.$get('/announce/saved');
-    commit('loadFavorites', res);
+    const res = await this.$axios.$get('/announce/favorites');
+    commit('mutate', { property: 'favorites', value: res });
+  },
+  async addToFavorites({ commit }, id) {
+    this.$axios.$post(`/announce/${id}/favorite`);
+    commit('addToFavorites', { id });
   },
   // Saved search
   async getSavedSearch({ commit }){
@@ -741,18 +735,10 @@ export const mutations = {
       state.messages.splice(groupIndex, 1);
     }
   },
-  // saved
+  // favorites
   addToFavorites(state, payload) {
-    let type = state.favorites[payload.type];
-    let index = type.indexOf(payload.id);
-    if (index >= 0) type.splice(index,1);
-    else type.push(payload.id);
-  },
-  loadFavorites(state, payload) {
-    for (var key in state.favorites) {
-      if (payload[key] !== undefined){
-        state.favorites[key] = payload[key];
-      }
-    }
-  },
+    let index = state.favorites.indexOf(payload.id);
+    if (index >= 0) state.favorites.splice(index,1);
+    else state.favorites.push(payload.id);
+  }
 }

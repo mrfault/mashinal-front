@@ -2,9 +2,10 @@ import { mapGetters, mapActions } from 'vuex';
 
 import { ColorModeMixin } from '~/mixins/color-mode';
 import { MessagesMixin } from '~/mixins/messages';
+import { SocketMixin } from '~/mixins/socket';
 
 export const LayoutMixin = {
-  mixins: [ColorModeMixin, MessagesMixin],
+  mixins: [ColorModeMixin, SocketMixin, MessagesMixin],
   data() {
     return {
       vhVariableSet: false,
@@ -23,7 +24,7 @@ export const LayoutMixin = {
     ...mapGetters(['loading', 'messages'])
   },
   methods: {
-    ...mapActions(['setLoading','setGridBreakpoint','getMessages','getSavedAnnouncements','resetSellTokens']),
+    ...mapActions(['setLoading','setGridBreakpoint','getMessages','getFavorites','resetSellTokens']),
 
     handleResize() {
       // update grid breakpoint
@@ -61,10 +62,17 @@ export const LayoutMixin = {
       }
     },
     // login
+    toggleEchoListening(toggle) {
+      if (toggle) {
+        this.connectEcho().listen('SendMessage', this.appendToMessage);
+      } else if(window.Echo) {
+        this.connectEcho().stopListening('SendMessage');
+      }
+    },
     async getUserData() {
       if(!this.loggedIn) return;
       if(!this.messages.length) await this.getMessages();
-      await this.getSavedAnnouncements();
+      await this.getFavorites();
     },
     closeLogin() {
       this.showLoginPopup = false;

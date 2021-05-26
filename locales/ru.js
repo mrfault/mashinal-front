@@ -1573,5 +1573,8 @@ export default {
 	"slug_cranes": "cranes", 
 	"slug_excavators": "excavators", 
 	"slug_bulldozers": "bulldozers", 
-	"slug_utilities": "utilities"
+	"slug_utilities": "utilities",
+
+	"copy_to_clipboard": "Скопировать ссылку",
+	"copied_to_clipboard": "Скопировано"
 }

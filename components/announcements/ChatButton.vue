@@ -19,7 +19,7 @@ export default {
       if(!this.loggedIn) {
         this.$nuxt.$emit('login-popup', 'chat')
       } else {
-        this.createMessagesGroup(this.announcement);
+        this.createMessagesGroup(this.announcement.user.id, this.announcement.id_unique);
       }
     },
     handleAfterLogin(key) {

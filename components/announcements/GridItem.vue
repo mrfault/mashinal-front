@@ -18,8 +18,8 @@
         </div>
         <div class="item-overlay_bottom d-flex">
           <span class="d-flex">
-            <add-comparison />
-            <add-favorite />
+            <add-comparison :announcement="announcement" />
+            <add-favorite :announcement="announcement" />
           </span>
           <span class="badge">{{ announcement.humanize_created_at }}</span>
         </div>
