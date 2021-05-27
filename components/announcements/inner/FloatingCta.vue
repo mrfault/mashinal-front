@@ -3,7 +3,7 @@
     <div class="floating-cta" ref="floating">
       <div class="row">
         <div class="col">
-          <promote-button />
+          <promote-button :announcement="announcement" />
         </div>
         <div class="col">
           <call-button :phone="contact.phone" />
@@ -35,7 +35,7 @@ export default {
   methods: {
     handleScroll() {
       let bounds = this.$refs.floatingAfter.getBoundingClientRect();
-      this.$refs.floating.classList[bounds.top < 82 ? 'add' : 'remove']('fixed-to-top');
+      this.$refs.floating.classList[bounds.top < 108 ? 'add' : 'remove']('fixed-to-top');
       this.$refs.floating.classList[(bounds.top - window.innerHeight) > -82 ? 'add' : 'remove']('fixed-to-bottom');
     }
   },

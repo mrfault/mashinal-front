@@ -19,6 +19,30 @@
   }
 }
 
+.list-line-separated {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  li {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid $grayish-blue-3;
+    padding: 1em 0;
+    &:first-child {
+      padding-top: 0;
+    }
+    &:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+    i {
+      flex-shrink: 0;
+      color: $red-1;
+      margin-right: 10px;
+    }
+  }
+}
+
 .modal-popup {
   @include abs-middle(fixed, 999);
   width: 346px;
@@ -58,6 +82,12 @@
 
   .modal-popup {
     background-color: $dark-2;
+  }
+
+  .list-line-separated {
+    li {
+      border-color: $dark-1;
+    }
   }
 }
 

@@ -19,7 +19,7 @@
           {{ announcement.humanize_created_at }}
         </span>
       </div>
-      <div class="status" v-if="announcement.status">
+      <div class="status" v-if="announcement.status == 2">
         <template v-if="announcement.system_paid_announce && !announcement.system_paid_announce.is_paid">
           {{ $t('need_pay') }}
         </template>

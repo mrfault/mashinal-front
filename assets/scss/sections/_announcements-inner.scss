@@ -165,27 +165,24 @@
     &.fixed-to-bottom,
     &.fixed-to-top {
       position: fixed;
+      z-index: 9;
       min-width: 320px;
       left: 50%;
       transform: translate(-50%);
       width: 100%;
       max-width: 540px;
       background: $white;
-      transition: margin .3s;
       & + div {
         height: 34px;
       }
     }
     &.fixed-to-bottom {
-      z-index: 9;
       bottom: 60px;
       border-top: 1px solid $grayish-blue-1;
       padding: 13px 25px 25px;
     }
     &.fixed-to-top {
-      z-index: 10;
       top: 60px;
-      margin-top: -20px;
       border-bottom: 1px solid $grayish-blue-1;
       padding: 13px 25px;
     }
@@ -349,6 +346,13 @@
         &:hover {
           background-color: $grey-1;
         }
+      }
+    }
+    .floating-cta {
+      &.fixed-to-bottom,
+      &.fixed-to-top {
+        background-color: $dark-2;
+        border-color: $dark-1;
       }
     }
   }
