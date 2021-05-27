@@ -102,6 +102,10 @@
   i {
     margin-right: 8px;
     margin-bottom: 1px;
+    &.icon-crown {
+      font-size: 17px;
+      margin-bottom: 3px;
+    }
   }
   &--white-outline {
     @include btn-style($bg-color: $white, $bg-hover: $white, $color-hover: $dark-blue-1, $outline: true);
@@ -136,6 +140,9 @@
   &--pale-red-outline {
     @include btn-style($bg-color: $red-2, $bg-hover: $red-2, $border-color: $red-4, $active-bg: $red-2, $outline: true);
   }
+  &--grey-outline {
+    @include btn-style($bg-color: $grey-8, $bg-hover: $grey-8, $outline: true);
+  }
 }
 
 .btn.btn-circle {
@@ -164,6 +171,9 @@
     &--red-outline,
     &--pale-red-outline {
       @include btn-style($bg-color: $grey-1, $bg-hover: $grey-1, $border-color: $grey-1, $active-bg: $white, $active-color: $dark-1, $outline: true, $override: false);
+    }
+    &--grey-outline {
+      @include btn-style($bg-color: $grey-1, $bg-hover: $grey-1, $border-color: $grey-1, $outline: true, $override: false);
     }
   }
 }

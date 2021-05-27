@@ -1,5 +1,5 @@
 <template>
-  <div class="quick-info card mb-2 mb-lg-3 mt-2 mt-lg-0">
+  <div class="quick-info card mb-lg-3">
     <h1>{{ getAnnouncementTitle(announcement) }}</h1>
     <div class="price">
       <span>{{ announcement.price }}</span>
@@ -19,6 +19,14 @@
           {{ announcement.humanize_created_at }}
         </span>
       </div>
+      <div class="status" v-if="announcement.status">
+        <template v-if="announcement.system_paid_announce && !announcement.system_paid_announce.is_paid">
+          {{ $t('need_pay') }}
+        </template>
+        <template v-else>
+          {{ $t('announcement_pending') }}
+        </template>
+      </div>
       <div class="d-flex">
         <share-it type="publish" />
         <button class="btn btn--dark-blue-2-outline full-width" @click.stop="copyToClipboard($env.WEBSITE_URL + $route.path)">
@@ -37,14 +45,14 @@
       </div>
     </div>
     <div class="row">
-      <div class="col order-lg-2" v-if="canSendMessage(announcement)">
+      <div class="col">
+        <show-map-button :lat="contact.lat" :lng="contact.lng" /> 
+      </div>
+      <div class="col" v-if="canSendMessage(announcement)" >
         <chat-button :announcement="announcement" has-after-login />
       </div>
-      <div class="col col-lg-12 order-lg-3 mt-lg-3">
+      <div class="col-12 mt-2 mt-lg-3" v-if="!isMobileBreakpoint">
         <call-button :phone="contact.phone" />
-      </div>
-      <div class="col-12 col-lg order-lg-1 mt-2 mt-lg-0">
-        <show-map-button :lat="contact.lat" :lng="contact.lng" /> 
       </div>
     </div>
   </div>
@@ -67,18 +75,7 @@ export default {
     ...mapGetters(['announcement']),
     
     contact() {
-      return {
-        type: 'user',
-        user: this.announcement.user,
-        id: this.announcement.user.id,
-        name: this.announcement.user.full_name,
-        phone: this.announcement.user.phone,
-        address: this.announcement.address,
-        img: this.announcement.user.avatar ? `${this.$env.BASE_URL}/storage/${this.announcement.user.avatar}` : '',
-        lat: this.announcement.latitude ? parseFloat(this.announcement.latitude) : 0,
-        lng: this.announcement.longitude ? parseFloat(this.announcement.longitude) : 0,
-        link: this.announcement.is_autosalon ? this.$localePath(`/salons/${this.announcement.user.autosalon.id}`) : false
-      };
+      return this.getAnnouncementContact(this.announcement);
     }
   },
   methods: {

@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card pt-0 pt-lg-3">
     <slot name="before" />
     <template v-if="comment">
       <h2 class="title-with-line full-width">

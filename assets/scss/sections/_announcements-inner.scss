@@ -69,8 +69,18 @@
         font-size: 13px;
       }
     }
+    .status {
+      border: 1px dashed;
+      color: $dark-blue-3;
+      line-height: 38px;
+      white-space: nowrap;
+      padding: 0 15px;
+      margin-bottom: 15px;
+      border-radius: 4px;
+      opacity: .6;
+    }
     .more-data {
-      margin: 10px 0;
+      margin: 10px 0 15px;
       .text-data {
         font-size: 15px;
         &:first-child {
@@ -150,6 +160,35 @@
   }
   .card {
     overflow: hidden;
+  }
+  .floating-cta {
+    &.fixed-to-bottom,
+    &.fixed-to-top {
+      position: fixed;
+      min-width: 320px;
+      left: 50%;
+      transform: translate(-50%);
+      width: 100%;
+      max-width: 540px;
+      background: $white;
+      transition: margin .3s;
+      & + div {
+        height: 34px;
+      }
+    }
+    &.fixed-to-bottom {
+      z-index: 9;
+      bottom: 60px;
+      border-top: 1px solid $grayish-blue-1;
+      padding: 13px 25px 25px;
+    }
+    &.fixed-to-top {
+      z-index: 10;
+      top: 60px;
+      margin-top: -20px;
+      border-bottom: 1px solid $grayish-blue-1;
+      padding: 13px 25px;
+    }
   }
 }
 
@@ -232,12 +271,14 @@
       }
     }
     &_top {
+      min-height: 40px;
       .d-flex {
         margin-left: auto;
       }
 
     }
     &_bottom {
+      min-height: 40px;
       .d-flex {
         margin-right: auto;
       }
@@ -342,12 +383,16 @@
 
 @include media-max-width('lg') {
   .inner-gallery {
-    margin: 0 -25px -15px;
+    margin: 0 -25px;
     .swiper-slide-bg {
       border-radius: 0;
       padding-bottom: 73.6%;
     }
     .gallery-overlay {
+      &_top,
+      &_bottom {
+        min-height: 34px;
+      }
       .btn-sq {
         width: 34px;
         height: 34px;
@@ -375,7 +420,7 @@
   }
   .announcements-inner {
     .quick-info {
-      border-radius: 0 0 4px 4px;
+      border-radius: 0;
     }
   }
 }

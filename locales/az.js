@@ -1419,10 +1419,10 @@ export default {
 	"map_is_loading": "Xəritə yüklənir...",
 	"map": "Xəritə",
 	"list": "Siyahı",
-	"car-showrooms": "Avtosalonlar",
-	"car-showroom-settings": "Avtosalonun Parametrləri",
-	"car-showroom-edit": "Avtosalonu redaktə et",
-	"search-car-showroom": "Avtosalon axtar",
+	"car-showrooms": "Salonlar",
+	"car-showroom-settings": "Salonun Parametrləri",
+	"car-showroom-edit": "Salonu redaktə et",
+	"search-car-showroom": "Salon axtar",
 	"days": ['Bazar ertəsi', 'Çərşənbə axşamı', 'Çərşənbə', 'Cümə axşamı', 'Cümə', 'Şənbə', 'Bazar'],
 	"days-short": ['B.e.', 'Ç.a.', 'Ç.', 'C.a.', 'C.', 'Ş.', 'B.'],
 	"only_official": "Ancaq rəsmi",
@@ -1451,9 +1451,9 @@ export default {
 	"contact_for_more_info": "Ətraflı məlumat üçün: <strong>{phone}</strong> və ya <strong>{email}</strong>.",
 
 	"plural_forms_autosalons": [
-		"Avtosalon",
-		"Avtosalon",
-		"Avtosalon"
+		"Salon",
+		"Salon",
+		"Salon"
 	],
 
 	"announce_count": "elan",
@@ -1572,5 +1572,7 @@ export default {
 	"slug_utilities": "kommunal",
 
 	"copy_to_clipboard": "Linki kopyala",
-	"copied_to_clipboard": "Kopyalandı"
+	"copied_to_clipboard": "Kopyalandı",
+	"announcement_pending": "Elan moderasiyadadır",
+	"need_pay": "Ödəniş edilməlidir"
 }

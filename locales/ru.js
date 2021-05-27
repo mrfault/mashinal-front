@@ -1416,10 +1416,10 @@ export default {
 	"map_is_loading": "Карта загружается...",
 	"map": "Карта",
 	"list": "Список",
-	"car-showrooms": "Автосалоны",
-  "car-showroom-settings": "Настройки Автосалона",
-  "car-showroom-edit": "Редактирование автосалона",
-  "search-car-showroom": "Найти автосалон",
+	"car-showrooms": "Салоны",
+  "car-showroom-settings": "Настройки Салона",
+  "car-showroom-edit": "Редактирование Салона",
+  "search-car-showroom": "Найти салон",
   "days": ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'],
   "days-short": ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'],
 	"only_official": "Только официальные",
@@ -1448,9 +1448,9 @@ export default {
   "contact_for_more_info": "Для дополнительной информации: <strong>{phone}</strong> или <strong>{email}</strong>.",
 
   "plural_forms_autosalons": [
-		"Автосалон",
-		"Автосалона",
-		"Автосалонов"
+		"Салон",
+		"Салона",
+		"Салонов"
 	],
 
 	"announce_count": "объявл.",
@@ -1576,5 +1576,7 @@ export default {
 	"slug_utilities": "utilities",
 
 	"copy_to_clipboard": "Скопировать ссылку",
-	"copied_to_clipboard": "Скопировано"
+	"copied_to_clipboard": "Скопировано",
+	"announcement_pending": "Объявление на рассмотрении",
+	"need_pay": "Требуется оплата"
 }

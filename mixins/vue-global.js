@@ -73,6 +73,20 @@ Vue.use({
             return this.$translateSoft(item.part_category.name);
           return '';
         },
+        getAnnouncementContact(item) {
+          return {
+            type: 'user',
+            user: item.user,
+            id: item.user.id,
+            name: item.user.full_name,
+            phone: item.user.phone,
+            address: item.address,
+            img: item.user.avatar ? `${this.$env.BASE_URL}/storage/${item.user.avatar}` : '',
+            lat: item.latitude ? parseFloat(item.latitude) : 0,
+            lng: item.longitude ? parseFloat(item.longitude) : 0,
+            link: item.is_autosalon ? this.$localePath(`/salons/${item.user.autosalon.id}`) : false
+          };
+        },
         canSendMessage(item) {
           return !this.loggedIn || (item.user.id !== this.user.id);
         }

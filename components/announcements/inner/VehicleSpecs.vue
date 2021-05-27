@@ -1,5 +1,5 @@
 <template>
-  <div class="vehicle-specs card mb-2 mb-lg-3">
+  <div class="vehicle-specs card pt-0 pt-lg-4 mb-lg-3">
     <ul>
       <li v-for="spec in vehicleSpecs" :key="spec.key">
         <span>
@@ -17,6 +17,9 @@
         {{ $t('catalog_model_specifications') }}
       </nuxt-link>
     </div>
+    <div class="mt-3 mt-lg-0" v-if="isMobileBreakpoint">
+      <floating-cta :announcement="announcement" />
+    </div>
   </div>
 </template>
 
@@ -25,14 +28,19 @@ import { mapGetters } from 'vuex';
 
 import { AnnouncementDataMixin } from '~/mixins/announcement';
 
+import FloatingCta from '~/components/announcements/inner/FloatingCta';
+
 export default {
   props: {
     type: String
   },
+  components: {
+    FloatingCta
+  },
   mixins: [AnnouncementDataMixin],
   computed: {
     ...mapGetters(['announcement', 'catalog', 'sellOptions', 'motoOptions']),
-
+    
     vehicleSpecs() {
       return [
         { key: 'years', value: this.announcement.year, class: 'car-year' },
