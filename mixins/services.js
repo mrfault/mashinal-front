@@ -7,7 +7,7 @@ export const ServicesMixin = {
     },
     getServiceLabel(count, label) {
       if(!['day','count'].includes(label)) return `${count} ${label}`;
-      return this.readPluralWord(count, this.$t('plural_forms_'+label), true);
+      return this.$readPlural(count, this.$t('plural_forms_'+label));
     },
     getReplacedName(name) {
       return name.replace('Поднять в Топ', 'В Топ')

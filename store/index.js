@@ -21,6 +21,11 @@ const getInitialState = () =>({
   myServices: [],
   myServiceOptions: [],
   myServiceHistory: [],
+  promotion: {
+    id: '',
+    optionId: '',
+    paymentId: 1
+  },
   // announcements
   myAnnouncements: {},
   mainAnnouncements: {},
@@ -132,6 +137,7 @@ export const getters = {
   myServices: s => s.myServices,
   myServiceOptions: s => s.myServiceOptions,
   myServiceHistory: s => s.myServiceHistory,
+  promotion: s => s.promotion,
   // announcements
   announcement: s => s.announcement,
   catalog: s => s.announcement.car_catalog,
@@ -628,6 +634,9 @@ export const actions = {
   async getMyServiceHistory({ commit }) {
     const res = await this.$axios.$get(`/my/actives/history`);
     commit('mutate', { property: 'myServiceHistory', value: res });
+  },
+  async updatePromotion({ commit }, {key, value}) {
+    commit('mutate', { property: 'promotion', key, value });
   },
   // Autosalons
   async getAutoSalonsList({commit}, params) {

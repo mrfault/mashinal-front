@@ -13,26 +13,41 @@
         </li>
       </ul>
     </modal-popup>
-    
+    <template v-if="promotionType">
+      <portal to="modals">
+        <promote :view="isMobileBreakpoint && 'screen'" 
+          :announcement="announcement" 
+          :promotion-type="promotionType"
+          @close="promotionType = ''" 
+        />
+      </portal>
+    </template>
   </button>
 </template>
 
 <script>
 import { ServicesMixin } from '~/mixins/services';
 
+import Promote from '~/components/announcements/Promote';
+
 export default {
   mixins: [ServicesMixin],
+  components: {
+    Promote
+  },
   props: {
     announcement: {}
   },
   data() {
     return {
-      showModal: false
+      showModal: false,
+      promotionType: ''
     }
   },
   methods: {
     selectService(type) {
-      thi
+      this.showModal = false;
+      this.promotionType = type;
     }
   }
 }

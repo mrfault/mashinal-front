@@ -71,6 +71,11 @@ hr {
   background-color: $grayish-blue-3;
   border: 0;
   margin: 20px 0;
+  &.dashed {
+    height: 0;
+    border-bottom: 1px dashed $grayish-blue-3;
+    background-color: transparent;
+  }
 }
 
 .cursor-pointer {
@@ -139,6 +144,9 @@ main {
   }
   hr {
     background-color: $dark-1;
+    &.dashed {
+      border-color: $dark-1;
+    }
   }
   .card {
     background-color: $dark-2;
