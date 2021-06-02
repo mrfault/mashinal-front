@@ -108,7 +108,7 @@
     }
   }
   &--white-outline {
-    @include btn-style($bg-color: $white, $bg-hover: $white, $color-hover: $dark-blue-1, $outline: true);
+    @include btn-style($bg-color: $white, $bg-hover: $white, $color-hover: $dark-blue-1, $active-bg: $white, $active-color: $red-1, $outline: true);
   }
   &--dark-blue {
     @include btn-style($bg-color: $dark-blue-1, $bg-hover: $dark-blue-4);

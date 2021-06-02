@@ -26,6 +26,7 @@
             <quick-info />
             <vehicle-specs type="moto" />
             <comment :comment="announcement.comment" v-if="isMobileBreakpoint" />
+            <promote-card v-if="!isMobileBreakpoint" />
           </div>
         </div>
       </div>
@@ -41,6 +42,7 @@ import VehicleSpecs from '~/components/announcements/inner/VehicleSpecs';
 import Gallery from '~/components/announcements/inner/Gallery';
 import ThumbsGallery from '~/components/announcements/inner/ThumbsGallery';
 import Comment from '~/components/announcements/inner/Comment';
+import PromoteCard from '~/components/announcements/inner/PromoteCard';
 
 export default {
   name: 'pages-moto-id',
@@ -49,7 +51,8 @@ export default {
     VehicleSpecs,
     Gallery,
     ThumbsGallery,
-    Comment
+    Comment,
+    PromoteCard
   },
   nuxtI18n: {
     paths: {

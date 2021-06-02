@@ -1467,7 +1467,7 @@ export default {
     "раз"
   ],
 
-	"count": "Штука",
+	"count": "штука",
 	"day": "День",
 	"plural_forms_count": ["штука","штуки","штук"],
 	"plural_forms_day": ["день","дня","дней"],

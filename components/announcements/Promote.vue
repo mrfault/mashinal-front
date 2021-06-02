@@ -1,7 +1,7 @@
 <template>
   <component :is="view === 'screen' ? 'mobile-screen' : 'div'" @back="goBack" :title="$t('promoting')" >
     <loader v-if="!promotion.id" />
-    <div class="promote-announcement" v-else>
+    <div :class="['promote-announcement', `is-${view}`]" v-else>
       <template v-if="view !== 'card'">
         <div class="announcement-details d-flex flex-lg-column">
           <img :src="getAnnouncementImage(this.announcement)" :alt="getAnnouncementTitle(announcement)" />
@@ -19,7 +19,7 @@
         </div>
         <hr />
       </template>
-      <form-buttons :options="serviceBtns" :group-by="view === 'screen' ? 1 : 3" :value="promotion.id" 
+      <form-buttons :btn-class="view === 'card' ? 'white-outline' : 'pale-red-outline'" :options="serviceBtns" :group-by="view === 'screen' ? 1 : 3" :value="promotion.id" 
           @input="updatePromotion({key: 'id', value: $event}), selectService()">
         <template #icon="{ button }">
           <icon :name="button.icon" />
@@ -30,11 +30,11 @@
           </span>
         </template>
       </form-buttons>
-      <hr class="dashed mt-0"/>
-      <h4 v-if="view === 'card'">
+      <hr class="dashed mt-0 mt-lg-3"/>
+      <h4 v-if="view === 'card'" class="mb-lg-2">
         <icon :name="getServiceIcon(selectedServiceInfo.type)" /> {{ selectedServiceInfo.name }}
       </h4>
-      <h4 v-else>{{ $t('my_packages') }}</h4>
+      <h4 v-else >{{ $t('my_packages') }}</h4>
       <template v-if="view !== 'card' && alreadyActive">
         <p class="info-text"><icon name="alert-circle" /> 
           <span v-if="selectedService.type == 4" v-html="$t('info_service_once_in_5_mins', { 
@@ -46,9 +46,9 @@
           })"></span>
         </p>
       </template>
-      <form-buttons :options="activeBtns" :group-by="view === 'screen' ? 1 : 3" :value="promotion.optionId" 
+      <form-buttons :btn-class="view === 'card' ? 'white-outline' : 'pale-red-outline'" :options="activeBtns" :group-by="view === 'screen' ? 1 : 3" :value="promotion.optionId" 
         @input="updatePromotion({key: 'optionId', value: $event})" />
-      <p v-if="selectedServiceInfo.description">{{ selectedServiceInfo.description }}</p>
+      <p class="mt-lg-3 mb-lg-0" v-if="selectedServiceInfo.description">{{ selectedServiceInfo.description }}</p>
       <template v-if="view !== 'card'">
         <h4>{{ $t('payment_method') }}</h4>
         <form-buttons :options="payments" :group-by="view === 'screen' ? 1 : 3" :value="promotion.paymentId" 
@@ -110,6 +110,7 @@ export default {
       return (this.myServices.length ? this.myServices : this.services)
         .map(service => ({
           ...service,
+          name: this.getReplacedName(service.name),
           icon: this.getServiceIcon(service.type),
           disabled: service.type == 4 ? this.isAlreadyActive(service.type) : false
         }));
@@ -120,14 +121,14 @@ export default {
         ? this.myServiceOptions
             .map(option => ({
               id: option.id,
-              name: `${this.getServiceLabel(option.active, option.active_label)} / x${option.count}`
+              name: `${this.getServiceLabel(option.active, option.active_label, this.view === 'card')} / x${option.count}`
             }))
         : this.services
             .find(service => service.id == this.promotion.id).actives
             .map(option => ({
               ...option,
               id: option.id,
-              name: `${this.getServiceLabel(option.daysOrCount, option.days)} / ${option.user_price} ₼`
+              name: `${this.getServiceLabel(option.daysOrCount, option.days, this.view === 'card')} / ${option.user_price} ₼`
             }));
     },
     payments() {
@@ -167,6 +168,7 @@ export default {
         await this.getMyServices();
     },
     async selectService() {
+      this.updatePromotion({ key: 'type', value: this.selectedService.type });
       this.active = true;
       this.hideStatus = false;
       if (this.loggedIn) {
@@ -175,13 +177,13 @@ export default {
         try {
           await this.getMyServiceOptions(this.selectedService.type);
           this.pendingSelect = false;
-          if(this.activeBtns.length)
+          if(this.activeBtns.length && this.view !== 'card')
             this.updatePromotion({ key: 'optionId', value: this.activeBtns[0].id});
         } catch(err) {
           this.pendingSelect = false;
         }
       } else if(this.activeBtns.length) {
-        this.updatePromotion({ key: 'optionId', value: this.activeBtns[0].id});
+        this.updatePromotion({ key: 'optionId', value: this.view === 'card' ? '' : this.activeBtns[0].id});
       }
     },
     async purchaseService() {
@@ -234,6 +236,7 @@ export default {
     goBack() {
       this.updatePromotion({ key: 'optionId', value: ''});
       this.updatePromotion({ key: 'id', value: ''});
+      this.updatePromotion({ key: 'type', value: '' });
       this.active = false;
       window.scrollTo(0,0);
       this.activated = false;

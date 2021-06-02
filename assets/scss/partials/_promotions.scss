@@ -1,7 +1,9 @@
 .promote-announcement {
   display: flex;
   flex-direction: column;
-  @include calc-vh(min-height, calc(100vh - 110px));
+  .info-text {
+    max-width: 100%;
+  }
   h4 {
     font-size: 16px;
     font-weight: 500;
@@ -123,6 +125,31 @@
       }
     }
   }
+  &.is-screen {
+    @include calc-vh(min-height, calc(100vh - 110px));
+  }
+  &.is-card {
+    .row {
+      margin: 0 -8px;
+      .col-4 {
+        padding: 0 8px;
+      }
+    }
+    background-color: transparent !important;
+    color: $white !important;
+    hr {
+      border-color: $white !important;
+      background-color: transparent !important;
+    }
+    .btn:hover {
+      color: $red-1 !important;
+    }
+  }
+}
+
+.promote-card {
+  background-color: $red-1 !important;
+  padding-top: 60px;
 }
 
 .dark-mode {
@@ -147,6 +174,9 @@
     }
     .promote-payment-info {
       background-color: $dark-2;
+    }
+    .price strong {
+      color: $white;
     }
   }
 }

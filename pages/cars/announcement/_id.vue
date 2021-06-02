@@ -35,6 +35,7 @@
                 <car-complects :options="announcement.options" />
               </template>
             </comment>
+            <promote-card v-if="!isMobileBreakpoint" />
           </div>
         </div>
       </div>
@@ -51,6 +52,7 @@ import Gallery from '~/components/announcements/inner/Gallery';
 import ThumbsGallery from '~/components/announcements/inner/ThumbsGallery';
 import Comment from '~/components/announcements/inner/Comment';
 import CarComplects from '~/components/announcements/inner/CarComplects';
+import PromoteCard from '~/components/announcements/inner/PromoteCard';
 
 export default {
   name: 'pages-cars-id',
@@ -58,9 +60,10 @@ export default {
     QuickInfo,
     VehicleSpecs,
     Gallery,
+    ThumbsGallery,
     Comment,
     CarComplects,
-    ThumbsGallery
+    PromoteCard
   },
   nuxtI18n: {
     paths: {
