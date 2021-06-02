@@ -132,6 +132,9 @@
   background-color: $white;
   border-radius: 4px;
   margin: 0 auto;
+  &.larger {
+    width: 590px;
+  }
   &_scrollview {
     @include calc-vh(max-height, calc(100vh - 170px));
   }

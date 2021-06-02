@@ -100,11 +100,6 @@
     }
   }
   .promote-payment-info {
-    margin-top: auto;
-    position: sticky;
-    bottom: 0;
-    left: 0;
-    background-color: $white;
     hr {
       margin: 0;
     }
@@ -127,6 +122,14 @@
   }
   &.is-screen {
     @include calc-vh(min-height, calc(100vh - 110px));
+
+    .promote-payment-info {
+      margin-top: auto;
+      position: sticky;
+      bottom: 0;
+      left: 0;
+      background-color: $white;
+    }
   }
   &.is-card {
     .row {
@@ -172,11 +175,13 @@
         }
       }
     }
-    .promote-payment-info {
-      background-color: $dark-2;
-    }
     .price strong {
       color: $white;
+    }
+    &.is-screen {
+      .promote-payment-info {
+        background-color: $dark-2;
+      }
     }
   }
 }

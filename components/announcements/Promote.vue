@@ -3,9 +3,9 @@
     <loader v-if="!promotion.id" />
     <div :class="['promote-announcement', `is-${view}`]" v-else>
       <template v-if="view !== 'card'">
-        <div class="announcement-details d-flex flex-lg-column">
+        <div class="announcement-details d-flex flex-lg-column mb-lg-1">
           <img :src="getAnnouncementImage(this.announcement)" :alt="getAnnouncementTitle(announcement)" />
-          <div class="d-flex flex-column flex-lg-row">
+          <div class="d-flex flex-column flex-lg-row justify-content-lg-between mt-lg-3">
             <h4>{{ getAnnouncementTitle(announcement) }}</h4>
             <div class="price">
               <span>{{ announcement.price }}</span>
@@ -47,12 +47,14 @@
         </p>
       </template>
       <form-buttons :btn-class="view === 'card' ? 'white-outline' : 'pale-red-outline'" :options="activeBtns" :group-by="view === 'screen' ? 1 : 3" :value="promotion.optionId" 
-        @input="updatePromotion({key: 'optionId', value: $event})" />
-      <p class="mt-lg-3 mb-lg-0" v-if="selectedServiceInfo.description">{{ selectedServiceInfo.description }}</p>
+        @input="updatePromotion({key: 'optionId', value: $event}), selectServiceOption()" />
+      <p :class="['mt-lg-3', {'mb-lg-0': view === 'card'}]" v-if="selectedServiceInfo.description">{{ selectedServiceInfo.description }}</p>
       <template v-if="view !== 'card'">
         <h4>{{ $t('payment_method') }}</h4>
-        <form-buttons :options="payments" :group-by="view === 'screen' ? 1 : 3" :value="promotion.paymentId" 
-          @input="updatePromotion({key: 'paymentId', value: $event})" />
+        <div class="pb-lg-3">
+          <form-buttons :options="payments" :group-by="view === 'screen' ? 1 : 3" :value="promotion.paymentId" 
+            @input="updatePromotion({key: 'paymentId', value: $event})" />
+        </div>
         <div class="promote-payment-info">
           <hr />
           <div class="d-flex justify-content-between align-items-center">
@@ -186,6 +188,11 @@ export default {
         this.updatePromotion({ key: 'optionId', value: this.view === 'card' ? '' : this.activeBtns[0].id});
       }
     },
+    selectServiceOption() {
+      if(this.view === 'card') {
+        this.$emit('select-service-option', this.promotion.optionId);
+      }
+    },
     async purchaseService() {
       this.pending = true;
       try {
@@ -253,12 +260,13 @@ export default {
     if(this.showSuccessOrError) 
       this.hideStatus = false;
     await this.getServiceData();
+    if (this.view === 'popup') return;
     this.updatePromotion({ key: 'id', value: this.serviceBtns.find(service => service.type == this.promotionType).id});
     await this.selectService();
   },
-  mounted() {
-    if(this.view === 'screen') {
-
+  beforeDestroy() {
+    if(this.view === 'popup') {
+      this.updatePromotion({ key: 'optionId', value: '' });
     }
   }
 }

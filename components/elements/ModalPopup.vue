@@ -3,7 +3,7 @@
     <backdrop @click="$emit('close')" v-if="toggle">
       <template #default="{ show }">
         <transition name="translate-fade">
-          <div class="modal-popup" v-if="show" @click.stop>
+          <div :class="['modal-popup', {[modalClass]: modalClass}]" v-if="show" @click.stop>
             <div class="modal-popup_content">
               <div class="title d-flex align-items-center">
                 <h4 v-if="title">{{ title }}</h4>
@@ -28,7 +28,8 @@
 export default {
   props: {
     toggle: Boolean,
-    title: String
+    title: String,
+    modalClass: String
   }
 }
 </script>
