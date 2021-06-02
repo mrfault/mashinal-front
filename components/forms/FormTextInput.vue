@@ -13,7 +13,7 @@
         v-mask="mask"
         v-model="inputValue"
       />
-      <icon name="info-circle" v-if="invalid" />
+      <icon name="alert-circle" v-if="invalid" />
     </div>
   </div>
 </template>

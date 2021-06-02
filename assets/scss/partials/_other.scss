@@ -26,13 +26,73 @@
   overflow-y: auto;
   z-index: 20;
   width: 100%;
+  width: calc(100% + 1px);
   height: 100%;
   left: 50%;
   min-width: 320px;
   transform: translate(-50%);
   top: 0;
   background-color: $white;
-  padding: 80px 0 20px;
+  padding: 60px 0 0;
+  .container {
+    min-height: 100%;
+    & > div {
+      min-height: 100%;
+    }
+  }
+}
+
+.mobile-status {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  overflow-y: auto;
+  z-index: 41;
+  width: 100%;
+  width: calc(100% + 1px);
+  height: 100%;
+  left: 50%;
+  min-width: 320px;
+  transform: translate(-50%);
+  top: 0;
+  color: $white;
+  .top {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    max-width: 540px;
+    padding: 25px;
+    left: 50%;
+    transform: translate(-50%);
+    text-align: right;
+    span {
+      display: inline-block;
+      font-size: 16px;
+    }
+  }
+  .status-text {
+    display: flex;
+    align-items: flex-start;
+    width: 270px;
+    margin: 0 auto;
+    h4 {
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: 2px;
+    }
+    i {
+      font-size: 37px;
+      margin-right: 15px;
+    }
+  }
+  &.error {
+    background-color: $red-1;
+  }
+  &.success {
+    background-color: $green-1;
+  }
 }
 
 .dark-mode {
@@ -117,6 +177,7 @@
   display: block;
   margin: auto;
   position: absolute;
+  z-index: 1;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -166,6 +227,7 @@
 
   .modal-popup {
     width: 100%;
+    width: calc(100% + 1px);
     max-width: 540px;
     bottom: 0px;
     top: auto;

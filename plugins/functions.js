@@ -28,6 +28,11 @@ export default function({ app, route, store }, inject) {
   inject('queryParams', (params) => {
     return '?' + Object.keys(params).map(key => `${key}=${params[key]}`).join('&');
   });
+  inject('removeQueryParam', (param) => {
+    let query = _.clone(route.query);
+    delete query[param];
+    app.router.push({ query });
+  });
   // validators
   inject('isPhoneNumber', (value) => {
     return value.match(/^[+]994[ ][(][0-9]{2}[)][ ][0-9]{3}[-][0-9]{2}[-][0-9]{2}$/) !== null;

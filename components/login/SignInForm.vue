@@ -21,7 +21,7 @@
         @input="passwordWrong = false"
       />
     </div>
-    <p class="info-text" v-if="form.staticPhone"><icon name="info-circle" /> {{ $t('login_before_announce') }}</p>
+    <p class="info-text" v-if="form.staticPhone"><icon name="alert-circle" /> {{ $t('login_before_announce') }}</p>
     <p><span class="cursor-pointer" @click="$emit('update-tab','sign-in','forgot')">{{ $t('forgot_your_password')}}</span></p>
     <button type="submit" :class="['btn','btn--green',{pending}]">{{ actionText || $t('login') }}</button>
   </form>

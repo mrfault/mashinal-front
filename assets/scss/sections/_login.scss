@@ -167,6 +167,7 @@
   .login-forms {
     &--popup {
       width: 100%;
+      width: calc(100% + 1px);
       max-width: 540px;
       bottom: 0px;
       top: auto;

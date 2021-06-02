@@ -3,10 +3,43 @@
   flex-direction: column;
   @include calc-vh(min-height, calc(100vh - 110px));
   h4 {
-    display: flex;
-    align-items: center;
     font-size: 16px;
     font-weight: 500;
+    i {
+      margin-right: 5px;
+    }
+  }
+  p {
+    strong {
+      font-weight: 600;
+    }
+  }
+  .announcement-details {
+    img {
+      width: 100%;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+    & + hr {
+      margin-top: 0;
+    }
+    h4,
+    .price {
+      font-size: 16px;
+      font-weight: 500;
+      span:first-child {
+        color: $dark-blue-2;
+      }
+      span:last-child {
+        color: $dark-blue-3;
+        margin-left: 1.5em;
+      }
+      i {
+        position: relative;
+        top: .1em;
+        margin-right: .3em;
+      }
+    }
   }
   .btn {
     .badge {
@@ -48,9 +81,30 @@
       }
     }
   }
+  .promotion-details {
+    display: flex;
+    flex-direction: column;
+    margin-left: auto;
+    justify-content: flex-end;
+    align-items: flex-end;
+    i {
+      margin-right: 6px;
+    }
+    strong {
+      font-weight: 500;
+      font-size: 14px;
+      color: $dark-blue-2;
+      margin-top: 3px;
+    }
+  }
   .promote-payment-info {
+    margin-top: auto;
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    background-color: $white;
     hr {
-      margin-bottom: 0;
+      margin: 0;
     }
     .d-flex {
       height: 60px;
@@ -63,6 +117,7 @@
       flex-direction: column;
       font-weight: 500;
       strong {
+        font-size: 14px;
         color: $dark-blue-2;
         font-weight: 500;
       }
@@ -71,10 +126,47 @@
 }
 
 .dark-mode {
-  .btn {
-    .badge {
-      span {
-        background-color: $grey-2;
+  .promote-announcement {
+    .announcement-details {
+      .price span:first-child {
+        color: $white;
+      }
+      .price span:last-child {
+        color: $grey-7;
+      }
+    }
+    .promotion-details strong {
+      color: $white;
+    }
+    .btn {
+      .badge {
+        span {
+          background-color: $grey-2;
+        }
+      }
+    }
+    .promote-payment-info {
+      background-color: $dark-2;
+    }
+  }
+}
+
+@include media-max-width('lg') {
+  .promote-announcement {
+    .announcement-details {
+      padding: 15px 0;
+      img {
+        width: 40px;
+        height: 40px;
+        margin-right: 13px;
+        flex-shrink: 0;
+      }
+      h4 {
+        font-size: 13px;
+        margin-bottom: 5px;
+      }
+      .price {
+        font-size: 14px;
       }
     }
   }

@@ -8,7 +8,7 @@
               :class="['swiper-slide-bg swiper-lazy', {'yt-play': announcement.youtube_id && index === 1}]" 
               :data-background="slide"
             >
-              <div class="loader"><div></div><div></div><div></div></div>
+              <loader />
             </div>
           </div>
         </div>

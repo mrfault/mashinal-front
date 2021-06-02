@@ -6,9 +6,11 @@ import Breadcrumbs from '~/components/elements/Breadcrumbs';
 import Pagination from '~/components/elements/Pagination';
 import LoginTabs from '~/components/elements/LoginTabs';
 import ActionBar from '~/components/elements/ActionBar';
+import MobileScreen from '~/components/elements/MobileScreen';
 import ModalPopup from '~/components/elements/ModalPopup';
 import Backdrop from '~/components/elements/Backdrop';
 import ShareIt from '~/components/elements/ShareIt';
+import Loader from '~/components/elements/Loader';
 // forms
 import FormNumericInput from '~/components/forms/FormNumericInput';
 import FormTextInput from '~/components/forms/FormTextInput';
@@ -25,9 +27,11 @@ Vue.component('breadcrumbs', Breadcrumbs);
 Vue.component('pagination', Pagination);
 Vue.component('login-tabs', LoginTabs);
 Vue.component('action-bar', ActionBar);
+Vue.component('mobile-screen', MobileScreen);
 Vue.component('backdrop', Backdrop);
 Vue.component('modal-popup', ModalPopup);
 Vue.component('share-it', ShareIt);
+Vue.component('loader', Loader);
 // ***
 Vue.component('transition-expand', TransitionExpand);
 // ***

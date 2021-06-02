@@ -26,6 +26,7 @@ const getInitialState = () =>({
     optionId: '',
     paymentId: 1
   },
+  mobileStatusData: false,
   // announcements
   myAnnouncements: {},
   mainAnnouncements: {},
@@ -138,6 +139,7 @@ export const getters = {
   myServiceOptions: s => s.myServiceOptions,
   myServiceHistory: s => s.myServiceHistory,
   promotion: s => s.promotion,
+  mobileStatusData: s => s.mobileStatusData,
   // announcements
   announcement: s => s.announcement,
   catalog: s => s.announcement.car_catalog,
@@ -218,10 +220,18 @@ const objectNotEmpty = (state, commit, property) => {
 };
 
 export const actions = {
-  async nuxtServerInit({ dispatch }) {
+  async nuxtServerInit({ dispatch }, { route, app }) {
     await Promise.all([
       dispatch('getStaticPages')
     ]);
+    if(['true','false'].includes(route.query.success)) {
+      let type = route.query.success === 'true' ? 'success' : 'error';
+      dispatch('updateMobileStatus', {
+        type,
+        title: app.i18n.t(`${type}_payment`),
+        text: app.i18n.t(`${type}_payment_msg`)
+      });
+    }
   },
   // Loading
   setLoading({ commit }, loading) {
@@ -637,6 +647,9 @@ export const actions = {
   },
   async updatePromotion({ commit }, {key, value}) {
     commit('mutate', { property: 'promotion', key, value });
+  },
+  async updateMobileStatus({ commit }, value) {
+    commit('mutate', { property: 'mobileStatusData', value });
   },
   // Autosalons
   async getAutoSalonsList({commit}, params) {

@@ -71,7 +71,7 @@ export default {
     let announcementTitle = `${this.catalog.brand.name} ${this.$translateHard(this.catalog.model.name)}`;
     let title = `${this.$t(`meta-title_announcement-${this.announcement.is_new ? 'new' : 'used'}`, { announce: `${announcementTitle}, ${this.announcement.year}` })}`;
     let description = `${announcementTitle}, ${this.$t('meta-descr_announcement', { announce: `${this.announcement.price}` })}`;
-    let image = this.announcement.media.main_inner ? this.announcement.media.main_inner[0] : this.announcement.media[Object.keys(this.announcement.media)[0]][0];
+    let image = this.getAnnouncementImage(this.announcement);
     return this.$headMeta({ title, description, image }, {
       category: 'Car',
       id: this.announcement.id_unique,

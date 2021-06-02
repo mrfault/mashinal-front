@@ -1485,7 +1485,7 @@ export default {
 	"error_payment": "Uğursuz əməliyyat!",
 	"error_payment_msg": "Sizin ödəməniz həyata keçmədi.",
 	"success_payment": "Ödəmə tamamlandı!",
-	"success_payment_msg": "Elanınız son elanlar bölməsində və axtarış nəticələrində birinci yerə qalxacaq.",
+	"success_payment_msg": "Sizin ödəməniz uğurla tamamlandı.",
 	"success_activate": "Servis aktiv olunub!",
 	"success_activate_msg": "Elanınız son elanlar bölməsində və axtarış nəticələrində birinci yerə qalxacaq.",
 	"updated": "Yeniləndi",

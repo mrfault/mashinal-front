@@ -21,10 +21,10 @@ export const LayoutMixin = {
     }
   },
   computed: {
-    ...mapGetters(['loading', 'messages'])
+    ...mapGetters(['loading', 'messages', 'mobileStatusData'])
   },
   methods: {
-    ...mapActions(['setLoading','setGridBreakpoint','getMessages','getFavorites','resetSellTokens']),
+    ...mapActions(['setLoading','setGridBreakpoint','getMessages','getFavorites','resetSellTokens','updateMobileStatus']),
 
     handleResize() {
       // update grid breakpoint

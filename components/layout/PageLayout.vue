@@ -20,8 +20,9 @@
             </transition>
           </template>
         </backdrop>
-        <portal-target name="mobile-screen" />
         <portal-target name="modals" />
+        <portal-target name="mobile-screen" />
+        <mobile-status v-if="mobileStatusData" @close="updateMobileStatus(false)" />
         <mobile-nav />
         <page-footer />
       </div>
@@ -36,6 +37,7 @@ import PageHeader from '~/components/layout/PageHeader';
 import PageFooter from '~/components/layout/PageFooter';
 import MobileMenu from '~/components/layout/MobileMenu';
 import MobileNav from '~/components/layout/MobileNav';
+import MobileStatus from '~/components/elements/MobileStatus';
 import ThemeSwitch from '~/components/elements/ThemeSwitch';
 import ScrollTop from '~/components/elements/ScrollTop';
 
@@ -46,6 +48,7 @@ export default {
     PageFooter,
     MobileMenu,
     MobileNav,
+    MobileStatus,
     ThemeSwitch,
     ScrollTop
   }

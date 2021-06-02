@@ -60,7 +60,7 @@ export default {
     let announcementTitle = `${this.motoBrand.name} ${this.motoModel.name}`;
     let title = `${this.$t(`meta-title_announcement-${this.announcement.is_new ? 'new' : 'used'}`, { announce: `${announcementTitle}, ${this.announcement.year}` })}`;
     let description = `${announcementTitle}, ${this.$t('meta-descr_announcement', { announce: `${this.announcement.price}` })}`;
-    let image = this.announcement.media.main_inner ? this.announcement.media.main_inner[0] : this.announcement.media[Object.keys(this.announcement.media)[0]][0];
+    let image = this.getAnnouncementImage(this.announcement);
     let category = 'Motorcycle';
     if (this.announcement.moto_atv_brand) category = 'Atv';
     else if(this.announcement.scooter_brand) category = 'Scooter';

@@ -87,6 +87,9 @@ Vue.use({
             link: item.is_autosalon ? this.$localePath(`/salons/${item.user.autosalon.id}`) : false
           };
         },
+        getAnnouncementImage(item) {
+          return item.media.main_inner ? item.media.main_inner[0] : item.media[Object.keys(item.media)[0]][0];
+        },
         canSendMessage(item) {
           return !this.loggedIn || (item.user.id !== this.user.id);
         }
