@@ -6,6 +6,8 @@
           <share-it type="publish" />
           <span class="text-data">
             <icon name="eye" />
+            {{ announcement.view_count }}
+            <icon name="cursor" />
             {{ announcement.open_count }}
           </span>
           <span class="text-data">
