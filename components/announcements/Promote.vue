@@ -3,9 +3,9 @@
     <loader v-if="!promotion.id" />
     <div :class="['promote-announcement', `is-${view}`]" v-else>
       <template v-if="view !== 'card'">
-        <div class="announcement-details d-flex flex-lg-column mb-lg-1">
+        <div class="announcement-details d-flex mb-lg-3">
           <img :src="getAnnouncementImage(this.announcement)" :alt="getAnnouncementTitle(announcement)" />
-          <div class="d-flex flex-column flex-lg-row justify-content-lg-between mt-lg-3">
+          <div class="d-flex flex-column ml-lg-3 mt-lg-1">
             <h4>{{ getAnnouncementTitle(announcement) }}</h4>
             <div class="price">
               <span>{{ announcement.price }}</span>

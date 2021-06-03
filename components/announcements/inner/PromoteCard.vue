@@ -8,8 +8,8 @@
     <modal-popup 
       :toggle="showModal" 
       :title="$t('promoting')"
+      :modal-class="'larger promote-popup'"
       @close="showModal = false"
-      :modal-class="'larger'"
     >
       <promote view="popup"
         :announcement="announcement" 

@@ -18,7 +18,8 @@
   }
   .announcement-details {
     img {
-      width: 100%;
+      width: 160px;
+      height: 120px;
       object-fit: cover;
       border-radius: 4px;
     }
@@ -147,6 +148,12 @@
     .btn:hover {
       color: $red-1 !important;
     }
+  }
+}
+
+.modal-popup.promote-popup {
+  .modal-popup_content {
+    padding-bottom: 10px;
   }
 }
 
