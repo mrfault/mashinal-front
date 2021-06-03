@@ -83,13 +83,8 @@ export default {
     });
   },
   async asyncData({ store, route }) {
-    let id = route.params.id.slice(0, -1);
-    let type = route.params.id.slice(-1);
-    let path = '/moto';
-    if (type === '2') path += '/scooter';
-    else if (type === '3') path += '/atv';
     await Promise.all([
-      store.dispatch('getMotoAnnouncement', { id, path }),
+      store.dispatch('getAnnouncementInner', route.params.id),
       store.dispatch('getComplaintOptions'),
       store.dispatch('getOptions'),
       store.dispatch('getMotoOptions')

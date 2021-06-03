@@ -80,9 +80,8 @@ export default {
     });
   },
   async asyncData({ store, route }) {
-    let id = route.params.id.slice(0, -1);
     await Promise.all([
-      store.dispatch('getCommercialAnnouncement', { id }),
+      store.dispatch('getAnnouncementInner', route.params.id),
       store.dispatch('getComplaintOptions'),
       store.dispatch('getOptions')
     ]);

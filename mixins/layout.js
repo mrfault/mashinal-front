@@ -21,10 +21,10 @@ export const LayoutMixin = {
     }
   },
   computed: {
-    ...mapGetters(['loading', 'messages', 'mobileStatusData'])
+    ...mapGetters(['loading', 'messages'])
   },
   methods: {
-    ...mapActions(['setLoading','setGridBreakpoint','getMessages','getFavorites','resetSellTokens','updateMobileStatus']),
+    ...mapActions(['setLoading','setGridBreakpoint','getMessages','getFavorites','resetSellTokens']),
 
     handleResize() {
       // update grid breakpoint
@@ -96,16 +96,13 @@ export const LayoutMixin = {
     });
   },
   mounted() {
+    this.configSocket();
     if (this.loggedIn) {
-      this.configSocket();
       this.toggleEchoListening(true);
     }
 
     this.$nuxt.$on('login', (auth) => {
-      if (auth) {
-        this.configSocket();
-        this.afterLogin();
-      }
+      if (auth) this.afterLogin();
       this.toggleEchoListening(auth);
     });
 

@@ -26,7 +26,7 @@ const getInitialState = () =>({
     optionId: '',
     paymentId: 1
   },
-  mobileStatusData: false,
+  paidStatusData: false,
   // announcements
   myAnnouncements: {},
   mainAnnouncements: {},
@@ -139,7 +139,7 @@ export const getters = {
   myServiceOptions: s => s.myServiceOptions,
   myServiceHistory: s => s.myServiceHistory,
   promotion: s => s.promotion,
-  mobileStatusData: s => s.mobileStatusData,
+  paidStatusData: s => s.paidStatusData,
   // announcements
   announcement: s => s.announcement,
   catalog: s => s.announcement.car_catalog,
@@ -226,7 +226,7 @@ export const actions = {
     ]);
     if(['true','false'].includes(route.query.success)) {
       let type = route.query.success === 'true' ? 'success' : 'error';
-      dispatch('updateMobileStatus', {
+      dispatch('updatePaidStatus', {
         type,
         title: app.i18n.t(`${type}_payment`),
         text: app.i18n.t(`${type}_payment_msg`)
@@ -526,6 +526,10 @@ export const actions = {
     const res = await this.$axios.$get('/my/all-announce');
     commit('mutate', { property: 'myAnnouncements', value: res });
   },
+  async getAnnouncementInner({ commit }, id) {
+    const res = await this.$axios.$get(`/announce/${id}`);
+    commit('mutate', { property: 'announcement', value: res });
+  },
   async deleteAnnounement({ commit }, data) {
     await this.$axios.$post('/' + data.type + '/' + data.id + '/delete');
   },
@@ -648,8 +652,8 @@ export const actions = {
   async updatePromotion({ commit }, {key, value}) {
     commit('mutate', { property: 'promotion', key, value });
   },
-  async updateMobileStatus({ commit }, value) {
-    commit('mutate', { property: 'mobileStatusData', value });
+  async updatePaidStatus({ commit }, value) {
+    commit('mutate', { property: 'paidStatusData', value });
   },
   // Autosalons
   async getAutoSalonsList({commit}, params) {

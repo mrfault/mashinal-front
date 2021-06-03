@@ -1,5 +1,5 @@
 <template>
-  <component :is="view === 'screen' ? 'mobile-screen' : 'div'" @back="goBack" :title="$t('promoting')" >
+  <component :is="isScreen ? 'mobile-screen' : 'div'" @back="goBack" :title="$t('promoting')" >
     <loader v-if="!promotion.id" />
     <div :class="['promote-announcement', `is-${view}`]" v-else>
       <template v-if="view !== 'card'">
@@ -12,14 +12,14 @@
               <span><icon name="exchange" /> {{ announcement.price_converted }}</span>
             </div>
           </div>
-          <div class="promotion-details" v-if="view === 'screen'">
+          <div class="promotion-details" v-if="isScreen">
             <span><icon :name="getServiceIcon(selectedServiceInfo.type)" /> {{ selectedServiceInfo.name }}</span>
             <strong>{{ selectedServiceOption ? selectedServiceOption.user_price : 0 }} ₼</strong>
           </div>
         </div>
         <hr />
       </template>
-      <form-buttons :btn-class="view === 'card' ? 'white-outline' : 'pale-red-outline'" :options="serviceBtns" :group-by="view === 'screen' ? 1 : 3" :value="promotion.id" 
+      <form-buttons :btn-class="isCard ? 'white-outline' : 'pale-red-outline'" :options="serviceBtns" :group-by="isScreen ? 1 : 3" :value="promotion.id" 
           @input="updatePromotion({key: 'id', value: $event}), selectService()">
         <template #icon="{ button }">
           <icon :name="button.icon" />
@@ -31,7 +31,7 @@
         </template>
       </form-buttons>
       <hr class="dashed mt-0 mt-lg-3"/>
-      <h4 v-if="view === 'card'" class="mb-lg-2">
+      <h4 v-if="isCard" class="mb-lg-2">
         <icon :name="getServiceIcon(selectedServiceInfo.type)" /> {{ selectedServiceInfo.name }}
       </h4>
       <h4 v-else >{{ $t('my_packages') }}</h4>
@@ -46,13 +46,13 @@
           })"></span>
         </p>
       </template>
-      <form-buttons :btn-class="view === 'card' ? 'white-outline' : 'pale-red-outline'" :options="activeBtns" :group-by="view === 'screen' ? 1 : 3" :value="promotion.optionId" 
+      <form-buttons :btn-class="isCard ? 'white-outline' : 'pale-red-outline'" :options="serviceOptionBtns" :group-by="isScreen ? 1 : 3" :value="promotion.optionId" 
         @input="updatePromotion({key: 'optionId', value: $event}), selectServiceOption()" />
-      <p :class="['mt-lg-3', {'mb-lg-0': view === 'card'}]" v-if="selectedServiceInfo.description">{{ selectedServiceInfo.description }}</p>
+      <p :class="['mt-lg-3', {'mb-lg-0': isCard}]" v-if="selectedServiceInfo.description">{{ selectedServiceInfo.description }}</p>
       <template v-if="view !== 'card'">
         <h4>{{ $t('payment_method') }}</h4>
         <div class="pb-lg-3">
-          <form-buttons :options="payments" :group-by="view === 'screen' ? 1 : 3" :value="promotion.paymentId" 
+          <form-buttons :options="payments" :group-by="isScreen ? 1 : 3" :value="promotion.paymentId" 
             @input="updatePromotion({key: 'paymentId', value: $event})" />
         </div>
         <div class="promote-payment-info">
@@ -75,6 +75,7 @@
 import { mapState, mapActions } from 'vuex';
 
 import { ServicesMixin } from '~/mixins/services';
+import { SocketMixin } from '~/mixins/socket';
 
 export default {
   props: {
@@ -82,13 +83,14 @@ export default {
     announcement: {},
     promotionType: {}
   },
-  mixins: [ServicesMixin],
+  mixins: [ServicesMixin, SocketMixin],
   data() {
     return {
-      hideStatus: true,
+      isPopup: this.view === 'popup',
+      isScreen: this.view === 'screen',
+      isCard: this.view === 'card',
       pending: false,
       pendingSelect: false,
-      active: false
     }
   },
   computed: {
@@ -101,7 +103,7 @@ export default {
     },
     selectedServiceOption() {
       if(!this.promotion.optionId) return false;
-      return (this.activeBtns)
+      return (this.serviceOptionBtns)
         .find(option => option.id == this.promotion.optionId);
     },
     selectedServiceInfo() {
@@ -117,32 +119,26 @@ export default {
           disabled: service.type == 4 ? this.isAlreadyActive(service.type) : false
         }));
     },
-    activeBtns() {
+    serviceOptionBtns() {
       if(!this.promotion.id || this.pendingSelect) return [];
       return (this.myServiceOptions.length && this.shouldActivate)  
         ? this.myServiceOptions
             .map(option => ({
               id: option.id,
-              name: `${this.getServiceLabel(option.active, option.active_label, this.view === 'card')} / x${option.count}`
+              name: `${this.getServiceLabel(option.active, option.active_label, this.isCard)} / x${option.count}`
             }))
         : this.services
             .find(service => service.id == this.promotion.id).actives
             .map(option => ({
               ...option,
               id: option.id,
-              name: `${this.getServiceLabel(option.daysOrCount, option.days, this.view === 'card')} / ${option.user_price} ₼`
+              name: `${this.getServiceLabel(option.daysOrCount, option.days, this.isCard)} / ${option.user_price} ₼`
             }));
     },
     payments() {
       return [
         { key: 1, name: this.$t('pay_with_card') }
       ]
-    },
-    showSuccessOrError() {
-      return ['true','false'].includes(this.$route.query.success);
-    },
-    showStatus() {
-      return !this.hideStatus && this.showSuccessOrError;
     },
     alreadyActive() {
       return this.selectedService ? this.isAlreadyActive(this.selectedService.type) : false;
@@ -162,7 +158,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getServices', 'getMyServices', 'getMyServiceOptions', 'updatePromotion', 'updateMobileStatus']), 
+    ...mapActions(['getServices', 'getMyServices', 'getMyServiceOptions', 'updatePromotion', 'updatePaidStatus', 'getAnnouncementInner']), 
 
     async getServiceData() {
       await this.getServices();
@@ -171,40 +167,52 @@ export default {
     },
     async selectService() {
       this.updatePromotion({ key: 'type', value: this.selectedService.type });
-      this.active = true;
-      this.hideStatus = false;
       if (this.loggedIn) {
         this.updatePromotion({ key: 'optionId', value: ''});
         this.pendingSelect = true;
         try {
           await this.getMyServiceOptions(this.selectedService.type);
           this.pendingSelect = false;
-          if(this.activeBtns.length && this.view !== 'card')
-            this.updatePromotion({ key: 'optionId', value: this.activeBtns[0].id});
+          if(this.serviceOptionBtns.length && this.view !== 'card')
+            this.updatePromotion({ key: 'optionId', value: this.serviceOptionBtns[0].id});
         } catch(err) {
           this.pendingSelect = false;
         }
-      } else if(this.activeBtns.length) {
-        this.updatePromotion({ key: 'optionId', value: this.view === 'card' ? '' : this.activeBtns[0].id});
+      } else if(this.serviceOptionBtns.length) {
+        this.updatePromotion({ key: 'optionId', value: this.isCard ? '' : this.serviceOptionBtns[0].id});
       }
     },
     selectServiceOption() {
-      if(this.view === 'card') {
+      if(this.isCard) {
         this.$emit('select-service-option', this.promotion.optionId);
       }
     },
     async purchaseService() {
       this.pending = true;
       try {
-        // buy service (api returns payment_id and redirect_url)
-        const res = await this.$axios.$post('/marketing/buyService', {
+        const res = await this.$axios.$post(this.$env.API_BASE_URL + '/marketing/buyService', {
           service_active_id: this.promotion.optionId,
           announce_id_unique: this.announcement.id_unique
         });
-        // redirect to kapital bank page
-        this.$nuxt.$loading.start();
-        setTimeout(() => this.$nuxt.$loading.finish(), 500);
-        window.location = res.data.redirect_url;
+        this.pending = false;
+        if (this.isPopup) {
+          window.open(res.data.redirect_url, 'purchaseservice', 'toolbar=yes,scrollbars=yes,resizable=yes,top=50,left=100,width=494,height=718');
+          this.connectEcho(`purchase.${res.data.payment_id}`, false).listen('PurchaseInitiated', async (data) => {
+            const paid = data.payment.status === 1;
+            if (paid) await this.fetchAnnouncementData();
+            let type = paid ? 'success' : 'error';
+            this.updatePaidStatus({
+              type,
+              text: this.$t(`${type}_payment_msg`),
+              title: this.$t(`${type}_payment`)
+            });
+          });
+        } else {
+          // redirect to kapital bank page
+          this.$nuxt.$loading.start();
+          setTimeout(() => this.$nuxt.$loading.finish(), 500);
+          window.location = res.data.redirect_url;
+        }
       } catch(err) {
         this.pending = false;
       }
@@ -219,11 +227,12 @@ export default {
         });
         // reload services and announcement data
         await this.getServiceData();
+        await this.fetchAnnouncementData();
         // reset some data
         this.updatePromotion({ key: 'optionId', value: ''});
         this.pending = false;
         this.goBack();
-        this.updateMobileStatus({
+        this.updatePaidStatus({
           type: 'success',
           text: this.$t('success_activate_msg'),
           title: this.$t('success_activate')
@@ -240,15 +249,15 @@ export default {
         await this.activateService();
       }
     },
+    async fetchAnnouncementData() {
+      if (this.$route.params.id)
+        await this.getAnnouncementInner(this.$route.params.id);
+    },
     goBack() {
       this.updatePromotion({ key: 'optionId', value: ''});
       this.updatePromotion({ key: 'id', value: ''});
       this.updatePromotion({ key: 'type', value: '' });
-      this.active = false;
       window.scrollTo(0,0);
-      this.activated = false;
-      this.hideStatus = true;
-      this.active = false;
       this.$router.push({ query: null });
       this.$emit('close');
     },
@@ -257,15 +266,13 @@ export default {
     }
   },
   async fetch() {
-    if(this.showSuccessOrError) 
-      this.hideStatus = false;
     await this.getServiceData();
-    if (this.view === 'popup') return;
+    if (this.isPopup) return;
     this.updatePromotion({ key: 'id', value: this.serviceBtns.find(service => service.type == this.promotionType).id});
     await this.selectService();
   },
   beforeDestroy() {
-    if(this.view === 'popup') {
+    if(this.isPopup) {
       this.updatePromotion({ key: 'optionId', value: '' });
     }
   }

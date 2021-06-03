@@ -3,15 +3,16 @@
     <promote view="card"
       :announcement="announcement" 
       :promotion-type="promotion.type || 1"
-      @select-service-option="selectServiceOption($event), showModal = true"
+      @select-service-option="showModal = true"
     />
     <modal-popup 
       :toggle="showModal" 
-      :title="$t('promoting')"
+      :title="paidStatusData ? '' : $t('promoting')"
       :modal-class="'larger promote-popup'"
-      @close="showModal = false"
+      @close="showModal = false, updatePaidStatus(false)"
     >
-      <promote view="popup"
+      <paid-status v-if="paidStatusData" />
+      <promote view="popup" v-else
         :announcement="announcement" 
         :promotion-type="promotion.type"
       />
@@ -20,13 +21,15 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 import Promote from '~/components/announcements/Promote';
+import PaidStatus from '~/components/elements/PaidStatus';
 
 export default {
   components: {
-    Promote
+    Promote,
+    PaidStatus
   },
   data() {
     return {
@@ -34,12 +37,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['announcement', 'promotion'])
+    ...mapGetters(['announcement', 'promotion', 'paidStatusData'])
   },
   methods: {
-    selectServiceOption(id) {
-
-    }
+    ...mapActions(['updatePaidStatus'])
   }
 }
 </script>

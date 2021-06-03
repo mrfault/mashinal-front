@@ -23,8 +23,8 @@ export const SocketMixin = {
         },
       });
     },
-    connectEcho(channel = false) {
-      return window.Echo.private(channel || ('user.'+ this.$auth.user.id));
+    connectEcho(channel = false, isPrivate = true) {
+      return window.Echo[isPrivate ? 'private' : 'channel'](channel || ('user.'+ this.$auth.user.id));
     }
   }
 }
