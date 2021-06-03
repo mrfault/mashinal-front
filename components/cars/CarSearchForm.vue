@@ -35,7 +35,8 @@
           <template v-if="isMobileBreakpoint">
             <div class="col-6 mb-2">
               <form-select :label="$t('mark')" :options="brands" v-model="form.additional_brands[rows[0]]['brand']"
-                @change="setBrand($event, rows[0])" has-search/>
+                @change="setBrand($event, rows[0])" has-search :clear-option="false" :popular-options="[129,483,8,1,767,117]" 
+                img-key="transformed_media" />
             </div>
             <div class="col-6 mb-2">
               <form-select :label="$t('model')" :options="carModels[rows[0]]" v-model="form.additional_brands[rows[0]]['model']"

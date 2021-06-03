@@ -36,9 +36,23 @@
           </div>
           <vue-scroll :ops="scrollOps" ref="vs" v-else :key="vsKey">
             <div :class="{'container': isMobileBreakpoint}">
+              <div class="row pt-3" v-if="popularOptions && !search">
+                <div v-for="option in $sortBy(getFilteredOptions, (a, b) => popularOptions.indexOf(b.id) - popularOptions.indexOf(a.id)).slice(0,6)" 
+                  :key="option.id" class="col-4 popular-option" @click.stop="selectValue = option">
+                  <div class="img" v-if="imgKey && option[imgKey]">
+                    <img :src="option[imgKey]" :alt="getOptionName(option)" />
+                  </div>
+                  <div class="text-truncate">
+                    <span>{{ getOptionName(option) }}</span>
+                  </div>
+                </div>
+              </div>
               <template v-for="(option, index) in getFilteredOptions">
                 <div :key="index" :class="['select-menu_dropdown-option', {'selected': isSelected(option), 'anchor': isAnchor(index)}]" 
                     @click.stop="selectValue = option">
+                  <div class="img" v-if="imgKey && option[imgKey]">
+                    <img :src="option[imgKey]" :alt="getOptionName(option)" />
+                  </div>
                   <div class="text-truncate">
                     <span>{{ getOptionName(option) }}</span>
                   </div>
@@ -115,7 +129,9 @@
       },
       inSelectMenu: Boolean,
       hasSearch: Boolean,
-      hasNoBg: Boolean
+      hasNoBg: Boolean,
+      popularOptions: Array,
+      imgKey: String
     },
     data() {
       return {

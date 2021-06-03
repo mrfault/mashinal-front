@@ -96,4 +96,5 @@ export default function({ app, route, store }, inject) {
   });
   // underscore
   inject('clone', _.clone);
+  inject('sortBy', _.sortBy);
 }
