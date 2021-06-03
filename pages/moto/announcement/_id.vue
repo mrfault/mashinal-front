@@ -29,6 +29,7 @@
             <promote-card v-if="!isMobileBreakpoint" />
           </div>
         </div>
+        <relatives />
       </div>
     </div>
   </div>
@@ -43,6 +44,7 @@ import Gallery from '~/components/announcements/inner/Gallery';
 import ThumbsGallery from '~/components/announcements/inner/ThumbsGallery';
 import Comment from '~/components/announcements/inner/Comment';
 import PromoteCard from '~/components/announcements/inner/PromoteCard';
+import Relatives from '~/components/announcements/inner/Relatives';
 
 export default {
   name: 'pages-moto-id',
@@ -52,7 +54,8 @@ export default {
     Gallery,
     ThumbsGallery,
     Comment,
-    PromoteCard
+    PromoteCard,
+    Relatives
   },
   nuxtI18n: {
     paths: {

@@ -22,7 +22,7 @@
         </backdrop>
         <portal-target name="modals" />
         <portal-target name="mobile-screen" />
-        <paid-status v-if="isMobileBreakpoint" />
+        <paid-status v-if="paidStatusData && isMobileBreakpoint" />
         <mobile-nav />
         <page-footer />
       </div>

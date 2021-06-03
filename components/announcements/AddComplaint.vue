@@ -53,9 +53,6 @@ export default {
     },
     isComplained() {
       return this.announcement.complaints.length || this.userAlreadyComplained || this.triedAgain;
-    },
-    userIsOwner() {
-      return this.loggedIn && this.announcement.user.id === this.user.id;
     }
   },
   methods: {

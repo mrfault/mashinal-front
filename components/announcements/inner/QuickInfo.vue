@@ -55,18 +55,36 @@
         <call-button :phone="contact.phone" />
       </div>
     </div>
+    <template v-if="userIsOwner(announcement)">
+      <hr />
+      <div class="row">
+        <div class="col">
+          <restore-button :announcement="announcement" v-if="announcement.status == 3" />
+          <deactivate-button :announcement="announcement" v-else />
+        </div>
+        <div class="col">
+          <edit-button :announcement="announcement" />
+        </div>
+      </div>
+    </template>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
 
+import RestoreButton from '~/components/announcements/RestoreButton';
+import DeactivateButton from '~/components/announcements/DeactivateButton';
+import EditButton from '~/components/announcements/EditButton';
 import ChatButton from '~/components/announcements/ChatButton';
 import CallButton from '~/components/announcements/CallButton';
 import ShowMapButton from '~/components/elements/ShowMapButton';
 
 export default {
   components: {
+    RestoreButton,
+    DeactivateButton,
+    EditButton,
     ChatButton,
     CallButton,
     ShowMapButton

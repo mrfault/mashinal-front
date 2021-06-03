@@ -92,6 +92,9 @@ Vue.use({
         },
         canSendMessage(item) {
           return !this.loggedIn || (item.user.id !== this.user.id);
+        },
+        userIsOwner(item) {
+          return this.loggedIn && item.user.id === this.user.id;
         }
       },
       computed: {

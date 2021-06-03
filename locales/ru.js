@@ -716,7 +716,7 @@ export default {
 	"if_you_have_an_account": "Если у Вас есть аккаунт",
 	"impulse_ranges": "Импульсные диапазоны",
 	"inactive": "Неактивные",
-	"inactive_1": "Неактивный",
+	"inactive_make": "Деактивировать",
 	"in_garanty": "На гарантии",
 	"in_stock": "В наличии",
 	"included": "В комплекте",

@@ -1,5 +1,5 @@
 <template>
-  <div :class="['paid-status', (isMobileBreakpoint ? 'full-screen' : 'in-popup'), paidStatusData.type]" v-if="paidStatusData">
+  <div :class="['paid-status', (isMobileBreakpoint ? 'full-screen' : 'in-popup'), paidStatusData.type]">
     <div class="top" v-if="isMobileBreakpoint">
       <span class="cursor-pointer" @click="$removeQueryParam('success'), updatePaidStatus(false)">
         <icon name="cross" />
@@ -26,10 +26,12 @@ export default {
     ...mapActions(['updatePaidStatus'])
   },
   mounted() {
-    this.setBodyOverflow('hidden');
+    if (this.isMobileBreakpoint) 
+      this.setBodyOverflow('hidden');
   },
   beforeDestroy() {
-    this.setBodyOverflow('scroll');
+    if (this.isMobileBreakpoint)
+      this.setBodyOverflow('scroll');
     this.updatePaidStatus(false);
   }
 }

@@ -38,6 +38,7 @@
             <promote-card v-if="!isMobileBreakpoint" />
           </div>
         </div>
+        <relatives />
       </div>
     </div>
   </div>
@@ -53,6 +54,7 @@ import ThumbsGallery from '~/components/announcements/inner/ThumbsGallery';
 import Comment from '~/components/announcements/inner/Comment';
 import CarComplects from '~/components/announcements/inner/CarComplects';
 import PromoteCard from '~/components/announcements/inner/PromoteCard';
+import Relatives from '~/components/announcements/inner/Relatives';
 
 export default {
   name: 'pages-cars-id',
@@ -63,7 +65,8 @@ export default {
     ThumbsGallery,
     Comment,
     CarComplects,
-    PromoteCard
+    PromoteCard,
+    Relatives
   },
   nuxtI18n: {
     paths: {

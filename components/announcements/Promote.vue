@@ -257,8 +257,6 @@ export default {
       this.updatePromotion({ key: 'optionId', value: ''});
       this.updatePromotion({ key: 'id', value: ''});
       this.updatePromotion({ key: 'type', value: '' });
-      window.scrollTo(0,0);
-      this.$router.push({ query: null });
       this.$emit('close');
     },
     isAlreadyActive(type) {

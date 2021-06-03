@@ -21,7 +21,7 @@ export const LayoutMixin = {
     }
   },
   computed: {
-    ...mapGetters(['loading', 'messages'])
+    ...mapGetters(['loading','messages','paidStatusData'])
   },
   methods: {
     ...mapActions(['setLoading','setGridBreakpoint','getMessages','getFavorites','resetSellTokens']),
@@ -97,9 +97,8 @@ export const LayoutMixin = {
   },
   mounted() {
     this.configSocket();
-    if (this.loggedIn) {
+    if (this.loggedIn) 
       this.toggleEchoListening(true);
-    }
 
     this.$nuxt.$on('login', (auth) => {
       if (auth) this.afterLogin();
@@ -125,7 +124,8 @@ export const LayoutMixin = {
 
   },
   beforeDestroy() {
-    this.toggleEchoListening(false);
+    if (this.loggedIn) 
+      this.toggleEchoListening(false);
 
     this.$nuxt.$off(['login', 'login-popup']);
 
