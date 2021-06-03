@@ -1,0 +1,42 @@
+.map-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  @include calc-vh(height, calc(100vh));
+  .static-map {
+    max-width: 100%;
+  }
+  .map {
+    position: relative;
+    width: 1200px;
+    height: 816px;
+    max-width: 100%;
+    @include calc-vh(height, calc(100vh - 50px));
+    overflow: hidden;
+    #map {
+      @include abs-zero;
+    }
+    // [class*=copyrights-pane] {
+    //   display: none;
+    // }
+  }
+}
+
+.dark-mode {
+  .map-wrapper {
+    .map {
+      [class*=ground-pane] {
+        filter: brightness(0.7);
+      }
+    }
+  }
+}
+
+@include media-max-width('lg') {
+  .map-wrapper {
+    .map {
+      max-height: 75vh;
+    }
+  }
+}

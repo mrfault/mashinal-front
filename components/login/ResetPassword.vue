@@ -24,7 +24,7 @@
         v-model="form.passwordConfirm"
       />
     </div>
-    <p class="info-text"><icon name="info-circle" /> {{ $t('enter_the_code_sent_to_your_number')}}</p>
+    <p class="info-text"><icon name="alert-circle" /> {{ $t('enter_the_code_sent_to_your_number')}}</p>
     <button type="submit" :class="['btn','btn--green',{pending}]">{{$t('restore_password')}}</button>
   </form>
 </template>

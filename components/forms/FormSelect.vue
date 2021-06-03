@@ -7,7 +7,7 @@
           <template v-if="hasSearch && showOptions && !isMobileBreakpoint">
             <span class="search-input">
               <span class="placeholder">{{ label }}: </span>
-              <input type="text" @click.stop v-model="search" ref="searchInput" />
+              <input type="text" @click.stop v-model="search" ref="searchInput" @keyup.enter="handleSearchSubmit" />
             </span>
           </template>
           <template v-else>{{ getLabelText }}</template>
@@ -160,9 +160,14 @@
         this.showOptions = false;
         this.$emit('clear');
       },
+      handleSearchSubmit() {
+        if (this.search && this.getFilteredOptions.length) {
+          this.selectValue = this.getFilteredOptions[0];
+        }
+      },
       handleDocClick(event) {
         let clickedInsideDropdown = this.$refs.dropdownOptions.contains(event.target);
-        if(!clickedInsideDropdown && !this.blockClick) {
+        if (!clickedInsideDropdown && !this.blockClick) {
           this.showOptions = false;
         }
       }

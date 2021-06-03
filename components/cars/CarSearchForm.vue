@@ -108,7 +108,7 @@
                   </form-select>
                 </div>
                 <div class="col-6 col-lg-3 mb-2 mb-lg-3">
-                  <form-select :label="$t('city')" :options="sellOptions.regions" v-model="form.region" />
+                  <form-select :label="$t('city')" :options="sellOptions.regions" v-model="form.region" has-search />
                 </div>
                 <div class="col-6 col-lg-3 mb-2 mb-lg-3">
                   <form-checkbox :label="$t('barter')" v-model="form.exchange_possible" 
@@ -206,7 +206,7 @@
         <div class="col-12">
           <div :class="['row', {'flex-column-reverse flex-lg-row': !assistant, 'align-items-end': assistant}]">
             <div class="col-lg-6" v-if="assistant">
-              <form-range v-model="formAssistant.price">
+              <form-range v-model="formAssistant.price" :min="10000" :max="100000" :step="10000">
                 <div class="row mt-2 mt-lg-3 mb-2 mb-lg-0">
                   <div class="col-6">
                     <div class="form-info">{{ formAssistant.price[0] }} ₼</div>
@@ -339,7 +339,7 @@ export default {
       formAssistant: {
         body: {},
         packs: [],
-        price: [1000, 500000]
+        price: [10000, 100000]
       }
     }
   },

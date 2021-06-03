@@ -1,5 +1,5 @@
 <template>
-  <div class="backdrop" @click="$emit('click')">
+  <div class="backdrop" @click.stop="$emit('click')">
     <div class="container">
       <slot :show="show" />
     </div>
@@ -15,6 +15,7 @@ export default {
   },
   mounted() {
     this.setBodyOverflow('hidden');
+    this.$emit('mount');
     this.show = true;
   },
   beforeDestroy() {

@@ -8,7 +8,7 @@
         v-model="form.code"
       />
     </div>
-    <p class="info-text"><icon name="info-circle" /> {{ $t('enter_the_code_sent_to_your_number')}}</p>
+    <p class="info-text"><icon name="alert-circle" /> {{ $t('enter_the_code_sent_to_your_number')}}</p>
     <p v-if="showResend || codeSent || askToCallSupport"> 
       <span v-if="showResend && resendSmsAfterSecond === 0" class="cursor-pointer" @click="resendCode">{{ $t('resend_code') }}</span>
       <span v-else-if="showResend && resendSmsAfterSecond > 0">

@@ -32,11 +32,11 @@ export default {
     value: {},
     min: {
       type: Number,
-      default: 1000
+      default: 0
     },
     max: {
       type: Number,
-      default: 500000
+      default: 100000
     },
     step: {
       type: Number,

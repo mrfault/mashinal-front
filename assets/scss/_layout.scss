@@ -71,6 +71,11 @@ hr {
   background-color: $grayish-blue-3;
   border: 0;
   margin: 20px 0;
+  &.dashed {
+    height: 0;
+    border-bottom: 1px dashed $grayish-blue-3;
+    background-color: transparent;
+  }
 }
 
 .cursor-pointer {
@@ -116,6 +121,10 @@ main {
   min-width: 320px;
 }
 
+.position-relative {
+  position: relative;
+}
+
 .card {
   position: relative;
   background-color: $white;
@@ -135,6 +144,9 @@ main {
   }
   hr {
     background-color: $dark-1;
+    &.dashed {
+      border-color: $dark-1;
+    }
   }
   .card {
     background-color: $dark-2;
@@ -145,7 +157,7 @@ main {
   position: relative;
   padding-left: 40px;
   max-width: 250px;
-  .icon-info-circle {
+  .icon-alert-circle {
     position: absolute;
     top: 1px;
     left: 16px;
@@ -411,6 +423,14 @@ main {
       .menu > li a:hover {
         color: $yellow-1;
       }
+      .langs-menu,
+      .user-menu {
+        border-color: $white;
+        &:hover {
+          background-color: $white;
+          color: $dark-2;
+        }
+      }
       .langs-menu_list-inner,
       .user-menu_list-inner {
         color: $white;
@@ -511,7 +531,7 @@ main {
       color: $dark-1;
     }
     .logo + p {
-      color: $grey-3;
+      color: $grey-4;
     }
   }
 }
@@ -776,7 +796,7 @@ main {
 .breadcrumbs {
   margin: -30px 0 0;
   ul {
-    margin: 0;
+    margin: 0 auto 0 0;
     padding: 0;
     display: flex;
     align-items: center;
@@ -900,7 +920,7 @@ main {
   cursor: pointer;
   &.floating {
     position: fixed;
-    z-index: 60;
+    z-index: 9;
     bottom: 30px;
     left: 30px;
     width: 60px;
@@ -948,7 +968,7 @@ main {
   transition: visibility 0 .3s ease-out, opacity .3s ease-out;
   cursor: pointer;
   position: fixed;
-  z-index: 60;
+  z-index: 9;
   bottom: 30px;
   right: 30px;
   width: 60px;
@@ -1178,6 +1198,7 @@ main {
 
 .__rail-is-vertical {
   background: $white !important;
+  border-radius: 0 !important;
   .__bar-is-vertical {
     background: $grayish-blue-2 !important;
   }
@@ -1197,6 +1218,10 @@ main {
 @include media-max-width('lg') {
   body {
     font-size: 13px;
+  }
+
+  hr {
+    margin: 15px 0;
   }
 
   [class^=pages-] {

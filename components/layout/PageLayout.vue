@@ -9,7 +9,7 @@
         <slot name="after-header" />
         <main>
           <slot name="nuxt" />
-          <theme-switch :floating="true" v-if="!isMobileBreakpoint" />
+          <theme-switch :floating="true" />
           <scroll-top />
         </main>
         <slot name="before-header" />
@@ -20,6 +20,9 @@
             </transition>
           </template>
         </backdrop>
+        <portal-target name="modals" />
+        <portal-target name="mobile-screen" />
+        <paid-status v-if="paidStatusData && isMobileBreakpoint" />
         <mobile-nav />
         <page-footer />
       </div>
@@ -34,6 +37,7 @@ import PageHeader from '~/components/layout/PageHeader';
 import PageFooter from '~/components/layout/PageFooter';
 import MobileMenu from '~/components/layout/MobileMenu';
 import MobileNav from '~/components/layout/MobileNav';
+import PaidStatus from '~/components/elements/PaidStatus';
 import ThemeSwitch from '~/components/elements/ThemeSwitch';
 import ScrollTop from '~/components/elements/ScrollTop';
 
@@ -44,6 +48,7 @@ export default {
     PageFooter,
     MobileMenu,
     MobileNav,
+    PaidStatus,
     ThemeSwitch,
     ScrollTop
   }

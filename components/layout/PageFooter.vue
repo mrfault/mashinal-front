@@ -8,11 +8,7 @@
           </nuxt-link>
           <p>{{ $t('learn_about_emerging_product_text') }}</p>
           <newsletter />
-          <div class="socials">
-            <a v-for="(link, key) in socialLinks" :key="key" :href="link" rel="noopener" target="_blank">
-              <icon :name="key" />
-            </a>
-          </div>
+          <share-it type="contact" />
           <mark>&copy; {{ currentYear }} Mashin.al Developed by 
             <a href="//al.ventures" target="_blank" rel="noopener">AlVentures</a>
           </mark>
@@ -47,14 +43,6 @@ export default {
   components: {
     Newsletter
   },
-  mixins: [MenusDataMixin],
-  computed: {
-    socialLinks() {
-      return {
-        facebook: 'https://facebook.com/mashinal',
-        instagram: 'https://instagram.com/mashin.al'
-      }
-    }
-  }
+  mixins: [MenusDataMixin]
 }
 </script>

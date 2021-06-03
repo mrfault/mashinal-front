@@ -6,7 +6,11 @@ import Breadcrumbs from '~/components/elements/Breadcrumbs';
 import Pagination from '~/components/elements/Pagination';
 import LoginTabs from '~/components/elements/LoginTabs';
 import ActionBar from '~/components/elements/ActionBar';
+import MobileScreen from '~/components/elements/MobileScreen';
+import ModalPopup from '~/components/elements/ModalPopup';
 import Backdrop from '~/components/elements/Backdrop';
+import ShareIt from '~/components/elements/ShareIt';
+import Loader from '~/components/elements/Loader';
 // forms
 import FormNumericInput from '~/components/forms/FormNumericInput';
 import FormTextInput from '~/components/forms/FormTextInput';
@@ -16,8 +20,6 @@ import FormButtons from '~/components/forms/FormButtons';
 import FormRange from '~/components/forms/FormRange';
 // transitions
 import TransitionExpand from '~/components/transitions/TransitionExpand';
-// packages
-import StackModal from '@innologica/vue-stackable-modal';
 // ***
 Vue.component('icon', Icon);
 Vue.component('timer', Timer);
@@ -25,7 +27,11 @@ Vue.component('breadcrumbs', Breadcrumbs);
 Vue.component('pagination', Pagination);
 Vue.component('login-tabs', LoginTabs);
 Vue.component('action-bar', ActionBar);
+Vue.component('mobile-screen', MobileScreen);
 Vue.component('backdrop', Backdrop);
+Vue.component('modal-popup', ModalPopup);
+Vue.component('share-it', ShareIt);
+Vue.component('loader', Loader);
 // ***
 Vue.component('transition-expand', TransitionExpand);
 // ***
@@ -35,5 +41,3 @@ Vue.component('form-checkbox', FormCheckbox);
 Vue.component('form-select', FormSelect);
 Vue.component('form-buttons', FormButtons);
 Vue.component('form-range', FormRange);
-// ***
-Vue.component('stack-modal', StackModal);

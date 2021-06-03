@@ -16,7 +16,7 @@ export default function({ app, route, store }, inject) {
     if (!path) return '#0';
     // do some magic
     if (path === '/')  
-      path = app.localePath('index');
+      return app.localePath('index');
     else 
       path = app.localePath(('/ru'+(path === '/' ? '' : path)), locale || app.i18n.locale);
     // check if the right locale in path
@@ -27,6 +27,11 @@ export default function({ app, route, store }, inject) {
   });
   inject('queryParams', (params) => {
     return '?' + Object.keys(params).map(key => `${key}=${params[key]}`).join('&');
+  });
+  inject('removeQueryParam', (param) => {
+    let query = _.clone(route.query);
+    delete query[param];
+    app.router.push({ query });
   });
   // validators
   inject('isPhoneNumber', (value) => {
@@ -80,8 +85,14 @@ export default function({ app, route, store }, inject) {
       .replace('класс', app.i18n.t('class'))
       .replace(/( – 0)|( – н\.в\.)/g, name.toString().includes(`${year}`) ? '' : ` – ${year}`);
   });
+  inject('translateSoft', (name) => {
+    return name[app.i18n.locale] || name.ru || name || '';
+  });
   inject('search', (str, keyword) => {
-    return str.toLowerCase().search(keyword.toLowerCase()) !== -1;
+    return str.toString().toLowerCase().search(keyword.toLowerCase()) !== -1;
+  });
+  inject('expireDate', (days = 30) => {
+    return new Date(new Date().getTime() + (days * 24 * 3600 * 1000));
   });
   // underscore
   inject('clone', _.clone);

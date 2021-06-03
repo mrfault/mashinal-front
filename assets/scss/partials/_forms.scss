@@ -86,7 +86,7 @@ textarea {
     top: 50%;
     transform: translate(0, -50%);
     pointer-events: none;
-    &.icon-info-circle {
+    &.icon-alert-circle {
       position: absolute;
       right: 10px;
       color: $red-1;

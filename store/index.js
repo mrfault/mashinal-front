@@ -11,13 +11,7 @@ const getInitialState = () =>({
   // saved search & favorites
   savedSearchList: [],
   singleSavedSearch: {},
-  favorites: {
-    cars: [],
-    motorcycles: [],
-    scooters: [],
-    atvs: [],
-    commercial: []
-  },
+  favorites: [],
   // messages
   messages: [],
   suggestedMessages: [],
@@ -27,6 +21,12 @@ const getInitialState = () =>({
   myServices: [],
   myServiceOptions: [],
   myServiceHistory: [],
+  promotion: {
+    id: '',
+    optionId: '',
+    paymentId: 1
+  },
+  paidStatusData: false,
   // announcements
   myAnnouncements: {},
   mainAnnouncements: {},
@@ -138,8 +138,11 @@ export const getters = {
   myServices: s => s.myServices,
   myServiceOptions: s => s.myServiceOptions,
   myServiceHistory: s => s.myServiceHistory,
+  promotion: s => s.promotion,
+  paidStatusData: s => s.paidStatusData,
   // announcements
   announcement: s => s.announcement,
+  catalog: s => s.announcement.car_catalog,
   carsAnnouncements: s => s.carsAnnouncements,
   motoAnnouncements: s => s.motoAnnouncements,
   commercialAnnouncements: s => s.commercialAnnouncements,
@@ -217,10 +220,18 @@ const objectNotEmpty = (state, commit, property) => {
 };
 
 export const actions = {
-  async nuxtServerInit({ dispatch }) {
+  async nuxtServerInit({ dispatch }, { route, app }) {
     await Promise.all([
       dispatch('getStaticPages')
     ]);
+    if(['true','false'].includes(route.query.success)) {
+      let type = route.query.success === 'true' ? 'success' : 'error';
+      dispatch('updatePaidStatus', {
+        type,
+        title: app.i18n.t(`${type}_payment`),
+        text: app.i18n.t(`${type}_payment_msg`)
+      });
+    }
   },
   // Loading
   setLoading({ commit }, loading) {
@@ -275,7 +286,7 @@ export const actions = {
     commit('appendToMessage', { group: data.activeGroup, message: res });
   },
   async createMessagesGroup({ commit }, data) {
-    const res = await this.$axios.$post('/profile/messages/'+ data.recipientId, data.announce);
+    const res = await this.$axios.$post('/profile/messages/'+ data.recipientId, { id_unique: data.announceId });
     commit('appendMessageToGroup', { group: res });
     return res;
   },
@@ -295,14 +306,14 @@ export const actions = {
     const res = await this.$axios.$get(`/payment/getHistory?page=${data.page || 1}`);
     commit('mutate', { property: 'transactions', value: res });
   },
-  // Saved announces
-  async addToFavorites({ commit }, data) {
-    this.$axios.$post('/announce/save', {id: data.id, type: data.type});
-    commit('addToFavorites', {id: data.id, type: data.type});
-  },
+  // Favorites
   async getFavorites({ commit }) {
-    const res = await this.$axios.$get('/announce/saved');
-    commit('loadFavorites', res);
+    const res = await this.$axios.$get('/announce/favorites');
+    commit('mutate', { property: 'favorites', value: res });
+  },
+  async addToFavorites({ commit }, id) {
+    this.$axios.$post(`/announce/${id}/favorite`);
+    commit('addToFavorites', { id });
   },
   // Saved search
   async getSavedSearch({ commit }){
@@ -459,20 +470,7 @@ export const actions = {
     const res = await this.$axios.$get(`/additional/get_badges`);
     commit('mutate', { property: 'badges', value: res });
   },
-  resetOptions({ state, commit }, property = false) {
-    let arr = [
-      'sellOptions','allSellOptions2','bodyOptions',
-      'colors','complaintOptions','badges','brands','popularOptions','allSellOptions',
-      'motoOptions','commercialAllOptions','commercialTypes'
-    ];
-    if (property) {
-      arr = state['needResetOptions'].filter(p => p !== property);
-      commit('mutate', { property: 'needResetOptions', value: arr });
-    } else {
-      commit('mutate', { property: 'needResetOptions', value: arr });
-    }
-  },
-  // Commercial
+  // Commercial Options
   async getCommercialAllOptions({ state, commit }) {
     if (objectNotEmpty(state, commit, 'commercialAllOptions')) return;
     const res = await this.$axios.$get(`/commercial/get_all_options`);
@@ -491,7 +489,21 @@ export const actions = {
     const res = await this.$axios.$get('/commercial/all_types');
     commit('mutate', { property: 'commercialTypes', value: res });
   },
-  // Announcements
+  // Reset Options
+  resetOptions({ state, commit }, property = false) {
+    let arr = [
+      'sellOptions','allSellOptions2','bodyOptions',
+      'colors','complaintOptions','badges','brands','popularOptions','allSellOptions',
+      'motoOptions','commercialAllOptions','commercialTypes'
+    ];
+    if (property) {
+      arr = state['needResetOptions'].filter(p => p !== property);
+      commit('mutate', { property: 'needResetOptions', value: arr });
+    } else {
+      commit('mutate', { property: 'needResetOptions', value: arr });
+    }
+  },
+  // Search
   async getMainSearch({ commit }, data) {
     const res = await this.$axios.$get(data.url);
     commit('mutate', { property: 'mainAnnouncements', value: res });
@@ -501,45 +513,46 @@ export const actions = {
     const res = await this.$axios.$post(`${url}?page=${data.page || 1}`, data.post);
     commit('mutate', { property: prefix + 'Announcements', value: res });
   },
-  // Premium / VIP
   async getPromotedSearch({ commit }, data) {
     const res = await this.$axios.$get(`/${data.type}/cars?page=${data.page || 1}`);
     commit('mutate', { property: 'promotedAnnouncements', value: res });
+  },
+  // Announcements
+  async getRelativeAnnouncements({ commit }, id) {
+    const res = await this.$axios.$get(`/grid/same/announcements/${id}`);
+    commit('mutate', { property: 'relativeAnnouncements', value: res });
   },
   async getMyAllAnnouncements({ commit }) {
     const res = await this.$axios.$get('/my/all-announce');
     commit('mutate', { property: 'myAnnouncements', value: res });
   },
+  async getAnnouncementInner({ commit }, id) {
+    const res = await this.$axios.$get(`/announce/${id}`);
+    commit('mutate', { property: 'announcement', value: res });
+  },
   async deleteAnnounement({ commit }, data) {
     await this.$axios.$post('/' + data.type + '/' + data.id + '/delete');
   },
-  setRestoreOptions({commit}, data){
-    commit('mutate', { property: 'restore_announcement', value: data });
-  },
   // Car announcements
-  async getSingleAnnouncement({ commit }, data) {
+  async getCarAnnouncement({ commit }, data) {
     const res = await this.$axios.$get(`/announcement/${data.id}`);
     commit('mutate', { property: 'announcement', value: res });
   },
-  async getMyAnnouncement({ commit }, id) {
+  async getMyCarAnnouncement({ commit }, id) {
     const res = await this.$axios.$get(`/edit_announce/${id}`);
     commit('mutate', { property: 'announcement', value: res });
   },
-  async getRelativeAnnouncements({ commit }, id) {
-    const res = await this.$axios.$get(`/grid/same/announcements/${id}`);
-    commit('mutate', { property: 'relativeAnnouncements', value: res });
-  },
   // Commercial Announcements
-  async getSingleComAnnouncement({ commit }, data) {
+  async getCommercialAnnouncement({ commit }, data) {
     const res = await this.$axios.$get(`/commercial/get_single_announce/${data.id}`);
     commit('mutate', { property: 'announcement', value: res });
   },
-  async getMyComAnnouncement({ commit }, id) {
+  async getMyCommercialAnnouncement({ commit }, id) {
     const res = await this.$axios.$get(`/commercial/edit_announce/${id}`);
     commit('mutate', { property: 'announcement', value: res });
   },
   // Moto Announcements
-  async getSingleMotoAnnouncement({ commit }, data) {
+  async getMotoAnnouncement({ commit }, data) {
     const res = await this.$axios.$get(`${data.path}/get_announce/${data.id}`);
     commit('mutate', { property: 'announcement', value: res });
   },
@@ -635,6 +648,12 @@ export const actions = {
   async getMyServiceHistory({ commit }) {
     const res = await this.$axios.$get(`/my/actives/history`);
     commit('mutate', { property: 'myServiceHistory', value: res });
+  },
+  async updatePromotion({ commit }, {key, value}) {
+    commit('mutate', { property: 'promotion', key, value });
+  },
+  async updatePaidStatus({ commit }, value) {
+    commit('mutate', { property: 'paidStatusData', value });
   },
   // Autosalons
   async getAutoSalonsList({commit}, params) {
@@ -742,18 +761,10 @@ export const mutations = {
       state.messages.splice(groupIndex, 1);
     }
   },
-  // saved
+  // favorites
   addToFavorites(state, payload) {
-    let type = state.favorites[payload.type];
-    let index = type.indexOf(payload.id);
-    if (index >= 0) type.splice(index,1);
-    else type.push(payload.id);
-  },
-  loadFavorites(state, payload) {
-    for (var key in state.favorites) {
-      if (payload[key] !== undefined){
-        state.favorites[key] = payload[key];
-      }
-    }
-  },
+    let index = state.favorites.indexOf(payload.id);
+    if (index >= 0) state.favorites.splice(index,1);
+    else state.favorites.push(payload.id);
+  }
 }

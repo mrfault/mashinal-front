@@ -15,7 +15,7 @@
         @blur="handleNumeric(true)"
         @input="updateInput"
       />
-      <icon name="info-circle" v-if="invalid" />
+      <icon name="alert-circle" v-if="invalid" />
     </div>
   </div>
 </template>

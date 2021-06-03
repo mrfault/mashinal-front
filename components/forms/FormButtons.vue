@@ -1,10 +1,12 @@
 <template>
   <div class="row">
-    <div :class="`col${groupBy > 0 ? ('-' + 12 / groupBy) : ''}`" v-for="(option, index) in formattedOptions" :key="index">
+    <div :class="[`col${groupBy > 0 ? ('-' + 12 / groupBy) : ''}`, {'mb-2 mb-lg-3': groupBy === 1}]" v-for="(option, index) in formattedOptions" :key="index">
       <div class="form-group">
-        <button type="button" :class="['btn', 'full-width', 'btn--pale-red-outline', {'active': isActive(option), 'disabled':isDisabled(option)}]"
-                @click="selectedValue = option.key">
-          {{ option.name }}
+        <button type="button" :class="['btn', 'full-width', `btn--${btnClass}`, {'active': isActive(option), 'disabled':isDisabled(option)}]"
+            @click="selectedValue = option.key">
+          <slot name="icon" :button="option" />
+          <span>{{ option.name }}</span>
+          <slot name="badge" :button="option" />
         </button>
       </div>
     </div>
@@ -23,6 +25,9 @@
       disabled: {
         type: Boolean,
         default: false
+      },
+      btnClass: {
+        default: 'pale-red-outline'
       }
     },
     data() {

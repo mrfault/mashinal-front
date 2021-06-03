@@ -2,9 +2,10 @@ import { mapGetters, mapActions } from 'vuex';
 
 import { ColorModeMixin } from '~/mixins/color-mode';
 import { MessagesMixin } from '~/mixins/messages';
+import { SocketMixin } from '~/mixins/socket';
 
 export const LayoutMixin = {
-  mixins: [ColorModeMixin, MessagesMixin],
+  mixins: [ColorModeMixin, SocketMixin, MessagesMixin],
   data() {
     return {
       vhVariableSet: false,
@@ -12,11 +13,18 @@ export const LayoutMixin = {
       loginActionKey: ''
     }
   },
+  head() {
+    return {
+      script: [
+        { hid: 'maps', src: `https://api-maps.yandex.ru/2.1/?apikey=${this.$env.YANDEX_MAPS_API}&lang=${this.locale === 'az' ? 'tr_TR' : 'ru_RU'}` }
+      ]
+    }
+  },
   computed: {
-    ...mapGetters(['loading', 'messages'])
+    ...mapGetters(['loading','messages','paidStatusData'])
   },
   methods: {
-    ...mapActions(['setLoading','setGridBreakpoint','getMessages','getSavedAnnouncements','resetSellTokens']),
+    ...mapActions(['setLoading','setGridBreakpoint','getMessages','getFavorites','resetSellTokens']),
 
     handleResize() {
       // update grid breakpoint
@@ -37,6 +45,7 @@ export const LayoutMixin = {
       this.vhVariableSet = true;
     },
     handleScroll() {
+      let scrolled = window.scrollY;
       let layout = document.querySelector('.layout');
       // header
       let headerEl = document.querySelector('.page-header');
@@ -48,15 +57,22 @@ export const LayoutMixin = {
       let footerEl = document.querySelector('.page-footer');
       if (footerEl) {
         let reachedFooter = (window.pageYOffset + window.innerHeight) >= footerEl.offsetTop;
-        layout.classList[reachedFooter ? 'add' : 'remove']('reached-footer');
-        layout.classList[window.scrollY > 0 ? 'add' : 'remove']('scrolled');
+        layout.classList[scrolled > 0 && reachedFooter ? 'add' : 'remove']('reached-footer');
+        layout.classList[scrolled > 0 ? 'add' : 'remove']('scrolled');
       }
     },
     // login
+    toggleEchoListening(toggle) {
+      if (toggle) {
+        this.connectEcho().listen('SendMessage', this.appendToMessage);
+      } else if(window.Echo) {
+        this.connectEcho().stopListening('SendMessage');
+      }
+    },
     async getUserData() {
       if(!this.loggedIn) return;
       if(!this.messages.length) await this.getMessages();
-      await this.getSavedAnnouncements();
+      await this.getFavorites();
     },
     closeLogin() {
       this.showLoginPopup = false;
@@ -80,16 +96,12 @@ export const LayoutMixin = {
     });
   },
   mounted() {
-    if (this.loggedIn) {
-      this.configSocket();
+    this.configSocket();
+    if (this.loggedIn) 
       this.toggleEchoListening(true);
-    }
 
     this.$nuxt.$on('login', (auth) => {
-      if (auth) {
-        this.configSocket();
-        this.afterLogin();
-      }
+      if (auth) this.afterLogin();
       this.toggleEchoListening(auth);
     });
 
@@ -112,7 +124,8 @@ export const LayoutMixin = {
 
   },
   beforeDestroy() {
-    this.toggleEchoListening(false);
+    if (this.loggedIn) 
+      this.toggleEchoListening(false);
 
     this.$nuxt.$off(['login', 'login-popup']);
 

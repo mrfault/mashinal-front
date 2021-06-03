@@ -59,7 +59,7 @@
             </form-select>
           </div>
           <div class="col-6 col-lg-2 mb-2 mb-lg-3" v-if="!isMobileBreakpoint">
-            <form-select :label="$t('city')" :options="sellOptions.regions" v-model="form.region" />
+            <form-select :label="$t('city')" :options="sellOptions.regions" v-model="form.region" has-search />
           </div>
           <div class="col-6 col-lg-2 mb-2 mb-lg-3">
             <form-checkbox :label="$t('barter')" v-model="form.exchange_possible" 
@@ -78,7 +78,7 @@
             <component :is="!isMobileBreakpoint ? 'transition-expand' : 'div'">
               <div class="row" v-if="isMobileBreakpoint || !collapsed">
                 <div class="col-6 col-lg-2 mb-2 mb-lg-3" v-if="isMobileBreakpoint">
-                  <form-select :label="$t('city')" :options="sellOptions.regions" v-model="form.region" />
+                  <form-select :label="$t('city')" :options="sellOptions.regions" v-model="form.region" has-search />
                 </div>
                 <div class="col-6 col-lg-2 mb-2 mb-lg-3">
                   <form-select :label="$t('mileage')" custom anchor="right" :suffix="$t('char_kilometre')"
