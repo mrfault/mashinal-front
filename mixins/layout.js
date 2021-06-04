@@ -57,7 +57,8 @@ export const LayoutMixin = {
       let footerEl = document.querySelector('.page-footer');
       if (footerEl) {
         let reachedFooter = (window.pageYOffset + window.innerHeight) >= footerEl.offsetTop;
-        layout.classList[scrolled > 0 && reachedFooter ? 'add' : 'remove']('reached-footer');
+        let noScroll = document.documentElement.clientHeight === window.innerHeight;
+        layout.classList[(scrolled > 0 || noScroll) && reachedFooter ? 'add' : 'remove']('reached-footer');
         layout.classList[scrolled > 0 ? 'add' : 'remove']('scrolled');
       }
     },

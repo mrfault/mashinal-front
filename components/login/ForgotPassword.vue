@@ -2,13 +2,13 @@
   <form class="form forgot-password" @submit.prevent="submit" novalidate>
     <div class="form-part">
       <p v-if="form.staticPhone">
-        <span v-mask="maskPhone(true)">{{ sellPhoneEntered }}</span>
+        <span v-mask="$maskPhone(true)">{{ sellPhoneEntered }}</span>
       </p>
       <form-text-input v-else
         autocomplete="tel" 
         :placeholder="$t('mobile_number')" 
         :invalid="validator.phone.$error" 
-        :mask="maskPhone()"  
+        :mask="$maskPhone()"  
         v-model="form.phone"
       />  
     </div>

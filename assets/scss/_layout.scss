@@ -136,6 +136,11 @@ main {
   &.no-pd {
     padding: 0;
   }
+  p, ul, ol {
+    strong {
+      font-weight: 600;
+    }
+  }
 }
 
 .dark-mode {
@@ -467,6 +472,7 @@ main {
   margin-top: auto;
   p {
     margin-top: 20px;
+    max-width: 400px;
   }
   mark {
     display: block;

@@ -1493,7 +1493,7 @@ export default {
 	"go_back_to_announcement": "Elana geri dön",
 	"go_further": "Davam et",
 	"login_before_announce": "Elan yerləşdirə bilmək üçün əvvəlcə hesabınıza daxil olun.",
-	"you_can_only_have_3_announce_within_30_days": "Hörmətli İstifadəçi, Siz 30 gün ərzində Mashin.AL portalında 3 pulsuz elan yerləşdirə bilərsiniz.",
+	"you_can_only_have_3_announce_within_30_days": "Hörmətli İstifadəçi, Siz <strong>30</strong> gün ərzində Mashin.AL portalında 3 pulsuz elan yerləşdirə bilərsiniz.",
 	"relative_announcements": "Bənzər elanlar",
 
 	"park_radar": "Park radarı",

@@ -1,11 +1,13 @@
 import Vue from 'vue';
 
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 
 Vue.use({
   install(Vue) {
     Vue.mixin({
       methods: {
+        ...mapMutations(['mutate']),
+
         // messages
         async createMessagesGroup(recipientId = false, announceId = false){
           if (!recipientId && !announceId) return;
@@ -29,18 +31,6 @@ Vue.use({
           } else {
             if(!this.$gtag) console.warn('gtag not setted');
             else this.$gtag('event', 'conversion', { send_to: eventKey });
-          }
-        },
-        // masks
-        maskPhone(inline = false) {
-          let mask = '+\\9\\94 (99) 999-99-99';
-          return inline ? mask : { mask, showMaskOnHover: false };
-        },
-        maskEmail() {
-          return {
-            alias: 'email',
-            showMaskOnHover: false, 
-            showMaskOnFocus: false
           }
         },
         // other

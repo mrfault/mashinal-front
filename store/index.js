@@ -575,22 +575,6 @@ export const actions = {
     } catch(e) {}
   },
   // Sell
-  setSellSavedOptions({commit, state}) {
-    for(let key in state.sellCookies) {
-      commit('mutate', { property: 'sellCookies', value: this.$cookies.get(`sell_${key}`), key: key });
-    }
-  },
-  removeSellSavedOptions({commit, state}, options = false) {
-    let cookies = options || state.sellCookies;
-    for(let key in cookies) {
-      key = options ? cookies[key] : key;
-      this.$cookies.remove(`sell_${key}`);
-      if(state.sellCookies[key] !== '')
-        commit('mutate', { property: 'sellCookies', value: '', key: key });
-      if(state.hasOwnProperty(`sell_${key}`) && Object.keys(state[`sell_${key}`]).length)
-        commit('mutate', { property: `sell_${key}`, value: [] });
-    }
-  },
   async checkSellTokens({ commit }, phone) {
     const res = await this.$axios.$post('/check/user/by/phone', { phone });
     commit('mutate', { property: 'sellTokens', value: res.data && res.data.announce_count });
