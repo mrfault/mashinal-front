@@ -141,6 +141,10 @@ main {
       font-weight: 600;
     }
   }
+  &.disabled > * {
+    opacity: .25;
+    pointer-events: none;
+  }
 }
 
 .dark-mode {

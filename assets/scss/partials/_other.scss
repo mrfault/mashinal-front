@@ -198,6 +198,43 @@
   }
 }
 
+.selectable-block {
+  user-select: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  min-height: 72px;
+  border: 1px solid $grayish-blue-4;
+  border-radius: 4px;
+  padding: 8px 15px;
+  &.active {
+    background-color: $grayish-blue-2;
+  }
+  .block-info {
+    display: block;
+    width: 100%;
+    font-weight: 500;
+    hyphens: auto;
+  }
+  .block-icon {
+    flex-shrink: 0;
+    font-size: 55px;
+    margin-right: 10px;
+    i {
+      display: flex;
+    }
+  }
+}
+
+.dark-mode {
+  .selectable-block {
+    border-color: $grey-1;
+    &.active {
+      background-color: $grey-6;
+    }
+  }
+}
+
 .loader {
   display: block;
   margin: auto;
@@ -274,6 +311,17 @@
           font-size: 16px;
         }
       }
+    }
+  }
+
+  .selectable-block {
+    padding: 8px;
+    .block-info {
+      font-size: 12px;
+    }
+    .block-icon {
+      font-size: 50px;
+      margin-right: 8px;
     }
   }
 }

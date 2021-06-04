@@ -1,7 +1,7 @@
 <template>
-  <form class="form form--v2" @click.prevent="checkPhone">
+  <form class="form form--v2" @submit.prevent="checkPhone">
     <div class="row">
-      <div class="col">
+      <div class="col-lg-6 mb-2 mb-lg-0">
         <form-text-input
           autocomplete="tel" 
           :placeholder="$t('mobile_number')" 
@@ -10,7 +10,7 @@
           v-model="form.phone"
         />
       </div>
-      <div class="col">
+      <div class="col-lg-6">
         <button type="submit" class="btn btn--green full-width">{{ $t('go_further') }}</button>
       </div>
     </div>
@@ -46,7 +46,7 @@ export default {
       this.pending = true;
       try {
         await this.checkSellTokens(this.form.phone.replace(/[^0-9]+/g, ''));
-        this.mutate({ property: 'sellPhone', value: this.form.phone });
+        this.mutate({ property: 'sellPhoneEntered', value: this.form.phone });
         this.pending = false;
       } catch(error) {
         this.pending = false;
@@ -54,11 +54,8 @@ export default {
     }
   },
   async fetch() {
-    let phone = this.$parsePhone(this.$route.query.phone);
-    if (phone) {
-      this.form.phone = phone;
-      await this.checkPhone();
-    }
+    this.form.phone = this.$parsePhone(this.$route.query.phone);
+    if (this.form.phone) await this.checkPhone();
   }
 }
 </script>

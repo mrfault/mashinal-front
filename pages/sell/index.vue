@@ -4,32 +4,50 @@
       <breadcrumbs :crumbs="crumbs" />
       <div class="row">
         <div class="col-lg-5">
-          <div class="card">
+          <div class="card mt-5 mt-lg-0">
             <h2 class="title-with-line full-width">
               <span>{{ $t('new_announce') }}</span>
             </h2>
-            <template v-if="loggedIn || sellTokens !== false">
-              <template v-if="loggedIn && user.announce_left > 0">
-                <p v-html="$t('you_can_create_announcement', { 
-                  plural: $readPlural(user.announce_left, $t('plural_forms_announcements'), false),
-                  left: user.announce_left
-                })"></p>
-              </template>
-              <template v-else-if="!loggedIn && sellTokens > 0">
-                <p v-html="$t('you_can_create_announcement', { 
-                  plural: $readPlural(sellTokens, $t('plural_forms_announcements'), false),
-                  left: sell_tokens
-                })"></p>
+            <client-only>
+              <template v-if="loggedIn || sellTokens !== false">
+                <template v-if="loggedIn && user.announce_left > 0">
+                  <p v-html="$t('you_can_create_announcement', { 
+                    phone: $parsePhone(user.phone).replace('+994 (', '(0'),
+                    plural: $readPlural(user.announce_left, $t('plural_forms_announcements'), false),
+                    left: user.announce_left
+                  })"></p>
+                </template>
+                <template v-else-if="!loggedIn && sellTokens > 0">
+                  <p v-html="$t('you_can_create_announcement', { 
+                    phone: sellPhoneEntered.replace('+994 (', '(0'),
+                    plural: $readPlural(sellTokens, $t('plural_forms_announcements'),  false),
+                    left: sellTokens
+                  })"></p>
+                </template>
+                <template v-else>
+                  <p><strong class="text-red">*</strong> {{ $t('no_announcements_on_balance') }}</p><br/>
+                  <p v-if="loggedIn && user.autosalon" v-html="$t('contact_for_more_info', { phone: '(055) 222-13-05', email: 'elchin.m@mashin.al' })"></p>
+                  <p v-else v-html="$t('contact_for_more_info', { phone: '*8787', email: 'support@mashin.al' })"></p>
+                </template>
               </template>
               <template v-else>
-                <p><strong class="text-red">*</strong> {{ $t('no_announcements_on_balance') }}</p><br/>
-                <p v-if="loggedIn && user.autosalon" v-html="$t('contact_for_more_info', { phone: '(055) 222-13-05', email: 'elchin.m@mashin.al' })"></p>
-                <p v-else v-html="$t('contact_for_more_info', { phone: '*8787', email: 'support@mashin.al' })"></p>
+                <p v-html="$t('you_can_only_have_3_announce_within_30_days')"></p>
+                <check-sell-tokens />
               </template>
-            </template>
-            <template v-else>
-              <p v-html="$t('you_can_only_have_3_announce_within_30_days')"></p>
-              <check-sell-tokens />
+            </client-only>
+          </div>
+        </div>
+        <div class="col-lg-7">
+          <div :class="['card mt-2 mt-lg-0', {disabled: disableSteps}]">
+            <h2 class="title-with-line full-width">
+              <span>{{ $t('vehicle_type') }}</span>
+            </h2>
+            <vehicle-options :options="searchMenus" :value="vehicleType" @input="handleVehicleType" />
+            <template v-if="!disableSteps && hasCategories">
+              <h2 class="title-with-line full-width mt-3" ref="categories">
+                <span>{{ $t(searchMenus[selectedIndex].title) }}</span>
+              </h2>
+              <vehicle-options :options="searchMenus[selectedIndex].children" :value="vehicleCategory" @input="handleVehicleCategory" />
             </template>
           </div>
         </div>
@@ -39,14 +57,20 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
+  import { mapGetters, mapActions } from 'vuex';
+
+  import { MenusDataMixin } from '~/mixins/menus-data';
 
   import CheckSellTokens from '~/components/sell/CheckSellTokens';
+  import VehicleOptions from '~/components/options/VehicleOptions';
 
   export default {
+    name: 'pages-sell-index',
     components: {
-      CheckSellTokens
+      CheckSellTokens,
+      VehicleOptions
     },
+    mixins: [MenusDataMixin],
     nuxtI18n: {
       paths: {
         az: '/satmaq'
@@ -58,18 +82,63 @@
         description: this.$t('meta-descr_sell')
       });
     },
+    async asyncData({ store, route }) {
+      if (!route.query.phone) 
+        store.dispatch('resetSellTokens');
+      store.dispatch('updateSellForm', {});
+      return {
+        vehicleType: '',
+        vehicleCategory: '',
+        selectedIndex: ''
+      }
+    },
     computed: {
-      ...mapGetters(['sellTokens']),
+      ...mapGetters(['sellTokens', 'sellPhoneEntered', 'sellForm']),
 
       crumbs() {
         return [
           { name: this.$t('place_an_ad') }
         ]
+      },
+
+      hasCategories() {
+        return ['moto','commercial'].includes(this.vehicleType);
+      },
+      disableSteps() {
+        return !(this.loggedIn && this.user.announce_left > 0) && !(!this.loggedIn && this.sellTokens > 0);
       }
     },
-    created() {
-      if (!this.$route.query.phone) 
-        this.$store.dispatch('resetSellTokens');
+    methods: {
+      ...mapActions(['updateSellForm']),
+
+      handleVehicleType(e) {
+        if (this.disableSteps) return;
+        this.vehicleCategory = '';
+        this.vehicleType = e.value;
+        this.selectedIndex = e.index;
+        if (this.hasCategories) {
+          this.$nextTick(() => {
+            if (this.isMobileBreakpoint) 
+              this.scrollTo(this.$refs.categories, -20);
+          });
+        } else {
+          this.nextSteps();
+        }
+      },
+      handleVehicleCategory(e) {
+        if (this.disableSteps) return;
+        this.vehicleCategory = e.value;
+        this.nextSteps();
+      },
+      nextSteps() {
+        this.updateSellForm({
+          type: this.vehicleType,
+          category: this.hasCategories && this.searchMenus[this.selectedIndex].children
+            .find(item => item.title === this.vehicleCategory).icon.split('-').pop()
+        });
+        let path = this.$localePath(`/sell/${this.vehicleType}`);
+        this.$router.push(path);
+      }
     }
   }
 </script>

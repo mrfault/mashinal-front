@@ -6,9 +6,9 @@ export const MenusDataMixin = {
 
     searchMenus() {
       return [
-        { title: 'cars', route: '/cars' },
-        { title: 'moto', route: '/moto', children: this.motoMenus },
-        { title: 'commercial', route: '/commercial', children: this.commercialMenus }
+        { title: 'cars', route: '/cars', icon: 'car-1' },
+        { title: 'moto', route: '/moto', children: this.motoMenus, icon: 'moto-1' },
+        { title: 'commercial', route: '/commercial', children: this.commercialMenus, icon: 'commercial-1' }
       ]
     },
 

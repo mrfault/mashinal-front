@@ -34,10 +34,10 @@ export default function({ app, route, store }, inject) {
     app.router.push({ query });
   });
   // formatting
-  inject('parsePhone', (phone) => {
+  inject('parsePhone', (phone, brief = false) => {
     if (!phone || phone.length !== 12) return '';
     return ('994'+phone.slice(3))
-      .replace(/(\d{3})(\d{2})(\d{3})(\d{2})(\d{2})/g, '+$1 ($2) $3-$4-$5');
+      .replace(/(\d{3})(\d{2})(\d{3})(\d{2})(\d{2})/g, brief ? '($2) $3-$4-$5' : '+$1 ($2) $3-$4-$5');
   });
   inject('parseUnsafe', (unsafe) => {
     if(unsafe == null) return '';
@@ -63,7 +63,7 @@ export default function({ app, route, store }, inject) {
     return `${append ? `${value} ${currency}`: `${currency} ${value}`}`;
   });
   inject('readPlural', (n, forms, count = true) => {
-    return (count ? `${n} ` : '') + forms[(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2) ];
+    return `${count ? `${n} ` : ''}${forms[(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2) ]}`;
   });
   // masks
   inject('maskPhone', (inline = false) => {

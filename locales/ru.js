@@ -1442,7 +1442,7 @@ export default {
   "views_count": "Просмотры",
   "most_viewed_announcements": "Самые просматриваемые",
   "new_announce": "Продать",
-  "you_can_create_announcement": "Вы можете разместить <strong>{left}</strong> объявлений.",
+  "you_can_create_announcement": "По номеру <strong>{phone}</strong> вы можете разместить <strong>{left}</strong> {plural}.",
   "no_announcements_on_balance": "Вы превысили лимит размещения объявления.",
   "please_make_a_payment": "Пожалуйста, пополните свой баланс.",
   "contact_for_more_info": "Для дополнительной информации: <strong>{phone}</strong> или <strong>{email}</strong>.",
@@ -1595,5 +1595,7 @@ export default {
 	"copy_to_clipboard": "Скопировать ссылку",
 	"copied_to_clipboard": "Скопировано",
 	"announcement_pending": "Объявление на рассмотрении",
-	"need_pay": "Требуется оплата"
+	"need_pay": "Требуется оплата",
+
+	"vehicle_type": "Тип техники"
 }

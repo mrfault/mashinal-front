@@ -38,6 +38,11 @@ export default {
   components: {
     Grid
   },
+  nuxtI18n: {
+    paths: {
+      az: '/moto'
+    }
+  },
   head() {
     return this.$headMeta({
       title: this.$t('meta-title_moto', { type: this.$t('meta-words_moto-types')[0] }),

@@ -1270,7 +1270,7 @@ export default {
 	"tympanic": "Barabanlı",
 	"type": "Növ",
 	"type_actual": "Aktual",
-	"type_cars": "Minik ",
+	"type_cars": "Minik",
 	"type_cars_commercial": "Yüngül yük maşınları",
 	"type_discussed": "Müzakirə olunan",
 	"type_motos": "Motosikletlər",
@@ -1445,7 +1445,7 @@ export default {
 	"views_count": "Ümumi baxış",
 	"most_viewed_announcements": "Ən çox baxılan elanlar",
 	"new_announce": "Yeni elan",
-	"you_can_create_announcement": "Siz <strong>{left}</strong> elan yerləşdirə bilərsiniz.",
+	"you_can_create_announcement": "Siz <strong>{phone}</strong> nömrəsindən <strong>{left}</strong> elan yerləşdirə bilərsiniz.",
 	"no_announcements_on_balance": "Siz elan yerləşdirmə limitini keçmisiniz.",
 	"please_make_a_payment": "Zəhmət olmasa balansınızı artırın.",
 	"contact_for_more_info": "Ətraflı məlumat üçün: <strong>{phone}</strong> və ya <strong>{email}</strong>.",
@@ -1591,5 +1591,7 @@ export default {
 	"copy_to_clipboard": "Linki kopyala",
 	"copied_to_clipboard": "Kopyalandı",
 	"announcement_pending": "Elan moderasiyadadır",
-	"need_pay": "Ödəniş edilməlidir"
+	"need_pay": "Ödəniş edilməlidir",
+
+	"vehicle_type": "Nəqliyyat növü"
 }

@@ -81,27 +81,7 @@ const getInitialState = () =>({
   sellPhoneEntered: '',
   sellPhoneRegistered: false,
   sellAutosalonRights: false,
-  sellCookies: {
-    brand: '',
-    model: '',
-    years: '',
-    body: '',
-    generations: '',
-    engines: '',
-    gearing: '',
-    transmissions: '',
-    modifications: '',
-    power: '',
-    capacity: '',
-    box: ''
-  },
-  sellGenerations: [],
-  sellEngines: [],
-  sellYears: [],
-  sellGearing: [],
-  sellModifications: [],
-  sellTransmissions: [],
-  sellBody: [],
+  sellForm: {},
   // autosalons
   autosalonsList: [],
   autosalonsInBounds: false,
@@ -192,13 +172,7 @@ export const getters = {
   sellPhoneEntered: s => s.sellPhoneEntered,
   sellPhoneRegistered: s => s.sellPhoneRegistered,
   sellAutosalonRights: s => s.sellAutosalonRights,
-  sellCookies: s => s.sellCookies,
-  sellGenerations: s => s.sellGenerations,
-  sellEngines: s => s.sellEngines,
-  sellYears: s => s.sellYears,
-  sellGearing: s => s.sellGearing,
-  sellModifications: s => s.sellModifications,
-  sellTransmissions: s => s.sellTransmissions,
+  sellForm: s => s.sellForm,
   // autosalons
   autosalonsList: s => s.autosalonsList,
   autosalonsInBounds: s => s.autosalonsInBounds,
@@ -586,6 +560,9 @@ export const actions = {
     commit('mutate', { property: 'sellPhoneRegistered', value: false });
     commit('mutate', { property: 'sellAutosalonRights', value: false });
     commit('mutate', { property: 'sellPhoneEntered', value: '' });
+  },
+  updateSellForm({ commit }, data) {
+    commit('mutate', { property: 'sellForm', value: data });
   },
   // Sell Options
   async getSellYears({ commit }, params) {
