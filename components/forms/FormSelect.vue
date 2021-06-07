@@ -28,7 +28,7 @@
         <template v-if="showOptions">
           <div class="mt-3" v-if="hasSearch && isMobileBreakpoint" @click.stop>
             <div class="container">
-              <form-text-input :placeholder="$t('search')" iconName="search" v-model="search"/>
+              <form-text-input :placeholder="$t('search')" icon-name="search" v-model="search"/>
             </div>
           </div>
           <div :class="{'container': isMobileBreakpoint}" v-if="custom">

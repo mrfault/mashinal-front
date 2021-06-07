@@ -4,7 +4,7 @@ body {
   line-height: 1.35;
   font-weight: normal;
   font-family: 'Gilroy';
-  background-color: $grayish-blue-1;
+  background-color: $greyish-blue-1;
   overflow-y: scroll;
 }
 
@@ -68,12 +68,12 @@ h2 {
 
 hr {
   height: 1px;
-  background-color: $grayish-blue-3;
+  background-color: $greyish-blue-3;
   border: 0;
   margin: 20px 0;
   &.dashed {
     height: 0;
-    border-bottom: 1px dashed $grayish-blue-3;
+    border-bottom: 1px dashed $greyish-blue-3;
     background-color: transparent;
   }
 }
@@ -185,6 +185,18 @@ main {
   color: $yellow-1;
 }
 
+.text {
+  &-medium {
+    font-weight: 500;
+  }
+  &-semibold {
+    font-weight: 600;
+  }
+  &-bold {
+    font-weight: 700;
+  }
+}
+
 .menu,
 .dropdown-menu {
   padding: 0;
@@ -206,7 +218,7 @@ main {
   transition: box-shadow .1s ease-out;
   .topbar {
     background-color: $white;
-    border-bottom: 1px solid $grayish-blue-1;
+    border-bottom: 1px solid $greyish-blue-1;
     & > .container {
       display: flex;
       justify-content: space-between;
@@ -387,7 +399,7 @@ main {
       opacity: 0;
       background-color: $white;
       box-shadow: $shadow-light-3;
-      border-top: 1px solid $grayish-blue-1;
+      border-top: 1px solid $greyish-blue-1;
     }
     .menu > li:hover {
       & > a {
@@ -556,7 +568,7 @@ main {
   background-color: $white;
   height: 60px;
   width: 100%;
-  border-top: 2px solid $grayish-blue-1;
+  border-top: 2px solid $greyish-blue-1;
   margin-top: auto;
   ul {
     display: flex;
@@ -572,7 +584,7 @@ main {
       justify-content: flex-end;  
       height: 58px;
       padding-bottom: 9px;
-      color: $grayish-blue-4;
+      color: $greyish-blue-4;
       font-size: 11px;
       font-weight: 500;
       text-align: center;
@@ -620,7 +632,7 @@ main {
           border-radius: 50%;
           width: 51px;
           height: 51px;
-          border: 6px solid $grayish-blue-1;
+          border: 6px solid $greyish-blue-1;
           background-color: $green-1;
           color: $white;
           font-size: 16px;
@@ -1023,7 +1035,7 @@ main {
   top: 0;
   width: 100%;
   background-color: $white;
-  border-bottom: 1px solid $grayish-blue-2;
+  border-bottom: 1px solid $greyish-blue-2;
   .d-flex {
     height: 60px;
   }
@@ -1210,7 +1222,7 @@ main {
   background: $white !important;
   border-radius: 0 !important;
   .__bar-is-vertical {
-    background: $grayish-blue-2 !important;
+    background: $greyish-blue-2 !important;
   }
 }
 

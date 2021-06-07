@@ -1,5 +1,5 @@
 <template>
-  <component :is="isScreen ? 'mobile-screen' : 'div'" @back="goBack" :title="$t('promoting')" >
+  <component :is="isScreen ? 'mobile-screen' : 'div'" @back="goBack" :bar-title="$t('promoting')" >
     <loader v-if="!promotion.id" />
     <div :class="['promote-announcement', `is-${view}`]" v-else>
       <template v-if="view !== 'card'">
@@ -46,6 +46,7 @@
           })"></span>
         </p>
       </template>
+      <div style="height: 34px" v-if="!serviceOptionBtns.length"></div>
       <form-buttons :btn-class="isCard ? 'white-outline' : 'pale-red-outline'" :options="serviceOptionBtns" :group-by="isScreen ? 1 : 3" :value="promotion.optionId" 
         @input="updatePromotion({key: 'optionId', value: $event}), selectServiceOption()" />
       <p :class="['mt-lg-3', {'mb-lg-0': isCard}]" v-if="selectedServiceInfo.description">{{ selectedServiceInfo.description }}</p>

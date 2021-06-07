@@ -128,7 +128,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid $grayish-blue-3;
+      border-bottom: 1px solid $greyish-blue-3;
       &:first-child {
         padding-top: 0;
       }
@@ -182,12 +182,12 @@
     }
     &.fixed-to-bottom {
       bottom: 60px;
-      border-top: 1px solid $grayish-blue-1;
+      border-top: 1px solid $greyish-blue-1;
       padding: 13px 25px 25px;
     }
     &.fixed-to-top {
       top: 60px;
-      border-bottom: 1px solid $grayish-blue-1;
+      border-bottom: 1px solid $greyish-blue-1;
       padding: 13px 25px;
     }
   }
@@ -227,7 +227,7 @@
       background-position: center;
       border-radius: 4px;
       cursor: pointer;
-      background-color: $grayish-blue-3;
+      background-color: $greyish-blue-3;
     }
   }
   .gallery-overlay {

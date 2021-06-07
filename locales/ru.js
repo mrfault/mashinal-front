@@ -1597,5 +1597,9 @@ export default {
 	"announcement_pending": "Объявление на рассмотрении",
 	"need_pay": "Требуется оплата",
 
-	"vehicle_type": "Тип техники"
+	"vehicle_type": "Тип техники",
+	"brand_name": "Название марки",
+	"model_name": "Название модели",
+	"clean": "Очистить",
+	"prod_year": "Год выпуска",
 }

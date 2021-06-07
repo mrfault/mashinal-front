@@ -32,7 +32,7 @@
               </template>
               <template v-else>
                 <p v-html="$t('you_can_only_have_3_announce_within_30_days')"></p>
-                <check-sell-tokens />
+                <sell-check-tokens />
               </template>
             </client-only>
           </div>
@@ -61,13 +61,13 @@
 
   import { MenusDataMixin } from '~/mixins/menus-data';
 
-  import CheckSellTokens from '~/components/sell/CheckSellTokens';
+  import SellCheckTokens from '~/components/sell/SellCheckTokens';
   import VehicleOptions from '~/components/options/VehicleOptions';
 
   export default {
     name: 'pages-sell-index',
     components: {
-      CheckSellTokens,
+      SellCheckTokens,
       VehicleOptions
     },
     mixins: [MenusDataMixin],

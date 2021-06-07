@@ -1593,5 +1593,9 @@ export default {
 	"announcement_pending": "Elan moderasiyadadır",
 	"need_pay": "Ödəniş edilməlidir",
 
-	"vehicle_type": "Nəqliyyat növü"
+	"vehicle_type": "Nəqliyyat növü",
+	"brand_name": "Markanın adı",
+	"model_name": "Modelin adı",
+	"clean": "Təmizlə",
+	"prod_year": "Buraxılış ili",
 }

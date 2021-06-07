@@ -1,6 +1,6 @@
 <template>
-  <div class="row">
-    <div :class="[`col${groupBy > 0 ? ('-' + 12 / groupBy) : ''}`, {'mb-2 mb-lg-3': groupBy === 1}]" v-for="(option, index) in formattedOptions" :key="index">
+  <div :class="['row', {'mb-n2 mb-lg-n3': isMultirow}]">
+    <div :class="[`col${groupBy > 0 ? ('-' + ([1,2,3,4,6,12].includes(groupBy) ? 12 / groupBy : 'auto')) : ''}`, {'mb-2 mb-lg-3': groupBy === 1 || isMultirow}]" v-for="(option, index) in formattedOptions" :key="index">
       <div class="form-group">
         <button type="button" :class="['btn', 'full-width', `btn--${btnClass}`, {'active': isActive(option), 'disabled':isDisabled(option)}]"
             @click="selectedValue = option.key">
@@ -67,6 +67,9 @@
             this.prevValue = value;
           }
         }
+      },
+      isMultirow() {
+        return this.groupBy > 1 && this.formattedOptions.length > this.groupBy;
       }
     }
   }

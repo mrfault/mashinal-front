@@ -34,7 +34,7 @@ textarea {
   justify-content: center;
   font-weight: 500;
   text-align: center;
-  background-color: $grayish-blue-2;
+  background-color: $greyish-blue-2;
   height: 34px;
   padding: 9px 15px 7px;
   border-radius: 4px;
@@ -67,7 +67,7 @@ textarea {
   textarea {
     width: 100%;
     border: 0;
-    background-color: $grayish-blue-2;
+    background-color: $greyish-blue-2;
     padding: 9px 15px 7px;
     border-radius: 4px;
     &.invalid {
@@ -108,7 +108,7 @@ textarea {
     align-items: center;
     margin: 0;
     width: 100%;
-    background-color: $grayish-blue-2;
+    background-color: $greyish-blue-2;
     border-radius: 4px;
     height: 34px;
     padding: 0 15px;
@@ -125,7 +125,7 @@ textarea {
     justify-content: center;
     flex-shrink: 0;
     margin-right: 10px;
-    border: 1px solid $grayish-blue-5;
+    border: 1px solid $greyish-blue-5;
     border-radius: 4px;
     width: 18px;
     height: 18px;
@@ -185,7 +185,7 @@ textarea {
   &_triangle {
     position: absolute;
     bottom: -10px;
-    color: $grayish-blue-2;
+    color: $greyish-blue-2;
     &.anchor-right {
       right: 15px;
     }
@@ -199,7 +199,7 @@ textarea {
     justify-content: space-between;
     width: 100%;
     font-weight: 500;
-    background-color: $grayish-blue-2;
+    background-color: $greyish-blue-2;
     height: 34px;
     padding: 8px 15px;
     border-radius: 4px;
@@ -260,7 +260,7 @@ textarea {
     z-index: 2;
     visibility: hidden;
     opacity: 0;
-    background-color: $grayish-blue-2;
+    background-color: $greyish-blue-2;
     border-radius: 4px;
     box-shadow: $shadow-light-5;
     padding: 7px 0;
@@ -296,7 +296,7 @@ textarea {
         color: $dark-blue-2;
       }
       &:not(.disabled):hover {
-        background-color: darken($grayish-blue-2, 2%);
+        background-color: darken($greyish-blue-2, 2%);
       }
       .icon-check {
         position: absolute;
@@ -318,7 +318,7 @@ textarea {
       top: 0;
       background-color: $white;
       .form-merged {
-        background-color: $grayish-blue-2;
+        background-color: $greyish-blue-2;
         border-radius: 4px;
         margin: 20px 0;
         .form-group {
@@ -338,27 +338,27 @@ textarea {
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      img {
+        max-width: 100%;
+        max-height: 100%;
+      }
     }
     .popular-option {
       text-align: center;
       margin-bottom: 24px;
       cursor: pointer;
       .img {
-        width: 52px;
+        width: 40px;
         height: 40px;
         flex-shrink: 0;
         margin-right: 14px;
         margin: 0 auto 8px;
-        img {
-          max-width: 52px;
-          max-height: 40px;
-        }
       }
     }
     &.responsive &-option {
       height: 50px;
       padding: 0 34px 0 0;
-      border-top: 1px solid $grayish-blue-2;
+      border-top: 1px solid $greyish-blue-2;
       &:first-child {
         border-top: 0;
       }
@@ -366,15 +366,12 @@ textarea {
         background-color: transparent !important;
       }
       .img {
-        width: 36px;
+        width: 28px;
         height: 28px;
         flex-shrink: 0;
         margin-right: 14px;
-        img {
-          max-width: 36px;
-          max-height: 28px;
-        }
       }
+      
     }
     &.responsive .mt-3 + .select-menu_dropdown-option {
       border-top: 0;
@@ -386,7 +383,7 @@ textarea {
   display: flex;
   align-items: center;
   .form-group:not(:last-child) {
-    border-right: 1px solid $grayish-blue-6;
+    border-right: 1px solid $greyish-blue-6;
   }
   .text-input {
     width: 141px;
@@ -430,7 +427,7 @@ textarea {
   .vue-slider {
     height: 2px;
     &-rail {
-      background-color: $grayish-blue-7;
+      background-color: $greyish-blue-7;
     }
     &-process {
       background-color: $dark-blue-1;
@@ -512,6 +509,11 @@ textarea {
     &_dropdown {
       background-color: $dark-1;
       box-shadow: $shadow-dark-5;
+      .img {
+        background-color: $white;
+        border-radius: 4px;
+        padding: 4px;
+      }
       &-option {
         &.selected {
           color: $yellow-1;
@@ -524,14 +526,16 @@ textarea {
         .select-menu_dropdown-option {
           border-top-color: $dark-2;
         }
+        
+        .select-menu_label,
+        .text-input input {
+          background-color: $dark-2;
+        }
+        
         .form-merged {
           background-color: $dark-2;
           .form-group:not(:last-child) {
             border-right-color: $dark-1;
-          }
-          .select-menu_label,
-          .text-input input {
-            background-color: $dark-2;
           }
         }
       }

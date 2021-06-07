@@ -2,22 +2,177 @@
   <div class="pages-sell">
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
+      <div :class="{'card': !isMobileBreakpoint}">
+        <div class="sell_selected-model d-flex align-items-center mb-3" v-if="!isMobileBreakpoint && showModelOptions">
+          <div class="img mr-1">
+            <img :src="selectedBrand.transformed_media" :alt="selectedBrand.name" />
+          </div>
+          <span>{{ selectedBrand.name }}</span>
+          <span v-if="form.model"><span>&nbsp;/</span> {{ selectedModel.name }}</span>
+          <span v-if="form.year"><span>&nbsp;/</span> {{ form.year }}</span>
+          <div class="ml-auto" v-if="!showLastStep">
+            <button class="btn btn--red-outline" @click="cleanForm">{{ $t('clean') }}</button>
+          </div>
+        </div>
+        <sell-last-step v-if="showLastStep" 
+          :key="lastStepKey"
+          :initial-form="form"
+          @close="showLastStep = false, lastStepKey++"
+        />
+        <year-options v-else-if="showYearOptions"
+          :years="sellYears" 
+          :title="$t('prod_year')"
+          :value="form.year"
+          @input="handleYear"
+          @close="handleYear()"
+        />
+        <model-options key="model" v-else-if="showModelOptions"
+          :options="models" 
+          :title="$t('model')"
+          :status-title="$t('select_model')"
+          :input-title="$t('model_name')"
+          :value="form.model"
+          @input="handleModel($parseSlug($event.slug))"
+          @close="handleModel()"
+        />
+        <model-options key="brand" v-else-if="showBrandOptions"
+          :options="brands" 
+          :popular-options="[129,483,8,1,767,117]"
+          :title="$t('mark')"
+          :status-title="$t('select_brand')"
+          :input-title="$t('brand_name')"
+          :value="form.brand"
+          :img-key="'transformed_media'"
+          @input="handleBrand($parseSlug($event.slug))"
+          @close="$router.push($localePath('/sell'))"
+        />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
+
+import ModelOptions from '~/components/options/ModelOptions';
+import YearOptions from '~/components/options/YearOptions';
+import SellLastStep from '~/components/sell/SellLastStep';
 
 export default {
   name: 'pages-sell-cars',
+  middleware: 'sellTokens',
+  components: {
+    ModelOptions,
+    YearOptions,
+    SellLastStep
+  },
   nuxtI18n: {
     paths: {
       az: '/satmaq/masinlar'
     }
   },
+  async asyncData({ store }) {
+    await store.dispatch('getBrands');
+    return {
+      showBrandOptions: true,
+      showModelOptions: false,
+      showYearOptions: false,
+      showLastStep: false,
+      lastStepKey: 0,
+      form: {
+        car_catalog_id: '',
+        brand: '',
+        model: '',
+        generation_id: '',
+        car_body_type: '',
+        gearing: '', // engines
+        modification: '', // transmissions/box
+        transmission: '', // gearing
+        capacity: '',
+        power: '',          
+        year: '',
+        youtube: {
+          id: '',
+          thumb: ''
+        },
+        selectedColor: [],
+        is_matte: 0,
+        mileage: '',
+        region_id: '',
+        address: '',
+        lat: 0,
+        lng: 0,
+        vin: '',
+        price: '',
+        owner_type: 0,
+        currency: 1,
+        car_number: '',
+        show_car_number: 0,
+        show_vin: 0,
+        part: {},
+        all_options: {},
+        badges: [],
+        new_badges: [],
+        comment: '',
+        is_new: false, 
+        beaten: false, 
+        customs_clearance: false, 
+        tradeable: false, 
+        credit: false,
+        guaranty: false, 
+        saved_images: []
+      }
+    }
+  },
+  methods: {
+    ...mapActions(['getModels', 'getSellYears']),
+
+    getFormKeys(...keys) {
+      let form = {};
+      keys.map(key => {form[key] = this.form[key]});
+      return form;
+    },
+    async handleBrand(slug = '') {
+      this.form.brand = slug;
+      if (slug) {
+        await this.getModels(this.form.brand);
+        this.showModelOptions = true;
+      }
+      window.scrollTo(0, 0);
+    },
+    async handleModel(slug = '') {
+      this.form.model = slug;
+      if (slug) {
+        await this.getSellYears(this.getFormKeys('brand','model'));
+        this.showYearOptions = true;
+      } else {
+        this.showModelOptions = false;
+      }
+      window.scrollTo(0, 0);
+    },
+    async handleYear(year = '') {
+      this.form.year = year;
+      if (year) {
+        this.showLastStep = true;
+      } else {
+        this.showYearOptions = false;
+      }
+    },
+    cleanForm() {
+      this.showLastStep = false;
+      this.handleYear();
+      this.handleModel();
+    }
+  },
   computed: {
-    ...mapGetters(['sellForm']),
+    ...mapGetters(['sellForm', 'brands', 'models', 'sellYears']),
+
+    selectedBrand() {
+      return this.brands?.find(brand => this.$parseSlug(brand.slug) === this.form.brand);
+    },
+    selectedModel() {
+      return this.models?.find(model => this.$parseSlug(model.slug) === this.form.model);
+    },
 
     crumbs() {
       return [

@@ -92,10 +92,11 @@ export default function({ app, route, store }, inject) {
   });
   inject('translateHard', (name) => {
     if(!name) return name;
+    name = name[app.i18n.locale] || name.ru || name;
     let year = new Date().getFullYear();
     return name.toString()
-      .replace('серия', app.i18n.t('series'))
-      .replace('класс', app.i18n.t('class'))
+      // .replace('series', app.i18n.t('series'))
+      // .replace('class', app.i18n.t('class'))
       .replace(/( – 0)|( – н\.в\.)/g, name.toString().includes(`${year}`) ? '' : ` – ${year}`);
   });
   inject('translateSoft', (name) => {
@@ -110,4 +111,5 @@ export default function({ app, route, store }, inject) {
   // underscore
   inject('clone', _.clone);
   inject('sortBy', _.sortBy);
+  inject('chunk', _.chunk);
 }

@@ -1,8 +1,8 @@
 <template>
   <portal to="mobile-screen">
-    <action-bar :title="title" @back="$emit('back')" />
+    <action-bar :title="barTitle" @back="$emit('back')" />
     <div class="mobile-screen">
-      <div class="container">
+      <div :class="{'container': !hideContainer}" :style="{height: hideContainer ? '100%' : 'auto'}">
         <slot />
       </div>
     </div>
@@ -12,7 +12,8 @@
 <script>
 export default {
   props: {
-    title: String
+    barTitle: String,
+    hideContainer: Boolean
   },
   mounted() {
     this.setBodyOverflow('hidden');

@@ -11,6 +11,7 @@ import { mapGetters } from 'vuex';
 
 export default {
   name: 'pages-sell-moto',
+  middleware: 'sellTokens',
   nuxtI18n: {
     paths: {
       az: '/satmaq/moto'
