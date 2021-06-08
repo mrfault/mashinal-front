@@ -1,5 +1,5 @@
 <template>
-  <div class="sell_selected-model d-flex align-items-center mb-3" v-if="!isMobileBreakpoint">
+  <div class="sell_selected-model mb-3" v-if="!isMobileBreakpoint">
     <div class="img mr-1" v-if="brand.transformed_media">
       <img :src="brand.transformed_media" :alt="brand.name" />
     </div>

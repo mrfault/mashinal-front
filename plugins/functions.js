@@ -33,6 +33,10 @@ export default function({ app, route, store }, inject) {
     delete query[param];
     app.router.push({ query });
   });
+  inject('pushQueryParam', (param) => {
+    let query = _.clone(route.query);
+    app.router.push({ query: {...query, [param.key]: param.value } });
+  });
   // formatting
   inject('parsePhone', (phone, brief = false) => {
     if (!phone || phone.length !== 12) return '';

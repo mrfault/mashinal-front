@@ -10,6 +10,11 @@
           :allow-clear="!showLastStep"
           @clean="cleanForm"
         />
+        <vehicle-options v-else-if="!isMobileBreakpoint" icons-only select-by-key
+          :options="searchMenus[2].children" 
+          :value="form.category" 
+          @input="handleCategory($event.key)" 
+        />
         <sell-last-step v-if="showLastStep" 
           :key="lastStepKey"
           :initial-form="form"
@@ -48,6 +53,9 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 
+import { MenusDataMixin } from '~/mixins/menus-data';
+
+import VehicleOptions from '~/components/options/VehicleOptions';
 import ModelOptions from '~/components/options/ModelOptions';
 import YearOptions from '~/components/options/YearOptions';
 import SellLastStep from '~/components/sell/SellLastStep';
@@ -56,7 +64,9 @@ import SellSelectedModel from '~/components/sell/SellSelectedModel';
 export default {
   name: 'pages-sell-commercial',
   middleware: 'sellTokens',
+  mixins: [MenusDataMixin],
   components: {
+    VehicleOptions,
     ModelOptions,
     YearOptions,
     SellLastStep,
@@ -68,7 +78,7 @@ export default {
     }
   },
   async asyncData({ route, store }) {
-    let category = ['1','2','3','4','5','6','7','8','9','10','11','12'].includes(route.query.category) 
+    let category = ['1','2','3','4','5','6','7','8','9','10','11','13'].includes(route.query.category) 
       ? route.query.category : '1';
     
     await Promise.all([
@@ -120,12 +130,17 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getCommercialModels']),
+    ...mapActions(['getCommercialBrands', 'getCommercialModels']),
 
     getFormKeys(...keys) {
       let form = {};
       keys.map(key => {form[key] = this.form[key]});
       return form;
+    },
+    async handleCategory(key) {
+      await this.getCommercialBrands(key);
+      this.form.category = key;
+      this.$pushQueryParam({ key: 'category', value: key });
     },
     async handleBrand(id = '') {
       this.form.selectedBrand = id;

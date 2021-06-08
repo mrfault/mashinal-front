@@ -1,11 +1,11 @@
 <template>
-  <div class="row mb-n2 mb-lg-n3">
-    <div class="col-6 col-lg-4 mb-2 mb-lg-3" v-for="(option, index) in options" :key="option.title">
-      <div :class="['selectable-block',{'active': selected === option.title}]" @click.stop="selected = { value: option.title, index }">
+  <div :class="['row', iconsOnly ? '' : 'mb-n2 mb-lg-n3']">
+    <div :class="['mb-2 mb-lg-3', iconsOnly ? 'col-2 col-lg-1' : 'col-6 col-lg-4']" v-for="(option, index) in options" :key="option.title">
+      <div :class="['selectable-block',{'active': selected === option.title || selected === getKey(option), 'icons-only': iconsOnly}]" @click.stop="selected = { value: option.title, index, key: getKey(option) }">
         <div class="block-icon">
           <icon :name="option.icon"/>
         </div>
-        <span class="block-info">
+        <span class="block-info" v-if="!iconsOnly">
           {{ $t(option.title) }}
         </span>
       </div>
@@ -17,7 +17,9 @@
 export default {
   props: {
     value: {},
-    options: Array
+    options: Array,
+    iconsOnly: Boolean,
+    selectByKey: Boolean
   },
   computed: {
     selected: {
@@ -27,6 +29,11 @@ export default {
       set(value) {
         this.$emit('input', value);
       }
+    }
+  },
+  methods: {
+    getKey(option) {
+      return this.options.find(item => item.title === option.title).icon.split('-').pop();
     }
   }
 }

@@ -10,6 +10,11 @@
           :allow-clear="!showLastStep"
           @clean="cleanForm"
         />
+        <vehicle-options v-else-if="!isMobileBreakpoint" icons-only select-by-key
+          :options="searchMenus[1].children" 
+          :value="form.category" 
+          @input="handleCategory($event.key)" 
+        />
         <sell-last-step v-if="showLastStep" 
           :key="lastStepKey"
           :initial-form="form"
@@ -48,6 +53,9 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 
+import { MenusDataMixin } from '~/mixins/menus-data';
+
+import VehicleOptions from '~/components/options/VehicleOptions';
 import ModelOptions from '~/components/options/ModelOptions';
 import YearOptions from '~/components/options/YearOptions';
 import SellLastStep from '~/components/sell/SellLastStep';
@@ -56,7 +64,9 @@ import SellSelectedModel from '~/components/sell/SellSelectedModel';
 export default {
   name: 'pages-sell-moto',
   middleware: 'sellTokens',
+  mixins: [MenusDataMixin],
   components: {
+    VehicleOptions,
     ModelOptions,
     YearOptions,
     SellLastStep,
@@ -126,6 +136,9 @@ export default {
       let form = {};
       keys.map(key => {form[key] = this.form[key]});
       return form;
+    },
+    handleCategory(key) {
+      this.form.category = key;
     },
     async handleBrand(id = '') {
       this.form.selectedBrand = id;

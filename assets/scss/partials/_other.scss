@@ -229,6 +229,13 @@
       display: flex;
     }
   }
+  &.icons-only {
+    padding: 0 !important;
+    justify-content: center;
+    .block-icon {
+      margin-right: 0 !important;
+    }
+  }
 }
 
 .dark-mode {
