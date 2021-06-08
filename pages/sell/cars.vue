@@ -50,7 +50,11 @@
         </div>
         <div class="col-auto" v-if="!isMobileBreakpoint && showLastStep">
           <div class="card">
-            <sell-preview />
+            <sell-preview 
+              :brand="brand"
+              :model="model"
+              :form="form"
+            />
           </div>
         </div>
       </div>

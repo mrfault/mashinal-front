@@ -7,7 +7,9 @@
 <script>
 export default {
   props: {
-    form: {}
+    form: {
+      default: () => ({})
+    }
   },
   computed: {
     progress() {

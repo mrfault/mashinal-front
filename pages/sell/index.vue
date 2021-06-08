@@ -2,7 +2,7 @@
   <div class="pages-sell">
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
-      <sell-progress :form="{}" v-if="!isMobileBreakpoint "/>
+      <sell-progress v-if="!isMobileBreakpoint "/>
       <div class="row">
         <div class="col-lg-5">
           <div class="card mt-5 mt-lg-0">

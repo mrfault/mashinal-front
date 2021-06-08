@@ -25,7 +25,7 @@
               @close="showLastStep = false, lastStepKey++, form.selectedYear = ''"
             />
             <year-options v-else-if="showYearOptions"
-              :years="{ min: 1972, max: currentYear }" 
+              :years="{ min: 1962, max: currentYear }" 
               :title="$t('prod_year')"
               :value="form.selectedYear"
               @input="handleYear"
@@ -53,7 +53,12 @@
         </div>
         <div class="col-auto" v-if="!isMobileBreakpoint && showLastStep">
           <div class="card">
-            <sell-preview />
+            <sell-preview 
+              :brand="selectedBrand"
+              :model="selectedModel"
+              :year="selectedYear"
+              :form="form"
+            />
           </div>
         </div>
       </div>

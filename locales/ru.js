@@ -1602,4 +1602,5 @@ export default {
 	"model_name": "Название модели",
 	"clean": "Очистить",
 	"prod_year": "Год выпуска",
+	"year": "год"
 }

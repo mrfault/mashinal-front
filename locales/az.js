@@ -1598,4 +1598,5 @@ export default {
 	"model_name": "Modelin adı",
 	"clean": "Təmizlə",
 	"prod_year": "Buraxılış ili",
+	"year": "il"
 }
