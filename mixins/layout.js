@@ -24,7 +24,7 @@ export const LayoutMixin = {
     ...mapGetters(['loading','messages','paidStatusData'])
   },
   methods: {
-    ...mapActions(['setLoading','setGridBreakpoint','getMessages','getFavorites','resetSellTokens']),
+    ...mapActions(['setLoading','setGridBreakpoint','getMessages','getFavorites','resetSellTokens','resetUserData']),
 
     handleResize() {
       // update grid breakpoint
@@ -93,6 +93,7 @@ export const LayoutMixin = {
       this.getUserData();
       if (!auth) {
         // reset store auth data
+        // this.resetUserData();
       }
     });
   },

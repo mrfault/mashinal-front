@@ -670,6 +670,11 @@ export const actions = {
   },
   updateAutosalonsSelected({commit}, list) {
     commit('mutate', { property: 'autosalonsSelected', value: list });
+  },
+  // Reset Data on Logout
+  resetUserData({ commit }) {
+    // reset services
+    commit('reset', ['myServices','myServiceHistory','myServiceOptions']);
   }
 }
 
