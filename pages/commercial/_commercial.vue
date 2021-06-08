@@ -107,7 +107,7 @@ export default {
         .filter(key => post?.additional_brands?.[key]?.brand)
         .map((key) => {
           let row = post.additional_brands[key];
-          return store.dispatch('getCommercialModels', { type: category.id, id: row.brand, index: key })
+          return store.dispatch('getCommercialModels', { category: category.id, id: row.brand, index: key })
         }),
     ]);
 

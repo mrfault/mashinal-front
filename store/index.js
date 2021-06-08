@@ -81,7 +81,6 @@ const getInitialState = () =>({
   sellPhoneEntered: '',
   sellPhoneRegistered: false,
   sellAutosalonRights: false,
-  sellForm: {},
   sellYears: [],
   sellBody: [],
   sellGenerations: [],
@@ -179,7 +178,6 @@ export const getters = {
   sellPhoneEntered: s => s.sellPhoneEntered,
   sellPhoneRegistered: s => s.sellPhoneRegistered,
   sellAutosalonRights: s => s.sellAutosalonRights,
-  sellForm: s => s.sellForm,
   sellYears: s => s.sellYears,
   sellBody: s => s.sellBody,
   sellGenerations: s => s.sellGenerations,
@@ -340,8 +338,8 @@ export const actions = {
     const res = await this.$axios.$get('/brands');
     commit('mutate', { property: 'brands', value: res });
   },
-  async getCommercialBrands({ commit }, type) {
-    const res = await this.$axios.$get(`/commercial/get_brands/${type}`);
+  async getCommercialBrands({ commit }, category) {
+    const res = await this.$axios.$get(`/commercial/get_brands/${category}`);
     commit('mutate', { property: 'commercialBrands', value: res });
   },
   // Models
@@ -350,20 +348,28 @@ export const actions = {
     commit('mutate', { property:'models', value: res });
   },
   async getCommercialModels({ commit }, data) {
-    const res = await this.$axios.$get(`/commercial/type/${data.type}/brand/${data.id}/models`);
-    commit('mutate', { property: 'commercialModels', value: res, key: data.index })
+    const res = await this.$axios.$get(`/commercial/type/${data.category}/brand/${data.id}/models`);
+    commit('mutate', { property: 'commercialModels', value: res, key: data.index || 0 })
+  },
+  async getMotoModels({ dispatch }, data) {
+    if(data.category == 1)  
+      await dispatch('getMotorcycleModels', { id: data.id, index: data.index || 0 });
+    else if(data.category == 2)  
+      await dispatch('getScooterModels', { id: data.id, index: data.index || 0 });
+    else if(data.category == 3)  
+      await dispatch('getAtvModels', { id: data.id, index: data.index || 0 });
   },
   async getMotorcycleModels({ commit }, data) {
     const res = await this.$axios.$get(`/moto/brand/${data.id}/models`);
-    commit('mutate', { property: 'motorcycleModels', value: res, key: data.index });
+    commit('mutate', { property: 'motorcycleModels', value: res, key: data.index || 0 });
   },
   async getAtvModels({ commit }, data) {
     const res = await this.$axios.$get(`/moto/atv/brand/${data.id}/models`);
-    commit('mutate', { property: 'atvModels', value: res, key: data.index });
+    commit('mutate', { property: 'atvModels', value: res, key: data.index || 0 });
   },
   async getScooterModels({ commit }, data) {
     const res = await this.$axios.$get(`/moto/scooter/brand/${data.id}/models`);
-    commit('mutate', { property: 'scooterModels', value: res, key: data.index });
+    commit('mutate', { property: 'scooterModels', value: res, key: data.index || 0 });
   },
   // Generations
   async getGenerations({ commit }, data) {
@@ -574,9 +580,6 @@ export const actions = {
     commit('mutate', { property: 'sellPhoneRegistered', value: false });
     commit('mutate', { property: 'sellAutosalonRights', value: false });
     commit('mutate', { property: 'sellPhoneEntered', value: '' });
-  },
-  updateSellForm({ commit }, data) {
-    commit('mutate', { property: 'sellForm', value: data });
   },
   // Sell Options
   async getSellYears({ commit }, params) {

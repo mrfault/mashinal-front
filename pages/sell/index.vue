@@ -85,7 +85,6 @@
     async asyncData({ store, route }) {
       if (!route.query.phone) 
         store.dispatch('resetSellTokens');
-      store.dispatch('updateSellForm', {});
       return {
         vehicleType: '',
         vehicleCategory: '',
@@ -109,8 +108,6 @@
       }
     },
     methods: {
-      ...mapActions(['updateSellForm']),
-
       handleVehicleType(e) {
         if (this.disableSteps) return;
         this.vehicleCategory = '';
@@ -131,12 +128,11 @@
         this.nextSteps();
       },
       nextSteps() {
-        this.updateSellForm({
-          type: this.vehicleType,
-          category: this.hasCategories && this.searchMenus[this.selectedIndex].children
-            .find(item => item.title === this.vehicleCategory).icon.split('-').pop()
-        });
-        let path = this.$localePath(`/sell/${this.vehicleType}`);
+        let category = this.hasCategories && this.searchMenus[this.selectedIndex].children
+            .find(item => item.title === this.vehicleCategory).icon
+            .split('-')
+            .pop();
+        let path = this.$localePath(`/sell/${this.vehicleType}${category ? `?category=${category}` : ''}`);
         this.$router.push(path);
       }
     }

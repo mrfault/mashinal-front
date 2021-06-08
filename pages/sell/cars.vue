@@ -3,17 +3,13 @@
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
       <div :class="{'card': !isMobileBreakpoint}">
-        <div class="sell_selected-model d-flex align-items-center mb-3" v-if="!isMobileBreakpoint && showModelOptions">
-          <div class="img mr-1">
-            <img :src="selectedBrand.transformed_media" :alt="selectedBrand.name" />
-          </div>
-          <span>{{ selectedBrand.name }}</span>
-          <span v-if="form.model"><span>&nbsp;/</span> {{ selectedModel.name }}</span>
-          <span v-if="form.year"><span>&nbsp;/</span> {{ form.year }}</span>
-          <div class="ml-auto" v-if="!showLastStep">
-            <button class="btn btn--red-outline" @click="cleanForm">{{ $t('clean') }}</button>
-          </div>
-        </div>
+        <sell-selected-model v-if="showModelOptions" 
+          :brand="brand"
+          :model="model"
+          :year="form.year"
+          :allow-clear="!showLastStep"
+          @clean="cleanForm"
+        />
         <sell-last-step v-if="showLastStep" 
           :key="lastStepKey"
           :initial-form="form"
@@ -57,6 +53,7 @@ import { mapGetters, mapActions } from 'vuex';
 import ModelOptions from '~/components/options/ModelOptions';
 import YearOptions from '~/components/options/YearOptions';
 import SellLastStep from '~/components/sell/SellLastStep';
+import SellSelectedModel from '~/components/sell/SellSelectedModel';
 
 export default {
   name: 'pages-sell-cars',
@@ -64,7 +61,8 @@ export default {
   components: {
     ModelOptions,
     YearOptions,
-    SellLastStep
+    SellLastStep,
+    SellSelectedModel
   },
   nuxtI18n: {
     paths: {
@@ -72,7 +70,12 @@ export default {
     }
   },
   async asyncData({ store }) {
-    await store.dispatch('getBrands');
+    await Promise.all([
+      store.dispatch('getBrands'),
+      store.dispatch('getOptions'),
+      store.dispatch('getColors'),
+    ]);
+
     return {
       showBrandOptions: true,
       showModelOptions: false,
@@ -165,12 +168,12 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['sellForm', 'brands', 'models', 'sellYears']),
+    ...mapGetters(['brands', 'models', 'sellYears']),
 
-    selectedBrand() {
+    brand() {
       return this.brands?.find(brand => this.$parseSlug(brand.slug) === this.form.brand);
     },
-    selectedModel() {
+    model() {
       return this.models?.find(model => this.$parseSlug(model.slug) === this.form.model);
     },
 

@@ -206,7 +206,7 @@ export default {
     async setBrand(id, index) {
       this.$set(this.form.additional_brands[index], 'brand', id);
       this.$set(this.form.additional_brands[index], 'model', '');
-      if (id) await this.getCommercialModels({ type: this.category.id, id, index });
+      if (id) await this.getCommercialModels({ category: this.category.id, id, index });
     },
     setCommercialFilter(key, value) {
       if(value === false || value === '' || (typeof value === 'object' && !Object.keys(value).length)) {
