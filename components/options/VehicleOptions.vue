@@ -18,8 +18,7 @@ export default {
   props: {
     value: {},
     options: Array,
-    iconsOnly: Boolean,
-    selectByKey: Boolean
+    iconsOnly: Boolean
   },
   computed: {
     selected: {
@@ -27,7 +26,9 @@ export default {
         return this.value;
       },
       set(value) {
+        let isSame = this.value === value.title || this.value === value.key;
         this.$emit('input', value);
+        if (!isSame) this.$emit('change', value);
       }
     }
   },

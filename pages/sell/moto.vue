@@ -12,10 +12,10 @@
               :allow-clear="!showLastStep"
               @clean="cleanForm"
             />
-            <vehicle-options v-else-if="!isMobileBreakpoint" icons-only select-by-key
+            <vehicle-options v-else-if="!isMobileBreakpoint" icons-only
               :options="searchMenus[1].children" 
               :value="form.category" 
-              @input="handleCategory($event.key)" 
+              @change="handleCategory($event.key)" 
             />
             <sell-last-step v-if="showLastStep" 
               :key="lastStepKey"

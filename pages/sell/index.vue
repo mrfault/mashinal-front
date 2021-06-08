@@ -44,12 +44,12 @@
             <h2 class="title-with-line full-width">
               <span>{{ $t('vehicle_type') }}</span>
             </h2>
-            <vehicle-options :options="searchMenus" :value="vehicleType" @input="handleVehicleType" />
+            <vehicle-options :options="searchMenus" :value="vehicleType" @change="handleVehicleType" />
             <template v-if="!disableSteps && hasCategories">
               <h2 class="title-with-line full-width mt-3" ref="categories">
                 <span>{{ $t(searchMenus[selectedIndex].title) }}</span>
               </h2>
-              <vehicle-options :options="searchMenus[selectedIndex].children" :value="vehicleCategory" @input="handleVehicleCategory" />
+              <vehicle-options :options="searchMenus[selectedIndex].children" :value="vehicleCategory" @change="handleVehicleCategory" />
             </template>
           </div>
         </div>
