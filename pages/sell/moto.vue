@@ -2,49 +2,54 @@
   <div class="pages-sell">
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
-      <div :class="{'card': !isMobileBreakpoint}">
-        <sell-selected-model v-if="showModelOptions" 
-          :brand="brand"
-          :model="model"
-          :year="form.selectedYear"
-          :allow-clear="!showLastStep"
-          @clean="cleanForm"
-        />
-        <vehicle-options v-else-if="!isMobileBreakpoint" icons-only select-by-key
-          :options="searchMenus[1].children" 
-          :value="form.category" 
-          @input="handleCategory($event.key)" 
-        />
-        <sell-last-step v-if="showLastStep" 
-          :key="lastStepKey"
-          :initial-form="form"
-          @close="showLastStep = false, lastStepKey++"
-        />
-        <year-options v-else-if="showYearOptions"
-          :years="{ min: 1992, max: currentYear }" 
-          :title="$t('prod_year')"
-          :value="form.selectedYear"
-          @input="handleYear"
-          @close="handleYear()"
-        />
-        <model-options key="model" v-else-if="showModelOptions"
-          :options="options.models" 
-          :title="$t('model')"
-          :status-title="$t('select_model')"
-          :input-title="$t('model_name')"
-          :value="form.selectedModel"
-          @input="handleModel($event.id)"
-          @close="handleModel()"
-        />
-        <model-options key="brand" v-else-if="showBrandOptions"
-          :options="options.brands.filter(b => b.models_count)" 
-          :title="$t('mark')"
-          :status-title="$t('select_brand')"
-          :input-title="$t('brand_name')"
-          :value="form.selectedBrand"
-          @input="handleBrand($event.id)"
-          @close="$router.push($localePath('/sell'))"
-        />
+      <div class="row">
+        <div class="col-auto">
+          <div :class="{'card': !isMobileBreakpoint}">
+            <sell-selected-model v-if="showModelOptions" 
+              :brand="brand"
+              :model="model"
+              :year="form.selectedYear"
+              :allow-clear="!showLastStep"
+              @clean="cleanForm"
+            />
+            <vehicle-options v-else-if="!isMobileBreakpoint" icons-only select-by-key
+              :options="searchMenus[1].children" 
+              :value="form.category" 
+              @input="handleCategory($event.key)" 
+            />
+            <sell-last-step v-if="showLastStep" 
+              :key="lastStepKey"
+              :title="`${brand.name} ${model.name}, ${form.selectedYear}`"
+              :initial-form="form"
+              @close="showLastStep = false, lastStepKey++"
+            />
+            <year-options v-else-if="showYearOptions"
+              :years="{ min: 1992, max: currentYear }" 
+              :title="$t('prod_year')"
+              :value="form.selectedYear"
+              @input="handleYear"
+              @close="handleYear()"
+            />
+            <model-options key="model" v-else-if="showModelOptions"
+              :options="options.models" 
+              :title="$t('model')"
+              :status-title="$t('select_model')"
+              :input-title="$t('model_name')"
+              :value="form.selectedModel"
+              @input="handleModel($event.id)"
+              @close="handleModel()"
+            />
+            <model-options key="brand" v-else-if="showBrandOptions"
+              :options="options.brands.filter(b => b.models_count)" 
+              :title="$t('mark')"
+              :status-title="$t('select_brand')"
+              :input-title="$t('brand_name')"
+              :value="form.selectedBrand"
+              @input="handleBrand($event.id)"
+              @close="$router.push($localePath('/sell'))"
+            />
+          </div>
+        </div>
       </div>
     </div>
   </div>

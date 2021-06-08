@@ -2,46 +2,51 @@
   <div class="pages-sell">
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
-      <div :class="{'card': !isMobileBreakpoint}">
-        <sell-selected-model v-if="showModelOptions" 
-          :brand="brand"
-          :model="model"
-          :year="form.year"
-          :allow-clear="!showLastStep"
-          @clean="cleanForm"
-        />
-        <sell-last-step v-if="showLastStep" 
-          :key="lastStepKey"
-          :initial-form="form"
-          @close="showLastStep = false, lastStepKey++"
-        />
-        <year-options v-else-if="showYearOptions"
-          :years="sellYears" 
-          :title="$t('prod_year')"
-          :value="form.year"
-          @input="handleYear"
-          @close="handleYear()"
-        />
-        <model-options key="model" v-else-if="showModelOptions"
-          :options="models" 
-          :title="$t('model')"
-          :status-title="$t('select_model')"
-          :input-title="$t('model_name')"
-          :value="form.model"
-          @input="handleModel($parseSlug($event.slug))"
-          @close="handleModel()"
-        />
-        <model-options key="brand" v-else-if="showBrandOptions"
-          :options="brands" 
-          :popular-options="[129,483,8,1,767,117]"
-          :title="$t('mark')"
-          :status-title="$t('select_brand')"
-          :input-title="$t('brand_name')"
-          :value="form.brand"
-          :img-key="'transformed_media'"
-          @input="handleBrand($parseSlug($event.slug))"
-          @close="$router.push($localePath('/sell'))"
-        />
+      <div class="row">
+        <div class="col-auto">
+          <div :class="{'card': !isMobileBreakpoint}">
+            <sell-selected-model v-if="showModelOptions" 
+              :brand="brand"
+              :model="model"
+              :year="form.year"
+              :allow-clear="!showLastStep"
+              @clean="cleanForm"
+            />
+            <sell-last-step v-if="showLastStep" 
+              :key="lastStepKey"
+              :initial-form="form"
+              :title="`${brand.name} ${model.name}, ${form.year}`"
+              @close="showLastStep = false, lastStepKey++"
+            />
+            <year-options v-else-if="showYearOptions"
+              :years="sellYears" 
+              :title="$t('prod_year')"
+              :value="form.year"
+              @input="handleYear"
+              @close="handleYear()"
+            />
+            <model-options key="model" v-else-if="showModelOptions"
+              :options="models" 
+              :title="$t('model')"
+              :status-title="$t('select_model')"
+              :input-title="$t('model_name')"
+              :value="form.model"
+              @input="handleModel($parseSlug($event.slug))"
+              @close="handleModel()"
+            />
+            <model-options key="brand" v-else-if="showBrandOptions"
+              :options="brands" 
+              :popular-options="[129,483,8,1,767,117]"
+              :title="$t('mark')"
+              :status-title="$t('select_brand')"
+              :input-title="$t('brand_name')"
+              :value="form.brand"
+              :img-key="'transformed_media'"
+              @input="handleBrand($parseSlug($event.slug))"
+              @close="$router.push($localePath('/sell'))"
+            />
+          </div>
+        </div>
       </div>
     </div>
   </div>
