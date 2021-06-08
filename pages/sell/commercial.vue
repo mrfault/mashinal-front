@@ -2,7 +2,7 @@
   <div class="pages-sell">
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
-      <div class="row">
+      <div class="sell_cards-row row">
         <div class="col-auto">
           <div :class="{'card': !isMobileBreakpoint}">
             <sell-selected-model v-if="showModelOptions" 
@@ -50,6 +50,11 @@
             />
           </div>
         </div>
+        <div class="col-auto" v-if="!isMobileBreakpoint && showLastStep">
+          <div class="card">
+            <sell-preview />
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -65,6 +70,7 @@ import ModelOptions from '~/components/options/ModelOptions';
 import YearOptions from '~/components/options/YearOptions';
 import SellLastStep from '~/components/sell/SellLastStep';
 import SellSelectedModel from '~/components/sell/SellSelectedModel';
+import SellPreview from '~/components/sell/SellPreview';
 
 export default {
   name: 'pages-sell-commercial',
@@ -75,7 +81,8 @@ export default {
     ModelOptions,
     YearOptions,
     SellLastStep,
-    SellSelectedModel
+    SellSelectedModel,
+    SellPreview
   },
   nuxtI18n: {
     paths: {

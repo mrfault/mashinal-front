@@ -20,6 +20,24 @@
   }
 }
 
+.sell_cards-row {
+  flex-wrap: nowrap;
+  & > .col-auto {
+    width: 100%;
+    &:not(:last-child) {
+      width: calc(100% - 224px);
+      & + .col-auto {
+        width: 224px;
+        .card {
+          position: sticky;
+          top: 161px;
+          right: 0;
+        }
+      }
+    }
+  }
+}
+
 .sell_last-step {
 
 }
