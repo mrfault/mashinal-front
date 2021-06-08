@@ -4,6 +4,25 @@
   }
 }
 
+.sell_progress {
+  position: relative;
+  width: 100%;
+  height: 10px;
+  border-radius: 100px;
+  overflow: hidden;
+  background-color: $white;
+  span {
+    position: absolute;
+    border-radius: 100px;
+    left: 0;
+    bottom: 0;
+    height: 10px;
+    width: 0px;
+    transition: width .2s ease-out;
+    background-color: $green-1;
+  }
+}
+
 .sell_selected-model {
   display: flex;
   align-items: center;
@@ -46,4 +65,20 @@
 
 .sell_last-step {
 
+}
+
+@include media-max-width('lg') {
+  .sell_progress {
+    position: fixed;
+    left: 0;
+    z-index: 21;
+    top: 61px;
+    border-radius: 0;
+    height: 9px;
+    background-color: transparent;
+    span {
+      border-radius: 0;
+      height: 9px;
+    }
+  }
 }

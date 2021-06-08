@@ -2,6 +2,7 @@
   <div class="pages-sell">
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
+      <sell-progress :form="form" />
       <div class="sell_cards-row row">
         <div class="col-auto">
           <div :class="{'card': !isMobileBreakpoint}">
@@ -21,7 +22,7 @@
               :key="lastStepKey"
               :initial-form="form"
               :title="`${brand.name} ${model.name}, ${form.selectedYear}`"
-              @close="showLastStep = false, lastStepKey++"
+              @close="showLastStep = false, lastStepKey++, form.selectedYear = ''"
             />
             <year-options v-else-if="showYearOptions"
               :years="{ min: 1972, max: currentYear }" 
@@ -71,6 +72,7 @@ import YearOptions from '~/components/options/YearOptions';
 import SellLastStep from '~/components/sell/SellLastStep';
 import SellSelectedModel from '~/components/sell/SellSelectedModel';
 import SellPreview from '~/components/sell/SellPreview';
+import SellProgress from '~/components/sell/SellProgress';
 
 export default {
   name: 'pages-sell-commercial',
@@ -82,7 +84,8 @@ export default {
     YearOptions,
     SellLastStep,
     SellSelectedModel,
-    SellPreview
+    SellPreview,
+    SellProgress
   },
   nuxtI18n: {
     paths: {
@@ -167,6 +170,7 @@ export default {
       if (id) {
         this.showYearOptions = true;
       } else {
+        this.form.selectedBrand = '';
         this.showModelOptions = false;
       }
       window.scrollTo(0, 0);
@@ -176,6 +180,7 @@ export default {
       if (year) {
         this.showLastStep = true;
       } else {
+        this.form.selectedModel = '';
         this.showYearOptions = false;
       }
     },

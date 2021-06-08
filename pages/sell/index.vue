@@ -2,6 +2,7 @@
   <div class="pages-sell">
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
+      <sell-progress :form="{}" v-if="!isMobileBreakpoint "/>
       <div class="row">
         <div class="col-lg-5">
           <div class="card mt-5 mt-lg-0">
@@ -65,12 +66,14 @@
 
   import SellCheckTokens from '~/components/sell/SellCheckTokens';
   import VehicleOptions from '~/components/options/VehicleOptions';
+import SellProgress from '~/components/sell/SellProgress';
 
   export default {
     name: 'pages-sell-index',
     components: {
       SellCheckTokens,
-      VehicleOptions
+      VehicleOptions,
+      SellProgress
     },
     mixins: [MenusDataMixin],
     nuxtI18n: {
