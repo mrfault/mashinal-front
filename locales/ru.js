@@ -144,7 +144,7 @@ export default {
 	"Luke": "Люк",
 	"Massage seats": "Сиденья с массажем",
 	"Memory seats": "Память положения сидений",
-	"Modification": "Модификация",
+	"modification": "Модификация",
 	"Multi zone climate control": "Климат-контроль многозонный",
 	"Multifunction steering wheel": "Мультифункциональное рулевое колесо",
 	"Multimedia system for rear passengers": "Мультимедиа система для задних пассажиров",

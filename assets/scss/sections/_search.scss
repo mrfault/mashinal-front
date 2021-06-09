@@ -172,9 +172,11 @@
     border: 1px solid $greyish-blue-4;
     border-radius: 4px;
     padding: 8px 15px;
-    &.active,
     &:hover {
       background-color: $greyish-blue-2;
+    }
+    &.active {
+      background-color: $greyish-blue-3;
     }
     .pack-info {
       width: 100%;

@@ -127,6 +127,12 @@
   }
 }
 
+.sell_select-modification {
+  .col-auto {
+    width: 20%;
+  }
+}
+
 @include media-max-width('lg') {
   .sell_progress {
     position: fixed;
@@ -139,6 +145,12 @@
     span {
       border-radius: 0;
       height: 9px;
+    }
+  }
+
+  .sell_select-modification {
+    .col-auto {
+      width: 100%;
     }
   }
 }

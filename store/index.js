@@ -81,6 +81,7 @@ const getInitialState = () =>({
   sellPhoneEntered: '',
   sellPhoneRegistered: false,
   sellAutosalonRights: false,
+  sellProgress: 5,
   sellYears: [],
   sellBody: [],
   sellGenerations: [],
@@ -178,13 +179,14 @@ export const getters = {
   sellPhoneEntered: s => s.sellPhoneEntered,
   sellPhoneRegistered: s => s.sellPhoneRegistered,
   sellAutosalonRights: s => s.sellAutosalonRights,
+  sellProgress: s => s.sellProgress,
   sellYears: s => s.sellYears,
   sellBody: s => s.sellBody,
   sellGenerations: s => s.sellGenerations,
-  sellEngines: s => s.sellEngines,
-  sellGearing: s => s.sellGearing,
-  sellTransmissions: s => s.sellTransmissions,
-  sellModifications: s => s.sellModifications,
+  sellEngines: s => Object.keys(s.sellEngines).map(key => s.sellEngines[key]),
+  sellGearing: s => Object.keys(s.sellGearing).map(key => s.sellGearing[key]),
+  sellTransmissions: s => Object.keys(s.sellTransmissions).map(key => s.sellTransmissions[key]),
+  sellModifications: s => Object.keys(s.sellModifications).map(key => s.sellModifications[key]),
   // autosalons
   autosalonsList: s => s.autosalonsList,
   autosalonsInBounds: s => s.autosalonsInBounds,
@@ -580,6 +582,9 @@ export const actions = {
     commit('mutate', { property: 'sellPhoneRegistered', value: false });
     commit('mutate', { property: 'sellAutosalonRights', value: false });
     commit('mutate', { property: 'sellPhoneEntered', value: '' });
+  },
+  setSellProgress({ commit }, value) {
+    commit('mutate', { property: 'sellProgress', value });
   },
   // Sell Options
   async getSellYears({ commit }, params) {

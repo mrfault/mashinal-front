@@ -6,7 +6,8 @@
   $active-color: $white, 
   $active-bg: false, 
   $border-color: false, 
-  $border-hover: false, 
+  $border-hover: false,
+  $border-active: false, 
   $outline: false, 
   $override: true
 ) {
@@ -42,7 +43,11 @@
     @if ($active-bg) {
       color: $active-color;
       background-color: $active-bg;
-      border-color: $active-bg;
+      @if ($border-active) {
+        border-color: $border-active;
+      } @else {
+        border-color: $active-bg;
+      }
     }
   }
 }
@@ -149,7 +154,7 @@
     @include btn-style($bg-color: $grey-8, $bg-hover: $grey-8, $outline: true);
   }
   &--primary-outline {
-    @include btn-style($color: $dark-blue-3, $color-hover: $dark-blue-3, $bg-color: transparent, $bg-hover: $greyish-blue-2, $border-color: $greyish-blue-4, $border-hover: $greyish-blue-4, $outline: true, $override: false);
+    @include btn-style($color: $dark-blue-3, $color-hover: $dark-blue-3, $bg-color: transparent, $bg-hover: $greyish-blue-2, $active-bg: $greyish-blue-3, $active-color: $dark-blue-3, $border-color: $greyish-blue-4, $border-active: $greyish-blue-4, $border-hover: $greyish-blue-4, $outline: true, $override: false);
   }
 }
 
@@ -184,7 +189,7 @@
       @include btn-style($bg-color: $grey-1, $bg-hover: $grey-1, $border-color: $grey-1, $outline: true, $override: false);
     }
     &--primary-outline {
-      @include btn-style($color: $white, $bg-color: transparent, $bg-hover: $grey-6, $border-color: $grey-1, $border-hover: $grey-1, $outline: true,  $override: false);
+      @include btn-style($color: $white, $bg-color: transparent, $bg-hover: $grey-6, $active-bg: $grey-2, $border-color: $grey-1, $border-active: $grey-1, $border-hover: $grey-1, $outline: true,  $override: false);
     }
   }
 }

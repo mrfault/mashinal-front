@@ -10,7 +10,7 @@
               :brand="brand"
               :model="model"
               :year="form.selectedYear"
-              :allow-clear="!showLastStep"
+              :allow-clear="showModelOptions"
               @clean="cleanForm"
             />
             <vehicle-options v-else-if="!isMobileBreakpoint" icons-only
@@ -18,7 +18,7 @@
               :value="form.category" 
               @change="handleCategory($event.key)" 
             />
-            <sell-last-step v-if="showLastStep" 
+            <sell-last-step type="moto" v-if="showLastStep" 
               :key="lastStepKey"
               :title="`${brand.name} ${model.name}, ${form.selectedYear}`"
               :initial-form="form"
@@ -147,7 +147,7 @@ export default {
   methods: {
     ...mapActions(['getMotoModels']),
 
-    getFormKeys(...keys) {
+    getFormValues(...keys) {
       let form = {};
       keys.map(key => {form[key] = this.form[key]});
       return form;

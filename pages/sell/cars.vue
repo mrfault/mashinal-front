@@ -10,10 +10,10 @@
               :brand="brand"
               :model="model"
               :year="form.year"
-              :allow-clear="!showLastStep"
+              :allow-clear="showModelOptions"
               @clean="cleanForm"
             />
-            <sell-last-step v-if="showLastStep" 
+            <sell-last-step type="cars" v-if="showLastStep" 
               :key="lastStepKey"
               :initial-form="form"
               :title="`${brand.name} ${model.name}, ${form.year}`"
@@ -132,6 +132,7 @@ export default {
         badges: [],
         new_badges: [],
         comment: '',
+        autogas: false,
         is_new: false, 
         beaten: false, 
         customs_clearance: false, 
@@ -145,7 +146,7 @@ export default {
   methods: {
     ...mapActions(['getModels', 'getSellYears']),
 
-    getFormKeys(...keys) {
+    getFormValues(...keys) {
       let form = {};
       keys.map(key => {form[key] = this.form[key]});
       return form;
@@ -161,7 +162,7 @@ export default {
     async handleModel(slug = '') {
       this.form.model = slug;
       if (slug) {
-        await this.getSellYears(this.getFormKeys('brand','model'));
+        await this.getSellYears(this.getFormValues('brand','model'));
         this.showYearOptions = true;
       } else {
         this.form.brand = '';

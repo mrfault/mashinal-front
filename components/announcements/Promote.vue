@@ -1,5 +1,5 @@
 <template>
-  <component :is="isScreen ? 'mobile-screen' : 'div'" @back="goBack" :bar-title="$t('promoting')" >
+  <component :is="isScreen ? 'mobile-screen' : 'div'" @back="goBack" :bar-title="$t('promoting')">
     <loader v-if="!promotion.id" />
     <div :class="['promote-announcement', `is-${view}`]" v-else>
       <template v-if="view !== 'card'">
@@ -30,7 +30,7 @@
           </span>
         </template>
       </form-buttons>
-      <hr class="dashed mt-0 mt-lg-3"/>
+      <hr class="dashed mt-2 mt-lg-3"/>
       <h4 v-if="isCard" class="mb-lg-2">
         <icon :name="getServiceIcon(selectedServiceInfo.type)" /> {{ selectedServiceInfo.name }}
       </h4>
@@ -49,10 +49,10 @@
       <div style="height: 34px" v-if="!serviceOptionBtns.length"></div>
       <form-buttons :btn-class="isCard ? 'white-outline' : 'pale-red-outline'" :options="serviceOptionBtns" :group-by="isScreen ? 1 : 3" :value="promotion.optionId" 
         @input="updatePromotion({key: 'optionId', value: $event}), selectServiceOption()" />
-      <p :class="['mt-lg-3', {'mb-lg-0': isCard}]" v-if="selectedServiceInfo.description">{{ selectedServiceInfo.description }}</p>
+      <p :class="['mt-2 mt-lg-3', {'mb-lg-0': isCard}]" v-if="selectedServiceInfo.description">{{ selectedServiceInfo.description }}</p>
       <template v-if="view !== 'card'">
         <h4>{{ $t('payment_method') }}</h4>
-        <div class="pb-lg-3">
+        <div class="pb-lg-3 mb-2 mb-lg-0">
           <form-buttons :options="payments" :group-by="isScreen ? 1 : 3" :value="promotion.paymentId" 
             @input="updatePromotion({key: 'paymentId', value: $event})" />
         </div>

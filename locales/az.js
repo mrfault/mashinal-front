@@ -144,7 +144,7 @@ export default {
 	"Luke": "Lyuk",
 	"Massage seats": "Masajlı oturacaqlar",
 	"Memory seats": "Yaddaşlı oturacaqlar",
-	"Modification": "Modifikasiya",
+	"modification": "Modifikasiya",
 	"Multi zone climate control": "Çoxzonalı iqlim nəzarəti",
 	"Multifunction steering wheel": "Multifunksional sükan",
 	"Multimedia system for rear passengers": "Arxa sərnişinlər üçün multimediya sistemi",

@@ -34,7 +34,7 @@
   top: 0;
   background-color: $white;
   padding: 69px 0 0;
-  .container {
+  .container.has-min-height {
     min-height: 100%;
     & > div {
       min-height: 100%;
@@ -211,9 +211,11 @@
   border-radius: 4px;
   padding: 8px 15px;
   transition: background .1s ease-out;
-  &.active,
   &:hover {
     background-color: $greyish-blue-2;
+  }
+  &.active {
+    background-color: $greyish-blue-3;
   }
   .block-info {
     display: block;
@@ -241,9 +243,11 @@
 .dark-mode {
   .selectable-block {
     border-color: $grey-1;
-    &.active,
     &:hover {
       background-color: $grey-6;
+    }
+    &.active {
+      background-color: $grey-2;
     }
   }
 }

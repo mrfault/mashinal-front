@@ -25,6 +25,16 @@ textarea {
 
 .form-group {
   width: 100%;
+  .btn {
+    &.full-width {
+      padding-left: 2px;
+      padding-right: 2px;
+    }
+    span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
 }
 
 .form-info {
