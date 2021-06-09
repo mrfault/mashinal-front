@@ -5,17 +5,31 @@
         <h2 class="title-with-line full-width">
           <span>{{ $t('carcase') }}</span>
         </h2>
-        <form-buttons v-model="form.car_body_type" :options="sellBody" 
-          :btn-class="'primary-outline'" :group-by="isMobileBreakpoint ? 2 : 5" 
-          @change="handleChange($event, 'getSellGenerations', ['car_body_type'], ['sellGenerations','sellEngines','sellGearing','sellTransmissions','sellModifications'], 'generation_id')" />
+        <form-buttons v-model="form.car_body_type" :options="sellBody"  
+          :btn-class="'primary-outline select-body'" :group-by="isMobileBreakpoint ? 2 : 5"
+          @change="handleChange($event, 'getSellGenerations', ['car_body_type'], ['sellGenerations','sellEngines','sellGearing','sellTransmissions','sellModifications'], 'generation_id')">
+          <template #custom="{ button }">
+            <div class="body-img">
+              <img :src="$env.BASE_URL + button.transformed_media" :alt="button.name[locale]" />
+            </div>
+          </template>
+        </form-buttons>
       </div>
       <div :key="2" class="mb-3" v-if="form.car_body_type && sellGenerations.length" ref="sell-generation_id">
         <h2 class="title-with-line full-width">
           <span>{{ $t('generation') }}</span>
         </h2>
         <form-buttons v-model="form.generation_id" :options="sellGenerations" 
-          :btn-class="'primary-outline'" :group-by="isMobileBreakpoint ? 2 : 5"
-          @change="handleChange($event, 'getSellEngines', ['car_body_type','generation_id'], ['sellEngines','sellGearing','sellTransmissions','sellModifications'], 'gearing')" />
+          :btn-class="'primary-outline select-generation'" :group-by="isMobileBreakpoint ? 2 : 5"
+          @change="handleChange($event, 'getSellEngines', ['car_body_type','generation_id'], ['sellEngines','sellGearing','sellTransmissions','sellModifications'], 'gearing')">
+          <template #custom="{ button }">
+            <div :style="getGenerationStyle(button)" :class="['generation-bg', {'no-img': !!getGenerationStyle(button).noImg }]"></div>
+            <div class="generation-info">
+              <span>{{ button.start_year }} - {{ button.end_year || currentYear }}</span>
+              <span>{{ button.short_name[locale] }}</span>
+            </div>
+          </template>
+        </form-buttons>
       </div>
       <div :key="3" class="mb-3" v-if="form.generation_id && sellEngines.length" ref="sell-gearing">
         <h2 class="title-with-line full-width">
@@ -93,6 +107,12 @@ export default {
       if (o.complect_type) name += `/${o.complect_type}`;
       return name;
     },
+    getGenerationStyle(o) {
+      const getImage = (media) => ((media && media.length > 0) ? this.$env.BASE_URL + (media[0]) : false);
+      let carType = o.car_type_generation.find(type => type.car_type_id === o.pivot.car_type_id);
+      let imgUrl = getImage(carType && carType.transformed_media.thumb);
+      return imgUrl ? { backgroundImage: `url('${imgUrl}')` } : { noImg: true };
+    },
     async handleChange(value, action, keys, props, nextKey) {
       // clean store props
       props.map(property => { this.mutate({ property, value: [] }); });
@@ -110,9 +130,13 @@ export default {
       // move next if only one option available
       this.$nextTick(() => {
         let options = this[action.replace('getSell', 'sell')];
-        if (options.length === 1) {
+        if (options.length === 1 && nextKey !== 'car_catalog_id') {
           let nextValue = options[0].engine || options[0].type_of_drive || options[0].box || options[0].id;
           this.$emit('update-form', { key: nextKey, value: nextValue });
+        } else {
+          setTimeout(() => {
+            this.scrollTo(this.$refs[`sell-${nextKey}`], -34, 1000, '.mobile-screen');
+          }, 100);
         }
       });
     }

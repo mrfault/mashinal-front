@@ -1029,7 +1029,7 @@ main {
 .action-bar {
   position: fixed;
   touch-action: none;
-  pointer-events: none;
+  // pointer-events: none;
   z-index: 40;
   left: 0;
   top: 0;

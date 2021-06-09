@@ -262,6 +262,9 @@ textarea {
       }
     }
   }
+  .action-bar {
+    pointer-events: none;
+  }
   &_dropdown {
     position: absolute;
     top: 54px;

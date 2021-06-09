@@ -34,12 +34,12 @@ Vue.use({
           }
         },
         // other
-        scrollTo(el, offset = 0, duration = 500) {
+        scrollTo(el, offset = 0, duration = 500, container = 'body') {
           if(el === 0) el = 'body';
           if (typeof el === 'string' && !document.querySelector(el)) return;
           if (typeof offset === 'object') offset = this.isMobileBreakpoint ? offset[0] : offset[1];
           offset += (this.isMobileBreakpoint ? -60 : -141);
-          this.$scrollTo(el, duration, { offset });
+          this.$scrollTo(el, duration, { offset, container });
         },
         setBodyOverflow(value = 'auto') {
           let bodyEl = document.querySelector('body');
