@@ -141,6 +141,29 @@
     }
   }
 
+  .btn {
+    [class^=icon] {
+      font-size: 16px;
+    }
+
+    .icon-drive {
+      @supports(-webkit-background-clip: text) {
+        &.type-of-drive-1,
+        &.type-of-drive-2 {
+          display: inline-block;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+        &.type-of-drive-1 {
+          background-image: linear-gradient(180deg, rgba($dark-blue-3, .6) 50%, $dark-blue-3 50%);
+        }
+        &.type-of-drive-2 {
+          background-image: linear-gradient(180deg, $dark-blue-3 50%, rgba($dark-blue-3, .6) 50%);
+        }
+      }
+    }
+  }
+
   .select-body {
     height: 110px;
     flex-direction: column;
@@ -199,6 +222,43 @@
         background-repeat: no-repeat;
         background-image: url('/img/car.svg');
         background-size: 70%;
+      }
+    }
+  }
+}
+
+.dark-mode {
+  .sell_select-modification {
+    
+    .btn {
+      .icon-drive {
+        @supports(-webkit-background-clip: text) {
+          &.type-of-drive-1 {
+            background-image: linear-gradient(180deg, rgba($white, .6) 50%, $white 50%);
+          }
+          &.type-of-drive-2 {
+            background-image: linear-gradient(180deg, $white 50%, rgba($white, .6) 50%);
+          }
+        }
+      }
+    }
+
+    .select-body {
+      .body-img {
+        filter: brightness(0) invert(1);
+      }
+    }
+
+    .select-generation {
+      .generation-info {
+        span {
+          &:nth-of-type(1) {
+            color: $white;
+          }
+          &:nth-of-type(2) {
+            color: $yellow-1;
+          }
+        }
       }
     }
   }

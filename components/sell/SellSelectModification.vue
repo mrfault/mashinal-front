@@ -38,7 +38,11 @@
         <form-buttons v-model="form.gearing" 
           :options="sellEngines.map(o => ({ name: $t('engine_values')[o.engine], key: o.engine }))" 
           :btn-class="'primary-outline'" :group-by="isMobileBreakpoint ? 1 : 5"
-          @change="handleChange($event, 'getSellGearing', ['car_body_type','generation_id','gearing'], ['sellGearing','sellTransmissions','sellModifications'], 'transmission')" />
+          @change="handleChange($event, 'getSellGearing', ['car_body_type','generation_id','gearing'], ['sellGearing','sellTransmissions','sellModifications'], 'transmission')">
+          <template #icon="{ button }">
+            <icon :name="getIcon('engine', button.key)" :class="`engine-${button.key}`" />
+          </template>
+        </form-buttons>
         <div class="mt-2 mt-lg-3">
           <form-checkbox :label="$t('gas_equipment')" v-model="form.autogas" transparent input-name="autogas" 
             @change="$emit('update-form', { key: 'autogas', value: $event })" />
@@ -51,7 +55,11 @@
         <form-buttons v-model="form.transmission" 
           :options="sellGearing.map(o => ({ name: $t('type_of_drive_values')[o.type_of_drive], key: o.type_of_drive }))" 
           :btn-class="'primary-outline'" :group-by="isMobileBreakpoint ? 1 : 5"
-          @change="handleChange($event, 'getSellTransmissions', ['car_body_type','generation_id','gearing','transmission'], ['sellTransmissions','sellModifications'], 'modification')" />
+          @change="handleChange($event, 'getSellTransmissions', ['car_body_type','generation_id','gearing','transmission'], ['sellTransmissions','sellModifications'], 'modification')">
+          <template #icon="{ button }">
+            <icon :name="getIcon('type_of_drive', button.key)" :class="`type-of-drive-${button.key}`" />
+          </template>
+        </form-buttons>
       </div>
       <div :key="5" class="mb-3" v-if="form.transmission && sellTransmissions.length" ref="sell-modification">
         <h2 class="title-with-line full-width">
@@ -60,7 +68,11 @@
         <form-buttons v-model="form.modification" 
           :options="sellTransmissions.map(o => ({ name: $t('box_values')[o.box], key: o.box }))" 
           :btn-class="'primary-outline'" :group-by="isMobileBreakpoint ? 1 : 5"
-          @change="handleChange($event, 'getSellModifications', ['car_body_type','generation_id','gearing','transmission','modification'], ['sellModifications'], 'car_catalog_id')" />
+          @change="handleChange($event, 'getSellModifications', ['car_body_type','generation_id','gearing','transmission','modification'], ['sellModifications'], 'car_catalog_id')">
+          <template #icon="{ button }">
+            <icon :name="getIcon('box', button.key)" :class="`box-${button.key}`" />
+          </template>
+        </form-buttons>
       </div>
       <div :key="6" class="mb-3" v-if="form.modification && sellModifications.length" ref="sell-car_catalog_id">
         <h2 class="title-with-line full-width">
@@ -113,7 +125,18 @@ export default {
       let imgUrl = getImage(carType && carType.transformed_media.thumb);
       return imgUrl ? { backgroundImage: `url('${imgUrl}')` } : { noImg: true };
     },
+    getIcon(key, value) {
+      return ({
+        engine: { 1: 'fuel-station', 2: 'battery-charge', 3: 'diesel', 4: 'gas', 5: 'plug' },
+        type_of_drive: { 1: 'drive', 2: 'drive', 3: 'drive' },
+        box: { 1: 'mechanical', 2: 'automatic', 3: 'robot', 4: 'variator', 5: 'reductor' }
+      })[key][value];
+    },
     async handleChange(value, action, keys, props, nextKey) {
+      if (this.isMobileBreakpoint) {
+        let $container = document.querySelector('.mobile-screen .container');
+        if (action) $container.style.minHeight = `${$container.scrollHeight}px`;
+      }
       // clean store props
       props.map(property => { this.mutate({ property, value: [] }); });
       // update form prop
@@ -122,7 +145,8 @@ export default {
       if (!action) return;
       // clean form props
       ['car_body_type','generation_id','gearing','transmission','modification','car_catalog_id'].map(key => {
-        if (!keys.includes(key)) this.$emit('update-form', { key, value: '' });
+        if (!keys.includes(key))
+          this.$emit('update-form', { key, value: '' });
       });
       // get values for the next input
       let values = this.getFormValues([...keys,'brand','model','year']);
@@ -133,9 +157,10 @@ export default {
         if (options.length === 1 && nextKey !== 'car_catalog_id') {
           let nextValue = options[0].engine || options[0].type_of_drive || options[0].box || options[0].id;
           this.$emit('update-form', { key: nextKey, value: nextValue });
-        } else {
+        } else if (this.isMobileBreakpoint) {
           setTimeout(() => {
-            this.scrollTo(this.$refs[`sell-${nextKey}`], -34, 1000, '.mobile-screen');
+            this.scrollTo(this.$refs[`sell-${nextKey}`], -34, 500, '.mobile-screen');
+            $container.style.minHeight = '';
           }, 100);
         }
       });

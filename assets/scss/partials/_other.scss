@@ -123,6 +123,11 @@
     hr {
       background-color: $dark-2;
     }
+    h2.title-with-line {
+      span {
+        background-color: $dark-1;
+      }
+    }
   }
 }
 
