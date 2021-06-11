@@ -84,6 +84,12 @@ export default {
       az: '/satmaq/masinlar'
     }
   },
+  head() {
+    return this.$headMeta({
+      title: this.$t('meta-title_sell'),
+      description: this.$t('meta-descr_sell')
+    });
+  },
   async asyncData({ store }) {
     await Promise.all([
       store.dispatch('getBrands'),

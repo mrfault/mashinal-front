@@ -92,6 +92,12 @@ export default {
       az: '/satmaq/moto'
     }
   },
+  head() {
+    return this.$headMeta({
+      title: this.$t('meta-title_moto-sell'),
+      description: this.$t('meta-descr_moto-sell')
+    });
+  },
   async asyncData({ route, store }) {
     let category = ['1','2','3'].includes(route.query.category) 
       ? route.query.category : '1';

@@ -100,7 +100,7 @@
       padding: 4px;
     }
     &_option {
-      border-top-color: $dark-2;
+      border-top-color: $dark-1;
     }
   }
 }
@@ -113,15 +113,6 @@
     width: 100%;
     &_option {
       padding: 0 34px 0 0;
-    }
-  }
-
-  .dark-mode {
-    .model-options {
-      .select-menu_label,
-      .text-input input {
-        background-color: $dark-2;
-      }
     }
   }
 }

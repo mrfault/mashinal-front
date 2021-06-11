@@ -16,20 +16,41 @@
               </div>
             </div>
           </div>
-          <div class="swiper-slide" key="loading" v-if="filesLength !== filesLoadedLength">
-            <div class="upload-image_form__thumbnail">
-              <loader />
-            </div>
-          </div>
-          <div class="swiper-slide" key="add-image" v-if="canUpload">
-            <div class="upload-image_form__thumbnail add-image" @click.stop="input.click()">
-              <div class="overlay">
-                <icon name="camera" />
-                <p>{{ $t('add_image')}}</p>
-                <!-- <p>{{ $t('at_least_5_photos', { min: minFiles, max: maxFiles })}}</p> -->
+          <template v-if="isMobileBreakpoint || !helpers || (helpers.length <= filesLoadedLength)">
+            <div class="swiper-slide" key="loading" v-if="filesLength !== filesLoadedLength">
+              <div class="upload-image_form__thumbnail">
+                <loader />
               </div>
             </div>
-          </div>
+            <div class="swiper-slide" key="add-image" v-if="canUpload">
+              <div class="upload-image_form__thumbnail add-image" @click.stop="input.click()">
+                <div class="overlay">
+                  <icon name="camera" />
+                  <p>{{ $t('add_image')}}</p>
+                  <!-- <p>{{ $t('at_least_5_photos', { min: minFiles, max: maxFiles })}}</p> -->
+                </div>
+              </div>
+            </div>
+          </template>
+          <template v-else>
+            <template v-for="(img, index) in helpers.slice(filesLoadedLength)">
+              <div class="swiper-slide" :key="img">
+                <div class="upload-image_form__thumbnail" v-if="(index + 1) <= (filesLength - filesLoadedLength)">
+                  <loader />
+                </div>
+                <div class="upload-image_form__thumbnail helper" @click.stop="input.click()" v-else>
+                  <img :src="img" alt=""/>
+                </div>
+              </div>
+            </template>
+            <template v-if="(filesLength - filesLoadedLength) > helpers.length">
+              <div class="swiper-slide" :key="'loading_'+i" v-for="i in (filesLength - filesLoadedLength - helpers.length)">
+                <div class="upload-image_form__thumbnail">
+                  <loader />
+                </div>
+              </div>
+            </template>
+          </template>
         </div>
       </div>
       <input type="file" :id="'upload-image_form__input--' + inputId" hidden multiple />
@@ -69,7 +90,8 @@ import Loader from './Loader.vue';
         type: Number,
         required: false,
         default: 25600
-      }
+      },
+      helpers: Array
     },
     data() {
       return {

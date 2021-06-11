@@ -14,6 +14,7 @@
           :maxFiles="maxFiles"
           :minFiles="minFiles"
           :defaultFiles="announcement ? announcement.media : files"
+          :helpers="helperImages"
           @files-changed="updateImages"
           @files-dropped="addImages"
           @file-deleted="deleteImage"
@@ -59,7 +60,7 @@ export default {
       deletedFiles: [],
       uploading: 0,
       publishing: false,
-      showAllOptions: false
+      showAllOptions: this.type !== 'cars'
     }
   },
   computed: {
@@ -67,6 +68,11 @@ export default {
       let progress = 30;
       if (this.form.car_catalog_id) progress += 10;
       return progress;
+    },
+
+    helperImages() {
+      let imgs = this.type === 'cars' ? [1,2,3,4,5] : (this.type === 'commercial' ? [1,2,3,4] : [1,2,3]);
+      return imgs.map(n => `/img/sell-helpers/${this.type}_${n}.png`);
     }
   },
   methods: {

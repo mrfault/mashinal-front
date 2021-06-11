@@ -92,6 +92,12 @@ export default {
       az: '/satmaq/ticari-avtomobiller'
     }
   },
+  head() {
+    return this.$headMeta({
+      title: this.$t('meta-title_sell'),
+      description: this.$t('meta-descr_sell')
+    });
+  },
   async asyncData({ route, store }) {
     let category = ['1','2','3','4','5','6','7','8','9','10','11','13'].includes(route.query.category) 
       ? route.query.category : '1';
