@@ -133,8 +133,9 @@ export default {
       })[key][value];
     },
     async handleChange(value, action, keys, props, nextKey) {
+      let $container;
       if (this.isMobileBreakpoint) {
-        let $container = document.querySelector('.mobile-screen .container');
+        $container = document.querySelector('.mobile-screen .container');
         if (action) $container.style.minHeight = `${$container.scrollHeight}px`;
       }
       // clean store props

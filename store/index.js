@@ -1,3 +1,5 @@
+import Vue from 'vue';
+
 const getInitialState = () =>({
   loading: true,
   colorMode: 'light',
@@ -89,6 +91,7 @@ const getInitialState = () =>({
   sellGearing: [],
   sellTransmissions: [],
   sellModifications: [],
+  sellPreviewData: {},
   // autosalons
   autosalonsList: [],
   autosalonsInBounds: false,
@@ -187,6 +190,7 @@ export const getters = {
   sellGearing: s => Object.keys(s.sellGearing).map(key => s.sellGearing[key]),
   sellTransmissions: s => Object.keys(s.sellTransmissions).map(key => s.sellTransmissions[key]),
   sellModifications: s => Object.keys(s.sellModifications).map(key => s.sellModifications[key]),
+  sellPreviewData: s => s.sellPreviewData,
   // autosalons
   autosalonsList: s => s.autosalonsList,
   autosalonsInBounds: s => s.autosalonsInBounds,
@@ -586,6 +590,9 @@ export const actions = {
   setSellProgress({ commit }, value) {
     commit('mutate', { property: 'sellProgress', value });
   },
+  setSellPreviewData({ commit }, {value, key}) {
+    commit('mutate', { property: 'sellPreviewData', value, key });
+  },
   // Sell Options
   async getSellYears({ commit }, params) {
     const res = await this.$axios.$get(`/sell/${params.brand}/${params.model}/get_years`);
@@ -685,7 +692,8 @@ export const actions = {
 
 export const mutations = {
   mutate(state, payload) {
-    if(payload.key !== undefined) state[payload.property][payload.key] = payload.value;
+    if (payload.key !== undefined) 
+      Vue.set(state[payload.property], payload.key, payload.value);
     else state[payload.property] = payload.value;
   },
   reset(state, payload) {

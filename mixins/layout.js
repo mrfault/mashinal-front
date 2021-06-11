@@ -101,7 +101,7 @@ export const LayoutMixin = {
     this.configSocket();
     if (this.loggedIn) 
       this.toggleEchoListening(true);
-
+      
     this.$nuxt.$on('login', (auth) => {
       if (auth) this.afterLogin();
       this.toggleEchoListening(auth);

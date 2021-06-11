@@ -24,6 +24,7 @@
   flex-direction: column;
   position: fixed;
   overflow-y: auto;
+  overflow-x: hidden;
   z-index: 20;
   width: 100%;
   width: calc(100% + 1px);
@@ -344,6 +345,85 @@
     .block-icon {
       font-size: 50px;
       margin-right: 8px;
+    }
+  }
+}
+
+.upload-image {
+  &_form__thumbnail {
+    width: 100%;
+    padding-bottom: 76.36%;
+    position: relative;
+    border-radius: 4px;
+    background-color: $greyish-blue-2;
+    overflow: hidden;
+    user-select: none;
+    .overlay {
+      @include abs-zero;
+      display: flex;
+      cursor: pointer;
+      padding: 10px;
+      justify-content: space-between;
+      align-items: flex-start;
+      pointer-events: none;
+      .btn-sq {
+        width: 34px;
+        height: 34px;
+        pointer-events: all;
+        background: rgba($white, 0.1);
+        backdrop-filter: blur(40px);
+        &.disabled {
+          opacity: .5;
+          pointer-events: none;
+        }
+        &:hover {
+          background: rgba($white, 0.2);
+        }
+        i {
+          font-size: 16px;
+          &.icon-reset {
+            transform: scaleX(-1) rotate(-60deg);
+          }
+        }
+      }
+    }
+    &.add-image {
+      .overlay {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: $dark-blue-3;
+        i {
+          font-size: 24px;
+        }
+        p {
+          margin: 1em 0 0;
+          &:nth-of-type(2) {
+            font-size: 11px;
+          }
+        }
+
+      }
+    }
+    img {
+      @include abs-zero;
+      object-fit: cover;
+    }
+  }
+  &.dragover &_form__thumbnail {
+    &.add-image {
+      background-color: $greyish-blue-3;
+    }
+  }
+}
+
+@include media-max-width('lg') {
+  .upload-image {
+    .swiper-container {
+      overflow: visible;
+    }
+    .swiper-slide {
+      width: 165px;
     }
   }
 }

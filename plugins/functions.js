@@ -112,6 +112,15 @@ export default function({ app, route, store }, inject) {
   inject('expireDate', (days = 30) => {
     return new Date(new Date().getTime() + (days * 24 * 3600 * 1000));
   });
+  inject('maxInArray', (array) => {
+    if (array.length === 0) return null;
+    if (array.length === 1) return array[0];
+    let k = array[0];
+    for (let i = 1; i < array.length; i++) {
+      k = Math.max(array[i], k);    
+    }
+    return k;
+  })
   // underscore
   inject('clone', _.clone);
   inject('sortBy', _.sortBy);
