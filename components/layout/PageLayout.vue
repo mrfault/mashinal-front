@@ -20,7 +20,8 @@
             </transition>
           </template>
         </backdrop>
-        <portal-target name="modals" />
+        <portal-target name="modals" multiple />
+        <portal-target name="mobile-dropdown" multiple />
         <portal-target name="mobile-screen" />
         <paid-status v-if="paidStatusData && isMobileBreakpoint" />
         <mobile-nav />

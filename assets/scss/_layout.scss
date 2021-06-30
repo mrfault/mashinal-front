@@ -58,6 +58,14 @@ h2 {
   }
 }
 
+.text-uppercase {
+  text-transform: uppercase;
+  input,
+  textarea {
+    text-transform: uppercase;
+  }
+}
+
 .dark-mode {
   h2.title-with-line {
     span {
@@ -1036,6 +1044,9 @@ main {
   width: 100%;
   background-color: $white;
   border-bottom: 1px solid $greyish-blue-2;
+  &.priority-1 {
+    z-index: 41;
+  }
   .d-flex {
     height: 60px;
   }

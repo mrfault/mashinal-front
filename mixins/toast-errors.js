@@ -25,8 +25,8 @@ export const ToastErrorsMixin = {
       this.toasts = {};
       this.$toasted.clear();
     },
-    hasError(field) {
-      return {'invalid': this.errors.includes(field), [`field--${field}`]: true };
+    isInvalid(field) {
+      return this.errors.includes(field);
     },
     hasValue(field, key) {
       let formEl = key !== undefined ? this.form[field][key] :  this.form[field];

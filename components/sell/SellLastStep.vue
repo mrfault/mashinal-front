@@ -10,7 +10,6 @@
           <span>{{ $t('photos') }}</span>
         </h2>
         <upload-image
-          :class="hasError('saved_images')"
           :maxFiles="maxFiles"
           :minFiles="minFiles"
           :defaultFiles="announcement ? announcement.media : files"
@@ -20,9 +19,39 @@
           @file-deleted="deleteImage"
           @file-rotated="rotateImage"
         />
-        <h2 class="title-with-line mt-2 mt-lg-3">
+        <h2 class="title-with-line mt-2 mt-lg-3" ref="youtube">
           <span>{{ $t('video') }}</span>
         </h2>
+        <add-video :value="form.youtube.id" @input="$set(form, 'youtube', $event)" />
+        <h2 class="title-with-line mt-2 mt-lg-3" ref="selectedColor">
+          <span>{{ $t('color') }}</span>
+        </h2>
+        <color-options v-model="form.selectedColor" :limit="2" :multiple="type === 'cars'"
+          @change-matt="form.is_matte = $event" :matt="form.is_matte" :hide-matt="type !== 'cars'" />
+        <h2 class="title-with-line mt-2 mt-lg-3" ref="mileage">
+          <span>{{ $t('mileage') }}</span>
+        </h2>
+        <div class="row">
+          <div class="col-12 col-lg-4 mb-2 mb-lg-0 text-uppercase">
+            <form-numeric-input :placeholder="$t('char_kilometre')" v-model="form.mileage" :invalid="isInvalid('mileage')" />
+          </div>
+          <div class="col-12 col-lg-4 mb-2 mb-lg-0">
+            <form-select :label="$t('data')" custom custom-checkboxes
+              :values="{ count: ['is_new','beaten','guaranty','customs_clearance','tradeable'].filter(a => form[a]).length }"
+              @clear="form.year_from = '', form.year_to = ''"
+            >
+              <div class="form-merged">
+                <form-checkbox :label="$t('is_new')" v-model="form.is_new" input-name="is_new" />
+                <form-checkbox :label="$t('bitie')" v-model="form.beaten" input-name="beaten">
+                  <popover :message="$t('with_significant_damage_to_body_elements_that_do_not_move_on_their_own')" :width="175" />
+                </form-checkbox>
+                <form-checkbox :label="$t('in_garanty')" v-model="form.guaranty" input-name="guaranty" />
+                <form-checkbox :label="$t('not_cleared')" v-model="form.customs_clearance" input-name="customs_clearance" />
+                <form-checkbox :label="$t('tradeable')" v-model="form.tradeable" input-name="tradeable" />
+              </div>
+            </form-select>
+          </div>
+        </div>
       </template>
     </div>
   </component>
@@ -35,11 +64,15 @@ import { ToastErrorsMixin } from '~/mixins/toast-errors';
 
 import SellSelectModification from '~/components/sell/SellSelectModification';
 import UploadImage from '~/components/elements/UploadImage';
+import ColorOptions from '~/components/options/ColorOptions';
+import AddVideo from '~/components/elements/AddVideo';
 
 export default {
   components: { 
     SellSelectModification,
-    UploadImage
+    UploadImage,
+    ColorOptions,
+    AddVideo
   },
   props: {
     edit: Boolean,

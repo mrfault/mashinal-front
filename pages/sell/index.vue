@@ -66,7 +66,7 @@
 
   import SellCheckTokens from '~/components/sell/SellCheckTokens';
   import VehicleOptions from '~/components/options/VehicleOptions';
-import SellProgress from '~/components/sell/SellProgress';
+  import SellProgress from '~/components/sell/SellProgress';
 
   export default {
     name: 'pages-sell-index',

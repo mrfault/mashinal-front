@@ -48,6 +48,13 @@ Vue.use({
           bodyEl.style.overflowX = value === 'scroll' ? 'auto' : value;
           bodyEl.style.overflowY = value;
         },
+        getParentByClassName(el, className) {
+          el = typeof el === 'string' ? document.querySelector(el) : el;
+          for( ; el && el !== document; el = el.parentNode) {
+            if(el.classList.contains(className)) return el;
+          }
+          return null;
+        },
         getAnnouncementTitle(item) {
           if (item.car_catalog)
             return (item.car_catalog.brand || item.brand).name + ' ' + this.$translateHard((item.car_catalog.model || item.model).name);

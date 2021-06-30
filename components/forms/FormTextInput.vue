@@ -1,19 +1,20 @@
 <template>
   <div class="form-group">
     <div class="text-input">
-      <icon :name="iconName" v-if="iconName" />
+      <icon :name="iconName" v-if="iconName" :class="{invalid, disabled}" />
       <input 
         :id="id"
         :type="type"
         :placeholder="placeholder" 
         :maxlength="maxlength" 
         :disabled="disabled"
-        :class="{invalid, disabled}"
+        :class="{invalid, valid, disabled}"
         :autocomplete="autocomplete"
         v-mask="mask"
         v-model="inputValue"
       />
-      <icon name="alert-circle" v-if="invalid" />
+      <icon name="alert-circle" v-if="invalid" class="invalid" />
+      <icon name="check-circle" v-else-if="valid" class="valid" />
     </div>
   </div>
 </template>
@@ -41,6 +42,10 @@
         default: false
       },
       invalid: {
+        type: Boolean,
+        default: false
+      },
+      valid: {
         type: Boolean,
         default: false
       },

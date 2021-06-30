@@ -20,6 +20,7 @@
         <icon class="checkbox-icon" :name="iconName" v-if="iconName" />
         <span class="text-truncate">{{ label }}</span>
       </label>
+      <slot />
     </div>
   </div>
 </template>

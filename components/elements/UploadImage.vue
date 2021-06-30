@@ -4,13 +4,13 @@
       <div class="swiper-container" v-swiper:uploadSwiper="swiperOps">
         <div class="swiper-wrapper upload-image_form__thumbnails">
           <div class="swiper-slide" v-for="key in orderdedKeys" :key="key">
-            <div class="upload-image_form__thumbnail" @click="fileClick($event, key, getFileIndex(key))">
+            <div class="upload-image_form__thumbnail" @click.stop="fileClick(key, getFileIndex(key))">
               <img v-if="image[key]" :src="image[key]" alt="" />
               <div class="overlay">
-                <button :class="['btn-sq', {'disabled': loading[key]}]" @click="fileRotate($event, key, getFileIndex(key))">
+                <button :class="['btn-sq', {'disabled': loading[key]}]" @click.stop="fileRotate(key, getFileIndex(key))">
                   <icon name="reset" />
                 </button>
-                <button :class="['btn-sq ml-auto', {'disabled': loading[key]}]" @click="fileDelete($event, key, getFileIndex(key))">
+                <button :class="['btn-sq ml-auto', {'disabled': loading[key]}]" @click.stop="fileDelete(key, getFileIndex(key))">
                   <icon name="cross" />
                 </button>
               </div>
@@ -157,7 +157,7 @@ import Loader from './Loader.vue';
 
       this.$nuxt.$on('delete-image-by-key', (key) => {
         Object.keys(this.files).map((k, i) => {
-          if(k == key) this.fileDelete(null, key, i);
+          if(k == key) this.fileDelete(key, i);
         });
       });
 
@@ -227,8 +227,8 @@ import Loader from './Loader.vue';
         });
         reader.readAsDataURL(this.files[key].file);
       },
-      fileDelete(e, key, index) {
-        if (this.loading[key]) return;
+      fileDelete(key, index) {
+        
         this.$emit('file-deleted', index);
 
         this.$delete(this.files, key);
@@ -248,14 +248,12 @@ import Loader from './Loader.vue';
 
         this.$emit('files-changed', this.imagesLoaded);
       },
-      fileRotate(e, key, index) {
+      fileRotate(key, index) {
         if (this.loading[key]) return;
         this.$emit('file-rotated', index, key);
         this.$set(this.loading, key, true);
       },
-      fileClick(e, key, index) {
-        e.preventDefault();
-        e.stopPropagation();
+      fileClick(key, index) {
         this.$emit('file-clicked', this.files[key]);
       },
       fileIsLoading(key) {

@@ -950,6 +950,7 @@ export default {
 	"permanent_all_wheel_drive": "Постоянный привод на все колеса",
 	"personal_announcement": "Личное объявление",
 	"personal_data": "Личные данные",
+	"data": "Данные",
 	"phone_number": "Номер телефона",
 	"phone_type": "Тип",
 	"photos": "Фотографии",

@@ -120,7 +120,7 @@ export default {
           thumb: ''
         },
         selectedColor: [],
-        is_matte: 0,
+        is_matte: false,
         mileage: '',
         region_id: '',
         address: '',

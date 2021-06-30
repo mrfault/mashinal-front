@@ -84,6 +84,9 @@ textarea {
       color: $red-1;
       padding-right: 34px;
     }
+    &.valid {
+      padding-right: 34px;
+    }
     &.disabled {
       color: $grey-3;
     }
@@ -101,6 +104,11 @@ textarea {
       right: 10px;
       color: $red-1;
     }
+    &.icon-check-circle {
+      position: absolute;
+      right: 10px;
+      color: $green-1;
+    }
     &:first-child {
       left: 14px;
       right: auto;
@@ -108,10 +116,20 @@ textarea {
         padding-left: 34px;
       }
     }
+    &.invalid {
+      color: $red-1;
+    }
+    &.valid {
+      color: $green-1;
+    }
+    &.disabled {
+      color: $grey-3;
+    }
   }
 }
 
 .checkbox-input {
+  position: relative;
   user-select: none;
   label {
     display: flex;
@@ -160,6 +178,11 @@ textarea {
         opacity: 1;
       }
     }
+  }
+  .popover-wrapper {
+    position: absolute;
+    right: 10px;
+    top: 10px;
   }
 }
 
@@ -290,6 +313,21 @@ textarea {
       padding: 0;
       width: auto;
     }
+    &.custom-checkboxes {
+      width: 100%;
+      .form-merged {
+        flex-direction: column;
+        padding: 5px 0;
+        .form-group {
+          border-right: 0 !important;
+          max-width: 100% !important;
+        }
+        .checkbox-input label {
+          display: inline-flex;
+          width: auto;
+        }
+      }
+    }
     &.show {
       visibility: visible;
       opacity: 1;
@@ -323,7 +361,7 @@ textarea {
       display: flex;
       flex-direction: column;
       position: fixed;
-      z-index: 20;
+      z-index: 40;
       padding: 60px 0 0;
       width: 100%;
       height: 100%;
@@ -421,12 +459,14 @@ textarea {
       &_triangle {
         color: $white;
       }
-      &_dropdown {
-        background-color: $white;
-        &-option {
-          &:not(.disabled):hover {
-            background-color: darken($white, 2%);
-          }
+    }
+  }
+  &_dropdown {
+    &.no-bg {
+      background-color: $white;
+      .select-menu_dropdown-option {
+        &:not(.disabled):hover {
+          background-color: darken($white, 2%);
         }
       }
     }
@@ -561,12 +601,14 @@ textarea {
         &_triangle {
           color: $dark-2;
         }
-        &_dropdown {
-          background-color: $dark-2;
-          &-option {
-            &:hover {
-              background-color: lighten($dark-2, 2%);
-            }
+      }
+    }
+    &_dropdown {
+      &.no-bg {
+        background-color: $dark-2;
+        .select-menu_dropdown-option {
+          &:hover {
+            background-color: lighten($dark-2, 2%);
           }
         }
       }

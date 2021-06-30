@@ -951,6 +951,7 @@ export default {
 	"permanent_all_wheel_drive": "Daimi tam ötürücülü",
 	"personal_announcement": "Şəxsi elan",
 	"personal_data": "Şəxsi məlumatlar",
+	"data": "Məlumatlar",
 	"phone_number": "Telefon nömrəsi",
 	"phone_type": "Növ",
 	"photos": "Şəkillər",
