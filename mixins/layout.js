@@ -16,7 +16,7 @@ export const LayoutMixin = {
   head() {
     return {
       script: [
-        { hid: 'maps', src: `https://api-maps.yandex.ru/2.1/?apikey=${this.$env.YANDEX_MAPS_API}&lang=${this.locale === 'az' ? 'tr_TR' : 'ru_RU'}` }
+        { hid: 'maps', src: `https://api-maps.yandex.ru/2.1/?apikey=${this.$env.YANDEX_MAPS_API}&lang=${this.locale === 'az' ? 'az_AZ' : 'ru_RU'}` }
       ]
     }
   },

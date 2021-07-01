@@ -499,6 +499,15 @@
       }
     }
   }
+  .popover {
+    &-content {
+      background-color: $dark-1;
+      box-shadow: $shadow-dark-7;
+      &_triangle {
+        color: $dark-1;
+      }
+    }
+  }
 }
 
 @include media-max-width('lg') {

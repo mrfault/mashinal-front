@@ -33,15 +33,14 @@
         </h2>
         <div class="row">
           <div class="col-12 col-lg-4 mb-2 mb-lg-0 text-uppercase">
-            <form-numeric-input :placeholder="$t('char_kilometre')" v-model="form.mileage" :invalid="isInvalid('mileage')" />
+            <form-numeric-input :placeholder="$t('char_kilometre')" v-model="form.mileage" 
+              :invalid="isInvalid('mileage')" />
           </div>
           <div class="col-12 col-lg-4 mb-2 mb-lg-0">
-            <form-select :label="$t('data')" custom custom-checkboxes
-              :values="{ count: ['is_new','beaten','guaranty','customs_clearance','tradeable'].filter(a => form[a]).length }"
-              @clear="form.year_from = '', form.year_to = ''"
-            >
+            <form-select :label="$t('data')" custom custom-checkboxes :allow-clear="false"
+              :values="{ count: ['is_new','beaten','guaranty','customs_clearance','tradeable'].filter(a => form[a]).length }">
               <div class="form-merged">
-                <form-checkbox :label="$t('is_new')" v-model="form.is_new" input-name="is_new" />
+                <form-checkbox :label="$t('is_new')" v-model="form.is_new" input-name="is_new" @change="updateMileage"/>
                 <form-checkbox :label="$t('bitie')" v-model="form.beaten" input-name="beaten">
                   <popover :message="$t('with_significant_damage_to_body_elements_that_do_not_move_on_their_own')" :width="175" />
                 </form-checkbox>
@@ -50,6 +49,26 @@
                 <form-checkbox :label="$t('tradeable')" v-model="form.tradeable" input-name="tradeable" />
               </div>
             </form-select>
+          </div>
+        </div>
+        <h2 class="title-with-line mt-2 mt-lg-3" ref="region">
+          <span>{{ $t('region_and_place_of_inspection') }}</span>
+        </h2>
+        <div class="row">
+          <template v-if="!isAutosalon">
+            <div class="col-12 col-lg-4 mb-2 mb-lg-0">
+              <form-select :label="$t('region')" :options="sellOptions.regions" v-model="form.region_id" has-search 
+                @change="removeError('region_id')" />
+            </div>
+            <div class="col-12 col-lg-4 mb-2 mb-lg-0">
+              <form-text-input :placeholder="$t('address')" icon-name="placeholder" v-model="form.address" />
+            </div>
+          </template>
+          <div class="col-12 col-lg-4 mb-2 mb-lg-0">
+            <pick-on-map-button :lat="form.lat" :lng="form.lng" :address="form.address"
+                @change-address="updateAddress" @change-latlng="updateLatLng">
+              <form-text-input :placeholder="$t('address')" icon-name="placeholder" v-model="form.address" />
+            </pick-on-map-button>
           </div>
         </div>
       </template>
@@ -66,13 +85,15 @@ import SellSelectModification from '~/components/sell/SellSelectModification';
 import UploadImage from '~/components/elements/UploadImage';
 import ColorOptions from '~/components/options/ColorOptions';
 import AddVideo from '~/components/elements/AddVideo';
+import PickOnMapButton from '~/components/elements/PickOnMapButton';
 
 export default {
   components: { 
     SellSelectModification,
     UploadImage,
     ColorOptions,
-    AddVideo
+    AddVideo,
+    PickOnMapButton
   },
   props: {
     edit: Boolean,
@@ -97,6 +118,8 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['sellOptions', 'sellAutosalonRights']),
+
     progress() {
       let progress = 30;
       if (this.form.car_catalog_id) progress += 10;
@@ -106,7 +129,11 @@ export default {
     helperImages() {
       let imgs = this.type === 'cars' ? [1,2,3,4,5] : (this.type === 'commercial' ? [1,2,3,4] : [1,2,3]);
       return imgs.map(n => `/img/sell-helpers/${this.type}_${n}.png`);
-    }
+    },
+
+    isAutosalon() {
+      return !!((this.loggedIn && this.user.autosalon) || this.sellAutosalonRights);
+    },
   },
   methods: {
     ...mapActions(['setSellProgress', 'setSellPreviewData']),
@@ -184,7 +211,23 @@ export default {
     updateImages(files) {
       this.files = files;
       this.setSellPreviewData({ value: files[0]?.image, key: 'image' });
-    }
+    },
+    updateMileage(is_new) {
+      if(!is_new) {
+        this.isInvalid('mileage') && this.removeError('mileage');
+      } else {
+        let mileage = this.form.mileage;
+        this.form.mileage = mileage > 500 || !mileage ? 0 : mileage;
+      }
+    },
+    updateAddress(address) {
+      this.form.address = address;
+      this.removeError('address');
+    },
+    updateLatLng({ lat, lng }) {
+      this.form.lat = lat;
+      this.form.lng = lng;
+    },
   },
   watch: {
     progress(value) {

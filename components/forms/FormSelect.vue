@@ -78,34 +78,32 @@
               <slot />
             </div>
             <vue-scroll :ops="scrollOps" ref="vs" v-else :key="vsKey">
-              <div class="container">
-                <div class="row pt-3" v-if="popularOptions && !search">
-                  <div v-for="option in $sortBy(getFilteredOptions, (a, b) => popularOptions.indexOf(b.id) - popularOptions.indexOf(a.id)).slice(0,6)" 
-                    :key="option.id" class="col-4 popular-option" @click.stop="selectValue = option">
-                    <div class="img" v-if="imgKey && option[imgKey]">
-                      <img :src="option[imgKey]" :alt="getOptionName(option)" />
-                    </div>
-                    <div class="text-truncate">
-                      <span>{{ getOptionName(option) }}</span>
-                    </div>
+              <div class="row pt-3" v-if="popularOptions && !search">
+                <div v-for="option in $sortBy(getFilteredOptions, (a, b) => popularOptions.indexOf(b.id) - popularOptions.indexOf(a.id)).slice(0,6)" 
+                  :key="option.id" class="col-4 popular-option" @click.stop="selectValue = option">
+                  <div class="img" v-if="imgKey && option[imgKey]">
+                    <img :src="option[imgKey]" :alt="getOptionName(option)" />
+                  </div>
+                  <div class="text-truncate">
+                    <span>{{ getOptionName(option) }}</span>
                   </div>
                 </div>
-                <template v-for="(option, index) in getFilteredOptions">
-                  <div :key="index" :class="['select-menu_dropdown-option', {'selected': isSelected(option), 'anchor': isAnchor(index)}]" 
-                      @click.stop="selectValue = option">
-                    <div class="img" v-if="imgKey && option[imgKey]">
-                      <img :src="option[imgKey]" :alt="getOptionName(option)" />
-                    </div>
-                    <div class="text-truncate">
-                      <span>{{ getOptionName(option) }}</span>
-                    </div>
-                    <icon name="check" v-if="isSelected(option)" />
+              </div>
+              <template v-for="(option, index) in getFilteredOptions">
+                <div :key="index" :class="['select-menu_dropdown-option', {'selected': isSelected(option), 'anchor': isAnchor(index)}]" 
+                    @click.stop="selectValue = option">
+                  <div class="img" v-if="imgKey && option[imgKey]">
+                    <img :src="option[imgKey]" :alt="getOptionName(option)" />
                   </div>
-                </template>
-                <div class="select-menu_dropdown-option disabled" v-if="!getFilteredOptions.length">
                   <div class="text-truncate">
-                    <span>{{ $t('no_results_found') }}</span>
+                    <span>{{ getOptionName(option) }}</span>
                   </div>
+                  <icon name="check" v-if="isSelected(option)" />
+                </div>
+              </template>
+              <div class="select-menu_dropdown-option disabled" v-if="!getFilteredOptions.length">
+                <div class="text-truncate">
+                  <span>{{ $t('no_results_found') }}</span>
                 </div>
               </div>
             </vue-scroll>
@@ -282,7 +280,7 @@
           let suffix = this.values.suffix || this.suffix;
           if (value && suffix) value += ` ${suffix}`;
           else suffix = this.suffix || this.values.suffix;
-          return value && this.values.showLabel ? `${this.label}: ${value}` : (value || `${this.label}${suffix ? (', '+suffix) : ''}`);
+          return value && this.values.showLabel ? `${this.label}${this.values.count ? ` (${this.values.count})` : `: ${value}`}` : (value || `${this.label}${suffix ? (', '+suffix) : ''}`);
         }
         let selected = this.options.filter(this.isSelected);
         return selected.length === 1
@@ -292,11 +290,12 @@
       getActionBarText() {
         if (this.hasNoValue) return this.getLabelText;
         else if (this.multiple) return this.value.length > 1 ? `${this.label} (${this.value.length})` : this.getLabelText;
+        else if (this.custom && this.values.count) return `${this.label} (${this.values.count})`;
         return `${(this.showLabelOnSelect && this.allowClear && !(this.custom && !this.values.showLabel)) ? '' : this.label + ': '}${this.getLabelText}`;
       },
       hasNoValue() {
         if(this.custom) 
-          return this.label === this.getLabelText.replace(`, ${this.suffix}`, '');
+          return this.values?.count ? false : (this.label === this.getLabelText.replace(`, ${this.suffix}`, ''));
         if(this.selectValue instanceof Array) {
           for(let i in this.selectValue)
             if(this.options.map(option => this.getValue(option, true)).indexOf(this.getKey(this.selectValue[i])) !== -1)
