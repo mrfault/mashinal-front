@@ -53,7 +53,7 @@
           </template>
         </div>
       </div>
-      <input type="file" :id="'upload-image_form__input--' + inputId" hidden multiple />
+      <input type="file" :id="'upload-image_form__input--' + inputId" accept="image/*" hidden multiple />
     </form>
   </div>
 </template>

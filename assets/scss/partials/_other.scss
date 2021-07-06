@@ -161,6 +161,9 @@
   background-color: $white;
   border-radius: 4px;
   margin: 0 auto;
+  &.wider {
+    width: 680px;
+  }
   &_scrollview {
     @include calc-vh(max-height, calc(100vh - 170px));
   }
@@ -309,8 +312,11 @@
   }
 
   .modal-popup {
-    width: 100%;
-    width: calc(100% + 1px);
+    &,
+    &.wider {
+      width: 100%;
+      width: calc(100% + 1px);
+    }
     max-width: 540px;
     bottom: 0px;
     top: auto;
@@ -352,6 +358,12 @@
     width: 15px;
     display: inline-block;
     position: relative;
+    i {
+      transform: none !important;
+      position: static !important;
+      pointer-events: all !important;
+      top: auto !important;
+    }
   }
   &-title {
     cursor: pointer;
@@ -386,11 +398,16 @@
       transform: rotate(180deg);
     }
     &.show {
-      z-index: 10;
+      z-index: 8;
       opacity: 1;
       visibility: visible;
       // transform: translate(-50%, 10px);
       transition: all 0.5s cubic-bezier(0.75, -0.02, 0.2, 0.97);
+    }
+    svg {
+      display: block;
+      width: 100%;
+      height: auto;
     }
   }
 }

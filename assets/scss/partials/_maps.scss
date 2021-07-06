@@ -61,8 +61,14 @@
 .dark-mode {
   .map-wrapper {
     .map {
-      [class*=ground-pane] {
-        filter: brightness(0.7);
+      // [class*=ground-pane] {
+      //   filter: brightness(0.7);
+      // }
+    }
+
+    .form-group {
+      .text-input input {
+        background-color: $dark-2;
       }
     }
   }

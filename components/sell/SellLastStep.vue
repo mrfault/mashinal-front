@@ -5,9 +5,9 @@
         :form="form"
         @update-form="handleModification"
       />
-      <template v-if="showAllOptions">
+      <div v-if="showAllOptions" :class="{'disabled-content': type === 'cars' && !form.car_catalog_id}">
         <h2 class="title-with-line" ref="saved_images">
-          <span>{{ $t('photos') }}</span>
+          <span>{{ $t('photos') }} <span class="star"> *</span></span>
         </h2>
         <upload-image
           :maxFiles="maxFiles"
@@ -24,17 +24,24 @@
         </h2>
         <add-video :value="form.youtube.id" @input="$set(form, 'youtube', $event)" />
         <h2 class="title-with-line mt-2 mt-lg-3" ref="selectedColor">
-          <span>{{ $t('color') }}</span>
+          <span>{{ $t('color') }} <span class="star"> *</span></span>
         </h2>
         <color-options v-model="form.selectedColor" :limit="2" :multiple="type === 'cars'"
           @change-matt="form.is_matte = $event" :matt="form.is_matte" :hide-matt="type !== 'cars'" />
         <h2 class="title-with-line mt-2 mt-lg-3" ref="mileage">
-          <span>{{ $t('mileage') }}</span>
+          <span>{{ $t('mileage') }} <span class="star"> *</span></span>
         </h2>
         <div class="row">
-          <div class="col-12 col-lg-4 mb-2 mb-lg-0 text-uppercase">
-            <form-numeric-input :placeholder="$t('char_kilometre')" v-model="form.mileage" 
-              :invalid="isInvalid('mileage')" />
+          <div class="col-12 col-lg-4 mb-2 mb-lg-0">
+            <div class="row">
+              <div class="col-auto flex-grow-1">
+                <form-numeric-input :placeholder="$t('mileage')" v-model="form.mileage" 
+                  :invalid="isInvalid('mileage')" />
+              </div>
+              <div class="col-auto">
+                <form-switch :options="getMileageOptions" v-model="form.mileage_measure" />
+              </div>
+            </div>
           </div>
           <div class="col-12 col-lg-4 mb-2 mb-lg-0">
             <form-select :label="$t('data')" custom custom-checkboxes :allow-clear="false"
@@ -45,14 +52,25 @@
                   <popover :message="$t('with_significant_damage_to_body_elements_that_do_not_move_on_their_own')" :width="175" />
                 </form-checkbox>
                 <form-checkbox :label="$t('in_garanty')" v-model="form.guaranty" input-name="guaranty" />
-                <form-checkbox :label="$t('not_cleared')" v-model="form.customs_clearance" input-name="customs_clearance" />
+                <form-checkbox :label="$t('not_cleared')" v-model="form.customs_clearance" input-name="customs_clearance"
+                  @change="removeError('car_number', true), removeError('vin', true)" />
                 <form-checkbox :label="$t('tradeable')" v-model="form.tradeable" input-name="tradeable" />
               </div>
             </form-select>
           </div>
         </div>
+        <template v-if="type === 'cars'">
+          <h2 class="title-with-line mt-2 mt-lg-3" ref="body-parts">
+            <span>{{ $t('body_condition') }}</span>
+          </h2>
+          <damage-options 
+            :selected="form.part"
+            @update-car-damage="updateCarDamage"
+            @update-car-damage-part="updateCarDamagePart"
+          />
+        </template>
         <h2 class="title-with-line mt-2 mt-lg-3" ref="region">
-          <span>{{ $t('region_and_place_of_inspection') }}</span>
+          <span>{{ $t('region_and_place_of_inspection') }} <span class="star"> *</span></span>
         </h2>
         <div class="row">
           <template v-if="!isAutosalon">
@@ -71,7 +89,84 @@
             </pick-on-map-button>
           </div>
         </div>
-      </template>
+        <h2 class="title-with-line mt-2 mt-lg-3" ref="price">
+          <span>{{ $t('price') }} <span class="star"> *</span></span>
+        </h2>
+        <div class="row">
+          <div class="col-12 col-lg-4 mb-2 mb-lg-0">
+            <div class="row flex-nowrap">
+              <div class="col-auto flex-grow-1">
+                <form-numeric-input :placeholder="$t('price')" v-model="form.price" 
+                  :invalid="isInvalid('price')" />
+              </div>
+              <div class="col-auto">
+                <form-switch :options="getCurrencyOptions" v-model="form.currency" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <h2 class="title-with-line mt-2 mt-lg-3" ref="price">
+          <span>{{ $t('license_plate_number_vin_or_carcase_number') }} <span class="star"> *</span></span>
+        </h2>
+        <div class="row">
+          <div class="col-12 col-lg-4 mb-2 mb-lg-0">
+            <form-text-input v-model="form.car_number" input-class="car-number-show-popover" 
+                :mask="type === 'cars' ? '99 - AA - 999' : '99 - A{1,2} - 999'"
+                :placeholder="type === 'cars' ? '__ - __ - ___' : '__ - _ - ___'" @focus="showCarNumberDisclaimer">
+              <popover :message="$t('real-car-number-will-make-post-faster')" :width="190" 
+                  name="car-number" @click="readCarNumberDisclaimer = true" />
+            </form-text-input>
+            <form-checkbox :label="$t('show_on_site')" v-model="form.show_car_number" input-name="show_car_number" 
+              transparent class="mt-2 mt-lg-3"/>
+          </div>
+          <div class="col-12 col-lg-4 mb-2 mb-lg-0">
+            <form-text-input v-model="form.vin" 
+                :mask="'*****************'"
+                :placeholder="$t('vin_carcase_number')">
+              <popover name="vin" :width="240">
+                <inline-svg src="/img/car-cert.svg"/>
+              </popover>
+            </form-text-input>
+            <form-checkbox :label="$t('show_on_site')" v-model="form.show_vin" input-name="show_vin" 
+              transparent class="mt-2 mt-lg-3"/>
+          </div>
+        </div>
+        <h2 class="title-with-line mt-2 mt-lg-3" ref="description">
+          <span>{{ $t('description_placeholder') }}</span>
+        </h2>
+        <form-textarea v-model="form.comment" :placeholder="$t('description_placeholder')" 
+          :maxlength="3000" />
+        <p class="info-text full-width less-pd mt-2">
+          {{ $t('it_is_forbidden_to_give_links_indicate_email_addresses_mail_address_of_the_place_of_inspection_telephones_price_offer_services')}}
+        </p>
+        <hr/>
+        <div class="row mt-4 mb-4">
+          <div class="service-banner col-6 col-lg-4" v-for="banner in ['vip','premium']" :key="banner">
+            <img :src="`/img/card-${banner}${isMobileBreakpoint ? '-mobile' : ''}-${locale}.png`" alt="banner"
+              @click="publishPost(banner)" />
+          </div>
+        </div>
+        <p class="info-text full-width mt-2">
+          <icon name="alert-circle" /> {{ $t('by_posting_an_ad_you_confirm_your_agreement_with_the_rules')}}: 
+          <nuxt-link :to="`/page/${getRulesPage.slug[locale]}`" @click.native.prevent="showRules = true" event="">
+            <strong>{{ $t('general_rules') }}</strong>
+          </nuxt-link>
+        </p>
+        <p class="info-text full-width less-pd mt-2">
+          <span class="star">*</span> - {{ $t('starred_fields_are_required')}}
+        </p>
+        <div class="text-right">
+          <button class="btn btn--green">{{ $t('post_for_free') }}</button>
+        </div>
+        <modal-popup
+          :modal-class="'wider'"
+          :toggle="showRules"
+          :title="getRulesPage.title[locale]"
+          @close="showRules = false"
+        >
+          <div v-html="getRulesPage.text[locale]"></div>
+        </modal-popup>
+      </div>
     </div>
   </component>
 </template>
@@ -84,6 +179,7 @@ import { ToastErrorsMixin } from '~/mixins/toast-errors';
 import SellSelectModification from '~/components/sell/SellSelectModification';
 import UploadImage from '~/components/elements/UploadImage';
 import ColorOptions from '~/components/options/ColorOptions';
+import DamageOptions from '~/components/options/DamageOptions';
 import AddVideo from '~/components/elements/AddVideo';
 import PickOnMapButton from '~/components/elements/PickOnMapButton';
 
@@ -92,6 +188,7 @@ export default {
     SellSelectModification,
     UploadImage,
     ColorOptions,
+    DamageOptions,
     AddVideo,
     PickOnMapButton
   },
@@ -114,11 +211,13 @@ export default {
       deletedFiles: [],
       uploading: 0,
       publishing: false,
-      showAllOptions: this.type !== 'cars'
+      showAllOptions: this.type !== 'cars',
+      readCarNumberDisclaimer: false,
+      showRules: false
     }
   },
   computed: {
-    ...mapGetters(['sellOptions', 'sellAutosalonRights']),
+    ...mapGetters(['sellOptions', 'sellAutosalonRights', 'staticPages']),
 
     progress() {
       let progress = 30;
@@ -133,6 +232,23 @@ export default {
 
     isAutosalon() {
       return !!((this.loggedIn && this.user.autosalon) || this.sellAutosalonRights);
+    },
+    getRulesPage() {
+      return this.staticPages.find(page => page.id == 1);
+    },
+
+    getCurrencyOptions() {
+      return [
+        { key: 1, name: 'AZN', sign: '₼'	},
+        { key: 2, name: 'USD', sign: '$'	},
+        { key: 3, name: 'EUR', sign: '€'	}
+      ];
+    },
+    getMileageOptions() {
+      return [
+        { key: 1, name: this.$t('char_kilometre')	},
+        { key: 2, name: this.$t('char_mile')	}
+      ];
     },
   },
   methods: {
@@ -228,6 +344,20 @@ export default {
       this.form.lat = lat;
       this.form.lng = lng;
     },
+    updateCarDamage(part) {
+      this.form.part = part;
+    },
+    updateCarDamagePart(index) {
+      this.$nuxt.$emit('update-car-damage-part', this.form.part[index] || {});
+    },
+    showCarNumberDisclaimer() {
+      if(this.readCarNumberDisclaimer) {
+        this.$nuxt.$emit('close-popover', 'car-number');
+      } else {
+        this.$nuxt.$emit('show-popover', 'car-number');
+        this.readCarNumberDisclaimer = true;
+      }
+    }
   },
   watch: {
     progress(value) {

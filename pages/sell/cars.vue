@@ -122,6 +122,7 @@ export default {
         selectedColor: [],
         is_matte: false,
         mileage: '',
+        mileage_measure: 1,
         region_id: '',
         address: '',
         lat: 0,

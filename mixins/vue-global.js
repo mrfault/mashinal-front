@@ -41,12 +41,16 @@ Vue.use({
           offset += (this.isMobileBreakpoint ? -60 : -141);
           this.$scrollTo(el, duration, { offset, container });
         },
-        setBodyOverflow(value = 'auto') {
+        setBodyOverflow(value = 'auto', className) {
           let bodyEl = document.querySelector('body');
           let scrollBarWidth = window.innerWidth - bodyEl.clientWidth;
-          bodyEl.style.paddingRight = `${value === 'hidden' ? scrollBarWidth : 0}px`;
-          bodyEl.style.overflowX = value === 'scroll' ? 'auto' : value;
-          bodyEl.style.overflowY = value;
+          let mobileScreenOpen = bodyEl.classList.contains('mobile-screen-open') && className !== 'mobile-screen-open';
+          let mobileScreen = document.querySelector('.mobile-screen');
+          if (className) bodyEl.classList[value === 'hidden' ? 'add' : 'remove'](className);
+          if (mobileScreenOpen && !mobileScreen) return;
+          (mobileScreenOpen ? mobileScreen : bodyEl).style.paddingRight = `${value === 'hidden' ? scrollBarWidth : 0}px`;
+          (mobileScreenOpen ? mobileScreen : bodyEl).style.overflowX = value === 'scroll' ? 'auto' : value;
+          (mobileScreenOpen ? mobileScreen : bodyEl).style.overflowY = value;
         },
         getParentByClassName(el, className) {
           el = typeof el === 'string' ? document.querySelector(el) : el;

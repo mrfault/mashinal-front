@@ -4,7 +4,9 @@
       <icon :name="icon" />
     </div>
     <div class="popover-content" :class="{show}" :style="{width: `${width}px`}">
-      <icon name="triangle" class="popover-content_triangle" />
+      <span class="popover-content_triangle">
+        <icon name="triangle" />
+      </span>
       <p class="popover-message">
         {{ message }}
         <slot />
@@ -35,7 +37,7 @@
     methods: {
       showThis() {
         this.$nuxt.$emit('close-all-popover');
-        this.$emit('handle-click');
+        this.$emit('click');
         this.show = true;
       },
       handleClick(e) {
@@ -44,6 +46,12 @@
           .filter(c => e.target.classList.contains(c) || this.getParentByClassName(e.target, c)).length;
         if (isPopoverClicked || e.target.classList.contains(this.name+'-show-popover')) hide = false;
         if (hide) this.show = false;
+      },
+      showPopover(name) {
+        if (this.name === name) this.showThis();
+      },
+      closePopover(name) {
+        if (!name || this.name === name) this.show = false;
       }
     },
     watch: {
@@ -53,19 +61,15 @@
       }
     },
     mounted() {
-      this.$nuxt.$on('show-popover', (name) => {
-        if(this.name === name) this.showThis();
-      });
-      this.$nuxt.$on('close-popover', (name) => {
-        if(this.name === name) this.show = false;
-      });
-      this.$nuxt.$on('close-all-popover', () => {
-        this.show = false;
-      });
+      this.$nuxt.$on('show-popover', this.showPopover);
+      this.$nuxt.$on('close-popover', this.closePopover);
+      this.$nuxt.$on('close-all-popover', this.closePopover);
     },
     beforeDestroy() {
+      this.$nuxt.$off('show-popover', this.showPopover);
+      this.$nuxt.$off('close-popover', this.closePopover);
+      this.$nuxt.$off('close-all-popover', this.closePopover);
       document.removeEventListener('click', this.handleClick);
-      this.$nuxt.$off(['close-all-popover','show-popover','close-popover']);
     }
   }
 </script>

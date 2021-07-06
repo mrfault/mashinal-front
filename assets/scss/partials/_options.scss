@@ -78,6 +78,100 @@
   }
 }
 
+.damage-options {
+  .car-damage {
+    &-img {
+      width: 260px;
+      flex-shrink: 0;
+      margin-right: 45px;
+      position: relative;
+      .roof .roof, 
+      .front .front
+      .rear .rear, 
+      .left-door-rear .left-door-rear, 
+      .left-door-front .left-door-front, 
+      .right-door-rear .right-door-rear, 
+      .right-door-front .right-door-front {
+        stroke: $dark-blue-2;
+      }
+    }
+    &-text {
+      width: 100%;
+      font-weight: 500;
+      & > div:not(:last-child) {
+        margin-bottom: 18px;
+      }
+      h4 {
+        color: $dark-blue-2;
+        font-size: 15px;
+        font-weight: 500;
+        margin-bottom: 8px;
+      }
+    }
+  }
+  .car-part {
+    position: absolute;
+    &_front,
+    &_rear,
+    &_roof {
+      left: 50%;
+      transform: translate(-50%);
+    }
+    &_front {
+      top: 3.175%;
+    }
+    &_rear {
+      bottom: 6.35%;
+    }
+    &_roof {
+      bottom: 42.85%;
+    }
+    &_right-door-rear {
+      bottom: 42.85%;
+      right: 9.6%;
+    }
+    &_left-door-rear {
+      bottom: 42.85%;
+      left: 9.6%;
+    }
+    &_right-door-front {
+      top: 38%;
+      right: 9.6%;
+    }
+    &_left-door-front {
+      top: 38%;
+      left: 9.6%;
+    }
+    &_point {
+      display: block;
+      cursor: pointer;
+      position: relative;
+      border: 1px solid $dark-blue-2;
+      border-radius: 50%;
+      width: 16px;
+      height: 16px;
+      &::after {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: $dark-blue-2;
+        border-radius: 50%;
+        width: 12px;
+        height: 12px;
+      }
+      &:not(.selected) {
+        border-color: $greyish-blue-5;
+        &::after {
+          background-color: $greyish-blue-5;
+        }
+      }
+    }
+  }
+}
+
 .dark-mode {
   .color-options {
     .color {
@@ -103,6 +197,44 @@
       border-top-color: $dark-1;
     }
   }
+
+  .damage-options {
+    .car-damage {
+      &-img {
+        svg {
+          stroke: rgba($white, .35);
+        }
+        .roof .roof, 
+        .front .front
+        .rear .rear, 
+        .left-door-rear .left-door-rear, 
+        .left-door-front .left-door-front, 
+        .right-door-rear .right-door-rear, 
+        .right-door-front .right-door-front {
+          stroke: $white;
+        }
+      }
+      &-text {
+        h4 {
+          color: $white;
+        }
+      }
+    }
+    .car-part {
+      &_point {
+        border: 1px solid $white;
+        &::after {
+          background-color: $white;
+        }
+        &:not(.selected) {
+          border-color: $grey-9;
+          &::after {
+            background-color: $grey-9;
+          }
+        }
+      }
+    }
+  }
 }
 
 @include media-max-width('lg') {
@@ -113,6 +245,18 @@
     width: 100%;
     &_option {
       padding: 0 34px 0 0;
+    }
+  }
+
+  .damage-options {
+    .car-damage {
+      &-img {
+        margin-right: 0;
+        margin: 0 auto 20px;
+      }
+      &-text {
+        width: 100%;
+      }
     }
   }
 }

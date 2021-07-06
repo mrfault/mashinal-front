@@ -125,6 +125,7 @@ export default {
           thumb: ''
         },
         mileage: '',
+        mileage_measure: 1,
         region_id: '',
         address: '',
         lat: 0,

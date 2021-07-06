@@ -223,8 +223,8 @@ export const SearchMixin = {
     },
     getCurrencyOptions() {
       return [
-        { key: 1, name: 'AZN'	},
-        { key: 2, name: 'USD'	}
+        { key: 1, name: 'AZN', sign: '₼' },
+        { key: 2, name: 'USD', sign: '$' }
       ];
     },
     getDamageOptions() {

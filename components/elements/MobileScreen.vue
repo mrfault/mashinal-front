@@ -17,10 +17,10 @@ export default {
     heightAuto: Boolean
   },
   mounted() {
-    this.setBodyOverflow('hidden');
+    this.setBodyOverflow('hidden', 'mobile-screen-open');
   },
   beforeDestroy() {
-    this.setBodyOverflow('scroll');
+    this.setBodyOverflow('scroll', 'mobile-screen-open');
   }
 }
 </script>

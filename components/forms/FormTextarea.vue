@@ -2,18 +2,14 @@
   <div class="form-group">
     <div class="text-input">
       <icon :name="iconName" v-if="iconName" :class="{invalid, disabled}" />
-      <input 
+      <textarea 
         :id="id"
-        :type="type"
         :placeholder="placeholder" 
         :maxlength="maxlength" 
         :disabled="disabled"
-        :class="{invalid, valid, disabled, [`${inputClass}`]:inputClass}"
-        :autocomplete="autocomplete"
-        v-mask="mask"
+        :class="{invalid, valid, disabled}"
         v-model="inputValue"
-        @focus="$emit('focus', $event)"
-      />
+      ></textarea>
       <icon name="alert-circle" v-if="invalid" class="invalid" />
       <icon name="check-circle" v-else-if="valid" class="valid" />
       <slot />
@@ -27,10 +23,6 @@
       value: {},
       id: String,
       iconName: String,
-      type: {
-        type: String,
-        default: 'text'
-      },
       placeholder: {
         type: String,
         default: ' '
@@ -50,15 +42,7 @@
       valid: {
         type: Boolean,
         default: false
-      },
-      autocomplete: {
-        type: String,
-        default: 'off'
-      },
-      mask: {
-        default: false
-      },
-      inputClass: String
+      }
     },
     data() {
       return {

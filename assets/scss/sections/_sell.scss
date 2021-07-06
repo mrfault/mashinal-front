@@ -171,6 +171,11 @@
   .select-body {
     height: 110px;
     flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 23px !important;
+    span {
+      white-space: normal;
+    }
     .body-img {
       display: flex;
       flex-direction: column;
@@ -228,6 +233,13 @@
         background-size: 70%;
       }
     }
+  }
+}
+
+.service-banner {
+  img {
+    cursor: pointer;
+    width: 100%;
   }
 }
 
