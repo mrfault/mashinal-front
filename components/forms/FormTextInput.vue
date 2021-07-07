@@ -2,6 +2,7 @@
   <div class="form-group">
     <div class="text-input">
       <icon :name="iconName" v-if="iconName" :class="{invalid, disabled}" />
+      <img :src="imgSrc" v-if="imgSrc" :class="{disabled}" />
       <input 
         :id="id"
         :type="type"
@@ -27,6 +28,7 @@
       value: {},
       id: String,
       iconName: String,
+      imgSrc: String,
       type: {
         type: String,
         default: 'text'

@@ -631,6 +631,7 @@ export default {
 	"fill_out_an_application": "Заполнить заявку",
 	"filters": "Фильтры",
 	"find": "Искать",
+	"finish": "Завершить",
 	"fines_amount": "Общая сумма штрафов за автотранспорт:",
 	"fines_count": "Количество штрафов на транспортное средство:",
 	"fines_info": "Подробная информация о штрафах",
@@ -1007,6 +1008,7 @@ export default {
 	"polnyy": "Полный",
 	"polnyy_podkluchayemiy": "Полный подключаемый",
 	"popular": "Популярные",
+	"popular_options": "Популярные опции",
 	"position": "Расположение",
 	"post_for_free": "Разместить бесплатно",
 	"power": "Мощноть",
@@ -1604,5 +1606,7 @@ export default {
 	"model_name": "Название модели",
 	"clean": "Очистить",
 	"prod_year": "Год выпуска",
-	"year": "год"
+	"year": "год",
+
+	"edit_or_restore": "Измените необходимые данные и"
 }

@@ -115,7 +115,9 @@ export default {
     },
     getModificationName(o) {
       let generation = this.sellGenerations.find(o => o.id === this.form.generation_id);
-      let name = `${o.power} ${this.$t('char_h_power')}/${o.capacity} ${this.$t('box_mode_values')[o.box]}/${generation.start_year} - ${generation.end_year || this.currentYear}`;
+      let name = `${this.$t('box_mode_values')[o.box]}/${generation.start_year} - ${generation.end_year || this.currentYear}`;
+      if (o.capacity) name = `${o.capacity} ${name}`;
+      if (o.power) name = `${o.power} ${this.$t('char_h_power')}/${name}`;
       if (o.complect_type) name += `/${o.complect_type}`;
       return name;
     },
@@ -160,7 +162,7 @@ export default {
           this.$emit('update-form', { key: nextKey, value: nextValue });
         } else if (this.isMobileBreakpoint) {
           setTimeout(() => {
-            this.scrollTo(this.$refs[`sell-${nextKey}`], -34, 500, '.mobile-screen');
+            this.scrollTo(this.$refs[`sell-${nextKey}`], -34, 500);
             $container.style.minHeight = '';
           }, 100);
         }

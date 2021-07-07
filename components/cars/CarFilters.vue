@@ -1,9 +1,10 @@
 <template>
   <div class="car-filters">
-    <div class="car-filters_row" v-for="(options, index) in allSellOptions2.detailed" :key="index">
+    <div class="car-filters_row" v-for="(options, index) in carFilterOptions" :key="index">
       <div class="d-flex mb-2 mb-lg-3" @click="$set(collapsed, index, !collapsed[index])">
         <h2 class="title-with-line full-width">
-          <span>{{ titles[index] || '' }}</span>
+          <span v-if="popular">{{ $t('popular_options') }}</span>
+          <span v-else>{{ titles[index] || '' }}</span>
         </h2>
         <icon :name="`chevron-${collapsed[index] ? 'down' : 'up'}`" class="cursor-pointer" />
       </div>
@@ -25,7 +26,7 @@
                 v-else-if="input.type === 'checkbox'"
                 v-model="form[input.name]" 
                 :label="$t(input.label)"
-                :id="`${input.name}${input.selected_key || ''}`"
+                :id="`${popular ? 'popular_' : ''}${input.name}${input.selected_key || ''}`"
                 :input-name="input.name"  
                 @change="changeFilter(input.name, $event, input.selected_key)"
               />
@@ -43,7 +44,8 @@ import { mapGetters } from 'vuex';
 export default {
   props: {
     values: {},
-    nameInValue: Boolean
+    nameInValue: Boolean,
+    popular: Boolean
   },
   data() {
     return {
@@ -66,7 +68,15 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['allSellOptions2'])
+    ...mapGetters(['allSellOptions', 'allSellOptions2', 'popularOptions']),
+
+    carFilterOptions() {
+      if (this.popular)
+        return [this.popularOptions];
+      else if (this.nameInValue)
+        return this.allSellOptions2.detailed;
+      return this.allSellOptions;
+    }
   },
   methods: {
     isMultiple(input) {
@@ -90,7 +100,7 @@ export default {
       this.$emit('change-filter', key, value);
     },
     setValues() {
-      this.allSellOptions2.detailed.map(options => {
+      this.carFilterOptions.map(options => {
         options.map(input => {
           this.$set(this.form, input.name, this.getValue(input, this.values));
         });

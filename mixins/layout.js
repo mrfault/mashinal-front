@@ -79,7 +79,7 @@ export const LayoutMixin = {
       this.showLoginPopup = false;
       this.loginActionKey = '';
     },
-    afterLogin() {
+    handleAfterLogin() {
       let key = this.loginActionKey;
       this.closeLogin();
       this.resetSellTokens();
@@ -103,7 +103,7 @@ export const LayoutMixin = {
       this.toggleEchoListening(true);
       
     this.$nuxt.$on('login', (auth) => {
-      if (auth) this.afterLogin();
+      if (auth) this.handleAfterLogin();
       this.toggleEchoListening(auth);
     });
 

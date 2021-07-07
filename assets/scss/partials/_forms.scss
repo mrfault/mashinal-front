@@ -86,7 +86,9 @@ textarea {
     padding: 9px 15px 7px;
     border-radius: 4px;
     &.invalid {
-      color: $red-1;
+      &:not(:focus) {
+        color: $red-1;
+      }
       padding-right: 34px;
     }
     &.valid {
@@ -101,7 +103,7 @@ textarea {
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  i {
+  i, img {
     position: absolute;
     top: 50%;
     transform: translate(0, -50%);
@@ -132,6 +134,9 @@ textarea {
     &.disabled {
       color: $grey-3;
     }
+  }
+  img:first-child + input {
+    padding-left: 42px;
   }
   .popover-wrapper {
     position: absolute;
@@ -439,6 +444,9 @@ textarea {
     &.responsive .mt-3 + .select-menu_dropdown-option {
       border-top: 0;
     }
+  }
+  &.invalid  &_label:not(.active) {
+    color: $red-1;
   }
 }
 

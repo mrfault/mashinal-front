@@ -7,11 +7,14 @@ export const ToastErrorsMixin = {
   },
   methods: {
     showError(key, message, options = {}, scroll = false) {
-      this.toasts[key] = this.$toasted.error(message, this.getToastOptions);
-      this.toasts[key].el.addEventListener('click', () => {
-        this.scrollTo(this.$refs[options.fieldView]);
+      this.toasts[key] = this.$toasted.error(message, {
+        duration: 0,
+        action: { text: this.$t('update') }
       });
-      if(scroll) this.scrollTo(this.$refs[options.fieldView]);
+      this.toasts[key].el.addEventListener('click', () => {
+        this.scrollTo(this.$refs[options.fieldView || key], options.offset || 0);
+      });
+      if (scroll) this.scrollTo(this.$refs[options.fieldView || key], options.offset || 0);
     },
     removeError(field, force = false) {
       if(!force && (!this.form[field] || this.form[field] === '')) return;
@@ -31,14 +34,6 @@ export const ToastErrorsMixin = {
     hasValue(field, key) {
       let formEl = key !== undefined ? this.form[field][key] :  this.form[field];
       return {'has-value': formEl !== undefined && formEl !== null && (formEl.length || formEl !== '') };
-    }
-  },
-  computed: {
-    getToastOptions() {
-      return {
-        duration: 0,
-        action: {text: this.$t('update')}
-      }
     }
   },
   beforeDestroy() {

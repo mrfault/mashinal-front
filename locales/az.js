@@ -631,6 +631,7 @@ export default {
 	"fill_out_an_application": "Müraciəti doldurun",
 	"filters": "Filtrlər",
 	"find": "Axtar",
+	"finish": "Tamamla",
 	"fines_amount": "Nəqliyyat vasitəsinə dair cərimələrin toplam məbləği:",
 	"fines_count": "Nəqliyyat vasitəsinə dair cərimələrin sayı:",
 	"fines_info": "Cərimələr haqqında ətraflı məlumat",
@@ -1008,6 +1009,7 @@ export default {
 	"polnyy": "Tam",
 	"polnyy_podkluchayemiy": "Tam qoşulan",
 	"popular": "Populyar",
+	"popular_options": "Populyar seçimlər",
 	"position": "Yerləşim",
 	"post_for_free": "Pulsuz yerləşdir",
 	"power": "Mühərrik gücü",
@@ -1600,5 +1602,7 @@ export default {
 	"model_name": "Modelin adı",
 	"clean": "Təmizlə",
 	"prod_year": "Buraxılış ili",
-	"year": "il"
+	"year": "il",
+
+	"edit_or_restore": "Nəqliyyat vasitəsinə dair məlumatlara düzəliş et və yaxud"
 }

@@ -31,6 +31,9 @@ export default {
     progress(value) {
       this.setSellProgress(value);
     }
+  },
+  beforeDestroy() {
+    this.setSellProgress(5);
   }
 }
 </script>

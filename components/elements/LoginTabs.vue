@@ -2,19 +2,17 @@
   <div :class="['login-forms', {'login-forms--popup': popup}]" @click.stop>
     <div>
       <div class="tabs row">
-        <div class="col">
+        <div class="col" v-if="!forceSellPhone || tab === 'sign-in'">
           <button 
-            :class="['btn', 'btn--pale-red-outline', {'active': tab === 'sign-in'}]" 
+            :class="['btn', 'btn--pale-red-outline', {'active': tab === 'sign-in', 'pointer-events-none': forceSellPhone}]" 
             @click="updateTab('sign-in')"
-            v-if="!forceSellPhone || tab === 'sign-in'"
             v-html="$t('login')"
           />
         </div>
-        <div class="col">
+        <div class="col" v-if="!forceSellPhone || tab === 'sign-up'">
           <button 
-            :class="['btn', 'btn--pale-red-outline', {'active': tab === 'sign-up'}]"
+            :class="['btn', 'btn--pale-red-outline', {'active': tab === 'sign-up', 'pointer-events-none': forceSellPhone}]"
             @click="updateTab('sign-up')"
-            v-if="!forceSellPhone || tab === 'sign-up'"
             v-html="$t('registration')"
           />
         </div>

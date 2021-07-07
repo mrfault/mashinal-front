@@ -27,7 +27,8 @@
           <span>{{ $t('color') }} <span class="star"> *</span></span>
         </h2>
         <color-options v-model="form.selectedColor" :limit="2" :multiple="type === 'cars'"
-          @change-matt="form.is_matte = $event" :matt="form.is_matte" :hide-matt="type !== 'cars'" />
+          @change-matt="form.is_matte = $event" :matt="form.is_matte" :hide-matt="type !== 'cars'"
+          @change="removeError('selectedColor')" />
         <h2 class="title-with-line mt-2 mt-lg-3" ref="mileage">
           <span>{{ $t('mileage') }} <span class="star"> *</span></span>
         </h2>
@@ -36,7 +37,7 @@
             <div class="row">
               <div class="col-auto flex-grow-1">
                 <form-numeric-input :placeholder="$t('mileage')" v-model="form.mileage" 
-                  :invalid="isInvalid('mileage')" />
+                  :invalid="isInvalid('mileage')" @change="removeError('mileage')" />
               </div>
               <div class="col-auto">
                 <form-switch :options="getMileageOptions" v-model="form.mileage_measure" />
@@ -69,14 +70,14 @@
             @update-car-damage-part="updateCarDamagePart"
           />
         </template>
-        <h2 class="title-with-line mt-2 mt-lg-3" ref="region">
+        <h2 class="title-with-line mt-2 mt-lg-3" ref="region_id">
           <span>{{ $t('region_and_place_of_inspection') }} <span class="star"> *</span></span>
         </h2>
         <div class="row">
           <template v-if="!isAutosalon">
             <div class="col-12 col-lg-4 mb-2 mb-lg-0">
               <form-select :label="$t('region')" :options="sellOptions.regions" v-model="form.region_id" has-search 
-                @change="removeError('region_id')" />
+                :invalid="isInvalid('region_id')" @change="removeError('region_id')" />
             </div>
             <div class="col-12 col-lg-4 mb-2 mb-lg-0">
               <form-text-input :placeholder="$t('address')" icon-name="placeholder" v-model="form.address" />
@@ -97,7 +98,7 @@
             <div class="row flex-nowrap">
               <div class="col-auto flex-grow-1">
                 <form-numeric-input :placeholder="$t('price')" v-model="form.price" 
-                  :invalid="isInvalid('price')" />
+                  :invalid="isInvalid('price')" @change="removeError('price')" />
               </div>
               <div class="col-auto">
                 <form-switch :options="getCurrencyOptions" v-model="form.currency" />
@@ -105,14 +106,15 @@
             </div>
           </div>
         </div>
-        <h2 class="title-with-line mt-2 mt-lg-3" ref="price">
+        <h2 class="title-with-line mt-2 mt-lg-3" ref="car_or_vin">
           <span>{{ $t('license_plate_number_vin_or_carcase_number') }} <span class="star"> *</span></span>
         </h2>
         <div class="row">
           <div class="col-12 col-lg-4 mb-2 mb-lg-0">
-            <form-text-input v-model="form.car_number" input-class="car-number-show-popover" 
+            <form-text-input v-model="form.car_number" input-class="car-number-show-popover" img-src="/img/flag.svg"
                 :mask="type === 'cars' ? '99 - AA - 999' : '99 - A{1,2} - 999'"
-                :placeholder="type === 'cars' ? '__ - __ - ___' : '__ - _ - ___'" @focus="showCarNumberDisclaimer">
+                :placeholder="type === 'cars' ? '__ - __ - ___' : '__ - _ - ___'" @focus="showCarNumberDisclaimer"
+                @change="removeError('car_number')">
               <popover :message="$t('real-car-number-will-make-post-faster')" :width="190" 
                   name="car-number" @click="readCarNumberDisclaimer = true" />
             </form-text-input>
@@ -121,8 +123,8 @@
           </div>
           <div class="col-12 col-lg-4 mb-2 mb-lg-0">
             <form-text-input v-model="form.vin" 
-                :mask="'*****************'"
-                :placeholder="$t('vin_carcase_number')">
+                :mask="'*****************'" :placeholder="$t('vin_carcase_number')"
+                @change="removeError('vin')">
               <popover name="vin" :width="240">
                 <inline-svg src="/img/car-cert.svg"/>
               </popover>
@@ -131,7 +133,11 @@
               transparent class="mt-2 mt-lg-3"/>
           </div>
         </div>
-        <h2 class="title-with-line mt-2 mt-lg-3" ref="description">
+        <div class="mt-2 mt-lg-3 mb-n2 mb-lg-n3" v-if="type=== 'cars'">
+          <car-filters :values="form.all_options" @change-filter="updateCarFilter" popular key="popular"/>
+          <car-filters :values="form.all_options" @change-filter="updateCarFilter" key="all"/>
+        </div>
+        <h2 class="title-with-line mt-2 mt-lg-3" ref="comment">
           <span>{{ $t('description_placeholder') }}</span>
         </h2>
         <form-textarea v-model="form.comment" :placeholder="$t('description_placeholder')" 
@@ -140,24 +146,6 @@
           {{ $t('it_is_forbidden_to_give_links_indicate_email_addresses_mail_address_of_the_place_of_inspection_telephones_price_offer_services')}}
         </p>
         <hr/>
-        <div class="row mt-4 mb-4">
-          <div class="service-banner col-6 col-lg-4" v-for="banner in ['vip','premium']" :key="banner">
-            <img :src="`/img/card-${banner}${isMobileBreakpoint ? '-mobile' : ''}-${locale}.png`" alt="banner"
-              @click="publishPost(banner)" />
-          </div>
-        </div>
-        <p class="info-text full-width mt-2">
-          <icon name="alert-circle" /> {{ $t('by_posting_an_ad_you_confirm_your_agreement_with_the_rules')}}: 
-          <nuxt-link :to="`/page/${getRulesPage.slug[locale]}`" @click.native.prevent="showRules = true" event="">
-            <strong>{{ $t('general_rules') }}</strong>
-          </nuxt-link>
-        </p>
-        <p class="info-text full-width less-pd mt-2">
-          <span class="star">*</span> - {{ $t('starred_fields_are_required')}}
-        </p>
-        <div class="text-right">
-          <button class="btn btn--green">{{ $t('post_for_free') }}</button>
-        </div>
         <modal-popup
           :modal-class="'wider'"
           :toggle="showRules"
@@ -166,6 +154,49 @@
         >
           <div v-html="getRulesPage.text[locale]"></div>
         </modal-popup>
+        <backdrop @click="showLoginPopup = false" v-if="showLoginPopup">
+          <template #default="{ show }">
+            <transition name="translate-fade">
+              <login-tabs v-if="show"
+                :popup="true" 
+                :skip-sign-in="true"  
+                :action-text="{
+                  login: $t('login_and_publish'),
+                  register: $t('register_and_publish'),
+                  confirm: $t('confirm_and_publish') 
+                }"
+                :force-sell-phone="true"
+              />
+            </transition>
+          </template>
+        </backdrop>
+        <div class="publish-post mb-4" ref="finish">
+          <div class="row mt-4 mb-4" v-if="showBanners && !isAlreadySold">
+            <div class="service-banner col-6 col-lg-4" v-for="banner in ['vip','premium']" :key="banner">
+              <img :src="`/img/card-${banner}${isMobileBreakpoint ? '-mobile' : ''}-${locale}.png`" alt="banner" @click="publishPost(banner)" />
+            </div>
+          </div>
+          <p class="info-text full-width mt-2">
+            <icon name="alert-circle" /> {{ $t('by_posting_an_ad_you_confirm_your_agreement_with_the_rules')}}: 
+            <nuxt-link :to="`/page/${getRulesPage.slug[locale]}`" @click.native.prevent="showRules = true" event="">
+              <strong>{{ $t('general_rules') }}</strong>
+            </nuxt-link>
+          </p>
+          <p class="info-text full-width less-pd mt-2">
+            <span class="star">*</span> - {{ $t('starred_fields_are_required')}}
+          </p>
+          <p class="info-text full-width less-pd text-red" v-if="isAlreadySold">
+            {{ $t('this_car_already_added_last_90_days_for_new_added_need_payment') }}
+          </p>
+          <p class="info-text full-width less-pd" v-else-if="restore">
+            {{ $t('edit_or_restore') }}
+          </p>
+          <div class="text-right">
+            <button type="button" @click="publishPost(false)" class="btn btn--green">
+              {{ isAlreadySold ? `${$t('place_and_pay')} 5 AZN` : (edit ? (restore ? $t('restore') : $t('edit_ad')) : $t('post_for_free')) }}
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </component>
@@ -182,6 +213,7 @@ import ColorOptions from '~/components/options/ColorOptions';
 import DamageOptions from '~/components/options/DamageOptions';
 import AddVideo from '~/components/elements/AddVideo';
 import PickOnMapButton from '~/components/elements/PickOnMapButton';
+import CarFilters from '~/components/cars/CarFilters';
 
 export default {
   components: { 
@@ -190,10 +222,12 @@ export default {
     ColorOptions,
     DamageOptions,
     AddVideo,
-    PickOnMapButton
+    PickOnMapButton,
+    CarFilters
   },
   props: {
     edit: Boolean,
+    restore: Boolean,
     title: String,
     type: String,
     initialForm: {},
@@ -213,15 +247,26 @@ export default {
       publishing: false,
       showAllOptions: this.type !== 'cars',
       readCarNumberDisclaimer: false,
-      showRules: false
+      showRules: false,
+      showBanners: this.type === 'cars' && !this.edit,
+      needToPay: false,
+      isAlreadySold: false,
+      showLoginPopup: false
     }
   },
   computed: {
-    ...mapGetters(['sellOptions', 'sellAutosalonRights', 'staticPages']),
+    ...mapGetters(['sellOptions', 'sellAutosalonRights', 'staticPages', 'services']),
 
     progress() {
       let progress = 30;
-      if (this.form.car_catalog_id) progress += 10;
+      if (this.form.mileage !== '' && ((this.form.selectedColor instanceof Array) ? (this.form.selectedColor.length) : (this.form.selectedColor !== ''))) progress += 10;
+      if (this.form.vin || this.form.car_number) progress += 10;
+      if (this.savedFiles.length >= this.minFiles) progress += 10;
+      if (this.form.price) progress += 10;
+      if (this.form.comment) progress += 10;
+      if (this.type === 'cars' && this.form.car_catalog_id) progress += 10;
+      if (this.type === 'cars' && Object.keys(this.form.all_options).length > 0) progress += 10;
+      if (this.type !== 'cars') progress += 20;
       return progress;
     },
 
@@ -252,7 +297,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['setSellProgress', 'setSellPreviewData']),
+    ...mapActions(['setSellProgress', 'setSellPreviewData', 'resetSellTokens', 'getMyAllAnnouncements']),
 
     handleModification({ key, value }) {
       this.$set(this.form, key, value);
@@ -261,12 +306,52 @@ export default {
         if (!this.isMobileBreakpoint) return;
         this.$nextTick(() => {
           setTimeout(() => {
-            this.scrollTo(this.$refs['saved_images'], -34, 500, '.mobile-screen');
+            this.scrollTo(this.$refs['saved_images'], -34, 500);
           }, 0);
         });
       }
     },
+    showCarNumberDisclaimer() {
+      if(this.readCarNumberDisclaimer) {
+        this.$nuxt.$emit('close-popover', 'car-number');
+      } else {
+        this.$nuxt.$emit('show-popover', 'car-number');
+        this.readCarNumberDisclaimer = true;
+      }
+    },
+    updateMileage(is_new) {
+      if(!is_new) {
+        this.isInvalid('mileage') && this.removeError('mileage');
+      } else {
+        let mileage = this.form.mileage;
+        this.form.mileage = mileage > 500 || !mileage ? 0 : mileage;
+      }
+    },
+    updateAddress(address) {
+      this.form.address = address;
+      this.removeError('address');
+    },
+    updateLatLng({ lat, lng }) {
+      this.form.lat = lat;
+      this.form.lng = lng;
+    },
+    updateCarDamage(part) {
+      this.form.part = part;
+    },
+    updateCarDamagePart(index) {
+      this.$nuxt.$emit('update-car-damage-part', this.form.part[index] || {});
+    },
+    updateCarFilter(key, value) {
+      if(value === false || value === '' || (typeof value === 'object' && !Object.keys(value).length))
+        this.$delete(this.form.all_options, key);
+      else this.$set(this.form.all_options, key, value);
+      this.$nuxt.$emit('change-car-filters');
+    },
     // image upload
+    updateImages(files) {
+      this.files = files;
+      this.setSellPreviewData({ value: files[0]?.image, key: 'image' });
+    },
     async addImages(images) {
       // passed min limit
       if((images.length + this.savedFiles.length + this.uploading) >= this.minFiles)
@@ -324,40 +409,96 @@ export default {
         }
       }
     },
-    updateImages(files) {
-      this.files = files;
-      this.setSellPreviewData({ value: files[0]?.image, key: 'image' });
-    },
-    updateMileage(is_new) {
-      if(!is_new) {
-        this.isInvalid('mileage') && this.removeError('mileage');
+    // post announcement
+    async publishPost(promote = false) {
+      this.needToPay = promote;
+      // wait till all images uploaded
+      if (this.uploading) {
+        this.$toasted.error(this.$t('please_wait_for_all_image_loading'));
+        return;
+      }
+      this.form.saved_images = this.savedFiles;
+      this.form.is_autosalon = this.isAutosalon;
+      // check if free announcement chosen
+      if (promote) {
+        this.form.package_id = 0;
+        this.form.service_active_id = this.services
+          .find(service => service.type == ({vip: 1, premium: 2})[promote]).actives
+          .find(active => active.daysOrCount == 3).id;
       } else {
-        let mileage = this.form.mileage;
-        this.form.mileage = mileage > 500 || !mileage ? 0 : mileage;
+        this.form.package_id = 0;
+        this.form.service_active_id = 0;
+      }
+      if (this.isAlreadySold) {
+        this.form.can_pay = true;
+      }
+      // generate post data
+      let formData = new FormData();
+      formData.append('data', JSON.stringify(this.form));
+      if (this.deletedFiles.length)
+        formData.append('deletedImages', JSON.stringify(this.deletedFiles));
+      // generate post link
+      let postUrl = '/sell/';
+      postUrl += (this.type !== 'cars' ? this.type + '/' : '');
+      postUrl += (this.type !== 'commercial' || !this.edit ? 'post/' : '');
+      postUrl += (this.edit ? ('edit/' + this.$route.params.edit) : 'publish');
+      try {
+        // publish or update post
+        const res = await this.$axios.$post(postUrl, formData);
+        if (this.loggedIn) await this.$auth.fetchUser();
+        // track event
+        if (!this.edit) {
+          this.fbTrack('Lead Api');
+          this.gtagTrack('AW-600951956/ccUSCJT25_IBEJSZx54C');
+        }
+        // update store data
+        if (this.edit && !this.restore) await this.getMyAllAnnouncements();
+        // redirect to payment if action was to restore or to purchase service
+        if (promote || this.restore || this.isAlreadySold) {
+          window.location = res.data.redirect_url;
+        } else {
+          this.$router.push(this.$localePath('/profile/announcements'));
+        }
+      } catch ({response: {status, data: {data, message}}}) {
+        this.clearErrors();
+
+        if(status === 420) {
+          this.$toasted.error(this.$t(message));
+          if(data.need_pay) {
+            this.isAlreadySold = true;
+            this.scrollTo('.publish-post');
+          }
+        } else {
+          // find errors
+          let dataLength = data && Object.keys(data).length;
+          if (dataLength) {
+            let count = 0;
+            for (let key in data) {
+              // key = Object.keys(data)[dataLength - Object.keys(data).indexOf(key) - 1];
+              let errorKey = key;
+              if(errorKey === 'car_or_vin') errorKey = this.form.customs_clearance ? 'vin' : 'car_number';
+              this.errors.push(errorKey);
+              let errorIndex = this.errors.indexOf(errorKey);
+              let errorText = `(${dataLength - errorIndex}/${dataLength}) ${data[key][0]}`;
+              // show error
+              this.showError(errorKey, errorText, { fieldView: key, offset: -15 }, count === 0);
+              count++;
+            }
+          } else if (message && status !== 499) {
+            this.$toasted.error(this.$t(message));
+          }
+        }
+        
+        // check if user logged in
+        if(!this.showLoginPopup && status === 499)
+          this.showLoginPopup = true;
       }
     },
-    updateAddress(address) {
-      this.form.address = address;
-      this.removeError('address');
+    handleAfterLogin() {
+      this.resetSellTokens();
+      this.showLoginPopup = false;
+      this.publishPost(this.needToPay);
     },
-    updateLatLng({ lat, lng }) {
-      this.form.lat = lat;
-      this.form.lng = lng;
-    },
-    updateCarDamage(part) {
-      this.form.part = part;
-    },
-    updateCarDamagePart(index) {
-      this.$nuxt.$emit('update-car-damage-part', this.form.part[index] || {});
-    },
-    showCarNumberDisclaimer() {
-      if(this.readCarNumberDisclaimer) {
-        this.$nuxt.$emit('close-popover', 'car-number');
-      } else {
-        this.$nuxt.$emit('show-popover', 'car-number');
-        this.readCarNumberDisclaimer = true;
-      }
-    }
   },
   watch: {
     progress(value) {
@@ -367,8 +508,11 @@ export default {
   created() {
     ['sellBody','sellGenerations','sellEngines','sellGearing','sellTransmissions','sellModifications']
       .map(property => { this.mutate({ property, value: [] }); });
+
+    this.$nuxt.$on('login', this.handleAfterLogin);
   },
   beforeDestroy() {
+    this.$nuxt.$off('login', this.handleAfterLogin);
     this.setSellPreviewData({ value: {} });
   }
 }
