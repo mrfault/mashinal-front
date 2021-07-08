@@ -139,8 +139,6 @@ export default {
         show_vin: 0,
         part: {},
         all_options: {},
-        badges: [],
-        new_badges: [],
         comment: '',
         autogas: false,
         is_new: false, 

@@ -22,21 +22,16 @@
       :title="active.name"
       @close="active = false"
     >
-      <div class="form">
+      <div class="form" v-if="forms[active.index]">
         <div class="row">
-          <div class="col-6 mb-2 mb-3" v-for="(name, index) in Object.keys(emptyForm).reverse()" :key="index">
-            <form-checkbox :label="$t(name)" v-model="form[name]" :input-name="name" />
+          <div class="col-6 mb-2 mb-3" v-for="(name, index) in Object.keys(forms[active.index]).reverse()" :key="index">
+            <form-checkbox :label="$t(name)" v-model="forms[active.index][name]" :input-name="name" />
           </div>
           <div class="col-12">
             <button class="btn btn--green full-width" @click="addToState(active.index)">
               {{ $t('save') }}
             </button>
           </div>
-          <!-- <div class="col-6">
-            <button class="btn btn--red full-width" @click="removeFromState(active.index)">
-              {{ $t('delete') }}
-            </button>
-          </div> -->
         </div>
       </div>
     </modal-popup>
@@ -45,18 +40,23 @@
 
 <script>
 export default {
-  props: ['selected'],
+  props: {
+    selected: {
+      default: () => ({})
+    }
+  },
   data() {
+    let f = i => ({
+      metal: this.selected?.[i]?.metal || false,
+      painted: this.selected?.[i]?.painted || false,
+      dent: this.selected?.[i]?.dent || false,
+      scratch: this.selected?.[i]?.scratch || false
+    });
+    console.log([f(0), f(1), f(2), f(3), f(4), f(5), f(6)])
     return {
       active: false,
       state: {},
-      form: {},
-      emptyForm: {
-        metal: false,
-        painted: false,
-        dent: false,
-        scratch: false
-      },
+      forms: [f(0), f(1), f(2), f(3), f(4), f(5), f(6)],
       carParts: [
         { name: this.$t('part_front_bumper'), id:'front' },
         { name: this.$t('part_front_left_door'), id:'left-door-front' },
@@ -70,7 +70,6 @@ export default {
   },
   methods: {
     showStateModal(index) {
-      this.$emit('update-car-damage-part', index);
       this.active = {...this.carParts[index], index: index };
     },
     selectDamage() {
@@ -86,8 +85,9 @@ export default {
       this.active = false;
     },
     addToState(index) {
-      if(Object.keys(this.form).filter(key => this.form[key]).length) {
-        this.active.form = { ...this.form };
+      let form = {...this.forms[this.active.index]};
+      if (Object.keys(form).filter(key => form[key]).length) {
+        this.active.form = form;
         this.$set(this.state, index, { ...this.active });
         this.selectDamage();
       } else {
@@ -109,17 +109,9 @@ export default {
       return [...new Set(parts)];
     }
   },
-  mounted() {
-    if(this.selected !== undefined) {
-      for(let i in this.selected)
-        this.$set(this.state, i, {...this.carParts[i], index: parseInt(i), form: this.selected[i]});
-    }
-    this.$nuxt.$on('update-car-damage-part', (form) => {
-      this.form = { ...this.emptyForm, ...form }
-    });
-  },
-  beforeDestroy() {
-    this.$nuxt.$off('update-car-damage-part');
+  created() {
+    for(let i in this.selected)
+      this.$set(this.state, i, {...this.carParts[i], index: parseInt(i), form: this.selected[i]});
   }
 }
 </script>

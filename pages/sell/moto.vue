@@ -138,8 +138,6 @@ export default {
         show_car_number: 0,
         show_vin: 0,
         all_options: {},
-        badges: [],
-        new_badges: [],
         comment: '',
         is_new: false, 
         beaten: false, 

@@ -12,7 +12,10 @@
       />
     </div>
     <div class="col-12 mt-2 mt-lg-3">
-      <p>{{ $t('add_a_video_this_will_attract_more_attention_increase_confidence_in_the_seller_and_increase_the_likelihood_of_a_call') }}</p>
+      <transition-group name="fade2">
+        <img :key="1" width="200" :src="thumb" v-if="!!youtubeUrl && !invalid" />
+        <p :key="2" v-else>{{ $t('add_a_video_this_will_attract_more_attention_increase_confidence_in_the_seller_and_increase_the_likelihood_of_a_call') }}</p>
+      </transition-group>
     </div>
   </div>
 </template>
@@ -20,7 +23,8 @@
 <script>
 export default {
   props: {
-    value: String
+    value: String,
+    thumb: String
   },
   data() {
     return {

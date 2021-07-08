@@ -103,7 +103,9 @@ export default {
       ? route.query.category : '1';
     
     await Promise.all([
+      store.dispatch('getCommercialAllOptions'),
       store.dispatch('getCommercialBrands', category),
+      store.dispatch('getCommercialFilters', category),
       store.dispatch('getOptions'),
       store.dispatch('getColors'),
     ]);
@@ -138,8 +140,6 @@ export default {
         show_car_number: 0,
         show_vin: 0,
         all_options: {},
-        badges: [],
-        new_badges: [],
         comment: '',
         is_new: false, 
         beaten: false, 

@@ -6,7 +6,7 @@
         @update-form="handleModification"
       />
       <div v-if="showAllOptions" :class="{'disabled-content': type === 'cars' && !form.car_catalog_id}">
-        <h2 class="title-with-line" ref="saved_images">
+        <h2 class="title-with-line mt-3 mt-lg-0" id="anchor-saved_images">
           <span>{{ $t('photos') }} <span class="star"> *</span></span>
         </h2>
         <upload-image
@@ -19,17 +19,18 @@
           @file-deleted="deleteImage"
           @file-rotated="rotateImage"
         />
-        <h2 class="title-with-line mt-2 mt-lg-3" ref="youtube">
+        <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-youtube">
           <span>{{ $t('video') }}</span>
         </h2>
-        <add-video :value="form.youtube.id" @input="$set(form, 'youtube', $event)" />
-        <h2 class="title-with-line mt-2 mt-lg-3" ref="selectedColor">
+        <add-video :value="form.youtube.id" @input="$set(form, 'youtube', $event)"
+           :thumb="form.youtube.thumb" />
+        <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-selectedColor">
           <span>{{ $t('color') }} <span class="star"> *</span></span>
         </h2>
         <color-options v-model="form.selectedColor" :limit="2" :multiple="type === 'cars'"
           @change-matt="form.is_matte = $event" :matt="form.is_matte" :hide-matt="type !== 'cars'"
           @change="removeError('selectedColor')" />
-        <h2 class="title-with-line mt-2 mt-lg-3" ref="mileage">
+        <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-mileage">
           <span>{{ $t('mileage') }} <span class="star"> *</span></span>
         </h2>
         <div class="row">
@@ -61,16 +62,12 @@
           </div>
         </div>
         <template v-if="type === 'cars'">
-          <h2 class="title-with-line mt-2 mt-lg-3" ref="body-parts">
+          <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-body-parts">
             <span>{{ $t('body_condition') }}</span>
           </h2>
-          <damage-options 
-            :selected="form.part"
-            @update-car-damage="updateCarDamage"
-            @update-car-damage-part="updateCarDamagePart"
-          />
+          <damage-options :selected="form.part" @update-car-damage="updateCarDamage" />
         </template>
-        <h2 class="title-with-line mt-2 mt-lg-3" ref="region_id">
+        <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-region_id">
           <span>{{ $t('region_and_place_of_inspection') }} <span class="star"> *</span></span>
         </h2>
         <div class="row">
@@ -90,7 +87,7 @@
             </pick-on-map-button>
           </div>
         </div>
-        <h2 class="title-with-line mt-2 mt-lg-3" ref="price">
+        <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-price">
           <span>{{ $t('price') }} <span class="star"> *</span></span>
         </h2>
         <div class="row">
@@ -106,7 +103,7 @@
             </div>
           </div>
         </div>
-        <h2 class="title-with-line mt-2 mt-lg-3" ref="car_or_vin">
+        <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-car_or_vin">
           <span>{{ $t('license_plate_number_vin_or_carcase_number') }} <span class="star"> *</span></span>
         </h2>
         <div class="row">
@@ -133,11 +130,24 @@
               transparent class="mt-2 mt-lg-3"/>
           </div>
         </div>
-        <div class="mt-2 mt-lg-3 mb-n2 mb-lg-n3" v-if="type=== 'cars'">
-          <car-filters :values="form.all_options" @change-filter="updateCarFilter" popular key="popular"/>
-          <car-filters :values="form.all_options" @change-filter="updateCarFilter" key="all"/>
+        <div class="mt-2 mt-lg-3">
+          <template v-if="type=== 'cars'">
+            <car-filters :values="form.all_options" @change-filter="updateCarFilter" popular key="popular"/>
+            <car-filters :values="form.all_options" @change-filter="updateCarFilter" key="all"/>
+          </template>
+          <template v-else>
+            <sell-filters
+              :type="type"
+              :category="form.category"
+              :selected="form"
+              :errors="errors"
+              @remove-error="removeError"
+              @add-form-keys="form = {...$event, ...form}"
+              @update-sell-filter="updateSellFilter"
+            />
+          </template>
         </div>
-        <h2 class="title-with-line mt-2 mt-lg-3" ref="comment">
+        <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-comment">
           <span>{{ $t('description_placeholder') }}</span>
         </h2>
         <form-textarea v-model="form.comment" :placeholder="$t('description_placeholder')" 
@@ -170,7 +180,7 @@
             </transition>
           </template>
         </backdrop>
-        <div class="publish-post mb-4" ref="finish">
+        <div class="publish-post mb-4" id="anchor-finish">
           <div class="row mt-4 mb-4" v-if="showBanners && !isAlreadySold">
             <div class="service-banner col-6 col-lg-4" v-for="banner in ['vip','premium']" :key="banner">
               <img :src="`/img/card-${banner}${isMobileBreakpoint ? '-mobile' : ''}-${locale}.png`" alt="banner" @click="publishPost(banner)" />
@@ -213,6 +223,7 @@ import ColorOptions from '~/components/options/ColorOptions';
 import DamageOptions from '~/components/options/DamageOptions';
 import AddVideo from '~/components/elements/AddVideo';
 import PickOnMapButton from '~/components/elements/PickOnMapButton';
+import SellFilters from '~/components/sell/SellFilters';
 import CarFilters from '~/components/cars/CarFilters';
 
 export default {
@@ -223,6 +234,7 @@ export default {
     DamageOptions,
     AddVideo,
     PickOnMapButton,
+    SellFilters,
     CarFilters
   },
   props: {
@@ -282,6 +294,10 @@ export default {
       return this.staticPages.find(page => page.id == 1);
     },
 
+    getSellFilters() {
+
+    },
+
     getCurrencyOptions() {
       return [
         { key: 1, name: 'AZN', sign: '₼'	},
@@ -338,14 +354,16 @@ export default {
     updateCarDamage(part) {
       this.form.part = part;
     },
-    updateCarDamagePart(index) {
-      this.$nuxt.$emit('update-car-damage-part', this.form.part[index] || {});
-    },
     updateCarFilter(key, value) {
       if(value === false || value === '' || (typeof value === 'object' && !Object.keys(value).length))
         this.$delete(this.form.all_options, key);
       else this.$set(this.form.all_options, key, value);
       this.$nuxt.$emit('change-car-filters');
+    },
+    updateSellFilter(key, value) {
+      if (value === '') 
+        this.$delete(this.form, key);
+      else this.$set(this.form, key, value);
     },
     // image upload
     updateImages(files) {
@@ -481,7 +499,7 @@ export default {
               let errorIndex = this.errors.indexOf(errorKey);
               let errorText = `(${dataLength - errorIndex}/${dataLength}) ${data[key][0]}`;
               // show error
-              this.showError(errorKey, errorText, { fieldView: key, offset: -15 }, count === 0);
+              this.showError(errorKey, errorText, { fieldView: key, offset: isMobileBreakpoint ? -15 : -20 }, count === 0);
               count++;
             }
           } else if (message && status !== 499) {
