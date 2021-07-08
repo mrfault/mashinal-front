@@ -148,36 +148,24 @@ import Loader from './Loader.vue';
         let keys = Object.keys(this.defaultFiles);
         for(let i in keys) {
           let file = this.defaultFiles[keys[i]];
-          this.$set(this.files, file.key || i, { file: new Blob(), name: file.name || file.split('/').pop(), loaded: true });
-          this.$set(this.image, file.key || i, file.image || (this.$env.BASE_URL + file));
-          this.$set(this.orderdedKeys, this.orderdedKeys.length, file.key || i);
+          let key = this.$notUndefined(file.key, i);
+          this.$set(this.files, key, { file: new Blob(), name: file.name || file.split('/').pop(), loaded: true });
+          this.$set(this.image, key, file.image || (this.$env.BASE_URL + file));
+          this.$set(this.orderdedKeys, this.orderdedKeys.length, key);
         }
         this.disableUpload = false;
       }
 
-      this.$nuxt.$on('delete-image-by-key', (key) => {
-        Object.keys(this.files).map((k, i) => {
-          if(k == key) this.fileDelete(key, i);
-        });
-      });
-
-      this.$nuxt.$on('hide-image-preloader-by-key', (key) => {
-        this.$set(this.loading, key, false);
-      });
-
-      this.$nuxt.$on('image-uploaded', (key, url, rotated = false) => {
-        this.$set(this.image, key, url);
-        if (!rotated) this.$set(this.files[key], 'loaded', true);
-        if (!rotated) this.$set(this.orderdedKeys, this.orderdedKeys.length, key);
-        this.$emit('files-changed', this.imagesLoaded);
-        // move to the last slide
-        if (!rotated) this.moveToSlide(this.filesLoadedLength, 500, 0);
-      });
+      this.$nuxt.$on('delete-image-by-key', this.deleteImageByKey);
+      this.$nuxt.$on('hide-image-preloader-by-key', this.hideImagePreloaderByKey);
+      this.$nuxt.$on('image-uploaded', this.handleImageUpload);
 
       this.$emit('files-changed', this.imagesLoaded);
     },
     beforeDestroy() {
-      this.$nuxt.$off(['image-uploaded','hide-image-preloader-by-key','delete-image-by-key']);
+      this.$nuxt.$off('delete-image-by-key', this.deleteImageByKey);
+      this.$nuxt.$off('hide-image-preloader-by-key', this.hideImagePreloaderByKey);
+      this.$nuxt.$off('image-uploaded', this.handleImageUpload);
     },
     methods: {
       dragEnter(e) {
@@ -267,6 +255,22 @@ import Loader from './Loader.vue';
         setTimeout(() => {
           this.uploadSwiper.slideTo(index, duration);
         }, timeout);
+      },
+      deleteImageByKey(key) {
+        Object.keys(this.files).map((k, i) => {
+          if(k == key) this.fileDelete(key, i);
+        });
+      },
+      hideImagePreloaderByKey(key) {
+        this.$set(this.loading, key, false);
+      },
+      handleImageUpload(key, url, rotated = false) {
+        this.$set(this.image, key, url);
+        if (!rotated) this.$set(this.files[key], 'loaded', true);
+        if (!rotated) this.$set(this.orderdedKeys, this.orderdedKeys.length, key);
+        this.$emit('files-changed', this.imagesLoaded);
+        // move to the last slide
+        if (!rotated) this.moveToSlide(this.filesLoadedLength, 500, 0);
       }
     },
     computed: {

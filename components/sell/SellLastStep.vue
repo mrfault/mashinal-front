@@ -12,7 +12,7 @@
         <upload-image
           :maxFiles="maxFiles"
           :minFiles="minFiles"
-          :defaultFiles="announcement ? announcement.media : files"
+          :defaultFiles="files"
           :helpers="helperImages"
           @files-changed="updateImages"
           @files-dropped="addImages"
@@ -250,7 +250,7 @@ export default {
     return {
       form: this.$clone(this.initialForm),
       date: Math.floor(Date.now() / 1000),
-      files: [],
+      files: this.announcement?.media || [],
       minFiles: this.type === 'moto' ? 2 : 3,
       maxFiles: 20,
       savedFiles: [...this.initialForm.saved_images],
@@ -499,7 +499,7 @@ export default {
               let errorIndex = this.errors.indexOf(errorKey);
               let errorText = `(${dataLength - errorIndex}/${dataLength}) ${data[key][0]}`;
               // show error
-              this.showError(errorKey, errorText, { fieldView: key, offset: isMobileBreakpoint ? -15 : -20 }, count === 0);
+              this.showError(errorKey, errorText, { fieldView: key, offset: this.isMobileBreakpoint ? -15 : -20 }, count === 0);
               count++;
             }
           } else if (message && status !== 499) {

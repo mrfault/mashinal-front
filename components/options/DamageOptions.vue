@@ -52,7 +52,6 @@ export default {
       dent: this.selected?.[i]?.dent || false,
       scratch: this.selected?.[i]?.scratch || false
     });
-    console.log([f(0), f(1), f(2), f(3), f(4), f(5), f(6)])
     return {
       active: false,
       state: {},
