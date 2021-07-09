@@ -11,9 +11,11 @@
       </nuxt-link>
     </div>
     <div class="row mb-n2 mb-lg-n3">
-      <div class="col-6 col-lg-auto mb-2 mb-lg-3" v-for="announcement in announcements" :key="announcement.id_unique">
-        <grid-item :announcement="announcement" />
-      </div>
+      <template v-for="announcement in announcements">
+        <div class="col-6 col-lg-auto mb-2 mb-lg-3" :key="announcement.id_unique">
+          <grid-item :announcement="announcement" />
+        </div>
+      </template>
     </div>
     <pagination 
       v-if="paginate && paginate.last_page > 1"
@@ -37,7 +39,8 @@ export default {
     iconName: String,
     showAll: String,
     paginate: {},
-    pending: Boolean
+    pending: Boolean,
+    watchRoute: Boolean
   },
   components: {
     GridItem
@@ -54,6 +57,12 @@ export default {
           this.$emit('change-page', page);
         });
       }
+    }
+  },
+  watch: {
+    '$route.query.page'(page) {
+      if (this.watchRoute) 
+        this.changePage(page);
     }
   }
 }

@@ -14,6 +14,7 @@ const getInitialState = () =>({
   savedSearchList: [],
   singleSavedSearch: {},
   favorites: [],
+  favoriteAnnouncements: [],
   // messages
   messages: [],
   suggestedMessages: [],
@@ -119,6 +120,7 @@ export const getters = {
   savedSearchList: s => s.favoritesSearchList,
   singleSavedSearch: s => s.singleSavedSearch,
   favorites: s => s.favorites,
+  favoriteAnnouncements: s => s.favoriteAnnouncements,
   // profile
   messages: s => s.messages,
   suggestedMessages: s => s.suggestedMessages,
@@ -304,8 +306,12 @@ export const actions = {
     commit('mutate', { property: 'favorites', value: res });
   },
   async addToFavorites({ commit }, id) {
-    this.$axios.$post(`/announce/${id}/favorite`);
     commit('addToFavorites', { id });
+    await this.$axios.$post(`/announce/${id}/favorite`);
+  },
+  async getFavoriteAnnouncements({ commit }, data = {}) {
+    const res = await this.$axios.$get(`/my/saved/all-announce?page=${data.page || 1}`);
+    commit('mutate', { property: 'favoriteAnnouncements', value: res });
   },
   // Saved search
   async getSavedSearch({ commit }){
@@ -760,7 +766,12 @@ export const mutations = {
   // favorites
   addToFavorites(state, payload) {
     let index = state.favorites.indexOf(payload.id);
-    if (index >= 0) state.favorites.splice(index,1);
-    else state.favorites.push(payload.id);
+    // let announcementIndex = state.favoriteAnnouncements.data
+    //   .findIndex(announcement => announcement.id_unique === payload.id);
+    if (index >= 0) {
+      state.favorites.splice(index,1);
+    } else {
+      state.favorites.push(payload.id);
+    }
   }
 }

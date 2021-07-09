@@ -10,9 +10,9 @@
           <span>{{ $t('photos') }} <span class="star"> *</span></span>
         </h2>
         <upload-image
-          :maxFiles="maxFiles"
-          :minFiles="minFiles"
-          :defaultFiles="files"
+          :max-files="maxFiles"
+          :min-files="minFiles"
+          :default-files="files"
           :helpers="helperImages"
           @files-changed="updateImages"
           @files-dropped="addImages"
@@ -138,7 +138,6 @@
           <template v-else>
             <sell-filters
               :type="type"
-              :category="form.category"
               :selected="form"
               :errors="errors"
               @remove-error="removeError"

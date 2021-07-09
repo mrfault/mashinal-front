@@ -6,8 +6,8 @@
       </h2>
       <div class="row">
         <template v-if="getType(item) === 'input-radio'">
-          <div class="col-lg-4" v-for="(input, index) in getValues(item)" :key="index">
-            <form-radio transparent
+          <div class="col-lg-4 mb-2 mb-lg-3" v-for="(input, index) in getValues(item)" :key="index">
+            <form-radio
               v-model="form[getKey(item)]"
               :invalid="hasError(item)"
               :input-name="getKey(item)"
@@ -50,7 +50,7 @@
     return { ...form,  [key]: data.hasOwnProperty(key) && data[key] ? data[key] : '' }
   }
   export default {
-    props: ['category', 'selected', 'nameInValue', 'errors', 'type'],
+    props: ['selected', 'nameInValue', 'errors', 'type'],
     data() {
       let filters = {}, options = false;
       if (this.type === 'commercial') {
@@ -83,7 +83,7 @@
       },
       getValues(item) {
         let options = this.options && this.options[item.type_key];
-        let sell_values = item.sell_values && item.sell_values[parseInt(this.category)];
+        let sell_values = item.sell_values && item.sell_values[parseInt(this.selected.category)];
         let values = options || sell_values || item.values;
         return this.type === 'commercial' && this.getType(item) === 'input-radio' && !item.required 
           ? [...values, { key: 0, name: this.$t('not_set') }] 
@@ -125,7 +125,7 @@
         let filters = {};
         for(let i in this.filters) {
           let item = this.filters[i];
-          if(!item.category || item.category.includes(parseInt(this.category)))
+          if(!item.category || item.category.includes(parseInt(this.selected.category)))
             filters[i] = {...item, field: i};
         }
         return filters;
