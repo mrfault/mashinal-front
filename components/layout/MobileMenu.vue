@@ -8,7 +8,10 @@
         <nuxt-link class="logo" :to="$localePath('/')" @click.native="$nuxt.$emit('logo-click')">
           <img :src="`/img/${isDarkMode ? 'logo-white' : 'logo'}.svg`" alt="logo" />
         </nuxt-link>
-        <nuxt-link custom :to="$localePath('/cars/advanced-search')" v-slot="{ href }">
+        <span class="cursor-pointer" @click="logout" v-if="(routeName||'').includes('profile')">
+          <icon name="logout" />
+        </span>
+        <nuxt-link custom :to="$localePath('/cars/advanced-search')" v-slot="{ href }" v-else>
           <span class="cursor-pointer" @click="goToSearch(href)">
             <icon name="options" />
           </span>

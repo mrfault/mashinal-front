@@ -16,7 +16,7 @@
       return {
         link: encodeURI(`https://mashin.al${this.path || this.$route.path}`),
         socials: {
-          contact: ['instagram', 'facebook'],
+          contact: ['facebook', 'instagram'],
           publish: ['facebook', 'whatsapp','telegram', 'twitter'],
         }
       }

@@ -7,6 +7,7 @@
         <date-picker 
           v-model="inputValue" 
           value-type="format" 
+          :popup-style="{ top: '100%', left: 0 }"
           :append-to-body="false"
           :format="'DD.MM.YYYY'"
           :placeholder="placeholder" 
@@ -28,6 +29,7 @@
           :disabled="disabled"
           :class="{invalid, valid, disabled, [`${inputClass}`]:inputClass}"
           :autocomplete="autocomplete"
+          :readonly="readonly"
           v-mask="mask"
           v-model="inputValue"
           @focus="$emit('focus', $event)"
@@ -86,7 +88,8 @@
         default: false
       },
       inputClass: String,
-      inputDate: Boolean
+      inputDate: Boolean,
+      readonly: Boolean
     },
     components: {
       DatePicker

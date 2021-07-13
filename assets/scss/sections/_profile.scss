@@ -90,7 +90,53 @@
     .profile {
       &_info {
         &-details {
-          border-bottom: 1px solid $dark-1;
+          border-bottom-color: $dark-1;
+        }
+      }
+    }
+  }
+}
+
+@include media-max-width(lg) {
+  .pages-profile {
+    .card {
+      margin-top: 0;
+      padding: 15px;
+      .edit-link {
+        top: 15px;
+        right: 15px;
+        font-size: 16px;
+      }
+    }
+    .profile {
+      &_info {
+        margin-bottom: -10px;
+        &-details {
+          border-bottom: 0;
+          padding-bottom: 10px;
+        }
+      }
+      &_top {
+        display: flex;
+        width: 100%;
+        margin-bottom: 15px;
+        .avatar {
+          flex-shrink: 0;
+          width: 60px;
+          height: 60px;
+          margin: 0 15px 0 0;
+        }
+        h2 {
+          font-size: 14px;
+          font-weight: 500;
+          margin-bottom: 4px;
+          & ~ span {
+            display: block;
+            margin-bottom: 4px;
+            &:last-child {
+              margin-bottom: 0;
+            }
+          }
         }
       }
     }

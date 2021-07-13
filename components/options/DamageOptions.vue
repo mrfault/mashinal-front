@@ -24,7 +24,7 @@
     >
       <div class="form" v-if="forms[active.index]">
         <div class="row">
-          <div class="col-6 mb-2 mb-3" v-for="(name, index) in Object.keys(forms[active.index]).reverse()" :key="index">
+          <div class="col-6 mb-2 mb-lg-3" v-for="(name, index) in Object.keys(forms[active.index]).reverse()" :key="index">
             <form-checkbox :label="$t(name)" v-model="forms[active.index][name]" :input-name="name" />
           </div>
           <div class="col-12">

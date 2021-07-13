@@ -138,6 +138,12 @@ textarea {
       color: $grey-3;
     }
   }
+  &.textarea {
+    i, img {
+      top: 17px;
+      transform: translate(0, -50%);
+    }
+  }
   img:first-child + input {
     padding-left: 42px;
   }
@@ -573,6 +579,14 @@ textarea {
       }
       &_triangle {
         color: $white;
+      }
+      &_dropdown {
+        background-color: $white;
+        .select-menu_dropdown-option {
+          &:not(.disabled):hover {
+            background-color: darken($white, 2%);
+          }
+        }
       }
     }
   }

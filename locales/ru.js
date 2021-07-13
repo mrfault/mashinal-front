@@ -1611,5 +1611,6 @@ export default {
 	"edit_or_restore": "Измените необходимые данные и",
 	"user_information": "Информация о пользователе",
 	"user_information_edit": "Редактировать",
-	"no_favorites": "Вы не добавляли в избранное"
+	"no_favorites": "Вы не добавляли в избранное",
+	"worktime_support": "Пн - Пт 09:00 - 18:00"
 }

@@ -870,6 +870,11 @@ main {
       }
     }
   }
+  .socials {
+    a:not(:last-child) {
+      margin-right: 25px;
+    }
+  }
 }
 
 .dark-mode {
@@ -1331,6 +1336,9 @@ main {
 
   .card {
     margin: 0 -25px;
+    &.with-margins {
+      margin: 0;
+    }
     &.pt-2.pt-lg-4 {
       border-top-left-radius: 0;
       border-top-right-radius: 0;

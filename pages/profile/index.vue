@@ -2,27 +2,38 @@
   <div class="pages-profile pt-5">
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
-      <div class="card">
-        <img class="avatar" :src="getUserAvatar" :alt="user.full_name" />
-        <h2 class="title-with-line text-center">
-          <span>{{ user.full_name }}</span>
-        </h2>
+      <div class="card with-margins">
+        <div class="profile_top">
+          <img class="avatar" :src="getUserAvatar" :alt="user.full_name" />
+          <div class="profile_top-details">
+            <h2 :class="['text-center', {'title-with-line': !isMobileBreakpoint}]">
+              <span>{{ user.full_name }}</span>
+            </h2>
+            <template v-if="isMobileBreakpoint">
+              <span>{{ $moment(user.birthday).format('DD.MM.YYYY') }}</span>
+              <span>{{ user.gender == 1 ? $t('male') : $('female') }}</span>
+            </template>
+          </div>
+        </div>
+        <hr v-if="isMobileBreakpoint" />
         <nuxt-link class="edit-link" :to="$localePath('/profile/settings')">
           <icon name="edit" />
         </nuxt-link>
         <div class="row profile_info">
-          <div class="col-lg-3">
-            <div class="profile_info-details">
-              <icon name="calendar" />
-              <span>{{ $moment(user.birthday).format('DD.MM.YYYY') }}</span>
+          <template v-if="!isMobileBreakpoint">
+            <div class="col-lg-3">
+              <div class="profile_info-details">
+                <icon name="calendar" />
+                <span>{{ $moment(user.birthday).format('DD.MM.YYYY') }}</span>
+              </div>
             </div>
-          </div>
-          <div class="col-lg-3">
-            <div class="profile_info-details">
-              <icon name="user" />
-              <span>{{ user.gender == 1 ? $t('male') : $('female') }}</span>
+            <div class="col-lg-3">
+              <div class="profile_info-details">
+                <icon name="user" />
+                <span>{{ user.gender == 1 ? $t('male') : $('female') }}</span>
+              </div>
             </div>
-          </div>
+          </template>
           <div class="col-lg-3">
             <div class="profile_info-details">
               <icon name="envelope" />

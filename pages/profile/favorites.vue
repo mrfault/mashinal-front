@@ -8,6 +8,7 @@
         :paginate="$paginate(favoriteAnnouncements)"
         :pending="pending"
         :watch-route="true"
+        :title="$t('favorites')"
         @change-page="changePage"
       />
       <no-results :text="$t('no_favorites')" v-else />

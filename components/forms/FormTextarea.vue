@@ -1,6 +1,6 @@
 <template>
   <div class="form-group">
-    <div class="text-input">
+    <div class="text-input textarea">
       <icon :name="iconName" v-if="iconName" :class="{invalid, disabled}" />
       <textarea 
         :id="id"

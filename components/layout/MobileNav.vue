@@ -24,11 +24,17 @@ export default {
         'index', 'cars', 'cars-vip', 'cars-premium', 'cars-assistant', 'cars-advanced-search',
         'moto', 'moto-moto', 'commercial','commercial-commercial'
       ].includes(this.routeName);
+    },
+    hasProfileData() {
+      return [
+        'profile', 'profile-settings'
+      ].includes(this.routeName);
     }
   },
   methods: {
     isPseudoActive(menu) {
-      return this.hasSearchNav && menu.title === 'search';
+      return (this.hasSearchNav && menu.title === 'search') 
+          || (this.hasProfileData && menu.title === 'my_account');
     }
   }
 }

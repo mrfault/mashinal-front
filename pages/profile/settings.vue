@@ -36,10 +36,10 @@
               btn-class="primary-outline"  />
           </div>
           <div class="col-lg-4 mb-3 mb-lg-3">
-            
+            <change-email :placeholder="$t('email')" />
           </div>
           <div class="col-lg-4 mb-3 mb-lg-3 ">
-            
+            <change-phone :placeholder="$t('mobile_number')" />
           </div>
           <div class="full-width"></div>
           <div class="col-lg-4 mb-3 mb-lg-3">
@@ -67,12 +67,18 @@
 </template>
 
 <script>
-
   import { UserDataMixin } from '~/mixins/user-data';
+
+  import ChangeEmail from '~/components/elements/ChangeEmail';
+  import ChangePhone from '~/components/elements/ChangePhone';
 
   export default {
     name: 'pages-profile-settings',
     mixins: [UserDataMixin],
+    components: {
+      ChangeEmail,
+      ChangePhone
+    },
     nuxtI18n: {
       paths: {
         az: '/profil/parametrler'
