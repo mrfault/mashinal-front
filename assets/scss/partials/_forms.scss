@@ -102,6 +102,9 @@ textarea {
     height: 34px;
     overflow: hidden;
     text-overflow: ellipsis;
+    &[type=password] {
+      padding-right: 24px;
+    }
   }
   i, img {
     position: absolute;
@@ -142,6 +145,22 @@ textarea {
     position: absolute;
     right: 10px;
     top: 10px;
+  }
+  .show-password {
+    position: absolute;
+    right: 0;
+    top: 0;
+    cursor: pointer;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    i {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
   }
 }
 

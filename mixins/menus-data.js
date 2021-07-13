@@ -43,7 +43,7 @@ export const MenusDataMixin = {
         { title: 'favorites', route: '/profile/favorites', icon: 'star' },
         { title: 'new_announce', route: '/sell', icon: 'plus' },
         { title: 'messages', route: '/profile/messages', icon: 'chat' },
-        { title: 'my_account', route: '/profile/settings', icon: 'user', hide: !this.loggedIn || this.user?.autosalon },
+        { title: 'my_account', route: '/profile', icon: 'user', hide: !this.loggedIn || this.user?.autosalon },
         { title: 'dashboard', route: '/profile/dashboard', icon: 'settings', hide: !this.loggedIn || !this.user?.autosalon },
         { title: 'login', route: '/login', icon: 'user', hide: this.loggedIn }
       ]

@@ -1,4 +1,5 @@
 import _ from '~/lib/underscore';
+import moment from 'moment';
 import { generateMetaInfo } from '~/plugins/head-meta';
 
 export default function({ app, route, store }, inject) {
@@ -125,4 +126,5 @@ export default function({ app, route, store }, inject) {
   inject('clone', _.clone);
   inject('sortBy', _.sortBy);
   inject('chunk', _.chunk);
+  inject('moment', moment);
 }

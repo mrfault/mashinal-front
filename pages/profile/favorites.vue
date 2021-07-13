@@ -10,7 +10,7 @@
         :watch-route="true"
         @change-page="changePage"
       />
-      <no-results v-else />
+      <no-results :text="$t('no_favorites')" v-else />
     </div>
   </div>
 </template>

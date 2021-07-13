@@ -1,0 +1,653 @@
+.mx-icon-left:before,
+.mx-icon-right:before,
+.mx-icon-double-left:before,
+.mx-icon-double-right:before,
+.mx-icon-double-left:after,
+.mx-icon-double-right:after {
+  content: "";
+  position: relative;
+  top: -1px;
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  vertical-align: middle;
+  border-style: solid;
+  border-width: 2px 0 0 2px;
+  border-radius: 1px;
+  box-sizing: border-box;
+  transform-origin: center;
+  transform: rotate(-45deg) scale(0.7);
+}
+
+.mx-icon-double-left:after {
+  left: -4px;
+}
+
+.mx-icon-double-right:before {
+  left: 4px;
+}
+
+.mx-icon-right:before,
+.mx-icon-double-right:before,
+.mx-icon-double-right:after {
+  transform: rotate(135deg) scale(0.7);
+}
+
+.mx-btn {
+  box-sizing: border-box;
+  line-height: 1;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 7px 15px;
+  margin: 0;
+  cursor: pointer;
+  background-color: transparent;
+  outline: none;
+  border: 1px solid rgba(0, 0, 0, .1);
+  border-radius: 4px;
+  color: $dark-blue-1;
+  white-space: nowrap;
+}
+
+.mx-btn:hover {
+  border-color: $dark-blue-2;
+  color: $dark-blue-2;
+}
+
+.mx-btn-text {
+  border: 0;
+  padding: 0 4px;
+  text-align: left;
+  line-height: inherit;
+  text-transform: capitalize;
+}
+
+.mx-scrollbar {
+  height: 100%;
+}
+
+.mx-scrollbar:hover .mx-scrollbar-track {
+  opacity: 1;
+}
+
+.mx-scrollbar-wrap {
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.mx-scrollbar-track {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  bottom: 2px;
+  width: 6px;
+  z-index: 1;
+  border-radius: 4px;
+  opacity: 0;
+  transition: opacity .24s ease-out;
+}
+
+.mx-scrollbar-track .mx-scrollbar-thumb {
+  position: absolute;
+  width: 100%;
+  height: 0;
+  cursor: pointer;
+  border-radius: inherit;
+  background-color: rgba(144, 147, 153, .3);
+  transition: background-color .3s;
+}
+
+.mx-zoom-in-down-enter-active,
+.mx-zoom-in-down-leave-active {
+  opacity: 1;
+  transform: scaleY(1);
+  transition: transform .3s cubic-bezier(0.23, 1, 0.32, 1), opacity .3s cubic-bezier(0.23, 1, 0.32, 1);
+  transform-origin: center top;
+}
+
+.mx-zoom-in-down-enter,
+.mx-zoom-in-down-leave-to {
+  opacity: 0;
+  transform: scaleY(0);
+}
+
+.mx-datepicker {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.mx-datepicker svg {
+  font-size: 14px;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em;
+  overflow: hidden;
+  fill: $dark-blue-1;
+  pointer-events: all !important;
+  margin-right: .3em;
+  line {
+    stroke: $dark-blue-1;
+  }
+}
+
+.mx-datepicker button i {
+  position: static !important;
+  left: auto !important;
+  top: auto !important;
+  transform: none !important;
+}
+
+.mx-datepicker .mx-input:not(:placeholder-shown) ~ i svg {
+  fill: $dark-blue-2;
+  line {
+    stroke: $dark-blue-2;
+  }
+}
+
+.mx-datepicker-range {
+  width: 320px;
+}
+
+.mx-datepicker-inline {
+  width: auto;
+}
+
+.mx-input-wrapper {
+  position: relative;
+}
+
+.mx-input-wrapper .mx-icon-clear {
+  display: none;
+}
+
+.mx-input-wrapper .mx-input:not(:placeholder-shown) ~ .mx-icon-clear {
+  display: block;
+}
+
+.mx-input-wrapper .mx-input:not(:placeholder-shown) ~ .mx-icon-clear+.mx-icon-calendar {
+  display: none;
+}
+
+.mx-input::-ms-clear {
+  display: none;
+}
+
+.mx-icon-calendar,
+.mx-icon-clear {
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  transform: translateY(-50%);
+  font-size: 16px;
+  line-height: 1;
+  color: rgba(0, 0, 0, .5);
+  vertical-align: middle;
+}
+
+.mx-icon-clear {
+  cursor: pointer;
+}
+
+.mx-icon-clear svg {
+  font-size: 8px !important;
+  fill: $dark-blue-2;
+  line {
+    stroke: $dark-blue-2;
+  }
+}
+
+.mx-icon-clear:hover {
+  color: rgba(0, 0, 0, .8);
+}
+
+.mx-datepicker-main {
+  font: 14px/1.5 "Helvetica Neue", Helvetica, Arial, "Microsoft Yahei", sans-serif;
+  color: $dark-blue-1;
+  background-color: $white;
+  border: 1px solid $greyish-blue-3;
+  border-radius: 4px;
+}
+
+.mx-datepicker-popup {
+  position: absolute;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.05);
+  z-index: 8;
+}
+
+.mx-datepicker-sidebar {
+  float: left;
+  box-sizing: border-box;
+  width: 100px;
+  padding: 6px;
+  overflow: auto;
+}
+
+.mx-datepicker-sidebar+.mx-datepicker-content {
+  margin-left: 100px;
+  border-left: 1px solid $greyish-blue-3;
+}
+
+.mx-datepicker-body {
+  position: relative;
+  user-select: none;
+}
+
+.mx-btn-shortcut {
+  display: block;
+  padding: 0 6px;
+  line-height: 24px;
+}
+
+.mx-range-wrapper {
+  display: flex;
+}
+
+.mx-datepicker-header {
+  padding: 6px 8px;
+  border-bottom: 1px solid $greyish-blue-3;
+}
+
+.mx-datepicker-footer {
+  padding: 6px 8px;
+  text-align: right;
+  border-top: 1px solid $greyish-blue-3;
+}
+
+.mx-calendar {
+  box-sizing: border-box;
+  width: 368px;
+  padding: 6px 12px;
+}
+
+.mx-calendar+.mx-calendar {
+  border-left: 1px solid $greyish-blue-3;
+}
+
+.mx-calendar-header,
+.mx-time-header {
+  box-sizing: border-box;
+  height: 34px;
+  line-height: 34px;
+  text-align: center;
+  overflow: hidden;
+}
+
+.mx-btn-icon-left,
+.mx-btn-icon-double-left {
+  float: left;
+}
+
+.mx-btn-icon-right,
+.mx-btn-icon-double-right {
+  float: right;
+}
+
+.mx-calendar-header-label {
+  font-size: 14px;
+}
+
+.mx-calendar-decade-separator {
+  margin: 0 2px;
+}
+
+.mx-calendar-decade-separator:after {
+  content: "~";
+}
+
+.mx-calendar-content {
+  position: relative;
+  height: 224px;
+  box-sizing: border-box;
+}
+
+.mx-calendar-content .cell {
+  cursor: pointer;
+  text-transform: capitalize;
+  border-radius: 4px;
+}
+
+.mx-calendar-content .cell:hover {
+  color: $dark-blue-1;
+  background-color: $greyish-blue-1;
+}
+
+.mx-calendar-content .cell.active {
+  color: $white;
+  background-color: $dark-blue-2;
+}
+
+.mx-calendar-content .cell.in-range {
+  color: $dark-blue-1;
+  background-color: $greyish-blue-5;
+}
+
+.mx-calendar-content .cell.disabled {
+  cursor: not-allowed;
+  color: $grey-1;
+  background-color: $greyish-blue-1;
+}
+
+.mx-calendar-week-mode .mx-date-row {
+  cursor: pointer;
+}
+
+.mx-calendar-week-mode .mx-date-row:hover {
+  background-color: $greyish-blue-4;
+}
+
+.mx-calendar-week-mode .mx-date-row.mx-active-week {
+  background-color: $greyish-blue-5;
+}
+
+.mx-calendar-week-mode .mx-date-row .cell:hover {
+  color: inherit;
+  background-color: transparent;
+}
+
+.mx-calendar-week-mode .mx-date-row .cell.active {
+  color: inherit;
+  background-color: transparent;
+}
+
+.mx-week-number {
+  opacity: .5;
+}
+
+.mx-table {
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.mx-table th {
+  padding: 0;
+  font-weight: 500;
+}
+
+.mx-table tr {
+  vertical-align: middle;
+}
+
+.mx-table td {
+  padding: 0;
+  height: 32px;
+  line-height: 32px;
+  vertical-align: middle;
+}
+
+.mx-table-date td,
+.mx-table-date th {
+  height: 32px;
+  font-size: 12px;
+  line-height: 32px;
+}
+
+.mx-table-date .today {
+  color: $dark-blue-2;
+}
+
+.mx-table-date .cell.not-current-month {
+  color: $grey-1;
+}
+
+.mx-time {
+  flex: 1;
+  width: 224px;
+  background: $white;
+}
+
+.mx-time+.mx-time {
+  border-left: 1px solid $greyish-blue-3;
+}
+
+.mx-calendar-time {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.mx-time-header {
+  border-bottom: 1px solid $greyish-blue-3;
+}
+
+.mx-time-content {
+  height: 224px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.mx-time-columns {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.mx-time-column {
+  flex: 1;
+  position: relative;
+  border-left: 1px solid $greyish-blue-3;
+  text-align: center;
+}
+
+.mx-time-column:first-child {
+  border-left: 0;
+}
+
+.mx-time-column .mx-time-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mx-time-column .mx-time-list::after {
+  content: "";
+  display: block;
+  height: 192px;
+}
+
+.mx-time-column .mx-time-item {
+  cursor: pointer;
+  font-size: 12px;
+  height: 32px;
+  line-height: 32px;
+}
+
+.mx-time-column .mx-time-item:hover {
+  color: $dark-blue-1;
+  background-color: $greyish-blue-4;
+}
+
+.mx-time-column .mx-time-item.active {
+  color: $dark-blue-2;
+  background-color: transparent;
+  font-weight: 700;
+}
+
+.mx-time-column .mx-time-item.disabled {
+  cursor: not-allowed;
+  color: $grey-1;
+  background-color: $greyish-blue-1;
+}
+
+.mx-time-option {
+  cursor: pointer;
+  padding: 8px 10px;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.mx-time-option:hover {
+  color: $dark-blue-1;
+  background-color: $greyish-blue-4;
+}
+
+.mx-time-option.active {
+  color: $dark-blue-2;
+  background-color: transparent;
+  font-weight: 700;
+}
+
+.mx-time-option.disabled {
+  cursor: not-allowed;
+  color: $grey-1;
+  background-color: $greyish-blue-1;
+}
+
+@include media-max-width('lg') {
+  .mx-calendar {
+    box-sizing: border-box;
+    width: calc(100vw - 52px);
+    max-width: 490px;
+    padding: 6px 12px;
+  }
+
+  .mx-range-wrapper {
+    flex-direction: column
+  }
+}
+
+.dark-mode {
+  .mx-btn {
+    color: $white;
+  }
+  
+  .mx-btn:hover {
+    border-color: $yellow-1;
+    color: $yellow-1;
+  }
+  
+  .mx-datepicker svg {
+    fill: $white;
+    line {
+      stroke: $white;
+    }
+  }
+  
+  .mx-datepicker .mx-input:not(:placeholder-shown) ~ i svg {
+    fill: $yellow-1;
+    line {
+      stroke: $yellow-1;
+    }
+  }
+  
+  .mx-icon-clear svg {
+    fill: $yellow-1;
+    line {
+      stroke: $yellow-1;
+    }
+  }
+
+  .mx-datepicker-main {
+    color: $white;
+    background-color: $dark-1;
+    border: 1px solid $grey-1;
+  }
+  
+  .mx-datepicker-sidebar+.mx-datepicker-content {
+    border-left: 1px solid $grey-1;
+  }
+  
+  .mx-datepicker-header {
+    border-bottom: 1px solid $grey-1;
+  }
+  
+  .mx-datepicker-footer {
+    border-top: 1px solid $grey-1;
+  }
+  
+  .mx-calendar+.mx-calendar {
+    border-left: 1px solid $grey-1;
+  }
+  
+  .mx-calendar-content .cell:hover {
+    color: $white;
+    background-color: $dark-2;
+  }
+  
+  .mx-calendar-content .cell.active {
+    color: $white;
+    background-color: $grey-2;
+  }
+  
+  .mx-calendar-content .cell.in-range {
+    color: $white;
+    background-color: $greyish-blue-5;
+  }
+  
+  .mx-calendar-content .cell.disabled {
+    color: $grey-1;
+    background-color: $greyish-blue-1;
+  }
+  
+  .mx-calendar-week-mode .mx-date-row:hover {
+    background-color: $greyish-blue-4;
+  }
+  
+  .mx-calendar-week-mode .mx-date-row.mx-active-week {
+    background-color: $greyish-blue-5;
+  }
+  
+  .mx-table-date .today {
+    color: $yellow-1;
+  }
+  
+  .mx-table-date .cell.not-current-month {
+    color: $grey-1;
+  }
+  
+  .mx-time {
+    background: $white;
+  }
+  
+  .mx-time+.mx-time {
+    border-left: 1px solid $grey-1;
+  }
+
+  .mx-time-header {
+    border-bottom: 1px solid $grey-1;
+  }
+  
+  .mx-time-column {
+    border-left: 1px solid $grey-1;
+  }
+  
+  .mx-time-column .mx-time-item:hover {
+    color: $white;
+    background-color: $greyish-blue-4;
+  }
+  
+  .mx-time-column .mx-time-item.active {
+    color: $yellow-1;
+  }
+  
+  .mx-time-column .mx-time-item.disabled {
+    color: $grey-1;
+    background-color: $greyish-blue-1;
+  }
+  
+  .mx-time-option:hover {
+    color: $white;
+    background-color: $greyish-blue-4;
+  }
+  
+  .mx-time-option.active {
+    color: $yellow-1;
+  }
+  
+  .mx-time-option.disabled {
+    color: $grey-1;
+    background-color: $greyish-blue-1;
+  }
+}

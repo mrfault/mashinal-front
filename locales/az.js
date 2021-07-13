@@ -1604,5 +1604,8 @@ export default {
 	"prod_year": "Buraxılış ili",
 	"year": "il",
 
-	"edit_or_restore": "Nəqliyyat vasitəsinə dair məlumatlara düzəliş et və yaxud"
+	"edit_or_restore": "Nəqliyyat vasitəsinə dair məlumatlara düzəliş et və yaxud",
+	"user_information": "İstifadəçi məlumatları",
+	"user_information_edit": "Məlumatları redaktə et",
+	"no_favorites": "Seçilmişlərə əlavə etməmisiniz"
 }

@@ -10,7 +10,7 @@ export const UserDataMixin = {
     },
     getUserSettingsLink() {
       if (!this.loggedIn) return this.$localePath('/login');
-      return this.$localePath(this.user.autosalon ? '/profile/dashboard' : '/profile/settings');
+      return this.$localePath(this.user.autosalon ? '/profile/dashboard' : '/profile');
     }
   },
   methods: {

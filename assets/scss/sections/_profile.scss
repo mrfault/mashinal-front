@@ -1,0 +1,98 @@
+.pages-profile {
+  .card {
+    position: relative;
+    margin-top: 50px;
+    .edit-link {
+      position: absolute;
+      top: 30px;
+      right: 25px;
+      font-size: 18px;
+    }
+    a {
+      &:not(:hover) {
+        color: inherit;
+      }
+    }
+  }
+  .avatar {
+    display: block;
+    width: 100px;
+    height: 100px;
+    background-color: $greyish-blue-3;
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    margin-top: -75px;
+  }
+  .profile {
+    &_info {
+      &-details {
+        display: flex;
+        align-items: center;
+        padding-bottom: 16px;
+        border-bottom: 1px solid $greyish-blue-3;
+      }
+      i {
+        margin-right: 9px;
+      }
+    }
+  }
+}
+
+.pages-profile-settings {
+  .profile {
+    &_edit {
+      
+    }
+  }
+  .avatar {
+    &_edit {
+      margin-bottom: 40px;
+      .croppa-image {
+        position: relative;
+        width: 100px;
+        margin: 0 auto;
+        canvas {
+          display: block;
+          border-radius: 4px;
+        }
+        &.croppa--has-target {
+          cursor: move;
+        }
+      }
+      .drop-file {
+        position: absolute;
+        bottom: 9px;
+        right: 9px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 25px;
+        height: 25px;
+        border-radius: 4px;
+        color: $dark-blue-3;
+        border: 1px solid $greyish-blue-4;
+        background-color: $white;
+      }
+      p {
+        font-weight: 500;
+        margin: 9px 0 0;
+      }
+    }
+  }
+}
+
+.dark-mode {
+  .pages-profile {
+    .avatar {
+      background-color: $dark-3;
+    }
+    .profile {
+      &_info {
+        &-details {
+          border-bottom: 1px solid $dark-1;
+        }
+      }
+    }
+  }
+}

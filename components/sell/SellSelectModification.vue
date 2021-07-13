@@ -3,7 +3,7 @@
     <transition-group name="fade2">
       <div :key="1" class="mt-3 mt-lg-0 mb-3" v-if="form.year && sellBody.length" ref="sell-car_body_type">
         <h2 class="title-with-line full-width">
-          <span>{{ $t('carcase') }}</span>
+          <span>{{ $t('carcase') }} <span class="star"> *</span></span>
         </h2>
         <form-buttons v-model="form.car_body_type" :options="sellBody"  
           :btn-class="'primary-outline select-body'" :group-by="isMobileBreakpoint ? 2 : 5"
@@ -17,7 +17,7 @@
       </div>
       <div :key="2" class="mb-3" v-if="form.car_body_type && sellGenerations.length" ref="sell-generation_id">
         <h2 class="title-with-line full-width">
-          <span>{{ $t('generation') }}</span>
+          <span>{{ $t('generation') }} <span class="star"> *</span></span>
         </h2>
         <form-buttons v-model="form.generation_id" :options="sellGenerations" 
           :btn-class="'primary-outline select-generation'" :group-by="isMobileBreakpoint ? 2 : 5"
@@ -33,7 +33,7 @@
       </div>
       <div :key="3" class="mb-3" v-if="form.generation_id && sellEngines.length" ref="sell-gearing">
         <h2 class="title-with-line full-width">
-          <span>{{ $t('engine') }}</span>
+          <span>{{ $t('engine') }} <span class="star"> *</span></span>
         </h2>
         <form-buttons v-model="form.gearing" 
           :options="sellEngines.map(o => ({ name: $t('engine_values')[o.engine], key: o.engine }))" 
@@ -50,7 +50,7 @@
       </div>
       <div :key="4" class="mb-3" v-if="form.gearing && sellGearing.length" ref="sell-transmission">
         <h2 class="title-with-line full-width">
-          <span>{{ $t('type_of_drive') }}</span>
+          <span>{{ $t('type_of_drive') }} <span class="star"> *</span></span>
         </h2>
         <form-buttons v-model="form.transmission" 
           :options="sellGearing.map(o => ({ name: $t('type_of_drive_values')[o.type_of_drive], key: o.type_of_drive }))" 
@@ -63,7 +63,7 @@
       </div>
       <div :key="5" class="mb-3" v-if="form.transmission && sellTransmissions.length" ref="sell-modification">
         <h2 class="title-with-line full-width">
-          <span>{{ $t('box') }}</span>
+          <span>{{ $t('box') }} <span class="star"> *</span></span>
         </h2>
         <form-buttons v-model="form.modification" 
           :options="sellTransmissions.map(o => ({ name: $t('box_values')[o.box], key: o.box }))" 
@@ -76,7 +76,7 @@
       </div>
       <div :key="6" class="mb-3" v-if="form.modification && sellModifications.length" ref="sell-car_catalog_id">
         <h2 class="title-with-line full-width">
-          <span>{{ $t('modification') }}</span>
+          <span>{{ $t('modification') }} <span class="star"> *</span></span>
         </h2>
         <form-buttons v-model="form.car_catalog_id" 
           :options="sellModifications.map(o => ({ name: getModificationName(o), key: o.id }))" 

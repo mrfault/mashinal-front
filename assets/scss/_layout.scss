@@ -61,6 +61,11 @@ h2 {
       width: 100%;
       border-bottom: 1px solid;
     }
+    &.text-center {
+      span {
+        padding-left: 25px;
+      }
+    }
   }
 }
 

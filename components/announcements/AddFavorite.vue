@@ -51,7 +51,6 @@ export default {
   },
   beforeDestroy() {
     this.$nuxt.$off('after-login', this.handleAfterLogin);
-    this.$toasted.clear();
   }
 }
 </script>

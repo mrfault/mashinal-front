@@ -1608,5 +1608,8 @@ export default {
 	"prod_year": "Год выпуска",
 	"year": "год",
 
-	"edit_or_restore": "Измените необходимые данные и"
+	"edit_or_restore": "Измените необходимые данные и",
+	"user_information": "Информация о пользователе",
+	"user_information_edit": "Редактировать",
+	"no_favorites": "Вы не добавляли в избранное"
 }
