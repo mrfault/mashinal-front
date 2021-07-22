@@ -77,6 +77,14 @@ h2 {
   }
 }
 
+.text-lowercase {
+  text-transform: lowercase;
+}
+
+.fw-500 {
+  font-weight: 500;
+}
+
 .dark-mode {
   h2.title-with-line {
     span {
@@ -202,8 +210,27 @@ main {
   color: $green-1;
 }
 
-.text-red {
+.text-dark-blue-2 {
+  color: $dark-blue-2;
+}
+
+.text-dark-blue-3 {
+  color: $dark-blue-3;
+}
+
+.text-red,
+.text-hover-red:hover {
   color: $red-1;
+}
+
+.dark-mode {
+  .text-dark-blue-2,
+  .text-hover-red:hover {
+    color: $yellow-1;
+  }
+  .text-dark-blue-3 {
+    color: $grey-5;
+  }
 }
 
 .text-yellow {
@@ -1213,6 +1240,11 @@ main {
 
 .disabled-content {
   opacity: .4;
+  pointer-events: none;
+}
+
+.disabled-ui {
+  opacity: .25;
   pointer-events: none;
 }
 

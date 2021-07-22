@@ -9,7 +9,7 @@
             :initial-image="getUserAvatar"
             :accept="'image/*'"
             :canvas-color="'transparent'"
-            :zoom-speed="5" 
+            :zoom-speed="15" 
             :width="100"
             :height="100"
             :quality="1"

@@ -71,7 +71,7 @@ export default {
       if(!this.selectedOptions.length) return;
       this.pending = true;
       // send complaint if options selected
-      await this.$axios.$post(`/complaint-options`, {
+      this.$axios.$post(`/complaint-options`, {
         options: this.selectedOptions,
         announcement_id: this.announcement.id,
         announcement_model: this.getType,

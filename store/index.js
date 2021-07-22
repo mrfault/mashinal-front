@@ -117,7 +117,7 @@ export const getters = {
   menus: s => s.menus,
   staticPages: s => s.staticPages,
   // saved search & favorites
-  savedSearchList: s => s.favoritesSearchList,
+  savedSearchList: s => s.savedSearchList,
   singleSavedSearch: s => s.singleSavedSearch,
   favorites: s => s.favorites,
   favoriteAnnouncements: s => s.favoriteAnnouncements,
@@ -328,12 +328,20 @@ export const actions = {
   },
   async deleteSavedSearch({ commit, state }, id){
     await this.$axios.$delete(`/saved-search/${id}`);
-    const rest_search = state.favoritesSearchList.filter(search => search.id !== id);
-    commit('mutate', { property: 'savedSearchList', value: rest_search });
+    const list = state.savedSearchList.filter(search => search.id !== id);
+    commit('mutate', { property: 'savedSearchList', value: list });
     commit('mutate', { property: 'singleSavedSearch', value: {} });
   },
-  async updateSavedSearchNotificationsInterval({ commit }, data){
-    const res = await this.$axios.$post('/saved-search-notification-interval', data);
+  async deleteSavedSearchMultiple({ commit, state }, data){
+    await this.$axios.$post(`/saved-search/delete_all`, data);
+    const list = state.savedSearchList.filter(search => !data.ids.includes(search.id));
+    commit('mutate', { property: 'savedSearchList', value: list });
+    commit('mutate', { property: 'singleSavedSearch', value: {} });
+  },
+  async updateSavedSearchNotificationsInterval({ commit, state }, data){
+    await this.$axios.$post('/saved-search-notification-interval', data);
+    const list = state.savedSearchList.map(search => !data.id.includes(search.id) ? search : ({...search, notification_interval: data.type }));
+    commit('mutate', { property: 'savedSearchList', value: list });
     commit('mutate', { property: 'singleSavedSearch', key: 'notification_interval', value: data.type });
   },
   clearSavedSearch({ commit }){

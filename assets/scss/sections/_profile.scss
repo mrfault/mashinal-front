@@ -82,6 +82,106 @@
   }
 }
 
+.pages-profile-payments {
+  .payment-history-info {
+    color: $dark-blue-2;
+    font-size: 15px;
+    margin: -10px -10px 0;
+  }
+  .payment-history-rows {
+    padding: 0 10px;
+    margin-bottom: -20px;
+    .row {
+      align-items: center;
+      justify-content: center;
+      height: 45px;
+      font-size: 15px;
+      border-top: 1px solid $greyish-blue-3;
+      &.head {
+        border-top: 0;
+        height: auto;
+        margin-top: -10px;
+        margin-bottom: -10px;
+        span {
+          color: inherit !important;
+        }
+      }
+      i {
+        width: 18px;
+        margin-right: 8px;
+      }
+      .payment-service,
+      .payment-period,
+      .payment-price,
+      .payment-date {
+        display: inline-flex;
+        justify-content: flex-start;
+        flex-shrink: 0;
+        white-space: nowrap;
+      }
+      .payment-service {
+        align-items: center;
+        width: 145px;
+      }
+      .payment-period {
+        color: $dark-blue-3;
+        width: 120px;
+      }
+      .payment-price {
+        width: 90px;
+      }
+      .payment-date {
+        color: $dark-blue-3;
+        width: 90px;
+        text-align: right;
+        justify-content: flex-end;
+      }
+    }
+  }
+}
+
+.pages-profile-templates {
+  .templates-controls {
+    padding: 6px 25px;
+    .control-icon {
+      padding: 4px 8px;
+      font-size: 17px;
+      margin-left: 8px;
+      &:last-child {
+        margin-right: -8px;
+      }
+    }
+  }
+  .templates-item {
+    padding: 6px 25px;
+    .toggle .cursor-pointer {
+      display: inline-block;
+      padding: 4px 8px;
+      margin-right: -8px;
+    }
+    &_params {
+      .row {
+        padding: 25px 0 10px;
+        .col-auto {
+          width: 20%;
+        }
+        .param {
+          span:first-child {
+            margin-bottom: 5px;
+          }
+        }
+      }
+      hr {
+        position: absolute;
+        top: 46px;
+        left: 0;
+        width: 100%;
+        margin: 0;
+      }
+    }
+  }
+}
+
 .dark-mode {
   .pages-profile {
     .avatar {
@@ -91,6 +191,21 @@
       &_info {
         &-details {
           border-bottom-color: $dark-1;
+        }
+      }
+    }
+  }
+
+  .pages-profile-payments {
+    .payment-history-info {
+      color: $yellow-1;
+    }
+    .payment-history-rows {
+      .row {
+        border-top-color: $dark-1;
+        .payment-period,
+        .payment-date {
+          color: $grey-1;
         }
       }
     }
@@ -136,6 +251,87 @@
             &:last-child {
               margin-bottom: 0;
             }
+          }
+        }
+      }
+    }
+  }
+
+  .pages-profile-payments {
+    .payment-history-rows {
+      margin-bottom: -25px;
+      .row {
+        background-color: $white;
+        margin: 0 -35px;
+        padding: 0 25px;
+        &:nth-child(2n + 2) {
+          background-color: $greyish-blue-1;
+        }
+        border-top: 0;
+        .payment-service,
+        .payment-price,
+        .payment-period,
+        .payment-date {
+          font-size: 14px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          span {
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+        }
+        .payment-service {
+          width: 125px;
+        }
+        .payment-period {
+          width: 90px;
+        }
+        .payment-price {
+          width: 50px;
+        }
+        .payment-date {
+          width: 70px;
+        }
+      }
+    }
+  }
+
+  .pages-profile-templates {
+    .templates-controls {
+      padding: 25px;
+      .row {
+        position: absolute;
+        z-index: 1;
+        top: 28px;
+        right: 0;
+      }
+      .control-icon {
+        background-color: $white;
+        margin-left: -22px;
+        padding: 0 22px;
+        &:first-child {
+          padding-left: 25px;
+        }
+        &:last-child {
+          margin-right: -32px;
+        }
+        &.disabled-ui {
+          opacity: 1;
+          i {
+            opacity: .25;
+          }
+        }
+      }
+    }
+  }
+
+  .dark-mode {
+    .pages-profile-payments {
+      .payment-history-rows {
+        .row {
+          background-color: $dark-2;
+          &:nth-child(2n + 2) {
+            background-color: $dark-1;
           }
         }
       }

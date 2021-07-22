@@ -81,8 +81,9 @@ export default {
   methods: {
     ...mapActions(['changeLocale']),
 
-    toggleSidebarMenu(toggle) {
-      this.showSidebar = toggle;
+    toggleSidebarMenu(show) {
+      this.showSidebar = show;
+      this.setBodyOverflow(show ? 'hidden' : 'scroll');
     },
     goToSearch(path) {
       if (['cars', 'index', 'cars-assistant', 'cars-advanced-search'].includes(this.routeName))
@@ -91,12 +92,10 @@ export default {
     }
   },
   watch: {
-    showSidebar(show) {
-      this.setBodyOverflow(show ? 'hidden' : 'scroll');
-    },
     breakpoint(breakpoint) {
       if(breakpoint === 'lg') {
         this.showSidebar = false;
+        this.setBodyOverflow('scroll');
       }
     }
   }

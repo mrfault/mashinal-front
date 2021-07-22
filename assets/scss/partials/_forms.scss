@@ -188,6 +188,12 @@ textarea {
     .text-truncate {
       margin-bottom: -1px;
     }
+    &.pr-0 .text-truncate {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      height: 100%;
+    }
   }
   .checkbox {
     display: flex;

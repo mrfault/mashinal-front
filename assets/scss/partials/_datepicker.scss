@@ -316,8 +316,9 @@
 }
 
 .mx-calendar-content .cell.active {
-  color: $white;
-  background-color: $dark-blue-2;
+  color: $dark-blue-3;
+  background-color: $greyish-blue-3;
+  border: 1px solid $greyish-blue-4;
 }
 
 .mx-calendar-content .cell.in-range {
@@ -579,6 +580,7 @@
   .mx-calendar-content .cell.active {
     color: $white;
     background-color: $grey-2;
+    border-color: $grey-1;
   }
   
   .mx-calendar-content .cell.in-range {

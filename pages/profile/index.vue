@@ -11,7 +11,7 @@
             </h2>
             <template v-if="isMobileBreakpoint">
               <span>{{ $moment(user.birthday).format('DD.MM.YYYY') }}</span>
-              <span>{{ user.gender == 1 ? $t('male') : $('female') }}</span>
+              <span>{{ user.gender == 1 ? $t('male') : $t('female') }}</span>
             </template>
           </div>
         </div>
@@ -30,7 +30,7 @@
             <div class="col-lg-3">
               <div class="profile_info-details">
                 <icon name="user" />
-                <span>{{ user.gender == 1 ? $t('male') : $('female') }}</span>
+                <span>{{ user.gender == 1 ? $t('male') : $t('female') }}</span>
               </div>
             </div>
           </template>

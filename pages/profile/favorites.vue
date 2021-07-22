@@ -9,6 +9,7 @@
         :pending="pending"
         :watch-route="true"
         :title="$t('favorites')"
+        :show-title="isMobileBreakpoint"
         @change-page="changePage"
       />
       <no-results :text="$t('no_favorites')" v-else />

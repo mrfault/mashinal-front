@@ -11,7 +11,8 @@
                   <icon name="cross" />
                 </span>
               </div>
-              <vue-scroll>
+              <slot v-if="!overflowHidden" />
+              <vue-scroll v-else>
                 <div class="modal-popup_scrollview">
                   <slot />
                 </div>
@@ -29,7 +30,11 @@ export default {
   props: {
     toggle: Boolean,
     title: String,
-    modalClass: String
+    modalClass: String,
+    overflowHidden: {
+      type: Boolean,
+      default: true
+    }
   },
   methods: {
     handleEscapeKey(e) {
