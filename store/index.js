@@ -7,6 +7,7 @@ const getInitialState = () =>({
   uiScale: 1,
   menus: [],
   staticPages: [],
+  pageRef: '',
   // axios cancellation
   CancelToken: null,
   cancel: null,
@@ -32,6 +33,7 @@ const getInitialState = () =>({
   paidStatusData: false,
   // announcements
   myAnnouncements: {},
+  myAnnouncement: {},
   mainAnnouncements: {},
   carsAnnouncements: [],
   motoAnnouncements: [],
@@ -116,6 +118,7 @@ export const getters = {
   user: s => s.auth.user,
   menus: s => s.menus,
   staticPages: s => s.staticPages,
+  pageRef: s => s.pageRef,
   // saved search & favorites
   savedSearchList: s => s.savedSearchList,
   singleSavedSearch: s => s.singleSavedSearch,
@@ -141,6 +144,7 @@ export const getters = {
   promotedAnnouncements: s => s.promotedAnnouncements,
   mainAnnouncements: s => s.mainAnnouncements,
   myAnnouncements: s => s.myAnnouncements,
+  myAnnouncement: s => s.myAnnouncement,
   relativeAnnouncements: s => s.relativeAnnouncements,
   // catalog
   catalogItems: s => s.catalogItems,
@@ -254,6 +258,9 @@ export const actions = {
   async getStaticPages({ commit }) {
     const res = await this.$axios.$get('/get_static_pages');
     commit('mutate', { property: 'staticPages', value: res });
+  },
+  setPageRef({ commit }, path) {
+    commit('mutate', { property: 'pageRef', value: path });
   },
   // Messages
   async getMessages({ commit }) {
@@ -536,16 +543,21 @@ export const actions = {
     const res = await this.$axios.$get(`/grid/same/announcements/${id}`);
     commit('mutate', { property: 'relativeAnnouncements', value: res });
   },
-  async getMyAllAnnouncements({ commit }) {
-    const res = await this.$axios.$get('/my/all-announce');
+  async getMyAllAnnouncements({ commit }, data = {}) {
+    const res = await this.$axios.$get(`/my/all-announce-paginated?page=${data.page || 1}`);
     commit('mutate', { property: 'myAnnouncements', value: res });
   },
   async getAnnouncementInner({ commit }, id) {
     const res = await this.$axios.$get(`/announce/${id}`);
     commit('mutate', { property: 'announcement', value: res });
   },
-  async deleteAnnounement({ commit }, data) {
-    await this.$axios.$post('/' + data.type + '/' + data.id + '/delete');
+  async getMyAnnouncement({ commit }, id) {
+    const res = await this.$axios.$get(`/announcement/edit/${id}`);
+    commit('mutate', { property: 'myAnnouncement', value: res });
+  },
+  async deleteMyAnnounement({ commit }, id) {
+    await this.$axios.$delete(`/announcement/${id}/delete`);
+    commit('mutate', { property: 'myAnnouncement', value: {} });
   },
   // Car announcements
   async getCarAnnouncement({ commit }, data) {
@@ -554,7 +566,7 @@ export const actions = {
   },
   async getMyCarAnnouncement({ commit }, id) {
     const res = await this.$axios.$get(`/edit_announce/${id}`);
-    commit('mutate', { property: 'announcement', value: res });
+    commit('mutate', { property: 'myAnnouncement', value: res });
   },
   // Commercial Announcements
   async getCommercialAnnouncement({ commit }, data) {
@@ -563,7 +575,7 @@ export const actions = {
   },
   async getMyCommercialAnnouncement({ commit }, id) {
     const res = await this.$axios.$get(`/commercial/edit_announce/${id}`);
-    commit('mutate', { property: 'announcement', value: res });
+    commit('mutate', { property: 'myAnnouncement', value: res });
   },
   // Moto Announcements
   async getMotoAnnouncement({ commit }, data) {
@@ -572,7 +584,7 @@ export const actions = {
   },
   async getMyMotoAnnouncement({ commit }, data) {
     const res = await this.$axios.$get(`/moto/edit_announce/${data.id}?type=${data.type}`);
-    commit('mutate', { property: 'announcement', value: res });
+    commit('mutate', { property: 'myAnnouncement', value: res });
   },
   // Catalog
   async getCatalogSearch({commit, state}, data) {

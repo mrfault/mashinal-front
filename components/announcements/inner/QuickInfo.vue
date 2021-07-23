@@ -47,25 +47,25 @@
       </div>
     </div>
     <div class="row">
-      <div class="col">
+      <div class="col mt-2 mt-lg-3">
         <show-map-button :lat="contact.lat" :lng="contact.lng" /> 
       </div>
-      <div class="col" v-if="canSendMessage(announcement)" >
+      <div class="col mt-2 mt-lg-3" v-if="canSendMessage(announcement)" >
         <chat-button :announcement="announcement" has-after-login />
       </div>
       <div class="col-12 mt-2 mt-lg-3" v-if="!isMobileBreakpoint">
         <call-button :phone="contact.phone" />
       </div>
     </div>
-    <template v-if="userIsOwner(announcement)">
+    <template v-if="(userIsOwner(announcement) && announcement.status != 2) || (announcement.status == 3 && !announcement.is_autosalon)">
       <hr />
-      <div class="row">
-        <div class="col">
+      <div class="row mt-n2 mt-lg-n3">
+        <div class="col mt-2 mt-lg-3">
           <restore-button :announcement="announcement" v-if="announcement.status == 3" />
           <deactivate-button :announcement="announcement" v-else />
         </div>
-        <div class="col">
-          <edit-button :announcement="announcement" />
+        <div class="col mt-2 mt-lg-3" v-if="announcement.status != 3 && announcement.can_edit">
+          <edit-button :announcement="announcement" :type="type" />
         </div>
       </div>
     </template>
@@ -83,6 +83,9 @@ import CallButton from '~/components/announcements/CallButton';
 import ShowMapButton from '~/components/elements/ShowMapButton';
 
 export default {
+  props: {
+    type: String
+  },
   components: {
     RestoreButton,
     DeactivateButton,

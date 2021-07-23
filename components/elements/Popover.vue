@@ -7,7 +7,7 @@
       <span class="popover-content_triangle">
         <icon name="triangle" />
       </span>
-      <p class="popover-message">
+      <p :class="['popover-message', textClass || '']">
         {{ message }}
         <slot />
       </p>
@@ -19,6 +19,7 @@
   export default {
     props: {
       message: String,
+      textClass: String,
       width: Number,
       name: {
         type: String,

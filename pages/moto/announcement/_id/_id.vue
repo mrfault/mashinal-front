@@ -1,5 +1,5 @@
 <template>
-  <div class="pages-commercial-id">
+  <div class="pages-moto-id">
     <div class="container">
       <div class="announcements-inner">
         <breadcrumbs :crumbs="crumbs">
@@ -25,8 +25,8 @@
             </comment>
           </div>
           <div class="col-auto">
-            <quick-info />
-            <vehicle-specs type="commercial" />
+            <quick-info type="moto" />
+            <vehicle-specs type="moto" />
             <comment :comment="announcement.comment" v-if="isMobileBreakpoint" />
             <promote-card v-if="!isMobileBreakpoint" />
           </div>
@@ -49,7 +49,7 @@ import PromoteCard from '~/components/announcements/inner/PromoteCard';
 import Relatives from '~/components/announcements/inner/Relatives';
 
 export default {
-  name: 'pages-commercial-id',
+  name: 'pages-moto-id',
   components: {
     QuickInfo,
     VehicleSpecs,
@@ -61,20 +61,23 @@ export default {
   },
   nuxtI18n: {
     paths: {
-      az: '/ticari-avtomobiller/elan/:id'
+      az: '/moto/elan/:id'
     }
   },
   head() {
-    let announcementTitle = `${this.$translateSoft(this.announcement.commercial_brand.name)} ${this.$translateSoft(this.announcement.commercial_model.name)}`;
+    let announcementTitle = `${this.motoBrand.name} ${this.motoModel.name}`;
     let title = `${this.$t(`meta-title_announcement-${this.announcement.is_new ? 'new' : 'used'}`, { announce: `${announcementTitle}, ${this.announcement.year}` })}`;
     let description = `${announcementTitle}, ${this.$t('meta-descr_announcement', { announce: `${this.announcement.price}` })}`;
     let image = this.getAnnouncementImage(this.announcement);
+    let category = 'Motorcycle';
+    if (this.announcement.moto_atv_brand) category = 'Atv';
+    else if(this.announcement.scooter_brand) category = 'Scooter';
     return this.$headMeta({ title, description, image }, {
-      category: 'Commercial',
+      category,
       id: this.announcement.id_unique,
       autosalon: this.announcement.user.autosalon,
-      brand: this.$translateSoft(this.announcement.commercial_brand.name),
-      model: this.$translateSoft(this.announcement.commercial_model.name),
+      brand: this.motoBrand.name,
+      model: this.motoModel.name,
       year: this.announcement.year,
       price: { amount: this.announcement.price_int, currency: this.announcement.currency_id },
       services: this.announcement.type,
@@ -88,7 +91,8 @@ export default {
     await Promise.all([
       store.dispatch('getAnnouncementInner', route.params.id),
       store.dispatch('getComplaintOptions'),
-      store.dispatch('getOptions')
+      store.dispatch('getOptions'),
+      store.dispatch('getMotoOptions')
     ]);
   },
   methods: {
@@ -98,45 +102,36 @@ export default {
         sorting: 'created_at_desc',
         additional_brands: {0: {...brand}, 1: {...brand}, 2: {...brand}, 3: {...brand}, 4: {...brand}},
         announce_type: 0,
-        currency: 1,
-        com_type: this.announcement.commercial_type_id
+        currency: 1
       }
       // insert announcement data into form
       if (type.includes('brand')) {
-        form.additional_brands[0].brand = this.announcement.commercial_brand.id;
+        form.additional_brands[0].brand = this.motoBrand.id;
       }
       if (type.includes('model')) {
-        form.additional_brands[0].model = this.announcement.commercial_model.id;
+        form.additional_brands[0].model = this.motoModel.id;
       }
       
-      return `/commercial/${this.$t('slug_'+this.commercialSlug)}?filter=${encodeURI(JSON.stringify(form))}`
+      let slug = 'motorcycles';
+      if (this.announcement.moto_atv_brand) slug = 'atvs';
+      else if(this.announcement.scooter_brand) slug = 'scooters';
+      return `/moto/${this.$t('slug_'+slug)}?filter=${encodeURI(JSON.stringify(form))}`
     }
   },
   computed: {
     ...mapGetters(['announcement']),
 
-    commercialSlug() {
-      return ({
-        1: 'light',
-        2: 'trucks',
-        3: 'tractors',
-        4: 'bus',
-        5: 'trailers',
-        6: 'agricultural',
-        7: 'building',
-        8: 'autoloader',
-        9: 'cranes',
-        10: 'excavators',
-        11: 'bulldozers',
-        12: 'forklift',
-        13: 'utilities',
-      })[this.announcement.commercial_type_id];
+    motoBrand() {
+      return this.announcement.moto_brand || this.announcement.moto_atv_brand || this.announcement.scooter_brand;
+    },
+    motoModel() {
+      return this.announcement.moto_model || this.announcement.moto_atv_model || this.announcement.scooter_model;
     },
     crumbs() {
       return [
-        { name: this.$t('commercial'), route: '/commercial' },
-        { name: this.$translateSoft(this.announcement.commercial_brand.name), route: this.getFilterLink('brand') },
-        { name: this.$translateSoft(this.announcement.commercial_model.name), route: this.getFilterLink('brand-model') },
+        { name: this.$t('moto'), route: '/moto' },
+        { name: this.motoBrand.name, route: this.getFilterLink('brand') },
+        { name: this.motoModel.name, route: this.getFilterLink('brand-model') },
         { name: '#'+this.announcement.id_unique }
       ]
     }

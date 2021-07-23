@@ -1,12 +1,13 @@
 import Vue from 'vue';
 
-import { mapGetters, mapMutations } from 'vuex';
+import { mapGetters, mapActions, mapMutations } from 'vuex';
 
 Vue.use({
   install(Vue) {
     Vue.mixin({
       methods: {
         ...mapMutations(['mutate']),
+        ...mapActions(['setPageRef']),
 
         // messages
         async createMessagesGroup(recipientId = false, announceId = false){
@@ -61,20 +62,26 @@ Vue.use({
           }
           return null;
         },
-        getAnnouncementTitle(item) {
-          if (item.car_catalog)
-            return (item.car_catalog.brand || item.brand).name + ' ' + this.$translateHard((item.car_catalog.model || item.model).name);
-          else if (item.scooter_brand)
-            return item.scooter_brand.name + ' ' + item.scooter_model.name;
-          else if (item.moto_atv_brand)
-            return item.moto_atv_brand.name + ' ' + item.moto_atv_model.name;
-          else if (item.moto_brand)
-            return item.moto_brand.name + ' ' + item.moto_model.name;
-          else if (item.commercial_brand)
-            return this.$translateSoft(item.commercial_brand.name) + ' ' + this.$translateSoft(item.commercial_model.name);
-          else if (item.part_category?.name)
-            return this.$translateSoft(item.part_category.name);
+        getAnnouncementBrandName(item) {
+          if (item.car_catalog) return (item.car_catalog.brand || item.brand).name;
+          else if (item.scooter_brand) return item.scooter_brand.name;
+          else if (item.moto_atv_brand) return item.moto_atv_brand.name;
+          else if (item.moto_brand) return item.moto_brand.name;
+          else if (item.commercial_brand) return this.$translateSoft(item.commercial_brand.name);
           return '';
+        },
+        getAnnouncementModelName(item) {
+          if (item.car_catalog) return (item.car_catalog.model || item.model).name;
+          else if (item.scooter_model) return item.scooter_model.name;
+          else if (item.moto_atv_model) return item.moto_atv_brand.name;
+          else if (item.moto_model) return item.moto_model.name;
+          else if (item.commercial_model) return this.$translateSoft(item.commercial_model.name);
+          return '';
+        },
+        getAnnouncementTitle(item) {
+          if (item.part_category?.name)
+            return this.$translateSoft(item.part_category.name);
+          return this.getAnnouncementBrandName(item) + ' ' + this.getAnnouncementModelName(item);
         },
         getAnnouncementContact(item) {
           return {
@@ -101,7 +108,7 @@ Vue.use({
         }
       },
       computed: {
-        ...mapGetters(['loggedIn', 'user', 'colorMode', 'breakpoint']),
+        ...mapGetters(['loggedIn', 'user', 'colorMode', 'breakpoint', 'pageRef']),
 
         routeName() {
           return this.getRouteBaseName();

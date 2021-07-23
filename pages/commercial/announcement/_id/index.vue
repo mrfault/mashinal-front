@@ -1,5 +1,5 @@
 <template>
-  <div class="pages-cars-id">
+  <div class="pages-commercial-id">
     <div class="container">
       <div class="announcements-inner">
         <breadcrumbs :crumbs="crumbs">
@@ -22,21 +22,12 @@
               <template #before>
                 <thumbs-gallery />
               </template>
-              <template #after>
-                <hr v-if="announcement.comment" />
-                <car-complects :options="announcement.options" />
-              </template>
             </comment>
           </div>
           <div class="col-auto">
-            <quick-info />
-            <vehicle-specs type="cars" />
-            <comment :comment="announcement.comment" v-if="isMobileBreakpoint">
-              <template #after>
-                <hr v-if="announcement.comment" />
-                <car-complects :options="announcement.options" />
-              </template>
-            </comment>
+            <quick-info type="commercial" />
+            <vehicle-specs type="commercial" />
+            <comment :comment="announcement.comment" v-if="isMobileBreakpoint" />
             <promote-card v-if="!isMobileBreakpoint" />
           </div>
         </div>
@@ -54,44 +45,42 @@ import VehicleSpecs from '~/components/announcements/inner/VehicleSpecs';
 import Gallery from '~/components/announcements/inner/Gallery';
 import ThumbsGallery from '~/components/announcements/inner/ThumbsGallery';
 import Comment from '~/components/announcements/inner/Comment';
-import CarComplects from '~/components/announcements/inner/CarComplects';
 import PromoteCard from '~/components/announcements/inner/PromoteCard';
 import Relatives from '~/components/announcements/inner/Relatives';
 
 export default {
-  name: 'pages-cars-id',
+  name: 'pages-commercial-id',
   components: {
     QuickInfo,
     VehicleSpecs,
     Gallery,
     ThumbsGallery,
     Comment,
-    CarComplects,
     PromoteCard,
     Relatives
   },
   nuxtI18n: {
     paths: {
-      az: '/masinlar/elan/:id'
+      az: '/ticari-avtomobiller/elan/:id'
     }
   },
   head() {
-    let announcementTitle = `${this.catalog.brand.name} ${this.$translateHard(this.catalog.model.name)}`;
+    let announcementTitle = `${this.$translateSoft(this.announcement.commercial_brand.name)} ${this.$translateSoft(this.announcement.commercial_model.name)}`;
     let title = `${this.$t(`meta-title_announcement-${this.announcement.is_new ? 'new' : 'used'}`, { announce: `${announcementTitle}, ${this.announcement.year}` })}`;
     let description = `${announcementTitle}, ${this.$t('meta-descr_announcement', { announce: `${this.announcement.price}` })}`;
     let image = this.getAnnouncementImage(this.announcement);
     return this.$headMeta({ title, description, image }, {
-      category: 'Car',
+      category: 'Commercial',
       id: this.announcement.id_unique,
       autosalon: this.announcement.user.autosalon,
-      brand: this.catalog.brand.name,
-      model: this.catalog.model.name.replace('серия', 'seriya').replace('класс', 'klass'),
+      brand: this.$translateSoft(this.announcement.commercial_brand.name),
+      model: this.$translateSoft(this.announcement.commercial_model.name),
       year: this.announcement.year,
       price: { amount: this.announcement.price_int, currency: this.announcement.currency_id },
       services: this.announcement.type,
       new: this.announcement.is_new,
       available: this.announcement.status == 1,
-      barter: this.announcement.exchange_possible,
+      barter: this.announcement.tradeable,
       credit: this.announcement.credit
     });
   },
@@ -99,45 +88,55 @@ export default {
     await Promise.all([
       store.dispatch('getAnnouncementInner', route.params.id),
       store.dispatch('getComplaintOptions'),
-      store.dispatch('getOptions'),
-      store.dispatch('getAllOtherOptions')
+      store.dispatch('getOptions')
     ]);
   },
   methods: {
     getFilterLink(type) {
-      let brand = { brand: '', brand_slug: '', model: '', model_slug: '', generation: '' };
+      let brand = { brand: '', model: '' };
       let form = {
         sorting: 'created_at_desc',
         additional_brands: {0: {...brand}, 1: {...brand}, 2: {...brand}, 3: {...brand}, 4: {...brand}},
-        all_options: {},
-        announce_type: 1,
-        currency: 1
+        announce_type: 0,
+        currency: 1,
+        com_type: this.announcement.commercial_type_id
       }
       // insert announcement data into form
       if (type.includes('brand')) {
-        form.additional_brands[0].brand = this.catalog.brand.id;
-        form.additional_brands[0].brand_slug = this.catalog.brand.slug;
+        form.additional_brands[0].brand = this.announcement.commercial_brand.id;
       }
       if (type.includes('model')) {
-        form.additional_brands[0].model = this.catalog.model.id;
-        form.additional_brands[0].model_slug = this.catalog.model.slug;
-      }
-      if (type.includes('generation')) {
-        form.additional_brands[0].generation = this.catalog.generation.id;
+        form.additional_brands[0].model = this.announcement.commercial_model.id;
       }
       
-      return `/cars?car_filter=${encodeURI(JSON.stringify(form))}`
+      return `/commercial/${this.$t('slug_'+this.commercialSlug)}?filter=${encodeURI(JSON.stringify(form))}`
     }
   },
   computed: {
-    ...mapGetters(['announcement', 'catalog']),
+    ...mapGetters(['announcement']),
 
+    commercialSlug() {
+      return ({
+        1: 'light',
+        2: 'trucks',
+        3: 'tractors',
+        4: 'bus',
+        5: 'trailers',
+        6: 'agricultural',
+        7: 'building',
+        8: 'autoloader',
+        9: 'cranes',
+        10: 'excavators',
+        11: 'bulldozers',
+        12: 'forklift',
+        13: 'utilities',
+      })[this.announcement.commercial_type_id];
+    },
     crumbs() {
       return [
-        { name: this.$t('cars'), route: '/cars' },
-        { name: this.catalog.brand.name, route: this.getFilterLink('brand') },
-        { name: this.catalog.model.name, route: this.getFilterLink('brand-model') },
-        { name: this.$translateHard(this.catalog.generation.name[this.locale]), route: this.getFilterLink('brand-model-generation') },
+        { name: this.$t('commercial'), route: '/commercial' },
+        { name: this.$translateSoft(this.announcement.commercial_brand.name), route: this.getFilterLink('brand') },
+        { name: this.$translateSoft(this.announcement.commercial_model.name), route: this.getFilterLink('brand-model') },
         { name: '#'+this.announcement.id_unique }
       ]
     }

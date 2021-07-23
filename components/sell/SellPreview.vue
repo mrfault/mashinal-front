@@ -4,8 +4,8 @@
          :style="sellPreviewData.image ? {backgroundImage: `url('${sellPreviewData.image}')`} : {}">
     </div>
     <h4>{{ brand.name }} {{ model.name }}</h4>
-    <p>{{ form.year || form.selectedYear }} {{ $t('year') }}, {{ sellPreviewData.mileage || 0 }} {{ $t('char_kilometre') }}</p>
-    <p class="price">{{ sellPreviewData.price || 0 }} {{ sellPreviewData.currency === 2 ? '$' : '₼' }}</p>
+    <p>{{ form.year || form.selectedYear }} {{ $t('year') }}, {{ $readNumber(sellPreviewData.mileage || 0) }} {{ sellPreviewData.mileage_measure }}</p>
+    <p class="price">{{ $readNumber(sellPreviewData.price || 0) }} {{ sellPreviewData.currency }}</p>
     <p>{{ sellPreviewData.region || $t('baku') }}</p>
   </div>
 </template>

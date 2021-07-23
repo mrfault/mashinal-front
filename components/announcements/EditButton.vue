@@ -1,20 +1,21 @@
 <template>
-  <button :class="['btn full-width', `btn--${className} `]" @click.stop="handleClick">
+  <nuxt-link :class="['btn full-width', `btn--${className} `]" :to="path" @click.native="setPageRef($route.path)">
     <icon name="edit" /> {{ $t('edit') }}
-  </button>
+  </nuxt-link>
 </template>
 
 <script>
 export default {
   props: {
     announcement: {},
+    type: String,
     className: {
       default: 'dark-blue'
     }
   },
-  methods: {
-    handleClick() {
-      
+  computed: {
+    path() {
+      return this.$localePath(`/${this.type}/announcement/${this.$route.params.id}/edit`);
     }
   }
 }

@@ -41,6 +41,7 @@
         set(value) {
           value = this.disabled ? this.value : value;
           this.$emit('input', value);
+          this.$emit('change', value);
         }
       }
     }

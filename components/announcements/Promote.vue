@@ -2,7 +2,7 @@
   <component :is="isScreen ? 'mobile-screen' : 'div'" @back="goBack" :bar-title="$t('promoting')">
     <loader v-if="!promotion.id" />
     <div :class="['promote-announcement', `is-${view}`]" v-else>
-      <template v-if="view !== 'card'">
+      <template v-if="!isCard">
         <div class="announcement-details d-flex mb-lg-3">
           <img :src="getAnnouncementImage(this.announcement)" :alt="getAnnouncementTitle(announcement)" />
           <div class="d-flex flex-column ml-lg-3 mt-lg-1">
@@ -24,10 +24,8 @@
         <template #icon="{ button }">
           <icon :name="button.icon" />
         </template>
-        <template #badge="{ button }" v-if="shouldActivate">
-          <span class="badge circle" v-if="button.count">
-            <span>{{ button.count }}</span>
-          </span>
+        <template #badge="{ button }" v-if="!isCard && shouldActivate">
+          <span class="badge" v-if="button.count">{{ button.count }}</span>
         </template>
       </form-buttons>
       <hr class="dashed mt-2 mt-lg-3"/>
@@ -35,7 +33,7 @@
         <icon :name="getServiceIcon(selectedServiceInfo.type)" /> {{ selectedServiceInfo.name }}
       </h4>
       <h4 v-else >{{ $t('my_packages') }}</h4>
-      <template v-if="view !== 'card' && alreadyActive">
+      <template v-if="!isCard && alreadyActive">
         <p class="info-text"><icon name="alert-circle" /> 
           <span v-if="selectedService.type == 4" v-html="$t('info_service_once_in_5_mins', { 
             service: selectedService.name 
@@ -50,18 +48,20 @@
       <form-buttons :btn-class="isCard ? 'white-outline' : 'pale-red-outline'" :options="serviceOptionBtns" :group-by="isScreen ? 1 : 3" :value="promotion.optionId" 
         @input="updatePromotion({key: 'optionId', value: $event}), selectServiceOption()" />
       <p :class="['mt-2 mt-lg-3', {'mb-lg-0': isCard}]" v-if="selectedServiceInfo.description">{{ selectedServiceInfo.description }}</p>
-      <template v-if="view !== 'card'">
-        <h4>{{ $t('payment_method') }}</h4>
-        <div class="pb-lg-3 mb-2 mb-lg-0">
-          <form-buttons :options="payments" :group-by="isScreen ? 1 : 3" :value="promotion.paymentId" 
-            @input="updatePromotion({key: 'paymentId', value: $event})" />
-        </div>
+      <template v-if="!isCard">
+        <template v-if="shouldPay">
+          <h4>{{ $t('payment_method') }}</h4>
+          <div class="pb-lg-3 mb-2 mb-lg-0">
+            <form-buttons :options="payments" :group-by="isScreen ? 1 : 3" :value="promotion.paymentId" 
+              @input="updatePromotion({key: 'paymentId', value: $event})" />
+          </div>
+        </template>
         <div class="promote-payment-info">
           <hr />
           <div class="d-flex justify-content-between align-items-center">
             <span class="price">
               <span>{{ $t('total')}}</span>
-              <strong>{{ selectedServiceOption ? selectedServiceOption.user_price : 0 }} ₼</strong>
+              <strong>{{ (selectedServiceOption ? selectedServiceOption.user_price : 0) || 0 }} ₼</strong>
             </span>
             <button class="btn btn--green" @click="activateOrPay"
               :class="{disabled}">{{ $t(shouldPay ? 'pay' : 'activate') }}</button>
@@ -174,7 +174,7 @@ export default {
         try {
           await this.getMyServiceOptions(this.selectedService.type);
           this.pendingSelect = false;
-          if(this.serviceOptionBtns.length && this.view !== 'card')
+          if(this.serviceOptionBtns.length && !this.isCard)
             this.updatePromotion({ key: 'optionId', value: this.serviceOptionBtns[0].id});
         } catch(err) {
           this.pendingSelect = false;

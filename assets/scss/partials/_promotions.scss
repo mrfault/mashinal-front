@@ -46,42 +46,13 @@
   }
   .btn {
     .badge {
-      position: absolute;
-      top: 8px;
-      right: 4px;
-      span {
-        display: block;
-        color: #fff;
-        font-size: 12px;
-        border-radius: 2px;
-        line-height: 20px;
-        background-color: $dark-blue-1;
-        padding: 0 10px;
-        border-top-right-radius: 0;
-      }
-      &.circle {
-        top: -5px;
-        right: 0px;
-        span {
-          width: 20px;
-          height: 20px;
-          font-size: 11px;
-          line-height: 20px;
-          padding: 0;
-          border-radius: 50%;
-        }
-      }
-      &:not(.circle)::after {
-        content: '';
-        display: block;
-        position: absolute;
-        right: 0;
-        bottom: 100%;
-        width: 0;
-        height: 0;
-        border-bottom: 8px solid $dark-blue-1;
-        border-right: 5px solid transparent;
-      }
+      display: inline-block;
+      margin-top: -5px;
+      font-weight: bold;
+      width: 20px;
+      height: 20px;
+      font-size: 11px;
+      line-height: 20px;
     }
   }
   .promotion-details {

@@ -1,7 +1,7 @@
 <template>
   <component :is="isMobileBreakpoint ? 'mobile-screen' : 'div'" @back="$emit('close')" :bar-title="title" height-auto>
     <div class="sell_last-step">
-      <sell-select-modification v-if="type === 'cars'"
+      <sell-select-modification v-if="!edit && type === 'cars'"
         :form="form"
         @update-form="handleModification"
       />
@@ -38,10 +38,11 @@
             <div class="row">
               <div class="col-auto flex-grow-1">
                 <form-numeric-input :placeholder="$t('mileage')" v-model="form.mileage" 
-                  :invalid="isInvalid('mileage')" @change="removeError('mileage')" />
+                  :invalid="isInvalid('mileage')" @change="removeError('mileage'), updatePreview('mileage')" />
               </div>
               <div class="col-auto">
-                <form-switch :options="getMileageOptions" v-model="form.mileage_measure" />
+                <form-switch :options="getMileageOptions" v-model="form.mileage_measure" 
+                  @change="updatePreview('mileage_measure')" />
               </div>
             </div>
           </div>
@@ -67,26 +68,26 @@
           </h2>
           <damage-options :selected="form.part" @update-car-damage="updateCarDamage" />
         </template>
-        <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-region_id">
-          <span>{{ $t('region_and_place_of_inspection') }} <span class="star"> *</span></span>
-        </h2>
-        <div class="row">
-          <template v-if="!isAutosalon">
+        <template v-if="!isAutosalon">
+          <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-region_id">
+            <span>{{ $t('region_and_place_of_inspection') }} <span class="star"> *</span></span>
+          </h2>
+          <div class="row">
             <div class="col-12 col-lg-4 mb-2 mb-lg-0">
               <form-select :label="$t('region')" :options="sellOptions.regions" v-model="form.region_id" has-search 
-                :invalid="isInvalid('region_id')" @change="removeError('region_id')" />
+                :invalid="isInvalid('region_id')" @change="removeError('region_id'), updatePreview('region')" />
             </div>
             <div class="col-12 col-lg-4 mb-2 mb-lg-0">
               <form-text-input :placeholder="$t('address')" icon-name="placeholder" v-model="form.address" />
             </div>
-          </template>
-          <div class="col-12 col-lg-4 mb-2 mb-lg-0">
-            <pick-on-map-button :lat="form.lat" :lng="form.lng" :address="form.address"
-                @change-address="updateAddress" @change-latlng="updateLatLng">
-              <form-text-input :placeholder="$t('address')" icon-name="placeholder" v-model="form.address" />
-            </pick-on-map-button>
+            <div class="col-12 col-lg-4 mb-2 mb-lg-0">
+              <pick-on-map-button :lat="form.lat" :lng="form.lng" :address="form.address"
+                  @change-address="updateAddress" @change-latlng="updateLatLng">
+                <form-text-input :placeholder="$t('address')" icon-name="placeholder" v-model="form.address" />
+              </pick-on-map-button>
+            </div>
           </div>
-        </div>
+        </template>
         <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-price">
           <span>{{ $t('price') }} <span class="star"> *</span></span>
         </h2>
@@ -95,10 +96,11 @@
             <div class="row flex-nowrap">
               <div class="col-auto flex-grow-1">
                 <form-numeric-input :placeholder="$t('price')" v-model="form.price" 
-                  :invalid="isInvalid('price')" @change="removeError('price')" />
+                  :invalid="isInvalid('price')" @change="removeError('price'), updatePreview('price')" />
               </div>
               <div class="col-auto">
-                <form-switch :options="getCurrencyOptions" v-model="form.currency" />
+                <form-switch :options="getCurrencyOptions" v-model="form.currency" 
+                  @change="updatePreview('currency')"/>
               </div>
             </div>
           </div>
@@ -112,7 +114,7 @@
                 :mask="type === 'cars' ? '99 - AA - 999' : '99 - A{1,2} - 999'"
                 :placeholder="type === 'cars' ? '__ - __ - ___' : '__ - _ - ___'" @focus="showCarNumberDisclaimer"
                 @change="removeError('car_number')">
-              <popover :message="$t('real-car-number-will-make-post-faster')" :width="190" 
+              <popover :message="$t('real-car-number-will-make-post-faster')" text-class="text-red" :width="190" 
                   name="car-number" @click="readCarNumberDisclaimer = true" />
             </form-text-input>
             <form-checkbox :label="$t('show_on_site')" v-model="form.show_car_number" input-name="show_car_number" 
@@ -256,7 +258,7 @@ export default {
       deletedFiles: [],
       uploading: 0,
       publishing: false,
-      showAllOptions: this.type !== 'cars',
+      showAllOptions: this.type !== 'cars' || this.edit,
       readCarNumberDisclaimer: false,
       showRules: false,
       showBanners: this.type === 'cars' && !this.edit,
@@ -333,6 +335,21 @@ export default {
         this.$nuxt.$emit('show-popover', 'car-number');
         this.readCarNumberDisclaimer = true;
       }
+    },
+    updatePreview(key) {
+      if (!key || key === 'region')
+        this.setSellPreviewData({ value: this.sellOptions.regions
+          .find(o => o.key === this.form.region_id)?.name[this.locale], key: 'region' });
+      if (!key || key === 'price')
+        this.setSellPreviewData({ value: this.form.price, key: 'price' });
+      if (!key || key === 'currency')
+        this.setSellPreviewData({ value: this.getCurrencyOptions
+          .find(o => o.key === this.form.currency)?.sign, key: 'currency' });
+      if (!key || key === 'mileage')
+        this.setSellPreviewData({ value: this.form.mileage, key: 'mileage' });
+      if (!key || key === 'mileage_measure')
+        this.setSellPreviewData({ value: this.getMileageOptions
+          .find(o => o.key === this.form.mileage_measure)?.name, key: 'mileage_measure' });
     },
     updateMileage(is_new) {
       if(!is_new) {
@@ -468,8 +485,6 @@ export default {
           this.fbTrack('Lead Api');
           this.gtagTrack('AW-600951956/ccUSCJT25_IBEJSZx54C');
         }
-        // update store data
-        if (this.edit && !this.restore) await this.getMyAllAnnouncements();
         // redirect to payment if action was to restore or to purchase service
         if (promote || this.restore || this.isAlreadySold) {
           window.location = res.data.redirect_url;
@@ -527,6 +542,7 @@ export default {
       .map(property => { this.mutate({ property, value: [] }); });
 
     this.$nuxt.$on('login', this.handleAfterLogin);
+    this.updatePreview();
   },
   beforeDestroy() {
     this.$nuxt.$off('login', this.handleAfterLogin);

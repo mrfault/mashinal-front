@@ -1,8 +1,8 @@
 import { mapGetters, mapActions } from 'vuex';
 
 import { ColorModeMixin } from '~/mixins/color-mode';
-import { MessagesMixin } from '~/mixins/messages';
 import { SocketMixin } from '~/mixins/socket';
+import { MessagesMixin } from '~/mixins/messages';
 
 export const LayoutMixin = {
   mixins: [ColorModeMixin, SocketMixin, MessagesMixin],

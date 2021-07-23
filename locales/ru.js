@@ -293,7 +293,7 @@ export default {
 	"application_for_a_loan_to_buy_a_car_on_mashinal": "Заявки на кредит для покупки автомобиля на Mashin.al",
 	"applying_filter": "Способ нанесения краски",
 	"appointment": "Назначение",
-	"are_you_sure_you_want_to_delete_the_announcement": "Вы точно хотите удалить объявление?",
+	"are_you_sure_you_want_to_delete_the_announcement": "Вы точно хотите деактивировать объявление?",
 	"are_you_sure_you_want_to_delete_the_store": "Вы точно хотите удалить магазин?",
 	"at": "При {value}",
 	"at_least_5_photos": "Не менее {min}, но не более {max}",
