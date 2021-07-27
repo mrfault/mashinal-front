@@ -1621,5 +1621,6 @@ export default {
 	"no_favorites": "Seçilmişlərə əlavə etməmisiniz",
 	"worktime_support": "B.e. - C. 09:00 - 18:00",
 
-	"select_all": "Hamısını seç"
+	"select_all": "Hamısını seç",
+	"status": "Status"
 }

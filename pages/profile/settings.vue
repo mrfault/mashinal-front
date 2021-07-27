@@ -1,5 +1,5 @@
 <template>
-  <div class="pages-profile-settings pt-5">
+  <div class="pages-profile-settings pt-2 pt-lg-5">
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
       <div class="card">

@@ -13,7 +13,11 @@
     <div class="row mb-n2 mb-lg-n3">
       <template v-for="announcement in announcements">
         <div class="col-6 col-lg-auto mb-2 mb-lg-3" :key="announcement.id_unique">
-          <grid-item :announcement="announcement" />
+          <grid-item 
+            :announcement="announcement" 
+            :show-checkbox="showCheckbox" 
+            :show-phone-count="showPhoneCount"
+          />
         </div>
       </template>
     </div>
@@ -42,6 +46,12 @@ export default {
       type: Boolean,
       default: true
     },
+    pushIntoRouter: {
+      type: Boolean,
+      default: true
+    },
+    showCheckbox: Boolean,
+    showPhoneCount: Boolean,
     paginate: {},
     pending: Boolean,
     watchRoute: Boolean
@@ -57,9 +67,13 @@ export default {
           this.scrollTo('.announcements-grid', [-15, -20]);
         });
       } else {
-        this.$router.push({ query: { ...this.$route.query, page } }, () => {
+        if (!this.pushIntoRouter) {
           this.$emit('change-page', page);
-        });
+        } else {
+          this.$router.push({ query: { ...this.$route.query, page } }, () => {
+            this.$emit('change-page', page);
+          });
+        }
       }
     }
   },

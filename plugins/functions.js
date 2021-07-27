@@ -26,8 +26,9 @@ export default function({ app, route, store }, inject) {
     // escape trailing slash
     return path.replace(/\/+$/, '');
   });
-  inject('queryParams', (params) => {
-    return '?' + Object.keys(params).map(key => `${key}=${params[key]}`).join('&');
+  inject('queryParams', (params, skipEmpty) => {
+    let keys = Object.keys(params).filter(key => skipEmpty ? ![undefined, '', false].includes(params[key]) : true);
+    return '?' + keys.map(key => `${key}=${params[key]}`).join('&');
   });
   inject('removeQueryParam', (param) => {
     let query = _.clone(route.query);

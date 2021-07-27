@@ -7,7 +7,7 @@ const getInitialState = () =>({
   uiScale: 1,
   menus: [],
   staticPages: [],
-  pageRef: '',
+  pageRefs: ['',''],
   // axios cancellation
   CancelToken: null,
   cancel: null,
@@ -118,7 +118,8 @@ export const getters = {
   user: s => s.auth.user,
   menus: s => s.menus,
   staticPages: s => s.staticPages,
-  pageRef: s => s.pageRef,
+  pageRefs: s => s.pageRefs,
+  pageRef: s => s.pageRefs[0],
   // saved search & favorites
   savedSearchList: s => s.savedSearchList,
   singleSavedSearch: s => s.singleSavedSearch,
@@ -259,8 +260,8 @@ export const actions = {
     const res = await this.$axios.$get('/get_static_pages');
     commit('mutate', { property: 'staticPages', value: res });
   },
-  setPageRef({ commit }, path) {
-    commit('mutate', { property: 'pageRef', value: path });
+  setPageRef({ commit }, {index, path}) {
+    commit('mutate', { property: 'pageRefs', key: index, value: path });
   },
   // Messages
   async getMessages({ commit }) {
@@ -544,7 +545,7 @@ export const actions = {
     commit('mutate', { property: 'relativeAnnouncements', value: res });
   },
   async getMyAllAnnouncements({ commit }, data = {}) {
-    const res = await this.$axios.$get(`/my/all-announce-paginated?page=${data.page || 1}`);
+    const res = await this.$axios.$get(`/my/all-announce-paginated?page=${data.page || 1}${[0,1,2,3].includes(data.status) ? `&status=${data.status}` : ''}`);
     commit('mutate', { property: 'myAnnouncements', value: res });
   },
   async getAnnouncementInner({ commit }, id) {

@@ -1414,6 +1414,12 @@ main {
     min-width: 1250px;
   }
 
+  .row {
+    .col-lg-1-5 {
+      width: 20%;
+    }
+  }
+
   /** VueScroll */
 
   .__rail-is-vertical {

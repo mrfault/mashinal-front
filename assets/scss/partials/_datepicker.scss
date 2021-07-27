@@ -509,7 +509,7 @@
 @include media-max-width('lg') {
   .mx-calendar {
     box-sizing: border-box;
-    width: calc(100vw - 64px);
+    width: calc(100vw - 52px);
     max-width: 490px;
     padding: 6px 12px;
   }

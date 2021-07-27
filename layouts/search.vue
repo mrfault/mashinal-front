@@ -15,6 +15,7 @@ import SearchNav from '~/components/layout/SearchNav';
 
 export default {
   name: 'layout-search',
+  middleware: 'main',
   components: {
     PageLayout,
     SearchNav

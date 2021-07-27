@@ -1625,5 +1625,6 @@ export default {
 	"no_favorites": "Вы не добавляли в избранное",
 	"worktime_support": "Пн - Пт 09:00 - 18:00",
 
-	"select_all": "Выбрать все"
+	"select_all": "Выбрать все",
+	"status": "Статус"
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="pages-profile-payments pt-5">
+  <div class="pages-profile-payments pt-2 pt-lg-5">
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
       <div class="card mb-lg-3" v-if="isMobileBreakpoint || myServiceHistory.length">

@@ -11,6 +11,7 @@ import PageLayout from '~/components/layout/PageLayout';
 
 export default {
   name: 'layout-default',
+  middleware: 'main',
   components: {
     PageLayout
   }

@@ -1,5 +1,5 @@
 <template>
-  <div class="pages-contact-us pt-5">
+  <div class="pages-contact-us pt-2 pt-lg-5">
     <div class="container">
       <breadcrumbs :crumbs="crumbs">
         <share-it type="contact" />

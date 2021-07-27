@@ -1,5 +1,5 @@
 <template>
-  <div class="pages-profile-templates pt-5">
+  <div class="pages-profile-templates pt-2 pt-lg-5">
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
       <div class="templates-controls card mb-2 mb-lg-3">

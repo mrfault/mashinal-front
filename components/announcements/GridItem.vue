@@ -37,6 +37,16 @@
         <icon name="percent" v-if="announcement.credit"/>
         <icon name="barter" v-if="announcement.tradeable || announcement.exchange_possible"/>
       </span>
+      <span class="d-flex" @click.stop v-if="showCheckbox">
+        <span class="call-count" v-if="announcement.show_phone_number_count || showPhoneCount">
+          <icon name="phone-call" />
+          {{ announcement.show_phone_number_count || 0 }}
+        </span>
+        <div class="item-checkbox">
+          <form-checkbox :value="selected" :input-name="`selected_${announcement.id_unique}`" transparent
+            @input="handleChange" />
+        </div>
+      </span>
     </div>
   </div>
 </template>
@@ -47,11 +57,18 @@ import AddComparison from '~/components/announcements/AddComparison';
 
 export default {
   props: {
-    announcement: {}
+    announcement: {},
+    showCheckbox: Boolean,
+    showPhoneCount: Boolean
   },
   components: {
     AddFavorite,
     AddComparison
+  },
+  data() {
+    return {
+      selected: false
+    }
   },
   computed: {
     getType() {
@@ -105,7 +122,21 @@ export default {
       
       if (!this.isMobileBreakpoint && !this.$env.DEV) return;
       this.$router.push(this.getLink);
+    },
+    handleChange(value) {
+      this.selected = value;
+      this.$nuxt.$emit('select-announcement', this.announcement.id_unique, value, true);
+    },
+    selectAnnouncement(id, value, controls = false) {
+      if (controls || (id != this.announcement.id_unique)) return;
+      this.handleChange(value);
     }
+  },
+  mounted() {
+    this.$nuxt.$on('select-announcement', this.selectAnnouncement);
+  },
+  beforeDestroy() {
+    this.$nuxt.$off('select-announcement', this.selectAnnouncement);
   }
 }
 </script>
