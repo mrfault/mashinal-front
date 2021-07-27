@@ -9,7 +9,8 @@
           transparent @input="handleSelectAll" @change="handleSelectAll"/>
       </div>
       <div class="col-6 col-lg-2 d-flex align-items-center justify-content-end">
-        <span :class="['control-icon cursor-pointer text-hover-red', {'disabled-ui': !selected.length || ![0,1,''].includes(status)}]" @click="showDeactivateModal = true">
+        <span :class="['control-icon cursor-pointer text-hover-red', {'disabled-ui': !selected.length}]" 
+            @click="showDeactivateModal = true" v-tooltip="$t('inactive_make')">
           <icon name="minus-circle" />
           <modal-popup
             :toggle="showDeactivateModal"
@@ -69,7 +70,20 @@ export default {
       });
     },
     async deactivateAnouncement() {
-      if (this.pending || ![0,1,''].includes(this.status)) return;
+      if (this.pending) return;
+
+      let canProceed = true;
+      
+      this.selected.map(id => {
+        let item = this.myAnnouncements.data.find(item => item.id_unique == id);
+        if (![0,1].includes(item.status)) canProceed = false;
+      });
+
+      if (!canProceed) {
+        this.$toasted.error(this.$t('cant_deactivate_selected_announcements'));
+        return;
+      }
+
       this.pending = true;
       try {
         await Promise.all(this.selected.map(this.deleteMyAnnounement));

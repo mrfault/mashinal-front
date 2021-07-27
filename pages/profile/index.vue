@@ -2,7 +2,7 @@
   <div class="pages-profile pt-5">
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
-      <div class="card with-margins">
+      <div class="card profile-card with-margins">
         <div class="profile_top">
           <img class="avatar" :src="getUserAvatar" :alt="user.full_name" />
           <div class="profile_top-details">

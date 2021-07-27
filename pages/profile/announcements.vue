@@ -22,8 +22,8 @@
         :show-checkbox="true"
         @change-page="changePage"
       />
-      <no-results :text="$t('add_an_ad_and_thousands_of_potential_buyers_will_see_it')" v-else>
-        <nuxt-link :to="$localePath('/sell')" class="btn btn--green mt-2 mt-lg-3" v-html="$t('to_sell')" />
+      <no-results :text="statusReady !== '' ? '' : $t('add_an_ad_and_thousands_of_potential_buyers_will_see_it')" v-else>
+        <nuxt-link v-if="statusReady === ''" :to="$localePath('/sell')" class="btn btn--green mt-2 mt-lg-3" v-html="$t('to_sell')" />
       </no-results>
     </div>
   </div>
@@ -61,6 +61,7 @@ export default {
 
     return { 
       pending: false,
+      statusReady: '',
       form: {
         status: ''
       }
@@ -72,6 +73,7 @@ export default {
     async changePage(page = 1) {
       this.pending = true;
       await this.getMyAllAnnouncements({ page, ...this.form });
+      this.statusReady = this.form.status;
       this.pending = false;
       this.scrollTo('.announcements-grid.paginated', [-15, -20]);
     },

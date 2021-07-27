@@ -1626,5 +1626,6 @@ export default {
 	"worktime_support": "Пн - Пт 09:00 - 18:00",
 
 	"select_all": "Выбрать все",
-	"status": "Статус"
+	"status": "Статус",
+	"cant_deactivate_selected_announcements": "Выбранные объявления находятся на рассмотрении или уже деактивированы"
 }

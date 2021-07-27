@@ -201,9 +201,20 @@
     padding: 4px 8px;
     font-size: 17px;
     margin-left: 8px;
-    &:last-child {
+    &:last-of-type {
       margin-right: 5px;
       padding-right: 0;
+      & ~ .tooltip {
+        left: 4px !important;
+      }
+    }
+  }
+}
+
+.dark-mode {
+  .controls-panel {
+    .control-icon {
+      background-color: $dark-2;
     }
   }
 }
@@ -221,10 +232,10 @@
       background-color: $white;
       margin-left: -22px;
       padding: 0 22px;
-      // &:first-child {
+      // &:first-of-type {
       //   padding-left: 25px;
       // }
-      // &:last-child {
+      // &:last-of-type {
       //   margin-right: -32px;
       // }
       &.disabled-ui {

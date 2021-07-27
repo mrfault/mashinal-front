@@ -2,7 +2,7 @@
   <div class="pages-profile-templates pt-2 pt-lg-5">
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
-      <div class="templates-controls card mb-2 mb-lg-3">
+      <div class="templates-controls-panel card mb-2 mb-lg-3">
         <h2 class="title-with-line mb-0" v-if="isMobileBreakpoint">
           <span>{{ $t('my_searches') }}</span>
         </h2>
@@ -12,10 +12,10 @@
               transparent @input="handleSelectAll" @change="handleSelectAll"/>
           </div>
           <div class="col-6 col-lg-2 d-flex align-items-center justify-content-end">
-            <span :class="['control-icon cursor-pointer text-hover-red', {'disabled-ui': !selected.length}]" @click="showIntervalModal = true">
+            <span :class="['control-icon cursor-pointer text-hover-red', {'disabled-ui': !selected.length}]" @click="showIntervalModal = true" v-tooltip="$t('receive_notifications')">
               <icon name="bell" />
             </span>
-            <span :class="['control-icon cursor-pointer text-hover-red', {'disabled-ui': !selected.length}]" @click="showRemoveModal = true">
+            <span :class="['control-icon cursor-pointer text-hover-red', {'disabled-ui': !selected.length}]" @click="showRemoveModal = true" v-tooltip="$t('delete')">
               <icon name="garbage" />
             </span>
           </div>
@@ -142,6 +142,7 @@
         }
       },
       handleSelectAll(value) {
+        this.selectAll = value;
         this.$set(this, 'selected', value 
           ? this.savedSearchList.map(item => item.id) 
           : []

@@ -2,66 +2,73 @@
   <div class="pages-profile-settings pt-2 pt-lg-5">
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
-      <div class="card">
-        <div class="avatar_edit">
-          <croppa class="croppa-image" 
-            v-model="form.avatar" placeholder="" 
-            :initial-image="getUserAvatar"
-            :accept="'image/*'"
-            :canvas-color="'transparent'"
-            :zoom-speed="15" 
-            :width="100"
-            :height="100"
-            :quality="1"
-            :prevent-white-space="true" 
-            :show-remove-button="false"
-            :replace-drop="true"
-          >
-            <span class="drop-file" @click="form.avatar.chooseFile()">
-              <icon name="camera" />
-            </span>
-          </croppa>
-          <p class="text-center">100x100px</p>
+      <component 
+        :is="isMobileBreakpoint ? 'mobile-screen' : 'div'" 
+        :bar-title="$t('user_information_edit')" 
+        @back="$router.push(pageRef || $localePath('/profile'))" 
+        height-auto
+      >
+        <div class="card profile-settings-card">
+          <div class="avatar_edit">
+            <croppa class="croppa-image" 
+              v-model="form.avatar" placeholder="" 
+              :initial-image="getUserAvatar"
+              :accept="'image/*'"
+              :canvas-color="'transparent'"
+              :zoom-speed="15" 
+              :width="100"
+              :height="100"
+              :quality="1"
+              :prevent-white-space="true" 
+              :show-remove-button="false"
+              :replace-drop="true"
+            >
+              <span class="drop-file" @click="form.avatar.chooseFile()">
+                <icon name="camera" />
+              </span>
+            </croppa>
+            <p class="text-center">100x100px</p>
+          </div>
+          <div class="row profile_edit">
+            <div class="col-lg-4 mb-3 mb-lg-3">
+              <form-text-input :maxlength="30" disabled 
+                :placeholder="$t('name')" v-model="form.name" />
+            </div>
+            <div class="col-lg-4 mb-3 mb-lg-3">
+              <form-text-input :placeholder="$t('birthday')" v-model="form.birthday" input-date />
+            </div>
+            <div class="col-lg-4 mb-3 mb-lg-3">
+              <form-buttons v-model="form.gender" :options="getGenderOptions" :group-by="2"
+                btn-class="primary-outline"  />
+            </div>
+            <div class="col-lg-4 mb-3 mb-lg-3">
+              <change-email :placeholder="$t('email')" />
+            </div>
+            <div class="col-lg-4 mb-3 mb-lg-3 ">
+              <change-phone :placeholder="$t('mobile_number')" />
+            </div>
+            <div class="full-width"></div>
+            <div class="col-lg-4 mb-3 mb-lg-3">
+              <form-text-input type="password" autocomplete="old-password" :maxlength="255" 
+                :placeholder="$t('current_password')"  v-model="form.old"
+              />
+            </div>
+            <div class="col-lg-4 mb-3 mb-lg-3">
+              <form-text-input type="password" autocomplete="new-password" :maxlength="255" 
+                :placeholder="$t('new_password')"  v-model="form.password"
+              />
+            </div>
+            <div class="col-lg-4 mb-3 mb-lg-3">
+              <form-text-input type="password" autocomplete="new-password" :maxlength="255" 
+                :placeholder="$t('confirm_new_password')"  v-model="form.password_confirmation"
+              />
+            </div>
+            <div class="col-lg-2 offset-lg-10">
+              <button class="btn btn--green full-width" @click="submit">{{ $t('confirm') }}</button>
+            </div>
+          </div>
         </div>
-        <div class="row profile_edit">
-          <div class="col-lg-4 mb-3 mb-lg-3">
-            <form-text-input :maxlength="30" disabled 
-              :placeholder="$t('name')" v-model="form.name" />
-          </div>
-          <div class="col-lg-4 mb-3 mb-lg-3">
-            <form-text-input :placeholder="$t('birthday')" v-model="form.birthday" input-date />
-          </div>
-          <div class="col-lg-4 mb-3 mb-lg-3">
-            <form-buttons v-model="form.gender" :options="getGenderOptions" :group-by="2"
-              btn-class="primary-outline"  />
-          </div>
-          <div class="col-lg-4 mb-3 mb-lg-3">
-            <change-email :placeholder="$t('email')" />
-          </div>
-          <div class="col-lg-4 mb-3 mb-lg-3 ">
-            <change-phone :placeholder="$t('mobile_number')" />
-          </div>
-          <div class="full-width"></div>
-          <div class="col-lg-4 mb-3 mb-lg-3">
-            <form-text-input type="password" autocomplete="old-password" :maxlength="255" 
-              :placeholder="$t('current_password')"  v-model="form.old"
-            />
-          </div>
-          <div class="col-lg-4 mb-3 mb-lg-3">
-            <form-text-input type="password" autocomplete="new-password" :maxlength="255" 
-              :placeholder="$t('new_password')"  v-model="form.password"
-            />
-          </div>
-          <div class="col-lg-4 mb-3 mb-lg-3">
-            <form-text-input type="password" autocomplete="new-password" :maxlength="255" 
-              :placeholder="$t('confirm_new_password')"  v-model="form.password_confirmation"
-            />
-          </div>
-          <div class="col-lg-2 offset-lg-10">
-            <button class="btn btn--green full-width" @click="submit">{{ $t('confirm') }}</button>
-          </div>
-        </div>
-      </div>
+      </component>
     </div>
   </div>
 </template>

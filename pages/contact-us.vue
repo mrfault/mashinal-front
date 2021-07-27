@@ -4,7 +4,7 @@
       <breadcrumbs :crumbs="crumbs">
         <share-it type="contact" />
       </breadcrumbs>
-      <div class="card mb-2 mb-lg-3">
+      <div class="card contact-us-card mb-2 mb-lg-3">
         <h2 class="title-with-line">
           <span>{{ $t('contact_information') }}</span>
         </h2>
@@ -33,7 +33,7 @@
           <share-it type="contact" />
         </template>
       </div>
-      <div class="card">
+      <div class="card contact-us-card">
         <h2 class="title-with-line">
           <span>{{ $t('contact_us') }}</span>
         </h2>
