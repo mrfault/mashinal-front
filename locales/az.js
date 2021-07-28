@@ -1623,5 +1623,7 @@ export default {
 
 	"select_all": "Hamısını seç",
 	"status": "Status",
-	"cant_deactivate_selected_announcements": "Seçilmiş elanlar moderasiyadadır və ya artıq deaktiv olunub"
+	"cant_deactivate_selected_announcements": "Seçilmiş elanlar moderasiyadadır və ya artıq deaktiv olunub",
+	"logout": "Hesabdan çıx",
+	"autocatalog": "Avtokataloq"
 }

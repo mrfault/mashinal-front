@@ -18,19 +18,6 @@ import { MenusDataMixin } from '~/mixins/menus-data';
 
 export default {
   mixins: [MenusDataMixin],
-  computed: {
-    hasSearchNav() {
-      return [
-        'index', 'cars', 'cars-vip', 'cars-premium', 'cars-assistant', 'cars-advanced-search',
-        'moto', 'moto-moto', 'commercial','commercial-commercial'
-      ].includes(this.routeName);
-    },
-    hasProfileData() {
-      return [
-        'profile', 'profile-settings'
-      ].includes(this.routeName);
-    }
-  },
   methods: {
     isPseudoActive(menu) {
       return (this.hasSearchNav && menu.title === 'search') 

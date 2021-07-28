@@ -6,7 +6,7 @@
         <div class="profile_top">
           <img class="avatar" :src="getUserAvatar" :alt="user.full_name" />
           <div class="profile_top-details">
-            <h2 :class="['text-center', {'title-with-line': !isMobileBreakpoint}]">
+            <h2 :class="{'text-center title-with-line': !isMobileBreakpoint}">
               <span>{{ user.full_name }}</span>
             </h2>
             <template v-if="isMobileBreakpoint">
@@ -16,7 +16,7 @@
           </div>
         </div>
         <hr v-if="isMobileBreakpoint" />
-        <nuxt-link class="edit-link" :to="$localePath('/profile/settings')">
+        <nuxt-link class="edit-link" :to="$localePath('/profile/settings')" @click.native="setPageRef($route.path)">
           <icon name="edit" />
         </nuxt-link>
         <div class="row profile_info">

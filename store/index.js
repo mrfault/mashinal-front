@@ -7,6 +7,7 @@ const getInitialState = () =>({
   uiScale: 1,
   menus: [],
   staticPages: [],
+  pageRef: '',
   pageRefs: ['',''],
   // axios cancellation
   CancelToken: null,
@@ -119,7 +120,7 @@ export const getters = {
   menus: s => s.menus,
   staticPages: s => s.staticPages,
   pageRefs: s => s.pageRefs,
-  pageRef: s => s.pageRefs[0],
+  pageRef: s => s.pageRef,
   // saved search & favorites
   savedSearchList: s => s.savedSearchList,
   singleSavedSearch: s => s.singleSavedSearch,
@@ -260,8 +261,11 @@ export const actions = {
     const res = await this.$axios.$get('/get_static_pages');
     commit('mutate', { property: 'staticPages', value: res });
   },
-  setPageRef({ commit }, {index, path}) {
+  setPageRefs({ commit }, {index, path}) {
     commit('mutate', { property: 'pageRefs', key: index, value: path });
+  },
+  setPageRef({ commit }, path) {
+    commit('mutate', { property: 'pageRef', value: path });
   },
   // Messages
   async getMessages({ commit }) {

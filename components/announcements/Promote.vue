@@ -14,7 +14,7 @@
           </div>
           <div class="promotion-details" v-if="isScreen">
             <span><icon :name="getServiceIcon(selectedServiceInfo.type)" /> {{ selectedServiceInfo.name }}</span>
-            <strong>{{ selectedServiceOption ? selectedServiceOption.user_price : 0 }} ₼</strong>
+            <strong>{{ selectedServiceOption ? `${selectedServiceOption.user_price} ₼` : '...' }}</strong>
           </div>
         </div>
         <hr />

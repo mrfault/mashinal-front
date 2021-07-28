@@ -15,10 +15,12 @@ export const MenusDataMixin = {
     pageMenus() {
       return [{
         title: 'contact_us',
-        route: '/contact-us'
+        route: '/contact-us',
+        icon: 'phone-call'
       }].concat(this.staticPages.map(page => ({
         title: page.title, 
-        route: '/page/'+page.slug[this.locale]
+        route: '/page/'+page.slug[this.locale],
+        icon: 'policy'
       })));
     },
 
@@ -71,6 +73,11 @@ export const MenusDataMixin = {
 
     sidebarMenus() {
       return [
+        { title: 'car-showrooms', route: '/salons', icon: 'store' },
+        { title: 'autocatalog', route: '/catalog', icon: 'book' },
+        { title: 'comparisons', route: '/comparison', icon: 'compare' },
+        { title: 'helper_search', route: '/cars/assistant', icon: 'flag' },
+        { title: 'my_searches', route: '/profile/templates', icon: 'template', auth: true },
         ...this.pageMenus
       ]
     },
@@ -98,6 +105,19 @@ export const MenusDataMixin = {
         { title: 'scooters', route: '/moto/'+this.$t('slug_scooters'), icon: 'moto-2' },
         { title: 'atvs', route: '/moto/'+this.$t('slug_atvs'), icon: 'moto-3' }
       ]
+    },
+
+    hasSearchNav() {
+      return [
+        'index', 'cars', 'cars-vip', 'cars-premium', 'cars-assistant', 'cars-advanced-search',
+        'moto', 'moto-moto', 'commercial','commercial-commercial'
+      ].includes(this.routeName);
+    },
+    
+    hasProfileData() {
+      return [
+        'profile', 'profile-settings'
+      ].includes(this.routeName);
     }
   }
 }

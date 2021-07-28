@@ -1627,5 +1627,7 @@ export default {
 
 	"select_all": "Выбрать все",
 	"status": "Статус",
-	"cant_deactivate_selected_announcements": "Выбранные объявления находятся на рассмотрении или уже деактивированы"
+	"cant_deactivate_selected_announcements": "Выбранные объявления находятся на рассмотрении или уже деактивированы",
+	"logout": "Выйти",
+	"autocatalog": "Автокаталог"
 }

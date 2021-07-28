@@ -1,5 +1,5 @@
 <template>
-  <nuxt-link :class="['btn full-width', `btn--${className} `]" :to="path">
+  <nuxt-link :class="['btn full-width', `btn--${className} `]" :to="path" @click.native="setPageRef($route.path)">
     <icon name="edit" /> {{ $t('edit') }}
   </nuxt-link>
 </template>
