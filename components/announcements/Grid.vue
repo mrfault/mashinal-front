@@ -17,6 +17,7 @@
             :announcement="announcement" 
             :show-checkbox="showCheckbox" 
             :show-phone-count="showPhoneCount"
+            :track-views="trackViews"
           />
         </div>
       </template>
@@ -43,6 +44,10 @@ export default {
     iconName: String,
     showAll: String,
     showTitle: {
+      type: Boolean,
+      default: true
+    },
+    trackViews: {
       type: Boolean,
       default: true
     },

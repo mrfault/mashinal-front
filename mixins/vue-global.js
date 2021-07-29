@@ -79,8 +79,7 @@ Vue.use({
           return '';
         },
         getAnnouncementTitle(item) {
-          if (item.part_category?.name)
-            return this.$translateSoft(item.part_category.name);
+          if (item.title) return item.title;
           return this.getAnnouncementBrandName(item) + ' ' + this.getAnnouncementModelName(item);
         },
         getAnnouncementContact(item) {

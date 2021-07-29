@@ -1447,7 +1447,8 @@ export default {
 	"from_possible_used": "Использовано",
 	"from_possible_left": "Осталось",
 	"more_details": "Подробнее",
-  "dashboard": "Управление",
+  "dashboard": "Панель управления",
+  "dashboard_brief": "Управление",
   "statistics": "Статистика",
   "pricing": "Оценивание",
   "my_profile": "Мой профиль",
@@ -1629,5 +1630,6 @@ export default {
 	"status": "Статус",
 	"cant_deactivate_selected_announcements": "Выбранные объявления находятся на рассмотрении или уже деактивированы",
 	"logout": "Выйти",
-	"autocatalog": "Автокаталог"
+	"autocatalog": "Автокаталог",
+	"back_to_home": "На главную"
 }

@@ -82,6 +82,7 @@
   export default {
     name: 'pages-profile-settings',
     mixins: [UserDataMixin],
+    middleware: ['auth_general','auth_user'],
     components: {
       ChangeEmail,
       ChangePhone

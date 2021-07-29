@@ -3,10 +3,10 @@
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
       <div class="templates-controls-panel card mb-2 mb-lg-3">
-        <h2 class="title-with-line mb-0" v-if="isMobileBreakpoint">
+        <h2 class="title-with-line mt-n1 mb-n1" v-if="isMobileBreakpoint">
           <span>{{ $t('my_searches') }}</span>
         </h2>
-        <div class="row justify-content-between align-items-center">
+        <div class="row justify-content-between align-items-center mt-n1 mt-lg-0">
           <div class="col-6 col-lg-2 ml-n2" v-if="!isMobileBreakpoint">
             <form-checkbox class="fw-500" :label="$t('select_all')" v-model="selectAll" input-name="selectAll" 
               transparent @input="handleSelectAll" @change="handleSelectAll"/>

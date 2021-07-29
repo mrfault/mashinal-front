@@ -21,7 +21,8 @@ export default {
   methods: {
     isPseudoActive(menu) {
       return (this.hasSearchNav && menu.title === 'search') 
-          || (this.hasProfileData && menu.title === 'my_account');
+          || (this.hasProfileData && menu.title === 'my_account')
+          || (this.hasDashboardPanel && menu.title === 'dashboard_brief');
     }
   }
 }

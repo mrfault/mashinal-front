@@ -4,8 +4,9 @@
       <breadcrumbs :crumbs="crumbs" />
       <controls-panel 
         :status="form.status"
+        :show-toolbar="!!myAnnouncements.data.length"
       />
-      <div class="row flex-row-reverse">
+      <div class="row flex-row-reverse" v-if="!(statusReady === '' && !myAnnouncements.data.length)">
         <div class="col-lg-auto col-lg-1-5 mb-lg-n1">
           <form-select :label="$t('status')" :options="getStatusOptions" v-model="form.status"
             @change="changePage(1)" :clear-option="false" has-no-bg />

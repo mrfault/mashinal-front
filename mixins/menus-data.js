@@ -46,7 +46,7 @@ export const MenusDataMixin = {
         { title: 'new_announce', route: '/sell', icon: 'plus' },
         { title: 'messages', route: '/profile/messages', icon: 'chat' },
         { title: 'my_account', route: '/profile', icon: 'user', hide: !this.loggedIn || this.user?.autosalon },
-        { title: 'dashboard', route: '/profile/dashboard', icon: 'settings', hide: !this.loggedIn || !this.user?.autosalon },
+        { title: 'dashboard_brief', route: '/profile/dashboard', icon: 'settings', hide: !this.loggedIn || !this.user?.autosalon },
         { title: 'login', route: '/login', icon: 'user', hide: this.loggedIn }
       ]
     },
@@ -55,7 +55,7 @@ export const MenusDataMixin = {
       return this.user?.autosalon 
         ? [
           { title: 'dashboard', route: '/profile/dashboard' },
-          { title: 'my_announcements', route: '/profile/announcements' },
+          { title: 'my_announces', route: '/profile/announcements' },
           { title: 'messages', route: '/profile/messages' },
           { title: 'statistics', route: '/profile/statistics' },
           // { title: 'pricing', route: '/profile/pricing' },
@@ -64,7 +64,7 @@ export const MenusDataMixin = {
         ]  
         : [
           { title: 'settings', route: '/profile/settings' },
-          { title: 'my_announcements', route: '/profile/announcements' },
+          { title: 'my_announces', route: '/profile/announcements' },
           { title: 'comparisons', route: '/comparison' },
           { title: 'messages', route: '/profile/messages' },
           { title: 'payments', route: '/profile/payments' }
@@ -113,10 +113,23 @@ export const MenusDataMixin = {
         'moto', 'moto-moto', 'commercial','commercial-commercial'
       ].includes(this.routeName);
     },
+
+    hasSearchNav() {
+      return [
+        'index', 'cars', 'cars-vip', 'cars-premium', 'cars-assistant', 'cars-advanced-search',
+        'moto', 'moto-moto', 'commercial','commercial-commercial'
+      ].includes(this.routeName);
+    },
     
     hasProfileData() {
       return [
         'profile', 'profile-settings'
+      ].includes(this.routeName);
+    },
+    
+    hasDashboardPanel() {
+      return [
+        'profile', 'profile-settings', 'profile-dashboard', 'profile-calls', 'profile-statistics'
       ].includes(this.routeName);
     }
   }

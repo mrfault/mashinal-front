@@ -2,8 +2,8 @@
   <div class="pages-profile-payments pt-2 pt-lg-5">
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
-      <div class="card mb-lg-3" v-if="isMobileBreakpoint || myServiceHistory.length">
-        <h2 class="title-with-line mb-n1" v-if="isMobileBreakpoint">
+      <div class="card mb-2 mb-lg-3" v-if="isMobileBreakpoint || myServiceHistory.length">
+        <h2 class="title-with-line mt-n1 mb-n1" v-if="isMobileBreakpoint">
           <span>{{ $t('payment_history') }}</span>
         </h2>
         <div class="payment-history-rows" v-else>

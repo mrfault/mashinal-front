@@ -18,7 +18,7 @@
         </div>
         <div class="item-overlay_bottom d-flex">
           <span class="d-flex">
-            <add-comparison :announcement="announcement" />
+            <add-comparison :announcement="announcement" v-if="getType !== 'Part'"/>
             <add-favorite :announcement="announcement" />
           </span>
           <span class="badge">{{ announcement.humanize_created_at }}</span>
@@ -37,12 +37,12 @@
         <icon name="percent" v-if="announcement.credit"/>
         <icon name="barter" v-if="announcement.tradeable || announcement.exchange_possible"/>
       </span>
-      <span class="d-flex" @click.stop v-if="showCheckbox">
+      <span class="d-flex" @click.stop v-if="showCheckbox || showPhoneCount">
         <span class="call-count" v-if="announcement.show_phone_number_count || showPhoneCount">
           <icon name="phone-call" />
           {{ announcement.show_phone_number_count || 0 }}
         </span>
-        <div class="item-checkbox">
+        <div class="item-checkbox" v-if="showCheckbox">
           <form-checkbox :value="selected" :input-name="`selected_${announcement.id_unique}`" transparent
             @input="handleChange" />
         </div>
@@ -59,7 +59,8 @@ export default {
   props: {
     announcement: {},
     showCheckbox: Boolean,
-    showPhoneCount: Boolean
+    showPhoneCount: Boolean,
+    trackViews: Boolean
   },
   components: {
     AddFavorite,
@@ -77,16 +78,20 @@ export default {
       else if(item.scooter_brand) return 'Scooter';
       else if(item.moto_atv_brand) return 'Atv';
       else if(item.commercial_brand) return 'Commercial';
-      return 'Car';
+      else if(item.car_catalog) return 'Car';
+      else if(item.title) return 'Part';
+      return '';
     },
     getLink() {
       let type = 'cars';
       if (['Motorcycle','Scooter','Atv'].includes(this.getType)) type = 'moto';
       else if (['Commercial'].includes(this.getType)) type = 'commercial';
+      else if (['Part'].includes(this.getType)) type = 'parts';
       let path = `/${type}/announcement/${this.announcement.id_unique}`;
       return this.$localePath(path);
     },
     getTextLine() {
+      if (['Part'].includes(this.getType)) return this.announcement.description;
       let text = `${this.announcement.year} ${this.$t('plural_forms_year')[0]}`;
       if (this.getCapacity) text += `, ${this.getCapacity}`;
       text += `, ${this.$readNumber(this.announcement.mileage)} ${this.$t('char_kilometre')}`;
@@ -113,12 +118,14 @@ export default {
   },
   methods: {
     goToAnnouncement() {
-      this.fbTrack('ViewContent', {
-        content_type: 'product',
-        content_category: this.getType,
-        content_ids: [this.announcement.id_unique],
-        content_name: this.getAnnouncementTitle(this.announcement) + ', ' + this.announcement.year
-      });
+      if (this.trackViews) {
+        this.fbTrack('ViewContent', {
+          content_type: 'product',
+          content_category: this.getType,
+          content_ids: [this.announcement.id_unique],
+          content_name: this.getAnnouncementTitle(this.announcement) + ', ' + this.announcement.year
+        });
+      }
       
       if (!this.isMobileBreakpoint && !this.$env.DEV) return;
       this.$router.push(this.getLink);

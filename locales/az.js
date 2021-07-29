@@ -947,7 +947,7 @@ export default {
 	"password": "Şifrə",
 	"payment": "Ödəniş",
 	"payment_amount": "Məbləğ",
-	"payment_history": "ÖDƏNİŞ TARİXÇƏSİ",
+	"payment_history": "Ödəniş tarixçəsi",
 	"payment_method": "Ödəniş üsulları",
 	"payments": "Ödənişlər",
 	"perednie-tormoza": "Ön əyləclər",
@@ -1450,7 +1450,8 @@ export default {
 	"from_possible_used": "Istifadə olunan",
 	"from_possible_left": "Qalan",
 	"more_details": "Ətraflı",
-	"dashboard": "İdarəetmə",
+	"dashboard": "İdarəetmə paneli",
+	"dashboard_brief": "İdarəetmə",
 	"statistics": "Statistika",
 	"pricing": "Qiymətləndirmə",
 	"my_announces": "Elanlarım",
@@ -1625,5 +1626,6 @@ export default {
 	"status": "Status",
 	"cant_deactivate_selected_announcements": "Seçilmiş elanlar moderasiyadadır və ya artıq deaktiv olunub",
 	"logout": "Hesabdan çıx",
-	"autocatalog": "Avtokataloq"
+	"autocatalog": "Avtokataloq",
+	"back_to_home": "Ana səhifəyə qayıt"
 }
