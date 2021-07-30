@@ -1,6 +1,6 @@
 <template>
   <div :class="['announcements-grid', {'loading-content': pending, 'paginated': paginate}]">
-    <div class="title" v-if="title">
+    <div class="title" v-if="title && showTitle">
       <h2>
         <icon :name="iconName" v-if="iconName" />
         <span>{{ title }}</span>
@@ -11,9 +11,16 @@
       </nuxt-link>
     </div>
     <div class="row mb-n2 mb-lg-n3">
-      <div class="col-6 col-lg-auto mb-2 mb-lg-3" v-for="announcement in announcements" :key="announcement.id_unique">
-        <grid-item :announcement="announcement" />
-      </div>
+      <template v-for="announcement in announcements">
+        <div class="col-6 col-lg-auto mb-2 mb-lg-3" :key="announcement.id_unique">
+          <grid-item 
+            :announcement="announcement" 
+            :show-checkbox="showCheckbox" 
+            :show-phone-count="showPhoneCount"
+            :track-views="trackViews"
+          />
+        </div>
+      </template>
     </div>
     <pagination 
       v-if="paginate && paginate.last_page > 1"
@@ -36,8 +43,23 @@ export default {
     title: String,
     iconName: String,
     showAll: String,
+    showTitle: {
+      type: Boolean,
+      default: true
+    },
+    trackViews: {
+      type: Boolean,
+      default: true
+    },
+    pushIntoRouter: {
+      type: Boolean,
+      default: true
+    },
+    showCheckbox: Boolean,
+    showPhoneCount: Boolean,
     paginate: {},
-    pending: Boolean
+    pending: Boolean,
+    watchRoute: Boolean
   },
   components: {
     GridItem
@@ -50,10 +72,20 @@ export default {
           this.scrollTo('.announcements-grid', [-15, -20]);
         });
       } else {
-        this.$router.push({ query: { ...this.$route.query, page } }, () => {
+        if (!this.pushIntoRouter) {
           this.$emit('change-page', page);
-        });
+        } else {
+          this.$router.push({ query: { ...this.$route.query, page } }, () => {
+            this.$emit('change-page', page);
+          });
+        }
       }
+    }
+  },
+  watch: {
+    '$route.query.page'(page) {
+      if (this.watchRoute) 
+        this.changePage(page);
     }
   }
 }

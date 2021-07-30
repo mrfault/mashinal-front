@@ -6,19 +6,21 @@ export const MenusDataMixin = {
 
     searchMenus() {
       return [
-        { title: 'cars', route: '/cars' },
-        { title: 'moto', route: '/moto', children: this.motoMenus },
-        { title: 'commercial', route: '/commercial', children: this.commercialMenus }
+        { title: 'cars', route: '/cars', icon: 'car-1' },
+        { title: 'moto', route: '/moto', children: this.motoMenus, icon: 'moto-1' },
+        { title: 'commercial', route: '/commercial', children: this.commercialMenus, icon: 'commercial-1' }
       ]
     },
 
     pageMenus() {
       return [{
         title: 'contact_us',
-        route: '/contact-us'
+        route: '/contact-us',
+        icon: 'phone-call'
       }].concat(this.staticPages.map(page => ({
         title: page.title, 
-        route: '/page/'+page.slug[this.locale]
+        route: '/page/'+page.slug[this.locale],
+        icon: 'policy'
       })));
     },
 
@@ -31,8 +33,8 @@ export const MenusDataMixin = {
     topbarMenus() {
       return [
         { title: 'comparisons', route: '/comparison', icon: 'compare' },
-        { title: 'favorites', route: '/my/favorites', icon: 'star' },
-        { title: 'templates', route: '/my/templates', icon: 'template' },
+        { title: 'favorites', route: '/profile/favorites', icon: 'star' },
+        { title: 'templates', route: '/profile/templates', icon: 'template' },
         { title: 'messages', route: '/profile/messages', icon: 'chat' }
       ]
     },
@@ -40,11 +42,11 @@ export const MenusDataMixin = {
     bottomMenus() {
       return [
         { title: 'search', route: '/', icon: 'search' },
-        { title: 'favorites', route: '/my/favorites', icon: 'star' },
+        { title: 'favorites', route: '/profile/favorites', icon: 'star' },
         { title: 'new_announce', route: '/sell', icon: 'plus' },
         { title: 'messages', route: '/profile/messages', icon: 'chat' },
-        { title: 'my_account', route: '/profile/settings', icon: 'user', hide: !this.loggedIn || this.user?.autosalon },
-        { title: 'dashboard', route: '/profile/dashboard', icon: 'settings', hide: !this.loggedIn || !this.user?.autosalon },
+        { title: 'my_account', route: '/profile', icon: 'user', hide: !this.loggedIn || this.user?.autosalon },
+        { title: 'dashboard_brief', route: '/profile/dashboard', icon: 'settings', hide: !this.loggedIn || !this.user?.autosalon },
         { title: 'login', route: '/login', icon: 'user', hide: this.loggedIn }
       ]
     },
@@ -53,7 +55,7 @@ export const MenusDataMixin = {
       return this.user?.autosalon 
         ? [
           { title: 'dashboard', route: '/profile/dashboard' },
-          { title: 'my_announcements', route: '/my/announcements' },
+          { title: 'my_announces', route: '/profile/announcements' },
           { title: 'messages', route: '/profile/messages' },
           { title: 'statistics', route: '/profile/statistics' },
           // { title: 'pricing', route: '/profile/pricing' },
@@ -62,7 +64,7 @@ export const MenusDataMixin = {
         ]  
         : [
           { title: 'settings', route: '/profile/settings' },
-          { title: 'my_announcements', route: '/my/announcements' },
+          { title: 'my_announces', route: '/profile/announcements' },
           { title: 'comparisons', route: '/comparison' },
           { title: 'messages', route: '/profile/messages' },
           { title: 'payments', route: '/profile/payments' }
@@ -71,6 +73,11 @@ export const MenusDataMixin = {
 
     sidebarMenus() {
       return [
+        { title: 'car-showrooms', route: '/salons', icon: 'store' },
+        { title: 'autocatalog', route: '/catalog', icon: 'book' },
+        { title: 'comparisons', route: '/comparison', icon: 'compare' },
+        { title: 'helper_search', route: '/cars/assistant', icon: 'flag' },
+        { title: 'my_searches', route: '/profile/templates', icon: 'template', auth: true },
         ...this.pageMenus
       ]
     },
@@ -88,7 +95,7 @@ export const MenusDataMixin = {
         { title: 'commercial_cranes', route: '/commercial/'+this.$t('slug_cranes'), icon: 'commercial-9' }, 
         { title: 'commercial_excavators', route: '/commercial/'+this.$t('slug_excavators'), icon: 'commercial-10' }, 
         { title: 'commercial_bulldozers', route: '/commercial/'+this.$t('slug_bulldozers'), icon: 'commercial-11' }, 
-        { title: 'commercial_utilities', route: '/commercial/'+this.$t('slug_utilities'), icon: 'commercial-12' }
+        { title: 'commercial_utilities', route: '/commercial/'+this.$t('slug_utilities'), icon: 'commercial-13' }
       ]
     },
 
@@ -98,6 +105,32 @@ export const MenusDataMixin = {
         { title: 'scooters', route: '/moto/'+this.$t('slug_scooters'), icon: 'moto-2' },
         { title: 'atvs', route: '/moto/'+this.$t('slug_atvs'), icon: 'moto-3' }
       ]
+    },
+
+    hasSearchNav() {
+      return [
+        'index', 'cars', 'cars-vip', 'cars-premium', 'cars-assistant', 'cars-advanced-search',
+        'moto', 'moto-moto', 'commercial','commercial-commercial'
+      ].includes(this.routeName);
+    },
+
+    hasSearchNav() {
+      return [
+        'index', 'cars', 'cars-vip', 'cars-premium', 'cars-assistant', 'cars-advanced-search',
+        'moto', 'moto-moto', 'commercial','commercial-commercial'
+      ].includes(this.routeName);
+    },
+    
+    hasProfileData() {
+      return [
+        'profile', 'profile-settings'
+      ].includes(this.routeName);
+    },
+    
+    hasDashboardPanel() {
+      return [
+        'profile', 'profile-settings', 'profile-dashboard', 'profile-calls', 'profile-statistics'
+      ].includes(this.routeName);
     }
   }
 }

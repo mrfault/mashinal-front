@@ -3,7 +3,7 @@
     <button class="btn btn--dark-blue full-width" @click="showMap = true">
       <icon name="placeholder" /> {{ $t('map') }}
     </button>
-    <backdrop @click="showMap = false" v-if="showMap" @mount="handleMount">
+    <backdrop @click="showMap = false" v-if="showMap" @mount="beforeInit">
       <template #default="{ show }">
         <transition name="fade">
           <div class="map-wrapper" v-show="show">
@@ -48,6 +48,10 @@ export default {
     }
   },
   methods: {
+    beforeInit() {
+      if (this.isStatic) return;
+      ymaps.ready(this.init);
+    },
     init() {
       this.map = new ymaps.Map('map', {
         center: [this.lat,this.lng],
@@ -59,15 +63,11 @@ export default {
         iconLayout: 'default#image',
         iconImageHref: '/icons/maps-placeholder.svg',
         iconImageSize: [28, 40],
-        // iconImageOffset: [-5, -38]
+        iconImageOffset: [-14, -40]
       }
       
       this.map.geoObjects
         .add(new ymaps.Placemark(this.map.getCenter(), {}, markOps));
-    },
-    handleMount() {
-      if (this.isStatic) return;
-      ymaps.ready(this.init);
     }
   }
 }

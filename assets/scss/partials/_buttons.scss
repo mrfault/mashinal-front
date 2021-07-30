@@ -6,6 +6,8 @@
   $active-color: $white, 
   $active-bg: false, 
   $border-color: false, 
+  $border-hover: false,
+  $border-active: false, 
   $outline: false, 
   $override: true
 ) {
@@ -30,14 +32,22 @@
   &:hover {
     color: $color-hover;
     background-color: $bg-hover;
-    border-color: $bg-hover;
+    @if ($border-hover) {
+      border-color: $border-hover;
+    } @else {
+      border-color: $bg-hover;
+    }
   }
   &.active,
   &.active:hover {
     @if ($active-bg) {
       color: $active-color;
       background-color: $active-bg;
-      border-color: $active-bg;
+      @if ($border-active) {
+        border-color: $border-active;
+      } @else {
+        border-color: $active-bg;
+      }
     }
   }
 }
@@ -140,8 +150,14 @@
   &--pale-red-outline {
     @include btn-style($bg-color: $red-2, $bg-hover: $red-2, $border-color: $red-4, $active-bg: $red-2, $outline: true);
   }
+  &--grey {
+    @include btn-style($bg-color: $grey-10, $bg-hover: $grey-8);
+  }
   &--grey-outline {
     @include btn-style($bg-color: $grey-8, $bg-hover: $grey-8, $outline: true);
+  }
+  &--primary-outline {
+    @include btn-style($color: $dark-blue-3, $color-hover: $dark-blue-3, $bg-color: transparent, $bg-hover: $greyish-blue-2, $active-bg: $greyish-blue-3, $active-color: $dark-blue-3, $border-color: $greyish-blue-4, $border-active: $greyish-blue-4, $border-hover: $greyish-blue-4, $outline: true, $override: false);
   }
 }
 
@@ -154,6 +170,7 @@
 
 .dark-mode {
   .btn {
+    &--grey,
     &--dark-blue {
       @include btn-style($bg-color: $grey-2, $bg-hover: $grey-1);
     }
@@ -175,7 +192,14 @@
     &--grey-outline {
       @include btn-style($bg-color: $grey-1, $bg-hover: $grey-1, $border-color: $grey-1, $outline: true, $override: false);
     }
+    &--primary-outline {
+      @include btn-style($color: $white, $bg-color: transparent, $bg-hover: $grey-6, $active-bg: $grey-2, $border-color: $grey-1, $border-active: $grey-1, $border-hover: $grey-1, $outline: true,  $override: false);
+    }
   }
+}
+
+.btn.disabled {
+  opacity: .4;
 }
 
 .btn.pending {
@@ -196,26 +220,36 @@
     width: 10px;
     height: 10px;
     border-radius: 5px;
-    background-color: rgba(255, 255, 255, 1);
-    color: rgba(255, 255, 255, 1);
-    box-shadow: 9984px 0 0 0 rgba(255, 255, 255, 1), 9999px 0 0 0 rgba(255, 255, 255, 1), 10014px 0 0 0 rgba(255, 255, 255, 1);
-    animation: button-loading 1s infinite linear;
+    background-color: rgba($white, 1);
+    color: rgba($white, 1);
+    box-shadow: 9984px 0 0 0 rgba($white, 1), 9999px 0 0 0 rgba($white, 1), 10014px 0 0 0 rgba($white, 1);
+    animation: button-loading-white 1s infinite linear;
   }
 }
 
-.btn.disabled {
-  opacity: .4;
+.light-mode {
+  .btn.pending {
+    &.btn--dark-blue-outline {
+      &::after {
+        background-color: rgba($dark-blue-1, 1);
+        color: rgba($dark-blue-1, 1);
+        box-shadow: 9984px 0 0 0 rgba($dark-blue-1, 1), 9999px 0 0 0 rgba($white, 1), 10014px 0 0 0 rgba($white, 1);
+        animation: button-loading-dark-blue 1s infinite linear;
+      }
+    }
+  }
 }
 
-@keyframes button-loading {
+@keyframes button-loading-white {
   100%,
-  0% {
-    box-shadow: 9984px 0px 0 0  rgba(255,255,255,0.33), 9999px 0 0 0  rgba(255,255,255,0.66), 10014px 0 0 0  rgba(255,255,255,1);
-  }
-  33% {
-    box-shadow: 9984px 0 0 0  rgba(255,255,255,0.66), 9999px 0px 0 0  rgba(255,255,255,0.33), 10014px 0 0 0  rgba(255,255,255,1);
-  }
-  66% {
-    box-shadow: 9984px 0 0 0  rgba(255,255,255,1), 9999px 0 0 0  rgba(255,255,255,0.66), 10014px 0px 0 0  rgba(255,255,255,0.33);
-  }
+  0% {box-shadow: 9984px 0px 0 0  rgba($white,0.33), 9999px 0 0 0  rgba($white,0.66), 10014px 0 0 0  rgba($white,1);}
+  33% {box-shadow: 9984px 0 0 0  rgba($white,0.66), 9999px 0px 0 0  rgba($white,0.33), 10014px 0 0 0  rgba($white,1);}
+  66% {box-shadow: 9984px 0 0 0  rgba($white,1), 9999px 0 0 0  rgba($white,0.66), 10014px 0px 0 0  rgba($white,0.33);}
+}
+
+@keyframes button-loading-dark-blue {
+  100%,
+  0% {box-shadow: 9984px 0px 0 0  rgba($dark-blue-1,0.33), 9999px 0 0 0  rgba($dark-blue-1,0.66), 10014px 0 0 0  rgba($dark-blue-1,1);}
+  33% {box-shadow: 9984px 0 0 0  rgba($dark-blue-1,0.66), 9999px 0px 0 0  rgba($dark-blue-1,0.33), 10014px 0 0 0  rgba($dark-blue-1,1);}
+  66% {box-shadow: 9984px 0 0 0  rgba($dark-blue-1,1), 9999px 0 0 0  rgba($dark-blue-1,0.66), 10014px 0px 0 0  rgba($dark-blue-1,0.33);}
 }

@@ -1,0 +1,320 @@
+.sell_tokens-info {
+  p:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.sell_progress {
+  position: relative;
+  width: 100%;
+  height: 10px;
+  border-radius: 100px;
+  overflow: hidden;
+  background-color: $white;
+  span {
+    position: absolute;
+    border-radius: 100px;
+    left: 0;
+    bottom: 0;
+    height: 10px;
+    width: 0px;
+    transition: width .2s ease-out;
+    background-color: $green-1;
+  }
+}
+
+.sell_selected-model {
+  display: flex;
+  align-items: center;
+  height: 34px;
+  span {
+    font-size: 15px;
+    font-weight: 500;
+  }
+  .img {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 34px;
+    img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+  }
+}
+
+.sell_cards-row {
+  flex-wrap: nowrap;
+  & > .col-auto {
+    width: 100%;
+    &:not(:last-child) {
+      width: calc(100% - 224px);
+      & + .col-auto {
+        width: 224px;
+        .card {
+          padding: 15px;
+          position: sticky;
+          top: 161px;
+          right: 0;
+        }
+      }
+    }
+  }
+}
+
+.sell_last-step {
+  .add-video {
+    p {
+      margin-bottom: 0;
+    }
+    img {
+      border-radius: 4px;
+    }
+  }
+}
+
+.sell_preview {
+  display: flex;
+  flex-direction: column;
+  p {
+    color: $greyish-blue-7;
+    margin: 0;
+    font-size: 14px;
+    &.price {
+      font-size: 15px;
+      color: $dark-blue-2;
+      margin: 5px 0;
+    }
+  }
+  h4 {
+    font-weight: 500;
+    font-size: 15px;
+    margin-bottom: 7px;
+  }
+  .img-bg {
+    width: 100%;
+    padding-bottom: 73.2%;
+    background-size: cover;
+    background-position: center;
+    background-color: $greyish-blue-3;
+    margin-bottom: 14px;
+    border-radius: 4px;
+    overflow: hidden;
+    &.no-img {
+      background-repeat: no-repeat;
+      background-image: url('/img/car.svg');
+      background-size: 70%;
+    }
+  }
+}
+
+.dark-mode {
+  .sell_selected-model {
+    .img {
+      background-color: $white;
+      border-radius: 4px;
+      padding: 2px;
+    }
+  }
+  .sell_progress {
+    background-color: $dark-2;
+  }
+  .sell_preview {
+    p {
+      color: rgba($greyish-blue-7, .7);
+      &.price {
+        color: $white;
+      }
+    }
+    .img-bg {
+      background-color: $dark-3;
+    }
+  }
+}
+
+.sell_select-modification {
+  .col-auto {
+    width: 20%;
+  }
+
+  .form-group {
+    display: flex;
+    min-height: 100%;
+    overflow: hidden;
+    .btn {
+      padding: 0 10px;
+    }
+  }
+
+  .btn {
+    [class^=icon] {
+      font-size: 16px;
+    }
+
+    .icon-drive {
+      @supports(-webkit-background-clip: text) {
+        &.type-of-drive-1,
+        &.type-of-drive-2 {
+          display: inline-block;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+        &.type-of-drive-1 {
+          background-image: linear-gradient(180deg, rgba($dark-blue-3, .6) 50%, $dark-blue-3 50%);
+        }
+        &.type-of-drive-2 {
+          background-image: linear-gradient(180deg, $dark-blue-3 50%, rgba($dark-blue-3, .6) 50%);
+        }
+      }
+    }
+  }
+
+  .select-body {
+    height: 110px;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 23px !important;
+    span {
+      white-space: normal;
+    }
+    .body-img {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 65%;
+      height: 35px;
+      margin-bottom: 10px;
+      img {
+        max-width: 100%;
+        max-height: 100%;
+      }
+    }
+  }
+
+  .select-generation {
+    height: auto;
+    min-height: 100%;
+    flex-wrap: wrap;
+    padding: 0 0 10px !important;
+    white-space: normal;
+    & > span:last-child {
+      display: none;
+    }
+    .generation-info {
+      height: 100%;
+      width: 100%;
+      span {
+        display: block;
+        width: 100%;
+        text-align: left;
+        padding: 0 15px;
+        &:nth-of-type(1) {
+          color: $dark-blue-1;
+        }
+        &:nth-of-type(2) {
+          color: $dark-blue-2;
+          margin-top: 5px;
+        }
+      }
+    }
+    .generation-bg {
+      align-self: flex-start;
+      width: 100%;
+      padding-bottom: 76.36%;
+      background-size: cover;
+      background-color: $greyish-blue-3;
+      margin-bottom: 15px;
+      border-radius: 4px;
+      overflow: hidden;
+      border-radius: 4px 4px 0 0;
+      &.no-img {
+        background-repeat: no-repeat;
+        background-image: url('/img/car.svg');
+        background-size: 70%;
+      }
+    }
+  }
+}
+
+.service-banner {
+  img {
+    cursor: pointer;
+    width: 100%;
+  }
+}
+
+.dark-mode {
+  .sell_select-modification {
+    
+    .btn {
+      .icon-drive {
+        @supports(-webkit-background-clip: text) {
+          &.type-of-drive-1 {
+            background-image: linear-gradient(180deg, rgba($white, .6) 50%, $white 50%);
+          }
+          &.type-of-drive-2 {
+            background-image: linear-gradient(180deg, $white 50%, rgba($white, .6) 50%);
+          }
+        }
+      }
+    }
+
+    .select-body {
+      .body-img {
+        filter: brightness(0) invert(1);
+      }
+    }
+
+    .select-generation {
+      .generation-info {
+        span {
+          &:nth-of-type(1) {
+            color: $white;
+          }
+          &:nth-of-type(2) {
+            color: $yellow-1;
+          }
+        }
+      }
+    }
+  }
+}
+
+@include media-max-width('lg') {
+  .sell_progress {
+    position: fixed;
+    left: 0;
+    z-index: 21;
+    top: 61px;
+    border-radius: 0;
+    height: 9px;
+    background-color: transparent !important;
+    span {
+      border-radius: 0;
+      height: 9px;
+    }
+  }
+
+  .sell_select-modification {
+    .col-auto {
+      width: 100%;
+    }
+  }
+}
+
+@include media-min-width('lg') {
+  .sell_last-step {
+    .color-options {
+      margin-left: -5px;
+      margin-right: -5px;
+      .col-lg-auto {
+        width: 50px;
+        padding: 0 5px;
+        margin-bottom: 0 !important;
+      }
+    }
+  }
+}

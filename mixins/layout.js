@@ -1,8 +1,8 @@
 import { mapGetters, mapActions } from 'vuex';
 
 import { ColorModeMixin } from '~/mixins/color-mode';
-import { MessagesMixin } from '~/mixins/messages';
 import { SocketMixin } from '~/mixins/socket';
+import { MessagesMixin } from '~/mixins/messages';
 
 export const LayoutMixin = {
   mixins: [ColorModeMixin, SocketMixin, MessagesMixin],
@@ -16,7 +16,7 @@ export const LayoutMixin = {
   head() {
     return {
       script: [
-        { hid: 'maps', src: `https://api-maps.yandex.ru/2.1/?apikey=${this.$env.YANDEX_MAPS_API}&lang=${this.locale === 'az' ? 'tr_TR' : 'ru_RU'}` }
+        { hid: 'maps', src: `https://api-maps.yandex.ru/2.1/?apikey=${this.$env.YANDEX_MAPS_API}&lang=${this.locale === 'az' ? 'az_AZ' : 'ru_RU'}` }
       ]
     }
   },
@@ -24,7 +24,7 @@ export const LayoutMixin = {
     ...mapGetters(['loading','messages','paidStatusData'])
   },
   methods: {
-    ...mapActions(['setLoading','setGridBreakpoint','getMessages','getFavorites','resetSellTokens']),
+    ...mapActions(['setLoading','setGridBreakpoint','getMessages','getFavorites','resetSellTokens','resetUserData','updatePaidStatus']),
 
     handleResize() {
       // update grid breakpoint
@@ -57,7 +57,8 @@ export const LayoutMixin = {
       let footerEl = document.querySelector('.page-footer');
       if (footerEl) {
         let reachedFooter = (window.pageYOffset + window.innerHeight) >= footerEl.offsetTop;
-        layout.classList[scrolled > 0 && reachedFooter ? 'add' : 'remove']('reached-footer');
+        let noScroll = document.documentElement.clientHeight === window.innerHeight;
+        layout.classList[(scrolled > 0 || noScroll) && reachedFooter ? 'add' : 'remove']('reached-footer');
         layout.classList[scrolled > 0 ? 'add' : 'remove']('scrolled');
       }
     },
@@ -78,7 +79,7 @@ export const LayoutMixin = {
       this.showLoginPopup = false;
       this.loginActionKey = '';
     },
-    afterLogin() {
+    handleAfterLogin() {
       let key = this.loginActionKey;
       this.closeLogin();
       this.resetSellTokens();
@@ -92,6 +93,7 @@ export const LayoutMixin = {
       this.getUserData();
       if (!auth) {
         // reset store auth data
+        // this.resetUserData();
       }
     });
   },
@@ -99,9 +101,9 @@ export const LayoutMixin = {
     this.configSocket();
     if (this.loggedIn) 
       this.toggleEchoListening(true);
-
+      
     this.$nuxt.$on('login', (auth) => {
-      if (auth) this.afterLogin();
+      if (auth) this.handleAfterLogin();
       this.toggleEchoListening(auth);
     });
 

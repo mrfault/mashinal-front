@@ -15,6 +15,11 @@ textarea {
 
 textarea {
   resize: none;
+  height: 140px;
+}
+
+.star {
+  color: $red-1;
 }
 
 .form-row {
@@ -25,6 +30,16 @@ textarea {
 
 .form-group {
   width: 100%;
+  .btn {
+    &.full-width {
+      padding-left: 2px;
+      padding-right: 2px;
+    }
+    span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
 }
 
 .form-info {
@@ -34,7 +49,7 @@ textarea {
   justify-content: center;
   font-weight: 500;
   text-align: center;
-  background-color: $grayish-blue-2;
+  background-color: $greyish-blue-2;
   height: 34px;
   padding: 9px 15px 7px;
   border-radius: 4px;
@@ -67,11 +82,16 @@ textarea {
   textarea {
     width: 100%;
     border: 0;
-    background-color: $grayish-blue-2;
+    background-color: $greyish-blue-2;
     padding: 9px 15px 7px;
     border-radius: 4px;
     &.invalid {
-      color: $red-1;
+      &:not(:focus) {
+        color: $red-1;
+      }
+      padding-right: 34px;
+    }
+    &.valid {
       padding-right: 34px;
     }
     &.disabled {
@@ -80,8 +100,13 @@ textarea {
   }
   input {
     height: 34px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    &[type=password] {
+      padding-right: 24px;
+    }
   }
-  i {
+  i, img {
     position: absolute;
     top: 50%;
     transform: translate(0, -50%);
@@ -91,6 +116,11 @@ textarea {
       right: 10px;
       color: $red-1;
     }
+    &.icon-check-circle {
+      position: absolute;
+      right: 10px;
+      color: $green-1;
+    }
     &:first-child {
       left: 14px;
       right: auto;
@@ -98,17 +128,57 @@ textarea {
         padding-left: 34px;
       }
     }
+    &.invalid {
+      color: $red-1;
+    }
+    &.valid {
+      color: $green-1;
+    }
+    &.disabled {
+      color: $grey-3;
+    }
+  }
+  &.textarea {
+    i, img {
+      top: 17px;
+      transform: translate(0, -50%);
+    }
+  }
+  img:first-child + input {
+    padding-left: 42px;
+  }
+  .popover-wrapper {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+  }
+  .show-password {
+    position: absolute;
+    right: 0;
+    top: 0;
+    cursor: pointer;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    i {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
   }
 }
 
 .checkbox-input {
+  position: relative;
   user-select: none;
   label {
     display: flex;
     align-items: center;
     margin: 0;
     width: 100%;
-    background-color: $grayish-blue-2;
+    background-color: $greyish-blue-2;
     border-radius: 4px;
     height: 34px;
     padding: 0 15px;
@@ -118,6 +188,12 @@ textarea {
     .text-truncate {
       margin-bottom: -1px;
     }
+    &.pr-0 .text-truncate {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      height: 100%;
+    }
   }
   .checkbox {
     display: flex;
@@ -125,7 +201,7 @@ textarea {
     justify-content: center;
     flex-shrink: 0;
     margin-right: 10px;
-    border: 1px solid $grayish-blue-5;
+    border: 1px solid $greyish-blue-5;
     border-radius: 4px;
     width: 18px;
     height: 18px;
@@ -147,6 +223,60 @@ textarea {
       border-color: $green-1;
       background-color: $green-1;
       i {
+        opacity: 1;
+      }
+    }
+  }
+  .popover-wrapper {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+  }
+}
+
+.radio-input {
+  position: relative;
+  user-select: none;
+  label {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    width: 100%;
+    background-color: $greyish-blue-2;
+    border-radius: 4px;
+    height: 34px;
+    padding: 0 15px;
+    &.transparent {
+      background: transparent !important;
+    }
+    .text-truncate {
+      margin-bottom: -1px;
+    }
+  }
+  .radio-point {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-right: 10px;
+    border: 1px solid $greyish-blue-5;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    &::after {
+      content: '';
+      display: block;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: $green-1;
+      opacity: 0;
+      transition: opacity .2s ease-in-out;
+    }
+  }
+  input:checked ~ label {
+    .radio-point {
+      &::after {
         opacity: 1;
       }
     }
@@ -185,7 +315,7 @@ textarea {
   &_triangle {
     position: absolute;
     bottom: -10px;
-    color: $grayish-blue-2;
+    color: $greyish-blue-2;
     &.anchor-right {
       right: 15px;
     }
@@ -199,7 +329,7 @@ textarea {
     justify-content: space-between;
     width: 100%;
     font-weight: 500;
-    background-color: $grayish-blue-2;
+    background-color: $greyish-blue-2;
     height: 34px;
     padding: 8px 15px;
     border-radius: 4px;
@@ -252,6 +382,9 @@ textarea {
       }
     }
   }
+  .action-bar {
+    pointer-events: none;
+  }
   &_dropdown {
     position: absolute;
     top: 54px;
@@ -260,7 +393,7 @@ textarea {
     z-index: 2;
     visibility: hidden;
     opacity: 0;
-    background-color: $grayish-blue-2;
+    background-color: $greyish-blue-2;
     border-radius: 4px;
     box-shadow: $shadow-light-5;
     padding: 7px 0;
@@ -276,6 +409,21 @@ textarea {
     &.custom {
       padding: 0;
       width: auto;
+    }
+    &.custom-checkboxes {
+      width: 100%;
+      .form-merged {
+        flex-direction: column;
+        padding: 5px 0;
+        .form-group {
+          border-right: 0 !important;
+          max-width: 100% !important;
+        }
+        .checkbox-input label {
+          display: inline-flex;
+          width: auto;
+        }
+      }
     }
     &.show {
       visibility: visible;
@@ -296,7 +444,7 @@ textarea {
         color: $dark-blue-2;
       }
       &:not(.disabled):hover {
-        background-color: darken($grayish-blue-2, 2%);
+        background-color: darken($greyish-blue-2, 2%);
       }
       .icon-check {
         position: absolute;
@@ -310,7 +458,7 @@ textarea {
       display: flex;
       flex-direction: column;
       position: fixed;
-      z-index: 20;
+      z-index: 40;
       padding: 60px 0 0;
       width: 100%;
       height: 100%;
@@ -318,7 +466,7 @@ textarea {
       top: 0;
       background-color: $white;
       .form-merged {
-        background-color: $grayish-blue-2;
+        background-color: $greyish-blue-2;
         border-radius: 4px;
         margin: 20px 0;
         .form-group {
@@ -333,19 +481,77 @@ textarea {
         }
       }
     }
+    .img {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      img {
+        max-width: 100%;
+        max-height: 100%;
+      }
+    }
+    .popular-option {
+      text-align: center;
+      margin-bottom: 24px;
+      cursor: pointer;
+      .img {
+        width: 40px;
+        height: 40px;
+        flex-shrink: 0;
+        margin-right: 14px;
+        margin: 0 auto 8px;
+      }
+    }
     &.responsive &-option {
       height: 50px;
       padding: 0 34px 0 0;
-      border-top: 1px solid $grayish-blue-2;
+      border-top: 1px solid $greyish-blue-2;
       &:first-child {
         border-top: 0;
       }
       &:not(.disabled):hover {
         background-color: transparent !important;
       }
+      .img {
+        width: 28px;
+        height: 28px;
+        flex-shrink: 0;
+        margin-right: 14px;
+      }
+      
     }
     &.responsive .mt-3 + .select-menu_dropdown-option {
       border-top: 0;
+    }
+  }
+  &.invalid  &_label:not(.active) {
+    color: $red-1;
+  }
+}
+
+.form-switch {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px 4px;
+  background-color: $red-1;
+  border-radius: 4px;
+  button {
+    color: $white;
+    width: 28px;
+    height: 28px;
+    line-height: 28px;
+    font-size: 14px;
+    text-align: center;
+    background: transparent;
+    border: 0;
+    padding: 0;
+    border-radius: 4px;
+    text-transform: uppercase;
+    &.active {
+      color: $red-1;
+      background-color: $white;
     }
   }
 }
@@ -354,7 +560,7 @@ textarea {
   display: flex;
   align-items: center;
   .form-group:not(:last-child) {
-    border-right: 1px solid $grayish-blue-6;
+    border-right: 1px solid $greyish-blue-6;
   }
   .text-input {
     width: 141px;
@@ -366,6 +572,7 @@ textarea {
 
 .text-input.no-bg input,
 .checkbox-input.no-bg label,
+.radio-input.no-bg label,
 .form-info.no-bg{
   background-color: $white;
 }
@@ -381,10 +588,20 @@ textarea {
       }
       &_dropdown {
         background-color: $white;
-        &-option {
+        .select-menu_dropdown-option {
           &:not(.disabled):hover {
             background-color: darken($white, 2%);
           }
+        }
+      }
+    }
+  }
+  &_dropdown {
+    &.no-bg {
+      background-color: $white;
+      .select-menu_dropdown-option {
+        &:not(.disabled):hover {
+          background-color: darken($white, 2%);
         }
       }
     }
@@ -398,7 +615,7 @@ textarea {
   .vue-slider {
     height: 2px;
     &-rail {
-      background-color: $grayish-blue-7;
+      background-color: $greyish-blue-7;
     }
     &-process {
       background-color: $dark-blue-1;
@@ -430,13 +647,16 @@ textarea {
 
 .dark-mode {
   .text-input input,
+  .text-input textarea,
   .checkbox-input label,
+  .radio-input label,
   .form-info {
     background-color: $dark-1;
   }
 
   .text-input.no-bg input,
   .checkbox-input.no-bg label,
+  .radio-input.no-bg label,
   .form-info.no-bg {
     background-color: $dark-2;
   }
@@ -446,7 +666,8 @@ textarea {
     color: $grey-1;
   }
 
-  .checkbox-input .checkbox {
+  .checkbox-input .checkbox,
+  .radio-input .radio-point {
     border-color: $grey-1;
   }
 
@@ -480,6 +701,11 @@ textarea {
     &_dropdown {
       background-color: $dark-1;
       box-shadow: $shadow-dark-5;
+      .img {
+        background-color: $white;
+        border-radius: 4px;
+        padding: 4px;
+      }
       &-option {
         &.selected {
           color: $yellow-1;
@@ -492,14 +718,16 @@ textarea {
         .select-menu_dropdown-option {
           border-top-color: $dark-2;
         }
+        
+        .select-menu_label,
+        .text-input input {
+          background-color: $dark-2;
+        }
+        
         .form-merged {
           background-color: $dark-2;
           .form-group:not(:last-child) {
             border-right-color: $dark-1;
-          }
-          .select-menu_label,
-          .text-input input {
-            background-color: $dark-2;
           }
         }
       }
@@ -512,12 +740,14 @@ textarea {
         &_triangle {
           color: $dark-2;
         }
-        &_dropdown {
-          background-color: $dark-2;
-          &-option {
-            &:hover {
-              background-color: lighten($dark-2, 2%);
-            }
+      }
+    }
+    &_dropdown {
+      &.no-bg {
+        background-color: $dark-2;
+        .select-menu_dropdown-option {
+          &:hover {
+            background-color: lighten($dark-2, 2%);
           }
         }
       }
@@ -527,6 +757,19 @@ textarea {
   .form-merged {
     .form-group:not(:last-child) {
       border-right-color: $dark-2;
+    }
+
+    .checkbox-input label {
+      background-color: $dark-2;
+    }
+
+    .popover {
+      &-content {
+        background-color: $dark-2;
+        &_triangle {
+          color: $dark-2;
+        }
+      }
     }
   }
 

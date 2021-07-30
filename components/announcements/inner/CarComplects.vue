@@ -1,5 +1,5 @@
 <template>
-  <div class="car-complects" v-if="hasOptions">
+  <div class="car-complects">
     <h2 class="title-with-line full-width">
       <span>{{ $t('Комплектация') }}</span>
     </h2>
@@ -10,7 +10,7 @@
         :key="index"
       >
         <p v-for="(option, index) in getOptions(group)" :key="index">
-          {{ getOptionValue(option, chosenOptions[option.name]) }}
+          {{ getOptionValue(option, options[option.name]) }}
         </p>
       </collapse-content>
       <hr v-if="index !== filteredSellOptions.length - 1" :key="'hr-'+index" />
@@ -49,12 +49,6 @@ export default {
     
     filteredSellOptions() {
       return this.allSellOptions.filter(group => !!this.getOptions(group).length);
-    },
-    chosenOptions() {
-      return typeof this.options === 'string' ? JSON.parse(this.options) : this.options;
-    },
-    hasOptions() {
-      return Object.keys(this.chosenOptions).length > 0;
     }
   },
   methods: {
@@ -63,7 +57,7 @@ export default {
       return `${this.titles[index]} (${len})`;
     },
     getOptions(group) {
-      return group.filter((option) => this.chosenOptions && this.chosenOptions[option.name] !== undefined);
+      return group.filter((option) => this.options && this.options[option.name] !== undefined);
     },
     getOptionValue(item, value) {
       if (item.type === 'select') {

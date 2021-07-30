@@ -10,7 +10,8 @@
   font-display: block;
 }
 
-[class^="icon-"], [class*=" icon-"] {
+[class^="icon-"], 
+[class*=" icon-"] {
   display: inline-flex;
   flex-shrink: 0;
   font-family: 'icons' !important;
@@ -24,14 +25,18 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+[class^="path"] {
+  font-style: normal !important;
+}
+
 .icon-car-1:before {
   content: "\e900";
 }
 .icon-moto-1:before {
-  content: "\e901";
+  content: "\e902";
 }
 .icon-moto-2:before {
-  content: "\e902";
+  content: "\e901";
 }
 .icon-moto-3:before {
   content: "\e903";
@@ -69,7 +74,7 @@
 .icon-commercial-11:before {
   content: "\e934";
 }
-.icon-commercial-12:before {
+.icon-commercial-13:before {
   content: "\e935";
 }
 .icon-alert:before {
@@ -250,6 +255,7 @@
 }
 .icon-top:before {
   content: "\e948";
+  font-weight: bold;
 }
 .icon-analytics:before {
   content: "\e949";
@@ -281,13 +287,11 @@
 .icon-diesel:before {
   content: "\e953";
 }
-.icon-drive .path1:before {
-  content: "\e954";
-  opacity: 0.0625;
+.icon-gas:before {
+  content: "\e94a";
 }
-.icon-drive .path2:before {
+.icon-drive:before {
   content: "\e955";
-  margin-left: -1em;
 }
 .icon-edit:before {
   content: "\e956";
@@ -339,4 +343,25 @@
 }
 .icon-variator:before {
   content: "\e966";
+}
+.icon-reductor:before {
+  content: "\e967";
+}
+.icon-camera:before {
+  content: "\e968";
+}
+.icon-policy:before {
+  content: "\e969";
+}
+.icon-book:before {
+  content: "\e96a";
+}
+.icon-store:before {
+  content: "\e96b";
+}
+.icon-calendar-1:before {
+  content: "\e96c";
+}
+.icon-phone:before {
+  content: "\e96d";
 }

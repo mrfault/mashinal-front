@@ -5,19 +5,22 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   props: {
     announcement: {}
   },
   methods: {
-    handleClick(skipIfAdded = false) {
+    ...mapActions(['addToFavorites']),
+
+    async handleClick(skipIfAdded = false) {
       if(skipIfAdded && this.isAdded) return;
       if(!this.loggedIn) {
         this.$nuxt.$emit('login-popup', 'favorite' + this.announcement.id_unique);
       } else {
-        this.$store.dispatch('addToFavorites', this.announcement.id_unique);
+        await this.addToFavorites(this.announcement.id_unique);
+        this.$nuxt.$emit('favorites-updated');
         if(this.isAdded) {
           this.$toasted.success(this.$t('my_favorites_added'), { 
             action: !this.routeName === 'profile-favorites' && { 
@@ -48,7 +51,6 @@ export default {
   },
   beforeDestroy() {
     this.$nuxt.$off('after-login', this.handleAfterLogin);
-    this.$toasted.clear();
   }
 }
 </script>

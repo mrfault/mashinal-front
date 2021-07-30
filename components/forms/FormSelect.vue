@@ -1,8 +1,8 @@
 <template>
   <div class="form-group">
-    <div :class="['select-menu',{'no-bg': hasNoBg}]">
+    <div :class="['select-menu',{'no-bg': hasNoBg, invalid}]">
       <span :class="['select-menu_label', {'selected': hasSelectedValue, 'disabled': disabled, 'active': showOptions}]" 
-        @click="showOptions = disabled ? false : !showOptions">
+        @click="displayMenuOptions">
         <span :class="['text-truncate', {'full-width': hasSearch}]">
           <template v-if="hasSearch && showOptions && !isMobileBreakpoint">
             <span class="search-input">
@@ -13,32 +13,88 @@
           <template v-else>{{ getLabelText }}</template>
         </span>
         <span class="counter" v-if="multiple && selectValue.length > 1">{{ selectValue.length }}</span>
+        <span class="counter" v-else-if="custom && values.count">{{ values.count }}</span>
         <icon name="cross" v-if="allowClear && !hasNoValue" @click.native.stop="clearSelect" class="cursor-pointer" />
         <icon :name="iconName" v-else />
       </span>
       <icon :class="['select-menu_triangle', `anchor-${anchor}`]" name="triangle" v-if="showOptions"/>
-      <action-bar 
-        :title="getActionBarText"
-        v-if="showOptions && isMobileBreakpoint && !inSelectMenu" 
-        @back="showOptions = false" 
-        @accept="showOptions = false"
-        :show-check="(custom || multiple) && !hasNoValue"
-      />
-      <div :class="['select-menu_dropdown', `anchor-${anchor}`, {'show': showOptions, custom, 'responsive': isMobileBreakpoint}]" ref="dropdownOptions">
-        <template v-if="showOptions">
-          <div class="mt-3" v-if="hasSearch && isMobileBreakpoint" @click.stop>
-            <div class="container">
-              <form-text-input :placeholder="$t('search')" iconName="search" v-model="search"/>
+      <portal to="mobile-dropdown" v-if="isMobileBreakpoint">
+        <action-bar class="priority-1"
+          :title="getActionBarText"
+          v-if="showOptions && isMobileBreakpoint && !inSelectMenu" 
+          @back="showOptions = false" 
+          @accept="showOptions = false"
+          :show-check="(custom || multiple) && !hasNoValue"
+        />
+        <div :class="['select-menu_dropdown responsive', `anchor-${anchor}`, {'show': showOptions, custom, 'custom-checkboxes': customCheckboxes}]">
+          <template v-if="showOptions">
+            <div class="mt-3" v-if="hasSearch" @click.stop>
+              <div class="container">
+                <form-text-input :placeholder="$t('search')" icon-name="search" v-model="search"/>
+              </div>
             </div>
-          </div>
-          <div :class="{'container': isMobileBreakpoint}" v-if="custom">
-            <slot />
-          </div>
-          <vue-scroll :ops="scrollOps" ref="vs" v-else :key="vsKey">
-            <div :class="{'container': isMobileBreakpoint}">
+            <div class="container" v-if="custom">
+              <slot />
+            </div>
+            <vue-scroll :ops="scrollOps" ref="vsMob" v-else :key="vsKey">
+              <div class="container">
+                <div class="row pt-3" v-if="popularOptions && !search">
+                  <div v-for="option in $sortBy(getFilteredOptions, (a, b) => popularOptions.indexOf(b.id) - popularOptions.indexOf(a.id)).slice(0,6)" 
+                    :key="option.id" class="col-4 popular-option" @click.stop="selectValue = option">
+                    <div class="img" v-if="imgKey && option[imgKey]">
+                      <img :src="option[imgKey]" :alt="getOptionName(option)" />
+                    </div>
+                    <div class="text-truncate">
+                      <span>{{ getOptionName(option) }}</span>
+                    </div>
+                  </div>
+                </div>
+                <template v-for="(option, index) in getFilteredOptions">
+                  <div :key="index" :class="['select-menu_dropdown-option', {'selected': isSelected(option), 'anchor': isAnchor(index)}]" 
+                      @click.stop="selectValue = option">
+                    <div class="img" v-if="imgKey && option[imgKey]">
+                      <img :src="option[imgKey]" :alt="getOptionName(option)" />
+                    </div>
+                    <div class="text-truncate">
+                      <span>{{ getOptionName(option) }}</span>
+                    </div>
+                    <icon name="check" v-if="isSelected(option)" />
+                  </div>
+                </template>
+                <div class="select-menu_dropdown-option disabled" v-if="!getFilteredOptions.length">
+                  <div class="text-truncate">
+                    <span>{{ $t('no_results_found') }}</span>
+                  </div>
+                </div>
+              </div>
+            </vue-scroll>
+          </template>
+        </div>
+      </portal>
+      <template v-else>
+        <div :class="['select-menu_dropdown', `anchor-${anchor}`, {'show': showOptions, custom, 'custom-checkboxes': customCheckboxes}]" ref="dropdownOptions">
+          <template v-if="showOptions">
+            <div v-if="custom">
+              <slot />
+            </div>
+            <vue-scroll :ops="scrollOps" ref="vs" v-else :key="vsKey">
+              <div class="row pt-3" v-if="popularOptions && !search">
+                <div v-for="option in $sortBy(getFilteredOptions, (a, b) => popularOptions.indexOf(b.id) - popularOptions.indexOf(a.id)).slice(0,6)" 
+                  :key="option.id" class="col-4 popular-option" @click.stop="selectValue = option">
+                  <div class="img" v-if="imgKey && option[imgKey]">
+                    <img :src="option[imgKey]" :alt="getOptionName(option)" />
+                  </div>
+                  <div class="text-truncate">
+                    <span>{{ getOptionName(option) }}</span>
+                  </div>
+                </div>
+              </div>
               <template v-for="(option, index) in getFilteredOptions">
                 <div :key="index" :class="['select-menu_dropdown-option', {'selected': isSelected(option), 'anchor': isAnchor(index)}]" 
                     @click.stop="selectValue = option">
+                  <div class="img" v-if="imgKey && option[imgKey]">
+                    <img :src="option[imgKey]" :alt="getOptionName(option)" />
+                  </div>
                   <div class="text-truncate">
                     <span>{{ getOptionName(option) }}</span>
                   </div>
@@ -50,10 +106,10 @@
                   <span>{{ $t('no_results_found') }}</span>
                 </div>
               </div>
-            </div>
-          </vue-scroll>
-        </template>
-      </div>
+            </vue-scroll>
+          </template>
+        </div>
+      </template>
     </div>
   </div>
 </template>
@@ -72,6 +128,7 @@
         default: () => ([])
       },
       custom: Boolean,
+      customCheckboxes: Boolean,
       anchor: {
         type: String,
         default: 'left'
@@ -115,7 +172,10 @@
       },
       inSelectMenu: Boolean,
       hasSearch: Boolean,
-      hasNoBg: Boolean
+      hasNoBg: Boolean,
+      popularOptions: Array,
+      imgKey: String,
+      invalid: Boolean
     },
     data() {
       return {
@@ -126,6 +186,9 @@
       }
     },
     methods: {
+      displayMenuOptions() {
+        this.showOptions = this.disabled ? false : !this.showOptions;
+      },
       getValue(option, onlykey = false) {
         const name = option.name[this.locale] || option.name.ru || option.name;
         const key = this.$notUndefined(option.id,option.key);
@@ -166,6 +229,7 @@
         }
       },
       handleDocClick(event) {
+        if (this.isMobileBreakpoint) return;
         let clickedInsideDropdown = this.$refs.dropdownOptions.contains(event.target);
         if (!clickedInsideDropdown && !this.blockClick) {
           this.showOptions = false;
@@ -217,7 +281,7 @@
           let suffix = this.values.suffix || this.suffix;
           if (value && suffix) value += ` ${suffix}`;
           else suffix = this.suffix || this.values.suffix;
-          return value && this.values.showLabel ? `${this.label}: ${value}` : (value || `${this.label}${suffix ? (', '+suffix) : ''}`);
+          return value && this.values.showLabel ? `${this.label}${this.values.count ? ` (${this.values.count})` : `: ${value}`}` : (value || `${this.label}${suffix ? (', '+suffix) : ''}`);
         }
         let selected = this.options.filter(this.isSelected);
         return selected.length === 1
@@ -227,11 +291,12 @@
       getActionBarText() {
         if (this.hasNoValue) return this.getLabelText;
         else if (this.multiple) return this.value.length > 1 ? `${this.label} (${this.value.length})` : this.getLabelText;
+        else if (this.custom && this.values.count) return `${this.label} (${this.values.count})`;
         return `${(this.showLabelOnSelect && this.allowClear && !(this.custom && !this.values.showLabel)) ? '' : this.label + ': '}${this.getLabelText}`;
       },
       hasNoValue() {
         if(this.custom) 
-          return this.label === this.getLabelText.replace(`, ${this.suffix}`, '');
+          return this.values?.count ? false : (this.label === this.getLabelText.replace(`, ${this.suffix}`, ''));
         if(this.selectValue instanceof Array) {
           for(let i in this.selectValue)
             if(this.options.map(option => this.getValue(option, true)).indexOf(this.getKey(this.selectValue[i])) !== -1)

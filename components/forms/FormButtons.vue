@@ -1,10 +1,11 @@
 <template>
-  <div class="row">
-    <div :class="[`col${groupBy > 0 ? ('-' + 12 / groupBy) : ''}`, {'mb-2 mb-lg-3': groupBy === 1}]" v-for="(option, index) in formattedOptions" :key="index">
+  <div :class="['row', {'mb-n2 mb-lg-n3': isMultirow}]">
+    <div :class="[`col${groupBy > 0 ? ('-' + ([1,2,3,4,6,12].includes(groupBy) ? 12 / groupBy : 'auto')) : ''}`, {'mb-2 mb-lg-3': isMultirow}]" v-for="(option, index) in formattedOptions" :key="index">
       <div class="form-group">
-        <button type="button" :class="['btn', 'full-width', `btn--${btnClass}`, {'active': isActive(option), 'disabled':isDisabled(option)}]"
+        <button type="button" :class="[`btn full-width btn--${btnClass}`, {'active': isActive(option), 'disabled':isDisabled(option)}]"
             @click="selectedValue = option.key">
           <slot name="icon" :button="option" />
+          <slot name="custom" :button="option" />
           <span>{{ option.name }}</span>
           <slot name="badge" :button="option" />
         </button>
@@ -61,11 +62,18 @@
         set(value) {
           value = this.disabled ? this.value : value;
           this.$emit('input', value);
-          // check if value was changed
-          if(value !== this.prevValue) {
-            this.$emit('change', value);
-            this.prevValue = value;
-          }
+        }
+      },
+      isMultirow() {
+        return this.formattedOptions.length > this.groupBy;
+      }
+    },
+    watch: {
+      value(value) {
+        // check if value was changed
+        if(value !== this.prevValue) {
+          this.$emit('change', value);
+          this.prevValue = value;
         }
       }
     }

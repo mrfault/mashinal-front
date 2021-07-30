@@ -5,13 +5,14 @@
         <transition name="translate-fade">
           <div :class="['modal-popup', {[modalClass]: modalClass}]" v-if="show" @click.stop>
             <div class="modal-popup_content">
-              <div class="title d-flex align-items-center">
+              <div class="title d-flex">
                 <h4 v-if="title">{{ title }}</h4>
                 <span class="cursor-pointer close" @click="$emit('close')">
                   <icon name="cross" />
                 </span>
               </div>
-              <vue-scroll>
+              <slot v-if="!overflowHidden" />
+              <vue-scroll v-else>
                 <div class="modal-popup_scrollview">
                   <slot />
                 </div>
@@ -29,7 +30,24 @@ export default {
   props: {
     toggle: Boolean,
     title: String,
-    modalClass: String
+    modalClass: String,
+    overflowHidden: {
+      type: Boolean,
+      default: true
+    }
+  },
+  methods: {
+    handleEscapeKey(e) {
+      if (e.key === 'Escape'){
+        this.$emit('close');
+      }
+    }
+  },
+  mounted() {
+    window.addEventListener('keydown', this.handleEscapeKey);
+  },
+  beforeDestroy() {
+    window.removeEventListener('keydown', this.handleEscapeKey);
   }
 }
 </script>

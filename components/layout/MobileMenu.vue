@@ -8,11 +8,14 @@
         <nuxt-link class="logo" :to="$localePath('/')" @click.native="$nuxt.$emit('logo-click')">
           <img :src="`/img/${isDarkMode ? 'logo-white' : 'logo'}.svg`" alt="logo" />
         </nuxt-link>
-        <nuxt-link custom :to="$localePath('/cars/advanced-search')" v-slot="{ href }">
+        <nuxt-link custom :to="$localePath('/cars/advanced-search')" v-slot="{ href }" v-if="hasSearchNav || !loggedIn">
           <span class="cursor-pointer" @click="goToSearch(href)">
             <icon name="options" />
           </span>
         </nuxt-link>
+        <span class="cursor-pointer" @click="logout" v-else>
+          <icon name="logout" />
+        </span>
       </div>
     </div>
     <div class="menu-backdrop" v-if="showSidebar" @click="toggleSidebarMenu(false)"></div>
@@ -42,18 +45,21 @@
             </nuxt-link>
             <hr/>
           </li>
-          <li v-for="menu in sidebarMenus" :key="menu.title[locale] || menu.title">
-            <nuxt-link :to="$localePath(menu.route)" @click.native="toggleSidebarMenu(false)">
-              <span>{{ menu.title[locale] || $t(menu.title) }}</span>
-            </nuxt-link>
-          </li>
+          <template v-for="menu in sidebarMenus">
+            <li :key="menu.title[locale] || menu.title" v-if="(menu.auth && loggedIn) || !menu.auth">
+              <nuxt-link :to="$localePath(menu.route)" @click.native="toggleSidebarMenu(false)">
+                <icon :name="menu.icon" v-if="menu.icon" />
+                <span>{{ menu.title[locale] || $t(menu.title) }}</span>
+              </nuxt-link>
+            </li>
+          </template>
           <li>
             <slot />
           </li>
           <li class="logout" key="logout" v-if="loggedIn">
             <a href="javascript:void(0);" @click="logout(), toggleSidebarMenu(false)">
               <icon name="logout" />
-              <span>{{ $t('output') }}</span>
+              <span>{{ $t('logout') }}</span>
             </a>
           </li>
         </ul>
@@ -78,8 +84,9 @@ export default {
   methods: {
     ...mapActions(['changeLocale']),
 
-    toggleSidebarMenu(toggle) {
-      this.showSidebar = toggle;
+    toggleSidebarMenu(show) {
+      this.showSidebar = show;
+      this.setBodyOverflow(show ? 'hidden' : 'scroll');
     },
     goToSearch(path) {
       if (['cars', 'index', 'cars-assistant', 'cars-advanced-search'].includes(this.routeName))
@@ -88,12 +95,10 @@ export default {
     }
   },
   watch: {
-    showSidebar(show) {
-      this.setBodyOverflow(show ? 'hidden' : 'scroll');
-    },
     breakpoint(breakpoint) {
       if(breakpoint === 'lg') {
         this.showSidebar = false;
+        this.setBodyOverflow('scroll');
       }
     }
   }

@@ -29,7 +29,7 @@
                       <nuxt-link :to="$localePath(menu.route)">{{ $t(menu.title) }}</nuxt-link>
                     </li>
                     <li key="logout">
-                      <a href="javascript:void(0);" @click="logout">{{ $t('output') }}</a>
+                      <a href="javascript:void(0);" @click="logout">{{ $t('logout') }}</a>
                     </li>
                   </ul>
                 </div>

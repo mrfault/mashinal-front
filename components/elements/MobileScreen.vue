@@ -1,8 +1,8 @@
 <template>
   <portal to="mobile-screen">
-    <action-bar :title="title" @back="$emit('back')" />
+    <action-bar :title="barTitle" @back="$emit('back')" />
     <div class="mobile-screen">
-      <div class="container">
+      <div :class="{'container': !hideContainer, 'has-min-height': !heightAuto}" :style="{height: hideContainer ? '100%' : 'auto'}">
         <slot />
       </div>
     </div>
@@ -12,13 +12,15 @@
 <script>
 export default {
   props: {
-    title: String
+    barTitle: String,
+    hideContainer: Boolean,
+    heightAuto: Boolean
   },
   mounted() {
-    this.setBodyOverflow('hidden');
+    this.setBodyOverflow('hidden', 'mobile-screen-open');
   },
   beforeDestroy() {
-    this.setBodyOverflow('scroll');
+    this.setBodyOverflow('scroll', 'mobile-screen-open');
   }
 }
 </script>

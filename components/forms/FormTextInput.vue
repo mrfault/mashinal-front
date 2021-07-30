@@ -1,29 +1,61 @@
 <template>
   <div class="form-group">
     <div class="text-input">
-      <icon :name="iconName" v-if="iconName" />
-      <input 
-        :id="id"
-        :type="type"
-        :placeholder="placeholder" 
-        :maxlength="maxlength" 
-        :disabled="disabled"
-        :class="{invalid, disabled}"
-        :autocomplete="autocomplete"
-        v-mask="mask"
-        v-model="inputValue"
-      />
-      <icon name="alert-circle" v-if="invalid" />
+      <icon :name="iconName" v-if="iconName" :class="{invalid, disabled}" />
+      <img :src="imgSrc" v-if="imgSrc" :class="{disabled}" />
+      <template v-if="inputDate">
+        <date-picker 
+          v-model="inputValue" 
+          value-type="format" 
+          :popup-style="{ top: '100%', left: 0 }"
+          :append-to-body="false"
+          :format="'DD.MM.YYYY'"
+          :placeholder="placeholder" 
+          :lang="locale" 
+          :input-attr="{readonly: 'readonly', id, maxlength, disabled}"
+          :input-class="{invalid, valid, disabled, [`${inputClass}`]:inputClass}"
+        >
+          <template #icon-clear>
+            <icon name="cross" />
+          </template>
+        </date-picker>
+      </template>
+      <template v-else>
+        <input
+          :id="id"
+          :type="showPassword ? 'text' : type"
+          :placeholder="placeholder" 
+          :maxlength="maxlength" 
+          :disabled="disabled"
+          :class="{invalid, valid, disabled, [`${inputClass}`]:inputClass}"
+          :autocomplete="autocomplete"
+          :readonly="readonly"
+          v-mask="mask"
+          v-model="inputValue"
+          @focus="$emit('focus', $event)"
+        />
+        <span v-if="type === 'password'" class="show-password" @click="showPassword = !showPassword">
+          <icon :name="showPassword ? 'eye' : 'hide'" />
+        </span>
+      </template>
+      <icon name="alert-circle" v-if="invalid" class="invalid" />
+      <icon name="check-circle" v-else-if="valid" class="valid" />
+      <slot />
     </div>
   </div>
 </template>
 
 <script>
+  import DatePicker from 'vue2-datepicker';
+  import 'vue2-datepicker/locale/az';
+  import 'vue2-datepicker/locale/ru';
+
   export default {
     props: {
       value: {},
       id: String,
       iconName: String,
+      imgSrc: String,
       type: {
         type: String,
         default: 'text'
@@ -44,17 +76,28 @@
         type: Boolean,
         default: false
       },
+      valid: {
+        type: Boolean,
+        default: false
+      },
       autocomplete: {
         type: String,
         default: 'off'
       },
       mask: {
         default: false
-      }
+      },
+      inputClass: String,
+      inputDate: Boolean,
+      readonly: Boolean
+    },
+    components: {
+      DatePicker
     },
     data() {
       return {
-        prevValue: this.value
+        prevValue: this.value,
+        showPassword: false
       }
     },
     computed: {

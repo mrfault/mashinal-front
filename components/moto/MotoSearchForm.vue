@@ -294,12 +294,12 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getMotorcycleModels', 'getScooterModels', 'getAtvModels']),
+    ...mapActions(['getMotoModels']),
 
     async setBrand(id, index) {
       this.$set(this.form.additional_brands[index], 'brand', id);
       this.$set(this.form.additional_brands[index], 'model', '');
-      if (id) await this[this.category.modelsAction]({ id, index });
+      if (id) await this.getMotoModels({ category: this.category.id, id, index });
     }
   }
 }

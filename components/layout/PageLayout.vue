@@ -20,9 +20,20 @@
             </transition>
           </template>
         </backdrop>
-        <portal-target name="modals" />
+        <modal-popup
+          v-if="!isMobileBreakpoint" 
+          :toggle="!!paidStatusData" 
+          :modal-class="'larger promote-popup'"
+          @close="updatePaidStatus(false)"
+        >
+          <paid-status v-if="paidStatusData" />
+        </modal-popup>
+        <paid-status v-else-if="paidStatusData" />
+        <!-- portal targets -->
+        <portal-target name="modals" multiple />
+        <portal-target name="mobile-dropdown" multiple />
         <portal-target name="mobile-screen" />
-        <paid-status v-if="paidStatusData && isMobileBreakpoint" />
+        <!-- /portal targets -->
         <mobile-nav />
         <page-footer />
       </div>

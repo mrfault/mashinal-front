@@ -1,3 +1,5 @@
+import Vue from 'vue';
+
 const getInitialState = () =>({
   loading: true,
   colorMode: 'light',
@@ -5,6 +7,8 @@ const getInitialState = () =>({
   uiScale: 1,
   menus: [],
   staticPages: [],
+  pageRef: '',
+  pageRefs: ['',''],
   // axios cancellation
   CancelToken: null,
   cancel: null,
@@ -12,6 +16,7 @@ const getInitialState = () =>({
   savedSearchList: [],
   singleSavedSearch: {},
   favorites: [],
+  favoriteAnnouncements: [],
   // messages
   messages: [],
   suggestedMessages: [],
@@ -29,6 +34,7 @@ const getInitialState = () =>({
   paidStatusData: false,
   // announcements
   myAnnouncements: {},
+  myAnnouncement: {},
   mainAnnouncements: {},
   carsAnnouncements: [],
   motoAnnouncements: [],
@@ -81,27 +87,15 @@ const getInitialState = () =>({
   sellPhoneEntered: '',
   sellPhoneRegistered: false,
   sellAutosalonRights: false,
-  sellCookies: {
-    brand: '',
-    model: '',
-    years: '',
-    body: '',
-    generations: '',
-    engines: '',
-    gearing: '',
-    transmissions: '',
-    modifications: '',
-    power: '',
-    capacity: '',
-    box: ''
-  },
+  sellProgress: 5,
+  sellYears: [],
+  sellBody: [],
   sellGenerations: [],
   sellEngines: [],
-  sellYears: [],
   sellGearing: [],
-  sellModifications: [],
   sellTransmissions: [],
-  sellBody: [],
+  sellModifications: [],
+  sellPreviewData: {},
   // autosalons
   autosalonsList: [],
   autosalonsInBounds: false,
@@ -125,10 +119,13 @@ export const getters = {
   user: s => s.auth.user,
   menus: s => s.menus,
   staticPages: s => s.staticPages,
+  pageRefs: s => s.pageRefs,
+  pageRef: s => s.pageRef,
   // saved search & favorites
-  savedSearchList: s => s.favoritesSearchList,
+  savedSearchList: s => s.savedSearchList,
   singleSavedSearch: s => s.singleSavedSearch,
   favorites: s => s.favorites,
+  favoriteAnnouncements: s => s.favoriteAnnouncements,
   // profile
   messages: s => s.messages,
   suggestedMessages: s => s.suggestedMessages,
@@ -149,6 +146,7 @@ export const getters = {
   promotedAnnouncements: s => s.promotedAnnouncements,
   mainAnnouncements: s => s.mainAnnouncements,
   myAnnouncements: s => s.myAnnouncements,
+  myAnnouncement: s => s.myAnnouncement,
   relativeAnnouncements: s => s.relativeAnnouncements,
   // catalog
   catalogItems: s => s.catalogItems,
@@ -192,13 +190,15 @@ export const getters = {
   sellPhoneEntered: s => s.sellPhoneEntered,
   sellPhoneRegistered: s => s.sellPhoneRegistered,
   sellAutosalonRights: s => s.sellAutosalonRights,
-  sellCookies: s => s.sellCookies,
-  sellGenerations: s => s.sellGenerations,
-  sellEngines: s => s.sellEngines,
+  sellProgress: s => s.sellProgress,
   sellYears: s => s.sellYears,
-  sellGearing: s => s.sellGearing,
-  sellModifications: s => s.sellModifications,
-  sellTransmissions: s => s.sellTransmissions,
+  sellBody: s => s.sellBody,
+  sellGenerations: s => s.sellGenerations,
+  sellEngines: s => Object.keys(s.sellEngines).map(key => s.sellEngines[key]),
+  sellGearing: s => Object.keys(s.sellGearing).map(key => s.sellGearing[key]),
+  sellTransmissions: s => Object.keys(s.sellTransmissions).map(key => s.sellTransmissions[key]),
+  sellModifications: s => Object.keys(s.sellModifications).map(key => s.sellModifications[key]),
+  sellPreviewData: s => s.sellPreviewData,
   // autosalons
   autosalonsList: s => s.autosalonsList,
   autosalonsInBounds: s => s.autosalonsInBounds,
@@ -261,6 +261,12 @@ export const actions = {
     const res = await this.$axios.$get('/get_static_pages');
     commit('mutate', { property: 'staticPages', value: res });
   },
+  setPageRefs({ commit }, {index, path}) {
+    commit('mutate', { property: 'pageRefs', key: index, value: path });
+  },
+  setPageRef({ commit }, path) {
+    commit('mutate', { property: 'pageRef', value: path });
+  },
   // Messages
   async getMessages({ commit }) {
     const res = await this.$axios.$get('/profile/messages');
@@ -312,8 +318,12 @@ export const actions = {
     commit('mutate', { property: 'favorites', value: res });
   },
   async addToFavorites({ commit }, id) {
-    this.$axios.$post(`/announce/${id}/favorite`);
     commit('addToFavorites', { id });
+    await this.$axios.$post(`/announce/${id}/favorite`);
+  },
+  async getFavoriteAnnouncements({ commit }, data = {}) {
+    const res = await this.$axios.$get(`/my/saved/all-announce?page=${data.page || 1}`);
+    commit('mutate', { property: 'favoriteAnnouncements', value: res });
   },
   // Saved search
   async getSavedSearch({ commit }){
@@ -330,12 +340,20 @@ export const actions = {
   },
   async deleteSavedSearch({ commit, state }, id){
     await this.$axios.$delete(`/saved-search/${id}`);
-    const rest_search = state.favoritesSearchList.filter(search => search.id !== id);
-    commit('mutate', { property: 'savedSearchList', value: rest_search });
+    const list = state.savedSearchList.filter(search => search.id !== id);
+    commit('mutate', { property: 'savedSearchList', value: list });
     commit('mutate', { property: 'singleSavedSearch', value: {} });
   },
-  async updateSavedSearchNotificationsInterval({ commit }, data){
-    const res = await this.$axios.$post('/saved-search-notification-interval', data);
+  async deleteSavedSearchMultiple({ commit, state }, data){
+    await this.$axios.$post(`/saved-search/delete_all`, data);
+    const list = state.savedSearchList.filter(search => !data.ids.includes(search.id));
+    commit('mutate', { property: 'savedSearchList', value: list });
+    commit('mutate', { property: 'singleSavedSearch', value: {} });
+  },
+  async updateSavedSearchNotificationsInterval({ commit, state }, data){
+    await this.$axios.$post('/saved-search-notification-interval', data);
+    const list = state.savedSearchList.map(search => !data.id.includes(search.id) ? search : ({...search, notification_interval: data.type }));
+    commit('mutate', { property: 'savedSearchList', value: list });
     commit('mutate', { property: 'singleSavedSearch', key: 'notification_interval', value: data.type });
   },
   clearSavedSearch({ commit }){
@@ -352,8 +370,8 @@ export const actions = {
     const res = await this.$axios.$get('/brands');
     commit('mutate', { property: 'brands', value: res });
   },
-  async getCommercialBrands({ commit }, type) {
-    const res = await this.$axios.$get(`/commercial/get_brands/${type}`);
+  async getCommercialBrands({ commit }, category) {
+    const res = await this.$axios.$get(`/commercial/get_brands/${category}`);
     commit('mutate', { property: 'commercialBrands', value: res });
   },
   // Models
@@ -362,20 +380,28 @@ export const actions = {
     commit('mutate', { property:'models', value: res });
   },
   async getCommercialModels({ commit }, data) {
-    const res = await this.$axios.$get(`/commercial/type/${data.type}/brand/${data.id}/models`);
-    commit('mutate', { property: 'commercialModels', value: res, key: data.index })
+    const res = await this.$axios.$get(`/commercial/type/${data.category}/brand/${data.id}/models`);
+    commit('mutate', { property: 'commercialModels', value: res, key: data.index || 0 })
+  },
+  async getMotoModels({ dispatch }, data) {
+    if(data.category == 1)  
+      await dispatch('getMotorcycleModels', { id: data.id, index: data.index || 0 });
+    else if(data.category == 2)  
+      await dispatch('getScooterModels', { id: data.id, index: data.index || 0 });
+    else if(data.category == 3)  
+      await dispatch('getAtvModels', { id: data.id, index: data.index || 0 });
   },
   async getMotorcycleModels({ commit }, data) {
     const res = await this.$axios.$get(`/moto/brand/${data.id}/models`);
-    commit('mutate', { property: 'motorcycleModels', value: res, key: data.index });
+    commit('mutate', { property: 'motorcycleModels', value: res, key: data.index || 0 });
   },
   async getAtvModels({ commit }, data) {
     const res = await this.$axios.$get(`/moto/atv/brand/${data.id}/models`);
-    commit('mutate', { property: 'atvModels', value: res, key: data.index });
+    commit('mutate', { property: 'atvModels', value: res, key: data.index || 0 });
   },
   async getScooterModels({ commit }, data) {
     const res = await this.$axios.$get(`/moto/scooter/brand/${data.id}/models`);
-    commit('mutate', { property: 'scooterModels', value: res, key: data.index });
+    commit('mutate', { property: 'scooterModels', value: res, key: data.index || 0 });
   },
   // Generations
   async getGenerations({ commit }, data) {
@@ -522,16 +548,21 @@ export const actions = {
     const res = await this.$axios.$get(`/grid/same/announcements/${id}`);
     commit('mutate', { property: 'relativeAnnouncements', value: res });
   },
-  async getMyAllAnnouncements({ commit }) {
-    const res = await this.$axios.$get('/my/all-announce');
+  async getMyAllAnnouncements({ commit }, data = {}) {
+    const res = await this.$axios.$get(`/my/all-announce-paginated?page=${data.page || 1}${[0,1,2,3].includes(data.status) ? `&status=${data.status}` : ''}`);
     commit('mutate', { property: 'myAnnouncements', value: res });
   },
   async getAnnouncementInner({ commit }, id) {
     const res = await this.$axios.$get(`/announce/${id}`);
     commit('mutate', { property: 'announcement', value: res });
   },
-  async deleteAnnounement({ commit }, data) {
-    await this.$axios.$post('/' + data.type + '/' + data.id + '/delete');
+  async getMyAnnouncement({ commit }, id) {
+    const res = await this.$axios.$get(`/announcement/edit/${id}`);
+    commit('mutate', { property: 'myAnnouncement', value: res });
+  },
+  async deleteMyAnnounement({ commit }, id) {
+    await this.$axios.$delete(`/announcement/${id}/delete`);
+    commit('mutate', { property: 'myAnnouncement', value: {} });
   },
   // Car announcements
   async getCarAnnouncement({ commit }, data) {
@@ -540,7 +571,7 @@ export const actions = {
   },
   async getMyCarAnnouncement({ commit }, id) {
     const res = await this.$axios.$get(`/edit_announce/${id}`);
-    commit('mutate', { property: 'announcement', value: res });
+    commit('mutate', { property: 'myAnnouncement', value: res });
   },
   // Commercial Announcements
   async getCommercialAnnouncement({ commit }, data) {
@@ -549,7 +580,7 @@ export const actions = {
   },
   async getMyCommercialAnnouncement({ commit }, id) {
     const res = await this.$axios.$get(`/commercial/edit_announce/${id}`);
-    commit('mutate', { property: 'announcement', value: res });
+    commit('mutate', { property: 'myAnnouncement', value: res });
   },
   // Moto Announcements
   async getMotoAnnouncement({ commit }, data) {
@@ -558,7 +589,7 @@ export const actions = {
   },
   async getMyMotoAnnouncement({ commit }, data) {
     const res = await this.$axios.$get(`/moto/edit_announce/${data.id}?type=${data.type}`);
-    commit('mutate', { property: 'announcement', value: res });
+    commit('mutate', { property: 'myAnnouncement', value: res });
   },
   // Catalog
   async getCatalogSearch({commit, state}, data) {
@@ -575,22 +606,6 @@ export const actions = {
     } catch(e) {}
   },
   // Sell
-  setSellSavedOptions({commit, state}) {
-    for(let key in state.sellCookies) {
-      commit('mutate', { property: 'sellCookies', value: this.$cookies.get(`sell_${key}`), key: key });
-    }
-  },
-  removeSellSavedOptions({commit, state}, options = false) {
-    let cookies = options || state.sellCookies;
-    for(let key in cookies) {
-      key = options ? cookies[key] : key;
-      this.$cookies.remove(`sell_${key}`);
-      if(state.sellCookies[key] !== '')
-        commit('mutate', { property: 'sellCookies', value: '', key: key });
-      if(state.hasOwnProperty(`sell_${key}`) && Object.keys(state[`sell_${key}`]).length)
-        commit('mutate', { property: `sell_${key}`, value: [] });
-    }
-  },
   async checkSellTokens({ commit }, phone) {
     const res = await this.$axios.$post('/check/user/by/phone', { phone });
     commit('mutate', { property: 'sellTokens', value: res.data && res.data.announce_count });
@@ -602,6 +617,12 @@ export const actions = {
     commit('mutate', { property: 'sellPhoneRegistered', value: false });
     commit('mutate', { property: 'sellAutosalonRights', value: false });
     commit('mutate', { property: 'sellPhoneEntered', value: '' });
+  },
+  setSellProgress({ commit }, value) {
+    commit('mutate', { property: 'sellProgress', value });
+  },
+  setSellPreviewData({ commit }, {value, key}) {
+    commit('mutate', { property: 'sellPreviewData', value, key });
   },
   // Sell Options
   async getSellYears({ commit }, params) {
@@ -657,47 +678,53 @@ export const actions = {
   },
   // Autosalons
   async getAutoSalonsList({commit}, params) {
-    const data = await this.$axios.$get('/auto_salon_list' + (params ? ('?' + params) : ''));
-    commit('mutate', { property: 'autosalonsList', value: data });
+    const res = await this.$axios.$get('/auto_salon_list' + (params ? ('?' + params) : ''));
+    commit('mutate', { property: 'autosalonsList', value: res });
   },
-  async getAutoSalonById({commit}, {id, page}) {
-    const data = await this.$axios.$get('/auto_salon/' + id + '?page=' + (page || 1));
-    commit('mutate', { property: 'autosalonSingle', value: data });
+  async getAutoSalonById({commit}, data) {
+    const res = await this.$axios.$get('/auto_salon/' + data.id + '?page=' + (data.page || 1));
+    commit('mutate', { property: 'autosalonSingle', value: res });
   },
   async getMyAutoSalon({commit}) {
-    const data = await this.$axios.$get('/my/autosalon/edit');
-    commit('mutate', { property: 'myAutosalon', value: data });
+    const res = await this.$axios.$get('/my/autosalon/edit');
+    commit('mutate', { property: 'myAutosalon', value: res });
   },
   async setMyAutoSalon({commit}, form) {
-    const data = await this.$axios.$post('/my/autosalon/edit', form);
-    commit('mutate', { property: 'myAutosalon', value: data });
+    const res = await this.$axios.$post('/my/autosalon/edit', form);
+    commit('mutate', { property: 'myAutosalon', value: res });
   },
-  async getAnnouncementCalls({commit}) {
-    const data = await this.$axios.$get('/my/call-announces');
-    commit('mutate', { property: 'myAnnouncementCalls', value: data });
+  async getAnnouncementCalls({commit}, data = {}) {
+    const res = await this.$axios.$get(`/my/call-announces?page=${data.page || 1}`);
+    commit('mutate', { property: 'myAnnouncementCalls', value: res });
   },
   async incrementAnnouncementCalls({}, id) {
     await this.$axios.$get(`/announce/${id}/show/phone`);
   },
   async getAnnouncementStats({commit}) {
-    const data = await this.$axios.$get('/my/dashboard/statistics');
-    commit('mutate', { property: 'myAnnouncementStats', value: data });
+    const res = await this.$axios.$get('/my/dashboard/statistics');
+    commit('mutate', { property: 'myAnnouncementStats', value: res });
   },
   async getPackageStats({commit}) {
-    const data = await this.$axios.$get('/my/dashboard/package');
-    commit('mutate', { property: 'myPackageStats', value: data });
+    const res = await this.$axios.$get('/my/dashboard/package');
+    commit('mutate', { property: 'myPackageStats', value: res });
   },
   updateAutosalonsInBounds({commit}, list) {
     commit('mutate', { property: 'autosalonsInBounds', value: list });
   },
   updateAutosalonsSelected({commit}, list) {
     commit('mutate', { property: 'autosalonsSelected', value: list });
+  },
+  // Reset Data on Logout
+  resetUserData({ commit }) {
+    // reset services
+    commit('reset', ['myServices','myServiceHistory','myServiceOptions']);
   }
 }
 
 export const mutations = {
   mutate(state, payload) {
-    if(payload.key !== undefined) state[payload.property][payload.key] = payload.value;
+    if (payload.key !== undefined) 
+      Vue.set(state[payload.property], payload.key, payload.value);
     else state[payload.property] = payload.value;
   },
   reset(state, payload) {
@@ -764,7 +791,12 @@ export const mutations = {
   // favorites
   addToFavorites(state, payload) {
     let index = state.favorites.indexOf(payload.id);
-    if (index >= 0) state.favorites.splice(index,1);
-    else state.favorites.push(payload.id);
+    // let announcementIndex = state.favoriteAnnouncements.data
+    //   .findIndex(announcement => announcement.id_unique === payload.id);
+    if (index >= 0) {
+      state.favorites.splice(index,1);
+    } else {
+      state.favorites.push(payload.id);
+    }
   }
 }

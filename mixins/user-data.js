@@ -10,13 +10,14 @@ export const UserDataMixin = {
     },
     getUserSettingsLink() {
       if (!this.loggedIn) return this.$localePath('/login');
-      return this.$localePath(this.user.autosalon ? '/profile/dashboard' : '/profile/settings');
+      return this.$localePath(this.user.autosalon ? '/profile/dashboard' : '/profile');
     }
   },
   methods: {
     async logout() {
-      await this.$auth.logout();
-      this.$router.push(this.$localePath('/'), () => {
+      this.$router.push(this.$localePath('/?logout=true'), async () => {
+        this.$router.push(this.$localePath('/'));
+        await this.$auth.logout();
         this.$nuxt.$emit('login', false);
       });
     }

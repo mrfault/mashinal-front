@@ -7,7 +7,7 @@
       @close="showModal = false, selectedOptions = []"
     >
       <div class="form">
-        <div class="mb-2 mb-3" v-for="(option, index) in complaintOptions" :key="index">
+        <div class="mb-2 mb-lg-3" v-for="(option, index) in complaintOptions" :key="index">
           <form-checkbox :label="$t(option.title[locale])" v-model="selectedOptions" 
             :checked-value="option.id" :id="''+option.id" />
         </div>
@@ -71,7 +71,7 @@ export default {
       if(!this.selectedOptions.length) return;
       this.pending = true;
       // send complaint if options selected
-      await this.$axios.$post(`/complaint-options`, {
+      this.$axios.$post(`/complaint-options`, {
         options: this.selectedOptions,
         announcement_id: this.announcement.id,
         announcement_model: this.getType,

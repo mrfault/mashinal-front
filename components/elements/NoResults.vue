@@ -1,12 +1,15 @@
 <template>
   <div class="no-results">
     <img src="/img/car.svg" alt="" />
-    <span>{{ $t('no_results_found') }}</span>
+    <span>{{ text || $t('no_results_found') }}</span>
+    <slot />
   </div>
 </template>
 
 <script>
 export default {
-  
+  props: {
+    text: String
+  }
 }
 </script>

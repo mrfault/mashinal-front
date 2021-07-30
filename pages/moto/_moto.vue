@@ -61,9 +61,9 @@ export default {
     if(!slug) return error({ statusCode: 404 });
 
     const category = ({
-      'motorcycles': { id: 1, type: 'motorcycles', url: '/grid/moto', modelsAction: 'getMotorcycleModels' },
-      'scooters': { id: 2, type: 'scooters', url: '/grid/scooter', modelsAction: 'getScooterModels' },
-      'atvs': { id: 3, type: 'atvs', url: '/grid/atv', modelsAction: 'getAtvModels' }
+      'motorcycles': { id: 1, type: 'motorcycles', url: '/grid/moto' },
+      'scooters': { id: 2, type: 'scooters', url: '/grid/scooter' },
+      'atvs': { id: 3, type: 'atvs', url: '/grid/atv' }
     })[slug];
 
     await store.dispatch('i18n/setRouteParams', { 
@@ -85,7 +85,7 @@ export default {
         .filter(key => post?.additional_brands?.[key]?.brand)
         .map((key) => {
           let row = post.additional_brands[key];
-          return store.dispatch(category.modelsAction, { id: row.brand, index: key })
+          return store.dispatch('getMotoModels', { category: category.id, id: row.brand, index: key })
         }),
     ]);
 

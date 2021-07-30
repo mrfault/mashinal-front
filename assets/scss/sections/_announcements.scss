@@ -60,7 +60,7 @@
       background-position: center;
       background-size: cover;
       border-radius: 4px 4px 0 0;
-      background-color: $grayish-blue-3;
+      background-color: $greyish-blue-3;
     }
     .item-details {
       padding: 15px 15px 10px;
@@ -71,7 +71,16 @@
       }
       .item-info {
         display: block;
-        color: $grayish-blue-7;
+        color: $greyish-blue-7;
+      }
+    }
+    .call-count {
+      display: inline-flex;
+      align-items: center;
+      color: $greyish-blue-7;
+      i {
+        margin-right: 4px;
+        font-size: 12px;
       }
     }
     .item-price {
@@ -87,6 +96,17 @@
       }
       i {
         margin-left: 15px;
+      }
+    }
+    .item-checkbox {
+      width: 100%;
+      .checkbox-input {
+        label {
+          flex-direction: row-reverse;
+          .checkbox {
+            margin-right: -16px;
+          }
+        }
       }
     }
     .item-overlay {
@@ -158,6 +178,7 @@
     font-size: 18px;
     font-weight: 500;
     margin-top: 22px;
+    max-width: 300px;
   }
 }
 
@@ -167,9 +188,62 @@
   left: 50%;
   transform: translate(-50%, 50%);
   .btn-circle {
-    background-color: $grayish-blue-1;
+    background-color: $greyish-blue-1;
     i {
       margin-top: -5px;
+    }
+  }
+}
+
+.controls-panel {
+  padding: 6px 25px;
+  .control-icon {
+    padding: 4px 8px;
+    font-size: 17px;
+    margin-left: 8px;
+    &:last-of-type {
+      margin-right: 5px;
+      padding-right: 0;
+      & ~ .tooltip {
+        left: 4px !important;
+      }
+    }
+  }
+}
+
+.dark-mode {
+  .controls-panel {
+    .control-icon {
+      background-color: $dark-2;
+    }
+  }
+}
+
+@include media-max-width(lg) {
+  .controls-panel {
+    padding: 25px;
+    .row {
+      position: absolute;
+      z-index: 1;
+      top: 28px;
+      right: 0;
+    }
+    .control-icon {
+      background-color: $white;
+      margin-left: -22px;
+      padding: 0 22px;
+      // &:first-of-type {
+      //   padding-left: 25px;
+      // }
+      // &:last-of-type {
+      //   margin-right: -32px;
+      // }
+      &.disabled-ui {
+        opacity: 1;
+        i {
+          opacity: .25;
+        }
+      }
     }
   }
 }
@@ -187,7 +261,8 @@
       .item-bg {
         background-color: $dark-3;
       }
-      .item-details .item-info {
+      .item-details .item-info,
+      .call-count {
         color: $grey-4;
       }
       .item-price span {

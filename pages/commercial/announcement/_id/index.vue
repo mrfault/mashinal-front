@@ -6,6 +6,8 @@
           <share-it type="publish" />
           <span class="text-data">
             <icon name="eye" />
+            {{ announcement.view_count }}
+            <icon name="cursor" />
             {{ announcement.open_count }}
           </span>
           <span class="text-data">
@@ -23,7 +25,7 @@
             </comment>
           </div>
           <div class="col-auto">
-            <quick-info />
+            <quick-info type="commercial" />
             <vehicle-specs type="commercial" />
             <comment :comment="announcement.comment" v-if="isMobileBreakpoint" />
             <promote-card v-if="!isMobileBreakpoint" />
