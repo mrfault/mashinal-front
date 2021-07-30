@@ -1,14 +1,6 @@
 <template>
-  <button :class="['btn full-width', `btn--${className}`]" @click.stop="restoreAnnouncement">
+  <button :class="['btn full-width', `btn--${className}`, { pending }]" @click.stop="restoreAnnouncement">
     <icon name="refresh" /> {{ $t('restore') }}
-    <modal-popup
-      v-if="!isMobileBreakpoint" 
-      :toggle="!!paidStatusData" 
-      :modal-class="'larger promote-popup'"
-      @close="updatePaidStatus(false)"
-    >
-      <paid-status v-if="paidStatusData" />
-    </modal-popup>
   </button>
 </template>
 
@@ -35,6 +27,8 @@ export default {
       try {
         if (this.announcement.is_autosalon) {
           await this.$axios.$get(`/restore/${this.announcement.id_unique}`);
+          await this.$nuxt.refresh();
+          this.$toasted.success(this.$t('announcement_restored'));
           this.pending = false;
         } else {
           const res = await this.$axios.$get(`/restore/${this.announcement.id_unique}`);

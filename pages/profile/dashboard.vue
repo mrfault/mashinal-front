@@ -44,7 +44,7 @@
             <template v-else-if="card.key === 'contract'">
               <p class="mt-1">{{ $t('contract_end_time') }}:<br/><strong>{{ announceStats.contract.end_date }}</strong></p>
               <h4 class="skip-truncate">
-                <strong :class="announceStats.contract.left_days < 8 ? 'text-red' : 'text-green'">
+                <strong :class="shouldExtendContract ? 'text-red' : 'text-green'">
                   {{ announceStats.contract.left_days }}
                 </strong> 
                 {{ $readPlural(announceStats.contract.left_days, $t('plural_forms_day'), false) }}
@@ -66,7 +66,7 @@
               <nuxt-link class="text-green" :to="$localePath('/sell')" v-if="card.key === 'announcements'">
                 {{ $t(locale === 'az' ? 'place_an_ad' : 'to_sell') }}
               </nuxt-link>
-              <a class="text-green" href="javascript:void(0);" @click="showExtendContract = true" v-else-if="card.key === 'contract' && announceStats.contract.left_days < 8">
+              <a class="text-green" href="javascript:void(0);" @click="showExtendContract = true" v-else-if="card.key === 'contract' && shouldExtendContract">
                 {{ $t('pay') }}
               </a>
             </template>
@@ -82,6 +82,33 @@
             </div>
           </dashboard-card>
         </div>
+        <modal-popup
+          :toggle="showExtendContract"
+          :title="$t('extend_subscription')"
+          @close="showExtendContract = false"
+        >
+          <form class="form" @submit.prevent="extendContract">
+            <p v-html="$t('pay_till_date', { date: announceStats.contract.end_date })"></p>
+            <h4>{{ $t('payment_method') }}</h4>
+            <div class="mb-2 mb-lg-0">
+              <form-buttons v-model="selectedPaymentMethod" :options="paymentMethodOptions" :group-by="2" />
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col-6">
+                <span class="total-price">
+                  <span>{{ $t('total')}}</span>
+                  <strong>{{ announceStats.contract.price }} ₼</strong>
+                </span>
+              </div>
+              <div class="col-6">
+                <button type="submit" :class="['btn btn--green full-width', { pending }]">
+                  {{ $t('confirm') }}
+                </button>
+              </div>
+            </div>
+          </form>
+        </modal-popup>
       </div>
     </div>
   </div>
@@ -91,13 +118,14 @@
   import { mapGetters, mapActions } from 'vuex';
 
   import { StatsMixin } from '~/mixins/statistics';
+  import { PaymentMixin } from '~/mixins/payment';
 
   import DashboardCard from '~/components/profile/DashboardCard';
 
   export default {
     name: 'pages-profile-dashboard',
     middleware: ['auth_general','auth_autosalon'],
-    mixins: [StatsMixin],
+    mixins: [StatsMixin, PaymentMixin],
     components: {
       DashboardCard
     },  
@@ -118,6 +146,7 @@
       ]); 
 
       return {
+        pending: false,
         showExtendContract: false,
         supportContacts: [
           { phone: '055-222-13-51', call: '+994552221351', email: 'adalat@al.ventures' },
@@ -154,11 +183,24 @@
           return group.last_message && !group.last_message.is_read && parseInt(group.last_message.sender_id) !== parseInt(this.user.id);
         });
         return unread.length;
+      },
+
+      shouldExtendContract() {
+        return this.announceStats.contract.left_days < 8;
       }
     },
     methods: {
-      ...mapActions([]),
-     
+      async extendContract() {
+        if (this.pending) return;
+        this.pending = true;
+        try {
+          const res = await this.$axios.$get(`/payment/package`);
+          this.pending = false;
+          this.handlePayment(res);
+        } catch (err) {
+          this.pending = false;
+        }
+      }
     }
   }
 </script>

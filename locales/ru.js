@@ -1631,5 +1631,6 @@ export default {
 	"cant_deactivate_selected_announcements": "Выбранные объявления находятся на рассмотрении или уже деактивированы",
 	"logout": "Выйти",
 	"autocatalog": "Автокаталог",
-	"back_to_home": "На главную"
+	"back_to_home": "На главную",
+	"announcement_restored": "Объявление восстановлено"
 }

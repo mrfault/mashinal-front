@@ -24,7 +24,7 @@ export const LayoutMixin = {
     ...mapGetters(['loading','messages','paidStatusData'])
   },
   methods: {
-    ...mapActions(['setLoading','setGridBreakpoint','getMessages','getFavorites','resetSellTokens','resetUserData']),
+    ...mapActions(['setLoading','setGridBreakpoint','getMessages','getFavorites','resetSellTokens','resetUserData','updatePaidStatus']),
 
     handleResize() {
       // update grid breakpoint

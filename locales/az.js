@@ -1627,5 +1627,6 @@ export default {
 	"cant_deactivate_selected_announcements": "Seçilmiş elanlar moderasiyadadır və ya artıq deaktiv olunub",
 	"logout": "Hesabdan çıx",
 	"autocatalog": "Avtokataloq",
-	"back_to_home": "Ana səhifəyə qayıt"
+	"back_to_home": "Ana səhifəyə qayıt",
+	"announcement_restored": "Elan bərpa edilib"
 }

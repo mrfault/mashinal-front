@@ -59,7 +59,7 @@
         <div class="promote-payment-info">
           <hr />
           <div class="d-flex justify-content-between align-items-center">
-            <span class="price">
+            <span class="total-price">
               <span>{{ $t('total')}}</span>
               <strong>{{ (selectedServiceOption ? selectedServiceOption.user_price : 0) || 0 }} ₼</strong>
             </span>
