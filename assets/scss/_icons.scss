@@ -255,6 +255,7 @@
 }
 .icon-top:before {
   content: "\e948";
+  font-weight: bold;
 }
 .icon-analytics:before {
   content: "\e949";
@@ -357,4 +358,10 @@
 }
 .icon-store:before {
   content: "\e96b";
+}
+.icon-calendar-1:before {
+  content: "\e96c";
+}
+.icon-phone:before {
+  content: "\e96d";
 }

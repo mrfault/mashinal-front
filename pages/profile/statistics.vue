@@ -10,7 +10,7 @@
       <div class="row">
         <div class="col-lg-6 mb-2 mb-lg-0">
           <div class="card full-height">
-            <div class="statistics-announcements full-height">
+            <div class="statistics-announcements larger full-height">
               <div class="circle-bar" v-for="(stat, i) in circleStats" :key="i">
                 <div class="circle-bar_filled" :style="{borderColor: stat.color, color: stat.color}">
                   <strong>{{ stat.value }}</strong>

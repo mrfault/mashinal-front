@@ -1477,7 +1477,7 @@ export default {
     "объявлений"
   ],
 
-  "plural_forms_count": [
+  "plural_forms_times": [
     "раз",
     "раза",
     "раз"
@@ -1519,7 +1519,7 @@ export default {
 	"xenon_lamps":"Ксеноновые фары",
 
 	"phone_call_count": "Число звонков",
-  "phone_visited_n_times": "С объявлений на Ваш номер перешли {count}",
+  "phone_visited_n_times": "С объявлений на Ваш номер перешли <span>{count}</span>",
 	"comparisons": "Сравнения",
 	"search": "Поиск",
 

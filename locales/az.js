@@ -1480,7 +1480,7 @@ export default {
 		"elan"
 	],
 
-	"plural_forms_count": [
+	"plural_forms_times": [
 		"dəfə",
 		"dəfə",
 		"dəfə"
@@ -1522,7 +1522,7 @@ export default {
 	"xenon_lamps":"Ksenon faralar",
 
 	"phone_call_count": "Zəng sayı",
-	"phone_visited_n_times": "Elanlarınız üzərindən nömrənizə {count} keçid edilib.",
+	"phone_visited_n_times": "Elanlarınız üzərindən nömrənizə <span>{count}</span> keçid edilib.",
 
 	"announcements_comparison": "Elanların müqayisəsi",
 	"announcements_comparison_to_use": "Müqayisə edə bilmək üçün elanlara keçin.",

@@ -28,6 +28,12 @@ a {
 .dark-mode {
   a {
     color: $yellow-1;
+    &.text-red {
+      color: $red-1;
+    }
+    &.text-green {
+      color: $green-1;
+    }
   }
 }
 
@@ -657,7 +663,8 @@ main {
         }
         &.icon-star,
         &.icon-chat,
-        &.icon-user {
+        &.icon-user,
+        &.icon-settings {
           font-weight: bold;
         }
       }
