@@ -1435,8 +1435,17 @@ main {
 
   .row {
     .col-lg-1-5 {
-      width: 20%;
+      flex: 0 0 20%;
+      max-width: 20%;
     }
+  }
+
+  .offset-lg-3-5 {
+    margin-left: 60%;
+  }
+
+  .offset-lg-4-5 {
+    margin-left: 80%;
   }
 
   /** VueScroll */

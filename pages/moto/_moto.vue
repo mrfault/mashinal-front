@@ -45,7 +45,7 @@ export default {
   head() {
     return this.$headMeta({
       title: this.$t('meta-title_moto', { type: this.$t('meta-words_moto-types')[this.category.id - 1] }),
-      descr: this.$t('meta-descr_moto', { type: this.$t('meta-words_moto-types')[this.category.id - 1] })
+      description: this.$t('meta-descr_moto', { type: this.$t('meta-words_moto-types')[this.category.id - 1] })
     });
   },
   async asyncData({ store, route, app, error }) {

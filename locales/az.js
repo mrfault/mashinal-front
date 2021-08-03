@@ -226,6 +226,7 @@ export default {
 	"Xenon": "Ksenonlu faralar",
 	"Yandex.Auto": "Yandeks.Avto",
 	"absorber_type": "Amortizator növü",
+	"acceleration": "Sürətlənmə",
 	"acceleration_from_s": "Sürətlənmə min., s",
 	"accepted": "Aktiv",
 	"accessories_material": "Material",
@@ -550,6 +551,8 @@ export default {
 	"desired_credit_amount": "Kreditin məbləği",
 	"detail": "Ətraflı",
 	"detail_report": "Ətraflı hesabat",
+	"simpled": "Adi",
+	"detailed": "Detallı",
 	"detailed_search": "Detallı axtarış",
 	"helper_search": "Bələdçi",
 	"detect_radar_type": "Radar detektorların növləri",
@@ -816,12 +819,12 @@ export default {
 	"meta-title_moto-sell": "Motosikleti Onlayn Maşın Bazarında Sat",
 	"meta-title_sell": "Maşını Onlayn Maşın Bazarında Sat",
 	"meta-words_catalog-car": [
-		"modelləri",
-		"təzə və köhnə modelləri",
-		"kuzovları",
-		"haqqında",
-		"xüsusiyyətləri",
-		"kompektasiyası"
+		"Modelləri",
+		"Təzə və köhnə modelləri",
+		"Kuzovlar",
+		"Xüsusiyyətlər",
+		"Modifikasiya",
+		"Kompektasiya"
 	],
 	"meta-words_moto-types": [
 		"Motosiklet",

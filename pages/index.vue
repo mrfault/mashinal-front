@@ -59,7 +59,7 @@ export default {
   head() {
     return this.$headMeta({
       title: this.$t('meta-title_main-page'),
-      descr: this.$t('meta-descr_main-page')
+      description: this.$t('meta-descr_main-page')
     });
   },
   async asyncData({ store }) {
