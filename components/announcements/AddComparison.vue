@@ -1,5 +1,5 @@
 <template>
-  <button class="btn-sq btn-sq--color-red" @click.stop="handleClick">
+  <button class="btn-sq btn-sq--color-red" @click.prevent.stop="handleClick">
     <icon name="compare" />
   </button>
 </template>

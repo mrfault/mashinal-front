@@ -68,8 +68,10 @@ export default {
     },
     handleItemClick(item) {
       let path = this.$localePath(this.getLink(item));
+      let scrollToGrid = !this.$route.params.generation;
       this.$router.push(path, () => {
-        this.scrollTo('.catalog-grid', [-15, -20]);
+        if (scrollToGrid) this.scrollTo('.catalog-grid', [-15, -20]);
+        else this.scrollReset();
       });
     },
     getTitle(item) {

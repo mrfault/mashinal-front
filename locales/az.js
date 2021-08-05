@@ -577,7 +577,7 @@ export default {
 	"edit_store": "Düzəliş et",
 	"ekologicheskiy-klass": "Ekoloji sinif",
 	"ekspluatatsionnye-pokazateli": "İşlənmə göstəriciləri",
-	"electric_motor_power": "Мощность электродвигателей",
+	"electric_motor_power": "Elektrik mühərrikin gücü",
 	"electrical": "Elektrik",
 	"electrician": "Elektrik",
 	"elektrika-i-svet": "Elektronika və işıqlandırma",
@@ -683,11 +683,15 @@ export default {
 		"AI-98",
 		"Qaz (Benzin)",
 		"DT",
-		"AI-92"
+		"AI-92",
+		'AI-91',
+		'E85',
+		'E100',
+		'Elektrik'
 	],
 	"gas": "Qaz",
 	"gas-turbine": "Turbin mühərrik",
-	"gas_distribution_system": "Система газораспределения",
+	"gas_distribution_system": "Qazpaylayıcı sistemi",
 	"gas_equipment": "Qaz-balon avadanlıqları",
 	"gaz": "Gaz",
 	"gearing": "Ötürücü",
@@ -902,7 +906,7 @@ export default {
 	"obem_sm3": "Həcm",
 	"obem-bagazhnika-minmaks-l": "Baqaj həcmi min., l.",
 	"obem-dvigatelya-sm3": "Mühərrik həcmi, sm³",
-	"obem-i-massa": "həcmi və çəkisi",
+	"obem-i-massa": "Həcmi və çəkisi",
 	"obem-toplivnogo-baka-l": "Yanacaq çəninin tutumu, l.",
 	"obshchaya-informatsiya": "Ümumi məlumat",
 	"offer_valid": "Təklif etibarlıdır",
@@ -1269,7 +1273,7 @@ export default {
 	"to_plug": "Qoşmaq",
 	"to_sell": "Elan yerləşdir",
 	"toplivo": "Yanacaq",
-	"torque_of_electric_motors": "Крутящий момент электродвигателей",
+	"torque_of_electric_motors": "Elektrik mühərrikin fırlanma anı",
 	"torsionnaya": "Torsion barlı",
 	"touch_screen": "Sensor ekran",
 	"tracked_bulldozer": "Tırtıllı buldozer",
@@ -1617,6 +1621,7 @@ export default {
 	"model_name": "Modelin adı",
 	"clean": "Təmizlə",
 	"prod_year": "Buraxılış ili",
+	"prod_years": "Buraxılış illəri",
 	"year": "il",
 
 	"edit_or_restore": "Nəqliyyat vasitəsinə dair məlumatlara düzəliş et və yaxud",
@@ -1631,5 +1636,6 @@ export default {
 	"logout": "Hesabdan çıx",
 	"autocatalog": "Avtokataloq",
 	"back_to_home": "Ana səhifəyə qayıt",
-	"announcement_restored": "Elan bərpa edilib"
+	"announcement_restored": "Elan bərpa edilib",
+	"available_modifications": "Mövcud modifikasiyalar"
 }

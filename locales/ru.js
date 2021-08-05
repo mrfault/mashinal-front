@@ -296,7 +296,7 @@ export default {
 	"appointment": "Назначение",
 	"are_you_sure_you_want_to_delete_the_announcement": "Вы точно хотите деактивировать объявление?",
 	"are_you_sure_you_want_to_delete_the_store": "Вы точно хотите удалить магазин?",
-	"at": "При {value}",
+	"at": "при {value}",
 	"at_least_5_photos": "Не менее {min}, но не более {max}",
 	"athermal": "Атермальное",
 	"attach": "Привязать",
@@ -683,7 +683,11 @@ export default {
 		"АИ-98",
 		"Газ (Бензин)",
 		"ДТ",
-		"АИ-92"
+		"АИ-92",
+    'АИ-91',
+    'E85',
+    'E100',
+    'Электричество'
 	],
 	"gas": "Газ",
 	"gas-turbine": "Газовая турбина",
@@ -823,7 +827,7 @@ export default {
 		"Поколения",
 		"Кузовы",
 		"Технические параметры",
-		"Модификация",
+		"Технические параметры",
 		"Комплектация"
 	],
 	"meta-words_moto-types": [
@@ -1621,6 +1625,7 @@ export default {
 	"model_name": "Название модели",
 	"clean": "Очистить",
 	"prod_year": "Год выпуска",
+	"prod_years": "Годы выпуска",
 	"year": "год",
 
 	"edit_or_restore": "Измените необходимые данные и",
@@ -1635,5 +1640,6 @@ export default {
 	"logout": "Выйти",
 	"autocatalog": "Автокаталог",
 	"back_to_home": "На главную",
-	"announcement_restored": "Объявление восстановлено"
+	"announcement_restored": "Объявление восстановлено",
+	"available_modifications": "Доступные модификации"
 }

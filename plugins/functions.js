@@ -122,7 +122,10 @@ export default function({ app, route, store }, inject) {
       k = Math.max(array[i], k);    
     }
     return k;
-  })
+  });
+  inject('skipUndefinedEntries', (o) => {
+    return Object.entries(o).reduce((a,[k,v]) => (v == null || v === '' || v === false ? a : (a[k]=v, a)), {});
+  });
   // underscore
   inject('clone', _.clone);
   inject('sortBy', _.sortBy);

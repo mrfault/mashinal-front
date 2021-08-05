@@ -61,7 +61,7 @@ const getInitialState = () =>({
   carTypeName: {},
   firstGeneration: false,
   firstGenerationEquipments: [],
-  specificationsList: [],
+  modificationsList: [],
   equipmentsList: [],
   // options
   colors: [],
@@ -167,7 +167,7 @@ export const getters = {
   carTypeName: s => s.carTypeName,
   firstGeneration: s => s.firstGeneration,
   firstGenerationEquipments: s => s.firstGenerationEquipments,
-  specificationsList: s => s.specificationsList,
+  modificationsList: s => s.modificationsList,
   equipmentsList: s => s.equipmentsList,
   // options
   colors: s => s.colors,
@@ -436,19 +436,19 @@ export const actions = {
     const res = await this.$axios.$get(`/brand/${data.brand}/model/${data.model}/generation/${data.generation}/body/${data.body}`);
     commit('mutate', { property: 'firstGeneration', value: res });
   },
-  async getSpecificationsList({ commit }, data) {
+  async getModificationsList({ commit }, data) {
     const res = await this.$axios.$get(`/brand/${data.brand}/model/${data.model}/generation/${data.generation}/get_type/${data.body}`);
-    commit('mutate', { property: 'specificationsList', value: res });
+    commit('mutate', { property: 'modificationsList', value: res });
+  },
+  async getBodyModification({ commit }, data) {
+    const res = await this.$axios.$get(`/brand/${data.brand}/model/${data.model}/generation/${data.generation}/body/${data.body}${data.modification ? `/catalog/${data.modification}` : ''}`);
+    commit('mutate', { property: 'firstGeneration', value: res });
   },
   async getEquipmentsList({ commit }, data) {
     const res = await this.$axios.$get(`/brand/${data.brand}/model/${data.model}/generation/${data.generation}/get_type/${data.body}/equipments`);
     commit('mutate', { property: 'equipmentsList', value: res });
   },
-  async getCatalogSpecifications({ commit }, data) {
-    const res = await this.$axios.$get(`/brand/${data.brand}/model/${data.model}/generation/${data.generation}/body/${data.body}/catalog/${data.specification || data.equipment}`);
-    commit('mutate', { property: 'firstGeneration', value: res });
-  },
-  async getCatalogEquipments({ commit }, data) {
+  async getBodyEquipments({ commit }, data) {
     const res = await this.$axios.$get(`/brand/${data.brand}/model/${data.model}/generation/${data.generation}/body/${data.body}/catalog/${data.equipment}/equipments`);
     commit('mutate', { property: 'firstGenerationEquipments',  value: res });
   },

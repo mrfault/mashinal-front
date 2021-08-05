@@ -12,7 +12,7 @@ export default {
       store.dispatch('getBodyOptions'),
       store.dispatch('getModels', route.params.brand),
       store.dispatch('getGenerations', route.params),
-      store.dispatch('getGenerationTypes', route.params),
+      // store.dispatch('getGenerationTypes', route.params),
       store.dispatch('getFirstGeneration', route.params),
       store.dispatch('getCatalogSearch', { post, page, params: {...route.params} })
     ]);
