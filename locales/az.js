@@ -226,6 +226,7 @@ export default {
 	"Xenon": "Ksenonlu faralar",
 	"Yandex.Auto": "Yandeks.Avto",
 	"absorber_type": "Amortizator növü",
+	"acceleration": "Sürətlənmə",
 	"acceleration_from_s": "Sürətlənmə min., s",
 	"accepted": "Aktiv",
 	"accessories_material": "Material",
@@ -550,6 +551,8 @@ export default {
 	"desired_credit_amount": "Kreditin məbləği",
 	"detail": "Ətraflı",
 	"detail_report": "Ətraflı hesabat",
+	"simpled": "Adi",
+	"detailed": "Detallı",
 	"detailed_search": "Detallı axtarış",
 	"helper_search": "Bələdçi",
 	"detect_radar_type": "Radar detektorların növləri",
@@ -574,7 +577,7 @@ export default {
 	"edit_store": "Düzəliş et",
 	"ekologicheskiy-klass": "Ekoloji sinif",
 	"ekspluatatsionnye-pokazateli": "İşlənmə göstəriciləri",
-	"electric_motor_power": "Мощность электродвигателей",
+	"electric_motor_power": "Elektrik mühərrikin gücü",
 	"electrical": "Elektrik",
 	"electrician": "Elektrik",
 	"elektrika-i-svet": "Elektronika və işıqlandırma",
@@ -680,11 +683,15 @@ export default {
 		"AI-98",
 		"Qaz (Benzin)",
 		"DT",
-		"AI-92"
+		"AI-92",
+		'AI-91',
+		'E85',
+		'E100',
+		'Elektrik'
 	],
 	"gas": "Qaz",
 	"gas-turbine": "Turbin mühərrik",
-	"gas_distribution_system": "Система газораспределения",
+	"gas_distribution_system": "Qazpaylayıcı sistemi",
 	"gas_equipment": "Qaz-balon avadanlıqları",
 	"gaz": "Gaz",
 	"gearing": "Ötürücü",
@@ -816,12 +823,12 @@ export default {
 	"meta-title_moto-sell": "Motosikleti Onlayn Maşın Bazarında Sat",
 	"meta-title_sell": "Maşını Onlayn Maşın Bazarında Sat",
 	"meta-words_catalog-car": [
-		"modelləri",
-		"təzə və köhnə modelləri",
-		"kuzovları",
-		"haqqında",
-		"xüsusiyyətləri",
-		"kompektasiyası"
+		"Modelləri",
+		"Təzə və köhnə modelləri",
+		"Kuzovlar",
+		"Xüsusiyyətlər",
+		"Modifikasiya",
+		"Kompektasiya"
 	],
 	"meta-words_moto-types": [
 		"Motosiklet",
@@ -899,7 +906,7 @@ export default {
 	"obem_sm3": "Həcm",
 	"obem-bagazhnika-minmaks-l": "Baqaj həcmi min., l.",
 	"obem-dvigatelya-sm3": "Mühərrik həcmi, sm³",
-	"obem-i-massa": "həcmi və çəkisi",
+	"obem-i-massa": "Həcmi və çəkisi",
 	"obem-toplivnogo-baka-l": "Yanacaq çəninin tutumu, l.",
 	"obshchaya-informatsiya": "Ümumi məlumat",
 	"offer_valid": "Təklif etibarlıdır",
@@ -1266,7 +1273,7 @@ export default {
 	"to_plug": "Qoşmaq",
 	"to_sell": "Elan yerləşdir",
 	"toplivo": "Yanacaq",
-	"torque_of_electric_motors": "Крутящий момент электродвигателей",
+	"torque_of_electric_motors": "Elektrik mühərrikin fırlanma anı",
 	"torsionnaya": "Torsion barlı",
 	"touch_screen": "Sensor ekran",
 	"tracked_bulldozer": "Tırtıllı buldozer",
@@ -1614,6 +1621,7 @@ export default {
 	"model_name": "Modelin adı",
 	"clean": "Təmizlə",
 	"prod_year": "Buraxılış ili",
+	"prod_years": "Buraxılış illəri",
 	"year": "il",
 
 	"edit_or_restore": "Nəqliyyat vasitəsinə dair məlumatlara düzəliş et və yaxud",
@@ -1628,5 +1636,6 @@ export default {
 	"logout": "Hesabdan çıx",
 	"autocatalog": "Avtokataloq",
 	"back_to_home": "Ana səhifəyə qayıt",
-	"announcement_restored": "Elan bərpa edilib"
+	"announcement_restored": "Elan bərpa edilib",
+	"available_modifications": "Mövcud modifikasiyalar"
 }

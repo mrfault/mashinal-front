@@ -9,9 +9,6 @@ const getInitialState = () =>({
   staticPages: [],
   pageRef: '',
   pageRefs: ['',''],
-  // axios cancellation
-  CancelToken: null,
-  cancel: null,
   // saved search & favorites
   savedSearchList: [],
   singleSavedSearch: {},
@@ -64,7 +61,7 @@ const getInitialState = () =>({
   carTypeName: {},
   firstGeneration: false,
   firstGenerationEquipments: [],
-  specificationsList: [],
+  modificationsList: [],
   equipmentsList: [],
   // options
   colors: [],
@@ -162,6 +159,7 @@ export const getters = {
   commercialModels: s => s.commercialModels,
   scooterModels: s => s.scooterModels,
   carModels: s => s.carModels,
+  modelDescription: s => s.modelDescription,
   // generations
   generations: s => s.generations,
   generationTypes: s => s.generationTypes,
@@ -169,7 +167,7 @@ export const getters = {
   carTypeName: s => s.carTypeName,
   firstGeneration: s => s.firstGeneration,
   firstGenerationEquipments: s => s.firstGenerationEquipments,
-  specificationsList: s => s.specificationsList,
+  modificationsList: s => s.modificationsList,
   equipmentsList: s => s.equipmentsList,
   // options
   colors: s => s.colors,
@@ -405,13 +403,12 @@ export const actions = {
   },
   // Generations
   async getGenerations({ commit }, data) {
-    const res = await this.$axios.$get(`/brand/${data.params.name}/model/${data.params.model}/generations`);
+    const res = await this.$axios.$get(`/brand/${data.brand}/model/${data.model}/generations`);
     commit('mutate', { property: 'generations', value: res.generations });
     commit('mutate', { property: 'modelDescription', value: res.model.description });
-    if (!data.onlyGeneration) commit('mutate', { property: 'firstGeneration', value: res.firstGeneration });
   },
-  async getFirstGeneration({ commit }, params) {
-    const res = await this.$axios.$get(`/brand/${params.name}/model/${params.model}/generation/${params.generation}`);
+  async getFirstGeneration({ commit }, data) {
+    const res = await this.$axios.$get(`/brand/${data.brand}/model/${data.model}/generation/${data.generation}`);
     commit('mutate', { property: 'firstGeneration', value: res });
   },
   async getModelGenerations({ commit }, slug) {
@@ -426,8 +423,8 @@ export const actions = {
     const res = data.value ? await this.$axios.$get(`/brand/${data.brand_slug}/model/${data.value}/generations`) : [];
     commit('mutate', { property: 'carGenerations', value: res.generations || [], key: data.index })
   },
-  async getGenerationTypes({ commit }, params) {
-    const res = await this.$axios.$get(`/brand/${params.name}/model/${params.model}/generation/${params.generation}/get_types`);
+  async getGenerationTypes({ commit }, data) {
+    const res = await this.$axios.$get(`/brand/${data.brand}/model/${data.model}/generation/${data.generation}/get_types`);
     commit('mutate', { property: 'generationTypes', value: res });
   },
   async getCarTypeName({ commit }, id) {
@@ -435,24 +432,24 @@ export const actions = {
     commit('mutate', { property: 'carTypeName', value: res });
   },
   // Body
-  async getBody({ commit }, params) {
-    const res = await this.$axios.$get(`/brand/${params.name}/model/${params.model}/generation/${params.generation}/body/${params.body}`);
+  async getBody({ commit }, data) {
+    const res = await this.$axios.$get(`/brand/${data.brand}/model/${data.model}/generation/${data.generation}/body/${data.body}`);
     commit('mutate', { property: 'firstGeneration', value: res });
   },
-  async getSpecificationsList({ commit }, params) {
-    const res = await this.$axios.$get(`/brand/${params.name}/model/${params.model}/generation/${params.generation}/get_type/${params.body}`);
-    commit('mutate', { property: 'specificationsList', value: res });
+  async getModificationsList({ commit }, data) {
+    const res = await this.$axios.$get(`/brand/${data.brand}/model/${data.model}/generation/${data.generation}/get_type/${data.body}`);
+    commit('mutate', { property: 'modificationsList', value: res });
   },
-  async getEquipmentsList({ commit }, params) {
-    const res = await this.$axios.$get(`/brand/${params.name}/model/${params.model}/generation/${params.generation}/get_type/${params.body}/equipments`);
+  async getBodyModification({ commit }, data) {
+    const res = await this.$axios.$get(`/brand/${data.brand}/model/${data.model}/generation/${data.generation}/body/${data.body}${data.modification ? `/catalog/${data.modification}` : ''}`);
+    commit('mutate', { property: 'firstGeneration', value: res });
+  },
+  async getEquipmentsList({ commit }, data) {
+    const res = await this.$axios.$get(`/brand/${data.brand}/model/${data.model}/generation/${data.generation}/get_type/${data.body}/equipments`);
     commit('mutate', { property: 'equipmentsList', value: res });
   },
-  async getCatalogSpecifications({ commit }, params) {
-    const res = await this.$axios.$get(`/brand/${params.name}/model/${params.model}/generation/${params.generation}/body/${params.body}/catalog/${params.specification || params.equipment}`);
-    commit('mutate', { property: 'firstGeneration', value: res });
-  },
-  async getCatalogEquipments({ commit }, params) {
-    const res = await this.$axios.$get(`/brand/${params.name}/model/${params.model}/generation/${params.generation}/body/${params.body}/catalog/${params.equipment}/equipments`);
+  async getBodyEquipments({ commit }, data) {
+    const res = await this.$axios.$get(`/brand/${data.brand}/model/${data.model}/generation/${data.generation}/body/${data.body}/catalog/${data.equipment}/equipments`);
     commit('mutate', { property: 'firstGenerationEquipments',  value: res });
   },
   // Options
@@ -592,18 +589,28 @@ export const actions = {
     commit('mutate', { property: 'myAnnouncement', value: res });
   },
   // Catalog
-  async getCatalogSearch({commit, state}, data) {
-    try {
-      commit('mutate', { property: 'CancelToken', value: this.$axios.CancelToken });
-      if(typeof state.cancel == 'function') state.cancel('operation cancelled');
-      const res = await this.$axios.$post(`/search_catalog?page=${data.query.page || 1}`, { filteredData: state.catalogForm, params: data.params }, {
-        cancelToken: new state.CancelToken(function executor(c) { 
-          commit('mutate', { property: 'cancel', value: c });
-        }),
-      });
-      if(data.get_items) commit('mutate', { property: 'catalogItems', value: res.items });
-      commit('mutate', { property: 'catalogTotal', value: res.total });
-    } catch(e) {}
+  async getCatalogSearch({commit}, data) {
+    if (data.params.brand) data.params.name = data.params.brand;
+    if (data.params.generation) data.params.generation = 'g_' + data.params.generation;
+    if (data.params.body) data.params.body = 'body_' + data.params.body;
+
+    let filteredData = {};
+    for (let key in data.post) {
+      if (['kolichestvo-mest','privod','tip-dvigatelya','korobka','body'].includes(key)) {
+        filteredData[key] = { key, value: data.post[key] };
+      } else if (key.includes('max_')) {
+        let rangeKey = key.replace('max_', '');
+        filteredData[rangeKey] = `${data.post['min_'+rangeKey] || 0}-${data.post['max_'+rangeKey] || 0}`;
+      } else if (key.includes('min_')) {
+        continue;
+      } else {
+        filteredData[key] = data.post[key];
+      }
+    }
+
+    const res = await this.$axios.$post(`/search_catalog?page=${data.page || 1}`, { filteredData, params: data.params });
+    if (!data.totalCount) commit('mutate', { property: 'catalogItems', value: res.items });
+    if (data.totalCount !== false) commit('mutate', { property: 'catalogTotal', value: res.total });
   },
   // Sell
   async checkSellTokens({ commit }, phone) {
@@ -625,32 +632,32 @@ export const actions = {
     commit('mutate', { property: 'sellPreviewData', value, key });
   },
   // Sell Options
-  async getSellYears({ commit }, params) {
-    const res = await this.$axios.$get(`/sell/${params.brand}/${params.model}/get_years`);
+  async getSellYears({ commit }, data) {
+    const res = await this.$axios.$get(`/sell/${data.brand}/${data.model}/get_years`);
     commit('mutate', { property: 'sellYears', value: res });
   },
-  async getSellBody({ commit }, params) {
-    const res = await this.$axios.$get(`/sell/${params.brand}/${params.model}/year/${params.year}`);
+  async getSellBody({ commit }, data) {
+    const res = await this.$axios.$get(`/sell/${data.brand}/${data.model}/year/${data.year}`);
     commit('mutate', { property: 'sellBody', value: res });
   },
-  async getSellGenerations({ commit }, params) {
-    const res = await this.$axios.$get(`/sell/${params.brand}/${params.model}/year/${params.year}/body/${params.body}/generations`);
+  async getSellGenerations({ commit }, data) {
+    const res = await this.$axios.$get(`/sell/${data.brand}/${data.model}/year/${data.year}/body/${data.body}/generations`);
     commit('mutate', { property: 'sellGenerations', value: res });
   },
-  async getSellEngines({ commit }, params) {
-    const res = await this.$axios.$get(`/sell/${params.brand}/${params.model}/year/${params.year}/body/${params.body}/generation/${params.generation}/engines`);
+  async getSellEngines({ commit }, data) {
+    const res = await this.$axios.$get(`/sell/${data.brand}/${data.model}/year/${data.year}/body/${data.body}/generation/${data.generation}/engines`);
     commit('mutate', { property: 'sellEngines', value: res });
   },
-  async getSellGearing({ commit }, params) {
-    const res = await this.$axios.$get(`/sell/${params.brand}/${params.model}/body/${params.body}/generation/${params.generation}/engine/${params.engine}/gearing`);
+  async getSellGearing({ commit }, data) {
+    const res = await this.$axios.$get(`/sell/${data.brand}/${data.model}/body/${data.body}/generation/${data.generation}/engine/${data.engine}/gearing`);
     commit('mutate', { property: 'sellGearing', value: res });
   },
-  async getSellTransmissions({ commit }, params) {
-    const res = await this.$axios.$get(`/sell/${params.brand}/${params.model}/body/${params.body}/generation/${params.generation}/engine/${params.engine}/gearing/${params.gearing}/transmissions`);
+  async getSellTransmissions({ commit }, data) {
+    const res = await this.$axios.$get(`/sell/${data.brand}/${data.model}/body/${data.body}/generation/${data.generation}/engine/${data.engine}/gearing/${data.gearing}/transmissions`);
     commit('mutate', { property: 'sellTransmissions', value: res });
   },
-  async getSellModifications({ commit }, params) {
-    const res = await this.$axios.$get(`/sell/${params.brand}/${params.model}/body/${params.body}/generation/${params.generation}/engine/${params.engine}/gearing/${params.gearing}/trns/${params.transmission}/modifications`);
+  async getSellModifications({ commit }, data) {
+    const res = await this.$axios.$get(`/sell/${data.brand}/${data.model}/body/${data.body}/generation/${data.generation}/engine/${data.engine}/gearing/${data.gearing}/trns/${data.transmission}/modifications`);
     commit('mutate', { property: 'sellModifications', value: res });
   },
   // Services
@@ -677,8 +684,8 @@ export const actions = {
     commit('mutate', { property: 'paidStatusData', value });
   },
   // Autosalons
-  async getAutoSalonsList({commit}, params) {
-    const res = await this.$axios.$get('/auto_salon_list' + (params ? ('?' + params) : ''));
+  async getAutoSalonsList({commit}, data) {
+    const res = await this.$axios.$get('/auto_salon_list' + (data ? ('?' + data) : ''));
     commit('mutate', { property: 'autosalonsList', value: res });
   },
   async getAutoSalonById({commit}, data) {

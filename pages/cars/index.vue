@@ -60,7 +60,7 @@ export default {
   head() {
     return this.$headMeta({
       title: this.$t('meta-title_cars'),
-      descr: this.$t('meta-descr_cars')
+      description: this.$t('meta-descr_cars')
     });
   },
   async asyncData({ store, route, $auth }) {

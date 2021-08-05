@@ -30,7 +30,7 @@
         </template>
       </div>
       <div class="d-flex">
-        <share-it type="publish" />
+        <share-it type="publish" class="btns" />
         <button class="btn btn--dark-blue-2-outline full-width" @click.stop="copyToClipboard($env.WEBSITE_URL + $route.path)">
           <icon name="link" /> {{ $t('copy_to_clipboard') }}
         </button>
@@ -99,29 +99,6 @@ export default {
     
     contact() {
       return this.getAnnouncementContact(this.announcement);
-    }
-  },
-  methods: {
-    // copy text to clipboard
-    copyToClipboard(text) {
-      try {
-        navigator.clipboard.writeText(text);
-        this.$toasted.success(this.$t('copied_to_clipboard'));
-      } catch(error) {
-        console.error(error);
-        try {
-          let tempInput = document.createElement('input');
-          tempInput.type = 'text';
-          tempInput.value = text;
-          document.body.appendChild(tempInput);
-          tempInput.select();
-          document.execCommand('Copy');
-          document.body.removeChild(tempInput);
-          this.$toasted.success(this.$t('copied_to_clipboard'));
-        } catch(error) {
-          console.error(error);
-        }
-      }
     }
   }
 }

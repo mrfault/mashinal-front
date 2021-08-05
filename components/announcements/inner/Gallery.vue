@@ -3,7 +3,7 @@
     <div class="position-relative">
       <div class="swiper-container" v-swiper:gallerySwiper="swiperOps" ref="gallerySwiper">
         <div class="swiper-wrapper">
-          <div class="swiper-slide" :key="index" v-for="(slide, index) in slides.thumbs">
+          <div class="swiper-slide" :key="index" v-for="(slide, index) in slides.main">
             <div @click="currentSlide = index, openLightbox()"
               :class="['swiper-slide-bg swiper-lazy', {'yt-play': announcement.youtube_id && index === 1}]" 
               :data-background="slide"
@@ -15,15 +15,17 @@
       </div>
       <div class="gallery-overlay">
         <div class="gallery-overlay_top d-flex">
-          <span class="badge from-border" v-if="announcement.is_autosalon">{{ $t('is_autosalon') }}</span>
-          <span class="d-flex">
-            <span class="badge squared" v-if="announcement.type[1]">
-              <icon name="vip" />
+          <template v-if="where === 'announcement'">
+            <span class="badge from-border" v-if="announcement.is_autosalon">{{ $t('is_autosalon') }}</span>
+            <span class="d-flex">
+              <span class="badge squared" v-if="announcement.type[1]">
+                <icon name="vip" />
+              </span>
+              <span class="badge squared" v-if="announcement.type[2]">
+                <icon name="premium" />
+              </span>
             </span>
-            <span class="badge squared" v-if="announcement.type[2]">
-              <icon name="premium" />
-            </span>
-          </span>
+          </template>
         </div>
         <div class="gallery-overlay_middle">
           <span class="d-flex justify-content-between">
@@ -36,14 +38,19 @@
           </span>
         </div>
         <div class="gallery-overlay_bottom d-flex">
-          <span class="d-flex">
-            <add-comparison :announcement="announcement" />
-            <add-favorite :announcement="announcement" />
-          </span>
-          <add-complaint :announcement="announcement" />
+          <template v-if="where === 'announcement'">
+            <span class="d-flex">
+              <add-comparison :announcement="announcement" />
+              <add-favorite :announcement="announcement" />
+            </span>
+            <add-complaint :announcement="announcement" />
+          </template>
+          <template v-else>
+            <add-comparison />
+          </template>
         </div>
       </div>
-      <div class="announcement-lightbox" v-touch:swipe.top="handleSwipeTop">
+      <div class="inner-gallery-lightbox" v-touch:swipe.top="handleSwipeTop">
         <FsLightbox
           :toggler="toggleFsLightbox"
           :sources="slides.main"
@@ -61,17 +68,23 @@
             <img :src="$env.BASE_URL + slides.main[currentSlide]" alt="" />
           </div>
           <div v-if="showLightbox" class="fslightbox-footer d-lg-none" :key="1">
-            <div class="announcement-lightbox-footer">
-              <h3>{{ getAnnouncementTitle(announcement) }}</h3>
-              <h4>{{ announcement.price }}</h4>
-              <div class="row">
-                <div class="col" v-if="canSendMessage(announcement)">
-                  <chat-button :announcement="announcement" :className="'white-outline'" />
+            <div class="inner-gallery-lightbox-footer">
+              <template v-if="where === 'announcement'">
+                <h3>{{ getAnnouncementTitle(announcement) }}</h3>
+                <h4>{{ announcement.price }}</h4>
+                <div class="row">
+                  <div class="col" v-if="canSendMessage(announcement)">
+                    <chat-button :announcement="announcement" :className="'white-outline'" />
+                  </div>
+                  <div class="col">
+                    <call-button :phone="announcement.user.phone" />
+                  </div>
                 </div>
-                <div class="col">
-                  <call-button :phone="announcement.user.phone" />
-                </div>
-              </div>
+              </template>
+              <template v-else-if="where === 'catalog'">
+                <h3 v-html="title"></h3>
+                <h4 v-html="subtitle"></h4>
+              </template>
             </div>
           </div>
         </transition-group>
@@ -91,6 +104,15 @@ import AddComparison from '~/components/announcements/AddComparison';
 import AddComplaint from '~/components/announcements/AddComplaint';
 
 export default {
+  props: {
+    where: {
+      type: String,
+      default: 'announcement'
+    },
+    media: {},
+    title: String,
+    subtitle: String
+  },
   components: {
     FsLightbox,
     CallButton,
@@ -169,17 +191,23 @@ export default {
     ...mapGetters(['announcement']),
 
     slides() {
-      let media = this.announcement.media;
-      let yt_video = this.announcement.youtube_id;
-      if (media.length === 0) return [];
-      let thumbs = this.getMediaByKey(media, 'main');
-      let main = this.getMediaByKey(media, 'main_inner');
-      let types = main.map(_ => 'image');
-      if(yt_video) {
-        thumbs.splice(1, 0, `https://img.youtube.com/vi/${yt_video}/hqdefault.jpg`);
-        main.splice(1, 0, `https://www.youtube.com/watch?v=${yt_video}`);
-        types.splice(1, 0, 'youtube');
+      let thumbs = [], main = [];
+      if (this.where === 'catalog') {
+        thumbs = this.getMediaByKey(this.media, 'thumb');
+        main = this.getMediaByKey(this.media, 'main');
+      } else if (this.where === 'announcement') {
+        let media = this.announcement.media;
+        if (media.length === 0) return [];
+        thumbs = this.getMediaByKey(media, 'main');
+        main = this.getMediaByKey(media, 'main_inner');
+        let yt_video = this.announcement.youtube_id;
+        if (yt_video) {
+          thumbs.splice(1, 0, `https://img.youtube.com/vi/${yt_video}/hqdefault.jpg`);
+          main.splice(1, 0, `https://www.youtube.com/watch?v=${yt_video}`);
+          types.splice(1, 0, 'youtube');
+        }
       }
+      let types = main.map(_ => 'image');
       return { thumbs, main, types };
     }
   },

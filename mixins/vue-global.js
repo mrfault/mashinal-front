@@ -34,6 +34,27 @@ Vue.use({
             else this.$gtag('event', 'conversion', { send_to: eventKey });
           }
         },
+        // copy text to clipboard
+        copyToClipboard(text) {
+          try {
+            navigator.clipboard.writeText(text);
+            this.$toasted.success(this.$t('copied_to_clipboard'));
+          } catch(error) {
+            console.error(error);
+            try {
+              let tempInput = document.createElement('input');
+              tempInput.type = 'text';
+              tempInput.value = text;
+              document.body.appendChild(tempInput);
+              tempInput.select();
+              document.execCommand('Copy');
+              document.body.removeChild(tempInput);
+              this.$toasted.success(this.$t('copied_to_clipboard'));
+            } catch(error) {
+              console.error(error);
+            }
+          }
+        },
         // other
         scrollTo(el, offset = 0, duration = 500, container = 'body') {
           if (document.body.classList.contains('mobile-screen-open')) 
@@ -43,6 +64,9 @@ Vue.use({
           if (typeof offset === 'object') offset = this.isMobileBreakpoint ? offset[0] : offset[1];
           offset += (this.isMobileBreakpoint ? -60 : -141);
           this.$scrollTo(el, duration, { offset, container });
+        },
+        scrollReset() {
+          window.scrollTo(0, 0);
         },
         setBodyOverflow(value = 'auto', className) {
           let bodyEl = document.querySelector('body');

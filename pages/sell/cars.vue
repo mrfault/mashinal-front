@@ -165,7 +165,7 @@ export default {
         await this.getModels(this.form.brand);
         this.showModelOptions = true;
       }
-      window.scrollTo(0, 0);
+      this.scrollReset();
     },
     async handleModel(slug = '') {
       this.form.model = slug;
@@ -176,7 +176,7 @@ export default {
         this.form.brand = '';
         this.showModelOptions = false;
       }
-      window.scrollTo(0, 0);
+      this.scrollReset();
     },
     async handleYear(year = '') {
       this.form.year = year;

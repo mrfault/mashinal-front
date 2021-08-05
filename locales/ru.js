@@ -226,6 +226,7 @@ export default {
 	"Xenon": "Ксеноновые/Биксеноновые",
 	"Yandex.Auto": "Яндекс.Авто",
 	"absorber_type": "Тип амортизатора",
+	"acceleration": "Разгон",
 	"acceleration_from_s": "Разгон от, с",
 	"accepted": "Активный",
 	"accessories_material": "Материал",
@@ -295,7 +296,7 @@ export default {
 	"appointment": "Назначение",
 	"are_you_sure_you_want_to_delete_the_announcement": "Вы точно хотите деактивировать объявление?",
 	"are_you_sure_you_want_to_delete_the_store": "Вы точно хотите удалить магазин?",
-	"at": "При {value}",
+	"at": "при {value}",
 	"at_least_5_photos": "Не менее {min}, но не более {max}",
 	"athermal": "Атермальное",
 	"attach": "Привязать",
@@ -333,7 +334,7 @@ export default {
 	"bluetooth": "Bluetooth",
 	"body_condition": "Состояние кузова",
 	"body_polish_type": "Тип",
-	"body_type": "Тип",
+	"body_type": "Тип кузова",
 	"boom_departure": "Вылет стрелы",
 	"bound_to": "Привязан к",
 	"box": "Коробка",
@@ -550,6 +551,8 @@ export default {
 	"desired_credit_amount": "Желаемая сумма кредита",
 	"detail": "Полный",
 	"detail_report": "Полный отчет",
+	"simpled": "Обычный",
+	"detailed": "Детальный",
 	"detailed_search": "Детальный поиск",
 	"helper_search": "Помощник",
 	"detect_radar_type": "Виды определяемых радаров",
@@ -680,7 +683,11 @@ export default {
 		"АИ-98",
 		"Газ (Бензин)",
 		"ДТ",
-		"АИ-92"
+		"АИ-92",
+    'АИ-91',
+    'E85',
+    'E100',
+    'Электричество'
 	],
 	"gas": "Газ",
 	"gas-turbine": "Газовая турбина",
@@ -819,7 +826,7 @@ export default {
 		"Модели",
 		"Поколения",
 		"Кузовы",
-		"Информация о",
+		"Технические параметры",
 		"Технические параметры",
 		"Комплектация"
 	],
@@ -1618,6 +1625,7 @@ export default {
 	"model_name": "Название модели",
 	"clean": "Очистить",
 	"prod_year": "Год выпуска",
+	"prod_years": "Годы выпуска",
 	"year": "год",
 
 	"edit_or_restore": "Измените необходимые данные и",
@@ -1632,5 +1640,6 @@ export default {
 	"logout": "Выйти",
 	"autocatalog": "Автокаталог",
 	"back_to_home": "На главную",
-	"announcement_restored": "Объявление восстановлено"
+	"announcement_restored": "Объявление восстановлено",
+	"available_modifications": "Доступные модификации"
 }
