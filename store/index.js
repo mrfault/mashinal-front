@@ -4,7 +4,7 @@ const getInitialState = () =>({
   loading: true,
   colorMode: 'light',
   breakpoint: null,
-  uiScale: 1,
+  ptk: null,
   menus: [],
   staticPages: [],
   pageRef: '',
@@ -110,8 +110,8 @@ export const state = () => (getInitialState());
 export const getters = {
   loading: s => s.loading,
   colorMode: s => s.colorMode,
-  uiScale: s => s.uiScale,
   breakpoint: s => s.breakpoint,
+  ptk: s => s.ptk,
   loggedIn: s => s.auth.loggedIn,
   user: s => s.auth.user,
   menus: s => s.menus,
@@ -218,10 +218,24 @@ const objectNotEmpty = (state, commit, property) => {
 };
 
 export const actions = {
-  async nuxtServerInit({ dispatch }, { route, app }) {
+  async nuxtServerInit({ dispatch, commit }, { route, app }) {
     await Promise.all([
       dispatch('getStaticPages')
     ]);
+
+    let ptk = this.$cookies.get('ptk') || 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
+      .replace(/[xy]/g, (c) => {
+        let r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      })
+      .toUpperCase();
+
+    if (!this.$cookies.get('ptk')) {
+      this.$cookies.set('ptk', ptk, { maxAge: 60 * 60 * 24 * 7000 });
+    }
+
+    commit('mutate', { property:'ptk', value: ptk });
+
     if(['true','false'].includes(route.query.success)) {
       let type = route.query.success === 'true' ? 'success' : 'error';
       dispatch('updatePaidStatus', {
