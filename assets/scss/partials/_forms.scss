@@ -18,6 +18,12 @@ textarea {
   height: 140px;
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 .star {
   color: $red-1;
 }

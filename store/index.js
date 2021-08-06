@@ -23,6 +23,7 @@ const getInitialState = () =>({
   myServices: [],
   myServiceOptions: [],
   myServiceHistory: [],
+  myBalanceHistory: [],
   promotion: {
     id: '',
     optionId: '',
@@ -132,6 +133,7 @@ export const getters = {
   myServices: s => s.myServices,
   myServiceOptions: s => s.myServiceOptions,
   myServiceHistory: s => s.myServiceHistory,
+  myBalanceHistory: s => s.myBalanceHistory,
   promotion: s => s.promotion,
   paidStatusData: s => s.paidStatusData,
   // announcements
@@ -318,11 +320,6 @@ export const actions = {
   },
   async blockUser({}, data) {
     await this.$axios.$post('/profile/messages/'+ data.id +'/block');
-  },
-  // Payments
-  async getTransactions({ commit }, data) {
-    const res = await this.$axios.$get(`/payment/getHistory?page=${data.page || 1}`);
-    commit('mutate', { property: 'transactions', value: res });
   },
   // Favorites
   async getFavorites({ commit }) {
@@ -690,6 +687,10 @@ export const actions = {
   async getMyServiceHistory({ commit }) {
     const res = await this.$axios.$get(`/my/actives/history`);
     commit('mutate', { property: 'myServiceHistory', value: res });
+  },
+  async getMyBalanceHistory({ commit }, data = {}) {
+    const res = await this.$axios.$get(`/payment/getHistory?page=${data.page || 1}`);
+    commit('mutate', { property: 'myBalanceHistory', value: res });
   },
   async updatePromotion({ commit }, {key, value}) {
     commit('mutate', { property: 'promotion', key, value });

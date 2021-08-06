@@ -345,6 +345,7 @@ main {
             height: 50px;
             border-radius: 50%;
             margin-right: 15px;
+            background-color: $greyish-blue-3;
           }
         }
       }
@@ -505,6 +506,9 @@ main {
       .menu > li a.active,
       .menu > li a:hover {
         color: $yellow-1;
+      }
+      .user-menu img {
+        background-color: $dark-3;
       }
       .langs-menu,
       .user-menu {
@@ -832,6 +836,7 @@ main {
         border-radius: 50%;
         margin-right: 15px;
         border: 2px solid $white;
+        background-color: rgba($white, .15);
       }
     }
     hr {

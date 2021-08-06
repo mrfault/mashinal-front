@@ -1,6 +1,6 @@
 <template>
   <div class="upload-image" :class="{ 'dragover': onDragover }">
-    <form :id="'upload-image_form--' + inputId" enctype="multipart/form-data">
+    <form :id="'upload-image_form--' + inputId" enctype="multipart/form-data" novalidate>
       <div class="swiper-container" v-swiper:uploadSwiper="swiperOps">
         <div class="swiper-wrapper upload-image_form__thumbnails">
           <div class="swiper-slide" v-for="key in orderdedKeys" :key="key">

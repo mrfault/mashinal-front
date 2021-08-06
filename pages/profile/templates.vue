@@ -37,7 +37,7 @@
         :overflow-hidden="false"
         @close="showIntervalModal = false"
       >
-        <form class="form" @submit.prevent="updateNotifications">
+        <form class="form" @submit.prevent="updateNotifications" novalidate>
           <div class="mb-2 mb-lg-3">
             <form-select
               v-if="user.email"
@@ -58,7 +58,7 @@
         :title="$t('want_to_delete_a_search')"
         @close="showRemoveModal = false"
       >
-        <form class="form" @submit.prevent="removeSavedSearch">
+        <form class="form" @submit.prevent="removeSavedSearch" novalidate>
           <button type="submit" :class="['btn btn--green full-width', { pending }]">
             {{ $t('confirm') }}
           </button>

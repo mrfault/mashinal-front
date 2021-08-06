@@ -87,7 +87,7 @@
           :title="$t('extend_subscription')"
           @close="showExtendContract = false"
         >
-          <form class="form" @submit.prevent="extendContract">
+          <form class="form" @submit.prevent="extendContract" novalidate>
             <p v-html="$t('pay_till_date', { date: announceStats.contract.end_date })"></p>
             <h4>{{ $t('payment_method') }}</h4>
             <div class="mb-2 mb-lg-0">

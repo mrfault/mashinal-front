@@ -479,7 +479,8 @@ export default {
       try {
         // publish or update post
         const res = await this.$axios.$post(postUrl, formData);
-        if (this.loggedIn) await this.$auth.fetchUser();
+        if (this.loggedIn) 
+          await this.$auth.fetchUser();
         // track event
         if (!this.edit) {
           this.fbTrack('Lead Api');

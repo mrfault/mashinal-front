@@ -36,6 +36,29 @@
   }
 }
 
+.profile-links-card {
+  padding: 12px 15px;
+  .link-block {
+    a {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-weight: 500;
+    }
+    a:not(:hover) {
+      color: inherit;
+    }
+    hr {
+      margin: 12px 0;
+    }
+    &:last-child {
+      hr {
+        display: none;
+      }
+    }
+  }
+}
+
 .profile-settings-card {
   .avatar {
     &_edit {
@@ -128,6 +151,13 @@
       text-align: right;
       justify-content: flex-end;
     }
+    &.less-cols {
+      .payment-date {
+        width: 115px;
+        text-align: left;
+        justify-content: flex-start;
+      }
+    }
   }
 }
 
@@ -167,6 +197,24 @@
       left: 0;
       width: 100%;
       margin: 0;
+    }
+  }
+}
+
+.increase-balance {
+  p {
+    font-size: 16px;
+    font-weight: 500;
+  }
+  i {
+    font-size: 50px;
+  }
+  strong {
+    display: block;
+    font-size: 30px;
+    font-weight: 500;
+    i {
+      font-size: 21px;
     }
   }
 }
@@ -275,6 +323,12 @@
       }
       .payment-date {
         width: 70px;
+      }
+      &.less-cols {
+        .payment-date {
+          width: 115px;
+          justify-content: flex-end;
+        }
       }
     }
   }

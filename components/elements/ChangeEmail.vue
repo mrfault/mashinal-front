@@ -17,7 +17,7 @@
       :title="$t('want_to_change_your_email')"
       @close="confirmEmailEdit = false; $emit('close');"
     >
-      <form class="form" @submit.prevent="emailEditOpen">
+      <form class="form" @submit.prevent="emailEditOpen" novalidate>
         <div class="mb-2 mb-lg-3">
           <p>{{ $t('new_email_will_need_to_be_confirmed')}}</p>
         </div>
@@ -31,7 +31,7 @@
       :title="$t('enter_new_email')"
       @close="confirmEmailEditInput = false; $emit('close');"
     >
-      <form class="form" @submit.prevent="getCodeForNewEmail">
+      <form class="form" @submit.prevent="getCodeForNewEmail" novalidate>
         <div class="mb-2 mb-lg-3">
           <form-text-input 
             key="newEmail"
@@ -53,7 +53,7 @@
       :title="$t('enter_the_code_from_mail')"
       @close="confirmEmailCodeInput = false; changeEmailInit = false; $emit('close');"
     >
-      <form class="form" @submit.prevent="checkCodeForNewEmail">
+      <form class="form" @submit.prevent="checkCodeForNewEmail" novalidate>
         <div class="mb-2 mb-lg-3">
           <form-text-input
             key="code"

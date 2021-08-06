@@ -200,6 +200,7 @@
 
 .btn.disabled {
   opacity: .4;
+  pointer-events: none;
 }
 
 .btn.pending {
