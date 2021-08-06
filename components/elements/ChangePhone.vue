@@ -16,7 +16,7 @@
       :title="$t('want_to_change_your_phone_number')"
       @close="confirmPhoneEdit = false; $emit('close');"
     >
-      <form class="form" @submit.prevent="phoneEditOpen">
+      <form class="form" @submit.prevent="phoneEditOpen" novalidate>
         <div class="mb-2 mb-lg-3">
           <p>{{ $t('the_new_number_will_need_to_be_confirmed_by_sms')}}</p>
         </div>
@@ -30,7 +30,7 @@
       :title="$t('enter_a_new_mobile_number')"
       @close="confirmPhoneEditInput = false; $emit('close');"
     >
-      <form class="form" @submit.prevent="getSmsForNewNumber">
+      <form class="form" @submit.prevent="getSmsForNewNumber" novalidate>
         <div class="mb-2 mb-lg-3">
           <form-text-input 
             key="newPhone"
@@ -51,7 +51,7 @@
       :title="$t('enter_the_code_from_sms')"
       @close="confirmPhoneEditInput = false; changePhoneInit = false; $emit('close');"
     >
-      <form class="form" @submit.prevent="checkCodeForNewNumber">
+      <form class="form" @submit.prevent="checkCodeForNewNumber" novalidate>
         <div class="mb-2 mb-lg-3">
           <form-text-input
             key="code"

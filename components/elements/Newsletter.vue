@@ -1,6 +1,6 @@
 <template>
   <div class="newsletter">
-    <form class="form" @submit.prevent="subscribe">
+    <form class="form" @submit.prevent="subscribe" novalidate>
       <input type="text" v-model="form.email" :placeholder="$t('email')" :class="{'invalid': $v.form.email.$error }" />
       <button type="submit" class="btn btn--green">{{ $t('subscribe') }}</button>
     </form>

@@ -34,18 +34,27 @@
               </div>
             </div>
           </template>
-          <div class="col-lg-3">
+          <div class="col-lg-3" v-if="user.email">
             <div class="profile_info-details">
               <icon name="envelope" />
               <a :href="`mailto:${user.email}`">{{ user.email }}</a>
             </div>
           </div>
-          <div class="col-lg-3">
+          <div class="col-lg-3" v-if="user.phone">
             <div class="profile_info-details">
               <icon name="phone-call" />
               <a :href="`tel:+${user.phone}`" v-mask="$maskPhone(true)">+{{ user.phone }}</a>
             </div>
           </div>
+        </div>
+      </div>
+      <div class="card profile-links-card with-margins mt-2 mt-lg-3" v-if="isMobileBreakpoint">
+        <div class="link-block" v-for="menu in userMenus.filter(menu => menu.showOnCard)" :key="menu.title">
+          <nuxt-link :to="$localePath(menu.route)">
+            {{ $t(menu.title) }}
+            <icon name="chevron-right" />
+          </nuxt-link>
+          <hr />
         </div>
       </div>
     </div>
@@ -54,10 +63,12 @@
 
 <script>
   import { UserDataMixin } from '~/mixins/user-data';
+  import { MenusDataMixin } from '~/mixins/menus-data';
 
   export default {
     name: 'pages-profile-index',
-    mixins: [UserDataMixin],
+    middleware: ['auth_general','auth_user'],
+    mixins: [UserDataMixin, MenusDataMixin],
     nuxtI18n: {
       paths: {
         az: '/profil'

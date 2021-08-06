@@ -1,6 +1,7 @@
-export default function ({ app, error, $axios }) {
+export default function ({ app, store, error, $axios }) {
   $axios.onRequest(config => {
     config.headers['locale'] = app.i18n.locale;
+    config.headers['ptk'] = store.getters.ptk;
   });
 
   $axios.onError(err => {

@@ -19,7 +19,7 @@
         <div class="payment-history-rows">
           <div :class="['payment-history-info text-center', {'mb-2 mb-lg-4': myServiceHistory.length}]" :key="0">
             <template v-if="!isMobileBreakpoint && myServiceHistory.length">
-              <button :class="['btn btn--grey', {pending}]" @click="update">
+              <button class="btn btn--grey pointer-events-none">
                 <icon name="refresh" /> {{ myServiceHistory[0].created_at.split(' ')[0] }}
               </button>
             </template>
@@ -53,7 +53,7 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex';
+  import { mapGetters } from 'vuex';
 
   import { ServicesMixin } from '~/mixins/services';
 
@@ -73,8 +73,6 @@
     },
     async asyncData({store}) {
       await store.dispatch('getMyServiceHistory');
-
-      return { pending: false }
     },
     computed: {
       ...mapGetters(['myServiceHistory']),
@@ -83,20 +81,6 @@
         return [
           { name: this.$t('payment_history') }
         ]
-      }
-    },
-    methods: {
-      ...mapActions(['getMyServiceHistory']),
-
-      async update() {
-        if (this.pending) return;
-        this.pending = true;
-        try {
-          await this.getMyServiceHistory();
-          this.pending = false;
-        } catch(err) {
-          this.pending = false;
-        }
       }
     }
   }

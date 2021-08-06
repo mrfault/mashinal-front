@@ -269,7 +269,7 @@
       },
       getFilteredOptions() {
         if(!this.search || !this.hasSearch) return this.getOptions;
-        return this.options.filter(option => this.$search(option.name, this.search));
+        return this.options.filter(option => this.$search(this.getOptionName(option), this.search));
       },
       getLabelText() {
         if(this.custom) {
