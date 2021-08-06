@@ -94,7 +94,8 @@ export default {
         // route.params.generation && store.dispatch('getGenerationTypes', route.params),
         route.params.body && store.dispatch('getBodyModification', route.params),
         route.params.body && store.dispatch('getModificationsList', route.params),
-        store.dispatch('getCatalogSearch', { post, page, params: Object.keys(post).length ? { temp: 1, ...route.params} : {...route.params} })
+        store.dispatch('getCatalogSearch', { post, page, params: Object.keys(post).length ? { temp: 1, ...route.params} : {...route.params}, totalCount: !!route.params.brand }),
+        !route.params.brand && store.dispatch('getCatalogSearch', { post, page, params: { temp: 1, ...route.params}, totalCount: true })
       ]);
     }
     return { 

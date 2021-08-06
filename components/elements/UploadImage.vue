@@ -59,9 +59,7 @@
 </template>
 
 <script>
-import Loader from './Loader.vue';
   export default {
-  components: { Loader },
     props: {
       defaultFiles: {
         default: false

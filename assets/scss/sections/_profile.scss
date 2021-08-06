@@ -202,19 +202,29 @@
 }
 
 .increase-balance {
-  p {
-    font-size: 16px;
-    font-weight: 500;
-  }
-  i {
-    font-size: 50px;
-  }
-  strong {
-    display: block;
-    font-size: 30px;
-    font-weight: 500;
+  &-info {
+    padding: 20px 0;
+    text-align: center;
+    p {
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: 0;
+    }
     i {
-      font-size: 21px;
+      font-size: 50px;
+    }
+    strong {
+      display: block;
+      font-size: 30px;
+      font-weight: 500;
+      i {
+        font-size: 21px;
+      }
+    }
+  }
+  &-form {
+    p {
+      margin-bottom: -5px;
     }
   }
 }
@@ -357,6 +367,13 @@
           opacity: .25;
         }
       }
+    }
+  }
+
+  .increase-balance {
+    &-info {
+      padding: 40px 0 0;
+      text-align: center;
     }
   }
 

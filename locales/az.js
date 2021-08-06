@@ -1231,6 +1231,7 @@ export default {
   "remen": "Kəmər",
   "Remote engine start": "Məsafədən mühərrikin işə salınması",
   "replenish": "Balansı artır",
+  "replenishment": "Balans artırma",
   "report": "Hesabat",
   "request": "Müraciət",
   "resend_code": "Birdə göndər",

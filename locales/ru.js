@@ -1232,6 +1232,7 @@ export default {
   "remen": "Ремень",
   "Remote engine start": "Дистанционный запуск двигателя",
   "replenish": "Пополнить баланс",
+  "replenishment": "Пополнение баланса",
   "report": "Отчет",
   "request": "Заявка",
   "resend_code": "Отправить еще раз",
