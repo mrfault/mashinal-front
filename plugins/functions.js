@@ -109,7 +109,7 @@ export default function({ app, route, store }, inject) {
     return name[app.i18n.locale] || name.ru || name || '';
   });
   inject('search', (str, keyword) => {
-    return str.toString().toLowerCase().search(keyword.toLowerCase()) !== -1;
+    return str && str.toString().toLowerCase().search(keyword.toLowerCase()) !== -1;
   });
   inject('expireDate', (days = 30) => {
     return new Date(new Date().getTime() + (days * 24 * 3600 * 1000));
@@ -125,6 +125,10 @@ export default function({ app, route, store }, inject) {
   });
   inject('skipUndefinedEntries', (o) => {
     return Object.entries(o).reduce((a,[k,v]) => (v == null || v === '' || v === false ? a : (a[k]=v, a)), {});
+  });
+  inject('withBaseUrl', (url) => {
+    if (!url) return url;
+    return (url.includes('https://') || url.includes('http://')) ? url : `${app.$env.BASE_URL}${url}`;
   });
   // underscore
   inject('clone', _.clone);

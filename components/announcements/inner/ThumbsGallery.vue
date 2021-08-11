@@ -39,7 +39,7 @@ export default {
   methods: {
     getMediaByKey(media, key) {
       key = media[key] ? key : Object.keys(media)[0];
-      return media[key] instanceof Array ? media[key].map(item => `${this.$env.BASE_URL}${item}`) : [];
+      return media[key] instanceof Array ? media[key].map(item => this.$withBaseUrl(item)) : [];
     }
   },
   computed: {

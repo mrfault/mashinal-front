@@ -297,7 +297,8 @@ export const actions = {
       }
     }
   },
-  async getSuggestedMessages({ commit }) {
+  async getSuggestedMessages({ commit, state }) {
+    if (objectNotEmpty(state, commit, 'suggestedMessages')) return;
     const res = await this.$axios.$get('/profile/suggestedMessages');
     commit('mutate', { property: 'suggestedMessages', value: res })
   },
@@ -314,9 +315,9 @@ export const actions = {
     await this.$axios.$get('/profile/messages/'+ id +'/remove');
     commit('removeGroup', { groupId: id });
   },
-  markAsRead({ commit, state }, data) {
-    this.$axios.$get('/profile/messages/'+state.messages[data.groupIndex].id+'/read');
-    commit('markAsRead', { groupIndex: data.groupIndex });
+  markAsRead({ commit }, id) {
+    this.$axios.$get('/profile/messages/'+ id +'/read');
+    commit('markAsRead', { groupId: id });
   },
   async blockUser({}, data) {
     await this.$axios.$post('/profile/messages/'+ data.id +'/block');
@@ -528,7 +529,8 @@ export const actions = {
     let arr = [
       'sellOptions','allSellOptions2','bodyOptions',
       'colors','complaintOptions','badges','brands','popularOptions','allSellOptions',
-      'motoOptions','commercialAllOptions','commercialTypes'
+      'motoOptions','commercialAllOptions','commercialTypes',
+      'suggestedMessages','messages'
     ];
     if (property) {
       arr = state['needResetOptions'].filter(p => p !== property);
@@ -800,8 +802,10 @@ export const mutations = {
     state.messages[payload.groupIndex].messages = payload.messages;
   },
   markAsRead(state, payload) {
-    state.messages[payload.groupIndex].is_read = true;
-    state.messages[payload.groupIndex].last_message.is_read = true;
+    let groupIndex = state.messages.findIndex(group => group.id == payload.groupId);
+
+    state.messages[groupIndex].is_read = true;
+    state.messages[groupIndex].last_message.is_read = true;
   },
   removeGroup(state, payload) {
     let groupIndex = state.messages.findIndex(group => group.id == payload.groupId);

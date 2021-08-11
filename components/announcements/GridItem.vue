@@ -100,9 +100,9 @@ export default {
     getImage() {
       let item = this.announcement;
       if(item.media && item.media.thumb && item.media.thumb.length)
-        return this.$env.BASE_URL + item.media.thumb[0];  
+        return this.$withBaseUrl(item.media.thumb[0]);  
       else if(item.media && item.media.length)
-        return this.$env.BASE_URL + (item.media[0].thumb || item.media[0]);
+        return this.$withBaseUrl(item.media[0].thumb || item.media[0]);
       return false;
     },
     getCapacity() {

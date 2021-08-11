@@ -1,6 +1,6 @@
 <template>
   <div class="form-group">
-    <div class="text-input">
+    <div :class="['text-input', {[`${blockClass}`]:blockClass}]">
       <icon :name="iconName" v-if="iconName" :class="{invalid, disabled}" />
       <img :src="imgSrc" v-if="imgSrc" :class="{disabled}" />
       <template v-if="inputDate">
@@ -88,6 +88,7 @@
         default: false
       },
       inputClass: String,
+      blockClass: String,
       inputDate: Boolean,
       readonly: Boolean
     },

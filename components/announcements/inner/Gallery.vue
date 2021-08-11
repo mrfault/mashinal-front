@@ -65,7 +65,7 @@
         />
         <transition-group name="fade">
           <div v-if="showLightbox" class="fslightbox-blur-bg" :key="0">
-            <img :src="$env.BASE_URL + slides.main[currentSlide]" alt="" />
+            <img :src="$withBaseUrl(slides.main[currentSlide])" alt="" />
           </div>
           <div v-if="showLightbox" class="fslightbox-footer d-lg-none" :key="1">
             <div class="inner-gallery-lightbox-footer">
@@ -175,7 +175,7 @@ export default {
     },
     getMediaByKey(media, key) {
       key = media[key] ? key : Object.keys(media)[0];
-      return media[key] instanceof Array ? media[key].map(item => `${this.$env.BASE_URL}${item}`) : [];
+      return media[key] instanceof Array ? media[key].map(item => this.$withBaseUrl(item)) : [];
     },
     closeLightbox() {
       if(this.showLightbox) {

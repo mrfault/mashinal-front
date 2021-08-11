@@ -5,7 +5,7 @@ export const UserDataMixin = {
       else if (this.user.avatar?.includes('/logo.jpg')) 
         return '/img/autosalon-logo.jpg';
       else if (this.user.avatar)
-        return `${this.$env.BASE_URL}/storage/${this.user.avatar}`;
+        return this.$withBaseUrl(`/storage/${this.user.avatar}`);
       return '/img/user.jpg';
     },
     getUserSettingsLink() {

@@ -92,19 +92,24 @@ Vue.use({
           else if (item.moto_atv_brand) return item.moto_atv_brand.name;
           else if (item.moto_brand) return item.moto_brand.name;
           else if (item.commercial_brand) return this.$translateSoft(item.commercial_brand.name);
+          else if (item.brand) return item.brand.name;
           return '';
         },
         getAnnouncementModelName(item) {
-          if (item.car_catalog) return (item.car_catalog.model || item.model).name;
+          if (item.car_catalog) return this.$translateHard((item.car_catalog.model || item.model).name);
           else if (item.scooter_model) return item.scooter_model.name;
           else if (item.moto_atv_model) return item.moto_atv_brand.name;
           else if (item.moto_model) return item.moto_model.name;
           else if (item.commercial_model) return this.$translateSoft(item.commercial_model.name);
+          else if (item.model) return this.$translateHard(item.model.name);
           return '';
         },
         getAnnouncementTitle(item) {
           if (item.title) return item.title;
-          return this.getAnnouncementBrandName(item) + ' ' + this.getAnnouncementModelName(item);
+          let brand = this.getAnnouncementBrandName(item);
+          let model = this.getAnnouncementModelName(item);
+          if (!brand && !model) return '';
+          return (brand || '') + ' ' + (model || '');
         },
         getAnnouncementContact(item) {
           return {
@@ -114,7 +119,7 @@ Vue.use({
             name: item.user.full_name,
             phone: item.user.phone,
             address: item.address,
-            img: item.user.avatar ? `${this.$env.BASE_URL}/storage/${item.user.avatar}` : '',
+            img: item.user.avatar ? this.$withBaseUrl(`/storage/${item.user.avatar}`) : '',
             lat: item.latitude ? parseFloat(item.latitude) : 0,
             lng: item.longitude ? parseFloat(item.longitude) : 0,
             link: item.is_autosalon ? this.$localePath(`/salons/${item.user.autosalon.id}`) : false

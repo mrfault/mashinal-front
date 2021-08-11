@@ -25,7 +25,7 @@
             </div>
             <div>
               <div class="body">
-                <inline-svg :src="$env.BASE_URL + type.transformed_media" />
+                <inline-svg :src="$withBaseUrl(type.transformed_media)" />
               </div>
               <div :class="['length', {'hidden': !main.size.length}]">
                 <img src="/img/size-length.svg" alt="" />

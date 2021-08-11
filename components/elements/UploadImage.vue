@@ -148,7 +148,7 @@
           let file = this.defaultFiles[keys[i]];
           let key = this.$notUndefined(file.key, i);
           this.$set(this.files, key, { file: new Blob(), name: file.name || file.split('/').pop(), loaded: true });
-          this.$set(this.image, key, file.image || (this.$env.BASE_URL + file));
+          this.$set(this.image, key, file.image || this.$withBaseUrl(file));
           this.$set(this.orderdedKeys, this.orderdedKeys.length, key);
         }
         this.disableUpload = false;
