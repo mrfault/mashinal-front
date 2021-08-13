@@ -1,12 +1,14 @@
 <template>
-  <div class="chat-item pt-0" @click="$emit('select-group', group.id)">
+  <div :class="['chat-item pt-0', {active}]" @click="$emit('select-group', group.id)">
     <hr class="mt-0"/>
     <div class="d-flex">
-      <img :class="['chat-avatar', {'is-online': !isChatBot && chatUser.is_online}]" :src="chatAvatar" alt="" >
+      <div :class="{'is-online': isOnline}">
+        <img class="chat-avatar" :src="chatAvatar" alt="" >
+      </div>
       <div class="chat-info">
         <div class="chat-first-line">
           <span class="text-medium text-truncate">{{ chatUser.full_name }}</span>
-          <span class="text-dark-blue-3">{{ lastMessage ? lastMessage.humanize_created_at : '' }}</span>
+          <span class="text-dark-blue-3">{{ lastMessage ? $moment(lastMessage.created_at).format('hh:mm') : '' }}</span>
           <span class="dots" @click.stop="$emit('show-modal')" v-if="!isChatBot && isMobileBreakpoint">
             <i v-for="i in 3" :key="i"></i>
           </span>
@@ -43,7 +45,8 @@
 export default {
   props: {
     group: {},
-    blocked: Boolean
+    blocked: Boolean,
+    active: Boolean
   },
   computed: {
     notRead() {
@@ -51,6 +54,7 @@ export default {
       return !this.group.is_read && this.group.last_message.sender_id != this.user.id;
     },
     notReadCount() {
+      if (this.group?.last_message?.is_read) return 0;
       return this.group?.messages?.filter(m => !m.is_read).length || 0;
     },
     chatAnnouncement() {
@@ -64,7 +68,9 @@ export default {
       let avatar = isUserAvatar ? this.chatAnnouncement.media?.thumb_100x100?.[0] : this.group.sender.avatar;
       return avatar ? this.$withBaseUrl(`${!isUserAvatar ? '/storage/' : ''}${avatar}`) : '/img/user.jpg';
     },
-
+    isOnline() {
+      return !this.isChatBot && this.chatUser.is_online;
+    },
     isChatBot() {
       return this.chatUser.id == 3;
     },

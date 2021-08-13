@@ -282,10 +282,25 @@ export const actions = {
     commit('mutate', { property: 'pageRef', value: path });
   },
   // Messages
-  async getMessages({ commit }) {
+  async getMessages({ commit, state }, groupId) {
     const res = await this.$axios.$get('/profile/messages');
+    let messages = [];
+    if (groupId) {
+      messages = await this.$axios.$get('/profile/group/'+ groupId +'/messages');
+    }
+    
     commit('mutate', { property: 'messages', value: res });
     commit('appendMessagesToGroup', { setAllEmpty: true });
+    
+    if (groupId && messages.length) {
+      let groupIndex = state.messages.findIndex(group => group.id == groupId);
+
+      if (groupIndex !== -1){
+        if (!state.messages[groupIndex].messages_loaded){
+          commit('appendMessagesToGroup', { groupIndex, messages });
+        }
+      }
+    }
   },
   async getGroupMessages({ commit, state }, groupId) {
     let groupIndex = state.messages.findIndex(group => group.id == groupId);
@@ -805,7 +820,10 @@ export const mutations = {
     let groupIndex = state.messages.findIndex(group => group.id == payload.groupId);
 
     state.messages[groupIndex].is_read = true;
-    state.messages[groupIndex].last_message.is_read = true;
+    
+    if (state.messages[groupIndex].last_message) {
+      state.messages[groupIndex].last_message.is_read = true;
+    }
   },
   removeGroup(state, payload) {
     let groupIndex = state.messages.findIndex(group => group.id == payload.groupId);

@@ -4,7 +4,7 @@
       <breadcrumbs :crumbs="crumbs" />
       <div :class="['messages', {'empty': !messages.length}]">
         <div class="row flex-lg-nowrap">
-          <div class="col-auto mr-lg-2">
+          <div class="col-auto" v-if="!isMobileBreakpoint || activeGroupId === false">
             <div class="card">
               <template v-if="messages.length">
                 <div class="pl-3 pr-3 pt-2 pb-2 pl-lg-4 pr-lg-4 pt-lg-3 pb-lg-3">
@@ -38,6 +38,7 @@
                         @show-modal="activeModalGroup = group"
                         :group="group"
                         :blocked="isBlocked(group)"
+                        :active="activeGroupId == group.id"
                         :key="group.id"
                       />
                       <template v-if="!filteredGroups.length">
@@ -69,7 +70,7 @@
               </div>
             </div>
           </div>
-          <div class="col-auto">
+          <div class="col-auto" v-if="!isMobileBreakpoint || activeGroupId !== false">
             <div class="card">
               <chat-messages
                 v-if="messages.length && activeGroupId !== false"
@@ -118,13 +119,9 @@
     },
     async asyncData({store, route}) {
       await Promise.all([
-        store.dispatch('getMessages'),
+        store.dispatch('getMessages', route.query.group),
         store.dispatch('getSuggestedMessages')
       ]);
-
-      if (route.query.group) {
-        await store.dispatch('getGroupMessages', route.query.group);
-      }
 
       return {
         activeGroupId: route.query.group || false,
@@ -231,6 +228,11 @@
             this.$auth.fetchUser();
           }
         });
+        setTimeout(() => {
+          if (!this.isMobileBreakpoint && this.messages.length && !this.activeGroupId) {
+            this.activeGroupId = this.messages[0].id;
+          }
+        }, 0);
       });
     }
   }

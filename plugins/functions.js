@@ -2,6 +2,9 @@ import _ from '~/lib/underscore';
 import moment from 'moment';
 import { generateMetaInfo } from '~/plugins/head-meta';
 
+import 'moment/locale/ru';
+import 'moment/locale/az';
+
 export default function({ app, route, store }, inject) {
   // generate meta tags for seo
   inject('headMeta', ({ title, description, image }, product = false) => {
@@ -130,9 +133,24 @@ export default function({ app, route, store }, inject) {
     if (!url) return url;
     return (url.includes('https://') || url.includes('http://')) ? url : `${app.$env.BASE_URL}${url}`;
   });
+  inject('formatDate', (date, format = 'DD.MM.YYYY', weekdays, parse) => {
+    const fixDayOfWeek = (n) => n == 0 ? 6 : n - 1;
+    if (parse)
+      date = Date.parse(date);
+    if (weekdays)
+      format = format.replace('day', weekdays[fixDayOfWeek(moment(date).format('d'))]);
+    moment.locale('ru');
+    let ru = moment(date).format(format);
+    moment.locale('az');
+    let az = moment(date).format(format);
+    moment.locale('en');
+    let en = moment(date).format(format);
+    return ({ ru, az, en });
+  });
   // underscore
   inject('clone', _.clone);
   inject('sortBy', _.sortBy);
   inject('chunk', _.chunk);
+  inject('groupBy', _.groupBy);
   inject('moment', moment);
 }
