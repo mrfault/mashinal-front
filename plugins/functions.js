@@ -49,7 +49,7 @@ export default function({ app, route, store }, inject) {
       .replace(/(\d{3})(\d{2})(\d{3})(\d{2})(\d{2})/g, brief ? '($2) $3-$4-$5' : '+$1 ($2) $3-$4-$5');
   });
   inject('parseUnsafe', (unsafe) => {
-    if(unsafe == null) return '';
+    if (unsafe == null) return '';
     return unsafe
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
@@ -96,11 +96,11 @@ export default function({ app, route, store }, inject) {
   });
   inject('notUndefined', (...values) => {
     for(let i in values)
-      if(values[i] !== undefined) return values[i];
+      if (values[i] !== undefined) return values[i];
     return values[0];
   });
   inject('translateHard', (name) => {
-    if(!name) return name;
+    if (!name) return name;
     name = name[app.i18n.locale] || name.ru || name;
     let year = new Date().getFullYear();
     return name.toString()
@@ -151,6 +151,7 @@ export default function({ app, route, store }, inject) {
   inject('clone', _.clone);
   inject('sortBy', _.sortBy);
   inject('chunk', _.chunk);
+  inject('uniq', _.uniq);
   inject('groupBy', _.groupBy);
   inject('moment', moment);
 }

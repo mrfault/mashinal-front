@@ -41,7 +41,7 @@
         return this.selectedValue === option.key;
       },
       isDisabled(option) {
-        if(option.disabled) return true;
+        if (option.disabled) return true;
         return this.disabled;
       }
     },
@@ -71,7 +71,7 @@
     watch: {
       value(value) {
         // check if value was changed
-        if(value !== this.prevValue) {
+        if (value !== this.prevValue) {
           this.$emit('change', value);
           this.prevValue = value;
         }

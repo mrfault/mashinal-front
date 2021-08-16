@@ -120,13 +120,13 @@
         this.$v.$reset();
         this.tab = tab;
         this.action = action !== '' ? action : tab;
-        if(action === 'sms') this.resendData = data;
+        if (action === 'sms') this.resendData = data;
         this.$emit('update-tab', tab);
       }
     },
     created() {
       this.resetForm();
-      if(this.forceSellPhone && !this.sellPhoneRegistered) {
+      if (this.forceSellPhone && !this.sellPhoneRegistered) {
         this.updateTab('sign-up');
       }
     }

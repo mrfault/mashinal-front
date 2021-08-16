@@ -74,12 +74,12 @@ export default {
   computed: {
     getType() {
       let item = this.announcement;
-      if(item.moto_brand) return 'Motorcycle';
-      else if(item.scooter_brand) return 'Scooter';
-      else if(item.moto_atv_brand) return 'Atv';
-      else if(item.commercial_brand) return 'Commercial';
-      else if(item.car_catalog) return 'Car';
-      else if(item.title) return 'Part';
+      if (item.moto_brand) return 'Motorcycle';
+      else if (item.scooter_brand) return 'Scooter';
+      else if (item.moto_atv_brand) return 'Atv';
+      else if (item.commercial_brand) return 'Commercial';
+      else if (item.car_catalog) return 'Car';
+      else if (item.title) return 'Part';
       return '';
     },
     getLink() {
@@ -99,15 +99,15 @@ export default {
     },
     getImage() {
       let item = this.announcement;
-      if(item.media && item.media.thumb && item.media.thumb.length)
+      if (item.media && item.media.thumb && item.media.thumb.length)
         return this.$withBaseUrl(item.media.thumb[0]);  
-      else if(item.media && item.media.length)
+      else if (item.media && item.media.length)
         return this.$withBaseUrl(item.media[0].thumb || item.media[0]);
       return false;
     },
     getCapacity() {
       let item = this.announcement;
-      if(item.car_catalog && (!item.car_catalog.capacity || item.car_catalog.capacity === '0')) 
+      if (item.car_catalog && (!item.car_catalog.capacity || item.car_catalog.capacity === '0')) 
         return false;
       let capacity = item.car_catalog 
         ? item.car_catalog.capacity // show 0.1 L if value less than 50 sm3

@@ -33,7 +33,7 @@ export default {
       ]
     },
     errorTitle() {
-      if(this.error.statusCode == 404) 
+      if (this.error.statusCode == 404) 
         return this.$t('page_not_found_error');
       return this.$t('server_error');
     }

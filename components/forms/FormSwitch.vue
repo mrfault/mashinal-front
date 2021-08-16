@@ -29,7 +29,7 @@
         return this.selectedValue === option.key;
       },
       isDisabled(option) {
-        if(option.disabled) return true;
+        if (option.disabled) return true;
         return this.disabled;
       }
     },

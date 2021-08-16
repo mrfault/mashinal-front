@@ -96,15 +96,15 @@ export default {
   },
   methods: {
     openModalToChangePhone() {
-      if(this.user.phone) return;
+      if (this.user.phone) return;
       this.$emit('open');
-      if(this.changePhoneInit) {
+      if (this.changePhoneInit) {
         this.confirmPhoneCodeInput = true;
       } else {
         this.$v.$reset();
         this.newPhone = '';
         this.code = '';
-        if(this.user.phone) {
+        if (this.user.phone) {
           this.confirmPhoneEdit = true;
         } else {
           this.confirmPhoneEditInput = true;

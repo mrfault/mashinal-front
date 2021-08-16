@@ -47,7 +47,7 @@
         return (time < 10 ? '0' : '') + time;
       },
       countdown() {
-        if(this.totalTime > 0){
+        if (this.totalTime > 0){
           this.totalTime--;
           this.saveTime();
         } else {
@@ -57,8 +57,8 @@
         }
       },
       saveTime(force = false) {
-        if(this.saveAs) {
-          if(!force && (this.saveAfter > 0 && this.totalTime > 0)){
+        if (this.saveAs) {
+          if (!force && (this.saveAfter > 0 && this.totalTime > 0)){
             this.saveAfter--;
           } else {
             localStorage.setItem(this.saveAs, this.totalTime > 0 ? this.totalTime : this.duration);
@@ -78,13 +78,13 @@
         return this.padTime(this.totalTime - (this.hours * 3600) - (this.minutes * 60));
       },
       formatTime() {
-        if(this.format === 'i:s') 
+        if (this.format === 'i:s') 
           return `${this.minutes}:${this.seconds}`;
         return `${this.hours}:${this.minutes}:${this.seconds}`;
       }
     },
     mounted() {
-      if(this.saveAs) {
+      if (this.saveAs) {
         const saved = localStorage.getItem(this.saveAs);
         this.totalTime = (saved && (saved > 3 ? saved - 3 : 0)) || this.duration; 
       }

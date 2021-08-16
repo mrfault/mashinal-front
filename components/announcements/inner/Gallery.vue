@@ -144,7 +144,7 @@ export default {
   },
   methods: {
     openLightbox(index) {
-      if(index) this.currentSlide = index;
+      if (index) this.currentSlide = index;
       this.showLightbox = true;
       this.toggleFsLightbox = !this.toggleFsLightbox;
       this.setBodyOverflow('hidden');
@@ -178,12 +178,12 @@ export default {
       return media[key] instanceof Array ? media[key].map(item => this.$withBaseUrl(item)) : [];
     },
     closeLightbox() {
-      if(this.showLightbox) {
+      if (this.showLightbox) {
         this.toggleFsLightbox = !this.toggleFsLightbox;
       }
     },
     handleSwipeTop() {
-      if(document.querySelector('body').classList.contains('zooming')) return;
+      if (document.querySelector('body').classList.contains('zooming')) return;
       this.closeLightbox();
     }
   },

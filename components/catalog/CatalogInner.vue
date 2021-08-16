@@ -213,9 +213,9 @@ export default {
         ].indexOf(key) !== -1;
     },
     getSuffix(key) {
-      if(key === 'obem' || key === 'raskhod') return this.$t('char_litre');
-      if(key === 'moshchnost') return this.$t('char_h_power');
-      if(key === 'razgon') return this.$t('char_second');
+      if (key === 'obem' || key === 'raskhod') return this.$t('char_litre');
+      if (key === 'moshchnost') return this.$t('char_h_power');
+      if (key === 'razgon') return this.$t('char_second');
     },
     getDivSpecs(specs) {
       let divSpecs = [{}, {}];

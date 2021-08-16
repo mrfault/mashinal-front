@@ -71,10 +71,10 @@
         this.numericValue = this.validateValue(this.value);
         let isSame = this.prevValue === this.value;
         this.prevValue = this.value;
-        if(!isSame) this.$emit('change', this.getValue(this.value));
+        if (!isSame) this.$emit('change', this.getValue(this.value));
       },
       validateValue(value) {
-        if((this.minValue > 0 && value === 0) || (!value && value !== 0)) return '';
+        if ((this.minValue > 0 && value === 0) || (!value && value !== 0)) return '';
         value = value < this.minValue ? this.minValue : value;
         value = value > this.maxValue ? this.maxValue : value;
         return value;
@@ -89,13 +89,13 @@
         return value.toString().replace(/\D+/g,'').replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
       },
       handleKeyUp(e) {
-        if(this.typingInterval) {
+        if (this.typingInterval) {
           clearTimeout(this.typingTimer);
           this.typingTimer = setTimeout(this.handleNumeric, this.typingInterval);
         }
       },
       handleKeyDown(e) {
-        if(this.typingInterval) {
+        if (this.typingInterval) {
           clearTimeout(this.typingTimer);
         }
       }

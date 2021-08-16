@@ -249,7 +249,7 @@ export default {
         let searchSame = decodeURIComponent(searchUrl) === decodeURIComponent(this.$route.fullPath);
         let pageSame = pageUrl === this.$route.path;
         if (searchSame || pageSame) this.$emit('pending');
-        if(searchSame) {
+        if (searchSame) {
           this.$emit('submit', 1, force);
         } else {
           this.$router.push(searchUrl, () => {

@@ -17,20 +17,20 @@ Vue.use({
         },
         // tracking events with fb pixel
         fbTrack(eventName, options) {
-          if(this.$env.DEV) {
+          if (this.$env.DEV) {
             console.log('fb pixel track "' + eventName + '"', options ? JSON.stringify(options) : '');
           } else {
-            if(!this.$fb) console.warn('fb pixel not setted');
-            else if(options) this.$fb.track(eventName, options);
+            if (!this.$fb) console.warn('fb pixel not setted');
+            else if (options) this.$fb.track(eventName, options);
             else this.$fb.track(eventName);
           }
         },
         // tracking events with gtag manager
         gtagTrack(eventKey) {
-          if(this.$env.DEV) {
+          if (this.$env.DEV) {
             console.log('gtag track "' + eventKey + '"');
           } else {
-            if(!this.$gtag) console.warn('gtag not setted');
+            if (!this.$gtag) console.warn('gtag not setted');
             else this.$gtag('event', 'conversion', { send_to: eventKey });
           }
         },
@@ -82,7 +82,7 @@ Vue.use({
         getParentByClassName(el, className) {
           el = typeof el === 'string' ? document.querySelector(el) : el;
           for( ; el && el !== document; el = el.parentNode) {
-            if(el.classList.contains(className)) return el;
+            if (el.classList.contains(className)) return el;
           }
           return null;
         },
@@ -154,7 +154,7 @@ Vue.use({
           return ['xs', 'sm', 'md'].includes(this.breakpoint);
         },
         isMobileDevice() {
-          if(!navigator.userAgent) return false;
+          if (!navigator.userAgent) return false;
           return [/iPhone/i,/iPad/i,/iPod/i,/Android/i,/BlackBerry/i,/Windows Phone/i]
             .some(os => navigator.userAgent.match(os));
         },

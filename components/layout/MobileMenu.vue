@@ -96,7 +96,7 @@ export default {
   },
   watch: {
     breakpoint(breakpoint) {
-      if(breakpoint === 'lg') {
+      if (breakpoint === 'lg') {
         this.showSidebar = false;
         this.setBodyOverflow('scroll');
       }

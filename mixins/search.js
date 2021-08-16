@@ -48,7 +48,7 @@ export const SearchMixin = {
     parseFormData() {
       this.setFormData(JSON.parse(this.$route.query[this.meta.param] || '{}'));
       let keys = Object.keys(this.form.additional_brands).filter(key => this.form.additional_brands[key].brand);
-      if(keys.length) this.rows = [...keys];
+      if (keys.length) this.rows = [...keys];
     },
     beforeSubmitForm() {
       if (['cars-assistant'].includes(this.routeName)) {
@@ -105,20 +105,20 @@ export const SearchMixin = {
       let searchUrl = `${this.$localePath(this.meta.path)}?${searchQuery}`;
       let searchSame = decodeURIComponent(searchUrl) === decodeURIComponent(this.$route.fullPath);
       this.$emit('pending');
-      if(searchSame) {
+      if (searchSame) {
         this.$emit('submit');
       } else {
         let prevRouteName = this.routeName;
         this.$router.push(searchUrl, () => {
           this.$emit('submit');
           // for ex. when routing from / to /cars
-          if(this.routeName !== prevRouteName) {
+          if (this.routeName !== prevRouteName) {
             setTimeout(() => {
               this.scrollTo('.announcements-sorting');
             }, 100);
           }
           // look for a saved search
-          if(this.loggedIn && this.meta.type === 'cars') {
+          if (this.loggedIn && this.meta.type === 'cars') {
             this.fetchSavedSearch({ search_url: `${this.meta.path}?${searchQuery}` });
           } 
         });
@@ -172,8 +172,8 @@ export const SearchMixin = {
         return !!this.singleSavedSearch.id;
       },
       set() {
-        if(!this.loggedIn) return;
-        if(this.singleSavedSearch.id) {
+        if (!this.loggedIn) return;
+        if (this.singleSavedSearch.id) {
           this.deleteSavedSearch(this.singleSavedSearch.id)
             .then(() => {
               this.$toasted.success(this.$t('my_templates_removed'));
@@ -250,7 +250,7 @@ export const SearchMixin = {
     }
   },
   created() {
-    if(!this.isStarterPage) {
+    if (!this.isStarterPage) {
       this.parseFormData();
     }
   },

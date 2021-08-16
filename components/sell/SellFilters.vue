@@ -120,12 +120,12 @@
     },
     computed: {
       filteredComponents() {
-        if(this.filters instanceof Array) 
+        if (this.filters instanceof Array) 
           return this.filters;
         let filters = {};
         for(let i in this.filters) {
           let item = this.filters[i];
-          if(!item.category || item.category.includes(parseInt(this.selected.category)))
+          if (!item.category || item.category.includes(parseInt(this.selected.category)))
             filters[i] = {...item, field: i};
         }
         return filters;
@@ -137,9 +137,9 @@
         let key = this.getKey(item);
         let type = this.getType(item);
         let value = this.selected.hasOwnProperty(key) && this.selected[key];
-        if(type === 'input-radio')
+        if (type === 'input-radio')
           this.form[key] = value || 0;
-        else if(type === 'input-numeric')
+        else if (type === 'input-numeric')
           this.form[key] = value || '';
       }
       this.$emit('add-form-keys', this.form);

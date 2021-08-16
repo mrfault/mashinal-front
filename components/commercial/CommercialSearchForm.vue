@@ -209,7 +209,7 @@ export default {
       if (id) await this.getCommercialModels({ category: this.category.id, id, index });
     },
     setCommercialFilter(key, value) {
-      if(value === false || value === '' || (typeof value === 'object' && !Object.keys(value).length)) {
+      if (value === false || value === '' || (typeof value === 'object' && !Object.keys(value).length)) {
         this.$delete(this.form, key);
       } else this.$set(this.form, key, value);
     }

@@ -1,11 +1,11 @@
 <template>
-  <div class="pages-profile-messages pt-2 pt-lg-5">
+  <div class="pages-profile-messages pt-0 pt-lg-5 pb-0 pb-lg-5">
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
-      <div :class="['messages', {'empty': !messages.length}]">
+      <div :class="['messages', {'empty': !messages.length, 'no-send-input': activeGroupInterlocutor.id == 3}]">
         <div class="row flex-lg-nowrap">
           <div class="col-auto" v-if="!isMobileBreakpoint || activeGroupId === false">
-            <div class="card">
+            <div class="card messages-card">
               <template v-if="messages.length">
                 <div class="pl-3 pr-3 pt-2 pb-2 pl-lg-4 pr-lg-4 pt-lg-3 pb-lg-3">
                   <form-text-input 
@@ -35,7 +35,7 @@
                     <template v-if="messages.length">
                       <chat-item v-for="group in filteredGroups" 
                         @select-group="selectActiveGroup"
-                        @show-modal="activeModalGroup = group"
+                        @show-modal="activeModalGroup = group, showControlsModal = true;"
                         :group="group"
                         :blocked="isBlocked(group)"
                         :active="activeGroupId == group.id"
@@ -71,9 +71,9 @@
             </div>
           </div>
           <div class="col-auto" v-if="!isMobileBreakpoint || activeGroupId !== false">
-            <div class="card">
+            <div class="card messages-card">
               <chat-messages
-                v-if="messages.length && activeGroupId !== false"
+                v-if="activeGroupMessages && messages.length && activeGroupId !== false"
                 :group="activeGroupMessages"
                 :chat-user="activeGroupInterlocutor"
                 :blocked="getBlockedUserIds.includes(activeGroupInterlocutor.id)"
@@ -81,10 +81,29 @@
                 :message-pin="activeMessage"
                 @go-back="activeGroupId = false"
                 @go-to-announcement="goToAnnouncement"
+                @block-chat="blockChat"
+                @delete-chat="deleteChat"
               />
             </div>
           </div>
         </div>
+        <modal-popup
+          v-if="getInterlocutor(activeModalGroup)"
+          :toggle="showControlsModal"
+          :title="getInterlocutor(activeModalGroup).full_name"
+          @close="showControlsModal = false"
+        >
+          <ul class="list-line-separated">
+            <li class="cursor-pointer" key="block" @click="blockChat()">
+              <icon class="text-dark-blue-2" :name="getUserBlock" />
+              {{ $t(getUserBlock + '_user') }}
+            </li>
+            <li class="cursor-pointer" key="clear" @click="deleteChat()">
+              <icon name="garbage" />
+              {{ $t('clear_chat') }}
+            </li>
+          </ul>
+        </modal-popup>
       </div>
     </div>
   </div>
@@ -123,12 +142,20 @@
         store.dispatch('getSuggestedMessages')
       ]);
 
+      if (store.state.messages.length) {
+        await store.dispatch('getGroupMessages', store.state.messages[0].id);
+      }
+
       return {
         activeGroupId: route.query.group || false,
         activeMessage: false,
         activeModalGroup: false,
         showBlockedGroups: false,
-        searchValue: ''
+        searchValue: '',
+        showControlsModal: false,
+        showDeleteModal: false,
+        showBlockModal: false,
+        pending: false
       }
       
     },
@@ -153,6 +180,7 @@
       activeGroupInterlocutor() {
         if (this.activeGroupId === false) return {};
         let group = this.activeGroupMessages;
+        if (!group) return {};
         return group.sender_id == this.user.id ? group.recipient : group.sender;
       },
 
@@ -168,7 +196,7 @@
       }
     },
     methods: {
-      ...mapActions(['getGroupMessages']),
+      ...mapActions(['getGroupMessages','removeMessageGroup','blockUser']),
      
       filterByMessageText(groupId) {
         if (!this.searchValue.length) return [];
@@ -211,9 +239,54 @@
         let type = group.announce_type.replace('App\\', '').toLowerCase();
         // get inner link
         if (type === 'announcement') type = 'cars';
-        else if(['motorcycle','scooter','motoatv'].includes(type)) type = 'moto';
-        else if(type === 'commercial') type = 'commercial';
+        else if (['motorcycle','scooter','motoatv'].includes(type)) type = 'moto';
+        else if (type === 'commercial') type = 'commercial';
         this.$router.push(this.$localePath(`/${type}/announcement/${announcement.id_unique}`));
+      },
+
+      async deleteChat(group) {
+        if (group) this.activeModalGroup = group;
+        if (this.pending) return;
+        this.pending = true;
+        try {
+          await this.removeMessageGroup(this.activeModalGroup.id);
+          if (this.activeGroupId) {
+            this.$router.push({ query: null });
+          }
+          this.setActiveFirstGroup();
+          this.$toasted.success(this.$t('message_removed'));
+          this.showControlsModal = false;
+          this.pending = false;
+        } catch(err) {
+          this.pending = false;
+        }
+      },
+      async blockChat(group) {
+        if (group) this.activeModalGroup = group;
+        if (this.pending) return;
+        this.pending = true;
+        try {
+          let userId = this.getInterlocutor(this.activeModalGroup).id;
+          let successMessage = this.$t(`you_${this.getUserBlock}ed_this_user`);
+          await this.blockUser({ id: userId });
+          await this.$auth.fetchUser();
+          this.showControlsModal = false;
+          this.connectEcho('user.' + userId).whisper('action', { 
+            userId: this.user.id,
+            action: this.getUserBlock
+          });
+          this.$toasted.success(successMessage);
+          this.pending = false;
+        } catch(err) {
+          this.pending = false;
+        }
+      },
+      setActiveFirstGroup() {
+        setTimeout(() => {
+          if (!this.isMobileBreakpoint && this.messages.length && !this.activeGroupId) {
+            this.activeGroupId = this.messages[0].id || false;
+          }
+        }, 0);
       }
     },
     watch: {
@@ -228,11 +301,7 @@
             this.$auth.fetchUser();
           }
         });
-        setTimeout(() => {
-          if (!this.isMobileBreakpoint && this.messages.length && !this.activeGroupId) {
-            this.activeGroupId = this.messages[0].id;
-          }
-        }, 0);
+        this.setActiveFirstGroup();
       });
     }
   }

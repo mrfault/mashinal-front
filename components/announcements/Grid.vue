@@ -66,7 +66,7 @@ export default {
   },
   methods: {
     changePage(page) {
-      if(this.showAll) {
+      if (this.showAll) {
         this.$emit('pending');
         this.$router.push({ path: this.showAll, query: { page } }, () => {
           this.scrollTo('.announcements-grid', [-15, -20]);

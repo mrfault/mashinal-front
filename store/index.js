@@ -211,7 +211,7 @@ export const getters = {
 };
 
 const objectNotEmpty = (state, commit, property) => {
-  if(state['needResetOptions'].includes(property)) {
+  if (state['needResetOptions'].includes(property)) {
     let arr = state['needResetOptions'].filter(p => p !== property);
     commit('mutate', { property: 'needResetOptions', value: arr }); 
     return false;
@@ -238,7 +238,7 @@ export const actions = {
 
     commit('mutate', { property:'ptk', value: ptk });
 
-    if(['true','false'].includes(route.query.success)) {
+    if (['true','false'].includes(route.query.success)) {
       let type = route.query.success === 'true' ? 'success' : 'error';
       dispatch('updatePaidStatus', {
         type,
@@ -264,7 +264,7 @@ export const actions = {
     let changed = locale !== this.$i18n.locale;
     this.$i18n.setLocale(locale);
     // update options in store
-    if(changed) dispatch('resetOptions');
+    if (changed) dispatch('resetOptions');
   },
   // Pages
   async getMenus({ commit }) {
@@ -409,11 +409,11 @@ export const actions = {
     commit('mutate', { property: 'commercialModels', value: res, key: data.index || 0 })
   },
   async getMotoModels({ dispatch }, data) {
-    if(data.category == 1)  
+    if (data.category == 1)  
       await dispatch('getMotorcycleModels', { id: data.id, index: data.index || 0 });
-    else if(data.category == 2)  
+    else if (data.category == 2)  
       await dispatch('getScooterModels', { id: data.id, index: data.index || 0 });
-    else if(data.category == 3)  
+    else if (data.category == 3)  
       await dispatch('getAtvModels', { id: data.id, index: data.index || 0 });
   },
   async getMotorcycleModels({ commit }, data) {
@@ -806,7 +806,7 @@ export const mutations = {
     }
   },
   appendMessagesToGroup(state, payload) {
-    if(payload.setAllEmpty) {
+    if (payload.setAllEmpty) {
       state.messages.map( (item) => {
         item.messages_loaded = false;
         item.messages = [];

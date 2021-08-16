@@ -87,12 +87,12 @@ export default {
       this.currentSlide = fsBox.stageIndexes.current;
     },
     closeLightbox() {
-      if(this.showLightbox) {
+      if (this.showLightbox) {
         this.toggleFsLightbox = !this.toggleFsLightbox;
       }
     },
     handleSwipeTop() {
-      if(document.querySelector('body').classList.contains('zooming')) return;
+      if (document.querySelector('body').classList.contains('zooming')) return;
       this.closeLightbox();
     }
   },

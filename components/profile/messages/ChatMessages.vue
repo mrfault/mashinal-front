@@ -5,21 +5,30 @@
         <div :class="{'is-online': isOnline}">
           <img class="chat-avatar" :src="chatAvatar" alt="" />
         </div>
-        <span class="username">{{ chatUser.full_name }}</span>
+        <span class="username">
+          {{ chatUser.full_name }}
+          <template v-if="isMobileBreakpoint">
+            <br/>
+            <span class="username-subtitle">
+              <span class="text-truncate">{{ getAnnouncementTitle(chatAnnouncement) }}</span>
+              <span class="text-dark-blue-2">{{ chatAnnouncement.price || '' }}</span>
+            </span> 
+          </template>
+        </span>
         <template v-if="!isChatBot">
-          <span class="cursor-pointer text-dark-blue-2">
-            <icon name="block" />
+          <span class="cursor-pointer text-dark-blue-2" @click.stop="$emit('block-chat', group)">
+            <icon :name="blocked ? 'unblock' : 'block'" />
           </span>
-          <span class="cursor-pointer text-red">
+          <span class="cursor-pointer text-red" @click.stop="$emit('delete-chat', group)">
             <icon name="garbage" />
           </span>
         </template>
       </div>
-      <template v-if="!isChatBot && group.announce">
+      <template v-if="!isMobileBreakpoint && !isChatBot && group.announce">
         <span class="divider"></span>
-        <div class="chat-inner-announcement">
-          <img :src="chatAnnouncementThumb" alt="" />
-          <span>
+        <div class="chat-inner-announcement user-select-none">
+          <img class="cursor-pointer" :src="chatAnnouncementThumb" alt="" @click.stop="$emit('go-to-announcement', group)" />
+          <span class="cursor-pointer" @click.stop="$emit('go-to-announcement', group)">
             {{ getAnnouncementTitle(chatAnnouncement) }}<br/>
             <span class="text-dark-blue-2">{{ chatAnnouncement.price || '' }}</span>
           </span>
@@ -31,23 +40,23 @@
       <div class="suggested-messages" v-if="showSuggestedMessages">
         <button class="btn btn--primary-outline" 
           v-for="(title, i) in filteredSuggestedMessages" 
-          @click="sendSuggestedMessage(title)"
+          @click="useSuggestedMessage(title)"
           :key="i" 
           v-html="title"
         />
       </div>
-      <div class="messages-list" v-else>
+      <div :class="['messages-list', {'attachments-preview-active': !!Object.keys(files).length}]">
         <div class="scroll-container">
           <vue-scroll class="white-scroll-bg" ref="chat">
             <div class="messages-list-items">
-              <div class="messages-list-items_group mt-2 mt-lg-3" v-for="(messages, date) in messagesByDate" :key="date">
+              <div class="messages-list-items_group" v-for="(messages, date) in messagesByDate" :key="date">
                 <div class="text-center">
                   <span class="btn btn--grey pointer-events-none">
                     {{ $formatDate(date, '[day], D MMM', $t('days-short'), true)[locale] }}
                   </span>
                 </div>
                 <message-item 
-                  v-for="message in group.messages" 
+                  v-for="message in messages" 
                   :key="message.id"
                   :message="message"
                   :group-attachments="attachments"
@@ -57,8 +66,18 @@
             </div>
           </vue-scroll>
         </div>
-        <div class="messages-list-send">
+        <div class="messages-list-send" v-if="!isChatBot">
           <hr class="mb-0 mt-0" />
+          <message-send
+            @type="handleTyping"
+            @attach="handleFiles"
+            @send="submitMessage"
+            :disabled="disabledTexting"
+            :sending="sendingFiles"
+            :blocked="blocked || blockedBy"
+            :message="textareaMessage"
+            v-model="text"
+          />
         </div>
       </div>
     </div>
@@ -71,6 +90,7 @@ import { mapGetters, mapActions } from 'vuex';
 import { SocketMixin } from '~/mixins/socket';
 
 import MessageItem from '~/components/profile/messages/MessageItem';
+import MessageSend from '~/components/profile/messages/MessageSend';
 
 export default {
   props: {
@@ -82,7 +102,8 @@ export default {
   },
   mixins: [SocketMixin],
   components: {
-    MessageItem
+    MessageItem,
+    MessageSend
   },
   data() {
     return {
@@ -118,10 +139,10 @@ export default {
         .map(m => m.title[this.locale]);
     },
     showSuggestedMessages() {
-      return !this.group.messages.length && this.filteredSuggestedMessages.length && !this.isChatBot;
+      return !this.group.messages.length && this.group.announce && this.filteredSuggestedMessages.length && !this.isChatBot;
     },
     messagesByDate() {
-      return this.$groupBy(this.group.messages, (m) => this.$moment(m.created_at).format('YYYY-MM-DD'));
+      return this.$groupBy(this.group.messages, (m) => m.created_at.slice(0,10));
     },
     attachments() {
       return this.group.messages
@@ -145,7 +166,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['markAsRead']),
+    ...mapActions(['markAsRead', 'sendMessage']),
 
     checkIfRead() {
       let message = this.group.last_message;
@@ -171,24 +192,26 @@ export default {
     },
     updateEventListenerList(list, event, fn, remove = false) {
       for (let i = 0; i < list.length; i++) {
-        if(remove) {
+        if (remove) {
           list[i].removeEventListener(event, fn, false);
         } else {
           list[i].addEventListener(event, fn, false);
         }
       }
     },
-    handleScrollToMessage(pin = false) {
-      if(pin !== false) {
-        this.$refs.chat.scrollIntoView(`#message-${this.messagePin}`, 150, 'easeInQuad');
-      } else {
-        this.$refs.chat.scrollTo({y: '100%'}, 150, 'easeInQuad');
-      }
+    handleScrollToMessage(pin = false, duration = 300) {
+      this.$nextTick(() => {
+        if (pin !== false) {
+          this.$refs.chat?.scrollIntoView(`#message-${this.messagePin}`, duration, 'easeInQuad');
+        } else {
+          this.$refs.chat?.scrollTo({y: '100%'}, duration, 'easeInQuad');
+        }
+      });
     },
     handleMessageLinkClick(e) {
       e.preventDefault();
       let path = $event.srcElement.pathname;
-      if(path.match(/muqaise|comparison/))
+      if (path.match(/muqaise|comparison/))
         window.open(`https://mashin.al${path}`, '_blank');
       else this.$router.push(e.srcElement.pathname);
     },
@@ -198,31 +221,31 @@ export default {
     handleFiles(files) {
       this.$set(this, 'files', files);
     },
-    sendSuggestedMessage(title) {
+    useSuggestedMessage(title) {
       this.text = title;
-      this.sendMessage();
+      this.submitMessage();
     },
-    async sendMessage() {
+    async submitMessage() {
       if (this.disabledTexting) return;
       let hasAttachments = this.files.length > 0;
       if (hasAttachments || (this.text && this.text.replace(/\s/g, '') !== '')) {
         let formData = new FormData();
         // include form data
-        formData.append('recipient_id', this.interlocutor.id);
+        formData.append('recipient_id', this.chatUser.id);
         formData.append('group_id', this.group.id);
         formData.append('text', this.text);
         // include attachments
         this.files.map(file => {formData.append('files[]', file);});
         // before send
-        if(hasAttachments) {
+        if (hasAttachments) {
           this.toggleSendingStatus(true);
         } else this.text = '';
         // after send
         const afterSendActions = () => {
           window.scrollTo(0,0);
-          if(hasAttachments) {
+          if (hasAttachments) {
             this.text = '';
-            this.$nuxt.$emit('clearMessageAttachments');
+            this.$nuxt.$emit('clear-message-attachments');
             this.toggleSendingStatus(false);
           } else {
             this.toggleTypingStatus(true);
@@ -231,9 +254,9 @@ export default {
         }
         // send
         try {
-          await this.$store.dispatch('profile/sendMessage', { form: formData, activeGroup: this.group });
+          await this.sendMessage({ form: formData, activeGroup: this.group });
+          this.markAsRead(this.group.id);
           afterSendActions();
-          this.handleScrollToMessage(false);
           this.lightboxKey++;
         } catch({ response: { data: { data }}}) {
           if (data.type === 2)
@@ -244,32 +267,36 @@ export default {
     }
   },
   watch: {
-    $route(route) {
+    '$route.query.group'() {
       this.checkIfRead();
+      this.handleScrollToMessage(this.messagePin, 0);
     },
     'files.length'(val, old) {
-      if(val === 1 && old === 0) {
-        this.$nextTick(this.handleScrollToMessage);
+      if (val === 1 && old === 0) {
+        this.handleScrollToMessage(false);
       }
+    },
+    'group.messages.length'() {
+      this.handleScrollToMessage(false);
     }
   },
   mounted() {
     this.checkIfRead();
     this.updateEventListenerList(this.messageLinks, 'click', this.handleMessageLinkClick);
-    this.handleScrollToMessage(this.messagePin);
+    this.handleScrollToMessage(this.messagePin, false);
     this.$nextTick(()=>{
       this.connectEcho('typing.'+this.user.id).listenForWhisper('typing', (data) => {
         // check if announcement is relevant
-        if(data.announceId && (data.announceId !== this.group.announce_id)) return;
+        if (data.announceId && (data.announceId !== this.group.announce_id)) return;
         // check interlocutor
-        if(data.userId == this.interlocutor.id) {
-          if(data.sendingAttachment) {
+        if (data.userId == this.chatUser.id) {
+          if (data.sendingAttachment) {
             this.sending = data.typing;
             return;
           } else {
             this.typing = data.typing;
             clearTimeout(this.timeout);
-            if(this.typing) {
+            if (this.typing) {
               this.timeout = setTimeout(() => {
                 this.typing = false;
               }, 1000);

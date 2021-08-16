@@ -281,7 +281,7 @@ export default {
       }
       for(let key in group) {
         let categories = this.motoOptions.config[group[key]].category;
-        if(categories && categories[0] && categories.indexOf(this.category.id) === -1) 
+        if (categories && categories[0] && categories.indexOf(this.category.id) === -1) 
           delete group[key];
       }
       return group;

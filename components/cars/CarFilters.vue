@@ -88,8 +88,8 @@ export default {
         : (input.selected_key ? false : (this.isMultiple(input) ? [] : (input.type === 'select' ? '' : false)));
     },
     changeFilter(key, value, selected_key) {
-      if(selected_key) {
-        if(this.selectMultiple.includes(key)) {
+      if (selected_key) {
+        if (this.selectMultiple.includes(key)) {
           let selected = this.values[key] || [];
           let index = selected.findIndex(v => v == selected_key);
           value = value ? [...selected, selected_key] : (index === -1 ? [] : selected.filter((_, i) => i !== index));

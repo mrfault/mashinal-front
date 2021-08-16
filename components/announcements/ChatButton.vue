@@ -16,7 +16,7 @@ export default {
   methods: {
     handleClick() {
       if (!this.canSendMessage(this.announcement)) return;
-      if(!this.loggedIn) {
+      if (!this.loggedIn) {
         this.$nuxt.$emit('login-popup', 'chat')
       } else {
         this.createMessagesGroup(this.announcement.user.id, this.announcement.id_unique);
@@ -27,11 +27,11 @@ export default {
     }
   },
   mounted() {
-    if(this.hasAfterLogin) 
+    if (this.hasAfterLogin) 
       this.$nuxt.$on('after-login', this.handleAfterLogin);
   },
   beforeDestroy() {
-    if(this.hasAfterLogin) 
+    if (this.hasAfterLogin) 
       this.$nuxt.$off('after-login', this.handleAfterLogin);
   }
 }
