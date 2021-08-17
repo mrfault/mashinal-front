@@ -61,9 +61,9 @@
           this.$nuxt.$emit('login', true);
         }).catch(({response}) => {
           this.pending = false;
-          if(response.status === 401) {
+          if (response.status === 401) {
             this.passwordWrong = true;
-          } else if(response.status === 406) {
+          } else if (response.status === 406) {
             this.$emit('update-tab','sign-up','sms', response.data.data);
           }
         });

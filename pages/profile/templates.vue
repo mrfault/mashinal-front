@@ -2,68 +2,71 @@
   <div class="pages-profile-templates pt-2 pt-lg-5">
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
-      <div class="templates-controls-panel card mb-2 mb-lg-3">
-        <h2 class="title-with-line mt-n1 mb-n1" v-if="isMobileBreakpoint">
-          <span>{{ $t('my_searches') }}</span>
-        </h2>
-        <div class="row justify-content-between align-items-center mt-n1 mt-lg-0">
-          <div class="col-6 col-lg-2 ml-n2" v-if="!isMobileBreakpoint">
-            <form-checkbox class="fw-500" :label="$t('select_all')" v-model="selectAll" input-name="selectAll" 
-              transparent @input="handleSelectAll" @change="handleSelectAll"/>
-          </div>
-          <div class="col-6 col-lg-2 d-flex align-items-center justify-content-end">
-            <span :class="['control-icon cursor-pointer text-hover-red', {'disabled-ui': !selected.length}]" @click="showIntervalModal = true" v-tooltip="$t('receive_notifications')">
-              <icon name="bell" />
-            </span>
-            <span :class="['control-icon cursor-pointer text-hover-red', {'disabled-ui': !selected.length}]" @click="showRemoveModal = true" v-tooltip="$t('delete')">
-              <icon name="garbage" />
-            </span>
+      <template v-if="savedSearchList.length">
+        <div class="templates-controls-panel card mb-2 mb-lg-3">
+          <h2 class="title-with-line mt-n1 mb-n1" v-if="isMobileBreakpoint">
+            <span>{{ $t('my_searches') }}</span>
+          </h2>
+          <div class="row justify-content-between align-items-center mt-n1 mt-lg-0">
+            <div class="col-6 col-lg-2 ml-n2" v-if="!isMobileBreakpoint">
+              <form-checkbox class="fw-500" :label="$t('select_all')" v-model="selectAll" input-name="selectAll" 
+                transparent @input="handleSelectAll" @change="handleSelectAll"/>
+            </div>
+            <div class="col-6 col-lg-2 d-flex align-items-center justify-content-end">
+              <span :class="['control-icon cursor-pointer text-hover-red', {'disabled-ui': !selected.length}]" @click="showIntervalModal = true" v-tooltip="$t('receive_notifications')">
+                <icon name="bell" />
+              </span>
+              <span :class="['control-icon cursor-pointer text-hover-red', {'disabled-ui': !selected.length}]" @click="showRemoveModal = true" v-tooltip="$t('delete')">
+                <icon name="garbage" />
+              </span>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="templates-list">
-        <saved-search 
-          v-for="item in savedSearchList" 
-          :key="item.id"
-          :item="item"
-          :checked="selected.includes(item.id)"
-          :notification-options="getNotificationOptions"
-          @change="selectSavedSearch"
-        />
-      </div>
-      <modal-popup
-        :toggle="showIntervalModal"
-        :title="$t('receive_notifications')"
-        :overflow-hidden="false"
-        @close="showIntervalModal = false"
-      >
-        <form class="form" @submit.prevent="updateNotifications" novalidate>
-          <div class="mb-2 mb-lg-3">
-            <form-select
-              v-if="user.email"
-              v-model="interval"
-              :options="getNotificationOptions"
-              :clear-option="false"
-              :allow-clear="false"
-              :skip-select="true"
-            />
-          </div>
-          <button type="submit" :class="['btn btn--green full-width', { pending }]">
-            {{ $t('confirm') }}
-          </button>
-        </form>
-      </modal-popup>
-      <modal-popup
-        :toggle="showRemoveModal"
-        :title="$t('want_to_delete_a_search')"
-        @close="showRemoveModal = false"
-      >
-        <form class="form" @submit.prevent="removeSavedSearch" novalidate>
-          <button type="submit" :class="['btn btn--green full-width', { pending }]">
-            {{ $t('confirm') }}
-          </button>
-        </form>
-      </modal-popup>
+        <div class="templates-list">
+          <saved-search 
+            v-for="item in savedSearchList" 
+            :key="item.id"
+            :item="item"
+            :checked="selected.includes(item.id)"
+            :notification-options="getNotificationOptions"
+            @change="selectSavedSearch"
+          />
+        </div>
+        <modal-popup
+          :toggle="showIntervalModal"
+          :title="$t('receive_notifications')"
+          :overflow-hidden="false"
+          @close="showIntervalModal = false"
+        >
+          <form class="form" @submit.prevent="updateNotifications" novalidate>
+            <div class="mb-2 mb-lg-3">
+              <form-select
+                v-if="user.email"
+                v-model="interval"
+                :options="getNotificationOptions"
+                :clear-option="false"
+                :allow-clear="false"
+                :skip-select="true"
+              />
+            </div>
+            <button type="submit" :class="['btn btn--green full-width', { pending }]">
+              {{ $t('confirm') }}
+            </button>
+          </form>
+        </modal-popup>
+        <modal-popup
+          :toggle="showRemoveModal"
+          :title="$t('want_to_delete_a_search')"
+          @close="showRemoveModal = false"
+        >
+          <form class="form" @submit.prevent="removeSavedSearch" novalidate>
+            <button type="submit" :class="['btn btn--green full-width', { pending }]">
+              {{ $t('confirm') }}
+            </button>
+          </form>
+        </modal-popup>
+      </template>
+      <no-results :text="$t('no_templates')" v-else />
     </div>
   </div>
 </template>
@@ -72,12 +75,14 @@
   import { mapGetters, mapActions } from 'vuex';
 
   import SavedSearch from '~/components/profile/SavedSearch';
+  import NoResults from '~/components/elements/NoResults';
 
   export default {
     name: 'pages-profile-templates',
     middleware: 'auth_general',
     components: { 
-      SavedSearch
+      SavedSearch,
+      NoResults
     },
     nuxtI18n: {
       paths: {

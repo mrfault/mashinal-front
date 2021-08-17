@@ -71,12 +71,12 @@ export default {
     let title = this.$t(`meta-title_catalog${paramsLength ? '-car' : ''}`, { car: titleParts, word: this.$t('meta-words_catalog-car')[paramsLength - 1] });
     let description = this.$t(`meta-descr_catalog${paramsLength ? '-car' : ''}`, { car: descrParts });
     let image;
-    if(params.body && this.firstGeneration) {
+    if (params.body && this.firstGeneration) {
       image = this.firstGeneration.generation.car_type_generation
         .find(item => this.firstGeneration.car_type_id === item.car_type_id).transformed_media?.main?.[0];
-    } else if(params.model && this.catalogItems?.items?.[0]) {
+    } else if (params.model && this.catalogItems?.items?.[0]) {
       image = this.catalogItems?.items?.[0].car_type_generation[0].transformed_media?.main?.[0];
-    } else if(params.brand) {
+    } else if (params.brand) {
       image = this.selectedBrand.main;
     }
     

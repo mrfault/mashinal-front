@@ -148,8 +148,13 @@
     }
     i {
       flex-shrink: 0;
-      color: $red-1;
       margin-right: 10px;
+      &:not(.text-dark-blue-2) {
+        color: $red-1;
+      }
+      &.icon-unblock {
+        font-size: 1.61em;
+      }
     }
   }
 }

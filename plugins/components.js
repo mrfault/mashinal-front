@@ -24,6 +24,7 @@ import FormSelect from '~/components/forms/FormSelect';
 import FormButtons from '~/components/forms/FormButtons';
 import FormRange from '~/components/forms/FormRange';
 import FormSwitch from '~/components/forms/FormSwitch';
+import ContentEditable from '~/components/forms/ContentEditable';
 // transitions
 import TransitionExpand from '~/components/transitions/TransitionExpand';
 // ***
@@ -54,3 +55,4 @@ Vue.component('form-select', FormSelect);
 Vue.component('form-buttons', FormButtons);
 Vue.component('form-range', FormRange);
 Vue.component('form-switch', FormSwitch);
+Vue.component('content-editable', ContentEditable);

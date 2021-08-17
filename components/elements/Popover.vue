@@ -57,7 +57,7 @@
     },
     watch: {
       show(value) {
-        if(value) document.addEventListener('click', this.handleClick);
+        if (value) document.addEventListener('click', this.handleClick);
         else document.removeEventListener('click', this.handleClick);
       }
     },

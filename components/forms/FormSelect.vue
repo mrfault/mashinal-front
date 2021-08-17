@@ -192,9 +192,9 @@
       getValue(option, onlykey = false) {
         const name = option.name[this.locale] || option.name.ru || option.name;
         const key = this.$notUndefined(option.id,option.key);
-        if(!onlykey && this.slugInValue)
+        if (!onlykey && this.slugInValue)
           return option.slug || key;
-        if(!onlykey && this.nameInValue) {
+        if (!onlykey && this.nameInValue) {
           return { key: key, name: name }
         }
         return this.$notUndefined(key,name);
@@ -248,7 +248,7 @@
             value = this.multiple ? [] : '';
           } else {
             value = this.getValue(option);
-            if(this.clearOption && this.getKey(value) === -1) {
+            if (this.clearOption && this.getKey(value) === -1) {
               this.clearSelect();
               return;
             } else {
@@ -268,11 +268,11 @@
         return [...addons, ...this.options];
       },
       getFilteredOptions() {
-        if(!this.search || !this.hasSearch) return this.getOptions;
+        if (!this.search || !this.hasSearch) return this.getOptions;
         return this.options.filter(option => this.$search(this.getOptionName(option), this.search));
       },
       getLabelText() {
-        if(this.custom) {
+        if (this.custom) {
           let value;
           let read = this.values.read !== false;
           if (this.values.from && this.values.to) value = `${this.$readNumber(this.values.from, read)} - ${this.$readNumber(this.values.to, read)}`;
@@ -295,11 +295,11 @@
         return `${(this.showLabelOnSelect && this.allowClear && !(this.custom && !this.values.showLabel)) ? '' : this.label + ': '}${this.getLabelText}`;
       },
       hasNoValue() {
-        if(this.custom) 
+        if (this.custom) 
           return this.values?.count ? false : (this.label === this.getLabelText.replace(`, ${this.suffix}`, ''));
-        if(this.selectValue instanceof Array) {
+        if (this.selectValue instanceof Array) {
           for(let i in this.selectValue)
-            if(this.options.map(option => this.getValue(option, true)).indexOf(this.getKey(this.selectValue[i])) !== -1)
+            if (this.options.map(option => this.getValue(option, true)).indexOf(this.getKey(this.selectValue[i])) !== -1)
               return false;
           return true;
         } else return this.selectValue === '' || this.selectValue === null;
@@ -320,29 +320,29 @@
         this.showOptions = false;
       },
       disabled(disabled) {
-        if(disabled && this.clearOnDisable) this.clearSelect();
+        if (disabled && this.clearOnDisable) this.clearSelect();
       },
       value() {
-        if(this.value === undefined) 
+        if (this.value === undefined) 
           this.selectValue = undefined;
       },
       showOptions(val) {
-        if(val) {
+        if (val) {
           this.blockClick = true;
           setTimeout(() => {
             this.blockClick = false;
           }, 0);
           this.$nextTick(() => {
-            if(this.hasSearch && !this.isMobileBreakpoint) {
+            if (this.hasSearch && !this.isMobileBreakpoint) {
               this.$refs.searchInput?.focus();
             }
             // scroll to the selected option
-            if(!this.hasNoValue && !this.isMobileBreakpoint) {
-              if(!this.$refs.vs) return;
+            if (!this.hasNoValue && !this.isMobileBreakpoint) {
+              if (!this.$refs.vs) return;
               this.$refs.vs.scrollIntoView('.select-menu_dropdown-option.anchor', 0);
             }
             // focus on first input
-            if(this.custom) {
+            if (this.custom) {
               this.$el.querySelector('.text-input input')?.focus();
             }
           });
@@ -350,7 +350,7 @@
           this.search = '';
         }
         // hide overflow when selected
-        if(!this.inSelectMenu) {
+        if (!this.inSelectMenu) {
           document.querySelector('body').classList[val ? 'add' : 'remove']('select-menu-open');
         }
       },

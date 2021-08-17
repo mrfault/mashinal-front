@@ -1,14 +1,14 @@
 export const ServicesMixin = {
   methods: {
     getServiceIcon(type) {
-      if(type == 1) return 'vip';
-      else if(type == 2) return 'premium';
-      else if(type == 4) return 'top';
+      if (type == 1) return 'vip';
+      else if (type == 2) return 'premium';
+      else if (type == 4) return 'top';
     },
     getServiceLabel(count, label, shorten = false) {
       const replaced = (str) => !shorten ? str 
         : str.replace(/день|дня|дней/, 'д.').replace('gün', 'g.').replace('dəfə', 'd.').replace('штука', 'шт.');
-      if(!['day','count'].includes(label)) return replaced(`${count} ${label}`);
+      if (!['day','count'].includes(label)) return replaced(`${count} ${label}`);
       return replaced(this.$readPlural(count, this.$t('plural_forms_'+label)));
     },
     getReplacedName(name) {

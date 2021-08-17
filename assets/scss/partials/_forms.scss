@@ -104,6 +104,13 @@ input::-webkit-inner-spin-button {
       color: $grey-3;
     }
   }
+  &.placeholder-lighter {
+    i,
+    input::placeholder,
+    textarea::placeholder {
+      opacity: .4;
+    }
+  }
   input {
     height: 34px;
     overflow: hidden;

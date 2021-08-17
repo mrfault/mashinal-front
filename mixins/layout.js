@@ -65,14 +65,14 @@ export const LayoutMixin = {
     // login
     toggleEchoListening(toggle) {
       if (toggle) {
-        this.connectEcho().listen('SendMessage', this.appendToMessage);
-      } else if(window.Echo) {
+        this.connectEcho().listen('SendMessage', this.addNewMessage);
+      } else if (window.Echo) {
         this.connectEcho().stopListening('SendMessage');
       }
     },
     async getUserData() {
-      if(!this.loggedIn) return;
-      if(!this.messages.length) await this.getMessages();
+      if (!this.loggedIn) return;
+      if (!this.messages.length) await this.getMessages();
       await this.getFavorites();
     },
     closeLogin() {
@@ -83,7 +83,7 @@ export const LayoutMixin = {
       let key = this.loginActionKey;
       this.closeLogin();
       this.resetSellTokens();
-      if(key) this.$nuxt.$emit('after-login', key);
+      if (key) this.$nuxt.$emit('after-login', key);
     }
   },
   created() {

@@ -94,7 +94,7 @@ export default {
       }
     },
     getPartsData(index = -1, get_comment) {
-      if(index < 0) return Object.keys(this.state).length;
+      if (index < 0) return Object.keys(this.state).length;
       return Object.keys(this.state[index].form).filter(key => (
         this.state[index].form[key] && (get_comment ? key === 'comment' : key !== 'comment')
       )).reverse();

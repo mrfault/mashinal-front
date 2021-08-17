@@ -189,7 +189,9 @@
 }
 
 .inner-thumbs-gallery {
-  margin-bottom: 25px;
+  &:not(:last-child) {
+    margin-bottom: 25px;
+  }
   .swiper-container {
     overflow: visible;
   }

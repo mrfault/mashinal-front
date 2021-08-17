@@ -65,7 +65,7 @@
         />
         <transition-group name="fade">
           <div v-if="showLightbox" class="fslightbox-blur-bg" :key="0">
-            <img :src="$env.BASE_URL + slides.main[currentSlide]" alt="" />
+            <img :src="$withBaseUrl(slides.main[currentSlide])" alt="" />
           </div>
           <div v-if="showLightbox" class="fslightbox-footer d-lg-none" :key="1">
             <div class="inner-gallery-lightbox-footer">
@@ -144,7 +144,7 @@ export default {
   },
   methods: {
     openLightbox(index) {
-      if(index) this.currentSlide = index;
+      if (index) this.currentSlide = index;
       this.showLightbox = true;
       this.toggleFsLightbox = !this.toggleFsLightbox;
       this.setBodyOverflow('hidden');
@@ -175,15 +175,15 @@ export default {
     },
     getMediaByKey(media, key) {
       key = media[key] ? key : Object.keys(media)[0];
-      return media[key] instanceof Array ? media[key].map(item => `${this.$env.BASE_URL}${item}`) : [];
+      return media[key] instanceof Array ? media[key].map(item => this.$withBaseUrl(item)) : [];
     },
     closeLightbox() {
-      if(this.showLightbox) {
+      if (this.showLightbox) {
         this.toggleFsLightbox = !this.toggleFsLightbox;
       }
     },
     handleSwipeTop() {
-      if(document.querySelector('body').classList.contains('zooming')) return;
+      if (document.querySelector('body').classList.contains('zooming')) return;
       this.closeLightbox();
     }
   },

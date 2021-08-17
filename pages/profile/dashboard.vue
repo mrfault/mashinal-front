@@ -24,7 +24,7 @@
             <template v-else-if="card.key === 'messages'">
               <ul>
                 <li>{{ $t('vsego') }}: {{ circleStats[3].value }}</li>
-                <li :class="{'text-red': unreadMsgCount > 0}">{{ $t('unread_messages') }}: {{ unreadMsgCount }}</li>
+                <li :class="{'text-red': notreadMsgCount > 0}">{{ $t('notread_messages') }}: {{ notreadMsgCount }}</li>
               </ul>
             </template>
             <template v-else-if="card.key === 'autosalon'">
@@ -178,11 +178,11 @@
         }));
       },
 
-      unreadMsgCount() {
-        let unread = this.messages.filter((group) => {
+      notreadMsgCount() {
+        let notread = this.messages.filter((group) => {
           return group.last_message && !group.last_message.is_read && parseInt(group.last_message.sender_id) !== parseInt(this.user.id);
         });
-        return unread.length;
+        return notread.length;
       },
 
       shouldExtendContract() {

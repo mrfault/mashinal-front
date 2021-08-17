@@ -60,8 +60,8 @@ export default {
       set(index) {
         let value = [];
         for(let key in this.value)
-          if(this.value[key] != index) value.push(this.value[key]);
-        if(this.value.indexOf(index) === -1) value.push(index);
+          if (this.value[key] != index) value.push(this.value[key]);
+        if (this.value.indexOf(index) === -1) value.push(index);
         this.$emit('input', value);
       }
     }

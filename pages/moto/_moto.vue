@@ -58,7 +58,7 @@ export default {
       'atvler': 'atvs'
     })[route.params.moto];
     
-    if(!slug) return error({ statusCode: 404 });
+    if (!slug) return error({ statusCode: 404 });
 
     const category = ({
       'motorcycles': { id: 1, type: 'motorcycles', url: '/grid/moto' },
@@ -104,7 +104,7 @@ export default {
       this.pending = true;
       await this.getGridSearch({ ...this.searchParams, post, page });
       this.pending = false;
-      if(page === 1) {
+      if (page === 1) {
         this.scrollTo('.announcements-sorting');
       } else {
         this.scrollTo('.announcements-grid.paginated', [-15, -20]);

@@ -97,15 +97,15 @@ export default {
   },
   methods: {
     openModalToChangeEmail() {
-      if(this.user.email) return;
+      if (this.user.email) return;
       this.$emit('open');
-      if(this.changeEmailInit) {
+      if (this.changeEmailInit) {
         this.confirmEmailCodeInput = true;
       } else {
         this.$v.$reset();
         this.newEmail = '';
         this.code = '';
-        if(this.user.email) {
+        if (this.user.email) {
           this.confirmEmailEdit = true;
         } else {
           this.confirmEmailEditInput = true;

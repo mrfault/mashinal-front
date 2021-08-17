@@ -329,7 +329,7 @@ export default {
       }
     },
     showCarNumberDisclaimer() {
-      if(this.readCarNumberDisclaimer) {
+      if (this.readCarNumberDisclaimer) {
         this.$nuxt.$emit('close-popover', 'car-number');
       } else {
         this.$nuxt.$emit('show-popover', 'car-number');
@@ -352,7 +352,7 @@ export default {
           .find(o => o.key === this.form.mileage_measure)?.name, key: 'mileage_measure' });
     },
     updateMileage(is_new) {
-      if(!is_new) {
+      if (!is_new) {
         this.isInvalid('mileage') && this.removeError('mileage');
       } else {
         let mileage = this.form.mileage;
@@ -371,7 +371,7 @@ export default {
       this.form.part = part;
     },
     updateCarFilter(key, value) {
-      if(value === false || value === '' || (typeof value === 'object' && !Object.keys(value).length))
+      if (value === false || value === '' || (typeof value === 'object' && !Object.keys(value).length))
         this.$delete(this.form.all_options, key);
       else this.$set(this.form.all_options, key, value);
       this.$nuxt.$emit('change-car-filters');
@@ -388,7 +388,7 @@ export default {
     },
     async addImages(images) {
       // passed min limit
-      if((images.length + this.savedFiles.length + this.uploading) >= this.minFiles)
+      if ((images.length + this.savedFiles.length + this.uploading) >= this.minFiles)
         this.removeError('saved_images'); 
       // upload images
       this.uploading += images.length;
@@ -495,9 +495,9 @@ export default {
       } catch ({response: {status, data: {data, message}}}) {
         this.clearErrors();
 
-        if(status === 420) {
+        if (status === 420) {
           this.$toasted.error(this.$t(message));
-          if(data.need_pay) {
+          if (data.need_pay) {
             this.isAlreadySold = true;
             this.scrollTo('.publish-post');
           }
@@ -509,7 +509,7 @@ export default {
             for (let key in data) {
               // key = Object.keys(data)[dataLength - Object.keys(data).indexOf(key) - 1];
               let errorKey = key;
-              if(errorKey === 'car_or_vin') errorKey = this.form.customs_clearance ? 'vin' : 'car_number';
+              if (errorKey === 'car_or_vin') errorKey = this.form.customs_clearance ? 'vin' : 'car_number';
               this.errors.push(errorKey);
               let errorIndex = this.errors.indexOf(errorKey);
               let errorText = `(${dataLength - errorIndex}/${dataLength}) ${data[key][0]}`;
@@ -523,7 +523,7 @@ export default {
         }
         
         // check if user logged in
-        if(!this.showLoginPopup && status === 499)
+        if (!this.showLoginPopup && status === 499)
           this.showLoginPopup = true;
       }
     },

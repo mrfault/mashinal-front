@@ -1,6 +1,6 @@
 <template>
   <div class="form-group">
-    <div class="text-input">
+    <div :class="['text-input', {[`${blockClass}`]:blockClass}]">
       <icon :name="iconName" v-if="iconName" :class="{invalid, disabled}" />
       <img :src="imgSrc" v-if="imgSrc" :class="{disabled}" />
       <template v-if="inputDate">
@@ -88,6 +88,7 @@
         default: false
       },
       inputClass: String,
+      blockClass: String,
       inputDate: Boolean,
       readonly: Boolean
     },
@@ -109,7 +110,7 @@
           value = (this.disabled || (this.value.length > this.maxlength)) ? this.value : value;
           this.$emit('input', value);
           // check if value was changed
-          if(value !== this.prevValue) {
+          if (value !== this.prevValue) {
             this.$emit('change', value);
             this.prevValue = value;
           }

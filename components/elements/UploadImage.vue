@@ -122,7 +122,7 @@
       }
     },
     created() {
-      if(this.defaultFiles) {
+      if (this.defaultFiles) {
         this.disableUpload = true;
       }
     },
@@ -142,13 +142,13 @@
       ['drop'].forEach(event => this.form.addEventListener(event, this.fileDrop));
       ['change'].forEach(event => this.input.addEventListener(event, this.fileDrop));
       
-      if(this.defaultFiles) {
+      if (this.defaultFiles) {
         let keys = Object.keys(this.defaultFiles);
         for(let i in keys) {
           let file = this.defaultFiles[keys[i]];
           let key = this.$notUndefined(file.key, i);
           this.$set(this.files, key, { file: new Blob(), name: file.name || file.split('/').pop(), loaded: true });
-          this.$set(this.image, key, file.image || (this.$env.BASE_URL + file));
+          this.$set(this.image, key, file.image || this.$withBaseUrl(file));
           this.$set(this.orderdedKeys, this.orderdedKeys.length, key);
         }
         this.disableUpload = false;
@@ -182,7 +182,7 @@
 
         for (let i = 0; i < newFiles.length; i++) {
           let isImage = newFiles[i].type.match('image.*');
-          if(!isImage || this.filesLength === this.maxFiles) break;
+          if (!isImage || this.filesLength === this.maxFiles) break;
           
           let key = this.index;
 
@@ -207,7 +207,7 @@
           this.$set(this.image, key, reader.result);
           this.$set(this.files[key], 'loaded', true);
           this.$emit('file-loaded', this.files[key]);
-          if(this.filesLoadedLength === this.filesLength) {
+          if (this.filesLoadedLength === this.filesLength) {
             this.moveToSlide(this.filesLength, 500, 100);
           }
         });
@@ -222,12 +222,12 @@
         this.$delete(this.loading, key);
         this.$delete(this.orderdedKeys, this.orderdedKeys.indexOf(key));
         
-        // if(e !== null) {
+        // if (e !== null) {
         //   index = this.orderdedKeys.indexOf(key);
         //   let active_index = this.uploadSwiper.activeIndex;        
         //   let slide_to = active_index === this.orderdedKeys.length ? index : false;
 
-        //   if(index < active_index && slide_to !== false) {
+        //   if (index < active_index && slide_to !== false) {
         //     this.moveToSlide(slide_to);
         //   }
         // }
@@ -256,7 +256,7 @@
       },
       deleteImageByKey(key) {
         Object.keys(this.files).map((k, i) => {
-          if(k == key) this.fileDelete(key, i);
+          if (k == key) this.fileDelete(key, i);
         });
       },
       hideImagePreloaderByKey(key) {

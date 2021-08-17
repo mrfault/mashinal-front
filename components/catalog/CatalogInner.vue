@@ -25,7 +25,7 @@
             </div>
             <div>
               <div class="body">
-                <inline-svg :src="$env.BASE_URL + type.transformed_media" />
+                <inline-svg :src="$withBaseUrl(type.transformed_media)" />
               </div>
               <div :class="['length', {'hidden': !main.size.length}]">
                 <img src="/img/size-length.svg" alt="" />
@@ -213,9 +213,9 @@ export default {
         ].indexOf(key) !== -1;
     },
     getSuffix(key) {
-      if(key === 'obem' || key === 'raskhod') return this.$t('char_litre');
-      if(key === 'moshchnost') return this.$t('char_h_power');
-      if(key === 'razgon') return this.$t('char_second');
+      if (key === 'obem' || key === 'raskhod') return this.$t('char_litre');
+      if (key === 'moshchnost') return this.$t('char_h_power');
+      if (key === 'razgon') return this.$t('char_second');
     },
     getDivSpecs(specs) {
       let divSpecs = [{}, {}];

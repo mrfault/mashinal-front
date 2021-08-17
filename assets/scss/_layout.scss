@@ -115,6 +115,10 @@ hr {
   cursor: pointer;
 }
 
+.user-select-none {
+  user-select: none;
+}
+
 .pointer-events-none {
   pointer-events: none;
 }
@@ -1489,21 +1493,21 @@ main {
     }
   }
 
-  .modal-popup {
-    .__rail-is-vertical {
-      .__bar-is-vertical {
-        background: $greyish-blue-3 !important;
+  .light-mode {
+    .white-scroll-bg {
+      .__rail-is-vertical {
+        .__bar-is-vertical {
+          background: $greyish-blue-3 !important;
+        }
       }
     }
   }
   
   .dark-mode {
-    &, .modal-popup {
-      .__rail-is-vertical {
-        background: transparent !important;
-        .__bar-is-vertical {
-          background: $grey-1 !important;
-        }
+    .__rail-is-vertical {
+      background: transparent !important;
+      .__bar-is-vertical {
+        background: $grey-1 !important;
       }
     }
   }

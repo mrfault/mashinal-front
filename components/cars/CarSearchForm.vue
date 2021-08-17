@@ -377,19 +377,19 @@ export default {
       if (id) await this.getModelGenerationsArray({ value: slug, brand_slug, index });
     },
     setCarFilter(key, value) {
-      if(value === false || value === '' || (typeof value === 'object' && !Object.keys(value).length))
+      if (value === false || value === '' || (typeof value === 'object' && !Object.keys(value).length))
         this.$delete(this.form.all_options, key);
       else this.$set(this.form.all_options, key, value);
     }
   },
   created() {
     this.$nuxt.$on('go-to-search', this.goToSearch);
-    if(this.routeName === 'index') 
+    if (this.routeName === 'index') 
       this.$nuxt.$on('logo-click', this.resetForm);
   },
   beforeDestroy() {
     this.$nuxt.$off('go-to-search', this.goToSearch);
-    if(this.routeName === 'index') 
+    if (this.routeName === 'index') 
       this.$nuxt.$off('logo-click', this.resetForm);
   }
 }

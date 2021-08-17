@@ -17,20 +17,20 @@ Vue.use({
         },
         // tracking events with fb pixel
         fbTrack(eventName, options) {
-          if(this.$env.DEV) {
+          if (this.$env.DEV) {
             console.log('fb pixel track "' + eventName + '"', options ? JSON.stringify(options) : '');
           } else {
-            if(!this.$fb) console.warn('fb pixel not setted');
-            else if(options) this.$fb.track(eventName, options);
+            if (!this.$fb) console.warn('fb pixel not setted');
+            else if (options) this.$fb.track(eventName, options);
             else this.$fb.track(eventName);
           }
         },
         // tracking events with gtag manager
         gtagTrack(eventKey) {
-          if(this.$env.DEV) {
+          if (this.$env.DEV) {
             console.log('gtag track "' + eventKey + '"');
           } else {
-            if(!this.$gtag) console.warn('gtag not setted');
+            if (!this.$gtag) console.warn('gtag not setted');
             else this.$gtag('event', 'conversion', { send_to: eventKey });
           }
         },
@@ -82,7 +82,7 @@ Vue.use({
         getParentByClassName(el, className) {
           el = typeof el === 'string' ? document.querySelector(el) : el;
           for( ; el && el !== document; el = el.parentNode) {
-            if(el.classList.contains(className)) return el;
+            if (el.classList.contains(className)) return el;
           }
           return null;
         },
@@ -92,19 +92,24 @@ Vue.use({
           else if (item.moto_atv_brand) return item.moto_atv_brand.name;
           else if (item.moto_brand) return item.moto_brand.name;
           else if (item.commercial_brand) return this.$translateSoft(item.commercial_brand.name);
+          else if (item.brand) return item.brand.name;
           return '';
         },
         getAnnouncementModelName(item) {
-          if (item.car_catalog) return (item.car_catalog.model || item.model).name;
+          if (item.car_catalog) return this.$translateHard((item.car_catalog.model || item.model).name);
           else if (item.scooter_model) return item.scooter_model.name;
           else if (item.moto_atv_model) return item.moto_atv_brand.name;
           else if (item.moto_model) return item.moto_model.name;
           else if (item.commercial_model) return this.$translateSoft(item.commercial_model.name);
+          else if (item.model) return this.$translateHard(item.model.name);
           return '';
         },
         getAnnouncementTitle(item) {
           if (item.title) return item.title;
-          return this.getAnnouncementBrandName(item) + ' ' + this.getAnnouncementModelName(item);
+          let brand = this.getAnnouncementBrandName(item);
+          let model = this.getAnnouncementModelName(item);
+          if (!brand && !model) return '';
+          return (brand || '') + ' ' + (model || '');
         },
         getAnnouncementContact(item) {
           return {
@@ -114,7 +119,7 @@ Vue.use({
             name: item.user.full_name,
             phone: item.user.phone,
             address: item.address,
-            img: item.user.avatar ? `${this.$env.BASE_URL}/storage/${item.user.avatar}` : '',
+            img: item.user.avatar ? this.$withBaseUrl(`/storage/${item.user.avatar}`) : '',
             lat: item.latitude ? parseFloat(item.latitude) : 0,
             lng: item.longitude ? parseFloat(item.longitude) : 0,
             link: item.is_autosalon ? this.$localePath(`/salons/${item.user.autosalon.id}`) : false
@@ -149,7 +154,7 @@ Vue.use({
           return ['xs', 'sm', 'md'].includes(this.breakpoint);
         },
         isMobileDevice() {
-          if(!navigator.userAgent) return false;
+          if (!navigator.userAgent) return false;
           return [/iPhone/i,/iPad/i,/iPod/i,/Android/i,/BlackBerry/i,/Windows Phone/i]
             .some(os => navigator.userAgent.match(os));
         },

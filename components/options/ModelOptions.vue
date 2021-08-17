@@ -92,7 +92,7 @@ export default {
       }
     },
     getFilteredOptions() {
-      if(!this.search) return this.options;
+      if (!this.search) return this.options;
       return this.options.filter(option => this.$search(option.name, this.search));
     },
     getPopularOptions() {

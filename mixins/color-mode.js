@@ -18,9 +18,9 @@ export const ColorModeMixin = {
       } 
       try {
         // try both new and deprecated methods
-        if(darkMediaQuery.addEventListener) {
+        if (darkMediaQuery.addEventListener) {
           darkMediaQuery.addEventListener('change', handleMediaQuery);
-        } else if(darkMediaQuery.addListener) {
+        } else if (darkMediaQuery.addListener) {
           darkMediaQuery.addListener(handleMediaQuery);
         } 
       } catch(err) {

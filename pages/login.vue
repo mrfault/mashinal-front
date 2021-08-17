@@ -62,7 +62,7 @@ export default {
     handleLogin(auth) {
       if (!auth) return;
       this.resetSellTokens();
-      let path = this.loggedIn && this.user.autosalon ? '/profile/dashboard' : '/';
+      let path = this.loggedIn && this.user.autosalon ? '/profile/dashboard' : '/profile';
       if (this.$route.query.ref) path = this.$route.query.ref;
       this.$router.push(this.$localePath(path));
     }

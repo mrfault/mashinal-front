@@ -99,10 +99,10 @@ export default {
     getImage(item) {
       const { model, generation } = {...this.$route.params};
       if (!model) {
-        return item.transformed_media ? (this.$env.BASE_URL + item.transformed_media) : false;
+        return item.transformed_media ? this.$withBaseUrl(item.transformed_media) : false;
       } else {
         let media = generation ? item.transformed_media.thumb : item.car_type_generation[0].transformed_media.thumb;
-        return media?.length ? (this.$env.BASE_URL + media[0]) : false;
+        return media?.length ? this.$withBaseUrl(media[0]) : false;
       }
     },
   }

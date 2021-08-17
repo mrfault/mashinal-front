@@ -10,7 +10,7 @@
           @change="handleChange($event, 'getSellGenerations', ['car_body_type'], ['sellGenerations','sellEngines','sellGearing','sellTransmissions','sellModifications'], 'generation_id')">
           <template #custom="{ button }">
             <div class="body-img">
-              <img :src="$env.BASE_URL + button.transformed_media" :alt="button.name[locale]" />
+              <img :src="$withBaseUrl(button.transformed_media)" :alt="button.name[locale]" />
             </div>
           </template>
         </form-buttons>
@@ -122,7 +122,7 @@ export default {
       return name;
     },
     getGenerationStyle(o) {
-      const getImage = (media) => ((media && media.length > 0) ? this.$env.BASE_URL + (media[0]) : false);
+      const getImage = (media) => ((media && media.length > 0) ? this.$withBaseUrl(media[0]) : false);
       let carType = o.car_type_generation.find(type => type.car_type_id === o.pivot.car_type_id);
       let imgUrl = getImage(carType && carType.transformed_media.thumb);
       return imgUrl ? { backgroundImage: `url('${imgUrl}')` } : { noImg: true };

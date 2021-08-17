@@ -71,7 +71,7 @@ export default {
     let image = this.getAnnouncementImage(this.announcement);
     let category = 'Motorcycle';
     if (this.announcement.moto_atv_brand) category = 'Atv';
-    else if(this.announcement.scooter_brand) category = 'Scooter';
+    else if (this.announcement.scooter_brand) category = 'Scooter';
     return this.$headMeta({ title, description, image }, {
       category,
       id: this.announcement.id_unique,
@@ -114,7 +114,7 @@ export default {
       
       let slug = 'motorcycles';
       if (this.announcement.moto_atv_brand) slug = 'atvs';
-      else if(this.announcement.scooter_brand) slug = 'scooters';
+      else if (this.announcement.scooter_brand) slug = 'scooters';
       return `/moto/${this.$t('slug_'+slug)}?filter=${encodeURI(JSON.stringify(form))}`
     }
   },
