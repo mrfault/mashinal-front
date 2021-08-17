@@ -4,7 +4,7 @@
       <div class="d-flex mb-2 mb-lg-3" @click="$set(collapsed, index, !collapsed[index])">
         <h2 class="title-with-line full-width">
           <span v-if="popular">{{ $t('popular_options') }}</span>
-          <span v-else>{{ titles[index] || '' }}</span>
+          <span v-else>{{ getTitle(index) }}</span>
         </h2>
         <icon :name="`chevron-${collapsed[index] ? 'down' : 'up'}`" class="cursor-pointer" />
       </div>
@@ -45,6 +45,7 @@ export default {
   props: {
     values: {},
     nameInValue: Boolean,
+    collapsedByDefault: Boolean,
     popular: Boolean
   },
   data() {
@@ -82,6 +83,17 @@ export default {
     isMultiple(input) {
       return this.selectMultiple.includes(input.name);
     },
+    getTitle(index) {
+      let title = this.titles[index] || '';
+      let count = 0;
+      this.carFilterOptions[index].map(input => {
+        let value = this.form[input.name];
+        if ((value instanceof Array && value?.length) || (value === true) || (typeof value === 'number')) {
+          count++;
+        }
+      });
+      return count ? `${title} (${count})` : title;
+    },
     getValue(input, values) {
       return values.hasOwnProperty(input.name) 
         ? (input.selected_key ? (this.isMultiple(input) ? values[[input.name]].includes(input.selected_key) : input.selected_key == values[[input.name]]) : values[[input.name]])
@@ -110,6 +122,11 @@ export default {
   created() {
     this.setValues();
     this.$nuxt.$on('change-car-filters', this.setValues);
+    if (this.collapsedByDefault) {
+      this.carFilterOptions.map((_, index) => {
+        this.$set(this.collapsed, index, true);
+      });
+    }
   },
   beforeDestroy() {
     this.$nuxt.$off('change-car-filters', this.setValues);

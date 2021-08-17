@@ -93,7 +93,7 @@ export const LayoutMixin = {
       this.getUserData();
       if (!auth) {
         // reset store auth data
-        // this.resetUserData();
+        this.resetUserData();
       }
     });
   },
