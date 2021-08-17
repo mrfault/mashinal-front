@@ -1,5 +1,9 @@
+import { mapGetters } from 'vuex';
+
 export const UserDataMixin = {
   computed: {
+    ...mapGetters(['countNewMessages']),
+    
     getUserAvatar() {
       if (!this.loggedIn) return undefined;
       else if (this.user.avatar?.includes('/logo.jpg')) 

@@ -13,7 +13,7 @@ Vue.use({
         async createMessagesGroup(recipientId = false, announceId = false){
           if (!recipientId && !announceId) return;
           let data = await this.$store.dispatch('createMessagesGroup', { recipientId, announceId });
-          this.$router.push(this.$localePath('profile-messages') + '?group=' + data.id);
+          this.$router.push(`${this.$localePath('/profile/messages')}?group=${data.id}`);
         },
         // tracking events with fb pixel
         fbTrack(eventName, options) {

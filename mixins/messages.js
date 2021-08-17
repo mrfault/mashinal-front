@@ -1,6 +1,9 @@
-import { mapActions, mapMutations } from 'vuex';
+import { mapGetters, mapActions, mapMutations } from 'vuex';
 
 export const MessagesMixin = {
+  computed: {
+    ...mapGetters(['countNewMessages'])
+  },
   methods: {
     ...mapActions(['markAsRead']),
     ...mapMutations(['appendToMessage']),
@@ -26,13 +29,8 @@ export const MessagesMixin = {
         });
       }
     },
-    notReadMessageGroupCount() {
-      return this.messages.filter((group) => {
-        return group.last_message && !group.last_message.is_read && (group.last_message.sender_id != this.user.id);
-      }).length;
-    },
     showNotReadMessagesToast() {
-      if (!this.routeName === 'profile-messages' && this.notReadMessageGroupCount > 0) {
+      if (!this.routeName === 'profile-messages' && this.countNewMessages > 0) {
         this.$toasted.success(this.$t('you_have_got_a_message'), { 
           action: { 
             text: this.$t('read'),

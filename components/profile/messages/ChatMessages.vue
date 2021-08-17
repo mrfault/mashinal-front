@@ -49,7 +49,7 @@
         <div class="scroll-container">
           <vue-scroll class="white-scroll-bg" ref="chat">
             <div class="messages-list-items">
-              <div class="messages-list-items_group" v-for="(messages, date) in messagesByDate" :key="date">
+              <div class="messages-list-items_group" v-for="(messages, date) in messagesByDate(group.id)" :key="date">
                 <div class="text-center">
                   <span class="btn btn--grey pointer-events-none">
                     {{ $formatDate(date, '[day], D MMM', $t('days-short'), true)[locale] }}
@@ -59,12 +59,30 @@
                   v-for="message in messages" 
                   :key="message.id"
                   :message="message"
-                  :group-attachments="attachments"
                   :raw-html="isChatBot"
+                  @show-image="openLightbox"
                 />
               </div>
             </div>
           </vue-scroll>
+        </div>
+        <div class="inner-gallery-lightbox" v-touch:swipe.top="handleSwipeTop">
+          <FsLightbox
+            :toggler="toggleFsLightbox"
+            :sources="attachments"
+            :slide="currentSlide + 1"
+            :key="lightboxKey"
+            :onClose="refreshLightbox"
+            :onBeforeClose="onBeforeClose"
+            :showThumbsOnMount="!isMobileBreakpoint"
+            :disableThumbs="isMobileBreakpoint"
+            :onSlideChange="changeLightboxSlide"
+          />
+          <transition-group name="fade">
+            <div v-if="showLightbox" class="fslightbox-blur-bg" :key="0">
+              <img :src="$withBaseUrl(attachments[currentSlide])" alt="" />
+            </div>
+          </transition-group>
         </div>
         <div class="messages-list-send" v-if="!isChatBot">
           <hr class="mb-0 mt-0" />
@@ -89,6 +107,8 @@ import { mapGetters, mapActions } from 'vuex';
 
 import { SocketMixin } from '~/mixins/socket';
 
+import FsLightbox from 'fslightbox-vue';
+
 import MessageItem from '~/components/profile/messages/MessageItem';
 import MessageSend from '~/components/profile/messages/MessageSend';
 
@@ -102,6 +122,7 @@ export default {
   },
   mixins: [SocketMixin],
   components: {
+    FsLightbox,
     MessageItem,
     MessageSend
   },
@@ -112,11 +133,15 @@ export default {
       typing: false,
       sending: false,
       timeout: -1,
-      sendingFiles: false
+      sendingFiles: false,
+      toggleFsLightbox: false,
+      showLightbox: false,
+      lightboxKey: 0,
+      currentSlide: 0
     }
   },
   computed: {
-    ...mapGetters(['suggestedMessages']),
+    ...mapGetters(['suggestedMessages','messagesByDate']),
 
     chatAvatar() {
       return this.chatUser.avatar ? this.$withBaseUrl(`/storage/${this.chatUser.avatar}`) : '/img/user.jpg';
@@ -139,10 +164,8 @@ export default {
         .map(m => m.title[this.locale]);
     },
     showSuggestedMessages() {
+      if (this.blocked || this.blockedBy) return false;
       return !this.group.messages.length && this.group.announce && this.filteredSuggestedMessages.length && !this.isChatBot;
-    },
-    messagesByDate() {
-      return this.$groupBy(this.group.messages, (m) => m.created_at.slice(0,10));
     },
     attachments() {
       return this.group.messages
@@ -201,19 +224,18 @@ export default {
     },
     handleScrollToMessage(pin = false, duration = 300) {
       this.$nextTick(() => {
-        if (pin !== false) {
-          this.$refs.chat?.scrollIntoView(`#message-${this.messagePin}`, duration, 'easeInQuad');
-        } else {
-          this.$refs.chat?.scrollTo({y: '100%'}, duration, 'easeInQuad');
-        }
+        setTimeout(() => {
+          if (pin !== false) {
+            this.$refs.chat?.scrollIntoView(`#message-${this.messagePin}`, duration, 'easeInQuad');
+          } else {
+            this.$refs.chat?.scrollTo({y: '100%'}, duration, 'easeInQuad');
+          }
+        }, 0);
       });
     },
     handleMessageLinkClick(e) {
       e.preventDefault();
-      let path = $event.srcElement.pathname;
-      if (path.match(/muqaise|comparison/))
-        window.open(`https://mashin.al${path}`, '_blank');
-      else this.$router.push(e.srcElement.pathname);
+      this.$router.push(e.srcElement.pathname);
     },
     handleTyping() {
       this.toggleTypingStatus();
@@ -221,9 +243,9 @@ export default {
     handleFiles(files) {
       this.$set(this, 'files', files);
     },
-    useSuggestedMessage(title) {
-      this.text = title;
-      this.submitMessage();
+    async useSuggestedMessage(text) {
+      this.$set(this, 'text', text);
+      await this.submitMessage();
     },
     async submitMessage() {
       if (this.disabledTexting) return;
@@ -256,6 +278,7 @@ export default {
         try {
           await this.sendMessage({ form: formData, activeGroup: this.group });
           this.markAsRead(this.group.id);
+          console.log({...this.group})
           afterSendActions();
           this.lightboxKey++;
         } catch({ response: { data: { data }}}) {
@@ -264,6 +287,34 @@ export default {
           afterSendActions();
         }
       }
+    },
+    // lightboz
+    openLightbox(src) {
+      let index = this.attachments.indexOf(src);
+      if (index !== -1) this.currentSlide = index;
+      this.showLightbox = true;
+      this.toggleFsLightbox = !this.toggleFsLightbox;
+      this.setBodyOverflow('hidden');
+    },
+    refreshLightbox() {
+      this.onBeforeClose();
+      this.lightboxKey++;
+    },
+    onBeforeClose() {
+      this.showLightbox = false;
+      this.setBodyOverflow('scroll');
+    },
+    changeLightboxSlide(fsBox) {
+      this.currentSlide = fsBox.stageIndexes.current;
+    },
+    closeLightbox() {
+      if (this.showLightbox) {
+        this.toggleFsLightbox = !this.toggleFsLightbox;
+      }
+    },
+    handleSwipeTop() {
+      if (document.querySelector('body').classList.contains('zooming')) return;
+      this.closeLightbox();
     }
   },
   watch: {
@@ -276,8 +327,11 @@ export default {
         this.handleScrollToMessage(false);
       }
     },
-    'group.messages.length'() {
+    'group.messages.length'(len) {
       this.handleScrollToMessage(false);
+    },
+    breakpoint() {
+      this.refreshLightbox();
     }
   },
   mounted() {
