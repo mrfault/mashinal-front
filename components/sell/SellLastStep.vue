@@ -135,7 +135,7 @@
         <div class="mt-2 mt-lg-3">
           <template v-if="type=== 'cars'">
             <car-filters :values="form.all_options" @change-filter="updateCarFilter" popular key="popular"/>
-            <car-filters :values="form.all_options" @change-filter="updateCarFilter" key="all"/>
+            <car-filters :values="form.all_options" @change-filter="updateCarFilter" key="all" collapsed-by-default />
           </template>
           <template v-else>
             <sell-filters

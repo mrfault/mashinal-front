@@ -37,6 +37,7 @@
               :status-title="$t('select_model')"
               :input-title="$t('model_name')"
               :value="form.selectedModel"
+              :sort-alphabetically="false"
               @input="handleModel($event.id)"
               @close="handleModel()"
             />

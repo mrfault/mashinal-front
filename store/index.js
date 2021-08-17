@@ -765,7 +765,7 @@ export const actions = {
   // Reset Data on Logout
   resetUserData({ commit }) {
     // reset services
-    commit('reset', ['myServices','myServiceHistory','myServiceOptions']);
+    commit('reset', ['myServices','myServiceHistory','myServiceOptions','messages']);
   }
 }
 
