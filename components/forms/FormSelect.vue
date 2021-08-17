@@ -42,7 +42,7 @@
                   <div v-for="option in $sortBy(getFilteredOptions, (a, b) => popularOptions.indexOf(b.id) - popularOptions.indexOf(a.id)).slice(0,6)" 
                     :key="option.id" class="col-4 popular-option" @click.stop="selectValue = option">
                     <div class="img" v-if="imgKey && option[imgKey]">
-                      <img :src="option[imgKey]" :alt="getOptionName(option)" />
+                      <img :src="$withBaseUrl(option[imgKey])" :alt="getOptionName(option)" />
                     </div>
                     <div class="text-truncate">
                       <span>{{ getOptionName(option) }}</span>
@@ -53,7 +53,7 @@
                   <div :key="index" :class="['select-menu_dropdown-option', {'selected': isSelected(option), 'anchor': isAnchor(index)}]" 
                       @click.stop="selectValue = option">
                     <div class="img" v-if="imgKey && option[imgKey]">
-                      <img :src="option[imgKey]" :alt="getOptionName(option)" />
+                      <img :src="$withBaseUrl(option[imgKey])" :alt="getOptionName(option)" />
                     </div>
                     <div class="text-truncate">
                       <span>{{ getOptionName(option) }}</span>
@@ -82,7 +82,7 @@
                 <div v-for="option in $sortBy(getFilteredOptions, (a, b) => popularOptions.indexOf(b.id) - popularOptions.indexOf(a.id)).slice(0,6)" 
                   :key="option.id" class="col-4 popular-option" @click.stop="selectValue = option">
                   <div class="img" v-if="imgKey && option[imgKey]">
-                    <img :src="option[imgKey]" :alt="getOptionName(option)" />
+                    <img :src="$withBaseUrl(option[imgKey])" :alt="getOptionName(option)" />
                   </div>
                   <div class="text-truncate">
                     <span>{{ getOptionName(option) }}</span>
@@ -93,7 +93,7 @@
                 <div :key="index" :class="['select-menu_dropdown-option', {'selected': isSelected(option), 'anchor': isAnchor(index)}]" 
                     @click.stop="selectValue = option">
                   <div class="img" v-if="imgKey && option[imgKey]">
-                    <img :src="option[imgKey]" :alt="getOptionName(option)" />
+                    <img :src="$withBaseUrl(option[imgKey])" :alt="getOptionName(option)" />
                   </div>
                   <div class="text-truncate">
                     <span>{{ getOptionName(option) }}</span>
