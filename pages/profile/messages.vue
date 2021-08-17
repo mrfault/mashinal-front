@@ -36,7 +36,7 @@
                       <chat-item v-for="group in filteredGroups" 
                         @select-group="selectActiveGroup"
                         @show-modal="activeModalGroup = group, showControlsModal = true;"
-                        :group="group"
+                        :group="messagesByGroup(group.id)"
                         :blocked="isBlocked(group)"
                         :active="activeGroupId == group.id"
                         :key="group.id"
@@ -73,8 +73,8 @@
           <div class="col-auto" v-if="!isMobileBreakpoint || activeGroupId !== false">
             <div class="card messages-card">
               <chat-messages
-                v-if="activeGroupMessages && messages.length && activeGroupId !== false"
-                :group="activeGroupMessages"
+                v-if="messages.length && activeGroupId !== false && messagesByGroup(activeGroupId)"
+                :group="messagesByGroup(activeGroupId)"
                 :chat-user="activeGroupInterlocutor"
                 :blocked="getBlockedUserIds.includes(activeGroupInterlocutor.id)"
                 :blocked-by="getBlockedByUserIds.includes(activeGroupInterlocutor.id)"
@@ -160,7 +160,7 @@
       
     },
     computed: {
-      ...mapGetters(['messages']),
+      ...mapGetters(['messages','messagesByGroup']),
 
       crumbs() {
         return [
@@ -174,14 +174,9 @@
         });
       },
 
-      activeGroupMessages() {
-        return this.messages.find(group => group.id == this.activeGroupId);
-      },
       activeGroupInterlocutor() {
-        if (this.activeGroupId === false) return {};
-        let group = this.activeGroupMessages;
-        if (!group) return {};
-        return group.sender_id == this.user.id ? group.recipient : group.sender;
+        let group = this.messagesByGroup(this.activeGroupId);
+        return !group ? {} : group.sender_id == this.user.id ? group.recipient : group.sender;
       },
 
       getBlockedUserIds() {

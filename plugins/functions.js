@@ -151,7 +151,7 @@ export default function({ app, route, store }, inject) {
   inject('clone', _.clone);
   inject('sortBy', _.sortBy);
   inject('chunk', _.chunk);
-  inject('uniq', _.uniq);
-  inject('groupBy', _.groupBy);
+  // inject('uniq', _.uniq);
+  // inject('groupBy', _.groupBy);
   inject('moment', moment);
 }

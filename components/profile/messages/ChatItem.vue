@@ -21,7 +21,7 @@
             <icon name="handshake" v-else />
           </span>
           <span class="text-right" v-if="notReadCount">
-            <span class="badge">{{ notReadCount }}</span>
+            <span class="badge-counter">{{ notReadCount }}</span>
           </span>
         </div>
         <div class="chat-details text-dark-blue-3">

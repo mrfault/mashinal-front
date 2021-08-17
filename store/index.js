@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import _ from '~/lib/underscore';
 
 const getInitialState = () =>({
   loading: true,
@@ -126,7 +127,15 @@ export const getters = {
   favoriteAnnouncements: s => s.favoriteAnnouncements,
   // profile
   messages: s => s.messages,
+  messagesByGroup: s => id => s.messages.find(group => group.id == id),
+  messagesByDate: s => id => {
+    let messages = s.messages.find(group => group.id == id).messages;
+    return _.groupBy(messages, (message) => message.created_at.slice(0,10));
+  },
   suggestedMessages: s => s.suggestedMessages,
+  countNewMessages: s => s.messages.filter((group) => {
+    return group.last_message && !group.last_message.is_read && (group.last_message.sender_id != s.auth.user.id);
+  }).length,
   // services
   services: s => s.services,
   actives: s => s.actives,
@@ -787,10 +796,14 @@ export const mutations = {
       state.messages.unshift(payload.group);
       groupIndex = 0;
     }
-    state.messages[groupIndex].is_read = false;
-    state.messages[groupIndex].messages.push(payload.message);
-    state.messages[groupIndex].last_message = payload.message;
-    // show group first
+
+    state.messages[groupIndex] = {
+      ...state.messages[groupIndex],
+      is_read: false,
+      messages: [...state.messages[groupIndex].messages, payload.message],
+      last_message: payload.message
+    }
+    
     let group = state.messages[groupIndex];
     let isChatBot = group.sender_id == 3;
     state.messages.splice(groupIndex, 1);
