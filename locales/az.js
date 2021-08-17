@@ -952,6 +952,7 @@ export default {
   "no_restriction": "Nəqliyyat vasitəsinə tətbiq edilmiş mövcud deyil",
   "no_results_found": "Nəticə tapılmadı",
   "no_spare_parts_found_for_this_request": "Bu sorğu ilə bağlı ehtiyat hissələri tapılmadı",
+  "no_templates": "Axtarış şablonları hələ yadda saxlamamısınız",
   "not_cleared": "Gömrükdən keçməmiş",
   "not_found": "Tapılmadı",
   "not_set": "Qeyd edilməmişdir",
