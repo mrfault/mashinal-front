@@ -10,8 +10,8 @@
               <span>{{ user.full_name }}</span>
             </h2>
             <template v-if="isMobileBreakpoint">
-              <span>{{ $moment(user.birthday).format('DD.MM.YYYY') }}</span>
-              <span>{{ user.gender == 1 ? $t('male') : $t('female') }}</span>
+              <span v-if="user.birthday">{{ $moment(user.birthday).format('DD.MM.YYYY') }}</span>
+              <span v-if="[1,2].includes(user.gender)">{{ user.gender == 1 ? $t('male') : $t('female') }}</span>
             </template>
           </div>
         </div>
@@ -21,13 +21,13 @@
         </nuxt-link>
         <div class="row profile_info">
           <template v-if="!isMobileBreakpoint">
-            <div class="col-lg-3">
+            <div class="col-lg-3" v-if="user.birthday">
               <div class="profile_info-details">
                 <icon name="calendar" />
                 <span>{{ $moment(user.birthday).format('DD.MM.YYYY') }}</span>
               </div>
             </div>
-            <div class="col-lg-3">
+            <div class="col-lg-3" v-if="[1,2].includes(user.gender)">
               <div class="profile_info-details">
                 <icon name="user" />
                 <span>{{ user.gender == 1 ? $t('male') : $t('female') }}</span>
