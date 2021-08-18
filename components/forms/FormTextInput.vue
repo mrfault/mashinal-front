@@ -34,12 +34,12 @@
           v-model="inputValue"
           @focus="$emit('focus', $event)"
         />
-        <span v-if="type === 'password'" class="show-password" @click="showPassword = !showPassword">
+        <span v-if="type === 'password' && !invalid" class="show-password" @click="showPassword = !showPassword">
           <icon :name="showPassword ? 'eye' : 'hide'" />
         </span>
       </template>
       <icon name="alert-circle" v-if="invalid" class="invalid" />
-      <icon name="check-circle" v-else-if="valid" class="valid" />
+      <icon name="check-circle" v-else-if="valid && type !== 'password'" class="valid" />
       <slot />
     </div>
   </div>
