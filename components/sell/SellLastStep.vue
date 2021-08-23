@@ -48,7 +48,7 @@
           </div>
           <div class="col-12 col-lg-4 mb-2 mb-lg-0">
             <form-select :label="$t('data')" custom custom-checkboxes :allow-clear="false"
-              :values="{ count: ['is_new','beaten','guaranty','customs_clearance','tradeable'].filter(a => form[a]).length }">
+              :values="{ count: ['is_new','beaten','guaranty','customs_clearance','tradeable','credit'].filter(a => form[a]).length }">
               <div class="form-merged">
                 <form-checkbox :label="$t('is_new')" v-model="form.is_new" input-name="is_new" @change="updateMileage"/>
                 <form-checkbox :label="$t('bitie')" v-model="form.beaten" input-name="beaten">
@@ -58,6 +58,7 @@
                 <form-checkbox :label="$t('not_cleared')" v-model="form.customs_clearance" input-name="customs_clearance"
                   @change="removeError('car_number', true), removeError('vin', true)" />
                 <form-checkbox :label="$t('tradeable')" v-model="form.tradeable" input-name="tradeable" />
+                <form-checkbox :label="$t('credit_possible')" v-model="form.credit" input-name="credit" />
               </div>
             </form-select>
           </div>
@@ -75,7 +76,8 @@
           <div class="row">
             <div class="col-12 col-lg-4 mb-2 mb-lg-0">
               <form-select :label="$t('region')" :options="sellOptions.regions" v-model="form.region_id" has-search 
-                :invalid="isInvalid('region_id')" @change="removeError('region_id'), updatePreview('region')" />
+                :invalid="isInvalid('region_id')" @change="removeError('region_id'), updatePreview('region')" 
+                :clear-option="false" />
             </div>
             <div class="col-12 col-lg-4 mb-2 mb-lg-0">
               <form-text-input :placeholder="$t('address')" icon-name="placeholder" v-model="form.address" />
@@ -354,6 +356,7 @@ export default {
     updateMileage(is_new) {
       if (!is_new) {
         this.isInvalid('mileage') && this.removeError('mileage');
+        this.updatePreview('mileage');
       } else {
         let mileage = this.form.mileage;
         this.form.mileage = mileage > 500 || !mileage ? 0 : mileage;
