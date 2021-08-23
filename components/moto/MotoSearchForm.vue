@@ -12,17 +12,17 @@
             @change="setBrand($event, key)" has-search/>
         </div>
         <div class="col-6 col-lg-4 mb-2 mb-lg-3">
-          <div class="row">
+          <div :class="['row', {'has-add-btn': canAddRow(index), 'has-remove-btn': canRemoveRow()}]">
             <div :class="['col', {'col-12': isMobileBreakpoint}]">
               <form-select :label="$t('model')" :options="models[key]" v-model="form.additional_brands[key]['model']"
                 :disabled="form.additional_brands[key]['brand'] && !models[key].length" has-search />
             </div>
             <div class="col-auto" v-if="!isMobileBreakpoint">
               <div class="form-counter">
-                <div class="form-info" v-if="rows.length < 5 && index === rows.length - 1" @click="addSearchRow(key)">
+                <div class="form-info" v-if="canAddRow(index)" @click="addSearchRow(key)">
                   <icon name="plus" />
                 </div>
-                <div class="form-info" v-if="rows.length > 1" @click="removeSearchRow(key)">
+                <div class="form-info" v-if="canRemoveRow()" @click="removeSearchRow(key)">
                   <icon name="minus" />
                 </div>
               </div>
@@ -288,7 +288,7 @@ export default {
     },
     getMotoCapacityOptions() {
       return this.motoOptions?.config.volume.values.map(o => ({
-        key: o.key, 
+        key: parseInt(o.name), 
         name: o.name.replace(' см³', '')
       }));
     }

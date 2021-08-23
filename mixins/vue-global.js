@@ -119,7 +119,7 @@ Vue.use({
             name: item.user.full_name,
             phone: item.user.phone,
             address: item.address,
-            img: item.user.avatar ? this.$withBaseUrl(`/storage/${item.user.avatar}`) : '',
+            img: item.user.avatar ? this.$withBaseUrl(`/storage/${item.user.avatar}`) : '/img/user.jpg',
             lat: item.latitude ? parseFloat(item.latitude) : 0,
             lng: item.longitude ? parseFloat(item.longitude) : 0,
             link: item.is_autosalon ? this.$localePath(`/salons/${item.user.autosalon.id}`) : false

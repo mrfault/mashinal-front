@@ -131,6 +131,12 @@ export const SearchMixin = {
     getOptionValue(name, key) {
       return this[`get${name}Options`].find(option => option.key === key)?.name || '';
     },
+    canAddRow(index) {
+      return this.rows.length < 5 && index === this.rows.length - 1;
+    },
+    canRemoveRow() {
+      return this.rows.length > 1;
+    },
     addSearchRow(key) {
       if (this.rows.length === 5) return;
       let keys = Object.keys(this.form.additional_brands);

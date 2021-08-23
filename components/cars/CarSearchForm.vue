@@ -59,17 +59,17 @@
                     :disabled="form.additional_brands[key]['brand'] && !carModels[key].length" @change="setModel($event, key)" has-search />
                 </div>
                 <div class="col-4">
-                  <div class="row">
+                  <div :class="['row', {'has-add-btn': canAddRow(index), 'has-remove-btn': canRemoveRow()}]">
                     <div class="col">
                       <form-select :label="$t('generation')" :options="carGenerations[key]" v-model="form.additional_brands[key]['generation']"
                         :disabled="form.additional_brands[key]['model'] && !carGenerations[key].length" has-search />
                     </div>
                     <div class="col-auto">
                       <div class="form-counter">
-                        <div class="form-info" v-if="rows.length < 5 && index === rows.length - 1" @click="addSearchRow(key)">
+                        <div class="form-info" v-if="canAddRow(index)" @click="addSearchRow(key)">
                           <icon name="plus" />
                         </div>
-                        <div class="form-info" v-if="rows.length > 1" @click="removeSearchRow(key)">
+                        <div class="form-info" v-if="canRemoveRow()" @click="removeSearchRow(key)">
                           <icon name="minus" />
                         </div>
                       </div>
@@ -196,7 +196,7 @@
               <car-filters :values="form.all_options" name-in-value @change-filter="setCarFilter" />
             </div>
           </template>
-          <div class="col-6 col-lg-2 mb-2 mb-lg-3" v-if="!isMobileBreakpoint">
+          <div class="col-6 col-lg-2 mb-2 mb-lg-3" v-if="!isMobileBreakpoint && !advanced">
             <div class="form-info text-green">
               {{ $readPlural(totalCount, $t('plural_forms_announcements')) }}
             </div>
