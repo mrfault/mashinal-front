@@ -59,7 +59,7 @@ export const MenusDataMixin = {
           { title: 'my_announces', route: '/profile/announcements', showOnCard: true },
           { title: 'messages', route: '/profile/messages', showOnCard: false },
           { title: 'statistics', route: '/profile/statistics', showOnCard: false },
-          { title: 'my_profile', route: '/profile/autosalon', showOnCard: false },
+          { title: 'my_profile', route: '/profile/salon', showOnCard: false },
           { title: 'payment_history', route: '/profile/payments', showOnCard: true },
           { title: 'balans', route: '/profile/balance', showOnCard: true }
         ]  

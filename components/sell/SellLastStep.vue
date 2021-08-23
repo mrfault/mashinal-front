@@ -475,7 +475,7 @@ export default {
       let postUrl = '/sell/';
       postUrl += (this.type !== 'cars' ? this.type + '/' : '');
       postUrl += (this.type !== 'commercial' || !this.edit ? 'post/' : '');
-      postUrl += (this.edit ? ('edit/' + this.$route.params.edit) : 'publish');
+      postUrl += (this.edit ? ('edit/' + this.$route.params.id.slice(0, -1)) : 'publish');
       try {
         // publish or update post
         const res = await this.$axios.$post(postUrl, formData);
@@ -490,7 +490,9 @@ export default {
         if (promote || this.restore || this.isAlreadySold) {
           window.location = res.data.redirect_url;
         } else {
-          this.$router.push(this.$localePath('/profile/announcements'));
+          this.$router.push(this.$localePath('/profile/announcements'), () => {
+            this.$toasted.success(this.$t('saved_changes'));
+          });
         }
       } catch ({response: {status, data: {data, message}}}) {
         this.clearErrors();

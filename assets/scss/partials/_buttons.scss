@@ -123,6 +123,9 @@
       margin-bottom: 3px;
     }
   }
+  &.text-left {
+    justify-content: flex-start;
+  }
   &--white-outline {
     @include btn-style($bg-color: $white, $bg-hover: $white, $color-hover: $dark-blue-1, $active-bg: $white, $active-color: $red-1, $outline: true);
   }

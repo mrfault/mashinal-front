@@ -25,7 +25,7 @@
 
   export default {
     name: 'pages-profile-calls',
-    middleware: ['auth_general','auth_autosalon'],
+    middleware: ['auth_general','auth_salon'],
     components: {
       Grid
     },

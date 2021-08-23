@@ -101,7 +101,7 @@ const getInitialState = () =>({
   autosalonsSelected: [],
   autosalonsOnlyOfficial: false,
   autosalonSingle: {},
-  myAutosalon: {},
+  mySalon: {},
   myAnnouncementCalls: {},
   myAnnouncementStats: {},
   myPackageStats: {},
@@ -213,7 +213,7 @@ export const getters = {
   autosalonsInBounds: s => s.autosalonsInBounds,
   autosalonsSelected: s => s.autosalonsSelected,
   autosalonSingle: s => s.autosalonSingle,
-  myAutosalon: s => s.myAutosalon,
+  mySalon: s => s.mySalon,
   myAnnouncementCalls: s => s.myAnnouncementCalls,
   myAnnouncementStats: s => s.myAnnouncementStats,
   myPackageStats: s => s.myPackageStats
@@ -733,13 +733,13 @@ export const actions = {
     const res = await this.$axios.$get('/auto_salon/' + data.id + '?page=' + (data.page || 1));
     commit('mutate', { property: 'autosalonSingle', value: res });
   },
-  async getMyAutoSalon({commit}) {
+  async getMySalon({commit}) {
     const res = await this.$axios.$get('/my/autosalon/edit');
-    commit('mutate', { property: 'myAutosalon', value: res });
+    commit('mutate', { property: 'mySalon', value: res });
   },
-  async setMyAutoSalon({commit}, form) {
+  async updateMySalon({commit}, form) {
     const res = await this.$axios.$post('/my/autosalon/edit', form);
-    commit('mutate', { property: 'myAutosalon', value: res });
+    commit('mutate', { property: 'mySalon', value: res });
   },
   async getAnnouncementCalls({commit}, data = {}) {
     const res = await this.$axios.$get(`/my/call-announces?page=${data.page || 1}`);

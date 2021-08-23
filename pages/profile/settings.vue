@@ -10,36 +10,19 @@
       >
         <div class="card profile-settings-card">
           <div class="avatar_edit">
-            <croppa class="croppa-image" 
-              v-model="form.avatar" placeholder="" 
-              :initial-image="getUserAvatar"
-              :accept="'image/*'"
-              :canvas-color="'transparent'"
-              :zoom-speed="15" 
-              :width="100"
-              :height="100"
-              :quality="1"
-              :prevent-white-space="true" 
-              :show-remove-button="false"
-              :replace-drop="true"
-            >
-              <span class="drop-file" @click="form.avatar.chooseFile()">
-                <icon name="camera" />
-              </span>
-            </croppa>
+            <form-image v-model="form.avatar" :initial-image="getUserAvatar" />
             <p class="text-center">100x100px</p>
           </div>
           <div class="row profile_edit">
             <div class="col-lg-4 mb-3 mb-lg-3">
-              <form-text-input :maxlength="30" disabled 
-                :placeholder="$t('name')" v-model="form.name" />
+              <form-text-input :maxlength="30" disabled :placeholder="$t('name')" v-model="form.name" />
             </div>
             <div class="col-lg-4 mb-3 mb-lg-3">
               <form-text-input :placeholder="$t('birthday')" v-model="form.birthday" input-date />
             </div>
             <div class="col-lg-4 mb-3 mb-lg-3">
               <form-buttons v-model="form.gender" :options="getGenderOptions" :group-by="2"
-                btn-class="primary-outline"  />
+                btn-class="primary-outline" />
             </div>
             <div class="col-lg-4 mb-3 mb-lg-3">
               <change-email :placeholder="$t('email')" />
@@ -110,9 +93,7 @@
           gender: $auth.user.gender || '',
           birthday: app.$moment($auth.user.birthday || null).format('DD.MM.YYYY'),
           avatar: null
-        },
-        initialAvatar: null,
-        previousAvatar: null
+        }
       }
     },
     computed: {
@@ -136,21 +117,17 @@
           ? this.$moment(date, 'DD.MM.YYYY').format('DD-MM-YYYY') : null;
       },
       async submit() {
-        this.form.name = this.user.name;
-        this.form.surname = this.user.surname;
-
-        let form = {...this.form};
-        for (let key in form) {
-          if (key === 'avatar' || !form[key]) delete form[key];
-          if (key === 'birthday') form[key] = this.escapeDate(form[key]);
-        }
+        this.form.name = this.user.name || '';
+        this.form.lastname = this.user.lastname || '';
 
         let formData = new FormData();
-        for (let key in form)
-          formData.append(key, form[key]);
 
-        const blob = await this.form.avatar.promisedBlob('image/jpeg', 0.8);
-        formData.append('avatar', blob, `profile_${this.user.id}_.jpg`);
+        for (let key in this.form) {
+          let value = this.form[key];
+          if (key === 'birthday')
+            value = this.escapeDate(this.form[key]);
+          formData.append(key, value);
+        }
         
         this.$axios.$post('/profile/change_info', formData).then((res) => {
           this.$toasted.success(this.$t('saved_changes'));

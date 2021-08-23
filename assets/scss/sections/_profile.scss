@@ -63,32 +63,17 @@
   .avatar {
     &_edit {
       margin-bottom: 40px;
-      .croppa-image {
-        position: relative;
+      .form-image {
         width: 100px;
+        height: 100px;
         margin: 0 auto;
-        canvas {
-          display: block;
-          border-radius: 4px;
-        }
-        &.croppa--has-target {
-          cursor: move;
-        }
       }
-      .drop-file {
-        position: absolute;
-        bottom: 9px;
-        right: 9px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 25px;
-        height: 25px;
-        border-radius: 4px;
-        color: $dark-blue-3;
-        border: 1px solid $greyish-blue-4;
-        background-color: $white;
+      &.cover {
+        width: calc(100% - 120px);
+        .form-image {
+          width: 100%;
+          height: 100px;
+        }
       }
       p {
         font-weight: 500;
