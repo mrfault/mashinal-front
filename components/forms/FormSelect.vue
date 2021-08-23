@@ -12,7 +12,7 @@
           </template>
           <template v-else>{{ getLabelText }}</template>
         </span>
-        <span class="counter" v-if="multiple && selectValue.length > 1">{{ selectValue.length }}</span>
+        <span class="counter" v-if="multiple && selectValue.length > 1 && !shortNamesLabel">{{ selectValue.length }}</span>
         <span class="counter" v-else-if="custom && values.count">{{ values.count }}</span>
         <icon name="cross" v-if="allowClear && !hasNoValue" @click.native.stop="clearSelect" class="cursor-pointer" />
         <icon :name="iconName" v-else />
@@ -175,7 +175,8 @@
       hasNoBg: Boolean,
       popularOptions: Array,
       imgKey: String,
-      invalid: Boolean
+      invalid: Boolean,
+      shortNamesLabel: Boolean
     },
     data() {
       return {
@@ -276,14 +277,20 @@
           let value;
           let read = this.values.read !== false;
           if (this.values.from && this.values.to) value = `${this.$readNumber(this.values.from, read)} - ${this.$readNumber(this.values.to, read)}`;
-          else if (this.values.from || this.values.to) value = `${this.$t(!this.values.from ? 'to' : 'from')} ${this.$readNumber(this.values.from || this.values.to, read)}`;
+          else if (this.values.from || this.values.to) value = `${this.values.showPreposition ? (this.$t(!this.values.from ? 'to' : 'from') + ' ') : ''}${this.$readNumber(this.values.from || this.values.to, read)}`;
           else if (this.values.from === 0 || this.values.to === 0) value = `${this.$t(this.values.to === 0 ? 'to' : 'from')} 0`;
           let suffix = this.values.suffix || this.suffix;
           if (value && suffix) value += ` ${suffix}`;
           else suffix = this.suffix || this.values.suffix;
           return value && this.values.showLabel ? `${this.label}${this.values.count ? ` (${this.values.count})` : `: ${value}`}` : (value || `${this.label}${suffix ? (', '+suffix) : ''}`);
         }
+        
         let selected = this.options.filter(this.isSelected);
+
+        if (this.shortNamesLabel) {
+          return selected.length ? `${this.label}: ${selected.map(option => option.nameShort).join(', ')}` : this.label;
+        }
+
         return selected.length === 1
           ? `${(this.showLabelOnSelect && this.allowClear) ? (this.label + ': ' + (this.suffix ? (', '+this.suffix) : '')) : ''}${this.getOptionName(selected[0])}`
           : this.label;

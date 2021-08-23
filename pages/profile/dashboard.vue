@@ -124,7 +124,7 @@
 
   export default {
     name: 'pages-profile-dashboard',
-    middleware: ['auth_general','auth_autosalon'],
+    middleware: ['auth_general','auth_salon'],
     mixins: [StatsMixin, PaymentMixin],
     components: {
       DashboardCard
@@ -170,7 +170,7 @@
           { key: 'statistics', title: 'statistics', route: '/profile/statistics', icon: 'analytics' },
           { key: 'messages', title: 'messages', route: '/profile/messages', icon: 'chat' },
           { key: 'calls', title: 'phone_call_count', route: '/profile/calls', icon: 'phone' },
-          { key: 'autosalon', title: 'my_profile', route: '/profile/autosalon', icon: 'user' },
+          { key: 'autosalon', title: 'my_profile', route: '/profile/salon', icon: 'user' },
           { key: 'contract', title: 'contract', route: '/profile/payments', icon: 'calendar-1' }
         ].map(link => ({ ...link,
           title: this.$t(link.title), 

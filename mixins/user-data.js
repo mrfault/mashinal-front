@@ -7,7 +7,7 @@ export const UserDataMixin = {
     getUserAvatar() {
       if (!this.loggedIn) return undefined;
       else if (this.user.avatar?.includes('/logo.jpg')) 
-        return '/img/autosalon-logo.jpg';
+        return '/img/salon-logo.jpg';
       else if (this.user.avatar)
         return this.$withBaseUrl(`/storage/${this.user.avatar}`);
       return '/img/user.jpg';

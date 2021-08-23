@@ -62,7 +62,7 @@
 
   export default {
     name: 'pages-profile-statistics',
-    middleware: 'auth_autosalon',
+    middleware: 'auth_salon',
     mixins: [StatsMixin],
     components: {
       Grid
