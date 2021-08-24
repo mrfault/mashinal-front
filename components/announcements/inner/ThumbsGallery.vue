@@ -57,6 +57,8 @@ export default {
         if (yt_video) {
           thumbs.splice(1, 0, `https://img.youtube.com/vi/${yt_video}/hqdefault.jpg`);
         }
+      } else if (this.where === 'salon') {
+        return this.media;
       }
       return thumbs;
     }

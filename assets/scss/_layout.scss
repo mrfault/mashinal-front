@@ -127,6 +127,10 @@ hr {
   opacity: 0;
 }
 
+.overflow-hidden {
+  overflow: hidden;
+}
+
 .wrapper {
   @include calc-vh(min-height, calc(100vh));
   &.loading {

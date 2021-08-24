@@ -1,7 +1,7 @@
 <template>
   <div class="inner-gallery">
     <div class="position-relative">
-      <div class="swiper-container" v-swiper:gallerySwiper="swiperOps" ref="gallerySwiper">
+      <div class="swiper-container" v-swiper:gallerySwiper="swiperOps" ref="gallerySwiper" v-if="showSlider">
         <div class="swiper-wrapper">
           <div class="swiper-slide" :key="index" v-for="(slide, index) in slides.main">
             <div @click="currentSlide = index, openLightbox()"
@@ -13,7 +13,7 @@
           </div>
         </div>
       </div>
-      <div class="gallery-overlay">
+      <div class="gallery-overlay" v-if="showSlider">
         <div class="gallery-overlay_top d-flex">
           <template v-if="where === 'announcement'">
             <span class="badge from-border" v-if="announcement.is_autosalon">{{ $t('is_autosalon') }}</span>
@@ -111,7 +111,11 @@ export default {
     },
     media: {},
     title: String,
-    subtitle: String
+    subtitle: String,
+    showSlider: {
+      type: Boolean,
+      default: true
+    }
   },
   components: {
     FsLightbox,
@@ -157,16 +161,16 @@ export default {
       this.showLightbox = false;
       this.setBodyOverflow('scroll');
     },
-    onSlide() {
-      this.currentSlide = this.gallerySwiper.realIndex;
-    },
     changeSlide(index) {
+      if (!this.showSlider) return;
       this.gallerySwiper.slideTo(index + 1, 0);
     },
     slidePrev() {
+      if (!this.showSlider) return;
       this.gallerySwiper.slidePrev();
     },
     slideNext() {
+      if (!this.showSlider) return;
       this.gallerySwiper.slideNext();
     },
     changeLightboxSlide(fsBox) {
@@ -206,6 +210,9 @@ export default {
           main.splice(1, 0, `https://www.youtube.com/watch?v=${yt_video}`);
           types.splice(1, 0, 'youtube');
         }
+      } else if (this.where === 'salon') {
+        thumbs = this.media[1];
+        main = this.media[0];
       }
       let types = main.map(_ => 'image');
       return { thumbs, main, types };
@@ -218,16 +225,19 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      setTimeout(() => {
-        this.gallerySwiper.init();
-      }, 0);
-
-      this.$nuxt.$on('show-gallery-slide', this.changeSlide);
+      if (this.showSlider) {
+        setTimeout(() => {
+          this.gallerySwiper.init();
+        }, 0);
+      }
+      
+      if (this.showSlider) this.$nuxt.$on('show-gallery-slide', this.changeSlide);
       this.$nuxt.$on('show-lightbox', this.openLightbox);
     });
   },
   beforeDestroy() {
-    this.$nuxt.$off(['show-gallery-slide', 'show-lightbox']);
+    if (this.showSlider) this.$nuxt.$off('show-gallery-slide', this.changeSlide);
+    this.$nuxt.$off('show-lightbox', this.openLightbox);
   }
 }
 </script>
