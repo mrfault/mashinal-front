@@ -85,7 +85,7 @@ const getInitialState = () =>({
   sellTokens: false,
   sellPhoneEntered: '',
   sellPhoneRegistered: false,
-  sellAutosalonRights: false,
+  sellSalonRights: false,
   sellProgress: 5,
   sellYears: [],
   sellBody: [],
@@ -95,12 +95,12 @@ const getInitialState = () =>({
   sellTransmissions: [],
   sellModifications: [],
   sellPreviewData: {},
-  // autosalons
-  autosalonsList: [],
-  autosalonsInBounds: false,
-  autosalonsSelected: [],
-  autosalonsOnlyOfficial: false,
-  autosalonSingle: {},
+  // salons
+  salonsList: [],
+  salonsInBounds: false,
+  salonsSelected: [],
+  salonsOnlyOfficial: false,
+  salonSingle: {},
   mySalon: {},
   myAnnouncementCalls: {},
   myAnnouncementStats: {},
@@ -198,7 +198,7 @@ export const getters = {
   sellTokens: s => s.sellTokens,
   sellPhoneEntered: s => s.sellPhoneEntered,
   sellPhoneRegistered: s => s.sellPhoneRegistered,
-  sellAutosalonRights: s => s.sellAutosalonRights,
+  sellSalonRights: s => s.sellSalonRights,
   sellProgress: s => s.sellProgress,
   sellYears: s => s.sellYears,
   sellBody: s => s.sellBody,
@@ -208,11 +208,11 @@ export const getters = {
   sellTransmissions: s => Object.keys(s.sellTransmissions).map(key => s.sellTransmissions[key]),
   sellModifications: s => Object.keys(s.sellModifications).map(key => s.sellModifications[key]),
   sellPreviewData: s => s.sellPreviewData,
-  // autosalons
-  autosalonsList: s => s.autosalonsList,
-  autosalonsInBounds: s => s.autosalonsInBounds,
-  autosalonsSelected: s => s.autosalonsSelected,
-  autosalonSingle: s => s.autosalonSingle,
+  // salons
+  salonsList: s => s.salonsList,
+  salonsInBounds: s => s.salonsInBounds,
+  salonsSelected: s => s.salonsSelected,
+  salonSingle: s => s.salonSingle,
   mySalon: s => s.mySalon,
   myAnnouncementCalls: s => s.myAnnouncementCalls,
   myAnnouncementStats: s => s.myAnnouncementStats,
@@ -654,12 +654,12 @@ export const actions = {
     const res = await this.$axios.$post('/check/user/by/phone', { phone });
     commit('mutate', { property: 'sellTokens', value: res.data && res.data.announce_count });
     commit('mutate', { property: 'sellPhoneRegistered', value: res.data && res.data.have_account });
-    commit('mutate', { property: 'sellAutosalonRights', value: res.data && res.data.is_autosalon });
+    commit('mutate', { property: 'sellSalonRights', value: res.data && res.data.is_autosalon });
   },
   resetSellTokens({ commit }) {
     commit('mutate', { property: 'sellTokens', value: false });
     commit('mutate', { property: 'sellPhoneRegistered', value: false });
-    commit('mutate', { property: 'sellAutosalonRights', value: false });
+    commit('mutate', { property: 'sellSalonRights', value: false });
     commit('mutate', { property: 'sellPhoneEntered', value: '' });
   },
   setSellProgress({ commit }, value) {
@@ -724,14 +724,14 @@ export const actions = {
   async updatePaidStatus({ commit }, value) {
     commit('mutate', { property: 'paidStatusData', value });
   },
-  // Autosalons
-  async getAutoSalonsList({commit}, data) {
+  // Salons
+  async getSalonsList({commit}, data) {
     const res = await this.$axios.$get('/auto_salon_list' + (data ? ('?' + data) : ''));
-    commit('mutate', { property: 'autosalonsList', value: res });
+    commit('mutate', { property: 'salonsList', value: res });
   },
-  async getAutoSalonById({commit}, data) {
+  async getSalonById({commit}, data) {
     const res = await this.$axios.$get('/auto_salon/' + data.id + '?page=' + (data.page || 1));
-    commit('mutate', { property: 'autosalonSingle', value: res });
+    commit('mutate', { property: 'salonSingle', value: res });
   },
   async getMySalon({commit}) {
     const res = await this.$axios.$get('/my/autosalon/edit');
@@ -756,11 +756,11 @@ export const actions = {
     const res = await this.$axios.$get('/my/dashboard/package');
     commit('mutate', { property: 'myPackageStats', value: res });
   },
-  updateAutosalonsInBounds({commit}, list) {
-    commit('mutate', { property: 'autosalonsInBounds', value: list });
+  updateSalonsInBounds({commit}, list) {
+    commit('mutate', { property: 'salonsInBounds', value: list });
   },
-  updateAutosalonsSelected({commit}, list) {
-    commit('mutate', { property: 'autosalonsSelected', value: list });
+  updateSalonsSelected({commit}, list) {
+    commit('mutate', { property: 'salonsSelected', value: list });
   },
   // Reset Data on Logout
   resetUserData({ commit }) {

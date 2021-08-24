@@ -205,10 +205,12 @@
       background-position: center;
       border-radius: 4px;
       cursor: pointer;
-      transition: filter .3s;
-      filter: brightness(0.8);
-      &:hover {
-        filter: brightness(1);
+      @media (hover: hover) {
+        transition: filter .3s;
+        filter: brightness(0.8);
+        &:hover {
+          filter: brightness(1);
+        }
       }
     }
   }
@@ -418,6 +420,15 @@
         &.squared {
           min-width: 34px;
         }
+      }
+    }
+  }
+  .inner-thumbs-gallery {
+    .swiper-slide {
+      width: 150px;
+      // margin-right: 20px;
+      &-bg {
+        padding-bottom: 74.66%;
       }
     }
   }

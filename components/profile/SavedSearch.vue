@@ -59,13 +59,13 @@ export default {
     },
     title() {
       let title = this.$t('all_car_brands');
-      let brand_id = this.filter.additional_brands[0].brand;
-      let model_slug = this.filter.additional_brands[0].model_slug;
-      let generation_slug = this.filter.additional_brands[0].generation_slug;
-      if (brand_id) title = this.brands.find(brand => brand.id == brand_id).name;
+      let data = this.filter.additional_brands[0];
+      if (data.brand) title = this.brands.find(brand => brand.id == data.brand).name;
       const slugToTitle = slug => slug.replace(/_| /g, '-').split('-').map(w => w ? (w[0].toUpperCase() + w.slice(1)) : '').join(' ')
-      if (model_slug) title += (' ' + slugToTitle(model_slug));
-      if (generation_slug) title += (' ' + slugToTitle(generation_slug));
+      if (data.model_name) title += (' ' + this.$translateHard(data.model_name));
+      else if (data.model_slug) title += (' ' + slugToTitle(data.model_slug));
+      if (data.generation_name) title += (' ' + this.$translateHard(data.generation_name));
+      else if (data.generation_slug) title += (' ' + slugToTitle(data.generation_slug));
       return title;
     },
     params() {

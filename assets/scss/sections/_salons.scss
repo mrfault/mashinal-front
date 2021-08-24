@@ -1,0 +1,22 @@
+.salon-comment-card {
+  .comment {
+    white-space: pre-line;
+    &:last-child p:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+@include media-max-width(lg) {
+  .salon-single-card {
+    padding: 25px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    .inner-thumbs-gallery {
+      margin-top: 20px;
+    }
+    .cover-with-avatar {
+      margin: -25px -25px 18px;
+    }
+  }
+}

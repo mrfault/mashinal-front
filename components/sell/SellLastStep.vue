@@ -270,7 +270,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['sellOptions', 'sellAutosalonRights', 'staticPages', 'services']),
+    ...mapGetters(['sellOptions', 'sellSalonRights', 'staticPages', 'services']),
 
     progress() {
       let progress = 30;
@@ -291,7 +291,7 @@ export default {
     },
 
     isAutosalon() {
-      return !!((this.loggedIn && this.user.autosalon) || this.sellAutosalonRights);
+      return !!((this.loggedIn && this.user.autosalon) || this.sellSalonRights);
     },
     getRulesPage() {
       return this.staticPages.find(page => page.id == 1);
