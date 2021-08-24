@@ -142,7 +142,7 @@ export default {
         this.newEmail = '';
         this.code = '';
         await this.$auth.fetchUser();
-        this.$emit('close');
+        this.$emit('success');
       });
     }
   },

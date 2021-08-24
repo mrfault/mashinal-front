@@ -207,7 +207,7 @@
         <div class="col-12">
           <div :class="['row', {'flex-column-reverse flex-lg-row': !assistant, 'align-items-end': assistant}]">
             <div class="col-lg-6" v-if="assistant">
-              <form-range v-model="formAssistant.price" :min="10000" :max="100000" :step="10000">
+              <form-range v-model="formAssistant.price" :min="5000" :max="100000" :step="5000">
                 <div class="row mt-2 mt-lg-3 mb-2 mb-lg-0">
                   <div class="col-6">
                     <div class="form-info">{{ formAssistant.price[0] }} ₼</div>
@@ -341,7 +341,7 @@ export default {
       formAssistant: {
         body: {},
         packs: [],
-        price: [10000, 100000]
+        price: [5000, 100000]
       }
     }
   },

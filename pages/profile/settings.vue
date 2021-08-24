@@ -57,86 +57,86 @@
 </template>
 
 <script>
-  import { UserDataMixin } from '~/mixins/user-data';
+import { UserDataMixin } from '~/mixins/user-data';
 
-  import ChangeEmail from '~/components/elements/ChangeEmail';
-  import ChangePhone from '~/components/elements/ChangePhone';
+import ChangeEmail from '~/components/elements/ChangeEmail';
+import ChangePhone from '~/components/elements/ChangePhone';
 
-  export default {
-    name: 'pages-profile-settings',
-    mixins: [UserDataMixin],
-    middleware: ['auth_general','auth_user'],
-    components: {
-      ChangeEmail,
-      ChangePhone
-    },
-    nuxtI18n: {
-      paths: {
-        az: '/profil/parametrler'
-      }
-    },
-    head() {
-      return this.$headMeta({
-        title: this.$t('user_information_edit')
-      });
-    },
-    async asyncData({ $auth, app }) {
-      await $auth.fetchUser();
-      
-      return {
-        form: {
-          old: '',
-          password: '',
-          password_confirmation: '',
-          name: $auth.user.full_name || '',
-          lastname: $auth.user.lastname || '',
-          gender: $auth.user.gender || '',
-          birthday: app.$moment($auth.user.birthday || null).format('DD.MM.YYYY'),
-          avatar: null
-        }
-      }
-    },
-    computed: {
-      crumbs() {
-        return [
-          { name: this.$t('user_information'), route: '/profile' },
-          { name: this.$t('user_information_edit') }
-        ]
-      },
-
-      getGenderOptions() {
-        return [
-          { key: 1, name: this.$t('male')	},
-          { key: 2, name: this.$t('female')	}
-        ];
-      }
-    },
-    methods: {
-      escapeDate(date) {
-        return (date !== null && date !== '' && date !== 'Invalid date') 
-          ? this.$moment(date, 'DD.MM.YYYY').format('DD-MM-YYYY') : null;
-      },
-      async submit() {
-        this.form.name = this.user.name || '';
-        this.form.lastname = this.user.lastname || '';
-
-        let formData = new FormData();
-
-        for (let key in this.form) {
-          let value = this.form[key];
-          if (key === 'birthday')
-            value = this.escapeDate(this.form[key]);
-          formData.append(key, value);
-        }
-        
-        this.$axios.$post('/profile/change_info', formData).then((res) => {
-          this.$toasted.success(this.$t('saved_changes'));
-          this.form.old = '';
-          this.form.password = '';
-          this.form.password_confirmation = '';
-          this.$auth.fetchUser();
-        });
+export default {
+  name: 'pages-profile-settings',
+  mixins: [UserDataMixin],
+  middleware: ['auth_general','auth_user'],
+  components: {
+    ChangeEmail,
+    ChangePhone
+  },
+  nuxtI18n: {
+    paths: {
+      az: '/profil/parametrler'
+    }
+  },
+  head() {
+    return this.$headMeta({
+      title: this.$t('user_information_edit')
+    });
+  },
+  async asyncData({ $auth, app }) {
+    await $auth.fetchUser();
+    
+    return {
+      form: {
+        old: '',
+        password: '',
+        password_confirmation: '',
+        name: $auth.user.full_name || '',
+        lastname: $auth.user.lastname || '',
+        gender: $auth.user.gender || '',
+        birthday: app.$moment($auth.user.birthday || null).format('DD.MM.YYYY'),
+        avatar: null
       }
     }
+  },
+  computed: {
+    crumbs() {
+      return [
+        { name: this.$t('user_information'), route: '/profile' },
+        { name: this.$t('user_information_edit') }
+      ]
+    },
+
+    getGenderOptions() {
+      return [
+        { key: 1, name: this.$t('male')	},
+        { key: 2, name: this.$t('female')	}
+      ];
+    }
+  },
+  methods: {
+    escapeDate(date) {
+      return (date !== null && date !== '' && date !== 'Invalid date') 
+        ? this.$moment(date, 'DD.MM.YYYY').format('DD-MM-YYYY') : null;
+    },
+    async submit() {
+      this.form.name = this.user.name || '';
+      this.form.lastname = this.user.lastname || '';
+
+      let formData = new FormData();
+
+      for (let key in this.form) {
+        let value = this.form[key];
+        if (key === 'birthday')
+          value = this.escapeDate(this.form[key]);
+        formData.append(key, value);
+      }
+      
+      this.$axios.$post('/profile/change_info', formData).then((res) => {
+        this.$toasted.success(this.$t('saved_changes'));
+        this.form.old = '';
+        this.form.password = '';
+        this.form.password_confirmation = '';
+        this.$auth.fetchUser();
+      });
+    }
   }
+}
 </script>

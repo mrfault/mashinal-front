@@ -20,7 +20,7 @@ export default function({ app, route, store }, inject) {
     if (!path) return '#0';
     // do some magic
     if (path === '/')  
-      return app.localePath('index');
+      return '/' + (app.i18n.locale === 'az' ? '' : app.i18n.locale);
     else 
       path = app.localePath(('/ru'+(path === '/' ? '' : path)), locale || app.i18n.locale);
     // check if the right locale in path
