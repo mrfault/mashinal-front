@@ -79,9 +79,21 @@
               <div class="row" v-if="isMobileBreakpoint || !collapsed">
                 <div class="col-12">
                   <commercial-filters :values="form" @change-filter="setCommercialFilter">
-                    <div class="col-6 col-lg-2 mb-2 mb-lg-3" v-if="isMobileBreakpoint">
-                      <form-select :label="$t('city')" :options="sellOptions.regions" v-model="form.region" has-search />
-                    </div>
+                    <template #before>
+                      <div class="col-6 col-lg-2 mb-2 mb-lg-3" v-if="isMobileBreakpoint">
+                        <form-select :label="$t('city')" :options="sellOptions.regions" v-model="form.region" has-search />
+                      </div>
+                    </template>
+                    <template #after>
+                      <div class="col-6 col-lg-2 mb-2 mb-lg-3">
+                        <form-select :label="$t('damage')" v-model="form.status" :options="getDamageOptions"
+                          :show-label-on-select="false" />
+                      </div>
+                      <div class="col-6 col-lg-2 mb-2 mb-lg-3">
+                        <form-select :label="$t('customs')" v-model="form.customs" :options="getCustomsOptions"
+                          :show-label-on-select="false" />
+                      </div>
+                    </template>
                   </commercial-filters>
                 </div>
                 <div class="col-12 mb-2 mb-lg-0">
