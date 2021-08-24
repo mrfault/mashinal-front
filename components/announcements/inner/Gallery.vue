@@ -5,8 +5,8 @@
         <div class="swiper-wrapper">
           <div class="swiper-slide" :key="index" v-for="(slide, index) in slides.main">
             <div @click="currentSlide = index, openLightbox()"
-              :class="['swiper-slide-bg swiper-lazy', {'yt-play': announcement.youtube_id && index === 1}]" 
-              :data-background="slide"
+              :class="['swiper-slide-bg swiper-lazy', {'yt-play': showYtVideo(index)}]" 
+              :data-background="showYtVideo(index) ? getYtVideoImage('hq') : slide"
             >
               <loader />
             </div>
@@ -65,7 +65,7 @@
         />
         <transition-group name="fade">
           <div v-if="showLightbox" class="fslightbox-blur-bg" :key="0">
-            <img :src="$withBaseUrl(slides.main[currentSlide])" alt="" />
+            <img :src="showYtVideo(currentSlide) ? getYtVideoImage('hq') : $withBaseUrl(slides.main[currentSlide])" alt="" />
           </div>
           <div v-if="showLightbox" class="fslightbox-footer d-lg-none" :key="1">
             <div class="inner-gallery-lightbox-footer">
@@ -189,13 +189,19 @@ export default {
     handleSwipeTop() {
       if (document.querySelector('body').classList.contains('zooming')) return;
       this.closeLightbox();
+    },
+    showYtVideo(index) {
+      return this.announcement?.youtube_id && index === 1;
+    },
+    getYtVideoImage(size) {
+      return `https://img.youtube.com/vi/${this.announcement.youtube_id}/${size}default.jpg`;
     }
   },
   computed: {
     ...mapGetters(['announcement']),
 
     slides() {
-      let thumbs = [], main = [];
+      let thumbs = [], main = [], types = [], hasVideo = false;
       if (this.where === 'catalog') {
         thumbs = this.getMediaByKey(this.media, 'thumb');
         main = this.getMediaByKey(this.media, 'main');
@@ -204,17 +210,17 @@ export default {
         if (media.length === 0) return [];
         thumbs = this.getMediaByKey(media, 'main');
         main = this.getMediaByKey(media, 'main_inner');
-        let yt_video = this.announcement.youtube_id;
-        if (yt_video) {
-          thumbs.splice(1, 0, `https://img.youtube.com/vi/${yt_video}/hqdefault.jpg`);
-          main.splice(1, 0, `https://www.youtube.com/watch?v=${yt_video}`);
-          types.splice(1, 0, 'youtube');
+        if (this.announcement.youtube_id) {
+          hasVideo = true;
+          thumbs.splice(1, 0, this.getYtVideoImage('hq'));
+          main.splice(1, 0, `https://www.youtube.com/watch?v=${this.announcement.youtube_id}`);
         }
       } else if (this.where === 'salon') {
         thumbs = this.media[1];
         main = this.media[0];
       }
-      let types = main.map(_ => 'image');
+      types = main.map(_ => 'image');
+      if (hasVideo) types.splice(1, 0, 'youtube');
       return { thumbs, main, types };
     }
   },

@@ -700,6 +700,7 @@ export default {
   "has_insurance": "Nəqliyyat vasitəsinin icbari siğortası mövcuddur",
   "has_insurance_events": "Nəqliyyat vasitəsinin icbari siğortasının hadisələri mövcuddur",
   "has_lising_kredit": "Nəqliyyat vasitəsinin girov vəya kredit/lizinq müqaviləsi mövcuddur",
+  "hatchback": "Hetçbek",
   "Head-up display": "Proyeksiya ekranı",
   "Headlight control system": "Uzaq işığın tənzimləmə sistemi",
   "Headlight range control": "Avtomatik fara korrektoru",
@@ -1073,8 +1074,8 @@ export default {
   ],
   "plural_forms_carcase": [
     "ban növü",
-    "banlar",
-    "banların"
+    "ban növü",
+    "ban növü"
   ],
   "plural_forms_category": [
     "kateqoriya",
