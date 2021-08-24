@@ -1,6 +1,6 @@
 import Vue from 'vue';
 
-const getInitialState = () =>({
+const getInitialState = () => ({
   loading: true,
   colorMode: 'light',
   breakpoint: null,

@@ -1,0 +1,368 @@
+// [START] Comparison badge
+.comparison-badge {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $red-1;
+  border-radius: 4px 0 0 4px;
+  box-shadow: 0 0 15px $red-1;
+  z-index: 1;
+  transform: translateY(-50%);
+  
+  @include media-min-width('lg') {
+    width: 60px;
+    height: 60px;
+  }
+  @include media-max-width('lg') {
+    width: 50px;
+    height: 50px;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  i {
+    font-size: 30px;
+    color: $white;
+  }
+}
+// [END] Comparison badge
+
+
+// [START] Comparison Preview
+.comparison-preview {
+  width: 345px;
+  padding: 25px;
+  position: fixed;
+  right: 90px;
+  top: 50%;
+  z-index: 10;
+  transform: translateY(-50%);
+  border-radius: 4px;
+  border: nonex;
+  background: $white;
+  box-shadow: 0 0 15px $shadow-light-6;
+
+  &:focus {
+    outline: none;
+  }
+
+  &__title {
+    justify-content: space-between;
+    align-items: center;
+
+    h4 {
+      font-size: 18px;
+      font-weight: 500;
+      margin: 0;
+    }
+  }
+
+  &__list {
+    padding: 20px 0 25px;
+  }
+
+  &__list-item {
+    display: flex;
+
+    img {
+      width: 88px;
+      border-radius: 4px;
+      object-fit: cover;
+    }
+
+    .info {
+      margin-left: 15px;
+      flex: 1;
+      overflow: hidden;
+
+      &__title {
+        margin-bottom: 5px;
+        font-size: 15px;
+        font-weight: 500;
+        color: $dark-blue-1;
+      }
+      
+      &__desc {
+        margin-bottom: 5px;
+        font-size: 14px;
+        font-weight: 500;
+        color: $greyish-blue-7;
+      }
+
+      &__price {
+        font-size: 15px;
+        font-weight: 500;
+        color: $dark-blue-2;
+      }
+    }
+
+    .remove-btn {
+      padding: 0;
+      color: $red-1;
+      height: min-content;
+      border: none;
+      background-color: transparent;
+
+      i {
+        margin: 0;
+        font-size: 19px;
+      }
+    }
+  }
+
+  hr {
+    margin: 25px 0;
+  }
+}
+
+.dark-mode {
+  .comparison-preview {
+    background: $dark-2;
+
+    &__list-item {
+      .info {
+        &__title {
+          color: $white;
+        }
+        
+        &__desc {
+          color: $white;
+          opacity: 0.7;
+        }
+  
+        &__price {
+          color: $white;
+        }
+      }
+    }
+
+    .btn {
+      @include btn-style($bg-color: $red-1, $bg-hover: $red-2);
+    }
+  }
+}
+// [END] Comparison Preview
+
+
+$column-width-lg: calc(100% / 5);
+$column-width-sm: calc(100% / 2.5);
+
+// [START] Comparison Index page
+.pages-comparison-index {
+  // Filter
+  .comparison-filter {
+    .card {
+      padding: 20px 25px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    &__types .btn {
+      width: 100px;
+      min-width: unset;
+      max-width: unset;
+    }
+
+    &__checkboxes {
+      display: flex;
+      justify-content: flex-end;
+
+      .form-group {
+        width: auto;
+      }
+      
+      & > *:not(:first-child) {
+        margin-left: 20px;
+      }
+    }
+  }
+
+  // Main section
+  .comparison {
+    overflow: auto;
+    margin-top: 20px;
+
+    &__items {
+      display: flex;
+      overflow: auto;
+    }
+
+    &__item {
+      min-width: $column-width-lg;
+      width: $column-width-lg;
+      padding: 0 10px;
+      
+      @include media-max-width('lg') {
+        min-width: $column-width-sm;
+        width: $column-width-sm;
+      }
+
+      &:first-child {
+        padding-left: 0;
+      }
+
+      &:last-child {
+        padding-right: 0;
+      }
+
+      &__image {
+        position: relative;
+        height: 160px;
+        background-position: center;
+        background-size: cover;
+        border-radius: 4px;
+        
+        @include media-max-width('lg') {
+          height: 134px;
+        }
+
+        .action-button {
+          width: 34px;
+          height: 34px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          position: absolute;
+          backdrop-filter: blur(40px);
+          border-radius: 4px;
+
+          &:hover {
+            cursor: pointer;
+          }
+
+          &--close {
+            right: 10px;
+            top: 10px;
+          }
+
+          &--select {
+            right: 10px;
+            bottom: 10px;
+          }
+
+          &--recommend{
+            left: 10px;
+            top: 10px;
+          }
+
+          i {
+            width: 12px;
+            height: 12px;
+            color: $dark-blue-1;
+          }
+        }
+      }
+
+      &__title {
+        margin-top: 14px;
+        font-size: 14px;
+        font-weight: 500;
+        color: $dark-blue-1;
+      }
+
+      &__ {
+        margin-top: 5px;
+        font-size: 14px;
+        font-weight: 400;
+        color: $dark-blue-1;
+      }
+      
+      &__price {
+        margin-top: 5px;
+        font-size: 14px;
+        font-weight: 500;
+        color: $dark-blue-2;
+      }
+
+      &__phone {
+        margin-top: 10px;
+      }
+    }
+
+    &__specifications {
+      h2 {
+        margin-top: 22px;
+      }
+      .collapse-content {
+        h3 {
+          margin-bottom: 13px;
+        }
+        
+        &__title {
+          margin-bottom: 5px;
+          font-size: 14px;
+          color: $dark-blue-3;
+          font-weight: 400;
+        }
+
+        &__columns {
+          white-space: nowrap;
+          overflow: auto;
+          &::-webkit-scrollbar {
+            display: none;
+          }
+          /* Optional: show position indicator in red */
+          &::-webkit-scrollbar-thumb {
+              display: none;
+          }
+        }
+        
+        &__column {
+          min-width: $column-width-lg;
+          width: $column-width-lg;
+          padding: 0 10px;
+          display: inline-block;
+
+          @include media-max-width('lg') {
+            min-width: $column-width-sm;
+            width: $column-width-sm;
+          }
+
+          &:first-of-type {
+            padding-left: 0;
+          }
+    
+          &:last-of-type {
+            padding-right: 0;
+          }
+        }
+      }
+    }
+  }
+}
+// [END] Comparison Index page
+
+
+// [START] Add model popup
+.comparison-add-model-popup {
+  width: 590px;
+
+  .car-image {
+    width: 100%;
+    height: 400px;
+    margin-bottom: 25px;
+    border-radius: 4px;
+    object-fit: cover;
+  }
+
+  form {
+  }
+}
+// [END] Add model popup
+
+
+// [START] Dark mode - Main section
+.dark-mode .pages-comparison-index .comparison {
+  &__item__title {
+    color: $white;
+  }
+  &__item__price {
+    color: $white;
+  } 
+}
+// [END] Dark mode - Main section

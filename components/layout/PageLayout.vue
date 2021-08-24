@@ -34,6 +34,7 @@
         <portal-target name="mobile-dropdown" multiple />
         <portal-target name="mobile-screen" />
         <!-- /portal targets -->
+        <comparison-badge />
         <mobile-nav />
         <page-footer />
       </div>
@@ -51,6 +52,7 @@ import MobileNav from '~/components/layout/MobileNav';
 import PaidStatus from '~/components/elements/PaidStatus';
 import ThemeSwitch from '~/components/elements/ThemeSwitch';
 import ScrollTop from '~/components/elements/ScrollTop';
+import ComparisonBadge from '~/components/elements/ComparisonBadge';
 
 export default {
   mixins: [LayoutMixin],
@@ -61,7 +63,8 @@ export default {
     MobileNav,
     PaidStatus,
     ThemeSwitch,
-    ScrollTop
+    ScrollTop,
+    ComparisonBadge
   }
 }
 </script>

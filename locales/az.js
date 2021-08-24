@@ -1631,5 +1631,12 @@ export default {
 	"logout": "Hesabdan çıx",
 	"autocatalog": "Avtokataloq",
 	"back_to_home": "Ana səhifəyə qayıt",
-	"announcement_restored": "Elan bərpa edilib"
+	"announcement_restored": "Elan bərpa edilib",
+	"comparison_show_differences": "Yalnız fərqliləri göstər",
+	"comparison_hide_empty_cells": "Boş xanaları gizlət",
+	"characteristics": "Xarakteristikalar",
+	"modification_and_supply": "Modifikasiya və təchizat",
+	"compare": "Müqayisə et",
+	"maksimalnaya-moshchnost-lskvt-pri-obmin__result": "{ls} / {kvt} hər {ob/min}",
+	"maksimalnyy-krutyashchiy-moment-nm-pri-obmin__result": "{nm} hər {ob/min}",
 }

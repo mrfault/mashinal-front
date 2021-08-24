@@ -2,19 +2,18 @@
   <div class="pages-404">
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
-      <div class="info-404 text-center">
-        <img :src="`/img/404${isDarkMode ? '-dark-mode' : ''}.svg`" :alt="errorTitle" />
-        <h1>{{ errorTitle }}</h1>
+      <NotFound :title="errorTitle">
         <nuxt-link class="btn btn--green" :to="$localePath('/')">
           <icon name="arrow-left" /> {{ $t('back_to_home') }}
         </nuxt-link>
-      </div>
+      </NotFound>
     </div>
   </div>
 </template>
 
 <script>
 import { LayoutMixin } from '~/mixins/layout';
+import NotFound from '@/components/elements/NotFound.vue'
 
 export default {
   name: 'layout-error',
@@ -25,6 +24,9 @@ export default {
     return this.$headMeta({
       title: this.errorTitle
     })
+  },
+  components: {
+    NotFound
   },
   computed: {
     crumbs() {

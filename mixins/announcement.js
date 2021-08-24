@@ -7,7 +7,7 @@ export const AnnouncementDataMixin = {
   methods: {
     getSpecs(...specs) {
       return specs.filter(spec => spec).join(' / ');
-    }
+    },
   },
   computed: {
     motoTypeKey() {
