@@ -609,6 +609,7 @@ export default {
   "finish": "Tamamla",
   "first": "Birinci",
   "first_owner": "İlk sahibi",
+  "first_owner_question": "İlk sahibisən?",
   "first_sticker": "Birinci stiker",
   "Folding rear seat": "Qatlanan arxa oturacaq",
   "for_ads": "Reklam üçün",

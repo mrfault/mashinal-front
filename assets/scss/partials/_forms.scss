@@ -568,6 +568,13 @@ input::-webkit-inner-spin-button {
       background-color: $white;
     }
   }
+  &.auto-width {
+    button {
+      width: auto;
+      text-transform: normal;
+      padding: 0 12px;
+    }
+  }
 }
 
 .form-merged {

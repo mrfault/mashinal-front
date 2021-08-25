@@ -149,6 +149,18 @@
           border-radius: 0 4px 4px 0;
           min-width: 74px;
         }
+        &.active {
+          background-color: $green-1;
+        }
+        &.pending {
+          background-color: $dark-blue-2;
+        }
+        &.inactive {
+          background-color: $yellow-2;
+        }
+        &.rejected {
+          background-color: $red-1;
+        }
       }
       &_top {
         .d-flex {

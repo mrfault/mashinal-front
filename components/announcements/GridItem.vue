@@ -6,7 +6,16 @@
     <div class="item-bg" role="img" :aria-label="getAnnouncementTitle(announcement)" v-lazy:background-image="getImage">
       <div class="item-overlay">
         <div class="item-overlay_top d-flex">
-          <span class="badge from-border" v-if="announcement.is_autosalon">{{ $t('is_autosalon') }}</span>
+          <template v-if="showStatus">
+            <span class="badge from-border active" v-if="announcement.status == 1">{{ $t('accepted')}}</span>
+            <span class="badge from-border pending" v-else-if="announcement.status == 2 && announcement.system_paid_announce && !announcement.system_paid_announce.is_paid">{{ $t('need_pay')}}</span>
+            <span class="badge from-border pending" v-else-if="announcement.status == 2">{{ $t('under_consideration')}}</span>
+            <span class="badge from-border rejected" v-else-if="announcement.status == 0">{{ $t('rejected')}}</span>
+            <span class="badge from-border inactive" v-else-if="announcement.status == 3">{{ $t('inactive')}}</span>
+          </template>
+          <template v-else-if="announcement.is_autosalon">
+            <span class="badge from-border">{{ $t('is_autosalon') }}</span>
+          </template>
           <span class="d-flex">
             <span class="badge squared" v-if="announcement.type[1]">
               <icon name="vip" />
@@ -17,7 +26,7 @@
           </span>
         </div>
         <div class="item-overlay_bottom d-flex">
-          <span class="d-flex">
+          <span class="d-flex" v-if="announcement.status == 1">
             <add-comparison :announcement="announcement" v-if="announcement.car_catalog"/>
             <add-favorite :announcement="announcement" />
           </span>
@@ -58,6 +67,7 @@ import AddComparison from '~/components/announcements/AddComparison';
 export default {
   props: {
     announcement: {},
+    showStatus: Boolean,
     showCheckbox: Boolean,
     showPhoneCount: Boolean,
     trackViews: Boolean

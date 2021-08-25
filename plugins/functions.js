@@ -44,6 +44,7 @@ export default function({ app, route, store }, inject) {
   });
   // formatting
   inject('parsePhone', (phone, brief = false) => {
+    if (typeof phone === 'number') phone = `${phone}`;
     if (!phone || phone.length !== 12) return '';
     return ('994'+phone.slice(3))
       .replace(/(\d{3})(\d{2})(\d{3})(\d{2})(\d{2})/g, brief ? '($2) $3-$4-$5' : '+$1 ($2) $3-$4-$5');

@@ -22,9 +22,13 @@
               <template #before>
                 <thumbs-gallery />
               </template>
-              <template #after v-if="Object.keys(getComplectOptions).length">
+              <template #after v-if="hasComplects || getCarHealth">
                 <hr v-if="announcement.comment" />
-                <car-complects :options="getComplectOptions" />
+                <template v-if="getCarHealth">
+                  <damage-options :selected="getCarHealth" read-only/>
+                  <hr v-if="hasComplects" />
+                </template>
+                <car-complects :options="getComplectOptions" v-if="hasComplects" />
               </template>
             </comment>
           </div>
@@ -32,9 +36,13 @@
             <quick-info type="cars" />
             <vehicle-specs type="cars" />
             <comment :comment="announcement.comment" v-if="isMobileBreakpoint">
-              <template #after v-if="Object.keys(getComplectOptions).length">
+              <template #after v-if="hasComplects || getCarHealth">
                 <hr v-if="announcement.comment" />
-                <car-complects :options="getComplectOptions" />
+                <template v-if="getCarHealth">
+                  <damage-options :selected="getCarHealth" read-only/>
+                  <hr v-if="hasComplects" />
+                </template>
+                <car-complects :options="getComplectOptions" v-if="hasComplects" />
               </template>
             </comment>
             <promote-card v-if="!isMobileBreakpoint" />
@@ -55,6 +63,7 @@ import Gallery from '~/components/announcements/inner/Gallery';
 import ThumbsGallery from '~/components/announcements/inner/ThumbsGallery';
 import Comment from '~/components/announcements/inner/Comment';
 import CarComplects from '~/components/announcements/inner/CarComplects';
+import DamageOptions from '~/components/options/DamageOptions';
 import PromoteCard from '~/components/announcements/inner/PromoteCard';
 import Relatives from '~/components/announcements/inner/Relatives';
 
@@ -67,6 +76,7 @@ export default {
     ThumbsGallery,
     Comment,
     CarComplects,
+    DamageOptions,
     PromoteCard,
     Relatives
   },
@@ -136,6 +146,14 @@ export default {
       return typeof this.announcement.options === 'string' 
         ? JSON.parse(this.announcement.options) 
         : this.announcement.options;
+    },
+    hasComplects() {
+      return Object.keys(this.getComplectOptions).length;
+    },
+    getCarHealth() {
+      return this.announcement.car_body_health 
+        ? JSON.parse(this.announcement.car_body_health.options)
+        : false;
     },
 
     crumbs() {

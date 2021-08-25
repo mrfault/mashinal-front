@@ -608,6 +608,7 @@ export default {
   "finish": "Завершить",
   "first": "Первый",
   "first_owner": "Первый владелец",
+  "first_owner_question": "Вы первый владелец?",
   "first_sticker": "Первый стикер",
   "Folding rear seat": "Складывающееся заднее сидение",
   "for_ads": "Для рекламы",

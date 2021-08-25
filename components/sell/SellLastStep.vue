@@ -107,6 +107,14 @@
             </div>
           </div>
         </div>
+        <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-owner_type">
+          <span>{{ $t('first_owner_question') }}</span>
+        </h2>
+        <div class="row">
+          <div class="col-auto mb-2 mb-lg-0">
+            <form-switch :options="getOwnerOptions" v-model="form.owner_type" auto-width />
+          </div>
+        </div>
         <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-car_or_vin">
           <span>{{ $t('license_plate_number_vin_or_carcase_number') }} <span class="star"> *</span></span>
         </h2>
@@ -315,6 +323,12 @@ export default {
         { key: 2, name: this.$t('char_mile')	}
       ];
     },
+    getOwnerOptions() {
+      return [
+        { key: 0, name: this.$t('yes')	},
+        { key: 1, name: this.$t('no')	}
+      ];
+    }
   },
   methods: {
     ...mapActions(['setSellProgress', 'setSellPreviewData', 'resetSellTokens', 'getMyAllAnnouncements']),
@@ -497,7 +511,7 @@ export default {
         if (promote || this.restore || this.isAlreadySold) {
           window.location = res.data.redirect_url;
         } else {
-          this.$router.push(this.$localePath('/profile/announcements'), () => {
+          this.$router.push(this.$localePath('/profile/announcements?status=2'), () => {
             this.$toasted.success(this.$t('saved_changes'));
           });
         }

@@ -144,12 +144,14 @@
     }
     &_point {
       display: block;
-      cursor: pointer;
       position: relative;
       border: 1px solid $dark-blue-2;
       border-radius: 50%;
       width: 16px;
       height: 16px;
+      &:not(.read-only) {
+        cursor: pointer;
+      }
       &::after {
         content: '';
         display: block;
