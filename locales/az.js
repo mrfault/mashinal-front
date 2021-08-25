@@ -1067,10 +1067,10 @@ export default {
     "elan",
     "elan"
   ],
-  "plural_forms_autosalons": [
-    "Salon",
-    "Salon",
-    "Salon"
+  "plural_forms_salons": [
+    "salon",
+    "salon",
+    "salon"
   ],
   "plural_forms_carcase": [
     "ban növü",
@@ -1268,6 +1268,7 @@ export default {
   "s_h": "işlənmiş",
   "safe_type": "Növ",
   "sale": "Satış",
+  "salon_name": "Salonun adı",
   "Salon colour": "Salonun rəngi",
   "Salon material": "Salonun materialı",
   "saturday": "Şənbə",

@@ -356,11 +356,11 @@ export default {
     updateMileage(is_new) {
       if (!is_new) {
         this.isInvalid('mileage') && this.removeError('mileage');
-        this.updatePreview('mileage');
       } else {
         let mileage = this.form.mileage;
         this.form.mileage = mileage > 500 || !mileage ? 0 : mileage;
       }
+      this.updatePreview('mileage');
     },
     updateAddress(address) {
       this.form.address = address;

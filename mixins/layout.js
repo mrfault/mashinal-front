@@ -10,7 +10,8 @@ export const LayoutMixin = {
     return {
       vhVariableSet: false,
       showLoginPopup: false,
-      loginActionKey: ''
+      loginActionKey: '',
+      loadingKey: ''
     }
   },
   head() {
@@ -121,7 +122,11 @@ export const LayoutMixin = {
       this.handleResize();
       this.handleScroll();
       this.pickColorMode();
+      // strange behavior of loading prop which is not updating 
+      // in v-show directive without changing key sometimes
+      let loading = this.loading;
       this.setLoading(false);
+      if (loading) this.loadingKey++;
     }, 0);
 
   },

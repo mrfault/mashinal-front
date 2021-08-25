@@ -1,7 +1,7 @@
 <template>
-  <div :class="['wrapper', {loading}, `${colorMode}-mode`]">
+  <div :class="['wrapper', { loading }, `${colorMode}-mode`]">
     <transition name="fade">
-      <div class="layout" v-show="!loading">
+      <div class="layout" v-show="!loading" :key="loadingKey">
         <mobile-menu>
           <theme-switch />
         </mobile-menu>

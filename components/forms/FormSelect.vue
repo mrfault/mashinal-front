@@ -30,7 +30,12 @@
           <template v-if="showOptions">
             <div class="mt-3" v-if="hasSearch" @click.stop>
               <div class="container">
-                <form-text-input :placeholder="$t('search')" icon-name="search" v-model="search"/>
+                <form-text-input 
+                  v-model="search"
+                  :placeholder="$t('search')" 
+                  icon-name="search" 
+                  block-class="placeholder-lighter" 
+                />
               </div>
             </div>
             <div class="container" v-if="custom">

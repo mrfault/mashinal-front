@@ -27,7 +27,8 @@ export const MenusDataMixin = {
     navbarMenus() {
       return [
         ...this.searchMenus,
-        { title: 'autocatalog', route: '/catalog' }
+        { title: 'autocatalog', route: '/catalog' },
+        { title: 'car-showrooms', route: '/salons' }
       ]
     },
 

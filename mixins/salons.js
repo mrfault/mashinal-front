@@ -1,14 +1,17 @@
 export const SalonsMixin = {
   methods: {
     getLogo(logo) {
-      return this.$withBaseUrl(logo);
+      return logo ? this.$withBaseUrl(logo) : '/img/salon-logo.jpg';
     },
     getCover(cover) {
-      return this.$withBaseUrl(cover);
+      return cover ? this.$withBaseUrl(cover) : '/img/salon-cover.jpg';
     },
-    getConcatPhones(phones) {
+    getTotalCount(salon) {
+      return salon.announcements?.total || salon.announcement_count || 0;
+    },
+    getConcatPhones(phones, max = 2) {
       return phones
-        .slice(0, this.brief ? 1 : 10)
+        .slice(0, max)
         .map(phone => phone.replace(/(\d{3})(\d{2})(\d{3})(\d{2})(\d{2})/g, '<a onclick="event.stopPropagation()" href="tel:+'+phone+'">+$1 $2 $3 $4 $5</a>'))
         .join(', ');
     },

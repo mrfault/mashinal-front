@@ -1066,10 +1066,10 @@ export default {
     "объявления",
     "объявлений"
   ],
-  "plural_forms_autosalons": [
-    "Салон",
-    "Салона",
-    "Салонов"
+  "plural_forms_salons": [
+    "салон",
+    "салона",
+    "салонов"
   ],
   "plural_forms_carcase": [
     "кузов",
@@ -1268,6 +1268,7 @@ export default {
   "s_h": "Б/У",
   "safe_type": "Тип",
   "sale": "Продажа",
+  "salon_name": "Название салона",
   "Salon colour": "Цвет салона",
   "Salon material": "Материал салона",
   "saturday": "Cуббота",
