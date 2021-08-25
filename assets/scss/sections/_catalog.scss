@@ -110,6 +110,7 @@
     }
     li span:last-child {
       flex-shrink: 0;
+      max-width: 60%;
     }
   }
 }

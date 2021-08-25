@@ -97,6 +97,7 @@ const getInitialState = () =>({
   sellPreviewData: {},
   // salons
   salonsList: [],
+  salonsFiltered: [],
   salonsInBounds: false,
   salonsSelected: [],
   salonsOnlyOfficial: false,
@@ -210,6 +211,7 @@ export const getters = {
   sellPreviewData: s => s.sellPreviewData,
   // salons
   salonsList: s => s.salonsList,
+  salonsFiltered: s => s.salonsFiltered,
   salonsInBounds: s => s.salonsInBounds,
   salonsSelected: s => s.salonsSelected,
   salonSingle: s => s.salonSingle,
@@ -725,9 +727,10 @@ export const actions = {
     commit('mutate', { property: 'paidStatusData', value });
   },
   // Salons
-  async getSalonsList({commit}, data) {
-    const res = await this.$axios.$get('/auto_salon_list' + (data ? ('?' + data) : ''));
+  async getSalonsList({commit}, params = '') {
+    const res = await this.$axios.$get('/auto_salon_list' + params);
     commit('mutate', { property: 'salonsList', value: res });
+    commit('mutate', { property: 'salonsFiltered', value: res });
   },
   async getSalonById({commit}, data) {
     const res = await this.$axios.$get('/auto_salon/' + data.id + '?page=' + (data.page || 1));
@@ -756,6 +759,9 @@ export const actions = {
     const res = await this.$axios.$get('/my/dashboard/package');
     commit('mutate', { property: 'myPackageStats', value: res });
   },
+  updateSalonsFiltered({commit}, list) {
+    commit('mutate', { property: 'salonsFiltered', value: list });
+  },
   updateSalonsInBounds({commit}, list) {
     commit('mutate', { property: 'salonsInBounds', value: list });
   },
@@ -773,18 +779,18 @@ export const mutations = {
   mutate(state, payload) {
     if (payload.key !== undefined) 
       Vue.set(state[payload.property], payload.key, payload.value);
-    else state[payload.property] = payload.value;
+    else Vue.set(state, payload.property, payload.value);
   },
   reset(state, payload) {
     const initialState = getInitialState();
     payload.map(property => { 
-      state[property] = initialState[property];
+      Vue.set(state, property, initialState[property]);
     });
   },
   removeItem(state, payload) {
-    state[payload.property] = state[payload.property].filter(item => {
+    Vue.set(state, payload.property, state[payload.property].filter(item => {
       return item[payload.key] !== payload.value;
-    });
+    }));
   },
 
   // messages

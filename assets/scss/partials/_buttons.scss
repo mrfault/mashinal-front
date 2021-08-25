@@ -157,7 +157,7 @@
     @include btn-style($color: $red-1, $bg-color: $red-3, $bg-hover: $red-2, $active-bg: $red-2);
   }
   &--pale-red-outline {
-    @include btn-style($bg-color: $red-2, $bg-hover: $red-2, $border-color: $red-4, $active-bg: $red-2, $outline: true);
+    @include btn-style($color-hover: $red-2, $bg-color: $red-2, $bg-hover: $red-4, $border-color: $red-4, $active-bg: $red-2, $outline: true);
   }
   &--grey {
     @include btn-style($bg-color: $grey-10, $bg-hover: $grey-8);
@@ -203,6 +203,72 @@
     }
     &--primary-outline {
       @include btn-style($color: $white, $bg-color: transparent, $bg-hover: $grey-6, $active-bg: $grey-2, $border-color: $grey-1, $border-active: $grey-1, $border-hover: $grey-1, $outline: true,  $override: false);
+    }
+  }
+}
+
+.card.with-btns {
+  margin-top: 35px;
+  border-top-left-radius: 0;
+  .card-btns {
+    margin: -59px -25px 25px;
+    border-radius: 4px 4px 0 0;
+    overflow: hidden;
+    background-color: $white;
+    max-width: 300px;
+  }
+}
+
+.btn {
+  &--merged {
+    position: relative;
+    border-radius: 0 !important;
+    border: 0 !important;
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 17px;
+      border-right: 1px solid $red-4;
+    }
+    &:hover:before,
+    &.active::before {
+      content: none;
+    }
+  }
+}
+
+.row > div {
+  &:hover + div .btn--merged::before,
+  &.active + div .btn--merged::before,
+  &:nth-child(1) .btn--merged::before {
+    content: none;
+  }
+}
+
+.dark-mode {
+  .card.with-btns {
+    .card-btns {
+      background-color: $dark-2;
+    }
+  }
+
+  .btn {
+    &--merged {
+      &::before {
+        border-color: $grey-1;
+      }
+    }
+  }
+}
+
+@include media-max-width(lg) {
+  .card.with-btns {
+    margin-top: 60px;
+    .card-btns {
+      margin: -59px 0 25px;
     }
   }
 }

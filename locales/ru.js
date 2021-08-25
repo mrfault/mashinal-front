@@ -608,6 +608,7 @@ export default {
   "finish": "Завершить",
   "first": "Первый",
   "first_owner": "Первый владелец",
+  "first_owner_question": "Вы первый владелец?",
   "first_sticker": "Первый стикер",
   "Folding rear seat": "Складывающееся заднее сидение",
   "for_ads": "Для рекламы",
@@ -826,7 +827,7 @@ export default {
   "Memory seats": "Память положения сидений",
   "menee_7_sec": "Менее 7 секунд",
   "message": "Сообщение",
-  "message_or_name": "Название авто или имя продовца",
+  "message_or_name": "Название авто или имя продавца",
   "message_removed": "Чат удален",
   "message_sent_successfully": "Сообщение успешно отправлено",
   "messages": "Сообщения",
@@ -1066,10 +1067,10 @@ export default {
     "объявления",
     "объявлений"
   ],
-  "plural_forms_autosalons": [
-    "Салон",
-    "Салона",
-    "Салонов"
+  "plural_forms_salons": [
+    "салон",
+    "салона",
+    "салонов"
   ],
   "plural_forms_carcase": [
     "кузов",
@@ -1168,6 +1169,7 @@ export default {
   "rain_sensor": "Датчик дождя",
   "ranges": "Диапазоны",
   "raskhod": "Расход",
+  "raskhod-topliva-l-gorodtrassa": "Расход топлива, л/100км (город / трасса)",
   "raskhod-topliva-l-gorodtrassasmeshannyy": "Расход топлива, л/100км (город / трасса / смешанный цикл)",
   "raspolozhenie-dvigatelya": "Расположение двигателя",
   "raspolozhenie-tsilindrov": "Расположение цилиндров",
@@ -1268,6 +1270,7 @@ export default {
   "s_h": "Б/У",
   "safe_type": "Тип",
   "sale": "Продажа",
+  "salon_name": "Название салона",
   "Salon colour": "Цвет салона",
   "Salon material": "Материал салона",
   "saturday": "Cуббота",

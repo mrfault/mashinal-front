@@ -27,7 +27,7 @@ export const AnnouncementDataMixin = {
         : color.name?.[this.locale] || ' ';
     },
     box() {
-      switch(this.announcement.announcement_type) {
+      switch(this.type) {
         case 'cars':
           return this.$t('box_values')[this.catalog.main[' ']['box']];
         case 'moto':
@@ -46,7 +46,7 @@ export const AnnouncementDataMixin = {
       }
     },
     gear() {
-      switch(this.announcement.announcement_type) {
+      switch(this.type) {
         case 'cars':
           return this.$t('type_of_drive_values')[this.catalog.main[' ']['type_of_drive']];
         case 'moto':
@@ -66,7 +66,7 @@ export const AnnouncementDataMixin = {
       }
     },
     engine() {
-      switch(this.announcement.announcement_type) {
+      switch(this.type) {
         case 'cars':
           return this.$t('engine_values')[this.catalog.main['  ']['engine']];
         case 'moto':

@@ -112,6 +112,7 @@ Vue.use({
           return (brand || '') + ' ' + (model || '');
         },
         getAnnouncementContact(item) {
+          let img = item.is_autosalon ? item.user.autosalon.logo : item.user.avatar;
           return {
             type: 'user',
             user: item.user,
@@ -119,9 +120,9 @@ Vue.use({
             name: item.user.full_name,
             phone: item.user.phone,
             address: item.address,
-            img: (item.user.avatar && !item.user.avatar.includes('/images/')) 
-              ? this.$withBaseUrl(`/storage/${item.user.avatar}`) 
-              : (item.is_autosalon ? '/img/salon-logo.jpg' : '/img/user.jpg'),
+            img: item.is_autosalon 
+              ? (!img || img?.includes('/images/') ? '/img/salon-logo.jpg' : this.$withBaseUrl(img))
+              : (this.$withBaseUrl(img, '/storage/') || '/img/user.jpg'),
             lat: item.latitude ? parseFloat(item.latitude) : 0,
             lng: item.longitude ? parseFloat(item.longitude) : 0,
             link: item.is_autosalon ? this.$localePath(`/salons/${item.user.autosalon.id}`) : false
@@ -135,6 +136,9 @@ Vue.use({
         },
         userIsOwner(item) {
           return this.loggedIn && item.user.id === this.user.id;
+        },
+        salonIsOwner(item) {
+          return this.loggedIn && item.id === this.user.autosalon?.id;
         }
       },
       computed: {

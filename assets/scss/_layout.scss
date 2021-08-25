@@ -127,6 +127,16 @@ hr {
   opacity: 0;
 }
 
+.round-4 {
+  border-radius: 4px;
+}
+
+.keep-colors {
+  &, &:hover {
+    color: inherit;
+  }
+}
+
 .overflow-hidden {
   overflow: hidden;
 }
@@ -237,6 +247,10 @@ main {
   color: $red-1;
 }
 
+.bg-greyish-blue-2 {
+  background-color: $greyish-blue-2;
+}
+
 .dark-mode {
   .text-dark-blue-2,
   .text-hover-red:hover {
@@ -244,6 +258,10 @@ main {
   }
   .text-dark-blue-3 {
     color: $grey-5;
+  }
+
+  .bg-greyish-blue-2 {
+    background-color: $dark-1;
   }
 }
 
@@ -1495,6 +1513,10 @@ main {
     .col-lg-1-5 {
       flex: 0 0 20%;
       max-width: 20%;
+    }
+    .col-lg-2-5 {
+      flex: 0 0 40%;
+      max-width: 40%;
     }
     .col-lg-1-8 {
       flex: 0 0 12.5%;

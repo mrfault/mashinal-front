@@ -1,6 +1,6 @@
 <template>
   <div class="form-group">
-    <div class="form-switch">
+    <div :class="['form-switch', {'auto-width': autoWidth}]">
       <button type="button" :class="[{'active': isActive(option), 'disabled':isDisabled(option)}]" v-for="(option, index) in options" :key="index"
         @click="selectedValue = option.key">
         {{ option.sign || option.name }}
@@ -14,10 +14,8 @@
     props: {
       value: {},
       options: {},
-      disabled: {
-        type: Boolean,
-        default: false
-      }
+      disabled: Boolean,
+      autoWidth: Boolean
     },
     data() {
       return {

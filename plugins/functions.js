@@ -31,7 +31,7 @@ export default function({ app, route, store }, inject) {
   });
   inject('queryParams', (params, skipEmpty) => {
     let keys = Object.keys(params).filter(key => skipEmpty ? ![undefined, '', false].includes(params[key]) : true);
-    return '?' + keys.map(key => `${key}=${params[key]}`).join('&');
+    return '?' + keys.map(key => `${key}=${encodeURIComponent(params[key])}`).join('&');
   });
   inject('removeQueryParam', (param) => {
     let query = _.clone(route.query);
@@ -44,6 +44,7 @@ export default function({ app, route, store }, inject) {
   });
   // formatting
   inject('parsePhone', (phone, brief = false) => {
+    if (typeof phone === 'number') phone = `${phone}`;
     if (!phone || phone.length !== 12) return '';
     return ('994'+phone.slice(3))
       .replace(/(\d{3})(\d{2})(\d{3})(\d{2})(\d{2})/g, brief ? '($2) $3-$4-$5' : '+$1 ($2) $3-$4-$5');
@@ -129,9 +130,9 @@ export default function({ app, route, store }, inject) {
   inject('skipUndefinedEntries', (o) => {
     return Object.entries(o).reduce((a,[k,v]) => (v == null || v === '' || v === false ? a : (a[k]=v, a)), {});
   });
-  inject('withBaseUrl', (url) => {
+  inject('withBaseUrl', (url, dir = '') => {
     if (!url) return url;
-    return (url.includes('https://') || url.includes('http://')) ? url : `${app.$env.BASE_URL}${url}`;
+    return (url.includes('https://') || url.includes('http://')) ? url : `${app.$env.BASE_URL}${dir}${url}`;
   });
   inject('formatDate', (date, format = 'DD.MM.YYYY', weekdays, parse) => {
     const fixDayOfWeek = (n) => n == 0 ? 6 : n - 1;

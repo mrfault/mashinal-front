@@ -107,6 +107,14 @@
             </div>
           </div>
         </div>
+        <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-owner_type">
+          <span>{{ $t('first_owner_question') }}</span>
+        </h2>
+        <div class="row">
+          <div class="col-auto mb-2 mb-lg-0">
+            <form-switch :options="getOwnerOptions" v-model="form.owner_type" auto-width />
+          </div>
+        </div>
         <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-car_or_vin">
           <span>{{ $t('license_plate_number_vin_or_carcase_number') }} <span class="star"> *</span></span>
         </h2>
@@ -205,7 +213,7 @@
             {{ $t('edit_or_restore') }}
           </p>
           <div class="text-right">
-            <button type="button" @click="publishPost(false)" class="btn btn--green">
+            <button type="button" @click="publishPost(false)" :class="['btn btn--green', { pending }]">
               {{ isAlreadySold ? `${$t('place_and_pay')} 5 AZN` : (edit ? (restore ? $t('restore') : $t('edit_ad')) : $t('post_for_free')) }}
             </button>
           </div>
@@ -266,7 +274,8 @@ export default {
       showBanners: this.type === 'cars' && !this.edit,
       needToPay: false,
       isAlreadySold: false,
-      showLoginPopup: false
+      showLoginPopup: false,
+      pending: false
     }
   },
   computed: {
@@ -314,6 +323,12 @@ export default {
         { key: 2, name: this.$t('char_mile')	}
       ];
     },
+    getOwnerOptions() {
+      return [
+        { key: 0, name: this.$t('yes')	},
+        { key: 1, name: this.$t('no')	}
+      ];
+    }
   },
   methods: {
     ...mapActions(['setSellProgress', 'setSellPreviewData', 'resetSellTokens', 'getMyAllAnnouncements']),
@@ -356,11 +371,11 @@ export default {
     updateMileage(is_new) {
       if (!is_new) {
         this.isInvalid('mileage') && this.removeError('mileage');
-        this.updatePreview('mileage');
       } else {
         let mileage = this.form.mileage;
         this.form.mileage = mileage > 500 || !mileage ? 0 : mileage;
       }
+      this.updatePreview('mileage');
     },
     updateAddress(address) {
       this.form.address = address;
@@ -448,6 +463,7 @@ export default {
     },
     // post announcement
     async publishPost(promote = false) {
+      if (this.pending) return;
       this.needToPay = promote;
       // wait till all images uploaded
       if (this.uploading) {
@@ -479,6 +495,8 @@ export default {
       postUrl += (this.type !== 'cars' ? this.type + '/' : '');
       postUrl += (this.type !== 'commercial' || !this.edit ? 'post/' : '');
       postUrl += (this.edit ? ('edit/' + this.$route.params.id.slice(0, -1)) : 'publish');
+      // post
+      this.pending = true;
       try {
         // publish or update post
         const res = await this.$axios.$post(postUrl, formData);
@@ -493,12 +511,13 @@ export default {
         if (promote || this.restore || this.isAlreadySold) {
           window.location = res.data.redirect_url;
         } else {
-          this.$router.push(this.$localePath('/profile/announcements'), () => {
+          this.$router.push(this.$localePath('/profile/announcements?status=2'), () => {
             this.$toasted.success(this.$t('saved_changes'));
           });
         }
       } catch ({response: {status, data: {data, message}}}) {
         this.clearErrors();
+        this.pending = false;
 
         if (status === 420) {
           this.$toasted.error(this.$t(message));

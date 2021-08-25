@@ -106,6 +106,7 @@ export default {
     await Promise.all([
       store.dispatch('getSavedSearch'),
       store.dispatch('getBrands'),
+      store.dispatch('getBodyOptions'),
       store.dispatch('getColors'),
       store.dispatch('getOptions'),
       store.dispatch('getAllOtherOptions')

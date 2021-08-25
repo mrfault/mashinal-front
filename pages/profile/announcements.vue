@@ -9,7 +9,7 @@
       <div class="row flex-row-reverse" v-if="!(statusReady === '' && !myAnnouncements.data.length)">
         <div class="col-lg-auto col-lg-1-5 mb-lg-n1">
           <form-select :label="$t('status')" :options="getStatusOptions" v-model="form.status"
-            @change="changePage(1)" :clear-option="false" has-no-bg />
+            @change="changePage(1)" :clear-option="false" :allow-clear="false" has-no-bg />
         </div>
       </div>
       <grid 
@@ -21,6 +21,7 @@
         :title="$t('my_announces')"
         :show-title="false"
         :show-checkbox="true"
+        :show-status="true"
         @change-page="changePage"
       />
       <no-results :text="statusReady !== '' ? '' : $t('add_an_ad_and_thousands_of_potential_buyers_will_see_it')" v-else>
@@ -55,17 +56,17 @@ export default {
       title: this.$t('my_announces')
     });
   },
-  async asyncData({ store }) {
-    await Promise.all([
-      store.dispatch('getMyAllAnnouncements'),
-    ]);
+  async asyncData({ store, route }) {
+    let status = ['0','1','2','3'].includes(route.query.status) ? parseInt(route.query.status) : 1;
 
+    await Promise.all([
+      store.dispatch('getMyAllAnnouncements', { status }),
+    ]);
+    
     return { 
       pending: false,
-      statusReady: '',
-      form: {
-        status: ''
-      }
+      statusReady: status,
+      form: { status }
     }
   },
   methods: {

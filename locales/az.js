@@ -609,6 +609,7 @@ export default {
   "finish": "Tamamla",
   "first": "Birinci",
   "first_owner": "İlk sahibi",
+  "first_owner_question": "İlk sahibisən?",
   "first_sticker": "Birinci stiker",
   "Folding rear seat": "Qatlanan arxa oturacaq",
   "for_ads": "Reklam üçün",
@@ -1067,10 +1068,10 @@ export default {
     "elan",
     "elan"
   ],
-  "plural_forms_autosalons": [
-    "Salon",
-    "Salon",
-    "Salon"
+  "plural_forms_salons": [
+    "salon",
+    "salon",
+    "salon"
   ],
   "plural_forms_carcase": [
     "ban növü",
@@ -1169,6 +1170,7 @@ export default {
   "rain_sensor": "Yağış sensoru",
   "ranges": "Dispazonlar",
   "raskhod": "Sərfi",
+  "raskhod-topliva-l-gorodtrassa": "Yanacaq sərfi,l/100km (şəhər, magistral)",
   "raskhod-topliva-l-gorodtrassasmeshannyy": "Yanacaq sərfi,l/100km (şəhər, magistral, qarışıq dövr)",
   "raspolozhenie-dvigatelya": "Mühərrikin yerləşməsi",
   "raspolozhenie-tsilindrov": "Silindrlərin yerləşməsi",
@@ -1268,6 +1270,7 @@ export default {
   "s_h": "işlənmiş",
   "safe_type": "Növ",
   "sale": "Satış",
+  "salon_name": "Salonun adı",
   "Salon colour": "Salonun rəngi",
   "Salon material": "Salonun materialı",
   "saturday": "Şənbə",
