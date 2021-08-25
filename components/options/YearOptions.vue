@@ -30,7 +30,13 @@ export default {
 
     options() {
       let years = [];
-      for (let i = this.years.max; i >= this.years.min; i--) years.push(i);
+      if (this.years.years) {
+        years = this.years.years;
+      } else {
+        for (let i = this.years.max; i >= this.years.min; i--) {
+          years.push(i);
+        }
+      }
       return years.map(year => ({ key: year, name: year }));
     }
   }

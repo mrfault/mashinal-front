@@ -1169,6 +1169,7 @@ export default {
   "rain_sensor": "Yağış sensoru",
   "ranges": "Dispazonlar",
   "raskhod": "Sərfi",
+  "raskhod-topliva-l-gorodtrassa": "Yanacaq sərfi,l/100km (şəhər, magistral)",
   "raskhod-topliva-l-gorodtrassasmeshannyy": "Yanacaq sərfi,l/100km (şəhər, magistral, qarışıq dövr)",
   "raspolozhenie-dvigatelya": "Mühərrikin yerləşməsi",
   "raspolozhenie-tsilindrov": "Silindrlərin yerləşməsi",

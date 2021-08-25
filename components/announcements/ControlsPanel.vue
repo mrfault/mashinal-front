@@ -1,5 +1,5 @@
 <template>
-  <div class="controls-panel card mb-3 mb-lg-3">
+  <div class="controls-panel card mb-3 mb-lg-3" v-if="showToolbar || isMobileBreakpoint">
     <h2 class="title-with-line mt-n1 mb-n1" v-if="isMobileBreakpoint">
       <span>{{ $t('my_announces') }}</span>
     </h2>

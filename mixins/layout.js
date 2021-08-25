@@ -124,9 +124,8 @@ export const LayoutMixin = {
       this.pickColorMode();
       // strange behavior of loading prop which is not updating 
       // in v-show directive without changing key sometimes
-      let loading = this.loading;
       this.setLoading(false);
-      if (loading) this.loadingKey++;
+      // this.loadingKey++;
     }, 0);
 
   },

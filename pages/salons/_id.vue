@@ -7,7 +7,7 @@
           <div class="cover" :style="{backgroundImage: `url('${getCover(salonSingle.cover)}')`}">
             <img class="avatar" :src="getLogo(salonSingle.logo)" :alt="salonSingle.name" />
           </div>
-          <nuxt-link class="edit-link" :to="$localePath('/profile/salon')" @click.native="setPageRef($route.path)">
+          <nuxt-link class="edit-link" :to="$localePath('/profile/salon')" @click.native="setPageRef($route.path)" v-if="salonIsOwner(salonSingle)">
             <icon name="edit" />
           </nuxt-link>
         </div>
@@ -27,7 +27,7 @@
               <span>{{ salonSingle.address }}</span>
             </div>
           </div>
-          <div class="col-lg-4" v-if="salonSingle.working_days || salonSingle.working_hours">
+          <div class="col-lg-4" v-if="getWorkingDays(salonSingle.working_days, salonSingle.working_hours)">
             <div class="profile_info-details">
               <icon name="time" />
               <span v-html="getWorkingDays(salonSingle.working_days, salonSingle.working_hours)" />

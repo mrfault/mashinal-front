@@ -6,7 +6,9 @@
       <salon-filters-form />
       <div class="row mt-2 mt-lg-3 mb-n2 mb-lg-n3" v-if="salonsFiltered.length">
         <div class="col-lg-4 mb-2 mb-lg-3" v-for="salon in salonsFiltered" :key="salon.id">
-          <salon-card :salon="salon" />
+          <nuxt-link class="keep-colors" :to="$localePath(`/salons/${salon.id}`)">
+            <salon-card :salon="salon" />
+          </nuxt-link>
         </div>
       </div>
       <no-results v-else />

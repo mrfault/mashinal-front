@@ -754,6 +754,14 @@ input::-webkit-inner-spin-button {
         &_triangle {
           color: $dark-2;
         }
+        &_dropdown {
+          background-color: $dark-2;
+          .select-menu_dropdown-option {
+            &:hover {
+              background-color: lighten($dark-2, 2%);
+            }
+          }
+        }
       }
     }
     &_dropdown {
@@ -809,6 +817,22 @@ input::-webkit-inner-spin-button {
       }
       &-dot-tooltip {
         background-color: $dark-2;
+      }
+    }
+  }
+}
+
+@include media-min-width('lg') {
+  .dark-mode {
+    .select-menu {
+      &_dropdown {
+        &.custom-checkboxes {
+          .form-merged {
+            .checkbox-input label {
+              background-color: $dark-1;
+            }
+          }
+        }
       }
     }
   }

@@ -131,6 +131,12 @@ hr {
   border-radius: 4px;
 }
 
+.keep-colors {
+  &, &:hover {
+    color: inherit;
+  }
+}
+
 .overflow-hidden {
   overflow: hidden;
 }

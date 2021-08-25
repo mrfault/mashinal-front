@@ -129,9 +129,9 @@ export default function({ app, route, store }, inject) {
   inject('skipUndefinedEntries', (o) => {
     return Object.entries(o).reduce((a,[k,v]) => (v == null || v === '' || v === false ? a : (a[k]=v, a)), {});
   });
-  inject('withBaseUrl', (url) => {
+  inject('withBaseUrl', (url, dir = '') => {
     if (!url) return url;
-    return (url.includes('https://') || url.includes('http://')) ? url : `${app.$env.BASE_URL}${url}`;
+    return (url.includes('https://') || url.includes('http://')) ? url : `${app.$env.BASE_URL}${dir}${url}`;
   });
   inject('formatDate', (date, format = 'DD.MM.YYYY', weekdays, parse) => {
     const fixDayOfWeek = (n) => n == 0 ? 6 : n - 1;

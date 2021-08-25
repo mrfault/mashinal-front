@@ -205,7 +205,7 @@
             {{ $t('edit_or_restore') }}
           </p>
           <div class="text-right">
-            <button type="button" @click="publishPost(false)" class="btn btn--green">
+            <button type="button" @click="publishPost(false)" :class="['btn btn--green', { pending }]">
               {{ isAlreadySold ? `${$t('place_and_pay')} 5 AZN` : (edit ? (restore ? $t('restore') : $t('edit_ad')) : $t('post_for_free')) }}
             </button>
           </div>
@@ -266,7 +266,8 @@ export default {
       showBanners: this.type === 'cars' && !this.edit,
       needToPay: false,
       isAlreadySold: false,
-      showLoginPopup: false
+      showLoginPopup: false,
+      pending: false
     }
   },
   computed: {
@@ -448,6 +449,7 @@ export default {
     },
     // post announcement
     async publishPost(promote = false) {
+      if (this.pending) return;
       this.needToPay = promote;
       // wait till all images uploaded
       if (this.uploading) {
@@ -479,6 +481,8 @@ export default {
       postUrl += (this.type !== 'cars' ? this.type + '/' : '');
       postUrl += (this.type !== 'commercial' || !this.edit ? 'post/' : '');
       postUrl += (this.edit ? ('edit/' + this.$route.params.id.slice(0, -1)) : 'publish');
+      // post
+      this.pending = true;
       try {
         // publish or update post
         const res = await this.$axios.$post(postUrl, formData);
@@ -499,6 +503,7 @@ export default {
         }
       } catch ({response: {status, data: {data, message}}}) {
         this.clearErrors();
+        this.pending = false;
 
         if (status === 420) {
           this.$toasted.error(this.$t(message));

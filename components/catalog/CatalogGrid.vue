@@ -87,14 +87,11 @@ export default {
     },
     getLink(item) {
       const { brand, model, generation } = {...this.$route.params};
-      if (!model) {
-        return `/catalog/${item.parent.slug}/${item.slug}`;
-      } else {
-        let id = generation ? item.car_type_id : item.id;
-        if (generation) 
-          return `/catalog/${brand}/${model}/${generation}/${id}`;
-        return `/catalog/${brand}/${model}/${id}`;
-      }
+      const { filter } = {...this.$route.query}
+      let path = model
+        ? (generation ? `/catalog/${brand}/${model}/${generation}/${item.car_type_id}` : `/catalog/${brand}/${model}/${item.id}`)
+        : (`/catalog/${item.parent.slug}/${item.slug}`);
+      return filter ? `${path}?filter=${filter}` : path;
     },
     getImage(item) {
       const { model, generation } = {...this.$route.params};
