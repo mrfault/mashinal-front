@@ -96,7 +96,7 @@ export default {
         lng: parseFloat(announcement.longitude || 0),
         vin: announcement.vin,
         price: announcement.price_int || '',
-        owner_type: announcement.owners || 0,
+        owner_type: parseInt(announcement.owners || 0),
         currency: announcement.currency_id || 1,
         car_number: announcement.car_number,
         show_car_number: announcement.show_car_number,

@@ -100,64 +100,6 @@
         font-size: 12px;
       }
     }
-    .socials {
-      flex-shrink: 0;
-      a {
-        display: inline-flex;
-        vertical-align: top;
-        align-items: center;
-        justify-content: center;
-        height: 34px;
-        width: 34px;
-        border: 1px solid;
-        border-radius: 4px;
-        margin-right: 15px;
-        &:hover {
-          color: $white;
-          background-color: $dark-blue-2;
-        }
-      }
-    }
-  }
-  .vehicle-specs {
-    ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    li {
-      color: $grey-8;
-      padding: 1em 0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid $greyish-blue-3;
-      &:first-child {
-        padding-top: 0;
-      }
-      &:last-child {
-        border-bottom: 0;
-        padding-bottom: 0;
-      }
-      span {
-        display: inline-flex;
-        align-items: center;
-        vertical-align: top;
-        &:first-child {
-          flex-shrink: 0;
-          width: 130px;
-          color: $dark-blue-3;
-          padding-right: 5px;
-        }
-        &:last-child {
-          padding-left: 5px;
-          text-align: right;
-        }
-        i {
-          margin-right: 10px;
-        }
-      }
-    }
   }
   .comment {
     white-space: pre-line;
@@ -196,8 +138,78 @@
   }
 }
 
+.vehicle-specs {
+  & > .row {
+    margin: 0 -28px;
+    .col {
+      padding: 0 28px;
+    }
+  }
+  hr {
+    margin: 14px 0;
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  li {
+    color: $grey-8;
+    padding: 1em 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid $greyish-blue-3;
+    &:first-child {
+      padding-top: 0;
+    }
+    &:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+    span {
+      display: inline-flex;
+      align-items: center;
+      vertical-align: top;
+      &:first-child {
+        flex-shrink: 0;
+        width: 130px;
+        color: $dark-blue-3;
+        padding-right: 5px;
+      }
+      &:last-child {
+        padding-left: 5px;
+        text-align: right;
+      }
+      i {
+        margin-right: 10px;
+      }
+    }
+  }
+}
+
+.yt-play {
+  position: relative;
+  &::after {
+    content: '';
+    @include abs-middle;
+    width: 100px;
+    height: 100px;
+    background-image: url('/icons/youtube.svg');
+    background-position: center;
+    background-size: 100%;
+    background-repeat: no-repeat;
+  }
+}
+
 .inner-thumbs-gallery {
-  margin-bottom: 25px;
+  .yt-play::after {
+    width: 50px;
+    height: 50px;
+  }
+  &:not(:last-child) {
+    margin-bottom: 25px;
+  }
   .swiper-container {
     overflow: visible;
   }
@@ -211,10 +223,12 @@
       background-position: center;
       border-radius: 4px;
       cursor: pointer;
-      transition: filter .3s;
-      filter: brightness(0.8);
-      &:hover {
-        filter: brightness(1);
+      @media (hover: hover) {
+        transition: filter .3s;
+        filter: brightness(0.8);
+        &:hover {
+          filter: brightness(1);
+        }
       }
     }
   }
@@ -307,7 +321,7 @@
   }
 }
 
-.announcement-lightbox {
+.inner-gallery-lightbox {
   height: 0;
   &-footer {
     padding: 15px 15px 25px;
@@ -329,7 +343,6 @@
       color: $white;
     }
     .price span:last-child,
-    .vehicle-specs span:first-child,
     .text-data {
       color: $grey-7;
     }
@@ -342,19 +355,6 @@
     .contact address {
       color: $grey-4;
     }
-    .vehicle-specs li {
-      color: $white;
-      border-color: $dark-1;
-    }
-    .quick-info {
-      .socials a {
-        color: $white;
-        border-color: $grey-1;
-        &:hover {
-          background-color: $grey-1;
-        }
-      }
-    }
     .floating-cta {
       &.fixed-to-bottom,
       &.fixed-to-top {
@@ -363,6 +363,17 @@
       }
     }
   }
+
+  .vehicle-specs {
+    span:first-child {
+      color: $grey-7;
+    }
+    li {
+      color: $white;
+      border-color: $dark-1;
+    }
+  }
+
   .inner-gallery {
     .swiper-slide {
       &-bg {
@@ -398,6 +409,7 @@
     .swiper-slide-bg {
       border-radius: 0;
       padding-bottom: 73.6%;
+      background-position: center;
     }
     .gallery-overlay {
       &_top,
@@ -426,6 +438,15 @@
         &.squared {
           min-width: 34px;
         }
+      }
+    }
+  }
+  .inner-thumbs-gallery {
+    .swiper-slide {
+      width: 150px;
+      // margin-right: 20px;
+      &-bg {
+        padding-bottom: 74.66%;
       }
     }
   }

@@ -17,7 +17,7 @@
       :title="$t('want_to_change_your_email')"
       @close="confirmEmailEdit = false; $emit('close');"
     >
-      <form class="form" @submit.prevent="emailEditOpen">
+      <form class="form" @submit.prevent="emailEditOpen" novalidate>
         <div class="mb-2 mb-lg-3">
           <p>{{ $t('new_email_will_need_to_be_confirmed')}}</p>
         </div>
@@ -31,7 +31,7 @@
       :title="$t('enter_new_email')"
       @close="confirmEmailEditInput = false; $emit('close');"
     >
-      <form class="form" @submit.prevent="getCodeForNewEmail">
+      <form class="form" @submit.prevent="getCodeForNewEmail" novalidate>
         <div class="mb-2 mb-lg-3">
           <form-text-input 
             key="newEmail"
@@ -53,7 +53,7 @@
       :title="$t('enter_the_code_from_mail')"
       @close="confirmEmailCodeInput = false; changeEmailInit = false; $emit('close');"
     >
-      <form class="form" @submit.prevent="checkCodeForNewEmail">
+      <form class="form" @submit.prevent="checkCodeForNewEmail" novalidate>
         <div class="mb-2 mb-lg-3">
           <form-text-input
             key="code"
@@ -97,15 +97,15 @@ export default {
   },
   methods: {
     openModalToChangeEmail() {
-      if(this.user.email) return;
+      if (this.user.email) return;
       this.$emit('open');
-      if(this.changeEmailInit) {
+      if (this.changeEmailInit) {
         this.confirmEmailCodeInput = true;
       } else {
         this.$v.$reset();
         this.newEmail = '';
         this.code = '';
-        if(this.user.email) {
+        if (this.user.email) {
           this.confirmEmailEdit = true;
         } else {
           this.confirmEmailEditInput = true;
@@ -142,7 +142,7 @@ export default {
         this.newEmail = '';
         this.code = '';
         await this.$auth.fetchUser();
-        this.$emit('close');
+        this.$emit('success');
       });
     }
   },

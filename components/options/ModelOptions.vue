@@ -17,7 +17,7 @@
                 <div v-if="index === 10" :key="'break-' +option.id" class="full-width d-none d-lg-block"></div>
                 <div :key="option.id" :class="['popular-option', isMobileBreakpoint ? 'col-4' : 'col']" @click.stop="optionsValue = option">
                   <div class="img" v-if="imgKey && option[imgKey]">
-                    <img :src="option[imgKey]" :alt="getOptionName(option)" />
+                    <img :src="$withBaseUrl(option[imgKey])" :alt="getOptionName(option)" />
                   </div>
                   <div class="text-truncate">
                     <span>{{ getOptionName(option) }}</span>
@@ -33,7 +33,7 @@
             <template v-for="(option, index) in getFilteredOptions">
               <div :key="index" class="model-options_option" @click.stop="optionsValue = option">
                 <div class="img" v-if="imgKey && option[imgKey]">
-                  <img :src="option[imgKey]" :alt="getOptionName(option)" />
+                  <img :src="$withBaseUrl(option[imgKey])" :alt="getOptionName(option)" />
                 </div>
                 <div class="text-truncate">
                   <span>{{ getOptionName(option) }}</span>
@@ -41,18 +41,30 @@
               </div>
             </template>
           </template>
-          <template v-else>
+          <template v-else-if="sortAlphabetically">
             <div class="col-lg-2" v-for="(col, i) in $chunk(getFilteredOptions, Math.ceil(getFilteredOptions.length / 6))" :key="i">
               <template v-for="(option, index) in col">
                 <div :key="index" class="model-options_option mb-n1" @click.stop="optionsValue = option">
                   <div class="img" v-if="imgKey && option[imgKey]">
-                    <img :src="option[imgKey]" :alt="getOptionName(option)" />
+                    <img :src="$withBaseUrl(option[imgKey])" :alt="getOptionName(option)" />
                   </div>
                   <div class="text-truncate">
                     <span :class="{'text-bold': option.popular === 1}">{{ getOptionName(option) }}</span>
                   </div>
                 </div>
               </template>
+            </div>
+          </template>
+          <template v-else>
+            <div class="col-lg-2" v-for="(option, index) in getFilteredOptions" :key="index">
+              <div class="model-options_option mb-n1" @click.stop="optionsValue = option">
+                <div class="img" v-if="imgKey && option[imgKey]">
+                  <img :src="$withBaseUrl(option[imgKey])" :alt="getOptionName(option)" />
+                </div>
+                <div class="text-truncate">
+                  <span :class="{'text-bold': option.popular === 1}">{{ getOptionName(option) }}</span>
+                </div>
+              </div>
             </div>
           </template>
           <div :class="['model-options_option disabled', { 'pl-1 pr-1 mb-n1': !isMobileBreakpoint}]" v-if="!getFilteredOptions.length">
@@ -75,7 +87,11 @@ export default {
     statusTitle: String,
     options: Array,
     popularOptions: Array,
-    imgKey: String
+    imgKey: String,
+    sortAlphabetically: {
+      type: Boolean,
+      default: true
+    }
   },
   data() {
     return {
@@ -92,7 +108,7 @@ export default {
       }
     },
     getFilteredOptions() {
-      if(!this.search) return this.options;
+      if (!this.search) return this.options;
       return this.options.filter(option => this.$search(option.name, this.search));
     },
     getPopularOptions() {

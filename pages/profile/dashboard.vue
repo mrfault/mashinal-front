@@ -24,7 +24,7 @@
             <template v-else-if="card.key === 'messages'">
               <ul>
                 <li>{{ $t('vsego') }}: {{ circleStats[3].value }}</li>
-                <li :class="{'text-red': unreadMsgCount > 0}">{{ $t('unread_messages') }}: {{ unreadMsgCount }}</li>
+                <li :class="{'text-red': notreadMsgCount > 0}">{{ $t('notread_messages') }}: {{ notreadMsgCount }}</li>
               </ul>
             </template>
             <template v-else-if="card.key === 'autosalon'">
@@ -87,7 +87,7 @@
           :title="$t('extend_subscription')"
           @close="showExtendContract = false"
         >
-          <form class="form" @submit.prevent="extendContract">
+          <form class="form" @submit.prevent="extendContract" novalidate>
             <p v-html="$t('pay_till_date', { date: announceStats.contract.end_date })"></p>
             <h4>{{ $t('payment_method') }}</h4>
             <div class="mb-2 mb-lg-0">
@@ -124,7 +124,7 @@
 
   export default {
     name: 'pages-profile-dashboard',
-    middleware: ['auth_general','auth_autosalon'],
+    middleware: ['auth_general','auth_salon'],
     mixins: [StatsMixin, PaymentMixin],
     components: {
       DashboardCard
@@ -170,7 +170,7 @@
           { key: 'statistics', title: 'statistics', route: '/profile/statistics', icon: 'analytics' },
           { key: 'messages', title: 'messages', route: '/profile/messages', icon: 'chat' },
           { key: 'calls', title: 'phone_call_count', route: '/profile/calls', icon: 'phone' },
-          { key: 'autosalon', title: 'my_profile', route: '/profile/autosalon', icon: 'user' },
+          { key: 'autosalon', title: 'my_profile', route: '/profile/salon', icon: 'user' },
           { key: 'contract', title: 'contract', route: '/profile/payments', icon: 'calendar-1' }
         ].map(link => ({ ...link,
           title: this.$t(link.title), 
@@ -178,11 +178,11 @@
         }));
       },
 
-      unreadMsgCount() {
-        let unread = this.messages.filter((group) => {
+      notreadMsgCount() {
+        let notread = this.messages.filter((group) => {
           return group.last_message && !group.last_message.is_read && parseInt(group.last_message.sender_id) !== parseInt(this.user.id);
         });
-        return unread.length;
+        return notread.length;
       },
 
       shouldExtendContract() {

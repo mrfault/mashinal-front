@@ -36,36 +36,44 @@
   }
 }
 
+.profile-links-card {
+  padding: 12px 15px;
+  .link-block {
+    a {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-weight: 500;
+    }
+    a:not(:hover) {
+      color: inherit;
+    }
+    hr {
+      margin: 12px 0;
+    }
+    &:last-child {
+      hr {
+        display: none;
+      }
+    }
+  }
+}
+
 .profile-settings-card {
   .avatar {
     &_edit {
       margin-bottom: 40px;
-      .croppa-image {
-        position: relative;
+      .form-image {
         width: 100px;
+        height: 100px;
         margin: 0 auto;
-        canvas {
-          display: block;
-          border-radius: 4px;
-        }
-        &.croppa--has-target {
-          cursor: move;
-        }
       }
-      .drop-file {
-        position: absolute;
-        bottom: 9px;
-        right: 9px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 25px;
-        height: 25px;
-        border-radius: 4px;
-        color: $dark-blue-3;
-        border: 1px solid $greyish-blue-4;
-        background-color: $white;
+      &.cover {
+        width: calc(100% - 120px);
+        .form-image {
+          width: 100%;
+          height: 100px;
+        }
       }
       p {
         font-weight: 500;
@@ -128,6 +136,13 @@
       text-align: right;
       justify-content: flex-end;
     }
+    &.less-cols {
+      .payment-date {
+        width: 115px;
+        text-align: left;
+        justify-content: flex-start;
+      }
+    }
   }
 }
 
@@ -168,6 +183,64 @@
       width: 100%;
       margin: 0;
     }
+  }
+}
+
+.increase-balance {
+  &-info {
+    padding: 20px 0;
+    text-align: center;
+    p {
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: 0;
+    }
+    i {
+      font-size: 50px;
+    }
+    strong {
+      display: block;
+      font-size: 30px;
+      font-weight: 500;
+      i {
+        font-size: 21px;
+      }
+    }
+  }
+  &-form {
+    p {
+      margin-bottom: -5px;
+    }
+  }
+}
+
+.cover-with-avatar {
+  position: relative;
+  margin: -25px -25px 18px;
+  padding-bottom: 55px;
+  .cover {
+    width: 100%;
+    height: 0;
+    padding-bottom: 25%;
+    background-position: center;
+    background-size: cover;
+    border-radius: 4px 4px 0 0;
+  }
+  .avatar {
+    margin: 0;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    margin-left: -55px;
+    width: 110px;
+    height: 110px;
+    border: 5px solid $white;
+  }
+  .edit-link {
+    position: absolute;
+    bottom: 0;
+    top: auto;
+    right: 25px;
   }
 }
 
@@ -276,6 +349,12 @@
       .payment-date {
         width: 70px;
       }
+      &.less-cols {
+        .payment-date {
+          width: 115px;
+          justify-content: flex-end;
+        }
+      }
     }
   }
 
@@ -303,6 +382,20 @@
           opacity: .25;
         }
       }
+    }
+  }
+
+  .increase-balance {
+    &-info {
+      padding: 40px 0 0;
+      text-align: center;
+    }
+  }
+
+  .cover-with-avatar {
+    margin: -15px -15px 18px;
+    .cover {
+      border-radius: 0;
     }
   }
 

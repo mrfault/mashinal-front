@@ -64,9 +64,9 @@ export default {
 
     const announcement = store.state.myAnnouncement;
     
-    const filters = store.state.commercialFilters;
     const category = announcement.commercial_type_id;
-    await store.dispatch('getCommercialFilters', announcement.commercial_type_id);
+    await store.dispatch('getCommercialFilters', category);
+    const filters = store.state.commercialFilters;
 
     return {
       lastStepKey: 0,
@@ -87,7 +87,7 @@ export default {
         lng: parseFloat(announcement.longitude || 0),
         vin: announcement.vin,
         price: announcement.price_int || '',
-        owner_type: announcement.owner || 0,
+        owner_type: parseInt(announcement.owner || 0),
         currency: announcement.currency_id || 1,
         car_number: announcement.car_number,
         show_car_number: announcement.show_car_number,

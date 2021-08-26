@@ -12,6 +12,7 @@ import ModalPopup from '~/components/elements/ModalPopup';
 import Backdrop from '~/components/elements/Backdrop';
 import ShareIt from '~/components/elements/ShareIt';
 import Loader from '~/components/elements/Loader';
+import InfiniteLoading from '~/components/elements/InfiniteLoading';
 import Popover from '~/components/elements/Popover';
 // forms
 import FormNumericInput from '~/components/forms/FormNumericInput';
@@ -23,6 +24,8 @@ import FormSelect from '~/components/forms/FormSelect';
 import FormButtons from '~/components/forms/FormButtons';
 import FormRange from '~/components/forms/FormRange';
 import FormSwitch from '~/components/forms/FormSwitch';
+import FormImage from '~/components/forms/FormImage';
+import ContentEditable from '~/components/forms/ContentEditable';
 // transitions
 import TransitionExpand from '~/components/transitions/TransitionExpand';
 // ***
@@ -39,6 +42,7 @@ Vue.component('backdrop', Backdrop);
 Vue.component('modal-popup', ModalPopup);
 Vue.component('share-it', ShareIt);
 Vue.component('loader', Loader);
+Vue.component('infinite-loading', InfiniteLoading);
 Vue.component('popover', Popover);
 // ***
 Vue.component('transition-expand', TransitionExpand);
@@ -52,3 +56,5 @@ Vue.component('form-select', FormSelect);
 Vue.component('form-buttons', FormButtons);
 Vue.component('form-range', FormRange);
 Vue.component('form-switch', FormSwitch);
+Vue.component('form-image', FormImage);
+Vue.component('content-editable', ContentEditable);

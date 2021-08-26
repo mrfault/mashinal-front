@@ -1,5 +1,5 @@
 <template>
-  <div class="controls-panel card mb-3 mb-lg-3">
+  <div class="controls-panel card mb-3 mb-lg-3" v-if="showToolbar || isMobileBreakpoint">
     <h2 class="title-with-line mt-n1 mb-n1" v-if="isMobileBreakpoint">
       <span>{{ $t('my_announces') }}</span>
     </h2>
@@ -17,7 +17,7 @@
             :title="$t('are_you_sure_you_want_to_delete_the_announcement')"
             @close="showDeactivateModal = false"
           >
-            <form class="form" @submit.prevent="deactivateAnouncement">
+            <form class="form" @submit.prevent="deactivateAnouncement" novalidate>
               <button type="submit" :class="['btn btn--green full-width', { pending }]">
                 {{ $t('confirm') }}
               </button>

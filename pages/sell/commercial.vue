@@ -37,6 +37,7 @@
               :status-title="$t('select_model')"
               :input-title="$t('model_name')"
               :value="form.selectedModel"
+              :sort-alphabetically="false"
               @input="handleModel($event.id)"
               @close="handleModel()"
             />
@@ -170,7 +171,7 @@ export default {
         await this.getCommercialModels({ category: this.form.category, id });
         this.showModelOptions = true;
       }
-      window.scrollTo(0, 0);
+      this.scrollReset();
     },
     async handleModel(id = '') {
       this.form.selectedModel = id;
@@ -180,7 +181,7 @@ export default {
         this.form.selectedBrand = '';
         this.showModelOptions = false;
       }
-      window.scrollTo(0, 0);
+      this.scrollReset();
     },
     async handleYear(year = '') {
       this.form.selectedYear = year;

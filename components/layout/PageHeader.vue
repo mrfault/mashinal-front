@@ -11,6 +11,9 @@
               <nuxt-link :to="$localePath(menu.route)">
                 <icon :name="menu.icon" />
                 {{ $t(menu.title) }}
+                <template v-if="menu.title === 'messages' && countNewMessages > 0">
+                  <span class="badge-counter">{{ countNewMessages }}</span>
+                </template>
               </nuxt-link>
             </li>
           </ul>

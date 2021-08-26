@@ -68,8 +68,10 @@ export default {
     },
     handleItemClick(item) {
       let path = this.$localePath(this.getLink(item));
+      let scrollToGrid = !this.$route.params.generation;
       this.$router.push(path, () => {
-        this.scrollTo('.catalog-grid', [-15, -20]);
+        if (scrollToGrid) this.scrollTo('.catalog-grid', [-15, -20]);
+        else this.scrollReset();
       });
     },
     getTitle(item) {
@@ -85,22 +87,19 @@ export default {
     },
     getLink(item) {
       const { brand, model, generation } = {...this.$route.params};
-      if (!model) {
-        return `/catalog/${item.parent.slug}/${item.slug}`;
-      } else {
-        let id = generation ? item.car_type_id : item.id;
-        if (generation) 
-          return `/catalog/${brand}/${model}/${generation}/${id}`;
-        return `/catalog/${brand}/${model}/${id}`;
-      }
+      const { filter } = {...this.$route.query}
+      let path = model
+        ? (generation ? `/catalog/${brand}/${model}/${generation}/${item.car_type_id}` : `/catalog/${brand}/${model}/${item.id}`)
+        : (`/catalog/${item.parent.slug}/${item.slug}`);
+      return filter ? `${path}?filter=${filter}` : path;
     },
     getImage(item) {
       const { model, generation } = {...this.$route.params};
       if (!model) {
-        return item.transformed_media ? (this.$env.BASE_URL + item.transformed_media) : false;
+        return item.transformed_media ? this.$withBaseUrl(item.transformed_media) : false;
       } else {
         let media = generation ? item.transformed_media.thumb : item.car_type_generation[0].transformed_media.thumb;
-        return media?.length ? (this.$env.BASE_URL + media[0]) : false;
+        return media?.length ? this.$withBaseUrl(media[0]) : false;
       }
     },
   }

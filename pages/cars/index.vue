@@ -88,7 +88,7 @@ export default {
         }),
     ]);
 
-    if($auth.loggedIn) {
+    if ($auth.loggedIn) {
       await store.dispatch('fetchSavedSearch', { 
         search_url: `/cars?car_filter=${encodeURI(JSON.stringify(post))}`
       });
@@ -108,7 +108,7 @@ export default {
       this.pending = true;
       await this.getGridSearch({ ...this.searchParams, post, page });
       this.pending = false;
-      if(page === 1) {
+      if (page === 1) {
         this.scrollTo('.announcements-sorting');
       } else {
         this.scrollTo('.announcements-grid.paginated', [-15, -20]);

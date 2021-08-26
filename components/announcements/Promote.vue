@@ -98,17 +98,17 @@ export default {
     ...mapState(['services', 'myServices', 'myServiceOptions', 'promotion']),
 
     selectedService() {
-      if(!this.promotion.id) return false;
+      if (!this.promotion.id) return false;
       return (this.myServices.length ? this.myServices : this.services)
         .find(service => service.id == this.promotion.id);
     },
     selectedServiceOption() {
-      if(!this.promotion.optionId) return false;
+      if (!this.promotion.optionId) return false;
       return (this.serviceOptionBtns)
         .find(option => option.id == this.promotion.optionId);
     },
     selectedServiceInfo() {
-      if(!this.selectedService) return false;
+      if (!this.selectedService) return false;
       return this.services.find(service => service.type == this.selectedService.type);
     },
     serviceBtns() {
@@ -121,7 +121,7 @@ export default {
         }));
     },
     serviceOptionBtns() {
-      if(!this.promotion.id || this.pendingSelect) return [];
+      if (!this.promotion.id || this.pendingSelect) return [];
       return (this.myServiceOptions.length && this.shouldActivate)  
         ? this.myServiceOptions
             .map(option => ({
@@ -163,7 +163,7 @@ export default {
 
     async getServiceData() {
       await this.getServices();
-      if(this.loggedIn && this.user.autosalon) 
+      if (this.loggedIn && this.user.autosalon) 
         await this.getMyServices();
     },
     async selectService() {
@@ -174,17 +174,17 @@ export default {
         try {
           await this.getMyServiceOptions(this.selectedService.type);
           this.pendingSelect = false;
-          if(this.serviceOptionBtns.length && !this.isCard)
+          if (this.serviceOptionBtns.length && !this.isCard)
             this.updatePromotion({ key: 'optionId', value: this.serviceOptionBtns[0].id});
         } catch(err) {
           this.pendingSelect = false;
         }
-      } else if(this.serviceOptionBtns.length) {
+      } else if (this.serviceOptionBtns.length) {
         this.updatePromotion({ key: 'optionId', value: this.isCard ? '' : this.serviceOptionBtns[0].id});
       }
     },
     selectServiceOption() {
-      if(this.isCard) {
+      if (this.isCard) {
         this.$emit('select-service-option', this.promotion.optionId);
       }
     },
@@ -271,7 +271,7 @@ export default {
     await this.selectService();
   },
   beforeDestroy() {
-    if(this.isPopup) {
+    if (this.isPopup) {
       this.updatePromotion({ key: 'optionId', value: '' });
     }
   }

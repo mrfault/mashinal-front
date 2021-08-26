@@ -1,7 +1,9 @@
 <template>
   <div class="pages-catalog">
     <div class="container"> 
-      <breadcrumbs :crumbs="crumbs" />
+      <breadcrumbs :crumbs="crumbs">
+        <share-it type="publish" v-if="$route.params.body" />
+      </breadcrumbs>
       <template v-if="!$route.params.body">
         <catalog-search-form 
           :total-count="catalogTotal"
@@ -19,6 +21,13 @@
         />
         <no-results v-else />
       </template>
+      <template v-else>
+        <catalog-inner 
+          :selected-brand="selectedBrand"
+          :selected-model="selectedModel"
+          :selected-car="selectedGenerationType"
+        />
+      </template>
     </div>
   </div>
 </template>
@@ -28,13 +37,16 @@ import { mapGetters, mapActions } from 'vuex';
 
 import CatalogSearchForm from '~/components/catalog/CatalogSearchForm';
 import CatalogGrid from '~/components/catalog/CatalogGrid';
+import CatalogInner from '~/components/catalog/CatalogInner';
 import NoResults from '~/components/elements/NoResults';
 
 export default {
   name: 'pages-catalog',
+  scrollToTop: true,
   components: {
     CatalogSearchForm,
     CatalogGrid,
+    CatalogInner,
     NoResults
   },
   nuxtI18n: {
@@ -46,10 +58,10 @@ export default {
     let params = {...this.$route.params};
     let paramsLength = Object.keys(params).length;
     let titleParts = '', descrParts = '';
-    ['Brand', 'Model', 'Generation', 'Body', 'Modification'].map((part, index) => {
+    ['Brand', 'Model', 'Generation', 'Body'].map((part, index) => {
       let titleText = this[`selected${part}Text`];
       if (titleText) {
-        let delim = ['Generation', 'Body', 'Modification'].includes(part) ? ', ' : ' ';
+        let delim = ['Generation', 'Body'].includes(part) ? ', ' : ' ';
         if (index === 0) delim = '';
         titleParts += delim + titleText;
         if (index < 2) descrParts += delim + titleText;
@@ -59,12 +71,12 @@ export default {
     let title = this.$t(`meta-title_catalog${paramsLength ? '-car' : ''}`, { car: titleParts, word: this.$t('meta-words_catalog-car')[paramsLength - 1] });
     let description = this.$t(`meta-descr_catalog${paramsLength ? '-car' : ''}`, { car: descrParts });
     let image;
-    if(params.body && this.firstGeneration) {
+    if (params.body && this.firstGeneration) {
       image = this.firstGeneration.generation.car_type_generation
         .find(item => this.firstGeneration.car_type_id === item.car_type_id).transformed_media?.main?.[0];
-    } else if(params.model && this.catalogItems?.items?.[0]) {
+    } else if (params.model && this.catalogItems?.items?.[0]) {
       image = this.catalogItems?.items?.[0].car_type_generation[0].transformed_media?.main?.[0];
-    } else if(params.brand) {
+    } else if (params.brand) {
       image = this.selectedBrand.main;
     }
     
@@ -79,10 +91,11 @@ export default {
         store.dispatch('getBodyOptions'),
         route.params.brand && store.dispatch('getModels', route.params.brand),
         route.params.model && store.dispatch('getGenerations', route.params),
-        route.params.generation && store.dispatch('getGenerationTypes', route.params),
-        route.params.body && store.dispatch('getBody', route.params),
-        route.params.body && store.dispatch('getSpecificationsList', route.params),
-        store.dispatch('getCatalogSearch', { post, page, params: Object.keys(post).length ? { temp: 1, ...route.params} : {...route.params} })
+        // route.params.generation && store.dispatch('getGenerationTypes', route.params),
+        route.params.body && store.dispatch('getBodyModification', route.params),
+        route.params.body && store.dispatch('getModificationsList', route.params),
+        store.dispatch('getCatalogSearch', { post, page, params: Object.keys(post).length ? { temp: 1, ...route.params} : {...route.params}, totalCount: !!route.params.brand }),
+        !route.params.brand && store.dispatch('getCatalogSearch', { post, page, params: { temp: 1, ...route.params}, totalCount: true })
       ]);
     }
     return { 
@@ -114,7 +127,7 @@ export default {
           .filter(part => this[`selected${part}Text`])
           .map((part, i) => ({ 
             name: this[`selected${part}Text`], 
-            route: i === params.length - 1 ? '' : `/catalog/${params.slice(0, i + 1).join('/')}` 
+            route: (i === params.length - 1 || part === 'Body') ? '' : `/catalog/${params.slice(0, i + 1).join('/')}` 
           }))
       );
     },
@@ -135,6 +148,11 @@ export default {
       if (!this.$route.params.model) return false;
       return this.$translateHard(this.selectedModel?.name);
     },
+    selectedGenerationType() {
+      if (!this.$route.params.generation) return false;
+      let generation = this.firstGeneration?.generation;
+      return generation?.car_type_generation?.find(g => g.car_type_id == this.firstGeneration?.car_type_id);
+    },
     selectedGenerationText() {
       if (!this.$route.params.generation) return false;
       let generation = this.firstGeneration?.generation;
@@ -142,10 +160,13 @@ export default {
     },
     selectedBodyText() {
       if (!this.$route.params.body) return false;
-      return this.firstGeneration?.car_type?.name?.[this.locale];
+      let name = this.firstGeneration?.car_type?.name?.[this.locale];
+      if (!name) return false;
+      if (this.selectedModificationText) name += ` (${this.selectedModificationText})`;
+      return name;
     },
     selectedModificationText() {
-      if (!this.$route.params.modification) return false;
+      if (!this.$route.params.body) return false;
       let complectation = this.firstGeneration?.complect_type;
       let modification = this.firstGeneration?.main[' ']['obem'] + ' ' + this.$t(this.$t('box_mode_values')[this.firstGeneration?.main[' ']['box']]);
       return (complectation && complectation !== '–') ? (complectation + ' ' + modification) : (modification);

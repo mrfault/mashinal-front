@@ -42,8 +42,8 @@ export default {
       set(index) {
         let value = {};
         for(let key in this.value)
-          if(key != index) value[key] = [...this.shortcuts[key].keys];
-        if(!this.value[index]) value[index] = [...this.shortcuts[index].keys];
+          if (key != index) value[key] = [...this.shortcuts[key].keys];
+        if (!this.value[index]) value[index] = [...this.shortcuts[index].keys];
         this.$emit('input', value);
       }
     }

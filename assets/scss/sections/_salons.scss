@@ -1,0 +1,62 @@
+.salon-comment-card {
+  .comment {
+    white-space: pre-line;
+    &:last-child p:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.salon-filters-form {
+  .checkbox-row .col-auto {
+    min-width: 120px;
+  }
+}
+
+.salon-card {
+  padding: 20px 25px;
+  .salon {
+    &-logo {
+      flex-shrink: 0;
+      margin-right: 15px;
+      img {
+        border-radius: 50%;
+        width: 68px;
+        height: 68px;
+      }
+    }
+    &-info {
+      width: 100%;
+      h3 {
+        font-size: 15px;
+        font-weight: 500;
+        line-height: 1.4;
+        margin-bottom: 4px;
+        max-width: 160px;
+      }
+      span {
+        font-size: 14px;
+        a {
+          color: inherit;
+        }
+        i {
+          margin-right: 6px;
+        }
+      }
+    }
+  }
+}
+
+@include media-max-width(lg) {
+  .salon-single-card {
+    padding: 25px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    .inner-thumbs-gallery {
+      margin-top: 20px;
+    }
+    .cover-with-avatar {
+      margin: -25px -25px 18px;
+    }
+  }
+}

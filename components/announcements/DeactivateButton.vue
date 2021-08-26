@@ -6,7 +6,7 @@
       :title="$t('are_you_sure_you_want_to_delete_the_announcement')"
       @close="showDeactivateModal = false"
     >
-      <form class="form" @submit.prevent="deactivateAnouncement">
+      <form class="form" @submit.prevent="deactivateAnouncement" novalidate>
         <button type="submit" :class="['btn btn--green full-width', { pending }]">
           {{ $t('confirm') }}
         </button>

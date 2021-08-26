@@ -48,7 +48,7 @@
           </div>
           <div class="col-12 col-lg-4 mb-2 mb-lg-0">
             <form-select :label="$t('data')" custom custom-checkboxes :allow-clear="false"
-              :values="{ count: ['is_new','beaten','guaranty','customs_clearance','tradeable'].filter(a => form[a]).length }">
+              :values="{ count: ['is_new','beaten','guaranty','customs_clearance','tradeable','credit'].filter(a => form[a]).length }">
               <div class="form-merged">
                 <form-checkbox :label="$t('is_new')" v-model="form.is_new" input-name="is_new" @change="updateMileage"/>
                 <form-checkbox :label="$t('bitie')" v-model="form.beaten" input-name="beaten">
@@ -58,6 +58,7 @@
                 <form-checkbox :label="$t('not_cleared')" v-model="form.customs_clearance" input-name="customs_clearance"
                   @change="removeError('car_number', true), removeError('vin', true)" />
                 <form-checkbox :label="$t('tradeable')" v-model="form.tradeable" input-name="tradeable" />
+                <form-checkbox :label="$t('credit_possible')" v-model="form.credit" input-name="credit" />
               </div>
             </form-select>
           </div>
@@ -75,7 +76,8 @@
           <div class="row">
             <div class="col-12 col-lg-4 mb-2 mb-lg-0">
               <form-select :label="$t('region')" :options="sellOptions.regions" v-model="form.region_id" has-search 
-                :invalid="isInvalid('region_id')" @change="removeError('region_id'), updatePreview('region')" />
+                :invalid="isInvalid('region_id')" @change="removeError('region_id'), updatePreview('region')" 
+                :clear-option="false" />
             </div>
             <div class="col-12 col-lg-4 mb-2 mb-lg-0">
               <form-text-input :placeholder="$t('address')" icon-name="placeholder" v-model="form.address" />
@@ -103,6 +105,14 @@
                   @change="updatePreview('currency')"/>
               </div>
             </div>
+          </div>
+        </div>
+        <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-owner_type">
+          <span>{{ $t('first_owner_question') }}</span>
+        </h2>
+        <div class="row">
+          <div class="col-auto mb-2 mb-lg-0">
+            <form-switch :options="getOwnerOptions" v-model="form.owner_type" auto-width />
           </div>
         </div>
         <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-car_or_vin">
@@ -135,12 +145,12 @@
         <div class="mt-2 mt-lg-3">
           <template v-if="type=== 'cars'">
             <car-filters :values="form.all_options" @change-filter="updateCarFilter" popular key="popular"/>
-            <car-filters :values="form.all_options" @change-filter="updateCarFilter" key="all"/>
+            <car-filters :values="form.all_options" @change-filter="updateCarFilter" key="all" collapsed-by-default />
           </template>
           <template v-else>
             <sell-filters
               :type="type"
-              :selected="form"
+              :selected="form.filters || form"
               :errors="errors"
               @remove-error="removeError"
               @add-form-keys="form = {...$event, ...form}"
@@ -203,7 +213,7 @@
             {{ $t('edit_or_restore') }}
           </p>
           <div class="text-right">
-            <button type="button" @click="publishPost(false)" class="btn btn--green">
+            <button type="button" @click="publishPost(false)" :class="['btn btn--green', { pending }]">
               {{ isAlreadySold ? `${$t('place_and_pay')} 5 AZN` : (edit ? (restore ? $t('restore') : $t('edit_ad')) : $t('post_for_free')) }}
             </button>
           </div>
@@ -264,11 +274,12 @@ export default {
       showBanners: this.type === 'cars' && !this.edit,
       needToPay: false,
       isAlreadySold: false,
-      showLoginPopup: false
+      showLoginPopup: false,
+      pending: false
     }
   },
   computed: {
-    ...mapGetters(['sellOptions', 'sellAutosalonRights', 'staticPages', 'services']),
+    ...mapGetters(['sellOptions', 'sellSalonRights', 'staticPages', 'services']),
 
     progress() {
       let progress = 30;
@@ -289,14 +300,10 @@ export default {
     },
 
     isAutosalon() {
-      return !!((this.loggedIn && this.user.autosalon) || this.sellAutosalonRights);
+      return !!((this.loggedIn && this.user.autosalon) || this.sellSalonRights);
     },
     getRulesPage() {
       return this.staticPages.find(page => page.id == 1);
-    },
-
-    getSellFilters() {
-
     },
 
     getCurrencyOptions() {
@@ -312,6 +319,12 @@ export default {
         { key: 2, name: this.$t('char_mile')	}
       ];
     },
+    getOwnerOptions() {
+      return [
+        { key: 0, name: this.$t('yes')	},
+        { key: 1, name: this.$t('no')	}
+      ];
+    }
   },
   methods: {
     ...mapActions(['setSellProgress', 'setSellPreviewData', 'resetSellTokens', 'getMyAllAnnouncements']),
@@ -329,7 +342,7 @@ export default {
       }
     },
     showCarNumberDisclaimer() {
-      if(this.readCarNumberDisclaimer) {
+      if (this.readCarNumberDisclaimer) {
         this.$nuxt.$emit('close-popover', 'car-number');
       } else {
         this.$nuxt.$emit('show-popover', 'car-number');
@@ -352,12 +365,13 @@ export default {
           .find(o => o.key === this.form.mileage_measure)?.name, key: 'mileage_measure' });
     },
     updateMileage(is_new) {
-      if(!is_new) {
+      if (!is_new) {
         this.isInvalid('mileage') && this.removeError('mileage');
       } else {
         let mileage = this.form.mileage;
         this.form.mileage = mileage > 500 || !mileage ? 0 : mileage;
       }
+      this.updatePreview('mileage');
     },
     updateAddress(address) {
       this.form.address = address;
@@ -371,7 +385,7 @@ export default {
       this.form.part = part;
     },
     updateCarFilter(key, value) {
-      if(value === false || value === '' || (typeof value === 'object' && !Object.keys(value).length))
+      if (value === false || value === '' || (typeof value === 'object' && !Object.keys(value).length))
         this.$delete(this.form.all_options, key);
       else this.$set(this.form.all_options, key, value);
       this.$nuxt.$emit('change-car-filters');
@@ -388,7 +402,7 @@ export default {
     },
     async addImages(images) {
       // passed min limit
-      if((images.length + this.savedFiles.length + this.uploading) >= this.minFiles)
+      if ((images.length + this.savedFiles.length + this.uploading) >= this.minFiles)
         this.removeError('saved_images'); 
       // upload images
       this.uploading += images.length;
@@ -445,6 +459,7 @@ export default {
     },
     // post announcement
     async publishPost(promote = false) {
+      if (this.pending) return;
       this.needToPay = promote;
       // wait till all images uploaded
       if (this.uploading) {
@@ -475,11 +490,14 @@ export default {
       let postUrl = '/sell/';
       postUrl += (this.type !== 'cars' ? this.type + '/' : '');
       postUrl += (this.type !== 'commercial' || !this.edit ? 'post/' : '');
-      postUrl += (this.edit ? ('edit/' + this.$route.params.edit) : 'publish');
+      postUrl += (this.edit ? ('edit/' + this.$route.params.id.slice(0, -1)) : 'publish');
+      // post
+      this.pending = true;
       try {
         // publish or update post
         const res = await this.$axios.$post(postUrl, formData);
-        if (this.loggedIn) await this.$auth.fetchUser();
+        if (this.loggedIn) 
+          await this.$auth.fetchUser();
         // track event
         if (!this.edit) {
           this.fbTrack('Lead Api');
@@ -489,14 +507,17 @@ export default {
         if (promote || this.restore || this.isAlreadySold) {
           window.location = res.data.redirect_url;
         } else {
-          this.$router.push(this.$localePath('/profile/announcements'));
+          this.$router.push(this.$localePath('/profile/announcements?status=2'), () => {
+            this.$toasted.success(this.$t('saved_changes'));
+          });
         }
       } catch ({response: {status, data: {data, message}}}) {
         this.clearErrors();
+        this.pending = false;
 
-        if(status === 420) {
+        if (status === 420) {
           this.$toasted.error(this.$t(message));
-          if(data.need_pay) {
+          if (data.need_pay) {
             this.isAlreadySold = true;
             this.scrollTo('.publish-post');
           }
@@ -508,7 +529,7 @@ export default {
             for (let key in data) {
               // key = Object.keys(data)[dataLength - Object.keys(data).indexOf(key) - 1];
               let errorKey = key;
-              if(errorKey === 'car_or_vin') errorKey = this.form.customs_clearance ? 'vin' : 'car_number';
+              if (errorKey === 'car_or_vin') errorKey = this.form.customs_clearance ? 'vin' : 'car_number';
               this.errors.push(errorKey);
               let errorIndex = this.errors.indexOf(errorKey);
               let errorText = `(${dataLength - errorIndex}/${dataLength}) ${data[key][0]}`;
@@ -522,7 +543,7 @@ export default {
         }
         
         // check if user logged in
-        if(!this.showLoginPopup && status === 499)
+        if (!this.showLoginPopup && status === 499)
           this.showLoginPopup = true;
       }
     },

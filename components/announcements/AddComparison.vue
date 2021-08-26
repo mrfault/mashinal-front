@@ -2,7 +2,7 @@
   <button
     class="btn-sq btn-sq--color-red"
     :class="{'active': isActive}"
-    @click.stop="handleClick"
+    @click.prevent.stop="handleClick"
   >
     <icon name="compare" />
   </button>

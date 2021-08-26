@@ -12,7 +12,7 @@
           </template>
           <template v-else>{{ getLabelText }}</template>
         </span>
-        <span class="counter" v-if="multiple && selectValue.length > 1">{{ selectValue.length }}</span>
+        <span class="counter" v-if="multiple && selectValue.length > 1 && !shortNamesLabel">{{ selectValue.length }}</span>
         <span class="counter" v-else-if="custom && values.count">{{ values.count }}</span>
         <icon name="cross" v-if="allowClear && !hasNoValue" @click.native.stop="clearSelect" class="cursor-pointer" />
         <icon :name="iconName" v-else />
@@ -30,7 +30,12 @@
           <template v-if="showOptions">
             <div class="mt-3" v-if="hasSearch" @click.stop>
               <div class="container">
-                <form-text-input :placeholder="$t('search')" icon-name="search" v-model="search"/>
+                <form-text-input 
+                  v-model="search"
+                  :placeholder="$t('search')" 
+                  icon-name="search" 
+                  block-class="placeholder-lighter" 
+                />
               </div>
             </div>
             <div class="container" v-if="custom">
@@ -42,7 +47,7 @@
                   <div v-for="option in $sortBy(getFilteredOptions, (a, b) => popularOptions.indexOf(b.id) - popularOptions.indexOf(a.id)).slice(0,6)" 
                     :key="option.id" class="col-4 popular-option" @click.stop="selectValue = option">
                     <div class="img" v-if="imgKey && option[imgKey]">
-                      <img :src="option[imgKey]" :alt="getOptionName(option)" />
+                      <img :src="$withBaseUrl(option[imgKey])" :alt="getOptionName(option)" />
                     </div>
                     <div class="text-truncate">
                       <span>{{ getOptionName(option) }}</span>
@@ -53,7 +58,7 @@
                   <div :key="index" :class="['select-menu_dropdown-option', {'selected': isSelected(option), 'anchor': isAnchor(index)}]" 
                       @click.stop="selectValue = option">
                     <div class="img" v-if="imgKey && option[imgKey]">
-                      <img :src="option[imgKey]" :alt="getOptionName(option)" />
+                      <img :src="$withBaseUrl(option[imgKey])" :alt="getOptionName(option)" />
                     </div>
                     <div class="text-truncate">
                       <span>{{ getOptionName(option) }}</span>
@@ -82,7 +87,7 @@
                 <div v-for="option in $sortBy(getFilteredOptions, (a, b) => popularOptions.indexOf(b.id) - popularOptions.indexOf(a.id)).slice(0,6)" 
                   :key="option.id" class="col-4 popular-option" @click.stop="selectValue = option">
                   <div class="img" v-if="imgKey && option[imgKey]">
-                    <img :src="option[imgKey]" :alt="getOptionName(option)" />
+                    <img :src="$withBaseUrl(option[imgKey])" :alt="getOptionName(option)" />
                   </div>
                   <div class="text-truncate">
                     <span>{{ getOptionName(option) }}</span>
@@ -93,7 +98,7 @@
                 <div :key="index" :class="['select-menu_dropdown-option', {'selected': isSelected(option), 'anchor': isAnchor(index)}]" 
                     @click.stop="selectValue = option">
                   <div class="img" v-if="imgKey && option[imgKey]">
-                    <img :src="option[imgKey]" :alt="getOptionName(option)" />
+                    <img :src="$withBaseUrl(option[imgKey])" :alt="getOptionName(option)" />
                   </div>
                   <div class="text-truncate">
                     <span>{{ getOptionName(option) }}</span>
@@ -175,7 +180,8 @@
       hasNoBg: Boolean,
       popularOptions: Array,
       imgKey: String,
-      invalid: Boolean
+      invalid: Boolean,
+      shortNamesLabel: Boolean
     },
     data() {
       return {
@@ -192,9 +198,9 @@
       getValue(option, onlykey = false) {
         const name = option.name[this.locale] || option.name.ru || option.name;
         const key = this.$notUndefined(option.id,option.key);
-        if(!onlykey && this.slugInValue)
+        if (!onlykey && this.slugInValue)
           return option.slug || key;
-        if(!onlykey && this.nameInValue) {
+        if (!onlykey && this.nameInValue) {
           return { key: key, name: name }
         }
         return this.$notUndefined(key,name);
@@ -248,7 +254,7 @@
             value = this.multiple ? [] : '';
           } else {
             value = this.getValue(option);
-            if(this.clearOption && this.getKey(value) === -1) {
+            if (this.clearOption && this.getKey(value) === -1) {
               this.clearSelect();
               return;
             } else {
@@ -268,22 +274,28 @@
         return [...addons, ...this.options];
       },
       getFilteredOptions() {
-        if(!this.search || !this.hasSearch) return this.getOptions;
-        return this.options.filter(option => this.$search(option.name, this.search));
+        if (!this.search || !this.hasSearch) return this.getOptions;
+        return this.options.filter(option => this.$search(this.getOptionName(option), this.search));
       },
       getLabelText() {
-        if(this.custom) {
+        if (this.custom) {
           let value;
           let read = this.values.read !== false;
           if (this.values.from && this.values.to) value = `${this.$readNumber(this.values.from, read)} - ${this.$readNumber(this.values.to, read)}`;
-          else if (this.values.from || this.values.to) value = `${this.$t(!this.values.from ? 'to' : 'from')} ${this.$readNumber(this.values.from || this.values.to, read)}`;
+          else if (this.values.from || this.values.to) value = `${this.values.showPreposition ? (this.$t(!this.values.from ? 'to' : 'from') + ' ') : ''}${this.$readNumber(this.values.from || this.values.to, read)}`;
           else if (this.values.from === 0 || this.values.to === 0) value = `${this.$t(this.values.to === 0 ? 'to' : 'from')} 0`;
           let suffix = this.values.suffix || this.suffix;
           if (value && suffix) value += ` ${suffix}`;
           else suffix = this.suffix || this.values.suffix;
           return value && this.values.showLabel ? `${this.label}${this.values.count ? ` (${this.values.count})` : `: ${value}`}` : (value || `${this.label}${suffix ? (', '+suffix) : ''}`);
         }
+        
         let selected = this.options.filter(this.isSelected);
+
+        if (this.shortNamesLabel) {
+          return selected.length ? `${this.label}: ${selected.map(option => option.nameShort).join(', ')}` : this.label;
+        }
+
         return selected.length === 1
           ? `${(this.showLabelOnSelect && this.allowClear) ? (this.label + ': ' + (this.suffix ? (', '+this.suffix) : '')) : ''}${this.getOptionName(selected[0])}`
           : this.label;
@@ -295,11 +307,11 @@
         return `${(this.showLabelOnSelect && this.allowClear && !(this.custom && !this.values.showLabel)) ? '' : this.label + ': '}${this.getLabelText}`;
       },
       hasNoValue() {
-        if(this.custom) 
+        if (this.custom) 
           return this.values?.count ? false : (this.label === this.getLabelText.replace(`, ${this.suffix}`, ''));
-        if(this.selectValue instanceof Array) {
+        if (this.selectValue instanceof Array) {
           for(let i in this.selectValue)
-            if(this.options.map(option => this.getValue(option, true)).indexOf(this.getKey(this.selectValue[i])) !== -1)
+            if (this.options.map(option => this.getValue(option, true)).indexOf(this.getKey(this.selectValue[i])) !== -1)
               return false;
           return true;
         } else return this.selectValue === '' || this.selectValue === null;
@@ -320,29 +332,29 @@
         this.showOptions = false;
       },
       disabled(disabled) {
-        if(disabled && this.clearOnDisable) this.clearSelect();
+        if (disabled && this.clearOnDisable) this.clearSelect();
       },
-      value() {
-        if(this.value === undefined) 
+      value(value) {
+        if (this.value === undefined) 
           this.selectValue = undefined;
       },
       showOptions(val) {
-        if(val) {
+        if (val) {
           this.blockClick = true;
           setTimeout(() => {
             this.blockClick = false;
           }, 0);
           this.$nextTick(() => {
-            if(this.hasSearch && !this.isMobileBreakpoint) {
+            if (this.hasSearch && !this.isMobileBreakpoint) {
               this.$refs.searchInput?.focus();
             }
             // scroll to the selected option
-            if(!this.hasNoValue && !this.isMobileBreakpoint) {
-              if(!this.$refs.vs) return;
+            if (!this.hasNoValue && !this.isMobileBreakpoint) {
+              if (!this.$refs.vs) return;
               this.$refs.vs.scrollIntoView('.select-menu_dropdown-option.anchor', 0);
             }
             // focus on first input
-            if(this.custom) {
+            if (this.custom) {
               this.$el.querySelector('.text-input input')?.focus();
             }
           });
@@ -350,7 +362,7 @@
           this.search = '';
         }
         // hide overflow when selected
-        if(!this.inSelectMenu) {
+        if (!this.inSelectMenu) {
           document.querySelector('body').classList[val ? 'add' : 'remove']('select-menu-open');
         }
       },

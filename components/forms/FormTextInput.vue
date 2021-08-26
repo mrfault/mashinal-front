@@ -1,6 +1,6 @@
 <template>
   <div class="form-group">
-    <div class="text-input">
+    <div :class="['text-input', {[`${blockClass}`]:blockClass}]">
       <icon :name="iconName" v-if="iconName" :class="{invalid, disabled}" />
       <img :src="imgSrc" v-if="imgSrc" :class="{disabled}" />
       <template v-if="inputDate">
@@ -34,12 +34,12 @@
           v-model="inputValue"
           @focus="$emit('focus', $event)"
         />
-        <span v-if="type === 'password'" class="show-password" @click="showPassword = !showPassword">
+        <span v-if="type === 'password' && !invalid" class="show-password" @click="showPassword = !showPassword">
           <icon :name="showPassword ? 'eye' : 'hide'" />
         </span>
       </template>
       <icon name="alert-circle" v-if="invalid" class="invalid" />
-      <icon name="check-circle" v-else-if="valid" class="valid" />
+      <icon name="check-circle" v-else-if="valid && type !== 'password'" class="valid" />
       <slot />
     </div>
   </div>
@@ -88,6 +88,7 @@
         default: false
       },
       inputClass: String,
+      blockClass: String,
       inputDate: Boolean,
       readonly: Boolean
     },
@@ -109,7 +110,7 @@
           value = (this.disabled || (this.value.length > this.maxlength)) ? this.value : value;
           this.$emit('input', value);
           // check if value was changed
-          if(value !== this.prevValue) {
+          if (value !== this.prevValue) {
             this.$emit('change', value);
             this.prevValue = value;
           }

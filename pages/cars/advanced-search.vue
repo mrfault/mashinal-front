@@ -55,7 +55,7 @@ export default {
         }),
     ]);
 
-    if($auth.loggedIn) {
+    if ($auth.loggedIn) {
       await store.dispatch('fetchSavedSearch', { 
         search_url: `/cars?car_filter=${encodeURI(JSON.stringify(post))}`
       });

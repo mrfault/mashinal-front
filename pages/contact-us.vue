@@ -37,7 +37,7 @@
         <h2 class="title-with-line">
           <span>{{ $t('contact_us') }}</span>
         </h2>
-        <form class="form" @submit.prevent="sendMessage">
+        <form class="form" @submit.prevent="sendMessage" novalidate>
           <div class="row">
             <div class="col-lg-4 mb-2 mb-lg-3">
               <form-text-input 

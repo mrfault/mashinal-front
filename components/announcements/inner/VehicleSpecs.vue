@@ -76,7 +76,8 @@ export default {
       ].filter(spec => spec.value && (!spec.for || spec.for.includes(this.type)));
     },
     catalogLink() {
-      return this.catalog && `/catalog/${this.catalog.brand.slug}/${this.catalog.model.slug}/${this.catalog.generation.id}/${this.catalog.car_type.id}/${this.catalog.id}`;
+      let path = this.catalog && `/catalog/${this.catalog.brand.slug}/${this.catalog.model.slug}/${this.catalog.generation.id}/${this.catalog.car_type.id}/mod/${this.catalog.id}`;
+      return path && this.$localePath(path);
     }
   }
 }

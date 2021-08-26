@@ -1,10 +1,13 @@
 <template>
   <div class="damage-options">
+    <h2 class="title-with-line mt-2 mt-lg-3" v-if="readOnly">
+      <span>{{ $t('body_condition') }}</span>
+    </h2>
     <div class="d-flex flex-column flex-lg-row">
       <div class="car-damage-img">
         <inline-svg src="/img/car-damage.svg" :class="beatenParts" />
         <div :class="['car-part', 'car-part_'+part.id]" v-for="(part, index) in carParts" :key="index">
-          <span @click="showStateModal(index)" :class="['car-part_point', {selected: state.hasOwnProperty(index)}]"></span>
+          <span @click="showStateModal(index)" :class="['car-part_point', {selected: state.hasOwnProperty(index), 'read-only': readOnly}]"></span>
         </div>
       </div>
       <div class="car-damage-text" v-if="getPartsData()">
@@ -43,7 +46,8 @@ export default {
   props: {
     selected: {
       default: () => ({})
-    }
+    },
+    readOnly: Boolean
   },
   data() {
     let f = i => ({
@@ -69,9 +73,11 @@ export default {
   },
   methods: {
     showStateModal(index) {
+      if (this.readOnly) return;
       this.active = {...this.carParts[index], index: index };
     },
     selectDamage() {
+      if (this.readOnly) return;
       this.active = false;
       let parts = {};
       for(let i in this.state)
@@ -79,11 +85,13 @@ export default {
       this.$emit('update-car-damage', parts);
     },
     removeFromState(index){
+      if (this.readOnly) return;
       this.$delete(this.state, index);
       this.selectDamage();
       this.active = false;
     },
     addToState(index) {
+      if (this.readOnly) return;
       let form = {...this.forms[this.active.index]};
       if (Object.keys(form).filter(key => form[key]).length) {
         this.active.form = form;
@@ -94,7 +102,7 @@ export default {
       }
     },
     getPartsData(index = -1, get_comment) {
-      if(index < 0) return Object.keys(this.state).length;
+      if (index < 0) return Object.keys(this.state).length;
       return Object.keys(this.state[index].form).filter(key => (
         this.state[index].form[key] && (get_comment ? key === 'comment' : key !== 'comment')
       )).reverse();

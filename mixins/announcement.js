@@ -16,22 +16,22 @@ export const AnnouncementDataMixin = {
       else if (this.announcement.moto_atv_brand) return 3;
     },
     region() {
-      if(!this.announcement.region_id || !this.sellOptions) return false;
+      if (!this.announcement.region_id || !this.sellOptions) return false;
       return getName(this.announcement.region_id, this.sellOptions.regions);
     },
     color() {
       let color = this.announcement.colors || this.announcement.color || {};
-      if(!color.length && !color.id) return ' ';
+      if (!color.length && !color.id) return ' ';
       return color instanceof Array
         ? color.filter(color => color.name).map(color => color.name[this.locale]).join(', ') || ' '
         : color.name?.[this.locale] || ' ';
     },
     box() {
-      switch(this.announcement.announcement_type) {
+      switch(this.type) {
         case 'cars':
           return this.$t('box_values')[this.catalog.main[' ']['box']];
         case 'moto':
-          if(!this.motoOptions.config) return false;
+          if (!this.motoOptions.config) return false;
           return this.$t(getName(this.announcement.box_id, this.motoOptions.config.box.sell_values[this.motoTypeKey]));
         case 'commercial':
           return getName(this.announcement.box_id, [
@@ -46,11 +46,11 @@ export const AnnouncementDataMixin = {
       }
     },
     gear() {
-      switch(this.announcement.announcement_type) {
+      switch(this.type) {
         case 'cars':
           return this.$t('type_of_drive_values')[this.catalog.main[' ']['type_of_drive']];
         case 'moto':
-          if(!this.motoOptions.config) return false;
+          if (!this.motoOptions.config) return false;
           return this.$t(getName(this.announcement.gear_id, this.motoOptions.config.drive.sell_values[this.motoTypeKey]));
         case 'commercial':
           return getName(this.announcement.gear_id, [
@@ -66,11 +66,11 @@ export const AnnouncementDataMixin = {
       }
     },
     engine() {
-      switch(this.announcement.announcement_type) {
+      switch(this.type) {
         case 'cars':
           return this.$t('engine_values')[this.catalog.main['  ']['engine']];
         case 'moto':
-          if(!this.motoOptions.config) return false;
+          if (!this.motoOptions.config) return false;
           return this.$t(getName(this.announcement.engine_type_id, this.motoOptions.config.engine.sell_values[this.motoTypeKey]));
         case 'commercial':
           return getName(this.announcement.engine_id, [
@@ -90,37 +90,37 @@ export const AnnouncementDataMixin = {
       return this.catalog && this.catalog.car_type.name[this.locale];
     },
     cylinderBlock() {
-      if(!this.motoOptions.config) return false;
+      if (!this.motoOptions.config) return false;
       return this.$t(getName(this.announcement.cylinders, this.motoOptions.config.cylinders.sell_values[this.motoTypeKey]));
     },
     cylinderPlacement() {
-      if(!this.motoOptions.config) return false;
+      if (!this.motoOptions.config) return false;
       return this.$t(getName(this.announcement.cylinder_type_id, this.motoOptions.config.cylinder_placement.sell_values[this.motoTypeKey]));
     },
     tact() {
-      if(this.announcement.tact === 0) return false;
+      if (this.announcement.tact === 0) return false;
       return this.announcement.tact === 1 ? 2 : 4;
     },
     commercialType() {
-      if(this.announcement.commercial_car_type)
+      if (this.announcement.commercial_car_type)
         return this.announcement.commercial_car_type.name[this.locale];
-      if(this.announcement.truck_car_type)
+      if (this.announcement.truck_car_type)
         return this.announcement.truck_car_type.name[this.locale];
-      if(this.announcement.cabin_type)
+      if (this.announcement.cabin_type)
         return this.announcement.cabin_type.name[this.locale];
-      if(this.announcement.bus_car_type)
+      if (this.announcement.bus_car_type)
         return this.announcement.bus_car_type.name[this.locale];
-      if(this.announcement.trailer_type)
+      if (this.announcement.trailer_type)
         return this.announcement.trailer_type.name[this.locale];
-      if(this.announcement.equip_type)
+      if (this.announcement.equip_type)
         return this.announcement.equip_type.name[this.locale];
-      if(this.announcement.construction_type)
+      if (this.announcement.construction_type)
         return this.announcement.construction_type.name[this.locale];
-      if(this.announcement.forklift_type)
+      if (this.announcement.forklift_type)
         return this.announcement.forklift_type.name[this.locale];
-      if(this.announcement.excavator_type)
+      if (this.announcement.excavator_type)
         return this.announcement.excavator_type.name[this.locale];
-      if(this.announcement.communal_type)
+      if (this.announcement.communal_type)
         return this.announcement.communal_type.name[this.locale];
       return getName(this.announcement.bulldozer_type_id, [
         {name: this.$t('wheel_dozer'), key: 1},
@@ -179,9 +179,9 @@ export const AnnouncementDataMixin = {
     },
     engineSpecs() {
       const specs = [];
-      if(this.capacity && this.capacity != 0) specs.push(`${this.capacity} ${this.catalog ? this.$t('char_litre') : this.$t('char_sm_cube')}`);
-      if(this.power && this.power != 0) specs.push(`${this.power} ${this.$t('char_h_power')}`);
-      if(this.engine) specs.push(`${this.engine}`);
+      if (this.capacity && this.capacity != 0) specs.push(`${this.capacity} ${this.catalog ? this.$t('char_litre') : this.$t('char_sm_cube')}`);
+      if (this.power && this.power != 0) specs.push(`${this.power} ${this.$t('char_h_power')}`);
+      if (this.engine) specs.push(`${this.engine}`);
       return specs.join(' / ');
     },
     loadingKg() {

@@ -4,14 +4,14 @@
       <div class="tabs row">
         <div class="col" v-if="!forceSellPhone || tab === 'sign-in'">
           <button 
-            :class="['btn', 'btn--pale-red-outline', {'active': tab === 'sign-in', 'pointer-events-none': forceSellPhone}]" 
+            :class="['btn', 'btn--pale-red-outline', {'active': tab === 'sign-in' && !forceSellPhone, 'pointer-events-none': forceSellPhone}]" 
             @click="updateTab('sign-in')"
             v-html="$t('login')"
           />
         </div>
         <div class="col" v-if="!forceSellPhone || tab === 'sign-up'">
           <button 
-            :class="['btn', 'btn--pale-red-outline', {'active': tab === 'sign-up', 'pointer-events-none': forceSellPhone}]"
+            :class="['btn', 'btn--pale-red-outline', {'active': tab === 'sign-up' && !forceSellPhone, 'pointer-events-none': forceSellPhone}]"
             @click="updateTab('sign-up')"
             v-html="$t('registration')"
           />
@@ -120,13 +120,13 @@
         this.$v.$reset();
         this.tab = tab;
         this.action = action !== '' ? action : tab;
-        if(action === 'sms') this.resendData = data;
+        if (action === 'sms') this.resendData = data;
         this.$emit('update-tab', tab);
       }
     },
     created() {
       this.resetForm();
-      if(this.forceSellPhone && !this.sellPhoneRegistered) {
+      if (this.forceSellPhone && !this.sellPhoneRegistered) {
         this.updateTab('sign-up');
       }
     }

@@ -44,7 +44,7 @@
             </div>
             <div class="col-6 mb-2">
               <form-select :label="$t('generation')" :options="carGenerations[rows[0]]" v-model="form.additional_brands[rows[0]]['generation']"
-                :disabled="form.additional_brands[rows[0]]['model'] && !carGenerations[rows[0]].length" has-search />
+                :disabled="form.additional_brands[rows[0]]['model'] && !carGenerations[rows[0]].length" @change="setGeneration($event, rows[0])" has-search />
             </div>
           </template>
           <template v-else>
@@ -59,17 +59,17 @@
                     :disabled="form.additional_brands[key]['brand'] && !carModels[key].length" @change="setModel($event, key)" has-search />
                 </div>
                 <div class="col-4">
-                  <div class="row">
+                  <div :class="['row', {'has-add-btn': canAddRow(index), 'has-remove-btn': canRemoveRow()}]">
                     <div class="col">
                       <form-select :label="$t('generation')" :options="carGenerations[key]" v-model="form.additional_brands[key]['generation']"
-                        :disabled="form.additional_brands[key]['model'] && !carGenerations[key].length" has-search />
+                        :disabled="form.additional_brands[key]['model'] && !carGenerations[key].length" @change="setGeneration($event, key)" has-search />
                     </div>
                     <div class="col-auto">
                       <div class="form-counter">
-                        <div class="form-info" v-if="rows.length < 5 && index === rows.length - 1" @click="addSearchRow(key)">
+                        <div class="form-info" v-if="canAddRow(index)" @click="addSearchRow(key)">
                           <icon name="plus" />
                         </div>
-                        <div class="form-info" v-if="rows.length > 1" @click="removeSearchRow(key)">
+                        <div class="form-info" v-if="canRemoveRow()" @click="removeSearchRow(key)">
                           <icon name="minus" />
                         </div>
                       </div>
@@ -196,7 +196,7 @@
               <car-filters :values="form.all_options" name-in-value @change-filter="setCarFilter" />
             </div>
           </template>
-          <div class="col-6 col-lg-2 mb-2 mb-lg-3" v-if="!isMobileBreakpoint">
+          <div class="col-6 col-lg-2 mb-2 mb-lg-3" v-if="!isMobileBreakpoint && !advanced">
             <div class="form-info text-green">
               {{ $readPlural(totalCount, $t('plural_forms_announcements')) }}
             </div>
@@ -207,7 +207,7 @@
         <div class="col-12">
           <div :class="['row', {'flex-column-reverse flex-lg-row': !assistant, 'align-items-end': assistant}]">
             <div class="col-lg-6" v-if="assistant">
-              <form-range v-model="formAssistant.price" :min="10000" :max="100000" :step="10000">
+              <form-range v-model="formAssistant.price" :min="5000" :max="100000" :step="5000">
                 <div class="row mt-2 mt-lg-3 mb-2 mb-lg-0">
                   <div class="col-6">
                     <div class="form-info">{{ formAssistant.price[0] }} ₼</div>
@@ -298,7 +298,8 @@ export default {
       brand_slug: '', 
       model: '', 
       model_slug: '', 
-      generation: '' 
+      generation: '' , 
+      generation_slug: '' 
     };
     return {
       rows: ['0'],
@@ -340,7 +341,7 @@ export default {
       formAssistant: {
         body: {},
         packs: [],
-        price: [10000, 100000]
+        price: [5000, 100000]
       }
     }
   },
@@ -360,36 +361,50 @@ export default {
     ...mapActions(['getModelsArray', 'getModelGenerationsArray']),
 
     async setBrand(id, index) {
-      let slug = this.brands.find(option => option.id == id)?.slug || '';
+      let brand = this.brands.find(option => option.id == id);
+      let slug = brand?.slug || '';
       this.$set(this.form.additional_brands[index], 'brand', id);
       this.$set(this.form.additional_brands[index], 'brand_slug', slug);
       this.$set(this.form.additional_brands[index], 'model', '');
       this.$set(this.form.additional_brands[index], 'model_slug', '');
+      this.$set(this.form.additional_brands[index], 'model_name', '');
       this.$set(this.form.additional_brands[index], 'generation', '');
+      this.$set(this.form.additional_brands[index], 'generation_slug', '');
+      this.$set(this.form.additional_brands[index], 'generation_name', '');
       if (id) await this.getModelsArray({ value: slug, index });
     },
     async setModel(id, index) {
-      let slug = this.carModels[index].find(option => option.id == id)?.slug || '';
-      let brand_slug = this.form.additional_brands[index].brand_slug
+      let model = this.carModels[index].find(option => option.id == id);
+      let slug = model?.slug || '', name = model?.name || '';
+      let brand_slug = this.form.additional_brands[index].brand_slug;
       this.$set(this.form.additional_brands[index], 'model', id);
       this.$set(this.form.additional_brands[index], 'model_slug', slug);
+      this.$set(this.form.additional_brands[index], 'model_name', name);
       this.$set(this.form.additional_brands[index], 'generation', '');
+      this.$set(this.form.additional_brands[index], 'generation_slug', '');
+      this.$set(this.form.additional_brands[index], 'generation_name', '');
       if (id) await this.getModelGenerationsArray({ value: slug, brand_slug, index });
     },
+    async setGeneration(id, index) {
+      let generation = this.carGenerations[index].find(option => option.id == id);
+      this.$set(this.form.additional_brands[index], 'generation', id);
+      this.$set(this.form.additional_brands[index], 'generation_slug', generation?.short_name || '');
+      this.$set(this.form.additional_brands[index], 'generation_name', generation?.name || '');
+    },
     setCarFilter(key, value) {
-      if(value === false || value === '' || (typeof value === 'object' && !Object.keys(value).length))
+      if (value === false || value === '' || (typeof value === 'object' && !Object.keys(value).length))
         this.$delete(this.form.all_options, key);
       else this.$set(this.form.all_options, key, value);
     }
   },
   created() {
     this.$nuxt.$on('go-to-search', this.goToSearch);
-    if(this.routeName === 'index') 
+    if (this.routeName === 'index') 
       this.$nuxt.$on('logo-click', this.resetForm);
   },
   beforeDestroy() {
     this.$nuxt.$off('go-to-search', this.goToSearch);
-    if(this.routeName === 'index') 
+    if (this.routeName === 'index') 
       this.$nuxt.$off('logo-click', this.resetForm);
   }
 }

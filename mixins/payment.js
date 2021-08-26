@@ -28,7 +28,11 @@ export const PaymentMixin = {
         if (res?.data?.payment_id) {
           this.connectEcho(`purchase.${res.data.payment_id}`, false).listen('PurchaseInitiated', async (data) => {
             const paid = data.payment.status === 1;
-            if (paid) await this.$nuxt.refresh();
+            if (paid) {
+              await this.$nuxt.refresh();
+              if (this.loggedIn)
+                await this.$auth.fetchUser();
+            }
             let type = paid ? 'success' : 'error';
             this.updatePaidStatus({
               type,

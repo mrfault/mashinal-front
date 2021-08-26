@@ -4,7 +4,7 @@
       <div class="d-flex mb-2 mb-lg-3" @click="$set(collapsed, index, !collapsed[index])">
         <h2 class="title-with-line full-width">
           <span v-if="popular">{{ $t('popular_options') }}</span>
-          <span v-else>{{ titles[index] || '' }}</span>
+          <span v-else>{{ getTitle(index) }}</span>
         </h2>
         <icon :name="`chevron-${collapsed[index] ? 'down' : 'up'}`" class="cursor-pointer" />
       </div>
@@ -29,6 +29,7 @@
                 :id="`${popular ? 'popular_' : ''}${input.name}${input.selected_key || ''}`"
                 :input-name="input.name"  
                 @change="changeFilter(input.name, $event, input.selected_key)"
+                watch-value
               />
             </template>
           </div>
@@ -45,6 +46,7 @@ export default {
   props: {
     values: {},
     nameInValue: Boolean,
+    collapsedByDefault: Boolean,
     popular: Boolean
   },
   data() {
@@ -82,17 +84,28 @@ export default {
     isMultiple(input) {
       return this.selectMultiple.includes(input.name);
     },
+    getTitle(index) {
+      let title = this.titles[index] || '';
+      let count = 0;
+      this.carFilterOptions[index].map(input => {
+        let value = this.form[input.name];
+        if ((value instanceof Array && value?.length) || (value === true) || (typeof value === 'number')) {
+          count++;
+        }
+      });
+      return count ? `${title} (${count})` : title;
+    },
     getValue(input, values) {
       return values.hasOwnProperty(input.name) 
         ? (input.selected_key ? (this.isMultiple(input) ? values[[input.name]].includes(input.selected_key) : input.selected_key == values[[input.name]]) : values[[input.name]])
         : (input.selected_key ? false : (this.isMultiple(input) ? [] : (input.type === 'select' ? '' : false)));
     },
     changeFilter(key, value, selected_key) {
-      if(selected_key) {
-        if(this.selectMultiple.includes(key)) {
+      if (selected_key) {
+        if (this.selectMultiple.includes(key)) {
           let selected = this.values[key] || [];
           let index = selected.findIndex(v => v == selected_key);
-          value = value ? [...selected, selected_key] : (index === -1 ? [] : selected.filter((_, i) => i !== index));
+          value = value ? (index === -1 ? [...selected, selected_key] : selected) : (index === -1 ? [] : selected.filter((_, i) => i !== index));
         } else {
           value = value ? selected_key : '';
         }
@@ -110,6 +123,11 @@ export default {
   created() {
     this.setValues();
     this.$nuxt.$on('change-car-filters', this.setValues);
+    if (this.collapsedByDefault) {
+      this.carFilterOptions.map((_, index) => {
+        this.$set(this.collapsed, index, true);
+      });
+    }
   },
   beforeDestroy() {
     this.$nuxt.$off('change-car-filters', this.setValues);

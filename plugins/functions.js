@@ -2,6 +2,9 @@ import _ from '~/lib/underscore';
 import moment from 'moment';
 import { generateMetaInfo } from '~/plugins/head-meta';
 
+import 'moment/locale/ru';
+import 'moment/locale/az';
+
 export default function({ app, route, store }, inject) {
   // generate meta tags for seo
   inject('headMeta', ({ title, description, image }, product = false) => {
@@ -17,7 +20,7 @@ export default function({ app, route, store }, inject) {
     if (!path) return '#0';
     // do some magic
     if (path === '/')  
-      return app.localePath('index');
+      return '/' + (app.i18n.locale === 'az' ? '' : app.i18n.locale);
     else 
       path = app.localePath(('/ru'+(path === '/' ? '' : path)), locale || app.i18n.locale);
     // check if the right locale in path
@@ -28,7 +31,7 @@ export default function({ app, route, store }, inject) {
   });
   inject('queryParams', (params, skipEmpty) => {
     let keys = Object.keys(params).filter(key => skipEmpty ? ![undefined, '', false].includes(params[key]) : true);
-    return '?' + keys.map(key => `${key}=${params[key]}`).join('&');
+    return '?' + keys.map(key => `${key}=${encodeURIComponent(params[key])}`).join('&');
   });
   inject('removeQueryParam', (param) => {
     let query = _.clone(route.query);
@@ -41,12 +44,13 @@ export default function({ app, route, store }, inject) {
   });
   // formatting
   inject('parsePhone', (phone, brief = false) => {
+    if (typeof phone === 'number') phone = `${phone}`;
     if (!phone || phone.length !== 12) return '';
     return ('994'+phone.slice(3))
       .replace(/(\d{3})(\d{2})(\d{3})(\d{2})(\d{2})/g, brief ? '($2) $3-$4-$5' : '+$1 ($2) $3-$4-$5');
   });
   inject('parseUnsafe', (unsafe) => {
-    if(unsafe == null) return '';
+    if (unsafe == null) return '';
     return unsafe
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
@@ -93,11 +97,11 @@ export default function({ app, route, store }, inject) {
   });
   inject('notUndefined', (...values) => {
     for(let i in values)
-      if(values[i] !== undefined) return values[i];
+      if (values[i] !== undefined) return values[i];
     return values[0];
   });
   inject('translateHard', (name) => {
-    if(!name) return name;
+    if (!name) return name;
     name = name[app.i18n.locale] || name.ru || name;
     let year = new Date().getFullYear();
     return name.toString()
@@ -109,7 +113,7 @@ export default function({ app, route, store }, inject) {
     return name[app.i18n.locale] || name.ru || name || '';
   });
   inject('search', (str, keyword) => {
-    return str.toString().toLowerCase().search(keyword.toLowerCase()) !== -1;
+    return str && str.toString().toLowerCase().search(keyword.toLowerCase()) !== -1;
   });
   inject('expireDate', (days = 30) => {
     return new Date(new Date().getTime() + (days * 24 * 3600 * 1000));
@@ -122,10 +126,33 @@ export default function({ app, route, store }, inject) {
       k = Math.max(array[i], k);    
     }
     return k;
-  })
+  });
+  inject('skipUndefinedEntries', (o) => {
+    return Object.entries(o).reduce((a,[k,v]) => (v == null || v === '' || v === false ? a : (a[k]=v, a)), {});
+  });
+  inject('withBaseUrl', (url, dir = '') => {
+    if (!url) return url;
+    return (url.includes('https://') || url.includes('http://')) ? url : `${app.$env.BASE_URL}${dir}${url}`;
+  });
+  inject('formatDate', (date, format = 'DD.MM.YYYY', weekdays, parse) => {
+    const fixDayOfWeek = (n) => n == 0 ? 6 : n - 1;
+    if (parse)
+      date = Date.parse(date);
+    if (weekdays)
+      format = format.replace('day', weekdays[fixDayOfWeek(moment(date).format('d'))]);
+    moment.locale('ru');
+    let ru = moment(date).format(format);
+    moment.locale('az');
+    let az = moment(date).format(format);
+    moment.locale('en');
+    let en = moment(date).format(format);
+    return ({ ru, az, en });
+  });
   // underscore
   inject('clone', _.clone);
   inject('sortBy', _.sortBy);
   inject('chunk', _.chunk);
+  // inject('uniq', _.uniq);
+  // inject('groupBy', _.groupBy);
   inject('moment', moment);
 }

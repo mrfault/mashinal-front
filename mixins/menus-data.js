@@ -27,7 +27,8 @@ export const MenusDataMixin = {
     navbarMenus() {
       return [
         ...this.searchMenus,
-        { title: 'autocatalog', route: '/catalog' }
+        { title: 'autocatalog', route: '/catalog' },
+        { title: 'car-showrooms', route: '/salons' }
       ]
     },
 
@@ -55,20 +56,21 @@ export const MenusDataMixin = {
     userMenus() {
       return this.user?.autosalon 
         ? [
-          { title: 'dashboard', route: '/profile/dashboard' },
-          { title: 'my_announces', route: '/profile/announcements' },
-          { title: 'messages', route: '/profile/messages' },
-          { title: 'statistics', route: '/profile/statistics' },
-          // { title: 'pricing', route: '/profile/pricing' },
-          { title: 'my_profile', route: '/profile/autosalon' },
-          { title: 'payments', route: '/profile/payments' }
+          { title: 'dashboard', route: '/profile/dashboard', showOnCard: false },
+          { title: 'my_announces', route: '/profile/announcements', showOnCard: true },
+          { title: 'messages', route: '/profile/messages', showOnCard: false },
+          { title: 'statistics', route: '/profile/statistics', showOnCard: false },
+          { title: 'my_profile', route: '/profile/salon', showOnCard: false },
+          { title: 'payment_history', route: '/profile/payments', showOnCard: true },
+          { title: 'balans', route: '/profile/balance', showOnCard: true }
         ]  
         : [
-          { title: 'settings', route: '/profile/settings' },
-          { title: 'my_announces', route: '/profile/announcements' },
-          { title: 'comparisons', route: '/comparison' },
-          { title: 'messages', route: '/profile/messages' },
-          { title: 'payments', route: '/profile/payments' }
+          { title: 'settings', route: '/profile/settings', showOnCard: false },
+          { title: 'my_announces', route: '/profile/announcements', showOnCard: true },
+          { title: 'comparisons', route: '/comparison', showOnCard: false },
+          { title: 'messages', route: '/profile/messages', showOnCard: false },
+          { title: 'payment_history', route: '/profile/payments', showOnCard: true },
+          { title: 'balans', route: '/profile/balance', showOnCard: true }
         ];
     },
 

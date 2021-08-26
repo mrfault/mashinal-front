@@ -67,7 +67,7 @@
           value = this.disabled ? this.value : value;
           this.$emit('input', value);
           // check if value was changed
-          if(value !== this.prevValue) {
+          if (value !== this.prevValue) {
             this.$emit('change', value);
             this.prevValue = value;
           }

@@ -263,4 +263,16 @@
       width: 20%;
     }
   }
+
+  .has-add-btn,
+  .has-remove-btn {
+    & > .col {
+      max-width: calc(100% - 54px);
+    }
+  }
+  .has-add-btn.has-remove-btn {
+    & > .col {
+      max-width: calc(100% - 89px);
+    }
+  }
 }

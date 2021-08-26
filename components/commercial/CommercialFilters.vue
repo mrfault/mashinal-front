@@ -1,13 +1,13 @@
 <template>
   <div class="commercial-filters">
     <div class="row">
-      <slot />
+      <slot name="before" />
       <div :class="['mb-2 mb-lg-3', filter.type.includes('buttons') ? 'col-12 col-lg-4' : 'col-6 col-lg-2']" v-for="filter in filters" :key="filter.key">
         <template v-if="filterExists(filter)">
           <template v-if="filter.type === 'form-numeric-input-group'">
             <form-select :label="filter.placeholder" custom :suffix="filter.suffix"
               :values="{from: form[`${filter.key}_from`], to: form[`${filter.key}_to`], suffix: filter.suffix, showLabel: filter.showLabel }"
-              @clear="form[`${filter.key}_from`] = '', form[`${filter.key}_to`] = ''"
+              @clear="form[`${filter.key}_from`] = '', form[`${filter.key}_to`] = '', changeFilter(`${filter.key}_from`, ''), changeFilter(`${filter.key}_to`, '')"
             >
               <div class="form-merged">
                 <form-numeric-input :placeholder="$t('from')" v-model="form[`${filter.key}_from`]" 
@@ -20,7 +20,7 @@
           <template v-else-if="filter.type === 'form-select-group'">
             <form-select :label="filter.placeholder" custom :suffix="filter.suffix"
               :values="{from: form[`${filter.key}_from`], to: form[`${filter.key}_to`] }"
-              @clear="form[`${filter.key}_from`] = '', form[`${filter.key}_to`] = ''"
+              @clear="form[`${filter.key}_from`] = '', form[`${filter.key}_to`] = '', changeFilter(`${filter.key}_from`, ''), changeFilter(`${filter.key}_to`, '')"
             >
               <div class="form-merged">
                 <form-select :label="$t('from')" v-model="form[`${filter.key}_from`]" 
@@ -43,6 +43,7 @@
           </template>
         </template>
       </div>
+      <slot name="after" />
     </div>
   </div>
 </template>

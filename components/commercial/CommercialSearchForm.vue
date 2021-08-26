@@ -12,17 +12,17 @@
             @change="setBrand($event, key)" has-search/>
         </div>
         <div class="col-6 col-lg-4 mb-2 mb-lg-3">
-          <div class="row">
+          <div :class="['row', {'has-add-btn': canAddRow(index), 'has-remove-btn': canRemoveRow()}]">
             <div :class="['col', {'col-12': isMobileBreakpoint}]">
               <form-select :label="$t('model')" :options="commercialModels[key]" v-model="form.additional_brands[key]['model']"
                 :disabled="form.additional_brands[key]['brand'] && !commercialModels[key].length" has-search />
             </div>
             <div class="col-auto" v-if="!isMobileBreakpoint">
               <div class="form-counter">
-                <div class="form-info" v-if="rows.length < 5 && index === rows.length - 1" @click="addSearchRow(key)">
+                <div class="form-info" v-if="canAddRow(index)" @click="addSearchRow(key)">
                   <icon name="plus" />
                 </div>
-                <div class="form-info" v-if="rows.length > 1" @click="removeSearchRow(key)">
+                <div class="form-info" v-if="canRemoveRow()" @click="removeSearchRow(key)">
                   <icon name="minus" />
                 </div>
               </div>
@@ -79,9 +79,21 @@
               <div class="row" v-if="isMobileBreakpoint || !collapsed">
                 <div class="col-12">
                   <commercial-filters :values="form" @change-filter="setCommercialFilter">
-                    <div class="col-6 col-lg-2 mb-2 mb-lg-3" v-if="isMobileBreakpoint">
-                      <form-select :label="$t('city')" :options="sellOptions.regions" v-model="form.region" has-search />
-                    </div>
+                    <template #before>
+                      <div class="col-6 col-lg-2 mb-2 mb-lg-3" v-if="isMobileBreakpoint">
+                        <form-select :label="$t('city')" :options="sellOptions.regions" v-model="form.region" has-search />
+                      </div>
+                    </template>
+                    <template #after>
+                      <div class="col-6 col-lg-2 mb-2 mb-lg-3">
+                        <form-select :label="$t('damage')" v-model="form.status" :options="getDamageOptions"
+                          :show-label-on-select="false" />
+                      </div>
+                      <div class="col-6 col-lg-2 mb-2 mb-lg-3">
+                        <form-select :label="$t('customs')" v-model="form.customs" :options="getCustomsOptions"
+                          :show-label-on-select="false" />
+                      </div>
+                    </template>
                   </commercial-filters>
                 </div>
                 <div class="col-12 mb-2 mb-lg-0">
@@ -209,7 +221,7 @@ export default {
       if (id) await this.getCommercialModels({ category: this.category.id, id, index });
     },
     setCommercialFilter(key, value) {
-      if(value === false || value === '' || (typeof value === 'object' && !Object.keys(value).length)) {
+      if (value === false || value === '' || (typeof value === 'object' && !Object.keys(value).length)) {
         this.$delete(this.form, key);
       } else this.$set(this.form, key, value);
     }

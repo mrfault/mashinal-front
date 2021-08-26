@@ -10,7 +10,8 @@ export const LayoutMixin = {
     return {
       vhVariableSet: false,
       showLoginPopup: false,
-      loginActionKey: ''
+      loginActionKey: '',
+      loadingKey: ''
     }
   },
   head() {
@@ -65,14 +66,14 @@ export const LayoutMixin = {
     // login
     toggleEchoListening(toggle) {
       if (toggle) {
-        this.connectEcho().listen('SendMessage', this.appendToMessage);
-      } else if(window.Echo) {
+        this.connectEcho().listen('SendMessage', this.addNewMessage);
+      } else if (window.Echo) {
         this.connectEcho().stopListening('SendMessage');
       }
     },
     async getUserData() {
-      if(!this.loggedIn) return;
-      if(!this.messages.length) await this.getMessages();
+      if (!this.loggedIn) return;
+      if (!this.messages.length) await this.getMessages();
       await this.getFavorites();
     },
     closeLogin() {
@@ -83,7 +84,7 @@ export const LayoutMixin = {
       let key = this.loginActionKey;
       this.closeLogin();
       this.resetSellTokens();
-      if(key) this.$nuxt.$emit('after-login', key);
+      if (key) this.$nuxt.$emit('after-login', key);
     }
   },
   created() {
@@ -93,7 +94,7 @@ export const LayoutMixin = {
       this.getUserData();
       if (!auth) {
         // reset store auth data
-        // this.resetUserData();
+        this.resetUserData();
       }
     });
   },
@@ -121,7 +122,10 @@ export const LayoutMixin = {
       this.handleResize();
       this.handleScroll();
       this.pickColorMode();
+      // strange behavior of loading prop which is not updating 
+      // in v-show directive without changing key sometimes
       this.setLoading(false);
+      // this.loadingKey++;
     }, 0);
 
   },

@@ -13,25 +13,46 @@ Vue.use({
         async createMessagesGroup(recipientId = false, announceId = false){
           if (!recipientId && !announceId) return;
           let data = await this.$store.dispatch('createMessagesGroup', { recipientId, announceId });
-          this.$router.push(this.$localePath('profile-messages') + '?group=' + data.id);
+          this.$router.push(`${this.$localePath('/profile/messages')}?group=${data.id}`);
         },
         // tracking events with fb pixel
         fbTrack(eventName, options) {
-          if(this.$env.DEV) {
+          if (this.$env.DEV) {
             console.log('fb pixel track "' + eventName + '"', options ? JSON.stringify(options) : '');
           } else {
-            if(!this.$fb) console.warn('fb pixel not setted');
-            else if(options) this.$fb.track(eventName, options);
+            if (!this.$fb) console.warn('fb pixel not setted');
+            else if (options) this.$fb.track(eventName, options);
             else this.$fb.track(eventName);
           }
         },
         // tracking events with gtag manager
         gtagTrack(eventKey) {
-          if(this.$env.DEV) {
+          if (this.$env.DEV) {
             console.log('gtag track "' + eventKey + '"');
           } else {
-            if(!this.$gtag) console.warn('gtag not setted');
+            if (!this.$gtag) console.warn('gtag not setted');
             else this.$gtag('event', 'conversion', { send_to: eventKey });
+          }
+        },
+        // copy text to clipboard
+        copyToClipboard(text) {
+          try {
+            navigator.clipboard.writeText(text);
+            this.$toasted.success(this.$t('copied_to_clipboard'));
+          } catch(error) {
+            console.error(error);
+            try {
+              let tempInput = document.createElement('input');
+              tempInput.type = 'text';
+              tempInput.value = text;
+              document.body.appendChild(tempInput);
+              tempInput.select();
+              document.execCommand('Copy');
+              document.body.removeChild(tempInput);
+              this.$toasted.success(this.$t('copied_to_clipboard'));
+            } catch(error) {
+              console.error(error);
+            }
           }
         },
         // other
@@ -43,6 +64,9 @@ Vue.use({
           if (typeof offset === 'object') offset = this.isMobileBreakpoint ? offset[0] : offset[1];
           offset += (this.isMobileBreakpoint ? -60 : -141);
           this.$scrollTo(el, duration, { offset, container });
+        },
+        scrollReset() {
+          window.scrollTo(0, 0);
         },
         setBodyOverflow(value = 'auto', className) {
           let bodyEl = document.querySelector('body');
@@ -58,7 +82,7 @@ Vue.use({
         getParentByClassName(el, className) {
           el = typeof el === 'string' ? document.querySelector(el) : el;
           for( ; el && el !== document; el = el.parentNode) {
-            if(el.classList.contains(className)) return el;
+            if (el.classList.contains(className)) return el;
           }
           return null;
         },
@@ -68,21 +92,27 @@ Vue.use({
           else if (item.moto_atv_brand) return item.moto_atv_brand.name;
           else if (item.moto_brand) return item.moto_brand.name;
           else if (item.commercial_brand) return this.$translateSoft(item.commercial_brand.name);
+          else if (item.brand) return item.brand.name;
           return '';
         },
         getAnnouncementModelName(item) {
-          if (item.car_catalog) return (item.car_catalog.model || item.model).name;
+          if (item.car_catalog) return this.$translateHard((item.car_catalog.model || item.model).name);
           else if (item.scooter_model) return item.scooter_model.name;
           else if (item.moto_atv_model) return item.moto_atv_brand.name;
           else if (item.moto_model) return item.moto_model.name;
           else if (item.commercial_model) return this.$translateSoft(item.commercial_model.name);
+          else if (item.model) return this.$translateHard(item.model.name);
           return '';
         },
         getAnnouncementTitle(item) {
           if (item.title) return item.title;
-          return this.getAnnouncementBrandName(item) + ' ' + this.getAnnouncementModelName(item);
+          let brand = this.getAnnouncementBrandName(item);
+          let model = this.getAnnouncementModelName(item);
+          if (!brand && !model) return '';
+          return (brand || '') + ' ' + (model || '');
         },
         getAnnouncementContact(item) {
+          let img = item.is_autosalon ? item.user.autosalon.logo : item.user.avatar;
           return {
             type: 'user',
             user: item.user,
@@ -90,7 +120,9 @@ Vue.use({
             name: item.user.full_name,
             phone: item.user.phone,
             address: item.address,
-            img: item.user.avatar ? `${this.$env.BASE_URL}/storage/${item.user.avatar}` : '',
+            img: item.is_autosalon 
+              ? (!img || img?.includes('/images/') ? '/img/salon-logo.jpg' : this.$withBaseUrl(img))
+              : (this.$withBaseUrl(img, '/storage/') || '/img/user.jpg'),
             lat: item.latitude ? parseFloat(item.latitude) : 0,
             lng: item.longitude ? parseFloat(item.longitude) : 0,
             link: item.is_autosalon ? this.$localePath(`/salons/${item.user.autosalon.id}`) : false
@@ -135,6 +167,9 @@ Vue.use({
         },
         userIsOwner(item) {
           return this.loggedIn && item.user.id === this.user.id;
+        },
+        salonIsOwner(item) {
+          return this.loggedIn && item.id === this.user.autosalon?.id;
         }
       },
       computed: {
@@ -156,7 +191,7 @@ Vue.use({
           return ['xs', 'sm', 'md'].includes(this.breakpoint);
         },
         isMobileDevice() {
-          if(!navigator.userAgent) return false;
+          if (!navigator.userAgent) return false;
           return [/iPhone/i,/iPad/i,/iPod/i,/Android/i,/BlackBerry/i,/Windows Phone/i]
             .some(os => navigator.userAgent.match(os));
         },

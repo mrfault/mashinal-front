@@ -52,6 +52,12 @@
   }
 }
 
+.btn-reset {
+  border: 0;
+  padding: 0;
+  background: transparent;
+}
+
 .btn-sq {
   border: 0;
   display: inline-flex;
@@ -117,6 +123,9 @@
       margin-bottom: 3px;
     }
   }
+  &.text-left {
+    justify-content: flex-start;
+  }
   &--white-outline {
     @include btn-style($bg-color: $white, $bg-hover: $white, $color-hover: $dark-blue-1, $active-bg: $white, $active-color: $red-1, $outline: true);
   }
@@ -148,7 +157,7 @@
     @include btn-style($color: $red-1, $bg-color: $red-3, $bg-hover: $red-2, $active-bg: $red-2);
   }
   &--pale-red-outline {
-    @include btn-style($bg-color: $red-2, $bg-hover: $red-2, $border-color: $red-4, $active-bg: $red-2, $outline: true);
+    @include btn-style($color-hover: $red-2, $bg-color: $red-2, $bg-hover: $red-4, $border-color: $red-4, $active-bg: $red-2, $outline: true);
   }
   &--grey {
     @include btn-style($bg-color: $grey-10, $bg-hover: $grey-8);
@@ -198,8 +207,75 @@
   }
 }
 
+.card.with-btns {
+  margin-top: 35px;
+  border-top-left-radius: 0;
+  .card-btns {
+    margin: -59px -25px 25px;
+    border-radius: 4px 4px 0 0;
+    overflow: hidden;
+    background-color: $white;
+    max-width: 300px;
+  }
+}
+
+.btn {
+  &--merged {
+    position: relative;
+    border-radius: 0 !important;
+    border: 0 !important;
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 17px;
+      border-right: 1px solid $red-4;
+    }
+    &:hover:before,
+    &.active::before {
+      content: none;
+    }
+  }
+}
+
+.row > div {
+  &:hover + div .btn--merged::before,
+  &.active + div .btn--merged::before,
+  &:nth-child(1) .btn--merged::before {
+    content: none;
+  }
+}
+
+.dark-mode {
+  .card.with-btns {
+    .card-btns {
+      background-color: $dark-2;
+    }
+  }
+
+  .btn {
+    &--merged {
+      &::before {
+        border-color: $grey-1;
+      }
+    }
+  }
+}
+
+@include media-max-width(lg) {
+  .card.with-btns {
+    margin-top: 60px;
+    .card-btns {
+      margin: -59px 0 25px;
+    }
+  }
+}
+
 .btn.disabled {
   opacity: .4;
+  pointer-events: none;
 }
 
 .btn.pending {

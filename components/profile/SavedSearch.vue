@@ -47,7 +47,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['brands', 'colors', 'sellOptions', 'allSellOptions']),
+    ...mapGetters(['brands', 'colors', 'sellOptions', 'allSellOptions', 'bodyOptions']),
 
     checkedValue: {
       get() {
@@ -58,36 +58,42 @@ export default {
       }
     },
     title() {
-      let title = this.$t('all_car_brands');
-      let brand_id = this.filter.additional_brands[0].brand;
-      let model_slug = this.filter.additional_brands[0].model_slug;
-      let generation_slug = this.filter.additional_brands[0].generation_slug;
-      if (brand_id) title = this.brands.find(brand => brand.id == brand_id).name;
-      const slugToTitle = slug => slug.replace(/_| /g, '-').split('-').map(w => w ? (w[0].toUpperCase() + w.slice(1)) : '').join(' ')
-      if (model_slug) title += (' ' + slugToTitle(model_slug));
-      if (generation_slug) title += (' ' + slugToTitle(generation_slug));
-      return title;
+      let models = Object.keys(this.filter.additional_brands)
+        .map(key => {
+          let title = '';
+          let data = this.filter.additional_brands[key];
+          if (data.brand) title = this.brands.find(brand => brand.id == data.brand).name;
+          const slugToTitle = slug => slug.replace(/_| /g, '-').split('-').map(w => w ? (w[0].toUpperCase() + w.slice(1)) : '').join(' ')
+          if (data.model_name) title += (' ' + this.$translateHard(data.model_name));
+          else if (data.model_slug) title += (' ' + slugToTitle(data.model_slug));
+          if (data.generation_name) title += (' ' + this.$translateHard(data.generation_name));
+          else if (data.generation_slug) title += (' ' + slugToTitle(data.generation_slug));
+          return title;
+        })
+        .filter(title => title);
+      
+      return models.length ? models.join(', ') : this.$t('all_car_brands');
     },
     params() {
       let data = [
-        {name: 'year', title: this.$t('prod_year') , range: true},
-        {name: 'price', title: this.$t('price') , range: true, suffix: this.filter.currency === 2 ? 'USD' : 'AZN'},
-        {name: 'region', title: this.$t('city') , options: this.sellOptions.regions, key: 'key'},
+        {name: 'year', title: this.$t('prod_year'), range: true},
+        {name: 'price', title: this.$t('price'), range: true, suffix: this.filter.currency === 2 ? 'USD' : 'AZN'},
+        {name: 'region', title: this.$t('city'), options: this.sellOptions.regions, key: 'key'},
         {name: 'mileage', title: this.$t('mileage'), range: true, suffix: this.$t('char_kilometre')},
-        {name: 'capacity', title: this.$t('capacity') , range: true, suffix: this.$t('char_litre')},
-        {name: 'engine_type', title: this.$t('engine') , list: true},
-        {name: 'korobka', title: this.$t('box') , list: true},
-        {name: 'body', title: this.$t('com_light_type') , list: true},
-        {name: 'gearing', title: this.$t('gearing') , list: true},
-        {name: 'colors', title: this.$t('color') , options: this.colors, key: 'id', list: this.filter.colors instanceof Array},
-        {name: 'is_matte', title: this.$t('matt') , boolean: true},
-        {name: 'n_of_seats', title: this.$t('kolichestvo-mest') , list: true},
-        {name: 'credit', title: this.$t('credit') , boolean: true},
-        {name: 'exchange_possible', title: this.$t('barter') , boolean: true},
-        {name: 'damage', title: this.$t('damage') , options: [{name: this.$t('without_beaten'), key: 1},{name: this.$t('broken'), key: 2}]},
-        {name: 'customs', title: this.$t('customs') , options: [{name: this.$t('cleared'), key: 1},{name: this.$t('not_cleared'), key: 2}]},
-        {name: 'in_garanty', title: this.$t('in_garanty') , boolean: true},
-        {name: 'with_video', title: this.$t('with_video') , boolean: true}
+        {name: 'capacity', title: this.$t('capacity'), range: true, suffix: this.$t('char_litre')},
+        {name: 'engine_type', title: this.$t('engine'), list: true},
+        {name: 'korobka', title: this.$t('box'), list: true},
+        {name: 'body', title: this.$t('com_light_type'), options: this.bodyOptions.main.default_options.body.values, body_options: true },
+        {name: 'gearing', title: this.$t('gearing'), list: true},
+        {name: 'colors', title: this.$t('color'), options: this.colors, key: 'id', list: this.filter.colors instanceof Array},
+        {name: 'is_matte', title: this.$t('matt'), boolean: true},
+        {name: 'n_of_seats', title: this.$t('kolichestvo-mest'), list: true},
+        {name: 'credit', title: this.$t('credit'), boolean: true},
+        {name: 'exchange_possible', title: this.$t('barter'), boolean: true},
+        {name: 'damage', title: this.$t('damage'), options: [{name: this.$t('without_beaten'), key: 1},{name: this.$t('broken'), key: 2}]},
+        {name: 'customs', title: this.$t('customs'), options: [{name: this.$t('cleared'), key: 1},{name: this.$t('not_cleared'), key: 2}]},
+        {name: 'in_garanty', title: this.$t('in_garanty'), boolean: true},
+        {name: 'with_video', title: this.$t('with_video'), boolean: true}
       ];
       // add values
       return data.map(param => {
@@ -107,13 +113,19 @@ export default {
           else if (maxValue) value = this.$t('to')  +` ${read ? this.$readNumber(maxValue) : maxValue} ${param.suffix || ''}`;
         } else if (param.list && key in this.filter) {
           value = param.options
-            ? param.options.filter(option => this.filter[key].includes(option[param.key || 'key'])).map(option => option.name[this.locale]).join(', ')
+            ? param.options
+                .filter(option => this.filter[key].includes(option[param.key || 'key']))
+                .map(option => option.name[this.locale] || option.name).join(', ')
             : this.filter[key].map(option => this.$t(option.name)).join(', ');
         } else if (param.boolean && key in this.filter) {
           value = this.filter[key] ? (['exchange_possible','credit'].includes(key) ? this.$t('is_possible') : '✓') : '✕';
         } else if (param.options && key in this.filter) {
-          let option = param.options.find(option => option[param.key || 'key'] == this.filter[key]);
-          value = option.name[this.locale] || option.name;
+          value = (this.filter[key] instanceof Array ? this.filter[key] : [this.filter[key]])
+            .map(selected => {
+              let paramKey = param.key || 'key';
+              let option = param.options.find(option => option[paramKey] == (selected[paramKey] || selected));
+              return option.name[this.locale] || option.name;
+            }).join(', ');
         }
         return {...param, value}
       })

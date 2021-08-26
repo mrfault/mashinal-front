@@ -1,7 +1,8 @@
 <template>
   <div :class="['row', iconsOnly ? '' : 'mb-n2 mb-lg-n3']">
     <div :class="['mb-2 mb-lg-3', iconsOnly ? 'col-2 col-lg-1' : 'col-6 col-lg-4']" v-for="(option, index) in options" :key="option.title">
-      <div :class="['selectable-block',{'active': selected === option.title || selected === getKey(option), 'icons-only': iconsOnly}]" @click.stop="selected = { value: option.title, index, key: getKey(option) }">
+      <div :class="['selectable-block',{'active': selected === option.title || selected === getKey(option), 'icons-only': iconsOnly}]" 
+        @click.stop="selected = { value: option.title, index, key: getKey(option) }" v-tooltip="iconsOnly && $t(option.title)">
         <div class="block-icon">
           <icon :name="option.icon"/>
         </div>

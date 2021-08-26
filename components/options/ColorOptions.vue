@@ -1,13 +1,13 @@
 <template>
   <div class="color-options row">
     <div class="col-2 col-lg-auto mb-2 mb-lg-3" v-for="(color, index) in colors" :key="color.id">
-      <span :class="['color', {'selected': isSelected(color.id), 'contrast': index > 8}]" :style="getStyles(color)" @click="selected = color.id">
+      <span :class="['color', {'selected': isSelected(color.id), 'contrast': index > 8}]" :style="getStyles(color)" @click="selected = color.id" v-tooltip="color.name[locale]">
         <span class="sr-only">{{ color.name[locale] }}</span>
         <icon name="check" v-if="isSelected(color.id)" />
       </span>
     </div>
     <div class="col-2 col-lg-auto mb-2 mb-lg-3" key="matt" v-if="!hideMatt">
-      <span :class="['color','matt', {'selected': matt}]" @click="$emit('change-matt', !matt)">
+      <span :class="['color','matt', {'selected': matt}]" @click="$emit('change-matt', !matt)" v-tooltip="$t('matt')">
         <span>{{ $t('matt').slice(0,3) }}</span>
       </span>
     </div>

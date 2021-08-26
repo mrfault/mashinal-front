@@ -17,8 +17,8 @@ export const ToastErrorsMixin = {
       if (scroll) this.scrollTo(`#anchor-${options.fieldView || key}`, options.offset || 0);
     },
     removeError(field, force = false) {
-      if(!force && (!this.form[field] || this.form[field] === '')) return;
-      if(this.errors.includes(field)) {
+      if (!force && (!this.form[field] || this.form[field] === '')) return;
+      if (this.errors.includes(field)) {
         this.errors = this.errors.filter(key => key !== field);
         this.toasts[field].goAway(100);
       }

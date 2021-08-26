@@ -67,7 +67,8 @@
       },
       labelClick: {
         type: Boolean
-      }
+      },
+      watchValue: Boolean
     },
     data() {
       return {
@@ -83,7 +84,7 @@
           value = this.disabled ? this.value : value;
           this.$emit('input', value);
           // check if value was changed
-          if(value !== this.prevValue) {
+          if (value !== this.prevValue) {
             this.$emit('change', value);
             this.prevValue = value;
           }
@@ -92,7 +93,14 @@
     },
     methods: {
       handleClick() {
-        if (this.disabled) this.$emit('try');
+        if (this.disabled) 
+          this.$emit('try');
+      }
+    },
+    watch: {
+      value(value) {
+        if (this.watchValue)
+          this.inputValue = value;
       }
     }
   }

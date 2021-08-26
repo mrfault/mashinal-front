@@ -14,8 +14,15 @@ textarea {
 }
 
 textarea {
+  display: block;
   resize: none;
   height: 140px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .star {
@@ -96,6 +103,13 @@ textarea {
     }
     &.disabled {
       color: $grey-3;
+    }
+  }
+  &.placeholder-lighter {
+    i,
+    input::placeholder,
+    textarea::placeholder {
+      opacity: .4;
     }
   }
   input {
@@ -554,6 +568,13 @@ textarea {
       background-color: $white;
     }
   }
+  &.auto-width {
+    button {
+      width: auto;
+      text-transform: normal;
+      padding: 0 12px;
+    }
+  }
 }
 
 .form-merged {
@@ -740,6 +761,14 @@ textarea {
         &_triangle {
           color: $dark-2;
         }
+        &_dropdown {
+          background-color: $dark-2;
+          .select-menu_dropdown-option {
+            &:hover {
+              background-color: lighten($dark-2, 2%);
+            }
+          }
+        }
       }
     }
     &_dropdown {
@@ -795,6 +824,22 @@ textarea {
       }
       &-dot-tooltip {
         background-color: $dark-2;
+      }
+    }
+  }
+}
+
+@include media-min-width('lg') {
+  .dark-mode {
+    .select-menu {
+      &_dropdown {
+        &.custom-checkboxes {
+          .form-merged {
+            .checkbox-input label {
+              background-color: $dark-1;
+            }
+          }
+        }
       }
     }
   }

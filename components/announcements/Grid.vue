@@ -16,6 +16,7 @@
           <grid-item 
             :announcement="announcement" 
             :show-checkbox="showCheckbox" 
+            :show-status="showStatus"
             :show-phone-count="showPhoneCount"
             :track-views="trackViews"
           />
@@ -55,6 +56,7 @@ export default {
       type: Boolean,
       default: true
     },
+    showStatus: Boolean,
     showCheckbox: Boolean,
     showPhoneCount: Boolean,
     paginate: {},
@@ -66,7 +68,7 @@ export default {
   },
   methods: {
     changePage(page) {
-      if(this.showAll) {
+      if (this.showAll) {
         this.$emit('pending');
         this.$router.push({ path: this.showAll, query: { page } }, () => {
           this.scrollTo('.announcements-grid', [-15, -20]);

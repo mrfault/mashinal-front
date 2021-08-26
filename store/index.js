@@ -1,10 +1,11 @@
 import Vue from 'vue';
+import _ from '~/lib/underscore';
 
 const getInitialState = () => ({
   loading: true,
   colorMode: 'light',
   breakpoint: null,
-  uiScale: 1,
+  ptk: null,
   menus: [],
   staticPages: [],
   pageRef: '',
@@ -23,6 +24,7 @@ const getInitialState = () => ({
   myServices: [],
   myServiceOptions: [],
   myServiceHistory: [],
+  myBalanceHistory: [],
   promotion: {
     id: '',
     optionId: '',
@@ -61,7 +63,7 @@ const getInitialState = () => ({
   carTypeName: {},
   firstGeneration: false,
   firstGenerationEquipments: [],
-  specificationsList: [],
+  modificationsList: [],
   equipmentsList: [],
   // options
   colors: [],
@@ -83,7 +85,7 @@ const getInitialState = () => ({
   sellTokens: false,
   sellPhoneEntered: '',
   sellPhoneRegistered: false,
-  sellAutosalonRights: false,
+  sellSalonRights: false,
   sellProgress: 5,
   sellYears: [],
   sellBody: [],
@@ -93,13 +95,14 @@ const getInitialState = () => ({
   sellTransmissions: [],
   sellModifications: [],
   sellPreviewData: {},
-  // autosalons
-  autosalonsList: [],
-  autosalonsInBounds: false,
-  autosalonsSelected: [],
-  autosalonsOnlyOfficial: false,
-  autosalonSingle: {},
-  myAutosalon: {},
+  // salons
+  salonsList: [],
+  salonsFiltered: [],
+  salonsInBounds: false,
+  salonsSelected: [],
+  salonsOnlyOfficial: false,
+  salonSingle: {},
+  mySalon: {},
   myAnnouncementCalls: {},
   myAnnouncementStats: {},
   myPackageStats: {},
@@ -110,8 +113,8 @@ export const state = () => (getInitialState());
 export const getters = {
   loading: s => s.loading,
   colorMode: s => s.colorMode,
-  uiScale: s => s.uiScale,
   breakpoint: s => s.breakpoint,
+  ptk: s => s.ptk,
   loggedIn: s => s.auth.loggedIn,
   user: s => s.auth.user,
   menus: s => s.menus,
@@ -125,13 +128,22 @@ export const getters = {
   favoriteAnnouncements: s => s.favoriteAnnouncements,
   // profile
   messages: s => s.messages,
+  messagesByGroup: s => id => s.messages.find(group => group.id == id),
+  messagesByDate: s => id => {
+    let messages = s.messages.find(group => group.id == id).messages;
+    return _.groupBy(messages, (message) => message.created_at.slice(0,10));
+  },
   suggestedMessages: s => s.suggestedMessages,
+  countNewMessages: s => s.messages.filter((group) => {
+    return group.last_message && !group.last_message.is_read && (group.last_message.sender_id != s.auth.user.id);
+  }).length,
   // services
   services: s => s.services,
   actives: s => s.actives,
   myServices: s => s.myServices,
   myServiceOptions: s => s.myServiceOptions,
   myServiceHistory: s => s.myServiceHistory,
+  myBalanceHistory: s => s.myBalanceHistory,
   promotion: s => s.promotion,
   paidStatusData: s => s.paidStatusData,
   // announcements
@@ -167,7 +179,7 @@ export const getters = {
   carTypeName: s => s.carTypeName,
   firstGeneration: s => s.firstGeneration,
   firstGenerationEquipments: s => s.firstGenerationEquipments,
-  specificationsList: s => s.specificationsList,
+  modificationsList: s => s.modificationsList,
   equipmentsList: s => s.equipmentsList,
   // options
   colors: s => s.colors,
@@ -187,7 +199,7 @@ export const getters = {
   sellTokens: s => s.sellTokens,
   sellPhoneEntered: s => s.sellPhoneEntered,
   sellPhoneRegistered: s => s.sellPhoneRegistered,
-  sellAutosalonRights: s => s.sellAutosalonRights,
+  sellSalonRights: s => s.sellSalonRights,
   sellProgress: s => s.sellProgress,
   sellYears: s => s.sellYears,
   sellBody: s => s.sellBody,
@@ -197,19 +209,20 @@ export const getters = {
   sellTransmissions: s => Object.keys(s.sellTransmissions).map(key => s.sellTransmissions[key]),
   sellModifications: s => Object.keys(s.sellModifications).map(key => s.sellModifications[key]),
   sellPreviewData: s => s.sellPreviewData,
-  // autosalons
-  autosalonsList: s => s.autosalonsList,
-  autosalonsInBounds: s => s.autosalonsInBounds,
-  autosalonsSelected: s => s.autosalonsSelected,
-  autosalonSingle: s => s.autosalonSingle,
-  myAutosalon: s => s.myAutosalon,
+  // salons
+  salonsList: s => s.salonsList,
+  salonsFiltered: s => s.salonsFiltered,
+  salonsInBounds: s => s.salonsInBounds,
+  salonsSelected: s => s.salonsSelected,
+  salonSingle: s => s.salonSingle,
+  mySalon: s => s.mySalon,
   myAnnouncementCalls: s => s.myAnnouncementCalls,
   myAnnouncementStats: s => s.myAnnouncementStats,
   myPackageStats: s => s.myPackageStats
 };
 
 const objectNotEmpty = (state, commit, property) => {
-  if(state['needResetOptions'].includes(property)) {
+  if (state['needResetOptions'].includes(property)) {
     let arr = state['needResetOptions'].filter(p => p !== property);
     commit('mutate', { property: 'needResetOptions', value: arr }); 
     return false;
@@ -218,11 +231,25 @@ const objectNotEmpty = (state, commit, property) => {
 };
 
 export const actions = {
-  async nuxtServerInit({ dispatch }, { route, app }) {
+  async nuxtServerInit({ dispatch, commit }, { route, app }) {
     await Promise.all([
       dispatch('getStaticPages')
     ]);
-    if(['true','false'].includes(route.query.success)) {
+
+    let ptk = this.$cookies.get('ptk') || 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
+      .replace(/[xy]/g, (c) => {
+        let r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      })
+      .toUpperCase();
+
+    if (!this.$cookies.get('ptk')) {
+      this.$cookies.set('ptk', ptk, { maxAge: 60 * 60 * 24 * 7000 });
+    }
+
+    commit('mutate', { property:'ptk', value: ptk });
+
+    if (['true','false'].includes(route.query.success)) {
       let type = route.query.success === 'true' ? 'success' : 'error';
       dispatch('updatePaidStatus', {
         type,
@@ -248,7 +275,7 @@ export const actions = {
     let changed = locale !== this.$i18n.locale;
     this.$i18n.setLocale(locale);
     // update options in store
-    if(changed) dispatch('resetOptions');
+    if (changed) dispatch('resetOptions');
   },
   // Pages
   async getMenus({ commit }) {
@@ -266,10 +293,25 @@ export const actions = {
     commit('mutate', { property: 'pageRef', value: path });
   },
   // Messages
-  async getMessages({ commit }) {
+  async getMessages({ commit, state }, groupId) {
     const res = await this.$axios.$get('/profile/messages');
+    let messages = [];
+    if (groupId) {
+      messages = await this.$axios.$get('/profile/group/'+ groupId +'/messages');
+    }
+    
     commit('mutate', { property: 'messages', value: res });
     commit('appendMessagesToGroup', { setAllEmpty: true });
+    
+    if (groupId && messages.length) {
+      let groupIndex = state.messages.findIndex(group => group.id == groupId);
+
+      if (groupIndex !== -1){
+        if (!state.messages[groupIndex].messages_loaded){
+          commit('appendMessagesToGroup', { groupIndex, messages });
+        }
+      }
+    }
   },
   async getGroupMessages({ commit, state }, groupId) {
     let groupIndex = state.messages.findIndex(group => group.id == groupId);
@@ -281,7 +323,8 @@ export const actions = {
       }
     }
   },
-  async getSuggestedMessages({ commit }) {
+  async getSuggestedMessages({ commit, state }) {
+    if (objectNotEmpty(state, commit, 'suggestedMessages')) return;
     const res = await this.$axios.$get('/profile/suggestedMessages');
     commit('mutate', { property: 'suggestedMessages', value: res })
   },
@@ -298,17 +341,12 @@ export const actions = {
     await this.$axios.$get('/profile/messages/'+ id +'/remove');
     commit('removeGroup', { groupId: id });
   },
-  markAsRead({ commit, state }, data) {
-    this.$axios.$get('/profile/messages/'+state.messages[data.groupIndex].id+'/read');
-    commit('markAsRead', { groupIndex: data.groupIndex });
+  markAsRead({ commit }, id) {
+    this.$axios.$get('/profile/messages/'+ id +'/read');
+    commit('markAsRead', { groupId: id });
   },
   async blockUser({}, data) {
     await this.$axios.$post('/profile/messages/'+ data.id +'/block');
-  },
-  // Payments
-  async getTransactions({ commit }, data) {
-    const res = await this.$axios.$get(`/payment/getHistory?page=${data.page || 1}`);
-    commit('mutate', { property: 'transactions', value: res });
   },
   // Favorites
   async getFavorites({ commit }) {
@@ -382,11 +420,11 @@ export const actions = {
     commit('mutate', { property: 'commercialModels', value: res, key: data.index || 0 })
   },
   async getMotoModels({ dispatch }, data) {
-    if(data.category == 1)  
+    if (data.category == 1)  
       await dispatch('getMotorcycleModels', { id: data.id, index: data.index || 0 });
-    else if(data.category == 2)  
+    else if (data.category == 2)  
       await dispatch('getScooterModels', { id: data.id, index: data.index || 0 });
-    else if(data.category == 3)  
+    else if (data.category == 3)  
       await dispatch('getAtvModels', { id: data.id, index: data.index || 0 });
   },
   async getMotorcycleModels({ commit }, data) {
@@ -436,19 +474,19 @@ export const actions = {
     const res = await this.$axios.$get(`/brand/${data.brand}/model/${data.model}/generation/${data.generation}/body/${data.body}`);
     commit('mutate', { property: 'firstGeneration', value: res });
   },
-  async getSpecificationsList({ commit }, data) {
+  async getModificationsList({ commit }, data) {
     const res = await this.$axios.$get(`/brand/${data.brand}/model/${data.model}/generation/${data.generation}/get_type/${data.body}`);
-    commit('mutate', { property: 'specificationsList', value: res });
+    commit('mutate', { property: 'modificationsList', value: res });
+  },
+  async getBodyModification({ commit }, data) {
+    const res = await this.$axios.$get(`/brand/${data.brand}/model/${data.model}/generation/${data.generation}/body/${data.body}${data.modification ? `/catalog/${data.modification}` : ''}`);
+    commit('mutate', { property: 'firstGeneration', value: res });
   },
   async getEquipmentsList({ commit }, data) {
     const res = await this.$axios.$get(`/brand/${data.brand}/model/${data.model}/generation/${data.generation}/get_type/${data.body}/equipments`);
     commit('mutate', { property: 'equipmentsList', value: res });
   },
-  async getCatalogSpecifications({ commit }, data) {
-    const res = await this.$axios.$get(`/brand/${data.brand}/model/${data.model}/generation/${data.generation}/body/${data.body}/catalog/${data.specification || data.equipment}`);
-    commit('mutate', { property: 'firstGeneration', value: res });
-  },
-  async getCatalogEquipments({ commit }, data) {
+  async getBodyEquipments({ commit }, data) {
     const res = await this.$axios.$get(`/brand/${data.brand}/model/${data.model}/generation/${data.generation}/body/${data.body}/catalog/${data.equipment}/equipments`);
     commit('mutate', { property: 'firstGenerationEquipments',  value: res });
   },
@@ -517,7 +555,8 @@ export const actions = {
     let arr = [
       'sellOptions','allSellOptions2','bodyOptions',
       'colors','complaintOptions','badges','brands','popularOptions','allSellOptions',
-      'motoOptions','commercialAllOptions','commercialTypes'
+      'motoOptions','commercialAllOptions','commercialTypes',
+      'suggestedMessages','messages'
     ];
     if (property) {
       arr = state['needResetOptions'].filter(p => p !== property);
@@ -617,12 +656,12 @@ export const actions = {
     const res = await this.$axios.$post('/check/user/by/phone', { phone });
     commit('mutate', { property: 'sellTokens', value: res.data && res.data.announce_count });
     commit('mutate', { property: 'sellPhoneRegistered', value: res.data && res.data.have_account });
-    commit('mutate', { property: 'sellAutosalonRights', value: res.data && res.data.is_autosalon });
+    commit('mutate', { property: 'sellSalonRights', value: res.data && res.data.is_autosalon });
   },
   resetSellTokens({ commit }) {
     commit('mutate', { property: 'sellTokens', value: false });
     commit('mutate', { property: 'sellPhoneRegistered', value: false });
-    commit('mutate', { property: 'sellAutosalonRights', value: false });
+    commit('mutate', { property: 'sellSalonRights', value: false });
     commit('mutate', { property: 'sellPhoneEntered', value: '' });
   },
   setSellProgress({ commit }, value) {
@@ -677,28 +716,33 @@ export const actions = {
     const res = await this.$axios.$get(`/my/actives/history`);
     commit('mutate', { property: 'myServiceHistory', value: res });
   },
+  async getMyBalanceHistory({ commit }, data = {}) {
+    const res = await this.$axios.$get(`/payment/getHistory?page=${data.page || 1}`);
+    commit('mutate', { property: 'myBalanceHistory', value: res });
+  },
   async updatePromotion({ commit }, {key, value}) {
     commit('mutate', { property: 'promotion', key, value });
   },
   async updatePaidStatus({ commit }, value) {
     commit('mutate', { property: 'paidStatusData', value });
   },
-  // Autosalons
-  async getAutoSalonsList({commit}, data) {
-    const res = await this.$axios.$get('/auto_salon_list' + (data ? ('?' + data) : ''));
-    commit('mutate', { property: 'autosalonsList', value: res });
+  // Salons
+  async getSalonsList({commit}, params = '') {
+    const res = await this.$axios.$get('/auto_salon_list' + params);
+    commit('mutate', { property: 'salonsList', value: res });
+    commit('mutate', { property: 'salonsFiltered', value: res });
   },
-  async getAutoSalonById({commit}, data) {
+  async getSalonById({commit}, data) {
     const res = await this.$axios.$get('/auto_salon/' + data.id + '?page=' + (data.page || 1));
-    commit('mutate', { property: 'autosalonSingle', value: res });
+    commit('mutate', { property: 'salonSingle', value: res });
   },
-  async getMyAutoSalon({commit}) {
+  async getMySalon({commit}) {
     const res = await this.$axios.$get('/my/autosalon/edit');
-    commit('mutate', { property: 'myAutosalon', value: res });
+    commit('mutate', { property: 'mySalon', value: res });
   },
-  async setMyAutoSalon({commit}, form) {
+  async updateMySalon({commit}, form) {
     const res = await this.$axios.$post('/my/autosalon/edit', form);
-    commit('mutate', { property: 'myAutosalon', value: res });
+    commit('mutate', { property: 'mySalon', value: res });
   },
   async getAnnouncementCalls({commit}, data = {}) {
     const res = await this.$axios.$get(`/my/call-announces?page=${data.page || 1}`);
@@ -715,16 +759,19 @@ export const actions = {
     const res = await this.$axios.$get('/my/dashboard/package');
     commit('mutate', { property: 'myPackageStats', value: res });
   },
-  updateAutosalonsInBounds({commit}, list) {
-    commit('mutate', { property: 'autosalonsInBounds', value: list });
+  updateSalonsFiltered({commit}, list) {
+    commit('mutate', { property: 'salonsFiltered', value: list });
   },
-  updateAutosalonsSelected({commit}, list) {
-    commit('mutate', { property: 'autosalonsSelected', value: list });
+  updateSalonsInBounds({commit}, list) {
+    commit('mutate', { property: 'salonsInBounds', value: list });
+  },
+  updateSalonsSelected({commit}, list) {
+    commit('mutate', { property: 'salonsSelected', value: list });
   },
   // Reset Data on Logout
   resetUserData({ commit }) {
     // reset services
-    commit('reset', ['myServices','myServiceHistory','myServiceOptions']);
+    commit('reset', ['myServices','myServiceHistory','myServiceOptions','messages']);
   }
 }
 
@@ -732,18 +779,18 @@ export const mutations = {
   mutate(state, payload) {
     if (payload.key !== undefined) 
       Vue.set(state[payload.property], payload.key, payload.value);
-    else state[payload.property] = payload.value;
+    else Vue.set(state, payload.property, payload.value);
   },
   reset(state, payload) {
     const initialState = getInitialState();
     payload.map(property => { 
-      state[property] = initialState[property];
+      Vue.set(state, property, initialState[property]);
     });
   },
   removeItem(state, payload) {
-    state[payload.property] = state[payload.property].filter(item => {
+    Vue.set(state, payload.property, state[payload.property].filter(item => {
       return item[payload.key] !== payload.value;
-    });
+    }));
   },
 
   // messages
@@ -755,10 +802,14 @@ export const mutations = {
       state.messages.unshift(payload.group);
       groupIndex = 0;
     }
-    state.messages[groupIndex].is_read = false;
-    state.messages[groupIndex].messages.push(payload.message);
-    state.messages[groupIndex].last_message = payload.message;
-    // show group first
+
+    state.messages[groupIndex] = {
+      ...state.messages[groupIndex],
+      is_read: false,
+      messages: [...state.messages[groupIndex].messages, payload.message],
+      last_message: payload.message
+    }
+    
     let group = state.messages[groupIndex];
     let isChatBot = group.sender_id == 3;
     state.messages.splice(groupIndex, 1);
@@ -774,7 +825,7 @@ export const mutations = {
     }
   },
   appendMessagesToGroup(state, payload) {
-    if(payload.setAllEmpty) {
+    if (payload.setAllEmpty) {
       state.messages.map( (item) => {
         item.messages_loaded = false;
         item.messages = [];
@@ -785,8 +836,13 @@ export const mutations = {
     state.messages[payload.groupIndex].messages = payload.messages;
   },
   markAsRead(state, payload) {
-    state.messages[payload.groupIndex].is_read = true;
-    state.messages[payload.groupIndex].last_message.is_read = true;
+    let groupIndex = state.messages.findIndex(group => group.id == payload.groupId);
+
+    state.messages[groupIndex].is_read = true;
+    
+    if (state.messages[groupIndex].last_message) {
+      state.messages[groupIndex].last_message.is_read = true;
+    }
   },
   removeGroup(state, payload) {
     let groupIndex = state.messages.findIndex(group => group.id == payload.groupId);

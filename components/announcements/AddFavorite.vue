@@ -15,13 +15,13 @@ export default {
     ...mapActions(['addToFavorites']),
 
     async handleClick(skipIfAdded = false) {
-      if(skipIfAdded && this.isAdded) return;
-      if(!this.loggedIn) {
+      if (skipIfAdded && this.isAdded) return;
+      if (!this.loggedIn) {
         this.$nuxt.$emit('login-popup', 'favorite' + this.announcement.id_unique);
       } else {
         await this.addToFavorites(this.announcement.id_unique);
         this.$nuxt.$emit('favorites-updated');
-        if(this.isAdded) {
+        if (this.isAdded) {
           this.$toasted.success(this.$t('my_favorites_added'), { 
             action: !this.routeName === 'profile-favorites' && { 
               text: this.$t('show'),

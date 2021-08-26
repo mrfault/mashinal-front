@@ -57,18 +57,18 @@ export default {
   },
   methods: {
     openModal() {
-      if(this.isComplained || this.userComplained) return;
+      if (this.isComplained || this.userComplained) return;
       this.showModal = true;
     },
     eatCookie() {
-      if(this.userAlreadyComplained) return;
+      if (this.userAlreadyComplained) return;
       let complaints = this.$cookies.get('complaints') || [];
       let newComplaint = { announce_id: this.announcement.id, announce_type: this.getType };
       let expires = this.$expireDate(30);
       this.$cookies.set('complaints', [...complaints, newComplaint], { expires });
     },
     async sendComplaint() {
-      if(!this.selectedOptions.length) return;
+      if (!this.selectedOptions.length) return;
       this.pending = true;
       // send complaint if options selected
       this.$axios.$post(`/complaint-options`, {
