@@ -1,6 +1,6 @@
 <template>
   <portal to="modals">
-    <backdrop @click="$emit('close')" v-if="toggle">
+    <backdrop :class="backdropClass" @click="$emit('close')" v-if="toggle">
       <template #default="{ show }">
         <transition name="translate-fade">
           <div :class="['modal-popup', {[modalClass]: modalClass}]" v-if="show" @click.stop>
@@ -30,6 +30,7 @@ export default {
   props: {
     toggle: Boolean,
     title: String,
+    backdropClass: String,
     modalClass: String,
     overflowHidden: {
       type: Boolean,

@@ -150,34 +150,61 @@
 
 
 $column-width-lg: calc(100% / 5);
-$column-width-sm: calc(100% / 2.5);
+$column-width-md: calc(100% / 2.5);
+$column-width-xs: calc(100% / 1.8);
 
 // [START] Comparison Index page
 .pages-comparison-index {
+  @include media-max-width('lg') {
+    padding-top: 20px;
+  }
+
   // Filter
   .comparison-filter {
     .card {
       padding: 20px 25px;
       display: flex;
       justify-content: space-between;
+
+      @include media-max-width('lg') {
+        flex-direction: column;
+        gap: 20px;
+      }
     }
 
     &__types .btn {
-      width: 100px;
       min-width: unset;
       max-width: unset;
+      
+      @include media-min-width('lg') {
+        width: 100px;
+      }
+    }
+    
+    &__right-side {
+      display: flex;
+      gap: 20px;
+
+      @include media-max-width('lg') {
+        flex-direction: column;
+      }
     }
 
     &__checkboxes {
       display: flex;
       justify-content: flex-end;
+      gap: 20px;
+      
+      @include media-max-width('sm') {
+        flex-wrap: wrap;
+      }
 
       .form-group {
         width: auto;
-      }
-      
-      & > *:not(:first-child) {
-        margin-left: 20px;
+
+        @include media-max-width('lg') {
+          flex: 1
+        }
       }
     }
   }
@@ -198,8 +225,12 @@ $column-width-sm: calc(100% / 2.5);
       padding: 0 10px;
       
       @include media-max-width('lg') {
-        min-width: $column-width-sm;
-        width: $column-width-sm;
+        min-width: $column-width-md;
+        width: $column-width-md;
+      }
+      @include media-max-width('sm') {
+        min-width: $column-width-xs;
+        width: $column-width-xs;
       }
 
       &:first-child {
@@ -319,8 +350,12 @@ $column-width-sm: calc(100% / 2.5);
           display: inline-block;
 
           @include media-max-width('lg') {
-            min-width: $column-width-sm;
-            width: $column-width-sm;
+            min-width: $column-width-md;
+            width: $column-width-md;
+          }
+          @include media-max-width('sm') {
+            min-width: $column-width-xs;
+            width: $column-width-xs;
           }
 
           &:first-of-type {
@@ -340,7 +375,13 @@ $column-width-sm: calc(100% / 2.5);
 
 // [START] Add model popup
 .comparison-add-model-popup {
-  width: 590px;
+  @include media-min-width('lg') {
+    max-width: 590px;
+  }
+
+  &--backdrop {
+    z-index: 39;
+  }
 
   .car-image {
     width: 100%;
@@ -348,9 +389,11 @@ $column-width-sm: calc(100% / 2.5);
     margin-bottom: 25px;
     border-radius: 4px;
     object-fit: cover;
-  }
-
-  form {
+    
+    @include media-max-width('lg') {
+      height: auto;
+      max-height: 200px;
+    }
   }
 }
 // [END] Add model popup

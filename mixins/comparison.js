@@ -66,14 +66,14 @@ export const ComparisonMixin = {
       const desc = [];
 
       // Generation
-      if (model.generation) {
+      if (model.generation && model.generation.name) {
         desc.push(model.generation.name[this.locale])
       } else if (model.model_generations && model.generation_id) {
         desc.push(model.model_generations.find(g => g.id === model.generation_id).short_name[this.locale])
       }
 
       // Car type
-      if (model.carType) {
+      if (model.carType && model.carType.name) {
         desc.push(model.carType.name[this.locale])
       } else if (model.car_types && model.car_type_id) {
         desc.push(model.car_types.find(g => g.id === model.car_type_id).name[this.locale])

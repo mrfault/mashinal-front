@@ -25,7 +25,7 @@
       <!-- Recommended model -->
       <div
         class="comparison__item"
-        v-if="recommendedModel && showRecommendation"
+        v-if="recommendedModelVisible"
       >
         <div
           class="comparison__item__image"
@@ -76,7 +76,7 @@
             </h4>
 
             <div class="collapse-content__columns" >
-              <div v-for="(model, mIndex) in models" :key="model.id_unique" class="collapse-content__column" >
+              <div v-for="(model, mIndex) in modelsForSpecs" :key="model.id_unique" class="collapse-content__column" >
                 <p>{{ specification.values[mIndex] }}</p>
               </div>
             </div>
@@ -220,6 +220,16 @@ export default {
         },
       ]
     },
+    recommendedModelVisible() {
+      return this.recommendedModel && this.showRecommendation
+    },
+    modelsForSpecs() {
+      if (this.recommendedModelVisible) {
+        return [...this.models, {}]
+      } else {
+        return this.models
+      }
+    }
   },
   watch: {
     models(val) {

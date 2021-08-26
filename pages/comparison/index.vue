@@ -44,9 +44,6 @@ export default {
     ComparisonMainSection,
     ComparisonAddModel
   },
-  async asyncData() {
-    //
-  },
   computed: {
     crumbs() {
       return [

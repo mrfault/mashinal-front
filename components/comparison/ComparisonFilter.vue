@@ -7,27 +7,29 @@
         :options="options"
         :group-by="0"
       />
-      <div class="comparison-filter__checkboxes">
+      <div class="comparison-filter__right-side">
         <button
           v-if="compareType === 'models'"
           class="btn full-width btn--pale-green"
           @click.stop="addModel()"
         >
-            <icon name="plus-circle" /> 
-            <span>{{ $t('add_car_model') }}</span>
+          <icon name="plus-circle" /> 
+          <span>{{ $t('add_car_model') }}</span>
         </button>
-        <form-checkbox
-          v-model="showDifferences" 
-          :label="$t('comparison_show_differences')"
-          :checked="showDifferences"
-          input-name="show_differences"
-        />
-        <form-checkbox
-          v-model="hideEmptyCells" 
-          :label="$t('comparison_hide_empty_cells')"
-          :checked="hideEmptyCells"
-          input-name="hide_empty_cells"
-        />
+        <div class="comparison-filter__checkboxes">
+          <form-checkbox
+            v-model="showDifferences" 
+            :label="$t('comparison_show_differences')"
+            :checked="showDifferences"
+            input-name="show_differences"
+          />
+          <form-checkbox
+            v-model="hideEmptyCells" 
+            :label="$t('comparison_hide_empty_cells')"
+            :checked="hideEmptyCells"
+            input-name="hide_empty_cells"
+          />
+        </div>
       </div>
     </div>
   </div>

@@ -1,5 +1,6 @@
 <template>
   <modal-popup
+    backdropClass="comparison-add-model-popup--backdrop"
     modalClass="comparison-add-model-popup"
     :toggle="showModal"
     :title="$t('add_car_model')"
@@ -15,7 +16,7 @@
   
     <form>
       <div class="row">
-        <div class="col-6 mb-2">
+        <div class="col-12 col-sm-6 mb-2">
           <form-select
             :label="$t('mark')"
             :options="brands"
@@ -24,7 +25,7 @@
             has-search
           />
         </div>
-        <div class="col-6 mb-2">
+        <div class="col-12 col-sm-6 mb-2">
           <form-select
             :label="$t('model')"
             :options="models"
@@ -33,7 +34,7 @@
             has-search
           />
         </div>
-        <div class="col-6 mb-2">
+        <div class="col-12 col-sm-6 mb-2">
           <form-select
             :label="$t('generation')"
             :options="generations"
@@ -42,7 +43,7 @@
             has-search
           />
         </div>
-        <div class="col-6 mb-2">
+        <div class="col-12 col-sm-6 mb-2">
           <form-select
             :label="$t('body_type')"
             :options="carTypes "
@@ -51,7 +52,7 @@
             has-search
           />
         </div>
-        <div class="col-6">
+        <div class="col-12 col-sm-6 mb-2">
           <form-select
             :label="$t('modification_and_supply')"
             :options="modifications"
@@ -61,7 +62,7 @@
           />
         </div>
 
-        <div class="col-6">
+        <div class="col-12 col-sm-6">
           <button class="btn btn--green full-width" @click.prevent="addToList" v-if="this.form.modification">
             {{ $t('add') }}
           </button>
