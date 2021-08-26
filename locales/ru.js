@@ -1029,7 +1029,7 @@ export default {
   "Passenger": "Пассажира",
   "Passenger seat back folding function": "Функция складывания спинки сиденья пассажира",
   "password": "Пароль",
-  "password_will_be_sent_by_email": "Письмо для восстановления пароля будет отправлено на указанный вами e-mail.",
+  "password_will_be_sent_by_email": "Для изменения пароля на ваш мобильный номер будет отправлен 5-ти значный код.",
   "pay": "Оплатить",
   "pay_till_date": "Необходимо сделать платеж до <strong>{date}</strong>.",
   "pay_with_card": "Банковская карта",
