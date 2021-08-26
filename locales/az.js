@@ -1,4 +1,4 @@
-{
+export default {
   "–": "–",
   "1 zone climate control": "1 zonalı iqlim nəzarəti",
   "1_cylinder": "1 silindr",
