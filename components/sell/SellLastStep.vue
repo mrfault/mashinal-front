@@ -116,7 +116,7 @@
           </div>
         </div>
         <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-car_or_vin">
-          <span>{{ $t('license_plate_number_vin_or_carcase_number') }} <span class="star"> *</span></span>
+          <span>{{ $t('license_plate_number_vin_or_carcase_number') }} <span class="star" v-if="type === 'cars'"> *</span></span>
         </h2>
         <div class="row">
           <div class="col-12 col-lg-4 mb-2 mb-lg-0">
