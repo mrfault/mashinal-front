@@ -80,6 +80,9 @@ export default {
   beforeRouteLeave(to, from, next) {
     this.$nuxt.$emit('prevent-popstate');
     next();
+  },
+  created() {
+    console.log('test commit');
   }
 }
 </script>
