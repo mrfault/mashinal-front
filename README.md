@@ -1,4 +1,4 @@
-# Mashin.al Nuxt Project1
+# Mashin.al Nuxt Project
 
 > mashinal-front
 
