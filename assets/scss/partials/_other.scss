@@ -528,6 +528,9 @@
       background-color: $greyish-blue-3;
     }
   }
+  .swiper-container:not(.swiper-container-initialized) {
+    opacity: 0;
+  }
   .swiper-slide:nth-child(5) {
     .helper img {
       width: 100%;
