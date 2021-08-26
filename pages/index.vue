@@ -82,7 +82,7 @@ export default {
     next();
   },
   created() {
-    console.log('test commit');
+    console.log('ya tibe neti skaju');
   }
 }
 </script>
