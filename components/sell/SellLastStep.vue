@@ -306,10 +306,6 @@ export default {
       return this.staticPages.find(page => page.id == 1);
     },
 
-    getSellFilters() {
-
-    },
-
     getCurrencyOptions() {
       return [
         { key: 1, name: 'AZN', sign: '₼'	},
