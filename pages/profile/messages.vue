@@ -18,55 +18,57 @@
                 <hr class="mt-0 mb-0" />
               </template>
               <div class="messages_chat-list">
-                <vue-scroll class="white-scroll-bg">
-                  <div class="chat-list-switch cursor-pointer" @click="showBlockedGroups = !showBlockedGroups">
-                    <template v-if="showBlockedGroups">
-                      <span class="switch-icon"><icon name="chat" /></span>
-                      <span class="switch-text">{{ $t('chat_list') }}</span>
-                      <span class="switch-count text-dark-blue-3">{{ countGroups(false) }}</span>
-                    </template>
-                    <template v-else>
-                      <span class="switch-icon text-dark-blue-2"><icon name="block" /></span>
-                      <span class="switch-text text-dark-blue-2">{{ $t('blocked_users') }}</span>
-                      <span class="switch-count text-dark-blue-3">{{ countGroups(true) }}</span>
-                    </template>
-                  </div>
-                  <div class="chat-list-items">
-                    <template v-if="messages.length">
-                      <chat-item v-for="group in filteredGroups" 
-                        @select-group="selectActiveGroup"
-                        @show-modal="activeModalGroup = group, showControlsModal = true;"
-                        :group="messagesByGroup(group.id)"
-                        :blocked="isBlocked(group)"
-                        :active="activeGroupId == group.id"
-                        :key="group.id"
-                      />
-                      <template v-if="!filteredGroups.length">
-                        <div class="pl-4 pr-1">
-                          <hr class="mt-0"/>
-                          <p class="text-center mt-2">
-                            {{ searchValue ? $t('no_results_found') : $t('no_blocked_users') }}
-                          </p>
-                        </div>
+                <client-only>
+                  <vue-scroll class="white-scroll-bg">
+                    <div class="chat-list-switch cursor-pointer" @click="showBlockedGroups = !showBlockedGroups">
+                      <template v-if="showBlockedGroups">
+                        <span class="switch-icon"><icon name="chat" /></span>
+                        <span class="switch-text">{{ $t('chat_list') }}</span>
+                        <span class="switch-count text-dark-blue-3">{{ countGroups(false) }}</span>
                       </template>
-                    </template>
-                    <template v-else>
-                      <nuxt-link :to="$localePath('/')" class="chat-item d-block">
-                        <div class="d-flex">
-                          <img class="chat-avatar" src="/img/user.jpg" :alt="$t('no_messages')" />
-                          <div class="chat-info">
-                            <div class="chat-first-line">
-                              <span class="text-medium">{{ $t('no_messages') }}</span>
-                            </div>
-                            <div class="chat-details">
-                              <span>{{ $t('start_conversation_from_announcement') }}</span>
+                      <template v-else>
+                        <span class="switch-icon text-dark-blue-2"><icon name="block" /></span>
+                        <span class="switch-text text-dark-blue-2">{{ $t('blocked_users') }}</span>
+                        <span class="switch-count text-dark-blue-3">{{ countGroups(true) }}</span>
+                      </template>
+                    </div>
+                    <div class="chat-list-items">
+                      <template v-if="messages.length">
+                        <chat-item v-for="group in filteredGroups" 
+                          @select-group="selectActiveGroup"
+                          @show-modal="activeModalGroup = group, showControlsModal = true;"
+                          :group="messagesByGroup(group.id)"
+                          :blocked="isBlocked(group)"
+                          :active="activeGroupId == group.id"
+                          :key="group.id"
+                        />
+                        <template v-if="!filteredGroups.length">
+                          <div class="pl-4 pr-1">
+                            <hr class="mt-0"/>
+                            <p class="text-center mt-2">
+                              {{ searchValue ? $t('no_results_found') : $t('no_blocked_users') }}
+                            </p>
+                          </div>
+                        </template>
+                      </template>
+                      <template v-else>
+                        <nuxt-link :to="$localePath('/')" class="chat-item d-block">
+                          <div class="d-flex">
+                            <img class="chat-avatar" src="/img/user.jpg" :alt="$t('no_messages')" />
+                            <div class="chat-info">
+                              <div class="chat-first-line">
+                                <span class="text-medium">{{ $t('no_messages') }}</span>
+                              </div>
+                              <div class="chat-details">
+                                <span>{{ $t('start_conversation_from_announcement') }}</span>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </nuxt-link>
-                    </template>
-                  </div>
-                </vue-scroll>
+                        </nuxt-link>
+                      </template>
+                    </div>
+                  </vue-scroll>
+                </client-only>
               </div>
             </div>
           </div>
