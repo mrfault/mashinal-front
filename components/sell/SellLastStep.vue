@@ -150,7 +150,7 @@
           <template v-else>
             <sell-filters
               :type="type"
-              :selected="form"
+              :selected="form.filters || form"
               :errors="errors"
               @remove-error="removeError"
               @add-form-keys="form = {...$event, ...form}"
@@ -304,10 +304,6 @@ export default {
     },
     getRulesPage() {
       return this.staticPages.find(page => page.id == 1);
-    },
-
-    getSellFilters() {
-
     },
 
     getCurrencyOptions() {

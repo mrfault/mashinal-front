@@ -334,7 +334,7 @@
       disabled(disabled) {
         if (disabled && this.clearOnDisable) this.clearSelect();
       },
-      value() {
+      value(value) {
         if (this.value === undefined) 
           this.selectValue = undefined;
       },

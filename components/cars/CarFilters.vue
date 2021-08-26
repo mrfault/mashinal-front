@@ -29,6 +29,7 @@
                 :id="`${popular ? 'popular_' : ''}${input.name}${input.selected_key || ''}`"
                 :input-name="input.name"  
                 @change="changeFilter(input.name, $event, input.selected_key)"
+                watch-value
               />
             </template>
           </div>
@@ -104,7 +105,7 @@ export default {
         if (this.selectMultiple.includes(key)) {
           let selected = this.values[key] || [];
           let index = selected.findIndex(v => v == selected_key);
-          value = value ? [...selected, selected_key] : (index === -1 ? [] : selected.filter((_, i) => i !== index));
+          value = value ? (index === -1 ? [...selected, selected_key] : selected) : (index === -1 ? [] : selected.filter((_, i) => i !== index));
         } else {
           value = value ? selected_key : '';
         }
