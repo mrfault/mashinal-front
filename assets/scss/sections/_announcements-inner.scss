@@ -213,6 +213,9 @@
   .swiper-container {
     overflow: visible;
   }
+  .swiper-container:not(.swiper-container-initialized) {
+    opacity: 0;
+  }
   .swiper-slide {
     width: 130px;
     // margin-right: 20px;

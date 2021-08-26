@@ -7,7 +7,7 @@
       />
       <div v-if="showAllOptions" :class="{'disabled-content': type === 'cars' && !form.car_catalog_id}">
         <h2 class="title-with-line mt-3 mt-lg-0" id="anchor-saved_images">
-          <span>{{ $t('photos') }} <span class="star"> *</span></span>
+          <span>{{ $t('photos') }} ({{ $t('at_least_5_photos', { min: minFiles, max: maxFiles }).toLowerCase() }}) <span class="star"> *</span></span>
         </h2>
         <upload-image
           :max-files="maxFiles"
