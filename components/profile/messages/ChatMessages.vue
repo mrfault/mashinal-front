@@ -37,14 +37,6 @@
     </div>
     <hr class="mt-0 mb-0" />
     <div class="messages_msg-list">
-      <div class="suggested-messages" v-if="showSuggestedMessages">
-        <button class="btn btn--primary-outline" 
-          v-for="(title, i) in filteredSuggestedMessages" 
-          @click="useSuggestedMessage(title)"
-          :key="i" 
-          v-html="title"
-        />
-      </div>
       <div :class="['messages-list', {'attachments-preview-active': !!Object.keys(files).length}]">
         <div class="scroll-container">
           <vue-scroll class="white-scroll-bg" ref="chat">
@@ -97,6 +89,14 @@
             v-model="text"
           />
         </div>
+      </div>
+      <div class="suggested-messages" v-if="showSuggestedMessages">
+        <button class="btn btn--primary-outline" 
+          v-for="(title, i) in filteredSuggestedMessages" 
+          @click="useSuggestedMessage(title)"
+          :key="i" 
+          v-html="title"
+        />
       </div>
     </div>
   </div>
