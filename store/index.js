@@ -10,6 +10,7 @@ const getInitialState = () =>({
   staticPages: [],
   pageRef: '',
   pageRefs: ['',''],
+  hideFooter: false,
   // saved search & favorites
   savedSearchList: [],
   singleSavedSearch: {},
@@ -121,6 +122,7 @@ export const getters = {
   staticPages: s => s.staticPages,
   pageRefs: s => s.pageRefs,
   pageRef: s => s.pageRef,
+  hideFooter: s => s.hideFooter,
   // saved search & favorites
   savedSearchList: s => s.savedSearchList,
   singleSavedSearch: s => s.singleSavedSearch,
@@ -269,6 +271,10 @@ export const actions = {
   // Grid
   setGridBreakpoint({ commit }, breakpoint) {
     commit('mutate', { property: 'breakpoint', value: breakpoint });
+  },
+  // Footer
+  setFooterVisibility({ commit }, show) {
+    commit('mutate', { property: 'hideFooter', value: !show });
   },
   // Localization
   async changeLocale({ dispatch }, locale) {

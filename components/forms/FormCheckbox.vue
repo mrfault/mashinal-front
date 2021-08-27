@@ -13,7 +13,7 @@
         :false-value="typeof inputValue === 'number' ? 0 : false"
         v-model="inputValue"
       />
-      <label :for="id || inputName" :class="{transparent, 'pr-0': labelClick}" @click="handleClick">
+      <label :for="id || inputName" :class="{transparent, 'pr-0': labelClick}" @click="handleClick" v-tooltip="hasTooltip ? label : ''">
         <span class="checkbox">
           <icon name="check" />
         </span>
@@ -68,7 +68,8 @@
       labelClick: {
         type: Boolean
       },
-      watchValue: Boolean
+      watchValue: Boolean,
+      hasTooltip: Boolean
     },
     data() {
       return {

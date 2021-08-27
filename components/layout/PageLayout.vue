@@ -35,7 +35,7 @@
         <portal-target name="mobile-screen" />
         <!-- /portal targets -->
         <mobile-nav />
-        <page-footer />
+        <page-footer v-if="!hideFooter" />
       </div>
     </transition>
   </div>

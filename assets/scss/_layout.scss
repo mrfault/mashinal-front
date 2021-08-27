@@ -137,6 +137,14 @@ hr {
   }
 }
 
+.dark-mode {
+  .keep-colors {
+    &, &:hover {
+      color: inherit;
+    }
+  }
+}
+
 .overflow-hidden {
   overflow: hidden;
 }
