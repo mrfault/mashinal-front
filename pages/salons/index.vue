@@ -124,5 +124,8 @@ export default {
       this.setFooterVisibility(this.view === 'list');
     }
   },
+  beforeDestroy() {
+    this.setFooterVisibility(true);
+  }
 }
 </script>
