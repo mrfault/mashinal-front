@@ -15,47 +15,49 @@
         <no-results v-else />
       </div>
     </template>
-    <template v-else-if="view === 'map'">
-      <div class="map-fw-container" v-if="!isMobileBreakpoint">
-        <div :class="['map-sidebar', { collapse: !disableCollapse && collapse }]">
-          <div class="map-sidebar_content">
-            <breadcrumbs :crumbs="crumbs" />
-            <salon-filters-form :count="salons.length" :short="!isMobileBreakpoint"/>
-            <div class="scroll-container" v-if="salons.length">
-              <vue-scroll class="white-scroll-bg">
-                <div class="salon-card-list" >
-                  <div v-for="salon in salons" :key="salon.id">
-                    <nuxt-link class="keep-colors" :to="$localePath(`/salons/${salon.id}`)">
-                      <salon-card :salon="salon" />
-                    </nuxt-link>
+    <div :class="`map-${isMobileBreakpoint ? 'fh' : 'fw'}-container`" v-show="view === 'map'">
+      <template v-if="!isMobileBreakpoint">
+        <template v-if="view === 'map'">
+          <div :class="['map-sidebar', { collapse: !disableCollapse && collapse }]">
+            <div class="map-sidebar_content">
+              <breadcrumbs :crumbs="crumbs" />
+              <salon-filters-form :count="salons.length" :short="!isMobileBreakpoint"/>
+              <div class="scroll-container" v-if="salons.length">
+                <vue-scroll class="white-scroll-bg">
+                  <div class="salon-card-list" >
+                    <div v-for="salon in salons" :key="salon.id">
+                      <nuxt-link class="keep-colors" :to="$localePath(`/salons/${salon.id}`)">
+                        <salon-card :salon="salon" />
+                      </nuxt-link>
+                    </div>
                   </div>
-                </div>
-              </vue-scroll>
+                </vue-scroll>
+              </div>
+              <no-results v-else />
             </div>
-            <no-results v-else />
+            <div class="map-sidebar_toggle" @click="collapse = !collapse" v-if="!disableCollapse">
+              <icon :name="collapse ? 'chevron-right' : 'chevron-left'" />
+            </div>
           </div>
-          <div class="map-sidebar_toggle" @click="collapse = !collapse" v-if="!disableCollapse">
-            <icon :name="collapse ? 'chevron-right' : 'chevron-left'" />
+          <div class="map-topbar">
+            <div class="container">
+              <salon-search-form :short="!isMobileBreakpoint && (!collapse || disableCollapse)" />
+            </div>
           </div>
-        </div>
-        <div class="map-topbar">
-          <div class="container">
-            <salon-search-form :short="!isMobileBreakpoint && (!collapse || disableCollapse)" />
-          </div>
-        </div>
+        </template>
         <clustered-map 
           key="desktop-map"
           :margin-left="{ left: 0, top: 0, width: '360px', height: '100%' }"
           :margin-top="{ top: 0, left: 0, width: '100%', height: '150px' }" 
           :use-margin-left="!disableCollapse && !collapse" 
         />
-      </div>
-      <div class="map-fh-container" v-else>
+      </template>
+      <template v-else>
         <clustered-map 
           key="mobile-map"
         />
-      </div>
-    </template>
+      </template>
+    </div>
     <div class="salon-view-btn">
       <button class="btn btn--dark-blue" @click="changeView">
         <template v-if="view === 'list'">
