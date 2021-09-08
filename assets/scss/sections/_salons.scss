@@ -14,8 +14,6 @@
 }
 
 .salon-card-list {
-  height: calc(100vh - 378px);
-  min-height: 303px;
   &:not(.row) {
     & > div:not(:last-child) .salon-card::after {
       content: '';
@@ -25,6 +23,13 @@
       width: calc(100% - 50px);
       border-bottom: 1px solid $greyish-blue-3;
     }
+  }
+}
+
+.map-view {
+  .salon-card-list {
+    height: calc(100vh - 378px);
+    min-height: 303px;
   }
 }
 
