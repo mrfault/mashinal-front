@@ -4,9 +4,9 @@
       <div class="container">
         <breadcrumbs :crumbs="crumbs" />
         <salon-search-form />
-        <salon-filters-form :count="salons.length" />
-        <div class="salon-card-list row mt-2 mt-lg-3 mb-n2 mb-lg-n3" v-if="salons.length">
-          <div class="col-lg-4 mb-2 mb-lg-3" v-for="salon in salons" :key="salon.id">
+        <salon-filters-form :count="salonsFiltered.length" />
+        <div class="salon-card-list row mt-2 mt-lg-3 mb-n2 mb-lg-n3" v-if="salonsFiltered.length">
+          <div class="col-lg-4 mb-2 mb-lg-3" v-for="salon in salonsFiltered" :key="salon.id">
             <nuxt-link class="keep-colors" :to="$localePath(`/salons/${salon.id}`)">
               <salon-card :salon="salon" />
             </nuxt-link>
@@ -21,11 +21,11 @@
           <div :class="['map-sidebar', { collapse: !disableCollapse && collapse }]">
             <div class="map-sidebar_content">
               <breadcrumbs :crumbs="crumbs" />
-              <salon-filters-form :count="salons.length" :short="!isMobileBreakpoint"/>
-              <div class="scroll-container" v-if="salons.length">
+              <salon-filters-form :count="salonsInView.length" :short="!isMobileBreakpoint"/>
+              <div class="scroll-container" v-if="salonsInView.length">
                 <vue-scroll class="white-scroll-bg">
                   <div class="salon-card-list" >
-                    <div v-for="salon in salons" :key="salon.id">
+                    <div v-for="salon in salonsInView" :key="salon.id">
                       <nuxt-link class="keep-colors" :to="$localePath(`/salons/${salon.id}`)">
                         <salon-card :salon="salon" />
                       </nuxt-link>
@@ -120,14 +120,14 @@ export default {
       ]
     },
 
-    salons() {
+    salonsInView() {
       return this.salonsFiltered.filter(salon => {
         return this.salonsInBounds ? this.salonsInBounds.includes(salon.id) : true;
       });
     }
   },
   methods: {
-    ...mapActions(['setFooterVisibility']),
+    ...mapActions(['setFooterVisibility', 'updateSalonsInBounds']),
 
     changeView() {
       this.view = (this.view === 'list') ? 'map' : 'list';
