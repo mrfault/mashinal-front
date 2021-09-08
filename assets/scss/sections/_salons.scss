@@ -14,6 +14,8 @@
 }
 
 .salon-card-list {
+  height: calc(100vh - 378px);
+  min-height: 303px;
   &:not(.row) {
     & > div:not(:last-child) .salon-card::after {
       content: '';
@@ -60,6 +62,17 @@
   }
 }
 
+.balloon-content {
+  a {
+    color: $dark-blue-1;
+  }
+  .salon-card {
+    width: 310px;
+    padding: 10px 0 10px 13px;
+    cursor: pointer;
+  }
+}
+
 .salon-search-form {
   .card-left-offset {
     display: block;
@@ -74,6 +87,10 @@
         border-bottom-color: $dark-1;
       }
     }
+  }
+
+  .balloon-content .salon-card {
+    color: $white;
   }
 }
 
@@ -120,7 +137,14 @@
   }
 }
 
-@media (min-width: map-get($grid-breakpoints, 'lg')) {
+@include media-max-width('lg') {
+  .salon-view-btn {
+    bottom: 90px;
+    margin-top: 90px;
+  }
+}
+
+@include media-min-width('lg') {
   .map-view {
     .salon-filters-form {
       .card {

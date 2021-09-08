@@ -59,7 +59,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['brands', 'carModels', 'carGenerations']),
+    ...mapGetters(['brands', 'carModels', 'carGenerations', 'salonsSearchFilters']),
 
     getMileageOptions() {
       return [
@@ -73,9 +73,10 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getModelsArray', 'getModelGenerationsArray', 'getSalonsList']),
+    ...mapActions(['getModelsArray', 'getModelGenerationsArray', 'getSalonsList', 'updateSalonsSearchFilters']),
 
     async searchAutosalons() {
+      this.updateSalonsSearchFilters({...this.form});
       this.searchAgain = false;
       if (this.pending) {
         this.searchAgain = true;
@@ -106,5 +107,9 @@ export default {
       if (id) await this.getModelGenerationsArray({ value: slug, brand_slug, index });
     }
   },
+  created() {
+    for (let key in this.salonsSearchFilters)
+      this.$set(this.form, key, this.salonsSearchFilters[key]);
+  }
 }
 </script>

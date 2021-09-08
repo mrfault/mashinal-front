@@ -98,9 +98,11 @@ const getInitialState = () =>({
   sellPreviewData: {},
   // salons
   salonsList: [],
+  salonsSearched: [],
+  salonsFilters: {},
+  salonsSearchFilters: {},
   salonsFiltered: [],
   salonsInBounds: false,
-  salonsSelected: [],
   salonsOnlyOfficial: false,
   salonSingle: {},
   mySalon: {},
@@ -213,9 +215,11 @@ export const getters = {
   sellPreviewData: s => s.sellPreviewData,
   // salons
   salonsList: s => s.salonsList,
+  salonsSearched: s => s.salonsSearched,
+  salonsFilters: s => s.salonsFilters,
+  salonsSearchFilters: s => s.salonsSearchFilters,
   salonsFiltered: s => s.salonsFiltered,
   salonsInBounds: s => s.salonsInBounds,
-  salonsSelected: s => s.salonsSelected,
   salonSingle: s => s.salonSingle,
   mySalon: s => s.mySalon,
   myAnnouncementCalls: s => s.myAnnouncementCalls,
@@ -735,7 +739,8 @@ export const actions = {
   // Salons
   async getSalonsList({commit}, params = '') {
     const res = await this.$axios.$get('/auto_salon_list' + params);
-    commit('mutate', { property: 'salonsList', value: res });
+    if (!params) commit('mutate', { property: 'salonsList', value: res });
+    commit('mutate', { property: 'salonsSearched', value: res });
     commit('mutate', { property: 'salonsFiltered', value: res });
   },
   async getSalonById({commit}, data) {
@@ -749,6 +754,12 @@ export const actions = {
   async updateMySalon({commit}, form) {
     const res = await this.$axios.$post('/my/autosalon/edit', form);
     commit('mutate', { property: 'mySalon', value: res });
+  },
+  updateSalonsFilters({commit}, form) {
+    commit('mutate', { property: 'salonsFilters', value: form });
+  },
+  updateSalonsSearchFilters({commit}, form) {
+    commit('mutate', { property: 'salonsSearchFilters', value: form });
   },
   async getAnnouncementCalls({commit}, data = {}) {
     const res = await this.$axios.$get(`/my/call-announces?page=${data.page || 1}`);
@@ -770,9 +781,6 @@ export const actions = {
   },
   updateSalonsInBounds({commit}, list) {
     commit('mutate', { property: 'salonsInBounds', value: list });
-  },
-  updateSalonsSelected({commit}, list) {
-    commit('mutate', { property: 'salonsSelected', value: list });
   },
   // Reset Data on Logout
   resetUserData({ commit }) {
