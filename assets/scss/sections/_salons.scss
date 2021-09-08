@@ -13,6 +13,21 @@
   }
 }
 
+.salon-card-list {
+  height: calc(100vh - 378px);
+  min-height: 303px;
+  &:not(.row) {
+    & > div:not(:last-child) .salon-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 25px;
+      width: calc(100% - 50px);
+      border-bottom: 1px solid $greyish-blue-3;
+    }
+  }
+}
+
 .salon-card {
   padding: 20px 25px;
   .salon {
@@ -47,7 +62,39 @@
   }
 }
 
-@include media-max-width(lg) {
+.balloon-content {
+  a {
+    color: $dark-blue-1;
+  }
+  .salon-card {
+    width: 310px;
+    padding: 10px 0 10px 13px;
+    cursor: pointer;
+  }
+}
+
+.salon-search-form {
+  .card-left-offset {
+    display: block;
+    width: 0;
+  }
+}
+
+.dark-mode {
+  .salon-card-list {
+    &:not(.row) {
+      & > div:not(:last-child) .salon-card::after {
+        border-bottom-color: $dark-1;
+      }
+    }
+  }
+
+  .balloon-content .salon-card {
+    color: $white;
+  }
+}
+
+@include media-max-width('lg') {
   .salon-single-card {
     padding: 25px;
     border-top-left-radius: 0;
@@ -57,6 +104,169 @@
     }
     .cover-with-avatar {
       margin: -25px -25px 18px;
+    }
+  }
+}
+
+.salon-view-btn {
+  display: inline-block;
+  position: sticky;
+  z-index: 1;
+  bottom: 30px;
+  left: 50%;
+  transform: translate(-50%);
+  margin-top: 30px;
+}
+
+.map-view {
+  padding-top: 0;
+  padding-bottom: 0;
+  .salon-card {
+    width: 100%;
+  }
+  .salon-view-btn {
+    position: fixed;
+    margin-top: 0;
+  }
+  .breadcrumbs {
+    margin: 0;
+    padding: 10px 25px 0;
+    ul {
+      height: 40px;
+    }
+  }
+}
+
+@include media-max-width('lg') {
+  .salon-view-btn {
+    bottom: 90px;
+    margin-top: 90px;
+  }
+}
+
+@include media-min-width('lg') {
+  .map-view {
+    .salon-filters-form {
+      .card {
+        padding: 0 25px 0;
+      }
+      .order-lg-2 {
+        .form-group {
+          margin-bottom: -10px;
+        }
+        .checkbox-input label {
+          background-color: transparent;
+          justify-content: flex-end;
+          padding: 0;
+        }
+      }
+      .order-lg-1 {
+        .form-info {
+          text-align: left;
+          justify-content: flex-start;
+          padding: 0;
+          background-color: transparent;
+          margin-bottom: -10px;
+        }
+      }
+      .order-lg-4 {
+        .checkbox-row {
+          padding: 10px 0;
+        }
+      }
+    }
+    .salon-search-form {
+      display: flex;
+      width: 100%;
+      .card-left-offset {
+        width: 0;
+        flex-shrink: 0;
+        transition: width .6s;
+      }
+      &.short {
+        .card-left-offset {
+          width: 395px;
+        }
+      }
+      .card {
+        width: 100%;
+        background: rgba($dark-blue-2, 0.1);
+        backdrop-filter: blur(40px);
+        transition: margin-right .6s;
+      }
+    }
+  }
+
+  .dark-mode {
+    .map-view {
+      .salon-search-form {
+        .card {
+          background: rgba($dark-2, 0.1);
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 1350px) {
+  .map-view {
+    .salon-search-form.short {
+      .card-left-offset {
+        width: 350px;
+      }
+      .card {
+        margin-right: -30px;
+      }
+    }
+  }
+}
+
+@media (min-width: 1440px) {
+  .map-view {
+    .salon-search-form.short {
+      .card-left-offset {
+        width: 305px;
+      }
+      .card {
+        margin-right: -60px;
+      }
+    }
+  }
+}
+
+@media (min-width: map-get($grid-breakpoints, 'lg')) and (max-width: 1680px - 0.02px) {
+  .map-view {
+    .salon-search-form.short {
+      .row {
+        .col-lg-1-5,
+        .col-lg-2-5 {
+          flex: 0 0 25%;
+          max-width: 25%;
+        }
+      }
+      .checkbox-row {
+        .checkbox-input label .text-truncate {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 1680px) {
+  .map-view {
+    .salon-search-form.short {
+      .card-left-offset {
+        width: 180px;
+      }
+      .card {
+        margin-right: -180px;
+      }
+      .checkbox-row {
+        .checkbox-input label ~ .tooltip {
+          display: none !important;
+        }
+      }
     }
   }
 }

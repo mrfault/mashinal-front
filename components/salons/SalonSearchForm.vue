@@ -1,5 +1,6 @@
 <template>
-  <div class="salon-filters-form form">
+  <div :class="['salon-search-form form', { short }]">
+    <div class="card-left-offset"></div>
     <div class="card with-btns">
       <div class="card-btns">
         <form-buttons :options="getMileageOptions" :group-by="3" v-model="form.announce_type" 
@@ -19,13 +20,17 @@
           <form-select :label="$t('generation')" :options="carGenerations[0]" v-model="form.generation_id"
             :disabled="form.model_id && !carGenerations[0].length" has-search @change="searchAutosalons()" />
         </div>
-        <div class="col-6 col-lg-1-5 mb-2 mb-lg-3">
-          <form-checkbox :label="$t('barter')" v-model="form.barter" 
-            input-name="barter" icon-name="barter" @change="searchAutosalons()" />
-        </div>
-        <div class="col-6 col-lg-1-5 mb-2 mb-lg-3">
-          <form-checkbox :label="$t('credit')" v-model="form.credit" 
-            input-name="credit" icon-name="percent" @change="searchAutosalons()" />
+        <div class="col-12 col-lg-2-5 mb-2 mb-lg-3">
+          <div :class="['row', {'checkbox-row': short}]">
+            <div class="col-6 col-lg-6">
+              <form-checkbox :label="$t('barter')" v-model="form.barter" 
+                input-name="barter" icon-name="barter" @change="searchAutosalons()" :has-tooltip="short" />
+            </div>
+            <div class="col-6 col-lg-6">
+              <form-checkbox :label="$t('credit')" v-model="form.credit" 
+                input-name="credit" icon-name="percent" @change="searchAutosalons()" :has-tooltip="short" />
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -36,6 +41,9 @@
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
+  props: {
+    short: Boolean
+  },
   data() {
     return {
       pending: false,
@@ -51,7 +59,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['brands', 'carModels', 'carGenerations']),
+    ...mapGetters(['brands', 'carModels', 'carGenerations', 'salonsSearchFilters']),
 
     getMileageOptions() {
       return [
@@ -65,9 +73,10 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getModelsArray', 'getModelGenerationsArray', 'getSalonsList']),
+    ...mapActions(['getModelsArray', 'getModelGenerationsArray', 'getSalonsList', 'updateSalonsSearchFilters']),
 
     async searchAutosalons() {
+      this.updateSalonsSearchFilters({...this.form});
       this.searchAgain = false;
       if (this.pending) {
         this.searchAgain = true;
@@ -98,5 +107,9 @@ export default {
       if (id) await this.getModelGenerationsArray({ value: slug, brand_slug, index });
     }
   },
+  created() {
+    for (let key in this.salonsSearchFilters)
+      this.$set(this.form, key, this.salonsSearchFilters[key]);
+  }
 }
 </script>

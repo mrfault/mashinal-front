@@ -231,7 +231,7 @@
   }
 }
 
-@include media-max-width(lg) {
+@include media-max-width('lg') {
   .controls-panel {
     padding: 25px;
     .row {

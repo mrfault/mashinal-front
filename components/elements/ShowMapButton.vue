@@ -23,12 +23,15 @@
 </template>
 
 <script>
+import { YMapsMixin } from '~/mixins/ymaps';
+
 export default {
   props: {
     lat: Number,
     lng: Number,
     isStatic: Boolean
   },
+  mixins: [YMapsMixin],
   data() {
     return {
       showMap: false,
@@ -50,7 +53,9 @@ export default {
   methods: {
     beforeInit() {
       if (this.isStatic) return;
-      ymaps.ready(this.init);
+      this.ymapsScriptLoad().then(() => {
+        ymaps.ready(this.init);
+      });
     },
     init() {
       this.map = new ymaps.Map('map', {

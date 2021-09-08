@@ -264,7 +264,7 @@
   }
 }
 
-@include media-max-width(lg) {
+@include media-max-width('lg') {
   .card.with-btns {
     margin-top: 60px;
     .card-btns {

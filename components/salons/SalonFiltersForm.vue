@@ -1,39 +1,39 @@
 <template>
   <div class="salon-filters-form form">
-    <div class="card mt-2 mt-lg-3">
+    <div :class="`card mt-2 mt-lg-${short ? '0' : '3'}`">
       <div class="row mb-n2 mb-lg-n3">
-        <div class="col-12 col-lg-1-5 mb-2 mb-lg-3">
+        <div :class="[`col-12 ${short ? '' : 'col-lg-1-5'} mb-2 mb-lg-3`, {'order-lg-3': short}]">
           <form-text-input 
-            v-model="search" 
+            v-model="form.search" 
             icon-name="search" 
             block-class="placeholder-lighter"
             :placeholder="$t('salon_name')"
             @change="filterAutosalons" 
           />
         </div>
-        <div class="col-12 col-lg-2-5 mb-2 mb-lg-3">
+        <div :class="[`col-12 ${short ? '' : 'col-lg-2-5'} mb-2 mb-lg-3`, {'order-lg-4': short}]">
           <div class="row no-gutters checkbox-row bg-greyish-blue-2 round-4">
             <div class="col-auto">
-              <form-checkbox :label="$t('cars')" v-model="haveCar" input-name="haveCar" 
+              <form-checkbox :label="$t('cars')" v-model="form.haveCar" input-name="haveCar" 
                 @change="filterAutosalons" />
             </div>
             <div class="col-auto">
-              <form-checkbox :label="$t('moto')" v-model="haveMoto" input-name="haveMoto" 
+              <form-checkbox :label="$t('moto')" v-model="form.haveMoto" input-name="haveMoto" 
                 @change="filterAutosalons" />
             </div>
             <div class="col-auto">
-              <form-checkbox :label="$t('commercial')" v-model="haveCommercial" input-name="haveCommercial" 
+              <form-checkbox :label="$t('commercial')" v-model="form.haveCommercial" input-name="haveCommercial" 
                 @change="filterAutosalons" />
             </div>
           </div>
         </div>
-        <div class="col-6 col-lg-1-5 mb-2 mb-lg-3">
-          <form-checkbox :label="$t('only_official')" v-model="officialOnly" input-name="officialOnly" 
+        <div :class="[`col-6 ${short ? '' : 'col-lg-1-5'} mb-2 mb-lg-3`, {'order-lg-2': short}]">
+          <form-checkbox :label="$t('only_official')" v-model="form.officialOnly" input-name="officialOnly" 
             @change="filterAutosalons" />
         </div>
-        <div class="col-6 col-lg-1-5 mb-2 mb-lg-3">
+        <div :class="[`col-6 ${short ? '' : 'col-lg-1-5'} mb-2 mb-lg-3`, {'order-lg-1': short}]">
           <div class="form-info text-green">
-            {{ $readPlural(salonsFiltered.length, $t('plural_forms_salons')) }}
+            {{ $readPlural(count, $t('plural_forms_salons')) }}
           </div>
         </div>
       </div>
@@ -45,30 +45,37 @@
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
+  props: {
+    short: Boolean,
+    count: Number
+  },
   data() {
     return {
       pending: false,
-      search: '',
-      officialOnly: false,
-      haveCar: false,
-      haveMoto: false,
-      haveCommercial: false
+      form: {
+        search: '',
+        officialOnly: false,
+        haveCar: false,
+        haveMoto: false,
+        haveCommercial: false
+      }
     }
   },
   computed: {
-    ...mapGetters(['salonsFiltered', 'salonsList']),
+    ...mapGetters(['salonsSearched', 'salonsFilters']),
   },
   methods: {
-    ...mapActions(['updateSalonsFiltered']),
+    ...mapActions(['updateSalonsFiltered', 'updateSalonsFilters']),
 
-    async filterAutosalons() {
-      let list = this.salonsList.filter((salon) => {
+    filterAutosalons() {
+      this.updateSalonsFilters({...this.form});
+      let list = this.salonsSearched.filter((salon) => {
         let matches = true;
-        if (this.search) matches &= this.$search(salon.name, this.search);
-        if (this.officialOnly) matches &= salon.is_official;
-        if (this.haveCar) matches &= salon.have_car;
-        if (this.haveMoto) matches &= salon.have_moto;
-        if (this.haveCommercial) matches &= salon.have_commercial;
+        if (this.form.search) matches &= this.$search(salon.name, this.form.search);
+        if (this.form.officialOnly) matches &= salon.is_official;
+        if (this.form.haveCar) matches &= salon.have_car;
+        if (this.form.haveMoto) matches &= salon.have_moto;
+        if (this.form.haveCommercial) matches &= salon.have_commercial;
         return matches;
       });
       this.updateSalonsFiltered(list);
@@ -76,6 +83,8 @@ export default {
     }
   },
   created() {
+    for (let key in this.salonsFilters)
+      this.$set(this.form, key, this.salonsFilters[key]);
     this.$nuxt.$on('search-salons', this.filterAutosalons);
   },
   beforeDestroy() {

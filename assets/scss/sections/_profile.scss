@@ -272,7 +272,7 @@
   }
 }
 
-@include media-max-width(lg) {
+@include media-max-width('lg') {
   .profile-card {
     margin-top: 0;
     padding: 15px;
