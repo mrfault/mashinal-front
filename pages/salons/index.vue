@@ -44,9 +44,15 @@
           </div>
         </div>
         <clustered-map 
+          key="desktop-map"
           :margin-left="{ left: 0, top: 0, width: '360px', height: '100%' }"
           :margin-top="{ top: 0, left: 0, width: '100%', height: '150px' }" 
           :use-margin-left="!disableCollapse && !collapse" 
+        />
+      </div>
+      <div class="map-fh-container" v-else>
+        <clustered-map 
+          key="mobile-map"
         />
       </div>
     </template>
@@ -113,7 +119,9 @@ export default {
     },
 
     salons() {
-      return this.salonsFiltered.filter(salon => this.salonsInBounds ? this.salonsInBounds.includes(salon.id) : true);
+      return this.salonsFiltered.filter(salon => {
+        return this.salonsInBounds ? this.salonsInBounds.includes(salon.id) : true;
+      });
     }
   },
   methods: {
