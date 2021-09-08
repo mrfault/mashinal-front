@@ -55,22 +55,22 @@ export default {
         center: this.cacheMapCenter,
         zoom: 12,
         controls: ['zoomControl','geolocationControl'],
-        autoFitToViewport: 'always' 
+        // autoFitToViewport: 'always' 
       }, {
         restrictMapArea: [[85,-178.9], [-73.87011,180]],
-        geolocationControlPosition: {
-          top: '20px',
-          right: '20px'
-        },
-        zoomControlPosition: {
-          bottom: '40px',
-          right: '20px'
-        }
+        geolocationControlPosition: !this.isMobileBreakpoint 
+          ? { top: '20px', right: '20px' } 
+          : { top: '20px', left: '20px' },
+        zoomControlPosition: !this.isMobileBreakpoint 
+          ? { bottom: '40px', right: '20px' }
+          : { bottom: '40px', left: '20px' }
       });
 
       this.objectManager = new ymaps.ObjectManager({
         clusterize: true,
         gridSize: 200,
+        zoomMargin: 50,
+        geoObjectBalloonAutoPanMargin: [90, 5, 220, 5],
         geoObjectOpenBalloonOnClick: false,
         geoObjectHideIconOnBalloonOpen: false,
         geoObjectIconLayout: 'default#imageWithContent',
