@@ -70,7 +70,7 @@ export default {
         clusterize: true,
         gridSize: 200,
         zoomMargin: 50,
-        geoObjectBalloonAutoPanMargin: [90, 5, 220, 5],
+        geoObjectBalloonAutoPanMargin: [90, 20, 220, 20],
         geoObjectOpenBalloonOnClick: false,
         geoObjectHideIconOnBalloonOpen: false,
         geoObjectIconLayout: 'default#imageWithContent',

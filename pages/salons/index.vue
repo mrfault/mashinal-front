@@ -1,10 +1,25 @@
 <template>
   <div :class="['pages-salons', `${view}-view`]">
+    <mobile-screen @back="showSearch = false" :bar-title="$t('search_salon')" v-if="showSearch && isMobileBreakpoint">
+      <div class="flex-stretch-chilren pt-2">
+        <div class="full-width">
+          <form-buttons :options="searchFormTypeOptions" :group-by="2" v-model="searchFormType" />
+        </div>
+        <salon-search-form v-show="searchFormType === 1" @search="showSearch = false" />
+        <salon-filters-form v-show="searchFormType === 0" @filter="showSearch = false"
+          :count="(view === 'list' ? salonsFiltered : salonsInView).length" /> 
+      </div>
+    </mobile-screen>
     <template v-if="view === 'list'">
       <div class="container">
         <breadcrumbs :crumbs="crumbs" />
-        <salon-search-form />
-        <salon-filters-form :count="salonsFiltered.length" />
+        <div class="title grid-title mt-2" v-if="isMobileBreakpoint">
+          <h2><span>{{ $t('salons') }}</span></h2>
+        </div>
+        <template v-else>
+          <salon-search-form />
+          <salon-filters-form :count="salonsFiltered.length" />
+        </template>
         <div class="salon-card-list row mt-2 mt-lg-3 mb-n2 mb-lg-n3" v-if="salonsFiltered.length">
           <div class="col-lg-4 mb-2 mb-lg-3" v-for="salon in salonsFiltered" :key="salon.id">
             <nuxt-link class="keep-colors" :to="$localePath(`/salons/${salon.id}`)">
@@ -96,11 +111,10 @@ export default {
   },
   head() {
     return this.$headMeta({
-      title: this.$t('car-showrooms'),
+      title: this.$t('salons'),
     });
   },
   async asyncData({ store, route }) {
-    store.dispatch('setFooterVisibility', false);
     await Promise.all([
       store.dispatch('getBrands'),
       store.dispatch('getSalonsList')
@@ -108,7 +122,9 @@ export default {
     return {
       view: 'map',
       collapse: false,
-      disableCollapse: true
+      disableCollapse: true,
+      showSearch: false,
+      searchFormType: 0
     }
   },
   computed: {
@@ -116,7 +132,7 @@ export default {
 
     crumbs() {
       return [
-        { name: this.$t('car-showrooms') }
+        { name: this.$t('salons') }
       ]
     },
 
@@ -124,6 +140,12 @@ export default {
       return this.salonsFiltered.filter(salon => {
         return this.salonsInBounds ? this.salonsInBounds.includes(salon.id) : true;
       });
+    },
+    searchFormTypeOptions() {
+      return [
+        { key: 0, name: this.$t('search_by_salon') },
+        { key: 1, name: this.$t('search_by_auto') }
+      ]
     }
   },
   methods: {
@@ -132,10 +154,18 @@ export default {
     changeView() {
       this.view = (this.view === 'list') ? 'map' : 'list';
       this.setFooterVisibility(this.view === 'list');
+    },
+    toggleSearch() {
+      this.showSearch = !this.showSearch;
     }
+  },
+  created() {
+    this.setFooterVisibility(false);
+    this.$nuxt.$on('search-icon-click', this.toggleSearch);
   },
   beforeDestroy() {
     this.setFooterVisibility(true);
+    this.$nuxt.$off('search-icon-click', this.toggleSearch);
   }
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
-  <div class="salon-filters-form form">
-    <div :class="`card mt-2 mt-lg-${short ? '0' : '3'}`">
+  <div :class="['salon-filters-form form', {'has-sticky-screen-bottom': isMobileBreakpoint}]">
+    <div :class="`card mt-lg-${short ? '0' : '3'}`">
       <div class="row mb-n2 mb-lg-n3">
         <div :class="[`col-12 ${short ? '' : 'col-lg-1-5'} mb-2 mb-lg-3`, {'order-lg-3': short}]">
           <form-text-input 
@@ -8,35 +8,38 @@
             icon-name="search" 
             block-class="placeholder-lighter"
             :placeholder="$t('salon_name')"
-            @change="filterAutosalons" 
+            @change="filterAutosalons()" 
           />
         </div>
         <div :class="[`col-12 ${short ? '' : 'col-lg-2-5'} mb-2 mb-lg-3`, {'order-lg-4': short}]">
-          <div class="row no-gutters checkbox-row bg-greyish-blue-2 round-4">
+          <div :class="['row no-gutters checkbox-row', {'bg-greyish-blue-2 round-4': !isMobileBreakpoint }]">
             <div class="col-auto">
               <form-checkbox :label="$t('cars')" v-model="form.haveCar" input-name="haveCar" 
-                @change="filterAutosalons" />
+                @change="filterAutosalons()" :transparent="isMobileBreakpoint" />
             </div>
             <div class="col-auto">
               <form-checkbox :label="$t('moto')" v-model="form.haveMoto" input-name="haveMoto" 
-                @change="filterAutosalons" />
+                @change="filterAutosalons()" :transparent="isMobileBreakpoint" />
             </div>
             <div class="col-auto">
               <form-checkbox :label="$t('commercial')" v-model="form.haveCommercial" input-name="haveCommercial" 
-                @change="filterAutosalons" />
+                @change="filterAutosalons()" :transparent="isMobileBreakpoint" />
             </div>
           </div>
         </div>
         <div :class="[`col-6 ${short ? '' : 'col-lg-1-5'} mb-2 mb-lg-3`, {'order-lg-2': short}]">
           <form-checkbox :label="$t('only_official')" v-model="form.officialOnly" input-name="officialOnly" 
-            @change="filterAutosalons" />
+            @change="filterAutosalons()" :transparent="isMobileBreakpoint" />
         </div>
-        <div :class="[`col-6 ${short ? '' : 'col-lg-1-5'} mb-2 mb-lg-3`, {'order-lg-1': short}]">
+        <div :class="[`col-6 ${short ? '' : 'col-lg-1-5'} mb-2 mb-lg-3`, {'order-lg-1': short}]" v-if="!isMobileBreakpoint">
           <div class="form-info text-green">
             {{ $readPlural(count, $t('plural_forms_salons')) }}
           </div>
         </div>
       </div>
+    </div>
+    <div class="stick-to-screen-bottom" v-if="isMobileBreakpoint">
+      <button class="btn full-width btn--green" @click="filterAutosalons(true), $emit('filter')">{{ $t('find') }}</button>
     </div>
   </div>
 </template>
@@ -51,7 +54,6 @@ export default {
   },
   data() {
     return {
-      pending: false,
       form: {
         search: '',
         officialOnly: false,
@@ -67,7 +69,8 @@ export default {
   methods: {
     ...mapActions(['updateSalonsFiltered', 'updateSalonsFilters']),
 
-    filterAutosalons() {
+    filterAutosalons(runOnMobile = false) {
+      if (this.isMobileBreakpoint && !runOnMobile) return;
       this.updateSalonsFilters({...this.form});
       let list = this.salonsSearched.filter((salon) => {
         let matches = true;
@@ -79,6 +82,7 @@ export default {
         return matches;
       });
       this.updateSalonsFiltered(list);
+      this.$emit('filter');
       this.$nuxt.$emit('filter-salons');
     }
   },

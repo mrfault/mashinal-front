@@ -13,6 +13,9 @@
             <icon name="options" />
           </span>
         </nuxt-link>
+        <span class="cursor-pointer" @click="$nuxt.$emit('search-icon-click')" v-else-if="routeName === 'salons'">
+          <icon name="search" />
+        </span>
         <span class="cursor-pointer" @click="logout" v-else>
           <icon name="logout" />
         </span>

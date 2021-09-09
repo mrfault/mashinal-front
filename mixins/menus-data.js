@@ -28,7 +28,7 @@ export const MenusDataMixin = {
       return [
         ...this.searchMenus,
         { title: 'autocatalog', route: '/catalog' },
-        { title: 'car-showrooms', route: '/salons' }
+        { title: 'salons', route: '/salons' }
       ]
     },
 
@@ -76,7 +76,7 @@ export const MenusDataMixin = {
 
     sidebarMenus() {
       return [
-        { title: 'car-showrooms', route: '/salons', icon: 'store' },
+        { title: 'salons', route: '/salons', icon: 'store' },
         { title: 'autocatalog', route: '/catalog', icon: 'book' },
         { title: 'comparisons', route: '/comparison', icon: 'compare' },
         { title: 'helper_search', route: '/cars/assistant', icon: 'flag' },
@@ -108,13 +108,6 @@ export const MenusDataMixin = {
         { title: 'scooters', route: '/moto/'+this.$t('slug_scooters'), icon: 'moto-2' },
         { title: 'atvs', route: '/moto/'+this.$t('slug_atvs'), icon: 'moto-3' }
       ]
-    },
-
-    hasSearchNav() {
-      return [
-        'index', 'cars', 'cars-vip', 'cars-premium', 'cars-assistant', 'cars-advanced-search',
-        'moto', 'moto-moto', 'commercial','commercial-commercial'
-      ].includes(this.routeName);
     },
 
     hasSearchNav() {
