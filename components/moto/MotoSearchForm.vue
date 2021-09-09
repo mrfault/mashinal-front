@@ -198,21 +198,11 @@ export default {
     category: {}
   },
   data() {
-    let brand = { 
-      brand: '', 
-      model: ''
-    };
     return {
       rows: ['0'],
       form: {
         sorting: 'created_at_desc',
-        additional_brands: {
-          0: {...brand}, 
-          1: {...brand}, 
-          2: {...brand}, 
-          3: {...brand}, 
-          4: {...brand}
-        },
+        additional_brands: { 0: {}, 1: {}, 2: {}, 3: {}, 4: {} },
         announce_type: 0,
         currency: 1,
         box: [],

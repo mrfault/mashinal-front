@@ -335,7 +335,7 @@
         if (disabled && this.clearOnDisable) this.clearSelect();
       },
       value(value) {
-        if (this.value === undefined) 
+        if (this.value === undefined)
           this.selectValue = undefined;
       },
       showOptions(val) {
@@ -369,6 +369,10 @@
       getFilteredOptions() {
         this.vsKey++;
       }
+    },
+    created() {
+      if (this.value === undefined) 
+        this.selectValue = undefined;
     },
     mounted() {
       document.addEventListener('click', this.handleDocClick);

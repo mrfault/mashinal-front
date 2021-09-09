@@ -1,5 +1,5 @@
 <template>
-  <component :is="isMobileBreakpoint ? 'mobile-screen' : 'div'" @back="$emit('close')" :bar-title="title" height-auto>
+  <component :is="isMobileBreakpoint ? 'mobile-screen' : 'div'" @back="$emit('close')" @action="$emit('clean')" action-icon="reset" :bar-title="title" height-auto>
     <div class="sell_last-step">
       <sell-select-modification v-if="!edit && type === 'cars'"
         :form="form"
