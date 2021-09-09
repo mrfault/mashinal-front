@@ -1,6 +1,6 @@
 <template>
   <div :class="['announcements-grid', {'loading-content': pending, 'paginated': paginate}]">
-    <div class="title" v-if="title && showTitle">
+    <div class="title grid-title" v-if="title && showTitle">
       <h2>
         <icon :name="iconName" v-if="iconName" />
         <span>{{ title }}</span>

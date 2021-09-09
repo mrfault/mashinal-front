@@ -310,7 +310,7 @@ export default {
       return [
         { key: 1, name: 'AZN', sign: '₼'	},
         { key: 2, name: 'USD', sign: '$'	},
-        { key: 3, name: 'EUR', sign: '€'	}
+        // { key: 3, name: 'EUR', sign: '€'	}
       ];
     },
     getMileageOptions() {

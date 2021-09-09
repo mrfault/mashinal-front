@@ -450,6 +450,7 @@ main {
           display: flex;
           align-items: center;
           color: inherit;
+          font-weight: 500;
           &.active,
           &:hover {
             color: $red-1;
@@ -478,6 +479,7 @@ main {
           display: inline-flex;
           align-items: center;
           color: inherit;
+          font-weight: 500;
           &.active,
           &:hover {
             color: $red-1;
@@ -799,14 +801,9 @@ main {
     span {
       &:first-of-type {
         color: $red-1;
-        i {
-          font-size: 16px;
-        }
       }
-      &:last-of-type {
-        i {
-          font-size: 18px;
-        }
+      i::before {
+        font-size: 16px;
       }
     }
     &.has-shadow {

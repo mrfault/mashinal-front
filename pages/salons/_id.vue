@@ -2,7 +2,7 @@
   <div class="pages-salons-id">
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
-      <div class="card profile-card salon-single-card overflow-hidden mt-0 mb-n3 mb-lg-3" v-if="salonSingle.description">
+      <div :class="['card profile-card salon-single-card overflow-hidden mt-0 mb-lg-3', salonSingle.description ? 'mb-n3' : 'mb-2']">
         <div class="cover-with-avatar">
           <div class="cover" :style="{backgroundImage: `url('${getCover(salonSingle.cover)}')`}">
             <img class="avatar" :src="getLogo(salonSingle.logo)" :alt="salonSingle.name" />
@@ -34,8 +34,10 @@
             </div>
           </div>
         </div>
-        <gallery where="salon" :media="[salonSingle.gallery_urls, salonSingle.gallery_thumbs]" :show-slider="false" />
-        <thumbs-gallery where="salon" :media="salonSingle.gallery_thumbs" />
+        <template v-if="salonSingle.gallery_urls.length">
+          <gallery where="salon" :media="[salonSingle.gallery_urls, salonSingle.gallery_thumbs]" :show-slider="false" />
+          <thumbs-gallery where="salon" :media="salonSingle.gallery_thumbs" />
+        </template>
       </div>
       <div class="card salon-comment-card mb-2 mb-lg-3" v-if="salonSingle.description">
         <h2 class="title-with-line">
@@ -81,7 +83,7 @@ export default {
   },
   head() {
     return this.$headMeta({
-      title: `${this.$t('is_autosalon')} ${this.salonSingle.name} | ${this.$t('car-showrooms')}`,
+      title: `${this.$t('is_autosalon')} ${this.salonSingle.name} | ${this.$t('salons')}`,
       description: this.salonSingle.short_description
     });
   },
@@ -100,7 +102,7 @@ export default {
 
     crumbs() {
       return [
-        { name: this.$t('car-showrooms'), route: '/salons' },
+        { name: this.$t('salons'), route: '/salons' },
         { name: this.salonSingle.name }
       ]
     }

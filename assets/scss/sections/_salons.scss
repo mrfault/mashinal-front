@@ -73,7 +73,7 @@
   }
   .salon-card {
     width: 310px;
-    padding: 10px 0 10px 13px;
+    padding: 10px 13px;
     cursor: pointer;
   }
 }
@@ -143,14 +143,21 @@
 }
 
 @include media-max-width('lg') {
+  .list-view {
+    padding-bottom: 90px;
+  }
   .salon-view-btn {
+    position: fixed;
     bottom: 90px;
-    margin-top: 90px;
+    margin-top: 0;
   }
 }
 
 @include media-min-width('lg') {
   .map-view {
+    .no-results {
+      margin-top: 70px;
+    }
     .salon-filters-form {
       .card {
         padding: 0 25px 0;

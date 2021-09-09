@@ -1,10 +1,11 @@
 <template>
-  <div :class="['salon-search-form form', { short }]">
+  <div :class="['salon-search-form form', { short, 'has-sticky-screen-bottom': isMobileBreakpoint }]">
     <div class="card-left-offset"></div>
     <div class="card with-btns">
       <div class="card-btns">
         <form-buttons :options="getMileageOptions" :group-by="3" v-model="form.announce_type" 
-          btn-class="pale-red-outline btn--merged" row-class="no-gutters" @change="searchAutosalons()" />
+          :btn-class="!isMobileBreakpoint ? 'pale-red-outline btn--merged' : 'pale-red-outline'" 
+          :row-class="!isMobileBreakpoint ? 'no-gutters' : ''" @change="searchAutosalons()" />
       </div>
       <div class="row mb-n2 mb-lg-n3">
         <div class="col-12 col-lg-1-5 mb-2 mb-lg-3">
@@ -12,11 +13,11 @@
             :clear-option="!isMobileBreakpoint" :popular-options="isMobileBreakpoint ? [129,483,8,1,767,117] : undefined" 
             :img-key="isMobileBreakpoint ? 'transformed_media' : ''" @change="setBrand($event, 0), searchAutosalons()" has-search />
         </div>
-        <div class="col-6 col-lg-1-5 mb-2 mb-lg-3">
+        <div class="col-12 col-lg-1-5 mb-2 mb-lg-3">
           <form-select :label="$t('model')" :options="carModels[0]" v-model="form.model_id"
             :disabled="form.brand_id && !carModels[0].length" @change="setModel($event, 0), searchAutosalons()" has-search />
         </div>
-        <div class="col-6 col-lg-1-5 mb-2 mb-lg-3">
+        <div class="col-12 col-lg-1-5 mb-2 mb-lg-3">
           <form-select :label="$t('generation')" :options="carGenerations[0]" v-model="form.generation_id"
             :disabled="form.model_id && !carGenerations[0].length" has-search @change="searchAutosalons()" />
         </div>
@@ -24,15 +25,18 @@
           <div :class="['row', {'checkbox-row': short}]">
             <div class="col-6 col-lg-6">
               <form-checkbox :label="$t('barter')" v-model="form.barter" 
-                input-name="barter" icon-name="barter" @change="searchAutosalons()" :has-tooltip="short" />
+                input-name="barter" icon-name="barter" @change="searchAutosalons()" :has-tooltip="short" :transparent="isMobileBreakpoint"/>
             </div>
             <div class="col-6 col-lg-6">
               <form-checkbox :label="$t('credit')" v-model="form.credit" 
-                input-name="credit" icon-name="percent" @change="searchAutosalons()" :has-tooltip="short" />
+                input-name="credit" icon-name="percent" @change="searchAutosalons()" :has-tooltip="short" :transparent="isMobileBreakpoint"/>
             </div>
           </div>
         </div>
       </div>
+    </div>
+    <div class="stick-to-screen-bottom" v-if="isMobileBreakpoint">
+      <button :class="['btn full-width btn--green', { pending }]" @click="searchAutosalons(true)">{{ $t('find') }}</button>
     </div>
   </div>
 </template>
@@ -75,7 +79,8 @@ export default {
   methods: {
     ...mapActions(['getModelsArray', 'getModelGenerationsArray', 'getSalonsList', 'updateSalonsSearchFilters']),
 
-    async searchAutosalons() {
+    async searchAutosalons(runOnMobile = false) {
+      if (this.isMobileBreakpoint && !runOnMobile) return;
       this.updateSalonsSearchFilters({...this.form});
       this.searchAgain = false;
       if (this.pending) {
@@ -88,7 +93,9 @@ export default {
         this.$nuxt.$emit('search-salons');
         this.pending = false;
         if (this.searchAgain) {
-          await this.searchAutosalons();
+          await this.searchAutosalons(runOnMobile);
+        } else {
+          this.$emit('search');
         }
       } catch(err) {
         this.pending = false;
