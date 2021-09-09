@@ -86,6 +86,11 @@
 }
 
 .dark-mode {
+  .salon-card {
+    .salon-info_bottom-line {
+      opacity: .7;
+    }
+  }
   .salon-card-list {
     &:not(.row) {
       & > div:not(:last-child) .salon-card::after {

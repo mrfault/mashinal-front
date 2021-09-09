@@ -30,6 +30,14 @@
     //   display: none;
     // }
 
+    [class*=islets_card__title] {
+      padding-right: 25px;
+    }
+
+    [class$=islets_card] {
+      padding: 10px 13px;
+    }
+
     [class*=balloon-pane] {
       top: -25px !important;
     }
@@ -50,6 +58,15 @@
       box-shadow: none !important;
       background: $white !important;
       border-radius: 4px;
+    }
+
+    [class*=islets_balloon_layout_panel] {
+      border-radius: 4px 4px 0 0;
+      [class*=balloon__content] {
+        & > * {
+          width: 100% !important;
+        }
+      }
     }
 
     [class*="-balloon "] {
