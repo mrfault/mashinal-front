@@ -15,7 +15,7 @@
           <h4>{{ state[index].name }}</h4>
           <p>
             {{ getPartsData(index).map(key => $t(key)).join(', ') }}
-            <em v-if="getPartsData(index, 'comment')[0]"> - {{ state[index].form[getPartsData(index, 'comment')[0]] }}</em>
+            <em v-if="getPartsData(index, 'comment')[0]"> — {{ state[index].form[getPartsData(index, 'comment')[0]] }}</em>
           </p>
         </div>
       </div>

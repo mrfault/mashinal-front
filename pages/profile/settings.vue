@@ -121,11 +121,15 @@ export default {
       this.form.lastname = this.user.lastname || '';
 
       let formData = new FormData();
-
+      let pwdKeys = ['old','password','password_confirmation'];
       for (let key in this.form) {
         let value = this.form[key];
         if (key === 'birthday')
           value = this.escapeDate(this.form[key]);
+        if (key === 'avatar' && !this.form[key]) 
+          continue;
+        if (pwdKeys.includes(key) && !pwdKeys.filter(k => !!this.form[k]).length)
+          continue;
         formData.append(key, value);
       }
       

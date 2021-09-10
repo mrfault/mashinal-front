@@ -811,11 +811,11 @@ main {
     }
   }
   .menu-backdrop {
-    @include abs-zero(fixed, 999);
+    @include abs-zero(fixed, 50);
     @include backdrop-filter;
   }
   .menu-sidebar {
-    @include abs-zero(fixed, 1000);
+    @include abs-zero(fixed, 51);
     display: flex;
     overflow: auto;
     transform: translate(-101%);
@@ -1251,7 +1251,7 @@ main {
 /** Backdrop */
 
 .backdrop {
-  @include abs-zero(fixed, 999);
+  @include abs-zero(fixed, 35);
   @include backdrop-filter;
 }
 
