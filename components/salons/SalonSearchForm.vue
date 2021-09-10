@@ -90,12 +90,10 @@ export default {
       this.pending = true;
       try {
         await this.getSalonsList(this.$queryParams(this.form, true));
-        this.$nuxt.$emit('search-salons');
+        this.$nuxt.$emit('search-salons', runOnMobile);
         this.pending = false;
         if (this.searchAgain) {
           await this.searchAutosalons(runOnMobile);
-        } else {
-          this.$emit('search');
         }
       } catch(err) {
         this.pending = false;

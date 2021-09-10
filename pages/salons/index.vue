@@ -5,7 +5,7 @@
         <div class="full-width">
           <form-buttons :options="searchFormTypeOptions" :group-by="2" v-model="searchFormType" />
         </div>
-        <salon-search-form v-show="searchFormType === 1" @search="showSearch = false" />
+        <salon-search-form v-show="searchFormType === 1" />
         <salon-filters-form v-show="searchFormType === 0" @filter="showSearch = false"
           :count="(view === 'list' ? salonsFiltered : salonsInView).length" /> 
       </div>

@@ -534,7 +534,7 @@ export default {
               let errorIndex = this.errors.indexOf(errorKey);
               let errorText = `(${dataLength - errorIndex}/${dataLength}) ${data[key][0]}`;
               // show error
-              this.showError(errorKey, errorText, { fieldView: key, offset: this.isMobileBreakpoint ? -15 : -20 }, count === 0);
+              this.showError(errorKey, errorText, { fieldView: key, offset: this.isMobileBreakpoint ? 30 : -20 }, count === 0);
               count++;
             }
           } else if (message && status !== 499) {

@@ -477,7 +477,7 @@ input::-webkit-inner-spin-button {
       display: flex;
       flex-direction: column;
       position: fixed;
-      z-index: 40;
+      z-index: 55;
       padding: 60px 0 0;
       width: 100%;
       height: 100%;
@@ -850,5 +850,11 @@ input::-webkit-inner-spin-button {
         }
       }
     }
+  }
+}
+
+@include media-max-width('lg') {
+  .range-slider {
+    padding: 10px 25px 0;
   }
 }
