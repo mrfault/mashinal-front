@@ -1,5 +1,5 @@
 <template>
-  <component :is="isMobileBreakpoint ? 'mobile-screen' : 'div'" @back="$emit('close')" :bar-title="title" height-auto>
+  <component :is="isMobileBreakpoint ? 'mobile-screen' : 'div'" @back="$emit('close')" @action="$emit('clean')" action-icon="reset" :bar-title="title" height-auto>
     <div class="sell_last-step">
       <sell-select-modification v-if="!edit && type === 'cars'"
         :form="form"
@@ -204,7 +204,7 @@
             </nuxt-link>
           </p>
           <p class="info-text full-width less-pd mt-2">
-            <span class="star">*</span> - {{ $t('starred_fields_are_required')}}
+            <span class="star">*</span> — {{ $t('starred_fields_are_required')}}
           </p>
           <p class="info-text full-width less-pd text-red" v-if="isAlreadySold">
             {{ $t('this_car_already_added_last_90_days_for_new_added_need_payment') }}

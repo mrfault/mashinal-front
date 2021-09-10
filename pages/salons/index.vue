@@ -149,7 +149,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['setFooterVisibility', 'updateSalonsInBounds']),
+    ...mapActions(['setFooterVisibility', 'updateSalonsInBounds', 'updateSalonsSearchFilters', 'updateSalonsFilters']),
 
     changeView() {
       this.view = (this.view === 'list') ? 'map' : 'list';
@@ -165,6 +165,8 @@ export default {
   },
   beforeDestroy() {
     this.setFooterVisibility(true);
+    this.updateSalonsFilters({});
+    this.updateSalonsSearchFilters({});
     this.$nuxt.$off('search-icon-click', this.toggleSearch);
   }
 }

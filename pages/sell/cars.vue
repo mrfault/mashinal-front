@@ -18,6 +18,7 @@
               :initial-form="form"
               :title="`${brand.name} ${model.name}, ${form.year}`"
               @close="showLastStep = false, lastStepKey++, form.year = ''"
+              @clean="cleanForm"
             />
             <year-options v-else-if="showYearOptions"
               :years="sellYears" 
@@ -25,6 +26,7 @@
               :value="form.year"
               @input="handleYear"
               @close="handleYear()"
+              @clean="cleanForm"
             />
             <model-options key="model" v-else-if="showModelOptions"
               :options="models" 
@@ -35,6 +37,7 @@
               :sort-alphabetically="false"
               @input="handleModel($parseSlug($event.slug))"
               @close="handleModel()"
+              @clean="cleanForm"
             />
             <model-options key="brand" v-else-if="showBrandOptions"
               :options="brands" 
@@ -46,6 +49,7 @@
               :img-key="'transformed_media'"
               @input="handleBrand($parseSlug($event.slug))"
               @close="$router.push($localePath('/sell'))"
+              disable-clean
             />
           </div>
         </div>

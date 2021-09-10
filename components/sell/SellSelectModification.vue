@@ -25,7 +25,7 @@
           <template #custom="{ button }">
             <div :style="getGenerationStyle(button)" :class="['generation-bg', {'no-img': !!getGenerationStyle(button).noImg }]"></div>
             <div class="generation-info">
-              <span>{{ button.start_year }} - {{ button.end_year || currentYear }}</span>
+              <span>{{ button.start_year }} — {{ button.end_year || currentYear }}</span>
               <span>{{ button.short_name[locale] }}</span>
             </div>
           </template>

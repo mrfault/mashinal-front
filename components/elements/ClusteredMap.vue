@@ -3,9 +3,9 @@
     <div class="map" @click.stop>
       <div id="map" :class="{hide: !centerUpdated}"></div>
     </div>
-    <div class="sr-only" ref="salonInfo" v-if="selectedSalon">
+    <div class="sr-only" ref="salonInfo">
       <div class="balloon-content">
-        <salon-card :salon="selectedSalon" />
+        <salon-card :salon="selectedSalon" :key="selectedSalon.id" v-if="selectedSalon" />
       </div>
     </div>
   </div>
@@ -68,7 +68,7 @@ export default {
 
       this.objectManager = new ymaps.ObjectManager({
         clusterize: true,
-        gridSize: 200,
+        gridSize: 64,
         zoomMargin: 50,
         geoObjectBalloonAutoPanMargin: [90, 20, 220, 20],
         geoObjectOpenBalloonOnClick: false,
@@ -96,9 +96,9 @@ export default {
       this.objectManager.objects.events.add('click', (e) => {
         let id = e.get('objectId');
         let object = this.objectManager.objects.getById(id);
-        this.selectedSalon = object.data;
+        this.$set(this, 'selectedSalon', object.data);
         this.$nextTick(() => {
-          object.properties.balloonContent = this.$refs.salonInfo.innerHTML;
+          object.properties.balloonContent = this.$refs.salonInfo?.innerHTML || '';
           this.objectManager.objects.balloon.setData(object);
           this.objectManager.objects.balloon.open(id);
         });

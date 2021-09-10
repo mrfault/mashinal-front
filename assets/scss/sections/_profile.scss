@@ -147,6 +147,7 @@
 }
 
 .templates-controls-panel {
+  overflow: hidden;
   padding: 6px 25px;
   .control-icon {
     padding: 4px 8px;
@@ -159,10 +160,19 @@
 }
 .templates-item {
   padding: 6px 25px;
-  .toggle .cursor-pointer {
-    display: inline-block;
-    padding: 4px 8px;
-    margin-right: -8px;
+  .dots {
+    position: relative;
+  }
+  .toggle {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    margin-left: 20px;
+    .cursor-pointer {
+      display: inline-block;
+      padding: 4px 8px;
+      margin-right: -8px;
+    }
   }
   &_params {
     .row {
@@ -176,7 +186,7 @@
         }
       }
     }
-    hr {
+    & > hr {
       position: absolute;
       top: 46px;
       left: 0;
@@ -380,6 +390,38 @@
         opacity: 1;
         i {
           opacity: .25;
+        }
+      }
+    }
+  }
+
+  .templates-item {
+    &_params {
+      .row {
+        padding-top: 20px;
+        hr {
+          margin: 13px 0;
+        }
+        .col-auto {
+          width: 100%;
+          &:last-of-type hr {
+            display: none;
+          }
+        }
+        .param {
+          justify-content: space-between;
+          span {
+            &:first-child {
+              padding-right: 10px;
+              margin-bottom: 0;
+            }
+            &:last-child {
+              text-align: right;
+              padding-left: 10px;
+              flex-shrink: 0;
+              max-width: 55%;
+            }
+          }
         }
       }
     }

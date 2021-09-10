@@ -27,7 +27,7 @@
           v-if="mainAnnouncements.random_moto.length"
           :announcements="mainAnnouncements.random_moto" 
           :title="$t('moto')"
-          :show-all="$localePath('/motorcycles')"
+          :show-all="$localePath('/moto')"
           :pending="pending"
         />
       </template>

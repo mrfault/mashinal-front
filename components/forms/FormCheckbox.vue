@@ -19,8 +19,8 @@
         </span>
         <icon class="checkbox-icon" :name="iconName" v-if="iconName" />
         <span class="text-truncate text-dark-blue-2 text-hover-red pl-3 pl-lg-0 cursor-pointer" v-if="labelClick" @click.stop.prevent="$emit('label-click')">
-          {{ label }}
-          <icon class="ml-1" name="chevron-right" />
+          <span>{{ label }}</span>
+          <icon class="ml-1" name="chevron-right" v-if="!isMobileBreakpoint" />
         </span>
         <span class="text-truncate" v-else>{{ label }}</span>
       </label>

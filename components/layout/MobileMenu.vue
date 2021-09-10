@@ -8,14 +8,14 @@
         <nuxt-link class="logo" :to="$localePath('/')" @click.native="$nuxt.$emit('logo-click')">
           <img :src="`/img/${isDarkMode ? 'logo-white' : 'logo'}.svg`" alt="logo" />
         </nuxt-link>
-        <nuxt-link custom :to="$localePath('/cars/advanced-search')" v-slot="{ href }" v-if="hasSearchNav || !loggedIn">
+        <span class="cursor-pointer" @click="$nuxt.$emit('search-icon-click')" v-if="routeName === 'salons'">
+          <icon name="search" />
+        </span>
+        <nuxt-link custom :to="$localePath('/cars/advanced-search')" v-slot="{ href }" v-else-if="hasSearchNav || !loggedIn">
           <span class="cursor-pointer" @click="goToSearch(href)">
             <icon name="options" />
           </span>
         </nuxt-link>
-        <span class="cursor-pointer" @click="$nuxt.$emit('search-icon-click')" v-else-if="routeName === 'salons'">
-          <icon name="search" />
-        </span>
         <span class="cursor-pointer" @click="logout" v-else>
           <icon name="logout" />
         </span>

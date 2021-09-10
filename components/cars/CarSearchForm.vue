@@ -293,25 +293,11 @@ export default {
     assistant: Boolean
   },
   data() {
-    let brand = { 
-      brand: '', 
-      brand_slug: '', 
-      model: '', 
-      model_slug: '', 
-      generation: '' , 
-      generation_slug: '' 
-    };
     return {
       rows: ['0'],
       form: {
         sorting: 'created_at_desc',
-        additional_brands: {
-          0: {...brand}, 
-          1: {...brand}, 
-          2: {...brand}, 
-          3: {...brand}, 
-          4: {...brand}
-        },
+        additional_brands: { 0: {}, 1: {}, 2: {}, 3: {}, 4: {} },
         all_options: {},
         announce_type: 1,
         currency: 1,
@@ -365,12 +351,8 @@ export default {
       let slug = brand?.slug || '';
       this.$set(this.form.additional_brands[index], 'brand', id);
       this.$set(this.form.additional_brands[index], 'brand_slug', slug);
-      this.$set(this.form.additional_brands[index], 'model', '');
-      this.$set(this.form.additional_brands[index], 'model_slug', '');
-      this.$set(this.form.additional_brands[index], 'model_name', '');
-      this.$set(this.form.additional_brands[index], 'generation', '');
-      this.$set(this.form.additional_brands[index], 'generation_slug', '');
-      this.$set(this.form.additional_brands[index], 'generation_name', '');
+      ['model','model_slug','model_name','generation','generation_slug','generation_name']
+        .map(key => { this.$set(this.form.additional_brands[index], key, '') });
       if (id) await this.getModelsArray({ value: slug, index });
     },
     async setModel(id, index) {
@@ -380,9 +362,8 @@ export default {
       this.$set(this.form.additional_brands[index], 'model', id);
       this.$set(this.form.additional_brands[index], 'model_slug', slug);
       this.$set(this.form.additional_brands[index], 'model_name', name);
-      this.$set(this.form.additional_brands[index], 'generation', '');
-      this.$set(this.form.additional_brands[index], 'generation_slug', '');
-      this.$set(this.form.additional_brands[index], 'generation_name', '');
+      ['generation','generation_slug','generation_name']
+        .map(key => { this.$set(this.form.additional_brands[index], key, '') });
       if (id) await this.getModelGenerationsArray({ value: slug, brand_slug, index });
     },
     async setGeneration(id, index) {

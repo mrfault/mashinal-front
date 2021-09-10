@@ -94,7 +94,7 @@
   top: 0;
   left: 0;
   background: rgba($dark-blue-1, 0.3);
-  z-index: 800;
+  z-index: 30;
   touch-action: none;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -392,7 +392,7 @@
 
 .fslightbox-blur-bg {
   position: fixed;
-  z-index: 799;
+  z-index: 29;
   top: 0;
   left: 0;
   width: 100%;
@@ -424,7 +424,7 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  z-index: 801;
+  z-index: 31;
   pointer-events: none;
   .btn {
     pointer-events: all;

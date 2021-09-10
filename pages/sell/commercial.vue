@@ -23,6 +23,7 @@
               :initial-form="form"
               :title="`${brand.name} ${model.name}, ${form.selectedYear}`"
               @close="showLastStep = false, lastStepKey++, form.selectedYear = ''"
+              @clean="cleanForm"
             />
             <year-options v-else-if="showYearOptions"
               :years="{ min: 1962, max: currentYear }" 
@@ -30,6 +31,7 @@
               :value="form.selectedYear"
               @input="handleYear"
               @close="handleYear()"
+              @clean="cleanForm"
             />
             <model-options key="model" v-else-if="showModelOptions"
               :options="commercialModels[0]" 
@@ -40,6 +42,7 @@
               :sort-alphabetically="false"
               @input="handleModel($event.id)"
               @close="handleModel()"
+              @clean="cleanForm"
             />
             <model-options key="brand" v-else-if="showBrandOptions"
               :options="commercialBrands" 
@@ -49,6 +52,7 @@
               :value="form.selectedBrand"
               @input="handleBrand($event.id)"
               @close="$router.push($localePath('/sell'))"
+              disable-clean
             />
           </div>
         </div>
