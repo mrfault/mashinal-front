@@ -147,7 +147,6 @@
 }
 
 .templates-controls-panel {
-  overflow: hidden;
   padding: 6px 25px;
   .control-icon {
     padding: 4px 8px;
@@ -370,6 +369,7 @@
 
   .templates-controls-panel {
     padding: 25px;
+    overflow: hidden;
     .row {
       position: absolute;
       z-index: 1;
@@ -436,6 +436,13 @@
 
   .cover-with-avatar {
     margin: -15px -15px 18px;
+    padding-bottom: 40px;
+    .avatar {
+      height: 80px;
+      width: 80px;
+      margin-left: -40px;
+      border-width: 3px;
+    }
     .cover {
       border-radius: 0;
     }

@@ -18,7 +18,7 @@
                 :label="$t(input.placeholder)" 
                 :options="input.options" 
                 :multiple="isMultiple(input)" 
-                :name-in-value="isMultiple(input) && !!nameInValue"
+                :name-in-value="!!nameInValue"
                 :translate-options="true"
                 @change="changeFilter(input.name, $event)"
               />
@@ -82,7 +82,7 @@ export default {
   },
   methods: {
     isMultiple(input) {
-      return this.selectMultiple.includes(input.name);
+      return this.selectMultiple.includes(input.name || input) || !!this.nameInValue;
     },
     getTitle(index) {
       let title = this.titles[index] || '';
@@ -102,7 +102,7 @@ export default {
     },
     changeFilter(key, value, selected_key) {
       if (selected_key) {
-        if (this.selectMultiple.includes(key)) {
+        if (this.isMultiple(key)) {
           let selected = this.values[key] || [];
           let index = selected.findIndex(v => v == selected_key);
           value = value ? (index === -1 ? [...selected, selected_key] : selected) : (index === -1 ? [] : selected.filter((_, i) => i !== index));

@@ -34,7 +34,10 @@
   transform: translate(-50%);
   top: 0;
   background-color: $white;
-  padding: 69px 0 0;
+  padding: 61px 0 0;
+  & > .container {
+    overflow-x: hidden;
+  }
   .container.has-min-height {
     min-height: 100%;
     & > div {
@@ -194,7 +197,7 @@
 }
 
 .modal-popup {
-  @include abs-middle(fixed, 35);
+  @include abs-middle(fixed, 50);
   width: 346px;
   max-width: 100%;
   background-color: $white;

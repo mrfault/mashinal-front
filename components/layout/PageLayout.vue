@@ -33,6 +33,7 @@
         <portal-target name="modals" multiple />
         <portal-target name="mobile-dropdown" multiple />
         <portal-target name="mobile-screen" />
+        <portal-target name="backdrop" />
         <!-- /portal targets -->
         <mobile-nav />
         <page-footer v-if="!hideFooter" />
