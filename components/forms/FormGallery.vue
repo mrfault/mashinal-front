@@ -14,7 +14,7 @@
           <template v-else>
             <img :src="previews[key]" alt="" />
             <div class="overlay">
-              <button v-if="rotatable" class="btn-sq" @click.stop="fileRotate(key)">
+              <button v-if="rotatable" class="btn-sq" @click.prevent="fileRotate(key, getFileIndex(key))">
                 <icon name="reset" />
               </button>
               <button class="btn-sq ml-auto" @click.stop="fileDelete(key)">
@@ -72,7 +72,8 @@ export default {
       index: 0,
       previews: {},
       fileBlobs: {},
-      fileKeys: []
+      fileKeys: [],
+      loading: {},
     }
   },
   computed: {
@@ -160,29 +161,25 @@ export default {
       });
     },
     showLoader(key) {
-      let result;
       if (this.hasFile(key)) {
         if (this.files) {
-          result = !this.files.find(f => f.key === key)?.id
+          return !this.files.find(f => f.key === key)?.id
         }
       } else {
-        result = true
+        return true
       }
-      result = false
-
-      return result;
+      return false
     },
-    fileRotate(key) {
-      const id = this.files.find(f => f.key === key).id
-      this.$axios
-        .$get('/media/'+id+'/rotate/right')
-        .then(res => {
-          //
-        })
-        .catch(error => {
-          //
-        })
-    }
+    getFileIndex(key) {
+      console.log('yaya', key, this.fileKeys)
+      return this.fileKeys.findIndex(fKey => fKey === key);
+    },
+    fileRotate(key, index) {
+      console.log('na', key, index)
+      if (this.loading[key]) return;
+      this.$emit('file-rotated', index, key);
+      this.$set(this.loading, key, true);
+    },
   },
   created() {
     this.updateInitialData();

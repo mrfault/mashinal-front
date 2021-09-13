@@ -127,7 +127,7 @@
                       class="btn btn--link show-more"
                       @click="showAllBrands = true"
                     >
-                      Daha çox
+                      {{ $t('show_all') }}
                       <icon name="chevron-down" />
                     </button>
                     <button
@@ -135,7 +135,7 @@
                       class="btn btn--link show-more"
                       @click="showAllBrands = false"
                     >
-                      Daha az
+                      {{ $t('show_less') }}
                       <icon name="chevron-up" />
                     </button>
                   </div>

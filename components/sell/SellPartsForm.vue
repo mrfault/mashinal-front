@@ -191,6 +191,7 @@
             @addFiles="addFiles"
             @removeFile="removeFile"
             @dragEnd="onDragEnd"
+            @file-rotated="rotateImage"
           >
             <template v-slot:pre >
               <div class="col-12 col-lg-3-5 mb-lg-3 mb-2">
@@ -200,12 +201,12 @@
                   </div>
                   <div class="upload-rules__content">
                     <div class="upload-rules__content__title">
-                      Şəkil əlavə etmə şərtləri
+                      {{ $t('terms_of_image_attachment') }}
                     </div>
                     <ul class="upload-rules__content__list">
-                      <li>Minimal - 1 şəkil</li>
-                      <li>Maksimal - 22 şəkil</li>
-                      <li>Minimal ölçü - 500x500 px</li>
+                      <li>{{ $t('min_image_count', { count: 1 })}}</li>
+                      <li>{{ $t('max_image_count', { count: 22 }) }}</li>
+                      <li>{{ $t('min_image_size', { w: 500, h: 500 }) }}</li>
                     </ul>
                   </div>
                 </div>
@@ -511,6 +512,24 @@ export default {
         });
       }
     },
+    async rotateImage(index, key) {
+      console.log(index)
+      if (this.files[index]) {
+        try {
+          this.$nuxt.$loading.start();
+          const { data } = await this.$axios.$get(`/media/${this.files[index].id}/rotate/right`);
+          this.files.find(f => f.key === key).file = data.thumb
+          this.$nuxt.$loading.finish();
+
+        } catch({response: {data: {data}}}) {
+          this.$nuxt.$loading.finish();
+          this.clearErrors();
+          for (let key in data) {
+            this.$toasted.error(data[key]);
+          }
+        }
+      }
+    }
   },
   computed: {
     conditionButtons() {

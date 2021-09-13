@@ -1360,6 +1360,7 @@ export default {
   "show": "Göstər",
   "show_ads": "Elanları göstər",
   "show_all": "Daha çox göstər",
+  "show_less": "Daha az göstər",
   "show_announcements": "Elanları göstər",
   "show_application": "Müraciəti göstər",
   "show_by_date": "Tarixə görə",
@@ -1713,5 +1714,10 @@ export default {
   "sell_parts_keywords_info": "Açar sözlər əlavə etməklə elanınızı axtarış zamanı ilk sıralarda göstərilməsinə nail olacaqsınız.",
   "place_announcement": "Elanı yerləşdir",
   "negotiable": "Razılaşma yolu ilə",
-  "announcement_name": "Elanın adı"
+  "announcement_name": "Elanın adı",
+  "you_will_be_contacted_shortly": "Qısa zaman ərzində sizinlə əlaqə yaradılacaq.",
+  "terms_of_image_attachment": "Şəkil əlavə etmə şərtləri",
+  "min_image_count": "Minimal - {count} şəkil",
+  "max_image_count": "Maksimal - {count} şəkil",
+  "min_image_size": "Minimal ölçü - {w}x{h} px",
 }

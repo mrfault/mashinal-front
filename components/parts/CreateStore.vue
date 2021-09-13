@@ -15,7 +15,7 @@
       v-model="phone"
       class="mb-2"
     />
-    <p class="create-store__desc mb-2">Qısa zaman ərzində sizinlə əlaqə yaradılacaq.</p>
+    <p class="create-store__desc mb-2">{{ $t('you_will_be_contacted_shortly') }}</p>
     <button
       class="btn btn--green full-width"
       :disabled="!fullName || !phone"
