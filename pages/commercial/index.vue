@@ -3,9 +3,9 @@
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
       <grid 
-        v-if="commercialAnnouncements.standard.length"
-        :announcements="commercialAnnouncements.standard" 
-        :paginate="commercialAnnouncements.paginate"
+        v-if="commercialAnnouncements.data.length"
+        :announcements="commercialAnnouncements.data" 
+        :paginate="$paginate(commercialAnnouncements)"
         :title="$t('recent_uploads')"
         :pending="pending"
         @change-page="searchCommercial"

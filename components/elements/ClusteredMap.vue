@@ -27,7 +27,14 @@ export default {
     marginTop: {
       default: 0
     },
-    useMarginLeft: Boolean
+    useMarginLeft: {
+      type: Boolean,
+      default: false
+    },
+    checkBounds: {
+      type: Boolean,
+      default: false
+    }
   },
   components: { 
     SalonCard
@@ -104,7 +111,9 @@ export default {
         });
       });
 
-      this.objectManager.objects.balloon.events.add('click', this.goToSalon);
+      this.objectManager.objects.balloon.events.add('click', () => {
+        this.$emit('balloon-click', this.selectedSalon?.id || '')
+      });
 
       this.map.geoObjects.add(this.objectManager);
 
@@ -112,14 +121,16 @@ export default {
       this.updateMapMargin();
       this.updateMapCenter(0, true);
 
-      this.map.events.add('boundschange', (e) => { 
-        let list = this.salonsList.filter(salon => {
-          let bounds = this.map.getBounds(true);
-          return ymaps.util.bounds.containsPoint(bounds, [salon.lat, salon.lng]);
-        });
+      if (this.checkBounds) {
+        this.map.events.add('boundschange', (e) => { 
+          let list = this.salonsList.filter(salon => {
+            let bounds = this.map.getBounds(true);
+            return ymaps.util.bounds.containsPoint(bounds, [salon.lat, salon.lng]);
+          });
 
-        this.updateSalonsInBounds(list.map(salon => salon.id));
-      });
+          this.updateSalonsInBounds(list.map(salon => salon.id));
+        });
+      }
     
       this.$nuxt.$on('filter-salons', this.setFilters);
     },
@@ -127,7 +138,7 @@ export default {
       this.objectManager.removeAll();
       this.objectManager.add({ 
         type: 'FeatureCollection', 
-        features: this.salonsList.map((salon, i) => ({
+        features: this.salonsList.map((salon) => ({
           type: 'Feature',
           id: salon.id,
           geometry: {
@@ -150,16 +161,19 @@ export default {
       this.objectManager?.setFilter((object) => !!this.salonsFiltered.find(salon => salon.id == object.id));
     },
     updateMapCenter(duration = 600, filter = false) {
-      if (this.centerUpdated && !this.salonsFiltered.length) return;
+      if (!this.salonsList.length) {
+        this.centerUpdated = true;
+        return;
+      } else if (this.centerUpdated && !this.salonsFiltered.length) return;
       this.map.setBounds(this.map.geoObjects.getBounds(), {
         duration: duration,
         checkZoomRange: true,
         zoomMargin: this.map.margin.getMargin(),
-      }).then(() => {
+      }).done(() => {
         this.cacheMapCenter = this.map.getCenter();
         if (filter) this.setFilters();
         this.centerUpdated = true;
-      }).catch((err) => {
+      }, (err) => {
         this.centerUpdated = true;
       });
     },  
@@ -175,9 +189,6 @@ export default {
     },
     resize() {
       this.map.container.fitToViewport();
-    },
-    goToSalon() {
-      this.$router.push(this.$localePath(`/salons/${this.selectedSalon?.id}`));
     }
   },
   watch: {

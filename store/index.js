@@ -739,7 +739,9 @@ export const actions = {
   // Salons
   async getSalonsList({commit}, params = '') {
     const res = await this.$axios.$get('/auto_salon_list' + params);
-    if (!params) commit('mutate', { property: 'salonsList', value: res });
+    if (!params || params === '?part=true') {
+      commit('mutate', { property: 'salonsList', value: res });
+    }
     commit('mutate', { property: 'salonsSearched', value: res });
     commit('mutate', { property: 'salonsFiltered', value: res });
   },

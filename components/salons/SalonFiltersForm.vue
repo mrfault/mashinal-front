@@ -2,31 +2,33 @@
   <div :class="['salon-filters-form form', {'has-sticky-screen-bottom': isMobileBreakpoint}]">
     <div :class="`card mt-lg-${short ? '0' : '3'}`">
       <div class="row mb-n2 mb-lg-n3">
-        <div :class="[`col-12 ${short ? '' : 'col-lg-1-5'} mb-2 mb-lg-3`, {'order-lg-3': short}]">
+        <div :class="[`col-12 ${short ? '' : (where === 'parts' ? 'col-lg-3-5' : 'col-lg-1-5')} mb-2 mb-lg-3`, {'order-lg-3': short}]">
           <form-text-input 
             v-model="form.search" 
             icon-name="search" 
             block-class="placeholder-lighter"
-            :placeholder="$t('salon_name')"
+            :placeholder="$t(where === 'parts' ? 'shop_name' : 'salon_name')"
             @change="filterAutosalons()" 
           />
         </div>
-        <div :class="[`col-12 ${short ? '' : 'col-lg-2-5'} mb-2 mb-lg-3`, {'order-lg-4': short}]">
-          <div :class="['row', {'no-gutters checkbox-row bg-greyish-blue-2 round-4': !isMobileBreakpoint }]">
-            <div class="col-lg-auto">
-              <form-checkbox :label="$t('cars')" v-model="form.haveCar" input-name="haveCar" 
-                @change="filterAutosalons()" :transparent="isMobileBreakpoint" />
-            </div>
-            <div class="col-lg-auto">
-              <form-checkbox :label="$t('moto')" v-model="form.haveMoto" input-name="haveMoto" 
-                @change="filterAutosalons()" :transparent="isMobileBreakpoint" />
-            </div>
-            <div class="col-lg-auto">
-              <form-checkbox :label="$t('commercial')" v-model="form.haveCommercial" input-name="haveCommercial" 
-                @change="filterAutosalons()" :transparent="isMobileBreakpoint" />
+        <template v-if="where === 'transport'">
+          <div :class="[`col-12 ${short ? '' : 'col-lg-2-5'} mb-2 mb-lg-3`, {'order-lg-4': short}]">
+            <div :class="['row', {'no-gutters checkbox-row bg-greyish-blue-2 round-4': !isMobileBreakpoint }]">
+              <div class="col-lg-auto">
+                <form-checkbox :label="$t('cars')" v-model="form.haveCar" input-name="haveCar" 
+                  @change="filterAutosalons()" :transparent="isMobileBreakpoint" />
+              </div>
+              <div class="col-lg-auto">
+                <form-checkbox :label="$t('moto')" v-model="form.haveMoto" input-name="haveMoto" 
+                  @change="filterAutosalons()" :transparent="isMobileBreakpoint" />
+              </div>
+              <div class="col-lg-auto">
+                <form-checkbox :label="$t('commercial')" v-model="form.haveCommercial" input-name="haveCommercial" 
+                  @change="filterAutosalons()" :transparent="isMobileBreakpoint" />
+              </div>
             </div>
           </div>
-        </div>
+        </template>
         <div :class="[`${isMobileBreakpoint ? 'col-12' : 'col-6'} ${!short ? 'col-lg-1-5' : 'order-lg-2'} mb-2 mb-lg-3`]">
           <form-checkbox :label="$t('only_official')" v-model="form.officialOnly" input-name="officialOnly" 
             @change="filterAutosalons()" :transparent="isMobileBreakpoint" />
@@ -50,7 +52,11 @@ import { mapGetters, mapActions } from 'vuex';
 export default {
   props: {
     short: Boolean,
-    count: Number
+    count: Number,
+    where: {
+      type: String,
+      default: 'transport'
+    }
   },
   data() {
     return {

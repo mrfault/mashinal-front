@@ -1022,6 +1022,12 @@ main {
         color: $white;
       }
     }
+    .socials a {
+      color: $white;
+      &:hover {
+        color: $yellow-1;
+      }
+    }
   }
 }
 
@@ -1530,6 +1536,14 @@ main {
     .col-lg-2-5 {
       flex: 0 0 40%;
       max-width: 40%;
+    }
+    .col-lg-3-5 {
+      flex: 0 0 60%;
+      max-width: 60%;
+    }
+    .col-lg-4-5 {
+      flex: 0 0 80%;
+      max-width: 80%;
     }
     .col-lg-1-8 {
       flex: 0 0 12.5%;

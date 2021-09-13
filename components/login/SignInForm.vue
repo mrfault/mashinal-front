@@ -51,7 +51,7 @@
         this.validator.$touch();
         if (this.pending || this.validator.$pending || this.validator.$error) return;
         this.pending = true;
-        this.$auth.loginWith('laravelJWT', {
+        this.$auth.loginWith('local', {
           data: {
             phone: this.form.phone.replace(/[^0-9]+/g, ''),
             password: this.form.password

@@ -3,16 +3,16 @@
     <div class="container"> 
       <breadcrumbs :crumbs="crumbs" />
       <moto-search-form 
-        :total-count="motoAnnouncements.paginate.total"
+        :total-count="$paginate(motoAnnouncements).total"
         :pending="pending"
         :category="category"
         @pending="pending = true"
         @submit="searchMoto"
       />
       <grid 
-        v-if="motoAnnouncements.standard.length"
-        :announcements="motoAnnouncements.standard" 
-        :paginate="motoAnnouncements.paginate"
+        v-if="motoAnnouncements.data.length"
+        :announcements="motoAnnouncements.data" 
+        :paginate="$paginate(motoAnnouncements)"
         :title="$t('recent_uploads')"
         :pending="pending"
         @change-page="searchMoto"
