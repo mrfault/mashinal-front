@@ -6,7 +6,7 @@
       </p>
       <form-text-input v-else
         autocomplete="tel" 
-        :placeholder="$t('mobile_number')" 
+        :placeholder="$t('contact_number')" 
         :invalid="validator.phone.$error" 
         :mask="$maskPhone()"  
         v-model="form.phone"

@@ -1,7 +1,7 @@
 <template>
   <div class="vehicle-specs card pt-0 pt-lg-4 mb-lg-3">
     <ul>
-      <li v-for="spec in vehicleSpecs" :key="spec.key">
+      <li v-for="spec in announcementSpecs" :key="spec.key">
         <span>
           <icon name="barter" v-if="spec.key === 'exchange'" />
           <icon name="percent" v-else-if="spec.key === 'credit'" />
@@ -41,15 +41,15 @@ export default {
   computed: {
     ...mapGetters(['announcement', 'catalog', 'sellOptions', 'motoOptions']),
     
-    vehicleSpecs() {
-      return [
-        { key: 'years', value: this.announcement.year, class: 'car-year' },
-        { key: 'mileage', value: this.mileage + (this.announcement.is_new ? ', ' + this.$t('is_new').toLowerCase() : ''), class: 'car-mileage' },
+    announcementSpecs() {
+      const specs = [
+        { key: 'years', value: this.announcement.year, class: 'car-year'},
+        { key: 'mileage', value: this.mileage + (this.announcement.is_new ? ', ' + this.$t('is_new').toLowerCase() : ''), class: 'car-mileage', for: ['cars', 'commercial', 'moto'] },
         { key: 'condition', value: (this.announcement.broken || this.announcement.status_id || this.announcement.beaten) && this.$t('bitie')  },
         { key: 'guaranty', value: (this.announcement.in_garanty || this.announcement.guaranty) && this.$t('in_garanty') },
         { key: 'com_equip_type', value: this.commercialType, for: ['commercial'] },
         { key: 'carcase', value: this.bodyType, for: ['cars'] },
-        { key: 'color2', value: this.color },
+        { key: 'color2', value: this.color, for: ['cars', 'commercial', 'moto'] },
         { key: 'engine', value: this.engineSpecs },
         { key: 'the_number_of_measures', value: this.tact, for: ['moto'] },
         { key: 'cylinder_block', value: this.cylinderBlock, for: ['moto'] },
@@ -66,14 +66,33 @@ export default {
         { key: 'exhaust_class', value: this.exhaustClass, for: ['commercial'] },
         { key: 'cab_suspension', value: this.cabinSuspension, for: ['commercial'] },
         { key: 'chassis_suspension', value: this.chassisSuspension, for: ['commercial'] },
-        { key: 'first_owner', value: (this.announcement.owner_type || this.announcement.owners) ? this.$t('no') : this.$t('yes')  },
-        { key: 'customs', value: (this.announcement.customs_clearance || this.announcement.customed_id || this.announcement.customed ) ? this.$t('not_cleared') : this.$t('cleared') },
+        { key: 'first_owner', value: (this.announcement.owner_type || this.announcement.owners) ? this.$t('no') : this.$t('yes'), for: ['cars', 'commercial', 'moto'] },
+        { key: 'customs', value: (this.announcement.customs_clearance || this.announcement.customed_id || this.announcement.customed ) ? this.$t('not_cleared') : this.$t('cleared'), for: ['cars', 'commercial', 'moto'] },
+        { key: 'category', value: this.announcement?.category?.name[this.locale], for: ['parts'] },
+        { key: 'subcategory', value: this.announcement?.sub_category?.name[this.locale], for: ['parts'] },
         { key: 'region', value: this.region },
         { key: 'vin', value: this.announcement.show_vin && this.announcement.vin },
         { key: 'license_plate', value: this.announcement.show_car_number && this.announcement.car_number },
         { key: 'exchange', value: (this.announcement.exchange_possible || this.announcement.tradeable) && this.$t('is_possible') },
-        { key: 'credit', value: this.announcement.credit && this.$t('is_in_credit') }
-      ].filter(spec => spec.value && (!spec.for || spec.for.includes(this.type)));
+        { key: 'credit', value: this.announcement.credit && this.$t('is_in_credit') },
+        { key: 'condition', value: this.condition, for: ['parts'] },
+        { key: 'is_original', value: this.announcement.is_original ? this.$t('yes') : this.$t('no'), for: ['parts'] },
+        { key: 'have_delivery', value: this.announcement.have_delivery ? this.$t('yes') : this.$t('no'), for: ['parts'] },
+        { key: 'have_warranty', value: this.announcement.have_warranty ? this.$t('yes') : this.$t('no'), for: ['parts'] }
+      ];
+
+      // Dynamic specs
+      if (this.type === 'parts') {
+        Object.keys(this.announcement.filters).forEach(filter => {
+          specs.push({
+            key: filter,
+            value: this.$t(this.announcement.filters[filter].name),
+            for: ['parts'] }
+          )
+        })
+      }
+      
+      return specs.filter(spec => spec.value && (!spec.for || spec.for.includes(this.type)));
     },
     catalogLink() {
       let path = this.catalog && `/catalog/${this.catalog.brand.slug}/${this.catalog.model.slug}/${this.catalog.generation.id}/${this.catalog.car_type.id}/mod/${this.catalog.id}`;

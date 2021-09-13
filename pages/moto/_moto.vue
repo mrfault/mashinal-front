@@ -1,6 +1,6 @@
 <template>
   <div class="pages-moto">
-    <div class="container"> 
+    <div class="container">
       <breadcrumbs :crumbs="crumbs" />
       <moto-search-form 
         :total-count="motoAnnouncements.paginate.total"

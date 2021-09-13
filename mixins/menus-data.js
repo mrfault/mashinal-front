@@ -1,6 +1,8 @@
 import { mapGetters } from 'vuex';
+import { RoutesMixin } from './routes';
 
 export const MenusDataMixin = {
+  mixins: [RoutesMixin],
   computed: {
     ...mapGetters(['staticPages']),
 
@@ -8,7 +10,8 @@ export const MenusDataMixin = {
       return [
         { title: 'cars', route: '/cars', icon: 'car-1' },
         { title: 'moto', route: '/moto', children: this.motoMenus, icon: 'moto-1' },
-        { title: 'commercial', route: '/commercial', children: this.commercialMenus, icon: 'commercial-1' }
+        { title: 'commercial', route: '/commercial', children: this.commercialMenus, icon: 'commercial-1' },
+        { title: 'parts', route: '/parts', children: this.partsMenus, icon: 'part-1' }
       ]
     },
 
@@ -108,6 +111,11 @@ export const MenusDataMixin = {
         { title: 'scooters', route: '/moto/'+this.$t('slug_scooters'), icon: 'moto-2' },
         { title: 'atvs', route: '/moto/'+this.$t('slug_atvs'), icon: 'moto-3' }
       ]
+    },
+
+    partsMenus() {
+      // Experimental
+      return this.partsRoutes.filter(r => r.showOnMenu)
     },
 
     hasSearchNav() {

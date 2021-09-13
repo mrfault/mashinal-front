@@ -58,6 +58,7 @@ export default {
     activeType() {
       if (this.routeName.includes('moto')) return 'moto';
       else if (this.routeName.includes('commercial')) return 'commercial';
+      else if (this.routeName.includes('parts')) return 'parts';
       return 'cars';
     },
     activeMenu() {

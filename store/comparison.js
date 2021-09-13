@@ -71,7 +71,6 @@ export const actions = {
   },
   async getInitialRecommendation({ commit }) {
     const { data } = await this.$axios.$get(`/comparison/model/recommended/initial`);
-    console.log(data)
     commit('mutate', {
       property: 'recommendedModel',
       value: data

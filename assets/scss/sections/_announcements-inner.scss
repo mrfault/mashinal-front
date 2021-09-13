@@ -136,6 +136,23 @@
       padding: 13px 25px;
     }
   }
+  .keywords {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+
+    .keyword {
+      display: flex;
+      align-items: center;
+      height: 34px;
+      padding: 0 16px;
+      border-radius: 17px;
+      color: $dark-blue-3;
+      font-size: 14px;
+      font-weight: 500;
+      border: 1px solid $greyish-blue-4;
+    }
+  }
 }
 
 .vehicle-specs {

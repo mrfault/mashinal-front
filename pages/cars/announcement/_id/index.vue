@@ -34,7 +34,7 @@
           </div>
           <div class="col-auto">
             <quick-info type="cars" />
-            <vehicle-specs type="cars" />
+            <announcement-specs type="cars" />
             <comment :comment="announcement.comment" v-if="isMobileBreakpoint">
               <template #after v-if="hasComplects || getCarHealth">
                 <hr v-if="announcement.comment" />
@@ -58,7 +58,7 @@
 import { mapGetters } from 'vuex';
 
 import QuickInfo from '~/components/announcements/inner/QuickInfo';
-import VehicleSpecs from '~/components/announcements/inner/VehicleSpecs';
+import AnnouncementSpecs from '~/components/announcements/inner/AnnouncementSpecs';
 import Gallery from '~/components/announcements/inner/Gallery';
 import ThumbsGallery from '~/components/announcements/inner/ThumbsGallery';
 import Comment from '~/components/announcements/inner/Comment';
@@ -71,7 +71,7 @@ export default {
   name: 'pages-cars-id',
   components: {
     QuickInfo,
-    VehicleSpecs,
+    AnnouncementSpecs,
     Gallery,
     ThumbsGallery,
     Comment,

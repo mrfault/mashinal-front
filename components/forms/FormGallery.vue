@@ -1,23 +1,30 @@
 <template>
   <div class="form-gallery mb-n2 mb-lg-n3">
-    <draggable v-model="fileKeys" @end="dragFile" draggable=".draggable" :sort="true" group="people" class="row">
-      <div class="col-4 col-lg-1-8 mb-2 mb-lg-3 draggable" v-for="key in fileKeys" :key="key">
+    <draggable
+      v-model="fileKeys"
+      @end="dragFile"
+      draggable=".draggable"
+      :sort="true"
+      group="people"
+      class="row"
+    >
+      <div :class="itemClass" class="draggable" v-for="key in fileKeys" :key="key">
         <div class="form-gallery_thumbnail">
-          <template v-if="hasFile(key)">
+          <loader v-if="showLoader(key)" />
+          <template v-else>
             <img :src="previews[key]" alt="" />
             <div class="overlay">
-              <!-- <button class="btn-sq" @click.stop="fileRotate(key, getFileIndex(key))">
+              <button v-if="rotatable" class="btn-sq" @click.stop="fileRotate(key)">
                 <icon name="reset" />
-              </button> -->
+              </button>
               <button class="btn-sq ml-auto" @click.stop="fileDelete(key)">
                 <icon name="cross" />
               </button>
             </div>
           </template>
-          <loader v-else />
         </div>
       </div>
-      <div class="col-4 col-lg-1-8 mb-2 mb-lg-3" v-if="filesCount < maxFiles">
+      <div :class="itemClass" v-if="filesCount < maxFiles">
         <label class="form-gallery_thumbnail add-image" for="upload-input">
           <input class="sr-only" type="file" id="upload-input" multiple accept="image/*" @change="filesDrop"/>
           <div class="overlay">
@@ -26,6 +33,9 @@
           </div>
         </label>
       </div>
+      <template slot="header">
+        <slot name="pre"/>
+      </template>
     </draggable>
   </div>
 </template>
@@ -40,7 +50,19 @@ export default {
       default: 21
     },
     initialImages: Array,
-    initialKeys: Array
+    initialKeys: Array,
+    itemClass: {
+      type: [String, Array, Object]
+    },
+    files: {
+      type: Array,
+      required: false
+    },
+    rotatable: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
   },
   components: {
     draggable
@@ -66,6 +88,7 @@ export default {
       e.preventDefault();
       
       let droppedFiles = e.target.files || e.dataTransfer.files;
+      const newFiles = []
 
       for (let i = 0; i < droppedFiles.length; i++) {
         let isImage = droppedFiles[i].type.match('image.*');
@@ -73,6 +96,10 @@ export default {
         
         let key = 'new_' + this.index;
         this.index++;
+        newFiles.push({
+          file: droppedFiles[i],
+          key
+        })
         
         this.$set(this.fileBlobs, key, droppedFiles[i]);
         this.$set(this.previews, key, '');
@@ -88,6 +115,8 @@ export default {
         reader.readAsDataURL(this.fileBlobs[key]);
       }
 
+      this.$emit('addFiles', newFiles);
+
       e.target.value = '';
     },
     hasFile(key) {
@@ -102,11 +131,13 @@ export default {
 
       this.fileKeys.splice(this.fileKeys.indexOf(key), 1);
 
+      this.$emit('removeFile', key);
       if (!this.isNewFile(key)) 
         this.$emit('delete', key);
       this.passSortedBlobs();
     },
-    dragFile() {
+    dragFile(e) {
+      this.$emit('dragEnd', e)
       this.passSortedBlobs();
       this.$forceUpdate();
     },
@@ -127,12 +158,41 @@ export default {
         this.$set(this.previews, key, this.$withBaseUrl(this.initialImages[index]));
         this.$set(this.fileKeys, index, key);
       });
+    },
+    showLoader(key) {
+      let result;
+      if (this.hasFile(key)) {
+        if (this.files) {
+          result = !this.files.find(f => f.key === key)?.id
+        }
+      } else {
+        result = true
+      }
+      result = false
+
+      return result;
+    },
+    fileRotate(key) {
+      const id = this.files.find(f => f.key === key).id
+      this.$axios
+        .$get('/media/'+id+'/rotate/right')
+        .then(res => {
+          //
+        })
+        .catch(error => {
+          //
+        })
     }
   },
   created() {
     this.updateInitialData();
     this.$nuxt.$on('gallery-update', this.updateInitialData);
     this.passSortedBlobs();
+  },
+  watch: {
+    initialKeys() {
+      this.updateInitialData();
+    }
   }
 }
 </script>

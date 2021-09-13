@@ -87,7 +87,7 @@
           if (value !== this.prevValue) {
             this.$emit('change', value);
             this.prevValue = value;
-          }
+          } 
         }
       }
     },

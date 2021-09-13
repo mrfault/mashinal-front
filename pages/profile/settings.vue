@@ -28,7 +28,7 @@
               <change-email :placeholder="$t('email')" />
             </div>
             <div class="col-lg-4 mb-3 mb-lg-3 ">
-              <change-phone :placeholder="$t('mobile_number')" />
+              <change-phone :placeholder="$t('contact_number')" />
             </div>
             <div class="full-width"></div>
             <div class="col-lg-4 mb-3 mb-lg-3">

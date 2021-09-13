@@ -1,0 +1,231 @@
+.part-categories {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+
+  li {
+    flex: 1;
+
+    a {
+      padding: 16px;
+      font-size: 14px;
+      font-weight: 500;
+      color: $dark-blue-1;
+      border: 1px solid $greyish-blue-4;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+
+      i {
+        font-size: 40px;
+        margin-right: 15px;
+      }
+    }
+
+  }
+}
+
+.parts {
+  &-banners {
+    display: flex;
+    gap: 20px;
+  }
+
+  &-banner {
+    border-radius: 4px;
+    padding: 20px 50px;
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &__text {
+      max-width: 250px;
+    }
+
+    &__title {
+      font-size: 22px;
+      font-weight: 500;
+      color: $dark-blue-1;
+    }
+
+    &__description {
+      font-size: 16px;
+      font-weight: 400;
+      color: $dark-blue-1;
+    }
+
+    &__link {
+      font-size: 16px;
+      font-weight: 500;
+      color: $dark-blue-2;
+      display: flex;
+      align-items: center;
+      
+      i {
+        margin-left: 11px;
+        font-size: 12px;
+      }
+    }
+    
+    &__image {
+      width: 150px;
+    }
+
+    &--winter-tyres {
+      background-color: #FFCB14;
+      .parts-banner__image {
+        width: 200px;
+      }
+    }
+
+    &--online-store {
+      background-color: #44E58E;
+    }
+  }
+}
+
+.create-store {
+  &__desc {
+    padding: 0 14px;
+  }
+}
+
+.part-search-form {
+  @include media-max-width('lg') {
+    .row.vertical-gap {
+      gap: 20px
+    }
+  }
+
+  .checkboxes-box {
+    background-color: $greyish-blue-2;
+    border-radius: 4px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+
+    .show-more {
+      display: flex;
+      align-items: baseline;
+    }
+  }
+}
+
+.sell_parts-form {
+  .row [class^=col-] {
+    display: flex;
+    align-items: flex-end;
+
+    & > * {
+      flex: 1;
+    }
+  }
+
+  .price-input-group {
+    display: flex;
+    
+    input {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+    
+    .checkbox-input label {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      border-left: 1px solid $greyish-blue-6;
+    }
+  }
+
+  .parts_image-upload {
+    
+    .form-gallery_thumbnail {
+      padding-bottom: 80%;
+      margin: 0
+    }
+
+    .upload-rules {
+      height: 100%;
+      padding: 20px;
+      background-color: $greyish-blue-2;
+      display: flex;
+      border-radius: 4px;
+      
+      &__image {
+        height: 100%;
+        padding-left: 35px;
+        padding-right: 35px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 4px;
+        background-color: $white;
+      }
+      
+      &__content {
+        margin-left: 12px;
+        
+        &__title {
+          font-size: 15px;
+          font-weight: 500;
+        }
+        
+        &__list {
+          padding-left: 20px;
+          margin: 5px 0 0;
+          
+          li {
+            font-size: 14px;
+            font-weight: 400;
+            margin-bottom: 4px;
+            
+            &:last-child {
+              margin-bottom: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.dark-mode {
+  .parts_image-upload .upload-rules {
+    background-color: $dark-1;
+    &__image {
+      background-color: $dark-2;
+    }
+  }
+
+  .parts {
+    &-banner {
+      &__title {
+        color: $dark-2;
+      }
+  
+      &__description {
+        color: $dark-2;
+      }
+  
+      &__link {
+        color: $dark-blue-2;
+      }
+    }
+  }
+
+  .part-categories {
+    li a {
+      color: $white;
+      border-color: rgba($white, 0.2);
+
+      &.active {
+        background-color: rgba($grey-11, 0.2);
+      }
+    }
+  }
+
+  .part-search-form {
+    .checkboxes-box {
+      background-color: $dark-1;
+    }
+  }
+}

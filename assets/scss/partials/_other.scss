@@ -552,6 +552,7 @@
     background-color: $greyish-blue-2;
     overflow: hidden;
     user-select: none;
+    cursor: pointer;
     .overlay {
       @include abs-zero;
       display: flex;
@@ -668,6 +669,7 @@
     .form-gallery_thumbnail {
       background-color: $dark-1;
       &.add-image {
+        cursor: pointer;
         .overlay {
           color: $grey-4;
         }
