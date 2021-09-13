@@ -27,6 +27,7 @@ export const MenusDataMixin = {
     navbarMenus() {
       return [
         ...this.searchMenus,
+        { title: 'parts', route: '/parts', children: this.partsMenus },
         { title: 'autocatalog', route: '/catalog' },
         { title: 'salons', route: '/salons' }
       ]
@@ -110,6 +111,13 @@ export const MenusDataMixin = {
       ]
     },
 
+    partsMenus() {
+      return [
+        { title: 'parts', route: '/parts' },
+        { title: 'shops', route: '/parts/shops' },
+      ]
+    },
+
     hasSearchNav() {
       return [
         'index', 'cars', 'cars-vip', 'cars-premium', 'cars-assistant', 'cars-advanced-search',
@@ -126,6 +134,12 @@ export const MenusDataMixin = {
     hasDashboardPanel() {
       return [
         'profile', 'profile-settings', 'profile-dashboard', 'profile-calls', 'profile-statistics'
+      ].includes(this.routeName);
+    },
+
+    hasSearchFilters() {
+      return [
+        'salons', 'parts-shops'
       ].includes(this.routeName);
     }
   }

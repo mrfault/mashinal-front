@@ -37,7 +37,7 @@
       </div>
     </template>
     <hr />
-    <div class="contact">
+    <div :class="['contact', {'cursor-pointer': !!contact.link }]" @click.stop="handleContactClick">
       <div class="img">
         <img :src="contact.img" alt="" />
       </div>
@@ -99,6 +99,13 @@ export default {
     
     contact() {
       return this.getAnnouncementContact(this.announcement);
+    }
+  },
+  methods: {
+    handleContactClick() {
+      if (this.contact.link) {
+        this.$router.push(this.contact.link);
+      }
     }
   }
 }

@@ -3,25 +3,11 @@
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
       <grid 
-        v-if="mainAnnouncements.vip.length"
-        :announcements="mainAnnouncements.vip" 
-        :title="$t('vip_announcements')"
-        :icon-name="'vip'"
-        :pending="pending"
-      />
-      <grid 
         :announcements="mainAnnouncements.latest" 
         :paginate="$paginate(mainAnnouncements)"
         :title="$t('recent_uploads')"
         :pending="pending"
         @pending="pending = true"
-      />
-      <grid 
-        v-if="mainAnnouncements.premium.length"
-        :announcements="mainAnnouncements.premium" 
-        :title="$t('premium_announcements')"
-        :icon-name="'premium'"
-        :pending="pending"
       />
     </div>
   </div>

@@ -16,7 +16,7 @@
       <div class="gallery-overlay" v-if="showSlider">
         <div class="gallery-overlay_top d-flex">
           <template v-if="where === 'announcement'">
-            <span class="badge from-border" v-if="announcement.is_autosalon">{{ $t('is_autosalon') }}</span>
+            <span class="badge from-border" v-if="announcement.is_autosalon">{{ $t(announcement.title ? 'shop' : 'is_autosalon') }}</span>
             <span class="d-flex">
               <span class="badge squared" v-if="announcement.type[1]">
                 <icon name="vip" />

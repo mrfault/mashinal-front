@@ -280,7 +280,6 @@ export default {
         try {
           await this.sendMessage({ form: formData, activeGroup: this.group });
           this.markAsRead(this.group.id);
-          console.log({...this.group})
           afterSendActions();
           this.lightboxKey++;
         } catch({ response: { data: { data }}}) {

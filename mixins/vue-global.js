@@ -125,7 +125,7 @@ Vue.use({
               : (this.$withBaseUrl(img, '/storage/') || '/img/user.jpg'),
             lat: item.latitude ? parseFloat(item.latitude) : 0,
             lng: item.longitude ? parseFloat(item.longitude) : 0,
-            link: item.is_autosalon ? this.$localePath(`/salons/${item.user.autosalon.id}`) : false
+            link: item.is_autosalon ? this.$localePath(`${item.title ? '/parts/shops' : '/salons'}/${item.user.autosalon.id}`) : false
           };
         },
         getAnnouncementImage(item) {
