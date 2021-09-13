@@ -1,12 +1,12 @@
 <template>
-  <div :class="['pages-salons', `${view}-view`]">
+  <div :class="['pages-parts-shops', `${view}-view`]">
     <mobile-screen @back="showSearch = false" :bar-title="$t('search_salon')" v-if="showSearch && isMobileBreakpoint">
       <div class="flex-stretch-chilren pt-4">
         <div class="full-width">
           <form-buttons :options="searchFormTypeOptions" :group-by="2" v-model="searchFormType" />
         </div>
-        <salon-search-form v-show="searchFormType === 1" />
-        <salon-filters-form v-show="searchFormType === 0" @filter="showSearch = false"
+        <salon-search-form v-show="searchFormType === 1" where="parts" />
+        <salon-filters-form v-show="searchFormType === 0" where="parts" @filter="showSearch = false"
           :count="(view === 'list' ? salonsFiltered : salonsInView).length" /> 
       </div>
     </mobile-screen>
@@ -17,12 +17,12 @@
           <h2><span>{{ $t('salons') }}</span></h2>
         </div>
         <template v-else>
-          <salon-search-form />
-          <salon-filters-form :count="salonsFiltered.length" />
+          <salon-search-form where="parts" />
+          <salon-filters-form where="parts" :count="salonsFiltered.length" />
         </template>
         <div class="salon-card-list row mt-2 mt-lg-3 mb-n2 mb-lg-n3" v-if="salonsFiltered.length">
           <div class="col-lg-4 mb-2 mb-lg-3" v-for="salon in salonsFiltered" :key="salon.id">
-            <nuxt-link class="keep-colors" :to="$localePath(`/salons/${salon.id}`)">
+            <nuxt-link class="keep-colors" :to="$localePath(`/parts/shops/${salon.id}`)">
               <salon-card :salon="salon" />
             </nuxt-link>
           </div>
@@ -36,12 +36,12 @@
           <div :class="['map-sidebar', { collapse: !disableCollapse && collapse }]">
             <div class="map-sidebar_content">
               <breadcrumbs :crumbs="crumbs" />
-              <salon-filters-form :count="salonsInView.length" :short="!isMobileBreakpoint"/>
+              <salon-filters-form where="parts" :count="salonsInView.length" :short="!isMobileBreakpoint"/>
               <div class="scroll-container" v-if="salonsInView.length">
                 <vue-scroll class="white-scroll-bg">
                   <div class="salon-card-list" >
                     <div v-for="salon in salonsInView" :key="salon.id">
-                      <nuxt-link class="keep-colors" :to="$localePath(`/salons/${salon.id}`)">
+                      <nuxt-link class="keep-colors" :to="$localePath(`/parts/shops/${salon.id}`)">
                         <salon-card :salon="salon" />
                       </nuxt-link>
                     </div>
@@ -56,7 +56,7 @@
           </div>
           <div class="map-topbar">
             <div class="container">
-              <salon-search-form :short="!isMobileBreakpoint && (!collapse || disableCollapse)" />
+              <salon-search-form where="parts" :short="!isMobileBreakpoint && (!collapse || disableCollapse)" />
             </div>
           </div>
         </template>
@@ -65,13 +65,13 @@
           :margin-left="{ left: 0, top: 0, width: '360px', height: '100%' }"
           :margin-top="{ top: 0, left: 0, width: '100%', height: '150px' }" 
           :use-margin-left="!disableCollapse && !collapse" 
-          @balloon-click="$router.push($localePath(`/salons/${$event}`))"
+          @balloon-click="$router.push($localePath(`/parts/shops/${$event}`))"
         />
       </template>
       <template v-else>
         <clustered-map 
           key="mobile-map"
-          @balloon-click="$router.push($localePath(`/salons/${$event}`))"
+          @balloon-click="$router.push($localePath(`/parts/shops/${$event}`))"
         />
       </template>
     </div>
@@ -98,7 +98,7 @@ import NoResults from '~/components/elements/NoResults';
 import ClusteredMap from '~/components/elements/ClusteredMap';
 
 export default {
-  name: 'pages-salons',
+  name: 'pages-parts-shops',
   components: {
     SalonSearchForm,
     SalonFiltersForm,
@@ -108,18 +108,18 @@ export default {
   },
   nuxtI18n: {
     paths: {
-      az: '/salonlar'
+      az: '/ehtiyat-hisseleri/magazalar'
     }
   },
   head() {
     return this.$headMeta({
-      title: this.$t('salons'),
+      title: this.$t('parts_shops'),
     });
   },
   async asyncData({ store, route }) {
     await Promise.all([
       store.dispatch('getBrands'),
-      store.dispatch('getSalonsList')
+      store.dispatch('getSalonsList', '?part=true')
     ]);
     return {
       view: 'map',
@@ -134,7 +134,8 @@ export default {
 
     crumbs() {
       return [
-        { name: this.$t('salons') }
+        { name: this.$t('parts'), route: '/parts' },
+        { name: this.$t('shops') }
       ]
     },
 
@@ -145,8 +146,8 @@ export default {
     },
     searchFormTypeOptions() {
       return [
-        { key: 0, name: this.$t('search_by_salon') },
-        { key: 1, name: this.$t('search_by_auto') }
+        { key: 0, name: this.$t('search_by_shop') },
+        { key: 1, name: this.$t('search_by_part') }
       ]
     }
   },

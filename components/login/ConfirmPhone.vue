@@ -65,7 +65,7 @@
           this.gtagTrack('AW-600951956/-O6CCJGB2fIBEJSZx54C');
           // move to login
           if (this.skipSignIn) {
-            this.$auth.loginWith('laravelJWT', {
+            this.$auth.loginWith('local', {
               data: {
                 phone: this.form.phone.replace(/[^0-9]+/g, ''),
                 password: this.form.password || this.form.code

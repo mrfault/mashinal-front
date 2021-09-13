@@ -138,6 +138,9 @@
       width: 45px;
     }
   }
+  .btn-sq {
+    pointer-events: all;
+  }
   &:last-child &_row:last-child .row:last-of-type {
     margin-bottom: 0 !important;
     & + hr {
@@ -150,7 +153,6 @@
   .body-modifications {
     .btn-sq {
       border: 1px solid $red-4;
-      pointer-events: all;
       &.active,
       &:hover {
         border-color: $red-1;

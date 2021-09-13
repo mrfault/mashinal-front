@@ -3,36 +3,20 @@
     <div class="container"> 
       <breadcrumbs :crumbs="crumbs" />
       <car-search-form 
-        :total-count="carsAnnouncements.paginate.total"
+        :total-count="$paginate(carsAnnouncements).total"
         :pending="pending"
         @pending="pending = true"
         @submit="searchCars" 
       />
       <grid 
-        v-if="carsAnnouncements.vip.length"
-        :announcements="carsAnnouncements.vip" 
-        :title="$t('vip_announcements')"
-        :show-all="$localePath('/cars/vip')"
-        :icon-name="'vip'"
-        :pending="pending"
-      />
-      <grid 
-        v-if="carsAnnouncements.standard.length"
-        :announcements="carsAnnouncements.standard" 
-        :paginate="carsAnnouncements.paginate"
+        v-if="carsAnnouncements.data.length"
+        :announcements="carsAnnouncements.data" 
+        :paginate="$paginate(carsAnnouncements)"
         :title="$t('recent_uploads')"
         :pending="pending"
         @change-page="searchCars"
       />
       <no-results v-else />
-      <grid 
-        v-if="carsAnnouncements.premium.length"
-        :announcements="carsAnnouncements.premium" 
-        :title="$t('premium_announcements')"
-        :show-all="$localePath('/cars/premium')"
-        :icon-name="'premium'"
-        :pending="pending"
-      />
     </div>
   </div>
 </template>

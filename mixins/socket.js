@@ -18,7 +18,7 @@ export const SocketMixin = {
         authEndpoint: this.$env.BROADCAST_URL,
         auth: {
           headers: {
-            Authorization: this.$auth.$storage.getUniversal('_token.laravelJWT')
+            Authorization: this.$auth.$storage.getUniversal('_token.local')
           },
         },
       });

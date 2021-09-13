@@ -1022,6 +1022,12 @@ main {
         color: $white;
       }
     }
+    .socials a {
+      color: $white;
+      &:hover {
+        color: $yellow-1;
+      }
+    }
   }
 }
 

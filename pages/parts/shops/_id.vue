@@ -1,5 +1,5 @@
 <template>
-  <div class="pages-salons-id">
+  <div class="pages-parts-shops-id">
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
       <div :class="['card profile-card salon-single-card overflow-hidden mt-0 mb-lg-3', salonSingle.description ? 'mb-n3' : 'mb-2']">
@@ -12,7 +12,7 @@
           </nuxt-link>
         </div>
         <h2 class="title-with-line text-center">
-          <span>{{ $t('is_autosalon') }} "{{ salonSingle.name }}"</span>
+          <span>{{ salonSingle.name }}</span>
         </h2>
         <div class="row align-items-lg-end profile_info">
           <div class="col-lg-4" v-if="salonSingle.phones.length">
@@ -69,7 +69,7 @@ import Gallery from '~/components/announcements/inner/Gallery';
 import ThumbsGallery from '~/components/announcements/inner/ThumbsGallery';
 
 export default {
-  name: 'pages-salons-id',
+  name: 'pages-parts-shops-id',
   components: {
     Grid,
     Gallery,
@@ -78,12 +78,12 @@ export default {
   mixins: [SalonsMixin],
   nuxtI18n: {
     paths: {
-      az: '/salonlar/:id'
+      az: '/ehtiyat-hisseleri/magazalar/:id'
     }
   },
   head() {
     return this.$headMeta({
-      title: `${this.$t('is_autosalon')} "${this.salonSingle.name}" | ${this.$t('salons')}`,
+      title: `${this.salonSingle.name} | ${this.$t('parts_shops')}`,
       description: this.salonSingle.short_description
     });
   },
@@ -102,7 +102,8 @@ export default {
 
     crumbs() {
       return [
-        { name: this.$t('salons'), route: '/salonlar' },
+        { name: this.$t('parts'), route: '/parts' },
+        { name: this.$t('shops'), route: '/parts/shops' },
         { name: this.salonSingle.name }
       ]
     }
