@@ -37,34 +37,28 @@
     </div>
     <hr class="mt-0 mb-0" />
     <div class="messages_msg-list">
-      <div class="suggested-messages" v-if="showSuggestedMessages">
-        <button class="btn btn--primary-outline" 
-          v-for="(title, i) in filteredSuggestedMessages" 
-          @click="useSuggestedMessage(title)"
-          :key="i" 
-          v-html="title"
-        />
-      </div>
       <div :class="['messages-list', {'attachments-preview-active': !!Object.keys(files).length}]">
         <div class="scroll-container">
-          <vue-scroll class="white-scroll-bg" ref="chat">
-            <div class="messages-list-items">
-              <div class="messages-list-items_group" v-for="(messages, date) in messagesByDate(group.id)" :key="date">
-                <div class="text-center">
-                  <span class="btn btn--grey pointer-events-none">
-                    {{ $formatDate(date, '[day], D MMM', $t('days-short'), true)[locale] }}
-                  </span>
+          <client-only>
+            <vue-scroll class="white-scroll-bg" ref="chat">
+              <div class="messages-list-items">
+                <div class="messages-list-items_group" v-for="(messages, date) in messagesByDate(group.id)" :key="date">
+                  <div class="text-center">
+                    <span class="btn btn--grey pointer-events-none">
+                      {{ $formatDate(date, '[day], D MMM', $t('days-short'), true)[locale] }}
+                    </span>
+                  </div>
+                  <message-item 
+                    v-for="message in messages" 
+                    :key="message.id"
+                    :message="message"
+                    :raw-html="isChatBot"
+                    @show-image="openLightbox"
+                  />
                 </div>
-                <message-item 
-                  v-for="message in messages" 
-                  :key="message.id"
-                  :message="message"
-                  :raw-html="isChatBot"
-                  @show-image="openLightbox"
-                />
               </div>
-            </div>
-          </vue-scroll>
+            </vue-scroll>
+          </client-only>
         </div>
         <div class="inner-gallery-lightbox" v-touch:swipe.top="handleSwipeTop">
           <FsLightbox
@@ -97,6 +91,14 @@
             v-model="text"
           />
         </div>
+      </div>
+      <div class="suggested-messages" v-if="showSuggestedMessages">
+        <button class="btn btn--primary-outline" 
+          v-for="(title, i) in filteredSuggestedMessages" 
+          @click="useSuggestedMessage(title)"
+          :key="i" 
+          v-html="title"
+        />
       </div>
     </div>
   </div>
@@ -278,7 +280,6 @@ export default {
         try {
           await this.sendMessage({ form: formData, activeGroup: this.group });
           this.markAsRead(this.group.id);
-          console.log({...this.group})
           afterSendActions();
           this.lightboxKey++;
         } catch({ response: { data: { data }}}) {

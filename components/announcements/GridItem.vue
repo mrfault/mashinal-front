@@ -14,7 +14,7 @@
             <span class="badge from-border inactive" v-else-if="announcement.status == 3">{{ $t('inactive')}}</span>
           </template>
           <template v-else-if="announcement.is_autosalon">
-            <span class="badge from-border">{{ $t('is_autosalon') }}</span>
+            <span class="badge from-border">{{ $t(announcement.title ? 'shop' : 'is_autosalon') }}</span>
           </template>
           <span class="d-flex">
             <span class="badge squared" v-if="announcement.type[1]">
@@ -38,7 +38,7 @@
       <h3 class="text-truncate">
         <span>{{ getAnnouncementTitle(announcement) }}</span>
       </h3>
-      <span class="item-info text-truncate">
+      <span class="item-info text-truncate" v-if="getTextLine">
         <span>{{ getTextLine }}</span>
       </span>
       <span class="item-price">
@@ -46,7 +46,7 @@
         <icon name="percent" v-if="announcement.credit"/>
         <icon name="barter" v-if="announcement.tradeable || announcement.exchange_possible"/>
       </span>
-      <span class="d-flex" @click.stop v-if="showCheckbox || showPhoneCount">
+      <span class="d-flex mt-auto" @click.stop v-if="showCheckbox || showPhoneCount">
         <span class="call-count" v-if="announcement.show_phone_number_count || showPhoneCount">
           <icon name="phone-call" />
           {{ announcement.show_phone_number_count || 0 }}

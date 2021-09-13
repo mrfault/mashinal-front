@@ -3,16 +3,16 @@
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
       <commercial-search-form 
-        :total-count="commercialAnnouncements.paginate.total"
+        :total-count="$paginate(commercialAnnouncements).total"
         :pending="pending"
         :category="category"
         @pending="pending = true"
         @submit="searchCommercial"
       />
       <grid 
-        v-if="commercialAnnouncements.standard.length"
-        :announcements="commercialAnnouncements.standard" 
-        :paginate="commercialAnnouncements.paginate"
+        v-if="commercialAnnouncements.data.length"
+        :announcements="commercialAnnouncements.data" 
+        :paginate="$paginate(commercialAnnouncements)"
         :title="$t('recent_uploads')"
         :pending="pending"
         @change-page="searchCommercial"

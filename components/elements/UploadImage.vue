@@ -7,10 +7,10 @@
             <div class="upload-image_form__thumbnail" @click.stop="fileClick(key, getFileIndex(key))">
               <img v-if="image[key]" :src="image[key]" alt="" />
               <div class="overlay">
-                <button :class="['btn-sq', {'disabled': loading[key]}]" @click.stop="fileRotate(key, getFileIndex(key))">
+                <button type="button" :class="['btn-sq', {'disabled': loading[key]}]" @click.stop="fileRotate(key, getFileIndex(key))">
                   <icon name="reset" />
                 </button>
-                <button :class="['btn-sq ml-auto', {'disabled': loading[key]}]" @click.stop="fileDelete(key, getFileIndex(key))">
+                <button type="button" :class="['btn-sq ml-auto', {'disabled': loading[key]}]" @click.stop="fileDelete(key, getFileIndex(key))">
                   <icon name="cross" />
                 </button>
               </div>
@@ -26,8 +26,7 @@
               <div class="upload-image_form__thumbnail add-image" @click.stop="input.click()">
                 <div class="overlay">
                   <icon name="camera" />
-                  <p>{{ $t('add_image')}}</p>
-                  <!-- <p>{{ $t('at_least_5_photos', { min: minFiles, max: maxFiles })}}</p> -->
+                  <p>{{ $t('add_image') }}</p>
                 </div>
               </div>
             </div>

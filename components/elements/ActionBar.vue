@@ -4,7 +4,8 @@
       <div class="d-flex align-items-center justify-content-between">
         <icon name="chevron-left" @click.native.stop="$emit('back')" class="cursor-pointer" />
         <span>{{ title || $t('return_back') }}</span>
-        <icon name="check" @click.native.stop="$emit('accept')" class="cursor-pointer" v-if="showCheck" />
+        <icon :name="actionIcon" @click.native.stop="$emit('action')" :class="['cursor-pointer', {'disabled':disableAction}]" v-if="actionIcon" />
+        <icon name="check" @click.native.stop="$emit('accept')" class="cursor-pointer" v-else-if="showCheck" />
         <icon name="check no-pointer-events opacity-0" v-else/>
       </div>
     </div>
@@ -15,7 +16,9 @@
 export default {
   props: {
     title: String,
-    showCheck: Boolean
+    showCheck: Boolean,
+    actionIcon: String,
+    disableAction: Boolean
   }
 }
 </script>

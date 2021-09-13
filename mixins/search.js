@@ -10,17 +10,25 @@ export const SearchMixin = {
     ...mapActions(['fetchSavedSearch', 'createSavedSearch', 'deleteSavedSearch']),
 
     getFormData() {
-      let requiredKeys = ['additional_brands'];
+      let requiredKeys = [];
       if (this.meta.type === 'cars') requiredKeys.push('all_options');
-
       let form = {};
       for (let property in this.form) {
         let value = this.form[property];
-        const notFalse = value !== false || value === true;
-        const notEmptyString = !(value instanceof Array) && value !== '';
-        const notEmptyArray = value instanceof Array && value.length > 0;
-        if (notFalse && ( (notEmptyString || notEmptyArray) || requiredKeys.includes(property)) )
-          this.$set(form, property, value);
+        if (property === 'additional_brands') {
+          let brands = { 0: {}, 1: {}, 2: {}, 3: {}, 4: {} }
+          for (let index in value)
+            for (let key in value[index])
+              if (value[index][key])
+                brands[index][key] = value[index][key];
+          this.$set(form, property, brands);
+        } else {
+          const notFalse = value !== false || value === true;
+          const notEmptyString = !(value instanceof Array) && value !== '';
+          const notEmptyArray = value instanceof Array && value.length > 0;
+          if (notFalse && ( (notEmptyString || notEmptyArray) || requiredKeys.includes(property)) )
+            this.$set(form, property, value);
+        }
       }
       return form;
     },

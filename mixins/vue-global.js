@@ -58,7 +58,7 @@ Vue.use({
         // other
         scrollTo(el, offset = 0, duration = 500, container = 'body') {
           if (document.body.classList.contains('mobile-screen-open')) 
-            container = '.mobile-screen';
+            container = '.mobile-screen > .container';
           if (el === 0) el = 'body';
           if (typeof el === 'string' && !document.querySelector(el)) return;
           if (typeof offset === 'object') offset = this.isMobileBreakpoint ? offset[0] : offset[1];
@@ -125,7 +125,7 @@ Vue.use({
               : (this.$withBaseUrl(img, '/storage/') || '/img/user.jpg'),
             lat: item.latitude ? parseFloat(item.latitude) : 0,
             lng: item.longitude ? parseFloat(item.longitude) : 0,
-            link: item.is_autosalon ? this.$localePath(`/salons/${item.user.autosalon.id}`) : false
+            link: item.is_autosalon ? this.$localePath(`${item.title ? '/parts/shops' : '/salons'}/${item.user.autosalon.id}`) : false
           };
         },
         getAnnouncementImage(item) {

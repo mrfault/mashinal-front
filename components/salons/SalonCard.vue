@@ -5,11 +5,11 @@
         <img :src="getLogo(salon.logo || salon.media)" :alt="salon.name" />
       </div>
       <div class="salon-info">
-        <h3>{{ $t('is_autosalon') }} "{{ salon.name }}"</h3>
-        <div class="d-flex justify-content-between">
+        <h3>{{ salon.name }}</h3>
+        <div class="salon-info_bottom-line d-flex justify-content-between">
           <span class="d-inline-flex align-items-center">
-            <icon name="phone-call" v-if="getConcatPhones(salon.phones, 1)" />
-            <span v-html="getConcatPhones(salon.phones, 1)"></span>
+            <icon name="phone-call" v-if="getConcatPhones(salon.phones, 1, false)" />
+            <span v-html="getConcatPhones(salon.phones, 1, false)"></span>
           </span>
           <span class="d-inline-flex align-items-center">
             <icon name="img" /> 

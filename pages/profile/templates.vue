@@ -13,7 +13,7 @@
                 transparent @input="handleSelectAll" @change="handleSelectAll"/>
             </div>
             <div class="col-6 col-lg-2 d-flex align-items-center justify-content-end">
-              <span :class="['control-icon cursor-pointer text-hover-red', {'disabled-ui': !selected.length}]" @click="user.email ? (showIntervalModal = true) : $nuxt.$emit('open-modal-to-change-email')" v-tooltip="$t('receive_notifications')">
+              <span :class="['control-icon cursor-pointer text-hover-red', {'disabled-ui': !selected.length}]" @click="openNotificationsModal" v-tooltip="$t('receive_notifications')">
                 <icon name="bell" />
               </span>
               <span :class="['control-icon cursor-pointer text-hover-red', {'disabled-ui': !selected.length}]" @click="showRemoveModal = true" v-tooltip="$t('delete')">
@@ -30,6 +30,7 @@
             :checked="selected.includes(item.id)"
             :notification-options="getNotificationOptions"
             @change="selectSavedSearch"
+            @select="selectOneSavedSearch"
           />
         </div>
         <modal-popup
@@ -47,6 +48,8 @@
                 :clear-option="false"
                 :allow-clear="false"
                 :skip-select="true"
+                :show-label-only-on-action-bar="true"
+                :label="$t('receive_notifications')"
               />
             </div>
             <button type="submit" :class="['btn btn--green full-width', { pending }]">
@@ -155,12 +158,24 @@ export default {
         this.selectAll = true;
       }
     },
+    selectOneSavedSearch(id) {
+      if (this.selected.length) 
+        this.handleSelectAll(false);
+      this.selectSavedSearch(id, true);
+      this.openNotificationsModal();
+    },
     handleSelectAll(value) {
       this.selectAll = value;
       this.$set(this, 'selected', value 
         ? this.savedSearchList.map(item => item.id) 
         : []
       );
+    },
+    openNotificationsModal() {
+      if (this.user.email) 
+        this.showIntervalModal = true;
+      else 
+        this.$nuxt.$emit('open-modal-to-change-email');
     },
     async updateNotifications() {
       if (this.pending) return;

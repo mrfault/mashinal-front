@@ -39,6 +39,7 @@ export default {
     trackCall(n) {
       this.fbTrack('Call ' + n);
       this.gtagTrack('AW-600951956/' + (n === 1 ? 'rgWNCOTA8IMCEJSZx54C' : 'VunMCPr51oMCEJSZx54C'));
+      this.$axios.$get(`/announce/${this.$route.params.id}/show/phone`);
     }
   }
 }

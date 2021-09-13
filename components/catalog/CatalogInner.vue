@@ -45,7 +45,7 @@
                   <li v-for="(spec, key) in specs" :key="key">
                     <span>{{ $t(key) }}</span>
                     <span v-if="hasValues(key)">{{ $t(key+'_values')[spec] }}</span>
-                    <span v-else>{{ spec || '-' }} {{ spec && getSuffix(key) }}</span>
+                    <span v-else>{{ spec || '—' }} {{ spec && getSuffix(key) }}</span>
                   </li>
                 </ul>
               </div>
@@ -68,7 +68,7 @@
                       <span v-else-if="Array.isArray(spec) && spec.length && `${spec[0]}`.length">
                         {{ spec[0] }}
                         <template v-if="spec[2] !== undefined">
-                          <template v-if="spec[1]"> / {{ spec[1] }}</template><template v-if="spec[2]">, {{ $t('at', { value: spec[2] }) }}</template>
+                          <template v-if="spec[1]"> / {{ spec[1] }}</template><template v-if="spec[2] && spec[2] !== '—'">, {{ $t('at', { value: spec[2] }) }}</template>
                         </template>
                         <template v-else-if="spec[1]">{{ $t('at', { value: spec[1] }) }}</template>
                       </span>
@@ -201,7 +201,7 @@ export default {
       return (main[' ']['obem'] && (main[' ']['obem'] + ' ' + box)) || box;
     },
     modPower(main) {
-      return (main['  ']['moshchnost'] && (main['  ']['moshchnost'] + ' ' + this.$t('char_h_power'))) || '-';
+      return (main['  ']['moshchnost'] && (main['  ']['moshchnost'] + ' ' + this.$t('char_h_power'))) || '—';
     },
     modBox(main) {
       return this.$t('box_values')[main[' ']['box']];
@@ -219,11 +219,11 @@ export default {
     },
     getDivSpecs(specs) {
       let divSpecs = [{}, {}];
-      Object.keys(this.$skipUndefinedEntries(specs)).map((key, i) => {
+      Object.keys(this.$skipUndefinedEntries(specs, ['-','—'])).map((key, i) => {
         divSpecs[i % 2 === 0 ? 0 : 1][key] = specs[key];
       });
       return this.isMobileBreakpoint 
-        ? [this.$skipUndefinedEntries(specs)] 
+        ? [this.$skipUndefinedEntries(specs, ['-','—'])] 
         : divSpecs;
     },
     handleModClick(mod) {

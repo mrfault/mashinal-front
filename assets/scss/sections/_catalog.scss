@@ -138,6 +138,9 @@
       width: 45px;
     }
   }
+  .btn-sq {
+    pointer-events: all;
+  }
   &:last-child &_row:last-child .row:last-of-type {
     margin-bottom: 0 !important;
     & + hr {
@@ -150,7 +153,6 @@
   .body-modifications {
     .btn-sq {
       border: 1px solid $red-4;
-      pointer-events: all;
       &.active,
       &:hover {
         border-color: $red-1;
@@ -172,7 +174,7 @@
       width: 180px;
       height: 60px;
     }
-    path {
+    path, circle, rect {
       fill: $dark-blue-1;
     }
   }
@@ -240,7 +242,7 @@
 
   .body-dimensions {
     .body {
-      path {
+      path, circle, rect {
         fill: $white;
       }
     }

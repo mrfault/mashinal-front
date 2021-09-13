@@ -105,7 +105,7 @@ export default function({ app, route, store }, inject) {
     name = name[app.i18n.locale] || name.ru || name;
     let year = new Date().getFullYear();
     return name.toString()
-      // .replace('series', app.i18n.t('series'))
+      .replace('series', app.i18n.t('series'))
       // .replace('class', app.i18n.t('class'))
       .replace(/( – 0)|( – н\.в\.)/g, name.toString().includes(`${year}`) ? '' : ` – ${year}`);
   });

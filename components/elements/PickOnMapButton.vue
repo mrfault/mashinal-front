@@ -30,16 +30,20 @@
 </template>
 
 <script>
+import { YMapsMixin } from '~/mixins/ymaps';
+
 export default {
   props: {
     lat: Number,
     lng: Number,
     address: String
   },
+  mixins: [YMapsMixin],
   data() {
     return {
       showMap: false,
       map: null,
+      placemark: null,
       cacheLat: this.lat,
       cacheLng: this.lng,
       cacheAddress: this.address
@@ -50,7 +54,9 @@ export default {
   },
   methods: {
     beforeInit() {
-      ymaps.ready(this.init);
+      this.ymapsScriptLoad().then(() => {
+        ymaps.ready(this.init);
+      });
       this.cacheLat = this.lat,
       this.cacheLng = this.lng,
       this.cacheAddress = this.address;

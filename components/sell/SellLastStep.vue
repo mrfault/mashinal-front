@@ -1,5 +1,5 @@
 <template>
-  <component :is="isMobileBreakpoint ? 'mobile-screen' : 'div'" @back="$emit('close')" :bar-title="title" height-auto>
+  <component :is="isMobileBreakpoint ? 'mobile-screen' : 'div'" @back="$emit('close')" @action="$emit('clean')" action-icon="reset" :bar-title="title" height-auto>
     <div class="sell_last-step">
       <sell-select-modification v-if="!edit && type === 'cars'"
         :form="form"
@@ -7,7 +7,7 @@
       />
       <div v-if="showAllOptions" :class="{'disabled-content': type === 'cars' && !form.car_catalog_id}">
         <h2 class="title-with-line mt-3 mt-lg-0" id="anchor-saved_images">
-          <span>{{ $t('photos') }} <span class="star"> *</span></span>
+          <span>{{ $t('photos') }} ({{ $t('at_least_5_photos', { min: minFiles, max: maxFiles }).toLowerCase() }}) <span class="star"> *</span></span>
         </h2>
         <upload-image
           :max-files="maxFiles"
@@ -116,7 +116,7 @@
           </div>
         </div>
         <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-car_or_vin">
-          <span>{{ $t('license_plate_number_vin_or_carcase_number') }} <span class="star"> *</span></span>
+          <span>{{ $t('license_plate_number_vin_or_carcase_number') }} <span class="star" v-if="type === 'cars'"> *</span></span>
         </h2>
         <div class="row">
           <div class="col-12 col-lg-4 mb-2 mb-lg-0">
@@ -204,7 +204,7 @@
             </nuxt-link>
           </p>
           <p class="info-text full-width less-pd mt-2">
-            <span class="star">*</span> - {{ $t('starred_fields_are_required')}}
+            <span class="star">*</span> — {{ $t('starred_fields_are_required')}}
           </p>
           <p class="info-text full-width less-pd text-red" v-if="isAlreadySold">
             {{ $t('this_car_already_added_last_90_days_for_new_added_need_payment') }}
@@ -310,7 +310,7 @@ export default {
       return [
         { key: 1, name: 'AZN', sign: '₼'	},
         { key: 2, name: 'USD', sign: '$'	},
-        { key: 3, name: 'EUR', sign: '€'	}
+        // { key: 3, name: 'EUR', sign: '€'	}
       ];
     },
     getMileageOptions() {
@@ -534,7 +534,7 @@ export default {
               let errorIndex = this.errors.indexOf(errorKey);
               let errorText = `(${dataLength - errorIndex}/${dataLength}) ${data[key][0]}`;
               // show error
-              this.showError(errorKey, errorText, { fieldView: key, offset: this.isMobileBreakpoint ? -15 : -20 }, count === 0);
+              this.showError(errorKey, errorText, { fieldView: key, offset: this.isMobileBreakpoint ? 30 : -20 }, count === 0);
               count++;
             }
           } else if (message && status !== 499) {

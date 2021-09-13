@@ -44,6 +44,24 @@
   font-weight: 500;
 }
 
+.dots {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+  i {
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background-color: $dark-blue-1;
+  }
+}
+
 .chat {
   &-list-items {
     padding: 0 11px 0 0;
@@ -83,23 +101,6 @@
     margin-right: -11px;
     user-select: none;
     cursor: pointer;
-    .dots {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: absolute;
-      right: 0px;
-      top: 0px;
-      width: 15px;
-      height: 15px;
-      cursor: pointer;
-      i {
-        width: 3px;
-        height: 3px;
-        border-radius: 50%;
-        background-color: $dark-blue-2;
-      }
-    }
     &.active {
       background-color: $greyish-blue-8;
       hr,
@@ -269,6 +270,10 @@
   .btn {
     margin: 5px;
   }
+}
+
+.attachments-preview-active + .suggested-messages {
+  bottom: 164px;
 }
 
 .messages-list {
@@ -546,6 +551,12 @@
     color: $dark-2;
     background-color: $yellow-1;
   }
+  
+  .dots {
+    i {
+      background-color: $yellow-1;
+    }
+  }
 
   .messages {
     &_chat-list,
@@ -581,11 +592,6 @@
       }
     }
     &-item {
-      .dots {
-        i {
-          background-color: $yellow-1;
-        }
-      }
       &.active {
         background-color: $dark-3;
       }
