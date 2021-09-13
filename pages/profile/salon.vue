@@ -91,7 +91,7 @@
             </div>
             <div class="col-lg-4 mb-2 mb-lg-3" id="anchor-working_hours">
               <form-select :label="$t('work_hours')" custom
-                :values="{from: form.working_hours.start, to: form.working_hours.end, showLabel: true, showPreposition: false }"
+                :values="{from: form.working_hours.start, to: form.working_hours.end, showPreposition: false }"
                 :allow-clear="false"
               >
                 <div class="form-merged">

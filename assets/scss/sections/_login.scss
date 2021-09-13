@@ -54,7 +54,7 @@
   width: 288px;
   margin: 0 auto;
   &--popup {
-    @include abs-middle(fixed, 999);
+    @include abs-middle(fixed, 50);
     height: 364px;
     width: 338px;
     max-width: 100%;

@@ -115,10 +115,9 @@ export default {
   },
   methods: {
     getFilterLink(type) {
-      let brand = { brand: '', brand_slug: '', model: '', model_slug: '', generation: '' };
       let form = {
         sorting: 'created_at_desc',
-        additional_brands: {0: {...brand}, 1: {...brand}, 2: {...brand}, 3: {...brand}, 4: {...brand}},
+        additional_brands: { 0: {}, 1: {}, 2: {}, 3: {}, 4: {} },
         all_options: {},
         announce_type: 1,
         currency: 1

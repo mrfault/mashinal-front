@@ -175,6 +175,7 @@
         type: Boolean,
         default: true
       },
+      showLabelOnlyOnActionBar: Boolean,
       inSelectMenu: Boolean,
       hasSearch: Boolean,
       hasNoBg: Boolean,
@@ -281,7 +282,7 @@
         if (this.custom) {
           let value;
           let read = this.values.read !== false;
-          if (this.values.from && this.values.to) value = `${this.$readNumber(this.values.from, read)} - ${this.$readNumber(this.values.to, read)}`;
+          if (this.values.from && this.values.to) value = `${this.$readNumber(this.values.from, read)} — ${this.$readNumber(this.values.to, read)}`;
           else if (this.values.from || this.values.to) value = `${this.values.showPreposition ? (this.$t(!this.values.from ? 'to' : 'from') + ' ') : ''}${this.$readNumber(this.values.from || this.values.to, read)}`;
           else if (this.values.from === 0 || this.values.to === 0) value = `${this.$t(this.values.to === 0 ? 'to' : 'from')} 0`;
           let suffix = this.values.suffix || this.suffix;
@@ -302,9 +303,10 @@
       },
       getActionBarText() {
         if (this.hasNoValue) return this.getLabelText;
+        if (this.showLabelOnlyOnActionBar) return this.label;
         else if (this.multiple) return this.value.length > 1 ? `${this.label} (${this.value.length})` : this.getLabelText;
         else if (this.custom && this.values.count) return `${this.label} (${this.values.count})`;
-        return `${(this.showLabelOnSelect && this.allowClear && !(this.custom && !this.values.showLabel)) ? '' : this.label + ': '}${this.getLabelText}`;
+        return `${(this.showLabelOnSelect && this.allowClear && !(this.custom && !this.values.showLabel)) ? '' : (this.label ? (this.label + ': ') : '')}${this.getLabelText}`;
       },
       hasNoValue() {
         if (this.custom) 
@@ -335,7 +337,7 @@
         if (disabled && this.clearOnDisable) this.clearSelect();
       },
       value(value) {
-        if (this.value === undefined) 
+        if (this.value === undefined)
           this.selectValue = undefined;
       },
       showOptions(val) {
@@ -369,6 +371,10 @@
       getFilteredOptions() {
         this.vsKey++;
       }
+    },
+    created() {
+      if (this.value === undefined) 
+        this.selectValue = undefined;
     },
     mounted() {
       document.addEventListener('click', this.handleDocClick);

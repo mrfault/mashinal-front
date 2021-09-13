@@ -42,6 +42,10 @@ img {
   flex-shrink: 0;
 }
 
+button:focus {
+  outline: none;
+}
+
 h1 {
   font-size: 30px;
   font-weight: 500;
@@ -134,6 +138,14 @@ hr {
 .keep-colors {
   &, &:hover {
     color: inherit;
+  }
+}
+
+.dark-mode {
+  .keep-colors {
+    &, &:hover {
+      color: inherit;
+    }
   }
 }
 
@@ -442,6 +454,7 @@ main {
           display: flex;
           align-items: center;
           color: inherit;
+          font-weight: 500;
           &.active,
           &:hover {
             color: $red-1;
@@ -470,6 +483,7 @@ main {
           display: inline-flex;
           align-items: center;
           color: inherit;
+          font-weight: 500;
           &.active,
           &:hover {
             color: $red-1;
@@ -791,14 +805,9 @@ main {
     span {
       &:first-of-type {
         color: $red-1;
-        i {
-          font-size: 16px;
-        }
       }
-      &:last-of-type {
-        i {
-          font-size: 18px;
-        }
+      i::before {
+        font-size: 16px;
       }
     }
     &.has-shadow {
@@ -806,11 +815,11 @@ main {
     }
   }
   .menu-backdrop {
-    @include abs-zero(fixed, 999);
+    @include abs-zero(fixed, 50);
     @include backdrop-filter;
   }
   .menu-sidebar {
-    @include abs-zero(fixed, 1000);
+    @include abs-zero(fixed, 51);
     display: flex;
     overflow: auto;
     transform: translate(-101%);
@@ -1189,7 +1198,7 @@ main {
   background-color: $white;
   border-bottom: 1px solid $greyish-blue-2;
   &.priority-1 {
-    z-index: 41;
+    z-index: 56;
   }
   .d-flex {
     height: 60px;
@@ -1214,6 +1223,10 @@ main {
     &.icon-check {
       font-weight: bold;
       font-size: 8px;
+    }
+    &.disabled {
+      opacity: .25;
+      pointer-events: none;
     }
   }
 }
@@ -1242,7 +1255,7 @@ main {
 /** Backdrop */
 
 .backdrop {
-  @include abs-zero(fixed, 999);
+  @include abs-zero(fixed, 50);
   @include backdrop-filter;
 }
 

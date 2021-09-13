@@ -1,5 +1,5 @@
 <template>
-  <component :is="isMobileBreakpoint ? 'mobile-screen' : 'div'" @back="goBack" :bar-title="statusTitle" hide-container>
+  <component :is="isMobileBreakpoint ? 'mobile-screen' : 'div'" @back="goBack" @action="$emit('clean')" action-icon="reset" :disable-action="disableClean" :bar-title="statusTitle" hide-container>
     <h2 class="title-with-line full-width" v-if="title && !isMobileBreakpoint">
       <span>{{ title }}</span>
     </h2>
@@ -91,7 +91,8 @@ export default {
     sortAlphabetically: {
       type: Boolean,
       default: true
-    }
+    },
+    disableClean: Boolean
   },
   data() {
     return {

@@ -80,7 +80,7 @@ export default {
         if (generation) 
           return item?.car_type.name[this.locale];
         else 
-          return `${this.$translateHard(item.short_name)}<br/>${item.start_year} - ${item.end_year || this.currentYear}`;
+          return `${this.$translateHard(item.short_name)}<br/>${item.start_year} — ${item.end_year || this.currentYear}`;
       } else {
         return (!brand ? (item.parent.name + ' ') : '') + this.$translateHard(item.name);
       }

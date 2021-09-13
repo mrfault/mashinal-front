@@ -1,12 +1,15 @@
 <template>
   <div class="templates-item card mb-2 mb-lg-3">
     <div class="d-flex align-items-center justify-content-between" @click="toggleCollapse">
-      <div class="ml-n2" @click.stop>
+      <div class="ml-n2 overflow-hidden" @click.stop>
         <form-checkbox class="fw-500" :label="title" v-model="checkedValue" :input-name="`saved-search-${item.id}`" 
           transparent label-click @label-click="goToSearch" />
       </div>
       <div class="toggle">
-        <span class="text-dark-blue-3">{{ setting.selected_name }}</span>
+        <span class="text-dark-blue-3" v-if="!isMobileBreakpoint">{{ setting.selected_name }}</span>
+        <span class="dots" @click.stop="$emit('select', item.id)" v-else>
+          <i v-for="i in 3" :key="i"></i>
+        </span>
         <span :class="['cursor-pointer', {'disabled-ui': !params.length}]" @click.stop="toggleCollapse">
           <icon :name="`chevron-${collapsed ? 'down' : 'up'}`" />
         </span>
@@ -17,12 +20,13 @@
         <hr />
         <div class="row">
           <template v-for="(param, i) in params">
-            <div class="full-width mb-2" v-if="i > 0 && i % 5 === 0" :key="i"></div>
+            <span class="d-block full-width mb-lg-2" v-if="i > 0 && i % 5 === 0" :key="i"></span>
             <div class="col-auto"  :key="i+'_param'">
-              <div class="param d-flex flex-column">
+              <div class="param d-flex flex-lg-column">
                 <span class="text-dark-blue-3">{{ param.title }}</span>
                 <span>{{ param.value }}</span>
               </div>
+              <hr v-if="isMobileBreakpoint" />
             </div>
           </template>
         </div>
@@ -108,7 +112,7 @@ export default {
           else if (key + '_to' in this.filter) maxValue = this.filter[key + '_to'];
           if (minValue && maxValue) value = minValue === maxValue
             ? `${read ? this.$readNumber(minValue) : minValue} ${param.suffix || ''}`
-            : `${read ? this.$readNumber(minValue) : minValue} - ${read ? this.$readNumber(maxValue) : maxValue} ${param.suffix || ''}`;
+            : `${read ? this.$readNumber(minValue) : minValue} — ${read ? this.$readNumber(maxValue) : maxValue} ${param.suffix || ''}`;
           else if (minValue) value = this.$t('from')  +` ${read ? this.$readNumber(minValue) : minValue} ${param.suffix || ''}`;
           else if (maxValue) value = this.$t('to')  +` ${read ? this.$readNumber(maxValue) : maxValue} ${param.suffix || ''}`;
         } else if (param.list && key in this.filter) {

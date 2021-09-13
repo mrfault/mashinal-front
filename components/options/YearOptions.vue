@@ -1,5 +1,5 @@
 <template>
-  <component :is="isMobileBreakpoint ? 'mobile-screen' : 'div'" @back="$emit('close')" :bar-title="title">
+  <component :is="isMobileBreakpoint ? 'mobile-screen' : 'div'" @back="$emit('close')" @action="$emit('clean')" action-icon="reset" :bar-title="title">
     <h2 class="title-with-line full-width" v-if="title && !isMobileBreakpoint">
       <span>{{ title }}</span>
     </h2>

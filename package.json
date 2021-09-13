@@ -9,7 +9,6 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
-    "@innologica/vue-stackable-modal": "^0.1.9",
     "@nuxtjs/auth-next": "^5.0.0-1595976864.509d9d6",
     "@nuxtjs/axios": "^5.3.6",
     "@nuxtjs/google-analytics": "^2.4.0",
@@ -22,7 +21,6 @@
     "cookie-universal-nuxt": "^2.1.1",
     "core-js": "^3.9.1",
     "fslightbox-vue": "file:lib/fslightbox-pro",
-    "fuse.js": "^6.4.6",
     "inputmask": "^3.3.11",
     "laravel-echo": "^1.6.1",
     "moment": "^2.24.0",

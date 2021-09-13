@@ -1,9 +1,11 @@
 <template>
-  <div class="backdrop" @click.stop="$emit('click')">
-    <div class="container">
-      <slot :show="show" />
+  <portal to="backdrop">
+    <div class="backdrop" @click.stop="$emit('click')">
+      <div class="container">
+        <slot :show="show" />
+      </div>
     </div>
-  </div>
+  </portal>
 </template>
 
 <script>

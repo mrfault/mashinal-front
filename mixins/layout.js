@@ -14,15 +14,8 @@ export const LayoutMixin = {
       loadingKey: ''
     }
   },
-  head() {
-    return {
-      script: [
-        { hid: 'maps', src: `https://api-maps.yandex.ru/2.1/?apikey=${this.$env.YANDEX_MAPS_API}&lang=${this.locale === 'az' ? 'az_AZ' : 'ru_RU'}` }
-      ]
-    }
-  },
   computed: {
-    ...mapGetters(['loading','messages','paidStatusData'])
+    ...mapGetters(['loading','messages','paidStatusData','hideFooter'])
   },
   methods: {
     ...mapActions(['setLoading','setGridBreakpoint','getMessages','getFavorites','resetSellTokens','resetUserData','updatePaidStatus']),

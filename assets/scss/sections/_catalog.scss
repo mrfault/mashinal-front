@@ -172,7 +172,7 @@
       width: 180px;
       height: 60px;
     }
-    path {
+    path, circle, rect {
       fill: $dark-blue-1;
     }
   }
@@ -240,7 +240,7 @@
 
   .body-dimensions {
     .body {
-      path {
+      path, circle, rect {
         fill: $white;
       }
     }
