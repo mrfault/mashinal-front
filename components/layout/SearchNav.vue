@@ -1,7 +1,7 @@
 <template>
   <div class="search-nav">
     <nav class="mt-n2">
-      <div class="search-types">
+      <div class="search-types" v-if="activeType !== 'parts'">
         <div class="container">
           <ul>
             <li v-for="menu in searchMenus" :key="menu.title">
@@ -62,7 +62,9 @@ export default {
       return 'cars';
     },
     activeMenu() {
-      return this.searchMenus.find(menu => menu.title === this.activeType);
+      if (this.activeType === 'parts') 
+        return { title: 'parts', route: '/parts', children: this.partsMenus };
+      return this.navbarMenus.find(menu => menu.title === this.activeType);
     }
   },
   methods: {
