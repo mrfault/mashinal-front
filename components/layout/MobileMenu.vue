@@ -11,11 +11,12 @@
         <span class="cursor-pointer" @click="$nuxt.$emit('search-icon-click')" v-if="hasSearchFilters">
           <icon name="search" />
         </span>
-        <nuxt-link custom :to="$localePath('/cars/advanced-search')" v-slot="{ href }" v-else-if="hasSearchNav || !loggedIn">
-          <span class="cursor-pointer" @click="goToSearch(href)">
-            <icon name="options" />
-          </span>
-        </nuxt-link>
+        <span class="cursor-pointer" @click="goTo($localePath('/parts/shops'))" v-else-if="hasShops">
+          <icon name="shop" />
+        </span>
+        <span class="cursor-pointer" @click="goTo($localePath('/cars/advanced-search'))" v-else-if="hasSearchNav || !loggedIn">
+          <icon name="options" />
+        </span>
         <span class="cursor-pointer" @click="logout" v-else>
           <icon name="logout" />
         </span>
@@ -91,7 +92,7 @@ export default {
       this.showSidebar = show;
       this.setBodyOverflow(show ? 'hidden' : 'scroll');
     },
-    goToSearch(path) {
+    goTo(path) {
       if (['cars', 'index', 'cars-assistant', 'cars-advanced-search'].includes(this.routeName))
         this.$nuxt.$emit('go-to-search', path);
       else this.$router.push(path);
