@@ -1,21 +1,26 @@
 export const ComparisonMixin = {
   mounted() {
-    if (document.querySelector('.comparison__items')) {
-      document.querySelector('.comparison__items').addEventListener('wheel', this.onWheelScroll)
-      document.querySelector('.comparison__items').addEventListener('scroll', this.onScroll)
+    const comparisonItems = document.querySelector('.comparison__items');
+    if (comparisonItems) {
+      comparisonItems.addEventListener('wheel', this.onWheelScroll)
+      comparisonItems.addEventListener('scroll', this.onScroll)
     }
   },
   methods: {
     onWheelScroll(event) {
-      if (!event.deltaY) {
-        return;
-      }
-      document.querySelectorAll('.collapse-content__columns').forEach(element => {
-        element.scrollLeft += event.deltaY;
-      })
+      const comparisonItems = document.querySelector('.comparison__items');
 
-      event.currentTarget.scrollLeft += event.deltaY + event.deltaX;
-      event.preventDefault();
+      if (comparisonItems.scrollWidth > comparisonItems.clientWidth) {
+        if (!event.deltaY) {
+          return;
+        }
+        document.querySelectorAll('.collapse-content__columns').forEach(element => {
+          element.scrollLeft += event.deltaY;
+        })
+  
+        event.currentTarget.scrollLeft += event.deltaY + event.deltaX;
+        event.preventDefault();
+      }
     },
     onScroll(event) {
       document.querySelectorAll('.collapse-content__columns').forEach(element => {

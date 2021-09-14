@@ -52,6 +52,7 @@ export default {
   },
   async asyncData({ $axios, store, app, route }) {
     const categories = await $axios.$get('/part/categories');
+    console.log(categories, route.params.category)
     const category = categories.find(item => item.slug[app.i18n.locale] === route.params.category && item.id !== 18);
     const filters = await $axios.$get(`/part/category/${category.id}/filters`)
 

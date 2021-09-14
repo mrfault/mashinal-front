@@ -23,6 +23,7 @@
             v-model="form.brand"
             @change="brandSelected"
             has-search
+            :clear-option="false"
           />
         </div>
         <div class="col-12 col-sm-6 mb-2">
@@ -32,6 +33,7 @@
             v-model="form.model"
             @change="modelSelected"
             has-search
+            :clear-option="false"
           />
         </div>
         <div class="col-12 col-sm-6 mb-2">
@@ -41,6 +43,7 @@
             v-model="form.generation"
             @change="generationSelected"
             has-search
+            :clear-option="false"
           />
         </div>
         <div class="col-12 col-sm-6 mb-2">
@@ -50,6 +53,7 @@
             v-model="form.carType"
             @change="carTypeSelected"
             has-search
+            :clear-option="false"
           />
         </div>
         <div class="col-12 col-sm-6 mb-2">
@@ -59,6 +63,7 @@
             v-model="form.modification"
             :translateOptions="false"
             has-search
+            :clear-option="false"
           />
         </div>
 
