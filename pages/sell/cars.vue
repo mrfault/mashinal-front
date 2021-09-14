@@ -97,7 +97,6 @@ export default {
   },
   async asyncData({ store }) {
     await Promise.all([
-      store.dispatch('getServices'),
       store.dispatch('getBrands'),
       store.dispatch('getOptions'),
       store.dispatch('getColors'),

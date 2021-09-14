@@ -17,12 +17,7 @@
             <span class="badge from-border">{{ $t(announcement.title ? 'shop' : 'is_autosalon') }}</span>
           </template>
           <span class="d-flex">
-            <span class="badge squared" v-if="announcement.type[1]">
-              <icon name="vip" />
-            </span>
-            <span class="badge squared" v-if="announcement.type[2]">
-              <icon name="premium" />
-            </span>
+            <!-- here badges can be placed -->
           </span>
         </div>
         <div class="item-overlay_bottom d-flex">

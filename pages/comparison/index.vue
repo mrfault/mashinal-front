@@ -31,11 +31,10 @@ export default {
     }
   },
   head() {
-    // TODO Correct translations [az/ru]
     return this.$headMeta({
       title: this.$t('meta-title_comparison'),
       description: this.$t('meta-descr_comparison'),
-    })
+    });
   },
   components: {
     Breadcrumbs,

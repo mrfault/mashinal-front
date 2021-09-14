@@ -39,7 +39,6 @@
             <quick-info type="parts" />
             <announcement-specs type="parts" />
             <keywords />
-            <promote-card v-if="!isMobileBreakpoint" />
           </div>
         </div>
       </div>
@@ -56,33 +55,10 @@ import QuickInfo from '~/components/announcements/inner/QuickInfo';
 import AnnouncementSpecs from '~/components/announcements/inner/AnnouncementSpecs';
 import ThumbsGallery from '~/components/announcements/inner/ThumbsGallery';
 import CollapseContent from '~/components/elements/CollapseContent';
-import PromoteCard from '~/components/announcements/inner/PromoteCard';
 import Keywords from '~/components/announcements/inner/Keywords';
 
 export default {
   name: 'pages-parts-id',
-  nuxtI18n: {
-    paths: {
-      az: '/ehtiyat-hisseleri/elan/:id'
-    }
-  },
-  head() {
-    // TODO Specify correctness
-    let announcementTitle = this.getAnnouncementTitle(this.announcement);
-    let title = `${this.$t(`meta-title_announcement-${this.announcement.is_new ? 'new' : 'used'}`, { announce: `${announcementTitle}` })}`;
-    let description = `${announcementTitle}, ${this.$t('meta-descr_announcement', { announce: `${this.announcement.price}` })}`;
-    let image = this.getAnnouncementImage(this.announcement);
-    return this.$headMeta({ title, description, image }, {
-      category: 'Part',
-      id: this.announcement.id_unique,
-      autosalon: this.announcement.user.autosalon,
-      brand: this.getAnnouncementBrandName(this.announcement),
-      price: { amount: this.announcement.price_int, currency: this.announcement.currency_id },
-      services: this.announcement.type,
-      new: this.announcement.is_new,
-      available: this.announcement.status == 1
-    });
-  },
   components: {
     Gallery,
     Comment,
@@ -90,8 +66,19 @@ export default {
     AnnouncementSpecs,
     ThumbsGallery,
     CollapseContent,
-    PromoteCard,
     Keywords
+  },
+  nuxtI18n: {
+    paths: {
+      az: '/ehtiyat-hisseleri/elan/:id'
+    }
+  },
+  head() {
+    let announcementTitle = this.getAnnouncementTitle(this.announcement);
+    let title = `${this.$t(`meta-title_announcement-${this.announcement.is_new ? 'new' : 'used'}`, { announce: `${announcementTitle}` })}`;
+    let description = `${announcementTitle}, ${this.$t('meta-descr_announcement', { announce: `${this.announcement.price}` })}`;
+    let image = this.getAnnouncementImage(this.announcement);
+    return this.$headMeta({ title, description, image });
   },
   async asyncData({ store, route }) {
     await Promise.all([
