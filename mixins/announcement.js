@@ -7,7 +7,7 @@ export const AnnouncementDataMixin = {
   methods: {
     getSpecs(...specs) {
       return specs.filter(spec => spec).join(' / ');
-    }
+    },
   },
   computed: {
     motoTypeKey() {
@@ -192,6 +192,9 @@ export const AnnouncementDataMixin = {
     },
     numberOfAxes() {
       return this.announcement.number_of_axles && `${this.announcement.number_of_axles} ${this.$t('axles')}`;
+    },
+    condition() {
+      return this.announcement.is_new ? this.$t('new') : this.$t('used')
     }
   }
 }

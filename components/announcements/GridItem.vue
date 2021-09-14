@@ -27,7 +27,7 @@
         </div>
         <div class="item-overlay_bottom d-flex">
           <span class="d-flex" v-if="announcement.status == 1">
-            <add-comparison :announcement="announcement" v-if="announcement.car_catalog"/>
+            <add-comparison :announcement="announcement" v-if="getType === 'Car'"/>
             <add-favorite :announcement="announcement" />
           </span>
           <span class="badge">{{ announcement.humanize_created_at }}</span>

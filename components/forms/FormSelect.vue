@@ -1,6 +1,6 @@
 <template>
   <div class="form-group">
-    <div :class="['select-menu',{'no-bg': hasNoBg, invalid}]">
+    <div :class="['select-menu',{'no-bg': hasNoBg, invalid}]" tabindex="0">
       <span :class="['select-menu_label', {'selected': hasSelectedValue, 'disabled': disabled, 'active': showOptions}]" 
         @click="displayMenuOptions">
         <span :class="['text-truncate', {'full-width': hasSearch}]">
