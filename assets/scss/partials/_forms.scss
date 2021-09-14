@@ -197,6 +197,7 @@ input::-webkit-inner-spin-button {
     border-radius: 4px;
     height: 34px;
     padding: 0 15px;
+    cursor: pointer;
     &.transparent {
       background: transparent !important;
     }
@@ -331,6 +332,7 @@ input::-webkit-inner-spin-button {
 
 .select-menu {
   position: relative;
+  cursor: pointer;
   &_triangle {
     position: absolute;
     bottom: -10px;
@@ -850,6 +852,73 @@ input::-webkit-inner-spin-button {
         }
       }
     }
+  }
+}
+
+.form-buttons .label {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.form-keywords {
+  height: 200px;
+  margin-top: 20px; //delete this
+  padding: 20px 15px;
+  background-color: $greyish-blue-2;
+  border-radius: 4px;
+  cursor: text;
+  
+  .keywords {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    
+    .keyword {
+      height: 34px;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      border: 1px solid $dark-blue-2;
+      border-radius: 17px;
+      cursor: pointer;
+      color: $dark-blue-2;
+      font-weight: 500;
+      font-size: 14px;
+      
+      &--highlighted {
+        border-width: 2px;
+      }
+
+      i {
+        font-size: 12px;
+        margin-right: 6px;
+      }
+    }
+  }
+
+  input {
+    display: block;
+    height: 34px;
+    border: none;
+    background-color: transparent;
+    flex: 1;
+
+    &:focus, &:active {
+      background-color: transparent;
+      border: none;
+      outline: none;
+      box-shadow: none;
+    }
+  }
+}
+
+.dark-mode .form-keywords {
+  background-color: $dark-1;
+
+  .keyword {
+    border-color: $yellow-1;
+    color: $yellow-1;
   }
 }
 

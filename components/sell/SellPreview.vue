@@ -3,9 +3,11 @@
     <div :class="['img-bg', {'no-img': !sellPreviewData.image}]" 
          :style="sellPreviewData.image ? {backgroundImage: `url('${sellPreviewData.image}')`} : {}">
     </div>
-    <h4>{{ brand.name }} {{ model.name }}</h4>
-    <p>{{ form.year || form.selectedYear }} {{ $t('year') }}, {{ $readNumber(sellPreviewData.mileage || 0) }} {{ sellPreviewData.mileage_measure }}</p>
-    <p class="price">{{ $readNumber(sellPreviewData.price || 0) }} {{ sellPreviewData.currency }}</p>
+    <h4>{{ announcementTitle }}</h4>
+    <p>{{ announcementDescription }}</p>
+    <p class="price">
+      {{ announcementPrice }}
+    </p>
     <p>{{ sellPreviewData.region || $t('baku') }}</p>
   </div>
 </template>
@@ -15,12 +17,52 @@ import { mapGetters } from 'vuex';
 
 export default {
   props: {
-    form: {},
-    brand: {},
-    model: {}
+    form: {
+      type: Object,
+      required: false
+    },
+    brand: {
+      type: [Object, String],
+      required: false
+    },
+    model: {
+      type: [Object, String],
+      required: false
+    }
   },
   computed: {
-    ...mapGetters(['sellPreviewData'])
+    ...mapGetters(['sellPreviewData']),
+    announcementTitle() {
+      if (this.sellPreviewData.title) {
+        return this.sellPreviewData.title
+      } else if (this.brand.name || this.model.name) {
+        return [this.brand.name, this.model.name].join(' ')
+      } else {
+        return this.$t('announcement_name')
+      }
+    },
+    announcementDescription() {
+      if (this.form.year || this.form.selectedYear || this.sellPreviewData.mileage) {
+        return [
+          this.form.year || this.form.selectedYear,
+          this.$t('year') + ',',
+          this.$readNumber(this.sellPreviewData.mileage || 0),
+          this.sellPreviewData.mileage_measure
+        ].join(' ')
+      } else if (this.sellPreviewData.shine_width && this.sellPreviewData.height && this.sellPreviewData.diameter) {
+        return [
+          this.sellPreviewData.shine_width + '/' + this.sellPreviewData.height,
+          this.sellPreviewData.diameter
+        ].join(' ')
+      }
+    },
+    announcementPrice() {
+      if (this.sellPreviewData.is_negotiable) {
+        return this.$t('negotiable')
+      } else {
+        return (''+this.$readNumber(this.sellPreviewData.price) || 0) + (this.sellPreviewData.currency || '₼')
+      }
+    }
   }
 }
 </script>

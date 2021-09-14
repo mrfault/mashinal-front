@@ -7,7 +7,7 @@ export const AnnouncementDataMixin = {
   methods: {
     getSpecs(...specs) {
       return specs.filter(spec => spec).join(' / ');
-    }
+    },
   },
   computed: {
     motoTypeKey() {
@@ -16,8 +16,13 @@ export const AnnouncementDataMixin = {
       else if (this.announcement.moto_atv_brand) return 3;
     },
     region() {
-      if (!this.announcement.region_id || !this.sellOptions) return false;
-      return getName(this.announcement.region_id, this.sellOptions.regions);
+      if (this.announcement.region_id && Object.keys(this.sellOptions).length) {
+        return getName(this.announcement.region_id, this.sellOptions.regions);
+      } else if (this.announcement.region) {
+        return this.announcement.region.name[this.locale] 
+      } else {
+        return false;
+      }
     },
     color() {
       let color = this.announcement.colors || this.announcement.color || {};
@@ -192,6 +197,9 @@ export const AnnouncementDataMixin = {
     },
     numberOfAxes() {
       return this.announcement.number_of_axles && `${this.announcement.number_of_axles} ${this.$t('axles')}`;
+    },
+    condition() {
+      return this.announcement.is_new ? this.$t('new') : this.$t('used')
     }
   }
 }
