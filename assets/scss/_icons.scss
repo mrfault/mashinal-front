@@ -29,6 +29,12 @@
   font-style: normal !important;
 }
 
+.icon-parts:before {
+  content: "\e977";
+}
+.icon-shop:before {
+  content: "\e976";
+}
 .icon-part-1:before {
   content: "\e975";
 }

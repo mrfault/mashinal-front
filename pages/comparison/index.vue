@@ -25,7 +25,6 @@ import ComparisonAddModel from '~/components/comparison/ComparisonAddModel.vue'
 
 export default {
   name: 'comparison-index',
-  layout: 'default',
   nuxtI18n: {
     paths: {
       az: '/muqayise'

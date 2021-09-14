@@ -82,6 +82,11 @@
       max-width: 100px;
       a {
         padding-top: 5px;
+        &.category-link {
+          i {
+            margin-bottom: 3px;
+          }
+        }
       }
     }
   }

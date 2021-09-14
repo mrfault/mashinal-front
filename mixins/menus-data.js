@@ -80,6 +80,7 @@ export const MenusDataMixin = {
     sidebarMenus() {
       return [
         { title: 'salons', route: '/salons', icon: 'store' },
+        { title: 'parts', route: '/parts', icon: 'parts' },
         { title: 'autocatalog', route: '/catalog', icon: 'book' },
         { title: 'comparisons', route: '/comparison', icon: 'compare' },
         { title: 'helper_search', route: '/cars/assistant', icon: 'flag' },
@@ -124,13 +125,6 @@ export const MenusDataMixin = {
       ];
     },
 
-    partsMenus() {
-      return [
-        { title: 'parts', route: '/parts' },
-        { title: 'shops', route: '/parts/shops' },
-      ]
-    },
-
     hasSearchNav() {
       return [
         'index', 'cars', 'cars-vip', 'cars-premium', 'cars-assistant', 'cars-advanced-search',
@@ -153,6 +147,12 @@ export const MenusDataMixin = {
     hasSearchFilters() {
       return [
         'salons', 'parts-shops'
+      ].includes(this.routeName);
+    },
+
+    hasShops() {
+      return [
+        'parts', 'parts-category'
       ].includes(this.routeName);
     }
   }

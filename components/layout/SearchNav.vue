@@ -1,7 +1,7 @@
 <template>
   <div class="search-nav">
-    <nav class="mt-n2">
-      <div class="search-types" v-if="activeType !== 'parts'">
+    <nav :class="{'mt-n2': !showOnlyCategories}">
+      <div class="search-types" v-if="!showOnlyCategories">
         <div class="container">
           <ul>
             <li v-for="menu in searchMenus" :key="menu.title">
@@ -25,7 +25,7 @@
           <div class="swiper-container" v-swiper:searchNavSwiper="swiperOps" v-else>
             <div class="swiper-wrapper">
               <div class="swiper-slide" v-for="submenu in activeMenu.children" :key="submenu.title">
-                <nuxt-link :to="$localePath(submenu.route)">
+                <nuxt-link :to="$localePath(submenu.route)" :class="{'category-link': showOnlyCategories}">
                   <icon :name="submenu.icon" />
                   {{ $t(submenu.title) }}
                 </nuxt-link>
@@ -65,6 +65,9 @@ export default {
       if (this.activeType === 'parts') 
         return { title: 'parts', route: '/parts', children: this.partsMenus };
       return this.navbarMenus.find(menu => menu.title === this.activeType);
+    },
+    showOnlyCategories() {
+      return this.activeType === 'parts';
     }
   },
   methods: {
