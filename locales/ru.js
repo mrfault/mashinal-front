@@ -1727,15 +1727,13 @@ export default {
   "min_image_size": "Минимальный размер - {w}x{h} px",
   "no_cars_found": "Нет машины",
   "add_car_model": "Добавить модель",
-
-  // TODO check translates
   "luggage_volume_min_max": "Объем багажа мин./макс.",
   "count_of_seats": "Количество мест",
   "max_speed": "Максимальная скорость",
   "fuel_consumption_city": "Расход топлива, город",
   "fuel_consumption_highway": "Расход топлива, трасса",
-  "fuel_consumption_mixed": "Расход топлива смешанный",
-  "fuel_brand": "Марка топлива",
+  "fuel_consumption_mixed": "Расход топлива, смешанный",
+  "fuel_brand": "Тип топлива",
   "dimensions": "Габаритные размеры",
   "width": "Ширина",
   "height": "Рост",
