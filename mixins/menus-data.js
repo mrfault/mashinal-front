@@ -122,7 +122,7 @@ export const MenusDataMixin = {
         { title: 'parts', route: '/parts' },
         { title: 'shops', route: '/parts/shops' }
       ];
-    }
+    },
 
     hasSearchNav() {
       return [
