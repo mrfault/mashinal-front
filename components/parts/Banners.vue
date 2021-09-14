@@ -10,12 +10,12 @@
         <p class="parts-banner__description">
           {{ $t('winter_tyres_desc') }}
         </p>
-        <nuxt-link to="/" class="parts-banner__link">
+        <nuxt-link :to="winterTyresURL" class="parts-banner__link">
           {{ $t('detail') }}
           <icon name="arrow-right" />
         </nuxt-link>
       </div>
-      <img class="parts-banner__image" src="img/banner_winter_tyres.png" />
+      <img class="parts-banner__image" src="/img/banner_winter_tyres.png" />
     </div>
 
     <!-- Create online store -->
@@ -32,7 +32,7 @@
           <icon name="arrow-right" />
         </nuxt-link>
       </div>
-      <img class="parts-banner__image" src="img/banner_create_online_store.png" />
+      <img class="parts-banner__image" src="/img/banner_create_online_store.png" />
     </div>
 
     <CreateStore
@@ -53,6 +53,16 @@ export default {
   data() {
     return {
       showCreateStoreModal: false
+    }
+  },
+  computed: {
+    winterTyresURL() {
+      return (
+        this.$localePath('/parts') +
+        '/' + this.$t('slug_tyres') +
+        '?parts_filter=' +
+        encodeURI(JSON.stringify({"season": [1]}))
+      )
     }
   }
 }

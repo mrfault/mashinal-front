@@ -1,4 +1,4 @@
-// [START] Comparison badge
+// Comparison badge
 .comparison-badge {
   position: fixed;
   right: 0;
@@ -30,10 +30,9 @@
     color: $white;
   }
 }
-// [END] Comparison badge
 
 
-// [START] Comparison Preview
+// Comparison Preview
 .comparison-preview {
   width: 345px;
   padding: 25px;
@@ -146,14 +145,13 @@
     }
   }
 }
-// [END] Comparison Preview
 
 
 $column-width-lg: calc(100% / 5);
 $column-width-md: calc(100% / 2.5);
 $column-width-xs: calc(100% / 1.8);
 
-// [START] Comparison Index page
+// Comparison Index page
 .pages-comparison-index {
   @include media-max-width('lg') {
     padding-top: 20px;
@@ -370,13 +368,12 @@ $column-width-xs: calc(100% / 1.8);
     }
   }
 }
-// [END] Comparison Index page
 
 
-// [START] Add model popup
+// Add model popup
 .comparison-add-model-popup {
   @include media-min-width('lg') {
-    max-width: 590px;
+    width: 550px;
   }
 
   &--backdrop {
@@ -396,10 +393,9 @@ $column-width-xs: calc(100% / 1.8);
     }
   }
 }
-// [END] Add model popup
 
 
-// [START] Dark mode - Main section
+// Dark mode - Main section
 .dark-mode .pages-comparison-index .comparison {
   &__item__title {
     color: $white;
@@ -408,4 +404,3 @@ $column-width-xs: calc(100% / 1.8);
     color: $white;
   } 
 }
-// [END] Dark mode - Main section
