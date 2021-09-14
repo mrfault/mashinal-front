@@ -28,7 +28,6 @@
             <quick-info type="moto" />
             <announcement-specs type="moto" />
             <comment :comment="announcement.comment" v-if="isMobileBreakpoint" />
-            <promote-card v-if="!isMobileBreakpoint" />
           </div>
         </div>
         <relatives />
@@ -45,7 +44,6 @@ import AnnouncementSpecs from '~/components/announcements/inner/AnnouncementSpec
 import Gallery from '~/components/announcements/inner/Gallery';
 import ThumbsGallery from '~/components/announcements/inner/ThumbsGallery';
 import Comment from '~/components/announcements/inner/Comment';
-import PromoteCard from '~/components/announcements/inner/PromoteCard';
 import Relatives from '~/components/announcements/inner/Relatives';
 
 export default {
@@ -56,7 +54,6 @@ export default {
     Gallery,
     ThumbsGallery,
     Comment,
-    PromoteCard,
     Relatives
   },
   nuxtI18n: {

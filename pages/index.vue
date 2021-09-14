@@ -14,15 +14,27 @@
         :pending="pending"
         @pending="pending = true"
       />
-      <template v-if="mainAnnouncements.random_moto">
-        <grid 
-          v-if="mainAnnouncements.random_moto.length"
-          :announcements="mainAnnouncements.random_moto" 
-          :title="$t('moto')"
-          :show-all="$localePath('/moto')"
-          :pending="pending"
-        />
-      </template>
+      <grid 
+        v-if="mainAnnouncements.random_part && mainAnnouncements.random_part.length"
+        :announcements="mainAnnouncements.random_part" 
+        :title="$t('parts')"
+        :show-all="$localePath('/parts')"
+        :pending="pending"
+      />
+      <grid 
+        v-if="mainAnnouncements.random_moto && mainAnnouncements.random_moto.length"
+        :announcements="mainAnnouncements.random_moto" 
+        :title="$t('moto')"
+        :show-all="$localePath('/moto')"
+        :pending="pending"
+      />
+      <grid 
+        v-if="mainAnnouncements.random_commercial && mainAnnouncements.random_commercial.length"
+        :announcements="mainAnnouncements.random_commercial" 
+        :title="$t('commercial')"
+        :show-all="$localePath('/commercial')"
+        :pending="pending"
+      />
     </div>
   </div>
 </template>

@@ -1360,6 +1360,7 @@ export default {
   "shirina-zadney-kolei": "Arxa izin eni",
   "shock_sensor": "Zərbə sensoru",
   "shop_name": "Mağazanın adı",
+  "shop": "Mağaza",
   "shops": "Mağazalar",
   "short_information": "Qısa təsvir",
   "show": "Göstər",

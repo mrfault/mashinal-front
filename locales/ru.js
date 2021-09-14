@@ -1361,6 +1361,7 @@ export default {
   "shirina-zadney-kolei": "Ширина задней колеи",
   "shock_sensor": "Датчик удара",
   "shop_name": "Название магазина",
+  "shop": "Магазин",
   "shops": "Магазины",
   "short_information": "Краткая информация",
   "show": "Показать",

@@ -171,11 +171,9 @@ export default {
       return false
     },
     getFileIndex(key) {
-      console.log('yaya', key, this.fileKeys)
       return this.fileKeys.findIndex(fKey => fKey === key);
     },
     fileRotate(key, index) {
-      console.log('na', key, index)
       if (this.loading[key]) return;
       this.$emit('file-rotated', index, key);
       this.$set(this.loading, key, true);

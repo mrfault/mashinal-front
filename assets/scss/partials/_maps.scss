@@ -127,9 +127,12 @@
       border-color: $grey-4;
     }
 
-    [class*="float-button "] {
+    [class*="float-button "],
+    [class*="listbox__button "],
+    [class*="listbox__panel "] {
       border-radius: 4px;
       box-shadow: $shadow-light-2;
+      border: 0;
     }
   }
   .map-placemark {
@@ -256,7 +259,7 @@
     height: 100%;
     flex-shrink: 0;
     width: 360px;
-    min-width: calc(50% - 600px);
+    // min-width: calc(50% - 600px);
     background-color: $white;
     transition: transform .6s;
     &.collapse {

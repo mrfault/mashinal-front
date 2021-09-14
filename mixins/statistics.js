@@ -4,7 +4,7 @@ export const StatsMixin = {
   computed: {
     ...mapState(['myAnnouncementStats','myPackageStats']),
 
-    circleStats() {
+    countStats() {
       let stats = this.myAnnouncementStats;
       return [
         { label: 'announcements', value: stats.announce_count, from: false, color: this.isDarkMode ? '#FFFFFF' : '#081A3E' },
@@ -13,17 +13,7 @@ export const StatsMixin = {
         { label: 'messages', value: stats.message_count, from: false, color: '#246EB2' }
       ]
     },
-    packageStats() {
-      let stats = this.myPackageStats.list;
-      let statsStyle = {
-        1: { color: '#F81734', icon: 'vip' },
-        2: { color: '#29A53E', icon: 'premium' },
-        4: { color: this.isDarkMode ? '#FFFFFF' : '#081A3E', icon: 'top' }
-      }
-      return Object.keys(stats)
-        .map(key => ({...statsStyle[key], ...stats[key]}));
-    },
-    announceStats() {
+    announcementStats() {
       let stats = this.myAnnouncementStats;
       return {
         package: this.myPackageStats.package,
@@ -40,7 +30,8 @@ export const StatsMixin = {
       }
     },
     mostViewed() {
-      return Object.values(this.myAnnouncementStats.most_viewed_announces);
+      let stats = this.myAnnouncementStats;
+      return Object.values(stats.most_viewed_announces);
     }
   }
 }

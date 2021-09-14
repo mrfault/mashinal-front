@@ -45,7 +45,6 @@
                 <car-complects :options="getComplectOptions" v-if="hasComplects" />
               </template>
             </comment>
-            <promote-card v-if="!isMobileBreakpoint" />
           </div>
         </div>
         <relatives />
@@ -64,7 +63,6 @@ import ThumbsGallery from '~/components/announcements/inner/ThumbsGallery';
 import Comment from '~/components/announcements/inner/Comment';
 import CarComplects from '~/components/announcements/inner/CarComplects';
 import DamageOptions from '~/components/options/DamageOptions';
-import PromoteCard from '~/components/announcements/inner/PromoteCard';
 import Relatives from '~/components/announcements/inner/Relatives';
 
 export default {
@@ -77,7 +75,6 @@ export default {
     Comment,
     CarComplects,
     DamageOptions,
-    PromoteCard,
     Relatives
   },
   nuxtI18n: {
