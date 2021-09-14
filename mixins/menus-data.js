@@ -124,6 +124,13 @@ export const MenusDataMixin = {
       ];
     },
 
+    partsMenus() {
+      return [
+        { title: 'parts', route: '/parts' },
+        { title: 'shops', route: '/parts/shops' },
+      ]
+    },
+
     hasSearchNav() {
       return [
         'index', 'cars', 'cars-vip', 'cars-premium', 'cars-assistant', 'cars-advanced-search',
