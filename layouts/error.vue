@@ -2,11 +2,11 @@
   <div class="pages-404">
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
-      <NotFound :title="errorTitle">
+      <not-found :title="errorTitle">
         <nuxt-link class="btn btn--green" :to="$localePath('/')">
           <icon name="arrow-left" /> {{ $t('back_to_home') }}
         </nuxt-link>
-      </NotFound>
+      </not-found>
     </div>
   </div>
 </template>
