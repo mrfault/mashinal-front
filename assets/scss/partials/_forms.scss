@@ -197,7 +197,6 @@ input::-webkit-inner-spin-button {
     border-radius: 4px;
     height: 34px;
     padding: 0 15px;
-    cursor: pointer;
     &.transparent {
       background: transparent !important;
     }
@@ -332,7 +331,6 @@ input::-webkit-inner-spin-button {
 
 .select-menu {
   position: relative;
-  cursor: pointer;
   &_triangle {
     position: absolute;
     bottom: -10px;
