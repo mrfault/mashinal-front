@@ -1,10 +1,14 @@
 <template>
   <div>
     <div id="comparison" class="comparison card" v-if="!showNotFound">
-      <ComparisonAnnouncements v-if="filter.compareType === 'announcements'" />
-      <ComparisonModels v-else />
+      <comparison-announcements v-if="filter.compareType === 'announcements'" />
+      <comparison-models v-else />
     </div>
-    <NotFound v-else text="Avtomobil yoxdur"/>
+    <not-found v-else :text="$t('no_cars_found')">
+      <nuxt-link class="btn btn--green" :to="$localePath('/')">
+        {{ $t('to_add_an_advert') }}
+      </nuxt-link>
+    </not-found>
   </div>
 </template>
 
