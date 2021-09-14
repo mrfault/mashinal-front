@@ -1,6 +1,8 @@
 import { mapGetters } from 'vuex';
+import { RoutesMixin } from './routes';
 
 export const MenusDataMixin = {
+  mixins: [RoutesMixin],
   computed: {
     ...mapGetters(['staticPages']),
 
@@ -9,7 +11,7 @@ export const MenusDataMixin = {
         { title: 'cars', route: '/cars', icon: 'car-1' },
         { title: 'moto', route: '/moto', children: this.motoMenus, icon: 'moto-1' },
         { title: 'commercial', route: '/commercial', children: this.commercialMenus, icon: 'commercial-1' }
-      ]
+      ];
     },
 
     pageMenus() {
@@ -27,10 +29,10 @@ export const MenusDataMixin = {
     navbarMenus() {
       return [
         ...this.searchMenus,
-        { title: 'parts', route: '/parts', children: this.partsMenus },
+        { title: 'parts', route: '/parts', children: this.partsSubMenus },
         { title: 'autocatalog', route: '/catalog' },
         { title: 'salons', route: '/salons' }
-      ]
+      ];
     },
 
     topbarMenus() {
@@ -39,7 +41,7 @@ export const MenusDataMixin = {
         { title: 'favorites', route: '/profile/favorites', icon: 'star' },
         { title: 'templates', route: '/profile/templates', icon: 'template' },
         { title: 'messages', route: '/profile/messages', icon: 'chat' }
-      ]
+      ];
     },
 
     bottomMenus() {
@@ -51,7 +53,7 @@ export const MenusDataMixin = {
         { title: 'my_account', route: '/profile', icon: 'user', hide: !this.loggedIn || this.user?.autosalon },
         { title: 'dashboard_brief', route: '/profile/dashboard', icon: 'settings', hide: !this.loggedIn || !this.user?.autosalon },
         { title: 'login', route: '/login', icon: 'user', hide: this.loggedIn }
-      ]
+      ];
     },
 
     userMenus() {
@@ -83,7 +85,7 @@ export const MenusDataMixin = {
         { title: 'helper_search', route: '/cars/assistant', icon: 'flag' },
         { title: 'my_searches', route: '/profile/templates', icon: 'template', auth: true },
         ...this.pageMenus
-      ]
+      ];
     },
 
     commercialMenus() {
@@ -100,7 +102,7 @@ export const MenusDataMixin = {
         { title: 'commercial_excavators', route: '/commercial/'+this.$t('slug_excavators'), icon: 'commercial-10' }, 
         { title: 'commercial_bulldozers', route: '/commercial/'+this.$t('slug_bulldozers'), icon: 'commercial-11' }, 
         { title: 'commercial_utilities', route: '/commercial/'+this.$t('slug_utilities'), icon: 'commercial-13' }
-      ]
+      ];
     },
 
     motoMenus() {
@@ -108,15 +110,19 @@ export const MenusDataMixin = {
         { title: 'motorcycles', route: '/moto/'+this.$t('slug_motorcycles'), icon: 'moto-1' },
         { title: 'scooters', route: '/moto/'+this.$t('slug_scooters'), icon: 'moto-2' },
         { title: 'atvs', route: '/moto/'+this.$t('slug_atvs'), icon: 'moto-3' }
-      ]
+      ];
     },
 
     partsMenus() {
+      return this.partsRoutes.filter(r => r.showOnMenu);
+    },
+    
+    partsSubMenus() {
       return [
         { title: 'parts', route: '/parts' },
-        { title: 'shops', route: '/parts/shops' },
-      ]
-    },
+        { title: 'shops', route: '/parts/shops' }
+      ];
+    }
 
     hasSearchNav() {
       return [

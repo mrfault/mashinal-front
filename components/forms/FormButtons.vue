@@ -1,5 +1,8 @@
 <template>
-  <div :class="[`row ${rowClass}`, {'mb-n2 mb-lg-n3': isMultirow}]">
+  <div :class="['form-buttons', `row ${rowClass}`, {'mb-n2 mb-lg-n3': isMultirow}]">
+    <div class="col-12">
+      <h4 class="label" v-if="label">{{ label }}</h4>
+    </div>
     <div :class="[`col${groupBy > 0 ? ('-' + ([1,2,3,4,6,12].includes(groupBy) ? 12 / groupBy : 'auto')) : ''}`, {'mb-2 mb-lg-3': isMultirow}, {'active': isActive(option)}]" v-for="(option, index) in formattedOptions" :key="index">
       <div class="form-group">
         <button type="button" :class="[`btn full-width btn--${btnClass}`, {'active': isActive(option), 'disabled':isDisabled(option)}]"
@@ -19,6 +22,10 @@
     props: {
       value: {},
       options: {},
+      label: {
+        type: String,
+        default: ''
+      },
       groupBy: {
         type: Number,
         default: 3

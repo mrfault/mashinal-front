@@ -168,6 +168,9 @@
   &--primary-outline {
     @include btn-style($color: $dark-blue-3, $color-hover: $dark-blue-3, $bg-color: transparent, $bg-hover: $greyish-blue-2, $active-bg: $greyish-blue-3, $active-color: $dark-blue-3, $border-color: $greyish-blue-4, $border-active: $greyish-blue-4, $border-hover: $greyish-blue-4, $outline: true, $override: false);
   }
+  &--link {
+    @include btn-style($color: $dark-blue-2, $color-hover: $dark-blue-3, $bg-color: transparent, $bg-hover: transparent, $active-bg: transparent, $active-color: $dark-blue-3);
+  }
 }
 
 .btn.btn-circle {
