@@ -1734,7 +1734,7 @@ export default {
   "fuel_consumption_highway": "Расход топлива, трасса",
   "fuel_consumption_mixed": "Расход топлива, смешанный",
   "fuel_brand": "Тип топлива",
-  "dimensions": "Габаритные размеры",
+  "dimensions": "Габариты",
   "width": "Ширина",
   "height": "Рост",
   "length": "Длина",
