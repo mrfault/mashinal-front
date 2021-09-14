@@ -17,6 +17,9 @@
                 </div>
               </div>
             </template>
+            <template v-else-if="card.key === 'balance'">
+              <p>{{ $t('wallet_balance') }}:<br/><strong>{{ user.balance }} <icon name="azn" /></strong></p>
+            </template>
             <template v-else-if="card.key === 'calls'">
               <h4 class="text-dark-blue-2">{{ announcementStats.calls }}</h4>
               <p v-html="$t('phone_visited_n_times', { count: $readPlural(announcementStats.calls, $t('plural_forms_times')) })"></p>
@@ -55,6 +58,9 @@
             <template #footer>
               <nuxt-link class="text-green" :to="$localePath('/sell')" v-if="card.key === 'announcements'">
                 {{ $t(locale === 'az' ? 'place_an_ad' : 'to_sell') }}
+              </nuxt-link>
+              <nuxt-link class="text-green" :to="$localePath('/profile/balance')" v-else-if="card.key === 'balance'">
+                {{ $t('replenish') }}
               </nuxt-link>
               <a class="text-green" href="javascript:void(0);" @click="showExtendContract = true" v-else-if="card.key === 'contract' && shouldExtendContract">
                 {{ $t('pay') }}
@@ -156,6 +162,7 @@
       cards() {
         return [
           { key: 'announcements', title: 'my_announces', route: '/profile/announcements', icon: 'photo' },
+          { key: 'balance', title: 'balans', route: '/profile/balance', icon: 'wallet' },
           { key: 'statistics', title: 'statistics', route: '/profile/statistics', icon: 'analytics' },
           { key: 'messages', title: 'messages', route: '/profile/messages', icon: 'chat' },
           { key: 'calls', title: 'phone_call_count', route: '/profile/calls', icon: 'phone' },
