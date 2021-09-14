@@ -1,7 +1,7 @@
 <template>
   <div :class="['form-buttons', `row ${rowClass}`, {'mb-n2 mb-lg-n3': isMultirow}]">
-    <div class="col-12">
-      <h4 class="label" v-if="label">{{ label }}</h4>
+    <div class="col-12" v-if="label">
+      <h4 class="label">{{ label }}</h4>
     </div>
     <div :class="[`col${groupBy > 0 ? ('-' + ([1,2,3,4,6,12].includes(groupBy) ? 12 / groupBy : 'auto')) : ''}`, {'mb-2 mb-lg-3': isMultirow}, {'active': isActive(option)}]" v-for="(option, index) in formattedOptions" :key="index">
       <div class="form-group">
