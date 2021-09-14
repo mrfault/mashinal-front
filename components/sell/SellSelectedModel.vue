@@ -1,7 +1,7 @@
 <template>
   <div class="sell_selected-model mb-3" v-if="!isMobileBreakpoint">
     <div class="img mr-1" v-if="brand.transformed_media">
-      <img :src="brand.transformed_media" :alt="brand.name" />
+      <img :src="$withBaseUrl(brand.transformed_media)" :alt="brand.name" />
     </div>
     <span>{{ brand.name }}</span>
     <span v-if="model"><span>&nbsp;/</span> {{ model.name }}</span>

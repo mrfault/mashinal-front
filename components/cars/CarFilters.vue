@@ -20,7 +20,7 @@
                 :multiple="isMultiple(input)" 
                 :name-in-value="!!nameInValue"
                 :translate-options="true"
-                @change="changeFilter(input.name, $event)"
+                @change="changeFilter(input, $event)"
               />
               <form-checkbox  
                 v-else-if="input.type === 'checkbox'"
@@ -28,7 +28,7 @@
                 :label="$t(input.label)"
                 :id="`${popular ? 'popular_' : ''}${input.name}${input.selected_key || ''}`"
                 :input-name="input.name"  
-                @change="changeFilter(input.name, $event, input.selected_key)"
+                @change="changeFilter(input, $event)"
                 watch-value
               />
             </template>
@@ -82,7 +82,7 @@ export default {
   },
   methods: {
     isMultiple(input) {
-      return this.selectMultiple.includes(input.name || input) || !!this.nameInValue;
+      return this.selectMultiple.includes(input.name) || (!!this.nameInValue && input.type === 'select');
     },
     getTitle(index) {
       let title = this.titles[index] || '';
@@ -100,9 +100,11 @@ export default {
         ? (input.selected_key ? (this.isMultiple(input) ? values[[input.name]].includes(input.selected_key) : input.selected_key == values[[input.name]]) : values[[input.name]])
         : (input.selected_key ? false : (this.isMultiple(input) ? [] : (input.type === 'select' ? '' : false)));
     },
-    changeFilter(key, value, selected_key) {
+    changeFilter(input, value) {
+      let key = input.key;
+      let selected_key = input.selected_key;
       if (selected_key) {
-        if (this.isMultiple(key)) {
+        if (this.isMultiple(input)) {
           let selected = this.values[key] || [];
           let index = selected.findIndex(v => v == selected_key);
           value = value ? (index === -1 ? [...selected, selected_key] : selected) : (index === -1 ? [] : selected.filter((_, i) => i !== index));
