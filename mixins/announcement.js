@@ -16,13 +16,8 @@ export const AnnouncementDataMixin = {
       else if (this.announcement.moto_atv_brand) return 3;
     },
     region() {
-      if (this.announcement.region_id && Object.keys(this.sellOptions).length) {
-        return getName(this.announcement.region_id, this.sellOptions.regions);
-      } else if (this.announcement.region) {
-        return this.announcement.region.name[this.locale] 
-      } else {
-        return false;
-      }
+      if (!this.announcement.region_id || !this.sellOptions) return false;
+      return getName(this.announcement.region_id, this.sellOptions.regions);
     },
     color() {
       let color = this.announcement.colors || this.announcement.color || {};
