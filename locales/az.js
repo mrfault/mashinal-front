@@ -1299,7 +1299,6 @@ export default {
   "salon_name": "Salonun adı",
   "Salon colour": "Salonun rəngi",
   "Salon material": "Salonun materialı",
-  "salon_name": "Salonun adı",
   "saturday": "Şənbə",
   "save": "Yadda saxla",
   "save_searches_so_you_dont_miss_new_offers": "Yeni təklifləri qaçırmamaq üçün axtardığlarınızı yaddaşa salın.",
