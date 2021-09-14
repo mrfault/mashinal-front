@@ -1732,7 +1732,7 @@ export default {
   "fuel_consumption_city": "Yanacaq sərfiyyatı, şəhər",
   "fuel_consumption_highway": "Yanacaq sərfiyyatı, magistral",
   "fuel_consumption_mixed": "Yanacaq sərfiyyatı, qarışıq",
-  "fuel_brand": "Yanacaq markası",
+  "fuel_brand": "Yanacaq növü",
   "dimensions": "Ölçülər",
   "width": "Eni",
   "height": "Hündürlük",
