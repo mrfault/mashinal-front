@@ -4,7 +4,7 @@
       <div class="col-lg-6 mb-2 mb-lg-0">
         <form-text-input
           autocomplete="tel" 
-          :placeholder="$t('mobile_number')" 
+          :placeholder="$t('contact_number')" 
           :invalid="$v.form.phone.$error" 
           :mask="$maskPhone()"  
           v-model="form.phone"

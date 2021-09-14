@@ -55,8 +55,10 @@ export const SearchMixin = {
     },
     parseFormData() {
       this.setFormData(JSON.parse(this.$route.query[this.meta.param] || '{}'));
-      let keys = Object.keys(this.form.additional_brands).filter(key => this.form.additional_brands[key].brand);
-      if (keys.length) this.rows = [...keys];
+      if (this.form.additional_brands) {
+        let keys = Object.keys(this.form.additional_brands).filter(key => this.form.additional_brands[key].brand);
+        if (keys.length) this.rows = [...keys];
+      }
     },
     beforeSubmitForm() {
       if (['cars-assistant'].includes(this.routeName)) {

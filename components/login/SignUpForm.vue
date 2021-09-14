@@ -13,7 +13,7 @@
       <form-text-input  
         v-if="!form.staticPhone"
         autocomplete="tel" 
-        :placeholder="$t('mobile_number')" 
+        :placeholder="$t('contact_number')" 
         :invalid="validator.phone.$error" 
         :mask="$maskPhone()"  
         v-model="form.phone"

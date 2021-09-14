@@ -755,3 +755,23 @@
     }
   }
 }
+
+.not-found {
+  padding: 70px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  img {
+    width: 475px;
+    max-width: 80%;
+    margin: 0 auto 25px;
+  }
+  
+  h1 {
+    color: $red-1;
+    font-size: 18px;
+    font-weight: 500;
+    margin: 25px 0;
+  }
+}

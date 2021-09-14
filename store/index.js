@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import _ from '~/lib/underscore';
 
-const getInitialState = () =>({
+const getInitialState = () => ({
   loading: true,
   colorMode: 'light',
   breakpoint: null,

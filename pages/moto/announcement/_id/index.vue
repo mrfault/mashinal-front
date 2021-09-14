@@ -26,7 +26,7 @@
           </div>
           <div class="col-auto">
             <quick-info type="moto" />
-            <vehicle-specs type="moto" />
+            <announcement-specs type="moto" />
             <comment :comment="announcement.comment" v-if="isMobileBreakpoint" />
             <promote-card v-if="!isMobileBreakpoint" />
           </div>
@@ -41,7 +41,7 @@
 import { mapGetters } from 'vuex';
 
 import QuickInfo from '~/components/announcements/inner/QuickInfo';
-import VehicleSpecs from '~/components/announcements/inner/VehicleSpecs';
+import AnnouncementSpecs from '~/components/announcements/inner/AnnouncementSpecs';
 import Gallery from '~/components/announcements/inner/Gallery';
 import ThumbsGallery from '~/components/announcements/inner/ThumbsGallery';
 import Comment from '~/components/announcements/inner/Comment';
@@ -52,7 +52,7 @@ export default {
   name: 'pages-moto-id',
   components: {
     QuickInfo,
-    VehicleSpecs,
+    AnnouncementSpecs,
     Gallery,
     ThumbsGallery,
     Comment,

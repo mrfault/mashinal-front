@@ -35,6 +35,7 @@
         <portal-target name="mobile-screen" />
         <portal-target name="backdrop" />
         <!-- /portal targets -->
+        <comparison-badge />
         <mobile-nav />
         <page-footer v-if="!hideFooter" />
       </div>
@@ -52,6 +53,7 @@ import MobileNav from '~/components/layout/MobileNav';
 import PaidStatus from '~/components/elements/PaidStatus';
 import ThemeSwitch from '~/components/elements/ThemeSwitch';
 import ScrollTop from '~/components/elements/ScrollTop';
+import ComparisonBadge from '~/components/elements/ComparisonBadge';
 
 export default {
   mixins: [LayoutMixin],
@@ -62,7 +64,8 @@ export default {
     MobileNav,
     PaidStatus,
     ThemeSwitch,
-    ScrollTop
+    ScrollTop,
+    ComparisonBadge
   }
 }
 </script>

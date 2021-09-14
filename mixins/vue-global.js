@@ -129,7 +129,38 @@ Vue.use({
           };
         },
         getAnnouncementImage(item) {
-          return item.media.main_inner ? item.media.main_inner[0] : item.media[Object.keys(item.media)[0]][0];
+          if (item.media.main_inner) {
+            return item.media.main_inner[0]
+          } else if (item.media[0] instanceof Object) {
+            return item.media[0][Object.keys(item.media[0])[0]];
+          } else {
+            return item.media[Object.keys(item.media)[0]][0];
+          }
+        },
+        getAnnouncementType(item) {
+          if(item.moto_brand) return 'Motorcycle';
+          else if(item.scooter_brand) return 'Scooter';
+          else if(item.moto_atv_brand) return 'Atv';
+          else if(item.commercial_brand) return 'Commercial';
+          else if(item.car_catalog) return 'Car';
+          else if(item.title) return 'Part';
+          return '';
+        },
+        getAnnouncementTextLine(announcement) {
+          if (['Part'].includes(this.getAnnouncementType(announcement))) return announcement.description;
+          let text = `${announcement.year} ${this.$t('plural_forms_year')[0]}`;
+          if (this.getAnnouncementCapacity(announcement)) text += `, ${this.getAnnouncementCapacity(announcement)}`;
+          text += `, ${this.$readNumber(announcement.mileage)} ${this.$t('char_kilometre')}`;
+          return text;
+        },
+        getAnnouncementCapacity(item) {
+          if(item.car_catalog && (!item.car_catalog.capacity || item.car_catalog.capacity === '0')) 
+            return false;
+          let capacity = item.car_catalog 
+            ? item.car_catalog.capacity // show 0.1 L if value less than 50 sm3
+            : (item.capacity && item.capacity > 50) ? (((item.capacity) / 1000).toFixed(1)) : item.capacity; 
+          let show_litres = item.car_catalog || (item.capacity && item.capacity > 50);
+          return capacity ? `${capacity} ${this.$t(show_litres ? 'char_litre' : 'char_sm_cube')}` : false;
         },
         canSendMessage(item) {
           return !this.loggedIn || (item.user.id !== this.user.id);
