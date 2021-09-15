@@ -17,7 +17,7 @@
         <icon name="cross" v-if="allowClear && !hasNoValue" @click.native.stop="clearSelect" class="cursor-pointer" />
         <icon :name="iconName" v-else />
       </span>
-      <icon :class="['select-menu_triangle', `anchor-${anchor}`]" name="triangle" v-if="showOptions"/>
+      <icon :class="['select-menu_triangle', `anchor-${anchor} anchor-${placeOptionsAbove ? 'top' : 'bottom'}`]" name="triangle" v-if="showOptions"/>
       <portal to="mobile-dropdown" v-if="isMobileBreakpoint">
         <action-bar class="priority-1"
           :title="getActionBarText"
@@ -77,7 +77,7 @@
         </div>
       </portal>
       <template v-else>
-        <div :class="['select-menu_dropdown', `anchor-${anchor}`, {'show': showOptions, custom, 'custom-checkboxes': customCheckboxes}]" ref="dropdownOptions">
+        <div :class="['select-menu_dropdown', `anchor-${anchor} anchor-${placeOptionsAbove ? 'top' : 'bottom'}`, {'show': showOptions, custom, 'custom-checkboxes': customCheckboxes}]" ref="dropdownOptions">
           <template v-if="showOptions">
             <div v-if="custom">
               <slot />
@@ -189,6 +189,7 @@
         search: '',
         blockClick: false,
         showOptions: false,
+        placeOptionsAbove: false,
         vsKey: 0
       }
     },
@@ -235,9 +236,9 @@
           this.selectValue = this.getFilteredOptions[0];
         }
       },
-      handleDocClick(event) {
+      handleDocClick(e) {
         if (this.isMobileBreakpoint) return;
-        let clickedInsideDropdown = this.$refs.dropdownOptions.contains(event.target);
+        let clickedInsideDropdown = this.$refs.dropdownOptions.contains(e.target);
         if (!clickedInsideDropdown && !this.blockClick) {
           this.showOptions = false;
         }
@@ -347,6 +348,10 @@
             this.blockClick = false;
           }, 0);
           this.$nextTick(() => {
+            // check window offset
+            let emptySpace = window.innerHeight - this.$refs.dropdownOptions.getBoundingClientRect().bottom;
+            this.placeOptionsAbove = emptySpace < 20;
+            // auto focus
             if (this.hasSearch && !this.isMobileBreakpoint) {
               this.$refs.searchInput?.focus();
             }
@@ -361,6 +366,7 @@
             }
           });
         } else {
+          this.placeOptionsAbove = false;
           this.search = '';
         }
         // hide overflow when selected
@@ -378,9 +384,11 @@
     },
     mounted() {
       document.addEventListener('click', this.handleDocClick);
+      this.$nuxt.$on('modal-popup-click', this.handleDocClick);
     },
     beforeDestroy() {
       document.removeEventListener('click', this.handleDocClick);
+      this.$nuxt.$off('modal-popup-click', this.handleDocClick);
     }
   }
 </script>
