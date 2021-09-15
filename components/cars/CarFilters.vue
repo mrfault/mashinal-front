@@ -101,7 +101,7 @@ export default {
         : (input.selected_key ? false : (this.isMultiple(input) ? [] : (input.type === 'select' ? '' : false)));
     },
     changeFilter(input, value) {
-      let key = input.key;
+      let key = input.name;
       let selected_key = input.selected_key;
       if (selected_key) {
         if (this.isMultiple(input)) {

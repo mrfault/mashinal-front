@@ -103,7 +103,7 @@ export default {
       return [
         { name: this.$t('all'), key: 1 },
         { name: this.$t('new'), key: 2 },
-        { name: this.$t('with_mileage'), key: 3 }
+        { name: this.$t(this.where === 'parts' ? 'S_H' : 'with_mileage'), key: 3 }
       ];
     },
     showResetBtn() {

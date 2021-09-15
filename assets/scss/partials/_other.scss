@@ -296,6 +296,10 @@
   &.active {
     background-color: $greyish-blue-3;
   }
+  &.disabled {
+    opacity: .25;
+    pointer-events: none;
+  }
   .block-info {
     display: block;
     width: 100%;
@@ -308,6 +312,10 @@
     margin-right: 10px;
     i {
       display: flex;
+      &.icon-parts {
+        font-size: .7em;
+        -webkit-text-stroke: .2px;
+      }
     }
   }
   &.icons-only {
