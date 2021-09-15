@@ -36,12 +36,12 @@
     .price {
       font-size: 16px;
       font-weight: 500;
-      span:first-child {
-        color: $dark-blue-2;
-      }
       span:last-child {
         color: $dark-blue-3;
-        margin-left: 1.5em;
+      }
+      span:first-child {
+        color: $dark-blue-2;
+        margin-right: 1.5em;
       }
       i {
         position: relative;

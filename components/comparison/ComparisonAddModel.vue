@@ -1,5 +1,6 @@
 <template>
   <modal-popup
+    v-if="showModal"
     backdropClass="comparison-add-model-popup--backdrop"
     modalClass="comparison-add-model-popup"
     :toggle="showModal"

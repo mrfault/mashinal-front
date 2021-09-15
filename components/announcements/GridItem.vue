@@ -14,7 +14,7 @@
             <span class="badge from-border inactive" v-else-if="announcement.status == 3">{{ $t('inactive')}}</span>
           </template>
           <template v-else-if="announcement.is_autosalon">
-            <span class="badge from-border">{{ $t(announcement.title ? 'shop' : 'is_autosalon') }}</span>
+            <span class="badge from-border">{{ $t(announcement.title ? 'salon' : 'is_autosalon') }}</span>
           </template>
           <span class="d-flex">
             <span class="badge squared" v-if="announcement.type[1]">
@@ -27,7 +27,7 @@
         </div>
         <div class="item-overlay_bottom d-flex">
           <span class="d-flex" v-if="announcement.status == 1">
-            <add-comparison :announcement="announcement" v-if="getType === 'Car'"/>
+            <add-comparison :id="announcement.id_unique" v-if="getType === 'Car'"/>
             <add-favorite :announcement="announcement" />
           </span>
           <span class="badge">{{ announcement.humanize_created_at }}</span>

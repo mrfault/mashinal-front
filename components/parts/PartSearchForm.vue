@@ -31,7 +31,7 @@
             <div class="col-lg-2" v-if="showSubcategories">
               <form-select
                 :label="$t('category')"
-                v-model="form.subcategory"
+                v-model="form.sub_category_id"
                 :options="subcategories"
                 has-search
               />
@@ -89,6 +89,7 @@
                     v-model="form[filter.key]"
                     :label="$t(filter.key)"
                     :options="filter.values"
+                    translateOptions
                     multiple
                     has-search
                   />
@@ -207,7 +208,7 @@ export default {
       })
 
       if (this.filters.sub_categories.length) {
-        additionalProperties['subcategory'] = ''
+        additionalProperties['sub_category_id'] = ''
       }
       if (this.filters.brands.length) {
         additionalProperties['brand_ids'] = []

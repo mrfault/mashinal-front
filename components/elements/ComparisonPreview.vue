@@ -60,7 +60,7 @@ export default {
   },
   computed: {
     list() {
-      return this.$store.getters['comparison/list']
+      return this.$store.getters['comparison/announcementsList']
     },
     scrollOps() {
       return  {

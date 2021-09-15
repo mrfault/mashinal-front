@@ -1,7 +1,7 @@
 <template>
   <transition-group name="fade">
     <div v-if="badgeVisible" :key="'badgeVisible'">
-      <div class="comparison-badge" @click="previewVisible = !previewVisible">
+      <div class="comparison-badge" @click="handleClick">
         <icon name="compare" />
       </div>
       <comparison-preview
@@ -27,6 +27,15 @@ export default {
   },
   mounted() {
     this.$store.dispatch('comparison/getInitialAnnouncements')
+  },
+  methods: {
+    handleClick() {
+      if (this.list.length < 2) {
+        this.previewVisible = !this.previewVisible
+      } else {
+        this.$router.push(this.$localePath('/comparison'))
+      }
+    }
   },
   computed: {
     list() {
