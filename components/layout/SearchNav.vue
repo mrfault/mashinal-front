@@ -62,9 +62,7 @@ export default {
       return 'cars';
     },
     activeMenu() {
-      if (this.activeType === 'parts') 
-        return { title: 'parts', route: '/parts', children: this.partsMenus };
-      return this.navbarMenus.find(menu => menu.title === this.activeType);
+      return this.announcementsMenus.find(menu => menu.title === this.activeType);
     },
     showOnlyCategories() {
       return this.activeType === 'parts';
