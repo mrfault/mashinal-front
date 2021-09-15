@@ -207,10 +207,17 @@
       height: 40px;
       width: 40px;
     }
+    .typing-status {
+      font-size: 12px;
+      font-weight: normal;
+    }
     .username {
       font-size: 13px;
       font-weight: 500;
       margin-right: auto;
+      span:first-child {
+        margin-right: 5px;
+      }
       &-subtitle {
         display: inline-flex;
         align-items: center;

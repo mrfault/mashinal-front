@@ -21,7 +21,7 @@ export const MessagesMixin = {
             text: this.$t('read'),
             onClick : (e, toast) => {
               let groupId = group.recipient_id == this.user.id ? group.sender_id : group.recipient_id;
-              let announceId = group.announce_id_unique;
+              let announceId = parseInt(group.announce.id_unique);
               this.createMessagesGroup(groupId, announceId);
               toast.goAway(0);
             }
