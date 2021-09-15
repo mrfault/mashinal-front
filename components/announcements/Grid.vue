@@ -11,8 +11,8 @@
       </nuxt-link>
     </div>
     <div class="row mb-n2 mb-lg-n3">
-      <template v-for="announcement in announcements">
-        <div class="col-6 col-lg-auto mb-2 mb-lg-3" :key="announcement.id_unique">
+      <template v-for="(announcement, index) in announcements">
+        <div class="col-6 col-lg-auto mb-2 mb-lg-3" :key="announcement.id_unique + '_' + index">
           <grid-item 
             :announcement="announcement" 
             :show-checkbox="showCheckbox" 
