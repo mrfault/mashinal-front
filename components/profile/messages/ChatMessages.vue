@@ -6,7 +6,11 @@
           <img class="chat-avatar" :src="chatAvatar" alt="" />
         </div>
         <span class="username">
-          {{ chatUser.full_name }}
+          <span>{{ chatUser.full_name }}</span>
+          <span class="typing-status text-dark-blue-3" v-if="sending || typing">
+            <template v-if="sending">{{ $t('is_sending') }}</template>
+            <template v-else-if="typing">{{ $t('is_typing') }}</template>
+          </span>
           <template v-if="isMobileBreakpoint">
             <br/>
             <span class="username-subtitle">
