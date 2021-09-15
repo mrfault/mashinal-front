@@ -513,14 +513,12 @@ export default {
       }
     },
     async rotateImage(index, key) {
-      console.log(index)
       if (this.files[index]) {
         try {
           this.$nuxt.$loading.start();
           const { data } = await this.$axios.$get(`/media/${this.files[index].id}/rotate/right`);
           this.files.find(f => f.key === key).file = data.thumb
           this.$nuxt.$loading.finish();
-
         } catch({response: {data: {data}}}) {
           this.$nuxt.$loading.finish();
           this.clearErrors();

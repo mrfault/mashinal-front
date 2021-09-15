@@ -3,14 +3,14 @@
     <form :id="'upload-image_form--' + inputId" enctype="multipart/form-data" novalidate>
       <div class="swiper-container" v-swiper:uploadSwiper="swiperOps">
         <div class="swiper-wrapper upload-image_form__thumbnails">
-          <div class="swiper-slide" v-for="key in orderdedKeys" :key="key">
-            <div class="upload-image_form__thumbnail" @click.stop="fileClick(key, getFileIndex(key))">
+          <div class="swiper-slide" v-for="(key, index) in orderdedKeys" :key="key">
+            <div class="upload-image_form__thumbnail" @click.stop="fileClick(key, index)">
               <img v-if="image[key]" :src="image[key]" alt="" />
               <div class="overlay">
-                <button type="button" :class="['btn-sq', {'disabled': loading[key]}]" @click.stop="fileRotate(key, getFileIndex(key))">
+                <button type="button" :class="['btn-sq', {'disabled': loading[key]}]" @click.stop="fileRotate(key, index)">
                   <icon name="reset" />
                 </button>
-                <button type="button" :class="['btn-sq ml-auto', {'disabled': loading[key]}]" @click.stop="fileDelete(key, getFileIndex(key))">
+                <button type="button" :class="['btn-sq ml-auto', {'disabled': loading[key]}]" @click.stop="fileDelete(key, index)">
                   <icon name="cross" />
                 </button>
               </div>
@@ -213,7 +213,6 @@
         reader.readAsDataURL(this.files[key].file);
       },
       fileDelete(key, index) {
-        
         this.$emit('file-deleted', index);
 
         this.$delete(this.files, key);
@@ -243,9 +242,6 @@
       },
       fileIsLoading(key) {
         return this.loading[key] === true;
-      },
-      getFileIndex(key) {
-        return Object.keys(this.files).findIndex(fileKey => fileKey == key);
       },
       moveToSlide(index, duration = 0, timeout = 0) {
         clearTimeout(this.swiperTimeout);

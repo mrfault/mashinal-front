@@ -3,9 +3,6 @@
     <div class="floating-cta" ref="floating">
       <div class="row">
         <div class="col">
-          <promote-button :announcement="announcement" />
-        </div>
-        <div class="col">
           <call-button :phone="contact.phone" />
         </div>
       </div>
@@ -17,15 +14,13 @@
 
 <script>
 import CallButton from '~/components/announcements/CallButton';
-import PromoteButton from '~/components/announcements/PromoteButton';
 
 export default {
   props: {
     announcement: {}
   },
   components: {
-    CallButton,
-    PromoteButton
+    CallButton
   },
   computed: {
     contact() {

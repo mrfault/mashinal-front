@@ -837,9 +837,9 @@ main {
       width: 100%;
       max-width: 400px;
       margin-left: auto;
-      & > .d-flex {
-        margin-bottom: auto;
-      }
+      // & > .d-flex {
+      //   margin-bottom: auto;
+      // }
     }
     &.show {
       transform: translate(0%);

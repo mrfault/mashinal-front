@@ -14,6 +14,13 @@ export const MenusDataMixin = {
       ];
     },
 
+    announcementsMenus() {
+      return [
+        ...this.searchMenus,
+        { title: 'parts', route: '/parts', children: this.partsMenus, icon: 'parts' }
+      ];
+    },
+
     pageMenus() {
       return [{
         title: 'contact_us',

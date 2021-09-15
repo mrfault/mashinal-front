@@ -18,12 +18,7 @@
           <template v-if="where === 'announcement'">
             <span class="badge from-border" v-if="announcement.is_autosalon">{{ $t(announcement.title ? 'shop' : 'is_autosalon') }}</span>
             <span class="d-flex">
-              <span class="badge squared" v-if="announcement.type[1]">
-                <icon name="vip" />
-              </span>
-              <span class="badge squared" v-if="announcement.type[2]">
-                <icon name="premium" />
-              </span>
+              <!-- here badges can be placed -->
             </span>
           </template>
         </div>

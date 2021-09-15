@@ -664,7 +664,7 @@ export const actions = {
   // Sell
   async checkSellTokens({ commit }, phone) {
     const res = await this.$axios.$post('/check/user/by/phone', { phone });
-    commit('mutate', { property: 'sellTokens', value: res.data && res.data.announce_count });
+    commit('mutate', { property: 'sellTokens', value: res.data && { transport: res.data.announce_count, parts: res.data.part_announce_count } });
     commit('mutate', { property: 'sellPhoneRegistered', value: res.data && res.data.have_account });
     commit('mutate', { property: 'sellSalonRights', value: res.data && res.data.is_autosalon });
   },

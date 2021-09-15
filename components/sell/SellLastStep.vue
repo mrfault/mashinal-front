@@ -194,7 +194,7 @@
         <div class="publish-post mb-4" id="anchor-finish">
           <div class="row mt-4 mb-4" v-if="showBanners && !isAlreadySold">
             <div class="service-banner col-6 col-lg-4" v-for="banner in ['vip','premium']" :key="banner">
-              <img :src="`/img/card-${banner}${isMobileBreakpoint ? '-mobile' : ''}-${locale}.png`" alt="banner" @click="publishPost(banner)" />
+              <img :src="`/img/card-${banner}${isMobileBreakpoint ? '-mobile' : ''}-${locale}.png`" alt="banner" @click="publishPost" />
             </div>
           </div>
           <p class="info-text full-width mt-2">
@@ -213,8 +213,8 @@
             {{ $t('edit_or_restore') }}
           </p>
           <div class="text-right">
-            <button type="button" @click="publishPost(false)" :class="['btn btn--green', { pending }]">
-              {{ isAlreadySold ? `${$t('place_and_pay')} 5 AZN` : (edit ? (restore ? $t('restore') : $t('edit_ad')) : $t('post_for_free')) }}
+            <button type="button" @click="publishPost" :class="['btn btn--green', { pending }]">
+              {{ isAlreadySold ? `${$t('place_and_pay')} 5 AZN` : (edit ? (restore ? $t('restore') : $t('edit_ad')) : $t('place_an_ad')) }}
             </button>
           </div>
         </div>
@@ -271,15 +271,14 @@ export default {
       showAllOptions: this.type !== 'cars' || this.edit,
       readCarNumberDisclaimer: false,
       showRules: false,
-      showBanners: this.type === 'cars' && !this.edit,
-      needToPay: false,
+      showBanners: false,
       isAlreadySold: false,
       showLoginPopup: false,
       pending: false
     }
   },
   computed: {
-    ...mapGetters(['sellOptions', 'sellSalonRights', 'staticPages', 'services']),
+    ...mapGetters(['sellOptions', 'sellSalonRights', 'staticPages']),
 
     progress() {
       let progress = 30;
@@ -458,9 +457,8 @@ export default {
       }
     },
     // post announcement
-    async publishPost(promote = false) {
+    async publishPost() {
       if (this.pending) return;
-      this.needToPay = promote;
       // wait till all images uploaded
       if (this.uploading) {
         this.$toasted.error(this.$t('please_wait_for_all_image_loading'));
@@ -468,19 +466,8 @@ export default {
       }
       this.form.saved_images = this.savedFiles;
       this.form.is_autosalon = this.isAutosalon;
-      // check if free announcement chosen
-      if (promote) {
-        this.form.package_id = 0;
-        this.form.service_active_id = this.services
-          .find(service => service.type == ({vip: 1, premium: 2})[promote]).actives
-          .find(active => active.daysOrCount == 3).id;
-      } else {
-        this.form.package_id = 0;
-        this.form.service_active_id = 0;
-      }
-      if (this.isAlreadySold) {
+      if (this.isAlreadySold) 
         this.form.can_pay = true;
-      }
       // generate post data
       let formData = new FormData();
       formData.append('data', JSON.stringify(this.form));
@@ -503,8 +490,8 @@ export default {
           this.fbTrack('Lead Api');
           this.gtagTrack('AW-600951956/ccUSCJT25_IBEJSZx54C');
         }
-        // redirect to payment if action was to restore or to purchase service
-        if (promote || this.restore || this.isAlreadySold) {
+        // redirect to payment if action was to restore
+        if (this.restore || this.isAlreadySold) {
           window.location = res.data.redirect_url;
         } else {
           this.$router.push(this.$localePath('/profile/announcements?status=2'), () => {
@@ -550,7 +537,7 @@ export default {
     handleAfterLogin() {
       this.resetSellTokens();
       this.showLoginPopup = false;
-      this.publishPost(this.needToPay);
+      this.publishPost();
     },
   },
   watch: {

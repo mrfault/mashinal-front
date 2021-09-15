@@ -7,39 +7,14 @@
           <span>{{ $t('statistics') }}</span>
         </h2>
       </div>
-      <div class="row">
-        <div class="col-lg-6 mb-2 mb-lg-0">
-          <div class="card full-height">
-            <div class="statistics-announcements larger full-height">
-              <div class="circle-bar" v-for="(stat, i) in circleStats" :key="i">
-                <div class="circle-bar_filled" :style="{borderColor: stat.color, color: stat.color}">
-                  <strong>{{ stat.value }}</strong>
-                </div>
-                <div class="circle-bar_info">
-                  <span>{{ $t(stat.label) }}</span>
-                </div>
-              </div>
+      <div class="card full-height mb-2 mb-lg-0">
+        <div class="statistics-announcements larger full-height">
+          <div class="circle-bar" v-for="(stat, i) in countStats" :key="i">
+            <div class="circle-bar_filled" :style="{borderColor: stat.color, color: stat.color}">
+              <strong>{{ stat.value }}</strong>
             </div>
-          </div>
-        </div>
-        <div class="col-lg-6">
-          <div class="card full-height">
-            <div class="statistics-packages">
-              <div class="packages-progress-bar" v-for="(stat, index) in packageStats" :key="index">
-                <div class="packages-progress-bar_placeholder">
-                  <div class="packages-progress-bar_filled"
-                    :style="{backgroundColor: stat.color, height:(100 * (stat.have / stat.total))+'%'}">
-                    <icon :name="stat.icon" />
-                  </div>
-                  <div class="packages-progress-bar_empty">
-                    <icon :name="stat.icon" :style="{color: stat.color}" />
-                  </div>
-                </div>
-                <div class="packages-progress-bar_info">
-                  <strong :style="{color: stat.color}">{{ stat.have }}</strong>
-                  <span>{{ stat.label }}</span>                
-                </div>
-              </div>
+            <div class="circle-bar_info">
+              <span>{{ $t(stat.label) }}</span>
             </div>
           </div>
         </div>

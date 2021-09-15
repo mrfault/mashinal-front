@@ -36,7 +36,6 @@ export default {
   },
   head() {
     return this.$headMeta({
-      // TODO fix translates
       title: this.$t('meta-title_parts'),
       description: this.$t('meta-descr_parts')
     });

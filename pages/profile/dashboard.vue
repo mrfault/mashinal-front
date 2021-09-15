@@ -12,18 +12,21 @@
                   <li class="text-red">{{ $t('from_possible_used') }}</li>
                 </ul>
                 <div class="statistics-sell-tokens_bar">
-                  <span class="bar-filled" :style="{width:`calc(${100*(announceStats.left/announceStats.possible)}% + 15px)`}" v-if="announceStats.left">{{ announceStats.left }}</span>
-                  <span class="bar-empty" :style="{width:`calc(${100*(announceStats.used/announceStats.possible)}% - 15px)`}" v-if="announceStats.used">{{ announceStats.used }}</span>
+                  <span class="bar-filled" :style="{width:`calc(${100*(announcementStats.left/announcementStats.possible)}% + 15px)`}" v-if="announcementStats.left">{{ announcementStats.left }}</span>
+                  <span class="bar-empty" :style="{width:`calc(${100*(announcementStats.used/announcementStats.possible)}% - 15px)`}" v-if="announcementStats.used">{{ announcementStats.used }}</span>
                 </div>
               </div>
             </template>
+            <template v-else-if="card.key === 'balance'">
+              <p>{{ $t('wallet_balance') }}:<br/><strong>{{ user.balance }} <icon name="azn" /></strong></p>
+            </template>
             <template v-else-if="card.key === 'calls'">
-              <h4 class="text-dark-blue-2">{{ announceStats.calls }}</h4>
-              <p v-html="$t('phone_visited_n_times', { count: $readPlural(announceStats.calls, $t('plural_forms_times')) })"></p>
+              <h4 class="text-dark-blue-2">{{ announcementStats.calls }}</h4>
+              <p v-html="$t('phone_visited_n_times', { count: $readPlural(announcementStats.calls, $t('plural_forms_times')) })"></p>
             </template>
             <template v-else-if="card.key === 'messages'">
               <ul>
-                <li>{{ $t('vsego') }}: {{ circleStats[3].value }}</li>
+                <li>{{ $t('vsego') }}: {{ countStats[3].value }}</li>
                 <li :class="{'text-red': notreadMsgCount > 0}">{{ $t('notread_messages') }}: {{ notreadMsgCount }}</li>
               </ul>
             </template>
@@ -31,28 +34,18 @@
               <h4>{{ user.autosalon.name }}</h4>
               <p>{{ user.autosalon.short_description || '' }}</p>
             </template>
-            <template v-else-if="card.key === 'services'">
-              <div class="statistics-services">
-                <ul>
-                  <li v-for="(stat, i) in packageStats" :key="i">
-                    <icon class="text-red" :name="stat.icon" />
-                    <span>{{ stat.label }} - <strong>{{ stat.have }}</strong></span>
-                  </li>
-                </ul>
-              </div>
-            </template>
             <template v-else-if="card.key === 'contract'">
-              <p class="mt-1">{{ $t('contract_end_time') }}:<br/><strong>{{ announceStats.contract.end_date }}</strong></p>
+              <p class="mt-1">{{ $t('contract_end_time') }}:<br/><strong>{{ announcementStats.contract.end_date }}</strong></p>
               <h4 class="skip-truncate">
                 <strong :class="shouldExtendContract ? 'text-red' : 'text-green'">
-                  {{ announceStats.contract.left_days }}
+                  {{ announcementStats.contract.left_days }}
                 </strong> 
-                {{ $readPlural(announceStats.contract.left_days, $t('plural_forms_day'), false) }}
+                {{ $readPlural(announcementStats.contract.left_days, $t('plural_forms_day'), false) }}
               </h4>
             </template>
             <template v-else-if="card.key === 'statistics'">
               <div class="statistics-announcements smaller">
-                <div class="circle-bar" v-for="(stat, i) in circleStats.slice(0,-1)" :key="i">
+                <div class="circle-bar" v-for="(stat, i) in countStats.slice(0,-1)" :key="i">
                   <div class="circle-bar_filled" :style="{borderColor: stat.color, color: stat.color}">
                     <strong>{{ stat.value }}</strong>
                   </div>
@@ -65,6 +58,9 @@
             <template #footer>
               <nuxt-link class="text-green" :to="$localePath('/sell')" v-if="card.key === 'announcements'">
                 {{ $t(locale === 'az' ? 'place_an_ad' : 'to_sell') }}
+              </nuxt-link>
+              <nuxt-link class="text-green" :to="$localePath('/profile/balance')" v-else-if="card.key === 'balance'">
+                {{ $t('replenish') }}
               </nuxt-link>
               <a class="text-green" href="javascript:void(0);" @click="showExtendContract = true" v-else-if="card.key === 'contract' && shouldExtendContract">
                 {{ $t('pay') }}
@@ -88,7 +84,7 @@
           @close="showExtendContract = false"
         >
           <form class="form" @submit.prevent="extendContract" novalidate>
-            <p v-html="$t('pay_till_date', { date: announceStats.contract.end_date })"></p>
+            <p v-html="$t('pay_till_date', { date: announcementStats.contract.end_date })"></p>
             <h4>{{ $t('payment_method') }}</h4>
             <div class="mb-2 mb-lg-0">
               <form-buttons v-model="selectedPaymentMethod" :options="paymentMethodOptions" :group-by="2" />
@@ -98,7 +94,7 @@
               <div class="col-6">
                 <span class="total-price">
                   <span>{{ $t('total')}}</span>
-                  <strong>{{ announceStats.contract.price }} ₼</strong>
+                  <strong>{{ announcementStats.contract.price }} ₼</strong>
                 </span>
               </div>
               <div class="col-6">
@@ -166,7 +162,7 @@
       cards() {
         return [
           { key: 'announcements', title: 'my_announces', route: '/profile/announcements', icon: 'photo' },
-          { key: 'services', title: 'services', route: '/profile/payments', icon: 'crown' },
+          { key: 'balance', title: 'balans', route: '/profile/balance', icon: 'wallet' },
           { key: 'statistics', title: 'statistics', route: '/profile/statistics', icon: 'analytics' },
           { key: 'messages', title: 'messages', route: '/profile/messages', icon: 'chat' },
           { key: 'calls', title: 'phone_call_count', route: '/profile/calls', icon: 'phone' },
@@ -186,7 +182,7 @@
       },
 
       shouldExtendContract() {
-        return this.announceStats.contract.left_days < 8;
+        return this.announcementStats.contract.left_days < 8;
       }
     },
     methods: {

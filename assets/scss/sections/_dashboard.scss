@@ -76,6 +76,9 @@
           color: $dark-blue-2;
         }
       }
+      .icon-azn {
+        font-size: 12px;
+      }
     }
   }
   &_footer {
@@ -221,12 +224,6 @@
   }
   &.larger {
     padding: 55px 30px;
-    .circle-bar {
-      &:nth-child(1),
-      &:nth-child(2) {
-        margin-bottom: 75px;
-      }
-    }
   }
   &.smaller {
     padding: 0;
