@@ -6,19 +6,22 @@
     class="create-store"
   >
     <form-text-input 
-      :placeholder="$t('name') +', '+ $t('surname')" 
       v-model="fullName"
+      :placeholder="$t('name') +', '+ $t('surname')"
+      :invalid="$v.fullName.$error"
       class="mb-3"
     />
     <form-text-input 
-      :placeholder="$t('mobile_number')" 
       v-model="phone"
+      :placeholder="$t('mobile_number')" 
+      :invalid="$v.phone.$error"
+      :mask="$maskPhone()"
+      autocomplete="tel"
       class="mb-2"
     />
     <p class="create-store__desc mb-2">{{ $t('you_will_be_contacted_shortly') }}</p>
     <button
       class="btn btn--green full-width"
-      :disabled="!fullName || !phone"
       @click.prevent="confirm"
     >
       {{ $t('confirm') }}
@@ -27,6 +30,9 @@
 </template>
 
 <script>
+import { required } from 'vuelidate/lib/validators';
+import { isPhoneNumber } from '~/lib/validators';
+
 export default {
   props: {
     visible: {
@@ -40,8 +46,15 @@ export default {
       phone: ''
     }
   },
+  validations: {
+    fullName: { required },
+    phone: { required, isPhoneNumber }
+  },
   methods: {
     confirm() {
+      this.$v.$touch();
+      console.log(this.$v)
+      if (this.$v.$pending || this.$v.$error) return;
       this.$axios.$post('/part/open/store', {
         full_name: this.fullName,
         phone: this.phone.replace(/\D/g, ''),
@@ -49,10 +62,12 @@ export default {
         .then(res => {
           this.modalVisible = false
           this.fullName = ''
-          this.phone = ''
+          this.phone = '',
+          this.$v.$reset();
+          this.$toasted.success(this.$t('your_request_has_been_sent'))
         })
         .catch(error => {
-          console.error(error)
+          this.$toasted.error(this.$t('error_occurred'))
         })
     }
   },

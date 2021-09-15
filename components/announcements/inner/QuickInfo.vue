@@ -3,7 +3,7 @@
     <h1>{{ getAnnouncementTitle(announcement) }}</h1>
     <div class="price">
       <span>{{ announcement.price }}</span>
-      <span><icon name="exchange" /> {{ announcement.price_converted }}</span>
+      <span v-if="type !== 'parts'"><icon name="exchange" /> {{ announcement.price_converted }}</span>
     </div>
     <template v-if="isMobileBreakpoint">
       <div class="more-data d-flex">

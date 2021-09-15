@@ -74,12 +74,13 @@ export default {
   methods: {
     searchParts() {
       const data = JSON.parse(this.$route.query.parts_filter || '{}');
+      data.category_id = this.category.id
       this.$store.dispatch('parts/search', data)
     }
   },
   computed: {
     ...mapGetters({
-      announcements: 'parts/announcements'
+      announcements: 'parts/announcements',
     }),
     crumbs() {
       return [

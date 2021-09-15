@@ -8,7 +8,7 @@
         :class="{'keyword--highlighted': highlightLastKeyword && index === keywords.length - 1}"
         @click="removeKeyword(index)"
       >
-        <icon name="check" />
+        <icon name="cross" />
         {{ keyword }}
       </span>
     </div>
