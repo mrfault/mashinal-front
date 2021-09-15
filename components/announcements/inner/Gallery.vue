@@ -35,13 +35,13 @@
         <div class="gallery-overlay_bottom d-flex">
           <template v-if="where === 'announcement'">
             <span class="d-flex">
-              <add-comparison :announcement="announcement" v-if="announcement.car_catalog" />
+              <add-comparison :id="announcement.id_unique" v-if="announcement.car_catalog" />
               <add-favorite :announcement="announcement" />
             </span>
             <add-complaint :announcement="announcement" />
           </template>
           <template v-else>
-            <add-comparison :announcement="announcement" v-if="announcement.car_catalog" />
+            <add-comparison :id="announcement.id_unique" v-if="announcement.car_catalog" />
           </template>
         </div>
       </div>

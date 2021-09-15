@@ -37,9 +37,11 @@ export const getters = {
 
 export const actions = {
   getInitialAnnouncements({ dispatch, commit }) {
+    const val = this.$cookies.get('comparisonAnnouncements') || []
+
     commit('mutate', {
       property: 'announcementIds',
-      value: JSON.parse(this.$cookies.get('comparisonAnnouncements') || '[]')
+      value: val
     })
     dispatch('getAnnouncements')
   },
@@ -51,11 +53,11 @@ export const actions = {
       dispatch('getAnnouncements')
     }
 
-    this.$cookies.set('comparisonAnnouncements', JSON.stringify(state.announcementIds))
+    this.$cookies.set('comparisonAnnouncements', state.announcementIds)
   },
   removeAnnouncement({ dispatch, commit, state }, index) {
     commit('removeAnnouncement', index);
-    this.$cookies.set('comparisonAnnouncements', JSON.stringify(state.announcementIds))
+    this.$cookies.set('comparisonAnnouncements', state.announcementIds)
     dispatch('getAnnouncements')
   },
   async getAnnouncements({ commit, state }) {

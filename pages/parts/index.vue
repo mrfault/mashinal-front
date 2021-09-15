@@ -2,17 +2,18 @@
   <div class="pages-moto-index">
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
-      <Categories class="d-none d-lg-flex" />
-      <PartSearchForm
+      <categories class="d-none d-lg-flex" />
+      <part-search-form
         :pending="pending"
         @pending="pending = true"
         @submit="searchParts" 
       />
-      <Banners />
-      <Grid
-        v-if="announcements"
+      <banners />
+      <grid
+        v-if="announcements.length"
         :announcements="announcements"
       />
+      <no-results v-else/>
     </div>
   </div>
 </template>
@@ -23,6 +24,7 @@ import Grid from '~/components/announcements/Grid.vue'
 import Categories from '~/components/parts/Categories.vue'
 import Banners from '~/components/parts/Banners.vue'
 import PartSearchForm from '~/components/parts/PartSearchForm.vue'
+import NoResults from '~/components/elements/NoResults.vue'
 
 export default {
   name: 'pages-parts-index',
@@ -42,7 +44,8 @@ export default {
     Grid,
     Categories,
     Banners,
-    PartSearchForm
+    PartSearchForm,
+    NoResults
   },
   async asyncData({ store }) {
     await store.dispatch('parts/getHomePageData');

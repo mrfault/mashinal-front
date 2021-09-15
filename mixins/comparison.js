@@ -52,7 +52,7 @@ export const ComparisonMixin = {
       return announcement.humanize_mileage + ' km'
     },
     getColor(announcement) {
-      return announcement.colors.map(item => item.name[this.locale]).join(', ')
+      return announcement?.colors?.map(item => item.name[this.locale]).join(', ') || []
     },
     getCustomsClearance(announcement) {
       return announcement.customs_clearance ? 'Gömrükdən keçmiş' : 'Gömrükdən keçməmiş'
