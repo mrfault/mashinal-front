@@ -957,6 +957,8 @@ export default {
   "no spikes": "Без шипов",
   "no_announcements_found": "Не найдено объявлений",
   "no_announcements_on_balance": "Вы превысили лимит размещения объявления.",
+  "no_announcements_on_balance_transport": "Вы превысили лимит размещения объявления на легковые, мото и коммерческие автомобили.",
+  "no_announcements_on_balance_parts": "Вы превысили лимит размещения объявления на запчасти.",
   "no_blocked_users": "Вы еще не заблокировали ни одного пользователя",
   "no_favorites": "Вы еще не добавляли в избранное",
   "no_fines_count": "Без штрафов за транспорт",

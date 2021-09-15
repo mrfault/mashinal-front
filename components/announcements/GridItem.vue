@@ -21,7 +21,7 @@
           </span>
         </div>
         <div class="item-overlay_bottom d-flex">
-          <span class="d-flex" v-if="announcement.status == 1">
+          <span class="d-flex" v-if="announcement.status === undefined || announcement.status == 1">
             <add-comparison :id="announcement.id_unique" v-if="getType === 'Car'"/>
             <add-favorite :announcement="announcement" />
           </span>

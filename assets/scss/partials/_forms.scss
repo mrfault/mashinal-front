@@ -333,13 +333,19 @@ input::-webkit-inner-spin-button {
   position: relative;
   &_triangle {
     position: absolute;
-    bottom: -10px;
     color: $greyish-blue-2;
     &.anchor-right {
       right: 15px;
     }
     &.anchor-left {
       left: 15px;
+    }
+    &.anchor-bottom {
+      bottom: -10px;
+    }
+    &.anchor-top {
+      top: -10px;
+      transform: scale(-1);
     }
   }
   &_label {
@@ -406,7 +412,6 @@ input::-webkit-inner-spin-button {
   }
   &_dropdown {
     position: absolute;
-    top: 54px;
     width: 100%;
     width: calc(100% + 1px);
     z-index: 2;
@@ -416,6 +421,12 @@ input::-webkit-inner-spin-button {
     border-radius: 4px;
     box-shadow: $shadow-light-5;
     padding: 7px 0;
+    &.anchor-top {
+      bottom: 54px;
+    }
+    &.anchor-bottom {
+      top: 54px;
+    }
     &.anchor-left {
       left: -1px;
     }
