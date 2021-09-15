@@ -146,7 +146,7 @@
             <div class="col-lg-4 mb-3">
               <form-checkbox
                 v-model="form.have_delivery"
-                :label="$t('delivery')"
+                :label="$t('have_delivery')"
                 checked-value="delivery"
                 id="delivery"
               />
@@ -156,7 +156,7 @@
             <div class="col-lg-4 mb-3">
               <form-checkbox
                 v-model="form.have_warranty"
-                :label="$t('warranty')"
+                :label="$t('have_warranty')"
                 checked-value="warranty"
                 id="warranty"
               />
@@ -260,7 +260,7 @@ export default {
         description: '',
         category_id: '',
         sub_category_id: '',
-        region_id: '',
+        region_id: 1,
         brand_id: '',
         is_new: true,
         is_original: true,
@@ -322,7 +322,7 @@ export default {
         ...this.form,
         sub_category_id: '',
         brand_id: '',
-        region_id: '',
+        region_id: 1,
         is_new: true,
         is_original: true,
       }
@@ -360,6 +360,11 @@ export default {
 
       if (!this.upload_ended) {
         this.$toasted.error(this.$t('please_wait_for_all_image_loading'));
+        return false;
+      }
+      
+      if (!this.files.length) {
+        this.$toasted.error(this.$t('content_component_error_image'));
         return false;
       }
 
@@ -455,7 +460,7 @@ export default {
       return result
     },
     updatePreview() {
-      if (this.form.region_id) {
+      if (this.form.region_id && this.regions.length) {
         this.setSellPreviewData({
           key: 'region',
           value: this.regions.find(r => r.id === this.form.region_id)?.name

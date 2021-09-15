@@ -215,6 +215,10 @@ $column-width-xs: calc(100% / 1.8);
     &__items {
       display: flex;
       overflow: auto;
+
+      @include media-max-width('lg') {
+        padding-bottom: 15px;
+      }
     }
 
     &__item {

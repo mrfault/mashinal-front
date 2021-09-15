@@ -1741,7 +1741,7 @@ export default {
   "fuel_brand": "Тип топлива",
   "dimensions": "Габариты",
   "width": "Ширина",
-  "height": "Рост",
+  "height": "Высота",
   "length": "Длина",
   "salon": "Салон",
   "is_original":"Оригинальный",
@@ -1764,4 +1764,7 @@ export default {
   "all_season":"Всесезонные",
   "studded":"Шипованные",
   "not_studded":"Нешипованные",
+  "is_negotiable":"Договорная",
+  "have_delivery":"Доставка",
+  "have_warranty":"Гарантия",
 }

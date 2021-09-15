@@ -41,7 +41,7 @@
             <add-complaint :announcement="announcement" />
           </template>
           <template v-else>
-            <add-comparison :announcement="announcement" v-if="announcement.car_catalog" />
+            <add-comparison :id="announcement.id_unique" v-if="announcement.car_catalog" />
           </template>
         </div>
       </div>

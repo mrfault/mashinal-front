@@ -1764,4 +1764,7 @@ export default {
   "all_season":"Bütün mövsumlar",
   "studded":"Şipli",
   "not_studded":"Şipsiz",
+  "is_negotiable":"Razılaşma yolu ilə",
+  "have_delivery": "Çatdırılma mövcuddur",
+  "have_warranty": "Zəmanət",
 }
