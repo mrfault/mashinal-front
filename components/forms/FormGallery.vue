@@ -95,8 +95,7 @@ export default {
         let isImage = droppedFiles[i].type.match('image.*');
         if(!isImage || this.filesCount === this.maxFiles) break;
         
-        let key = 'new_' + this.index;
-        this.index++;
+        let key = 'new_' + String(Math.random()).split('.')[1];
         newFiles.push({
           file: droppedFiles[i],
           key
@@ -154,7 +153,7 @@ export default {
     },
     updateInitialData() {
       Object.assign(this.$data, this.$options.data.apply(this));
-      this.initialKeys.map((key, index) => {
+      this.initialKeys?.map((key, index) => {
         this.$set(this.fileBlobs, key, null);
         this.$set(this.previews, key, this.$withBaseUrl(this.initialImages[index]));
         this.$set(this.fileKeys, index, key);
