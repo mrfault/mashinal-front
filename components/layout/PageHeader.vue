@@ -64,7 +64,7 @@
                 <div class="container">
                   <ul class="dropdown-menu row">
                     <li class="col-3" v-for="submenu in menu.children" :key="submenu.title">
-                      <nuxt-link :to="$localePath(submenu.route)">
+                      <nuxt-link :to="$localePath(submenu.route)" exact>
                         <icon :name="submenu.icon" />
                         {{ $t(submenu.title) }}
                       </nuxt-link>
