@@ -180,7 +180,7 @@ export default {
               values: this.models.map(m => this.getFuelConsumptionMixed(m.modification || m.modifications.find(mod => mod.id === m.catalog_id))),
             },
             {
-              title: this.$t('fuel_brand'),
+              title: this.$t('fuel_type'),
               values: this.models.map(m => this.getFuelBrand(m.modification || m.modifications.find(mod => mod.id === m.catalog_id))),
             },
             {

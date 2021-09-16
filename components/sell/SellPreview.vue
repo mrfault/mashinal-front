@@ -50,10 +50,11 @@ export default {
           this.sellPreviewData.mileage_measure
         ].join(' ')
       } else if (this.sellPreviewData.shine_width && this.sellPreviewData.height && this.sellPreviewData.diameter) {
-        return [
-          this.sellPreviewData.shine_width + '/' + this.sellPreviewData.height,
+        return (
+          this.sellPreviewData.shine_width + '/' +
+          this.sellPreviewData.height + '/' +
           this.sellPreviewData.diameter
-        ].join(' ')
+        )
       }
     },
     announcementPrice() {

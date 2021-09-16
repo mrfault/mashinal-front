@@ -11,7 +11,7 @@
             class="comparison__item__image"
             :style="`background-image: url(${getAnnouncementImage(announcement)})`"
           >
-            <div class="comparison__item__image--close" @click="removeItem(announcement.id_unique)">
+            <div class="action-button action-button--close" @click="removeItem(announcement.id_unique)">
               <icon name="cross" />
             </div>
           </div>
@@ -84,113 +84,113 @@ export default {
     collapses() {
       return [
         {
-          title: 'Elan',
+          title: this.$t('announcement'),
           defaultCollapsed: true,
           items: [
             {
-              title: 'Modifikasiya və təchizat',
+              title: this.$t('modification_and_supply'),
               values: this.announcements.map(a => this.getModificationAndSupply(a.car_catalog)),
             },
             {
-              title: 'Buraxılış ili',
+              title: this.$t('years'),
               values: this.announcements.map(a => this.getYear(a.car_catalog)),
             },
             {
-              title: 'Yürüş',
+              title: this.$t('mileage'),
               values: this.announcements.map(a => this.getMileage(a.car_catalog)),
             },
             {
-              title: 'Rəng',
+              title: this.$t('color'),
               values: this.announcements.map(a => this.getColor(a.car_catalog)),
             },
             {
-              title: 'Gömrük',
+              title: this.$t('customs'),
               values: this.announcements.map(a => this.getCustomsClearance(a.car_catalog)),
             },
             {
-              title: 'İlk sahibi',
+              title: this.$t('first_owner'),
               values: this.announcements.map(a => this.getOwnerType(a.car_catalog)),
             },
           ]
         },
         {
-          title: 'İşlənmə göstəriciləri',
+          title: this.$t('ekspluatatsionnye-pokazateli'),
           defaultCollapsed: false,
           items: [
             {
-              title: 'Maksimal sürət',
+              title: this.$t('max_speed'),
               values: this.announcements.map(a => this.getMaxSpeed(a.car_catalog)),
             },
             {
-              title: 'Sürətlənmə 100 km/saat,s',
+              title: this.$t('razgon-do-100-kmch-s'),
               values: this.announcements.map(a => this.getAcceleration100(a.car_catalog)),
             },
             {
-              title: 'Yanacaq sərfiyyatı, şəhər',
+              title: this.$t('fuel_consumption_city'),
               values: this.announcements.map(a => this.getFuelConsumptionCity(a.car_catalog)),
             },
             {
-              title: 'Yanacaq sərfiyyatı, magistral',
+              title: this.$t('fuel_consumption_highway'),
               values: this.announcements.map(a => this.getFuelConsumptionTrack(a.car_catalog)),
             },
             {
-              title: 'Yanacaq sərfiyyatı, qarışıq',
+              title: this.$t('fuel_consumption_mixed'),
               values: this.announcements.map(a => this.getFuelConsumptionMixed(a.car_catalog)),
             },
             {
-              title: 'Yanacaq markası',
+              title: this.$t('fuel_type'),
               values: this.announcements.map(a => this.getFuelBrand(a.car_catalog)),
             },
             {
-              title: 'Ekoloji sinif',
+              title: this.$t('ekologicheskiy-klass'),
               values: this.announcements.map(a => this.getEcoClass(a.car_catalog)),
             },
           ]
         },
         {
-          title: 'Mühərrik',
+          title: this.$t('dvigatel'),
           defaultCollapsed: true,
           items: [
             {
-              title: 'Mühərrik növü',
+              title: this.$t('engine'),
               values: this.announcements.map(a => this.getEngineType(a.car_catalog)),
             },
             {
-              title: 'At gücü / Maksimal at gücü',
+              title: this.$t('horse_power') + '/' + this.$t('max_horse_power'),
               values: this.announcements.map(a => this.getHorsePower(a.car_catalog)),
             },
             {
-              title: 'Maksimum fırlanma anı',
+              title: this.$t('maksimalnyy-krutyashchiy-moment'),
               values: this.announcements.map(a => this.getTorque(a.car_catalog)),
             },
           ]
         },
         {
-          title: 'Ölçülər',
+          title: this.$t('dimensions'),
           defaultCollapsed: true,
           items: [
             {
-              title: 'Uzunluq',
+              title: this.$t('length'),
               values: this.announcements.map(a => this.getLength(a.car_catalog)),
             },
             {
-              title: 'Eni',
+              title: this.$t('width'),
               values: this.announcements.map(a => this.getWidth(a.car_catalog)),
             },
             {
-              title: 'Hündürlük',
+              title: this.$t('height'),
               values: this.announcements.map(a => this.getHeight(a.car_catalog)),
             },
             {
-              title: 'Təkər bazası',
+              title: this.$t('kolesnaya-baza'),
               values: this.announcements.map(a => this.getWheelBase(a.car_catalog)),
             },
             {
-              title: 'Ön izin eni',
+              title: this.$t('shirina-peredney-kolei'),
               values: this.announcements.map(a => this.getFrontWheelWidth(a.car_catalog)),
             },
             {
-              title: 'Arxa izin eni',
+              title: this.$t('shirina-zadney-kolei'),
               values: this.announcements.map(a => this.getRearWheelWidth(a.car_catalog)),
             },
           ]

@@ -1,6 +1,6 @@
 <template>
   <transition-group name="fade">
-    <div v-if="badgeVisible" :key="'badgeVisible'">
+    <div v-if="badgeVisible && !isMobileBreakpoint" :key="'badgeVisible'">
       <div class="comparison-badge" @click="handleClick">
         <icon name="compare" />
       </div>
