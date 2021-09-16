@@ -810,6 +810,7 @@ export default {
   "maksimalnaya-moshchnost-lskvt-pri-obmin": "Максимальная мощность, л.с./кВт при об/мин",
   "maksimalnaya-moshchnost-lskvt-pri-obmin__result": "{ls} / {kvt} при {ob/min}",
   "maksimalnaya-skorost-kmch": "Максимальная скорость, км/ч",
+  "maksimalnyy-krutyashchiy-moment": "Максимальный крутящий момент",
   "maksimalnyy-krutyashchiy-moment-nm-pri-obmin": "Максимальный крутящий момент, Н*м при об/мин",
   "maksimalnyy-krutyashchiy-moment-nm-pri-obmin__result": "{nm} при {ob/min}",
   "male": "Мужской",
@@ -1740,7 +1741,7 @@ export default {
   "fuel_consumption_city": "Расход топлива, город",
   "fuel_consumption_highway": "Расход топлива, трасса",
   "fuel_consumption_mixed": "Расход топлива, смешанный",
-  "fuel_brand": "Тип топлива",
+  "fuel_type": "Тип топлива",
   "dimensions": "Габариты",
   "width": "Ширина",
   "height": "Высота",
@@ -1770,4 +1771,11 @@ export default {
   "have_delivery":"Доставка",
   "have_warranty":"Гарантия",
   "sub_category": "Подкатегория",
+  "starting_current":"Пусковой ток",
+  "weight":"Вес",
+
+  // Check translations
+  "announcement":"Объявления",
+  "horse_power":"Лошадиные силы",
+  "max_horse_power":"Максимальная лошадиные силы",
 }
