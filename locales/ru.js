@@ -1770,4 +1770,6 @@ export default {
   "have_delivery":"Доставка",
   "have_warranty":"Гарантия",
   "sub_category": "Подкатегория",
+  "starting_current":"Пусковой ток",
+  "weight":"Вес",
 }

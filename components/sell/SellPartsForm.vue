@@ -51,7 +51,7 @@
         <!-- Subcategory -->
         <div class="col-lg-4 mb-3 mb-lg-0" v-if="subcategories.length">
           <form-select
-            :label="$t('subcategory')"
+            :label="$t('sub_category')"
             :options="subcategories"
             v-model="form.sub_category_id"
             :invalid="$v.form.sub_category_id.$error"
@@ -64,6 +64,7 @@
             :label="$t('select_brand')"
             :options="brands"
             v-model="form.brand_id"
+            :invalid="$v.form.brand_id.$error"
           />
         </div>
         
@@ -104,9 +105,10 @@
                 v-model="form[filter.key]"
                 :label="$t(filter.key)"
                 :options="filter.values"
-                @change="dynamicFilterOnChange(filter.key, $event)"
+                :invalid="errors.includes(filter.key)"
                 has-search
                 translateOptions
+                @change="dynamicFilterOnChange(filter.key, $event)"
               />
 
               <!-- Checkbox -->
@@ -116,6 +118,15 @@
                 :label="$t(filter.key)"
                 :checked-value="form[filter.key]"
                 :id="'dynamic-filter-' + filter.key"
+                :invalid="errors.includes(filter.key)"
+              />
+
+              <!-- Input -->
+              <form-text-input
+                v-if="filter.component === 'filter-single-input'"
+                v-model="form[filter.key]"
+                :placeholder="$t(filter.key)"
+                :invalid="errors.includes(filter.key)"
               />
             </div>
 
@@ -124,6 +135,7 @@
               <form-numeric-input
                 :placeholder="$t('price')"
                 v-model="form.price"
+                :invalid="$v.form.price.$error"
               />
               <form-checkbox
                 v-model="form.is_negotiable"
@@ -140,6 +152,7 @@
                 :label="$t('region')"
                 :options="regions"
                 has-search
+                :invalid="$v.form.region_id.$error"
               />
             </div>
 
@@ -225,16 +238,36 @@
         </div>
       </div>
     </form>
+
+    <backdrop @click="showLoginPopup = false" v-if="showLoginPopup">
+      <template #default="{ show }">
+        <transition name="translate-fade">
+          <login-tabs v-if="show"
+            :popup="true" 
+            :skip-sign-in="true"  
+            :action-text="{
+              login: $t('login_and_publish'),
+              register: $t('register_and_publish'),
+              confirm: $t('confirm_and_publish') 
+            }"
+            :force-sell-phone="false"
+          />
+        </transition>
+      </template>
+    </backdrop>
   </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
 import { required, requiredIf, minLength, maxLength } from 'vuelidate/lib/validators';
+import { ToastErrorsMixin } from '~/mixins/toast-errors';
+
 import FormKeywords from '~/components/forms/FormKeywords'
 import FormGallery from '~/components/forms/FormGallery'
 
 export default {
+  mixins: [ToastErrorsMixin],
   props: {
     isEdit: {
       type: Boolean,
@@ -280,8 +313,38 @@ export default {
       maxFiles: 22,
       files: [],
       date: Math.floor(Date.now() / 1000),
-      upload_ended: true
+      upload_ended: true,
+      showLoginPopup: false,
+      pending: false,
+      errors: []
     }
+  },
+  validations: {
+    form: {
+      title: {
+        required,
+        minLength: minLength(2),
+        maxLength: maxLength(20)
+      },
+      category_id: {
+        required
+      },
+      sub_category_id: {
+        required: requiredIf(function() {return this.filters.sub_categories.length})
+      },
+      brand_id: {
+        required: requiredIf(function() {return this.filters.brands.length})
+      },
+      region_id: {
+        required: requiredIf(function() {return this.filters.regions.length})
+      },
+      price: {
+        required: requiredIf(function() {return !this.form.is_negotiable})
+      },
+    }
+  },
+  created() {
+    this.$nuxt.$on('login', this.handleAfterLogin);
   },
   mounted() {
     if (this.initialForm) {
@@ -301,23 +364,8 @@ export default {
       })
     }
   },
-  validations: {
-    form: {
-      title: {
-        required,
-        minLength: minLength(2),
-        maxLength: maxLength(20)
-      },
-      category_id: {
-        required
-      },
-      sub_category_id: {
-        required: requiredIf(function() {return this.filters.sub_categories.length})
-      },
-    }
-  },
   methods: {
-    ...mapActions(['setSellPreviewData']),
+    ...mapActions(['setSellPreviewData', 'resetSellTokens']),
     categorySelected(id) {
       this.form = {
         ...this.form,
@@ -345,6 +393,7 @@ export default {
       const defaults = {
         'multiselect-component': '',
         'checkbox-component': false,
+        'filter-single-input': '',
       }
       
       this.filters.filters.forEach(filter => {
@@ -355,47 +404,6 @@ export default {
     },
     dynamicFilterOnChange(key, value) {
       this.form = {...this.form}
-    },
-    async submit() {
-      this.$v.$touch();
-
-      if (!this.upload_ended) {
-        this.$toasted.error(this.$t('please_wait_for_all_image_loading'));
-        return false;
-      }
-      
-      if (!this.files.length) {
-        this.$toasted.error(this.$t('content_component_error_image'));
-        return false;
-      }
-
-      if (!(this.$v.$pending || this.$v.$error)) {
-        let data = {...this.form}
-        data = this.removeEmptyKeys({
-          ...this.form,
-          tags: this.form.keywords.map(keyword => ({ text: keyword })),
-          saved_images: this.files.map(({ id }) => id),
-          deletedIds: []
-        })
-
-        delete data.keywords;
-
-        const formData = new FormData()
-        formData.append('data', JSON.stringify(data))
-
-        try {
-          let requestURL;
-          if (this.isEdit) {
-            requestURL= '/sell/part/edit/' + this.form.id;
-          } else {
-            requestURL= '/sell/part/post/publish';
-          }
-          const response = await this.$axios.post(requestURL, formData)
-          this.$router.push(this.$localePath('/profile/announcements'))
-        } catch(error) {
-          console.error(error)
-        }
-      }
     },
     addFiles(files) {
       this.upload_ended = false;
@@ -447,18 +455,121 @@ export default {
         path: data.images[0]
       }
     },
-    removeEmptyKeys(obj) {
-      const result = {};
-      
-      Object.entries(obj).map((obj) => {
-        const key = obj[0]
-        const value = obj[1]
-        if (!(value === null || value === undefined || value === '')) {
-          result[key] = value
+    async rotateImage(index, key) {
+      if (this.files[index]) {
+        try {
+          this.$nuxt.$loading.start();
+          const { data } = await this.$axios.$get(`/media/${this.files[index].id}/rotate/right`);
+          this.files.find(f => f.key === key).file = data.thumb
+          this.$nuxt.$loading.finish();
+        } catch({response: {data: {data}}}) {
+          this.$nuxt.$loading.finish();
+          this.clearErrors();
+          for (let key in data) {
+            this.$toasted.error(data[key]);
+          }
+        }
+      }
+    },
+    submit() {
+      const validated = this.validate()
+      if (validated) {
+        this.publish()
+      }
+    },
+    validate() {
+      this.$v.$touch();
+
+      this.errors = [];
+      this.filters.filters.forEach(filter => {
+        if (filter.is_required){
+          const value = this.form[filter.key]
+          if (value === '') {
+            this.errors.push(filter.key)
+          }
         }
       })
+      
+      if (this.errors.length) {
+        return false
+      }
 
-      return result
+      if (!this.upload_ended) {
+        this.$toasted.error(this.$t('please_wait_for_all_image_loading'));
+        return false;
+      }
+      
+      if (!this.files.length) {
+        this.$toasted.error(this.$t('content_component_error_image'));
+        return false;
+      }
+
+      if (!(this.$v.$pending || this.$v.$error)) {
+        return true
+      }
+    },
+    async publish() {
+      let data = {...this.form}
+      data = this.removeEmptyKeys({
+        ...this.form,
+        tags: this.form.keywords.map(keyword => ({ text: keyword })),
+        saved_images: this.files.map(({ id }) => id),
+        deletedIds: []
+      })
+      delete data.keywords;
+
+      const formData = new FormData()
+      formData.append('data', JSON.stringify(data))
+
+      this.pending = true;
+      try {
+        let requestURL;
+        if (this.isEdit) {
+          requestURL= '/sell/part/edit/' + this.form.id;
+        } else {
+          requestURL= '/sell/part/post/publish';
+        }
+        const response = await this.$axios.post(requestURL, formData)
+        if (this.loggedIn) 
+          await this.$auth.fetchUser();
+        this.$router.push(this.$localePath('/profile/announcements?status=2'), () => {
+          this.$toasted.success(this.$t('saved_changes'));
+        });
+      } catch ({response: {status, data: {data, message}}}) {
+        this.clearErrors();
+        this.pending = false;
+        
+        if (status === 420) {
+          this.$toasted.error(this.$t(message));
+          // if (data.need_pay) {
+          //   this.isAlreadySold = true;
+          //   this.scrollTo('.publish-post');
+          // }
+        } else {
+          // find errors
+          let dataLength = data && Object.keys(data).length;
+          if (dataLength) {
+            let count = 0;
+            for (let key in data) {
+              // key = Object.keys(data)[dataLength - Object.keys(data).indexOf(key) - 1];
+              let errorKey = key;
+              this.errors.push(errorKey);
+              let errorIndex = this.errors.indexOf(errorKey);
+              let errorText = `(${dataLength - errorIndex}/${dataLength}) ${data[key][0]}`;
+              // show error
+              this.showError(errorKey, errorText, { fieldView: key, offset: this.isMobileBreakpoint ? 30 : -20 }, count === 0);
+              count++;
+            }
+          } else if (message && status !== 499) {
+            this.$toasted.error(this.$t(message));
+          }
+        }
+
+        // check if user logged in
+        if (!this.showLoginPopup && status === 499) {
+          this.showLoginPopup = true;
+        }
+      }
     },
     updatePreview() {
       if (this.form.region_id && this.regions.length) {
@@ -518,22 +629,24 @@ export default {
         });
       }
     },
-    async rotateImage(index, key) {
-      if (this.files[index]) {
-        try {
-          this.$nuxt.$loading.start();
-          const { data } = await this.$axios.$get(`/media/${this.files[index].id}/rotate/right`);
-          this.files.find(f => f.key === key).file = data.thumb
-          this.$nuxt.$loading.finish();
-        } catch({response: {data: {data}}}) {
-          this.$nuxt.$loading.finish();
-          this.clearErrors();
-          for (let key in data) {
-            this.$toasted.error(data[key]);
-          }
+    removeEmptyKeys(obj) {
+      const result = {};
+      
+      Object.entries(obj).map((obj) => {
+        const key = obj[0]
+        const value = obj[1]
+        if (!(value === null || value === undefined || value === '')) {
+          result[key] = value
         }
-      }
-    }
+      })
+
+      return result
+    },
+    handleAfterLogin() {
+      this.resetSellTokens();
+      this.showLoginPopup = false;
+      this.publish();
+    },
   },
   computed: {
     conditionButtons() {

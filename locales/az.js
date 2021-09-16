@@ -1770,4 +1770,6 @@ export default {
   "have_warranty": "Zəmanət",
   "have_warranty": "Zəmanət",
   "sub_category":"Alt kateqoriya",
+  "starting_current":"Başlanğıc cərəyanı", 
+  "weight":"Çəki",
 }
