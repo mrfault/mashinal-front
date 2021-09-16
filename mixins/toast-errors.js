@@ -36,7 +36,11 @@ export const ToastErrorsMixin = {
       return {'has-value': formEl !== undefined && formEl !== null && (formEl.length || formEl !== '') };
     }
   },
+  mounted() {
+    this.$nuxt.$on('clear-toast-errors', this.clearErrors);
+  }, 
   beforeDestroy() {
     this.$toasted.clear();
+    this.$nuxt.$off('clear-toast-errors', this.clearErrors);
   }
 }

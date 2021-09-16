@@ -105,7 +105,6 @@
                 :label="$t(filter.key)"
                 :options="filter.values"
                 @change="dynamicFilterOnChange(filter.key, $event)"
-                has-search
                 translateOptions
               />
 

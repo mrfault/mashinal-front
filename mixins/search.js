@@ -234,7 +234,7 @@ export const SearchMixin = {
       return [
         { name: this.$t('all'), key: zeroFirst ? 0 : 1 },
         { name: this.$t('new'), key: zeroFirst ? 1 : 2 },
-        { name: this.$t('with_mileage'), key: zeroFirst ? 2 : 3 }
+        { name: this.$t(this.meta.type === 'parts' ? 'S_H' : 'with_mileage'), key: zeroFirst ? 2 : 3 }
       ];
     },
     getCurrencyOptions() {

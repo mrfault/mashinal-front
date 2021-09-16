@@ -91,7 +91,6 @@
                     :options="filter.values"
                     translateOptions
                     multiple
-                    has-search
                   />
 
                   <!-- Checkbox -->

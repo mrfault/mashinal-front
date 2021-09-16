@@ -53,7 +53,31 @@ export default {
     PartSearchForm,
     NoResults
   },
-  async asyncData({ $axios, store, app, route }) {
+  async asyncData({ $axios, store, app, route, error }) {
+    const slug = ({
+      'zapcasti': 'parts',
+      'siny': 'tyres',
+      'diski': 'rims',
+      'masla-i-avtoximiya': 'oil_and_auto_chemistry',
+      'akkumulyatory': 'batteries',
+      'aksessuary': 'auto_accessories',
+      'avtoinstrumenty': 'repair_tools',
+      'ehtiyyat-hisseleri': 'parts',
+      'sinler': 'tyres',
+      'diskler': 'rims',
+      'yag-ve-avto-kimya': 'oil_and_auto_chemistry',
+      'akkumulyatorlar': 'batteries',
+      'avtoaksesuarlar': 'auto_accessories',
+      'temir-aletleri': 'repair_tools'
+    })[route.params.category];
+
+    if (!slug) return error({ statusCode: 404 });
+
+    await store.dispatch('i18n/setRouteParams', { 
+      az: { category: app.i18n.t('slug_'+slug, 'az') }, 
+      ru: { category: app.i18n.t('slug_'+slug, 'ru') } 
+    });
+
     const categories = await $axios.$get('/part/categories');
     const category = categories.find(item => Object.values(item.slug).includes(route.params.category) && item.id !== 18);
     const filters = await $axios.$get(`/part/category/${category.id}/filters`)
