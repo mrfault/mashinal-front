@@ -95,7 +95,7 @@ export default {
       description: this.$t('meta-descr_sell')
     });
   },
-  async asyncData({ store }) {
+  async asyncData({ store, app }) {
     await Promise.all([
       store.dispatch('getBrands'),
       store.dispatch('getOptions'),
@@ -151,7 +151,8 @@ export default {
         tradeable: false, 
         credit: false,
         guaranty: false, 
-        saved_images: []
+        saved_images: [],
+        btl_cookie: app.$cookies.get('btl') || ''
       }
     }
   },

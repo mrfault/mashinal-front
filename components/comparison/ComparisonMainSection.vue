@@ -14,9 +14,9 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import ComparisonAnnouncements from '~/components/comparison/ComparisonAnnouncements.vue'
-import ComparisonModels from '~/components/comparison/ComparisonModels.vue'
-import NotFound from '~/components/elements/NotFound.vue'
+import ComparisonAnnouncements from '~/components/comparison/ComparisonAnnouncements'
+import ComparisonModels from '~/components/comparison/ComparisonModels'
+import NotFound from '~/components/elements/NotFound'
 
 export default {
   components:{

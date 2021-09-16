@@ -13,7 +13,7 @@
 
 <script>
 import { LayoutMixin } from '~/mixins/layout';
-import NotFound from '@/components/elements/NotFound.vue'
+import NotFound from '@/components/elements/NotFound'
 
 export default {
   name: 'layout-error',

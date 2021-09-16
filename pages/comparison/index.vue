@@ -18,10 +18,10 @@
 </template>
 
 <script>
-import Breadcrumbs from '~/components/elements/Breadcrumbs.vue'
-import ComparisonFilter from '~/components/comparison/ComparisonFilter.vue'
-import ComparisonMainSection from '~/components/comparison/ComparisonMainSection.vue'
-import ComparisonAddModel from '~/components/comparison/ComparisonAddModel.vue'
+import Breadcrumbs from '~/components/elements/Breadcrumbs'
+import ComparisonFilter from '~/components/comparison/ComparisonFilter'
+import ComparisonMainSection from '~/components/comparison/ComparisonMainSection'
+import ComparisonAddModel from '~/components/comparison/ComparisonAddModel'
 
 export default {
   name: 'comparison-index',

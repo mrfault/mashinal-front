@@ -197,6 +197,9 @@ Vue.use({
         },
         isDarkMode() {
           return this.colorMode === 'dark';
+        },
+        btlCookie() {
+          return this.$cookies.get('btl');
         }
       },
       filters: {

@@ -4,7 +4,7 @@
       <div class="row">
         <div class="col-6">
           <nuxt-link class="logo" :to="$localePath('/')" @click.native="$nuxt.$emit('logo-click')">
-            <img src="/img/logo-white.svg" alt="logo" />
+            <img src="/img/logo-white.svg" alt="logo" v-if="!btlCookie" />
           </nuxt-link>
           <p>{{ $t('learn_about_emerging_product_text') }}</p>
           <newsletter />
