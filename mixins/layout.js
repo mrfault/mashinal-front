@@ -122,6 +122,15 @@ export const LayoutMixin = {
       this.handleResize();
       this.handleScroll();
       this.pickColorMode();
+      // check payment status
+      if (['true','false'].includes(this.$route.query.success)) {
+        let type = this.$route.query.success === 'true' ? 'success' : 'error';
+        this.updatePaidStatus({
+          type,
+          title: this.$t(`${type}_payment`),
+          text: this.$t(`${type}_payment_msg`)
+        });
+      }
       // strange behavior of loading prop which is not updating 
       // in v-show directive without changing key sometimes
       this.setLoading(false);

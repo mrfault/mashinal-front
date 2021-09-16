@@ -25,7 +25,7 @@
                 </div>
                 <p>* {{ $t('enter_the_amount_in_azn') }}</p>
                 <hr />
-                <button type="submit" :class="['btn btn--green full-width', {pending, disabled: form.money < 0.1}]">
+                <button type="submit" :class="['btn btn--green full-width', {pending, disabled: form.money < this.minAmount}]">
                   {{ $t('replenish') }}
                 </button>
               </form> 
@@ -97,11 +97,12 @@
         title: this.$t('balans')
       });
     },
-    async asyncData({store}) {
+    async asyncData({ store, app }) {
       await store.dispatch('getMyBalanceHistory');
 
       return { 
         pending: false,
+        minAmount: app.$env.DEV ? 0.01 : 0.1,
         form: {
           money: ''
         }
@@ -118,10 +119,10 @@
     },
     methods: {      
       async increaseBalance() {
-        if (this.pending || this.form.money < 0.1) return;
+        if (this.pending || this.form.money < this.minAmount) return;
         this.pending = true;
         try {
-          const res = await this.$axios.$post('/payment/addBalance', this.form);
+          const res = await this.$axios.$post(`/payment/addBalance?is_mobile=${this.isMobileBreakpoint}`, this.form);
           this.pending = false;
           this.form.money = '';
           this.handlePayment(res);
