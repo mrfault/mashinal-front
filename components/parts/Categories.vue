@@ -1,7 +1,7 @@
 <template>
   <ul class="part-categories card">
     <li v-for="category in categories" :key="category.title">
-      <nuxt-link :to="category.route">
+      <nuxt-link :to="$localePath(category.route)">
         <icon :name="category.icon" />
         {{ $t(category.title) }}
       </nuxt-link>

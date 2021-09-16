@@ -53,7 +53,6 @@ export default {
   methods: {
     confirm() {
       this.$v.$touch();
-      console.log(this.$v)
       if (this.$v.$pending || this.$v.$error) return;
       this.$axios.$post('/part/open/store', {
         full_name: this.fullName,
