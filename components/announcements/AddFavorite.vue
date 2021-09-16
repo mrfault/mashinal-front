@@ -12,7 +12,7 @@ export default {
     announcement: {}
   },
   methods: {
-    ...mapActions(['addToFavorites']),
+    ...mapActions(['addToFavorites','getNotViewedFavorites']),
 
     async handleClick(skipIfAdded = false) {
       if (skipIfAdded && this.isAdded) return;
@@ -20,6 +20,7 @@ export default {
         this.$nuxt.$emit('login-popup', 'favorite' + this.announcement.id_unique);
       } else {
         await this.addToFavorites(this.announcement.id_unique);
+        this.getNotViewedFavorites();
         this.$nuxt.$emit('favorites-updated');
         if (this.isAdded) {
           this.$toasted.success(this.$t('my_favorites_added'), { 

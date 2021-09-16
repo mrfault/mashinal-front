@@ -1505,6 +1505,9 @@ main {
 
   body.select-menu-open {
     overflow-y: hidden !important;
+    .toasted-container {
+      z-index: -1;
+    }
   }
 
   .pagination {

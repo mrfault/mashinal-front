@@ -52,7 +52,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getFavoriteAnnouncements']),
+    ...mapActions(['getFavoriteAnnouncements', 'markViewedFavorites']),
 
     async changePage(page = 1) {
       page = this.$route.query.page || 1;
@@ -71,7 +71,8 @@ export default {
       ]
     }
   },
-  mounted() {
+  created() {
+    this.markViewedFavorites();
     this.$nuxt.$on('favorites-updated', this.getFavoriteAnnouncements);
   },
   beforeDestroy() {
