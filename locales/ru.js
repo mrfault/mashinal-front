@@ -971,7 +971,7 @@ export default {
   "no_payments_yet": "История платежей пуста",
   "no_report_for_this_car": "По данной машине нет информации",
   "no_restriction": "Не применимо к транспортному средству",
-  "no_results_found": "Не найдено результатов",
+  "no_results_found": "Не найдено",
   "no_spare_parts_found_for_this_request": "По данному запросу запчастей не найдено",
   "no_templates": "Вы еще не сохраняли шаблоны поисков",
   "not_cleared": "Не растаможен",

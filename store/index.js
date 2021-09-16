@@ -14,8 +14,10 @@ const getInitialState = () => ({
   // saved search & favorites
   savedSearchList: [],
   singleSavedSearch: {},
+  notViewedSavedSearch: [],
   favorites: [],
   favoriteAnnouncements: [],
+  notViewedFavorites: 0,
   // messages
   messages: [],
   suggestedMessages: [],
@@ -128,8 +130,10 @@ export const getters = {
   // saved search & favorites
   savedSearchList: s => s.savedSearchList,
   singleSavedSearch: s => s.singleSavedSearch,
+  notViewedSavedSearch: s => s.notViewedSavedSearch,
   favorites: s => s.favorites,
   favoriteAnnouncements: s => s.favoriteAnnouncements,
+  notViewedFavorites: s => s.notViewedFavorites,
   // profile
   messages: s => s.messages,
   messagesByGroup: s => id => s.messages.find(group => group.id == id),
@@ -371,6 +375,14 @@ export const actions = {
     const res = await this.$axios.$get(`/my/saved/all-announce?page=${data.page || 1}`);
     commit('mutate', { property: 'favoriteAnnouncements', value: res });
   },
+  async getNotViewedFavorites({ commit }) {
+    const res = await this.$axios.$get(`/announce/saved/not-viewed-count`);
+    commit('mutate', { property: 'notViewedFavorites', value: res.data });
+  },
+  async markViewedFavorites({ commit }) {
+    const res = await this.$axios.$get(`/announce/saved/mark-viewed`);
+    commit('mutate', { property: 'notViewedFavorites', value: res.data });
+  },
   // Saved search
   async getSavedSearch({ commit }){
     const res = await this.$axios.$get('/saved-search');
@@ -404,6 +416,14 @@ export const actions = {
   },
   clearSavedSearch({ commit }){
     commit('mutate', { property: 'singleSavedSearch', value: {} });
+  },
+  async getNotViewedSavedSearch({ commit }) {
+    const res = await this.$axios.$get(`/saved-search/not-viewed-count`);
+    commit('mutate', { property: 'notViewedSavedSearch', value: res.data });
+  },
+  async markViewedSavedSearch({ commit }) {
+    const res = await this.$axios.$get(`/saved-search/mark-viewed`);
+    commit('mutate', { property: 'notViewedSavedSearch', value: res.data });
   },
   // Services
   async getMyActives({ commit }) {
@@ -786,8 +806,7 @@ export const actions = {
   },
   // Reset Data on Logout
   resetUserData({ commit }) {
-    // reset services
-    commit('reset', ['myServices','myServiceHistory','myServiceOptions','messages']);
+    commit('reset', ['myServices','myServiceHistory','myServiceOptions','messages','notViewedFavorites','notViewedSavedSearch']);
   }
 }
 

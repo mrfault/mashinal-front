@@ -18,7 +18,8 @@ export const LayoutMixin = {
     ...mapGetters(['loading','messages','paidStatusData','hideFooter'])
   },
   methods: {
-    ...mapActions(['setLoading','setGridBreakpoint','getMessages','getFavorites','resetSellTokens','resetUserData','updatePaidStatus']),
+    ...mapActions(['setLoading','setGridBreakpoint','getMessages','getFavorites','resetSellTokens','resetUserData','updatePaidStatus',
+                   'getNotViewedSavedSearch','getNotViewedFavorites']),
 
     handleResize() {
       // update grid breakpoint
@@ -69,7 +70,11 @@ export const LayoutMixin = {
     async getUserData() {
       if (!this.loggedIn) return;
       if (!this.messages.length) await this.getMessages();
-      await this.getFavorites();
+      await Promise.all([
+        this.getNotViewedSavedSearch(),
+        this.getNotViewedFavorites(),
+        this.getFavorites()
+      ]);
     },
     closeLogin() {
       this.showLoginPopup = false;
