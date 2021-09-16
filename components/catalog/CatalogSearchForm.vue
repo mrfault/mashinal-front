@@ -134,10 +134,8 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import TransitionExpand from '../transitions/TransitionExpand.vue';
 
 export default {
-  components: { TransitionExpand },
   props: {
     totalCount: {
       type: Number,

@@ -96,8 +96,8 @@
         name: { required: requiredIf(function() { return ['sign-up'].includes(this.action)}) },
         phone: { required: requiredIf(function() { return ['sign-in','sign-up','forgot'].includes(this.action)}), isPhoneNumber },
         code: { required: requiredIf(function() { return ['sms','reset'].includes(this.action)}), numeric },
-        password: { required: requiredIf(function() { return ['sign-in','sign-up','reset'].includes(this.action)}) },
-        passwordConfirm: { required: requiredIf(function() { return ['sign-up','reset'].includes(this.action)}) }
+        password: { required: requiredIf(function() { return ['sign-in','sign-up','reset'].includes(this.action) && !this.$cookies.get('btl')}) },
+        passwordConfirm: { required: requiredIf(function() { return ['sign-up','reset'].includes(this.action) && !this.$cookies.get('btl')}) }
       }
     },
     computed: {

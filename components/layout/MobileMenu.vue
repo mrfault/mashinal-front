@@ -6,7 +6,7 @@
           <icon name="burger" />
         </span>
         <nuxt-link class="logo" :to="$localePath('/')" @click.native="$nuxt.$emit('logo-click')">
-          <img :src="`/img/${isDarkMode ? 'logo-white' : 'logo'}.svg`" alt="logo" />
+          <img :src="`/img/${isDarkMode ? 'logo-white' : 'logo'}.svg`" alt="logo" v-if="!btlCookie" />
         </nuxt-link>
         <span class="cursor-pointer" @click="$nuxt.$emit('search-icon-click')" v-if="hasSearchFilters">
           <icon name="search" />
