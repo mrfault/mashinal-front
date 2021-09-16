@@ -14,6 +14,12 @@
                 <template v-if="menu.title === 'messages' && countNewMessages > 0">
                   <span class="badge-counter">{{ countNewMessages }}</span>
                 </template>
+                <template v-if="menu.title === 'favorites' && notViewedFavorites > 0">
+                  <span class="badge-counter">{{ notViewedFavorites }}</span>
+                </template>
+                <template v-if="menu.title === 'templates' && notViewedSavedSearch > 0">
+                  <span class="badge-counter">{{ notViewedSavedSearch }}</span>
+                </template>
               </nuxt-link>
             </li>
           </ul>
@@ -82,7 +88,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 import { MenusDataMixin } from '~/mixins/menus-data';
 import { UserDataMixin } from '~/mixins/user-data';
@@ -91,6 +97,9 @@ export default {
   mixins: [MenusDataMixin, UserDataMixin],
   methods: {
     ...mapActions(['changeLocale'])
+  },
+  computed: {
+    ...mapGetters(['notViewedFavorites','notViewedSavedSearch'])
   }
 }
 </script>

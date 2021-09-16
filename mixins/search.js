@@ -7,7 +7,7 @@ export const SearchMixin = {
     }
   },
   methods: {
-    ...mapActions(['fetchSavedSearch', 'createSavedSearch', 'deleteSavedSearch']),
+    ...mapActions(['fetchSavedSearch', 'createSavedSearch', 'deleteSavedSearch', 'getNotViewedSavedSearch']),
 
     getFormData() {
       let requiredKeys = [];
@@ -192,6 +192,7 @@ export const SearchMixin = {
         if (this.singleSavedSearch.id) {
           this.deleteSavedSearch(this.singleSavedSearch.id)
             .then(() => {
+              this.getNotViewedSavedSearch();
               this.$toasted.success(this.$t('my_templates_removed'));
             });
         } else {
@@ -204,6 +205,7 @@ export const SearchMixin = {
             search_url: `${this.meta.path}?${this.meta.param}=${encodeURI(searchFilter)}`,
             lang: this.locale
           }).then(() => {
+            this.getNotViewedSavedSearch();
             this.$toasted.success(this.$t('search_saved'));
           });
         }

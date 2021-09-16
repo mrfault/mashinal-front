@@ -144,7 +144,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['updateSavedSearchNotificationsInterval', 'deleteSavedSearchMultiple']),
+    ...mapActions(['updateSavedSearchNotificationsInterval', 'deleteSavedSearchMultiple', 'markViewedSavedSearch']),
 
     selectSavedSearch(id, value) {
       this.$set(this, 'selected', value 
@@ -203,6 +203,9 @@ export default {
         this.pending = false;
       }
     },
+  },
+  created() {
+    this.markViewedSavedSearch();
   }
 }
 </script>
