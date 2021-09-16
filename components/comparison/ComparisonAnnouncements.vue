@@ -20,6 +20,7 @@
           <call-button
             class="comparison__item__phone"
             :phone="getAnnouncementContact(announcement)"
+            :announcementId="announcement.id_unique"
           />
         </div>
     </div>

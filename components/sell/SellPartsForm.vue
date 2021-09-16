@@ -38,7 +38,7 @@
       </h2>
       <div class="row">
         <!-- Category -->
-        <div class="col-lg-4">
+        <div class="col-lg-4 mb-3 mb-lg-0">
           <form-select
             :label="$t('category')"
             :options="categories"
@@ -49,7 +49,7 @@
         </div>
 
         <!-- Subcategory -->
-        <div class="col-lg-4" v-if="subcategories.length">
+        <div class="col-lg-4 mb-3 mb-lg-0" v-if="subcategories.length">
           <form-select
             :label="$t('subcategory')"
             :options="subcategories"
@@ -59,9 +59,9 @@
         </div>
 
         <!-- Brand -->
-        <div class="col-lg-4" v-if="brands.length">
+        <div class="col-lg-4 mb-3 mb-lg-0" v-if="brands.length">
           <form-select
-            :label="$t('brand')"
+            :label="$t('select_brand')"
             :options="brands"
             v-model="form.brand_id"
           />
@@ -106,6 +106,7 @@
                 :options="filter.values"
                 @change="dynamicFilterOnChange(filter.key, $event)"
                 has-search
+                translateOptions
               />
 
               <!-- Checkbox -->

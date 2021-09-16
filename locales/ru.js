@@ -1324,6 +1324,7 @@ export default {
   "search_saved": "Поиск сохранен",
   "search-salon": "Найти салон",
   "Season": "Сезон",
+  "season": "Сезон",
   "seasonal_storage": "Сезонное хранение",
   "Seat height adjustment": "Регулировка сидений по высоте",
   "Seat ventilation": "Вентиляция сидений",
@@ -1629,7 +1630,7 @@ export default {
   "Wireless charging for smartphone": "Беспроводная зарядка для смартфона",
   "with spikes": "Шипованные",
   "with_discount": "Со скидкой",
-  "with_mileage": "С пробегом",
+  "with_mileage": "Б/У",
   "with_new": "новых",
   "with_significant_damage_to_body_elements_that_do_not_move_on_their_own": "С существенными повреждениями кузовных элементов, не передвигающиеся своим ходом.",
   "with_video": "С видео",
@@ -1767,4 +1768,5 @@ export default {
   "is_negotiable":"Договорная",
   "have_delivery":"Доставка",
   "have_warranty":"Гарантия",
+  "sub_category": "Подкатегория",
 }

@@ -349,8 +349,10 @@
           }, 0);
           this.$nextTick(() => {
             // check window offset
-            let emptySpace = window.innerHeight - this.$refs.dropdownOptions.getBoundingClientRect().bottom;
-            this.placeOptionsAbove = emptySpace < 20;
+            if (!this.isMobileBreakpoint) {
+              let emptySpace = window.innerHeight - this.$refs.dropdownOptions.getBoundingClientRect().bottom;
+              this.placeOptionsAbove = emptySpace < 20;
+            }
             // auto focus
             if (this.hasSearch && !this.isMobileBreakpoint) {
               this.$refs.searchInput?.focus();

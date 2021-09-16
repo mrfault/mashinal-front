@@ -1767,4 +1767,6 @@ export default {
   "is_negotiable":"Razılaşma yolu ilə",
   "have_delivery": "Çatdırılma mövcuddur",
   "have_warranty": "Zəmanət",
+  "have_warranty": "Zəmanət",
+  "sub_category":"Alt kateqoriya",
 }
