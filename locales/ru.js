@@ -1631,7 +1631,7 @@ export default {
   "Wireless charging for smartphone": "Беспроводная зарядка для смартфона",
   "with spikes": "Шипованные",
   "with_discount": "Со скидкой",
-  "with_mileage": "Б/У",
+  "with_mileage": "С пробегом",
   "with_new": "новых",
   "with_significant_damage_to_body_elements_that_do_not_move_on_their_own": "С существенными повреждениями кузовных элементов, не передвигающиеся своим ходом.",
   "with_video": "С видео",
