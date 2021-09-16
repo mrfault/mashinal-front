@@ -14,10 +14,10 @@
                 <template v-if="menu.title === 'messages' && countNewMessages > 0">
                   <span class="badge-counter">{{ countNewMessages }}</span>
                 </template>
-                <template v-if="menu.title === 'favorites' && notViewedFavorites > 0">
+                <template v-else-if="menu.title === 'favorites' && notViewedFavorites > 0">
                   <span class="badge-counter">{{ notViewedFavorites }}</span>
                 </template>
-                <template v-if="menu.title === 'templates' && notViewedSavedSearch > 0">
+                <template v-else-if="menu.title === 'templates' && notViewedSavedSearch > 0">
                   <span class="badge-counter">{{ notViewedSavedSearch }}</span>
                 </template>
               </nuxt-link>

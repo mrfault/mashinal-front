@@ -48,6 +48,7 @@ import Grid from '~/components/announcements/Grid';
 export default {
   name: 'pages-index',
   layout: 'search',
+  middleware: 'payment_redirect',
   components: {
     CarSearchForm,
     Grid

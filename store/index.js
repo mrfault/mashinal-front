@@ -241,7 +241,7 @@ const objectNotEmpty = (state, commit, property) => {
 };
 
 export const actions = {
-  async nuxtServerInit({ dispatch, commit }, { route, app }) {
+  async nuxtServerInit({ dispatch, commit }) {
     await Promise.all([
       dispatch('getStaticPages')
     ]);
@@ -258,15 +258,6 @@ export const actions = {
     }
 
     commit('mutate', { property:'ptk', value: ptk });
-
-    if (['true','false'].includes(route.query.success)) {
-      let type = route.query.success === 'true' ? 'success' : 'error';
-      dispatch('updatePaidStatus', {
-        type,
-        title: app.i18n.t(`${type}_payment`),
-        text: app.i18n.t(`${type}_payment_msg`)
-      });
-    }
   },
   // Loading
   setLoading({ commit }, loading) {
