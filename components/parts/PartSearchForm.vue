@@ -37,13 +37,13 @@
               />
             </div>
             <!-- Sort -->
-            <div class="col-lg-2" v-if="showSorting">
+            <!-- <div class="col-lg-2" v-if="showSorting">
               <form-select
                 :label="$t('sorting')"
                 v-model="form.sort"
                 :options="getSortingOptions"
               />
-            </div>
+            </div> -->
             <!-- Price -->
             <div class="col-lg-2">
               <form-select

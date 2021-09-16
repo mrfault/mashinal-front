@@ -1324,6 +1324,7 @@ export default {
   "search_saved": "Поиск сохранен",
   "search-salon": "Найти салон",
   "Season": "Сезон",
+  "season": "Сезон",
   "seasonal_storage": "Сезонное хранение",
   "Seat height adjustment": "Регулировка сидений по высоте",
   "Seat ventilation": "Вентиляция сидений",
@@ -1768,4 +1769,5 @@ export default {
   "is_negotiable":"Договорная",
   "have_delivery":"Доставка",
   "have_warranty":"Гарантия",
+  "sub_category": "Подкатегория",
 }

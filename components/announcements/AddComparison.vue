@@ -28,7 +28,7 @@ export default {
   methods: {
     handleClick() {
       if (this.type === 'announcement') {
-        this.$store.dispatch('comparison/toggleAnnouncement', id)
+        this.$store.dispatch('comparison/toggleAnnouncement', this.id)
       } else {
         // this.$store.dispatch('comparison/toggleModel', id)
       }
@@ -37,7 +37,7 @@ export default {
   computed: {
     isActive() {
       if (this.type === 'announcement') {
-        return this.$store.getters['comparison/announcementIds'].findIndex(aId => aId === id) >= 0
+        return this.$store.getters['comparison/announcementIds'].findIndex(aId => aId === this.id) >= 0
       } else {
         // return this.$store.getters['comparison/modelIds'].findIndex(aId => aId === id) >= 0
         return false
