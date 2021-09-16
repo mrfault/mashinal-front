@@ -66,7 +66,7 @@ export default {
         { key: 'exhaust_class', value: this.exhaustClass, for: ['commercial'] },
         { key: 'cab_suspension', value: this.cabinSuspension, for: ['commercial'] },
         { key: 'chassis_suspension', value: this.chassisSuspension, for: ['commercial'] },
-        { key: 'first_owner', value: (this.announcement.owner_type || this.announcement.owners) ? this.$t('no') : this.$t('yes'), for: ['cars', 'commercial', 'moto'] },
+        { key: 'first_owner', value: (parseInt(this.announcement.owner_type || this.announcement.owners)) ? this.$t('no') : this.$t('yes'), for: ['cars', 'commercial', 'moto'] },
         { key: 'customs', value: (this.announcement.customs_clearance || this.announcement.customed_id || this.announcement.customed ) ? this.$t('not_cleared') : this.$t('cleared'), for: ['cars', 'commercial', 'moto'] },
         { key: 'category', value: this.announcement?.category?.name[this.locale], for: ['parts'] },
         { key: 'subcategory', value: this.announcement?.sub_category?.name[this.locale], for: ['parts'] },
