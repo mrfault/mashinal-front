@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import ComparisonPreview from '~/components/elements/ComparisonPreview.vue'
+import ComparisonPreview from '~/components/elements/ComparisonPreview'
 
 export default {
   components: {

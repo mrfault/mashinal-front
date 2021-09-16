@@ -1431,6 +1431,7 @@ export default {
   "standard_jaso": "JASO standartı",
   "starred_fields_are_required": "Ulduzlu xanaları doldurmaq mütləqdir",
   "start_conversation_from_announcement": "Siz çatları elanların səhifələrindən başlaya bilərsiz",
+  "start_to_work": "İşə başlamaq",
   "Start-stop system": "Start-stop sistemi",
   "statistics": "Statistika",
   "status": "Status",

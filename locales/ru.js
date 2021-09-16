@@ -1434,6 +1434,7 @@ export default {
   "standard_jaso": "Стандарт JASO",
   "starred_fields_are_required": "Поля отмеченные этим символом объязательны для заполнения",
   "start_conversation_from_announcement": "Вы можете начать беседу со страницы объявления",
+  "start_to_work": "Начать работу",
   "Start-stop system": "Система «старт-стоп»",
   "statistics": "Статистика",
   "status": "Статус",

@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import CreateStore from '~/components/parts/CreateStore.vue'
+import CreateStore from '~/components/parts/CreateStore'
 
 export default {
   components: {

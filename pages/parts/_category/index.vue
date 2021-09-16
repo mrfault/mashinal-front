@@ -23,11 +23,11 @@
 import { mapGetters } from 'vuex'
 import { RoutesMixin } from '~/mixins/routes'
 
-import Grid from '~/components/announcements/Grid.vue'
-import Categories from '~/components/parts/Categories.vue'
-import Banners from '~/components/parts/Banners.vue'
-import PartSearchForm from '~/components/parts/PartSearchForm.vue'
-import NoResults from '~/components/elements/NoResults.vue'
+import Grid from '~/components/announcements/Grid'
+import Categories from '~/components/parts/Categories'
+import Banners from '~/components/parts/Banners'
+import PartSearchForm from '~/components/parts/PartSearchForm'
+import NoResults from '~/components/elements/NoResults'
 
 export default {
   name: 'pages-parts-categories',

@@ -103,7 +103,7 @@ export default {
       description: this.$t('meta-descr_sell')
     });
   },
-  async asyncData({ route, store }) {
+  async asyncData({ route, store, app }) {
     let category = ['1','2','3','4','5','6','7','8','9','10','11','13'].includes(route.query.category) 
       ? route.query.category : '1';
     
@@ -152,7 +152,8 @@ export default {
         tradeable: false, 
         credit: false,
         guaranty: false, 
-        saved_images: []
+        saved_images: [],
+        btl_cookie: app.$cookies.get('btl') || ''
       }
     }
   },

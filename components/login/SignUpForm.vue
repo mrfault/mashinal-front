@@ -66,9 +66,23 @@
           phone: this.form.phone.replace(/[^0-9]+/g, ''),
           password: this.form.password,
           password_confirmation: this.form.passwordConfirm
-        }).then(() => {
-          this.pending = false;
-          this.$emit('update-tab','sign-up','sms');
+        }).then((res) => {
+          if (res.data.password) {
+            this.$auth.loginWith('local', {
+              data: {
+                phone: this.form.phone.replace(/[^0-9]+/g, ''),
+                password: res.data.password
+              }
+            }).then(()=>{
+              this.pending = false;
+              this.$nuxt.$emit('login', true);
+            }).catch((err) => {
+              this.pending = false;
+            });
+          } else {
+            this.pending = false;
+            this.$emit('update-tab','sign-up','sms');
+          }
         }).catch((err) => {
           this.pending = false;
         });

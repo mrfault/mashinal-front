@@ -231,8 +231,8 @@
 <script>
 import { mapActions } from 'vuex';
 import { required, requiredIf, minLength, maxLength } from 'vuelidate/lib/validators';
-import FormKeywords from '~/components/forms/FormKeywords.vue'
-import FormGallery from '~/components/forms/FormGallery.vue'
+import FormKeywords from '~/components/forms/FormKeywords'
+import FormGallery from '~/components/forms/FormGallery'
 
 export default {
   props: {
@@ -587,6 +587,9 @@ export default {
         this.updatePreview()
       }
     }
+  },
+  beforeDestroy() {
+    this.setSellPreviewData({ value: {} });
   }
 }
 </script>
