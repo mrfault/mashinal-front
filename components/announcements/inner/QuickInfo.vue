@@ -47,7 +47,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col mt-2 mt-lg-3">
+      <div class="col mt-2 mt-lg-3" v-if="contact.lat && contact.lng">
         <show-map-button :lat="contact.lat" :lng="contact.lng" /> 
       </div>
       <div class="col mt-2 mt-lg-3" v-if="canSendMessage(announcement)" >
