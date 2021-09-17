@@ -13,9 +13,9 @@
             <span class="badge from-border rejected" v-else-if="announcement.status == 0">{{ $t('rejected')}}</span>
             <span class="badge from-border inactive" v-else-if="announcement.status == 3">{{ $t('inactive')}}</span>
           </template>
-          <template v-else-if="announcement.is_autosalon">
+          <!-- <template v-else-if="announcement.is_autosalon">
             <span class="badge from-border">{{ $t(announcement.title ? 'shop' : 'is_autosalon') }}</span>
-          </template>
+          </template> -->
           <span class="d-flex">
             <!-- here badges can be placed -->
           </span>
