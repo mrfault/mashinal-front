@@ -126,7 +126,7 @@
                   <span class="col">{{ modPower(mod.main) }}</span>
                   <span class="col">{{ modBox(mod.main) }}</span>
                   <span class="col-auto">
-                    <add-comparison has-border :id="mod.id" type="model"/>
+                    <add-comparison has-border :model="mod" type="model"/>
                   </span>
                 </a>
               </template>

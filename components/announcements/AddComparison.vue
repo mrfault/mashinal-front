@@ -10,10 +10,14 @@
 
 <script>
 export default {
-  props: {
+props: {
     id: {
       type: [Number, String],
-      required: true
+      required: false
+    },
+    model: {
+      type: Object,
+      required: false
     },
     type: {
       type: String,
@@ -30,7 +34,7 @@ export default {
       if (this.type === 'announcement') {
         this.$store.dispatch('comparison/toggleAnnouncement', this.id)
       } else {
-        // this.$store.dispatch('comparison/toggleModel', id)
+        // this.$store.dispatch('comparison/toggleModel', this.model)
       }
     }
   },
@@ -39,8 +43,7 @@ export default {
       if (this.type === 'announcement') {
         return this.$store.getters['comparison/announcementIds'].findIndex(aId => aId === this.id) >= 0
       } else {
-        // return this.$store.getters['comparison/modelIds'].findIndex(aId => aId === id) >= 0
-        return false
+        return false // this.$store.getters['comparison/modelsList'].findIndex(model => model.catalog_id === this.model.catalog_id) >= 0
       }
     }
   }

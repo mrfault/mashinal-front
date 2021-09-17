@@ -1776,4 +1776,5 @@ export default {
   "announcement":"Elan",
   "horse_power":"At gücü",
   "max_horse_power":"Maksimal at gücü",
+  "used":"İşlənmiş",
 }

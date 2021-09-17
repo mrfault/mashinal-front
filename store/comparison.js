@@ -55,6 +55,15 @@ export const actions = {
 
     this.$cookies.set('comparisonAnnouncements', state.announcementIds)
   },
+  toggleModel({ commit, state }, model) {
+    if (state.modelsList.findIndex(m => m.id === model.id) >= 0) {
+      commit('removeModel', model.id)
+    } else {
+      commit('addModel', model)
+    }
+
+    this.$cookies.set('comparisonAnnouncements', state.announcementIds)
+  },
   removeAnnouncement({ dispatch, commit, state }, index) {
     commit('removeAnnouncement', index);
     this.$cookies.set('comparisonAnnouncements', state.announcementIds)

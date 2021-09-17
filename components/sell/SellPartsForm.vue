@@ -1,6 +1,6 @@
 <template>
   <div class="sell_parts-form">
-    <form class="form" novalidate>
+    <form class="form" novalidate @submit.prevent.stop>
       <!-- General Information -->
       <h2 class="title-with-line mt-3 mt-lg-0" id="anchor-general-information">
         <span>{{ $t('general_informations') }} <span class="star"> *</span></span>
@@ -127,6 +127,7 @@
                 v-model="form[filter.key]"
                 :placeholder="$t(filter.key)"
                 :invalid="errors.includes(filter.key)"
+                @input="dynamicFilterOnChange(filter.key, $event)"
               />
             </div>
 
@@ -250,7 +251,7 @@
               register: $t('register_and_publish'),
               confirm: $t('confirm_and_publish') 
             }"
-            :force-sell-phone="false"
+            :force-sell-phone="true"
           />
         </transition>
       </template>
@@ -404,6 +405,10 @@ export default {
     },
     dynamicFilterOnChange(key, value) {
       this.form = {...this.form}
+
+      if (this.errors.includes(key) && value) {
+        this.errors = this.errors.filter(item => item !== key)
+      }
     },
     addFiles(files) {
       this.upload_ended = false;
@@ -636,6 +641,8 @@ export default {
         const key = obj[0]
         const value = obj[1]
         if (!(value === null || value === undefined || value === '')) {
+          result[key] = value
+        } else if (['description', 'product_code'].includes(key)) {
           result[key] = value
         }
       })

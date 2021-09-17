@@ -5,19 +5,28 @@
       v-if="visible"
       key="comparison-preview"
       ref="comparisonPreview"
-      @focusout="$emit('close')"
       tabindex="0"
     >
       <div class="comparison-preview__title d-flex">
-        <h4 >{{ $t('announcements') }}</h4>
+        <h4 >{{ activeType === 'announcements' ? $t('comparison_announcements') : $t('comparison_models') }}</h4>
         <span class="cursor-pointer close" @click="$emit('close')">
           <icon name="cross" />
         </span>
       </div>
 
+      <form-buttons
+        class="mt-2"
+        btn-class="pale-red-outline"
+        :options="typeButtons"
+        :group-by="2"
+        v-model="activeType"
+      />
+
+      
       <vue-scroll :ops="scrollOps">
-        <div class="comparison-preview__list">
-          <template v-for="(announcement, index) in list">
+        <!-- Announcements -->
+        <div class="comparison-preview__list" v-if="activeType === 'announcements'">
+          <template v-for="(announcement, index) in announcementsList">
             <div class="comparison-preview__list-item" :key="'announcement-' + announcement.id">
               <img :src="getAnnouncementImage(announcement)" alt="">
               <div class="info">
@@ -25,16 +34,39 @@
                 <div class="info__desc text-truncate">{{ getAnnouncementTextLine(announcement) }}</div>
                 <div class="info__price text-truncate">{{ announcement.price }}</div>
               </div>
-              <button class="remove-btn" @click="remove(announcement.id_unique)">
+              <button class="remove-btn" @click="removeAnnouncement(announcement.id_unique)">
                 <icon name="garbage" />
               </button>
             </div>
-            <hr :key="'hr-' + announcement.id" v-if="index < list.length - 1"/>
+            <hr :key="'hr-' + announcement.id" v-if="index < announcementsList.length - 1"/>
+          </template>
+        </div>
+
+        <!-- Models -->
+        <div class="comparison-preview__list" v-if="activeType === 'models'">
+          <template v-for="(model, index) in modelsList">
+            <div class="comparison-preview__list-item" :key="'model-' + model.catalog_id">
+              <img :src="model.model.transformed_media" alt="">
+              <div class="info">
+                <div class="info__title text-truncate">{{ getModelTitle(model) }}</div>
+                <div class="info__desc text-truncate"  v-for="desc in getModelDescription(model)" :key="desc">
+                  {{ desc }}
+                </div>
+              </div>
+              <button class="remove-btn" @click="removeModel(model.catalog_id)">
+                <icon name="garbage" />
+              </button>
+            </div>
+            <hr :key="'hr-' + model.catalog_id" v-if="index < modelsList.length - 1"/>
           </template>
         </div>
       </vue-scroll>
 
-      <button class="btn btn--red btn--unaffected-by-theme full-width" v-if="list.length > 1" @click="compare">
+      <button
+        class="btn btn--red btn--unaffected-by-theme full-width"
+        v-if="activeType === 'announcements' ? announcementsList.length > 1 : modelsList.length > 1"
+        @click="compare"
+      >
         <icon name="compare" />
         {{ $t('compare') }}
       </button>
@@ -43,24 +75,45 @@
 </template>
 
 <script>
+import { ComparisonMixin } from '~/mixins/comparison'
+
 export default {
+  mixins: [ComparisonMixin],
   props: {  
     visible: {
       type: Boolean,
       required: true
     }
   },
+  data() {
+    return {
+      activeType: 'announcements'
+    }
+  },
   methods: {
-    remove(id) {
+    removeAnnouncement(id) {
       this.$store.dispatch('comparison/removeAnnouncement', id)
+    },
+    removeModel(id) {
+      this.$store.dispatch('comparison/removeModel', id)
     },
     compare() {
       this.$router.push(this.$localePath('/comparison'))
+    },
+    updateActiveTab() {
+      if (!this.announcementsList.length) {
+        this.activeType = 'models'
+      } else if (!this.modelsList.length) {
+        this.activeType = 'announcements'
+      }
     }
   },
   computed: {
-    list() {
+    announcementsList() {
       return this.$store.getters['comparison/announcementsList']
+    },
+    modelsList() {
+      return this.$store.getters['comparison/modelsList']
     },
     scrollOps() {
       return  {
@@ -68,15 +121,27 @@ export default {
           maxHeight: this.isMobileBreakpoint ? undefined : 350
         }
       }
+    },
+    typeButtons() {
+      return [
+        { key: 'announcements', name: this.$t('comparison_announcements') },
+        { key: 'models', name: this.$t('comparison_models') }
+      ]
     }
   },
   watch: {
     visible(value) {
       if (value) {
         this.$nextTick(() => {
-          this.$refs.comparisonPreview.focus()
+          // this.$refs.comparisonPreview.focus()
         })
       }
+    },
+    announcementsList() {
+      this.updateActiveTab()
+    },
+    modelsList() {
+      this.updateActiveTab()
     }
   }
 }
