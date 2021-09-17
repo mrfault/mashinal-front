@@ -184,7 +184,7 @@
                 :action-text="{
                   login: $t('login_and_publish'),
                   register: $t('register_and_publish'),
-                  confirm: $t('confirm_and_publish') 
+                  confirm: $t('confirm_and_publish')
                 }"
                 :force-sell-phone="true"
               />
@@ -320,8 +320,8 @@ export default {
     },
     getOwnerOptions() {
       return [
-        { key: 0, name: this.$t('yes')	},
-        { key: 1, name: this.$t('no')	}
+        { key: 1, name: this.$t('yes')	},
+        { key: 0, name: this.$t('no')	}
       ];
     }
   },
@@ -368,7 +368,7 @@ export default {
         this.isInvalid('mileage') && this.removeError('mileage');
       } else {
         let mileage = this.form.mileage;
-        this.form.mileage = mileage > 500 || !mileage ? 0 : mileage;
+        this.form.mileage = mileage > (this.form.mileage_measure === 2 ? 310.686 : 500) || !mileage ? 0 : mileage;
       }
       this.updatePreview('mileage');
     },
