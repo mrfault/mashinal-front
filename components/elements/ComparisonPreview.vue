@@ -14,6 +14,7 @@
       </div>
 
       <form-buttons
+        v-if="typeButtons.length > 1"
         class="mt-2"
         btn-class="pale-red-outline"
         :options="typeButtons"
@@ -89,6 +90,9 @@ export default {
       activeType: 'announcements'
     }
   },
+  mounted() {
+    this.updateActiveTab()
+  },
   methods: {
     removeAnnouncement(id) {
       this.$store.dispatch('comparison/removeAnnouncement', id)
@@ -117,15 +121,21 @@ export default {
     scrollOps() {
       return  {
         scrollPanel: {
-          maxHeight: this.isMobileBreakpoint ? undefined : 350
+          maxHeight: this.isMobileBreakpoint ? undefined : '350'
         }
       }
     },
     typeButtons() {
-      return [
-        { key: 'announcements', name: this.$t('comparison_announcements') },
-        { key: 'models', name: this.$t('comparison_models') }
-      ]
+      const buttons = []
+      if (this.announcementsList.length) {
+        buttons.push({ key: 'announcements', name: this.$t('comparison_announcements') })
+      }
+      
+      if (this.modelsList.length) {
+        buttons.push({ key: 'models', name: this.$t('comparison_models') })
+      }
+
+      return buttons
     }
   },
   watch: {
