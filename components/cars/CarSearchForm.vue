@@ -210,10 +210,10 @@
               <form-range v-model="formAssistant.price" :min="5000" :max="100000" :step="5000">
                 <div class="row mt-2 mt-lg-3 mb-2 mb-lg-0">
                   <div class="col-6">
-                    <div class="form-info">{{ formAssistant.price[0] }} ₼</div>
+                    <div class="form-info">{{ $readNumber(formAssistant.price[0]) }} ₼</div>
                   </div>
                   <div class="col-6">
-                    <div class="form-info">{{ formAssistant.price[1] }} ₼</div>
+                    <div class="form-info">{{ $readNumber(formAssistant.price[1]) }} ₼</div>
                   </div>
                 </div>
               </form-range>
