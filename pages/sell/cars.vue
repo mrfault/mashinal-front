@@ -96,6 +96,7 @@ export default {
     });
   },
   async asyncData({ store, app }) {
+    store.dispatch('setSellPreviewData', { value: {} });
     await Promise.all([
       store.dispatch('getBrands'),
       store.dispatch('getOptions'),

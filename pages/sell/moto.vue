@@ -107,6 +107,7 @@ export default {
     let category = ['1','2','3'].includes(route.query.category) 
       ? route.query.category : '1';
     
+    store.dispatch('setSellPreviewData', { value: {} });
     await Promise.all([
       store.dispatch('getMotoOptions'),
       store.dispatch('getOptions'),

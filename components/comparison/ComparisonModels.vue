@@ -12,7 +12,7 @@
           class="comparison__item__image"
           :style="`background-image: url(${model.model.transformed_media})`"
         >
-          <div class="action-button action-button--close" @click="removeItem(model.id)">
+          <div class="action-button action-button--close" @click="removeItem(model.catalog_id)">
             <icon name="cross" />
           </div>
         </div>

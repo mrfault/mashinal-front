@@ -143,7 +143,8 @@ export default {
       toggleFsLightbox: false,
       showLightbox: false,
       lightboxKey: 0,
-      currentSlide: 0
+      currentSlide: 0,
+      sendingMessage: false
     }
   },
   computed: {
@@ -254,7 +255,8 @@ export default {
       await this.submitMessage();
     },
     async submitMessage() {
-      if (this.disabledTexting) return;
+      if (this.disabledTexting || this.sendingMessage) return;
+      this.sendingMessage = true;
       let hasAttachments = this.files.length > 0;
       if (hasAttachments || (this.text && this.text.replace(/\s/g, '') !== '')) {
         let formData = new FormData();
@@ -283,10 +285,12 @@ export default {
         // send
         try {
           await this.sendMessage({ form: formData, activeGroup: this.group });
+          this.sendingMessage = false;
           this.markAsRead(this.group.id);
           afterSendActions();
           this.lightboxKey++;
         } catch({ response: { data: { data }}}) {
+          this.sendingMessage = false;
           if (data.type === 2)
             await this.$auth.fetchUser();
           afterSendActions();

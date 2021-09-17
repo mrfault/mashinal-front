@@ -1778,4 +1778,5 @@ export default {
   "announcement":"Объявления",
   "horse_power":"Лошадиные силы",
   "max_horse_power":"Максимальная лошадиные силы",
+  "used":"Использовал",
 }

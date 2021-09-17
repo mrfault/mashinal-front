@@ -15,7 +15,7 @@
       alt=""
     />
   
-    <form>
+    <form @submit.prevent >
       <div class="row">
         <div class="col-12 col-lg-6 mb-2 mb-lg-3">
           <form-select
@@ -69,7 +69,11 @@
         </div>
 
         <div class="col-12 col-lg-6">
-          <button class="btn btn--green full-width" @click.prevent="addToList" v-if="this.form.modification">
+          <button
+            class="btn btn--green full-width"
+            :class="{'disabled': !this.form.modification}"
+            @click.prevent="addToList"
+          >
             {{ $t('add') }}
           </button>
         </div>
@@ -146,15 +150,20 @@ export default {
   },
   methods: {
     async brandSelected(id) {
-      if (id) {
-        this.form = {
-          ...this.form,
-          model: null,
-          generation: null,
-          carType: null,
-          modification: null,
-        },
+      this.form = {
+        ...this.form,
+        model: null,
+        generation: null,
+        carType: null,
+        modification: null,
+      }
 
+      this.$store.commit('comparison/mutate', { property: 'models', value: [] });
+      this.$store.commit('comparison/mutate', { property: 'generations', value: [] });
+      this.$store.commit('comparison/mutate', { property: 'carTypes', value: [] });
+      this.$store.commit('comparison/mutate', { property: 'modifications', value: [] });
+
+      if (id) {
         await this.$store.dispatch('comparison/getModels', id);
 
         if (this.models.length === 1) {
@@ -165,14 +174,19 @@ export default {
       }
     },
     async modelSelected(id) {
-      if (id) {
-        this.form = {
-          ...this.form,
-          generation: null,
-          carType: null,
-          modification: null,
-        },
+      this.form = {
+        ...this.form,
+        generation: null,
+        carType: null,
+        modification: null,
+      }
 
+      this.$store.commit('comparison/mutate', { property: 'generations', value: [] })
+      this.$store.commit('comparison/mutate', { property: 'carTypes', value: [] })
+      this.$store.commit('comparison/mutate', { property: 'modifications', value: [] });
+
+
+      if (id) {
         this.image = this.models.find(model => model.id === id).transformed_media;
         await this.$store.dispatch('comparison/getGenerations', id);
 
@@ -184,13 +198,16 @@ export default {
       }
     },
     async generationSelected(id) {
-      if (id) {
-        this.form = {
-          ...this.form,
-          carType: null,
-          modification: null,
-        },
+      this.form = {
+        ...this.form,
+        carType: null,
+        modification: null,
+      }
 
+      this.$store.commit('comparison/mutate', { property: 'carTypes', value: [] })
+      this.$store.commit('comparison/mutate', { property: 'modifications', value: [] });
+
+      if (id) {
         await this.$store.dispatch('comparison/getCarTypes', id);
 
         if (this.carTypes.length === 1) {
@@ -201,12 +218,14 @@ export default {
       }
     },
     async carTypeSelected(id) {
-      if (id) {
-        this.form = {
-          ...this.form,
-          modification: null,
-        },
+      this.form = {
+        ...this.form,
+        modification: null,
+      }
 
+      this.$store.commit('comparison/mutate', { property: 'modifications', value: [] });
+
+      if (id) {
         await this.$store.dispatch('comparison/getModifications', {
           car_type_id: id,
           generation_id: this.form.generation,
