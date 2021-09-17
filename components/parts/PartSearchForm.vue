@@ -73,79 +73,94 @@
                 </div>
               </form-select>
             </div>
-            <!-- Dynamic filters -->
-            <div class="col-lg-12 mb-3" v-if="showDynamicFilter">
-              <hr/>
 
-              <div class="row">
-                <div
-                  v-for="filter in dynamicFilters"
-                  :key="filter.id"
-                  class="col-lg-2 mb-3"
-                >
-                  <!-- Select -->
-                  <form-select
-                    v-if="filter.component === 'multiselect-component'"
-                    v-model="form[filter.key]"
-                    :label="$t(filter.key)"
-                    :options="filter.values"
-                    translateOptions
-                    multiple
-                  />
+            <div class="col-12" v-if="showDynamicFilter">
+              <transition-expand>
+                <div v-if="!collapsed" class="row">
+                  <!-- Dynamic filters -->
+                  <div class="col-lg-12 mb-3" v-if="showDynamicFilter">
+                    <hr/>
 
-                  <!-- Checkbox -->
-                  <form-checkbox
-                    v-if="filter.component === 'checkbox-component'"
-                    v-model="form[filter.key]"
-                    :label="$t(filter.key)"
-                    :checked-value="form[filter.key]"
-                    :id="'dynamic-filter-' + filter.key"
-                  />
-                </div>
-              </div>
+                    <div class="row">
+                      <div
+                        v-for="filter in dynamicFilters"
+                        :key="filter.id"
+                        class="col-lg-2 mb-3"
+                      >
+                        <!-- Select -->
+                        <form-select
+                          v-if="filter.component === 'multiselect-component'"
+                          v-model="form[filter.key]"
+                          :label="$t(filter.key)"
+                          :options="filter.values"
+                          translateOptions
+                          multiple
+                        />
 
-              <!-- Brands -->
-              <div class="checkboxes-box">
-                <div class="row">
-                  <!-- Brand checkboxes -->
-                  <div class="col-lg-2"
-                    v-for="brand in visibleBrands"
-                    :key="brand.id"
-                  >
-                    <form-checkbox
-                      :label="brand.name"
-                      :value="form.brand_ids.includes(brand.id)"
-                      :checked-value="brand.id"
-                      :id="'brand-' + brand.id" 
-                      @change="brandsOnChange(brand.id)"
-                    />
+                        <!-- Checkbox -->
+                        <form-checkbox
+                          v-if="filter.component === 'checkbox-component'"
+                          v-model="form[filter.key]"
+                          :label="$t(filter.key)"
+                          :checked-value="form[filter.key]"
+                          :id="'dynamic-filter-' + filter.key"
+                        />
+
+                        <!-- Input -->
+                        <form-text-input
+                          v-if="filter.component === 'filter-single-input'"
+                          v-model="form[filter.key]"
+                          :id="'dynamic-filter-' + filter.key"
+                          :placeholder="$t(filter.key)"
+                        />
+                      </div>
+                    </div>
+
+                    <!-- Brands -->
+                    <div class="checkboxes-box">
+                      <div class="row">
+                        <!-- Brand checkboxes -->
+                        <div class="col-lg-2"
+                          v-for="brand in visibleBrands"
+                          :key="brand.id"
+                        >
+                          <form-checkbox
+                            :label="brand.name"
+                            :value="form.brand_ids.includes(brand.id)"
+                            :checked-value="brand.id"
+                            :id="'brand-' + brand.id" 
+                            @change="brandsOnChange(brand.id)"
+                          />
+                        </div>
+                        <!-- Show more/less -->
+                        <div class="col-lg-2">
+                          <button
+                            v-if="!showAllBrands"
+                            class="btn btn--link show-more"
+                            @click="showAllBrands = true"
+                          >
+                            {{ $t('show_all') }}
+                            <icon name="chevron-down" />
+                          </button>
+                          <button
+                            v-else
+                            class="btn btn--link show-more"
+                            @click="showAllBrands = false"
+                          >
+                            {{ $t('show_less') }}
+                            <icon name="chevron-up" />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <!-- Show more/less -->
-                  <div class="col-lg-2">
-                    <button
-                      v-if="!showAllBrands"
-                      class="btn btn--link show-more"
-                      @click="showAllBrands = true"
-                    >
-                      {{ $t('show_all') }}
-                      <icon name="chevron-down" />
-                    </button>
-                    <button
-                      v-else
-                      class="btn btn--link show-more"
-                      @click="showAllBrands = false"
-                    >
-                      {{ $t('show_less') }}
-                      <icon name="chevron-up" />
-                    </button>
-                  </div>
                 </div>
-              </div>
+              </transition-expand>
             </div>
             <!-- Gap if dynamic filter is active-->
             <div class="col-lg-8" v-if="showDynamicFilter"></div>
             <!-- Reset button -->
-            <div class="col-lg-2">
+            <div class="col-lg-2" :class="{'mt-3': collapsed && showDynamicFilter}">
               <button
                 type="button"
                 :class="['btn', 'full-width', 'btn--red-outline']"
@@ -156,7 +171,7 @@
               </button>
             </div>
             <!-- Search button -->
-            <div class="col-lg-2">
+            <div class="col-lg-2" :class="{'mt-3': collapsed && showDynamicFilter}">
               <button
                 type="button"
                 :class="['btn', 'full-width', 'btn--green']"
@@ -168,6 +183,11 @@
             </div>
           </div>
         </div>
+      </div>
+      <div class="collapse-toggle" v-if="showDynamicFilter">
+        <button type="button" class="btn btn-circle" @click="collapsed = !collapsed">
+          <icon :name="`chevron-${collapsed ? 'down' : 'up'}`" />
+        </button>
       </div>
     </div>
   </div>
@@ -307,7 +327,7 @@ export default {
       return this.isWheelCategory
     },
     showDynamicFilter() {
-      return this.isWheelCategory
+      return this.dynamicFilters.length
     }
   },
   watch: {
