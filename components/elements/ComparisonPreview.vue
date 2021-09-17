@@ -5,7 +5,6 @@
       v-if="visible"
       key="comparison-preview"
       ref="comparisonPreview"
-      tabindex="0"
     >
       <div class="comparison-preview__title d-flex">
         <h4 >{{ activeType === 'announcements' ? $t('comparison_announcements') : $t('comparison_models') }}</h4>
@@ -16,7 +15,7 @@
 
       <form-buttons
         class="mt-2"
-        btn-class="pale-red-outline"
+        :btn-class="isDarkMode ? 'white-outline' : 'pale-red-outline'"
         :options="typeButtons"
         :group-by="2"
         v-model="activeType"

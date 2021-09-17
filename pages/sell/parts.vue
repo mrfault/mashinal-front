@@ -11,7 +11,7 @@
         </div>
         <div class="col-auto" v-if="!isMobileBreakpoint">
           <div class="card">
-            <sell-preview :form="form"/>
+            <sell-preview type="part" :form="form"/>
           </div>
         </div>
       </div>

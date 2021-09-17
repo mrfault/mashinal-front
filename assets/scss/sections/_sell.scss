@@ -106,14 +106,13 @@
       &--car {
         background-repeat: no-repeat;
         background-image: url('/img/car.svg');
-        background-size: 70%;
+        background-size: 40%;
       }
-      // &--part {
-      //   background-image: url('/img/part.svg');
-      //   background-size: 40%;
-      //   background-color: $white;
-      //   border: 1px solid $greyish-blue-3;
-      // }
+      &--part {
+        background-repeat: no-repeat;
+        background-image: url('/img/part.svg');
+        background-size: 30%;
+      }
     }
   }
 }

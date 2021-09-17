@@ -398,7 +398,7 @@ export default {
   "contract_end_time": "Срок истечения контракта",
   "Cooled glove box": "Охлаждаемый перчаточный ящик",
   "copied_to_clipboard": "Скопировано",
-  "copy_to_clipboard": "Скопировать ссылку",
+  "copy_to_clipboard": "Скопировать",
   "corps": "Корпус",
   "corrector": "Корректор",
   "count": "штука",
