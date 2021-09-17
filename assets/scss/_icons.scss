@@ -116,6 +116,18 @@
 }
 .icon-azn:before {
   content: "\e90f";
+  font-size: .8em;
+  -webkit-text-stroke: .4px;
+}
+.icon-eur:before {
+  content: "\e978";
+  font-size: .8em;
+  -webkit-text-stroke: .4px;
+}
+.icon-usd:before {
+  content: "\e979";
+  font-size: .8em;
+  -webkit-text-stroke: .2px;
 }
 .icon-barter:before {
   content: "\e910";
