@@ -46,10 +46,9 @@
       </h2>
       <div class="row">
         <!-- Category -->
-        <div class="col-lg-4 mb-3 mb-lg-0">
+        <div class="col-lg-4 mb-3 mb-lg-0" id="anchor-category_id">
           <form-select
             v-model="form.category_id"
-            id="anchor-category_id"
             :label="$t('category')"
             :options="categories"
             :invalid="isInvalid('category_id')"
@@ -59,10 +58,13 @@
         </div>
 
         <!-- Subcategory -->
-        <div class="col-lg-4 mb-3 mb-lg-0" v-if="subcategories.length">
+        <div
+          class="col-lg-4 mb-3 mb-lg-0"
+          v-if="subcategories.length"
+          id="anchor-sub_category_id"
+        >
           <form-select
             v-model="form.sub_category_id"
-            id="anchor-sub_category_id"
             :label="$t('sub_category')"
             :options="subcategories"
             :invalid="isInvalid('sub_category')"
@@ -72,10 +74,13 @@
         </div>
 
         <!-- Brand -->
-        <div class="col-lg-4 mb-3 mb-lg-0" v-if="brands.length">
+        <div
+          class="col-lg-4 mb-3 mb-lg-0"
+          v-if="brands.length"
+          id="anchor-brand_id"
+        >
           <form-select
             v-model="form.brand_id"
-            id="anchor-brand_id"
             :label="$t('select_brand')"
             :options="brands"
             :invalid="isInvalid('brand_id')"
@@ -120,6 +125,7 @@
               class="col-lg-4 mb-3"
               v-for="filter in dynamicFilters"
               :key="'filter-' + filter.id"
+              :id="'anchor-' + filter.key"
             >
               <!-- Select -->
               <form-select
@@ -127,7 +133,6 @@
                 v-model="form[filter.key]"
                 has-search
                 translateOptions
-                :id="'anchor-' + filter.key"
                 :label="$t(filter.key)"
                 :options="filter.values"
                 :invalid="isInvalid(filter.key)"
@@ -178,11 +183,14 @@
             </div>
 
             <!-- Region -->
-            <div class="col-lg-4 mb-3" v-if="regions.length">
+            <div
+              class="col-lg-4 mb-3"
+              v-if="regions.length"
+              id="anchor-region_id"
+            >
               <form-select
                 v-model="form.region_id"
                 has-search
-                id="anchor-region_id"
                 :label="$t('region')"
                 :options="regions"
                 :invalid="isInvalid('region_id')"

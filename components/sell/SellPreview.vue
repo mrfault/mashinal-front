@@ -1,6 +1,6 @@
 <template>
   <div class="sell_preview">
-    <div :class="['img-bg', 'no-img', !sellPreviewData.image ? 'no-img--' + type : '']" 
+    <div :class="['img-bg', !sellPreviewData.image ? 'no-img--' + type : '']" 
          :style="sellPreviewData.image ? {backgroundImage: `url('${sellPreviewData.image}')`} : {}">
     </div>
     <h4>{{ announcementTitle }}</h4>
