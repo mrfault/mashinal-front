@@ -42,7 +42,8 @@ export default {
       title: this.$t('your_announcements')
     });
   },
-  async asyncData({ store, route, app }) {
+  async asyncData({ store, route }) {
+    store.dispatch('setSellPreviewData', { value: {} });
     await Promise.all([
       store.dispatch('getMyAnnouncement', route.params.id)
     ]);

@@ -55,6 +55,7 @@ export default {
     });
   },
   async asyncData({ store, route, app }) {
+    store.dispatch('setSellPreviewData', { value: {} });
     await Promise.all([
       store.dispatch('getOptions'),
       store.dispatch('getColors'),

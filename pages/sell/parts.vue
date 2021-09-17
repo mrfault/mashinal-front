@@ -11,7 +11,7 @@
         </div>
         <div class="col-auto" v-if="!isMobileBreakpoint">
           <div class="card">
-            <sell-preview :brand="brand" :model="model" :form="form"/>
+            <sell-preview :brand="$t('mark')" :model="$t('model')" :form="form"/>
           </div>
         </div>
       </div>
@@ -40,6 +40,9 @@ export default {
       description: this.$t('meta-descr_parts-sell')
     });
   },
+  async asyncData({ store }) {
+    store.dispatch('setSellPreviewData', { value: {} });
+  },
   components: {
     SellProgress,
     SellPreview,
@@ -49,12 +52,6 @@ export default {
     ...mapGetters({
       form: 'parts/form'
     }),
-    brand() {
-      return "Brand"
-    },
-    model() {
-      return "Model"
-    },
     crumbs() {
       return [
         { name: this.$t('place_an_ad'), route: '/sell' },
