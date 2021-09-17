@@ -172,7 +172,7 @@ export default {
     },
     showSuggestedMessages() {
       if (this.blocked || this.blockedBy) return false;
-      return !this.group.messages.length && this.group.announce && this.filteredSuggestedMessages.length && !this.isChatBot;
+      return !this.group.messages.length && this.group.announce?.status === 1 && this.filteredSuggestedMessages.length && !this.isChatBot;
     },
     attachments() {
       return this.group.messages
