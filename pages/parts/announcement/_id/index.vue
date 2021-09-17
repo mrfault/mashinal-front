@@ -27,6 +27,7 @@
 
               <template #after>
                 <collapse-content
+                  v-if="announcement.description"
                   :title="$t('seller_comment')"
                   :first-collapsed="false"
                 >

@@ -141,7 +141,7 @@
       }
     }
 
-    .btn {
+    .compare-btn {
       @include btn-style($bg-color: $red-1, $bg-hover: $red-2);
     }
   }
