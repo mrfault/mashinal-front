@@ -160,8 +160,11 @@ export const actions = {
       value: data
     });
   },
-  addModel({ commit }, model) {
-    commit('addModel', model)
+  async addModel({ commit }, id) {
+    // const model = await this.$axios.get('/catalog/' + id)
+
+    // id === model
+    commit('addModel', id)
   },
   removeModel({ commit }, id) {
     commit('removeModel', id);
@@ -198,12 +201,14 @@ export const mutations = {
   },
   addModel(state, payload) {
     if (state.modelsList.length < state.limit) {
+      // if (!state.modelsList.map(m => m.id).includes(payload.id)) {
       if (!state.modelsList.map(m => m.id || m.catalog_id).includes(payload.id || payload.catalog_id)) {
         state.modelsList.push(payload)
       }
     }
   },
   removeModel(state, id) {
+    // state.modelsList = state.modelsList.filter(m => m.id !== id)
     const index = state.modelsList.findIndex(x => x.id === id)
     state.modelsList.splice(index, 1)
   },
