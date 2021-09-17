@@ -30,16 +30,16 @@ export default {
   },
   methods: {
     handleClick() {
-      if (this.list.length < 2) {
+      // if (this.list.length < 2) {
         this.previewVisible = !this.previewVisible
-      } else {
-        this.$router.push(this.$localePath('/comparison'))
-      }
+      // } else {
+      //   this.$router.push(this.$localePath('/comparison'))
+      // }
     }
   },
   computed: {
     list() {
-      return this.$store.state.comparison.announcementsList
+      return [...this.$store.state.comparison.announcementsList, ...this.$store.state.comparison.modelsList]
     }
   },
   watch:{

@@ -1,5 +1,5 @@
 <template>
-  <div class="parts-banners">
+  <div class="parts-banners row">
 
     <!-- Winter tyres -->
     <div class="parts-banner parts-banner--winter-tyres">
