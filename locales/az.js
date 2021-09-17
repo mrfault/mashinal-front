@@ -1777,6 +1777,4 @@ export default {
   "horse_power":"At gücü",
   "max_horse_power":"Maksimal at gücü",
   "all_parts":"Bütün ehtiyat hissələri",
-  " mm":" mm",
-  " km":" km",
 }

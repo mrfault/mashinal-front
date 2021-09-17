@@ -49,7 +49,7 @@ export const ComparisonMixin = {
       return announcement.year || '—'
     },
     getMileage(announcement) {
-      return (announcement.humanize_mileage || '—') + this.$t(' km')
+      return (announcement.humanize_mileage || '—') + ' ' + this.$t('char_kilometre')
     },
     getColor(announcement) {
       return announcement?.colors?.map(item => item.name[this.locale]).join(', ') || '—'
@@ -210,7 +210,7 @@ export const ComparisonMixin = {
     getLength(item) {
       if (item.specifications['razmery-mm']) {
         if (item.specifications['razmery-mm']['dlina']) {
-          return parseInt(item.specifications['razmery-mm']['dlina']) + this.$t(' mm');
+          return parseInt(item.specifications['razmery-mm']['dlina']) + ' ' + this.$t('char_millimetre');
         }
       }
       return '—'
@@ -218,7 +218,7 @@ export const ComparisonMixin = {
     getWidth(item) {
       if (item.specifications['razmery-mm']) {
         if (item.specifications['razmery-mm']['shirina']) {
-          return parseInt(item.specifications['razmery-mm']['shirina']) + this.$t(' mm');
+          return parseInt(item.specifications['razmery-mm']['shirina']) + ' ' + this.$t('char_millimetre');
         }
       }
       return '—'
@@ -226,7 +226,7 @@ export const ComparisonMixin = {
     getHeight(item) {
       if (item.specifications['razmery-mm']) {
         if (item.specifications['razmery-mm']['vysota']) {
-          return parseInt(item.specifications['razmery-mm']['vysota']) + this.$t(' mm');
+          return parseInt(item.specifications['razmery-mm']['vysota']) + ' ' + this.$t('char_millimetre');
         }
       }
       return '—'
@@ -234,7 +234,7 @@ export const ComparisonMixin = {
     getWheelBase(item) {
       if (item.specifications['razmery-mm']) {
         if (item.specifications['razmery-mm']['kolesnaya-baza']) {
-          return parseInt(item.specifications['razmery-mm']['kolesnaya-baza']) + this.$t(' mm');
+          return parseInt(item.specifications['razmery-mm']['kolesnaya-baza']) + ' ' + this.$t('char_millimetre');
         }
       }
       return '—'
@@ -242,7 +242,7 @@ export const ComparisonMixin = {
     getFrontWheelWidth(item) {
       if (item.specifications['razmery-mm']) {
         if (item.specifications['razmery-mm']['shirina-peredney-kolei']) {
-          return parseInt(item.specifications['razmery-mm']['shirina-peredney-kolei']) + this.$t(' mm');
+          return parseInt(item.specifications['razmery-mm']['shirina-peredney-kolei']) + ' ' + this.$t('char_millimetre');
         }
       }
       return '—'
@@ -250,7 +250,7 @@ export const ComparisonMixin = {
     getRearWheelWidth(item) {
       if (item.specifications['razmery-mm']) {
         if (item.specifications['razmery-mm']['shirina-zadney-kolei'] !== undefined) {
-          return parseInt(item.specifications['razmery-mm']['shirina-zadney-kolei']) + this.$t(' mm');
+          return parseInt(item.specifications['razmery-mm']['shirina-zadney-kolei']) + ' ' + this.$t('char_millimetre');
         }
       }
       return '—'

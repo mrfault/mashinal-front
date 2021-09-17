@@ -1779,6 +1779,4 @@ export default {
   "horse_power":"Лошадиные силы",
   "max_horse_power":"Максимальная лошадиные силы",
   "all_parts":"Все запчасти",
-  " mm":" мм",
-  " km":" км",
 }
