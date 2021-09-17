@@ -16,7 +16,7 @@
 
       <form-buttons
         class="mt-2"
-        :btn-class="isDarkMode ? 'white-outline' : 'pale-red-outline'"
+        btn-class="pale-red-outline"
         :options="typeButtons"
         :group-by="2"
         v-model="activeType"
@@ -63,7 +63,7 @@
       </vue-scroll>
 
       <button
-        class="btn btn--red btn--unaffected-by-theme full-width"
+        class="btn btn--red btn--unaffected-by-theme full-width compare-btn"
         v-if="activeType === 'announcements' ? announcementsList.length > 1 : modelsList.length > 1"
         @click="compare"
       >
