@@ -48,7 +48,7 @@
           <div class="col-12 col-lg-1-5 mb-2 mb-lg-3">
             <form-select :label="$t('price')" custom :suffix="'AZN'"
               :values="{from: form.price_from, to: form.price_to, suffix: '₼' }"
-              @clear="form.price_from = '', form.price_to = ''"
+              @clear="form.price_from = '', form.price_to = '', searchAutosalons()"
             >
               <div class="form-merged">
                 <form-numeric-input :placeholder="$t('from')" v-model="form.price_from" 

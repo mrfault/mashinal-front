@@ -36,10 +36,10 @@ export const MenusDataMixin = {
     navbarMenus() {
       return [
         ...this.searchMenus,
-        { title: 'parts', route: '/parts', children: this.partsSubMenus },
+        { title: 'parts', route: '/parts', children: this.$env.DEV ? this.partsSubMenus : false },
         { title: 'autocatalog', route: '/catalog' },
-        { title: 'salons', route: '/salons' }
-      ];
+        { title: 'salons', route: '/salons', dev: true }
+      ].filter(item => !item.dev || this.$env.DEV);
     },
 
     topbarMenus() {
@@ -86,14 +86,14 @@ export const MenusDataMixin = {
 
     sidebarMenus() {
       return [
-        { title: 'salons', route: '/salons', icon: 'store' },
+        { title: 'salons', route: '/salons', icon: 'store', dev: true },
         { title: 'parts', route: '/parts', icon: 'parts' },
         { title: 'autocatalog', route: '/catalog', icon: 'book' },
         { title: 'comparisons', route: '/comparison', icon: 'compare' },
         { title: 'helper_search', route: '/cars/assistant', icon: 'flag' },
         { title: 'my_searches', route: '/profile/templates', icon: 'template', auth: true },
         ...this.pageMenus
-      ];
+      ].filter(item => !item.dev || this.$env.DEV);
     },
 
     commercialMenus() {
@@ -127,9 +127,9 @@ export const MenusDataMixin = {
     
     partsSubMenus() {
       return [
-        { title: 'parts', route: '/parts' },
-        { title: 'shops', route: '/parts/shops' }
-      ];
+        { title: 'parts', route: '/parts', dev: true },
+        { title: 'shops', route: '/parts/shops', dev: true }
+      ].filter(item => !item.dev || this.$env.DEV);
     },
 
     hasSearchNav() {

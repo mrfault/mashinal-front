@@ -1663,7 +1663,7 @@ export default {
   "yes": "Да",
   "you": "Вы",
   "you_blocked_this_user": "Вы заблокировали этого пользователя",
-  "you_can_create_announcement": "По номеру <strong>{phone}</strong> вы можете разместить <strong>{left}</strong> {plural} на легковые, мото и коммерческие автомобили, а также <strong>{left_part}</strong> {plural_parts} на запчасти.",
+  "you_can_create_announcement": "По номеру <strong>{phone}</strong> вы можете разместить <strong>{left}</strong> {plural} на легковые, мото и коммерческие автомобили, а также <strong>{left_parts}</strong> {plural_parts} на запчасти.",
   "you_can_create_announcement_transport": "По номеру <strong>{phone}</strong> вы можете разместить <strong>{left}</strong> {plural} на легковые, мото и коммерческие автомобили.",
   "you_can_create_announcement_parts": "По номеру <strong>{phone}</strong> вы можете разместить <strong>{left_parts}</strong> {plural_parts} на запчасти.",
   "you_can_only_have_some_free_announcement_within_30_days": "В течении <strong>30</strong> дней на сайте Mashin.al можно разместить только <strong>3</strong> объявления на легковые, мото и коммерческие автомобили и <strong>6</strong> объявлений на запчасти.",

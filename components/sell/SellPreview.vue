@@ -42,6 +42,8 @@ export default {
         return this.sellPreviewData.title
       } else if (this?.brand?.name || this?.model?.name) {
         return [this.brand.name, this.model.name].join(' ')
+      } else if (typeof (this.brand || this.model || false) === 'string') {
+        return [this.brand, this.model].join(' ')
       } else {
         return this.$t('announcement_name')
       }
