@@ -320,8 +320,8 @@ export default {
     },
     getOwnerOptions() {
       return [
-        { key: 1, name: this.$t('yes')	},
-        { key: 0, name: this.$t('no')	}
+        { key: 0, name: this.$t('yes')	},
+        { key: 1, name: this.$t('no')	}
       ];
     }
   },
