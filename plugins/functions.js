@@ -18,6 +18,8 @@ export default function({ app, route, store }, inject) {
   // routing
   inject('localePath', (path, locale) => {
     if (!path) return '#0';
+    // check if route name was specified and escape trailing slash
+    if (!path.includes('/')) return app.localePath(path).replace(/\/+$/, '');
     // do some magic
     if (path === '/')  
       return '/' + (app.i18n.locale === 'az' ? '' : app.i18n.locale);

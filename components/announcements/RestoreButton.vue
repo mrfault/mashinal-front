@@ -31,7 +31,7 @@ export default {
           this.$toasted.success(this.$t('announcement_restored'));
           this.pending = false;
         } else {
-          const res = await this.$axios.$get(`/restore/${this.announcement.id_unique}`);
+          const res = await this.$axios.$get(`/restore/${this.announcement.id_unique}?is_mobile=${this.isMobileBreakpoint}`);
           this.pending = false;
           this.handlePayment(res);
         }

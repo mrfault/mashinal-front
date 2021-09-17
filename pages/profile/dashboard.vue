@@ -190,7 +190,7 @@
         if (this.pending) return;
         this.pending = true;
         try {
-          const res = await this.$axios.$get(`/payment/package`);
+          const res = await this.$axios.$get(`/payment/package?is_mobile=${this.isMobileBreakpoint}`);
           this.pending = false;
           this.handlePayment(res);
         } catch (err) {

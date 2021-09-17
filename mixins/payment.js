@@ -27,7 +27,8 @@ export const PaymentMixin = {
         window.open((res?.data?.redirect_url || res), name, 'toolbar=yes,scrollbars=yes,resizable=yes,top=50,left=100,width=494,height=718');
         if (res?.data?.payment_id) {
           this.connectEcho(`purchase.${res.data.payment_id}`, false).listen('PurchaseInitiated', async (data) => {
-            const paid = data.payment.status === 1;
+            let { is_paid, status } = data.payment;
+            let paid = is_paid || status === 1;
             if (paid) {
               await this.$nuxt.refresh();
               if (this.loggedIn)

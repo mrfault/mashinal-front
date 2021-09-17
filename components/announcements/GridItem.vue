@@ -99,7 +99,7 @@ export default {
       if (['Part'].includes(this.getType)) return this.announcement.description;
       let text = `${this.announcement.year} ${this.$t('plural_forms_year')[0]}`;
       if (this.getCapacity) text += `, ${this.getCapacity}`;
-      text += `, ${this.$readNumber(this.announcement.mileage)} ${this.$t('char_kilometre')}`;
+      text += `, ${this.announcement.humanize_mileage} ${this.$t('char_kilometre')}`;
       return text;
     },
     getImage() {
