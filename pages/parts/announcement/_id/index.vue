@@ -27,7 +27,7 @@
 
               <template #after>
                 <collapse-content
-                  title="Satıcının rəyi"
+                  :title="$t('seller_comment')"
                   :first-collapsed="false"
                 >
                   <p>{{ announcement.description }}</p>

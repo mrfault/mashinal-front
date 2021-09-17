@@ -67,7 +67,7 @@ export default {
   "add_description": "Добавить описание",
   "add_email": "Добавить E-mail",
   "add_feedback": "Добавить отзыв",
-  "add_image": "Добавить картину",
+  "add_image": "Добавить изображение",
   "add_logo_image": "Добавьте лого",
   "add_mobile_number": "Добавить номер моб. телефона",
   "add_photos": "Добавить фотографии",
@@ -1778,5 +1778,5 @@ export default {
   "announcement":"Объявления",
   "horse_power":"Лошадиные силы",
   "max_horse_power":"Максимальная лошадиные силы",
-  "used":"Использовал",
+  "all_parts":"Все запчасти",
 }

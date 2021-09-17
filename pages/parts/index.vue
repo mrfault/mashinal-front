@@ -78,7 +78,7 @@ export default {
     }),
     crumbs() {
       return [
-        { name: this.$t('parts') }
+        { name: this.$t('all_parts') }
       ]
     }
   }

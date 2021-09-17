@@ -110,7 +110,7 @@ export default {
     }),
     crumbs() {
       return [
-        { name: this.$t('parts'), route: '/parts' },
+        { name: this.$t('all_parts'), route: '/parts' },
         { name: this.partsRoutes.find(route => route.slug === this.$route.params.category)?.localeTitle }
       ]
     }

@@ -72,6 +72,7 @@
           <button
             class="btn btn--green full-width"
             :class="{'disabled': !this.form.modification}"
+            :disabled="!this.form.modification"
             @click.prevent="addToList"
           >
             {{ $t('add') }}
