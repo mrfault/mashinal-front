@@ -5,7 +5,6 @@
       v-if="visible"
       key="comparison-preview"
       ref="comparisonPreview"
-      tabindex="0"
     >
       <div class="comparison-preview__title d-flex">
         <h4 >{{ activeType === 'announcements' ? $t('comparison_announcements') : $t('comparison_models') }}</h4>
