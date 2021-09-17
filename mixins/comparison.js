@@ -43,22 +43,22 @@ export const ComparisonMixin = {
 
     // Specs getters
     getModificationAndSupply(announcement) {
-      return announcement.capacity
+      return announcement.capacity || '—'
     },
     getYear(announcement) {
-      return announcement.year
+      return announcement.year || '—'
     },
     getMileage(announcement) {
-      return announcement.humanize_mileage + ' km'
+      return (announcement.humanize_mileage || '—') + this.$t(' km')
     },
     getColor(announcement) {
-      return announcement?.colors?.map(item => item.name[this.locale]).join(', ') || []
+      return announcement?.colors?.map(item => item.name[this.locale]).join(', ') || '—'
     },
     getCustomsClearance(announcement) {
-      return announcement.customs_clearance ? 'Gömrükdən keçmiş' : 'Gömrükdən keçməmiş'
+      return announcement.customs_clearance ? this.$t('cleared') : this.$t('cleared')
     },
     getOwnerType(announcement) {
-      return announcement.owner_type ? 'Bəli' : 'Xeyr'
+      return announcement.owner_type ? this.$t('yes') : this.$t('no')
     },
     getModelTitle(model) {
       if (model.brand) {
@@ -210,7 +210,7 @@ export const ComparisonMixin = {
     getLength(item) {
       if (item.specifications['razmery-mm']) {
         if (item.specifications['razmery-mm']['dlina']) {
-          return parseInt(item.specifications['razmery-mm']['dlina']) + ' mm';
+          return parseInt(item.specifications['razmery-mm']['dlina']) + this.$t(' mm');
         }
       }
       return '—'
@@ -218,7 +218,7 @@ export const ComparisonMixin = {
     getWidth(item) {
       if (item.specifications['razmery-mm']) {
         if (item.specifications['razmery-mm']['shirina']) {
-          return parseInt(item.specifications['razmery-mm']['shirina']) + ' mm';
+          return parseInt(item.specifications['razmery-mm']['shirina']) + this.$t(' mm');
         }
       }
       return '—'
@@ -226,7 +226,7 @@ export const ComparisonMixin = {
     getHeight(item) {
       if (item.specifications['razmery-mm']) {
         if (item.specifications['razmery-mm']['vysota']) {
-          return parseInt(item.specifications['razmery-mm']['vysota']) + ' mm';
+          return parseInt(item.specifications['razmery-mm']['vysota']) + this.$t(' mm');
         }
       }
       return '—'
@@ -234,7 +234,7 @@ export const ComparisonMixin = {
     getWheelBase(item) {
       if (item.specifications['razmery-mm']) {
         if (item.specifications['razmery-mm']['kolesnaya-baza']) {
-          return parseInt(item.specifications['razmery-mm']['kolesnaya-baza']) + ' mm';
+          return parseInt(item.specifications['razmery-mm']['kolesnaya-baza']) + this.$t(' mm');
         }
       }
       return '—'
@@ -242,7 +242,7 @@ export const ComparisonMixin = {
     getFrontWheelWidth(item) {
       if (item.specifications['razmery-mm']) {
         if (item.specifications['razmery-mm']['shirina-peredney-kolei']) {
-          return parseInt(item.specifications['razmery-mm']['shirina-peredney-kolei']) + ' mm';
+          return parseInt(item.specifications['razmery-mm']['shirina-peredney-kolei']) + this.$t(' mm');
         }
       }
       return '—'
@@ -250,7 +250,7 @@ export const ComparisonMixin = {
     getRearWheelWidth(item) {
       if (item.specifications['razmery-mm']) {
         if (item.specifications['razmery-mm']['shirina-zadney-kolei'] !== undefined) {
-          return parseInt(item.specifications['razmery-mm']['shirina-zadney-kolei']) + ' mm';
+          return parseInt(item.specifications['razmery-mm']['shirina-zadney-kolei']) + this.$t(' mm');
         }
       }
       return '—'

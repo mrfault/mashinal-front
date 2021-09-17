@@ -16,7 +16,7 @@
 
       <form-buttons
         class="mt-2"
-        btn-class="pale-red-outline"
+        :btn-class="isDarkMode ? 'white-outline' : 'pale-red-outline'"
         :options="typeButtons"
         :group-by="2"
         v-model="activeType"
