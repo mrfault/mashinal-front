@@ -1763,7 +1763,7 @@ export default {
   "your_request_has_been_sent": "Sorğunuz göndərildi",
   "winter":"Qış mövsumu",
   "summer":"Yay mövsumu",
-  "all_season":"Bütün mövsumlar",
+  "all_season":"Bütün mövsümlər",
   "studded":"Şipli",
   "not_studded":"Şipsiz",
   "is_negotiable":"Razılaşma yolu ilə",
@@ -1776,5 +1776,5 @@ export default {
   "announcement":"Elan",
   "horse_power":"At gücü",
   "max_horse_power":"Maksimal at gücü",
-  "used":"İşlənmiş",
+  "all_parts":"Bütün ehtiyat hissələri",
 }

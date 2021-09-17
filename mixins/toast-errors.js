@@ -21,6 +21,7 @@ export const ToastErrorsMixin = {
       if (this.errors.includes(field)) {
         this.errors = this.errors.filter(key => key !== field);
         this.toasts[field].goAway(100);
+
       }
     },
     clearErrors() {
