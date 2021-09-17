@@ -238,6 +238,7 @@
         if (type === 'announcement') type = 'cars';
         else if (['motorcycle','scooter','motoatv'].includes(type)) type = 'moto';
         else if (type === 'commercial') type = 'commercial';
+        else if (type === 'part') type = 'parts';
         this.$router.push(this.$localePath(`/${type}/announcement/${announcement.id_unique}`));
       },
 
