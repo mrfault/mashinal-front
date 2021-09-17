@@ -9,8 +9,8 @@
         >
           <div
             class="comparison__item__image"
-            :style="`background-image: url(${getAnnouncementImage(announcement)})`"
           >
+            <img :src="getAnnouncementImage(announcement)" :alt="getAnnouncementTitle(announcement)">
             <div class="action-button action-button--close" @click="removeItem(announcement.id_unique)">
               <icon name="cross" />
             </div>
