@@ -14,10 +14,10 @@
           <template v-else>
             <img :src="previews[key]" alt="" />
             <div class="overlay">
-              <button v-if="rotatable" class="btn-sq" @click.prevent="fileRotate(key, getFileIndex(key))">
+              <button v-if="rotatable" class="btn-sq" type="button" @click.prevent="fileRotate(key, getFileIndex(key))">
                 <icon name="reset" />
               </button>
-              <button class="btn-sq ml-auto" @click.stop="fileDelete(key)">
+              <button class="btn-sq ml-auto" type="button" @click.stop="fileDelete(key)">
                 <icon name="cross" />
               </button>
             </div>

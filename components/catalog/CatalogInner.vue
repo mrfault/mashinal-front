@@ -126,7 +126,7 @@
                   <span class="col">{{ modPower(mod.main) }}</span>
                   <span class="col">{{ modBox(mod.main) }}</span>
                   <span class="col-auto">
-                    <add-comparison has-border :model="mod" type="model"/>
+                    <add-comparison has-border :id="mod.id" type="model"/>
                   </span>
                 </a>
               </template>
@@ -193,6 +193,15 @@ export default {
     pathBase() {
       let { brand, model, generation, body } = {...this.$route.params};
       return this.$localePath(`/catalog/${brand}/${model}/${generation}/${body}`);
+    },
+    model() {
+      return {
+        brand: this.selectedBrand,
+        model: this.selectedModel,
+        generation: this.selectedCar,
+        carType: {},
+        modification: this.modSpecs,
+      }
     }
   },
   methods: {

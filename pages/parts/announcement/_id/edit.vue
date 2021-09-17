@@ -14,7 +14,7 @@
         </div>
         <div class="col-auto">
           <div class="card">
-            <sell-preview :form="form" />
+            <sell-preview type="part" :form="form" />
           </div>
         </div>
       </div>

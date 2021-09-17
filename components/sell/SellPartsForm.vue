@@ -1,6 +1,6 @@
 <template>
   <div class="sell_parts-form">
-    <form class="form" novalidate @submit.prevent.stop>
+    <form class="form" novalidate @submit.prevent>
       <!-- General Information -->
       <h2 class="title-with-line mt-3 mt-lg-0" id="anchor-general-information">
         <span>{{ $t('general_informations') }} <span class="star"> *</span></span>
