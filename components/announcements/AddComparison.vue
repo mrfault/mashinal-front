@@ -15,10 +15,6 @@ props: {
       type: [Number, String],
       required: false
     },
-    model: {
-      type: Object,
-      required: false
-    },
     type: {
       type: String,
       required: false,
@@ -34,7 +30,7 @@ props: {
       if (this.type === 'announcement') {
         this.$store.dispatch('comparison/toggleAnnouncement', this.id)
       } else {
-        // this.$store.dispatch('comparison/toggleModel', this.model)
+        this.$store.dispatch('comparison/toggleModel', this.id)
       }
     }
   },
@@ -43,7 +39,7 @@ props: {
       if (this.type === 'announcement') {
         return this.$store.getters['comparison/announcementIds'].findIndex(aId => aId === this.id) >= 0
       } else {
-        return false // this.$store.getters['comparison/modelsList'].findIndex(model => model.catalog_id === this.model.catalog_id) >= 0
+        return this.$store.getters['comparison/modelsList'].findIndex(model => model.id === this.id) >= 0
       }
     }
   }

@@ -45,7 +45,7 @@
         <!-- Models -->
         <div class="comparison-preview__list" v-if="activeType === 'models'">
           <template v-for="(model, index) in modelsList">
-            <div class="comparison-preview__list-item" :key="'model-' + model.catalog_id">
+            <div class="comparison-preview__list-item" :key="'model-' + model.id">
               <img :src="model.model.transformed_media" alt="">
               <div class="info">
                 <div class="info__title text-truncate">{{ getModelTitle(model) }}</div>
@@ -53,11 +53,11 @@
                   {{ desc }}
                 </div>
               </div>
-              <button class="remove-btn" @click="removeModel(model.catalog_id)">
+              <button class="remove-btn" @click="removeModel(model.id)">
                 <icon name="garbage" />
               </button>
             </div>
-            <hr :key="'hr-' + model.catalog_id" v-if="index < modelsList.length - 1"/>
+            <hr :key="'hr-' + model.id" v-if="index < modelsList.length - 1"/>
           </template>
         </div>
       </vue-scroll>
