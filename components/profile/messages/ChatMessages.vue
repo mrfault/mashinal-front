@@ -13,7 +13,7 @@
           </span>
           <template v-if="isMobileBreakpoint">
             <br/>
-            <span class="username-subtitle">
+            <span class="username-subtitle" @click.stop="$emit('go-to-announcement', group)">
               <span class="text-truncate">{{ getAnnouncementTitle(chatAnnouncement) }}</span>
               <span class="text-dark-blue-2">{{ chatAnnouncement.price || '' }}</span>
             </span> 
