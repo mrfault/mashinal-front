@@ -1,5 +1,5 @@
 <template>
-  <div class="form-group">
+  <div class="form-group" :id="id">
     <div :class="['select-menu',{'no-bg': hasNoBg, invalid}]" tabindex="0">
       <span :class="['select-menu_label', {'selected': hasSelectedValue, 'disabled': disabled, 'active': showOptions}]" 
         @click="displayMenuOptions">

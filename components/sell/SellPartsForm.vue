@@ -8,21 +8,29 @@
       <div class="row">
         <div class="col-lg-4 mb-3">
           <form-text-input
-            :placeholder="$t('product_code')"
             v-model="form.product_code"
+            id="anchor-product_code"
+            :placeholder="$t('product_code')"
+            :invalid="isInvalid('product_code')"
+            @change="removeError('product_code')"
           />
         </div>
         <div class="col-lg-4 mb-3">
           <form-text-input
-            :placeholder="$t('title_max_character', { max: 20 })"
             v-model="form.title"
-            :invalid="$v.form.title.$error"
+            :placeholder="$t('title_max_character', { max: 20 })"
+            id="anchor-title"
+            :invalid="isInvalid('title')"
+            @change="removeError('title')"
           />
         </div>
         <div class="col-12 mb-2">
           <form-textarea
-            :placeholder="$t('description_placeholder', { max: 20 })"
             v-model="form.description"
+            id="anchor-description"
+            :placeholder="$t('description_placeholder', { max: 20 })"
+            :invalid="isInvalid('description')"
+            @change="removeError('description')"
           />
         </div>
         <div class="col-12">
@@ -40,31 +48,39 @@
         <!-- Category -->
         <div class="col-lg-4 mb-3 mb-lg-0">
           <form-select
+            v-model="form.category_id"
+            id="anchor-category_id"
             :label="$t('category')"
             :options="categories"
-            v-model="form.category_id"
-            @change="categorySelected"
-            :invalid="$v.form.category_id.$error"
+            :invalid="isInvalid('category_id')"
+            :clear-option="false"
+            @change="categorySelected($event), removeError('category_id')"
           />
         </div>
 
         <!-- Subcategory -->
         <div class="col-lg-4 mb-3 mb-lg-0" v-if="subcategories.length">
           <form-select
+            v-model="form.sub_category_id"
+            id="anchor-sub_category_id"
             :label="$t('sub_category')"
             :options="subcategories"
-            v-model="form.sub_category_id"
-            :invalid="$v.form.sub_category_id.$error"
+            :invalid="isInvalid('sub_category')"
+            :clear-option="false"
+            @change="removeError('sub_category')"
           />
         </div>
 
         <!-- Brand -->
         <div class="col-lg-4 mb-3 mb-lg-0" v-if="brands.length">
           <form-select
+            v-model="form.brand_id"
+            id="anchor-brand_id"
             :label="$t('select_brand')"
             :options="brands"
-            v-model="form.brand_id"
-            :invalid="$v.form.brand_id.$error"
+            :invalid="isInvalid('brand_id')"
+            :clear-option="false"
+            @change="removeError('brand_id')"
           />
         </div>
         
@@ -74,22 +90,28 @@
             <!-- Condition -->
             <div class="col-lg-4 mb-3">
               <form-buttons
-                :label="`${$t('new')}/${$t('S_H')}`"
                 v-model="form.is_new"
-                :options="conditionButtons"
+                id="anchor-is_new"
                 btn-class="primary-outline"
+                :label="`${$t('new')}/${$t('S_H')}`"
+                :options="conditionButtons"
                 :group-by="2"
+                :invalid="isInvalid('is_new')"
+                @change="removeError('is_new')"
               />
             </div>
 
             <!-- Originality -->
             <div class="col-lg-4 mb-3">
               <form-buttons
-                :label="`${$t('original')}/${$t('duplicate')}`"
                 v-model="form.is_original"
-                :options="originalityButtons"
+                id="anchor-is_original"
                 btn-class="primary-outline"
+                :label="`${$t('original')}/${$t('duplicate')}`"
+                :options="originalityButtons"
                 :group-by="2"
+                :invalid="isInvalid('is_original')"
+                @change="removeError('is_original')"
               />
             </div>
 
@@ -103,46 +125,55 @@
               <form-select
                 v-if="filter.component === 'multiselect-component'"
                 v-model="form[filter.key]"
-                :label="$t(filter.key)"
-                :options="filter.values"
-                :invalid="errors.includes(filter.key)"
                 has-search
                 translateOptions
-                @change="dynamicFilterOnChange(filter.key, $event)"
+                :id="'anchor-' + filter.key"
+                :label="$t(filter.key)"
+                :options="filter.values"
+                :invalid="isInvalid(filter.key)"
+                :clear-option="!filter.is_required"
+                @change="removeError(filter.key), dynamicFilterOnChange(filter.key, $event)"
               />
 
               <!-- Checkbox -->
               <form-checkbox
                 v-if="filter.component === 'checkbox-component'"
                 v-model="form[filter.key]"
+                :id="'anchor-' + filter.key"
                 :label="$t(filter.key)"
                 :checked-value="form[filter.key]"
-                :id="'dynamic-filter-' + filter.key"
-                :invalid="errors.includes(filter.key)"
+                :invalid="isInvalid(filter.key)"
+                @change="removeError(filter.key)"
               />
 
               <!-- Input -->
               <form-text-input
                 v-if="filter.component === 'filter-single-input'"
                 v-model="form[filter.key]"
+                :id="'anchor-' + filter.key"
                 :placeholder="$t(filter.key)"
-                :invalid="errors.includes(filter.key)"
+                :invalid="isInvalid(filter.key)"
                 @input="dynamicFilterOnChange(filter.key, $event)"
+                @change="removeError(filter.key)"
               />
             </div>
 
             <!-- Price -->
             <div class="col-lg-8 mb-3 price-input-group">
               <form-numeric-input
-                :placeholder="$t('price')"
                 v-model="form.price"
-                :invalid="$v.form.price.$error"
+                id="anchor-price"
+                :placeholder="$t('price')"
+                :invalid="isInvalid('price')"
+                @change="removeError('price')"
               />
               <form-checkbox
                 v-model="form.is_negotiable"
-                :label="$t('is_negotiable')"
+                id="anchor-is_negotiable"
                 checked-value="is_negotiable"
-                id="is_negotiable"
+                :label="$t('is_negotiable')"
+                :invalid="isInvalid('is_negotiable')"
+                @change="removeError('price', true), removeError('is_negotiable')"
               />
             </div>
 
@@ -150,10 +181,13 @@
             <div class="col-lg-4 mb-3" v-if="regions.length">
               <form-select
                 v-model="form.region_id"
+                has-search
+                id="anchor-region_id"
                 :label="$t('region')"
                 :options="regions"
-                has-search
-                :invalid="$v.form.region_id.$error"
+                :invalid="isInvalid('region_id')"
+                @change="removeError('region_id')"
+                :clear-option="false"
               />
             </div>
 
@@ -161,9 +195,11 @@
             <div class="col-lg-4 mb-3">
               <form-checkbox
                 v-model="form.have_delivery"
-                :label="$t('have_delivery')"
+                id="anchor-have_delivery"
                 checked-value="delivery"
-                id="delivery"
+                :label="$t('have_delivery')"
+                :invalid="isInvalid('have_delivery')"
+                @change="removeError('have_delivery')"
               />
             </div>
 
@@ -171,9 +207,11 @@
             <div class="col-lg-4 mb-3">
               <form-checkbox
                 v-model="form.have_warranty"
-                :label="$t('have_warranty')"
+                id="anchor-have_warranty"
                 checked-value="warranty"
-                id="warranty"
+                :label="$t('have_warranty')"
+                :invalid="isInvalid('have_warranty')"
+                @change="removeError('have_warranty')"
               />
             </div>
           </div>
@@ -316,8 +354,7 @@ export default {
       date: Math.floor(Date.now() / 1000),
       upload_ended: true,
       showLoginPopup: false,
-      pending: false,
-      errors: []
+      pending: false
     }
   },
   validations: {
@@ -383,6 +420,10 @@ export default {
         regions: [],
         filters: [],
       }
+
+      this.filters.filters.forEach(filter => {
+        delete this.form[filter.key]
+      })
 
       if (id) {
         this.getFilters(id)
@@ -483,21 +524,21 @@ export default {
       }
     },
     validate() {
-      this.$v.$touch();
+      // this.$v.$touch();
 
-      this.errors = [];
-      this.filters.filters.forEach(filter => {
-        if (filter.is_required){
-          const value = this.form[filter.key]
-          if (value === '') {
-            this.errors.push(filter.key)
-          }
-        }
-      })
+      // this.errors = [];
+      // this.filters.filters.forEach(filter => {
+      //   if (filter.is_required){
+      //     const value = this.form[filter.key]
+      //     if (value === '') {
+      //       this.errors.push(filter.key)
+      //     }
+      //   }
+      // })
       
-      if (this.errors.length) {
-        return false
-      }
+      // if (this.errors.length) {
+      //   return false
+      // }
 
       if (!this.upload_ended) {
         this.$toasted.error(this.$t('please_wait_for_all_image_loading'));
@@ -509,9 +550,9 @@ export default {
         return false;
       }
 
-      if (!(this.$v.$pending || this.$v.$error)) {
+      // if (!(this.$v.$pending || this.$v.$error)) {
         return true
-      }
+      // }
     },
     async publish() {
       let data = {...this.form}
@@ -546,17 +587,12 @@ export default {
         
         if (status === 420) {
           this.$toasted.error(this.$t(message));
-          // if (data.need_pay) {
-          //   this.isAlreadySold = true;
-          //   this.scrollTo('.publish-post');
-          // }
         } else {
           // find errors
           let dataLength = data && Object.keys(data).length;
           if (dataLength) {
             let count = 0;
             for (let key in data) {
-              // key = Object.keys(data)[dataLength - Object.keys(data).indexOf(key) - 1];
               let errorKey = key;
               this.errors.push(errorKey);
               let errorIndex = this.errors.indexOf(errorKey);
@@ -608,9 +644,9 @@ export default {
           key: 'shine_width',
           value: this.dynamicFilters
             .find(f => f.key === 'shine_width')
-            .values
-            .find(v => v.id === this.form.shine_width)
-            .name
+            ?.values
+            ?.find(v => v.id === this.form.shine_width)
+            ?.name || ''
         });
       }
       if (this.form.diameter) {
@@ -618,9 +654,9 @@ export default {
           key: 'diameter',
           value: this.dynamicFilters
             .find(f => f.key === 'diameter')
-            .values
-            .find(v => v.id === this.form.diameter)
-            .name
+            ?.values
+            ?.find(v => v.id === this.form.diameter)
+            ?.name || ''
         });
       }
       if (this.form.height) {
@@ -628,9 +664,9 @@ export default {
           key: 'height',
           value: this.dynamicFilters
             .find(f => f.key === 'height')
-            .values
-            .find(v => v.id === this.form.height)
-            .name
+            ?.values
+            ?.find(v => v.id === this.form.height)
+            ?.name || ''
         });
       }
     },

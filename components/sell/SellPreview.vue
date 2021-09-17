@@ -1,6 +1,6 @@
 <template>
   <div class="sell_preview">
-    <div :class="['img-bg', {'no-img': !sellPreviewData.image}]" 
+    <div :class="['img-bg', 'no-img', !sellPreviewData.image ? 'no-img--' + type : '']" 
          :style="sellPreviewData.image ? {backgroundImage: `url('${sellPreviewData.image}')`} : {}">
     </div>
     <h4>{{ announcementTitle }}</h4>
@@ -28,6 +28,11 @@ export default {
     model: {
       type: [Object, String],
       required: false
+    },
+    type: {
+      type: String,
+      required: false,
+      default: 'car'
     }
   },
   computed: {
@@ -35,7 +40,7 @@ export default {
     announcementTitle() {
       if (this.sellPreviewData.title) {
         return this.sellPreviewData.title
-      } else if (this.brand.name || this.model.name) {
+      } else if (this?.brand?.name || this?.model?.name) {
         return [this.brand.name, this.model.name].join(' ')
       } else {
         return this.$t('announcement_name')

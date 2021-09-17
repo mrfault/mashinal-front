@@ -1,7 +1,7 @@
 <template>
   <div class="keywords card mb-lg-3" v-if="announcement.tags.length">
     <div
-      v-for="keyword in announcement.keywords"
+      v-for="keyword in announcement.tags"
       :key="keyword.id"
       class="keyword"
     >
