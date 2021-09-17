@@ -63,7 +63,7 @@ export default {
       if (this.sellPreviewData.is_negotiable) {
         return this.$t('negotiable')
       } else {
-        return (''+this.$readNumber(this.sellPreviewData.price) || 0) + (this.sellPreviewData.currency || '₼')
+        return (''+this.$readNumber(this.sellPreviewData.price) || 0) + ' ' + (this.sellPreviewData.currency || '₼')
       }
     }
   }
