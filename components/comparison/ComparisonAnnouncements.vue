@@ -85,7 +85,7 @@ export default {
       return [
         {
           title: this.$t('announcement'),
-          defaultCollapsed: true,
+          defaultCollapsed: false,
           items: [
             {
               title: this.$t('modification_and_supply'),
@@ -149,7 +149,7 @@ export default {
         },
         {
           title: this.$t('dvigatel'),
-          defaultCollapsed: true,
+          defaultCollapsed: false,
           items: [
             {
               title: this.$t('engine'),
@@ -167,7 +167,7 @@ export default {
         },
         {
           title: this.$t('dimensions'),
-          defaultCollapsed: true,
+          defaultCollapsed: false,
           items: [
             {
               title: this.$t('length'),

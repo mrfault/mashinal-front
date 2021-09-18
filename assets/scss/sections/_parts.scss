@@ -33,7 +33,10 @@
   &-banners {
     display: flex;
     gap: 20px;
-    flex-wrap: wrap;
+
+    @include media-max-width('md') {
+      flex-direction: column;
+    }
   }
 
   &-banner {
@@ -44,6 +47,11 @@
     justify-content: space-between;
     align-items: center;
 
+    @include media-max-width('md') {
+      padding: 10px 20px;
+      width: 100%;
+    }
+
     &__text {
       max-width: 250px;
     }
@@ -52,12 +60,18 @@
       font-size: 22px;
       font-weight: 500;
       color: $dark-blue-1;
+      @include media-max-width('md') {
+        font-size: 15px;
+      }
     }
 
     &__description {
       font-size: 16px;
       font-weight: 400;
       color: $dark-blue-1;
+      @include media-max-width('md') {
+        font-size: 11px;
+      }
     }
 
     &__link {
@@ -66,6 +80,9 @@
       color: $dark-blue-2;
       display: flex;
       align-items: center;
+      @include media-max-width('md') {
+        font-size: 11px;
+      }
       
       i {
         margin-left: 11px;
@@ -75,12 +92,23 @@
     
     &__image {
       width: 150px;
+      @include media-max-width('md') {
+        width: 85px;
+      }
     }
 
     &--winter-tyres {
       background-color: #FFCB14;
-      .parts-banner__image {
+      
+      @include media-max-width('md') {
+        padding-right: 10px;
+      }
+        .parts-banner__image {
         width: 200px;
+        
+        @include media-max-width('md') {
+          width: 110px;
+        }
       }
     }
 
