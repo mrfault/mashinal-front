@@ -871,7 +871,7 @@ input::-webkit-inner-spin-button {
 }
 
 .form-keywords {
-  height: 200px;
+  min-height: 200px;
   margin-top: 20px; //delete this
   padding: 20px 15px;
   background-color: $greyish-blue-2;
