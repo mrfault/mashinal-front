@@ -134,7 +134,7 @@ export default {
         },
         mileage: '',
         mileage_measure: 1,
-        region_id: '',
+        region_id: 1,
         address: '',
         lat: 0,
         lng: 0,
