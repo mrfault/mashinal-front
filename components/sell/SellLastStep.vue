@@ -227,6 +227,7 @@
 import { mapGetters, mapActions } from 'vuex';
 
 import { ToastErrorsMixin } from '~/mixins/toast-errors';
+import { ImageResizeMixin } from '~/mixins/img-resize';
 
 import SellSelectModification from '~/components/sell/SellSelectModification';
 import UploadImage from '~/components/elements/UploadImage';
@@ -256,7 +257,7 @@ export default {
     initialForm: {},
     announcement: {}
   },
-  mixins: [ToastErrorsMixin],
+  mixins: [ToastErrorsMixin, ImageResizeMixin],
   data() {
     return {
       form: this.$clone(this.initialForm),
@@ -408,8 +409,9 @@ export default {
       await Promise.all(
         images.map(async (image) => {
           let formData = new FormData();
+          let file = await this.resizeImage(image.file);
           formData.append('temp_id', this.date);
-          formData.append('images[]', image.file);
+          formData.append('images[]', file);
           try {
             const data = await this.$axios.$post('/upload_temporary_images', formData, {
               progress: false,
