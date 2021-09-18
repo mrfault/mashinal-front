@@ -24,6 +24,13 @@ export default {
     ComparisonModels,
     NotFound
   },
+  mounted() {
+    this.$store.commit('comparison/mutate', {
+      property: 'filter',
+      key: 'compareType',
+      value: this.$route.hash.replace('#', '')
+    })
+  },
   computed: {
     ...mapGetters({
       filter: 'comparison/filter',
@@ -31,6 +38,15 @@ export default {
     }),
     showNotFound() {
       return this.filter.compareType === 'announcements' && !this.announcements.length
+    }
+  },
+  watch: {
+    '$route'(val) {
+      this.$store.commit('comparison/mutate', {
+        property: 'filter',
+        key: 'compareType',
+        value: val.hash.replace('#', '')
+      })
     }
   }
 }

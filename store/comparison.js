@@ -162,18 +162,19 @@ export const actions = {
   },
   async addModel({ commit }, id) {
     const { data } = await this.$axios.get('/catalog/' + id)
-    commit('addModel', data[0])
+    const model = Array.isArray(data) ? data[0] : data
+    commit('addModel', model)
   },
   removeModel({ commit }, id) {
     commit('removeModel', id);
   },
-  async selectModel({ commit, state, rootState }, catalogId) {
+  async selectModel({ dispatch, state, rootState }, catalogId) {
     if (rootState.auth.loggedIn) {
-      const { data } = await this.$axios.$post(`/comparison/model`, { catalog_id: catalogId });
-      commit('addModel', data)
+      await this.$axios.$post(`/comparison/model`, { catalog_id: catalogId });
+      dispatch('addModel', catalogId)
     } else {
-      const { data } = await this.$axios.$post(`/comparison/model/catalog`, { catalogId });
-      commit('addModel', data)
+      await this.$axios.$post(`/comparison/model/catalog`, { catalogId });
+      dispatch('addModel', catalogId)
       this.$cookies.set('comparisonModels', state.modelsList.map(m => m.id || m.catalog_id))
     }
   }

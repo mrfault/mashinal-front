@@ -23,8 +23,8 @@
       />
 
       
+      <!-- Announcements -->
       <vue-scroll :ops="scrollOps">
-        <!-- Announcements -->
         <div class="comparison-preview__list" v-if="activeType === 'announcements'">
           <template v-for="(announcement, index) in announcementsList">
             <div class="comparison-preview__list-item" :key="'announcement-' + announcement.id">
@@ -41,8 +41,10 @@
             <hr :key="'hr-' + announcement.id" v-if="index < announcementsList.length - 1"/>
           </template>
         </div>
+      </vue-scroll>
 
         <!-- Models -->
+      <vue-scroll :ops="scrollOps">
         <div class="comparison-preview__list" v-if="activeType === 'models'">
           <template v-for="(model, index) in modelsList">
             <div class="comparison-preview__list-item" :key="'model-' + model.id">
@@ -101,7 +103,7 @@ export default {
       this.$store.dispatch('comparison/removeModel', id)
     },
     compare() {
-      this.$router.push(this.$localePath('/comparison'))
+      this.$router.push(this.$localePath('/comparison#' + this.activeType))
     },
     updateActiveTab() {
       if (!this.announcementsList.length) {
@@ -121,6 +123,7 @@ export default {
     scrollOps() {
       return  {
         scrollPanel: {
+          height: 'auto',
           maxHeight: this.isMobileBreakpoint ? undefined : '350'
         }
       }
@@ -142,7 +145,7 @@ export default {
     visible(value) {
       if (value) {
         this.$nextTick(() => {
-          // this.$refs.comparisonPreview.focus()
+          this.$forceUpdate()
         })
       }
     },

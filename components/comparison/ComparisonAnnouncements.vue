@@ -63,7 +63,6 @@ import { mapGetters } from 'vuex';
 import { ComparisonMixin } from '~/mixins/comparison'
 import CallButton from '~/components/announcements/CallButton';
 import CollapseContent from '~/components/elements/CollapseContent';
-import NotFound from '~/components/elements/NotFound';
 
 export default {
   mixins: [ComparisonMixin],
