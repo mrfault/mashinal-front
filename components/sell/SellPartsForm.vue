@@ -132,7 +132,7 @@
                 v-if="filter.component === 'multiselect-component'"
                 v-model="form[filter.key]"
                 has-search
-                translateOptions
+                :translateOptions="(typeof filter.values[0].name !== 'number')"
                 :label="$t(filter.key)"
                 :options="filter.values"
                 :invalid="isInvalid(filter.key)"
@@ -686,7 +686,7 @@ export default {
         const value = obj[1]
         if (!(value === null || value === undefined || value === '')) {
           result[key] = value
-        } else if (['description', 'product_code'].includes(key)) {
+        } else if (['description', 'product_code', 'brand_id'].includes(key)) {
           result[key] = value
         }
       })

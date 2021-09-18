@@ -1773,10 +1773,10 @@ export default {
   "sub_category": "Подкатегория",
   "starting_current":"Пусковой ток",
   "weight":"Вес",
-
-  // Check translations
   "announcement":"Объявления",
   "horse_power":"Лошадиные силы",
   "max_horse_power":"Максимальная лошадиные силы",
   "all_parts":"Все запчасти",
+  "comparison_added": "Добавлено в сравнения",
+  "comparison_removed": "Удалено из сравнений"
 }
