@@ -89,7 +89,7 @@ export default {
           is_matte: announcement.is_matte,
           mileage: parseInt(announcement.mileage || 0),
           mileage_measure: announcement.mileage_measure || 1,
-          region_id: announcement.region_id,
+          region_id: announcement.region_id || 1,
           address: announcement.address,
           lat: parseFloat(announcement.latitude || 0),
           lng: parseFloat(announcement.longitude || 0),
