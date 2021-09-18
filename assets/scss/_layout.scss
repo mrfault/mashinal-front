@@ -157,7 +157,7 @@ hr {
   @include calc-vh(min-height, calc(100vh));
   &.loading {
     background-color: $red-1;
-    background-image: url('/img/logo-white.svg');
+    background-image: url('/img/logo-white-2.svg');
     background-size: 200px;
     background-position: center;
     background-repeat: no-repeat;
@@ -327,7 +327,7 @@ main {
     }
     .logo {
       img {
-        height: 15px;
+        height: 30px;
         width: auto;
       }
     }
@@ -596,6 +596,11 @@ main {
   color: $white;
   padding: 40px 0px;
   margin-top: auto;
+  .logo {
+    img {
+      height: 30px;
+    }
+  }
   p {
     margin-top: 20px;
     max-width: 400px;
@@ -801,6 +806,11 @@ main {
       justify-content: space-between;
       align-items: center;
       height: 60px;
+    }
+    .logo {
+      img {
+        height: 30px;
+      }
     }
     span {
       &:first-of-type {
