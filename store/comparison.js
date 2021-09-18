@@ -177,7 +177,6 @@ export const actions = {
       this.$cookies.set('comparisonModels', state.modelsList.map(m => m.id || m.catalog_id))
     }
   }
-
 }
 
 export const mutations = {

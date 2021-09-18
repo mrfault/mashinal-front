@@ -67,9 +67,10 @@ export default {
         }, 1000)
       }
     },
-    searchParts() {
+    async searchParts() {
       const data = JSON.parse(this.$route.query.parts_filter || '{}');
-      this.$store.dispatch('parts/search', data)
+      await this.$store.dispatch('parts/search', data);
+      this.scrollTo('.announcements-grid', [0, -30]);
     }
   },
   computed: {
