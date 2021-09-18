@@ -93,7 +93,7 @@
     },
     validations: {
       form: {
-        name: { required: requiredIf(function() { return ['sign-up'].includes(this.action)}) },
+        name: { required: requiredIf(function() { return ['sign-up'].includes(this.action) && !this.$cookies.get('btl')}) },
         phone: { required: requiredIf(function() { return ['sign-in','sign-up','forgot'].includes(this.action)}), isPhoneNumber },
         code: { required: requiredIf(function() { return ['sms','reset'].includes(this.action)}), numeric },
         password: { required: requiredIf(function() { return ['sign-in','sign-up','reset'].includes(this.action) && !this.$cookies.get('btl')}) },
@@ -126,7 +126,7 @@
     },
     created() {
       this.resetForm();
-      if (this.forceSellPhone && !this.sellPhoneRegistered) {
+      if (this.forceSellPhone && !this.sellPhoneRegistered || this.btlCookie) {
         this.updateTab('sign-up');
       }
     }
