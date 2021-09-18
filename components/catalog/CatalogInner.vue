@@ -70,7 +70,7 @@
                         <template v-if="spec[2] !== undefined">
                           <template v-if="spec[1]"> / {{ spec[1] }}</template><template v-if="spec[2] && spec[2] !== '—'">, {{ $t('at', { value: spec[2] }) }}</template>
                         </template>
-                        <template v-else-if="spec[1]">{{ $t('at', { value: spec[1] }) }}</template>
+                        <template v-else-if="spec[1] && spec[1] !== '—'">{{ $t('at', { value: spec[1] }) }}</template>
                       </span>
                       <span v-else-if="typeof spec === 'object' && !Array.isArray(spec)">
                         <template v-if="spec.city || spec.track || spec.mixed">{{ spec.city }} / {{ spec.track }} / {{ spec.mixed }}</template>
