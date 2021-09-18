@@ -409,9 +409,9 @@ export default {
       await Promise.all(
         images.map(async (image) => {
           let formData = new FormData();
-          let file = await this.resizeImage(image.file);
+          // let file = await this.resizeImage(image.file);
           formData.append('temp_id', this.date);
-          formData.append('images[]', file);
+          formData.append('images[]', image.file);
           try {
             const data = await this.$axios.$post('/upload_temporary_images', formData, {
               progress: false,
