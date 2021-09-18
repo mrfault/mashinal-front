@@ -9,6 +9,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
 props: {
     id: {
@@ -26,20 +28,35 @@ props: {
     }
   },
   methods: {
-    handleClick() {
+    async handleClick() {
       if (this.type === 'announcement') {
-        this.$store.dispatch('comparison/toggleAnnouncement', this.id)
+        if (this.announcementsList.findIndex(a => a.id_unique === this.id) >= 0) {
+          this.$toasted.success(this.$t('comparison_removed'))
+        } else {
+          this.$toasted.success(this.$t('comparison_added'))
+        }
+        await this.$store.dispatch('comparison/toggleAnnouncement', this.id)
       } else {
-        this.$store.dispatch('comparison/toggleModel', this.id)
+        if (this.modelsList.findIndex(a => a.id === this.id) >= 0) {
+          this.$toasted.success(this.$t('comparison_removed'))
+        } else {
+          this.$toasted.success(this.$t('comparison_added'))
+        }
+        await this.$store.dispatch('comparison/toggleModel', this.id)
       }
     }
   },
   computed: {
+    ...mapGetters({
+      announcementsList: 'comparison/announcementsList',
+      announcementIds: 'comparison/announcementIds',
+      modelsList: 'comparison/modelsList'
+    }),
     isActive() {
       if (this.type === 'announcement') {
-        return this.$store.getters['comparison/announcementIds'].findIndex(aId => aId === this.id) >= 0
+        return this.announcementIds.findIndex(aId => aId === this.id) >= 0
       } else {
-        return this.$store.getters['comparison/modelsList'].findIndex(model => model.id === this.id) >= 0
+        return this.modelsList.findIndex(model => model.id === this.id) >= 0
       }
     }
   }

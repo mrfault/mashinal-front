@@ -69,7 +69,7 @@ export default {
         { key: 'first_owner', value: (parseInt(this.announcement.owner_type || this.announcement.owners || this.announcement.owner)) ? this.$t('no') : this.$t('yes'), for: ['cars', 'commercial', 'moto'] },
         { key: 'customs', value: (this.announcement.customs_clearance || this.announcement.customed_id || this.announcement.customed ) ? this.$t('not_cleared') : this.$t('cleared'), for: ['cars', 'commercial', 'moto'] },
         { key: 'category', value: this.announcement?.category?.name[this.locale], for: ['parts'] },
-        { key: 'subcategory', value: this.announcement?.sub_category?.name[this.locale], for: ['parts'] },
+        { key: 'sub_category', value: this.announcement?.sub_category?.name[this.locale], for: ['parts'] },
         { key: 'region', value: this.region },
         { key: 'vin', value: this.announcement.show_vin && this.announcement.vin },
         { key: 'license_plate', value: this.announcement.show_car_number && this.announcement.car_number },
