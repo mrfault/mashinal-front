@@ -471,7 +471,7 @@ export default {
   "description": "Описание",
   "description_placeholder": "Описание",
   "desired_credit_amount": "Желаемая сумма кредита",
-  "detail": "Полный",
+  "detail": "Подробнее",
   "detail_report": "Полный отчет",
   "detailed": "Детальный",
   "detailed_search": "Детальный поиск",

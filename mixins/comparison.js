@@ -49,7 +49,10 @@ export const ComparisonMixin = {
       return announcement.year || '—'
     },
     getMileage(announcement) {
-      return (announcement.humanize_mileage || '—') + ' ' + this.$t('char_kilometre')
+      if (announcement.humanize_mileage) {
+        return (announcement.humanize_mileage) + ' ' + this.$t('char_kilometre')
+      }
+      return '—'
     },
     getColor(announcement) {
       return announcement?.colors?.map(item => item.name[this.locale]).join(', ') || '—'
@@ -246,7 +249,7 @@ export const ComparisonMixin = {
     },
     getRearWheelWidth(item) {
       if (item.specifications['razmery-mm']) {
-        if (item.specifications['razmery-mm']['shirina-zadney-kolei'] !== undefined) {
+        if (item.specifications['razmery-mm']['shirina-zadney-kolei']) {
           return parseInt(item.specifications['razmery-mm']['shirina-zadney-kolei']) + ' ' + this.$t('char_millimetre');
         }
       }

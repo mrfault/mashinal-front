@@ -19,16 +19,16 @@
           />
         </div>
         <div class="col-12">
-          <div class="row vertical-gap">
+          <div class="row">
             <!-- Part name -->
-            <div class="col">
+            <div class="col" :class="{'mb-3': isMobileBreakpoint}">
               <form-text-input
                 :placeholder="$t('part_name')"
                 v-model="form.text"
               />
             </div>
             <!-- Subcategory -->
-            <div class="col-lg-2" v-if="showSubcategories">
+            <div class="col-lg-2" :class="{'mb-3': isMobileBreakpoint}" v-if="showSubcategories">
               <form-select
                 :label="$t('category')"
                 v-model="form.sub_category_id"
@@ -78,7 +78,7 @@
               <transition-expand>
                 <div v-if="!collapsed" class="row">
                   <!-- Dynamic filters -->
-                  <div class="col-lg-12 mb-3" v-if="showDynamicFilter">
+                  <div class="col-lg-12" v-if="showDynamicFilter">
                     <hr/>
 
                     <div class="row">
@@ -158,9 +158,9 @@
               </transition-expand>
             </div>
             <!-- Gap if dynamic filter is active-->
-            <div class="col-lg-8" v-if="showDynamicFilter"></div>
+            <div class="col-lg-8" v-if="!isMobileBreakpoint && showDynamicFilter"></div>
             <!-- Reset button -->
-            <div class="col-lg-2" :class="{'mt-3': collapsed && showDynamicFilter}">
+            <div class="col-lg-2" :class="{'mt-3': showDynamicFilter || isMobileBreakpoint}">
               <button
                 type="button"
                 :class="['btn', 'full-width', 'btn--red-outline']"
@@ -171,7 +171,7 @@
               </button>
             </div>
             <!-- Search button -->
-            <div class="col-lg-2" :class="{'mt-3': collapsed && showDynamicFilter}">
+            <div class="col-lg-2" :class="{'mt-3': showDynamicFilter || isMobileBreakpoint}">
               <button
                 type="button"
                 :class="['btn', 'full-width', 'btn--green']"
