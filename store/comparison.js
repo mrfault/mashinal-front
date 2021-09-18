@@ -55,11 +55,11 @@ export const actions = {
 
     this.$cookies.set('comparisonAnnouncements', state.announcementIds)
   },
-  toggleModel({ commit, state }, model) {
-    if (state.modelsList.findIndex(m => m.id === model.id) >= 0) {
-      commit('removeModel', model.id)
+  toggleModel({ dispatch, commit, state }, id) {
+    if (state.modelsList.findIndex(m => m.id === id) >= 0) {
+      commit('removeModel', id)
     } else {
-      commit('addModel', model)
+      dispatch('addModel', id)
     }
 
     this.$cookies.set('comparisonAnnouncements', state.announcementIds)
@@ -161,10 +161,8 @@ export const actions = {
     });
   },
   async addModel({ commit }, id) {
-    // const model = await this.$axios.get('/catalog/' + id)
-
-    // id === model
-    commit('addModel', id)
+    const { data } = await this.$axios.get('/catalog/' + id)
+    commit('addModel', data[0])
   },
   removeModel({ commit }, id) {
     commit('removeModel', id);
@@ -201,16 +199,13 @@ export const mutations = {
   },
   addModel(state, payload) {
     if (state.modelsList.length < state.limit) {
-      // if (!state.modelsList.map(m => m.id).includes(payload.id)) {
-      if (!state.modelsList.map(m => m.id || m.catalog_id).includes(payload.id || payload.catalog_id)) {
+      if (!state.modelsList.map(m => m.id).includes(payload.id)) {
         state.modelsList.push(payload)
       }
     }
   },
   removeModel(state, id) {
-    // state.modelsList = state.modelsList.filter(m => m.id !== id)
-    const index = state.modelsList.findIndex(x => x.id === id)
-    state.modelsList.splice(index, 1)
+    state.modelsList = state.modelsList.filter(m => m.id !== id)
   },
 }
 

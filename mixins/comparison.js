@@ -60,6 +60,8 @@ export const ComparisonMixin = {
     getOwnerType(announcement) {
       return announcement.owner_type ? this.$t('yes') : this.$t('no')
     },
+
+
     getModelTitle(model) {
       if (model.brand) {
         return model.brand.name + ' ' + model.model.name
@@ -71,23 +73,18 @@ export const ComparisonMixin = {
       const desc = [];
 
       // Generation
-      if (model.generation && model.generation.name) {
-        desc.push(model.generation.name[this.locale])
-      } else if (model.model_generations && model.generation_id) {
-        desc.push(model.model_generations.find(g => g.id === model.generation_id).short_name[this.locale])
+      if (model?.generation?.name) {
+        desc.push(model?.generation?.name[this.locale]) // added model
+      } else if (model?.model_generations && model?.generation_id) {
+        desc.push(model.model_generations.find(g => g.id === model.generation_id).short_name[this.locale]) // recommended model
       }
 
       // Car type
-      if (model.carType && model.carType.name) {
-        desc.push(model.carType.name[this.locale])
-      } else if (model.car_types && model.car_type_id) {
-        desc.push(model.car_types.find(g => g.id === model.car_type_id).name[this.locale])
+      if (model.car_types && model.car_type_id) {
+        desc.push(model.car_types.find(c => c.id === model.car_type_id).name[this.locale]) // recommended model
       }
 
       // Modification
-      if (model.modification) {
-        desc.push(model.modification.name)
-      }
       
       return desc
     },

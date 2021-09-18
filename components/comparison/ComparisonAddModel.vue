@@ -244,20 +244,7 @@ export default {
       return txt + this.$t('l.s.');
     },
     addToList() {
-      const brand = this.brands.find(b => b.id === this.form.brand);
-      const model = this.models.find(m => m.id === this.form.model);
-      const generation = this.generations.find(g => g.id === this.form.generation);
-      const carType = this.carTypes.find(c => c.id === this.form.carType);
-      const modification = this.modifications.find(m => m.id === this.form.modification);
-
-      this.$store.dispatch('comparison/addModel', {
-        id: modification.id,
-        brand,
-        model,
-        generation,
-        carType,
-        modification
-      })
+      this.$store.dispatch('comparison/addModel', this.form.modification)
 
       this.showModal = false;
       this.image = null;

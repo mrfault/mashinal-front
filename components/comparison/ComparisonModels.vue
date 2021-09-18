@@ -134,95 +134,95 @@ export default {
       return [
         {
           title: this.$t('characteristics'),
-          defaultCollapsed: true,
+          defaultCollapsed: false,
           items: [
             {
               title: this.$t('luggage_volume_min_max'),
-              values: this.models.map(m => this.getTrunkVolume(m.modification || m.modifications.find(mod => mod.id === m.catalog_id))),
+              values: this.models.map(m => this.getTrunkVolume(m)),
             },
             {
               title: this.$t('seat_count'),
-              values: this.models.map(m => this.getSeatCount(m.modification || m.modifications.find(mod => mod.id === m.catalog_id))),
+              values: this.models.map(m => this.getSeatCount(m)),
             },
             {
               title: this.$t('box'),
-              values: this.models.map(m => this.getTransmission(m.modification || m.modifications.find(mod => mod.id === m.catalog_id))),
+              values: this.models.map(m => this.getTransmission(m)),
             },
             {
               title: this.$t('brand_country'),
-              values: this.models.map(m => this.getBrandCountry(m.modification || m.modifications.find(mod => mod.id === m.catalog_id))),
+              values: this.models.map(m => this.getBrandCountry(m)),
             },
           ]
         },
         {
           title: this.$t('ekspluatatsionnye-pokazateli'),
-          defaultCollapsed: true,
+          defaultCollapsed: false,
           items: [
             {
               title: 'Maksimal sürət',
               title: this.$t('max_speed'),
-              values: this.models.map(m => this.getMaxSpeed(m.modification || m.modifications.find(mod => mod.id === m.catalog_id))),
+              values: this.models.map(m => this.getMaxSpeed(m)),
             },
             {
               title: this.$t('razgon-do-100-kmch-s'),
-              values: this.models.map(m => this.getAcceleration100(m.modification || m.modifications.find(mod => mod.id === m.catalog_id))),
+              values: this.models.map(m => this.getAcceleration100(m)),
             },
             {
               title: this.$t('fuel_consumption_city'),
-              values: this.models.map(m => this.getFuelConsumptionCity(m.modification || m.modifications.find(mod => mod.id === m.catalog_id))),
+              values: this.models.map(m => this.getFuelConsumptionCity(m)),
             },
             {
               title: this.$t('fuel_consumption_highway'),
-              values: this.models.map(m => this.getFuelConsumptionTrack(m.modification || m.modifications.find(mod => mod.id === m.catalog_id))),
+              values: this.models.map(m => this.getFuelConsumptionTrack(m)),
             },
             {
               title: this.$t('fuel_consumption_mixed'),
-              values: this.models.map(m => this.getFuelConsumptionMixed(m.modification || m.modifications.find(mod => mod.id === m.catalog_id))),
+              values: this.models.map(m => this.getFuelConsumptionMixed(m)),
             },
             {
               title: this.$t('fuel_type'),
-              values: this.models.map(m => this.getFuelBrand(m.modification || m.modifications.find(mod => mod.id === m.catalog_id))),
+              values: this.models.map(m => this.getFuelBrand(m)),
             },
             {
               title: 'Ekoloji sinif',
               title: this.$t('ekologicheskiy-klass'),
-              values: this.models.map(m => this.getEcoClass(m.modification || m.modifications.find(mod => mod.id === m.catalog_id))),
+              values: this.models.map(m => this.getEcoClass(m)),
             },
           ]
         },
         {
           title: this.$t('dimensions'),
-          defaultCollapsed: true,
+          defaultCollapsed: false,
           items: [
             {
               title: 'Uzunluq',
               title: this.$t('dimensions'),
-              values: this.models.map(m => this.getLength(m.modification || m.modifications.find(mod => mod.id === m.catalog_id))),
+              values: this.models.map(m => this.getLength(m)),
             },
             {
               title: 'Eni',
               title: this.$t('width'),
-              values: this.models.map(m => this.getWidth(m.modification || m.modifications.find(mod => mod.id === m.catalog_id))),
+              values: this.models.map(m => this.getWidth(m)),
             },
             {
               title: 'Hündürlük',
               title: this.$t('height'),
-              values: this.models.map(m => this.getHeight(m.modification || m.modifications.find(mod => mod.id === m.catalog_id))),
+              values: this.models.map(m => this.getHeight(m)),
             },
             {
               title: 'Təkər bazası',
               title: this.$t('kolesnaya-baza'),
-              values: this.models.map(m => this.getWheelBase(m.modification || m.modifications.find(mod => mod.id === m.catalog_id))),
+              values: this.models.map(m => this.getWheelBase(m)),
             },
             {
               title: 'Ön izin eni',
               title: this.$t('shirina-peredney-kolei'),
-              values: this.models.map(m => this.getFrontWheelWidth(m.modification || m.modifications.find(mod => mod.id === m.catalog_id))),
+              values: this.models.map(m => this.getFrontWheelWidth(m)),
             },
             {
               title: 'Arxa izin eni',
               title: this.$t('shirina-zadney-kolei'),
-              values: this.models.map(m => this.getRearWheelWidth(m.modification || m.modifications.find(mod => mod.id === m.catalog_id))),
+              values: this.models.map(m => this.getRearWheelWidth(m)),
             },
           ]
         },
