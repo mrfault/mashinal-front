@@ -180,7 +180,7 @@ export default {
         .map(attachment => this.$withBaseUrl(attachment.src));
     },
     messageLinks() {
-      return document?.querySelectorAll('.message-text a[href*="mashin.al"]');
+      return document?.querySelectorAll('.message-text a[target="_blank"]');
     },
     announcementNotFound() {
       return this.chatAnnouncement.status !== 1;
@@ -345,9 +345,9 @@ export default {
   },
   mounted() {
     this.checkIfRead();
-    this.updateEventListenerList(this.messageLinks, 'click', this.handleMessageLinkClick);
     this.handleScrollToMessage(this.messagePin, false);
     this.$nextTick(()=>{
+      this.updateEventListenerList(this.messageLinks, 'click', this.handleMessageLinkClick);
       this.connectEcho('typing.'+this.user.id).listenForWhisper('typing', (data) => {
         // check if announcement is relevant
         if (data.announceId && (data.announceId !== this.group.announce_id)) return;
