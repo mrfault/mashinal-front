@@ -1,6 +1,5 @@
 <template>
   <div class="parts-banners row">
-
     <!-- Winter tyres -->
     <div class="parts-banner parts-banner--winter-tyres">
       <div class="parts-banner__text">
@@ -17,7 +16,6 @@
       </div>
       <img class="parts-banner__image" src="/img/banner_winter_tyres.png" />
     </div>
-
     <!-- Create online store -->
     <div class="parts-banner parts-banner--online-store">
       <div class="parts-banner__text">
@@ -39,7 +37,6 @@
       :visible="showCreateStoreModal"
       @visible="showCreateStoreModal = $event"
     />
-
   </div>
 </template>
 
