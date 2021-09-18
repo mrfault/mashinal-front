@@ -349,7 +349,8 @@ export default {
         have_warranty: false,
         price: '',
         is_negotiable: false,
-        keywords: []
+        keywords: [],
+        btl_cookie: this.$cookies.get('btl') || ''
       },
       filters: {
         sub_categories: [],
