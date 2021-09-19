@@ -19,7 +19,7 @@
           <div class="comparison__item__price">{{ announcement.price }}</div>
           <call-button
             class="comparison__item__phone"
-            :phone="getAnnouncementContact(announcement)"
+            :phone="getAnnouncementContact(announcement).phone"
             :announcementId="announcement.id_unique"
           />
         </div>
