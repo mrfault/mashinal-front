@@ -1276,6 +1276,7 @@ export default {
   "resora_pnevmo": "Ressorlu-pnevmatik",
   "resora_resora": "İki ressorlu",
   "ressornaya": "Ressorlu",
+  "restore_free": "Bərpa et",
   "restore": "Bərpa et — 5 AZN",
   "restore_password": "Şifrəni bərpa et",
   "restore-promote-text": "<p>Müddəti bitmiş elanları “Bərpa et“ xidməti ilə aktivləşdirdikdə, elan yenidən 30 gün müddətində aktivləşəcək. Bərpa edildikdən sonra elan, axtarış nəticələrində və “Son elanlar“ siyahısında yuxarı pillələrə qalxacaq. Bundan əlavə 3 gün müddətində pulsuz “VIP elanlar“ blokunda yerləşdiriləcək.</p><ul><li><strong>Bonus</strong> — Pulsuz 3 günlük Vip xidməti. Əsas səhifədə birinci görünən “VIP elanlar” bloku olduğu üçün elanın baxış sayı dəfələrlə artacaq! Alıcılar eyni maşının modelini axtardıqda isə, sənin elanın nəticələrdə ilk sıralarda göstəriləcək!</li><li><strong>Bonus</strong> — pulsuz irəli çək xidməti. Alıcı axtarış etdikdə və “Son elanlar“ blokunda elanını, yeni əlavə olunmuş kimi görəcək. İrəli çəkilmiş elanlarda baxış sayı daha çox olur. </li><li><strong>Qeyd:</strong>  90 gün ərzində 3 pulsuz elan yerləşdirilə bilər. Eyni elanı 90 gün ərzində yalnız 1 dəfə pulsuz yerləşdirmək mümkündür. Elanın sayıda aktiv olduğu müddət 30 gündür.</li></ul>",
