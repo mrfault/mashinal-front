@@ -6,12 +6,12 @@
         :status="form.status"
         :show-toolbar="!!myAnnouncements.data.length"
       />
-      <div class="row flex-row-reverse" v-if="!(statusReady === '' && !myAnnouncements.data.length)">
+      <!-- <div class="row flex-row-reverse" v-if="!(statusReady === '' && !myAnnouncements.data.length)">
         <div class="col-lg-auto col-lg-1-5 mb-lg-n1">
           <form-select :label="$t('status')" :options="getStatusOptions" v-model="form.status"
             @change="changePage(1)" :clear-option="false" :allow-clear="false" has-no-bg />
         </div>
-      </div>
+      </div> -->
       <grid 
         v-if="myAnnouncements.data.length"
         :announcements="myAnnouncements.data" 
@@ -57,7 +57,7 @@ export default {
     });
   },
   async asyncData({ store, route }) {
-    let status = ['0','1','2','3'].includes(route.query.status) ? parseInt(route.query.status) : 1;
+    let status = ['0','1','2','3'].includes(route.query.status) ? parseInt(route.query.status) : '';
 
     await Promise.all([
       store.dispatch('getMyAllAnnouncements', { status }),

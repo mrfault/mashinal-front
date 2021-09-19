@@ -10,7 +10,7 @@
             </h2>
             <div class="increase-balance-info">
               <icon name="wallet" class="mb-2" />
-              <strong class="mb-1">{{ user.balance }} <icon name="azn" /></strong>
+              <strong class="mb-1">{{ user.balance }} ALManat</strong>
               <p v-if="!isMobileBreakpoint">{{ $t('wallet_balance') }}</p>
             </div>
           </div>

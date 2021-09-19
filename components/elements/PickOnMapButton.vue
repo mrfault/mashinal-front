@@ -102,12 +102,17 @@ export default {
       });
     },
     savePlaceOnMap() {
+      if (!this.lat && !this.lng) {
+        this.placemark.events.fire('dragend');
+      }
       this.showMap = false;
     },
     closeMap() {
       this.$emit('change-latlng', { lat: this.cacheLat, lng: this.cacheLng });
       this.$emit('change-address', this.cacheAddress);
-      this.$nextTick(() => this.showMap = false);
+      this.$nextTick(() => {
+        this.showMap = false;
+      });
     }
   }
 }

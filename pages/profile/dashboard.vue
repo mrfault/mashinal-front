@@ -18,7 +18,7 @@
               </div>
             </template>
             <template v-else-if="card.key === 'balance'">
-              <p>{{ $t('wallet_balance') }}:<br/><strong>{{ user.balance }} <icon name="azn" /></strong></p>
+              <p>{{ $t('wallet_balance') }}:<br/><strong>{{ user.balance }} ALManat</strong></p>
             </template>
             <template v-else-if="card.key === 'calls'">
               <h4 class="text-dark-blue-2">{{ announcementStats.calls }}</h4>

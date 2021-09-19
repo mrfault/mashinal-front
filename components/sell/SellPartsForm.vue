@@ -593,7 +593,7 @@ export default {
         const response = await this.$axios.post(requestURL, formData)
         if (this.loggedIn) 
           await this.$auth.fetchUser();
-        this.$router.push(this.$localePath('/profile/announcements?status=2'), () => {
+        this.$router.push(this.$localePath('/profile/announcements'), () => {
           this.$toasted.success(this.$t('saved_changes'));
         });
       } catch ({response: {status, data: {data, message}}}) {
