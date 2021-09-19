@@ -9,6 +9,7 @@ import { PaymentMixin } from '~/mixins/payment';
 
 export default {
   props: {
+    free: Boolean,
     announcement: {},
     className: {
       default: 'dark-blue-outline'
@@ -25,7 +26,7 @@ export default {
       if (this.pending) return;
       this.pending = true;
       try {
-        if (this.announcement.is_autosalon) {
+        if (this.announcement.is_autosalon || this.free) {
           await this.$axios.$get(`/restore/${this.announcement.id_unique}`);
           await this.$nuxt.refresh();
           this.$toasted.success(this.$t('announcement_restored'));

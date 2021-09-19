@@ -61,7 +61,7 @@
       <hr />
       <div class="row mt-n2 mt-lg-n3">
         <div class="col mt-2 mt-lg-3">
-          <restore-button :announcement="announcement" v-if="announcement.status == 3" />
+          <restore-button :announcement="announcement" v-if="announcement.status == 3" :free="type === 'parts'" />
           <deactivate-button :announcement="announcement" v-else />
         </div>
         <div class="col mt-2 mt-lg-3" v-if="announcement.status != 3 && announcement.can_edit">

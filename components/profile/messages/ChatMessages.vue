@@ -65,21 +65,32 @@
           </client-only>
         </div>
         <div class="inner-gallery-lightbox" v-touch:swipe.top="handleSwipeTop">
-          <FsLightbox
-            :toggler="toggleFsLightbox"
-            :sources="attachments"
-            :slide="currentSlide + 1"
-            :key="lightboxKey"
-            :onClose="refreshLightbox"
-            :onBeforeClose="onBeforeClose"
-            :showThumbsOnMount="!isMobileBreakpoint"
-            :disableThumbs="isMobileBreakpoint"
-            :onSlideChange="changeLightboxSlide"
-          />
+          <template v-if="isMobileBreakpoint">
+            <FsLightbox
+              :toggler="toggleFsLightbox"
+              :sources="attachments"
+              :slide="currentSlide + 1"
+              :key="lightboxKey"
+              :onClose="refreshLightbox"
+              :onBeforeClose="onBeforeClose"
+              :disableThumbs="true"
+              :onSlideChange="changeLightboxSlide"
+            />
+          </template>
           <transition-group name="fade">
-            <div v-if="showLightbox" class="fslightbox-blur-bg" :key="0">
-              <img :src="$withBaseUrl(attachments[currentSlide])" alt="" />
-            </div>
+            <template v-if="(showLightbox && isMobileBreakpoint) || (!isMobileBreakpoint && showImagesSlider)">
+              <div class="blur-bg" :key="0">
+                <img :src="$withBaseUrl(attachments[currentSlide])" alt="" />
+              </div>
+              <div class="blur-bg_slider" :key="1" v-if="!isMobileBreakpoint" @click="closeLightbox">
+                <images-slider 
+                  :current-slide="currentSlide"
+                  :slides="{ main: attachments }" 
+                  @close="closeLightbox" 
+                  @slide-change="currentSlide = $event"
+                />
+              </div>
+            </template>
           </transition-group>
         </div>
         <div class="messages-list-send" v-if="!isChatBot">
@@ -117,6 +128,7 @@ import FsLightbox from 'fslightbox-vue';
 
 import MessageItem from '~/components/profile/messages/MessageItem';
 import MessageSend from '~/components/profile/messages/MessageSend';
+import ImagesSlider from '~/components/elements/ImagesSlider';
 
 export default {
   props: {
@@ -130,7 +142,8 @@ export default {
   components: {
     FsLightbox,
     MessageItem,
-    MessageSend
+    MessageSend,
+    ImagesSlider
   },
   data() {
     return {
@@ -142,6 +155,7 @@ export default {
       sendingFiles: false,
       toggleFsLightbox: false,
       showLightbox: false,
+      showImagesSlider: false,
       lightboxKey: 0,
       currentSlide: 0,
       sendingMessage: false
@@ -301,8 +315,12 @@ export default {
     openLightbox(src) {
       let index = this.attachments.indexOf(src);
       if (index !== -1) this.currentSlide = index;
-      this.showLightbox = true;
-      this.toggleFsLightbox = !this.toggleFsLightbox;
+      if (this.isMobileBreakpoint) {
+        this.showLightbox = true;
+        this.toggleFsLightbox = !this.toggleFsLightbox;
+      } else {
+        this.showImagesSlider = true;
+      }
       this.setBodyOverflow('hidden');
     },
     refreshLightbox() {
@@ -317,8 +335,13 @@ export default {
       this.currentSlide = fsBox.stageIndexes.current;
     },
     closeLightbox() {
-      if (this.showLightbox) {
-        this.toggleFsLightbox = !this.toggleFsLightbox;
+      if (this.isMobileBreakpoint) {
+        if (this.showLightbox) {
+          this.toggleFsLightbox = !this.toggleFsLightbox;
+        }
+      } else {
+        this.setBodyOverflow('scroll');
+        this.showImagesSlider = false;
       }
     },
     handleSwipeTop() {
