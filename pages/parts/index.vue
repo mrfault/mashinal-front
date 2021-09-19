@@ -9,11 +9,13 @@
         @submit="searchParts" 
       />
       <banners />
-      <grid
-        v-if="announcements.length"
-        :announcements="announcements"
-      />
-      <no-results v-else/>
+      <div class="announcements-content">
+        <grid
+          v-if="announcements.length"
+          :announcements="announcements"
+        />
+        <no-results v-else/>
+      </div>
     </div>
   </div>
 </template>
@@ -70,7 +72,7 @@ export default {
     async searchParts() {
       const data = JSON.parse(this.$route.query.parts_filter || '{}');
       await this.$store.dispatch('parts/search', data);
-      this.scrollTo('.announcements-grid', [0, -30]);
+      this.scrollTo('.announcements-content', [0, -30]);
     }
   },
   computed: {

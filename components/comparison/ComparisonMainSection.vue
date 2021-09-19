@@ -25,28 +25,31 @@ export default {
     NotFound
   },
   mounted() {
-    this.$store.commit('comparison/mutate', {
-      property: 'filter',
-      key: 'compareType',
-      value: this.$route.hash.replace('#', '')
-    })
+    this.updateCompareType()
   },
   computed: {
     ...mapGetters({
       filter: 'comparison/filter',
-      announcements: 'comparison/announcementIds'
+      announcements: 'comparison/announcementIds',
+      modelsList: 'comparison/modelsList',
     }),
     showNotFound() {
       return this.filter.compareType === 'announcements' && !this.announcements.length
     }
   },
-  watch: {
-    '$route'(val) {
+  methods: {
+    updateCompareType() {
+      const defaultType = this.modelsList.length ? 'models' : 'announcements'
       this.$store.commit('comparison/mutate', {
         property: 'filter',
         key: 'compareType',
-        value: val.hash.replace('#', '')
+        value: this.$route?.hash.replace?.('#', '') || defaultType
       })
+    }
+  },
+  watch: {
+    '$route'(val) {
+      this.updateCompareType()
     }
   }
 }

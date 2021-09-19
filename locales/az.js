@@ -1541,7 +1541,7 @@ export default {
   "tuesday": "Çərşənbə axşamı",
   "turbocharged": "Turbo mühərrik",
   "turn_signal": "Dönmə siqnalı",
-  "turning_circle": "Диаметр разворота, м",
+  "turning_circle": "Dönmə dairəsi, m",
   "tympanic": "Barabanlı",
   "type": "Növ",
   "type_actual": "Aktual",

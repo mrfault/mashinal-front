@@ -7,7 +7,10 @@
       ref="comparisonPreview"
     >
       <div class="comparison-preview__title d-flex">
-        <h4 >{{ activeType === 'announcements' ? $t('comparison_announcements') : $t('comparison_models') }}</h4>
+        <h4 v-if="typeButtons.length !== 2">
+          {{ activeType === 'announcements' ? $t('comparison_announcements') : $t('comparison_models') }}
+        </h4>
+        <span v-else />
         <span class="cursor-pointer close" @click="$emit('close')">
           <icon name="cross" />
         </span>
@@ -24,8 +27,8 @@
 
       
       <!-- Announcements -->
-      <vue-scroll :ops="scrollOps">
-        <div class="comparison-preview__list" v-if="activeType === 'announcements'">
+      <vue-scroll :ops="scrollOps" v-if="activeType === 'announcements'">
+        <div class="comparison-preview__list">
           <template v-for="(announcement, index) in announcementsList">
             <div class="comparison-preview__list-item" :key="'announcement-' + announcement.id">
               <img :src="getAnnouncementImage(announcement)" alt="">
@@ -44,8 +47,8 @@
       </vue-scroll>
 
         <!-- Models -->
-      <vue-scroll :ops="scrollOps">
-        <div class="comparison-preview__list" v-if="activeType === 'models'">
+      <vue-scroll :ops="scrollOps" v-if="activeType === 'models'">
+        <div class="comparison-preview__list">
           <template v-for="(model, index) in modelsList">
             <div class="comparison-preview__list-item" :key="'model-' + model.id">
               <img :src="model.model.transformed_media" alt="">
