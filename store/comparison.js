@@ -8,7 +8,7 @@ const getInitialState = () => ({
   filter: {
     compareType: 'announcements',
     showDifferences: false,
-    hideEmptyCells: false
+    hideEmptyCells: true
   },
   showAddModelPopup: false.property,
   brands: [],
@@ -33,6 +33,7 @@ export const getters = {
   carTypes: s => s.carTypes,
   modifications: s => s.modifications,
   recommendedModel: s => s.recommendedModel,
+  count: s => s.announcementsList.length + s.modelsList.length
 }
 
 export const actions = {
