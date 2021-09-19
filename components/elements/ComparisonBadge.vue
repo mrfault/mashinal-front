@@ -13,6 +13,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import ComparisonPreview from '~/components/elements/ComparisonPreview'
 
 export default {
@@ -27,27 +28,27 @@ export default {
   },
   mounted() {
     this.$store.dispatch('comparison/getInitialAnnouncements')
+    this.updateVisible()
   },
   methods: {
     handleClick() {
-      // if (this.list.length < 2) {
-        this.previewVisible = !this.previewVisible
-      // } else {
-      //   this.$router.push(this.$localePath('/comparison'))
-      // }
-    }
-  },
-  computed: {
-    list() {
-      return [...this.$store.state.comparison.announcementsList, ...this.$store.state.comparison.modelsList]
-    }
-  },
-  watch:{
-    list() {
-      this.badgeVisible = Boolean(this.list.length)
+      this.previewVisible = !this.previewVisible
+    },
+    updateVisible()  {
+      this.badgeVisible = Boolean(this.$store.getters['comparison/count'])
       if (!this.badgeVisible) {
         this.previewVisible = false
       }
+    }
+  },
+  computed: {
+    ...mapGetters({
+      count: 'comparison/count'
+    })
+  },
+  watch:{
+    count() {
+      this.updateVisible()
     }
   },
   
