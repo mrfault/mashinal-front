@@ -496,7 +496,7 @@ export default {
         if (this.restore || this.isAlreadySold) {
           window.location = res.data.redirect_url;
         } else {
-          this.$router.push(this.$localePath('/profile/announcements?status=2'), () => {
+          this.$router.push(this.$localePath('/profile/announcements'), () => {
             this.$toasted.success(this.$t('saved_changes'));
           });
         }

@@ -37,7 +37,7 @@ export const PaymentMixin = {
             let type = paid ? 'success' : 'error';
             this.updatePaidStatus({
               type,
-              text: this.$t(`${type}_payment_msg`),
+              text: '', //this.$t(`${type}_payment_msg`),
               title: this.$t(`${type}_payment`)
             });
           });

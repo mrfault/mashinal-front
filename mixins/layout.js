@@ -128,7 +128,7 @@ export const LayoutMixin = {
         this.updatePaidStatus({
           type,
           title: this.$t(`${type}_payment`),
-          text: this.$t(`${type}_payment_msg`)
+          text: '', //this.$t(`${type}_payment_msg`)
         });
       }
       // strange behavior of loading prop which is not updating 

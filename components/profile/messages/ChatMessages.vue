@@ -193,7 +193,7 @@ export default {
         .map(attachment => this.$withBaseUrl(attachment.src));
     },
     messageLinks() {
-      return document?.querySelectorAll('.message-text a[target="_blank"]');
+      return document?.querySelectorAll('.message-text a');
     },
     announcementNotFound() {
       return this.chatAnnouncement.status !== 1;
