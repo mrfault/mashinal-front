@@ -69,7 +69,7 @@ typings/
 .nuxt
 
 # nuxt.js config
-nuxt.config.js
+# nuxt.config.js
 
 # Nuxt generate
 dist
