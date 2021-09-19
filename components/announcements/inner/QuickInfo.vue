@@ -57,11 +57,11 @@
         <call-button :phone="contact.phone" />
       </div>
     </div>
-    <template v-if="(userIsOwner(announcement) && announcement.status != 2) || (announcement.status == 3 && !announcement.is_autosalon)">
+    <template v-if="!brief && (userIsOwner(announcement) && announcement.status != 2) || (announcement.status == 3 && !announcement.is_autosalon)">
       <hr />
       <div class="row mt-n2 mt-lg-n3">
         <div class="col mt-2 mt-lg-3">
-          <restore-button :announcement="announcement" v-if="announcement.status == 3" />
+          <restore-button :announcement="announcement" v-if="announcement.status == 3" :free="type === 'parts'" />
           <deactivate-button :announcement="announcement" v-else />
         </div>
         <div class="col mt-2 mt-lg-3" v-if="announcement.status != 3 && announcement.can_edit">
@@ -84,7 +84,8 @@ import ShowMapButton from '~/components/elements/ShowMapButton';
 
 export default {
   props: {
-    type: String
+    type: String,
+    brief: Boolean
   },
   components: {
     RestoreButton,

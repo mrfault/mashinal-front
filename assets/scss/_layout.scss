@@ -1539,6 +1539,9 @@ main {
   .layout,
   .container {
     min-width: 1250px;
+    &.wider {
+      min-width: 100%;
+    }
   }
 
   .row {
@@ -1597,6 +1600,15 @@ main {
       .__bar-is-vertical {
         background: $grey-1 !important;
       }
+    }
+  }
+}
+
+@media (min-width: 1616px) {
+  .layout,
+  .container {
+    &.wider {
+      min-width: 1616px;
     }
   }
 }

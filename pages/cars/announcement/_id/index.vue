@@ -17,7 +17,10 @@
         </breadcrumbs>
         <div class="row flex-column flex-lg-row">
           <div class="col-auto">
-            <gallery />
+            <gallery>
+              <quick-info type="cars" brief />
+              <announcement-specs type="cars" brief />
+            </gallery>
             <comment :comment="announcement.comment" v-if="!isMobileBreakpoint">
               <template #before>
                 <thumbs-gallery />

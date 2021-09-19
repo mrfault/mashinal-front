@@ -10,11 +10,13 @@
         @pending="pending = true"
         @submit="searchParts" 
       />
-      <grid
-        v-if="announcements.length"
-        :announcements="announcements"
-      />
-      <no-results v-else/>
+      <div class="announcements-content">
+        <grid
+          v-if="announcements.length"
+          :announcements="announcements"
+        />
+        <no-results v-else/>
+      </div>
     </div>
   </div>
 </template>
@@ -102,7 +104,7 @@ export default {
       const data = JSON.parse(this.$route.query.parts_filter || '{}');
       data.category_id = this.category.id
       await this.$store.dispatch('parts/search', data)
-      this.scrollTo('.announcements-grid', [0, -30]);
+      this.scrollTo('.announcements-content', [0, -30]);
     }
   },
   computed: {

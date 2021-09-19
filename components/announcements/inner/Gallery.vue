@@ -4,7 +4,7 @@
       <div class="swiper-container" v-swiper:gallerySwiper="swiperOps" ref="gallerySwiper" v-if="showSlider">
         <div class="swiper-wrapper">
           <div class="swiper-slide" :key="index" v-for="(slide, index) in slides.main">
-            <div @click="currentSlide = index, openLightbox()"
+            <div @click.stop="openLightbox(index)"
               :class="['swiper-slide-bg swiper-lazy', {'yt-play': showYtVideo(index)}]" 
               :data-background="showYtVideo(index) ? getYtVideoImage('hq') : slide"
             >
@@ -46,42 +46,56 @@
         </div>
       </div>
       <div class="inner-gallery-lightbox" v-touch:swipe.top="handleSwipeTop">
-        <FsLightbox
-          :toggler="toggleFsLightbox"
-          :sources="slides.main"
-          :types="slides.types"
-          :slide="currentSlide + 1"
-          :key="lightboxKey"
-          :onClose="refreshLightbox"
-          :onBeforeClose="onBeforeClose"
-          :showThumbsOnMount="!isMobileBreakpoint"
-          :disableThumbs="isMobileBreakpoint"
-          :onSlideChange="changeLightboxSlide"
-        />
+        <template v-if="isMobileBreakpoint">
+          <FsLightbox
+            :toggler="toggleFsLightbox"
+            :sources="slides.main"
+            :types="slides.types"
+            :slide="currentSlide + 1"
+            :key="lightboxKey"
+            :onClose="refreshLightbox"
+            :onBeforeClose="onBeforeClose"
+            :disableThumbs="true"
+            :onSlideChange="changeLightboxSlide"
+          />
+        </template>
         <transition-group name="fade">
-          <div v-if="showLightbox" class="fslightbox-blur-bg" :key="0">
-            <img :src="showYtVideo(currentSlide) ? getYtVideoImage('hq') : $withBaseUrl(slides.main[currentSlide])" alt="" />
-          </div>
-          <div v-if="showLightbox" class="fslightbox-footer d-lg-none" :key="1">
-            <div class="inner-gallery-lightbox-footer">
-              <template v-if="where === 'announcement'">
-                <h3>{{ getAnnouncementTitle(announcement) }}</h3>
-                <h4>{{ announcement.price }}</h4>
-                <div class="row">
-                  <div class="col" v-if="canSendMessage(announcement)">
-                    <chat-button :announcement="announcement" :className="'white-outline'" />
-                  </div>
-                  <div class="col">
-                    <call-button :phone="announcement.user.phone" />
-                  </div>
-                </div>
-              </template>
-              <template v-else-if="where === 'catalog'">
-                <h3 v-html="title"></h3>
-                <h4 v-html="subtitle"></h4>
-              </template>
+          <template v-if="(showLightbox && isMobileBreakpoint) || (!isMobileBreakpoint && showImagesSlider)">
+            <div class="blur-bg" :key="0">
+              <!-- <img :src="showYtVideo(currentSlide) ? getYtVideoImage('hq') : $withBaseUrl(slides.main[currentSlide])" alt="" /> -->
+              <img :src="$withBaseUrl(slides.main[0])" alt="" /> 
             </div>
-          </div>
+            <div class="blur-bg_announcement-info" :key="1" v-if="isMobileBreakpoint">
+              <div class="inner-gallery-lightbox-footer">
+                <template v-if="where === 'announcement'">
+                  <h3>{{ getAnnouncementTitle(announcement) }}</h3>
+                  <h4>{{ announcement.price }}</h4>
+                  <div class="row">
+                    <div class="col" v-if="canSendMessage(announcement)">
+                      <chat-button :announcement="announcement" :className="'white-outline'" />
+                    </div>
+                    <div class="col">
+                      <call-button :phone="announcement.user.phone" />
+                    </div>
+                  </div>
+                </template>
+                <template v-else-if="where === 'catalog'">
+                  <h3 v-html="title"></h3>
+                  <h4 v-html="subtitle"></h4>
+                </template>
+              </div>
+            </div>
+            <div class="blur-bg_slider" :key="2" v-else>
+              <images-slider 
+                :current-slide="currentSlide"
+                :slides="slides" 
+                :has-sidebar="where === 'announcement'"
+                @close="closeLightbox" 
+              >
+                <slot v-if="where === 'announcement'" />
+              </images-slider>
+            </div>
+          </template> 
         </transition-group>
       </div>
     </div>
@@ -97,6 +111,7 @@ import ChatButton from '~/components/announcements/ChatButton';
 import AddFavorite from '~/components/announcements/AddFavorite';
 import AddComparison from '~/components/announcements/AddComparison';
 import AddComplaint from '~/components/announcements/AddComplaint';
+import ImagesSlider from '~/components/elements/ImagesSlider';
 
 export default {
   props: {
@@ -118,11 +133,13 @@ export default {
     ChatButton,
     AddFavorite,
     AddComparison,
-    AddComplaint
+    AddComplaint,
+    ImagesSlider
   },
   data() {
     return {
       toggleFsLightbox: false,
+      showImagesSlider: false,
       showLightbox: false,
       lightboxKey: 0,
       currentSlide: 0,
@@ -144,8 +161,12 @@ export default {
   methods: {
     openLightbox(index) {
       if (index) this.currentSlide = index;
-      this.showLightbox = true;
-      this.toggleFsLightbox = !this.toggleFsLightbox;
+      if (this.isMobileBreakpoint) {
+        this.showLightbox = true;
+        this.toggleFsLightbox = !this.toggleFsLightbox;
+      } else {
+        this.showImagesSlider = true;
+      }
       this.setBodyOverflow('hidden');
     },
     refreshLightbox() {
@@ -177,8 +198,13 @@ export default {
       return media[key] instanceof Array ? media[key].map(item => this.$withBaseUrl(item)) : [];
     },
     closeLightbox() {
-      if (this.showLightbox) {
-        this.toggleFsLightbox = !this.toggleFsLightbox;
+      if (this.isMobileBreakpoint) {
+        if (this.showLightbox) {
+          this.toggleFsLightbox = !this.toggleFsLightbox;
+        }
+      } else {
+        this.setBodyOverflow('scroll');
+        this.showImagesSlider = false;
       }
     },
     handleSwipeTop() {
@@ -221,6 +247,7 @@ export default {
   },
   watch: {
     breakpoint() {
+      this.showImagesSlider = false;
       this.refreshLightbox();
     }
   },
@@ -229,6 +256,9 @@ export default {
       if (this.showSlider) {
         setTimeout(() => {
           this.gallerySwiper.init();
+          this.gallerySwiper.on('slideChangeTransitionStart', () => {
+            this.currentSlide = this.gallerySwiper.realIndex;
+          });
         }, 0);
       }
       

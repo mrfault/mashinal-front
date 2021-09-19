@@ -54,6 +54,7 @@
               <nuxt-link :to="$localePath(menu.route)" @click.native="toggleSidebarMenu(false)">
                 <icon :name="menu.icon" v-if="menu.icon" />
                 <span>{{ menu.title[locale] || $t(menu.title) }}</span>
+                <span>{{ (menu.title === 'comparisons') && comparisonCount ? '&nbsp;('+comparisonCount+')' : '' }}</span>
               </nuxt-link>
             </li>
           </template>
@@ -73,7 +74,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 import { MenusDataMixin } from '~/mixins/menus-data';
 import { UserDataMixin } from '~/mixins/user-data';
@@ -97,6 +98,11 @@ export default {
         this.$nuxt.$emit('go-to-search', path);
       else this.$router.push(path);
     }
+  },
+  computed: {
+    ...mapGetters({
+      comparisonCount: 'comparison/count'
+    })
   },
   watch: {
     breakpoint(breakpoint) {
