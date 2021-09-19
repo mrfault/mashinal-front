@@ -13,6 +13,7 @@
         <grid
           v-if="announcements.length"
           :announcements="announcements"
+          :pending="pending"
         />
         <no-results v-else/>
       </div>
@@ -58,20 +59,23 @@ export default {
   },
   mounted() {
     window.addEventListener('scroll', this.getNextAnnouncements)
+    console.log('added')
   },
   methods: {
     async getNextAnnouncements(e) {
       if ((window.scrollY + 800 > document.body.scrollHeight) && !this.pending) {
         this.pending = true;
         await this.$store.dispatch('parts/getNextAnnounements')
-        setTimeout(() => {
           this.pending = false;
-        }, 1000)
+        // setTimeout(() => {
+        // }, 1000)
       }
     },
     async searchParts() {
       const data = JSON.parse(this.$route.query.parts_filter || '{}');
+      this.pending = true;
       await this.$store.dispatch('parts/search', data);
+      this.pending = false;
       this.scrollTo('.announcements-content', [0, -30]);
     }
   },
@@ -85,6 +89,10 @@ export default {
         { name: this.$t('all_parts') }
       ]
     }
+  },
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.getNextAnnouncements)
+    console.log('removed')
   }
 }
 </script>
