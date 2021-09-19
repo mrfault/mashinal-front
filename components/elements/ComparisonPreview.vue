@@ -7,7 +7,10 @@
       ref="comparisonPreview"
     >
       <div class="comparison-preview__title d-flex">
-        <h4 >{{ activeType === 'announcements' ? $t('comparison_announcements') : $t('comparison_models') }}</h4>
+        <h4 v-if="typeButtons.length !== 2">
+          {{ activeType === 'announcements' ? $t('comparison_announcements') : $t('comparison_models') }}
+        </h4>
+        <span v-else />
         <span class="cursor-pointer close" @click="$emit('close')">
           <icon name="cross" />
         </span>
