@@ -11,9 +11,9 @@
         <span class="cursor-pointer" @click="$nuxt.$emit('search-icon-click')" v-if="hasSearchFilters">
           <icon name="search" />
         </span>
-        <span class="cursor-pointer" @click="goTo($localePath('/parts/shops'))" v-else-if="hasShops">
-          <!-- <icon name="shop" /> -->
-        </span>
+        <!-- <span class="cursor-pointer" @click="goTo($localePath('/parts/shops'))" v-else-if="hasShops">
+          <icon name="shop" />
+        </span> -->
         <span class="cursor-pointer" @click="goTo($localePath('/cars/advanced-search'))" v-else-if="hasSearchNav || !loggedIn">
           <icon name="options" />
         </span>

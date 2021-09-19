@@ -64,7 +64,7 @@ export const MenusDataMixin = {
     },
 
     userMenus() {
-      return this.user?.autosalon 
+      return (this.user?.autosalon 
         ? [
           { title: 'dashboard', route: '/profile/dashboard', showOnCard: false },
           { title: 'my_announces', route: '/profile/announcements', showOnCard: true },
@@ -79,9 +79,9 @@ export const MenusDataMixin = {
           { title: 'my_announces', route: '/profile/announcements', showOnCard: true },
           { title: 'comparisons', route: '/comparison', showOnCard: false },
           { title: 'messages', route: '/profile/messages', showOnCard: false },
-          { title: 'payment_history', route: '/profile/payments', showOnCard: true },
-          { title: 'balans', route: '/profile/balance', showOnCard: true }
-        ];
+          { title: 'payment_history', route: '/profile/payments', showOnCard: true, dev: true },
+          { title: 'balans', route: '/profile/balance', showOnCard: true, dev: true }
+        ]).filter(item => !item.dev || this.$env.DEV);;
     },
 
     sidebarMenus() {

@@ -74,6 +74,17 @@ export default {
   computed: {
     ...mapGetters(['mainAnnouncements'])
   },
+  methods: {
+    scrollUp() {
+      this.$scrollTo('body');
+    }
+  },
+  mounted() {
+    this.$nuxt.$on('logo-click', this.scrollUp);
+  },
+  beforeDestroy() {
+    this.$nuxt.$off('logo-click', this.scrollUp);
+  },
   beforeRouteLeave(to, from, next) {
     this.$nuxt.$emit('prevent-popstate');
     next();
