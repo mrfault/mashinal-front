@@ -61,7 +61,7 @@ export default {
   },
   methods: {
     async getNextAnnouncements(e) {
-      if ((window.scrollY + 500 > document.body.scrollHeight) && !this.pending) {
+      if ((window.scrollY + 800 > document.body.scrollHeight) && !this.pending) {
         this.pending = true;
         await this.$store.dispatch('parts/getNextAnnounements')
         setTimeout(() => {
@@ -77,7 +77,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      announcements: 'parts/announcements'
+      announcements: 'parts/announcements',
+      pagination: 'parts/pagination',
     }),
     crumbs() {
       return [
