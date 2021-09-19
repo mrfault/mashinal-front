@@ -364,30 +364,6 @@ export default {
       pending: false
     }
   },
-  validations: {
-    form: {
-      title: {
-        required,
-        minLength: minLength(2),
-        maxLength: maxLength(20)
-      },
-      category_id: {
-        required
-      },
-      sub_category_id: {
-        required: requiredIf(function() {return this.filters.sub_categories.length})
-      },
-      brand_id: {
-        required: requiredIf(function() {return this.filters.brands.length})
-      },
-      region_id: {
-        required: requiredIf(function() {return this.filters.regions.length})
-      },
-      price: {
-        required: requiredIf(function() {return !this.form.is_negotiable})
-      },
-    }
-  },
   created() {
     this.$nuxt.$on('login', this.handleAfterLogin);
   },
@@ -443,13 +419,13 @@ export default {
       }
 
       if (this.filters.sub_categories.length) {
-        this.form.sub_category_id = ''
+        this.form.sub_category_id = this?.initialForm?.sub_category_id || null
       } else {
         delete this.form.sub_category_id
       }
       
       if (this.filters.brands.length) {
-        this.form.brand_id = ''
+        this.form.brand_id = this?.initialForm?.brand_id || null
       } else {
         delete this.form.brand_id
       }
@@ -540,22 +516,6 @@ export default {
       }
     },
     validate() {
-      // this.$v.$touch();
-
-      // this.errors = [];
-      // this.filters.filters.forEach(filter => {
-      //   if (filter.is_required){
-      //     const value = this.form[filter.key]
-      //     if (value === '') {
-      //       this.errors.push(filter.key)
-      //     }
-      //   }
-      // })
-      
-      // if (this.errors.length) {
-      //   return false
-      // }
-
       if (!this.upload_ended) {
         this.$toasted.error(this.$t('please_wait_for_all_image_loading'));
         return false;
@@ -566,9 +526,7 @@ export default {
         return false;
       }
 
-      // if (!(this.$v.$pending || this.$v.$error)) {
-        return true
-      // }
+      return true
     },
     async publish() {
       let data = {
