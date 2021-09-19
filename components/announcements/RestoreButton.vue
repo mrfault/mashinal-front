@@ -1,6 +1,6 @@
 <template>
   <button :class="['btn full-width', `btn--${className}`, { pending }]" @click.stop="restoreAnnouncement">
-    <icon name="refresh" /> {{ $t('restore') }}
+    <icon name="refresh" /> {{ $t('restore'+(free ? '_free' : '')) }}
   </button>
 </template>
 

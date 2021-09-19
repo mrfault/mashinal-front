@@ -1,13 +1,13 @@
 <template>
   <div class="images-slider">
     <div class="toolbar">
-      <span>{{ currentSlide + 1 }} / {{ slides.main.length }}</span>
+      <span></span>
       <span class="cursor-pointer" @click.stop="$emit('close')">
         <icon name="cross" />
       </span>
     </div>
-    <div class="container">
-      <div class="row" @click.stop>
+    <div :class="['container', { 'wider': hasSidebar}]">
+      <div :class="['row', { 'has-sidebar': hasSidebar}]" @click.stop>
         <div class="col-auto">
           <button id="slider-prev" class="btn" @click.stop="thumbsPrev" v-if="slides.main.length > 6">
             <icon name="chevron-up" />
@@ -29,14 +29,17 @@
         </div>
         <div class="col-auto">
           <div class="position-relative">
-            <div class="swiper-container" v-swiper:imagesSwiper="swiperOps" ref="imagesSwiper">
+            <div id="images-swiper" class="swiper-container" v-swiper:imagesSwiper="swiperOps" ref="imagesSwiper">
               <div class="swiper-wrapper">
                 <div class="swiper-slide" :key="index" v-for="(slide, index) in slides.main">
-                  <div
-                    :class="['swiper-slide-bg swiper-lazy', {'yt-play': slides.types && slides.types[index] === 'youtube'}]" 
-                    :data-background="slide"
-                  >
-                    <loader />
+                  <div class="swiper-slide-bg">
+                    <div class="iframe" v-if="slides.types && slides.types[index] === 'youtube'">
+                      <iframe v-if="showIframe" :src="`https://www.youtube.com/embed/${slide.split('?v=')[1]}`" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    <template v-else>
+                      <img alt="" :data-src="slide" class="swiper-lazy" />
+                      <loader />
+                    </template>
                   </div>
                 </div>
               </div>
@@ -56,6 +59,7 @@
           </div>
         </div>
         <div class="col-auto" v-if="hasSidebar">
+          <slot />
         </div>
       </div>
     </div>
@@ -68,10 +72,11 @@ export default {
   props: {
     slides: {},
     currentSlide: Number,
-    hasSidebar: Boolean,
+    hasSidebar: Boolean
   },
   data() {
     return {
+      slideIndex: this.currentSlide,
       swiperOps: {
         effect: 'fade',
         fadeEffect: {
@@ -83,13 +88,15 @@ export default {
           loadPrevNext: false,
           preloaderClass: 'loader'
         },
-        initialSlide: this.currentSlide
+        initialSlide: this.currentSlide,
       },
       thumbOps: {
         initialSlide: this.currentSlide,
         direction: 'vertical',
-        slidesPerView: 6
-      }
+        slidesPerView: 'auto',
+        spaceBetween: 20
+      },
+      showIframe: false
     }
   },
   methods: {
@@ -112,10 +119,11 @@ export default {
   mounted() {
     this.$nextTick(() => {
       this.imagesSwiper.thumbs.swiper = this.thumbsSwiper;
-      this.imagesSwiper.on('slideChangeTransitionStart', () => {
-        setTimeout(() => {
-          this.$emit('slide-change', this.imagesSwiper.realIndex);
-        }, 0);
+      this.imagesSwiper.on('slideChange', () => {
+        this.showIframe = false;
+        this.$nextTick(() => {
+          this.showIframe = true;
+        });
       });
     });
   }

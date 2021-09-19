@@ -1,5 +1,5 @@
 <template>
-  <div class="vehicle-specs card pt-0 pt-lg-4 mb-lg-3">
+  <div :class="['vehicle-specs card pt-0 pt-lg-4', {'mb-lg-3': !brief}]">
     <ul>
       <li v-for="spec in announcementSpecs" :key="spec.key">
         <span>
@@ -32,7 +32,8 @@ import FloatingCta from '~/components/announcements/inner/FloatingCta';
 
 export default {
   props: {
-    type: String
+    type: String,
+    brief: Boolean
   },
   components: {
     FloatingCta
@@ -92,7 +93,8 @@ export default {
         })
       }
       
-      return specs.filter(spec => spec.value && (!spec.for || spec.for.includes(this.type)));
+      let filteredSpecs = specs.filter(spec => spec.value && (!spec.for || spec.for.includes(this.type)));
+      return this.brief ? filteredSpecs.slice(0,5) : filteredSpecs;
     },
     catalogLink() {
       let path = this.catalog && `/catalog/${this.catalog.brand.slug}/${this.catalog.model.slug}/${this.catalog.generation.id}/${this.catalog.car_type.id}/mod/${this.catalog.id}`;
