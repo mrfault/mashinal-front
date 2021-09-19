@@ -14,6 +14,9 @@
         <grid
           v-if="announcements.length"
           :announcements="announcements"
+          :paginate="$paginate(pagination)"
+          :pending="pending"
+          @change-page="searchParts"
         />
         <no-results v-else/>
       </div>
@@ -100,16 +103,20 @@ export default {
     }
   },
   methods: {
-    async searchParts() {
+    async searchParts(page) {
+      page = this.$route.query.page || 1;
       const data = JSON.parse(this.$route.query.parts_filter || '{}');
       data.category_id = this.category.id
-      await this.$store.dispatch('parts/search', data)
+      this.pending = true;
+      await this.$store.dispatch('parts/search', {...data, page},)
+      this.pending = false;
       this.scrollTo('.announcements-content', [0, -30]);
     }
   },
   computed: {
     ...mapGetters({
       announcements: 'parts/announcements',
+      pagination: 'parts/pagination',
     }),
     crumbs() {
       return [

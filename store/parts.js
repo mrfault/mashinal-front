@@ -1,13 +1,8 @@
 import Vue from 'vue';
 
 const getInitialState = () => ({
-  announcements: [],
-  pagination: {
-    current_page: 0,
-    last_page: 0,
-    total: 0,
-    per_page: 0,
-  },
+  announcements: {},
+  pagination: {},
   categories: [],
   form: {
     product_code: '',
@@ -30,8 +25,12 @@ const getInitialState = () => ({
 export const state = () => getInitialState()
 
 export const getters = {
-  announcements: s => s.announcements,
-  pagination: s => s.pagination,
+  announcements: s => s.announcements.data || [],
+  pagination: s => {
+    const data = {...s.announcements}
+    delete data.data
+    return data
+  },
   categories: s => s.categories,
   form: s => s.form,
 }
@@ -41,6 +40,7 @@ export const actions = {
     const data = await this.$axios.$post('/part/home_page');
     commit('mutate', {
       property: 'announcements',
+      key: 'data',
       value: data
     })
   },
@@ -48,7 +48,8 @@ export const actions = {
     const data = await this.$axios.$post('/part/home_page');
     commit('mutate', {
       property: 'announcements',
-      value: [...state.announcements, ...data]
+      key: 'data',
+      value: [...state.announcements.data, ...data]
     })
   },
   async search({ commit }, payload) {
@@ -57,23 +58,23 @@ export const actions = {
     }
     delete payload.announce_type;
 
-    const data = await this.$axios.$post('/part', payload)
+    const data = await this.$axios.$post('/part?page=' + payload.page, payload)
     commit('mutate', {
       property: 'announcements',
-      value: data.data
+      value: data
     })
-    commit('mutate', {
-      property: 'pagination',
-      value: {
-        current_page: data.current_page,
-        last_page: data.last_page,
-        total: data.total,
-        per_page: data.per_page,
-      }
-    })
+    // commit('mutate', {
+    //   property: 'pagination',
+    //   value: {
+    //     current_page: data.current_page,
+    //     last_page: data.last_page,
+    //     total: data.total,
+    //     per_page: data.per_page,
+    //   }
+    // })
   },
   async getCategoryAnnouncements({ commit }, payload) {
-    const { data } = await this.$axios.$post('/part', payload);
+    const data = await this.$axios.$post('/part', payload);
 
     commit('mutate', {
       property: 'announcements',
