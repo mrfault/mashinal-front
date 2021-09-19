@@ -340,9 +340,7 @@ export default {
         title: '',
         description: '',
         category_id: '',
-        sub_category_id: '',
         region_id: 1,
-        brand_id: '',
         is_new: true,
         is_original: true,
         have_delivery: false,
@@ -416,9 +414,6 @@ export default {
     categorySelected(id) {
       this.form = {
         ...this.form,
-        sub_category_id: '',
-        brand_id: '',
-        region_id: 1,
         is_new: true,
         is_original: true,
       }
@@ -445,6 +440,18 @@ export default {
         'multiselect-component': '',
         'checkbox-component': false,
         'filter-single-input': '',
+      }
+
+      if (this.filters.sub_categories.length) {
+        this.form.sub_category_id = ''
+      } else {
+        delete this.form.sub_category_id
+      }
+      
+      if (this.filters.brands.length) {
+        this.form.brand_id = ''
+      } else {
+        delete this.form.brand_id
       }
       
       this.filters.filters.forEach(filter => {
@@ -564,13 +571,12 @@ export default {
       // }
     },
     async publish() {
-      let data = {...this.form}
-      data = this.removeEmptyKeys({
+      let data = {
         ...this.form,
         tags: this.form.keywords.map(keyword => ({ text: keyword })),
         saved_images: this.files.map(({ id }) => id),
         deletedIds: []
-      })
+      }
       delete data.keywords;
 
       const formData = new FormData()
@@ -678,21 +684,6 @@ export default {
             ?.name || ''
         });
       }
-    },
-    removeEmptyKeys(obj) {
-      const result = {};
-      
-      Object.entries(obj).map((obj) => {
-        const key = obj[0]
-        const value = obj[1]
-        if (!(value === null || value === undefined || value === '')) {
-          result[key] = value
-        } else if (['description', 'product_code', 'brand_id'].includes(key)) {
-          result[key] = value
-        }
-      })
-
-      return result
     },
     handleAfterLogin() {
       this.resetSellTokens();
