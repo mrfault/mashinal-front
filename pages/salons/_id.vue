@@ -102,7 +102,7 @@ export default {
 
     crumbs() {
       return [
-        { name: this.$t('salons'), route: '/salonlar' },
+        { name: this.$t('salons'), route: '/salons' },
         { name: this.salonSingle.name }
       ]
     }

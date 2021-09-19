@@ -1,6 +1,6 @@
 export const generateMetaInfo = ({ title, description, image, path, locale, product }) => {
   const getPath = (lang) => 'https://mashin.al' + path[lang];
-  image = image || 'https://mashin.al/mashin-al-banner3.jpg';
+  image = image || 'https://mashin.al/mashinal-banner.png';
   
   let services = [], types = [];
   if (product) {
