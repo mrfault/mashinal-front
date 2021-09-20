@@ -1779,5 +1779,6 @@ export default {
   "max_horse_power":"Maksimal at gücü",
   "all_parts":"Bütün ehtiyat hissələri",
   "comparison_added": "Müqayisəyə əlavə olundu",
-  "comparison_removed": "Müqayisədən silindi"
+  "comparison_removed": "Müqayisədən silindi",
+  "other_announcements": "Digər elanlar"
 }

@@ -697,8 +697,6 @@ export default {
     form: {
       deep: true,
       handler() {
-        console.log('sub', this.form.sub_category_id)
-        console.log('brand', this.form.brand_id)
         this.updatePreview()
       }
     },

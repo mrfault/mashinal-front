@@ -1779,5 +1779,6 @@ export default {
   "max_horse_power":"Максимальная лошадиные силы",
   "all_parts":"Все запчасти",
   "comparison_added": "Добавлено в сравнения",
-  "comparison_removed": "Удалено из сравнений"
+  "comparison_removed": "Удалено из сравнений",
+  "other_announcements": "Другие объявления"
 }

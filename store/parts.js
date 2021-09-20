@@ -2,6 +2,7 @@ import Vue from 'vue';
 
 const getInitialState = () => ({
   announcements: {},
+  otherAnnouncements: [],
   pagination: {},
   categories: [],
   form: {
@@ -19,13 +20,15 @@ const getInitialState = () => ({
     price: '',
     is_negotiable: false,
     keywords: []
-  }
+  },
+  
 })
 
 export const state = () => getInitialState()
 
 export const getters = {
   announcements: s => s.announcements.data || [],
+  otherAnnouncements: s => s.otherAnnouncements || [],
   pagination: s => {
     const data = {...s.announcements}
     delete data.data
@@ -43,6 +46,11 @@ export const actions = {
       key: 'data',
       value: data
     })
+    commit('mutate', {
+      property: 'otherAnnouncements',
+      value: data
+    })
+
   },
   async getNextAnnounements({ state, commit }) {
     const data = await this.$axios.$post('/part/home_page');
