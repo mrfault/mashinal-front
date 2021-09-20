@@ -1,6 +1,6 @@
 <template>
   <div class="no-results">
-    <img src="/img/car.svg" alt="" />
+    <img :src="`/img/${type}.svg`" alt="" />
     <span>{{ text || $t('no_results_found') }}</span>
     <slot />
   </div>
@@ -9,7 +9,15 @@
 <script>
 export default {
   props: {
-    text: String
+    text: String,
+    type: {
+      type: String,
+      required: false,
+      default: 'car',
+      validator(val) {
+        return ['car', 'part'].includes(val)
+      }
+    }
   }
 }
 </script>

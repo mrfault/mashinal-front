@@ -18,7 +18,7 @@
           :pending="pending"
           @change-page="searchParts"
         />
-        <no-results v-else/>
+        <no-results v-else type="part"/>
       </div>
     </div>
   </div>
@@ -108,7 +108,7 @@ export default {
       const data = JSON.parse(this.$route.query.parts_filter || '{}');
       data.category_id = this.category.id
       this.pending = true;
-      await this.$store.dispatch('parts/search', {...data, page},)
+      await this.$store.dispatch('parts/search', {...data, page})
       this.pending = false;
       this.scrollTo('.announcements-content', [0, -30]);
     }
