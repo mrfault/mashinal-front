@@ -90,7 +90,7 @@
           : values;
       },
       getPlaceholder(item) {
-        return this.$t(item.placeholder) || this.$t(item.type_key);
+        return this.$t(item.placeholder) || this.$t(item.type_key.replace('engine', 'fuel'));
       },
       hasError(item) {
         let field = this.getKey(item);

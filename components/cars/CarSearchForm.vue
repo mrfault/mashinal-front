@@ -126,6 +126,18 @@
                   <form-checkbox :label="$t('credit')" v-model="form.credit" 
                     input-name="credit" icon-name="percent" />
                 </div>
+                <template v-if="isMobileBreakpoint && !advanced && !collapsed">
+                  <div class="col-6 col-lg-3 mb-2 mb-lg-3">
+                    <form-select :label="$t('fuel')" v-model="form.engine_type" 
+                      :options="bodyOptions.main.default_options['tip-dvigatelya'].values"
+                      multiple name-in-value translate-options />
+                  </div>
+                  <div class="col-6 col-lg-3 mb-2 mb-lg-3">
+                    <form-select :label="$t('korobka')" v-model="form.korobka" 
+                      :options="bodyOptions.main.default_options['korobka'].values"
+                      multiple name-in-value translate-options />
+                  </div>
+                </template>
               </div>
             </component>
           </div>

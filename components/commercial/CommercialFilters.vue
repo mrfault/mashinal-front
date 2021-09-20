@@ -74,7 +74,7 @@ export default {
           ? values
           : Object.keys(values).map((key,index) => ({ key: index, name: values[key][this.locale] || values[key] }));
         // placeholder
-        modifiedFilter.placeholder = this.$t(filter.type_key);
+        modifiedFilter.placeholder = this.$t(filter.type_key.replace('engine', 'fuel'));
         modifiedFilter.showLabel = filter.type_key.includes('seat_count');
         // suffix
         let suffix = '';
