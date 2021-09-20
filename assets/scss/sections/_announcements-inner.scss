@@ -443,6 +443,7 @@
   }
   & > .container > .row {
     flex-wrap: nowrap;
+    align-items: center;
     & > .col-auto {
       &:nth-child(1) {
         width: 150px;
