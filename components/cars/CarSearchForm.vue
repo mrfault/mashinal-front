@@ -135,7 +135,7 @@
               </form-select>
             </div>
             <div class="col-6 col-lg-2 mb-2 mb-lg-3">
-              <form-select :label="$t('dvigatel')" v-model="form.engine_type" 
+              <form-select :label="$t('fuel')" v-model="form.engine_type" 
                 :options="bodyOptions.main.default_options['tip-dvigatelya'].values"
                 multiple name-in-value translate-options />
             </div>

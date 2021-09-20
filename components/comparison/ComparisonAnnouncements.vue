@@ -151,7 +151,7 @@ export default {
           defaultCollapsed: false,
           items: [
             {
-              title: this.$t('engine'),
+              title: this.$t('fuel'),
               values: this.announcements.map(a => this.getEngineType(a.car_catalog)),
             },
             {

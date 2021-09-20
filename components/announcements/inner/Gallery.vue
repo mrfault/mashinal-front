@@ -1,10 +1,11 @@
 <template>
   <div class="inner-gallery">
     <div class="position-relative">
-      <div class="swiper-container" v-swiper:gallerySwiper="swiperOps" ref="gallerySwiper" v-if="showSlider">
+      <div class="swiper-container" v-swiper:gallerySwiper="swiperOps" ref="gallerySwiper" v-if="showSlider"
+        @click.stop="openLightbox(currentSlide)">
         <div class="swiper-wrapper">
           <div class="swiper-slide" :key="index" v-for="(slide, index) in slides.main">
-            <div @click.stop="openLightbox(index)"
+            <div
               :class="['swiper-slide-bg swiper-lazy', {'yt-play': showYtVideo(index)}]" 
               :data-background="showYtVideo(index) ? getYtVideoImage('hq') : slide"
             >
@@ -268,6 +269,7 @@ export default {
   },
   beforeDestroy() {
     if (this.showSlider) this.$nuxt.$off('show-gallery-slide', this.changeSlide);
+    if (this.showImagesSlider || this.showLightbox) this.closeLightbox();
     this.$nuxt.$off('show-lightbox', this.openLightbox);
   }
 }
