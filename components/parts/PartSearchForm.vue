@@ -164,7 +164,7 @@
               <button
                 type="button"
                 :class="['btn', 'full-width', 'btn--red-outline']"
-                @click="resetForm"
+                @click="reset"
               >
                 <icon name="reset" />
                 {{ $t('clear_search') }}
@@ -273,6 +273,10 @@ export default {
       } else {
         this.form.brand_ids.push(id)
       }
+    },
+    reset() {
+      this.resetForm()
+      this.$store.dispatch('parts/setSearchActive', false)
     }
   },
   computed: {

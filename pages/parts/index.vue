@@ -8,7 +8,7 @@
         @pending="pending = true"
         @submit="searchParts" 
       />
-      <banners />
+      <banners v-if="!searchActive"/>
       <div class="announcements-content">
         <grid
           v-if="announcements.length"
@@ -87,6 +87,8 @@ export default {
       } else {
         window.addEventListener('scroll', this.getNextAnnouncements)
       }
+
+      this.$store.dispatch('parts/setSearchActive', true)
     }
   },
   computed: {
@@ -94,6 +96,7 @@ export default {
       announcements: 'parts/announcements',
       otherAnnouncements: 'parts/otherAnnouncements',
       pagination: 'parts/pagination',
+      searchActive: 'parts/searchActive',
     }),
     crumbs() {
       return [
