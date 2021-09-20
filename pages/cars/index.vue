@@ -12,7 +12,7 @@
         v-if="carsAnnouncements.data.length"
         :announcements="carsAnnouncements.data" 
         :paginate="$paginate(carsAnnouncements)"
-        :title="$t('recent_uploads')"
+        :title="$t('announcements')"
         :pending="pending"
         @change-page="searchCars"
       />

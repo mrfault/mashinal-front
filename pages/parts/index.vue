@@ -16,6 +16,12 @@
           :pending="pending"
         />
         <no-results v-else/>
+
+        <grid
+          v-if="!announcements.length"
+          :title="$t('other_announcements')"
+          :announcements="otherAnnouncements"
+        />
       </div>
     </div>
   </div>
@@ -59,7 +65,6 @@ export default {
   },
   mounted() {
     window.addEventListener('scroll', this.getNextAnnouncements)
-    console.log('added')
   },
   methods: {
     async getNextAnnouncements(e) {
@@ -77,11 +82,17 @@ export default {
       await this.$store.dispatch('parts/search', data);
       this.pending = false;
       this.scrollTo('.announcements-content', [0, -30]);
+      if (!this.announcements.length) {
+        window.removeEventListener('scroll', this.getNextAnnouncements)
+      } else {
+        window.addEventListener('scroll', this.getNextAnnouncements)
+      }
     }
   },
   computed: {
     ...mapGetters({
       announcements: 'parts/announcements',
+      otherAnnouncements: 'parts/otherAnnouncements',
       pagination: 'parts/pagination',
     }),
     crumbs() {
@@ -92,7 +103,6 @@ export default {
   },
   beforeDestroy() {
     window.removeEventListener('scroll', this.getNextAnnouncements)
-    console.log('removed')
   }
 }
 </script>

@@ -10,17 +10,17 @@
       <div class="row mb-n2 mb-lg-n3">
         <div class="col-6 col-lg-1-5 mb-2 mb-lg-3">
           <form-select :label="$t('mark')" :options="brands" v-model="form.name"
-            @change="form.model = '', form.generation = '', submitForm(true)" has-search :clear-option="!isMobileBreakpoint" 
+            @change="form.model = '', form.generation = '', submitForm(true, false)" has-search :clear-option="!isMobileBreakpoint" 
             :popular-options="isMobileBreakpoint ? [129,483,8,1,767,117] : undefined" 
             :img-key="isMobileBreakpoint ? 'transformed_media' : ''" slug-in-value />
         </div>
         <div class="col-6 col-lg-1-5 mb-2 mb-lg-3">
           <form-select :label="$t('model')" :options="models" v-model="form.model"
-            :disabled="!form.name || !$route.params.brand" @change="form.generation = '', submitForm(true)" has-search slug-in-value />
+            :disabled="!form.name || !$route.params.brand" @change="form.generation = '', submitForm(true, false)" has-search slug-in-value />
         </div>
         <div class="col-6 col-lg-1-5 mb-2 mb-lg-3">
           <form-select :label="$t('generation')" :options="generations" v-model="form.generation"
-            :disabled="!form.model || !$route.params.model" @change="submitForm(true)" has-search />
+            :disabled="!form.model || !$route.params.model" @change="submitForm(true, false)" has-search />
         </div>
         <div class="col-6 col-lg-1-5 mb-2 mb-lg-3">
           <form-select :label="$t('body_type')" v-model="form['body']"
@@ -178,7 +178,7 @@ export default {
     // static data
     getCollapseOptions() {
       return [
-        { key: 1, name: this.$t('simpled') },
+        { key: 1, name: this.$t('simple') },
         { key: 0, name: this.$t('detailed') }
       ]
     },
@@ -233,7 +233,7 @@ export default {
         body: form.body || (body ? [this.bodyOptions.main.default_options['body'].values.find(o => o.key == body)] : [])
       });
     },
-    submitForm(force = false) {
+    submitForm(force = false, scroll = true) {
       // throttle submission
       clearTimeout(this.timeout);
       this.timeout = setTimeout(() => {
@@ -252,7 +252,7 @@ export default {
         } else {
           this.$router.push(searchUrl, () => {
             if (pageSame) this.$emit('submit', 1, force);
-            else this.scrollTo('.catalog-grid', [-15, -20]);
+            else if (scroll) this.scrollTo('.catalog-grid', [-15, -20]);
           });
         }
       }, force ? 100 : 1000);

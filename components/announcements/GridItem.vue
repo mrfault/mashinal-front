@@ -25,7 +25,7 @@
             <add-comparison :id="announcement.id_unique" v-if="getType === 'Car'"/>
             <add-favorite :announcement="announcement" />
           </span>
-          <span class="badge">{{ announcement.humanize_created_at }}</span>
+          <span class="badge">{{ $formatDate(announcement.created_at, 'D MMM')[locale] }}</span>
         </div>
       </div>
     </div>

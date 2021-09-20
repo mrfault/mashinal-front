@@ -144,7 +144,7 @@
               <form-checkbox
                 v-if="filter.component === 'checkbox-component'"
                 v-model="form[filter.key]"
-                :id="'anchor-' + filter.key"
+                :id="filter.key"
                 :label="$t(filter.key)"
                 :checked-value="form[filter.key]"
                 :invalid="isInvalid(filter.key)"
@@ -155,7 +155,6 @@
               <form-text-input
                 v-if="filter.component === 'filter-single-input'"
                 v-model="form[filter.key]"
-                :id="'anchor-' + filter.key"
                 :placeholder="$t(filter.key)"
                 :invalid="isInvalid(filter.key)"
                 @input="dynamicFilterOnChange(filter.key, $event)"
@@ -371,7 +370,8 @@ export default {
     if (this.initialForm) {
       this.form = {
         ...this.form,
-        ...this.initialForm
+        ...this.initialForm,
+        keywords: this.initialForm.tags.map(t => t.text)
       }
 
       this.getFilters(this.initialForm.category_id)
@@ -451,8 +451,6 @@ export default {
     addFiles(files) {
       this.upload_ended = false;
       const file = files[0];
-
-      
 
       this.uploadFile(file.file).then(uploadedFile => {
         this.files.push({
@@ -697,8 +695,6 @@ export default {
     form: {
       deep: true,
       handler() {
-        console.log('sub', this.form.sub_category_id)
-        console.log('brand', this.form.brand_id)
         this.updatePreview()
       }
     },
