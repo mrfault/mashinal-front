@@ -21,7 +21,8 @@ const getInitialState = () => ({
     is_negotiable: false,
     keywords: []
   },
-  searchActive: false
+  searchActive: false,
+  showNotFound: false
 })
 
 export const state = () => getInitialState()
@@ -37,10 +38,11 @@ export const getters = {
   categories: s => s.categories,
   form: s => s.form,
   searchActive: s => s.searchActive,
+  showNotFound: s => s.showNotFound,
 }
 
 export const actions = {
-  async getHomePageData({ commit }) {
+  async getHomePageData({ commit, state }) {
     const data = await this.$axios.$post('/part/home_page');
     commit('mutate', {
       property: 'announcements',
@@ -55,11 +57,18 @@ export const actions = {
   },
   async getNextAnnounements({ state, commit }) {
     const data = await this.$axios.$post('/part/home_page');
-    commit('mutate', {
-      property: 'announcements',
-      key: 'data',
-      value: [...state.announcements.data, ...data]
-    })
+    if (state.showNotFound) {
+      commit('mutate', {
+        property: 'otherAnnouncements',
+        value: [...state.otherAnnouncements, ...data]
+      })
+    } else {
+      commit('mutate', {
+        property: 'announcements',
+        key: 'data',
+        value: [...state.announcements.data, ...data]
+      })
+    }
   },
   async search({ commit }, payload) {
     if (payload.announce_type) {
@@ -67,20 +76,15 @@ export const actions = {
     }
     delete payload.announce_type;
 
-    const data = await this.$axios.$post('/part?page=' + payload.page, payload)
+    const data = await this.$axios.$post('/part?page=' + payload?.page || 1, payload)
+    commit('mutate', {
+      property: 'showNotFound',
+      value: !data.data.length
+    }) 
     commit('mutate', {
       property: 'announcements',
       value: data
     })
-    // commit('mutate', {
-    //   property: 'pagination',
-    //   value: {
-    //     current_page: data.current_page,
-    //     last_page: data.last_page,
-    //     total: data.total,
-    //     per_page: data.per_page,
-    //   }
-    // })
   },
   async getCategoryAnnouncements({ commit }, payload) {
     const data = await this.$axios.$post('/part', payload);

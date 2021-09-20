@@ -1782,5 +1782,7 @@ export default {
   "all_parts":"Bütün ehtiyat hissələri",
   "comparison_added": "Müqayisəyə əlavə olundu",
   "comparison_removed": "Müqayisədən silindi",
-  "other_announcements": "Digər elanlar"
+  "other_announcements": "Digər elanlar",
+  "reached_the_limit_announcement": "Elan sayı limitə çatıb",
+  "reached_the_limit_model": "Model sayı limitə çatıb",
 }

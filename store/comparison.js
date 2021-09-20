@@ -4,7 +4,7 @@ const getInitialState = () => ({
   announcementIds: [],
   announcementsList: [],
   modelsList: [],
-  limit: 10,
+  limit: 6,
   filter: {
     compareType: 'announcements',
     showDifferences: false,
@@ -33,7 +33,8 @@ export const getters = {
   carTypes: s => s.carTypes,
   modifications: s => s.modifications,
   recommendedModel: s => s.recommendedModel,
-  count: s => s.announcementsList.length + s.modelsList.length
+  count: s => s.announcementsList.length + s.modelsList.length,
+  limit: s => s.limit,
 }
 
 export const actions = {

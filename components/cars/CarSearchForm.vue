@@ -118,14 +118,6 @@
                 <div class="col-6 col-lg-3 mb-2 mb-lg-3">
                   <form-select :label="$t('city')" :options="sellOptions.regions" v-model="form.region" has-search />
                 </div>
-                <div class="col-6 col-lg-3 mb-2 mb-lg-3">
-                  <form-checkbox :label="$t('barter')" v-model="form.exchange_possible" 
-                    input-name="exchange_possible" icon-name="barter" />
-                </div>
-                <div class="col-6 col-lg-3 mb-2 mb-lg-3">
-                  <form-checkbox :label="$t('credit')" v-model="form.credit" 
-                    input-name="credit" icon-name="percent" />
-                </div>
                 <template v-if="isMobileBreakpoint && !advanced && !collapsed">
                   <div class="col-6 col-lg-3 mb-2 mb-lg-3">
                     <form-select :label="$t('fuel')" v-model="form.engine_type" 
@@ -138,6 +130,14 @@
                       multiple name-in-value translate-options />
                   </div>
                 </template>
+                <div class="col-6 col-lg-3 mb-2 mb-lg-3">
+                  <form-checkbox :label="$t('barter')" v-model="form.exchange_possible" 
+                    input-name="exchange_possible" icon-name="barter" />
+                </div>
+                <div class="col-6 col-lg-3 mb-2 mb-lg-3">
+                  <form-checkbox :label="$t('credit')" v-model="form.credit" 
+                    input-name="credit" icon-name="percent" />
+                </div>
               </div>
             </component>
           </div>
