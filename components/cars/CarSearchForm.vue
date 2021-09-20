@@ -102,6 +102,18 @@
           <div class="col-12 col-lg-8">
             <component :is="isMobileBreakpoint && !advanced ? 'transition-expand' : 'div'">
               <div class="row" v-if="!isMobileBreakpoint || advanced || !collapsed">
+                <template v-if="isMobileBreakpoint && !advanced && !collapsed">
+                  <div class="col-6 col-lg-3 mb-2 mb-lg-3">
+                    <form-select :label="$t('fuel')" v-model="form.engine_type" 
+                      :options="bodyOptions.main.default_options['tip-dvigatelya'].values"
+                      multiple name-in-value translate-options />
+                  </div>
+                  <div class="col-6 col-lg-3 mb-2 mb-lg-3">
+                    <form-select :label="$t('korobka')" v-model="form.korobka" 
+                      :options="bodyOptions.main.default_options['korobka'].values"
+                      multiple name-in-value translate-options />
+                  </div>
+                </template>
                 <div class="col-6 col-lg-3 mb-2 mb-lg-3">
                   <form-select :label="$t('price')" custom :suffix="getOptionValue('Currency', form.currency)"
                     :values="{from: form.price_from, to: form.price_to, suffix: form.currency === 2 ? '$' : '₼' }"
@@ -118,18 +130,6 @@
                 <div class="col-6 col-lg-3 mb-2 mb-lg-3">
                   <form-select :label="$t('city')" :options="sellOptions.regions" v-model="form.region" has-search />
                 </div>
-                <template v-if="isMobileBreakpoint && !advanced && !collapsed">
-                  <div class="col-6 col-lg-3 mb-2 mb-lg-3">
-                    <form-select :label="$t('fuel')" v-model="form.engine_type" 
-                      :options="bodyOptions.main.default_options['tip-dvigatelya'].values"
-                      multiple name-in-value translate-options />
-                  </div>
-                  <div class="col-6 col-lg-3 mb-2 mb-lg-3">
-                    <form-select :label="$t('korobka')" v-model="form.korobka" 
-                      :options="bodyOptions.main.default_options['korobka'].values"
-                      multiple name-in-value translate-options />
-                  </div>
-                </template>
                 <div class="col-6 col-lg-3 mb-2 mb-lg-3">
                   <form-checkbox :label="$t('barter')" v-model="form.exchange_possible" 
                     input-name="exchange_possible" icon-name="barter" />
