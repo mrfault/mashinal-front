@@ -144,7 +144,7 @@
               <form-checkbox
                 v-if="filter.component === 'checkbox-component'"
                 v-model="form[filter.key]"
-                :id="'anchor-' + filter.key"
+                :id="filter.key"
                 :label="$t(filter.key)"
                 :checked-value="form[filter.key]"
                 :invalid="isInvalid(filter.key)"
@@ -155,7 +155,6 @@
               <form-text-input
                 v-if="filter.component === 'filter-single-input'"
                 v-model="form[filter.key]"
-                :id="'anchor-' + filter.key"
                 :placeholder="$t(filter.key)"
                 :invalid="isInvalid(filter.key)"
                 @input="dynamicFilterOnChange(filter.key, $event)"
