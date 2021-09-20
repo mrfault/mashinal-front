@@ -31,6 +31,15 @@ export default function({ app, route, store }, inject) {
     // escape trailing slash
     return path.replace(/\/+$/, '');
   });
+  inject('resolveRoute', (path, locale) => {
+    let route = app.router.resolve(path).route;
+    let name = app.getRouteBaseName(route);
+    let params = route.params;
+    let query = route.query;
+    
+    locale = locale || app.i18n.locale;
+    return app.localePath({name, params, query}, locale);
+  });
   inject('queryParams', (params, skipEmpty) => {
     let keys = Object.keys(params).filter(key => skipEmpty ? ![undefined, '', false].includes(params[key]) : true);
     return '?' + keys.map(key => `${key}=${encodeURIComponent(params[key])}`).join('&');
