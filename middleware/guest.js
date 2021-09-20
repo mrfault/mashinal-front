@@ -1,5 +1,5 @@
-export default function ({ $auth, app, redirect }) {
+export default function ({ $auth, app, route, redirect }) {
   if ($auth.loggedIn) {
-    return redirect(app.$localePath('/'))
+    return redirect(app.$localePath(route.query.ref || '/'))
   }
 }

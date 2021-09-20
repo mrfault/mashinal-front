@@ -11,7 +11,7 @@ export default function ({ route, app, redirect }) {
     path = app.$localePath(page);
   }
   if (path && ['true','false'].includes(status)) {
-    redirect(`${path}?success=${status}`);
+    return redirect(`${path}?success=${status}`);
   }
   return true;
 }
