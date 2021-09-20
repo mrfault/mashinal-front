@@ -21,7 +21,7 @@ const getInitialState = () => ({
     is_negotiable: false,
     keywords: []
   },
-  
+  searchActive: false
 })
 
 export const state = () => getInitialState()
@@ -36,6 +36,7 @@ export const getters = {
   },
   categories: s => s.categories,
   form: s => s.form,
+  searchActive: s => s.searchActive,
 }
 
 export const actions = {
@@ -95,6 +96,12 @@ export const actions = {
     commit('mutate', {
       property: 'categories',
       value: categories
+    })
+  },
+  setSearchActive({ commit }, payload) {
+    commit('mutate', {
+      property: 'searchActive',
+      value: payload
     })
   }
 }

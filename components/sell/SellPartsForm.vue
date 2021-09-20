@@ -536,7 +536,8 @@ export default {
         ...this.form,
         tags: this.form.keywords.map(keyword => ({ text: keyword })),
         saved_images: this.files.map(({ id }) => id),
-        deletedIds: []
+        deletedIds: [],
+        price: this.form.is_negotiable ? 0 : this.form.price
       }
       delete data.keywords;
 

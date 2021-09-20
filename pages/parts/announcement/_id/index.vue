@@ -97,7 +97,7 @@ export default {
     crumbs() {
       const items = [
         {
-          name: this.$t('parts'),
+          name: this.$t('all_parts'),
           route: '/parts'
         },{
           name: this.announcement.category.name[this.locale],
