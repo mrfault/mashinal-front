@@ -33,7 +33,7 @@
       </div>
       <div :key="3" class="mb-3" v-if="form.generation_id && sellEngines.length" ref="sell-gearing">
         <h2 class="title-with-line full-width">
-          <span>{{ $t('engine') }} <span class="star"> *</span></span>
+          <span>{{ $t('fuel') }} <span class="star"> *</span></span>
         </h2>
         <form-buttons v-model="form.gearing" 
           :options="sellEngines.map(o => ({ name: $t('engine_values')[o.engine], key: o.engine }))" 

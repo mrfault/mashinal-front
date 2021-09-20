@@ -85,7 +85,7 @@ export default {
         {name: 'region', title: this.$t('city'), options: this.sellOptions.regions, key: 'key'},
         {name: 'mileage', title: this.$t('mileage'), range: true, suffix: this.$t('char_kilometre')},
         {name: 'capacity', title: this.$t('capacity'), range: true, suffix: this.$t('char_litre')},
-        {name: 'engine_type', title: this.$t('engine'), list: true},
+        {name: 'engine_type', title: this.$t('fuel'), list: true},
         {name: 'korobka', title: this.$t('box'), list: true},
         {name: 'body', title: this.$t('com_light_type'), options: this.bodyOptions.main.default_options.body.values, body_options: true },
         {name: 'gearing', title: this.$t('gearing'), list: true},

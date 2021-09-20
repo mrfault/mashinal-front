@@ -34,7 +34,7 @@
               multiple name-in-value object-in-value translate-options @change="submitForm()"  />
           </div>
           <div class="col-6 col-lg-1-5 mb-2 mb-lg-3">
-            <form-select :label="$t('dvigatel')" v-model="form['tip-dvigatelya']"
+            <form-select :label="$t('fuel')" v-model="form['tip-dvigatelya']"
               :options="bodyOptions.main.default_options['tip-dvigatelya'].values"
               multiple name-in-value object-in-value translate-options @change="submitForm()"  />
           </div>
