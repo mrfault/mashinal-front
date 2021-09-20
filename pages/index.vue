@@ -63,6 +63,7 @@ export default {
     await Promise.all([
       store.dispatch('getBrands'),
       store.dispatch('getOptions'),
+      store.dispatch('getBodyOptions'),
       store.dispatch('getMainSearch', { url: '/home_page_cars' }),
       store.dispatch('clearSavedSearch')
     ]);

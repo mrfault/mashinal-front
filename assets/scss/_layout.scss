@@ -91,6 +91,10 @@ h2 {
   text-transform: lowercase;
 }
 
+.skip-truncate {
+  overflow: visible !important;
+}
+
 .fw-500 {
   font-weight: 500;
 }

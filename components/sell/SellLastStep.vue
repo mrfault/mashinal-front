@@ -127,7 +127,7 @@
               <popover :message="$t('real-car-number-will-make-post-faster')" text-class="text-red" :width="190" 
                   name="car-number" @click="readCarNumberDisclaimer = true" />
             </form-text-input>
-            <form-checkbox :label="$t('show_on_site')" v-model="form.show_car_number" input-name="show_car_number" 
+            <form-checkbox :label="$t('show_car_number_on_site')" v-model="form.show_car_number" input-name="show_car_number" 
               transparent class="mt-2 mt-lg-3"/>
           </div>
           <div class="col-12 col-lg-4 mb-2 mb-lg-0">
@@ -138,7 +138,7 @@
                 <inline-svg src="/img/car-cert.svg"/>
               </popover>
             </form-text-input>
-            <form-checkbox :label="$t('show_on_site')" v-model="form.show_vin" input-name="show_vin" 
+            <form-checkbox :label="$t('show_vin_on_site')" v-model="form.show_vin" input-name="show_vin" 
               transparent class="mt-2 mt-lg-3"/>
           </div>
         </div>
