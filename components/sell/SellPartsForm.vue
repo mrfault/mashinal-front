@@ -371,7 +371,8 @@ export default {
     if (this.initialForm) {
       this.form = {
         ...this.form,
-        ...this.initialForm
+        ...this.initialForm,
+        keywords: this.initialForm.tags.map(t => t.text)
       }
 
       this.getFilters(this.initialForm.category_id)
@@ -451,8 +452,6 @@ export default {
     addFiles(files) {
       this.upload_ended = false;
       const file = files[0];
-
-      
 
       this.uploadFile(file.file).then(uploadedFile => {
         this.files.push({
