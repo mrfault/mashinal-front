@@ -126,7 +126,7 @@ export default {
       this.$emit('close');
     },
     getOptionName(option) {
-      return option.name[this.locale] || option.name;
+      return this.$translateHard(option.name);
     }
   }
 }

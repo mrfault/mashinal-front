@@ -71,6 +71,8 @@
     }
     .item-checkbox {
       width: 100%;
+      position: relative;
+      z-index: 1;
       .checkbox-input {
         label {
           flex-direction: row-reverse;

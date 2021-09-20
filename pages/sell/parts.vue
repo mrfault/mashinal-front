@@ -28,7 +28,7 @@ import SellPartsForm from '~/components/sell/SellPartsForm';
 
 export default {
   name: 'pages-sell-parts',
-  middleware: 'sellTokens',
+  middleware: 'sell_tokens',
   nuxtI18n: {
     paths: {
       az: '/satmaq/ehtiyat-hisseleri'

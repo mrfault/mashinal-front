@@ -75,7 +75,7 @@ import SellProgress from '~/components/sell/SellProgress';
 
 export default {
   name: 'pages-sell-cars',
-  middleware: 'sellTokens',
+  middleware: 'sell_tokens',
   components: {
     ModelOptions,
     YearOptions,

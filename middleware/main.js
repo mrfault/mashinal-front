@@ -1,6 +1,7 @@
-export default function ({ store, route }) {
-  // store.dispatch('setPageRefs', { index: 0, path: store.getters.pageRefs[1] || '' });
-  // store.dispatch('setPageRefs', { index: 1, path: route.path || '' });
+export default function ({ app, route, redirect }) {
+  if(!app.getRouteBaseName() && !route.fullPath.match(/^(\/ru\/)|^(\/ru$)/)) {
+    return redirect(app.$resolveRoute('/ru' + route.fullPath, app.i18n.locale || 'az'));
+  }
   return true;
 }
 
