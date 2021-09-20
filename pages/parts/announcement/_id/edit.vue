@@ -12,7 +12,7 @@
             />
           </div>
         </div>
-        <div class="col-auto">
+        <div class="col-auto" v-if="!isMobileBreakpoint">
           <div class="card">
             <sell-preview type="part" :form="form" />
           </div>
