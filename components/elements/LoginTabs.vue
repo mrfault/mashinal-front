@@ -122,6 +122,11 @@
         this.action = action !== '' ? action : tab;
         if (action === 'sms') this.resendData = data;
         this.$emit('update-tab', tab);
+      },
+      handleEscapeKey(e) {
+        if (e.key === 'Escape'){
+          this.$emit('close');
+        }
       }
     },
     created() {
@@ -129,6 +134,12 @@
       if (this.forceSellPhone && !this.sellPhoneRegistered || this.btlCookie) {
         this.updateTab('sign-up');
       }
+    },
+    mounted() {
+      if (this.popup) window.addEventListener('keydown', this.handleEscapeKey);
+    },
+    beforeDestroy() {
+      if (this.popup) window.removeEventListener('keydown', this.handleEscapeKey);
     }
   }
 </script>

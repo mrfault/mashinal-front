@@ -187,6 +187,7 @@
                   confirm: $t('confirm_and_publish')
                 }"
                 :force-sell-phone="true"
+                @close="showLoginPopup = false"
               />
             </transition>
           </template>
