@@ -6,7 +6,7 @@
         v-if="commercialAnnouncements.data.length"
         :announcements="commercialAnnouncements.data" 
         :paginate="$paginate(commercialAnnouncements)"
-        :title="$t('recent_uploads')"
+        :title="$t('announcements')"
         :pending="pending"
         @change-page="searchCommercial"
       />

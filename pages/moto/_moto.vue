@@ -13,7 +13,7 @@
         v-if="motoAnnouncements.data.length"
         :announcements="motoAnnouncements.data" 
         :paginate="$paginate(motoAnnouncements)"
-        :title="$t('recent_uploads')"
+        :title="$t('announcements')"
         :pending="pending"
         @change-page="searchMoto"
       />

@@ -5,7 +5,7 @@
       <grid 
         :announcements="mainAnnouncements.latest" 
         :paginate="$paginate(mainAnnouncements)"
-        :title="$t('recent_uploads')"
+        :title="$t('announcements')"
         :pending="pending"
         @pending="pending = true"
       />

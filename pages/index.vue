@@ -9,7 +9,7 @@
       <grid 
         :announcements="mainAnnouncements.standard" 
         :paginate="$paginate(mainAnnouncements)"
-        :title="$t('recent_uploads')"
+        :title="$t('announcements')"
         :show-all="$localePath('/cars')"
         :pending="pending"
         @pending="pending = true"
