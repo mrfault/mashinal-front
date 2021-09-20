@@ -96,7 +96,7 @@ export default {
         slidesPerView: 'auto',
         spaceBetween: 20
       },
-      showIframe: false
+      showIframe: true
     }
   },
   methods: {
