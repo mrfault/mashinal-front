@@ -81,7 +81,7 @@ import SellProgress from '~/components/sell/SellProgress';
 
 export default {
   name: 'pages-sell-moto',
-  middleware: 'sellTokens',
+  middleware: 'sell_tokens',
   mixins: [MenusDataMixin],
   components: {
     VehicleOptions,
