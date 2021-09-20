@@ -401,6 +401,9 @@ export default {
         filters: [],
       }
 
+      delete this.form.sub_category_id;
+      delete this.form.brand_id;
+
       this.filters.filters.forEach(filter => {
         delete this.form[filter.key]
       })
@@ -412,24 +415,26 @@ export default {
     async getFilters(category_id) {
       this.filters = await this.$axios.$get(`/part/category/${category_id}/filters`)
 
+      if (this.filters.sub_categories.length) {
+        const value = this.filters.sub_categories.find(c => c.id === this.initialForm?.sub_category_id)?.id
+        this.$set(this.form, 'sub_category_id', value || null )
+      } else {
+        delete this.form.sub_category_id
+      }
+      
+      if (this.filters.brands.length) {
+        const value = this.filters.brands.find(c => c.id === this?.initialForm?.brand_id)?.id
+        this.$set(this.form, 'brand_id', value || null)
+      } else {
+        delete this.form.brand_id
+      }
+
       const defaults = {
         'multiselect-component': '',
         'checkbox-component': false,
         'filter-single-input': '',
       }
 
-      if (this.filters.sub_categories.length) {
-        this.form.sub_category_id = this?.initialForm?.sub_category_id || null
-      } else {
-        delete this.form.sub_category_id
-      }
-      
-      if (this.filters.brands.length) {
-        this.form.brand_id = this?.initialForm?.brand_id || null
-      } else {
-        delete this.form.brand_id
-      }
-      
       this.filters.filters.forEach(filter => {
         if (!Object.keys(this.form).includes(filter.key)) {
           this.form[filter.key] = defaults[filter.component]
@@ -692,6 +697,8 @@ export default {
     form: {
       deep: true,
       handler() {
+        console.log('sub', this.form.sub_category_id)
+        console.log('brand', this.form.brand_id)
         this.updatePreview()
       }
     },
