@@ -27,7 +27,7 @@
             </nuxt-link>
           </div>
         </div>
-        <no-results v-else />
+        <no-results type="part" v-else />
       </div>
     </template>
     <div :class="`map-${isMobileBreakpoint ? 'fh' : 'fw'}-container`" v-show="view === 'map'">
@@ -48,7 +48,7 @@
                   </div>
                 </vue-scroll>
               </div>
-              <no-results v-else />
+              <no-results type="part" v-else />
             </div>
             <div class="map-sidebar_toggle" @click="collapse = !collapse" v-if="!disableCollapse">
               <icon :name="collapse ? 'chevron-right' : 'chevron-left'" />
