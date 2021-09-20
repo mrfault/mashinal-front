@@ -375,6 +375,10 @@ $column-width-xs: calc(100% / 1.8);
           &:last-of-type {
             padding-right: 0;
           }
+
+          p {
+            white-space: normal;
+          }
         }
       }
     }

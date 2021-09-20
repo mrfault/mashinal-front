@@ -267,6 +267,13 @@ export const SearchMixin = {
       ];
     }
   },
+  watch: {
+    '$route.query'(query) {
+      if (!Object.keys(query || {}).length) {
+        this.resetForm(true);
+      }
+    }
+  },
   created() {
     if (!this.isStarterPage) {
       this.parseFormData();
