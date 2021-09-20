@@ -54,6 +54,7 @@ export default {
 
     await Promise.all([
       store.dispatch('getBrands'),
+      store.dispatch('getBodyOptions'),
       store.dispatch('getOptions'),
       store.dispatch('getGridSearch', { ...searchParams, post, page }),
       // get model options for brands

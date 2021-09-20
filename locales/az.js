@@ -1381,6 +1381,8 @@ export default {
   "show_number": "Nömrəni göstər",
   "show_on_map": "Xəritədə göstər",
   "show_on_site": "Saytda göstərilsin?",
+  "show_vin_on_site": "Saytda ban nömrəsi göstərilsin?",
+  "show_car_number_on_site": "Saytda qeydiyyat nişanı göstərilsin?",
   "show_report": "Hesabatı göstərmək",
   "showing_stores_with_admin_rights": "İdarəetmə hüquqları ilə olan mağazalar göstərilir",
   "side": "Tərəf",
