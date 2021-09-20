@@ -125,11 +125,11 @@ export default {
   created() {
     this.setValues();
     this.$nuxt.$on('change-car-filters', this.setValues);
-    if (this.collapsedByDefault) {
-      this.carFilterOptions.map((_, index) => {
+    this.carFilterOptions.map((_, index) => {
+      if (this.collapsedByDefault || (!this.popular && index !== 0)) {
         this.$set(this.collapsed, index, true);
-      });
-    }
+      }
+    });
   },
   beforeDestroy() {
     this.$nuxt.$off('change-car-filters', this.setValues);
