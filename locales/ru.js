@@ -1780,5 +1780,7 @@ export default {
   "all_parts":"Все запчасти",
   "comparison_added": "Добавлено в сравнения",
   "comparison_removed": "Удалено из сравнений",
-  "other_announcements": "Другие объявления"
+  "other_announcements": "Другие объявления",
+  "reached_the_limit_announcement": "Elan sayı limitə çatıb",
+  "reached_the_limit_model": "Model sayı limitə çatıb",
 }

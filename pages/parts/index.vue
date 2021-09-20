@@ -11,14 +11,15 @@
       <banners v-if="!searchActive"/>
       <div class="announcements-content">
         <grid
-          v-if="announcements.length"
+          v-if="announcements.length && !showNotFound"
           :announcements="announcements"
           :pending="pending"
         />
-        <no-results v-else/>
+
+        <no-results v-if="showNotFound" type="part"/>
 
         <grid
-          v-if="!announcements.length"
+          v-if="showNotFound"
           :title="$t('other_announcements')"
           :announcements="otherAnnouncements"
         />
@@ -60,7 +61,7 @@ export default {
     await store.dispatch('parts/getHomePageData');
     
     return {
-      pending: false,
+      pending: false
     }
   },
   mounted() {
@@ -71,9 +72,7 @@ export default {
       if ((window.scrollY + 800 > document.body.scrollHeight) && !this.pending) {
         this.pending = true;
         await this.$store.dispatch('parts/getNextAnnounements')
-          this.pending = false;
-        // setTimeout(() => {
-        // }, 1000)
+        this.pending = false;
       }
     },
     async searchParts() {
@@ -82,10 +81,11 @@ export default {
       await this.$store.dispatch('parts/search', data);
       this.pending = false;
       this.scrollTo('.announcements-content', [0, -30]);
+      
       if (!this.announcements.length) {
-        window.removeEventListener('scroll', this.getNextAnnouncements)
-      } else {
         window.addEventListener('scroll', this.getNextAnnouncements)
+      } else {
+        window.removeEventListener('scroll', this.getNextAnnouncements)
       }
 
       this.$store.dispatch('parts/setSearchActive', true)
@@ -97,6 +97,7 @@ export default {
       otherAnnouncements: 'parts/otherAnnouncements',
       pagination: 'parts/pagination',
       searchActive: 'parts/searchActive',
+      showNotFound: 'parts/showNotFound',
     }),
     crumbs() {
       return [

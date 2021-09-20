@@ -33,14 +33,22 @@ props: {
         if (this.announcementsList.findIndex(a => a.id_unique === this.id) >= 0) {
           this.$toasted.success(this.$t('comparison_removed'))
         } else {
-          this.$toasted.success(this.$t('comparison_added'))
+          if (this.limit === this.announcementsList.length) {
+            this.$toasted.error(this.$t('reached_the_limit_announcement'))
+          } else {
+            this.$toasted.success(this.$t('comparison_added'))
+          }
         }
         await this.$store.dispatch('comparison/toggleAnnouncement', this.id)
       } else {
         if (this.modelsList.findIndex(a => a.id === this.id) >= 0) {
           this.$toasted.success(this.$t('comparison_removed'))
         } else {
-          this.$toasted.success(this.$t('comparison_added'))
+          if (this.limit === this.modelsList.length) {
+            this.$toasted.error(this.$t('reached_the_limit_model'))
+          } else {
+            this.$toasted.success(this.$t('comparison_added'))
+          }
         }
         await this.$store.dispatch('comparison/toggleModel', this.id)
       }
@@ -50,7 +58,8 @@ props: {
     ...mapGetters({
       announcementsList: 'comparison/announcementsList',
       announcementIds: 'comparison/announcementIds',
-      modelsList: 'comparison/modelsList'
+      modelsList: 'comparison/modelsList',
+      limit: 'comparison/limit',
     }),
     isActive() {
       if (this.type === 'announcement') {
