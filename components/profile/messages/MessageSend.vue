@@ -104,7 +104,7 @@ export default {
         this.fileKey++;
       }
       
-      this.updateFiles();
+      this.$nextTick(this.updateFiles);
     },
     removeFile(key) {
       if (this.sending) return;
@@ -113,12 +113,8 @@ export default {
     },
     previewAttachments() {
       for (let key in this.attachments) {
-        let reader = new FileReader();
-        reader.addEventListener('load', () => {
-          this.$refs['attachment-'+key][0].src = reader.result;
-          this.$set(this.loaded, key, true);
-        }, false);
-        reader.readAsDataURL(this.attachments[key]);
+        this.$refs['attachment-'+key][0].src = URL.createObjectURL(this.attachments[key]);
+        this.$set(this.loaded, key, true);
       }
     },
     updateFiles() {

@@ -115,7 +115,7 @@
                 :max-files="21"
                 :initial-images="mySalon.gallery_thumbs"
                 :initial-keys="mySalon.gallery_ids"
-                itemClass="col-4 col-lg-1-8 mb-lg-3 mb-2"
+                item-class="col-4 col-lg-1-8 mb-lg-3 mb-2"
                 @change-saved="addFiles($event, 'saved_gallery')"
                 @change-ids="addFiles($event, 'gallery_ids')"
                 @delete="deleteFile($event)"
