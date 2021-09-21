@@ -122,6 +122,7 @@
 import { mapGetters, mapActions } from 'vuex';
 
 import { SocketMixin } from '~/mixins/socket';
+import { ImageResizeMixin } from '~/mixins/img-resize';
 
 import FsLightbox from 'fslightbox-vue';
 
@@ -137,7 +138,7 @@ export default {
     blockedBy: {},
     messagePin: {}
   },
-  mixins: [SocketMixin],
+  mixins: [SocketMixin, ImageResizeMixin],
   components: {
     FsLightbox,
     MessageItem,
@@ -278,7 +279,10 @@ export default {
         formData.append('group_id', this.group.id);
         formData.append('text', this.text);
         // include attachments
-        this.files.map(file => {formData.append('files[]', file);});
+        await Promise.all(this.files.map(async (file) => {
+          let resizedFile = await this.getResizedImage(file);
+          formData.append('files[]', resizedFile);
+        }));
         // before send
         if (hasAttachments) {
           this.toggleSendingStatus(true);

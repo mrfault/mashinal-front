@@ -43,6 +43,8 @@
 <script>
 import draggable from 'vuedraggable';
 
+import { ImageResizeMixin } from '~/mixins/img-resize';
+
 export default {
   props: {
     maxFiles: {
@@ -64,6 +66,7 @@ export default {
       default: false
     }
   },
+  mixins: [ImageResizeMixin],
   components: {
     draggable
   },
@@ -79,13 +82,10 @@ export default {
   computed: {
     filesCount() {
       return Object.keys(this.previews).length;
-    },
-    filesLoaded() {
-      return !Object.keys(this.previews).filter(preview => !preview).length;
     }
   },
   methods: {
-    filesDrop(e) {
+    async filesDrop(e) {
       e.preventDefault();
       
       let droppedFiles = e.target.files || e.dataTransfer.files;
@@ -96,25 +96,20 @@ export default {
         if(!isImage || this.filesCount === this.maxFiles) break;
         
         let key = 'new_' + String(Math.random()).split('.')[1];
-        newFiles.push({
-          file: droppedFiles[i],
-          key
-        })
         
         this.$set(this.fileBlobs, key, droppedFiles[i]);
         this.$set(this.previews, key, '');
 
         this.fileKeys.push(key);
 
-        let reader = new FileReader();
+        let resizedFile = await this.getResizedImage(droppedFiles[i]);
+        this.$set(this.fileBlobs, key, resizedFile);
+        this.$set(this.previews, key, URL.createObjectURL(resizedFile));
 
-        reader.addEventListener('load', () => {
-          this.$set(this.previews, key, reader.result);
-          if(this.filesLoaded) this.passSortedBlobs();
-        });
-        reader.readAsDataURL(this.fileBlobs[key]);
+        newFiles.push({ file: resizedFile, key });
       }
 
+      this.passSortedBlobs();
       this.$emit('addFiles', newFiles);
 
       e.target.value = '';
