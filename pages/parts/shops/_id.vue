@@ -54,6 +54,7 @@
         :pending="pending"
         @pending="pending = true"
         @change-page="changePage"
+        escape-duplicates
       />
     </div>
   </div>

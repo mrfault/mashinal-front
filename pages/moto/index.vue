@@ -8,6 +8,7 @@
         :title="$t('announcements')"
         :pending="pending"
         @pending="pending = true"
+        escape-duplicates
       />
     </div>
   </div>
