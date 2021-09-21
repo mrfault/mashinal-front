@@ -28,7 +28,7 @@
           <form-textarea
             v-model="form.description"
             id="anchor-description"
-            :placeholder="$t('description_placeholder', { max: 20 })"
+            :placeholder="$t('description_placeholder_part', { max: 20 })"
             :invalid="isInvalid('description')"
             @change="removeError('description')"
           />

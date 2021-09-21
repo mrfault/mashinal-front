@@ -472,6 +472,8 @@ export default {
   "Departure": "Çıxış, mm",
   "description": "Məlumat",
   "description_placeholder": "Təsvir",
+  "description_placeholder_transport": "NV haqqında əlavə məlumat",
+  "description_placeholder_part": "EH haqqında əlavə məlumat",
   "desired_credit_amount": "Kreditin məbləği",
   "detail": "Ətraflı",
   "detail_report": "Ətraflı hesabat",

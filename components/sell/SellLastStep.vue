@@ -161,7 +161,7 @@
         <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-comment">
           <span>{{ $t('description_placeholder') }}</span>
         </h2>
-        <form-textarea v-model="form.comment" :placeholder="$t('description_placeholder')" 
+        <form-textarea v-model="form.comment" :placeholder="$t('description_placeholder_transport')" 
           :maxlength="3000" />
         <p class="info-text full-width less-pd mt-2">
           {{ $t('it_is_forbidden_to_give_links_indicate_email_addresses_mail_address_of_the_place_of_inspection_telephones_price_offer_services')}}
