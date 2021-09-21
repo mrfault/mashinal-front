@@ -9,6 +9,7 @@
         :title="$t('announcements')"
         :pending="pending"
         @change-page="searchCommercial"
+        escape-duplicates
       />
       <no-results v-else />
     </div>

@@ -16,6 +16,7 @@
         :title="$t('announcements')"
         :pending="pending"
         @change-page="searchMoto"
+        escape-duplicates
       />
       <no-results v-else />
     </div>

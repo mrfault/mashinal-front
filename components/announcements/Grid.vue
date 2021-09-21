@@ -12,7 +12,7 @@
     </div>
     <div class="row mb-n2 mb-lg-n3">
       <template v-for="(announcement, index) in announcements">
-        <div class="col-6 col-lg-auto mb-2 mb-lg-3" :key="announcement.id_unique + '_' + index">
+        <div class="col-6 col-lg-auto mb-2 mb-lg-3" :key="announcement.id_unique + (escapeDuplicates ? ('_' + index) : '')">
           <grid-item 
             :announcement="announcement" 
             :show-checkbox="showCheckbox" 
@@ -61,7 +61,8 @@ export default {
     showPhoneCount: Boolean,
     paginate: {},
     pending: Boolean,
-    watchRoute: Boolean
+    watchRoute: Boolean,
+    escapeDuplicates: Boolean
   },
   components: {
     GridItem

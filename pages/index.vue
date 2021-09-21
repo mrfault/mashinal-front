@@ -7,34 +7,15 @@
         @pending="pending = true"
       />
       <grid 
-        :announcements="mainAnnouncements.standard" 
+        v-if="mainAnnouncements.data.length"
+        :announcements="mainAnnouncements.data" 
         :paginate="$paginate(mainAnnouncements)"
         :title="$t('announcements')"
-        :show-all="$localePath('/cars')"
         :pending="pending"
         @pending="pending = true"
+        escape-duplicates
       />
-      <grid 
-        v-if="mainAnnouncements.random_part && mainAnnouncements.random_part.length"
-        :announcements="mainAnnouncements.random_part" 
-        :title="$t('parts')"
-        :show-all="$localePath('/parts')"
-        :pending="pending"
-      />
-      <grid 
-        v-if="mainAnnouncements.random_moto && mainAnnouncements.random_moto.length"
-        :announcements="mainAnnouncements.random_moto" 
-        :title="$t('moto')"
-        :show-all="$localePath('/moto')"
-        :pending="pending"
-      />
-      <grid 
-        v-if="mainAnnouncements.random_commercial && mainAnnouncements.random_commercial.length"
-        :announcements="mainAnnouncements.random_commercial" 
-        :title="$t('commercial')"
-        :show-all="$localePath('/commercial')"
-        :pending="pending"
-      />
+      <no-results v-else />
     </div>
   </div>
 </template>
@@ -44,6 +25,7 @@ import { mapGetters } from 'vuex';
 
 import CarSearchForm from '~/components/cars/CarSearchForm';
 import Grid from '~/components/announcements/Grid';
+import NoResults from '~/components/elements/NoResults';
 
 export default {
   name: 'pages-index',
@@ -51,7 +33,8 @@ export default {
   middleware: 'payment_redirect',
   components: {
     CarSearchForm,
-    Grid
+    Grid,
+    NoResults
   },
   head() {
     return this.$headMeta({
@@ -64,7 +47,7 @@ export default {
       store.dispatch('getBrands'),
       store.dispatch('getOptions'),
       store.dispatch('getBodyOptions'),
-      store.dispatch('getMainSearch', { url: '/home_page_cars' }),
+      store.dispatch('getMainSearch', { url: '/home_page_all' }),
       store.dispatch('clearSavedSearch')
     ]);
 

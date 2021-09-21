@@ -14,6 +14,7 @@
           v-if="announcements.length && !showNotFound"
           :announcements="announcements"
           :pending="pending"
+          escape-duplicates
         />
 
         <no-results v-if="showNotFound" type="part"/>
@@ -22,6 +23,7 @@
           v-if="showNotFound"
           :title="$t('other_announcements')"
           :announcements="otherAnnouncements"
+          escape-duplicates
         />
       </div>
     </div>
