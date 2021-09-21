@@ -10,12 +10,11 @@ export const LayoutMixin = {
     return {
       vhVariableSet: false,
       showLoginPopup: false,
-      loginActionKey: '',
-      loadingKey: ''
+      loginActionKey: ''
     }
   },
   computed: {
-    ...mapGetters(['loading','messages','paidStatusData','hideFooter'])
+    ...mapGetters(['loading','loadingKey','messages','paidStatusData','hideFooter'])
   },
   methods: {
     ...mapActions(['setLoading','setGridBreakpoint','getMessages','getFavorites','resetSellTokens','resetUserData','updatePaidStatus',
@@ -134,7 +133,6 @@ export const LayoutMixin = {
       // strange behavior of loading prop which is not updating 
       // in v-show directive without changing key sometimes
       this.setLoading(false);
-      // this.loadingKey++;
     }, 0);
 
   },
