@@ -470,6 +470,8 @@ export default {
   "Departure": "Вылет, мм",
   "description": "Описание",
   "description_placeholder": "Описание",
+  "description_placeholder_transport": "Дополнительная информация о транспортном средстве",
+  "description_placeholder_part": "Дополнительная информация о запчасти",
   "desired_credit_amount": "Желаемая сумма кредита",
   "detail": "Подробнее",
   "detail_report": "Полный отчет",
