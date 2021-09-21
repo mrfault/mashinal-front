@@ -216,6 +216,10 @@ export default {
     },
     getYtVideoImage(size) {
       return `https://img.youtube.com/vi/${this.announcement.youtube_id}/${size}default.jpg`;
+    },
+    updateTouchEvents() {
+      this.gallerySwiper.simulateTouch = this.isMobileBreakpoint;
+      this.gallerySwiper.allowTouchMove = this.isMobileBreakpoint;
     }
   },
   computed: {
@@ -247,9 +251,9 @@ export default {
   },
   watch: {
     breakpoint() {
-      this.gallerySwiper.simulateTouch = this.isMobileBreakpoint;
-      this.gallerySwiper.allowTouchMove = this.isMobileBreakpoint;
       this.showImagesSlider = false;
+      if (this.showSlider) 
+        this.updateTouchEvents();
       this.refreshLightbox();
     }
   },
@@ -261,11 +265,10 @@ export default {
           this.gallerySwiper.on('slideChange', () => {
             this.currentSlide = this.gallerySwiper.realIndex;
           });
-          this.gallerySwiper.on('click', () => {
+          this.gallerySwiper.on('click tap touchEnd', () => {
             this.openLightbox(this.currentSlide);
           });
-          this.gallerySwiper.simulateTouch = this.isMobileBreakpoint;
-          this.gallerySwiper.allowTouchMove = this.isMobileBreakpoint;
+          this.updateTouchEvents();
         }, 0);
       }
       

@@ -7,15 +7,35 @@
         @pending="pending = true"
       />
       <grid 
-        v-if="mainAnnouncements.data.length"
-        :announcements="mainAnnouncements.data" 
+        escape-duplicates
+        :announcements="mainAnnouncements.standard" 
         :paginate="$paginate(mainAnnouncements)"
         :title="$t('announcements')"
+        :show-all="$localePath('/cars')"
         :pending="pending"
         @pending="pending = true"
-        escape-duplicates
       />
-      <no-results v-else />
+      <grid 
+        v-if="mainAnnouncements.random_part && mainAnnouncements.random_part.length"
+        :announcements="mainAnnouncements.random_part" 
+        :title="$t('parts')"
+        :show-all="$localePath('/parts')"
+        :pending="pending"
+      />
+      <grid 
+        v-if="mainAnnouncements.random_moto && mainAnnouncements.random_moto.length"
+        :announcements="mainAnnouncements.random_moto" 
+        :title="$t('moto')"
+        :show-all="$localePath('/moto')"
+        :pending="pending"
+      />
+      <grid 
+        v-if="mainAnnouncements.random_commercial && mainAnnouncements.random_commercial.length"
+        :announcements="mainAnnouncements.random_commercial" 
+        :title="$t('commercial')"
+        :show-all="$localePath('/commercial')"
+        :pending="pending"
+      />
     </div>
   </div>
 </template>
@@ -25,7 +45,6 @@ import { mapGetters } from 'vuex';
 
 import CarSearchForm from '~/components/cars/CarSearchForm';
 import Grid from '~/components/announcements/Grid';
-import NoResults from '~/components/elements/NoResults';
 
 export default {
   name: 'pages-index',
@@ -33,8 +52,7 @@ export default {
   middleware: 'payment_redirect',
   components: {
     CarSearchForm,
-    Grid,
-    NoResults
+    Grid
   },
   head() {
     return this.$headMeta({
@@ -47,7 +65,7 @@ export default {
       store.dispatch('getBrands'),
       store.dispatch('getOptions'),
       store.dispatch('getBodyOptions'),
-      store.dispatch('getMainSearch', { url: '/home_page_all' }),
+      store.dispatch('getMainSearch', { url: '/home_page_cars' }),
       store.dispatch('clearSavedSearch')
     ]);
 
