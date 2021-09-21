@@ -27,7 +27,7 @@
 
       
       <!-- Announcements -->
-      <vue-scroll :ops="scrollOps" v-if="activeType === 'announcements'">
+      <vue-scroll :ops="announcementScrollOps" v-if="activeType === 'announcements'">
         <div class="comparison-preview__list">
           <template v-for="(announcement, index) in announcementsList">
             <div class="comparison-preview__list-item" :key="'announcement-' + announcement.id">
@@ -46,8 +46,8 @@
         </div>
       </vue-scroll>
 
-        <!-- Models -->
-      <vue-scroll :ops="scrollOps" v-if="activeType === 'models'">
+      <!-- Models -->
+      <vue-scroll :ops="modelScrollOps" v-if="activeType === 'models'">
         <div class="comparison-preview__list">
           <template v-for="(model, index) in modelsList">
             <div class="comparison-preview__list-item" :key="'model-' + model.id">
@@ -123,12 +123,16 @@ export default {
     modelsList() {
       return this.$store.getters['comparison/modelsList']
     },
-    scrollOps() {
+    announcementScrollOps() {
       return  {
-        scrollPanel: {
-          height: 'auto',
-          maxHeight: this.isMobileBreakpoint ? undefined : '350'
-        }
+        vuescroll: { sizeStrategy: 'number' },
+        scrollPanel: { maxHeight: this.isMobileBreakpoint ? undefined : '350' }
+      }
+    },
+    modelScrollOps() {
+      return  {
+        vuescroll: { sizeStrategy: 'number' },
+        scrollPanel: { maxHeight: this.isMobileBreakpoint ? undefined : '350' }
       }
     },
     typeButtons() {
@@ -157,6 +161,10 @@ export default {
     },
     modelsList() {
       this.updateActiveTab()
+    },
+    activeType() {
+      document.querySelector('.comparison-preview__list').focus()
+      this.$forceUpdate()
     }
   }
 }

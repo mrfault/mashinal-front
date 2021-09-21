@@ -596,12 +596,10 @@ export default {
           value: this.regions.find(r => r.id === this.form.region_id)?.name
         });
       }
-      if (this.form.price) {
-        this.setSellPreviewData({
-          key: 'price',
-          value: this.form.price
-        });
-      }
+      this.setSellPreviewData({
+        key: 'price',
+        value: this.form.price
+      });
       this.setSellPreviewData({
         key: 'is_negotiable',
         value: this.form.is_negotiable
