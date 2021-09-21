@@ -2,10 +2,10 @@
   <div class="inner-gallery">
     <div class="position-relative">
       <div class="swiper-container" v-swiper:gallerySwiper="swiperOps" ref="gallerySwiper" v-if="showSlider"
-        @click.stop="openLightbox(currentSlide)">
+        >
         <div class="swiper-wrapper">
           <div class="swiper-slide" :key="index" v-for="(slide, index) in slides.main">
-            <div
+            <div @click.stop="openLightbox(index)"
               :class="['swiper-slide-bg swiper-lazy', {'yt-play': showYtVideo(index)}]" 
               :data-background="showYtVideo(index) ? getYtVideoImage('hq') : slide"
             >
@@ -150,7 +150,7 @@ export default {
         fadeEffect: {
           crossFade: true
         },
-        loop: true,
+        loop: false,
         preloadImages: false,
         lazy: {
           loadPrevNext: false,
@@ -161,7 +161,7 @@ export default {
   },
   methods: {
     openLightbox(index) {
-      if (index) this.currentSlide = index;
+      if (index || index === 0) this.currentSlide = index;
       if (this.isMobileBreakpoint) {
         this.showLightbox = true;
         this.toggleFsLightbox = !this.toggleFsLightbox;
@@ -248,6 +248,8 @@ export default {
   },
   watch: {
     breakpoint() {
+      this.gallerySwiper.simulateTouch = this.isMobileBreakpoint;
+      this.gallerySwiper.allowTouchMove = this.isMobileBreakpoint;
       this.showImagesSlider = false;
       this.refreshLightbox();
     }
@@ -260,6 +262,8 @@ export default {
           this.gallerySwiper.on('slideChangeTransitionStart', () => {
             this.currentSlide = this.gallerySwiper.realIndex;
           });
+          this.gallerySwiper.simulateTouch = this.isMobileBreakpoint;
+          this.gallerySwiper.allowTouchMove = this.isMobileBreakpoint;
         }, 0);
       }
       
