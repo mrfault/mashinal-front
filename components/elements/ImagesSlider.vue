@@ -78,6 +78,7 @@ export default {
     return {
       slideIndex: this.currentSlide,
       swiperOps: {
+        initialSlide: this.currentSlide,
         effect: 'fade',
         fadeEffect: {
           crossFade: true
@@ -88,13 +89,19 @@ export default {
           loadPrevNext: false,
           preloaderClass: 'loader'
         },
-        initialSlide: this.currentSlide,
+        keyboard: {
+          enabled: true
+        }
       },
       thumbOps: {
         initialSlide: this.currentSlide,
         direction: 'vertical',
         slidesPerView: 'auto',
-        spaceBetween: 20
+        spaceBetween: 20,
+        keyboard: {
+          enabled: true,
+          pageUpDown: true
+        }
       },
       showIframe: true
     }
@@ -114,9 +121,15 @@ export default {
     },
     changeSlide(index) {
       this.imagesSwiper.slideTo(index + 1, 0);
+    },
+    handleEscapeKey(e) {
+      if (e.key === 'Escape'){
+        this.$emit('close');
+      }
     }
   },
   mounted() {
+    window.addEventListener('keydown', this.handleEscapeKey);
     this.$nextTick(() => {
       this.imagesSwiper.thumbs.swiper = this.thumbsSwiper;
       this.imagesSwiper.on('slideChange', () => {
@@ -126,6 +139,9 @@ export default {
         });
       });
     });
+  },
+  beforeDestroy() {
+    window.removeEventListener('keydown', this.handleEscapeKey);
   }
 }
 </script>

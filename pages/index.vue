@@ -7,6 +7,7 @@
         @pending="pending = true"
       />
       <grid 
+        escape-duplicates
         :announcements="mainAnnouncements.standard" 
         :paginate="$paginate(mainAnnouncements)"
         :title="$t('announcements')"
@@ -63,6 +64,7 @@ export default {
     await Promise.all([
       store.dispatch('getBrands'),
       store.dispatch('getOptions'),
+      store.dispatch('getBodyOptions'),
       store.dispatch('getMainSearch', { url: '/home_page_cars' }),
       store.dispatch('clearSavedSearch')
     ]);

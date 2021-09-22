@@ -5,18 +5,25 @@
         <div class="col-lg-4 mb-2 mb-lg-3">
           <form-buttons :options="getMileageOptions" :group-by="3" v-model="form.announce_type" />
         </div>
-        <div class="col-lg-4 offset-md-4 mb-2 mb-lg-3 d-none d-lg-block">
+        <div class="col-lg-6 offset-md-2 mb-2 mb-lg-3 d-none d-lg-block">
           <div class="row">
-            <div class="col-6">
-              <nuxt-link custom :to="$localePath('/cars/advanced-search')" v-slot="{ href, isActive }">
-                <a :href="href" class="btn btn--pale-red full-width" :class="{'active': isActive}" @click.prevent="goToSearch(href)">
+            <div class="col-4">
+              <nuxt-link custom exact :to="$localePath('/cars')" v-slot="{ href }">
+                <a :href="href" class="btn btn--pale-red full-width" :class="{'active': ['cars','index'].includes(routeName)}" @click.prevent="goToSearch(href)">
+                  <icon name="search" /> {{ $t('regular_search') }}
+                </a>
+              </nuxt-link>
+            </div>
+            <div class="col-4">
+              <nuxt-link custom exact :to="$localePath('/cars/advanced-search')" v-slot="{ href }">
+                <a :href="href" class="btn btn--pale-red full-width" :class="{'active': routeName === 'cars-advanced-search'}" @click.prevent="goToSearch(href)">
                   <icon name="options" /> {{ $t('advanced_search') }}
                 </a>
               </nuxt-link>
             </div>
-            <div class="col-6">
-              <nuxt-link custom :to="$localePath('/cars/assistant')" v-slot="{ href, isActive }">
-                <a :href="href" class="btn btn--pale-red full-width" :class="{'active': isActive}" @click.prevent="goToSearch(href)">
+            <div class="col-4">
+              <nuxt-link custom exact :to="$localePath('/cars/assistant')" v-slot="{ href }">
+                <a :href="href" class="btn btn--pale-red full-width" :class="{'active': routeName === 'cars-assistant'}" @click.prevent="goToSearch(href)">
                   <icon name="flag" /> {{ $t('helper_search') }}
                 </a>
               </nuxt-link>
@@ -95,6 +102,18 @@
           <div class="col-12 col-lg-8">
             <component :is="isMobileBreakpoint && !advanced ? 'transition-expand' : 'div'">
               <div class="row" v-if="!isMobileBreakpoint || advanced || !collapsed">
+                <template v-if="isMobileBreakpoint && !advanced && !collapsed">
+                  <div class="col-6 col-lg-3 mb-2 mb-lg-3">
+                    <form-select :label="$t('fuel')" v-model="form.engine_type" 
+                      :options="bodyOptions.main.default_options['tip-dvigatelya'].values"
+                      multiple name-in-value translate-options />
+                  </div>
+                  <div class="col-6 col-lg-3 mb-2 mb-lg-3">
+                    <form-select :label="$t('korobka')" v-model="form.korobka" 
+                      :options="bodyOptions.main.default_options['korobka'].values"
+                      multiple name-in-value translate-options />
+                  </div>
+                </template>
                 <div class="col-6 col-lg-3 mb-2 mb-lg-3">
                   <form-select :label="$t('price')" custom :suffix="getOptionValue('Currency', form.currency)"
                     :values="{from: form.price_from, to: form.price_to, suffix: form.currency === 2 ? '$' : '₼' }"
@@ -135,7 +154,7 @@
               </form-select>
             </div>
             <div class="col-6 col-lg-2 mb-2 mb-lg-3">
-              <form-select :label="$t('dvigatel')" v-model="form.engine_type" 
+              <form-select :label="$t('fuel')" v-model="form.engine_type" 
                 :options="bodyOptions.main.default_options['tip-dvigatelya'].values"
                 multiple name-in-value translate-options />
             </div>
@@ -219,9 +238,32 @@
               </form-range>
             </div>
             <div class="col-lg-8" v-else>
-              <div class="row" v-show="searchApplied">
-                <div class="col-lg-4 mt-2 mt-lg-0">
-                  <form-checkbox :label="$t('search_save')" v-model="savedSearch" 
+              <div class="row">
+                <template v-if="!advanced && !assistant && !isMobileBreakpoint">
+                  <div class="col-lg-3 mb-lg-0">
+                    <form-select :label="$t('fuel')" v-model="form.engine_type" 
+                      :options="bodyOptions.main.default_options['tip-dvigatelya'].values"
+                      multiple name-in-value translate-options />
+                  </div>
+                  <div class="col-lg-3 mb-lg-0">
+                    <form-select :label="$t('korobka')" v-model="form.korobka" 
+                      :options="bodyOptions.main.default_options['korobka'].values"
+                      multiple name-in-value translate-options />
+                  </div>
+                  <div class="col-lg-3 mb-lg-0">
+                    <form-select :label="$t('mileage')" custom :suffix="$t('char_kilometre')"
+                      :values="{from: form.mileage_from, to: form.mileage_to }"
+                      @clear="form.mileage_from = '', form.mileage_to = ''"
+                    >
+                      <div class="form-merged">
+                        <form-numeric-input :placeholder="$t('from')" v-model="form.mileage_from" :suffix="$t('char_kilometre')" />
+                        <form-numeric-input :placeholder="$t('to')" v-model="form.mileage_to" :suffix="$t('char_kilometre')" />
+                      </div>
+                    </form-select>
+                  </div>
+                </template>
+                <div class="col-lg-3 mt-2 mt-lg-0" v-show="searchApplied">
+                  <form-checkbox :label="$t('search_save')" v-model="savedSearch" skip-truncate
                     input-name="savedSearch" transparent :disabled="!loggedIn" @try="$nuxt.$emit('login-popup', 'saved-search')" />
                 </div>
               </div>

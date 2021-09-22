@@ -16,7 +16,7 @@
         <backdrop @click="closeLogin" v-if="showLoginPopup">
           <template #default="{ show }">
             <transition name="translate-fade">
-              <login-tabs :popup="true" :skip-sign-in="true" v-if="show" />
+              <login-tabs :popup="true" :skip-sign-in="true" v-if="show" @close="closeLogin" />
             </transition>
           </template>
         </backdrop>

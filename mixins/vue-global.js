@@ -146,21 +146,20 @@ Vue.use({
           else if(item.title) return 'Part';
           return '';
         },
-        getAnnouncementTextLine(announcement) {
-          if (['Part'].includes(this.getAnnouncementType(announcement))) return announcement.description;
-          let text = `${announcement.year} ${this.$t('plural_forms_year')[0]}`;
-          if (this.getAnnouncementCapacity(announcement)) text += `, ${this.getAnnouncementCapacity(announcement)}`;
-          text += `, ${this.$readNumber(announcement.mileage)} ${this.$t('char_kilometre')}`;
+        getAnnouncementTextLine(item) {
+          if (['Part'].includes(this.getAnnouncementType(item))) return item.description;
+          let text = `${item.year} ${this.$t('plural_forms_year')[0]}`;
+          if (this.getAnnouncementCapacity(item)) text += `, ${this.getAnnouncementCapacity(item)}`;
+          text += `, ${this.$readNumber(item.mileage)} ${this.$t('char_kilometre')}`;
           return text;
         },
         getAnnouncementCapacity(item) {
-          if(item.car_catalog && (!item.car_catalog.capacity || item.car_catalog.capacity === '0')) 
-            return false;
-          let capacity = item.car_catalog 
-            ? item.car_catalog.capacity // show 0.1 L if value less than 50 sm3
-            : (item.capacity && item.capacity > 50) ? (((item.capacity) / 1000).toFixed(1)) : item.capacity; 
-          let show_litres = item.car_catalog || (item.capacity && item.capacity > 50);
-          return capacity ? `${capacity} ${this.$t(show_litres ? 'char_litre' : 'char_sm_cube')}` : false;
+          let type = this.getAnnouncementType(item);
+          let capacity = item.car_catalog?.capacity || item.capacity;
+          let showLitres = ['Car','Commercial'].includes(type);
+          if (!capacity || capacity == '0') return false;
+          if (showLitres && capacity > 50) capacity = (capacity / 1000).toFixed(1);
+          return `${capacity} ${this.$t(showLitres ? 'char_litre' : 'char_sm_cube')}`;
         },
         canSendMessage(item) {
           return !this.loggedIn || (item.user.id !== this.user.id);

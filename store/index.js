@@ -3,6 +3,7 @@ import _ from '~/lib/underscore';
 
 const getInitialState = () => ({
   loading: true,
+  loadingKey: 1,
   colorMode: 'light',
   breakpoint: null,
   ptk: null,
@@ -117,6 +118,7 @@ export const state = () => (getInitialState());
 
 export const getters = {
   loading: s => s.loading,
+  loadingKey: s => s.loadingKey,
   colorMode: s => s.colorMode,
   breakpoint: s => s.breakpoint,
   ptk: s => s.ptk,
@@ -260,8 +262,11 @@ export const actions = {
     commit('mutate', { property:'ptk', value: ptk });
   },
   // Loading
-  setLoading({ commit }, loading) {
+  setLoading({ commit, state }, loading) {
     commit('mutate', { property: 'loading', value: loading })
+    if (state.loadingKey < 3) {
+      commit('mutate', { property: 'loadingKey', value: state.loadingKey + 1 })
+    }
   },
   // Dark/Light theme
   setColorMode({ commit }, theme) {
@@ -592,9 +597,8 @@ export const actions = {
     commit('mutate', { property: 'mainAnnouncements', value: res });
   },
   async getGridSearch({ commit }, data) {
-    const url = data.url, prefix = data.prefix;
-    const res = await this.$axios.$post(`${url}?page=${data.page || 1}`, data.post);
-    commit('mutate', { property: prefix + 'Announcements', value: res });
+    const res = await this.$axios.$post(`${data.url}?page=${data.page || 1}`, data.post);
+    commit('mutate', { property: data.prefix + 'Announcements', value: res });
   },
   async getPromotedSearch({ commit }, data) {
     const res = await this.$axios.$get(`/${data.type}/cars?page=${data.page || 1}`);

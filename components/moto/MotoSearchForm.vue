@@ -123,7 +123,7 @@
                     :options="motoOptions.config[select].values.filter(value => value.key !== 0)" 
                     :multiple="motoOptions.config[select].multiple && !motoOptions.config[select].not_foreach && key !== 'tacts'" 
                     :name-in-value="motoOptions.config[select].multiple && !motoOptions.config[select].not_foreach && key !== 'tacts'"
-                    :label="$t(motoOptions.config[select].placeholder.replace('cleared','customs'))" 
+                    :label="$t(motoOptions.config[select].placeholder)" 
                     :translate-options="true"
                   />
                 </div>

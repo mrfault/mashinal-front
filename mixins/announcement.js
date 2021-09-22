@@ -172,17 +172,15 @@ export const AnnouncementDataMixin = {
       ]);
     },
     capacity() {
-      return (this.catalog || this.announcement).capacity;
+      return this.getAnnouncementCapacity(this.announcement);
     },
     power() {
-      return (this.catalog || this.announcement).power;
+      let power = (this.catalog || this.announcement).power;
+      return (!power || power == 0) ? false : `${power} ${this.$t('char_h_power')}`
     },
     engineSpecs() {
-      const specs = [];
-      if (this.capacity && this.capacity != 0) specs.push(`${this.capacity} ${this.catalog ? this.$t('char_litre') : this.$t('char_sm_cube')}`);
-      if (this.power && this.power != 0) specs.push(`${this.power} ${this.$t('char_h_power')}`);
-      if (this.engine) specs.push(`${this.engine}`);
-      return specs.join(' / ');
+      return [this.capacity, this.power, this.engine]
+        .filter(spec => spec).map(spec => `${spec}`).join(' / ');
     },
     loadingKg() {
       return this.announcement.weight && `${this.announcement.weight} ${this.$t('char_kilogramm')}`;

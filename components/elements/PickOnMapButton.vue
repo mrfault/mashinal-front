@@ -49,9 +49,6 @@ export default {
       cacheAddress: this.address
     }
   },
-  computed: {
-    
-  },
   methods: {
     beforeInit() {
       this.ymapsScriptLoad().then(() => {
@@ -113,7 +110,18 @@ export default {
       this.$nextTick(() => {
         this.showMap = false;
       });
+    },
+    handleEscapeKey(e) {
+      if (e.key === 'Escape'){
+        this.closeMap();
+      }
     }
+  },
+  mounted() {
+    window.addEventListener('keydown', this.handleEscapeKey);
+  },
+  beforeDestroy() {
+    window.removeEventListener('keydown', this.handleEscapeKey);
   }
 }
 </script>

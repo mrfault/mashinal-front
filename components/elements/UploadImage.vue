@@ -188,29 +188,12 @@
           filesToUpload.push({ file: newFiles[i], key });
           this.$set(this.files, key, { name: newFiles[i].name, file: newFiles[i], loaded: false });
           this.$set(this.loading, key, true);
-
-          if ((newFiles[i].size * 0.001) > this.maxFileSize) {
-            this.$set(this.files[key], 'bad_size', true);
-          }
-
           this.$set(this.image, key, '');
 
           this.index++;
         }
         this.$emit('files-dropped', filesToUpload);
         e.target.value = '';
-      },
-      fileRead(key) {
-        let reader = new FileReader();
-        reader.addEventListener('load', (e) => {
-          this.$set(this.image, key, reader.result);
-          this.$set(this.files[key], 'loaded', true);
-          this.$emit('file-loaded', this.files[key]);
-          if (this.filesLoadedLength === this.filesLength) {
-            this.moveToSlide(this.filesLength, 500, 100);
-          }
-        });
-        reader.readAsDataURL(this.files[key].file);
       },
       fileDelete(key, index) {
         this.$emit('file-deleted', index);

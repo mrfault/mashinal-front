@@ -10,18 +10,21 @@
 </template>
 
 <script>
+import { ImageResizeMixin } from '~/mixins/img-resize';
+
 export default {
   props: {
     value: {},
     initialImage: {}
   },
+  mixins: [ImageResizeMixin],
   data() {
     return {
       preview: ''
     }
   },
   methods: {
-    filesDrop(e) {
+    async filesDrop(e) {
       e.preventDefault();
       
       let droppedFiles = e.target.files || e.dataTransfer.files;
@@ -30,18 +33,10 @@ export default {
         let isImage = droppedFiles[i].type.match('image.*');
         if(!isImage) break;
         
-        this.$emit('input', droppedFiles[i]);
-
-        let reader = new FileReader();
-
-        reader.addEventListener('load', () => {
-          this.preview = reader.result;
-        });
-
-        reader.readAsDataURL(droppedFiles[i]);
+        let resizedFile = await this.getResizedImage(droppedFiles[i]);
+        this.$emit('input', resizedFile);
+        this.preview = URL.createObjectURL(resizedFile);
       }
-
-      // e.target.value = '';
     }
   },
 }

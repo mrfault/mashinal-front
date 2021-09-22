@@ -17,6 +17,7 @@
           :paginate="$paginate(pagination)"
           :pending="pending"
           @change-page="searchParts"
+          escape-duplicates
         />
         <no-results v-else type="part"/>
       </div>

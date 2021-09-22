@@ -15,6 +15,7 @@
         :title="$t('announcements')"
         :pending="pending"
         @change-page="searchCars"
+        escape-duplicates
       />
       <no-results v-else />
     </div>
@@ -54,6 +55,7 @@ export default {
 
     await Promise.all([
       store.dispatch('getBrands'),
+      store.dispatch('getBodyOptions'),
       store.dispatch('getOptions'),
       store.dispatch('getGridSearch', { ...searchParams, post, page }),
       // get model options for brands

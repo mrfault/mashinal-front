@@ -127,7 +127,7 @@
               <popover :message="$t('real-car-number-will-make-post-faster')" text-class="text-red" :width="190" 
                   name="car-number" @click="readCarNumberDisclaimer = true" />
             </form-text-input>
-            <form-checkbox :label="$t('show_on_site')" v-model="form.show_car_number" input-name="show_car_number" 
+            <form-checkbox :label="$t('show_car_number_on_site')" v-model="form.show_car_number" input-name="show_car_number" 
               transparent class="mt-2 mt-lg-3"/>
           </div>
           <div class="col-12 col-lg-4 mb-2 mb-lg-0">
@@ -138,7 +138,7 @@
                 <inline-svg src="/img/car-cert.svg"/>
               </popover>
             </form-text-input>
-            <form-checkbox :label="$t('show_on_site')" v-model="form.show_vin" input-name="show_vin" 
+            <form-checkbox :label="$t('show_vin_on_site')" v-model="form.show_vin" input-name="show_vin" 
               transparent class="mt-2 mt-lg-3"/>
           </div>
         </div>
@@ -161,7 +161,7 @@
         <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-comment">
           <span>{{ $t('description_placeholder') }}</span>
         </h2>
-        <form-textarea v-model="form.comment" :placeholder="$t('description_placeholder')" 
+        <form-textarea v-model="form.comment" :placeholder="$t('description_placeholder_transport')" 
           :maxlength="3000" />
         <p class="info-text full-width less-pd mt-2">
           {{ $t('it_is_forbidden_to_give_links_indicate_email_addresses_mail_address_of_the_place_of_inspection_telephones_price_offer_services')}}
@@ -187,6 +187,7 @@
                   confirm: $t('confirm_and_publish')
                 }"
                 :force-sell-phone="true"
+                @close="showLoginPopup = false"
               />
             </transition>
           </template>

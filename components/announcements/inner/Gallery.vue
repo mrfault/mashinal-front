@@ -4,7 +4,7 @@
       <div class="swiper-container" v-swiper:gallerySwiper="swiperOps" ref="gallerySwiper" v-if="showSlider">
         <div class="swiper-wrapper">
           <div class="swiper-slide" :key="index" v-for="(slide, index) in slides.main">
-            <div @click.stop="openLightbox(index)"
+            <div
               :class="['swiper-slide-bg swiper-lazy', {'yt-play': showYtVideo(index)}]" 
               :data-background="showYtVideo(index) ? getYtVideoImage('hq') : slide"
             >
@@ -160,7 +160,7 @@ export default {
   },
   methods: {
     openLightbox(index) {
-      if (index) this.currentSlide = index;
+      if (index || index === 0) this.currentSlide = index;
       if (this.isMobileBreakpoint) {
         this.showLightbox = true;
         this.toggleFsLightbox = !this.toggleFsLightbox;
@@ -216,6 +216,10 @@ export default {
     },
     getYtVideoImage(size) {
       return `https://img.youtube.com/vi/${this.announcement.youtube_id}/${size}default.jpg`;
+    },
+    updateTouchEvents() {
+      this.gallerySwiper.simulateTouch = this.isMobileBreakpoint;
+      this.gallerySwiper.allowTouchMove = this.isMobileBreakpoint;
     }
   },
   computed: {
@@ -248,6 +252,8 @@ export default {
   watch: {
     breakpoint() {
       this.showImagesSlider = false;
+      if (this.showSlider) 
+        this.updateTouchEvents();
       this.refreshLightbox();
     }
   },
@@ -256,9 +262,13 @@ export default {
       if (this.showSlider) {
         setTimeout(() => {
           this.gallerySwiper.init();
-          this.gallerySwiper.on('slideChangeTransitionStart', () => {
+          this.gallerySwiper.on('slideChange', () => {
             this.currentSlide = this.gallerySwiper.realIndex;
           });
+          this.gallerySwiper.on('click tap touchEnd', () => {
+            this.openLightbox(this.currentSlide);
+          });
+          this.updateTouchEvents();
         }, 0);
       }
       
@@ -268,6 +278,7 @@ export default {
   },
   beforeDestroy() {
     if (this.showSlider) this.$nuxt.$off('show-gallery-slide', this.changeSlide);
+    if (this.showImagesSlider || this.showLightbox) this.closeLightbox();
     this.$nuxt.$off('show-lightbox', this.openLightbox);
   }
 }
