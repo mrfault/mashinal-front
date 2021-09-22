@@ -1785,6 +1785,6 @@ export default {
   "comparison_added": "Добавлено в сравнения",
   "comparison_removed": "Удалено из сравнений",
   "other_announcements": "Другие объявления",
-  "reached_the_limit_announcement": "Elan sayı limitə çatıb",
-  "reached_the_limit_model": "Model sayı limitə çatıb",
+  "reached_the_limit_announcement": "Вы превысили лимит добавления объявлений",
+  "reached_the_limit_model": "Вы превысили лимит добавления модели",
 }

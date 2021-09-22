@@ -551,6 +551,8 @@ export default {
       }
       delete data.keywords;
 
+      if (!data.brand_id) delete data.brand_id
+
       const formData = new FormData()
       formData.append('data', JSON.stringify(data))
 
