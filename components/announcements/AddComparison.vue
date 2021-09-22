@@ -12,7 +12,7 @@
 import { mapGetters } from 'vuex';
 
 export default {
-props: {
+  props: {
     id: {
       type: [Number, String],
       required: false

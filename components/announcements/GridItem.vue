@@ -38,8 +38,8 @@
       </span>
       <span class="item-price">
         <span>{{ announcement.price }}</span>
-        <icon name="percent" v-if="announcement.credit"/>
-        <icon name="barter" v-if="announcement.tradeable || announcement.exchange_possible"/>
+        <icon name="percent" v-tooltip="$t('credit_possible')" v-if="announcement.credit"/>
+        <icon name="barter" v-tooltip="$t('tradeable')" v-if="announcement.tradeable || announcement.exchange_possible"/>
       </span>
       <span class="d-flex mt-auto" @click.stop v-if="showCheckbox || showPhoneCount">
         <span class="call-count" v-if="announcement.show_phone_number_count || showPhoneCount">
