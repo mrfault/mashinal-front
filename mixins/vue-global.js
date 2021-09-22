@@ -146,15 +146,14 @@ Vue.use({
           else if(item.title) return 'Part';
           return '';
         },
-        getAnnouncementTextLine(announcement) {
-          if (['Part'].includes(this.getAnnouncementType(announcement))) return announcement.description;
-          let text = `${announcement.year} ${this.$t('plural_forms_year')[0]}`;
-          if (this.getAnnouncementCapacity(announcement)) text += `, ${this.getAnnouncementCapacity(announcement)}`;
-          text += `, ${this.$readNumber(announcement.mileage)} ${this.$t('char_kilometre')}`;
+        getAnnouncementTextLine(item) {
+          if (['Part'].includes(this.getAnnouncementType(item))) return item.description;
+          let text = `${item.year} ${this.$t('plural_forms_year')[0]}`;
+          if (this.getAnnouncementCapacity(item)) text += `, ${this.getAnnouncementCapacity(item)}`;
+          text += `, ${this.$readNumber(item.mileage)} ${this.$t('char_kilometre')}`;
           return text;
         },
-        getAnnouncementCapacity() {
-          let item = this.announcement;
+        getAnnouncementCapacity(item) {
           let type = this.getAnnouncementType(item);
           let capacity = item.car_catalog?.capacity || item.capacity;
           let showLitres = ['Car','Commercial'].includes(type);
