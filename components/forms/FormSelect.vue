@@ -182,7 +182,8 @@
       popularOptions: Array,
       imgKey: String,
       invalid: Boolean,
-      shortNamesLabel: Boolean
+      shortNamesLabel: Boolean,
+      checkOptionsOffset: Boolean
     },
     data() {
       return {
@@ -349,7 +350,7 @@
           }, 0);
           this.$nextTick(() => {
             // check window offset
-            if (!this.isMobileBreakpoint) {
+            if (this.checkOptionsOffset && !this.isMobileBreakpoint) {
               let emptySpace = window.innerHeight - this.$refs.dropdownOptions.getBoundingClientRect().bottom;
               this.placeOptionsAbove = emptySpace < 20;
             }

@@ -71,7 +71,11 @@
               </div>
             </div>
           </div>
-          <infinite-loading :action="'getMyBalanceHistory'" :getter="'myBalanceHistory'" />
+          <infinite-loading 
+            action="getMyBalanceHistory" 
+            getter="myBalanceHistory" 
+            class-name="mt-3 mt-lg-4"
+          />
         </div>
       </div>
     </div>

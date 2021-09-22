@@ -1,5 +1,9 @@
 <template>
-  <button :class="['btn-sq btn-sq--color-dark-blue', {'active': isAdded}]" @click.stop="handleClick()" v-if="announcement.status !== 2">
+  <button 
+    :class="['btn-sq btn-sq--color-dark-blue', {'active': isAdded}]" 
+    @click.stop="handleClick()" 
+    v-if="announcement.status !== 2"
+  >
     <icon name="star" />
   </button>
 </template>
