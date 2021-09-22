@@ -111,14 +111,12 @@ export default {
       return false;
     },
     getCapacity() {
-      let item = this.announcement;
-      if (item.car_catalog && (!item.car_catalog.capacity || item.car_catalog.capacity === '0')) 
-        return false;
-      let capacity = item.car_catalog 
-        ? item.car_catalog.capacity // show 0.1 L if value less than 50 sm3
-        : (item.capacity && item.capacity > 50) ? (((item.capacity) / 1000).toFixed(1)) : item.capacity; 
-      let show_litres = item.car_catalog || (item.capacity && item.capacity > 50);
-      return capacity ? `${capacity} ${this.$t(show_litres ? 'char_litre' : 'char_sm_cube')}` : false;
+      let item = this.announcement, type = this.getType;
+      let capacity = item.car_catalog?.capacity || item.capacity;
+      let showLitres = ['Car','Commercial'].includes(type);
+      if (!capacity || capacity == '0') return false;
+      if (showLitres && capacity > 50) capacity = (capacity / 1000).toFixed(1);
+      return `${capacity} ${this.$t(showLitres ? 'char_litre' : 'char_sm_cube')}`;
     }
   },
   methods: {
