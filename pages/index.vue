@@ -23,6 +23,8 @@
       getter="mainAnnouncements" 
       action-b="getInfiniteMainPartsSearch" 
       getter-b="mainPartsAnnouncements" 
+      :per-page="20"
+      :per-page-b="4"
     />
   </div>
 </template>

@@ -15,6 +15,8 @@ export default {
     getterB: String,
     action: String,
     actionB: String,
+    perPage: Number,
+    perPageB: Number,
     actionData: {
       default: () => ({})
     },
@@ -37,7 +39,7 @@ export default {
       let usePlanB = false;
       if (this.actionB && this.getterB) {
         let prevResB = this.$store.getters[this.getterB];
-        let contentBNotLoaded = (this.pageB === 1) || prevResB.next_page_url && (prevResB.total !== prevResB.to);
+        let contentBNotLoaded = (this.pageB === 1) || (prevResB.next_page_url && (prevResB.total !== prevResB.to));
         usePlanB = contentBNotLoaded && this.page === this.pageB;
       } 
       if (!this.loading && this.condition && contentNotLoaded && isTimeToScroll) {
@@ -47,7 +49,7 @@ export default {
             ...this.actionData, page: usePlanB ? this.pageB : (this.page + 1)
           });
           let newRes = this.$store.getters[usePlanB ? this.getterB : this.getter];
-          this.mutate({ property: this.getter, key: 'data', value: [...prevRes.data, ...newRes.data] });
+          if (!usePlanB || newRes.data.length % this.perPageB === 0) this.mutate({ property: this.getter, key: 'data', value: [...prevRes.data, ...newRes.data] });
           if (usePlanB) this.pageB = this.pageB + 1;
           else this.page = this.page + 1;
           this.loading = false;
