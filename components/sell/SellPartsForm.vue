@@ -273,6 +273,14 @@
               </div>
             </template>
           </form-gallery>
+
+          <!-- Experimental WIP -->
+          <!-- <form-gallery2
+            itemClass="col-4 col-lg-1-5 mb-lg-3 mb-2"
+            :maxFiles="maxFiles"
+            rotatable
+            uploadPath="/upload_temporary_images"
+          /> -->
         </div>
       </div>
 
@@ -306,11 +314,11 @@
 
 <script>
 import { mapActions } from 'vuex';
-import { required, requiredIf, minLength, maxLength } from 'vuelidate/lib/validators';
 import { ToastErrorsMixin } from '~/mixins/toast-errors';
 
 import FormKeywords from '~/components/forms/FormKeywords'
 import FormGallery from '~/components/forms/FormGallery'
+// import FormGallery2 from '~/components/forms/FormGallery2'
 
 export default {
   mixins: [ToastErrorsMixin],
@@ -327,7 +335,8 @@ export default {
   },
   components: {
     FormKeywords,
-    FormGallery
+    FormGallery,
+    // FormGallery2,
   },
   async fetch() {
     await this.$store.dispatch('parts/getCategories')
