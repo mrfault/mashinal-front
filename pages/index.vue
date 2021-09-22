@@ -6,37 +6,24 @@
         :pending="pending"
         @pending="pending = true"
       />
+    </div>
+    <div class="overflow-hidden">
       <grid 
-        escape-duplicates
-        :announcements="mainAnnouncements.standard" 
-        :paginate="$paginate(mainAnnouncements)"
-        :title="$t('announcements')"
-        :show-all="$localePath('/cars')"
+        :escape-duplicates="true"
+        :announcements="mainAnnouncements.data" 
         :pending="pending"
-        @pending="pending = true"
-      />
-      <grid 
-        v-if="mainAnnouncements.random_part && mainAnnouncements.random_part.length"
-        :announcements="mainAnnouncements.random_part" 
-        :title="$t('parts')"
-        :show-all="$localePath('/parts')"
-        :pending="pending"
-      />
-      <grid 
-        v-if="mainAnnouncements.random_moto && mainAnnouncements.random_moto.length"
-        :announcements="mainAnnouncements.random_moto" 
-        :title="$t('moto')"
-        :show-all="$localePath('/moto')"
-        :pending="pending"
-      />
-      <grid 
-        v-if="mainAnnouncements.random_commercial && mainAnnouncements.random_commercial.length"
-        :announcements="mainAnnouncements.random_commercial" 
-        :title="$t('commercial')"
-        :show-all="$localePath('/commercial')"
-        :pending="pending"
+        :banner="true"
+        :banner-place="24"
+        :banner-for="'Part'"
+        :has-container="true"
       />
     </div>
+    <infinite-loading 
+      action="getInfiniteMainSearch" 
+      getter="mainAnnouncements" 
+      action-b="getInfiniteMainPartsSearch" 
+      getter-b="mainPartsAnnouncements" 
+    />
   </div>
 </template>
 
@@ -65,7 +52,7 @@ export default {
       store.dispatch('getBrands'),
       store.dispatch('getOptions'),
       store.dispatch('getBodyOptions'),
-      store.dispatch('getMainSearch', { url: '/home_page_cars' }),
+      store.dispatch('getInfiniteMainSearch'),
       store.dispatch('clearSavedSearch')
     ]);
 
