@@ -120,6 +120,9 @@
                 @change-ids="addFiles($event, 'gallery_ids')"
                 @delete="deleteFile($event)"
               />
+
+              <!-- Experimental WIP -->
+              <!-- <form-gallery2/> -->
             </div>
             <div class="col-lg-2 offset-lg-10">
               <button :class="['btn btn--green full-width', {pending}]" @click="submit">{{ $t('confirm') }}</button>
@@ -138,13 +141,15 @@
 
   import PickOnMapButton from '~/components/elements/PickOnMapButton';
   import FormGallery from '~/components/forms/FormGallery';
+  // import FormGallery2 from '~/components/forms/FormGallery2';
 
   export default {
     name: 'pages-profile-salon',
     mixins: [ToastErrorsMixin],
     components: {
       PickOnMapButton,
-      FormGallery
+      FormGallery,
+      // FormGallery2,
     },
     middleware: ['auth_general','auth_salon'],
     nuxtI18n: {

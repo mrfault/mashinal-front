@@ -4,7 +4,7 @@ const getInitialState = () => ({
   announcementIds: [],
   announcementsList: [],
   modelsList: [],
-  limit: 6,
+  limit: 5,
   filter: {
     compareType: 'announcements',
     showDifferences: false,
