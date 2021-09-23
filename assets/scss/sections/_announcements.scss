@@ -7,8 +7,7 @@
   }
   &_banner {
     height: 100%; 
-    // background-color: $white;
-    background-color: #FFCB14; 
+    background-color: $white;
     border-radius: 4px;
     transition: box-shadow .2s ease-out;
     cursor: pointer;
@@ -18,9 +17,9 @@
     }
     .banner-bg {
       @include abs-zero;
-      background-size: contain;
+      background-size: cover;
       background-position: center;
-      background-repeat: no-repeat;
+      border-radius: 4px;
     }
   }
   &_item {
@@ -298,7 +297,7 @@
   }
   .announcements-grid {
     &_banner {
-      // background-color: $dark-2;
+      background-color: $dark-2;
       &:hover {
         box-shadow: $shadow-dark-6;
       }

@@ -406,7 +406,7 @@ export default {
   "count": "dəfə",
   "credit": "Kredit",
   "credit_amount": "Kreditin məbləği",
-  "credit_possible": "Kredit mümkündür",
+  "credit_possible": "Kreditdədir",
   "credit_term": "Kredit müddəti",
   "credits": "Kreditlər",
   "Cruise control": "Kruiz-kontrol",

@@ -94,6 +94,11 @@ export default {
   props: {
     form: {}
   },
+  data() {
+    return {
+      timeout: -1
+    }
+  },
   computed: {
     ...mapGetters(['sellBody','sellGenerations','sellEngines','sellGearing','sellTransmissions','sellModifications']),
   },
@@ -135,6 +140,7 @@ export default {
       })[key][value];
     },
     async handleChange(value, action, keys, props, nextKey) {
+      clearTimeout(this.timeout);
       let $container;
       if (this.isMobileBreakpoint) {
         $container = document.querySelector('.mobile-screen .container');
@@ -161,9 +167,14 @@ export default {
           let nextValue = options[0].engine || options[0].type_of_drive || options[0].box || options[0].id;
           this.$emit('update-form', { key: nextKey, value: nextValue });
         } else if (this.isMobileBreakpoint) {
-          setTimeout(() => {
+          this.timeout = setTimeout(() => {
             this.scrollTo(this.$refs[`sell-${nextKey}`], -34, 500);
             $container.style.minHeight = '';
+          }, 100);
+        }
+        if (!this.isMobileBreakpoint) {
+          this.timeout = setTimeout(() => {
+            this.scrollTo(this.$refs[`sell-${nextKey}`], -20, 500);
           }, 100);
         }
       });

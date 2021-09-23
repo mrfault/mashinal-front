@@ -4,7 +4,7 @@
       <input 
         type="text" 
         :id="id"
-        :class="{invalid, disabled}"
+        :class="{invalid, disabled, [inputClass]: !!inputClass}"
         :placeholder="placeholder"
         :value="numericValue"
         :disabled="disabled"
@@ -51,7 +51,8 @@
       },
       typingInterval: {
         default: 450
-      }
+      },
+      inputClass: String
     },
     data() {
       return {
