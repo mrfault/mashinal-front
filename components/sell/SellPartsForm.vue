@@ -155,7 +155,7 @@
               <form-text-input
                 v-if="filter.component === 'filter-single-input'"
                 v-model="form[filter.key]"
-                :placeholder="$t(filter.key)"
+                :placeholder="$t(filter.key === 'capacity' ? 'battery_capacity': filter.key)"
                 :invalid="isInvalid(filter.key)"
                 @input="dynamicFilterOnChange(filter.key, $event)"
                 @change="removeError(filter.key)"
@@ -277,10 +277,32 @@
           <!-- Experimental WIP -->
           <!-- <form-gallery2
             itemClass="col-4 col-lg-1-5 mb-lg-3 mb-2"
-            :maxFiles="maxFiles"
-            rotatable
             uploadPath="/upload_temporary_images"
-          /> -->
+            rotatable
+            :maxFiles="maxFiles"
+            :initialFiles="filesModel"
+            @change="filesOnChange"
+          >
+            <template v-slot:header >
+              <div class="col-12 col-lg-3-5 mb-lg-3 mb-2">
+                <div class="upload-rules">
+                  <div class="upload-rules__image">
+                    <img src="/img/parts_upload_rules.png">
+                  </div>
+                  <div class="upload-rules__content">
+                    <div class="upload-rules__content__title">
+                      {{ $t('terms_of_image_attachment') }}
+                    </div>
+                    <ul class="upload-rules__content__list">
+                      <li>{{ $t('min_image_count', { count: 1 })}}</li>
+                      <li>{{ $t('max_image_count', { count: 22 }) }}</li>
+                      <li>{{ $t('min_image_size', { w: 500, h: 500 }) }}</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </template>
+          </form-gallery2> -->
         </div>
       </div>
 
@@ -662,6 +684,10 @@ export default {
       this.showLoginPopup = false;
       this.publish();
     },
+
+    // filesOnChange(files) {
+    //   this.filesModel = files
+    // }
   },
   computed: {
     conditionButtons() {
@@ -701,6 +727,22 @@ export default {
     dynamicFilters() {
       return this?.filters?.filters || []
     },
+    // filesModel: {
+    //   get() {
+    //     return this.files.map(file => ({
+    //       id: file.id,
+    //       key: file.key,
+    //       preview: file.file
+    //     }))
+    //   },
+    //   set(val) {
+    //     this.files = val.map(file => ({
+    //       id: file.id,
+    //       key: file.key,
+    //       file: file.preview
+    //     }))
+    //   },
+    // }
   },
   watch: {
     form: {
