@@ -404,7 +404,7 @@ export default {
   "count": "штука",
   "credit": "Кредит",
   "credit_amount": "Сумма кредита",
-  "credit_possible": "Возможен кредит",
+  "credit_possible": "В кредите",
   "credit_term": "Срок кредита",
   "credits": "Кредиты",
   "Cruise control": "Круиз-контроль",

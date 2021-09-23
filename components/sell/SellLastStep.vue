@@ -117,10 +117,10 @@
           </div>
         </div>
         <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-car_or_vin">
-          <span>{{ $t(form.customs_clearance ? 'license_plate' : 'license_plate_number_vin_or_carcase_number') }} <span class="star" v-if="type === 'cars'"> *</span></span>
+          <span>{{ $t(form.customs_clearance ? 'vin_carcase_number' : 'license_plate_number_vin_or_carcase_number') }} <span class="star" v-if="type === 'cars'"> *</span></span>
         </h2>
         <div class="row">
-          <div class="col-lg-4 mb-2 mb-lg-0">
+          <div class="col-lg-4 mb-2 mb-lg-0" v-if="!form.customs_clearance">
             <form-text-input v-model="form.car_number" input-class="car-number-show-popover" img-src="/img/flag.svg"
                 :mask="type === 'cars' ? '99 - AA - 999' : '99 - A{1,2} - 999'"
                 :placeholder="type === 'cars' ? '__ - __ - ___' : '__ - _ - ___'" @focus="showCarNumberDisclaimer"
@@ -131,7 +131,7 @@
             <form-checkbox :label="$t('show_car_number_on_site')" v-model="form.show_car_number" input-name="show_car_number" 
               transparent class="mt-2 mt-lg-3"/>
           </div>
-          <div class="col-lg-4 mb-2 mb-lg-0" v-if="!form.customs_clearance">
+          <div class="col-lg-4 mb-2 mb-lg-0">
             <form-text-input v-model="form.vin" 
                 :mask="'*****************'" :placeholder="$t('vin_carcase_number')"
                 @change="removeError('vin')">
