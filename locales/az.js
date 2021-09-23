@@ -161,7 +161,7 @@ export default {
   "ball_type": "Farkop növü",
   "barter": "Barter",
   "BAS, EBD": "Tormozlama zamanı yardım (BAS, EBD)",
-  "battery_capacity": "Akkumulyatorların tutumu, kVt*saat",
+  "battery_capacity": "Akkumulyatorun tutumu, kVt*saat",
   "battery_height": "Hündürlük",
   "battery_length": "Uzunluğu",
   "battery_powered": "Şarjlanmış akkumulyator",
