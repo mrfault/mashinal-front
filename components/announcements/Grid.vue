@@ -1,27 +1,47 @@
 <template>
   <div :class="['announcements-grid', {'loading-content': pending, 'paginated': paginate}]">
-    <div class="title grid-title" v-if="title && showTitle">
-      <h2>
-        <icon :name="iconName" v-if="iconName" />
-        <span>{{ title }}</span>
-      </h2>
-      <nuxt-link v-if="showAll" :to="showAll">
-        {{ $t('all') }}
-        <icon name="arrow-right" />
-      </nuxt-link>
+    <div :class="{'container': hasContainer}">
+      <div class="title grid-title" v-if="title && showTitle">
+        <h2>
+          <icon :name="iconName" v-if="iconName" />
+          <span>{{ title }}</span>
+        </h2>
+        <nuxt-link v-if="showAll" :to="showAll">
+          {{ $t('all') }}
+          <icon name="arrow-right" />
+        </nuxt-link>
+      </div>
     </div>
-    <div class="row mb-n2 mb-lg-n3">
-      <template v-for="(announcement, index) in announcements">
-        <div class="col-6 col-lg-auto mb-2 mb-lg-3" :key="announcement.id_unique + (escapeDuplicates ? ('_' + index) : '')">
-          <grid-item 
-            :announcement="announcement" 
-            :show-checkbox="showCheckbox" 
-            :show-status="showStatus"
-            :show-phone-count="showPhoneCount"
-            :track-views="trackViews"
-          />
-        </div>
-      </template>
+    <div :class="{'container': hasContainer}">
+      <div class="row mb-n2 mb-lg-n3">
+        <template v-for="(announcement, index) in announcements">
+          <div :class="['col-6 col-lg-auto', {
+                        'col-lg-mid': checkItemIndex(index + 2, announcement), 
+                        'pt-4 mt-1': checkItemTop(index, announcement), 
+                        'pb-4 mb-4': checkItemBottom(index, announcement) }, 
+                          checkItemB(index, announcement) 
+                            ? 'col-b mb-0 pb-2 mb-lg-4 mt-lg-6 pt-lg-4 pb-lg-4' 
+                            : 'mb-2 mb-lg-3' 
+                        ]"
+              :key="announcement.id_unique + (escapeDuplicates ? ('_' + index) : '')">
+            <grid-item 
+              :announcement="announcement" 
+              :show-checkbox="showCheckbox" 
+              :show-status="showStatus"
+              :show-phone-count="showPhoneCount"
+              :track-views="trackViews"
+            />
+          </div>
+          <template v-if="!isMobileBreakpoint && checkItemIndex(index + 1, announcement)">
+            <div class="col-6 col-lg-auto mb-lg-4 mt-lg-6 pt-lg-4 pb-lg-4" :key="'banner_' + index">
+              <div class="announcements-grid_banner d-flex align-items-center justify-content-center" 
+                  @click="$router.push($localePath('/sell/parts'))">
+                <div class="banner-bg" :style="{backgroundImage: `url('/img/banner_winter_tyres.png')`}"></div>
+              </div>
+            </div>
+          </template>
+        </template>
+      </div>
     </div>
     <pagination 
       v-if="paginate && paginate.last_page > 1"
@@ -62,7 +82,11 @@ export default {
     paginate: {},
     pending: Boolean,
     watchRoute: Boolean,
-    escapeDuplicates: Boolean
+    escapeDuplicates: Boolean,
+    hasContainer: Boolean,
+    banner: Boolean,
+    bannerPlace: Number,
+    bannerFor: String
   },
   components: {
     GridItem
@@ -83,6 +107,24 @@ export default {
           });
         }
       }
+    },
+    checkItemIndex(index, item) {
+      if (this.getAnnouncementType(item) !== this.bannerFor) return false;
+      return this.banner && (index % this.bannerPlace === 0);
+    },
+    checkItemB(index, item) {
+      return this.checkItemIndex(index + 1, item) || 
+        this.checkItemIndex(index + 2, item) || 
+        this.checkItemIndex(index + 3, item) || 
+        this.checkItemIndex(index + 4, item);
+    },
+    checkItemTop(index, item) {
+      return this.checkItemIndex(index + 3, item) || 
+        this.checkItemIndex(index + 4, item);
+    },
+    checkItemBottom(index, item) {
+      return this.checkItemIndex(index + 1, item) || 
+        this.checkItemIndex(index + 2, item);
     }
   },
   watch: {

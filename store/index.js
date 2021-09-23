@@ -39,6 +39,7 @@ const getInitialState = () => ({
   myAnnouncements: {},
   myAnnouncement: {},
   mainAnnouncements: {},
+  mainPartsAnnouncements: {},
   carsAnnouncements: [],
   motoAnnouncements: [],
   commercialAnnouncements: [],
@@ -164,6 +165,7 @@ export const getters = {
   commercialAnnouncements: s => s.commercialAnnouncements,
   promotedAnnouncements: s => s.promotedAnnouncements,
   mainAnnouncements: s => s.mainAnnouncements,
+  mainPartsAnnouncements: s => s.mainPartsAnnouncements,
   myAnnouncements: s => s.myAnnouncements,
   myAnnouncement: s => s.myAnnouncement,
   relativeAnnouncements: s => s.relativeAnnouncements,
@@ -592,6 +594,14 @@ export const actions = {
     }
   },
   // Search
+  async getInfiniteMainSearch({ commit }, data = {}) {
+    const res = await this.$axios.$get(`/grid/home_page_all?page=${data.page || 1}`);
+    commit('mutate', { property: 'mainAnnouncements', value: res });
+  },
+  async getInfiniteMainPartsSearch({ commit }, data = {}) {
+    const res = await this.$axios.$get(`/grid/home_page_parts?per_page=4&page=${data.page || 1}`);
+    commit('mutate', { property: 'mainPartsAnnouncements', value: res });
+  },
   async getMainSearch({ commit }, data) {
     const res = await this.$axios.$get(data.url);
     commit('mutate', { property: 'mainAnnouncements', value: res });

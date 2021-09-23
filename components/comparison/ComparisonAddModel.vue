@@ -25,6 +25,7 @@
             @change="brandSelected"
             has-search
             :clear-option="false"
+            :check-options-offset="true"
           />
         </div>
         <div class="col-12 col-lg-6 mb-2 mb-lg-3">
@@ -35,6 +36,7 @@
             @change="modelSelected"
             has-search
             :clear-option="false"
+            :check-options-offset="true"
           />
         </div>
         <div class="col-12 col-lg-6 mb-2 mb-lg-3">
@@ -45,6 +47,7 @@
             @change="generationSelected"
             has-search
             :clear-option="false"
+            :check-options-offset="true"
           />
         </div>
         <div class="col-12 col-lg-6 mb-2 mb-lg-3">
@@ -55,6 +58,7 @@
             @change="carTypeSelected"
             has-search
             :clear-option="false"
+            :check-options-offset="true"
           />
         </div>
         <div class="col-12 col-lg-6 mb-2 mb-lg-3">
@@ -65,6 +69,7 @@
             :translateOptions="false"
             has-search
             :clear-option="false"
+            :check-options-offset="true"
           />
         </div>
 

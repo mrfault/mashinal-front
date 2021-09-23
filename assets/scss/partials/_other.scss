@@ -375,7 +375,6 @@
   position: relative;
   width: 100%;
   height: 67px;
-  margin-top: 30px;
 }
 
 @keyframes loader {
@@ -588,6 +587,10 @@
 }
 
 .form-gallery {
+  // WIP
+  // display: flex;
+  // flex-wrap: wrap;
+  
   .draggable > div {
     cursor: move;
   }

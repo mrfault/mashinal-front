@@ -269,6 +269,7 @@ export const SearchMixin = {
   },
   watch: {
     '$route.query'(query) {
+      if (this.routeName === 'index') return;
       if (!Object.keys(query || {}).length) {
         this.resetForm(true);
       }

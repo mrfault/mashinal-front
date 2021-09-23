@@ -1,5 +1,5 @@
 <template>
-  <div class="infinite-loading" v-if="loading">
+  <div :class="['infinite-loading', {className}]" v-if="loading">
     <loader />
   </div>
 </template>
@@ -12,15 +12,21 @@ export default {
       default: true
     },
     getter: String,
+    getterB: String,
     action: String,
+    actionB: String,
+    perPage: Number,
+    perPageB: Number,
     actionData: {
       default: () => ({})
     },
-    offset: Number
+    offset: Number,
+    className: String
   },
   data() {
     return {
       page: 1,
+      pageB: 1,
       loading: false,
       triggerOffset: this.offset || 0
     }
@@ -30,13 +36,22 @@ export default {
       let prevRes = this.$store.getters[this.getter];
       let isTimeToScroll = (window.scrollY + window.innerHeight) >= (document.documentElement.scrollHeight - this.triggerOffset);
       let contentNotLoaded = prevRes.next_page_url && prevRes.total !== prevRes.to;
+      let usePlanB = false;
+      if (this.actionB && this.getterB) {
+        let prevResB = this.$store.getters[this.getterB];
+        let contentBNotLoaded = (this.pageB === 1) || (prevResB.next_page_url && (prevResB.total !== prevResB.to));
+        usePlanB = contentBNotLoaded && this.page === this.pageB;
+      } 
       if (!this.loading && this.condition && contentNotLoaded && isTimeToScroll) {
         this.loading = true;
         try {
-          await this.$store.dispatch(this.action, {...this.actionData, page: this.page + 1});
-          let newRes = this.$store.getters[this.getter];
-          this.mutate({ property: this.getter, key: 'data', value: [...prevRes.data, ...newRes.data] });
-          this.page = page + 1;
+          await this.$store.dispatch((usePlanB ? this.actionB : this.action), {
+            ...this.actionData, page: usePlanB ? this.pageB : (this.page + 1)
+          });
+          let newRes = this.$store.getters[usePlanB ? this.getterB : this.getter];
+          if (!usePlanB || newRes.data.length % this.perPageB === 0) this.mutate({ property: this.getter, key: 'data', value: [...prevRes.data, ...newRes.data] });
+          if (usePlanB) this.pageB = this.pageB + 1;
+          else this.page = this.page + 1;
           this.loading = false;
           this.$emit('loaded-content');
         } catch(err) {
