@@ -668,7 +668,8 @@ export default {
     "АИ-91",
     "E85",
     "E100",
-    "Электричество"
+    "Электричество",
+    "Водород"
   ],
   "Full size": "Полноразмерное",
   "furgon": "Фургон",
@@ -719,6 +720,7 @@ export default {
   "here_can_be_your_advertising": "Тут может быть ваша реклама",
   "Hi-Fi Audio system": "Аудиосистема Hi-Fi",
   "history": "История",
+  "home_page": "Главная страница",
   "hot_offer": "Горячее предложение",
   "Hub (DIA)": "Ступица (DIA)",
   "hybrid": "Гибрид",

@@ -5,6 +5,9 @@ import VueLazyload from 'vue-lazyload';
 import VTooltip from 'v-tooltip';
 import Inputmask from 'inputmask';
 import vuescroll from 'vuescroll';
+import * as rive from 'rive-js';
+
+Vue.prototype.$rive = rive;
 
 Vue.use(Vue2TouchEvents)
 Vue.use(VueAwesomeSwiper);

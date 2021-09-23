@@ -30,6 +30,7 @@
             <button :class="['btn','btn--pale-red-outline',{'active': code === locale}]" v-for="code in locales" :key="code" 
               @click="changeLocale(code)">{{ code }}</button>
           </div>
+          <slot />
           <span class="cursor-pointer close d-inline-flex align-top" @click="toggleSidebarMenu(false)">
             <icon name="cross" />
           </span>
@@ -58,9 +59,6 @@
               </nuxt-link>
             </li>
           </template>
-          <li>
-            <slot />
-          </li>
           <li class="logout" key="logout" v-if="loggedIn">
             <a href="javascript:void(0);" @click="logout(), toggleSidebarMenu(false)">
               <icon name="logout" />
