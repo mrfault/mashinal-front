@@ -53,7 +53,7 @@ export default {
         let media = this.announcement.media;
         let yt_video = this.announcement.youtube_id;
         if (media.length === 0) return [];
-        thumbs = this.getMediaByKey(media, 'main');
+        thumbs = this.getMediaByKey(media, 'thumb_inner');
         if (yt_video) {
           thumbs.splice(1, 0, `https://img.youtube.com/vi/${yt_video}/hqdefault.jpg`);
         }

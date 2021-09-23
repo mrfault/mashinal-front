@@ -36,7 +36,7 @@
             <div class="col-6 col-lg-auto mb-lg-4 mt-lg-6 pt-lg-4 pb-lg-4" :key="'banner_' + index">
               <div class="announcements-grid_banner d-flex align-items-center justify-content-center" 
                   @click="$router.push($localePath('/sell/parts'))">
-                <div class="banner-bg" :style="{backgroundImage: `url('/img/banner_winter_tyres.png')`}"></div>
+                <div class="banner-bg" :style="{backgroundImage: `url(${getBannerImage(index + 1)})`}"></div>
               </div>
             </div>
           </template>
@@ -84,8 +84,9 @@ export default {
     watchRoute: Boolean,
     escapeDuplicates: Boolean,
     hasContainer: Boolean,
-    banner: Boolean,
+    banner: String,
     bannerPlace: Number,
+    bannerCount: Number,
     bannerFor: String
   },
   components: {
@@ -125,6 +126,13 @@ export default {
     checkItemBottom(index, item) {
       return this.checkItemIndex(index + 1, item) || 
         this.checkItemIndex(index + 2, item);
+    },
+    getBannerImage(index) {
+      let count = (index / this.bannerPlace) % this.bannerCount;
+      count = count === 0 ? this.bannerCount : count;
+      return this.banner
+        .replace('{count}', count)
+        .replace('{locale}', this.locale);
     }
   },
   watch: {

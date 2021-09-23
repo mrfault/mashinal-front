@@ -233,7 +233,7 @@ export default {
       } else if (this.where === 'announcement') {
         let media = this.announcement.media;
         if (media.length === 0) return [];
-        thumbs = this.getMediaByKey(media, 'main');
+        thumbs = this.getMediaByKey(media, 'thumb_inner');
         main = this.getMediaByKey(media, 'main_inner');
         if (this.announcement.youtube_id) {
           hasVideo = true;

@@ -3,7 +3,7 @@
     <h2 class="title-with-line mt-2 mt-lg-3" v-if="readOnly">
       <span>{{ $t('body_condition') }}</span>
     </h2>
-    <div class="d-flex flex-column flex-lg-row">
+    <div class="d-flex flex-column flex-lg-row align-items-start">
       <div class="car-damage-img">
         <inline-svg src="/img/car-damage.svg" :class="beatenParts" />
         <div :class="['car-part', 'car-part_'+part.id]" v-for="(part, index) in carParts" :key="index">

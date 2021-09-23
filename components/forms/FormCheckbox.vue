@@ -13,7 +13,7 @@
         :false-value="typeof inputValue === 'number' ? 0 : false"
         v-model="inputValue"
       />
-      <label :for="id || inputName" :class="{transparent, 'pr-0': labelClick}" @click="handleClick" v-tooltip="hasTooltip ? label : ''">
+      <label :for="id || inputName" :class="{transparent, 'pr-0': labelClick, 'has-popover': hasPopover}" @click="handleClick" v-tooltip="hasTooltip ? label : ''">
         <span class="checkbox">
           <icon name="check" />
         </span>
@@ -70,7 +70,8 @@
       },
       watchValue: Boolean,
       hasTooltip: Boolean,
-      skipTruncate: Boolean
+      skipTruncate: Boolean,
+      hasPopover: Boolean
     },
     data() {
       return {

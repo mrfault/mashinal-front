@@ -12,8 +12,9 @@
         :escape-duplicates="true"
         :announcements="mainAnnouncements.data" 
         :pending="pending"
-        :banner="true"
+        :banner="'/img/sell-parts-{count}-{locale}.jpg'"
         :banner-place="24"
+        :banner-count="3"
         :banner-for="'Part'"
         :has-container="true"
       />
