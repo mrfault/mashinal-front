@@ -111,7 +111,7 @@
                           v-if="filter.component === 'filter-single-input'"
                           v-model="form[filter.key]"
                           :id="'dynamic-filter-' + filter.key"
-                          :placeholder="$t(filter.key)"
+                          :placeholder="$t(filter.key === 'capacity' ? 'battery_capacity' : filter.key)"
                         />
                       </div>
                     </div>
