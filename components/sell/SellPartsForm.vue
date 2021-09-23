@@ -564,7 +564,7 @@ export default {
         } else {
           requestURL= '/sell/part/post/publish';
         }
-        const response = await this.$axios.post(requestURL, formData)
+        await this.$axios.post(requestURL, formData)
         if (this.loggedIn) 
           await this.$auth.fetchUser();
         this.$router.push(this.$localePath('/profile/announcements'), () => {
