@@ -49,6 +49,7 @@
               <form-select
                 :label="$t('price')"
                 custom
+                anchor="right"
                 :suffix="getOptionValue('Currency', form.currency)"
                 :values="{from: form.price_from, to: form.price_to, suffix: form.currency === 2 ? '$' : '₼' }"
                 @clear="form.price_from = '', form.price_to = ''"

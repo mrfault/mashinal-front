@@ -1,6 +1,6 @@
 <template>
   <div :class="['wrapper', { loading }, `${colorMode}-mode`]">
-    <transition name="fade">
+    <component :is="loadingKey < 3 ? 'transition' : 'div'" name="fade">
       <div class="layout" v-show="!loading" :key="loadingKey">
         <mobile-menu>
           <theme-switch />
@@ -39,7 +39,7 @@
         <mobile-nav />
         <page-footer v-if="!hideFooter" />
       </div>
-    </transition>
+    </component>
   </div>
 </template>
 

@@ -264,7 +264,7 @@ export const actions = {
     commit('mutate', { property:'ptk', value: ptk });
   },
   // Loading
-  setLoading({ commit, state }, loading, refresh = true) {
+  setLoading({ commit, state }, loading, refresh) {
     commit('mutate', { property: 'loading', value: loading })
     if (refresh && state.loadingKey < 3) {
       commit('mutate', { property: 'loadingKey', value: state.loadingKey + 1 })

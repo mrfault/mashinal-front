@@ -35,7 +35,7 @@
           <template v-if="!isMobileBreakpoint && checkItemIndex(index + 1, announcement)">
             <div class="col-6 col-lg-auto mb-lg-4 mt-lg-6 pt-lg-4 pb-lg-4" :key="'banner_' + index">
               <div class="announcements-grid_banner d-flex align-items-center justify-content-center" 
-                  @click="$router.push($localePath('/sell/parts'))">
+                  @click="$router.push($localePath(bannerLink))">
                 <div class="banner-bg" :style="{backgroundImage: `url(${getBannerImage(index + 1)})`}"></div>
               </div>
             </div>
@@ -87,7 +87,8 @@ export default {
     banner: String,
     bannerPlace: Number,
     bannerCount: Number,
-    bannerFor: String
+    bannerFor: String,
+    bannerLink: String
   },
   components: {
     GridItem
