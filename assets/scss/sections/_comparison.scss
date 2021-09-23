@@ -42,9 +42,14 @@
   z-index: 10;
   transform: translateY(-50%);
   border-radius: 4px;
-  border: nonex;
+  border: none;
   background: $white;
   box-shadow: $shadow-light-5;
+
+  .__vuescroll {
+    height: auto !important;
+    max-height: 350px !important;
+  }
 
   &:focus {
     outline: none;

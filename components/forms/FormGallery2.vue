@@ -82,6 +82,7 @@ export default {
         //   loading,
         // }
       ],
+      date: Math.floor(Date.now() / 1000),
     }
   },
   methods: {
