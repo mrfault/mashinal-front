@@ -1121,6 +1121,7 @@ main {
 
 .theme-switch {
   cursor: pointer;
+  overflow: hidden;
   &.floating {
     position: fixed;
     z-index: 9;
@@ -1131,37 +1132,23 @@ main {
     border-radius: 50%;
     box-shadow: $shadow-light-1;
     background-color: $white;
-    .theme-switch_icons {
-      @include abs-middle;
-      font-size: 24px;
-      span {
-        display: flex;
-      }
-    }
-    &:hover {
-      color: $dark-blue-2;
-    }
+    // &:hover canvas {
+    //   opacity: .5;
+    // }
+  }
+  canvas {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: scale(.3) translate(-50%,-50%);
+    transform-origin: 0 0;
+    // transition: opacity .2s;
   }
   &.mobile {
-    background-color: $red-6;
-    width: 64px;
-    border-radius: 4px;
-    color: $white;
-    padding: 4px;
-    .theme-switch_icons {
-      display: flex;
-      span {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 28px;
-        height: 28px;
-        border-radius: 4px;
-        &.active {
-          background-color: $red-5;
-        }
-      }
-    }
+    position: relative;
+    width: 40px;
+    height: 40px;
   }
 }
 
@@ -1258,12 +1245,6 @@ main {
     box-shadow: $shadow-dark-1;
     &:hover {
       color: $yellow-1;
-    }
-  }
-  .theme-switch.mobile {
-    background-color: $grey-1;
-    .theme-switch_icons span.active {
-      background-color: $dark-2;
     }
   }
   .action-bar {

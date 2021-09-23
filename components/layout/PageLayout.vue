@@ -1,15 +1,15 @@
 <template>
   <div :class="['wrapper', { loading }, `${colorMode}-mode`]">
-    <transition name="fade">
+    <component :is="loadingKey < 3 ? 'transition' : 'div'" name="fade">
       <div class="layout" v-show="!loading" :key="loadingKey">
         <mobile-menu>
-          <theme-switch />
+          <theme-switch v-if="isMobileBreakpoint"/>
         </mobile-menu>
         <page-header />
         <slot name="after-header" />
         <main>
           <slot name="nuxt" />
-          <theme-switch :floating="true" />
+          <theme-switch :floating="true" v-if="!isMobileBreakpoint" />
           <scroll-top />
         </main>
         <slot name="before-header" />
@@ -39,7 +39,7 @@
         <mobile-nav />
         <page-footer v-if="!hideFooter" />
       </div>
-    </transition>
+    </component>
   </div>
 </template>
 
