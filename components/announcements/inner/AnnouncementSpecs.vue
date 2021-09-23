@@ -5,7 +5,8 @@
         <span>
           <icon name="barter" v-if="spec.key === 'exchange'" />
           <icon name="percent" v-else-if="spec.key === 'credit'" />
-          {{ $t(spec.key) }}
+          <!-- Fix here -->
+          {{ $t(type === 'parts' ? spec.key === 'capacity' ? 'battery_capacity' : spec.key : spec.key) }}
         </span>
         <span>
           {{ spec.value }}
