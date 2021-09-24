@@ -62,8 +62,7 @@
         <transition-group name="fade">
           <template v-if="(showLightbox && isMobileBreakpoint) || (!isMobileBreakpoint && showImagesSlider)">
             <div class="blur-bg" :key="0">
-              <!-- <img :src="showYtVideo(currentSlide) ? getYtVideoImage('hq') : $withBaseUrl(slides.main[currentSlide])" alt="" /> -->
-              <img :src="$withBaseUrl(slides.main[0])" alt="" /> 
+              <img :src="showYtVideo(currentSlide) ? getYtVideoImage('hq') : $withBaseUrl(slides.main[currentSlide])" alt="" />
             </div>
             <div class="blur-bg_announcement-info" :key="1" v-if="isMobileBreakpoint">
               <div class="inner-gallery-lightbox-footer">
@@ -90,9 +89,12 @@
                 :current-slide="currentSlide"
                 :slides="slides" 
                 :has-sidebar="where === 'announcement'"
-                @close="closeLightbox" 
+                @close="closeLightbox"
+                @slide-change="currentSlide = $event" 
               >
-                <slot v-if="where === 'announcement'" />
+                <template #sidebar v-if="where === 'announcement'" >
+                  <slot />
+                </template>
               </images-slider>
             </div>
           </template> 
@@ -160,7 +162,9 @@ export default {
   },
   methods: {
     openLightbox(index) {
-      if (index || index === 0) this.currentSlide = index;
+      if (index || index === 0) {
+        this.currentSlide = index;
+      }
       if (this.isMobileBreakpoint) {
         this.showLightbox = true;
         this.toggleFsLightbox = !this.toggleFsLightbox;
@@ -190,6 +194,7 @@ export default {
       this.gallerySwiper.slideNext();
     },
     changeLightboxSlide(fsBox) {
+      if (!this.showLightbox) return;
       this.currentSlide = fsBox.stageIndexes.current;
       this.changeSlide(this.currentSlide);
     },

@@ -23,19 +23,18 @@ export default {
       this.setColorMode(colorMode);
       this.$cookies.set('color-mode', colorMode);
       document.documentElement.setAttribute('data-color-mode', this.colorMode);
-      this.triggerAnimation();
+      this.updateAnimation();
     },
     initAnimation() {
       this.animation = new this.$rive.Rive({
         src: '/rive/theme-switch.riv',
         canvas: this.$refs.canvas,
         stateMachines: 'state',
-        layout: new this.$rive.Layout({fit: 'contain', alignment: 'center'}),
         autoplay: true,
-        onLoad: this.triggerAnimation
+        onLoad: this.updateAnimation
       });
     },
-    triggerAnimation() {
+    updateAnimation() {
       this.animation?.stateMachineInputs('state')?.forEach(i => {
         switch(i.name) {
           case 'dark':
@@ -50,7 +49,7 @@ export default {
   },
   watch: {
     breakpoint() {
-      this.triggerAnimation();
+      this.updateAnimation();
     }
   },
   mounted() {
