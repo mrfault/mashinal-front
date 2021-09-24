@@ -1791,4 +1791,6 @@ export default {
   "other_announcements": "Digər elanlar",
   "reached_the_limit_announcement": "Elan sayı limitə çatıb",
   "reached_the_limit_model": "Model sayı limitə çatıb",
+  "you_can_add_a_maximum_of_count_photos": "Maksimum {count} şəkil əlavə edə bilərsiniz",
+
 }
