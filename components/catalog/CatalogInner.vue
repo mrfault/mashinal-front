@@ -85,6 +85,7 @@
             </div>
           </div>
         </div>
+        <catalog-announcements :catalog-id="firstGeneration.id" :key="firstGeneration.id" />
       </div>
       <div class="col-auto">
         <div class="card mb-2 mb-lg-3" v-if="!isMobileBreakpoint">
@@ -145,6 +146,7 @@ import { mapGetters } from 'vuex';
 import Gallery from '~/components/announcements/inner/Gallery';
 import ThumbsGallery from '~/components/announcements/inner/ThumbsGallery';
 import AddComparison from '~/components/announcements/AddComparison';
+import CatalogAnnouncements from '~/components/catalog/CatalogAnnouncements';
 
 export default {
   props: {
@@ -155,7 +157,8 @@ export default {
   components: {
     Gallery,
     ThumbsGallery,
-    AddComparison
+    AddComparison,
+    CatalogAnnouncements
   },
   computed: {
     ...mapGetters(['firstGeneration', 'modificationsList']),
