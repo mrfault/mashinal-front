@@ -132,7 +132,7 @@ export const LayoutMixin = {
       }
       // strange behavior of loading prop which is not updating 
       // in v-show directive without changing key sometimes
-      this.setLoading(false, true);
+      this.setLoading([false, true]);
     }, 0);
 
   },
