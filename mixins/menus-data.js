@@ -86,6 +86,7 @@ export const MenusDataMixin = {
 
     sidebarMenus() {
       return [
+        { title: 'home_page', route: '/', icon: 'home' },
         { title: 'salons', route: '/salons', icon: 'store', dev: true },
         { title: 'parts', route: '/parts', icon: 'parts' },
         { title: 'autocatalog', route: '/catalog', icon: 'book' },

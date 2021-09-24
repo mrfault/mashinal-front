@@ -80,13 +80,14 @@
           <transition-group name="fade">
             <template v-if="(showLightbox && isMobileBreakpoint) || (!isMobileBreakpoint && showImagesSlider)">
               <div class="blur-bg" :key="0">
-                <img :src="$withBaseUrl(attachments[0])" alt="" />
+                <img :src="$withBaseUrl(attachments[currentSlide])" alt="" />
               </div>
               <div class="blur-bg_slider" :key="1" v-if="!isMobileBreakpoint">
                 <images-slider 
                   :current-slide="currentSlide"
                   :slides="{ main: attachments }" 
                   @close="closeLightbox" 
+                  @slide-change="currentSlide = $event"
                 />
               </div>
             </template>

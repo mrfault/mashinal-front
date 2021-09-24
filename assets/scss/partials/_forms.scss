@@ -200,6 +200,11 @@ input::-webkit-inner-spin-button {
     &.transparent {
       background: transparent !important;
     }
+    &.has-popover {
+      display: inline-flex;
+      width: auto;
+      padding-right: 40px;
+    }
     .text-truncate {
       margin-bottom: -1px;
       span {
@@ -849,6 +854,16 @@ input::-webkit-inner-spin-button {
 }
 
 @include media-min-width('lg') {
+  .form-group {
+    .text-input {
+      input {
+        &.w-133 {
+          width: 133px;
+        }
+      }
+    }
+  }
+
   .dark-mode {
     .select-menu {
       &_dropdown {

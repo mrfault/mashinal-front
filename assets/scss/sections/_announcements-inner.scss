@@ -362,9 +362,12 @@
     justify-content: space-between;
     position: absolute;
     top: 22px;
+    left: 50%;
+    transform: translate(-50%);
     padding: 0 25px;
     color: $white;
     width: 100%;
+    max-width: 1616px;
   }
   .swiper-thumb-bg,
   .swiper-slide-bg {
@@ -478,7 +481,7 @@
     }
     & > .col-auto {
       &:nth-child(2) {
-        width: 1070px;
+        width: calc(100% - 150px);
       }
     }
     &.has-sidebar {

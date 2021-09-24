@@ -34,10 +34,10 @@
           <span>{{ $t('mileage') }} <span class="star"> *</span></span>
         </h2>
         <div class="row">
-          <div class="col-12 col-lg-4 mb-2 mb-lg-0">
-            <div class="row">
+          <div class="col-lg-3 mb-2 mb-lg-0">
+            <div class="row flex-nowrap">
               <div class="col-auto flex-grow-1">
-                <form-numeric-input :placeholder="$t('mileage')" v-model="form.mileage" 
+                <form-numeric-input :placeholder="$t('mileage')" v-model="form.mileage" input-class="w-133" 
                   :invalid="isInvalid('mileage')" @change="removeError('mileage'), updatePreview('mileage')" />
               </div>
               <div class="col-auto">
@@ -46,21 +46,16 @@
               </div>
             </div>
           </div>
-          <div class="col-12 col-lg-4 mb-2 mb-lg-0">
-            <form-select :label="$t('data')" custom custom-checkboxes :allow-clear="false"
-              :values="{ count: ['is_new','beaten','guaranty','customs_clearance','tradeable','credit'].filter(a => form[a]).length }">
-              <div class="form-merged">
-                <form-checkbox :label="$t('is_new')" v-model="form.is_new" input-name="is_new" @change="updateMileage"/>
-                <form-checkbox :label="$t('bitie')" v-model="form.beaten" input-name="beaten">
-                  <popover :message="$t('with_significant_damage_to_body_elements_that_do_not_move_on_their_own')" :width="175" />
-                </form-checkbox>
-                <form-checkbox :label="$t('in_garanty')" v-model="form.guaranty" input-name="guaranty" />
-                <form-checkbox :label="$t('not_cleared')" v-model="form.customs_clearance" input-name="customs_clearance"
-                  @change="removeError('car_number', true), removeError('vin', true)" />
-                <form-checkbox :label="$t('tradeable')" v-model="form.tradeable" input-name="tradeable" />
-                <form-checkbox :label="$t('credit_possible')" v-model="form.credit" input-name="credit" />
-              </div>
-            </form-select>
+          <div class="col-lg-auto mb-2 mb-lg-0">
+            <div class="d-flex flex-wrap flex-lg-nowrap">
+              <form-checkbox transparent :label="$t('is_new')" v-model="form.is_new" input-name="is_new" @change="updateMileage"/>
+              <form-checkbox transparent :label="$t('bitie')" v-model="form.beaten" input-name="beaten" has-popover>
+                <popover :message="$t('with_significant_damage_to_body_elements_that_do_not_move_on_their_own')" :width="175" />
+              </form-checkbox>
+              <form-checkbox transparent :label="$t('not_cleared')" v-model="form.customs_clearance" input-name="customs_clearance"
+                @change="removeError('car_number', true), removeError('vin', true), form.vin = ''" />
+              <form-checkbox transparent :label="$t('in_garanty')" v-model="form.guaranty" input-name="guaranty" />
+            </div>
           </div>
         </div>
         <template v-if="type === 'cars'">
@@ -74,15 +69,15 @@
             <span>{{ $t('region_and_place_of_inspection') }} <span class="star"> *</span></span>
           </h2>
           <div class="row">
-            <div class="col-12 col-lg-4 mb-2 mb-lg-0">
+            <div class="col-lg-4 mb-2 mb-lg-0">
               <form-select :label="$t('region')" :options="sellOptions.regions" v-model="form.region_id" has-search 
                 :invalid="isInvalid('region_id')" @change="removeError('region_id'), updatePreview('region')" 
                 :clear-option="false" />
             </div>
-            <div class="col-12 col-lg-4 mb-2 mb-lg-0">
+            <div class="col-lg-4 mb-2 mb-lg-0">
               <form-text-input :placeholder="$t('address')" icon-name="placeholder" v-model="form.address" />
             </div>
-            <div class="col-12 col-lg-4 mb-2 mb-lg-0">
+            <div class="col-lg-4 mb-2 mb-lg-0">
               <pick-on-map-button :lat="form.lat" :lng="form.lng" :address="form.address"
                   @change-address="updateAddress" @change-latlng="updateLatLng">
                 <form-text-input :placeholder="$t('address')" icon-name="placeholder" v-model="form.address" />
@@ -94,16 +89,22 @@
           <span>{{ $t('price') }} <span class="star"> *</span></span>
         </h2>
         <div class="row">
-          <div class="col-12 col-lg-4 mb-2 mb-lg-0">
+          <div class="col-lg-3 mb-2 mb-lg-0">
             <div class="row flex-nowrap">
               <div class="col-auto flex-grow-1">
-                <form-numeric-input :placeholder="$t('price')" v-model="form.price" 
+                <form-numeric-input :placeholder="$t('price')" v-model="form.price" input-class="w-133"
                   :invalid="isInvalid('price')" @change="removeError('price'), updatePreview('price')" />
               </div>
               <div class="col-auto">
                 <form-switch :options="getCurrencyOptions" v-model="form.currency" 
                   @change="updatePreview('currency')"/>
               </div>
+            </div>
+          </div>
+          <div class="col-lg-auto mb-2 mb-lg-0">
+            <div class="d-flex flex-wrap flex-lg-nowrap">
+              <form-checkbox transparent :label="$t('tradeable')" v-model="form.tradeable" input-name="tradeable" />
+              <form-checkbox transparent :label="$t('credit_possible')" v-model="form.credit" input-name="credit" />
             </div>
           </div>
         </div>
@@ -116,10 +117,10 @@
           </div>
         </div>
         <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-car_or_vin">
-          <span>{{ $t('license_plate_number_vin_or_carcase_number') }} <span class="star" v-if="type === 'cars'"> *</span></span>
+          <span>{{ $t(form.customs_clearance ? 'vin_carcase_number' : 'license_plate_number_vin_or_carcase_number') }} <span class="star" v-if="type === 'cars'"> *</span></span>
         </h2>
         <div class="row">
-          <div class="col-12 col-lg-4 mb-2 mb-lg-0">
+          <div class="col-lg-4 mb-2 mb-lg-0" v-if="!form.customs_clearance">
             <form-text-input v-model="form.car_number" input-class="car-number-show-popover" img-src="/img/flag.svg"
                 :mask="type === 'cars' ? '99 - AA - 999' : '99 - A{1,2} - 999'"
                 :placeholder="type === 'cars' ? '__ - __ - ___' : '__ - _ - ___'" @focus="showCarNumberDisclaimer"
@@ -130,7 +131,7 @@
             <form-checkbox :label="$t('show_car_number_on_site')" v-model="form.show_car_number" input-name="show_car_number" 
               transparent class="mt-2 mt-lg-3"/>
           </div>
-          <div class="col-12 col-lg-4 mb-2 mb-lg-0">
+          <div class="col-lg-4 mb-2 mb-lg-0">
             <form-text-input v-model="form.vin" 
                 :mask="'*****************'" :placeholder="$t('vin_carcase_number')"
                 @change="removeError('vin')">
@@ -143,7 +144,7 @@
           </div>
         </div>
         <div class="mt-2 mt-lg-3">
-          <template v-if="type=== 'cars'">
+          <template v-if="type === 'cars'">
             <car-filters :values="form.all_options" @change-filter="updateCarFilter" popular key="popular"/>
             <car-filters :values="form.all_options" @change-filter="updateCarFilter" key="all" collapsed-by-default />
           </template>

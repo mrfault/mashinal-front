@@ -12,9 +12,11 @@
         :escape-duplicates="true"
         :announcements="mainAnnouncements.data" 
         :pending="pending"
-        :banner="true"
+        :banner="'/img/parts-{count}-{locale}.jpg'"
         :banner-place="24"
+        :banner-count="4"
         :banner-for="'Part'"
+        :banner-link="'/parts'"
         :has-container="true"
       />
     </div>
