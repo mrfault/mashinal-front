@@ -66,9 +66,10 @@
 <script>
 import Draggable from 'vuedraggable';
 import { ToastErrorsMixin } from '~/mixins/toast-errors';
+import { ImageResizeMixin } from '~/mixins/img-resize';
 
 export default {
-  mixins: [ToastErrorsMixin],
+  mixins: [ToastErrorsMixin, ImageResizeMixin],
   components:{
     Draggable
   },
@@ -104,8 +105,11 @@ export default {
       date: Math.floor(Date.now() / 1000),
     }
   },
+  mounted() {
+    this.files = JSON.parse(JSON.stringify(this.initialFiles))
+  },
   methods: {
-    handleFiles(event) {
+    async handleFiles(event) {
       let files = [...event.target.files];
 
       if (this.files.length + files.length >= this.maxFiles) {
@@ -117,21 +121,19 @@ export default {
         let isImage = file.type.match('image.*');
         if (!isImage) break;
 
-        let reader = new FileReader();
-        reader.addEventListener('load', () => {
-          this.fileLoaded(reader, file)
-        });
-        reader.readAsDataURL(file)
+        const resizedFile = await this.getResizedImage(file);
+        this.fileLoaded(resizedFile)
       }
 
       event.target.value = '';
     },
-    async fileLoaded (reader, file) {
+    async fileLoaded (file) {
       const fileUniqueKey = String(Math.random()).split('.')[1]
 
       this.files.push({
         key: fileUniqueKey,
-        preview: reader.result,
+        preview: URL.createObjectURL(file),
+        blob: file,
         loading: true
       })
       if (this.uploadPath) {
