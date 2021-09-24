@@ -1793,4 +1793,5 @@ export default {
   "other_announcements": "Другие объявления",
   "reached_the_limit_announcement": "Вы превысили лимит добавления объявлений",
   "reached_the_limit_model": "Вы превысили лимит добавления модели",
+  "you_can_add_a_maximum_of_count_photos": "Maksimum {count} şəkil əlavə edə bilərsiniz",
 }

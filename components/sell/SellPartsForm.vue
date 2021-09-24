@@ -241,47 +241,16 @@
       </h2>
       <div class="row parts_image-upload">
         <div class="col-12">
-          <form-gallery
-            :maxFiles="maxFiles"
-            :initialImages="files.map(({file}) => file)"
-            :initialKeys="files.map(({key}) => key)"
-            :files="files"
-            itemClass="col-4 col-lg-1-5 mb-lg-3 mb-2"
-            rotatable
-            @addFiles="addFiles"
-            @removeFile="removeFile"
-            @dragEnd="onDragEnd"
-            @file-rotated="rotateImage"
-          >
-            <template v-slot:pre >
-              <div class="col-12 col-lg-3-5 mb-lg-3 mb-2">
-                <div class="upload-rules">
-                  <div class="upload-rules__image">
-                    <img src="/img/parts_upload_rules.png">
-                  </div>
-                  <div class="upload-rules__content">
-                    <div class="upload-rules__content__title">
-                      {{ $t('terms_of_image_attachment') }}
-                    </div>
-                    <ul class="upload-rules__content__list">
-                      <li>{{ $t('min_image_count', { count: 1 })}}</li>
-                      <li>{{ $t('max_image_count', { count: 22 }) }}</li>
-                      <li>{{ $t('min_image_size', { w: 500, h: 500 }) }}</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </template>
-          </form-gallery>
 
-          <!-- Experimental WIP -->
-          <!-- <form-gallery2
+          <!-- Gallery -->
+          <form-gallery2
             itemClass="col-4 col-lg-1-5 mb-lg-3 mb-2"
             uploadPath="/upload_temporary_images"
             rotatable
-            :maxFiles="maxFiles"
-            :initialFiles="filesModel"
+            :maxFiles="22"
+            :initialFiles="initialFiles"
             @change="filesOnChange"
+            @loading="upload_loading = $event"
           >
             <template v-slot:header >
               <div class="col-12 col-lg-3-5 mb-lg-3 mb-2">
@@ -302,7 +271,7 @@
                 </div>
               </div>
             </template>
-          </form-gallery2> -->
+          </form-gallery2>
         </div>
       </div>
 
@@ -340,8 +309,7 @@ import { mapActions } from 'vuex';
 import { ToastErrorsMixin } from '~/mixins/toast-errors';
 
 import FormKeywords from '~/components/forms/FormKeywords'
-import FormGallery from '~/components/forms/FormGallery'
-// import FormGallery2 from '~/components/forms/FormGallery2'
+import FormGallery2 from '~/components/forms/FormGallery2'
 
 export default {
   mixins: [ToastErrorsMixin],
@@ -358,8 +326,7 @@ export default {
   },
   components: {
     FormKeywords,
-    FormGallery,
-    // FormGallery2,
+    FormGallery2,
   },
   async fetch() {
     await this.$store.dispatch('parts/getCategories')
@@ -387,10 +354,9 @@ export default {
         regions: [],
         filters: [],
       },
-      maxFiles: 22,
+      initialFiles: [],
       files: [],
-      date: Math.floor(Date.now() / 1000),
-      upload_ended: true,
+      upload_loading: false,
       showLoginPopup: false,
       pending: false
     }
@@ -408,9 +374,9 @@ export default {
 
       this.getFilters(this.initialForm.category_id)
 
-      this.files = this.initialForm.defaultImages.map((image, index) => {
+      this.initialFiles = this.initialForm.defaultImages.map((image, index) => {
         return {
-          file: image,
+          preview: image,
           id: this.initialForm.defaultImageIds[index],
           key: this.initialForm.defaultImageIds[index],
         }
@@ -480,70 +446,6 @@ export default {
         this.errors = this.errors.filter(item => item !== key)
       }
     },
-    addFiles(files) {
-      this.upload_ended = false;
-      const file = files[0];
-
-      this.uploadFile(file.file).then(uploadedFile => {
-        this.files.push({
-          id: uploadedFile.id,
-          key: file.key,
-          file: uploadedFile.path,
-        })
-        
-        // Recursion for sequential insert
-        const newFiles = [...files];
-        newFiles.shift()
-        if (newFiles.length) {
-          this.addFiles(newFiles)
-        } else {
-          this.upload_ended = true;
-        }
-      }).catch(error => {
-        this.upload_ended = true;
-      })
-    },
-    removeFile(key) {
-      this.files = this.files.filter(file => file.key !== key)
-    },
-    onDragEnd(e) {
-      if (this.upload_ended) {
-        const [file] = this.files.splice(e.oldDraggableIndex, 1)
-        this.files.splice(e.newDraggableIndex, 0, file)
-      }
-    },
-    async uploadFile(file) {
-      const formData = new FormData();
-      formData.append('temp_id', this.date)
-      formData.append('images[]', file);
-
-      const data = await this.$axios.$post('/upload_temporary_images', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      })
-
-      return {
-        id: data.ids[0],
-        path: data.images[0]
-      }
-    },
-    async rotateImage(index, key) {
-      if (this.files[index]) {
-        try {
-          this.$nuxt.$loading.start();
-          const { data } = await this.$axios.$get(`/media/${this.files[index].id}/rotate/right`);
-          this.files.find(f => f.key === key).file = data.thumb
-          this.$nuxt.$loading.finish();
-        } catch({response: {data: {data}}}) {
-          this.$nuxt.$loading.finish();
-          this.clearErrors();
-          for (let key in data) {
-            this.$toasted.error(data[key]);
-          }
-        }
-      }
-    },
     submit() {
       const validated = this.validate()
       if (validated) {
@@ -551,7 +453,7 @@ export default {
       }
     },
     validate() {
-      if (!this.upload_ended) {
+      if (this.upload_loading) {
         this.$toasted.error(this.$t('please_wait_for_all_image_loading'));
         return false;
       }
@@ -564,11 +466,19 @@ export default {
       return true
     },
     async publish() {
+        const saved_images = this.files.map(({ id }) => id)
+        const deletedIds = []
+        this.initialFiles.forEach(({id}) => {
+          if (!saved_images.includes(id)) {
+            deletedIds.push(id)
+          }
+        })
+
       let data = {
         ...this.form,
         tags: this.form.keywords.map(keyword => ({ text: keyword })),
-        saved_images: this.files.map(({ id }) => id),
-        deletedIds: [],
+        saved_images,
+        deletedIds,
         price: this.form.is_negotiable ? 0 : this.form.price
       }
       delete data.keywords;
@@ -644,7 +554,7 @@ export default {
       });
       this.setSellPreviewData({
         key: 'image',
-        value: this.files[0]?.file
+        value: this.files[0]?.preview
       });
 
       // For tyres and rims
@@ -684,10 +594,9 @@ export default {
       this.showLoginPopup = false;
       this.publish();
     },
-
-    // filesOnChange(files) {
-    //   this.filesModel = files
-    // }
+    filesOnChange(files) {
+      this.files = files
+    }
   },
   computed: {
     conditionButtons() {
@@ -727,22 +636,6 @@ export default {
     dynamicFilters() {
       return this?.filters?.filters || []
     },
-    // filesModel: {
-    //   get() {
-    //     return this.files.map(file => ({
-    //       id: file.id,
-    //       key: file.key,
-    //       preview: file.file
-    //     }))
-    //   },
-    //   set(val) {
-    //     this.files = val.map(file => ({
-    //       id: file.id,
-    //       key: file.key,
-    //       file: file.preview
-    //     }))
-    //   },
-    // }
   },
   watch: {
     form: {
