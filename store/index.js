@@ -47,6 +47,7 @@ const getInitialState = () => ({
   announcement: {},
   relativeAnnouncements: [],
   // catalog
+  catalogAnnouncements: [],
   catalogTotal: 0,
   catalogItems: {},
   catalogForm: {},
@@ -170,6 +171,7 @@ export const getters = {
   myAnnouncement: s => s.myAnnouncement,
   relativeAnnouncements: s => s.relativeAnnouncements,
   // catalog
+  catalogAnnouncements: s => s.catalogAnnouncements,
   catalogItems: s => s.catalogItems,
   catalogTotal: s => s.catalogTotal,
   catalogForm: s => s.catalogForm,
@@ -685,6 +687,10 @@ export const actions = {
     const res = await this.$axios.$post(`/search_catalog?page=${data.page || 1}`, { filteredData, params: data.params });
     if (!data.totalCount) commit('mutate', { property: 'catalogItems', value: res.items });
     if (data.totalCount !== false) commit('mutate', { property: 'catalogTotal', value: res.total });
+  },
+  async getCatalogAnnouncements({commit}, id) {
+    const res = await this.$axios.$get(`/catalog/${id}/announces`);
+    commit('mutate', { property: 'catalogAnnouncements', value: res });
   },
   // Sell
   async checkSellTokens({ commit }, phone) {

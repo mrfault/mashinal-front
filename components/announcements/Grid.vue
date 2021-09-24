@@ -15,7 +15,17 @@
     <div :class="{'container': hasContainer}">
       <div class="row mb-n2 mb-lg-n3">
         <template v-for="(announcement, index) in announcements">
-          <div :class="['col-6 col-lg-auto', {
+          <template v-if="where === 'catalog'">
+            <grid-item 
+              :col-class="'col-lg-6 mb-2 mb-lg-3'"
+              :announcement="announcement" 
+              :track-views="trackViews"
+              :show-gallery="true"
+              :key="announcement.id_unique"
+            />
+          </template>
+          <template v-else>
+            <div :class="['col-6 col-lg-auto', {
                         'col-lg-mid': checkItemIndex(index + 2, announcement), 
                         'pt-4 mt-1': checkItemTop(index, announcement), 
                         'pb-4 mb-4': checkItemBottom(index, announcement) }, 
@@ -24,21 +34,22 @@
                             : 'mb-2 mb-lg-3' 
                         ]"
               :key="announcement.id_unique + (escapeDuplicates ? ('_' + index) : '')">
-            <grid-item 
-              :announcement="announcement" 
-              :show-checkbox="showCheckbox" 
-              :show-status="showStatus"
-              :show-phone-count="showPhoneCount"
-              :track-views="trackViews"
-            />
-          </div>
-          <template v-if="!isMobileBreakpoint && checkItemIndex(index + 1, announcement)">
-            <div class="col-6 col-lg-auto mb-lg-4 mt-lg-6 pt-lg-4 pb-lg-4" :key="'banner_' + index">
-              <div class="announcements-grid_banner d-flex align-items-center justify-content-center" 
-                  @click="$router.push($localePath(bannerLink))">
-                <div class="banner-bg" :style="{backgroundImage: `url(${getBannerImage(index + 1)})`}"></div>
-              </div>
+              <grid-item 
+                :announcement="announcement" 
+                :show-checkbox="showCheckbox" 
+                :show-status="showStatus"
+                :show-phone-count="showPhoneCount"
+                :track-views="trackViews"
+              />
             </div>
+            <template v-if="!isMobileBreakpoint && checkItemIndex(index + 1, announcement)">
+              <div class="col-6 col-lg-auto mb-lg-4 mt-lg-6 pt-lg-4 pb-lg-4" :key="'banner_' + index">
+                <div class="announcements-grid_banner d-flex align-items-center justify-content-center" 
+                    @click="$router.push($localePath(bannerLink))">
+                  <div class="banner-bg" :style="{backgroundImage: `url(${getBannerImage(index + 1)})`}"></div>
+                </div>
+              </div>
+            </template>
           </template>
         </template>
       </div>
@@ -88,7 +99,8 @@ export default {
     bannerPlace: Number,
     bannerCount: Number,
     bannerFor: String,
-    bannerLink: String
+    bannerLink: String,
+    where: String
   },
   components: {
     GridItem
