@@ -88,7 +88,7 @@ export default {
         Object.keys(this.announcement.filters).forEach(filter => {
           specs.push({
             key: filter,
-            value: this.$t(this.announcement.filters[filter].name),
+            value: this.$t(this.announcement.filters[filter]?.name || ''),
             for: ['parts'] }
           )
         })
