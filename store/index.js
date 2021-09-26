@@ -3,7 +3,6 @@ import _ from '~/lib/underscore';
 
 const getInitialState = () => ({
   loading: true,
-  loadingKey: 1,
   colorMode: 'light',
   breakpoint: null,
   ptk: null,
@@ -47,6 +46,7 @@ const getInitialState = () => ({
   announcement: {},
   relativeAnnouncements: [],
   // catalog
+  catalogAnnouncements: [],
   catalogTotal: 0,
   catalogItems: {},
   catalogForm: {},
@@ -119,7 +119,6 @@ export const state = () => (getInitialState());
 
 export const getters = {
   loading: s => s.loading,
-  loadingKey: s => s.loadingKey,
   colorMode: s => s.colorMode,
   breakpoint: s => s.breakpoint,
   ptk: s => s.ptk,
@@ -170,6 +169,7 @@ export const getters = {
   myAnnouncement: s => s.myAnnouncement,
   relativeAnnouncements: s => s.relativeAnnouncements,
   // catalog
+  catalogAnnouncements: s => s.catalogAnnouncements,
   catalogItems: s => s.catalogItems,
   catalogTotal: s => s.catalogTotal,
   catalogForm: s => s.catalogForm,
@@ -264,11 +264,8 @@ export const actions = {
     commit('mutate', { property:'ptk', value: ptk });
   },
   // Loading
-  setLoading({ commit, state }, [loading, refresh]) {
+  setLoading({ commit }, loading) {
     commit('mutate', { property: 'loading', value: loading })
-    if (refresh && state.loadingKey < 3) {
-      commit('mutate', { property: 'loadingKey', value: state.loadingKey + 1 })
-    }
   },
   // Dark/Light theme
   setColorMode({ commit }, theme) {
@@ -685,6 +682,10 @@ export const actions = {
     const res = await this.$axios.$post(`/search_catalog?page=${data.page || 1}`, { filteredData, params: data.params });
     if (!data.totalCount) commit('mutate', { property: 'catalogItems', value: res.items });
     if (data.totalCount !== false) commit('mutate', { property: 'catalogTotal', value: res.total });
+  },
+  async getCatalogAnnouncements({commit}, id) {
+    const res = await this.$axios.$get(`/catalog/${id}/announces`);
+    commit('mutate', { property: 'catalogAnnouncements', value: res });
   },
   // Sell
   async checkSellTokens({ commit }, phone) {
