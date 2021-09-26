@@ -1,7 +1,7 @@
 <template>
   <div :class="['wrapper', { loading }, `${colorMode}-mode`]">
-    <component :is="loadingKey < 3 ? 'transition' : 'div'" name="fade">
-      <div class="layout" v-show="!loading" :key="loadingKey">
+    <transition name="fade">
+      <div class="layout" v-show="!loading">
         <mobile-menu>
           <theme-switch v-if="isMobileBreakpoint"/>
         </mobile-menu>
@@ -39,7 +39,7 @@
         <mobile-nav />
         <page-footer v-if="!hideFooter" />
       </div>
-    </component>
+    </transition>
   </div>
 </template>
 

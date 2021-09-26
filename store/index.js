@@ -3,7 +3,6 @@ import _ from '~/lib/underscore';
 
 const getInitialState = () => ({
   loading: true,
-  loadingKey: 1,
   colorMode: 'light',
   breakpoint: null,
   ptk: null,
@@ -120,7 +119,6 @@ export const state = () => (getInitialState());
 
 export const getters = {
   loading: s => s.loading,
-  loadingKey: s => s.loadingKey,
   colorMode: s => s.colorMode,
   breakpoint: s => s.breakpoint,
   ptk: s => s.ptk,
@@ -266,11 +264,8 @@ export const actions = {
     commit('mutate', { property:'ptk', value: ptk });
   },
   // Loading
-  setLoading({ commit, state }, [loading, refresh]) {
+  setLoading({ commit }, loading) {
     commit('mutate', { property: 'loading', value: loading })
-    if (refresh && state.loadingKey < 3) {
-      commit('mutate', { property: 'loadingKey', value: state.loadingKey + 1 })
-    }
   },
   // Dark/Light theme
   setColorMode({ commit }, theme) {
