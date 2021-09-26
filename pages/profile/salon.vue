@@ -111,18 +111,13 @@
                 @change="removeError('description')" :invalid="isInvalid('description')" />
             </div>
             <div class="col-lg-12" id="anchor-saved_gallery">
-              <form-gallery
-                :max-files="21"
-                :initial-images="mySalon.gallery_thumbs"
-                :initial-keys="mySalon.gallery_ids"
-                item-class="col-4 col-lg-1-8 mb-lg-3 mb-2"
-                @change-saved="addFiles($event, 'saved_gallery')"
-                @change-ids="addFiles($event, 'gallery_ids')"
-                @delete="deleteFile($event)"
+              <form-gallery2
+                itemClass="col-4 col-lg-1-8 mb-lg-3 mb-2"
+                :maxFiles="21"
+                :initialFiles="initialFiles"
+                @change="filesOnChange"
+                @loading="pending = $event"
               />
-
-              <!-- Experimental WIP -->
-              <!-- <form-gallery2/> -->
             </div>
             <div class="col-lg-2 offset-lg-10">
               <button :class="['btn btn--green full-width', {pending}]" @click="submit">{{ $t('confirm') }}</button>
@@ -136,20 +131,17 @@
 
 <script>
   import { mapGetters, mapActions } from 'vuex';
-
   import { ToastErrorsMixin } from '~/mixins/toast-errors'; 
 
   import PickOnMapButton from '~/components/elements/PickOnMapButton';
-  import FormGallery from '~/components/forms/FormGallery';
-  // import FormGallery2 from '~/components/forms/FormGallery2';
+  import FormGallery2 from '~/components/forms/FormGallery2';
 
   export default {
     name: 'pages-profile-salon',
     mixins: [ToastErrorsMixin],
     components: {
       PickOnMapButton,
-      FormGallery,
-      // FormGallery2,
+      FormGallery2,
     },
     middleware: ['auth_general','auth_salon'],
     nuxtI18n: {
@@ -189,13 +181,10 @@
           working_hours: {...salon.working_hours} || { start: '09:00', end: '18:00' },
           short_description: salon.short_description || '',
           description: salon.description || '',
-          gallery_count: salon.gallery_ids.length,
-          gallery_ids: [...salon.gallery_ids].map((key, index) => ({ position: index, id: key })),
-          saved_gallery: [],
-          deleted_gallery: [],
           logo: null,
           cover: null
-        }
+        },
+        files: []
       }
     },
     computed: {
@@ -222,6 +211,13 @@
           days.push(this.getDayOption(i));
         }
         return days;
+      },
+      initialFiles() {
+        return this.mySalon?.gallery_thumbs?.map((image, index) => ({
+          preview: image,
+          id: this.mySalon.gallery_ids[index],
+          key: this.mySalon.gallery_ids[index],
+        })) || []
       }
     },
     methods: {
@@ -239,11 +235,8 @@
         // prepare data to send
         let formData = new FormData();
         for (let key in this.form) {
-          if (key === 'name') continue;
-          else if (key === 'saved_gallery') {
-            this.form[key].map(value => {
-              formData.append(key + '[]', value);
-            });
+          if (key === 'name') {
+            continue;
           } else {
             let value = this.form[key];
             let sendAsBinary = ['cover','logo'].includes(key);
@@ -253,6 +246,35 @@
               formData.append(key, sendAsStr ? JSON.stringify(value) : value);
           }
         }
+
+        // Add new files to formData
+        this.files.forEach(file => {
+          if (file.hasOwnProperty('blob')) {
+            formData.append('saved_gallery[]', file.blob)
+          }
+        })
+
+        // Add gallery ids to formData
+        const gallery_ids = []
+        this.files.forEach((file, index) => {
+          if (file.hasOwnProperty('id')) {
+            gallery_ids.push({ position: index, id: file.id })
+          }
+        })
+        formData.append('gallery_ids', JSON.stringify(gallery_ids))
+
+        // Add removed gallery ids to formData
+        const deleted_gallery = []
+        this.mySalon.gallery_ids.forEach(id => {
+          if (!this.files.map(({ id }) => id).includes(id)) {
+            deleted_gallery.push(id)
+          }
+        })
+        formData.append('deleted_gallery', JSON.stringify(deleted_gallery));
+
+        // Add gallery count to formData
+        formData.append('gallery_count', this.files.length);
+
         // update autosalon info
         try {
           await this.updateMySalon(formData);
@@ -264,11 +286,6 @@
           // reset form values
           this.$set(this.form, 'logo', null);
           this.$set(this.form, 'cover', null);
-          this.$set(this.form, 'saved_gallery', []);
-          this.$set(this.form, 'deleted_gallery', []);
-          this.$set(this.form, 'gallery_count', this.mySalon.gallery_ids.length);
-          this.$set(this.form, 'gallery_ids', [...this.mySalon.gallery_ids]
-            .map((key, index) => ({ position: index, id: key })));
           this.$nuxt.$emit('gallery-update');
           this.pending = false;
         } catch({response: {status, data: {data, message}}}) {
@@ -310,14 +327,6 @@
         this.form.lat = lat;
         this.form.lng = lng;
       },
-      addFiles(files, key) {
-        this.$set(this.form, key, files);
-        this.form.gallery_count = this.form.gallery_ids.length;
-        this.form.gallery_count += this.form.saved_gallery.length;
-      },
-      deleteFile(key) {
-        this.form.deleted_gallery.push(key);
-      },
       async changePassword() {
         if (this.pending) return;
         this.pending = true;
@@ -334,6 +343,9 @@
         } catch(err) {
           this.pending = false;
         }
+      },
+      filesOnChange(files) {
+        this.files = files
       }
     },
     created() {
