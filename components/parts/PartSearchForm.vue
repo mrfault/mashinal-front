@@ -36,14 +36,6 @@
                 has-search
               />
             </div>
-            <!-- Sort -->
-            <!-- <div class="col-lg-2" v-if="showSorting">
-              <form-select
-                :label="$t('sorting')"
-                v-model="form.sort"
-                :options="getSortingOptions"
-              />
-            </div> -->
             <!-- Price -->
             <div class="col-lg-2">
               <form-select
@@ -73,6 +65,13 @@
                   />
                 </div>
               </form-select>
+            </div>
+
+            <!-- Announcement count -->
+            <div class="col-12 col-lg-2" v-if="!isMobileBreakpoint">
+              <div class="form-info text-green">
+                {{ $readPlural(pagination.total, $t('plural_forms_announcements')) }}
+              </div>
             </div>
 
             <div class="col-12" v-if="showDynamicFilter">
@@ -158,29 +157,38 @@
                 </div>
               </transition-expand>
             </div>
-            <!-- Gap if dynamic filter is active-->
-            <div class="col-lg-8" v-if="!isMobileBreakpoint && showDynamicFilter"></div>
-            <!-- Reset button -->
-            <div class="col-lg-2" :class="{'mt-3': showDynamicFilter || isMobileBreakpoint}">
-              <button
-                type="button"
-                :class="['btn', 'full-width', 'btn--red-outline']"
-                @click="reset"
-              >
-                <icon name="reset" />
-                {{ $t('clear_search') }}
-              </button>
-            </div>
-            <!-- Search button -->
-            <div class="col-lg-2" :class="{'mt-3': showDynamicFilter || isMobileBreakpoint}">
-              <button
-                type="button"
-                :class="['btn', 'full-width', 'btn--green']"
-                @click="submitForm"
-              >
-                <icon name="search" />
-                {{ $t('find') }}
-              </button>
+            <div class="col-12">
+              <div class="row">
+                <div class="col-lg-8" v-if="!isMobileBreakpoint"></div>
+                <!-- Announcement count -->
+                <div class="col-12 col-lg-2 mt-3" v-if="isMobileBreakpoint">
+                  <div class="form-info text-green">
+                    {{ $readPlural(pagination.total, $t('plural_forms_announcements')) }}
+                  </div>
+                </div>
+                <!-- Reset button -->
+                <div class="col-6 col-lg-2 mt-3">
+                  <button
+                    type="button"
+                    :class="['btn', 'full-width', 'btn--red-outline']"
+                    @click="reset"
+                  >
+                    <icon name="reset" />
+                    {{ $t('clear_search') }}
+                  </button>
+                </div>
+                <!-- Search button -->
+                <div class="col-6 col-lg-2 mt-3">
+                  <button
+                    type="button"
+                    :class="['btn', 'full-width', 'btn--green']"
+                    @click="submitForm"
+                  >
+                    <icon name="search" />
+                    {{ $t('find') }}
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -195,6 +203,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { SearchMixin } from '~/mixins/search';
 import { RoutesMixin } from '~/mixins/routes';
 
@@ -281,6 +290,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      pagination: 'parts/pagination'
+    }),
     // meta data
     meta() {
       return {
