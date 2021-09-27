@@ -5,8 +5,7 @@
         <span>
           <icon name="barter" v-if="spec.key === 'exchange'" />
           <icon name="percent" v-else-if="spec.key === 'credit'" />
-          <!-- Fix here -->
-          {{ $t(type === 'parts' ? spec.key === 'capacity' ? 'battery_capacity' : spec.key : spec.key) }}
+          {{ $t(spec.key) }}
         </span>
         <span>
           {{ spec.value }}
@@ -87,7 +86,7 @@ export default {
       if (this.type === 'parts') {
         Object.keys(this.announcement.filters).forEach(filter => {
           specs.push({
-            key: filter,
+            key: filter.replace('capacity', 'battery_capacity'),
             value: this.$t(this.announcement.filters[filter]?.name || ''),
             for: ['parts'] }
           )
