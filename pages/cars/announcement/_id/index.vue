@@ -110,7 +110,8 @@ export default {
       store.dispatch('getAnnouncementInner', route.params.id),
       store.dispatch('getComplaintOptions'),
       store.dispatch('getOptions'),
-      store.dispatch('getAllOtherOptions')
+      store.dispatch('getAllOtherOptions'),
+      store.dispatch('getPopularOptions')
     ]);
   },
   methods: {

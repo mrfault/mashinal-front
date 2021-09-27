@@ -144,7 +144,6 @@
     display: flex;
     flex-wrap: wrap;
     gap: 15px;
-
     .keyword {
       display: flex;
       align-items: center;
@@ -538,6 +537,12 @@
       &.fixed-to-top {
         background-color: $dark-2;
         border-color: $dark-1;
+      }
+    }
+    .keywords {
+      .keyword {
+        border-color: $yellow-1;
+        color: $yellow-1;
       }
     }
   }

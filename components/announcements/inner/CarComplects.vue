@@ -3,10 +3,24 @@
     <h2 class="title-with-line full-width">
       <span>{{ $t('Комплектация') }}</span>
     </h2>
+    <template v-if="tagSellOptions.length">
+      <collapse-content
+        :title="$t('popular_options')"
+        :first-collapsed="false"
+        key="popular"
+      >
+        <div class="keywords pt-1">
+          <div class="keyword" v-for="(option, index) in tagSellOptions" :key="index">
+            {{ $t(option.label) }}
+          </div>
+        </div>
+      </collapse-content>
+      <hr v-if="filteredSellOptions.length" :key="'hr-popular'" />
+    </template>
     <template v-for="(group, index) in filteredSellOptions">
       <collapse-content
         :title="getTitle(group, index)"
-        :first-collapsed="false"
+        :first-collapsed="tagSellOptions.length || index !== 0"
         :key="index"
       >
         <p v-for="(option, index) in getOptions(group)" :key="index">
@@ -45,10 +59,16 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['allSellOptions']),
+    ...mapGetters(['allSellOptions', 'popularOptions']),
     
     filteredSellOptions() {
       return this.allSellOptions.filter(group => !!this.getOptions(group).length);
+    },
+    tagSellOptions() {
+      return this.popularOptions.filter((option) => {
+        let value = this.options?.[option.name];
+        return value instanceof Array ? value.includes(option.selected_key) : value;
+      });
     }
   },
   methods: {
