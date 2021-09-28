@@ -10,7 +10,7 @@ const getInitialState = () => ({
     showDifferences: false,
     hideEmptyCells: true
   },
-  showAddModelPopup: false.property,
+  showAddModelPopup: false,
   brands: [],
   models: [],
   generations: [],
@@ -38,6 +38,7 @@ export const getters = {
 }
 
 export const actions = {
+  // Announcements
   getInitialAnnouncements({ dispatch, commit }) {
     const val = this.$cookies.get('comparisonAnnouncements') || []
 
@@ -53,15 +54,6 @@ export const actions = {
     } else {
       commit('addAnnouncement', id)
       dispatch('getAnnouncements')
-    }
-
-    this.$cookies.set('comparisonAnnouncements', state.announcementIds)
-  },
-  toggleModel({ dispatch, commit, state }, id) {
-    if (state.modelsList.findIndex(m => m.id === id) >= 0) {
-      commit('removeModel', id)
-    } else {
-      dispatch('addModel', id)
     }
 
     this.$cookies.set('comparisonAnnouncements', state.announcementIds)
@@ -82,34 +74,8 @@ export const actions = {
       });
     }
   },
-  async getInitialRecommendation({ commit }) {
-    const { data } = await this.$axios.$get(`/comparison/model/recommended/initial`);
-    commit('mutate', {
-      property: 'recommendedModel',
-      value: data
-    });
-  },
-  async updateRecommendation({ commit, state, dispatch }, params) {
-    // fix here 
-    const skip = state.recommendedModel.catalog_id;
-    
-    let catalog = null;
-    const modelIds = state.modelsList.map(m => m.id || m.catalog_id)
-    if (modelIds.length) {
-      catalog = modelIds[Math.floor(Math.random() * modelIds.length)];
-    } else {
-      if (!state.recommendedModel) {
-        await dispatch('getInitialRecommendation')
-      }
-      catalog = state.recommendedModel.catalog_id
-    }
 
-    const { data } = await this.$axios.$get(`/comparison/model/${catalog}/recommended?skip=${skip}&comparisons=` + (this.$cookies.get('comparisonModels') ? this.$cookies.get('comparisonModels') : ''));
-    commit('mutate', {
-      property: 'recommendedModel',
-      value: data
-    });
-  },
+  // Models
   async getBrands({ commit }) {
     const { data } = await this.$axios.$get(`/comparison/model/brands`);
     commit('mutate', {
@@ -162,13 +128,49 @@ export const actions = {
       value: data
     });
   },
-  async addModel({ commit }, id) {
+  toggleModel({ dispatch, commit, state }, id) {
+    if (state.modelsList.findIndex(m => m.id === id) >= 0) {
+      commit('removeModel', id)
+    } else {
+      dispatch('addModel', id)
+    }
+  },
+  async addModel({ state, commit }, id) {
     const { data } = await this.$axios.get('/catalog/' + id)
     const model = Array.isArray(data) ? data[0] : data
     commit('addModel', model)
+    this.$cookies.set('comparisonModels', JSON.stringify(state.modelsList.map(m => m.id)))
   },
-  removeModel({ commit }, id) {
+  removeModel({ state, commit }, id) {
     commit('removeModel', id);
+    this.$cookies.set('comparisonModels', JSON.stringify(state.modelsList.map(m => m.id)))
+  },
+  async getInitialRecommendation({ commit }) {
+    const { data } = await this.$axios.$get(`/comparison/model/recommended/initial`);
+    commit('mutate', {
+      property: 'recommendedModel',
+      value: data
+    });
+  },
+  async updateRecommendation({ commit, state, dispatch }) {
+    const skip = state.recommendedModel.catalog_id;
+    
+    let catalog = null;
+    const modelIds = state.modelsList.map(m => m.id)
+    if (modelIds.length) {
+      catalog = modelIds[Math.floor(Math.random() * modelIds.length)];
+    } else {
+      if (!state.recommendedModel) {
+        await dispatch('getInitialRecommendation')
+      }
+      catalog = state.recommendedModel.catalog_id
+    }
+
+    const { data } = await this.$axios.$get(`/comparison/model/${catalog}/recommended?skip=${skip}&comparisons=` + (this.$cookies.get('comparisonModels') ? this.$cookies.get('comparisonModels') : ''));
+    commit('mutate', {
+      property: 'recommendedModel',
+      value: data
+    });
   },
   async selectModel({ dispatch, state, rootState }, catalogId) {
     if (rootState.auth.loggedIn) {
@@ -177,7 +179,7 @@ export const actions = {
     } else {
       await this.$axios.$post(`/comparison/model/catalog`, { catalogId });
       dispatch('addModel', catalogId)
-      this.$cookies.set('comparisonModels', state.modelsList.map(m => m.id || m.catalog_id))
+      this.$cookies.set('comparisonModels', JSON.stringify(state.modelsList.map(m => m.id)))
     }
   }
 }

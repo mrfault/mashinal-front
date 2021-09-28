@@ -3,6 +3,7 @@
     <div v-if="badgeVisible && !isMobileBreakpoint" :key="'badgeVisible'">
       <div class="comparison-badge" @click="handleClick">
         <icon name="compare" />
+        <span v-if="count" class="comparison-badge__count">{{ count }}</span>
       </div>
       <comparison-preview
         :visible="previewVisible"
