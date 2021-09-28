@@ -3,6 +3,13 @@ export const RoutesMixin = {
     partsRoutes() {
       return [
         {
+          title: 'all',
+          localeTitle: this.$t('all'),
+          slug: '/',
+          route: '/parts/',
+          icon: 'part-0',
+          showOnMenu: true
+        },{
           title: 'parts',
           localeTitle: this.$t('parts'),
           slug: this.$t('slug_parts'),
