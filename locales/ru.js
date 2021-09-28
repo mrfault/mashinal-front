@@ -1794,4 +1794,5 @@ export default {
   "reached_the_limit_announcement": "Вы превысили лимит добавления объявлений",
   "reached_the_limit_model": "Вы превысили лимит добавления модели",
   "you_can_add_a_maximum_of_count_photos": "Maksimum {count} şəkil əlavə edə bilərsiniz",
+  "all_announcements_of_user": "Все объявления этого пользователя",
 }
