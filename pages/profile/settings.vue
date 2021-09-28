@@ -10,7 +10,8 @@
       >
         <div class="card profile-settings-card">
           <div class="avatar_edit">
-            <form-image v-model="form.avatar" :initial-image="getUserAvatar" />
+            <form-image v-model="form.avatar" :initial-image="getUserAvatar" 
+              croppable :width="100" :height="100" />
             <p class="text-center">100x100px</p>
           </div>
           <div class="row profile_edit">
@@ -125,10 +126,12 @@ export default {
       for (let key in this.form) {
         let value = this.form[key];
         if (key === 'birthday') {
-          value = this.escapeDate(this.form[key]);
+          value = this.escapeDate(value);
           if (!value) continue;
-        } if (key === 'avatar' && !this.form[key]) {
-           continue;
+        } if (key === 'avatar') {
+          if (value) 
+            value = await value.promisedBlob('image/jpeg', 0.8);
+          else continue;
         } else if (pwdKeys.includes(key) && !pwdKeys.filter(k => !!this.form[k]).length) {
           continue;
         }

@@ -81,7 +81,10 @@
             </li>
           </ul>
         </nav>
-        <nuxt-link class="btn btn--pale-green" :to="$localePath('/sell')" v-html="$t('to_sell')" />
+        <nuxt-link class="btn btn--pale-green-outline" :to="$localePath('/sell')">
+          <icon name="plus-circle" />
+          {{ $t('to_sell') }}
+        </nuxt-link>
       </div>
     </div>
   </header>

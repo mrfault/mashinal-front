@@ -107,6 +107,13 @@ export default {
   },
   async fetch() {
     await this.$store.dispatch('comparison/getInitialRecommendation')
+    
+    const models = this.$cookies.get('comparisonModels')
+    if (models.length) {
+      models.forEach(id => {
+        this.$store.dispatch('comparison/addModel', id)
+      })
+    }
   },
   methods: {
     removeItem(id) {
