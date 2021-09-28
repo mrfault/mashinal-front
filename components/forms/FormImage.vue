@@ -1,11 +1,34 @@
 <template>
   <div class="form-image">
-    <input class="sr-only" type="file" accept="image/*" @change="filesDrop"/>
-    <loader v-if="preview === '' && !initialImage" />
-    <img :src="preview || initialImage" alt="" v-else />
-    <span class="drop-file">
-      <icon name="camera" />
-    </span>
+    <croppa class="croppa-image" 
+      v-if="croppable"
+      v-model="croppaValue" placeholder="" 
+      :initial-image="initialImage"
+      :accept="'image/*'"
+      :canvas-color="'transparent'"
+      :zoom-speed="15" 
+      :width="width"
+      :height="height"
+      :quality="1"
+      :prevent-white-space="true" 
+      :show-remove-button="false"
+      :replace-drop="true"
+    >
+      <span class="placeholder" v-if="!croppaValue || !croppaValue.imageSet">
+        <icon name="img" />
+      </span>
+      <span class="drop-file" @click="croppaValue.chooseFile()">
+        <icon name="camera" />
+      </span>
+    </croppa>
+    <template v-else>
+      <input class="sr-only" type="file" accept="image/*" @change="filesDrop"/>
+      <loader v-if="preview === '' && !initialImage" />
+      <img :src="preview || initialImage" alt="" v-else />
+      <span class="drop-file">
+        <icon name="camera" />
+      </span>
+    </template>
   </div>
 </template>
 
@@ -15,12 +38,25 @@ import { ImageResizeMixin } from '~/mixins/img-resize';
 export default {
   props: {
     value: {},
-    initialImage: {}
+    initialImage: {},
+    croppable: Boolean,
+    width: Number,
+    height: Number
   },
   mixins: [ImageResizeMixin],
   data() {
     return {
-      preview: ''
+      preview: '',
+    }
+  },
+  computed: {
+    croppaValue: {
+      get() {
+        return this.value;
+      },
+      set(value) {
+        this.$emit('input', value);
+      }
     }
   },
   methods: {

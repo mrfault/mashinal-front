@@ -38,9 +38,9 @@
               @clear="form.year_from = '', form.year_to = ''"
             >
               <div class="form-merged">
-                <form-select :label="$t('from')" :options="getYearOptions" v-model="form.year_from" 
+                <form-select :label="$t('from')" :options="getYearOptions(false, form.year_to)" v-model="form.year_from" 
                   :show-label-on-select="false" :clear-option="false" in-select-menu />
-                <form-select :label="$t('to')" :options="getYearOptions" v-model="form.year_to"
+                <form-select :label="$t('to')" :options="getYearOptions(form.year_from, false)" v-model="form.year_to"
                   :show-label-on-select="false" :clear-option="false" in-select-menu />
               </div>
             </form-select>

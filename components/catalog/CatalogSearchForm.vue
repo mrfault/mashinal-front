@@ -65,9 +65,9 @@
             >
               <div class="form-merged">
                 <form-select :label="$t('from')" v-model="form.min_years" @change="submitForm()" 
-                  :options="getYearOptions" :show-label-on-select="false" :clear-option="false" in-select-menu />
+                  :options="getYearOptions(false, form.max_years)" :show-label-on-select="false" :clear-option="false" in-select-menu />
                 <form-select :label="$t('to')" v-model="form.max_years" @change="submitForm()" 
-                  :options="getYearOptions" :show-label-on-select="false" :clear-option="false" in-select-menu />
+                  :options="getYearOptions(form.min_years, false)" :show-label-on-select="false" :clear-option="false" in-select-menu />
               </div>
             </form-select>
           </div>
@@ -175,20 +175,11 @@ export default {
       return !!this.$route.query.filter;
     },
 
-    // static data
     getCollapseOptions() {
       return [
         { key: 1, name: this.$t('simple') },
         { key: 0, name: this.$t('detailed') }
       ]
-    },
-
-    getYearOptions() {
-      let years = [], j = 0;
-      for (let i = this.currentYear; i >= 1886; i--) {
-        years[j] = { name: i, key: i }; j++;
-      }
-      return years;
     },
   },
   methods: {
@@ -271,6 +262,13 @@ export default {
     togglePopStateListener(listen = false) {
       if (listen) window.addEventListener('popstate', this.handlePopState);
       else window.removeEventListener('popstate', this.handlePopState);
+    },
+    getYearOptions(min, max) {
+      let years = [], j = 0;
+      for (let i = (max || this.currentYear); i >= (min || 1886); i--) {
+        years[j] = { name: i, key: i }; j++;
+      }
+      return years;
     }
   },
   watch: {

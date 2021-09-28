@@ -671,6 +671,7 @@
   user-select: none;
   .drop-file {
     position: absolute;
+    z-index: 1;
     bottom: 9px;
     right: 9px;
     cursor: pointer;
@@ -684,6 +685,22 @@
     border: 1px solid $greyish-blue-4;
     background-color: $white;
     pointer-events: none;
+  }
+  .croppa-image {
+    &.croppa--has-target {
+      cursor: move;
+    }
+    .drop-file {
+      pointer-events: all;
+    }
+    .placeholder {
+      @include abs-middle;
+      font-size: 20px;
+      opacity: .25;
+      i {
+        display: block;
+      }
+    }
   }
   input {
     clip: auto;

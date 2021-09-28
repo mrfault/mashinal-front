@@ -92,9 +92,9 @@
               @clear="form.min_year = '', form.max_year = ''"
             >
               <div class="form-merged">
-                <form-select :label="$t('from')" :options="getYearOptions" v-model="form.min_year" 
+                <form-select :label="$t('from')" :options="getYearOptions(false, form.max_year)" v-model="form.min_year" 
                   :show-label-on-select="false" :clear-option="false" in-select-menu />
-                <form-select :label="$t('to')" :options="getYearOptions" v-model="form.max_year"
+                <form-select :label="$t('to')" :options="getYearOptions(form.min_year, false)" v-model="form.max_year"
                   :show-label-on-select="false" :clear-option="false" in-select-menu />
               </div>
             </form-select>

@@ -19,14 +19,13 @@
       color: $color;
     }
     background-color: transparent;
-    @if ($border-color) {
-      border: 1px solid $border-color;
-    } @else {
-      border: 1px solid $bg-color;
-    }
   } @else {
     color: $color;
     background-color: $bg-color;
+  }
+  @if ($border-color) {
+    border: 1px solid $border-color;
+  } @else {
     border: 1px solid $bg-color;
   }
   &:hover {
@@ -147,6 +146,9 @@
   &--pale-green {
     @include btn-style($color: $green-1, $bg-color: $green-3, $bg-hover: $green-2);
   }
+  &--pale-green-outline {
+    @include btn-style($color: $green-1, $bg-color: $green-3, $bg-hover: $green-2, $border-color: $green-1);
+  }
   &--red {
     @include btn-style($bg-color: $red-1, $bg-hover: $red-2);
   }
@@ -190,7 +192,8 @@
     &--dark-blue-outline {
       @include btn-style($bg-color: $grey-1, $bg-hover: $grey-1, $border-color: $grey-1, $outline: true, $override: false);
     }
-    &--pale-green {
+    &--pale-green,
+    &--pale-green-outline {
       @include btn-style($bg-color: $green-1, $bg-hover: $green-2);
     }
     &--red,

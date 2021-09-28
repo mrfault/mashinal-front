@@ -178,6 +178,13 @@ export const SearchMixin = {
     togglePopStateListener(listen = false) {
       if (listen) window.addEventListener('popstate', this.handlePopState);
       else window.removeEventListener('popstate', this.handlePopState);
+    },
+    getYearOptions(min, max) {
+      let years = [], j = 0;
+      for (let i = (max || this.currentYear); i >= (min || 1886); i--) {
+        years[j] = { name: i, key: i }; j++;
+      }
+      return years;
     }
   },
   computed: {
@@ -223,14 +230,7 @@ export const SearchMixin = {
     searchApplied() {
       return !this.isStarterPage && !!this.$route.query[this.meta.param];
     },
-    // static data
-    getYearOptions() {
-      let years = [], j = 0;
-      for (let i = this.currentYear; i >= 1886; i--) {
-        years[j] = { name: i, key: i }; j++;
-      }
-      return years;
-    },
+    
     getMileageOptions() {
       let zeroFirst = this.meta.type !== 'cars';
       return [
