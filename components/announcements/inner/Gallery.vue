@@ -35,8 +35,10 @@
         <div class="gallery-overlay_bottom d-flex">
           <template v-if="where === 'announcement'">
             <span class="d-flex">
-              <add-comparison :id="announcement.id_unique" v-if="announcement.car_catalog" />
-              <add-favorite :announcement="announcement" />
+              <template v-if="announcement.status == 1">
+                <add-comparison :id="announcement.id_unique" v-if="announcement.car_catalog" />
+                <add-favorite :announcement="announcement" />
+              </template>
             </span>
             <add-complaint :announcement="announcement" />
           </template>
@@ -270,7 +272,7 @@ export default {
           this.gallerySwiper.on('slideChange', () => {
             this.currentSlide = this.gallerySwiper.realIndex;
           });
-          this.gallerySwiper.on('click tap touchEnd', () => {
+          this.gallerySwiper.on(this.isMobileBreakpoint ? 'click tap': 'click tap touchEnd', () => {
             this.openLightbox(this.currentSlide);
           });
           this.updateTouchEvents();

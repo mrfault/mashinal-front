@@ -1,5 +1,5 @@
 <template>
-  <div :class="{[colClass]: colClass}">
+  <div :class="colClass || 'stratch-child-block'">
     <div class="announcements-grid_gallery" @click="goToAnnouncement" v-if="showGallery">
       <a v-if="!isMobileBreakpoint && !$env.DEV" target="_blank" :href="getLink" class="abs-link" @click.stop>
         <span class="sr-only">{{ getAnnouncementTitle(announcement) }}</span>
