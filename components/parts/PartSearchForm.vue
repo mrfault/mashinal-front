@@ -68,7 +68,7 @@
             </div>
 
             <!-- Announcement count -->
-            <div class="col-12 col-lg-2" v-if="!isMobileBreakpoint">
+            <div class="col-12 col-lg-2" v-if="!isMobileBreakpoint && pagination.total !== undefined">
               <div class="form-info text-green">
                 {{ $readPlural(pagination.total, $t('plural_forms_announcements')) }}
               </div>
@@ -161,7 +161,7 @@
               <div class="row">
                 <div class="col-lg-8" v-if="!isMobileBreakpoint"></div>
                 <!-- Announcement count -->
-                <div class="col-12 col-lg-2 mt-3" v-if="isMobileBreakpoint">
+                <div class="col-12 col-lg-2 mt-3" v-if="isMobileBreakpoint && pagination.total !== undefined">
                   <div class="form-info text-green">
                     {{ $readPlural(pagination.total, $t('plural_forms_announcements')) }}
                   </div>
