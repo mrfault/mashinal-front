@@ -5,14 +5,16 @@
         v-model="rangeValue" 
         :min="min" 
         :max="max" 
+        :data="data || []"
         :interval="step" 
         :enable-cross="false"
         :tooltip="'always'"
         :min-range="step"
       >
-        <template v-slot:tooltip="{ value }">
-          <div class="tooltip">
-            {{ value === rangeValue[0] ? $t('from') : $t('to') }}
+        <template #tooltip="{ value }">
+          <div :class="['tooltip', { 'in-right': max === value, 'in-left': min === value }]">
+            <template v-if="tooltipTemplate">{{ tooltipTemplate.replace('{value}', value).replace('day', $readPlural(value, $t('plural_forms_day'), false)) }}</template>
+            <template v-else>{{ value === rangeValue[0] ? $t('from') : $t('to') }}</template>
           </div>
         </template>
       </vue-slider>
@@ -30,6 +32,7 @@ import 'vue-slider-component/theme/default.css';
 export default {
   props: {
     value: {},
+    data: {},
     min: {
       type: Number,
       default: 0
@@ -41,7 +44,8 @@ export default {
     step: {
       type: Number,
       default: 1000
-    }
+    },
+    tooltipTemplate: String
   },
   components: {
     VueSlider

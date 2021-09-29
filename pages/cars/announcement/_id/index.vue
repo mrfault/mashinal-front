@@ -38,6 +38,7 @@
           <div class="col-auto">
             <quick-info type="cars" />
             <announcement-specs type="cars" />
+            <monetization :announcement="announcement" v-if="!isMobileBreakpoint && showMonetization(announcement)" />
             <comment :comment="announcement.comment" v-if="isMobileBreakpoint">
               <template #after v-if="hasComplects || getCarHealth">
                 <hr v-if="announcement.comment" />
@@ -67,6 +68,7 @@ import Comment from '~/components/announcements/inner/Comment';
 import CarComplects from '~/components/announcements/inner/CarComplects';
 import DamageOptions from '~/components/options/DamageOptions';
 import Relatives from '~/components/announcements/inner/Relatives';
+import Monetization from '~/components/announcements/Monetization';
 
 export default {
   name: 'pages-cars-id',
@@ -78,7 +80,8 @@ export default {
     Comment,
     CarComplects,
     DamageOptions,
-    Relatives
+    Relatives,
+    Monetization
   },
   nuxtI18n: {
     paths: {

@@ -48,10 +48,11 @@
           </nuxtLink>
         </h2>
         <h2 v-else>{{ contact.name }}</h2>
-        <address>{{ contact.address }}</address>
+        <address v-if="announcement.status != 3">{{ contact.address }}</address>
+        <span class="text-red" v-else>{{ $t('sold') }}</span>
       </div>
     </div>
-    <div class="row">
+    <div class="row" v-if="announcement.status != 3">
       <div class="col mt-2 mt-lg-3" v-if="contact.lat && contact.lng">
         <show-map-button :lat="contact.lat" :lng="contact.lng" /> 
       </div>
@@ -62,8 +63,14 @@
         <call-button :phone="contact.phone" />
       </div>
     </div>
+    <template v-if="!brief && userIsOwner(announcement) && announcement.has_monetization">
+      <hr class="mt-3" />
+      <div class="mb-2 mb-lg-3">
+        <monetization-stats-button :announcement="announcement" />
+      </div>
+    </template>
     <template v-if="!brief && (userIsOwner(announcement) && announcement.status != 2) || (announcement.status == 3 && !announcement.is_autosalon)">
-      <hr />
+      <hr :class="{'mt-3': announcement.status == 3}" />
       <div class="row mt-n2 mt-lg-n3">
         <div class="col mt-2 mt-lg-3">
           <restore-button :announcement="announcement" v-if="announcement.status == 3" :free="type === 'parts'" />
@@ -85,6 +92,7 @@ import DeactivateButton from '~/components/announcements/DeactivateButton';
 import EditButton from '~/components/announcements/EditButton';
 import ChatButton from '~/components/announcements/ChatButton';
 import CallButton from '~/components/announcements/CallButton';
+import MonetizationStatsButton from '~/components/announcements/MonetizationStatsButton';
 import ShowMapButton from '~/components/elements/ShowMapButton';
 
 export default {
@@ -98,7 +106,8 @@ export default {
     EditButton,
     ChatButton,
     CallButton,
-    ShowMapButton
+    ShowMapButton,
+    MonetizationStatsButton
   },
   computed: {
     ...mapGetters(['announcement']),

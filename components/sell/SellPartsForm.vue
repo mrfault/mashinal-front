@@ -152,7 +152,7 @@
               />
 
               <!-- Input -->
-              <form-text-input
+              <form-numeric-input
                 v-if="filter.component === 'filter-single-input'"
                 v-model="form[filter.key]"
                 :placeholder="$t(filter.key === 'capacity' ? 'battery_capacity': filter.key)"

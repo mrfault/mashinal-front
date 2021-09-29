@@ -29,6 +29,21 @@
   font-style: normal !important;
 }
 
+.icon-users:before {
+  content: "\e97e";
+}
+.icon-money-used:before {
+  content: "\e97d";
+}
+.icon-money-total:before {
+  content: "\e97c";
+}
+.icon-money-left:before {
+  content: "\e97b";
+}
+.icon-pie-chart:before {
+  content: "\e97a";
+}
 .icon-parts:before {
   content: "\e977";
   -webkit-text-stroke: .2px;
