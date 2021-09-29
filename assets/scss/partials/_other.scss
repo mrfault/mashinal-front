@@ -253,6 +253,35 @@
   &.larger {
     width: 590px;
   }
+  &.modal-container {
+    width: 1200px;
+  }
+}
+
+.modal-card {
+  padding: 23px 25px;
+  border: 1px solid $greyish-blue-3;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  p {
+    margin-bottom: 0;
+  }
+}
+
+.modal-sticky-bottom {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  background-color: $white;
+}
+
+.dark-mode {
+  .modal-card {
+    border-color: $dark-1;
+  }
+  .modal-sticky-bottom {
+    background-color: $dark-2;
+  }
 }
 
 .dark-mode {
@@ -398,7 +427,9 @@
 
   .modal-popup {
     &,
-    &.wider {
+    &.wider,
+    &.larger,
+    &.modal-container {
       width: 100%;
       width: calc(100% + 1px);
     }

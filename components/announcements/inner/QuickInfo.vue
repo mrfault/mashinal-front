@@ -63,6 +63,12 @@
         <call-button :phone="contact.phone" />
       </div>
     </div>
+    <template v-if="!brief && userIsOwner(announcement) && announcement.has_monetization">
+      <hr class="mt-3" />
+      <div class="mb-2 mb-lg-3">
+        <monetization-stats-button :announcement="announcement" />
+      </div>
+    </template>
     <template v-if="!brief && (userIsOwner(announcement) && announcement.status != 2) || (announcement.status == 3 && !announcement.is_autosalon)">
       <hr :class="{'mt-3': announcement.status == 3}" />
       <div class="row mt-n2 mt-lg-n3">
@@ -86,6 +92,7 @@ import DeactivateButton from '~/components/announcements/DeactivateButton';
 import EditButton from '~/components/announcements/EditButton';
 import ChatButton from '~/components/announcements/ChatButton';
 import CallButton from '~/components/announcements/CallButton';
+import MonetizationStatsButton from '~/components/announcements/MonetizationStatsButton';
 import ShowMapButton from '~/components/elements/ShowMapButton';
 
 export default {
@@ -99,7 +106,8 @@ export default {
     EditButton,
     ChatButton,
     CallButton,
-    ShowMapButton
+    ShowMapButton,
+    MonetizationStatsButton
   },
   computed: {
     ...mapGetters(['announcement']),
