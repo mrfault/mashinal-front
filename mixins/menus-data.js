@@ -80,7 +80,7 @@ export const MenusDataMixin = {
           { title: 'comparisons', route: '/comparison', showOnCard: false },
           { title: 'messages', route: '/profile/messages', showOnCard: false },
           { title: 'payment_history', route: '/profile/payments', showOnCard: true, dev: true },
-          { title: 'balans', route: '/profile/balance', showOnCard: true, dev: true }
+          { title: 'balans', route: '/profile/balance', showOnCard: true }
         ]).filter(item => !item.dev || this.$env.DEV);;
     },
 

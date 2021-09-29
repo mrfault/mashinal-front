@@ -2,6 +2,9 @@
   <div>
     <div class="floating-cta" ref="floating">
       <div class="row">
+        <div class="col" v-if="showMonetization(announcement)">
+          <monetization :announcement="announcement" type="button" />
+        </div>
         <div class="col">
           <call-button :phone="contact.phone" />
         </div>
@@ -14,13 +17,15 @@
 
 <script>
 import CallButton from '~/components/announcements/CallButton';
+import Monetization from '~/components/announcements/Monetization';
 
 export default {
   props: {
     announcement: {}
   },
   components: {
-    CallButton
+    CallButton,
+    Monetization
   },
   computed: {
     contact() {
