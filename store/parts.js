@@ -46,8 +46,7 @@ export const actions = {
     const data = await this.$axios.$post('/part/home_page');
     commit('mutate', {
       property: 'announcements',
-      key: 'data',
-      value: data
+      value: { data }
     })
     commit('mutate', {
       property: 'otherAnnouncements',

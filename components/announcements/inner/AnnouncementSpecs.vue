@@ -69,9 +69,13 @@ export default {
         { key: 'chassis_suspension', value: this.chassisSuspension, for: ['commercial'] },
         { key: 'first_owner', value: (parseInt(this.announcement.owner_type || this.announcement.owners || this.announcement.owner)) ? this.$t('no') : this.$t('yes'), for: ['cars', 'commercial', 'moto'] },
         { key: 'customs', value: (this.announcement.customs_clearance || this.announcement.customed_id || this.announcement.customed ) ? this.$t('not_cleared') : this.$t('cleared'), for: ['cars', 'commercial', 'moto'] },
+        { key: 'product_code', value: this.announcement.product_code, for: ['parts'] },
         { key: 'category', value: this.announcement?.category?.name[this.locale], for: ['parts'] },
         { key: 'sub_category', value: this.announcement?.sub_category?.name[this.locale], for: ['parts'] },
-        { key: 'region', value: this.region },
+        { key: 'brand_name', value: this.announcement?.brand?.name, for: ['parts'] },
+        ...Object.keys(this.announcement.filters).map(key => (
+          { key, value: this.announcement.filters[key], for: ['parts'] }
+        )),
         { key: 'vin', value: this.announcement.show_vin && this.announcement.vin },
         { key: 'license_plate', value: this.announcement.show_car_number && this.announcement.car_number },
         { key: 'exchange', value: (this.announcement.exchange_possible || this.announcement.tradeable) && this.$t('is_possible') },
