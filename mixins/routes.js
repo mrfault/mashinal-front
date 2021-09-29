@@ -7,7 +7,7 @@ export const RoutesMixin = {
           localeTitle: this.$t('all'),
           slug: '/',
           route: '/parts/',
-          icon: 'part-0',
+          icon: 'parts',
           showOnMenu: true
         },{
           title: 'parts',
