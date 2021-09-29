@@ -73,9 +73,6 @@ export default {
         { key: 'category', value: this.announcement?.category?.name[this.locale], for: ['parts'] },
         { key: 'sub_category', value: this.announcement?.sub_category?.name[this.locale], for: ['parts'] },
         { key: 'brand_name', value: this.announcement?.brand?.name, for: ['parts'] },
-        ...Object.keys(this.announcement.filters).map(key => (
-          { key, value: this.announcement.filters[key], for: ['parts'] }
-        )),
         { key: 'vin', value: this.announcement.show_vin && this.announcement.vin },
         { key: 'license_plate', value: this.announcement.show_car_number && this.announcement.car_number },
         { key: 'exchange', value: (this.announcement.exchange_possible || this.announcement.tradeable) && this.$t('is_possible') },
@@ -89,9 +86,16 @@ export default {
       // Dynamic specs
       if (this.type === 'parts') {
         Object.keys(this.announcement.filters).forEach(filter => {
+          let value = this.announcement.filters[filter]
+          if (typeof value === 'boolean') {
+            value = value ? this.$t('yes') : this.$t('yes');
+          } else if (typeof value === 'object') {
+            value = this.$t(value.name)
+          }
+
           specs.push({
             key: filter.replace('capacity', 'battery_capacity'),
-            value: this.$t(this.announcement.filters[filter]?.name || ''),
+            value,
             for: ['parts'] }
           )
         })
