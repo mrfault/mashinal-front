@@ -32,7 +32,9 @@
               <span class="badge from-border">{{ $t(announcement.title ? 'shop' : 'is_autosalon') }}</span>
             </template> -->
             <span class="d-flex">
-              <!-- here badges can be placed -->
+              <span class="btn-sq btn-sq--color-red active" v-if="announcement.has_monetization">
+                <icon name="speaker" />
+              </span>
             </span>
           </div>
           <div class="item-overlay_bottom d-flex">
