@@ -20,7 +20,7 @@
     <template v-for="(group, index) in filteredSellOptions">
       <collapse-content
         :title="getTitle(group, index)"
-        :first-collapsed="tagSellOptions.length || index !== 0"
+        :first-collapsed="!!tagSellOptions.length || index !== 0"
         :key="index"
       >
         <p v-for="(option, index) in getOptions(group)" :key="index">
