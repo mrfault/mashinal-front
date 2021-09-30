@@ -349,7 +349,7 @@ export default {
       }
     },
     handleSwipeTop() {
-      if (document.querySelector('body').classList.contains('zooming')) return;
+      if (document?.body?.classList.contains('zooming')) return;
       this.closeLightbox();
     }
   },
