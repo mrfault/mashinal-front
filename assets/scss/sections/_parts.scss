@@ -26,7 +26,7 @@
         }
       }
   
-      &.active a {
+      &.active a, &:hover a {
         background-color: $greyish-blue-9;
       }
     }
@@ -256,8 +256,8 @@
   }
 
   .part-categories {
-    li {
-      &.active a{
+    .category {
+      &.active a, &:hover a {
         background-color: rgba($grey-11, 0.2);
       }
 
