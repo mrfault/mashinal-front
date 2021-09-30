@@ -26,7 +26,7 @@ export default {
   data() {
     return {
       swiperOps: {
-        slidesPerView: 5.8,
+        slidesPerView: 5.3,
         spaceBetween: 20,
         freeMode: true,
         init: false
