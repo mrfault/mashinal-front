@@ -40,9 +40,11 @@
 .parts {
   &-banners {
     display: flex;
-    gap: 20px;
-
     @include media-max-width('md') {
+      flex-direction: column;
+    }
+    .col {
+      display: flex;
       flex-direction: column;
     }
   }
