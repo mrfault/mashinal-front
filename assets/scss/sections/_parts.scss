@@ -26,7 +26,7 @@
         }
       }
   
-      &.active a {
+      &.active a, &:hover a {
         background-color: $greyish-blue-9;
       }
     }
@@ -40,9 +40,11 @@
 .parts {
   &-banners {
     display: flex;
-    gap: 20px;
-
     @include media-max-width('md') {
+      flex-direction: column;
+    }
+    .col {
+      display: flex;
       flex-direction: column;
     }
   }
@@ -254,8 +256,8 @@
   }
 
   .part-categories {
-    li {
-      &.active a{
+    .category {
+      &.active a, &:hover a {
         background-color: rgba($grey-11, 0.2);
       }
 
