@@ -67,7 +67,7 @@
                 <span class="payment-price">
                   <span :class="row.operation_type === '+' ? 'text-green' : 'text-red'">{{ row.price }} {{ getCurrency(row.operation_key) }}</span>
                 </span>
-                <span class="payment-date"><span>{{ $moment(row.created_at).format('hh:mm | DD.MM.YYYY') }}</span></span>
+                <span class="payment-date"><span>{{ $moment(row.created_at).format('HH:mm | DD.MM.YYYY') }}</span></span>
               </div>
             </div>
           </div>
