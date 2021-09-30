@@ -901,6 +901,7 @@ export default {
   "miniven": "Miniven",
   "contact_number": "Əlaqə nömrəsi",
   "mobile_number": "Mobil nömrə",
+  "mobile_number_your": "Mobil nömrəniz",
   "model": "Model",
   "model_card": "Model kartı",
   "model_name": "Modelin adı",
