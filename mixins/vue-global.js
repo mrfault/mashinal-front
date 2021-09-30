@@ -113,7 +113,7 @@ Vue.use({
           return (brand || '') + ' ' + (model || '');
         },
         getAnnouncementContact(item) {
-          let img = item.is_autosalon ? item.user.autosalon.logo : item.user.avatar;
+          let img = item.is_autosalon ? item.user.autosalon?.logo : item.user.avatar;
           return {
             type: 'user',
             user: item.user,

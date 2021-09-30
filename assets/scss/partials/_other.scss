@@ -211,6 +211,10 @@
   }
   &_content {
     padding: 25px;
+    ul, ol {
+      padding-left: 25px;
+      line-height: 2;
+    }
     .title {
       margin-bottom: 20px;
       font-size: 12px;
