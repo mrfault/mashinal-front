@@ -47,8 +47,8 @@ export const ImageResizeMixin = {
             }
           }
           reader.readAsDataURL(file);
-        } catch (err) {
-          console.error(err);
+        } catch (error) {
+          console.error(error);
           resolve(file);
         }
       });

@@ -365,7 +365,7 @@
             }
             // focus on first input
             if (this.custom) {
-              this.$el.querySelector('.text-input input')?.focus();
+              this.$el?.querySelector('.text-input input')?.focus();
             }
           });
         } else {
@@ -374,7 +374,7 @@
         }
         // hide overflow when selected
         if (!this.inSelectMenu) {
-          document.querySelector('body').classList[val ? 'add' : 'remove']('select-menu-open');
+          document?.body?.classList[val ? 'add' : 'remove']('select-menu-open');
         }
       },
       getFilteredOptions() {

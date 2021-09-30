@@ -154,10 +154,10 @@
               <!-- Input -->
               <form-numeric-input
                 v-if="filter.component === 'filter-single-input'"
-                v-model="form[filter.key]"
+                :value="form[filter.key]"
                 :placeholder="$t(filter.key === 'capacity' ? 'battery_capacity': filter.key)"
                 :invalid="isInvalid(filter.key)"
-                @input="dynamicFilterOnChange(filter.key, $event)"
+                @input="form[filter.key] = String($event), dynamicFilterOnChange(filter.key, $event)"
                 @change="removeError(filter.key)"
               />
             </div>

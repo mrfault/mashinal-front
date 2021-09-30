@@ -98,43 +98,44 @@ export const LayoutMixin = {
     });
   },
   mounted() {
-    this.configSocket();
-    if (this.loggedIn) 
-      this.toggleEchoListening(true);
+    this.$nextTick(() => {
+      this.configSocket();
+      if (this.loggedIn) 
+        this.toggleEchoListening(true);
+        
+      this.$nuxt.$on('login', (auth) => {
+        if (auth) this.handleAfterLogin();
+        this.toggleEchoListening(auth);
+      });
+
+      this.$nuxt.$on('login-popup', (key) => {
+        if (this.loggedIn) return;
+        this.showLoginPopup = true;
+        this.loginActionKey = key;
+      });
+
+      window.addEventListener('resize', this.handleResize);
+      window.addEventListener('resize', this.handleScroll);
+      window.addEventListener('scroll', this.handleScroll);
       
-    this.$nuxt.$on('login', (auth) => {
-      if (auth) this.handleAfterLogin();
-      this.toggleEchoListening(auth);
+      setTimeout(() => {
+        this.handleResize();
+        this.handleScroll();
+        this.pickColorMode();
+        // check payment status
+        if (['true','false'].includes(this.$route.query.success)) {
+          let type = this.$route.query.success === 'true' ? 'success' : 'error';
+          this.updatePaidStatus({
+            type,
+            title: this.$t(`${type}_payment`),
+            text: '', //this.$t(`${type}_payment_msg`)
+          });
+        }
+        // strange behavior of loading prop which is not updating 
+        // in v-show directive without changing key sometimes
+        this.setLoading(false);
+      }, 0);
     });
-
-    this.$nuxt.$on('login-popup', (key) => {
-      if (this.loggedIn) return;
-      this.showLoginPopup = true;
-      this.loginActionKey = key;
-    });
-
-    window.addEventListener('resize', this.handleResize);
-    window.addEventListener('resize', this.handleScroll);
-    window.addEventListener('scroll', this.handleScroll);
-    
-    setTimeout(() => {
-      this.handleResize();
-      this.handleScroll();
-      this.pickColorMode();
-      // check payment status
-      if (['true','false'].includes(this.$route.query.success)) {
-        let type = this.$route.query.success === 'true' ? 'success' : 'error';
-        this.updatePaidStatus({
-          type,
-          title: this.$t(`${type}_payment`),
-          text: '', //this.$t(`${type}_payment_msg`)
-        });
-      }
-      // strange behavior of loading prop which is not updating 
-      // in v-show directive without changing key sometimes
-      this.setLoading(false);
-    }, 0);
-
   },
   beforeDestroy() {
     if (this.loggedIn) 
