@@ -3,19 +3,21 @@
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
       <grid 
-        :announcements="mainAnnouncements.latest" 
-        :paginate="$paginate(mainAnnouncements)"
+        :announcements="mainAnnouncements.data" 
         :title="$t('announcements')"
         :pending="pending"
-        @pending="pending = true"
         escape-duplicates
+      />
+      <infinite-loading 
+        action="getMotoMainSearch" 
+        getter="mainAnnouncements" 
       />
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 import Grid from '~/components/announcements/Grid';
 
@@ -39,12 +41,15 @@ export default {
   async asyncData({ store }) {
     await Promise.all([
       store.dispatch('getMotoOptions'),
-      store.dispatch('getMainSearch', { url: '/moto_home_page' })
+      store.dispatch('getMotoMainSearch')
     ]);
 
     return {
       pending: false
     }
+  },
+  methods: {
+    ...mapActions(['getMotoMainSearch'])
   },
   computed: {
     ...mapGetters(['mainAnnouncements']),
