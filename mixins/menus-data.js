@@ -71,7 +71,6 @@ export const MenusDataMixin = {
           { title: 'messages', route: '/profile/messages', showOnCard: false },
           { title: 'statistics', route: '/profile/statistics', showOnCard: false },
           { title: 'my_profile', route: '/profile/salon', showOnCard: false },
-          { title: 'payment_history', route: '/profile/payments', showOnCard: true },
           { title: 'balans', route: '/profile/balance', showOnCard: true }
         ]  
         : [
@@ -79,7 +78,6 @@ export const MenusDataMixin = {
           { title: 'my_announces', route: '/profile/announcements', showOnCard: true },
           { title: 'comparisons', route: '/comparison', showOnCard: false },
           { title: 'messages', route: '/profile/messages', showOnCard: false },
-          { title: 'payment_history', route: '/profile/payments', showOnCard: true, dev: true },
           { title: 'balans', route: '/profile/balance', showOnCard: true }
         ]).filter(item => !item.dev || this.$env.DEV);;
     },
