@@ -10,14 +10,7 @@ export const PaymentMixin = {
     }
   },
   computed: {
-    ...mapGetters(['paidStatusData']),
-
-    paymentMethodOptions() {
-      return [
-        { key: 1, name: this.$t('pay_with_card') },
-        // { key: 2, name: this.$t('pay_with_million') }
-      ]
-    }
+    ...mapGetters(['paidStatusData'])
   },
   methods: {
     ...mapActions(['updatePaidStatus']),

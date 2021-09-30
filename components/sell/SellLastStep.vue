@@ -53,7 +53,7 @@
                 <popover :message="$t('with_significant_damage_to_body_elements_that_do_not_move_on_their_own')" :width="175" />
               </form-checkbox>
               <form-checkbox transparent :label="$t('not_cleared')" v-model="form.customs_clearance" input-name="customs_clearance"
-                @change="removeError('car_number', true), removeError('vin', true), form.vin = ''" />
+                @change="removeError('car_number', true), removeError('vin', true), form.car_number = ''" />
               <form-checkbox transparent :label="$t('in_garanty')" v-model="form.guaranty" input-name="guaranty" />
             </div>
           </div>

@@ -70,9 +70,11 @@ export default {
   },
   methods: {
     slideToCategory() {
-      if (this.routeName !== 'commercial-commercial') return false;
-      let slide = this.activeMenu?.children?.findIndex(menu => this.$localePath(menu.route) === this.$route.path);
-      if (slide) this.searchNavSwiper?.slideTo(slide);
+      this.$nextTick(() => {
+        if (this.routeName !== 'commercial-commercial') return false;
+        let slide = this.activeMenu?.children?.findIndex(menu => this.$localePath(menu.route) === this.$route.path);
+        if (slide) this.searchNavSwiper?.slideTo(slide);
+      });
     }
   },
   mounted() {

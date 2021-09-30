@@ -570,7 +570,7 @@ export default {
   ],
   "enter_a_new_mobile_number": "Yeni əlaqə nömrəsi əlavə et",
   "enter_new_email": "Yeni e-mail ünvanı qeyd et",
-  "enter_the_amount_in_azn": "Məbləği AZN ilə daxil et",
+  "enter_the_amount_in_azn": "Məbləği AZN ilə daxil et (min. {min})",
   "enter_the_code": "Kodu daxil edin",
   "enter_the_code_from_mail": "Elektron ünvana göndərilən kodu daxil et",
   "enter_the_code_from_sms": "SMS-də gəlmiş kodu əlavə et",
@@ -1064,7 +1064,8 @@ export default {
   "pay": "Ödəniş et",
   "pay_till_date": "<strong>{date}</strong> tarixinə qədər ödəniş etməlisiniz.",
   "pay_with_card": "Bank kartı",
-  "pay_with_million": "Milliön",
+  "pay_with_terminal": "Terminallarda ödəniş",
+  "pay_with_balance": "Balans",
   "payment": "Ödəniş",
   "payment_amount": "Məbləğ",
   "payment_history": "Ödəniş tarixçəsi",
@@ -1818,5 +1819,16 @@ export default {
   "ad_grid_clicks": "Elana ətraflı baxış sayı",
   "ad_messages": "Mesaj yazanlar",
   "ad_calls": "Nömrənin açılma sayı",
-  "ad_favorites": "Seçilmişlərə əlavə edənlər"
+  "ad_favorites": "Seçilmişlərə əlavə edənlər",
+  "sell_again": "Elan təkrar yerləşdirib",
+  "terminal_pay_info": "Milliön terminalları vasitəsilə aşağıdakı qaydada balans artıra bilərsiniz.",
+  "terminal_pay_steps": [
+    "Terminalın ekranında \"İrəli\" düyməsini sıxın",
+    "\"Elanlar və kuponlar\" bölməsini seçin",
+    "Açılan bölmədə \"Mashin.al\"-ı seçin",
+    "Qeydiyyat zamanı istifadə etdiyiniz mobil nömrəni daxil edin",
+    "Nömrənin düzgünlüyünə əmin olun",
+    "\"Nağd pulla ödəniş\" üsulunu seçin",
+    "Əsginasları terminala daxil edin, \"İrəli\" düyməsini sıxın və çeki götürün"
+  ],
 }
