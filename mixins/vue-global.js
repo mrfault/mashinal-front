@@ -69,7 +69,8 @@ Vue.use({
           window.scrollTo(0, 0);
         },
         setBodyOverflow(value = 'auto', className) {
-          let bodyEl = document.querySelector('body');
+          let bodyEl = document.body;
+          if (!bodyEl) return;
           let scrollBarWidth = window.innerWidth - bodyEl.clientWidth;
           let mobileScreenOpen = bodyEl.classList.contains('mobile-screen-open') && className !== 'mobile-screen-open';
           let mobileScreen = document.querySelector('.mobile-screen');

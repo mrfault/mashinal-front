@@ -246,9 +246,8 @@ const objectNotEmpty = (state, commit, property) => {
 
 export const actions = {
   async nuxtServerInit({ dispatch, commit }) {
-    await Promise.all([
-      dispatch('getStaticPages')
-    ]);
+
+    await dispatch('getStaticPages');
 
     let ptk = this.$cookies.get('ptk') || 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
       .replace(/[xy]/g, (c) => {

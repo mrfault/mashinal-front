@@ -23,8 +23,8 @@ export const ColorModeMixin = {
         } else if (darkMediaQuery.addListener) {
           darkMediaQuery.addListener(handleMediaQuery);
         } 
-      } catch(err) {
-        console.error(err);
+      } catch(error) {
+        console.error(error);
       }       
     }
   }

@@ -98,7 +98,7 @@ export const LayoutMixin = {
     });
   },
   mounted() {
-    try {
+    this.$nextTick(() => {
       this.configSocket();
       if (this.loggedIn) 
         this.toggleEchoListening(true);
@@ -135,11 +135,7 @@ export const LayoutMixin = {
         // in v-show directive without changing key sometimes
         this.setLoading(false);
       }, 0);
-    } catch(err) {
-      console.log(err);
-      console.log('error catched');
-      this.setLoading(false);
-    }
+    });
   },
   beforeDestroy() {
     if (this.loggedIn) 
