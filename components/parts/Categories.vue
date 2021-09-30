@@ -34,11 +34,9 @@ export default {
     }
   },
   mounted() {
-    this.$nextTick(() => {
-      setTimeout(() => {
-        this.thumbsSwiper.init();
-      }, 0);
-    });
+    setTimeout(() => {
+      this.thumbsSwiper.init();
+    }, 1);
   },
   methods: {
     isActive(category) {
