@@ -855,6 +855,7 @@ export default {
   "meta-descr_sell": "Создайте бесплатное объявление за 5 минут, чтобы продать свой автомобиль и получить выгоду от хороших предложений.",
   "meta-descr_parts-sell": "Создайте бесплатное объявление за 5 минут, чтобы продать запчасть и получить выгоду от хороших предложений.",
   "meta-descr_parts": "Смотрите на списки запчастей и сравнивайте их цены. Сохраняйте понравившиеся объявления.",
+  "meta-descr_business-profile": "Biznes profili",
   "meta-title_announcement-new": "Новый {announce}",
   "meta-title_announcement-used": "Подержанный {announce}",
   "meta-title_cars": "Объявления о продаже новых и подержанных авто | Цены на новые и подержанные авто",
@@ -873,6 +874,7 @@ export default {
   "meta-title_parts": "Объявления о продаже запчастей | Цены на запчасти",
   "meta-title_parts-sell": "Продать запчасть на официальном авторынке",
   "meta-title_parts_category": "Объявления о продаже {category} | Цены {category}",
+  "meta-title_business-profile": "Biznes profili yarat",
   "meta-words_catalog-car": [
     "Модели",
     "Поколения",

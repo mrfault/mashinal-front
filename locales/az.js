@@ -854,6 +854,7 @@ export default {
   "meta-descr_sell": "Maşını satmaq üçün 5 Dəqiqəyə Pulsuz Maşın Elanı Yarat Və Yaxşı Təkliflərdən Yararlan.",
   "meta-descr_parts-sell": "Ehtiyat hissələrini satmaq üçün 5 Dəqiqəyə Pulsuz Ehtiyat hissələri Elanı Yarat Və Yaxşı Təkliflərdən Yararlan.",
   "meta-descr_parts": "Ehtiyat hissələri",
+  "meta-descr_business-profile": "Biznes profili",
   "meta-title_announcement-new": "Yeni {announce}",
   "meta-title_announcement-used": "İşlənmiş {announce}",
   "meta-title_cars": "Yeni Və İşlənmiş Maşın Elanları | Yeni Və İşlənmiş Maşın Qiymətləri",
@@ -872,6 +873,7 @@ export default {
   "meta-title_parts": "Ehtiyat hissələri",
   "meta-title_parts-sell": "Ehtiyat hissələrini Onlayn Maşın Bazarında Sat",
   "meta-title_parts_category": "{category} Elanları | {category} Qiymətləri",
+  "meta-title_business-profile": "Biznes profili yarat",
   "meta-words_catalog-car": [
     "Modelləri",
     "Təzə və köhnə modelləri",
@@ -1818,5 +1820,10 @@ export default {
   "ad_grid_clicks": "Elana ətraflı baxış sayı",
   "ad_messages": "Mesaj yazanlar",
   "ad_calls": "Nömrənin açılma sayı",
-  "ad_favorites": "Seçilmişlərə əlavə edənlər"
+  "ad_favorites": "Seçilmişlərə əlavə edənlər",
+  "business_profile_services": "Biznes profili xidmətləri",
+  "autosalon": "Avtosalon",
+  "get_a_business_profile": "Biznes profil əldə et",
+  "repeat_password": "Şifrənin təkrarı",
+  "you_will_have_to_pay_100_to_get_a_business_profile": "*Biznes profili əldə etmək üçün 100 ₼ ödəniş etməli olacaqsınız.",
 }
