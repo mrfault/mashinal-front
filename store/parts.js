@@ -75,7 +75,7 @@ export const actions = {
     }
     delete payload.announce_type;
 
-    const data = await this.$axios.$post('/part?page=' + payload?.page || 1, payload)
+    const data = await this.$axios.$post('/grid/part?page=' + payload?.page || 1, payload)
     commit('mutate', {
       property: 'showNotFound',
       value: !data.data.length
@@ -86,7 +86,7 @@ export const actions = {
     })
   },
   async getCategoryAnnouncements({ commit }, payload) {
-    const data = await this.$axios.$post('/part', payload);
+    const data = await this.$axios.$post('/grid/part', payload);
 
     commit('mutate', {
       property: 'announcements',
