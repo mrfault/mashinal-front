@@ -71,7 +71,7 @@
                 <template v-if="where === 'announcement'">
                   <h3>{{ getAnnouncementTitle(announcement) }}</h3>
                   <h4>{{ announcement.price }}</h4>
-                  <div class="row">
+                  <div class="row" v-if="announcement.status != 3">
                     <div class="col" v-if="canSendMessage(announcement)">
                       <chat-button :announcement="announcement" :className="'white-outline'" />
                     </div>

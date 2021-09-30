@@ -17,7 +17,7 @@
         {{ $t('catalog_model_specifications') }}
       </nuxt-link>
     </div>
-    <div class="mt-3 mt-lg-0" v-if="isMobileBreakpoint">
+    <div class="mt-3 mt-lg-0" v-if="isMobileBreakpoint && announcement.status != 3">
       <floating-cta :announcement="announcement" />
     </div>
   </div>
