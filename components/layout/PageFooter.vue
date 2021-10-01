@@ -9,7 +9,7 @@
           <p>{{ $t('learn_about_emerging_product_text') }}</p>
           <newsletter />
           <share-it type="contact" />
-          <mark>&copy; {{ currentYear }} Mashin.al Developed by 
+          <mark>&copy; {{ currentYear }} Mashin.AL Developed by 
             <a href="//al.ventures" target="_blank" rel="noopener">AlVentures</a>
           </mark>
         </div>

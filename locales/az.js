@@ -1399,7 +1399,7 @@ export default {
   "sign-in": "Daxil <br/>ol.",
   "sign-in_info": "Hesabına daxil ol",
   "sign-up": "Qeydiyyatdan <br/>keç.",
-  "sign-up_info": "Mashin.al-da qeydiyyatdan keç",
+  "sign-up_info": "Mashin.AL-da qeydiyyatdan keç",
   "Signaling": "Siqnalizasiya",
   "simple": "Sadə",
   "simpled": "Adi",
@@ -1826,7 +1826,7 @@ export default {
   "terminal_pay_steps": [
     "Terminalın ekranında \"İrəli\" düyməsini sıxın",
     "\"Elanlar və kuponlar\" bölməsini seçin",
-    "Açılan bölmədə \"Mashin.al\"-ı seçin",
+    "Açılan bölmədə \"Mashin.AL\"-ı seçin",
     "Qeydiyyat zamanı istifadə etdiyiniz mobil nömrəni daxil edin",
     "Nömrənin düzgünlüyünə əmin olun",
     "\"Nağd pulla ödəniş\" üsulunu seçin",

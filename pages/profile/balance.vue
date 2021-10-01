@@ -109,7 +109,7 @@
 
       return { 
         pending: false,
-        minAmount: app.$env.DEV ? 0.01 : 0.1,
+        minAmount: app.$env.DEV ? 0.01 : 1,
         form: {
           money: ''
         }

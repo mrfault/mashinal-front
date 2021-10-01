@@ -28,7 +28,7 @@
         />
         <div :class="['select-menu_dropdown responsive', `anchor-${anchor}`, {'show': showOptions, custom, 'custom-checkboxes': customCheckboxes}]">
           <template v-if="showOptions">
-            <div class="mt-3" v-if="hasSearch" @click.stop>
+            <div class="mt-3" v-if="hasSearch && !hasGenerations" @click.stop>
               <div class="container">
                 <form-text-input 
                   v-model="search"
@@ -54,19 +54,33 @@
                     </div>
                   </div>
                 </div>
-                <template v-for="(option, index) in getFilteredOptions">
-                  <div :key="index" :class="['select-menu_dropdown-option', {'selected': isSelected(option), 'anchor': isAnchor(index)}]" 
-                      @click.stop="selectValue = option">
-                    <div class="img" v-if="imgKey && option[imgKey]">
-                      <img :src="$withBaseUrl(option[imgKey])" :alt="getOptionName(option)" />
+                <div class="mt-2" v-if="hasGenerations && getFilteredOptions.length">
+                  <form-buttons v-model="selectGeneration" :options="getFilteredOptions" 
+                    :btn-class="'primary-outline select-generation'" :group-by="2">
+                    <template #custom="{ button }">
+                      <div :style="getGenerationStyle(button)" :class="['generation-bg', {'no-img': !!getGenerationStyle(button).noImg }]"></div>
+                      <div class="generation-info">
+                        <span>{{ button.start_year }} — {{ button.end_year || currentYear }}</span>
+                        <span>{{ button.short_name[locale] }}</span>
+                      </div>
+                    </template>
+                  </form-buttons>
+                </div>
+                <template v-else-if="getFilteredOptions.length">
+                  <template v-for="(option, index) in getFilteredOptions">
+                    <div :key="index" :class="['select-menu_dropdown-option', {'selected': isSelected(option), 'anchor': isAnchor(index)}]" 
+                        @click.stop="selectValue = option">
+                      <div class="img" v-if="imgKey && option[imgKey]">
+                        <img :src="$withBaseUrl(option[imgKey])" :alt="getOptionName(option)" />
+                      </div>
+                      <div class="text-truncate">
+                        <span>{{ getOptionName(option) }}</span>
+                      </div>
+                      <icon name="check" v-if="isSelected(option)" />
                     </div>
-                    <div class="text-truncate">
-                      <span>{{ getOptionName(option) }}</span>
-                    </div>
-                    <icon name="check" v-if="isSelected(option)" />
-                  </div>
+                  </template>
                 </template>
-                <div class="select-menu_dropdown-option disabled" v-if="!getFilteredOptions.length">
+                <div class="select-menu_dropdown-option disabled" v-else>
                   <div class="text-truncate">
                     <span>{{ $t('no_results_found') }}</span>
                   </div>
@@ -179,6 +193,7 @@
       inSelectMenu: Boolean,
       hasSearch: Boolean,
       hasNoBg: Boolean,
+      hasGenerations: Boolean,
       popularOptions: Array,
       imgKey: String,
       invalid: Boolean,
@@ -243,6 +258,11 @@
         if (!clickedInsideDropdown && !this.blockClick) {
           this.showOptions = false;
         }
+      },
+      getGenerationStyle(o) {
+        const getImage = (media) => ((media && media.length > 0) ? this.$withBaseUrl(media[0]) : false);
+        let imgUrl = getImage(o.car_type_generation?.[0]?.transformed_media.thumb);
+        return imgUrl ? { backgroundImage: `url('${imgUrl}')` } : { noImg: true };
       }
     },
     computed: {
@@ -272,8 +292,17 @@
           this.$emit('change', value);
         }
       },
+      selectGeneration: {
+        get() {
+          return this.selectValue ? this.getKey(this.selectValue) : '';
+        },
+        set(value) {
+          this.selectValue = this.getOptions.find(option => this.getOptionKey(option) == value);
+        }
+      },
       getOptions() {
         let addons = this.clearOption ? [{ key: -1, name: this.$t('any') }] : []
+        if (this.hasGenerations && this.isMobileBreakpoint) return this.options;
         return [...addons, ...this.options];
       },
       getFilteredOptions() {
