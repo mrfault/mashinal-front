@@ -1807,7 +1807,7 @@ export default {
   "ad_stopped": "Реклама остановлена",
   "ad_started": "Реклама запущена",
   "go_back": "Назад",
-  "n_azn_return_after_ad_stop": "В случае прекращения рекламы вам на баланс вернутся {n} ₼.",
+  "n_azn_return_after_ad_stop": "В случае прекращения рекламы вам на баланс вернутся {n} ₼",
   "ad_views_shown": "Охват рекламы",
   "ad_money_budget": "Общий бюджет",
   "ad_money_used": "Потрачено на рекламу",

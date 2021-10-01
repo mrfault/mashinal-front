@@ -5,7 +5,7 @@
         <div class="col" v-if="showMonetization(announcement)">
           <monetization-button :announcement="announcement" class-name="red-outline" />
         </div>
-        <div class="col" v-if="announcement.has_monetization">
+        <div class="col" v-if="userIsOwner(announcement) && announcement.has_monetization">
           <monetization-stats-button :announcement="announcement" />
         </div>
         <div class="col" v-if="!userIsOwner(announcement)">
