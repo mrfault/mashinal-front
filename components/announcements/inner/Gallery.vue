@@ -276,7 +276,7 @@ export default {
             this.openLightbox(this.currentSlide);
           });
           this.updateTouchEvents();
-        }, 0);
+        }, 100);
       }
       
       if (this.showSlider) this.$nuxt.$on('show-gallery-slide', this.changeSlide);

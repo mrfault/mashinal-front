@@ -60,8 +60,8 @@ export default {
     NoResults
   },
   async asyncData({ store }) {
-    await store.dispatch('parts/getHomePageData');
-    
+    await store.dispatch('parts/getAnnouncements')
+
     return {
       pending: false
     }
@@ -70,17 +70,22 @@ export default {
     window.addEventListener('scroll', this.getNextAnnouncements)
   },
   methods: {
-    async getNextAnnouncements(e) {
+    async getNextAnnouncements() {
       if ((window.scrollY + 800 > document.body.scrollHeight) && !this.pending) {
         this.pending = true;
-        await this.$store.dispatch('parts/getNextAnnounements')
+        await this.$store.dispatch('parts/getAnnouncements', {
+          body: {},
+          params: {
+            page: this.pagination.current_page + 1
+          }
+        })
         this.pending = false;
       }
     },
     async searchParts() {
       const data = JSON.parse(this.$route.query.parts_filter || '{}');
       this.pending = true;
-      await this.$store.dispatch('parts/search', data);
+      await this.$store.dispatch('parts/getAnnouncements', { body: data });
       this.pending = false;
       this.scrollTo('.announcements-content', [0, -30]);
       
