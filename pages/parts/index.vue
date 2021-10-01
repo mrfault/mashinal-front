@@ -19,11 +19,11 @@
 
         <no-results v-if="showNotFound" type="part"/>
 
-        <!-- Coming soon -->
         <grid
-          v-if="false"
+          v-if="showNotFound"
           :title="$t('other_announcements')"
           :announcements="otherAnnouncements"
+          :pending="pending"
           escape-duplicates
         />
       </div>
@@ -68,18 +68,37 @@ export default {
     }
   },
   mounted() {
+    if (this.$route.query.parts_filter) {
+      this.searchParts()
+    }
     window.addEventListener('scroll', this.getNextAnnouncements)
   },
   methods: {
     async getNextAnnouncements() {
       if ((window.scrollY + 800 > document.body.scrollHeight) && !this.pending) {
         this.pending = true;
-        await this.$store.dispatch('parts/getAnnouncements', {
-          body: {},
-          params: {
-            page: this.pagination.current_page + 1
+
+        if (!this.showNotFound) {
+          const { current_page, last_page } = this.pagination
+          if (current_page < last_page) {
+            await this.$store.dispatch('parts/getAnnouncements', {
+              body: JSON.parse(this.$route.query.parts_filter || '{}'),
+              params: {
+                page: (current_page || 0) + 1
+              }
+            })
           }
-        })
+        } else {
+          const { current_page, last_page } = this.otherAnnouncementsPagination
+          if (current_page ? current_page < last_page : true) {
+            await this.$store.dispatch('parts/getOtherAnnouncements', {
+              body: {},
+              params: {
+                page: (current_page || 0) + 1
+              }
+            })
+          }
+        }
         this.pending = false;
       }
     },
@@ -89,13 +108,6 @@ export default {
       await this.$store.dispatch('parts/getAnnouncements', { body: data });
       this.pending = false;
       this.scrollTo('.announcements-content', [0, -30]);
-      
-      if (!this.announcements.length) {
-        window.addEventListener('scroll', this.getNextAnnouncements)
-      } else {
-        window.removeEventListener('scroll', this.getNextAnnouncements)
-      }
-
       this.$store.dispatch('parts/setSearchActive', true)
     }
   },
@@ -104,6 +116,7 @@ export default {
       announcements: 'parts/announcements',
       otherAnnouncements: 'parts/otherAnnouncements',
       pagination: 'parts/pagination',
+      otherAnnouncementsPagination: 'parts/otherAnnouncementsPagination',
       searchActive: 'parts/searchActive',
       showNotFound: 'parts/showNotFound',
     }),

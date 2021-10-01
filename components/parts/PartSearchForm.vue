@@ -278,8 +278,7 @@ export default {
     },
     brandsOnChange(id) {
       if (this.form.brand_ids.includes(id)) {
-        const index = this.form.brand_ids.findIndex(brand => brand.id === id)
-        this.form.brand_ids.splice(index, 1)
+        this.form.brand_ids = this.form.brand_ids.filter(brand => brand.id !== id)
       } else {
         this.form.brand_ids.push(id)
       }
