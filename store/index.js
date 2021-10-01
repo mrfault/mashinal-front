@@ -598,8 +598,8 @@ export const actions = {
     const res = await this.$axios.$get(`/grid/home_page_parts?per_page=4&page=${data.page || 1}`);
     commit('mutate', { property: 'mainPartsAnnouncements', value: res });
   },
-  async getMainSearch({ commit }, data) {
-    const res = await this.$axios.$get(data.url);
+  async getMotoMainSearch({ commit }, data = {}) {
+    const res = await this.$axios.$get(`/moto_home_page?page=${data.page || 1}`);
     commit('mutate', { property: 'mainAnnouncements', value: res });
   },
   async getGridSearch({ commit }, data) {

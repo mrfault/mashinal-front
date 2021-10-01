@@ -1,7 +1,8 @@
 <template>
   <div class="parts-banners row">
     <!-- Winter tyres -->
-    <div class="parts-banner parts-banner--winter-tyres">
+    <div class="col mb-2 mb-lg-0">
+      <div class="parts-banner parts-banner--winter-tyres">
       <div class="parts-banner__text">
         <h3 class="parts-banner__title">
           {{ $t('winter_tyres') }}
@@ -15,9 +16,11 @@
         </nuxt-link>
       </div>
       <img class="parts-banner__image" src="/img/banner_winter_tyres.png" />
+      </div>
     </div>
     <!-- Create online store -->
-    <div class="parts-banner parts-banner--online-store">
+    <div class="col">
+      <div class="parts-banner parts-banner--online-store">
       <div class="parts-banner__text">
         <h3 class="parts-banner__title">
           {{ $t('create_online_store') }}
@@ -31,6 +34,7 @@
         </nuxt-link>
       </div>
       <img class="parts-banner__image" src="/img/banner_create_online_store.png" />
+      </div>
     </div>
 
     <CreateStore

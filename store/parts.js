@@ -96,7 +96,7 @@ export const actions = {
       }
     }
 
-    const { data: announcements, ...pagination} = await this.$axios.$post('/part', body, config);
+    const { data: announcements, ...pagination} = await this.$axios.$post('/grid/part', body, config);
 
     commit('mutate', {
       property: 'showNotFound',

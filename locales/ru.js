@@ -902,6 +902,7 @@ export default {
   "miniven": "Минивэн",
   "contact_number": "Номер моб. телефона",
   "mobile_number": "Номер моб. телефона",
+  "mobile_number_your": "Номер телефона",
   "model": "Модель",
   "model_card": "Карточка модели",
   "model_name": "Название модели",
