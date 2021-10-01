@@ -216,7 +216,7 @@
           </p>
           <div class="text-right">
             <button type="button" @click="publishPost" :class="['btn btn--green', { pending }]">
-              {{ isAlreadySold ? `${$t('place_and_pay')} 5 AZN` : (edit ? (restore ? $t('restore') : $t('edit_ad')) : $t('place_an_ad')) }}
+              {{ isAlreadySold ? `${$t('place_and_pay')} 5 ₼` : (edit ? (restore ? $t('restore') : $t('edit_ad')) : $t('place_an_ad')) }}
             </button>
           </div>
         </div>
@@ -497,8 +497,8 @@ export default {
           this.gtagTrack('AW-600951956/ccUSCJT25_IBEJSZx54C');
         }
         // redirect to payment if action was to restore
-        if (this.restore || this.isAlreadySold) {
-          this.handlePayment(res);
+        if (res?.data?.redirect_url) {
+          this.handlePayment(res, this.$localePath('/profile/announcements'));
         } else {
           this.$router.push(this.$localePath('/profile/announcements'), () => {
             this.$toasted.success(this.$t('saved_changes'));

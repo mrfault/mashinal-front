@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="floating-cta" ref="floating">
+    <div class="floating-cta fixed-to-bottom" ref="floating">
       <div class="row">
         <div class="col" v-if="showMonetization(announcement)">
           <monetization-button :announcement="announcement" class-name="grey-outline" />
@@ -10,8 +10,8 @@
         </div>
       </div>
     </div>
-    <div ref="floatingBefore"></div>
-    <div ref="floatingAfter"></div>
+    <!-- <div ref="floatingBefore"></div>
+    <div ref="floatingAfter"></div> -->
   </div>
 </template>
 
@@ -41,12 +41,12 @@ export default {
   },
   mounted() {
     this.handleScroll();
-    window.addEventListener('scroll', this.handleScroll);
-    window.addEventListener('resize', this.handleScroll);
+    // window.addEventListener('scroll', this.handleScroll);
+    // window.addEventListener('resize', this.handleScroll);
   },
   beforeDestroy() {
-    window.removeEventListener('scroll', this.handleScroll);
-    window.removeEventListener('resize', this.handleScroll);
+    // window.removeEventListener('scroll', this.handleScroll);
+    // window.removeEventListener('resize', this.handleScroll);
   }
 }
 </script>

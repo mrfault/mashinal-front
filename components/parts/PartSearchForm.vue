@@ -41,7 +41,7 @@
               <form-select
                 :label="$t('price')"
                 custom
-                anchor="right"
+                suffix="AZN"
                 :values="{from: form.price_from, to: form.price_to, suffix: '₼' }"
                 @clear="form.price_from = '', form.price_to = ''"
               >

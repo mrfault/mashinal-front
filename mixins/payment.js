@@ -15,24 +15,36 @@ export const PaymentMixin = {
   methods: {
     ...mapActions(['updatePaidStatus']),
     
-    handlePayment(res, name = 'purchaseservice') {
+    callUpdatePaidStatus(paid, text) {
+      let type = paid ? 'success' : 'error';
+      if (!paid) text = this.$t('try_again');
+      this.updatePaidStatus({ type, text, title: this.$t(`${type}_payment`) });
+    },
+    handlePayment(res, route = false, text = '', name = 'purchaseservice') {
       if (!this.isMobileBreakpoint) {
         window.open((res?.data?.redirect_url || res), name, 'toolbar=yes,scrollbars=yes,resizable=yes,top=50,left=100,width=494,height=718');
         if (res?.data?.payment_id) {
           this.connectEcho(`purchase.${res.data.payment_id}`, false).listen('PurchaseInitiated', async (data) => {
             let { is_paid, status } = data.payment;
             let paid = is_paid || status === 1;
+            
             if (paid) {
-              await this.$nuxt.refresh();
               if (this.loggedIn)
                 await this.$auth.fetchUser();
+              if (!route) {
+                await this.$nuxt.refresh();
+                this.callUpdatePaidStatus(paid, text);
+              }
+            } else {
+              this.callUpdatePaidStatus(paid);
             }
-            let type = paid ? 'success' : 'error';
-            this.updatePaidStatus({
-              type,
-              text: '', //this.$t(`${type}_payment_msg`),
-              title: this.$t(`${type}_payment`)
-            });
+            
+            if (route) {
+              this.$router.push(route, () => {
+                this.callUpdatePaidStatus(paid, text);
+              });
+            }
+            
           });
         }
       } else {
