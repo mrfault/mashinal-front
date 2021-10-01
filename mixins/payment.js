@@ -23,8 +23,9 @@ export const PaymentMixin = {
     handlePayment(res, route = false, text = '', name = 'purchaseservice') {
       if (!this.isMobileBreakpoint) {
         window.open((res?.data?.redirect_url || res), name, 'toolbar=yes,scrollbars=yes,resizable=yes,top=50,left=100,width=494,height=718');
-        if (res?.data?.payment_id) {
-          this.connectEcho(`purchase.${res.data.payment_id}`, false).listen('PurchaseInitiated', async (data) => {
+        let payment_id = res?.data?.payment_id;
+        if (payment_id) {
+          this.connectEcho(`purchase.${payment_id}`, false).listen('PurchaseInitiated', async (data) => {
             let { is_paid, status } = data.payment;
             let paid = is_paid || status === 1;
             
@@ -38,11 +39,18 @@ export const PaymentMixin = {
             } else {
               this.callUpdatePaidStatus(paid);
             }
+
+            const stopListening = () => {
+              this.connectEcho(`purchase.${payment_id}`, false).stopListening('PurchaseInitiated');
+            }
             
             if (route) {
               this.$router.push(route, () => {
                 this.callUpdatePaidStatus(paid, text);
+                stopListening();
               });
+            } else {
+              stopListening();
             }
             
           });
