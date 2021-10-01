@@ -19,8 +19,9 @@
 
         <no-results v-if="showNotFound" type="part"/>
 
+        <!-- Coming soon -->
         <grid
-          v-if="showNotFound"
+          v-if="false"
           :title="$t('other_announcements')"
           :announcements="otherAnnouncements"
           escape-duplicates

@@ -30,7 +30,6 @@
           <div class="col-auto">
             <quick-info type="commercial" />
             <announcement-specs type="commercial" />
-            <monetization :announcement="announcement" v-if="!isMobileBreakpoint && showMonetization(announcement)" />
             <comment :comment="announcement.comment" v-if="isMobileBreakpoint" />
           </div>
         </div>
@@ -49,7 +48,6 @@ import Gallery from '~/components/announcements/inner/Gallery';
 import ThumbsGallery from '~/components/announcements/inner/ThumbsGallery';
 import Comment from '~/components/announcements/inner/Comment';
 import Relatives from '~/components/announcements/inner/Relatives';
-import Monetization from '~/components/announcements/Monetization';
 
 export default {
   name: 'pages-commercial-id',
@@ -59,8 +57,7 @@ export default {
     Gallery,
     ThumbsGallery,
     Comment,
-    Relatives,
-    Monetization
+    Relatives
   },
   nuxtI18n: {
     paths: {

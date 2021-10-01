@@ -48,6 +48,7 @@
             has-search
             :clear-option="false"
             :check-options-offset="true"
+            :has-generations="true"
           />
         </div>
         <div class="col-12 col-lg-6 mb-2 mb-lg-3">
@@ -104,11 +105,11 @@ export default {
   data() {
     return {
       form: {
-        brand: null,
-        model: null,
-        generation: null,
-        carType: null,
-        modification: null,
+        brand: '',
+        model: '',
+        generation: '',
+        carType: '',
+        modification: '',
       },
       image: null
     }

@@ -20,7 +20,7 @@
         </div>
         <div class="col-6 col-lg-1-5 mb-2 mb-lg-3">
           <form-select :label="$t('generation')" :options="generations" v-model="form.generation"
-            :disabled="!form.model || !$route.params.model" @change="submitForm(true, false)" has-search />
+            :disabled="!form.model || !$route.params.model" @change="submitForm(true, false)" has-search has-generations />
         </div>
         <div class="col-6 col-lg-1-5 mb-2 mb-lg-3">
           <form-select :label="$t('body_type')" v-model="form['body']"

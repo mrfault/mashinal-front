@@ -63,11 +63,12 @@
         <call-button :phone="contact.phone" />
       </div>
     </div>
-    <template v-if="!brief && userIsOwner(announcement) && (announcement.has_monetization || needToPay)">
+    <template v-if="!brief && userIsOwner(announcement) && (announcement.status == 1 || announcement.has_monetization || needToPay)">
       <hr class="mt-3" />
       <div :class="{'mb-2 mb-lg-3': !needToPay}">
         <pay-announcement-button :announcement="announcement" v-if="needToPay"/>
-        <monetization-stats-button :announcement="announcement" v-else />
+        <monetization-stats-button :announcement="announcement" v-else-if="announcement.has_monetization" />
+        <monetization-button :announcement="announcement" v-else-if="announcement.status == 1" />
       </div>
     </template>
     <template v-if="!brief && (userIsOwner(announcement) && announcement.status != 2) || (announcement.status == 3 && !announcement.is_autosalon)">
@@ -93,6 +94,7 @@ import DeactivateButton from '~/components/announcements/DeactivateButton';
 import EditButton from '~/components/announcements/EditButton';
 import ChatButton from '~/components/announcements/ChatButton';
 import CallButton from '~/components/announcements/CallButton';
+import MonetizationButton from '~/components/announcements/MonetizationButton';
 import MonetizationStatsButton from '~/components/announcements/MonetizationStatsButton';
 import PayAnnouncementButton from '~/components/announcements/PayAnnouncementButton';
 import ShowMapButton from '~/components/elements/ShowMapButton';
@@ -109,6 +111,7 @@ export default {
     ChatButton,
     CallButton,
     ShowMapButton,
+    MonetizationButton,
     MonetizationStatsButton,
     PayAnnouncementButton
   },
