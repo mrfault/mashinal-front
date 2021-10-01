@@ -1470,7 +1470,7 @@ export default {
   "subscription_completed_modal_title": "Abunə olun",
   "success_activate": "Servis aktiv olunub!",
   "success_activate_msg": "Elanınız son elanlar bölməsində və axtarış nəticələrində birinci yerə qalxacaq.",
-  "success_payment": "Ödəmə tamamlandı!",
+  "success_payment": "Əməliyyat tamamlandı!",
   "success_payment_msg": "Sizin ödəməniz uğurla tamamlandı.",
   "summer": "Yay",
   "Sun curtains for rear doors": "Arxa qapılarda pərdələr",

@@ -29,7 +29,11 @@ export default {
         const res = await this.$axios.$get(`/restore/${this.announcement.id_unique}?is_mobile=${this.isMobileBreakpoint}`);
         if (!res?.data?.redirect_url) {
           await this.$nuxt.refresh();
-          this.$toasted.success(this.$t('announcement_restored'));
+          this.updatePaidStatus({ 
+            type: 'success', 
+            text: this.$t('announcement_restored'), 
+            title: this.$t('success_payment') 
+          });
           this.pending = false;
         } else {
           this.pending = false;

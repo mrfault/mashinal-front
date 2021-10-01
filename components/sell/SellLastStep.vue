@@ -501,7 +501,21 @@ export default {
           this.handlePayment(res, this.$localePath('/profile/announcements'));
         } else {
           this.$router.push(this.$localePath('/profile/announcements'), () => {
-            this.$toasted.success(this.$t('saved_changes'));
+            if (this.restore) {
+              this.updatePaidStatus({ 
+                type: 'success', 
+                text: this.$t('announcement_restored'), 
+                title: this.$t('success_payment') 
+              });
+            } else if (this.isAlreadySold) {
+              this.updatePaidStatus({ 
+                type: 'success', 
+                text: this.$t('announcement_paid'), 
+                title: this.$t('success_payment') 
+              });
+            } else {
+              this.$toasted.success(this.$t('saved_changes'));
+            }
           });
         }
       } catch ({response: {status, data: {data, message}}}) {

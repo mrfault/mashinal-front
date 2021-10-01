@@ -145,7 +145,11 @@ export default {
           this.$auth.fetchUser()
         ]);
         this.pending = false;
-        this.$toasted.success(this.$t('ad_started'));
+        this.updatePaidStatus({ 
+          type: 'success', 
+          text: this.$t('ad_started'), 
+          title: this.$t('success_payment') 
+        });
       }
     }
   },
