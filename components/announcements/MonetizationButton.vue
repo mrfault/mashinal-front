@@ -1,8 +1,6 @@
 <template>
-  <div :class="{'monetization-card card mb-lg-3': type !== 'button'}">
-    <button :class="`btn btn--${type === 'button' ? 'grey' : 'white'}-outline full-width`" @click.stop="showModal = true">
-      {{ $t('get_an_ad') }}
-    </button>
+  <button :class="`btn btn--${className} full-width`" @click.stop="showModal = true">
+    {{ $t('get_an_ad') }}
     <modal-popup 
       :toggle="showModal" 
       :title="$t('get_an_ad')"
@@ -61,7 +59,7 @@
         </div>
       </div>
     </modal-popup>
-  </div>
+  </button>
 </template>
 
 <script>
@@ -70,7 +68,9 @@ import { PaymentMixin } from '~/mixins/payment';
 
 export default {
   props: {
-    type: String,
+    className: {
+      default: 'red'
+    },
     announcement: {}
   },
   mixins: [PaymentMixin],

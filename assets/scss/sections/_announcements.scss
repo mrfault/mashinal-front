@@ -38,6 +38,9 @@
     &:hover {
       box-shadow: $shadow-light-6;
     }
+    .has-tooltip {
+      z-index: 1;
+    }
     .item-bg {
       position: relative;
       width: 100%;
