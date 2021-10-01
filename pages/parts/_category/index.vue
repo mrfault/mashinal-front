@@ -105,6 +105,11 @@ export default {
       pending: false
     }
   },
+  mounted() {
+    if (this.$route.query.parts_filter) {
+      this.searchParts()
+    }
+  },
   methods: {
     async searchParts(page) {
       page = this.$route.query.page || 1;
