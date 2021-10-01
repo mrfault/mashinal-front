@@ -230,6 +230,7 @@ import { mapGetters, mapActions } from 'vuex';
 
 import { ToastErrorsMixin } from '~/mixins/toast-errors';
 import { ImageResizeMixin } from '~/mixins/img-resize';
+import { PaymentMixin } from '~/mixins/payment';
 
 import SellSelectModification from '~/components/sell/SellSelectModification';
 import UploadImage from '~/components/elements/UploadImage';
@@ -259,7 +260,7 @@ export default {
     initialForm: {},
     announcement: {}
   },
-  mixins: [ToastErrorsMixin, ImageResizeMixin],
+  mixins: [ToastErrorsMixin, ImageResizeMixin, PaymentMixin],
   data() {
     return {
       form: this.$clone(this.initialForm),
@@ -482,6 +483,7 @@ export default {
       postUrl += (this.type !== 'cars' ? this.type + '/' : '');
       postUrl += (this.type !== 'commercial' || !this.edit ? 'post/' : '');
       postUrl += (this.edit ? ('edit/' + this.$route.params.id.slice(0, -1)) : 'publish');
+      postUrl += (`?is_mobile=${this.isMobileBreakpoint}`);
       // post
       this.pending = true;
       try {
@@ -496,7 +498,7 @@ export default {
         }
         // redirect to payment if action was to restore
         if (this.restore || this.isAlreadySold) {
-          window.location = res.data.redirect_url;
+          this.handlePayment(res);
         } else {
           this.$router.push(this.$localePath('/profile/announcements'), () => {
             this.$toasted.success(this.$t('saved_changes'));

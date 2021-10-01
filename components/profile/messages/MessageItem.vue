@@ -6,7 +6,7 @@
             :class="{'half-width': !(message.attachments.length % 2 === 1 && i === message.attachments.length - 1)}">
           <img :src="$withBaseUrl(image.thumb)" alt="" @click="$emit('show-image', $withBaseUrl(image.src))" />
           <span class="message-time">
-            {{ $moment(message.created_at).format('hh:mm') }}
+            {{ $moment(message.created_at).format('HH:mm') }}
           </span>
         </div>
       </div>
@@ -17,7 +17,7 @@
         </span>
         <span :class="['message-time', {'text-dark-blue-3': !sentByMe}]">
           <icon name="check1" v-if="sentByMe" />
-          {{ $moment(message.created_at).format('hh:mm') }}
+          {{ $moment(message.created_at).format('HH:mm') }}
         </span>
       </div>
     </div>
