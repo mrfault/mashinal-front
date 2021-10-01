@@ -42,10 +42,10 @@
                 :label="$t('price')"
                 custom
                 anchor="right"
-                :suffix="getOptionValue('Currency', form.currency)"
-                :values="{from: form.price_from, to: form.price_to, suffix: form.currency === 2 ? '$' : '₼' }"
+                :values="{from: form.price_from, to: form.price_to, suffix: '₼' }"
                 @clear="form.price_from = '', form.price_to = ''"
               >
+                <!-- :suffix="getOptionValue('Currency', form.currency)" -->
                 <div class="form-merged">
                   <form-numeric-input
                     :placeholder="$t('from')"
@@ -55,14 +55,14 @@
                     :placeholder="$t('to')"
                     v-model="form.price_to"
                   />
-                  <form-select
+                  <!-- <form-select
                     :label="'AZN'"
                     :options="getCurrencyOptions"
                     v-model="form.currency"
                     :allow-clear="false"
                     :clear-option="false" 
                     in-select-menu
-                  />
+                  /> -->
                 </div>
               </form-select>
             </div>
@@ -248,7 +248,7 @@ export default {
         announce_type: 0,
         price_from: '',
         price_to: '',
-        currency: 1,
+        // currency: 1,
         text: '',
         sort: '',
         ...additionalProperties
