@@ -22,7 +22,7 @@
         </span>
       </div>
       <div class="status" v-if="announcement.status == 2">
-        <template v-if="announcement.system_paid_announce && !announcement.system_paid_announce.is_paid">
+        <template v-if="needToPay">
           {{ $t('need_pay') }}
         </template>
         <template v-else>
@@ -63,10 +63,11 @@
         <call-button :phone="contact.phone" />
       </div>
     </div>
-    <template v-if="!brief && userIsOwner(announcement) && announcement.has_monetization">
+    <template v-if="!brief && userIsOwner(announcement) && (announcement.has_monetization || needToPay)">
       <hr class="mt-3" />
-      <div class="mb-2 mb-lg-3">
-        <monetization-stats-button :announcement="announcement" />
+      <div :class="{'mb-2 mb-lg-3': !needToPay}">
+        <pay-announcement-button :announcement="announcement" v-if="needToPay"/>
+        <monetization-stats-button :announcement="announcement" v-else />
       </div>
     </template>
     <template v-if="!brief && (userIsOwner(announcement) && announcement.status != 2) || (announcement.status == 3 && !announcement.is_autosalon)">
@@ -93,6 +94,7 @@ import EditButton from '~/components/announcements/EditButton';
 import ChatButton from '~/components/announcements/ChatButton';
 import CallButton from '~/components/announcements/CallButton';
 import MonetizationStatsButton from '~/components/announcements/MonetizationStatsButton';
+import PayAnnouncementButton from '~/components/announcements/PayAnnouncementButton';
 import ShowMapButton from '~/components/elements/ShowMapButton';
 
 export default {
@@ -107,13 +109,17 @@ export default {
     ChatButton,
     CallButton,
     ShowMapButton,
-    MonetizationStatsButton
+    MonetizationStatsButton,
+    PayAnnouncementButton
   },
   computed: {
     ...mapGetters(['announcement']),
     
     contact() {
       return this.getAnnouncementContact(this.announcement);
+    },
+    needToPay() {
+      return this.announcement.status == 2 && this.announcement.system_paid_announce && !this.announcement.system_paid_announce.is_paid;
     }
   },
   methods: {
