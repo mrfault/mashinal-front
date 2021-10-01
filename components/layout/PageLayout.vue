@@ -23,7 +23,7 @@
         <modal-popup
           v-if="!isMobileBreakpoint" 
           :toggle="!!paidStatusData" 
-          :modal-class="'larger promote-popup'"
+          :modal-class="'status-popup'"
           @close="updatePaidStatus(false)"
         >
           <paid-status v-if="paidStatusData" />

@@ -10,7 +10,7 @@
       </div>
       <div class="col-6 col-lg-2 d-flex align-items-center justify-content-end">
         <span :class="['control-icon cursor-pointer text-hover-red', {'disabled-ui': !selected.length}]" 
-            @click="showDeactivateModal = true" v-tooltip="$t('inactive_make')">
+            @click="showDeactivateModal = true">
           <icon name="minus-circle" />
           <modal-popup
             :toggle="showDeactivateModal"

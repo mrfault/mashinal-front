@@ -4,6 +4,7 @@ const getInitialState = () => ({
   announcements: [],
   otherAnnouncements: [],
   pagination: {},
+  otherAnnouncementsPagination: {},
   categories: [],
   form: {
     product_code: '',
@@ -29,8 +30,9 @@ export const state = () => getInitialState()
 
 export const getters = {
   announcements: s => s.announcements,
-  otherAnnouncements: s => s.otherAnnouncements || [],
+  otherAnnouncements: s => s.otherAnnouncements,
   pagination: s => s.pagination,
+  otherAnnouncementsPagination: s => s.otherAnnouncementsPagination,
   categories: s => s.categories,
   form: s => s.form,
   searchActive: s => s.searchActive,
@@ -38,7 +40,7 @@ export const getters = {
 }
 
 export const actions = {
-  async getAnnouncements({ commit }, payload = {}) {
+  async getAnnouncementsReq(store, payload = {}) {
     const body = payload.body ? {...payload.body} : {}
     if (body.announce_type) {
       body.is_new = body.announce_type === 1 ? true : false
@@ -51,12 +53,18 @@ export const actions = {
         page: payload?.params?.page || 1
       }
     }
-
     const { data: announcements, ...pagination} = await this.$axios.$post('/grid/part', body, config);
+
+    return {
+      announcements, pagination
+    }
+  },
+  async getAnnouncements({ dispatch, commit }, payload) {
+    const { announcements, pagination } = await dispatch('getAnnouncementsReq', payload)
 
     commit('mutate', {
       property: 'showNotFound',
-      value: !announcements.length
+      value: pagination.total === 0
     }) 
     commit('mutate', {
       property: 'pagination',
@@ -64,7 +72,34 @@ export const actions = {
     }) 
     commit('setAnnouncements', {
       announcements,
-      append: config.params.page > 1
+      append: pagination.current_page > 1,
+      property: "announcements"
+    })
+
+    if (pagination.total === 0) {
+      await dispatch('getOtherAnnouncements')
+    } else {
+      commit('mutate', {
+        property: 'otherAnnouncementsPagination',
+        value: {}
+      })
+      commit('setAnnouncements', {
+        announcements: [],
+        property: "otherAnnouncements"
+      })
+    }
+  },
+  async getOtherAnnouncements({ dispatch, commit }, payload) {
+    const { announcements, pagination } = await dispatch('getAnnouncementsReq', payload)
+
+    commit('mutate', {
+      property: 'otherAnnouncementsPagination',
+      value: pagination
+    })
+    commit('setAnnouncements', {
+      announcements,
+      append: pagination.current_page > 1,
+      property: "otherAnnouncements"
     })
   },
   async getCategories({ commit }) {
@@ -98,10 +133,13 @@ export const mutations = {
   },
 
   setAnnouncements(state, payload) {
+    const property = payload.property || 'announcements'
+    const announcements = [...payload.announcements]
+    
     if (payload?.append) {
-      state.announcements = [...state.announcements, ...payload.announcements]
+      state[property] = [...state[property], ...announcements]
     } else {
-      state.announcements = payload.announcements
+      state[property] = announcements
     }
   }
 }

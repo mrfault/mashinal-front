@@ -26,15 +26,18 @@ export default {
       if (this.pending) return;
       this.pending = true;
       try {
-        if (this.announcement.is_autosalon || this.free) {
-          await this.$axios.$get(`/restore/${this.announcement.id_unique}`);
+        const res = await this.$axios.$get(`/restore/${this.announcement.id_unique}?is_mobile=${this.isMobileBreakpoint}`);
+        if (!res?.data?.redirect_url) {
           await this.$nuxt.refresh();
-          this.$toasted.success(this.$t('announcement_restored'));
+          this.updatePaidStatus({ 
+            type: 'success', 
+            text: this.$t('announcement_restored'), 
+            title: this.$t('success_payment') 
+          });
           this.pending = false;
         } else {
-          const res = await this.$axios.$get(`/restore/${this.announcement.id_unique}?is_mobile=${this.isMobileBreakpoint}`);
           this.pending = false;
-          this.handlePayment(res);
+          this.handlePayment(res, false, this.$t('announcement_restored'));
         }
       } catch (err) {
         this.pending = false;

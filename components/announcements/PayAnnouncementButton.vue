@@ -1,6 +1,6 @@
 <template>
   <button :class="['btn btn--dark-blue-2-outline full-width', { pending }]" @click.stop="pay">
-    {{ $t('pay') }}
+    {{ $t('pay_money', {n: 5}) }}
   </button>
 </template>
 
@@ -23,8 +23,18 @@ export default {
       this.pending = true;
       try {
         const res = await this.$axios.$get(`/payment/get_system_paid_announce_status/${this.announcement.id}?is_mobile=${this.isMobileBreakpoint}`);
-        this.pending = false;
-        this.handlePayment(res);
+        if (!res?.data?.redirect_url) {
+          await this.$nuxt.refresh();
+          this.updatePaidStatus({ 
+            type: 'success', 
+            text: this.$t('announcement_paid'), 
+            title: this.$t('success_payment') 
+          });
+          this.pending = false;
+        } else {
+          this.pending = false;
+          this.handlePayment(res, false, this.$t('announcement_paid'));
+        }
       } catch (err) {
         this.pending = false;
       }

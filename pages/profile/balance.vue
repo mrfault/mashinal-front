@@ -137,7 +137,7 @@
           const res = await this.$axios.$post(`/payment/addBalance?is_mobile=${this.isMobileBreakpoint}`, this.form);
           this.pending = false;
           this.form.money = '';
-          this.handlePayment(res);
+          this.handlePayment(res, false, this.$t('balance_increased'));
         } catch (err) {
           this.pending = false;
         }
