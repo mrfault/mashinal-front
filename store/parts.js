@@ -1,7 +1,7 @@
 import Vue from 'vue';
 
 const getInitialState = () => ({
-  announcements: {},
+  announcements: [],
   otherAnnouncements: [],
   pagination: {},
   categories: [],
@@ -28,13 +28,9 @@ const getInitialState = () => ({
 export const state = () => getInitialState()
 
 export const getters = {
-  announcements: s => s.announcements.data || [],
+  announcements: s => s.announcements,
   otherAnnouncements: s => s.otherAnnouncements || [],
-  pagination: s => {
-    const data = {...s.announcements}
-    delete data.data
-    return data
-  },
+  pagination: s => s.pagination,
   categories: s => s.categories,
   form: s => s.form,
   searchActive: s => s.searchActive,
@@ -42,56 +38,81 @@ export const getters = {
 }
 
 export const actions = {
-  async getHomePageData({ commit, state }) {
-    const data = await this.$axios.$post('/part/home_page');
-    commit('mutate', {
-      property: 'announcements',
-      value: { data }
-    })
-    commit('mutate', {
-      property: 'otherAnnouncements',
-      value: data
-    })
+  // async getHomePageData({ commit, state }) {
+  //   const data = await this.$axios.$post('/part/home_page');
+  //   commit('mutate', {
+  //     property: 'announcements',
+  //     value: { data }
+  //   })
+  //   commit('mutate', {
+  //     property: 'otherAnnouncements',
+  //     value: data
+  //   })
 
-  },
-  async getNextAnnounements({ state, commit }) {
-    const data = await this.$axios.$post('/part/home_page');
-    if (state.showNotFound) {
-      commit('mutate', {
-        property: 'otherAnnouncements',
-        value: [...state.otherAnnouncements, ...data]
-      })
-    } else {
-      commit('mutate', {
-        property: 'announcements',
-        key: 'data',
-        value: [...state.announcements.data, ...data]
-      })
-    }
-  },
-  async search({ commit }, payload) {
-    if (payload.announce_type) {
-      payload.is_new = payload.announce_type === 1 ? true : false
-    }
-    delete payload.announce_type;
+  // },
+  // async getNextAnnounements({ state, commit }) {
+  //   const data = await this.$axios.$post('/part/home_page');
+  //   if (state.showNotFound) {
+  //     commit('mutate', {
+  //       property: 'otherAnnouncements',
+  //       value: [...state.otherAnnouncements, ...data]
+  //     })
+  //   } else {
+  //     commit('mutate', {
+  //       property: 'announcements',
+  //       key: 'data',
+  //       value: [...state.announcements.data, ...data]
+  //     })
+  //   }
+  // },
+  // async search({ commit }, payload) {
+  //   if (payload.announce_type) {
+  //     payload.is_new = payload.announce_type === 1 ? true : false
+  //   }
+  //   delete payload.announce_type;
 
-    const data = await this.$axios.$post('/grid/part?page=' + payload?.page || 1, payload)
+  //   const data = await this.$axios.$post('/part?page=' + payload?.page || 1, payload)
+  //   commit('mutate', {
+  //     property: 'showNotFound',
+  //     value: !data.data.length
+  //   }) 
+  //   commit('mutate', {
+  //     property: 'announcements',
+  //     value: data
+  //   })
+  // },
+
+  async getAnnouncements({ commit }, payload = {}) {
+    const body = payload.body ? {...payload.body} : {}
+    if (body.announce_type) {
+      body.is_new = body.announce_type === 1 ? true : false
+    }
+    delete body.announce_type;
+
+    const config = {
+      params: {
+        ...(payload.params ? payload.params : {}),
+        page: payload?.params?.page || 1
+      }
+    }
+
+    const { data: announcements, ...pagination} = await this.$axios.$post('/grid/part', body, config);
+
     commit('mutate', {
       property: 'showNotFound',
-      value: !data.data.length
+      value: !announcements.length
     }) 
     commit('mutate', {
-      property: 'announcements',
-      value: data
+      property: 'pagination',
+      value: pagination
+    }) 
+    commit('setAnnouncements', {
+      announcements,
+      append: config.params.page > 1
     })
   },
-  async getCategoryAnnouncements({ commit }, payload) {
-    const data = await this.$axios.$post('/grid/part', payload);
-
-    commit('mutate', {
-      property: 'announcements',
-      value: data
-    })
+  async getOtherAnnouncements({ dispatch }) {
+    dispatch('getAnnouncements')
   },
   async getCategories({ commit }) {
     const categories = await this.$axios.$get('/part/categories');
@@ -111,7 +132,6 @@ export const actions = {
     const announcements = await this.$axios.$get('/get_announces_by_phone/' + phone);
     commit('mutate', {
       property: 'announcements',
-      key: 'data',
       value: announcements
     })
   }
@@ -123,5 +143,13 @@ export const mutations = {
       Vue.set(state[payload.property], payload.key, payload.value);
     else state[payload.property] = payload.value;
   },
+
+  setAnnouncements(state, payload) {
+    if (payload?.append) {
+      state.announcements = [...state.announcements, ...payload.announcements]
+    } else {
+      state.announcements = payload.announcements
+    }
+  }
 }
 
