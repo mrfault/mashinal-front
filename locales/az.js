@@ -1833,5 +1833,6 @@ export default {
   ],
   "announcement_paid": "Elan moderasiyaya göndərilib",
   "balance_increased": "Balans artırılıb",
-  "try_again": "Yenidən cəhd et"
+  "try_again": "Yenidən cəhd et",
+  "ad_announcement": "Reklamlı elan"
 }
