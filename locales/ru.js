@@ -1833,5 +1833,6 @@ export default {
   ],
   "announcement_paid": "Объявление отправлено на модерацию",
   "balance_increased": "Баланс пополнен",
-  "try_again": "Попробуйте еще раз"
+  "try_again": "Попробуйте еще раз",
+  "ad_announcement": "Рекламное объявление"
 }
