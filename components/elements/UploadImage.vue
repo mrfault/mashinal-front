@@ -146,8 +146,8 @@ export default {
       for(let i in keys) {
         let file = this.defaultFiles[keys[i]];
         let key = this.$notUndefined(file.key, i);
-        this.$set(this.files, key, { file: new Blob(), name: file.name || file.split('/').pop(), loaded: true, id: key });
-        this.$set(this.image, key, file.image || this.$withBaseUrl(file));
+        this.$set(this.files, key, { file: new Blob(), name: file.name || file.media.split('/').pop(), loaded: true, id: key });
+        this.$set(this.image, key, file.image || this.$withBaseUrl(file.media));
         this.$set(this.orderdedKeys, this.orderdedKeys.length, key);
       }
       this.disableUpload = false;
@@ -166,7 +166,9 @@ export default {
   },
   methods: {
     dragFile(e) {
-      this.$emit('order-changed', this.orderdedKeys.map(key => this.files[key].id));
+      let sorted = this.orderdedKeys.map(key => this.files[key].id);
+      let preview = this.image[this.orderdedKeys[0]];
+      this.$emit('order-changed', sorted, preview);
     },
     fileDrop(e) {
       e.preventDefault();

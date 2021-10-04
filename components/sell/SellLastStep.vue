@@ -266,7 +266,7 @@ export default {
     return {
       form: this.$clone(this.initialForm),
       date: Math.floor(Date.now() / 1000),
-      files: this.announcement?.media || [],
+      files: (this.announcement?.media || []).map((media, i) => ({ media, key: this.initialForm.saved_images[i]  })),
       minFiles: this.type === 'moto' ? 2 : 3,
       maxFiles: 20,
       savedFiles: [...this.initialForm.saved_images],
@@ -462,8 +462,9 @@ export default {
         }
       }
     },
-    changeOrder(sorted) {
+    changeOrder(sorted, preview) {
       this.$set(this, 'savedFiles', sorted);
+      this.setSellPreviewData({ value: preview, key: 'image' });
     },
     // post announcement
     async publishPost() {
