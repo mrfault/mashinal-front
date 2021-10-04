@@ -8,13 +8,13 @@
         <nuxt-link class="logo" :to="$localePath('/')" @click.native="$nuxt.$emit('logo-click')">
           <img :src="`/img/${isDarkMode ? 'logo-white' : 'logo'}.svg`" alt="logo" v-if="!btlCookie" />
         </nuxt-link>
-        <span class="cursor-pointer" @click="$nuxt.$emit('search-icon-click')" v-if="hasSearchFilters">
+        <span class="cursor-pointer" @click="handleIconClick(false, 'search-icon-click')" v-if="hasSearchFilters">
           <icon name="search" />
         </span>
-        <!-- <span class="cursor-pointer" @click="goTo($localePath('/parts/shops'))" v-else-if="hasShops">
+        <!-- <span class="cursor-pointer" @click="handleIconClick($localePath('/parts/shops'))" v-else-if="hasShops">
           <icon name="shop" />
         </span> -->
-        <span class="cursor-pointer" @click="goTo($localePath('/cars/advanced-search'))" v-else-if="hasSearchNav || !loggedIn">
+        <span class="cursor-pointer" @click="handleIconClick($localePath('/cars/advanced-search'))" v-else-if="hasSearchNav || !loggedIn">
           <icon name="options" />
         </span>
         <span class="cursor-pointer" @click="logout" v-else>
@@ -91,10 +91,14 @@ export default {
       this.showSidebar = show;
       this.setBodyOverflow(show ? 'hidden' : 'scroll');
     },
-    goTo(path) {
-      if (['cars', 'index', 'cars-assistant', 'cars-advanced-search'].includes(this.routeName))
-        this.$nuxt.$emit('go-to-search', path);
-      else this.$router.push(path);
+    handleIconClick(path, event) {
+      if (path) {
+        if (['cars', 'index', 'cars-assistant', 'cars-advanced-search'].includes(this.routeName))
+          this.$nuxt.$emit('go-to-search', path);
+        else this.$router.push(path);
+      } else if (event) {
+        this.$nuxt.$emit(event);
+      }
     }
   },
   computed: {

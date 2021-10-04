@@ -56,7 +56,7 @@ export const SearchMixin = {
     parseFormData() {
       this.setFormData(JSON.parse(this.$route.query[this.meta.param] || '{}'));
       if (this.form.additional_brands) {
-        let keys = Object.keys(this.form.additional_brands).filter(key => this.form.additional_brands[key].brand);
+        let keys = Object.keys(this.form.additional_brands).filter(key => this.form.additional_brands[key].category || this.form.additional_brands[key].brand);
         if (keys.length) this.rows = [...keys];
       }
     },
@@ -156,7 +156,11 @@ export const SearchMixin = {
     removeSearchRow(key) {
       if (this.rows.length === 1) return;
       let index = this.rows.indexOf(key);
-      this.setBrand('', key);
+      if (this.meta.type === 'commercial' && !this.category.id) {
+        this.setCategory('', key);
+      } else {
+        this.setBrand('', key);
+      }
       this.rows.splice(index, 1);
     },
     goToSearch(path) {
@@ -276,7 +280,7 @@ export const SearchMixin = {
     }
   },
   created() {
-    if (!this.isStarterPage) {
+    if (!this.routeName !== 'index') {
       this.parseFormData();
     }
   },

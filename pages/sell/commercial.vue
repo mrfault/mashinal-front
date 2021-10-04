@@ -45,7 +45,7 @@
               @clean="cleanForm"
             />
             <model-options key="brand" v-else-if="showBrandOptions"
-              :options="commercialBrands" 
+              :options="commercialBrands[0]" 
               :title="$t('mark')"
               :status-title="$t('select_brand')"
               :input-title="$t('brand_name')"
@@ -110,7 +110,7 @@ export default {
     store.dispatch('setSellPreviewData', { value: {} });
     await Promise.all([
       store.dispatch('getCommercialAllOptions'),
-      store.dispatch('getCommercialBrands', category),
+      store.dispatch('getCommercialBrands', { category }),
       store.dispatch('getCommercialFilters', category),
       store.dispatch('getOptions'),
       store.dispatch('getColors'),
@@ -166,10 +166,10 @@ export default {
       keys.map(key => {form[key] = this.form[key]});
       return form;
     },
-    async handleCategory(key) {
-      await this.getCommercialBrands(key);
-      this.form.category = key;
-      this.$pushQueryParam({ key: 'category', value: key });
+    async handleCategory(category) {
+      await this.getCommercialBrands({ category });
+      this.form.category = category;
+      this.$pushQueryParam({ key: 'category', value: category });
     },
     async handleBrand(id = '') {
       this.form.selectedBrand = id;
@@ -208,7 +208,7 @@ export default {
     ...mapGetters(['commercialBrands', 'commercialModels']),
 
     brand() {
-      return this.commercialBrands?.find(brand => brand.id === this.form.selectedBrand);
+      return this.commercialBrands?.[0]?.find(brand => brand.id === this.form.selectedBrand);
     },
     model() {
       return this.commercialModels?.[0]?.find(model => model.id === this.form.selectedModel);

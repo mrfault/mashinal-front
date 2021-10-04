@@ -52,7 +52,7 @@ const getInitialState = () => ({
   catalogForm: {},
   // brands
   brands: [],
-  commercialBrands: [],
+  commercialBrands: { 0:[], 1:[], 2:[], 3:[], 4:[] },
   // models
   models: [],
   atvModels: { 0:[], 1:[], 2:[], 3:[], 4:[] },
@@ -430,9 +430,9 @@ export const actions = {
     const res = await this.$axios.$get('/brands');
     commit('mutate', { property: 'brands', value: res });
   },
-  async getCommercialBrands({ commit }, category) {
-    const res = await this.$axios.$get(`/commercial/get_brands/${category}`);
-    commit('mutate', { property: 'commercialBrands', value: res });
+  async getCommercialBrands({ commit }, data) {
+    const res = await this.$axios.$get(`/commercial/get_brands/${data.category}`);
+    commit('mutate', { property: 'commercialBrands', value: res, key: data.index || 0 });
   },
   // Models
   async getModels({ commit }, name) {

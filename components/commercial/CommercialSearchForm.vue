@@ -6,10 +6,14 @@
           <form-buttons :options="getMileageOptions" :group-by="3" v-model="form.announce_type" />
         </div>
       </div>
-      <div class="row" v-for="(key, index) in rows" :key="key">
+      <div class="row" v-for="(key, index) in (isMobileBreakpoint ? [0] : rows)" :key="key">
+        <div class="col-12 col-lg-4 mb-2" v-if="!category.id">
+          <form-select :label="$t('vehicle_type')" :options="commercialTypes" v-model="form.additional_brands[key]['category']"
+            @change="setCategory($event, key)" has-search/>
+        </div>
         <div class="col-6 col-lg-4 mb-2">
-          <form-select :label="$t('mark')" :options="commercialBrands" v-model="form.additional_brands[key]['brand']"
-            @change="setBrand($event, key)" has-search/>
+          <form-select :label="$t('mark')" :options="commercialBrands[routeName === 'commercial' ? key : 0]" v-model="form.additional_brands[key]['brand']"
+            @change="setBrand($event, key)" :disabled="(category.id || form.additional_brands[key]['category']) && !commercialBrands[key].length" has-search/>
         </div>
         <div class="col-6 col-lg-4 mb-2 mb-lg-3">
           <div :class="['row', {'has-add-btn': canAddRow(index), 'has-remove-btn': canRemoveRow()}]">
@@ -78,7 +82,7 @@
             <component :is="!isMobileBreakpoint ? 'transition-expand' : 'div'">
               <div class="row" v-if="isMobileBreakpoint || !collapsed">
                 <div class="col-12">
-                  <commercial-filters :values="form" @change-filter="setCommercialFilter">
+                  <commercial-filters :values="form" @change-filter="setCommercialFilter" :common="true">
                     <template #before>
                       <div class="col-6 col-lg-2 mb-2 mb-lg-3" v-if="isMobileBreakpoint">
                         <form-select :label="$t('city')" :options="sellOptions.regions" v-model="form.region" has-search />
@@ -130,7 +134,7 @@
         </button>
       </div>
     </div>
-    <div class="announcements-sorting" v-show="!isStarterPage && totalCount">
+    <div class="announcements-sorting" v-show="totalCount">
       <div class="row">
         <div class="col-6 col-lg-auto mt-3 mt-lg-5 mb-n6 mb-lg-n1">
           <div class="form-info no-bg text-green" v-if="isMobileBreakpoint">
@@ -174,7 +178,7 @@ export default {
       form: {
         sorting: 'created_at_desc',
         additional_brands: { 0: {}, 1: {}, 2: {}, 3: {}, 4: {} },
-        com_type: this.category.id,
+        com_type: this.category.id || '',
         announce_type: 0,
         currency: 1,
         year_from: '',
@@ -191,24 +195,30 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['commercialBrands', 'commercialModels', 'sellOptions']),
+    ...mapGetters(['commercialTypes', 'commercialBrands', 'commercialModels', 'sellOptions']),
 
     // meta data
     meta() {
       return {
         type: 'commercial',
-        path: '/commercial/'+this.$t('slug_'+this.category.type),
+        path: this.category.type ? '/commercial/'+this.$t('slug_'+this.category.type) : '/commercial',
         param: 'filter'
       }
     }
   },
   methods: {
-    ...mapActions(['getCommercialModels']),
+    ...mapActions(['getCommercialBrands', 'getCommercialModels']),
 
+    async setCategory(id, index) {
+      this.$set(this.form.additional_brands[index], 'category', id);
+      this.$set(this.form.additional_brands[index], 'brand', '');
+      this.$set(this.form.additional_brands[index], 'model', '');
+      if (id) await this.getCommercialBrands({ category: this.category.id || this.form.additional_brands[index].category || this.form.com_type, index });
+    },
     async setBrand(id, index) {
       this.$set(this.form.additional_brands[index], 'brand', id);
       this.$set(this.form.additional_brands[index], 'model', '');
-      if (id) await this.getCommercialModels({ category: this.category.id, id, index });
+      if (id) await this.getCommercialModels({ category: this.category.id || this.form.additional_brands[index].category || this.form.com_type, id, index });
     },
     setCommercialFilter(key, value) {
       if (value === false || value === '' || (typeof value === 'object' && !Object.keys(value).length)) {
