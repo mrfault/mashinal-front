@@ -18,6 +18,7 @@
           @files-dropped="addImages"
           @file-deleted="deleteImage"
           @file-rotated="rotateImage"
+          @order-changed="changeOrder"
         />
         <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-youtube">
           <span>{{ $t('video') }}</span>
@@ -421,7 +422,7 @@ export default {
               headers: { 'Content-Type': 'multipart/form-data' }
             });
             this.uploading--;
-            this.$nuxt.$emit('image-uploaded', image.key, data.images[0]);
+            this.$nuxt.$emit('image-uploaded', image.key, false, data.images[0], data.ids[0]);
             this.$nuxt.$emit('hide-image-preloader-by-key', image.key);
             this.savedFiles = [...this.savedFiles, ...data.ids];
           } catch({response: {data: {data}}}) {
@@ -449,7 +450,7 @@ export default {
           this.$nuxt.$loading.start();
           const { data } = await this.$axios.$get(`/media/${this.savedFiles[index]}/rotate/right`);
           this.$nuxt.$loading.finish();
-          this.$nuxt.$emit('image-uploaded', key, data.thumb, true);
+          this.$nuxt.$emit('image-uploaded', key, true, data.thumb);
           this.$nuxt.$emit('hide-image-preloader-by-key', key);
         } catch({response: {data: {data}}}) {
           this.$nuxt.$emit('hide-image-preloader-by-key', key);
@@ -460,6 +461,9 @@ export default {
           }
         }
       }
+    },
+    changeOrder(sorted) {
+      this.$set(this, 'savedFiles', sorted);
     },
     // post announcement
     async publishPost() {
