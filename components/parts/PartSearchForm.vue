@@ -25,6 +25,7 @@
               <form-text-input
                 :placeholder="$t('part_name')"
                 v-model="form.text"
+                @keyup.native.enter="submitForm"
               />
             </div>
             <!-- Subcategory -->
