@@ -795,7 +795,7 @@ export default {
   "lising_kredit": "Girov/Kredit",
   "list": "Siyahı",
   "Little spare wheel": "Kiçik ehtiyat təkəri",
-  "Load index": "təkərlərin təzyiqi",
+  "Load index": "Təkərlərin təzyiqi",
   "load_more": "daha çox göstər",
   "loading": "Yükləmə",
   "logbook": "Jurnallar",
@@ -1209,7 +1209,7 @@ export default {
   "rate": "Faiz",
   "razgon": "Sürətlənmə",
   "razgon-do-100-kmch-s": "Sürətlənmə 100 km/saat,s",
-  "razmer-koles": "təkərlərin ölçüsü",
+  "razmer-koles": "Təkərlərin ölçüsü",
   "razmery-mm": "Ölçülər,mm",
   "read": "Oxumaq",
   "real-car-number-will-make-post-faster": "Qeydiyyat nişanını düzgün qeyd etdiyiniz halda elanınız saytda daha tez dərc olunacaq",
@@ -1619,6 +1619,7 @@ export default {
   "Volume sensor": "Salona daxil olma sensoru (həcmin sensoru)",
   "vsego": "Ümumi",
   "vybrosy-co2-gkm": "Emissiyalar CO2 q/km",
+  "co2_emissions": "Emissiyalar CO2 q/km",
   "vysota": "Hündürlük",
   "wallet_balance": "Pul kisəsinin balansı",
   "want_to_change_your_email": "E-mail ünvanı dəyişmək istərdinizmi?",
@@ -1834,5 +1835,6 @@ export default {
   "announcement_paid": "Elan moderasiyaya göndərilib",
   "balance_increased": "Balans artırılıb",
   "try_again": "Yenidən cəhd et",
-  "ad_announcement": "Reklamlı elan"
+  "ad_announcement": "Reklamlı elan",
+  "снижение токсичных выбросов по нормативу 2018 года": "2018-сi ilin standartına görə zəhərli tullantıların azaldılması"
 }

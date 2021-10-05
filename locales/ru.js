@@ -1618,6 +1618,7 @@ export default {
   "Volume sensor": "Датчик проникновения в салон (датчик объема)",
   "vsego": "Всего",
   "vybrosy-co2-gkm": "Выбросы CO2 г/км",
+  "co2_emissions": "Выбросы CO2 г/км",
   "vysota": "Высота",
   "wallet_balance": "Баланс кошелька",
   "want_to_change_your_email": "Хотите поменять E-mail?",
@@ -1834,5 +1835,6 @@ export default {
   "announcement_paid": "Объявление отправлено на модерацию",
   "balance_increased": "Баланс пополнен",
   "try_again": "Попробуйте еще раз",
-  "ad_announcement": "Рекламное объявление"
+  "ad_announcement": "Рекламное объявление",
+  "снижение токсичных выбросов по нормативу 2018 года": "снижение токсичных выбросов по нормативу 2018 года"
 }
