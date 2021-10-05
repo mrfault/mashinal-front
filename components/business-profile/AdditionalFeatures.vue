@@ -46,12 +46,12 @@
       </div>
       <div class="col-12 col-lg-6 content">
         <h2 class="section-title heading-dots heading-dots--left">Rəqiblərdən fərqlənin</h2>
-        <p class="ml-0">
+        <p class="ml-0 text-with-check">
           <icon name="check" />
           <span class="shop-badge">SHOP</span>
           işarəsi ilə digər elan sahiblərindən seçilmə imkanı
         </p>
-        <p class="ml-0 mt-1">
+        <p class="ml-0 mt-1 text-with-check">
           <icon name="check" />
           Elanlarınızda bir neçə əlaqə vasitəsi qeydetmə imkanı
         </p>

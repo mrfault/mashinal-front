@@ -1826,4 +1826,6 @@ export default {
   "get_a_business_profile": "Biznes profil əldə et",
   "repeat_password": "Şifrənin təkrarı",
   "you_will_have_to_pay_100_to_get_a_business_profile": "*Biznes profili əldə etmək üçün 100 ₼ ödəniş etməli olacaqsınız.",
+  "More": "Daha çox",
+  "less": "Daha az",
 }

@@ -83,11 +83,6 @@
             margin: 12px 18px 0;
             font-size: 16px;
             font-weight: 400;
-            i[class^="icon-"] {
-              margin-right: 15px;
-              font-size: 10px;
-              color: $green-1;
-            }
           }
           .shop-badge {
             margin-right: 8px;
@@ -132,6 +127,64 @@
     &__application-section {
       padding: 50px 0;
       background-color: $greyish-blue-10;
+
+      h2 {
+        margin-bottom: 40px;
+      }
+
+      .middle-images {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: flex-end;
+      }
+    }
+
+    &__faq {
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 50px;
+
+      h2 {
+        margin-bottom: 42px;
+      }
+    }
+
+    &__entrepreneurs {
+      display: flex;
+      flex-direction: column;
+      h2 {
+        margin: 46px 0 42px;
+        font-size: 24px;
+        font-weight: 500;
+        font-style: italic;
+        em {
+          color: $dark-blue-2;
+        }
+      }
+
+      .entrepreneurs-list {
+        display: flex;
+        flex-wrap: wrap;
+        row-gap: 25px;
+
+        .entrepreneur {
+          padding: 0 25px;
+          width: 10%;
+          img {
+            width: 100%;
+            object-fit: contain;
+            object-position: center;
+            aspect-ratio: 1 / 1;
+          }
+          &__name {
+            text-align: center;
+            margin-top: 13px;
+            font-size: 15px;
+            font-weight: 500;
+          }
+        }
+      }
     }
   }
 
@@ -167,6 +220,28 @@
     &--left:after {
       padding-right: 0;
       content: none;
+    }
+  }
+  button.show-more {
+    padding: 0 25px;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    align-self: center;
+    i {
+      margin: 0 0 0 10px ;
+      font-size: 10px;
+    }
+  }
+  .text-with-check {
+    margin: 12px 18px 0 0;
+    font-size: 16px;
+    font-weight: 400;
+    i[class^="icon-"] {
+      margin-right: 15px;
+      font-size: 10px;
+      color: $green-1;
     }
   }
 }
