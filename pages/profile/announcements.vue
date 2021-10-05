@@ -2,6 +2,11 @@
   <div class="pages-annoucements pt-2 pt-lg-5">
     <div class="container"> 
       <breadcrumbs :crumbs="crumbs" />
+      <div class="card" v-if="isMobileBreakpoint">
+        <h2 class="title-with-line mb-0">
+          <span>{{ $t('my_announces') }}</span>
+        </h2>
+      </div>
       <controls-panel 
         :status="form.status"
         :show-toolbar="!!myAnnouncements.data.length"

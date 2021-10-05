@@ -570,7 +570,7 @@ export default {
   ],
   "enter_a_new_mobile_number": "Yeni əlaqə nömrəsi əlavə et",
   "enter_new_email": "Yeni e-mail ünvanı qeyd et",
-  "enter_the_amount_in_azn": "Məbləği AZN ilə daxil et (min. {min})",
+  "enter_the_amount_in_azn": "Məbləği AZN ilə daxil et (min. {min} ₼)",
   "enter_the_code": "Kodu daxil edin",
   "enter_the_code_from_mail": "Elektron ünvana göndərilən kodu daxil et",
   "enter_the_code_from_sms": "SMS-də gəlmiş kodu əlavə et",

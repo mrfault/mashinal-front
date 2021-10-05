@@ -569,7 +569,7 @@ export default {
   ],
   "enter_a_new_mobile_number": "Введите новый номер моб. телефона",
   "enter_new_email": "Введите новый E-mail",
-  "enter_the_amount_in_azn": "Введите сумму в манатах (мин. {min})",
+  "enter_the_amount_in_azn": "Введите сумму в манатах (мин. {min} ₼)",
   "enter_the_code": "Введите код",
   "enter_the_code_from_mail": "Введите код с почты",
   "enter_the_code_from_sms": "Введите код с СМС",
