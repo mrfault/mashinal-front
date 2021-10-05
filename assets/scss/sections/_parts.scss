@@ -277,6 +277,10 @@
   .part-search-form {
     .checkboxes-box {
       background-color: $dark-1;
+
+      .show-more {
+        color: $white;
+      }
     }
   }
 
