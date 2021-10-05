@@ -63,12 +63,12 @@
         <call-button :phone="contact.phone" />
       </div>
     </div>
-    <template v-if="!brief && userIsOwner(announcement) && (announcement.status == 1 || announcement.has_monetization || needToPay)">
+    <template v-if="!brief && userIsOwner(announcement) && ((!this.isMobileBreakpoint && (announcement.status == 1 || announcement.has_monetization)) || needToPay)">
       <hr class="mt-3" />
       <div :class="{'mb-2 mb-lg-3': !needToPay}">
         <pay-announcement-button :announcement="announcement" v-if="needToPay"/>
-        <monetization-stats-button :announcement="announcement" v-else-if="announcement.has_monetization" />
-        <monetization-button :announcement="announcement" v-else-if="announcement.status == 1" />
+        <monetization-stats-button :announcement="announcement" v-else-if="!this.isMobileBreakpoint && announcement.has_monetization" />
+        <monetization-button :announcement="announcement" v-else-if="!this.isMobileBreakpoint && announcement.status == 1" />
       </div>
     </template>
     <template v-if="!brief && (userIsOwner(announcement) && announcement.status != 2) || (announcement.status == 3 && !announcement.is_autosalon)">

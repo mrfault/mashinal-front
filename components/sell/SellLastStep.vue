@@ -18,6 +18,7 @@
           @files-dropped="addImages"
           @file-deleted="deleteImage"
           @file-rotated="rotateImage"
+          @order-changed="changeOrder"
         />
         <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-youtube">
           <span>{{ $t('video') }}</span>
@@ -216,7 +217,7 @@
           </p>
           <div class="text-right">
             <button type="button" @click="publishPost" :class="['btn btn--green', { pending }]">
-              {{ isAlreadySold ? `${$t('place_and_pay')} 5 AZN` : (edit ? (restore ? $t('restore') : $t('edit_ad')) : $t('place_an_ad')) }}
+              {{ isAlreadySold ? `${$t('place_and_pay')} 5 ₼` : (edit ? (restore ? $t('restore') : $t('edit_ad')) : $t('place_an_ad')) }}
             </button>
           </div>
         </div>
@@ -265,7 +266,7 @@ export default {
     return {
       form: this.$clone(this.initialForm),
       date: Math.floor(Date.now() / 1000),
-      files: this.announcement?.media || [],
+      files: (this.announcement?.media || []).map((media, i) => ({ media, key: this.initialForm.saved_images[i]  })),
       minFiles: this.type === 'moto' ? 2 : 3,
       maxFiles: 20,
       savedFiles: [...this.initialForm.saved_images],
@@ -421,7 +422,7 @@ export default {
               headers: { 'Content-Type': 'multipart/form-data' }
             });
             this.uploading--;
-            this.$nuxt.$emit('image-uploaded', image.key, data.images[0]);
+            this.$nuxt.$emit('image-uploaded', image.key, false, data.images[0], data.ids[0]);
             this.$nuxt.$emit('hide-image-preloader-by-key', image.key);
             this.savedFiles = [...this.savedFiles, ...data.ids];
           } catch({response: {data: {data}}}) {
@@ -449,7 +450,7 @@ export default {
           this.$nuxt.$loading.start();
           const { data } = await this.$axios.$get(`/media/${this.savedFiles[index]}/rotate/right`);
           this.$nuxt.$loading.finish();
-          this.$nuxt.$emit('image-uploaded', key, data.thumb, true);
+          this.$nuxt.$emit('image-uploaded', key, true, data.thumb);
           this.$nuxt.$emit('hide-image-preloader-by-key', key);
         } catch({response: {data: {data}}}) {
           this.$nuxt.$emit('hide-image-preloader-by-key', key);
@@ -460,6 +461,10 @@ export default {
           }
         }
       }
+    },
+    changeOrder(sorted, preview) {
+      this.$set(this, 'savedFiles', sorted);
+      this.setSellPreviewData({ value: preview, key: 'image' });
     },
     // post announcement
     async publishPost() {
@@ -497,11 +502,25 @@ export default {
           this.gtagTrack('AW-600951956/ccUSCJT25_IBEJSZx54C');
         }
         // redirect to payment if action was to restore
-        if (this.restore || this.isAlreadySold) {
-          this.handlePayment(res);
+        if (res?.data?.redirect_url) {
+          this.handlePayment(res, this.$localePath('/profile/announcements'));
         } else {
           this.$router.push(this.$localePath('/profile/announcements'), () => {
-            this.$toasted.success(this.$t('saved_changes'));
+            if (this.restore) {
+              this.updatePaidStatus({ 
+                type: 'success', 
+                text: this.$t('announcement_restored'), 
+                title: this.$t('success_payment') 
+              });
+            } else if (this.isAlreadySold) {
+              this.updatePaidStatus({ 
+                type: 'success', 
+                text: this.$t('announcement_paid'), 
+                title: this.$t('success_payment') 
+              });
+            } else {
+              this.$toasted.success(this.$t('saved_changes'));
+            }
           });
         }
       } catch ({response: {status, data: {data, message}}}) {

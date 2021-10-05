@@ -138,14 +138,18 @@ export default {
       if (this.paymentMethod === 'card') {
         this.pending = false;
         this.showModal = false;
-        this.handlePayment(res);
+        this.handlePayment(res, false, this.$t('ad_started'));
       } else {
         await Promise.all([
           this.$nuxt.refresh(),
           this.$auth.fetchUser()
         ]);
         this.pending = false;
-        this.$toasted.success(this.$t('ad_started'));
+        this.updatePaidStatus({ 
+          type: 'success', 
+          text: this.$t('ad_started'), 
+          title: this.$t('success_payment') 
+        });
       }
     }
   },
@@ -155,6 +159,7 @@ export default {
       this.price.min = this.pricesForPlan[0];
       this.price.value = this.pricesForPlan[2];
       this.price.max = this.pricesForPlan[this.pricesForPlan.length - 1];
+      if (this.haveBalanceForPlan) this.paymentMethod = 'balance';
     });
   }
 }

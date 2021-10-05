@@ -26,7 +26,6 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 
-import SearchNav from '~/components/layout/SearchNav';
 import CommercialSearchForm from '~/components/commercial/CommercialSearchForm';
 import Grid from '~/components/announcements/Grid';
 import NoResults from '~/components/elements/NoResults';
@@ -35,7 +34,6 @@ export default {
   name: 'pages-commercial-slug',
   layout: 'search',
   components: {
-    SearchNav,
     CommercialSearchForm,
     Grid,
     NoResults
@@ -101,7 +99,7 @@ export default {
       store.dispatch('getOptions'),
       store.dispatch('getColors'),
       store.dispatch('getCommercialSearchFilters', category.id),
-      store.dispatch('getCommercialBrands', category.id),
+      store.dispatch('getCommercialBrands', { category: category.id }),
       store.dispatch('getGridSearch', { ...searchParams, post, page }),
       // get model options for brands
       ...Object.keys(post?.additional_brands || {})

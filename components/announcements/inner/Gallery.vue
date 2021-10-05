@@ -272,7 +272,7 @@ export default {
           this.gallerySwiper.on('slideChange', () => {
             this.currentSlide = this.gallerySwiper.realIndex;
           });
-          this.gallerySwiper.on(this.isMobileBreakpoint ? 'click tap': 'click tap touchEnd', () => {
+          this.gallerySwiper.on(this.isMobileBreakpoint ? 'click': 'click tap touchEnd', () => {
             this.openLightbox(this.currentSlide);
           });
           this.updateTouchEvents();

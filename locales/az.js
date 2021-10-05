@@ -770,8 +770,6 @@ export default {
   "kpp_type": "Sürətlər qutusunun növü",
   "kupe": "Kupe",
   "kupit": "Almaq",
-  "kupit_detail": "{price} AZN",
-  "kupit_simple": "{price} AZN",
   "lamp": "Fara",
   "lamp_filter": "Lampa növü",
   "lamp_material": "Material",
@@ -1063,6 +1061,7 @@ export default {
   "password": "Şifrə",
   "password_will_be_sent_by_email": "Şifrənin dəyişdirilməsi üçün, qeyd etdiyin mobil nömrəyə 5 rəgəmli kod göndəriləcək.",
   "pay": "Ödəniş et",
+  "pay_money": "Ödəniş et - {n} ₼",
   "pay_till_date": "<strong>{date}</strong> tarixinə qədər ödəniş etməlisiniz.",
   "pay_with_card": "Bank kartı",
   "pay_with_terminal": "Terminallarda ödəniş",
@@ -1285,7 +1284,7 @@ export default {
   "resora_resora": "İki ressorlu",
   "ressornaya": "Ressorlu",
   "restore_free": "Bərpa et",
-  "restore": "Bərpa et — 5 AZN",
+  "restore": "Bərpa et — 5 ₼",
   "restore_password": "Şifrəni bərpa et",
   "restore-promote-text": "<p>Müddəti bitmiş elanları “Bərpa et“ xidməti ilə aktivləşdirdikdə, elan yenidən 30 gün müddətində aktivləşəcək. Bərpa edildikdən sonra elan, axtarış nəticələrində və “Son elanlar“ siyahısında yuxarı pillələrə qalxacaq. Bundan əlavə 3 gün müddətində pulsuz “VIP elanlar“ blokunda yerləşdiriləcək.</p><ul><li><strong>Bonus</strong> — Pulsuz 3 günlük Vip xidməti. Əsas səhifədə birinci görünən “VIP elanlar” bloku olduğu üçün elanın baxış sayı dəfələrlə artacaq! Alıcılar eyni maşının modelini axtardıqda isə, sənin elanın nəticələrdə ilk sıralarda göstəriləcək!</li><li><strong>Bonus</strong> — pulsuz irəli çək xidməti. Alıcı axtarış etdikdə və “Son elanlar“ blokunda elanını, yeni əlavə olunmuş kimi görəcək. İrəli çəkilmiş elanlarda baxış sayı daha çox olur. </li><li><strong>Qeyd:</strong>  90 gün ərzində 3 pulsuz elan yerləşdirilə bilər. Eyni elanı 90 gün ərzində yalnız 1 dəfə pulsuz yerləşdirmək mümkündür. Elanın sayıda aktiv olduğu müddət 30 gündür.</li></ul>",
   "restriction": "Məhdudlaşdırma",
@@ -1471,7 +1470,7 @@ export default {
   "subscription_completed_modal_title": "Abunə olun",
   "success_activate": "Servis aktiv olunub!",
   "success_activate_msg": "Elanınız son elanlar bölməsində və axtarış nəticələrində birinci yerə qalxacaq.",
-  "success_payment": "Ödəmə tamamlandı!",
+  "success_payment": "Əməliyyat tamamlandı!",
   "success_payment_msg": "Sizin ödəməniz uğurla tamamlandı.",
   "summer": "Yay",
   "Sun curtains for rear doors": "Arxa qapılarda pərdələr",
@@ -1832,4 +1831,8 @@ export default {
     "\"Nağd pulla ödəniş\" üsulunu seçin",
     "Əsginasları terminala daxil edin, \"İrəli\" düyməsini sıxın və çeki götürün"
   ],
+  "announcement_paid": "Elan moderasiyaya göndərilib",
+  "balance_increased": "Balans artırılıb",
+  "try_again": "Yenidən cəhd et",
+  "ad_announcement": "Reklamlı elan"
 }

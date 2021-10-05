@@ -65,7 +65,7 @@
                   <span>{{ $t(row.operation_key) }}</span>
                 </span>
                 <span class="payment-price">
-                  <span :class="row.operation_type === '+' ? 'text-green' : 'text-red'">{{ row.price }} {{ getCurrency(row.operation_key) }}</span>
+                  <span :class="row.operation_type === '+' ? 'text-green' : 'text-red'">{{ row.price }} {{ (row.provider === 'balance' || row.operation_key === 'ad_stopped') ? 'ALManat' : '₼' }}</span>
                 </span>
                 <span class="payment-date"><span>{{ $moment(row.created_at).format(isMobileBreakpoint ? 'DD.MM' : 'HH:mm | DD.MM.YYYY') }}</span></span>
               </div>
@@ -125,11 +125,6 @@
       }
     },
     methods: {    
-      getCurrency(key) {
-        if (['ad_started','ad_stopped'].includes(key)) 
-          return 'ALManat';
-        return '₼';
-      }, 
       async increaseBalance() {
         if (this.pending || this.form.money < this.minAmount) return;
         this.pending = true;
@@ -137,7 +132,7 @@
           const res = await this.$axios.$post(`/payment/addBalance?is_mobile=${this.isMobileBreakpoint}`, this.form);
           this.pending = false;
           this.form.money = '';
-          this.handlePayment(res);
+          this.handlePayment(res, false, this.$t('balance_increased'));
         } catch (err) {
           this.pending = false;
         }

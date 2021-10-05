@@ -64,6 +64,9 @@ export default {
     activeMenu() {
       return this.announcementsMenus.find(menu => menu.title === this.activeType);
     },
+    activeSlide() {
+      return this.activeMenu?.children?.findIndex(menu => this.$localePath(menu.route) === this.$route.path);
+    },
     showOnlyCategories() {
       return this.activeType === 'parts';
     }
@@ -71,9 +74,11 @@ export default {
   methods: {
     slideToCategory() {
       this.$nextTick(() => {
-        if (this.routeName !== 'commercial-commercial') return false;
-        let slide = this.activeMenu?.children?.findIndex(menu => this.$localePath(menu.route) === this.$route.path);
-        if (slide) this.searchNavSwiper?.slideTo(slide);
+        setTimeout(() => {
+          if (!['commercial-commercial','parts-category'].includes(this.routeName)) return false;
+          if (typeof this.activeSlide === 'number') 
+            this.searchNavSwiper?.slideTo(this.activeSlide);
+        }, 0);
       });
     }
   },

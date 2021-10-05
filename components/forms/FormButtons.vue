@@ -3,8 +3,8 @@
     <div class="col-12" v-if="label">
       <h4 class="label">{{ label }}</h4>
     </div>
-    <div :class="[`col${groupBy > 0 ? ('-' + ([1,2,3,4,6,12].includes(groupBy) ? 12 / groupBy : 'auto')) : ''}`, {'mb-2 mb-lg-3': isMultirow}, {'active': isActive(option)}]" v-for="(option, index) in formattedOptions" :key="index">
-      <div class="form-group">
+    <div :class="['d-flex flex-column', `col${groupBy > 0 ? ('-' + ([1,2,3,4,6,12].includes(groupBy) ? 12 / groupBy : 'auto')) : ''}`, {'mb-2 mb-lg-3': isMultirow}, {'active': isActive(option)}]" v-for="(option, index) in formattedOptions" :key="index">
+      <div class="form-group flex-grow-1 d-flex flex-column">
         <button type="button" :class="[`btn full-width btn--${btnClass}`, {'active': isActive(option), 'disabled':isDisabled(option)}]"
             @click="selectedValue = option.key">
           <slot name="icon" :button="option" />

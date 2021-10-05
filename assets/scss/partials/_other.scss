@@ -146,8 +146,7 @@
     }
   }
   &.in-popup {
-    height: 270px;
-    padding-bottom: 51px;
+    padding-bottom: 40px;
     &.error {
       h4, i {
         color: $red-1;
@@ -533,7 +532,10 @@
 }
 
 .upload-image {
-  &_form__thumbnail {
+  .draggable &_thumbnail {
+    cursor: move;
+  }
+  &_thumbnail {
     width: 100%;
     padding-bottom: 76.36%;
     position: relative;
@@ -600,23 +602,18 @@
       object-fit: cover;
     }
   }
-  &.dragover &_form__thumbnail {
+  .col-6:nth-child(5) &_thumbnail.helper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    top: 0;
+    left: 0;
+    transform: none;
+  }
+  &.dragover &_thumbnail {
     &.add-image,
     &.helper {
       background-color: $greyish-blue-3;
-    }
-  }
-  .swiper-container:not(.swiper-container-initialized) {
-    opacity: 0;
-  }
-  .swiper-slide:nth-child(5) {
-    .helper img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      top: 0;
-      left: 0;
-      transform: none;
     }
   }
 }
@@ -752,7 +749,7 @@
 
 .dark-mode {
   .upload-image {
-    .upload-image_form__thumbnail {
+    .upload-image_thumbnail {
       background-color: $dark-1;
       &.add-image,
       &.helper {
@@ -761,7 +758,7 @@
         }
       }
     }
-    &.dragover .upload-image_form__thumbnail {
+    &.dragover .upload-image_thumbnail {
       &.add-image,
       &.helper {
         background-color: $grey-2;
@@ -798,15 +795,6 @@
 }
 
 @include media-max-width('lg') {
-  .upload-image {
-    .swiper-container {
-      overflow: visible;
-    }
-    .swiper-slide {
-      width: 165px;
-    }
-  }
-
   .popover {
     &-content {
       left: 100%; 
