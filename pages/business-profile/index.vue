@@ -18,11 +18,24 @@
           <features />
         </div>
         <div class="col-12 col-lg-4">
-          <registration-form-salon />
-          <!-- <registration-form-parts /> -->
+          <!-- <registration-form-salon /> -->
+          <registration-form-parts />
         </div>
       </div>
+
+      <hr class="m-0"/>
+      <competitor-announcements />
+
+      <hr class="m-0"/>
+      <control-panel />
+
+      <hr class="m-0"/>
+      <additional-features />
+
+      <hr class="m-0"/>
+      <announcements />
     </div>
+    <application-section />
   </div>
 </template>
 
@@ -30,6 +43,11 @@
 import Features from '~/components/business-profile/Features.vue'
 import RegistrationFormParts from '~/components/business-profile/RegistrationFormParts.vue';
 import RegistrationFormSalon from '~/components/business-profile/RegistrationFormSalon.vue';
+import CompetitorAnnouncements from '~/components/business-profile/CompetitorAnnouncements.vue';
+import ControlPanel from '~/components/business-profile/ControlPanel.vue';
+import AdditionalFeatures from '~/components/business-profile/AdditionalFeatures.vue';
+import Announcements from '~/components/business-profile/Announcements.vue';
+import ApplicationSection from '~/components/business-profile/ApplicationSection.vue';
 
 export default {
   name: "pages-business-profile-index",
@@ -48,7 +66,12 @@ export default {
   components: {
     Features,
     RegistrationFormParts,
-    RegistrationFormSalon
+    RegistrationFormSalon,
+    CompetitorAnnouncements,
+    ControlPanel,
+    AdditionalFeatures,
+    Announcements,
+    ApplicationSection
   },
   data() {
     return {
