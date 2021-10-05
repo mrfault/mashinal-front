@@ -1,17 +1,15 @@
 <template>
-  <div class="controls-panel card mb-3 mb-lg-3" v-if="showToolbar || isMobileBreakpoint">
-    <h2 class="title-with-line mt-n1 mb-n1" v-if="isMobileBreakpoint">
-      <span>{{ $t('my_announces') }}</span>
-    </h2>
-    <div class="row justify-content-between align-items-center mt-n1 mt-lg-0" v-if="showToolbar">
-      <div class="col-6 col-lg-2 ml-n2" v-if="!isMobileBreakpoint">
+  <div class="controls-panel card mt-n3 pb-3 pb-lg-6 mt-lg-0 mb-lg-3" v-if="showToolbar || isMobileBreakpoint">
+    <div class="row flex-nowrap justify-content-between align-items-center" v-if="showToolbar">
+      <!-- <div class="col-lg-2 ml-n2">
         <form-checkbox class="fw-500" :label="$t('select_all')" v-model="selectAll" input-name="selectAll" 
           transparent @input="handleSelectAll" @change="handleSelectAll"/>
-      </div>
-      <div class="col-6 col-lg-2 d-flex align-items-center justify-content-end">
+      </div> -->
+      <div class="col d-flex align-items-center justify-content-end">
         <span :class="['control-icon cursor-pointer text-hover-red', {'disabled-ui': !selected.length}]" 
             @click="showDeactivateModal = true">
           <icon name="minus-circle" />
+          <span>{{ $t('inactive_make') }}</span>
           <modal-popup
             :toggle="showDeactivateModal"
             :title="$t('are_you_sure_you_want_to_delete_the_announcement')"
