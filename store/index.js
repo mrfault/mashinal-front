@@ -627,8 +627,12 @@ export const actions = {
     const res = await this.$axios.$get(`/announcement/edit/${id}`);
     commit('mutate', { property: 'myAnnouncement', value: res });
   },
-  async deleteMyAnnounement({ commit }, id) {
+  async deactivateMyAnnounement({ commit }, id) {
     await this.$axios.$delete(`/announcement/${id}/delete`);
+    commit('mutate', { property: 'myAnnouncement', value: {} });
+  },
+  async deleteMyAnnounement({ commit }, id) {
+    await this.$axios.$delete(`/announcement/${id}/remove`);
     commit('mutate', { property: 'myAnnouncement', value: {} });
   },
   // Car announcements
