@@ -1,23 +1,37 @@
 <template>
-  <div class="controls-panel card mb-3 mb-lg-3" v-if="showToolbar || isMobileBreakpoint">
-    <h2 class="title-with-line mt-n1 mb-n1" v-if="isMobileBreakpoint">
-      <span>{{ $t('my_announces') }}</span>
-    </h2>
-    <div class="row justify-content-between align-items-center mt-n1 mt-lg-0" v-if="showToolbar">
-      <div class="col-6 col-lg-2 ml-n2" v-if="!isMobileBreakpoint">
+  <div class="controls-panel card mt-n3 mt-lg-0 mb-lg-3" v-if="showToolbar || isMobileBreakpoint">
+    <div class="row flex-nowrap justify-content-between align-items-center" v-if="showToolbar">
+      <!-- <div class="col-lg-2 ml-n2">
         <form-checkbox class="fw-500" :label="$t('select_all')" v-model="selectAll" input-name="selectAll" 
           transparent @input="handleSelectAll" @change="handleSelectAll"/>
-      </div>
-      <div class="col-6 col-lg-2 d-flex align-items-center justify-content-end">
+      </div> -->
+      <div class="col d-flex align-items-center justify-content-end">
         <span :class="['control-icon cursor-pointer text-hover-red', {'disabled-ui': !selected.length}]" 
             @click="showDeactivateModal = true">
           <icon name="minus-circle" />
+          <span>{{ $t('inactive_make') }}</span>
           <modal-popup
             :toggle="showDeactivateModal"
-            :title="$t('are_you_sure_you_want_to_delete_the_announcement')"
+            :title="$t('are_you_sure_you_want_to_deactivate_the_announcements')"
             @close="showDeactivateModal = false"
           >
             <form class="form" @submit.prevent="deactivateAnouncement" novalidate>
+              <button type="submit" :class="['btn btn--green full-width', { pending }]">
+                {{ $t('confirm') }}
+              </button>
+            </form>
+          </modal-popup>
+        </span>
+        <span :class="['control-icon cursor-pointer text-hover-red', {'disabled-ui': !selected.length}]" 
+            @click="showDeleteModal = true">
+          <icon name="garbage" />
+          <span>{{ $t('delete') }}</span>
+          <modal-popup
+            :toggle="showDeleteModal"
+            :title="$t('are_you_sure_you_want_to_delete_the_announcements')"
+            @close="showDeleteModal = false"
+          >
+            <form class="form" @submit.prevent="deleteAnouncement" novalidate>
               <button type="submit" :class="['btn btn--green full-width', { pending }]">
                 {{ $t('confirm') }}
               </button>
@@ -34,7 +48,6 @@ import { mapGetters, mapActions } from 'vuex';
 
 export default {
   props: {
-    status: {},
     showToolbar: Boolean
   },
   data() {
@@ -42,6 +55,7 @@ export default {
       selected: [],
       selectAll: false,
       showDeactivateModal: false,
+      showDeleteModal: false,
       pending: false
     }
   },
@@ -49,7 +63,7 @@ export default {
     ...mapGetters(['myAnnouncements'])
   },
   methods: {
-    ...mapActions(['deleteMyAnnounement']),
+    ...mapActions(['deactivateMyAnnounement','deleteMyAnnounement']),
 
     selectAnnouncement(id, value, controls = false) {
       if (!controls) return;
@@ -87,19 +101,40 @@ export default {
 
       this.pending = true;
       try {
-        await Promise.all(this.selected.map(this.deleteMyAnnounement));
+        await Promise.all(this.selected.map(this.deactivateMyAnnounement));
+        this.handleSelectAll(false);
         await this.$nuxt.refresh();
         this.pending = false;
         this.showDeactivateModal = false;
-        this.handleSelectAll(false);
       } catch (err) {
         this.pending = false;
       }
-    }
-  },
-  watch: {
-    status() {
-      this.handleSelectAll(false);
+    },
+    async deleteAnouncement() {
+      if (this.pending) return;
+
+      let canProceed = true;
+      
+      this.selected.map(id => {
+        let item = this.myAnnouncements.data.find(item => item.id_unique == id);
+        if (![3].includes(item.status)) canProceed = false;
+      });
+
+      if (!canProceed) {
+        this.$toasted.error(this.$t('cant_delete_selected_announcements'));
+        return;
+      }
+
+      this.pending = true;
+      try {
+        await Promise.all(this.selected.map(this.deleteMyAnnounement));
+        this.handleSelectAll(false);
+        await this.$nuxt.refresh();
+        this.pending = false;
+        this.showDeleteModal = false;
+      } catch (err) {
+        this.pending = false;
+      }
     }
   },
   mounted() {

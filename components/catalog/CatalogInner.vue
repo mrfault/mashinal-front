@@ -64,7 +64,8 @@
                   <ul>
                     <li v-for="(spec, key) in col" :key="key">
                       <span>{{ $t(key) }}</span>
-                      <span v-if="hasValues(key)">{{ $t(key+'_values')[spec || 0] }}</span>
+                      <span v-if="['ekologicheskiy-klass'].includes(key)">{{ $t(spec) }}</span>
+                      <span v-else-if="hasValues(key)">{{ $t(key+'_values')[spec || 0] }}</span>
                       <span v-else-if="Array.isArray(spec) && spec.length && `${spec[0]}`.length">
                         {{ spec[0] }}
                         <template v-if="spec[2] !== undefined">
