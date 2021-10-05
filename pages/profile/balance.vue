@@ -65,7 +65,10 @@
                   <span>{{ $t(row.operation_key) }}</span>
                 </span>
                 <span class="payment-price">
-                  <span :class="row.operation_type === '+' ? 'text-green' : 'text-red'">{{ row.price }} {{ (row.provider === 'balance' || row.operation_key === 'ad_stopped') ? 'ALManat' : '₼' }}</span>
+                  <span :class="row.operation_type === '+' ? 'text-green' : 'text-red'">
+                    {{ row.operation_type }}
+                    {{ row.price }} {{ (row.provider === 'balance' || row.operation_key === 'ad_stopped') ? 'ALManat' : '₼' }}
+                  </span>
                 </span>
                 <span class="payment-date"><span>{{ $moment(row.created_at).format(isMobileBreakpoint ? 'DD.MM' : 'HH:mm | DD.MM.YYYY') }}</span></span>
               </div>
