@@ -278,7 +278,7 @@
 }
 
 .controls-panel {
-  padding: 5px 25px;
+  padding: 8px 25px 9px;
   .control-icon {
     display: inline-flex;
     align-items: center;
@@ -307,7 +307,15 @@
       background-color: $dark-2;
     }
   }
-  
+}
+
+@include media-max-width('lg') {
+  .controls-panel {
+    padding: 0 25px 17px;
+  }
+}
+
+.dark-mode {
   .grid-title {
     background-color: $dark-2;
   }
