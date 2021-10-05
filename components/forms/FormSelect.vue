@@ -363,6 +363,7 @@
     watch: {
       breakpoint() {
         this.showOptions = false;
+        document?.body?.classList.remove('select-menu-open');
       },
       disabled(disabled) {
         if (disabled && this.clearOnDisable) this.clearSelect();

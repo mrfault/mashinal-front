@@ -1,5 +1,5 @@
 <template>
-  <div class="form-gallery2 mb-n2 mb-lg-n3">
+  <div class="form-gallery mb-n2 mb-lg-n3">
     <draggable
       v-model="files"
       class="row full-width"
