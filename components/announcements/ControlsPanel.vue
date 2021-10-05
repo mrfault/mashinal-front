@@ -1,5 +1,5 @@
 <template>
-  <div class="controls-panel card mt-n3 pb-3 pb-lg-6 mt-lg-0 mb-lg-3" v-if="showToolbar || isMobileBreakpoint">
+  <div class="controls-panel card mt-n3 mt-lg-0 mb-lg-3" v-if="showToolbar || isMobileBreakpoint">
     <div class="row flex-nowrap justify-content-between align-items-center" v-if="showToolbar">
       <!-- <div class="col-lg-2 ml-n2">
         <form-checkbox class="fw-500" :label="$t('select_all')" v-model="selectAll" input-name="selectAll" 
