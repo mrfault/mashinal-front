@@ -275,7 +275,7 @@
       border-top-color: $dark-1;
       .payment-period,
       .payment-date {
-        color: $grey-1;
+        color: $grey-4;
       }
     }
   }
@@ -350,14 +350,14 @@
         width: 165px;
       }
       .payment-price {
-        width: 100px;
+        width: 113px;
       }
       .payment-date {
         width: 70px;
       }
       &.less-cols {
         .payment-date {
-          width: 50px;
+          width: 40px;
           justify-content: flex-end;
         }
       }
