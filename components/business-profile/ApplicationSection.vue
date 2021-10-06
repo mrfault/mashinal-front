@@ -4,15 +4,15 @@
       <div class="row">
         <div class="col-12 col-lg-5">
           <h2 class="section-title heading-dots heading-dots--left">{{ $t('apply_for_a_business_profile') }}</h2>
-          <img src="/img/application_form_3.svg" alt="" draggable="false">
+          <img src="/img/application_form_3.svg" alt="">
         </div>
         <div class="col-12 col-lg-2 middle-images">
           <div class="row">
             <div class="col-auto col-lg-12">
-              <img :src="`/img/application_form_1_${colorMode}.svg`" alt="" draggable="false">
+              <img :src="`/img/application_form_1_${colorMode}.svg`" alt="">
             </div>
             <div class="col-auto col-lg-12">
-              <img :src="`/img/application_form_2_${colorMode}.png`" alt="" draggable="false">
+              <img :src="`/img/application_form_2_${colorMode}.png`" alt="">
             </div>
           </div>
         </div>

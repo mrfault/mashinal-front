@@ -13,14 +13,14 @@
       <h3 class="section-subtitle">{{ $t('control_panel_desc') }}</h3>
     </div>
     <div class="images">
-      <img :src="`/img/control_panel_1_${colorMode}.svg`" alt="" draggable="false">
-      <img :src="`/img/control_panel_2_${colorMode}.svg`" alt="" draggable="false">
-      <img :src="`/img/control_panel_3_${colorMode}.svg`" alt="" draggable="false">
-      <img :src="`/img/control_panel_4_${colorMode}.svg`" alt="" draggable="false">
-      <img :src="`/img/control_panel_5_${colorMode}.svg`" alt="" draggable="false">
-      <img :src="`/img/control_panel_6_${colorMode}.svg`" alt="" draggable="false">
-      <img :src="`/img/control_panel_7_${colorMode}.svg`" alt="" draggable="false">
-      <img :src="`/img/control_panel_8_${colorMode}.svg`" alt="" draggable="false">
+      <img :src="`/img/control_panel_1_${colorMode}.svg`" alt="">
+      <img :src="`/img/control_panel_2_${colorMode}.svg`" alt="">
+      <img :src="`/img/control_panel_3_${colorMode}.svg`" alt="">
+      <img :src="`/img/control_panel_4_${colorMode}.svg`" alt="">
+      <img :src="`/img/control_panel_5_${colorMode}.svg`" alt="">
+      <img :src="`/img/control_panel_6_${colorMode}.svg`" alt="">
+      <img :src="`/img/control_panel_7_${colorMode}.svg`" alt="">
+      <img :src="`/img/control_panel_8_${colorMode}.svg`" alt="">
     </div>
   </div>
 </template>

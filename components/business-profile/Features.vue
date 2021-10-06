@@ -4,7 +4,7 @@
       <div class="feature">
         <div class="feature__background"></div>
         <div class="feature__foreground">
-          <img class="feature__bookmark" src="/icons/bookmark.svg" draggable="false"/>
+          <img class="feature__bookmark" src="/icons/bookmark.svg"/>
           <div class="feature__title">{{ $t('features_1_title') }}</div>
           <div class="feature__text">{{ $t('features_1_desc') }}</div>
         </div>
@@ -14,7 +14,7 @@
       <div class="feature">
         <div class="feature__background"></div>
         <div class="feature__foreground">
-          <img class="feature__bookmark" src="/icons/bookmark.svg" draggable="false"/>
+          <img class="feature__bookmark" src="/icons/bookmark.svg"/>
           <div class="feature__title">{{ $t('features_2_title') }}</div>
           <div class="feature__text">
             <!-- TODO change to icon -->
@@ -27,7 +27,7 @@
       <div class="feature">
         <div class="feature__background"></div>
         <div class="feature__foreground">
-          <img class="feature__bookmark" src="/icons/bookmark.svg" draggable="false"/>
+          <img class="feature__bookmark" src="/icons/bookmark.svg"/>
           <div class="feature__title">{{ $t('features_3_title') }}</div>
           <div class="feature__text">{{ $t('features_3_title') }}</div>
         </div>
@@ -37,7 +37,7 @@
       <div class="feature">
         <div class="feature__background"></div>
         <div class="feature__foreground">
-          <img class="feature__bookmark" src="/icons/bookmark.svg" draggable="false"/>
+          <img class="feature__bookmark" src="/icons/bookmark.svg"/>
           <div class="feature__title">{{ $t('features_4_title') }}</div>
           <div class="feature__text">{{ $t('features_4_title') }}</div>
         </div>

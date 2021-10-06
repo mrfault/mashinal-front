@@ -50,24 +50,24 @@
 import { mapGetters } from 'vuex';
 
 import Features from '~/components/business-profile/Features.vue'
-import RegistrationFormParts from '~/components/business-profile/RegistrationFormParts.vue';
-import RegistrationFormSalon from '~/components/business-profile/RegistrationFormSalon.vue';
-import CompetitorAnnouncements from '~/components/business-profile/CompetitorAnnouncements.vue';
-import ControlPanel from '~/components/business-profile/ControlPanel.vue';
-import AdditionalFeatures from '~/components/business-profile/AdditionalFeatures.vue';
-import Announcements from '~/components/business-profile/Announcements.vue';
-import ApplicationSection from '~/components/business-profile/ApplicationSection.vue';
-import FAQ from '~/components/business-profile/FAQ.vue';
-import Entrepreneurs from '~/components/business-profile/Entrepreneurs.vue';
-import Advantages from '~/components/business-profile/Advantages.vue';
-import Packages from '~/components/business-profile/Packages.vue';
-import PartsPackages from '~/components/business-profile/PartsPackages.vue';
+import RegistrationFormParts from '~/components/business-profile/RegistrationFormParts';
+import RegistrationFormSalon from '~/components/business-profile/RegistrationFormSalon';
+import CompetitorAnnouncements from '~/components/business-profile/CompetitorAnnouncements';
+import ControlPanel from '~/components/business-profile/ControlPanel';
+import AdditionalFeatures from '~/components/business-profile/AdditionalFeatures';
+import Announcements from '~/components/business-profile/Announcements';
+import ApplicationSection from '~/components/business-profile/ApplicationSection';
+import FAQ from '~/components/business-profile/FAQ';
+import Entrepreneurs from '~/components/business-profile/Entrepreneurs';
+import Advantages from '~/components/business-profile/Advantages';
+import Packages from '~/components/business-profile/Packages';
+import PartsPackages from '~/components/business-profile/PartsPackages';
 
 export default {
-  name: "pages-business-profile-index",
+  name: 'pages-business-profile-index',
   nuxtI18n: {
     paths: {
-      az: "/biznes-profil"
+      az: '/biznes-profil'
     }
   },
   head() {
