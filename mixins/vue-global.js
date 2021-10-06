@@ -69,7 +69,8 @@ Vue.use({
           window.scrollTo(0, 0);
         },
         setBodyOverflow(value = 'auto', className) {
-          let bodyEl = document.querySelector('body');
+          let bodyEl = document.body;
+          if (!bodyEl) return;
           let scrollBarWidth = window.innerWidth - bodyEl.clientWidth;
           let mobileScreenOpen = bodyEl.classList.contains('mobile-screen-open') && className !== 'mobile-screen-open';
           let mobileScreen = document.querySelector('.mobile-screen');
@@ -112,7 +113,7 @@ Vue.use({
           return (brand || '') + ' ' + (model || '');
         },
         getAnnouncementContact(item) {
-          let img = item.is_autosalon ? item.user.autosalon.logo : item.user.avatar;
+          let img = item.is_autosalon ? item.user.autosalon?.logo : item.user.avatar;
           return {
             type: 'user',
             user: item.user,

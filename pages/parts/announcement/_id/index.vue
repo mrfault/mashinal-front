@@ -43,7 +43,6 @@
             <quick-info type="parts" />
             <announcement-specs type="parts" />
             <keywords />
-            <monetization :announcement="announcement" v-if="!isMobileBreakpoint && showMonetization(announcement)" />
           </div>
         </div>
       </div>
@@ -61,7 +60,6 @@ import AnnouncementSpecs from '~/components/announcements/inner/AnnouncementSpec
 import ThumbsGallery from '~/components/announcements/inner/ThumbsGallery';
 import CollapseContent from '~/components/elements/CollapseContent';
 import Keywords from '~/components/announcements/inner/Keywords';
-import Monetization from '~/components/announcements/Monetization';
 
 export default {
   name: 'pages-parts-id',
@@ -72,8 +70,7 @@ export default {
     AnnouncementSpecs,
     ThumbsGallery,
     CollapseContent,
-    Keywords,
-    Monetization
+    Keywords
   },
   nuxtI18n: {
     paths: {

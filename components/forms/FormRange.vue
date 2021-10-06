@@ -5,7 +5,7 @@
         v-model="rangeValue" 
         :min="min" 
         :max="max" 
-        :data="data || []"
+        :data="data || null"
         :interval="step" 
         :enable-cross="false"
         :tooltip="'always'"

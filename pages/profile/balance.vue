@@ -23,7 +23,7 @@
                 <div class="mb-2 mb-lg-3">
                   <form-text-input type="number" v-model="form.money" :placeholder="$t('payment_amount')" />
                 </div>
-                <p>* {{ $t('enter_the_amount_in_azn') }}</p>
+                <p>* {{ $t('enter_the_amount_in_azn', { min: minAmount }) }}</p>
                 <hr />
                 <button type="submit" :class="['btn btn--green full-width', {pending, disabled: form.money < this.minAmount}]">
                   {{ $t('replenish') }}
@@ -65,9 +65,12 @@
                   <span>{{ $t(row.operation_key) }}</span>
                 </span>
                 <span class="payment-price">
-                  <span :class="row.operation_type === '+' ? 'text-green' : 'text-red'">{{ row.price }} ₼</span>
+                  <span :class="row.operation_type === '+' ? 'text-green' : 'text-red'">
+                    {{ row.operation_type }}
+                    {{ row.price }} {{ (row.provider === 'balance' || row.operation_key === 'ad_stopped') ? 'ALM' : '₼' }}
+                  </span>
                 </span>
-                <span class="payment-date"><span>{{ $moment(row.created_at).format('hh:mm | DD.MM.YYYY') }}</span></span>
+                <span class="payment-date"><span>{{ $moment(row.created_at).format(isMobileBreakpoint ? 'DD.MM' : 'HH:mm | DD.MM.YYYY') }}</span></span>
               </div>
             </div>
           </div>
@@ -101,12 +104,15 @@
         title: this.$t('balans')
       });
     },
-    async asyncData({ store, app }) {
-      await store.dispatch('getMyBalanceHistory');
+    async asyncData({ store, app, $auth }) {
+      await Promise.all([
+        store.dispatch('getMyBalanceHistory'),
+        $auth.fetchUser()
+      ]);
 
       return { 
         pending: false,
-        minAmount: app.$env.DEV ? 0.01 : 0.1,
+        minAmount: app.$env.DEV ? 0.01 : 1,
         form: {
           money: ''
         }
@@ -121,7 +127,7 @@
         ]
       }
     },
-    methods: {      
+    methods: {    
       async increaseBalance() {
         if (this.pending || this.form.money < this.minAmount) return;
         this.pending = true;
@@ -129,7 +135,7 @@
           const res = await this.$axios.$post(`/payment/addBalance?is_mobile=${this.isMobileBreakpoint}`, this.form);
           this.pending = false;
           this.form.money = '';
-          this.handlePayment(res);
+          this.handlePayment(res, false, this.$t('balance_increased'));
         } catch (err) {
           this.pending = false;
         }

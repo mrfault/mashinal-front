@@ -67,7 +67,7 @@ export default {
     this.$nextTick(() => {
       setTimeout(() => {
         this.thumbsSwiper.init();
-      }, 0);
+      }, 100);
     });
   }
 }

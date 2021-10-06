@@ -440,5 +440,10 @@ $column-width-xs: calc(100% / 1.8);
   }
   &__item__price {
     color: $white;
-  } 
+  }
+  &__specifications {
+    .collapse-content__title {
+      color: rgba($white, 0.6);
+    }
+  }
 }

@@ -2,47 +2,49 @@
   <div class="commercial-filters">
     <div class="row">
       <slot name="before" />
-      <div :class="['mb-2 mb-lg-3', filter.type.includes('buttons') ? 'col-12 col-lg-4' : 'col-6 col-lg-2']" v-for="filter in filters" :key="filter.key">
-        <template v-if="filterExists(filter)">
-          <template v-if="filter.type === 'form-numeric-input-group'">
-            <form-select :label="filter.placeholder" custom :suffix="filter.suffix"
-              :values="{from: form[`${filter.key}_from`], to: form[`${filter.key}_to`], suffix: filter.suffix, showLabel: filter.showLabel }"
-              @clear="form[`${filter.key}_from`] = '', form[`${filter.key}_to`] = '', changeFilter(`${filter.key}_from`, ''), changeFilter(`${filter.key}_to`, '')"
-            >
-              <div class="form-merged">
-                <form-numeric-input :placeholder="$t('from')" v-model="form[`${filter.key}_from`]" 
-                  @change="changeFilter(`${filter.key}_from`, $event)" />
-                <form-numeric-input :placeholder="$t('to')" v-model="form[`${filter.key}_to`]" 
-                  @change="changeFilter(`${filter.key}_to`, $event)" />
-              </div>
-            </form-select>
+      <template v-if="!common">
+        <div :class="['mb-2 mb-lg-3', filter.type.includes('buttons') ? 'col-12 col-lg-4' : 'col-6 col-lg-2']" v-for="filter in filters" :key="filter.key">
+          <template v-if="filterExists(filter)">
+            <template v-if="filter.type === 'form-numeric-input-group'">
+              <form-select :label="filter.placeholder" custom :suffix="filter.suffix"
+                :values="{from: form[`${filter.key}_from`], to: form[`${filter.key}_to`], suffix: filter.suffix, showLabel: filter.showLabel }"
+                @clear="form[`${filter.key}_from`] = '', form[`${filter.key}_to`] = '', changeFilter(`${filter.key}_from`, ''), changeFilter(`${filter.key}_to`, '')"
+              >
+                <div class="form-merged">
+                  <form-numeric-input :placeholder="$t('from')" v-model="form[`${filter.key}_from`]" 
+                    @change="changeFilter(`${filter.key}_from`, $event)" />
+                  <form-numeric-input :placeholder="$t('to')" v-model="form[`${filter.key}_to`]" 
+                    @change="changeFilter(`${filter.key}_to`, $event)" />
+                </div>
+              </form-select>
+            </template>
+            <template v-else-if="filter.type === 'form-select-group'">
+              <form-select :label="filter.placeholder" custom :suffix="filter.suffix"
+                :values="{from: form[`${filter.key}_from`], to: form[`${filter.key}_to`] }"
+                @clear="form[`${filter.key}_from`] = '', form[`${filter.key}_to`] = '', changeFilter(`${filter.key}_from`, ''), changeFilter(`${filter.key}_to`, '')"
+              >
+                <div class="form-merged">
+                  <form-select :label="$t('from')" v-model="form[`${filter.key}_from`]" 
+                    :options="filter.options" :show-label-on-select="false" :clear-option="false" in-select-menu :suffix="filter.suffix"
+                    @change="changeFilter(`${filter.key}_from`, $event)" />
+                  <form-select :label="$t('to')" v-model="form[`${filter.key}_to`]"
+                    :options="filter.options" :show-label-on-select="false" :clear-option="false" in-select-menu :suffix="filter.suffix"
+                    @change="changeFilter(`${filter.key}_to`, $event)" />
+                </div>
+              </form-select>
+            </template>
+            <template v-else-if="filter.type === 'form-select'">
+              <form-select :label="filter.placeholder" v-model="form[filter.key]" :suffix="filter.suffix"
+                :options="filter.options" :multiple="filter.multiple" :name-in-value="filter.multiple" 
+                @change="changeFilter(filter.key, $event)" />
+            </template>
+            <template v-else-if="filter.type === 'form-buttons'">
+              <form-buttons :options="filter.options" v-model="form[filter.key]"
+                @change="changeFilter(filter.key, $event)" />
+            </template>
           </template>
-          <template v-else-if="filter.type === 'form-select-group'">
-            <form-select :label="filter.placeholder" custom :suffix="filter.suffix"
-              :values="{from: form[`${filter.key}_from`], to: form[`${filter.key}_to`] }"
-              @clear="form[`${filter.key}_from`] = '', form[`${filter.key}_to`] = '', changeFilter(`${filter.key}_from`, ''), changeFilter(`${filter.key}_to`, '')"
-            >
-              <div class="form-merged">
-                <form-select :label="$t('from')" v-model="form[`${filter.key}_from`]" 
-                  :options="filter.options" :show-label-on-select="false" :clear-option="false" in-select-menu :suffix="filter.suffix"
-                  @change="changeFilter(`${filter.key}_from`, $event)" />
-                <form-select :label="$t('to')" v-model="form[`${filter.key}_to`]"
-                  :options="filter.options" :show-label-on-select="false" :clear-option="false" in-select-menu :suffix="filter.suffix"
-                  @change="changeFilter(`${filter.key}_to`, $event)" />
-              </div>
-            </form-select>
-          </template>
-          <template v-else-if="filter.type === 'form-select'">
-            <form-select :label="filter.placeholder" v-model="form[filter.key]" :suffix="filter.suffix"
-              :options="filter.options" :multiple="filter.multiple" :name-in-value="filter.multiple" 
-              @change="changeFilter(filter.key, $event)" />
-          </template>
-          <template v-else-if="filter.type === 'form-buttons'">
-            <form-buttons :options="filter.options" v-model="form[filter.key]"
-              @change="changeFilter(filter.key, $event)" />
-          </template>
-        </template>
-      </div>
+        </div>
+      </template>
       <slot name="after" />
     </div>
   </div>
@@ -53,7 +55,8 @@ import { mapGetters } from 'vuex';
 
 export default {
   props: {
-    values: {}
+    values: {},
+    common: Boolean
   },
   data() {
     return {

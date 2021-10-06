@@ -51,7 +51,7 @@
             </div>
             <div class="col-6 mb-2">
               <form-select :label="$t('generation')" :options="carGenerations[rows[0]]" v-model="form.additional_brands[rows[0]]['generation']"
-                :disabled="form.additional_brands[rows[0]]['model'] && !carGenerations[rows[0]].length" @change="setGeneration($event, rows[0])" has-search />
+                :disabled="form.additional_brands[rows[0]]['model'] && !carGenerations[rows[0]].length" @change="setGeneration($event, rows[0])" has-search has-generations />
             </div>
           </template>
           <template v-else>
@@ -69,7 +69,7 @@
                   <div :class="['row', {'has-add-btn': canAddRow(index), 'has-remove-btn': canRemoveRow()}]">
                     <div class="col">
                       <form-select :label="$t('generation')" :options="carGenerations[key]" v-model="form.additional_brands[key]['generation']"
-                        :disabled="form.additional_brands[key]['model'] && !carGenerations[key].length" @change="setGeneration($event, key)" has-search />
+                        :disabled="form.additional_brands[key]['model'] && !carGenerations[key].length" @change="setGeneration($event, key)" has-search has-generations />
                     </div>
                     <div class="col-auto">
                       <div class="form-counter">

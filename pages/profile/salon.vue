@@ -279,7 +279,7 @@
         try {
           await this.updateMySalon(formData);
           await Promise.all([
-            this.getMySalon({id: this.user.autosalon.id}),
+            this.getMySalon({id: this.user.autosalon?.id}),
             this.$auth.fetchUser()
           ]);
           this.$toasted.success(this.$t('saved_changes'));

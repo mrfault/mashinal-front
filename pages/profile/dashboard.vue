@@ -31,8 +31,8 @@
               </ul>
             </template>
             <template v-else-if="card.key === 'autosalon'">
-              <h4>{{ user.autosalon.name }}</h4>
-              <p>{{ user.autosalon.short_description || '' }}</p>
+              <h4>{{ user.autosalon && user.autosalon.name }}</h4>
+              <p>{{ user.autosalon && user.autosalon.short_description || '' }}</p>
             </template>
             <template v-else-if="card.key === 'contract'">
               <p class="mt-1">{{ $t('contract_end_time') }}:<br/><strong>{{ announcementStats.contract.end_date }}</strong></p>
@@ -183,6 +183,12 @@
 
       shouldExtendContract() {
         return this.announcementStats.contract.left_days < 8;
+      },
+
+      paymentMethodOptions() {
+        return [
+          { key: 1, name: this.$t('pay_with_card') }
+        ]
       }
     },
     methods: {

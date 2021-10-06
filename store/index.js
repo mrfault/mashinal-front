@@ -52,7 +52,7 @@ const getInitialState = () => ({
   catalogForm: {},
   // brands
   brands: [],
-  commercialBrands: [],
+  commercialBrands: { 0:[], 1:[], 2:[], 3:[], 4:[] },
   // models
   models: [],
   atvModels: { 0:[], 1:[], 2:[], 3:[], 4:[] },
@@ -246,9 +246,12 @@ const objectNotEmpty = (state, commit, property) => {
 
 export const actions = {
   async nuxtServerInit({ dispatch, commit }) {
-    await Promise.all([
-      dispatch('getStaticPages')
-    ]);
+    if (!this.$auth.loggedIn) {
+      this.$auth.setUser(false);
+      await this.$auth.logout();
+    }
+
+    await dispatch('getStaticPages');
 
     let ptk = this.$cookies.get('ptk') || 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
       .replace(/[xy]/g, (c) => {
@@ -431,9 +434,9 @@ export const actions = {
     const res = await this.$axios.$get('/brands');
     commit('mutate', { property: 'brands', value: res });
   },
-  async getCommercialBrands({ commit }, category) {
-    const res = await this.$axios.$get(`/commercial/get_brands/${category}`);
-    commit('mutate', { property: 'commercialBrands', value: res });
+  async getCommercialBrands({ commit }, data) {
+    const res = await this.$axios.$get(`/commercial/get_brands/${data.category}`);
+    commit('mutate', { property: 'commercialBrands', value: res, key: data.index || 0 });
   },
   // Models
   async getModels({ commit }, name) {
@@ -599,8 +602,8 @@ export const actions = {
     const res = await this.$axios.$get(`/grid/home_page_parts?per_page=4&page=${data.page || 1}`);
     commit('mutate', { property: 'mainPartsAnnouncements', value: res });
   },
-  async getMainSearch({ commit }, data) {
-    const res = await this.$axios.$get(data.url);
+  async getMotoMainSearch({ commit }, data = {}) {
+    const res = await this.$axios.$get(`/moto_home_page?page=${data.page || 1}`);
     commit('mutate', { property: 'mainAnnouncements', value: res });
   },
   async getGridSearch({ commit }, data) {
@@ -628,8 +631,12 @@ export const actions = {
     const res = await this.$axios.$get(`/announcement/edit/${id}`);
     commit('mutate', { property: 'myAnnouncement', value: res });
   },
-  async deleteMyAnnounement({ commit }, id) {
+  async deactivateMyAnnounement({ commit }, id) {
     await this.$axios.$delete(`/announcement/${id}/delete`);
+    commit('mutate', { property: 'myAnnouncement', value: {} });
+  },
+  async deleteMyAnnounement({ commit }, id) {
+    await this.$axios.$delete(`/announcement/${id}/remove`);
     commit('mutate', { property: 'myAnnouncement', value: {} });
   },
   // Car announcements

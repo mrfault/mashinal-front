@@ -25,6 +25,7 @@
               <form-text-input
                 :placeholder="$t('part_name')"
                 v-model="form.text"
+                @keyup.native.enter="submitForm"
               />
             </div>
             <!-- Subcategory -->
@@ -41,11 +42,11 @@
               <form-select
                 :label="$t('price')"
                 custom
-                anchor="right"
-                :suffix="getOptionValue('Currency', form.currency)"
-                :values="{from: form.price_from, to: form.price_to, suffix: form.currency === 2 ? '$' : '₼' }"
+                suffix="AZN"
+                :values="{from: form.price_from, to: form.price_to, suffix: '₼' }"
                 @clear="form.price_from = '', form.price_to = ''"
               >
+                <!-- :suffix="getOptionValue('Currency', form.currency)" -->
                 <div class="form-merged">
                   <form-numeric-input
                     :placeholder="$t('from')"
@@ -55,14 +56,14 @@
                     :placeholder="$t('to')"
                     v-model="form.price_to"
                   />
-                  <form-select
+                  <!-- <form-select
                     :label="'AZN'"
                     :options="getCurrencyOptions"
                     v-model="form.currency"
                     :allow-clear="false"
                     :clear-option="false" 
                     in-select-menu
-                  />
+                  /> -->
                 </div>
               </form-select>
             </div>
@@ -248,7 +249,7 @@ export default {
         announce_type: 0,
         price_from: '',
         price_to: '',
-        currency: 1,
+        // currency: 1,
         text: '',
         sort: '',
         ...additionalProperties
@@ -278,8 +279,7 @@ export default {
     },
     brandsOnChange(id) {
       if (this.form.brand_ids.includes(id)) {
-        const index = this.form.brand_ids.findIndex(brand => brand.id === id)
-        this.form.brand_ids.splice(index, 1)
+        this.form.brand_ids = this.form.brand_ids.filter(brand => brand.id !== id)
       } else {
         this.form.brand_ids.push(id)
       }

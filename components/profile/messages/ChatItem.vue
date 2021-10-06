@@ -8,7 +8,7 @@
       <div class="chat-info">
         <div class="chat-first-line">
           <span class="text-medium text-truncate">{{ chatUser.full_name }}</span>
-          <span class="text-dark-blue-3">{{ lastMessage ? $moment(lastMessage.created_at).format('hh:mm') : '' }}</span>
+          <span class="text-dark-blue-3">{{ lastMessage ? $moment(lastMessage.created_at).format('HH:mm') : '' }}</span>
           <span class="dots" @click.stop="$emit('show-modal', group)" v-if="!isChatBot && isMobileBreakpoint">
             <i v-for="i in 3" :key="i"></i>
           </span>

@@ -13,8 +13,8 @@
       <h3 class="section-subtitle">Daha çox müştəri cəlb edin, diqqət yalnız sizin elanlarda olsun</h3>
     </div>
     <div class="images">
-      <img :src="`/img/competitor_announcements_1_${colorMode}.svg`" alt="" draggable="false">
-      <img :src="`/img/competitor_announcements_2_${colorMode}.svg`" alt="" draggable="false">
+      <img :src="`/img/competitor_announcements_1_${colorMode}.svg`" alt="">
+      <img :src="`/img/competitor_announcements_2_${colorMode}.svg`" alt="">
     </div>
   </div>
 </template>

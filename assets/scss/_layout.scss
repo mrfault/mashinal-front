@@ -3,10 +3,10 @@ body {
   font-size: 14px;
   line-height: 1.35;
   font-weight: normal;
-  font-family: 'Gilroy';
+  font-family: 'Gilroy', 'Montserrat';
   background-color: $greyish-blue-1;
   overflow-y: scroll;
-}
+} 
 
 [data-color-mode=dark] body {
   color: $white;

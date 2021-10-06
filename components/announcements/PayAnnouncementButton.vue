@@ -1,6 +1,6 @@
 <template>
-  <button :class="['btn full-width', `btn--${className}`, { pending }]" @click.stop="restoreAnnouncement">
-    <icon name="refresh" /> {{ $t('restore'+(free ? '_free' : '')) }}
+  <button :class="['btn btn--dark-blue-2-outline full-width', { pending }]" @click.stop="pay">
+    {{ $t('pay_money', {n: 5}) }}
   </button>
 </template>
 
@@ -9,11 +9,7 @@ import { PaymentMixin } from '~/mixins/payment';
 
 export default {
   props: {
-    free: Boolean,
-    announcement: {},
-    className: {
-      default: 'dark-blue-outline'
-    }
+    announcement: {}
   },
   mixins: [PaymentMixin],
   data() {
@@ -22,22 +18,22 @@ export default {
     }
   },
   methods: {
-    async restoreAnnouncement() {
+    async pay() {
       if (this.pending) return;
       this.pending = true;
       try {
-        const res = await this.$axios.$get(`/restore/${this.announcement.id_unique}?is_mobile=${this.isMobileBreakpoint}`);
+        const res = await this.$axios.$get(`/payment/get_system_paid_announce_status/${this.announcement.id}?is_mobile=${this.isMobileBreakpoint}`);
         if (!res?.data?.redirect_url) {
           await this.$nuxt.refresh();
           this.updatePaidStatus({ 
             type: 'success', 
-            text: this.$t('announcement_restored'), 
+            text: this.$t('announcement_paid'), 
             title: this.$t('success_payment') 
           });
           this.pending = false;
         } else {
           this.pending = false;
-          this.handlePayment(res, false, this.$t('announcement_restored'));
+          this.handlePayment(res, false, this.$t('announcement_paid'));
         }
       } catch (err) {
         this.pending = false;
