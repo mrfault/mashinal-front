@@ -8,9 +8,9 @@
           'heading-dots--left': isMobileBreakpoint
         }"
       >
-        İdarəetmə paneli
+        {{ $t('control_panel_title') }}
       </h2>
-      <h3 class="section-subtitle">Hesabınıza dair bütün statistik məlumatlar və göstəricilər bir paneldə</h3>
+      <h3 class="section-subtitle">{{ $t('control_panel_desc') }}</h3>
     </div>
     <div class="images">
       <img :src="`/img/control_panel_1_${colorMode}.svg`" alt="" draggable="false">

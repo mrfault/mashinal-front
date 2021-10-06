@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row">
         <div class="col-12 col-lg-5">
-          <h2 class="section-title heading-dots heading-dots--left">Biznes profili üçün müraciət et</h2>
+          <h2 class="section-title heading-dots heading-dots--left">{{ $t('apply_for_a_business_profile') }}</h2>
           <img src="/img/application_form_3.svg" alt="" draggable="false">
         </div>
         <div class="col-12 col-lg-2 middle-images">

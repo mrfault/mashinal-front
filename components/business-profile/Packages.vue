@@ -8,7 +8,7 @@
           'heading-dots--left': isMobileBreakpoint
         }"
       >
-        Biznes profili paketləri
+        {{ $t('business_profile_packages') }}
       </h2>
     </div>
     <div class="packages">
@@ -29,17 +29,17 @@
         <div class="package__details">
           <p class="mx-0 mt-1 text-with-check">
             <icon name="check" />
-            Elan sayı - {{ item.announcementCount }}
+            {{ $t('announcement_count') }} - {{ item.announcementCount }}
           </p>
           <p class="mx-0 mt-1 text-with-check">
             <icon name="check" />
             <icon name="wallet" />
-            - {{ item.alManat }} ALManat
+            - {{ item.alManat }} {{ $t('almanat') }}
           </p>
         </div>
       </div>
     </div>
-    <button class="btn btn--green align-self-center">Onlayn ödə</button>
+    <button class="btn btn--green align-self-center">{{ $t('pay_online') }}</button>
   </div>
 </template>
 
@@ -50,37 +50,37 @@ export default {
       packages: [
         {
           price: 1000,
-          name: 'Limitsiz',
-          announcementCount: 'Limitsiz',
+          name: this.$t('Limitsiz'),
+          announcementCount: this.$t('Limitsiz'),
           alManat: '400'
         },
         {
           price: 800,
-          name: 'Pro',
+          name: this.$t('Pro'),
           announcementCount: '100',
           alManat: '400'
         },
         {
           price: 600,
-          name: 'Platinium',
+          name: this.$t('Platinium'),
           announcementCount: '30',
           alManat: '300'
         },
         {
           price: 400,
-          name: 'Qızıl',
+          name: this.$t('Qızıl'),
           announcementCount: '20',
           alManat: '200'
         },
         {
           price: 200,
-          name: 'Gümüş',
+          name: this.$t('Gümüş'),
           announcementCount: '10',
           alManat: '100'
         },
         {
           price: 100,
-          name: 'Bürünc',
+          name: this.$t('Bürünc'),
           announcementCount: '5',
           alManat: '50'
         },

@@ -5,8 +5,8 @@
         <div class="feature__background"></div>
         <div class="feature__foreground">
           <img class="feature__bookmark" src="/icons/bookmark.svg" draggable="false"/>
-          <div class="feature__title">Vahid biznes paket</div>
-          <div class="feature__text">100 ₼</div>
+          <div class="feature__title">{{ $t('features_1_title') }}</div>
+          <div class="feature__text">{{ $t('features_1_desc') }}</div>
         </div>
       </div>
     <!-- </div>
@@ -15,7 +15,7 @@
         <div class="feature__background"></div>
         <div class="feature__foreground">
           <img class="feature__bookmark" src="/icons/bookmark.svg" draggable="false"/>
-          <div class="feature__title">1 illik limitsiz elan sayı</div>
+          <div class="feature__title">{{ $t('features_2_title') }}</div>
           <div class="feature__text">
             <!-- TODO change to icon -->
             <img src="/icons/infinity.svg" />
@@ -28,8 +28,8 @@
         <div class="feature__background"></div>
         <div class="feature__foreground">
           <img class="feature__bookmark" src="/icons/bookmark.svg" draggable="false"/>
-          <div class="feature__title">Aylıq ödəniş</div>
-          <div class="feature__text">0 ₼</div>
+          <div class="feature__title">{{ $t('features_3_title') }}</div>
+          <div class="feature__text">{{ $t('features_3_title') }}</div>
         </div>
       </div>
     <!-- </div>
@@ -38,16 +38,10 @@
         <div class="feature__background"></div>
         <div class="feature__foreground">
           <img class="feature__bookmark" src="/icons/bookmark.svg" draggable="false"/>
-          <div class="feature__title">Paket dəyəri = Depozit</div>
-          <div class="feature__text">100 ₼</div>
+          <div class="feature__title">{{ $t('features_4_title') }}</div>
+          <div class="feature__text">{{ $t('features_4_title') }}</div>
         </div>
       </div>
     <!-- </div> -->
   </div>
 </template>
-
-<script>
-export default {
-
-}
-</script>

@@ -5,7 +5,7 @@
     </div>
     <div class="col-12 col-lg-4">
       <h2 class="section-title heading-dots heading-dots--left m-0 mb-3" v-if="isMobileBreakpoint">
-        Biznes profil üçün müraciət
+        {{ $t('apply_for_a_business_profile') }}
       </h2>
       <registration-form-parts/>
     </div>

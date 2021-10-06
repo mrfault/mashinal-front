@@ -3,7 +3,7 @@
     <div class="container">
       <breadcrumbs :crumbs="crumbs"/>
 
-      <div class="row justify-content-center">
+      <div class="row justify-content-center mt-4 mt-lg-0">
         <div class="col-auto">
           <form-switch
             :options="profileTypes"

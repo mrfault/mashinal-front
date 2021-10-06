@@ -1,9 +1,7 @@
 <template>
   <div class="business-profile__entrepreneurs">
     <div :class="{'text-center': !isMobileBreakpoint}">
-      <h2>
-        <em>500</em> sahibkar artıq mashin.al-da öz biznesini uğurla inkişaf etdirir
-      </h2>
+      <h2 v-html="$t('entrepreneurs_title', {count: 500})" />
     </div>
 
     <div class="entrepreneurs-list card">

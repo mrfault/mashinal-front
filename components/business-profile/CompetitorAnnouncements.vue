@@ -8,9 +8,9 @@
           'heading-dots--left': isMobileBreakpoint
         }"
       >
-        Elanlarınızın altında rəqib elanların olmaması
+        {{ $t('competitor_announcements_title') }}
       </h2>
-      <h3 class="section-subtitle">Daha çox müştəri cəlb edin, diqqət yalnız sizin elanlarda olsun</h3>
+      <h3 class="section-subtitle">{{ $t('competitor_announcements_desc') }}</h3>
     </div>
     <div class="images">
       <img :src="`/img/competitor_announcements_1_${colorMode}.svg`" alt="" draggable="false">

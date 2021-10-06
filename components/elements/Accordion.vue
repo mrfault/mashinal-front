@@ -14,7 +14,7 @@
           class="accordion__header__toggle"
           :class="{'accordion__header__toggle--active': activeAccordionIndex === index}"
         >
-          <icon name="chevron-up" />
+          <icon name="chevron-down" />
         </div>
       </div>
       <transition-expand>
