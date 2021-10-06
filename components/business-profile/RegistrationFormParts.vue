@@ -1,7 +1,7 @@
 <template>
-  <div class="card">
+  <div class="card m-0 mb-4 mb-lg-0">
     <form @submit.prevent>
-      <h2 class="title-with-line full-width">
+      <h2 class="title-with-line full-width" v-if="!isMobileBreakpoint">
         <span>{{ $t('get_a_business_profile') }}</span>
       </h2>
 

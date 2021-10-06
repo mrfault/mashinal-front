@@ -10,14 +10,14 @@
         <img src="/img/additional_features_illustration_1.svg" alt="" draggable="false" class="illustration-1">
       </div>
       <div class="col-12 col-lg-6">
-        <img src="/img/additional_features_1.png" alt="" draggable="false">
+        <img :src="`/img/additional_features_1_${colorMode}.png`" alt="" draggable="false">
       </div>
     </div>
     <hr class="m-0"/>
     
     <div class="row section">
       <div class="col-12 col-lg-6">
-        <img src="/img/additional_features_2.png" alt="" draggable="false">
+        <img :src="`/img/additional_features_2_${colorMode}.png`" alt="" draggable="false">
       </div>
       <div class="col-12 col-lg-6 content">
         <h2 class="section-title heading-dots heading-dots--left">Sosial media hesablarınıza keçid</h2>
@@ -35,14 +35,14 @@
         <img src="/img/additional_features_illustration_3.svg" alt="" draggable="false" class="illustration-3">
       </div>
       <div class="col-12 col-lg-6">
-        <img src="/img/additional_features_3.png" alt="" draggable="false">
+        <img :src="`/img/additional_features_3_${colorMode}.png`" alt="" draggable="false">
       </div>
     </div>
     <hr class="m-0"/>
     
     <div class="row section">
       <div class="col-12 col-lg-6">
-        <img src="/img/additional_features_4.png" alt="" draggable="false">
+        <img :src="`/img/additional_features_4_${colorMode}.png`" alt="" draggable="false">
       </div>
       <div class="col-12 col-lg-6 content">
         <h2 class="section-title heading-dots heading-dots--left">Rəqiblərdən fərqlənin</h2>
@@ -55,7 +55,7 @@
           <icon name="check" />
           Elanlarınızda bir neçə əlaqə vasitəsi qeydetmə imkanı
         </p>
-        <img src="/img/additional_features_illustration_4.svg" alt="" draggable="false" class="illustration-4">
+        <img src="/img/additional_features_illustration_4.svg" alt="" draggable="false" class="illustration-4 mb-4 mb-lg-0">
       </div>
     </div>
     <hr class="m-0"/>
@@ -63,17 +63,17 @@
     <div class="row section">
       <div class="col-12 col-lg-6 content">
         <h2 class="section-title heading-dots heading-dots--left">WhatsApp və Telegram vasitəsi ilə birbaşa əlaqə yaratmaq imkanı</h2>
-        <img src="/img/additional_features_illustration_5.svg" alt="" draggable="false" class="illustration-5">
+        <img src="/img/additional_features_illustration_5.svg" alt="" draggable="false" class="illustration-5 mb-4 mb-lg-0">
       </div>
       <div class="col-12 col-lg-6">
-        <img src="/img/additional_features_5.png" alt="" draggable="false">
+        <img :src="`/img/additional_features_5_${colorMode}.png`" alt="" draggable="false">
       </div>
     </div>
     <hr class="m-0"/>
     
     <div class="row section">
       <div class="col-12 col-lg-6">
-        <img src="/img/additional_features_6.png" alt="" draggable="false">
+        <img :src="`/img/additional_features_6_${colorMode}.png`" alt="" draggable="false">
       </div>
       <div class="col-12 col-lg-6 content">
         <h2 class="section-title heading-dots heading-dots--left">0 ₼ aylıq ödəniş</h2>
@@ -83,7 +83,5 @@
         <img src="/img/additional_features_illustration_6.svg" alt="" draggable="false" class="illustration-6">
       </div>
     </div>
-    <hr class="m-0"/>
-
   </div>
 </template>

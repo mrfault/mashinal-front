@@ -1,6 +1,6 @@
 <template>
   <div class="business-profile__entrepreneurs">
-    <div class="text-center">
+    <div :class="{'text-center': !isMobileBreakpoint}">
       <h2>
         <em>500</em> sahibkar artıq mashin.al-da öz biznesini uğurla inkişaf etdirir
       </h2>
@@ -43,10 +43,12 @@ export default {
         }
       ],
       showAll: false,
-      defaultVisibleItemCount: 40
     }
   },
   computed: {
+    defaultVisibleItemCount() {
+      return this.isMobileBreakpoint ? 15 : 40
+    },
     visibleEntrpreneurs() {
       const data = [].concat(...[...Array(20).keys()].map(() => this.entrepreneurs))
 

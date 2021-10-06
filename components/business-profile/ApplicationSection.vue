@@ -7,8 +7,14 @@
           <img src="/img/application_form_3.svg" alt="" draggable="false">
         </div>
         <div class="col-12 col-lg-2 middle-images">
-          <img src="/img/application_form_1.svg" alt="" draggable="false">
-          <img src="/img/application_form_2.png" alt="" draggable="false">
+          <div class="row">
+            <div class="col-auto col-lg-12">
+              <img :src="`/img/application_form_1_${colorMode}.svg`" alt="" draggable="false">
+            </div>
+            <div class="col-auto col-lg-12">
+              <img :src="`/img/application_form_2_${colorMode}.png`" alt="" draggable="false">
+            </div>
+          </div>
         </div>
         <div class="col-12 col-lg-1">
         </div>

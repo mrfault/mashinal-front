@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card m-0">
     <form @submit.prevent>
       <h2 class="title-with-line full-width">
         <span>{{ $t('get_a_business_profile') }}</span>

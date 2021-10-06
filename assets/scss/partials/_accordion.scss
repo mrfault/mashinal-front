@@ -49,3 +49,16 @@
     font-weight: 400;
   }
 }
+
+.dark-mode {
+  .accordion {
+    &__header {
+      background-color: $dark-2;
+      color: $white;
+    }
+    &__body {
+      border-color: $dark-1;
+      background-color: $dark-2;
+    }
+  }
+}

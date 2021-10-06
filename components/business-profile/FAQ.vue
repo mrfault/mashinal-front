@@ -1,7 +1,15 @@
 <template>
   <div class="business-profile__faq">
-    <div class="text-center">
-      <h2 class="section-title heading-dots">Tez-tez verilən suallar</h2>
+    <div :class="{'text-center': !isMobileBreakpoint}">
+      <h2
+        :class="{
+          'section-title': true,
+          'heading-dots': true,
+          'heading-dots--left': isMobileBreakpoint
+        }"
+      >
+        Tez-tez verilən suallar
+      </h2>
     </div>
 
     <accordion

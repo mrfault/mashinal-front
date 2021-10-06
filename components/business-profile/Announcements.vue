@@ -11,7 +11,7 @@ export default {
   },
   async fetch() {
     const announcements = await this.$axios.post('/grid/cars')
-    this.announcements = announcements.data.data.slice(0, 5)
+    this.announcements = announcements.data.data.slice(0, this.isMobileBreakpoint ? 4 : 5)
   },
   data() {
     return {

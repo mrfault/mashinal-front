@@ -13,14 +13,10 @@
         </div>
       </div>
 
-      <div class="row mt-5" v-if="isParts">
-        <div class="col-12 col-lg-8">
-          <features/>
-        </div>
-        <div class="col-12 col-lg-4">
-          <registration-form-parts/>
-        </div>
-      </div>
+      <packages v-if="isAutosalon && isMobileBreakpoint"/>
+      <hr class="m-0" v-if="isAutosalon && isMobileBreakpoint"/>
+
+      <parts-packages v-if="isParts"/>
 
       <advantages v-if="isAutosalon"/>
 
@@ -32,6 +28,9 @@
 
       <hr class="m-0"/>
       <additional-features />
+
+      <hr class="m-0" v-if="isAutosalon && !isMobileBreakpoint"/>
+      <packages v-if="isAutosalon && !isMobileBreakpoint"/>
 
       <hr class="m-0"/>
       <announcements />
@@ -61,6 +60,8 @@ import ApplicationSection from '~/components/business-profile/ApplicationSection
 import FAQ from '~/components/business-profile/FAQ.vue';
 import Entrepreneurs from '~/components/business-profile/Entrepreneurs.vue';
 import Advantages from '~/components/business-profile/Advantages.vue';
+import Packages from '~/components/business-profile/Packages.vue';
+import PartsPackages from '~/components/business-profile/PartsPackages.vue';
 
 export default {
   name: "pages-business-profile-index",
@@ -87,7 +88,9 @@ export default {
     ApplicationSection,
     FAQ,
     Entrepreneurs,
-    Advantages
+    Advantages,
+    Packages,
+    PartsPackages
   },
   computed: {
     ...mapGetters({
