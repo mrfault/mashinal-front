@@ -32,13 +32,13 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['deleteMyAnnounement']),
+    ...mapActions(['deactivateMyAnnounement']),
 
     async deactivateAnouncement() {
       if (this.pending) return;
       this.pending = true;
       try {
-        await this.deleteMyAnnounement(this.announcement.id_unique);
+        await this.deactivateMyAnnounement(this.announcement.id_unique);
         await this.$nuxt.refresh();
         this.pending = false;
         this.showDeactivateModal = false;

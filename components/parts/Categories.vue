@@ -1,7 +1,7 @@
 <template>
   <div class="part-categories card">
-    <div class="swiper-container" v-swiper:thumbsSwiper="swiperOps">
-      <div class="part-categories__wrapper swiper-wrapper">
+    <!-- <div class="swiper-container" v-swiper:categorySwiper="swiperOps">
+      <div class="part-categories__wrapper swiper-wrapper"> -->
         <div
           v-for="category in categories"
           :key="category.title"
@@ -13,8 +13,8 @@
             {{ $t(category.title) }}
           </nuxt-link>
         </div>
-      </div>
-    </div>
+      <!-- </div>
+    </div> -->
   </div>
 </template>
 
@@ -29,16 +29,22 @@ export default {
         slidesPerView: 5.3,
         spaceBetween: 20,
         freeMode: true,
-        init: false
+        init: false,
+        observer: true,
+        observeParents: true,
+        centeredSlides: true,
+        centeredSlidesBounds: true
       }
     }
   },
   mounted() {
-    this.$nextTick(() => {
-      setTimeout(() => {
-        this.thumbsSwiper.init();
-      }, 0);
-    });
+    // this.$nextTick(() => {
+    //   setTimeout(() => {
+    //     this.categorySwiper.init();
+    //     let slide = this.categories.findIndex(category => this.$localePath(category.route) === this.$route.path);
+    //     if (slide) this.categorySwiper?.slideTo(slide);
+    //   }, 0);
+    // });
   },
   methods: {
     isActive(category) {

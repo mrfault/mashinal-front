@@ -26,7 +26,7 @@ export const generateMetaInfo = ({ title, description, image, path, locale, prod
   ]
 
   return { 
-    titleTemplate: getPath('az') === '/' ? '%s' : '%s | Mashin.al',
+    titleTemplate: getPath('az') === '/' ? '%s' : '%s | Mashin.AL',
     htmlAttrs: {
       lang: locale
     },
@@ -36,18 +36,18 @@ export const generateMetaInfo = ({ title, description, image, path, locale, prod
       { name: 'viewport', content: 'width=device-width, initial-scale=1, user-scalable=no' },
       { hid: 'author', name: 'author', content: 'AlVentures' },
       { hid: 'theme-color', name: 'theme-color', content: '#f2f2f2' },
-      { hid: 'application-name', name: 'application-name', content: 'Mashin.al' },
+      { hid: 'application-name', name: 'application-name', content: 'Mashin.AL' },
       { hid: 'msapplication-TileColor', name: 'msapplication-TileColor', content: '#b91d47' },
       { hid: 'description', name: 'description', content: description },
       // twitter card
       { hid: 'twitter:card', name: 'twitter:card', content: 'summary' },
-      { hid: 'twitter:site', name: 'twitter:site', content: 'Mashin.al' },
+      { hid: 'twitter:site', name: 'twitter:site', content: 'Mashin.AL' },
       { hid: 'twitter:title', name: 'twitter:title', content: title },
       { hid: 'twitter:description', name: 'twitter:description', content: description },
       { hid: 'twitter:image', name: 'twitter:image', content: image },
       { hid: 'twitter:url', name: 'twitter:url', content: getPath(locale) },
       // open graph
-      { hid: 'og:site_name', property: 'og:site_name', content: 'Mashin.al' },
+      { hid: 'og:site_name', property: 'og:site_name', content: 'Mashin.AL' },
       { hid: 'og:type', property: 'og:type', content: 'website' },
       { hid: 'og:title', property: 'og:title', content: title },
       { hid: 'og:description', property: 'og:description', content: description },

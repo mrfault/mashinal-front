@@ -88,9 +88,11 @@ export default {
     const category = categories.find(item => Object.values(item.slug).includes(route.params.category) && item.id !== 18);
     const filters = await $axios.$get(`/part/category/${category.id}/filters`)
 
-    await store.dispatch('parts/getCategoryAnnouncements', {
-      category_id: category.id,
-      sub_category_id: route.query.id || 0
+    await store.dispatch('parts/getAnnouncements', {
+      body: {
+        category_id: category.id,
+        sub_category_id: route.query.id || 0
+      }
     });
 
     return {
@@ -103,13 +105,21 @@ export default {
       pending: false
     }
   },
+  mounted() {
+    if (this.$route.query.parts_filter) {
+      this.searchParts()
+    }
+  },
   methods: {
     async searchParts(page) {
       page = this.$route.query.page || 1;
       const data = JSON.parse(this.$route.query.parts_filter || '{}');
       data.category_id = this.category.id
       this.pending = true;
-      await this.$store.dispatch('parts/search', {...data, page})
+      await this.$store.dispatch('parts/getAnnouncements', {
+        body: data,
+        params: { page }
+      })
       this.pending = false;
       this.scrollTo('.announcements-content', [0, -30]);
     }

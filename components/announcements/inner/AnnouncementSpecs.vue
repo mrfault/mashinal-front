@@ -17,7 +17,7 @@
         {{ $t('catalog_model_specifications') }}
       </nuxt-link>
     </div>
-    <div class="mt-3 mt-lg-0" v-if="isMobileBreakpoint">
+    <div class="mt-3 mt-lg-0" v-if="isMobileBreakpoint && announcement.status != 3">
       <floating-cta :announcement="announcement" />
     </div>
   </div>
@@ -87,17 +87,19 @@ export default {
       if (this.type === 'parts') {
         Object.keys(this.announcement.filters).forEach(filter => {
           let value = this.announcement.filters[filter]
-          if (typeof value === 'boolean') {
-            value = value ? this.$t('yes') : this.$t('yes');
-          } else if (typeof value === 'object') {
-            value = this.$t(value.name)
+          if (value) {
+            if (typeof value === 'boolean') {
+              value = value ? this.$t('yes') : this.$t('yes');
+            } else if (typeof value === 'object') {
+              value = this.$t(value.name)
+            }
+  
+            specs.push({
+              key: filter.replace('capacity', 'battery_capacity'),
+              value,
+              for: ['parts'] }
+            )
           }
-
-          specs.push({
-            key: filter.replace('capacity', 'battery_capacity'),
-            value,
-            for: ['parts'] }
-          )
         })
       }
       

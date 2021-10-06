@@ -1,9 +1,10 @@
 import Vue from 'vue';
 
 const getInitialState = () => ({
-  announcements: {},
+  announcements: [],
   otherAnnouncements: [],
   pagination: {},
+  otherAnnouncementsPagination: {},
   categories: [],
   form: {
     product_code: '',
@@ -28,13 +29,10 @@ const getInitialState = () => ({
 export const state = () => getInitialState()
 
 export const getters = {
-  announcements: s => s.announcements.data || [],
-  otherAnnouncements: s => s.otherAnnouncements || [],
-  pagination: s => {
-    const data = {...s.announcements}
-    delete data.data
-    return data
-  },
+  announcements: s => s.announcements,
+  otherAnnouncements: s => s.otherAnnouncements,
+  pagination: s => s.pagination,
+  otherAnnouncementsPagination: s => s.otherAnnouncementsPagination,
   categories: s => s.categories,
   form: s => s.form,
   searchActive: s => s.searchActive,
@@ -42,55 +40,66 @@ export const getters = {
 }
 
 export const actions = {
-  async getHomePageData({ commit, state }) {
-    const data = await this.$axios.$post('/part/home_page');
-    commit('mutate', {
-      property: 'announcements',
-      value: { data }
-    })
-    commit('mutate', {
-      property: 'otherAnnouncements',
-      value: data
-    })
+  async getAnnouncementsReq(store, payload = {}) {
+    const body = payload.body ? {...payload.body} : {}
+    if (body.announce_type) {
+      body.is_new = body.announce_type === 1 ? true : false
+    }
+    delete body.announce_type;
 
-  },
-  async getNextAnnounements({ state, commit }) {
-    const data = await this.$axios.$post('/part/home_page');
-    if (state.showNotFound) {
-      commit('mutate', {
-        property: 'otherAnnouncements',
-        value: [...state.otherAnnouncements, ...data]
-      })
-    } else {
-      commit('mutate', {
-        property: 'announcements',
-        key: 'data',
-        value: [...state.announcements.data, ...data]
-      })
+    const config = {
+      params: {
+        ...(payload.params ? payload.params : {}),
+        page: payload?.params?.page || 1
+      }
+    }
+    const { data: announcements, ...pagination} = await this.$axios.$post('/grid/part', body, config);
+
+    return {
+      announcements, pagination
     }
   },
-  async search({ commit }, payload) {
-    if (payload.announce_type) {
-      payload.is_new = payload.announce_type === 1 ? true : false
-    }
-    delete payload.announce_type;
+  async getAnnouncements({ dispatch, commit }, payload) {
+    const { announcements, pagination } = await dispatch('getAnnouncementsReq', payload)
 
-    const data = await this.$axios.$post('/part?page=' + payload?.page || 1, payload)
     commit('mutate', {
       property: 'showNotFound',
-      value: !data.data.length
+      value: pagination.total === 0
     }) 
     commit('mutate', {
-      property: 'announcements',
-      value: data
+      property: 'pagination',
+      value: pagination
+    }) 
+    commit('setAnnouncements', {
+      announcements,
+      append: pagination.current_page > 1,
+      property: "announcements"
     })
+
+    if (pagination.total === 0) {
+      await dispatch('getOtherAnnouncements')
+    } else {
+      commit('mutate', {
+        property: 'otherAnnouncementsPagination',
+        value: {}
+      })
+      commit('setAnnouncements', {
+        announcements: [],
+        property: "otherAnnouncements"
+      })
+    }
   },
-  async getCategoryAnnouncements({ commit }, payload) {
-    const data = await this.$axios.$post('/part', payload);
+  async getOtherAnnouncements({ dispatch, commit }, payload) {
+    const { announcements, pagination } = await dispatch('getAnnouncementsReq', payload)
 
     commit('mutate', {
-      property: 'announcements',
-      value: data
+      property: 'otherAnnouncementsPagination',
+      value: pagination
+    })
+    commit('setAnnouncements', {
+      announcements,
+      append: pagination.current_page > 1,
+      property: "otherAnnouncements"
     })
   },
   async getCategories({ commit }) {
@@ -111,7 +120,6 @@ export const actions = {
     const announcements = await this.$axios.$get('/get_announces_by_phone/' + phone);
     commit('mutate', {
       property: 'announcements',
-      key: 'data',
       value: announcements
     })
   }
@@ -123,5 +131,16 @@ export const mutations = {
       Vue.set(state[payload.property], payload.key, payload.value);
     else state[payload.property] = payload.value;
   },
+
+  setAnnouncements(state, payload) {
+    const property = payload.property || 'announcements'
+    const announcements = [...payload.announcements]
+    
+    if (payload?.append) {
+      state[property] = [...state[property], ...announcements]
+    } else {
+      state[property] = announcements
+    }
+  }
 }
 

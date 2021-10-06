@@ -20,7 +20,7 @@
           </div>
           <div class="col-12 col-lg-1-5 mb-2 mb-lg-3">
             <form-select :label="$t('generation')" :options="carGenerations[0]" v-model="form.generation_id"
-              :disabled="form.model_id && !carGenerations[0].length" has-search @change="searchAutosalons()" />
+              :disabled="form.model_id && !carGenerations[0].length" has-search has-generations @change="searchAutosalons()" />
           </div>
           <div class="col-12 col-lg-2-5 mb-2 mb-lg-3">
             <div :class="['row', {'checkbox-row': short}]">

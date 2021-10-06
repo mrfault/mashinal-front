@@ -652,6 +652,7 @@ export default {
     }
   },
   beforeDestroy() {
+    this.$nuxt.$off('login', this.handleAfterLogin);
     this.setSellPreviewData({ value: {} });
   }
 }

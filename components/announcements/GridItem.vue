@@ -33,7 +33,7 @@
             </template> -->
             <span class="d-flex">
               <span class="btn-sq btn-sq--color-red active" v-if="announcement.has_monetization">
-                <icon name="speaker" />
+                <icon name="speaker" v-tooltip="$t('ad_announcement')" />
               </span>
             </span>
           </div>

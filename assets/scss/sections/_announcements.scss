@@ -38,6 +38,9 @@
     &:hover {
       box-shadow: $shadow-light-6;
     }
+    .has-tooltip {
+      z-index: 1;
+    }
     .item-bg {
       position: relative;
       width: 100%;
@@ -275,11 +278,19 @@
 }
 
 .controls-panel {
-  padding: 6px 25px;
+  padding: 8px 25px 9px;
   .control-icon {
+    display: inline-flex;
+    align-items: center;
     padding: 4px 8px;
     font-size: 17px;
     margin-left: 8px;
+    span {
+      font-size: 14px;
+      font-weight: 500;
+      margin-left: 8px;
+      margin-top: 1px;
+    }
     &:last-of-type {
       margin-right: 5px;
       padding-right: 0;
@@ -300,30 +311,7 @@
 
 @include media-max-width('lg') {
   .controls-panel {
-    padding: 25px;
-    .row {
-      position: absolute;
-      z-index: 1;
-      top: 28px;
-      right: 0;
-    }
-    .control-icon {
-      background-color: $white;
-      margin-left: -22px;
-      padding: 0 22px;
-      // &:first-of-type {
-      //   padding-left: 25px;
-      // }
-      // &:last-of-type {
-      //   margin-right: -32px;
-      // }
-      &.disabled-ui {
-        opacity: 1;
-        i {
-          opacity: .25;
-        }
-      }
-    }
+    padding: 0 25px 17px;
   }
 }
 

@@ -2,10 +2,12 @@
   <div class="pages-annoucements pt-2 pt-lg-5">
     <div class="container"> 
       <breadcrumbs :crumbs="crumbs" />
-      <controls-panel 
-        :status="form.status"
-        :show-toolbar="!!myAnnouncements.data.length"
-      />
+      <div class="card" v-if="isMobileBreakpoint">
+        <h2 class="title-with-line mb-0">
+          <span>{{ $t('my_announces') }}</span>
+        </h2>
+      </div>
+      <controls-panel :show-toolbar="!!myAnnouncements.data.length" />
       <!-- <div class="row flex-row-reverse" v-if="!(statusReady === '' && !myAnnouncements.data.length)">
         <div class="col-lg-auto col-lg-1-5 mb-lg-n1">
           <form-select :label="$t('status')" :options="getStatusOptions" v-model="form.status"
