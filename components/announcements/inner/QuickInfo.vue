@@ -42,11 +42,15 @@
         <img :src="contact.img" alt="" />
       </div>
       <div class="info">
-        <h2 v-if="type === 'parts' && contact.user.active_parts_count > 1">
-          <nuxtLink :to="$localePath(`/parts/user/${contact.phone}/announcements`)">
-            {{ contact.name }}
-          </nuxtLink>
-        </h2>
+        <nuxtLink
+          v-if="type === 'parts' && contact.user.active_parts_count > 1"
+          :to="$localePath(`/parts/user/${contact.phone}/announcements`)"
+        >
+          <h2>
+              {{ contact.name }}
+          </h2>
+          <span class="all-announcements">{{ $t('other_announcements_of_user') }}<icon name="arrow-right" /></span>
+        </nuxtLink>
         <h2 v-else>{{ contact.name }}</h2>
         <address v-if="announcement.status != 3">{{ contact.address }}</address>
         <span class="text-red" v-else>{{ $t('sold') }}</span>

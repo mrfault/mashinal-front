@@ -1840,5 +1840,7 @@ export default {
   "balance_increased": "Balans artırılıb",
   "try_again": "Yenidən cəhd et",
   "ad_announcement": "Reklamlı elan",
-  "снижение токсичных выбросов по нормативу 2018 года": "2018-сi ilin standartına görə zəhərli tullantıların azaldılması"
+  "снижение токсичных выбросов по нормативу 2018 года": "2018-сi ilin standartına görə zəhərli tullantıların azaldılması",
+  "keywords": "Açar sözlər",
+  "other_announcements_of_user": "İstifadəçinin digər elanları"
 }

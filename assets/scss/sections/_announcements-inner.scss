@@ -70,10 +70,18 @@
         font-size: inherit;
         font-weight: 500;
         margin: 0 0 4px;
+        color: $dark-blue-1;
       }
       address {
         font-size: 13px;
         margin: 0;
+      }
+      .all-announcements {
+        font-size: 13px;
+        i {
+          font-size: 10px;
+          margin-left: 6px;
+        }
       }
     }
     .status {
@@ -141,19 +149,26 @@
     }
   }
   .keywords {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    .keyword {
-      display: flex;
-      align-items: center;
-      height: 34px;
-      padding: 0 16px;
-      border-radius: 17px;
-      color: $dark-blue-3;
-      font-size: 14px;
+    h3 {
+      color: $dark-blue-2;
       font-weight: 500;
-      border: 1px solid $greyish-blue-4;
+      font-size: 16px;
+    }
+    &__list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      .keyword {
+        display: flex;
+        align-items: center;
+        height: 34px;
+        padding: 0 16px;
+        border-radius: 17px;
+        color: $dark-blue-3;
+        font-size: 14px;
+        font-weight: 500;
+        border: 1px solid $greyish-blue-4;
+      }
     }
   }
 }
@@ -532,8 +547,13 @@
         color: $yellow-1;
       }
     }
-    .contact address {
-      color: $grey-4;
+    .contact {
+      address {
+        color: $grey-4;
+      }
+      h2 {
+        color: $white;
+      }
     }
     .floating-cta {
       &.fixed-to-bottom,
@@ -543,6 +563,9 @@
       }
     }
     .keywords {
+      h3 {
+        color: $grey-4
+      }
       .keyword {
         border-color: $yellow-1;
         color: $yellow-1;
