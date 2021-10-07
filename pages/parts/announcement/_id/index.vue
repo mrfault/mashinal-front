@@ -162,5 +162,8 @@ export default {
       return items.filter(item => item.name)
     }
   },
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.getNextAnnouncements)
+  }
 }
 </script>
