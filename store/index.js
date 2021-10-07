@@ -246,6 +246,10 @@ const objectNotEmpty = (state, commit, property) => {
 
 export const actions = {
   async nuxtServerInit({ dispatch, commit }) {
+    if (!this.$auth.loggedIn) {
+      this.$auth.setUser(false);
+      await this.$auth.logout();
+    }
 
     await dispatch('getStaticPages');
 
