@@ -107,8 +107,8 @@ export default {
       this.pending = true;
       await this.$store.dispatch('parts/getAnnouncements', { body: data });
       this.pending = false;
+      await this.$store.dispatch('parts/setSearchActive', true)
       this.scrollTo('.announcements-content', [0, -30]);
-      this.$store.dispatch('parts/setSearchActive', true)
     }
   },
   computed: {

@@ -168,6 +168,9 @@
         font-size: 14px;
         font-weight: 500;
         border: 1px solid $greyish-blue-4;
+        &--clickable {
+          cursor: pointer;
+        }
       }
     }
   }
