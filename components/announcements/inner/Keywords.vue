@@ -1,25 +1,41 @@
 <template>
-  <div class="keywords card mb-lg-3" v-if="announcement.tags.length">
-    <h3>{{ $t('keywords') }}</h3>
+  <div class="keywords card" v-if="keywords">
+    <h3 v-if="title">{{ title }}</h3>
     <div class="keywords__list">
-      <nuxt-link
-        v-for="keyword in announcement.tags"
-        :key="keyword.id"
+      <div
+        v-for="(keyword, index) in keywords"
+        :key="index"
         class="keyword"
-        :to="`${$localePath('/parts')}?parts_filter=${JSON.stringify({text: keyword.name})}`"
+        :class="{'keyword--clickable': clickable}"
+        @click="$emit('click', keyword)"
       >
-        {{ keyword.name }}
-      </nuxt-link>
+        {{ keyword[label] }}
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-
 export default {
-  computed: {
-    ...mapGetters(['announcement'])
+  props: {
+    title: {
+      type: String,
+      required: false
+    },
+    keywords: {
+      type: Array,
+      required: true
+    },
+    label: {
+      type: String,
+      required: false,
+      default: 'name'
+    },
+    clickable: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
   }
 }
 </script>

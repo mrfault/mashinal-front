@@ -42,10 +42,16 @@
           <div class="col-auto">
             <quick-info type="parts" />
             <announcement-specs type="parts" />
-            <keywords />
+            <keywords
+              class="mb-lg-3"
+              :title="$t('keywords')"
+              :keywords="announcement.tags"
+              label="name"
+              clickable
+              @click="keywordOnClick"
+            />
           </div>
         </div>
-
         <relatives />
       </div>
     </div>
@@ -95,6 +101,11 @@ export default {
       store.dispatch('getOptions'),
       store.dispatch('getAllOtherOptions')
     ]);
+  },
+  methods: {
+    keywordOnClick(keyword) {
+      this.$router.push(`${this.$localePath('/parts')}?parts_filter=${JSON.stringify({text: keyword.name})}`)
+    }
   },
   computed: {
     ...mapGetters(['announcement']),
