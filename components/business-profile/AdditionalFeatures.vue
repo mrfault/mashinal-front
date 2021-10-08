@@ -34,8 +34,8 @@
         </p>
         <img src="/img/additional_features_illustration_3.svg" alt="" class="illustration-3">
       </div>
-      <div class="col-12 col-lg-6">
-        <img :src="`/img/additional_features_3_${colorMode}.png`" alt="">
+      <div class="col-12 col-lg-6 mt-4 mt-lg-0">
+        <img :src="`/img/additional_features_3_${colorMode}_${isMobileBreakpoint ? 'mobile' : 'desktop'}.svg`" alt="">
       </div>
     </div>
     <hr class="m-0"/>

@@ -36,7 +36,8 @@
       <announcements />
     </div>
 
-    <application-section :type="profileType"/>
+    <application-section v-if="isParts"/>
+    <contact-us v-if="isAutosalon"/>
 
     <div class="container">
       <f-a-q />
@@ -49,7 +50,7 @@
 <script>
 import { mapGetters } from 'vuex';
 
-import Features from '~/components/business-profile/Features.vue'
+import Features from '~/components/business-profile/Features'
 import RegistrationFormParts from '~/components/business-profile/RegistrationFormParts';
 import RegistrationFormSalon from '~/components/business-profile/RegistrationFormSalon';
 import CompetitorAnnouncements from '~/components/business-profile/CompetitorAnnouncements';
@@ -62,6 +63,7 @@ import Entrepreneurs from '~/components/business-profile/Entrepreneurs';
 import Advantages from '~/components/business-profile/Advantages';
 import Packages from '~/components/business-profile/Packages';
 import PartsPackages from '~/components/business-profile/PartsPackages';
+import ContactUs from '~/components/business-profile/ContactUs';
 
 export default {
   name: 'pages-business-profile-index',
@@ -90,7 +92,8 @@ export default {
     Entrepreneurs,
     Advantages,
     Packages,
-    PartsPackages
+    PartsPackages,
+    ContactUs
   },
   computed: {
     ...mapGetters({

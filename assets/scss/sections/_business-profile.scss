@@ -153,7 +153,7 @@
         &.illustration-6 { width: 104px }
       }
     }
-    &__application-section {
+    &__application-section, &__contact-us {
       padding: 50px 0;
       background-color: $greyish-blue-10;
       @media (max-width: map-get($grid-breakpoints, 'lg')) {
@@ -164,16 +164,31 @@
       }
       .middle-images {
         .row {
-          display: flex;
-          flex-direction: column;
-          align-items: flex-end;
+          height: 100%;
+          @media (max-width: map-get($grid-breakpoints, 'lg')) {
+            padding-bottom: 25px;
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: space-between;
+          }
         }
-        .col-auto{
+        .col-auto {
           display: flex;
-          justify-content: space-around;
+          align-items: center;
+          @media (max-width: map-get($grid-breakpoints, 'lg')) {
+          }
+          &:first-of-type img {
+            margin: 0 50px 0 auto;
+            @media (max-width: map-get($grid-breakpoints, 'lg')) {
+              margin: 0;
+            }
+          }
+          &:last-of-type img {
+            @media (max-width: map-get($grid-breakpoints, 'lg')) {
+              margin-top: 25px;
+            }
+          }
         }
-      }
-      @media (max-width: map-get($grid-breakpoints, 'lg')) {
       }
     }
     &__faq {
@@ -457,7 +472,7 @@
           }
         }
       }
-      &__application-section {
+      &__application-section, &__contact-us {
         background-color: $dark-5;
       }
       &__entrepreneurs {
