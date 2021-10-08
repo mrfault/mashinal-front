@@ -111,7 +111,7 @@
                 @change="removeError('description')" :invalid="isInvalid('description')" />
             </div>
             <div class="col-lg-12" id="anchor-saved_gallery">
-              <form-gallery2
+              <form-gallery
                 itemClass="col-4 col-lg-1-8 mb-lg-3 mb-2"
                 :maxFiles="21"
                 :initialFiles="initialFiles"
@@ -134,14 +134,14 @@
   import { ToastErrorsMixin } from '~/mixins/toast-errors'; 
 
   import PickOnMapButton from '~/components/elements/PickOnMapButton';
-  import FormGallery2 from '~/components/forms/FormGallery2';
+  import FormGallery from '~/components/forms/FormGallery';
 
   export default {
     name: 'pages-profile-salon',
     mixins: [ToastErrorsMixin],
     components: {
       PickOnMapButton,
-      FormGallery2,
+      FormGallery,
     },
     middleware: ['auth_general','auth_salon'],
     nuxtI18n: {
