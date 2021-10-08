@@ -9,11 +9,11 @@
         :first-collapsed="false"
         key="popular"
       >
-        <div class="keywords pt-1">
-          <div class="keyword" v-for="(option, index) in tagSellOptions" :key="index">
-            {{ $t(option.label) }}
-          </div>
-        </div>
+        <keywords
+          class="p-0"
+          :keywords="tagSellOptions"
+          label="label"
+        />
       </collapse-content>
       <hr v-if="filteredSellOptions.length" :key="'hr-popular'" />
     </template>
@@ -36,13 +36,15 @@
 import { mapGetters } from 'vuex';
 
 import CollapseContent from '~/components/elements/CollapseContent';
+import Keywords from '~/components/announcements/inner/Keywords';
 
 export default {
   props: {
     options: {}
   },
   components: {
-    CollapseContent
+    CollapseContent,
+    Keywords
   },
   data() {
     return {
