@@ -28,8 +28,8 @@
 </template>
 
 <script>
-import RegistrationFormParts from '~/components/business-profile/RegistrationFormParts.vue';
-import RegistrationFormSalon from '~/components/business-profile/RegistrationFormSalon.vue';
+import RegistrationFormParts from '~/components/business-profile/RegistrationFormParts';
+import RegistrationFormSalon from '~/components/business-profile/RegistrationFormSalon';
 
 export default {
   props: {

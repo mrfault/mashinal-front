@@ -67,7 +67,7 @@ import AnnouncementSpecs from '~/components/announcements/inner/AnnouncementSpec
 import ThumbsGallery from '~/components/announcements/inner/ThumbsGallery';
 import CollapseContent from '~/components/elements/CollapseContent';
 import Keywords from '~/components/announcements/inner/Keywords';
-import Grid from '~/components/announcements/Grid.vue';
+import Grid from '~/components/announcements/Grid';
 
 export default {
   name: 'pages-parts-id',

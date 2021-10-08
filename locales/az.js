@@ -1748,7 +1748,7 @@ export default {
   "place_announcement": "Elanı yerləşdir",
   "negotiable": "Razılaşma yolu ilə",
   "announcement_name": "Elanın adı",
-  "you_will_be_contacted_shortly": "Qısa zaman ərzində sizinlə əlaqə yaradılacaq.",
+  "you_will_be_contacted_shortly": "* Qısa zaman ərzində sizinlə əlaqə yaradılacaq.",
   "terms_of_image_attachment": "Şəkil əlavə etmə şərtləri",
   "min_image_count": "Minimal - {count} şəkil",
   "max_image_count": "Maksimal - {count} şəkil",
