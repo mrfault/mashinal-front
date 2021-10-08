@@ -18,7 +18,7 @@
 
     <button class="btn btn--dark-blue-2-outline mt-5 show-more" @click="showAll = !showAll" v-if="defaultVisibleItemCount">
       {{ showAll ? $t('less') : $t('More') }}
-      <icon :name="showAll ? 'arrow-top' : 'arrow-down'" />
+      <icon :name="showAll ? 'arrow-top' : 'arrow-bottom'" />
     </button>
   </div>
 </template>

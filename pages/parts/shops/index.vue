@@ -116,10 +116,10 @@ export default {
       title: this.$t('parts_shops'),
     });
   },
-  async asyncData({ store, route }) {
+  async asyncData({ store }) {
     await Promise.all([
       store.dispatch('getBrands'),
-      store.dispatch('getSalonsList', '?part=true')
+      store.dispatch('getSalonsList', { type: 2, params: '?part=true'})
     ]);
     return {
       view: 'map',

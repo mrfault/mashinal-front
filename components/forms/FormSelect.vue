@@ -1,6 +1,6 @@
 <template>
   <div class="form-group">
-    <div :class="['select-menu',{'no-bg': hasNoBg, invalid}]">
+    <div :class="['select-menu',{'no-bg': hasNoBg, invalid, wider}]">
       <span :class="['select-menu_label', {'selected': hasSelectedValue, 'disabled': disabled, 'active': showOptions}]" 
         @click="displayMenuOptions">
         <span :class="['text-truncate', {'full-width': hasSearch}]">
@@ -198,7 +198,8 @@
       imgKey: String,
       invalid: Boolean,
       shortNamesLabel: Boolean,
-      checkOptionsOffset: Boolean
+      checkOptionsOffset: Boolean,
+      wider: Boolean
     },
     data() {
       return {

@@ -28,9 +28,9 @@
               <span class="badge from-border rejected" v-else-if="announcement.status == 0">{{ $t('rejected')}}</span>
               <span class="badge from-border inactive" v-else-if="announcement.status == 3">{{ $t('inactive')}}</span>
             </template>
-            <!-- <template v-else-if="announcement.is_autosalon">
-              <span class="badge from-border">{{ $t(announcement.title ? 'shop' : 'is_autosalon') }}</span>
-            </template> -->
+            <template v-else-if="announcement.is_autosalon || announcement.is_part_salon">
+              <span class="badge from-border">{{ $t(announcement.is_part_salon ? 'shop' : 'is_autosalon') }}</span>
+            </template>
             <span class="d-flex">
               <span class="btn-sq btn-sq--color-red active" v-if="announcement.has_monetization">
                 <icon name="speaker" v-tooltip="$t('ad_announcement')" />

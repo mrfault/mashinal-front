@@ -99,6 +99,7 @@ export default {
       });
     },
     savePlaceOnMap() {
+      if (!this.map) return;
       if (!this.lat && !this.lng) {
         this.placemark.events.fire('dragend');
       }

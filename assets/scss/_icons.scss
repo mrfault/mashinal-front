@@ -132,6 +132,10 @@
 .icon-arrow-top:before {
   content: "\e90e";
 }
+.icon-arrow-bottom:before {
+  content: "\e90e";
+  transform: rotate(180deg);
+}
 .icon-azn:before {
   content: "\e90f";
   font-size: .8em;

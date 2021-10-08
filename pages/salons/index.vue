@@ -116,10 +116,10 @@ export default {
       title: this.$t('salons'),
     });
   },
-  async asyncData({ store, route }) {
+  async asyncData({ store }) {
     await Promise.all([
       store.dispatch('getBrands'),
-      store.dispatch('getSalonsList')
+      store.dispatch('getSalonsList', { type: 1 })
     ]);
     return {
       view: 'map',

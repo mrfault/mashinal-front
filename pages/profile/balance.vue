@@ -10,8 +10,15 @@
             </h2>
             <div class="increase-balance-info">
               <icon name="wallet" class="mb-2" />
-              <strong class="mb-1">{{ user.balance }} ALManat</strong>
+              <strong class="mb-1">{{ totalBalance }} ALManat</strong>
               <p v-if="!isMobileBreakpoint">{{ $t('wallet_balance') }}</p>
+              <template v-if="user.autosalon || user.part_salon">
+                <hr />
+                <div class="row justify-content-center">
+                  <div class="col-auto text-medium" v-if="user.autosalon">{{ $t('is_autosalon') }}: {{ user.autosalon.balance }} ALM</div>
+                  <div class="col-auto text-medium" v-if="user.part_salon">{{ $t('shop') }}: {{ user.part_salon.balance }} ALM</div>
+                </div>
+              </template>
             </div>
           </div>
           <div class="card mb-2 mb-lg-0">
@@ -125,6 +132,10 @@
         return [
           { name: this.$t('balans') }
         ]
+      },
+
+      totalBalance() {
+        return this.user.balance + (this.user.autosalon?.balance || 0) + (this.user.part_salon?.balance || 0);
       }
     },
     methods: {    

@@ -57,29 +57,33 @@ export const MenusDataMixin = {
         { title: 'favorites', route: '/profile/favorites', icon: 'star' },
         { title: 'new_announce', route: '/sell', icon: 'plus' },
         { title: 'messages', route: '/profile/messages', icon: 'chat' },
-        { title: 'my_account', route: '/profile', icon: 'user', hide: !this.loggedIn || this.user?.autosalon },
-        { title: 'dashboard_brief', route: '/profile/dashboard', icon: 'settings', hide: !this.loggedIn || !this.user?.autosalon },
+        { title: 'my_account', route: '/profile', icon: 'user', hide: !this.loggedIn },
         { title: 'login', route: '/login', icon: 'user', hide: this.loggedIn }
       ];
     },
 
     userMenus() {
-      return (this.user?.autosalon 
-        ? [
-          { title: 'dashboard', route: '/profile/dashboard', showOnCard: false },
-          { title: 'my_announces', route: '/profile/announcements', showOnCard: true },
-          { title: 'messages', route: '/profile/messages', showOnCard: false },
-          { title: 'statistics', route: '/profile/statistics', showOnCard: false },
-          { title: 'my_profile', route: '/profile/salon', showOnCard: false },
-          { title: 'balans', route: '/profile/balance', showOnCard: true }
-        ]  
-        : [
-          { title: 'settings', route: '/profile/settings', showOnCard: false },
-          { title: 'my_announces', route: '/profile/announcements', showOnCard: true },
-          { title: 'comparisons', route: '/comparison', showOnCard: false },
-          { title: 'messages', route: '/profile/messages', showOnCard: false },
-          { title: 'balans', route: '/profile/balance', showOnCard: true }
-        ]).filter(item => !item.dev || this.$env.DEV);;
+      if (!this.loggedIn) return [];
+
+      let menus = [
+        { title: 'settings', route: '/profile/settings', showOnCard: false },
+        { title: 'my_announces', route: '/profile/announcements', showOnCard: true },
+        { title: 'balans', route: '/profile/balance', showOnCard: true }
+      ];
+
+      if (this.user.autosalon) {
+        menus.push(
+          { title: 'dashboard_salon', route: '/dashboard/' + this.user.autosalon.id, showOnCard: true }
+        );
+      }
+      
+      if (this.user.part_salon) {
+        menus.push(
+          { title: 'dashboard_shop', route: '/dashboard/' + this.user.part_salon.id, showOnCard: true }
+        );
+      }
+
+      return menus;
     },
 
     sidebarMenus() {

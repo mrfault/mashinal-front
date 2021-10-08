@@ -91,6 +91,7 @@ const getInitialState = () => ({
   sellPhoneEntered: '',
   sellPhoneRegistered: false,
   sellSalonRights: false,
+  sellPartSalonRights: false,
   sellProgress: 5,
   sellYears: [],
   sellBody: [],
@@ -212,6 +213,7 @@ export const getters = {
   sellPhoneEntered: s => s.sellPhoneEntered,
   sellPhoneRegistered: s => s.sellPhoneRegistered,
   sellSalonRights: s => s.sellSalonRights,
+  sellPartSalonRights: s => s.sellPartSalonRights,
   sellProgress: s => s.sellProgress,
   sellYears: s => s.sellYears,
   sellBody: s => s.sellBody,
@@ -697,14 +699,21 @@ export const actions = {
   // Sell
   async checkSellTokens({ commit }, phone) {
     const res = await this.$axios.$post('/check/user/by/phone', { phone });
-    commit('mutate', { property: 'sellTokens', value: res.data && { transport: res.data.announce_count, parts: res.data.part_announce_count } });
+    commit('mutate', { property: 'sellTokens', value: res.data && { 
+      cars: res.data.announce_left_car, 
+      commercial: res.data.announce_left_commercial, 
+      moto: res.data.announce_left_moto, 
+      parts: res.data.part_announce_count 
+    } });
     commit('mutate', { property: 'sellPhoneRegistered', value: res.data && res.data.have_account });
     commit('mutate', { property: 'sellSalonRights', value: res.data && res.data.is_autosalon });
+    commit('mutate', { property: 'sellPartsShopRights', value: res.data && res.data.is_part_salon });
   },
   resetSellTokens({ commit }) {
     commit('mutate', { property: 'sellTokens', value: false });
     commit('mutate', { property: 'sellPhoneRegistered', value: false });
     commit('mutate', { property: 'sellSalonRights', value: false });
+    commit('mutate', { property: 'sellPartsShopRights', value: false });
     commit('mutate', { property: 'sellPhoneEntered', value: '' });
   },
   setSellProgress({ commit }, value) {
@@ -770,8 +779,8 @@ export const actions = {
     commit('mutate', { property: 'paidStatusData', value });
   },
   // Salons
-  async getSalonsList({commit}, params = '') {
-    const res = await this.$axios.$get('/auto_salon_list' + params);
+  async getSalonsList({commit}, { type, params }) {
+    const res = await this.$axios.$get(`/auto_salon_list/${type}${params || ''}`);
     if (!params || params === '?part=true') {
       commit('mutate', { property: 'salonsList', value: res });
     }
@@ -782,12 +791,12 @@ export const actions = {
     const res = await this.$axios.$get('/auto_salon/' + data.id + '?page=' + (data.page || 1));
     commit('mutate', { property: 'salonSingle', value: res });
   },
-  async getMySalon({commit}) {
-    const res = await this.$axios.$get('/my/autosalon/edit');
+  async getMySalon({commit}, { id }) {
+    const res = await this.$axios.$get(`/my/autosalon/${id}/edit`);
     commit('mutate', { property: 'mySalon', value: res });
   },
-  async updateMySalon({commit}, form) {
-    const res = await this.$axios.$post('/my/autosalon/edit', form);
+  async updateMySalon({commit}, { id, form}) {
+    const res = await this.$axios.$post(`/my/autosalon/${id}/edit`, form);
     commit('mutate', { property: 'mySalon', value: res });
   },
   updateSalonsFilters({commit}, form) {
@@ -797,18 +806,18 @@ export const actions = {
     commit('mutate', { property: 'salonsSearchFilters', value: form });
   },
   async getAnnouncementCalls({commit}, data = {}) {
-    const res = await this.$axios.$get(`/my/call-announces?page=${data.page || 1}`);
+    const res = await this.$axios.$get(`/my/call-announces/${data.id}?page=${data.page || 1}`);
     commit('mutate', { property: 'myAnnouncementCalls', value: res });
   },
   async incrementAnnouncementCalls({}, id) {
     await this.$axios.$get(`/announce/${id}/show/phone`);
   },
-  async getAnnouncementStats({commit}) {
-    const res = await this.$axios.$get('/my/dashboard/statistics');
+  async getAnnouncementStats({commit}, id) {
+    const res = await this.$axios.$get(`/my/dashboard/statistics/${id}`);
     commit('mutate', { property: 'myAnnouncementStats', value: res });
   },
-  async getPackageStats({commit}) {
-    const res = await this.$axios.$get('/my/dashboard/package');
+  async getPackageStats({commit}, id) {
+    const res = await this.$axios.$get(`/my/dashboard/package/${id}`);
     commit('mutate', { property: 'myPackageStats', value: res });
   },
   updateSalonsFiltered({commit}, list) {

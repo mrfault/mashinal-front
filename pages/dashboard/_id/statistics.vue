@@ -1,5 +1,5 @@
 <template>
-  <div class="pages-profile-statistics pt-2 pt-lg-5">
+  <div class="pages-dashboard-statistics pt-2 pt-lg-5">
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
       <div class="card mb-2 mb-lg-3" v-if="isMobileBreakpoint">
@@ -36,7 +36,7 @@
   import Grid from '~/components/announcements/Grid';
 
   export default {
-    name: 'pages-profile-statistics',
+    name: 'pages-dashboard-statistics',
     middleware: 'auth_salon',
     mixins: [StatsMixin],
     components: {
@@ -44,7 +44,7 @@
     },
     nuxtI18n: {
       paths: {
-        az: '/profil/statistika'
+        az: '/idareetme-paneli/:id/statistika'
       }
     },
     head() {
@@ -52,10 +52,10 @@
         title: this.$t('statistics')
       });
     },
-    async asyncData({store}) {
+    async asyncData({store, route}) {
       await Promise.all([
-        store.dispatch('getAnnouncementStats'),
-        store.dispatch('getPackageStats')
+        store.dispatch('getAnnouncementStats', route.params.id),
+        store.dispatch('getPackageStats', route.params.id)
       ]); 
     },
     computed: {
@@ -63,7 +63,7 @@
 
       crumbs() {
         return [
-          { name: this.$t('dashboard'), route: '/profile/dashboard' },
+          { name: this.$t('dashboard'), route: '/dashboard/' + this.$route.params.id },
           { name: this.$t('statistics') }
         ]
       }

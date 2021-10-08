@@ -12,7 +12,7 @@
       <hr />
       <h4>{{ $t('daily_budget') }}</h4>
       <form-range v-model="price.value" :min="price.min" :max="price.max" :step="0.1" 
-        :data="pricesForPlan" :tooltip-template="`{value} ₼`" />
+        :data="pricesForPlan" :tooltip-template="`{value} ALM`" />
       <h4>{{ $t('duration') }}</h4>
       <form-range v-model="day.value" :min="day.min" :max="day.max" :step="1" 
         :data="daysForPlan" :tooltip-template="`{value} day`" />
@@ -27,11 +27,11 @@
         <div class="row">
           <div class="col-6 col-lg-4">
             <p class="text-medium">{{ $t('total') }}</p>
-            <p class="text-medium text-dark-blue-2">{{ selectedPlan.price }} ₼ - {{ $readPlural(selectedPlan.days, $t('plural_forms_day')) }}</p>
+            <p class="text-medium text-dark-blue-2">{{ selectedPlan.price }} ALM - {{ $readPlural(selectedPlan.days, $t('plural_forms_day')) }}</p>
           </div>
           <div class="col-6 col-lg-4">
             <p class="text-medium">{{ $t('balans') }}</p>
-            <p class="text-medium text-dark-blue-2">{{ user.balance }} ALManat</p>
+            <p class="text-medium text-dark-blue-2">{{ totalBalance }} ALM</p>
           </div>
           <div class="col-12 col-lg-4 mt-2 mt-lg-0">
             <button :class="['btn btn--green full-width', { pending }]" @click="getAnAd">
@@ -94,6 +94,12 @@ export default {
     }
   },
   computed: {
+    totalBalance() {
+      let balance = this.user.balance;
+      if (this.announcement.is_autosalon) balance += this.announcement.user.autosalon.balance;
+      else if (this.announcement.is_part_salon) balance += this.announcement.user.part_salon.balance; 
+      return balance;
+    },
     pricesForPlan() {
       return this.priceList.map((item) => parseFloat(item.price));
     },
@@ -107,7 +113,7 @@ export default {
       return this.availablePlans.find(item => item.days === this.day.value) || {};
     },
     haveBalanceForPlan() {
-      return parseFloat(this.selectedPlan.price) <= parseFloat(this.user.balance);
+      return parseFloat(this.selectedPlan.price) <= this.totalBalance;
     },
     paymentMethodOptions() {
       return [

@@ -609,8 +609,13 @@ input::-webkit-inner-spin-button {
   }
   .select-menu {
     width: 88px;
+    &.wider {
+      width: 186px;
+    }
   }
 }
+
+
 
 .text-input.no-bg input,
 .checkbox-input.no-bg label,

@@ -1,5 +1,5 @@
 <template>
-  <div class="pages-profile-calls pt-lg-5">
+  <div class="pages-dashboard-calls pt-lg-5">
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
       <grid 
@@ -24,14 +24,14 @@
   import Grid from '~/components/announcements/Grid';
 
   export default {
-    name: 'pages-profile-calls',
+    name: 'pages-dashboard-calls',
     middleware: ['auth_general','auth_salon'],
     components: {
       Grid
     },
     nuxtI18n: {
       paths: {
-        az: '/profil/zeng-sayi'
+        az: '/idareetme-paneli/:id/zeng-sayi'
       }
     },
     head() {
@@ -39,8 +39,8 @@
         title: this.$t('phone_call_count')
       });
     },
-    async asyncData({store}) {
-      await store.dispatch('getAnnouncementCalls');
+    async asyncData({store, route}) {
+      await store.dispatch('getAnnouncementCalls', { id: route.params.id});
 
       return {
         pending: false
@@ -51,7 +51,7 @@
 
       crumbs() {
         return [
-          { name: this.$t('dashboard'), route: '/profile/dashboard' },
+          { name: this.$t('dashboard'), route: '/dashboard/' + this.$route.params.id },
           { name: this.$t('phone_call_count') }
         ]
       }
@@ -62,7 +62,7 @@
       async changePage(page = 1) {
         page = this.$route.query.page || 1;
         this.pending = true;
-        await this.getAnnouncementCalls({ page });
+        await this.getAnnouncementCalls({ id: this.$route.params.id, page });
         this.pending = false;
         this.scrollTo('.announcements-grid.paginated', [-15, -20]);
       }

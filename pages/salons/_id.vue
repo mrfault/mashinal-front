@@ -5,17 +5,17 @@
       <div :class="['card profile-card salon-single-card overflow-hidden mt-0 mb-lg-3', salonSingle.description ? 'mb-n3' : 'mb-2']">
         <div class="cover-with-avatar">
           <div class="cover" :style="{backgroundImage: `url('${getCover(salonSingle.cover)}')`}">
-            <img class="avatar" :src="getLogo(salonSingle.logo)" :alt="salonSingle.name" />
+            <img class="avatar" :src="getLogo(salonSingle.logo)" :alt="salonSingle.name || salonSingle.user.full_name" />
           </div>
           <nuxt-link class="edit-link" :to="$localePath('/profile/salon')" @click.native="setPageRef($route.path)" v-if="salonIsOwner(salonSingle)">
             <icon name="edit" />
           </nuxt-link>
         </div>
         <h2 class="title-with-line text-center">
-          <span>{{ $t('is_autosalon') }} "{{ salonSingle.name }}"</span>
+          <span>{{ $t('is_autosalon') }} "{{ salonSingle.name || salonSingle.user.full_name }}"</span>
         </h2>
         <div class="row align-items-lg-end profile_info">
-          <div class="col-lg-4" v-if="salonSingle.phones.length">
+          <div class="col-lg-4" v-if="salonSingle.phones && salonSingle.phones.length">
             <div class="profile_info-details">
               <icon name="phone-call" />
               <span v-html="getConcatPhones(salonSingle.phones)" />
@@ -84,7 +84,7 @@ export default {
   },
   head() {
     return this.$headMeta({
-      title: `${this.$t('is_autosalon')} "${this.salonSingle.name}" | ${this.$t('salons')}`,
+      title: `${this.$t('is_autosalon')} "${this.salonSingle.name || this.salonSingle.user.full_name}" | ${this.$t('salons')}`,
       description: this.salonSingle.short_description
     });
   },
@@ -104,7 +104,7 @@ export default {
     crumbs() {
       return [
         { name: this.$t('salons'), route: '/salons' },
-        { name: this.salonSingle.name }
+        { name: this.salonSingle.name || this.salonSingle.user.full_name }
       ]
     }
   },

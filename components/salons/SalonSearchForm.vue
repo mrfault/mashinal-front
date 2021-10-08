@@ -46,7 +46,7 @@
             />
           </div>
           <div class="col-12 col-lg-1-5 mb-2 mb-lg-3">
-            <form-select :label="$t('price')" custom :suffix="'AZN'"
+            <form-select :label="$t('price')" custom anchor="right" :suffix="'AZN'"
               :values="{from: form.price_from, to: form.price_to, suffix: '₼' }"
               @clear="form.price_from = '', form.price_to = '', searchAutosalons()"
             >
@@ -123,7 +123,10 @@ export default {
       }
       this.pending = true;
       try {
-        await this.getSalonsList(this.$queryParams(this.form, true));
+        await this.getSalonsList({ 
+          type: this.where === 'transport' ? 1 : 2, 
+          params: this.$queryParams(this.form, true) 
+        });
         this.$nuxt.$emit('search-salons', runOnMobile);
         this.pending = false;
         if (this.searchAgain) {

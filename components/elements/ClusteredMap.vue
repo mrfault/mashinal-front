@@ -130,7 +130,7 @@ export default {
 
       if (this.checkBounds) {
         this.map.events.add('boundschange', (e) => { 
-          let list = this.salonsList.filter(salon => {
+          let list = this.salonsList.filter(salon => salon.lat).filter(salon => {
             let bounds = this.map.getBounds(true);
             return ymaps.util.bounds.containsPoint(bounds, [salon.lat, salon.lng]);
           });
@@ -145,7 +145,7 @@ export default {
       this.objectManager.removeAll();
       this.objectManager.add({ 
         type: 'FeatureCollection', 
-        features: this.salonsList.map((salon) => ({
+        features: this.salonsList.filter(salon => salon.lat).map((salon) => ({
           type: 'Feature',
           id: salon.id,
           geometry: {
@@ -168,7 +168,7 @@ export default {
       this.objectManager?.setFilter((object) => !!this.salonsFiltered.find(salon => salon.id == object.id));
     },
     updateMapCenter(duration = 600, filter = false) {
-      if (!this.salonsList.length) {
+      if (!this.salonsList.filter(salon => salon.lat).length) {
         this.centerUpdated = true;
         return;
       } else if (this.centerUpdated && !this.salonsFiltered.length) return;

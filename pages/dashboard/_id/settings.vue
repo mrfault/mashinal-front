@@ -1,11 +1,11 @@
 <template>
-  <div class="pages-profile-salon pt-2 pt-lg-5">
+  <div class="pages-dashboard-settings pt-2 pt-lg-5">
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
       <component 
         :is="isMobileBreakpoint ? 'mobile-screen' : 'div'" 
         :bar-title="$t('user_information_edit')" 
-        @back="$router.push(pageRef || $localePath('/profile'))" 
+        @back="$router.push(pageRef || $localePath('/dashboard/'+$route.params.id))" 
         height-auto
       >
         <div class="card profile-settings-card">
@@ -21,8 +21,7 @@
           </div>
           <div class="row">
             <div class="col-lg-4 mb-2 mb-lg-3">
-              <form-text-input :maxlength="30" disabled 
-                :placeholder="$t('name')" v-model="form.name" />
+              <form-text-input :maxlength="30" :placeholder="$t('name')" v-model="form.name" />
             </div>
             <div class="col-lg-4 mb-2 mb-lg-3" v-for="i in 2" :key="i" id="anchor-phones">
               <form-text-input v-if="i === 1 || typeof form.phones[i - 1] === 'string'"
@@ -95,10 +94,10 @@
                 :allow-clear="false"
               >
                 <div class="form-merged">
-                  <form-select :label="$t('from')" :options="hoursOptions" v-model="form.working_hours.start" 
-                    @change="removeError('working_time')" :show-label-on-select="false" :clear-option="false" :allow-clear="false" />
-                  <form-select :label="$t('from_time')" :options="hoursOptions" v-model="form.working_hours.end" 
-                    @change="removeError('working_time')" :show-label-on-select="false" :clear-option="false" :allow-clear="false" />
+                  <form-select :label="$t('from_time')" :options="hoursOptions" v-model="form.working_hours.start" 
+                    @change="removeError('working_time')" :show-label-on-select="false" :clear-option="false" :allow-clear="false" wider />
+                  <form-select :label="$t('to_time')" :options="hoursOptions" v-model="form.working_hours.end" 
+                    @change="removeError('working_time')" :show-label-on-select="false" :clear-option="false" :allow-clear="false" wider />
                 </div>
               </form-select>
             </div>
@@ -137,7 +136,7 @@
   import FormGallery2 from '~/components/forms/FormGallery2';
 
   export default {
-    name: 'pages-profile-salon',
+    name: 'pages-dashboard-settings',
     mixins: [ToastErrorsMixin],
     components: {
       PickOnMapButton,
@@ -146,7 +145,7 @@
     middleware: ['auth_general','auth_salon'],
     nuxtI18n: {
       paths: {
-        az: '/profil/salon'
+        az: '/idareetme-paneli/:id/parametrler'
       }
     },
     head() {
@@ -154,10 +153,10 @@
         title: this.$t('user_information_edit')
       });
     },
-    async asyncData({ store }) {
+    async asyncData({ store, route }) {
       await Promise.all([
         store.dispatch('getOptions'),
-        store.dispatch('getMySalon')
+        store.dispatch('getMySalon', { id: route.params.id })
       ]);
 
       let salon = store.getters.mySalon;
@@ -171,8 +170,8 @@
           password_confirmation: ''
         },
         form: {
-          name: salon.name,
-          phones: [...salon.phones].map(phone => '+'+phone),
+          name: salon.name || '',
+          phones: [...(salon.phones || [])].map(phone => '+'+phone),
           address: salon.address || '',
           lat: salon.lat || 0,
           lng: salon.lng || 0,
@@ -192,7 +191,7 @@
 
       crumbs() {
         return [
-          { name: this.$t('dashboard'), route: '/profile/dashboard' },
+          { name: this.$t('dashboard'), route: '/dashboard/' + this.$route.params.id },
           { name: this.$t('user_information_edit') }
         ]
       },
@@ -235,16 +234,12 @@
         // prepare data to send
         let formData = new FormData();
         for (let key in this.form) {
-          if (key === 'name') {
-            continue;
-          } else {
-            let value = this.form[key];
-            let sendAsBinary = ['cover','logo'].includes(key);
-            let sendAsStr = typeof value === 'object' && !sendAsBinary;
-            if (key === 'phones') value = value.map(v => v.replace(/[\+\-\(\)]|[ ]/g,''));
-            if(!sendAsBinary || value)
-              formData.append(key, sendAsStr ? JSON.stringify(value) : value);
-          }
+          let value = this.form[key];
+          let sendAsBinary = ['cover','logo'].includes(key);
+          let sendAsStr = typeof value === 'object' && !sendAsBinary;
+          if (key === 'phones') value = value.map(v => v.replace(/[\+\-\(\)]|[ ]/g,''));
+          if(!sendAsBinary || value)
+            formData.append(key, sendAsStr ? JSON.stringify(value) : value);
         }
 
         // Add new files to formData
@@ -277,9 +272,9 @@
 
         // update autosalon info
         try {
-          await this.updateMySalon(formData);
+          await this.updateMySalon({ id: this.$route.params.id, form: formData});
           await Promise.all([
-            this.getMySalon({id: this.user.autosalon?.id}),
+            this.getMySalon({ id: this.$route.params.id }),
             this.$auth.fetchUser()
           ]);
           this.$toasted.success(this.$t('saved_changes'));

@@ -10,7 +10,7 @@ export const SalonsMixin = {
       return salon.announcements?.total || salon.announcement_count || 0;
     },
     getConcatPhones(phones, max = 2, clickable = true) {
-      return phones
+      return (phones || [])
         .slice(0, max)
         .map(phone => phone.replace(/(\d{3})(\d{2})(\d{3})(\d{2})(\d{2})/g, '<a '+(clickable ? ('onclick="event.stopPropagation()" href="tel:+'+phone+'"') : 'href="javascript:void(0);"')+'>+$1 $2 $3 $4 $5</a>'))
         .join(', ');

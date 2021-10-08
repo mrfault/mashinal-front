@@ -2,7 +2,7 @@
   <div :class="['salon-card', 'card with-margins']">
     <div class="d-flex align-items-center">
       <div class="salon-logo">
-        <img :src="getLogo(salon.logo || salon.media)" :alt="salon.name" />
+        <img :src="getLogo(salon.logo)" :alt="salon.name" />
       </div>
       <div class="salon-info">
         <h3>{{ salon.name }}</h3>

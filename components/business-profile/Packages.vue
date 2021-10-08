@@ -34,7 +34,7 @@
           <p class="mx-0 mt-1 text-with-check">
             <icon name="check" />
             <icon name="wallet" />
-            - {{ item.alManat }} {{ $t('almanat') }}
+            - {{ item.alManat }} ALM
           </p>
         </div>
       </div>

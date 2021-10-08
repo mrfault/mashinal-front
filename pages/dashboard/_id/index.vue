@@ -1,5 +1,5 @@
 <template>
-  <div class="pages-profile-dashboard pt-2 pt-lg-5">
+  <div class="pages-dashboard pt-2 pt-lg-5">
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
       <div class="row mb-n2 mb-lg-n3">
@@ -18,7 +18,7 @@
               </div>
             </template>
             <template v-else-if="card.key === 'balance'">
-              <p>{{ $t('wallet_balance') }}:<br/><strong>{{ user.balance }} ALManat</strong></p>
+              <p>{{ $t('wallet_balance') }}:<br/><strong>{{ salonDetails.balance }} ALManat</strong></p>
             </template>
             <template v-else-if="card.key === 'calls'">
               <h4 class="text-dark-blue-2">{{ announcementStats.calls }}</h4>
@@ -31,8 +31,8 @@
               </ul>
             </template>
             <template v-else-if="card.key === 'autosalon'">
-              <h4>{{ user.autosalon && user.autosalon.name }}</h4>
-              <p>{{ user.autosalon && user.autosalon.short_description || '' }}</p>
+              <h4>{{ salonDetails.name }}</h4>
+              <p>{{ salonDetails.short_description || '' }}</p>
             </template>
             <template v-else-if="card.key === 'contract'">
               <p class="mt-1">{{ $t('contract_end_time') }}:<br/><strong>{{ announcementStats.contract.end_date }}</strong></p>
@@ -119,7 +119,7 @@
   import DashboardCard from '~/components/profile/DashboardCard';
 
   export default {
-    name: 'pages-profile-dashboard',
+    name: 'pages-dashboard',
     middleware: ['auth_general','auth_salon'],
     mixins: [StatsMixin, PaymentMixin],
     components: {
@@ -127,7 +127,7 @@
     },  
     nuxtI18n: {
       paths: {
-        az: '/profil/idareetme-paneli'
+        az: '/idareetme-paneli/:id'
       }
     },
     head() {
@@ -135,10 +135,10 @@
         title: this.$t('dashboard')
       });
     },
-    async asyncData({store}) {
+    async asyncData({store, route}) {
       await Promise.all([
-        store.dispatch('getAnnouncementStats'),
-        store.dispatch('getPackageStats')
+        store.dispatch('getAnnouncementStats', route.params.id),
+        store.dispatch('getPackageStats', route.params.id)
       ]); 
 
       return {
@@ -159,15 +159,26 @@
         ]
       }, 
 
+      salonDetails() {
+        let id = this.$route.params.id;
+        let isShop = id == this.user.part_salon.id;
+        return {
+          short_description: this.user[isShop ? 'part_salon' : 'autosalon'].short_description || '',
+          name: this.user[isShop ? 'part_salon' : 'autosalon'].name || this.user.full_name,
+          balance: this.user.balance + this.user[isShop ? 'part_salon' : 'autosalon'].balance
+        }
+      },
+
       cards() {
+        let id = this.$route.params.id;
         return [
           { key: 'announcements', title: 'my_announces', route: '/profile/announcements', icon: 'photo' },
           { key: 'balance', title: 'balans', route: '/profile/balance', icon: 'wallet' },
-          { key: 'statistics', title: 'statistics', route: '/profile/statistics', icon: 'analytics' },
+          { key: 'statistics', title: 'statistics', route: '/dashboard/' + id + '/statistics', icon: 'analytics' },
           { key: 'messages', title: 'messages', route: '/profile/messages', icon: 'chat' },
-          { key: 'calls', title: 'phone_call_count', route: '/profile/calls', icon: 'phone' },
-          { key: 'autosalon', title: 'my_profile', route: '/profile/salon', icon: 'user' },
-          { key: 'contract', title: 'contract', route: '/profile/payments', icon: 'calendar-1' }
+          { key: 'calls', title: 'phone_call_count', route: '/dashboard/' + id + '/calls', icon: 'phone' },
+          { key: 'autosalon', title: 'my_profile', route: '/dashboard/' + id + '/settings', icon: 'user' },
+          { key: 'contract', title: 'contract', route: '/business-profile', icon: 'calendar-1' }
         ].map(link => ({ ...link,
           title: this.$t(link.title), 
           path: this.$localePath(link.route)

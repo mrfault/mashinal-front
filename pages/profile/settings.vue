@@ -66,7 +66,7 @@ import ChangePhone from '~/components/elements/ChangePhone';
 export default {
   name: 'pages-profile-settings',
   mixins: [UserDataMixin],
-  middleware: ['auth_general','auth_user'],
+  middleware: ['auth_general'],
   components: {
     ChangeEmail,
     ChangePhone
