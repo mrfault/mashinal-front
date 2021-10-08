@@ -243,7 +243,7 @@
         <div class="col-12">
 
           <!-- Gallery -->
-          <form-gallery2
+          <form-gallery
             itemClass="col-4 col-lg-1-5 mb-lg-3 mb-2"
             uploadPath="/upload_temporary_images"
             rotatable
@@ -271,7 +271,7 @@
                 </div>
               </div>
             </template>
-          </form-gallery2>
+          </form-gallery>
         </div>
       </div>
 
@@ -309,7 +309,7 @@ import { mapActions } from 'vuex';
 import { ToastErrorsMixin } from '~/mixins/toast-errors';
 
 import FormKeywords from '~/components/forms/FormKeywords'
-import FormGallery2 from '~/components/forms/FormGallery2'
+import FormGallery from '~/components/forms/FormGallery'
 
 export default {
   mixins: [ToastErrorsMixin],
@@ -326,7 +326,7 @@ export default {
   },
   components: {
     FormKeywords,
-    FormGallery2,
+    FormGallery,
   },
   async fetch() {
     await this.$store.dispatch('parts/getCategories')
