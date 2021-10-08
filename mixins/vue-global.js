@@ -57,6 +57,7 @@ Vue.use({
         },
         // other
         scrollTo(el, offset = 0, duration = 500, container = 'body') {
+          console.log('1', offset)
           if (document.body.classList.contains('mobile-screen-open')) 
             container = '.mobile-screen > .container';
           if (el === 0) el = 'body';
@@ -64,6 +65,7 @@ Vue.use({
           if (typeof offset === 'object') offset = this.isMobileBreakpoint ? offset[0] : offset[1];
           offset += (this.isMobileBreakpoint ? -60 : -141);
           this.$scrollTo(el, duration, { offset, container });
+          console.log('2', offset)
         },
         scrollReset() {
           window.scrollTo(0, 0);
