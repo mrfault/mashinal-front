@@ -46,12 +46,7 @@
           </div>
         </div>
 
-        <grid
-          :title="$t('relative_announcements')"
-          :announcements="otherAnnouncements"
-          :pending="pending"
-          escape-duplicates
-        />
+        <relatives />
       </div>
     </div>
   </div>
@@ -67,7 +62,7 @@ import AnnouncementSpecs from '~/components/announcements/inner/AnnouncementSpec
 import ThumbsGallery from '~/components/announcements/inner/ThumbsGallery';
 import CollapseContent from '~/components/elements/CollapseContent';
 import Keywords from '~/components/announcements/inner/Keywords';
-import Grid from '~/components/announcements/Grid.vue';
+import Relatives from '~/components/announcements/inner/Relatives.vue';
 
 export default {
   name: 'pages-parts-id',
@@ -79,7 +74,7 @@ export default {
     ThumbsGallery,
     CollapseContent,
     Keywords,
-    Grid
+    Relatives
   },
   nuxtI18n: {
     paths: {
@@ -98,47 +93,11 @@ export default {
       store.dispatch('getAnnouncementInner', route.params.id),
       store.dispatch('getComplaintOptions'),
       store.dispatch('getOptions'),
-      store.dispatch('getAllOtherOptions'),
+      store.dispatch('getAllOtherOptions')
     ]);
-
-    return {
-      pending: false
-    }
-  },
-  mounted() {
-    this.getOtherAnnouncements()
-    window.addEventListener('scroll', this.getNextAnnouncements)
-  },
-  methods: {
-    async getNextAnnouncements() {
-      if ((window.scrollY + 800 > document.body.scrollHeight) && !this.pending) {
-        this.pending = true;
-        const { current_page, last_page } = this.otherAnnouncementsPagination
-        if (current_page ? current_page < last_page : true) {
-          await this.getOtherAnnouncements()
-        }
-        this.pending = false;
-      }
-    },
-    async getOtherAnnouncements() {
-      const { current_page, last_page } = this.otherAnnouncementsPagination
-      await this.$store.dispatch('parts/getOtherAnnouncements', {
-        body: {
-          category_id: this.announcement.category.id,
-          sub_category_id: this.announcement.sub_category?.id
-        },
-        params: {
-          page: (current_page || 0) + 1
-        }
-      })
-    }
   },
   computed: {
-    ...mapGetters({
-      'announcement': 'announcement',
-      'otherAnnouncements': 'parts/otherAnnouncements',
-      'otherAnnouncementsPagination': 'parts/otherAnnouncementsPagination'
-    }),
+    ...mapGetters(['announcement']),
     crumbs() {
       const items = [
         {
@@ -162,8 +121,5 @@ export default {
       return items.filter(item => item.name)
     }
   },
-  beforeDestroy() {
-    window.removeEventListener('scroll', this.getNextAnnouncements)
-  }
 }
 </script>
