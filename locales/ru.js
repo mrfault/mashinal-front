@@ -1896,5 +1896,7 @@ export default {
   "silver": "Серебряный",
   "bronze": "Бронзовый",
   "change_package": "Пакет изменен",
-  "renew_package": "Пакет обновлен"
+  "renew_package": "Пакет обновлен",
+  "keywords": "Ключевые слова",
+  "other_announcements_of_user": "Другие объявления пользователя"
 }

@@ -1896,5 +1896,7 @@ export default {
   "silver": "Gümüş",
   "bronze": "Bürünc",
   "change_package": "Paket dəyişdi",
-  "renew_package": "Paket yeniləndi"
+  "renew_package": "Paket yeniləndi",
+  "keywords": "Açar sözlər",
+  "other_announcements_of_user": "İstifadəçinin digər elanları"
 }
