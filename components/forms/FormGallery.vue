@@ -34,7 +34,7 @@
         </label>
       </div>
       <template slot="header">
-        <slot name="pre"/>
+        <slot name="header"/>
       </template>
     </draggable>
   </div>
