@@ -70,7 +70,7 @@ export default {
       return this.popularOptions.filter((option) => {
         let value = this.options?.[option.name];
         return value instanceof Array ? value.includes(option.selected_key) : value;
-      });
+      }).map(option => ({...option, label: this.$t(option.label)}) );
     }
   },
   methods: {
