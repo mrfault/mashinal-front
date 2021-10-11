@@ -392,19 +392,19 @@ export default {
         is_original: true,
       }
 
+      delete this.form.sub_category_id;
+      delete this.form.brand_id;
+      
+      this.filters.filters.forEach(filter => {
+        delete this.form[filter.key]
+      })
+      
       this.filters = {
         sub_categories: [],
         brands: [],
         regions: [],
         filters: [],
       }
-
-      delete this.form.sub_category_id;
-      delete this.form.brand_id;
-
-      this.filters.filters.forEach(filter => {
-        delete this.form[filter.key]
-      })
 
       if (id) {
         this.getFilters(id)
