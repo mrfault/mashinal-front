@@ -168,7 +168,12 @@ export const getters = {
   mainPartsAnnouncements: s => s.mainPartsAnnouncements,
   myAnnouncements: s => s.myAnnouncements,
   myAnnouncement: s => s.myAnnouncement,
-  relativeAnnouncements: s => s.relativeAnnouncements,
+  relativeAnnouncements: s => {
+    if (typeof s.relativeAnnouncements === 'object') {
+      return Object.values(s.relativeAnnouncements)
+    }
+    return s.relativeAnnouncements
+  },
   // catalog
   catalogAnnouncements: s => s.catalogAnnouncements,
   catalogItems: s => s.catalogItems,
