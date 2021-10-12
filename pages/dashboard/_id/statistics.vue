@@ -52,10 +52,10 @@
         title: this.$t('statistics')
       });
     },
-    async asyncData({store, route}) {
+    async asyncData({store, route, app}) {
       await Promise.all([
-        store.dispatch('getAnnouncementStats', route.params.id),
-        store.dispatch('getPackageStats', route.params.id)
+        store.dispatch('getAnnouncementStats', app.$getDashboardId(route.params.id)),
+        store.dispatch('getPackageStats', app.$getDashboardId(route.params.id))
       ]); 
     },
     computed: {

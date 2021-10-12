@@ -253,6 +253,9 @@ main {
   &.less-pd {
     padding-left: 15px;
   }
+  span.cursor-pointer.text-red:hover {
+    text-decoration: underline;
+  }
 }
 
 .text-green {

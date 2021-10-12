@@ -10,13 +10,13 @@
             </h2>
             <div class="increase-balance-info">
               <icon name="wallet" class="mb-2" />
-              <strong class="mb-1">{{ totalBalance }} ALManat</strong>
+              <strong class="mb-1">{{ $readNumber(totalBalance) }} ALManat</strong>
               <p v-if="!isMobileBreakpoint">{{ $t('wallet_balance') }}</p>
               <template v-if="user.autosalon || user.part_salon">
                 <hr />
                 <div class="row justify-content-center">
-                  <div class="col-auto text-medium" v-if="user.autosalon">{{ $t('is_autosalon') }}: {{ user.autosalon.balance }} ALM</div>
-                  <div class="col-auto text-medium" v-if="user.part_salon">{{ $t('shop') }}: {{ user.part_salon.balance }} ALM</div>
+                  <div class="col-auto text-medium" v-if="user.autosalon">{{ $t('is_autosalon') }}: {{ $readNumber(user.autosalon.balance) }} ALM</div>
+                  <div class="col-auto text-medium" v-if="user.part_salon">{{ $t('shop') }}: {{ $readNumber(user.part_salon.balance) }} ALM</div>
                 </div>
               </template>
             </div>

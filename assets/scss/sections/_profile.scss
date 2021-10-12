@@ -29,8 +29,21 @@
         padding-bottom: 16px;
         border-bottom: 1px solid $greyish-blue-3;
       }
-      i {
+      i, img {
         margin-right: 9px;
+      }
+      img {
+        width: 14px;
+      }
+      span a {
+        display: inline-flex;
+        align-items: flex-start;
+        &:not(:first-child) {
+          margin-left: 21px;
+        }
+        img {
+          margin-left: 9px;
+        }
       }
     }
   }
@@ -245,6 +258,17 @@
     height: 110px;
     border: 5px solid $white;
   }
+  .badge {
+    position: absolute;
+    bottom: 75px;
+    left: 20px;
+    background-color: $dark-blue-2;
+    color: $white;
+    font-weight: 500;
+    text-transform: uppercase;
+    padding: 11px 20px;
+    border-radius: 4px;
+  }
   .edit-link {
     position: absolute;
     bottom: 0;
@@ -442,6 +466,12 @@
     }
     .cover {
       border-radius: 0;
+    }
+    .badge {
+      bottom: 55px;
+      left: 25px;
+      padding: 6px 15px;
+      border-radius: 4px;
     }
   }
 

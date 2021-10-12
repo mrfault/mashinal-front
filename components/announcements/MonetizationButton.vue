@@ -80,7 +80,6 @@ export default {
       showTerminalInfo: false,
       pending: false,
       priceList: [], 
-      paymentMethod: 'card',
       day: {
         value: 5,
         min: 1,
@@ -114,19 +113,6 @@ export default {
     },
     haveBalanceForPlan() {
       return parseFloat(this.selectedPlan.price) <= this.totalBalance;
-    },
-    paymentMethodOptions() {
-      return [
-        { key: 'card', name: this.$t('pay_with_card') },
-        { key: 'balance', name: this.$t('pay_with_balance'), disabled: !this.haveBalanceForPlan },
-      ]
-    }
-  },
-  watch: {
-    haveBalanceForPlan(value) {
-      if (!value) {
-        this.paymentMethod = 'card';
-      }
     }
   },
   methods: {

@@ -23,7 +23,7 @@ export default function ({ app, store, error, $axios }) {
       if (!err.response.config.url.includes('user')) {
         location.reload();
       }
-    } else {
+    } else if (![433].includes(code)) {
       if (process.client) {
         app.$toast.error(err.response.data.message);
       }

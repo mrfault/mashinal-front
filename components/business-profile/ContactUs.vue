@@ -17,7 +17,7 @@
           </div>
         </div>
         <div class="col-12 col-lg-4">
-          <registration-form-salon />
+          <salon-apply />
         </div>
       </div>
     </div>
@@ -25,11 +25,11 @@
 </template>
 
 <script>
-import RegistrationFormSalon from '~/components/business-profile/RegistrationFormSalon';
+import SalonApply from '~/components/business-profile/SalonApply';
 
 export default {
   components: {
-    RegistrationFormSalon
+    SalonApply
   }
 }
 </script>

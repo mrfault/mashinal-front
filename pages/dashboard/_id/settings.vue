@@ -153,10 +153,10 @@
         title: this.$t('user_information_edit')
       });
     },
-    async asyncData({ store, route }) {
+    async asyncData({ store, route, app }) {
       await Promise.all([
         store.dispatch('getOptions'),
-        store.dispatch('getMySalon', { id: route.params.id })
+        store.dispatch('getMySalon', { id: app.$getDashboardId(route.params.id) })
       ]);
 
       let salon = store.getters.mySalon;
@@ -272,9 +272,9 @@
 
         // update autosalon info
         try {
-          await this.updateMySalon({ id: this.$route.params.id, form: formData});
+          await this.updateMySalon({ id: this.$getDashboardId(this.$route.params.id), form: formData});
           await Promise.all([
-            this.getMySalon({ id: this.$route.params.id }),
+            this.getMySalon({ id: this.$getDashboardId(this.$route.params.id) }),
             this.$auth.fetchUser()
           ]);
           this.$toasted.success(this.$t('saved_changes'));

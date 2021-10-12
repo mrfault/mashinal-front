@@ -1,44 +1,29 @@
 <template>
-  <div class="pages-business-profile-index">
+  <div class="pages-business-profile">
     <div class="container">
       <breadcrumbs :crumbs="crumbs"/>
-
       <div class="row justify-content-center mt-4 mt-lg-0">
         <div class="col-auto">
-          <form-switch
-            :options="profileTypes"
-            v-model="profileTypeModel"
-            autoWidth
-          />
+          <form-switch :options="profileTypes" v-model="profileTypeModel" auto-width />
         </div>
       </div>
-
+      <parts-packages v-if="isParts"/>
       <packages v-if="isAutosalon && isMobileBreakpoint"/>
       <hr class="m-0" v-if="isAutosalon && isMobileBreakpoint"/>
-
-      <parts-packages v-if="isParts"/>
-
       <advantages v-if="isAutosalon"/>
-
       <hr class="m-0"/>
       <competitor-announcements />
-
       <hr class="m-0"/>
       <control-panel />
-
       <hr class="m-0"/>
       <additional-features />
-
       <hr class="m-0" v-if="isAutosalon && !isMobileBreakpoint"/>
       <packages v-if="isAutosalon && !isMobileBreakpoint"/>
-
       <hr class="m-0"/>
       <announcements />
     </div>
-
     <application-section v-if="isParts"/>
     <contact-us v-if="isAutosalon"/>
-
     <div class="container">
       <f-a-q />
       <hr class="m-0"/>
@@ -50,9 +35,7 @@
 <script>
 import { mapGetters } from 'vuex';
 
-import Features from '~/components/business-profile/Features'
-import RegistrationFormParts from '~/components/business-profile/RegistrationFormParts';
-import RegistrationFormSalon from '~/components/business-profile/RegistrationFormSalon';
+import Features from '~/components/business-profile/Features';
 import CompetitorAnnouncements from '~/components/business-profile/CompetitorAnnouncements';
 import ControlPanel from '~/components/business-profile/ControlPanel';
 import AdditionalFeatures from '~/components/business-profile/AdditionalFeatures';
@@ -66,23 +49,9 @@ import PartsPackages from '~/components/business-profile/PartsPackages';
 import ContactUs from '~/components/business-profile/ContactUs';
 
 export default {
-  name: 'pages-business-profile-index',
-  nuxtI18n: {
-    paths: {
-      az: '/biznes-profil'
-    }
-  },
-  head() {
-    // Fix translations
-    return this.$headMeta({
-      title: this.$t('meta-title_business-profile'),
-      description: this.$t('meta-descr_business-profile')
-    });
-  },
+  name: 'pages-business-profile',
   components: {
     Features,
-    RegistrationFormParts,
-    RegistrationFormSalon,
     CompetitorAnnouncements,
     ControlPanel,
     AdditionalFeatures,
@@ -95,27 +64,46 @@ export default {
     PartsPackages,
     ContactUs
   },
+  nuxtI18n: {
+    paths: {
+      az: '/biznes-profil'
+    }
+  },
+  head() {
+    return this.$headMeta({
+      title: this.$t('meta-title_business-profile'),
+      description: this.$t('meta-descr_business-profile')
+    });
+  },
+  async asyncData({ store, route }) {
+    if (route.query.type == 2) {
+      store.dispatch('packages/setProfileType', 'parts');
+    }
+    await Promise.all([
+      store.dispatch('packages/getPackages')
+    ]);
+  },
   computed: {
     ...mapGetters({
-      profileType: 'businessProfile/profileType'
+      profileType: 'packages/profileType'
     }),
     crumbs() {
       return [
         { name: this.$t('business_profile_services')}
-      ]
+      ];
     },
     profileTypes() {
       return [
-        { key: 'autosalon', name: this.$t('autosalon') },
+        { key: 'autosalon', name: this.$t('is_autosalon') },
         { key: 'parts', name: this.$t('parts') }
-      ]
+      ];
     },
     profileTypeModel: {
       get() {
-        return this.profileType
+        return this.profileType;
       },
       set(value) {
-        this.$store.dispatch('businessProfile/setProfileType', value)
+        this.$store.dispatch('packages/setProfileType', value);
       }
     },
     isAutosalon() { return this.profileType === 'autosalon' },

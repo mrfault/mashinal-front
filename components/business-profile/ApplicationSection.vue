@@ -17,7 +17,7 @@
           </div>
         </div>
         <div class="col-12 col-lg-4">
-          <registration-form-parts />
+          <parts-apply where="application" />
         </div>
       </div>
     </div>
@@ -25,11 +25,11 @@
 </template>
 
 <script>
-import RegistrationFormParts from '~/components/business-profile/RegistrationFormParts';
+import PartsApply from '~/components/business-profile/PartsApply';
 
 export default {
   components: {
-    RegistrationFormParts
+    PartsApply
   }
 }
 </script>

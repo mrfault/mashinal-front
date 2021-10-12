@@ -71,17 +71,10 @@ export const MenusDataMixin = {
         { title: 'balans', route: '/profile/balance', showOnCard: true }
       ];
 
-      if (this.user.autosalon) {
-        menus.push(
-          { title: 'dashboard_salon', route: '/dashboard/' + this.user.autosalon.id, showOnCard: true }
-        );
-      }
-      
-      if (this.user.part_salon) {
-        menus.push(
-          { title: 'dashboard_shop', route: '/dashboard/' + this.user.part_salon.id, showOnCard: true }
-        );
-      }
+      if (this.user.autosalon)
+        menus.push({ title: 'dashboard_salon', route: '/dashboard/1', showOnCard: true });
+      if (this.user.part_salon)
+        menus.push({ title: 'dashboard_shop', route: '/dashboard/2', showOnCard: true });
 
       return menus;
     },

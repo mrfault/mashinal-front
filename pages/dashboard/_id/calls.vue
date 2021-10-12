@@ -40,7 +40,7 @@
       });
     },
     async asyncData({store, route}) {
-      await store.dispatch('getAnnouncementCalls', { id: route.params.id});
+      await store.dispatch('getAnnouncementCalls', { id: this.$getDashboardId(route.params.id)});
 
       return {
         pending: false
@@ -62,7 +62,7 @@
       async changePage(page = 1) {
         page = this.$route.query.page || 1;
         this.pending = true;
-        await this.getAnnouncementCalls({ id: this.$route.params.id, page });
+        await this.getAnnouncementCalls({ id: this.$getDashboardId(this.$route.params.id), page });
         this.pending = false;
         this.scrollTo('.announcements-grid.paginated', [-15, -20]);
       }

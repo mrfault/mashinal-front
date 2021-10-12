@@ -18,7 +18,7 @@
               </div>
             </template>
             <template v-else-if="card.key === 'balance'">
-              <p>{{ $t('wallet_balance') }}:<br/><strong>{{ salonDetails.balance }} ALManat</strong></p>
+              <p>{{ $t('wallet_balance') }}:<br/><strong>{{ $readNumber(salonDetails.balance) }} ALManat</strong></p>
             </template>
             <template v-else-if="card.key === 'calls'">
               <h4 class="text-dark-blue-2">{{ announcementStats.calls }}</h4>
@@ -65,6 +65,9 @@
               <a class="text-green" href="javascript:void(0);" @click="showExtendContract = true" v-else-if="card.key === 'contract' && shouldExtendContract">
                 {{ $t('pay') }}
               </a>
+              <nuxt-link class="text-green" :to="$localePath('/business-profile') + '?scrollto=packages'" v-else-if="card.key === 'contract' && $route.params.id == 1">
+                {{ $t('to_change_package') }}
+              </nuxt-link>
             </template>
           </dashboard-card>
         </div>
@@ -87,7 +90,7 @@
             <p v-html="$t('pay_till_date', { date: announcementStats.contract.end_date })"></p>
             <h4>{{ $t('payment_method') }}</h4>
             <div class="mb-2 mb-lg-0">
-              <form-buttons v-model="selectedPaymentMethod" :options="paymentMethodOptions" :group-by="2" />
+              <form-buttons v-model="paymentMethod" :options="paymentMethodOptions" :group-by="2" />
             </div>
             <hr />
             <div class="row">
@@ -135,10 +138,11 @@
         title: this.$t('dashboard')
       });
     },
-    async asyncData({store, route}) {
+    async asyncData({store, route, app}) {
+      store.dispatch('packages/setProfileType', route.params.id == 2 ? 'parts' : 'autosalon');
       await Promise.all([
-        store.dispatch('getAnnouncementStats', route.params.id),
-        store.dispatch('getPackageStats', route.params.id)
+        store.dispatch('getAnnouncementStats', app.$getDashboardId(route.params.id)),
+        store.dispatch('getPackageStats', app.$getDashboardId(route.params.id))
       ]); 
 
       return {
@@ -160,7 +164,7 @@
       }, 
 
       salonDetails() {
-        let id = this.$route.params.id;
+        let id = this.$getDashboardId(this.$route.params.id);
         let isShop = id == this.user.part_salon.id;
         return {
           short_description: this.user[isShop ? 'part_salon' : 'autosalon'].short_description || '',
@@ -195,11 +199,9 @@
       shouldExtendContract() {
         return this.announcementStats.contract.left_days < 8;
       },
-
-      paymentMethodOptions() {
-        return [
-          { key: 1, name: this.$t('pay_with_card') }
-        ]
+      
+      haveBalanceForPlan() {
+        return parseFloat(this.announcementStats.contract.price) <= this.user.balance;
       }
     },
     methods: {
@@ -207,9 +209,26 @@
         if (this.pending) return;
         this.pending = true;
         try {
-          const res = await this.$axios.$get(`/payment/package?is_mobile=${this.isMobileBreakpoint}`);
-          this.pending = false;
-          this.handlePayment(res);
+          const res = await this.$axios.$post(`/payment/renew-package?is_mobile=${this.isMobileBreakpoint}`, {
+            autosalon_id: this.$getDashboardId(this.$route.params.id),
+            type: this.paymentMethod
+          });
+          if (this.paymentMethod === 'card') {
+            this.pending = false;
+            this.handlePayment(res, false, this.$t('renew_package'));
+          } else {
+            await Promise.all([
+              this.$nuxt.refresh(),
+              this.$auth.fetchUser()
+            ]);
+            this.pending = false;
+            this.showModal = false;
+            this.updatePaidStatus({ 
+              type: 'success', 
+              text: this.$t('renew_package'), 
+              title: this.$t('success_payment') 
+            });
+          }
         } catch (err) {
           this.pending = false;
         }

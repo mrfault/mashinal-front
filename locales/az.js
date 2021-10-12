@@ -1848,7 +1848,6 @@ export default {
   "ad_announcement": "Reklamlı elan",
   "снижение токсичных выбросов по нормативу 2018 года": "2018-сi ilin standartına görə zəhərli tullantıların azaldılması",
   "business_profile_services": "Biznes profili xidmətləri",
-  "autosalon": "Avtosalon",
   "get_a_business_profile": "Biznes profil əldə et",
   "repeat_password": "Şifrənin təkrarı",
   "you_will_have_to_pay_100_to_get_a_business_profile": "*Biznes profili əldə etmək üçün 100 ₼ ödəniş etməli olacaqsınız.",
@@ -1880,7 +1879,6 @@ export default {
   "entrepreneurs_title": "<em>{count}</em> sahibkar artıq mashin.al-da öz biznesini uğurla inkişaf etdirir",
   "frequently_asked_questions": "Tez-tez verilən suallar",
   "features_1_title": "Vahid biznes paket",
-  "features_1_desc": "100 ₼",
   "features_2_title": "1 illik limitsiz elan sayı",
   "features_3_title": "Aylıq ödəniş",
   "features_3_desc": "0 ₼",
@@ -1897,6 +1895,11 @@ export default {
   "bronze": "Bürünc",
   "change_package": "Paket dəyişdi",
   "renew_package": "Paket yeniləndi",
+  "package_bought": "Paket aktivləşdirildi",
   "keywords": "Açar sözlər",
-  "other_announcements_of_user": "İstifadəçinin digər elanları"
+  "other_announcements_of_user": "İstifadəçinin digər elanları",
+  "business_profile_payment": "Biznes profili üçün ödəniş",
+  "business_profile_payment_info": "Ödəniş etdiyiniz təqdirdə, profiliniz avtomatik olaraq biznes profili ilə əvəz olunacaq.",
+  "wp_write_us": "Whatsapp-dan yaz",
+  "to_change_package": "Paketi dəyiş"
 }

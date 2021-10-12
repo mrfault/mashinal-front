@@ -53,6 +53,9 @@ export default function({ app, route, store }, inject) {
     let query = _.clone(route.query);
     app.router.push({ query: {...query, [param.key]: param.value } });
   });
+  inject('getDashboardId', (type) => {
+    return type == 2 ? store.state.auth?.user?.part_salon?.id : store.state.auth?.user?.autosalon?.id;
+  });
   // formatting
   inject('parsePhone', (phone, brief = false) => {
     if (typeof phone === 'number') phone = `${phone}`;

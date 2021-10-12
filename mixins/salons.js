@@ -9,15 +9,15 @@ export const SalonsMixin = {
     getTotalCount(salon) {
       return salon.announcements?.total || salon.announcement_count || 0;
     },
-    getConcatPhones(phones, max = 2, clickable = true) {
+    getConcatPhones(phones, max = 2, clickable = true, msg = false) {
       return (phones || [])
         .slice(0, max)
-        .map(phone => phone.replace(/(\d{3})(\d{2})(\d{3})(\d{2})(\d{2})/g, '<a '+(clickable ? ('onclick="event.stopPropagation()" href="tel:+'+phone+'"') : 'href="javascript:void(0);"')+'>+$1 $2 $3 $4 $5</a>'))
+        .map(phone => (phone).replace(/(\d{3})(\d{2})(\d{3})(\d{2})(\d{2})/g, '<a '+(clickable ? ('onclick="event.stopPropagation()" href="tel:+'+phone+'"') : 'href="javascript:void(0);"')+'>+$1 $2 $3 $4 $5' + (msg ? '<img src="/icons/whatsapp-circle.svg" alt="" />' : '') + '</a>'))
         .join(', ');
     },
     getWorkingDays(days, hours) {
-      if(!days && !hours) return false;
-      let strHours = hours ? `${hours.start} - ${hours.end}` : '';
+      if (!days && !hours) return false;
+      let strHours = hours?.start ? `${hours.start} - ${hours.end}` : '';
       if(!days || !days.length) return strHours;
       let weekDays = [...days].sort(), dayRows = [], lastKey = 0;
       for (let i = 0; i < weekDays.length; i++) {

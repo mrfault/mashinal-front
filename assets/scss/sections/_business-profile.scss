@@ -1,4 +1,4 @@
-.pages-business-profile-index {
+.pages-business-profile {
 
   .business-profile {
     &__features {
@@ -122,6 +122,7 @@
             color: $white;
             font-size: 13px;
             font-weight: 500;
+            text-transform: uppercase;
           }
         }
         @media (min-width: map-get($grid-breakpoints, 'lg')) {
@@ -343,30 +344,30 @@
               color: $dark-blue-1;
             }
           }
-          &:nth-child(1) {
-            .package__name  { color: $green-1 }
-            .icon-check     { color: $green-1 }
-          }
-          &:nth-child(2) { 
-            .package__name  { color: $orange-1 }
-            .icon-check     { color: $orange-1 }
-          }
-          &:nth-child(3) { 
-            .package__name  { color: $magenta-1 }
-            .icon-check     { color: $magenta-1 }
-          }
-          &:nth-child(4) { 
-            .package__name  { color: $yellow-3 }
-            .icon-check     { color: $yellow-3 }
-          }
-          &:nth-child(5) { 
-            .package__name  { color: $grey-12 }
-            .icon-check     { color: $grey-12 }
-          }
-          &:nth-child(6) { 
-            .package__name  { color: $red-7 }
-            .icon-check     { color: $red-7 }
-          }
+          // &:nth-child(1) {
+          //   .package__name  { color: $green-1 }
+          //   .icon-check     { color: $green-1 }
+          // }
+          // &:nth-child(2) { 
+          //   .package__name  { color: $orange-1 }
+          //   .icon-check     { color: $orange-1 }
+          // }
+          // &:nth-child(3) { 
+          //   .package__name  { color: $magenta-1 }
+          //   .icon-check     { color: $magenta-1 }
+          // }
+          // &:nth-child(4) { 
+          //   .package__name  { color: $yellow-3 }
+          //   .icon-check     { color: $yellow-3 }
+          // }
+          // &:nth-child(5) { 
+          //   .package__name  { color: $grey-12 }
+          //   .icon-check     { color: $grey-12 }
+          // }
+          // &:nth-child(6) { 
+          //   .package__name  { color: $red-7 }
+          //   .icon-check     { color: $red-7 }
+          // }
           @media (min-width: map-get($grid-breakpoints, 'lg')) {
             &:nth-child(2n) {
               margin-top: 20px;
@@ -457,7 +458,7 @@
 }
 
 .dark-mode {
-  .pages-business-profile-index {
+  .pages-business-profile {
     .business-profile {
       &__features {
         .feature {

@@ -48,7 +48,7 @@
         <h2 class="section-title heading-dots heading-dots--left">{{ $t('additional_features_4_title') }}</h2>
         <p class="ml-0 text-with-check">
           <icon name="check" />
-          <span class="shop-badge">SHOP</span>
+          <span class="shop-badge">{{ $t('shop') }}</span>
           {{ $t('additional_features_4_desc_2') }}
         </p>
         <p class="ml-0 mt-1 text-with-check">
