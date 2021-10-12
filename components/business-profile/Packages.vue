@@ -15,17 +15,17 @@
         >
           <div :class="['package__radio', {'package__radio--checked': selected === item.id}]"></div>
           <div class="package__price">{{ item.price }} ₼</div>
-          <div class="package__name" :style="selectedPackage.color ? ('color: ' + selectedPackage.color) : ''">
+          <div class="package__name" :style="item.color ? ('color: ' + item.color) : ''">
             {{ item.name[locale] }}
           </div>
           <hr />
           <div class="package__details">
             <p class="mx-0 mt-1 text-with-check">
-              <icon name="check" />
+              <icon name="check" :style="item.color ? ('color: ' + item.color) : ''" />
               {{ $t('announcement_count') }} - {{ item.unlimited ? $t('Limitsiz') : item.announce_count }}
             </p>
             <p class="mx-0 mt-1 text-with-check">
-              <icon name="check" :style="selectedPackage.color ? ('color: ' + selectedPackage.color) : ''" />
+              <icon name="check" :style="item.color ? ('color: ' + item.color) : ''" />
               <icon name="wallet" />
               - {{ item.service_price }} ALM
             </p>
@@ -181,6 +181,7 @@ export default {
     this.$nextTick(() => {
       if (this.$route.query.scrollto) {
         let ref = this.$refs[this.$route.query.scrollto];
+        this.$router.push({ query: null });
         if (ref) setTimeout(() => {
           this.scrollTo(ref);
         }, 300);

@@ -26,8 +26,8 @@
     <contact-us v-if="isAutosalon"/>
     <div class="container">
       <f-a-q />
-      <hr class="m-0"/>
-      <entrepreneurs />
+      <!-- <hr class="m-0"/>
+      <entrepreneurs /> -->
     </div>
   </div>
 </template>
@@ -80,7 +80,8 @@ export default {
       store.dispatch('packages/setProfileType', 'parts');
     }
     await Promise.all([
-      store.dispatch('packages/getPackages')
+      store.dispatch('packages/getPackages'),
+      store.dispatch('packages/getFaq')
     ]);
   },
   computed: {

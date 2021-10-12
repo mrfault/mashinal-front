@@ -48,7 +48,7 @@
         <h2 class="section-title heading-dots heading-dots--left">{{ $t('additional_features_4_title') }}</h2>
         <p class="ml-0 text-with-check">
           <icon name="check" />
-          <span class="shop-badge">{{ $t('shop') }}</span>
+          <span class="shop-badge">SHOP</span>
           {{ $t('additional_features_4_desc_2') }}
         </p>
         <p class="ml-0 mt-1 text-with-check">
@@ -71,7 +71,7 @@
     </div>
     <hr class="m-0"/>
     
-    <div class="row section">
+    <div class="row section" v-if="profileType === 'parts'">
       <div class="col-12 col-lg-6">
         <img :src="`/img/additional_features_6_${colorMode}.png`" alt="">
       </div>
@@ -85,3 +85,15 @@
     </div>
   </div>
 </template>
+
+<script>
+import { mapGetters } from 'vuex';
+
+export default {
+  computed: {
+    ...mapGetters({
+      profileType: 'packages/profileType'
+    })
+  }
+}
+</script>

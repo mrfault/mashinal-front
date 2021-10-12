@@ -15,7 +15,7 @@
               <p class="text-center">100x100px</p>
             </div>
             <div class="avatar_edit col-auto mb-2 cover" id="anchor-cover">
-              <form-image v-model="form.cover" :initial-image="getSalonImg('cover')" />
+              <form-image v-model="form.cover" :initial-image="getSalonImg('cover-'+mySalon.type_id)" />
               <p class="text-center">1200x300px</p>
             </div>
           </div>

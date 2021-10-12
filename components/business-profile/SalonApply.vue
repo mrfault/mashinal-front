@@ -54,11 +54,12 @@ export default {
       if (this.pending || this.$v.$pending || this.$v.$error) return;
       this.pending = true;
       try {
-        await this.$axios.$post(`/packages/contact`, {
+        await this.$axios.$post(`/part/open/store`, {
           phone: this.form.phone.replace(/[^0-9]+/g, ''),
-          name: this.form.name
+          full_name: this.form.name
         });
         this.pending = false;
+        this.$toasted.success(this.$t('your_request_has_been_sent'));
       } catch (err) {
         this.pending = false;
       }

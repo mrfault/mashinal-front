@@ -2,9 +2,9 @@
   <div class="salon-inner">
     <div :class="['card profile-card salon-single-card overflow-hidden mt-0 mb-lg-3', salonSingle.description ? 'mb-n3' : 'mb-2']">
       <div class="cover-with-avatar">
-        <div class="cover" :style="{backgroundImage: `url('${getCover(salonSingle.cover)}')`}">
+        <div class="cover" :style="{backgroundImage: `url('${getCover(salonSingle.cover, salonSingle.type_id)}')`}">
           <img class="avatar" :src="getLogo(salonSingle.logo)" :alt="salonSingle.name || salonSingle.user.full_name" />
-          <span class="badge">{{ salonSingle.type_id == 2 ? $t('shop') : $t('is_autosalon') }}</span>
+          <span class="badge">SHOP</span>
         </div>
         <nuxt-link class="edit-link" :to="$localePath('/profile/salon')" @click.native="setPageRef($route.path)" v-if="salonIsOwner(salonSingle)">
           <icon name="edit" />

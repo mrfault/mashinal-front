@@ -1,16 +1,18 @@
 import Vue from 'vue';
 
 const getInitialState = () => ({
+  profileType: 'autosalon',
   packages: [],
-  profileType: 'autosalon'
+  faq: []
 });
 
 export const state = () => getInitialState();
 
 export const getters = {
-  salonPackages: s => s.packages.filter(p => p.type_id == 1).sort((a, b) => b.sort_order - a.sort_order),
-  partsPackages: s => s.packages.filter(p => p.type_id == 2).sort((a, b) => b.sort_order - a.sort_order),
-  profileType: s => s.profileType
+  salonPackages: s => s.packages.filter(p => p.type_id == 1),
+  partsPackages: s => s.packages.filter(p => p.type_id == 2),
+  profileType: s => s.profileType,
+  faq: s => s.faq
 }
 
 export const actions = {
@@ -20,6 +22,10 @@ export const actions = {
   async getPackages({ commit }) {
     const res = await this.$axios.$get('/packages');
     commit('mutate', { property: 'packages', value: res });
+  },
+  async getFaq({ commit }) {
+    const res = await this.$axios.$get('/faq');
+    commit('mutate', { property: 'faq', value: res });
   }
 }
 

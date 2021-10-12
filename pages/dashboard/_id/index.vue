@@ -165,7 +165,7 @@
 
       salonDetails() {
         let id = this.$getDashboardId(this.$route.params.id);
-        let isShop = id == this.user.part_salon.id;
+        let isShop = id == this.user.part_salon?.id;
         return {
           short_description: this.user[isShop ? 'part_salon' : 'autosalon'].short_description || '',
           name: this.user[isShop ? 'part_salon' : 'autosalon'].name || this.user.full_name,

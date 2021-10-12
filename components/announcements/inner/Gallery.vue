@@ -17,7 +17,7 @@
         <div class="gallery-overlay_top d-flex">
           <template v-if="where === 'announcement'">
             <span class="badge from-border" v-if="announcement.is_autosalon || announcement.is_part_salon">
-              {{ $t(announcement.is_part_salon ? 'shop' : 'is_autosalon') }}
+              SHOP
             </span>
             <span class="d-flex">
               <!-- here badges can be placed -->

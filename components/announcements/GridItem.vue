@@ -29,7 +29,7 @@
               <span class="badge from-border inactive" v-else-if="announcement.status == 3">{{ $t('inactive')}}</span>
             </template>
             <template v-else-if="announcement.is_autosalon || announcement.is_part_salon">
-              <span class="badge from-border">{{ $t(announcement.is_part_salon ? 'shop' : 'is_autosalon') }}</span>
+              <span class="badge from-border">SHOP</span>
             </template>
             <span class="d-flex">
               <span class="btn-sq btn-sq--color-red active" v-if="announcement.has_monetization">
