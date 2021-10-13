@@ -708,7 +708,9 @@ export const actions = {
       cars: res.data.announce_left_car, 
       commercial: res.data.announce_left_commercial, 
       moto: res.data.announce_left_moto, 
-      parts: res.data.part_announce_count 
+      parts: res.data.part_announce_count, 
+      parts_unlimited: res.data.part_unlimited, 
+      salon_unlimited: res.data.salon_unlimited 
     } });
     commit('mutate', { property: 'sellPhoneRegistered', value: res.data && res.data.have_account });
     commit('mutate', { property: 'sellSalonRights', value: res.data && res.data.is_autosalon });

@@ -93,10 +93,12 @@
           cars: 0,
           moto: 0,
           commercial: 0,
-          parts: 0
+          parts: 0,
+          parts_unlimited: this.loggedIn ? this.user?.part_salon.is_unlimited : this.sellTokens.parts_unlimited,
+          salon_unlimited: this.loggedIn ? this.user?.autosalon.is_unlimited : this.sellTokens.salon_unlimited
         }
 
-        for (let type in tokens) {
+        for (let type of ['cars','moto','commercial','parts']) {
           let tokenKey = `announce_left_${type}`;
           if (type === 'cars') tokenKey = tokenKey.slice(0, -1);
           else if (type === 'parts') tokenKey = 'part_announce_left';
@@ -112,7 +114,7 @@
       vehicleOptions() {
         return this.announcementsMenus.map(menu => ({
           ...menu,
-          disabled: this.tokens[menu.title] <= 0
+          disabled: this.tokens[menu.title] <= 0 && !this.tokens[menu.title === 'parts' ? 'parts_unlimited' : 'salon_unlimited']
         }));
       }
     },
@@ -148,23 +150,26 @@
 
         let firstLine, secondLine, thirdLine;
 
-        let transportTokens = this.$maxInArray([this.tokens.cars, this.tokens.moto, this.tokens.commercial]);
-        let partTokens = this.tokens.parts;
+        let transportTokens = this.$maxInArray([this.tokens.cars, this.tokens.moto, this.tokens.commercial, 0]);
+        let partTokens = this.$maxInArray([this.tokens.parts, 0]);
 
-        let firstLocaleEnding = (transportTokens > 0 && partTokens > 0) ? '' : (transportTokens ? '_transport' : '_parts');
-        let secondLocaleEnding  = (transportTokens <= 0 && partTokens <= 0) ? '' : (transportTokens <= 0 ? '_transport' : '_parts');
+        let hasTransportTokens = transportTokens > 0 || this.tokens.salon_unlimited;
+        let hasPartsTokens = partTokens > 0 || this.tokens.parts_unlimited;
 
-        if (transportTokens || partTokens) {
+        let firstLocaleEnding = (hasTransportTokens && hasPartsTokens) ? '' : (hasTransportTokens ? '_transport' : '_parts');
+        let secondLocaleEnding  = (!hasTransportTokens && !hasPartsTokens) ? '' : (!hasTransportTokens ? '_transport' : '_parts');
+
+        if (hasTransportTokens || hasPartsTokens) {
           firstLine = this.$t(`you_can_create_announcement${firstLocaleEnding}`, { 
             phone: phone.replace('+994 (', '(0'),
-            plural: this.$readPlural(transportTokens, this.$t('plural_forms_announcements'), false),
-            plural_parts: this.$readPlural(partTokens, this.$t('plural_forms_announcements'), false),
-            left: transportTokens, 
-            left_parts: partTokens
+            plural: this.$readPlural(transportTokens || '∞', this.$t('plural_forms_announcements'), false),
+            plural_parts: this.$readPlural(partTokens || '∞', this.$t('plural_forms_announcements'), false),
+            left: transportTokens || '∞', 
+            left_parts: partTokens || '∞'
           });
         }
 
-        if (!transportTokens || !partTokens) {
+        if (!hasTransportTokens || !hasPartsTokens) {
           secondLine = '<strong class="text-red">*</strong> ' + this.$t(`no_announcements_on_balance${secondLocaleEnding}`);
           thirdLine = this.$t('contact_for_more_info', { 
             phone: (isSalon || isShop) ? '(055) 222-13-05' : '*8787', 
