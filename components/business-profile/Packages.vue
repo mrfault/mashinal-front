@@ -256,7 +256,7 @@ export default {
   },
   created() {
     this.selected = this.salonPackages[0].id;
-    this.getSalonAnnouncements();
+    if (this.hasSalon) this.getSalonAnnouncements();
   },
   mounted() {
     this.$nuxt.$on('after-login', this.handleAfterLogin);
