@@ -43,6 +43,9 @@
         }
         img {
           margin-left: 9px;
+          &:nth-of-type(2) {
+            margin-left: 0;
+          }
         }
       }
     }
@@ -240,6 +243,24 @@
   position: relative;
   margin: -25px -25px 18px;
   padding-bottom: 55px;
+  .socials {
+    display: flex;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      border-radius: 4px;
+      width: 40px;
+      height: 40px;
+      color: $dark-blue-2;
+      background-color: $white;
+      margin-left: 20px;
+    }
+  }
   .cover {
     width: 100%;
     height: 0;
@@ -278,6 +299,11 @@
 }
 
 .dark-mode {
+  .cover-with-avatar {
+    .avatar {
+      border-color: $dark-2;
+    }
+  }
   .profile-card {
     .avatar {
       background-color: $dark-3;
@@ -320,6 +346,16 @@
         &-details {
           border-bottom: 0;
           padding-bottom: 10px;
+          span {
+            display: flex;
+            flex-direction: column;
+          }
+          span a {
+            &:not(:first-child) {
+              margin-left: 0;
+              margin-top: 5px;
+            }
+          }
         }
       }
       &_top {
@@ -472,6 +508,17 @@
       left: 25px;
       padding: 6px 15px;
       border-radius: 4px;
+    }
+    .edit-link {
+      top: auto;
+      bottom: 0;
+    }
+    .socials {
+      a {
+        width: 30px;
+        height: 30px;
+        font-size: 16px;
+      }
     }
   }
 

@@ -1897,7 +1897,7 @@ export default {
   "other_announcements_of_user": "İstifadəçinin digər elanları",
   "business_profile_payment": "Biznes profili üçün ödəniş",
   "business_profile_payment_info": "Ödəniş etdiyiniz təqdirdə, profiliniz avtomatik olaraq biznes profili ilə əvəz olunacaq.",
-  "wp_write_us": "Whatsapp-dan yaz",
+  "wp_write_us": "Whatsapp/Telegram-dan yaz",
   "to_change_package": "Paketi dəyiş",
   "faq": "Tez-tez verilən suallar",
   "you_should_deactivate_announcements": "Sizin {package1} paketiniz aktivdir. {package2} paketə keçid etmək üçün elanlarınızın sayını maksimum {n}-a endirməlisiniz.<br/>Davam etmək üçün deaktiv etmək istədiyiniz elanları seçin."

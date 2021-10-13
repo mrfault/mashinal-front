@@ -4,8 +4,8 @@ export default function ({ app, $auth, store, redirect }) {
     moto: 0,
     commercial: 0,
     parts: 0,
-    parts_unlimited: $auth.loggedIn ? $auth.user?.part_salon.is_unlimited : store.state.sellTokens.parts_unlimited,
-    salon_unlimited: $auth.loggedIn ? $auth.user?.autosalon.is_unlimited : store.state.sellTokens.salon_unlimited
+    parts_unlimited: $auth.loggedIn ? $auth.user?.part_salon?.is_unlimited : store.state.sellTokens.parts_unlimited,
+    salon_unlimited: $auth.loggedIn ? $auth.user?.autosalon?.is_unlimited : store.state.sellTokens.salon_unlimited
   }
 
   for (let type of ['cars','moto','commercial','parts']) {

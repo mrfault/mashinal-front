@@ -5,6 +5,11 @@
         <div class="cover" :style="{backgroundImage: `url('${getCover(salonSingle.cover, salonSingle.type_id)}')`}">
           <img class="avatar" :src="getLogo(salonSingle.logo)" :alt="salonSingle.name || salonSingle.user.full_name" />
           <span class="badge">SHOP</span>
+          <div class="socials" @click.stop>
+            <a v-for="social in ['facebook','instagram']" :key="social" :href="salonSingle[social]" rel="noopener" target="_blank">
+              <icon :name="social" />
+            </a>
+          </div>
         </div>
         <nuxt-link class="edit-link" :to="$localePath(`/dashboard/${salonSingle.type_id}/settings`)" @click.native="setPageRef($route.path)" v-if="salonIsOwner(salonSingle)">
           <icon name="edit" />
@@ -24,6 +29,7 @@
           <div class="col-lg-3 mb-2" v-if="!isMobileBreakpoint">
             <div class="profile_info-details">
               <img src="/icons/whatsapp-circle.svg" alt="" />
+              <img src="/icons/telegram-circle.svg" alt="" />
               <span>{{ $t('wp_write_us') }}</span>
             </div>
           </div>

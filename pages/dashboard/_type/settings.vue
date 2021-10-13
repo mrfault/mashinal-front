@@ -15,13 +15,19 @@
               <p class="text-center">100x100px</p>
             </div>
             <div class="avatar_edit col-auto mb-2 cover" id="anchor-cover">
-              <form-image v-model="form.cover" :initial-image="getSalonImg('cover-'+mySalon.type_id)" />
+              <form-image v-model="form.cover" :initial-image="getSalonImg('cover')" />
               <p class="text-center">1200x300px</p>
             </div>
           </div>
           <div class="row">
             <div class="col-lg-4 mb-2 mb-lg-3">
-              <form-text-input :maxlength="30" :placeholder="$t('name')" v-model="form.name" />
+              <form-text-input 
+                :maxlength="30" 
+                :placeholder="$t('name')" 
+                v-model="form.name" 
+                :invalid="isInvalid('name')" 
+                @change="removeError('name')" 
+              />
             </div>
             <div class="col-lg-4 mb-2 mb-lg-3" v-for="i in 2" :key="i" id="anchor-phones">
               <form-text-input v-if="i === 1 || typeof form.phones[i - 1] === 'string'"
@@ -109,6 +115,12 @@
               <form-textarea :maxlength="1000" :placeholder="$t('general_information')" v-model="form.description" 
                 @change="removeError('description')" :invalid="isInvalid('description')" />
             </div>
+            <div class="col-lg-6 mb-2 mb-lg-3" id="anchor-facebook">
+              <form-text-input type="url" placeholder="Facebook URL" icon-name="facebook" v-model="form.facebook" />
+            </div>
+            <div class="col-lg-6 mb-2 mb-lg-3" id="anchor-instagram">
+              <form-text-input type="url" placeholder="Instagram URL" icon-name="instagram" v-model="form.instagram" />
+            </div>
             <div class="col-lg-12" id="anchor-saved_gallery">
               <form-gallery
                 itemClass="col-4 col-lg-1-8 mb-lg-3 mb-2"
@@ -181,7 +193,9 @@
           short_description: salon.short_description || '',
           description: salon.description || '',
           logo: null,
-          cover: null
+          cover: null,
+          facebook: salon.facebook || '',
+          instagram: salon.instagram || ''
         },
         files: []
       }
@@ -231,6 +245,13 @@
           .filter(p => p && p.replace(/[\+\-\(\)]|[ ]|[\_]/g,'').length === 12);
         if (!this.form.phones.length)
           this.$set(this.form.phones, 0, '');
+
+        ['facebook','instagram'].map(key => {
+          if (!this.form[key].match(new RegExp(/^(https?|chrome):\/\/[^\s$.?#].[^\s]*$/))) {
+            this.form[key] = '';
+          }
+        })
+
         // prepare data to send
         let formData = new FormData();
         for (let key in this.form) {
@@ -297,7 +318,7 @@
       },
 
       getSalonImg(key) {
-        return this.mySalon[key] ? this.$withBaseUrl(this.mySalon[key]) : `/img/salon-${key}-${this.colorMode}.jpg`;
+        return this.mySalon[key] ? this.$withBaseUrl(this.mySalon[key]) : `/img/salon-${key === 'cover' ? `${key}-${this.mySalon.type_id}` : key}-${this.colorMode}.jpg`;
       },
       getDayOption(i) {
         i = parseInt(i);
