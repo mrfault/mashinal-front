@@ -162,10 +162,10 @@
         if (hasTransportTokens || hasPartsTokens) {
           firstLine = this.$t(`you_can_create_announcement${firstLocaleEnding}`, { 
             phone: phone.replace('+994 (', '(0'),
-            plural: this.$readPlural(transportTokens || '∞', this.$t('plural_forms_announcements'), false),
-            plural_parts: this.$readPlural(partTokens || '∞', this.$t('plural_forms_announcements'), false),
-            left: transportTokens || '∞', 
-            left_parts: partTokens || '∞'
+            plural: this.$readPlural(transportTokens || 1000, this.$t('plural_forms_announcements'), false),
+            plural_parts: this.$readPlural(partTokens || 1000, this.$t('plural_forms_announcements'), false),
+            left: transportTokens || this.$t('unlimited_count'), 
+            left_parts: partTokens || this.$t('unlimited_count'),
           });
         }
 

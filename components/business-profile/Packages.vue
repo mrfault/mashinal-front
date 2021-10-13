@@ -192,6 +192,10 @@ export default {
           });
         }
         if (this.downgradePlan) {
+          await Promise.all([
+            this.$nuxt.refresh(),
+            this.$auth.fetchUser()
+          ]);
           this.pending = false;
           this.updatePaidStatus({ 
             type: 'success', 

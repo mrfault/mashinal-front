@@ -1886,6 +1886,7 @@ export default {
   "announcement_count": "Количество объявлений",
   "pay_online": "Оплатить",
   "limitless": "Безлимитный",
+  "unlimited_count": "неограниченное количество",
   "pro": "Pro",
   "platinium": "Платиновый",
   "gold": "Золотой",

@@ -1885,6 +1885,7 @@ export default {
   "announcement_count": "Elan sayı",
   "pay_online": "Onlayn ödə",
   "limitless": "Limitsiz",
+  "unlimited_count": "limitsiz",
   "pro": "Pro",
   "platinium": "Platinium",
   "gold": "Qızıl",
