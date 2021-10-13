@@ -4,7 +4,7 @@ const getInitialState = () => ({
   profileType: 'salon',
   packages: [],
   faq: [],
-  salonAnnouncements: []
+  salonAnnouncements: {}
 });
 
 export const state = () => getInitialState();

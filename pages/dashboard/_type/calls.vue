@@ -31,7 +31,7 @@
     },
     nuxtI18n: {
       paths: {
-        az: '/idareetme-paneli/:id/zeng-sayi'
+        az: '/idareetme-paneli/:type/zeng-sayi'
       }
     },
     head() {

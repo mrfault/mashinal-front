@@ -457,6 +457,18 @@
   }
 }
 
+.announcements-popup {
+  width: 1000px;
+  p > span {
+    font-weight: 500;
+  }
+  .row {
+    p {
+      margin-bottom: 0;
+    }
+  }
+}
+
 .dark-mode {
   .pages-business-profile {
     .business-profile {

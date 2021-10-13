@@ -13,7 +13,10 @@
                 </ul>
                 <div class="statistics-sell-tokens_bar">
                   <span class="bar-filled" :style="{width:`calc(${100*(announcementStats.left/announcementStats.possible)}% + 15px)`}" v-if="announcementStats.left">{{ announcementStats.left }}</span>
-                  <span class="bar-empty" :style="{width:`calc(${100*(announcementStats.used/announcementStats.possible)}% - 15px)`}" v-if="announcementStats.used">{{ announcementStats.used }}</span>
+                  <span :class="salonDetails.unlimited ? 'bar-filled' : 'bar-empty'" :style="{width:`calc(${100*(announcementStats.used/announcementStats.possible)}% - 15px)`}" v-if="announcementStats.used">
+                    <template v-if="salonDetails.unlimited">∞</template>
+                    <template v-else>{{ announcementStats.used }}</template>
+                  </span>
                 </div>
               </div>
             </template>
@@ -130,7 +133,7 @@
     },  
     nuxtI18n: {
       paths: {
-        az: '/idareetme-paneli/:id'
+        az: '/idareetme-paneli/:type'
       }
     },
     head() {
@@ -169,7 +172,8 @@
         return {
           short_description: this.user[isShop ? 'part_salon' : 'autosalon'].short_description || '',
           name: this.user[isShop ? 'part_salon' : 'autosalon'].name || this.user.full_name,
-          balance: this.user.balance + this.user[isShop ? 'part_salon' : 'autosalon'].balance
+          balance: this.user.balance + this.user[isShop ? 'part_salon' : 'autosalon'].balance,
+          unlimited: this.user[isShop ? 'part_salon' : 'autosalon'].current_package.unlimited
         }
       },
 

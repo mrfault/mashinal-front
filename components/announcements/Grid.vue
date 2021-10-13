@@ -39,6 +39,8 @@
                 :show-checkbox="showCheckbox" 
                 :show-status="showStatus"
                 :show-phone-count="showPhoneCount"
+                :show-overlay="showOverlay"
+                :clickable="clickable"
                 :track-views="trackViews"
               />
             </div>
@@ -100,7 +102,15 @@ export default {
     bannerCount: Number,
     bannerFor: String,
     bannerLink: String,
-    where: String
+    where: String,
+    showOverlay: {
+      type: Boolean,
+      default: true
+    },
+    clickable: {
+      type: Boolean,
+      default: true
+    }
   },
   components: {
     GridItem

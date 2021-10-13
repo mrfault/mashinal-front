@@ -38,7 +38,7 @@
     </form>
     <modal-popup 
       :toggle="showModal" 
-      :title="`${$t('package')} - <span style='${selectedPackage.color ? ('color: ' + selectedPackage.color) : ''}'>${selectedPackage.name[locale]}</span>`"
+      :title="`${$t('package')} - ${getPackageName(selectedPackage)}`"
       @close="showModal = false"
     >
       <p class="mb-2 mb-lg-3">{{ $t('business_profile_payment_info') }}</p>
@@ -80,6 +80,40 @@
         </div>
       </div>
     </modal-popup>
+    <modal-popup
+      :toggle="showMyAnnouncements"
+      :title="`${$t('package')} - ${getPackageName(selectedPackage)}`"
+      @close="showMyAnnouncements = false, deselectAnnouncements()"
+      :modal-class="'announcements-popup' + (isMobileBreakpoint ? ' larger' : '')"
+    >
+      <p v-html="$t('you_should_deactivate_announcements', { 
+        package1: getPackageName(user.autosalon.current_package), 
+        package2: getPackageName(selectedPackage),
+        n: selectedPackage.announce_count
+      })" v-if="user.autosalon"></p>
+      <grid 
+        :announcements="salonAnnouncements.items" 
+        :show-title="false"
+        :show-phone-count="true"
+        :show-checkbox="true"
+        :show-overlay="false"
+        :clickable="false"
+      />
+      <div class="modal-sticky-bottom">
+        <hr/>
+        <div class="row">
+          <div class="col-6 col-lg-1-5">
+            <div class="form-info text-red">{{ $t('from_possible_left') }}: {{ leftToDeactivate }}</div>
+          </div>
+          <div class="col-12 col-lg-3-5"></div>
+          <div class="col-6 col-lg-1-5 mt-2 mt-lg-0">
+            <button :class="['btn btn--green full-width', { pending, disabled: leftToDeactivate !== 0 }]" @click="deactivateAnouncement">
+              {{ $t('confirm') }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </modal-popup>
   </div>
 </template>
 
@@ -88,14 +122,21 @@ import { mapGetters, mapActions } from 'vuex';
 
 import { PaymentMixin } from '~/mixins/payment';
 
+import Grid from '~/components/announcements/Grid';
+
 export default {
   mixins: [PaymentMixin],
+  components: {
+    Grid
+  },
   data() {
     return {
       pending: false,
       selected: '',
       showModal: false,
-      showTerminalInfo: false
+      showTerminalInfo: false,
+      showMyAnnouncements: false,
+      selectedAnnouncements: []
     }
   },
   computed: {
@@ -109,18 +150,24 @@ export default {
     },
     downgradePlan() {
       if (!this.hasSalon) return false;
-      return parseFloat(this.selectedPackage.price) < parseFloat(this.user.autosalon.package_price);
+      return parseFloat(this.selectedPackage.price) < parseFloat(this.user.autosalon.current_package.price);
     },
     selectedPackage() {
       return this.salonPackages.find(p => p.id === this.selected);
     },
     hasSalon() {
       return this.loggedIn && this.user.autosalon;
+    },
+    leftToDeactivate() {
+      if (!this.user.autosalon || !this.downgradePlan) return 0;
+      let left = this.user.autosalon.current_package.announce_count - this.user.announce_left_car - this.selectedPackage.announce_count - this.selectedAnnouncements.length;
+      return left < 0 ? 0 : left;
     }
   },
   methods: {
     ...mapActions({
-      getSalonAnnouncements: 'packages/getAnnouncements'
+      getSalonAnnouncements: 'packages/getSalonAnnouncements',
+      deactivateMyAnnounement: 'deactivateMyAnnounement'
     }),
     async submit() {
       if (!this.loggedIn) this.$nuxt.$emit('login-popup', 'salon-package');
@@ -170,11 +217,42 @@ export default {
         }
       } catch (err) {
         this.pending = false;
+        // give salon opportunity to deactivate announcements
+        if (err.response.status === 433) {
+          this.showMyAnnouncements = true;
+        }
       }
     },
     handleAfterLogin(key) {
       if (key === 'salon-package') this.showModal = true;
-    }
+    },
+    getPackageName(item) {
+      return `<span style='${item.color ? ('color: ' + item.color) : ''}'>${item.name?.[this.locale]}</span>`;
+    },
+    selectAnnouncement(id, value, controls = false) {
+      if (!controls) return;
+      
+      this.$set(this, 'selectedAnnouncements', value 
+        ? (this.selectedAnnouncements.includes(id) ? [...this.selectedAnnouncements] : [...this.selectedAnnouncements, id]) 
+        : this.selectedAnnouncements.filter(selected_id => selected_id != id)
+      );
+    },
+    deselectAnnouncements() {
+      this.$set(this, 'selectedAnnouncements', []);
+    },
+    async deactivateAnouncement() {
+      if (this.pending) return;
+      this.pending = true;
+      try {
+        await Promise.all(this.selectedAnnouncements.map(this.deactivateMyAnnounement));
+        await this.$nuxt.refresh();
+        this.pending = false;
+        this.showMyAnnouncements = false;
+        await this.getBusinessProfile();
+      } catch (err) {
+        this.pending = false;
+      }
+    },
   },
   created() {
     this.selected = this.salonPackages[0].id;
@@ -182,6 +260,7 @@ export default {
   },
   mounted() {
     this.$nuxt.$on('after-login', this.handleAfterLogin);
+    this.$nuxt.$on('select-announcement', this.selectAnnouncement);
 
     this.$nextTick(() => {
       if (this.$route.query.scrollto) {
@@ -195,6 +274,7 @@ export default {
   },
   beforeDestroy() {
     this.$nuxt.$off('after-login', this.handleAfterLogin);
+    this.$nuxt.$off('select-announcement', this.selectAnnouncement);
   }
 }
 </script>

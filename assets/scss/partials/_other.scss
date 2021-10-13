@@ -256,6 +256,13 @@
         }
       }
     }
+    .announcements-grid_item {
+      cursor: default;
+      border: 1px solid $greyish-blue-3;
+      &:hover {
+        box-shadow: none;
+      }
+    }
   }
   &.larger {
     width: 590px;
@@ -277,6 +284,7 @@
 
 .modal-sticky-bottom {
   position: sticky;
+  z-index: 1;
   bottom: 0;
   left: 0;
   background-color: $white;

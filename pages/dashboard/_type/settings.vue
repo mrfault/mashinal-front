@@ -145,7 +145,7 @@
     middleware: ['auth_general','auth_salon'],
     nuxtI18n: {
       paths: {
-        az: '/idareetme-paneli/:id/parametrler'
+        az: '/idareetme-paneli/:type/parametrler'
       }
     },
     head() {
@@ -297,7 +297,7 @@
       },
 
       getSalonImg(key) {
-        return this.mySalon[key] ? this.$withBaseUrl(this.mySalon[key]) : `/img/salon-${key}.jpg`;
+        return this.mySalon[key] ? this.$withBaseUrl(this.mySalon[key]) : `/img/salon-${key}-${this.colorMode}.jpg`;
       },
       getDayOption(i) {
         i = parseInt(i);

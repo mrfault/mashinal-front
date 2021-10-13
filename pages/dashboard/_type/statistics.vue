@@ -44,7 +44,7 @@
     },
     nuxtI18n: {
       paths: {
-        az: '/idareetme-paneli/:id/statistika'
+        az: '/idareetme-paneli/:type/statistika'
       }
     },
     head() {
