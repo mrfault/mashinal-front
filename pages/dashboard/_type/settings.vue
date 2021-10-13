@@ -5,7 +5,7 @@
       <component 
         :is="isMobileBreakpoint ? 'mobile-screen' : 'div'" 
         :bar-title="$t('user_information_edit')" 
-        @back="$router.push(pageRef || $localePath('/dashboard/'+$route.params.id))" 
+        @back="$router.push(pageRef || $localePath('/dashboard/'+$route.params.type))" 
         height-auto
       >
         <div class="card profile-settings-card">
@@ -156,7 +156,7 @@
     async asyncData({ store, route, app }) {
       await Promise.all([
         store.dispatch('getOptions'),
-        store.dispatch('getMySalon', { id: app.$getDashboardId(route.params.id) })
+        store.dispatch('getMySalon', { id: app.$getDashboardId(route.params.type) })
       ]);
 
       let salon = store.getters.mySalon;
@@ -191,7 +191,7 @@
 
       crumbs() {
         return [
-          { name: this.$t('dashboard'), route: '/dashboard/' + this.$route.params.id },
+          { name: this.$t('dashboard'), route: '/dashboard/' + this.$route.params.type },
           { name: this.$t('user_information_edit') }
         ]
       },
@@ -272,9 +272,9 @@
 
         // update autosalon info
         try {
-          await this.updateMySalon({ id: this.$getDashboardId(this.$route.params.id), form: formData});
+          await this.updateMySalon({ id: this.$getDashboardId(this.$route.params.type), form: formData});
           await Promise.all([
-            this.getMySalon({ id: this.$getDashboardId(this.$route.params.id) }),
+            this.getMySalon({ id: this.$getDashboardId(this.$route.params.type) }),
             this.$auth.fetchUser()
           ]);
           this.$toasted.success(this.$t('saved_changes'));

@@ -30,7 +30,7 @@
                 <li :class="{'text-red': notreadMsgCount > 0}">{{ $t('notread_messages') }}: {{ notreadMsgCount }}</li>
               </ul>
             </template>
-            <template v-else-if="card.key === 'autosalon'">
+            <template v-else-if="card.key === 'salon'">
               <h4>{{ salonDetails.name }}</h4>
               <p>{{ salonDetails.short_description || '' }}</p>
             </template>
@@ -65,7 +65,7 @@
               <a class="text-green" href="javascript:void(0);" @click="showExtendContract = true" v-else-if="card.key === 'contract' && shouldExtendContract">
                 {{ $t('pay') }}
               </a>
-              <nuxt-link class="text-green" :to="$localePath('/business-profile') + '?scrollto=packages'" v-else-if="card.key === 'contract' && $route.params.id == 1">
+              <nuxt-link class="text-green" :to="$localePath('/business-profile') + '?scrollto=packages'" v-else-if="card.key === 'contract' && $route.params.type == 1">
                 {{ $t('to_change_package') }}
               </nuxt-link>
             </template>
@@ -139,10 +139,10 @@
       });
     },
     async asyncData({store, route, app}) {
-      store.dispatch('packages/setProfileType', route.params.id == 2 ? 'parts' : 'autosalon');
+      store.dispatch('packages/setProfileType', route.params.type == 2 ? 'parts' : 'salon');
       await Promise.all([
-        store.dispatch('getAnnouncementStats', app.$getDashboardId(route.params.id)),
-        store.dispatch('getPackageStats', app.$getDashboardId(route.params.id))
+        store.dispatch('getAnnouncementStats', app.$getDashboardId(route.params.type)),
+        store.dispatch('getPackageStats', app.$getDashboardId(route.params.type))
       ]); 
 
       return {
@@ -164,7 +164,7 @@
       }, 
 
       salonDetails() {
-        let id = this.$getDashboardId(this.$route.params.id);
+        let id = this.$getDashboardId(this.$route.params.type);
         let isShop = id == this.user.part_salon?.id;
         return {
           short_description: this.user[isShop ? 'part_salon' : 'autosalon'].short_description || '',
@@ -174,14 +174,14 @@
       },
 
       cards() {
-        let id = this.$route.params.id;
+        let id = this.$route.params.type;
         return [
           { key: 'announcements', title: 'my_announces', route: '/profile/announcements', icon: 'photo' },
           { key: 'balance', title: 'balans', route: '/profile/balance', icon: 'wallet' },
           { key: 'statistics', title: 'statistics', route: '/dashboard/' + id + '/statistics', icon: 'analytics' },
           { key: 'messages', title: 'messages', route: '/profile/messages', icon: 'chat' },
           { key: 'calls', title: 'phone_call_count', route: '/dashboard/' + id + '/calls', icon: 'phone' },
-          { key: 'autosalon', title: 'my_profile', route: '/dashboard/' + id + '/settings', icon: 'user' },
+          { key: 'salon', title: 'my_profile', route: '/dashboard/' + id + '/settings', icon: 'user' },
           { key: 'contract', title: 'contract', route: '/business-profile', icon: 'calendar-1' }
         ].map(link => ({ ...link,
           title: this.$t(link.title), 
@@ -210,7 +210,7 @@
         this.pending = true;
         try {
           const res = await this.$axios.$post(`/payment/renew-package?is_mobile=${this.isMobileBreakpoint}`, {
-            autosalon_id: this.$getDashboardId(this.$route.params.id),
+            autosalon_id: this.$getDashboardId(this.$route.params.type),
             type: this.paymentMethod
           });
           if (this.paymentMethod === 'card') {

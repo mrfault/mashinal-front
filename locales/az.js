@@ -748,7 +748,6 @@ export default {
   "injector": "İnjektor",
   "inspection_info": "Nəqliyyat vasitəsinin texniki baxışı haqqında məlumat",
   "insurance_info": "İcbari Sığorta hadisələri haqqında məlumat",
-  "is_autosalon": "Salon",
   "is_in_credit": "Kreditdədir",
   "is_main": "Əsas",
   "is_new": "Yeni",

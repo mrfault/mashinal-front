@@ -84,7 +84,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 import { PaymentMixin } from '~/mixins/payment';
 
@@ -100,7 +100,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      salonPackages: 'packages/salonPackages'
+      salonPackages: 'packages/salonPackages',
+      salonAnnouncements: 'packages/salonAnnouncements'
     }),
     haveBalanceForPlan() {
       if (!this.selected || !this.loggedIn) return false;
@@ -118,6 +119,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      getSalonAnnouncements: 'packages/getAnnouncements'
+    }),
     async submit() {
       if (!this.loggedIn) this.$nuxt.$emit('login-popup', 'salon-package');
       else if (!this.downgradePlan) this.showModal = true;
@@ -174,6 +178,7 @@ export default {
   },
   created() {
     this.selected = this.salonPackages[0].id;
+    this.getSalonAnnouncements();
   },
   mounted() {
     this.$nuxt.$on('after-login', this.handleAfterLogin);

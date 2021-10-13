@@ -95,7 +95,7 @@ export default {
     },
     profileTypes() {
       return [
-        { key: 'autosalon', name: this.$t('is_autosalon') },
+        { key: 'salon', name: this.$t('salon') },
         { key: 'parts', name: this.$t('parts') }
       ];
     },
@@ -107,7 +107,7 @@ export default {
         this.$store.dispatch('packages/setProfileType', value);
       }
     },
-    isAutosalon() { return this.profileType === 'autosalon' },
+    isAutosalon() { return this.profileType === 'salon' },
     isParts() { return this.profileType === 'parts' }
   }
 }

@@ -24,7 +24,7 @@ export default {
   },
   head() {
     return this.$headMeta({
-      title: `${this.$t('is_autosalon')} "${this.salonSingle.name || this.salonSingle.user.full_name}" | ${this.$t('salons')}`,
+      title: `${this.$t('salon')} "${this.salonSingle.name || this.salonSingle.user.full_name}" | ${this.$t('salons')}`,
       description: this.salonSingle.short_description
     });
   },

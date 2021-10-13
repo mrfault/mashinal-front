@@ -54,8 +54,8 @@
     },
     async asyncData({store, route, app}) {
       await Promise.all([
-        store.dispatch('getAnnouncementStats', app.$getDashboardId(route.params.id)),
-        store.dispatch('getPackageStats', app.$getDashboardId(route.params.id))
+        store.dispatch('getAnnouncementStats', app.$getDashboardId(route.params.type)),
+        store.dispatch('getPackageStats', app.$getDashboardId(route.params.type))
       ]); 
     },
     computed: {
@@ -63,7 +63,7 @@
 
       crumbs() {
         return [
-          { name: this.$t('dashboard'), route: '/dashboard/' + this.$route.params.id },
+          { name: this.$t('dashboard'), route: '/dashboard/' + this.$route.params.type },
           { name: this.$t('statistics') }
         ]
       }

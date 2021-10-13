@@ -40,7 +40,7 @@
       });
     },
     async asyncData({store, route}) {
-      await store.dispatch('getAnnouncementCalls', { id: this.$getDashboardId(route.params.id)});
+      await store.dispatch('getAnnouncementCalls', { id: this.$getDashboardId(route.params.type)});
 
       return {
         pending: false
@@ -51,7 +51,7 @@
 
       crumbs() {
         return [
-          { name: this.$t('dashboard'), route: '/dashboard/' + this.$route.params.id },
+          { name: this.$t('dashboard'), route: '/dashboard/' + this.$route.params.type },
           { name: this.$t('phone_call_count') }
         ]
       }
@@ -62,7 +62,7 @@
       async changePage(page = 1) {
         page = this.$route.query.page || 1;
         this.pending = true;
-        await this.getAnnouncementCalls({ id: this.$getDashboardId(this.$route.params.id), page });
+        await this.getAnnouncementCalls({ id: this.$getDashboardId(this.$route.params.type), page });
         this.pending = false;
         this.scrollTo('.announcements-grid.paginated', [-15, -20]);
       }

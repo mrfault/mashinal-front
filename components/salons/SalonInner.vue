@@ -6,12 +6,12 @@
           <img class="avatar" :src="getLogo(salonSingle.logo)" :alt="salonSingle.name || salonSingle.user.full_name" />
           <span class="badge">SHOP</span>
         </div>
-        <nuxt-link class="edit-link" :to="$localePath('/profile/salon')" @click.native="setPageRef($route.path)" v-if="salonIsOwner(salonSingle)">
+        <nuxt-link class="edit-link" :to="$localePath(`/dashboard/${salonSingle.type_id}/settings`)" @click.native="setPageRef($route.path)" v-if="salonIsOwner(salonSingle)">
           <icon name="edit" />
         </nuxt-link>
       </div>
       <h2 class="title-with-line text-center">
-        <span>{{ $t('is_autosalon') }} "{{ salonSingle.name || salonSingle.user.full_name }}"</span>
+        <span>{{ $t('salon') }} "{{ salonSingle.name || salonSingle.user.full_name }}"</span>
       </h2>
       <div class="row align-items-lg-end profile_info">
         <template v-if="salonSingle.phones && salonSingle.phones.length">
