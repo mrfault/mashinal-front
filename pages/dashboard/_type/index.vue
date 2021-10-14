@@ -173,7 +173,7 @@
           short_description: this.user[isShop ? 'part_salon' : 'autosalon'].short_description || '',
           name: this.user[isShop ? 'part_salon' : 'autosalon'].name || this.user.full_name,
           balance: this.user.balance + this.user[isShop ? 'part_salon' : 'autosalon'].balance,
-          unlimited: this.user[isShop ? 'part_salon' : 'autosalon'].current_package.unlimited
+          unlimited: this.user[isShop ? 'part_salon' : 'autosalon']?.is_unlimited
         }
       },
 

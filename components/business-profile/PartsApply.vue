@@ -122,7 +122,7 @@ export default {
         if (this.paymentMethod === 'card') {
           this.pending = false;
           this.showModal = false;
-          this.handlePayment(res, [this.$localePath('/dashboard/2'), false], this.$t('package_bought'));
+          this.handlePayment(res, [this.$localePath('/dashboard/2/settings'), false], this.$t('package_bought'));
         } else {
           await Promise.all([
             this.$nuxt.refresh(),
@@ -130,10 +130,12 @@ export default {
           ]);
           this.pending = false;
           this.showModal = false;
-          this.updatePaidStatus({ 
-            type: 'success', 
-            text: this.$t('package_bought'), 
-            title: this.$t('success_payment') 
+          this.$router.push(this.$localePath('/dashboard/2/settings'), () => {
+            this.updatePaidStatus({ 
+              type: 'success', 
+              text: this.$t('package_bought'), 
+              title: this.$t('success_payment') 
+            });
           });
         }
       } catch (err) {

@@ -197,10 +197,12 @@ export default {
             this.$auth.fetchUser()
           ]);
           this.pending = false;
-          this.updatePaidStatus({ 
-            type: 'success', 
-            text: this.$t('change_package'), 
-            title: this.$t('success_payment') 
+          this.$router.push(this.$localePath('/dashboard/1'+(this.hasSalon ? '' : '/settings')), () => {
+            this.updatePaidStatus({ 
+              type: 'success', 
+              text: this.$t('change_package'), 
+              title: this.$t('success_payment') 
+            });
           });
         } else if (this.paymentMethod === 'card') {
           this.pending = false;
@@ -213,10 +215,12 @@ export default {
           ]);
           this.pending = false;
           this.showModal = false;
-          this.updatePaidStatus({ 
-            type: 'success', 
-            text: this.$t(this.hasSalon ? 'change_package' : 'package_bought'), 
-            title: this.$t('success_payment') 
+          this.$router.push(this.$localePath('/dashboard/1'+(this.hasSalon ? '' : '/settings')), () => {
+            this.updatePaidStatus({ 
+              type: 'success', 
+              text: this.$t(this.hasSalon ? 'change_package' : 'package_bought'), 
+              title: this.$t('success_payment') 
+            });
           });
         }
       } catch (err) {

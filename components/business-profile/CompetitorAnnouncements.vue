@@ -13,8 +13,8 @@
       <h3 class="section-subtitle">{{ $t('competitor_announcements_desc') }}</h3>
     </div>
     <div class="images">
-      <img :src="`/img/competitor_announcements_1_${colorMode}.svg`" alt="">
-      <img :src="`/img/competitor_announcements_2_${colorMode}.svg`" alt="">
+      <img :src="`/img/business-profile/competitor_announcements_1_${colorMode}.svg`" alt="">
+      <img :src="`/img/business-profile/competitor_announcements_2_${colorMode}.svg`" alt="">
     </div>
   </div>
 </template>

@@ -29,7 +29,7 @@
         </p>
       </div>
       <div class="col-lg-4">
-        <img :src="`/img/advantages_illustration_1_${colorMode}.svg`" alt="">
+        <img :src="`/img/business-profile/advantages_illustration_1_${colorMode}.svg`" alt="">
       </div>
     </div>
   </div>
