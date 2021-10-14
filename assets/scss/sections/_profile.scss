@@ -259,6 +259,12 @@
       color: $dark-blue-2;
       background-color: $white;
       margin-left: 20px;
+      cursor: pointer;
+      transition: .2s ease;
+      &:hover {
+        color: $white;
+        background-color: $dark-blue-2;
+      }
     }
   }
   .cover {

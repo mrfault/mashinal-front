@@ -108,7 +108,7 @@ export default {
       this.$v.$touch();
       if (this.$v.$pending || this.$v.$error) return;
       if (this.loggedIn) this.showModal = true;
-      else this.$nuxt.$emit('login-popup', 'parts-package-' + this.where, this.form);
+      else this.$nuxt.$emit('login-popup', 'parts-package-' + this.where);
     },
     async getBusinessProfile() {
       if (this.pending) return;
