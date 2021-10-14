@@ -20,6 +20,7 @@
           <salon-search-form />
           <salon-filters-form :count="salonsFiltered.length" />
         </template>
+        <banners type="2" class="mt-5" />
         <div class="salon-card-list row mt-2 mt-lg-3 mb-n2 mb-lg-n3" v-if="salonsFiltered.length">
           <div class="col-lg-4 mb-2 mb-lg-3" v-for="salon in salonsFiltered" :key="salon.id">
             <nuxt-link class="keep-colors" :to="$localePath(`/salons/${salon.id}`)">
@@ -96,6 +97,7 @@ import SalonFiltersForm from '~/components/salons/SalonFiltersForm';
 import SalonCard from '~/components/salons/SalonCard';
 import NoResults from '~/components/elements/NoResults';
 import ClusteredMap from '~/components/elements/ClusteredMap';
+import Banners from '~/components/parts/Banners';
 
 export default {
   name: 'pages-salons',
@@ -104,7 +106,8 @@ export default {
     SalonFiltersForm,
     SalonCard,
     NoResults,
-    ClusteredMap
+    ClusteredMap,
+    Banners
   },
   nuxtI18n: {
     paths: {

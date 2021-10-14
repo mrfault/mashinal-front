@@ -39,8 +39,16 @@
     <modal-popup 
       :toggle="showModal" 
       :title="`${$t('package')} - ${getPackageName(selectedPackage)}`"
-      @close="showModal = false"
+      @close="showModal = false, $v.$reset()"
     >
+      <form-text-input 
+        v-if="!hasSalon"
+        :maxlength="30"
+        :placeholder="$t('shop_name')" 
+        :invalid="$v.form.name.$error" 
+        v-model="form.name"
+        class="mb-2 mb-lg-3" 
+      />
       <p class="mb-2 mb-lg-3">{{ $t('business_profile_payment_info') }}</p>
       <h4 class="mb-2">{{ $t('payment_method') }}</h4>
       <form-buttons v-model="paymentMethod" :options="paymentMethodOptions" :group-by="2" />
@@ -122,6 +130,8 @@ import { mapGetters, mapActions } from 'vuex';
 
 import { PaymentMixin } from '~/mixins/payment';
 
+import { required } from 'vuelidate/lib/validators';
+
 import Grid from '~/components/announcements/Grid';
 
 export default {
@@ -136,7 +146,16 @@ export default {
       showModal: false,
       showTerminalInfo: false,
       showMyAnnouncements: false,
-      selectedAnnouncements: []
+      selectedAnnouncements: [],
+      hasSalon: !!this.$store.state.user?.autosalon,
+      form: {
+        name: ''
+      }
+    }
+  },
+  validations: {
+    form: { 
+      name: { required }
     }
   },
   computed: {
@@ -154,9 +173,6 @@ export default {
     },
     selectedPackage() {
       return this.salonPackages.find(p => p.id === this.selected);
-    },
-    hasSalon() {
-      return this.loggedIn && this.user.autosalon;
     },
     leftToDeactivate() {
       if (!this.user.autosalon || !this.downgradePlan) return 0;
@@ -176,6 +192,10 @@ export default {
     },
     async getBusinessProfile() {
       if (this.pending) return;
+      if (!this.hasSalon) {
+        this.$v.$touch();
+        if (this.$v.$pending || this.$v.$error) return;
+      }
       this.pending = true;
       try {
         let res;
@@ -187,6 +207,7 @@ export default {
           });
         } else {
           res = await this.$axios.$post(`/payment/package?is_mobile=${this.isMobileBreakpoint}`, {
+            name: this.form.name,
             package_id: this.selected,
             type: this.paymentMethod
           });
