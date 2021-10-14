@@ -51,7 +51,7 @@
         }
       }
     }
-    &__competitor_announcements {
+    &__competitor-announcements {
       padding-bottom: 50px;
       @media (max-width: map-get($grid-breakpoints, 'lg')) {
         padding-bottom: 25px;
@@ -62,6 +62,11 @@
         justify-content: center;
         @media (max-width: map-get($grid-breakpoints, 'lg')) {
           flex-direction: column;
+        }
+        @media (min-width: map-get($grid-breakpoints, 'lg')) {
+          img {
+            width: 468px;
+          }
         }
       }
     }
@@ -74,12 +79,14 @@
         display: flex;
         flex-wrap: wrap;
         justify-content: space-between;
+        gap: 20px;
         img {
           user-select: none;
-          margin-bottom: 20px;
-          width: calc(100% - 3 * 20px) / 4;
           @media (max-width: map-get($grid-breakpoints, 'lg')) {
             width: 100%;
+          }
+          @media (min-width: map-get($grid-breakpoints, 'lg')) {
+            width: calc((100% - (3 * 20px)) / 4);
           }
         }
       }

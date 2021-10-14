@@ -35,7 +35,7 @@
         <img src="/img/business-profile/additional_features_illustration_3.svg" alt="" class="illustration-3">
       </div>
       <div class="col-12 col-lg-6 mt-4 mt-lg-0">
-        <img :src="`/img/business-profile/${profileType}_additional_features_3_${colorMode}_${isMobileBreakpoint ? 'mobile' : 'desktop'}.svg`" alt="">
+        <img :src="`/img/business-profile/${profileType}_additional_features_3_${colorMode}_${isMobileBreakpoint ? 'mobile' : 'desktop'}.png`" alt="">
       </div>
     </div>
     <hr class="m-0"/>
