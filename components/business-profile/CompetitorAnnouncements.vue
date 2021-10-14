@@ -1,13 +1,7 @@
 <template>
   <div class="business-profile__competitor-announcements">
     <div :class="{'text-center': !isMobileBreakpoint}">
-      <h2
-        :class="{
-          'section-title': true,
-          'heading-dots': true,
-          'heading-dots--left': isMobileBreakpoint
-        }"
-      >
+      <h2 :class="['section-title','heading-dots',{'heading-dots--left': isMobileBreakpoint}]">
         {{ $t('competitor_announcements_title') }}
       </h2>
       <h3 class="section-subtitle">{{ $t('competitor_announcements_desc') }}</h3>

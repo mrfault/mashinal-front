@@ -22,7 +22,7 @@
           <div class="package__details">
             <p class="mx-0 mt-1 text-with-check">
               <icon name="check" :style="item.color ? ('color: ' + item.color) : ''" />
-              {{ $t('announcement_count') }} - {{ item.unlimited ? $t('Limitsiz') : item.announce_count }}
+              {{ $t('announcement_count') }} - {{ item.unlimited ? $t('limitless') : item.announce_count }}
             </p>
             <p class="mx-0 mt-1 text-with-check">
               <icon name="check" :style="item.color ? ('color: ' + item.color) : ''" />
@@ -149,7 +149,7 @@ export default {
       selectedAnnouncements: [],
       hasSalon: !!this.$store.state.auth.user?.autosalon,
       form: {
-        name: ''
+        name: this.$store.state.auth.user?.part_salon?.name || ''
       }
     }
   },
@@ -262,7 +262,11 @@ export default {
       }
     },
     handleAfterLogin(key) {
-      if (key === 'salon-package') this.showModal = true;
+      if (key === 'salon-package') {
+        this.hasSalon = !!this.user?.autosalon;
+        this.form.name = this.user.part_salon?.name || '';
+        this.showModal = true;
+      }
     },
     getPackageName(item) {
       return `<span style='${item.color ? ('color: ' + item.color) : ''}'>${item.name?.[this.locale]}</span>`;

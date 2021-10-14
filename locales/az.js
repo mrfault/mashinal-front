@@ -1890,7 +1890,7 @@ export default {
   "business_profile_packages": "Biznes profilinin paketləri",
   "announcement_count": "Elan sayı",
   "pay_online": "Onlayn ödə",
-  "limitless": "Limitsiz",
+  "limitless": "limitsiz",
   "unlimited_count": "limitsiz",
   "pro": "Pro",
   "platinium": "Platinium",

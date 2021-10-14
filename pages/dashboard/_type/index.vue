@@ -143,10 +143,7 @@
     },
     async asyncData({store, route, app}) {
       store.dispatch('packages/setProfileType', route.params.type == 2 ? 'parts' : 'salon');
-      await Promise.all([
-        store.dispatch('getAnnouncementStats', app.$getDashboardId(route.params.type)),
-        store.dispatch('getPackageStats', app.$getDashboardId(route.params.type))
-      ]); 
+      await store.dispatch('getAnnouncementStats', app.$getDashboardId(route.params.type)); 
 
       return {
         pending: false,

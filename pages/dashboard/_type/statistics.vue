@@ -53,10 +53,7 @@
       });
     },
     async asyncData({store, route, app}) {
-      await Promise.all([
-        store.dispatch('getAnnouncementStats', app.$getDashboardId(route.params.type)),
-        store.dispatch('getPackageStats', app.$getDashboardId(route.params.type))
-      ]); 
+      await store.dispatch('getAnnouncementStats', app.$getDashboardId(route.params.type)); 
     },
     computed: {
       ...mapGetters([]),
