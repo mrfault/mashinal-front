@@ -38,7 +38,7 @@
               <p>{{ salonDetails.short_description || '' }}</p>
             </template>
             <template v-else-if="card.key === 'contract'">
-              <p class="mt-1">{{ $t('contract_end_time') }}:<br/><strong>{{ announcementStats.contract.end_date }}</strong></p>
+              <p class="mt-1" v-html="`${salonDetails.isShop ? $t('contract_end_time') : $t('package_end_time', { package: salonDetails.packageName })}: <strong>${announcementStats.contract.end_date}</strong>`"></p>
               <h4 class="skip-truncate">
                 <strong :class="shouldExtendContract ? 'text-red' : 'text-green'">
                   {{ announcementStats.contract.left_days }}
@@ -169,11 +169,14 @@
       salonDetails() {
         let id = this.$getDashboardId(this.$route.params.type);
         let isShop = id == this.user.part_salon?.id;
+        let myPackage = this.user.autosalon?.current_package || {};
         return {
+          isShop: isShop,
           short_description: this.user[isShop ? 'part_salon' : 'autosalon'].short_description || '',
           name: this.user[isShop ? 'part_salon' : 'autosalon'].name || this.user.full_name,
           balance: this.user.balance + this.user[isShop ? 'part_salon' : 'autosalon'].balance,
-          unlimited: this.user[isShop ? 'part_salon' : 'autosalon']?.is_unlimited
+          unlimited: this.user[isShop ? 'part_salon' : 'autosalon']?.is_unlimited,
+          packageName: isShop ? '' : `<span style='${myPackage.color ? ('color: ' + myPackage.color) : ''}'>${myPackage.name?.[this.locale]}</span>`
         }
       },
 

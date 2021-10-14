@@ -305,7 +305,7 @@
             }
           }
           &__price {
-            font-size: 30px;
+            font-size: 22px;
             font-weight: 500;
             line-height: 25px;
             color: $dark-blue-2;
@@ -314,8 +314,8 @@
             }
           }
           &__name {
-            margin-top: 14px;
-            font-size: 30px;
+            margin-top: 10px;
+            font-size: 22px;
             font-weight: 500;
             line-height: 25px;
             @media (max-width: map-get($grid-breakpoints, 'lg')) {

@@ -39,8 +39,8 @@
         title: this.$t('phone_call_count')
       });
     },
-    async asyncData({store, route}) {
-      await store.dispatch('getAnnouncementCalls', { id: this.$getDashboardId(route.params.type)});
+    async asyncData({store, route, app}) {
+      await store.dispatch('getAnnouncementCalls', { id: app.$getDashboardId(route.params.type)});
 
       return {
         pending: false

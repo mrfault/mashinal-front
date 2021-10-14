@@ -318,7 +318,7 @@
       min-width: 76px;
       border-radius: 4px;
       color: $white;
-      background-color: rgba($dark-blue-1, .35);
+      background-color: $dark-blue-2;
       padding: 0 14px;
       i {
         font-size: 17px;
@@ -638,8 +638,6 @@
       }
       .badge {
         height: 34px;
-        color: $white;
-        background-color: rgba($dark-blue-1, .35);
         padding: 0 10px;
         i {
           font-size: 15px;

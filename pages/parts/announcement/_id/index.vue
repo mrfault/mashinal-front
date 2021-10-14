@@ -43,7 +43,7 @@
             <quick-info type="parts" />
             <announcement-specs type="parts" />
             <keywords
-              class="mb-lg-3"
+              class="card mb-lg-3"
               :title="$t('keywords')"
               :keywords="announcement.tags"
               label="name"

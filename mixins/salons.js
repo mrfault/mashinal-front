@@ -11,6 +11,7 @@ export const SalonsMixin = {
     },
     getConcatPhones(phones, max = 2, clickable = true, msg = false) {
       return (phones || [])
+        .filter(phone => phone)
         .slice(0, max)
         .map(phone => (phone).replace(/(\d{3})(\d{2})(\d{3})(\d{2})(\d{2})/g, '<a '+(clickable ? ('onclick="event.stopPropagation()" href="tel:+'+phone+'"') : 'href="javascript:void(0);"')+'>+$1 $2 $3 $4 $5' + (msg ? '<img src="/icons/whatsapp-circle.svg" alt="" /><img src="/icons/telegram-circle.svg" alt="" />' : '') + '</a>'))
         .join(msg ? '' : ', ');

@@ -400,6 +400,7 @@ export default {
   "content_component_error_text": "Описание должно содержать минимум 500 символов",
   "contract": "Контракт",
   "contract_end_time": "Срок истечения контракта",
+  "package_end_time": "Срок истечения пакета \"{package}\"",
   "Cooled glove box": "Охлаждаемый перчаточный ящик",
   "copied_to_clipboard": "Скопировано",
   "copy_to_clipboard": "Скопировать",

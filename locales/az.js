@@ -402,6 +402,7 @@ export default {
   "content_component_error_text": "Təsvir minimum 500 simvoldan ibarət olmalıdır",
   "contract": "Müqavilə",
   "contract_end_time": "Müqavilənin bitmə vaxtı",
+  "package_end_time": "\"{package}\" paketin bitmə vaxtı",
   "Cooled glove box": "Soyudulmuş əlcək qutusu",
   "copied_to_clipboard": "Kopyalandı",
   "copy_to_clipboard": "Linki kopyala",
