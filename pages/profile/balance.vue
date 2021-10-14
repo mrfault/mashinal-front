@@ -135,7 +135,7 @@
       },
 
       totalBalance() {
-        return this.user.balance + (this.user.autosalon?.balance || 0) + (this.user.part_salon?.balance || 0);
+        return Math.round((this.user.balance + (this.user.autosalon?.balance || 0) + (this.user.part_salon?.balance || 0)) * 1000) / 1000;
       }
     },
     methods: {    

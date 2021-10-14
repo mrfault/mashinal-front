@@ -1148,6 +1148,11 @@ export default {
     "salon",
     "salon"
   ],
+  "plural_forms_shops": [
+    "mağaza",
+    "mağaza",
+    "mağaza"
+  ],
   "plural_forms_times": [
     "dəfə",
     "dəfə",

@@ -60,7 +60,7 @@
         <div class="row">
           <div class="col-6">
             <p class="text-medium mb-0">{{ $t('total') }}</p>
-            <p class="text-medium text-dark-blue-2 mb-0">{{ selectedPackage.price }} ₼</p>
+            <p class="text-medium text-dark-blue-2 mb-0">{{ calculatedPrice }} ₼</p>
           </div>
           <div class="col-6">
             <button :class="['btn btn--green full-width', { pending }]" @click="getBusinessProfile">
@@ -147,7 +147,7 @@ export default {
       showTerminalInfo: false,
       showMyAnnouncements: false,
       selectedAnnouncements: [],
-      hasSalon: !!this.$store.state.user?.autosalon,
+      hasSalon: !!this.$store.state.auth.user?.autosalon,
       form: {
         name: ''
       }
@@ -163,9 +163,18 @@ export default {
       salonPackages: 'packages/salonPackages',
       salonAnnouncements: 'packages/salonAnnouncements'
     }),
+    priceDifference() {
+      if (!this.hasSalon || this.downgradePlan) return 0;
+      let diff = parseFloat(this.selectedPackage.price) - parseFloat(this.user.autosalon.current_package.price);
+      return diff > 0 ? diff : 0;
+    },
+    calculatedPrice() {
+      if (!this.selectedPackage) return 0;
+      return Math.round((this.priceDifference || parseFloat(this.selectedPackage.price))*1000)/1000;
+    },
     haveBalanceForPlan() {
       if (!this.selected || !this.loggedIn) return false;
-      return parseFloat(this.selectedPackage.price) <= this.user.balance;
+      return this.calculatedPrice <= this.user.balance;
     },
     downgradePlan() {
       if (!this.hasSalon) return false;

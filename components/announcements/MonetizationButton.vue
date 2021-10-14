@@ -97,7 +97,7 @@ export default {
       let balance = this.user.balance;
       if (this.announcement.is_autosalon) balance += this.announcement.user.autosalon.balance;
       else if (this.announcement.is_part_salon) balance += this.announcement.user.part_salon.balance; 
-      return balance;
+      return Math.round(balance * 1000) / 1000;
     },
     pricesForPlan() {
       return this.priceList.map((item) => parseFloat(item.price));

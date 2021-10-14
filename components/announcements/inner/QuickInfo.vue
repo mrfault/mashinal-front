@@ -75,7 +75,7 @@
         <monetization-button :announcement="announcement" v-else-if="!this.isMobileBreakpoint && announcement.status == 1" />
       </div>
     </template>
-    <template v-if="!brief && (userIsOwner(announcement) && announcement.status != 2)">
+    <template v-if="!brief && (userIsOwner(announcement) && announcement.status != 2) && !(announcement.is_autosalon && announcement.status == 3)">
       <hr :class="{'mt-3': announcement.status == 3}" />
       <div class="row mt-n2 mt-lg-n3">
         <div class="col mt-2 mt-lg-3">

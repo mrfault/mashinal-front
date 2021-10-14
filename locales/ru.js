@@ -1112,6 +1112,11 @@ export default {
     "салона",
     "салонов"
   ],
+  "plural_forms_shops": [
+    "магазин",
+    "магазина",
+    "магазинов"
+  ],
   "plural_forms_carcase": [
     "кузов",
     "кузова",

@@ -35,7 +35,7 @@
         </div>
         <div :class="[`col-6 ${short ? '' : 'col-lg-1-5'} mb-2 mb-lg-3`, {'order-lg-1': short}]" v-if="!isMobileBreakpoint">
           <div class="form-info text-green">
-            {{ $readPlural(count, $t('plural_forms_salons')) }}
+            {{ $readPlural(count, $t(where === 'transport' ? 'plural_forms_salons' : 'plural_forms_shops')) }}
           </div>
         </div>
       </div>
