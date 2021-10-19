@@ -105,10 +105,14 @@ export default {
       },
       set(value) {
         this.$store.dispatch('packages/setProfileType', value);
+        this.$router.push({ query: { ...this.$route.query, type: value === 'parts' ? 2 : 1 } });
       }
     },
     isAutosalon() { return this.profileType === 'salon' },
     isParts() { return this.profileType === 'parts' }
+  },
+  mounted() {
+    this.$router.push({ query: { ...this.$route.query, type: this.profileType === 'parts' ? 2 : 1 } });
   }
 }
 </script>

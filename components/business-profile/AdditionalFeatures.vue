@@ -46,7 +46,7 @@
       </div>
       <div class="col-12 col-lg-6 content">
         <h2 class="section-title heading-dots heading-dots--left">{{ $t('additional_features_4_title') }}</h2>
-        <p class="ml-0 text-with-check">
+        <p class="ml-0 text-with-check with-badge">
           <icon name="check" />
           <span class="shop-badge">SHOP</span>
           {{ $t('additional_features_4_desc_2') }}

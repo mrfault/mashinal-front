@@ -44,7 +44,7 @@
       <form-text-input 
         v-if="!hasSalon"
         :maxlength="30"
-        :placeholder="$t('shop_name')" 
+        :placeholder="$t('salon_name')" 
         :invalid="$v.form.name.$error" 
         v-model="form.name"
         class="mb-2 mb-lg-3" 

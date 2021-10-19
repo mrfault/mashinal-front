@@ -23,7 +23,7 @@
           <div class="col-lg-9 mb-2">
             <div class="profile_info-details">
               <icon name="phone-call" />
-              <span v-html="getConcatPhones(salonSingle.phones, 3, true, true)" />
+              <span v-html="getConcatPhones(salonSingle.phones, 3, true, true, salonSingle.short_number)" />
             </div>
           </div>
           <div class="col-lg-3 mb-2" v-if="!isMobileBreakpoint">

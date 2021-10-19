@@ -1,6 +1,6 @@
 <template>
   <grid 
-    :announcements="profileType === 'salon' ? cars : parts" 
+    :announcements="announcements" 
     :clickable="false"
   />
 </template>
@@ -226,7 +226,12 @@ export default {
   computed: {
     ...mapGetters({
       profileType: 'packages/profileType'
-    })
+    }),
+
+    announcements() {
+      return (this.profileType === 'salon' ? this.cars : this.parts)
+        .slice(0, this.isMobileBreakpoint ? 4 : 5);
+    }
   }
 }
 </script>

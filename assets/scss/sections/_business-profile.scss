@@ -259,8 +259,9 @@
     }
     &__advantages {
       padding: 25px 0 44px;
-      @media (max-width: map-get($grid-breakpoints, 'lg')) {
-        img {
+      img {
+        width: 100%;
+        @media (max-width: map-get($grid-breakpoints, 'lg')) {
           margin-top: 20px;
         }
       }
@@ -444,17 +445,28 @@
     }
   }
   .text-with-check {
+    display: inline-flex;
+    align-items: flex-start;
     margin: 12px 18px 0 0;
     font-size: 16px;
     font-weight: 400;
-    i[class^="icon-"] {
+    i {
       margin-right: 15px;
+      margin-top: 4px;
       font-size: 10px;
       color: $green-1;
     }
+    .shop-badge {
+      margin-top: -4px;
+    }
+    &.with-badge {
+      i {
+        margin-top: 5px;
+      }
+    }
     @media (max-width: map-get($grid-breakpoints, 'lg')) {
       font-size: 13px;
-      i[class^="icon-"] {
+      i {
         margin-right: 5px;
         font-size: 8px;
       }

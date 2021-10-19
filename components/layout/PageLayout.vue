@@ -36,7 +36,7 @@
         <portal-target name="backdrop" />
         <!-- /portal targets -->
         <comparison-badge />
-        <mobile-nav v-if="!hideMobileNav" />
+        <mobile-nav />
         <page-footer v-if="!hideFooter" />
       </div>
     </transition>

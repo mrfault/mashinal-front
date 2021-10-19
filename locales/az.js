@@ -1692,7 +1692,7 @@ export default {
   "you_blocked_this_user": "Siz bu istifadəçini bloklamısınız",
   "you_can_create_announcement": "Siz <strong>{phone}</strong> nömrəsindən minik, moto və ticari avtomobillər kateqoriyalarında <strong>{left}</strong> elan, ehtiyat hissələri kateqoriyasında isə <strong>{left_parts}</strong> elan yerləşdirə bilərsiniz.",
   "you_can_create_announcement_transport": "Siz <strong>{phone}</strong> nömrəsindən minik, moto və ticari avtomobillər kateqoriyalarında <strong>{left}</strong> elan yerləşdirə bilərsiniz.",
-  "you_can_create_announcement_parts": "Siz <strong>{phone}</strong> nömrəsindən ehtiyat hissələri kateqorisında <strong>{left_parts}</strong> elan yerləşdirə bilərsiniz.",
+  "you_can_create_announcement_parts": "Siz <strong>{phone}</strong> nömrəsindən ehtiyat hissələri kateqoriyasında <strong>{left_parts}</strong> elan yerləşdirə bilərsiniz.",
   "you_can_only_have_some_free_announcement_within_30_days": "Hörmətli İstifadəçi, Siz <strong>30</strong> gün ərzində Mashin.AL portalında minik, moto və ticari avtomobillər kateqoriyalarında <strong>1</strong> elan, ehtiyat hissələri kateqoriyasında isə <strong>6</strong> elan pulsuz yerləşdirə bilərsiniz.",
   "you_have_got_a_message": "Sizə mesaj gəldi",
   "you_unblocked_this_user": "Siz bu istifadəçini blokdan çıxarmısınız",

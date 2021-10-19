@@ -11,11 +11,15 @@
         <div class="card profile-settings-card">
           <div class="row flex-nowrap">
             <div class="avatar_edit col-auto mb-2" id="anchor-logo">
-              <form-image v-model="form.logo" :initial-image="getSalonImg('logo')" />
+              <div class="avatar_edit-inner">
+                <form-image v-model="form.logo" :initial-image="getSalonImg('logo')" />
+              </div>
               <p class="text-center">100x100px</p>
             </div>
             <div class="avatar_edit col-auto mb-2 cover" id="anchor-cover">
-              <form-image v-model="form.cover" :initial-image="getSalonImg('cover')" />
+              <div class="avatar_edit-inner">
+                <form-image v-model="form.cover" :initial-image="getSalonImg('cover')" />
+              </div>
               <p class="text-center">1200x300px</p>
             </div>
           </div>
@@ -122,8 +126,8 @@
             <div class="col-lg-4 mb-2 mb-lg-3" id="anchor-instagram">
               <form-text-input type="url" placeholder="Instagram URL" icon-name="instagram" v-model="form.instagram" />
             </div>
-            <div class="col-lg-4 mb-2 mb-lg-3" id="anchor-instagram">
-              <form-text-input type="url" placeholder="Instagram URL" icon-name="instagram" v-model="form.instagram" />
+            <div class="col-lg-4 mb-2 mb-lg-3" id="anchor-facebook">
+              <form-text-input type="url" placeholder="Facebook URL" icon-name="facebook" v-model="form.facebook" />
             </div>
             <div class="col-lg-12" id="anchor-saved_gallery">
               <form-gallery

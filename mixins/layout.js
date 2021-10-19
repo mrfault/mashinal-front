@@ -15,12 +15,7 @@ export const LayoutMixin = {
     }
   },
   computed: {
-    ...mapGetters(['loading','messages','paidStatusData','hideFooter']),
-
-    hideMobileNav() {
-      return false;
-      return ['profile-messages'].includes(this.routeName);
-    }
+    ...mapGetters(['loading','messages','paidStatusData','hideFooter'])
   },
   methods: {
     ...mapActions(['setLoading','setGridBreakpoint','getMessages','getFavorites','resetSellTokens','resetUserData','updatePaidStatus',
