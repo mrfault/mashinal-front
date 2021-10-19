@@ -20,7 +20,9 @@
               SHOP
             </span>
             <span class="d-flex">
-              <!-- here badges can be placed -->
+              <span class="btn-sq btn-sq--color-red active" v-if="announcement.has_monetization">
+                <icon name="speaker" v-tooltip="$t('ad_announcement')" />
+              </span>
             </span>
           </template>
         </div>

@@ -15,7 +15,7 @@
               <template v-if="user.autosalon || user.part_salon">
                 <hr />
                 <div class="row justify-content-center">
-                  <div class="col-12 text-medium">{{ $t('is_main') }}: {{ $readNumber(user.balance) }} ALM</div>
+                  <div class="col-12 text-medium mb-1">{{ $t('is_main') }}: {{ $readNumber(user.balance) }} ALM</div>
                   <div class="col-auto text-medium" v-if="user.autosalon">{{ $t('salon') }}: {{ $readNumber(user.autosalon.balance) }} ALM</div>
                   <div class="col-auto text-medium" v-if="user.part_salon">{{ $t('shop') }}: {{ $readNumber(user.part_salon.balance) }} ALM</div>
                 </div>
