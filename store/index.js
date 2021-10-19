@@ -802,9 +802,8 @@ export const actions = {
     const res = await this.$axios.$get(`/my/autosalon/${id}/edit`);
     commit('mutate', { property: 'mySalon', value: res });
   },
-  async updateMySalon({commit}, { id, form}) {
-    const res = await this.$axios.$post(`/my/autosalon/${id}/edit`, form);
-    commit('mutate', { property: 'mySalon', value: res });
+  async updateMySalon({}, { id, form}) {
+    await this.$axios.$post(`/my/autosalon/${id}/edit`, form);
   },
   updateSalonsFilters({commit}, form) {
     commit('mutate', { property: 'salonsFilters', value: form });

@@ -1,5 +1,5 @@
 <template>
-  <div :class="['salon-card', 'card with-margins']">
+  <div class="card with-margins salon-card">
     <div class="d-flex align-items-center">
       <div class="salon-logo">
         <img :src="getLogo(salon.logo)" :alt="salon.name" />

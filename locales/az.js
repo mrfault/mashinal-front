@@ -1907,5 +1907,8 @@ export default {
   "wp_write_us": "Whatsapp/Telegram-dan yaz",
   "to_change_package": "Paketi dəyiş",
   "faq": "Tez-tez verilən suallar",
-  "you_should_deactivate_announcements": "Sizin {package1} paketiniz aktivdir. {package2} paketə keçid etmək üçün elanlarınızın sayını maksimum {n}-a endirməlisiniz.<br/>Davam etmək üçün deaktiv etmək istədiyiniz elanları seçin."
+  "you_should_deactivate_announcements": "Sizin {package1} paketiniz aktivdir. {package2} paketə keçid etmək üçün elanlarınızın sayını maksimum {n}-a endirməlisiniz.<br/>Davam etmək üçün deaktiv etmək istədiyiniz elanları seçin.",
+  "are_you_sure_you_want_to_change_parts_name": "Hal-hazırda sizə şamil edilmiş Salon adını eyni ilə Ehtiyat hissələri bölümündə istifadə etməmək istədiyinizə əminsiniz?",
+  "are_you_sure_you_want_to_change_salon_name": "Hal-hazırda sizə şamil edilmiş Mağaza adını eyni ilə Salonlar bölümündə istifadə etməmək istədiyinizə əminsiniz?",
+  "short_number": "Qısa nömrə"
 }

@@ -27,6 +27,7 @@
                 v-model="form.name" 
                 :invalid="isInvalid('name')" 
                 @change="removeError('name')" 
+                disabled
               />
             </div>
             <div class="col-lg-4 mb-2 mb-lg-3" v-for="i in 2" :key="i" id="anchor-phones">
@@ -115,10 +116,13 @@
               <form-textarea :maxlength="1000" :placeholder="$t('general_information')" v-model="form.description" 
                 @change="removeError('description')" :invalid="isInvalid('description')" />
             </div>
-            <div class="col-lg-6 mb-2 mb-lg-3" id="anchor-facebook">
-              <form-text-input type="url" placeholder="Facebook URL" icon-name="facebook" v-model="form.facebook" />
+            <div class="col-lg-4 mb-2 mb-lg-3" id="anchor-facebook">
+              <form-text-input :placeholder="$t('short_number')" v-model="form.short_number" />
             </div>
-            <div class="col-lg-6 mb-2 mb-lg-3" id="anchor-instagram">
+            <div class="col-lg-4 mb-2 mb-lg-3" id="anchor-instagram">
+              <form-text-input type="url" placeholder="Instagram URL" icon-name="instagram" v-model="form.instagram" />
+            </div>
+            <div class="col-lg-4 mb-2 mb-lg-3" id="anchor-instagram">
               <form-text-input type="url" placeholder="Instagram URL" icon-name="instagram" v-model="form.instagram" />
             </div>
             <div class="col-lg-12" id="anchor-saved_gallery">
@@ -195,7 +199,8 @@
           logo: null,
           cover: null,
           facebook: salon.facebook || '',
-          instagram: salon.instagram || ''
+          instagram: salon.instagram || '',
+          short_number: salon.short_number || ''
         },
         files: []
       }
@@ -255,6 +260,7 @@
         // prepare data to send
         let formData = new FormData();
         for (let key in this.form) {
+          if (key === 'name') continue;
           let value = this.form[key];
           let sendAsBinary = ['cover','logo'].includes(key);
           let sendAsStr = typeof value === 'object' && !sendAsBinary;

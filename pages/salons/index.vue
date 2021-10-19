@@ -13,14 +13,14 @@
     <template v-if="view === 'list'">
       <div class="container">
         <breadcrumbs :crumbs="crumbs" />
-        <div class="title grid-title mt-2" v-if="isMobileBreakpoint">
-          <h2><span>{{ $t('salons') }}</span></h2>
-        </div>
-        <template v-else>
+        <template v-if="!isMobileBreakpoint">
           <salon-search-form />
           <salon-filters-form :count="salonsFiltered.length" />
         </template>
         <banners type="2" class="mt-5" />
+        <div class="title grid-title mt-2" v-if="isMobileBreakpoint">
+          <h2><span>{{ $t('salons') }}</span></h2>
+        </div>
         <div class="salon-card-list row mt-2 mt-lg-3 mb-n2 mb-lg-n3" v-if="salonsFiltered.length">
           <div class="col-lg-4 mb-2 mb-lg-3" v-for="salon in salonsFiltered" :key="salon.id">
             <nuxt-link class="keep-colors" :to="$localePath(`/salons/${salon.id}`)">
@@ -125,7 +125,7 @@ export default {
       store.dispatch('getSalonsList', { type: 1 })
     ]);
     return {
-      view: 'map',
+      view: 'list',
       collapse: false,
       disableCollapse: true,
       showSearch: false,

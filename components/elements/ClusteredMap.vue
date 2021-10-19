@@ -33,7 +33,7 @@ export default {
     },
     checkBounds: {
       type: Boolean,
-      default: false
+      default: true
     }
   },
   components: { 

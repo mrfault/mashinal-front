@@ -11,9 +11,9 @@
         <span class="cursor-pointer" @click="handleIconClick(false, 'search-icon-click')" v-if="hasSearchFilters">
           <icon name="search" />
         </span>
-        <!-- <span class="cursor-pointer" @click="handleIconClick($localePath('/parts/shops'))" v-else-if="hasShops">
+        <span class="cursor-pointer" @click="handleIconClick($localePath('/parts/shops'))" v-else-if="hasShops">
           <icon name="shop" />
-        </span> -->
+        </span>
         <span class="cursor-pointer" @click="handleIconClick($localePath('/cars/advanced-search'))" v-else-if="hasSearchNav || !loggedIn">
           <icon name="options" />
         </span>
