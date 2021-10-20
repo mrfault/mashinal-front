@@ -269,8 +269,12 @@
           let sendAsBinary = ['cover','logo'].includes(key);
           let sendAsStr = typeof value === 'object' && !sendAsBinary;
           if (key === 'phones') value = value.map(v => v.replace(/[\+\-\(\)]|[ ]/g,''));
-          if(!sendAsBinary || value)
+          if (sendAsBinary) {
+            value = await value.promisedBlob('image/jpeg', 0.8);
+            formData.append(key, value);
+          } else if(value) {
             formData.append(key, sendAsStr ? JSON.stringify(value) : value);
+          }
         }
 
         // Add new files to formData

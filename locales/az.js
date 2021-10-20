@@ -1911,5 +1911,5 @@ export default {
   "are_you_sure_you_want_to_change_parts_name": "Hal-hazırda sizə şamil edilmiş Salon adını eyni ilə Ehtiyat hissələri bölümündə istifadə etməmək istədiyinizə əminsiniz?",
   "are_you_sure_you_want_to_change_salon_name": "Hal-hazırda sizə şamil edilmiş Mağaza adını eyni ilə Salonlar bölümündə istifadə etməmək istədiyinizə əminsiniz?",
   "short_number": "Qısa nömrə",
-  "logo_and_cover_sizing_info": "Loqo <strong>1200x300px</strong>, örtük şəkli isə <strong>1200x300px</strong> ölçüsündə olmalıdır."
+  "logo_and_cover_sizing_info": "Loqo <strong>100x100px</strong>, örtük şəkli isə <strong>1200x300px</strong> ölçüsündə olmalıdır."
 }

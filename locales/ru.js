@@ -1912,5 +1912,5 @@ export default {
   "are_you_sure_you_want_to_change_parts_name": "Вы уверены, что не хотите использовать для магазина запчастей название привязанного вам салона?",
   "are_you_sure_you_want_to_change_salon_name": "Вы уверены, что не хотите использовать для салона название привязанного вам магазина запчастей?",
   "short_number": "Короткий номер",
-  "logo_and_cover_sizing_info": "Лого должно иметь размер <strong>1200x300px</strong>, а фото обложки - <strong>1200x300px</strong>."
+  "logo_and_cover_sizing_info": "Лого должно иметь размер <strong>100x100px</strong>, а фото обложки - <strong>1200x300px</strong>."
 }
