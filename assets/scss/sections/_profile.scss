@@ -390,6 +390,11 @@
     .avatar {
       border-color: $dark-2;
     }
+    &_edit {
+      .avatar_edit:not(.cover) {
+        border-color: $dark-2;
+      }
+    }
   }
   .profile-card {
     .avatar {

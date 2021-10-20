@@ -15,7 +15,6 @@
                 <form-image 
                   v-model="form.logo" 
                   :initial-image="getSalonImg('logo')" 
-                  :no-image="!mySalon.logo"
                   :width="isMobileBreakpoint ? 80 : 100" 
                   :height="isMobileBreakpoint ? 80 : 100" 
                   croppable 
@@ -27,7 +26,6 @@
                 <form-image 
                   v-model="form.cover" 
                   :initial-image="getSalonImg('cover')" 
-                  :no-image="!mySalon.cover"
                   croppable 
                   auto-sizing 
                 />
@@ -47,20 +45,31 @@
                 disabled
               />
             </div>
-            <div class="col-lg-4 mb-2 mb-lg-3" v-for="i in 2" :key="i" id="anchor-phones">
+            <div class="col-lg-4 mb-2 mb-lg-3" v-for="i in 3" :key="i" id="anchor-phones">
               <form-text-input v-if="i === 1 || typeof form.phones[i - 1] === 'string'"
                 v-model="form.phones[i - 1]"
                 autocomplete="tel" 
+                has-inputs
                 :id="'phone_'+i"
                 :placeholder="$t('contact_number')" 
                 :mask="$maskPhone()"  
                 :invalid="isInvalid('phones')" 
                 @change="removeError('phones')" 
-              />
+              >
+                <template #inputs>
+                  <form-checkbox v-model="form.telegram[i - 1]" 
+                    :input-name="'telegram_'+i" transparent label="<img src='/icons/telegram-circle.svg' alt='' />" />
+                  <form-checkbox v-model="form.whatsapp[i - 1]" 
+                    :input-name="'whatsapp_'+i" transparent label="<img src='/icons/whatsapp-circle.svg' alt='' />" />
+                </template>
+              </form-text-input>
               <button v-else class="btn btn--primary-outline full-width text-left" @click="$set(form.phones, i - 1, ''), focusOnPhoneInput(i)">
                 <icon name="plus-circle" />
-                {{ $t('add_second_number') }}
+                {{ $t(i == 2 ? 'add_second_number' : 'add_third_number') }}
               </button>
+            </div>
+            <div class="col-lg-4 mb-2 mb-lg-3" id="anchor-facebook">
+              <form-text-input :placeholder="$t('short_number')" v-model="form.short_number" />
             </div>
             <div class="col-lg-4 mb-2 mb-lg-3" id="anchor-region_id">
               <form-select :label="$t('region')" :options="sellOptions.regions" v-model="form.region_id" has-search 
@@ -70,14 +79,14 @@
               <form-text-input :placeholder="$t('address')" icon-name="placeholder" v-model="form.address"
                 :invalid="isInvalid('address')" @change="removeError('address')" />
             </div>
-            <div class="col-lg-4 mb-2 mb-lg-3">
+            <div class="col-lg-2 mb-2 mb-lg-3">
               <pick-on-map-button :lat="form.lat" :lng="form.lng" :address="form.address"
                   @change-address="updateAddress" @change-latlng="updateLatLng">
                 <form-text-input :placeholder="$t('address')" icon-name="placeholder" v-model="form.address" 
                   :invalid="isInvalid('address')" @change="removeError('address')" />
               </pick-on-map-button>
             </div>
-            <div class="col-lg-4 mb-2 mb-lg-3">
+            <div class="col-lg-2 mb-2 mb-lg-3">
               <button class="btn btn--dark-blue-2-outline full-width" @click="showPasswordModal = true">
                 {{ $t('change_password') }}
               </button>
@@ -125,6 +134,12 @@
                 </div>
               </form-select>
             </div>
+            <div class="col-lg-4 mb-2 mb-lg-3" id="anchor-instagram">
+              <form-text-input type="url" placeholder="Instagram URL" icon-name="link" v-model="form.instagram" block-class="placeholder-dark-blue-3" />
+            </div>
+            <div class="col-lg-4 mb-2 mb-lg-3" id="anchor-facebook">
+              <form-text-input type="url" placeholder="Facebook URL" icon-name="link" v-model="form.facebook" block-class="placeholder-dark-blue-3" />
+            </div>
             <div class="col-lg-12 mb-2 mb-lg-3" id="anchor-short_description">
               <form-text-input :maxlength="1000" :placeholder="$t('short_information')" v-model="form.short_description" 
                 @change="removeError('short_description')" :invalid="isInvalid('short_description')" />
@@ -132,15 +147,6 @@
             <div class="col-lg-12 mb-2 mb-lg-3" id="anchor-description">
               <form-textarea :maxlength="1000" :placeholder="$t('general_information')" v-model="form.description" 
                 @change="removeError('description')" :invalid="isInvalid('description')" />
-            </div>
-            <div class="col-lg-4 mb-2 mb-lg-3" id="anchor-facebook">
-              <form-text-input :placeholder="$t('short_number')" v-model="form.short_number" />
-            </div>
-            <div class="col-lg-4 mb-2 mb-lg-3" id="anchor-instagram">
-              <form-text-input type="url" placeholder="Instagram URL" icon-name="instagram" v-model="form.instagram" />
-            </div>
-            <div class="col-lg-4 mb-2 mb-lg-3" id="anchor-facebook">
-              <form-text-input type="url" placeholder="Facebook URL" icon-name="facebook" v-model="form.facebook" />
             </div>
             <div class="col-lg-12" id="anchor-saved_gallery">
               <form-gallery
@@ -205,6 +211,8 @@
         form: {
           name: salon.name || '',
           phones: [...(salon.phones || [])].map(phone => '+'+phone),
+          telegram: [...(salon.telegram || [])],
+          whatsapp: [...(salon.whatsapp || [])],
           address: salon.address || '',
           lat: salon.lat || 0,
           lng: salon.lng || 0,
@@ -264,7 +272,14 @@
         this.pending = true;
         // clear empty fields
         this.form.phones = this.form.phones
-          .filter(p => p && p.replace(/[\+\-\(\)]|[ ]|[\_]/g,'').length === 12);
+          .filter((phone, i) => {
+            let pass = phone && phone.replace(/[\+\-\(\)]|[ ]|[\_]/g,'').length === 12;
+            if (!pass) {
+              this.form.telegram.splice(i, 1);
+              this.form.whatsapp.splice(i, 1);
+            }
+            return pass;
+          });
         if (!this.form.phones.length)
           this.$set(this.form.phones, 0, '');
 

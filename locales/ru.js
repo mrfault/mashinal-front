@@ -1905,7 +1905,7 @@ export default {
   "other_announcements_of_user": "Другие объявления пользователя",
   "business_profile_payment": "Оплата бизнес профиля",
   "business_profile_payment_info": "После оплаты ваш аккаунт будет автоматически заменен бизенес профилем.",
-  "wp_write_us": "Пишите в Whatsapp/Telegram",
+  "wp_write_us": "Пишите в {msg}",
   "to_change_package": "Поменять пакет",
   "faq": "Часто задаваемые вопросы",
   "you_should_deactivate_announcements": "У вас активен пакет {package1}. Для того чтобы перейти на пакет {package2} нужно довести количество объявлений до {n}.<br/>Выберите объявления, которые вы хотите деактивировать, чтобы продолжить.",

@@ -47,6 +47,25 @@ input::-webkit-inner-spin-button {
       text-overflow: ellipsis;
     }
   }
+  &_inputs {
+    display: flex;
+    position: absolute;
+    right: 10px;
+    top: 0;
+    .form-group {
+      border-left: 1px solid $greyish-blue-6;
+    }
+  }
+}
+
+.dark-mode {
+  .form-group {
+    &_inputs {
+      .form-group {
+        border-color: $dark-2;
+      }
+    }
+  }
 }
 
 .form-info {
@@ -111,6 +130,13 @@ input::-webkit-inner-spin-button {
     input::placeholder,
     textarea::placeholder {
       opacity: .4;
+    }
+  }
+  &.placeholder-dark-blue-3 {
+    i,
+    input::placeholder,
+    textarea::placeholder {
+      color: $dark-blue-3;
     }
   }
   input {
@@ -197,6 +223,10 @@ input::-webkit-inner-spin-button {
     border-radius: 4px;
     height: 34px;
     padding: 0 15px;
+    img {
+      width: 16px;
+      height: 16px;
+    }
     &.transparent {
       background: transparent !important;
     }
@@ -711,6 +741,15 @@ input::-webkit-inner-spin-button {
   .text-input input.disabled,
   .select-menu_label.disabled {
     color: $grey-1;
+  }
+
+
+  .text-input.placeholder-dark-blue-3 {
+    i,
+    input::placeholder,
+    textarea::placeholder {
+      color: $grey-5;
+    }
   }
 
   .checkbox-input .checkbox,

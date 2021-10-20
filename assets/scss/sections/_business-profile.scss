@@ -86,11 +86,11 @@
         gap: 20px;
         img {
           user-select: none;
+          width: calc((100% - (3 * 20px)) / 4);
           @media (max-width: map-get($grid-breakpoints, 'lg')) {
             width: 100%;
-          }
-          @media (min-width: map-get($grid-breakpoints, 'lg')) {
-            width: calc((100% - (3 * 20px)) / 4);
+            max-width: 325px;
+            margin: 0 auto;
           }
         }
       }

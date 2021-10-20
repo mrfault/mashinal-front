@@ -20,17 +20,21 @@
       </h2>
       <div class="row align-items-lg-end profile_info">
         <template v-if="salonSingle.phones && salonSingle.phones.length">
-          <div class="col-lg-9 mb-2">
+          <div :class="`col-lg-${messengers.length ? 9 : 12} mb-2`">
             <div class="profile_info-details">
               <icon name="phone-call" />
-              <span v-html="getConcatPhones(salonSingle.phones, 3, true, true, salonSingle.short_number)" />
+              <span v-html="getConcatPhones(salonSingle.phones, 3, true, { 
+                  telegram: salonSingle.telegram || [], 
+                  whatsapp: salonSingle.whatsapp || []  
+                }, salonSingle.short_number)" 
+              ></span>
             </div>
           </div>
-          <div class="col-lg-3 mb-2" v-if="!isMobileBreakpoint">
+          <div class="col-lg-3 mb-2" v-if="!isMobileBreakpoint && messengers.length">
             <div class="profile_info-details">
-              <img src="/icons/whatsapp-circle.svg" alt="" />
-              <img src="/icons/telegram-circle.svg" alt="" />
-              <span>{{ $t('wp_write_us') }}</span>
+              <img src="/icons/whatsapp-circle.svg" alt="" v-if="messengers.includes('Whatsapp')" />
+              <img src="/icons/telegram-circle.svg" alt="" v-if="messengers.includes('Telegram')" />
+              <span>{{ $t('wp_write_us', {msg: messengers}) }}</span>
             </div>
           </div>
         </template>
@@ -98,6 +102,12 @@ export default {
 
     hasWorkingHours() {
       return !!this.getWorkingDays(this.salonSingle.working_days, this.salonSingle.working_hours)
+    },
+    messengers() {
+      let msg = [];
+      if (this.salonSingle.whatsapp?.find(wp => wp)) msg.push('Whatsapp');
+      if (this.salonSingle.telegram?.find(tg => tg)) msg.push('Telegram');
+      return msg.join('/');
     }
   },
   methods: {
