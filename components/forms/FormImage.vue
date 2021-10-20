@@ -7,12 +7,13 @@
       :accept="'image/*'"
       :canvas-color="'transparent'"
       :zoom-speed="15" 
-      :width="width"
-      :height="height"
+      :width="width || 200"
+      :height="height || 200"
       :quality="1"
       :prevent-white-space="true" 
       :show-remove-button="false"
       :replace-drop="true"
+      :auto-sizing="autoWidth"
     >
       <span class="placeholder" v-if="!croppaValue || !croppaValue.imageSet">
         <icon name="img" />
@@ -39,6 +40,7 @@ export default {
   props: {
     value: {},
     initialImage: {},
+    autoWidth: Boolean,
     croppable: Boolean,
     width: Number,
     height: Number

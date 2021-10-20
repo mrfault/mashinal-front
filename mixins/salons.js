@@ -29,9 +29,9 @@ export const SalonsMixin = {
         else dayRows[++lastKey] = [day];
       }
       let strDays = this.$t('days-short');
-      return dayRows.map(row => row.length === 1
-        ? `${strDays[row[0] - 1]} ${strHours}`
-        : `<span>${strDays[row[0] - 1]} - </span><span>${strDays[row[row.length - 1] - 1]} ${strHours}</span>`).join('<br/>');
+      return '<table>' + dayRows.map(row => row.length === 1
+        ? `<tr><td>${strDays[row[0] - 1]}</td><td>${strHours}</td></tr>`
+        : `<tr><td>${strDays[row[0] - 1]} - ${strDays[row[row.length - 1] - 1]}</td><td>${strHours}</td></tr>`).join('') + '</table>';
     }
   }
 }

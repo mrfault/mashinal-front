@@ -297,7 +297,7 @@ export default {
     },
   },
   created() {
-    this.selected = this.salonPackages[0].id;
+    this.selected = this.salonPackages.find(item => item.announce_count == 20).id;
     if (this.hasSalon) this.getSalonAnnouncements();
   },
   mounted() {

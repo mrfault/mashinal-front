@@ -43,7 +43,7 @@
         <div class="col-lg-3 mb-2" v-if="hasWorkingHours">
           <div class="profile_info-details">
             <icon name="time" />
-            <span v-html="getWorkingDays(salonSingle.working_days, salonSingle.working_hours)" />
+            <span class="working-time" v-html="getWorkingDays(salonSingle.working_days, salonSingle.working_hours)" />
           </div>
         </div>
       </div>

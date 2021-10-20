@@ -10,15 +10,15 @@
       >
         <div class="card profile-settings-card">
           <div class="row flex-nowrap">
-            <div class="avatar_edit col-auto mb-2" id="anchor-logo">
+            <!-- <div class="avatar_edit col-auto mb-2" id="anchor-logo">
               <div class="avatar_edit-inner">
-                <form-image v-model="form.logo" :initial-image="getSalonImg('logo')" />
+                <form-image v-model="form.logo" :initial-image="getSalonImg('logo')" :width="100" :height="100" croppable />
               </div>
               <p class="text-center">100x100px</p>
-            </div>
+            </div> -->
             <div class="avatar_edit col-auto mb-2 cover" id="anchor-cover">
               <div class="avatar_edit-inner">
-                <form-image v-model="form.cover" :initial-image="getSalonImg('cover')" />
+                <form-image v-model="form.cover" :initial-image="getSalonImg('cover')" croppable auto-width />
               </div>
               <p class="text-center">1200x300px</p>
             </div>
