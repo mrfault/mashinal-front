@@ -62,7 +62,7 @@
               <nuxt-link class="text-green" :to="$localePath('/sell')" v-if="card.key === 'announcements'">
                 {{ $t(locale === 'az' ? 'place_an_ad' : 'to_sell') }}
               </nuxt-link>
-              <nuxt-link class="text-green" :to="$localePath('/profile/balance')" v-else-if="card.key === 'balance'">
+              <nuxt-link class="text-green" :to="$localePath('/profile/balance?scrollto=increase')" v-else-if="card.key === 'balance'">
                 {{ $t('replenish') }}
               </nuxt-link>
               <a class="text-green" href="javascript:void(0);" @click="showExtendContract = true" v-else-if="card.key === 'contract' && shouldExtendContract">

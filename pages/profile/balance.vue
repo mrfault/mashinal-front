@@ -22,7 +22,7 @@
               </template>
             </div>
           </div>
-          <div class="card mb-2 mb-lg-0">
+          <div class="card mb-2 mb-lg-0" ref="increase">
             <div class="increase-balance-form">
               <form class="form" @submit.prevent="increaseBalance" novalidate>
                 <h2 class="title-with-line">
@@ -152,6 +152,18 @@
           this.pending = false;
         }
       },
+    },
+    mounted() {
+      this.$nextTick(() => {
+        if (this.$route.query.scrollto) {
+          let ref = this.$refs[this.$route.query.scrollto];
+          this.$router.replace({ query: null });
+          if (ref) setTimeout(() => {
+            this.scrollTo(ref, [-15, -20]);
+            this.$el?.querySelector('.text-input input')?.focus();
+          }, 300);
+        }
+      });
     }
   }
 </script>
