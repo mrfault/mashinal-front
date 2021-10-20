@@ -2,7 +2,7 @@
   <div :class="['salon-filters-form form', {'has-sticky-screen-bottom': isMobileBreakpoint}]">
     <div :class="`card mt-lg-${short ? '0' : '3'}`">
       <div class="row mb-n2 mb-lg-n3">
-        <div :class="[`col-12 ${short ? '' : (where === 'parts' ? 'col-lg-3-5' : 'col-lg-1-5')} mb-2 mb-lg-3`, {'order-lg-3': short}]">
+        <div :class="[`col-12 ${short ? '' : (where === 'transport' ? 'col-lg-1-5' : 'col-lg-4-5')} mb-2 mb-lg-3`, {'order-lg-3': short}]">
           <form-text-input 
             v-model="form.search" 
             icon-name="search" 
@@ -29,7 +29,7 @@
             </div>
           </div>
         </template>
-        <div :class="[`${isMobileBreakpoint ? 'col-12' : 'col-6'} ${!short ? 'col-lg-1-5' : 'order-lg-2'} mb-2 mb-lg-3`]">
+        <div :class="[`${isMobileBreakpoint ? 'col-12' : 'col-6'} ${!short ? 'col-lg-1-5' : 'order-lg-2'} mb-2 mb-lg-3`]" v-if="where === 'transport'">
           <form-checkbox :label="$t('only_official')" v-model="form.officialOnly" input-name="officialOnly" 
             @change="filterAutosalons()" :transparent="isMobileBreakpoint" />
         </div>

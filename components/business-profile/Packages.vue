@@ -307,7 +307,7 @@ export default {
     this.$nextTick(() => {
       if (this.$route.query.scrollto) {
         let ref = this.$refs[this.$route.query.scrollto];
-        this.$router.push({ query: null });
+        this.$router.replace({ query: { type: 1 } });
         if (ref) setTimeout(() => {
           this.scrollTo(ref);
         }, 300);

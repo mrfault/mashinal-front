@@ -76,9 +76,7 @@ export default {
     });
   },
   async asyncData({ store, route }) {
-    if (route.query.type == 2) {
-      store.dispatch('packages/setProfileType', 'parts');
-    }
+    store.dispatch('packages/setProfileType', route.query.type == 2 ? 'parts' : 'salon');
     await Promise.all([
       store.dispatch('packages/getPackages'),
       store.dispatch('packages/getFaq')
@@ -111,8 +109,10 @@ export default {
     isAutosalon() { return this.profileType === 'salon' },
     isParts() { return this.profileType === 'parts' }
   },
-  mounted() {
-    this.$router.push({ query: { ...this.$route.query, type: this.profileType === 'parts' ? 2 : 1 } });
+  watch: {
+    $route(route) {
+      this.profileTypeModel = route.query.type == 2 ? 'parts' : 'salon';
+    }
   }
 }
 </script>

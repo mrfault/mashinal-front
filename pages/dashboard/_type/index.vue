@@ -68,7 +68,7 @@
               <a class="text-green" href="javascript:void(0);" @click="showExtendContract = true" v-else-if="card.key === 'contract' && shouldExtendContract">
                 {{ $t('pay') }}
               </a>
-              <nuxt-link class="text-green" :to="$localePath('/business-profile') + '?scrollto=packages'" v-else-if="card.key === 'contract' && $route.params.type == 1">
+              <nuxt-link class="text-green" :to="$localePath('/business-profile') + '?type=1&scrollto=packages'" v-else-if="card.key === 'contract' && $route.params.type == 1">
                 {{ $t('to_change_package') }}
               </nuxt-link>
             </template>
@@ -142,7 +142,6 @@
       });
     },
     async asyncData({store, route, app}) {
-      store.dispatch('packages/setProfileType', route.params.type == 2 ? 'parts' : 'salon');
       await store.dispatch('getAnnouncementStats', app.$getDashboardId(route.params.type)); 
 
       return {
@@ -178,15 +177,15 @@
       },
 
       cards() {
-        let id = this.$route.params.type;
+        let type = this.$route.params.type;
         return [
           { key: 'announcements', title: 'my_announces', route: '/profile/announcements', icon: 'photo' },
           { key: 'balance', title: 'balans', route: '/profile/balance', icon: 'wallet' },
-          { key: 'statistics', title: 'statistics', route: '/dashboard/' + id + '/statistics', icon: 'analytics' },
+          { key: 'statistics', title: 'statistics', route: '/dashboard/' + type + '/statistics', icon: 'analytics' },
           { key: 'messages', title: 'messages', route: '/profile/messages', icon: 'chat' },
-          { key: 'calls', title: 'phone_call_count', route: '/dashboard/' + id + '/calls', icon: 'phone' },
-          { key: 'salon', title: 'my_profile', route: '/dashboard/' + id + '/settings', icon: 'user' },
-          { key: 'contract', title: 'contract', route: '/business-profile', icon: 'calendar-1' }
+          { key: 'calls', title: 'phone_call_count', route: '/dashboard/' + type + '/calls', icon: 'phone' },
+          { key: 'salon', title: 'my_profile', route: '/dashboard/' + type + '/settings', icon: 'user' },
+          { key: 'contract', title: 'contract', route: '/business-profile?type=' + type, icon: 'calendar-1' }
         ].map(link => ({ ...link,
           title: this.$t(link.title), 
           path: this.$localePath(link.route)
