@@ -165,7 +165,6 @@ export default {
     }
   },
   created() {
-    this.setFooterVisibility(false);
     this.$nuxt.$on('search-icon-click', this.toggleSearch);
   },
   beforeDestroy() {
