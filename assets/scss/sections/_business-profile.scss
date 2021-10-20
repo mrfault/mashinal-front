@@ -279,12 +279,9 @@
         column-gap: 20px;
         @media (max-width: map-get($grid-breakpoints, 'lg')) {
           display: grid;
-          grid-template-columns: 1fr 1fr;
+          grid-template-columns: repeat(auto-fit, minmax(33.33%, 2fr));
           gap: 15px;
           padding: 20px 0 30px;
-        }
-        @media (max-width: map-get($grid-breakpoints, 'sm')) {
-          // grid-template-columns: 1fr;
         }
         .package {
           flex: 1;
@@ -292,6 +289,10 @@
           padding: 26px 16px 18px;
           border: 1px solid $greyish-blue-3;
           cursor: pointer;
+          transition: box-shadow .2s ease-out;
+          &:hover {
+            box-shadow: $shadow-light-6;
+          }
           @media (max-width: map-get($grid-breakpoints, 'lg')) {
             margin: 0;
             padding: 16px 10px;
@@ -299,6 +300,7 @@
           }
           &--active {
             border-color: $green-1;
+            pointer-events: none;
           }
           &__radio {
             position: absolute;
@@ -518,6 +520,9 @@
         .packages {
           .package {
             border-color: $dark-5;
+            &:hover {
+              box-shadow: $shadow-dark-6;
+            }
             &--active {
               border-color: $green-1;
             }

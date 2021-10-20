@@ -9,20 +9,20 @@
         height-auto
       >
         <div class="card profile-settings-card">
-          <div class="row flex-nowrap">
-            <!-- <div class="avatar_edit col-auto mb-2" id="anchor-logo">
+          <div class="row flex-wrap position-relative cover-with-avatar_edit">
+            <div class="avatar_edit col-auto mb-2" id="anchor-logo">
               <div class="avatar_edit-inner">
-                <form-image v-model="form.logo" :initial-image="getSalonImg('logo')" :width="100" :height="100" croppable />
+                <form-image v-model="form.logo" :initial-image="getSalonImg('logo')" :width="isMobileBreakpoint ? 80 : 100" :height="isMobileBreakpoint ? 80 : 100" croppable />
               </div>
-              <p class="text-center">100x100px</p>
-            </div> -->
+            </div>
             <div class="avatar_edit col-auto mb-2 cover" id="anchor-cover">
               <div class="avatar_edit-inner">
-                <form-image v-model="form.cover" :initial-image="getSalonImg('cover')" croppable auto-width />
+                <form-image v-model="form.cover" :initial-image="getSalonImg('cover')" croppable auto-sizing />
               </div>
-              <p class="text-center">1200x300px</p>
             </div>
+            <p v-html="$t('logo_and_cover_sizing_info')" v-if="!isMobileBreakpoint"></p>
           </div>
+          <p v-html="$t('logo_and_cover_sizing_info')" v-if="isMobileBreakpoint"></p>
           <div class="row">
             <div class="col-lg-4 mb-2 mb-lg-3">
               <form-text-input 

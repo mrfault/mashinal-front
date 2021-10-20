@@ -1,6 +1,6 @@
 <template>
-  <div class="form-image">
-    <croppa class="croppa-image" 
+  <div :class="['form-image', {'position-relative': autoSizing}]">
+    <croppa :class="['croppa-image', {'auto-size': autoSizing}]" 
       v-if="croppable"
       v-model="croppaValue" placeholder="" 
       :initial-image="initialImage"
@@ -13,7 +13,7 @@
       :prevent-white-space="true" 
       :show-remove-button="false"
       :replace-drop="true"
-      :auto-sizing="autoWidth"
+      :auto-sizing="autoSizing"
     >
       <span class="placeholder" v-if="!croppaValue || !croppaValue.imageSet">
         <icon name="img" />
@@ -40,7 +40,7 @@ export default {
   props: {
     value: {},
     initialImage: {},
-    autoWidth: Boolean,
+    autoSizing: Boolean,
     croppable: Boolean,
     width: Number,
     height: Number
@@ -77,5 +77,14 @@ export default {
       }
     }
   },
+  mounted() {
+    this.$nextTick(() => {
+      if (this.croppable) {
+        setTimeout(() => {
+          window.dispatchEvent(new Event('resize'));
+        }, 100);
+      }
+    });
+  }
 }
 </script>
