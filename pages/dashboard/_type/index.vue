@@ -13,8 +13,8 @@
                 </ul>
                 <div class="statistics-sell-tokens_bar">
                   <span class="bar-filled" :style="{width:`calc(${100*(announcementStats.left/announcementStats.possible)}% + 15px)`}" v-if="announcementStats.left">{{ announcementStats.left }}</span>
-                  <span :class="salonDetails.unlimited ? 'bar-filled' : 'bar-empty'" :style="{width:`calc(${100*(announcementStats.used/announcementStats.possible)}% - 15px)`}" v-if="announcementStats.used">
-                    <template v-if="salonDetails.unlimited">∞</template>
+                  <span :class="salonDetails.unlimited ? 'bar-filled d-flex align-items-center justify-content-center' : 'bar-empty'" :style="{width:`calc(${100*(announcementStats.used/announcementStats.possible)}% - 15px)`}" v-if="announcementStats.used || salonDetails.unlimited">
+                    <template v-if="salonDetails.unlimited"><icon name="infinity" /></template>
                     <template v-else>{{ announcementStats.used }}</template>
                   </span>
                 </div>
