@@ -12,12 +12,25 @@
           <div class="row flex-wrap position-relative cover-with-avatar_edit">
             <div class="avatar_edit col-auto mb-2" id="anchor-logo">
               <div class="avatar_edit-inner">
-                <form-image v-model="form.logo" :initial-image="getSalonImg('logo')" :width="isMobileBreakpoint ? 80 : 100" :height="isMobileBreakpoint ? 80 : 100" croppable />
+                <form-image 
+                  v-model="form.logo" 
+                  :initial-image="getSalonImg('logo')" 
+                  :no-image="!mySalon.logo"
+                  :width="isMobileBreakpoint ? 80 : 100" 
+                  :height="isMobileBreakpoint ? 80 : 100" 
+                  croppable 
+                />
               </div>
             </div>
             <div class="avatar_edit col-auto mb-2 cover" id="anchor-cover">
               <div class="avatar_edit-inner">
-                <form-image v-model="form.cover" :initial-image="getSalonImg('cover')" croppable auto-sizing />
+                <form-image 
+                  v-model="form.cover" 
+                  :initial-image="getSalonImg('cover')" 
+                  :no-image="!mySalon.cover"
+                  croppable 
+                  auto-sizing 
+                />
               </div>
             </div>
             <p v-html="$t('logo_and_cover_sizing_info')" v-if="!isMobileBreakpoint"></p>
@@ -195,7 +208,7 @@
           address: salon.address || '',
           lat: salon.lat || 0,
           lng: salon.lng || 0,
-          region_id: salon.region_id || '',
+          region_id: salon.region_id || 1,
           working_days: [...(salon.working_days || [])],
           working_hours: {...salon.working_hours} || { start: '09:00', end: '18:00' },
           short_description: salon.short_description || '',

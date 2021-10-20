@@ -1,6 +1,6 @@
 <template>
   <div :class="['form-image', {'position-relative': autoSizing}]">
-    <croppa :class="['croppa-image', {'auto-size': autoSizing}]" 
+    <croppa :class="['croppa-image', {'auto-size': autoSizing, 'prevent-move': !hasImage}]" 
       v-if="croppable"
       v-model="croppaValue" placeholder="" 
       :initial-image="initialImage"
@@ -14,6 +14,9 @@
       :show-remove-button="false"
       :replace-drop="true"
       :auto-sizing="autoSizing"
+      :disable-drag-to-move="!hasImage"
+      :disable-scroll-to-zoom="!hasImage"
+      @new-image="hasImage = true"
     >
       <span class="placeholder" v-if="!croppaValue || !croppaValue.imageSet">
         <icon name="img" />
@@ -43,12 +46,14 @@ export default {
     autoSizing: Boolean,
     croppable: Boolean,
     width: Number,
-    height: Number
+    height: Number,
+    noImage: Boolean
   },
   mixins: [ImageResizeMixin],
   data() {
     return {
       preview: '',
+      hasImage: !this.noImage
     }
   },
   computed: {
@@ -66,7 +71,7 @@ export default {
       e.preventDefault();
       
       let droppedFiles = e.target.files || e.dataTransfer.files;
-
+      
       for (let i = 0; i < droppedFiles.length; i++) {
         let isImage = droppedFiles[i].type.match('image.*');
         if(!isImage) break;
