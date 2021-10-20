@@ -10,7 +10,7 @@
         <main>
           <slot name="nuxt" />
           <theme-switch :floating="true" v-if="!isMobileBreakpoint" />
-          <scroll-top />
+          <scroll-top v-if="!hideFooter" />
         </main>
         <slot name="before-header" />
         <backdrop @click="closeLogin" v-if="showLoginPopup">
