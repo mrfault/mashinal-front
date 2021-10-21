@@ -15,10 +15,11 @@
                 <form-image 
                   v-model="form.logo" 
                   :initial-image="getSalonImg('logo')" 
-                  :no-image="!mySalon.logo"
+                  :no-image="!hasLogo"
                   :width="isMobileBreakpoint ? 80 : 100" 
                   :height="isMobileBreakpoint ? 80 : 100" 
                   croppable 
+                  @new-image="hasLogo = true"
                 />
               </div>
             </div>
@@ -27,9 +28,10 @@
                 <form-image 
                   v-model="form.cover" 
                   :initial-image="getSalonImg('cover')"  
-                  :no-image="!mySalon.cover"
+                  :no-image="!hasCover"
                   croppable 
                   auto-sizing 
+                  @new-image="hasCover = true"
                 />
               </div>
             </div>
@@ -229,7 +231,9 @@
           instagram: salon.instagram || '',
           short_number: salon.short_number || ''
         },
-        files: []
+        files: [],
+        hasLogo: !!salon.logo,
+        hasCover: !!salon.cover
       }
     },
     computed: {
@@ -300,6 +304,7 @@
           let sendAsStr = typeof value === 'object' && !sendAsBinary;
           if (key === 'phones') value = value.map(v => v.replace(/[\+\-\(\)]|[ ]/g,''));
           if (sendAsBinary) {
+            if ((key === 'logo' && !this.hasLogo) || (key === 'cover' && !this.hasCover)) continue;
             value = await value?.promisedBlob('image/jpeg', 0.8);
             formData.append(key, value);
           } else if(value) {

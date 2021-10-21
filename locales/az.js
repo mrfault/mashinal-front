@@ -1093,6 +1093,7 @@ export default {
   "phone_number": "Əlaqə nömrəsi",
   "phone_type": "Növ",
   "phone_visited_n_times": "Elanlarınız üzərindən nömrənizə <span>{count}</span> keçid edilib.",
+  "phone_visited_zero_times": "Elanlarınız üzərindən nömrənizə keçid edilimiyib.",
   "photos": "Şəkillər",
   "photos_and_video": "Şəkillər və video",
   "pickup": "Pikap",

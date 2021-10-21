@@ -8,7 +8,7 @@
         @pending="pending = true"
         @submit="searchParts" 
       />
-      <banners v-if="!searchActive"/>
+      <banners v-if="!searchActive" reverse />
       <div class="announcements-content">
         <grid
           v-if="announcements.length && !showNotFound"

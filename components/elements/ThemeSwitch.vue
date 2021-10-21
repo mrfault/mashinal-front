@@ -38,7 +38,7 @@ export default {
       this.animation?.stateMachineInputs('state')?.forEach(i => {
         switch(i.name) {
           case 'dark':
-            i.value = this.isDarkMode;
+            i.value = !this.isDarkMode;
             break;
           case 'switch_color':
             i.value = !this.isMobileBreakpoint;

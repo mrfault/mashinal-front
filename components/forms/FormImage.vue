@@ -1,6 +1,6 @@
 <template>
   <div :class="['form-image', {'position-relative': autoSizing}]">
-    <croppa :class="['croppa-image', {'auto-size': autoSizing, 'prevent-move': !hasImage}]" 
+    <croppa :class="['croppa-image', {'auto-size': autoSizing, 'prevent-move': noImage}]" 
       v-if="croppable"
       v-model="croppaValue" placeholder="" 
       :initial-image="initialImage"
@@ -14,13 +14,10 @@
       :show-remove-button="false"
       :replace-drop="true"
       :auto-sizing="autoSizing"
-      :disable-drag-to-move="!hasImage"
-      :disable-scroll-to-zoom="!hasImage"
-      @new-image="hasImage = true"
+      :disable-drag-to-move="noImage"
+      :disable-scroll-to-zoom="noImage"
+      @new-image="$emit('new-image')"
     >
-      <span class="placeholder" v-if="!croppaValue || !croppaValue.imageSet">
-        <icon name="img" />
-      </span>
       <span class="drop-file" @click="croppaValue.chooseFile()">
         <icon name="camera" />
       </span>
@@ -52,8 +49,7 @@ export default {
   mixins: [ImageResizeMixin],
   data() {
     return {
-      preview: '',
-      hasImage: !this.noImage
+      preview: ''
     }
   },
   computed: {

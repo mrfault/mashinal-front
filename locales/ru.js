@@ -1092,6 +1092,7 @@ export default {
   "phone_number": "Номер телефона",
   "phone_type": "Тип",
   "phone_visited_n_times": "С объявлений на Ваш номер перешли <span>{count}</span>",
+  "phone_visited_zero_times": "С объявлений на Ваш номер еще не было переходов</span>",
   "photos": "Фотографии",
   "photos_and_video": "Фотографии и видео",
   "pickup": "Пикап",

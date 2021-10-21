@@ -17,7 +17,7 @@
           <salon-search-form where="parts" />
           <salon-filters-form where="parts" :count="salonsFiltered.length" />
         </template>
-        <banners type="2" class="mt-2 mt-lg-5" />
+        <banners type="2" class="mt-2 mt-lg-5" reverse />
         <div class="title grid-title mt-2" v-if="isMobileBreakpoint">
           <h2><span>{{ $t('shops') }}</span></h2>
         </div>

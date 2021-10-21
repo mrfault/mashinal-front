@@ -3,7 +3,7 @@
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
       <grid 
-        v-if="myAnnouncementCalls.items.length"
+        v-if="!myAnnouncementCalls.items.length"
         :title="$t('phone_call_count')"
         :announcements="myAnnouncementCalls.items" 
         :paginate="$paginate(myAnnouncementCalls)"
@@ -14,6 +14,9 @@
         :track-views="false"
         @change-page="changePage"
       />
+      <no-results :text="$t('add_an_ad_and_thousands_of_potential_buyers_will_see_it')" v-else>
+        <nuxt-link :to="$localePath('/sell')" class="btn btn--green mt-2 mt-lg-3" v-html="$t('to_sell')" />
+      </no-results>
     </div>
   </div>
 </template>
@@ -22,12 +25,14 @@
   import { mapGetters, mapActions } from 'vuex';
 
   import Grid from '~/components/announcements/Grid';
+  import NoResults from '~/components/elements/NoResults';
 
   export default {
     name: 'pages-dashboard-calls',
     middleware: ['auth_general','auth_salon'],
     components: {
-      Grid
+      Grid,
+      NoResults
     },
     nuxtI18n: {
       paths: {

@@ -25,7 +25,7 @@
             </template>
             <template v-else-if="card.key === 'calls'">
               <h4 class="text-dark-blue-2">{{ announcementStats.calls }}</h4>
-              <p v-html="$t('phone_visited_n_times', { count: $readPlural(announcementStats.calls, $t('plural_forms_times')) })"></p>
+              <p v-html="$t(`phone_visited_${announcementStats.calls > 0 ? 'n' : 'zero'}_times`, { count: $readPlural(announcementStats.calls, $t('plural_forms_times')) })"></p>
             </template>
             <template v-else-if="card.key === 'messages'">
               <ul>
