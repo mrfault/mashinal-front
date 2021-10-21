@@ -298,7 +298,12 @@ export default {
   },
   created() {
     this.selected = this.salonPackages.find(item => item.announce_count == 20).id;
-    if (this.hasSalon) this.getSalonAnnouncements();
+    if (this.hasSalon) {
+      let activePackage = this.salonPackages.find(item => item.id === this.user.autosalon.current_package.id);
+      // `current_package` may include a package which is not in the list anymore
+      if (activePackage) this.selected = activePackage.id;
+      this.getSalonAnnouncements();
+    }
   },
   mounted() {
     this.$nuxt.$on('after-login', this.handleAfterLogin);
