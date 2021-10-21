@@ -703,6 +703,8 @@ export default {
   "go_to": "Keçid al",
   "go_to_announcements": "Elanlara keç",
   "go_to_request": "Sorğuya keçmək",
+  "go_to_salon": "Salona keçmək",
+  "go_to_shop": "Mağazaya keçmək",
   "gps": "GPS",
   "grease_type": "Növ",
   "green_sert": "Yaşıl sertifikat",
@@ -1811,7 +1813,7 @@ export default {
   "reached_the_limit_announcement": "Elan sayı limitə çatıb",
   "reached_the_limit_model": "Model sayı limitə çatıb",
   "you_can_add_a_maximum_of_count_photos": "Maksimum {count} şəkil əlavə edə bilərsiniz",
-  "all_announcements_of_user": "İstifadəçinin bütün elanları",
+  "all_announcements_of_user": "{name} istifadəçinin bütün elanları",
   "get_an_ad": "Reklam et",
   "daily_budget_and_duration": "Günlük büdcə və müddəti",
   "ad_views_count": "Elanın təqribi göstərilmə əhatəsi",
@@ -1839,7 +1841,6 @@ export default {
   "sell_again": "Elan təkrar yerləşdirib",
   "terminal_pay_info": "Milliön terminalları vasitəsilə aşağıdakı qaydada balans artıra bilərsiniz.",
   "terminal_pay_steps": [
-    "Terminalın ekranında \"İrəli\" düyməsini sıxın",
     "\"Elanlar və kuponlar\" bölməsini seçin",
     "Açılan bölmədə \"Mashin.AL\"-ı seçin",
     "Qeydiyyat zamanı istifadə etdiyiniz mobil nömrəni daxil edin",
@@ -1911,5 +1912,7 @@ export default {
   "are_you_sure_you_want_to_change_parts_name": "Hal-hazırda sizə şamil edilmiş Salon adını eyni ilə Ehtiyat hissələri bölümündə istifadə etməmək istədiyinizə əminsiniz?",
   "are_you_sure_you_want_to_change_salon_name": "Hal-hazırda sizə şamil edilmiş Mağaza adını eyni ilə Salonlar bölümündə istifadə etməmək istədiyinizə əminsiniz?",
   "short_number": "Qısa nömrə",
-  "logo_and_cover_sizing_info": "Loqo <strong>100x100px</strong>, örtük şəkli isə <strong>1200x300px</strong> ölçüsündə olmalıdır."
+  "logo_and_cover_sizing_info": "Loqo <strong>100x100px</strong>, örtük şəkli isə <strong>1200x300px</strong> ölçüsündə olmalıdır.",
+  "shop_other_announcements": "Mağazanın digər elanları",
+  "salon_other_announcements": "Salonun digər elanları"
 }

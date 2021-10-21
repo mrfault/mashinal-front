@@ -702,6 +702,8 @@ export default {
   "go_further": "Продолжить",
   "go_to": "Перейти",
   "go_to_request": "Перейти к заявке",
+  "go_to_salon": "Перейти к салону",
+  "go_to_shop": "Перейти к магазину",
   "gps": "GPS",
   "grease_type": "Тип",
   "green_sert": "Зеленый сертификат",
@@ -797,7 +799,7 @@ export default {
   "liftback": "Лифтбек",
   "lifting_height": "Подъем",
   "Light": "Светлый",
-  "Light alloy": "Легкосплавные",
+  "Light alloy": "Легкосплавные диски",
   "Light sensor": "Датчик света",
   "lising_kredit": "Обеспечение / Кредит",
   "list": "Список",
@@ -1811,7 +1813,7 @@ export default {
   "reached_the_limit_announcement": "Вы превысили лимит добавления объявлений",
   "reached_the_limit_model": "Вы превысили лимит добавления модели",
   "you_can_add_a_maximum_of_count_photos": "Maksimum {count} şəkil əlavə edə bilərsiniz",
-  "all_announcements_of_user": "Все объявления этого пользователя",
+  "all_announcements_of_user": "Все объявления пользователя {name}",
   "get_an_ad": "Рекламировать",
   "daily_budget_and_duration": "Ежедневный бюджет и срок действия",
   "ad_views_count": "Охват рекламной кампании по показам",
@@ -1839,7 +1841,6 @@ export default {
   "sell_again": "Объявление повторно размещено",
   "terminal_pay_info": "Вы можете пополнить баланс в терминалах Milliön следующим образом.",
   "terminal_pay_steps": [
-    "Нажмите на экране терминала «Далее»",
     "Выберите раздел «Объявления и купоны»",
     "В открывшемся разделе выберите «Mashin.AL»",
     "Введите указанный вами при регистрации номер телефона",
@@ -1912,5 +1913,7 @@ export default {
   "are_you_sure_you_want_to_change_parts_name": "Вы уверены, что не хотите использовать для магазина запчастей название привязанного вам салона?",
   "are_you_sure_you_want_to_change_salon_name": "Вы уверены, что не хотите использовать для салона название привязанного вам магазина запчастей?",
   "short_number": "Короткий номер",
-  "logo_and_cover_sizing_info": "Лого должно иметь размер <strong>100x100px</strong>, а фото обложки - <strong>1200x300px</strong>."
-}
+  "logo_and_cover_sizing_info": "Лого должно иметь размер <strong>100x100px</strong>, а фото обложки - <strong>1200x300px</strong>.",
+  "shop_other_announcements": "Другие объявления магазина \"{name}\"",
+  "salon_other_announcements": "Другие объявления салона \"{name}\"" 
+}  

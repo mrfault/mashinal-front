@@ -115,13 +115,6 @@ export const actions = {
       property: 'searchActive',
       value: payload
     })
-  },
-  async getAnnouncementsByNumber({ commit }, phone) {
-    const announcements = await this.$axios.$get('/get_announces_by_phone/' + phone);
-    commit('mutate', {
-      property: 'announcements',
-      value: announcements
-    })
   }
 }
 

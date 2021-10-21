@@ -124,6 +124,8 @@ Vue.use({
             img = item.user.part_salon?.logo;
             link = this.$localePath(`/parts/shops/${item.user.part_salon.id}`);
             name = item.user.part_salon.name || item.user.full_name;
+          } else if (item.user.active_announcements_count > 1) {
+            link = this.$localePath(`/user/${item.user.id}/announcements`);
           }
           return {
             type: 'user',
@@ -177,10 +179,10 @@ Vue.use({
           return !this.loggedIn || (item.user.id !== this.user.id);
         },
         userIsOwner(item) {
-          return this.loggedIn && item.user.id === this.user.id;
+          return this.loggedIn && (item.user.id === this.user.id);
         },
         salonIsOwner(item) {
-          return this.loggedIn && item.id === this.user.autosalon?.id;
+          return this.loggedIn && (item.id === this.user.autosalon?.id || item.id === this.user.part_salon?.id);
         },
         showMonetization(item) {
           return this.userIsOwner(item) && item.status == 1 && !item.has_monetization;

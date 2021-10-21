@@ -15,6 +15,7 @@
                 <form-image 
                   v-model="form.logo" 
                   :initial-image="getSalonImg('logo')" 
+                  :no-image="!mySalon.logo"
                   :width="isMobileBreakpoint ? 80 : 100" 
                   :height="isMobileBreakpoint ? 80 : 100" 
                   croppable 
@@ -25,7 +26,8 @@
               <div class="avatar_edit-inner">
                 <form-image 
                   v-model="form.cover" 
-                  :initial-image="getSalonImg('cover')" 
+                  :initial-image="getSalonImg('cover')"  
+                  :no-image="!mySalon.cover"
                   croppable 
                   auto-sizing 
                 />
@@ -298,7 +300,7 @@
           let sendAsStr = typeof value === 'object' && !sendAsBinary;
           if (key === 'phones') value = value.map(v => v.replace(/[\+\-\(\)]|[ ]/g,''));
           if (sendAsBinary) {
-            value = await value.promisedBlob('image/jpeg', 0.8);
+            value = await value?.promisedBlob('image/jpeg', 0.8);
             formData.append(key, value);
           } else if(value) {
             formData.append(key, sendAsStr ? JSON.stringify(value) : value);

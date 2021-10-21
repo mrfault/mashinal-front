@@ -54,11 +54,21 @@
     }
     .contact {
       display: flex;
+      .info {
+        width: 100%;
+      }
       .img {
         width: 40px;
         height: 40px;
         flex-shrink: 0;
         margin-right: 10px;
+        &.is-online {
+          &::after {
+            bottom: 0;
+            right: 0;
+            transform: translate(40%, 40%);
+          }
+        }
         img {
           width: 100%;
           height: 100%;
@@ -77,6 +87,8 @@
         margin: 0;
       }
       .all-announcements {
+        display: block;
+        margin-top: 4px;
         font-size: 13px;
         i {
           font-size: 10px;

@@ -42,9 +42,10 @@ const getInitialState = () => ({
   carsAnnouncements: [],
   motoAnnouncements: [],
   commercialAnnouncements: [],
-  promotedAnnouncements: [],
+  shopAnnouncements: {},
   announcement: {},
   relativeAnnouncements: [],
+  userAnnouncements: [],
   // catalog
   catalogAnnouncements: [],
   catalogTotal: 0,
@@ -163,7 +164,7 @@ export const getters = {
   carsAnnouncements: s => s.carsAnnouncements,
   motoAnnouncements: s => s.motoAnnouncements,
   commercialAnnouncements: s => s.commercialAnnouncements,
-  promotedAnnouncements: s => s.promotedAnnouncements,
+  shopAnnouncements: s => s.shopAnnouncements,
   mainAnnouncements: s => s.mainAnnouncements,
   mainPartsAnnouncements: s => s.mainPartsAnnouncements,
   myAnnouncements: s => s.myAnnouncements,
@@ -174,6 +175,7 @@ export const getters = {
     }
     return s.relativeAnnouncements
   },
+  userAnnouncements: s => s.userAnnouncements,
   // catalog
   catalogAnnouncements: s => s.catalogAnnouncements,
   catalogItems: s => s.catalogItems,
@@ -617,14 +619,18 @@ export const actions = {
     const res = await this.$axios.$post(`${data.url}?page=${data.page || 1}`, data.post);
     commit('mutate', { property: data.prefix + 'Announcements', value: res });
   },
-  async getPromotedSearch({ commit }, data) {
-    const res = await this.$axios.$get(`/${data.type}/cars?page=${data.page || 1}`);
-    commit('mutate', { property: 'promotedAnnouncements', value: res });
-  },
   // Announcements
-  async getRelativeAnnouncements({ commit }, id) {
-    const res = await this.$axios.$get(`/grid/same/announcements/${id}`);
+  async getRelativeAnnouncements({ commit }, data) {
+    const res = await this.$axios.$get(`/grid/same/announcements/${data.id}`);
     commit('mutate', { property: 'relativeAnnouncements', value: res });
+  },
+  async getShopOtherAnnouncements({ commit }, data) {
+    const res = await this.$axios.$get(`/grid/shop/announcements/${data.id}?page=${data.page || 1}`);
+    commit('mutate', { property: 'shopAnnouncements', value: res });
+  },
+  async getUserAnnouncements({ commit }, data) {
+    const res = await this.$axios.$get(`/user/${data.id}/announcements`);
+    commit('mutate', { property: 'userAnnouncements', value: res });
   },
   async getMyAllAnnouncements({ commit }, data = {}) {
     const res = await this.$axios.$get(`/my/all-announce-paginated?page=${data.page || 1}${[0,1,2,3].includes(data.status) ? `&status=${data.status}` : ''}`);
