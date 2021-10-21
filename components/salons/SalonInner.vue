@@ -23,7 +23,7 @@
           <div :class="`col-lg-${messengers.length ? 9 : 12} mb-2`">
             <div class="profile_info-details">
               <icon name="phone-call" />
-              <span v-html="getConcatPhones(salonSingle.phones, 3, true, { 
+              <span class="d-inline-flex" v-html="getConcatPhones(salonSingle.phones, 3, true, { 
                   telegram: salonSingle.telegram || [], 
                   whatsapp: salonSingle.whatsapp || []  
                 }, salonSingle.short_number)" 

@@ -45,7 +45,7 @@
                 disabled
               />
             </div>
-            <div class="col-lg-4 mb-2 mb-lg-3" v-for="i in 3" :key="i" id="anchor-phones">
+            <div class="col-lg-4 mb-2 mb-lg-3" v-for="i in 3" :key="i" :id="'anchor-phones'+(i === 1 ? '' : i)">
               <form-text-input v-if="i === 1 || typeof form.phones[i - 1] === 'string'"
                 v-model="form.phones[i - 1]"
                 autocomplete="tel" 
