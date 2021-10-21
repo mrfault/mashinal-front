@@ -542,8 +542,18 @@ main {
         padding-top: 10px;
         padding-bottom: 10px;
         i {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
           width: 60px;
+          height: 45px;
           font-size: 45px;
+          &.icon-store {
+            font-size: 25px;
+          }
+          &.icon-parts {
+            font-size: 30px;
+          }
         }
       }
     }
