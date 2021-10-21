@@ -160,6 +160,10 @@
           this.$router.replace({ query: null });
           if (ref) setTimeout(() => {
             this.scrollTo(ref, [-15, -20]);
+            ref.classList.add('underline');
+            setTimeout(() => {
+              ref.classList.remove('underline');
+            }, 2000);
             this.$el?.querySelector('.text-input input')?.focus();
           }, 300);
         }

@@ -206,6 +206,7 @@ main {
   background-color: $white;
   border-radius: 4px;
   padding: 25px;
+  transition: box-shadow .2s ease-out;
   &.no-bg {
     background-color: transparent;
   }
@@ -221,6 +222,9 @@ main {
     opacity: .25;
     pointer-events: none;
   }
+  &.underline {
+    box-shadow: $shadow-light-6;
+  }
 }
 
 .dark-mode {
@@ -235,6 +239,9 @@ main {
   }
   .card {
     background-color: $dark-2;
+    &.underline {
+      box-shadow: $shadow-dark-6;
+    }
   }
 }
 
