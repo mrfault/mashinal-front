@@ -1,7 +1,7 @@
 <template>
   <div class="search-nav">
-    <nav :class="{'mt-n2': !showOnlyCategories}">
-      <div class="search-types" v-if="!showOnlyCategories">
+    <nav class="mt-n2">
+      <div class="search-types">
         <div class="container">
           <ul>
             <li v-for="menu in searchMenus" :key="menu.title">
@@ -25,7 +25,7 @@
           <div class="swiper-container" v-swiper:searchNavSwiper="swiperOps" v-else>
             <div class="swiper-wrapper">
               <div class="swiper-slide" v-for="submenu in activeMenu.children" :key="submenu.title">
-                <nuxt-link :to="$localePath(submenu.route)" :class="{'category-link': showOnlyCategories}">
+                <nuxt-link :to="$localePath(submenu.route)" :class="{'category-link': activeType === 'parts'}">
                   <icon :name="submenu.icon" />
                   {{ $t(submenu.title) }}
                 </nuxt-link>
@@ -62,20 +62,17 @@ export default {
       return 'cars';
     },
     activeMenu() {
-      return this.announcementsMenus.find(menu => menu.title === this.activeType);
+      return this.searchMenus.find(menu => menu.title === this.activeType);
     },
     activeSlide() {
       return this.activeMenu?.children?.findIndex(menu => this.$localePath(menu.route) === this.$route.path);
-    },
-    showOnlyCategories() {
-      return this.activeType === 'parts';
     }
   },
   methods: {
     slideToCategory() {
       this.$nextTick(() => {
         setTimeout(() => {
-          if (!['commercial-commercial','parts-category'].includes(this.routeName)) return false;
+          if (!['commercial','commercial-commercial','parts','parts-category'].includes(this.routeName)) return false;
           if (typeof this.activeSlide === 'number') 
             this.searchNavSwiper?.slideTo(this.activeSlide);
         }, 0);

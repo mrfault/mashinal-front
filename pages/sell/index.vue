@@ -112,7 +112,7 @@
         return ['moto','commercial'].includes(this.vehicleType);
       },
       vehicleOptions() {
-        return this.announcementsMenus.map(menu => ({
+        return this.searchMenus.map(menu => ({
           ...menu,
           disabled: this.tokens[menu.title] <= 0 && !this.tokens[menu.title === 'parts' ? 'parts_unlimited' : 'salon_unlimited']
         }));
