@@ -215,8 +215,8 @@
         form: {
           name: salon.name || '',
           phones: [...(salon.phones || [])].map(phone => '+'+phone),
-          telegram: [...(salon.telegram || [])],
-          whatsapp: [...(salon.whatsapp || [])],
+          telegram: [...(salon.telegram || [])].slice(0, (salon.phones || []).length),
+          whatsapp: [...(salon.whatsapp || [])].slice(0, (salon.phones || []).length),
           address: salon.address || '',
           lat: salon.lat || 0,
           lng: salon.lng || 0,

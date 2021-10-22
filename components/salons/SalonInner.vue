@@ -16,7 +16,7 @@
         </nuxt-link>
       </div>
       <h2 class="title-with-line text-center">
-        <span>{{ $t('salon') }} "{{ salonSingle.name || salonSingle.user.full_name }}"</span>
+        <span>{{ $t(isShop ? 'shop' : 'salon') }} "{{ salonSingle.name || salonSingle.user.full_name }}"</span>
       </h2>
       <div class="row align-items-lg-end profile_info">
         <template v-if="salonSingle.phones && salonSingle.phones.length">
@@ -105,9 +105,13 @@ export default {
     },
     messengers() {
       let msg = [];
-      if (this.salonSingle.whatsapp?.find(wp => wp)) msg.push('Whatsapp');
-      if (this.salonSingle.telegram?.find(tg => tg)) msg.push('Telegram');
+      let phonesLength = this.salonSingle.phones?.length || 0;
+      if (this.salonSingle.whatsapp?.slice(0, phonesLength).find(wp => wp)) msg.push('Whatsapp');
+      if (this.salonSingle.telegram?.slice(0, phonesLength).find(tg => tg)) msg.push('Telegram');
       return msg.join('/');
+    },
+    isShop() {
+      return this.routeName.includes('parts');
     }
   },
   methods: {
