@@ -11,8 +11,8 @@
         <div class="col-6 col-lg-1-5 mb-2 mb-lg-3">
           <form-select :label="$t('mark')" :options="brands" v-model="form.name"
             @change="form.model = '', form.generation = '', submitForm(true, false)" has-search :clear-option="!isMobileBreakpoint" 
-            :popular-options="isMobileBreakpoint ? [129,483,8,1,767,117] : undefined" 
-            :img-key="isMobileBreakpoint ? 'transformed_media' : ''" slug-in-value />
+            :popular-options="isMobileBreakpoint ? [129,483,8,1,767,117] : undefined" slug-in-value
+            :img-key="isMobileBreakpoint ? 'transformed_media' : ''" :img-placeholder="`/logos/car-${colorMode}.svg`" />
         </div>
         <div class="col-6 col-lg-1-5 mb-2 mb-lg-3">
           <form-select :label="$t('model')" :options="models" v-model="form.model"

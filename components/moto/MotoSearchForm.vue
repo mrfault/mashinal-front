@@ -9,7 +9,8 @@
       <div class="row" v-for="(key, index) in rows" :key="key">
         <div class="col-6 col-lg-4 mb-2">
           <form-select :label="$t('mark')" :options="brands" v-model="form.additional_brands[key]['brand']"
-            @change="setBrand($event, key)" has-search/>
+            @change="setBrand($event, key)" has-search
+            :img-key="isMobileBreakpoint ? 'transformed_media' : ''" :img-placeholder="`/logos/moto-${colorMode}.svg`" />
         </div>
         <div class="col-6 col-lg-4 mb-2 mb-lg-3">
           <div :class="['row', {'has-add-btn': canAddRow(index), 'has-remove-btn': canRemoveRow()}]">

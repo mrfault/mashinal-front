@@ -16,8 +16,8 @@
               <template v-for="(option, index) in getPopularOptions">
                 <div v-if="index === 10" :key="'break-' +option.id" class="full-width d-none d-lg-block"></div>
                 <div :key="option.id" :class="['popular-option', isMobileBreakpoint ? 'col-4' : 'col']" @click.stop="optionsValue = option">
-                  <div class="img" v-if="imgKey && option[imgKey]">
-                    <img :src="$withBaseUrl(option[imgKey])" :alt="getOptionName(option)" />
+                  <div class="img" v-if="imgKey">
+                    <img :src="$withBaseUrl(option[imgKey]) || imgPlaceholder" :alt="getOptionName(option)" />
                   </div>
                   <div class="text-truncate">
                     <span>{{ getOptionName(option) }}</span>
@@ -32,8 +32,8 @@
           <template v-if="isMobileBreakpoint">
             <template v-for="(option, index) in getFilteredOptions">
               <div :key="index" class="model-options_option" @click.stop="optionsValue = option">
-                <div class="img" v-if="imgKey && option[imgKey]">
-                  <img :src="$withBaseUrl(option[imgKey])" :alt="getOptionName(option)" />
+                <div class="img" v-if="imgKey">
+                  <img :src="$withBaseUrl(option[imgKey]) || imgPlaceholder" :alt="getOptionName(option)" />
                 </div>
                 <div class="text-truncate">
                   <span>{{ getOptionName(option) }}</span>
@@ -45,8 +45,8 @@
             <div class="col-lg-2" v-for="(col, i) in $chunk(getFilteredOptions, Math.ceil(getFilteredOptions.length / 6))" :key="i">
               <template v-for="(option, index) in col">
                 <div :key="index" class="model-options_option mb-n1" @click.stop="optionsValue = option">
-                  <div class="img" v-if="imgKey && option[imgKey]">
-                    <img :src="$withBaseUrl(option[imgKey])" :alt="getOptionName(option)" />
+                  <div class="img" v-if="imgKey">
+                    <img :src="$withBaseUrl(option[imgKey]) || imgPlaceholder" :alt="getOptionName(option)" />
                   </div>
                   <div class="text-truncate">
                     <span :class="{'text-bold': option.popular === 1}">{{ getOptionName(option) }}</span>
@@ -58,8 +58,8 @@
           <template v-else>
             <div class="col-lg-2" v-for="(option, index) in getFilteredOptions" :key="index">
               <div class="model-options_option mb-n1" @click.stop="optionsValue = option">
-                <div class="img" v-if="imgKey && option[imgKey]">
-                  <img :src="$withBaseUrl(option[imgKey])" :alt="getOptionName(option)" />
+                <div class="img" v-if="imgKey">
+                  <img :src="$withBaseUrl(option[imgKey]) || imgPlaceholder" :alt="getOptionName(option)" />
                 </div>
                 <div class="text-truncate">
                   <span :class="{'text-bold': option.popular === 1}">{{ getOptionName(option) }}</span>
@@ -88,6 +88,7 @@ export default {
     options: Array,
     popularOptions: Array,
     imgKey: String,
+    imgPlaceholder: String,
     sortAlphabetically: {
       type: Boolean,
       default: true
