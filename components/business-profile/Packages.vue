@@ -165,12 +165,12 @@ export default {
     }),
     priceDifference() {
       if (!this.hasSalon || this.downgradePlan) return 0;
-      let diff = parseFloat(this.selectedPackage.price) - parseFloat(this.user.autosalon.current_package.price);
+      let diff = this.$substract(parseFloat(this.selectedPackage.price), parseFloat(this.user.autosalon.current_package.price));
       return diff > 0 ? diff : 0;
     },
     calculatedPrice() {
       if (!this.selectedPackage) return 0;
-      return Math.round((this.priceDifference || parseFloat(this.selectedPackage.price))*1000)/1000;
+      return this.priceDifference || parseFloat(this.selectedPackage.price);
     },
     haveBalanceForPlan() {
       if (!this.selected || !this.loggedIn) return false;

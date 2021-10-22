@@ -358,8 +358,20 @@ main {
       display: flex;
       align-items: center;
     }
+    .form-switch {
+      margin-left: 20px;
+      button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+      i {
+        font-size: 17px;
+      }
+    }
     .user-menu {
       position: relative;
+      flex-shrink: 0;
       cursor: pointer;
       width: 34px;
       margin-left: 50px;
@@ -373,7 +385,7 @@ main {
         z-index: 1;
         width: 300px;
         top: 100%;
-        right: -81px;
+        right: -166px;
         visibility: hidden;
         opacity: 0;
         padding-top: 10px;
@@ -1207,11 +1219,41 @@ main {
   }
 }
 
+.map-switch {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: fixed;
+  z-index: 9;
+  bottom: 120px;
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  font-size: 24px;
+  color: $white;
+  box-shadow: $shadow-light-1;
+  background-color: $dark-blue-1;
+}
+
 .reached-footer {
   .theme-switch.floating,
   .scroll-top {
     position: absolute;
     bottom: 30px;
+  }
+  .map-switch {
+    position: absolute;
+    bottom: 120px;
+  }
+}
+
+@include media-max-width('lg') {
+  .map-switch {
+    position: fixed !important;
+    right: 25px;
+    bottom: 120px !important;
   }
 }
 
@@ -1269,7 +1311,8 @@ main {
 
 .dark-mode {
   .theme-switch.floating,
-  .scroll-top {
+  .scroll-top,
+  .map-switch {
     background-color: $dark-2;
     box-shadow: $shadow-dark-1;
     &:hover {

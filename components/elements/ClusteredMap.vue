@@ -66,13 +66,13 @@ export default {
       }, {
         restrictMapArea: [[85,-178.9], [-73.87011,180]],
         geolocationControlPosition: !this.isMobileBreakpoint 
-          ? { bottom: '170px', right: '20px' } 
+          ? { bottom: '170px', left: '20px' } 
           : { top: '20px', left: '20px' },
         zoomControlPosition: !this.isMobileBreakpoint 
-          ? { bottom: '40px', right: '20px' }
+          ? { bottom: '40px', left: '20px' }
           : { bottom: '40px', left: '20px' },
         typeSelectorPosition: !this.isMobileBreakpoint 
-          ? { bottom: '135px', right: '20px' }
+          ? { bottom: '135px', left: '20px' }
           : { top: '20px', right: '20px' },
         typeSelectorSize: 'small',
         zoomControlSize: 'small'
@@ -82,7 +82,7 @@ export default {
 
       this.objectManager = new ymaps.ObjectManager({
         clusterize: true,
-        gridSize: 200,
+        gridSize: 128,
         zoomMargin: 50,
         geoObjectBalloonAutoPanMargin: [90, 20, 220, 20],
         geoObjectOpenBalloonOnClick: false,

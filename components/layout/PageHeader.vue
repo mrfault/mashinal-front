@@ -54,6 +54,7 @@
               </div>
             </div>
           </div>
+          <form-switch :options="getThemeOptions" v-model="activeTheme" />
         </nav>
       </div>
     </div>
@@ -99,10 +100,27 @@ import { UserDataMixin } from '~/mixins/user-data';
 export default {
   mixins: [MenusDataMixin, UserDataMixin],
   methods: {
-    ...mapActions(['changeLocale'])
+    ...mapActions(['changeLocale','setColorMode'])
   },
   computed: {
-    ...mapGetters(['notViewedFavorites','notViewedSavedSearch'])
+    ...mapGetters(['notViewedFavorites','notViewedSavedSearch']),
+
+    activeTheme: {
+      get() {
+        return this.colorMode;
+      },
+      set(value) {
+        this.setColorMode(value);
+        this.$cookies.set('color-mode', value);
+        document.documentElement.setAttribute('data-color-mode', value);
+      }
+    },
+    getThemeOptions() {
+      return [
+        { key: 'light', icon: 'sun' },
+        { key: 'dark', icon: 'moon' }
+      ]
+    }
   }
 }
 </script>

@@ -162,6 +162,13 @@ export default function({ app, route, store }, inject) {
     let en = moment(date).format(format);
     return ({ ru, az, en });
   });
+  // numeric precision
+  inject('sum', (a, b) => {
+    return Math.round((a * 100) + (b * 100)) / 100;
+  });
+  inject('substract', (a, b) => {
+    return Math.round((a * 100) - (b * 100)) / 100;
+  });
   // underscore
   inject('clone', _.clone);
   inject('sortBy', _.sortBy);

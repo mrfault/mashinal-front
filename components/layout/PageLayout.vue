@@ -2,15 +2,13 @@
   <div :class="['wrapper', { loading }, `${colorMode}-mode`]">
     <transition name="fade">
       <div class="layout" v-show="!loading">
-        <mobile-menu>
-          <theme-switch v-if="isMobileBreakpoint"/>
-        </mobile-menu>
+        <mobile-menu />
         <page-header />
         <slot name="after-header" />
         <main>
           <slot name="nuxt" />
-          <theme-switch :floating="true" v-if="!isMobileBreakpoint" />
           <scroll-top v-if="!hideFooter" />
+          <map-switch v-if="['salons','parts-shops'].includes(routeName)" />
         </main>
         <slot name="before-header" />
         <backdrop @click="closeLogin" v-if="showLoginPopup">
@@ -51,9 +49,9 @@ import PageFooter from '~/components/layout/PageFooter';
 import MobileMenu from '~/components/layout/MobileMenu';
 import MobileNav from '~/components/layout/MobileNav';
 import PaidStatus from '~/components/elements/PaidStatus';
-import ThemeSwitch from '~/components/elements/ThemeSwitch';
 import ScrollTop from '~/components/elements/ScrollTop';
 import ComparisonBadge from '~/components/elements/ComparisonBadge';
+import MapSwitch from '~/components/salons/MapSwitch';
 
 export default {
   mixins: [LayoutMixin],
@@ -63,9 +61,9 @@ export default {
     MobileMenu,
     MobileNav,
     PaidStatus,
-    ThemeSwitch,
     ScrollTop,
-    ComparisonBadge
+    ComparisonBadge,
+    MapSwitch
   }
 }
 </script>

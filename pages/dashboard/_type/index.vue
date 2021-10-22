@@ -170,7 +170,7 @@
           isShop: isShop,
           short_description: this.user[isShop ? 'part_salon' : 'autosalon'].short_description || '',
           name: this.user[isShop ? 'part_salon' : 'autosalon'].name || this.user.full_name,
-          balance: this.user.balance + this.user[isShop ? 'part_salon' : 'autosalon'].balance,
+          balance: this.$sum(this.user.balance, this.user[isShop ? 'part_salon' : 'autosalon'].balance),
           unlimited: this.user[isShop ? 'part_salon' : 'autosalon']?.is_unlimited,
           packageName: isShop ? '' : `<span style='${myPackage.color ? ('color: ' + myPackage.color) : ''}'>${myPackage.name?.[this.locale]}</span>`
         }

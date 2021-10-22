@@ -30,7 +30,7 @@
             <button :class="['btn','btn--pale-red-outline',{'active': code === locale}]" v-for="code in locales" :key="code" 
               @click="changeLocale(code)">{{ code }}</button>
           </div>
-          <slot />
+          <theme-switch />
           <span class="cursor-pointer close d-inline-flex align-top" @click="toggleSidebarMenu(false)">
             <icon name="cross" />
           </span>
@@ -77,8 +77,13 @@ import { mapGetters, mapActions } from 'vuex';
 import { MenusDataMixin } from '~/mixins/menus-data';
 import { UserDataMixin } from '~/mixins/user-data';
 
+import ThemeSwitch from '~/components/elements/ThemeSwitch';
+
 export default {
   mixins: [MenusDataMixin, UserDataMixin],
+  components: {
+    ThemeSwitch
+  },
   data() {
     return {
       showSidebar: false

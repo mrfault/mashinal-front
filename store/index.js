@@ -114,7 +114,7 @@ const getInitialState = () => ({
   mySalon: {},
   myAnnouncementCalls: {},
   myAnnouncementStats: {},
-  myPackageStats: {},
+  mapView: false
 });
 
 export const state = () => (getInitialState());
@@ -241,7 +241,7 @@ export const getters = {
   mySalon: s => s.mySalon,
   myAnnouncementCalls: s => s.myAnnouncementCalls,
   myAnnouncementStats: s => s.myAnnouncementStats,
-  myPackageStats: s => s.myPackageStats
+  mapView: s => s.mapView
 };
 
 const objectNotEmpty = (state, commit, property) => {
@@ -828,15 +828,14 @@ export const actions = {
     const res = await this.$axios.$get(`/my/dashboard/statistics/${id}`);
     commit('mutate', { property: 'myAnnouncementStats', value: res });
   },
-  async getPackageStats({commit}, id) {
-    const res = await this.$axios.$get(`/my/dashboard/package/${id}`);
-    commit('mutate', { property: 'myPackageStats', value: res });
-  },
   updateSalonsFiltered({commit}, list) {
     commit('mutate', { property: 'salonsFiltered', value: list });
   },
   updateSalonsInBounds({commit}, list) {
     commit('mutate', { property: 'salonsInBounds', value: list });
+  },
+  setMapView({commit}, visible) {
+    commit('mutate', { property: 'mapView', value: visible });
   },
   // Reset Data on Logout
   resetUserData({ commit }) {

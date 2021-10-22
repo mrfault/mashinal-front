@@ -1,5 +1,5 @@
 <template>
-  <div :class="['pages-parts-shops', `${view}-view`]">
+  <div :class="['pages-parts-shops', `${mapView ? 'map' : 'list'}-view`]">
     <mobile-screen @back="showSearch = false" :bar-title="$t('search_salon')" v-if="showSearch && isMobileBreakpoint">
       <div class="flex-stretch-chilren pt-4">
         <div class="full-width">
@@ -7,10 +7,10 @@
         </div>
         <salon-search-form v-show="searchFormType === 1" where="parts" />
         <salon-filters-form v-show="searchFormType === 0" where="parts" @filter="showSearch = false"
-          :count="(view === 'list' ? salonsFiltered : salonsInView).length" /> 
+          :count="(!mapView ? salonsFiltered : salonsInView).length" /> 
       </div>
     </mobile-screen>
-    <template v-if="view === 'list'">
+    <template v-if="!mapView">
       <div class="container">
         <breadcrumbs :crumbs="crumbs" />
         <template v-if="!isMobileBreakpoint">
@@ -31,9 +31,9 @@
         <no-results type="part" v-else />
       </div>
     </template>
-    <div :class="`map-${isMobileBreakpoint ? 'fh' : 'fw'}-container`" v-show="view === 'map'">
+    <div :class="`map-${isMobileBreakpoint ? 'fh' : 'fw'}-container`" v-if="mapView">
       <template v-if="!isMobileBreakpoint">
-        <template v-if="view === 'map'">
+        <template v-if="mapView">
           <div :class="['map-sidebar', { collapse: !disableCollapse && collapse }]">
             <div class="map-sidebar_content">
               <breadcrumbs :crumbs="crumbs" />
@@ -62,7 +62,7 @@
           </div>
         </template>
         <clustered-map 
-          key="desktop-map"
+          :key="'desktop-map_'+mapKey"
           :margin-left="{ left: 0, top: 0, width: '360px', height: '100%' }"
           :margin-top="{ top: 0, left: 0, width: '100%', height: '150px' }" 
           :use-margin-left="!disableCollapse && !collapse" 
@@ -71,20 +71,10 @@
       </template>
       <template v-else>
         <clustered-map 
-          key="mobile-map"
+          :key="'mobile-map_'+mapKey"
           @balloon-click="$router.push($localePath(`/parts/shops/${$event}`))"
         />
       </template>
-    </div>
-    <div class="salon-view-btn">
-      <button class="btn btn--dark-blue" @click="changeView">
-        <template v-if="view === 'list'">
-          <icon name="map" /> {{ $t('map') }}
-        </template>
-        <template v-else-if="view === 'map'">
-          <icon name="burger" /> {{ $t('list') }}
-        </template>
-      </button>
     </div>
   </div>
 </template>
@@ -125,15 +115,15 @@ export default {
       store.dispatch('getSalonsList', { type: 2, params: '?part=true'})
     ]);
     return {
-      view: 'list',
       collapse: false,
       disableCollapse: true,
       showSearch: false,
-      searchFormType: 0
+      searchFormType: 0,
+      mapKey: 0
     }
   },
   computed: {
-    ...mapGetters(['salonsFiltered', 'salonsInBounds']),
+    ...mapGetters(['salonsFiltered', 'salonsInBounds', 'mapView']),
 
     crumbs() {
       return [
@@ -155,20 +145,23 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['setFooterVisibility', 'updateSalonsInBounds', 'updateSalonsSearchFilters', 'updateSalonsFilters']),
+    ...mapActions(['setFooterVisibility', 'setMapView', 'updateSalonsInBounds', 'updateSalonsSearchFilters', 'updateSalonsFilters']),
 
-    changeView() {
-      this.view = (this.view === 'list') ? 'map' : 'list';
-      this.setFooterVisibility(this.view === 'list');
-    },
     toggleSearch() {
       this.showSearch = !this.showSearch;
+    }
+  },
+  watch: {
+    mapView(visible) {
+      this.mapKey = 1;
+      this.setFooterVisibility(!visible);
     }
   },
   created() {
     this.$nuxt.$on('search-icon-click', this.toggleSearch);
   },
   beforeDestroy() {
+    this.setMapView(false);
     this.setFooterVisibility(true);
     this.updateSalonsFilters({});
     this.updateSalonsSearchFilters({});
