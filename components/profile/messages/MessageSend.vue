@@ -26,7 +26,7 @@
         </span>
       </div>
       <div class="textarea-submit">
-        <button type="submit" class="btn-reset" @click="$emit('send', $event)">
+        <button type="submit" class="btn-reset">
           <icon name="send" />
         </button>
       </div>
