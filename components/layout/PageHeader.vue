@@ -54,7 +54,7 @@
               </div>
             </div>
           </div>
-          <form-switch :options="getThemeOptions" v-model="activeTheme" />
+          <theme-switch />
         </nav>
       </div>
     </div>
@@ -97,30 +97,18 @@ import { mapGetters, mapActions } from 'vuex';
 import { MenusDataMixin } from '~/mixins/menus-data';
 import { UserDataMixin } from '~/mixins/user-data';
 
+import ThemeSwitch from '~/components/elements/ThemeSwitch';
+
 export default {
   mixins: [MenusDataMixin, UserDataMixin],
+  components: {
+    ThemeSwitch
+  },
   methods: {
-    ...mapActions(['changeLocale','setColorMode'])
+    ...mapActions(['changeLocale'])
   },
   computed: {
-    ...mapGetters(['notViewedFavorites','notViewedSavedSearch']),
-
-    activeTheme: {
-      get() {
-        return this.colorMode;
-      },
-      set(value) {
-        this.setColorMode(value);
-        this.$cookies.set('color-mode', value);
-        document.documentElement.setAttribute('data-color-mode', value);
-      }
-    },
-    getThemeOptions() {
-      return [
-        { key: 'light', icon: 'sun' },
-        { key: 'dark', icon: 'moon' }
-      ]
-    }
+    ...mapGetters(['notViewedFavorites','notViewedSavedSearch'])
   }
 }
 </script>

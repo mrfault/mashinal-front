@@ -163,11 +163,11 @@ export default function({ app, route, store }, inject) {
     return ({ ru, az, en });
   });
   // numeric precision
-  inject('sum', (a, b) => {
-    return Math.round((a * 100) + (b * 100)) / 100;
+  inject('sum', (...numbers) => {
+    return Math.round(numbers.map(a => a * 100).reduce((a, b) => (a + b))) / 100;
   });
-  inject('substract', (a, b) => {
-    return Math.round((a * 100) - (b * 100)) / 100;
+  inject('substract', (...numbers) => {
+    return Math.round(numbers.map(a => a * 100).reduce((a, b) => (a - b))) / 100;
   });
   // underscore
   inject('clone', _.clone);

@@ -291,7 +291,7 @@
         </button>
       </div>
     </div>
-    <div class="announcements-sorting" v-show="!isStarterPage && totalCount && !(advanced || assistant)">
+    <div class="announcements-sorting" v-show="routeName !== 'index' && totalCount && !(advanced || assistant)">
       <div class="row">
         <div class="col-6 col-lg-auto mt-3 mt-lg-5 mb-n6 mb-lg-n1">
           <div class="form-info no-bg text-green" v-if="isMobileBreakpoint">
@@ -421,12 +421,12 @@ export default {
     }
   },
   created() {
-    this.$nuxt.$on('go-to-search', this.goToSearch);
+    this.$nuxt.$on('extend-options', this.goToSearch);
     if (this.routeName === 'index') 
       this.$nuxt.$on('logo-click', this.resetForm);
   },
   beforeDestroy() {
-    this.$nuxt.$off('go-to-search', this.goToSearch);
+    this.$nuxt.$off('extend-options', this.goToSearch);
     if (this.routeName === 'index') 
       this.$nuxt.$off('logo-click', this.resetForm);
   }

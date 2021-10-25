@@ -6,7 +6,7 @@
           <ul>
             <li v-for="menu in searchMenus" :key="menu.title">
               <nuxt-link :to="$localePath(menu.route)" :class="{'active': menu.title === activeType }">
-                {{ $t(menu.title) }}
+                {{ $t(menu.title).replace(' Avtomobillər', '') }}
               </nuxt-link>
             </li>
           </ul>
@@ -16,7 +16,7 @@
         <div class="container">
           <ul v-if="activeMenu.children.length < 4">
             <li v-for="submenu in activeMenu.children" :key="submenu.title">
-              <nuxt-link :to="$localePath(submenu.route)">
+              <nuxt-link :to="$localePath(submenu.route)" exact :class="{'active': checkActive(submenu.route)}">
                 <icon :name="submenu.icon" />
                 {{ $t(submenu.title) }}
               </nuxt-link>
@@ -25,7 +25,7 @@
           <div class="swiper-container" v-swiper:searchNavSwiper="swiperOps" v-else>
             <div class="swiper-wrapper">
               <div class="swiper-slide" v-for="submenu in activeMenu.children" :key="submenu.title">
-                <nuxt-link :to="$localePath(submenu.route)" :class="{'category-link': activeType === 'parts'}">
+                <nuxt-link :to="$localePath(submenu.route)" exact :class="{'active': checkActive(submenu.route), 'category-link': activeType === 'parts'}">
                   <icon :name="submenu.icon" />
                   {{ $t(submenu.title) }}
                 </nuxt-link>
@@ -77,6 +77,10 @@ export default {
             this.searchNavSwiper?.slideTo(this.activeSlide);
         }, 0);
       });
+    },
+    checkActive(route) {
+      if (route === '/parts' && this.routeName !== 'parts') return false;
+      return this.$route.fullPath.includes(this.$localePath(route));
     }
   },
   mounted() {

@@ -1593,7 +1593,7 @@ export default {
     "Ön",
     "Tam"
   ],
-  "type_of_motos": "Motosiklet növü",
+  "type_of_motos": "Moto növü",
   "type_of_mount": "Bərkitmə növü",
   "type_useful": "Faydalı",
   "type_your_email": "E-poçt ünvanını daxil et.",

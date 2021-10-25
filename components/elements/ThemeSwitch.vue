@@ -1,5 +1,5 @@
 <template>
-  <div :class="['theme-switch',{'floating d-none d-lg-block': floating, 'mobile': !floating}]" @click="switchColorMode">
+  <div :class="['theme-switch',{'floating d-none d-lg-block': floating}]" @click="switchColorMode">
     <canvas ref="canvas" width="120" height="120"></canvas>
   </div>
 </template>
@@ -49,7 +49,7 @@ export default {
   },
   watch: {
     breakpoint() {
-      this.updateAnimation();
+      this.$nextTick(this.updateAnimation);
     }
   },
   mounted() {

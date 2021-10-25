@@ -33,7 +33,7 @@
         </div>
       </div>
       <div class="text-center">
-        <button type="submit" :class="['btn btn--green', { 'pending': downgradePlan && pending }]">{{ $t((hasSalon) ? 'to_change_package' : 'pay_online') }}</button>
+        <button type="submit" :class="['btn btn--green', { 'pending': downgradePlan && pending, 'disabled': activePackage && activePackage.id == selected  }]">{{ $t((hasSalon) ? 'to_change_package' : 'pay_online') }}</button>
       </div>
     </form>
     <modal-popup 
@@ -183,6 +183,10 @@ export default {
     selectedPackage() {
       return this.salonPackages.find(p => p.id === this.selected);
     },
+    activePackage() {
+      if (!this.hasSalon) return null;
+      return this.salonPackages.find(item => item.id === this.user.autosalon.current_package.id) || null
+    },
     leftToDeactivate() {
       if (!this.user.autosalon || !this.downgradePlan) return 0;
       let left = this.user.autosalon.current_package.announce_count - this.user.announce_left_car - this.selectedPackage.announce_count - this.selectedAnnouncements.length;
@@ -299,9 +303,8 @@ export default {
   created() {
     this.selected = this.salonPackages.find(item => item.announce_count == 20).id;
     if (this.hasSalon) {
-      let activePackage = this.salonPackages.find(item => item.id === this.user.autosalon.current_package.id);
       // `current_package` may include a package which is not in the list anymore
-      if (activePackage) this.selected = activePackage.id;
+      if (this.activePackage) this.selected = this.activePackage.id;
       this.getSalonAnnouncements();
     }
   },

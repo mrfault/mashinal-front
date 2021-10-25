@@ -611,10 +611,6 @@ export const actions = {
     const res = await this.$axios.$get(`/grid/home_page_parts?per_page=4&page=${data.page || 1}`);
     commit('mutate', { property: 'mainPartsAnnouncements', value: res });
   },
-  async getMotoMainSearch({ commit }, data = {}) {
-    const res = await this.$axios.$get(`/moto_home_page?page=${data.page || 1}`);
-    commit('mutate', { property: 'mainAnnouncements', value: res });
-  },
   async getGridSearch({ commit }, data) {
     const res = await this.$axios.$post(`${data.url}?page=${data.page || 1}`, data.post);
     commit('mutate', { property: data.prefix + 'Announcements', value: res });

@@ -1,5 +1,5 @@
 <template>
-  <div class="commercial-search-form form">
+  <div class="commercial-search-form form" ref="searchForm">
     <div class="card pt-2 pt-lg-4">
       <div class="row">
         <div class="col-lg-4 mb-2 mb-lg-3">
@@ -83,7 +83,7 @@
             <component :is="!isMobileBreakpoint ? 'transition-expand' : 'div'">
               <div class="row" v-if="isMobileBreakpoint || !collapsed">
                 <div class="col-12">
-                  <commercial-filters :values="form" @change-filter="setCommercialFilter" :common="true">
+                  <commercial-filters :values="form" @change-filter="setCommercialFilter" :common="!category.type">
                     <template #before>
                       <div class="col-6 col-lg-2 mb-2 mb-lg-3" v-if="isMobileBreakpoint">
                         <form-select :label="$t('city')" :options="sellOptions.regions" v-model="form.region" has-search />
@@ -214,12 +214,12 @@ export default {
       this.$set(this.form.additional_brands[index], 'category', id);
       this.$set(this.form.additional_brands[index], 'brand', '');
       this.$set(this.form.additional_brands[index], 'model', '');
-      if (id) await this.getCommercialBrands({ category: this.category.id || this.form.additional_brands[index].category || this.form.com_type, index });
+      if (id) await this.getCommercialBrands({ category: this.category.id || this.form.additional_brands[index]['category'] || this.form.com_type, index });
     },
     async setBrand(id, index) {
       this.$set(this.form.additional_brands[index], 'brand', id);
       this.$set(this.form.additional_brands[index], 'model', '');
-      if (id) await this.getCommercialModels({ category: this.category.id || this.form.additional_brands[index].category || this.form.com_type, id, index });
+      if (id) await this.getCommercialModels({ category: this.category.id || this.form.additional_brands[index]['category'] || this.form.com_type, id, index });
     },
     setCommercialFilter(key, value) {
       if (value === false || value === '' || (typeof value === 'object' && !Object.keys(value).length)) {

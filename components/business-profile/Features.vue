@@ -17,7 +17,6 @@
           <img class="feature__bookmark" src="/icons/bookmark.svg"/>
           <div class="feature__title">{{ $t('features_2_title') }}</div>
           <div class="feature__text">
-            <!-- TODO change to icon -->
             <img src="/icons/infinity.svg" />
           </div>
         </div>

@@ -30,7 +30,7 @@
             <button :class="['btn','btn--pale-red-outline',{'active': code === locale}]" v-for="code in locales" :key="code" 
               @click="changeLocale(code)">{{ code }}</button>
           </div>
-          <theme-switch />
+          <theme-switch v-if="isMobileBreakpoint" />
           <span class="cursor-pointer close d-inline-flex align-top" @click="toggleSidebarMenu(false)">
             <icon name="cross" />
           </span>
@@ -98,8 +98,10 @@ export default {
     },
     handleIconClick(path, event) {
       if (path) {
-        if (['cars', 'index', 'cars-assistant', 'cars-advanced-search'].includes(this.routeName))
-          this.$nuxt.$emit('go-to-search', path);
+        if (['moto', 'moto-moto', 'commercial', 'commercial-commercial'].includes(this.routeName))
+          this.$nuxt.$emit('extend-options');
+        else if (['cars', 'index', 'cars-assistant', 'cars-advanced-search'].includes(this.routeName))
+          this.$nuxt.$emit('extend-options', path);
         else this.$router.push(path);
       } else if (event) {
         this.$nuxt.$emit(event);

@@ -1592,7 +1592,7 @@ export default {
     "Передний",
     "Полный"
   ],
-  "type_of_motos": "Тип мотоцикла",
+  "type_of_motos": "Тип мото",
   "type_of_mount": "Тип крепления",
   "type_useful": "Полезные",
   "type_your_email": "Введите ваш e-mail",

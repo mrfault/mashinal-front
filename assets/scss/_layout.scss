@@ -358,16 +358,8 @@ main {
       display: flex;
       align-items: center;
     }
-    .form-switch {
+    .theme-switch {
       margin-left: 20px;
-      button {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-      }
-      i {
-        font-size: 17px;
-      }
     }
     .user-menu {
       position: relative;
@@ -385,7 +377,7 @@ main {
         z-index: 1;
         width: 300px;
         top: 100%;
-        right: -166px;
+        right: -141px;
         visibility: hidden;
         opacity: 0;
         padding-top: 10px;
@@ -1163,6 +1155,9 @@ main {
 .theme-switch {
   cursor: pointer;
   overflow: hidden;
+  position: relative;
+  width: 40px;
+  height: 40px;
   &.floating {
     position: fixed;
     z-index: 9;
@@ -1186,11 +1181,6 @@ main {
     transform-origin: 0 0;
     // transition: opacity .2s;
   }
-  &.mobile {
-    position: relative;
-    width: 40px;
-    height: 40px;
-  }
 }
 
 .scroll-top {
@@ -1207,6 +1197,7 @@ main {
   border-radius: 50%;
   box-shadow: $shadow-light-1;
   background-color: $white;
+  user-select: none;
   .scroll-top_icon {
     @include abs-middle;
     font-size: 24px;
@@ -1235,6 +1226,7 @@ main {
   color: $white;
   box-shadow: $shadow-light-1;
   background-color: $dark-blue-1;
+  user-select: none;
 }
 
 .reached-footer {
