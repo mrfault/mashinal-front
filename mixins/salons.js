@@ -14,7 +14,7 @@ export const SalonsMixin = {
         .filter(phone => phone)
         .slice(0, max)
         .map((phone, i) => `${phone}`
-          .replace(/(\d{3})(\d{2})(\d{3})(\d{2})(\d{2})/g, '<a '+(clickable ? ('onclick="event.stopPropagation()" href="tel:+'+phone+'"') : 'href="javascript:void(0);"')+'>+$1 $2 $3 $4 $5' + (msg ? `${msg.whatsapp[i] ? '{WHATSAPP}' : ''}${msg.telegram[i] ? '{TELEGRAM}' : ''}` : '') + '</a>')
+          .replace(/(\d{3})(\d{2})(\d{3})(\d{2})(\d{2})/g, '<span class="d-flex flex-row"><a '+(clickable ? ('onclick="event.stopPropagation()" href="tel:+'+phone+'"') : 'href="javascript:void(0);"')+'>+$1 $2 $3 $4 $5' + (msg ? `${msg.whatsapp[i] ? '{WHATSAPP}' : ''}${msg.telegram[i] ? '{TELEGRAM}' : ''}` : '') + '</a></span>')
           .replace('{WHATSAPP}', `<a rel="noopener" target="_blank" href="https://wa.me/${phone}"><img src="/icons/whatsapp-circle.svg" alt="" /></a>`)
           .replace('{TELEGRAM}', `<a rel="noopener" target="_blank" href="https://t.me/+${phone}"><img src="/icons/telegram-circle.svg" alt="" /></a>`)
         )

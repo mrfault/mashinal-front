@@ -34,6 +34,7 @@
       }
       img {
         width: 14px;
+        margin-bottom: 1px;
       }
       table {
         tr:not(:first-child) {
@@ -43,18 +44,28 @@
           padding-left: 5px;
         }
       }
-      span a {
-        display: inline-flex;
-        align-items: flex-start;
-        &:not(:first-child) {
-          margin-left: 21px;
+      span {
+        a {
+          display: inline-flex;
+          align-items: flex-start;
+          &[rel=noopener] {
+            align-self: center;
+            margin-left: 0 !important;
+            img {
+              margin-left: 9px;
+              margin-right: 0;
+            }
+          }
         }
-        &[rel=noopener] {
-          align-self: center;
-          margin-left: 0 !important;
-          img {
-            margin-left: 9px;
-            margin-right: 0;
+        & > span {
+          &:not(:first-child) {
+            margin-left: 21px;
+          }
+          a {
+            margin-top: 0 !important;
+            &:first-child {
+              min-width: 105px;
+            }
           }
         }
       }
@@ -443,10 +454,10 @@
           span {
             display: flex;
             flex-direction: column;
+            margin-left: 0 !important;
           }
           span a {
             &:not(:first-child) {
-              margin-left: 0;
               margin-top: 5px;
             }
           }
