@@ -93,16 +93,17 @@ export default {
 
       this.map.geoObjects.add(this.placemark);
 
-
       const geolocationControl = new ymaps.control.GeolocationControl({
         options: { noPlacemark: true }
       });
+      
       geolocationControl.events.add('locationchange', (e) => {
         const coords = e.get('position');
         this.placemark.geometry.setCoordinates(coords);
         this.applyCoordinates(coords);
         this.map.setCenter(coords, this.map.getZoom(), {duration: 300});
       });
+
       this.map.controls.add(geolocationControl);
     },
     applyCoordinates(coords) {

@@ -1,5 +1,5 @@
 <template>
-  <div class="map-switch" @click="setMapView(!mapView), changeView()">
+  <div class="map-switch" @click="setMapView(!mapView), callEvent()">
     <icon :name="mapView ? 'list' : 'placeholder'" />
     <span>{{ $t(mapView ? 'list' : 'map') }}</span>
   </div>
@@ -15,12 +15,17 @@ export default {
   methods: {
     ...mapActions(['setMapView']),
 
-    changeView() {
+    callEvent() {
       this.$nextTick(() => {
         // fix floating button position by calling
         // scroll handler in layout mixin
         window.dispatchEvent(new Event('scroll'));
       });
+    }
+  },
+  watch: {
+    $route() {
+      setTimeout(this.callEvent, 10);
     }
   }
 }
