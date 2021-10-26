@@ -14,7 +14,10 @@
         :track-views="false"
         @change-page="changePage"
       />
-      <no-results :text="$t('add_an_ad_and_thousands_of_potential_buyers_will_see_it')" v-else>
+      <no-results v-else
+        :type="$route.params.type == 2 ? 'part' : 'car'" 
+        :text="$t('add_an_ad_and_thousands_of_potential_buyers_will_see_it')" 
+      >
         <nuxt-link :to="$localePath('/sell')" class="btn btn--green mt-2 mt-lg-3" v-html="$t('to_sell')" />
       </no-results>
     </div>
