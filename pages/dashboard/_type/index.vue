@@ -181,7 +181,7 @@
       cards() {
         let type = this.$route.params.type;
         return [
-          { key: 'announcements', title: 'my_announces', route: '/profile/announcements', icon: 'photo' },
+          { key: 'announcements', title: 'my_announces', route: '/profile/announcements?type=' + type, icon: 'photo' },
           { key: 'balance', title: 'balans', route: '/profile/balance', icon: 'wallet' },
           { key: 'statistics', title: 'statistics', route: '/dashboard/' + type + '/statistics', icon: 'analytics' },
           { key: 'messages', title: 'messages', route: '/profile/messages', icon: 'chat' },

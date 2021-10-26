@@ -62,6 +62,8 @@
           <span class="call-count" v-if="announcement.show_phone_number_count || showPhoneCount">
             <icon name="phone-call" />
             {{ announcement.show_phone_number_count || 0 }}
+            <icon name="eye" />
+            {{ announcement.view_count }}
           </span>
           <div class="item-checkbox" v-if="showCheckbox">
             <form-checkbox :value="selected" :input-name="`selected_${announcement.id_unique}`" transparent

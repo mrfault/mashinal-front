@@ -629,7 +629,7 @@ export const actions = {
     commit('mutate', { property: 'userAnnouncements', value: res });
   },
   async getMyAllAnnouncements({ commit }, data = {}) {
-    const res = await this.$axios.$get(`/my/all-announce-paginated?page=${data.page || 1}${[0,1,2,3].includes(data.status) ? `&status=${data.status}` : ''}`);
+    const res = await this.$axios.$get(`/my/all-announce-paginated?page=${data.page || 1}${[0,1,2,3].includes(data.status) ? `&status=${data.status}` : ''}${data.shop ? `&${data.shop}=true` : ''}`);
     commit('mutate', { property: 'myAnnouncements', value: res });
   },
   async getAnnouncementInner({ commit }, id) {
