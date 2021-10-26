@@ -1,6 +1,7 @@
 <template>
   <div class="map-switch" @click="setMapView(!mapView), changeView()">
     <icon :name="mapView ? 'list' : 'placeholder'" />
+    <span>{{ $t(mapView ? 'list' : 'map') }}</span>
   </div>
 </template>
 
