@@ -1,5 +1,5 @@
 <template>
-  <div class="pages-moto-index">
+  <div class="pages-parts-index">
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
       <categories class="d-none d-lg-flex" />
