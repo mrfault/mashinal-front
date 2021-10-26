@@ -272,47 +272,53 @@ export default {
     async submitMessage() {
       if (this.disabledTexting || this.sendingMessage) return;
       this.sendingMessage = true;
-      let hasAttachments = this.files.length > 0;
-      if (hasAttachments || (this.text && this.text.replace(/\s/g, '') !== '')) {
-        let formData = new FormData();
-        // include form data
-        formData.append('recipient_id', this.chatUser.id);
-        formData.append('group_id', this.group.id);
-        formData.append('text', this.text);
-        // include attachments
-        await Promise.all(this.files.map(async (file) => {
-          let resizedFile = await this.getResizedImage(file);
-          formData.append('files[]', resizedFile);
-        }));
-        // before send
-        if (hasAttachments) {
-          this.toggleSendingStatus(true);
-        } else this.text = '';
-        // after send
-        const afterSendActions = () => {
-          window.scrollTo(0,0);
+      try {
+        let hasAttachments = this.files.length > 0;
+        if (hasAttachments || (this.text && this.text.replace(/\s/g, '') !== '')) {
+          let formData = new FormData();
+          // include form data
+          formData.append('recipient_id', this.chatUser.id);
+          formData.append('group_id', this.group.id);
+          formData.append('text', this.text);
+          // include attachments
+          await Promise.all(this.files.map(async (file) => {
+            let resizedFile = await this.getResizedImage(file);
+            formData.append('files[]', resizedFile);
+          }));
+          // before send
           if (hasAttachments) {
-            this.text = '';
-            this.$nuxt.$emit('clear-message-attachments');
-            this.toggleSendingStatus(false);
-          } else {
-            this.toggleTypingStatus(true);
-            this.toggleTypingStatus(false);
+            this.toggleSendingStatus(true);
+          } else this.text = '';
+          // after send
+          const afterSendActions = () => {
+            window.scrollTo(0,0);
+            if (hasAttachments) {
+              this.text = '';
+              this.$nuxt.$emit('clear-message-attachments');
+              this.toggleSendingStatus(false);
+            } else {
+              this.toggleTypingStatus(true);
+              this.toggleTypingStatus(false);
+            }
           }
-        }
-        // send
-        try {
-          await this.sendMessage({ form: formData, activeGroup: this.group });
+          // send
+          try {
+            await this.sendMessage({ form: formData, activeGroup: this.group });
+            this.sendingMessage = false;
+            this.markAsRead(this.group.id);
+            afterSendActions();
+            this.lightboxKey++;
+          } catch({ response: { data: { data }}}) {
+            this.sendingMessage = false;
+            if (data.type === 2)
+              await this.$auth.fetchUser();
+            afterSendActions();
+          }
+        } else {
           this.sendingMessage = false;
-          this.markAsRead(this.group.id);
-          afterSendActions();
-          this.lightboxKey++;
-        } catch({ response: { data: { data }}}) {
-          this.sendingMessage = false;
-          if (data.type === 2)
-            await this.$auth.fetchUser();
-          afterSendActions();
         }
+      } catch {
+        this.sendingMessage = false;
       }
     },
     // lightboz

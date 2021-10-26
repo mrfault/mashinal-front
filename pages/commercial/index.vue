@@ -2,13 +2,13 @@
   <div class="pages-commercial-index">
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
-      <!-- <commercial-search-form 
+      <commercial-search-form 
         :total-count="$paginate(commercialAnnouncements).total"
         :pending="pending"
         :category="{}"
         @pending="pending = true"
         @submit="searchCommercial"
-      /> -->
+      />
       <grid 
         v-if="commercialAnnouncements.data.length"
         :announcements="commercialAnnouncements.data" 
@@ -26,8 +26,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 
-// TODO: uncomment commercial search form
-// import CommercialSearchForm from '~/components/commercial/CommercialSearchForm';
+import CommercialSearchForm from '~/components/commercial/CommercialSearchForm';
 import Grid from '~/components/announcements/Grid';
 import NoResults from '~/components/elements/NoResults';
 
@@ -35,7 +34,7 @@ export default {
   name: 'pages-commercial-index',
   layout: 'search',
   components: {
-    // CommercialSearchForm,
+    CommercialSearchForm,
     Grid,
     NoResults
   },
@@ -59,19 +58,19 @@ export default {
       store.dispatch('getCommercialTypes'),
       store.dispatch('getGridSearch', { ...searchParams, post, page }),
       // get brand options for category
-      // ...Object.keys(post?.additional_brands || {})
-      //   .filter(key => post?.additional_brands?.[key]?.category)
-      //   .map((key) => {
-      //     let row = post.additional_brands[key];
-      //     return store.dispatch('getCommercialBrands', { category: row.category, index: key })
-      //   }),
+      ...Object.keys(post?.additional_brands || {})
+        .filter(key => post?.additional_brands?.[key]?.category)
+        .map((key) => {
+          let row = post.additional_brands[key];
+          return store.dispatch('getCommercialBrands', { category: row.category, index: key })
+        }),
       // get model options for brands
-      // ...Object.keys(post?.additional_brands || {})
-      //   .filter(key => post?.additional_brands?.[key]?.brand)
-      //   .map((key) => {
-      //     let row = post.additional_brands[key];
-      //     return store.dispatch('getCommercialModels', { category: row.category, id: row.brand, index: key })
-      //   }),
+      ...Object.keys(post?.additional_brands || {})
+        .filter(key => post?.additional_brands?.[key]?.brand)
+        .map((key) => {
+          let row = post.additional_brands[key];
+          return store.dispatch('getCommercialModels', { category: row.category, id: row.brand, index: key })
+        }),
     ]);
 
     return {
@@ -100,9 +99,9 @@ export default {
       ]
     }
   },
-  // beforeRouteLeave(to, from, next) {
-  //   this.$nuxt.$emit('prevent-popstate');
-  //   next();
-  // }
+  beforeRouteLeave(to, from, next) {
+    this.$nuxt.$emit('prevent-popstate');
+    next();
+  }
 }
 </script>

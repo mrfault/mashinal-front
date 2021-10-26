@@ -1,22 +1,23 @@
 <template>
-  <div class="form-image">
-    <croppa class="croppa-image" 
+  <div :class="['form-image', {'position-relative': autoSizing}]">
+    <croppa :class="['croppa-image', {'auto-size': autoSizing, 'prevent-move': noImage}]" 
       v-if="croppable"
       v-model="croppaValue" placeholder="" 
       :initial-image="initialImage"
       :accept="'image/*'"
       :canvas-color="'transparent'"
       :zoom-speed="15" 
-      :width="width"
-      :height="height"
+      :width="width || 200"
+      :height="height || 200"
       :quality="1"
       :prevent-white-space="true" 
       :show-remove-button="false"
       :replace-drop="true"
+      :auto-sizing="autoSizing"
+      :disable-drag-to-move="noImage"
+      :disable-scroll-to-zoom="noImage"
+      @new-image="$emit('new-image')"
     >
-      <span class="placeholder" v-if="!croppaValue || !croppaValue.imageSet">
-        <icon name="img" />
-      </span>
       <span class="drop-file" @click="croppaValue.chooseFile()">
         <icon name="camera" />
       </span>
@@ -39,14 +40,16 @@ export default {
   props: {
     value: {},
     initialImage: {},
+    autoSizing: Boolean,
     croppable: Boolean,
     width: Number,
-    height: Number
+    height: Number,
+    noImage: Boolean
   },
   mixins: [ImageResizeMixin],
   data() {
     return {
-      preview: '',
+      preview: ''
     }
   },
   computed: {
@@ -64,7 +67,7 @@ export default {
       e.preventDefault();
       
       let droppedFiles = e.target.files || e.dataTransfer.files;
-
+      
       for (let i = 0; i < droppedFiles.length; i++) {
         let isImage = droppedFiles[i].type.match('image.*');
         if(!isImage) break;
@@ -75,5 +78,14 @@ export default {
       }
     }
   },
+  mounted() {
+    this.$nextTick(() => {
+      if (this.croppable) {
+        setTimeout(() => {
+          window.dispatchEvent(new Event('resize'));
+        }, 100);
+      }
+    });
+  }
 }
 </script>

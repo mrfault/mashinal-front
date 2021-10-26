@@ -1,6 +1,6 @@
 <template>
   <div class="part-search-form mb-5">
-    <div class="card">
+    <div class="card pt-2 pt-lg-4">
       <div class="row">
         <!-- Mileage options -->
         <div class="col-lg-4 mb-3 mb-lg-3" v-if="showMilageOptions">

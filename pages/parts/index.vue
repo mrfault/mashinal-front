@@ -1,5 +1,5 @@
 <template>
-  <div class="pages-moto-index">
+  <div class="pages-parts-index">
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
       <categories class="d-none d-lg-flex" />
@@ -8,7 +8,7 @@
         @pending="pending = true"
         @submit="searchParts" 
       />
-      <banners v-if="!searchActive"/>
+      <banners v-if="!searchActive" reverse />
       <div class="announcements-content">
         <grid
           v-if="announcements.length && !showNotFound"

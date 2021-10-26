@@ -2,7 +2,7 @@ import { mapState } from 'vuex';
 
 export const StatsMixin = {
   computed: {
-    ...mapState(['myAnnouncementStats','myPackageStats']),
+    ...mapState(['myAnnouncementStats']),
 
     countStats() {
       let stats = this.myAnnouncementStats;
@@ -16,7 +16,6 @@ export const StatsMixin = {
     announcementStats() {
       let stats = this.myAnnouncementStats;
       return {
-        package: this.myPackageStats.package,
         possible: stats.possible_announce_count,
         used: stats.used_announce_count,
         left: stats.possible_announce_count < stats.used_announce_count 

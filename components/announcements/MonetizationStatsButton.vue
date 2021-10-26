@@ -127,8 +127,8 @@
       <form class="form" @submit.prevent="stopAd" novalidate>
         <div class="row">
           <div class="col">
-            <button type="button" class="btn btn--primary-outline full-width" @click="showStopAdModal = false, showStatsModal = true">
-              {{ $t('go_back') }}
+            <button type="button" class="btn btn--primary-outline full-width" @click="showStopAdModal = false">
+              {{ $t('no') }}
             </button>
           </div>
           <div class="col">

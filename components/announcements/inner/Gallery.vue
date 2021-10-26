@@ -16,9 +16,13 @@
       <div class="gallery-overlay" v-if="showSlider">
         <div class="gallery-overlay_top d-flex">
           <template v-if="where === 'announcement'">
-            <!-- <span class="badge from-border" v-if="announcement.is_autosalon">{{ $t(announcement.title ? 'shop' : 'is_autosalon') }}</span> -->
+            <span class="badge from-border" v-if="announcement.is_autosalon || announcement.is_part_salon">
+              SHOP
+            </span>
             <span class="d-flex">
-              <!-- here badges can be placed -->
+              <span class="btn-sq btn-sq--color-red active" v-if="announcement.has_monetization">
+                <icon name="speaker" v-tooltip="$t('ad_announcement')" />
+              </span>
             </span>
           </template>
         </div>

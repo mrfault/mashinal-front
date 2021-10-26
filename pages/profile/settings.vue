@@ -66,7 +66,7 @@ import ChangePhone from '~/components/elements/ChangePhone';
 export default {
   name: 'pages-profile-settings',
   mixins: [UserDataMixin],
-  middleware: ['auth_general','auth_user'],
+  middleware: ['auth_general'],
   components: {
     ChangeEmail,
     ChangePhone
@@ -129,8 +129,7 @@ export default {
           value = this.escapeDate(value);
           if (!value) continue;
         } if (key === 'avatar') {
-          if (value) 
-            value = await value.promisedBlob('image/jpeg', 0.8);
+          if (value) value = await value?.promisedBlob('image/jpeg', 0.8);
           else continue;
         } else if (pwdKeys.includes(key) && !pwdKeys.filter(k => !!this.form[k]).length) {
           continue;

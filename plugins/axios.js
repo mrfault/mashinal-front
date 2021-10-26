@@ -21,9 +21,9 @@ export default function ({ app, store, error, $axios }) {
       return true;
     } else if (code === 401) {
       if (!err.response.config.url.includes('user')) {
-        location.reload();
+        window.location.reload();
       }
-    } else {
+    } else if (![433].includes(code)) {
       if (process.client) {
         app.$toast.error(err.response.data.message);
       }

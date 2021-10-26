@@ -54,6 +54,7 @@
               </div>
             </div>
           </div>
+          <theme-switch />
         </nav>
       </div>
     </div>
@@ -96,8 +97,13 @@ import { mapGetters, mapActions } from 'vuex';
 import { MenusDataMixin } from '~/mixins/menus-data';
 import { UserDataMixin } from '~/mixins/user-data';
 
+import ThemeSwitch from '~/components/elements/ThemeSwitch';
+
 export default {
   mixins: [MenusDataMixin, UserDataMixin],
+  components: {
+    ThemeSwitch
+  },
   methods: {
     ...mapActions(['changeLocale'])
   },

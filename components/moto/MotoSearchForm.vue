@@ -1,21 +1,26 @@
 <template>
-  <div class="moto-search-form form">
+  <div class="moto-search-form form" ref="searchForm">
     <div class="card pt-2 pt-lg-4">
       <div class="row">
         <div class="col-lg-4 mb-2 mb-lg-3">
           <form-buttons :options="getMileageOptions" :group-by="3" v-model="form.announce_type" />
         </div>
       </div>
-      <div class="row" v-for="(key, index) in rows" :key="key">
+      <div class="row" v-for="(key, index) in (isMobileBreakpoint ? [0] : rows)" :key="key">
+        <div class="col-12 col-lg-4 mb-2" v-if="!category.id">
+          <form-select :label="$t('type_of_motos')" :options="motoTypes" v-model="form.additional_brands[key]['category']"
+            @change="setCategory($event, key)" has-search/>
+        </div>
         <div class="col-6 col-lg-4 mb-2">
-          <form-select :label="$t('mark')" :options="brands" v-model="form.additional_brands[key]['brand']"
-            @change="setBrand($event, key)" has-search/>
+          <form-select :label="$t('mark')" :options="brands(category.id || form.additional_brands[key]['category'])" v-model="form.additional_brands[key]['brand']"
+            @change="setBrand($event, key)" :disabled="(category.id || form.additional_brands[key]['category']) && !brands(category.id || form.additional_brands[key]['category']).length" has-search
+            :img-key="isMobileBreakpoint ? 'transformed_media' : ''" :img-placeholder="`/logos/moto-${colorMode}.svg`" />
         </div>
         <div class="col-6 col-lg-4 mb-2 mb-lg-3">
           <div :class="['row', {'has-add-btn': canAddRow(index), 'has-remove-btn': canRemoveRow()}]">
             <div :class="['col', {'col-12': isMobileBreakpoint}]">
-              <form-select :label="$t('model')" :options="models[key]" v-model="form.additional_brands[key]['model']"
-                :disabled="form.additional_brands[key]['brand'] && !models[key].length" has-search />
+              <form-select :label="$t('model')" :options="models(category.id || form.additional_brands[key]['category'])[key]" v-model="form.additional_brands[key]['model']"
+                :disabled="form.additional_brands[key]['brand'] && !models(category.id || form.additional_brands[key]['category'])[key].length" has-search />
             </div>
             <div class="col-auto" v-if="!isMobileBreakpoint">
               <div class="form-counter">
@@ -161,7 +166,7 @@
         </button>
       </div>
     </div>
-    <div class="announcements-sorting" v-show="!isStarterPage && totalCount">
+    <div class="announcements-sorting" v-show="routeName !== 'index' && totalCount">
       <div class="row">
         <div class="col-6 col-lg-auto mt-3 mt-lg-5 mb-n6 mb-lg-n1">
           <div class="form-info no-bg text-green" v-if="isMobileBreakpoint">
@@ -238,24 +243,17 @@ export default {
     meta() {
       return {
         type: 'moto',
-        path: '/moto/'+this.$t('slug_'+this.category.type),
+        path: this.category.type ? '/moto/'+this.$t('slug_'+this.category.type) : '/moto',
         param: 'filter'
       }
     },
     // options
-    brands() {
-      return {
-        1: this.motoOptions.brands,
-        2: this.motoOptions.scooter_brands,
-        3: this.motoOptions.atv_brands
-      }[this.category.id];
-    },
-    models() {
-      return {
-        1: this.motorcycleModels,
-        2: this.scooterModels,
-        3: this.atvModels
-      }[this.category.id];
+    motoTypes() {
+      return [
+        { key: 1, name: this.$t('motorcycles') },
+        { key: 2, name: this.$t('scooters') },
+        { key: 3, name: this.$t('atvs') }
+      ]
     },
     // static data
     getMotoSelectGroup() {
@@ -270,9 +268,14 @@ export default {
         customs: 'customed_ones' 
       }
       for(let key in group) {
-        let categories = this.motoOptions.config[group[key]].category;
-        if (categories && categories[0] && categories.indexOf(this.category.id) === -1) 
-          delete group[key];
+        if (this.category.id) {
+          let categories = this.motoOptions.config[group[key]].category;
+          if (categories && categories[0] && categories.indexOf(this.category.id) === -1) 
+            delete group[key];
+        } else {
+          if (['drive','tacts','sum_cylinders','cylinders'].includes(key)) 
+            delete group[key];
+        }
       }
       return group;
     },
@@ -286,11 +289,31 @@ export default {
   methods: {
     ...mapActions(['getMotoModels']),
 
+    async setCategory(id, index) {
+      this.$set(this.form.additional_brands[index], 'category', id);
+      this.$set(this.form.additional_brands[index], 'brand', '');
+      this.$set(this.form.additional_brands[index], 'model', '');
+    },
     async setBrand(id, index) {
       this.$set(this.form.additional_brands[index], 'brand', id);
       this.$set(this.form.additional_brands[index], 'model', '');
-      if (id) await this.getMotoModels({ category: this.category.id, id, index });
-    }
+      if (id) await this.getMotoModels({ category: this.category.id || this.form.additional_brands[index]['category'], id, index });
+    },
+
+    brands(category) {
+      return {
+        1: this.motoOptions.brands,
+        2: this.motoOptions.scooter_brands,
+        3: this.motoOptions.atv_brands
+      }[parseInt(category) || 1];
+    },
+    models(category) {
+      return {
+        1: this.motorcycleModels,
+        2: this.scooterModels,
+        3: this.atvModels
+      }[parseInt(category) || 1];
+    },
   }
 }
 </script>

@@ -12,7 +12,8 @@
           <div class="col-12 col-lg-1-5 mb-2 mb-lg-3">
             <form-select :label="$t('mark')" :options="brands" v-model="form.brand_id"
               :clear-option="!isMobileBreakpoint" :popular-options="isMobileBreakpoint ? [129,483,8,1,767,117] : undefined" 
-              :img-key="isMobileBreakpoint ? 'transformed_media' : ''" @change="setBrand($event, 0), searchAutosalons()" has-search />
+              @change="setBrand($event, 0), searchAutosalons()" has-search
+              :img-key="isMobileBreakpoint ? 'transformed_media' : ''" :img-placeholder="`/logos/car-${colorMode}.svg`" />
           </div>
           <div class="col-12 col-lg-1-5 mb-2 mb-lg-3">
             <form-select :label="$t('model')" :options="carModels[0]" v-model="form.model_id"
@@ -46,7 +47,7 @@
             />
           </div>
           <div class="col-12 col-lg-1-5 mb-2 mb-lg-3">
-            <form-select :label="$t('price')" custom :suffix="'AZN'"
+            <form-select :label="$t('price')" custom anchor="right" :suffix="'AZN'"
               :values="{from: form.price_from, to: form.price_to, suffix: '₼' }"
               @clear="form.price_from = '', form.price_to = '', searchAutosalons()"
             >
@@ -123,7 +124,10 @@ export default {
       }
       this.pending = true;
       try {
-        await this.getSalonsList(this.$queryParams(this.form, true));
+        await this.getSalonsList({ 
+          type: this.where === 'transport' ? 1 : 2, 
+          params: this.$queryParams(this.form, true) 
+        });
         this.$nuxt.$emit('search-salons', runOnMobile);
         this.pending = false;
         if (this.searchAgain) {

@@ -156,15 +156,26 @@ export const SearchMixin = {
     removeSearchRow(key) {
       if (this.rows.length === 1) return;
       let index = this.rows.indexOf(key);
-      if (this.meta.type === 'commercial' && !this.category.id) {
+      if (['commercial','moto'].includes(this.meta.type) && !this.category.id) {
         this.setCategory('', key);
       } else {
         this.setBrand('', key);
       }
       this.rows.splice(index, 1);
     },
+    getYearOptions(min, max) {
+      let years = [], j = 0;
+      for (let i = (max || this.currentYear); i >= (min || 1886); i--) {
+        years[j] = { name: i, key: i }; j++;
+      }
+      return years;
+    },
     goToSearch(path) {
       this.$router.push(`${path}?${this.meta.param}=${encodeURI(JSON.stringify(this.getFormData()))}`);
+    },
+    extendOptions() {
+      this.collapsed = false;
+      this.scrollTo(this.$refs.searchForm);
     },
     async handleAfterLogin(key) {
       if (key === 'saved-search' && this.meta.type === 'cars') {
@@ -182,13 +193,6 @@ export const SearchMixin = {
     togglePopStateListener(listen = false) {
       if (listen) window.addEventListener('popstate', this.handlePopState);
       else window.removeEventListener('popstate', this.handlePopState);
-    },
-    getYearOptions(min, max) {
-      let years = [], j = 0;
-      for (let i = (max || this.currentYear); i >= (min || 1886); i--) {
-        years[j] = { name: i, key: i }; j++;
-      }
-      return years;
     }
   },
   computed: {
@@ -232,7 +236,7 @@ export const SearchMixin = {
       return !!(hasBrand || hasAllOptions || hasOptions);
     },
     searchApplied() {
-      return !this.isStarterPage && !!this.$route.query[this.meta.param];
+      return this.routeName !== 'index' && !!this.$route.query[this.meta.param];
     },
     
     getMileageOptions() {
@@ -288,10 +292,16 @@ export const SearchMixin = {
     this.togglePopStateListener(true);
     this.$nuxt.$on('prevent-popstate', this.togglePopStateListener);
     this.$nuxt.$on('after-login', this.handleAfterLogin);
+    if (['moto','commercial'].includes(this.meta.type)) {
+      this.$nuxt.$on('extend-options', this.extendOptions);
+    }
   },
   beforeDestroy() {
     this.togglePopStateListener(false);
     this.$nuxt.$off('prevent-popstate', this.togglePopStateListener);
     this.$nuxt.$off('after-login', this.handleAfterLogin);
+    if (['moto','commercial'].includes(this.meta.type)) {
+      this.$nuxt.$off('extend-options', this.extendOptions);
+    }
   }
 }

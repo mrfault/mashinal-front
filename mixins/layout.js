@@ -10,7 +10,8 @@ export const LayoutMixin = {
     return {
       vhVariableSet: false,
       showLoginPopup: false,
-      loginActionKey: ''
+      loginActionKey: '',
+      loginInitialForm: {}
     }
   },
   computed: {
@@ -108,10 +109,11 @@ export const LayoutMixin = {
         this.toggleEchoListening(auth);
       });
 
-      this.$nuxt.$on('login-popup', (key) => {
+      this.$nuxt.$on('login-popup', (key, form = {}) => {
         if (this.loggedIn) return;
         this.showLoginPopup = true;
         this.loginActionKey = key;
+        this.$set(this, 'loginInitialForm', form); 
       });
 
       window.addEventListener('resize', this.handleResize);

@@ -104,6 +104,24 @@
   }
 }
 
+.dark-mode {
+  .btn-sq {
+    &--color-dark-blue {
+      color: $dark-1;
+      &.active {
+        color: $white;
+        background-color: $dark-1;
+      }
+      @media(hover: hover) {
+        &:hover {
+          color: $white;
+          background-color: $dark-1;
+        }
+      }
+    }
+  }
+}
+
 .btn {
   border: 0;
   display: inline-flex;

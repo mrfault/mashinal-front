@@ -43,7 +43,7 @@
             <quick-info type="parts" />
             <announcement-specs type="parts" />
             <keywords
-              class="mb-lg-3"
+              class="card mb-lg-3"
               :title="$t('keywords')"
               :keywords="announcement.tags"
               label="name"
@@ -68,7 +68,7 @@ import AnnouncementSpecs from '~/components/announcements/inner/AnnouncementSpec
 import ThumbsGallery from '~/components/announcements/inner/ThumbsGallery';
 import CollapseContent from '~/components/elements/CollapseContent';
 import Keywords from '~/components/announcements/inner/Keywords';
-import Relatives from '~/components/announcements/inner/Relatives.vue';
+import Relatives from '~/components/announcements/inner/Relatives';
 
 export default {
   name: 'pages-parts-id',

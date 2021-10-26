@@ -1,6 +1,6 @@
 <template>
   <div class="form-group">
-    <div :class="['select-menu',{'no-bg': hasNoBg, invalid}]">
+    <div :class="['select-menu',{'no-bg': hasNoBg, invalid, wider}]">
       <span :class="['select-menu_label', {'selected': hasSelectedValue, 'disabled': disabled, 'active': showOptions}]" 
         @click="displayMenuOptions">
         <span :class="['text-truncate', {'full-width': hasSearch}]">
@@ -46,8 +46,8 @@
                 <div class="row pt-3" v-if="popularOptions && !search">
                   <div v-for="option in $sortBy(getFilteredOptions, (a, b) => popularOptions.indexOf(b.id) - popularOptions.indexOf(a.id)).slice(0,6)" 
                     :key="option.id" class="col-4 popular-option" @click.stop="selectValue = option">
-                    <div class="img" v-if="imgKey && option[imgKey]">
-                      <img :src="$withBaseUrl(option[imgKey])" :alt="getOptionName(option)" />
+                    <div class="img" v-if="imgKey">
+                      <img :src="$withBaseUrl(option[imgKey]) || imgPlaceholder" :alt="getOptionName(option)" />
                     </div>
                     <div class="text-truncate">
                       <span>{{ getOptionName(option) }}</span>
@@ -70,8 +70,8 @@
                   <template v-for="(option, index) in getFilteredOptions">
                     <div :key="index" :class="['select-menu_dropdown-option', {'selected': isSelected(option), 'anchor': isAnchor(index)}]" 
                         @click.stop="selectValue = option">
-                      <div class="img" v-if="imgKey && option[imgKey]">
-                        <img :src="$withBaseUrl(option[imgKey])" :alt="getOptionName(option)" />
+                      <div class="img" v-if="imgKey">
+                        <img :src="$withBaseUrl(option[imgKey]) || imgPlaceholder" :alt="getOptionName(option)" />
                       </div>
                       <div class="text-truncate">
                         <span>{{ getOptionName(option) }}</span>
@@ -100,8 +100,8 @@
               <div class="row pt-3" v-if="popularOptions && !search">
                 <div v-for="option in $sortBy(getFilteredOptions, (a, b) => popularOptions.indexOf(b.id) - popularOptions.indexOf(a.id)).slice(0,6)" 
                   :key="option.id" class="col-4 popular-option" @click.stop="selectValue = option">
-                  <div class="img" v-if="imgKey && option[imgKey]">
-                    <img :src="$withBaseUrl(option[imgKey])" :alt="getOptionName(option)" />
+                  <div class="img" v-if="imgKey">
+                    <img :src="$withBaseUrl(option[imgKey]) || imgPlaceholder" :alt="getOptionName(option)" />
                   </div>
                   <div class="text-truncate">
                     <span>{{ getOptionName(option) }}</span>
@@ -111,8 +111,8 @@
               <template v-for="(option, index) in getFilteredOptions">
                 <div :key="index" :class="['select-menu_dropdown-option', {'selected': isSelected(option), 'anchor': isAnchor(index)}]" 
                     @click.stop="selectValue = option">
-                  <div class="img" v-if="imgKey && option[imgKey]">
-                    <img :src="$withBaseUrl(option[imgKey])" :alt="getOptionName(option)" />
+                  <div class="img" v-if="imgKey">
+                    <img :src="$withBaseUrl(option[imgKey]) || imgPlaceholder" :alt="getOptionName(option)" />
                   </div>
                   <div class="text-truncate">
                     <span>{{ getOptionName(option) }}</span>
@@ -196,9 +196,11 @@
       hasGenerations: Boolean,
       popularOptions: Array,
       imgKey: String,
+      imgPlaceholder: String,
       invalid: Boolean,
       shortNamesLabel: Boolean,
-      checkOptionsOffset: Boolean
+      checkOptionsOffset: Boolean,
+      wider: Boolean
     },
     data() {
       return {
@@ -425,7 +427,3 @@
     }
   }
 </script>
-
-<style lang="scss">
-  
-</style>

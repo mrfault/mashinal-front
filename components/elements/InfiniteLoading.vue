@@ -1,5 +1,5 @@
 <template>
-  <div :class="['infinite-loading', {className}]" v-if="loading">
+  <div :class="['infinite-loading', {[className]: !!className}]" v-if="loading">
     <loader />
   </div>
 </template>

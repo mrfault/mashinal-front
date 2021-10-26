@@ -7,7 +7,7 @@
                @click.stop="$nuxt.$emit('modal-popup-click', $event)">
             <div class="modal-popup_content">
               <div class="title d-flex">
-                <h4 v-if="title">{{ title }}</h4>
+                <h4 v-if="title" v-html="title"></h4>
                 <span class="cursor-pointer close" @click="$emit('close')">
                   <icon name="cross" />
                 </span>

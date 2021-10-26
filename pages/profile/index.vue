@@ -67,7 +67,7 @@
 
   export default {
     name: 'pages-profile-index',
-    middleware: ['auth_general','auth_user'],
+    middleware: ['auth_general'],
     mixins: [UserDataMixin, MenusDataMixin],
     nuxtI18n: {
       paths: {

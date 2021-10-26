@@ -65,7 +65,6 @@ export default {
       let path = '/profile';
       if (this.loggedIn && this.user.user_type === 3) path = '/profile/btl';
       else if (this.$route.query.ref) path = this.$route.query.ref;
-      else if(this.loggedIn && this.user.autosalon) path = '/profile/dashboard';
       this.$router.push(this.$localePath(path));
     }
   },
