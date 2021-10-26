@@ -23,6 +23,8 @@
         v-if="mostViewed.length"
         :announcements="mostViewed" 
         :title="$t('most_viewed_announcements')"
+        :show-phone-count="true"
+        :track-views="false"
       />
     </div>
   </div>

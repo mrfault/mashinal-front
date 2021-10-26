@@ -117,7 +117,7 @@ export default {
       
       this.selected.map(id => {
         let item = this.myAnnouncements.data.find(item => item.id_unique == id);
-        if (![3].includes(item.status)) canProceed = false;
+        if (![0,3].includes(item.status)) canProceed = false;
       });
 
       if (!canProceed) {

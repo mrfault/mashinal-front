@@ -60,9 +60,10 @@ export default {
   },
   async asyncData({ store, route }) {
     let status = ['0','1','2','3'].includes(route.query.status) ? parseInt(route.query.status) : '';
+    let shop = ['1','2'].includes(route.query.type) ? (route.query.type == 2 ? 'part' : 'salon') : false;
 
     await Promise.all([
-      store.dispatch('getMyAllAnnouncements', { status }),
+      store.dispatch('getMyAllAnnouncements', { status, shop }),
     ]);
     
     return { 

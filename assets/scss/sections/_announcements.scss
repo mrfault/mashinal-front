@@ -74,6 +74,11 @@
       i {
         margin-right: 4px;
         font-size: 12px;
+        &.icon-cursor,
+        &.icon-eye {
+          margin-left: 8px;
+          font-size: 15px;
+        }
       }
     }
     .item-price {
