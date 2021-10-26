@@ -62,7 +62,9 @@ export default {
       this.map = new ymaps.Map('map', {
         center: [this.lat || 40.400651, this.lng || 49.8694303],
         zoom: 12,
-        controls: ['zoomControl','geolocationControl']
+        controls: ['zoomControl']
+      }, {
+        restrictMapArea: [[85,-178.9], [-73.87011,180]]
       });
 
       this.placemark = new ymaps.Placemark(this.map.getCenter(), {}, {
@@ -90,6 +92,18 @@ export default {
       });
 
       this.map.geoObjects.add(this.placemark);
+
+
+      const geolocationControl = new ymaps.control.GeolocationControl({
+        options: { noPlacemark: true }
+      });
+      geolocationControl.events.add('locationchange', (e) => {
+        const coords = e.get('position');
+        this.placemark.geometry.setCoordinates(coords);
+        this.applyCoordinates(coords);
+        this.map.setCenter(coords, this.map.getZoom(), {duration: 300});
+      });
+      this.map.controls.add(geolocationControl);
     },
     applyCoordinates(coords) {
       this.$emit('change-latlng', { lat: coords[0], lng: coords[1] });
