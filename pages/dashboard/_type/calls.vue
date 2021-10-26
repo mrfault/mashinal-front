@@ -3,7 +3,7 @@
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
       <grid 
-        v-if="!myAnnouncementCalls.items.length"
+        v-if="myAnnouncementCalls.items.length"
         :title="$t('phone_call_count')"
         :announcements="myAnnouncementCalls.items" 
         :paginate="$paginate(myAnnouncementCalls)"

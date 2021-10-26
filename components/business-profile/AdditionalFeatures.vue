@@ -10,14 +10,14 @@
         <img src="/img/business-profile/additional_features_illustration_1.svg" alt="" class="illustration-1">
       </div>
       <div class="col-12 col-lg-6">
-        <img :src="`/img/business-profile/${profileType}_additional_features_1_${colorMode}.png`" alt="">
+        <img :src="`/img/business-profile/${profileType}_additional_features_1_${colorMode}_${locale}.png`" alt="">
       </div>
     </div>
     <hr class="m-0"/>
     
     <div class="row section">
       <div class="col-12 col-lg-6">
-        <img :src="`/img/business-profile/${profileType}_additional_features_2_${colorMode}.png`" alt="">
+        <img :src="`/img/business-profile/${profileType}_additional_features_2_${colorMode}_${locale}.png`" alt="">
       </div>
       <div class="col-12 col-lg-6 content">
         <h2 class="section-title heading-dots heading-dots--left">{{ $t('additional_features_2_title') }}</h2>
@@ -35,14 +35,14 @@
         <img src="/img/business-profile/additional_features_illustration_3.svg" alt="" class="illustration-3">
       </div>
       <div class="col-12 col-lg-6 mt-4 mt-lg-0">
-        <img :src="`/img/business-profile/${profileType}_additional_features_3_${colorMode}.png`" alt="">
+        <img :src="`/img/business-profile/${profileType}_additional_features_3_${colorMode}_${locale}.png`" alt="">
       </div>
     </div>
     <hr class="m-0"/>
     
     <div class="row section">
       <div class="col-12 col-lg-6">
-        <img :src="`/img/business-profile/${profileType}_additional_features_4_${colorMode}.png`" alt="">
+        <img :src="`/img/business-profile/${profileType}_additional_features_4_${colorMode}_${locale}.png`" alt="">
       </div>
       <div class="col-12 col-lg-6 content">
         <h2 class="section-title heading-dots heading-dots--left">{{ $t('additional_features_4_title') }}</h2>
@@ -66,7 +66,7 @@
         <img src="/img/business-profile/additional_features_illustration_5.svg" alt="" class="illustration-5 mb-4 mb-lg-0">
       </div>
       <div class="col-12 col-lg-6">
-        <img :src="`/img/business-profile/${profileType}_additional_features_5_${colorMode}.png`" alt="">
+        <img :src="`/img/business-profile/${profileType}_additional_features_5_${colorMode}_${locale}.png`" alt="">
       </div>
     </div>
     <hr class="m-0"/>
