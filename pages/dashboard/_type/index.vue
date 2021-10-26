@@ -76,10 +76,12 @@
         </div>
         <div class="col-lg-3 mb-2 mb-lg-3">
           <dashboard-card :key="'support'">
-            <div class="d-flex flex-column justify-content-between align-items-center full-height pt-2 pb-2">
+            <div class="d-flex flex-column justify-content-center align-items-center full-height pt-2 pb-2">
               <div class="support-contact" v-for="(contact, i) in supportContacts" :key="i">
-                <h5><a :href="`tel:${contact.call}`">{{ contact.phone }}</a></h5>
-                <p><a :href="`mailto:${contact.email}`">{{ contact.email }}</a></p>
+                <h5>
+                  <a v-if="contact.phone" :href="`tel:${contact.phone}`">{{ contact.phone }}</a>
+                  <a v-else-if="contact.email" :href="`mailto:${contact.email}`">{{ contact.email }}</a>
+                </h5>
               </div>
             </div>
           </dashboard-card>
@@ -148,8 +150,8 @@
         pending: false,
         showExtendContract: false,
         supportContacts: [
-          { phone: '055-222-13-51', call: '+994552221351', email: 'adalat@al.ventures' },
-          { phone: '055-222-13-51', call: '+994552221351', email: 'elchin.m@al.ventures' }
+          { phone: '*8787' },
+          { email: 'support@mashin.al' }
         ]
       }
     },
