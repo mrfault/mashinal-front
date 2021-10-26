@@ -81,7 +81,8 @@
       popup: Boolean,
       skipSignIn: Boolean,
       forceSellPhone: Boolean,
-      actionText: {}
+      actionText: {},
+      initialForm: {}
     },
     data() {
       return {
@@ -106,7 +107,7 @@
     methods: {
       resetForm() {
         this.form = {
-          name: '',
+          name: this.initialForm?.name || '',
           phone: this.forceSellPhone ? this.sellPhoneEntered : '',
           code: '',
           password: '',

@@ -1,5 +1,5 @@
 <template>
-  <div :class="['theme-switch',{'floating d-none d-lg-block': floating, 'mobile': !floating}]" @click="switchColorMode">
+  <div :class="['theme-switch',{'floating d-none d-lg-block': floating}]" @click="switchColorMode">
     <canvas ref="canvas" width="120" height="120"></canvas>
   </div>
 </template>
@@ -38,7 +38,7 @@ export default {
       this.animation?.stateMachineInputs('state')?.forEach(i => {
         switch(i.name) {
           case 'dark':
-            i.value = this.isDarkMode;
+            i.value = !this.isDarkMode;
             break;
           case 'switch_color':
             i.value = !this.isMobileBreakpoint;
@@ -49,7 +49,7 @@ export default {
   },
   watch: {
     breakpoint() {
-      this.updateAnimation();
+      this.$nextTick(this.updateAnimation);
     }
   },
   mounted() {

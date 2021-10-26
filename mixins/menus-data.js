@@ -10,13 +10,7 @@ export const MenusDataMixin = {
       return [
         { title: 'cars', route: '/cars', icon: 'car-1' },
         { title: 'moto', route: '/moto', children: this.motoMenus, icon: 'moto-1' },
-        { title: 'commercial', route: '/commercial', children: this.commercialMenus, icon: 'commercial-1' }
-      ];
-    },
-
-    announcementsMenus() {
-      return [
-        ...this.searchMenus,
+        { title: 'commercial', route: '/commercial', children: this.commercialMenus, icon: 'commercial-1' },
         { title: 'parts', route: '/parts', children: this.partsMenus, icon: 'parts' }
       ];
     },
@@ -35,11 +29,11 @@ export const MenusDataMixin = {
 
     navbarMenus() {
       return [
-        ...this.searchMenus,
-        { title: 'parts', route: '/parts', children: this.$env.DEV ? this.partsSubMenus : false },
+        ...this.searchMenus.slice(0, 3),
+        { title: 'parts', route: '/parts', children: this.partsSubMenus },
         { title: 'autocatalog', route: '/catalog' },
-        { title: 'salons', route: '/salons', dev: true }
-      ].filter(item => !item.dev || this.$env.DEV);
+        { title: 'salons', route: '/salons' }
+      ]
     },
 
     topbarMenus() {
@@ -57,42 +51,39 @@ export const MenusDataMixin = {
         { title: 'favorites', route: '/profile/favorites', icon: 'star' },
         { title: 'new_announce', route: '/sell', icon: 'plus' },
         { title: 'messages', route: '/profile/messages', icon: 'chat' },
-        { title: 'my_account', route: '/profile', icon: 'user', hide: !this.loggedIn || this.user?.autosalon },
-        { title: 'dashboard_brief', route: '/profile/dashboard', icon: 'settings', hide: !this.loggedIn || !this.user?.autosalon },
+        { title: 'my_account', route: '/profile', icon: 'user', hide: !this.loggedIn },
         { title: 'login', route: '/login', icon: 'user', hide: this.loggedIn }
       ];
     },
 
     userMenus() {
-      return (this.user?.autosalon 
-        ? [
-          { title: 'dashboard', route: '/profile/dashboard', showOnCard: false },
-          { title: 'my_announces', route: '/profile/announcements', showOnCard: true },
-          { title: 'messages', route: '/profile/messages', showOnCard: false },
-          { title: 'statistics', route: '/profile/statistics', showOnCard: false },
-          { title: 'my_profile', route: '/profile/salon', showOnCard: false },
-          { title: 'balans', route: '/profile/balance', showOnCard: true }
-        ]  
-        : [
-          { title: 'settings', route: '/profile/settings', showOnCard: false },
-          { title: 'my_announces', route: '/profile/announcements', showOnCard: true },
-          { title: 'comparisons', route: '/comparison', showOnCard: false },
-          { title: 'messages', route: '/profile/messages', showOnCard: false },
-          { title: 'balans', route: '/profile/balance', showOnCard: true }
-        ]).filter(item => !item.dev || this.$env.DEV);;
+      if (!this.loggedIn) return [];
+
+      let menus = [
+        { title: 'settings', route: '/profile/settings', showOnCard: false },
+        { title: 'my_announces', route: '/profile/announcements', showOnCard: true },
+        { title: 'balans', route: '/profile/balance', showOnCard: true }
+      ];
+
+      if (this.user.autosalon)
+        menus.push({ title: 'dashboard_salon', route: '/dashboard/1', showOnCard: true });
+      if (this.user.part_salon)
+        menus.push({ title: 'dashboard_shop', route: '/dashboard/2', showOnCard: true });
+
+      return menus;
     },
 
     sidebarMenus() {
       return [
         { title: 'home_page', route: '/', icon: 'home' },
-        { title: 'salons', route: '/salons', icon: 'store', dev: true },
+        { title: 'salons', route: '/salons', icon: 'store' },
         { title: 'parts', route: '/parts', icon: 'parts' },
         { title: 'autocatalog', route: '/catalog', icon: 'book' },
         { title: 'comparisons', route: '/comparison', icon: 'compare' },
         { title: 'helper_search', route: '/cars/assistant', icon: 'flag' },
         { title: 'my_searches', route: '/profile/templates', icon: 'template', auth: true },
         ...this.pageMenus
-      ].filter(item => !item.dev || this.$env.DEV);
+      ]
     },
 
     commercialMenus() {
@@ -126,15 +117,15 @@ export const MenusDataMixin = {
     
     partsSubMenus() {
       return [
-        { title: 'parts', route: '/parts', dev: true },
-        { title: 'shops', route: '/parts/shops', dev: true }
-      ].filter(item => !item.dev || this.$env.DEV);
+        { title: 'parts', route: '/parts', icon: 'parts' },
+        { title: 'shops', route: '/parts/shops', icon: 'store' }
+      ]
     },
 
     hasSearchNav() {
       return [
         'index', 'cars', 'cars-vip', 'cars-premium', 'cars-assistant', 'cars-advanced-search',
-        'moto', 'moto-moto', 'commercial','commercial-commercial'
+        'moto', 'moto-moto', 'commercial','commercial-commercial','parts','parts-category'
       ].includes(this.routeName);
     },
     

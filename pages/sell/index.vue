@@ -12,8 +12,8 @@
             <div class="sell_tokens-info">
               <client-only>
                 <template v-if="loggedIn || sellTokens !== false">
-                  <p v-html="getTextLines(sellTokens.transport, sellTokens.parts, sellPhoneEntered)" v-if="!loggedIn"></p>
-                  <p v-html="getTextLines(user.announce_left, user.part_announce_left, $parsePhone(user.phone))" v-else></p>
+                  <p v-html="getTextLines(sellPhoneEntered)" v-if="!loggedIn"></p>
+                  <p v-html="getTextLines($parsePhone(user.phone))" v-else></p>
                 </template>
                 <template v-else>
                   <p v-html="$t('you_can_only_have_some_free_announcement_within_30_days')"></p>
@@ -88,16 +88,34 @@
         ]
       },
 
+      tokens() {
+        let tokens = {
+          cars: 0,
+          moto: 0,
+          commercial: 0,
+          parts: 0,
+          parts_unlimited: this.loggedIn ? this.user?.part_salon?.is_unlimited : this.sellTokens.parts_unlimited,
+          salon_unlimited: this.loggedIn ? this.user?.autosalon?.is_unlimited : this.sellTokens.salon_unlimited
+        }
+
+        for (let type of ['cars','moto','commercial','parts']) {
+          let tokenKey = `announce_left_${type}`;
+          if (type === 'cars') tokenKey = tokenKey.slice(0, -1);
+          else if (type === 'parts') tokenKey = 'part_announce_left';
+          if (this.loggedIn) tokens[type] = this.user[tokenKey];
+          else if (this.sellTokens) tokens[type] = this.sellTokens[type];
+        };
+
+        return tokens;
+      },
       hasCategories() {
         return ['moto','commercial'].includes(this.vehicleType);
       },
       vehicleOptions() {
-        let hasTransportTokens = !this.loggedIn ? this.sellTokens?.transport > 0 : this.user.announce_left > 0;
-        let hasPartsTokens = !this.loggedIn ? this.sellTokens?.parts > 0 : this.user.part_announce_left > 0;
-        return this.announcementsMenus.map(menu => ({
+        return this.searchMenus.map(menu => ({
           ...menu,
-          disabled: (menu.title === 'parts' && !hasPartsTokens) || (menu.title !== 'parts' && !hasTransportTokens)
-        }))
+          disabled: this.tokens[menu.title] <= 0 && !this.tokens[menu.title === 'parts' ? 'parts_unlimited' : 'salon_unlimited']
+        }));
       }
     },
     methods: {
@@ -126,27 +144,36 @@
         let path = this.$localePath(`/sell/${this.vehicleType}${category ? `?category=${category}` : ''}`);
         this.$router.push(path);
       },
-      getTextLines(transportTokens, partsTokens, phone) {
+      getTextLines(phone) {
+        let isSalon = this.loggedIn && this.user.autosalon;
+        let isShop = this.loggedIn && this.user.part_salon;
+
         let firstLine, secondLine, thirdLine;
-        let canSellTransport = transportTokens > 0, 
-            canSellParts = partsTokens > 0, 
-            isSalon = this.loggedIn && this.user.autosalon;
-        let firstLocaleEnding  = (canSellTransport && canSellParts) ? '' : (canSellTransport ? '_transport' : '_parts');
-        let secondLocaleEnding  = (!canSellTransport && !canSellParts) ? '' : (!canSellTransport ? '_transport' : '_parts');
-        if (canSellTransport || canSellParts) {
+
+        let transportTokens = this.$maxInArray([this.tokens.cars, this.tokens.moto, this.tokens.commercial, 0]);
+        let partTokens = this.$maxInArray([this.tokens.parts, 0]);
+
+        let hasTransportTokens = transportTokens > 0 || this.tokens.salon_unlimited;
+        let hasPartsTokens = partTokens > 0 || this.tokens.parts_unlimited;
+
+        let firstLocaleEnding = (hasTransportTokens && hasPartsTokens) ? '' : (hasTransportTokens ? '_transport' : '_parts');
+        let secondLocaleEnding  = (!hasTransportTokens && !hasPartsTokens) ? '' : (!hasTransportTokens ? '_transport' : '_parts');
+
+        if (hasTransportTokens || hasPartsTokens) {
           firstLine = this.$t(`you_can_create_announcement${firstLocaleEnding}`, { 
             phone: phone.replace('+994 (', '(0'),
-            plural: this.$readPlural(transportTokens, this.$t('plural_forms_announcements'), false),
-            plural_parts: this.$readPlural(partsTokens, this.$t('plural_forms_announcements'), false),
-            left: transportTokens, 
-            left_parts: partsTokens
+            plural: this.$readPlural(transportTokens || 1000, this.$t('plural_forms_announcements'), false),
+            plural_parts: this.$readPlural(partTokens || 1000, this.$t('plural_forms_announcements'), false),
+            left: transportTokens || this.$t('unlimited_count'), 
+            left_parts: partTokens || this.$t('unlimited_count'),
           });
         }
-        if (!canSellTransport || !canSellParts) {
+
+        if (!hasTransportTokens || !hasPartsTokens) {
           secondLine = '<strong class="text-red">*</strong> ' + this.$t(`no_announcements_on_balance${secondLocaleEnding}`);
           thirdLine = this.$t('contact_for_more_info', { 
-            phone: isSalon ? '(055) 222-13-05' : '*8787', 
-            email: isSalon ? 'elchin.m@mashin.al' : 'support@mashin.al' 
+            phone: (isSalon || isShop) ? '(055) 222-13-05' : '*8787', 
+            email: (isSalon || isShop) ? 'elchin.m@mashin.al' : 'support@mashin.al' 
           });
         }
         return [firstLine,secondLine,thirdLine].filter(line => line).map(line => `${line}`).join('<br/><br/>');

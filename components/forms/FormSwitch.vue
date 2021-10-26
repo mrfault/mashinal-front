@@ -2,8 +2,8 @@
   <div class="form-group">
     <div :class="['form-switch', {'auto-width': autoWidth}]">
       <button type="button" :class="[{'active': isActive(option), 'disabled':isDisabled(option)}]" v-for="(option, index) in options" :key="index"
-        @click="selectedValue = option.key">
-        {{ option.sign || option.name }}
+          @click="selectedValue = option.key">
+        <icon :name="option.icon" v-if="option.icon" />{{ option.sign || option.name || '' }}
       </button>
     </div>
   </div>

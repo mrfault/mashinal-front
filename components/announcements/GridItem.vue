@@ -1,7 +1,7 @@
 <template>
   <div :class="colClass || 'stratch-child-block'">
     <div class="announcements-grid_gallery" @click="goToAnnouncement" v-if="showGallery">
-      <a v-if="!isMobileBreakpoint && !$env.DEV" target="_blank" :href="getLink" class="abs-link" @click.stop>
+      <a v-if="clickable && !isMobileBreakpoint && !$env.DEV" target="_blank" :href="getLink" class="abs-link" @click.stop>
         <span class="sr-only">{{ getAnnouncementTitle(announcement) }}</span>
       </a>
       <div class="d-flex">
@@ -15,11 +15,11 @@
       </div>
     </div>
     <div class="announcements-grid_item" @click="goToAnnouncement">
-      <a v-if="!isMobileBreakpoint && !$env.DEV" target="_blank" :href="getLink" class="abs-link" @click.stop>
+      <a v-if="clickable && !isMobileBreakpoint && !$env.DEV" target="_blank" :href="getLink" class="abs-link" @click.stop>
         <span class="sr-only">{{ getAnnouncementTitle(announcement) }}</span>
       </a>
       <div class="item-bg" role="img" :aria-label="getAnnouncementTitle(announcement)" v-lazy:background-image="getImage" v-if="!showGallery">
-        <div class="item-overlay">
+        <div class="item-overlay" v-if="showOverlay">
           <div class="item-overlay_top d-flex">
             <template v-if="showStatus">
               <span class="badge from-border active" v-if="announcement.status == 1">{{ $t('accepted')}}</span>
@@ -28,9 +28,9 @@
               <span class="badge from-border rejected" v-else-if="announcement.status == 0">{{ $t('rejected')}}</span>
               <span class="badge from-border inactive" v-else-if="announcement.status == 3">{{ $t('inactive')}}</span>
             </template>
-            <!-- <template v-else-if="announcement.is_autosalon">
-              <span class="badge from-border">{{ $t(announcement.title ? 'shop' : 'is_autosalon') }}</span>
-            </template> -->
+            <template v-else-if="announcement.is_autosalon || announcement.is_part_salon">
+              <span class="badge from-border">SHOP</span>
+            </template>
             <span class="d-flex">
               <span class="btn-sq btn-sq--color-red active" v-if="announcement.has_monetization">
                 <icon name="speaker" v-tooltip="$t('ad_announcement')" />
@@ -42,7 +42,7 @@
               <add-comparison :id="announcement.id_unique" v-if="getType === 'Car'"/>
               <add-favorite :announcement="announcement" />
             </span>
-            <span class="badge">{{ $formatDate(announcement.created_at, 'D MMM')[locale] }}</span>
+            <span class="badge" v-if="announcement.created_at">{{ $formatDate(announcement.created_at, 'D MMM')[locale] }}</span>
           </div>
         </div>
       </div>
@@ -84,6 +84,8 @@ export default {
     showCheckbox: Boolean,
     showPhoneCount: Boolean,
     showGallery: Boolean,
+    showOverlay: Boolean,
+    clickable: Boolean,
     trackViews: Boolean,
     colClass: String
   },
@@ -118,7 +120,7 @@ export default {
     getTextLine() {
       if (['Part'].includes(this.getType)) return this.announcement.description;
       let text = `${this.announcement.year} ${this.$t('plural_forms_year')[0]}`;
-      if (this.getCapacity) text += `, ${this.getCapacity}`;
+      if (this.getCapacity && this.showOverlay) text += `, ${this.getCapacity}`;
       text += `, ${this.announcement.humanize_mileage} ${this.$t('char_kilometre')}`;
       return text;
     },
@@ -141,6 +143,8 @@ export default {
   },
   methods: {
     goToAnnouncement() {
+      if (!this.clickable) return;
+
       if (this.trackViews) {
         this.fbTrack('ViewContent', {
           content_type: 'product',

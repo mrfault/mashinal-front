@@ -113,20 +113,33 @@ Vue.use({
           return (brand || '') + ' ' + (model || '');
         },
         getAnnouncementContact(item) {
-          let img = item.is_autosalon ? item.user.autosalon?.logo : item.user.avatar;
+          let img = item.user.avatar, 
+              name = item.user.full_name, 
+              link = false;
+          if (item.is_autosalon) {
+            img = item.user.autosalon?.logo;
+            link = this.$localePath(`/salons/${item.user.autosalon.id}`);
+            name = item.user.autosalon.name || item.user.full_name;
+          } else if (item.is_part_salon) {
+            img = item.user.part_salon?.logo;
+            link = this.$localePath(`/parts/shops/${item.user.part_salon.id}`);
+            name = item.user.part_salon.name || item.user.full_name;
+          } else if (item.user.active_announcements_count > 1) {
+            link = this.$localePath(`/user/${item.user.id}/announcements`);
+          }
           return {
             type: 'user',
             user: item.user,
             id: item.user.id,
-            name: item.user.full_name,
+            name: name,
+            link: link,
             phone: item.user.phone,
             address: item.address,
-            img: item.is_autosalon 
-              ? (!img || img?.includes('/images/') ? '/img/salon-logo.jpg' : this.$withBaseUrl(img))
+            img: (item.is_autosalon || item.is_part_salon) 
+              ? (!img || img?.includes('/images/') ? `/img/salon-logo-${this.colorMode}.jpg` : this.$withBaseUrl(img))
               : (this.$withBaseUrl(img, '/storage/') || '/img/user.jpg'),
             lat: item.latitude ? parseFloat(item.latitude) : 0,
-            lng: item.longitude ? parseFloat(item.longitude) : 0,
-            link: false //item.is_autosalon ? this.$localePath(`${item.title ? '/parts/shops' : '/salons'}/${item.user.autosalon.id}`) : false
+            lng: item.longitude ? parseFloat(item.longitude) : 0
           };
         },
         getAnnouncementImage(item) {
@@ -166,10 +179,10 @@ Vue.use({
           return !this.loggedIn || (item.user.id !== this.user.id);
         },
         userIsOwner(item) {
-          return this.loggedIn && item.user.id === this.user.id;
+          return this.loggedIn && (item.user.id === this.user.id);
         },
         salonIsOwner(item) {
-          return this.loggedIn && item.id === this.user.autosalon?.id;
+          return this.loggedIn && (item.id === this.user.autosalon?.id || item.id === this.user.part_salon?.id);
         },
         showMonetization(item) {
           return this.userIsOwner(item) && item.status == 1 && !item.has_monetization;

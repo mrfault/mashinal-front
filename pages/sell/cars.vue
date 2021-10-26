@@ -47,6 +47,7 @@
               :input-title="$t('brand_name')"
               :value="form.brand"
               :img-key="'transformed_media'"
+              :img-placeholder="`/logos/car-${colorMode}.svg`"
               @input="handleBrand($parseSlug($event.slug))"
               @close="$router.push($localePath('/sell'))"
               disable-clean

@@ -11,9 +11,9 @@
         <span class="cursor-pointer" @click="handleIconClick(false, 'search-icon-click')" v-if="hasSearchFilters">
           <icon name="search" />
         </span>
-        <!-- <span class="cursor-pointer" @click="handleIconClick($localePath('/parts/shops'))" v-else-if="hasShops">
-          <icon name="shop" />
-        </span> -->
+        <span class="cursor-pointer" @click="handleIconClick($localePath('/parts/shops'))" v-else-if="hasShops">
+          <icon name="store" />
+        </span>
         <span class="cursor-pointer" @click="handleIconClick($localePath('/cars/advanced-search'))" v-else-if="hasSearchNav || !loggedIn">
           <icon name="options" />
         </span>
@@ -30,7 +30,7 @@
             <button :class="['btn','btn--pale-red-outline',{'active': code === locale}]" v-for="code in locales" :key="code" 
               @click="changeLocale(code)">{{ code }}</button>
           </div>
-          <slot />
+          <theme-switch v-if="isMobileBreakpoint" />
           <span class="cursor-pointer close d-inline-flex align-top" @click="toggleSidebarMenu(false)">
             <icon name="cross" />
           </span>
@@ -77,8 +77,13 @@ import { mapGetters, mapActions } from 'vuex';
 import { MenusDataMixin } from '~/mixins/menus-data';
 import { UserDataMixin } from '~/mixins/user-data';
 
+import ThemeSwitch from '~/components/elements/ThemeSwitch';
+
 export default {
   mixins: [MenusDataMixin, UserDataMixin],
+  components: {
+    ThemeSwitch
+  },
   data() {
     return {
       showSidebar: false
@@ -93,8 +98,10 @@ export default {
     },
     handleIconClick(path, event) {
       if (path) {
-        if (['cars', 'index', 'cars-assistant', 'cars-advanced-search'].includes(this.routeName))
-          this.$nuxt.$emit('go-to-search', path);
+        if (['moto', 'moto-moto', 'commercial', 'commercial-commercial'].includes(this.routeName))
+          this.$nuxt.$emit('extend-options');
+        else if (['cars', 'index', 'cars-assistant', 'cars-advanced-search'].includes(this.routeName))
+          this.$nuxt.$emit('extend-options', path);
         else this.$router.push(path);
       } else if (event) {
         this.$nuxt.$emit(event);

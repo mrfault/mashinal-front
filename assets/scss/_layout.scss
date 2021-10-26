@@ -206,6 +206,7 @@ main {
   background-color: $white;
   border-radius: 4px;
   padding: 25px;
+  transition: box-shadow .2s ease-out;
   &.no-bg {
     background-color: transparent;
   }
@@ -221,6 +222,9 @@ main {
     opacity: .25;
     pointer-events: none;
   }
+  &.underline {
+    box-shadow: $shadow-light-6;
+  }
 }
 
 .dark-mode {
@@ -235,6 +239,9 @@ main {
   }
   .card {
     background-color: $dark-2;
+    &.underline {
+      box-shadow: $shadow-dark-6;
+    }
   }
 }
 
@@ -252,6 +259,9 @@ main {
   }
   &.less-pd {
     padding-left: 15px;
+  }
+  span.cursor-pointer.text-red:hover {
+    text-decoration: underline;
   }
 }
 
@@ -348,8 +358,12 @@ main {
       display: flex;
       align-items: center;
     }
+    .theme-switch {
+      margin-left: 20px;
+    }
     .user-menu {
       position: relative;
+      flex-shrink: 0;
       cursor: pointer;
       width: 34px;
       margin-left: 50px;
@@ -363,7 +377,7 @@ main {
         z-index: 1;
         width: 300px;
         top: 100%;
-        right: -81px;
+        right: -141px;
         visibility: hidden;
         opacity: 0;
         padding-top: 10px;
@@ -539,8 +553,18 @@ main {
         padding-top: 10px;
         padding-bottom: 10px;
         i {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
           width: 60px;
+          height: 45px;
           font-size: 45px;
+          &.icon-store {
+            font-size: 22px;
+          }
+          &.icon-parts {
+            font-size: 30px;
+          }
         }
       }
     }
@@ -1131,6 +1155,9 @@ main {
 .theme-switch {
   cursor: pointer;
   overflow: hidden;
+  position: relative;
+  width: 40px;
+  height: 40px;
   &.floating {
     position: fixed;
     z-index: 9;
@@ -1154,11 +1181,6 @@ main {
     transform-origin: 0 0;
     // transition: opacity .2s;
   }
-  &.mobile {
-    position: relative;
-    width: 40px;
-    height: 40px;
-  }
 }
 
 .scroll-top {
@@ -1175,6 +1197,7 @@ main {
   border-radius: 50%;
   box-shadow: $shadow-light-1;
   background-color: $white;
+  user-select: none;
   .scroll-top_icon {
     @include abs-middle;
     font-size: 24px;
@@ -1187,11 +1210,48 @@ main {
   }
 }
 
+.map-switch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: fixed;
+  z-index: 9;
+  bottom: 120px;
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  font-size: 24px;
+  color: $white;
+  box-shadow: $shadow-light-1;
+  background-color: $dark-blue-1;
+  user-select: none;
+  span {
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 21px;
+  }
+}
+
 .reached-footer {
   .theme-switch.floating,
   .scroll-top {
     position: absolute;
     bottom: 30px;
+  }
+  .map-switch {
+    position: absolute;
+    bottom: 120px;
+  }
+}
+
+@include media-max-width('lg') {
+  .map-switch {
+    position: fixed !important;
+    right: 25px;
+    bottom: 90px !important;
   }
 }
 
@@ -1249,7 +1309,8 @@ main {
 
 .dark-mode {
   .theme-switch.floating,
-  .scroll-top {
+  .scroll-top,
+  .map-switch {
     background-color: $dark-2;
     box-shadow: $shadow-dark-1;
     &:hover {

@@ -294,12 +294,16 @@
     },
     mounted() {
       this.$nextTick(() => {
-        this.connectEcho().listenForWhisper('action', (data) => {
-          if (data.userId != this.user.id) {
-            this.$auth.fetchUser();
+        setTimeout(() => {
+          this.connectEcho().listenForWhisper('action', (data) => {
+            if (data.userId != this.user.id) {
+              this.$auth.fetchUser();
+            }
+          });
+          if (!this.isMobileBreakpoint) {
+            this.setActiveFirstGroup();
           }
-        });
-        this.setActiveFirstGroup();
+        }, 0);
       });
     }
   }

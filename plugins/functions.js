@@ -53,6 +53,9 @@ export default function({ app, route, store }, inject) {
     let query = _.clone(route.query);
     app.router.push({ query: {...query, [param.key]: param.value } });
   });
+  inject('getDashboardId', (type) => {
+    return type == 2 ? store.state.auth?.user?.part_salon?.id : store.state.auth?.user?.autosalon?.id;
+  });
   // formatting
   inject('parsePhone', (phone, brief = false) => {
     if (typeof phone === 'number') phone = `${phone}`;
@@ -116,7 +119,7 @@ export default function({ app, route, store }, inject) {
     name = name[app.i18n.locale] || name.ru || name;
     let year = new Date().getFullYear();
     return name.toString()
-      .replace('series', app.i18n.t('series'))
+      .replace(/series|серия/, app.i18n.t('series'))
       // .replace('class', app.i18n.t('class'))
       .replace(/( – 0)|( – н\.в\.)/g, name.toString().includes(`${year}`) ? '' : ` – ${year}`);
   });
@@ -158,6 +161,13 @@ export default function({ app, route, store }, inject) {
     moment.locale('en');
     let en = moment(date).format(format);
     return ({ ru, az, en });
+  });
+  // numeric precision
+  inject('sum', (...numbers) => {
+    return Math.round(numbers.map(a => a * 100).reduce((a, b) => (a + b))) / 100;
+  });
+  inject('substract', (...numbers) => {
+    return Math.round(numbers.map(a => a * 100).reduce((a, b) => (a - b))) / 100;
   });
   // underscore
   inject('clone', _.clone);

@@ -50,6 +50,8 @@
               :status-title="$t('select_brand')"
               :input-title="$t('brand_name')"
               :value="form.selectedBrand"
+              :img-key="'transformed_media'"
+              :img-placeholder="`/logos/moto-${colorMode}.svg`"
               @input="handleBrand($event.id)"
               @close="$router.push($localePath('/sell'))"
               disable-clean

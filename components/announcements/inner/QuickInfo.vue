@@ -38,22 +38,19 @@
     </template>
     <hr />
     <div :class="['contact', {'cursor-pointer': !!contact.link }]" @click.stop="handleContactClick">
-      <div class="img">
+      <div :class="['img', {'is-online': contact.user.is_online}]">
         <img :src="contact.img" alt="" />
       </div>
       <div class="info">
-        <nuxtLink
-          v-if="type === 'parts' && contact.user.active_parts_count > 1"
-          :to="$localePath(`/parts/user/${contact.phone}/announcements`)"
-        >
-          <h2>
-              {{ contact.name }}
-          </h2>
-          <span class="all-announcements">{{ $t('other_announcements_of_user') }}<icon name="arrow-right" /></span>
-        </nuxtLink>
-        <h2 v-else>{{ contact.name }}</h2>
+        <h2>{{ contact.name }}</h2>
         <address v-if="announcement.status != 3">{{ contact.address }}</address>
         <span class="text-red" v-else>{{ $t('sold') }}</span>
+        <nuxt-link :to="contact.link" class="all-announcements text-dark-blue-2 text-medium" v-if="contact.user.active_announcements_count > 1 || announcement.is_part_salon || announcement.is_autosalon">
+          <span v-if="announcement.is_part_salon">{{ $t('go_to_shop') }}</span>
+          <span v-else-if="announcement.is_autosalon">{{ $t('go_to_salon') }}</span>
+          <span v-else>{{ $t('other_announcements_of_user') }}</span>
+          <icon name="chevron-right" />
+        </nuxt-link>
       </div>
     </div>
     <div class="row" v-if="announcement.status != 3">
@@ -75,7 +72,7 @@
         <monetization-button :announcement="announcement" v-else-if="!this.isMobileBreakpoint && announcement.status == 1" />
       </div>
     </template>
-    <template v-if="!brief && (userIsOwner(announcement) && announcement.status != 2) || (announcement.status == 3 && !announcement.is_autosalon)">
+    <template v-if="!brief && (userIsOwner(announcement) && announcement.status != 2) && !(announcement.is_autosalon && announcement.status == 3)">
       <hr :class="{'mt-3': announcement.status == 3}" />
       <div class="row mt-n2 mt-lg-n3">
         <div class="col mt-2 mt-lg-3">

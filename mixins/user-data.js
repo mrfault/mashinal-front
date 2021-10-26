@@ -7,14 +7,14 @@ export const UserDataMixin = {
     getUserAvatar() {
       if (!this.loggedIn) return undefined;
       else if (this.user.avatar?.includes('/logo.jpg')) 
-        return '/img/salon-logo.jpg';
+        return `/img/salon-logo-${this.colorMode}.jpg`;
       else if (this.user.avatar)
         return this.$withBaseUrl(`/storage/${this.user.avatar}`);
       return '/img/user.jpg';
     },
     getUserSettingsLink() {
       if (!this.loggedIn) return this.$localePath('/login');
-      return this.$localePath(this.user.autosalon ? '/profile/dashboard' : '/profile');
+      return '/profile';
     }
   },
   methods: {

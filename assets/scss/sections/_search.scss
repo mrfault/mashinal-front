@@ -35,7 +35,7 @@
       font-size: 13px;
       font-weight: 500;
       text-align: center;
-      width: 30%;
+      width: auto;
     }
     a {
       &.active::before {
@@ -76,6 +76,19 @@
         font-size: 40px;
       }
     }
+    ul li {
+      &:first-child {
+        text-align: left;
+        padding-left: 0;
+      }
+      &:last-child {
+        text-align: right;
+        padding-right: 0;
+      }
+      a {
+        display: inline-flex;
+      }
+    }
     .swiper-slide {
       width: auto;
       min-width: 85px;
@@ -83,8 +96,21 @@
       a {
         padding-top: 5px;
         &.category-link {
+          padding-left: 5px;
+          padding-right: 5px;
           i {
-            margin-bottom: 3px;
+            font-size: 30px;
+            padding: 5px;
+          }
+        }
+      }
+      &:first-child {
+        min-width: auto;
+        padding-left: 0;
+        a.category-link {
+          padding-left: 0;
+          i {
+            padding: 5px 0;
           }
         }
       }

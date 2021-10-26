@@ -40,7 +40,10 @@
       </template>
       <icon name="alert-circle" v-if="invalid" class="invalid" />
       <icon name="check-circle" v-else-if="valid && type !== 'password'" class="valid" />
-      <slot />
+      <slot name="default" />
+    </div>
+    <div class="form-group_inputs" v-if="hasInputs">
+      <slot name="inputs" />
     </div>
   </div>
 </template>
@@ -90,7 +93,8 @@
       inputClass: String,
       blockClass: String,
       inputDate: Boolean,
-      readonly: Boolean
+      readonly: Boolean,
+      hasInputs: Boolean
     },
     components: {
       DatePicker

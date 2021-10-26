@@ -42,9 +42,10 @@ const getInitialState = () => ({
   carsAnnouncements: [],
   motoAnnouncements: [],
   commercialAnnouncements: [],
-  promotedAnnouncements: [],
+  shopAnnouncements: {},
   announcement: {},
   relativeAnnouncements: [],
+  userAnnouncements: [],
   // catalog
   catalogAnnouncements: [],
   catalogTotal: 0,
@@ -91,6 +92,7 @@ const getInitialState = () => ({
   sellPhoneEntered: '',
   sellPhoneRegistered: false,
   sellSalonRights: false,
+  sellPartSalonRights: false,
   sellProgress: 5,
   sellYears: [],
   sellBody: [],
@@ -112,7 +114,7 @@ const getInitialState = () => ({
   mySalon: {},
   myAnnouncementCalls: {},
   myAnnouncementStats: {},
-  myPackageStats: {},
+  mapView: false
 });
 
 export const state = () => (getInitialState());
@@ -162,7 +164,7 @@ export const getters = {
   carsAnnouncements: s => s.carsAnnouncements,
   motoAnnouncements: s => s.motoAnnouncements,
   commercialAnnouncements: s => s.commercialAnnouncements,
-  promotedAnnouncements: s => s.promotedAnnouncements,
+  shopAnnouncements: s => s.shopAnnouncements,
   mainAnnouncements: s => s.mainAnnouncements,
   mainPartsAnnouncements: s => s.mainPartsAnnouncements,
   myAnnouncements: s => s.myAnnouncements,
@@ -173,6 +175,7 @@ export const getters = {
     }
     return s.relativeAnnouncements
   },
+  userAnnouncements: s => s.userAnnouncements,
   // catalog
   catalogAnnouncements: s => s.catalogAnnouncements,
   catalogItems: s => s.catalogItems,
@@ -217,6 +220,7 @@ export const getters = {
   sellPhoneEntered: s => s.sellPhoneEntered,
   sellPhoneRegistered: s => s.sellPhoneRegistered,
   sellSalonRights: s => s.sellSalonRights,
+  sellPartSalonRights: s => s.sellPartSalonRights,
   sellProgress: s => s.sellProgress,
   sellYears: s => s.sellYears,
   sellBody: s => s.sellBody,
@@ -237,7 +241,7 @@ export const getters = {
   mySalon: s => s.mySalon,
   myAnnouncementCalls: s => s.myAnnouncementCalls,
   myAnnouncementStats: s => s.myAnnouncementStats,
-  myPackageStats: s => s.myPackageStats
+  mapView: s => s.mapView
 };
 
 const objectNotEmpty = (state, commit, property) => {
@@ -607,22 +611,22 @@ export const actions = {
     const res = await this.$axios.$get(`/grid/home_page_parts?per_page=4&page=${data.page || 1}`);
     commit('mutate', { property: 'mainPartsAnnouncements', value: res });
   },
-  async getMotoMainSearch({ commit }, data = {}) {
-    const res = await this.$axios.$get(`/moto_home_page?page=${data.page || 1}`);
-    commit('mutate', { property: 'mainAnnouncements', value: res });
-  },
   async getGridSearch({ commit }, data) {
     const res = await this.$axios.$post(`${data.url}?page=${data.page || 1}`, data.post);
     commit('mutate', { property: data.prefix + 'Announcements', value: res });
   },
-  async getPromotedSearch({ commit }, data) {
-    const res = await this.$axios.$get(`/${data.type}/cars?page=${data.page || 1}`);
-    commit('mutate', { property: 'promotedAnnouncements', value: res });
-  },
   // Announcements
-  async getRelativeAnnouncements({ commit }, id) {
-    const res = await this.$axios.$get(`/grid/same/announcements/${id}`);
+  async getRelativeAnnouncements({ commit }, data) {
+    const res = await this.$axios.$get(`/grid/same/announcements/${data.id}`);
     commit('mutate', { property: 'relativeAnnouncements', value: res });
+  },
+  async getShopOtherAnnouncements({ commit }, data) {
+    const res = await this.$axios.$get(`/grid/shop/announcements/${data.id}?page=${data.page || 1}`);
+    commit('mutate', { property: 'shopAnnouncements', value: res });
+  },
+  async getUserAnnouncements({ commit }, data) {
+    const res = await this.$axios.$get(`/user/${data.id}/announcements`);
+    commit('mutate', { property: 'userAnnouncements', value: res });
   },
   async getMyAllAnnouncements({ commit }, data = {}) {
     const res = await this.$axios.$get(`/my/all-announce-paginated?page=${data.page || 1}${[0,1,2,3].includes(data.status) ? `&status=${data.status}` : ''}`);
@@ -702,14 +706,23 @@ export const actions = {
   // Sell
   async checkSellTokens({ commit }, phone) {
     const res = await this.$axios.$post('/check/user/by/phone', { phone });
-    commit('mutate', { property: 'sellTokens', value: res.data && { transport: res.data.announce_count, parts: res.data.part_announce_count } });
+    commit('mutate', { property: 'sellTokens', value: res.data && { 
+      cars: res.data.announce_left_car, 
+      commercial: res.data.announce_left_commercial, 
+      moto: res.data.announce_left_moto, 
+      parts: res.data.part_announce_count, 
+      parts_unlimited: res.data.part_unlimited, 
+      salon_unlimited: res.data.salon_unlimited 
+    } });
     commit('mutate', { property: 'sellPhoneRegistered', value: res.data && res.data.have_account });
     commit('mutate', { property: 'sellSalonRights', value: res.data && res.data.is_autosalon });
+    commit('mutate', { property: 'sellPartsShopRights', value: res.data && res.data.is_part_salon });
   },
   resetSellTokens({ commit }) {
     commit('mutate', { property: 'sellTokens', value: false });
     commit('mutate', { property: 'sellPhoneRegistered', value: false });
     commit('mutate', { property: 'sellSalonRights', value: false });
+    commit('mutate', { property: 'sellPartsShopRights', value: false });
     commit('mutate', { property: 'sellPhoneEntered', value: '' });
   },
   setSellProgress({ commit }, value) {
@@ -775,8 +788,8 @@ export const actions = {
     commit('mutate', { property: 'paidStatusData', value });
   },
   // Salons
-  async getSalonsList({commit}, params = '') {
-    const res = await this.$axios.$get('/auto_salon_list' + params);
+  async getSalonsList({commit}, { type, params }) {
+    const res = await this.$axios.$get(`/auto_salon_list/${type}${params || ''}`);
     if (!params || params === '?part=true') {
       commit('mutate', { property: 'salonsList', value: res });
     }
@@ -787,13 +800,12 @@ export const actions = {
     const res = await this.$axios.$get('/auto_salon/' + data.id + '?page=' + (data.page || 1));
     commit('mutate', { property: 'salonSingle', value: res });
   },
-  async getMySalon({commit}) {
-    const res = await this.$axios.$get('/my/autosalon/edit');
+  async getMySalon({commit}, { id }) {
+    const res = await this.$axios.$get(`/my/autosalon/${id}/edit`);
     commit('mutate', { property: 'mySalon', value: res });
   },
-  async updateMySalon({commit}, form) {
-    const res = await this.$axios.$post('/my/autosalon/edit', form);
-    commit('mutate', { property: 'mySalon', value: res });
+  async updateMySalon({}, { id, form}) {
+    await this.$axios.$post(`/my/autosalon/${id}/edit`, form);
   },
   updateSalonsFilters({commit}, form) {
     commit('mutate', { property: 'salonsFilters', value: form });
@@ -802,25 +814,24 @@ export const actions = {
     commit('mutate', { property: 'salonsSearchFilters', value: form });
   },
   async getAnnouncementCalls({commit}, data = {}) {
-    const res = await this.$axios.$get(`/my/call-announces?page=${data.page || 1}`);
+    const res = await this.$axios.$get(`/my/call-announces/${data.id}?page=${data.page || 1}`);
     commit('mutate', { property: 'myAnnouncementCalls', value: res });
   },
   async incrementAnnouncementCalls({}, id) {
     await this.$axios.$get(`/announce/${id}/show/phone`);
   },
-  async getAnnouncementStats({commit}) {
-    const res = await this.$axios.$get('/my/dashboard/statistics');
+  async getAnnouncementStats({commit}, id) {
+    const res = await this.$axios.$get(`/my/dashboard/statistics/${id}`);
     commit('mutate', { property: 'myAnnouncementStats', value: res });
-  },
-  async getPackageStats({commit}) {
-    const res = await this.$axios.$get('/my/dashboard/package');
-    commit('mutate', { property: 'myPackageStats', value: res });
   },
   updateSalonsFiltered({commit}, list) {
     commit('mutate', { property: 'salonsFiltered', value: list });
   },
   updateSalonsInBounds({commit}, list) {
     commit('mutate', { property: 'salonsInBounds', value: list });
+  },
+  setMapView({commit}, visible) {
+    commit('mutate', { property: 'mapView', value: visible });
   },
   // Reset Data on Logout
   resetUserData({ commit }) {

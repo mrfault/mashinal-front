@@ -121,33 +121,39 @@ export default {
         let isImage = file.type.match('image.*');
         if (!isImage) break;
 
-        const resizedFile = await this.getResizedImage(file);
-        this.fileLoaded(resizedFile)
+        const fileUniqueKey = String(Math.random()).split('.')[1]
+        this.files.push({
+          key: fileUniqueKey,
+          preview: null,
+          blob: null,
+          loading: true
+        })
+
+        this.getResizedImage(file).then(resizedFile => {
+          this.fileLoaded(resizedFile, fileUniqueKey)
+        });
       }
 
       event.target.value = '';
     },
-    async fileLoaded (file) {
-      const fileUniqueKey = String(Math.random()).split('.')[1]
+    async fileLoaded (file, key) {
+      const currentFile = this.files.find(f => f.key === key);
+      currentFile.preview = URL.createObjectURL(file);
+      currentFile.blob = file;
+      currentFile.loading = true;
 
-      this.files.push({
-        key: fileUniqueKey,
-        preview: URL.createObjectURL(file),
-        blob: file,
-        loading: true
-      })
       if (this.uploadPath) {
         const uploadedFile = await this.uploadFile(file)
 
         if (uploadedFile) {
-          this.setFilePropertyByKey(fileUniqueKey, 'id', uploadedFile.id)
-          this.setFilePropertyByKey(fileUniqueKey, 'preview', uploadedFile.path)
+          this.setFilePropertyByKey(key, 'id', uploadedFile.id)
+          this.setFilePropertyByKey(key, 'preview', uploadedFile.path)
         } else {
-          this.deleteFile(fileUniqueKey)
+          this.deleteFile(key)
         }
       }
 
-      this.setFilePropertyByKey(fileUniqueKey, 'loading', false)
+      this.setFilePropertyByKey(key, 'loading', false)
     },
     async uploadFile(file) {
       const formData = new FormData();
