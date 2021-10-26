@@ -4,7 +4,7 @@ export const SalonsMixin = {
       return logo ? this.$withBaseUrl(logo) : `/img/salon-logo-${this.colorMode}.jpg`;
     },
     getCover(cover, type) {
-      return cover ? this.$withBaseUrl(cover) : `/img/salon-cover-${type}-${this.colorMode}.jpg`;
+      return cover ? this.$withBaseUrl(cover) : `/img/salon-cover-${type}-${this.colorMode}${this.isMobileBreakpoint ? '-m' : ''}.jpg`;
     },
     getTotalCount(salon) {
       return salon.announcements?.total || salon.announcement_count || 0;

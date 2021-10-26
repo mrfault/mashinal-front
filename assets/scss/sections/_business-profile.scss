@@ -496,6 +496,9 @@
 
 .dark-mode {
   .pages-business-profile {
+    .form-switch {
+      background-color: $dark-2;
+    }
     .business-profile {
       &__features {
         .feature {

@@ -65,7 +65,12 @@ export default {
       return this.searchMenus.find(menu => menu.title === this.activeType);
     },
     activeSlide() {
-      return this.activeMenu?.children?.findIndex(menu => this.$localePath(menu.route) === this.$route.path);
+      return this.activeMenu?.children?.findIndex(menu => {
+        let routeMatches = this.$localePath(menu.route) === this.$route.path;
+        if (menu.route.includes(this.$t('slug_tyres'))) 
+          return routeMatches || this.$localePath(menu.route.replace(this.$t('slug_tyres'), this.$t('slug_rims'))) === this.$route.path;
+        return routeMatches;
+      });
     }
   },
   methods: {
@@ -79,7 +84,10 @@ export default {
       });
     },
     checkActive(route) {
-      if (route === '/parts' && this.routeName !== 'parts') return false;
+      if (route === '/parts' && this.routeName !== 'parts') 
+        return false;
+      if (route.includes(this.$t('slug_tyres')) && this.$route.path.includes(this.$t('slug_rims'))) 
+        return true;
       return this.$route.fullPath.includes(this.$localePath(route));
     }
   },
