@@ -177,9 +177,12 @@ export default {
       this.collapsed = !this.collapsed;
     },
     goToSearch() {
-      let search_url = this.item.search_url
+      let filter = this.item.search_filter;
+      let url = this.item.search_url
         .replace('/cars', this.$localePath('/cars'));
-      this.$router.push(search_url);
+      if (url?.[0] !== '/') 
+        url = `${this.$localePath('/cars')}?car_filter=${encodeURI(filter)}`;
+      this.$router.push(url);
     },
   }
 }
