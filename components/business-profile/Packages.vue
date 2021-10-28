@@ -73,7 +73,7 @@
     <modal-popup
       :toggle="showTerminalInfo"
       :title="$t('pay_with_terminal')"
-      @close="showTerminalInfo = false"
+      @close="showTerminalInfo = false, showModal = true"
     >
       <p>{{ $t('terminal_pay_info') }}</p>
       <div class="form-info text-green mb-2">{{ $t('mobile_number_your')}}: {{ $parsePhone(user.phone) }}</div>
