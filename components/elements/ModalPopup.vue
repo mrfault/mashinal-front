@@ -40,7 +40,7 @@ export default {
   },
   methods: {
     handleEscapeKey(e) {
-      if (e.key === 'Escape'){
+      if (this.toggle && e.key === 'Escape'){
         this.$emit('close');
       }
     }
