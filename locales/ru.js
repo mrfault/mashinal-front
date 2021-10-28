@@ -1916,5 +1916,6 @@ export default {
   "short_number": "Короткий номер",
   "logo_and_cover_sizing_info": "Лого должно иметь размер <strong>100x100px</strong>, а фото обложки - <strong>1200x300px</strong>.",
   "shop_other_announcements": "Другие объявления магазина \"{name}\"",
-  "salon_other_announcements": "Другие объявления салона \"{name}\"" 
+  "salon_other_announcements": "Другие объявления салона \"{name}\"" ,
+  "dev_will_solve": "Наши разработчики работают над этой проблемой"
 }  

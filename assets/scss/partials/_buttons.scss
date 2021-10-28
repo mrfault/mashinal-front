@@ -215,6 +215,7 @@
     &--dark-blue-outline {
       @include btn-style($bg-color: $grey-1, $bg-hover: $grey-1, $border-color: $grey-1, $outline: true, $override: false);
     }
+    &--green,
     &--pale-green,
     &--pale-green-outline {
       @include btn-style($bg-color: $green-1, $bg-hover: $green-2);
