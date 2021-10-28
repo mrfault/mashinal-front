@@ -6,29 +6,26 @@
           {{ $t('business_profile_packages') }}
         </h2>
       </div>
-      <div class="packages">
-        <div
-          :class="['package card',{'package--active': selected === item.id}]"
-          v-for="item in salonPackages"
-          :key="item.id"
-          @click="selected = item.id"
-        >
-          <div :class="['package__radio', {'package__radio--checked': selected === item.id}]"></div>
-          <div class="package__price">{{ item.price }} ₼</div>
-          <div class="package__name" :style="item.color ? ('color: ' + item.color) : ''">
-            {{ item.name[locale] }}
-          </div>
-          <hr />
-          <div class="package__details">
-            <p class="mx-0 mt-1 text-with-check">
-              <icon name="check" :style="item.color ? ('color: ' + item.color) : ''" />
-              {{ $t('announcement_count') }} - {{ item.unlimited ? $t('limitless') : item.announce_count }}
-            </p>
-            <p class="mx-0 mt-1 text-with-check">
-              <icon name="check" :style="item.color ? ('color: ' + item.color) : ''" />
-              <icon name="wallet" />
-              - {{ item.service_price }} ALM
-            </p>
+      <div class="row packages">
+        <div class="col-6 col-lg-2 mb-2 mb-lg-0" v-for="item in salonPackages" :key="item.id">
+          <div :class="['package card',{'package--active': selected === item.id}]" @click="selected = item.id">
+            <div :class="['package__radio', {'package__radio--checked': selected === item.id}]"></div>
+            <div class="package__price">{{ item.price }} ₼</div>
+            <div class="package__name" :style="item.color ? ('color: ' + item.color) : ''">
+              {{ item.name[locale] }}
+            </div>
+            <hr />
+            <div class="package__details">
+              <p class="mx-0 mt-1 text-with-check">
+                <icon name="check" :style="item.color ? ('color: ' + item.color) : ''" />
+                {{ $t('announcement_count') }} - {{ item.unlimited ? $t('limitless') : item.announce_count }}
+              </p>
+              <p class="mx-0 mt-1 text-with-check">
+                <icon name="check" :style="item.color ? ('color: ' + item.color) : ''" />
+                <icon name="wallet" />
+                - {{ item.service_price }} ALM
+              </p>
+            </div>
           </div>
         </div>
       </div>

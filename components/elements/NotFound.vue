@@ -1,7 +1,7 @@
 <template>
   <div class="not-found">
-    <img :src="`/img/404${isDarkMode ? '-dark-mode' : ''}.svg`" :alt="text || $t('no_results_found')" />
-    <h1>{{ text || $t('no_results_found') }}</h1>
+    <img :src="imgSrc || `/img/404${isDarkMode ? '-dark-mode' : ''}.svg`" :alt="text || $t('no_results_found')" />
+    <h1 :class="textClass">{{ text || $t('no_results_found') }}</h1>
     <slot />
   </div>
 </template>
@@ -10,7 +10,11 @@
 export default {
   props: {
     text: String,
-    required: false
+    textClass: {
+      type: String,
+      default: 'text-red'
+    },
+    imgSrc: String
   }
 }
 </script>
