@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import { mutate } from '~/lib/vuex-helpers/mutations';
 
 const getInitialState = () => ({
   profileType: 'salon',
@@ -36,9 +36,5 @@ export const actions = {
 }
 
 export const mutations = {
-  mutate(state, payload) {
-    if (payload.key !== undefined) 
-      Vue.set(state[payload.property], payload.key, payload.value);
-    else state[payload.property] = payload.value;
-  },
+  mutate: mutate()
 }

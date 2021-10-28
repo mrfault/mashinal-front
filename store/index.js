@@ -1,5 +1,5 @@
-import Vue from 'vue';
 import _ from '~/lib/underscore';
+import { mutate, reset } from '~/lib/vuex-helpers/mutations';
 
 const getInitialState = () => ({
   loading: true,
@@ -840,22 +840,8 @@ export const actions = {
 }
 
 export const mutations = {
-  mutate(state, payload) {
-    if (payload.key !== undefined) 
-      Vue.set(state[payload.property], payload.key, payload.value);
-    else Vue.set(state, payload.property, payload.value);
-  },
-  reset(state, payload) {
-    const initialState = getInitialState();
-    payload.map(property => { 
-      Vue.set(state, property, initialState[property]);
-    });
-  },
-  removeItem(state, payload) {
-    Vue.set(state, payload.property, state[payload.property].filter(item => {
-      return item[payload.key] !== payload.value;
-    }));
-  },
+  mutate: mutate(),
+  reset: reset(getInitialState()),
 
   // messages
   appendToMessage(state, payload) {
