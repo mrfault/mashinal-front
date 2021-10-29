@@ -2,7 +2,11 @@
   <div class="pages-404">
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
-      <not-found :title="errorTitle">
+      <not-found 
+        :text="notFound ? errorTitle : $t('dev_will_solve')" 
+        :text-class="notFound ? 'text-red' : 'text-dark-blue-2'"
+        :img-src="notFound ? '' : '/img/programmers.svg'"
+      >
         <nuxt-link class="btn btn--green" :to="$localePath('/')">
           <icon name="arrow-left" /> {{ $t('back_to_home') }}
         </nuxt-link>
@@ -13,7 +17,8 @@
 
 <script>
 import { LayoutMixin } from '~/mixins/layout';
-import NotFound from '@/components/elements/NotFound'
+
+import NotFound from '~/components/elements/NotFound';
 
 export default {
   name: 'layout-error',
@@ -34,8 +39,11 @@ export default {
         { name: this.errorTitle }
       ]
     },
+    notFound() {
+      return this.error.statusCode == 404;
+    },
     errorTitle() {
-      if (this.error.statusCode == 404) 
+      if (this.notFound) 
         return this.$t('page_not_found_error');
       return this.$t('server_error');
     }

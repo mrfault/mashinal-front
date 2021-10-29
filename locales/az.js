@@ -1377,7 +1377,7 @@ export default {
   "send": "Göndər",
   "send_the_code": "Kodu göndər",
   "series": "seriya",
-  "server_error": "Server xətası",
+  "server_error": "Sistem çöküb",
   "service": "Xidmət",
   "services": "Xidmətlər",
   "settings": "İstifadəçi parametrləri",
@@ -1915,5 +1915,6 @@ export default {
   "short_number": "Qısa nömrə",
   "logo_and_cover_sizing_info": "Loqo <strong>100x100px</strong>, örtük şəkli isə <strong>1200x300px</strong> ölçüsündə olmalıdır.",
   "shop_other_announcements": "Mağazanın digər elanları",
-  "salon_other_announcements": "Salonun digər elanları"
+  "salon_other_announcements": "Salonun digər elanları",
+  "dev_will_solve": "Mühəndislərimiz problemi ən qısa zamanda aradan qaldıracaq"
 }
