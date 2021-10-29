@@ -251,19 +251,20 @@
           color: $dark-blue-2;
         }
       }
+      // youtu.be/-TeK76qBL5o
       .entrepreneurs-list {
         display: flex;
         flex-wrap: wrap;
-        // TODO replace gap property
-        gap: 25px;
+        justify-content: space-between;
         @media (max-width: map-get($grid-breakpoints, 'lg')) {
           background-color: transparent;
         }
         .entrepreneur {
+          margin-bottom: 25px;
           padding: 0 25px;
-          width: 10%;
+          width: calc(100% / 8);
           @media (max-width: map-get($grid-breakpoints, 'lg')) {
-            width: 33.33%;
+            width: calc(100% / 3);
           }
           img {
             width: 100%;
