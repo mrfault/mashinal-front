@@ -6,16 +6,23 @@
   }
   .business-profile {
     &__features {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-gap: 44px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
       padding-bottom: 54px;
-      @media (max-width: map-get($grid-breakpoints, 'lg')) {
-        grid-template-columns: 1fr;
-      }
       .feature {
         height: 180px;
         position: relative;
+        width: calc((100% - 44px) / 2);
+        &:not(:nth-child(n+3)) {
+          margin-bottom: 44px;
+        }
+        @media (max-width: map-get($grid-breakpoints, 'lg')) {
+          width: 100%;
+          &:not(:last-child) {
+            margin-bottom: 44px;
+          }
+        }
         &__foreground {
           width: calc(100% - 15px);
           height: calc(100% - 15px);
@@ -89,18 +96,26 @@
         padding-bottom: 30px;
       }
       .images {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr 1fr;
-        grid-gap: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
         @media (max-width: map-get($grid-breakpoints, 'lg')) {
-          grid-template-columns: 1fr;
+          flex-direction: column;
         }
         width: 100%;
         img {
-          width: 100%;
+          @media (min-width: map-get($grid-breakpoints, 'lg')) {
+            width: calc((100% - 60px) / 4);
+            &:nth-child(n+5) {
+              margin-top: 20px;
+            }
+          }
           @media (max-width: map-get($grid-breakpoints, 'lg')) {
             max-width: 325px;
             margin: 0 auto;
+            &:not(:last-of-type) {
+              margin-bottom: 20px;
+            }
           }
         }
       }
@@ -235,19 +250,24 @@
         em {
           color: $dark-blue-2;
         }
+
+        @media (max-width: map-get($grid-breakpoints, 'lg')) {
+          margin: 25px 0;
+          font-size: 18px;
+        }
       }
+      // youtu.be/-TeK76qBL5o
       .entrepreneurs-list {
         display: flex;
         flex-wrap: wrap;
-        gap: 25px;
         @media (max-width: map-get($grid-breakpoints, 'lg')) {
           background-color: transparent;
         }
         .entrepreneur {
-          padding: 0 25px;
+          padding: 10px 25px;
           width: 10%;
           @media (max-width: map-get($grid-breakpoints, 'lg')) {
-            width: 33.33%;
+            width: calc(100% / 3);
           }
           img {
             width: 100%;
@@ -255,7 +275,8 @@
             object-position: center;
             aspect-ratio: 1 / 1;
             @media (max-width: map-get($grid-breakpoints, 'lg')) {
-              // width: 40px;
+              max-width: 60px;
+              margin: 0 auto;
             }
           }
           &__name {
