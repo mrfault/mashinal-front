@@ -66,7 +66,7 @@
                 {{ $t('replenish') }}
               </nuxt-link>
               <a class="text-green" href="javascript:void(0);" @click="showExtendContract = true" v-else-if="card.key === 'contract' && shouldExtendContract">
-                {{ $t('pay') }}
+                {{ $t('extend_subscription') }}
               </a>
               <nuxt-link class="text-green" :to="$localePath('/business-profile') + '?type=1&scrollto=packages'" v-else-if="card.key === 'contract' && $route.params.type == 1">
                 {{ $t('to_change_package') }}
@@ -92,7 +92,8 @@
           @close="showExtendContract = false"
         >
           <form class="form" @submit.prevent="extendContract" novalidate>
-            <p v-html="$t('pay_till_date', { date: announcementStats.contract.end_date })"></p>
+            <p v-html="$t('pay_till_date', { date: announcementStats.contract.end_date })" v-if="announcementStats.contract.left_days > 0"></p>
+            <p v-else>{{ $t('pay_to_continue') }}</p>
             <h4>{{ $t('payment_method') }}</h4>
             <div class="mb-2 mb-lg-0">
               <form-buttons v-model="paymentMethod" :options="paymentMethodOptions" :group-by="2" />
@@ -202,7 +203,7 @@
       },
 
       shouldExtendContract() {
-        return this.announcementStats.contract.left_days < 8;
+        return this.announcementStats.contract.left_days < 5;
       },
       
       haveBalanceForPlan() {

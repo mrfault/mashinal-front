@@ -75,7 +75,8 @@ export default {
       image = this.firstGeneration.generation.car_type_generation
         .find(item => this.firstGeneration.car_type_id === item.car_type_id).transformed_media?.main?.[0];
     } else if (params.model && this.catalogItems?.items?.[0]) {
-      image = this.catalogItems?.items?.[0].car_type_generation[0].transformed_media?.main?.[0];
+      let item = this.catalogItems?.items?.[0]; 
+      image = (item?.car_type_generation?.find(type => type.car_type_id === item.fav_car_type_id) || item?.car_type_generation[0]).transformed_media?.main?.[0];
     } else if (params.brand) {
       image = this.selectedBrand.main;
     }

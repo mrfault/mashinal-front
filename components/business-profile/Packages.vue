@@ -30,7 +30,9 @@
         </div>
       </div>
       <div class="text-center">
-        <button type="submit" :class="['btn btn--green', { 'pending': downgradePlan && pending, 'disabled': activePackage && activePackage.id == selected  }]">{{ $t((hasSalon) ? 'to_change_package' : 'pay_online') }}</button>
+        <button type="submit" :class="['btn btn--green', { 'pending': downgradePlan && pending, 'disabled': activePackage && activePackage.id == selected && !shouldBuy  }]">
+          {{ $t((shouldBuy) ? 'to_buy_package' : 'to_change_package') }}
+        </button>
       </div>
     </form>
     <modal-popup 
@@ -46,7 +48,9 @@
         v-model="form.name"
         class="mb-2 mb-lg-3" 
       />
-      <p class="mb-2 mb-lg-3">{{ $t('business_profile_payment_info') }}</p>
+      <p class="mb-2 mb-lg-3">
+        {{ $t(hasSalon ? 'business_profile_package_change_info' : 'business_profile_payment_info') }}
+      </p>
       <h4 class="mb-2">{{ $t('payment_method') }}</h4>
       <form-buttons v-model="paymentMethod" :options="paymentMethodOptions" :group-by="2" />
       <p class="mt-2 info-text"><icon name="alert-circle" /> 
@@ -161,7 +165,7 @@ export default {
       salonAnnouncements: 'packages/salonAnnouncements'
     }),
     priceDifference() {
-      if (!this.hasSalon || this.downgradePlan) return 0;
+      if (this.shouldBuy || this.downgradePlan) return 0;
       let diff = this.$substract(parseFloat(this.selectedPackage.price), parseFloat(this.user.autosalon.current_package.price));
       return diff > 0 ? diff : 0;
     },
@@ -174,11 +178,15 @@ export default {
       return this.calculatedPrice <= this.user.balance;
     },
     downgradePlan() {
-      if (!this.hasSalon) return false;
+      if (this.shouldBuy) return false;
       return parseFloat(this.selectedPackage.price) < parseFloat(this.user.autosalon.current_package.price);
     },
     selectedPackage() {
       return this.salonPackages.find(p => p.id === this.selected);
+    },
+    shouldBuy() {
+      // no salon or expired
+      return !this.hasSalon || this.user?.autosalon?.status === 0;
     },
     activePackage() {
       if (!this.hasSalon) return null;
@@ -209,15 +217,15 @@ export default {
       this.pending = true;
       try {
         let res;
-        if (this.hasSalon) {
-          res = await this.$axios.$post(`/payment/change-package?is_mobile=${this.isMobileBreakpoint}`, {
-            autosalon_id: this.user.autosalon.id,
+        if (this.shouldBuy) {
+          res = await this.$axios.$post(`/payment/package?is_mobile=${this.isMobileBreakpoint}`, {
+            name: this.form.name,
             package_id: this.selected,
             type: this.paymentMethod
           });
         } else {
-          res = await this.$axios.$post(`/payment/package?is_mobile=${this.isMobileBreakpoint}`, {
-            name: this.form.name,
+          res = await this.$axios.$post(`/payment/change-package?is_mobile=${this.isMobileBreakpoint}`, {
+            autosalon_id: this.user.autosalon.id,
             package_id: this.selected,
             type: this.paymentMethod
           });
@@ -238,7 +246,7 @@ export default {
         } else if (this.paymentMethod === 'card') {
           this.pending = false;
           this.showModal = false;
-          this.handlePayment(res, [this.$localePath('/dashboard/1'+(this.hasSalon ? '' : '/settings')), false], this.$t(this.hasSalon ? 'change_package' : 'package_bought'));
+          this.handlePayment(res, [this.$localePath('/dashboard/1'+(this.hasSalon ? '' : '/settings')), false], this.$t(this.shouldBuy ? 'package_bought' : 'change_package'));
         } else {
           await Promise.all([
             this.$nuxt.refresh(),
@@ -249,7 +257,7 @@ export default {
           this.$router.push(this.$localePath('/dashboard/1'+(this.hasSalon ? '' : '/settings')), () => {
             this.updatePaidStatus({ 
               type: 'success', 
-              text: this.$t(this.hasSalon ? 'change_package' : 'package_bought'), 
+              text: this.$t(this.shouldBuy ? 'package_bought' : 'change_package'), 
               title: this.$t('success_payment') 
             });
           });

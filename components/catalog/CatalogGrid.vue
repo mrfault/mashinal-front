@@ -98,7 +98,7 @@ export default {
       if (!model) {
         return item?.transformed_media ? this.$withBaseUrl(item.thumb || item.transformed_media) : false;
       } else {
-        let media = generation ? item?.transformed_media?.thumb : item.car_type_generation[0]?.transformed_media?.thumb;
+        let media = generation ? item?.transformed_media?.thumb : (item?.car_type_generation?.find(type => type.car_type_id === item.fav_car_type_id) || item.car_type_generation[0])?.transformed_media?.thumb;
         return media?.length ? this.$withBaseUrl(media[0]) : false;
       }
     },
