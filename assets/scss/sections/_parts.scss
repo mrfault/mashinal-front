@@ -129,11 +129,12 @@
 }
 
 .part-search-form {
-  @include media-max-width('lg') {
-    .row.vertical-gap {
-      gap: 20px
-    }
-  }
+  // Not used anywhere
+  // @include media-max-width('lg') {
+  //   .row.vertical-gap {
+  //     gap: 20px
+  //   }
+  // }
 
   .checkboxes-box {
     background-color: $greyish-blue-2;
