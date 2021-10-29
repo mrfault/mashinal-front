@@ -250,17 +250,20 @@
         em {
           color: $dark-blue-2;
         }
+
+        @media (max-width: map-get($grid-breakpoints, 'lg')) {
+          margin: 25px 0;
+          font-size: 18px;
+        }
       }
       .entrepreneurs-list {
         display: flex;
         flex-wrap: wrap;
-        // TODO replace gap property
-        gap: 25px;
         @media (max-width: map-get($grid-breakpoints, 'lg')) {
           background-color: transparent;
         }
         .entrepreneur {
-          padding: 0 25px;
+          padding: 10px 25px;
           width: 10%;
           @media (max-width: map-get($grid-breakpoints, 'lg')) {
             width: 33.33%;
@@ -271,7 +274,8 @@
             object-position: center;
             aspect-ratio: 1 / 1;
             @media (max-width: map-get($grid-breakpoints, 'lg')) {
-              // width: 40px;
+              max-width: 60px;
+              margin: 0 auto;
             }
           }
           &__name {
