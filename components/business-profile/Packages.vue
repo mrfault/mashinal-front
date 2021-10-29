@@ -149,6 +149,7 @@ export default {
       showMyAnnouncements: false,
       selectedAnnouncements: [],
       hasSalon: !!this.$store.state.auth.user?.autosalon,
+      contractEnded: this.$store.state.auth.user?.autosalon?.status === 0,
       form: {
         name: this.$store.state.auth.user?.part_salon?.name || ''
       }
@@ -185,8 +186,7 @@ export default {
       return this.salonPackages.find(p => p.id === this.selected);
     },
     shouldBuy() {
-      // no salon or expired
-      return !this.hasSalon || this.user?.autosalon?.status === 0;
+      return !this.hasSalon || this.contractEnded;
     },
     activePackage() {
       if (!this.hasSalon) return null;
@@ -273,6 +273,7 @@ export default {
     handleAfterLogin(key) {
       if (key === 'salon-package') {
         this.hasSalon = !!this.user?.autosalon;
+        this.contractEnded = this.user?.autosalon?.status === 0;
         this.form.name = this.user.part_salon?.name || '';
         this.showModal = true;
       }
