@@ -256,6 +256,7 @@
           font-size: 18px;
         }
       }
+      // youtu.be/-TeK76qBL5o
       .entrepreneurs-list {
         display: flex;
         flex-wrap: wrap;
@@ -266,7 +267,7 @@
           padding: 10px 25px;
           width: 10%;
           @media (max-width: map-get($grid-breakpoints, 'lg')) {
-            width: 33.33%;
+            width: calc(100% / 3);
           }
           img {
             width: 100%;
