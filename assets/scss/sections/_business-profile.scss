@@ -200,6 +200,9 @@
         margin-bottom: 40px;
       }
       .middle-images {
+        img {
+          max-width: 100%;
+        }
         .row {
           height: 100%;
           @media (max-width: map-get($grid-breakpoints, 'lg')) {
