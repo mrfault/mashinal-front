@@ -56,9 +56,6 @@ export default {
         { name: this.$t('garage') }
       ]
     }
-  },
-  methods: {
-    
   }
 }
 </script>

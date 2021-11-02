@@ -73,12 +73,19 @@ export default {
       if (this.pending || this.$v.$pending || this.$v.$error) return;
       this.pending = true;
       try {
-        await this.addNewCar({
+        const res = await this.addNewCar({
           ...this.form,
           car_number: this.form.car_number.replace(/-|[ ]/g, '')
         });
-        this.$toasted.$success('car_added');
         this.pending = false;
+        if (res.status === 'success') {
+          this.$toasted.success(this.$t('car_added'));
+          this.showModal = false;
+          this.$v.$reset();
+          this.form.car_number = '';
+          this.form.tech_id = '';
+          this.scrollReset();
+        }
       } catch(err) {
         this.pending = false;
       }

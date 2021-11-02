@@ -1,13 +1,13 @@
 <template>
-  <div :class="['garage_car-item', { 'inactive': car.status !== 1 }]">
+  <div :class="['garage_car-item', { 'car-active': car.status === 1 }]" @click="$emit('set-active', car.id)">
     <div class="car-bg d-flex flex-column justify-content-between">
       <div class="d-flex justify-content-end align-items-center">
-        <button class="btn-sq btn-sq--color-red" @click="showDeleteModal = true">
+        <button class="btn-sq btn-sq--color-red" @click.stop="showDeleteModal = true">
           <icon name="garbage" />
         </button>
       </div>
       <div class="d-flex justify-content-between align-items-center">
-        <button class="btn-sq btn-sq--color-dark-blue-3">
+        <button class="btn-sq btn-sq--color-dark-blue-3" @click.stop>
           <icon name="camera" />
         </button>
         <span class="date">{{ carDate }}</span>
@@ -15,10 +15,10 @@
     </div>
     <div class="car-info d-flex justify-content-between align-items-center">
       <span>{{ carNumber }}</span>
-      <button :class="['btn btn--dark-blue-outline', { pending: pending && !showDeleteModal }]" v-if="car.status === 1" @click="deactivateCar">
+      <button :class="['btn btn--dark-blue-outline', { pending: pending && !showDeleteModal }]" v-if="car.status === 1" @click.stop="deactivateCar">
         {{ $t('inactive_make') }}
       </button>
-      <button :class="['btn btn--green', { pending: pending && !showDeleteModal }]" v-else @click="activateCar">
+      <button :class="['btn btn--green', { pending: pending && !showDeleteModal }]" v-else @click.stop="activateCar">
         {{ $t('activate') }}
       </button>
     </div>
@@ -69,7 +69,7 @@ export default {
       this.pending = true;
       try {
         await this.activate({ id: this.car.id });
-        this.$toasted.$success('car_activated');
+        this.$toasted.success(this.$t('car_activated'));
         this.pending = false;
       } catch(err) {
         this.pending = false;
@@ -80,7 +80,7 @@ export default {
       this.pending = true;
       try {
         await this.deactivate({ id: this.car.id });
-        this.$toasted.$success('car_deactivated');
+        this.$toasted.success(this.$t('car_deactivated'));
         this.pending = false;
       } catch(err) {
         this.pending = false;
@@ -90,9 +90,13 @@ export default {
       if (this.pending) return;
       this.pending = true;
       try {
-        await this.delete({ id: this.car.id });
-        this.$toasted.$success('car_deleted');
-        this.pending = false;
+        const res = await this.delete({ id: this.car.id });
+        if (res.status === 'success') {
+          this.$toasted.success(this.$t('car_deleted'));
+          this.pending = false;
+          this.showDeleteModal = false;
+          this.scrollReset();
+        }
       } catch(err) {
         this.pending = false;
       }

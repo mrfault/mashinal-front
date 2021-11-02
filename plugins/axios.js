@@ -6,11 +6,12 @@ export default function ({ app, store, error, $axios }) {
 
   $axios.onResponse(res => {
     // handle sms radar errors
-    if (res.data?.status === 'error' && res.data.error_code) {
-      if ([3101].includes(res.data.error_code)) {
+    let smsRadarErrCode = res.data?.error_code;
+    if (smsRadarErrCode) {
+      if ([3101].includes(smsRadarErrCode)) {
         return;
       } else if (process.client) {
-        app.$toast.error(res.data.description);
+        app.$toast.error(app.i18n.t('garage_error_'+smsRadarErrCode));
       }
     }
   });

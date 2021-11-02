@@ -36,10 +36,12 @@
   background-color: $white;
   border-radius: 4px;
   font-weight: 500;
-  transition: box-shadow .2s ease-out;
-  cursor: pointer;
-  &:hover {
-    box-shadow: $shadow-light-6;
+  &.car-active {
+    transition: box-shadow .2s ease-out;
+    cursor: pointer;
+    &:hover {
+      box-shadow: $shadow-light-6;
+    }
   }
   &:not(:last-child) {
     margin-bottom: 20px;
@@ -68,6 +70,23 @@
     height: 25px;
     padding: 4px 12px 3px;
   }
+  &:not(.car-active) {
+    .car-bg {
+      position: relative;
+      &::after {
+        content: '';
+        @include abs-zero;
+        z-index: 1;
+        background-color: rgba($white, .5);
+      }
+    }
+    .car-info span {
+      opacity: .5;
+    }
+    .date, .btn-sq {
+      display: none;
+    }
+  }
 }
 
 .dark-mode {
@@ -78,11 +97,18 @@
   }
   .garage_car-item {
     background-color: $dark-2;
-    &:hover {
+    &.car-active:hover {
       box-shadow: $shadow-dark-6;
     }
     .car-bg {
       background-color: $dark-3;
+    }
+    &:not(.car-active) {
+      .car-bg {
+        &::after {
+          background-color: rgba($dark-2, .5);
+        }
+      }
     }
   }
 }
