@@ -29,9 +29,13 @@
   font-style: normal !important;
 }
 
+.icon-garage:before {
+  content: "\e982";
+}
 .icon-list:before {
   content: "\e981";
-}.icon-infinity:before {
+}
+.icon-infinity:before {
   content: "\e980";
 }
 .icon-speaker:before {

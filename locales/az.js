@@ -80,6 +80,7 @@ export default {
   "add_an_ad_and_thousands_of_potential_buyers_will_see_it": "Elan əlavə et və minlərlə potensial alıcı tərəfindən baxış əldə edin",
   "add_balance": "Balansın artırılması",
   "add_calc_percent": "Planlaşdırılmış əhatə dairəsinin {n}%",
+  "add_car": "Avtomobil əlavə et",
   "add_car_model": "Model əlavə et",
   "add_cover_image": "Şəkil yükləyin",
   "add_description": "Təsviri əlavə et",
@@ -180,6 +181,7 @@ export default {
   "are_you_sure_you_want_to_delete_the_announcements": "Seçilmiş elanları silmək istədiyinizə əminsiniz?",
   "are_you_sure_you_want_to_delete_the_message": "Mesajı silmək istədiyinizə əminsiniz?",
   "are_you_sure_you_want_to_delete_the_store": "Mağazanı silmək istədiyinizə əminsiniz?",
+  "are_you_sure_you_want_to_delete_the_car": "Avtomobili silmək istədiyinizə əminsiniz?",
   "Armored body": "Zirehli ban",
   "ASR": "Yerində fırlanma əleyhinə (ASR)",
   "at": "{value}-də",
@@ -770,6 +772,7 @@ export default {
   ],
   "Full size": "Tam ölçülü",
   "furgon": "Furqon ",
+  "garage": "Qaraj",
   "gas": "Qaz",
   "gas_distribution_system": "Qazpaylayıcı sistemi",
   "gas_equipment": "Qaz-balon avadanlıqları",
@@ -1913,5 +1916,21 @@ export default {
   "снижение токсичных выбросов по нормативу 2018 года": "2018-сi ilin standartına görə zəhərli tullantıların azaldılması",
   "Стандарт": "Standart",
   "такта": "takt",
-  "электро": "Elektrik"
+  "электро": "Elektrik",
+
+  "garage_terms_title": "Qaraja avtomobil əlavə etməyin şərtləri",
+  "garage_terms_points": [
+    "Ödəniş etməlisiniz ki, qaraja avtomobil əlavə edə biləsiniz.",
+    "Ödəniş etməlisiniz ki, qaraja avtomobil əlavə edə biləsiniz.",
+    "Ödəniş etməlisiniz ki, qaraja avtomobil əlavə edə biləsiniz."
+  ],
+  "garage_payment_info": "Hər əlavə etdiyiniz avtomobilə görə aylıq 1 ₼ (ƏDV daxil) məbləğ tutulacaq.",
+  "car_number": "Avtomobilin nömrəsi",
+  "tech_id": "Tex pasport seriya və nömrəsi",
+  "my_cars": "Avtomobilim",
+  "check_points": "Bal yoxla",
+  "car_added": "Avtomobil əlavə edildi",
+  "car_activated": "Avtomobil aktiv edildi",
+  "car_deactivated": "Avtomobil deaktiv edildi",
+  "car_deleted": "Avtomobil silindi",
 }

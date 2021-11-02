@@ -1,0 +1,91 @@
+.garage_no-cars-card {
+  img {
+    max-width: 80%;
+    margin: 60px auto 10px;
+  }
+  p {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 24px;
+  }
+  h2 {
+    margin-top: 75px;
+  }
+  ol {
+    padding: 0;
+    margin: 0;
+    list-style-position: inside;
+    li {
+      &:not(:last-child) {
+        margin-bottom: 8px;
+      }
+    }
+  }
+}
+
+.garage_nav-card {
+  .btn {
+    min-width: 146px;
+  }
+}
+
+.garage_cars-list {
+}
+
+.garage_car-item {
+  background-color: $white;
+  border-radius: 4px;
+  font-weight: 500;
+  transition: box-shadow .2s ease-out;
+  cursor: pointer;
+  &:hover {
+    box-shadow: $shadow-light-6;
+  }
+  &:not(:last-child) {
+    margin-bottom: 20px;
+  }
+  .car-bg {
+    height: 172px;
+    padding: 12px;
+    background-color: $greyish-blue-3;
+    border-radius: 4px 4px 0 0;
+  }
+  .car-info {
+    padding: 10px 12px;
+  }
+  .date {
+    color: $white;
+    background-color: rgba($dark-blue-1, .35);
+    height: 25px;
+    padding: 2px 8px 0;
+    border-radius: 4px;
+    line-height: 25px;
+    width: 82px;
+    text-align: center;
+  }
+  .btn {
+    font-size: 12px;
+    height: 25px;
+    padding: 4px 12px 3px;
+  }
+}
+
+.dark-mode {
+  .garage_cars-list {
+    .date {
+      background-color: rgba($dark-1, .35);
+    }
+  }
+  .garage_car-item {
+    background-color: $dark-2;
+    &:hover {
+      box-shadow: $shadow-dark-6;
+    }
+    .car-bg {
+      background-color: $dark-3;
+    }
+  }
+}
+
+@include media-max-width('lg') {
+}
