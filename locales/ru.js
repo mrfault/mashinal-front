@@ -211,6 +211,7 @@ export default {
   "bagajnik_ot_500_l": "багажник от 500 л",
   "baku": "Баку",
   "balance_increased": "Баланс пополнен",
+  "balance_is_reset": "Баланс обнулился",
   "balans": "Баланс",
   "ball_type": "Тип шара",
   "barter": "Бартер",
