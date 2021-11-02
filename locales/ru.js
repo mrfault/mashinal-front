@@ -179,6 +179,7 @@ export default {
   "are_you_sure_you_want_to_delete_the_announcements": "Вы точно хотите удалить выбранные объявления?",
   "are_you_sure_you_want_to_delete_the_message": "Вы точно хотите удалить сообщение?",
   "are_you_sure_you_want_to_delete_the_store": "Вы точно хотите удалить магазин?",
+  "are_you_sure_you_want_to_delete_the_car": "Вы точно хотите удалить автомобиль?",
   "Armored body": "Бронированный кузов",
   "ASR": "Антипробуксовочная (ASR)",
   "at": "при {value}",
