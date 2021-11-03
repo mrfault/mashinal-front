@@ -582,6 +582,18 @@ main {
   }
 }
 
+.support-hotline {
+  display: inline-flex;
+  align-items: center;
+  color: $red-1;
+  font-weight: 500;
+  padding-right: 10px;
+  margin-left: -10px;
+  i {
+    font-size: 34px;
+  }
+}
+
 .dark-mode {
   .page-header {
     background-color: $dark-2;
