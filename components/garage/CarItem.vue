@@ -1,24 +1,48 @@
 <template>
-  <div :class="['garage_car-item', { 'car-active': car.status === 1 }]" @click="showInfo">
-    <div :class="['car-bg d-flex flex-column justify-content-between', {'no-img': !car.thumb}]">
-      <div class="d-flex justify-content-end align-items-center">
-        <button class="btn-sq btn-sq--color-red" @click.stop="showDeleteModal = true">
-          <icon name="garbage" />
-        </button>
+  <div :class="['garage_car-item', { 'car-active': car.status === 1, 'thumb-set': thumbSet }]" @click="showInfo">
+    <div :class="['car-bg', {'no-img': !car.thumb && !thumbPending}]"
+         :style="car.thumb && !thumbPending ? { backgroundImage: `url('${$withBaseUrl(car.thumb)}')` } : {}">
+      <div class="car-bg-inner d-flex flex-column justify-content-between" v-if="!thumbSet">
+        <div class="d-flex justify-content-end align-items-center">
+          <button class="btn-sq btn-sq--color-red" @click.stop="showDeleteModal = true">
+            <icon name="garbage" />
+          </button>
+        </div>
+        <div class="d-flex justify-content-between align-items-center">
+          <button class="btn-sq btn-sq--color-dark-blue-3" @click.stop="thumb.chooseFile()">
+            <icon name="camera" />
+          </button>
+          <span class="date">{{ carDate }}</span>
+        </div>
       </div>
-      <div class="d-flex justify-content-between align-items-center">
-        <button class="btn-sq btn-sq--color-dark-blue-3" @click.stop>
-          <icon name="camera" />
+      <loader v-if="thumbPending" />
+      <croppa :class="['croppa-image auto-size']" 
+        v-show="thumbSet && !thumbPending" @click.native.stop
+        v-model="thumb" placeholder="" 
+        :accept="'image/*'"
+        :canvas-color="'transparent'"
+        :zoom-speed="15" 
+        :quality="1"
+        :prevent-white-space="true" 
+        :show-remove-button="false"
+        :replace-drop="true"
+        :auto-sizing="true"
+        @new-image="updateThumbImage"
+      >
+        <button class="btn-sq btn-sq--color-dark-blue-3" @click.stop="saveThumb">
+          <icon name="check" />
         </button>
-        <span class="date">{{ carDate }}</span>
-      </div>
+        <button class="btn-sq btn-sq--color-dark-blue-3" @click.stop="removeThumb">
+          <icon name="cross" />
+        </button>
+      </croppa>
     </div>
     <div class="car-info d-flex justify-content-between align-items-center">
       <span>{{ carNumber }}</span>
-      <button :class="['btn btn--dark-blue-outline', { pending: pending && !showDeleteModal }]" v-if="car.status === 1" @click.stop="deactivateCar">
+      <button :class="['btn btn--dark-blue-outline', { pending: pending && !showDeleteModal, disabled: thumbSet }]" v-if="car.status === 1" @click.stop="deactivateCar">
         {{ $t('inactive_make') }}
       </button>
-      <button :class="['btn btn--green', { pending: pending && !showDeleteModal }]" v-else @click.stop="activateCar">
+      <button :class="['btn btn--green', { pending: pending && !showDeleteModal, disabled: thumbSet }]" v-else @click.stop="activateCar">
         {{ $t('activate') }}
       </button>
     </div>
@@ -38,15 +62,20 @@
 
 <script>
 import { mapActions } from 'vuex';
+import Loader from '../elements/Loader.vue';
 
 export default {
+  components: { Loader },
   props: {
     car: {}
   },
   data() {
     return {
       pending: false,
-      showDeleteModal: false
+      showDeleteModal: false,
+      thumbSet: false,
+      thumb: null,
+      thumbPending: false
     }
   },
   computed: {
@@ -61,15 +90,37 @@ export default {
     ...mapActions({
       activate: 'garage/activateCar',
       deactivate: 'garage/deactivateCar',
-      delete: 'garage/deleteCar'
+      delete: 'garage/deleteCar',
+      uploadCarThumb: 'garage/uploadCarThumb'
     }),
 
     showInfo() {
       if (this.car.status !== 1) return;
       this.$emit('set-active', this.car.id);
     },
+    updateThumbImage() {
+      this.thumbSet = true;
+      this.$nextTick(() => {
+        window.dispatchEvent(new Event('resize'));
+      });
+    },
+    removeThumb() {
+      this.thumb.remove();
+      this.thumbSet = false;
+    },
+    async saveThumb() {
+      this.thumbPending = true;
+      let formData = new FormData();
+      formData.append('car_id', this.car.id);
+      let thumb = await this.thumb?.promisedBlob('image/jpeg', 0.8);
+      formData.append('thumb', thumb);
+      await this.uploadCarThumb(formData);
+      this.$toasted.success(this.$t('image_uploaded'));
+      this.thumbPending = false;
+      this.removeThumb();
+    },
     async activateCar() {
-      if (this.pending) return;
+      if (this.pending || this.thumbSet) return;
       this.pending = true;
       try {
         await this.activate({ id: this.car.id });
@@ -80,7 +131,7 @@ export default {
       }
     },
     async deactivateCar() {
-      if (this.pending) return;
+      if (this.pending || this.thumbSet) return;
       this.pending = true;
       try {
         await this.deactivate({ id: this.car.id });

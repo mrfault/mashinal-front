@@ -57,6 +57,11 @@ export const actions = {
     const res = await this.$axios.$get(`/garage/driver-license/check${this.$queryParams(data)}`);
     commit('mutate', { property: 'driverLicensePoints', value: res });
     return res;
+  },
+  async uploadCarThumb({ commit }, data) {
+    const res = await this.$axios.$post(`/garage/image_upload`, data);
+    if (res) commit('updateCar', { id: data.get('car_id'), key: 'thumb', value: res });
+    return res;
   }
 }
 
@@ -64,12 +69,12 @@ export const mutations = {
   mutate: mutate(),
   updateCar(state, { id, key, value }) {
     if (!state.cars.data) return;
-    let index = state.cars.data.findIndex(item => item.id === id);
+    let index = state.cars.data.findIndex(item => item.id === parseInt(id));
     if (index !== -1) Vue.set(state.cars.data[index], key, value);
   },
   removeCar(state, { id }) {
     if (!state.cars.data) return;
-    let index = state.cars.data.findIndex(item => item.id === id);
+    let index = state.cars.data.findIndex(item => item.id === parseInt(id));
     if (index !== -1) Vue.delete(state.cars.data, index);
     if (!state.cars.data.length) Vue.delete(state.cars, 'data');
   }

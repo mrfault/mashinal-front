@@ -1973,5 +1973,6 @@ export default {
   "have": "Var",
   "auth_date": "Qeydiyyat tarixi",
   "fines": "Cərimələr",
-  "no_active_cars": "Sizin heç bir aktiv avtomobiliniz yoxdur"
+  "no_active_cars": "Sizin heç bir aktiv avtomobiliniz yoxdur",
+  "image_uploaded": "Şəkil yükləndi"
 }

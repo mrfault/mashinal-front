@@ -86,6 +86,16 @@
   &--color-dark-blue-3 {
     background-color: $white;
     color: $dark-blue-3;
+    &.active {
+      color: $white;
+      background-color: $dark-blue-3;
+    }
+    @media(hover: hover) {
+      &:hover {
+        color: $white;
+        background-color: $dark-blue-3;
+      }
+    }
   }
   &--color-red {
     background-color: $white;
@@ -125,6 +135,16 @@
     }
     &--color-dark-blue-3 {
       color: $grey-2;
+      &.active {
+        color: $white;
+        background-color: $dark-1;
+      }
+      @media(hover: hover) {
+        &:hover {
+          color: $white;
+          background-color: $dark-1;
+        }
+      }
     }
   }
 }

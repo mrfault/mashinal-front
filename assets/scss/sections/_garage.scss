@@ -43,7 +43,7 @@
   background-color: $white;
   border-radius: 4px;
   font-weight: 500;
-  &.car-active {
+  &.car-active:not(.thumb-set) {
     transition: box-shadow .2s ease-out;
     cursor: pointer;
     &:hover {
@@ -51,8 +51,8 @@
     }
   }
   .car-bg {
-    height: 172px;
-    padding: 12px;
+    position: relative;
+    padding-bottom: 76.78%;
     background-color: $greyish-blue-3;
     border-radius: 4px 4px 0 0;
     background-position: center;
@@ -60,6 +60,31 @@
       background-repeat: no-repeat;
       background-image: url('/img/car.svg');
       background-size: 40%;
+    }
+    &-inner {
+      @include abs-zero;
+      padding: 12px;
+    }
+  }
+  .croppa-image {
+    border-radius: 4px 4px 0 0;
+    overflow: hidden;
+    &.croppa--has-target {
+      cursor: move;
+    }
+    .btn-sq {
+      position: absolute;
+      z-index: 1;
+      bottom: 12px;
+      left: 12px;
+      pointer-events: all;
+      i {
+        font-weight: bold;
+        font-size: 10px;
+      }
+      &:nth-of-type(2) {
+        left: 49px;
+      }
     }
   }
   .car-info {
@@ -101,6 +126,7 @@
 }
 
 .garage_no-active-cars {
+  color: $dark-blue-1;
   background-color: $yellow-4;
   padding: 20px 25px;
   border-radius: 4px;
@@ -130,7 +156,7 @@
   }
   .garage_car-item {
     background-color: $dark-2;
-    &.car-active:hover {
+    &.car-active:not(.thumb-set):hover {
       box-shadow: $shadow-dark-6;
     }
     .car-bg {
