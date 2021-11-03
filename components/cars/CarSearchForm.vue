@@ -423,12 +423,12 @@ export default {
   created() {
     this.$nuxt.$on('extend-options', this.goToSearch);
     if (this.routeName === 'index') 
-      this.$nuxt.$on('logo-click', this.resetForm);
+      this.$nuxt.$on('reset-search-form', this.resetForm);
   },
   beforeDestroy() {
     this.$nuxt.$off('extend-options', this.goToSearch);
     if (this.routeName === 'index') 
-      this.$nuxt.$off('logo-click', this.resetForm);
+      this.$nuxt.$off('reset-search-form', this.resetForm);
   }
 }
 </script>
