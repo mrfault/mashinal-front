@@ -1,4 +1,4 @@
-.garage_no-cars-card {
+.garage_no-cars {
   img {
     max-width: 80%;
     margin: 60px auto 10px;
@@ -23,7 +23,8 @@
   }
 }
 
-.garage_nav-card {
+.garage_nav,
+.garage_cars-nav {
   .btn {
     min-width: 146px;
   }
@@ -54,6 +55,12 @@
     padding: 12px;
     background-color: $greyish-blue-3;
     border-radius: 4px 4px 0 0;
+    background-position: center;
+    &.no-img {
+      background-repeat: no-repeat;
+      background-image: url('/img/car.svg');
+      background-size: 40%;
+    }
   }
   .car-info {
     padding: 10px 12px;
@@ -93,6 +100,28 @@
   }
 }
 
+.garage_no-active-cars {
+  background-color: $yellow-4;
+  padding: 20px 25px;
+  border-radius: 4px;
+  .text {
+    width: 100%;
+    font-size: 16px;
+    padding-right: 25px;
+  }
+  img {
+    flex-shrink: 0;
+    width: 34px;
+    height: 34px;
+    margin-right: 25px;
+  }
+  span.cursor-pointer {
+    flex-shrink: 0;
+    width: 14px;
+    margin-left: 25px;
+  }
+}
+
 .dark-mode {
   .garage_cars-list {
     .date {
@@ -118,4 +147,15 @@
 }
 
 @include media-max-width('lg') {
+  .garage_nav,
+  .garage_cars-nav {
+    .btn {
+      min-width: auto;
+    }
+  }
+  .garage_no-active-cars {
+    .text {
+      font-size: 14px;
+    }
+  }
 }

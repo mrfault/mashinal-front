@@ -4,7 +4,7 @@
       <breadcrumbs :crumbs="crumbs" />
       <template v-if="cars.data">
         <garage-nav :tab="tab" @change-tab="tab = $event" />
-        <cars-list v-if="tab === 'cars'" />
+        <cars-list v-show="tab === 'cars'" />
       </template>
       <template v-else>
         <garage-empty />

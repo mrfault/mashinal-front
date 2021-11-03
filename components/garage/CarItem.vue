@@ -1,6 +1,6 @@
 <template>
-  <div :class="['garage_car-item', { 'car-active': car.status === 1 }]" @click="$emit('set-active', car.id)">
-    <div class="car-bg d-flex flex-column justify-content-between">
+  <div :class="['garage_car-item', { 'car-active': car.status === 1 }]" @click="showInfo">
+    <div :class="['car-bg d-flex flex-column justify-content-between', {'no-img': !car.thumb}]">
       <div class="d-flex justify-content-end align-items-center">
         <button class="btn-sq btn-sq--color-red" @click.stop="showDeleteModal = true">
           <icon name="garbage" />
@@ -64,6 +64,10 @@ export default {
       delete: 'garage/deleteCar'
     }),
 
+    showInfo() {
+      if (this.car.status !== 1) return;
+      this.$emit('set-active', this.car.id);
+    },
     async activateCar() {
       if (this.pending) return;
       this.pending = true;

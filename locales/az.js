@@ -1965,4 +1965,13 @@ export default {
   "car_activated": "Avtomobil aktiv edildi",
   "car_deactivated": "Avtomobil deaktiv edildi",
   "car_deleted": "Avtomobil silindi",
+  "about": "Haqqında",
+  "brand_model": "Marka/model",
+  "tech_exp_date": "Texniki baxışın bitmə vaxtı",
+  "has_arrest": "Məhdudiyyət (həbs)",
+  "dont_have": "Yoxdur",
+  "have": "Var",
+  "auth_date": "Qeydiyyat tarixi",
+  "fines": "Cərimələr",
+  "no_active_cars": "Sizin heç bir aktiv avtomobiliniz yoxdur"
 }

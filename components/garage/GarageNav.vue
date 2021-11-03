@@ -1,5 +1,5 @@
 <template>
-  <div class="garage_nav-card card with-margins mb-2 mb-lg-3">
+  <div class="garage_nav card with-margins mb-2 mb-lg-3">
     <div class="row">
       <div class="col-6 col-lg-auto">
         <button 

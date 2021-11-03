@@ -1,5 +1,5 @@
 <template>
-  <div class="garage_no-cars-card card with-margins">
+  <div class="garage_no-cars card with-margins">
     <div class="text-center">
       <img src="/img/car-garage.svg" alt="" />
       <p class="text-red">{{ $t('no_cars_found') }}</p>
