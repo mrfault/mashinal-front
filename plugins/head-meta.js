@@ -28,7 +28,7 @@ export const generateMetaInfo = ({ title, description, image, path, locale, prod
   let appbanner = [
     { hid: 'smartbanner:title', name: 'smartbanner:title', content: 'Mashin.AL' },
     { hid: 'smartbanner:title', name: 'smartbanner:title', content: 'Mashin.AL' },
-    { hid: 'smartbanner:author', name: 'smartbanner:author', content: 'AlVentures' },
+    { hid: 'smartbanner:author', name: 'smartbanner:author', content: locale === 'az' ? 'Mobil tətbiq' : 'Мобильное приложение' },
     { hid: 'smartbanner:icon-apple', name: 'smartbanner:icon-apple', content: '/apple-touch-icon.png' },
     { hid: 'smartbanner:icon-google', name: 'smartbanner:icon-google', content: '/android-chrome-192x192.png' },
     { hid: 'smartbanner:button', name: 'smartbanner:button', content: locale === 'az' ? 'Yüklə' : 'Скачать' },
