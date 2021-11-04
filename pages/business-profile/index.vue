@@ -42,7 +42,7 @@ import AdditionalFeatures from '~/components/business-profile/AdditionalFeatures
 import Announcements from '~/components/business-profile/Announcements';
 import ApplicationSection from '~/components/business-profile/ApplicationSection';
 import FAQ from '~/components/business-profile/FAQ';
-// import Entrepreneurs from '~/components/business-profile/Entrepreneurs';
+import Entrepreneurs from '~/components/business-profile/Entrepreneurs';
 import Advantages from '~/components/business-profile/Advantages';
 import Packages from '~/components/business-profile/Packages';
 import PartsPackages from '~/components/business-profile/PartsPackages';
@@ -58,7 +58,7 @@ export default {
     Announcements,
     ApplicationSection,
     FAQ,
-    // Entrepreneurs,
+    Entrepreneurs,
     Advantages,
     Packages,
     PartsPackages,

@@ -134,8 +134,8 @@
           </div>
           <div class="col-lg-4 mb-2 mb-lg-0">
             <form-text-input v-model="form.vin" 
-                :mask="{mask: '*****************', definitions: { '*': { casing: 'upper' } }}" 
-                :placeholder="$t('vin_carcase_number')" @change="removeError('vin')">
+                :mask="'*****************'" :placeholder="$t('vin_carcase_number')"
+                @change="removeError('vin')">
               <popover name="vin" :width="240">
                 <inline-svg src="/img/car-cert.svg"/>
               </popover>
