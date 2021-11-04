@@ -4,18 +4,25 @@ export default function ({ app, store, error, $axios }) {
     config.headers['ptk'] = store.getters.ptk;
   });
 
+  $axios.onResponse(res => {
+    // handle sms radar errors
+    let smsRadarErrCode = res.data?.error_code;
+    if (smsRadarErrCode) {
+      if ([3101].includes(smsRadarErrCode)) {
+        return;
+      } else if (process.client) {
+        app.$toast.error(app.i18n.t('garage_error_'+smsRadarErrCode));
+      }
+    }
+  });
+
   $axios.onError(err => {
-    // console.log(err.response.data.message);
-    // console.log(err.response.data.exception);
-    // console.log(err.response.data.file);
-    // console.log(err.response.data.line);
-    
+    // stop loading
     if (process.client) {
       app.store.dispatch('setLoading', false);
     }
-
+    // handle global errors
     const code = parseInt(err.response && err.response.status);
-    
     if (code === 404/* || code === 500*/) {
       error({statusCode:code});
       return true;
