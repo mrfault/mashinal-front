@@ -62,7 +62,7 @@
       <div class="container">
         <nav class="full-width">
           <div class="row align-items-center">
-            <div class="col-lg-8 position-static">
+            <div class="col-lg-9 position-static">
               <ul class="menu">
                 <li v-for="menu in navbarMenus" :key="menu.title" :class="{'dropdown': menu.children}">
                   <nuxt-link :to="$localePath(menu.route)">
@@ -84,21 +84,15 @@
                 </li>
               </ul>
             </div>
-            <div class="col-lg-4">
+            <div class="col-lg-3">
               <div class="row">
-                <div class="col-2 text-right">
+                <div class="col-6 text-right">
                   <div class="support-hotline">
                     <icon name="support" /> 
                     <span>*8787</span>
                   </div>
                 </div>
-                <div class="col-5">
-                  <nuxt-link class="btn full-width btn--pale-red-outline" :to="$localePath('/garage')" :active-class="''">
-                    <icon name="garage" />
-                    {{ $t('garage') }}
-                  </nuxt-link>
-                </div>
-                <div class="col-5">
+                <div class="col-6">
                   <nuxt-link class="btn full-width btn--pale-green-outline" :to="$localePath('/sell')">
                     <icon name="plus-circle" />
                     {{ $t('to_sell') }}
