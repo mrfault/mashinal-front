@@ -85,14 +85,14 @@
               </ul>
             </div>
             <div class="col-lg-4">
-              <div class="row">
+              <div class="row justify-content-end">
                 <div class="col-2 text-right">
                   <div class="support-hotline">
                     <icon name="support" /> 
                     <span>*8787</span>
                   </div>
                 </div>
-                <div class="col-5">
+                <div class="col-5" v-if="$env.DEV">
                   <nuxt-link class="btn full-width btn--pale-red-outline" :to="$localePath('/garage')" :active-class="''">
                     <icon name="garage" />
                     {{ $t('garage') }}
