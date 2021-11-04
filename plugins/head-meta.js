@@ -29,15 +29,12 @@ export const generateMetaInfo = ({ title, description, image, path, locale, prod
     { hid: 'smartbanner:title', name: 'smartbanner:title', content: 'Mashin.AL' },
     { hid: 'smartbanner:title', name: 'smartbanner:title', content: 'Mashin.AL' },
     { hid: 'smartbanner:author', name: 'smartbanner:author', content: 'AlVentures' },
-    // { hid: 'smartbanner:price', name: 'smartbanner:price', content: 'FREE' },
-    // { hid: 'smartbanner:price-suffix-apple', name: 'smartbanner:price-suffix-apple', content: ' - On the App Store' },
-    // { hid: 'smartbanner:price-suffix-google', name: 'smartbanner:price-suffix-google', content: ' - In Google Play' },
     { hid: 'smartbanner:icon-apple', name: 'smartbanner:icon-apple', content: '/apple-touch-icon.png' },
     { hid: 'smartbanner:icon-google', name: 'smartbanner:icon-google', content: '/android-chrome-192x192.png' },
     { hid: 'smartbanner:button', name: 'smartbanner:button', content: locale === 'az' ? 'Yüklə' : 'Скачать' },
     { hid: 'smartbanner:button-url-apple', name: 'smartbanner:button-url-apple', content: 'https://apps.apple.com/ru/app/mashin-al/id1588371190' },
     { hid: 'smartbanner:button-url-google', name: 'smartbanner:button-url-google', content: 'https://play.google.com/store/apps/details?id=ventures.al.mashinal' },
-    { hid: 'smartbanner:enabled-platforms', name: 'smartbanner:enabled-platforms', content: 'android' },
+    { hid: 'smartbanner:enabled-platforms', name: 'smartbanner:enabled-platforms', content: 'ios,android' },
     { hid: 'smartbanner:close-label', name: 'smartbanner:close-label', content: locale === 'az' ? 'Bağla' : 'Закрыть' },
     { hid: 'smartbanner:hide-ttl', name: 'smartbanner:hide-ttl', content: 86400000 }
   ]
@@ -74,7 +71,7 @@ export const generateMetaInfo = ({ title, description, image, path, locale, prod
       // pixel catalog
       ...product,
       // app
-      { hid: 'apple-itunes-app', name: 'apple-itunes-app', content: 'app-id=1588371190' },
+      // { hid: 'apple-itunes-app', name: 'apple-itunes-app', content: 'app-id=1588371190' },
       ...appbanner
     ],
     link: [

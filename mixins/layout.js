@@ -85,6 +85,11 @@ export const LayoutMixin = {
       this.closeLogin();
       this.resetSellTokens();
       if (key) this.$nuxt.$emit('after-login', key);
+    },
+    registerSW() {
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js');
+      }
     }
   },
   created() {
@@ -119,6 +124,8 @@ export const LayoutMixin = {
       window.addEventListener('resize', this.handleResize);
       window.addEventListener('resize', this.handleScroll);
       window.addEventListener('scroll', this.handleScroll);
+
+      window.addEventListener('load', this.registerSW);
       
       setTimeout(() => {
         this.handleResize();
@@ -148,5 +155,7 @@ export const LayoutMixin = {
     window.removeEventListener('resize', this.handleResize);
     window.removeEventListener('resize', this.handleScroll);
     window.removeEventListener('scroll', this.handleScroll);
+
+    window.removeEventListener('load', this.registerSW);
   }
 }
