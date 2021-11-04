@@ -76,14 +76,14 @@ export const MenusDataMixin = {
     sidebarMenus() {
       return [
         { title: 'home_page', route: '/', icon: 'home' },
+        { title: 'garage', route: '/garage', icon: 'garage', dev: true },
         { title: 'salons', route: '/salons', icon: 'store' },
-        { title: 'parts', route: '/parts', icon: 'parts' },
         { title: 'autocatalog', route: '/catalog', icon: 'book' },
         { title: 'comparisons', route: '/comparison', icon: 'compare' },
         { title: 'helper_search', route: '/cars/assistant', icon: 'flag' },
         { title: 'my_searches', route: '/profile/templates', icon: 'template', auth: true },
         ...this.pageMenus
-      ]
+      ].filter(menu => menu.dev && this.$env.DEV || !menu.dev)
     },
 
     commercialMenus() {
