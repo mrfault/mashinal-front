@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 import CarSearchForm from '~/components/cars/CarSearchForm';
 import Grid from '~/components/announcements/Grid';
@@ -68,15 +68,24 @@ export default {
     ...mapGetters(['mainAnnouncements'])
   },
   methods: {
-    scrollUp() {
+    ...mapActions(['getInfiniteMainSearch', 'clearSavedSearch']),
+
+    async handleLogoClick() {
       this.$scrollTo('body');
+      this.$nuxt.$emit('reset-search-form');
+      this.pending = true;
+      await Promise.all([
+        this.getInfiniteMainSearch(),
+        this.clearSavedSearch()
+      ]);
+      this.pending = false;
     }
   },
   mounted() {
-    this.$nuxt.$on('logo-click', this.scrollUp);
+    this.$nuxt.$on('logo-click', this.handleLogoClick);
   },
   beforeDestroy() {
-    this.$nuxt.$off('logo-click', this.scrollUp);
+    this.$nuxt.$off('logo-click', this.handleLogoCkick);
   },
   beforeRouteLeave(to, from, next) {
     this.$nuxt.$emit('prevent-popstate');

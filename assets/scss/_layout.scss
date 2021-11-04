@@ -201,6 +201,10 @@ main {
   position: relative;
 }
 
+.position-static {
+  position: static;
+}
+
 .card {
   position: relative;
   background-color: $white;
@@ -320,6 +324,10 @@ main {
 .dropdown-menu {
   padding: 0;
   list-style: none;
+}
+
+.w-auto {
+  width: auto !important;
 }
 
 .full-width {
@@ -571,6 +579,17 @@ main {
   }
   &.has-shadow {
     box-shadow: $shadow-light-4;
+  }
+}
+
+.support-hotline {
+  display: inline-flex;
+  align-items: center;
+  color: $red-1;
+  font-weight: 500;
+  padding-right: 10px;
+  i {
+    font-size: 34px;
   }
 }
 
@@ -962,6 +981,10 @@ main {
       }
     }
   }
+}
+
+.banner-open .mobile-menu {
+  top: 84px;
 }
 
 .dark-mode {

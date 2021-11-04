@@ -60,32 +60,48 @@
     </div>
     <div class="navbar">
       <div class="container">
-        <nav>
-          <ul class="menu">
-            <li v-for="menu in navbarMenus" :key="menu.title" :class="{'dropdown': menu.children}">
-              <nuxt-link :to="$localePath(menu.route)">
-                {{ $t(menu.title) }}
-                <icon name="chevron-down" v-if="menu.children" />
-              </nuxt-link>
-              <div class="dropdown-content" v-if="menu.children">
-                <div class="container">
-                  <ul class="dropdown-menu row">
-                    <li class="col-3" v-for="submenu in menu.children" :key="submenu.title">
-                      <nuxt-link :to="$localePath(submenu.route)" exact>
-                        <icon :name="submenu.icon" />
-                        {{ $t(submenu.title) }}
-                      </nuxt-link>
-                    </li>
-                  </ul>
+        <nav class="full-width">
+          <div class="row align-items-center">
+            <div class="col-lg-9 position-static">
+              <ul class="menu">
+                <li v-for="menu in navbarMenus" :key="menu.title" :class="{'dropdown': menu.children}">
+                  <nuxt-link :to="$localePath(menu.route)">
+                    {{ $t(menu.title) }}
+                    <icon name="chevron-down" v-if="menu.children" />
+                  </nuxt-link>
+                  <div class="dropdown-content" v-if="menu.children">
+                    <div class="container">
+                      <ul class="dropdown-menu row">
+                        <li class="col-3" v-for="submenu in menu.children" :key="submenu.title">
+                          <nuxt-link :to="$localePath(submenu.route)" exact>
+                            <icon :name="submenu.icon" />
+                            {{ $t(submenu.title) }}
+                          </nuxt-link>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="col-lg-3">
+              <div class="row">
+                <div class="col-6 text-right">
+                  <div class="support-hotline">
+                    <icon name="support" /> 
+                    <span>*8787</span>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <nuxt-link class="btn full-width btn--pale-green-outline" :to="$localePath('/sell')">
+                    <icon name="plus-circle" />
+                    {{ $t('to_sell') }}
+                  </nuxt-link>
                 </div>
               </div>
-            </li>
-          </ul>
+            </div>
+          </div>
         </nav>
-        <nuxt-link class="btn btn--pale-green-outline" :to="$localePath('/sell')">
-          <icon name="plus-circle" />
-          {{ $t('to_sell') }}
-        </nuxt-link>
       </div>
     </div>
   </header>
