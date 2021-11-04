@@ -15,5 +15,16 @@
     ],
     "theme_color": "#b90026",
     "background_color": "#b90026",
-    "display": "standalone"
+    "display": "standalone",
+    "prefer_related_applications": true,
+    "related_applications": [
+        {
+            "platform": "play",
+            "url": "https://play.google.com/store/apps/details?id=ventures.al.mashinal",
+            "id": "ventures.al.mashinal"
+        }, {
+            "platform": "itunes",
+            "url": "https://apps.apple.com/app/mashin-al/id1588371190"
+        }
+    ]
 }
