@@ -177,6 +177,7 @@ export default {
   "are_you_sure_you_want_to_change_salon_name": "Hal-hazırda sizə şamil edilmiş Mağaza adını eyni ilə Salonlar bölümündə istifadə etməmək istədiyinizə əminsiniz?",
   "are_you_sure_you_want_to_deactivate_the_announcement": "Elanı deaktiv etmək istədiyinizə əminsiniz?",
   "are_you_sure_you_want_to_deactivate_the_announcements": "Seçilmiş elanları deaktiv etmək istədiyinizə əminsiniz?",
+  "are_you_sure_you_want_to_deactivate_the_car": "Avtomobili deaktiv etmək istədiyinizə əminsiniz?",
   "are_you_sure_you_want_to_delete_the_announcement": "Elanı silmək istədiyinizə əminsiniz?",
   "are_you_sure_you_want_to_delete_the_announcements": "Seçilmiş elanları silmək istədiyinizə əminsiniz?",
   "are_you_sure_you_want_to_delete_the_message": "Mesajı silmək istədiyinizə əminsiniz?",

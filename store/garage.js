@@ -25,7 +25,7 @@ export const actions = {
   },
   async addNewCar({ dispatch }, data) {
     const res = await this.$axios.$get(`/garage/register${this.$queryParams(data)}`);
-    if (res.status === 'success') await dispatch('getCarList', { phone: data.phone });
+    if (res.status === 'success') await dispatch('getCarList', {});
     return res;
   },
   async activateCar({ commit }, data) {

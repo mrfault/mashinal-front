@@ -3,8 +3,15 @@
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
       <template v-if="cars.data">
-        <garage-nav :tab="tab" @change-tab="tab = $event" />
-        <cars-list v-show="tab === 'cars'" />
+        <garage-nav 
+          v-show="showNav || !isMobileBreakpoint" 
+          :tab="tab" 
+          @change-tab="tab = $event" 
+        />
+        <cars-list 
+          v-show="tab === 'cars'" 
+          @show-nav="showNav = $event"
+        />
       </template>
       <template v-else>
         <garage-empty />
@@ -38,12 +45,13 @@ export default {
       title: this.$t('garage')
     });
   },
-  async asyncData({ store, $auth }) {
+  async asyncData({ store }) {
     await Promise.all([
-      store.dispatch('garage/getCarList', { phone: $auth.user.phone })
+      store.dispatch('garage/getCarList', {})
     ]);
     return {
-      tab: 'cars'
+      tab: 'cars',
+      showNav: true
     }
   },
   computed: {

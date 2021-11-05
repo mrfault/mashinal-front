@@ -175,6 +175,7 @@ export default {
   "are_you_sure_you_want_to_change_salon_name": "Вы уверены, что не хотите использовать для салона название привязанного вам магазина запчастей?",
   "are_you_sure_you_want_to_deactivate_the_announcement": "Вы точно хотите деактивировать объявление?",
   "are_you_sure_you_want_to_deactivate_the_announcements": "Вы точно хотите деактивировать выбранные объявления?",
+  "are_you_sure_you_want_to_deactivate_the_car": "Вы точно хотите деактивировать автомобиль?",
   "are_you_sure_you_want_to_delete_the_announcement": "Вы точно хотите удалить объявление?",
   "are_you_sure_you_want_to_delete_the_announcements": "Вы точно хотите удалить выбранные объявления?",
   "are_you_sure_you_want_to_delete_the_message": "Вы точно хотите удалить сообщение?",
