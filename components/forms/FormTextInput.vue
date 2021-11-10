@@ -38,7 +38,7 @@
           <icon :name="showPassword ? 'eye' : 'hide'" />
         </span>
       </template>
-      <icon name="alert-circle" v-if="invalid" class="invalid" />
+      <icon name="alert-circle" v-if="invalid && !inputDate" class="invalid" />
       <icon name="check-circle" v-else-if="valid && type !== 'password'" class="valid" />
       <slot name="default" />
     </div>

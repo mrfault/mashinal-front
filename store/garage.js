@@ -54,7 +54,7 @@ export const actions = {
     return res;
   },
   async checkDriverPoints({ commit }, data) {
-    const res = await this.$axios.$get(`/garage/driver-license/check${this.$queryParams(data)}`);
+    const res = await this.$axios.$get(`/garage/driver/license/check${this.$queryParams(data)}`);
     commit('mutate', { property: 'driverLicensePoints', value: res });
     return res;
   },

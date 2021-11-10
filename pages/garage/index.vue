@@ -12,6 +12,10 @@
           v-show="tab === 'cars'" 
           @show-nav="showNav = $event"
         />
+        <check-driver-points 
+          v-show="tab === 'check-points'" 
+          @show-nav="showNav = $event"
+        />
       </template>
       <template v-else>
         <garage-empty />
@@ -26,13 +30,15 @@ import { mapGetters } from 'vuex';
 import GarageNav from '~/components/garage/GarageNav';
 import GarageEmpty from '~/components/garage/GarageEmpty';
 import CarsList from '~/components/garage/CarsList';
+import CheckDriverPoints from '~/components/garage/CheckDriverPoints';
 
 export default {
   name: 'pages-garage-index',
   components: {
     GarageNav,
     GarageEmpty,
-    CarsList
+    CarsList,
+    CheckDriverPoints
   },
   middleware: ['auth_general'],
   nuxtI18n: {

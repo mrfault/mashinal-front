@@ -18,7 +18,7 @@
         <form-text-input 
           class="mb-2 mb-lg-3"
           v-model="form.tech_id" 
-          :mask="{mask: '********', definitions: { '*': { casing: 'upper' } }}"
+          :mask="$maskAlphaNumeric('********')"
           :placeholder="$t('tech_id')" 
           :invalid="$v.form.tech_id.$error"
         />

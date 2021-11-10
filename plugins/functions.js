@@ -90,6 +90,9 @@ export default function({ app, route, store }, inject) {
     return `${count ? `${n} ` : ''}${forms[(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2) ]}`;
   });
   // masks
+  inject('maskAlphaNumeric', (mask, placeholder = '_') => {
+    return { mask, showMaskOnHover: false, definitions: { '*': { casing: 'upper', validator: '[a-zA-Z0-9]' } }, placeholder };
+  });
   inject('maskPhone', (inline = false) => {
     let mask = '+\\9\\94 (99) 999-99-99';
     return inline ? mask : { mask, showMaskOnHover: false };
@@ -173,7 +176,5 @@ export default function({ app, route, store }, inject) {
   inject('clone', _.clone);
   inject('sortBy', _.sortBy);
   inject('chunk', _.chunk);
-  // inject('uniq', _.uniq);
-  // inject('groupBy', _.groupBy);
   inject('moment', moment);
 }
