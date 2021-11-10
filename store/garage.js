@@ -44,12 +44,12 @@ export const actions = {
     return res;
   },
   async getProtocols({ commit }, data) {
-    const res = await this.$axios.$get(`/garage/protocol/list${this.$queryParams(data)}`);
+    const res = await this.$axios.$get(`/garage/protocols/list${this.$queryParams(data)}`);
     commit('mutate', { property: 'protocols', value: res });
     return res;
   },
   async getProtocolFiles({ commit }, data) {
-    const res = await this.$axios.$get(`/garage/protocol/files${this.$queryParams(data)}`);
+    const res = await this.$axios.$get(`/garage/protocols/files${this.$queryParams(data)}`);
     commit('mutate', { property: 'protocolFiles', value: res });
     return res;
   },
@@ -62,6 +62,10 @@ export const actions = {
     const res = await this.$axios.$post(`/garage/image_upload`, data);
     if (res) commit('updateCar', { id: data.get('car_id'), key: 'thumb', value: res });
     return res;
+  },
+  async resetCarData({ commit }, data) {
+    commit('mutate', { property: 'protocols', value: {} });
+    commit('mutate', { property: 'protocolFiles', value: {} });
   }
 }
 

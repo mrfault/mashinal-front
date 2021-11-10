@@ -79,6 +79,7 @@ export default {
   "add_a_video_this_will_attract_more_attention_increase_confidence_in_the_seller_and_increase_the_likelihood_of_a_call": "Добавьте видеоролик — это привлечет больше внимания, повысит доверие к продавцу и увеличит вероятность звонка.",
   "add_an_ad_and_thousands_of_potential_buyers_will_see_it": "Добавьте объявление, и его увидят тысячи потенциальных покупателей.",
   "add_balance": "Пополнение баланса",
+  "add_balance_through_ad_started": "Пополнение баланса",
   "add_calc_percent": "{n}% от запланированного охвата",
   "add_car": "Добавить автомобиль",
   "add_car_model": "Добавить модель",

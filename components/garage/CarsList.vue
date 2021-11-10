@@ -34,7 +34,8 @@
     <div class="col-12 col-lg-4-5">
       <div class="card with-margins" v-if="activeCar" v-show="carChosen || !isMobileBreakpoint">
         <cars-nav :tab="tab" @change-tab="tab = $event" />
-        <car-info :car="activeCar" v-if="tab === 'info'" />
+        <car-info :car="activeCar" v-show="tab === 'info'" :key="'info_' + activeCar.id" />
+        <car-protocols :car="activeCar" v-show="tab === 'fines'" :key="'fines_' + activeCar.id" />
       </div>
     </div>
   </div>
@@ -43,17 +44,19 @@
 <script>
 import { mapGetters } from 'vuex';
 
+import AddCar from '~/components/garage/AddCar';
 import CarItem from '~/components/garage/CarItem';
 import CarsNav from '~/components/garage/CarsNav';
 import CarInfo from '~/components/garage/CarInfo';
-import AddCar from '~/components/garage/AddCar';
+import CarProtocols from '~/components/garage/CarProtocols';
 
 export default {
   components: {
+    AddCar,
     CarItem,
     CarsNav,
     CarInfo,
-    AddCar
+    CarProtocols
   },
   data() {
     let activeCars = this.$store.state.garage.cars.data?.filter(car => car.status === 1);

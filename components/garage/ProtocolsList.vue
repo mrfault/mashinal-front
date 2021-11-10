@@ -51,9 +51,9 @@ export default {
         discount: protocol.discount && `${protocol.discount} ₼`,
         penalty: protocol.penalty && `${protocol.penalty} ₼`,
         total: protocol.total && `${protocol.total} ₼`,
-        date_decided: protocol.decision_date && this.$moment(protocol.decision_date).format('DD.MM.YYYY'),
-        date_expire: protocol.expiry_date && this.$moment(protocol.expiry_date).format('DD.MM.YYYY'),
-        date: protocol.date && this.$moment(protocol.date).format('DD.MM.YYYY')
+        date_decided: protocol.decision_date && this.$moment(protocol.decision_date.replace(/\./g,'-')).format('DD.MM.YYYY'),
+        date_expire: protocol.expiry_date && this.$moment(protocol.expiry_date.replace(/\./g,'-')).format('DD.MM.YYYY'),
+        date: protocol.date && this.$moment(protocol.date.replace(/\./g,'-')).format('DD.MM.YYYY')
       };
 
       let dataKeys = Object.keys(data).filter(k => data[k]);

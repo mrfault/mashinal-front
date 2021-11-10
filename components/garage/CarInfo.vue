@@ -22,19 +22,22 @@ export default {
   },
   computed: {
     mainSpecs() {
-      let firstCol = {
+      let data = {
         tech_id: this.car.tech_id,
         brand_model: this.car.mark,
-        years: this.car.year
-      };
-      let secondCol = {
+        years: this.car.year,
         auth_date: this.$moment(this.car.created_date).format('DD.MM.YYYY'),
         tech_exp_date: this.$moment(this.car.tech_exp_date).format('DD.MM.YYYY'),
         has_arrest: this.car.has_arrest ? this.$t('have') : this.$t('dont_have')
       };
-      return this.isMobileBreakpoint 
-        ? [{...firstCol, ...secondCol}]
-        : [firstCol, secondCol];
+
+      let dataKeys = Object.keys(data).filter(k => ![null,undefined].includes(data[k]));
+      let middleIndex = Math.ceil(dataKeys.length / 2);
+      let dataCols = this.$chunk(dataKeys, middleIndex); 
+
+      let getData = (keys) => keys.reduce((a, b) => ({...a, [b]: data[b]}), {});
+
+      return this.isMobileBreakpoint ? [getData(dataKeys)] : [getData(dataCols[0]), getData(dataCols[1])];
     },
   }
 }
