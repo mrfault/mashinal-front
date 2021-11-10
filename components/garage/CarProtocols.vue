@@ -1,9 +1,9 @@
 <template>
-  <div class="garage_car-protocols">
+  <div class="garage_car-protocols mt-4 mt-lg-0">
     <div class="position-relative" v-if="!protocols.data">
       <loader />
     </div>
-    <protocols-list :protocols="protocols.data" v-else />
+    <protocols-list :protocols="protocols.data" where="car-protocols" v-else />
   </div>
 </template>
 

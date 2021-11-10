@@ -359,6 +359,7 @@ export default {
   "char_hour": "s",
   "char_kilogramm": "kq",
   "char_kilometre": "km",
+  "char_kilometre_hour": "km/saat",
   "char_litre": "L",
   "char_metre": "m",
   "char_mile": "ml",
@@ -1994,5 +1995,10 @@ export default {
   "has_decision": "Qərarlı",
   "no_decision": "Qərarsız",
   "penalty": "Cərimə faizı",
-  
+  "fined_fullname": "Cərimə olunan",
+  "speed_max": "Sürət həddi",
+  "speed_real": "Aşdığınız sürət",
+  "protocol_took_place": "Qeydə alınma yeri",
+  "protocol_article": "İXM",
+  "watch_files": "Şəkil/videoya bax"
 }

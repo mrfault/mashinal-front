@@ -37,6 +37,15 @@
       margin-bottom: 20px;
     }
   }
+  .add-item {
+    position: relative;
+    padding-top: 76.78%;
+    padding-bottom: 79px;
+    &_inner {
+      width: 100%;
+      @include abs-middle;
+    }
+  }
 }
 
 .garage_car-item {
@@ -188,6 +197,14 @@
   .garage_no-active-cars {
     .text {
       font-size: 14px;
+    }
+  }
+  .garage_cars-list {
+    & > .row {
+      margin-bottom: -15px;
+      & > .col-6 {
+        margin-bottom: 15px;
+      }
     }
   }
   .garage_no-cars {

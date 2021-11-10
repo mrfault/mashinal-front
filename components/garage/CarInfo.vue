@@ -1,5 +1,5 @@
 <template>
-  <div class="vehicle-specs">
+  <div class="vehicle-specs mt-4 mt-lg-0">
     <hr />
     <div class="row">
       <div class="col" v-for="(specs, i) in mainSpecs" :key="i">
@@ -22,12 +22,14 @@ export default {
   },
   computed: {
     mainSpecs() {
+      let getDate = (date) => date && this.$moment(this.$parseDate(date)).format('DD.MM.YYYY');
+
       let data = {
         tech_id: this.car.tech_id,
         brand_model: this.car.mark,
         years: this.car.year,
-        auth_date: this.$moment(this.car.created_date).format('DD.MM.YYYY'),
-        tech_exp_date: this.$moment(this.car.tech_exp_date).format('DD.MM.YYYY'),
+        auth_date: getDate(this.car.created_date),
+        tech_exp_date: getDate(this.car.tech_exp_date),
         has_arrest: this.car.has_arrest ? this.$t('have') : this.$t('dont_have')
       };
 

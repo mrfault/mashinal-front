@@ -6,7 +6,7 @@
     <template v-else>
       <div class="mt-2 mt-lg-3" v-for="(protocol, index) in protocols" :key="protocol.id">
         <collapse-content
-          :title="protocol.protocol_number"
+          :title="`${protocol.protocol_series || ''}${protocol.protocol_number}`"
           :first-collapsed="index !== 0"
           title-with-line
         >
@@ -23,7 +23,44 @@
                 </ul>
               </div>
             </div>
-            <hr class="mb-0"/>
+            <hr :class="{'mb-0': where !== 'car-protocols'}"/>
+            <template v-if="where === 'car-protocols'">
+              <div class="row">
+                <div class="col">
+                  <ul>
+                    <template v-for="(spec, key) in restSpecs(protocol)">
+                      <li :key="key" v-if="spec">
+                        <span class="w-auto">{{ $t(key) }}</span>
+                        <span>{{ spec }}</span>
+                      </li>
+                    </template>
+                  </ul>
+                </div>
+              </div>
+              <hr class="mb-0"/>
+              <div class="mt-2 mt-lg-3" v-if="protocol.can_pay || protocol.has_files">
+                <div class="row">
+                  <template v-if="protocol.has_files">
+                    <div :class="['col-12 col-lg-1-5 ml-auto order-lg-2', {'mb-2 mb-lg-0': protocol.can_pay}]">
+                      <protocol-files-button :protocol="protocol" />
+                    </div>
+                  </template>
+                  <template v-if="protocol.can_pay">
+                    <div class="col-6 col-lg-3-5 mr-auto order-lg-1" >
+                      <span class="total-price" >
+                        <span>{{ $t('total')}}</span>
+                        <strong>{{ protocol.total }} ₼</strong>
+                      </span>
+                    </div>
+                    <div class="col-6 col-lg-1-5 ml-auto order-lg-3">
+                      <button class="btn btn--green full-width disabled" >
+                        {{ $t('pay_online') }}
+                      </button>
+                    </div>
+                  </template>
+                </div>
+              </div>
+            </template>
           </div>
         </collapse-content>
       </div>
@@ -33,27 +70,36 @@
 
 <script>
 import CollapseContent from '~/components/elements/CollapseContent';
+import ProtocolFilesButton from '~/components/garage/ProtocolFilesButton';
 
 export default {
   components: {
-    CollapseContent
+    CollapseContent,
+    ProtocolFilesButton
   },
   props: {
     protocols: {},
-    tab: String
+    tab: String,
+    where: String
   },
   methods: {
     mainSpecs(protocol) {
+      let getDate = (date) => date && this.$moment(this.$parseDate(date)).format('DD.MM.YYYY');
+
       let data = {
         car_number: protocol.car_number,
+        fined_fullname: protocol.fullname,
         point: protocol.point,
-        amount: protocol.amount && `${protocol.amount} ₼`,
+        fine: protocol.amount && `${protocol.amount} ₼`,
         discount: protocol.discount && `${protocol.discount} ₼`,
         penalty: protocol.penalty && `${protocol.penalty} ₼`,
-        total: protocol.total && `${protocol.total} ₼`,
-        date_decided: protocol.decision_date && this.$moment(protocol.decision_date.replace(/\./g,'-')).format('DD.MM.YYYY'),
-        date_expire: protocol.expiry_date && this.$moment(protocol.expiry_date.replace(/\./g,'-')).format('DD.MM.YYYY'),
-        date: protocol.date && this.$moment(protocol.date.replace(/\./g,'-')).format('DD.MM.YYYY')
+        total_amount: protocol.total && `${protocol.total} ₼`,
+        speed_max: protocol.speed_max && `${protocol.speed_max} ${this.$t('char_kilometre_hour')}`,
+        speed_real: protocol.speed_real && `${protocol.speed_real} ${this.$t('char_kilometre_hour')}`,
+        status: protocol.has_decision !== undefined && (protocol.has_decision ? this.$t('has_decision') : this.$t('no_decision')),
+        date_decided: getDate(protocol.decision_date),
+        date_expire: getDate(protocol.expiry_date),
+        date: getDate(protocol.date)|| getDate(protocol.action_date)
       };
 
       let dataKeys = Object.keys(data).filter(k => data[k]);
@@ -64,6 +110,12 @@ export default {
 
       return this.isMobileBreakpoint ? [getData(dataKeys)] : [getData(dataCols[0]), getData(dataCols[1])];
     },
+    restSpecs(protocol) {
+      return {
+        protocol_took_place: protocol.address,
+        protocol_article: protocol.law_item,
+      }
+    }
   }
 }
 </script>

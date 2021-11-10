@@ -359,6 +359,7 @@ export default {
   "char_hour": "ч",
   "char_kilogramm": "кг",
   "char_kilometre": "км",
+  "char_kilometre_hour": "км/ч",
   "char_litre": "л",
   "char_metre": "м",
   "char_mile": "мл",
