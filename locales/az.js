@@ -79,6 +79,7 @@ export default {
   "add_a_video_this_will_attract_more_attention_increase_confidence_in_the_seller_and_increase_the_likelihood_of_a_call": "Bir video əlavə et — bu daha çox diqqəti cəlb edəcək, zəng ehtimalını artıracaq.",
   "add_an_ad_and_thousands_of_potential_buyers_will_see_it": "Elan əlavə et və minlərlə potensial alıcı tərəfindən baxış əldə edin",
   "add_balance": "Balansın artırılması",
+  "add_balance_through_ad_started": "Balansın artırılması",
   "add_calc_percent": "Planlaşdırılmış əhatə dairəsinin {n}%",
   "add_car": "Avtomobil əlavə et",
   "add_car_model": "Model əlavə et",
