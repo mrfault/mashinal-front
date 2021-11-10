@@ -25,6 +25,9 @@
           <div class="col-6 col-lg-12" v-for="car in cars.data" :key="car.id">
             <car-item :car="car" @set-active="updateActiveCar"/>
           </div>
+          <div class="col-6 col-lg-12" v-if="isMobileBreakpoint">
+            <add-car tag="div" />
+          </div>
         </div>
       </div>
     </div>
@@ -43,12 +46,14 @@ import { mapGetters } from 'vuex';
 import CarItem from '~/components/garage/CarItem';
 import CarsNav from '~/components/garage/CarsNav';
 import CarInfo from '~/components/garage/CarInfo';
+import AddCar from '~/components/garage/AddCar';
 
 export default {
   components: {
     CarItem,
     CarsNav,
-    CarInfo
+    CarInfo,
+    AddCar
   },
   data() {
     let activeCars = this.$store.state.garage.cars.data?.filter(car => car.status === 1);

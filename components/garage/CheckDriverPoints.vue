@@ -1,6 +1,6 @@
 <template>
   <div class="driver-points-check">
-    <div class="card with-margins">
+    <div class="card with-margins" v-show="!isMobileBreakpoint || !protocolsChecked">
       <div class="info-text full-width mb-3"><icon name="alert-circle" /> 
         <span>{{ $t('fill_form_to_check_driver_points') }}</span>
       </div>
@@ -36,8 +36,14 @@
         </div>
       </form>
     </div>
-    <div class="card with-margins mt-2 mt-lg-3" v-if="driverLicensePoints.point_protocols">
-      <div class="d-flex justify-content-between">
+    <div class="garage_go-back card with-margins mb-2 mb-lg-0" v-show="isMobileBreakpoint && protocolsChecked">
+      <div class="d-flex align-items-center justify-content-between">
+        <icon name="chevron-left" @click.native.stop="showForm" class="cursor-pointer" />
+        <span>{{ form.series }}</span>
+      </div>
+    </div>
+    <div class="card with-margins mt-2 mt-lg-3" v-show="!isMobileBreakpoint || protocolsChecked" v-if="driverLicensePoints.point_protocols">
+      <div class="d-flex flex-column flex-lg-row justify-content-between">
         <div class="garage_check-points-nav">
           <div class="row">
             <div class="col-6 col-lg-auto" v-for="tabKey in ['point_protocols','unpaid_protocols']" :key="tabKey">
@@ -49,6 +55,7 @@
             </div>
           </div>
         </div>
+        <h3 class="garage_check-points-text mb-0 mt-3 mt-lg-0">{{ $t('your_points') }}: {{ driverLicensePoints.point || 0 }}</h3>
       </div>
       <protocols-list :protocols="driverLicensePoints[tab]" :tab="tab" />
     </div>
@@ -74,7 +81,8 @@ export default {
         birth: ''
       },
       pending: false,
-      tab: 'point_protocols'
+      tab: 'point_protocols',
+      protocolsChecked: false
     }
   },
   validations: {
@@ -102,11 +110,20 @@ export default {
         const res = await this.checkDriverPoints(this.form);
         if (res.status === 'success') {
           this.$v.$reset();
+          this.form.series = '';
+          this.form.expire = '';
+          this.form.birth = '';
+          this.protocolsChecked = true;
+          this.$emit('show-nav', false);
         }
         this.pending = false;
       } catch(error) {
         this.pending = false;
       }
+    },
+    showForm() {
+      this.protocolsChecked = false;
+      this.$emit('show-nav', true);
     }
   }
 }

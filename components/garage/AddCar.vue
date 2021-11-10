@@ -1,6 +1,7 @@
 <template>
-  <button :class="`btn btn--${btnClass}`" @click="showModal = true">
-    <icon name="plus-circle" />
+  <component :is="tag" :class="tag === 'button' ? `btn btn--${btnClass}` : 'add-item'" @click="showModal = true">
+    <icon name="plus-circle" v-if="tag === 'button'" />
+    <img src="/icons/plus-circle-1.svg" alt="" v-else />
     {{ $t('add_car') }}
     <modal-popup 
       :toggle="showModal"
@@ -30,7 +31,7 @@
         </button>
       </form>
     </modal-popup>
-  </button>
+  </component>
 </template>
 
 <script>
@@ -43,6 +44,10 @@ export default {
     btnClass: {
       type: String,
       default: 'green'
+    },
+    tag: {
+      type: String,
+      default: 'button'
     }
   },
   data() {

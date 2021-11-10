@@ -47,10 +47,10 @@ export default {
       let data = {
         car_number: protocol.car_number,
         point: protocol.point,
+        amount: protocol.amount && `${protocol.amount} ₼`,
         discount: protocol.discount && `${protocol.discount} ₼`,
         penalty: protocol.penalty && `${protocol.penalty} ₼`,
         total: protocol.total && `${protocol.total} ₼`,
-        amount: protocol.amount && `${protocol.amount} ₼`,
         date_decided: protocol.decision_date && this.$moment(protocol.decision_date).format('DD.MM.YYYY'),
         date_expire: protocol.expiry_date && this.$moment(protocol.expiry_date).format('DD.MM.YYYY'),
         date: protocol.date && this.$moment(protocol.date).format('DD.MM.YYYY')
