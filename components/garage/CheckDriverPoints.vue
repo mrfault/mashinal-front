@@ -76,10 +76,9 @@ export default {
   data() {
     return {
       form: {
-        series: 'BA014068',
-expire: '29.05.2031',
-birth: '22.08.1986'
-
+        series: '',
+        expire: '',
+        birth: ''
       },
       pending: false,
       tab: 'point_protocols',
