@@ -1,5 +1,5 @@
 .collapse-content {
-  h2, h3 {
+  & > h2, h3 {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -7,7 +7,7 @@
     user-select: none;
     cursor: pointer;
   }
-  h3 {
+  & > h3 {
     color: $dark-blue-2;
     font-weight: 500;
     font-size: 16px;
@@ -315,7 +315,7 @@
     background-color: $dark-2;
   }
   
-  .collapse-content h3 {
+  .collapse-content > h3 {
     color: $grey-4;
   }
 

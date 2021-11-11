@@ -51,6 +51,7 @@ export const actions = {
   async getProtocolFiles({ commit }, data) {
     const res = await this.$axios.$get(`/garage/protocols/files${this.$queryParams(data)}`);
     commit('mutate', { property: 'protocolFiles', value: res });
+    commit('mutate', { property: 'protocolFiles', key: 'din_id', value: data.din_id });
     return res;
   },
   async checkDriverPoints({ commit }, data) {

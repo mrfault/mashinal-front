@@ -1,5 +1,5 @@
 <template>
-  <div :class="['garage_car-item', { 'car-active': car.status === 1, 'thumb-set': thumbSet }]" @click="showInfo">
+  <div :class="['garage_car-item', { 'car-active': car.status === 1, 'thumb-set': thumbSet, active }]" @click="showInfo">
     <div :class="['car-bg', {'no-img': !car.thumb && !thumbPending}]"
          :style="car.thumb && !thumbPending ? { backgroundImage: `url('${$withBaseUrl(car.thumb)}')` } : {}">
       <div class="car-bg-inner d-flex flex-column justify-content-between" v-if="!thumbSet">
@@ -78,7 +78,8 @@ import Loader from '../elements/Loader.vue';
 export default {
   components: { Loader },
   props: {
-    car: {}
+    car: {},
+    active: Boolean
   },
   data() {
     return {
@@ -107,7 +108,7 @@ export default {
     }),
 
     showInfo() {
-      if (this.car.status !== 1) return;
+      if (this.car.status !== 1 || this.active) return;
       this.$emit('set-active', this.car.id);
     },
     updateThumbImage() {

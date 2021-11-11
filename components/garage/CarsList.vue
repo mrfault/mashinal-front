@@ -23,7 +23,7 @@
       <div class="garage_cars-list mb-2 mb-lg-0">
         <div class="row">
           <div class="col-6 col-lg-12" v-for="car in cars.data" :key="car.id">
-            <car-item :car="car" @set-active="updateActiveCar"/>
+            <car-item :car="car" @set-active="updateActiveCar" :active="activeCarId === car.id" />
           </div>
           <div class="col-6 col-lg-12" v-if="isMobileBreakpoint">
             <add-car tag="div" />
@@ -91,6 +91,11 @@ export default {
     showCarsList() {
       this.carChosen = false;
       this.$emit('show-nav', true);
+    }
+  },
+  watch: {
+    'activeCars.length'() {
+      this.activeCarId = this.activeCar.id;
     }
   }
 }
