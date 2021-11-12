@@ -13,7 +13,8 @@
               :allow-clear="showModelOptions"
               @clean="cleanForm"
             />
-            <vehicle-options v-else-if="!isMobileBreakpoint" icons-only
+            <vehicle-options v-else-if="!isMobileBreakpoint"
+              :group-by="5"
               :options="searchMenus[2].children" 
               :value="form.category" 
               @change="handleCategory($event.key)" 

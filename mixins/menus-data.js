@@ -88,18 +88,10 @@ export const MenusDataMixin = {
 
     commercialMenus() {
       return [
-        { title: 'commercial_light', route: '/commercial/'+this.$t('slug_light'), icon: 'commercial-1' }, 
         { title: 'commercial_trucks', route: '/commercial/'+this.$t('slug_trucks'), icon: 'commercial-2' }, 
-        { title: 'commercial_tractors', route: '/commercial/'+this.$t('slug_tractors'), icon: 'commercial-3' }, 
-        { title: 'commercial_bus', route: '/commercial/'+this.$t('slug_bus'), icon: 'commercial-4' }, 
+        { title: 'commercial_buses', route: '/commercial/'+this.$t('slug_buses'), icon: 'commercial-4' }, 
         { title: 'commercial_trailers', route: '/commercial/'+this.$t('slug_trailers'), icon: 'commercial-5' }, 
-        { title: 'commercial_agricultural', route: '/commercial/'+this.$t('slug_agricultural'), icon: 'commercial-6' }, 
-        { title: 'commercial_building', route: '/commercial/'+this.$t('slug_building'), icon: 'commercial-7' }, 
-        { title: 'commercial_autoloader', route: '/commercial/'+this.$t('slug_autoloader'), icon: 'commercial-8' }, 
-        { title: 'commercial_cranes', route: '/commercial/'+this.$t('slug_cranes'), icon: 'commercial-9' }, 
-        { title: 'commercial_excavators', route: '/commercial/'+this.$t('slug_excavators'), icon: 'commercial-10' }, 
-        { title: 'commercial_bulldozers', route: '/commercial/'+this.$t('slug_bulldozers'), icon: 'commercial-11' }, 
-        { title: 'commercial_utilities', route: '/commercial/'+this.$t('slug_utilities'), icon: 'commercial-13' }
+        { title: 'commercial_special', route: '/commercial/'+this.$t('slug_special'), icon: 'commercial-8' }
       ];
     },
 

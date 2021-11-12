@@ -88,7 +88,8 @@ export default {
     await Promise.all([
       store.dispatch('getAnnouncementInner', route.params.id),
       store.dispatch('getComplaintOptions'),
-      store.dispatch('getOptions')
+      store.dispatch('getOptions'),
+      store.dispatch('getCommercialTypes')
     ]);
   },
   methods: {
@@ -112,24 +113,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['announcement']),
+    ...mapGetters(['announcement', 'commercialTypes']),
 
     commercialSlug() {
-      return ({
-        1: 'light',
-        2: 'trucks',
-        3: 'tractors',
-        4: 'bus',
-        5: 'trailers',
-        6: 'agricultural',
-        7: 'building',
-        8: 'autoloader',
-        9: 'cranes',
-        10: 'excavators',
-        11: 'bulldozers',
-        12: 'forklift',
-        13: 'utilities',
-      })[this.announcement.commercial_type_id];
+      return this.commercialTypes.find(type => type.id == this.announcement.commercial_type_id)?.param;
     },
     crumbs() {
       return [
