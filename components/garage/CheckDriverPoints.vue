@@ -110,9 +110,6 @@ export default {
         const res = await this.checkDriverPoints(this.form);
         if (res.status === 'success') {
           this.$v.$reset();
-          this.form.series = '';
-          this.form.expire = '';
-          this.form.birth = '';
           this.protocolsChecked = true;
           this.$emit('show-nav', false);
         }
@@ -122,6 +119,9 @@ export default {
       }
     },
     showForm() {
+      this.form.series = '';
+      this.form.expire = '';
+      this.form.birth = '';
       this.protocolsChecked = false;
       this.$emit('show-nav', true);
     }

@@ -7,7 +7,7 @@
       <div class="mt-2 mt-lg-3" v-for="(protocol, index) in protocols" :key="protocol.id">
         <collapse-content
           :title="getTitle(protocol)"
-          :first-collapsed="index !== 0"
+          :first-collapsed="index !== 0 && where === 'car-protocols'"
           title-with-line
         >
           <div class="vehicle-specs">

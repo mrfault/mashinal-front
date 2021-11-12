@@ -1924,8 +1924,6 @@ export default {
 
   "garage_terms_title": "Qaraja avtomobil əlavə etməyin şərtləri",
   "garage_terms_points": [
-    "Ödəniş etməlisiniz ki, qaraja avtomobil əlavə edə biləsiniz.",
-    "Ödəniş etməlisiniz ki, qaraja avtomobil əlavə edə biləsiniz.",
     "Ödəniş etməlisiniz ki, qaraja avtomobil əlavə edə biləsiniz."
   ],
   "garage_payment_info": "Hər əlavə etdiyiniz avtomobilə görə aylıq 1 ₼ (ƏDV daxil) məbləğ tutulacaq.",
@@ -1956,7 +1954,6 @@ export default {
   "garage_error_7001": "Avtomobil tapılmadı",
   "garage_error_7002": "Texpasport nömrəsi yalnışdır",
   "garage_error_3501": "Cərimə tapılmadı",
-  "garage_error_3504": "Şəkil tapılmadı",
   "garage_error_3504": "Fayl tapılmadı",
   "garage_error_10000": "Texniki səhv baş verdi. Xahiş edirik yenidən cəhd edəsiniz",
 
@@ -1979,7 +1976,7 @@ export default {
   "no_active_cars": "Sizin heç bir aktiv avtomobiliniz yoxdur",
   "image_uploaded": "Şəkil yükləndi",
   "fill_form_to_check_driver_points": "Balları yoxlamaq üçün, vəsiqənin seriya, nömrəsi, doğuldunuz tarixi və vəsiqənin bitmə tarixini yazıb cərimə balları barədə məlumatı öyrənə bilərsiniz.",
-  "date_birth": "Doğulduğu tarix",
+  "date_birth": "Doğuldunuz tarix",
   "date_till": "Etibarlılıq müddəti",
   "date_expire": "Bitmə tarixi",
   "date_decided": "Qərar vurulma tarixi",

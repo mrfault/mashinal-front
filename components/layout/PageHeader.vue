@@ -93,7 +93,7 @@
                   </div>
                 </div>
                 <div class="col-5" v-if="$env.DEV">
-                  <nuxt-link class="btn full-width btn--pale-red-outline" :to="$localePath('/garage')" :active-class="''">
+                  <nuxt-link class="btn full-width btn--red-outline" :to="$localePath('/garage')" :active-class="''">
                     <icon name="garage" />
                     {{ $t('garage') }}
                   </nuxt-link>
