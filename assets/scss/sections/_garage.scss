@@ -164,6 +164,9 @@
   .position-relative {
     min-height: 100px;
   }
+  .vehicle-specs .col-lg-auto {
+    min-width: 20%; 
+  }
 }
 
 .garage_protocol-titles {
@@ -253,6 +256,11 @@
       font-weight: 500;
       margin: 0 auto;
       padding-right: 10px;
+    }
+  }
+  .date-picker-open {
+    .garage_driver-points-form {
+      margin-bottom: 202px;
     }
   }
 }

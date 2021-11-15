@@ -23,6 +23,9 @@ export default {
     return {
       collapsed: this.firstCollapsed
     }
+  },
+  beforeDestroy() {
+    this.collapsed = false;
   }
 }
 </script>

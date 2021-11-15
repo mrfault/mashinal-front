@@ -1,6 +1,6 @@
 <template>
-  <div class="driver-points-check">
-    <div class="card with-margins" v-show="!isMobileBreakpoint || !protocolsChecked">
+  <div class="garage_driver-points-check">
+    <div class="garage_driver-points-form card with-margins" v-show="!isMobileBreakpoint || !protocolsChecked">
       <div class="info-text full-width mb-3"><icon name="alert-circle" /> 
         <span>{{ $t('fill_form_to_check_driver_points') }}</span>
       </div>
@@ -37,9 +37,12 @@
       </form>
     </div>
     <div class="garage_go-back card with-margins mb-2 mb-lg-0" v-show="isMobileBreakpoint && protocolsChecked">
-      <div class="d-flex align-items-center justify-content-between">
+      <div class="d-flex align-items-center">
         <icon name="chevron-left" @click.native.stop="showForm" class="cursor-pointer" />
-        <span>{{ form.series }}</span>
+        <span class="row flex-grow-1 pr-0 align-items-center">
+          <span class="col-auto ml-2 mr-auto">{{ form.series }}</span> 
+          <span class="col-auto ml-0 mr-0">{{ $t('your_points') }}: {{ driverLicensePoints.point || 0 }}</span>
+        </span>
       </div>
     </div>
     <div class="card with-margins mt-2 mt-lg-3" v-show="!isMobileBreakpoint || protocolsChecked" v-if="driverLicensePoints.point_protocols">
@@ -50,12 +53,14 @@
               <button 
                 :class="['btn btn--pale-red-outline', {'active': tab === tabKey, 'full-width': isMobileBreakpoint}]" 
                 @click="tab = tabKey"
-                v-html="$t(tabKey)"
+                v-html="getTabText($t(tabKey))"
               />
             </div>
           </div>
         </div>
-        <h3 class="garage_check-points-text mb-0 mt-3 mt-lg-0">{{ $t('your_points') }}: {{ driverLicensePoints.point || 0 }}</h3>
+        <h3 class="garage_check-points-text mb-0" v-if="!isMobileBreakpoint">
+          {{ $t('your_points') }}: {{ driverLicensePoints.point || 0 }}
+        </h3>
       </div>
       <protocols-list :protocols="driverLicensePoints[tab]" :tab="tab" />
     </div>
@@ -124,6 +129,9 @@ export default {
       this.form.birth = '';
       this.protocolsChecked = false;
       this.$emit('show-nav', true);
+    },
+    getTabText(text) {
+      return this.isMobileBreakpoint ? text.split(' ')[0] : text;
     }
   }
 }

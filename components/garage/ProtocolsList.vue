@@ -1,10 +1,10 @@
 <template>
   <div class="garage_protocols-list">
     <p class="info-text full-width mt-2 mt-lg-3 mb-0" v-if="!protocols.length"><icon name="alert-circle" /> 
-      {{ $t('no_'+tab) }}
+      {{ $t('no_'+(tab || 'protocols')) }}
     </p>
     <template v-else>
-      <div class="mt-2 mt-lg-3" v-for="(protocol, index) in protocols" :key="protocol.id">
+      <div class="mt-3" v-for="(protocol, index) in protocols" :key="tab+'_'+protocol.id">
         <collapse-content
           :title="getTitle(protocol)"
           :first-collapsed="index !== 0 && where === 'car-protocols'"
@@ -41,7 +41,7 @@
               <div class="mt-2 mt-lg-3" v-if="protocol.can_pay || protocol.has_files">
                 <div class="row">
                   <template v-if="protocol.has_files">
-                    <div :class="['col-12 col-lg-1-5 ml-auto order-lg-2', {'mb-2 mb-lg-0': protocol.can_pay}]">
+                    <div :class="['col-12 col-lg-auto ml-auto order-lg-2', {'mb-2 mb-lg-0': protocol.can_pay}]">
                       <protocol-files-button :protocol="protocol">
                         <div class="card garage_protocol-info">
                           <div class="garage_protocol-titles">
@@ -84,13 +84,13 @@
                     </div>
                   </template>
                   <template v-if="protocol.can_pay">
-                    <div class="col-6 col-lg-3-5 mr-auto order-lg-1" >
+                    <div class="col-6 col-lg-auto mr-auto order-lg-1" >
                       <span class="total-price" >
                         <span>{{ $t('total')}}</span>
                         <strong>{{ protocol.total }} ₼</strong>
                       </span>
                     </div>
-                    <div class="col-6 col-lg-1-5 ml-auto order-lg-3">
+                    <div class="col-6 col-lg-1-5 order-lg-3">
                       <button class="btn btn--green full-width disabled" >
                         {{ $t('pay_online') }}
                       </button>
