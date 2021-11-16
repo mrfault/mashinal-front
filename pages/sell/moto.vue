@@ -106,8 +106,7 @@ export default {
     });
   },
   async asyncData({ route, store, app }) {
-    let category = ['1','2','3'].includes(route.query.category) 
-      ? route.query.category : '1';
+    let category = parseInt(['1','2','3'].includes(route.query.category) ? route.query.category : '1');
     
     store.dispatch('setSellPreviewData', { value: {} });
     await Promise.all([
@@ -166,13 +165,14 @@ export default {
       keys.map(key => {form[key] = this.form[key]});
       return form;
     },
-    handleCategory(key) {
-      this.form.category = key;
+    handleCategory(category) {
+      this.form.category = category;
+      this.$pushQueryParam({ key: 'category', value: category });
     },
     async handleBrand(id = '') {
       this.form.selectedBrand = id;
       if (id) {
-        await this.getMotoModels({ category: this.form.category, id });
+        await this.getMotoModels({ category: `${this.form.category}`, id });
         this.showModelOptions = true;
       }
       this.scrollReset();
@@ -207,14 +207,11 @@ export default {
 
     options() {
       switch(this.form.category) {
-        case '1':
-          return { brands: this.motoOptions.brands, models: this.motorcycleModels[0] }
-        case '2':
-          return { brands: this.motoOptions.scooter_brands, models: this.scooterModels[0] }
-        case '3':
-          return { brands: this.motoOptions.atv_brands, models: this.atvModels[0] }
+        case 1: return { brands: this.motoOptions.brands, models: this.motorcycleModels[0] }
+        case 2: return { brands: this.motoOptions.scooter_brands, models: this.scooterModels[0] }
+        case 3: return { brands: this.motoOptions.atv_brands, models: this.atvModels[0] }
       }
-      return {}
+      return { brands: [], models: [] }
     },
     brand() {
       return this.options?.brands?.find(brand => brand.id === this.form.selectedBrand);

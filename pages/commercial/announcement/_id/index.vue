@@ -88,8 +88,7 @@ export default {
     await Promise.all([
       store.dispatch('getAnnouncementInner', route.params.id),
       store.dispatch('getComplaintOptions'),
-      store.dispatch('getOptions'),
-      store.dispatch('getCommercialTypes')
+      store.dispatch('getOptions')
     ]);
   },
   methods: {

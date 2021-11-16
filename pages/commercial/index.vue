@@ -55,7 +55,6 @@ export default {
     let searchParams = { url: '/grid/commercial', prefix: 'commercial' }
 
     await Promise.all([
-      store.dispatch('getCommercialTypes'),
       store.dispatch('getGridSearch', { ...searchParams, post, page }),
       // get brand options for category
       ...Object.keys(post?.additional_brands || {})

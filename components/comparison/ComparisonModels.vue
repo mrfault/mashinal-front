@@ -11,7 +11,7 @@
         <div
           class="comparison__item__image"
         >
-          <img :src="model.model.transformed_media" :alt="getModelTitle">
+          <img :src="model.model.transformed_media" :alt="getModelTitle(model)">
           <div class="action-button action-button--close" @click="removeItem(model.id)">
             <icon name="cross" />
           </div>
