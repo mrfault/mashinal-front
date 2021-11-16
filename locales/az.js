@@ -431,7 +431,7 @@ export default {
   "commercial_light": "Yüngül ticari avtomobillər",
   "commercial_special": "Xüsusi texnika",
   "commercial_tractors": "Yük maşını traktorları",
-  "commercial_trailers": "Qoşqulu",
+  "commercial_trailers": "Qoşqular",
   "commercial_trucks": "Yük maşınları",
   "commercial_utilities": "Kommunal",
   "compare": "Müqayisə et",

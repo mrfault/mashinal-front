@@ -432,7 +432,7 @@ export default {
   "commercial_special": "Специальная техника",
   "commercial_tractors": "Седельные тягачи",
   "commercial_trailers": "Прицепы",
-  "commercial_trucks": "Грузовики",
+  "commercial_trucks": "Грузовая техника",
   "commercial_utilities": "Коммунальные",
   "compare": "Сравнить",
   "comparison_add": "Добавить в сравнения",

@@ -109,7 +109,7 @@ export default {
     await this.$store.dispatch('comparison/getInitialRecommendation')
     
     const models = this.$cookies.get('comparisonModels')
-    if (models.length) {
+    if (models?.length) {
       models.forEach(id => {
         this.$store.dispatch('comparison/addModel', id)
       })
@@ -236,6 +236,8 @@ export default {
       ]
     },
     recommendedModelVisible() {
+      return false;
+      // TODO: Remove recommended model feature
       return this.recommendedModel && this.showRecommendation
     },
     modelsForSpecs() {
