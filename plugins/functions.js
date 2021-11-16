@@ -141,9 +141,6 @@ export default function({ app, route, store }, inject) {
     }
     return k;
   });
-  inject('skipUndefinedEntries', (o) => {
-    return Object.entries(o).reduce((a,[k,v]) => (v == null || v === '' || v === false ? a : (a[k]=v, a)), {});
-  });
   inject('withBaseUrl', (url, dir = '') => {
     if (!url) return url;
     return (url.includes('https://') || url.includes('http://')) ? url : `${app.$env.BASE_URL}${dir}${url}`;
