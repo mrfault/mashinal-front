@@ -13,7 +13,7 @@
               :allow-clear="showModelOptions"
               @clean="cleanForm"
             />
-            <vehicle-options v-else-if="!isMobileBreakpoint"
+            <vehicle-options v-else-if="!isMobileBreakpoint" icons-only
               :group-by="5"
               :options="searchMenus[2].children" 
               :value="form.category" 
@@ -107,16 +107,16 @@ export default {
     });
   },
   async asyncData({ route, store, app }) {
-    let category = ['1','2','3','4','5','6','7','8','9','10','11','13'].includes(route.query.category) 
-      ? route.query.category : '1';
-
+    let categories = store.state.commercialTypes.map(type => `${type.id}`);
+    let category = parseInt(categories.includes(route.query.category) ? route.query.category : categories[0]);
+    
     store.dispatch('setSellPreviewData', { value: {} });
     await Promise.all([
       store.dispatch('getCommercialAllOptions'),
       store.dispatch('getCommercialBrands', { category }),
       store.dispatch('getCommercialFilters', category),
       store.dispatch('getOptions'),
-      store.dispatch('getColors'),
+      store.dispatch('getColors')
     ]);
     
     return {

@@ -260,7 +260,10 @@ export const actions = {
       await this.$auth.logout();
     }
 
-    await dispatch('getStaticPages');
+    await Promise.all([
+      dispatch('getStaticPages'),
+      dispatch('getCommercialTypes')
+    ]);
 
     let ptk = this.$cookies.get('ptk') || 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
       .replace(/[xy]/g, (c) => {

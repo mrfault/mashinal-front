@@ -4,7 +4,7 @@ import { RoutesMixin } from './routes';
 export const MenusDataMixin = {
   mixins: [RoutesMixin],
   computed: {
-    ...mapGetters(['staticPages']),
+    ...mapGetters(['staticPages','commercialTypes']),
 
     searchMenus() {
       return [
@@ -87,19 +87,19 @@ export const MenusDataMixin = {
     },
 
     commercialMenus() {
-      return [
-        { title: 'commercial_trucks', route: '/commercial/'+this.$t('slug_trucks'), icon: 'commercial-2' }, 
-        { title: 'commercial_buses', route: '/commercial/'+this.$t('slug_buses'), icon: 'commercial-4' }, 
-        { title: 'commercial_trailers', route: '/commercial/'+this.$t('slug_trailers'), icon: 'commercial-5' }, 
-        { title: 'commercial_special', route: '/commercial/'+this.$t('slug_special'), icon: 'commercial-8' }
-      ];
+      return this.commercialTypes.map(type => ({ 
+        title: `commercial_${type.param}`, 
+        route: '/commercial/'+this.$t(`slug_${type.param}`), 
+        icon: `commercial-${type.param}`,
+        id: type.id
+      }));
     },
 
     motoMenus() {
       return [
-        { title: 'motorcycles', route: '/moto/'+this.$t('slug_motorcycles'), icon: 'moto-1' },
-        { title: 'scooters', route: '/moto/'+this.$t('slug_scooters'), icon: 'moto-2' },
-        { title: 'atvs', route: '/moto/'+this.$t('slug_atvs'), icon: 'moto-3' }
+        { title: 'motorcycles', route: '/moto/'+this.$t('slug_motorcycles'), icon: 'moto-1', id: 1 },
+        { title: 'scooters', route: '/moto/'+this.$t('slug_scooters'), icon: 'moto-2', id: 2 },
+        { title: 'atvs', route: '/moto/'+this.$t('slug_atvs'), icon: 'moto-3', id: 3 }
       ];
     },
 

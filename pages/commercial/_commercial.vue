@@ -61,8 +61,6 @@ export default {
       'xususi': 'special'
     })[route.params.commercial];
 
-    await store.dispatch('getCommercialTypes');
-
     const category = {
       id: store.getters.commercialTypes.find(type => type.param === slug)?.id,
       type: slug
