@@ -2000,5 +2000,7 @@ export default {
   "speed_real": "Aşdığınız sürət",
   "protocol_took_place": "Qeydə alınma yeri",
   "protocol_article": "İXM",
-  "watch_files": "Şəkil/videoya bax"
+  "watch_files": "Şəkil/videoya bax",
+  "search_more": "Ətraflı",
+  "search_less": "Gizlət"
 }
