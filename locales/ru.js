@@ -1316,7 +1316,7 @@ export default {
   "popular_options": "Популярные опции",
   "position": "Расположение",
   "post_for_free": "Разместить бесплатно",
-  "power": "Мощноть",
+  "power": "Мощность",
   "Power seats": "Электрорегулировка сидений",
   "Power side-view mirror": "Электропривод зеркал",
   "Power steering": "Усилитель руля",
