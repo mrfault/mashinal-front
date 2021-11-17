@@ -84,7 +84,7 @@
       getValues(item) {
         let options = this.options && this.options[item.type_key];
         let sell_values = item.sell_values && item.sell_values[parseInt(this.selected.category)];
-        let values = options || sell_values || item.values;
+        let values = this.$sortBy(options || sell_values || item.values, a => a.name[this.locale] || this.$t(a.name));
         return this.type === 'commercial' && this.getType(item) === 'input-radio' && !item.required 
           ? [...values, { key: 0, name: this.$t('not_set') }] 
           : values;

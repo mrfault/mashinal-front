@@ -29,7 +29,6 @@
                 :id="`${popular ? 'popular_' : ''}${input.name}${input.selected_key || ''}`"
                 :input-name="input.name"  
                 @change="changeFilter(input, $event)"
-                watch-value
               />
             </template>
           </div>
@@ -78,6 +77,14 @@ export default {
       else if (this.nameInValue)
         return this.allSellOptions2.detailed;
       return this.allSellOptions;
+    },
+    carFilterCounters() {
+      return this.carFilterOptions.map(inputs => {
+        return inputs.filter(input => {
+          let value = this.form[input.name];
+          return (value instanceof Array && value?.length) || (value === true) || (typeof value === 'number' && value !== 0)
+        }).length;
+      });
     }
   },
   methods: {
@@ -86,13 +93,7 @@ export default {
     },
     getTitle(index) {
       let title = this.titles[index] || '';
-      let count = 0;
-      this.carFilterOptions[index].map(input => {
-        let value = this.form[input.name];
-        if ((value instanceof Array && value?.length) || (value === true) || (typeof value === 'number')) {
-          count++;
-        }
-      });
+      let count = this.carFilterCounters[index];
       return count ? `${title} (${count})` : title;
     },
     getValue(input, values) {
