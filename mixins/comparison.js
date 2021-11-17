@@ -1,31 +1,15 @@
 export const ComparisonMixin = {
-  mounted() {
-    const comparisonItems = document.querySelector('.comparison__items');
-    if (comparisonItems) {
-      comparisonItems.addEventListener('wheel', this.onWheelScroll)
-      comparisonItems.addEventListener('scroll', this.onScroll)
-    }
-  },
   methods: {
-    onWheelScroll(event) {
-      const comparisonItems = document.querySelector('.comparison__items');
-
-      if (comparisonItems.scrollWidth > comparisonItems.clientWidth) {
-        if (!event.deltaY) {
-          return;
-        }
-        document.querySelectorAll('.collapse-content__columns').forEach(element => {
-          element.scrollLeft += event.deltaY;
-        })
-  
-        event.currentTarget.scrollLeft += event.deltaY + event.deltaX;
-        event.preventDefault();
-      }
+    attachEvents() {
+      document.querySelectorAll('.collapse-content__columns, .comparison__items').forEach(el => {
+        el.removeEventListener('scroll', this.onScroll);
+        el.addEventListener('scroll', this.onScroll);
+      });
     },
-    onScroll(event) {
-      document.querySelectorAll('.collapse-content__columns').forEach(element => {
-        element.scrollLeft = event.target.scrollLeft;
-      })
+    onScroll(e) {
+      document.querySelectorAll('.collapse-content__columns, .comparison__items').forEach(el => {
+        el.scrollLeft = e.target.scrollLeft;
+      });
     },
     isAllSpecsSame(values) {
       return new Set(values).size === 1
@@ -300,5 +284,12 @@ export const ComparisonMixin = {
       }
       return '—'
     }
+  },
+  mounted() {
+    this.attachEvents();
+    this.$nuxt.$on('update-comparison-scroll-events', this.attachEvents);
+  },
+  beforeDestroy() {
+    this.$nuxt.$off('update-comparison-scroll-events', this.attachEvents);
   }
 }

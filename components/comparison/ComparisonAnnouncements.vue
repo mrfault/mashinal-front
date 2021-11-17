@@ -1,9 +1,9 @@
 <template>
   <div>
     <!-- Announcements -->
-    <div class="comparison__items" v-if="announcements.length">
+    <div class="comparison__items row" v-if="announcements.length">
         <div
-          class="comparison__item"
+          class="comparison__item col-auto col-lg-1-5"
           v-for="announcement in announcements"
           :key="announcement.id_unique"
         >
@@ -36,14 +36,15 @@
           :key="cIndex"
           :title="collapse.title"
           :first-collapsed="collapse.defaultCollapsed"
+          @click.native="$nuxt.$emit('update-comparison-scroll-events')"
         >
           <div v-for="(specification, sindex) in filteredSpecs(collapse.items)" :key="sindex">
             <h4 class="collapse-content__title">
               {{ specification.title }}
             </h4>
 
-            <div class="collapse-content__columns" >
-              <div v-for="(announcement, aIndex) in announcements" :key="announcement.id_unique" class="collapse-content__column" >
+            <div class="collapse-content__columns row" >
+              <div v-for="(announcement, aIndex) in announcements" :key="announcement.id_unique" class="collapse-content__column col-auto col-lg-1-5" >
                 <p>{{ specification.values[aIndex] }}</p>
               </div>
             </div>
