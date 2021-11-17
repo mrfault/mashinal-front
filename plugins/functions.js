@@ -5,6 +5,8 @@ import { generateMetaInfo } from '~/plugins/head-meta';
 import 'moment/locale/ru';
 import 'moment/locale/az';
 
+moment.defaultFormat = 'DD.MM.YYYY';
+
 export default function({ app, route, store }, inject) {
   // generate meta tags for seo
   inject('headMeta', ({ title, description, image }, product = false) => {
@@ -57,6 +59,10 @@ export default function({ app, route, store }, inject) {
     return type == 2 ? store.state.auth?.user?.part_salon?.id : store.state.auth?.user?.autosalon?.id;
   });
   // formatting
+  inject('parseDate', (date) => {
+    let d = date.slice(0,10).split(date.includes('.') ? '.' : '-');
+    return Date.parse((d[0].length === 4 ? [d[1], d[2], d[0]] : [d[1], d[0], d[2]]).join('.'));
+  });
   inject('parsePhone', (phone, brief = false) => {
     if (typeof phone === 'number') phone = `${phone}`;
     if (!phone || phone.length !== 12) return '';
@@ -90,6 +96,9 @@ export default function({ app, route, store }, inject) {
     return `${count ? `${n} ` : ''}${forms[(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2) ]}`;
   });
   // masks
+  inject('maskAlphaNumeric', (mask, placeholder = '_') => {
+    return { mask, showMaskOnHover: false, definitions: { '*': { casing: 'upper', validator: '[a-zA-Z0-9]' } }, placeholder };
+  });
   inject('maskPhone', (inline = false) => {
     let mask = '+\\9\\94 (99) 999-99-99';
     return inline ? mask : { mask, showMaskOnHover: false };
@@ -170,7 +179,5 @@ export default function({ app, route, store }, inject) {
   inject('clone', _.clone);
   inject('sortBy', _.sortBy);
   inject('chunk', _.chunk);
-  // inject('uniq', _.uniq);
-  // inject('groupBy', _.groupBy);
   inject('moment', moment);
 }

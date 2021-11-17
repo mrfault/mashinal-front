@@ -321,7 +321,7 @@ export default {
         this.sendingMessage = false;
       }
     },
-    // lightboz
+    // lightbox
     openLightbox(src) {
       let index = this.attachments.indexOf(src);
       if (index !== -1) this.currentSlide = index;

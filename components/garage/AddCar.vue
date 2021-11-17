@@ -1,7 +1,13 @@
 <template>
-  <button :class="`btn btn--${btnClass}`" @click="showModal = true">
-    <icon name="plus-circle" />
-    {{ $t('add_car') }}
+  <component :is="tag" :class="tag === 'button' ? `btn btn--${btnClass}` : 'add-item'" @click="showModal = true">
+    <template v-if="tag === 'button'">
+      <icon name="plus-circle" />
+      {{ $t('add_car') }}
+    </template>
+    <div class="add-item_inner" v-else>
+      <img src="/icons/plus-circle-1.svg" alt="" />
+      {{ $t('add_car') }}
+    </div>
     <modal-popup 
       :toggle="showModal"
       :title="$t('add_car')"
@@ -18,7 +24,7 @@
         <form-text-input 
           class="mb-2 mb-lg-3"
           v-model="form.tech_id" 
-          :mask="{mask: '********', definitions: { '*': { casing: 'upper' } }}"
+          :mask="$maskAlphaNumeric('********')"
           :placeholder="$t('tech_id')" 
           :invalid="$v.form.tech_id.$error"
         />
@@ -30,7 +36,7 @@
         </button>
       </form>
     </modal-popup>
-  </button>
+  </component>
 </template>
 
 <script>
@@ -43,6 +49,10 @@ export default {
     btnClass: {
       type: String,
       default: 'green'
+    },
+    tag: {
+      type: String,
+      default: 'button'
     }
   },
   data() {

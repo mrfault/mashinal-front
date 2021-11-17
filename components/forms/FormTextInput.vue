@@ -14,6 +14,8 @@
           :lang="locale" 
           :input-attr="{readonly: 'readonly', id, maxlength, disabled}"
           :input-class="{invalid, valid, disabled, [`${inputClass}`]:inputClass}"
+          @open="showDatepicker(true)"
+          @close="showDatepicker(false)"
         >
           <template #icon-clear>
             <icon name="cross" />
@@ -38,7 +40,7 @@
           <icon :name="showPassword ? 'eye' : 'hide'" />
         </span>
       </template>
-      <icon name="alert-circle" v-if="invalid" class="invalid" />
+      <icon name="alert-circle" v-if="invalid && !inputDate" class="invalid" />
       <icon name="check-circle" v-else-if="valid && type !== 'password'" class="valid" />
       <slot name="default" />
     </div>
@@ -102,7 +104,8 @@
     data() {
       return {
         prevValue: this.value,
-        showPassword: false
+        showPassword: false,
+        timeout: -1
       }
     },
     computed: {
@@ -119,6 +122,16 @@
             this.prevValue = value;
           }
         }
+      }
+    },
+    methods: {
+      showDatepicker(show) {
+        document.body.classList[show ? 'add' : 'remove']('date-picker-open');
+      }
+    },
+    beforeDestroy() {
+      if (this.inputDate) {
+        this.showDatepicker(false);
       }
     }
   }

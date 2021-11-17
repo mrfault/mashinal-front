@@ -178,6 +178,7 @@ export default {
   "are_you_sure_you_want_to_change_salon_name": "Hal-hazırda sizə şamil edilmiş Mağaza adını eyni ilə Salonlar bölümündə istifadə etməmək istədiyinizə əminsiniz?",
   "are_you_sure_you_want_to_deactivate_the_announcement": "Elanı deaktiv etmək istədiyinizə əminsiniz?",
   "are_you_sure_you_want_to_deactivate_the_announcements": "Seçilmiş elanları deaktiv etmək istədiyinizə əminsiniz?",
+  "are_you_sure_you_want_to_deactivate_the_car": "Avtomobili deaktiv etmək istədiyinizə əminsiniz?",
   "are_you_sure_you_want_to_delete_the_announcement": "Elanı silmək istədiyinizə əminsiniz?",
   "are_you_sure_you_want_to_delete_the_announcements": "Seçilmiş elanları silmək istədiyinizə əminsiniz?",
   "are_you_sure_you_want_to_delete_the_message": "Mesajı silmək istədiyinizə əminsiniz?",
@@ -358,6 +359,7 @@ export default {
   "char_hour": "s",
   "char_kilogramm": "kq",
   "char_kilometre": "km",
+  "char_kilometre_hour": "km/saat",
   "char_litre": "L",
   "char_metre": "m",
   "char_mile": "ml",
@@ -1924,8 +1926,6 @@ export default {
 
   "garage_terms_title": "Qaraja avtomobil əlavə etməyin şərtləri",
   "garage_terms_points": [
-    "Ödəniş etməlisiniz ki, qaraja avtomobil əlavə edə biləsiniz.",
-    "Ödəniş etməlisiniz ki, qaraja avtomobil əlavə edə biləsiniz.",
     "Ödəniş etməlisiniz ki, qaraja avtomobil əlavə edə biləsiniz."
   ],
   "garage_payment_info": "Hər əlavə etdiyiniz avtomobilə görə aylıq 1 ₼ (ƏDV daxil) məbləğ tutulacaq.",
@@ -1956,7 +1956,6 @@ export default {
   "garage_error_7001": "Avtomobil tapılmadı",
   "garage_error_7002": "Texpasport nömrəsi yalnışdır",
   "garage_error_3501": "Cərimə tapılmadı",
-  "garage_error_3504": "Şəkil tapılmadı",
   "garage_error_3504": "Fayl tapılmadı",
   "garage_error_10000": "Texniki səhv baş verdi. Xahiş edirik yenidən cəhd edəsiniz",
 
@@ -1977,5 +1976,29 @@ export default {
   "auth_date": "Qeydiyyat tarixi",
   "fines": "Cərimələr",
   "no_active_cars": "Sizin heç bir aktiv avtomobiliniz yoxdur",
-  "image_uploaded": "Şəkil yükləndi"
+  "image_uploaded": "Şəkil yükləndi",
+  "fill_form_to_check_driver_points": "Balları yoxlamaq üçün, sürücülük vəsiqəsinin seriya nömrəsi, doğuldunuz tarixi və vəsiqənin bitmə tarixini yazıb cərimə balları barədə məlumatı öyrənə bilərsiniz.",
+  "date_birth": "Doğuldunuz tarix",
+  "date_till": "Etibarlılıq müddəti",
+  "date_expire": "Bitmə tarixi",
+  "date_decided": "Qərar vurulma tarixi",
+  "serial_number": "Seriya №",
+  "point_protocols": "Bitməmiş cərimələr",
+  "unpaid_protocols": "Ödənilməmiş cərimələr",
+  "point": "Bal",
+  "your_points": "Balınız",
+  "fine": "Cərimə",
+  "total_amount": "Yekun məbləğ",
+  "no_unpaid_protocols": "Sizin ödənilməmiş cəriməniz yoxdur.",
+  "no_point_protocols": "Sizin bitməmiş cəriməniz yoxdur.",
+  "no_protocols": "Sizin cəriməniz yoxdur.",
+  "has_decision": "Qərarlı",
+  "no_decision": "Qərarsız",
+  "penalty": "Cərimə faizı",
+  "fined_fullname": "Cərimə olunan",
+  "speed_max": "Sürət həddi",
+  "speed_real": "Aşdığınız sürət",
+  "protocol_took_place": "Qeydə alınma yeri",
+  "protocol_article": "İXM",
+  "watch_files": "Şəkil/videoya bax"
 }

@@ -244,7 +244,7 @@
   }
 }
 
-.yt-play {
+.youtube-play {
   position: relative;
   &::after {
     content: '';
@@ -258,8 +258,45 @@
   }
 }
 
+.video-play {
+  position: relative;
+  filter: brightness(1) !important;
+  &::after {
+    font-family: 'icons';
+    font-weight: normal;
+    content: '\e984';
+    @include abs-middle;
+    font-size: 12px;
+    width: 30px;
+    height: 30px;
+    background-size: 20px;
+    text-align: center;
+    line-height: 30px;
+    border-radius: 50%;
+    background-color: rgba(100, 110, 149, 0.15);
+    transition: background .2s;
+  }
+  &::before {
+    content: '';
+    @include abs-middle;
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    background: rgba(100, 110, 149, 0.07);
+    transition: background .2s;
+  }
+  &:hover {
+    &::after {
+      background-color: rgba(100, 110, 149, 0.3);
+    }
+    &::before {
+      background: rgba(100, 110, 149, 0.14);
+    }
+  }
+}
+
 .inner-thumbs-gallery {
-  .yt-play::after {
+  .youtube-play::after {
     width: 50px;
     height: 50px;
   }
@@ -405,12 +442,25 @@
 
 .images-slider {
   width: 100%;
+  min-height: 690px;
+  padding-top: 40px;
   .iframe {
     width: 100%;
     padding-bottom: 62%;
     position: relative;
     iframe {
       @include abs-zero;
+    }
+  }
+  .video {
+    width: 100%;
+    padding-bottom: 62%;
+    position: relative;
+    border-radius: 4px;
+    overflow: hidden;
+    video {
+      @include abs-zero;
+      background-color: $black;
     }
   }
   .toolbar {
@@ -435,6 +485,7 @@
     border-radius: 4px;
     cursor: pointer;
     background-color: $greyish-blue-3;
+    overflow: hidden;
   }
   .swiper-slide-bg {
     display: flex;
@@ -445,8 +496,9 @@
     background-color: transparent !important;
     background-size: contain !important;
     background-repeat: no-repeat;
-    height: calc(100vh - 120px);
     padding-bottom: 0;
+    height: calc(100vh - 120px);
+    min-height: 630px;
     width: calc(100% - 120px);
     margin-left: 60px;
     img {
@@ -461,7 +513,7 @@
     &:hover {
       filter: brightness(1);
     }
-    &.yt-play::after {
+    &.youtube-play::after {
       width: 50px;
       height: 50px;
     }
@@ -558,6 +610,10 @@
 
 .inner-gallery-lightbox {
   height: 0;
+  .row .col-auto {
+    flex-shrink: 1;
+    width: 100%;
+  }
   &-footer {
     padding: 15px 15px 25px;
     color: $white;
@@ -628,6 +684,20 @@
     .swiper-thumb-bg, 
     .swiper-slide-bg {
       background-color: $dark-3;
+    }
+  }
+
+  .images-slider {
+    .slider-overlay {
+      &_middle {
+        .btn-sq {
+          background-color: rgba($dark-2, .6);
+          &:hover,
+          &.active {
+            background-color: $dark-2;
+          }
+        }
+      }
     }
   }
 }

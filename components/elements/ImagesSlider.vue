@@ -17,8 +17,8 @@
               <div class="swiper-slide" :key="index" v-for="(slide, index) in (slides.thumbs || slides.main)">
                 <div
                   @click="changeSlide(index)"
-                  :class="['swiper-thumb-bg', {'yt-play': slides.types && slides.types[index] === 'youtube'}]" 
-                  :style="{ backgroundImage: `url('${slide}')` }"
+                  :class="['swiper-thumb-bg', {[`${slides.types[index]}-play`]: slides.types && ['youtube','video'].includes(slides.types[index])}]" 
+                  :style="slide ? { backgroundImage: `url('${slide}')` } : {}"
                 ></div>
               </div>
             </div>
@@ -32,9 +32,12 @@
             <div id="images-swiper" class="swiper-container" v-swiper:imagesSwiper="swiperOps" ref="imagesSwiper" :auto-update="false">
               <div class="swiper-wrapper">
                 <div class="swiper-slide" :key="index" v-for="(slide, index) in slides.main">
-                  <div class="swiper-slide-bg">
+                  <div class="swiper-slide-bg" @click.stop>
                     <div class="iframe" v-if="slides.types && slides.types[index] === 'youtube'">
                       <iframe v-if="showIframe" :src="`https://www.youtube.com/embed/${slide.split('?v=')[1]}`" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    <div class="video" v-else-if="slides.types && slides.types[index] === 'video'">
+                      <video ref="video" controls><source :src="slide"></video>
                     </div>
                     <template v-else>
                       <img alt="" :data-src="slide" class="swiper-lazy" />
@@ -133,6 +136,7 @@ export default {
       this.imagesSwiper.thumbs.swiper = this.thumbsSwiper;
       this.imagesSwiper.on('slideChange', () => {
         this.showIframe = false;
+        this.$refs.video?.[0]?.pause();
         this.$nextTick(() => {
           this.showIframe = true;
           this.$emit('slide-change', this.imagesSwiper.realIndex);

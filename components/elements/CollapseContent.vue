@@ -1,9 +1,9 @@
 <template>
   <div class="collapse-content">
-    <h3 @click="collapsed = !collapsed">
+    <component :is="titleWithLine ? 'h2' : 'h3'" :class="{'title-with-line': titleWithLine}" @click="collapsed = !collapsed">
       <span>{{ title }}</span>
       <icon :name="`chevron-${collapsed ? 'down' : 'up'}`" class="cursor-pointer" />
-    </h3>
+    </component>
     <transition-expand>
       <div v-if="!collapsed">
         <slot />
@@ -16,12 +16,16 @@
 export default {
   props: {
     title: String,
-    firstCollapsed: Boolean
+    firstCollapsed: Boolean,
+    titleWithLine: Boolean
   },
   data() {
     return {
       collapsed: this.firstCollapsed
     }
+  },
+  beforeDestroy() {
+    this.collapsed = false;
   }
 }
 </script>

@@ -146,6 +146,9 @@ input::-webkit-inner-spin-button {
     &[type=password] {
       padding-right: 24px;
     }
+    &.invalid:not(:focus) + i svg {
+      fill: $red-1;
+    }
   }
   i, img {
     position: absolute;

@@ -64,6 +64,11 @@ h2 {
       padding-right: 25px;
       max-width: 90%;
     }
+    i {
+      position: relative;
+      background-color: $white;
+      padding-left: 10px;
+    }
     &::before {
       content: '';
       @include abs-middle;
@@ -101,7 +106,7 @@ h2 {
 
 .dark-mode {
   h2.title-with-line {
-    span {
+    span, i {
       background-color: $dark-2;
     }
   }
@@ -309,6 +314,9 @@ main {
 }
 
 .text {
+  &-normal {
+    font-weight: normal;
+  }
   &-medium {
     font-weight: 500;
   }

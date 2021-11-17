@@ -263,6 +263,12 @@
   padding: 6px 12px;
 }
 
+@include media-min-width('lg') {
+  .col-lg-3 > .form-group .mx-calendar {
+    width: 271px;
+  }
+}
+
 .mx-calendar+.mx-calendar {
   border-left: 1px solid $greyish-blue-3;
 }
@@ -509,7 +515,7 @@
 @include media-max-width('lg') {
   .mx-calendar {
     box-sizing: border-box;
-    width: calc(100vw - 50px);
+    width: 100%;
     max-width: 490px;
     padding: 6px 12px;
   }

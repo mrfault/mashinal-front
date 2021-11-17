@@ -25,7 +25,7 @@ export const actions = {
   },
   async addNewCar({ dispatch }, data) {
     const res = await this.$axios.$get(`/garage/register${this.$queryParams(data)}`);
-    if (res.status === 'success') await dispatch('getCarList', { phone: data.phone });
+    if (res.status === 'success') await dispatch('getCarList', {});
     return res;
   },
   async activateCar({ commit }, data) {
@@ -44,17 +44,18 @@ export const actions = {
     return res;
   },
   async getProtocols({ commit }, data) {
-    const res = await this.$axios.$get(`/garage/protocol/list${this.$queryParams(data)}`);
+    const res = await this.$axios.$get(`/garage/protocols/list${this.$queryParams(data)}`);
     commit('mutate', { property: 'protocols', value: res });
     return res;
   },
   async getProtocolFiles({ commit }, data) {
-    const res = await this.$axios.$get(`/garage/protocol/files${this.$queryParams(data)}`);
+    const res = await this.$axios.$get(`/garage/protocols/files${this.$queryParams(data)}`);
     commit('mutate', { property: 'protocolFiles', value: res });
+    commit('mutate', { property: 'protocolFiles', key: 'din_id', value: data.din_id });
     return res;
   },
   async checkDriverPoints({ commit }, data) {
-    const res = await this.$axios.$get(`/garage/driver-license/check${this.$queryParams(data)}`);
+    const res = await this.$axios.$get(`/garage/driver/license/check${this.$queryParams(data)}`);
     commit('mutate', { property: 'driverLicensePoints', value: res });
     return res;
   },
@@ -62,6 +63,10 @@ export const actions = {
     const res = await this.$axios.$post(`/garage/image_upload`, data);
     if (res) commit('updateCar', { id: data.get('car_id'), key: 'thumb', value: res });
     return res;
+  },
+  async resetCarData({ commit }, data) {
+    commit('mutate', { property: 'protocols', value: {} });
+    commit('mutate', { property: 'protocolFiles', value: {} });
   }
 }
 

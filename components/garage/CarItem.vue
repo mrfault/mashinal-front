@@ -1,5 +1,5 @@
 <template>
-  <div :class="['garage_car-item', { 'car-active': car.status === 1, 'thumb-set': thumbSet }]" @click="showInfo">
+  <div :class="['garage_car-item', { 'car-active': car.status === 1, 'thumb-set': thumbSet, active: active && !isMobileBreakpoint  }]" @click="showInfo">
     <div :class="['car-bg', {'no-img': !car.thumb && !thumbPending}]"
          :style="car.thumb && !thumbPending ? { backgroundImage: `url('${$withBaseUrl(car.thumb)}')` } : {}">
       <div class="car-bg-inner d-flex flex-column justify-content-between" v-if="!thumbSet">
@@ -39,10 +39,10 @@
     </div>
     <div class="car-info d-flex justify-content-between align-items-center">
       <span>{{ carNumber }}</span>
-      <button :class="['btn btn--dark-blue-outline', { pending: pending && !showDeleteModal, disabled: thumbSet }]" v-if="car.status === 1" @click.stop="deactivateCar">
+      <button :class="['btn btn--dark-blue-outline', { disabled: thumbSet }]" v-if="car.status === 1" @click.stop="showDeactivateModal = true">
         {{ $t('inactive_make') }}
       </button>
-      <button :class="['btn btn--green', { pending: pending && !showDeleteModal, disabled: thumbSet }]" v-else @click.stop="activateCar">
+      <button :class="['btn btn--green', { pending: pending && !showDeleteModal && !showDeactivateModal, disabled: thumbSet }]" v-else @click.stop="activateCar">
         {{ $t('activate') }}
       </button>
     </div>
@@ -52,6 +52,17 @@
       @close="showDeleteModal = false"
     >
       <form class="form" @submit.prevent="deleteCar" novalidate>
+        <button type="submit" :class="['btn btn--green full-width', { pending }]">
+          {{ $t('confirm') }}
+        </button>
+      </form>
+    </modal-popup>
+    <modal-popup
+      :toggle="showDeactivateModal"
+      :title="$t('are_you_sure_you_want_to_deactivate_the_car')"
+      @close="showDeactivateModal = false"
+    >
+      <form class="form" @submit.prevent="deactivateCar" novalidate>
         <button type="submit" :class="['btn btn--green full-width', { pending }]">
           {{ $t('confirm') }}
         </button>
@@ -67,14 +78,16 @@ import Loader from '../elements/Loader.vue';
 export default {
   components: { Loader },
   props: {
-    car: {}
+    car: {},
+    active: Boolean
   },
   data() {
     return {
       pending: false,
       showDeleteModal: false,
-      thumbSet: false,
+      showDeactivateModal: false,
       thumb: null,
+      thumbSet: false,
       thumbPending: false
     }
   },
@@ -95,7 +108,7 @@ export default {
     }),
 
     showInfo() {
-      if (this.car.status !== 1) return;
+      if (this.car.status !== 1 || (this.active && !this.isMobileBreakpoint)) return;
       this.$emit('set-active', this.car.id);
     },
     updateThumbImage() {
@@ -137,6 +150,7 @@ export default {
         await this.deactivate({ id: this.car.id });
         this.$toasted.success(this.$t('car_deactivated'));
         this.pending = false;
+        this.showDeactivateModal = false;
       } catch(err) {
         this.pending = false;
       }

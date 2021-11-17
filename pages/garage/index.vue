@@ -3,8 +3,19 @@
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
       <template v-if="cars.data">
-        <garage-nav :tab="tab" @change-tab="tab = $event" />
-        <cars-list v-show="tab === 'cars'" />
+        <garage-nav 
+          v-show="showNav || !isMobileBreakpoint" 
+          :tab="tab" 
+          @change-tab="tab = $event" 
+        />
+        <cars-list 
+          v-show="tab === 'cars'" 
+          @show-nav="showNav = $event"
+        />
+        <check-driver-points 
+          v-show="tab === 'check-points'" 
+          @show-nav="showNav = $event"
+        />
       </template>
       <template v-else>
         <garage-empty />
@@ -19,13 +30,15 @@ import { mapGetters } from 'vuex';
 import GarageNav from '~/components/garage/GarageNav';
 import GarageEmpty from '~/components/garage/GarageEmpty';
 import CarsList from '~/components/garage/CarsList';
+import CheckDriverPoints from '~/components/garage/CheckDriverPoints';
 
 export default {
   name: 'pages-garage-index',
   components: {
     GarageNav,
     GarageEmpty,
-    CarsList
+    CarsList,
+    CheckDriverPoints
   },
   middleware: ['auth_general'],
   nuxtI18n: {
@@ -38,12 +51,13 @@ export default {
       title: this.$t('garage')
     });
   },
-  async asyncData({ store, $auth }) {
+  async asyncData({ store }) {
     await Promise.all([
-      store.dispatch('garage/getCarList', { phone: $auth.user.phone })
+      store.dispatch('garage/getCarList', {})
     ]);
     return {
-      tab: 'cars'
+      tab: 'cars',
+      showNav: true
     }
   },
   computed: {
