@@ -275,10 +275,16 @@
   bottom: 0;
   left: 50%;
   transform: translate(-50%, 50%);
-  .btn-circle {
-    background-color: $greyish-blue-1;
+  .btn {
+    color: $red-1;
+    border: 3px solid;
+    border-radius: 100px;
+    padding-left: 25px;
+    padding-right: 25px;
+    background-color: $white;
+    border-color: $greyish-blue-1;
     i {
-      margin-top: -5px;
+      margin: 0;
     }
   }
 }
@@ -355,6 +361,9 @@
       .item-price span {
         color: $white;
       }
+      .item-overlay .badge {
+        background-color: rgba($dark-2, .35);
+      }
     }
   }
 
@@ -365,9 +374,10 @@
   }
 
   .collapse-toggle {
-    .btn-circle {
+    .btn {
       color: $white;
-      background-color: $dark-1;
+      background-color: $dark-2;
+      border-color: $dark-1;
     }
   }
 }

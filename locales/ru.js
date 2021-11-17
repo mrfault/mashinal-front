@@ -2000,5 +2000,7 @@ export default {
   "speed_real": "Скорость, которую вы превысили",
   "protocol_took_place": "Место составления протокола",
   "protocol_article": "КАП",
-  "watch_files": "Посмотреть фото/видео"
+  "watch_files": "Посмотреть фото/видео",
+  "search_more": "Все параметры",
+  "search_less": "Свернуть"
 }
