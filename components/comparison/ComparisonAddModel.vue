@@ -261,6 +261,10 @@ export default {
         carType: null,
         modification: null,
       }
+
+      this.$nextTick(() => {
+        this.$nuxt.$emit('update-comparison-scroll-events');
+      });
     }
   }
 }

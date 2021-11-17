@@ -1,10 +1,10 @@
 <template>
   <div>
     <!-- Models -->
-    <div class="comparison__items">
+    <div class="comparison__items row">
       <!-- Model list -->
       <div
-        class="comparison__item"
+        class="comparison__item col-auto col-lg-1-5"
         v-for="model in models"
         :key="model.id"
       >
@@ -19,6 +19,15 @@
         <div class="comparison__item__title">{{ getModelTitle(model) }}</div>
         <div class="comparison__item__desc" v-for="desc in getModelDescription(model)" :key="desc">
           {{ desc }}
+        </div>
+      </div>
+      
+      <div class="col-6 col-lg-1-5" v-if="!models.length">
+        <div class="add-item" @click.stop="addModel()">
+          <div class="add-item_inner">
+            <img src="/icons/plus-circle-1.svg" alt="" />
+            {{ $t('add_car_model') }}
+          </div>
         </div>
       </div>
       
@@ -69,14 +78,15 @@
           :key="cIndex"
           :title="collapse.title"
           :first-collapsed="collapse.defaultCollapsed"
+          @click.native="$nuxt.$emit('update-comparison-scroll-events')"
         >
           <div v-for="(specification, sindex) in filteredSpecs(collapse.items)" :key="sindex">
             <h4 class="collapse-content__title">
               {{ specification.title }}
             </h4>
 
-            <div class="collapse-content__columns" >
-              <div v-for="(model, mIndex) in modelsForSpecs" :key="model.id_unique" class="collapse-content__column" >
+            <div class="collapse-content__columns row" >
+              <div v-for="(model, mIndex) in modelsForSpecs" :key="model.id_unique" class="collapse-content__column col-auto col-lg-1-5" >
                 <p>{{ specification.values[mIndex] }}</p>
               </div>
             </div>
@@ -106,14 +116,7 @@ export default {
     }
   },
   async fetch() {
-    await this.$store.dispatch('comparison/getInitialRecommendation')
-    
-    const models = this.$cookies.get('comparisonModels')
-    if (models?.length) {
-      models.forEach(id => {
-        this.$store.dispatch('comparison/addModel', id)
-      })
-    }
+    // await this.$store.dispatch('comparison/getInitialRecommendation')
   },
   methods: {
     removeItem(id) {
@@ -129,6 +132,12 @@ export default {
     },
     removeRecommendedModel() {
       this.showRecommendation = false
+    },
+    addModel() {
+      this.$store.commit('comparison/mutate', {
+        property: 'showAddModelPopup',
+        value: true
+      })
     }
   },
   computed: {

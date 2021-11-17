@@ -4,11 +4,11 @@
       <comparison-announcements v-if="filter.compareType === 'announcements'" />
       <comparison-models v-else />
     </div>
-    <not-found v-else :text="$t('no_cars_found')">
-      <nuxt-link class="btn btn--green" :to="$localePath('/')">
-        {{ $t('to_add_an_advert') }}
-      </nuxt-link>
-    </not-found>
+    <no-results v-else
+      :text="$t('no_cars_found')" 
+    >
+      <nuxt-link :to="$localePath('/')" class="btn btn--green mt-2 mt-lg-3" v-html="$t('to_add_an_advert')" />
+    </no-results>
   </div>
 </template>
 
@@ -16,13 +16,13 @@
 import { mapGetters } from 'vuex';
 import ComparisonAnnouncements from '~/components/comparison/ComparisonAnnouncements'
 import ComparisonModels from '~/components/comparison/ComparisonModels'
-import NotFound from '~/components/elements/NotFound'
+import NoResults from '~/components/elements/NoResults'
 
 export default {
   components:{
     ComparisonAnnouncements,
     ComparisonModels,
-    NotFound
+    NoResults
   },
   mounted() {
     this.updateCompareType()
@@ -39,12 +39,13 @@ export default {
   },
   methods: {
     updateCompareType() {
-      const defaultType = this.modelsList.length ? 'models' : 'announcements'
-      this.$store.commit('comparison/mutate', {
-        property: 'filter',
-        key: 'compareType',
-        value: this.$route?.hash.replace?.('#', '') || defaultType
-      })
+      if (['announcements', 'models'].includes(this.$route.hash)) {
+        this.$store.commit('comparison/mutate', {
+          property: 'filter',
+          key: 'compareType',
+          value: this.$route.hash.replace?.('#', '')
+        });
+      }
     }
   },
   watch: {
