@@ -58,36 +58,50 @@
         </div>
       </div>
     </div>
+    <div class="overflow-hidden">
+      <div class="container">
+        <banking-cards />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-  import { UserDataMixin } from '~/mixins/user-data';
-  import { MenusDataMixin } from '~/mixins/menus-data';
+import { UserDataMixin } from '~/mixins/user-data';
+import { MenusDataMixin } from '~/mixins/menus-data';
 
-  export default {
-    name: 'pages-profile-index',
-    middleware: ['auth_general'],
-    mixins: [UserDataMixin, MenusDataMixin],
-    nuxtI18n: {
-      paths: {
-        az: '/profil'
-      }
-    },
-    head() {
-      return this.$headMeta({
-        title: this.$t('user_information')
-      });
-    },
-    async asyncData({ $auth }) {
-      await $auth.fetchUser();
-    },
-    computed: {
-      crumbs() {
-        return [
-          { name: this.$t('user_information') }
-        ]
-      }
+import BankingCards from '~/components/profile/BankingCards';
+
+export default {
+  name: 'pages-profile-index',
+  middleware: ['auth_general'],
+  mixins: [UserDataMixin, MenusDataMixin],
+  components: {
+    BankingCards
+  },
+  nuxtI18n: {
+    paths: {
+      az: '/profil'
+    }
+  },
+  head() {
+    return this.$headMeta({
+      title: this.$t('user_information')
+    });
+  },
+  async asyncData({ store, $auth }) {
+    await Promise.all([
+      $auth.fetchUser(),
+      store.dispatch('bankingCards/getBankingCards'),
+      store.dispatch('garage/getCarList', {})
+    ]);
+  },
+  computed: {
+    crumbs() {
+      return [
+        { name: this.$t('user_information') }
+      ]
     }
   }
+}
 </script>

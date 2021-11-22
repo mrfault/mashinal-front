@@ -2002,5 +2002,12 @@ export default {
   "protocol_article": "КАП",
   "watch_files": "Посмотреть фото/видео",
   "search_more": "Все параметры",
-  "search_less": "Свернуть"
+  "search_less": "Свернуть",
+
+  "add_new_card": "Добавить новую карту",
+  "main": "Основная",
+  "no_active_cards": "Активной карты нет",
+  "delete_card": "Удалить карту",
+  "card_deleted": "Карта удалена",
+  "are_you_sure_you_wnat_to_delete_the_card": "Подписка за услугу SMS-Radar для вышеуказанных автомобилей оплачивается картой <strong>\"{card}\"</strong>. Вы уверены, что хотите удалить ее?"
 }
