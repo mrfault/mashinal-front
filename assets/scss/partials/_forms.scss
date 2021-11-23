@@ -511,6 +511,34 @@ input::-webkit-inner-spin-button {
       &.selected {
         color: $dark-blue-2;
       }
+      &.card-option {
+        height: 67px;
+        .icon-check {
+          top: 13px;
+        }
+        .card-brand-img {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          background-color: $white;
+          width: 58px;
+          height: 41px;
+          border-radius: 4px;
+          & + .text-truncate {
+            display: flex;
+            flex-direction: column;
+            height: 41px;
+            justify-content: space-between;
+            span:not(:first-child) {
+              font-size: 15px;
+            }
+          }
+          .img {
+            background: transparent !important;
+          }
+        }
+      }
       &:not(.disabled):hover {
         background-color: darken($greyish-blue-2, 2%);
       }
@@ -809,6 +837,12 @@ input::-webkit-inner-spin-button {
       &-option {
         &.selected {
           color: $yellow-1;
+        }
+        &.card-option {
+          .card-brand-img,
+          & + div hr {
+            background-color: $dark-5;
+          }
         }
         &:hover {
           background-color: lighten($dark-1, 2%);

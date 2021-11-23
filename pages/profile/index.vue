@@ -63,6 +63,15 @@
         <banking-cards />
       </div>
     </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-lg-3 ml-auto mr-auto">
+          <div class="card mt-2 mb-2">
+            <select-banking-card />
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -71,13 +80,15 @@ import { UserDataMixin } from '~/mixins/user-data';
 import { MenusDataMixin } from '~/mixins/menus-data';
 
 import BankingCards from '~/components/profile/BankingCards';
+import SelectBankingCard from '~/components/profile/SelectBankingCard';
 
 export default {
   name: 'pages-profile-index',
   middleware: ['auth_general'],
   mixins: [UserDataMixin, MenusDataMixin],
   components: {
-    BankingCards
+    BankingCards,
+    SelectBankingCard
   },
   nuxtI18n: {
     paths: {

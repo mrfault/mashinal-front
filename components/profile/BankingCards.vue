@@ -135,10 +135,9 @@ export default {
       bankingCards: 'bankingCards/bankingCards',
       cars: 'garage/cars'
     }),
-
-
     activeCars() {
-      return this.cars.data?.filter(car => car.status === 1).map(car => ({
+      if (!this.cars.data) return [];
+      return this.cars.data.filter(car => car.status === 1).map(car => ({
         id: car.id,
         car_number: car.car_number.replace(/([A-Z]{1,2})/, ' $1 '),
         created_date: this.$moment(car.created_date).format('DD.MM.YYYY')
@@ -152,12 +151,7 @@ export default {
       delete: 'bankingCards/deleteCard'
     }),
     cardNumber(num) {
-      return [
-        num.slice(0,4),
-        num.slice(4,8),
-        num.slice(8,12),
-        num.slice(12,16)
-      ].map(n => `<span>${n}</span>`).join('');
+      return this.$parseCardNum(num).map(n => `<span>${n}</span>`).join('');
     },
     async addCard() {
       if (this.pending) return;

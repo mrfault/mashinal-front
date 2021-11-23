@@ -2013,5 +2013,6 @@ export default {
   "delete_card": "Удалить карту",
   "card_deleted": "Карта удалена",
   "are_you_sure_you_wnat_to_delete_the_card": "Вы точно хотите удалить карту?",
-  "card_is_used_to_pay": "Подписка за услугу SMS-Radar для вышеуказанных автомобилей оплачивается картой <strong>\"{card}\"</strong>."
+  "card_is_used_to_pay": "Подписка за услугу SMS-Radar для вышеуказанных автомобилей оплачивается картой <strong>\"{card}\"</strong>.",
+  "other_card": "Другая банковская карта"
 }
