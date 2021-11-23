@@ -332,6 +332,7 @@ export default {
   "capacity_from_l": "Mühərrik həcmi min., l",
   "capacity_from_sm3": "Mühərrik həcmi min., sm³",
   "car": "Avtomobil",
+  "car_plural": "Avtomobillər",
   "car_history": "Avtomobilin tarixi",
   "car_info": "Avtomobil haqqında məlumat",
   "car_loan": "Avtomobi̇l kredi̇ti̇",

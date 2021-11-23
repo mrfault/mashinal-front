@@ -29,7 +29,7 @@ export const MenusDataMixin = {
 
     navbarMenus() {
       let announcementCategories = [
-        { title: 'cars', route: '/cars', children: [{ title: 'car', route: '/cars', icon: 'car-1' }] },
+        { title: 'cars', route: '/cars', children: [{ title: 'car_plural', route: '/cars', icon: 'car-1' }] },
         { title: 'moto', route: '/moto', children: this.motoMenus },
         { title: 'commercial', route: '/commercial', children: this.commercialMenus }
       ]

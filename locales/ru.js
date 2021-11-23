@@ -332,6 +332,7 @@ export default {
   "capacity_from_l": "Объем от, л",
   "capacity_from_sm3": "Объем от, см³",
   "car": "Автомобиль",
+  "car_plural": "Автомобили",
   "car_history": "История автомобиля",
   "car_info": "Информация об автомобиле",
   "car_loan": "Кредит на автомобиль",
