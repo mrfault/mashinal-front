@@ -24,7 +24,7 @@ export const actions = {
     return res;
   },
   async addNewCar({ dispatch }, data) {
-    const res = await this.$axios.$get(`/garage/register${this.$queryParams(data)}`);
+    const res = await this.$axios.$get(`/garage/check${this.$queryParams(data)}`);
     if (res.status === 'success') await dispatch('getCarList', {});
     return res;
   },
