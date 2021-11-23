@@ -597,6 +597,19 @@ main {
           }
         }
       }
+      &_categories {
+        margin: 32px 0;
+        list-style: none;
+        border-right: 1px solid $greyish-blue-3;
+        padding: 0 28px 0 0;
+        a {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          height: 37px;
+          width: 100%;
+        }
+      }
     }
   }
   &.has-shadow {

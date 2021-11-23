@@ -28,8 +28,13 @@ export const MenusDataMixin = {
     },
 
     navbarMenus() {
+      let announcementCategories = [
+        { title: 'cars', route: '/cars', children: [{ title: 'car', route: '/cars', icon: 'car-1' }] },
+        { title: 'moto', route: '/moto', children: this.motoMenus },
+        { title: 'commercial', route: '/commercial', children: this.commercialMenus }
+      ]
       return [
-        ...this.searchMenus.slice(0, 3),
+        { title: 'announcements', route: '/cars', children: [], categories: announcementCategories },
         { title: 'parts', route: '/parts', children: this.partsSubMenus },
         { title: 'autocatalog', route: '/catalog' },
         { title: 'salons', route: '/salons' }
