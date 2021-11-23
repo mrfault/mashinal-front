@@ -65,7 +65,7 @@
     </div>
     <div class="container">
       <div class="row">
-        <div class="col-12 col-lg-3 ml-auto mr-auto">
+        <div class="col-12 col-lg-4 ml-auto mr-auto">
           <div class="card mt-2 mb-2">
             <select-banking-card />
           </div>

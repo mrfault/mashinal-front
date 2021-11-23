@@ -6,7 +6,7 @@
         <span :class="['text-truncate', {'full-width': hasSearch}]">
           <template v-if="hasCards && getSelectedOptions[0]">
             <span class="d-flex align-items-center" v-if="getSelectedOptions[0]">
-              <img :src="getSelectedOptions[0].icon" :alt="getSelectedOptions[0].brand" class="mr-1" />
+              <img :src="getSelectedOptions[0].icon" :alt="getSelectedOptions[0].brand" width="32" height="16" class="mr-1" />
               <span class="placeholder">{{ getSelectedOptions[0].name.slice(10) }}</span>
             </span>
           </template>
@@ -126,7 +126,7 @@
                     <div class="d-flex full-width">
                       <div class="card-brand-img mr-1" v-if="imgKey && option.brand">
                         <div class="img">
-                          <img width="25" :src="$withBaseUrl(option[imgKey])" :alt="getOptionName(option)" />
+                          <img :src="$withBaseUrl(option[imgKey])" :alt="getOptionName(option)" />
                         </div>
                       </div>
                       <div :class="['text-truncate', {'full-width text-center': !option.brand }]">
