@@ -4,7 +4,7 @@ import { RoutesMixin } from './routes';
 export const MenusDataMixin = {
   mixins: [RoutesMixin],
   computed: {
-    ...mapGetters(['staticPages','commercialTypes']),
+    ...mapGetters(['commercialTypes']),
 
     searchMenus() {
       return [
@@ -16,15 +16,10 @@ export const MenusDataMixin = {
     },
 
     pageMenus() {
-      return [{
-        title: 'contact_us',
-        route: '/contact-us',
-        icon: 'phone-call'
-      }].concat(this.staticPages.map(page => ({
-        title: page.title, 
-        route: '/page/'+page.slug[this.locale],
-        icon: 'policy'
-      })));
+      return [
+        { title: 'contact_us', route: '/contact-us', icon: 'phone-call' },
+        { title: 'policy', route: '/policy', icon: 'policy' }
+      ];
     },
 
     navbarMenus() {

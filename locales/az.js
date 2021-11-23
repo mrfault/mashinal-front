@@ -2014,5 +2014,6 @@ export default {
   "card_deleted": "Kart silindi",
   "are_you_sure_you_wnat_to_delete_the_card": "Kartı silmək istədiyinizə əminsiniz?",
   "card_is_used_to_pay": "Yuxarıdakı avtomobillərin SMS radar xidməti abunəliyi <strong>\"{card}\"</strong> nömrəli kart vasitəsilə ödənilir.",
-  "other_card": "Digər bank kartı"
+  "other_card": "Digər bank kartı",
+  "policy": "Qaydalar"
 }

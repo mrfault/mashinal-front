@@ -222,6 +222,9 @@ main {
   &.no-pd {
     padding: 0;
   }
+  &.has-collapse {
+    padding: 15px 25px;
+  }
   p, ul, ol {
     strong {
       font-weight: 600;
