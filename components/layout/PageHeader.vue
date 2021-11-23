@@ -73,7 +73,7 @@
             <div class="col-lg-8 position-static">
               <ul class="menu">
                 <li v-for="menu in navbarMenus" :key="menu.title" :class="{'dropdown': menu.children}" @mouseleave="activeCategory = 0">
-                  <nuxt-link :to="$localePath(menu.route)">
+                  <nuxt-link :to="$localePath(menu.route)" :class="{'active': menu.categories && hasSearchNav}">
                     {{ $t(menu.title) }}
                     <icon name="chevron-down" v-if="menu.children" />
                   </nuxt-link>
@@ -83,7 +83,7 @@
                         <div class="col-3" v-if="menu.categories">
                           <ul class="dropdown-menu_categories">
                             <li @mouseover="activeCategory = index" v-for="(category, index) in menu.categories" :key="category.title">
-                              <nuxt-link :to="$localePath(category.route)" active-class="link-active" :class="{active: index === activeCategory}">
+                              <nuxt-link :to="$localePath(category.route)" active-class="link-active" :class="{'active': index === activeCategory}">
                                 {{ $t(category.title) }}
                                 <icon name="chevron-right" />
                               </nuxt-link>
