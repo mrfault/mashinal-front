@@ -19,29 +19,31 @@
                     <span :class="['cursor-pointer', { active: card.default }]" @click="setDefault(card)">
                       <icon :name="`bookmark-${card.default ? 'fill' : 'outline'}`" />
                     </span>
-                    <span class="cursor-pointer" @click="showDeleteModal = true">
+                    <span class="cursor-pointer" @click="showDeleteModal = card.id">
                       <icon name="garbage" />
                       <modal-popup
-                        :toggle="showDeleteModal"
-                        :title="$t('delete_card')"
+                        :toggle="showDeleteModal === card.id"
+                        :title="$t('are_you_sure_you_wnat_to_delete_the_card')"
                         @close="showDeleteModal = false"
                       >
                         <form class="form" @submit.prevent="deleteCard(card.id)" novalidate>
-                          <div class="modal-card">
-                            <div class="vehicle-specs">
-                              <div class="row">
-                                <div class="col">
-                                  <ul>
-                                    <li v-for="car in activeCars" :key="car.id">
-                                      <span>{{ car.car_number }}</span>
-                                      <span>{{ car.created_date }}</span>
-                                    </li>
-                                  </ul>
+                          <template v-if="card.default && activeCars.length">
+                            <div class="modal-card">
+                              <div class="vehicle-specs">
+                                <div class="row">
+                                  <div class="col">
+                                    <ul>
+                                      <li v-for="car in activeCars" :key="car.id">
+                                        <span>{{ car.car_number }}</span>
+                                        <span>{{ car.created_date }}</span>
+                                      </li>
+                                    </ul>
+                                  </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
-                          <p v-html="$t('are_you_sure_you_wnat_to_delete_the_card', { card: card.masked_pan })"></p>
+                            <p v-html="$t('card_is_used_to_pay', { card: card.masked_pan })"></p>
+                          </template>
                           <button type="submit" :class="['btn btn--green full-width', { pending }]">
                             {{ $t('confirm') }}
                           </button>

@@ -5,6 +5,14 @@
         <nuxt-link class="logo" :to="$localePath('/')" @click.native="$nuxt.$emit('logo-click')">
           <img :src="`/img/${isDarkMode ? 'logo-white' : 'logo'}.svg`" alt="logo" v-if="!btlCookie" />
         </nuxt-link>
+        <div class="store-badges">
+          <a href="https://apple.co/2YgvGt4" target="_blank" rel="noopener">
+            <img :src="`/img/appstore-${colorMode}.svg`" alt="app store" />
+          </a>
+          <a href="https://bit.ly/3bYPtRj" target="_blank" rel="noopener">
+            <img :src="`/img/googleplay-${colorMode}.svg`" alt="google play" />
+          </a>
+        </div>
         <nav>
           <ul class="menu">
             <li v-for="menu in topbarMenus" :key="menu.title">

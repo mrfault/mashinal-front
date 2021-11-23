@@ -2003,11 +2003,14 @@ export default {
   "watch_files": "Şəkil/videoya bax",
   "search_more": "Ətraflı",
   "search_less": "Gizlət",
+  "garage_register_pay": "Maşın qaraja əlavə olunub",
+  "garage_activate_pay": "Maşın aktivləşdirilib",
 
   "add_new_card": "Yeni kart əlavə et",
   "main": "Əsas",
   "no_active_cards": "Aktiv kartınız yoxdur",
   "delete_card": "Kartı sil",
   "card_deleted": "Kart silindi",
-  "are_you_sure_you_wnat_to_delete_the_card": "Yuxarıdakı avtomobillərin SMS radar xidməti abunəliyi <strong>\"{card}\"</strong> nömrəli kart vasitəsilə ödənilir. Bu kartı silmək istədiyizə əminsiniz?"
+  "are_you_sure_you_wnat_to_delete_the_card": "Kartı silmək istədiyinizə əminsiniz?",
+  "card_is_used_to_pay": "Yuxarıdakı avtomobillərin SMS radar xidməti abunəliyi <strong>\"{card}\"</strong> nömrəli kart vasitəsilə ödənilir."
 }
