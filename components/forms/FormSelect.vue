@@ -10,6 +10,7 @@
               <span class="placeholder">{{ getSelectedOptions[0].name.slice(10) }}</span>
             </span>
           </template>
+          <template v-else-if="hasCards">{{ clearOptionText }}</template>
           <template v-else-if="hasSearch && showOptions && !isMobileBreakpoint">
             <span class="search-input">
               <span class="placeholder">{{ label }}: </span>

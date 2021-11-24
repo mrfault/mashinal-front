@@ -2,11 +2,17 @@ import { mapGetters, mapActions } from 'vuex';
 
 import { SocketMixin } from '~/mixins/socket';
 
+import SelectBankingCard from '~/components/profile/SelectBankingCard';
+
 export const PaymentMixin = {
   mixins: [SocketMixin],
+  components: {
+    SelectBankingCard
+  },
   data() {
     return {
-      paymentMethod: 'card'
+      paymentMethod: 'card',
+      bankingCard: ''
     }
   },
   computed: {
@@ -15,7 +21,7 @@ export const PaymentMixin = {
     paymentMethodOptions() {
       return [
         { key: 'card', name: this.$t('pay_with_card') },
-        { key: 'balance', name: this.$t('pay_with_balance'), disabled: !this.haveBalanceForPlan },
+        { key: 'balance', name: this.$t('pay_with_balance'), disabled: !this.haveBalanceToPay },
       ]
     }
   },
@@ -27,9 +33,10 @@ export const PaymentMixin = {
       if (!paid) text = this.$t('try_again');
       this.updatePaidStatus({ type, text, title: this.$t(`${type}_payment`) });
     },
-    handlePayment(res, route = false, text = '') {
+    handlePayment(res, route = false, text = '', version = 'v1') {
       if (!this.isMobileBreakpoint) {
-        window.open((res?.data?.redirect_url || res), 'purchaseservice', 'toolbar=yes,scrollbars=yes,resizable=yes,top=50,left=100,width=494,height=718');
+        let size = ({ v1: 'width=494,height=718', v2: 'width=1042,height=725' })[version];
+        window.open((res?.data?.redirect_url || res), 'purchaseservice', 'toolbar=yes,scrollbars=yes,resizable=yes,top=50,left=100,'+size);
         let payment_id = res?.data?.payment_id;
         if (payment_id) {
           this.connectEcho(`purchase.${payment_id}`, false).listen('PurchaseInitiated', async (data) => {
@@ -73,7 +80,7 @@ export const PaymentMixin = {
     }
   },
   watch: {
-    haveBalanceForPlan(value) {
+    haveBalanceToPay(value) {
       if (!value) {
         this.paymentMethod = 'card';
       }

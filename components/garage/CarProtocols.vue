@@ -31,7 +31,7 @@ export default {
     })
   },
   async fetch() {
-    await this.getProtocols({ car_id: this.car.id });
+    await this.getProtocols({ id: this.car.id });
   },
   beforeDestroy() {
     this.resetCarData();

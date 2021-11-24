@@ -174,7 +174,7 @@ export default {
       if (!this.selectedPackage) return 0;
       return this.priceDifference || parseFloat(this.selectedPackage.price);
     },
-    haveBalanceForPlan() {
+    haveBalanceToPay() {
       if (!this.selected || !this.loggedIn) return false;
       return this.calculatedPrice <= this.user.balance;
     },

@@ -113,7 +113,7 @@ export default {
     selectedPlan() {
       return this.availablePlans.find(item => item.days === this.day.value) || {};
     },
-    haveBalanceForPlan() {
+    haveBalanceToPay() {
       return parseFloat(this.selectedPlan.price) <= this.totalBalance;
     }
   },
@@ -121,7 +121,7 @@ export default {
     async getAnAd() {
       if (this.pending) return;
       this.pending = true;
-      if (!this.haveBalanceForPlan) {
+      if (!this.haveBalanceToPay) {
         this.paymentMethod = 'card';
       }
       const res = await this.$axios.$post(`/monetization/start?is_mobile=${this.isMobileBreakpoint ? 'true' : 'false'}`,{
@@ -153,7 +153,7 @@ export default {
       this.price.min = this.pricesForPlan[0];
       this.price.value = this.pricesForPlan[2];
       this.price.max = this.pricesForPlan[this.pricesForPlan.length - 1];
-      if (this.haveBalanceForPlan) this.paymentMethod = 'balance';
+      if (this.haveBalanceToPay) this.paymentMethod = 'balance';
     });
   }
 }

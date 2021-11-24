@@ -23,9 +23,12 @@ export const actions = {
     commit('mutate', { property: 'cars', value: res });
     return res;
   },
-  async addNewCar({ dispatch }, data) {
+  async checkNewCar({}, data) {
     const res = await this.$axios.$get(`/garage/check${this.$queryParams(data)}`);
-    if (res.status === 'success') await dispatch('getCarList', {});
+    return res;
+  },
+  async registerNewCar({}, data) {
+    const res = await this.$axios.$get(`/garage/register_pay${this.$queryParams(data)}`);
     return res;
   },
   async activateCar({ commit }, data) {
@@ -61,7 +64,7 @@ export const actions = {
   },
   async uploadCarThumb({ commit }, data) {
     const res = await this.$axios.$post(`/garage/image_upload`, data);
-    if (res) commit('updateCar', { id: data.get('car_id'), key: 'thumb', value: res });
+    if (res) commit('updateCar', { id: data.get('id'), key: 'thumb', value: res });
     return res;
   },
   async resetCarData({ commit }, data) {

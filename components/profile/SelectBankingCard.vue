@@ -33,15 +33,21 @@
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
-  data() {
-    return {
-      activeCardId: ''
-    }
+  props: {
+    value: {}
   },
   computed: {
     ...mapGetters({
       bankingCards: 'bankingCards/bankingCards'
     }),
+    activeCardId: {
+      get() {
+        return this.value;
+      },
+      set(value) {
+        this.$emit('input', value);
+      }
+    },
     cardOptions() {
       return this.bankingCards.map(card => ({
         key: card.id,

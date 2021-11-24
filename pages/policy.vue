@@ -9,7 +9,7 @@
           :title-with-hr="true"
           :animate="false"
         >
-          <div v-html="page.text[locale]"></div>
+          <div v-html="page.text[locale].replace(/&nbsp;/g, ' ')"></div>
         </collapse-content>
       </div>
     </div>

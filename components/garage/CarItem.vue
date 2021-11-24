@@ -124,7 +124,7 @@ export default {
     async saveThumb() {
       this.thumbPending = true;
       let formData = new FormData();
-      formData.append('car_id', this.car.id);
+      formData.append('id', this.car.id);
       let thumb = await this.thumb?.promisedBlob('image/jpeg', 0.8);
       formData.append('thumb', thumb);
       await this.uploadCarThumb(formData);
