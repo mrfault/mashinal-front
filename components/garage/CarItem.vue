@@ -39,10 +39,13 @@
     </div>
     <div class="car-info d-flex justify-content-between align-items-center">
       <span>{{ carNumber }}</span>
-      <button :class="['btn btn--dark-blue-outline', { disabled: thumbSet }]" v-if="car.status === 1" @click.stop="showDeactivateModal = true">
+      <div :class="['btn btn--dark-blue-2 pointer-events-none']" @click.stop="showPaymentModal = true" v-if="car.sync_status !== 1">
+        {{ $t('under_consideration') }}
+      </div>
+      <button :class="['btn btn--dark-blue-outline', { disabled: thumbSet }]" v-else-if="car.status === 1" @click.stop="showDeactivateModal = true">
         {{ $t('inactive_make') }}
       </button>
-      <button :class="['btn btn--green', { pending: pending && !showDeleteModal && !showDeactivateModal, disabled: thumbSet }]" v-else @click.stop="activateCar">
+      <button :class="['btn btn--green', { pending: pending && !showDeleteModal && !showDeactivateModal && !showPaymentModal, disabled: thumbSet }]" v-else @click.stop="showPaymentModal = true">
         {{ $t('activate') }}
       </button>
     </div>
@@ -68,19 +71,65 @@
         </button>
       </form>
     </modal-popup>
+    <modal-popup 
+      :toggle="showPaymentModal" 
+      :title="$t('payment')"
+      :overflow-hidden="isMobileBreakpoint"
+      @close="showPaymentModal = false"
+    >
+      <h4 class="mb-2">{{ $t('payment_method') }}</h4>
+      <form-buttons v-model="paymentMethod" :options="paymentMethodOptions" :group-by="2" />
+      <select-banking-card v-if="loggedIn" v-model="bankingCard" class="mt-2 mt-lg-3" />
+      <p class="mt-2 info-text"><icon name="alert-circle" /> 
+        <span class="text-medium cursor-pointer text-red" @click="showPaymentModal = false, showTerminalInfo = true">{{ $t('pay_with_terminal') }}</span>
+      </p>
+      <div :class="{'modal-sticky-bottom': isMobileBreakpoint}">
+        <hr/>
+        <div class="row">
+          <div class="col-6">
+            <p class="text-medium mb-0">{{ $t('total') }}</p>
+            <p class="text-medium text-dark-blue-2 mb-0">{{ price }} ₼</p>
+          </div>
+          <div class="col-6">
+            <button :class="['btn btn--green full-width', { pending }]" @click="activateCar">
+              {{ $t('pay') }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </modal-popup>
+    <modal-popup
+      :toggle="showTerminalInfo"
+      :title="$t('pay_with_terminal')"
+      @close="showTerminalInfo = false, showPaymentModal = true"
+    >
+      <p>{{ $t('terminal_pay_info') }}</p>
+      <div class="form-info text-green mb-2">{{ $t('mobile_number_your')}}: {{ $parsePhone(user.phone) }}</div>
+      <ol>
+        <li v-for="(step, i) in $t('terminal_pay_steps')" :key="i">{{ step }}</li>
+      </ol>
+      <div class="row">
+        <div class="col">
+          <button type="button" class="btn btn--primary-outline full-width" @click="showTerminalInfo = false, showPaymentModal = true">
+            {{ $t('go_back') }}
+          </button>
+        </div>
+      </div>
+    </modal-popup>
   </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
-import Loader from '../elements/Loader.vue';
+
+import { PaymentMixin } from '~/mixins/payment';
 
 export default {
-  components: { Loader },
   props: {
     car: {},
     active: Boolean
   },
+  mixins: [PaymentMixin],
   data() {
     return {
       pending: false,
@@ -88,7 +137,11 @@ export default {
       showDeactivateModal: false,
       thumb: null,
       thumbSet: false,
-      thumbPending: false
+      thumbPending: false,
+      bankingCard: '',
+      price: 1,
+      showTerminalInfo: false,
+      showPaymentModal: false
     }
   },
   computed: {
@@ -97,6 +150,9 @@ export default {
     },
     carNumber() {
       return this.car.car_number.replace(/([A-Z]{1,2})/, ' $1 ');
+    },
+    haveBalanceToPay() {
+      return parseFloat(this.price) <= this.user.balance;
     }
   },
   methods: {
@@ -136,9 +192,30 @@ export default {
       if (this.pending || this.thumbSet) return;
       this.pending = true;
       try {
-        await this.activate({ id: this.car.id });
-        this.$toasted.success(this.$t('car_activated'));
-        this.pending = false;
+        const res = await this.activate({
+          id: this.car.id,
+          card_id: this.bankingCard,
+          pay_type: this.paymentMethod,
+          is_mobile: this.isMobileBreakpoint
+        });
+        this.bankingCard = '';
+        if (this.paymentMethod === 'card' && !this.bankingCard) {
+          this.pending = false;
+          this.showPaymentModal = false;
+          this.handlePayment(res, false, this.$t('car_activated'), 'v2');
+        } else {
+          await Promise.all([
+            this.$nuxt.refresh(),
+            this.$auth.fetchUser()
+          ]);
+          this.pending = false;
+          this.showPaymentModal = false;
+          this.updatePaidStatus({ 
+            type: 'success', 
+            text: this.$t('car_activated'), 
+            title: this.$t('success_payment') 
+          });
+        }
       } catch(err) {
         this.pending = false;
       }

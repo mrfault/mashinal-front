@@ -46,7 +46,7 @@
       <form-buttons v-model="paymentMethod" :options="paymentMethodOptions" :group-by="2" />
       <select-banking-card v-if="loggedIn" v-model="bankingCard" class="mt-2 mt-lg-3" />
       <p class="mt-2 info-text"><icon name="alert-circle" /> 
-        <span class="text-medium cursor-pointer text-red" @click="showModal = false, showTerminalInfo = true">{{ $t('pay_with_terminal') }}</span>
+        <span class="text-medium cursor-pointer text-red" @click="showPaymentModal = false, showTerminalInfo = true">{{ $t('pay_with_terminal') }}</span>
       </p>
       <div :class="{'modal-sticky-bottom': isMobileBreakpoint}">
         <hr/>
@@ -113,9 +113,7 @@ export default {
       price: 0,
       form: {
         car_number: '',
-        tech_id: '',
-        operator: 1,
-        phone: this.$store.state.auth.user?.phone || ''
+        tech_id: ''
       }
     }
   },

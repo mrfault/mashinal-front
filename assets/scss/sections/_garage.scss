@@ -129,6 +129,10 @@
     .date, .btn-sq {
       display: none;
     }
+    .btn-sq--color-red {
+      display: inline-flex;
+      z-index: 2;
+    }
   }
 }
 

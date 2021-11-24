@@ -31,14 +31,13 @@ export const actions = {
     const res = await this.$axios.$get(`/garage/register_pay${this.$queryParams(data)}`);
     return res;
   },
-  async activateCar({ commit }, data) {
-    const res = await this.$axios.$get(`/garage/car/activate${this.$queryParams(data)}`);
-    if (res.status === 'success') commit('updateCar', { id: data.id, key: 'status', value: 1 });
+  async activateCar({}, data) {
+    const res = await this.$axios.$get(`/garage/activate_pay${this.$queryParams(data)}`);
     return res;
   },
   async deactivateCar({ commit }, data) {
     const res = await this.$axios.$get(`/garage/car/deactivate${this.$queryParams(data)}`);
-    if (res.status === 'success') commit('updateCar', { id: data.id, key: 'status', value: 0 });
+    commit('updateCar', { id: data.id, key: 'status', value: 0 });
     return res;
   },
   async deleteCar({ commit }, data) {

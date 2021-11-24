@@ -52,7 +52,7 @@ export default {
       return this.bankingCards.map(card => ({
         key: card.id,
         name: this.$parseCardNum(card.masked_pan).join(' '),
-        icon: `http://localhost:3000/img/cards/${card.brand.toLowerCase()}${this.isDarkMode ? '-white' : ''}.svg`,
+        icon: `/img/cards/${card.brand.toLowerCase()}${this.isDarkMode ? '-white' : ''}.svg`,
         brand: card.brand
       }));
     },

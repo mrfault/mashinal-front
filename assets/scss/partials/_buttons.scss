@@ -184,6 +184,9 @@
   &--dark-blue-outline {
     @include btn-style($bg-color: $dark-blue-1, $bg-hover: $dark-blue-4, $outline: true);
   }
+  &--dark-blue-2 {
+    @include btn-style($bg-color: $dark-blue-2, $bg-hover: $dark-blue-2);
+  }
   &--dark-blue-2-outline {
     @include btn-style($bg-color: $dark-blue-2, $bg-hover: $dark-blue-2, $outline: true);
   }
