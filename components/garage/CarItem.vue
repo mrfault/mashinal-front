@@ -198,7 +198,6 @@ export default {
           pay_type: this.paymentMethod,
           is_mobile: this.isMobileBreakpoint
         });
-        this.bankingCard = '';
         if (this.paymentMethod === 'card' && !this.bankingCard) {
           this.pending = false;
           this.showPaymentModal = false;
@@ -210,6 +209,7 @@ export default {
           ]);
           this.pending = false;
           this.showPaymentModal = false;
+          this.bankingCard = '';
           this.updatePaidStatus({ 
             type: 'success', 
             text: this.$t('car_activated'), 
@@ -236,13 +236,11 @@ export default {
       if (this.pending) return;
       this.pending = true;
       try {
-        const res = await this.delete({ id: this.car.id });
-        if (res.status === 'success') {
-          this.$toasted.success(this.$t('car_deleted'));
-          this.pending = false;
-          this.showDeleteModal = false;
-          this.scrollReset();
-        }
+        await this.delete({ id: this.car.id });
+        this.$toasted.success(this.$t('car_deleted'));
+        this.pending = false;
+        this.showDeleteModal = false;
+        this.scrollReset();
       } catch(err) {
         this.pending = false;
       }

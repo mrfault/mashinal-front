@@ -179,6 +179,7 @@ export default {
           ]);
           this.pending = false;
           this.showPaymentModal = false;
+          this.bankingCard = '';
           this.updatePaidStatus({ 
             type: 'success', 
             text: this.$t('car_added'), 

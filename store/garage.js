@@ -38,11 +38,12 @@ export const actions = {
   async deactivateCar({ commit }, data) {
     const res = await this.$axios.$get(`/garage/car/deactivate${this.$queryParams(data)}`);
     commit('updateCar', { id: data.id, key: 'status', value: 0 });
+    commit('updateCar', { id: data.id, key: 'sync_status', value: 0 });
     return res;
   },
   async deleteCar({ commit }, data) {
     const res = await this.$axios.$get(`/garage/car/delete${this.$queryParams(data)}`);
-    if (res.status === 'success') commit('removeCar', { id: data.id });
+    commit('removeCar', { id: data.id });
     return res;
   },
   async getProtocols({ commit }, data) {
