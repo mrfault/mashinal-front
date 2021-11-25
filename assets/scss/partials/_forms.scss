@@ -847,6 +847,9 @@ input::-webkit-inner-spin-button {
           & + div hr {
             background-color: $dark-5;
           }
+          .img {
+            background-color: transparent;
+          }
         }
         &:hover {
           background-color: lighten($dark-1, 2%);

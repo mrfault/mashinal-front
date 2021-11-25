@@ -115,13 +115,13 @@
                   </div>
                 </div>
                 <div class="col-5" v-if="$env.DEV">
-                  <nuxt-link class="btn full-width btn--red-outline" :to="$localePath('/garage')" :active-class="''">
+                  <nuxt-link class="btn full-width btn--red-outline" :to="$localePath('/garage')" @click.native="handleBtnClick('garage')">
                     <icon name="garage" />
                     {{ $t('garage') }}
                   </nuxt-link>
                 </div>
                 <div class="col-5">
-                  <nuxt-link class="btn full-width btn--pale-green-outline" :to="$localePath('/sell')">
+                  <nuxt-link class="btn full-width btn--pale-green-outline" :to="$localePath('/sell')" @click.native="handleBtnClick('sell')">
                     <icon name="plus-circle" />
                     {{ $t('to_sell') }}
                   </nuxt-link>
@@ -154,7 +154,13 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['changeLocale'])
+    ...mapActions(['changeLocale']),
+
+    handleBtnClick(name) {
+      if (this.routeName === name) {
+        this.scrollTo(9,9);
+      }
+    }
   },
   computed: {
     ...mapGetters(['notViewedFavorites','notViewedSavedSearch'])

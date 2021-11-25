@@ -75,7 +75,7 @@
                 </div>
                 <template v-else-if="getFilteredOptions.length">
                   <template v-for="(option, index) in getFilteredOptions">
-                    <div :key="index" :class="['select-menu_dropdown-option', {'selected': isSelected(option), 'anchor': isAnchor(index)}]" 
+                    <div :key="index" :class="['select-menu_dropdown-option', {'selected': isSelected(option), 'anchor': isAnchor(index), 'card-option': hasCards && option.brand}]" 
                         @click.stop="selectValue = option">
                       <div class="img" v-if="imgKey && (!hasCards || (hasCards && option[imgKey]))">
                         <img :src="$withBaseUrl(option[imgKey]) || imgPlaceholder" :alt="getOptionName(option)" />

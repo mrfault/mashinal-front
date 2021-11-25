@@ -44,7 +44,7 @@
     >
       <h4 class="mb-2">{{ $t('payment_method') }}</h4>
       <form-buttons v-model="paymentMethod" :options="paymentMethodOptions" :group-by="2" />
-      <select-banking-card v-if="loggedIn" v-model="bankingCard" class="mt-2 mt-lg-3" />
+      <select-banking-card v-model="bankingCard" class="mt-2 mt-lg-3" v-show="paymentMethod === 'card'" />
       <p class="mt-2 info-text"><icon name="alert-circle" /> 
         <span class="text-medium cursor-pointer text-red" @click="showPaymentModal = false, showTerminalInfo = true">{{ $t('pay_with_terminal') }}</span>
       </p>

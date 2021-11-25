@@ -60,7 +60,7 @@ export const MenusDataMixin = {
       if (!this.loggedIn) return [];
 
       let menus = [
-        { title: 'settings', route: '/profile/settings', showOnCard: false },
+        { title: 'user_information', route: '/profile', showOnCard: false },
         { title: 'my_announces', route: '/profile/announcements', showOnCard: true },
         { title: 'balans', route: '/profile/balance', showOnCard: true }
       ];
