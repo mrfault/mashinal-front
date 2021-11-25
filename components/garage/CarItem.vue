@@ -40,7 +40,7 @@
     <div class="car-info d-flex justify-content-between align-items-center">
       <span>{{ carNumber }}</span>
       <div :class="['btn btn--dark-blue-2 pointer-events-none']" @click.stop="showPaymentModal = true" v-if="car.sync_status !== 1">
-        {{ $t('under_consideration') }}
+        {{ $t('processing') }}
       </div>
       <button :class="['btn btn--dark-blue-outline', { disabled: thumbSet }]" v-else-if="car.status === 1" @click.stop="showDeactivateModal = true">
         {{ $t('inactive_make') }}

@@ -680,6 +680,9 @@ main {
       .dropdown-content {
         box-shadow: $shadow-dark-3;
       }
+      .dropdown-menu_categories {
+        border-right-color: $dark-1;
+      }
     }
   }
   .support-hotline {
