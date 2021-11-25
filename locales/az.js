@@ -2017,5 +2017,5 @@ export default {
   "card_is_used_to_pay": "Yuxarıdakı avtomobillərin SMS radar xidməti abunəliyi <strong>\"{card}\"</strong> nömrəli kart vasitəsilə ödənilir.",
   "other_card": "Digər bank kartı",
   "policy": "Qaydalar",
-  "processing": "Prosesdadır",
+  "processing": "Prosesdədir",
 }
