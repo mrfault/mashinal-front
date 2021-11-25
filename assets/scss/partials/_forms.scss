@@ -122,6 +122,7 @@ input::-webkit-inner-spin-button {
     }
     &.disabled {
       color: $grey-3;
+      -webkit-text-fill-color: $grey-3;
       opacity: 1;
     }
   }
@@ -180,6 +181,7 @@ input::-webkit-inner-spin-button {
     }
     &.disabled {
       color: $grey-3;
+      -webkit-text-fill-color: $grey-3;
     }
   }
   &.textarea {
@@ -780,11 +782,13 @@ input::-webkit-inner-spin-button {
     background-color: $dark-2;
   }
 
-  .text-input input.disabled,
+  .text-input input.disabled {
+    color: $grey-1;
+    -webkit-text-fill-color: $grey-3;
+  }
   .select-menu_label.disabled {
     color: $grey-1;
   }
-
 
   .text-input.placeholder-dark-blue-3 {
     i,
