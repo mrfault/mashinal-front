@@ -1,7 +1,7 @@
 <template>
   <div class="banking-cards">
     <div class="pt-2 pb-2">
-      <div class="swiper-container" v-swiper:cardsSwiper="swiperOps" ref="cardsSwiper" v-if="bankingCards.length">
+      <div class="swiper-container" v-swiper:cardsSwiper="swiperOps" ref="cardsSwiper" v-show="showCardsSwiper">
         <div class="swiper-wrapper">
           <div class="swiper-slide" :key="card.id" v-for="card in bankingCards">
             <div class="banking-cards_item">
@@ -64,7 +64,7 @@
           </div>
         </div>
       </div>
-      <div class="no-cards position-relative" v-else>
+      <div class="no-cards position-relative" v-if="!showCardsSwiper">
         <div class="banking-cards_item">
           <div class="card-img">
             <img :src="`/img/cards/card-${colorMode}-0.png`" alt="" />
@@ -93,7 +93,10 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 
+import { PaymentMixin } from '~/mixins/payment';
+
 export default {
+  mixins: [PaymentMixin],
   data() {
     return {
       pending: false,
@@ -143,11 +146,15 @@ export default {
         created_date: this.$moment(car.created_date).format('DD.MM.YYYY')
       }));
     },
+    showCardsSwiper() {
+      return !!this.bankingCards.length;
+    }
   },
   methods: {
     ...mapActions({
       getBankingCards: 'bankingCards/getBankingCards',
       makeCardDefault: 'bankingCards/makeCardDefault',
+      add: 'bankingCards/addCard',
       delete: 'bankingCards/deleteCard'
     }),
     cardNumber(num) {
@@ -157,7 +164,11 @@ export default {
       if (this.pending) return;
       this.pending = true;
       try {
+        const res = await this.add({
+          is_mobile: this.isMobileBreakpoint
+        });
         this.pending = false;
+        this.handlePayment(res, false, this.$t('card_added'), 'v2');
       } catch(err) {
         this.pending = false;
       }
@@ -178,13 +189,23 @@ export default {
       if (card.default) return;
       this.makeCardDefault(card.id);
     },
+    initSwiper() {
+      this.$nextTick(() => {
+        setTimeout(() => {
+          this.cardsSwiper?.init();
+        }, 100);
+      });
+    }
+  },
+  watch: {
+    showCardsSwiper(val) {
+      if (val) {
+        this.initSwiper();
+      }
+    }
   },
   mounted() {
-    this.$nextTick(() => {
-      setTimeout(() => {
-        this.cardsSwiper.init();
-      }, 100);
-    });
-  }
+    this.initSwiper();
+  },
 }
 </script>

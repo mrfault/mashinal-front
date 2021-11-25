@@ -28,9 +28,8 @@ export const actions = {
     commit('removeCard', { id });
     return res;
   },
-  async addCard({ commit }) {
-    const res = await this.$axios.$post(`/cards/add`);
-    // commit('addCard', { card });
+  async addCard({}, data) {
+    const res = await this.$axios.$post(`/cards/add${this.$queryParams(data)}`);
     return res;
   }
 }
