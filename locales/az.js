@@ -1975,6 +1975,7 @@ export default {
   "dont_have": "Yoxdur",
   "have": "Var",
   "auth_date": "Qeydiyyat tarixi",
+  "auth_end_date": "Servisin bitmə vaxtı",
   "fines": "Cərimələr",
   "no_active_cars": "Sizin heç bir aktiv avtomobiliniz yoxdur",
   "image_uploaded": "Şəkil yükləndi",

@@ -29,6 +29,7 @@ export default {
         brand_model: this.car.mark,
         years: this.car.year,
         auth_date: getDate(this.car.created_date),
+        auth_end_date: getDate(this.car.end_date),
         tech_exp_date: getDate(this.car.tech_exp_date),
         has_arrest: this.car.has_arrest ? this.$t('have') : this.$t('dont_have')
       };

@@ -1975,6 +1975,7 @@ export default {
   "dont_have": "Нет",
   "have": "Есть",
   "auth_date": "Дата регистрации",
+  "auth_end_date": "Дата окончания сервиса",
   "fines": "Штрафы",
   "no_active_cars": "У вас нет активных автомобилей",
   "image_uploaded": "Изображение загружено",
