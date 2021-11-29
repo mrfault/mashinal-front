@@ -64,6 +64,11 @@ h2 {
       padding-right: 25px;
       max-width: 90%;
     }
+    i {
+      position: relative;
+      background-color: $white;
+      padding-left: 10px;
+    }
     &::before {
       content: '';
       @include abs-middle;
@@ -101,7 +106,7 @@ h2 {
 
 .dark-mode {
   h2.title-with-line {
-    span {
+    span, i {
       background-color: $dark-2;
     }
   }
@@ -217,6 +222,9 @@ main {
   &.no-pd {
     padding: 0;
   }
+  &.has-collapse {
+    padding: 15px 25px;
+  }
   p, ul, ol {
     strong {
       font-weight: 600;
@@ -309,6 +317,9 @@ main {
 }
 
 .text {
+  &-normal {
+    font-weight: normal;
+  }
   &-medium {
     font-weight: 500;
   }
@@ -358,8 +369,22 @@ main {
     }
     .logo {
       img {
-        height: 30px;
+        height: 50px;
         width: auto;
+      }
+    }
+    .store-badges {
+      height: 50px;
+      width: 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      margin: 0 auto 0 12px;
+      a {
+        display: block;
+      }
+      img {
+        width: 100%;
       }
     }
     nav {
@@ -575,6 +600,19 @@ main {
           }
         }
       }
+      &_categories {
+        margin: 32px 0;
+        list-style: none;
+        border-right: 1px solid $greyish-blue-3;
+        padding: 0 28px 0 0;
+        a {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          height: 37px;
+          width: 100%;
+        }
+      }
     }
   }
   &.has-shadow {
@@ -642,7 +680,13 @@ main {
       .dropdown-content {
         box-shadow: $shadow-dark-3;
       }
+      .dropdown-menu_categories {
+        border-right-color: $dark-1;
+      }
     }
+  }
+  .support-hotline {
+    color: $yellow-1;
   }
 }
 

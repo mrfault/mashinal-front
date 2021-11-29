@@ -5,7 +5,7 @@
         <div class="swiper-wrapper">
           <div class="swiper-slide" :key="index" v-for="(slide, index) in slides.main">
             <div
-              :class="['swiper-slide-bg swiper-lazy', {'yt-play': showYtVideo(index)}]" 
+              :class="['swiper-slide-bg swiper-lazy', {'youtube-play': showYtVideo(index)}]" 
               :data-background="showYtVideo(index) ? getYtVideoImage('hq') : slide"
             >
               <loader />

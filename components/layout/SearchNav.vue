@@ -14,7 +14,7 @@
       </div>
       <div class="search-categories" v-if="activeMenu.children">
         <div class="container">
-          <ul v-if="activeMenu.children.length < 4">
+          <ul v-if="activeMenu.children.length < 5">
             <li v-for="submenu in activeMenu.children" :key="submenu.title">
               <nuxt-link :to="$localePath(submenu.route)" exact :class="{'active': checkActive(submenu.route)}">
                 <icon :name="submenu.icon" />

@@ -33,6 +33,7 @@ Vue.use(vuescroll, {
       scrollingX: false
     },
     rail: {
+      // keepShow: true,
       background: '#ffffff ',
       opacity: 0,
       size: '11px',
@@ -42,7 +43,7 @@ Vue.use(vuescroll, {
       onlyShowBarOnScroll: false,
       size: '7px',
       minSize: 0.1,
-      keepShow: true,
+      // keepShow: true,
       background: '#ffffff',
       opacity: 1,
       specifyBorderRadius: '4px',

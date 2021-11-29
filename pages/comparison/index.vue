@@ -25,6 +25,12 @@ import ComparisonAddModel from '~/components/comparison/ComparisonAddModel'
 
 export default {
   name: 'comparison-index',
+  components: {
+    Breadcrumbs,
+    ComparisonFilter,
+    ComparisonMainSection,
+    ComparisonAddModel
+  },
   nuxtI18n: {
     paths: {
       az: '/muqayise'
@@ -36,12 +42,15 @@ export default {
       description: this.$t('meta-descr_comparison'),
     });
   },
-  components: {
-    Breadcrumbs,
-    ComparisonFilter,
-    ComparisonMainSection,
-    ComparisonAddModel
-  },
+  async asyncData({ app, store }) {
+    await store.dispatch('comparison/getInitialAnnouncements');
+    const models = app.$cookies.get('comparisonModels');
+    if (models?.length) {
+      await Promise.all(
+        models.map(id => store.dispatch('comparison/addModel', id))
+      );
+    }
+  },  
   computed: {
     crumbs() {
       return [

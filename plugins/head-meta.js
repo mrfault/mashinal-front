@@ -86,6 +86,7 @@ export const generateMetaInfo = ({ title, description, image, path, locale, prod
       { hid: 'alternate-lang-ru', rel: 'alternate', hreflang: 'ru', href: getPath('ru') }
     ],
     script: [
+      // TODO: code app banner using user agent instead of 3rd party script 
       { hid: 'smartbanner-script', src: '/scripts/smartbanner.min.js' },
     ]
   }

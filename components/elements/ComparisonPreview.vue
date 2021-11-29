@@ -163,7 +163,7 @@ export default {
       this.updateActiveTab()
     },
     activeType() {
-      document.querySelector('.comparison-preview__list').focus()
+      document.querySelector('.comparison-preview__list')?.focus()
       this.$forceUpdate()
     }
   }

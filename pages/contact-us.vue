@@ -70,63 +70,63 @@
 </template>
 
 <script>
-  import { required, email } from 'vuelidate/lib/validators';
+import { required, email } from 'vuelidate/lib/validators';
 
-  export default {
-    name: 'pages-contact-us',
-    nuxtI18n: {
-      paths: {
-        az: '/elaqe'
-      }
-    },
-    head() {
-      return this.$headMeta({
-        title: this.$t('contact_us')
-      });
-    },
-    data() {
-      return  {
-        pending: false,
-        form: {
-          email: '',
-          message: ''
-        },
-        support: {
-          phone: '*8787',
-          email: 'support@mashin.al',
-          worktime: this.$t('worktime_support')
-        }
-      }
-    },
-    validations: {
+export default {
+  name: 'pages-contact-us',
+  nuxtI18n: {
+    paths: {
+      az: '/elaqe'
+    }
+  },
+  head() {
+    return this.$headMeta({
+      title: this.$t('contact_us')
+    });
+  },
+  data() {
+    return  {
+      pending: false,
       form: {
-        email: { required, email },
-        message: { required }
+        email: '',
+        message: ''
+      },
+      support: {
+        phone: '*8787',
+        email: 'support@mashin.al',
+        worktime: this.$t('worktime_support')
       }
-    },
-    computed: {
-      crumbs() {
-        return [
-          { name: this.$t('contact_us') }
-        ]
-      }
-    },
-    methods: {
-      async sendMessage() {
-        this.$v.$touch();
-        if (this.pending || this.$v.$pending || this.$v.$error) return;
-        this.pending = true;
-        try {
-          await this.$axios.$post('/save_mail', this.form);
-          this.pending = false;
-          this.form.email = '';
-          this.form.message = '';
-          this.$v.$reset();
-          this.$toasted.success(this.$t('message_sent_successfully'));
-        } catch(err) {
-          this.pending = false;
-        }
+    }
+  },
+  validations: {
+    form: {
+      email: { required, email },
+      message: { required }
+    }
+  },
+  computed: {
+    crumbs() {
+      return [
+        { name: this.$t('contact_us') }
+      ]
+    }
+  },
+  methods: {
+    async sendMessage() {
+      this.$v.$touch();
+      if (this.pending || this.$v.$pending || this.$v.$error) return;
+      this.pending = true;
+      try {
+        await this.$axios.$post('/save_mail', this.form);
+        this.pending = false;
+        this.form.email = '';
+        this.form.message = '';
+        this.$v.$reset();
+        this.$toasted.success(this.$t('message_sent_successfully'));
+      } catch(err) {
+        this.pending = false;
       }
     }
   }
+}
 </script>

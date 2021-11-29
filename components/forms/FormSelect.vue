@@ -4,7 +4,14 @@
       <span :class="['select-menu_label', {'selected': hasSelectedValue, 'disabled': disabled, 'active': showOptions}]" 
         @click="displayMenuOptions">
         <span :class="['text-truncate', {'full-width': hasSearch}]">
-          <template v-if="hasSearch && showOptions && !isMobileBreakpoint">
+          <template v-if="hasCards && getSelectedOptions[0]">
+            <span class="d-flex align-items-center" v-if="getSelectedOptions[0]">
+              <img :src="getSelectedOptions[0].icon" :alt="getSelectedOptions[0].brand" width="32" height="16" class="mr-1" />
+              <span class="placeholder">{{ getSelectedOptions[0].name.slice(10) }}</span>
+            </span>
+          </template>
+          <template v-else-if="hasCards">{{ clearOptionText }}</template>
+          <template v-else-if="hasSearch && showOptions && !isMobileBreakpoint">
             <span class="search-input">
               <span class="placeholder">{{ label }}: </span>
               <input type="text" @click.stop v-model="search" ref="searchInput" @keyup.enter="handleSearchSubmit" />
@@ -68,9 +75,9 @@
                 </div>
                 <template v-else-if="getFilteredOptions.length">
                   <template v-for="(option, index) in getFilteredOptions">
-                    <div :key="index" :class="['select-menu_dropdown-option', {'selected': isSelected(option), 'anchor': isAnchor(index)}]" 
+                    <div :key="index" :class="['select-menu_dropdown-option', {'selected': isSelected(option), 'anchor': isAnchor(index), 'card-option': hasCards && option.brand}]" 
                         @click.stop="selectValue = option">
-                      <div class="img" v-if="imgKey">
+                      <div class="img" v-if="imgKey && (!hasCards || (hasCards && option[imgKey]))">
                         <img :src="$withBaseUrl(option[imgKey]) || imgPlaceholder" :alt="getOptionName(option)" />
                       </div>
                       <div class="text-truncate">
@@ -109,14 +116,34 @@
                 </div>
               </div>
               <template v-for="(option, index) in getFilteredOptions">
-                <div :key="index" :class="['select-menu_dropdown-option', {'selected': isSelected(option), 'anchor': isAnchor(index)}]" 
+                <template v-if="hasCards && index !== 0">
+                  <div :class="{'pl-2 pr-2': index !== getFilteredOptions.length - 1}" :key="`hr_${index}`">
+                    <hr class="mb-0 mt-0" />
+                  </div>
+                </template>
+                <div :key="index" :class="['select-menu_dropdown-option', {'selected': isSelected(option), 'anchor': isAnchor(index), 'card-option': hasCards && option.brand}]" 
                     @click.stop="selectValue = option">
-                  <div class="img" v-if="imgKey">
-                    <img :src="$withBaseUrl(option[imgKey]) || imgPlaceholder" :alt="getOptionName(option)" />
-                  </div>
-                  <div class="text-truncate">
-                    <span>{{ getOptionName(option) }}</span>
-                  </div>
+                  <template v-if="hasCards">
+                    <div class="d-flex full-width">
+                      <div class="card-brand-img mr-1" v-if="imgKey && option.brand">
+                        <div class="img">
+                          <img :src="$withBaseUrl(option[imgKey])" :alt="getOptionName(option)" />
+                        </div>
+                      </div>
+                      <div :class="['text-truncate', {'full-width text-center': !option.brand }]">
+                        <span v-if="option.brand">{{ option.brand }}</span>
+                        <span>{{ getOptionName(option) }}</span>
+                      </div>
+                    </div>
+                  </template>
+                  <template v-else>
+                    <div class="img" v-if="imgKey">
+                      <img :src="$withBaseUrl(option[imgKey]) || imgPlaceholder" :alt="getOptionName(option)" />
+                    </div>
+                    <div class="text-truncate">
+                      <span>{{ getOptionName(option) }}</span>
+                    </div>
+                  </template>
                   <icon name="check" v-if="isSelected(option)" />
                 </div>
               </template>
@@ -170,6 +197,8 @@
         type: Boolean,
         default: true
       },
+      clearOptionText: String,
+      clearOptionPullDown: Boolean,
       nameInValue: Boolean,
       objectInValue: Boolean,
       slugInValue: Boolean,
@@ -200,7 +229,8 @@
       invalid: Boolean,
       shortNamesLabel: Boolean,
       checkOptionsOffset: Boolean,
-      wider: Boolean
+      wider: Boolean,
+      hasCards: Boolean
     },
     data() {
       return {
@@ -303,9 +333,12 @@
         }
       },
       getOptions() {
-        let addons = this.clearOption ? [{ key: -1, name: this.$t('any') }] : []
+        let addons = this.clearOption ? [{ key: -1, name: this.clearOptionText || this.$t('any') }] : []
         if (this.hasGenerations && this.isMobileBreakpoint) return this.options;
-        return [...addons, ...this.options];
+        return this.clearOptionPullDown ? [...this.options, ...addons] : [...addons, ...this.options];
+      },
+      getSelectedOptions() {
+        return this.options.filter(this.isSelected);
       },
       getFilteredOptions() {
         if (!this.search || !this.hasSearch) return this.getOptions;
@@ -324,7 +357,7 @@
           return value && this.values.showLabel ? `${this.label}${this.values.count ? ` (${this.values.count})` : `: ${value}`}` : (value || `${this.label}${suffix ? (', '+suffix) : ''}`);
         }
         
-        let selected = this.options.filter(this.isSelected);
+        let selected = this.getSelectedOptions;
 
         if (this.shortNamesLabel) {
           return selected.length ? `${this.label}: ${selected.map(option => option.nameShort).join(', ')}` : this.label;

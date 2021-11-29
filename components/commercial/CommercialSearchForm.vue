@@ -1,6 +1,6 @@
 <template>
   <div class="commercial-search-form form" ref="searchForm">
-    <div class="card pt-2 pt-lg-4">
+    <div class="card pt-2 pt-lg-4 mb-2">
       <div class="row">
         <div class="col-lg-4 mb-2 mb-lg-3">
           <form-buttons :options="getMileageOptions" :group-by="3" v-model="form.announce_type" />
@@ -13,7 +13,7 @@
         </div>
         <div class="col-6 col-lg-4 mb-2">
           <form-select :label="$t('mark')" :options="commercialBrands[routeName === 'commercial' ? key : 0]" v-model="form.additional_brands[key]['brand']"
-            @change="setBrand($event, key)" :disabled="(category.id || form.additional_brands[key]['category']) && !commercialBrands[key].length" has-search
+            @change="setBrand($event, key)" :disabled="(category.id || form.additional_brands[key]['category']) && !commercialBrands[routeName === 'commercial' ? key : 0].length" has-search
             :img-key="isMobileBreakpoint ? 'transformed_media' : ''" :img-placeholder="`/logos/commercial-${colorMode}.svg`" />
         </div>
         <div class="col-6 col-lg-4 mb-2 mb-lg-3">
@@ -130,7 +130,8 @@
         </div>
       </div>
       <div class="collapse-toggle">
-        <button type="button" class="btn btn-circle" @click="collapsed = !collapsed">
+        <button type="button" class="btn" @click="collapsed = !collapsed">
+          <span>{{ $t(`search_${collapsed ? 'more' : 'less'}`) }}</span>
           <icon :name="`chevron-${collapsed ? 'down' : 'up'}`" />
         </button>
       </div>

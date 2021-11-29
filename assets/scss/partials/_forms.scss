@@ -122,6 +122,7 @@ input::-webkit-inner-spin-button {
     }
     &.disabled {
       color: $grey-3;
+      -webkit-text-fill-color: $grey-3;
       opacity: 1;
     }
   }
@@ -145,6 +146,9 @@ input::-webkit-inner-spin-button {
     text-overflow: ellipsis;
     &[type=password] {
       padding-right: 24px;
+    }
+    &.invalid:not(:focus) + i svg {
+      fill: $red-1;
     }
   }
   i, img {
@@ -177,6 +181,7 @@ input::-webkit-inner-spin-button {
     }
     &.disabled {
       color: $grey-3;
+      -webkit-text-fill-color: $grey-3;
     }
   }
   &.textarea {
@@ -508,6 +513,34 @@ input::-webkit-inner-spin-button {
       &.selected {
         color: $dark-blue-2;
       }
+      &.card-option {
+        height: 67px;
+        .icon-check {
+          top: 13px;
+        }
+        .card-brand-img {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          background-color: $white;
+          width: 58px;
+          height: 41px;
+          border-radius: 4px;
+          & + .text-truncate {
+            display: flex;
+            flex-direction: column;
+            height: 41px;
+            justify-content: space-between;
+            span:not(:first-child) {
+              font-size: 15px;
+            }
+          }
+          .img {
+            background: transparent !important;
+          }
+        }
+      }
       &:not(.disabled):hover {
         background-color: darken($greyish-blue-2, 2%);
       }
@@ -749,11 +782,13 @@ input::-webkit-inner-spin-button {
     background-color: $dark-2;
   }
 
-  .text-input input.disabled,
+  .text-input input.disabled {
+    color: $grey-1;
+    -webkit-text-fill-color: $grey-3;
+  }
   .select-menu_label.disabled {
     color: $grey-1;
   }
-
 
   .text-input.placeholder-dark-blue-3 {
     i,
@@ -806,6 +841,15 @@ input::-webkit-inner-spin-button {
       &-option {
         &.selected {
           color: $yellow-1;
+        }
+        &.card-option {
+          .card-brand-img,
+          & + div hr {
+            background-color: $dark-5;
+          }
+          .img {
+            background-color: transparent;
+          }
         }
         &:hover {
           background-color: lighten($dark-1, 2%);

@@ -4,7 +4,7 @@ import { RoutesMixin } from './routes';
 export const MenusDataMixin = {
   mixins: [RoutesMixin],
   computed: {
-    ...mapGetters(['staticPages']),
+    ...mapGetters(['commercialTypes']),
 
     searchMenus() {
       return [
@@ -16,20 +16,20 @@ export const MenusDataMixin = {
     },
 
     pageMenus() {
-      return [{
-        title: 'contact_us',
-        route: '/contact-us',
-        icon: 'phone-call'
-      }].concat(this.staticPages.map(page => ({
-        title: page.title, 
-        route: '/page/'+page.slug[this.locale],
-        icon: 'policy'
-      })));
+      return [
+        { title: 'contact_us', route: '/contact-us', icon: 'phone-call' },
+        { title: 'policy', route: '/policy', icon: 'policy' }
+      ];
     },
 
     navbarMenus() {
+      let announcementCategories = [
+        { title: 'cars', route: '/cars', children: [{ title: 'car_plural', route: '/cars', icon: 'car-1' }] },
+        { title: 'moto', route: '/moto', children: this.motoMenus },
+        { title: 'commercial', route: '/commercial', children: this.commercialMenus }
+      ]
       return [
-        ...this.searchMenus.slice(0, 3),
+        { title: 'announcements', route: '/cars', children: [], categories: announcementCategories },
         { title: 'parts', route: '/parts', children: this.partsSubMenus },
         { title: 'autocatalog', route: '/catalog' },
         { title: 'salons', route: '/salons' }
@@ -60,7 +60,7 @@ export const MenusDataMixin = {
       if (!this.loggedIn) return [];
 
       let menus = [
-        { title: 'settings', route: '/profile/settings', showOnCard: false },
+        { title: 'user_information', route: '/profile', showOnCard: false },
         { title: 'my_announces', route: '/profile/announcements', showOnCard: true },
         { title: 'balans', route: '/profile/balance', showOnCard: true }
       ];
@@ -87,27 +87,19 @@ export const MenusDataMixin = {
     },
 
     commercialMenus() {
-      return [
-        { title: 'commercial_light', route: '/commercial/'+this.$t('slug_light'), icon: 'commercial-1' }, 
-        { title: 'commercial_trucks', route: '/commercial/'+this.$t('slug_trucks'), icon: 'commercial-2' }, 
-        { title: 'commercial_tractors', route: '/commercial/'+this.$t('slug_tractors'), icon: 'commercial-3' }, 
-        { title: 'commercial_bus', route: '/commercial/'+this.$t('slug_bus'), icon: 'commercial-4' }, 
-        { title: 'commercial_trailers', route: '/commercial/'+this.$t('slug_trailers'), icon: 'commercial-5' }, 
-        { title: 'commercial_agricultural', route: '/commercial/'+this.$t('slug_agricultural'), icon: 'commercial-6' }, 
-        { title: 'commercial_building', route: '/commercial/'+this.$t('slug_building'), icon: 'commercial-7' }, 
-        { title: 'commercial_autoloader', route: '/commercial/'+this.$t('slug_autoloader'), icon: 'commercial-8' }, 
-        { title: 'commercial_cranes', route: '/commercial/'+this.$t('slug_cranes'), icon: 'commercial-9' }, 
-        { title: 'commercial_excavators', route: '/commercial/'+this.$t('slug_excavators'), icon: 'commercial-10' }, 
-        { title: 'commercial_bulldozers', route: '/commercial/'+this.$t('slug_bulldozers'), icon: 'commercial-11' }, 
-        { title: 'commercial_utilities', route: '/commercial/'+this.$t('slug_utilities'), icon: 'commercial-13' }
-      ];
+      return this.commercialTypes.map(type => ({ 
+        title: `commercial_${type.param}`, 
+        route: '/commercial/'+this.$t(`slug_${type.param}`), 
+        icon: `commercial-${type.param}`,
+        id: type.id
+      }));
     },
 
     motoMenus() {
       return [
-        { title: 'motorcycles', route: '/moto/'+this.$t('slug_motorcycles'), icon: 'moto-1' },
-        { title: 'scooters', route: '/moto/'+this.$t('slug_scooters'), icon: 'moto-2' },
-        { title: 'atvs', route: '/moto/'+this.$t('slug_atvs'), icon: 'moto-3' }
+        { title: 'motorcycles', route: '/moto/'+this.$t('slug_motorcycles'), icon: 'moto-1', id: 1 },
+        { title: 'scooters', route: '/moto/'+this.$t('slug_scooters'), icon: 'moto-2', id: 2 },
+        { title: 'atvs', route: '/moto/'+this.$t('slug_atvs'), icon: 'moto-3', id: 3 }
       ];
     },
 

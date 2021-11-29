@@ -66,15 +66,24 @@
                       <span>{{ $t(key) }}</span>
                       <span v-if="['ekologicheskiy-klass'].includes(key)">{{ $t(spec) }}</span>
                       <span v-else-if="hasValues(key)">{{ $t(key+'_values')[spec || 0] }}</span>
-                      <span v-else-if="Array.isArray(spec) && spec.length && `${spec[0]}`.length">
-                        {{ spec[0] }}
-                        <template v-if="spec[2] !== undefined">
-                          <template v-if="spec[1]"> / {{ spec[1] }}</template><template v-if="spec[2] && spec[2] !== '—'">, {{ $t('at', { value: spec[2] }) }}</template>
+                      <span v-else-if="Array.isArray(spec) && spec.length">
+                        <template v-if="key.includes('maksimalnaya-moshchnost')">
+                          <template v-if="spec[0]">{{ spec[0] }}</template>
+                          <template v-if="spec[0] && spec[1] && spec[1] !== '—'">/</template>
+                          <template v-if="spec[1] && spec[1] !== '—'">{{ spec[1] }}</template>
+                          <template v-if="spec[2] && spec[2] !== '—'">{{ $t('at', { value: spec[2] }) }}</template>
                         </template>
-                        <template v-else-if="spec[1] && spec[1] !== '—'">{{ $t('at', { value: spec[1] }) }}</template>
+                        <template v-else-if="key.includes('krutyashchiy-moment')">
+                          <template v-if="spec[0]">{{ spec[0] }}</template>
+                          <template v-if="spec[1] && spec[1] !== '—'">{{ $t('at', { value: spec[1] }) }}</template>
+                        </template>
+                        <template v-else-if="key.includes('electric')">
+                          <template v-if="spec[0]">{{ spec[0] }}</template>
+                          <template v-if="spec[1] && spec[1] !== '—'">/ {{ spec[1] }}</template>
+                        </template>
                       </span>
                       <span v-else-if="typeof spec === 'object' && !Array.isArray(spec)">
-                        <template v-if="spec.city || spec.track || spec.mixed">{{ spec.city }} / {{ spec.track }} / {{ spec.mixed }}</template>
+                        <template v-if="spec.city || spec.track || spec.mixed">{{ spec.city || '?' }} / {{ spec.track || '?' }} / {{ spec.mixed || '?' }}</template>
                       </span>
                       <span v-else-if="spec && !Array.isArray(spec)">{{ spec }}</span>
                       <span v-else>-</span>
@@ -231,13 +240,19 @@ export default {
       if (key === 'razgon') return this.$t('char_second');
     },
     getDivSpecs(specs) {
-      let divSpecs = [{}, {}];
-      Object.keys(this.$skipUndefinedEntries(specs, ['-','—'])).map((key, i) => {
+      let filtered = {}, divSpecs = [{}, {}];
+      for (let key in specs) {
+        let value = specs[key];
+        if (value instanceof Array ? value.filter(i => !['-','—'].includes(i)).length : !['',null,false,'-','—'].includes(value)) {
+          if (!(this.hasValues(key) && value === 0)) {
+            filtered[key] = value;
+          }
+        }
+      }
+      Object.keys(filtered).map((key, i) => {
         divSpecs[i % 2 === 0 ? 0 : 1][key] = specs[key];
       });
-      return this.isMobileBreakpoint 
-        ? [this.$skipUndefinedEntries(specs, ['-','—'])] 
-        : divSpecs;
+      return this.isMobileBreakpoint ? filtered : divSpecs;
     },
     handleModClick(mod) {
       let path = `${this.pathBase}/mod/${mod.id}`;

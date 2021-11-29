@@ -1,0 +1,199 @@
+.banking-cards_item {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  background-color: $greyish-blue-8;
+  .card-img {
+    position: relative;
+    padding-bottom: 64.52%;
+    img {
+      @include abs-zero;
+    }
+    &.empty {
+      opacity: 0;
+    }
+  }
+  .card-details {
+    color: $white;
+    @include abs-zero;
+    z-index: 1;
+    padding: 8%;
+    .text-center {
+      letter-spacing: 1.5px;
+      font-size: 15px;
+    }
+  }
+  .card-bottom {
+    font-size: 13px;
+    img {
+      width: 32px;
+    }
+  }
+  .card-top {
+    span.cursor-pointer {
+      display: inline-block;
+      padding: 0 8px;
+      i {
+        font-size: 18px;
+        transition: color .2s;
+      }
+      &.active,
+      &:hover i {
+        color: $yellow-5;
+      }
+      &.active {
+        cursor: default;
+      }
+    }
+    .badge {
+      position: relative;
+      color: $dark-blue-1;
+      background-color: $white;
+      border-radius: 4px;
+      height: 19px;
+      span {
+        position: relative;
+        z-index: 1;
+        padding-left: 10px;
+      }
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: -18px;
+        z-index: 0;
+        height: 100%;
+        width: 40px;
+        background-image: url('/img/bookmark.svg');
+        background-size: auto 100%;
+        background-position: center right;
+      }
+    }
+  }
+  .card-number {
+    font-size: 15px;
+    letter-spacing: 5.4px;
+  }
+}
+
+.banking-cards {
+  margin: 35px 0 20px;
+  .banking-cards_item {
+    opacity: 0;
+  }
+  .swiper {
+    &-container {
+      overflow: visible;
+      margin: 0 auto;
+      max-width: 440px;
+    }
+    &-slide {
+      width: 296px;
+      max-width: 75%;
+      &-active {
+        .banking-cards_item {
+          opacity: 1;
+          filter: drop-shadow($shadow-light-8);
+        }
+      }
+      &-next,
+      &-prev {
+        .banking-cards_item {
+          pointer-events: none;
+          opacity: 1;
+        }
+      }
+    }
+  }
+  .no-cards {
+    margin: 0 auto;
+    max-width: 440px;
+    perspective: 1200px;
+    .banking-cards_item {
+      opacity: 1;
+      width: 296px;
+      max-width: 75%;
+      &:first-child {
+        position: relative;
+        z-index: 1;
+        filter: drop-shadow($shadow-light-8);
+        margin: 0 auto;
+      }
+      &:nth-child(2),
+      &:nth-child(3) {
+        position: absolute;
+        top: 0;
+        div {
+          width: 100%;
+          padding-bottom: 64.52%;
+        }
+      }
+      &:nth-child(2) {
+        left: 50%;
+        transform: translate3d(-110px, 0px, -300px) translateX(50%) rotateX(0deg) rotateY(-40deg) scale(1);
+      }
+      &:nth-child(3) {
+        right: 50%;
+        transform: translate3d(110px, 0px, -300px) translateX(-50%) rotateX(0deg) rotateY(40deg) scale(1);
+      }
+      .card-details {
+        color: $dark-blue-1;
+      }
+      @media (min-width: 340px) {
+        &:nth-child(2) {
+          transform: translate3d(-130px, 0px, -300px) translateX(50%) rotateX(0deg) rotateY(-40deg) scale(1);
+        }
+        &:nth-child(3) {
+          transform: translate3d(130px, 0px, -300px) translateX(-50%) rotateX(0deg) rotateY(40deg) scale(1);
+        }
+      }
+      @media (min-width: 390px) {
+        &:nth-child(2) {
+          transform: translate3d(-160px, 0px, -300px) translateX(50%) rotateX(0deg) rotateY(-40deg) scale(1);
+        }
+        &:nth-child(3) {
+          transform: translate3d(160px, 0px, -300px) translateX(-50%) rotateX(0deg) rotateY(40deg) scale(1);
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 540px) {
+  .banking-cards {
+    &_item {
+      .card-top {
+        span.cursor-pointer {
+          i {
+            font-size: 14px;
+          }
+        }
+      }
+      .card-number {
+        font-size: 14px;
+        letter-spacing: 3px;
+      }
+      .card-details {
+        .text-center {
+          letter-spacing: 1.4px;
+          font-size: 14px;
+        }
+      }
+    }
+  }
+}
+
+.dark-mode {
+  .banking-cards {
+    &_item {
+      background-color: $dark-2;
+    }
+    .no-cards {
+      .banking-cards_item {
+        .card-details {
+          color: $white;
+        }
+      }
+    }
+  }
+}

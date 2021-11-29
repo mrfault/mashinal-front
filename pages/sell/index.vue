@@ -137,11 +137,7 @@
         this.nextSteps();
       },
       nextSteps() {
-        let category = this.hasCategories && this.vehicleOptions[this.selectedIndex].children
-            .find(item => item.title === this.vehicleCategory).icon
-            .split('-')
-            .pop();
-        let path = this.$localePath(`/sell/${this.vehicleType}${category ? `?category=${category}` : ''}`);
+        let path = this.$localePath(`/sell/${this.vehicleType}${this.vehicleCategory ? `?category=${this.vehicleCategory}` : ''}`);
         this.$router.push(path);
       },
       getTextLines(phone) {

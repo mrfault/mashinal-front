@@ -29,6 +29,15 @@
   font-style: normal !important;
 }
 
+.icon-bookmark-outline:before {
+  content: "\e986";
+}
+.icon-bookmark-fill:before {
+  content: "\e985";
+}
+.icon-video:before {
+  content: "\e984";
+}
 .icon-support:before {
   content: "\e983";
 }
@@ -99,16 +108,16 @@
 .icon-commercial-1:before {
   content: "\e904";
 }
-.icon-commercial-2:before {
+.icon-commercial-trucks:before {
   content: "\e905";
 }
 .icon-commercial-3:before {
   content: "\e906";
 }
-.icon-commercial-4:before {
+.icon-commercial-buses:before {
   content: "\e907";
 }
-.icon-commercial-5:before {
+.icon-commercial-trailers:before {
   content: "\e908";
 }
 .icon-commercial-6:before {
@@ -117,7 +126,7 @@
 .icon-commercial-7:before {
   content: "\e90a";
 }
-.icon-commercial-8:before {
+.icon-commercial-special:before {
   content: "\e90b";
 }
 .icon-commercial-9:before {

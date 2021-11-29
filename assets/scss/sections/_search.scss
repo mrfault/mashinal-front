@@ -82,8 +82,10 @@
         padding-left: 0;
       }
       &:last-child {
-        text-align: right;
         padding-right: 0;
+        &:nth-child(3) {
+          text-align: right;
+        }
       }
       a {
         display: inline-flex;

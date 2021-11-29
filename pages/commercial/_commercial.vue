@@ -51,36 +51,18 @@ export default {
   },
   async asyncData({ store, route, app, error }) {
     const slug = ({
-      'light': 'light',
       'trucks': 'trucks',
-      'tractors': 'tractors',
-      'bus': 'bus',
+      'buses': 'buses',
       'trailers': 'trailers',
-      'agricultural': 'agricultural',
-      'building': 'building',
-      'autoloader': 'autoloader',
-      'cranes': 'cranes',
-      'excavators': 'excavators',
-      'bulldozers': 'bulldozers',
-      'utilities': 'utilities',
-      'yungul': 'light',
+      'special': 'special',
       'yuk': 'trucks',
-      'traktorlar': 'tractors',
-      'avtobuslar': 'bus',
-      'qosqulu-ve-yarı-qosqulu': 'trailers',
-      'kend-teserrufati': 'agricultural',
-      'tikinti-ve-yol': 'building',
-      'yukleyiciler': 'autoloader',
-      'kranlar': 'cranes',
-      'ekskavatorlar': 'excavators',
-      'buldozerler': 'bulldozers',
-      'kommunal': 'utilities'
+      'avtobuslar': 'buses',
+      'qosqulu': 'trailers',
+      'xususi': 'special'
     })[route.params.commercial];
 
-    await store.dispatch('getCommercialTypes');
-
     const category = {
-      id: store.getters.commercialTypes.find(type => type.param.replace('escalators', 'excavators') === slug)?.id,
+      id: store.getters.commercialTypes.find(type => type.param === slug)?.id,
       type: slug
     };
 

@@ -184,12 +184,6 @@ $column-width-xs: calc(100% / 1.8);
   .comparison-filter {
     .card {
       padding: 20px 25px;
-      display: flex;
-      justify-content: space-between;
-
-      @include media-max-width('lg') {
-        flex-direction: column;
-      }
     }
 
     &__types .btn {
@@ -245,45 +239,28 @@ $column-width-xs: calc(100% / 1.8);
 
     &__items {
       display: flex;
+      flex-wrap: nowrap;
       overflow: auto;
-
+      .add-item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 160px;
+      }
       @include media-max-width('lg') {
-        padding-bottom: 15px;
+        .add-item {
+          height: 148px;
+        }
       }
     }
 
     &__item {
-      min-width: $column-width-lg;
-      width: $column-width-lg;
-      padding: 0 10px;
-      
-      @include media-max-width('lg') {
-        min-width: $column-width-md;
-        width: $column-width-md;
-      }
-      @include media-max-width('sm') {
-        min-width: $column-width-xs;
-        width: $column-width-xs;
-      }
-
-      &:first-child {
-        padding-left: 0;
-      }
-
-      &:last-child {
-        padding-right: 0;
-      }
-
       &__image {
         position: relative;
         height: 160px;
         background-position: center;
         background-size: cover;
         border-radius: 4px;
-        
-        @include media-max-width('lg') {
-          height: 134px;
-        }
 
         img {
           width: 100%;
@@ -326,6 +303,14 @@ $column-width-xs: calc(100% / 1.8);
             height: 12px;
             color: $white;
           }
+        }
+      }
+        
+      @include media-max-width('lg') {
+        width: 200px;
+        padding-bottom: 10px;
+        &__image {
+          height: 148px;
         }
       }
 
@@ -372,6 +357,7 @@ $column-width-xs: calc(100% / 1.8);
         }
 
         &__columns {
+          flex-wrap: nowrap;
           white-space: nowrap;
           overflow: auto;
           &::-webkit-scrollbar {
@@ -384,30 +370,14 @@ $column-width-xs: calc(100% / 1.8);
         }
         
         &__column {
-          min-width: $column-width-lg;
-          width: $column-width-lg;
-          padding: 0 10px;
           display: inline-block;
-
-          @include media-max-width('lg') {
-            min-width: $column-width-md;
-            width: $column-width-md;
-          }
-          @include media-max-width('sm') {
-            min-width: $column-width-xs;
-            width: $column-width-xs;
-          }
-
-          &:first-of-type {
-            padding-left: 0;
-          }
-    
-          &:last-of-type {
-            padding-right: 0;
-          }
 
           p {
             white-space: normal;
+          }
+
+          @include media-max-width('lg') {
+            width: 200px;
           }
         }
       }
