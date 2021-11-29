@@ -98,7 +98,7 @@ export default {
     ...mapGetters({
       partsPackages: 'packages/partsPackages'
     }),
-    haveBalanceForPlan() {
+    haveBalanceToPay() {
       if (!this.loggedIn) return false;
       return parseFloat(this.partsPackages[0].price) <= this.user.balance;
     }

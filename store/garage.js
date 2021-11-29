@@ -23,24 +23,27 @@ export const actions = {
     commit('mutate', { property: 'cars', value: res });
     return res;
   },
-  async addNewCar({ dispatch }, data) {
-    const res = await this.$axios.$get(`/garage/register${this.$queryParams(data)}`);
-    if (res.status === 'success') await dispatch('getCarList', {});
+  async checkNewCar({}, data) {
+    const res = await this.$axios.$get(`/garage/check${this.$queryParams(data)}`);
     return res;
   },
-  async activateCar({ commit }, data) {
-    const res = await this.$axios.$get(`/garage/car/activate${this.$queryParams(data)}`);
-    if (res.status === 'success') commit('updateCar', { id: data.id, key: 'status', value: 1 });
+  async registerNewCar({}, data) {
+    const res = await this.$axios.$get(`/garage/register_pay${this.$queryParams(data)}`);
+    return res;
+  },
+  async activateCar({}, data) {
+    const res = await this.$axios.$get(`/garage/activate_pay${this.$queryParams(data)}`);
     return res;
   },
   async deactivateCar({ commit }, data) {
     const res = await this.$axios.$get(`/garage/car/deactivate${this.$queryParams(data)}`);
-    if (res.status === 'success') commit('updateCar', { id: data.id, key: 'status', value: 0 });
+    commit('updateCar', { id: data.id, key: 'status', value: 0 });
+    commit('updateCar', { id: data.id, key: 'sync_status', value: 0 });
     return res;
   },
   async deleteCar({ commit }, data) {
     const res = await this.$axios.$get(`/garage/car/delete${this.$queryParams(data)}`);
-    if (res.status === 'success') commit('removeCar', { id: data.id });
+    commit('removeCar', { id: data.id });
     return res;
   },
   async getProtocols({ commit }, data) {
@@ -61,7 +64,7 @@ export const actions = {
   },
   async uploadCarThumb({ commit }, data) {
     const res = await this.$axios.$post(`/garage/image_upload`, data);
-    if (res) commit('updateCar', { id: data.get('car_id'), key: 'thumb', value: res });
+    if (res) commit('updateCar', { id: data.get('id'), key: 'thumb', value: res });
     return res;
   },
   async resetCarData({ commit }, data) {

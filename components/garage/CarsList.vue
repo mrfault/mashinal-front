@@ -35,7 +35,7 @@
       <div class="card with-margins" v-if="activeCar" v-show="carChosen || !isMobileBreakpoint">
         <cars-nav :tab="tab" @change-tab="tab = $event" />
         <car-info :car="activeCar" v-show="tab === 'info'" :key="'info_' + activeCar.id" />
-        <car-protocols :car="activeCar" v-show="tab === 'fines'" :key="'fines_' + activeCar.id" />
+        <car-protocols :car="activeCar" v-show="tab === 'fines'" :key="'fines_' + activeCar.id" v-if="activeCar.car_id"/>
       </div>
     </div>
   </div>
@@ -59,7 +59,7 @@ export default {
     CarProtocols
   },
   data() {
-    let activeCars = this.$store.state.garage.cars.data?.filter(car => car.status === 1);
+    let activeCars = this.$store.state.garage.cars.data?.filter(car => car.status === 1 && car.sync_status === 1);
     return {
       tab: 'info',
       activeCarId: activeCars[0]?.id || '',
@@ -73,7 +73,7 @@ export default {
     }),
 
     activeCars() {
-      return this.cars.data?.filter(car => car.status === 1) || [];
+      return this.cars.data?.filter(car => car.status === 1 && car.status === 1) || [];
     },
     activeCar() {
       return this.activeCars.find(car => car.id === this.activeCarId) || this.activeCars?.[0];
@@ -95,7 +95,7 @@ export default {
   },
   watch: {
     'activeCars.length'() {
-      this.activeCarId = this.activeCar.id;
+      this.activeCarId = this.activeCar?.id || '';
     }
   }
 }

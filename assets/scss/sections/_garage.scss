@@ -59,8 +59,8 @@
       box-shadow: $shadow-light-6;
     }
   }
-  &.active .car-info span {
-    color: $dark-blue-2;
+  &.active {
+    box-shadow: 0 0 0 1px $dark-blue-1;
   }
   .car-bg {
     position: relative;
@@ -129,6 +129,22 @@
     .date, .btn-sq {
       display: none;
     }
+    .btn-sq--color-red {
+      display: inline-flex;
+      z-index: 2;
+    }
+  }
+  .text-status {
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    height: 34px;
+    &::before {
+      content: '\2022';
+      font-size: 18px;
+      line-height: 0;
+      margin-right: 3px;
+    }
   }
 }
 
@@ -192,8 +208,8 @@
     &.car-active:not(.thumb-set):not(.active):hover {
       box-shadow: $shadow-dark-6;
     }
-    &.active .car-info span {
-      color: $yellow-1;
+    &.active {
+      box-shadow: 0 0 0 1px $white;
     }
     .car-bg {
       background-color: $dark-3;
@@ -246,9 +262,6 @@
         margin-bottom: 8px;
       }
     }
-    .btn {
-      width: 100%;
-    }
   }
   .garage_go-back {
     padding: 14px 25px;
@@ -272,6 +285,10 @@
       height: 25px;
       min-width: 83px;
       padding: 4px 12px 3px;
+    }
+    .text-status {
+      font-size: 12px;
+      height: 25px;
     }
   }
 }

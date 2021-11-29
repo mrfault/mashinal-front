@@ -5,6 +5,14 @@
         <nuxt-link class="logo" :to="$localePath('/')" @click.native="$nuxt.$emit('logo-click')">
           <img :src="`/img/${isDarkMode ? 'logo-white' : 'logo'}.svg`" alt="logo" v-if="!btlCookie" />
         </nuxt-link>
+        <div class="store-badges">
+          <a href="https://apple.co/2YgvGt4" target="_blank" rel="noopener">
+            <img :src="`/img/appstore-${colorMode}.svg`" alt="app store" />
+          </a>
+          <a href="https://bit.ly/3bYPtRj" target="_blank" rel="noopener">
+            <img :src="`/img/googleplay-${colorMode}.svg`" alt="google play" />
+          </a>
+        </div>
         <nav>
           <ul class="menu">
             <li v-for="menu in topbarMenus" :key="menu.title">
@@ -64,21 +72,35 @@
           <div class="row align-items-center">
             <div class="col-lg-8 position-static">
               <ul class="menu">
-                <li v-for="menu in navbarMenus" :key="menu.title" :class="{'dropdown': menu.children}">
-                  <nuxt-link :to="$localePath(menu.route)">
+                <li v-for="menu in navbarMenus" :key="menu.title" :class="{'dropdown': menu.children}" @mouseleave="activeCategory = 0">
+                  <nuxt-link :to="$localePath(menu.route)" :class="{'active': menu.categories && hasSearchNav}">
                     {{ $t(menu.title) }}
                     <icon name="chevron-down" v-if="menu.children" />
                   </nuxt-link>
                   <div class="dropdown-content" v-if="menu.children">
                     <div class="container">
-                      <ul class="dropdown-menu row">
-                        <li class="col-3" v-for="submenu in menu.children" :key="submenu.title">
-                          <nuxt-link :to="$localePath(submenu.route)" exact>
-                            <icon :name="submenu.icon" />
-                            {{ $t(submenu.title) }}
-                          </nuxt-link>
-                        </li>
-                      </ul>
+                      <div class="row">
+                        <div class="col-3" v-if="menu.categories">
+                          <ul class="dropdown-menu_categories">
+                            <li @mouseover="activeCategory = index" v-for="(category, index) in menu.categories" :key="category.title">
+                              <nuxt-link :to="$localePath(category.route)" active-class="link-active" :class="{'active': index === activeCategory}">
+                                {{ $t(category.title) }}
+                                <icon name="chevron-right" />
+                              </nuxt-link>
+                            </li>
+                          </ul>
+                        </div>
+                        <div :class="`col-${menu.categories ? 9 : 12}`">
+                          <ul class="dropdown-menu row">
+                            <li :class="`col-${menu.categories ? 4 : 3}`" v-for="submenu in (menu.categories ? menu.categories[activeCategory].children : menu.children)" :key="submenu.title">
+                              <nuxt-link :to="$localePath(submenu.route)" exact>
+                                <icon :name="submenu.icon" />
+                                {{ $t(submenu.title) }}
+                              </nuxt-link>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </li>
@@ -93,13 +115,13 @@
                   </div>
                 </div>
                 <div class="col-5" v-if="$env.DEV">
-                  <nuxt-link class="btn full-width btn--red-outline" :to="$localePath('/garage')" :active-class="''">
+                  <nuxt-link class="btn full-width btn--red-outline" :to="$localePath('/garage')" @click.native="handleBtnClick('garage')">
                     <icon name="garage" />
                     {{ $t('garage') }}
                   </nuxt-link>
                 </div>
                 <div class="col-5">
-                  <nuxt-link class="btn full-width btn--pale-green-outline" :to="$localePath('/sell')">
+                  <nuxt-link class="btn full-width btn--pale-green-outline" :to="$localePath('/sell')" @click.native="handleBtnClick('sell')">
                     <icon name="plus-circle" />
                     {{ $t('to_sell') }}
                   </nuxt-link>
@@ -126,8 +148,19 @@ export default {
   components: {
     ThemeSwitch
   },
+  data() {
+    return {
+      activeCategory: 0
+    }
+  },
   methods: {
-    ...mapActions(['changeLocale'])
+    ...mapActions(['changeLocale']),
+
+    handleBtnClick(name) {
+      if (this.routeName === name) {
+        this.scrollTo(9,9);
+      }
+    }
   },
   computed: {
     ...mapGetters(['notViewedFavorites','notViewedSavedSearch'])

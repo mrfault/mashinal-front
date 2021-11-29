@@ -4,7 +4,7 @@ import { RoutesMixin } from './routes';
 export const MenusDataMixin = {
   mixins: [RoutesMixin],
   computed: {
-    ...mapGetters(['staticPages','commercialTypes']),
+    ...mapGetters(['commercialTypes']),
 
     searchMenus() {
       return [
@@ -16,20 +16,20 @@ export const MenusDataMixin = {
     },
 
     pageMenus() {
-      return [{
-        title: 'contact_us',
-        route: '/contact-us',
-        icon: 'phone-call'
-      }].concat(this.staticPages.map(page => ({
-        title: page.title, 
-        route: '/page/'+page.slug[this.locale],
-        icon: 'policy'
-      })));
+      return [
+        { title: 'contact_us', route: '/contact-us', icon: 'phone-call' },
+        { title: 'policy', route: '/policy', icon: 'policy' }
+      ];
     },
 
     navbarMenus() {
+      let announcementCategories = [
+        { title: 'cars', route: '/cars', children: [{ title: 'car_plural', route: '/cars', icon: 'car-1' }] },
+        { title: 'moto', route: '/moto', children: this.motoMenus },
+        { title: 'commercial', route: '/commercial', children: this.commercialMenus }
+      ]
       return [
-        ...this.searchMenus.slice(0, 3),
+        { title: 'announcements', route: '/cars', children: [], categories: announcementCategories },
         { title: 'parts', route: '/parts', children: this.partsSubMenus },
         { title: 'autocatalog', route: '/catalog' },
         { title: 'salons', route: '/salons' }
@@ -60,7 +60,7 @@ export const MenusDataMixin = {
       if (!this.loggedIn) return [];
 
       let menus = [
-        { title: 'settings', route: '/profile/settings', showOnCard: false },
+        { title: 'user_information', route: '/profile', showOnCard: false },
         { title: 'my_announces', route: '/profile/announcements', showOnCard: true },
         { title: 'balans', route: '/profile/balance', showOnCard: true }
       ];

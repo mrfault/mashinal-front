@@ -2,7 +2,7 @@
   <div class="pages-garage-index pt-5">
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
-      <template v-if="cars.data">
+      <template v-if="cars.data && cars.data.length">
         <garage-nav 
           v-show="showNav || !isMobileBreakpoint" 
           :tab="tab" 

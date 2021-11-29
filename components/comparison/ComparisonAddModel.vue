@@ -37,6 +37,7 @@
             has-search
             :clear-option="false"
             :check-options-offset="true"
+            :disabled="!form.brand || !models.length"
           />
         </div>
         <div class="col-12 col-lg-6 mb-2 mb-lg-3">
@@ -49,6 +50,7 @@
             :clear-option="false"
             :check-options-offset="true"
             :has-generations="true"
+            :disabled="!form.model || !generations.length"
           />
         </div>
         <div class="col-12 col-lg-6 mb-2 mb-lg-3">
@@ -60,6 +62,7 @@
             has-search
             :clear-option="false"
             :check-options-offset="true"
+            :disabled="!form.generation || !carTypes.length"
           />
         </div>
         <div class="col-12 col-lg-6 mb-2 mb-lg-3">
@@ -71,6 +74,7 @@
             has-search
             :clear-option="false"
             :check-options-offset="true"
+            :disabled="!form.carType || !modifications.length"
           />
         </div>
 

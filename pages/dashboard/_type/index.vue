@@ -206,7 +206,7 @@
         return this.announcementStats.contract.left_days < 5;
       },
       
-      haveBalanceForPlan() {
+      haveBalanceToPay() {
         return parseFloat(this.announcementStats.contract.price) <= this.user.balance;
       }
     },

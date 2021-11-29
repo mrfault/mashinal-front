@@ -69,6 +69,9 @@ export default function({ app, route, store }, inject) {
     return ('994'+phone.slice(3))
       .replace(/(\d{3})(\d{2})(\d{3})(\d{2})(\d{2})/g, brief ? '($2) $3-$4-$5' : '+$1 ($2) $3-$4-$5');
   });
+  inject('parseCardNum', (num) => {
+    return [num.slice(0,4),num.slice(4,8),num.slice(8,12),num.slice(12,16)];
+  });
   inject('parseUnsafe', (unsafe) => {
     if (unsafe == null) return '';
     return unsafe
