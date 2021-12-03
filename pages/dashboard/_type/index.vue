@@ -169,12 +169,13 @@
         let id = this.$getDashboardId(this.$route.params.type);
         let isShop = id == this.user.part_salon?.id;
         let myPackage = this.user.autosalon?.current_package || {};
+        let salon = this.user[isShop ? 'part_salon' : 'autosalon'];
         return {
           isShop: isShop,
-          short_description: this.user[isShop ? 'part_salon' : 'autosalon'].short_description || '',
-          name: this.user[isShop ? 'part_salon' : 'autosalon'].name || this.user.full_name,
-          balance: this.$sum(this.user.balance, this.user[isShop ? 'part_salon' : 'autosalon'].balance),
-          unlimited: this.user[isShop ? 'part_salon' : 'autosalon']?.is_unlimited,
+          short_description: salon.short_description || '',
+          name: salon.name || this.user.full_name,
+          balance: this.$sum(this.user.balance, salon.balance),
+          unlimited: salon?.status === 1 && salon?.is_unlimited,
           packageName: isShop ? '' : `<span style='${myPackage.color ? ('color: ' + myPackage.color) : ''}'>${myPackage.name?.[this.locale]}</span>`
         }
       },

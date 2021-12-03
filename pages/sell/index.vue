@@ -94,8 +94,12 @@
           moto: 0,
           commercial: 0,
           parts: 0,
-          parts_unlimited: this.loggedIn ? this.user?.part_salon?.is_unlimited : this.sellTokens.parts_unlimited,
-          salon_unlimited: this.loggedIn ? this.user?.autosalon?.is_unlimited : this.sellTokens.salon_unlimited
+          parts_unlimited: this.loggedIn 
+            ? (this.user?.part_salon?.status === 1 && this.user?.part_salon?.is_unlimited) 
+            : this.sellTokens.parts_unlimited,
+          salon_unlimited: this.loggedIn 
+            ? (this.user?.autosalon?.status === 1 && this.user?.autosalon?.is_unlimited) 
+            : this.sellTokens.salon_unlimited
         }
 
         for (let type of ['cars','moto','commercial','parts']) {
