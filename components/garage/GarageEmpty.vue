@@ -2,17 +2,9 @@
   <div class="garage_no-cars card with-margins">
     <div class="text-center">
       <img src="/img/car-garage.svg" alt="" />
-      <p class="text-red">{{ $t('no_cars_found') }}</p>
-      <add-car />
+      <p class="text-red mb-1 mb-lg-3">{{ $t('no_cars_found') }}</p>
+      <add-car class="mb-lg-3" />
     </div>
-    <h2 class="title-with-line full-width">
-      <span>{{ $t('garage_terms_title') }}</span>
-    </h2>
-    <ol>
-      <li v-for="(term, i) in $t('garage_terms_points')" :key="i">
-        {{ term }}
-      </li>
-    </ol>
   </div>
 </template>
 

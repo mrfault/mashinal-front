@@ -76,6 +76,15 @@
 .profile-links-card {
   padding: 12px 15px;
   .link-block {
+    i:first-child {
+      width: 18px;
+      height: 16px;
+      font-size: 16px;
+      margin-right: 12px;
+    }
+    i:last-child {
+      margin-left: auto;
+    }
     a {
       display: flex;
       align-items: center;

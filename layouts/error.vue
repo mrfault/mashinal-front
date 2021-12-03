@@ -4,7 +4,7 @@
       <breadcrumbs :crumbs="crumbs" />
       <not-found 
         :text="notFound ? errorTitle : $t('dev_will_solve')" 
-        :text-class="notFound ? 'text-red' : 'text-dark-blue-2'"
+        :text-class="(notFound ? 'text-red' : 'text-dark-blue-2') + ' text-center'"
         :img-src="notFound ? '' : '/img/programmers.svg'"
       >
         <nuxt-link class="btn btn--green" :to="$localePath('/')">

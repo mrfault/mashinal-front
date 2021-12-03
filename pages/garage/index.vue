@@ -20,12 +20,27 @@
       <template v-else>
         <garage-empty />
       </template>
+      <template v-if="tab === 'cars' && isMobileBreakpoint">
+        <div :class="['card profile-links-card with-margins', { 'mt-3': !cars.data || !cars.data.length }]" v-if="isMobileBreakpoint">
+          <div class="link-block" v-for="menu in userMenus.filter(menu => menu.showOnCard)" :key="menu.title">
+            <nuxt-link :to="$localePath(menu.route)">
+              <icon :name="menu.icon" />
+              {{ $t(menu.title) }}
+              <icon name="chevron-right" />
+            </nuxt-link>
+            <hr />
+          </div>
+        </div>
+      </template>
     </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
+
+import { UserDataMixin } from '~/mixins/user-data';
+import { MenusDataMixin } from '~/mixins/menus-data';
 
 import GarageNav from '~/components/garage/GarageNav';
 import GarageEmpty from '~/components/garage/GarageEmpty';
@@ -34,6 +49,7 @@ import CheckDriverPoints from '~/components/garage/CheckDriverPoints';
 
 export default {
   name: 'pages-garage-index',
+  mixins: [UserDataMixin, MenusDataMixin],
   components: {
     GarageNav,
     GarageEmpty,
