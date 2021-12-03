@@ -426,6 +426,16 @@
   border-radius: 4px;
   user-select: none;
   cursor: pointer;
+  transition: background .1s ease-out;
+  @media (hover: hover) {
+    &:hover {
+      color: $white;
+      background-color: $green-1;
+      img {
+        filter: brightness(0) invert(1);
+      }
+    }
+  }
   img {
     width: 35px;
     margin-bottom: 13px;
@@ -435,6 +445,22 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    padding: 15px;
+  }
+}
+
+.dark-mode {
+  .add-item {
+    color: $white;
+    background-color: $green-1;
+    @media (hover: hover) {
+      &:hover {
+        background-color: $green-2;
+      }
+    }
+    img {
+      filter: brightness(0) invert(1);
+    }
   }
 }
 
