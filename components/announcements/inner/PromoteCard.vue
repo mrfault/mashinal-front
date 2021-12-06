@@ -1,4 +1,5 @@
 <template>
+  <!-- deprecated component -->
   <div class="promote-card card mb-lg-3">
     <promote view="card"
       :announcement="announcement" 
@@ -24,7 +25,7 @@
 import { mapGetters, mapActions } from 'vuex';
 
 import Promote from '~/components/announcements/Promote';
-import PaidStatus from '~/components/elements/PaidStatus';
+import PaidStatus from '~/components/payments/PaidStatus';
 
 export default {
   components: {

@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import BankingCards from '~/components/profile/BankingCards';
+import BankingCards from '~/components/payments/BankingCards';
 
 export default {
   name: 'pages-profile-index',

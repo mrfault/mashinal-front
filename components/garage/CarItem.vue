@@ -80,9 +80,7 @@
       <h4 class="mb-2">{{ $t('payment_method') }}</h4>
       <form-buttons v-model="paymentMethod" :options="paymentMethodOptions" :group-by="2" />
       <select-banking-card v-model="bankingCard" class="mt-2 mt-lg-3" v-show="paymentMethod === 'card'" />
-      <p class="mt-2 info-text"><icon name="alert-circle" /> 
-        <span class="text-medium cursor-pointer text-red" @click="showPaymentModal = false, showTerminalInfo = true">{{ $t('pay_with_terminal') }}</span>
-      </p>
+      <terminal-info-button popup-name="garage-activate-popup" />
       <div :class="{'modal-sticky-bottom': isMobileBreakpoint}">
         <hr/>
         <div class="row">
@@ -98,24 +96,11 @@
         </div>
       </div>
     </modal-popup>
-    <modal-popup
-      :toggle="showTerminalInfo"
-      :title="$t('pay_with_terminal')"
-      @close="showTerminalInfo = false, showPaymentModal = true"
-    >
-      <p>{{ $t('terminal_pay_info') }}</p>
-      <div class="form-info text-green mb-2">{{ $t('mobile_number_your')}}: {{ $parsePhone(user.phone) }}</div>
-      <ol>
-        <li v-for="(step, i) in $t('terminal_pay_steps')" :key="i">{{ step }}</li>
-      </ol>
-      <div class="row">
-        <div class="col">
-          <button type="button" class="btn btn--primary-outline full-width" @click="showTerminalInfo = false, showPaymentModal = true">
-            {{ $t('go_back') }}
-          </button>
-        </div>
-      </div>
-    </modal-popup>
+    <terminal-info-popup 
+      name="garage-activate-popup"
+      @open="showPaymentModal = false" 
+      @close="showPaymentModal = true"
+    />
   </div>
 </template>
 
@@ -138,10 +123,7 @@ export default {
       thumb: null,
       thumbSet: false,
       thumbPending: false,
-      bankingCard: '',
-      price: 1,
-      showTerminalInfo: false,
-      showPaymentModal: false
+      price: 1
     }
   },
   computed: {
