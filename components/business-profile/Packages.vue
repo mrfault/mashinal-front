@@ -167,7 +167,7 @@ export default {
     }),
     priceDifference() {
       if (this.shouldBuy || this.downgradePlan) return 0;
-      let diff = this.$substract(parseFloat(this.selectedPackage.price), parseFloat(this.user.autosalon.current_package.price));
+      let diff = this.$substract(parseFloat(this.selectedPackage.price), parseFloat((this.user.autosalon.current_package?.price || 0)));
       return diff > 0 ? diff : 0;
     },
     calculatedPrice() {
@@ -180,7 +180,7 @@ export default {
     },
     downgradePlan() {
       if (this.shouldBuy) return false;
-      return parseFloat(this.selectedPackage.price) < parseFloat(this.user.autosalon.current_package.price);
+      return parseFloat(this.selectedPackage.price) < parseFloat((this.user.autosalon.current_package?.price || 0));
     },
     selectedPackage() {
       return this.salonPackages.find(p => p.id === this.selected);
@@ -190,11 +190,11 @@ export default {
     },
     activePackage() {
       if (!this.hasSalon) return null;
-      return this.salonPackages.find(item => item.id === this.user.autosalon.current_package.id) || null
+      return this.salonPackages.find(item => item.id === this.user.autosalon.current_package?.id) || null
     },
     leftToDeactivate() {
       if (!this.user.autosalon || !this.downgradePlan) return 0;
-      let left = this.user.autosalon.current_package.announce_count - this.user.announce_left_car - this.selectedPackage.announce_count - this.selectedAnnouncements.length;
+      let left = (this.user.autosalon.current_package?.announce_count || 0) - this.user.announce_left_car - this.selectedPackage.announce_count - this.selectedAnnouncements.length;
       return left < 0 ? 0 : left;
     }
   },
@@ -279,6 +279,7 @@ export default {
       }
     },
     getPackageName(item) {
+      if (!item) return ''
       return `<span style='${item.color ? ('color: ' + item.color) : ''}'>${item.name?.[this.locale]}</span>`;
     },
     selectAnnouncement(id, value, controls = false) {

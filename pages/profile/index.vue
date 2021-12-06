@@ -48,15 +48,6 @@
           </div>
         </div>
       </div>
-      <div class="card profile-links-card with-margins mt-2 mt-lg-3" v-if="isMobileBreakpoint">
-        <div class="link-block" v-for="menu in userMenus.filter(menu => menu.showOnCard)" :key="menu.title">
-          <nuxt-link :to="$localePath(menu.route)">
-            {{ $t(menu.title) }}
-            <icon name="chevron-right" />
-          </nuxt-link>
-          <hr />
-        </div>
-      </div>
     </div>
     <div class="overflow-hidden">
       <div class="container">
@@ -67,15 +58,11 @@
 </template>
 
 <script>
-import { UserDataMixin } from '~/mixins/user-data';
-import { MenusDataMixin } from '~/mixins/menus-data';
-
 import BankingCards from '~/components/profile/BankingCards';
 
 export default {
   name: 'pages-profile-index',
   middleware: ['auth_general'],
-  mixins: [UserDataMixin, MenusDataMixin],
   components: {
     BankingCards
   },

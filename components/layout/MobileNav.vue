@@ -28,9 +28,10 @@ export default {
   },
   methods: {
     isPseudoActive(menu) {
-      return (this.hasSearchNav && menu.title === 'search') 
-          || (this.hasProfileData && ['my_account', 'dashboard_brief'].includes(menu.title))
-          || (this.routeName === 'profile-messages' && menu.title === 'messages');
+      return (this.hasSearchNav && menu.title === 'main') 
+          || (this.routeName === 'profile-messages' && menu.title === 'messages')
+          || (this.routeName === 'garage' && menu.title === 'garage')
+          || (this.routeName?.includes('catalog') && menu.title === 'catalog');
     }
   }
 }

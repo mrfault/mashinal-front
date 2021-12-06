@@ -1,8 +1,9 @@
 <template>
-  <component :is="tag" :class="tag === 'button' ? `btn btn--${btnClass}` : 'add-item'" @click="showModal = true">
+  <component :is="tag" :class="tag === 'button' ? [`btn btn--${btnClass}`, { 'full-width': isMobileBreakpoint }] : 'add-item'" @click="showModal = true">
     <template v-if="tag === 'button'">
-      <icon name="plus-circle" />
+      <icon name="plus-circle" v-if="!isMobileBreakpoint" />
       {{ $t('add_car') }}
+      <icon name="arrow-right" class="ml-1" v-if="isMobileBreakpoint" />
     </template>
     <div class="add-item_inner" v-else>
       <img src="/icons/plus-circle-1.svg" alt="" />

@@ -17,8 +17,8 @@ export const MenusDataMixin = {
 
     pageMenus() {
       return [
-        { title: 'contact_us', route: '/contact-us', icon: 'phone-call' },
-        { title: 'policy', route: '/policy', icon: 'policy' }
+        { title: 'feedback', route: '/contact-us', icon: 'contact-tab' },
+        { title: 'policy', route: '/policy', icon: 'policy', showOnCard: true }
       ];
     },
 
@@ -47,11 +47,11 @@ export const MenusDataMixin = {
 
     bottomMenus() {
       return [
-        { title: 'search', route: '/', icon: 'search' },
-        { title: 'favorites', route: '/profile/favorites', icon: 'star' },
+        { title: 'main', route: '/', icon: 'home-tab' },
+        { title: 'catalog', route: '/catalog', icon: 'catalog-tab' },
         { title: 'new_announce', route: '/sell', icon: 'plus' },
-        { title: 'messages', route: '/profile/messages', icon: 'chat' },
-        { title: 'my_account', route: '/profile', icon: 'user', hide: !this.loggedIn },
+        { title: 'messages', route: '/profile/messages', icon: 'chat-tab' },
+        { title: 'garage', route: '/garage', icon: 'garage-tab', hide: !this.loggedIn },
         { title: 'login', route: '/login', icon: 'user', hide: this.loggedIn }
       ];
     },
@@ -60,35 +60,39 @@ export const MenusDataMixin = {
       if (!this.loggedIn) return [];
 
       let menus = [
-        { title: 'user_information', route: '/profile', showOnCard: false },
-        { title: 'my_announces', route: '/profile/announcements', showOnCard: true },
-        { title: 'balans', route: '/profile/balance', showOnCard: true }
+        { title: 'my_account', route: '/profile', icon: 'user', showOnCard: this.isMobileBreakpoint },
+        { title: 'my_announces', route: '/profile/announcements', icon: 'speaker', showOnCard: true },
+        { title: 'balans', route: '/profile/balance', icon: 'wallet', showOnCard: true }
       ];
 
       if (this.user.autosalon)
-        menus.push({ title: 'dashboard_salon', route: '/dashboard/1', showOnCard: true });
+        menus.push({ title: 'dashboard_salon', route: '/dashboard/1', icon: 'salons-tab', showOnCard: true });
       if (this.user.part_salon)
-        menus.push({ title: 'dashboard_shop', route: '/dashboard/2', showOnCard: true });
+        menus.push({ title: 'dashboard_shop', route: '/dashboard/2', icon: 'shops-tab', showOnCard: true });
+      if (this.isMobileBreakpoint)
+        menus.push(this.pageMenus.find(menu => menu.title === 'policy'));
+        
 
       return menus;
     },
 
     sidebarMenus() {
       return [
-        { title: 'home_page', route: '/', icon: 'home' },
-        { title: 'garage', route: '/garage', icon: 'garage', dev: true },
-        { title: 'salons', route: '/salons', icon: 'store' },
-        { title: 'autocatalog', route: '/catalog', icon: 'book' },
+        { title: 'garage', route: '/garage', icon: 'garage-tab', dev: true },
+        { title: 'salons', route: '/salons', icon: 'salons-tab' },
+        { title: 'shops', route: '/parts/shops', icon: 'shops-tab' },
+        { title: 'autocatalog', route: '/catalog', icon: 'catalog-tab' },
+        { title: 'favorites', route: '/profile/favorites', icon: 'favorites-tab' },
         { title: 'comparisons', route: '/comparison', icon: 'compare' },
-        { title: 'helper_search', route: '/cars/assistant', icon: 'flag' },
         { title: 'my_searches', route: '/profile/templates', icon: 'template', auth: true },
-        ...this.pageMenus
+        { title: 'helper_search', route: '/cars/assistant', icon: 'helper-tab' },
+        this.pageMenus.find(menu => menu.title === 'feedback')
       ].filter(menu => menu.dev && this.$env.DEV || !menu.dev)
     },
 
     commercialMenus() {
       return this.commercialTypes.map(type => ({ 
-        title: `commercial_${type.param}`, 
+        title: `commercial_${type.param}`,
         route: '/commercial/'+this.$t(`slug_${type.param}`), 
         icon: `commercial-${type.param}`,
         id: type.id
