@@ -20,7 +20,7 @@
       <template v-else>
         <garage-empty />
       </template>
-      <template v-if="tab === 'cars' && isMobileBreakpoint">
+      <template v-if="tab === 'cars' && (showNav || !isMobileBreakpoint)">
         <div :class="['card profile-links-card with-margins', { 'mt-3': !cars.data || !cars.data.length }]" v-if="isMobileBreakpoint">
           <div class="link-block" v-for="menu in userMenus.filter(menu => menu.showOnCard)" :key="menu.title">
             <nuxt-link :to="$localePath(menu.route)">
