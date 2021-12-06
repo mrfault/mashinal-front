@@ -18,16 +18,14 @@
       </button>
     </form>
     <modal-popup 
-      :toggle="showModal" 
+      :toggle="showPaymentModal" 
       :title="$t('business_profile_payment')"
-      @close="showModal = false"
+      @close="showPaymentModal = false"
     >
       <p class="mb-2 mb-lg-3">{{ $t('business_profile_payment_info') }}</p>
       <h4 class="mb-2">{{ $t('payment_method') }}</h4>
       <form-buttons v-model="paymentMethod" :options="paymentMethodOptions" :group-by="2" />
-      <p class="mt-2 info-text"><icon name="alert-circle" /> 
-        <span class="text-medium cursor-pointer text-red" @click="showModal = false, showTerminalInfo = true">{{ $t('pay_with_terminal') }}</span>
-      </p>
+      <terminal-info-button popup-name="packages-parts-popup" />
       <div class="modal-sticky-bottom">
         <hr/>
         <div class="row">
@@ -43,24 +41,11 @@
         </div>
       </div>
     </modal-popup>
-    <modal-popup
-      :toggle="showTerminalInfo"
-      :title="$t('pay_with_terminal')"
-      @close="showTerminalInfo = false, showModal = true"
-    >
-      <p>{{ $t('terminal_pay_info') }}</p>
-      <div class="form-info text-green mb-2">{{ $t('mobile_number_your')}}: {{ $parsePhone(user.phone) }}</div>
-      <ol>
-        <li v-for="(step, i) in $t('terminal_pay_steps')" :key="i">{{ step }}</li>
-      </ol>
-      <div class="row">
-        <div class="col">
-          <button type="button" class="btn btn--primary-outline full-width" @click="showTerminalInfo = false, showModal = true">
-            {{ $t('go_back') }}
-          </button>
-        </div>
-      </div>
-    </modal-popup>
+    <terminal-info-popup 
+      name="packages-parts-popup"
+      @open="showPaymentModal = false" 
+      @close="showPaymentModal = true"
+    />
   </div>
 </template>
 
@@ -84,9 +69,7 @@ export default {
       pending: false,
       form: {
         name: ''
-      },
-      showModal: false,
-      showTerminalInfo: false
+      }
     }
   },
   validations: {
@@ -107,7 +90,7 @@ export default {
     submit() {
       this.$v.$touch();
       if (this.$v.$pending || this.$v.$error) return;
-      if (this.loggedIn) this.showModal = true;
+      if (this.loggedIn) this.showPaymentModal = true;
       else this.$nuxt.$emit('login-popup', 'parts-package-' + this.where);
     },
     async getBusinessProfile() {
@@ -121,7 +104,7 @@ export default {
         });
         if (this.paymentMethod === 'card') {
           this.pending = false;
-          this.showModal = false;
+          this.showPaymentModal = false;
           this.handlePayment(res, [this.$localePath('/dashboard/2/settings'), false], this.$t('package_bought'));
         } else {
           await Promise.all([
@@ -129,7 +112,7 @@ export default {
             this.$auth.fetchUser()
           ]);
           this.pending = false;
-          this.showModal = false;
+          this.showPaymentModal = false;
           this.$router.push(this.$localePath('/dashboard/2/settings'), () => {
             this.updatePaidStatus({ 
               type: 'success', 
@@ -143,7 +126,7 @@ export default {
       }
     },
     handleAfterLogin(key) {
-      if (key === 'parts-package-' + this.where) this.showModal = true;
+      if (key === 'parts-package-' + this.where) this.showPaymentModal = true;
     }
   },
   mounted() {

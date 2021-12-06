@@ -1,4 +1,5 @@
 <template>
+  <!-- deprecated component -->
   <button class="btn btn--grey-outline full-width" @click.stop="showModal = true">
     <icon name="crown" /> {{ $t('promoting') }}
     <modal-popup 

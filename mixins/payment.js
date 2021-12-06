@@ -2,15 +2,20 @@ import { mapGetters, mapActions } from 'vuex';
 
 import { SocketMixin } from '~/mixins/socket';
 
-import SelectBankingCard from '~/components/profile/SelectBankingCard';
+import SelectBankingCard from '~/components/payments/SelectBankingCard';
+import TerminalInfoButton from '~/components/payments/TerminalInfoButton';
+import TerminalInfoPopup from '~/components/payments/TerminalInfoPopup';
 
 export const PaymentMixin = {
   mixins: [SocketMixin],
   components: {
-    SelectBankingCard
+    SelectBankingCard,
+    TerminalInfoButton,
+    TerminalInfoPopup
   },
   data() {
     return {
+      showPaymentModal: false,
       paymentMethod: 'card',
       bankingCard: ''
     }

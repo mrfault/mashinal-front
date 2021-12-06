@@ -48,7 +48,7 @@ import PageHeader from '~/components/layout/PageHeader';
 import PageFooter from '~/components/layout/PageFooter';
 import MobileMenu from '~/components/layout/MobileMenu';
 import MobileNav from '~/components/layout/MobileNav';
-import PaidStatus from '~/components/elements/PaidStatus';
+import PaidStatus from '~/components/payments/PaidStatus';
 import ScrollTop from '~/components/elements/ScrollTop';
 import ComparisonBadge from '~/components/elements/ComparisonBadge';
 import MapSwitch from '~/components/salons/MapSwitch';

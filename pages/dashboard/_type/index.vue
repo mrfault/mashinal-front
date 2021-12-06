@@ -65,7 +65,7 @@
               <nuxt-link class="text-green" :to="$localePath('/profile/balance?scrollto=increase')" v-else-if="card.key === 'balance'">
                 {{ $t('replenish') }}
               </nuxt-link>
-              <a class="text-green" href="javascript:void(0);" @click="showExtendContract = true" v-else-if="card.key === 'contract' && shouldExtendContract">
+              <a class="text-green" href="javascript:void(0);" @click="showPaymentModal = true" v-else-if="card.key === 'contract' && shouldExtendContract">
                 {{ $t('extend_subscription') }}
               </a>
               <nuxt-link class="text-green" :to="$localePath('/business-profile') + '?type=1&scrollto=packages'" v-else-if="card.key === 'contract' && $route.params.type == 1">
@@ -87,9 +87,9 @@
           </dashboard-card>
         </div>
         <modal-popup
-          :toggle="showExtendContract"
+          :toggle="showPaymentModal"
           :title="$t('extend_subscription')"
-          @close="showExtendContract = false"
+          @close="showPaymentModal = false"
         >
           <form class="form" @submit.prevent="extendContract" novalidate>
             <p v-html="$t('pay_till_date', { date: announcementStats.contract.end_date })" v-if="announcementStats.contract.left_days > 0"></p>
@@ -120,7 +120,7 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex';
+  import { mapGetters } from 'vuex';
 
   import { StatsMixin } from '~/mixins/statistics';
   import { PaymentMixin } from '~/mixins/payment';
@@ -149,7 +149,6 @@
 
       return {
         pending: false,
-        showExtendContract: false,
         supportContacts: [
           { phone: '*8787' },
           { email: 'support@mashin.al' }

@@ -1,11 +1,11 @@
 <template>
-  <button :class="`btn btn--${className} full-width`" @click.stop="showModal = true">
+  <button :class="`btn btn--${className} full-width`" @click.stop="showPaymentModal = true">
     {{ $t('get_an_ad') }}
     <modal-popup 
-      :toggle="showModal" 
+      :toggle="showPaymentModal" 
       :title="$t('get_an_ad')"
       :modal-class="'larger monetization-popup'"
-      @close="showModal = false"
+      @close="showPaymentModal = false"
     >
       <p class="text-dark-blue-3">{{ $t('ad_views_count') }}</p>
       <h4 class="text-dark-blue-2">{{ selectedPlan.min_view }} - {{ selectedPlan.max_view }}</h4>
@@ -19,9 +19,7 @@
       <p class="mb-2 mb-lg-3"><span class="star">* </span> {{ $t('ad_can_be_paused') }}</p>
       <h4>{{ $t('payment_method') }}</h4>
       <form-buttons v-model="paymentMethod" :options="paymentMethodOptions" :group-by="2" />
-      <p class="mt-2 info-text"><icon name="alert-circle" /> 
-        <span class="text-medium cursor-pointer text-red" @click="showModal = false, showTerminalInfo = true">{{ $t('pay_with_terminal') }}</span>
-      </p>
+      <terminal-info-button popup-name="monetization-popup" />
       <div class="modal-sticky-bottom">
         <hr/>
         <div class="row">
@@ -41,24 +39,11 @@
         </div>
       </div>
     </modal-popup>
-    <modal-popup
-      :toggle="showTerminalInfo"
-      :title="$t('pay_with_terminal')"
-      @close="showTerminalInfo = false, showModal = true"
-    >
-      <p>{{ $t('terminal_pay_info') }}</p>
-      <div class="form-info text-green mb-2">{{ $t('mobile_number_your')}}: {{ $parsePhone(user.phone) }}</div>
-      <ol>
-        <li v-for="(step, i) in $t('terminal_pay_steps')" :key="i">{{ step }}</li>
-      </ol>
-      <div class="row">
-        <div class="col">
-          <button type="button" class="btn btn--primary-outline full-width" @click="showTerminalInfo = false, showModal = true">
-            {{ $t('go_back') }}
-          </button>
-        </div>
-      </div>
-    </modal-popup>
+    <terminal-info-popup 
+      name="monetization-popup"
+      @open="showPaymentModal = false" 
+      @close="showPaymentModal = true"
+    />
   </button>
 </template>
 
@@ -76,8 +61,6 @@ export default {
   mixins: [PaymentMixin],
   data() {
     return {
-      showModal: false,
-      showTerminalInfo: false,
       pending: false,
       priceList: [], 
       day: {
@@ -131,7 +114,7 @@ export default {
       });
       if (this.paymentMethod === 'card') {
         this.pending = false;
-        this.showModal = false;
+        this.showPaymentModal = false;
         this.handlePayment(res, false, this.$t('ad_started'));
       } else {
         await Promise.all([

@@ -1,4 +1,5 @@
 <template>
+  <!-- deprecated component -->
   <component :is="isScreen ? 'mobile-screen' : 'div'" @back="goBack" :bar-title="$t('promoting')">
     <loader v-if="!promotion.id" />
     <div :class="['promote-announcement', `is-${view}`]" v-else>

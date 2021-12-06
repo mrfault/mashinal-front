@@ -36,9 +36,9 @@
       </div>
     </form>
     <modal-popup 
-      :toggle="showModal" 
+      :toggle="showPaymentModal" 
       :title="`${$t('package')} - ${getPackageName(selectedPackage)}`"
-      @close="showModal = false, $v.$reset()"
+      @close="showPaymentModal = false, $v.$reset()"
     >
       <form-text-input 
         v-if="!hasSalon"
@@ -53,9 +53,7 @@
       </p>
       <h4 class="mb-2">{{ $t('payment_method') }}</h4>
       <form-buttons v-model="paymentMethod" :options="paymentMethodOptions" :group-by="2" />
-      <p class="mt-2 info-text"><icon name="alert-circle" /> 
-        <span class="text-medium cursor-pointer text-red" @click="showModal = false, showTerminalInfo = true">{{ $t('pay_with_terminal') }}</span>
-      </p>
+      <terminal-info-button popup-name="packages-popup" />
       <div class="modal-sticky-bottom">
         <hr/>
         <div class="row">
@@ -71,24 +69,11 @@
         </div>
       </div>
     </modal-popup>
-    <modal-popup
-      :toggle="showTerminalInfo"
-      :title="$t('pay_with_terminal')"
-      @close="showTerminalInfo = false, showModal = true"
-    >
-      <p>{{ $t('terminal_pay_info') }}</p>
-      <div class="form-info text-green mb-2">{{ $t('mobile_number_your')}}: {{ $parsePhone(user.phone) }}</div>
-      <ol>
-        <li v-for="(step, i) in $t('terminal_pay_steps')" :key="i">{{ step }}</li>
-      </ol>
-      <div class="row">
-        <div class="col">
-          <button type="button" class="btn btn--primary-outline full-width" @click="showTerminalInfo = false, showModal = true">
-            {{ $t('go_back') }}
-          </button>
-        </div>
-      </div>
-    </modal-popup>
+    <terminal-info-popup 
+      name="packages-popup"
+      @open="showPaymentModal = false" 
+      @close="showPaymentModal = true"
+    />
     <modal-popup
       :toggle="showMyAnnouncements"
       :title="`${$t('package')} - ${getPackageName(selectedPackage)}`"
@@ -144,8 +129,6 @@ export default {
     return {
       pending: false,
       selected: '',
-      showModal: false,
-      showTerminalInfo: false,
       showMyAnnouncements: false,
       selectedAnnouncements: [],
       hasSalon: !!this.$store.state.auth.user?.autosalon,
@@ -205,7 +188,7 @@ export default {
     }),
     async submit() {
       if (!this.loggedIn) this.$nuxt.$emit('login-popup', 'salon-package');
-      else if (!this.downgradePlan) this.showModal = true;
+      else if (!this.downgradePlan) this.showPaymentModal = true;
       else await this.getBusinessProfile();
     },
     async getBusinessProfile() {
@@ -245,7 +228,7 @@ export default {
           });
         } else if (this.paymentMethod === 'card') {
           this.pending = false;
-          this.showModal = false;
+          this.showPaymentModal = false;
           this.handlePayment(res, [this.$localePath('/dashboard/1'+(this.hasSalon ? '' : '/settings')), false], this.$t(this.shouldBuy ? 'package_bought' : 'change_package'));
         } else {
           await Promise.all([
@@ -253,7 +236,7 @@ export default {
             this.$auth.fetchUser()
           ]);
           this.pending = false;
-          this.showModal = false;
+          this.showPaymentModal = false;
           this.$router.push(this.$localePath('/dashboard/1'+(this.hasSalon ? '' : '/settings')), () => {
             this.updatePaidStatus({ 
               type: 'success', 
@@ -275,7 +258,7 @@ export default {
         this.hasSalon = !!this.user?.autosalon;
         this.contractEnded = this.user?.autosalon?.status === 0;
         this.form.name = this.user.part_salon?.name || '';
-        this.showModal = true;
+        this.showPaymentModal = true;
       }
     },
     getPackageName(item) {
