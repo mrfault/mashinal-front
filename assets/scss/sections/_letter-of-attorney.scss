@@ -1,0 +1,169 @@
+.steps-progress {
+  position: sticky;
+  z-index: 8;
+  top: -2px;
+  left: 0;
+  background-color: $white;
+  margin-top: -2px;
+  &_inner {
+    position: relative;
+    width: 100%;
+    min-width: 100%;
+    padding: 2px 0;
+  }
+  &_bar {
+    position: absolute;
+    width: 100%;
+    height: 10px;
+    left: 0;
+    top: 50%;
+    margin-top: -5px;
+    border-radius: 100px;
+    border: 1px solid $greyish-blue-3;
+    .filled {
+      position: absolute;
+      width: 0;
+      height: 10px;
+      left: -1px;
+      top: -1px;
+      border-radius: 100px;
+      background-color: $green-1;
+      &.animate {
+        transition: width .3s;
+      }
+    }
+  }
+  &_list {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+    min-width: 100%;
+    .step {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      color: $green-1;
+      border: 2px solid;
+      border-radius: 50%;
+      font-size: 16px;
+      font-weight: 600;
+      padding-top: 3px;
+      box-shadow: 0 0 0 2px $white;
+      background-color: $white;
+      transition: border-color .3s, color .3s;
+      &.disabled {
+        color: $greyish-blue-3;
+        pointer-events: none;
+      }
+      &.active {
+        pointer-events: none;
+      }
+      &.passed {
+        background-color: $green-1;
+        border-color: $green-1;
+        color: $white;
+        i {
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}
+
+.steps-summary {
+  padding-top: 45px;
+  h4, p {
+    text-align: center;
+  }
+  h4 {
+    font-size: 16px;
+  }
+  .img {
+    width: 90px;
+    padding: 5px;
+    border: 1px solid $greyish-blue-3;
+    border-radius: 50%;
+    margin: -70px auto 20px;
+    background-color: $white;
+    img {
+      width: 100%;
+      border-radius: 50%;
+    }
+  }
+}
+
+.dark-mode {
+  .steps-progress {
+    background-color: $dark-2;
+    &_bar {
+      border: 1px solid $dark-1;
+    }
+    &_list {
+      .step {
+        box-shadow: 0 0 0 2px $dark-2;
+        background-color: $dark-2;
+        &.disabled {
+          color: $dark-1;
+        }
+        &.passed {
+          background-color: $green-1;
+        }
+      }
+    }
+  }
+  .steps-summary {
+    .img {
+      border-color: $dark-1;
+      background-color: $dark-2;
+    }
+  }
+}
+
+@include media-max-width('lg') {
+  .steps-progress {
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    &::-webkit-scrollbar {
+      width: 0;
+      height: 0;
+      background: transparent;
+    }
+    &_bar {
+      &, .filled {
+        border-radius: 4px;
+      }
+    }
+    &_inner,
+    &_list {
+      width: fit-content;
+    }
+    &_list {
+      .step {
+        width: 26px;
+        height: 26px;
+        margin-right: 60px;
+        font-size: 12px;
+        border-width: 1px;
+        &:first-child {
+          margin-left: 60px;
+        }
+        &.passed {
+          i {
+            font-size: 10px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@include media-max-width('sm') {
+  .steps-progress {
+    margin: 0 -25px;
+  }
+}

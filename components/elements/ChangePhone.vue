@@ -117,7 +117,7 @@ export default {
     },
     getSmsForNewNumber() {
       this.$v.$touch();
-      if (this.$v.$pending || this.$v.$error) return;
+      if (this.$v.$error) return;
       this.$axios.$post('/profile/change_phone_request', {
         phone: this.newPhone.replace(/[^0-9]+/g, ''),
       }).then(() => {
@@ -129,7 +129,7 @@ export default {
     },
     checkCodeForNewNumber() {
       this.$v.$touch();
-      if (this.$v.$pending || this.$v.$error) return;
+      if (this.$v.$error) return;
       this.$axios.$post('/profile/change_phone', {
         phone: this.newPhone.replace(/[^0-9]+/g, ''),
         code: this.code

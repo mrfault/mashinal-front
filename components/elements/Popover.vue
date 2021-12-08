@@ -57,8 +57,13 @@
     },
     watch: {
       show(value) {
-        if (value) document.addEventListener('click', this.handleClick);
-        else document.removeEventListener('click', this.handleClick);
+        if (value) {
+          this.$nuxt.$on('modal-popup-click', this.handleClick);
+          document.addEventListener('click', this.handleClick);
+        } else {
+          this.$nuxt.$off('modal-popup-click', this.handleClick);
+          document.removeEventListener('click', this.handleClick);
+        }
       }
     },
     mounted() {

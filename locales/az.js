@@ -2014,5 +2014,18 @@ export default {
   "снижение токсичных выбросов по нормативу 2018 года": "2018-сi ilin standartına görə zəhərli tullantıların azaldılması",
   "Стандарт": "Standart",
   "такта": "takt",
-  "электро": "Elektrik"
+  "электро": "Elektrik",
+
+  "letter_type_options": [
+    "Nəqliyyat vasitəsindən istifadə edilməsinə dair etibarnamə",
+    "Nəqliyyat vasitəsinə sərəncam verilməsinə dair etibarnamə"
+  ],
+  "step_1_info_title": "Şəxsiyyət vəsiqəsinin təsdiqi & Etibarnamənin növü",
+  "step_2_info_title": "Məlumat yoxlama - Şəxsiyyət vəsiqəsi",
+  "id_serial_number": "Şəxsiyyət vəsiqəsinin seriya və nömrəsi",
+  "id_fin_code": "Şəxsiyyət vəsiqəsinin FİN kodu",
+  "transport_mark": "Nəqliyyat vasitəsinin markası",
+  "transport_registered_number": "Nəqliyyat vasitəsinin dövlət qeydiyyat nişanı",
+  "letter_sender": "Etibar edən şəxs",
+  "letter_recepient": "Etibar edilən şəxs"
 }

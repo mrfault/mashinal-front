@@ -1,6 +1,6 @@
 <template>
   <portal to="modals">
-    <backdrop :class="backdropClass" @click="$emit('close')" v-if="toggle">
+    <backdrop :class="backdropClass" @click="handleBackdropClick" v-if="toggle">
       <template #default="{ show }">
         <transition name="translate-fade">
           <div :class="['modal-popup white-scroll-bg', {[modalClass]: modalClass}]" v-if="show" 
@@ -41,6 +41,11 @@ export default {
   methods: {
     handleEscapeKey(e) {
       if (this.toggle && e.key === 'Escape'){
+        this.$emit('close');
+      }
+    },
+    handleBackdropClick() {
+      if (this.isMobileBreakpoint) {
         this.$emit('close');
       }
     }

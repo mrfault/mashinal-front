@@ -5,7 +5,7 @@
     </div>
     <div :class="['d-flex flex-column', `col${groupBy > 0 ? ('-' + ([1,2,3,4,6,12].includes(groupBy) ? 12 / groupBy : 'auto')) : ''}`, {'mb-2 mb-lg-3': isMultirow}, {'active': isActive(option)}]" v-for="(option, index) in formattedOptions" :key="index">
       <div class="form-group flex-grow-1 d-flex flex-column">
-        <button type="button" :class="[`btn full-width btn--${btnClass}`, {'active': isActive(option), 'disabled':isDisabled(option)}]"
+        <button type="button" :class="[`btn full-width btn--${btnClass}`, {'active': isActive(option), 'disabled':isDisabled(option), 'height-auto': heightAuto }]"
             @click="selectedValue = option.key">
           <slot name="icon" :button="option" />
           <slot name="custom" :button="option" />
@@ -39,7 +39,8 @@
       },
       rowClass: {
         default: ''
-      }
+      },
+      heightAuto: Boolean
     },
     data() {
       return {

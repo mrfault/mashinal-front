@@ -195,7 +195,7 @@ export default {
       if (this.pending) return;
       if (!this.hasSalon) {
         this.$v.$touch();
-        if (this.$v.$pending || this.$v.$error) return;
+        if (this.$v.$error) return;
       }
       this.pending = true;
       try {

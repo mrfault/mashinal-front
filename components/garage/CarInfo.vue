@@ -12,13 +12,21 @@
       </div>
     </div>
     <hr class="mb-0"/>
+    <div class="d-flex justify-content-end mt-2 mt-lg-3">
+      <letter-of-attorney-button :car="car" />
+    </div>
   </div>
 </template>
 
 <script>
+import LetterOfAttorneyButton from '~/components/garage/loa/LetterOfAttorneyButton';
+
 export default {
   props: {
     car: {}
+  },
+  components: { 
+    LetterOfAttorneyButton
   },
   computed: {
     mainSpecs() {

@@ -300,9 +300,12 @@
   &.modal-container {
     width: 1200px;
   }
+  &.full-screen {
+    @include calc-vh(min-height, calc(100vh - 170px));
+  }
 }
 
-.modal-card {
+.card-bordered {
   padding: 23px 25px;
   border: 1px solid $greyish-blue-3;
   border-radius: 4px;
@@ -321,7 +324,7 @@
 }
 
 .dark-mode {
-  .modal-card {
+  .card-bordered {
     border-color: $dark-1;
   }
   .modal-sticky-bottom {
