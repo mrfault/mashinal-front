@@ -2027,5 +2027,6 @@ export default {
   "transport_mark": "Nəqliyyat vasitəsinin markası",
   "transport_registered_number": "Nəqliyyat vasitəsinin dövlət qeydiyyat nişanı",
   "letter_sender": "Etibar edən şəxs",
-  "letter_recepient": "Etibar edilən şəxs"
+  "letter_recepient": "Etibar edilən şəxs",
+  "letter_type": "Etibarnamənin növü"
 }

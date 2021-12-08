@@ -1,7 +1,7 @@
 <template>
   <div class="steps-summary">
     <div class="row">
-      <div class="col-lg-6" v-for="(user, i) in users" :key="i">
+      <div class="col-6" v-for="(user, i) in users" :key="i">
         <div class="card-bordered">
           <div class="img">
             <img :src="user.img || `/img/user.${isDarkMode ? 'jpg' : 'svg'}`" alt="" />
@@ -10,12 +10,12 @@
           <p class="text-dark-blue-3">{{ $t('letter_' + (i === 0 ? 'sender' : 'recepient')) }}</p>
         </div>
       </div>
-      <div class="col-lg-12">
+      <div class="col-12">
         <div class="card-bordered">
           <div class="vehicle-specs">
             <ul>
               <li v-for="(value, key) in specs" :key="key">
-                <span class="w-auto">{{ $t(key) }}</span>
+                <span class="wider">{{ $t(key) }}</span>
                 <span>{{ value }}</span>
               </li>
             </ul>
@@ -28,6 +28,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   props: {
     car: {}
@@ -41,11 +43,19 @@ export default {
     }
   },
   computed: {
+    ...mapGetters('letterOfAttorney', ['stepReceivedData', 'stepSendData', 'currentStep']),
+
     specs() {
-      return {
+      let specs = {
         transport_mark: this.car.mark,
         transport_registered_number: this.car.car_number.replace(/([A-Z]{1,2})/, ' $1 ')
       }
+
+      if (this.currentStep > 1) {
+        specs.letter_type = this.$t('letter_type_options')[this.stepReceivedData['1'].letterType]
+      }
+
+      return specs;
     }
   }
 }

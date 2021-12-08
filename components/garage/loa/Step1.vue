@@ -5,6 +5,7 @@
       :mask="$maskAlphaNumeric('*{+}', ' ')" 
       :placeholder="$t('id_fin_code')" 
       :invalid="$v.finCode.$error"
+      has-popover
     >
       <popover name="fin-code" :width="190">
         -----
@@ -15,6 +16,7 @@
       :mask="$maskAlphaNumeric('*{+}', ' ')" 
       :placeholder="$t('id_serial_number')" 
       :invalid="$v.serialNumber.$error"
+      has-popover
     >
       <popover name="fin-code" :width="190">
         -----
@@ -51,16 +53,28 @@ export default {
     ...mapGetters('letterOfAttorney', ['stepSendData']),
 
     letterType: {
-      get() { return this.stepSendData['1'].letterType; },
-      set(value) { this.updateSendData({ step: 1, param: 'letterType', value }); }
+      get() { 
+        return this.stepSendData['1'].letterType;
+      },
+      set(value) { 
+        this.updateSendData({ step: 1, param: 'letterType', value });
+      }
     },
     finCode: {
-      get() { return this.stepSendData['1'].finCode },
-      set(value) { this.updateSendData({ step: 1, param: 'finCode', value }); }
+      get() { 
+        return this.stepSendData['1'].finCode
+      },
+      set(value) { 
+        this.updateSendData({ step: 1, param: 'finCode', value });
+      }
     },
     serialNumber: {
-      get() { return this.stepSendData['1'].serialNumber; },
-      set(value) { this.updateSendData({ step: 1, param: 'serialNumber', value }); }
+      get() { 
+        return this.stepSendData['1'].serialNumber;
+      },
+      set(value) { 
+        this.updateSendData({ step: 1, param: 'serialNumber', value });
+      }
     },
     letterTypeOptions() {
       return [
@@ -70,7 +84,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('letterOfAttorney', ['updateSendData']),
+    ...mapActions('letterOfAttorney', ['updateSendData', 'updateReceivedData']),
 
     submit() {
       this.$v.$touch();
@@ -78,6 +92,11 @@ export default {
       this.pending = true;
       try {
         this.pending = false;
+        this.updateReceivedData({ 
+          step: 1, 
+          param: 'letterType', 
+          value: this.letterTypeOptions.findIndex(option => option.key === this.letterType) 
+        });
         this.$emit('next');
       } catch (err) {
         this.pending = false;

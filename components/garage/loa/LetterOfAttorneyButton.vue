@@ -14,19 +14,21 @@
     >
       <div class="letter-of-attorney">
         <steps-progress :finished="finished" />
-        <div class="mt-2 mt-lg-3 mb-2 mb-lg-3">
-          <p>{{ $t(`step_${currentStep}_info_title`) }}</p>
-        </div>
-        <div class="row">
-          <div class="col-lg-4">
-            <div class="card-bordered">
-              <component :is="`step-${currentStep}`" @next="stepForward" />
+        <template v-if="!finished">
+          <div class="mt-2 mt-lg-3 mb-2 mb-lg-3">
+            <p>{{ $t(`step_${currentStep}_info_title`) }}</p>
+          </div>
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="card-bordered">
+                <component :is="`step-${currentStep}`" @next="stepForward" />
+              </div>
+            </div>
+            <div class="col-lg-8">
+              <steps-summary :car="car" />
             </div>
           </div>
-          <div class="col-lg-8">
-            <steps-summary :car="car" />
-          </div>
-        </div>
+        </template>
       </div>
     </component>
   </button>

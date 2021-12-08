@@ -160,6 +160,11 @@
       }
     }
   }
+  .steps-summary {
+    .col-lg-6 {
+      margin-top: 45px;
+    }
+  }
 }
 
 @include media-max-width('sm') {

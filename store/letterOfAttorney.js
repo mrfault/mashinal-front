@@ -11,7 +11,7 @@ const getInitialState = () => ({
       serialNumber: ''
     }
   },
-  stepReceivedData: {}
+  stepReceivedData: { 1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 7: {}, 8: {}, 9: {}, 10: {} }
 });
 
 export const state = () => getInitialState();
@@ -37,7 +37,7 @@ export const actions = {
     commit('mutate', { property: 'stepSendData', value: data.value, key: data.step, param: data.param });
   },
   updateReceivedData({ commit }, data) {
-    commit('mutate', { property: 'stepReceivedData', value: data.value, key: data.step });
+    commit('mutate', { property: 'stepReceivedData', value: data.value, key: data.step, param: data.param });
   },
   resetSteps({ commit }) {
     commit('reset', ['maxSteps','step','stepSendData','stepReceivedData']);
