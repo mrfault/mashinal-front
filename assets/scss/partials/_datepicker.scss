@@ -259,14 +259,8 @@
 
 .mx-calendar {
   box-sizing: border-box;
-  width: 368px;
+  width: 100%;
   padding: 6px 12px;
-}
-
-@include media-min-width('lg') {
-  .col-lg-3 > .form-group .mx-calendar {
-    width: 271px;
-  }
 }
 
 .mx-calendar+.mx-calendar {
@@ -280,6 +274,8 @@
   line-height: 34px;
   text-align: center;
   overflow: hidden;
+  max-width: 200px;
+  margin: 0 auto;
 }
 
 .mx-btn-icon-left,
@@ -557,6 +553,7 @@
   }
 
   .mx-datepicker-main {
+    width: 100%;
     color: $white;
     background-color: $dark-1;
     border: 1px solid $grey-1;

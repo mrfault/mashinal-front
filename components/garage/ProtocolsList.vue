@@ -130,7 +130,7 @@ export default {
     mainSpecs(protocol, unite) {
       let getDate = (date) => date && this.$moment(this.$parseDate(date)).format('DD.MM.YYYY');
 
-      let data = {
+      return this.$dataRows({
         car_number: !unite && protocol.car_number,
         fined_fullname: protocol.fullname,
         point: protocol.point,
@@ -145,15 +145,7 @@ export default {
         date_expire: getDate(protocol.expiry_date),
         date: getDate(protocol.date)|| getDate(protocol.action_date),
         protocol_took_place: unite && protocol.address
-      };
-
-      let dataKeys = Object.keys(data).filter(k => data[k]);
-      let middleIndex = Math.ceil(dataKeys.length / 2);
-      let dataCols = this.$chunk(dataKeys, middleIndex); 
-
-      let getData = (keys) => keys.reduce((a, b) => ({...a, [b]: data[b]}), {});
-
-      return (this.isMobileBreakpoint || unite) ? [getData(dataKeys)] : [getData(dataCols[0]), getData(dataCols[1])];
+      }, this.isMobileBreakpoint || unite);
     },
     restSpecs(protocol) {
       return {

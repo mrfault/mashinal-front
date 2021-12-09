@@ -16,12 +16,12 @@
         <steps-progress :finished="finished" />
         <template v-if="!finished">
           <div class="mt-2 mt-lg-3 mb-2 mb-lg-3">
-            <p>{{ $t(`step_${currentStep}_info_title`) }}</p>
+            <h4>{{ $t(`step_${currentRealStep}_info_title`) }}</h4>
           </div>
           <div class="row">
             <div class="col-lg-4">
-              <div class="card-bordered">
-                <component :is="`step-${currentStep}`" @next="stepForward" />
+              <div :class="isMobileBreakpoint ? 'mb-4' : 'card-bordered'">
+                <component :is="`step-${currentRealStep}`" @next="stepForward" />
               </div>
             </div>
             <div class="col-lg-8">
@@ -96,7 +96,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('letterOfAttorney', ['currentStep', 'maxSteps'])
+    ...mapGetters('letterOfAttorney', ['currentStep', 'currentRealStep', 'maxSteps'])
   }
 }
 </script>
