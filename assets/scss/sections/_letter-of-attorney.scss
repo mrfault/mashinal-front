@@ -3,6 +3,28 @@
     font-size: 16px;
     font-weight: 500;
   }
+  .popover {
+    &-wrapper {
+      margin-left: 5px;
+    }
+    &-content {
+      background-color: $white;
+      &_triangle {
+        color: $white;
+        top: -15px;
+      }
+    }
+    &-message {
+      font-size: 16px;
+      font-weight: 500;
+      span {
+        display: inline-block;
+      }
+      img {
+        margin-top: 10px;
+      }
+    }
+  }
 }
 
 .steps-progress {
@@ -189,5 +211,16 @@
 @include media-max-width('sm') {
   .steps-progress {
     margin: 0 -25px;
+  }
+}
+
+@include media-min-width('lg') {
+  .steps-summary {
+    .card-bordered {
+      &_scrollview {
+        min-height: 85px;
+        @include calc-vh(max-height, calc(100vh - 555px));
+      }
+    }
   }
 }

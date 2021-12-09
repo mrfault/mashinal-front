@@ -8,7 +8,7 @@
         <icon name="triangle" />
       </span>
       <p :class="['popover-message', textClass || '']">
-        {{ message }}
+        <span v-html="message"></span>
         <slot />
       </p>
     </div>

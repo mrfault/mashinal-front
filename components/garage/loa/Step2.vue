@@ -77,29 +77,32 @@ export default {
   methods: {
     ...mapActions('letterOfAttorney', ['updateSendData', 'updateReceivedData']),
 
+    updateData() {
+      this.updateReceivedData([
+        { 
+          step: 2, 
+          param: 'gender', 
+          value: this.getGenderOptions.findIndex(option => option.key === this.gender) 
+        },
+        { 
+          step: 2, 
+          param: 'birthDate', 
+          value: this.birthDate 
+        },
+        { 
+          step: 2, 
+          param: 'idExpiryDate', 
+          value: this.idExpiryDate 
+        }
+      ]);
+    },
     submit() {
       this.$v.$touch();
       if (this.pending || this.$v.$error) return;
       this.pending = true;
       try {
         this.pending = false;
-        this.updateReceivedData([
-          { 
-            step: 2, 
-            param: 'gender', 
-            value: this.getGenderOptions.findIndex(option => option.key === this.gender) 
-          },
-          { 
-            step: 2, 
-            param: 'birthDate', 
-            value: this.birthDate 
-          },
-          { 
-            step: 2, 
-            param: 'idExpiryDate', 
-            value: this.idExpiryDate 
-          }
-        ]);
+        this.updateData();
         this.$emit('next');
       } catch (err) {
         this.pending = false;

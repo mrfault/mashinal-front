@@ -313,6 +313,9 @@
   p {
     margin-bottom: 0;
   }
+  .hasVBar.vBarVisible {
+    width: calc(100% + 20px) !important;
+  }
 }
 
 .modal-sticky-bottom {
@@ -620,7 +623,7 @@
       // transform: translate(-50%, 10px);
       transition: all 0.5s cubic-bezier(0.75, -0.02, 0.2, 0.97);
     }
-    svg {
+    svg, img {
       display: block;
       width: 100%;
       height: auto;

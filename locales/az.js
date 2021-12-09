@@ -2046,5 +2046,8 @@ export default {
   "driver_license_expiry_date": "Sürücülük vəsiqəsinin etibarlılıq müddəti",
   "transport_registered_number": "Nəqliyyat vasitəsinin qeydiyyat nömrəsi",
   "registered_number": "Qeydiyyat nömrəsi",
-  "transport_registered_given_date": "Qeydiyyat şəhadətnaməsinin verilmə tarixi"
+  "transport_registered_given_date": "Qeydiyyat şəhadətnaməsinin verilmə tarixi",
+  "fields_pointed_with_arrow": "Doldurulmalı sahələr <span class=\"text-red\">oxla</span> göstərilmişdir",
+  "recepient_id_serial_number": "Etibar edilən şəxsin şəxsiyyət vəsiqəsinin seriya və nömrəsi",
+  "recepient_id_fin_code": "Etibar edilən şəxsin şəxsiyyət vəsiqəsinin FİN kodu"
 }

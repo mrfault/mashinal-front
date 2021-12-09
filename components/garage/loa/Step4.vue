@@ -56,24 +56,27 @@ export default {
   methods: {
     ...mapActions('letterOfAttorney', ['updateSendData', 'updateReceivedData']),
 
+    updateData() {
+      this.updateReceivedData([
+        { 
+          step: 4, 
+          param: 'transportNumber', 
+          value: this.transportNumber 
+        },
+        { 
+          step: 4, 
+          param: 'transportGivenDate', 
+          value: this.transportGivenDate 
+        }
+      ]);
+    },
     submit() {
       this.$v.$touch();
       if (this.pending || this.$v.$error) return;
       this.pending = true;
       try {
         this.pending = false;
-        this.updateReceivedData([
-          { 
-            step: 4, 
-            param: 'transportNumber', 
-            value: this.transportNumber 
-          },
-          { 
-            step: 4, 
-            param: 'transportGivenDate', 
-            value: this.transportGivenDate 
-          }
-        ]);
+        this.updateData();
         this.$emit('next');
       } catch (err) {
         this.pending = false;

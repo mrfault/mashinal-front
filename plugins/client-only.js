@@ -33,7 +33,7 @@ Vue.use(vuescroll, {
       scrollingX: false
     },
     rail: {
-      keepShow: true,
+      // keepShow: true,
       background: '#ffffff ',
       opacity: 0,
       size: '11px',

@@ -23,6 +23,10 @@ const getInitialState = () => ({
     4: {
       transportNumber: '',
       transportGivenDate: ''
+    },
+    5: { 
+      idFinCodeB: '', 
+      idSerialNumberB: ''
     }
   },
   stepReceivedData: { 

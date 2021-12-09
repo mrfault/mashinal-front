@@ -71,29 +71,32 @@ export default {
   methods: {
     ...mapActions('letterOfAttorney', ['updateSendData', 'updateReceivedData']),
 
+    updateData() {
+      this.updateReceivedData([
+        { 
+          step: 3, 
+          param: 'driverLicenseNumber', 
+          value: this.driverLicenseNumber 
+        },
+        { 
+          step: 3, 
+          param: 'driverLicenseGivenDate', 
+          value: this.driverLicenseGivenDate 
+        },
+        { 
+          step: 3, 
+          param: 'driverLicenseExpiryDate', 
+          value: this.driverLicenseExpiryDate 
+        }
+      ]);
+    },
     submit() {
       this.$v.$touch();
       if (this.pending || this.$v.$error) return;
       this.pending = true;
       try {
         this.pending = false;
-        this.updateReceivedData([
-          { 
-            step: 3, 
-            param: 'driverLicenseNumber', 
-            value: this.driverLicenseNumber 
-          },
-          { 
-            step: 3, 
-            param: 'driverLicenseGivenDate', 
-            value: this.driverLicenseGivenDate 
-          },
-          { 
-            step: 3, 
-            param: 'driverLicenseExpiryDate', 
-            value: this.driverLicenseExpiryDate 
-          }
-        ]);
+        this.updateData();
         this.$emit('next');
       } catch (err) {
         this.pending = false;
