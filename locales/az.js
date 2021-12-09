@@ -2016,10 +2016,6 @@ export default {
   "такта": "takt",
   "электро": "Elektrik",
 
-  "letter_type_options": [
-    "Nəqliyyat vasitəsindən istifadə edilməsinə dair etibarnamə",
-    "Nəqliyyat vasitəsinə sərəncam verilməsinə dair etibarnamə"
-  ],
   "step_1_info_title": "Şəxsiyyət vəsiqəsinin təsdiqi & Etibarnamənin növü",
   "step_2_info_title": "Məlumat yoxlama - Şəxsiyyət vəsiqəsi",
   "step_3_info_title": "Məlumat yoxlama - Sürücülük vəsiqəsi",
@@ -2030,9 +2026,12 @@ export default {
   "step_8_info_title": "Nəqliyyat vasitəsinə sərəncam verilməsinə dair etibarnamə - Etibarnamənin müddəti",
   "step_9_info_title": "Nəqliyyat vasitəsinə sərəncam verilməsinə dair etibarnamə - Əlavə məlumat",
   "step_10_info_title": "Nəqliyyat vasitəsinə sərəncam verilməsinə dair etibarnamə - Videoyazı",
-
+  "letter_type_options": [
+    "Nəqliyyat vasitəsindən istifadə edilməsinə dair etibarnamə",
+    "Nəqliyyat vasitəsinə sərəncam verilməsinə dair etibarnamə"
+  ],
   "transport_mark": "Nəqliyyat vasitəsinin markası",
-  "transport_registered_number": "Nəqliyyat vasitəsinin dövlət qeydiyyat nişanı",
+  "transport_registered_sign": "Nəqliyyat vasitəsinin dövlət qeydiyyat nişanı",
   "letter_sender": "Etibar edən şəxs",
   "letter_recepient": "Etibar edilən şəxs",
   "letter_type": "Etibarnamənin növü",
@@ -2045,4 +2044,7 @@ export default {
   "driver_license_serial_number": "Sürücülük vəsiqəsinin seriya nömrəsi",
   "driver_license_given_date": "Sürücülük vəsiqəsinin verilmə tarixi",
   "driver_license_expiry_date": "Sürücülük vəsiqəsinin etibarlılıq müddəti",
+  "transport_registered_number": "Nəqliyyat vasitəsinin qeydiyyat nömrəsi",
+  "registered_number": "Qeydiyyat nömrəsi",
+  "transport_registered_given_date": "Qeydiyyat şəhadətnaməsinin verilmə tarixi"
 }

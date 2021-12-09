@@ -31,6 +31,15 @@
                   </li>
                 </ul>
               </div>
+              <div class="col col-12" v-if="currentRealStep > 4">
+                <hr />
+                <ul>
+                  <li v-for="(spec, key) in specs[2]" :key="key">
+                    <span class="w-auto">{{ $t(key) }}</span>
+                    <span>{{ spec }}</span>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
@@ -60,9 +69,9 @@ export default {
       return users;
     },
     specs() {
-      let specs = [{}, {}];
+      let specs = [{}, {}, {}];
       specs[0].transport_mark = this.car.mark;
-      specs[0].transport_registered_number = this.car.car_number.replace(/([A-Z]{1,2})/, ' $1 ');
+      specs[0].transport_registered_sign = this.car.car_number.replace(/([A-Z]{1,2})/, ' $1 ');
       if (this.currentRealStep > 1) {
         specs[0].letter_type = this.$t('letter_type_options')[this.stepReceivedData['1'].letterType];
         if (this.currentRealStep > 2) {
@@ -75,6 +84,10 @@ export default {
             specs[1].driver_license_expiry_date = this.stepReceivedData['3'].driverLicenseExpiryDate;
           }
           specs[1] = this.$dataRows(specs[1], this.isMobileBreakpoint);
+          if (this.currentRealStep > 4) {
+            specs[2].transport_registered_number = this.stepReceivedData['4'].transportNumber;
+            specs[2].transport_registered_given_date = this.stepReceivedData['4'].transportGivenDate;
+          }
         }
       }
       return specs;

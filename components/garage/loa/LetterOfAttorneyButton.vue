@@ -15,7 +15,7 @@
       <div class="letter-of-attorney">
         <steps-progress :finished="finished" />
         <template v-if="!finished">
-          <div class="mt-2 mt-lg-3 mb-2 mb-lg-3">
+          <div class="mt-2 mt-lg-0 mb-2 mb-lg-3">
             <h4>{{ $t(`step_${currentRealStep}_info_title`) }}</h4>
           </div>
           <div class="row">

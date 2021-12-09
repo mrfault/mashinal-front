@@ -19,6 +19,10 @@ const getInitialState = () => ({
       driverLicenseNumber: '',
       driverLicenseGivenDate: '',
       driverLicenseExpiryDate: ''
+    },
+    4: {
+      transportNumber: '',
+      transportGivenDate: ''
     }
   },
   stepReceivedData: { 
