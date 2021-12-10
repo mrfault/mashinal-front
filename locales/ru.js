@@ -875,7 +875,7 @@ export default {
   "guaranty": "Гарантия",
   "Handout protection": "Защита раздаточной коробки",
   "has_arrest": "Ограничение (арест)",
-  "has_decision": "Подтверженный",
+  "has_decision": "Подтвержденный",
   "has_inspection": "Доступно техобслуживание автомобиля",
   "has_insurance": "Обязательное автострахование доступно",
   "has_insurance_events": "Имеются случаи обязательного автострахования",
