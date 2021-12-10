@@ -27,6 +27,23 @@ const getInitialState = () => ({
     5: { 
       idFinCodeB: '', 
       idSerialNumberB: ''
+    },
+    6: {
+      mobileNotariatConfirm: false
+    },
+    7: {
+      letterPermissions: []
+    },
+    8: {
+    },
+    9: {
+      region: '',
+      senderPhone: '',
+      recepientPhone: '',
+      letterPermissionsTransfer: false,
+      letterConfirmData: false
+    },
+    10: {
     }
   },
   stepReceivedData: { 

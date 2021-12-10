@@ -7,7 +7,7 @@
         :label="$t(option.name)" 
         :checked-value="option.key" 
         :id="''+option.key" 
-        v-model="selectedOptions" 
+        v-model="letterPermissions" 
       />
     </div>
     <button type="submit" :class="['btn btn--green full-width', { pending }]">
@@ -28,6 +28,14 @@ export default {
   computed: {
     ...mapGetters('letterOfAttorney', ['stepSendData']),
 
+    letterPermissions: {
+      get() { 
+        return this.stepSendData['7'].letterPermissions
+      },
+      set(value) { 
+        this.updateSendData({ step: 7, param: 'letterPermissions', value });
+      }
+    },
     letterPermissionOptions() {
       return this.$t('letter_permission_options').map((name, i) => ({ key: i + 1, name }));
     }
@@ -35,8 +43,25 @@ export default {
   methods: {
     ...mapActions('letterOfAttorney', ['updateSendData']),
 
+    updateData() {
+      this.updateReceivedData([
+        { 
+          step: 7, 
+          param: 'letterPermissions', 
+          value: this.letterPermissions
+        }
+      ]);
+    },
     submit() {
-      this.$emit('next');
+      if (this.pending) return;
+      this.pending = true;
+      try {
+        this.pending = false;
+        this.updateData();
+        this.$emit('next');
+      } catch (err) {
+        this.pending = false;
+      }
     }
   }
 }

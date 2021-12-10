@@ -8,7 +8,7 @@
       :height-auto="true"
       :toggle="showSteps"
       :title="$t('send_a_letter_of_attorney')"
-      :modal-class="'modal-container full-screen'"
+      :modal-class="'modal-container letter-of-attorney-popup'"
       @back="close"
       @close="close"
     >
@@ -27,12 +27,16 @@
             </h4>
           </div>
           <div class="row">
-            <div class="col-lg-4">
-              <div :class="isMobileBreakpoint ? 'mb-4' : 'card-bordered'">
-                <component :is="`step-${currentRealStep}`" @next="stepForward" />
+            <div :class="currentRealStep === 10 ? 'col-lg-12' : 'col-lg-4'">
+              <div :class="{[isMobileBreakpoint ? 'mb-4' : 'card-bordered']: currentRealStep !== 10}">
+                <component 
+                  :is="`step-${currentRealStep}`" 
+                  @next="increaseStep" 
+                  @confirm="finished = true" 
+                />
               </div>
             </div>
-            <div class="col-lg-8">
+            <div class="col-lg-8" v-if="currentRealStep !== 10">
               <steps-summary :car="car" />
             </div>
           </div>
@@ -96,18 +100,6 @@ export default {
       this.finished = false;
       this.showSteps = false;
       this.resetSteps();
-    },
-    stepBack() {
-      if (this.currentStep > 1) {
-        this.decreaseStep();
-      }
-    },
-    stepForward() {
-      if (this.currentStep === this.maxSteps) {
-        this.finished = true;
-      } else {
-        this.increaseStep();
-      }
     }
   },
   computed: {

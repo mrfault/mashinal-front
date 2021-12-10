@@ -300,9 +300,6 @@
   &.modal-container {
     width: 1200px;
   }
-  &.full-screen {
-    @include calc-vh(min-height, calc(100vh - 170px));
-  }
 }
 
 .card-bordered {

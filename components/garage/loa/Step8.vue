@@ -21,8 +21,19 @@ export default {
   methods: {
     ...mapActions('letterOfAttorney', ['updateSendData']),
 
+    updateData() {
+
+    },
     submit() {
-      this.$emit('next');
+      if (this.pending) return;
+      this.pending = true;
+      try {
+        this.pending = false;
+        this.updateData();
+        this.$emit('next');
+      } catch (err) {
+        this.pending = false;
+      }
     }
   }
 }

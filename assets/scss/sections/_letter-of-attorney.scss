@@ -1,4 +1,11 @@
 .letter-of-attorney {
+  &-popup {
+    .modal-popup {
+      &_scrollview {
+        height: 1030px;
+      }
+    }
+  }
   h4 {
     font-size: 16px;
     font-weight: 500;
@@ -215,6 +222,14 @@
 }
 
 @include media-min-width('lg') {
+  .letter-of-attorney {
+    .scrollable-text {
+      &_scrollview {
+        min-height: 135px;
+        @include calc-vh(max-height, calc(100vh - 505px));
+      }
+    }
+  }
   .steps-summary {
     .card-bordered {
       &_scrollview {

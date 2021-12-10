@@ -245,6 +245,14 @@ input::-webkit-inner-spin-button {
       width: auto;
       padding-right: 40px;
     }
+    &.wrap-text {
+      height: auto;
+      align-items: flex-start;
+      .text-truncate.skip-truncate {
+        white-space: normal;
+        padding-top: 2px;
+      }
+    }
     .text-truncate {
       margin-bottom: -1px;
       span {
