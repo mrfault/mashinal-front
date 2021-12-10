@@ -99,8 +99,8 @@
           <div class="col-6 col-lg-1-5">
             <div class="form-info text-red">{{ $t('from_possible_left') }}: {{ leftToDeactivate }}</div>
           </div>
-          <div class="col-12 col-lg-3-5"></div>
-          <div class="col-6 col-lg-1-5 mt-2 mt-lg-0">
+          <div class="d-none d-lg-block col-lg-3-5"></div>
+          <div class="col-6 col-lg-1-5 mt-0">
             <button :class="['btn btn--green full-width', { pending, disabled: leftToDeactivate !== 0 }]" @click="deactivateAnouncement">
               {{ $t('confirm') }}
             </button>
