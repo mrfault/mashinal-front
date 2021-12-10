@@ -321,7 +321,7 @@
 .modal-sticky-bottom {
   position: sticky;
   z-index: 1;
-  bottom: 0;
+  bottom: -1px;
   left: 0;
   background-color: $white;
 }
