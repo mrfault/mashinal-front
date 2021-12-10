@@ -1,5 +1,15 @@
 <template>
   <form class="form" @submit.prevent="submit" novalidate>
+    <div class="checkbox-row bg-greyish-blue-2 round-4 mb-2 mb-lg-3 pb-1 pt-1">
+      <form-checkbox 
+        v-for="(option, index) in letterPermissionOptions" 
+        :key="index"
+        :label="$t(option.name)" 
+        :checked-value="option.key" 
+        :id="''+option.key" 
+        v-model="selectedOptions" 
+      />
+    </div>
     <button type="submit" :class="['btn btn--green full-width', { pending }]">
       {{ $t('go_further') }}
     </button>
@@ -17,6 +27,10 @@ export default {
   },
   computed: {
     ...mapGetters('letterOfAttorney', ['stepSendData']),
+
+    letterPermissionOptions() {
+      return this.$t('letter_permission_options').map((name, i) => ({ key: i + 1, name }));
+    }
   },
   methods: {
     ...mapActions('letterOfAttorney', ['updateSendData']),

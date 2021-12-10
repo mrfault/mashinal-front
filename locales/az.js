@@ -2030,6 +2030,15 @@ export default {
     "Nəqliyyat vasitəsindən istifadə edilməsinə dair etibarnamə",
     "Nəqliyyat vasitəsinə sərəncam verilməsinə dair etibarnamə"
   ],
+  "letter_permission_options": [
+    "Sür. hüququ olduqda idarə etmək",
+    "Bağışlamaq",
+    "İpoteka qoymaq",
+    "Sərəncam vermək və digər hərəkətlər",
+    "Qeydiyyata salmaq",
+    "Qeydiyyatdan çıxarmaq",
+    "Ərizə vermək"
+  ],
   "transport_mark": "Nəqliyyat vasitəsinin markası",
   "transport_registered_sign": "Nəqliyyat vasitəsinin dövlət qeydiyyat nişanı",
   "letter_sender": "Etibar edən şəxs",
