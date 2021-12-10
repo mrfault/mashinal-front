@@ -73,8 +73,11 @@ export const actions = {
       commit('mutate', { property: 'stepReceivedData', value: row.value, key: row.step, param: row.param });
     });
   },
-  resetSteps({ commit }) {
-    commit('reset', ['maxSteps','step','stepSendData','stepReceivedData']);
+  resetSteps({ commit, state }) {
+    commit('reset', ['maxSteps','step','stepSendData']);
+    Object.keys(state.stepReceivedData).map(key => {
+      commit('mutate', { property: 'stepReceivedData', value: {}, key });
+    });
   }
 }
 
