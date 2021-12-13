@@ -1,5 +1,9 @@
 <template>
   <form class="form" @submit.prevent="submit" novalidate>
+    <form-text-input class="mb-2 mb-lg-3"
+      v-model="letterExpiryDate" 
+      input-date
+    />
     <template v-if="!hasGeneralPower">
       <form-checkbox 
         :label="$t('letter_permissions_can_be_given')" 
@@ -49,6 +53,14 @@ export default {
       },
       set(value) { 
         this.updateSendData({ key: 'letterConfirmData', value });
+      }
+    },
+    letterExpiryDate: {
+      get() { 
+        return this.stepSendData.letterExpiryDate
+      },
+      set(value) { 
+        this.updateSendData({ key: 'letterExpiryDate', value });
       }
     }
   },

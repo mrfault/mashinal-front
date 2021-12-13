@@ -4,6 +4,7 @@ import { mutate, reset } from '~/lib/vuex-helpers/mutations';
 const getInitialState = () => ({
   step: 1,
   stepSendData: {
+    garageId: '',
     letterType: 1, 
     idFinCode: '', 
     idSerialNumber: '',

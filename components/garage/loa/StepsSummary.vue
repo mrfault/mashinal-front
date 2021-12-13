@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   props: {
@@ -89,10 +89,9 @@ export default {
               specs[2].transport_registered_number = this.stepSendData.transportNumber;
               specs[2].transport_registered_given_date = this.stepSendData.transportGivenDate;
               if (this.currentRealStep > 5) {
-                if (this.hasGeneralPower) {
-                  specs[2].recepient_id_serial_number = this.stepSendData.idSerialNumberB;
-                  specs[2].recepient_id_fin_code = this.stepSendData.idFinCodeB;
-                } else {
+                specs[2].recepient_id_serial_number = this.stepSendData.idSerialNumberB;
+                specs[2].recepient_id_fin_code = this.stepSendData.idFinCodeB;
+                if (!this.hasGeneralPower) {
                   specs[2].recepient_driver_license_serial_number = this.stepSendData.driverLicenseNumberB;
                 }
               }
@@ -103,6 +102,15 @@ export default {
       }
       return specs;
     }
+  },
+  methods: {
+    ...mapActions('letterOfAttorney', ['updateSendData'])
+  },
+  created() {
+    this.updateSendData([
+      { key: 'garageId', value: this.car.id },
+      { key: 'transportNumber', value: this.car.car_number }
+    ]);
   }
 }
 </script>

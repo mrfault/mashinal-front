@@ -1,24 +1,22 @@
 <template>
   <form class="form" @submit.prevent="submit" novalidate>
-    <template v-if="hasGeneralPower">
-      <form-text-input class="mb-2 mb-lg-3"
-        v-model="idFinCodeB" 
-        :mask="$maskAlphaNumeric('*{+}', ' ')" 
-        :placeholder="$t('id_fin_code')" 
-        :invalid="$v.idFinCodeB.$error"
-      />
-      <form-text-input class="mb-2 mb-lg-3"
-        v-model="idSerialNumberB" 
-        :mask="$maskAlphaNumeric('*{+}', ' ')" 
-        :placeholder="$t('id_serial_number')" 
-        :invalid="$v.idSerialNumberB.$error"
-      />
-    </template>
-    <template v-else>
+    <form-text-input class="mb-2 mb-lg-3"
+      v-model="idFinCodeB" 
+      :mask="$maskAlphaNumeric('*{+}', ' ')" 
+      :placeholder="$t('id_fin_code')" 
+      :invalid="$v.idFinCodeB.$error"
+    />
+    <form-text-input class="mb-2 mb-lg-3"
+      v-model="idSerialNumberB" 
+      :mask="$maskAlphaNumeric('*{+}', ' ')" 
+      :placeholder="$t('id_serial_number')" 
+      :invalid="$v.idSerialNumberB.$error"
+    />
+    <template v-if="!hasGeneralPower">
       <form-text-input class="mb-2 mb-lg-3"
         v-model="driverLicenseNumberB" 
         :mask="$maskAlphaNumeric('*{+}', ' ')" 
-        :placeholder="$t('license_serial_number')" 
+        :placeholder="$t('driver_license_serial_number')" 
         :invalid="$v.driverLicenseNumberB.$error"
       />
     </template>
@@ -40,7 +38,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 
-import { requiredIf } from 'vuelidate/lib/validators';
+import { required, requiredIf } from 'vuelidate/lib/validators';
 
 export default {
   data() {
@@ -49,8 +47,8 @@ export default {
     }
   },
   validations: {
-    idFinCodeB: { required: requiredIf(function() { return this.hasGeneralPower }) },
-    idSerialNumberB: { required: requiredIf(function() { return this.hasGeneralPower }) },
+    idFinCodeB: { required },
+    idSerialNumberB: { required },
     driverLicenseNumberB: { required: requiredIf(function() { return !this.hasGeneralPower }) }
   },
   computed: {
@@ -86,10 +84,7 @@ export default {
 
     updateData() {
       this.updateReceivedData([
-        { 
-          key: 'recepientFullName', 
-          value: 'İsmayılov Samir İdris oğlu' 
-        }
+        { key: 'recepientFullName', value: 'İsmayılov Samir İdris oğlu' }
       ]);
     },
     check() {

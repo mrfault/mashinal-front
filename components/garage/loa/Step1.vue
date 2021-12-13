@@ -78,14 +78,8 @@ export default {
 
     updateData() {
       this.updateReceivedData([
-        { 
-          key: 'senderFullName', 
-          value: 'Əhmədov Əhməd Məmməd oğlu' 
-        },
-        { 
-          key: 'hasDriverLicense', 
-          value: true 
-        }
+        { key: 'senderFullName', value: 'Əhmədov Əhməd Məmməd oğlu' },
+        { key: 'hasDriverLicense', value: true }
       ]);
     },
     submit() {

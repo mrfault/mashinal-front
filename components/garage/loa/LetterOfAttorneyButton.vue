@@ -32,7 +32,7 @@
                 <component 
                   :is="`step-${currentRealStep}`" 
                   @next="increaseStep" 
-                  @confirm="finished = true" 
+                  @confirm="finished = true"
                 />
               </div>
             </div>
@@ -104,12 +104,11 @@ export default {
         2: {imgs: ['id-card']},
         3: {imgs: ['drivers-card-front', 'drivers-card-back']},
         4: {imgs: ['tech-passport-front', 'tech-passport-back']},
-        5: {imgs: [this.hasGeneralPower ? 'id-card' : 'drivers-card-front']}
+        5: {imgs: this.hasGeneralPower ? ['id-card'] : ['id-card','drivers-card-front']}
       }
     },
     stepInfoTitle() {
-      let step = this.currentRealStep;
-      return this.$t(`step_${step}${[5].includes(step) ? ('_'+this.stepSendData.letterType) : ''}_info_title`);
+      return this.$t(`step_${this.currentRealStep}_info_title`);
     }
   }
 }

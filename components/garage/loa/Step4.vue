@@ -1,6 +1,7 @@
 <template>
   <form class="form" @submit.prevent="submit" novalidate>
     <form-text-input class="mb-2 mb-lg-3"
+      disabled
       v-model="transportNumber" 
       :mask="$maskAlphaNumeric('*{+}', ' ')" 
       :placeholder="$t('registered_number')" 
