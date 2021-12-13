@@ -30,10 +30,10 @@ export default {
 
     letterPermissions: {
       get() { 
-        return this.stepSendData['7'].letterPermissions
+        return this.stepSendData.letterPermissions
       },
       set(value) { 
-        this.updateSendData({ step: 7, param: 'letterPermissions', value });
+        this.updateSendData({ key: 'letterPermissions', value });
       }
     },
     letterPermissionOptions() {
@@ -44,13 +44,7 @@ export default {
     ...mapActions('letterOfAttorney', ['updateSendData', 'updateReceivedData']),
 
     updateData() {
-      this.updateReceivedData([
-        { 
-          step: 7, 
-          param: 'letterPermissions', 
-          value: this.letterPermissions
-        }
-      ]);
+      
     },
     submit() {
       if (this.pending) return;

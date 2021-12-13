@@ -1,17 +1,27 @@
 <template>
   <form class="form" @submit.prevent="submit" novalidate>
-    <form-text-input class="mb-2 mb-lg-3"
-      v-model="idFinCodeB" 
-      :mask="$maskAlphaNumeric('*{+}', ' ')" 
-      :placeholder="$t('id_fin_code')" 
-      :invalid="$v.idFinCodeB.$error"
-    />
-    <form-text-input class="mb-2 mb-lg-3"
-      v-model="idSerialNumberB" 
-      :mask="$maskAlphaNumeric('*{+}', ' ')" 
-      :placeholder="$t('id_serial_number')" 
-      :invalid="$v.idSerialNumberB.$error"
-    />
+    <template v-if="hasGeneralPower">
+      <form-text-input class="mb-2 mb-lg-3"
+        v-model="idFinCodeB" 
+        :mask="$maskAlphaNumeric('*{+}', ' ')" 
+        :placeholder="$t('id_fin_code')" 
+        :invalid="$v.idFinCodeB.$error"
+      />
+      <form-text-input class="mb-2 mb-lg-3"
+        v-model="idSerialNumberB" 
+        :mask="$maskAlphaNumeric('*{+}', ' ')" 
+        :placeholder="$t('id_serial_number')" 
+        :invalid="$v.idSerialNumberB.$error"
+      />
+    </template>
+    <template v-else>
+      <form-text-input class="mb-2 mb-lg-3"
+        v-model="driverLicenseNumberB" 
+        :mask="$maskAlphaNumeric('*{+}', ' ')" 
+        :placeholder="$t('license_serial_number')" 
+        :invalid="$v.driverLicenseNumberB.$error"
+      />
+    </template>
     <div class="row">
       <div class="col">
         <button type="button" :class="['btn btn--green-outline full-width', { pending }]" @click="check">
@@ -30,7 +40,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 
-import { required } from 'vuelidate/lib/validators';
+import { requiredIf } from 'vuelidate/lib/validators';
 
 export default {
   data() {
@@ -39,26 +49,35 @@ export default {
     }
   },
   validations: {
-    idFinCodeB: { required },
-    idSerialNumberB: { required }
+    idFinCodeB: { required: requiredIf(function() { return this.hasGeneralPower }) },
+    idSerialNumberB: { required: requiredIf(function() { return this.hasGeneralPower }) },
+    driverLicenseNumberB: { required: requiredIf(function() { return !this.hasGeneralPower }) }
   },
   computed: {
-    ...mapGetters('letterOfAttorney', ['stepSendData']),
+    ...mapGetters('letterOfAttorney', ['stepSendData', 'hasGeneralPower']),
 
     idFinCodeB: {
       get() { 
-        return this.stepSendData['5'].idFinCodeB
+        return this.stepSendData.idFinCodeB
       },
       set(value) { 
-        this.updateSendData({ step: 5, param: 'idFinCodeB', value });
+        this.updateSendData({ key: 'idFinCodeB', value });
       }
     },
     idSerialNumberB: {
       get() { 
-        return this.stepSendData['5'].idSerialNumberB;
+        return this.stepSendData.idSerialNumberB;
       },
       set(value) { 
-        this.updateSendData({ step: 5, param: 'idSerialNumberB', value });
+        this.updateSendData({ key: 'idSerialNumberB', value });
+      }
+    },
+    driverLicenseNumberB: {
+      get() { 
+        return this.stepSendData.driverLicenseNumberB;
+      },
+      set(value) { 
+        this.updateSendData({ key: 'driverLicenseNumberB', value });
       }
     }
   },
@@ -68,18 +87,7 @@ export default {
     updateData() {
       this.updateReceivedData([
         { 
-          step: 5, 
-          param: 'idFinCodeB', 
-          value: this.idFinCodeB
-        },
-        { 
-          step: 5, 
-          param: 'idSerialNumberB', 
-          value: this.idSerialNumberB 
-        },
-        { 
-          step: 5, 
-          param: 'recepientFullName', 
+          key: 'recepientFullName', 
           value: 'İsmayılov Samir İdris oğlu' 
         }
       ]);

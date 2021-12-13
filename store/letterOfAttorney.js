@@ -5,50 +5,33 @@ const getInitialState = () => ({
   maxSteps: { 1: 7, 2: 10 },
   step: 1,
   stepSendData: {
-    1: { 
-      letterType: 1, 
-      idFinCode: '', 
-      idSerialNumber: ''
-    },
-    2: { 
-      idExpiryDate: '',
-      birthDate: '', 
-      gender: 1
-    },
-    3: {
-      driverLicenseNumber: '',
-      driverLicenseGivenDate: '',
-      driverLicenseExpiryDate: ''
-    },
-    4: {
-      transportNumber: '',
-      transportGivenDate: ''
-    },
-    5: { 
-      idFinCodeB: '', 
-      idSerialNumberB: ''
-    },
-    6: {
-      mobileNotariatConfirm: false
-    },
-    7: {
-      letterPermissions: []
-    },
-    8: {
-    },
-    9: {
-      region: '',
-      senderPhone: '',
-      recepientPhone: '',
-      letterPermissionsTransfer: false,
-      letterConfirmData: false
-    },
-    10: {
-    }
+    letterType: 1, 
+    idFinCode: '', 
+    idSerialNumber: '',
+    idExpiryDate: '',
+    birthDate: '', 
+    gender: 1,
+    driverLicenseNumber: '',
+    driverLicenseGivenDate: '',
+    driverLicenseExpiryDate: '',
+    transportNumber: '',
+    transportGivenDate: '',
+    idFinCodeB: '', 
+    idSerialNumberB: '',
+    driverLicenseNumberB: '',
+    mobileNotariatConfirm: false,
+    letterPermissions: [],
+    letterExpiryDate: '',
+    region: '',
+    senderPhone: '',
+    recepientPhone: '',
+    letterPermissionsTransfer: false,
+    letterConfirmData: false,
+    videoFile: ''
   },
-  stepReceivedData: { 
-    1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 
-    6: {}, 7: {}, 8: {}, 9: {}, 10: {} 
+  stepReceivedData: {
+    senderFullName: '',
+    recepientFullName: ''
   }
 });
 
@@ -63,9 +46,10 @@ export const getters = {
     }
     return s.step;
   },
-  maxSteps: s => s.maxSteps[s.stepSendData['1'].letterType],
+  maxSteps: s => s.maxSteps[s.stepSendData.letterType],
   stepSendData: s => s.stepSendData,
   stepReceivedData: s => s.stepReceivedData,
+  hasGeneralPower: s => s.stepSendData.letterType === 2
 }
 
 export const actions = {
@@ -81,20 +65,17 @@ export const actions = {
   updateSendData({ commit }, dataRows) {
     if (!(dataRows instanceof Array)) dataRows = [dataRows];
     dataRows.map(row => {
-      commit('mutate', { property: 'stepSendData', value: row.value, key: row.step, param: row.param });
+      commit('mutate', { property: 'stepSendData', value: row.value, key: row.key });
     });
   },
   updateReceivedData({ commit }, dataRows) {
     if (!(dataRows instanceof Array)) dataRows = [dataRows];
     dataRows.map(row => {
-      commit('mutate', { property: 'stepReceivedData', value: row.value, key: row.step, param: row.param });
+      commit('mutate', { property: 'stepReceivedData', value: row.value, key: row.key });
     });
   },
-  resetSteps({ commit, state }) {
-    commit('reset', ['maxSteps','step','stepSendData']);
-    Object.keys(state.stepReceivedData).map(key => {
-      commit('mutate', { property: 'stepReceivedData', value: {}, key });
-    });
+  resetSteps({ commit }) {
+    commit('reset', ['maxSteps','step','stepSendData','stepReceivedData']);
   }
 }
 
@@ -106,7 +87,7 @@ export const mutations = {
     state.step = payload.value;
   },
   setNextStep(state) {
-    if (state.step < state.maxSteps[state.stepSendData['1'].letterType]) {
+    if (state.step < state.maxSteps[state.stepSendData.letterType]) {
       state.step++;
     }
   },

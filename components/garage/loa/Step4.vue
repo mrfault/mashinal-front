@@ -38,18 +38,18 @@ export default {
 
     transportNumber: {
       get() { 
-        return this.stepSendData['4'].transportNumber;
+        return this.stepSendData.transportNumber;
       },
       set(value) { 
-        this.updateSendData({ step: 4, param: 'transportNumber', value });
+        this.updateSendData({ key: 'transportNumber', value });
       }
     },
     transportGivenDate: {
       get() { 
-        return this.stepSendData['4'].transportGivenDate
+        return this.stepSendData.transportGivenDate
       },
       set(value) { 
-        this.updateSendData({ step: 4, param: 'transportGivenDate', value });
+        this.updateSendData({ key: 'transportGivenDate', value });
       }
     }
   },
@@ -57,18 +57,7 @@ export default {
     ...mapActions('letterOfAttorney', ['updateSendData', 'updateReceivedData']),
 
     updateData() {
-      this.updateReceivedData([
-        { 
-          step: 4, 
-          param: 'transportNumber', 
-          value: this.transportNumber 
-        },
-        { 
-          step: 4, 
-          param: 'transportGivenDate', 
-          value: this.transportGivenDate 
-        }
-      ]);
+      
     },
     submit() {
       this.$v.$touch();

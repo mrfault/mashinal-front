@@ -1,6 +1,6 @@
 <template>
   <form class="form" @submit.prevent="submit" novalidate>
-    <template v-if="showCheckboxes">
+    <template v-if="!hasGeneralPower">
       <form-checkbox 
         :label="$t('letter_permissions_can_be_given')" 
         input-name="letter_permissions_can_be_given"
@@ -17,7 +17,7 @@
         class="mb-3"
       />
     </template>
-    <button type="submit" :class="['btn btn--green full-width', { pending, 'disabled': showCheckboxes && !letterConfirmData }]">
+    <button type="submit" :class="['btn btn--green full-width', { pending, 'disabled': !hasGeneralPower && !letterConfirmData }]">
       {{ $t('go_further') }}
     </button>
   </form>
@@ -33,46 +33,30 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('letterOfAttorney', ['stepSendData']),
+    ...mapGetters('letterOfAttorney', ['stepSendData', 'hasGeneralPower']),
 
     letterPermissionsTransfer: {
       get() { 
-        return this.stepSendData['9'].letterPermissionsTransfer
+        return this.stepSendData.letterPermissionsTransfer
       },
       set(value) { 
-        this.updateSendData({ step: 9, param: 'letterPermissionsTransfer', value });
+        this.updateSendData({ key: 'letterPermissionsTransfer', value });
       }
     },
     letterConfirmData: {
       get() { 
-        return this.stepSendData['9'].letterConfirmData
+        return this.stepSendData.letterConfirmData
       },
       set(value) { 
-        this.updateSendData({ step: 9, param: 'letterConfirmData', value });
+        this.updateSendData({ key: 'letterConfirmData', value });
       }
-    },
-    showCheckboxes() {
-      return this.stepSendData['1'].letterType === 1;
     }
   },
   methods: {
     ...mapActions('letterOfAttorney', ['updateSendData']),
 
     updateData() {
-      if (this.showCheckboxes) {
-        this.updateReceivedData([
-          { 
-            step: 9, 
-            param: 'letterPermissionsTransfer', 
-            value: this.letterPermissionsTransfer
-          },
-          { 
-            step: 9, 
-            param: 'letterConfirmData', 
-            value: this.letterConfirmData
-          }
-        ]);
-      }
+     
     },
     submit() {
       if (this.pending) return;

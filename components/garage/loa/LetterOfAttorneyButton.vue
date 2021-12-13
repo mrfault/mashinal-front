@@ -16,7 +16,7 @@
         <steps-progress :finished="finished" />
         <template v-if="!finished">
           <div class="mt-2 mt-lg-0 mb-2 mb-lg-3">
-            <h4>{{ $t(`step_${currentRealStep}_info_title`) }}
+            <h4>{{ stepInfoTitle }}
               <popover name="hint" class="wider"
                 v-if="hints[currentRealStep]"
                 :width="isMobileBreakpoint ? 240 : 550" 
@@ -103,7 +103,12 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('letterOfAttorney', ['currentStep', 'currentRealStep', 'maxSteps'])
+    ...mapGetters('letterOfAttorney', ['stepSendData', 'currentStep', 'currentRealStep', 'maxSteps']),
+
+    stepInfoTitle() {
+      let step = this.currentRealStep;
+      return this.$t(`step_${step}${[5].includes(step) ? ('_'+this.stepSendData.letterType) : ''}_info_title`);
+    }
   }
 }
 </script>

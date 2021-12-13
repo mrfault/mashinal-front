@@ -61,12 +61,12 @@ export default {
     car: {}
   },
   computed: {
-    ...mapGetters('letterOfAttorney', ['stepReceivedData', 'stepSendData', 'currentRealStep']),
+    ...mapGetters('letterOfAttorney', ['stepReceivedData', 'stepSendData', 'currentRealStep', 'hasGeneralPower']),
 
     users() {
       return [
-        { name: this.stepReceivedData['1'].senderFullName }, 
-        { name: this.stepReceivedData['5'].recepientFullName }
+        { name: this.stepReceivedData.senderFullName }, 
+        { name: this.stepReceivedData.recepientFullName }
       ];
     },
     specs() {
@@ -74,23 +74,27 @@ export default {
       specs[0].transport_mark = this.car.mark;
       specs[0].transport_registered_sign = this.car.car_number.replace(/([A-Z]{1,2})/, ' $1 ');
       if (this.currentRealStep > 1) {
-        specs[0].letter_type = this.$t('letter_type_options')[this.stepReceivedData['1'].letterType];
+        specs[0].letter_type = this.$t('letter_type_options')[this.stepSendData.letterType - 1];
         if (this.currentRealStep > 2) {
-          specs[1].birth_date = this.stepReceivedData['2'].birthDate;
-          specs[1].gender = this.stepReceivedData['2'].gender === 0 ? this.$t('male') : this.$t('female');
-          specs[1].id_expiry_date = this.stepReceivedData['2'].idExpiryDate;
+          specs[1].birth_date = this.stepSendData.birthDate;
+          specs[1].gender = this.stepSendData.gender === 1 ? this.$t('male') : this.$t('female');
+          specs[1].id_expiry_date = this.stepSendData.idExpiryDate;
           if (this.currentRealStep > 3) {
-            specs[1].driver_license_serial_number = this.stepReceivedData['3'].driverLicenseNumber;
-            specs[1].driver_license_given_date = this.stepReceivedData['3'].driverLicenseGivenDate;
-            specs[1].driver_license_expiry_date = this.stepReceivedData['3'].driverLicenseExpiryDate;
+            specs[1].driver_license_serial_number = this.stepSendData.driverLicenseNumber;
+            specs[1].driver_license_given_date = this.stepSendData.driverLicenseGivenDate;
+            specs[1].driver_license_expiry_date = this.stepSendData.driverLicenseExpiryDate;
           }
           specs[1] = this.$dataRows(specs[1], this.isMobileBreakpoint);
           if (this.currentRealStep > 4) {
-            specs[2].transport_registered_number = this.stepReceivedData['4'].transportNumber;
-            specs[2].transport_registered_given_date = this.stepReceivedData['4'].transportGivenDate;
+            specs[2].transport_registered_number = this.stepSendData.transportNumber;
+            specs[2].transport_registered_given_date = this.stepSendData.transportGivenDate;
             if (this.currentRealStep > 5) {
-              specs[2].recepient_id_serial_number = this.stepReceivedData['5'].idSerialNumberB;
-              specs[2].recepient_id_fin_code = this.stepReceivedData['5'].idFinCodeB;
+              if (this.hasGeneralPower) {
+                specs[2].recepient_id_serial_number = this.stepSendData.idSerialNumberB;
+                specs[2].recepient_id_fin_code = this.stepSendData.idFinCodeB;
+              } else {
+                specs[2].recepient_driver_license_serial_number = this.stepSendData.driverLicenseNumberB;
+              }
             }
           }
         }

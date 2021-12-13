@@ -33,10 +33,10 @@ export default {
 
     mobileNotariatConfirm: {
       get() { 
-        return this.stepSendData['6'].mobileNotariatConfirm
+        return this.stepSendData.mobileNotariatConfirm
       },
       set(value) { 
-        this.updateSendData({ step: 6, param: 'mobileNotariatConfirm', value });
+        this.updateSendData({ key: 'mobileNotariatConfirm', value });
       }
     }
   },
@@ -44,13 +44,7 @@ export default {
     ...mapActions('letterOfAttorney', ['updateSendData', 'updateReceivedData']),
 
     updateData() {
-      this.updateReceivedData([
-        { 
-          step: 6, 
-          param: 'mobileNotariatConfirm', 
-          value: this.mobileNotariatConfirm
-        }
-      ]);
+      
     },
     submit() {
       if (this.pending) return;

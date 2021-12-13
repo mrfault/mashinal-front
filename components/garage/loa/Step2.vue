@@ -45,26 +45,26 @@ export default {
 
     birthDate: {
       get() { 
-        return this.stepSendData['2'].birthDate
+        return this.stepSendData.birthDate
       },
       set(value) { 
-        this.updateSendData({ step: 2, param: 'birthDate', value });
+        this.updateSendData({ key: 'birthDate', value });
       }
     },
     idExpiryDate: {
       get() { 
-        return this.stepSendData['2'].idExpiryDate;
+        return this.stepSendData.idExpiryDate;
       },
       set(value) { 
-        this.updateSendData({ step: 2, param: 'idExpiryDate', value });
+        this.updateSendData({ key: 'idExpiryDate', value });
       }
     },
     gender: {
       get() { 
-        return this.stepSendData['2'].gender;
+        return this.stepSendData.gender;
       },
       set(value) { 
-        this.updateSendData({ step: 2, param: 'gender', value });
+        this.updateSendData({ key: 'gender', value });
       }
     },
     getGenderOptions() {
@@ -78,23 +78,7 @@ export default {
     ...mapActions('letterOfAttorney', ['updateSendData', 'updateReceivedData']),
 
     updateData() {
-      this.updateReceivedData([
-        { 
-          step: 2, 
-          param: 'gender', 
-          value: this.getGenderOptions.findIndex(option => option.key === this.gender) 
-        },
-        { 
-          step: 2, 
-          param: 'birthDate', 
-          value: this.birthDate 
-        },
-        { 
-          step: 2, 
-          param: 'idExpiryDate', 
-          value: this.idExpiryDate 
-        }
-      ]);
+      
     },
     submit() {
       this.$v.$touch();

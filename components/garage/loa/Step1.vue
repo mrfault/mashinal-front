@@ -44,26 +44,26 @@ export default {
 
     letterType: {
       get() { 
-        return this.stepSendData['1'].letterType;
+        return this.stepSendData.letterType;
       },
       set(value) { 
-        this.updateSendData({ step: 1, param: 'letterType', value });
+        this.updateSendData({ key: 'letterType', value });
       }
     },
     idFinCode: {
       get() { 
-        return this.stepSendData['1'].idFinCode
+        return this.stepSendData.idFinCode
       },
       set(value) { 
-        this.updateSendData({ step: 1, param: 'idFinCode', value });
+        this.updateSendData({ key: 'idFinCode', value });
       }
     },
     idSerialNumber: {
       get() { 
-        return this.stepSendData['1'].idSerialNumber;
+        return this.stepSendData.idSerialNumber;
       },
       set(value) { 
-        this.updateSendData({ step: 1, param: 'idSerialNumber', value });
+        this.updateSendData({ key: 'idSerialNumber', value });
       }
     },
     letterTypeOptions() {
@@ -79,13 +79,7 @@ export default {
     updateData() {
       this.updateReceivedData([
         { 
-          step: 1, 
-          param: 'letterType', 
-          value: this.letterTypeOptions.findIndex(option => option.key === this.letterType) 
-        },
-        { 
-          step: 1, 
-          param: 'senderFullName', 
+          key: 'senderFullName', 
           value: 'Əhmədov Əhməd Məmməd oğlu' 
         }
       ]);

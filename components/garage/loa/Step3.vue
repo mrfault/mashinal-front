@@ -45,26 +45,26 @@ export default {
 
     driverLicenseNumber: {
       get() { 
-        return this.stepSendData['3'].driverLicenseNumber;
+        return this.stepSendData.driverLicenseNumber;
       },
       set(value) { 
-        this.updateSendData({ step: 3, param: 'driverLicenseNumber', value });
+        this.updateSendData({ key: 'driverLicenseNumber', value });
       }
     },
     driverLicenseGivenDate: {
       get() { 
-        return this.stepSendData['3'].driverLicenseGivenDate
+        return this.stepSendData.driverLicenseGivenDate
       },
       set(value) { 
-        this.updateSendData({ step: 3, param: 'driverLicenseGivenDate', value });
+        this.updateSendData({ key: 'driverLicenseGivenDate', value });
       }
     },
     driverLicenseExpiryDate: {
       get() { 
-        return this.stepSendData['3'].driverLicenseExpiryDate;
+        return this.stepSendData.driverLicenseExpiryDate;
       },
       set(value) { 
-        this.updateSendData({ step: 3, param: 'driverLicenseExpiryDate', value });
+        this.updateSendData({ key: 'driverLicenseExpiryDate', value });
       }
     }
   },
@@ -72,23 +72,7 @@ export default {
     ...mapActions('letterOfAttorney', ['updateSendData', 'updateReceivedData']),
 
     updateData() {
-      this.updateReceivedData([
-        { 
-          step: 3, 
-          param: 'driverLicenseNumber', 
-          value: this.driverLicenseNumber 
-        },
-        { 
-          step: 3, 
-          param: 'driverLicenseGivenDate', 
-          value: this.driverLicenseGivenDate 
-        },
-        { 
-          step: 3, 
-          param: 'driverLicenseExpiryDate', 
-          value: this.driverLicenseExpiryDate 
-        }
-      ]);
+      
     },
     submit() {
       this.$v.$touch();

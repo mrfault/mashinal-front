@@ -72,42 +72,42 @@ export default {
 
     region: {
       get() { 
-        return this.stepSendData['9'].region
+        return this.stepSendData.region
       },
       set(value) { 
-        this.updateSendData({ step: 9, param: 'region', value });
+        this.updateSendData({ key: 'region', value });
       }
     },
     senderPhone: {
       get() { 
-        return this.stepSendData['9'].senderPhone
+        return this.stepSendData.senderPhone
       },
       set(value) { 
-        this.updateSendData({ step: 9, param: 'senderPhone', value });
+        this.updateSendData({ key: 'senderPhone', value });
       }
     },
     recepientPhone: {
       get() { 
-        return this.stepSendData['9'].recepientPhone
+        return this.stepSendData.recepientPhone
       },
       set(value) { 
-        this.updateSendData({ step: 9, param: 'recepientPhone', value });
+        this.updateSendData({ key: 'recepientPhone', value });
       }
     },
     letterPermissionsTransfer: {
       get() { 
-        return this.stepSendData['9'].letterPermissionsTransfer
+        return this.stepSendData.letterPermissionsTransfer
       },
       set(value) { 
-        this.updateSendData({ step: 9, param: 'letterPermissionsTransfer', value });
+        this.updateSendData({ key: 'letterPermissionsTransfer', value });
       }
     },
     letterConfirmData: {
       get() { 
-        return this.stepSendData['9'].letterConfirmData
+        return this.stepSendData.letterConfirmData
       },
       set(value) { 
-        this.updateSendData({ step: 9, param: 'letterConfirmData', value });
+        this.updateSendData({ key: 'letterConfirmData', value });
       }
     }
   },
@@ -116,33 +116,7 @@ export default {
     ...mapActions(['getOptions']),
 
     updateData() {
-      this.updateReceivedData([
-        { 
-          step: 9, 
-          param: 'region', 
-          value: this.region
-        },
-        { 
-          step: 9, 
-          param: 'senderPhone', 
-          value: this.senderPhone 
-        },
-        { 
-          step: 9, 
-          param: 'recepientPhone', 
-          value: this.recepientPhone
-        },
-        { 
-          step: 9, 
-          param: 'letterPermissionsTransfer', 
-          value: this.letterPermissionsTransfer
-        },
-        { 
-          step: 9, 
-          param: 'letterConfirmData', 
-          value: this.letterConfirmData
-        }
-      ]);
+      
     },
     submit() {
       this.$v.$touch();
