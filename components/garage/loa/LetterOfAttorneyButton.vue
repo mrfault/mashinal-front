@@ -18,11 +18,11 @@
           <div class="mt-2 mt-lg-0 mb-2 mb-lg-3">
             <h4>{{ stepInfoTitle }}
               <popover name="hint" class="wider"
-                v-if="hints[currentRealStep]"
+                v-if="stepHints[currentRealStep]"
                 :width="isMobileBreakpoint ? 240 : 550" 
                 :message="$t('fields_pointed_with_arrow')"
               >
-                <img :src="`/img/docs/${img}.png`" alt="" v-for="img in (hints[currentRealStep].imgs || [])" :key="img" /> 
+                <img :src="`/img/docs/${img}.png`" alt="" v-for="img in (stepHints[currentRealStep].imgs || [])" :key="img" /> 
               </popover>
             </h4>
           </div>
@@ -83,14 +83,7 @@ export default {
   data() {
     return {
       showSteps: false,
-      finished: false,
-      hints: {
-        1: {imgs: ['id-card']},
-        2: {imgs: ['id-card']},
-        3: {imgs: ['drivers-card-front', 'drivers-card-back']},
-        4: {imgs: ['tech-passport-front', 'tech-passport-back']},
-        5: {imgs: ['id-card']}
-      }
+      finished: false
     }
   },
   methods: {
@@ -103,8 +96,17 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('letterOfAttorney', ['stepSendData', 'currentStep', 'currentRealStep', 'maxSteps']),
+    ...mapGetters('letterOfAttorney', ['stepSendData', 'currentStep', 'currentRealStep', 'maxSteps', 'hasGeneralPower']),
 
+    stepHints() {
+      return {
+        1: {imgs: ['id-card']},
+        2: {imgs: ['id-card']},
+        3: {imgs: ['drivers-card-front', 'drivers-card-back']},
+        4: {imgs: ['tech-passport-front', 'tech-passport-back']},
+        5: {imgs: [this.hasGeneralPower ? 'id-card' : 'drivers-card-front']}
+      }
+    },
     stepInfoTitle() {
       let step = this.currentRealStep;
       return this.$t(`step_${step}${[5].includes(step) ? ('_'+this.stepSendData.letterType) : ''}_info_title`);

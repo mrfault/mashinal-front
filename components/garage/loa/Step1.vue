@@ -81,6 +81,10 @@ export default {
         { 
           key: 'senderFullName', 
           value: 'Əhmədov Əhməd Məmməd oğlu' 
+        },
+        { 
+          key: 'hasDriverLicense', 
+          value: true 
         }
       ]);
     },

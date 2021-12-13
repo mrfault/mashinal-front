@@ -2,7 +2,6 @@ import Vue from 'vue';
 import { mutate, reset } from '~/lib/vuex-helpers/mutations';
 
 const getInitialState = () => ({
-  maxSteps: { 1: 7, 2: 10 },
   step: 1,
   stepSendData: {
     letterType: 1, 
@@ -31,7 +30,8 @@ const getInitialState = () => ({
   },
   stepReceivedData: {
     senderFullName: '',
-    recepientFullName: ''
+    recepientFullName: '',
+    hasDriverLicense: false
   }
 });
 
@@ -40,13 +40,16 @@ export const state = () => getInitialState();
 export const getters = {
   currentStep: s => s.step,
   currentRealStep: (s, g) => {
-    if (g.maxSteps === 7) {
-      if (s.step === 6) return 8;
-      if (s.step === 7) return 10;
-    }
-    return s.step;
+    let steps = [1,2,4,5,8,10];
+    // check if 6th, 7th and 9th steps are required
+    if (g.hasGeneralPower) steps.splice(4,1,6,7,8,9);
+    // check if 3rd step is required
+    if (g.stepReceivedData.hasDriverLicense) steps.splice(2,0,3);
+    return steps[s.step - 1];
   },
-  maxSteps: s => s.maxSteps[s.stepSendData.letterType],
+  maxSteps: (s, g) => {
+    return (g.hasGeneralPower ? 10 : 7) - (g.stepReceivedData.hasDriverLicense ? 0 : 1);
+  },
   stepSendData: s => s.stepSendData,
   stepReceivedData: s => s.stepReceivedData,
   hasGeneralPower: s => s.stepSendData.letterType === 2
@@ -87,9 +90,7 @@ export const mutations = {
     state.step = payload.value;
   },
   setNextStep(state) {
-    if (state.step < state.maxSteps[state.stepSendData.letterType]) {
-      state.step++;
-    }
+    state.step++;
   },
   setPrevStep(state) {
     if (state.step > 1) {

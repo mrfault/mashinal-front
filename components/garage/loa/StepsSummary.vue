@@ -80,23 +80,25 @@ export default {
           specs[1].gender = this.stepSendData.gender === 1 ? this.$t('male') : this.$t('female');
           specs[1].id_expiry_date = this.stepSendData.idExpiryDate;
           if (this.currentRealStep > 3) {
-            specs[1].driver_license_serial_number = this.stepSendData.driverLicenseNumber;
-            specs[1].driver_license_given_date = this.stepSendData.driverLicenseGivenDate;
-            specs[1].driver_license_expiry_date = this.stepSendData.driverLicenseExpiryDate;
-          }
-          specs[1] = this.$dataRows(specs[1], this.isMobileBreakpoint);
-          if (this.currentRealStep > 4) {
-            specs[2].transport_registered_number = this.stepSendData.transportNumber;
-            specs[2].transport_registered_given_date = this.stepSendData.transportGivenDate;
-            if (this.currentRealStep > 5) {
-              if (this.hasGeneralPower) {
-                specs[2].recepient_id_serial_number = this.stepSendData.idSerialNumberB;
-                specs[2].recepient_id_fin_code = this.stepSendData.idFinCodeB;
-              } else {
-                specs[2].recepient_driver_license_serial_number = this.stepSendData.driverLicenseNumberB;
+            if (this.stepReceivedData.hasDriverLicense) {
+              specs[1].driver_license_serial_number = this.stepSendData.driverLicenseNumber;
+              specs[1].driver_license_given_date = this.stepSendData.driverLicenseGivenDate;
+              specs[1].driver_license_expiry_date = this.stepSendData.driverLicenseExpiryDate;
+            }
+            if (this.currentRealStep > 4) {
+              specs[2].transport_registered_number = this.stepSendData.transportNumber;
+              specs[2].transport_registered_given_date = this.stepSendData.transportGivenDate;
+              if (this.currentRealStep > 5) {
+                if (this.hasGeneralPower) {
+                  specs[2].recepient_id_serial_number = this.stepSendData.idSerialNumberB;
+                  specs[2].recepient_id_fin_code = this.stepSendData.idFinCodeB;
+                } else {
+                  specs[2].recepient_driver_license_serial_number = this.stepSendData.driverLicenseNumberB;
+                }
               }
             }
           }
+          specs[1] = this.$dataRows(specs[1], this.isMobileBreakpoint);
         }
       }
       return specs;
