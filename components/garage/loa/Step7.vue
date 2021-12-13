@@ -41,7 +41,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('letterOfAttorney', ['updateSendData']),
+    ...mapActions('letterOfAttorney', ['updateSendData', 'updateReceivedData']),
 
     updateData() {
       this.updateReceivedData([

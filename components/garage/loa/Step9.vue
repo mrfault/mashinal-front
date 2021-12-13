@@ -112,7 +112,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('letterOfAttorney', ['updateSendData']),
+    ...mapActions('letterOfAttorney', ['updateSendData', 'updateReceivedData']),
     ...mapActions(['getOptions']),
 
     updateData() {
