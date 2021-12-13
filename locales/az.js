@@ -1377,6 +1377,16 @@ export default {
     "il",
     "il"
   ],
+  "plural_forms_month": [
+    "ay",
+    "ay",
+    "ay"
+  ],
+  "plural_forms_week": [
+    "həftə",
+    "həftə",
+    "həftə"
+  ],
   "Pneumatic suspension": "Pnevmatik",
   "pnevma": "Pnevmatic",
   "pnevmo_pnevmo": "İki pnevmatik",
@@ -2020,7 +2030,8 @@ export default {
   "step_2_info_title": "Məlumat yoxlama - Şəxsiyyət vəsiqəsi",
   "step_3_info_title": "Məlumat yoxlama - Sürücülük vəsiqəsi",
   "step_4_info_title": "Məlumat yoxlama - Nəqliyyat vasitəsinin qeydiyyat şəhadətnaməsi",
-  "step_5_info_title": "Nəqliyyat vasitəsinə sərəncam verilməsinə dair etibarnamə - Şəxsiyyət vəsiqəsinin təsdiqi",
+  "step_5_1_info_title": "Nəqliyyat vasitəsinə sərəncam verilməsinə dair etibarnamə - Şəxsiyyət və Sürücülük vəsiqələrinin təsdiqi",
+  "step_5_2_info_title": "Nəqliyyat vasitəsinə sərəncam verilməsinə dair etibarnamə - Şəxsiyyət vəsiqəsinin təsdiqi",
   "step_6_info_title": "Nəqliyyat vasitəsinə sərəncam verilməsinə dair etibarnamə - Səlahiyyətlər haqqında məlumat",
   "step_7_info_title": "Nəqliyyat vasitəsinə sərəncam verilməsinə dair etibarnamə - Ötürüləcək səlahiyyətlər",
   "step_8_info_title": "Nəqliyyat vasitəsinə sərəncam verilməsinə dair etibarnamə - Etibarnamənin müddəti",

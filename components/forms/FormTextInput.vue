@@ -14,6 +14,7 @@
           :lang="locale" 
           :input-attr="{readonly: 'readonly', id, maxlength, disabled}"
           :input-class="{invalid, valid, disabled, [`${inputClass}`]:inputClass}"
+          :disabled-date="disabledDate"
           @open="showDatepicker(true)"
           @close="showDatepicker(false)"
         >
@@ -97,7 +98,10 @@
       inputDate: Boolean,
       readonly: Boolean,
       hasInputs: Boolean,
-      hasPopover: Boolean
+      hasPopover: Boolean,
+      disabledDate: {
+        default: () => (() => {})
+      }
     },
     components: {
       DatePicker

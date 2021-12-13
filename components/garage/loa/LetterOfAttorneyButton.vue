@@ -108,7 +108,8 @@ export default {
       }
     },
     stepInfoTitle() {
-      return this.$t(`step_${this.currentRealStep}_info_title`);
+      let step = this.currentRealStep;
+      return this.$t(`step_${step}_${step === 5 ? (this.stepSendData.letterType+'_') : ''}info_title`);
     }
   }
 }

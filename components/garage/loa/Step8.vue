@@ -2,8 +2,20 @@
   <form class="form" @submit.prevent="submit" novalidate>
     <form-text-input class="mb-2 mb-lg-3"
       v-model="letterExpiryDate" 
+      :placeholder="$t('date_till')"
       input-date
+      :disabled-date="disabledDatesRange"
+      @change="rangeShortcut = ''"
     />
+    <div class="mb-2 mb-lg-3">
+      <form-buttons 
+        v-model="rangeShortcut" 
+        :options="rangeShortcutOptions" 
+        :group-by="2" 
+        btn-class="primary-outline" 
+        @change="handleExpiryDate"
+      />
+    </div>
     <template v-if="!hasGeneralPower">
       <form-checkbox 
         :label="$t('letter_permissions_can_be_given')" 
@@ -33,7 +45,8 @@ import { mapGetters, mapActions } from 'vuex';
 export default {
   data() {
     return {
-      pending: false
+      pending: false,
+      rangeShortcut: ''
     }
   },
   computed: {
@@ -62,11 +75,31 @@ export default {
       set(value) { 
         this.updateSendData({ key: 'letterExpiryDate', value });
       }
+    },
+
+    maxDate() {
+      return this.$moment().add('1', 'years');
+    },
+    rangeShortcutOptions() {
+      return [
+        { name: this.$readPlural(1, this.$t('plural_forms_week')), key: 1, params: ['1', 'weeks'] },
+        { name: this.$readPlural(1, this.$t('plural_forms_month')), key: 3, params: ['1', 'months'] },
+        { name: this.$readPlural(6, this.$t('plural_forms_month')), key: 5, params: ['6', 'months'] },
+        { name: this.$readPlural(1, this.$t('plural_forms_year')), key: 6, params: ['1', 'years'] }
+      ];
     }
   },
   methods: {
     ...mapActions('letterOfAttorney', ['updateSendData']),
 
+    disabledDatesRange(date) {
+      return date > this.maxDate;
+    },
+    handleExpiryDate(key) {
+      let addParams = this.rangeShortcutOptions.find(option => option.key === key)?.params;
+      if (!addParams) return;
+      this.letterExpiryDate = this.$moment.min(this.maxDate, this.$moment().add(...addParams)).format('DD.MM.YYYY');
+    },
     updateData() {
      
     },

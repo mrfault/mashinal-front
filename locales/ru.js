@@ -1378,6 +1378,16 @@ export default {
     "года",
     "лет"
   ],
+  "plural_forms_month": [
+    "месяц",
+    "месяца",
+    "месяцев"
+  ],
+  "plural_forms_week": [
+    "неделя",
+    "недели",
+    "недель"
+  ],
   "Pneumatic suspension": "Пневмоподвеска",
   "pnevma": "Пневматическая",
   "pnevmo_pnevmo": "Пневмо-пневмо",
