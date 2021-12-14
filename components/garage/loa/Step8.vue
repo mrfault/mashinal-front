@@ -3,9 +3,10 @@
     <form-text-input class="mb-2 mb-lg-3"
       v-model="letterExpiryDate" 
       :placeholder="$t('date_till')"
-      input-date
+      :invalid="$v.letterExpiryDate.$error"
       :disabled-date="disabledDatesRange"
-      @change="rangeShortcut = ''"
+      @change="rangeShortcut = ''" 
+      input-date
     />
     <div class="mb-2 mb-lg-3">
       <form-buttons 
@@ -42,12 +43,17 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 
+import { required } from 'vuelidate/lib/validators';
+
 export default {
   data() {
     return {
       pending: false,
       rangeShortcut: ''
     }
+  },
+  validations: {
+    letterExpiryDate: { required }
   },
   computed: {
     ...mapGetters('letterOfAttorney', ['stepSendData', 'hasGeneralPower']),
@@ -104,7 +110,8 @@ export default {
      
     },
     submit() {
-      if (this.pending) return;
+      this.$v.$touch();
+      if (this.pending || this.$v.$error) return;
       this.pending = true;
       try {
         this.pending = false;
