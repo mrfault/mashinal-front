@@ -71,8 +71,8 @@ export default {
     },
     specs() {
       let specs = [{}, {}, {}];
-      specs[0].transport_mark = this.car.mark;
-      specs[0].transport_registered_sign = this.car.car_number.replace(/([A-Z]{1,2})/, ' $1 ');
+      specs[0].vehicle_id_mark = this.car.mark;
+      specs[0].vehicle_id_sign = this.car.car_number.replace(/([A-Z]{1,2})/, ' $1 ');
       if (this.currentRealStep > 1) {
         specs[0].letter_type = this.$t('letter_type_options')[this.stepSendData.letterType - 1];
         if (this.currentRealStep > 2) {
@@ -86,8 +86,8 @@ export default {
               specs[1].driver_license_expiry_date = this.stepSendData.driverLicenseExpiryDate;
             }
             if (this.currentRealStep > 4) {
-              specs[2].transport_registered_number = this.stepSendData.transportNumber;
-              specs[2].transport_registered_given_date = this.stepSendData.transportGivenDate;
+              specs[2].vehicle_id_number = this.stepSendData.vehicleIdNumber;
+              specs[2].vehicle_id_given_date = this.stepSendData.vehicleIdGivenDate;
               if (this.currentRealStep > 5) {
                 specs[2].recepient_id_serial_number = this.stepSendData.idSerialNumberB;
                 specs[2].recepient_id_fin_code = this.stepSendData.idFinCodeB;
@@ -109,7 +109,7 @@ export default {
   created() {
     this.updateSendData([
       { key: 'garageId', value: this.car.id },
-      { key: 'transportNumber', value: this.car.car_number }
+      { key: 'carNumber', value: this.car.car_number }
     ]);
   }
 }

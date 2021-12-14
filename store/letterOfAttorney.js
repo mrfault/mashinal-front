@@ -5,6 +5,7 @@ const getInitialState = () => ({
   step: 1,
   stepSendData: {
     garageId: '',
+    carNumber: '',
     letterType: 1, 
     idFinCode: '', 
     idSerialNumber: '',
@@ -14,8 +15,8 @@ const getInitialState = () => ({
     driverLicenseNumber: '',
     driverLicenseGivenDate: '',
     driverLicenseExpiryDate: '',
-    transportNumber: '',
-    transportGivenDate: '',
+    vehicleIdNumber: '',
+    vehicleIdGivenDate: '',
     idFinCodeB: '', 
     idSerialNumberB: '',
     driverLicenseNumberB: '',

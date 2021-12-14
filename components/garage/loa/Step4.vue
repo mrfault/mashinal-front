@@ -1,16 +1,15 @@
 <template>
   <form class="form" @submit.prevent="submit" novalidate>
     <form-text-input class="mb-2 mb-lg-3"
-      disabled
-      v-model="transportNumber" 
+      v-model="vehicleIdNumber" 
       :mask="$maskAlphaNumeric('*{+}', ' ')" 
-      :placeholder="$t('registered_number')" 
-      :invalid="$v.transportNumber.$error"
+      :placeholder="$t('license_serial_number')" 
+      :invalid="$v.vehicleIdNumber.$error"
     />
     <form-text-input class="mb-2 mb-lg-3"
-      v-model="transportGivenDate" 
+      v-model="vehicleIdGivenDate" 
       :placeholder="$t('license_given_date')" 
-      :invalid="$v.transportGivenDate.$error"
+      :invalid="$v.vehicleIdGivenDate.$error"
       input-date
     />
     <button type="submit" :class="['btn btn--green full-width', { pending }]">
@@ -31,26 +30,26 @@ export default {
     }
   },
   validations: {
-    transportNumber: { required },
-    transportGivenDate: { required }
+    vehicleIdNumber: { required },
+    vehicleIdGivenDate: { required }
   },
   computed: {
     ...mapGetters('letterOfAttorney', ['stepSendData']),
 
-    transportNumber: {
+    vehicleIdNumber: {
       get() { 
-        return this.stepSendData.transportNumber;
+        return this.stepSendData.vehicleIdNumber;
       },
       set(value) { 
-        this.updateSendData({ key: 'transportNumber', value });
+        this.updateSendData({ key: 'vehicleIdNumber', value });
       }
     },
-    transportGivenDate: {
+    vehicleIdGivenDate: {
       get() { 
-        return this.stepSendData.transportGivenDate
+        return this.stepSendData.vehicleIdGivenDate
       },
       set(value) { 
-        this.updateSendData({ key: 'transportGivenDate', value });
+        this.updateSendData({ key: 'vehicleIdGivenDate', value });
       }
     }
   },

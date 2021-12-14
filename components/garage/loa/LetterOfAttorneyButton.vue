@@ -22,7 +22,7 @@
                 :width="isMobileBreakpoint ? 240 : 550" 
                 :message="$t('fields_pointed_with_arrow')"
               >
-                <img :src="`/img/docs/${img}.png`" alt="" v-for="img in (stepHints[currentRealStep].imgs || [])" :key="img" /> 
+                <img :src="`/img/docs/${img}.jpg`" alt="" v-for="img in (stepHints[currentRealStep].imgs || [])" :key="img" /> 
               </popover>
             </h4>
           </div>
