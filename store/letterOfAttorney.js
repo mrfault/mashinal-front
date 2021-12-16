@@ -33,7 +33,8 @@ const getInitialState = () => ({
   stepReceivedData: {
     senderFullName: '',
     recepientFullName: '',
-    hasDriverLicense: false
+    hasDriverLicense: false,
+    runningText: ''
   }
 });
 
@@ -42,6 +43,7 @@ export const state = () => getInitialState();
 export const getters = {
   currentStep: s => s.step,
   currentRealStep: (s, g) => {
+    return 10;
     let steps = [1,2,4,5,8,10];
     // check if 6th, 7th and 9th steps are required
     if (g.hasGeneralPower) steps.splice(4,1,6,7,8,9);

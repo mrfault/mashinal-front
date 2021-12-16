@@ -16,7 +16,7 @@
         <steps-progress :finished="finished" />
         <template v-if="!finished">
           <div class="mt-2 mt-lg-0 mb-2 mb-lg-3">
-            <h4>{{ stepInfoTitle }}
+            <h4 v-if="currentRealStep !== 10">{{ stepInfoTitle }}
               <popover name="hint" class="wider"
                 v-if="stepHints[currentRealStep]"
                 :width="isMobileBreakpoint ? 240 : 550" 
