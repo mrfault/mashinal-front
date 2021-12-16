@@ -142,7 +142,7 @@ export default {
       if (!this.cars.data) return [];
       return this.cars.data.filter(car => car.status === 1).map(car => ({
         id: car.id,
-        car_number: car.car_number.replace(/([A-Z]{1,2})/, ' $1 '),
+        car_number: this.$readCarNumber(car.car_number),
         created_date: this.$moment(car.created_date).format('DD.MM.YYYY')
       }));
     },

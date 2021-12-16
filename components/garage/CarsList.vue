@@ -15,7 +15,7 @@
       <div class="garage_go-back card with-margins mb-2 mb-lg-0">
         <div class="d-flex align-items-center justify-content-between">
           <icon name="chevron-left" @click.native.stop="showCarsList" class="cursor-pointer" />
-          <span>{{ activeCarNumber }}</span>
+          <span>{{ $readCarNumber(activeCar.car_number) }}</span>
         </div>
       </div>
     </div>
@@ -77,9 +77,6 @@ export default {
     },
     activeCar() {
       return this.activeCars.find(car => car.id === this.activeCarId) || this.activeCars?.[0];
-    },
-    activeCarNumber() {
-      return this.activeCar?.car_number.replace(/([A-Z]{1,2})/, ' $1 ');
     }
   },
   methods: {

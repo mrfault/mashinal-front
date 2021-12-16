@@ -45,7 +45,7 @@
                       <protocol-files-button :protocol="protocol">
                         <div class="card garage_protocol-info">
                           <div class="garage_protocol-titles">
-                            <h3 class="text-normal">{{ getCarNumber(protocol) }}</h3>
+                            <h3 class="text-normal">{{ $readCarNumber(protocol.car_number) }}</h3>
                             <h3 class="text-normal text-dark-blue-2">{{ getTitle(protocol) }}</h3>
                             <hr />
                           </div>
@@ -73,9 +73,9 @@
                                 </span>
                               </div>
                               <div class="col-6">
-                                <button class="btn btn--green full-width disabled" >
+                                <a :href="getPayLink(protocol)" target="_blank" rel="noopener" class="btn btn--green full-width" >
                                   {{ $t('pay_online') }}
-                                </button>
+                                </a>
                               </div>
                             </div>
                           </template>
@@ -91,9 +91,9 @@
                       </span>
                     </div>
                     <div class="col-6 col-lg-1-5 order-lg-3">
-                      <button class="btn btn--green full-width disabled" >
+                      <a :href="getPayLink(protocol)" target="_blank" rel="noopener" class="btn btn--green full-width" >
                         {{ $t('pay_online') }}
-                      </button>
+                      </a>
                     </div>
                   </template>
                 </div>
@@ -124,8 +124,9 @@ export default {
     getTitle(protocol) {
       return `${protocol.protocol_series || ''}${protocol.protocol_number}`;
     },
-    getCarNumber(protocol) {
-      return protocol.car_number.replace(/([A-Z]{1,2})/, ' $1 ');
+    getPayLink(protocol) {
+      let agency = protocol.protocol_series === 'BNA' ? 'bna' : 'din';
+      return `https://pay.api.az/${agency}/${protocol.protocol_series}${protocol.protocol_number}`;
     },
     mainSpecs(protocol, unite) {
       let getDate = (date) => date && this.$moment(this.$parseDate(date)).format('DD.MM.YYYY');

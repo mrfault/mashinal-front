@@ -98,6 +98,9 @@ export default function({ app, route, store }, inject) {
   inject('readPlural', (n, forms, count = true) => {
     return `${count ? `${n} ` : ''}${forms[(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2) ]}`;
   });
+  inject('readCarNumber', (number) => {
+    return number.replace(/([A-Z]{1,2})/, ' $1 ');
+  });  
   // masks
   inject('maskAlphaNumeric', (mask, placeholder = '_') => {
     return { mask, showMaskOnHover: false, definitions: { '*': { casing: 'upper', validator: '[a-zA-Z0-9]' } }, placeholder };
