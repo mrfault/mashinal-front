@@ -40,6 +40,7 @@ const getInitialState = () => ({
     recepientFatherName: '',
     recepientImage: '',
     runningText: '',
+    attorneyId: '',
     questions: []
   }
 });
@@ -49,15 +50,15 @@ export const state = () => getInitialState();
 export const getters = {
   currentStep: s => s.step,
   currentRealStep: (s, g) => {
-    let steps = [1,2,4,5,8,10];
-    // check if 6th, 7th and 9th steps are required
-    if (g.hasGeneralPower) steps.splice(4,1,6,7,8,9);
+    let steps = [1,2,4,5,8,9,10];
+    // check if 6th and 7th steps are required
+    if (g.hasGeneralPower) steps.splice(3,0,6,7);
     // check if 3rd step is required
     if (g.stepReceivedData.hasDriverLicense) steps.splice(2,0,3);
     return steps[s.step - 1];
   },
   maxSteps: (s, g) => {
-    return (g.hasGeneralPower ? 10 : 7) - (g.stepReceivedData.hasDriverLicense ? 0 : 1);
+    return (g.hasGeneralPower ? 10 : 8) - (g.stepReceivedData.hasDriverLicense ? 0 : 1);
   },
   stepSendData: s => s.stepSendData,
   stepReceivedData: s => s.stepReceivedData,
@@ -121,8 +122,7 @@ export const actions = {
     dispatch('updateReceivedData', [
       { key: 'isOwnVehicle', value: res.data.isOwnVehicle },
       { key: 'hasDriverLicense', value: res.data.haveDriverLicense },
-      { key: 'questions', value: res.data.questions || [] },
-      { key: 'runningText', value: res.data.runningText || '' }
+      { key: 'questions', value: res.data.questions || [] }
     ]);
     return res.data.have_access;
   },
@@ -163,12 +163,8 @@ export const actions = {
     });
     return res.data.have_access;
   },
-  async payForSubmission({ dispatch, state: { stepSendData, stepReceivedData } }, data) {
-    let formData = new FormData();
-    
-    Object.entries({
-      pay_type: data.pay_type,
-      card_id: data.card_id,
+  async checkAllData({ dispatch, state: { stepSendData, stepReceivedData } }, data) {
+    let checkData = {
       garage_id: stepSendData.garageId,
       idFinCode: stepSendData.idFinCode,
       idSerialNumber: stepSendData.idSerialNumber,
@@ -176,28 +172,41 @@ export const actions = {
       idFinCodeB: stepSendData.idFinCodeB,
       idSerialNumberB: stepSendData.idSerialNumberB,
       driverLicenseNumberB: stepSendData.driverLicenseNumberB,
-      videoFile: stepSendData.videoFile,
       letterExpiryDate: stepSendData.letterExpiryDate,
       letterPermissionsTransfer: stepSendData.letterPermissionsTransfer,
       letterType: stepSendData.letterType,
-      isOwnVehicle: stepReceivedData.isOwnVehicle
-    }).map(([key, value]) => { formData.append(key, value)});
-
-    stepSendData.letterType === 2 && Object.entries({
-      right_manage: stepSendData.letterPermissions.includes(1),
-      right_gift: stepSendData.letterPermissions.includes(2),
-      right_mortgage: stepSendData.letterPermissions.includes(3),
-      right_transfer_trust: stepSendData.letterPermissions.includes(4),
-      right_register: stepSendData.letterPermissions.includes(5),
-      right_unregister: stepSendData.letterPermissions.includes(6),
-      right_on_my_behalf: stepSendData.letterPermissions.includes(7),
+      isOwnVehicle: stepReceivedData.isOwnVehicle,
       answers: JSON.stringify([
         { answer: stepSendData.region, questionId: stepReceivedData.questions[0].id },
         { answer: stepSendData.senderPhone, questionId: stepReceivedData.questions[1].id },
         { answer: stepSendData.recepientPhone, questionId: stepReceivedData.questions[2].id }
       ])
-    }).map(([key, value]) => { formData.append(key, value)});
+    };
     
+    stepSendData.letterType === 2 && [
+      'right_manage', 'right_gift', 'right_mortgage', 'right_transfer_trust',
+      'right_register', 'right_unregister', 'right_on_my_behalf'
+    ].map((key, i) => { checkData[key] = stepSendData.letterPermissions.includes(i + 1) });
+    
+    const res = await this.$axios.$post(`/attorney/check_all_data`, checkData);
+
+    dispatch('updateReceivedData', [
+      { key: 'attorneyId', value: res.data.attorney_id || '' },
+      { key: 'runningText', value: res.data.runningText || '' }
+    ]);
+
+    return res.data.have_access;
+  },
+  async payForSubmission({ dispatch, state: { stepSendData, stepReceivedData } }, data) {
+    let formData = new FormData();
+    
+    Object.entries({
+      pay_type: data.pay_type,
+      card_id: data.card_id,
+      videoFile: stepSendData.videoFile,
+      attorney_id: stepReceivedData.attorneyId
+    }).map(([key, value]) => { formData.append(key, value)});
+
     const res = await this.$axios.$post(`/attorney/pay?is_mobile=${data.is_mobile}`, formData);
     return res;
   },

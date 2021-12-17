@@ -176,8 +176,8 @@ export default {
       }
     },
     stepInfoTitle() {
-      let step = this.currentRealStep;
-      return this.$t(`step_${step}_${step === 5 ? (this.stepSendData.letterType+'_') : ''}info_title`);
+      let step = this.currentRealStep, type = this.stepSendData.letterType;
+      return this.$t(`step_${step}_${step === 5 ? (type+'_') : ''}info_title`, { type: this.$t('letter_type_options')[type - 1] });
     },
 
     price() {

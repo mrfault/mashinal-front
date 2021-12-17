@@ -211,6 +211,9 @@ Vue.use({
           return [/iPhone/i,/iPad/i,/iPod/i,/Android/i,/BlackBerry/i,/Windows Phone/i]
             .some(os => navigator.userAgent.match(os));
         },
+        isPortraitOrientation() {
+          return window?.matchMedia('(orientation: portrait)').matches || false;
+        },
         isDarkMode() {
           return this.colorMode === 'dark';
         },

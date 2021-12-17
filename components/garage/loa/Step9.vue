@@ -104,12 +104,24 @@ export default {
     }
   },
   methods: {
-    ...mapActions('letterOfAttorney', ['updateSendData']),
+    ...mapActions('letterOfAttorney', ['updateSendData', 'checkAllData']),
 
-    submit() {
+    async submit() {
       this.$v.$touch();
-      if (this.$v.$error) return;
-      this.$emit('next');
+      if (this.pending || this.$v.$error) return;
+      this.pending = true;
+      try {
+        const isValid = await this.checkAllData();
+        if (isValid) {
+          this.pending = false;
+          this.$emit('next');
+        } else {
+          this.pending = false;
+          this.$toasted.error(this.$t('data_is_not_valid'));
+        }
+      } catch (err) {
+        this.pending = false;
+      }
     }
   }
 }

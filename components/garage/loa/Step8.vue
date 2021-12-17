@@ -17,24 +17,7 @@
         @change="handleExpiryDate"
       />
     </div>
-    <template v-if="!hasGeneralPower">
-      <form-checkbox 
-        :label="$t('letter_permissions_can_be_given')" 
-        input-name="letter_permissions_can_be_given"
-        v-model="letterPermissionsTransfer" 
-        transparent skip-truncate
-        class="mb-2 mb-lg-3"
-      />
-      <hr class="mt-0 mb-2 mb-lg-3" />
-      <form-checkbox 
-        :label="$t('letter_data_confirm')" 
-        input-name="letter_data_confirm"
-        v-model="letterConfirmData" 
-        transparent skip-truncate
-        class="mb-3"
-      />
-    </template>
-    <button type="submit" :class="['btn btn--green full-width', { pending, 'disabled': !hasGeneralPower && !letterConfirmData }]">
+    <button type="submit" :class="['btn btn--green full-width', { pending }]">
       {{ $t('go_further') }}
     </button>
   </form>
@@ -58,22 +41,6 @@ export default {
   computed: {
     ...mapGetters('letterOfAttorney', ['stepSendData', 'stepReceivedData', 'hasGeneralPower']),
 
-    letterPermissionsTransfer: {
-      get() { 
-        return this.stepSendData.letterPermissionsTransfer;
-      },
-      set(value) { 
-        this.updateSendData({ key: 'letterPermissionsTransfer', value });
-      }
-    },
-    letterConfirmData: {
-      get() { 
-        return this.stepSendData.letterConfirmData;
-      },
-      set(value) { 
-        this.updateSendData({ key: 'letterConfirmData', value });
-      }
-    },
     letterExpiryDate: {
       get() { 
         return this.stepSendData.letterExpiryDate;
