@@ -52,7 +52,7 @@ export const getters = {
   currentRealStep: (s, g) => {
     let steps = [1,2,4,5,8,9,10];
     // check if 6th and 7th steps are required
-    if (g.hasGeneralPower) steps.splice(3,0,6,7);
+    if (g.hasGeneralPower) steps.splice(4,0,6,7);
     // check if 3rd step is required
     if (g.stepReceivedData.hasDriverLicense) steps.splice(2,0,3);
     return steps[s.step - 1];
