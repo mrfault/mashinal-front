@@ -49,7 +49,7 @@ export default {
     if (!window.Record) window.Record = Record;
     if (!window.RecordRTC) window.RecordRTC = RecordRTC;
     // define player size
-    let size = this.isMobileBreakpoint ? [441,600] : [1150,600];
+    let size = this.isMobileBreakpoint ? (this.isMobileDevice ? [600,441] : [441,600]) : [1150,600];
     // init player
     this.player = videojs(this.$refs.video, {
       controls: false,
