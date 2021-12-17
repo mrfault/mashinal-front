@@ -1408,7 +1408,8 @@ main {
 
 .toasted-container.top-right {
   top: 8px !important;
-  right: 18px !important;
+  right: calc(50% - 600px) !important;
+  left: auto !important;
   .toasted.toasted-primary {
     &:not(:first-child) {
       display: none !important;

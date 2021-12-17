@@ -180,7 +180,10 @@ export const actions = {
       letterExpiryDate: stepSendData.letterExpiryDate,
       letterPermissionsTransfer: stepSendData.letterPermissionsTransfer,
       letterType: stepSendData.letterType,
-      isOwnVehicle: stepReceivedData.isOwnVehicle,
+      isOwnVehicle: stepReceivedData.isOwnVehicle
+    }).map(([key, value]) => { formData.append(key, value)});
+
+    stepSendData.letterType === 2 && Object.entries({
       right_manage: stepSendData.letterPermissions.includes(1),
       right_gift: stepSendData.letterPermissions.includes(2),
       right_mortgage: stepSendData.letterPermissions.includes(3),
