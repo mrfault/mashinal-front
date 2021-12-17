@@ -75,19 +75,21 @@ export default {
     }
   },
   methods: {
-    ...mapActions('letterOfAttorney', ['updateSendData', 'updateReceivedData']),
+    ...mapActions('letterOfAttorney', ['updateSendData', 'checkPinCode']),
 
-    updateData() {
-      
-    },
-    submit() {
+    async submit() {
       this.$v.$touch();
       if (this.pending || this.$v.$error) return;
       this.pending = true;
       try {
-        this.pending = false;
-        this.updateData();
-        this.$emit('next');
+        const isValid = await this.checkPinCode();
+        if (isValid) {
+          this.pending = false;
+          this.$emit('next');
+        } else {
+          this.pending = false;
+          this.$toasted.error(this.$t('data_is_not_valid'));
+        }
       } catch (err) {
         this.pending = false;
       }

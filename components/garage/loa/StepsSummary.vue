@@ -4,9 +4,13 @@
       <div class="col-6" v-for="(user, i) in users" :key="i">
         <div class="card-bordered">
           <div class="img">
-            <img :src="user.img || `/img/user.${isDarkMode ? 'jpg' : 'svg'}`" alt="" />
+            <img :src="user.image || `/img/user.${isDarkMode ? 'jpg' : 'svg'}`" alt="" />
           </div>
-          <h4><span :class="{'empty': !user.name}">{{ user.name || '----- ---' }}</span></h4>
+          <h4>
+            <span :class="{'empty': !user.name}" 
+              v-html="user.name ? `${user.name}<br/>${user.fatherName}` : '----- ---'">
+            </span>
+          </h4>
           <p class="text-dark-blue-3">{{ $t('letter_' + (i === 0 ? 'sender' : 'recepient')) }}</p>
         </div>
       </div>
@@ -65,8 +69,16 @@ export default {
 
     users() {
       return [
-        { name: this.stepReceivedData.senderFullName }, 
-        { name: this.stepReceivedData.recepientFullName }
+        { 
+          name: this.stepReceivedData.senderFullName, 
+          fatherName: this.stepReceivedData.senderFatherName , 
+          image: this.stepReceivedData.senderImage 
+        }, 
+        { 
+          name: this.stepReceivedData.recepientFullName, 
+          fatherName: this.stepReceivedData.recepientFatherName , 
+          image: this.stepReceivedData.recepientImage 
+        }
       ];
     },
     specs() {

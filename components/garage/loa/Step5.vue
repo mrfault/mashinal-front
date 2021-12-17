@@ -22,12 +22,12 @@
     </template>
     <div class="row">
       <div class="col">
-        <button type="button" :class="['btn btn--green-outline full-width', { pending }]" @click="check">
+        <button type="button" :class="['btn btn--green-outline full-width', { 'pending': pending && !confirmed }]" @click="check">
           <icon name="search" /> {{ $t('find') }}
         </button>
       </div>
       <div class="col">
-        <button type="submit" :class="['btn btn--green full-width', { pending }]">
+        <button type="submit" :class="['btn btn--green full-width', { 'pending': pending && confirmed }]">
           {{ $t('go_further') }}
         </button>
       </div>
@@ -43,7 +43,8 @@ import { required, requiredIf } from 'vuelidate/lib/validators';
 export default {
   data() {
     return {
-      pending: false
+      pending: false,
+      confirmed: false
     }
   },
   validations: {
@@ -80,35 +81,38 @@ export default {
     }
   },
   methods: {
-    ...mapActions('letterOfAttorney', ['updateSendData', 'updateReceivedData']),
+    ...mapActions('letterOfAttorney', ['updateSendData', 'checkOtherUserInfo', 'checkDriverLicense', 'hasGeneralPower']),
 
-    updateData() {
-      this.updateReceivedData([
-        { key: 'recepientFullName', value: 'İsmayılov Samir İdris oğlu' }
-      ]);
-    },
-    check() {
+    async submit(confirm = true) {
       this.$v.$touch();
       if (this.pending || this.$v.$error) return;
       this.pending = true;
+      this.confirmed = confirm;
       try {
-        this.pending = false;
-        this.updateData();
+        const isValidLicense = !this.hasGeneralPower && await this.checkDriverLicense();
+        if (isValidLicense || this.hasGeneralPower) {
+          try {
+            const isValid = await this.checkOtherUserInfo();
+            if (isValid) {
+              this.pending = false;
+              confirm && this.$emit('next');
+            } else {
+              this.pending = false;
+              this.$toasted.error(this.$t('data_is_not_valid'));
+            }
+          } catch (err) {
+            this.pending = false;
+          }
+        } else {
+          this.pending = false;
+          this.$toasted.error(this.$t('data_is_not_valid'));
+        }
       } catch (err) {
         this.pending = false;
       }
     },
-    submit() {
-      this.$v.$touch();
-      if (this.pending || this.$v.$error) return;
-      this.pending = true;
-      try {
-        this.pending = false;
-        this.updateData();
-        this.$emit('next');
-      } catch (err) {
-        this.pending = false;
-      }
+    async check() {
+      await this.submit(false);
     }
   }
 }

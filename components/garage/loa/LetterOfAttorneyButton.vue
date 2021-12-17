@@ -32,7 +32,7 @@
                 <component 
                   :is="`step-${currentRealStep}`" 
                   @next="increaseStep" 
-                  @confirm="finished = true"
+                  @confirm="finished = true, showSteps = false, showPaymentModal = true"
                 />
               </div>
             </div>
@@ -43,11 +43,43 @@
         </template>
       </div>
     </component>
+    <modal-popup 
+      :toggle="showPaymentModal" 
+      :title="$t('payment')"
+      :overflow-hidden="isMobileBreakpoint"
+      @close="showPaymentModal = false, close()"
+    >
+      <h4 class="mb-2">{{ $t('payment_method') }}</h4>
+      <form-buttons v-model="paymentMethod" :options="paymentMethodOptions" :group-by="2" />
+      <select-banking-card v-model="bankingCard" class="mt-2 mt-lg-3" v-show="paymentMethod === 'card'" />
+      <terminal-info-button popup-name="letter-of-attorney-popup" />
+      <div :class="{'modal-sticky-bottom': isMobileBreakpoint}">
+        <hr/>
+        <div class="row">
+          <div class="col-6">
+            <p class="text-medium mb-0">{{ $t('total') }}</p>
+            <p class="text-medium text-dark-blue-2 mb-0">{{ price }} ₼</p>
+          </div>
+          <div class="col-6">
+            <button :class="['btn btn--green full-width', { pending }]" @click="pay">
+              {{ $t('pay') }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </modal-popup>
+    <terminal-info-popup 
+      name="letter-of-attorney-popup"
+      @open="showPaymentModal = false" 
+      @close="showPaymentModal = true"
+    />
   </button>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
+
+import { PaymentMixin } from '~/mixins/payment';
 
 import StepsProgress from '~/components/garage/loa/StepsProgress';
 import StepsSummary from '~/components/garage/loa/StepsSummary';
@@ -80,15 +112,50 @@ export default {
     Step9,
     Step10
   },
+  mixins: [PaymentMixin],
   data() {
     return {
       showSteps: false,
-      finished: false
+      finished: false,
+      pending: false
     }
   },
   methods: {
-    ...mapActions('letterOfAttorney', ['decreaseStep', 'increaseStep', 'resetSteps']),
-
+    ...mapActions('letterOfAttorney', ['increaseStep', 'resetSteps', 'payForSubmission']),
+    
+    async pay() {
+      if (this.pending) return;
+      this.pending = true;
+      try {
+        const res = await this.payForSubmission({
+          card_id: this.bankingCard,
+          pay_type: this.paymentMethod,
+          is_mobile: this.isMobileBreakpoint
+        });
+        if (this.paymentMethod === 'card' && !this.bankingCard) {
+          this.pending = false;
+          this.showPaymentModal = false;
+          this.close();
+          this.handlePayment(res, false, this.$t('letter_of_attorney_submitted'), 'v2');
+        } else {
+          await Promise.all([
+            this.$nuxt.refresh(),
+            this.$auth.fetchUser()
+          ]);
+          this.pending = false;
+          this.showPaymentModal = false;
+          this.bankingCard = '';
+          this.close();
+          this.updatePaidStatus({ 
+            type: 'success', 
+            text: this.$t('letter_of_attorney_submitted'), 
+            title: this.$t('success_payment') 
+          });
+        }
+      } catch(err) {
+        this.pending = false;
+      }
+    },
     close() {
       this.finished = false;
       this.showSteps = false;
@@ -110,6 +177,13 @@ export default {
     stepInfoTitle() {
       let step = this.currentRealStep;
       return this.$t(`step_${step}_${step === 5 ? (this.stepSendData.letterType+'_') : ''}info_title`);
+    },
+
+    price() {
+      return this.hasGeneralPower ? 24 : 12;
+    },  
+    haveBalanceToPay() {
+      return parseFloat(this.price) <= this.user.balance;
     }
   }
 }

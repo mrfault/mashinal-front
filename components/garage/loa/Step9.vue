@@ -1,12 +1,9 @@
 <template>
   <form class="form" @submit.prevent="submit" novalidate>
-    <form-select 
-      :label="$t('current_city')" 
-      :options="sellOptions.regions" 
-      :invalid="$v.region.$error" 
-      :clear-option="false"
-      has-search 
+    <form-text-input 
       v-model="region" 
+      :placeholder="$t('current_city')" 
+      :invalid="$v.region.$error" 
       class="mb-2 mb-lg-3" 
     />
     <form-text-input 
@@ -57,10 +54,6 @@ export default {
       pending: false,
     }
   },
-  async fetch() {
-    await this.getOptions();
-    this.region = 1;
-  },
   validations: {
     region: { required },
     senderPhone: { required },
@@ -68,7 +61,6 @@ export default {
   },
   computed: {
     ...mapGetters('letterOfAttorney', ['stepSendData']),
-    ...mapGetters(['sellOptions']),
 
     region: {
       get() { 
@@ -112,32 +104,12 @@ export default {
     }
   },
   methods: {
-    ...mapActions('letterOfAttorney', ['updateSendData', 'updateReceivedData']),
-    ...mapActions(['getOptions']),
+    ...mapActions('letterOfAttorney', ['updateSendData']),
 
-    updateData() {
-      this.updateReceivedData([
-        { key: 'runningText', value: `Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-          Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown
-          printer took a galley of type and scrambled it to make a type specimen book. It has survived not
-          only five centuries, but also the leap into electronic typesetting, remaining essentially
-          unchanged. It was popularised in the 1960s with the release of Letraset sheets containing
-          Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker
-          including versions of Lorem Ipsum.` 
-        }
-      ]);
-    },
     submit() {
       this.$v.$touch();
-      if (this.pending || this.$v.$error) return;
-      this.pending = true;
-      try {
-        this.pending = false;
-        this.updateData();
-        this.$emit('next');
-      } catch (err) {
-        this.pending = false;
-      }
+      if (this.$v.$error) return;
+      this.$emit('next');
     }
   }
 }

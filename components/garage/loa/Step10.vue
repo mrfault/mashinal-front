@@ -78,37 +78,14 @@ export default {
       set(value) { 
         this.updateSendData({ key: 'videoFile', value });
       }
-    },
-  },
-  created() {
-    this.updateReceivedData([
-      { key: 'runningText', value: `Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-        Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown
-        printer took a galley of type and scrambled it to make a type specimen book. It has survived not
-        only five centuries, but also the leap into electronic typesetting, remaining essentially
-        unchanged. It was popularised in the 1960s with the release of Letraset sheets containing
-        Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker
-        including versions of Lorem Ipsum.` 
-      }
-    ]);
+    }
   },
   methods: {
-    ...mapActions('letterOfAttorney', ['updateSendData', 'updateReceivedData']),
+    ...mapActions('letterOfAttorney', ['updateSendData']),
     
-    updateData() {
-
-    },
-    submit() {
-      if (this.pending) return;
-      this.pending = true;
-      try {
-        this.pending = false;
-        this.updateData();
-        window.open(URL.createObjectURL(this.videoFile));
-        // this.$emit('confirm');
-      } catch (err) {
-        this.pending = false;
-      }
+    async submit() {
+      if (this.disabled) return;
+      this.$emit('confirm')
     }
   }
 }

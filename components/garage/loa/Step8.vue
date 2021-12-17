@@ -56,11 +56,11 @@ export default {
     letterExpiryDate: { required }
   },
   computed: {
-    ...mapGetters('letterOfAttorney', ['stepSendData', 'hasGeneralPower']),
+    ...mapGetters('letterOfAttorney', ['stepSendData', 'stepReceivedData', 'hasGeneralPower']),
 
     letterPermissionsTransfer: {
       get() { 
-        return this.stepSendData.letterPermissionsTransfer
+        return this.stepSendData.letterPermissionsTransfer;
       },
       set(value) { 
         this.updateSendData({ key: 'letterPermissionsTransfer', value });
@@ -68,7 +68,7 @@ export default {
     },
     letterConfirmData: {
       get() { 
-        return this.stepSendData.letterConfirmData
+        return this.stepSendData.letterConfirmData;
       },
       set(value) { 
         this.updateSendData({ key: 'letterConfirmData', value });
@@ -76,7 +76,7 @@ export default {
     },
     letterExpiryDate: {
       get() { 
-        return this.stepSendData.letterExpiryDate
+        return this.stepSendData.letterExpiryDate;
       },
       set(value) { 
         this.updateSendData({ key: 'letterExpiryDate', value });
@@ -84,7 +84,11 @@ export default {
     },
 
     maxDate() {
-      return this.$moment().add('1', 'years');
+      if (this.hasGeneralPower) {
+        return this.$moment().add('1', 'years');
+      } else {
+        return this.$moment(this.stepReceivedData.driverLicenseExpiryDateB);
+      }
     },
     rangeShortcutOptions() {
       return [
@@ -106,20 +110,10 @@ export default {
       if (!addParams) return;
       this.letterExpiryDate = this.$moment.min(this.maxDate, this.$moment().add(...addParams)).format('DD.MM.YYYY');
     },
-    updateData() {
-     
-    },
     submit() {
       this.$v.$touch();
-      if (this.pending || this.$v.$error) return;
-      this.pending = true;
-      try {
-        this.pending = false;
-        this.updateData();
-        this.$emit('next');
-      } catch (err) {
-        this.pending = false;
-      }
+      if (this.$v.$error) return;
+      this.$emit('next');
     }
   }
 }

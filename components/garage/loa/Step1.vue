@@ -74,22 +74,31 @@ export default {
     }
   },
   methods: {
-    ...mapActions('letterOfAttorney', ['updateSendData', 'updateReceivedData']),
+    ...mapActions('letterOfAttorney', ['updateSendData', 'checkUserAccess', 'checkOwnInfo']),
 
-    updateData() {
-      this.updateReceivedData([
-        { key: 'senderFullName', value: 'Əhmədov Əhməd Məmməd oğlu' },
-        { key: 'hasDriverLicense', value: true }
-      ]);
-    },
-    submit() {
+    async submit() {
       this.$v.$touch();
       if (this.pending || this.$v.$error) return;
       this.pending = true;
       try {
-        this.pending = false;
-        this.updateData();
-        this.$emit('next');
+        const isValid = await this.checkOwnInfo();
+        if (isValid) {
+          try {
+            const hasAccess = await this.checkUserAccess();
+            if (hasAccess) {
+              this.pending = false;
+              this.$emit('next');
+            } else {
+              this.pending = false;
+              this.$toasted.error(this.$t('you_cant_submit_letter_of_attorney'));
+            }
+          } catch (err) {
+            this.pending = false;
+          }
+        } else {
+          this.pending = false;
+          this.$toasted.error(this.$t('data_is_not_valid'));
+        }
       } catch (err) {
         this.pending = false;
       }

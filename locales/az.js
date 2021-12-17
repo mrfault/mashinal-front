@@ -2080,5 +2080,8 @@ export default {
   "mobile_notariat_confirm": "Mobil tətbiq vasitəsilə Notarius tərəfindən verilan izah mənə aydındır va buna uyğun olaraq növbəti mərhələdəki bu səlahiyyətləri seçirəm",
   "mobile_notariat_rules": "Siz \"Mobil Notariat\" tətbiqindən istifadə etməklə nəqliyyat vasitəsi üzərində sərəncam verilməsinə dair etibarnamə rəsmiləşdirmək üçün növbəti pəncərədə göstərilən səlahiyyətləri bütünlüklə va ya qismən (seçdikləriniz səlahiyyatləri işarələməklə) etibar edən şəxsə verə bilərsiniz:<br/>\"Sürücülük hüququ olduqda idarə etmək” - etibar olunan şəxs nəqliyyat vasitəsini idarə etmək səlahiyyətinə malik olacaqdır.<br/>\"Bağıslamaq\" - etibar olunan şəxs nəqliyyat vasitəsini adınızdan digər bir şəxsə bağışlanması haqqında müqaviləni bağlamaq səlahiyyatinə malik olacaqdır.",
   "video_recording": "Videoyazı",
-  "attention": "Diqqət"
+  "attention": "Diqqət",
+  "you_cant_submit_letter_of_attorney": "Sizin bu avtomobilə dair səlahiyyətiniz aşkar edilmədi",
+  "data_is_not_valid": "Məlumat düzgün daxil edilməmişdir",
+  "letter_of_attorney_submitted": "Müraciyətiniz baxılacaq"
 }
