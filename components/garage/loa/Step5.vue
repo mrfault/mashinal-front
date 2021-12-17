@@ -81,7 +81,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('letterOfAttorney', ['updateSendData', 'checkOtherUserInfo', 'checkDriverLicense', 'hasGeneralPower']),
+    ...mapActions('letterOfAttorney', ['updateSendData', 'checkOtherUserInfo', 'checkDriverLicense']),
 
     async submit(confirm = true) {
       this.$v.$touch();

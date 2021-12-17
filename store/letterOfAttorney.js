@@ -192,9 +192,9 @@ export const actions = {
       right_unregister: stepSendData.letterPermissions.includes(6),
       right_on_my_behalf: stepSendData.letterPermissions.includes(7),
       answers: JSON.stringify([
-        { answer: stepSendData.region, questionId: stepSendData.questions[0].id },
-        { answer: stepSendData.senderPhone, questionId: stepSendData.questions[1].id },
-        { answer: stepSendData.recepientPhone, questionId: stepSendData.questions[2].id }
+        { answer: stepSendData.region, questionId: stepReceivedData.questions[0].id },
+        { answer: stepSendData.senderPhone, questionId: stepReceivedData.questions[1].id },
+        { answer: stepSendData.recepientPhone, questionId: stepReceivedData.questions[2].id }
       ])
     }).map(([key, value]) => { formData.append(key, value)});
     

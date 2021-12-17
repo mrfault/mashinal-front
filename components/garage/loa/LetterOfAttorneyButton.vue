@@ -61,7 +61,7 @@
             <p class="text-medium text-dark-blue-2 mb-0">{{ price }} ₼</p>
           </div>
           <div class="col-6">
-            <button :class="['btn btn--green full-width', { pending }]" @click="pay">
+            <button :class="['btn btn--green full-width', { pending }]" @click.stop="pay">
               {{ $t('pay') }}
             </button>
           </div>
@@ -154,6 +154,7 @@ export default {
         }
       } catch(err) {
         this.pending = false;
+        console.error(err)
       }
     },
     close() {
