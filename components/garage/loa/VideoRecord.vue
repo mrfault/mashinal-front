@@ -92,6 +92,7 @@ export default {
     });
     this.player.on('error', (element, error) => {
       console.error(error);
+      this.$toasted.error(error);
     });
     // start / finish video recording
     this.player.on('startRecord', () => {

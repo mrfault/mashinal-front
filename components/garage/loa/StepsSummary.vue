@@ -1,6 +1,6 @@
 <template>
-  <div class="steps-summary">
-    <div class="row">
+  <div :class="['steps-summary', {'show-data': hasAnyPower}]">
+    <div class="row" v-if="hasAnyPower">
       <div class="col-6" v-for="(user, i) in users" :key="i">
         <div class="card-bordered">
           <div class="img">
@@ -53,7 +53,17 @@
         </div>
       </div>
     </div>
-    
+    <div v-else>
+      <div class="card-bordered">
+        <div class="status-text error">
+          <img src="/icons/alert-2.svg" alt="" />
+          <div>
+            <h4>{{ $t('wrong_data') }}</h4>
+            <p>{{ $t('you_cant_submit_letter_of_attorney') }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -65,7 +75,7 @@ export default {
     car: {}
   },
   computed: {
-    ...mapGetters('letterOfAttorney', ['stepReceivedData', 'stepSendData', 'currentRealStep', 'hasGeneralPower']),
+    ...mapGetters('letterOfAttorney', ['stepReceivedData', 'stepSendData', 'currentRealStep', 'hasGeneralPower', 'hasAnyPower']),
 
     users() {
       return [

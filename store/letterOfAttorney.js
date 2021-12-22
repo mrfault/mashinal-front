@@ -31,6 +31,7 @@ const getInitialState = () => ({
     videoFile: ''
   },
   stepReceivedData: {
+    showStepsSummary: true,
     hasDriverLicense: false,
     isOwnVehicle: false,
     senderFullName: '',
@@ -62,7 +63,8 @@ export const getters = {
   },
   stepSendData: s => s.stepSendData,
   stepReceivedData: s => s.stepReceivedData,
-  hasGeneralPower: s => s.stepSendData.letterType === 2
+  hasGeneralPower: s => s.stepSendData.letterType === 2,
+  hasAnyPower: s => s.stepReceivedData.showStepsSummary
 }
 
 export const actions = {
@@ -120,6 +122,7 @@ export const actions = {
       letterType: stepSendData.letterType
     });
     dispatch('updateReceivedData', [
+      { key: 'showStepsSummary', value: res.data.have_access },
       { key: 'isOwnVehicle', value: res.data.isOwnVehicle },
       { key: 'hasDriverLicense', value: res.data.haveDriverLicense },
       { key: 'questions', value: res.data.questions || [] }

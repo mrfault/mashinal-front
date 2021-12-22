@@ -73,7 +73,7 @@ export default {
 
     videoFile: {
       get() { 
-        return this.stepSendData.videoFile
+        return this.stepSendData.videoFile;
       },
       set(value) { 
         this.updateSendData({ key: 'videoFile', value });
@@ -85,7 +85,7 @@ export default {
     
     async submit() {
       if (this.disabled) return;
-      this.$emit('confirm')
+      this.$emit('confirm');
     }
   }
 }

@@ -2,7 +2,15 @@
   <form class="form" @submit.prevent="submit" novalidate>
     <div class="scrollable-text mb-2 mb-lg-3">
       <vue-scroll>
-        <div class="scrollable-text_scrollview" v-html="$t('mobile_notariat_rules')"></div>
+        <div class="scrollable-text_scrollview">
+          <div class="iframe mb-2" v-if="hasGeneralPower">
+            <iframe src="https://www.youtube.com/embed/Wo1wmo5qxeQ" 
+              frameborder="0" allowfullscreen
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" >
+            </iframe>
+          </div>
+          <div v-html="$t('mobile_notariat_rules')"></div>
+        </div>
       </vue-scroll>
     </div>
     <hr class="mt-0 mb-2 mb-lg-3" />
@@ -29,7 +37,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('letterOfAttorney', ['stepSendData']),
+    ...mapGetters('letterOfAttorney', ['stepSendData', 'hasGeneralPower']),
 
     mobileNotariatConfirm: {
       get() { 

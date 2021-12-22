@@ -2082,6 +2082,7 @@ export default {
     "video_recording": "Видеозапись",
     "attention": "Внимание",
     "you_cant_submit_letter_of_attorney": "У вас отсутствуют необходимые полномочия на данный автомобиль",
-    "data_is_not_valid": "Информация была введена неверно",
-    "letter_of_attorney_submitted": "Ваша заявка будет рассмотрена"
+    "data_is_not_valid": "Данные были введены ошибочно",
+    "letter_of_attorney_submitted": "Ваша заявка будет рассмотрена",
+    "wrong_data": "Данные ошибочны!"
 }

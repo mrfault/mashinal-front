@@ -111,9 +111,23 @@
 }
 
 .steps-summary {
-  padding-top: 45px;
-  h4, p {
-    text-align: center;
+  &.show-data {
+    padding-top: 45px;
+    h4, p {
+      text-align: center;
+    }
+  }
+  &:not(.show-data) {
+    .card-bordered {
+      padding-top: 40px;
+      padding-bottom: 40px;
+      @include media-min-width('lg') {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 322px;
+      }
+    }
   }
   h4 {
     span {

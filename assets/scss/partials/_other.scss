@@ -313,6 +313,41 @@
   .hasVBar.vBarVisible {
     width: calc(100% + 20px) !important;
   }
+  .status-text {
+    display: flex;
+    align-items: center;
+    width: 375px;
+    max-width: 100%;
+    margin: 0 auto;
+    div {
+      width: 100%;
+    }
+    h4 {
+      font-size: 20px;
+      font-weight: 500;
+      margin-bottom: 10px;
+      &:last-child {
+        margin-bottom: 0;
+        line-height: 1;
+      }
+    }
+    p {
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: 0;
+    }
+    img {
+      flex-shrink: 0;
+      height: 69px;
+      width: 69px;
+      margin-right: 18px;
+    }
+    &.error {
+      h4, i {
+        color: $red-1;
+      }
+    }
+  }
 }
 
 .modal-sticky-bottom {

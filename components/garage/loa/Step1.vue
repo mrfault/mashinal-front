@@ -81,23 +81,23 @@ export default {
       if (this.pending || this.$v.$error) return;
       this.pending = true;
       try {
-        const isValid = await this.checkOwnInfo();
-        if (isValid) {
+        const hasAccess = await this.checkUserAccess();
+        if (hasAccess) {
           try {
-            const hasAccess = await this.checkUserAccess();
-            if (hasAccess) {
+            const isValid = await this.checkOwnInfo();
+            if (isValid) {
               this.pending = false;
               this.$emit('next');
             } else {
               this.pending = false;
-              this.$toasted.error(this.$t('you_cant_submit_letter_of_attorney'));
+              this.$toasted.error(this.$t('data_is_not_valid'));
             }
           } catch (err) {
             this.pending = false;
           }
         } else {
           this.pending = false;
-          this.$toasted.error(this.$t('data_is_not_valid'));
+          // this.$toasted.error(this.$t('you_cant_submit_letter_of_attorney'));
         }
       } catch (err) {
         this.pending = false;
