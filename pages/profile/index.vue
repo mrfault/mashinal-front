@@ -58,11 +58,14 @@
 </template>
 
 <script>
+import { UserDataMixin } from '~/mixins/user-data';
+
 import BankingCards from '~/components/payments/BankingCards';
 
 export default {
   name: 'pages-profile-index',
   middleware: ['auth_general'],
+  mixins: [UserDataMixin],
   components: {
     BankingCards
   },
