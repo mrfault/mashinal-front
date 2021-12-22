@@ -1,5 +1,5 @@
 export default function ({ app, route, redirect, error }) {
-  let devRoutes = ['garage'];
+  let devRoutes = [];
   let routeName = app.getRouteBaseName();
   
   if (devRoutes.includes(routeName) && !app.$env.DEV) {
