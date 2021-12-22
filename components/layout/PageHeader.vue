@@ -114,7 +114,7 @@
                     <span>*8787</span>
                   </div>
                 </div>
-                <div class="col-5" v-if="$env.DEV">
+                <div class="col-5">
                   <nuxt-link class="btn full-width btn--red-outline" :to="$localePath('/garage')" @click.native="handleBtnClick('garage')">
                     <icon name="garage" />
                     {{ $t('garage') }}

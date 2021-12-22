@@ -78,7 +78,7 @@ export const MenusDataMixin = {
 
     sidebarMenus() {
       return [
-        { title: 'garage', route: '/garage', icon: 'garage-tab', dev: true },
+        { title: 'garage', route: '/garage', icon: 'garage-tab' },
         { title: 'salons', route: '/salons', icon: 'salons-tab' },
         { title: 'shops', route: '/parts/shops', icon: 'shops-tab' },
         { title: 'autocatalog', route: '/catalog', icon: 'catalog-tab' },
