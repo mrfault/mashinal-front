@@ -38,7 +38,7 @@
       </croppa>
     </div>
     <div class="car-info d-flex justify-content-between align-items-center">
-      <span>{{ carNumber }}</span>
+      <span>{{ $readCarNumber(car.car_number) }}</span>
       <div class="text-status text-dark-blue-2" v-if="car.sync_status !== 1">
         {{ $t('processing') }}
       </div>
@@ -129,9 +129,6 @@ export default {
   computed: {
     carDate() {
       return this.$moment(this.car.created_date).format('DD.MM.YYYY');
-    },
-    carNumber() {
-      return this.car.car_number.replace(/([A-Z]{1,2})/, ' $1 ');
     },
     haveBalanceToPay() {
       return parseFloat(this.price) <= this.user.balance;
