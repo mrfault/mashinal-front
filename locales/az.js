@@ -2014,5 +2014,6 @@ export default {
   "снижение токсичных выбросов по нормативу 2018 года": "2018-сi ilin standartına görə zəhərli tullantıların azaldılması",
   "Стандарт": "Standart",
   "такта": "takt",
-  "электро": "Elektrik"
+  "электро": "Elektrik",
+  "add_card": "Kart əlavə olunması"
 }
