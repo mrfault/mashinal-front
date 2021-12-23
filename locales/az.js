@@ -2084,5 +2084,6 @@ export default {
   "you_cant_submit_letter_of_attorney": "Sizin bu avtomobilə dair səlahiyyətiniz aşkar edilmədi",
   "data_is_not_valid": "Məlumat düzgün daxil edilməmişdir",
   "letter_of_attorney_submitted": "Müraciyətinizə baxılacaq",
-  "wrong_data": "Yanlış məlumat!"
+  "wrong_data": "Yanlış məlumat!",
+  "add_card": "Kart əlavə olunması"
 }
