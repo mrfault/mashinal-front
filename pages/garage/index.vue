@@ -1,37 +1,39 @@
 <template>
   <div class="pages-garage-index pt-5">
     <div class="container">
-      <breadcrumbs :crumbs="crumbs" />
-      <template v-if="cars.data && cars.data.length">
-        <garage-nav 
-          v-show="showNav || !isMobileBreakpoint" 
-          :tab="tab" 
-          @change-tab="tab = $event" 
-        />
-        <cars-list 
-          v-show="tab === 'cars'" 
-          @show-nav="showNav = $event"
-        />
-        <check-driver-points 
-          v-show="tab === 'check-points'" 
-          @show-nav="showNav = $event"
-        />
-      </template>
-      <template v-else>
-        <garage-empty />
-      </template>
-      <template v-if="tab === 'cars' && (showNav || !isMobileBreakpoint)">
-        <div :class="['card profile-links-card with-margins', { 'mt-3': !cars.data || !cars.data.length }]" v-if="isMobileBreakpoint">
-          <div class="link-block" v-for="menu in userMenus.filter(menu => menu.showOnCard)" :key="menu.title">
-            <nuxt-link :to="$localePath(menu.route)">
-              <icon :name="menu.icon" />
-              {{ $t(menu.title) }}
-              <icon name="chevron-right" />
-            </nuxt-link>
-            <hr />
+      <no-ssr>
+        <breadcrumbs :crumbs="crumbs" />
+        <template v-if="cars.data && cars.data.length">
+          <garage-nav
+            v-show="showNav || !isMobileBreakpoint"
+            :tab="tab"
+            @change-tab="tab = $event"
+          />
+          <cars-list
+            v-show="tab === 'cars'"
+            @show-nav="showNav = $event"
+          />
+          <check-driver-points
+            v-show="tab === 'check-points'"
+            @show-nav="showNav = $event"
+          />
+        </template>
+        <template v-else>
+          <garage-empty />
+        </template>
+        <template v-if="tab === 'cars' && (showNav || !isMobileBreakpoint)">
+          <div :class="['card profile-links-card with-margins', { 'mt-3': !cars.data || !cars.data.length }]" v-if="isMobileBreakpoint">
+            <div class="link-block" v-for="menu in userMenus.filter(menu => menu.showOnCard)" :key="menu.title">
+              <nuxt-link :to="$localePath(menu.route)">
+                <icon :name="menu.icon" />
+                {{ $t(menu.title) }}
+                <icon name="chevron-right" />
+              </nuxt-link>
+              <hr />
+            </div>
           </div>
-        </div>
-      </template>
+        </template>
+      </no-ssr>
     </div>
   </div>
 </template>
