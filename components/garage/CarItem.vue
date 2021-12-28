@@ -16,14 +16,14 @@
         </div>
       </div>
       <loader v-if="thumbPending" />
-      <croppa :class="['croppa-image auto-size']" 
+      <croppa :class="['croppa-image auto-size']"
         v-show="thumbSet && !thumbPending" @click.native.stop
-        v-model="thumb" placeholder="" 
+        v-model="thumb" placeholder=""
         :accept="'image/*'"
         :canvas-color="'transparent'"
-        :zoom-speed="15" 
+        :zoom-speed="15"
         :quality="1"
-        :prevent-white-space="true" 
+        :prevent-white-space="true"
         :show-remove-button="false"
         :replace-drop="true"
         :auto-sizing="true"
@@ -71,8 +71,8 @@
         </button>
       </form>
     </modal-popup>
-    <modal-popup 
-      :toggle="showPaymentModal" 
+    <modal-popup
+      :toggle="showPaymentModal"
       :title="$t('payment')"
       :overflow-hidden="isMobileBreakpoint"
       @close="showPaymentModal = false"
@@ -96,14 +96,21 @@
         </div>
       </div>
     </modal-popup>
-    <terminal-info-popup 
+    <terminal-info-popup
       name="garage-activate-popup"
-      @open="showPaymentModal = false" 
+      @open="showPaymentModal = false"
       @close="showPaymentModal = true"
     />
   </div>
 </template>
-
+<style scoped>
+  .car-bg {
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-color: #fff !important;
+  }
+</style>
 <script>
 import { mapActions } from 'vuex';
 
@@ -189,10 +196,10 @@ export default {
           this.pending = false;
           this.showPaymentModal = false;
           this.bankingCard = '';
-          this.updatePaidStatus({ 
-            type: 'success', 
-            text: this.$t('car_activated'), 
-            title: this.$t('success_payment') 
+          this.updatePaidStatus({
+            type: 'success',
+            text: this.$t('car_activated'),
+            title: this.$t('success_payment')
           });
         }
       } catch(err) {
