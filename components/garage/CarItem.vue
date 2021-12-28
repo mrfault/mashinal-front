@@ -104,7 +104,7 @@
   </div>
 </template>
 <style scoped>
-  .car-bg {
+  .car-bg:not(.no-img) {
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center center;
