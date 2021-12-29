@@ -4,7 +4,7 @@
          :style="car.thumb && !thumbPending ? { backgroundImage: `url('${$withBaseUrl(car.thumb)}')` } : {}">
       <div class="car-bg-inner d-flex flex-column justify-content-between" v-if="!thumbSet">
         <div class="d-flex justify-content-end align-items-center">
-          <button class="btn-sq btn-sq--color-red" @click.stop="showDeleteModal = true">
+          <button v-if="car.sync_status === 1" class="btn-sq btn-sq--color-red" @click.stop="showDeleteModal = true">
             <icon name="garbage" />
           </button>
         </div>

@@ -6,14 +6,14 @@
           <div class="swiper-slide" :key="card.id" v-for="card in bankingCards">
             <div class="banking-cards_item">
               <div class="card-img">
-                <img :src="`/img/cards/card-${colorMode}-${card.img}.png`" :alt="card.brand" />
+                <img :src="`/img/cards/card-${card.brand.toLowerCase()}-${card.img}.png`" :alt="card.brand" />
               </div>
               <div class="card-details d-flex flex-column justify-content-between">
                 <div class="card-top d-flex">
                   <transition name="fade2">
                     <span class="badge" v-if="card.default">
                       <span>{{ $t('main') }}</span>
-                    </span> 
+                    </span>
                   </transition>
                   <div class="d-flex ml-auto">
                     <span :class="['cursor-pointer', { active: card.default }]" @click="setDefault(card)">
@@ -57,7 +57,7 @@
                 </div>
                 <div class="card-bottom d-flex">
                   <span>**/**</span>
-                  <img class="ml-auto" :src="`/img/cards/${card.brand.toLowerCase()}-white.svg`" :alt="card.brand" />
+<!--                  <img class="ml-auto" :src="`/img/cards/${card.brand.toLowerCase()}-white.svg`" :alt="card.brand" />-->
                 </div>
               </div>
             </div>
