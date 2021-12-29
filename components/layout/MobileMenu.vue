@@ -6,7 +6,8 @@
           <icon name="burger" />
         </span>
         <nuxt-link class="logo" :to="$localePath('/')" @click.native="$nuxt.$emit('logo-click')">
-          <img :src="`/img/${isDarkMode ? 'logo-white' : 'logo'}.svg`" alt="logo" v-if="!btlCookie" />
+          <img :src="`/img/${isDarkMode ? 'logo-white' : 'logo'}.svg`" alt="logo" v-if="!btlCookie && !$env.NEW_YEAR_SOON" />
+          <img :src="`/img/${isDarkMode ? 'logo-white-ng' : 'logo-dark-ng'}.svg`" alt="logo" v-if="!btlCookie && $env.NEW_YEAR_SOON" />
         </nuxt-link>
         <span class="cursor-pointer" @click="handleIconClick(false, 'search-icon-click')" v-if="hasSearchFilters">
           <icon name="search" />
@@ -27,7 +28,7 @@
       <div class="menu-sidebar_content">
         <div class="d-flex align-items-center justify-content-between">
           <div class="langs-menu">
-            <button :class="['btn','btn--pale-red-outline',{'active': code === locale}]" v-for="code in locales" :key="code" 
+            <button :class="['btn','btn--pale-red-outline',{'active': code === locale}]" v-for="code in locales" :key="code"
               @click="changeLocale(code)">{{ code }}</button>
           </div>
           <theme-switch v-if="isMobileBreakpoint" />

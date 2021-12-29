@@ -3,7 +3,8 @@
     <div class="topbar">
       <div class="container">
         <nuxt-link class="logo" :to="$localePath('/')" @click.native="$nuxt.$emit('logo-click')">
-          <img :src="`/img/${isDarkMode ? 'logo-white' : 'logo'}.svg`" alt="logo" v-if="!btlCookie" />
+          <img :src="`/img/${isDarkMode ? 'logo-white' : 'logo'}.svg`" alt="logo" v-if="!btlCookie && !$env.NEW_YEAR_SOON" />
+          <img :src="`/img/${isDarkMode ? 'logo-white-ng' : 'logo-dark-ng'}.svg`" alt="logo" v-if="!btlCookie && $env.NEW_YEAR_SOON" />
         </nuxt-link>
         <div class="store-badges">
           <a href="https://apple.co/2YgvGt4" target="_blank" rel="noopener">
@@ -110,7 +111,7 @@
               <div class="row justify-content-end">
                 <div class="col-2 text-right">
                   <div class="support-hotline">
-                    <icon name="support" /> 
+                    <icon name="support" />
                     <span>*8787</span>
                   </div>
                 </div>
