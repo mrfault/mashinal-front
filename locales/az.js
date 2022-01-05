@@ -2085,5 +2085,6 @@ export default {
   "data_is_not_valid": "Məlumat düzgün daxil edilməmişdir",
   "letter_of_attorney_submitted": "Müraciyətinizə baxılacaq",
   "wrong_data": "Yanlış məlumat!",
-  "add_card": "Kart əlavə olunması"
+  "add_card": "Kart əlavə olunması",
+  "new_search":"Axtarışa keç",
 }
