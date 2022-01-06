@@ -105,7 +105,7 @@
 </template>
 <style scoped>
   .car-bg:not(.no-img) {
-    background-size: contain;
+    background-size: 100px 100px;
     background-repeat: no-repeat;
     background-position: center center;
     background-color: #fff !important;
