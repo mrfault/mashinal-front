@@ -1,6 +1,6 @@
 <template>
   <div :class="['garage_car-item', { 'car-active': car.status === 1, 'thumb-set': thumbSet, active: active && !isMobileBreakpoint  }]" @click="showInfo">
-    <div :class="['car-bg', {'no-img': !car.thumb && !thumbPending},{ 'car-bg-custom-size': !isUUID(getUuid(car.thumb)) }]"
+    <div :class="['car-bg', {'no-img': !car.thumb && !thumbPending},{ 'car-bg-custom-size': car.is_default_thumb }]"
          :style="car.thumb && !thumbPending ? { backgroundImage: `url('${$withBaseUrl(car.thumb)}')` } : {}">
       <div class="car-bg-inner d-flex flex-column justify-content-between" v-if="!thumbSet">
         <div class="d-flex justify-content-end align-items-center">
@@ -55,6 +55,7 @@
       @close="showDeleteModal = false"
     >
       <form class="form" @submit.prevent="deleteCar" novalidate>
+        <p><icon class="alert-warning-del" name="alert-circle" /> {{ $t('car_warning') }}</p>
         <button type="submit" :class="['btn btn--green full-width', { pending }]">
           {{ $t('confirm') }}
         </button>
@@ -66,6 +67,7 @@
       @close="showDeactivateModal = false"
     >
       <form class="form" @submit.prevent="deactivateCar" novalidate>
+        <p><icon class="alert-warning-del" name="alert-circle" /> {{ $t('car_warning') }}</p>
         <button type="submit" :class="['btn btn--green full-width', { pending }]">
           {{ $t('confirm') }}
         </button>
@@ -104,6 +106,11 @@
   </div>
 </template>
 <style scoped>
+.alert-warning-del {
+  margin-right: 2px;
+  margin-left: 2px;
+  vertical-align: text-bottom;
+}
   .car-bg-custom-size {
     background-size: 100px 100px;
   }
@@ -144,19 +151,6 @@ export default {
     }
   },
   methods: {
-    getUuid(url) {
-      return url.toString().slice(0,url.lastIndexOf('.')).slice(url.slice(0,70).lastIndexOf('/')+1)
-    },
-    isUUID ( uuid ) {
-      let s = "" + uuid;
-
-      s = s.match('^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$');
-      if (s === null) {
-        return false;
-      }
-      return true;
-    },
-
     ...mapActions({
       activate: 'garage/activateCar',
       deactivate: 'garage/deactivateCar',

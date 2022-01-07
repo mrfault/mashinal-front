@@ -15,6 +15,8 @@
           {{ announcement.view_count }}
           <icon name="cursor" />
           {{ announcement.open_count }}
+          <icon name="star" />
+            {{ announcement.favorites_count }}
         </span>
         <span class="text-data">
           <icon name="calendar" />
@@ -55,7 +57,7 @@
     </div>
     <div class="row" v-if="announcement.status != 3">
       <div class="col mt-2 mt-lg-3" v-if="contact.lat && contact.lng">
-        <show-map-button :lat="contact.lat" :lng="contact.lng" /> 
+        <show-map-button :lat="contact.lat" :lng="contact.lng" />
       </div>
       <div class="col mt-2 mt-lg-3" v-if="canSendMessage(announcement)" >
         <chat-button :announcement="announcement" has-after-login />
@@ -118,7 +120,7 @@ export default {
   },
   computed: {
     ...mapGetters(['announcement']),
-    
+
     contact() {
       return this.getAnnouncementContact(this.announcement);
     },

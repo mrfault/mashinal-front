@@ -2086,5 +2086,6 @@ export default {
     "letter_of_attorney_submitted": "Ваша заявка будет рассмотрена",
     "wrong_data": "Данные ошибочны!",
     "add_card": "Добавление карты",
-    "new_search":"Перейти к поиску"
+    "new_search":"Перейти к поиску",
+    "car_warning":"Оплаченная сумма не возвращается"
 }

@@ -10,6 +10,8 @@
             {{ announcement.view_count }}
             <icon name="cursor" />
             {{ announcement.open_count }}
+            <icon name="star" />
+            {{ announcement.favorites_count }}
           </span>
           <span class="text-data">
             <icon name="calendar" />

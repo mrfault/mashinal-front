@@ -2087,4 +2087,5 @@ export default {
   "wrong_data": "Yanlış məlumat!",
   "add_card": "Kart əlavə olunması",
   "new_search":"Axtarışa keç",
+  "car_warning":"Ödənilmiş məbləğ geri qaytarılmır"
 }

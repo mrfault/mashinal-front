@@ -9,6 +9,8 @@
             {{ announcement.view_count }}
             <icon name="cursor" />
             {{ announcement.open_count }}
+            <icon name="star" />
+            {{ announcement.favorites_count }}
           </span>
           <span class="text-data">
             <icon name="calendar" />
@@ -110,7 +112,7 @@ export default {
       if (type.includes('model')) {
         form.additional_brands[0].model = this.motoModel.id;
       }
-      
+
       let slug = 'motorcycles';
       if (this.announcement.moto_atv_brand) slug = 'atvs';
       else if (this.announcement.scooter_brand) slug = 'scooters';

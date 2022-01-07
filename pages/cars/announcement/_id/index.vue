@@ -9,6 +9,8 @@
             {{ announcement.view_count }}
             <icon name="cursor" />
             {{ announcement.open_count }}
+            <icon name="star" />
+            {{ announcement.favorites_count }}
           </span>
           <span class="text-data">
             <icon name="calendar" />
@@ -135,7 +137,7 @@ export default {
       if (type.includes('generation')) {
         form.additional_brands[0].generation = this.catalog.generation.id;
       }
-      
+
       return `/cars?car_filter=${encodeURI(JSON.stringify(form))}`
     }
   },
@@ -143,15 +145,15 @@ export default {
     ...mapGetters(['announcement', 'catalog']),
 
     getComplectOptions() {
-      return typeof this.announcement.options === 'string' 
-        ? JSON.parse(this.announcement.options) 
+      return typeof this.announcement.options === 'string'
+        ? JSON.parse(this.announcement.options)
         : this.announcement.options;
     },
     hasComplects() {
       return Object.keys(this.getComplectOptions).length;
     },
     getCarHealth() {
-      return this.announcement.car_body_health 
+      return this.announcement.car_body_health
         ? JSON.parse(this.announcement.car_body_health.options)
         : false;
     },
