@@ -1,6 +1,6 @@
 <template>
   <div :class="['garage_car-item', { 'car-active': car.status === 1, 'thumb-set': thumbSet, active: active && !isMobileBreakpoint  }]" @click="showInfo">
-    <div :class="['car-bg', {'no-img': !car.thumb && !thumbPending}]"
+    <div :class="['car-bg', {'no-img': !car.thumb && !thumbPending},{ 'car-bg-custom-size': !isUUID(getUuid(car.thumb)) }]"
          :style="car.thumb && !thumbPending ? { backgroundImage: `url('${$withBaseUrl(car.thumb)}')` } : {}">
       <div class="car-bg-inner d-flex flex-column justify-content-between" v-if="!thumbSet">
         <div class="d-flex justify-content-end align-items-center">
@@ -104,8 +104,10 @@
   </div>
 </template>
 <style scoped>
-  .car-bg:not(.no-img) {
+  .car-bg-custom-size {
     background-size: 100px 100px;
+  }
+  .car-bg:not(.no-img) {
     background-repeat: no-repeat;
     background-position: center center;
     background-color: #fff !important;
@@ -142,6 +144,19 @@ export default {
     }
   },
   methods: {
+    getUuid(url) {
+      return url.toString().slice(0,url.lastIndexOf('.')).slice(url.slice(0,70).lastIndexOf('/')+1)
+    },
+    isUUID ( uuid ) {
+      let s = "" + uuid;
+
+      s = s.match('^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$');
+      if (s === null) {
+        return false;
+      }
+      return true;
+    },
+
     ...mapActions({
       activate: 'garage/activateCar',
       deactivate: 'garage/deactivateCar',
