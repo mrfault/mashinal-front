@@ -680,7 +680,8 @@ export default {
     "Гибрид",
     "Дизель",
     "Газ",
-    "Электро"
+    "Электро",
+    "Plug-in Гибрид"
   ],
   "enter_a_new_mobile_number": "Введите новый номер моб. телефона",
   "enter_new_email": "Введите новый E-mail",
@@ -2078,7 +2079,7 @@ export default {
     "letter_data_confirm": "Подтверждаю достоверность информации",
     "video_recording_info_text": "Ваше лицо должно быть полностью видно в красной рамке, никакие дополнительные световые лучи не должны падать, также обращение следует записывать  без использования медицинской маски. После нажатия кнопки «Начать видеозапись» прочтите вслух текст от начала до конца в закрытом помещении. Если видеозапись верна, нажмите на кнопку \"Подтвердить\",в противном случае начните запись заново. Если видео записано некорректно, ваша заявка будет отклонена нотариусом.",
     "mobile_notariat_confirm": "Mobil tətbiq vasitəsilə Notarius tərəfindən verilan izah mənə aydındır va buna uyğun olaraq növbəti mərhələdəki bu səlahiyyətləri seçirəm",
-    "mobile_notariat_rules": "Siz \"Mobil Notariat\" tətbiqindən istifadə etməklə nəqliyyat vasitəsi üzərində sərəncam verilməsinə dair etibarnamə rəsmiləşdirmək üçün növbəti pəncərədə göstərilən səlahiyyətləri bütünlüklə va ya qismən (seçdikləriniz səlahiyyatləri işarələməklə) etibar edən şəxsə verə bilərsiniz:<br/>\"Sürücülük hüququ olduqda idarə etmək” - etibar olunan şəxs nəqliyyat vasitəsini idarə etmək səlahiyyətinə malik olacaqdır.<br/>\"Bağıslamaq\" - etibar olunan şəxs nəqliyyat vasitəsini adınızdan digər bir şəxsə bağışlanması haqqında müqaviləni bağlamaq səlahiyyatinə malik olacaqdır.",
+    "mobile_notariat_rules": "Siz \"Mobil Notariat\" tətbiqindən istifadə etməklə nəqliyyat vasitəsi üzərində sərəncam verilməsinə dair etibarnamə rəsmiləşdirmək üçün növbəti pəncərədə göstərilən səlahiyyətləri bütünlüklə va ya qismən (seçdikləriniz səlahiyyatləri işarələməklə) etibar edən şəxsə verə bilərsiniz:<br/>\"Sürücülük hüququ olduqda idarə etmək” - etibar olunan şəxs nəqliyyat vasitəsini idarə etmək səlahiyyətinə malik olacaqdır.<br/>\"Bağışlamaq\" - etibar olunan şəxs nəqliyyat vasitəsini adınızdan digər bir şəxsə bağışlanması haqqında müqaviləni bağlamaq səlahiyyatinə malik olacaqdır.",
     "video_recording": "Видеозапись",
     "attention": "Внимание",
     "you_cant_submit_letter_of_attorney": "У вас отсутствуют необходимые полномочия на данный автомобиль",
@@ -2087,5 +2088,7 @@ export default {
     "wrong_data": "Данные ошибочны!",
     "add_card": "Добавление карты",
     "new_search":"Перейти к поиску",
-    "car_warning":"Оплаченная сумма не возвращается"
+    "car_warning":"Оплаченная сумма не возвращается",
+    "combined_torgue" :"Комбинированный крутящий момент, Нм",
+    "combined_power" :"Комбинированная мощность двигателя, л.с. / кВт",
 }

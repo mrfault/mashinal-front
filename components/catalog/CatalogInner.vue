@@ -77,7 +77,7 @@
                           <template v-if="spec[0]">{{ spec[0] }}</template>
                           <template v-if="spec[1] && spec[1] !== '—'">{{ $t('at', { value: spec[1] }) }}</template>
                         </template>
-                        <template v-else-if="key.includes('electric')">
+                        <template v-else-if="key.includes('electric') || key.includes('combined')">
                           <template v-if="spec[0]">{{ spec[0] }}</template>
                           <template v-if="spec[1] && spec[1] !== '—'">/ {{ spec[1] }}</template>
                         </template>
@@ -129,8 +129,8 @@
             <div class="body-modifications_row" v-for="(group, key, index) in o" :key="key">
               <h5 class="text-dark-blue-3 mb-1" v-if="key !== '–' || index" >{{ $t(key) }} </h5>
               <template v-for="mod in group.filter(mod => mod.main)">
-                <a :class="['row flex-nowrap mb-1 align-items-center', { active: mod.id == firstGeneration.id }]" 
-                  :href="`${pathBase}/mod/${mod.id}`" 
+                <a :class="['row flex-nowrap mb-1 align-items-center', { active: mod.id == firstGeneration.id }]"
+                  :href="`${pathBase}/mod/${mod.id}`"
                   :key="mod.id" @click.prevent="handleModClick(mod)"
                 >
                   <span class="col">{{ modName(mod.main) }}</span>
@@ -172,7 +172,7 @@ export default {
   },
   computed: {
     ...mapGetters(['firstGeneration', 'modificationsList']),
-    
+
     main() {
       return this.firstGeneration.main;
     },
@@ -183,7 +183,7 @@ export default {
       return this.firstGeneration.specifications;
     },
     mainSpecs() {
-      return this.isMobileBreakpoint 
+      return this.isMobileBreakpoint
         ? [{...this.main[' '], ...this.main['  ']}]
         : [this.main[' '], this.main['  ']];
     },
@@ -230,7 +230,7 @@ export default {
     },
     hasValues(key) {
       return [
-          'fuel', 'type_of_drive', 'engine', 'box', 'type_of_boost', 'engine_location', 'cylinder_location', 
+          'fuel', 'type_of_drive', 'engine', 'box', 'type_of_boost', 'engine_location', 'cylinder_location',
           'engine_power_system', 'rear_brakes', 'front_brakes', 'rear_suspensions', 'front_suspensions', 'brand_country'
         ].indexOf(key) !== -1;
     },
@@ -244,7 +244,11 @@ export default {
       for (let key in specs) {
         let value = specs[key];
         if (value instanceof Array ? value.filter(i => !['-','—'].includes(i)).length : !['',null,false,'-','—'].includes(value)) {
-          if (!(this.hasValues(key) && value === 0)) {
+          if(key === 'combined_power') {
+            if(value.reduce((a, b) => a + b, 0) > 0)
+              filtered[key] = value;
+          }
+          else if (!(this.hasValues(key) && value === 0)) {
             filtered[key] = value;
           }
         }
