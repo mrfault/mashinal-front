@@ -8,7 +8,7 @@
         <icon name="triangle" />
       </span>
       <p :class="['popover-message', textClass || '']">
-        {{ message }}
+        <span v-html="message"></span>
         <slot />
       </p>
     </div>
@@ -57,8 +57,13 @@
     },
     watch: {
       show(value) {
-        if (value) document.addEventListener('click', this.handleClick);
-        else document.removeEventListener('click', this.handleClick);
+        if (value) {
+          this.$nuxt.$on('modal-popup-click', this.handleClick);
+          document.addEventListener('click', this.handleClick);
+        } else {
+          this.$nuxt.$off('modal-popup-click', this.handleClick);
+          document.removeEventListener('click', this.handleClick);
+        }
       }
     },
     mounted() {

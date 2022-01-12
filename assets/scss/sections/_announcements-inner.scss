@@ -235,7 +235,8 @@
         text-align: right;
       }
       &.wider {
-        width: 70%;
+        flex-grow: 1;
+        flex-shrink: 1;
       }
       i {
         margin-right: 10px;
@@ -440,17 +441,21 @@
   }
 }
 
+.iframe {
+  width: 100%;
+  padding-bottom: 56%;
+  position: relative;
+  iframe {
+    @include abs-zero;
+  }
+}
+
 .images-slider {
   width: 100%;
   min-height: 690px;
   padding-top: 40px;
   .iframe {
-    width: 100%;
     padding-bottom: 62%;
-    position: relative;
-    iframe {
-      @include abs-zero;
-    }
   }
   .video {
     width: 100%;

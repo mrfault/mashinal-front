@@ -42,7 +42,7 @@ export default {
 
     async checkPhone() {
       this.$v.$touch();
-      if (this.pending || this.$v.$pending || this.$v.$error) return;
+      if (this.pending || this.$v.$error) return;
       this.pending = true;
       try {
         await this.checkSellTokens(this.form.phone.replace(/[^0-9]+/g, ''));

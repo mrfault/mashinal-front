@@ -147,8 +147,13 @@ input::-webkit-inner-spin-button {
     &[type=password] {
       padding-right: 24px;
     }
-    &.invalid:not(:focus) + i svg {
-      fill: $red-1;
+    &.invalid:not(:focus) {
+      & + i svg {
+        fill: $red-1;
+      }
+      & + .popover-wrapper .popover-title {
+        color: $red-1;
+      }
     }
   }
   i, img {
@@ -239,6 +244,14 @@ input::-webkit-inner-spin-button {
       display: inline-flex;
       width: auto;
       padding-right: 40px;
+    }
+    &.wrap-text {
+      height: auto;
+      align-items: flex-start;
+      .text-truncate.skip-truncate {
+        white-space: normal;
+        padding-top: 2px;
+      }
     }
     .text-truncate {
       margin-bottom: -1px;
@@ -977,10 +990,21 @@ input::-webkit-inner-spin-button {
   }
 }
 
-.form-buttons .label {
-  font-size: 14px;
-  font-weight: 500;
-  margin-bottom: 10px;
+.form-buttons {
+  .label {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+  .btn {
+    &.height-auto {
+      height: 100%;
+      padding: 9px 16px 7px;
+      span {
+        white-space: normal;
+      }
+    }
+  }
 }
 
 .form-keywords {

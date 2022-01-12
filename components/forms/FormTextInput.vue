@@ -14,6 +14,7 @@
           :lang="locale" 
           :input-attr="{readonly: 'readonly', id, maxlength, disabled}"
           :input-class="{invalid, valid, disabled, [`${inputClass}`]:inputClass}"
+          :disabled-date="disabledDate"
           @open="showDatepicker(true)"
           @close="showDatepicker(false)"
         >
@@ -40,7 +41,7 @@
           <icon :name="showPassword ? 'eye' : 'hide'" />
         </span>
       </template>
-      <icon name="alert-circle" v-if="invalid && !inputDate" class="invalid" />
+      <icon name="alert-circle" v-if="invalid && !inputDate && !hasPopover" class="invalid" />
       <icon name="check-circle" v-else-if="valid && type !== 'password'" class="valid" />
       <slot name="default" />
     </div>
@@ -96,7 +97,11 @@
       blockClass: String,
       inputDate: Boolean,
       readonly: Boolean,
-      hasInputs: Boolean
+      hasInputs: Boolean,
+      hasPopover: Boolean,
+      disabledDate: {
+        default: () => (() => {})
+      }
     },
     components: {
       DatePicker

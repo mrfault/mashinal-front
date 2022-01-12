@@ -9,7 +9,7 @@
           </h2>
           <div class="row justify-content-between align-items-center mt-n1 mt-lg-0">
             <div class="col-6 col-lg-2 ml-n2" v-if="!isMobileBreakpoint">
-              <form-checkbox class="fw-500" :label="$t('select_all')" v-model="selectAll" input-name="selectAll" 
+              <form-checkbox class="fw-500" :label="$t('select_all')" v-model="selectAll" input-name="selectAll"
                 transparent @input="handleSelectAll" @change="handleSelectAll"/>
             </div>
             <div class="col-6 col-lg-2 d-flex align-items-center justify-content-end">
@@ -23,8 +23,8 @@
           </div>
         </div>
         <div class="templates-list">
-          <saved-search 
-            v-for="item in savedSearchList" 
+          <saved-search
+            v-for="item in savedSearchList"
             :key="item.id"
             :item="item"
             :checked="selected.includes(item.id)"
@@ -69,9 +69,16 @@
           </form>
         </modal-popup>
       </template>
-      <no-results :text="$t('no_templates')" v-else />
-      <change-email 
-        v-if="!user.email" 
+      <no-results :text="$t('no_templates')" v-else >
+        <nuxt-link style="max-width: 150px;" class="active btn btn--pale-green-outline d-flex full-width mt-2"
+                   :to="$localePath('/cars/advanced-search')">
+          <i aria-hidden="true" class="icon-arrow-left"></i>
+          {{ $t('new_search') }}
+        </nuxt-link>
+      </no-results>
+
+      <change-email
+        v-if="!user.email"
         hide-input
         @open="showIntervalModal = false"
         @success="showIntervalModal = true"
@@ -90,7 +97,7 @@ import ChangeEmail from '~/components/elements/ChangeEmail';
 export default {
   name: 'pages-profile-templates',
   middleware: 'auth_general',
-  components: { 
+  components: {
     ChangeEmail,
     SavedSearch,
     NoResults
@@ -115,7 +122,7 @@ export default {
       store.dispatch('getAllOtherOptions')
     ]);
 
-    return { 
+    return {
       selected: [],
       selectAll: false,
       interval: 0,
@@ -147,8 +154,8 @@ export default {
     ...mapActions(['updateSavedSearchNotificationsInterval', 'deleteSavedSearchMultiple', 'markViewedSavedSearch']),
 
     selectSavedSearch(id, value) {
-      this.$set(this, 'selected', value 
-        ? [...this.selected, id] 
+      this.$set(this, 'selected', value
+        ? [...this.selected, id]
         : this.selected.filter(selected_id => selected_id !== id)
       );
 
@@ -159,22 +166,22 @@ export default {
       }
     },
     selectOneSavedSearch(id) {
-      if (this.selected.length) 
+      if (this.selected.length)
         this.handleSelectAll(false);
       this.selectSavedSearch(id, true);
       this.openNotificationsModal();
     },
     handleSelectAll(value) {
       this.selectAll = value;
-      this.$set(this, 'selected', value 
-        ? this.savedSearchList.map(item => item.id) 
+      this.$set(this, 'selected', value
+        ? this.savedSearchList.map(item => item.id)
         : []
       );
     },
     openNotificationsModal() {
-      if (this.user.email) 
+      if (this.user.email)
         this.showIntervalModal = true;
-      else 
+      else
         this.$nuxt.$emit('open-modal-to-change-email');
     },
     async updateNotifications() {

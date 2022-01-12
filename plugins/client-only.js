@@ -43,7 +43,7 @@ Vue.use(vuescroll, {
       onlyShowBarOnScroll: false,
       size: '7px',
       minSize: 0.1,
-      // keepShow: true,
+      keepShow: true,
       background: '#ffffff',
       opacity: 1,
       specifyBorderRadius: '4px',

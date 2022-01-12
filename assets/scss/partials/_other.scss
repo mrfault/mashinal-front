@@ -302,13 +302,51 @@
   }
 }
 
-.modal-card {
+.card-bordered {
   padding: 23px 25px;
   border: 1px solid $greyish-blue-3;
   border-radius: 4px;
   margin-bottom: 20px;
   p {
     margin-bottom: 0;
+  }
+  .hasVBar.vBarVisible {
+    width: calc(100% + 20px) !important;
+  }
+  .status-text {
+    display: flex;
+    align-items: center;
+    width: 375px;
+    max-width: 100%;
+    margin: 0 auto;
+    div {
+      width: 100%;
+    }
+    h4 {
+      font-size: 20px;
+      font-weight: 500;
+      margin-bottom: 10px;
+      &:last-child {
+        margin-bottom: 0;
+        line-height: 1;
+      }
+    }
+    p {
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: 0;
+    }
+    img {
+      flex-shrink: 0;
+      height: 69px;
+      width: 69px;
+      margin-right: 18px;
+    }
+    &.error {
+      h4, i {
+        color: $red-1;
+      }
+    }
   }
 }
 
@@ -321,7 +359,7 @@
 }
 
 .dark-mode {
-  .modal-card {
+  .card-bordered {
     border-color: $dark-1;
   }
   .modal-sticky-bottom {
@@ -617,7 +655,7 @@
       // transform: translate(-50%, 10px);
       transition: all 0.5s cubic-bezier(0.75, -0.02, 0.2, 0.97);
     }
-    svg {
+    svg, img {
       display: block;
       width: 100%;
       height: auto;

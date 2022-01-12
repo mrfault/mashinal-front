@@ -11,14 +11,14 @@
       <template v-if="stats">
         <div class="row">
           <div class="col-lg-4">
-            <div class="modal-card">
+            <div class="card-bordered">
               <div class="ad-huge-stat">
                 <icon name="users" />
                 <strong>{{ stats.min_view }}</strong>
                 <p>{{ $t('ad_views_shown') }}</p>
               </div>
             </div>
-            <div class="modal-card">
+            <div class="card-bordered">
               <div class="vehicle-specs">
                 <div class="row">
                   <div class="col">
@@ -38,7 +38,7 @@
             </div>
           </div>
           <div class="col-lg-8">
-            <div class="modal-card">
+            <div class="card-bordered">
               <div class="row">
                 <div class="col-lg-4 mb-5 mb-lg-0">
                   <div class="ad-huge-stat">
@@ -63,7 +63,7 @@
                 </div>
               </div>
             </div>
-            <div class="modal-card">
+            <div class="card-bordered">
               <div class="vehicle-specs">
                 <div class="row">
                   <div class="col">

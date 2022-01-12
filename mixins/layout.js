@@ -106,9 +106,9 @@ export const LayoutMixin = {
   mounted() {
     this.$nextTick(() => {
       this.configSocket();
-      if (this.loggedIn) 
+      if (this.loggedIn)
         this.toggleEchoListening(true);
-        
+
       this.$nuxt.$on('login', (auth) => {
         if (auth) this.handleAfterLogin();
         this.toggleEchoListening(auth);
@@ -118,14 +118,14 @@ export const LayoutMixin = {
         if (this.loggedIn) return;
         this.showLoginPopup = true;
         this.loginActionKey = key;
-        this.$set(this, 'loginInitialForm', form); 
+        this.$set(this, 'loginInitialForm', form);
       });
 
       window.addEventListener('resize', this.handleResize);
       window.addEventListener('resize', this.handleScroll);
       window.addEventListener('scroll', this.handleScroll);
       // window.addEventListener('load', this.registerSW);
-      
+
       setTimeout(() => {
         this.handleResize();
         this.handleScroll();
@@ -139,14 +139,14 @@ export const LayoutMixin = {
             text: '', //this.$t(`${type}_payment_msg`)
           });
         }
-        // strange behavior of loading prop which is not updating 
+        // strange behavior of loading prop which is not updating
         // in v-show directive without changing key sometimes
         this.setLoading(false);
       }, 0);
     });
   },
   beforeDestroy() {
-    if (this.loggedIn) 
+    if (this.loggedIn)
       this.toggleEchoListening(false);
 
     this.$nuxt.$off(['login', 'login-popup']);

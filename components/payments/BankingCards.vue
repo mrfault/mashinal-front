@@ -28,7 +28,7 @@
                       >
                         <form class="form" @submit.prevent="deleteCard(card.id)" novalidate>
                           <template v-if="card.default && activeCars.length">
-                            <div class="modal-card">
+                            <div class="card-bordered">
                               <div class="vehicle-specs">
                                 <div class="row">
                                   <div class="col">

@@ -174,6 +174,15 @@ export default function({ app, route, store }, inject) {
     let en = moment(date).format(format);
     return ({ ru, az, en });
   });
+  inject('dataRows', (data, unite) => {
+    let dataKeys = Object.keys(data).filter(k => ![null,undefined].includes(data[k]));
+    let middleIndex = Math.ceil(dataKeys.length / 2);
+    let dataCols = _.chunk(dataKeys, middleIndex); 
+
+    let getData = (keys) => keys.reduce((a, b) => ({...a, [b]: data[b]}), {});
+
+    return unite ? [getData(dataKeys)] : [getData(dataCols[0]), getData(dataCols[1])];
+  });
   // numeric precision
   inject('sum', (...numbers) => {
     return Math.round(numbers.map(a => a * 100).reduce((a, b) => (a + b))) / 100;

@@ -74,7 +74,7 @@
             <div class="col-lg-8 position-static">
               <ul class="menu">
                 <li v-for="menu in navbarMenus" :key="menu.title" :class="{'dropdown': menu.children}" @mouseleave="activeCategory = 0">
-                  <nuxt-link :to="$localePath(menu.route)" :class="{'active': menu.categories && hasSearchNav}">
+                  <nuxt-link :to="$localePath(menu.route)" >
                     {{ $t(menu.title) }}
                     <icon name="chevron-down" v-if="menu.children" />
                   </nuxt-link>

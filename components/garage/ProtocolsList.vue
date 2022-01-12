@@ -1,6 +1,6 @@
 <template>
   <div class="garage_protocols-list">
-    <p class="info-text full-width mt-2 mt-lg-3 mb-0" v-if="!protocols.length"><icon name="alert-circle" /> 
+    <p class="info-text full-width mt-2 mt-lg-3 mb-0" v-if="!protocols.length"><icon name="alert-circle" />
       {{ $t('no_'+(tab || 'protocols')) }}
     </p>
     <template v-else>
@@ -38,10 +38,10 @@
                 </div>
               </div>
               <hr class="mb-0"/>
-              <div class="mt-2 mt-lg-3" v-if="protocol.can_pay || protocol.has_files">
+              <div class="mt-2 mt-lg-3" v-if="(protocol.can_pay && protocol.total > 0) || protocol.has_files">
                 <div class="row">
                   <template v-if="protocol.has_files">
-                    <div :class="['col-12 col-lg-auto ml-auto order-lg-2', {'mb-2 mb-lg-0': protocol.can_pay}]">
+                    <div :class="['col-12 col-lg-auto ml-auto order-lg-2', {'mb-2 mb-lg-0': protocol.can_pay && protocol.total > 0}]">
                       <protocol-files-button :protocol="protocol">
                         <div class="card garage_protocol-info">
                           <div class="garage_protocol-titles">
@@ -63,7 +63,7 @@
                               </div>
                             </div>
                           </div>
-                          <template v-if="protocol.can_pay">
+                          <template v-if="protocol.can_pay && protocol.total > 0">
                             <hr class="mb-auto" />
                             <div class="row">
                               <div class="col-6" >
@@ -83,7 +83,7 @@
                       </protocol-files-button>
                     </div>
                   </template>
-                  <template v-if="protocol.can_pay">
+                  <template v-if="protocol.can_pay && protocol.total > 0">
                     <div class="col-6 col-lg-auto mr-auto order-lg-1" >
                       <span class="total-price" >
                         <span>{{ $t('total')}}</span>
@@ -131,7 +131,7 @@ export default {
     mainSpecs(protocol, unite) {
       let getDate = (date) => date && this.$moment(this.$parseDate(date)).format('DD.MM.YYYY');
 
-      let data = {
+      return this.$dataRows({
         car_number: !unite && protocol.car_number,
         fined_fullname: protocol.fullname,
         point: protocol.point,
@@ -146,15 +146,7 @@ export default {
         date_expire: getDate(protocol.expiry_date),
         date: getDate(protocol.date)|| getDate(protocol.action_date),
         protocol_took_place: unite && protocol.address
-      };
-
-      let dataKeys = Object.keys(data).filter(k => data[k]);
-      let middleIndex = Math.ceil(dataKeys.length / 2);
-      let dataCols = this.$chunk(dataKeys, middleIndex); 
-
-      let getData = (keys) => keys.reduce((a, b) => ({...a, [b]: data[b]}), {});
-
-      return (this.isMobileBreakpoint || unite) ? [getData(dataKeys)] : [getData(dataCols[0]), getData(dataCols[1])];
+      }, this.isMobileBreakpoint || unite);
     },
     restSpecs(protocol) {
       return {

@@ -51,7 +51,7 @@ export default {
   methods: {
     async submit() {
       this.$v.$touch();
-      if (this.pending || this.$v.$pending || this.$v.$error) return;
+      if (this.pending || this.$v.$error) return;
       this.pending = true;
       try {
         await this.$axios.$post(`/part/open/store`, {

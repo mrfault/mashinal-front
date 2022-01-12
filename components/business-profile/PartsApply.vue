@@ -89,7 +89,7 @@ export default {
   methods: {
     submit() {
       this.$v.$touch();
-      if (this.$v.$pending || this.$v.$error) return;
+      if (this.$v.$error) return;
       if (this.loggedIn) this.showPaymentModal = true;
       else this.$nuxt.$emit('login-popup', 'parts-package-' + this.where);
     },

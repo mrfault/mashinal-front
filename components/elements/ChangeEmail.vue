@@ -118,7 +118,7 @@ export default {
     },
     getCodeForNewEmail() {
       this.$v.$touch();
-      if (this.$v.$pending || this.$v.$error) return;
+      if (this.$v.$error) return;
       this.$axios.$post('/profile/change_email_request', {
         email: this.newEmail,
       }).then(() => {
@@ -130,7 +130,7 @@ export default {
     },
     checkCodeForNewEmail() {
       this.$v.$touch();
-      if (this.$v.$pending || this.$v.$error) return;
+      if (this.$v.$error) return;
       this.$axios.$post('/profile/change_email', {
         email: this.newEmail,
         code: this.code
