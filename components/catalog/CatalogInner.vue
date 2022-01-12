@@ -256,7 +256,7 @@ export default {
       Object.keys(filtered).map((key, i) => {
         divSpecs[i % 2 === 0 ? 0 : 1][key] = specs[key];
       });
-      return this.isMobileBreakpoint ? filtered : divSpecs;
+      return this.isMobileBreakpoint ? [filtered] : divSpecs;
     },
     handleModClick(mod) {
       let path = `${this.pathBase}/mod/${mod.id}`;
