@@ -12,7 +12,7 @@
       </div>
     </div>
     <hr class="mb-0"/>
-    <div class="d-flex justify-content-end mt-2 mt-lg-3">
+    <div v-if="$env.isDev" class="d-flex justify-content-end mt-2 mt-lg-3">
       <letter-of-attorney-button :car="car" />
     </div>
   </div>
@@ -25,7 +25,7 @@ export default {
   props: {
     car: {}
   },
-  components: { 
+  components: {
     LetterOfAttorneyButton
   },
   computed: {
