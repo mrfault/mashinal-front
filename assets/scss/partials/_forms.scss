@@ -249,7 +249,6 @@ input::-webkit-inner-spin-button {
       height: auto;
       align-items: flex-start;
       .text-truncate.skip-truncate {
-        white-space: normal;
         padding-top: 2px;
       }
     }
@@ -630,7 +629,7 @@ input::-webkit-inner-spin-button {
         flex-shrink: 0;
         margin-right: 14px;
       }
-      
+
     }
     &.responsive .mt-3 + .select-menu_dropdown-option {
       border-top: 0;
@@ -872,12 +871,12 @@ input::-webkit-inner-spin-button {
         .select-menu_dropdown-option {
           border-top-color: $dark-2;
         }
-        
+
         .select-menu_label,
         .text-input input {
           background-color: $dark-2;
         }
-        
+
         .form-merged {
           background-color: $dark-2;
           .form-group:not(:last-child) {
@@ -918,7 +917,7 @@ input::-webkit-inner-spin-button {
       }
     }
   }
-  
+
   .form-merged {
     .form-group:not(:last-child) {
       border-right-color: $dark-2;
