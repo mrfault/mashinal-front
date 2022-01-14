@@ -680,6 +680,7 @@ export default {
     "Dizel",
     "Qaz",
     "Elektro",
+    "Qaz-turbin",
     "Plug-in Hibrid"
   ],
   "enter_a_new_mobile_number": "Yeni əlaqə nömrəsi əlavə et",

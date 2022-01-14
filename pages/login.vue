@@ -6,13 +6,11 @@
         <div class="row no-gutters">
           <div class="col-12 col-lg-6">
             <div class="tab-info">
-              <h1 v-html="$t(tab)"></h1>
-              <p>{{ $t(tab+'_info') }}</p>
-              <transition-group name="translate-fade">
-                <template v-for="type in ['sign-in','sign-up']">
-                  <img :src="`/img/${type}-car.png`" alt="" v-show="tab === type" :key="type" />
-                </template>
-              </transition-group>
+              <h1 v-html="$t('sign-in')"></h1>
+              <p>{{ $t('sign-in_info') }}</p>
+
+              <img src="/img/sign-in-car.png" alt=""  />
+
               <div class="tab-bg"></div>
             </div>
           </div>
@@ -58,7 +56,7 @@ export default {
   },
   methods: {
     ...mapActions(['resetSellTokens']),
-    
+
     handleLogin(auth) {
       if (!auth) return;
       this.resetSellTokens();
