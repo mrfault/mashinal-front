@@ -42,7 +42,7 @@
             <div class="row">
               <div class="col" v-for="(specs, i) in mainSpecs" :key="i">
                 <ul>
-                  <li v-for="(spec, key) in specs" :key="key">
+                  <li v-if="spec || $t(key+'_values')[spec]" v-for="(spec, key) in specs" :key="key">
                     <span>{{ $t(key) }}</span>
                     <span v-if="hasValues(key)">{{ $t(key+'_values')[spec] }}</span>
                     <span v-else>{{ spec || '—' }} {{ spec && getSuffix(key) }}</span>
@@ -250,6 +250,10 @@ export default {
           }
           else if (Array.isArray(value)) {
             if(value.reduce((a, b) => a + b, 0) > 0)
+              filtered[key] = value;
+          }
+          else if(Object.keys(value).length) {
+            if(Object.values(value).reduce((a, b) => a + b, 0) > 0)
               filtered[key] = value;
           }
           else if (!(this.hasValues(key) && value === 0)) {
