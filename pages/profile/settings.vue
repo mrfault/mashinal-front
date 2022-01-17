@@ -2,15 +2,15 @@
   <div class="pages-profile-settings pt-2 pt-lg-5">
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
-      <component 
-        :is="isMobileBreakpoint ? 'mobile-screen' : 'div'" 
-        :bar-title="$t('user_information_edit')" 
-        @back="$router.push(pageRef || $localePath('/profile'))" 
+      <component
+        :is="isMobileBreakpoint ? 'mobile-screen' : 'div'"
+        :bar-title="$t('user_information_edit')"
+        @back="$router.push(pageRef || $localePath('/profile'))"
         height-auto
       >
         <div class="card profile-settings-card">
           <div class="avatar_edit">
-            <form-image v-model="form.avatar" :initial-image="getUserAvatar" 
+            <form-image v-model="form.avatar" :initial-image="getUserAvatar"
               croppable :width="100" :height="100" />
             <p class="text-center">100x100px</p>
           </div>
@@ -32,21 +32,21 @@
               <change-phone :placeholder="$t('contact_number')" />
             </div>
             <div class="full-width"></div>
-            <div class="col-lg-4 mb-3 mb-lg-3">
-              <form-text-input type="password" autocomplete="old-password" :maxlength="255" 
-                :placeholder="$t('current_password')"  v-model="form.old"
-              />
-            </div>
-            <div class="col-lg-4 mb-3 mb-lg-3">
-              <form-text-input type="password" autocomplete="new-password" :maxlength="255" 
-                :placeholder="$t('new_password')"  v-model="form.password"
-              />
-            </div>
-            <div class="col-lg-4 mb-3 mb-lg-3">
-              <form-text-input type="password" autocomplete="new-password" :maxlength="255" 
-                :placeholder="$t('confirm_new_password')"  v-model="form.password_confirmation"
-              />
-            </div>
+<!--            <div class="col-lg-4 mb-3 mb-lg-3">-->
+<!--              <form-text-input type="password" autocomplete="old-password" :maxlength="255" -->
+<!--                :placeholder="$t('current_password')"  v-model="form.old"-->
+<!--              />-->
+<!--            </div>-->
+<!--            <div class="col-lg-4 mb-3 mb-lg-3">-->
+<!--              <form-text-input type="password" autocomplete="new-password" :maxlength="255" -->
+<!--                :placeholder="$t('new_password')"  v-model="form.password"-->
+<!--              />-->
+<!--            </div>-->
+<!--            <div class="col-lg-4 mb-3 mb-lg-3">-->
+<!--              <form-text-input type="password" autocomplete="new-password" :maxlength="255" -->
+<!--                :placeholder="$t('confirm_new_password')"  v-model="form.password_confirmation"-->
+<!--              />-->
+<!--            </div>-->
             <div class="col-lg-2 offset-lg-10">
               <button class="btn btn--green full-width" @click="submit">{{ $t('confirm') }}</button>
             </div>
@@ -83,7 +83,7 @@ export default {
   },
   async asyncData({ $auth, app }) {
     await $auth.fetchUser();
-    
+
     return {
       form: {
         old: '',
@@ -114,7 +114,7 @@ export default {
   },
   methods: {
     escapeDate(date) {
-      return (date !== null && date !== '' && date !== 'Invalid date') 
+      return (date !== null && date !== '' && date !== 'Invalid date')
         ? this.$moment(date, 'DD.MM.YYYY').format('DD-MM-YYYY') : null;
     },
     async submit() {
@@ -136,7 +136,7 @@ export default {
         }
         formData.append(key, value);
       }
-      
+
       this.$axios.$post('/profile/change_info', formData).then((res) => {
         this.$toasted.success(this.$t('saved_changes'));
         this.form.old = '';
