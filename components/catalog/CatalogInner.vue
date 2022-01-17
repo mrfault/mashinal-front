@@ -243,8 +243,12 @@ export default {
       let filtered = {}, divSpecs = [{}, {}];
       for (let key in specs) {
         let value = specs[key];
-        if (value instanceof Array ? value.filter(i => !['-','—'].includes(i)).length : !['',null,false,'-','—'].includes(value)) {
+        if (value instanceof Array ? value.filter(i => !['-','—'].includes(i)).length : !['',0,null,false,'-','—'].includes(value)) {
           if(key === 'combined_power') {
+            if(value.reduce((a, b) => a + b, 0) > 0)
+              filtered[key] = value;
+          }
+          else if (Array.isArray(value)) {
             if(value.reduce((a, b) => a + b, 0) > 0)
               filtered[key] = value;
           }
