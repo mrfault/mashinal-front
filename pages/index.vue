@@ -8,19 +8,11 @@
               <img :src="homePageSlider.image">
             </div>
             <div class="homePage-slide-right" :style="!isDarkMode ? `background:${homePageSlider.overlay_color}`:''">
-              <div :style="`
-                position: absolute;
-                top: 0;
-                left: 2px;
-                transform: translateX(-100%);
-                height: 100%;
-                border-top: 600px solid ${!isDarkMode ? homePageSlider.overlay_color:'#D0DBF9'};
-                border-left: 135px solid transparent;
-            `"></div>
+              <div class="before-slider-right" :style="` border-top: 600px solid ${!isDarkMode ? homePageSlider.overlay_color:'#D0DBF9'};`"></div>
               <div class="homePage-text-section">
                 <div class="homePage-text-section-title">
 
-                  <img :src="homePageSlider.icon">
+                  <img :src="isDarkMode ? homePageSlider.icon_dark : homePageSlider.icon">
                   <h3>{{ homePageSlider.title[locale] }}</h3>
                 </div>
                 <p>{{ homePageSlider.description[locale] }}</p>

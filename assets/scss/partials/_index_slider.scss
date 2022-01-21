@@ -14,10 +14,10 @@
 .dark-mode .homePage-slide-right {
   background: $dark-2;
 }
-.dark-mode .homePage-slide-right::before{
-  border-top: 600px solid $dark-2;
+.dark-mode .homePage-slide-right .before-slider-right{
+  border-top: 600px solid $dark-2 !important;
 }
-.homePage-slide-right::before{
+.homePage-slide-right > .before-slider-right{
   content: "";
   position: absolute;
   top: 0;
@@ -25,7 +25,6 @@
 
   transform: translateX(-100%);
   height: 100%;
-  border-top: 600px solid #D0DBF9;
   border-left: 135px solid transparent;
 
 }
