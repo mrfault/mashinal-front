@@ -1664,7 +1664,7 @@ export default {
   "Side mirrors": "Yan güzgülər",
   "side_curtain": "Yan pərdələr",
   "sign-in": "Daxil <br/>ol.",
-  "sign-in_info": "Hesabına daxil ol",
+  "sign-in_info": "Mashin.al-a daxil olun",
   "sign-up": "Qeydiyyatdan <br/>keç.",
   "sign-up_info": "Mashin.AL-da qeydiyyatdan keç",
   "Signaling": "Siqnalizasiya",

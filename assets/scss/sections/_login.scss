@@ -20,7 +20,7 @@
     height: 423px;
     padding: 50px;
     color: $white;
-    background-color: $red-1;
+    background-color: $dark-blue-1;
     border-radius: 4px 0 0 4px;
     img {
       width: 114px;
@@ -130,7 +130,7 @@
 @include media-max-width('lg') {
   .pages-login {
     @include calc-vh(min-height, calc(100vh - 60px));
-    background: linear-gradient(180deg, $red-1 379px, $white 379px);
+    background: $white;
     padding: 0;
     .tab-info {
       height: 354px;

@@ -6,16 +6,17 @@
         <div class="row no-gutters">
           <div class="col-12 col-lg-6">
             <div class="tab-info">
-              <h1 v-html="$t('sign-in')"></h1>
-              <p>{{ $t('sign-in_info') }}</p>
+              <h1 style="font-size: 40px;" v-html="$t('sign-in')"></h1>
+              <h2 style="font-weight: normal;">{{ $t('sign-in_info') }}</h2>
 
-              <img src="/img/sign-in-car.png" alt=""  />
+              <img src="/img/sign-up-car.png" alt=""  />
 
               <div class="tab-bg"></div>
             </div>
           </div>
           <div class="col-12 col-lg-6">
             <div class="tab-form">
+
               <login-tabs @update-tab="tab = $event" :skip-sign-in="true" />
             </div>
           </div>

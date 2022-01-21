@@ -43,8 +43,10 @@ export const LayoutMixin = {
       let scrolled = window.scrollY;
       let layout = document.querySelector('.layout');
       // header
-      let headerEl = document.querySelector('.page-header');
+      let headerEl = document.querySelector('.header-menu');
       let menuHeaderEl = document.querySelector('.menu-header');
+      let promotionEl = document.querySelector('.top-promotion-row');
+      promotionEl?.classList[window.scrollY > 0 ? 'add' : 'remove']('d-none');
       [headerEl, menuHeaderEl].map(el => {
         el?.classList[window.scrollY > 0 ? 'add' : 'remove']('has-shadow');
       });

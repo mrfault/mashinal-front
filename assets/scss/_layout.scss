@@ -12,7 +12,9 @@ body {
   color: $white;
   background-color: $dark-1;
 }
-
+.text-decoration-underline {
+  text-decoration: underline;
+}
 a {
   color: $dark-blue-2;
   text-decoration: none;
@@ -387,14 +389,10 @@ main {
 }
 
 .page-header {
-  background-color: $white;
-  position: fixed;
+  position: sticky;
   z-index: 10;
   top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  transition: box-shadow .1s ease-out;
-  border-radius: 0 0 20px 20px;
+  left: 0;
 
   .topbar {
     display: flex;
@@ -707,11 +705,10 @@ main {
     }
   }
 
-  &.has-shadow {
-    box-shadow: $shadow-light-4;
-  }
 }
-
+.has-shadow {
+  box-shadow: $shadow-light-4;
+}
 .support-hotline {
   display: inline-flex;
   align-items: center;
@@ -1262,8 +1259,6 @@ main {
 /** Breadcrumbs */
 
 .breadcrumbs {
-  margin: -30px 0 0;
-
   ul {
     margin: 0 auto 0 0;
     padding: 0;
@@ -2003,15 +1998,10 @@ main {
 .call-center img {
   height: 100%;
 }
-
-nav ul li i {
-  color: white;
+.header-menu {
+  padding-right: 0px;
+  padding-left: 0px;
 }
-
-nav div i {
-  color: white;
-}
-
 .top-header-right {
   padding-right: 50px;
 }

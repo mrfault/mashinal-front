@@ -1,7 +1,6 @@
 <template>
-  <div class="pages-index">
-
-    <div class="swiper-container" v-swiper:gallerySwiper="swiperOps" >
+  <div class="pages-index" :style="!isMobileBreakpoint ? 'margin-top: -162px;' : ''">
+    <div class="swiper-container" v-swiper:gallerySwiper="swiperOps" v-if="!isMobileBreakpoint">
       <div class="swiper-wrapper">
         <div class="swiper-slide" v-for="slide in 3">
           <div class=" homePage-slide-item" >
@@ -14,7 +13,7 @@
                   <img src="/test-icon.svg">
                   <h3>Qaraj</h3>
                 </div>
-                <p>Avtomobiliniz radara düşəndə anında mobil nömrənizə SMS-lə göndərilir {{ slide }}</p>
+                <p>Avtomobiliniz radara düşəndə anında mobil nömrənizə SMS-lə göndərilir</p>
                 <button class="btn  btn--green text-left"><i aria-hidden="true" class="icon-plus-circle"></i> Avtomobil əlavə et</button>
               </div>
             </div>
@@ -24,15 +23,6 @@
       <div class="swiper-pagination" slot="pagination"></div>
 
     </div>
-<!--    <swiper-->
-<!--      :options="swiperOps"-->
-<!--      :slides-per-view="3"-->
-<!--      :space-between="50"-->
-<!--      @swiper="onSwiper"-->
-<!--      @slideChange="onSlideChange"-->
-<!--    >-->
-
-<!--    </swiper>-->
     <div class="container">
       <car-search-form
         :total-count="$paginate(mainAnnouncements).total"

@@ -1,6 +1,13 @@
 <template>
   <div :class="['login-forms', {'login-forms--popup': popup}]" @click.stop>
     <div>
+      <steps-progress
+        :limit-steps="2"
+        :finished="finished"
+      />
+      <h2 :class="{'title-with-line': !isMobileBreakpoint}">
+        <span>{{ $t('login') }}</span>
+      </h2>
       <sign-in-form
         @update-tab="updateTab"
         v-if="action !== 'sms'"
@@ -30,6 +37,7 @@
 <!--        :action-text="actionText && actionText.register"-->
 <!--      />-->
       <confirm-phone
+        @setFinished="finished = $event"
         @update-tab="updateTab"
         v-else-if="action === 'sms'"
         :form="form"
@@ -43,23 +51,19 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex';
+import {mapActions, mapState} from 'vuex';
 
   import { requiredIf, numeric } from 'vuelidate/lib/validators';
   import { isPhoneNumber } from '~/lib/validators';
 
+  import StepsProgress from '~/components/garage/loa/StepsProgress';
   import SignInForm  from '~/components/login/SignInForm';
-  import ForgotPassword  from '~/components/login/ForgotPassword';
-  import ResetPassword  from '~/components/login/ResetPassword';
-  import SignUpForm  from '~/components/login/SignUpForm';
   import ConfirmPhone  from '~/components/login/ConfirmPhone';
 
   export default {
     components: {
+      StepsProgress,
       SignInForm,
-      ForgotPassword,
-      ResetPassword,
-      SignUpForm,
       ConfirmPhone
     },
     props: {
@@ -71,6 +75,7 @@
     },
     data() {
       return {
+        finished: false,
         tab: 'sign-in',
         action: 'sign-in',
         form: {},
@@ -90,6 +95,7 @@
       ...mapState(['sellPhoneEntered','sellPhoneRegistered'])
     },
     methods: {
+      ...mapActions('letterOfAttorney', ['updateStep']),
       resetForm() {
         this.form = {
           name: this.initialForm?.name || '',
@@ -106,7 +112,10 @@
         this.$v.$reset();
         this.tab = tab;
         this.action = action !== '' ? action : tab;
-        if (action === 'sms') this.resendData = data;
+        if (action === 'sms') {
+          this.resendData = data;
+          this.updateStep(2);
+        }
         this.$emit('update-tab', tab);
       },
       handleEscapeKey(e) {

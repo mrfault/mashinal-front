@@ -56,6 +56,7 @@
       ...mapState(['sellPhoneEntered'])
     },
     methods: {
+     // @deprecated
       submit() {
         // form submit handler
         this.validator.$touch();

@@ -4,7 +4,7 @@
       <vue-scroll>
         <div class="scrollable-text_scrollview">
           <div class="iframe mb-2" v-if="hasGeneralPower">
-            <iframe src="https://www.youtube.com/embed/Wo1wmo5qxeQ" 
+            <iframe src="https://www.youtube.com/embed/Wo1wmo5qxeQ"
               frameborder="0" allowfullscreen
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" >
             </iframe>
@@ -14,10 +14,10 @@
       </vue-scroll>
     </div>
     <hr class="mt-0 mb-2 mb-lg-3" />
-    <form-checkbox 
-      :label="$t('mobile_notariat_confirm')" 
+    <form-checkbox
+      :label="$t('mobile_notariat_confirm')"
       input-name="mobile_notariat_confirm"
-      v-model="mobileNotariatConfirm" 
+      v-model="mobileNotariatConfirm"
       transparent skip-truncate
       class="mb-3"
     />
@@ -40,10 +40,10 @@ export default {
     ...mapGetters('letterOfAttorney', ['stepSendData', 'hasGeneralPower']),
 
     mobileNotariatConfirm: {
-      get() { 
+      get() {
         return this.stepSendData.mobileNotariatConfirm
       },
-      set(value) { 
+      set(value) {
         this.updateSendData({ key: 'mobileNotariatConfirm', value });
       }
     }

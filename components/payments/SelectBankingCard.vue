@@ -1,18 +1,18 @@
 <template>
   <div class="select-banking-card" v-if="bankingCards.length">
-    <form-select 
-      :label="$t('pay_with_card')" 
-      :options="cardOptions" 
+    <form-select
+      :label="$t('pay_with_card')"
+      :options="cardOptions"
       :clear-option-text="$t('other_card')"
       :clear-option-pull-down="true"
       :has-cards="true"
       :skip-select="true"
       img-key="icon"
-      v-model="activeCardId" 
+      v-model="activeCardId"
     />
     <div class="banking-cards_item mt-3" v-if="activeCard">
       <div class="card-img">
-        <img :src="`/img/cards/card-${colorMode}-${activeCard.img}.png`" :alt="activeCard.brand" />
+        <img :src="`/img/cards/card-${activeCard.brand}-${activeCard.img}.png`" :alt="activeCard.brand" />
       </div>
       <div class="card-details d-flex flex-column justify-content-between">
         <div class="card-top d-flex">
@@ -22,7 +22,6 @@
         </div>
         <div class="card-bottom d-flex">
           <span>**/**</span>
-          <img class="ml-auto" :src="`/img/cards/${activeCard.brand.toLowerCase()}-white.svg`" :alt="activeCard.brand" />
         </div>
       </div>
     </div>

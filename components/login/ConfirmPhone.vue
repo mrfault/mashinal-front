@@ -8,13 +8,11 @@
         v-model="form.code"
       />
     </div>
-    <p class="info-text"><icon name="alert-circle" /> {{ $t('enter_the_code_sent_to_your_number')}}</p>
     <p v-if="showResend || codeSent || askToCallSupport">
-      <span v-if="showResend && resendSmsAfterSecond === 0" class="cursor-pointer" @click="resendCode">{{ $t('resend_code') }}</span>
-      <span v-else-if="showResend && resendSmsAfterSecond > 0">
-        <template v-if="locale === 'ru'">{{ $t('resend_code_after') }} </template>
+      <a v-if="showResend && resendSmsAfterSecond === 0" class="cursor-pointer text-decoration-underline" @click.prevent="resendCode">{{ $t('resend_code') }}</a>
+      <span class="d-flex justify-content-between" v-else-if="showResend && resendSmsAfterSecond > 0">
+        {{ $t('enter_the_code_sent_to_your_number') }}
         <timer format="i:s" :duration="resendSmsAfterSecond" @timeOver="resendSmsAfterSecond = 0" />
-        <template v-if="locale === 'az'"> {{ $t('resend_code_after') }}</template>
       </span>
       <span v-else-if="codeSent">{{ $t('code_has_been_sent') }}</span>
       <span v-else-if="askToCallSupport">{{ $t('please_call_to_support') }}</span>
@@ -24,6 +22,8 @@
 </template>
 
 <script>
+  import {mapActions} from "vuex";
+
   export default {
     props: {
       form: {},
@@ -44,6 +44,7 @@
       }
     },
     methods: {
+      ...mapActions('letterOfAttorney', ['updateStep']),
       resendCode() {
         this.showResend = false;
         this.$axios.$post('/resend/code', {
@@ -68,6 +69,7 @@
           this.fbTrack('Complete Registration Api');
           this.gtagTrack('AW-600951956/-O6CCJGB2fIBEJSZx54C');
           this.$auth.setUser(data.user.original)
+          this.$emit('setFinished',true)
           await this.$auth.setUserToken(data.meta.token);
 
           this.pending = false;

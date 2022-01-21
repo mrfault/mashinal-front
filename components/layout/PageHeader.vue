@@ -1,8 +1,6 @@
 <template>
-
-
   <div class="page-header">
-    <div>
+    <div v-if="!isMobileBreakpoint">
       <div class="top-promotion-row">
         <div class="container ">
           <div class="top-promotion">
@@ -28,7 +26,7 @@
         </div>
       </div>
     </div>
-    <header class=" d-none d-lg-block" :class="{ 'no-border-radius':hoverMenu}" >
+    <header class="header-menu container d-none d-lg-block" :class="{ 'no-border-radius':hoverMenu}" >
 
       <div class="topbar">
         <nuxt-link class="logo" :to="$localePath('/')" @click.native="$nuxt.$emit('logo-click')">
@@ -41,7 +39,7 @@
           <img src="/icons/subtract.svg">
           <span>*8787</span>
         </div>
-        <nav>
+        <nav class="topbar-nav">
           <ul class="menu">
             <li v-for="menu in topbarMenus" :key="menu.title">
               <nuxt-link :to="$localePath(menu.route)">
@@ -175,7 +173,18 @@
 
 
 </template>
-
+<style lang="scss">
+.topbar-nav {
+   .menu > li i {
+     color: #fff;
+   }
+}
+.header-menu {
+  background-color: #fff;
+  transition: box-shadow .1s ease-out;
+  border-radius: 0 0 20px 20px;
+}
+</style>
 <script>
 import {mapGetters, mapActions} from 'vuex';
 
