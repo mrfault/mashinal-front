@@ -60,6 +60,7 @@ export const MenusDataMixin = {
       if (!this.loggedIn) return [];
 
       let menus = [
+        { title: 'garage', route: '/garage', icon: 'user', showOnCard: this.isMobileBreakpoint },
         { title: 'my_account', route: '/profile', icon: 'user', showOnCard: this.isMobileBreakpoint },
         { title: 'my_announces', route: '/profile/announcements', icon: 'speaker', showOnCard: true },
         { title: 'balans', route: '/profile/balance', icon: 'wallet', showOnCard: true }
@@ -71,7 +72,7 @@ export const MenusDataMixin = {
         menus.push({ title: 'dashboard_shop', route: '/dashboard/2', icon: 'shops-tab', showOnCard: true });
       if (this.isMobileBreakpoint)
         menus.push(this.pageMenus.find(menu => menu.title === 'policy'));
-        
+
 
       return menus;
     },
@@ -91,9 +92,9 @@ export const MenusDataMixin = {
     },
 
     commercialMenus() {
-      return this.commercialTypes.map(type => ({ 
+      return this.commercialTypes.map(type => ({
         title: `commercial_${type.param}`,
-        route: '/commercial/'+this.$t(`slug_${type.param}`), 
+        route: '/commercial/'+this.$t(`slug_${type.param}`),
         icon: `commercial-${type.param}`,
         id: type.id
       }));
@@ -110,7 +111,7 @@ export const MenusDataMixin = {
     partsMenus() {
       return this.partsRoutes.filter(r => r.showOnMenu);
     },
-    
+
     partsSubMenus() {
       return [
         { title: 'parts', route: '/parts', icon: 'parts' },
@@ -124,13 +125,13 @@ export const MenusDataMixin = {
         'moto', 'moto-moto', 'commercial','commercial-commercial','parts','parts-category'
       ].includes(this.routeName);
     },
-    
+
     hasProfileData() {
       return [
         'profile', 'profile-settings'
       ].includes(this.routeName);
     },
-    
+
     hasDashboardPanel() {
       return [
         'profile', 'profile-settings', 'profile-dashboard', 'profile-calls', 'profile-statistics'
