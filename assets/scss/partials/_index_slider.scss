@@ -10,6 +10,13 @@
   background: #D0DBF9;
   width: 47%;
 }
+
+.dark-mode .homePage-slide-right {
+  background: $dark-2;
+}
+.dark-mode .homePage-slide-right::before{
+  border-top: 600px solid $dark-2;
+}
 .homePage-slide-right::before{
   content: "";
   position: absolute;
@@ -29,6 +36,7 @@
 .homePage-text-section{
 width: 50%;
   margin-top: 90px;
+  margin-left: 3px;
 }
 .homePage-text-section h3{
   font-size: 36px;
