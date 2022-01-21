@@ -29,7 +29,7 @@
         <nuxt-link class="logo" :to="$localePath('/')" @click.native="$nuxt.$emit('logo-click')">
           <img :src="`/img/${isDarkMode ? 'logo-white' : 'logo'}.svg`" alt="logo"
                v-if="!btlCookie && !$env.NEW_YEAR_SOON"/>
-          <img :src="`/img/${isDarkMode ? 'logo-white-ng' : 'logo-dark-blue-white'}.svg`" alt="logo"
+          <img :src="`/img/${isDarkMode ? 'logo-dark-mode' : 'logo-dark-blue-white'}.svg`" alt="logo"
                v-if="!btlCookie && $env.NEW_YEAR_SOON"/>
         </nuxt-link>
         <div class="call-center">

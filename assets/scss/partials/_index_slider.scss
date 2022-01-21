@@ -62,6 +62,13 @@ width: 50%;
 .swiper-pagination-bullet-active{
   background: #081A3E !important;
 }
+.dark-mode .swiper-pagination-bullet{
+  background: gray ;
+}
+.dark-mode .swiper-pagination-bullet-active{
+  background: $white !important;
+}
+
 .swiper-pagination-bullet{
   margin-left: 18px !important;
   width: 12px;
