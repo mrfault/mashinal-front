@@ -7,7 +7,7 @@
         </div>
         <salon-search-form v-show="searchFormType === 1" />
         <salon-filters-form v-show="searchFormType === 0" @filter="showSearch = false"
-          :count="(!mapView ? salonsFiltered : salonsInView).length" /> 
+          :count="(!mapView ? salonsFiltered : salonsInView).length" />
       </div>
     </mobile-screen>
     <template v-if="!mapView">
@@ -21,7 +21,7 @@
         <div class="title grid-title mt-2" v-if="isMobileBreakpoint">
           <h2><span>{{ $t('salons') }}</span></h2>
         </div>
-        <div class="salon-card-list row mt-2 mt-lg-3 mb-n2 mb-lg-n3" v-if="salonsFiltered.length">
+        <div class="mb-lg-0 mb-n2 mt-2 mt-lg-3 row salon-card-list" v-if="salonsFiltered.length">
           <div class="col-lg-4 mb-2 mb-lg-3" v-for="salon in salonsFiltered" :key="salon.id">
             <nuxt-link class="keep-colors" :to="$localePath(`/salons/${salon.id}`)">
               <salon-card :salon="salon" />
@@ -61,16 +61,16 @@
             </div>
           </div>
         </template>
-        <clustered-map 
+        <clustered-map
           :key="'desktop-map_'+mapKey"
           :margin-left="{ left: 0, top: 0, width: '360px', height: '100%' }"
-          :margin-top="{ top: 0, left: 0, width: '100%', height: '150px' }" 
-          :use-margin-left="!disableCollapse && !collapse" 
+          :margin-top="{ top: 0, left: 0, width: '100%', height: '150px' }"
+          :use-margin-left="!disableCollapse && !collapse"
           @balloon-click="$router.push($localePath(`/salons/${$event}`))"
         />
       </template>
       <template v-else>
-        <clustered-map 
+        <clustered-map
           :key="'mobile-map_'+mapKey"
           @balloon-click="$router.push($localePath(`/salons/${$event}`))"
         />

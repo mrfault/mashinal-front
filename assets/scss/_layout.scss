@@ -388,11 +388,33 @@ main {
   border-radius: 0 !important;
 }
 
+.rotatable_hover:hover > .rotatable {
+  transform: scaleY(-1);
+}
+.dark-mode {
+  .page-header {
+    .navbar-white {
+      color:$dark-1;
+      background: $white !important;
+      li:hover > a ,li a.active {
+        color:$red-1 !important;
+      }
+    }
+    .dropdown-content {
+      background: $white !important;
+      color:$dark-1;
+      li:hover > a, li a.active {
+        color:$red-1 !important;
+      }
+    }
+  }
+}
 .page-header {
   position: sticky;
   z-index: 10;
   top: 0;
   left: 0;
+
 
   .topbar {
     display: flex;
@@ -445,8 +467,10 @@ main {
       position: relative;
       flex-shrink: 0;
       cursor: pointer;
-      width: 34px;
-      margin-left: 50px;
+      width: 113px;
+      color: $white;
+      background: $red-1;
+      margin-left: 40px;
       padding: 0;
 
       & > i {
@@ -644,7 +668,7 @@ main {
       opacity: 0;
       background-color: $white;
       box-shadow: $shadow-light-3;
-      border-top: 1px solid $greyish-blue-1;
+
     }
 
     .menu > li:hover {
@@ -724,7 +748,6 @@ main {
 
 .dark-mode {
   .page-header {
-    background-color: $dark-2;
 
     .topbar,
     .navbar,
@@ -2012,7 +2035,10 @@ main {
   justify-content: center;
   align-items: center;
   height: 96px;
+  background: #FFE9EC;
+  color: #081A3E;
 }
+
 
 .topUnset {
   top: unset;

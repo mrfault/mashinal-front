@@ -27,7 +27,7 @@ export default {
     },
     initAnimation() {
       this.animation = new this.$rive.Rive({
-        src: '/rive/theme-switch-2.riv',
+        src: this.isMobileBreakpoint ? '/rive/theme-switch.riv' : '/rive/theme-switch-6.riv',
         canvas: this.$refs.canvas,
         stateMachines: 'state',
         autoplay: true,

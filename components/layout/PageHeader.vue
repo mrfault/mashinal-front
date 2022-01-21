@@ -17,7 +17,9 @@
             </div>
             <div class="top-promotion-row-item">
               <img src="/img/mobile-app.png" class="mobile-app" @click="">
-              <a style="margin-left: 10px;cursor:pointer" @click.prevent="closePromotion"><icon style="" name="cross"/></a>
+              <a style="margin-left: 10px;cursor:pointer" @click.prevent="closePromotion">
+                <icon style="color: #081A3E;" name="cross"/>
+              </a>
             </div>
 
           </div>
@@ -56,8 +58,10 @@
             </li>
           </ul>
           <nuxt-link custom :to="getUserSettingsLink" v-slot="{ navigate }">
-            <div class="user-menu btn btn--dark-blue-outline" @click="navigate">
-              <icon name="user"/>
+            <div class="user-menu btn rotatable_hover" @click="navigate">
+               <icon name="garage" style="margin-right: 10px;"/>
+               {{ $t('garage') }}
+              <icon name="chevron-down rotatable" class=""/>
               <div class="user-menu_list" v-if="loggedIn" @click.stop>
                 <div class="user-menu_list-inner">
                   <nuxt-link :to="getUserSettingsLink" class="d-inline-flex align-items-center align-top">
@@ -92,12 +96,12 @@
         </nav>
 
       </div>
-      <div class="navbar" :class="{ 'no-border-radius': hoverMenu }">
+      <div class="navbar navbar-white" :class="{ 'no-border-radius': hoverMenu }">
         <div class="container">
           <nav class="full-width">
             <div class="row align-items-center">
               <div class="col-lg-8 position-static">
-                <ul class="menu">
+                <ul class="menu position-relative">
                   <li @mouseover="menu.children ? hoverMenu = true : ''"
                       @mouseleave="hoverMenu = false;activeCategory = 0" v-for="menu in navbarMenus" :key="menu.title"
                       :class="{'dropdown': menu.children}">
@@ -105,7 +109,7 @@
                       {{ $t(menu.title) }}
                       <icon name="chevron-down" v-if="menu.children"/>
                     </nuxt-link>
-                    <div class="dropdown-content" v-if="menu.children">
+                    <div class="dropdown-content container" v-if="menu.children">
                       <div class="container">
                         <div class="row">
                           <div class="col-3" v-if="menu.categories">
@@ -140,19 +144,7 @@
               </div>
               <div class="col-lg-4">
                 <div class="row justify-content-end top-header-right">
-                  <div class="col-2 text-right">
-                    <div class="support-hotline">
-                      <icon name="support"/>
-                      <span>*8787</span>
-                    </div>
-                  </div>
-                  <div class="col-5">
-                    <nuxt-link class="btn full-width btn--red-outline" :to="$localePath('/garage')"
-                               @click.native="handleBtnClick('garage')">
-                      <icon name="garage"/>
-                      {{ $t('garage') }}
-                    </nuxt-link>
-                  </div>
+
                   <div class="col-5">
                     <nuxt-link class="btn full-width btn--pale-green-outline" :to="$localePath('/sell')"
                                @click.native="handleBtnClick('sell')">
@@ -179,7 +171,6 @@
    }
 }
 .header-menu {
-  background-color: #fff;
   transition: box-shadow .1s ease-out;
   border-radius: 0 0 20px 20px;
 }

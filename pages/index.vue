@@ -7,7 +7,16 @@
             <div class="homePage-slide-left">
               <img :src="homePageSlider.image">
             </div>
-            <div class="homePage-slide-right">
+            <div class="homePage-slide-right" :style="!isDarkMode ? `background:${homePageSlider.overlay_color}`:''">
+              <div :style="`
+                position: absolute;
+                top: 0;
+                left: 2px;
+                transform: translateX(-100%);
+                height: 100%;
+                border-top: 600px solid ${!isDarkMode ? homePageSlider.overlay_color:'#D0DBF9'};
+                border-left: 135px solid transparent;
+            `"></div>
               <div class="homePage-text-section">
                 <div class="homePage-text-section-title">
 
