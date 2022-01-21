@@ -1,57 +1,42 @@
 <template>
   <div :class="['login-forms', {'login-forms--popup': popup}]" @click.stop>
     <div>
-      <div class="tabs row">
-        <div class="col" v-if="!forceSellPhone || tab === 'sign-in'">
-          <button 
-            :class="['btn', 'btn--pale-red-outline', {'active': tab === 'sign-in' && !forceSellPhone, 'pointer-events-none': forceSellPhone}]" 
-            @click="updateTab('sign-in')"
-            v-html="$t('login')"
-          />
-        </div>
-        <div class="col" v-if="!forceSellPhone || tab === 'sign-up'">
-          <button 
-            :class="['btn', 'btn--pale-red-outline', {'active': tab === 'sign-up' && !forceSellPhone, 'pointer-events-none': forceSellPhone}]"
-            @click="updateTab('sign-up')"
-            v-html="$t('registration')"
-          />
-        </div>
-      </div>
-      <sign-in-form 
-        @update-tab="updateTab" 
-        v-if="action === 'sign-in'" 
-        :form="form" 
-        :validator="$v.form" 
-        :action-text="actionText && actionText.login" 
-      />
-      <forgot-password 
+      <sign-in-form
         @update-tab="updateTab"
-        v-else-if="action === 'forgot'" 
-        :form="form" 
-        :validator="$v.form" 
+        v-if="action !== 'sms'"
+        :form="form"
+        :popup="popup"
+        :validator="$v.form"
+        :action-text="actionText && actionText.login"
       />
-      <reset-password 
-        @update-tab="updateTab" 
-        v-else-if="action === 'reset'" 
-        :form="form" 
-        :validator="$v.form" 
-      />
-      <sign-up-form
+<!--      <forgot-password-->
+<!--        @update-tab="updateTab"-->
+<!--        v-else-if="action === 'forgot'"-->
+<!--        :form="form"-->
+<!--        :validator="$v.form"-->
+<!--      />-->
+<!--      <reset-password-->
+<!--        @update-tab="updateTab"-->
+<!--        v-else-if="action === 'reset'"-->
+<!--        :form="form"-->
+<!--        :validator="$v.form"-->
+<!--      />-->
+<!--      <sign-up-form-->
+<!--        @update-tab="updateTab"-->
+<!--        @reset="resetForm"-->
+<!--        v-else-if="action === 'sign-up'"-->
+<!--        :form="form"-->
+<!--        :validator="$v.form"-->
+<!--        :action-text="actionText && actionText.register"-->
+<!--      />-->
+      <confirm-phone
         @update-tab="updateTab"
-        @reset="resetForm"
-        v-else-if="action === 'sign-up'"
+        v-else-if="action === 'sms'"
         :form="form"
         :validator="$v.form"
-        :action-text="actionText && actionText.register" 
-      />
-      <confirm-phone 
-        @update-tab="updateTab" 
-        v-else-if="action === 'sms'" 
-        :form="form" 
-        :validator="$v.form" 
-        :action-text="actionText && actionText.confirm" 
-        :skip-sign-in="skipSignIn" 
-        :resend-data="resendData" 
+        :action-text="actionText && actionText.confirm"
+        :skip-sign-in="skipSignIn"
+        :resend-data="resendData"
       />
     </div>
   </div>
@@ -59,7 +44,7 @@
 
 <script>
   import { mapState } from 'vuex';
-  
+
   import { requiredIf, numeric } from 'vuelidate/lib/validators';
   import { isPhoneNumber } from '~/lib/validators';
 
@@ -71,10 +56,10 @@
 
   export default {
     components: {
-      SignInForm, 
-      ForgotPassword, 
-      ResetPassword, 
-      SignUpForm, 
+      SignInForm,
+      ForgotPassword,
+      ResetPassword,
+      SignUpForm,
       ConfirmPhone
     },
     props: {
@@ -97,8 +82,8 @@
         name: { required: requiredIf(function() { return ['sign-up'].includes(this.action) && !this.$cookies.get('btl')}) },
         phone: { required: requiredIf(function() { return ['sign-in','sign-up','forgot'].includes(this.action)}), isPhoneNumber },
         code: { required: requiredIf(function() { return ['sms','reset'].includes(this.action)}), numeric },
-        password: { required: requiredIf(function() { return ['sign-in','sign-up','reset'].includes(this.action) && !this.$cookies.get('btl')}) },
-        passwordConfirm: { required: requiredIf(function() { return ['sign-up','reset'].includes(this.action) && !this.$cookies.get('btl')}) }
+        // password: { required: requiredIf(function() { return ['sign-in','sign-up','reset'].includes(this.action) && !this.$cookies.get('btl')}) },
+        // passwordConfirm: { required: requiredIf(function() { return ['sign-up','reset'].includes(this.action) && !this.$cookies.get('btl')}) }
       }
     },
     computed: {
