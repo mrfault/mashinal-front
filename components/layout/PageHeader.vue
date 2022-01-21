@@ -13,11 +13,10 @@
             <div class="top-promotion-row-item">
               <img src="/img/app-store.svg" class="app-store-img">
               <img src="/img/google-play.svg" class="google-play-img">
-
             </div>
             <div class="top-promotion-row-item">
               <img src="/img/mobile-app.png" class="mobile-app" @click="">
-              <a style="margin-left: 10px;cursor:pointer" @click.prevent="closePromotion"><icon  name="cross"/></a>
+              <a style="margin-left: 10px;cursor:pointer" @click.prevent="closePromotion"><icon style="" name="cross"/></a>
             </div>
 
           </div>
