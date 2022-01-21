@@ -1,25 +1,25 @@
 <template>
-  <header class="page-header d-none d-lg-block">
-    <div class="topbar">
-      <div class="container">
+
+
+  <div class="container">
+    <header class="page-header d-none d-lg-block" :class="{ 'no-border-radius':hoverMenu }">
+      <div class="topbar">
         <nuxt-link class="logo" :to="$localePath('/')" @click.native="$nuxt.$emit('logo-click')">
-          <img :src="`/img/${isDarkMode ? 'logo-white' : 'logo'}.svg`" alt="logo" v-if="!btlCookie && !$env.NEW_YEAR_SOON" />
-          <img :src="`/img/${isDarkMode ? 'logo-white-ng' : 'logo-dark-ng'}.svg`" alt="logo" v-if="!btlCookie && $env.NEW_YEAR_SOON" />
+          <img :src="`/img/${isDarkMode ? 'logo-white' : 'logo'}.svg`" alt="logo"
+               v-if="!btlCookie && !$env.NEW_YEAR_SOON"/>
+          <img :src="`/img/${isDarkMode ? 'logo-white-ng' : 'logo-dark-blue-white'}.svg`" alt="logo"
+               v-if="!btlCookie && $env.NEW_YEAR_SOON"/>
         </nuxt-link>
-        <div class="store-badges">
-          <a href="https://apple.co/2YgvGt4" target="_blank" rel="noopener">
-            <img :src="`/img/appstore-${colorMode}.svg`" alt="app store" />
-          </a>
-          <a href="https://bit.ly/3bYPtRj" target="_blank" rel="noopener">
-            <img :src="`/img/googleplay-${colorMode}.svg`" alt="google play" />
-          </a>
+        <div class="call-center">
+          <img src="/icons/subtract.svg">
+          <span>*8787</span>
         </div>
         <nav>
           <ul class="menu">
             <li v-for="menu in topbarMenus" :key="menu.title">
               <nuxt-link :to="$localePath(menu.route)">
-                <icon :name="menu.icon" />
-                {{ $t(menu.title) }}
+                <icon :name="menu.icon"/>
+
                 <template v-if="menu.title === 'messages' && countNewMessages > 0">
                   <span class="badge-counter">{{ countNewMessages }}</span>
                 </template>
@@ -34,11 +34,11 @@
           </ul>
           <nuxt-link custom :to="getUserSettingsLink" v-slot="{ navigate }">
             <div class="user-menu btn btn--dark-blue-outline" @click="navigate">
-              <icon name="user" />
+              <icon name="user"/>
               <div class="user-menu_list" v-if="loggedIn" @click.stop>
                 <div class="user-menu_list-inner">
                   <nuxt-link :to="getUserSettingsLink" class="d-inline-flex align-items-center align-top">
-                    <img :src="getUserAvatar" :alt="user.full_name" />
+                    <img :src="getUserAvatar" :alt="user.full_name"/>
                     <span class="text-truncate">{{ user.full_name }}</span>
                   </nuxt-link>
                   <hr/>
@@ -56,91 +56,104 @@
           </nuxt-link>
           <div class="langs-menu btn btn--dark-blue-outline">
             <span>{{ locale }}</span>
-            <icon name="chevron-down" />
+            <icon name="chevron-down"/>
             <div class="langs-menu_list">
               <div class="langs-menu_list-inner">
-                <span class="cursor-pointer" v-for="code in locales" :key="code" @click="changeLocale(code)">{{ code }}</span>
+                <span class="cursor-pointer" v-for="code in locales" :key="code" @click="changeLocale(code)">{{
+                    code
+                  }}</span>
               </div>
             </div>
           </div>
-          <theme-switch />
+          <theme-switch/>
         </nav>
+
       </div>
-    </div>
-    <div class="navbar">
-      <div class="container">
-        <nav class="full-width">
-          <div class="row align-items-center">
-            <div class="col-lg-8 position-static">
-              <ul class="menu">
-                <li v-for="menu in navbarMenus" :key="menu.title" :class="{'dropdown': menu.children}" @mouseleave="activeCategory = 0">
-                  <nuxt-link :to="$localePath(menu.route)" >
-                    {{ $t(menu.title) }}
-                    <icon name="chevron-down" v-if="menu.children" />
-                  </nuxt-link>
-                  <div class="dropdown-content" v-if="menu.children">
-                    <div class="container">
-                      <div class="row">
-                        <div class="col-3" v-if="menu.categories">
-                          <ul class="dropdown-menu_categories">
-                            <li @mouseover="activeCategory = index" v-for="(category, index) in menu.categories" :key="category.title">
-                              <nuxt-link :to="$localePath(category.route)" active-class="link-active" :class="{'active': index === activeCategory}">
-                                {{ $t(category.title) }}
-                                <icon name="chevron-right" />
-                              </nuxt-link>
-                            </li>
-                          </ul>
-                        </div>
-                        <div :class="`col-${menu.categories ? 9 : 12}`">
-                          <ul class="dropdown-menu row">
-                            <li :class="`col-${menu.categories ? 4 : 3}`" v-for="submenu in (menu.categories ? menu.categories[activeCategory].children : menu.children)" :key="submenu.title">
-                              <nuxt-link :to="$localePath(submenu.route)" exact>
-                                <icon :name="submenu.icon" />
-                                {{ $t(submenu.title) }}
-                              </nuxt-link>
-                            </li>
-                          </ul>
+      <div class="navbar" :class="{ 'no-border-radius': hoverMenu }">
+        <div class="container">
+          <nav class="full-width">
+            <div class="row align-items-center">
+              <div class="col-lg-8 position-static">
+                <ul class="menu">
+                  <li @mouseover="menu.children ? hoverMenu = true : ''"
+                      @mouseleave="hoverMenu = false;activeCategory = 0" v-for="menu in navbarMenus" :key="menu.title"
+                      :class="{'dropdown': menu.children}">
+                    <nuxt-link :to="$localePath(menu.route)">
+                      {{ $t(menu.title) }}
+                      <icon name="chevron-down" v-if="menu.children"/>
+                    </nuxt-link>
+                    <div class="dropdown-content" v-if="menu.children">
+                      <div class="container">
+                        <div class="row">
+                          <div class="col-3" v-if="menu.categories">
+                            <ul class="dropdown-menu_categories">
+                              <li @mouseover="activeCategory = index" v-for="(category, index) in menu.categories"
+                                  :key="category.title">
+                                <nuxt-link :to="$localePath(category.route)" active-class="link-active"
+                                           :class="{'active': index === activeCategory}">
+                                  {{ $t(category.title) }}
+                                  <icon name="chevron-right"/>
+                                </nuxt-link>
+                              </li>
+                            </ul>
+                          </div>
+                          <div :class="`col-${menu.categories ? 9 : 12}`">
+                            <ul class="dropdown-menu row">
+                              <li :class="`col-${menu.categories ? 4 : 3}`"
+                                  v-for="submenu in (menu.categories ? menu.categories[activeCategory].children : menu.children)"
+                                  :key="submenu.title">
+                                <nuxt-link :to="$localePath(submenu.route)" exact>
+                                  <icon :name="submenu.icon"/>
+                                  {{ $t(submenu.title) }}
+                                </nuxt-link>
+                              </li>
+                            </ul>
+                          </div>
                         </div>
                       </div>
                     </div>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-lg-4">
+                <div class="row justify-content-end top-header-right">
+                  <div class="col-2 text-right">
+                    <div class="support-hotline">
+                      <icon name="support"/>
+                      <span>*8787</span>
+                    </div>
                   </div>
-                </li>
-              </ul>
-            </div>
-            <div class="col-lg-4">
-              <div class="row justify-content-end">
-                <div class="col-2 text-right">
-                  <div class="support-hotline">
-                    <icon name="support" />
-                    <span>*8787</span>
+                  <div class="col-5">
+                    <nuxt-link class="btn full-width btn--red-outline" :to="$localePath('/garage')"
+                               @click.native="handleBtnClick('garage')">
+                      <icon name="garage"/>
+                      {{ $t('garage') }}
+                    </nuxt-link>
                   </div>
-                </div>
-                <div class="col-5">
-                  <nuxt-link class="btn full-width btn--red-outline" :to="$localePath('/garage')" @click.native="handleBtnClick('garage')">
-                    <icon name="garage" />
-                    {{ $t('garage') }}
-                  </nuxt-link>
-                </div>
-                <div class="col-5">
-                  <nuxt-link class="btn full-width btn--pale-green-outline" :to="$localePath('/sell')" @click.native="handleBtnClick('sell')">
-                    <icon name="plus-circle" />
-                    {{ $t('to_sell') }}
-                  </nuxt-link>
+                  <div class="col-5">
+                    <nuxt-link class="btn full-width btn--pale-green-outline" :to="$localePath('/sell')"
+                               @click.native="handleBtnClick('sell')">
+                      <icon name="plus-circle"/>
+                      {{ $t('to_sell') }}
+                    </nuxt-link>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </nav>
+          </nav>
+        </div>
       </div>
-    </div>
-  </header>
+    </header>
+  </div>
+
+
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import {mapGetters, mapActions} from 'vuex';
 
-import { MenusDataMixin } from '~/mixins/menus-data';
-import { UserDataMixin } from '~/mixins/user-data';
+import {MenusDataMixin} from '~/mixins/menus-data';
+import {UserDataMixin} from '~/mixins/user-data';
 
 import ThemeSwitch from '~/components/elements/ThemeSwitch';
 
@@ -151,6 +164,7 @@ export default {
   },
   data() {
     return {
+      hoverMenu: false,
       activeCategory: 0
     }
   },
@@ -159,12 +173,12 @@ export default {
 
     handleBtnClick(name) {
       if (this.routeName === name) {
-        this.scrollTo(9,9);
+        this.scrollTo(9, 9);
       }
     }
   },
   computed: {
-    ...mapGetters(['notViewedFavorites','notViewedSavedSearch'])
+    ...mapGetters(['notViewedFavorites', 'notViewedSavedSearch'])
   }
 }
 </script>

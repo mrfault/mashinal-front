@@ -27,10 +27,11 @@ export default {
     },
     initAnimation() {
       this.animation = new this.$rive.Rive({
-        src: '/rive/theme-switch.riv',
+        src: '/rive/theme-switch-2.riv',
         canvas: this.$refs.canvas,
         stateMachines: 'state',
         autoplay: true,
+
         onLoad: this.updateAnimation
       });
     },

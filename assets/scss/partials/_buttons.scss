@@ -1,14 +1,14 @@
 @mixin btn-style(
-  $color: $white, 
-  $color-hover: $white, 
-  $bg-color: $dark-blue-1, 
-  $bg-hover: $dark-blue-2, 
-  $active-color: $white, 
-  $active-bg: false, 
-  $border-color: false, 
+  $color: $white,
+  $color-hover: $white,
+  $bg-color: $dark-blue-1,
+  $bg-hover: $dark-blue-2,
+  $active-color: $white,
+  $active-bg: false,
+  $border-color: false,
   $border-hover: false,
-  $border-active: false, 
-  $outline: false, 
+  $border-active: false,
+  $outline: false,
   $override: true
 ) {
 
@@ -182,7 +182,7 @@
     @include btn-style($bg-color: $dark-blue-1, $bg-hover: $dark-blue-4);
   }
   &--dark-blue-outline {
-    @include btn-style($bg-color: $dark-blue-1, $bg-hover: $dark-blue-4, $outline: true);
+    @include btn-style($bg-color: $white, $bg-hover: $dark-blue-4, $outline: true);
   }
   &--dark-blue-2 {
     @include btn-style($bg-color: $dark-blue-2, $bg-hover: $dark-blue-2);
@@ -343,7 +343,7 @@
 .btn.pending {
   pointer-events: none;
   position: relative;
-  user-select: none; 
+  user-select: none;
   color: transparent !important;
   * {
     color: transparent !important;

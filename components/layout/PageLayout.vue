@@ -3,6 +3,11 @@
     <transition name="fade">
       <div class="layout" v-show="!loading">
         <mobile-menu />
+        <row>
+          <div class="top-ads">
+
+          </div>
+        </row>
         <page-header />
         <slot name="after-header" />
         <main>
@@ -19,8 +24,8 @@
           </template>
         </backdrop>
         <modal-popup
-          v-if="!isMobileBreakpoint" 
-          :toggle="!!paidStatusData" 
+          v-if="!isMobileBreakpoint"
+          :toggle="!!paidStatusData"
           :modal-class="'status-popup'"
           @close="updatePaidStatus(false)"
         >
