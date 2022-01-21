@@ -11,8 +11,7 @@
               </p>
             </div>
             <div class="top-promotion-row-item">
-              <img src="/img/app-stor
-              e.svg" class="app-store-img">
+              <img src="/img/app-store.svg" class="app-store-img">
               <img src="/img/google-play.svg" class="google-play-img">
             </div>
             <div class="top-promotion-row-item">
