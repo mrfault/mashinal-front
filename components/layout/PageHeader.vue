@@ -1,6 +1,6 @@
 <template>
   <div class="page-header">
-    <div v-if="!isMobileBreakpoint">
+    <div v-if="!isMobileBreakpoint && !close && !$cookies.get('smartbanner_exited')">
       <div class="top-promotion-row">
         <div class="container ">
           <div class="top-promotion">
@@ -8,8 +8,6 @@
               <img src="/img/logo-red.svg">
               <p>
                 Mashin.al-dan çoxfunksiyalı yeni əlavə
-
-
               </p>
             </div>
             <div class="top-promotion-row-item">
@@ -19,7 +17,7 @@
             </div>
             <div class="top-promotion-row-item">
               <img src="/img/mobile-app.png" class="mobile-app" @click="">
-              <button>x</button>
+              <a style="margin-left: 10px;cursor:pointer" @click.prevent="closePromotion"><icon  name="cross"/></a>
             </div>
 
           </div>
@@ -200,6 +198,7 @@ export default {
   },
   data() {
     return {
+      close: false,
       hoverMenu: false,
       activeCategory: 0,
       topAdsVisible:true
@@ -207,7 +206,10 @@ export default {
   },
   methods: {
     ...mapActions(['changeLocale']),
-
+    closePromotion() {
+      this.$cookies.set('smartbanner_exited',1)
+      this.close = true;
+    },
     handleBtnClick(name) {
       if (this.routeName === name) {
         this.scrollTo(9, 9);
