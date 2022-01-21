@@ -11,8 +11,8 @@
               </p>
             </div>
             <div class="top-promotion-row-item">
-              <img src="/img/app-store.svg" class="app-store-img">
-              <img src="/img/google-play.svg" class="google-play-img">
+              <a target="_blank" href="https://apps.apple.com/tn/app/mashin-al/id1588371190?l=az" ><img src="/img/app-store.svg" class="app-store-img"></a>
+              <a target="_blank" href="https://play.google.com/store/apps/details?id=ventures.al.mashinal&hl=az&gl=US" ><img src="/img/google-play.svg" class="google-play-img"></a>
             </div>
             <div class="top-promotion-row-item">
               <img src="/img/mobile-app.png" class="mobile-app" @click="">
