@@ -1,8 +1,35 @@
 <template>
 
 
-  <div class="container">
-    <header class="page-header d-none d-lg-block" :class="{ 'no-border-radius':hoverMenu }">
+  <div class="page-header">
+    <div>
+      <div class="top-promotion-row">
+        <div class="container ">
+          <div class="top-promotion">
+            <div class="top-promotion-row-item">
+              <img src="/img/logo-red.svg">
+              <p>
+                Mashin.al-dan çoxfunksiyalı yeni əlavə
+
+
+              </p>
+            </div>
+            <div class="top-promotion-row-item">
+              <img src="/img/app-store.svg" class="app-store-img">
+              <img src="/img/google-play.svg" class="google-play-img">
+
+            </div>
+            <div class="top-promotion-row-item">
+              <img src="/img/mobile-app.png" class="mobile-app" @click="">
+              <button>x</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <header class=" d-none d-lg-block" :class="{ 'no-border-radius':hoverMenu}" >
+
       <div class="topbar">
         <nuxt-link class="logo" :to="$localePath('/')" @click.native="$nuxt.$emit('logo-click')">
           <img :src="`/img/${isDarkMode ? 'logo-white' : 'logo'}.svg`" alt="logo"
@@ -165,7 +192,8 @@ export default {
   data() {
     return {
       hoverMenu: false,
-      activeCategory: 0
+      activeCategory: 0,
+      topAdsVisible:true
     }
   },
   methods: {

@@ -2,24 +2,21 @@
   <div :class="['wrapper', { loading }, `${colorMode}-mode`]">
     <transition name="fade">
       <div class="layout" v-show="!loading">
-        <mobile-menu />
-        <row>
-          <div class="top-ads">
+        <mobile-menu/>
 
-          </div>
-        </row>
-        <page-header />
-        <slot name="after-header" />
+        <page-header/>
+        <slot name="after-header"/>
         <main>
-          <slot name="nuxt" />
-          <scroll-top v-if="!hideFooter" />
-          <map-switch v-if="['salons','parts-shops'].includes(routeName)" />
+          <slot name="nuxt"/>
+          <scroll-top v-if="!hideFooter"/>
+          <map-switch v-if="['salons','parts-shops'].includes(routeName)"/>
         </main>
-        <slot name="before-header" />
+        <slot name="before-header"/>
         <backdrop @click="closeLogin" v-if="showLoginPopup">
           <template #default="{ show }">
             <transition name="translate-fade">
-              <login-tabs :popup="true" :skip-sign-in="true" :initial-form="loginInitialForm" v-if="show" @close="closeLogin" />
+              <login-tabs :popup="true" :skip-sign-in="true" :initial-form="loginInitialForm" v-if="show"
+                          @close="closeLogin"/>
             </transition>
           </template>
         </backdrop>
@@ -29,25 +26,25 @@
           :modal-class="'status-popup'"
           @close="updatePaidStatus(false)"
         >
-          <paid-status v-if="paidStatusData" />
+          <paid-status v-if="paidStatusData"/>
         </modal-popup>
-        <paid-status v-else-if="paidStatusData" />
+        <paid-status v-else-if="paidStatusData"/>
         <!-- portal targets -->
-        <portal-target name="modals" multiple />
-        <portal-target name="mobile-dropdown" multiple />
-        <portal-target name="mobile-screen" />
-        <portal-target name="backdrop" />
+        <portal-target name="modals" multiple/>
+        <portal-target name="mobile-dropdown" multiple/>
+        <portal-target name="mobile-screen"/>
+        <portal-target name="backdrop"/>
         <!-- /portal targets -->
-        <comparison-badge />
-        <mobile-nav />
-        <page-footer v-if="!hideFooter" />
+        <comparison-badge/>
+        <mobile-nav/>
+        <page-footer v-if="!hideFooter"/>
       </div>
     </transition>
   </div>
 </template>
 
 <script>
-import { LayoutMixin } from '~/mixins/layout';
+import {LayoutMixin} from '~/mixins/layout';
 
 import PageHeader from '~/components/layout/PageHeader';
 import PageFooter from '~/components/layout/PageFooter';
