@@ -11,7 +11,8 @@
               </p>
             </div>
             <div class="top-promotion-row-item">
-              <img src="/img/app-store.svg" class="app-store-img">
+              <img src="/img/app-stor
+              e.svg" class="app-store-img">
               <img src="/img/google-play.svg" class="google-play-img">
             </div>
             <div class="top-promotion-row-item">
@@ -166,6 +167,7 @@
         </div>
       </div>
     </header>
+
   </div>
 
 
@@ -200,7 +202,8 @@ export default {
       close: false,
       hoverMenu: false,
       activeCategory: 0,
-      topAdsVisible:true
+      topAdsVisible:true,
+
     }
   },
   methods: {
@@ -216,7 +219,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['notViewedFavorites', 'notViewedSavedSearch'])
+    ...mapGetters(['notViewedFavorites', 'notViewedSavedSearch','homePageSliders'])
   }
 }
 </script>

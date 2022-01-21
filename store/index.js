@@ -112,6 +112,7 @@ const getInitialState = () => ({
   salonsOnlyOfficial: false,
   salonSingle: {},
   mySalon: {},
+  homePageSliders:{},
   myAnnouncementCalls: {},
   myAnnouncementStats: {},
   mapView: false
@@ -120,6 +121,7 @@ const getInitialState = () => ({
 export const state = () => (getInitialState());
 
 export const getters = {
+  homePageSliders: s => s.homePageSliders,
   loading: s => s.loading,
   colorMode: s => s.colorMode,
   breakpoint: s => s.breakpoint,
@@ -247,7 +249,7 @@ export const getters = {
 const objectNotEmpty = (state, commit, property) => {
   if (state['needResetOptions'].includes(property)) {
     let arr = state['needResetOptions'].filter(p => p !== property);
-    commit('mutate', { property: 'needResetOptions', value: arr }); 
+    commit('mutate', { property: 'needResetOptions', value: arr });
     return false;
   }
   return typeof state[property] === 'object' && Object.keys(state[property]).length > 0;
@@ -323,10 +325,10 @@ export const actions = {
     if (groupId) {
       messages = await this.$axios.$get('/profile/group/'+ groupId +'/messages');
     }
-    
+
     commit('mutate', { property: 'messages', value: res });
     commit('appendMessagesToGroup', { setAllEmpty: true });
-    
+
     if (groupId && messages.length) {
       let groupIndex = state.messages.findIndex(group => group.id == groupId);
 
@@ -460,11 +462,11 @@ export const actions = {
     commit('mutate', { property: 'commercialModels', value: res, key: data.index || 0 })
   },
   async getMotoModels({ dispatch }, data) {
-    if (data.category == 1)  
+    if (data.category == 1)
       await dispatch('getMotorcycleModels', { id: data.id, index: data.index || 0 });
-    else if (data.category == 2)  
+    else if (data.category == 2)
       await dispatch('getScooterModels', { id: data.id, index: data.index || 0 });
-    else if (data.category == 3)  
+    else if (data.category == 3)
       await dispatch('getAtvModels', { id: data.id, index: data.index || 0 });
   },
   async getMotorcycleModels({ commit }, data) {
@@ -709,13 +711,13 @@ export const actions = {
   // Sell
   async checkSellTokens({ commit }, phone) {
     const res = await this.$axios.$post('/check/user/by/phone', { phone });
-    commit('mutate', { property: 'sellTokens', value: res.data && { 
-      cars: res.data.announce_left_car, 
-      commercial: res.data.announce_left_commercial, 
-      moto: res.data.announce_left_moto, 
-      parts: res.data.part_announce_count, 
-      parts_unlimited: res.data.part_unlimited, 
-      salon_unlimited: res.data.salon_unlimited 
+    commit('mutate', { property: 'sellTokens', value: res.data && {
+      cars: res.data.announce_left_car,
+      commercial: res.data.announce_left_commercial,
+      moto: res.data.announce_left_moto,
+      parts: res.data.part_announce_count,
+      parts_unlimited: res.data.part_unlimited,
+      salon_unlimited: res.data.salon_unlimited
     } });
     commit('mutate', { property: 'sellPhoneRegistered', value: res.data && res.data.have_account });
     commit('mutate', { property: 'sellSalonRights', value: res.data && res.data.is_autosalon });
@@ -807,6 +809,10 @@ export const actions = {
     const res = await this.$axios.$get(`/my/autosalon/${id}/edit`);
     commit('mutate', { property: 'mySalon', value: res });
   },
+  async getHomePageSliders({commit}) {
+    const res = await this.$axios.$get(`/home_page_slider`);
+    commit('mutate', { property: 'homePageSliders', value: res });
+  },
   async updateMySalon({}, { id, form}) {
     await this.$axios.$post(`/my/autosalon/${id}/edit`, form);
   },
@@ -862,7 +868,7 @@ export const mutations = {
       messages: [...state.messages[groupIndex].messages, payload.message],
       last_message: payload.message
     }
-    
+
     let group = state.messages[groupIndex];
     let isChatBot = group.sender_id == 3;
     state.messages.splice(groupIndex, 1);
@@ -892,7 +898,7 @@ export const mutations = {
     let groupIndex = state.messages.findIndex(group => group.id == payload.groupId);
 
     state.messages[groupIndex].is_read = true;
-    
+
     if (state.messages[groupIndex].last_message) {
       state.messages[groupIndex].last_message.is_read = true;
     }

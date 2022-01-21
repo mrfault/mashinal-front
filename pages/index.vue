@@ -2,19 +2,21 @@
   <div class="pages-index" :style="!isMobileBreakpoint ? 'margin-top: -162px;' : ''">
     <div class="swiper-container" v-swiper:gallerySwiper="swiperOps" v-if="!isMobileBreakpoint">
       <div class="swiper-wrapper">
-        <div class="swiper-slide" v-for="slide in 3">
+        <div class="swiper-slide" v-for="homePageSlider in homePageSliders">
           <div class=" homePage-slide-item" >
             <div class="homePage-slide-left">
-              <img src="/slide.jpg">
+              <img :src="homePageSlider.image">
             </div>
             <div class="homePage-slide-right">
               <div class="homePage-text-section">
                 <div class="homePage-text-section-title">
-                  <img src="/test-icon.svg">
-                  <h3>Qaraj</h3>
+
+                  <img :src="homePageSlider.icon">
+                  <h3>{{ homePageSlider.title[locale] }}</h3>
                 </div>
-                <p>Avtomobiliniz radara düşəndə anında mobil nömrənizə SMS-lə göndərilir</p>
-                <button class="btn  btn--green text-left"><i aria-hidden="true" class="icon-plus-circle"></i> Avtomobil əlavə et</button>
+                <p>{{ homePageSlider.description[locale] }}</p>
+
+                <a :href="homePageSlider.button_link" class="btn  btn--green text-left" v-if="homePageSlider.button_link">{{homePageSlider.button_text[locale]}}</a>
               </div>
             </div>
           </div>
@@ -107,7 +109,8 @@ export default {
       store.dispatch('getOptions'),
       store.dispatch('getBodyOptions'),
       store.dispatch('getInfiniteMainSearch'),
-      store.dispatch('clearSavedSearch')
+      store.dispatch('clearSavedSearch'),
+      store.dispatch('getHomePageSliders')
     ]);
 
     return {
@@ -116,7 +119,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['mainAnnouncements'])
+    ...mapGetters(['mainAnnouncements','homePageSliders'])
   },
   methods: {
     ...mapActions(['getInfiniteMainSearch', 'clearSavedSearch']),
