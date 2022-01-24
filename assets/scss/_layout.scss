@@ -409,6 +409,9 @@ main {
     }
   }
 }
+.no-transform {
+  transform: none !important;
+}
 .page-header {
   position: sticky;
   z-index: 10;
