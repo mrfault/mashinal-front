@@ -615,7 +615,7 @@ main {
         }
 
         i {
-          font-size: 17px;
+          font-size: 24px;
           margin-right: 8px;
         }
       }
@@ -2071,4 +2071,8 @@ main {
 .top-promotion-row-item .mobile-app {
   display: flex;
   align-items: flex-end;
+}
+ .garage-icon{
+   margin-right: 6px;
+   background: unset !important;
 }

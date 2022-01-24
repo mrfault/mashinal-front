@@ -2,7 +2,7 @@
   <div class="pages-login">
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
-      <div class="login-card card no-pd">
+      <div class="login-card card no-pd mb-5">
         <div class="row no-gutters">
           <div class="col-12 col-lg-6">
             <div class="tab-info">

@@ -73,4 +73,23 @@ width: 50%;
   width: 12px;
   height: 12px;
 }
+.mobileHomePage-slide-item{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 
+}
+.mobileHomePage-slide-left{
+  height: auto;
+  width: 50%;
+  padding: 15px;
+}
+.mobileHomePage-slide-right{
+  width: 50%;
+  height: auto;
+
+}
+.mobileHomePage-slide-right img{
+  width: 100%;
+  height: auto;
+}
