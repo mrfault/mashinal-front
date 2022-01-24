@@ -409,6 +409,9 @@ main {
     }
   }
 }
+.no-transform {
+  transform: none !important;
+}
 .page-header {
   position: sticky;
   z-index: 10;
@@ -615,8 +618,10 @@ main {
         }
 
         i {
+
           font-size: 24px;
-          margin-right: 8px;
+
+
         }
       }
     }

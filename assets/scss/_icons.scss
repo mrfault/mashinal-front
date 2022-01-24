@@ -10,7 +10,7 @@
   font-display: block;
 }
 
-[class^="icon-"], 
+[class^="icon-"],
 [class*=" icon-"] {
   display: inline-flex;
   flex-shrink: 0;
@@ -478,4 +478,7 @@
 }
 .icon-handshake:before {
   content: "\e96f";
+}
+.icon-announce-tab:before {
+  content: "\e990";
 }

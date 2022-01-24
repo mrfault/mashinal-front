@@ -26,13 +26,14 @@ export const MenusDataMixin = {
       let announcementCategories = [
         { title: 'cars', route: '/cars', children: [{ title: 'car_plural', route: '/cars', icon: 'car-1' }] },
         { title: 'moto', route: '/moto', children: this.motoMenus },
-        { title: 'commercial', route: '/commercial', children: this.commercialMenus }
+        { title: 'commercial', route: '/commercial', children: this.commercialMenus },
+        { title: 'parts', route: '/parts', children: this.partsSubMenus },
       ]
       return [
-        { title: 'announcements', route: '/cars', children: [], categories: announcementCategories },
-        { title: 'parts', route: '/parts', children: this.partsSubMenus },
-        { title: 'autocatalog', route: '/catalog' },
-        { title: 'salons', route: '/salons' }
+        { icon: 'announce-tab', title: 'announcements', route: '/cars', children: [], categories: announcementCategories },
+        { icon: 'salons-tab', title: 'salons', route: '/salons' },
+        { icon: 'shops-tab', title: 'shops', route: '/parts/shops' },
+        { icon: 'catalog-tab', title: 'autocatalog', route: '/catalog' },
       ]
     },
 
@@ -115,7 +116,6 @@ export const MenusDataMixin = {
     partsSubMenus() {
       return [
         { title: 'parts', route: '/parts', icon: 'parts' },
-        { title: 'shops', route: '/parts/shops', icon: 'store' }
       ]
     },
 

@@ -103,10 +103,11 @@
                       @mouseleave="hoverMenu = false;activeCategory = 0" v-for="menu in navbarMenus" :key="menu.title"
                       :class="{'dropdown': menu.children}">
                     <nuxt-link :to="$localePath(menu.route)">
+                      <icon style="font-size: 20px;margin-right: 10px;" class="no-transform" :name="menu.icon"/>
                       {{ $t(menu.title) }}
                       <icon name="chevron-down" v-if="menu.children"/>
                     </nuxt-link>
-                    <div class="dropdown-content container" v-if="menu.children">
+                    <div class="dropdown-content container" style="padding-left: 0;" v-if="menu.children">
                       <div class="container">
                         <div class="row">
                           <div class="col-3" v-if="menu.categories">

@@ -1,10 +1,10 @@
 <template>
   <button class="btn btn--green-outline" @click="showSteps = true">
     {{ $t('send_a_letter_of_attorney') }}
-    <component 
+    <component
       v-if="!isMobileBreakpoint || showSteps"
-      :is="isMobileBreakpoint ? 'mobile-screen' : 'modal-popup'" 
-      :bar-title="$t('send_a_letter_of_attorney')" 
+      :is="isMobileBreakpoint ? 'mobile-screen' : 'modal-popup'"
+      :bar-title="$t('send_a_letter_of_attorney')"
       :height-auto="true"
       :toggle="showSteps"
       :title="$t('send_a_letter_of_attorney')"
@@ -19,19 +19,19 @@
             <h4 v-if="currentRealStep !== 10">{{ stepInfoTitle }}
               <popover name="hint" class="wider"
                 v-if="stepHints[currentRealStep]"
-                :width="isMobileBreakpoint ? 240 : 550" 
+                :width="isMobileBreakpoint ? 240 : 550"
                 :message="$t('fields_pointed_with_arrow')"
               >
-                <img :src="`/img/docs/${img}.jpg`" alt="" v-for="img in (stepHints[currentRealStep].imgs || [])" :key="img" /> 
+                <img :src="`/img/docs/${img}.jpg`" alt="" v-for="img in (stepHints[currentRealStep].imgs || [])" :key="img" />
               </popover>
             </h4>
           </div>
           <div class="row">
             <div :class="currentRealStep === 10 ? 'col-lg-12' : 'col-lg-4'">
               <div :class="{[isMobileBreakpoint ? 'mb-4' : 'card-bordered']: currentRealStep !== 10}">
-                <component 
-                  :is="`step-${currentRealStep}`" 
-                  @next="increaseStep" 
+                <component
+                  :is="`step-${currentRealStep}`"
+                  @next="increaseStep"
                   @confirm="finished = true, showSteps = false, showPaymentModal = true"
                 />
               </div>
@@ -43,16 +43,16 @@
         </template>
       </div>
     </component>
-    <modal-popup 
-      :toggle="showPaymentModal" 
+    <modal-popup
+      :toggle="showPaymentModal"
       :title="$t('payment')"
       :overflow-hidden="isMobileBreakpoint"
       @close="showPaymentModal = false, close()"
     >
       <h4 class="mb-2">{{ $t('payment_method') }}</h4>
-      <form-buttons v-model="paymentMethod" :options="paymentMethodOptions" :group-by="2" />
+<!--      <form-buttons v-model="paymentMethod" :options="paymentMethodOptions" :group-by="2" />-->
       <select-banking-card v-model="bankingCard" class="mt-2 mt-lg-3" v-show="paymentMethod === 'card'" />
-      <terminal-info-button popup-name="letter-of-attorney-popup" />
+<!--      <terminal-info-button popup-name="letter-of-attorney-popup" />-->
       <div :class="{'modal-sticky-bottom': isMobileBreakpoint}">
         <hr/>
         <div class="row">
@@ -68,9 +68,9 @@
         </div>
       </div>
     </modal-popup>
-    <terminal-info-popup 
+    <terminal-info-popup
       name="letter-of-attorney-popup"
-      @open="showPaymentModal = false" 
+      @open="showPaymentModal = false"
       @close="showPaymentModal = true"
     />
   </button>
@@ -122,7 +122,7 @@ export default {
   },
   methods: {
     ...mapActions('letterOfAttorney', ['increaseStep', 'resetSteps', 'payForSubmission']),
-    
+
     async pay() {
       if (this.pending) return;
       this.pending = true;
@@ -146,10 +146,10 @@ export default {
           this.showPaymentModal = false;
           this.bankingCard = '';
           this.close();
-          this.updatePaidStatus({ 
-            type: 'success', 
-            text: this.$t('letter_of_attorney_submitted'), 
-            title: this.$t('success_payment') 
+          this.updatePaidStatus({
+            type: 'success',
+            text: this.$t('letter_of_attorney_submitted'),
+            title: this.$t('success_payment')
           });
         }
       } catch(err) {
@@ -182,7 +182,7 @@ export default {
 
     price() {
       return this.hasGeneralPower ? 24 : 12;
-    },  
+    },
     haveBalanceToPay() {
       return parseFloat(this.price) <= this.user.balance;
     }
