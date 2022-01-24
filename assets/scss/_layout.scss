@@ -596,8 +596,8 @@ main {
       margin: 0;
 
       .badge-counter {
-        bottom: 5px;
-        left: 3px;
+        bottom: 8px;
+        left: -8px;
       }
 
       & > li {
@@ -618,10 +618,7 @@ main {
         }
 
         i {
-
           font-size: 24px;
-
-
         }
       }
     }
