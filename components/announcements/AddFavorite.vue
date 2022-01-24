@@ -1,7 +1,7 @@
 <template>
-  <button 
-    :class="['btn-sq btn-sq--color-dark-blue', {'active': isAdded}]" 
-    @click.stop="handleClick()" 
+  <button
+    :class="['btn-sq btn-sq--color-dark-blue', {'active': isAdded}]"
+    @click.stop="handleClick()"
     v-if="announcement.status !== 2"
   >
     <icon name="star" />
@@ -25,10 +25,11 @@ export default {
       } else {
         await this.addToFavorites(this.announcement.id_unique);
         this.getNotViewedFavorites();
+        this.$store.dispatch('getAnnouncementInner',this.announcement.id_unique)
         this.$nuxt.$emit('favorites-updated');
         if (this.isAdded) {
-          this.$toasted.success(this.$t('my_favorites_added'), { 
-            action: !this.routeName === 'profile-favorites' && { 
+          this.$toasted.success(this.$t('my_favorites_added'), {
+            action: !this.routeName === 'profile-favorites' && {
               text: this.$t('show'),
               onClick: () => {
                 this.$router.push(this.$localePath('/profile/favorites'));

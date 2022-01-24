@@ -6,18 +6,18 @@ const getInitialState = () => ({
   stepSendData: {
     garageId: '',
     carNumber: '',
-    letterType: 1, 
-    idFinCode: '', 
+    letterType: 1,
+    idFinCode: '',
     idSerialNumber: '',
     idExpiryDate: '',
-    birthDate: '', 
+    birthDate: '',
     gender: 1,
     driverLicenseNumber: '',
     driverLicenseGivenDate: '',
     driverLicenseExpiryDate: '',
     vehicleIdNumber: '',
     vehicleIdGivenDate: '',
-    idFinCodeB: '', 
+    idFinCodeB: '',
     idSerialNumberB: '',
     driverLicenseNumberB: '',
     mobileNotariatConfirm: false,
@@ -185,12 +185,12 @@ export const actions = {
         { answer: stepSendData.recepientPhone, questionId: stepReceivedData.questions[2].id }
       ])
     };
-    
+
     stepSendData.letterType === 2 && [
       'right_manage', 'right_gift', 'right_mortgage', 'right_transfer_trust',
       'right_register', 'right_unregister', 'right_on_my_behalf'
     ].map((key, i) => { checkData[key] = stepSendData.letterPermissions.includes(i + 1) });
-    
+
     const res = await this.$axios.$post(`/attorney/check_all_data`, checkData);
 
     dispatch('updateReceivedData', [
@@ -202,7 +202,7 @@ export const actions = {
   },
   async payForSubmission({ dispatch, state: { stepSendData, stepReceivedData } }, data) {
     let formData = new FormData();
-    
+
     Object.entries({
       pay_type: data.pay_type,
       card_id: data.card_id,
