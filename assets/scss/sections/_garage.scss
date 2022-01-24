@@ -32,7 +32,6 @@
 
 .garage_cars-list {
   & > .row {
-    margin-bottom: -20px;
     & > .col-6 {
       margin-bottom: 20px;
     }
@@ -181,7 +180,7 @@
     min-height: 100px;
   }
   .vehicle-specs .col-lg-auto {
-    min-width: 20%; 
+    min-width: 20%;
   }
 }
 
