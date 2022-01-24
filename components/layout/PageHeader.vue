@@ -106,7 +106,7 @@
                       {{ $t(menu.title) }}
                       <icon name="chevron-down" v-if="menu.children"/>
                     </nuxt-link>
-                    <div class="dropdown-content container" v-if="menu.children">
+                    <div class="dropdown-content container" style="padding-left: 0;" v-if="menu.children">
                       <div class="container">
                         <div class="row">
                           <div class="col-3" v-if="menu.categories">
