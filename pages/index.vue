@@ -17,7 +17,7 @@
                 </div>
                 <p>{{ homePageSlider.description[locale] }}</p>
 
-                <a :href="homePageSlider.button_link" class="btn  btn--green text-left" v-if="homePageSlider.button_link">{{homePageSlider.button_text[locale]}}</a>
+                <nuxt-link :to="$localePath(homePageSlider.button_link)" class="btn  btn--green text-left" v-if="homePageSlider.button_link">{{homePageSlider.button_text[locale]}}</nuxt-link>
               </div>
             </div>
           </div>
