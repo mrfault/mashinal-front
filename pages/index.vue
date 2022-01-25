@@ -26,23 +26,25 @@
       <div class="swiper-pagination" slot="pagination"></div>
 
     </div>
-    <div class="swiper-container" v-swiper:gallerySwiper="swiperOps" v-if="isMobileBreakpoint">
-      <div class="swiper-wrapper">
-        <div class="swiper-slide" v-for="homePageSlider in homePageSliders">
-          <div class=" mobileHomePage-slide-item" :style="!isDarkMode ? `background:${homePageSlider.overlay_color}`:''">
-            <div class="mobileHomePage-slide-left">
-              <h3>{{ homePageSlider.title[locale] }}</h3>
-              <p>{{ homePageSlider.description[locale] }}</p>
-              <nuxt-link :to="$localePath(homePageSlider.button_link)" class="btn  btn--green text-left" v-if="homePageSlider.button_link">{{homePageSlider.button_text[locale]}}</nuxt-link>
-            </div>
-            <div class="mobileHomePage-slide-right">
-              <img :src="homePageSlider.image">
+    <div class="container" v-if="isMobileBreakpoint">
+      <div class="swiper-container" v-swiper:gallerySwiper="swiperOps2" >
+        <div class="swiper-wrapper">
+          <div class="swiper-slide" v-for="homePageSlider in homePageSliders">
+            <div class=" mobileHomePage-slide-item" :style="!isDarkMode ? `background:${homePageSlider.overlay_color}`:''">
+              <div class="mobileHomePage-slide-left">
+                <h3>{{ homePageSlider.title[locale] }}</h3>
+                <p>{{ homePageSlider.description[locale] }}</p>
+                <nuxt-link :to="$localePath(homePageSlider.button_link)" class="btn  btn--green text-left" v-if="homePageSlider.button_link">{{homePageSlider.button_text[locale]}}</nuxt-link>
+              </div>
+              <div class="mobileHomePage-slide-right">
+                <img :src="homePageSlider.image">
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="swiper-pagination" slot="pagination"></div>
+        <div class="swiper-pagination" slot="pagination"></div>
 
+      </div>
     </div>
     <div class="container">
       <car-search-form
@@ -114,6 +116,19 @@ export default {
           clickable: true
         },
         loop: true,
+        preloadImages: false,
+        lazy: {
+          loadPrevNext: false,
+          preloaderClass: 'loader'
+        }
+      },
+      swiperOps2: {
+        init:false,
+
+        fadeEffect: {
+          crossFade: true
+        },
+        loop: false,
         preloadImages: false,
         lazy: {
           loadPrevNext: false,
