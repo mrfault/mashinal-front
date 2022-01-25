@@ -42,7 +42,7 @@
           <template v-if="isMobileBreakpoint">
             <div class="col-6 mb-2">
               <form-select :label="$t('mark')" :options="brands" v-model="form.additional_brands[rows[0]]['brand']"
-                @change="setBrand($event, rows[0])" has-search :clear-option="false" :popular-options="[129,483,8,1,767,117]" 
+                @change="setBrand($event, rows[0])" has-search :clear-option="false" :popular-options="[129,483,8,1,767,117]"
                 img-key="transformed_media" />
             </div>
             <div class="col-6 mb-2">
@@ -87,12 +87,12 @@
             </div>
           </template>
           <div class="col-6 col-lg-2 mb-2 mb-lg-3">
-            <form-select :label="$t('years')" custom 
+            <form-select :label="$t('years')" custom
               :values="{from: form.min_year, to: form.max_year, read: false }"
               @clear="form.min_year = '', form.max_year = ''"
             >
               <div class="form-merged">
-                <form-select :label="$t('from')" :options="getYearOptions(false, form.max_year)" v-model="form.min_year" 
+                <form-select :label="$t('from')" :options="getYearOptions(false, form.max_year)" v-model="form.min_year"
                   :show-label-on-select="false" :clear-option="false" in-select-menu />
                 <form-select :label="$t('to')" :options="getYearOptions(form.min_year, false)" v-model="form.max_year"
                   :show-label-on-select="false" :clear-option="false" in-select-menu />
@@ -104,12 +104,12 @@
               <div class="row" v-if="!isMobileBreakpoint || advanced || !collapsed">
                 <template v-if="isMobileBreakpoint && !advanced && !collapsed">
                   <div class="col-6 col-lg-3 mb-2 mb-lg-3">
-                    <form-select :label="$t('fuel')" v-model="form.engine_type" 
+                    <form-select :label="$t('fuel')" v-model="form.engine_type"
                       :options="bodyOptions.main.default_options['tip-dvigatelya'].values"
                       multiple name-in-value translate-options />
                   </div>
                   <div class="col-6 col-lg-3 mb-2 mb-lg-3">
-                    <form-select :label="$t('korobka')" v-model="form.korobka" 
+                    <form-select :label="$t('korobka')" v-model="form.korobka"
                       :options="bodyOptions.main.default_options['korobka'].values"
                       multiple name-in-value translate-options />
                   </div>
@@ -131,11 +131,11 @@
                   <form-select :label="$t('city')" :options="sellOptions.regions" v-model="form.region" has-search />
                 </div>
                 <div class="col-6 col-lg-3 mb-2 mb-lg-3">
-                  <form-checkbox :label="$t('barter')" v-model="form.exchange_possible" 
+                  <form-checkbox :label="$t('barter')" v-model="form.exchange_possible"
                     input-name="exchange_possible" icon-name="barter" />
                 </div>
                 <div class="col-6 col-lg-3 mb-2 mb-lg-3">
-                  <form-checkbox :label="$t('credit')" v-model="form.credit" 
+                  <form-checkbox :label="$t('credit')" v-model="form.credit"
                     input-name="credit" icon-name="percent" />
                 </div>
               </div>
@@ -154,22 +154,22 @@
               </form-select>
             </div>
             <div class="col-6 col-lg-2 mb-2 mb-lg-3">
-              <form-select :label="$t('fuel')" v-model="form.engine_type" 
+              <form-select :label="$t('fuel')" v-model="form.engine_type"
                 :options="bodyOptions.main.default_options['tip-dvigatelya'].values"
                 multiple name-in-value translate-options />
             </div>
             <div class="col-6 col-lg-2 mb-2 mb-lg-3">
-              <form-select :label="$t('korobka')" v-model="form.korobka" 
+              <form-select :label="$t('korobka')" v-model="form.korobka"
                 :options="bodyOptions.main.default_options['korobka'].values"
                 multiple name-in-value translate-options />
             </div>
             <div class="col-6 col-lg-2 mb-2 mb-lg-3">
-              <form-select :label="$t('carcase')" v-model="form.body" 
+              <form-select :label="$t('carcase')" v-model="form.body"
                 :options="bodyOptions.main.default_options['body'].values"
                 multiple name-in-value translate-options />
             </div>
             <div class="col-6 col-lg-2 mb-2 mb-lg-3">
-              <form-select :label="$t('privod')" v-model="form.gearing" 
+              <form-select :label="$t('privod')" v-model="form.gearing"
                 :options="bodyOptions.main.default_options['privod'].values"
                 multiple name-in-value translate-options />
             </div>
@@ -187,25 +187,25 @@
                 @clear="form.min_capacity = '', form.max_capacity = ''"
               >
                 <div class="form-merged">
-                  <form-select :label="$t('from')" v-model="form.min_capacity" 
-                    :options="bodyOptions.main.custom_options['capacity'].values" 
+                  <form-select :label="$t('from')" v-model="form.min_capacity"
+                    :options="bodyOptions.main.custom_options['capacity'].values"
                     :show-label-on-select="false" :clear-option="false" in-select-menu :suffix="$t('char_litre')" />
                   <form-select :label="$t('to')" v-model="form.max_capacity"
-                    :options="bodyOptions.main.custom_options['capacity'].values" 
+                    :options="bodyOptions.main.custom_options['capacity'].values"
                     :show-label-on-select="false" :clear-option="false" in-select-menu :suffix="$t('char_litre')" />
                 </div>
               </form-select>
             </div>
             <div class="col-6 col-lg-2 mb-2 mb-lg-3">
-              <form-select :label="$t(allSellOptions2.n_of_seats.placeholder)" v-model="form.n_of_seats" 
+              <form-select :label="$t(allSellOptions2.n_of_seats.placeholder)" v-model="form.n_of_seats"
                 multiple name-in-value translate-options :options="allSellOptions2.n_of_seats.options" />
             </div>
             <div class="col-6 col-lg-2 mb-2 mb-lg-3">
-              <form-checkbox :label="$t('in_garanty')" v-model="form.in_garanty" 
+              <form-checkbox :label="$t('in_garanty')" v-model="form.in_garanty"
                 input-name="in_garanty" />
             </div>
             <div class="col-6 col-lg-2 mb-2 mb-lg-3">
-              <form-checkbox :label="$t('with_video')" v-model="form.with_video" 
+              <form-checkbox :label="$t('with_video')" v-model="form.with_video"
                 input-name="with_video" />
             </div>
             <div class="col-12">
@@ -241,12 +241,12 @@
               <div class="row">
                 <template v-if="!advanced && !assistant && !isMobileBreakpoint">
                   <div class="col-lg-3 mb-lg-0">
-                    <form-select :label="$t('fuel')" v-model="form.engine_type" 
+                    <form-select :label="$t('fuel')" v-model="form.engine_type"
                       :options="bodyOptions.main.default_options['tip-dvigatelya'].values"
                       multiple name-in-value translate-options />
                   </div>
                   <div class="col-lg-3 mb-lg-0">
-                    <form-select :label="$t('korobka')" v-model="form.korobka" 
+                    <form-select :label="$t('korobka')" v-model="form.korobka"
                       :options="bodyOptions.main.default_options['korobka'].values"
                       multiple name-in-value translate-options />
                   </div>
@@ -262,7 +262,7 @@
                     </form-select>
                   </div>
                 </template>
-                <div class="col-lg-3 mt-2 mt-lg-0" v-show="searchApplied">
+                <div class="col-lg-3 mt-2 mt-lg-0 mb-3" v-show="searchApplied">
                   <form-checkbox :label="$t('search_save')" v-model="savedSearch" skip-truncate
                     input-name="savedSearch" transparent :disabled="!loggedIn" @try="$nuxt.$emit('login-popup', 'saved-search')" />
                 </div>
@@ -319,7 +319,7 @@ import CarBodyShortcuts from '~/components/cars/CarBodyShortcuts';
 import CarOptionPacks from '~/components/cars/CarOptionPacks';
 
 export default {
-  components: { 
+  components: {
     ColorOptions,
     CarFilters,
     CarBodyShortcuts,
@@ -423,12 +423,12 @@ export default {
   },
   created() {
     this.$nuxt.$on('extend-options', this.goToSearch);
-    if (this.routeName === 'index') 
+    if (this.routeName === 'index')
       this.$nuxt.$on('reset-search-form', this.resetForm);
   },
   beforeDestroy() {
     this.$nuxt.$off('extend-options', this.goToSearch);
-    if (this.routeName === 'index') 
+    if (this.routeName === 'index')
       this.$nuxt.$off('reset-search-form', this.resetForm);
   }
 }
