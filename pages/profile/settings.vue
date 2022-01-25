@@ -16,7 +16,7 @@
           </div>
           <div class="row profile_edit">
             <div class="col-lg-4 mb-3 mb-lg-3">
-              <form-text-input :maxlength="30" disabled :placeholder="$t('name')" v-model="form.name" />
+              <form-text-input :maxlength="30"  :placeholder="$t('name')" v-model="form.name" />
             </div>
             <div class="col-lg-4 mb-3 mb-lg-3">
               <form-text-input :placeholder="$t('birthday')" v-model="form.birthday" input-date />
@@ -89,7 +89,7 @@ export default {
         old: '',
         password: '',
         password_confirmation: '',
-        name: $auth.user.full_name || '',
+        name: $auth.user.full_name,
         lastname: $auth.user.lastname || '',
         gender: $auth.user.gender || '',
         birthday: app.$moment($auth.user.birthday || null).format('DD.MM.YYYY'),
@@ -118,8 +118,7 @@ export default {
         ? this.$moment(date, 'DD.MM.YYYY').format('DD-MM-YYYY') : null;
     },
     async submit() {
-      this.form.name = this.user.name || '';
-      this.form.lastname = this.user.lastname || '';
+
 
       let formData = new FormData();
       let pwdKeys = ['old','password','password_confirmation'];
