@@ -14,11 +14,11 @@
       />
 
     </div>
-    <p style="margin-bottom: 20px;" class="info-text" v-if="form.staticPhone"><icon name="alert-circle" /> {{ $t('login_before_announce') }}</p>
+<!--    <p style="margin-bottom: 20px;" class="info-text" v-if="form.staticPhone"><icon name="alert-circle" /> {{ $t('login_before_announce') }}</p>-->
 
     <button v-if="!form.staticPhone" type="submit" :class="['btn','btn--green',{pending}]">{{ actionText || $t('login') }}</button>
     <form-text-input
-      v-if="form.staticPhone"
+      v-if="form.staticPhone && !sellPhoneRegistered"
       :placeholder="$t('name')"
       :maxlength="30"
       :invalid="validator.name.$error"
@@ -53,7 +53,7 @@
       }
     },
     computed: {
-      ...mapState(['sellPhoneEntered'])
+      ...mapState(['sellPhoneEntered','sellPhoneRegistered'])
     },
     methods: {
      // @deprecated
