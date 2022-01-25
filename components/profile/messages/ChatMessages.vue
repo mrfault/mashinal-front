@@ -16,7 +16,7 @@
             <span class="username-subtitle" @click.stop="$emit('go-to-announcement', group)">
               <span class="text-truncate">{{ getAnnouncementTitle(chatAnnouncement) }}</span>
               <span class="text-dark-blue-2">{{ chatAnnouncement.price || '' }}</span>
-            </span> 
+            </span>
           </template>
         </span>
         <template v-if="!isChatBot">
@@ -52,8 +52,8 @@
                       {{ $formatDate(date, '[day], D MMM', $t('days-short'), true)[locale] }}
                     </span>
                   </div>
-                  <message-item 
-                    v-for="message in messages" 
+                  <message-item
+                    v-for="message in messages"
                     :key="message.id"
                     :message="message"
                     :raw-html="isChatBot"
@@ -83,10 +83,10 @@
                 <img :src="$withBaseUrl(attachments[currentSlide])" alt="" />
               </div>
               <div class="blur-bg_slider" :key="1" v-if="!isMobileBreakpoint">
-                <images-slider 
+                <images-slider
                   :current-slide="currentSlide"
-                  :slides="{ main: attachments }" 
-                  @close="closeLightbox" 
+                  :slides="{ main: attachments }"
+                  @close="closeLightbox"
                   @slide-change="currentSlide = $event"
                 />
               </div>
@@ -108,10 +108,10 @@
         </div>
       </div>
       <div class="suggested-messages" v-if="showSuggestedMessages">
-        <button class="btn btn--primary-outline" 
-          v-for="(title, i) in filteredSuggestedMessages" 
+        <button class="btn btn--primary-outline"
+          v-for="(title, i) in filteredSuggestedMessages"
           @click="useSuggestedMessage(title)"
-          :key="i" 
+          :key="i"
           v-html="title"
         />
       </div>
@@ -219,16 +219,16 @@ export default {
       this.markAsRead(this.group.id);
     },
     goBack() {
-      if (this.$route.query.group) 
+      if (this.$route.query.group)
         this.$router.replace({query: null});
       this.$emit('go-back');
     },
     toggleTypingStatus(status = true, sending = false) {
-      this.connectEcho('typing.' + this.chatUser.id).whisper('typing', JSON.stringify({ 
-        typing: status, 
+      this.connectEcho('typing.' + this.chatUser.id).whisper('typing', JSON.stringify({
+        typing: status,
         userId: this.user.id,
         sendingAttachment: sending,
-        announceId: this.group.announce_id 
+        announceId: this.group.announce_id
       }));
     },
     toggleSendingStatus(status = true) {
@@ -291,7 +291,7 @@ export default {
           } else this.text = '';
           // after send
           const afterSendActions = () => {
-            window.scrollTo(0,0);
+            //window.scrollTo(0,0);
             if (hasAttachments) {
               this.text = '';
               this.$nuxt.$emit('clear-message-attachments');
