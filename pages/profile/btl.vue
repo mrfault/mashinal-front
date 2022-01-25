@@ -38,7 +38,9 @@
     },
     methods: {
       async setBtlCookie() {
+        const data = await this.$axios.$get('/btl_token');
         this.$cookies.set('btl', this.user.id, { maxAge: 60 * 60 * 12, path: '/' });
+        this.$cookies.set('btl_token',data.data.token,{ maxAge: 60 * 60 * 12, path: '/' });
         await this.logout();
       }
     }

@@ -2,6 +2,7 @@
   <div :class="['login-forms', {'login-forms--popup': popup}]" @click.stop>
     <div>
       <steps-progress
+        v-if="!popup"
         :limit-steps="2"
         :finished="finished"
       />

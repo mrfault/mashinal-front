@@ -45,7 +45,7 @@
       </div>
       <div class="info">
         <h2>{{ contact.name }}</h2>
-        <address v-if="announcement.status != 3">{{ contact.address }}</address>
+        <address v-if="announcement.status != 3">{{ getAddress }}</address>
         <span class="text-red" v-else>{{ $t('sold') }}</span>
         <nuxt-link :to="contact.link" class="all-announcements text-dark-blue-2 text-medium" v-if="contact.user.active_announcements_count > 1 || announcement.is_part_salon || announcement.is_autosalon">
           <span v-if="announcement.is_part_salon">{{ $t('go_to_shop') }}</span>
@@ -120,7 +120,11 @@ export default {
   },
   computed: {
     ...mapGetters(['announcement']),
-
+    getAddress() {
+      return this.announcement.is_autosalon ? this.announcement.user?.autosalon?.address : (
+        this.announcement.is_part_salon ? this.announcement.user?.part_salon?.address : this.announcement.address
+      );
+    },
     contact() {
       return this.getAnnouncementContact(this.announcement);
     },
