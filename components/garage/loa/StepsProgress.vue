@@ -1,5 +1,5 @@
 <template>
-  <div class="steps-progress pt-2 pb-2 pt-lg-0" ref="steps">
+  <div class=" steps-progress pt-2 pb-2 pt-lg-0" ref="steps">
     <div class="steps-progress_inner">
       <div class="steps-progress_bar">
         <div :class="['filled', { 'animate': currentStep > 1 }]"
