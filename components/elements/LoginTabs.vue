@@ -136,6 +136,7 @@ import {mapActions, mapState} from 'vuex';
     },
     beforeDestroy() {
       if (this.popup) window.removeEventListener('keydown', this.handleEscapeKey);
+      this.updateStep(1);
     }
   }
 </script>
