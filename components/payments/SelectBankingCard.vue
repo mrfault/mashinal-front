@@ -12,7 +12,7 @@
     />
     <div class="banking-cards_item mt-3" v-if="activeCard">
       <div class="card-img">
-        <img :src="`/img/cards/card-${activeCard.brand}-${activeCard.img}.png`" :alt="activeCard.brand" />
+        <img :src="`/img/cards/card-${activeCard.brand.toLowerCase()}-${activeCard.img}.png`" :alt="activeCard.brand" />
       </div>
       <div class="card-details d-flex flex-column justify-content-between">
         <div class="card-top d-flex">
