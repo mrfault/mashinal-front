@@ -1,13 +1,13 @@
 <template>
   <div :class="['pages-parts-shops', `${mapView ? 'map' : 'list'}-view`]">
-    <mobile-screen @back="showSearch = false" :bar-title="$t('search_salon')" v-if="showSearch && isMobileBreakpoint">
+    <mobile-screen @back="showSearch = false" :bar-title="$t('search_part_salon')" v-if="showSearch && isMobileBreakpoint">
       <div class="flex-stretch-chilren pt-4">
         <div class="full-width">
           <form-buttons :options="searchFormTypeOptions" :group-by="2" v-model="searchFormType" />
         </div>
         <salon-search-form v-show="searchFormType === 1" where="parts" />
         <salon-filters-form v-show="searchFormType === 0" where="parts" @filter="showSearch = false"
-          :count="(!mapView ? salonsFiltered : salonsInView).length" /> 
+          :count="(!mapView ? salonsFiltered : salonsInView).length" />
       </div>
     </mobile-screen>
     <template v-if="!mapView">
@@ -61,16 +61,16 @@
             </div>
           </div>
         </template>
-        <clustered-map 
+        <clustered-map
           :key="'desktop-map_'+mapKey"
           :margin-left="{ left: 0, top: 0, width: '360px', height: '100%' }"
-          :margin-top="{ top: 0, left: 0, width: '100%', height: '150px' }" 
-          :use-margin-left="!disableCollapse && !collapse" 
+          :margin-top="{ top: 0, left: 0, width: '100%', height: '150px' }"
+          :use-margin-left="!disableCollapse && !collapse"
           @balloon-click="$router.push($localePath(`/parts/shops/${$event}`))"
         />
       </template>
       <template v-else>
-        <clustered-map 
+        <clustered-map
           :key="'mobile-map_'+mapKey"
           @balloon-click="$router.push($localePath(`/parts/shops/${$event}`))"
         />

@@ -1590,6 +1590,7 @@ export default {
   "search_less": "Gizlət",
   "search_more": "Ətraflı",
   "search_salon": "Salon axtarışı",
+  "search_part_salon": "Mağaza axtarışı",
   "search_save": "Axtarışı yadda saxla",
   "search_saved": "Axtarış yadda saxlanıldı",
   "search-salon": "Salon axtar",

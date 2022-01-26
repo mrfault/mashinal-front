@@ -1591,6 +1591,7 @@ export default {
   "search_less": "Свернуть",
   "search_more": "Все параметры",
   "search_salon": "Поиск салона",
+  "search_part_salon": "Поиск магазина",
   "search_save": "Сохранить поиск",
   "search_saved": "Поиск сохранен",
   "search-salon": "Найти салон",
