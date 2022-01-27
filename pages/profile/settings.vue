@@ -142,6 +142,7 @@ export default {
         this.form.password = '';
         this.form.password_confirmation = '';
         this.$auth.fetchUser();
+        this.$router.push(this.$localePath('/profile'))
       });
     }
   }
