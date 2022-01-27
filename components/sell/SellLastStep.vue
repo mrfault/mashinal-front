@@ -20,11 +20,11 @@
           @file-rotated="rotateImage"
           @order-changed="changeOrder"
         />
-        <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-youtube">
-          <span>{{ $t('video') }}</span>
-        </h2>
-        <add-video :value="form.youtube.id" @input="$set(form, 'youtube', $event)"
-           :thumb="form.youtube.thumb" />
+<!--        <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-youtube">-->
+<!--          <span>{{ $t('video') }}</span>-->
+<!--        </h2>-->
+<!--        <add-video :value="form.youtube.id" @input="$set(form, 'youtube', $event)"-->
+<!--           :thumb="form.youtube.thumb" />-->
         <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-selectedColor">
           <span>{{ $t('color') }} <span class="star"> *</span></span>
         </h2>
@@ -109,18 +109,18 @@
             </div>
           </div>
         </div>
-        <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-owner_type">
-          <span>{{ $t('first_owner_question') }}</span>
-        </h2>
-        <div class="row">
-          <div class="col-auto mb-2 mb-lg-0">
-            <form-switch :options="getOwnerOptions" v-model="form.owner_type" auto-width />
-          </div>
-        </div>
-        <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-car_or_vin">
+<!--        <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-owner_type">-->
+<!--          <span>{{ $t('first_owner_question') }}</span>-->
+<!--        </h2>-->
+<!--        <div class="row">-->
+<!--          <div class="col-auto mb-2 mb-lg-0">-->
+<!--            <form-switch :options="getOwnerOptions" v-model="form.owner_type" auto-width />-->
+<!--          </div>-->
+<!--        </div>-->
+        <h2 v-if="type === 'cars'" class="title-with-line mt-2 mt-lg-3" id="anchor-car_or_vin">
           <span>{{ $t(form.customs_clearance ? 'vin_carcase_number' : 'license_plate_number_vin_or_carcase_number') }} <span class="star" v-if="type === 'cars'"> *</span></span>
         </h2>
-        <div class="row">
+        <div class="row" v-if="type === 'cars'">
           <div class="col-lg-4 mb-2 mb-lg-0" v-if="!form.customs_clearance">
             <form-text-input v-model="form.car_number" input-class="car-number-show-popover" img-src="/img/flag.svg"
                 :mask="type === 'cars' ? '99 - AA - 999' : '99 - A{1,2} - 999'"
