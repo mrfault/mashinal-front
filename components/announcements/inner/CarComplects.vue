@@ -17,7 +17,7 @@
       </collapse-content>
       <hr v-if="filteredSellOptions.length" :key="'hr-popular'" />
     </template>
-    <template v-for="(group, index) in filteredSellOptions">
+    <template v-if="getOptions(group).length" v-for="(group, index) in filteredSellOptions">
       <collapse-content
         :title="getTitle(group, index)"
         :first-collapsed="!!tagSellOptions.length || index !== 0"
@@ -62,9 +62,9 @@ export default {
   },
   computed: {
     ...mapGetters(['allSellOptions', 'popularOptions']),
-    
+
     filteredSellOptions() {
-      return this.allSellOptions.filter(group => !!this.getOptions(group).length);
+      return this.allSellOptions;//.filter(group => !!this.getOptions(group).length);
     },
     tagSellOptions() {
       return this.popularOptions.filter((option) => {
