@@ -4,17 +4,16 @@
       <breadcrumbs :crumbs="crumbs" />
       <div class="login-card card no-pd mb-5">
         <div class="row no-gutters">
-          <div class="col-12 col-lg-6">
-            <div class="tab-info">
-              <h1 style="font-size: 40px;" v-html="$t('sign-in')"></h1>
-              <h2 style="font-weight: normal;">{{ $t('sign-in_info') }}</h2>
-
-              <img src="/img/sign-up-car.png" alt=""  />
-
-              <div class="tab-bg"></div>
+          <div class="col-12 col-lg-8">
+            <div class="login-image">
+              <h1>{{ $t('register_question1') }}</h1>
+              <p>{{ $t('register_question2') }}</p>
+              <img v-show="isDarkMode" style="width: 100%;" :src="`/login_image_${locale}_dark.png`" alt=""  />
+              <img v-show="!isDarkMode" style="width: 100%;" :src="`/login_image_${locale}.png`" alt=""  />
             </div>
+
           </div>
-          <div class="col-12 col-lg-6">
+          <div class="col-12 col-lg-4">
             <div class="tab-form">
 
               <login-tabs @update-tab="tab = $event" :skip-sign-in="true" />
@@ -75,3 +74,24 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+
+.login-image {
+  background: linear-gradient(69.9deg, #081A3E 0%, #246EB2 100%);
+  padding:37px 50px;
+
+  p {
+    font-size: 16px;
+    color:white;
+  }
+  h1 {
+    font-size: 26px;
+    color: white;
+  }
+}
+.dark-mode {
+  .login-image {
+    background: linear-gradient(69.9deg, #131314 0%, #202022 100%);;
+  }
+}
+</style>

@@ -106,6 +106,7 @@
               });
             } else {
               this.pending = false;
+              this.$emit('check-user',res.data.new_user)
               this.$emit('update-tab','sign-up','sms');
             }
           }).catch((err) => {
