@@ -17,6 +17,11 @@
             v-show="tab === 'check-points'"
             @show-nav="showNav = $event"
           />
+          <list-of-attorneys
+            :attorneys="attorneys"
+            v-show="tab === 'attorney-list'"
+            @show-nav="showNav = $event"
+          />
         </template>
         <template v-else>
           <garage-empty />
@@ -48,11 +53,13 @@ import GarageNav from '~/components/garage/GarageNav';
 import GarageEmpty from '~/components/garage/GarageEmpty';
 import CarsList from '~/components/garage/CarsList';
 import CheckDriverPoints from '~/components/garage/CheckDriverPoints';
+import ListOfAttorneys from "~/components/garage/loa/ListOfAttorneys";
 
 export default {
   name: 'pages-garage-index',
   mixins: [UserDataMixin, MenusDataMixin],
   components: {
+    ListOfAttorneys,
     GarageNav,
     GarageEmpty,
     CarsList,
@@ -71,16 +78,18 @@ export default {
   },
   async asyncData({ store }) {
     await Promise.all([
-      store.dispatch('garage/getCarList', {})
+      store.dispatch('garage/getCarList', {}),
+      store.dispatch('garage/getAttorneyList')
     ]);
     return {
-      tab: 'cars',
+      tab: 'attorney-list',
       showNav: true
     }
   },
   computed: {
     ...mapGetters({
-      cars: 'garage/cars'
+      cars: 'garage/cars',
+      attorneys:'garage/attorneys'
     }),
 
     crumbs() {

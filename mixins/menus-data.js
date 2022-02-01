@@ -62,7 +62,7 @@ export const MenusDataMixin = {
 
       let menus = [
         { title: 'garage', route: '/garage', icon: 'garage-tab', showOnCard: !this.isMobileBreakpoint },
-        { title: 'my_account', route: '/profile', icon: 'user', showOnCard: this.isMobileBreakpoint },
+        { title: 'my_account', route: '/profile/settings', icon: 'user', showOnCard: this.isMobileBreakpoint },
         { title: 'my_announces', route: '/profile/announcements', icon: 'speaker', showOnCard: true },
         { title: 'balans', route: '/profile/balance', icon: 'wallet', showOnCard: true }
       ];

@@ -20,6 +20,7 @@
     "bootstrap-vue": "^2.21.2",
     "cookie-universal-nuxt": "^2.1.1",
     "core-js": "^3.9.1",
+    "downloadjs": "^1.4.7",
     "fslightbox-vue": "file:lib/fslightbox-pro",
     "inputmask": "^3.3.11",
     "laravel-echo": "^1.6.1",

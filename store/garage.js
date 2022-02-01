@@ -3,6 +3,7 @@ import { mutate } from '~/lib/vuex-helpers/mutations';
 
 const getInitialState = () => ({
   cars: {},
+  attorneys: {},
   protocols: {},
   protocolFiles: {},
   driverLicensePoints: {}
@@ -12,6 +13,7 @@ export const state = () => getInitialState();
 
 export const getters = {
   cars: s => s.cars,
+  attorneys: s => s.attorneys,
   protocols: s => s.protocols,
   protocolFiles: s => s.protocolFiles,
   driverLicensePoints: s => s.driverLicensePoints
@@ -21,6 +23,11 @@ export const actions = {
   async getCarList({ commit }, data) {
     const res = await this.$axios.$get(`/garage/car/list${this.$queryParams(data)}`);
     commit('mutate', { property: 'cars', value: res });
+    return res;
+  },
+  async getAttorneyList({ commit }) {
+    const res = await this.$axios.$get(`/attorney/list`);
+    commit('mutate', { property: 'attorneys', value: res.data });
     return res;
   },
   async checkNewCar({}, data) {

@@ -2094,5 +2094,8 @@ export default {
   "combined_torgue" :"Ümumi fırlanma anı, Nm",
   "combined_power" :"Ümumi mühərrik gücü, h.p. / kVt",
   "register_question1": "Nə üçün qeydiyyatdan keçməliyəm?",
-  "register_question2": "Artıq bir kabinetdən, nəqliyyat vasitələrinizə dair bütün əməliyyatlar əl çatan olacaq."
+  "register_question2": "Artıq bir kabinetdən, nəqliyyat vasitələrinizə dair bütün əməliyyatlar əl çatan olacaq.",
+  "attorneys": "Etibarnamələr",
+  "approved": "Təsdiq edilib",
+  "disable_attorney": "Xitam ver"
 }

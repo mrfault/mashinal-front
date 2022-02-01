@@ -5,7 +5,7 @@
       <component
         :is="isMobileBreakpoint ? 'mobile-screen' : 'div'"
         :bar-title="$t('user_information_edit')"
-        @back="$router.push(pageRef || $localePath('/profile'))"
+        @back="$router.push(pageRef || $localePath('/profile/settings'))"
         height-auto
       >
         <div class="card profile-settings-card">
@@ -142,7 +142,7 @@ export default {
         this.form.password = '';
         this.form.password_confirmation = '';
         this.$auth.fetchUser();
-        this.$router.push(this.$localePath('/profile'))
+        this.$router.push(this.$localePath('/profile/settings'))
       });
     }
   }
