@@ -10,7 +10,7 @@
   font-display: block;
 }
 
-[class^="icon-"],
+[class^="icon-"], 
 [class*=" icon-"] {
   display: inline-flex;
   flex-shrink: 0;
@@ -479,10 +479,43 @@
 .icon-handshake:before {
   content: "\e96f";
 }
-.icon-announce-tab:before {
+.icon-grey-attorney:before {
   content: "\e990";
+  color: #246eb2;
 }
-.icon-garage-new:before {
+.icon-grey-calculator:before {
   content: "\e991";
-  margin-right: 5px;
+  color: #246eb2;
+}
+.icon-grey-check:before {
+  content: "\e992";
+  color: #246eb2;
+}
+.icon-grey-Customs-Officer:before {
+  content: "\e993";
+  color: #246eb2;
+}
+.icon-grey-guide-icon:before {
+  content: "\e994";
+  color: #246eb2;
+}
+.icon-grey-hammer:before {
+  content: "\e995";
+  color: #246eb2;
+}
+.icon-grey-insurance-icon:before {
+  content: "\e996";
+  color: #246eb2;
+}
+.icon-grey-list:before {
+  content: "\e997";
+  color: #246eb2;
+}
+.icon-grey-penalty:before {
+  content: "\e998";
+  color: #246eb2;
+}
+.icon-grey-police-icon:before {
+  content: "\e999";
+  color: #246eb2;
 }

@@ -34,6 +34,7 @@ export const MenusDataMixin = {
         { icon: 'salons-tab', title: 'salons', route: '/salons' },
         { icon: 'shops-tab', title: 'shops', route: '/parts/shops' },
         { icon: 'catalog-tab', title: 'autocatalog', route: '/catalog' },
+        { icon: 'grey-attorney', title: 'eservices', route: '/e-services' },
       ]
     },
 
