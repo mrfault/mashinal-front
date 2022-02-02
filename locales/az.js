@@ -2111,5 +2111,7 @@ export default {
   "disable_attorney": "Xitam ver",
   "pending":"Gözləmədədir",
   "rejected_attorney":"Qüvvədən düşüb",
-  "download": "Yüklə"
+  "download": "Yüklə",
+  "trolleybus":"Trolleybuslar və tramvaylar",
+  "juridical_person": "Hüquqi şəxs"
 }

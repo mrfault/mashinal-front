@@ -26,7 +26,7 @@
       />
     </div>
 
-    <div class="swiper-pagination-bullets">
+    <div class="swiper-pagination-bullets" v-if="!isMobileBreakpoint">
       <span  class="swiper-pagination-bullet" :class="{'swiper-pagination-bullet-active': action === 'sign-in' && !form.staticPhone }" ></span>
       <span class="swiper-pagination-bullet"  :class="{'swiper-pagination-bullet-active': action === 'sms' || form.staticPhone }"></span>
     </div>
