@@ -18,7 +18,6 @@
                   <span>{{ item.body }}</span>
                 </span>
                 <span>{{ $formatDate(item.created_at, 'HH:m | D.MM.YYYY')[locale] }}</span>
-<!--                <span style="margin-left: 25px"><icon name="chevron-down" /></span>-->
               </nuxt-link>
             </ul>
             <hr/>
