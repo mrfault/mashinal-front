@@ -2,26 +2,26 @@
   <div class="attorney-list">
     <div class="card mb-4 m-0" v-for="attorney in attorneys" :key="attorney.id">
       <div class="d-flex">
-        <h2 class="attorney-date" :class="{'title-with-line': !isMobileBreakpoint}">
-          <span>Qeydiyyat tarixi: {{ attorney.formatted_created_at }}</span>
+        <h2><icon class="mr-2" name="stamp" /></h2><h2 class="attorney-date" :class="{'title-with-line': !isMobileBreakpoint}">
+         <span> Qeydiyyat tarixi: {{ attorney.formatted_created_at }}</span>
         </h2>
         <span class="attorney-checked" :class="getStatus(attorney.status)">
-          <icon :name="attorney.status === 1 ? 'check' :'cross' "/>
-          {{ $t(getStatus(attorney.status)) }}
+          <icon :name="['wall-clock','check', 'cross'][attorney.status]"/>
+          {{ $t(getStatus(attorney.status)) }}<span v-if="attorney.status === 2">: {{ attorney.formatted_expire_date }}</span>
         </span>
       </div>
       <div class="attorney-info-wrapper">
         <div class="attorney-info">
-          <span class="model-title">Marka/model</span>
-          <span>CUPRA Formentor VZ5</span>
+          <span class="model-title">{{ $t('car_number') }}</span>
+          <span>{{ attorney.car_number }}</span>
         </div>
         <div class="attorney-info">
-          <span class="model-title">Etibarnamənin növü</span>
-          <span>Nəqliyyat vasitəsinə sərəncam verilməsinə dair etibarnamə</span>
+          <span class="model-title">{{ $t('letter_type') }}</span>
+          <span>{{ $t('letter_type_options')[attorney.type-1] }}</span>
         </div>
         <div>
-          <button class="btn btn--red-outline mr-1">{{ $t('disable_attorney') }}</button>
-          <button @click.prevent="getPdf(attorney.id)" class="btn btn--dark-blue">{{ $t('download') }}</button>
+          <button v-if="attorney.status === 1" class="btn btn--red-outline mr-1">{{ $t('disable_attorney') }}</button>
+          <button @click.prevent="getPdf(attorney.id)" class="btn btn--dark-blue"><icon name="download"/>{{ $t('download') }}</button>
         </div>
       </div>
 <!--      <div  class="d-flex justify-content-between">-->
@@ -45,7 +45,7 @@ export default {
       return [
         'pending',
         'approved',
-        'rejected'
+        'rejected_attorney'
       ][status]
     },
     async getPdf(id) {
@@ -55,7 +55,7 @@ export default {
         })
         download(data,'etibarname-'+id+'.pdf','application/pdf')
       }catch (e) {
-        this.$toasted.error('xəta baş verdi')
+        this.$toasted.error(this.$t('garage_error_3504'))
       }
 
     }
@@ -109,12 +109,15 @@ export default {
     &.approved {
       color: #29A53E;
     }
-    &.rejected {
-      color: red
+    &.rejected_attorney {
+      color: #F81734;
+    }
+    &.pending {
+      color: #646E95
     }
     i {
       margin-right: 5px;
-      font-size: 10px;
+      font-size: 14px;
     }
   }
 }
