@@ -2,12 +2,21 @@
   <form class="form confirm-sms-code" @submit.prevent="submit" novalidate>
     <div class="form-part">
       <form-text-input
+        v-if="!form.staticPhone && isNewUser"
+        :placeholder="$t('name')"
+        :maxlength="30"
+        :invalid="validator.name.$error"
+        v-model="form.name"
+      />
+      <p v-if="!form.staticPhone && isNewUser" style="color:#92959A;margin-top: -12px;">{{ '* istəyə dair qeyd oluna bilər' }}</p>
+      <form-text-input
         :placeholder="$t('enter_the_code')"
         :mask="'99999'"
         :invalid="validator.code.$error"
         v-model="form.code"
       />
     </div>
+
     <p v-if="showResend || codeSent || askToCallSupport">
       <a v-if="showResend && resendSmsAfterSecond === 0" class="cursor-pointer text-decoration-underline" @click.prevent="resendCode">{{ $t('resend_code') }}</a>
       <span class="d-flex justify-content-between" v-else-if="showResend && resendSmsAfterSecond > 0">
@@ -29,6 +38,7 @@
       form: {},
       validator: {},
       actionText: String,
+      isNewUser: Boolean,
       skipSignIn: Boolean,
       resendData: {
         default: {}

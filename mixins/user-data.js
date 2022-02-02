@@ -3,10 +3,10 @@ import { mapGetters } from 'vuex';
 export const UserDataMixin = {
   computed: {
     ...mapGetters(['countNewMessages']),
-    
+
     getUserAvatar() {
       if (!this.loggedIn) return undefined;
-      else if (this.user.avatar?.includes('/logo.jpg')) 
+      else if (this.user.avatar?.includes('/logo.jpg'))
         return `/img/salon-logo-${this.colorMode}.jpg`;
       else if (this.user.avatar)
         return this.$withBaseUrl(`/storage/${this.user.avatar}`);
@@ -14,7 +14,7 @@ export const UserDataMixin = {
     },
     getUserSettingsLink() {
       if (!this.loggedIn) return this.$localePath('/login');
-      return '/profile';
+      return '/profile/settings';
     }
   },
   methods: {

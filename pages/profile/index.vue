@@ -49,11 +49,6 @@
         </div>
       </div>
     </div>
-    <div class="overflow-hidden">
-      <div class="container">
-        <banking-cards />
-      </div>
-    </div>
   </div>
 </template>
 

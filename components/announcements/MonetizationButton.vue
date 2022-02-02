@@ -1,8 +1,8 @@
 <template>
   <button :class="`btn btn--${className} full-width`" @click.stop="showPaymentModal = true">
     {{ $t('get_an_ad') }}
-    <modal-popup 
-      :toggle="showPaymentModal" 
+    <modal-popup
+      :toggle="showPaymentModal"
       :title="$t('get_an_ad')"
       :modal-class="'larger monetization-popup'"
       @close="showPaymentModal = false"
@@ -11,10 +11,10 @@
       <h4 class="text-dark-blue-2">{{ selectedPlan.min_view }} - {{ selectedPlan.max_view }}</h4>
       <hr />
       <h4>{{ $t('daily_budget') }}</h4>
-      <form-range v-model="price.value" :min="price.min" :max="price.max" :step="0.1" 
+      <form-range v-model="price.value" :min="price.min" :max="price.max" :step="0.1"
         :data="pricesForPlan" :tooltip-template="`{value} ALM`" />
       <h4>{{ $t('duration') }}</h4>
-      <form-range v-model="day.value" :min="day.min" :max="day.max" :step="1" 
+      <form-range v-model="day.value" :min="day.min" :max="day.max" :step="1"
         :data="daysForPlan" :tooltip-template="`{value} day`" />
       <p class="mb-2 mb-lg-3"><span class="star">* </span> {{ $t('ad_can_be_paused') }}</p>
       <h4>{{ $t('payment_method') }}</h4>
@@ -39,9 +39,9 @@
         </div>
       </div>
     </modal-popup>
-    <terminal-info-popup 
+    <terminal-info-popup
       name="monetization-popup"
-      @open="showPaymentModal = false" 
+      @open="showPaymentModal = false"
       @close="showPaymentModal = true"
     />
   </button>
@@ -50,6 +50,7 @@
 <script>
 
 import { PaymentMixin } from '~/mixins/payment';
+import {mapGetters} from "vuex";
 
 export default {
   props: {
@@ -62,7 +63,7 @@ export default {
   data() {
     return {
       pending: false,
-      priceList: [], 
+      priceList: [],
       day: {
         value: 5,
         min: 1,
@@ -76,12 +77,13 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['user']),
     totalBalance() {
-      let balance = this.user.balance;
-      if (this.announcement.is_autosalon) 
+      let balance =0// this.user.balance;
+      if (this.announcement.is_autosalon)
         return this.$sum(balance, this.announcement.user.autosalon.balance);
       else if (this.announcement.is_part_salon)
-        return this.$sum(balance, this.announcement.user.part_salon.balance); 
+        return this.$sum(balance, this.announcement.user.part_salon.balance);
       return balance;
     },
     pricesForPlan() {
@@ -122,10 +124,10 @@ export default {
           this.$auth.fetchUser()
         ]);
         this.pending = false;
-        this.updatePaidStatus({ 
-          type: 'success', 
-          text: this.$t('ad_started'), 
-          title: this.$t('success_payment') 
+        this.updatePaidStatus({
+          type: 'success',
+          text: this.$t('ad_started'),
+          title: this.$t('success_payment')
         });
       }
     }

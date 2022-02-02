@@ -22,8 +22,8 @@
               </template>
             </div>
           </div>
-          <div class="card mb-2 mb-lg-0" ref="increase">
-            <div class="increase-balance-form">
+          <div class="mb-2 mb-lg-0" ref="increase">
+            <div class="card increase-balance-form">
               <form class="form" @submit.prevent="increaseBalance" novalidate>
                 <h2 class="title-with-line">
                   <span>{{ $t('replenishment') }}</span>
@@ -36,7 +36,10 @@
                 <button type="submit" :class="['btn btn--green full-width', {pending, disabled: form.money < this.minAmount}]">
                   {{ $t('replenish') }}
                 </button>
-              </form> 
+              </form>
+            </div>
+            <div>
+              <banking-cards />
             </div>
           </div>
         </div>
@@ -82,9 +85,9 @@
               </div>
             </div>
           </div>
-          <infinite-loading 
-            action="getMyBalanceHistory" 
-            getter="myBalanceHistory" 
+          <infinite-loading
+            action="getMyBalanceHistory"
+            getter="myBalanceHistory"
             class-name="mt-3 mt-lg-4"
           />
         </div>
@@ -95,13 +98,16 @@
 
 <script>
   import { mapGetters } from 'vuex';
-
+  import BankingCards from '~/components/payments/BankingCards';
   import { PaymentMixin } from '~/mixins/payment';
 
   export default {
     name: 'pages-profile-balance',
     middleware: 'auth_general',
     mixins: [PaymentMixin],
+    components: {
+      BankingCards
+    },
     nuxtI18n: {
       paths: {
         az: '/profil/balans'
@@ -115,10 +121,11 @@
     async asyncData({ store, app, $auth }) {
       await Promise.all([
         store.dispatch('getMyBalanceHistory'),
+        store.dispatch('bankingCards/getBankingCards'),
         $auth.fetchUser()
       ]);
 
-      return { 
+      return {
         pending: false,
         minAmount: app.$env.DEV ? 0.01 : 1,
         form: {
@@ -139,7 +146,7 @@
         return this.$sum(this.user.balance, this.user.autosalon?.balance || 0, this.user.part_salon?.balance || 0);
       }
     },
-    methods: {    
+    methods: {
       async increaseBalance() {
         if (this.pending || this.form.money < this.minAmount) return;
         this.pending = true;
