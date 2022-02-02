@@ -15,7 +15,7 @@
               <a target="_blank" href="https://play.google.com/store/apps/details?id=ventures.al.mashinal&hl=az&gl=US" ><img src="/img/google-play.svg" class="google-play-img"></a>
             </div>
             <div class="top-promotion-row-item">
-              <img src="/img/mobile-app.png" class="mobile-app" @click="">
+              <img src="/img/mobile-app.png" class="mobile-app">
               <a style="margin-left: 10px;cursor:pointer" @click.prevent="closePromotion">
                 <icon style="color: #081A3E;" name="cross"/>
               </a>
@@ -26,7 +26,6 @@
       </div>
     </div>
     <header class="header-menu container d-none d-lg-block" :class="{ 'no-border-radius':hoverMenu}" >
-
       <div class="topbar">
         <nuxt-link class="logo" :to="$localePath('/')" @click.native="$nuxt.$emit('logo-click')">
           <img :src="`/img/${isDarkMode ? 'logo-dark-mode' : 'logo-dark-blue-white'}.svg`" alt="logo"

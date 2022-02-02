@@ -1,0 +1,66 @@
+.e-service {
+  padding: 20px 24px 20px 25px;
+  background: #fff;
+  border-radius: 4px;
+  height: 189px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    &--title {
+      font: 400 18px Gilroy;
+      color: $dark-blue-1;
+    }
+    &--icon {
+      font: 26px;
+      color: $dark-blue-2;
+      font-size: 25px;
+    }
+  }
+  &__body {
+      display: flex;
+      flex-wrap: nowrap;
+    &--image {
+      height: 45px;
+      margin-right: 20px;
+      max-width: 46px;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+    }
+    &--description {
+      .key {
+        color: $dark-blue-1;
+        font: 400 14px Gilroy;
+        line-height: 19px;
+        margin-bottom: 2px;
+      }
+      .value {
+        color: $dark-blue-2;
+        font: 400 16px Gilroy;
+      }
+    }
+  }
+  &__actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    &--left {
+      a {
+        color: $green-1;
+        font: 400 14px Gilroy;
+        text-decoration: underline;
+      }
+    }
+    &--right{
+        color: $dark-blue-2;
+        i{
+            margin-left: 8px;
+        }
+    }
+  }
+}
