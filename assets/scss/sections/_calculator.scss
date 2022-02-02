@@ -21,6 +21,22 @@
         .form-group{
             margin-bottom: 20px;
         }
+        .secondary--heading{
+            font: 400 14px Gilroy !important;
+            color: $dark-blue-1;
+        }
+        .dollar__exchange{
+
+            span{
+                font: 400 16px Gilroy;
+                &:nth-child(1){
+                    color: $dark-blue-1;
+                }
+                &:nth-child(2){
+                    color: $dark-blue-2;
+                }
+            }
+        }
     }
     &__results{
         &--heading{
@@ -61,7 +77,6 @@
                     clip-path: polygon(0 0, 0% 100%, 100% 0);
                 }
             }
-            
         }
         &--content{
             border-radius: 4px;

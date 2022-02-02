@@ -22,15 +22,65 @@
                 <form-select
                   :label="labels.engineType"
                   :options="engineTypes"
-                  v-model="filled.vehicleType"
+                  v-model="filled.engineType"
+                />
+              </div>
+              <div class="col-12" v-if="isHybrid">
+                <form-select
+                  :label="labels.hybridEngineType"
+                  :options="hybridEngineTypes"
+                  v-model="filled.hybridEngineType"
                 />
               </div>
               <div class="col-12">
                 <form-select
-                  :label="labels.hybridEngineType"
-                  :options="hybridEngineTypes"
-                  v-model="filled.vehicleType"
+                  :label="labels.producerCountry"
+                  :options="countries"
+                  v-model="filled.producerCountry"
                 />
+              </div>
+              <div class="col-12">
+                <form-select
+                  :label="labels.senderCountry"
+                  :options="countries"
+                  v-model="filled.senderCountry"
+                />
+              </div>
+              <div class="col-12">
+                <form-numeric-input
+                  :placeholder="labels.customsValueOfVehicle"
+                  v-model="filled.customsValueOfVehicle"
+                />
+              </div>
+              <div class="col-12">
+                <h6 class="secondary--heading">İstehsal tarixi</h6>
+              </div>
+              <div class="col-6">
+                <form-checkbox
+                  :label="$t('more_than_one_year')"
+                  v-model="filled.isMoreThanOneYear"
+                  input-name="isMoreThanOneYear"
+                />
+              </div>
+              <div class="col-6">
+                <form-numeric-input
+                  :placeholder="`${$t('production_year')}`"
+                  v-model="filled.productionYear"
+                  maxlegth="4"
+                />
+              </div>
+              <div class="col-12">
+                <div class="dollar__exchange">
+                  <span>
+                    Dolların məzənnəsi:
+                  </span>
+                  <span>
+                    1 $ = 1.7 ₼
+                  </span>
+                </div>
+              </div>
+              <div class="col-12">
+                <hr />
               </div>
               <div class="col-6">
                 <button
@@ -60,18 +110,33 @@
         <!-- -------------------------------------------------------- -->
         <div class="col-12 col-md-6 col-lg-8">
           <div class="calculator__results">
-            <div class="calculator__results--heading">
-              <h3>{{ $t('insurance_fee_of_vehicle') }}</h3>
-              <h4>100 ₼</h4>
-              <div class="label">{{ $t('buy_insurance_with_credit') }}</div>
-              <span class="label-flip"></span>
-            </div>
             <div class="calculator__results--content">
               <div>
                 <h2 class="title-with-line">
-                  <span>{{ $t('buy_insurance') }}</span>
+                  <span>{{ $t('result') }}</span>
                 </h2>
-                {{filled.engineType}}
+                <div class="vehicle-specs">
+                  <div class="row">
+                    <div class="col">
+                      <!-- <ul>
+                        <li>
+                          <span>{{ $t('ad_active') }}</span>
+                          <span>{{ $t('yes') }}</span>
+                        </li>
+                        <li>
+                          <span>{{ $t('ad_done') }}</span>
+                          <span>
+                            {{
+                              $t('add_calc_percent', {
+                                n: stats.calculated_percent,
+                              })
+                            }}
+                          </span>
+                        </li>
+                      </ul> -->
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -91,6 +156,7 @@ export default {
       vehicleType: Models.vehicleTypes,
       engineTypes: Models.engineTypes,
       hybridEngineTypes: Models.hybridEngineTypes,
+      countries: Models.countries,
       filled: {
         country: 0,
         vehicleType: 0,
@@ -100,8 +166,9 @@ export default {
         hybridEngineType: 0,
         producerCountry: 0,
         senderCountry: 0,
-        customsValueOfVehicle: 0,
-        productionYearMoreThanOneYear: false,
+        customsValueOfVehicle: '',
+        isMoreThanOneYear: false,
+        productionYear: '',
       },
       labels: {
         vehicleType: 'Nəqliyyat vasitəsinin növü',
@@ -114,7 +181,7 @@ export default {
         senderCountry: 'Göndərən ölkə',
         customsValueOfVehicle: 'Avtomobilin gömrük dəyəri ($)',
         productionYear: 'İstehsal tarixi',
-        moreThanOneYear: '1 ildən çox',
+        moreThanOneYear: '',
         productionYearNumber: 'İstehsal ili',
       },
     }
@@ -124,13 +191,13 @@ export default {
     crumbs() {
       return [{ name: this.$t('customs_calculator') }]
     },
-    isHybrid: function(){
-      if (this.filled.vehicleType == "hybrid") {
-        return true;
-      }else{
-        return false;
+    isHybrid: function () {
+      if (this.filled.engineType == 'hybrid12345') {
+        return true
+      } else {
+        return false
       }
-    }
+    },
   },
 
   methods: {
