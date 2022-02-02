@@ -2110,5 +2110,7 @@ export default {
   "rejected_attorney":"Qüvvədən düşüb",
   "download": "Yüklə",
   "trolleybus":"Trolleybuslar və tramvaylar",
-  "juridical_person": "Hüquqi şəxs"
+  "juridical_person": "Hüquqi şəxs",
+  "notifications":"Bildirişlər",
+  "notification":"Bildiriş"
 }
