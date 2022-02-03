@@ -1,33 +1,41 @@
 <template>
-  <form class="form" @submit.prevent="submit" novalidate>
-    <form-text-input class="mb-2 mb-lg-3"
-      v-model="idFinCode" 
-      :mask="$maskAlphaNumeric('*{+}', ' ')" 
-      :placeholder="$t('id_fin_code')" 
-      :invalid="$v.idFinCode.$error"
-    />
-    <form-text-input class="mb-2 mb-lg-3"
-      v-model="idSerialNumber" 
-      :mask="$maskAlphaNumeric('*{+}', ' ')" 
-      :placeholder="$t('id_serial_number')" 
-      :invalid="$v.idSerialNumber.$error"
-    />
-    <form-buttons class="mb-2 mb-lg-3" 
-      v-model="letterType" 
-      :options="letterTypeOptions" 
-      :group-by="2" 
-      :height-auto="true" 
-    />
-    <button type="submit" :class="['btn btn--green full-width', { pending }]">
-      {{ $t('go_further') }}
-    </button>
+  <login-tabs :in-attorney="true" v-if="!$auth.loggedIn" />
+  <form v-else class="form" @submit.prevent="submit" novalidate>
+      <form-text-input class="mb-2 mb-lg-3"
+        v-model="carNumber"
+        v-if="!stepSendData.garageId"
+        mask="99 - AA - 999"
+        :placeholder="$t('car_number')"
+        :invalid="$v.carNumber.$error"
+      />
+      <form-text-input
+        class="mb-2 mb-lg-3"
+        v-model="idFinCode"
+        :mask="$maskAlphaNumeric('*{+}', ' ')"
+        :placeholder="$t('id_fin_code')"
+        :invalid="$v.idFinCode.$error"
+      />
+      <form-text-input class="mb-2 mb-lg-3"
+        v-model="idSerialNumber"
+        :mask="$maskAlphaNumeric('*{+}', ' ')"
+        :placeholder="$t('id_serial_number')"
+        :invalid="$v.idSerialNumber.$error"
+      />
+      <form-buttons class="mb-2 mb-lg-3"
+        v-model="letterType"
+        :options="letterTypeOptions"
+        :group-by="2"
+        :height-auto="true"
+      />
+      <button type="submit" :class="['btn btn--green full-width', { pending }]">
+        {{ $t('go_further') }}
+      </button>
   </form>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-
-import { required } from 'vuelidate/lib/validators';
+import {required, requiredIf} from 'vuelidate/lib/validators';
 
 export default {
   data() {
@@ -36,6 +44,11 @@ export default {
     }
   },
   validations: {
+    carNumber: {
+      required: requiredIf(function(){
+        return this.stepSendData.garageId > 0
+      })
+    },
     idFinCode: { required },
     idSerialNumber: { required }
   },
@@ -43,26 +56,34 @@ export default {
     ...mapGetters('letterOfAttorney', ['stepSendData']),
 
     letterType: {
-      get() { 
+      get() {
         return this.stepSendData.letterType;
       },
-      set(value) { 
+      set(value) {
         this.updateSendData({ key: 'letterType', value });
       }
     },
     idFinCode: {
-      get() { 
+      get() {
         return this.stepSendData.idFinCode
       },
-      set(value) { 
+      set(value) {
         this.updateSendData({ key: 'idFinCode', value });
       }
     },
+    carNumber: {
+      get() {
+        return this.stepSendData.carNumber
+      },
+      set(value) {
+        this.updateSendData({ key: 'carNumber', value });
+      }
+    },
     idSerialNumber: {
-      get() { 
+      get() {
         return this.stepSendData.idSerialNumber;
       },
-      set(value) { 
+      set(value) {
         this.updateSendData({ key: 'idSerialNumber', value });
       }
     },

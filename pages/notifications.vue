@@ -12,12 +12,14 @@
         <div class="row">
           <div class="col col-12 custom-col-12">
             <ul>
-              <nuxt-link :to="getRoutePath(item)" class="cursor-pointer" tag="li" v-for="item in notifications" :key="item.id">
-               <i v-show="!item.read_at" class="new-notification-dot"></i> <span class="wider notification-info">
-                  <span style="margin-bottom: 5px;white-space: nowrap;">{{ $t(item.title) }}</span>
-                  <span>{{ item.body }}</span>
-                </span>
-                <span>{{ $formatDate(item.created_at, 'HH:m | D.MM.YYYY')[locale] }}</span>
+              <nuxt-link :to="getRoutePath(item)" class="cursor-pointer flex-column" tag="li" v-for="item in notifications" :key="item.id">
+                <div class="full-width d-flex justify-content-between">
+                  <div class="d-flex align-items-center" style="margin-bottom: 5px;white-space: nowrap;">
+                    <i v-show="!item.read_at" class="new-notification-dot"></i>{{ $t(item.title) }}
+                  </div>
+                  <span>{{ $formatDate(item.created_at, 'HH:m | D.MM.YYYY')[locale] }}</span>
+                </div>
+                <div>{{ item.body }}</div>
               </nuxt-link>
             </ul>
             <hr/>
@@ -91,7 +93,9 @@ export default {
       return '/';
     }
   },
-
+  mounted() {
+    this.$axios.$post('/notifications/read_all')
+  },
   computed: {
     ...mapGetters(['notifications']),
     crumbs() {
@@ -110,7 +114,6 @@ export default {
   border-radius: 50%;
   margin-right: 7px;
   margin-left: 3px;
-  margin-bottom: 24px;
 }
 .custom-col-12 {
   padding: 0px 28px 0px 10px;

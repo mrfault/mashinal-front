@@ -1,7 +1,7 @@
 <template>
-  <div :class="['login-forms', {'login-forms--popup': popup}]" @click.stop>
+  <div :class="{ 'login-forms': !inAttorney, 'login-forms--popup': popup, 'login-in-attorney':inAttorney }" @click.stop>
     <div class="login-forms-with-dots">
-      <h2 :class="{'title-with-line': !isMobileBreakpoint}">
+      <h2 v-if="!inAttorney" :class="{'title-with-line': !isMobileBreakpoint}">
         <span>{{ $t('login') }}</span>
       </h2>
       <sign-in-form
@@ -26,7 +26,7 @@
       />
     </div>
 
-    <div class="swiper-pagination-bullets" v-if="!isMobileBreakpoint">
+    <div class="swiper-pagination-bullets" v-if="!isMobileBreakpoint && !inAttorney">
       <span  class="swiper-pagination-bullet" :class="{'swiper-pagination-bullet-active': action === 'sign-in' && !form.staticPhone }" ></span>
       <span class="swiper-pagination-bullet"  :class="{'swiper-pagination-bullet-active': action === 'sms' || form.staticPhone }"></span>
     </div>
@@ -50,6 +50,10 @@ export default {
     ConfirmPhone
   },
   props: {
+    inAttorney: {
+      default:false,
+      type: Boolean
+    },
     popup: Boolean,
     skipSignIn: Boolean,
     forceSellPhone: Boolean,
@@ -110,7 +114,6 @@ export default {
       this.action = action !== '' ? action : tab;
       if (action === 'sms') {
         this.resendData = data;
-        this.updateStep(2);
       }
       this.$emit('update-tab', tab);
     },
@@ -131,11 +134,16 @@ export default {
   },
   beforeDestroy() {
     if (this.popup) window.removeEventListener('keydown', this.handleEscapeKey);
-    this.updateStep(1);
   }
 }
 </script>
 <style lang="scss">
+.login-in-attorney {
+    .btn--green {
+      width: 100%;
+      margin-top:15px;
+    }
+}
 .login-forms-with-dots {
   flex: 1;
   flex-direction: column;

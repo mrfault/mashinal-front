@@ -1,5 +1,5 @@
 <template>
-  <button class="btn btn--green-outline" @click="showSteps = true">
+  <component :is="tag" :class="classes" @click="showSteps = true">
     {{ $t('send_a_letter_of_attorney') }}
     <component
       v-if="!isMobileBreakpoint || showSteps"
@@ -73,7 +73,7 @@
       @open="showPaymentModal = false"
       @close="showPaymentModal = true"
     />
-  </button>
+  </component>
 </template>
 
 <script>
@@ -96,7 +96,13 @@ import Step10 from '~/components/garage/loa/Step10';
 
 export default {
   props: {
-    car: {}
+    car: {},
+    classes:{
+      default:'btn btn--green-outline'
+    },
+    tag:{
+      default:'button'
+    }
   },
   components: {
     StepsProgress,
