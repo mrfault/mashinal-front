@@ -92,7 +92,7 @@ export default {
           title: 'Bələdçi',
           description: null,
           value: null,
-          icon: 'helper-tabs',
+          icon: 'helper-tab',
           url: '/insurance-calculator',
           hasAction: false,
           image: 'guide',

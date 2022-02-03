@@ -30,23 +30,21 @@ export default {
           image: 'etibarname',
           isAvailable: true
         },
-        // icon 
         {
           title: "Gömrük rüsumu kalkulyatoru",
           description: 'Dolların məzənnəsi:',
           value: '1 $ = 1.7₼',
-          icon: "",
+          icon: "customs-calculator-police",
           url: "/calculator/customs",
           hasAction: false,
           image: 'customs',
           isAvailable: true
         },
-        // icon
         {
           title: "İcbari sığorta kalkulyatoru",
           description: null,
           value: null,
-          icon: "",
+          icon: "compulsory-insurance-calculator",
           url: "/calculator/compulsory-insurance",
           hasAction: false,
           image: 'insurance',
