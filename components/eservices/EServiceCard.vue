@@ -19,8 +19,8 @@
       <span class="e-service__actions--left">
         <letter-of-attorney-button href="#" tag="a" classes=""  v-if="item.hasAction"/>
       </span>
-      <nuxt-link :to="item.url" class="e-service__actions--right">
-        {{ $t('detail') }}
+      <nuxt-link :to="$localePath(item.url)" class="e-service__actions--right">
+         {{ $t('detail') }}
         <icon name="chevron-right" />
       </nuxt-link>
     </div>

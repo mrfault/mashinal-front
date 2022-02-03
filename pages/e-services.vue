@@ -17,6 +17,11 @@ export default {
   components:{
     'e-service-card' :EServiceCard
   },
+   nuxtI18n: {
+    paths: {
+      az: '/e-xidmetler'
+    }
+  },
   data(){
     return{
       tabs: [
@@ -25,7 +30,7 @@ export default {
           description: 'Etibarnamələrin sayı:',
           value: 0,
           icon: "stamp-rotated",
-          url: "/asd",
+          url: "/garage",
           hasAction: true,
           image: 'etibarname',
           isAvailable: true
@@ -86,7 +91,7 @@ export default {
           description: null,
           value: null,
           icon: "helper-tab",
-          url: "/insurance-calculator",
+          url: "/cars/assistant",
           hasAction: false,
           image: 'guide',
           isAvailable: true

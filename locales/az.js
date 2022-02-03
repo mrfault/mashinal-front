@@ -2130,9 +2130,16 @@ export default {
   "download": "Yüklə",
   "trolleybus":"Trolleybuslar və tramvaylar",
   "juridical_person": "Hüquqi şəxs",
+
   "garage_services": "Qaraj xidmətləri",
   "notifications":"Bildirişlər",
   "notification":"Bildiriş",
   "notification_not_found":"Hal-hazırda heç bir bildirişiniz yoxdur.",
+  "empty_garage_title": "Qaraja avtomobil əlavə etməyin üstünlükləri",
+  "empty_garage_part_1": "1. 20 ₼ ödəniş etməlisiniz ki, qaraja avtomobil əlavə edə biləsiniz. Biz evdən çıxmadan cəmi bir saat ərzində eksklüziv ucuz qiymətə yeni avtomobil almağa imkan verən innovativ onlayn sistem yaratdıq. Biz sizin üçün təhlükəsiz, sürətli və rahat əməliyyata zəmanət veririk.",
+  "empty_garage_part_2": "2. Ödəniş etməlisiniz ki, qaraja avtomobil əlavə edə biləsiniz. Biz evdən çıxmadan cəmi bir saat ərzində eksklüziv ucuz qiymətə yeni avtomobil almağa imkan verən innovativ onlayn sistem yaratdıq. ",
+  "empty_garage_part_3": "3. Ödəniş etməlisiniz ki, qaraja avtomobil əlavə edə biləsiniz. Biz evdən çıxmadan cəmi bir saat ərzində eksklüziv ucuz qiymətə yeni avtomobil almağa imkan verən innovativ onlayn sistem yaratdıq. ",
+  "rules_of_giving_attorney": "Etibarnamə verməyin şərtləri",
+  "no_attorneys_found" : "Etibarnamə yoxdur",
 
 }
