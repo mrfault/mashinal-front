@@ -2132,6 +2132,7 @@ export default {
   "juridical_person": "Hüquqi şəxs",
   "garage_services": "Qaraj xidmətləri",
   "notifications":"Bildirişlər",
-  "notification":"Bildiriş"
+  "notification":"Bildiriş",
+  "notification_not_found":"Hal-hazırda heç bir bildirişiniz yoxdur.",
 
 }
