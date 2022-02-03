@@ -19,7 +19,7 @@
                   </div>
                   <span>{{ $formatDate(item.created_at, 'HH:m | D.MM.YYYY')[locale] }}</span>
                 </div>
-                <div>{{ item.body }}</div>
+                <div class="full-width">{{ item.body }}</div>
               </nuxt-link>
             </ul>
             <hr/>
