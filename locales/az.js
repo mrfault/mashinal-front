@@ -516,6 +516,8 @@ export default {
   "current_password": "Hazırkı şifrə",
   "customs": "Gömrük",
   "customs_calculator": "Gömrük rüsumu kalkulyatoru",
+  "custom_duty":"Mühərrikin işçi həcminə görə tutulan gömrük rüsum",
+  "customs_value_of_vehicle": "Avtomobilin gömrük dəyəri ($)",
   "cylinder_block": "Silindirlər bloku",
   "cylinder_location": "Silindrlərin yerləşməsi",
   "cylinder_location_values": [
@@ -688,6 +690,8 @@ export default {
     "Qaz-turbin",
     "Plug-in Hibrid"
   ],
+  "engine_volume": "Mühərrikin işçi həcmi (sm3)",
+  "engine_type": "Mühərrikin növü",
   "enter_a_new_mobile_number": "Yeni əlaqə nömrəsi əlavə et",
   "enter_new_email": "Yeni e-mail ünvanı qeyd et",
   "enter_the_amount_in_azn": "Məbləği AZN ilə daxil et (min. {min} ₼)",
@@ -710,6 +714,7 @@ export default {
   "eservices": "E-xidmətlər",
   "excavators": "Ekskavatorlar",
   "exchange": "Barter",
+  "excise_tax": "Aksiz vergisi",
   "exhaust_class": "Tükənmə sinfi",
   "extend_package": "Paketi yenilə",
   "extend_subscription": "Abunəliyi yenilə",
@@ -747,6 +752,7 @@ export default {
   "first_sticker": "Birinci stiker",
   "Folding rear seat": "Qatlanan arxa oturacaq",
   "for_ads": "Reklam üçün",
+  "for_the_provision_of_electronic_customs_service": "Elektron gömrük xidmətinin göstərilməsinə görə",
   "forgot_your_password": "Şifrəni bərpa et",
   "forklift": "Özünü yükləyən yük maşınları",
   "form_rating": "Xarici görünüş",
@@ -914,6 +920,7 @@ export default {
   "hub": "Mərkəz",
   "Hub (DIA)": "təkər topu (DIA)",
   "hybrid": "Hibrid",
+  "hybrid_engine_type": "Hibrid mühərrikin növü",
   "if_you_do_not_have_an_account": "Hesabınız olmadığı halda",
   "if_you_have_an_account": "Hesabınız olduğu halda",
   "image": "Şəkil",
@@ -930,6 +937,7 @@ export default {
   "info_service_once_in_5_mins": "<strong>{service}</strong> servisi 5 dəqiqəden bir dəfə istifadə edilə bilər.",
   "injector": "İnjektor",
   "inspection_info": "Nəqliyyat vasitəsinin texniki baxışı haqqında məlumat",
+  "insure_against_car_accidents":"Avtomobil qəzalarından sığortalanın",
   "insurance_fee_of_vehicle": 'Avtomobilinizin sığorta haqqı',
   "insurance_info": "İcbari Sığorta hadisələri haqqında məlumat",
   "is_in_credit": "Kreditdədir",
@@ -1236,6 +1244,7 @@ export default {
   "only_official": "Ancaq rəsmi",
   "Opening trunk without hands": "Baqajın əlsiz açılması",
   "operating": "İşlək",
+  "operating_fee": "Əməliyyat haqqı",
   "oppozitnoe": "W-formatlı",
   "optional": "İstəklə",
   "options": "Təhcizatlar",
@@ -1438,6 +1447,7 @@ export default {
   "processing": "Prosesdədir",
   "prod_year": "Buraxılış ili",
   "production_year": "İstehsal ili",
+  "production_country": "Mənşə(istehsal) ölkəsi",
   "prod_years": "Buraxılış illəri",
   "product_code": "Məhsul kodu",
   "profile_image_saved_successfully": "Şəkil uğurla yadda saxlanıldı",
@@ -1636,6 +1646,7 @@ export default {
   "send": "Göndər",
   "send_a_letter_of_attorney": "Etibarnamə ver",
   "send_the_code": "Kodu göndər",
+  "sender_country": "Göndərən ölkə",
   "serial_number": "Seriya №",
   "series": "seriya",
   "server_error": "Sistem çöküb",
@@ -1913,7 +1924,10 @@ export default {
   "v-obraznoe": "V-formatlı",
   "variable": "Avtomat (Variator)",
   "variator": "Avtomat (Variator)",
+  "vat": "ƏDV",
+  "vat_for_the_provision_of_electronic_customs_services": "Elektron gömrük xidmətinin göstərilməsinə görə ƏDV",
   "vehicle_type": "Nəqliyyat növü",
+  "vehicle_type_2": "Nəqliyyat vasitəsinin növü",
   "Velour": "Velür",
   "vertical_position": "Şaquli",
   "video": "Video",
@@ -2051,6 +2065,7 @@ export default {
   "step_8_info_title": "Nəqliyyat vasitəsinə sərəncam verilməsinə dair etibarnamə - Etibarnamənin müddəti",
   "step_9_info_title": "Nəqliyyat vasitəsinə sərəncam verilməsinə dair etibarnamə - Əlavə məlumat",
   "step_10_info_title": "Nəqliyyat vasitəsinə sərəncam verilməsinə dair etibarnamə - Videoyazı",
+  "learn_customs_duty" : "Gömrük rüsumunu öyrənin",
   "letter_type_options": [
     "Nəqliyyat vasitəsindən istifadə edilməsinə dair etibarnamə",
     "Nəqliyyat vasitəsinə sərəncam verilməsinə dair etibarnamə"
@@ -2071,6 +2086,7 @@ export default {
   "letter_type": "Etibarnamənin növü",
   "license_serial_number": "Vəsiqənin seriya nömrəsi",
   "license_given_date": "Vəsiqənin verilmə tarixi",
+  "license_fee": "Vəsiqə haqqı",
   "id_serial_number": "Şəxsiyyət vəsiqəsinin seriya və nömrəsi",
   "id_fin_code": "Şəxsiyyət vəsiqəsinin FİN kodu",
   "id_expiry_date": "Şəxsiyyət vəsiqəsinin etibarlılıq müddəti",
@@ -2113,5 +2129,11 @@ export default {
   "rejected_attorney":"Qüvvədən düşüb",
   "download": "Yüklə",
   "trolleybus":"Trolleybuslar və tramvaylar",
-  "juridical_person": "Hüquqi şəxs"
+  "juridical_person": "Hüquqi şəxs",
+
+
+  "garage_services": "Qaraj xidmətləri",
+  
+
+
 }

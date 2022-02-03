@@ -21,7 +21,7 @@ export const MenusDataMixin = {
         { title: 'policy', route: '/policy', icon: 'policy', showOnCard: true }
       ];
     },
-
+    
     navbarMenus() {
       let announcementCategories = [
         { title: 'cars', route: '/cars', children: [{ title: 'car_plural', route: '/cars', icon: 'car-1' }] },
@@ -34,7 +34,7 @@ export const MenusDataMixin = {
         { icon: 'salons-tab', title: 'salons', route: '/salons' },
         { icon: 'shops-tab', title: 'shops', route: '/parts/shops' },
         { icon: 'catalog-tab', title: 'autocatalog', route: '/catalog' },
-        { icon: 'grey-attorney', title: 'eservices', route: '/e-services' },
+        { icon: 'globe', title: 'eservices', route: '/e-services' },
       ]
     },
 
@@ -63,6 +63,7 @@ export const MenusDataMixin = {
 
       let menus = [
         { title: 'garage', route: '/garage', icon: 'garage-tab', showOnCard: !this.isMobileBreakpoint },
+        { title: 'garage_services', route: '/garage-services', icon: 'garage-tab', showOnCard: !this.isMobileBreakpoint },
         { title: 'my_account', route: '/profile/settings', icon: 'user', showOnCard: this.isMobileBreakpoint },
         { title: 'my_announces', route: '/profile/announcements', icon: 'speaker', showOnCard: true },
         { title: 'balans', route: '/profile/balance', icon: 'wallet', showOnCard: true }
