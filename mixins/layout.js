@@ -15,10 +15,10 @@ export const LayoutMixin = {
     }
   },
   computed: {
-    ...mapGetters(['loading','messages','paidStatusData','hideFooter'])
+    ...mapGetters(['loading','messages','paidStatusData','hideFooter','notifications'])
   },
   methods: {
-    ...mapActions(['setLoading','setGridBreakpoint','getMessages','getFavorites','resetSellTokens','resetUserData','updatePaidStatus',
+    ...mapActions(['setLoading','setGridBreakpoint','getMessages','getNotifications','getFavorites','resetSellTokens','resetUserData','updatePaidStatus',
                    'getNotViewedSavedSearch','getNotViewedFavorites']),
 
     handleResize() {
@@ -72,6 +72,7 @@ export const LayoutMixin = {
     async getUserData() {
       if (!this.loggedIn) return;
       if (!this.messages.length) await this.getMessages();
+      if(!this.notifications.length) await this.getNotifications();
       await Promise.all([
         this.getNotViewedSavedSearch(),
         this.getNotViewedFavorites(),

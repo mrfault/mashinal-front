@@ -40,10 +40,11 @@ export const MenusDataMixin = {
 
     topbarMenus() {
       return [
-        { title: 'comparisons', route: '/comparison', icon: 'compare' },
+        //{ title: 'comparisons', route: '/comparison', icon: 'compare' },
         { title: 'favorites', route: '/profile/favorites', icon: 'star' },
         { title: 'templates', route: '/profile/templates', icon: 'template' },
-        { title: 'messages', route: '/profile/messages', icon: 'chat' }
+        { title: 'messages', route: '/profile/messages', icon: 'chat' },
+        { title: 'notifications', route: '/notifications', icon: 'bell' },
       ];
     },
 

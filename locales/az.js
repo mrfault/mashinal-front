@@ -2130,10 +2130,8 @@ export default {
   "download": "Yüklə",
   "trolleybus":"Trolleybuslar və tramvaylar",
   "juridical_person": "Hüquqi şəxs",
-
-
   "garage_services": "Qaraj xidmətləri",
-  
-
+  "notifications":"Bildirişlər",
+  "notification":"Bildiriş"
 
 }

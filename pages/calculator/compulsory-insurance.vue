@@ -149,6 +149,17 @@ import { mapGetters } from 'vuex'
 import { required, requiredIf } from 'vuelidate/lib/validators'
 
 export default {
+  nuxtI18n: {
+    paths: {
+      az: '/icbari-sigorta-kalkulatoru'
+    }
+  },
+  head() {
+    return this.$headMeta({
+      title: this.$t('compulsory_insurance_calculator'),
+      description: this.$t('compulsory_insurance_calculator')
+    });
+  },
   validations: {
     filled: {
       vehicleType: { required },

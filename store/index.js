@@ -20,6 +20,7 @@ const getInitialState = () => ({
   notViewedFavorites: 0,
   // messages
   messages: [],
+  notifications:[],
   suggestedMessages: [],
   // services
   services: [],
@@ -142,6 +143,7 @@ export const getters = {
   notViewedFavorites: s => s.notViewedFavorites,
   // profile
   messages: s => s.messages,
+  notifications: s => s.notifications,
   messagesByGroup: s => id => s.messages.find(group => group.id == id),
   messagesByDate: s => id => {
     let messages = s.messages.find(group => group.id == id).messages;
@@ -151,6 +153,7 @@ export const getters = {
   countNewMessages: s => s.messages.filter((group) => {
     return group.last_message && !group.last_message.is_read && (group.last_message.sender_id != s.auth.user.id);
   }).length,
+  countNewNotifications: s => s.notifications.filter(item => !item.read_at).length,
   // services
   services: s => s.services,
   actives: s => s.actives,
@@ -317,6 +320,11 @@ export const actions = {
   },
   setPageRef({ commit }, path) {
     commit('mutate', { property: 'pageRef', value: path });
+  },
+
+  async getNotifications({ commit }) {
+    const { data } = await this.$axios.$get('/notifications')
+    commit('mutate', { property: 'notifications', value: data });
   },
   // Messages
   async getMessages({ commit, state }, groupId) {
