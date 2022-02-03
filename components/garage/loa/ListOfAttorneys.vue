@@ -12,7 +12,7 @@
             class="attorney-date"
             :class="{ 'title-with-line': !isMobileBreakpoint }"
           >
-            <span>Qeydiyyat tarixi: {{ attorney.formatted_created_at }}</span>
+            <span>{{ $t('auth_date') }}: {{ attorney.formatted_created_at }}</span>
           </h2>
           <span class="attorney-checked" :class="getStatus(attorney.status)">
             <icon :name="['wall-clock', 'check', 'cross'][attorney.status]" />
@@ -23,15 +23,19 @@
           </span>
         </div>
         <div class="attorney-info-wrapper">
-          <div class="attorney-info">
+          <div class="attorney-info" style="flex-grow: 1">
             <span class="model-title">{{ $t('car_number') }}</span>
             <span>{{ attorney.car_number }}</span>
           </div>
-          <div class="attorney-info">
+          <div class="attorney-info" style="flex-grow: 2">
             <span class="model-title">{{ $t('letter_type') }}</span>
             <span>{{ $t('letter_type_options')[attorney.type - 1] }}</span>
           </div>
+<<<<<<< HEAD
           <div class="button-container">
+=======
+          <div style="flex-grow: 1;text-align: right">
+>>>>>>> df06f0a75cdd315b9a3ef4ff98e6c2e9183dfb56
             <button
               v-if="attorney.status === 1"
               class="btn btn--red-outline mr-1"

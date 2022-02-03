@@ -84,7 +84,7 @@
 
           this.pending = false;
           this.$nuxt.$emit('login', true);
-
+          this.updateStep(1)
           // move to login
           // if (this.skipSignIn) {
           //   this.$auth.loginWith('local', {

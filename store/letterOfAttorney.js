@@ -118,6 +118,7 @@ export const actions = {
     const res = await this.$axios.$post(`/attorney/check_user_access`, {
       idFinCode: stepSendData.idFinCode,
       idSerialNumber: stepSendData.idSerialNumber,
+      car_number: stepSendData.carNumber.replace(/-|[ ]/g, ''),
       garageId: stepSendData.garageId,
       letterType: stepSendData.letterType
     });
@@ -161,6 +162,7 @@ export const actions = {
   async checkVehicleLicense({ dispatch, state: { stepSendData } }) {
     const res = await this.$axios.$post(`/attorney/check_vehicle_license`, {
       garageId: stepSendData.garageId,
+      car_number: stepSendData.carNumber.replace(/-|[ ]/g, ''),
       vehicleIdNumber: stepSendData.vehicleIdNumber,
       vehicleIdGivenDate: stepSendData.vehicleIdGivenDate
     });
@@ -169,6 +171,7 @@ export const actions = {
   async checkAllData({ dispatch, state: { stepSendData, stepReceivedData } }, data) {
     let checkData = {
       garage_id: stepSendData.garageId,
+      car_number: stepSendData.carNumber.replace(/-|[ ]/g, ''),
       idFinCode: stepSendData.idFinCode,
       idSerialNumber: stepSendData.idSerialNumber,
       driverLicenseNumber: stepSendData.driverLicenseNumber,
