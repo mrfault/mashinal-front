@@ -7,7 +7,7 @@
             <img :src="user.image || `/img/user.${isDarkMode ? 'jpg' : 'svg'}`" alt="" />
           </div>
           <h4>
-            <span :class="{'empty': !user.name}" 
+            <span :class="{'empty': !user.name}"
               v-html="user.name ? `${user.name}<br/>${user.fatherName}` : '----- ---'">
             </span>
           </h4>
@@ -79,22 +79,24 @@ export default {
 
     users() {
       return [
-        { 
-          name: this.stepReceivedData.senderFullName, 
-          fatherName: this.stepReceivedData.senderFatherName , 
-          image: this.stepReceivedData.senderImage 
-        }, 
-        { 
-          name: this.stepReceivedData.recepientFullName, 
-          fatherName: this.stepReceivedData.recepientFatherName , 
-          image: this.stepReceivedData.recepientImage 
+        {
+          name: this.stepReceivedData.senderFullName,
+          fatherName: this.stepReceivedData.senderFatherName ,
+          image: this.stepReceivedData.senderImage
+        },
+        {
+          name: this.stepReceivedData.recepientFullName,
+          fatherName: this.stepReceivedData.recepientFatherName ,
+          image: this.stepReceivedData.recepientImage
         }
       ];
     },
     specs() {
       let specs = [{}, {}, {}];
-      specs[0].vehicle_id_mark = this.car.mark;
-      specs[0].vehicle_id_sign = this.car.car_number.replace(/([A-Z]{1,2})/, ' $1 ');
+      if(this.car) {
+        specs[0].vehicle_id_mark = this.car.mark;
+        specs[0].vehicle_id_sign = this.car.car_number.replace(/([A-Z]{1,2})/, ' $1 ');
+      }
       if (this.currentRealStep > 1) {
         specs[0].letter_type = this.$t('letter_type_options')[this.stepSendData.letterType - 1];
         if (this.currentRealStep > 2) {
@@ -129,6 +131,7 @@ export default {
     ...mapActions('letterOfAttorney', ['updateSendData'])
   },
   created() {
+    if(this.car)
     this.updateSendData([
       { key: 'garageId', value: this.car.id },
       { key: 'carNumber', value: this.car.car_number }

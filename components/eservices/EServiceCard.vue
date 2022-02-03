@@ -17,10 +17,10 @@
     </div>
     <div class="e-service__actions">
       <span class="e-service__actions--left">
-        <nuxt-link to="#" v-if="item.hasAction">Etibarnamə ver</nuxt-link>
+        <letter-of-attorney-button href="#" tag="a" classes=""  v-if="item.hasAction"/>
       </span>
       <nuxt-link :to="item.url" class="e-service__actions--right">
-        Ətraflı
+        {{ $t('detail') }}
         <icon name="chevron-right" />
       </nuxt-link>
     </div>
@@ -28,8 +28,10 @@
 </template>
 
 <script>
+import LetterOfAttorneyButton from "~/components/garage/loa/LetterOfAttorneyButton";
 export default {
-    props:{
+  components: {LetterOfAttorneyButton},
+  props:{
         item: Object
     }
 }
