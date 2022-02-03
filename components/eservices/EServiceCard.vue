@@ -19,7 +19,7 @@
       <span class="e-service__actions--left">
         <nuxt-link to="#" v-if="item.hasAction">Etibarnamə ver</nuxt-link>
       </span>
-      <nuxt-link :to="item.url" class="e-service__actions--right">
+      <nuxt-link :to="$localePath(item.url)" class="e-service__actions--right">
         Ətraflı
         <icon name="chevron-right" />
       </nuxt-link>

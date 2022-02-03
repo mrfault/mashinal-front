@@ -30,7 +30,7 @@ export const MenusDataMixin = {
         { title: 'parts', route: '/parts', children: this.partsSubMenus },
       ]
       return [
-        { icon: 'announce-tab', title: 'announcements', route: '/cars', children: [], categories: announcementCategories },
+        { icon: 'speaker', title: 'announcements', route: '/cars', children: [], categories: announcementCategories },
         { icon: 'salons-tab', title: 'salons', route: '/salons' },
         { icon: 'shops-tab', title: 'shops', route: '/parts/shops' },
         { icon: 'catalog-tab', title: 'autocatalog', route: '/catalog' },
@@ -63,21 +63,15 @@ export const MenusDataMixin = {
       if (!this.loggedIn) return [];
 
       let menus = [
-        { title: 'garage', route: '/garage', icon: 'garage-tab', showOnCard: !this.isMobileBreakpoint },
-        { title: 'garage_services', route: '/garage-services', icon: 'garage-tab', showOnCard: !this.isMobileBreakpoint },
+        { title: 'garage', route: '/garage-services', icon: 'garage-tab', showOnCard: !this.isMobileBreakpoint },
         { title: 'my_account', route: '/profile/settings', icon: 'user', showOnCard: this.isMobileBreakpoint },
         { title: 'my_announces', route: '/profile/announcements', icon: 'speaker', showOnCard: true },
         { title: 'balans', route: '/profile/balance', icon: 'wallet', showOnCard: true }
       ];
 
-      if (this.user.autosalon)
-        menus.push({ title: 'dashboard_salon', route: '/dashboard/1', icon: 'salons-tab', showOnCard: true });
-      if (this.user.part_salon)
-        menus.push({ title: 'dashboard_shop', route: '/dashboard/2', icon: 'shops-tab', showOnCard: true });
       if (this.isMobileBreakpoint)
         menus.push(this.pageMenus.find(menu => menu.title === 'policy'));
-
-
+        
       return menus;
     },
 
