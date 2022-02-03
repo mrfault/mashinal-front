@@ -10,10 +10,10 @@
     <div class="card-bordered_scrollview card">
       <div class="vehicle-specs">
         <div class="row">
-          <div class="col col-12">
+          <div class="col col-12 custom-col-12">
             <ul>
               <nuxt-link :to="getRoutePath(item)" class="cursor-pointer" tag="li" v-for="item in notifications" :key="item.id">
-                <span class="wider notification-info">
+               <i v-show="!item.read_at" class="new-notification-dot"></i> <span class="wider notification-info">
                   <span style="margin-bottom: 5px;white-space: nowrap;">{{ $t(item.title) }}</span>
                   <span>{{ item.body }}</span>
                 </span>
@@ -29,7 +29,15 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+import {LayoutMixin} from "~/mixins/layout";
+
 export default {
+  async fetch({ store }) {
+    if(!store.state.notifications.length)
+      await store.dispatch('getNotifications')
+  },
+  mixins: [LayoutMixin],
   nuxtI18n: {
     paths: {
       az: '/bildirishler'
@@ -42,12 +50,8 @@ export default {
       description: this.$t('notifications')
     });
   },
-  async asyncData({ $axios }) {
-    const { data } = await $axios.$get('/notifications')
-
-    return {
-      notifications: data
-    }
+  created() {
+    this.getUserData();
   },
   methods:{
     getAnnounceTypePath(type) {
@@ -84,6 +88,7 @@ export default {
   },
 
   computed: {
+    ...mapGetters(['notifications']),
     crumbs() {
       return [{name: this.$t('notifications')}]
     },
@@ -92,6 +97,19 @@ export default {
 </script>
 
 <style scoped>
+.new-notification-dot {
+  display: block;
+  width: 5px;
+  height: 5px;
+  background: #F81734;
+  border-radius: 50%;
+  margin-right: 7px;
+  margin-left: 3px;
+  margin-bottom: 24px;
+}
+.custom-col-12 {
+  padding: 0px 28px 0px 10px;
+}
 .notification-info {
   display: flex;
   flex-direction: column;
