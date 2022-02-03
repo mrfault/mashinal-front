@@ -2,8 +2,9 @@
   <div class="pages-dashboard pt-2 pt-lg-5">
     <div class="container d-flex flex-wrap">
       <template  v-for="(item,index) in tabs" >
-        <div class="col-lg-3 mb-2 mb-lg-3" :key="index" v-if="item.isAvailable">
+        <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-2 mb-lg-3" :key="index" v-if="item.isAvailable">
           <e-service-card :item="item"></e-service-card>
+          
         </div>
       </template>
     </div>
@@ -23,7 +24,7 @@ export default {
           title: "Etibarnamə",
           description: 'Etibarnamələrin sayı:',
           value: 0,
-          icon: "grey-attorney",
+          icon: "stamp-rotated",
           url: "/asd",
           hasAction: true,
           image: 'etibarname',
@@ -33,7 +34,7 @@ export default {
           title: "Gömrük rüsumu kalkulyatoru",
           description: 'Dolların məzənnəsi:',
           value: '1 $ = 1.7₼',
-          icon: "grey-Customs-Officer",
+          icon: "customs-calculator-police",
           url: "/calculator/customs",
           hasAction: false,
           image: 'customs',
@@ -43,17 +44,18 @@ export default {
           title: "İcbari sığorta kalkulyatoru",
           description: null,
           value: null,
-          icon: "grey-insurance-icon",
+          icon: "compulsory-insurance-calculator",
           url: "/calculator/compulsory-insurance",
           hasAction: false,
           image: 'insurance',
           isAvailable: true
         },
+        // icon
         {
           title: "Kasko sığorta kalkulyatoru",
           description: null,
           value: null,
-          icon: "grey-calculator",
+          icon: "",
           url: "/insurance-calculator",
           hasAction: false,
           image: 'casco',
@@ -63,7 +65,7 @@ export default {
           title: "Bal yoxla",
           description: null,
           value: null,
-          icon: "grey-check",
+          icon: "receipe-manat",
           url: "/check-penalty",
           hasAction: false,
           image: 'check-penalty',
@@ -73,7 +75,7 @@ export default {
           title: "Super təklif",
           description: null,
           value: null,
-          icon: "grey-hammer",
+          icon: "hammer",
           url: "/super-offers",
           hasAction: false,
           image: 'super-offer',
@@ -83,7 +85,7 @@ export default {
           title: "Bələdçi",
           description: null,
           value: null,
-          icon: "grey-guide-icon",
+          icon: "helper-tab",
           url: "/insurance-calculator",
           hasAction: false,
           image: 'guide',
@@ -93,7 +95,7 @@ export default {
           title: "Axtarış şablonları",
           description: null,
           value: null,
-          icon: "grey-calculator",
+          icon: "template",
           url: "/insurance-calculator",
           hasAction: false,
           image: 'search',
@@ -103,7 +105,7 @@ export default {
           title: "Cərimələr",
           description: null,
           value: null,
-          icon: "grey-penalty",
+          icon: "receipe",
           url: "/insurance-calculator",
           hasAction: false,
           image: 'penalties',

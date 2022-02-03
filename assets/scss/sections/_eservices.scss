@@ -64,3 +64,38 @@
     }
   }
 }
+
+
+.dark-mode{
+  .e-service {
+    background: $dark-2;
+    &__header {
+      &--title {
+        color: #fff;
+      }
+      &--icon {
+        color: $grey-1;
+      }
+    }
+    &__body {
+      &--description {
+        .key {
+          color: #fff
+        }
+        .value {
+          color: #fff;
+        }
+      }
+    }
+    &__actions {
+      &--left {
+        a {
+          color: #fff;
+        }
+      }
+      &--right{
+          color: #fff;
+      }
+    }
+  }
+}
