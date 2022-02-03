@@ -58,7 +58,7 @@
           </ul>
           <nuxt-link custom :to="getUserSettingsLink" v-slot="{ navigate }">
             <div class="user-menu btn rotatable_hover" @click="navigate">
-              <icon name="garage-new"/>
+              <icon name="garage-tab"/>
                {{ $t('garage') }}
               <icon name="chevron-down rotatable" class=""/>
               <div class="user-menu_list" v-if="loggedIn" @click.stop>

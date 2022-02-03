@@ -1,13 +1,13 @@
 <template>
   <div class="container">
     <breadcrumbs :crumbs="crumbs" />
-    <div class="card d-flex justify-content-between mb-2" style="padding:20px 25px">
+    <div v-if="notifications.length" class="card d-flex justify-content-between mb-2" style="padding:20px 25px">
       <div style="font-size: 15px;">{{ $t('notification') }}</div>
       <div class="d-flex justify-content-between">
         <div style="font-size: 15px;margin-right: 70px;">{{ $t('date') }}</div>
       </div>
     </div>
-    <div class="card-bordered_scrollview card">
+    <div v-if="notifications.length" class="card-bordered_scrollview card">
       <div class="vehicle-specs">
         <div class="row">
           <div class="col col-12 custom-col-12">
@@ -25,16 +25,24 @@
         </div>
       </div>
     </div>
+    <div v-else>
+      <not-found img-src="/img/notification_icon.png" textClass="text-black" :text="$t('notification_not_found')">
+        <nuxt-link class="btn btn--green" :to="$localePath('/')">
+          <icon name="arrow-left" /> {{ $t('back_to_home') }}
+        </nuxt-link>
+      </not-found>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
 import {LayoutMixin} from "~/mixins/layout";
+import NotFound from "~/components/elements/NotFound";
 
 export default {
+  components: {NotFound},
   async fetch({ store }) {
-    if(!store.state.notifications.length)
       await store.dispatch('getNotifications')
   },
   mixins: [LayoutMixin],
@@ -49,9 +57,6 @@ export default {
       title: this.$t('notifications'),
       description: this.$t('notifications')
     });
-  },
-  created() {
-    this.getUserData();
   },
   methods:{
     getAnnounceTypePath(type) {
