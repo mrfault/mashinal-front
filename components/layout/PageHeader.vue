@@ -44,6 +44,9 @@
                 <template v-if="menu.title === 'messages' && countNewMessages > 0">
                   <span class="badge-counter">{{ countNewMessages }}</span>
                 </template>
+                <template v-if="menu.title === 'notifications' && countNewNotifications > 0">
+                  <span class="badge-counter">{{ countNewNotifications }}</span>
+                </template>
                 <template v-else-if="menu.title === 'favorites' && notViewedFavorites > 0">
                   <span class="badge-counter">{{ notViewedFavorites }}</span>
                 </template>

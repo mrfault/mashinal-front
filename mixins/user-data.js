@@ -2,7 +2,7 @@ import { mapGetters } from 'vuex';
 
 export const UserDataMixin = {
   computed: {
-    ...mapGetters(['countNewMessages']),
+    ...mapGetters(['countNewMessages','countNewNotifications']),
 
     getUserAvatar() {
       if (!this.loggedIn) return undefined;
