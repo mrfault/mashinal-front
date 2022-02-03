@@ -2141,5 +2141,7 @@ export default {
   "empty_garage_part_3": "3. Ödəniş etməlisiniz ki, qaraja avtomobil əlavə edə biləsiniz. Biz evdən çıxmadan cəmi bir saat ərzində eksklüziv ucuz qiymətə yeni avtomobil almağa imkan verən innovativ onlayn sistem yaratdıq. ",
   "rules_of_giving_attorney": "Etibarnamə verməyin şərtləri",
   "no_attorneys_found" : "Etibarnamə yoxdur",
+  "attorney": "Etibarnamə",
+  "attorney_count": "Etibarnamələrin sayı:"
 
 }
