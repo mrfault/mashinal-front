@@ -2150,4 +2150,7 @@ export default {
   "not_selected": "Seçilməyib",
   "vehicle_owner":"vehicleOwner",
   "engine_volume2":"Mühərrikin həcmi",
+  "last_one_week":"Son 1 həftə",
+  "last_month":"Son 1 ay",
+  "last_6_month":"Son 6 ay"
 }

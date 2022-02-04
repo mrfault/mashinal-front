@@ -2125,5 +2125,9 @@ export default {
     "rejected_attorney":"Отклонено",
     "approved":"Принято",
     "disable_attorney":"Остановить",
-    "notification":"Уведомления"
+    "notification":"Уведомления",
+    "last_one_week":"За неделю",
+    "last_month":"За месяц",
+    "last_6_month":"За полгода"
+
 }

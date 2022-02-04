@@ -11,6 +11,9 @@ export default {
       type: Boolean,
       default: true
     },
+    type: {
+      default: 0
+    },
     getter: String,
     getterB: String,
     action: String,
@@ -41,12 +44,13 @@ export default {
         let prevResB = this.$store.getters[this.getterB];
         let contentBNotLoaded = (this.pageB === 1) || (prevResB.next_page_url && (prevResB.total !== prevResB.to));
         usePlanB = contentBNotLoaded && this.page === this.pageB;
-      } 
+      }
       if (!this.loading && this.condition && contentNotLoaded && isTimeToScroll) {
         this.loading = true;
         try {
           await this.$store.dispatch((usePlanB ? this.actionB : this.action), {
-            ...this.actionData, page: usePlanB ? this.pageB : (this.page + 1)
+            ...this.actionData, page: usePlanB ? this.pageB : (this.page + 1),
+            type: this.type
           });
           let newRes = this.$store.getters[usePlanB ? this.getterB : this.getter];
           if (!usePlanB || newRes.data.length % this.perPageB === 0) this.mutate({ property: this.getter, key: 'data', value: [...prevRes.data, ...newRes.data] });

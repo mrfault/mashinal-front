@@ -66,25 +66,25 @@
                       @click="filterHistory(0)"
                       :class="{ 'btn--dark-blue-2': activeFilter === 0, 'btn--dark-blue-2-outline': activeFilter !==0 }"
                       class="btn btn-custom-border mr-2">
-                      Bütün
+                      {{ $t('all') }}
                     </button>
                     <button
                       @click="filterHistory(1)"
                       :class="{ 'btn--dark-blue-2': activeFilter === 1, 'btn--dark-blue-2-outline': activeFilter !==1 }"
                       class="btn btn-custom-border mr-2">
-                      Son 1 həftə
+                      {{ $t('last_one_week') }}
                     </button>
                     <button
                       @click="filterHistory(2)"
                       :class="{ 'btn--dark-blue-2': activeFilter === 2, 'btn--dark-blue-2-outline': activeFilter !==2 }"
                       class="btn btn-custom-border mr-2">
-                      Son 1 ay
+                      {{ $t('last_month') }}
                     </button>
                     <button
                       @click="filterHistory(3)"
                       :class="{ 'btn--dark-blue-2': activeFilter === 3, 'btn--dark-blue-2-outline': activeFilter !==3 }"
                       class="btn btn-custom-border">
-                      Son 6 ay
+                      {{ $t('last_6_month') }}
                     </button>
                   </div>
                 </template>
@@ -107,6 +107,7 @@
             </div>
           </div>
           <infinite-loading
+            :type="activeFilter"
             action="getMyBalanceHistory"
             getter="myBalanceHistory"
             class-name="mt-3 mt-lg-4"
