@@ -15,9 +15,17 @@
 import EServiceCard from '~/components/eservices/EServiceCard.vue'
 export default {
   components: { EServiceCard },
-  data() {
-    return {
-      garageServices: [
+  head() {
+    return this.$headMeta({
+      title: this.$t('garage_services'),
+    })
+  },
+  computed: {
+    crumbs() {
+      return [{ name: this.$t('garage_services') }]
+    },
+    garageServices() {
+      return [
         {
           title: this.$t('attorney'),
           description: this.$t('attorney_count'),
@@ -141,7 +149,7 @@ export default {
           url: '/dashboard/1',
           hasAction: false,
           image: 'saloon-dashboard',
-          isAvailable: true,
+          isAvailable: !!this.$auth.user.autosalon,
         },
         {
           title: this.$t('dashboard_shop'),
@@ -151,20 +159,10 @@ export default {
           url: '/dashboard/2',
           hasAction: false,
           image: 'shop-dashboard',
-          isAvailable: true,
+          isAvailable: !!this.$auth.user.part_salon,
         },
-      ],
+      ]
     }
-  },
-  head() {
-    return this.$headMeta({
-      title: this.$t('garage_services'),
-    })
-  },
-  computed: {
-    crumbs() {
-      return [{ name: this.$t('garage_services') }]
-    },
   },
   nuxtI18n: {
     paths: {

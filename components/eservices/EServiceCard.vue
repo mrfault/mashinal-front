@@ -12,7 +12,7 @@
       </div>
       <div class="e-service__body--description" v-if="item.description">
         <p class="key">{{ item.description }}</p>
-        <span class="value" v-if="item.value">{{ item.value }}</span>
+        <span class="value" >{{ item.value }}</span>
       </div>
       <div class="e-service__body--description" v-if="item.isContract">
         <p class="key">

@@ -34,7 +34,7 @@
               </div>
             </div>
           </dashboard-card>
-        </div> 
+        </div>
         <modal-popup
           :toggle="showPaymentModal"
           :title="$t('extend_subscription')"
@@ -123,6 +123,78 @@ export default {
   computed: {
     ...mapGetters(['messages']),
 
+    cards() {
+      let type = this.$route.params.type
+      let balance = type == 1 ?  this.$auth.user.autosalon.balance : this.$auth.user.part_salon.balance;
+      let package_name = type == 1 ? this.$auth.user.autosalon?.current_package?.name[this.locale] : this.$auth.user.part_salon?.current_package?.name[this.locale]
+      return [
+          {
+            key: 'announcements',
+            title: `${this.$t('my_announces')}`,
+            url: '/profile/announcements?type=' + type,
+            icon: 'photo',
+            image: 'announcement',
+            hasAction: true,
+            actionName: `${this.$t('place_an_ad')}`,
+            actionLink: '/sell',
+          },
+          {
+            key: 'balance',
+            title: `${this.$t('balans')}`,
+            url: '/profile/balance',
+            icon: 'wallet',
+            image: 'wallet',
+            hasAction: true,
+            actionName: `${this.$t('replenish')}`,
+            actionLink: '/asd',
+            description: `${this.$t('balance_of_wallet')}`,
+            value: `${balance} ALManat`,
+          },
+          {
+            key: 'statistics',
+            title: `${this.$t('statistics')}`,
+            url: '/dashboard/' + type + '/statistics',
+            icon: 'analytics',
+            image: 'pie-chart',
+          },
+          {
+            key: 'messages',
+            title: `${this.$t('messages')}`,
+            url: '/profile/messages',
+            icon: 'chat',
+            image: 'messages',
+            isMessage: true,
+            messageCounts:[this.myAnnouncementStats.message_count,this.myAnnouncementStats.message_count_not_read]
+          },
+          {
+            key: 'calls',
+            title: `${this.$t('phone_call_count')}`,
+            url: '/dashboard/' + type + '/calls',
+            icon: 'phone',
+            image: 'phone',
+            description: `${this.$t('transition_count_to_number')}`,
+            value: this.myAnnouncementStats.call_count,
+          },
+          {
+            key: 'salon',
+            title: `${this.$t('my_profile')}`,
+            url: '/dashboard/' + type + '/settings',
+            icon: 'user',
+            image: 'account',
+            description: `${this.$t('salon')} “${this.salonDetails.name}”`
+          },
+          {
+            key: 'contract',
+            title: `${this.$t('contract')}`,
+            url: '/business-profile?type=' + type,
+            icon: 'calendar-1',
+            image: 'calendar',
+            isContract: true,
+            contractName: package_name,
+            contractEndDate: this.myAnnouncementStats.agreement_end_date
+          },
+        ]
+    },
     crumbs() {
       return [{ name: this.$t('dashboard') }]
     },
@@ -197,81 +269,10 @@ export default {
       }
     },
   },
-  data() {
-    let type = this.$route.params.type
-    return {
-      cards: [
-        {
-          key: 'announcements',
-          title: `${this.$t('my_announces')}`,
-          url: '/profile/announcements?type=' + type,
-          icon: 'photo',
-          image: 'announcement',
-          hasAction: true,
-          actionName: `${this.$t('place_an_ad')}`,
-          actionLink: '/sell',
-        },
-        {
-          key: 'balance',
-          title: `${this.$t('balans')}`,
-          url: '/profile/balance',
-          icon: 'wallet',
-          image: 'wallet',
-          hasAction: true,
-          actionName: `${this.$t('replenish')}`,
-          actionLink: '/asd',
-          description: `${this.$t('balance_of_wallet')}`,
-          value: `${this.$auth.user.autosalon.balance} ALManat`,
-        },
-        {
-          key: 'statistics',
-          title: `${this.$t('statistics')}`,
-          url: '/dashboard/' + type + '/statistics',
-          icon: 'analytics',
-          image: 'pie-chart',
-        },
-        {
-          key: 'messages',
-          title: `${this.$t('messages')}`,
-          url: '/profile/messages',
-          icon: 'chat',
-          image: 'messages',
-          isMessage: true,
-          messageCounts:[2,1]
-        },
-        {
-          key: 'calls',
-          title: `${this.$t('phone_call_count')}`,
-          url: '/dashboard/' + type + '/calls',
-          icon: 'phone',
-          image: 'phone',
-          description: `${this.$t('transition_count_to_number')}`,
-          value: "20",
-        },
-        {
-          key: 'salon',
-          title: `${this.$t('my_profile')}`,
-          url: '/dashboard/' + type + '/settings',
-          icon: 'user',
-          image: 'account',
-          description: `${this.$t('salon')} “${this.salonDetails}”`
-        },
-        {
-          key: 'contract',
-          title: `${this.$t('contract')}`,
-          url: '/business-profile?type=' + type,
-          icon: 'calendar-1',
-          image: 'calendar',
-          isContract: true,
-          contractName: `${this.$t('bronze')}`,
-          contractEndDate: "20.02.2020"
-        },
-      ],
-    }
-  },
   created(){
     console.log(this.$auth);
   }
+
 
 }
 </script>
