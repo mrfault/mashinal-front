@@ -42,7 +42,7 @@ export default {
           description: null,
           value: null,
           icon: 'receipe-manat',
-          url: '/check-penalty',
+          url: '/check-driver-penalties',
           hasAction: false,
           image: 'check-penalty',
           isAvailable: true,
@@ -66,7 +66,7 @@ export default {
           icon: 'user',
           url: '/profile/settings',
           hasAction: false,
-          image: 'super-offer',
+          image: 'account',
           isAvailable: true,
         },
         {

@@ -30,7 +30,7 @@ export const MenusDataMixin = {
         { title: 'parts', route: '/parts', children: this.partsSubMenus },
       ]
       return [
-        { icon: 'speaker', title: 'announcements', route: '/cars', children: [], categories: announcementCategories },
+        { icon: 'car-manat', title: 'announcements', route: '/cars', children: [], categories: announcementCategories },
         { icon: 'salons-tab', title: 'salons', route: '/salons' },
         { icon: 'shops-tab', title: 'shops', route: '/parts/shops' },
         { icon: 'catalog-tab', title: 'autocatalog', route: '/catalog' },
@@ -65,8 +65,8 @@ export const MenusDataMixin = {
       let menus = [
         { title: 'garage', route: '/garage-services', icon: 'garage-tab', showOnCard: !this.isMobileBreakpoint },
         { title: 'my_account', route: '/profile/settings', icon: 'user', showOnCard: this.isMobileBreakpoint },
-        { title: 'my_announces', route: '/profile/announcements', icon: 'speaker', showOnCard: true },
-        { title: 'balans', route: '/profile/balance', icon: 'wallet', showOnCard: true }
+        // { title: 'my_announces', route: '/profile/announcements', icon: 'speaker', showOnCard: true },
+        // { title: 'balans', route: '/profile/balance', icon: 'wallet', showOnCard: true }
       ];
 
       if (this.isMobileBreakpoint)
@@ -81,6 +81,7 @@ export const MenusDataMixin = {
         { title: 'salons', route: '/salons', icon: 'salons-tab' },
         { title: 'shops', route: '/parts/shops', icon: 'shops-tab' },
         { title: 'autocatalog', route: '/catalog', icon: 'catalog-tab' },
+        { title: 'eservices', route: '/e-services', icon: 'globe' },
         { title: 'favorites', route: '/profile/favorites', icon: 'favorites-tab' },
         { title: 'comparisons', route: '/comparison', icon: 'compare' },
         { title: 'my_searches', route: '/profile/templates', icon: 'template', auth: true },
