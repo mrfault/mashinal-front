@@ -5,7 +5,7 @@
     </breadcrumbs>
     <div class="calculator">
       <div class="row">
-        <div class="col-12 col-md-6 col-lg-4">
+        <div class="col-12 col-md-12 col-lg-4">
           <div class="calculator__inputs">
             <h4 class="calculator__inputs--heading">
               {{ $t('compulsory_insurance_calculator') }}
@@ -68,11 +68,11 @@
             </div>
           </div>
         </div>
-        <div class="col-12 col-md-6 col-lg-8" v-if="resultPrice">
+        <div class="col-12 col-md-12 col-lg-8" v-if="resultPrice">
           <div class="calculator__results">
             <div class="calculator__results--heading">
               <h3>{{ $t('insurance_fee_of_vehicle') }}</h3>
-              <h4>{{ resultPrice }} ₼</h4>
+              <h4 class="w-100 w-lg-auto">{{ resultPrice }} ₼</h4>
               <div class="label">{{ $t('buy_insurance_with_credit') }}</div>
               <span class="label-flip"></span>
             </div>
@@ -132,7 +132,7 @@
             </div>
           </div>
         </div>
-        <div class="col-12 col-md-6 col-lg-8" v-else>
+        <div class="col-12 col-md-12 col-lg-8" v-else>
           <div class="calculator__empty-results">
             <div class="calculator__empty-results--image">
               <img src="/images/insurance-empty-result.png" alt="image" />
@@ -241,6 +241,9 @@ export default {
       } catch (e) {}
     },
   },
+  created(){
+    console.log("---------/-/-/-/-/-",this);
+  }
 }
 </script>
 

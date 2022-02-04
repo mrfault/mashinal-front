@@ -2148,7 +2148,7 @@ export default {
   "end_time_of_package" : "paketinin bitmə vaxtı:",
   "casco_insurance_calculator" : "Kasko sığorta kalkulyatoru",
   "not_selected": "Seçilməyib",
-  "vehicle_owner":"vehicleOwner",
+  "vehicle_owner":"Nəqliyyat vasitəsinin sahibi",
   "engine_volume2":"Mühərrikin həcmi",
   "check_penalty": "Bal yoxla",
   "last_one_week":"Son 1 həftə",
