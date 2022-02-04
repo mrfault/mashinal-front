@@ -1,12 +1,12 @@
 <template>
   <div class="pages-dashboard pt-2 pt-lg-5">
     <div class="container d-flex flex-wrap">
-      <template  v-for="(item,index) in garageServices" >
+      <breadcrumbs :crumbs="crumbs" />
+      <template v-for="(item, index) in garageServices">
         <div class="col-lg-3 mb-2 mb-lg-3" :key="index" v-if="item.isAvailable">
           <e-service-card :item="item"></e-service-card>
         </div>
       </template>
-
     </div>
   </div>
 </template>
@@ -30,7 +30,7 @@ export default {
           isAvailable: true,
         },
         {
-          title: this.$t("check_points"),
+          title: this.$t('check_points'),
           description: null,
           value: null,
           icon: 'receipe-manat',
@@ -71,7 +71,7 @@ export default {
         },
         {
           title: this.$t('balans'),
-          description: this.$t('wallet_balance')+':',
+          description: this.$t('wallet_balance') + ':',
           value: this.$auth.user.balance + ' ALManat',
           icon: 'wallet',
           url: '/profile/balance',
@@ -151,6 +151,21 @@ export default {
         },
       ],
     }
+  },
+  head() {
+    return this.$headMeta({
+      title: this.$t('garage_services'),
+    })
+  },
+  computed: {
+    crumbs() {
+      return [{ name: this.$t('garage_services') }]
+    },
+  },
+  nuxtI18n: {
+    paths: {
+      az: '/qaraj-xidmetleri',
+    },
   },
 }
 </script>

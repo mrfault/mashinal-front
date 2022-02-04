@@ -34,7 +34,7 @@
               </div>
             </div>
           </dashboard-card>
-        </div>
+        </div> 
         <modal-popup
           :toggle="showPaymentModal"
           :title="$t('extend_subscription')"
@@ -198,62 +198,80 @@ export default {
     },
   },
   data() {
-    let type = this.$route.params.type;
+    let type = this.$route.params.type
     return {
       cards: [
-          {
-            key: 'announcements',
-            title: `${this.$t('my_announces')}`,
-            url: '/profile/announcements?type=' + type,
-            icon: 'photo',
-            image: 'announcement',
-            hasAction: true
-          },
-          {
-            key: 'balance',
-            title: `${this.$t('balans')}`,
-            url: '/profile/balance',
-            icon: 'wallet',
-            image: 'wallet'
-          },
-          {
-            key: 'statistics',
-            title: `${this.$t('statistics')}`,
-            url: '/dashboard/' + type + '/statistics',
-            icon: 'analytics',
-            image: 'pie-chart'
-          },
-          {
-            key: 'messages',
-            title: `${this.$t('messages')}`,
-            url: '/profile/messages',
-            icon: 'chat',
-            image: 'messages'
-          },
-          {
-            key: 'calls',
-            title: `${this.$t('phone_call_count')}`,
-            url: '/dashboard/' + type + '/calls',
-            icon: 'phone',
-            image: 'phone',
-          },
-          {
-            key: 'salon',
-            title:`${this.$t( 'my_profile')}`,
-            url: '/dashboard/' + type + '/settings',
-            icon: 'user',
-            image: 'account'
-          },
-          {
-            key: 'contract',
-            title: `${this.$t('contract')}`,
-            url: '/business-profile?type=' + type,
-            icon: 'calendar-1',
-            image: 'calendar'
-          },
-        ]
-
+        {
+          key: 'announcements',
+          title: `${this.$t('my_announces')}`,
+          url: '/profile/announcements?type=' + type,
+          icon: 'photo',
+          image: 'announcement',
+          hasAction: true,
+          actionName: `${this.$t('place_an_ad')}`,
+          actionLink: '/sell',
+        },
+        {
+          key: 'balance',
+          title: `${this.$t('balans')}`,
+          url: '/profile/balance',
+          icon: 'wallet',
+          image: 'wallet',
+          hasAction: true,
+          actionName: `${this.$t('replenish')}`,
+          actionLink: '/asd',
+          description: `${this.$t('balance_of_wallet')}`,
+          value: `${this.$auth.user.autosalon.balance} ALManat`,
+        },
+        {
+          key: 'statistics',
+          title: `${this.$t('statistics')}`,
+          url: '/dashboard/' + type + '/statistics',
+          icon: 'analytics',
+          image: 'pie-chart',
+        },
+        {
+          key: 'messages',
+          title: `${this.$t('messages')}`,
+          url: '/profile/messages',
+          icon: 'chat',
+          image: 'messages',
+          isMessage: true,
+          messageCounts:[2,1]
+        },
+        {
+          key: 'calls',
+          title: `${this.$t('phone_call_count')}`,
+          url: '/dashboard/' + type + '/calls',
+          icon: 'phone',
+          image: 'phone',
+          description: `${this.$t('transition_count_to_number')}`,
+          value: "20",
+        },
+        {
+          key: 'salon',
+          title: `${this.$t('my_profile')}`,
+          url: '/dashboard/' + type + '/settings',
+          icon: 'user',
+          image: 'account',
+          description: `${this.$t('salon')} “${this.salonDetails}”`
+        },
+        {
+          key: 'contract',
+          title: `${this.$t('contract')}`,
+          url: '/business-profile?type=' + type,
+          icon: 'calendar-1',
+          image: 'calendar',
+          isContract: true,
+          contractName: `${this.$t('bronze')}`,
+          contractEndDate: "20.02.2020"
+        },
+      ],
     }
+  },
+  created(){
+    console.log(this.$auth);
   }
+
 }
 </script>
