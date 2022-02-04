@@ -8,8 +8,8 @@
             <div class="login-image">
               <h1>{{ $t('register_question1') }}</h1>
               <p>{{ $t('register_question2') }}</p>
-              <img v-show="isDarkMode" style="width: 100%;" :src="`/login_image_${isMobileBreakpoint ? 'mobile_':''}${locale}_dark.png`" alt=""  />
-              <img v-show="!isDarkMode" style="width: 100%;" :src="`/login_image_${isMobileBreakpoint ? 'mobile_':''}${locale}.png`" alt=""  />
+              <img v-show="isDarkMode" style="width: 100%;" :src="`/login_image_${isMobileBreakpoint ? 'mobile_':''}${locale}_dark.svg`" alt=""  />
+              <img v-show="!isDarkMode" style="width: 100%;" :src="`/login_image_${isMobileBreakpoint ? 'mobile_':''}${locale}.svg`" alt=""  />
             </div>
 
           </div>
