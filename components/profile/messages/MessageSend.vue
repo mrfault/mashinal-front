@@ -17,7 +17,7 @@
           @keydown="handleKeyDown"
           :maxlength="1000"
           :disabled="disabled"
-          :placeholder="$t('write')"
+          :placeholder="!message ? $t('write'):''"
           v-model="messageValue"
         />
         <span class="textarea-message text-dark-blue-3" v-if="message">

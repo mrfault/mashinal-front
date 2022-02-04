@@ -41,7 +41,7 @@ export default {
   mixins: [AnnouncementDataMixin],
   computed: {
     ...mapGetters(['announcement', 'catalog', 'sellOptions', 'motoOptions']),
-    
+
     announcementSpecs() {
       const specs = [
         { key: 'years', value: this.announcement.year, class: 'car-year'},
@@ -68,7 +68,7 @@ export default {
         { key: 'exhaust_class', value: this.exhaustClass, for: ['commercial'] },
         { key: 'cab_suspension', value: this.cabinSuspension, for: ['commercial'] },
         { key: 'chassis_suspension', value: this.chassisSuspension, for: ['commercial'] },
-        { key: 'first_owner', value: (parseInt(this.announcement.owner_type || this.announcement.owners || this.announcement.owner)) ? this.$t('no') : this.$t('yes'), for: ['cars', 'commercial', 'moto'] },
+       // { key: 'first_owner', value: (parseInt(this.announcement.owner_type || this.announcement.owners || this.announcement.owner)) ? this.$t('no') : this.$t('yes'), for: ['cars', 'commercial', 'moto'] },
         { key: 'customs', value: (this.announcement.customs_clearance || this.announcement.customed_id || this.announcement.customed ) ? this.$t('not_cleared') : this.$t('cleared'), for: ['cars', 'commercial', 'moto'] },
         { key: 'product_code', value: this.announcement.product_code, for: ['parts'] },
         { key: 'category', value: this.announcement?.category?.name[this.locale], for: ['parts'] },
@@ -94,7 +94,7 @@ export default {
             } else if (typeof value === 'object') {
               value = this.$t(value.name)
             }
-  
+
             specs.push({
               key: filter.replace('capacity', 'battery_capacity'),
               value,
@@ -103,7 +103,7 @@ export default {
           }
         })
       }
-      
+
       let filteredSpecs = specs.filter(spec => spec.value && (!spec.for || spec.for.includes(this.type)));
       return this.brief ? filteredSpecs.slice(0,5) : filteredSpecs;
     },
