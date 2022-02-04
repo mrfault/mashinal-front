@@ -26,6 +26,7 @@
                   :options="vehicleType"
                   :invalid="$v.filled.vehicleType.$error"
                   v-model="filled.vehicleType"
+                  :clearOption="false"
                 />
               </div>
               <div class="col-12" v-if="filled.vehicleType < 4">
@@ -33,6 +34,7 @@
                   :placeholder="labels.engineVolume"
                   v-model="filled.engineVolume"
                   :invalid="$v.filled.engineVolume.$error"
+                  :clearOption="false"
                 />
               </div>
               <div class="col-12">
@@ -41,6 +43,7 @@
                   :options="vehicleOwners"
                   :invalid="$v.filled.vehicleOwner.$error"
                   v-model="filled.vehicleOwner"
+                  :clearOption="false"
                 />
               </div>
               <div class="col-6">
@@ -117,7 +120,7 @@
                   />
                 </div>
                 <hr />
-                <div class="col-3 ml-auto">
+                <div class="col-3 ml-auto" v-if="false">
                   <button
                     type="button"
                     :class="['btn', 'full-width', 'btn--green']"
