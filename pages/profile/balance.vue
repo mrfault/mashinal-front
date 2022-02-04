@@ -55,20 +55,41 @@
           </div>
           <div class="card">
             <div class="payment-history-rows">
-              <div :class="['payment-history-info text-center', {'mb-2 mb-lg-4': myBalanceHistory.data.length}]" :key="0">
-                <template v-if="!isMobileBreakpoint && myBalanceHistory.data.length">
-                  <button class="btn btn--grey pointer-events-none">
+              <div :class="['payment-history-info', {'mb-2 mb-lg-4': myBalanceHistory.data.length}]" :key="0">
+                <template v-if="!isMobileBreakpoint">
+
+                  <button class="btn btn--grey pointer-events-none" v-if="myBalanceHistory.data.length">
                     <icon name="refresh" /> {{ $moment(myBalanceHistory.data[0].created_at).format('DD.MM.YYYY') }}
                   </button>
+                  <div class="mt-2">
+                    <button
+                      @click="filterHistory(0)"
+                      :class="{ 'btn--dark-blue-2': activeFilter === 0, 'btn--dark-blue-2-outline': activeFilter !==0 }"
+                      class="btn btn-custom-border mr-2">
+                      Bütün
+                    </button>
+                    <button
+                      @click="filterHistory(1)"
+                      :class="{ 'btn--dark-blue-2': activeFilter === 1, 'btn--dark-blue-2-outline': activeFilter !==1 }"
+                      class="btn btn-custom-border mr-2">
+                      Son 1 həftə
+                    </button>
+                    <button
+                      @click="filterHistory(2)"
+                      :class="{ 'btn--dark-blue-2': activeFilter === 2, 'btn--dark-blue-2-outline': activeFilter !==2 }"
+                      class="btn btn-custom-border mr-2">
+                      Son 1 ay
+                    </button>
+                    <button
+                      @click="filterHistory(3)"
+                      :class="{ 'btn--dark-blue-2': activeFilter === 3, 'btn--dark-blue-2-outline': activeFilter !==3 }"
+                      class="btn btn-custom-border">
+                      Son 6 ay
+                    </button>
+                  </div>
                 </template>
-                <template v-else-if="myBalanceHistory.data.length">
-                  <span class="d-flex justify-content-between">
-                    <span>{{ $t('updated') }}</span>
-                    <span>{{ $moment(myBalanceHistory.data[0].created_at).format('DD.MM.YYYY') }}</span>
-                  </span>
-                </template>
-                <template v-else>
-                  <span class="d-block text-left mt-0 mb-3 mb-lg-0">{{ $t('no_payments_yet') }}</span>
+                <template v-if="!myBalanceHistory.data.length">
+                  <span class="d-block text-left mt-2 mb-3 mb-lg-0">{{ $t('no_payments_yet') }}</span>
                 </template>
               </div>
               <div class="row less-cols justify-content-between flex-nowrap" v-for="(row, i) in myBalanceHistory.data" :key="i + 1">
@@ -95,7 +116,11 @@
     </div>
   </div>
 </template>
-
+<style >
+.btn-custom-border {
+  border: 1px solid rgba(36, 110, 178, 0.2);
+}
+</style>
 <script>
   import { mapGetters } from 'vuex';
   import BankingCards from '~/components/payments/BankingCards';
@@ -117,6 +142,11 @@
       return this.$headMeta({
         title: this.$t('balans')
       });
+    },
+    data() {
+      return {
+        activeFilter: 0
+      }
     },
     async asyncData({ store, app, $auth }) {
       await Promise.all([
@@ -147,6 +177,10 @@
       }
     },
     methods: {
+      filterHistory(type) {
+        this.activeFilter = type;
+        this.$store.dispatch('getMyBalanceHistory', {page: 1, type:type})
+      },
       async increaseBalance() {
         if (this.pending || this.form.money < this.minAmount) return;
         this.pending = true;

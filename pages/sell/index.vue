@@ -71,7 +71,7 @@
       });
     },
     async asyncData({ store, route }) {
-      if (!route.query.phone) 
+      if (!route.query.phone)
         store.dispatch('resetSellTokens');
       return {
         vehicleType: '',
@@ -94,11 +94,11 @@
           moto: 0,
           commercial: 0,
           parts: 0,
-          parts_unlimited: this.loggedIn 
-            ? (this.user?.part_salon?.status === 1 && this.user?.part_salon?.is_unlimited) 
+          parts_unlimited: this.loggedIn
+            ? (this.user?.part_salon?.status === 1 && this.user?.part_salon?.is_unlimited)
             : this.sellTokens.parts_unlimited,
-          salon_unlimited: this.loggedIn 
-            ? (this.user?.autosalon?.status === 1 && this.user?.autosalon?.is_unlimited) 
+          salon_unlimited: this.loggedIn
+            ? (this.user?.autosalon?.status === 1 && this.user?.autosalon?.is_unlimited)
             : this.sellTokens.salon_unlimited
         }
 
@@ -129,7 +129,7 @@
         this.selectedIndex = e.index;
         if (this.hasCategories) {
           this.$nextTick(() => {
-            if (this.isMobileBreakpoint) 
+            if (this.isMobileBreakpoint)
               this.scrollTo(this.$refs.categories, -20);
           });
         } else {
@@ -160,20 +160,20 @@
         let secondLocaleEnding  = (!hasTransportTokens && !hasPartsTokens) ? '' : (!hasTransportTokens ? '_transport' : '_parts');
 
         if (hasTransportTokens || hasPartsTokens) {
-          firstLine = this.$t(`you_can_create_announcement${firstLocaleEnding}`, { 
+          firstLine = this.$t(`you_can_create_announcement${firstLocaleEnding}`, {
             phone: phone.replace('+994 (', '(0'),
             plural: this.$readPlural(this.tokens.salon_unlimited ? 1000 : transportTokens, this.$t('plural_forms_announcements'), false),
             plural_parts: this.$readPlural(this.tokens.parts_unlimited ? 1000 : partTokens, this.$t('plural_forms_announcements'), false),
-            left: this.tokens.salon_unlimited ? this.$t('unlimited_count') : transportTokens, 
+            left: this.tokens.salon_unlimited ? this.$t('unlimited_count') : transportTokens,
             left_parts: this.tokens.parts_unlimited ? this.$t('unlimited_count') : partTokens,
           });
         }
 
         if (!hasTransportTokens || !hasPartsTokens) {
           secondLine = '<strong class="text-red">*</strong> ' + this.$t(`no_announcements_on_balance${secondLocaleEnding}`);
-          thirdLine = this.$t('contact_for_more_info', { 
-            phone: (isSalon || isShop) ? '(055) 222-13-05' : '*8787', 
-            email: (isSalon || isShop) ? 'elchin.m@mashin.al' : 'support@mashin.al' 
+          thirdLine = this.$t('contact_for_more_info', {
+            phone: (isSalon || isShop) ? '(055) 222-13-05' : '*8787',
+            email: (isSalon || isShop) ? 'elchin.m@mashin.al' : 'office@al.ventures'
           });
         }
         return [firstLine,secondLine,thirdLine].filter(line => line).map(line => `${line}`).join('<br/><br/>');
