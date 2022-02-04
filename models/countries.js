@@ -1,4 +1,4 @@
-export const countries = [
+export const countries_az = [
     { value:27, rel:0, name: "Albaniya" },
     { value:36, rel:0, name: "Argentina" },
     { value:10, rel:0, name: "Almaniya" },
