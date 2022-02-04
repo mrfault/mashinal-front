@@ -201,7 +201,6 @@ export default {
     let type = this.$route.params.type
     return {
       cards: [
-<<<<<<< HEAD
         {
           key: 'announcements',
           title: `${this.$t('my_announces')}`,
@@ -268,60 +267,6 @@ export default {
           contractEndDate: "20.02.2020"
         },
       ],
-=======
-          {
-            key: 'announcements',
-            title: `${this.$t('my_announces')}`,
-            url: '/profile/announcements?type=' + type,
-            icon: 'photo',
-            image: 'announcement',
-            hasAction: true
-          },
-          {
-            key: 'balance',
-            title: `${this.$t('balans')}`,
-            url: '/profile/balance',
-            icon: 'wallet',
-            image: 'wallet'
-          },
-          {
-            key: 'statistics',
-            title: `${this.$t('statistics')}`,
-            url: '/dashboard/' + type + '/statistics',
-            icon: 'analytics',
-            image: 'pie-chart'
-          },
-          {
-            key: 'messages',
-            title: `${this.$t('messages')}`,
-            url: '/profile/messages',
-            icon: 'chat',
-            image: 'messages'
-          },
-          {
-            key: 'calls',
-            title: `${this.$t('phone_call_count')}`,
-            url: '/dashboard/' + type + '/calls',
-            icon: 'phone',
-            image: 'phone',
-          },
-          {
-            key: 'salon',
-            title:`${this.$t( 'my_profile')}`,
-            url: '/dashboard/' + type + '/settings',
-            icon: 'user',
-            image: 'account'
-          },
-          {
-            key: 'contract',
-            title: `${this.$t('contract')}`,
-            url: '/business-profile?type=' + type,
-            icon: 'calendar-1',
-            image: 'calendar'
-          },
-        ]
-
->>>>>>> 12c22c533f8bda01b8a6976ed6152172b1613cd4
     }
   },
   created(){

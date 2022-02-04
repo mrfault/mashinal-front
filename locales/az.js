@@ -2143,15 +2143,11 @@ export default {
   "no_attorneys_found" : "Etibarnamə yoxdur",
   "attorney": "Etibarnamə",
   "attorney_count": "Etibarnamələrin sayı:",
-<<<<<<< HEAD
   "balance_of_wallet": "Pul kisəsinin balansı:",
   "transition_count_to_number": "Nömrənizə keçid sayı:",
   "end_time_of_package" : "paketinin bitmə vaxtı:",
   "casco_insurance_calculator" : "Kasko sığorta kalkulyatoru",
-=======
   "not_selected": "Seçilməyib",
   "vehicle_owner":"vehicleOwner",
   "engine_volume2":"Mühərrikin həcmi",
-
->>>>>>> 12c22c533f8bda01b8a6976ed6152172b1613cd4
 }
