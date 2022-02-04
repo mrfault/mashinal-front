@@ -65,14 +65,14 @@ export const actions = {
     commit('mutate', {
       property: 'showNotFound',
       value: pagination.total === 0
-    }) 
+    })
     commit('mutate', {
       property: 'pagination',
       value: pagination
-    }) 
+    })
     commit('setAnnouncements', {
       announcements,
-      append: pagination.current_page > 1,
+      append: false,//pagination.current_page > 1,
       property: "announcements"
     })
 
@@ -124,7 +124,7 @@ export const mutations = {
   setAnnouncements(state, payload) {
     const property = payload.property || 'announcements'
     const announcements = [...payload.announcements]
-    
+
     if (payload?.append) {
       state[property] = [...state[property], ...announcements]
     } else {

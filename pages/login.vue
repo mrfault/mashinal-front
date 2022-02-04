@@ -60,7 +60,7 @@ export default {
     handleLogin(auth) {
       if (!auth) return;
       this.resetSellTokens();
-      let path = '/garage';
+      let path = '/garage-services';
       if (this.loggedIn && this.user.user_type === 3) path = '/profile/btl';
       else if (this.$route.query.ref) path = this.$route.query.ref;
       this.$router.push(this.$localePath(path));

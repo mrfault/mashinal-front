@@ -99,7 +99,7 @@ export default {
   computed: {
     ...mapGetters(['notifications']),
     crumbs() {
-      return [{name: this.$t('notifications')}]
+      return [{name: this.$t('notification')}]
     },
   },
 }

@@ -468,7 +468,6 @@ export default {
   "complain_the_announce": "Пожаловаться на объявление",
   "complect_type": "Тип",
   "compulsory_insurance_begin_date": "Дата технического осмотра транспортного средства:",
-  "compulsory_insurance_calculator" : "Калькулятор обязательного страхования",
   "compulsory_insurance_first_req_num": "Дата первичной регистрации транспортного средства в стране:",
   "compulsory_insurance_info": "Информация об обязательном страховании транспортных средств",
   "compulsory_insurance_req_change_num": "Количество изменений регистрации транспортного средства в стране:",
@@ -2104,7 +2103,7 @@ export default {
     "attorney_count":"",
     "customs_calculator":"Калькулятор растаможки",
     "Dolların məzənnəsi":"Курс доллара",
-    "Калькулятор обязательного страхования":"Калькулятор страхования",
+    "compulsory_insurance_calculator":"Калькулятор страхования",
     "Е-сервисы":"Э-сервисы",
     "engine_type":"Тип топлива",
     "production_country":"Страна-производитель",
@@ -2125,5 +2124,11 @@ export default {
     "rejected_attorney":"Отклонено",
     "approved":"Принято",
     "disable_attorney":"Остановить",
-    "notification":"Уведомления"
+    "notification":"Уведомления",
+    "last_one_week":"За неделю",
+    "last_month":"За месяц",
+    "last_6_month":"За полгода",
+    "not_selected": "Не выбрано",
+    "garage_services":"Гаражи"
+
 }

@@ -44,7 +44,7 @@
           </div>
         </div>
         <div class="col-lg-8">
-          <div class="card mb-2 mb-lg-3" v-if="!isMobileBreakpoint && myBalanceHistory.data.length">
+          <div class="card mb-2 mb-lg-3" v-if="!isMobileBreakpoint">
             <div class="payment-history-rows">
               <div class="row less-cols head justify-content-between flex-nowrap">
                 <span class="payment-service"><span>{{ $t('transaction') }}</span></span>
@@ -66,30 +66,33 @@
                       @click="filterHistory(0)"
                       :class="{ 'btn--dark-blue-2': activeFilter === 0, 'btn--dark-blue-2-outline': activeFilter !==0 }"
                       class="btn btn-custom-border mr-2">
-                      Bütün
+                      {{ $t('all') }}
                     </button>
                     <button
                       @click="filterHistory(1)"
                       :class="{ 'btn--dark-blue-2': activeFilter === 1, 'btn--dark-blue-2-outline': activeFilter !==1 }"
                       class="btn btn-custom-border mr-2">
-                      Son 1 həftə
+                      {{ $t('last_one_week') }}
                     </button>
                     <button
                       @click="filterHistory(2)"
                       :class="{ 'btn--dark-blue-2': activeFilter === 2, 'btn--dark-blue-2-outline': activeFilter !==2 }"
                       class="btn btn-custom-border mr-2">
-                      Son 1 ay
+                      {{ $t('last_month') }}
                     </button>
                     <button
                       @click="filterHistory(3)"
                       :class="{ 'btn--dark-blue-2': activeFilter === 3, 'btn--dark-blue-2-outline': activeFilter !==3 }"
                       class="btn btn-custom-border">
-                      Son 6 ay
+                      {{ $t('last_6_month') }}
                     </button>
                   </div>
                 </template>
                 <template v-if="!myBalanceHistory.data.length">
-                  <span class="d-block text-left mt-2 mb-3 mb-lg-0">{{ $t('no_payments_yet') }}</span>
+                  <div class="not-found" style="padding: 215px 0;">
+                    <img src="/img/no_transactions.png"/>
+                    <span class="d-block text-left mt-2 mb-3 mb-lg-0">{{ $t('no_payments_yet') }}</span>
+                  </div>
                 </template>
               </div>
               <div class="row less-cols justify-content-between flex-nowrap" v-for="(row, i) in myBalanceHistory.data" :key="i + 1">
@@ -107,6 +110,7 @@
             </div>
           </div>
           <infinite-loading
+            :type="activeFilter"
             action="getMyBalanceHistory"
             getter="myBalanceHistory"
             class-name="mt-3 mt-lg-4"
