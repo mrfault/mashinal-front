@@ -206,42 +206,50 @@ export default {
             title: `${this.$t('my_announces')}`,
             url: '/profile/announcements?type=' + type,
             icon: 'photo',
+            image: 'announcement',
+            hasAction: true
           },
           {
             key: 'balance',
             title: `${this.$t('balans')}`,
             url: '/profile/balance',
             icon: 'wallet',
+            image: 'wallet'
           },
           {
             key: 'statistics',
             title: `${this.$t('statistics')}`,
             url: '/dashboard/' + type + '/statistics',
             icon: 'analytics',
+            image: 'pie-chart'
           },
           {
             key: 'messages',
             title: `${this.$t('messages')}`,
             url: '/profile/messages',
             icon: 'chat',
+            image: 'messages'
           },
           {
             key: 'calls',
             title: `${this.$t('phone_call_count')}`,
             url: '/dashboard/' + type + '/calls',
             icon: 'phone',
+            image: 'phone',
           },
           {
             key: 'salon',
             title:`${this.$t( 'my_profile')}`,
             url: '/dashboard/' + type + '/settings',
             icon: 'user',
+            image: 'account'
           },
           {
             key: 'contract',
             title: `${this.$t('contract')}`,
             url: '/business-profile?type=' + type,
             icon: 'calendar-1',
+            image: 'calendar'
           },
         ]
 

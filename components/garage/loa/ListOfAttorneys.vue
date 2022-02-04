@@ -31,7 +31,11 @@
             <span class="model-title">{{ $t('letter_type') }}</span>
             <span>{{ $t('letter_type_options')[attorney.type - 1] }}</span>
           </div>
+<<<<<<< HEAD
+          <div class="button-container">
+=======
           <div style="flex-grow: 1;text-align: right">
+>>>>>>> df06f0a75cdd315b9a3ef4ff98e6c2e9183dfb56
             <button
               v-if="attorney.status === 1"
               class="btn btn--red-outline mr-1"
@@ -100,6 +104,16 @@ export default {
   .attorney-info {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
+    &:nth-of-type(1){
+      flex-grow: 2;
+    }
+    &:nth-of-type(2){
+      flex-grow: 5;
+    }
+  }
+  .button-container{
+    flex-grow: 2;
   }
   .attorney-info-wrapper {
     display: flex;
