@@ -2142,6 +2142,9 @@ export default {
   "rules_of_giving_attorney": "Etibarnamə verməyin şərtləri",
   "no_attorneys_found" : "Etibarnamə yoxdur",
   "attorney": "Etibarnamə",
-  "attorney_count": "Etibarnamələrin sayı:"
-
+  "attorney_count": "Etibarnamələrin sayı:",
+  "balance_of_wallet": "Pul kisəsinin balansı:",
+  "transition_count_to_number": "Nömrənizə keçid sayı:",
+  "end_time_of_package" : "paketinin bitmə vaxtı:",
+  "casco_insurance_calculator" : "Kasko sığorta kalkulyatoru",
 }
