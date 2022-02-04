@@ -31,7 +31,8 @@
             <span class="model-title">{{ $t('letter_type') }}</span>
             <span>{{ $t('letter_type_options')[attorney.type - 1] }}</span>
           </div>
-          <div style="flex-grow: 1;text-align: right">
+
+          <div class="button-container">
             <button
               v-if="attorney.status === 1"
               class="btn btn--red-outline mr-1"
