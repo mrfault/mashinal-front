@@ -17,6 +17,7 @@
                   :options="vehicleType"
                   v-model="filled.vehicleType"
                   :invalid="$v.filled.vehicleType.$error"
+                  :clearOption="false"
                 />
               </div>
               <div class="col-12">
@@ -25,6 +26,7 @@
                   :options="engineTypes"
                   v-model="filled.engineType"
                   :invalid="$v.filled.engineType.$error"
+                  :clearOption="false"
                 />
               </div>
               <div class="col-12" v-if="isHybrid">
@@ -33,6 +35,7 @@
                   :options="hybridEngineTypes"
                   v-model="filled.hybridEngineType"
                   :invalid="$v.filled.hybridEngineType.$error"
+                  :clearOption="false"
                 />
               </div>
               <div class="col-12">
@@ -41,6 +44,7 @@
                   :options="countries"
                   v-model="filled.producerCountry"
                   :invalid="$v.filled.producerCountry.$error"
+                  :clearOption="false"
                 />
               </div>
               <div class="col-12">
@@ -49,6 +53,7 @@
                   :options="countries"
                   v-model="filled.senderCountry"
                   :invalid="$v.filled.senderCountry.$error"
+                  :clearOption="false"
                 />
               </div>
               <div class="col-12">
@@ -58,7 +63,7 @@
                   :invalid="$v.filled.customsValueOfVehicle.$error"
                 />
               </div>
-              <div class="col-12">
+              <div class="col-12" v-if="filled.engineType !== 4">
                 <form-numeric-input
                   :placeholder="$t('engine_volume')"
                   v-model="filled.engineVolume"
@@ -132,7 +137,7 @@
                       <ul>
                         <li>
                           <span>{{ $t('excise_tax') }}</span>
-                          <span>{{ result.aksizvergi }} ₼</span>
+                          <span>{{ result.aksizvergi || 0 }} ₼</span>
                         </li>
                         <li>
                           <span>{{ $t('custom_duty') }}</span>
@@ -148,7 +153,7 @@
                         </li>
                         <li>
                           <span>{{ $t('vat') }}</span>
-                          <span>{{ result.edv }} ₼</span>
+                          <span>{{ result.edv || 0 }} ₼</span>
                         </li>
                         <li>
                           <span>
@@ -205,15 +210,18 @@ import Models from '@/models'
 export default {
   data() {
     return {
-      countries: [],
       vehicleType: Models.vehicleTypes,
-      engineTypes: Models.engineTypes,
+      engineTypes: [
+        { name: this.$t('benzin'), id: 1 },
+        { name: this.$t('dizel'), id: 2 },
+        { name: this.$t('hybrid'), id: 2 },
+        { name: this.$t('electrical'), id: 2 },
+      ],
       hybridEngineTypes: Models.hybridEngineTypes,
-      countries: Models.countries,
       hasResult: false,
       result: {},
       filled: {
-        vehicleType: '',
+        vehicleType: 1,
         engineType: '',
         isHybrid: false,
         hybridEngineType: '',
@@ -229,6 +237,9 @@ export default {
   },
   computed: {
     ...mapGetters(['brands']),
+    countries(){
+      return Models['countries_'+this.locale];
+    },
     crumbs() {
       return [{ name: this.$t('customs_calculator') }]
     },
@@ -244,16 +255,13 @@ export default {
     reset() {
       this.$v.$reset()
       this.filled = {
-        vehicleType: '',
-
+        vehicleType: 1,
         engineType: '',
         isHybrid: false,
         hybridEngineType: '',
-
         producerCountry: '',
         senderCountry: '',
         customsValueOfVehicle: '',
-
         engineVolume: '',
         isMoreThanOneYear: false,
         productionYear: '',
@@ -479,8 +487,12 @@ export default {
         const result = {}
         if (engine_id == 4) {
           cem =
-            rusum + SBOR + vesiqe + ElPrice + ((ElPrice * 18) / 100).toFixed(2)
-          result['cem'] = cem
+            parseFloat(rusum) +
+            parseFloat(SBOR) +
+            parseFloat(vesiqe) +
+            parseFloat(ElPrice) +
+            parseFloat((ElPrice * 18) / 100)
+          result['cem'] = cem.toFixed(2)
           result['sbor'] = SBOR.toFixed(2)
           result['rusum'] = rusum.toFixed(2)
           result['vesiqe'] = vesiqe.toFixed(2)
@@ -513,23 +525,27 @@ export default {
   },
   validations: {
     filled: {
-        vehicleType: {required},
-        engineType: {required},
-        hybridEngineType: {
-          required: requiredIf(function (){
-            return this.filled.isHybrid == true;
-          })
-        },
-        producerCountry: { required },
-        senderCountry: { required },
-        customsValueOfVehicle: { required },
-        engineVolume: {required},
-        isMoreThanOneYear: false,
-        productionYear: {
-          required: requiredIf(function(){
-            return this.filled.isMoreThanOneYear == true;
-          })
-        },
+      vehicleType: { required },
+      engineType: {
+        required: requiredIf(function () {
+          return this.filled.engineType !== 4
+        }),
+      },
+      hybridEngineType: {
+        required: requiredIf(function () {
+          return this.filled.isHybrid == true
+        }),
+      },
+      producerCountry: { required },
+      senderCountry: { required },
+      customsValueOfVehicle: { required },
+      engineVolume: { required },
+      isMoreThanOneYear: false,
+      productionYear: {
+        required: requiredIf(function () {
+          return this.filled.isMoreThanOneYear == true
+        }),
+      },
     },
   },
 }
