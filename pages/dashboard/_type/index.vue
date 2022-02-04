@@ -117,7 +117,7 @@ export default {
 
     return {
       pending: false,
-      supportContacts: [{ phone: '*8787' }, { email: 'support@mashin.al' }],
+      supportContacts: [{ phone: '*8787' }, { email: 'office@al.ventures' }],
     }
   },
   computed: {
@@ -244,7 +244,7 @@ export default {
             icon: 'calendar-1',
           },
         ]
-      
+
     }
   }
 }

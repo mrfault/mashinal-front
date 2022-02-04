@@ -93,7 +93,7 @@ export default {
       },
       support: {
         phone: '*8787',
-        email: 'support@mashin.al',
+        email: 'office@al.ventures',
         worktime: this.$t('worktime_support')
       }
     }

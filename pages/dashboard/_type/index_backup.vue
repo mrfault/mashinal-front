@@ -42,7 +42,7 @@
               <h4 class="skip-truncate">
                 <strong :class="shouldExtendContract ? 'text-red' : 'text-green'">
                   {{ announcementStats.contract.left_days }}
-                </strong> 
+                </strong>
                 {{ $readPlural(announcementStats.contract.left_days, $t('plural_forms_day'), false) }}
               </h4>
             </template>
@@ -133,7 +133,7 @@
     mixins: [StatsMixin, PaymentMixin],
     components: {
       DashboardCard
-    },  
+    },
     nuxtI18n: {
       paths: {
         az: '/idareetme-paneli/:type'
@@ -145,13 +145,13 @@
       });
     },
     async asyncData({store, route, app}) {
-      await store.dispatch('getAnnouncementStats', app.$getDashboardId(route.params.type)); 
+      await store.dispatch('getAnnouncementStats', app.$getDashboardId(route.params.type));
 
       return {
         pending: false,
         supportContacts: [
           { phone: '*8787' },
-          { email: 'support@mashin.al' }
+          { email: 'office@al.ventures' }
         ]
       }
     },
@@ -162,7 +162,7 @@
         return [
           { name: this.$t('dashboard') }
         ]
-      }, 
+      },
 
       salonDetails() {
         let id = this.$getDashboardId(this.$route.params.type);
@@ -190,7 +190,7 @@
           { key: 'salon', title: 'my_profile', route: '/dashboard/' + type + '/settings', icon: 'user' },
           { key: 'contract', title: 'contract', route: '/business-profile?type=' + type, icon: 'calendar-1' }
         ].map(link => ({ ...link,
-          title: this.$t(link.title), 
+          title: this.$t(link.title),
           path: this.$localePath(link.route)
         }));
       },
@@ -205,7 +205,7 @@
       shouldExtendContract() {
         return this.announcementStats.contract.left_days < 5;
       },
-      
+
       haveBalanceToPay() {
         return parseFloat(this.announcementStats.contract.price) <= this.user.balance;
       }
@@ -229,10 +229,10 @@
             ]);
             this.pending = false;
             this.showModal = false;
-            this.updatePaidStatus({ 
-              type: 'success', 
-              text: this.$t('renew_package'), 
-              title: this.$t('success_payment') 
+            this.updatePaidStatus({
+              type: 'success',
+              text: this.$t('renew_package'),
+              title: this.$t('success_payment')
             });
           }
         } catch (err) {

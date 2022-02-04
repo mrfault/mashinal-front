@@ -791,7 +791,7 @@ export const actions = {
     commit('mutate', { property: 'myServiceHistory', value: res });
   },
   async getMyBalanceHistory({ commit }, data = {}) {
-    const res = await this.$axios.$get(`/payment/getHistory?page=${data.page || 1}`);
+    const res = await this.$axios.$get(`/payment/getHistory?page=${data.page || 1}&type=${data.type || 0}`);
     commit('mutate', { property: 'myBalanceHistory', value: res });
   },
   async updatePromotion({ commit }, {key, value}) {

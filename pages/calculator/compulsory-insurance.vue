@@ -11,15 +11,15 @@
               {{ $t('compulsory_insurance_calculator') }}
             </h4>
             <div class="row">
-              <div class="col-12">
-                <form-select
-                  :label="labels.country"
-                  :options="countries"
-                  v-model="filled.country"
-                  :disabled="true"
-                  :allowClear="false"
-                />
-              </div>
+<!--              <div class="col-12">-->
+<!--                <form-select-->
+<!--                  :label="labels.country"-->
+<!--                  :options="countries"-->
+<!--                  v-model="filled.country"-->
+<!--                  :disabled="true"-->
+<!--                  :allowClear="false"-->
+<!--                />-->
+<!--              </div>-->
               <div class="col-12">
                 <form-select
                   :label="labels.vehicleType"
@@ -202,9 +202,9 @@ export default {
       },
       labels: {
         country: 'Ölkə - Azərbaycan',
-        vehicleType: 'Nəqliyyat vasitəsinin növü',
-        engineVolume: 'Mühərrikin həcmi',
-        vehicleOwner: 'Nəqliyyat vasitəsinin sahibi',
+        vehicleType: this.$t('vehicle_type_2'),
+        engineVolume: this.$t('engine_volume2'),
+        vehicleOwner: this.$t('vehicle_owner'),
       },
     }
   },
