@@ -143,6 +143,9 @@ export default {
       width: 100%;
       margin-top:15px;
     }
+    .under-texts {
+      margin-top: 7px;
+    }
 }
 .login-forms-with-dots {
   flex: 1;

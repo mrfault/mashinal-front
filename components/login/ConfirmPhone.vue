@@ -17,7 +17,7 @@
       />
     </div>
 
-    <p v-if="showResend || codeSent || askToCallSupport">
+    <p class="under-texts" v-if="showResend || codeSent || askToCallSupport">
       <a v-if="showResend && resendSmsAfterSecond === 0" class="cursor-pointer text-decoration-underline" @click.prevent="resendCode">{{ $t('resend_code') }}</a>
       <span class="d-flex justify-content-between" v-else-if="showResend && resendSmsAfterSecond > 0">
         {{ $t('enter_the_code_sent_to_your_number') }}

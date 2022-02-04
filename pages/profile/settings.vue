@@ -22,7 +22,7 @@
               <form-text-input :placeholder="$t('birthday')" v-model="form.birthday" input-date />
             </div>
             <div class="col-lg-4 mb-3 mb-lg-3">
-              <form-buttons v-model="form.gender" :options="getGenderOptions" :group-by="2"
+              <form-buttons v-model="form.gender" :options="getGenderOptions" :group-by="3"
                 btn-class="primary-outline" />
             </div>
             <div class="col-lg-4 mb-3 mb-lg-3">
@@ -91,7 +91,7 @@ export default {
         password_confirmation: '',
         name: $auth.user.full_name,
         lastname: $auth.user.lastname || '',
-        gender: $auth.user.gender || '',
+        gender: $auth.user.gender || 0,
         birthday: app.$moment($auth.user.birthday || null).format('DD.MM.YYYY'),
         avatar: null
       }
@@ -107,6 +107,7 @@ export default {
 
     getGenderOptions() {
       return [
+        { key: 0, name: this.$t('not_selected') },
         { key: 1, name: this.$t('male')	},
         { key: 2, name: this.$t('female')	}
       ];

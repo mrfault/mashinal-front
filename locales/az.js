@@ -735,7 +735,7 @@ export default {
   "feedback_error_fill_ratings": "Qiymətləndirməni göstərin",
   "feedback_error_text_min_size": "Minimum 500 simvol",
   "female": "Qadın",
-  "fill_form_to_check_driver_points": "Balları yoxlamaq üçün, sürücülük vəsiqəsinin seriya nömrəsi, doğuldunuz tarixi və vəsiqənin bitmə tarixini yazıb cərimə balları barədə məlumatı öyrənə bilərsiniz.",
+  "fill_form_to_check_driver_points": "Balları yoxlamaq üçün, sürücülük vəsiqəsinin seriya nömrəsi və vəsiqənin bitmə tarixini yazıb cərimə balları barədə məlumatı öyrənə bilərsiniz.",
   "fill_out_an_application": "Müraciəti doldurun",
   "filters": "Filtrlər",
   "find": "Axtar",
@@ -2143,8 +2143,15 @@ export default {
   "no_attorneys_found" : "Etibarnamə yoxdur",
   "attorney": "Etibarnamə",
   "attorney_count": "Etibarnamələrin sayı:",
+<<<<<<< HEAD
   "balance_of_wallet": "Pul kisəsinin balansı:",
   "transition_count_to_number": "Nömrənizə keçid sayı:",
   "end_time_of_package" : "paketinin bitmə vaxtı:",
   "casco_insurance_calculator" : "Kasko sığorta kalkulyatoru",
+=======
+  "not_selected": "Seçilməyib",
+  "vehicle_owner":"vehicleOwner",
+  "engine_volume2":"Mühərrikin həcmi",
+
+>>>>>>> 12c22c533f8bda01b8a6976ed6152172b1613cd4
 }
