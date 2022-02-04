@@ -2128,6 +2128,7 @@ export default {
     "last_one_week":"За неделю",
     "last_month":"За месяц",
     "last_6_month":"За полгода",
-    "not_selected": "Не выбрано"
+    "not_selected": "Не выбрано",
+    "garage_services":"Гаражи"
 
 }
