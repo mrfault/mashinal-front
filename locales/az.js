@@ -2150,4 +2150,5 @@ export default {
   "not_selected": "Seçilməyib",
   "vehicle_owner":"vehicleOwner",
   "engine_volume2":"Mühərrikin həcmi",
+  "check_penalty": "Bal yoxla",
 }
