@@ -41,7 +41,7 @@
           <div class="attorney__info--buttons d-flex justify-content-end">
             <button
               @click="cancelAttorney(attorney)"
-              v-if="attorney.status === 1 "
+              v-if="attorney.status === 1 && attorney.action_id"
               class="btn btn--red-outline mr-1"
             >
               {{ $t('disable_attorney') }}
