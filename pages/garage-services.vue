@@ -89,7 +89,7 @@ export default {
           image: 'wallet',
           isAvailable: true,
           actionName: this.$t('replenish'),
-          actionLink: '/asd',
+          actionLink: '/profile/balance',
         },
         {
           title: this.$t('my_searches'),

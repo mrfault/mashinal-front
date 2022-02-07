@@ -120,6 +120,7 @@ h2 {
     span, i {
       background-color: $dark-2;
     }
+    background: $dark-2;
   }
 }
 
@@ -470,15 +471,20 @@ main {
       position: relative;
       flex-shrink: 0;
       cursor: pointer;
-      width: 113px;
+      min-width: 113px;
       color: $white;
       background: $red-1;
       margin-left: 40px;
-      padding: 0;
+      padding: 9px 15px;
+      display: flex;
+      align-items: center;
 
       & > i {
-        margin: 0;
+        margin: 0 10px 0 0;
         font-size: 15px;
+        &::before{
+          margin: 0 !important;
+        }
       }
 
       &_list {
@@ -528,6 +534,13 @@ main {
             background-color: $greyish-blue-3;
           }
         }
+      }
+
+      &__title{
+        margin-top: 4px;
+      }
+      &__toggler{
+        margin-top: 4px !important;
       }
 
       &:hover {

@@ -2138,4 +2138,6 @@ export default {
     "vat":"НДС",
     "for_the_provision_of_electronic_customs_service":"За оказание электронной таможенной услуги",
     "vat_for_the_provision_of_electronic_customs_services":"НДС за оказание электронных таможенных услуг",
+
+    "profile": 'Профиль',
 }
