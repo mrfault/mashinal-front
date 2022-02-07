@@ -65,13 +65,13 @@
               </div>
               <div class="col-12" v-if="filled.engineType !== 4">
                 <form-numeric-input
-                  :placeholder="$t('engine_volume')"
+                  :placeholder="$t('engine_volume2')"
                   v-model="filled.engineVolume"
                   :invalid="$v.filled.engineVolume.$error"
                 />
               </div>
               <div class="col-12">
-                <h6 class="secondary--heading">İstehsal tarixi</h6>
+                <h6 class="secondary--heading">{{ $t('production_year') }}</h6>
               </div>
               <div class="col-6">
                 <form-checkbox
@@ -92,7 +92,7 @@
               <div class="col-12">
                 <div class="dollar__exchange">
                   <span>
-                    Dolların məzənnəsi:
+                    {{ $t('dollar_course')}}:
                   </span>
                   <span>
                     1 $ = 1.7 ₼

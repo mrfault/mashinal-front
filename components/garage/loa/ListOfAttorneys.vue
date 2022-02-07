@@ -38,9 +38,10 @@
             <p>{{ $t('letter_type') }}</p>
             <p>{{ $t('letter_type_options')[attorney.type - 1] }}</p>
           </div>
-          <div class="attorney__info--buttons">
+          <div class="attorney__info--buttons d-flex justify-content-end">
             <button
-              v-if="attorney.status === 1"
+              @click="cancelAttorney(attorney)"
+              v-if="attorney.status === 1 "
               class="btn btn--red-outline mr-1"
             >
               {{ $t('disable_attorney') }}
@@ -78,6 +79,11 @@ export default {
     attorneys: {},
   },
   methods: {
+    cancelAttorney(attorney) {
+      this.$axios.$post('/attorney/cancel',{
+        id: attorney.action_id
+      })
+    },
     getStatus(status) {
       return ['pending', 'approved', 'rejected_attorney'][status]
     },

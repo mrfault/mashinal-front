@@ -47,7 +47,7 @@ export default {
         },
         {
           title: this.$t('customs_calculator'),
-          description: 'Dolların məzənnəsi:',
+          description: this.$t('dollar_course'),
           value: '1 $ = 1.7₼',
           icon: 'customs-calculator-police',
           url: '/calculator/customs',

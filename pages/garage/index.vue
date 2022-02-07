@@ -82,7 +82,7 @@ export default {
       store.dispatch('garage/getAttorneyList')
     ]);
     return {
-      tab: 'attorney-list',
+      tab: 'cars',
       showNav: true
     }
   },
