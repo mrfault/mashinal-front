@@ -1,9 +1,11 @@
 import * as calculator from './calculator'
-import * as countries from './countries'
+import * as countries_az from './countries_az'
+import * as countries_ru from './countries_ru'
 
 
 
 export default {
   ...calculator,
-  ...countries,
+  ...countries_az,
+  ...countries_ru,
 }
