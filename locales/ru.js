@@ -2129,6 +2129,6 @@ export default {
     "last_month":"За месяц",
     "last_6_month":"За полгода",
     "not_selected": "Не выбрано",
-    "garage_services":"Гаражи"
-
+    "garage_services":"Гаражи",
+    "filled_in_at_will":"Заполняется по желанию"
 }

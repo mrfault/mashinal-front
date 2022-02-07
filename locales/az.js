@@ -2150,9 +2150,10 @@ export default {
   "not_selected": "Seçilməyib",
   "vehicle_owner":"Nəqliyyat vasitəsinin sahibi",
   "engine_volume2":"Mühərrikin həcmi",
-  "check_penalty": "Bal yoxla",
+  "check_penalty2": "Bal yoxla",
   "last_one_week":"Son 1 həftə",
   "last_month":"Son 1 ay",
-  "last_6_month":"Son 6 ay"
+  "last_6_month":"Son 6 ay",
+  "filled_in_at_will":"İstəyə dair qeyd oluna bilər"
 
 }

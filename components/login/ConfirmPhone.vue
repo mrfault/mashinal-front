@@ -8,7 +8,7 @@
         :invalid="validator.name.$error"
         v-model="form.name"
       />
-      <p v-if="!form.staticPhone && isNewUser" style="color:#92959A;margin-top: -12px;">{{ '* istəyə dair qeyd oluna bilər' }}</p>
+      <p v-if="!form.staticPhone && isNewUser" style="color:#92959A;margin-top: -12px;">{{ $t('filled_in_at_will') }}</p>
       <form-text-input
         :placeholder="$t('enter_the_code')"
         :mask="'99999'"
