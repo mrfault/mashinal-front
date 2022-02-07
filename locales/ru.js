@@ -2138,5 +2138,12 @@ export default {
     "vat":"НДС",
     "for_the_provision_of_electronic_customs_service":"За оказание электронной таможенной услуги",
     "vat_for_the_provision_of_electronic_customs_services":"НДС за оказание электронных таможенных услуг",
-   "check_penalty2":"Проверка бала"
+    "check_penalty2":"Проверка бала",
+    "empty_garage_title":"Плюсы добавления автомобиля в гараж",
+    "empty_garage_part_1":"",
+    "empty_garage_part_2":"",
+    "empty_garage_part_3":"",
+    "transition_count_to_number":"Количество переходов по номеру:",
+    "end_time_of_package":"Дата окончания пакета",
+    "balance_of_wallet": "Баланс кошелька"
 }

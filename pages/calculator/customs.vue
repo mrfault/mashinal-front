@@ -464,7 +464,6 @@ export default {
           OUT = OUT * 1.5
         }
         const ifLessThanOneYear = !this.filled.isMoreThanOneYear
-        console.log(ifLessThanOneYear)
         if (
           (hybrid_id == 1 || hybrid_id == 2) &&
           engine_id == 3 &&
@@ -510,7 +509,6 @@ export default {
           result['gomrukedv'] = ((ElPrice * 18) / 100).toFixed(2)
           result['cem'] = cem.toFixed(2)
         }
-        console.log(result)
         this.result = result
         this.hasResult = true
       }
