@@ -2102,7 +2102,7 @@ export default {
     "attorney":"Доверенность",
     "attorney_count":"",
     "customs_calculator":"Калькулятор растаможки",
-    "Dolların məzənnəsi":"Курс доллара",
+    "dollar_course":"Курс доллара",
     "compulsory_insurance_calculator":"Калькулятор страхования",
     "Е-сервисы":"Э-сервисы",
     "engine_type":"Тип топлива",
@@ -2130,5 +2130,6 @@ export default {
     "last_6_month":"За полгода",
     "not_selected": "Не выбрано",
     "garage_services":"Гаражи",
-    "filled_in_at_will":"Заполняется по желанию"
+    "filled_in_at_will":"Заполняется по желанию",
+    "production_year": "Год выпуска",
 }
