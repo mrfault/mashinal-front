@@ -17,7 +17,10 @@
                   :options="vehicleType"
                   v-model="filled.vehicleType"
                   :invalid="$v.filled.vehicleType.$error"
+                  :allowClear="false"
+                  :showLabelOnlyOnActionBar="false"
                   :clearOption="false"
+                  :hideOptions="true"
                 />
               </div>
               <div class="col-12">

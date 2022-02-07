@@ -2156,4 +2156,5 @@ export default {
   "last_6_month":"Son 6 ay",
   "filled_in_at_will":"İstəyə dair qeyd oluna bilər",
   "dollar_course":"Dolların məzənnəsi",
+  "profile": 'Profil',
 }
