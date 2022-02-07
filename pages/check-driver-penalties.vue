@@ -21,7 +21,7 @@ export default {
   },
   head() {
     return this.$headMeta({
-      title: this.$t('check_penalty'),
+      title: this.$t('check_penalty2'),
     })
   },
   data() {
@@ -29,7 +29,7 @@ export default {
   },
   computed: {
     crumbs() {
-      return [{ name: this.$t('check_penalty') }]
+      return [{ name: this.$t('check_penalty2') }]
     },
   },
 }
