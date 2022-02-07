@@ -6,13 +6,15 @@
         v-for="attorney in attorneys"
         :key="attorney.id"
       >
-        <div class="d-flex">
-          <h2><icon class="mr-2" name="stamp" /></h2>
+        <div class="attorney-list--heading">
+          <icon  name="stamp" />
           <h2
             class="attorney-date"
             :class="{ 'title-with-line': !isMobileBreakpoint }"
           >
-            <span>{{ $t('auth_date') }}: {{ attorney.formatted_created_at }}</span>
+            <span>
+              {{ $t('auth_date') }}: {{ attorney.formatted_created_at }}
+            </span>
           </h2>
           <span class="attorney-checked" :class="getStatus(attorney.status)">
             <icon :name="['wall-clock', 'check', 'cross'][attorney.status]" />
@@ -22,17 +24,21 @@
             </span>
           </span>
         </div>
-        <div class="attorney-info-wrapper">
-          <div class="attorney-info" style="flex-grow: 1">
-            <span class="model-title">{{ $t('car_number') }}</span>
-            <span>{{ attorney.car_number }}</span>
-          </div>
-          <div class="attorney-info" style="flex-grow: 2">
-            <span class="model-title">{{ $t('letter_type') }}</span>
-            <span>{{ $t('letter_type_options')[attorney.type - 1] }}</span>
-          </div>
 
-          <div class="button-container">
+        <!-- ---------------- -->
+        <!-- ---------------- -->
+        <!-- ---------------- -->
+        <!-- ---------------- -->
+        <div class="attorney__info">
+          <div class="attorney__info--details">
+            <p>{{ $t('car_number') }}</p>
+            <p>{{ attorney.car_number }}</p>
+          </div>
+          <div class="attorney__info--details">
+            <p>{{ $t('letter_type') }}</p>
+            <p>{{ $t('letter_type_options')[attorney.type - 1] }}</p>
+          </div>
+          <div class="attorney__info--buttons">
             <button
               v-if="attorney.status === 1"
               class="btn btn--red-outline mr-1"
@@ -91,73 +97,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss">
-.attorney-list {
-  .model-title {
-    color: #646e95;
-    font-size: 14px;
-  }
-  .attorney-info {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    &:nth-of-type(1){
-      flex-grow: 2;
-    }
-    &:nth-of-type(2){
-      flex-grow: 5;
-    }
-  }
-  .button-container{
-    flex-grow: 2;
-  }
-  .attorney-info-wrapper {
-    display: flex;
-    justify-content: space-between;
-  }
-  @media (max-width: 1025px) {
-    .attorney-info {
-      margin-bottom: 10px;
-    }
-    .attorney-info-wrapper {
-      display: block;
-    }
-  }
-  .card {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .attorney-date {
-    width: 100%;
-  }
-
-  .attorney-more {
-    color: #246eb2;
-    font-size: 14px;
-    i {
-      margin-left: 5px;
-      font-size: 10px;
-    }
-  }
-  .attorney-checked {
-    font-size: 14px;
-    white-space: nowrap;
-    padding-left: 23px;
-    &.approved {
-      color: #29a53e;
-    }
-    &.rejected_attorney {
-      color: #f81734;
-    }
-    &.pending {
-      color: #646e95;
-    }
-    i {
-      margin-right: 5px;
-      font-size: 14px;
-    }
-  }
-}
-</style>
