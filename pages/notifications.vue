@@ -1,18 +1,19 @@
 <template>
   <div class="container">
-    <breadcrumbs :crumbs="crumbs" />
-    <div v-if="notifications.length" class="card d-flex justify-content-between mb-2" style="padding:20px 25px">
+    <breadcrumbs :crumbs="crumbs"/>
+    <div v-if="notifications.data.length" class="card d-flex justify-content-between mb-2" style="padding:20px 25px">
       <div style="font-size: 15px;">{{ $t('notification') }}</div>
       <div class="d-flex justify-content-between">
         <div style="font-size: 15px;margin-right: 70px;">{{ $t('date') }}</div>
       </div>
     </div>
-    <div v-if="notifications.length" class="card-bordered_scrollview card">
+    <div v-if="notifications.data.length" class="card-bordered_scrollview card">
       <div class="vehicle-specs">
         <div class="row">
           <div class="col col-12 custom-col-12">
             <ul>
-              <nuxt-link :to="getRoutePath(item)" class="cursor-pointer flex-column" tag="li" v-for="item in notifications" :key="item.id">
+              <nuxt-link :to="getRoutePath(item)" class="cursor-pointer flex-column" tag="li"
+                         v-for="item in getNotificationsList" :key="item.id">
                 <div class="full-width d-flex justify-content-between">
                   <div class="d-flex align-items-center" style="margin-bottom: 5px;white-space: nowrap;">
                     <i v-show="!item.read_at" class="new-notification-dot"></i>{{ $t(item.title) }}
@@ -30,22 +31,29 @@
     <div v-else>
       <not-found img-src="/img/notification_icon.png" textClass="text-black" :text="$t('notification_not_found')">
         <nuxt-link class="btn btn--green" :to="$localePath('/')">
-          <icon name="arrow-left" /> {{ $t('back_to_home') }}
+          <icon name="arrow-left"/>
+          {{ $t('back_to_home') }}
         </nuxt-link>
       </not-found>
     </div>
+    <pagination
+      v-if="notifications && notifications.last_page > 1"
+      :page-count="notifications.last_page"
+      :value="notifications.current_page"
+      @change-page="changePage"
+    />
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import {mapGetters} from "vuex";
 import {LayoutMixin} from "~/mixins/layout";
 import NotFound from "~/components/elements/NotFound";
 
 export default {
   components: {NotFound},
-  async fetch({ store }) {
-      await store.dispatch('getNotifications')
+  async fetch({store}) {
+    await store.dispatch('getNotifications')
   },
   mixins: [LayoutMixin],
   nuxtI18n: {
@@ -60,7 +68,11 @@ export default {
       description: this.$t('notifications')
     });
   },
-  methods:{
+  methods: {
+    async changePage(page) {
+          await this.$store.dispatch('getNotifications','page='+page)
+          this.scrollTo('.vehicle-specs', [-15, -20]);
+    },
     getAnnounceTypePath(type) {
       switch (type) {
         case 'App\\Announcement':
@@ -76,11 +88,11 @@ export default {
       }
     },
     getRoutePath(n) {
-      switch(n.route) {
+      switch (n.route) {
         case '/messages_bnb' :
-          return this.$localePath('/profile/messages?group='+n.value)
+          return this.$localePath('/profile/messages?group=' + n.value)
         case '/announcement_details' :
-          return this.$localePath(this.getAnnounceTypePath(n.notifiable_type)+'/'+n.value)
+          return this.$localePath(this.getAnnounceTypePath(n.notifiable_type) + '/' + n.value)
         case '/garage_bnb' :
           return this.$localePath('/garage')
         case '/balance' :
@@ -98,6 +110,16 @@ export default {
   },
   computed: {
     ...mapGetters(['notifications']),
+    getNotificationsList() {
+      return this.notifications.data.filter(item => {
+        if (item.route === '/messages_bnb') {
+          if (this.messages.find(m => m.id === item.value))
+            return item;
+        } else
+
+          return item;
+      })
+    },
     crumbs() {
       return [{name: this.$t('notification')}]
     },
@@ -115,9 +137,11 @@ export default {
   margin-right: 7px;
   margin-left: 3px;
 }
+
 .custom-col-12 {
   padding: 0px 28px 0px 10px;
 }
+
 .notification-info {
   display: flex;
   flex-direction: column;
