@@ -14,7 +14,7 @@
               <div class="col-12">
                 <form-select
                   :label="$t('vehicle_type_2')"
-                  :options="vehicleType"
+                  :options="vehicleTypes"
                   v-model="filled.vehicleType"
                   :invalid="$v.filled.vehicleType.$error"
                   :allowClear="false"
@@ -94,9 +94,7 @@
               </div>
               <div class="col-12">
                 <div class="dollar__exchange">
-                  <span>
-                    {{ $t('dollar_course')}}:
-                  </span>
+                  <span>{{ $t('dollar_course') }}:</span>
                   <span>
                     1 $ = 1.7 ₼
                   </span>
@@ -213,7 +211,9 @@ import Models from '@/models'
 export default {
   data() {
     return {
-      vehicleType: Models.vehicleTypes,
+      vehicleTypes: [
+        { name: this.$t('passenger_car'), id: 1 },
+      ],
       engineTypes: [
         { name: this.$t('benzin'), id: 1 },
         { name: this.$t('dizel'), id: 2 },
@@ -240,8 +240,8 @@ export default {
   },
   computed: {
     ...mapGetters(['brands']),
-    countries(){
-      return Models['countries_'+this.locale];
+    countries() {
+      return Models['countries_' + this.locale]
     },
     crumbs() {
       return [{ name: this.$t('customs_calculator') }]
@@ -272,6 +272,7 @@ export default {
       this.hasResult = false
     },
     calculate() {
+      console.log(this.filled.engineType)
       var engine_id = this.filled.engineType
       var hybrid_id = this.filled.hybridEngineType
 
@@ -518,10 +519,13 @@ export default {
     },
     async submit() {
       this.$v.$touch()
+      console.log(this.$v.$error)
       if (this.$v.$error) return
       try {
         this.calculate()
-      } catch (e) {}
+      } catch (e) {
+
+      }
     },
   },
   validations: {
@@ -540,7 +544,9 @@ export default {
       producerCountry: { required },
       senderCountry: { required },
       customsValueOfVehicle: { required },
-      engineVolume: { required },
+      engineVolume: {         required: requiredIf(function () {
+          return this.filled.engineType !== 4
+        }), },
       isMoreThanOneYear: false,
       productionYear: {
         required: requiredIf(function () {

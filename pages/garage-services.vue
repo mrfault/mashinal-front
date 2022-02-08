@@ -90,6 +90,7 @@ export default {
           isAvailable: true,
           actionName: this.$t('replenish'),
           actionLink: '/profile/balance',
+          hasActionMethod: true,
         },
         {
           title: this.$t('my_searches'),

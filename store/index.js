@@ -116,7 +116,9 @@ const getInitialState = () => ({
   homePageSliders:{},
   myAnnouncementCalls: {},
   myAnnouncementStats: {},
-  mapView: false
+  mapView: false,
+  // balance
+  balanceHasAnimation: false,
 });
 
 export const state = () => (getInitialState());
@@ -246,7 +248,8 @@ export const getters = {
   mySalon: s => s.mySalon,
   myAnnouncementCalls: s => s.myAnnouncementCalls,
   myAnnouncementStats: s => s.myAnnouncementStats,
-  mapView: s => s.mapView
+  mapView: s => s.mapView,
+
 };
 
 const objectNotEmpty = (state, commit, property) => {
