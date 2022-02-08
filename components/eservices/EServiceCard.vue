@@ -31,7 +31,7 @@
       </div>
     </div>
     <div class="e-service__actions">
-      <span class="e-service__actions--left">
+      <div class="e-service__actions--left">
         <letter-of-attorney-button
           href="#"
           tag="a"
@@ -42,7 +42,7 @@
         <button
           v-if="item.hasActionMethod"
           @click="setStoreBalance(item.actionLink)"
-          class="e-service__actions--button"
+          class="e-service__actions--button pl-0"
         >
           {{ item.actionName }}
         </button>
@@ -51,11 +51,13 @@
             {{ item.actionName }}
           </template>
         </nuxt-link>
-      </span>
-      <nuxt-link :to="$localePath(item.url)" class="e-service__actions--right">
-        {{ $t('detail') }}
-        <icon name="chevron-right" />
-      </nuxt-link>
+      </div>
+      <div class="e-service__actions--right">
+        <nuxt-link :to="$localePath(item.url)" class="">
+          {{ $t('detail') }}
+          <icon name="chevron-right" />
+        </nuxt-link>
+      </div>
     </div>
   </div>
 </template>
@@ -67,15 +69,15 @@ export default {
   props: {
     item: Object,
   },
-  methods:{
-    setStoreBalance(link){
-      this.$store.commit('mutate',{
-          property:'balanceHasAnimation',
-          value: true
-      });
+  methods: {
+    setStoreBalance(link) {
+      this.$store.commit('mutate', {
+        property: 'balanceHasAnimation',
+        value: true,
+      })
       this.$router.push(link)
-    }
-  }
+    },
+  },
 }
 </script>
 
