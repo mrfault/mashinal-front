@@ -12,19 +12,21 @@
       </div>
       <div class="e-service__body--description" v-if="item.description">
         <p class="key">{{ item.description }}</p>
-        <span class="value" >{{ item.value }}</span>
+        <span class="value">{{ item.value }}</span>
       </div>
       <div class="e-service__body--description" v-if="item.isContract">
         <p class="key">
           <span class="description-red-7">"{{ item.contractName }}"</span>
           {{ $t('end_time_of_package') }}
-          <span><b>{{ item.contractEndDate }}</b></span>
+          <span>
+            <b>{{ item.contractEndDate }}</b>
+          </span>
         </p>
       </div>
       <div class="e-service__body--description" v-if="item.isMessage">
         <ol>
-          <li>{{ $t('vsego')  }} :  {{ item.messageCounts[0]}} </li>
-          <li>{{ $t('notread_messages')  }} : {{ item.messageCounts[1]}} </li>
+          <li>{{ $t('vsego') }} : {{ item.messageCounts[0] }}</li>
+          <li>{{ $t('notread_messages') }} : {{ item.messageCounts[1] }}</li>
         </ol>
       </div>
     </div>
@@ -36,11 +38,18 @@
           classes=""
           v-if="item.hasAction && item.isAttorney"
         />
-        <nuxt-link
-          v-if="item.hasAction && item.actionName"
-          :to="$localePath(item.actionLink)"
+
+        <button
+          v-if="item.hasActionMethod"
+          @click="setStoreBalance(item.actionLink)"
+          class="e-service__actions--button"
         >
           {{ item.actionName }}
+        </button>
+        <nuxt-link v-else :to="$localePath(item.actionLink)">
+          <template>
+            {{ item.actionName }}
+          </template>
         </nuxt-link>
       </span>
       <nuxt-link :to="$localePath(item.url)" class="e-service__actions--right">
@@ -58,6 +67,15 @@ export default {
   props: {
     item: Object,
   },
+  methods:{
+    setStoreBalance(link){
+      this.$store.commit('mutate',{
+          property:'balanceHasAnimation',
+          value: true
+      });
+      this.$router.push(link)
+    }
+  }
 }
 </script>
 

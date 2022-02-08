@@ -82,6 +82,15 @@
             margin-left: 8px;
         }
     }
+    &--button{
+      color: $green-1;
+      font: 400 14px Gilroy;
+      text-decoration: underline;
+      width: 40%;
+      background: transparent;
+      border: none;
+      outline: none;
+    }
   }
 }
 
