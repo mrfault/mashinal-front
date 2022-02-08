@@ -272,6 +272,7 @@ export default {
       this.hasResult = false
     },
     calculate() {
+      console.log(this.filled.engineType)
       var engine_id = this.filled.engineType
       var hybrid_id = this.filled.hybridEngineType
 
@@ -518,10 +519,13 @@ export default {
     },
     async submit() {
       this.$v.$touch()
+      console.log(this.$v.$error)
       if (this.$v.$error) return
       try {
         this.calculate()
-      } catch (e) {}
+      } catch (e) {
+
+      }
     },
   },
   validations: {
@@ -540,7 +544,9 @@ export default {
       producerCountry: { required },
       senderCountry: { required },
       customsValueOfVehicle: { required },
-      engineVolume: { required },
+      engineVolume: {         required: requiredIf(function () {
+          return this.filled.engineType !== 4
+        }), },
       isMoreThanOneYear: false,
       productionYear: {
         required: requiredIf(function () {
