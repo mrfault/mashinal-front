@@ -14,7 +14,7 @@
               <div class="col-12">
                 <form-select
                   :label="$t('vehicle_type_2')"
-                  :options="vehicleType"
+                  :options="vehicleTypes"
                   v-model="filled.vehicleType"
                   :invalid="$v.filled.vehicleType.$error"
                   :allowClear="false"
@@ -94,9 +94,7 @@
               </div>
               <div class="col-12">
                 <div class="dollar__exchange">
-                  <span>
-                    {{ $t('dollar_course')}}:
-                  </span>
+                  <span>{{ $t('dollar_course') }}:</span>
                   <span>
                     1 $ = 1.7 ₼
                   </span>
@@ -213,7 +211,9 @@ import Models from '@/models'
 export default {
   data() {
     return {
-      vehicleType: Models.vehicleType,
+      vehicleTypes: [
+        { name: this.$t('passenger_car'), id: 1 },
+      ],
       engineTypes: [
         { name: this.$t('benzin'), id: 1 },
         { name: this.$t('dizel'), id: 2 },
@@ -240,8 +240,8 @@ export default {
   },
   computed: {
     ...mapGetters(['brands']),
-    countries(){
-      return Models['countries_'+this.locale];
+    countries() {
+      return Models['countries_' + this.locale]
     },
     crumbs() {
       return [{ name: this.$t('customs_calculator') }]

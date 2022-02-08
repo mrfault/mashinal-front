@@ -2157,4 +2157,5 @@ export default {
   "filled_in_at_will":"İstəyə dair qeyd oluna bilər",
   "dollar_course":"Dolların məzənnəsi",
   "profile": 'Profil',
+  "passenger_car":"Minik avtomobili",
 }
