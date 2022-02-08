@@ -28,7 +28,7 @@ export default {
       return [
         {
           title: this.$t('attorney'),
-          description: this.$t('attorney_count'),
+          description: null,
           value: 0,
           icon: 'stamp-rotated',
           url: '/garage',

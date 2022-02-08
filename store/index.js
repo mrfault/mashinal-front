@@ -155,7 +155,7 @@ export const getters = {
   countNewMessages: s => s.messages.filter((group) => {
     return group.last_message && !group.last_message.is_read && (group.last_message.sender_id != s.auth.user.id);
   }).length,
-  countNewNotifications: s => s.notifications.filter(item => !item.read_at).length,
+  countNewNotifications: s => s.notifications.data ? s.notifications.data.filter(item => !item.read_at).length : [],
   // services
   services: s => s.services,
   actives: s => s.actives,
@@ -325,8 +325,8 @@ export const actions = {
     commit('mutate', { property: 'pageRef', value: path });
   },
 
-  async getNotifications({ commit }) {
-    const { data } = await this.$axios.$get('/notifications')
+  async getNotifications({ commit },page = null) {
+    const data = await this.$axios.$get('/notifications?with_pagination=true&'+page)
     commit('mutate', { property: 'notifications', value: data });
   },
   // Messages
