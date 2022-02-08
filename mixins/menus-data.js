@@ -77,11 +77,11 @@ export const MenusDataMixin = {
 
     sidebarMenus() {
       return [
-        { title: 'garage', route: '/garage', icon: 'garage-tab' },
+        { title: 'garage', route: '/garage-services', icon: 'garage-tab' },
+        { title: 'eservices', route: '/e-services', icon: 'globe' },
         { title: 'salons', route: '/salons', icon: 'salons-tab' },
         { title: 'shops', route: '/parts/shops', icon: 'shops-tab' },
         { title: 'autocatalog', route: '/catalog', icon: 'catalog-tab' },
-        { title: 'eservices', route: '/e-services', icon: 'globe' },
         { title: 'favorites', route: '/profile/favorites', icon: 'favorites-tab' },
         { title: 'comparisons', route: '/comparison', icon: 'compare' },
         { title: 'my_searches', route: '/profile/templates', icon: 'template', auth: true },

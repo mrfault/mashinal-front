@@ -213,7 +213,7 @@ import Models from '@/models'
 export default {
   data() {
     return {
-      vehicleType: Models.vehicleTypes,
+      vehicleType: Models.vehicleType,
       engineTypes: [
         { name: this.$t('benzin'), id: 1 },
         { name: this.$t('dizel'), id: 2 },
