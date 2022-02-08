@@ -14,7 +14,7 @@
               <div class="col-12">
                 <form-select
                   :label="$t('vehicle_type_2')"
-                  :options="vehicleType"
+                  :options="vehicleTypes"
                   v-model="filled.vehicleType"
                   :invalid="$v.filled.vehicleType.$error"
                   :allowClear="false"
@@ -213,7 +213,7 @@ import Models from '@/models'
 export default {
   data() {
     return {
-      vehicleType: Models.vehicleType,
+      vehicleTypes: Models.vehicleType,
       engineTypes: [
         { name: this.$t('benzin'), id: 1 },
         { name: this.$t('dizel'), id: 2 },

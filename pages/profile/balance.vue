@@ -10,7 +10,6 @@
             </h2>
             <div
               class="increase-balance-info"
-              :class="{ 'tabs-filter': balanceHasAnimation }"
             >
               <icon name="wallet" class="mb-2" />
               <strong class="mb-1">
@@ -64,12 +63,12 @@
                 </button>
               </form>
             </div>
-            <div :class="{'tabs-filter':balanceHasAnimation}">
+            <div>
               <banking-cards />
             </div>
           </div>
         </div>
-        <div class="col-lg-8" :class="{ 'tabs-filter': balanceHasAnimation }">
+        <div class="col-lg-8">
           <div class="card mb-2 mb-lg-3" v-if="!isMobileBreakpoint">
             <div class="payment-history-rows">
               <div
@@ -295,7 +294,7 @@ export default {
           property:'balanceHasAnimation',
           value: false
       });
-      },4000)
+      },1000)
       
     },
   },
@@ -317,15 +316,5 @@ export default {
     })
     this.removeAnimationbalanceIncrement()
   },
-  watch:{
-    localStorage: function(){
-      let asd = localStorage.getItem("setAnimationToBalance")
-      if (asd) {
-        this.balanceHasAnimation = true;;
-      }else{
-        return false;
-      }
-    }
-  }
 }
 </script>
