@@ -31,7 +31,7 @@
         <!-- ---------------- -->
         <div class="attorney__info">
           <div class="attorney__info--details">
-            <p>{{ $t('car_number') }}</p>
+            <p>{{ $t('car_number') }} </p>
             <p>{{ attorney.car_number }}</p>
           </div>
           <div class="attorney__info--details">

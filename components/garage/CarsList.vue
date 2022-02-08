@@ -33,9 +33,13 @@
     </div>
     <div class="col-12 col-lg-4-5">
       <div class="card with-margins" v-if="activeCar" v-show="carChosen || !isMobileBreakpoint">
-        <cars-nav :tab="tab" @change-tab="tab = $event" />
-        <car-info :car="activeCar" v-show="tab === 'info'" :key="'info_' + activeCar.id" />
-        <car-protocols :car="activeCar" v-show="tab === 'fines'" :key="'fines_' + activeCar.id" v-if="activeCar.car_id"/>
+        <h2>{{$t('about')}}</h2>
+        <car-info :car="activeCar"  :key="'info_' + activeCar.id" />
+      </div>
+
+      <div class="card with-margins mt-4" v-if="activeCar" v-show="carChosen || !isMobileBreakpoint">
+        <h2>{{$t('fines')}} </h2>
+        <car-protocols :car="activeCar"  :key="'fines_' + activeCar.id" v-if="activeCar.car_id"/>
       </div>
     </div>
   </div>
@@ -54,7 +58,6 @@ export default {
   components: {
     AddCar,
     CarItem,
-    CarsNav,
     CarInfo,
     CarProtocols
   },
