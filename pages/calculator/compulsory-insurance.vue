@@ -84,16 +84,7 @@
               </div>
 
               <div class="row">
-                <div class="col-12 col-md-6 mb-3">
-                  <form-select
-                    :label="labels.country"
-                    :options="countries"
-                    v-model="filled.country"
-                    :disabled="true"
-                    :clear-option="false"
-                    :allowClear="false"
-                  />
-                </div>
+
                 <div class="col-12 col-md-6 mb-3">
                   <form-select
                     :label="labels.vehicleType"
@@ -132,7 +123,7 @@
             </div>
           </div>
         </div>
-        <div class="col-12 col-md-12 col-lg-8" v-else>
+        <div class="col-12 col-md-12 col-lg-8 mt-4" v-else>
           <div class="calculator__empty-results">
             <div class="calculator__empty-results--image">
               <img src="/images/insurance-empty-result.png" alt="image" />

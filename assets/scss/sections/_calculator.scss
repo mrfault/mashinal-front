@@ -7,6 +7,7 @@
       font: 400 18px Gilroy;
       margin-bottom: 18px;
       width: 100%;
+      padding-right: 64px;
       position: relative;
       &::after {
         position: absolute;
@@ -68,7 +69,7 @@
 
         &-flip {
           position: absolute;
-          top: 52px;
+          top: 39px;
           right: -17px;
           width: 17px;
           height: 17px;
@@ -165,7 +166,7 @@
           padding: 8px 14px 7px 21px;
           font: 400 14px Gilroy;
           clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 10% 50%);
-  
+
           &-flip {
             position: absolute;
             bottom: 5px;
@@ -212,7 +213,7 @@
       &--heading{
         padding: 80px 25px 20px 25px;
         .label {
-          top: 37px;
+          top: 23px;
         }
       }
     }
