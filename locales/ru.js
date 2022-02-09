@@ -2148,5 +2148,6 @@ export default {
     "empty_garage_part_3":"",
     "transition_count_to_number":"Количество переходов по номеру:",
     "end_time_of_package":"Дата окончания пакета",
-    "balance_of_wallet": "Баланс кошелька"
+    "balance_of_wallet": "Баланс кошелька",
+    "passenger_car":"Легковые"
 }
