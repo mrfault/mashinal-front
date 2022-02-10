@@ -7,21 +7,21 @@
         </div>
         <div class="col-lg-6 offset-md-2 mb-2 mb-lg-3 d-none d-lg-block">
           <div class="row">
-            <div class="col-4">
+            <div class="col-4" v-if="!onlySavedSearch">
               <nuxt-link custom exact :to="$localePath('/cars')" v-slot="{ href }">
                 <a :href="href" class="btn btn--pale-red full-width" :class="{'active': ['cars','index'].includes(routeName)}" @click.prevent="goToSearch(href)">
                   <icon name="search" /> {{ $t('regular_search') }}
                 </a>
               </nuxt-link>
             </div>
-            <div class="col-4">
+            <div class="col-4" v-if="!onlySavedSearch">
               <nuxt-link custom exact :to="$localePath('/cars/advanced-search')" v-slot="{ href }">
                 <a :href="href" class="btn btn--pale-red full-width" :class="{'active': routeName === 'cars-advanced-search'}" @click.prevent="goToSearch(href)">
                   <icon name="options" /> {{ $t('advanced_search') }}
                 </a>
               </nuxt-link>
             </div>
-            <div class="col-4">
+            <div class="col-4" v-if="!onlySavedSearch">
               <nuxt-link custom exact :to="$localePath('/cars/assistant')" v-slot="{ href }">
                 <a :href="href" class="btn btn--pale-red full-width" :class="{'active': routeName === 'cars-assistant'}" @click.prevent="goToSearch(href)">
                   <icon name="flag" /> {{ $t('helper_search') }}
@@ -262,13 +262,15 @@
                     </form-select>
                   </div>
                 </template>
-                <div class="col-lg-3 mt-2 mt-lg-0 mb-3" v-show="searchApplied">
-                  <form-checkbox :label="$t('search_save')" v-model="savedSearch" skip-truncate
-                    input-name="savedSearch" transparent :disabled="!loggedIn" @try="$nuxt.$emit('login-popup', 'saved-search')" />
-                </div>
+                <template v-if="!onlySavedSearch">
+                  <div class="col-lg-3 mt-2 mt-lg-0 mb-3" v-show="searchApplied">
+                    <form-checkbox :label="$t('search_save')" v-model="savedSearch" skip-truncate
+                                   input-name="savedSearch" transparent :disabled="!loggedIn" @try="$nuxt.$emit('login-popup', 'saved-search')" />
+                  </div>
+                </template>
               </div>
             </div>
-            <div :class="[{'col-lg-4': !assistant, 'col-lg-6': assistant}]">
+            <div v-if="!onlySavedSearch" :class="[{'col-lg-4': !assistant, 'col-lg-6': assistant}]">
               <div :class="['row', {'mb-1 mb-lg-0': !searchApplied && !(advanced || assistant)}]">
                 <div class="col-6">
                   <button type="button" :class="['btn','full-width','btn--red-outline',{'pointer-events-none': pending}]" @click="resetForm(!(advanced || assistant))">
@@ -282,17 +284,31 @@
                 </div>
               </div>
             </div>
+            <div v-else :class="[{'col-lg-4': !assistant, 'col-lg-6': assistant}]">
+              <div :class="['row', {'mb-1 mb-lg-0': !searchApplied && !(advanced || assistant)}]">
+                <div class="col-6">
+                  <button type="button" :class="['btn','full-width','btn--red-outline',{'pointer-events-none': pending}]" @click="resetForm(!(advanced || assistant))">
+                    <icon name="reset" /> {{ $t('clear_search') }}
+                  </button>
+                </div>
+                <div class="col-6">
+                  <button type="button" :class="['btn','full-width','btn--green',{pending}]" @click="$nuxt.$emit('login-popup', 'saved-search')">
+                     {{ $t('search_and_save') }}
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      <div class="collapse-toggle" v-if="isMobileBreakpoint && !(advanced || assistant)">
+      <div  class="collapse-toggle" v-if="isMobileBreakpoint && !(advanced || assistant)">
         <button type="button" class="btn" @click="collapsed = !collapsed">
           <span>{{ $t(`search_${collapsed ? 'more' : 'less'}`) }}</span>
           <icon :name="`chevron-${collapsed ? 'down' : 'up'}`" />
         </button>
       </div>
     </div>
-    <div class="announcements-sorting" v-show="routeName !== 'index' && totalCount && !(advanced || assistant)">
+    <div v-if="!onlySavedSearch" class="announcements-sorting" v-show="routeName !== 'index' && totalCount && !(advanced || assistant)">
       <div class="row">
         <div class="col-6 col-lg-auto mt-3 mt-lg-5 mb-n6 mb-lg-n1">
           <div class="form-info no-bg text-green" v-if="isMobileBreakpoint">
@@ -330,6 +346,10 @@ export default {
     totalCount: {
       type: Number,
       default: 0
+    },
+    onlySavedSearch: {
+      default: false,
+      type: Boolean
     },
     pending: Boolean,
     advanced: Boolean,

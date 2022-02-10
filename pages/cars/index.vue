@@ -1,23 +1,27 @@
 <template>
   <div class="pages-cars-index">
-    <div class="container"> 
+    <div class="container">
       <breadcrumbs :crumbs="crumbs" />
-      <car-search-form 
+      <car-search-form
+        :only-saved-search="!!$route.query.saved || false"
         :total-count="$paginate(carsAnnouncements).total"
         :pending="pending"
         @pending="pending = true"
-        @submit="searchCars" 
+        @submit="searchCars"
       />
-      <grid 
-        v-if="carsAnnouncements.data.length"
-        :announcements="carsAnnouncements.data" 
-        :paginate="$paginate(carsAnnouncements)"
-        :title="$t('announcements')"
-        :pending="pending"
-        @change-page="searchCars"
-        escape-duplicates
-      />
-      <no-results v-else />
+      <template v-if="!$route.query.saved">
+        <grid
+          v-if="carsAnnouncements.data.length"
+          :announcements="carsAnnouncements.data"
+          :paginate="$paginate(carsAnnouncements)"
+          :title="$t('announcements')"
+          :pending="pending"
+          @change-page="searchCars"
+          escape-duplicates
+        />
+        <no-results v-else />
+      </template>
+
     </div>
   </div>
 </template>
@@ -75,12 +79,12 @@ export default {
     ]);
 
     if ($auth.loggedIn) {
-      await store.dispatch('fetchSavedSearch', { 
+      await store.dispatch('fetchSavedSearch', {
         search_url: `/cars?car_filter=${encodeURI(JSON.stringify(post))}`
       });
     }
 
-    return { 
+    return {
       searchParams,
       pending: false
     }
@@ -103,7 +107,7 @@ export default {
   },
   computed: {
     ...mapGetters(['carsAnnouncements']),
-    
+
     crumbs() {
       return [
         { name: this.$t('cars') }
