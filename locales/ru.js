@@ -2149,5 +2149,6 @@ export default {
     "transition_count_to_number":"Количество переходов по номеру:",
     "end_time_of_package":"Дата окончания пакета",
     "balance_of_wallet": "Баланс кошелька",
-    "passenger_car":"Легковые"
+    "passenger_car":"Легковые",
+    "electric":"Электричество"
 }

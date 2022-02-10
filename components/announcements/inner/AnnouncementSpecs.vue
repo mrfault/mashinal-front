@@ -55,7 +55,7 @@ export default {
         { key: 'engine', value: this.engineSpecs },
         { key: 'the_number_of_measures', value: this.tact, for: ['moto'] },
         { key: 'cylinder_block', value: this.cylinderBlock, for: ['moto'] },
-        { key: 'cylinder_location', value: this.cylinderPlacement, for: ['moto'] },
+        { key: 'fuel_type', value: this.fuelType, for: ['moto'] },
         { key: 'box', value: this.box },
         { key: 'privod', value: this.gear },
         { key: 'type_of_brakes', value: this.brakeType, for: ['commercial'] },

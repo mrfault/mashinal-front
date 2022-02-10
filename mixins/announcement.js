@@ -97,6 +97,10 @@ export const AnnouncementDataMixin = {
       if (!this.motoOptions.config) return false;
       return this.$t(getName(this.announcement.cylinder_type_id, this.motoOptions.config.cylinder_placement.sell_values[this.motoTypeKey]));
     },
+    fuelType() {
+      if (!this.motoOptions.config) return false;
+      return this.$t(getName(this.announcement.fuel_type, this.motoOptions.config.fuel_type.values));
+    },
     tact() {
       if (this.announcement.tact === 0) return false;
       return this.announcement.tact === 1 ? 2 : 4;

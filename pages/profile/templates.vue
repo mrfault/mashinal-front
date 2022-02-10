@@ -42,7 +42,6 @@
           <form class="form" @submit.prevent="updateNotifications" novalidate>
             <div class="mb-2 mb-lg-3">
               <form-select
-                v-if="user.email"
                 v-model="interval"
                 :options="getNotificationOptions"
                 :clear-option="false"
@@ -71,7 +70,7 @@
       </template>
       <no-results :text="$t('no_templates')" v-else >
         <nuxt-link style="max-width: 150px;" class="active btn btn--pale-green-outline d-flex full-width mt-2"
-                   :to="$localePath('/cars/advanced-search')">
+                   :to="$localePath('/cars')">
           <i aria-hidden="true" class="icon-arrow-left"></i>
           {{ $t('new_search') }}
         </nuxt-link>
@@ -179,10 +178,7 @@ export default {
       );
     },
     openNotificationsModal() {
-      if (this.user.email)
         this.showIntervalModal = true;
-      else
-        this.$nuxt.$emit('open-modal-to-change-email');
     },
     async updateNotifications() {
       if (this.pending) return;
