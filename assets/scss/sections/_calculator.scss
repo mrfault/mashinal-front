@@ -66,7 +66,6 @@
         padding: 8px 14px 7px 28px;
         font: 400 14px Gilroy;
         clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 10% 50%);
-
         &-flip {
           position: absolute;
           top: 52px;
@@ -79,7 +78,7 @@
         @media screen and (max-width: 480px){
           &-flip {
 
-            top: 38px;
+            top: 52px;
 
           }
       }
@@ -221,7 +220,7 @@
       &--heading{
         padding: 80px 25px 20px 25px;
         .label {
-          top: 23px;
+          top: 37px;
         }
       }
     }
