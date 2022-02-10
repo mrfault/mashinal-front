@@ -70,7 +70,7 @@
       </template>
       <no-results :text="$t('no_templates')" v-else >
         <nuxt-link style="max-width: 150px;" class="active btn btn--pale-green-outline d-flex full-width mt-2"
-                   :to="$localePath('/cars')">
+                   :to="$localePath('/cars?saved=true')">
           <i aria-hidden="true" class="icon-arrow-left"></i>
           {{ $t('new_search') }}
         </nuxt-link>
