@@ -131,6 +131,12 @@
         color: $red-1;
     }
   }
+  &__info{
+    &--paragraph{
+      font: 400 14px Gilroy;
+      line-height: 19px;
+    }
+  }
 }
 
 
