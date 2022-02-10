@@ -69,13 +69,21 @@
 
         &-flip {
           position: absolute;
-          top: 39px;
+          top: 52px;
           right: -17px;
           width: 17px;
           height: 17px;
           background: #c6021c;
           clip-path: polygon(0 0, 0% 100%, 100% 0);
         }
+        @media screen and (max-width: 480px){
+          &-flip {
+
+            top: 38px;
+
+          }
+      }
+
       }
     }
     &--content {

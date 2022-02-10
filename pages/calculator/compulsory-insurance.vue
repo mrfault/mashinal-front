@@ -93,6 +93,7 @@
                     :invalid="$v.filled.vehicleType.$error"
                     :clear-option="false"
                     :clear-option-pull-down="false"
+                    disabled
                   />
                 </div>
                 <div class="col-12 col-md-6 mb-3" v-if="filled.vehicleType < 4">
@@ -100,6 +101,7 @@
                     :placeholder="labels.engineVolume"
                     v-model="filled.engineVolume"
                     :invalid="$v.filled.engineVolume.$error"
+                    disabled
                   />
                 </div>
                 <div class="col-12 col-md-6 mb-3">
@@ -108,6 +110,7 @@
                     :options="vehicleOwners"
                     v-model="filled.vehicleOwner"
                     :invalid="$v.filled.vehicleOwner.$error"
+                    disabled
                   />
                 </div>
                 <hr />
