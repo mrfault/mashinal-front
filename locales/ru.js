@@ -929,7 +929,7 @@ export default {
   "info_service_once_in_5_mins": "Сервис <strong>{service}</strong> можно использовать в 5 минут.",
   "injector": "Инжектор",
   "inspection_info": "Информация о техническом осмотре транспортного средства",
-  "insurance_fee_of_vehicle": 'Ваша премия по автострахованию',
+  "insurance_fee_of_vehicle": 'Стоимость страховки',
   "insurance_info": "Информация об обязательных страховых случаях",
   "is_in_credit": "В кредите",
   "is_main": "Основной",
@@ -2150,5 +2150,6 @@ export default {
     "end_time_of_package":"Дата окончания пакета",
     "balance_of_wallet": "Баланс кошелька",
     "passenger_car":"Легковые",
-    "electric":"Электричество"
+    "electric":"Электричество",
+    "notification_not_found":"Нет уведомлений.",
 }
