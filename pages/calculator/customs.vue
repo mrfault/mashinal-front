@@ -201,6 +201,23 @@
         </div>
       </div>
     </div>
+    <div class="row mt-3">
+      <div class="col-12">
+        <div class="card">
+          <h4>{{ $t('customs_info_title') }}</h4>
+          <hr />
+          <p class="calculator__info--paragraph">
+            {{ $t('customs_info_part_1') }}
+          </p>
+          <p class="calculator__info--paragraph">
+            {{ $t('customs_info_part_2') }}
+          </p>
+          <p class="calculator__info--paragraph mb-0">
+            {{ $t('customs_info_part_3') }}
+          </p>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -211,9 +228,7 @@ import Models from '@/models'
 export default {
   data() {
     return {
-      vehicleTypes: [
-        { name: this.$t('passenger_car'), id: 1 },
-      ],
+      vehicleTypes: [{ name: this.$t('passenger_car'), id: 1 }],
       engineTypes: [
         { name: this.$t('benzin'), id: 1 },
         { name: this.$t('dizel'), id: 2 },

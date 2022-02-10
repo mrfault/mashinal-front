@@ -8,7 +8,7 @@
     </div>
     <div class="e-service__body">
       <div class="e-service__body--image">
-        <img :src="`/images/${item.image}.png`" />
+        <img :src="`/card-icons/${item.image}.svg`" />
       </div>
       <div class="e-service__body--description" v-if="item.description">
         <p class="key">{{ item.description }}</p>
