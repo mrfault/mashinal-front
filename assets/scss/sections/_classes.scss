@@ -1,7 +1,18 @@
-.height-100{
-    height: 100%;
+.height-100 {
+  height: 100%;
 }
 
-.tabs-filter{
-    filter: blur(1px);
+.tabs-filter {
+  filter: blur(1px);
+}
+
+.checkbox-input,
+.letter_permissions_can_be_given {
+  span {
+    white-space: break-spaces !important;
+  }
+}
+
+.white-space-break {
+  white-space: break-spaces !important;
 }

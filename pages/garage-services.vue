@@ -162,6 +162,16 @@ export default {
           image: 'shop-dashboard',
           isAvailable: !!this.$auth.user.part_salon,
         },
+        {
+          title: this.$t('comparisons'),
+          description: null,
+          value: null,
+          icon: 'comparisons',
+          url: '/dashboard/2',
+          hasAction: false,
+          image: 'comparisons',
+          isAvailable: !!this.$auth.user.part_salon,
+        },
       ]
     }
   },
