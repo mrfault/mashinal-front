@@ -2163,5 +2163,9 @@ export default {
   "customs_info_part_2": 'Bəyannaməçi tərəfindən bəyan edilmiş gömrük  dəyəri və onun müəyyən edilməsi ilə bağlı məlumatlar dəqiq, kəmiyyəti müəyyən oluna bilən və sənədlərlə təsdiq edilmiş məlumatlara əsaslanmalıdır.',
   "customs_info_part_3": 'Gömrük orqanının gömrük dəyərləndirilməsi məqsədi ilə ona təqdim edilən hər hansı məlumatın, sənədin və ya bəyannamənin düzgünlüyünü araşdırmaq hüququ vardır.',
   "electric":"Elektrik",
-  "search_and_save": "Axtar və yadda saxla"
+  "search_and_save": "Axtar və yadda saxla",
+  "tooltip_favorites":"Seçilmişlər ",
+  "tooltip_templates":"Axtarış şablonları ",
+  "tooltip_messages":"Mesajlar  ",
+  "tooltip_notifications":"Bildirişlər ",
 }
