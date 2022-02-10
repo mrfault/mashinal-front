@@ -124,7 +124,7 @@ export default {
     return {
       selected: [],
       selectAll: false,
-      interval: 0,
+      interval: 1440,
       showRemoveModal: false,
       showIntervalModal: false,
       pending: false
