@@ -39,7 +39,7 @@ export const SearchMixin = {
       this.collapsed = collapsed;
       // get values from route query
       for (let property in this.form) {
-        if (!form.hasOwnProperty(property)) 
+        if (!form.hasOwnProperty(property))
           continue;
         let value = form[property];
         this.$set(this.form, property, value);
@@ -106,6 +106,9 @@ export const SearchMixin = {
       }
     },
     submitForm() {
+      if(this.onlySavedSearch) {
+        this.saveSearch();
+      }
       this.beforeSubmitForm();
       // tracking
       this.fbTrack('Search Api');
@@ -130,7 +133,7 @@ export const SearchMixin = {
           // look for a saved search
           if (this.loggedIn && this.meta.type === 'cars') {
             this.fetchSavedSearch({ search_url: `${this.meta.path}?${searchQuery}` });
-          } 
+          }
         });
       }
     },
@@ -220,6 +223,7 @@ export const SearchMixin = {
             search_url: `${this.meta.path}?${this.meta.param}=${encodeURI(searchFilter)}`,
             lang: this.locale
           }).then(() => {
+            this.$nuxt.$emit('saved-search-created')
             this.getNotViewedSavedSearch();
             this.$toasted.success(this.$t('search_saved'));
           });
@@ -238,7 +242,7 @@ export const SearchMixin = {
     searchApplied() {
       return this.routeName !== 'index' && !!this.$route.query[this.meta.param];
     },
-    
+
     getMileageOptions() {
       let zeroFirst = this.meta.type !== 'cars';
       return [

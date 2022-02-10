@@ -2158,5 +2158,6 @@ export default {
   "dollar_course":"Dolların məzənnəsi",
   "profile": 'Profil',
   "passenger_car":"Minik avtomobili",
-  "electric":"Elektrik"
+  "electric":"Elektrik",
+  "search_and_save": "Axtar və yadda saxla"
 }
