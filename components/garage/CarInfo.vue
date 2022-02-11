@@ -30,7 +30,7 @@ export default {
   },
   computed: {
     mainSpecs() {
-      let getDate = (date) => date && this.$moment(this.$parseDate(date)).format('DD.MM.YYYY');
+      let getDate = (date) => date && this.$moment((date)).format('DD.MM.YYYY');
 
       return this.$dataRows({
         tech_id: this.car.tech_id,

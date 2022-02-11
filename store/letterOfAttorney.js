@@ -51,6 +51,7 @@ export const state = () => getInitialState();
 export const getters = {
   currentStep: s => s.step,
   currentRealStep: (s, g) => {
+    return 10;
     let steps = [1,2,4,5,8,9,10];
     // check if 6th and 7th steps are required
     if (g.hasGeneralPower) steps.splice(4,0,6,7);
