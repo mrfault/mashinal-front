@@ -2157,4 +2157,5 @@ export default {
   "tooltip_templates":"Сохраненные поиски",
   "tooltip_messages":"Сообщения   ",
   "tooltip_notifications":"Уведомления ",
+  "other_options": "Другие опции"
 }

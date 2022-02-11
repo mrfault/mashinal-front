@@ -21,7 +21,7 @@ export const MenusDataMixin = {
         { title: 'policy', route: '/policy', icon: 'policy', showOnCard: true }
       ];
     },
-    
+
     navbarMenus() {
       let announcementCategories = [
         { title: 'cars', route: '/cars', children: [{ title: 'car_plural', route: '/cars', icon: 'car-1' }] },
@@ -71,7 +71,7 @@ export const MenusDataMixin = {
 
       if (this.isMobileBreakpoint)
         menus.push(this.pageMenus.find(menu => menu.title === 'policy'));
-        
+
       return menus;
     },
 

@@ -2168,4 +2168,5 @@ export default {
   "tooltip_templates":"Axtarış şablonları ",
   "tooltip_messages":"Mesajlar  ",
   "tooltip_notifications":"Bildirişlər ",
+  "other_options": "Digər seçimlər"
 }

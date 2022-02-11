@@ -42,6 +42,60 @@
         </template>
       </div>
     </div>
+    <div class="mt-2 mt-lg-3 car-filters_row">
+      <div class="d-flex mb-2 mb-lg-3" @click="collapsed = !collapsed;">
+        <h2 class="title-with-line full-width">
+          <span>{{ $t('other_options') }}</span>
+        </h2>
+        <icon :name="collapsed ? 'chevron-up' : 'chevron-down'" class="cursor-pointer" />
+      </div>
+    </div>
+    <transition-expand>
+      <div v-if="collapsed">
+        <div v-for="(item, index) in filteredOtherComponents" :key="index">
+        <h2 class="title-with-line" :id="`anchor-${getKey(item)}`">
+          <span>{{ getPlaceholder(item) }} <span class="star" v-if="item.required"> *</span></span>
+        </h2>
+        <div class="row">
+          <template v-if="getType(item) === 'input-radio'">
+            <div class="col-lg-4 mb-2 mb-lg-3" v-for="(input, index) in getValues(item)" :key="index">
+              <form-radio
+                v-model="form[getKey(item)]"
+                :invalid="hasError(item)"
+                :input-name="getKey(item)"
+                :radio-value="$notUndefined(input.id,input.key)"
+                :label="input.name[locale] || $t(input.name)"
+                @change="selectOption(getKey(item), $event)"
+              />
+            </div>
+          </template>
+          <template v-else-if="getType(item) === 'select-menu'">
+            <div class="col-lg-4">
+              <form-select
+                v-model="form[getKey(item)]"
+                :invalid="hasError(item)"
+                :label="getPlaceholder(item)"
+                :options="getValues(item)"
+                :name-in-value="true"
+                @change="selectOption(getKey(item), $event)"
+              />
+            </div>
+          </template>
+          <template class="form-group" :class="getError(item)" v-else-if="getType(item) === 'input-numeric'">
+            <div class="col-lg-4">
+              <form-numeric-input
+                v-model="form[getKey(item)]"
+                :invalid="hasError(item)"
+                :placeholder="`${getPlaceholder(item)}${getSuffix(getKey(item), ', ')}`"
+                :suffix="getSuffix(getKey(item))"
+                @change="selectOption(getKey(item), $event)"
+              />
+            </div>
+          </template>
+        </div>
+      </div>
+    </div>
+   </transition-expand>
   </div>
 </template>
 
@@ -66,6 +120,7 @@
         };
       }
       return {
+        collapsed: false,
         options,
         filters,
         form: filters instanceof Array
@@ -124,11 +179,27 @@
           return this.filters;
         let filters = {};
         for(let i in this.filters) {
+          if(this.otherOptions.includes(i)) continue;
           let item = this.filters[i];
           if (!item.category || item.category.includes(parseInt(this.selected.category)))
             filters[i] = {...item, field: i};
         }
         return filters;
+      },
+      filteredOtherComponents() {
+        if (this.filters instanceof Array)
+          return this.filters;
+        let filters = {};
+        for(let i in this.filters) {
+          if(!this.otherOptions.includes(i)) continue;
+          let item = this.filters[i];
+          if (!item.category || item.category.includes(parseInt(this.selected.category)))
+            filters[i] = {...item, field: i};
+        }
+        return filters;
+      },
+      otherOptions() {
+        return ['number_of_vehicles', 'engine', 'cylinders'];
       }
     },
     created() {
