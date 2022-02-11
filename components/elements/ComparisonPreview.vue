@@ -8,7 +8,11 @@
     >
       <div class="comparison-preview__title d-flex">
         <h4 v-if="typeButtons.length !== 2">
-          {{ activeType === 'announcements' ? $t('comparison_announcements') : $t('comparison_models') }}
+          {{
+            activeType === 'announcements'
+              ? $t('comparison_announcements')
+              : $t('comparison_models')
+          }}
         </h4>
         <span v-else />
         <span class="cursor-pointer close" @click="$emit('close')">
@@ -25,23 +29,42 @@
         v-model="activeType"
       />
 
-      
       <!-- Announcements -->
-      <vue-scroll :ops="announcementScrollOps" v-if="activeType === 'announcements'">
+      <vue-scroll
+        :ops="announcementScrollOps"
+        v-if="activeType === 'announcements'"
+      >
         <div class="comparison-preview__list">
           <template v-for="(announcement, index) in announcementsList">
-            <div class="comparison-preview__list-item" :key="'announcement-' + announcement.id">
-              <img :src="getAnnouncementImage(announcement)" alt="">
-              <div class="info">
-                <div class="info__title text-truncate">{{ getAnnouncementTitle(announcement) }}</div>
-                <div class="info__desc text-truncate">{{ getAnnouncementTextLine(announcement) }}</div>
-                <div class="info__price text-truncate">{{ announcement.price }}</div>
+            <div
+              class="comparison-preview__list-item"
+              :key="'announcement-' + announcement.id"
+            >
+              <div class="comparison-preview__list-item--image">
+                <img :src="getAnnouncementImage(announcement)" alt="" />
               </div>
-              <button class="remove-btn" @click="removeAnnouncement(announcement.id_unique)">
+              <div class="info">
+                <div class="info__title text-truncate">
+                  {{ getAnnouncementTitle(announcement) }}
+                </div>
+                <div class="info__desc text-truncate">
+                  {{ getAnnouncementTextLine(announcement) }}
+                </div>
+                <div class="info__price text-truncate">
+                  {{ announcement.price }}
+                </div>
+              </div>
+              <button
+                class="remove-btn"
+                @click="removeAnnouncement(announcement.id_unique)"
+              >
                 <icon name="garbage" />
               </button>
             </div>
-            <hr :key="'hr-' + announcement.id" v-if="index < announcementsList.length - 1"/>
+            <hr
+              :key="'hr-' + announcement.id"
+              v-if="index < announcementsList.length - 1"
+            />
           </template>
         </div>
       </vue-scroll>
@@ -50,11 +73,20 @@
       <vue-scroll :ops="modelScrollOps" v-if="activeType === 'models'">
         <div class="comparison-preview__list">
           <template v-for="(model, index) in modelsList">
-            <div class="comparison-preview__list-item" :key="'model-' + model.id">
-              <img :src="model.model.transformed_media" alt="">
+            <div
+              class="comparison-preview__list-item"
+              :key="'model-' + model.id"
+            >
+              <img :src="model.model.transformed_media" alt="" />
               <div class="info">
-                <div class="info__title text-truncate">{{ getModelTitle(model) }}</div>
-                <div class="info__desc text-truncate"  v-for="desc in getModelDescription(model)" :key="desc">
+                <div class="info__title text-truncate">
+                  {{ getModelTitle(model) }}
+                </div>
+                <div
+                  class="info__desc text-truncate"
+                  v-for="desc in getModelDescription(model)"
+                  :key="desc"
+                >
                   {{ desc }}
                 </div>
               </div>
@@ -62,14 +94,18 @@
                 <icon name="garbage" />
               </button>
             </div>
-            <hr :key="'hr-' + model.id" v-if="index < modelsList.length - 1"/>
+            <hr :key="'hr-' + model.id" v-if="index < modelsList.length - 1" />
           </template>
         </div>
       </vue-scroll>
 
       <button
         class="btn btn--red btn--unaffected-by-theme full-width compare-btn"
-        v-if="activeType === 'announcements' ? announcementsList.length > 1 : modelsList.length > 1"
+        v-if="
+          activeType === 'announcements'
+            ? announcementsList.length > 1
+            : modelsList.length > 1
+        "
         @click="compare"
       >
         <icon name="compare" />
@@ -84,15 +120,15 @@ import { ComparisonMixin } from '~/mixins/comparison'
 
 export default {
   mixins: [ComparisonMixin],
-  props: {  
+  props: {
     visible: {
       type: Boolean,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
-      activeType: 'announcements'
+      activeType: 'announcements',
     }
   },
   mounted() {
@@ -114,7 +150,7 @@ export default {
       } else if (!this.modelsList.length) {
         this.activeType = 'announcements'
       }
-    }
+    },
   },
   computed: {
     announcementsList() {
@@ -124,29 +160,32 @@ export default {
       return this.$store.getters['comparison/modelsList']
     },
     announcementScrollOps() {
-      return  {
+      return {
         vuescroll: { sizeStrategy: 'number' },
-        scrollPanel: { maxHeight: this.isMobileBreakpoint ? undefined : '350' }
+        scrollPanel: { maxHeight: this.isMobileBreakpoint ? undefined : '350' },
       }
     },
     modelScrollOps() {
-      return  {
+      return {
         vuescroll: { sizeStrategy: 'number' },
-        scrollPanel: { maxHeight: this.isMobileBreakpoint ? undefined : '350' }
+        scrollPanel: { maxHeight: this.isMobileBreakpoint ? undefined : '350' },
       }
     },
     typeButtons() {
       const buttons = []
       if (this.announcementsList.length) {
-        buttons.push({ key: 'announcements', name: this.$t('comparison_announcements') })
+        buttons.push({
+          key: 'announcements',
+          name: this.$t('comparison_announcements'),
+        })
       }
-      
+
       if (this.modelsList.length) {
         buttons.push({ key: 'models', name: this.$t('comparison_models') })
       }
 
       return buttons
-    }
+    },
   },
   watch: {
     visible(value) {
@@ -165,7 +204,7 @@ export default {
     activeType() {
       document.querySelector('.comparison-preview__list')?.focus()
       this.$forceUpdate()
-    }
-  }
+    },
+  },
 }
 </script>
