@@ -2152,5 +2152,9 @@ export default {
     "passenger_car":"Легковые",
     "electric":"Электричество",
     "notification_not_found":"Нет уведомлений.",
-    "search_and_save": "Искать и сохранить"
+    "search_and_save": "Искать и сохранить",
+  "tooltip_favorites":"Избранные ",
+  "tooltip_templates":"Сохраненные поиски",
+  "tooltip_messages":"Сообщения   ",
+  "tooltip_notifications":"Уведомления ",
 }
