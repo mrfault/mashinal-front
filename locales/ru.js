@@ -2148,7 +2148,6 @@ export default {
     "empty_garage_part_3":"",
     "transition_count_to_number":"Количество переходов по номеру:",
     "end_time_of_package":"Дата окончания пакета",
-    "balance_of_wallet": "Баланс кошелька",
     "passenger_car":"Легковые",
     "electric":"Электричество",
     "notification_not_found":"Нет уведомлений.",
@@ -2158,7 +2157,7 @@ export default {
   "tooltip_messages":"Сообщения   ",
   "tooltip_notifications":"Уведомления ",
   "other_options": "Другие опции",
-  "obem_sm3_and_power":"Объём и мощность двигателя"
+  "obem_sm3_and_power":"Объём и мощность двигателя",
     "balance_of_wallet": "Баланс кошелька",
     "notifications": "Уведомления",
 }
