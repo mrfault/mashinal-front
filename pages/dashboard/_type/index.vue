@@ -146,7 +146,7 @@ export default {
             image: 'wallet',
             hasAction: true,
             actionName: `${this.$t('replenish')}`,
-            actionLink: '/asd',
+            actionLink: '/profile/balance',
             description: `${this.$t('balance_of_wallet')}`,
             value: `${balance} ALManat`,
           },

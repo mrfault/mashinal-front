@@ -61,7 +61,7 @@ export default {
           image: 'announcement',
           isAvailable: true,
           actionName: this.$t('to_sell'),
-          actionLink: '/asd',
+          actionLink: '/sell',
         },
         {
           title: this.$t('my_account'),

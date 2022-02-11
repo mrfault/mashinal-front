@@ -1229,7 +1229,7 @@ export default {
   "older": "Старше",
   "on_map": "На карте",
   "on_this_topic": "По теме",
-  "only_3_free_ads_can_be_added_in_the_last_90_days": "За последние 90 дней можно добавить только 3 бесплатных объявления",
+  "only_3_free_ads_can_be_added_in_the_last_90_days": "За последние 30 дней можно добавить только 1 бесплатных объявления",
   "only_official": "Официальные",
   "Opening trunk without hands": "Открытие багажника без помощи рук",
   "operating": "Рабочий",
