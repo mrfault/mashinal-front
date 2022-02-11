@@ -1,7 +1,7 @@
 <template>
   <button :class="['btn full-width', `btn--${callAtOnce ? '' : 'pale-'}green`, {'justify-content-between': !callAtOnce}]" @click.stop="handleClick">
     <template v-if="callAtOnce">
-      <icon name="phone-call" /> 
+      <icon name="phone-call" />
       <span v-mask="$maskPhone(true)" v-if="!isMobileBreakpoint">+{{ phone }}</span>
       <span v-else>{{ $t('make_a_call') }}</span>
     </template>

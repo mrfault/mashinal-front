@@ -32,11 +32,11 @@
         <template class="form-group" :class="getError(item)" v-else-if="getType(item) === 'input-numeric'">
           <div class="col-lg-4">
             <form-numeric-input
-              v-model="form[getKey(item)]" 
+              v-model="form[getKey(item)]"
               :invalid="hasError(item)"
               :placeholder="`${getPlaceholder(item)}${getSuffix(getKey(item), ', ')}`"
-              :suffix="getSuffix(getKey(item))" 
-              @change="selectOption(getKey(item), $event)" 
+              :suffix="getSuffix(getKey(item))"
+              @change="selectOption(getKey(item), $event)"
             />
           </div>
         </template>
@@ -58,7 +58,7 @@
         filters = this.$clone(this.$store.getters.commercialFilters);
       } else if (this.type === 'moto') {
         filters = {
-          ...this.$clone(this.$store.getters.motoOptions.config), 
+          ...this.$clone(this.$store.getters.motoOptions.config),
           power: {
             placeholder: this.$t('power'),
             component: 'animated-input'
@@ -68,7 +68,7 @@
       return {
         options,
         filters,
-        form: filters instanceof Array 
+        form: filters instanceof Array
           ? filters.reduce((form, item) => formReducer(form, item.search_key, this.selected), {})
           : Object.keys(filters).reduce((form, key) => formReducer(form, key, this.selected), {})
       }
@@ -84,9 +84,9 @@
       getValues(item) {
         let options = this.options && this.options[item.type_key];
         let sell_values = item.sell_values && item.sell_values[parseInt(this.selected.category)];
-        let values = this.$sortBy(options || sell_values || item.values, a => a.name[this.locale] || this.$t(a.name));
-        return this.type === 'commercial' && this.getType(item) === 'input-radio' && !item.required 
-          ? [...values, { key: 0, name: this.$t('not_set') }] 
+        let values = options || sell_values || item.values;//this.$sortBy(options || sell_values || item.values, a => a.name[this.locale] || this.$t(a.name));
+        return this.type === 'commercial' && this.getType(item) === 'input-radio' && !item.required
+          ? [...values, { key: 0, name: this.$t('not_set') }]
           : values;
       },
       getPlaceholder(item) {
@@ -113,14 +113,14 @@
           case 'truck-types':
             return 'input-radio';
           case 'animated-input':
-          case 'input-component': 
+          case 'input-component':
             return 'input-numeric';
         }
       }
     },
     computed: {
       filteredComponents() {
-        if (this.filters instanceof Array) 
+        if (this.filters instanceof Array)
           return this.filters;
         let filters = {};
         for(let i in this.filters) {
