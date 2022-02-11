@@ -52,7 +52,7 @@
     </div>
     <transition-expand>
       <div v-if="collapsed">
-        <div v-for="(item, index) in filteredOtherComponents" :key="index">
+        <div v-for="(item, index) in filteredOtherComponents" :key="index+100">
         <h2 class="title-with-line" :id="`anchor-${getKey(item)}`">
           <span>{{ getPlaceholder(item) }} <span class="star" v-if="item.required"> *</span></span>
         </h2>
@@ -205,6 +205,16 @@
     created() {
       for(let i in this.filteredComponents) {
         let item = this.filteredComponents[i];
+        let key = this.getKey(item);
+        let type = this.getType(item);
+        let value = this.selected.hasOwnProperty(key) && this.selected[key];
+        if (type === 'input-radio')
+          this.form[key] = value || 0;
+        else if (type === 'input-numeric')
+          this.form[key] = value || '';
+      }
+      for(let i in this.filteredOtherComponents) {
+        let item = this.filteredOtherComponents[i];
         let key = this.getKey(item);
         let type = this.getType(item);
         let value = this.selected.hasOwnProperty(key) && this.selected[key];
