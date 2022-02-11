@@ -84,7 +84,7 @@ export default {
     },
     idSerialNumber: {
       get() {
-        return this.stepSendData.idSerialNumber
+        return this.stepSendData.idSerialNumber.toUpperCase()
       },
       set(value) {
         this.updateSendData({ key: 'idSerialNumber', value })
