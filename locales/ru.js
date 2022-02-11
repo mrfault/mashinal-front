@@ -2159,4 +2159,6 @@ export default {
   "tooltip_notifications":"Уведомления ",
   "other_options": "Другие опции",
   "obem_sm3_and_power":"Объём и мощность двигателя"
+    "balance_of_wallet": "Баланс кошелька",
+    "notifications": "Уведомления",
 }
