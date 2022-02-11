@@ -1,10 +1,10 @@
 <template>
   <div class="pages-favorites">
-    <div class="container"> 
+    <div class="container">
       <breadcrumbs :crumbs="crumbs" />
-      <grid 
+      <grid
         v-if="favoriteAnnouncements.data.length"
-        :announcements="favoriteAnnouncements.data" 
+        :announcements="favoriteAnnouncements.data"
         :paginate="$paginate(favoriteAnnouncements)"
         :pending="pending"
         :watch-route="true"
@@ -12,7 +12,12 @@
         :show-title="isMobileBreakpoint"
         @change-page="changePage"
       />
-      <no-results :text="$t('no_favorites')" v-else />
+      <no-results :text="$t('no_favorites')" v-else >
+        <nuxt-link style="max-width: 200px;" class="active btn btn--pale-green-outline d-flex full-width mt-2"
+                   :to="$localePath('/')">
+          <i aria-hidden="true" class="icon-plus-circle"></i> {{ $t('my_favorites_add') }}
+        </nuxt-link>
+      </no-results>
     </div>
   </div>
 </template>
@@ -47,7 +52,7 @@ export default {
       store.dispatch('getFavoriteAnnouncements', { page }),
     ]);
 
-    return { 
+    return {
       pending: false
     }
   },
@@ -64,7 +69,7 @@ export default {
   },
   computed: {
     ...mapGetters(['favoriteAnnouncements']),
-    
+
     crumbs() {
       return [
         { name: this.$t('favorites') }
