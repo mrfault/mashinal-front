@@ -32,6 +32,11 @@
             @change="selectSavedSearch"
             @select="selectOneSavedSearch"
           />
+          <nuxt-link style="max-width: 150px;" class="active btn ml-auto btn--pale-green-outline d-flex full-width mt-2"
+                     :to="$localePath('/cars?saved=true')">
+            <i aria-hidden="true" class="icon-arrow-left"></i>
+            {{ $t('new_search') }}
+          </nuxt-link>
         </div>
         <modal-popup
           :toggle="showIntervalModal"

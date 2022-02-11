@@ -2,7 +2,6 @@
   <button :class="['btn full-width', `btn--${callAtOnce ? '' : 'pale-'}green`]" @click.stop="handleClick">
     <icon name="phone-call" />
     <template v-if="callAtOnce">
-
       <span v-mask="$maskPhone(true)" v-if="!isMobileBreakpoint">+{{ phone }}</span>
       <span v-else>{{ $t('make_a_call') }}</span>
     </template>

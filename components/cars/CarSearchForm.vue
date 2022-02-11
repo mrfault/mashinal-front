@@ -320,7 +320,7 @@
                   </button>
                 </div>
                 <div class="col-6">
-                  <button type="button" :class="['btn','full-width','btn--green',{pending}]" @click="submitForm">
+                  <button type="button" :class="['btn','full-width','btn--green',{pending, 'btn-disabled': !searchAppliedCustom }]" @click="saveSearch">
                     <icon name="search"/>{{ $t('search_and_save') }}
                   </button>
                 </div>
@@ -376,7 +376,12 @@
     </modal-popup>
   </div>
 </template>
-
+<style>
+ .btn-disabled {
+   opacity: 0.2;
+   pointer-events: none;
+ }
+</style>
 <script>
 import {mapGetters, mapActions} from 'vuex';
 
@@ -517,7 +522,10 @@ export default {
   methods: {
     ...mapActions(['getModelsArray', 'getModelGenerationsArray', 'updateSavedSearchNotificationsInterval']),
     saveSearch() {
-        this.savedSearch = true;
+        if(this.searchAppliedCustom) {
+          this.submitForm();
+          this.savedSearch = true;
+        }
     },
     async updateNotifications() {
       if (this.pending2) return;

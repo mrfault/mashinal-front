@@ -106,9 +106,6 @@ export const SearchMixin = {
       }
     },
     submitForm() {
-      if(this.onlySavedSearch) {
-        this.saveSearch();
-      }
       this.beforeSubmitForm();
       // tracking
       this.fbTrack('Search Api');
