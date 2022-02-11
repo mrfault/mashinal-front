@@ -41,7 +41,7 @@
                   :clearOption="false"
                 />
               </div>
-              <div class="col-12" v-if="isHybrid">
+              <div class="col-12" v-if="filled.engineType == 3">
                 <form-select
                   :label="$t('hybrid_engine_type')"
                   :options="hybridEngineTypes"
