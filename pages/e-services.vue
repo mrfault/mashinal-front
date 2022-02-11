@@ -126,6 +126,16 @@ export default {
           image: 'penalties',
           isAvailable: true,
         },
+        {
+          title: this.$t('comparisons'),
+          description: null,
+          value: null,
+          icon: 'comparisons',
+          url: '/comparison',
+          hasAction: false,
+          image: 'comparisons',
+          isAvailable: true,
+        },
       ],
     }
   },

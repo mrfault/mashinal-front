@@ -11,7 +11,7 @@
           <e-service-card :item="item"></e-service-card>
         </div>
         <div class="col-lg-3 mb-2 mb-lg-3">
-          <dashboard-card :key="'support'">
+          <dashboard-card :key="'support'" style="height: 210px">
             <div
               class="d-flex flex-column justify-content-center align-items-center full-height pt-2 pb-2"
             >
