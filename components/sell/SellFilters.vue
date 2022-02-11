@@ -1,8 +1,8 @@
 <template>
   <div class="sell-filters">
-    <div v-for="(item, index) in filteredComponents" :key="index">
+    <div v-for="(item, index) in filteredComponents" :key="index" v-if="index !== 'power'">
       <h2 class="title-with-line mt-2 mt-lg-3" :id="`anchor-${getKey(item)}`">
-        <span>{{ getPlaceholder(item) }} <span class="star" v-if="item.required"> *</span></span>
+        <span>{{ index === 'volume' ? $t('obem_sm3_and_power') : getPlaceholder(item) }} <span class="star" v-if="item.required"> *</span></span>
       </h2>
       <div class="row">
         <template v-if="getType(item) === 'input-radio'">
@@ -37,6 +37,15 @@
               :placeholder="`${getPlaceholder(item)}${getSuffix(getKey(item), ', ')}`"
               :suffix="getSuffix(getKey(item))"
               @change="selectOption(getKey(item), $event)"
+            />
+          </div>
+          <div class="col-lg-4"  v-if="index === 'volume'">
+            <form-numeric-input
+              v-model="form[getKey(filteredComponents['power'])]"
+              :invalid="hasError(filteredComponents['power'])"
+              :placeholder="`${getPlaceholder(filteredComponents['power'])}${getSuffix(getKey(filteredComponents['power']), ', ')}`"
+              :suffix="getSuffix(getKey(filteredComponents['power']))"
+              @change="selectOption(getKey(filteredComponents['power']), $event)"
             />
           </div>
         </template>
@@ -199,7 +208,7 @@
         return filters;
       },
       otherOptions() {
-        return ['number_of_vehicles', 'engine', 'cylinders'];
+        return ['number_of_vehicles', 'engine', 'cylinders', 'box','fuel_type','drive'];
       }
     },
     created() {

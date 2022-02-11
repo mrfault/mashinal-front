@@ -2168,5 +2168,6 @@ export default {
   "tooltip_templates":"Axtarış şablonları ",
   "tooltip_messages":"Mesajlar  ",
   "tooltip_notifications":"Bildirişlər ",
-  "other_options": "Digər seçimlər"
+  "other_options": "Digər seçimlər",
+  "obem_sm3_and_power":"Həcm və mühərrik gücü"
 }
