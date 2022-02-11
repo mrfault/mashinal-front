@@ -11,7 +11,7 @@
               {{ $t('customs_calculator') }}
             </h4>
             <div class="row">
-              <div class="col-12">
+              <div class="col-12" v-if="false">
                 <form-select
                   :label="$t('vehicle_type_2')"
                   :options="vehicleTypes"
@@ -21,6 +21,15 @@
                   :showLabelOnlyOnActionBar="false"
                   :clearOption="false"
                   :hideOptions="true"
+                  disabled
+                />
+              </div>
+
+              <div class="col-12">
+                <form-text-input
+                  :disabled="true"
+                  :class="'override-disabled'"
+                  v-model="selectedVehicleType"
                 />
               </div>
               <div class="col-12">
@@ -268,6 +277,9 @@ export default {
         return false
       }
     },
+    selectedVehicleType(){
+      return this.$t('passenger_car')
+    }
   },
   methods: {
     reset() {

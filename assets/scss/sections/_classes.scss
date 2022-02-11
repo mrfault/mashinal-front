@@ -16,3 +16,14 @@
 .white-space-break {
   white-space: break-spaces !important;
 }
+
+.override-disabled {
+  input {
+    background: $greyish-blue-2 !important;
+    color: $dark-blue-1 !important;
+    &:disabled{
+      color: $dark-blue-1 !important;
+      -webkit-text-fill-color: $dark-blue-1 !important;
+    }
+  }
+}

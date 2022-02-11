@@ -3,9 +3,13 @@
     <div class="container d-flex flex-wrap">
       <breadcrumbs :crumbs="crumbs" />
       <template v-for="(item, index) in garageServices">
-        <div class="col-lg-3 mb-2 mb-lg-3" :key="index" v-if="item.isAvailable">
-          <e-service-card :item="item"></e-service-card>
-        </div>
+          <div
+            class="col-lg-3 mb-2 mb-lg-3"
+            :key="index"
+            v-if="item.isAvailable"
+          >
+            <e-service-card :item="item"></e-service-card>
+          </div>
       </template>
     </div>
   </div>
@@ -163,17 +167,27 @@ export default {
           isAvailable: !!this.$auth.user.part_salon,
         },
         {
-          title: this.$t('comparisons'),
+          title: this.$t('notifications'),
           description: null,
           value: null,
-          icon: 'comparisons',
-          url: '/dashboard/2',
+          icon: 'shops-tab',
+          url: '/notifications',
           hasAction: false,
-          image: 'comparisons',
-          isAvailable: !!this.$auth.user.part_salon,
+          image: 'notifications-image',
+          isAvailable: this.isMobileBreakpoint,
+        },
+        {
+          title: this.$t('policy'),
+          description: null,
+          value: null,
+          icon: 'shops-tab',
+          url: '/policy',
+          hasAction: false,
+          image: 'rules-image',
+          isAvailable: this.isMobileBreakpoint,
         },
       ]
-    }
+    },
   },
   nuxtI18n: {
     paths: {
