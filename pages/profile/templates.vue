@@ -32,6 +32,11 @@
             @change="selectSavedSearch"
             @select="selectOneSavedSearch"
           />
+          <nuxt-link style="max-width: 250px;" class="active btn ml-auto btn--pale-green-outline d-flex full-width mt-2"
+                     :to="$localePath('/cars?saved=true')">
+            <i aria-hidden="true" class="icon-arrow-left"></i>
+            {{ $t('new_saved_search') }}
+          </nuxt-link>
         </div>
         <modal-popup
           :toggle="showIntervalModal"
@@ -42,7 +47,6 @@
           <form class="form" @submit.prevent="updateNotifications" novalidate>
             <div class="mb-2 mb-lg-3">
               <form-select
-                v-if="user.email"
                 v-model="interval"
                 :options="getNotificationOptions"
                 :clear-option="false"
@@ -70,10 +74,10 @@
         </modal-popup>
       </template>
       <no-results :text="$t('no_templates')" v-else >
-        <nuxt-link style="max-width: 150px;" class="active btn btn--pale-green-outline d-flex full-width mt-2"
-                   :to="$localePath('/cars/advanced-search')">
+        <nuxt-link style="max-width: 250px;" class="active btn btn--pale-green-outline d-flex full-width mt-2"
+                   :to="$localePath('/cars?saved=true')">
           <i aria-hidden="true" class="icon-arrow-left"></i>
-          {{ $t('new_search') }}
+          {{ $t('new_saved_search') }}
         </nuxt-link>
       </no-results>
 
@@ -125,7 +129,7 @@ export default {
     return {
       selected: [],
       selectAll: false,
-      interval: 0,
+      interval: 1440,
       showRemoveModal: false,
       showIntervalModal: false,
       pending: false
@@ -179,10 +183,7 @@ export default {
       );
     },
     openNotificationsModal() {
-      if (this.user.email)
         this.showIntervalModal = true;
-      else
-        this.$nuxt.$emit('open-modal-to-change-email');
     },
     async updateNotifications() {
       if (this.pending) return;

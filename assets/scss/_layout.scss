@@ -1602,7 +1602,7 @@ main {
     pointer-events: all;
 
     &:first-of-type {
-      margin-right: -30px;
+/*      margin-right: -30px;*/
       justify-content: flex-start;
     }
 
@@ -2091,4 +2091,10 @@ main {
  .garage-icon{
    margin-right: 6px;
    background: unset !important;
+}
+.letter_permissions_can_be_given .text-truncate {
+  white-space: pre-wrap;
+}
+.white-space-pre-wrap > div > label > span {
+  white-space: pre-wrap !important;
 }

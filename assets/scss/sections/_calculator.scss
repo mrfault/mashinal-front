@@ -7,6 +7,7 @@
       font: 400 18px Gilroy;
       margin-bottom: 18px;
       width: 100%;
+      padding-right: 64px;
       position: relative;
       &::after {
         position: absolute;
@@ -65,7 +66,6 @@
         padding: 8px 14px 7px 28px;
         font: 400 14px Gilroy;
         clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 10% 50%);
-
         &-flip {
           position: absolute;
           top: 52px;
@@ -75,6 +75,14 @@
           background: #c6021c;
           clip-path: polygon(0 0, 0% 100%, 100% 0);
         }
+        @media screen and (max-width: 480px){
+          &-flip {
+
+            top: 52px;
+
+          }
+      }
+
       }
     }
     &--content {
@@ -164,14 +172,14 @@
         .label {
           background: $red-1;
           position: absolute;
-          top: 50%;
+          //top: 50%;
           transform: translateY(-50%);
           right: -17px;
           color: #fff;
-          padding: 8px 14px 7px 21px;
+          padding: 8px 14px 7px 41px;
           font: 400 14px Gilroy;
           clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 10% 50%);
-  
+
           &-flip {
             position: absolute;
             bottom: 5px;

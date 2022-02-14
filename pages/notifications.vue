@@ -111,14 +111,7 @@ export default {
   computed: {
     ...mapGetters(['notifications']),
     getNotificationsList() {
-      return this.notifications.data.filter(item => {
-        if (item.route === '/messages_bnb') {
-          if (this.messages.find(m => m.id === item.value))
-            return item;
-        } else
-
-          return item;
-      })
+      return this.notifications.data;
     },
     crumbs() {
       return [{name: this.$t('notification')}]

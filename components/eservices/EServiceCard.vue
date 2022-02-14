@@ -3,12 +3,12 @@
     <div class="e-service__header">
       <h5 class="e-service__header--title">{{ item.title }}</h5>
       <span class="e-service__header--icon">
-        <icon :name="item.icon" />
+        <icon :name="item.icon"/>
       </span>
     </div>
     <div class="e-service__body">
       <div class="e-service__body--image">
-        <img :src="`/card-icons/${item.image}.svg`" />
+        <img :src="`/card-icons/${item.image}.svg`"/>
       </div>
       <div class="e-service__body--description" v-if="item.description">
         <p class="key">{{ item.description }}</p>
@@ -24,6 +24,9 @@
         </p>
       </div>
       <div class="e-service__body--description" v-if="item.isMessage">
+        <div class="e-service__body--image">
+
+        </div>
         <ol>
           <li>{{ $t('vsego') }} : {{ item.messageCounts[0] }}</li>
           <li>{{ $t('notread_messages') }} : {{ item.messageCounts[1] }}</li>
@@ -55,7 +58,7 @@
       <div class="e-service__actions--right">
         <nuxt-link :to="$localePath(item.url)" class="">
           {{ $t('detail') }}
-          <icon name="chevron-right" />
+          <icon name="chevron-right"/>
         </nuxt-link>
       </div>
     </div>
@@ -64,8 +67,9 @@
 
 <script>
 import LetterOfAttorneyButton from '~/components/garage/loa/LetterOfAttorneyButton'
+
 export default {
-  components: { LetterOfAttorneyButton },
+  components: {LetterOfAttorneyButton},
   props: {
     item: Object,
   },

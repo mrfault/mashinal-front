@@ -22,7 +22,7 @@
       v-model="mobileNotariatConfirm"
       transparent
       skip-truncate
-      class="mb-3 step-6__form"
+      class="mb-3 step-6__form white-space-pre-wrap"
     />
     <button
       type="submit"

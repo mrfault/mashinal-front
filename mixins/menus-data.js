@@ -21,7 +21,7 @@ export const MenusDataMixin = {
         { title: 'policy', route: '/policy', icon: 'policy', showOnCard: true }
       ];
     },
-    
+
     navbarMenus() {
       let announcementCategories = [
         { title: 'cars', route: '/cars', children: [{ title: 'car_plural', route: '/cars', icon: 'car-1' }] },
@@ -54,7 +54,7 @@ export const MenusDataMixin = {
         { title: 'catalog', route: '/catalog', icon: 'catalog-tab' },
         { title: 'new_announce', route: '/sell', icon: 'plus' },
         { title: 'messages', route: '/profile/messages', icon: 'chat-tab' },
-        { title: 'garage', route: '/garage', icon: 'garage-tab', hide: !this.loggedIn },
+        { title: 'garage', route: '/garage-services', icon: 'garage-tab', hide: !this.loggedIn },
         { title: 'login', route: '/login', icon: 'user', hide: this.loggedIn }
       ];
     },
@@ -71,7 +71,7 @@ export const MenusDataMixin = {
 
       if (this.isMobileBreakpoint)
         menus.push(this.pageMenus.find(menu => menu.title === 'policy'));
-        
+
       return menus;
     },
 

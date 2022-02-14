@@ -2162,5 +2162,13 @@ export default {
   "customs_info_part_1": 'Azərbaycan Respublikasının gömrük ərazisinə mal qismində gətirilən nəqliyyat vasitələrinin bəyannaməçi tərəfindən gömrük dəyərinin  müəyyən edilməsi (gömrük dəyərləndirilməsi) beynəlxalq təcrübədə qəbul olunmuş ümumi prinsiplərə (1994-cü il Tariflər və Ticarət üzrə Baş Sazişin (GATT) VII maddəsinə, GATT-ın VII maddəsinin Tətbiq edilməsinə dair Razılaşmaya və onun əlavələrinə), Azərbaycan Respublikasının Gömrük Məcəlləsinə, "Gömrük tarifi haqqında" Azərbaycan Respublikasının Qanununa, həmçinin Azərbaycan Respublikasının qüvvədə olan digər qanunvericilik aktlarına uyğun olaraq həyata keçirilir.',
   "customs_info_part_2": 'Bəyannaməçi tərəfindən bəyan edilmiş gömrük  dəyəri və onun müəyyən edilməsi ilə bağlı məlumatlar dəqiq, kəmiyyəti müəyyən oluna bilən və sənədlərlə təsdiq edilmiş məlumatlara əsaslanmalıdır.',
   "customs_info_part_3": 'Gömrük orqanının gömrük dəyərləndirilməsi məqsədi ilə ona təqdim edilən hər hansı məlumatın, sənədin və ya bəyannamənin düzgünlüyünü araşdırmaq hüququ vardır.',
-
-} 
+  "electric":"Elektrik",
+  "search_and_save": "Axtar və yadda saxla",
+  "tooltip_favorites":"Seçilmişlər ",
+  "tooltip_templates":"Axtarış şablonları ",
+  "tooltip_messages":"Mesajlar  ",
+  "tooltip_notifications":"Bildirişlər ",
+  "other_options": "Digər seçimlər",
+  "obem_sm3_and_power":"Həcm və mühərrik gücü",
+  "new_saved_search":"Yeni axtarış şablonu yarat",
+}

@@ -14,6 +14,7 @@
       v-model="idFinCode"
       :placeholder="$t('id_fin_code')"
       :invalid="$v.idFinCode.$error"
+
     />
     <form-text-input
       class="mb-2 mb-lg-3"
@@ -56,6 +57,7 @@ export default {
   computed: {
     ...mapGetters('letterOfAttorney', ['stepSendData']),
 
+
     letterType: {
       get() {
         return this.stepSendData.letterType
@@ -66,7 +68,7 @@ export default {
     },
     idFinCode: {
       get() {
-        return this.stepSendData.idFinCode
+        return this.stepSendData.idFinCode.toUpperCase()
       },
       set(value) {
         this.updateSendData({ key: 'idFinCode', value })
@@ -82,7 +84,7 @@ export default {
     },
     idSerialNumber: {
       get() {
-        return this.stepSendData.idSerialNumber
+        return this.stepSendData.idSerialNumber.toUpperCase()
       },
       set(value) {
         this.updateSendData({ key: 'idSerialNumber', value })

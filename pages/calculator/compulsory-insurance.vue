@@ -84,16 +84,7 @@
               </div>
 
               <div class="row">
-                <div class="col-12 col-md-6 mb-3">
-                  <form-select
-                    :label="labels.country"
-                    :options="countries"
-                    v-model="filled.country"
-                    :disabled="true"
-                    :clear-option="false"
-                    :allowClear="false"
-                  />
-                </div>
+
                 <div class="col-12 col-md-6 mb-3">
                   <form-select
                     :label="labels.vehicleType"
@@ -102,6 +93,7 @@
                     :invalid="$v.filled.vehicleType.$error"
                     :clear-option="false"
                     :clear-option-pull-down="false"
+                    disabled
                   />
                 </div>
                 <div class="col-12 col-md-6 mb-3" v-if="filled.vehicleType < 4">
@@ -109,6 +101,7 @@
                     :placeholder="labels.engineVolume"
                     v-model="filled.engineVolume"
                     :invalid="$v.filled.engineVolume.$error"
+                    disabled
                   />
                 </div>
                 <div class="col-12 col-md-6 mb-3">
@@ -117,6 +110,7 @@
                     :options="vehicleOwners"
                     v-model="filled.vehicleOwner"
                     :invalid="$v.filled.vehicleOwner.$error"
+                    disabled
                   />
                 </div>
                 <hr />
@@ -132,7 +126,7 @@
             </div>
           </div>
         </div>
-        <div class="col-12 col-md-12 col-lg-8" v-else>
+        <div class="col-12 col-md-12 col-lg-8 mt-4" v-else>
           <div class="calculator__empty-results">
             <div class="calculator__empty-results--image">
               <img src="/images/insurance-empty-result.png" alt="image" />

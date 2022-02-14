@@ -25,7 +25,7 @@
   &__body {
       display: flex;
       flex-wrap: nowrap;
-      height: 62px;  
+      height: 62px;
     &--image {
       height: 45px;
       margin-right: 20px;
@@ -51,8 +51,9 @@
         color: $red-7;
       }
       ol{
-        list-style-type: disc;
+        list-style-type: none;
         padding-left: 20px;
+        margin-top: -44px;
         li{
           font: 500 14px Gilroy;
           &:nth-of-type(1){
@@ -63,6 +64,7 @@
           }
         }
       }
+
     }
   }
   &__actions {

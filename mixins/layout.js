@@ -65,6 +65,11 @@ export const LayoutMixin = {
     toggleEchoListening(toggle) {
       if (toggle) {
         this.connectEcho().listen('SendMessage', this.addNewMessage);
+        this.connectEcho('global-channel.'+this.$auth.user.id).listen('GlobalFrontEndEvent',({ data }) => {
+          data.map(value => {
+            this.$store.dispatch(value)
+          })
+        })
       } else if (window.Echo) {
         this.connectEcho().stopListening('SendMessage');
       }
