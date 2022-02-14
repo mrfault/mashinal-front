@@ -30,11 +30,8 @@
       />
 
       <!-- Announcements -->
-      <div
-        :ops="announcementScrollOps"
-        v-if="activeType === 'announcements'"
-      >
-        <div class="comparison-preview__list">
+      <div :ops="announcementScrollOps" v-if="activeType === 'announcements'">
+        <div class="comparison-preview__list" :class="{'custom-scrollbar': (announcementsList.length > 2)}">
           <template v-for="(announcement, index) in announcementsList">
             <div
               class="comparison-preview__list-item"
@@ -209,30 +206,31 @@ export default {
 }
 </script>
 
+<style lang="scss" scoped>
+.comparison-preview__list {
+  max-height: 320px;
+  overflow-y: hidden;
+}
+.custom-scrollbar {
+  overflow-y: scroll;
+  /* width */
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
 
-<style scoped>
-.comparison-preview__list{
-  height: 320px;
-  overflow-y: scroll ;
-  
-}
-/* width */
-::-webkit-scrollbar {
-  width: 5px;
-}
+  /* Track */
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
 
-/* Track */
-::-webkit-scrollbar-track {
-  background: #f1f1f1; 
-}
- 
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: rgb(206, 206, 206); 
-}
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    background: rgb(206, 206, 206);
+  }
 
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: #555; 
+  /* Handle on hover */
+  &::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
 }
 </style>

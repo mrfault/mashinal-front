@@ -5,8 +5,9 @@
         <mobile-menu/>
 
         <page-header/>
+         <!-- v-if="!isMobileBreakpoint && !close && !$cookies.get('smartbanner_exited')" -->
         <slot name="after-header"/>
-        <main>
+        <main :class="{'min-height-if-notification':  !cookiesHasNotificationOn || storeBannerIsOn, 'min-height-if-not-notification':  cookiesHasNotificationOn || !storeBannerIsOn}">
           <slot name="nuxt"/>
           <scroll-top v-if="!hideFooter"/>
           <map-switch v-if="['salons','parts-shops'].includes(routeName)"/>
@@ -66,6 +67,19 @@ export default {
     ScrollTop,
     ComparisonBadge,
     MapSwitch
+  },
+  computed:{
+    cookiesHasNotificationOn(){
+      var cookie = this.$cookies.get('smartbanner_exited');
+      if (cookie) {
+        return true;
+      }else{
+        return false;
+      }
+    },
+    storeBannerIsOn(){
+      return this.$store.state.smartBanner;
+    }
   }
 }
 </script>

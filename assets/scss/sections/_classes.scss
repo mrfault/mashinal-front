@@ -21,9 +21,28 @@
   input {
     background: $greyish-blue-2 !important;
     color: $dark-blue-1 !important;
-    &:disabled{
+    &:disabled {
       color: $dark-blue-1 !important;
       -webkit-text-fill-color: $dark-blue-1 !important;
     }
   }
+}
+.dark-mode {
+  .override-disabled {
+    input {
+      background: $dark-1 !important;
+      color: #fff !important;
+      &:disabled {
+        color: #fff !important;
+        -webkit-text-fill-color: #fff !important;
+      }
+    }
+  }
+}
+
+.min-height-if-notification {
+  min-height: calc(100vh - 572px);
+}
+.min-height-if-not-notification {
+  min-height: calc(100vh - 497px);
 }
