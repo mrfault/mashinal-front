@@ -198,7 +198,7 @@
             </div>
           </div>
         </div>
-        <div class="col-12 col-md-12 col-lg-8 mt-4" v-else>
+        <div class="col-12 col-md-12 col-lg-8 mt-4 mt-lg-0" v-else>
           <div class="calculator__empty-results">
             <div class="calculator__empty-results--image">
               <img src="/images/customs-empty-result.png" alt="image" />
