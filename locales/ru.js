@@ -2160,4 +2160,5 @@ export default {
   "obem_sm3_and_power":"Объём и мощность двигателя",
     "balance_of_wallet": "Баланс кошелька",
     "notifications": "Уведомления",
+  "new_saved_search":"Создай новый шаблон поиска",
 }

@@ -130,7 +130,7 @@ export default {
           title: this.$t('comparisons'),
           description: null,
           value: null,
-          icon: 'compare',
+          icon: 'comparisons',
           url: '/comparison',
           hasAction: false,
           image: 'comparisons',
