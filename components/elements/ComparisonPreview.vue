@@ -30,7 +30,7 @@
       />
 
       <!-- Announcements -->
-      <vue-scroll
+      <div
         :ops="announcementScrollOps"
         v-if="activeType === 'announcements'"
       >
@@ -67,7 +67,7 @@
             />
           </template>
         </div>
-      </vue-scroll>
+      </div>
 
       <!-- Models -->
       <vue-scroll :ops="modelScrollOps" v-if="activeType === 'models'">
@@ -208,3 +208,31 @@ export default {
   },
 }
 </script>
+
+
+<style scoped>
+.comparison-preview__list{
+  height: 320px;
+  overflow-y: scroll ;
+  
+}
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(206, 206, 206); 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+</style>
