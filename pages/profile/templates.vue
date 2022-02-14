@@ -32,7 +32,7 @@
             @change="selectSavedSearch"
             @select="selectOneSavedSearch"
           />
-          <nuxt-link style="max-width: 200px;" class="active btn ml-auto btn--pale-green-outline d-flex full-width mt-2"
+          <nuxt-link style="max-width: 250px;" class="active btn ml-auto btn--pale-green-outline d-flex full-width mt-2"
                      :to="$localePath('/cars?saved=true')">
             <i aria-hidden="true" class="icon-arrow-left"></i>
             {{ $t('new_saved_search') }}
@@ -74,7 +74,7 @@
         </modal-popup>
       </template>
       <no-results :text="$t('no_templates')" v-else >
-        <nuxt-link style="max-width: 200px;" class="active btn btn--pale-green-outline d-flex full-width mt-2"
+        <nuxt-link style="max-width: 250px;" class="active btn btn--pale-green-outline d-flex full-width mt-2"
                    :to="$localePath('/cars?saved=true')">
           <i aria-hidden="true" class="icon-arrow-left"></i>
           {{ $t('new_saved_search') }}
