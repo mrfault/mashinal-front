@@ -21,6 +21,7 @@ export const SocketMixin = {
       });
     },
     connectEcho(channel = false, isPrivate = true) {
+      if(!window.Echo) this.configSocket();
       return window.Echo[isPrivate ? 'private' : 'channel'](channel || ('user.'+ this.$auth.user.id));
     }
   }
