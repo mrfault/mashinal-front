@@ -2100,3 +2100,6 @@ main {
 .letter_permissions_can_be_given .text-truncate {
   white-space: pre-wrap;
 }
+.white-space-pre-wrap > div > label > span {
+  white-space: pre-wrap !important;
+}
