@@ -706,7 +706,7 @@ export default {
   "error_payment": "Неудачная операция!",
   "error_payment_msg": "Оплата не осуществлена.",
   "ESP": "Система стабилизации (ESP)",
-  "eservices": "Э-сервисы",
+  "eservices": "Эл.-сервисы",
   "excavators": "Экскаваторы",
   "exchange": "Бартер",
   "exhaust_class": "Класс выхлопа",
