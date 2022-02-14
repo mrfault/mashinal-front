@@ -8,8 +8,8 @@ export const SocketMixin = {
       window.Pusher = Pusher;
       window.Echo = new Echo({
         broadcaster: 'pusher',
-        key: 'any',
-        wsHost: this.$env.WS_HOST,
+        key: 'c4c2102447c08b6c126a',
+        //wsHost: this.$env.WS_HOST,
         wsPort: 6001,
         wssPort: 6001,
         disableStats: true,
