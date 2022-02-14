@@ -31,7 +31,10 @@
 
       <!-- Announcements -->
       <div :ops="announcementScrollOps" v-if="activeType === 'announcements'">
-        <div class="comparison-preview__list" :class="{'custom-scrollbar': (announcementsList.length > 2)}">
+        <div
+          class="comparison-preview__list"
+          :class="{ 'custom-scrollbar': announcementsList.length > 2 }"
+        >
           <template v-for="(announcement, index) in announcementsList">
             <div
               class="comparison-preview__list-item"
@@ -74,7 +77,9 @@
               class="comparison-preview__list-item"
               :key="'model-' + model.id"
             >
-              <img :src="model.model.transformed_media" alt="" />
+              <div class="comparison-preview__list-item--image">
+                <img :src="model.model.transformed_media" alt="" />
+              </div>
               <div class="info">
                 <div class="info__title text-truncate">
                   {{ getModelTitle(model) }}
