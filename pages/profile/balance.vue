@@ -34,7 +34,7 @@
               </template>
             </div>
           </div>
-          <div class="mb-2 mb-lg-0" ref="increase">
+          <div class="mb-2 mb-lg-0" ref="increase" id="increasebalance">
             <div
               class="card increase-balance-form"
               :class="{ 'increase-balance-animation': balanceHasAnimation }"
