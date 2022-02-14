@@ -23,7 +23,7 @@
           <span class="cursor-pointer text-dark-blue-2" @click.stop="$emit('block-chat', group)">
             <icon :name="blocked ? 'unblock' : 'block'" />
           </span>
-          <span class="cursor-pointer text-red" @click.stop="deleteGroup(group)">
+          <span class="cursor-pointer text-red" @click.stop="removeItem = group; showRemoveModal = true;">
             <icon name="garbage" />
           </span>
         </template>
@@ -116,6 +116,17 @@
         />
       </div>
     </div>
+    <modal-popup
+      :toggle="showRemoveModal"
+      :title="$t('are_you_sure_you_want_to_delete_the_message')"
+      @close="showRemoveModal = false"
+    >
+      <form class="form" @submit.prevent="deleteGroup" novalidate>
+        <button type="submit" :class="['btn btn--green full-width', { pending }]">
+          {{ $t('confirm') }}
+        </button>
+      </form>
+    </modal-popup>
   </div>
 </template>
 
@@ -148,6 +159,8 @@ export default {
   },
   data() {
     return {
+      showRemoveModal:false,
+      removeItem:null,
       text: '',
       files: [],
       typing: false,
@@ -212,10 +225,8 @@ export default {
   },
   methods: {
     ...mapActions(['markAsRead', 'sendMessage']),
-    deleteGroup(group) {
-      if(confirm(this.$t('are_you_sure'))){
-        this.$emit('delete-chat', group)
-      }
+    deleteGroup() {
+        this.$emit('delete-chat', this.removeItem)
     },
     checkIfRead() {
       let message = this.group.last_message;
