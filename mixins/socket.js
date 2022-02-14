@@ -9,11 +9,8 @@ export const SocketMixin = {
       window.Echo = new Echo({
         broadcaster: 'pusher',
         key: 'c4c2102447c08b6c126a',
+        cluster: 'eu',
         //wsHost: this.$env.WS_HOST,
-        wsPort: 6001,
-        wssPort: 6001,
-        disableStats: true,
-        enabledTransports: ['ws', 'wss'],
         forceTLS: true,
         authEndpoint: this.$env.BROADCAST_URL,
         auth: {
