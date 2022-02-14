@@ -23,7 +23,7 @@
           <span class="cursor-pointer text-dark-blue-2" @click.stop="$emit('block-chat', group)">
             <icon :name="blocked ? 'unblock' : 'block'" />
           </span>
-          <span class="cursor-pointer text-red" @click.stop="$emit('delete-chat', group)">
+          <span class="cursor-pointer text-red" @click.stop="deleteGroup(group)">
             <icon name="garbage" />
           </span>
         </template>
@@ -212,7 +212,11 @@ export default {
   },
   methods: {
     ...mapActions(['markAsRead', 'sendMessage']),
-
+    deleteGroup(group) {
+      if(confirm(this.$t('are_you_sure'))){
+        this.$emit('delete-chat', group)
+      }
+    },
     checkIfRead() {
       let message = this.group.last_message;
       if (message === null || message?.is_read) return;

@@ -1,22 +1,22 @@
 <template>
   <form class="form" @submit.prevent="submit" novalidate>
     <form-text-input class="mb-2 mb-lg-3"
-      v-model="birthDate" 
-      :placeholder="$t('birth_date')" 
+      v-model="birthDate"
+      :placeholder="$t('birth_date')"
       :invalid="$v.birthDate.$error"
       input-date
     />
     <form-text-input class="mb-2 mb-lg-3"
-      v-model="idExpiryDate" 
-      :placeholder="$t('date_till')" 
+      v-model="idExpiryDate"
+      :placeholder="$t('date_till')"
       :invalid="$v.idExpiryDate.$error"
       input-date
     />
     <p class="mb-1">{{ $t('gender') }}</p>
-    <form-buttons class="mb-2 mb-lg-3" 
-      v-model="gender" 
-      :options="getGenderOptions" 
-      :group-by="2" 
+    <form-buttons class="mb-2 mb-lg-3"
+      v-model="gender"
+      :options="getGenderOptions"
+      :group-by="2"
       btn-class="primary-outline"
     />
     <button type="submit" :class="['btn btn--green full-width', { pending }]">
@@ -44,26 +44,26 @@ export default {
     ...mapGetters('letterOfAttorney', ['stepSendData']),
 
     birthDate: {
-      get() { 
+      get() {
         return this.stepSendData.birthDate
       },
-      set(value) { 
+      set(value) {
         this.updateSendData({ key: 'birthDate', value });
       }
     },
     idExpiryDate: {
-      get() { 
+      get() {
         return this.stepSendData.idExpiryDate;
       },
-      set(value) { 
+      set(value) {
         this.updateSendData({ key: 'idExpiryDate', value });
       }
     },
     gender: {
-      get() { 
+      get() {
         return this.stepSendData.gender;
       },
-      set(value) { 
+      set(value) {
         this.updateSendData({ key: 'gender', value });
       }
     },

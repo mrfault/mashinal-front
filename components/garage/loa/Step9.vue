@@ -1,41 +1,41 @@
 <template>
   <form class="form" @submit.prevent="submit" novalidate>
-    <form-text-input 
-      v-model="region" 
-      :placeholder="$t('current_city')" 
-      :invalid="$v.region.$error" 
-      class="mb-2 mb-lg-3" 
+    <form-text-input
+      v-model="region"
+      :placeholder="$t('current_city')"
+      :invalid="$v.region.$error"
+      class="mb-2 mb-lg-3"
     />
-    <form-text-input 
+    <form-text-input
       v-model="senderPhone"
-      :placeholder="$t('mobile_phone_number')" 
+      :placeholder="$t('mobile_phone_number')"
       :invalid="$v.senderPhone.$error"
       :mask="$maskPhone()"
       autocomplete="tel"
       class="mb-2 mb-lg-3"
     />
-    <form-text-input 
+    <form-text-input
       v-model="recepientPhone"
-      :placeholder="$t('recepient_mobile_phone_number')" 
+      :placeholder="$t('recepient_mobile_phone_number')"
       :invalid="$v.recepientPhone.$error"
       :mask="$maskPhone()"
       autocomplete="tel"
       class="mb-3"
     />
-    <form-checkbox 
-      :label="$t('letter_permissions_can_be_given')" 
+    <form-checkbox
+      :label="$t('letter_permissions_can_be_given')"
       input-name="letter_permissions_can_be_given"
-      v-model="letterPermissionsTransfer" 
+      v-model="letterPermissionsTransfer"
       transparent skip-truncate
-      class="mb-2 mb-lg-3"
+      class="mb-2 mb-lg-3 white-space-pre-wrap"
     />
     <hr class="mt-0 mb-2 mb-lg-3" />
-    <form-checkbox 
-      :label="$t('letter_data_confirm')" 
+    <form-checkbox
+      :label="$t('letter_data_confirm')"
       input-name="letter_data_confirm"
-      v-model="letterConfirmData" 
+      v-model="letterConfirmData"
       transparent skip-truncate
-      class="mb-3"
+      class="mb-3 white-space-pre-wrap"
     />
     <button type="submit" :class="['btn btn--green full-width', { pending, 'disabled': !letterConfirmData }]">
       {{ $t('go_further') }}
@@ -63,42 +63,42 @@ export default {
     ...mapGetters('letterOfAttorney', ['stepSendData']),
 
     region: {
-      get() { 
+      get() {
         return this.stepSendData.region
       },
-      set(value) { 
+      set(value) {
         this.updateSendData({ key: 'region', value });
       }
     },
     senderPhone: {
-      get() { 
+      get() {
         return this.stepSendData.senderPhone
       },
-      set(value) { 
+      set(value) {
         this.updateSendData({ key: 'senderPhone', value });
       }
     },
     recepientPhone: {
-      get() { 
+      get() {
         return this.stepSendData.recepientPhone
       },
-      set(value) { 
+      set(value) {
         this.updateSendData({ key: 'recepientPhone', value });
       }
     },
     letterPermissionsTransfer: {
-      get() { 
+      get() {
         return this.stepSendData.letterPermissionsTransfer
       },
-      set(value) { 
+      set(value) {
         this.updateSendData({ key: 'letterPermissionsTransfer', value });
       }
     },
     letterConfirmData: {
-      get() { 
+      get() {
         return this.stepSendData.letterConfirmData
       },
-      set(value) { 
+      set(value) {
         this.updateSendData({ key: 'letterConfirmData', value });
       }
     }
