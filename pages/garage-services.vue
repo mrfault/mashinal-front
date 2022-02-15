@@ -93,7 +93,7 @@ export default {
           image: 'wallet',
           isAvailable: true,
           actionName: this.$t('replenish'),
-          actionLink: '/profile/balance',
+          actionLink: '/profile/balance?scrollto=increase',
           hasActionMethod: true,
         },
         {

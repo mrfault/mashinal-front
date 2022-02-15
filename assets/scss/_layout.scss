@@ -208,11 +208,6 @@ main {
   position: relative;
 }
 
-@media screen and (min-width: 1024px){
-  main{
-    min-height: calc(100vh - 572px);
-  }
-}
 
 [class^=pages-] {
   padding: 0px 0;
