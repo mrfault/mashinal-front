@@ -2098,10 +2098,6 @@ main {
 .white-space-pre-wrap > div > label > span {
   white-space: pre-wrap !important;
 }
-.vue-product-360 {
-  position: absolute;
-  z-index: 2;
-  img {
-    width: 100%;
-  }
+#v360-menu-btns {
+  display: none;
 }

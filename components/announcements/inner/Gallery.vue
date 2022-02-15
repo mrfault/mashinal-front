@@ -3,9 +3,20 @@
     <div class="position-relative">
       <div class="swiper-container" v-swiper:gallerySwiper="swiperOps" ref="gallerySwiper" v-if="showSlider">
         <div class="swiper-wrapper">
-          <div class="swiper-slide" :key="index" v-for="(slide, index) in slides.main">
-            <div
-              :class="['swiper-slide-bg swiper-lazy', {'youtube-play': showYtVideo(index)}]" 
+
+          <div class="swiper-slide"  :key="index" v-for="(slide, index) in slides.main">
+            <div style="width:100%;" v-if="index === 0 && announcement.images_360">
+              <div>
+                <vue-three-sixty
+                  buttonClass="d-none"
+                  disableZoom
+                  :files="announcement.images_360"
+                />
+              </div>
+            </div>
+
+            <div v-else
+              :class="['swiper-slide-bg swiper-lazy', {'youtube-play': showYtVideo(index)}]"
               :data-background="showYtVideo(index) ? getYtVideoImage('hq') : slide"
             >
               <loader />
@@ -91,19 +102,20 @@
               </div>
             </div>
             <div class="blur-bg_slider" :key="2" v-else>
-              <images-slider 
+              <images-slider
+                :announcement="announcement"
                 :current-slide="currentSlide"
-                :slides="slides" 
+                :slides="slides"
                 :has-sidebar="where === 'announcement'"
                 @close="closeLightbox"
-                @slide-change="currentSlide = $event" 
+                @slide-change="currentSlide = $event"
               >
                 <template #sidebar v-if="where === 'announcement'" >
                   <slot />
                 </template>
               </images-slider>
             </div>
-          </template> 
+          </template>
         </transition-group>
       </div>
     </div>
@@ -120,7 +132,6 @@ import AddFavorite from '~/components/announcements/AddFavorite';
 import AddComparison from '~/components/announcements/AddComparison';
 import AddComplaint from '~/components/announcements/AddComplaint';
 import ImagesSlider from '~/components/elements/ImagesSlider';
-
 export default {
   props: {
     where: {
@@ -142,7 +153,7 @@ export default {
     AddFavorite,
     AddComparison,
     AddComplaint,
-    ImagesSlider
+    ImagesSlider,
   },
   data() {
     return {
@@ -236,8 +247,9 @@ export default {
   computed: {
     ...mapGetters(['announcement']),
 
+
     slides() {
-      let thumbs = [], main = [], types = [], hasVideo = false;
+      let thumbs = [], main = [], types = [], hasVideo = false, has360 = false;
       if (this.where === 'catalog') {
         thumbs = this.getMediaByKey(this.media, 'thumb');
         main = this.getMediaByKey(this.media, 'main');
@@ -251,19 +263,28 @@ export default {
           thumbs.splice(1, 0, this.getYtVideoImage('hq'));
           main.splice(1, 0, `https://www.youtube.com/watch?v=${this.announcement.youtube_id}`);
         }
+        if(this.announcement.images_360 && this.announcement.images_360.length) {
+          thumbs.splice(0,0,this.announcement.images_360[0])
+          main.splice(0,0,this.announcement.images_360[0])
+          has360 = true;
+        }
+        //360 here
+
       } else if (this.where === 'salon') {
         thumbs = this.media[1];
         main = this.media[0];
       }
-      types = main.map(_ => 'image');
+      types = [...main.map(_ => 'image')];
+
       if (hasVideo) types.splice(1, 0, 'youtube');
+      if(has360) types.splice(0,0,'custom')
       return { thumbs, main, types };
     }
   },
   watch: {
     breakpoint() {
       this.showImagesSlider = false;
-      if (this.showSlider) 
+      if (this.showSlider)
         this.updateTouchEvents();
       this.refreshLightbox();
     }
@@ -276,13 +297,14 @@ export default {
           this.gallerySwiper.on('slideChange', () => {
             this.currentSlide = this.gallerySwiper.realIndex;
           });
-          this.gallerySwiper.on(this.isMobileBreakpoint ? 'click': 'click tap touchEnd', () => {
+
+          this.gallerySwiper.on('click', (event) => {
             this.openLightbox(this.currentSlide);
           });
           this.updateTouchEvents();
         }, 100);
       }
-      
+
       if (this.showSlider) this.$nuxt.$on('show-gallery-slide', this.changeSlide);
       this.$nuxt.$on('show-lightbox', this.openLightbox);
     });
@@ -294,3 +316,15 @@ export default {
   }
 }
 </script>
+<style scoped>
+@media only screen and (min-width: 1024px) {
+  .swiper-wrapper {
+    height: 493px;
+  }
+}
+.swiper-slide {
+  background-color: #D6E4F8;
+  display: flex;
+  align-items: center;
+}
+</style>

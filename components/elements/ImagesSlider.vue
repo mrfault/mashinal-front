@@ -17,7 +17,7 @@
               <div class="swiper-slide" :key="index" v-for="(slide, index) in (slides.thumbs || slides.main)">
                 <div
                   @click="changeSlide(index)"
-                  :class="['swiper-thumb-bg', {[`${slides.types[index]}-play`]: slides.types && ['youtube','video'].includes(slides.types[index])}]" 
+                  :class="['swiper-thumb-bg', {[`${slides.types[index]}-play`]: slides.types && ['youtube','video'].includes(slides.types[index])}]"
                   :style="slide ? { backgroundImage: `url('${slide}')` } : {}"
                 ></div>
               </div>
@@ -39,6 +39,12 @@
                     <div class="video" v-else-if="slides.types && slides.types[index] === 'video'">
                       <video ref="video" controls><source :src="slide"></video>
                     </div>
+                    <vue-three-sixty
+                      v-else-if="slides.types && slides.types[index] === 'custom'"
+                      buttonClass="d-none"
+                      disableZoom
+                      :files="announcement.images_360"
+                    />
                     <template v-else>
                       <img alt="" :data-src="slide" class="swiper-lazy" />
                       <loader />
@@ -74,6 +80,7 @@
 export default {
   props: {
     slides: {},
+    announcement:{},
     currentSlide: Number,
     hasSidebar: Boolean
   },
@@ -81,6 +88,7 @@ export default {
     return {
       swiperOps: {
         initialSlide: this.currentSlide,
+        allowTouchMove: false,
         effect: 'fade',
         fadeEffect: {
           crossFade: true
@@ -139,6 +147,7 @@ export default {
         this.$refs.video?.[0]?.pause();
         this.$nextTick(() => {
           this.showIframe = true;
+
           this.$emit('slide-change', this.imagesSwiper.realIndex);
         });
       });
