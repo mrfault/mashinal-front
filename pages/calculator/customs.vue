@@ -244,7 +244,10 @@ export default {
         { name: this.$t('hybrid'), id: 3 },
         { name: this.$t('electrical'), id: 4 },
       ],
-      hybridEngineTypes: Models.hybridEngineTypes,
+      hybridEngineTypes: [
+        { name: this.$t('benzin'), id: 1 },
+        { name: this.$t('dizel'), id: 2 },
+      ],
       hasResult: false,
       result: {},
       filled: {

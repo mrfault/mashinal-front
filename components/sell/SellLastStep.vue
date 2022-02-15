@@ -63,7 +63,7 @@
           <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-body-parts">
             <span>{{ $t('body_condition') }}</span>
           </h2>
-          <damage-options :selected="form.part" @update-car-damage="updateCarDamage" />
+          <damage-options :selected="form.part" @update-car-damage="updateCarDamage" :imageIsActive="true" />
         </template>
         <template v-if="!isAutosalon">
           <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-region_id">
