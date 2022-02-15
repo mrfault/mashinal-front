@@ -30,7 +30,7 @@
               <template #after v-if="hasComplects || getCarHealth">
                 <hr v-if="announcement.comment" />
                 <template v-if="getCarHealth">
-                  <damage-options :selected="getCarHealth" read-only :imageIsActive="imageIsActive"/>
+                  <damage-options :selected="getCarHealth" read-only :imageIsActive="imageIsActive" v-if="false"/>
                   <hr v-if="hasComplects" />
                 </template>
                 <car-complects :options="getComplectOptions" v-if="hasComplects" />
@@ -44,7 +44,7 @@
               <template #after v-if="hasComplects || getCarHealth">
                 <hr v-if="announcement.comment" />
                 <template v-if="getCarHealth">
-                  <damage-options :selected="getCarHealth" read-only/>
+                  <damage-options :selected="getCarHealth" read-only v-if="false"/>
                   <hr v-if="hasComplects" />
                 </template>
                 <car-complects :options="getComplectOptions" v-if="hasComplects" />
