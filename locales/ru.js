@@ -2161,4 +2161,5 @@ export default {
     "balance_of_wallet": "Баланс кошелька",
     "notifications": "Уведомления",
   "new_saved_search":"Создай новый шаблон поиска",
+  "hybrid_engine_type":"Гибридный тип двигателя"
 }
