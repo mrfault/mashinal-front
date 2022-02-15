@@ -69,7 +69,6 @@ import Comment from '~/components/announcements/inner/Comment';
 import CarComplects from '~/components/announcements/inner/CarComplects';
 import DamageOptions from '~/components/options/DamageOptions';
 import Relatives from '~/components/announcements/inner/Relatives';
-
 export default {
   name: 'pages-cars-id',
   components: {
@@ -80,7 +79,7 @@ export default {
     Comment,
     CarComplects,
     DamageOptions,
-    Relatives
+    Relatives,
   },
   nuxtI18n: {
     paths: {
@@ -143,7 +142,6 @@ export default {
   },
   computed: {
     ...mapGetters(['announcement', 'catalog']),
-
     getComplectOptions() {
       return typeof this.announcement.options === 'string'
         ? JSON.parse(this.announcement.options)

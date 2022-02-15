@@ -1,11 +1,13 @@
 <template>
   <div class="inner-thumbs-gallery">
+
     <div class="swiper-container" v-swiper:thumbsSwiper="swiperOps">
       <div class="swiper-wrapper">
+
         <div class="swiper-slide" :key="index" v-for="(slide, index) in thumbs">
           <div @click="$nuxt.$emit('show-lightbox', index)"
             @mouseenter="$nuxt.$emit('show-gallery-slide', index)"
-            :class="['swiper-slide-bg', {'youtube-play': where === 'announcement' && announcement.youtube_id && index === 1}]" 
+            :class="['swiper-slide-bg', {'youtube-play': where === 'announcement' && announcement.youtube_id && index === 1}]"
             :style="{backgroundImage: `url('${slide}')` }"
             role="img"
             aria-label=""></div>
@@ -44,7 +46,6 @@ export default {
   },
   computed: {
     ...mapGetters(['announcement']),
-
     thumbs() {
       let thumbs = [];
       if (this.where === 'catalog') {
