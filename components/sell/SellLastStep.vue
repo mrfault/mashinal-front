@@ -151,7 +151,7 @@
               <div class="d-flex mb-2 mb-lg-3" @click="collapsed = !collapsed">
                 <h2 class="title-with-line full-width">
 
-                  <span>{{ $t('others') }}</span>
+                  <span>{{ $t('other_options') }}</span>
                 </h2>
                 <icon :name="`chevron-${!collapsed ? 'down' : 'up'}`" class="cursor-pointer" />
               </div>
