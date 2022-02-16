@@ -67,9 +67,9 @@
         <template v-if="isMobileBreakpoint">
           <FsLightbox
             :toggler="toggleFsLightbox"
-            :sources="slides.main"
-            :types="slides.types"
-            :slide="currentSlide + 1"
+            :sources="slides.main.splice(0,1)"
+            :types="slides.types.splice(0,1)"
+            :slide="currentSlide"
             :key="lightboxKey"
             :onClose="refreshLightbox"
             :onBeforeClose="onBeforeClose"
