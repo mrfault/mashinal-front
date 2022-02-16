@@ -127,7 +127,7 @@
           <div class="body-modifications" v-for="(o, key) in modificationsList" :key="key">
             <h4 class="text-dark-blue-2">{{ $t('engine_values')[key] }}</h4>
             <div class="body-modifications_row" v-for="(group, key, index) in o" :key="key">
-              <h5 class="text-dark-blue-3 mb-1" v-if="key !== '–' || index" >{{ $t(key) }} </h5>
+              <h5 class="text-dark-blue-3 mb-1" v-if="key !== '–' || index" >{{ key }} </h5>
               <template v-for="mod in group.filter(mod => mod.main)">
                 <a :class="['row flex-nowrap mb-1 align-items-center', { active: mod.id == firstGeneration.id }]"
                   :href="`${pathBase}/mod/${mod.id}`"

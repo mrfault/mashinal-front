@@ -147,7 +147,21 @@
         <div class="mt-2 mt-lg-3">
           <template v-if="type === 'cars'">
             <car-filters :values="form.all_options" @change-filter="updateCarFilter" popular key="popular"/>
-            <car-filters :values="form.all_options" @change-filter="updateCarFilter" key="all" collapsed-by-default />
+            <div class="car-filters_row">
+              <div class="d-flex mb-2 mb-lg-3" @click="collapsed = !collapsed">
+                <h2 class="title-with-line full-width">
+
+                  <span>{{ $t('other_options') }}</span>
+                </h2>
+                <icon :name="`chevron-${!collapsed ? 'down' : 'up'}`" class="cursor-pointer" />
+              </div>
+              <transition-expand>
+                <div v-if="collapsed">
+                  <car-filters :values="form.all_options" @change-filter="updateCarFilter" key="all" collapsed-by-default />
+                </div>
+
+              </transition-expand>
+            </div>
           </template>
           <template v-else>
             <sell-filters
@@ -264,6 +278,7 @@ export default {
   mixins: [ToastErrorsMixin, ImageResizeMixin, PaymentMixin],
   data() {
     return {
+      collapsed: false,
       form: this.$clone(this.initialForm),
       date: Math.floor(Date.now() / 1000),
       files: (this.announcement?.media || []).map((media, i) => ({ media, key: this.initialForm.saved_images[i]  })),

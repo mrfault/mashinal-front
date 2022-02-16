@@ -81,7 +81,7 @@
               </div>
             </div>
           </nuxt-link>
-          <div class="langs-menu btn btn--dark-blue-outline">
+          <div class="langs-menu btn btn--dark-white-outline">
             <span>{{ locale }}</span>
             <icon name="chevron-down"/>
             <div class="langs-menu_list">
