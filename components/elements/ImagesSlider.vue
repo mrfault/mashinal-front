@@ -40,6 +40,7 @@
                       <video ref="video" controls><source :src="slide"></video>
                     </div>
                     <vue-three-sixty
+                      :amount="announcement.images_360.length"
                       v-else-if="slides.types && slides.types[index] === 'custom'"
                       buttonClass="d-none"
                       disableZoom
@@ -93,7 +94,7 @@ export default {
         fadeEffect: {
           crossFade: true
         },
-        loop: true,
+        loop: false,
         preloadImages: false,
         lazy: {
           loadPrevNext: false,
@@ -121,7 +122,10 @@ export default {
       this.imagesSwiper.slidePrev();
     },
     slideNext() {
-      this.imagesSwiper.slideNext();
+      if(this.slides.main.length-1 === this.imagesSwiper.activeIndex) {
+        this.imagesSwiper.slideTo(0);
+      }else
+        this.imagesSwiper.slideNext();
     },
     thumbsPrev() {
       this.thumbsSwiper.slidePrev();
