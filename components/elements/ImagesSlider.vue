@@ -39,13 +39,19 @@
                     <div class="video" v-else-if="slides.types && slides.types[index] === 'video'">
                       <video ref="video" controls><source :src="slide"></video>
                     </div>
-                    <vue-three-sixty
-                      :amount="announcement.images_360.length"
-                      v-else-if="slides.types && slides.types[index] === 'custom'"
-                      buttonClass="d-none"
-                      disableZoom
-                      :files="announcement.images_360"
-                    />
+                    <div class="position-relative" style="width: 100%; height: 100%;" v-else-if="slides.types && slides.types[index] === 'custom'">
+                      <vue-three-sixty
+                        :zooming="zoom"
+                        :amount="announcement.images_360.length"
+                        buttonClass="d-none"
+                        :files="announcement.images_360"
+                      />
+                      <div class="zoom-360-wrapper">
+                        <button class="btn btn--grey" @click="zoom+=2;">+</button>
+                        <button class="btn btn--grey" @click="zoom-=2;" >-</button>
+                      </div>
+                    </div>
+
                     <template v-else>
                       <img alt="" :data-src="slide" class="swiper-lazy" />
                       <loader />
@@ -87,6 +93,7 @@ export default {
   },
   data() {
     return {
+      zoom:0,
       swiperOps: {
         initialSlide: this.currentSlide,
         allowTouchMove: false,

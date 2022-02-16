@@ -6,7 +6,7 @@
 
           <div class="swiper-slide"  :key="index" v-for="(slide, index) in slides.main">
             <div style="width:100%;" v-if="index === 0 && announcement.images_360 && announcement.images_360.length">
-              <div>
+              <div class="position-relative">
                 <vue-three-sixty
                   :amount="announcement.images_360.length"
                   buttonClass="d-none"
