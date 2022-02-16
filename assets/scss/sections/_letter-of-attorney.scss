@@ -195,9 +195,6 @@
 .video-record {
   video {
     transform: rotateY(180deg);
-    &::-webkit-media-controls-panel {
-      display: none !important;
-    }
   }
   &_controls {
     display: flex;
@@ -490,8 +487,8 @@
         .wider {
           display: block;
         }
-        span {
-          &:last-child {
+        span{
+          &:last-child{
             text-align: inherit;
             margin-top: 5px;
             margin-left: 0;
