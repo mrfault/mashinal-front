@@ -1,7 +1,7 @@
 <template>
   <div :class="['steps-summary', {'show-data': hasAnyPower}]">
     <div class="row" v-if="hasAnyPower">
-      <div class="col-6" v-for="(user, i) in users" :key="i">
+      <div class="col-12 col-lg-6" v-for="(user, i) in users" :key="i">
         <div class="card-bordered">
           <div class="img">
             <img :src="user.image || `/img/user.${isDarkMode ? 'jpg' : 'svg'}`" alt="" />
