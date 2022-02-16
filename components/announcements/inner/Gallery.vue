@@ -67,9 +67,9 @@
         <template v-if="isMobileBreakpoint">
           <FsLightbox
             :toggler="toggleFsLightbox"
-            :sources="slides.main.splice(0,1)"
-            :types="slides.types.splice(0,1)"
-            :slide="currentSlide"
+            :sources="slides.main.slice(1,slides.main.length)"
+            :types="slides.types.slice(1,slides.main.length)"
+            :slide="currentSlide+1"
             :key="lightboxKey"
             :onClose="refreshLightbox"
             :onBeforeClose="onBeforeClose"
@@ -206,6 +206,7 @@ export default {
     },
     slidePrev() {
       if (!this.showSlider) return;
+      console.log(this.gallerySwiper.activeIndex)
       if(this.gallerySwiper.activeIndex === 0) {
         this.gallerySwiper.slideTo(this.slides.main.length-1);
       }else
