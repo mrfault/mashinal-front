@@ -53,7 +53,7 @@ export default {
           url: '/calculator/customs',
           hasAction: false,
           image: 'customs',
-          isAvailable: true,
+          isAvailable: false,
         },
         {
           title: this.$t('compulsory_insurance_calculator'),
