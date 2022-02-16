@@ -10,7 +10,9 @@
             :class="['swiper-slide-bg', {'youtube-play': where === 'announcement' && announcement.youtube_id && index === 1}]"
             :style="{backgroundImage: `url('${slide}')` }"
             role="img"
-            aria-label=""></div>
+            aria-label="">
+            <span class="image-360-pin" v-if="index === 0 && announcement.images_360 && announcement.images_360.length" >360<sup>&#176;</sup></span>
+          </div>
         </div>
       </div>
     </div>
@@ -58,6 +60,10 @@ export default {
         if (yt_video) {
           thumbs.splice(1, 0, `https://img.youtube.com/vi/${yt_video}/hqdefault.jpg`);
         }
+
+        if(this.announcement.images_360 && this.announcement.images_360.length) {
+          thumbs.splice(0,0,this.announcement.images_360[0])
+        }
       } else if (this.where === 'salon') {
         return this.media;
       }
@@ -73,3 +79,11 @@ export default {
   }
 }
 </script>
+<style scoped>
+.image-360-pin {
+  color: white;
+  position: absolute;
+  right: 10px;
+  top: 5px;
+}
+</style>
