@@ -169,7 +169,7 @@ export default {
         fadeEffect: {
           crossFade: true
         },
-        loop: true,
+        loop: false,
         preloadImages: false,
         lazy: {
           loadPrevNext: false,
@@ -209,7 +209,10 @@ export default {
     },
     slideNext() {
       if (!this.showSlider) return;
-      this.gallerySwiper.slideNext();
+      if(this.slides.main.length-1 === this.gallerySwiper.activeIndex) {
+        this.gallerySwiper.slideTo(0);
+      }else
+        this.gallerySwiper.slideNext();
     },
     changeLightboxSlide(fsBox) {
       if (!this.showLightbox) return;
