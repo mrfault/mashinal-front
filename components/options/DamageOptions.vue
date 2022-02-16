@@ -1,6 +1,6 @@
 <template>
   <div class="damage-options">
-    <h2 class="title-with-line mt-2 mt-lg-3" v-if="readOnly">
+    <h2 class="title-with-line mt-2 mt-lg-3" v-if="false">
       <span>{{ $t('body_condition') }}</span>
     </h2>
     <div class="d-flex flex-column flex-lg-row align-items-start">

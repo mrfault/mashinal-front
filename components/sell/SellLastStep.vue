@@ -60,7 +60,7 @@
           </div>
         </div>
         <template v-if="type === 'cars'">
-          <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-body-parts">
+          <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-body-parts" v-if="false">
             <span>{{ $t('body_condition') }}</span>
           </h2>
           <damage-options :selected="form.part" @update-car-damage="updateCarDamage" :imageIsActive="true" v-if="false"/>
