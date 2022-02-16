@@ -2060,7 +2060,7 @@ export default {
     ],
     "vehicle_id_mark": "Марка транспортного средства",
     "vehicle_id_sign": "Гос.номер транспортного средства",
-    "letter_sender": "Лицо,доверяющее управление",
+    "letter_sender": "Лицо, доверяющее управление",
     "letter_recepient": "Доверенное лицо",
     "letter_type": "Тип доверенности",
     "license_serial_number": "Номер серии",
