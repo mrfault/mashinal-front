@@ -1,7 +1,7 @@
 <template>
   <div class="inner-gallery">
     <div class="position-relative">
-      <div class="swiper-container" v-swiper:gallerySwiper="swiperOps" ref="gallerySwiper" v-if="showSlider">
+      <div class="swiper-container"  v-swiper:gallerySwiper="swiperOps" ref="gallerySwiper" v-if="showSlider">
         <div class="swiper-wrapper">
 
           <div class="swiper-slide"  :key="index" v-for="(slide, index) in slides.main">
@@ -166,6 +166,7 @@ export default {
       swiperOps: {
         init: false,
         effect: 'fade',
+        allowTouchMove: false,
         fadeEffect: {
           crossFade: true
         },
@@ -201,11 +202,15 @@ export default {
     },
     changeSlide(index) {
       if (!this.showSlider) return;
-      this.gallerySwiper.slideTo(index + 1, 0);
+      this.gallerySwiper.slideTo(index, 0);
     },
     slidePrev() {
       if (!this.showSlider) return;
-      this.gallerySwiper.slidePrev();
+      if(this.slides.main.length-1 === this.gallerySwiper.activeIndex) {
+        this.gallerySwiper.slideTo(this.slides.main.length-1);
+      }else
+        this.gallerySwiper.slidePrev();
+      this.updateTouchEvents();
     },
     slideNext() {
       if (!this.showSlider) return;
@@ -213,6 +218,7 @@ export default {
         this.gallerySwiper.slideTo(0);
       }else
         this.gallerySwiper.slideNext();
+      this.updateTouchEvents();
     },
     changeLightboxSlide(fsBox) {
       if (!this.showLightbox) return;
@@ -244,8 +250,14 @@ export default {
       return `https://img.youtube.com/vi/${this.announcement.youtube_id}/${size}default.jpg`;
     },
     updateTouchEvents() {
-      this.gallerySwiper.simulateTouch = this.isMobileBreakpoint;
-      this.gallerySwiper.allowTouchMove = this.isMobileBreakpoint;
+      if(this.gallerySwiper.activeIndex > 0)  {
+        this.gallerySwiper.simulateTouch = this.isMobileBreakpoint;
+        this.gallerySwiper.allowTouchMove = this.isMobileBreakpoint;
+      }else {
+        this.gallerySwiper.simulateTouch = false;
+        this.gallerySwiper.allowTouchMove = false;
+      }
+
     }
   },
   computed: {
@@ -294,13 +306,43 @@ export default {
     }
   },
   mounted() {
+    let swiperTouchStartX;
     this.$nextTick(() => {
       if (this.showSlider) {
         setTimeout(() => {
           this.gallerySwiper.init();
           this.gallerySwiper.on('slideChange', () => {
+            this.updateTouchEvents();
             this.currentSlide = this.gallerySwiper.realIndex;
           });
+          this.gallerySwiper.on('touchStart', (e) => {
+            if (e.type === 'touchstart') {
+              swiperTouchStartX = e.touches[0].clientX;
+            } else {
+              swiperTouchStartX = e.clientX;
+            }
+          })
+
+          this.gallerySwiper.on('touchEnd', (e) => {
+              const tolerance = 100;
+              const totalSlidesLen = this.gallerySwiper.slides.length;
+
+              const diff = (() => {
+                if (e.type === 'touchend') {
+                  return e.changedTouches[0].clientX - swiperTouchStartX;
+                } else {
+                  return e.clientX - swiperTouchStartX;
+                }
+              })();
+
+              if (this.gallerySwiper.isBeginning && diff >= tolerance) {
+                //this.gallerySwiper.slideTo(totalSlidesLen - 1);
+              } else if (this.gallerySwiper.isEnd && diff <= -tolerance) {
+                setTimeout(() => {
+                  this.gallerySwiper.slideTo(0);
+                }, 1);
+              }
+          })
 
           this.gallerySwiper.on('click', (event) => {
             this.openLightbox(this.currentSlide);

@@ -119,22 +119,36 @@ export default {
   },
   methods: {
     slidePrev() {
-      this.imagesSwiper.slidePrev();
+      if(this.imagesSwiper.activeIndex === 0) {
+        this.imagesSwiper.slideTo(this.slides.main.length-1);
+      }else
+        this.imagesSwiper.slidePrev();
+
+      this.updateTouchEvents();
     },
     slideNext() {
       if(this.slides.main.length-1 === this.imagesSwiper.activeIndex) {
         this.imagesSwiper.slideTo(0);
       }else
         this.imagesSwiper.slideNext();
+
+      this.updateTouchEvents();
     },
     thumbsPrev() {
       this.thumbsSwiper.slidePrev();
+    },
+    updateTouchEvents() {
+      if(this.imagesSwiper.activeIndex > 0)  {
+        this.imagesSwiper.allowTouchMove = true;
+      }else {
+        this.imagesSwiper.allowTouchMove = false;
+      }
     },
     thumbsNext() {
       this.thumbsSwiper.slideNext();
     },
     changeSlide(index) {
-      this.imagesSwiper.slideTo(index + 1, 0);
+      this.imagesSwiper.slideTo(index, 0);
     },
     handleEscapeKey(e) {
       if (e.key === 'Escape'){
@@ -153,8 +167,38 @@ export default {
           this.showIframe = true;
 
           this.$emit('slide-change', this.imagesSwiper.realIndex);
+          this.updateTouchEvents();
         });
       });
+      let swiperTouchStartX;
+      this.imagesSwiper.on('touchStart', (e) => {
+        if (e.type === 'touchstart') {
+          swiperTouchStartX = e.touches[0].clientX;
+        } else {
+          swiperTouchStartX = e.clientX;
+        }
+      })
+
+      this.imagesSwiper.on('touchEnd', (e) => {
+        const tolerance = 100;
+        const totalSlidesLen = this.imagesSwiper.slides.length;
+
+        const diff = (() => {
+          if (e.type === 'touchend') {
+            return e.changedTouches[0].clientX - swiperTouchStartX;
+          } else {
+            return e.clientX - swiperTouchStartX;
+          }
+        })();
+
+        if (this.imagesSwiper.isBeginning && diff >= tolerance) {
+          //this.gallerySwiper.slideTo(totalSlidesLen - 1);
+        } else if (this.imagesSwiper.isEnd && diff <= -tolerance) {
+          setTimeout(() => {
+            this.imagesSwiper.slideTo(0);
+          }, 1);
+        }
+      })
     });
   },
   beforeDestroy() {
