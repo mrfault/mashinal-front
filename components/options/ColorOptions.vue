@@ -36,7 +36,7 @@
 <style lang="scss">
 .custom-tooltip {
   .tooltip-inner {
-    background: #246eb2 !important;
+    background: #081A3E !important;
     color: #fff !important;
   }
 }
