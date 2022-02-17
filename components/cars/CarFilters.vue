@@ -6,7 +6,7 @@
           <span v-if="popular">{{ $t('popular_options') }}</span>
           <span v-else>{{ getTitle(index) }}</span>
         </h2>
-        <icon :name="`chevron-${collapsed[index] ? 'down' : 'up'}`" class="cursor-pointer" v-if="index==0 && popular"/>
+        <icon :name="`chevron-${collapsed[index] ? 'down' : 'up'}`" class="cursor-pointer" v-if="showIcon || (index==0 && popular)"/>
       </div>
       <transition-expand>
         <div class="row" v-if=collapsed[index]>
@@ -45,6 +45,10 @@ import {mapGetters} from 'vuex';
 
 export default {
   props: {
+    showIcon:{
+      default: true,
+      type: Boolean
+    },
     values: {},
     nameInValue: Boolean,
     collapsedByDefault: Boolean,

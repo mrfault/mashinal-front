@@ -153,7 +153,7 @@ export default {
   flex: 1;
   flex-direction: column;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
 }
 .login-forms {
   .swiper-pagination-bullets {

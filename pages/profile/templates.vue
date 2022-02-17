@@ -56,6 +56,7 @@
                 :label="$t('receive_notifications')"
               />
             </div>
+            <qrcode-box/>
             <button type="submit" :class="['btn btn--green full-width', { pending }]">
               {{ $t('confirm') }}
             </button>
@@ -97,11 +98,13 @@ import { mapGetters, mapActions } from 'vuex';
 import SavedSearch from '~/components/profile/SavedSearch';
 import NoResults from '~/components/elements/NoResults';
 import ChangeEmail from '~/components/elements/ChangeEmail';
+import QrcodeBox from "~/components/login/Qrcode-box";
 
 export default {
   name: 'pages-profile-templates',
   middleware: 'auth_general',
   components: {
+    QrcodeBox,
     ChangeEmail,
     SavedSearch,
     NoResults
