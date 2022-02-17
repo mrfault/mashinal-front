@@ -1,5 +1,5 @@
 <template>
-  <div class="qr-box mb-2" v-if=" !isMobileBreakpoint && !qrBoxIsClosed && !$cookies.get('qrBoxIsClosed')">
+  <div class="qr-box mb-2 mt-2" v-if=" !isMobileBreakpoint && !qrBoxIsClosed && !$cookies.get('qrBoxIsClosed')">
     <div class="row">
       <div class="col-md-4">
         <img src="/qr.svg">
