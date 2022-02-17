@@ -24,8 +24,8 @@
         :skip-sign-in="skipSignIn"
         :resend-data="resendData"
       />
+      <QrcodeBox/>
     </div>
-    <QrcodeBox/>
     <div class="swiper-pagination-bullets" v-if="!isMobileBreakpoint && !inAttorney">
       <span  class="swiper-pagination-bullet" :class="{'swiper-pagination-bullet-active': action === 'sign-in' && !form.staticPhone }" ></span>
       <span class="swiper-pagination-bullet"  :class="{'swiper-pagination-bullet-active': action === 'sms' || form.staticPhone }"></span>
@@ -153,7 +153,7 @@ export default {
   flex: 1;
   flex-direction: column;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
 }
 .login-forms {
   .swiper-pagination-bullets {
