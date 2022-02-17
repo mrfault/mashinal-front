@@ -95,6 +95,10 @@ export default {
       showNav: true,
     }
   },
+  mounted() {
+    if(this.$route.query.tab)
+       this.tab = this.$route.query.tab;
+  },
   computed: {
     ...mapGetters({
       cars: 'garage/cars',
