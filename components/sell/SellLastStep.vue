@@ -149,7 +149,7 @@
             <car-filters :values="form.all_options" @change-filter="updateCarFilter" popular key="popular"/>
             <div class="car-filters_row">
               <div class="d-flex mb-2 mb-lg-3" @click="collapsed = !collapsed">
-                <h2 class="title-with-line full-width">
+                <h2 class="title-with-line full-width">2
 
                   <span>{{ $t('others') }}</span>
                 </h2>

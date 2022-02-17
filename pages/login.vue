@@ -15,7 +15,6 @@
           </div>
           <div class="col-12 col-lg-4">
             <div class="tab-form">
-
               <login-tabs @update-tab="tab = $event" :skip-sign-in="true" />
             </div>
           </div>

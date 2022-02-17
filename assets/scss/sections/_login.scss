@@ -200,3 +200,26 @@
     }
   }
 }
+.qr-box{
+  background:$greyish-blue-2 ;
+  padding: 14px 12px;
+  display: flex;
+  p{
+    color: $dark-5;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .close  img{
+    position: relative;
+    left: 2px;
+    top: -8px;
+    cursor: pointer;
+  }
+  .app-icons{
+    display: flex;
+    img{
+      height: 95%;
+      margin-left: 2px;
+    }
+  }
+}
