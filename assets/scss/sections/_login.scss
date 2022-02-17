@@ -223,3 +223,11 @@
     }
   }
 }
+.dark-mode{
+.qr-box{
+  background:$dark-1 ;
+  p{
+    color: $white;
+  }
+}
+}
