@@ -2171,5 +2171,6 @@ export default {
   "other_options": "Digər seçimlər",
   "obem_sm3_and_power":"Həcm və mühərrik gücü",
   "new_saved_search":"Yeni axtarış şablonu yarat",
-  "attorney_pay":"Etibarnamə ödənişi"
+  "attorney_pay":"Etibarnamə ödənişi",
+  "qr_code_text":"Mashin.AL tətbiqini yükləyin. Yeniliklərdən xəbərdar olun!",
 }
