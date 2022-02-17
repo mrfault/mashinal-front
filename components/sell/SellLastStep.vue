@@ -152,7 +152,7 @@
                 <h2 class="title-with-line full-width">
                   <span>{{ $t('other_options') }}</span>
                 </h2>
-                <icon :name="`chevron-${!collapsed ? 'down' : 'up'}`" class="cursor-pointer" />
+                <icon :name="`chevron-${!collapsed ? 'up' : 'down'}`" class="cursor-pointer" />
               </div>
               <transition-expand>
                 <div v-if="collapsed">
@@ -277,7 +277,7 @@ export default {
   mixins: [ToastErrorsMixin, ImageResizeMixin, PaymentMixin],
   data() {
     return {
-      collapsed: false,
+      collapsed: true,
       form: this.$clone(this.initialForm),
       date: Math.floor(Date.now() / 1000),
       files: (this.announcement?.media || []).map((media, i) => ({ media, key: this.initialForm.saved_images[i]  })),

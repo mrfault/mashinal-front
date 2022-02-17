@@ -5,7 +5,7 @@
         <img src="/qr.svg">
       </div>
       <div class="col-md-8">
-        <p>Mashin.AL tətbiqini yükləyin. Yeniliklərdən xəbərdar olun!</p>
+        <p>{{$t('qr_code_text')}}</p>
         <div class="row mt-2">
           <div class="app-icons">
             <img src="/icons/app-store.svg" >
@@ -15,7 +15,7 @@
       </div>
     </div>
     <div class="close">
-      <img src="/icons/close.svg" @click="qrBoxClose">
+      <img :src="isDarkMode ? 'icons/close-white.svg' : 'icons/close.svg'" @click="qrBoxClose">
     </div>
   </div>
 </template>
