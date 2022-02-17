@@ -369,6 +369,7 @@
             :label="$t('receive_notifications')"
           />
         </div>
+        <qrcode-box/>
         <button type="submit" :class="['btn btn--green full-width', { pending2 }]">
           {{ $t('confirm') }}
         </button>
@@ -391,9 +392,11 @@ import ColorOptions from '~/components/options/ColorOptions';
 import CarFilters from '~/components/cars/CarFilters';
 import CarBodyShortcuts from '~/components/cars/CarBodyShortcuts';
 import CarOptionPacks from '~/components/cars/CarOptionPacks';
+import QrcodeBox from "~/components/login/Qrcode-box";
 
 export default {
   components: {
+    QrcodeBox,
     ColorOptions,
     CarFilters,
     CarBodyShortcuts,

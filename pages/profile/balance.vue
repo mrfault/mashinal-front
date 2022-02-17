@@ -95,7 +95,7 @@
                 ]"
                 :key="0"
               >
-                <template v-if="!isMobileBreakpoint">
+                <template v-if="!isMobileBreakpoint && (myBalanceHistory.data.length || myBalanceHistory.current_page !== 1)">
                   <button
                     class="btn btn--grey pointer-events-none"
                     v-if="myBalanceHistory.data.length"
@@ -295,7 +295,7 @@ export default {
           value: false
       });
       },1000)
-      
+
     },
   },
   mounted() {
