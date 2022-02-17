@@ -60,10 +60,10 @@
           </div>
         </div>
         <template v-if="type === 'cars'">
-          <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-body-parts">
+          <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-body-parts" v-if="false">
             <span>{{ $t('body_condition') }}</span>
           </h2>
-          <damage-options :selected="form.part" @update-car-damage="updateCarDamage" />
+          <damage-options :selected="form.part" @update-car-damage="updateCarDamage" :imageIsActive="true" v-if="false"/>
         </template>
         <template v-if="!isAutosalon">
           <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-region_id">
@@ -151,7 +151,7 @@
               <div class="d-flex mb-2 mb-lg-3" @click="collapsed = !collapsed">
                 <h2 class="title-with-line full-width">2
 
-                  <span>{{ $t('others') }}</span>
+                  <span>{{ $t('other_options') }}</span>
                 </h2>
                 <icon :name="`chevron-${!collapsed ? 'down' : 'up'}`" class="cursor-pointer" />
               </div>

@@ -7,8 +7,14 @@ import Inputmask from 'inputmask';
 import vuescroll from 'vuescroll';
 import * as rive from 'rive-js';
 
+import VueThreeSixty from 'vue-360'
+
+import 'vue-360/dist/css/style.css'
+
+
 Vue.prototype.$rive = rive;
 
+Vue.use(VueThreeSixty)
 Vue.use(Vue2TouchEvents)
 Vue.use(VueAwesomeSwiper);
 Vue.use(VueLazyload);

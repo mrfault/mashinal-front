@@ -1,10 +1,10 @@
 <template>
   <div class="damage-options">
-    <h2 class="title-with-line mt-2 mt-lg-3" v-if="readOnly">
+    <h2 class="title-with-line mt-2 mt-lg-3" v-if="false">
       <span>{{ $t('body_condition') }}</span>
     </h2>
     <div class="d-flex flex-column flex-lg-row align-items-start">
-      <div class="car-damage-img">
+      <div class="car-damage-img" v-if="imageIsActive">
         <inline-svg src="/img/car-damage.svg" :class="beatenParts" />
         <div :class="['car-part', 'car-part_'+part.id]" v-for="(part, index) in carParts" :key="index">
           <span @click="showStateModal(index)" :class="['car-part_point', {selected: state.hasOwnProperty(index), 'read-only': readOnly}]"></span>
@@ -47,7 +47,8 @@ export default {
     selected: {
       default: () => ({})
     },
-    readOnly: Boolean
+    readOnly: Boolean,
+    imageIsActive: Boolean
   },
   data() {
     let f = i => ({

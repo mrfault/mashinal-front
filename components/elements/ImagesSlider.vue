@@ -17,7 +17,7 @@
               <div class="swiper-slide" :key="index" v-for="(slide, index) in (slides.thumbs || slides.main)">
                 <div
                   @click="changeSlide(index)"
-                  :class="['swiper-thumb-bg', {[`${slides.types[index]}-play`]: slides.types && ['youtube','video'].includes(slides.types[index])}]" 
+                  :class="['swiper-thumb-bg', {[`${slides.types[index]}-play`]: slides.types && ['youtube','video'].includes(slides.types[index])}]"
                   :style="slide ? { backgroundImage: `url('${slide}')` } : {}"
                 ></div>
               </div>
@@ -39,6 +39,19 @@
                     <div class="video" v-else-if="slides.types && slides.types[index] === 'video'">
                       <video ref="video" controls><source :src="slide"></video>
                     </div>
+                    <div class="position-relative" style="width: 100%; height: 100%;" v-else-if="slides.types && slides.types[index] === 'custom'">
+                      <vue-three-sixty
+                        :zooming="zoom"
+                        :amount="announcement.images_360.length"
+                        buttonClass="d-none"
+                        :files="announcement.images_360"
+                      />
+                      <div class="zoom-360-wrapper">
+                        <button class="btn btn--grey" @click="zoom+=2;">+</button>
+                        <button class="btn btn--grey" @click="zoom-=2;" >-</button>
+                      </div>
+                    </div>
+
                     <template v-else>
                       <img alt="" :data-src="slide" class="swiper-lazy" />
                       <loader />
@@ -74,18 +87,21 @@
 export default {
   props: {
     slides: {},
+    announcement:{},
     currentSlide: Number,
     hasSidebar: Boolean
   },
   data() {
     return {
+      zoom:0,
       swiperOps: {
         initialSlide: this.currentSlide,
+        allowTouchMove: false,
         effect: 'fade',
         fadeEffect: {
           crossFade: true
         },
-        loop: true,
+        loop: false,
         preloadImages: false,
         lazy: {
           loadPrevNext: false,
@@ -110,19 +126,36 @@ export default {
   },
   methods: {
     slidePrev() {
-      this.imagesSwiper.slidePrev();
+      if(this.imagesSwiper.activeIndex === 0) {
+        this.imagesSwiper.slideTo(this.slides.main.length-1);
+      }else
+        this.imagesSwiper.slidePrev();
+
+      this.updateTouchEvents();
     },
     slideNext() {
-      this.imagesSwiper.slideNext();
+      if(this.slides.main.length-1 === this.imagesSwiper.activeIndex) {
+        this.imagesSwiper.slideTo(0);
+      }else
+        this.imagesSwiper.slideNext();
+
+      this.updateTouchEvents();
     },
     thumbsPrev() {
       this.thumbsSwiper.slidePrev();
+    },
+    updateTouchEvents() {
+      if(this.imagesSwiper.activeIndex > 0)  {
+        this.imagesSwiper.allowTouchMove = true;
+      }else {
+        this.imagesSwiper.allowTouchMove = false;
+      }
     },
     thumbsNext() {
       this.thumbsSwiper.slideNext();
     },
     changeSlide(index) {
-      this.imagesSwiper.slideTo(index + 1, 0);
+      this.imagesSwiper.slideTo(index, 0);
     },
     handleEscapeKey(e) {
       if (e.key === 'Escape'){
@@ -139,9 +172,40 @@ export default {
         this.$refs.video?.[0]?.pause();
         this.$nextTick(() => {
           this.showIframe = true;
+
           this.$emit('slide-change', this.imagesSwiper.realIndex);
+          this.updateTouchEvents();
         });
       });
+      let swiperTouchStartX;
+      this.imagesSwiper.on('touchStart', (e) => {
+        if (e.type === 'touchstart') {
+          swiperTouchStartX = e.touches[0].clientX;
+        } else {
+          swiperTouchStartX = e.clientX;
+        }
+      })
+
+      this.imagesSwiper.on('touchEnd', (e) => {
+        const tolerance = 100;
+        const totalSlidesLen = this.imagesSwiper.slides.length;
+
+        const diff = (() => {
+          if (e.type === 'touchend') {
+            return e.changedTouches[0].clientX - swiperTouchStartX;
+          } else {
+            return e.clientX - swiperTouchStartX;
+          }
+        })();
+
+        if (this.imagesSwiper.isBeginning && diff >= tolerance) {
+          //this.gallerySwiper.slideTo(totalSlidesLen - 1);
+        } else if (this.imagesSwiper.isEnd && diff <= -tolerance) {
+          setTimeout(() => {
+            this.imagesSwiper.slideTo(0);
+          }, 1);
+        }
+      })
     });
   },
   beforeDestroy() {

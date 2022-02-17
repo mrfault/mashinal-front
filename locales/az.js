@@ -397,7 +397,7 @@ export default {
   "check_insuranceAccident_info": "İcbari Sığorta hadisələri haqqında məlumat",
   "check_penalty": "Cərimələr (MMX və qayda pozuntuları)",
   "check_penalty_info": "Cərimələr haqqında ətraflı məlumat",
-  "check_points": "Bal yoxla",
+  "check_points": "Cərimə balını yoxla",
   "check_restriction": "Məhdudiyyət",
   "check_technical": "Texniki Baxış",
   "check-announcements-by-phone": "Elanlarınızı yoxlamaq üçün nömrənizi daxil edin.",
@@ -2036,7 +2036,7 @@ export default {
   "your_loan_application": "Sizin kredit üçün müraciətləriniz",
   "your_loan_application_at_filankes_bank_has_been_filled_out_and_will_be_considered_soon_you_can_familiarize_yourself_with_it_below": "Filankes Bankından kredit almaq üçün müraciətiniz tamamlanıb və qısa müddət ərzində nəzərdən keçiriləcək, aşağıda görə bilərsiniz.",
   "your_loan_application_at_filankes_bank_has_been_reviewed_you_can_familiarize_yourself_with_it_below": "Filankes Banka müraciətiniz nəzərdən keçirildi, aşağıda görə bilərsiniz.",
-  "your_points": "Balınız",
+  "your_points": "Cərimə balınız",
   "your_request_has_been_sent": "Sorğunuz göndərildi",
   "your_stores": "Sizin salonlar",
   "zadnie-tormoza": "Arxa əyləclər",
@@ -2150,7 +2150,7 @@ export default {
   "not_selected": "Seçilməyib",
   "vehicle_owner":"Nəqliyyat vasitəsinin sahibi",
   "engine_volume2":"Mühərrikin həcmi",
-  "check_penalty2": "Bal yoxla",
+  "check_penalty2": "Cərimə balını yoxla",
   "last_one_week":"Son 1 həftə",
   "last_month":"Son 1 ay",
   "last_6_month":"Son 6 ay",
@@ -2171,4 +2171,5 @@ export default {
   "other_options": "Digər seçimlər",
   "obem_sm3_and_power":"Həcm və mühərrik gücü",
   "new_saved_search":"Yeni axtarış şablonu yarat",
+  "attorney_pay":"Etibarnamə ödənişi"
 }

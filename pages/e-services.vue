@@ -63,7 +63,7 @@ export default {
           url: '/calculator/compulsory-insurance',
           hasAction: false,
           image: 'insurance',
-          isAvailable: true,
+          isAvailable: false,
         },
         // icon
         {
