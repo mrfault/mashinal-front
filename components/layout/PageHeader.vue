@@ -204,7 +204,6 @@ export default {
       this.$cookies.set('smartbanner_exited',1)
       this.close = true;
       this.$store.commit('closeSmartBanner', false);
-      console.log(this.$store.state.smartBanner);
     },
     handleBtnClick(name) {
       if (this.routeName === name) {
