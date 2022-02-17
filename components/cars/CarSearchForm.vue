@@ -16,6 +16,7 @@
                 </a>
               </nuxt-link>
             </div>
+
             <div class="col-4" v-if="!onlySavedSearch">
               <nuxt-link custom exact :to="$localePath('/cars/advanced-search')" v-slot="{ href }">
                 <a :href="href" class="btn btn--pale-red full-width"
