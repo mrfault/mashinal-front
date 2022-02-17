@@ -25,7 +25,7 @@
         :resend-data="resendData"
       />
     </div>
-
+    <QrcodeBox/>
     <div class="swiper-pagination-bullets" v-if="!isMobileBreakpoint && !inAttorney">
       <span  class="swiper-pagination-bullet" :class="{'swiper-pagination-bullet-active': action === 'sign-in' && !form.staticPhone }" ></span>
       <span class="swiper-pagination-bullet"  :class="{'swiper-pagination-bullet-active': action === 'sms' || form.staticPhone }"></span>
@@ -42,9 +42,11 @@ import {isPhoneNumber} from '~/lib/validators';
 import StepsProgress from '~/components/garage/loa/StepsProgress';
 import SignInForm from '~/components/login/SignInForm';
 import ConfirmPhone from '~/components/login/ConfirmPhone';
+import QrcodeBox from "~/components/login/Qrcode-box";
 
 export default {
   components: {
+    QrcodeBox,
     StepsProgress,
     SignInForm,
     ConfirmPhone
@@ -151,7 +153,7 @@ export default {
   flex: 1;
   flex-direction: column;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
 }
 .login-forms {
   .swiper-pagination-bullets {

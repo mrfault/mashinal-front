@@ -32,14 +32,17 @@
     <button type="submit" :class="['btn btn--green full-width', { pending }]">
       {{ $t('go_further') }}
     </button>
+    <qrcode-box class="mt-2"/>
   </form>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import { required, requiredIf } from 'vuelidate/lib/validators'
+import QrcodeBox from "~/components/login/Qrcode-box";
 
 export default {
+  components: {QrcodeBox},
   data() {
     return {
       pending: false,

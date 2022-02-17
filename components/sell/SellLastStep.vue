@@ -150,14 +150,13 @@
             <div class="car-filters_row">
               <div class="d-flex mb-2 mb-lg-3" @click="collapsed = !collapsed">
                 <h2 class="title-with-line full-width">
-
                   <span>{{ $t('other_options') }}</span>
                 </h2>
                 <icon :name="`chevron-${!collapsed ? 'down' : 'up'}`" class="cursor-pointer" />
               </div>
               <transition-expand>
                 <div v-if="collapsed">
-                  <car-filters :values="form.all_options" @change-filter="updateCarFilter" key="all" collapsed-by-default />
+                  <car-filters :show-icon="false" :values="form.all_options" @change-filter="updateCarFilter" key="all" collapsed-by-default />
                 </div>
 
               </transition-expand>
