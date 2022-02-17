@@ -17,8 +17,8 @@
                 </div>
                 <p>{{ homePageSlider.description[locale] }}</p>
 
-                <nuxt-link :to="$localePath(homePageSlider.button_link)" class="btn  btn--green text-left" v-if="false">{{homePageSlider.button_text[locale]}}</nuxt-link>
-                <button @click="gotoRoute($localePath(homePageSlider.button_link))" class="btn  btn--green text-left" v-if="homePageSlider.button_link">{{homePageSlider.button_text[locale]}}</button>
+                <nuxt-link :to="$localePath(homePageSlider.button_link)" class="btn  btn--green text-left" v-if="homePageSlider.button_link">{{homePageSlider.button_text[locale]}}</nuxt-link>
+                <button v-if="false" @click="gotoRoute($localePath(homePageSlider.button_link))" class="btn  btn--green text-left" >{{homePageSlider.button_text[locale]}}</button>
               </div>
             </div>
           </div>
@@ -153,9 +153,12 @@ export default {
     },
     gotoRoute(link){
       if (this.loggedIn) {
-        this.$route.push(link)
+        // this.$route.push(link)
+        this.$router.push({ path: '/qaraj' })
       }else{
-        this.$route.push(link)
+        // this.$route.push(link)
+        this.$router.push({ path: '/login' });
+        localStorage.setItem("loginFromSlider", true)
       }
     }
   },
