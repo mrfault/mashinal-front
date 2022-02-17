@@ -18,6 +18,7 @@
                 <p>{{ homePageSlider.description[locale] }}</p>
 
                 <nuxt-link :to="$localePath(homePageSlider.button_link)" class="btn  btn--green text-left" v-if="homePageSlider.button_link">{{homePageSlider.button_text[locale]}}</nuxt-link>
+                <button v-if="false" @click="gotoRoute($localePath(homePageSlider.button_link))" class="btn  btn--green text-left" >{{homePageSlider.button_text[locale]}}</button>
               </div>
             </div>
           </div>
@@ -97,10 +98,8 @@ export default {
   data() {
     return {
       currentSlide: 0,
-
       swiperOps: {
         init:false,
-
         fadeEffect: {
           crossFade: true
         },
@@ -142,8 +141,6 @@ export default {
   },
   methods: {
     ...mapActions(['getInfiniteMainSearch', 'clearSavedSearch']),
-
-
     async handleLogoClick() {
       this.$scrollTo('body');
       this.$nuxt.$emit('reset-search-form');
@@ -153,6 +150,16 @@ export default {
         this.clearSavedSearch()
       ]);
       this.pending = false;
+    },
+    gotoRoute(link){
+      if (this.loggedIn) {
+        // this.$route.push(link)
+        this.$router.push({ path: '/qaraj' })
+      }else{
+        // this.$route.push(link)
+        this.$router.push({ path: '/login' });
+        localStorage.setItem("loginFromSlider", true)
+      }
     }
   },
   mounted() {

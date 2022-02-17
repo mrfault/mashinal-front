@@ -206,7 +206,6 @@ export default {
     },
     slidePrev() {
       if (!this.showSlider) return;
-      console.log(this.gallerySwiper.activeIndex)
       if(this.gallerySwiper.activeIndex === 0) {
         this.gallerySwiper.slideTo(this.slides.main.length-1);
       }else

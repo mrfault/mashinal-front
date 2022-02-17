@@ -235,9 +235,6 @@ export default {
       } catch (e) {}
     },
   },
-  created(){
-    console.log("---------/-/-/-/-/-",this);
-  }
 }
 </script>
 

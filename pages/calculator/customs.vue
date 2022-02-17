@@ -302,7 +302,6 @@ export default {
       this.hasResult = false
     },
     calculate() {
-      console.log(this.filled.engineType)
       let senderCountryObj = this.countries.find(item => item.id === this.filled.senderCountry)
       let producerCountryObj = this.countries.find(item => item.id === this.filled.producerCountry)
       var engine_id = this.filled.engineType
@@ -431,8 +430,6 @@ export default {
           changes.change_2 = parseFloat(changes_o.change_2)
           changes.change_3 = parseFloat(changes_o.change_3)
           changes.change_4 = parseFloat(changes_o.change_4)
-
-          //console.log('3 ilden az, 3kubdan cox');
         }
 
         if (Type == 1) {
@@ -455,7 +452,6 @@ export default {
             parseFloat(prices.price_3) +
             (EngineValue - parseFloat(engineminuses.engineminus_3)) *
               parseFloat(changes.change_3)
-          //console.log('444_'+prices.price_3);
         } else if (Type == 5) {
           OUT =
             parseFloat(prices.price_4) +
@@ -551,7 +547,6 @@ export default {
     },
     async submit() {
       this.$v.$touch()
-      console.log(this.$v.$error)
       if (this.$v.$error) return
       try {
         this.calculate()
