@@ -8,8 +8,9 @@
       <!--/ 360 Viewer Header -->
 
       <!-- Percentage Loader -->
-      <div class="swiper-slide-bg v360-viewport" style="background-color: transparent" v-if="!imagesLoaded">
-        <loader/>
+      <div class="swiper-slide-bg v360-viewport" :class="{'mobile-version-360': fromFsPopup}" style="background-color: #d6e4f8 !important;" v-if="!imagesLoaded">
+        <h3 v-if="!fromFsPopup" style="position: absolute; top: 0; color: #081a3e;">{{ $t('Panorama yüklənir') }}</h3>
+        <loader><div class="percentage-center">{{ percentage }}%</div></loader>
       </div>
       <!--/ Percentage Loader -->
 
@@ -63,6 +64,10 @@ const uuidv1 = require('uuid/v1');
 export default {
   name: 'I360Viewer',
   props: {
+    fromFsPopup:{
+      type: Boolean,
+      default: false,
+    },
     showZoom: {
       type: Boolean,
       default: false,
@@ -139,6 +144,7 @@ export default {
   },
   data() {
     return {
+      percentage:0,
       minScale: 0.5,
       maxScale: 4,
       scale: 0.2,
@@ -294,12 +300,13 @@ export default {
       this.updatePercentageInLoader(percentage);
 
       if (this.loadedImages === this.amount) {
-         this.onAllImagesLoaded(event);
+        this.onAllImagesLoaded(event);
       } else if (this.loadedImages === 1) {
         //this.onFirstImageLoaded(event);
       }
     },
     updatePercentageInLoader(percentage) {
+      this.percentage = percentage;
       /* if (this.loader) {
           this.loader.style.width = percentage + '%';
       }
@@ -842,3 +849,17 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+.percentage-center {
+  position: absolute;
+  top: 50%;
+  color: #242426;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.mobile-version-360 {
+  .percentage-center {
+    color: white;
+  }
+}
+</style>

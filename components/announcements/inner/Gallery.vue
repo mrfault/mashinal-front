@@ -65,6 +65,7 @@
       </div>
       <div class="inner-gallery-lightbox" v-touch:swipe.top="handleSwipeTop">
         <template v-if="isMobileBreakpoint">
+          <h3 style="position: absolute; top: 0; color: #081a3e;">{{ $t('Panorama yüklənir') }}</h3>
           <FsLightbox
             :toggler="toggleFsLightbox"
             :sources="getSourcesFsLightbox"
@@ -266,7 +267,11 @@ export default {
         return  [
           {
             component: 'vue-three-sixty',
-            props: { files: this.announcement.images_360, amount: this.announcement.images_360.length }
+            props: {
+              files: this.announcement.images_360,
+              amount: this.announcement.images_360.length,
+              fromFsPopup: true,
+            }
           },...this.slides.main.slice(1,this.slides.main.length)
         ]
       }
