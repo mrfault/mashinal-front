@@ -67,10 +67,7 @@
         <template v-if="isMobileBreakpoint">
           <FsLightbox
             :toggler="toggleFsLightbox"
-            :sources="[{
-              component: 'vue-three-sixty',
-              props: { files: announcement.images_360, amount: announcement.images_360.length }
-            },...slides.main.slice(1,slides.main.length)]"
+            :sources="getSourcesFsLightbox"
             :types="slides.types"
             :slide="currentSlide+1"
             :key="lightboxKey"
@@ -264,7 +261,18 @@ export default {
   },
   computed: {
     ...mapGetters(['announcement']),
+    getSourcesFsLightbox() {
+      if(this.slides.types[0] === 'custom') {
+        return  [
+          {
+            component: 'vue-three-sixty',
+            props: { files: this.announcement.images_360, amount: this.announcement.images_360.length }
+          },...this.slides.main.slice(1,this.slides.main.length)
+        ]
+      }
+     return this.slides.main;
 
+    },
 
     slides() {
       let thumbs = [], main = [], types = [], hasVideo = false, has360 = false;
