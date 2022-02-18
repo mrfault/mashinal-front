@@ -130,12 +130,17 @@ export default {
       this.player.record().stopDevice();
     },
     retakeVideo() {
-      if (this.starting) return;
+      try {
+              if (this.starting) return;
       this.started = false;
       this.timer = '0:00';
       this.stopRecording();
       this.startRecording();
       this.$emit('retake');
+      } catch (error) {
+        alert("didididididi");
+      }
+
     }
   },
   beforeDestroy() {
