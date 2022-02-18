@@ -44,6 +44,7 @@ export default {
           image: 'etibarname',
           isAvailable: true,
           isAttorney: true,
+          checkIfSafari: true,
         },
         {
           title: this.$t('customs_calculator'),
