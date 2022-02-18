@@ -67,8 +67,11 @@
         <template v-if="isMobileBreakpoint">
           <FsLightbox
             :toggler="toggleFsLightbox"
-            :sources="slides.main.slice(1,slides.main.length)"
-            :types="slides.types.slice(1,slides.main.length)"
+            :sources="[{
+              component: 'vue-three-sixty',
+              props: { files: announcement.images_360, amount: announcement.images_360.length }
+            },...slides.main.slice(1,slides.main.length)]"
+            :types="slides.types"
             :slide="currentSlide+1"
             :key="lightboxKey"
             :onClose="refreshLightbox"
@@ -221,7 +224,6 @@ export default {
       this.updateTouchEvents();
     },
     changeLightboxSlide(fsBox) {
-      if (!this.showLightbox) return;
       this.currentSlide = fsBox.stageIndexes.current;
       this.changeSlide(this.currentSlide);
     },
@@ -306,6 +308,7 @@ export default {
     }
   },
   mounted() {
+    console.log(this.$refs.testref);
     let swiperTouchStartX;
     this.$nextTick(() => {
       if (this.showSlider) {
