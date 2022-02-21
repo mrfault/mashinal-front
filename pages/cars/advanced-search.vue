@@ -3,6 +3,7 @@
     <div class="container"> 
       <breadcrumbs :crumbs="crumbs" />
       <car-search-form 
+        :is-search-page="true"
         :advanced="true"
         :pending="pending"
         @pending="pending = true"

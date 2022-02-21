@@ -49,6 +49,10 @@ export default {
       default: true,
       type: Boolean
     },
+    isSearchPage:{
+      default: false,
+      type: Boolean
+    },
     values: {},
     nameInValue: Boolean,
     collapsedByDefault: Boolean,
@@ -132,11 +136,16 @@ export default {
   created() {
     this.setValues();
     this.$nuxt.$on('change-car-filters', this.setValues);
-    this.carFilterOptions.map((_, index) => {
-      if (this.collapsedByDefault || (!this.popular && index !== 0)) {
-        this.$set(this.collapsed, index, true);
-      }
-    });
+    if(!this.isSearchPage) {
+      this.carFilterOptions.map((_, index) => {
+        if (this.collapsedByDefault || (!this.popular && index === 0)) {
+          this.$set(this.collapsed, index, true);
+        }
+      });
+    }else {
+      this.$set(this.collapsed, 0, true);
+    }
+   
   },
   beforeDestroy() {
     this.$nuxt.$off('change-car-filters', this.setValues);
