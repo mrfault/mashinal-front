@@ -55,7 +55,6 @@ export default {
   async fetch({store}) {
     await store.dispatch('getNotifications')
   },
-  mixins: [LayoutMixin],
   nuxtI18n: {
     paths: {
       az: '/bildirishler'
