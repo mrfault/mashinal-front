@@ -9,7 +9,7 @@
 
       <!-- Percentage Loader -->
       <div class="swiper-slide-bg v360-viewport" :class="{'mobile-version-360': fromFsPopup}" style="background-color: #d6e4f8 !important;" v-if="!imagesLoaded">
-        <h3 v-if="!fromFsPopup" style="position: absolute; top: 0; color: #081a3e;">{{ $t('Panorama yüklənir') }}</h3>
+        <h3 v-if="!fromFsPopup" style="position: absolute; top: 30%;; color: #081a3e;">{{ $t('panorama_loading') }}</h3>
         <loader><div class="percentage-center">{{ percentage }}%</div></loader>
       </div>
       <!--/ Percentage Loader -->
@@ -300,7 +300,7 @@ export default {
       this.updatePercentageInLoader(percentage);
 
       if (this.loadedImages === this.amount) {
-        this.onAllImagesLoaded(event);
+      //  this.onAllImagesLoaded(event);
       } else if (this.loadedImages === 1) {
         //this.onFirstImageLoaded(event);
       }
