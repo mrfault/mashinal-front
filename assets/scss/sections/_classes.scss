@@ -47,7 +47,6 @@
   min-height: calc(100vh - 497px);
 }
 
-
 .safari-popup {
   position: absolute;
   top: 0;
@@ -56,4 +55,8 @@
   width: 300px;
   height: 300px;
   max-width: 80%;
+}
+
+.dropdown-menu-click {
+  visibility: hidden !important;
 }

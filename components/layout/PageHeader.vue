@@ -189,6 +189,7 @@
                       class="dropdown-content container"
                       style="padding-left: 0;"
                       v-if="menu.children"
+                       :class="{'dropdown-menu-click':closeDropdownMenu}"
                     >
                       <div class="container">
                         <div class="row">
@@ -273,6 +274,7 @@ export default {
       hoverMenu: false,
       activeCategory: 0,
       topAdsVisible: true,
+      closeDropdownMenu: false,
     }
   },
   methods: {
@@ -295,6 +297,14 @@ export default {
       'homePageSliders',
     ]),
   },
+  mounted(){
+    console.log(this.$router);
+  },
+  watch:{
+    $route (to, from){
+      this.closeDropdownMenu = true;
+    }
+  }
 }
 </script>
 
