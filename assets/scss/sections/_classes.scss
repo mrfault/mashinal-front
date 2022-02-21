@@ -46,3 +46,14 @@
 .min-height-if-not-notification {
   min-height: calc(100vh - 497px);
 }
+
+
+.safari-popup {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%);
+  width: 300px;
+  height: 300px;
+  max-width: 80%;
+}

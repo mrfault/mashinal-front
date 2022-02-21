@@ -1,4 +1,7 @@
 <template>
+<div class="test">
+
+
   <login-tabs :in-attorney="true" v-if="!$auth.loggedIn" />
   <form v-else class="form" @submit.prevent="submit" novalidate>
     <form-text-input
@@ -34,6 +37,7 @@
     </button>
     <qrcode-box class="mt-2"/>
   </form>
+  </div>
 </template>
 
 <script>
@@ -137,3 +141,6 @@ export default {
   },
 }
 </script>
+
+
+
