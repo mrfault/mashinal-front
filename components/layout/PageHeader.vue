@@ -290,7 +290,7 @@ export default {
       }
     },
   },
-  computed: {
+computed: {
     ...mapGetters([
       'notViewedFavorites',
       'notViewedSavedSearch',
@@ -318,6 +318,7 @@ export default {
     padding-left: 0;
     li {
       padding-left: 30px;
+      list-style-type: none;
       a {
         width: 24px;
         height: 24px;

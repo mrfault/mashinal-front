@@ -3,13 +3,9 @@
     <div class="container d-flex flex-wrap">
       <breadcrumbs :crumbs="crumbs" />
       <template v-for="(item, index) in garageServices">
-          <div
-            class="col-lg-3 mb-2 mb-lg-3"
-            :key="index"
-            v-if="item.isAvailable"
-          >
-            <e-service-card :item="item"></e-service-card>
-          </div>
+        <div class="col-lg-3 mb-2 mb-lg-3" :key="index" v-if="item.isAvailable">
+          <e-service-card :item="item"></e-service-card>
+        </div>
       </template>
     </div>
   </div>
@@ -40,7 +36,7 @@ export default {
           isAttorney: true,
           image: 'etibarname',
           isAvailable: true,
-          checkIfSafari: true
+          checkIfSafari: true,
         },
         {
           title: this.$t('check_points'),
@@ -186,6 +182,16 @@ export default {
           hasAction: false,
           image: 'rules-image',
           isAvailable: this.isMobileBreakpoint,
+        },
+        {
+          title: this.$t('create_eservice_and_shop'),
+          description: null,
+          value: null,
+          icon: 'create-shop',
+          url: '/business-profile',
+          hasAction: false,
+          image: 'createshop',
+          isAvailable: true,
         },
       ]
     },
