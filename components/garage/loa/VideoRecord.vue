@@ -123,6 +123,7 @@ export default {
       this[`${this.recording ? 'stop' : 'start'}Recording`]();
     },
     startRecording() {
+      
       this.starting = true;
       this.player.record().getDevice();
     },
@@ -130,17 +131,12 @@ export default {
       this.player.record().stopDevice();
     },
     retakeVideo() {
-      try {
-              if (this.starting) return;
+      if (this.starting) return;
       this.started = false;
       this.timer = '0:00';
       this.stopRecording();
       this.startRecording();
       this.$emit('retake');
-      } catch (error) {
-        alert("didididididi");
-      }
-
     }
   },
   beforeDestroy() {

@@ -231,7 +231,7 @@
               <color-options v-model="form.colors" :matt="form.is_matte" @change-matt="form.is_matte = $event"/>
             </div>
             <div class="col-12">
-              <car-filters :values="form.all_options" name-in-value @change-filter="setCarFilter"/>
+              <car-filters :is-search-page="isSearchPage" :values="form.all_options" name-in-value @change-filter="setCarFilter"/>
             </div>
           </template>
           <div class="col-6 col-lg-2 mb-2 mb-lg-3" v-if="!isMobileBreakpoint && !advanced">
@@ -408,6 +408,10 @@ export default {
     totalCount: {
       type: Number,
       default: 0
+    },
+    isSearchPage:{
+      type: Boolean,
+      default: false,
     },
     onlySavedSearch: {
       default: false,
