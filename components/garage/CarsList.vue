@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <transition-expand>
-      <div class="col-12" v-if="!activeCars.length && showNoActiveCarsAlert">
+      <div class="col-12" v-if="!cars.data.length && showNoActiveCarsAlert">
         <div class="garage_no-active-cars d-flex align-items-center mb-2 mb-lg-3">
           <img src="/img/speaker.svg" alt="" />
           <span class="text">{{ $t('no_active_cars') }}</span>

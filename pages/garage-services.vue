@@ -40,6 +40,7 @@ export default {
           isAttorney: true,
           image: 'etibarname',
           isAvailable: true,
+          checkIfSafari: true
         },
         {
           title: this.$t('check_points'),

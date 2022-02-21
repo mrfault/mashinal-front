@@ -73,6 +73,11 @@ export default {
   props: {
     item: Object,
   },
+  computed:{
+    isSafari(){
+      return /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    }
+  },
   methods: {
     setStoreBalance(link) {
       this.$store.commit('mutate', {
@@ -81,6 +86,14 @@ export default {
       })
       this.$router.push(link)
     },
+    checkIfSafari(link){
+      if (this.isSafari){
+        this.setStoreBalance(link);
+      }else{
+        alert("hayhuy")
+      }
+    }
   },
+
 }
 </script>

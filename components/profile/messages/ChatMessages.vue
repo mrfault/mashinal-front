@@ -159,6 +159,7 @@ export default {
   },
   data() {
     return {
+      pending: false,
       showRemoveModal:false,
       removeItem:null,
       text: '',
