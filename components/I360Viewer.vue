@@ -300,7 +300,7 @@ export default {
       this.updatePercentageInLoader(percentage);
 
       if (this.loadedImages === this.amount) {
-      //  this.onAllImagesLoaded(event);
+        this.onAllImagesLoaded(event);
       } else if (this.loadedImages === 1) {
         //this.onFirstImageLoaded(event);
       }
