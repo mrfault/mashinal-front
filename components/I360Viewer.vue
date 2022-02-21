@@ -620,7 +620,7 @@ export default {
     startMoving(evt) {
       this.movement = true
       this.movementStart = evt.pageX;
-      this.$refs.viewport.style.cursor = 'grabbing';
+      this.$refs.viewport.classList.add('v360-grabbing');
     },
     doMoving(evt) {
       if (this.movement) {
@@ -683,7 +683,7 @@ export default {
     stopMoving(evt) {
       this.movement = false
       this.movementStart = 0
-      this.$refs.viewport.style.cursor = 'grab'
+      this.$refs.viewport.classList.remove('v360-grabbing');
     },
     touchStart(evt) {
       this.movementStart = evt.touches[0].clientX
