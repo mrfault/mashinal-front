@@ -11,7 +11,6 @@
   $outline: false,
   $override: true
 ) {
-
   @if ($outline) {
     @if ($override) {
       color: $bg-color;
@@ -68,7 +67,7 @@
   width: 25px;
   padding: 0;
   border-radius: 4px;
-  transition: .1s ease-out;
+  transition: 0.1s ease-out;
   &--color-dark-blue {
     background-color: $white;
     color: $dark-blue-1;
@@ -76,7 +75,7 @@
       color: $white;
       background-color: $dark-blue-1;
     }
-    @media(hover: hover) {
+    @media (hover: hover) {
       &:hover {
         color: $white;
         background-color: $dark-blue-1;
@@ -90,7 +89,7 @@
       color: $white;
       background-color: $dark-blue-3;
     }
-    @media(hover: hover) {
+    @media (hover: hover) {
       &:hover {
         color: $white;
         background-color: $dark-blue-3;
@@ -104,7 +103,7 @@
       color: $white;
       background-color: $red-1;
     }
-    @media(hover: hover) {
+    @media (hover: hover) {
       &:hover {
         color: $white;
         background-color: $red-1;
@@ -117,7 +116,29 @@
     }
   }
 }
-
+.btn-transparent {
+  background-color: transparent;
+}
+.btn-favorite {
+  pointer-events: all;
+  border: none;
+  outline: none;
+  width: 24px;
+  height: 24px;
+  background-image: url('../../static/icons/star-favorite.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  span {
+    width: 100%;
+    height: 100%;
+  }
+  &:hover {
+    background-image: url('../../static/icons/star-favorite-active.svg');
+  }
+}
+.btn-favorite-active {
+  background-image: url('../../static/icons/star-favorite-active.svg');
+}
 .dark-mode {
   .btn-sq {
     &--color-dark-blue {
@@ -126,7 +147,7 @@
         color: $white;
         background-color: $dark-1;
       }
-      @media(hover: hover) {
+      @media (hover: hover) {
         &:hover {
           color: $white;
           background-color: $dark-1;
@@ -139,7 +160,7 @@
         color: $white;
         background-color: $dark-1;
       }
-      @media(hover: hover) {
+      @media (hover: hover) {
         &:hover {
           color: $white;
           background-color: $dark-1;
@@ -158,7 +179,7 @@
   padding: 9px 12px 7px;
   height: 34px;
   border-radius: 4px;
-  transition: .1s ease-out;
+  transition: 0.1s ease-out;
   cursor: pointer;
   font-weight: 500;
   &.full-width {
@@ -176,34 +197,66 @@
     justify-content: flex-start;
   }
   &--white-outline {
-    @include btn-style($bg-color: $white, $bg-hover: $white, $color-hover: $dark-blue-1, $active-bg: $white, $active-color: $red-1, $outline: true);
+    @include btn-style(
+      $bg-color: $white,
+      $bg-hover: $white,
+      $color-hover: $dark-blue-1,
+      $active-bg: $white,
+      $active-color: $red-1,
+      $outline: true
+    );
   }
   &--dark-blue {
     @include btn-style($bg-color: $dark-blue-1, $bg-hover: $dark-blue-4);
   }
   &--dark-blue-outline {
-    @include btn-style($bg-color: $dark-blue-1, $bg-hover: $dark-blue-4, $outline: true);
+    @include btn-style(
+      $bg-color: $dark-blue-1,
+      $bg-hover: $dark-blue-4,
+      $outline: true
+    );
   }
   &--dark-white-outline {
-    @include btn-style($bg-color: $white, $bg-hover: $dark-blue-4, $outline: true);
+    @include btn-style(
+      $bg-color: $white,
+      $bg-hover: $dark-blue-4,
+      $outline: true
+    );
   }
   &--dark-blue-2 {
     @include btn-style($bg-color: $dark-blue-2, $bg-hover: $dark-blue-2);
   }
   &--dark-blue-2-outline {
-    @include btn-style($bg-color: $dark-blue-2, $bg-hover: $dark-blue-2, $outline: true);
+    @include btn-style(
+      $bg-color: $dark-blue-2,
+      $bg-hover: $dark-blue-2,
+      $outline: true
+    );
   }
   &--green {
     @include btn-style($bg-color: $green-1, $bg-hover: $green-2);
   }
   &--green-outline {
-    @include btn-style($bg-color: $green-1, $bg-hover: $green-2, $outline: true);
+    @include btn-style(
+      $bg-color: $green-1,
+      $bg-hover: $green-2,
+      $outline: true
+    );
   }
   &--pale-green {
-    @include btn-style($color: $green-1, $bg-color: $green-3, $bg-hover: $green-2);
+    @include btn-style(
+      $color: $green-1,
+      $bg-color: $green-3,
+      $bg-hover: $green-2
+    );
   }
   &--pale-green-outline {
-    @include btn-style($color: $green-1, $bg-color: $green-3, $bg-hover: $green-2, $border-color: $green-1);
+    @include btn-style(
+      $color: $green-1,
+      $bg-color: $green-3,
+      $bg-hover: $green-2,
+      $border-color: $green-1
+    );
   }
   &--red {
     @include btn-style($bg-color: $red-1, $bg-hover: $red-2);
@@ -212,10 +265,22 @@
     @include btn-style($bg-color: $red-1, $bg-hover: $red-2, $outline: true);
   }
   &--pale-red {
-    @include btn-style($color: $red-1, $bg-color: $red-3, $bg-hover: $red-2, $active-bg: $red-2);
+    @include btn-style(
+      $color: $red-1,
+      $bg-color: $red-3,
+      $bg-hover: $red-2,
+      $active-bg: $red-2
+    );
   }
   &--pale-red-outline {
-    @include btn-style($color-hover: $red-2, $bg-color: $red-2, $bg-hover: $red-4, $border-color: $red-4, $active-bg: $red-2, $outline: true);
+    @include btn-style(
+      $color-hover: $red-2,
+      $bg-color: $red-2,
+      $bg-hover: $red-4,
+      $border-color: $red-4,
+      $active-bg: $red-2,
+      $outline: true
+    );
   }
   &--grey {
     @include btn-style($bg-color: $grey-10, $bg-hover: $grey-8);
@@ -224,10 +289,29 @@
     @include btn-style($bg-color: $grey-8, $bg-hover: $grey-8, $outline: true);
   }
   &--primary-outline {
-    @include btn-style($color: $dark-blue-3, $color-hover: $dark-blue-3, $bg-color: transparent, $bg-hover: $greyish-blue-2, $active-bg: $greyish-blue-3, $active-color: $dark-blue-3, $border-color: $greyish-blue-4, $border-active: $greyish-blue-4, $border-hover: $greyish-blue-4, $outline: true, $override: false);
+    @include btn-style(
+      $color: $dark-blue-3,
+      $color-hover: $dark-blue-3,
+      $bg-color: transparent,
+      $bg-hover: $greyish-blue-2,
+      $active-bg: $greyish-blue-3,
+      $active-color: $dark-blue-3,
+      $border-color: $greyish-blue-4,
+      $border-active: $greyish-blue-4,
+      $border-hover: $greyish-blue-4,
+      $outline: true,
+      $override: false
+    );
   }
   &--link {
-    @include btn-style($color: $dark-blue-2, $color-hover: $dark-blue-3, $bg-color: transparent, $bg-hover: transparent, $active-bg: transparent, $active-color: $dark-blue-3);
+    @include btn-style(
+      $color: $dark-blue-2,
+      $color-hover: $dark-blue-3,
+      $bg-color: transparent,
+      $bg-hover: transparent,
+      $active-bg: transparent,
+      $active-color: $dark-blue-3
+    );
   }
 }
 
@@ -246,7 +330,13 @@
     }
     &--dark-blue-2-outline,
     &--dark-blue-outline {
-      @include btn-style($bg-color: $grey-1, $bg-hover: $grey-1, $border-color: $grey-1, $outline: true, $override: false);
+      @include btn-style(
+        $bg-color: $grey-1,
+        $bg-hover: $grey-1,
+        $border-color: $grey-1,
+        $outline: true,
+        $override: false
+      );
     }
     &--green,
     &--pale-green,
@@ -255,17 +345,46 @@
     }
     &--red,
     &--pale-red {
-      @include btn-style($bg-color: $grey-2, $bg-hover: $grey-1, $active-bg: $white, $active-color: $dark-1);
+      @include btn-style(
+        $bg-color: $grey-2,
+        $bg-hover: $grey-1,
+        $active-bg: $white,
+        $active-color: $dark-1
+      );
     }
     &--red-outline,
     &--pale-red-outline {
-      @include btn-style($bg-color: $grey-1, $bg-hover: $grey-1, $border-color: $grey-1, $active-bg: $white, $active-color: $dark-1, $outline: true, $override: false);
+      @include btn-style(
+        $bg-color: $grey-1,
+        $bg-hover: $grey-1,
+        $border-color: $grey-1,
+        $active-bg: $white,
+        $active-color: $dark-1,
+        $outline: true,
+        $override: false
+      );
     }
     &--grey-outline {
-      @include btn-style($bg-color: $grey-1, $bg-hover: $grey-1, $border-color: $grey-1, $outline: true, $override: false);
+      @include btn-style(
+        $bg-color: $grey-1,
+        $bg-hover: $grey-1,
+        $border-color: $grey-1,
+        $outline: true,
+        $override: false
+      );
     }
     &--primary-outline {
-      @include btn-style($color: $white, $bg-color: transparent, $bg-hover: $grey-6, $active-bg: $grey-2, $border-color: $grey-1, $border-active: $grey-1, $border-hover: $grey-1, $outline: true,  $override: false);
+      @include btn-style(
+        $color: $white,
+        $bg-color: transparent,
+        $bg-hover: $grey-6,
+        $active-bg: $grey-2,
+        $border-color: $grey-1,
+        $border-active: $grey-1,
+        $border-hover: $grey-1,
+        $outline: true,
+        $override: false
+      );
     }
   }
 }
@@ -339,7 +458,7 @@
 }
 
 .btn.disabled {
-  opacity: .4;
+  opacity: 0.4;
   pointer-events: none;
 }
 
@@ -363,7 +482,8 @@
     border-radius: 5px;
     background-color: rgba($white, 1);
     color: rgba($white, 1);
-    box-shadow: 9984px 0 0 0 rgba($white, 1), 9999px 0 0 0 rgba($white, 1), 10014px 0 0 0 rgba($white, 1);
+    box-shadow: 9984px 0 0 0 rgba($white, 1), 9999px 0 0 0 rgba($white, 1),
+      10014px 0 0 0 rgba($white, 1);
     animation: button-loading-white 1s infinite linear;
   }
 }
@@ -374,7 +494,8 @@
       &::after {
         background-color: rgba($dark-blue-1, 1);
         color: rgba($dark-blue-1, 1);
-        box-shadow: 9984px 0 0 0 rgba($dark-blue-1, 1), 9999px 0 0 0 rgba($white, 1), 10014px 0 0 0 rgba($white, 1);
+        box-shadow: 9984px 0 0 0 rgba($dark-blue-1, 1),
+          9999px 0 0 0 rgba($white, 1), 10014px 0 0 0 rgba($white, 1);
         animation: button-loading-dark-blue 1s infinite linear;
       }
     }
@@ -382,7 +503,8 @@
       &::after {
         background-color: rgba($dark-blue-2, 1);
         color: rgba($dark-blue-2, 1);
-        box-shadow: 9984px 0 0 0 rgba($dark-blue-2, 1), 9999px 0 0 0 rgba($white, 1), 10014px 0 0 0 rgba($white, 1);
+        box-shadow: 9984px 0 0 0 rgba($dark-blue-2, 1),
+          9999px 0 0 0 rgba($white, 1), 10014px 0 0 0 rgba($white, 1);
         animation: button-loading-dark-blue-2 1s infinite linear;
       }
     }
@@ -390,7 +512,8 @@
       &::after {
         background-color: rgba($green-1, 1);
         color: rgba($green-1, 1);
-        box-shadow: 9984px 0 0 0 rgba($green-1, 1), 9999px 0 0 0 rgba($white, 1), 10014px 0 0 0 rgba($white, 1);
+        box-shadow: 9984px 0 0 0 rgba($green-1, 1), 9999px 0 0 0 rgba($white, 1),
+          10014px 0 0 0 rgba($white, 1);
         animation: button-loading-green 1s infinite linear;
       }
     }
@@ -399,28 +522,68 @@
 
 @keyframes button-loading-white {
   100%,
-  0% {box-shadow: 9984px 0px 0 0  rgba($white,0.33), 9999px 0 0 0  rgba($white,0.66), 10014px 0 0 0  rgba($white,1);}
-  33% {box-shadow: 9984px 0 0 0  rgba($white,0.66), 9999px 0px 0 0  rgba($white,0.33), 10014px 0 0 0  rgba($white,1);}
-  66% {box-shadow: 9984px 0 0 0  rgba($white,1), 9999px 0 0 0  rgba($white,0.66), 10014px 0px 0 0  rgba($white,0.33);}
+  0% {
+    box-shadow: 9984px 0px 0 0 rgba($white, 0.33),
+      9999px 0 0 0 rgba($white, 0.66), 10014px 0 0 0 rgba($white, 1);
+  }
+  33% {
+    box-shadow: 9984px 0 0 0 rgba($white, 0.66),
+      9999px 0px 0 0 rgba($white, 0.33), 10014px 0 0 0 rgba($white, 1);
+  }
+  66% {
+    box-shadow: 9984px 0 0 0 rgba($white, 1), 9999px 0 0 0 rgba($white, 0.66),
+      10014px 0px 0 0 rgba($white, 0.33);
+  }
 }
 
 @keyframes button-loading-dark-blue {
   100%,
-  0% {box-shadow: 9984px 0px 0 0  rgba($dark-blue-1,0.33), 9999px 0 0 0  rgba($dark-blue-1,0.66), 10014px 0 0 0  rgba($dark-blue-1,1);}
-  33% {box-shadow: 9984px 0 0 0  rgba($dark-blue-1,0.66), 9999px 0px 0 0  rgba($dark-blue-1,0.33), 10014px 0 0 0  rgba($dark-blue-1,1);}
-  66% {box-shadow: 9984px 0 0 0  rgba($dark-blue-1,1), 9999px 0 0 0  rgba($dark-blue-1,0.66), 10014px 0px 0 0  rgba($dark-blue-1,0.33);}
+  0% {
+    box-shadow: 9984px 0px 0 0 rgba($dark-blue-1, 0.33),
+      9999px 0 0 0 rgba($dark-blue-1, 0.66), 10014px 0 0 0 rgba($dark-blue-1, 1);
+  }
+  33% {
+    box-shadow: 9984px 0 0 0 rgba($dark-blue-1, 0.66),
+      9999px 0px 0 0 rgba($dark-blue-1, 0.33),
+      10014px 0 0 0 rgba($dark-blue-1, 1);
+  }
+  66% {
+    box-shadow: 9984px 0 0 0 rgba($dark-blue-1, 1),
+      9999px 0 0 0 rgba($dark-blue-1, 0.66),
+      10014px 0px 0 0 rgba($dark-blue-1, 0.33);
+  }
 }
 
 @keyframes button-loading-dark-blue-2 {
   100%,
-  0% {box-shadow: 9984px 0px 0 0  rgba($dark-blue-2,0.33), 9999px 0 0 0  rgba($dark-blue-2,0.66), 10014px 0 0 0  rgba($dark-blue-2,1);}
-  33% {box-shadow: 9984px 0 0 0  rgba($dark-blue-2,0.66), 9999px 0px 0 0  rgba($dark-blue-2,0.33), 10014px 0 0 0  rgba($dark-blue-2,1);}
-  66% {box-shadow: 9984px 0 0 0  rgba($dark-blue-2,1), 9999px 0 0 0  rgba($dark-blue-2,0.66), 10014px 0px 0 0  rgba($dark-blue-2,0.33);}
+  0% {
+    box-shadow: 9984px 0px 0 0 rgba($dark-blue-2, 0.33),
+      9999px 0 0 0 rgba($dark-blue-2, 0.66), 10014px 0 0 0 rgba($dark-blue-2, 1);
+  }
+  33% {
+    box-shadow: 9984px 0 0 0 rgba($dark-blue-2, 0.66),
+      9999px 0px 0 0 rgba($dark-blue-2, 0.33),
+      10014px 0 0 0 rgba($dark-blue-2, 1);
+  }
+  66% {
+    box-shadow: 9984px 0 0 0 rgba($dark-blue-2, 1),
+      9999px 0 0 0 rgba($dark-blue-2, 0.66),
+      10014px 0px 0 0 rgba($dark-blue-2, 0.33);
+  }
 }
 
 @keyframes button-loading-green {
   100%,
-  0% {box-shadow: 9984px 0px 0 0  rgba($green-1,0.33), 9999px 0 0 0  rgba($green-1,0.66), 10014px 0 0 0  rgba($green-1,1);}
-  33% {box-shadow: 9984px 0 0 0  rgba($green-1,0.66), 9999px 0px 0 0  rgba($green-1,0.33), 10014px 0 0 0  rgba($green-1,1);}
-  66% {box-shadow: 9984px 0 0 0  rgba($green-1,1), 9999px 0 0 0  rgba($green-1,0.66), 10014px 0px 0 0  rgba($green-1,0.33);}
+  0% {
+    box-shadow: 9984px 0px 0 0 rgba($green-1, 0.33),
+      9999px 0 0 0 rgba($green-1, 0.66), 10014px 0 0 0 rgba($green-1, 1);
+  }
+  33% {
+    box-shadow: 9984px 0 0 0 rgba($green-1, 0.66),
+      9999px 0px 0 0 rgba($green-1, 0.33), 10014px 0 0 0 rgba($green-1, 1);
+  }
+  66% {
+    box-shadow: 9984px 0 0 0 rgba($green-1, 1),
+      9999px 0 0 0 rgba($green-1, 0.66), 10014px 0px 0 0 rgba($green-1, 0.33);
+  }
 }
