@@ -53,10 +53,6 @@
         v-lazy:background-image="getImage"
         v-if="!showGallery"
       >
-        <!-- ----------------------------- -->
-        <!-- ----------------------------- -->
-        <!-- ----------------------------- -->
-        <!-- ----------------------------- -->
         <div class="item-overlay" v-if="showOverlay">
           <div class="item-overlay__top">
             <div class="item-overlay__top--left">
@@ -123,7 +119,8 @@
             </span>
             <div class="item-overlay__bottom--right">
               <span class="badge" v-if="announcement.has_360">
-                360<sup>o</sup>
+                360
+                <sup>o</sup>
               </span>
               <span class="badge" v-if="announcement.created_at">
                 {{ $formatDate(announcement.created_at, 'D MMM')[locale] }}
@@ -131,12 +128,8 @@
             </div>
           </div>
         </div>
-        <!-- ----------------------------- -->
-        <!-- ----------------------------- -->
-        <!-- ----------------------------- -->
-        <!-- ----------------------------- -->
       </div>
-
+      <!-- price, title -->
       <div class="item-details">
         <div class="d-flex">
           <h3 class="item-details__price">
@@ -147,7 +140,7 @@
           {{ getAnnouncementTitle(announcement) }}
         </h3>
         <!-- year, odometer, credit, barter -->
-        <div class="d-flex justify-content-between">
+        <div class="item-details--infos">
           <span class="item-details__year" v-if="getTextLine">
             <span>{{ getTextLine }}</span>
           </span>
@@ -162,43 +155,45 @@
               v-tooltip="$t('tradeable')"
               v-if="announcement.tradeable || announcement.exchange_possible"
             />
-            <span
-              class="d-flex mt-auto"
-              @click.stop
-              v-if="showCheckbox || showPhoneCount"
-            >
-              <span
-                class="call-count"
-                v-if="announcement.show_phone_number_count || showPhoneCount"
-              >
-                <icon name="phone-call" />
-                {{ announcement.show_phone_number_count || 0 }}
-                <icon name="eye" />
-                {{ announcement.view_count }}
-              </span>
-              <div class="item-checkbox" v-if="showCheckbox" style="">
-                <form-checkbox
-                  :value="selected"
-                  :input-name="`selected_${announcement.id_unique}`"
-                  transparent
-                  @input="handleChange"
-                />
-              </div>
-            </span>
           </span>
         </div>
-
-        <template v-if="showCheckbox && announcement.status === 1">
-          <hr class="mt-0" />
-          <span>
-            <monetization-button
-              v-if="!announcement.has_monetization"
-              :announcement="announcement"
-              class-name="red-outline"
-            />
-            <monetization-stats-button v-else :announcement="announcement" />
+        <!-- checkbox and counts -->
+        <div
+          class="item-details__checks"
+          @click.stop
+          v-if="showCheckbox || showPhoneCount"
+        >
+          <span
+            class="call-count"
+            v-if="announcement.show_phone_number_count || showPhoneCount"
+          >
+            <icon name="phone-call" />
+            {{ announcement.show_phone_number_count || 0 }}
+            <icon name="eye" />
+            {{ announcement.view_count }}
           </span>
-        </template>
+          <div class="item-checkbox" v-if="showCheckbox" style="">
+            <form-checkbox
+              :value="selected"
+              :input-name="`selected_${announcement.id_unique}`"
+              transparent
+              @input="handleChange"
+            />
+          </div>
+        </div>
+        <hr class="mt-1" v-if="showCheckbox && announcement.status === 1">
+        <div class="item-details__actions">
+          <template v-if="showCheckbox && announcement.status === 1">
+            <span>
+              <monetization-button
+                v-if="!announcement.has_monetization"
+                :announcement="announcement"
+                class-name="red-outline"
+              />
+              <monetization-stats-button v-else :announcement="announcement" />
+            </span>
+          </template>
+        </div>
       </div>
     </div>
   </div>
