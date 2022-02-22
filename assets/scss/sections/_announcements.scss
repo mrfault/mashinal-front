@@ -2,14 +2,14 @@
   position: relative;
   margin: 30px 0;
   &.loading-content {
-    opacity: .4;
+    opacity: 0.4;
     pointer-events: none;
   }
   &_banner {
-    height: 100%; 
+    height: 100%;
     background-color: $white;
     border-radius: 4px;
-    transition: box-shadow .2s ease-out;
+    transition: box-shadow 0.2s ease-out;
     cursor: pointer;
     position: relative;
     &:hover {
@@ -30,7 +30,7 @@
     position: relative;
     background-color: $white;
     border-radius: 4px;
-    transition: box-shadow .2s ease-out;
+    transition: box-shadow 0.2s ease-out;
     cursor: pointer;
     &:hover {
       box-shadow: $shadow-light-6;
@@ -56,11 +56,25 @@
       flex-direction: column;
       width: 100%;
       flex: 1;
-      padding: 15px 15px 10px;
-      h3 {
-        font-size: 15px;
-        font-weight: 500;
-        margin: 0 0 4px;
+      padding: 12px 15px 15px 15px;
+      &__price {
+        font: 600 18px Gilroy;
+        color: $dark-blue-2;
+      }
+      &__title {
+        padding-bottom: 5px;
+        font: 500 15px Gilroy;
+        margin-bottom: 0;
+      }
+      &__year {
+        font: 400 14px Gilroy;
+        color: $dark-blue-5;
+      }
+      &__options {
+        display: flex;
+        i:not(:last-child) {
+          margin-right: 16px;
+        }
       }
       .item-info {
         display: block;
@@ -85,7 +99,7 @@
       display: flex;
       align-items: center;
       width: 100%;
-      margin-top: 4px;
+      margin-bottom: 4px;
       span {
         color: $dark-blue-2;
         font-size: 15px;
@@ -117,6 +131,30 @@
       flex-direction: column;
       justify-content: space-between;
       padding: 12px;
+      &__top {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        &--left{
+          
+          width: 30%;
+        }
+        &--right{
+          width: 70%;
+          display: flex;
+          justify-content: flex-end;
+        }
+      }
+      &__bottom {
+        display: flex;
+        justify-content: space-between;
+        &--right{
+          display: flex;
+          &:not(:last-child){
+            margin-right: 10px;
+          }
+        }
+      }
       .btn-sq {
         pointer-events: all;
         &:not(:last-child) {
@@ -132,7 +170,7 @@
         height: 25px;
         min-width: 62px;
         border-radius: 4px;
-        background-color: rgba($dark-blue-1, .35);
+        background-color: rgba($dark-blue-1, 0.35);
         padding: 2px 8px 0;
         i {
           font-size: 12px;
@@ -163,16 +201,10 @@
           background-color: $red-1;
         }
       }
-      &_top {
-        .d-flex {
-          margin-left: auto;
-        }
+      .badge-blue{
+        background: $dark-blue-2;
       }
-      &_bottom {
-        .d-flex {
-          margin-right: auto;
-        }
-      }
+
     }
     a.abs-link {
       z-index: 1;
@@ -206,14 +238,13 @@
       border-radius: 4px;
       cursor: pointer;
       background-color: $white;
-      transition: box-shadow .2s ease-out;
+      transition: box-shadow 0.2s ease-out;
       &.wider {
         padding-bottom: 47.5%;
       }
     }
   }
 }
-
 
 .grid-title {
   display: flex;
@@ -362,7 +393,7 @@
         color: $white;
       }
       .item-overlay .badge {
-        background-color: rgba($dark-2, .35);
+        background-color: rgba($dark-2, 0.35);
       }
     }
   }
@@ -388,9 +419,9 @@
     &_item {
       .item-details {
         padding: 7px 10px 10px;
-        h3 {
-          font-size: 13px;
-        }
+        // h3 {
+        //   font-size: 13px;
+        // }
       }
       .item-info {
         font-size: 12px;
