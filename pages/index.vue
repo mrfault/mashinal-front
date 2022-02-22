@@ -1,5 +1,6 @@
 <template>
   <div class="pages-index" :style="!isMobileBreakpoint ? 'margin-top: -162px;' : ''">
+
     <div class="swiper-container" v-swiper:gallerySwiper="swiperOps" v-if="!isMobileBreakpoint">
       <div class="swiper-wrapper">
         <div class="swiper-slide" v-for="homePageSlider in homePageSliders">
@@ -80,12 +81,14 @@
 import {mapGetters, mapActions} from 'vuex';
 import CarSearchForm from '~/components/cars/CarSearchForm';
 import Grid from '~/components/announcements/Grid';
+import LoginButton from "~/components/asan/LoginButton";
 
 export default {
   name: 'pages-index',
   layout: 'search',
   middleware: 'payment_redirect',
   components: {
+    LoginButton,
     CarSearchForm,
     Grid,
   },

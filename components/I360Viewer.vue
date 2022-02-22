@@ -286,7 +286,7 @@ export default {
     addImage(resultSrc) {
       const image = new Image();
 
-      image.src = resultSrc;
+      image.src = resultSrc+'?cache=false';
       image.crossOrigin = 'anonymous'
       image.onload = this.onImageLoad.bind(this);
       image.onerror = this.onImageLoad.bind(this);
@@ -475,7 +475,7 @@ export default {
 
       if (!cached) {
         this.currentCanvasImage = new Image()
-        this.currentCanvasImage.crossOrigin = 'anonymous'
+       // this.currentCanvasImage.crossOrigin = 'anonymous'
         this.currentCanvasImage.src = this.currentImage
 
         this.currentCanvasImage.onload = () => {
