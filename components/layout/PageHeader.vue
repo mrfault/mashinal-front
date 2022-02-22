@@ -297,9 +297,6 @@ computed: {
       'homePageSliders',
     ]),
   },
-  mounted(){
-    console.log(this.$router);
-  },
   watch:{
     $route (to, from){
       this.closeDropdownMenu = true;

@@ -40,13 +40,15 @@
                       <video ref="video" controls><source :src="slide"></video>
                     </div>
                     <div class="position-relative" style="width: 100%;" v-else-if="slides.types && slides.types[index] === 'custom'">
-                      <vue-three-sixty
-                        showZoom
-                        disable-zoom
-                        :amount="announcement.images_360.length"
-                        buttonClass="d-none"
-                        :files="announcement.images_360"
-                      />
+                      <no-ssr>
+                        <vue-three-sixty
+                          showZoom
+                          disable-zoom
+                          :amount="announcement.images_360.length"
+                          buttonClass="d-none"
+                          :files="announcement.images_360"
+                        />
+                      </no-ssr>
                     </div>
 
                     <template v-else>
