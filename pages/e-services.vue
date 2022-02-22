@@ -137,6 +137,16 @@ export default {
           image: 'comparisons',
           isAvailable: true,
         },
+        {
+          title: this.$t('create_eservice_and_shop'),
+          description: null,
+          value: null,
+          icon: 'create-shop',
+          url: '/business-profile',
+          hasAction: false,
+          image: 'createshop',
+          isAvailable: true,
+        },
       ],
     }
   },
