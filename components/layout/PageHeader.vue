@@ -303,6 +303,10 @@ computed: {
   watch:{
     $route (to, from){
       this.closeDropdownMenu = true;
+      setTimeout(() => {
+        this.closeDropdownMenu = false;
+      }, 1000);
+      
     }
   }
 }
