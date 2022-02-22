@@ -77,7 +77,12 @@ export const LayoutMixin = {
     async getUserData() {
       if (!this.loggedIn) return;
       if (!this.messages.length) await this.getMessages();
-
+      if(!this.notifications.length) await this.getNotifications();
+      await Promise.all([
+        this.getNotViewedSavedSearch(),
+        this.getNotViewedFavorites(),
+        this.getFavorites()
+      ]);
     },
     closeLogin() {
       this.showLoginPopup = false;
@@ -96,7 +101,7 @@ export const LayoutMixin = {
     // }
   },
   created() {
-    this.getUserData();
+    //this.getUserData();
 
     this.$nuxt.$on('login', (auth) => {
       this.getUserData();
