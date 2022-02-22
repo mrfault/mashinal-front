@@ -146,7 +146,7 @@
         </div>
         <div class="mt-2 mt-lg-3">
           <template v-if="type === 'cars'">
-            <car-filters :values="form.all_options" @change-filter="updateCarFilter" popular key="popular"/>
+            <car-filters :values="form.all_options" @change-filter="updateCarFilter" popular key="popular" :collapsedByDefault="true"/>
             <div class="car-filters_row">
               <div class="d-flex mb-2 mb-lg-3" @click="collapsed = !collapsed">
                 <h2 class="title-with-line full-width">
@@ -277,7 +277,7 @@ export default {
   mixins: [ToastErrorsMixin, ImageResizeMixin, PaymentMixin],
   data() {
     return {
-      collapsed: true,
+      collapsed: false,
       form: this.$clone(this.initialForm),
       date: Math.floor(Date.now() / 1000),
       files: (this.announcement?.media || []).map((media, i) => ({ media, key: this.initialForm.saved_images[i]  })),
