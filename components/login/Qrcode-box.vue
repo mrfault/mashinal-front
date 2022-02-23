@@ -2,7 +2,7 @@
   <div class="qr-box mb-2 mt-2" v-if=" !isMobileBreakpoint && !qrBoxIsClosed && !$cookies.get('qrBoxIsClosed')">
     <div class="row">
       <div class="col-md-4">
-        <img src="/qr.svg">
+        <img :src="isDarkMode ? '/qr-dark.svg' : '/qr.svg'">
       </div>
       <div class="col-md-8">
         <p>{{$t('qr_code_text')}}</p>
