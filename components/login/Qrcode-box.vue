@@ -15,7 +15,7 @@
       </div>
     </div>
     <div class="close">
-      <img :src="isDarkMode ? 'icons/close-white.svg' : 'icons/close.svg'" @click="qrBoxClose">
+      <img :src="isDarkMode ? '/icons/close-white.svg' : '/icons/close.svg'" @click="qrBoxClose">
     </div>
   </div>
 </template>
