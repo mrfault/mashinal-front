@@ -181,7 +181,7 @@
             />
           </div>
         </div>
-        <hr class="mt-1" v-if="showCheckbox && announcement.status === 1">
+        <hr class="mt-1" v-if="showCheckbox && announcement.status === 1" />
         <div class="item-details__actions">
           <template v-if="showCheckbox && announcement.status === 1">
             <span>
@@ -261,11 +261,15 @@ export default {
     },
     getImage() {
       let item = this.announcement
-      if (item.media && item.media.thumb && item.media.thumb.length)
-        return this.$withBaseUrl(item.media.thumb[0])
-      else if (item.media && item.media.length)
-        return this.$withBaseUrl(item.media[0].thumb || item.media[0])
-      return false
+      if (item.has_360 == false) {
+        if (item.media && item.media.thumb && item.media.thumb.length)
+          return this.$withBaseUrl(item.media.thumb[0])
+        else if (item.media && item.media.length)
+          return this.$withBaseUrl(item.media[0].thumb || item.media[0])
+        return false
+      }else{
+        return this.$withBaseUrl(item.has_360)
+      }
     },
     getCapacity() {
       let item = this.announcement,
