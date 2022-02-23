@@ -2174,4 +2174,5 @@ export default {
   "attorney_pay":"Etibarnamə ödənişi",
   "qr_code_text":"Mashin.AL tətbiqini yükləyin. Yeniliklərdən xəbərdar olun!",
   "create_eservice_and_shop": "Salon/Mağaza yarat",
+  "panorama_loading": "Panorama yüklənir"
 }

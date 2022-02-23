@@ -101,7 +101,7 @@ export const LayoutMixin = {
     // }
   },
   created() {
-    this.getUserData();
+    //this.getUserData();
 
     this.$nuxt.$on('login', (auth) => {
       this.getUserData();

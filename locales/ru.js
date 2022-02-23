@@ -2170,5 +2170,6 @@ export default {
   "register_question2" : "Все операции над вашими объявлениями будут доступны из одного кабинета.",
   "attorney_pay":"Оплата за доверенность",
   "qr_code_text":"Установите приложение Mashin.AL! Следите за обновлениями",
-  "create_eservice_and_shop" : "Создай Салон/Магазин"
+  "create_eservice_and_shop" : "Создай Салон/Магазин",
+  "panorama_loading": "Загружается панорама"
 }

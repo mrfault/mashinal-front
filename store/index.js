@@ -285,7 +285,14 @@ export const actions = {
       this.$auth.setUser(false)
       await this.$auth.logout()
     }
-
+    if(this.$auth.loggedIn) {
+      await Promise.all([
+         dispatch('getNotifications'),
+         dispatch('getFavorites'),
+         dispatch('getNotViewedFavorites'),
+         dispatch('getNotViewedSavedSearch')
+      ])
+    }
     await Promise.all([
       dispatch('getStaticPages'),
       dispatch('getCommercialTypes'),

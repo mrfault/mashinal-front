@@ -8,9 +8,9 @@
             <div class="card messages-card">
               <template v-if="messages.length">
                 <div class="pl-3 pr-3 pt-2 pb-2 pl-lg-4 pr-lg-4 pt-lg-3 pb-lg-3">
-                  <form-text-input 
-                    v-model="searchValue" 
-                    icon-name="search" 
+                  <form-text-input
+                    v-model="searchValue"
+                    icon-name="search"
                     block-class="placeholder-lighter"
                     :placeholder="$t('message_or_name')"
                   />
@@ -34,7 +34,7 @@
                     </div>
                     <div class="chat-list-items">
                       <template v-if="messages.length">
-                        <chat-item v-for="group in filteredGroups" 
+                        <chat-item v-for="group in filteredGroups"
                           @select-group="selectActiveGroup"
                           @show-modal="activeModalGroup = group, showControlsModal = true;"
                           :group="messagesByGroup(group.id)"
@@ -159,7 +159,7 @@
         showBlockModal: false,
         pending: false
       }
-      
+
     },
     computed: {
       ...mapGetters(['messages','messagesByGroup']),
@@ -194,7 +194,7 @@
     },
     methods: {
       ...mapActions(['getGroupMessages','removeMessageGroup','blockUser']),
-     
+
       filterByMessageText(groupId) {
         if (!this.searchValue.length) return [];
         return this.messages
@@ -269,7 +269,7 @@
           await this.blockUser({ id: userId });
           await this.$auth.fetchUser();
           this.showControlsModal = false;
-          this.connectEcho('user.' + userId).whisper('action', { 
+          this.connectEcho('user.' + userId).whisper('action', {
             userId: this.user.id,
             action: this.getUserBlock
           });

@@ -7,12 +7,14 @@
           <div class="swiper-slide"  :key="index" v-for="(slide, index) in slides.main">
             <div style="width:100%;" v-if="index === 0 && announcement.images_360 && announcement.images_360.length">
               <div class="position-relative">
-                <vue-three-sixty
-                  :amount="announcement.images_360.length"
-                  buttonClass="d-none"
-                  disableZoom
-                  :files="announcement.images_360"
-                />
+                <no-ssr>
+                  <vue-three-sixty
+                    :amount="announcement.images_360.length"
+                    buttonClass="d-none"
+                    disableZoom
+                    :files="announcement.images_360"
+                  />
+                </no-ssr>
               </div>
             </div>
 
@@ -65,10 +67,11 @@
       </div>
       <div class="inner-gallery-lightbox" v-touch:swipe.top="handleSwipeTop">
         <template v-if="isMobileBreakpoint">
+          <h3 style="position: absolute; top: 0; color: #081a3e;">{{ $t('Panorama yüklənir') }}</h3>
           <FsLightbox
             :toggler="toggleFsLightbox"
-            :sources="slides.main.slice(1,slides.main.length)"
-            :types="slides.types.slice(1,slides.main.length)"
+            :sources="getSourcesFsLightbox"
+            :types="slides.types"
             :slide="currentSlide+1"
             :key="lightboxKey"
             :onClose="refreshLightbox"
@@ -221,7 +224,6 @@ export default {
       this.updateTouchEvents();
     },
     changeLightboxSlide(fsBox) {
-      if (!this.showLightbox) return;
       this.currentSlide = fsBox.stageIndexes.current;
       this.changeSlide(this.currentSlide);
     },
@@ -262,7 +264,22 @@ export default {
   },
   computed: {
     ...mapGetters(['announcement']),
+    getSourcesFsLightbox() {
+      if(this.slides.types[0] === 'custom') {
+        return  [
+          {
+            component: 'vue-three-sixty',
+            props: {
+              files: this.announcement.images_360,
+              amount: this.announcement.images_360.length,
+              fromFsPopup: true,
+            }
+          },...this.slides.main.slice(1,this.slides.main.length)
+        ]
+      }
+     return this.slides.main;
 
+    },
 
     slides() {
       let thumbs = [], main = [], types = [], hasVideo = false, has360 = false;
