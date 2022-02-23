@@ -67,14 +67,31 @@
         margin-bottom: 0;
       }
       &__year {
+        width: 100%;
         font: 400 14px Gilroy;
         color: $dark-blue-5;
+        
       }
       &__options {
         display: flex;
         i:not(:last-child) {
           margin-right: 16px;
         }
+      }
+      &__actions{
+        display: flex;
+        justify-content: flex-end;
+        width: 100%;
+      }
+      &__checks{
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+      }
+      &--infos{
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
       }
       .item-info {
         display: block;
