@@ -29,7 +29,7 @@
     </template>
     <li key="next" :class="['next', lastPageSelected() ? 'disabled' : '']">
       <button @click="nextPage()">
-        <icon name="chevron-right" />
+        <!-- <icon name="chevron-right" /> -->
         <inline-svg src="/icons/chevron-right.svg" :height="14" />
       </button>
     </li>
