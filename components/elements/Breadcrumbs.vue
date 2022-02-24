@@ -5,7 +5,7 @@
         <nuxt-link :to="$localePath('/')"><icon name="home" /></nuxt-link>
         <inline-svg
           v-if="index !== crumbs.length - 1"
-          src="/new-icons/chevron-right.svg"
+          src="/icons/chevron-right.svg"
           :height="10"
           class="mx-1"
         />
@@ -18,7 +18,7 @@
           <!-- <icon v-if="index !== crumbs.length - 1" name="chevron-right" /> -->
           <inline-svg
             v-if="index !== crumbs.length - 1"
-            src="/new-icons/chevron-right.svg"
+            src="/icons/chevron-right.svg"
             :height="10"
             class="mx-1"
           />

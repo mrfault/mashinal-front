@@ -92,12 +92,12 @@
             >
               <!-- <icon :name="collapse ? 'chevron-right' : 'chevron-left'" /> -->
               <inline-svg
-                src="/new-icons/chevron-right.svg"
+                src="/icons/chevron-right.svg"
                 :height="14"
                 v-if="collapse"
               />
               <inline-svg
-                src="/new-icons/chevron-left.svg"
+                src="/icons/chevron-left.svg"
                 :height="14"
                 v-else
               />

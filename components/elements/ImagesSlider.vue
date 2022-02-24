@@ -4,7 +4,7 @@
       <span>{{ currentSlide + 1 }} / {{ slides.main.length }}</span>
       <span class="cursor-pointer" @click.stop="$emit('close')">
         <!-- <icon name="cross" /> -->
-        <inline-svg src="/new-icons/cross.svg" height="14"/>
+        <inline-svg src="/icons/cross.svg" height="14"/>
       </span>
     </div>
     <div class="container wider">
@@ -135,7 +135,7 @@
                   >
                     <!-- <icon name="chevron-right" /> -->
                     <inline-svg
-                      src="/new-icons/chevron-right.svg"
+                      src="/icons/chevron-right.svg"
                       :height="14"
                     />
                   </button>

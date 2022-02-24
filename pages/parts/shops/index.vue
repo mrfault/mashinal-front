@@ -53,8 +53,8 @@
             </div>
             <div class="map-sidebar_toggle" @click="collapse = !collapse" v-if="!disableCollapse">
               <!-- <icon :name="collapse ? 'chevron-right' : 'chevron-left'" /> -->
-              <inline-svg src="/new-icons/chevron-right.svg" :height="14" v-if="collapse" />
-              <inline-svg src="/new-icons/chevron-left.svg" :height="14" v-else />
+              <inline-svg src="/icons/chevron-right.svg" :height="14" v-if="collapse" />
+              <inline-svg src="/icons/chevron-left.svg" :height="14" v-else />
             </div>
           </div>
           <div class="map-topbar">

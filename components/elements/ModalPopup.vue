@@ -10,7 +10,7 @@
                 <h4 v-if="title" v-html="title"></h4>
                 <span class="cursor-pointer close" @click="$emit('close')">
                   <!-- <icon name="cross" /> -->
-                  <inline-svg src="/new-icons/cross.svg" height="14"/>
+                  <inline-svg src="/icons/cross.svg" height="14"/>
                 </span>
               </div>
               <slot v-if="!overflowHidden" />

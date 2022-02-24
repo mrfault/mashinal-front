@@ -70,11 +70,11 @@
         <div class="gallery-overlay_middle">
           <span class="d-flex justify-content-between">
             <button id="gallery-prev" class="btn-sq" @click.stop="slidePrev">
-              <inline-svg src="/new-icons/chevron-left.svg" :height="14" />
+              <inline-svg src="/icons/chevron-left.svg" :height="14" />
             </button>
             <button id="gallery-next" class="btn-sq" @click.stop="slideNext">
               <!-- <icon name="chevron-right" /> -->
-              <inline-svg src="/new-icons/chevron-right.svg" :height="14" />
+              <inline-svg src="/icons/chevron-right.svg" :height="14" />
             </button>
           </span>
         </div>

@@ -20,7 +20,7 @@
     >
       <span class="drop-file" @click="croppaValue.chooseFile()">
         <!-- <icon name="camera" /> -->
-        <inline-svg src="/new-icons/camera.svg" :height="14" />
+        <inline-svg src="/icons/camera.svg" :height="14" />
       </span>
     </croppa>
     <template v-else>
@@ -29,7 +29,7 @@
       <img :src="preview || initialImage" alt="" v-else />
       <span class="drop-file">
         <!-- <icon name="camera" /> -->
-        <inline-svg src="/new-icons/camera.svg" :height="14" />
+        <inline-svg src="/icons/camera.svg" :height="14" />
       </span>
     </template>
   </div>

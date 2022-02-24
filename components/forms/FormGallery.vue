@@ -31,7 +31,7 @@
                 @click.stop="deleteFile(file.key)"
               >
                 <!-- <icon name="cross" /> -->
-                <inline-svg src="/new-icons/cross.svg" height="14"/>
+                <inline-svg src="/icons/cross.svg" height="14"/>
               </button>
             </div>
           </template>
@@ -51,7 +51,7 @@
           />
           <div class="overlay">
             <!-- <icon name="camera" /> -->
-            <inline-svg src="/new-icons/camera.svg" :height="14" />
+            <inline-svg src="/icons/camera.svg" :height="14" />
             <p>{{ $t('add_image')}}</p>
           </div>
         </label>

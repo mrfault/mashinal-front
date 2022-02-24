@@ -33,7 +33,7 @@
             <span class="text-truncate" v-else-if="lastMessage.text">{{ lastMessage.text }}</span>
             <span class="attachment-info" v-else-if="lastMessage.attachments.length">
               <!-- <icon name="camera" /> -->
-              <inline-svg src="/new-icons/camera.svg" :height="14" />
+              <inline-svg src="/icons/camera.svg" :height="14" />
               {{ $t('image') }}
 
             </span>

@@ -33,7 +33,7 @@
           <theme-switch v-if="isMobileBreakpoint" />
           <span class="cursor-pointer close d-inline-flex align-top" @click="toggleSidebarMenu(false)">
             <!-- <icon name="cross" /> -->
-            <inline-svg src="/new-icons/cross.svg" height="14"/>
+            <inline-svg src="/icons/cross.svg" height="14"/>
           </span>
         </div>
         <div class="user-menu" v-if="loggedIn">

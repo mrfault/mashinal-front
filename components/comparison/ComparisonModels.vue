@@ -14,7 +14,7 @@
           <img :src="model.model.transformed_media" :alt="getModelTitle(model)">
           <div class="action-button action-button--close" @click="removeItem(model.id)">
             <!-- <icon name="cross" /> -->
-            <inline-svg src="/new-icons/cross.svg" />
+            <inline-svg src="/icons/cross.svg" />
           </div>
         </div>
         <div class="comparison__item__title">{{ getModelTitle(model) }}</div>
@@ -47,7 +47,7 @@
             @click="removeRecommendedModel"
           >
             <!-- <icon name="cross" /> -->
-            <inline-svg src="/new-icons/cross.svg" />
+            <inline-svg src="/icons/cross.svg" />
           </div>
           <div
             class="action-button action-button--recommend"

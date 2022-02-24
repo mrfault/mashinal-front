@@ -9,7 +9,7 @@
         <span :class="['control-icon cursor-pointer text-hover-red', {'disabled-ui': !selected.length}]" 
             @click="showDeactivateModal = true">
           <!-- <icon name="minus-circle" /> -->
-          <inline-svg src="/new-icons/minus-circle.svg" :height="14" />
+          <inline-svg src="/icons/minus-circle.svg" :height="14" />
           <span>{{ $t('inactive_make') }}</span>
           <modal-popup
             :toggle="showDeactivateModal"
@@ -26,7 +26,7 @@
         <span :class="['control-icon cursor-pointer text-hover-red', {'disabled-ui': !selected.length}]" 
             @click="showDeleteModal = true">
           <!-- <icon name="garbage" /> -->
-          <inline-svg src="/new-icons/garbage.svg" :height="14" />
+          <inline-svg src="/icons/garbage.svg" :height="14" />
           <span>{{ $t('delete') }}</span>
           <modal-popup
             :toggle="showDeleteModal"

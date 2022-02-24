@@ -1,7 +1,7 @@
 <template>
   <button :class="['btn full-width', `btn--${className} `]" @click.stop="showDeactivateModal = true">
     <!-- <icon name="minus-circle" /> -->
-    <inline-svg src="/new-icons/minus-circle.svg" :height="14" />
+    <inline-svg src="/icons/minus-circle.svg" :height="14" />
      {{ $t('inactive_make') }}
     <modal-popup
       :toggle="showDeactivateModal"

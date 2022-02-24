@@ -1,7 +1,7 @@
 <template>
   <button class="btn-sq btn-sq--color-dark-blue" @click.stop="showModal = true">
     <!-- <icon name="alert" /> -->
-    <inline-svg src="/new-icons/alert.svg" :height="20" />
+    <inline-svg src="/icons/alert.svg" :height="20" />
     <modal-popup 
       :toggle="showModal" 
       :title="$t('complain_the_announce')"

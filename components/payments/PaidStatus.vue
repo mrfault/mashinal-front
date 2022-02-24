@@ -3,7 +3,7 @@
     <div class="top" v-if="isMobileBreakpoint">
       <span class="cursor-pointer" @click="$removeQueryParam('success'), updatePaidStatus(false)">
         <!-- <icon name="cross" /> -->
-        <inline-svg src="/new-icons/cross.svg" height="14"/>
+        <inline-svg src="/icons/cross.svg" height="14"/>
       </span>
     </div>
     <div class="status-text">

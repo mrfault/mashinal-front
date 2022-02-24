@@ -10,7 +10,7 @@
       <nuxt-link :to="path" @click.native="setPageRef($route.path)">
         {{ $t('more_details') }}
         <!-- <icon name="chevron-right" /> -->
-        <inline-svg src="/new-icons/chevron-right.svg" :height="14" />
+        <inline-svg src="/icons/chevron-right.svg" :height="14" />
       </nuxt-link>
     </div>
   </div>

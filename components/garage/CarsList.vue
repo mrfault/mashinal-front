@@ -7,7 +7,7 @@
           <span class="text">{{ $t('no_active_cars') }}</span>
           <span class="cursor-pointer ml-auto" @click="showNoActiveCarsAlert = false">
             <!-- <icon name="cross" /> -->
-            <inline-svg src="/new-icons/cross.svg" height="14"/>
+            <inline-svg src="/icons/cross.svg" height="14"/>
           </span>
         </div>
       </div>
