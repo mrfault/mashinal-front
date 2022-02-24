@@ -78,9 +78,9 @@
             </button>
           </span>
         </div>
-        <div class="gallery-overlay_bottom d-flex">
+        <div class="gallery-overlay_bottom">
           <template v-if="where === 'announcement'">
-            <span class="d-flex">
+            <div class="gallery-overlay_bottom--left">
               <template v-if="announcement.status == 1">
                 <add-comparison
                   :id="announcement.id_unique"
@@ -88,8 +88,11 @@
                 />
                 <add-favorite :announcement="announcement" />
               </template>
-            </span>
+            </div>
+
+            <div class="gallery-overlay_bottom--right">
             <add-complaint :announcement="announcement" />
+            </div>
           </template>
           <template v-else>
             <add-comparison
