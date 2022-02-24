@@ -21,7 +21,8 @@
         </span>
         <span class="counter" v-if="multiple && selectValue.length > 1 && !shortNamesLabel">{{ selectValue.length }}</span>
         <span class="counter" v-else-if="custom && values.count">{{ values.count }}</span>
-        <icon name="cross" v-if="allowClear && !hasNoValue" @click.native.stop="clearSelect" class="cursor-pointer" />
+        <!-- <icon name="cross" v-if="allowClear && !hasNoValue" @click.native.stop="clearSelect" class="cursor-pointer" /> -->
+        <inline-svg src="/icons/cross.svg" height="14" v-if="allowClear && !hasNoValue" @click.native.stop="clearSelect" class="cursor-pointer" />
         <icon :name="iconName" v-else />
       </span>
       <icon :class="['select-menu_triangle', `anchor-${anchor} anchor-${placeOptionsAbove ? 'top' : 'bottom'}`]" name="triangle" v-if="showOptions"/>

@@ -13654,10 +13654,6 @@
   "resolved" "https://registry.npmjs.org/vue-i18n/-/vue-i18n-8.24.2.tgz"
   "version" "8.24.2"
 
-"vue-inline-svg@^2.0.0":
-  "integrity" "sha512-tvuYR9ynqJEuzrwqneNQ2q5uoFbgbot1fFuWIADfpmA1Sm9CMkid1SJyRuvmUdQHdjgAstGEU3tMbiTk5ud4OQ=="
-  "resolved" "https://registry.npmjs.org/vue-inline-svg/-/vue-inline-svg-2.0.0.tgz"
-  "version" "2.0.0"
 
 "vue-jest@^3.0.5":
   "integrity" "sha512-PIOxFM+wsBMry26ZpfBvUQ/DGH2hvp5khDQ1n51g3bN0TwFwTy4J85XVfxTRMukqHji/GnAoGUnlZ5Ao73K62w=="

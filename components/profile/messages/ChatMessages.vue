@@ -24,7 +24,8 @@
             <icon :name="blocked ? 'unblock' : 'block'" />
           </span>
           <span class="cursor-pointer text-red" @click.stop="removeItem = group; showRemoveModal = true;">
-            <icon name="garbage" />
+            <!-- <icon name="garbage" /> -->
+            <inline-svg src="/icons/garbage.svg" :height="14" />
           </span>
         </template>
       </div>

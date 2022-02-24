@@ -9,7 +9,8 @@
               <div class="title d-flex">
                 <h4 v-if="title" v-html="title"></h4>
                 <span class="cursor-pointer close" @click="$emit('close')">
-                  <icon name="cross" />
+                  <!-- <icon name="cross" /> -->
+                  <inline-svg src="/icons/cross.svg" height="14"/>
                 </span>
               </div>
               <slot v-if="!overflowHidden" />

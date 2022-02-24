@@ -8,7 +8,8 @@
         :class="{'keyword--highlighted': highlightLastKeyword && index === keywords.length - 1}"
         @click="removeKeyword(index)"
       >
-        <icon name="cross" />
+        <!-- <icon name="cross" /> -->
+        <inline-svg src="/icons/cross.svg" height="14"/>
         {{ keyword }}
       </span>
     </div>
