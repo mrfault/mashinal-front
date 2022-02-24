@@ -5,12 +5,14 @@
       <div class="car-bg-inner d-flex flex-column justify-content-between" v-if="!thumbSet">
         <div class="d-flex justify-content-end align-items-center">
           <button v-if="car.sync_status === 1" class="btn-sq btn-sq--color-red" @click.stop="showDeleteModal = true">
-            <icon name="garbage" />
+            <!-- <icon name="garbage" /> -->
+            <inline-svg src="/new-icons/garbage.svg" :height="14" />
           </button>
         </div>
         <div class="d-flex justify-content-between align-items-center">
           <button class="btn-sq btn-sq--color-dark-blue-3" @click.stop="thumb.chooseFile()">
-            <icon name="camera" />
+            <!-- <icon name="camera" /> -->
+            <inline-svg src="/new-icons/camera.svg" :height="14" />
           </button>
           <span class="date">{{ carDate }}</span>
         </div>
@@ -33,7 +35,8 @@
           <icon name="check" />
         </button>
         <button class="btn-sq btn-sq--color-dark-blue-3" @click.stop="removeThumb">
-          <icon name="cross" />
+          <!-- <icon name="cross" /> -->
+          <inline-svg src="/new-icons/cross.svg" height="14"/>
         </button>
       </croppa>
     </div>

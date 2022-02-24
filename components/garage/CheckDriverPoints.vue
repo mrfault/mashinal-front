@@ -38,7 +38,8 @@
     </div>
     <div class="garage_go-back card with-margins mb-2 mb-lg-0" v-show="isMobileBreakpoint && protocolsChecked">
       <div class="d-flex align-items-center">
-        <icon name="chevron-left" @click.native.stop="showForm" class="cursor-pointer" />
+        <!-- <icon name="chevron-left" @click.native.stop="showForm" class="cursor-pointer" /> -->
+        <inline-svg src="/new-icons/chevron-left.svg" :height="14"  @click.native.stop="showForm" class="cursor-pointer"/>
         <span class="row flex-grow-1 pr-0 align-items-center">
           <span class="col-auto ml-2 mr-auto">{{ form.series }}</span>
           <span class="col-auto ml-0 mr-0">{{ $t('your_points') }}: {{ driverLicensePoints.point || 0 }}</span>

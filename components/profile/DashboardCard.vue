@@ -7,7 +7,11 @@
     </div>
     <div class="dashboard-card_footer" v-if="path">
       <slot name="footer" />
-      <nuxt-link :to="path" @click.native="setPageRef($route.path)">{{ $t('more_details') }} <icon name="chevron-right" /></nuxt-link>
+      <nuxt-link :to="path" @click.native="setPageRef($route.path)">
+        {{ $t('more_details') }}
+        <!-- <icon name="chevron-right" /> -->
+        <inline-svg src="/new-icons/chevron-right.svg" :height="14" />
+      </nuxt-link>
     </div>
   </div>
 </template>
@@ -17,7 +21,7 @@ export default {
   props: {
     title: String,
     icon: String,
-    path: String
-  }
+    path: String,
+  },
 }
 </script>

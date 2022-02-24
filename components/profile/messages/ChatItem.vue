@@ -32,7 +32,10 @@
             <span class="text-truncate" v-if="isChatBot && lastMessage.text" v-html="lastMessage.text.split('<br>')[0]"></span>
             <span class="text-truncate" v-else-if="lastMessage.text">{{ lastMessage.text }}</span>
             <span class="attachment-info" v-else-if="lastMessage.attachments.length">
-              <icon name="camera" />{{ $t('image') }}
+              <!-- <icon name="camera" /> -->
+              <inline-svg src="/new-icons/camera.svg" :height="14" />
+              {{ $t('image') }}
+
             </span>
           </template>
         </div>

@@ -16,7 +16,8 @@
               <icon name="reset" />
             </button>
             <button type="button" :class="['btn-sq ml-auto', {'disabled': loading[key]}]" @click.stop="fileDelete(key, index)">
-              <icon name="cross" />
+              <!-- <icon name="cross" /> -->
+              <inline-svg src="/new-icons/cross.svg" height="14"/>
             </button>
           </div>
         </div>
@@ -51,7 +52,8 @@
         <div class="col-6 col-lg-1-5 mb-2 mb-lg-3" key="add-image">
           <div class="upload-image_thumbnail add-image" @click.stop="input.click()">
             <div class="overlay">
-              <icon name="camera" />
+              <!-- <icon name="camera" /> -->
+              <inline-svg src="/new-icons/camera.svg" :height="14" />
               <p>{{ $t('add_image') }}</p>
             </div>
           </div>

@@ -16,7 +16,8 @@
         </h4>
         <span v-else />
         <span class="cursor-pointer close" @click="$emit('close')">
-          <icon name="cross" />
+          <!-- <icon name="cross" /> -->
+          <inline-svg src="/new-icons/cross.svg" height="14"/>
         </span>
       </div>
 
@@ -58,7 +59,8 @@
                 class="remove-btn"
                 @click="removeAnnouncement(announcement.id_unique)"
               >
-                <icon name="garbage" />
+                <!-- <icon name="garbage" /> -->
+                <inline-svg src="/new-icons/garbage.svg" :height="14" />
               </button>
             </div>
             <hr
@@ -93,7 +95,8 @@
                 </div>
               </div>
               <button class="remove-btn" @click="removeModel(model.id)">
-                <icon name="garbage" />
+                <!-- <icon name="garbage" /> -->
+                <inline-svg src="/new-icons/garbage.svg" :height="14" />
               </button>
             </div>
             <hr :key="'hr-' + model.id" v-if="index < modelsList.length - 1" />

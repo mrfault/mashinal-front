@@ -19,7 +19,8 @@
       @new-image="$emit('new-image')"
     >
       <span class="drop-file" @click="croppaValue.chooseFile()">
-        <icon name="camera" />
+        <!-- <icon name="camera" /> -->
+        <inline-svg src="/new-icons/camera.svg" :height="14" />
       </span>
     </croppa>
     <template v-else>
@@ -27,7 +28,8 @@
       <loader v-if="preview === '' && !initialImage" />
       <img :src="preview || initialImage" alt="" v-else />
       <span class="drop-file">
-        <icon name="camera" />
+        <!-- <icon name="camera" /> -->
+        <inline-svg src="/new-icons/camera.svg" :height="14" />
       </span>
     </template>
   </div>

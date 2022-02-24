@@ -35,7 +35,8 @@
       <div class="preview" :class="{'hide':!loaded[key], 'loading': sending}" v-for="(attachment, key) in attachments" :key="key">
         <div class="image-preloader" v-if="sending"></div>
         <button class="btn-sq btn-sq--color-red" @click="removeFile(key)">
-          <icon name="garbage"/>
+          <!-- <icon name="garbage"/> -->
+          <inline-svg src="/new-icons/garbage.svg" :height="14" />
         </button>
         <img src="" :ref="'attachment-'+key" alt="" />
       </div>
