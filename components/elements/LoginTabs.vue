@@ -157,6 +157,7 @@ export default {
 }
 .login-forms {
   .swiper-pagination-bullets {
+    margin-top: 10px;
     display: flex;
     justify-content: center;
     width: 100%;
