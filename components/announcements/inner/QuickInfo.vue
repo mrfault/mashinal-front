@@ -116,7 +116,6 @@
     <template
       v-if="
         !brief &&
-        userIsOwner(announcement) &&
         announcement.status != 2 &&
         !(announcement.is_autosalon && announcement.status == 3)
       "
@@ -131,9 +130,10 @@
           />
           <deactivate-button :announcement="announcement" v-else />
         </div>
+        
         <div
           class="col mt-2 mt-lg-3"
-          v-if="announcement.status != 3 && announcement.can_edit"
+         
         >
           <edit-button :announcement="announcement" :type="type" />
         </div>
