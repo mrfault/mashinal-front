@@ -12,6 +12,15 @@ export default {
     }
   },
   methods: {
+    async getCerts() {
+      let res = await fetch('https://apiasanlogintest.my.gov.az/ssoauthz/api/v1/token/certs',{
+        headers: {
+          Authorization: this.$cookies.get('asan_token')
+        }
+      })
+      res = await res.json();
+    },
+
     async checkToken() {
         let res = await fetch('https://apiasanlogintest.my.gov.az/ssoauthz/api/v1/token/check',{
           headers: {
@@ -32,9 +41,13 @@ export default {
           res = await res.json();
           if(res.status === 200) {
             this.$cookies.set('asan_token',res.data.token, { maxAge: 60 * 60 * 12, path: '/' });
-          }else {
-            await this.checkToken();
+             this.getCerts();
+             this.checkToken();
+          }else if(res.status === 401) {
+            this.checkToken();
           }
+
+
     }
   },
 
