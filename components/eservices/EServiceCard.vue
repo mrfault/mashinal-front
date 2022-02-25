@@ -56,8 +56,8 @@
       <div class="e-service__actions--right">
         <nuxt-link :to="$localePath(item.url)" class="">
           {{ $t('detail') }}
-          <!-- <icon name="chevron-right"/> -->
-          <inline-svg src="/icons/chevron-right.svg" :height="14" />
+          <icon name="chevron-right"/>
+          <!-- <inline-svg src="/icons/chevron-right.svg" :height="14" /> -->
         </nuxt-link>
       </div>
     </div>

@@ -19,14 +19,15 @@
             <div class="overlay">
               <button
                 v-if="rotatable"
-                class="btn-sq"
+                class="btn-transparent"
                 type="button"
                 @click.prevent="rotateFile(file.key)"
               >
-                <icon name="reset" />
+                <!-- <icon name="reset" /> -->
+                <inline-svg src="/icons/reset-new.svg" height="14"/>
               </button>
               <button
-                class="btn-sq ml-auto"
+                class="btn-transparent ml-auto"
                 type="button"
                 @click.stop="deleteFile(file.key)"
               >

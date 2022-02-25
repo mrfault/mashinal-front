@@ -207,8 +207,8 @@
                                   :class="{ active: index === activeCategory }"
                                 >
                                   {{ $t(category.title) }}
-                                  <!-- <icon name="chevron-right" /> -->
-                                  <inline-svg src="/icons/chevron-right.svg" :height="14" />
+                                  <icon name="chevron-right" />
+                                  <!-- <inline-svg src="/icons/chevron-right.svg" :height="14" /> -->
                                 </nuxt-link>
                               </li>
                             </ul>
