@@ -416,6 +416,21 @@
           height: 35px;
         }
       }
+      &--right{
+        button{
+          &:hover{
+            svg{
+              
+              path{
+                fill: $red-1;
+              }
+            }
+          }
+          svg{
+            height: 40px;
+          }
+        }
+      }
     }
     &_middle {
       .d-flex {
@@ -425,12 +440,21 @@
         background-color: rgba($dark-blue-1, 0.15);
         color: $white;
         i::before {
-          font-size: 14px;
+          font-size: 25px;
         }
         &:hover,
         &.active {
           color: $white;
           background-color: rgba($dark-blue-1, 0.3);
+        }
+      }
+      button{
+        &:hover{
+          svg{
+            path{
+              fill: $red-1;
+            }
+          }
         }
       }
     }

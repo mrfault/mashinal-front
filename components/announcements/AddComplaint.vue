@@ -1,5 +1,5 @@
 <template>
-  <button class="btn-sq btn-sq--color-dark-blue" @click.stop="showModal = true">
+  <button class="btn-transparent" @click.stop="showModal = true">
     <!-- <icon name="alert" /> -->
     <inline-svg src="/icons/alert.svg" :height="20" />
     <modal-popup 

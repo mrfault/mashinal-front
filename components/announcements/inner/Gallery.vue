@@ -69,12 +69,20 @@
         </div>
         <div class="gallery-overlay_middle">
           <span class="d-flex justify-content-between">
-            <button id="gallery-prev" class="btn-sq" @click.stop="slidePrev">
-              <inline-svg src="/icons/chevron-left.svg" :height="14" />
+            <button
+              id="gallery-prev"
+              class="btn-transparent"
+              @click.stop="slidePrev"
+            >
+              <inline-svg src="/icons/chevron-left.svg" :height="25" />
             </button>
-            <button id="gallery-next" class="btn-sq" @click.stop="slideNext">
+            <button
+              id="gallery-next"
+              class="btn-transparent"
+              @click.stop="slideNext"
+            >
               <!-- <icon name="chevron-right" /> -->
-              <inline-svg src="/icons/chevron-right.svg" :height="14" />
+              <inline-svg src="/icons/chevron-right.svg" :height="25" />
             </button>
           </span>
         </div>
@@ -91,7 +99,7 @@
             </div>
 
             <div class="gallery-overlay_bottom--right">
-            <add-complaint :announcement="announcement" />
+              <add-complaint :announcement="announcement" />
             </div>
           </template>
           <template v-else>
@@ -456,5 +464,9 @@ export default {
   background-color: #d6e4f8;
   display: flex;
   align-items: center;
+}
+.btn-transparent {
+  min-width: 40px;
+  min-height: 40px;
 }
 </style>
