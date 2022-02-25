@@ -165,7 +165,7 @@
           display: flex;
           justify-content: flex-end;
         }
-        .badge{
+        .badge {
           white-space: nowrap;
         }
       }
@@ -417,6 +417,11 @@
       }
       .item-overlay .badge {
         background-color: rgba($dark-2, 0.35);
+      }
+      .item-details {
+        &__price, &--infos, &__year {
+          color: #fff;
+        }
       }
     }
   }
