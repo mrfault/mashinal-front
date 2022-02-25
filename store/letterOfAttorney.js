@@ -53,11 +53,11 @@ export const getters = {
   currentStep: s => s.step,
   currentRealStep: (s, g) => {
     // return 10;
-    let steps = [1,2,4,5,8,9,10];
+    let steps = [/*1,2,*//*4,*/5,8,9,10];
     // check if 6th and 7th steps are required
     if (g.hasGeneralPower) steps.splice(4,0,6,7);
     // check if 3rd step is required
-    if (g.stepReceivedData.hasDriverLicense) steps.splice(2,0,3);
+    //if (g.stepReceivedData.hasDriverLicense) steps.splice(2,0,3);
     return steps[s.step - 1];
   },
   maxSteps: (s, g) => {
@@ -186,9 +186,9 @@ export const actions = {
       letterType: stepSendData.letterType,
       isOwnVehicle: stepReceivedData.isOwnVehicle,
       answers: JSON.stringify([
-        { answer: stepSendData.region, questionId: stepReceivedData.questions[0].id },
-        { answer: stepSendData.senderPhone, questionId: stepReceivedData.questions[1].id },
-        { answer: stepSendData.recepientPhone, questionId: stepReceivedData.questions[2].id }
+        { answer: stepSendData.region, questionId: 12 },
+        { answer: stepSendData.senderPhone, questionId: 5 },
+        { answer: stepSendData.recepientPhone, questionId: 10 }
       ])
     };
 

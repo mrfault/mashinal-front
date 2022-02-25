@@ -27,17 +27,17 @@
                         <span>{{ spec }}</span>
                       </li>
                     </ul>
-                    <hr v-if="currentRealStep > 2" />
+<!--                    <hr v-if="currentRealStep > 2" />-->
                   </div>
-                  <div class="col" v-for="(specs, i) in specs[1]" :key="i">
-                    <ul>
-                      <li v-for="(spec, key) in specs" :key="key">
-                        <span class="wider">{{ $t(key) }}</span>
-                        <span>{{ spec }}</span>
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="col col-12" v-if="currentRealStep > 4">
+<!--                  <div class="col" v-for="(specs, i) in specs[1]" :key="i">-->
+<!--                    <ul>-->
+<!--                      <li v-for="(spec, key) in specs" :key="key">-->
+<!--                        <span class="wider">{{ $t(key) }}</span>-->
+<!--                        <span>{{ spec }}</span>-->
+<!--                      </li>-->
+<!--                    </ul>-->
+<!--                  </div>-->
+                  <div class="col col-12" v-if="currentRealStep > 3">
                     <hr />
                     <ul>
                       <li v-for="(spec, key) in specs[2]" :key="key">
@@ -99,20 +99,21 @@ export default {
       }
       if (this.currentRealStep > 1) {
         specs[0].letter_type = this.$t('letter_type_options')[this.stepSendData.letterType - 1];
+
         if (this.currentRealStep > 2) {
-          specs[1].birth_date = this.stepSendData.birthDate;
-          specs[1].gender = this.stepSendData.gender === 1 ? this.$t('male') : this.$t('female');
-          specs[1].id_expiry_date = this.stepSendData.idExpiryDate;
-          if (this.currentRealStep > 3) {
+          //specs[1].birth_date = this.stepSendData.birthDate;
+          //specs[1].gender = this.stepSendData.gender === 1 ? this.$t('male') : this.$t('female');
+          //specs[1].id_expiry_date = this.stepSendData.idExpiryDate;
+          if (this.currentRealStep > 2) {
             if (this.stepReceivedData.hasDriverLicense) {
               specs[1].driver_license_serial_number = this.stepSendData.driverLicenseNumber;
               specs[1].driver_license_given_date = this.stepSendData.driverLicenseGivenDate;
               specs[1].driver_license_expiry_date = this.stepSendData.driverLicenseExpiryDate;
             }
-            if (this.currentRealStep > 4) {
-              specs[2].vehicle_id_number = this.stepSendData.vehicleIdNumber;
-              specs[2].vehicle_id_given_date = this.stepSendData.vehicleIdGivenDate;
-              if (this.currentRealStep > 5) {
+            if (this.currentRealStep > 3) {
+              // specs[2].vehicle_id_number = this.stepSendData.vehicleIdNumber;
+              // specs[2].vehicle_id_given_date = this.stepSendData.vehicleIdGivenDate;
+              if (this.currentRealStep > 4) {
                 specs[2].recepient_id_serial_number = this.stepSendData.idSerialNumberB;
                 specs[2].recepient_id_fin_code = this.stepSendData.idFinCodeB;
                 if (!this.hasGeneralPower) {
@@ -121,7 +122,7 @@ export default {
               }
             }
           }
-          specs[1] = this.$dataRows(specs[1], this.isMobileBreakpoint);
+          //specs[1] = this.$dataRows(specs[1], this.isMobileBreakpoint);
         }
       }
       return specs;
