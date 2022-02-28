@@ -30,6 +30,7 @@
                 :label="$t(input.label)"
                 :id="`${popular ? 'popular_' : ''}${input.name}${input.selected_key || ''}`"
                 :input-name="input.name"
+                @input="changeFilter(input, $event)"
                 @change="changeFilter(input, $event)"
               />
             </template>
