@@ -113,7 +113,7 @@ export default {
             if (this.currentRealStep > 3) {
               // specs[2].vehicle_id_number = this.stepSendData.vehicleIdNumber;
               // specs[2].vehicle_id_given_date = this.stepSendData.vehicleIdGivenDate;
-              if (this.currentRealStep > 4) {
+              if (this.currentRealStep > 5) {
                 specs[2].recepient_id_serial_number = this.stepSendData.idSerialNumberB;
                 specs[2].recepient_id_fin_code = this.stepSendData.idFinCodeB;
                 if (!this.hasGeneralPower) {

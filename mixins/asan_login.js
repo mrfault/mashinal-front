@@ -18,10 +18,18 @@ export default {
       res = await res.json()
       if(res.status === 401) {
         this.$cookies.remove('asan_token')
-        location.href = 'https://asanlogintest.my.gov.az/auth?origin=http://localhost:3000/garage-services?asan_token=true';
-      }
 
-    },
+        await this.$auth.logout();
+        let origin = this.$env.IS_LOCAL ? 'http://localhost:3000/asan/garage-services' : 'https://dev.mashin.al/asan/garage-services'
+        location.href = 'https://asanlogintest.my.gov.az/auth?origin='+origin;
+      }else {
+        if(!this.$auth.loggedIn) {
+          this.$router.push('/asan/garage-services');
+        }
+      }
+    }
+
+    ,
     async asanLogin() {
       let res = await fetch('https://asanlogintest.my.gov.az/ssoauthz/api/v1/token',{
         credentials: 'include',

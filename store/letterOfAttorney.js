@@ -6,7 +6,7 @@ const getInitialState = () => ({
   stepSendData: {
     garageId: '',
     carNumber: '',
-    letterType: 1,
+    letterType: 0,
     idFinCode: '',
     idSerialNumber: '',
     idExpiryDate: '',
@@ -89,7 +89,7 @@ export const actions = {
     });
   },
   resetSteps({ commit }) {
-    commit('reset', ['maxSteps','step','stepSendData','stepReceivedData']);
+    commit('reset', ['maxSteps','step','stepReceivedData']);
   },
   // API
   async checkOwnInfo({ dispatch, state: { stepSendData } }) {

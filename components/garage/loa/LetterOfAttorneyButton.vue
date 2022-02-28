@@ -224,7 +224,6 @@ export default {
   data() {
     return {
       vehicles: {},
-      letterType: null,
       showVehicleList: false,
       showSteps: false,
       finished: false,
@@ -303,6 +302,14 @@ export default {
         {key: 1, name: this.$t('letter_type_options')[0]},
         {key: 2, name: this.$t('letter_type_options')[1]},
       ]
+    },
+    letterType: {
+      get() {
+        return this.stepSendData.letterType
+      },
+      set(value) {
+        this.updateSendData({ key: 'letterType', value })
+      },
     },
     stepHints() {
       return {
