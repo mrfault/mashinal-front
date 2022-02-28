@@ -40,8 +40,8 @@
                 <nuxt-link :to="$localePath(menu.route)">
                   <icon :name="menu.icon" />
                   {{ $t(menu.title) }}
-                  <!-- <icon name="chevron-right" /> -->
-                  <inline-svg src="/icons/chevron-right.svg" :height="14" />
+                  <icon name="chevron-right" />
+                  <!-- <inline-svg src="/icons/chevron-right.svg" :height="14" /> -->
                 </nuxt-link>
                 <hr />
               </div>

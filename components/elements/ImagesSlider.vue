@@ -4,7 +4,7 @@
       <span>{{ currentSlide + 1 }} / {{ slides.main.length }}</span>
       <span class="cursor-pointer" @click.stop="$emit('close')">
         <!-- <icon name="cross" /> -->
-        <inline-svg src="/icons/cross.svg" height="14"/>
+        <inline-svg src="/icons/cross.svg" height="14" />
       </span>
     </div>
     <div class="container wider">
@@ -123,21 +123,19 @@
                 <span class="d-flex justify-content-between">
                   <button
                     id="slider-prev"
-                    class="btn-sq"
+                    class="btn-transparent"
                     @click.stop="slidePrev"
                   >
-                    <icon name="chevron-left" />
+                    <!-- <icon name="chevron-left" /> -->
+                    <inline-svg src="/icons/chevron-left.svg" :height="14" />
                   </button>
                   <button
                     id="slider-next"
-                    class="btn-sq"
+                    class="btn-transparent"
                     @click.stop="slideNext"
                   >
                     <!-- <icon name="chevron-right" /> -->
-                    <inline-svg
-                      src="/icons/chevron-right.svg"
-                      :height="14"
-                    />
+                    <inline-svg src="/icons/chevron-right.svg" :height="14" />
                   </button>
                 </span>
               </div>

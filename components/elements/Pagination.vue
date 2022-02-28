@@ -2,8 +2,8 @@
   <ul class="pagination">
     <li key="prev" :class="['prev', firstPageSelected() ? 'disabled' : '']">
       <button @click="prevPage()">
-        <!-- <icon name="chevron-left" /> -->
-        <inline-svg src="/icons/chevron-left.svg" :height="14" />
+        <icon name="chevron-left" />
+        <!-- <inline-svg src="/icons/chevron-left.svg" :height="14" /> -->
       </button>
     </li>
     <template v-for="page in pages">
@@ -29,8 +29,8 @@
     </template>
     <li key="next" :class="['next', lastPageSelected() ? 'disabled' : '']">
       <button @click="nextPage()">
-        <!-- <icon name="chevron-right" /> -->
-        <inline-svg src="/icons/chevron-right.svg" :height="14" />
+        <icon name="chevron-right" />
+        <!-- <inline-svg src="/icons/chevron-right.svg" :height="14" /> -->
       </button>
     </li>
   </ul>

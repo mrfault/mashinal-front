@@ -12,10 +12,11 @@
         <div class="upload-image_thumbnail">
           <img v-if="image[key]" :src="image[key]" alt="" />
           <div class="overlay">
-            <button type="button" :class="['btn-sq', {'disabled': loading[key]}]" @click.stop="fileRotate(key, index)">
-              <icon name="reset" />
+            <button type="button" :class="['btn-transparent', {'disabled': loading[key]}]" @click.stop="fileRotate(key, index)">
+              <!-- <icon name="reset" /> -->
+              <inline-svg src="/icons/reset-new.svg" height="14"/>
             </button>
-            <button type="button" :class="['btn-sq ml-auto', {'disabled': loading[key]}]" @click.stop="fileDelete(key, index)">
+            <button type="button" :class="['btn-transparent ml-auto', {'disabled': loading[key]}]" @click.stop="fileDelete(key, index)">
               <!-- <icon name="cross" /> -->
               <inline-svg src="/icons/cross.svg" height="14"/>
             </button>

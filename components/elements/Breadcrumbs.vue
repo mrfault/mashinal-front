@@ -15,13 +15,13 @@
           <nuxt-link :to="$localePath(crumb.route || '/')">
             {{ crumb.name }}
           </nuxt-link>
-          <!-- <icon v-if="index !== crumbs.length - 1" name="chevron-right" /> -->
-          <inline-svg
+          <icon v-if="index !== crumbs.length - 1" name="chevron-right" />
+          <!-- <inline-svg
             v-if="index !== crumbs.length - 1"
             src="/icons/chevron-right.svg"
             :height="10"
             class="mx-1"
-          />
+          /> -->
         </li>
         <li v-else :key="index" class="active" aria-current="page">
           <span>{{ crumb.name }}</span>

@@ -37,8 +37,8 @@
           @click.stop.prevent="$emit('label-click')"
         >
           <span v-html="label"></span>
-          <!-- <icon class="ml-1" name="chevron-right" v-if="!isMobileBreakpoint" /> -->
-          <inline-svg src="/icons/chevron-right.svg" :height="14" class="ml-1"  v-if="!isMobileBreakpoint"  />
+          <icon class="ml-1" name="chevron-right" v-if="!isMobileBreakpoint" />
+          <!-- <inline-svg src="/icons/chevron-right.svg" :height="14" class="ml-1"  v-if="!isMobileBreakpoint"  /> -->
         </span>
         <span
           :class="['text-truncate white-space-break', { 'skip-truncate': skipTruncate }]"

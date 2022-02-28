@@ -69,11 +69,8 @@
             {{ $t('go_to_salon') }}
           </span>
           <span v-else>{{ $t('other_announcements_of_user') }}</span>
-          <!-- <icon name="chevron-right" /> -->
-          <inline-svg
-            src="/icons/chevron-right.svg"
-            :height="14"
-          />
+          <icon name="chevron-right" />
+          <!-- <inline-svg src="/icons/chevron-right.svg" :height="14" /> -->
         </nuxt-link>
       </div>
     </div>
@@ -130,11 +127,8 @@
           />
           <deactivate-button :announcement="announcement" v-else />
         </div>
-        
-        <div
-          class="col mt-2 mt-lg-3"
-         
-        >
+
+        <div class="col mt-2 mt-lg-3">
           <edit-button :announcement="announcement" :type="type" />
         </div>
       </div>
