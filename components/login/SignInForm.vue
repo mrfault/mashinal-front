@@ -26,7 +26,6 @@
       v-if="form.staticPhone && !sellPhoneRegistered"
       :placeholder="$t('name')"
       :maxlength="30"
-      :invalid="validator.name.$error"
       v-model="form.name"
     />
     <confirm-phone

@@ -39,7 +39,7 @@ export default {
             }
 
 
-          },500000)
+          },5000)
           this.timer = 5;
           clearInterval(this.interval)
           this.interval = setInterval(() => {
@@ -48,8 +48,6 @@ export default {
           },1000)
 
         });
-
-
       }
     },
     async asanLogin() {

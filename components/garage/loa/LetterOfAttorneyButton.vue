@@ -73,7 +73,7 @@
     <modal-popup
       :toggle="showRedirect"
       :title="$t('send_a_letter_of_attorney')"
-      title-logo="/asan_logo.svg"
+      :title-logo="isDarkMode ? '/asan_logo_dark_mode.svg':'/asan_logo.svg'"
       :overflow-hidden="isMobileBreakpoint"
       @close="showRedirect = false"
     >
