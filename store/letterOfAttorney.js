@@ -89,7 +89,10 @@ export const actions = {
     });
   },
   resetSteps({ commit }) {
-    commit('reset', ['maxSteps','step','stepReceivedData']);
+    commit('reset', ['maxSteps','step']);
+  },
+  resetAllSteps({ commit }) {
+    commit('reset', ['maxSteps','step','stepReceivedData','stepSendData']);
   },
   // API
   async checkOwnInfo({ dispatch, state: { stepSendData } }) {
@@ -187,8 +190,8 @@ export const actions = {
       isOwnVehicle: stepReceivedData.isOwnVehicle,
       answers: JSON.stringify([
         { answer: stepSendData.region, questionId: 12 },
-        { answer: stepSendData.senderPhone, questionId: 5 },
-        { answer: stepSendData.recepientPhone, questionId: 10 }
+        { answer: stepSendData.senderPhone.replace(/[^0-9]+/g, '') , questionId: 5 },
+        { answer: stepSendData.recepientPhone.replace(/[^0-9]+/g, ''), questionId: 10 }
       ])
     };
 

@@ -18,14 +18,7 @@ export default {
   mixins: [ asan_login ],
   middleware: ['guest'],
   async mounted() {
-    await this.asanLogin();
-    const data = await this.$axios.$post('/asan/login');
-    this.$auth.setUser(data.user.original)
-    this.$emit('setFinished',true)
-    await this.$auth.setUserToken(data.meta.token);
-
     this.pending = false;
-    this.$nuxt.$emit('login', true);
     this.$router.push(this.$localePath(this.$route.params.page_slug))
   }
 }

@@ -13,7 +13,7 @@
       @close="close"
     >
       <div class="letter-of-attorney">
-        <steps-progress :limit-steps="5" :finished="finished"/>
+        <steps-progress :limit-steps="4" :finished="finished"/>
         <template v-if="!finished">
           <div class="mt-2 mt-lg-0 mb-2 mb-lg-3">
             <h4 v-if="currentRealStep !== 10">{{ stepInfoTitle }}
@@ -48,11 +48,11 @@
       :toggle="showPaymentModal"
       :title="$t('payment')"
       :overflow-hidden="isMobileBreakpoint"
-      @close="showPaymentModal = false, close()"
+      @close="showPaymentModal = false;finished = false; updateStep(1)"
     >
       <h4 class="mb-2">{{ $t('payment_method') }}</h4>
       <!--      <form-buttons v-model="paymentMethod" :options="paymentMethodOptions" :group-by="2" />-->
-      <select-banking-card v-model="bankingCard" class="mt-2 mt-lg-3" v-show="paymentMethod === 'card'"/>
+      <select-banking-card v-model="bankingCard" class="mt-2 mt-lg-3"/>
       <!--      <terminal-info-button popup-name="letter-of-attorney-popup" />-->
       <div :class="{'modal-sticky-bottom': isMobileBreakpoint}">
         <hr/>
@@ -69,6 +69,20 @@
         </div>
       </div>
     </modal-popup>
+
+    <modal-popup
+      :toggle="showRedirect"
+      :title="$t('send_a_letter_of_attorney')"
+      title-logo="/asan_logo.svg"
+      :overflow-hidden="isMobileBreakpoint"
+      @close="showRedirect = false"
+    >
+      <p>Etibarnamenin verilmesi ucun asan logine yonlendirilirsiz.</p>
+      <div class="align-items-center d-flex justify-content-center position-relative">
+        <animated-spinner/>
+        <span style="position: absolute;">{{ timer }}</span>
+      </div>
+    </modal-popup>
     <terminal-info-popup
       name="letter-of-attorney-popup"
       @open="showPaymentModal = false"
@@ -79,7 +93,7 @@
       :toggle="showVehicleList"
       :title="$t('send_a_letter_of_attorney')"
       :overflow-hidden="isMobileBreakpoint"
-      @close="showVehicleList = false"
+      @close="showVehicleList = false;close();"
     >
       <div class="attorney-before-step1">
         <h4 style="font-weight: normal">{{ $t('letter_type') }}</h4>
@@ -111,7 +125,9 @@
                   </div>
                 </div>
               </div>
-              <h4 class="sub-category mt-2" v-if="vehicles.canTransferVehicles.length">{{ $t('transferable_vehicles') }}</h4>
+              <h4 class="sub-category mt-2" v-if="vehicles.canTransferVehicles.length">{{
+                  $t('transferable_vehicles')
+                }}</h4>
               <div class="vehicle-list">
                 <div class="row">
                   <div class="col-md-4 col-6 mb-2" v-for="(item,index) in vehicles.canTransferVehicles" :key="index">
@@ -195,6 +211,7 @@ import Step8 from '~/components/garage/loa/Step8';
 import Step9 from '~/components/garage/loa/Step9';
 import Step10 from '~/components/garage/loa/Step10';
 import Asan_login from "~/mixins/asan_login";
+import AnimatedSpinner from "~/components/elements/AnimatedSpinner";
 
 export default {
   props: {
@@ -207,6 +224,7 @@ export default {
     }
   },
   components: {
+    AnimatedSpinner,
     StepsProgress,
     StepsSummary,
     Step1,
@@ -230,8 +248,9 @@ export default {
       pending: false
     }
   },
+
   methods: {
-    ...mapActions('letterOfAttorney', ['increaseStep', 'resetSteps', 'payForSubmission', 'updateSendData', 'updateReceivedData']),
+    ...mapActions('letterOfAttorney', ['increaseStep', 'updateStep', 'resetSteps', 'resetAllSteps', 'payForSubmission', 'updateSendData', 'updateReceivedData']),
     selectVehicle(item) {
       this.updateReceivedData(
         [
@@ -255,6 +274,7 @@ export default {
       await this.asanLogin();
       this.showVehicleList = true;
     },
+
     async pay() {
       if (this.pending) return;
       this.pending = true;
@@ -267,7 +287,7 @@ export default {
         if (this.paymentMethod === 'card' && !this.bankingCard) {
           this.pending = false;
           this.showPaymentModal = false;
-          this.close();
+          //this.close();
           this.handlePayment(res, false, this.$t('letter_of_attorney_submitted'), 'v2');
         } else {
           await Promise.all([
@@ -277,12 +297,13 @@ export default {
           this.pending = false;
           this.showPaymentModal = false;
           this.bankingCard = '';
-          this.close();
+
           this.updatePaidStatus({
             type: 'success',
             text: this.$t('letter_of_attorney_submitted'),
             title: this.$t('success_payment')
           });
+          this.close();
         }
       } catch (err) {
         this.pending = false;
@@ -292,7 +313,9 @@ export default {
     close() {
       this.finished = false;
       this.showSteps = false;
-      this.resetSteps();
+      this.showVehicleList = false;
+      this.vehicles = {};
+      this.resetAllSteps();
     }
   },
   computed: {
@@ -308,7 +331,7 @@ export default {
         return this.stepSendData.letterType
       },
       set(value) {
-        this.updateSendData({ key: 'letterType', value })
+        this.updateSendData({key: 'letterType', value})
       },
     },
     stepHints() {
