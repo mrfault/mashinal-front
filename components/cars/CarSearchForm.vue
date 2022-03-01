@@ -90,7 +90,7 @@
                     <div class="col-auto">
                       <div class="form-counter">
                         <div class="form-info" v-if="canAddRow(index)" @click="addSearchRow(key)">
-                          <icon name="plus123"/>
+                          <icon name="plus"/>
                         </div>
                         <div class="form-info" v-if="canRemoveRow()" @click="removeSearchRow(key)">
                           <icon name="minus"/>
