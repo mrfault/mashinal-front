@@ -113,11 +113,6 @@ export default {
   },
   validations: {
     form: {
-      name: {
-        required: requiredIf(function () {
-          return ['sign-up'].includes(this.action) && !this.$cookies.get('btl')
-        }),
-      },
       phone: {
         required: requiredIf(function () {
           return ['sign-in', 'sign-up', 'forgot'].includes(this.action)

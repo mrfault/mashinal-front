@@ -109,6 +109,7 @@ export default {
     async submit() {
       this.$v.$touch();
       if (this.pending || this.$v.$error) return;
+
       this.pending = true;
       try {
         const isValid = await this.checkAllData();

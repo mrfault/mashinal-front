@@ -5,7 +5,6 @@
         v-if="!form.staticPhone && isNewUser"
         :placeholder="$t('name')"
         :maxlength="30"
-        :invalid="validator.name.$error"
         v-model="form.name"
       />
       <p v-if="!form.staticPhone && isNewUser" style="color:#92959A;margin-top: -12px;">{{ $t('filled_in_at_will') }}</p>

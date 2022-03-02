@@ -1966,7 +1966,7 @@ export default {
   "with_mileage": "С пробегом",
   "with_new": "новых",
   "with_significant_damage_to_body_elements_that_do_not_move_on_their_own": "С существенными повреждениями кузовных элементов, не передвигающиеся своим ходом.",
-  "with_video": "С видео",
+  "with_video": "С панорамой",
   "without_beaten": "Кроме битых",
   "without_discount": "Без скидки",
   "without_store": "Без магазина",
@@ -2171,5 +2171,6 @@ export default {
   "attorney_pay":"Оплата за доверенность",
   "qr_code_text":"Установите приложение Mashin.AL! Следите за обновлениями",
   "create_eservice_and_shop" : "Создай Салон/Магазин",
-  "panorama_loading": "Загружается панорама"
+  "panorama_loading": "Загружается панорама",
+  "asan_login_redirect": "Для оформления доверенности вы пренаправляетесь на страницу asan login"
 }

@@ -104,8 +104,11 @@ export default {
       return '/';
     }
   },
-  mounted() {
-    this.$axios.$post('/notifications/read_all')
+  async mounted() {
+    await this.$axios.$post('/notifications/read_all')
+    setTimeout(() => {
+      this.$store.dispatch('getNotifications')
+    },1000)
   },
   computed: {
     ...mapGetters(['notifications']),

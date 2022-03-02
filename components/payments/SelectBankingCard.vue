@@ -1,5 +1,5 @@
 <template>
-  <div class="select-banking-card" v-if="bankingCards.length">
+  <div class="select-banking-card">
     <form-select
       :label="$t('pay_with_card')"
       :options="cardOptions"

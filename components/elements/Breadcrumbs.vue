@@ -9,7 +9,7 @@
           :height="10"
           class="mx-1"
         /> -->
-        <icon  v-if="index !== crumbs.length - 1" name="chevron-right" />
+        <icon name="chevron-right" />
       </li>
       <template v-for="(crumb, index) in crumbs">
         <li v-if="crumb.route" :key="index">

@@ -81,14 +81,12 @@
 import {mapGetters, mapActions} from 'vuex';
 import CarSearchForm from '~/components/cars/CarSearchForm';
 import Grid from '~/components/announcements/Grid';
-import LoginButton from "~/components/asan/LoginButton";
 
 export default {
   name: 'pages-index',
   layout: 'search',
   middleware: 'payment_redirect',
   components: {
-    LoginButton,
     CarSearchForm,
     Grid,
   },
