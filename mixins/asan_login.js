@@ -31,7 +31,6 @@ export default {
           this.timeout = setTimeout(async ()=> {
             if(this.showRedirect) {
               this.$cookies.remove('asan_token')
-              await this.$auth.logout();
               let origin = this.$env.IS_LOCAL ? 'http://localhost:3000/asan/garage-services' : 'https://dev.mashin.al/asan/garage-services'
               location.href = 'https://asanlogintest.my.gov.az/auth?origin='+origin;
             }else {

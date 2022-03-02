@@ -271,6 +271,7 @@ export default {
       this.$set(this, 'vehicles', data);
     },
     async showVehicles() {
+      if(!this.$auth.loggedIn) return await this.$router.push(this.$localePath('/login'));
       await this.asanLogin();
       this.showVehicleList = true;
     },
