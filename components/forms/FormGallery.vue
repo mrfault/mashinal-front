@@ -31,8 +31,8 @@
                 type="button"
                 @click.stop="deleteFile(file.key)"
               >
-                <!-- <icon name="cross" /> -->
-                <inline-svg src="/icons/cross.svg" height="14"/>
+                <icon name="cross" />
+                <!-- <inline-svg src="/icons/cross.svg" height="14"/> -->
               </button>
             </div>
           </template>

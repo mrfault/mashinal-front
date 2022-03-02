@@ -16,8 +16,8 @@
         </h4>
         <span v-else />
         <span class="cursor-pointer close" @click="$emit('close')">
-          <!-- <icon name="cross" /> -->
-          <inline-svg src="/icons/cross.svg" height="14"/>
+          <icon name="cross" />
+          <!-- <inline-svg src="/icons/cross.svg" height="14"/> -->
         </span>
       </div>
 
