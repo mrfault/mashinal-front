@@ -77,7 +77,7 @@
       :overflow-hidden="isMobileBreakpoint"
       @close="showRedirect = false"
     >
-      <p>Etibarnamenin verilmesi ucun asan logine yonlendirilirsiz.</p>
+      <p>{{ $t('asan_login_redirect') }}</p>
       <div class="align-items-center d-flex justify-content-center position-relative">
         <animated-spinner/>
         <span style="position: absolute;">{{ timer }}</span>

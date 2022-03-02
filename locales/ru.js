@@ -2171,5 +2171,6 @@ export default {
   "attorney_pay":"Оплата за доверенность",
   "qr_code_text":"Установите приложение Mashin.AL! Следите за обновлениями",
   "create_eservice_and_shop" : "Создай Салон/Магазин",
-  "panorama_loading": "Загружается панорама"
+  "panorama_loading": "Загружается панорама",
+  "asan_login_redirect": "Для оформления доверенности вы пренаправляетесь на страницу asan login"
 }
