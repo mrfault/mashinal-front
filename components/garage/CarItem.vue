@@ -5,8 +5,8 @@
       <div class="car-bg-inner d-flex flex-column justify-content-between" v-if="!thumbSet">
         <div class="d-flex justify-content-end align-items-center">
           <button v-if="car.sync_status === 1" class="btn-sq btn-sq--color-red" @click.stop="showDeleteModal = true">
-            <!-- <icon name="garbage" /> -->
-            <inline-svg src="/icons/garbage.svg" :height="14" />
+            <icon name="garbage" />
+            <!-- <inline-svg src="/icons/garbage.svg" :height="14" /> -->
           </button>
         </div>
         <div class="d-flex justify-content-between align-items-center">

@@ -1,13 +1,13 @@
 <template>
   <div :class="['wrapper', { loading }, `${colorMode}-mode`]">
     <transition name="fade">
-      <div class="layout" v-show="!loading">
+      <div class="layout" v-show="!loading" :class="{'layoutForMap': checkRouteIfSalon}">
         <mobile-menu/>
 
         <page-header/>
          <!-- v-if="!isMobileBreakpoint && !close && !$cookies.get('smartbanner_exited')" -->
         <slot name="after-header"/>
-        <main :class="{'min-height-if-notification':  !cookiesHasNotificationOn || storeBannerIsOn, 'min-height-if-not-notification':  cookiesHasNotificationOn || !storeBannerIsOn}">
+        <main :class="{'min-height-if-notification':  !cookiesHasNotificationOn || storeBannerIsOn, 'min-height-if-not-notification':  cookiesHasNotificationOn || !storeBannerIsOn, 'positionInitial' : checkRouteIfSalon}">
           <slot name="nuxt"/>
           <scroll-top v-if="!hideFooter"/>
           <map-switch v-if="['salons','parts-shops'].includes(routeName)"/>
@@ -79,7 +79,12 @@ export default {
     },
     storeBannerIsOn(){
       return this.$store.state.smartBanner;
+    },
+    checkRouteIfSalon(){
+      return this.$route.name == "salons___az"  || this.$route.name == "salons___ru"
     }
-  }
+  },
+
 }
 </script>
+

@@ -59,8 +59,8 @@
                 class="remove-btn"
                 @click="removeAnnouncement(announcement.id_unique)"
               >
-                <!-- <icon name="garbage" /> -->
-                <inline-svg src="/icons/garbage.svg" :height="14" />
+                <icon name="garbage" />
+                <!-- <inline-svg src="/icons/garbage.svg" :height="14" /> -->
               </button>
             </div>
             <hr
@@ -95,8 +95,8 @@
                 </div>
               </div>
               <button class="remove-btn" @click="removeModel(model.id)">
-                <!-- <icon name="garbage" /> -->
-                <inline-svg src="/icons/garbage.svg" :height="14" />
+                <icon name="garbage" />
+                <!-- <inline-svg src="/icons/garbage.svg" :height="14" /> -->
               </button>
             </div>
             <hr :key="'hr-' + model.id" v-if="index < modelsList.length - 1" />
