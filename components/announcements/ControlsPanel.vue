@@ -25,8 +25,8 @@
         </span>
         <span :class="['control-icon cursor-pointer text-hover-red', {'disabled-ui': !selected.length}]" 
             @click="showDeleteModal = true">
-          <!-- <icon name="garbage" /> -->
-          <inline-svg src="/icons/garbage.svg" :height="14" />
+          <icon name="garbage" />
+          <!-- <inline-svg src="/icons/garbage.svg" :height="14" /> -->
           <span>{{ $t('delete') }}</span>
           <modal-popup
             :toggle="showDeleteModal"

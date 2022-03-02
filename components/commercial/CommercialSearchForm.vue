@@ -25,8 +25,8 @@
             <div class="col-auto" v-if="!isMobileBreakpoint">
               <div class="form-counter">
                 <div class="form-info" v-if="canAddRow(index)" @click="addSearchRow(key)">
-                  <!-- <icon name="plus" /> -->
-                  <inline-svg src="/icons/plus.svg" :height="14" />
+                  <icon name="plus" />
+                  <!-- <inline-svg src="/icons/plus.svg" :height="14" /> -->
                 </div>
                 <div class="form-info" v-if="canRemoveRow()" @click="removeSearchRow(key)">
                   <icon name="minus" />

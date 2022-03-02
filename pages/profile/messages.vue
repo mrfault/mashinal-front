@@ -101,8 +101,8 @@
               {{ $t(getUserBlock + '_user') }}
             </li>
             <li class="cursor-pointer" key="clear" @click="deleteChat()">
-              <!-- <icon name="garbage" /> -->
-              <inline-svg src="/icons/garbage.svg" :height="14" />
+              <icon name="garbage" />
+              <!-- <inline-svg src="/icons/garbage.svg" :height="14" /> -->
               {{ $t('clear_chat') }}
             </li>
           </ul>

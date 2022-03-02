@@ -17,8 +17,8 @@
                 <icon name="bell" />
               </span>
               <span :class="['control-icon cursor-pointer text-hover-red', {'disabled-ui': !selected.length}]" @click="showRemoveModal = true" v-tooltip="$t('delete')">
-                <!-- <icon name="garbage" /> -->
-                <inline-svg src="/icons/garbage.svg" :height="14" />
+                <icon name="garbage" />
+                <!-- <inline-svg src="/icons/garbage.svg" :height="14" /> -->
               </span>
             </div>
           </div>
