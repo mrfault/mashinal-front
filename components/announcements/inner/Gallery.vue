@@ -1,17 +1,10 @@
 <template>
   <div class="inner-gallery">
     <div class="position-relative">
-      <div
-        class="swiper-container"
-        v-swiper:gallerySwiper="swiperOps"
-        ref="gallerySwiper"
-        v-if="showSlider"
-      >
+      <div class="swiper-container" v-swiper:gallerySwiper="swiperOps" ref="gallerySwiper" v-if="showSlider">
         <div class="swiper-wrapper">
-          <div
-            class="swiper-slide"
-            :key="index"
-            v-for="(slide, index) in slides.main"
+
+          <div class="swiper-slide" :key="index" v-for="(slide, index) in slides.main"
           >
             <div
               style="width: 100%;"
@@ -35,15 +28,15 @@
 
             <div
               v-else
-              :class="[
+                 :class="[
                 'swiper-slide-bg swiper-lazy',
                 { 'youtube-play': showYtVideo(index) },
               ]"
-              :data-background="
+                 :data-background="
                 showYtVideo(index) ? getYtVideoImage('hq') : slide
               "
             >
-              <loader />
+              <loader/>
             </div>
           </div>
         </div>
@@ -58,30 +51,38 @@
               SHOP
             </span>
             <span class="d-flex">
+                <span class="badge" v-if="announcement.images_360.length>0">
+                360
+                <sup>o</sup>
+
+              </span>
               <span
                 class="btn-sq btn-sq--color-red active"
                 v-if="announcement.has_monetization"
               >
-                <icon name="speaker" v-tooltip="$t('ad_announcement')" />
+                <icon name="speaker" v-tooltip="$t('ad_announcement')"/>
               </span>
+
+
             </span>
           </template>
         </div>
         <div class="gallery-overlay_middle">
+
           <span class="d-flex justify-content-between">
             <button
               id="gallery-prev"
               class="btn-transparent"
               @click.stop="slidePrev"
             >
-              <inline-svg src="/icons/chevron-left.svg" :height="25" />
+              <inline-svg src="/icons/chevron-left.svg" :height="25"/>
             </button>
             <button
               id="gallery-next"
               class="btn-transparent"
               @click.stop="slideNext"
             >
-              <!-- <icon name="chevron-right" /> -->
+              <!-- <icon name="chevron-right"/> -->
               <inline-svg src="/icons/chevron-right.svg" :height="25" />
             </button>
           </span>
@@ -90,23 +91,17 @@
           <template v-if="where === 'announcement'">
             <div class="gallery-overlay_bottom--left">
               <template v-if="announcement.status == 1">
-                <add-comparison
-                  :id="announcement.id_unique"
-                  v-if="announcement.car_catalog"
-                />
-                <add-favorite :announcement="announcement" />
+                <add-comparison :id="announcement.id_unique" v-if="announcement.car_catalog"/>
+                <add-favorite :announcement="announcement"/>
               </template>
             </div>
 
             <div class="gallery-overlay_bottom--right">
-              <add-complaint :announcement="announcement" />
+              <add-complaint :announcement="announcement"/>
             </div>
           </template>
           <template v-else>
-            <add-comparison
-              :id="announcement.id_unique"
-              v-if="announcement.car_catalog"
-            />
+            <add-comparison :id="announcement.id_unique" v-if="announcement.car_catalog"/>
           </template>
         </div>
       </div>
@@ -135,14 +130,8 @@
             "
           >
             <div class="blur-bg" :key="0">
-              <img
-                :src="
-                  showYtVideo(currentSlide)
-                    ? getYtVideoImage('hq')
-                    : $withBaseUrl(slides.main[currentSlide])
-                "
-                alt=""
-              />
+              <img :src="showYtVideo(currentSlide) ? getYtVideoImage('hq') : $withBaseUrl(slides.main[currentSlide])"
+                   alt=""/>
             </div>
             <div
               class="blur-bg_announcement-info"
@@ -155,13 +144,10 @@
                   <h4>{{ announcement.price }}</h4>
                   <div class="row" v-if="announcement.status != 3">
                     <div class="col" v-if="canSendMessage(announcement)">
-                      <chat-button
-                        :announcement="announcement"
-                        :className="'white-outline'"
-                      />
+                      <chat-button :announcement="announcement" :className="'white-outline'"/>
                     </div>
                     <div class="col">
-                      <call-button :phone="announcement.user.phone" />
+                      <call-button :phone="announcement.user.phone"/>
                     </div>
                   </div>
                 </template>
@@ -181,7 +167,7 @@
                 @slide-change="currentSlide = $event"
               >
                 <template #sidebar v-if="where === 'announcement'">
-                  <slot />
+                  <slot/>
                 </template>
               </images-slider>
             </div>
@@ -193,7 +179,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import {mapGetters} from 'vuex'
 
 import FsLightbox from 'fslightbox-vue'
 import CallButton from '~/components/announcements/CallButton'
@@ -340,7 +326,7 @@ export default {
               fromFsPopup: true,
             },
           },
-          ...this.slides.main.slice(1, this.slides.main.length),
+           ...this.slides.main.slice(1, this.slides.main.length),
         ]
       }
       return this.slides.main
@@ -386,7 +372,7 @@ export default {
 
       if (hasVideo) types.splice(1, 0, 'youtube')
       if (has360) types.splice(0, 0, 'custom')
-      return { thumbs, main, types }
+      return {thumbs, main, types}
     },
   },
   watch: {
@@ -460,6 +446,7 @@ export default {
     height: 493px;
   }
 }
+
 .swiper-slide {
   background-color: #d6e4f8;
   display: flex;
