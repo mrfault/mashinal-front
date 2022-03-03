@@ -1,10 +1,10 @@
 <template>
   <div class="inner-gallery">
     <div class="position-relative">
-      <div class="swiper-container"  v-swiper:gallerySwiper="swiperOps" ref="gallerySwiper" v-if="showSlider">
+      <div class="swiper-container" v-swiper:gallerySwiper="swiperOps" ref="gallerySwiper" v-if="showSlider">
         <div class="swiper-wrapper">
 
-          <div class="swiper-slide"  :key="index" v-for="(slide, index) in slides.main">
+          <div class="swiper-slide" :key="index" v-for="(slide, index) in slides.main">
             <div style="width:100%;" v-if="index === 0 && announcement.images_360 && announcement.images_360.length">
               <div class="position-relative">
                 <no-ssr>
@@ -19,10 +19,10 @@
             </div>
 
             <div v-else
-              :class="['swiper-slide-bg swiper-lazy', {'youtube-play': showYtVideo(index)}]"
-              :data-background="showYtVideo(index) ? getYtVideoImage('hq') : slide"
+                 :class="['swiper-slide-bg swiper-lazy', {'youtube-play': showYtVideo(index)}]"
+                 :data-background="showYtVideo(index) ? getYtVideoImage('hq') : slide"
             >
-              <loader />
+              <loader/>
             </div>
           </div>
         </div>
@@ -34,19 +34,27 @@
               SHOP
             </span>
             <span class="d-flex">
-              <span class="btn-sq btn-sq--color-red active" v-if="announcement.has_monetization">
-                <icon name="speaker" v-tooltip="$t('ad_announcement')" />
+                <span class="badge" v-if="announcement.images_360.length>0">
+                360
+                <sup>o</sup>
+
               </span>
+              <span class="btn-sq btn-sq--color-red active" v-if="announcement.has_monetization">
+                <icon name="speaker" v-tooltip="$t('ad_announcement')"/>
+              </span>
+
+
             </span>
           </template>
         </div>
         <div class="gallery-overlay_middle">
+
           <span class="d-flex justify-content-between">
             <button id="gallery-prev" class="btn-sq" @click.stop="slidePrev">
-              <icon name="chevron-left" />
+              <icon name="chevron-left"/>
             </button>
             <button id="gallery-next" class="btn-sq" @click.stop="slideNext">
-              <icon name="chevron-right" />
+              <icon name="chevron-right"/>
             </button>
           </span>
         </div>
@@ -54,14 +62,14 @@
           <template v-if="where === 'announcement'">
             <span class="d-flex">
               <template v-if="announcement.status == 1">
-                <add-comparison :id="announcement.id_unique" v-if="announcement.car_catalog" />
-                <add-favorite :announcement="announcement" />
+                <add-comparison :id="announcement.id_unique" v-if="announcement.car_catalog"/>
+                <add-favorite :announcement="announcement"/>
               </template>
             </span>
-            <add-complaint :announcement="announcement" />
+            <add-complaint :announcement="announcement"/>
           </template>
           <template v-else>
-            <add-comparison :id="announcement.id_unique" v-if="announcement.car_catalog" />
+            <add-comparison :id="announcement.id_unique" v-if="announcement.car_catalog"/>
           </template>
         </div>
       </div>
@@ -83,7 +91,8 @@
         <transition-group name="fade">
           <template v-if="(showLightbox && isMobileBreakpoint) || (!isMobileBreakpoint && showImagesSlider)">
             <div class="blur-bg" :key="0">
-              <img :src="showYtVideo(currentSlide) ? getYtVideoImage('hq') : $withBaseUrl(slides.main[currentSlide])" alt="" />
+              <img :src="showYtVideo(currentSlide) ? getYtVideoImage('hq') : $withBaseUrl(slides.main[currentSlide])"
+                   alt=""/>
             </div>
             <div class="blur-bg_announcement-info" :key="1" v-if="isMobileBreakpoint">
               <div class="inner-gallery-lightbox-footer">
@@ -92,10 +101,10 @@
                   <h4>{{ announcement.price }}</h4>
                   <div class="row" v-if="announcement.status != 3">
                     <div class="col" v-if="canSendMessage(announcement)">
-                      <chat-button :announcement="announcement" :className="'white-outline'" />
+                      <chat-button :announcement="announcement" :className="'white-outline'"/>
                     </div>
                     <div class="col">
-                      <call-button :phone="announcement.user.phone" />
+                      <call-button :phone="announcement.user.phone"/>
                     </div>
                   </div>
                 </template>
@@ -114,8 +123,8 @@
                 @close="closeLightbox"
                 @slide-change="currentSlide = $event"
               >
-                <template #sidebar v-if="where === 'announcement'" >
-                  <slot />
+                <template #sidebar v-if="where === 'announcement'">
+                  <slot/>
                 </template>
               </images-slider>
             </div>
@@ -127,7 +136,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import {mapGetters} from 'vuex';
 
 import FsLightbox from 'fslightbox-vue';
 import CallButton from '~/components/announcements/CallButton';
@@ -136,6 +145,7 @@ import AddFavorite from '~/components/announcements/AddFavorite';
 import AddComparison from '~/components/announcements/AddComparison';
 import AddComplaint from '~/components/announcements/AddComplaint';
 import ImagesSlider from '~/components/elements/ImagesSlider';
+
 export default {
   props: {
     where: {
@@ -209,17 +219,17 @@ export default {
     },
     slidePrev() {
       if (!this.showSlider) return;
-      if(this.gallerySwiper.activeIndex === 0) {
-        this.gallerySwiper.slideTo(this.slides.main.length-1);
-      }else
+      if (this.gallerySwiper.activeIndex === 0) {
+        this.gallerySwiper.slideTo(this.slides.main.length - 1);
+      } else
         this.gallerySwiper.slidePrev();
       this.updateTouchEvents();
     },
     slideNext() {
       if (!this.showSlider) return;
-      if(this.slides.main.length-1 === this.gallerySwiper.activeIndex) {
+      if (this.slides.main.length - 1 === this.gallerySwiper.activeIndex) {
         this.gallerySwiper.slideTo(0);
-      }else
+      } else
         this.gallerySwiper.slideNext();
       this.updateTouchEvents();
     },
@@ -252,10 +262,10 @@ export default {
       return `https://img.youtube.com/vi/${this.announcement.youtube_id}/${size}default.jpg`;
     },
     updateTouchEvents() {
-      if(this.gallerySwiper.activeIndex > 0)  {
+      if (this.gallerySwiper.activeIndex > 0) {
         this.gallerySwiper.simulateTouch = this.isMobileBreakpoint;
         this.gallerySwiper.allowTouchMove = this.isMobileBreakpoint;
-      }else {
+      } else {
         this.gallerySwiper.simulateTouch = false;
         this.gallerySwiper.allowTouchMove = false;
       }
@@ -265,8 +275,8 @@ export default {
   computed: {
     ...mapGetters(['announcement']),
     getSourcesFsLightbox() {
-      if(this.slides.types[0] === 'custom') {
-        return  [
+      if (this.slides.types[0] === 'custom') {
+        return [
           {
             component: 'vue-three-sixty',
             props: {
@@ -274,10 +284,10 @@ export default {
               amount: this.announcement.images_360.length,
               fromFsPopup: true,
             }
-          },...this.slides.main.slice(1,this.slides.main.length)
+          }, ...this.slides.main.slice(1, this.slides.main.length)
         ]
       }
-     return this.slides.main;
+      return this.slides.main;
 
     },
 
@@ -296,9 +306,9 @@ export default {
           thumbs.splice(1, 0, this.getYtVideoImage('hq'));
           main.splice(1, 0, `https://www.youtube.com/watch?v=${this.announcement.youtube_id}`);
         }
-        if(this.announcement.images_360 && this.announcement.images_360.length) {
-          thumbs.splice(0,0,this.announcement.images_360[0])
-          main.splice(0,0,this.announcement.images_360[0])
+        if (this.announcement.images_360 && this.announcement.images_360.length) {
+          thumbs.splice(0, 0, this.announcement.images_360[0])
+          main.splice(0, 0, this.announcement.images_360[0])
           has360 = true;
         }
         //360 here
@@ -310,8 +320,8 @@ export default {
       types = [...main.map(_ => 'image')];
 
       if (hasVideo) types.splice(1, 0, 'youtube');
-      if(has360) types.splice(0,0,'custom')
-      return { thumbs, main, types };
+      if (has360) types.splice(0, 0, 'custom')
+      return {thumbs, main, types};
     }
   },
   watch: {
@@ -341,24 +351,24 @@ export default {
           })
 
           this.gallerySwiper.on('touchEnd', (e) => {
-              const tolerance = 100;
-              const totalSlidesLen = this.gallerySwiper.slides.length;
+            const tolerance = 100;
+            const totalSlidesLen = this.gallerySwiper.slides.length;
 
-              const diff = (() => {
-                if (e.type === 'touchend') {
-                  return e.changedTouches[0].clientX - swiperTouchStartX;
-                } else {
-                  return e.clientX - swiperTouchStartX;
-                }
-              })();
-
-              if (this.gallerySwiper.isBeginning && diff >= tolerance) {
-                //this.gallerySwiper.slideTo(totalSlidesLen - 1);
-              } else if (this.gallerySwiper.isEnd && diff <= -tolerance) {
-                setTimeout(() => {
-                  this.gallerySwiper.slideTo(0);
-                }, 1);
+            const diff = (() => {
+              if (e.type === 'touchend') {
+                return e.changedTouches[0].clientX - swiperTouchStartX;
+              } else {
+                return e.clientX - swiperTouchStartX;
               }
+            })();
+
+            if (this.gallerySwiper.isBeginning && diff >= tolerance) {
+              //this.gallerySwiper.slideTo(totalSlidesLen - 1);
+            } else if (this.gallerySwiper.isEnd && diff <= -tolerance) {
+              setTimeout(() => {
+                this.gallerySwiper.slideTo(0);
+              }, 1);
+            }
           })
 
           this.gallerySwiper.on('click', (event) => {
@@ -385,6 +395,7 @@ export default {
     height: 493px;
   }
 }
+
 .swiper-slide {
   background-color: #D6E4F8;
   display: flex;
