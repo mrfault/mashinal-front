@@ -358,3 +358,11 @@
 //     }
 //   }
 // }
+
+.min-height-if-notification{
+  .pages-salons{
+    .map-sidebar{
+      height: calc(100% - 282px) !important;
+    }
+  }
+}
