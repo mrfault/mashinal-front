@@ -3,12 +3,12 @@
     <div class="e-service__header">
       <h5 class="e-service__header--title">{{ item.title }}</h5>
       <span class="e-service__header--icon">
-        <icon :name="item.icon"/>
+        <icon :name="item.icon" />
       </span>
     </div>
     <div class="e-service__body">
       <div class="e-service__body--image">
-        <img :src="`/card-icons/${item.image}.svg`"/>
+        <img :src="`/card-icons/${item.image}.svg`" />
       </div>
       <div class="e-service__body--description" v-if="item.description">
         <p class="key">{{ item.description }}</p>
@@ -24,9 +24,7 @@
         </p>
       </div>
       <div class="e-service__body--description" v-if="item.isMessage">
-        <div class="e-service__body--image">
-
-        </div>
+        <div class="e-service__body--image"></div>
         <ol>
           <li>{{ $t('vsego') }} : {{ item.messageCounts[0] }}</li>
           <li>{{ $t('notread_messages') }} : {{ item.messageCounts[1] }}</li>
@@ -59,6 +57,7 @@
         <nuxt-link :to="$localePath(item.url)" class="">
           {{ $t('detail') }}
           <icon name="chevron-right"/>
+          <!-- <inline-svg src="/icons/chevron-right.svg" :height="14" /> -->
         </nuxt-link>
       </div>
     </div>
@@ -69,14 +68,14 @@
 import LetterOfAttorneyButton from '~/components/garage/loa/LetterOfAttorneyButton'
 
 export default {
-  components: {LetterOfAttorneyButton},
+  components: { LetterOfAttorneyButton },
   props: {
     item: Object,
   },
-  computed:{
-    isSafari(){
-      return /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-    }
+  computed: {
+    isSafari() {
+      return /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
+    },
   },
   methods: {
     setStoreBalance(link) {
@@ -86,14 +85,13 @@ export default {
       })
       this.$router.push(link)
     },
-    checkIfSafari(link){
-      if (this.isSafari){
-        this.setStoreBalance(link);
-      }else{
-        alert("hayhuy")
+    checkIfSafari(link) {
+      if (this.isSafari) {
+        this.setStoreBalance(link)
+      } else {
+        alert('hayhuy')
       }
-    }
+    },
   },
-
 }
 </script>

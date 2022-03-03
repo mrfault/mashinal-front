@@ -2174,5 +2174,7 @@ export default {
   "attorney_pay":"Etibarnamə ödənişi",
   "qr_code_text":"Mashin.AL tətbiqini yükləyin. Yeniliklərdən xəbərdar olun!",
   "create_eservice_and_shop": "Salon/Mağaza yarat",
-  "panorama_loading": "Panorama yüklənir"
+  "panorama_loading": "Panorama yüklənir",
+  "vehicle_list": "Avtomobil seçimi",
+  "asan_login_redirect":"Etibarnamənin verilməsi üçün asan login-ə yönləndirilirsiz"
 }

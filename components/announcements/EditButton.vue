@@ -1,7 +1,11 @@
 <template>
-  <nuxt-link :class="['btn full-width', `btn--${className} `]" :to="path" @click.native="setPageRef($route.path)">
-    <icon name="edit" /> {{ $t('edit') }}
-  </nuxt-link>
+  <button
+    :class="['btn full-width', `btn--${className} `]"
+    @click="gotoRoute()"
+  >
+    <icon name="edit" />
+    {{ $t('edit') }}
+  </button>
 </template>
 
 <script>
@@ -10,13 +14,29 @@ export default {
     announcement: {},
     type: String,
     className: {
-      default: 'dark-blue'
-    }
+      default: 'dark-blue',
+    },
   },
   computed: {
     path() {
-      return this.$localePath(`/${this.type}/announcement/${this.$route.params.id}/edit`);
-    }
-  }
+      return this.$localePath(
+        `/${this.type}/announcement/${this.$route.params.id}/edit`,
+      )
+    },
+  },
+  methods: {
+    gotoRoute() {
+        if (
+          this.$auth.loggedIn && 
+          this.announcement.status != 3 &&
+          this.announcement.user_id === this.$auth.user.id
+        ) {
+          console.log(this.announcement.user_id, this.$auth.user.id)
+          this.$router.push(this.path)
+        } else {
+          this.$toasted.error('Sizin düzəliş etmə hüququnuz yoxdur')
+        }
+    },
+  },
 }
 </script>

@@ -13,6 +13,7 @@
             <img :src="getAnnouncementImage(announcement)" :alt="getAnnouncementTitle(announcement)">
             <div class="action-button action-button--close" @click="removeItem(announcement.id_unique)">
               <icon name="cross" />
+              <!-- <inline-svg src="/icons/cross.svg" /> -->
             </div>
           </div>
           <div class="comparison__item__title">{{ getAnnouncementTitle(announcement) }}</div>

@@ -38,6 +38,7 @@
         >
           <span v-html="label"></span>
           <icon class="ml-1" name="chevron-right" v-if="!isMobileBreakpoint" />
+          <!-- <inline-svg src="/icons/chevron-right.svg" :height="14" class="ml-1"  v-if="!isMobileBreakpoint"  /> -->
         </span>
         <span
           :class="['text-truncate white-space-break', { 'skip-truncate': skipTruncate }]"
@@ -109,9 +110,10 @@ export default {
         this.$emit('input', value)
         // check if value was changed
         if (value !== this.prevValue) {
-          this.$emit('change', value)
+        
           this.prevValue = value
         }
+          this.$emit('change', value)
       },
     },
   },

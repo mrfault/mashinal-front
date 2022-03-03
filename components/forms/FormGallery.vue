@@ -19,18 +19,20 @@
             <div class="overlay">
               <button
                 v-if="rotatable"
-                class="btn-sq"
+                class="btn-transparent"
                 type="button"
                 @click.prevent="rotateFile(file.key)"
               >
-                <icon name="reset" />
+                <!-- <icon name="reset" /> -->
+                <inline-svg src="/icons/reset-new.svg" height="14"/>
               </button>
               <button
-                class="btn-sq ml-auto"
+                class="btn-transparent ml-auto"
                 type="button"
                 @click.stop="deleteFile(file.key)"
               >
-                <icon name="cross" />
+                <!-- <icon name="cross" /> -->
+                <inline-svg src="/icons/cross.svg" height="14"/>
               </button>
             </div>
           </template>
@@ -49,7 +51,8 @@
             @change="handleFiles"
           />
           <div class="overlay">
-            <icon name="camera" />
+            <!-- <icon name="camera" /> -->
+            <inline-svg src="/icons/camera.svg" :height="14" />
             <p>{{ $t('add_image')}}</p>
           </div>
         </label>

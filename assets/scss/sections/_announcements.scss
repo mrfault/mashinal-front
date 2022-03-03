@@ -70,7 +70,12 @@
         width: 100%;
         font: 400 14px Gilroy;
         color: $dark-blue-5;
-        
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
       }
       &__options {
         display: flex;
@@ -78,17 +83,17 @@
           margin-right: 16px;
         }
       }
-      &__actions{
+      &__actions {
         display: flex;
         justify-content: flex-end;
         width: 100%;
       }
-      &__checks{
+      &__checks {
         width: 100%;
         display: flex;
         justify-content: flex-end;
       }
-      &--infos{
+      &--infos {
         display: flex;
         justify-content: space-between;
         width: 100%;
@@ -152,22 +157,24 @@
         width: 100%;
         display: flex;
         justify-content: space-between;
-        &--left{
-          
-          width: 30%;
+        &--left {
+          // width: 30%;
         }
-        &--right{
-          width: 70%;
+        &--right {
+          // width: 70%;
           display: flex;
           justify-content: flex-end;
+        }
+        .badge {
+          white-space: nowrap;
         }
       }
       &__bottom {
         display: flex;
         justify-content: space-between;
-        &--right{
+        &--right {
           display: flex;
-          &:not(:last-child){
+          &:not(:last-child) {
             margin-right: 10px;
           }
         }
@@ -218,10 +225,9 @@
           background-color: $red-1;
         }
       }
-      .badge-blue{
+      .badge-blue {
         background: $dark-blue-2;
       }
-
     }
     a.abs-link {
       z-index: 1;
@@ -411,6 +417,11 @@
       }
       .item-overlay .badge {
         background-color: rgba($dark-2, 0.35);
+      }
+      .item-details {
+        &__price, &--infos, &__year {
+          color: #fff;
+        }
       }
     }
   }

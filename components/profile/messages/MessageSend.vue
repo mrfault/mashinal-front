@@ -36,6 +36,7 @@
         <div class="image-preloader" v-if="sending"></div>
         <button class="btn-sq btn-sq--color-red" @click="removeFile(key)">
           <icon name="garbage"/>
+          <!-- <inline-svg src="/icons/garbage.svg" :height="14" /> -->
         </button>
         <img src="" :ref="'attachment-'+key" alt="" />
       </div>

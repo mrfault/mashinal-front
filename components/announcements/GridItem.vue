@@ -71,7 +71,7 @@
                 <span class="badge badge-blue">SHOP</span>
               </template>
               <template v-if="showStatus">
-                <span class="badge active" v-if="true">
+                <span class="badge active" v-if="announcement.status == 1">
                   {{ $t('accepted') }}
                 </span>
                 <span
@@ -262,7 +262,7 @@ export default {
     getImage() {
       let item = this.announcement
 
-      if (item.has_360 == false) {
+      if (item.has_360 == false || !item.has_360) {
         if (item.media && item.media.thumb && item.media.thumb.length)
           return this.$withBaseUrl(item.media.thumb[0])
         else if (item.media && item.media.length)

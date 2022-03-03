@@ -20,6 +20,7 @@
         >
           <template #icon-clear>
             <icon name="cross" />
+            <!-- <inline-svg src="/icons/cross.svg" height="14"/> -->
           </template>
         </date-picker>
       </template>

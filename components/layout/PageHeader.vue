@@ -34,7 +34,8 @@
                 style="margin-left: 10px; cursor: pointer;"
                 @click.prevent="closePromotion"
               >
-                <icon style="color: #081a3e;" name="cross" />
+                <!-- <icon style="color: #081a3e;" name="cross" /> -->
+                <inline-svg src="/icons/cross.svg" height="14" style="color: #081a3e;"/>
               </a>
             </div>
           </div>
@@ -207,6 +208,7 @@
                                 >
                                   {{ $t(category.title) }}
                                   <icon name="chevron-right" />
+                                  <!-- <inline-svg src="/icons/chevron-right.svg" :height="14" /> -->
                                 </nuxt-link>
                               </li>
                             </ul>

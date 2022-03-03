@@ -21,6 +21,7 @@
                     </span>
                     <span class="cursor-pointer" @click="showDeleteModal = card.id">
                       <icon name="garbage" />
+                      <!-- <inline-svg src="/icons/garbage.svg" :height="14" /> -->
                       <modal-popup
                         :toggle="showDeleteModal === card.id"
                         :title="$t('are_you_sure_you_wnat_to_delete_the_card')"

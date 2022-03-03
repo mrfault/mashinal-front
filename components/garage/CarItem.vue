@@ -6,11 +6,13 @@
         <div class="d-flex justify-content-end align-items-center">
           <button v-if="car.sync_status === 1" class="btn-sq btn-sq--color-red" @click.stop="showDeleteModal = true">
             <icon name="garbage" />
+            <!-- <inline-svg src="/icons/garbage.svg" :height="14" /> -->
           </button>
         </div>
         <div class="d-flex justify-content-between align-items-center">
           <button class="btn-sq btn-sq--color-dark-blue-3" @click.stop="thumb.chooseFile()">
-            <icon name="camera" />
+            <!-- <icon name="camera" /> -->
+            <inline-svg src="/icons/camera.svg" :height="14" />
           </button>
           <span class="date">{{ carDate }}</span>
         </div>
@@ -33,7 +35,8 @@
           <icon name="check" />
         </button>
         <button class="btn-sq btn-sq--color-dark-blue-3" @click.stop="removeThumb">
-          <icon name="cross" />
+          <!-- <icon name="cross" /> -->
+          <inline-svg src="/icons/cross.svg" height="14" color="#fff"/>
         </button>
       </croppa>
     </div>
