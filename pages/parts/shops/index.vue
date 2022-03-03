@@ -31,7 +31,7 @@
         <no-results type="part" v-else />
       </div>
     </template>
-    <div :class="`map-${isMobileBreakpoint ? 'fh' : 'fw'}-container`" v-if="mapView">
+    <div class="map-on-salons" :class="`map-${isMobileBreakpoint ? 'fh' : 'fw'}-container`" v-if="mapView">
       <template v-if="!isMobileBreakpoint">
         <template v-if="mapView">
           <div :class="['map-sidebar', { collapse: !disableCollapse && collapse }]">
