@@ -35,7 +35,7 @@
         :skip-sign-in="skipSignIn"
         :resend-data="resendData"
       />
-      <QrcodeBox  v-if="tabOptions.qrCode"/>
+      <QrcodeBox v-if="tabOptions.qrCode" />
     </div>
     <div
       class="swiper-pagination-bullets"
@@ -89,17 +89,19 @@ export default {
     initialForm: {},
     tabOptions: {
       type: Object,
-      default: {
-        header: true,
-        signInForm: true,
-        confirmPhone: true,
-        qrCode: true,
+      default() {
+        return {
+          header: true,
+          signInForm: true,
+          confirmPhone: true,
+          qrCode: true,
+        }
       },
     },
-    sellCheckTokens:{
+    sellCheckTokens: {
       type: Boolean,
-      default : false,
-    }
+      default: false,
+    },
   },
   data() {
     return {
