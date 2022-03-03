@@ -152,6 +152,8 @@
       &_content {
         max-width: 360px;
         margin-left: auto;
+        box-sizing: border-box;
+        overflow: hidden;
       }
       &_toggle {
         position: absolute;
@@ -166,6 +168,21 @@
         border-radius: 0 4px 4px 0;
         background-color: $white;
         cursor: pointer;
+      }
+      .salon {
+        &-card {
+          padding: 20px 0;
+          &-list {
+            max-height: 100%;
+            padding: 0 25px;
+            box-sizing: border-box;
+            overflow-x: hidden;
+            overflow-y: scroll;
+            &-container{
+              height: 200px;
+            }
+          }
+        }
       }
     }
     #map {
@@ -282,7 +299,7 @@
         // [class*=ground-pane] {
         //   filter: brightness(0.7);
         // }
-  
+
         [class*='-balloon '],
         [class*='balloon__layout'],
         [class*='balloon__content'],
@@ -290,12 +307,12 @@
         [class*='balloon__tail']::after {
           background: $dark-2 !important;
         }
-  
+
         [class*='balloon__layout'],
         [class*='balloon__tail'] {
           box-shadow: $shadow-dark-2 !important;
         }
-  
+
         [class*='balloon__close-button'] {
           &::after {
             color: $white;
@@ -304,37 +321,36 @@
             color: $yellow-1;
           }
         }
-  
+
         [class*='islets_card'] {
           color: $white !important;
         }
-  
+
         [class*='organization-rating'] {
           color: $white !important;
         }
-  
+
         [class*='-link'],
         [class*='__link'] {
           color: $yellow-1 !important;
         }
-  
+
         [class*='button-text'],
         [class*='copyright__link'] {
           color: $dark-1 !important;
         }
-  
+
         [class*='__separator'] {
           background-color: $dark-1 !important;
         }
       }
-  
+
       .form-group {
         .text-input input {
           background-color: $dark-2;
         }
       }
     }
-  
     .map-fw-container {
       .map-sidebar,
       .map-sidebar_toggle {
@@ -342,12 +358,28 @@
       }
     }
   }
-  
+
   [class*='map-copyrights-promo'] {
     display: none;
   }
+  .ymaps-2-1-79-controls__control {
+    inset: auto 20px 230px auto !important;
+  }
+  .ymaps-2-1-79-controls-pane {
+    text-align: right !important;
+    ymaps {
+      .ymaps-2-1-79-listbox {
+        display: none;
+      }
+    }
+  }
+  .ymaps-2-1-79-controls__bottom{
+    [title~='location'] {
+      // background: red;
+      display: none;
+    }
+  }
 }
-
 // @include media-max-width('lg') {
 //   .map-wrapper {
 //     .map {
@@ -359,10 +391,15 @@
 //   }
 // }
 
-.min-height-if-notification{
-  .pages-salons{
-    .map-sidebar{
+.min-height-if-notification {
+  .pages-salons {
+    .map-sidebar {
       height: calc(100% - 282px) !important;
     }
   }
 }
+
+// ymaps-2-1-79-controls__control{ inset: auto 20px 230px auto; }
+// ymaps-2-1-79-controls__control
+// ymaps-2-1-79-controls__control ymaps-2-1-79-user-selection-none
+// ymaps-2-1-79-controls__control
