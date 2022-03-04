@@ -1,0 +1,42 @@
+.top-promotion-row {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 96px;
+  background: #ffe9ec;
+  color: #081a3e;
+}
+
+.top-promotion {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.top-promotion-row-item {
+  display: flex;
+  align-items: center;
+}
+
+.top-promotion-row-item p {
+  margin: 0 0 0 25px;
+  font-size: 16px;
+}
+
+.top-promotion-row-item .app-store-img {
+  margin-left: -20px;
+}
+
+.top-promotion-row-item .google-play-img {
+  margin-left: 10px;
+}
+
+.top-promotion-row-item .mobile-app {
+  display: flex;
+  align-items: flex-end;
+}
+
+.banner-open .mobile-menu {
+  top: 84px;
+}

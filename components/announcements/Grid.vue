@@ -17,7 +17,7 @@
         <template v-for="(announcement, index) in announcements">
           <template v-if="where === 'catalog'">
             <grid-item 
-              :col-class="'col-lg-6 mb-2 mb-lg-3'"
+              :col-class="'col-lg-6 mb-2 mb-lg-4'"
               :announcement="announcement" 
               :track-views="trackViews"
               :show-gallery="true"
@@ -25,7 +25,7 @@
             />
           </template>
           <template v-else>
-            <div :class="['col-6 col-lg-auto', {
+            <div :class="['col-6 col-lg-3 col-xl-auto', {
                         'col-lg-mid': checkItemIndex(index + 2, announcement), 
                         'pt-4 mt-1': checkItemTop(index, announcement), 
                         'pb-4 mb-4': checkItemBottom(index, announcement) }, 

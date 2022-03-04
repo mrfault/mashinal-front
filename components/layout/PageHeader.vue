@@ -238,7 +238,7 @@
               </div>
               <div class="col-lg-4">
                 <div class="row justify-content-end top-header-right">
-                  <div class="col-5">
+                  <div class="col-5 col-lg-7 col-xl-5">
                     <nuxt-link
                       class="btn full-width btn--pale-green-outline"
                       :to="$localePath('/sell')"
