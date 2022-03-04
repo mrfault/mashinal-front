@@ -125,14 +125,24 @@
             v-if="announcement.status == 3"
             :free="type === 'parts'"
           />
-          <deactivate-button :announcement="announcement" v-else />
+          <deactivate-button
+            :announcement="announcement"
+            v-if="showDeactivateButton(announcement)"
+          />
         </div>
-
         <div class="col mt-2 mt-lg-3">
-          <edit-button :announcement="announcement" :type="type" />
+          <edit-button
+            :announcement="announcement"
+            :type="type"
+            v-if="showEditButton(announcement)"
+            @openModal="openModal"
+          />
         </div>
       </div>
     </template>
+    <modal-popup :toggle="showModal" @close="showModal = false">
+      <login-tabs></login-tabs>
+    </modal-popup>
   </div>
 </template>
 
@@ -153,6 +163,11 @@ export default {
   props: {
     type: String,
     brief: Boolean,
+  },
+  data() {
+    return {
+      showModal: false,
+    }
   },
   components: {
     RestoreButton,
@@ -191,6 +206,34 @@ export default {
         this.$router.push(this.contact.link)
       }
     },
+    showDeactivateButton(item) {
+      if (item.status == 1) {
+        return true
+      } else {
+        return false
+      }
+    },
+    showEditButton(item) {
+      console.log(this.$components)
+      if (this.$auth.loggedIn == false) {
+        if (item.status == 1 || item.status == 2) {
+          return true
+        } else {
+          return false
+        }
+      } else {
+        return true
+      }
+    },
+    openModal() {
+      this.showModal = true
+    },
+    closeModal() {
+      this.showModal = false
+    },
+  },
+  created() {
+    this.$nuxt.$on('closeModal', () => this.closeModal())
   },
 }
 </script>

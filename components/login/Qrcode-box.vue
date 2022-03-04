@@ -41,11 +41,6 @@ export default {
     }
   },
   props:{
-    dimensions:{
-      type: Array,
-      default: [32,80,68]
-      // [image-width, image-height, content-width]
-    },
     inSellPage:{
       type: Boolean,
       default: false,

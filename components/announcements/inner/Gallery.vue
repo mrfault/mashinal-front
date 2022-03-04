@@ -75,15 +75,16 @@
               class="btn-transparent"
               @click.stop="slidePrev"
             >
-              <inline-svg src="/icons/chevron-left.svg" :height="25"/>
+              <!-- <inline-svg src="/icons/chevron-left.svg" :height="25"/> -->
+              <icon name="chevron-left"/>
             </button>
             <button
               id="gallery-next"
               class="btn-transparent"
               @click.stop="slideNext"
             >
-              <!-- <icon name="chevron-right"/> -->
-              <inline-svg src="/icons/chevron-right.svg" :height="25" />
+              <icon name="chevron-right"/>
+              <!-- <inline-svg src="/icons/chevron-right.svg" :height="25" /> -->
             </button>
           </span>
         </div>
@@ -440,7 +441,7 @@ export default {
   },
 }
 </script>
-<style scoped>
+<style lang="scss" scoped>
 @media only screen and (min-width: 1024px) {
   .swiper-wrapper {
     height: 493px;
@@ -451,9 +452,5 @@ export default {
   background-color: #d6e4f8;
   display: flex;
   align-items: center;
-}
-.btn-transparent {
-  min-width: 40px;
-  min-height: 40px;
 }
 </style>
