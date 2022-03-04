@@ -25,17 +25,31 @@ export default {
     },
   },
   methods: {
+    // gotoRoute() {
+    //   if (this.announcement.user_id === this.$auth.user.id) {
+    //     if (this.$auth.loggedIn && this.announcement.status != 3) {
+    //       // console.log(this.announcement.user_id, this.$auth.user.id)
+    //       this.$router.push(this.path)
+    //     } else {
+    //       this.$toasted.error('Sizin düzəliş etmə hüququnuz yoxdur')
+    //     }
+    //   } else {
+    //     // this.$emit('openModal', true)
+    //   }
+    // },
     gotoRoute() {
+      if (this.$auth.loggedIn) {
         if (
-          this.$auth.loggedIn && 
-          this.announcement.status != 3 &&
-          this.announcement.user_id === this.$auth.user.id
+          this.announcement.user_id === this.$auth.user.id &&
+          this.announcement.status != 3
         ) {
-          console.log(this.announcement.user_id, this.$auth.user.id)
           this.$router.push(this.path)
         } else {
           this.$toasted.error('Sizin düzəliş etmə hüququnuz yoxdur')
         }
+      } else {
+        this.$emit('openModal', true)
+      }
     },
   },
 }

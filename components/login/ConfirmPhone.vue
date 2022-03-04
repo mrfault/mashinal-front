@@ -80,27 +80,10 @@
           this.$auth.setUser(data.user.original)
           this.$emit('setFinished',true)
           await this.$auth.setUserToken(data.meta.token);
-
           this.pending = false;
           this.$nuxt.$emit('login', true);
-          this.updateStep(1)
-          // move to login
-          // if (this.skipSignIn) {
-          //   this.$auth.loginWith('local', {
-          //     data: {
-          //       phone: this.form.phone.replace(/[^0-9]+/g, ''),
-          //       password: this.form.password || this.form.code
-          //     }
-          //   }).then(()=>{
-          //     this.pending = false;
-          //     this.$nuxt.$emit('login', true);
-          //   }).catch((err) => {
-          //     this.pending = false;
-          //   });
-          // } else {
-          //   this.pending = false;
-          //   this.$emit('update-tab','sign-in');
-          // }
+          this.updateStep(1);
+          this.$nuxt.$emit('closeModal');
         }).catch((err) => {
           this.pending = false;
         });
@@ -108,3 +91,21 @@
     }
   }
 </script>
+
+// move to login
+// if (this.skipSignIn) {
+//   this.$auth.loginWith('local', {
+//     data: {
+//       phone: this.form.phone.replace(/[^0-9]+/g, ''),
+//       password: this.form.password || this.form.code
+//     }
+//   }).then(()=>{
+//     this.pending = false;
+//     this.$nuxt.$emit('login', true);
+//   }).catch((err) => {
+//     this.pending = false;
+//   });
+// } else {
+//   this.pending = false;
+//   this.$emit('update-tab','sign-in');
+// }
