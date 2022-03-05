@@ -357,7 +357,6 @@
       pointer-events: all;
       width: 40px;
       height: 40px;
-      font-size: 20px !important;
       &:not(:last-child) {
         margin-right: 20px;
       }
@@ -440,7 +439,7 @@
         background-color: rgba($dark-blue-1, 0.15);
         color: $white;
         i::before {
-          font-size: 20px;
+          font-size: 14px;
         }
         &:hover,
         &.active {
@@ -785,7 +784,6 @@
       .btn-sq {
         width: 34px;
         height: 34px;
-        font-size: 17px;
         &:not(:last-child) {
           margin-right: 10px;
         }
