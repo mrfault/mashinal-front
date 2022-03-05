@@ -105,7 +105,7 @@
         />
         <monetization-button
           :announcement="announcement"
-          v-else-if="!this.isMobileBreakpoint && announcement.status == 1"
+          v-if="!this.isMobileBreakpoint"
         />
       </div>
     </template>
