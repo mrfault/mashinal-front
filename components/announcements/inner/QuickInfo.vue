@@ -101,11 +101,11 @@
         />
         <monetization-stats-button
           :announcement="announcement"
-          v-else-if="!this.isMobileBreakpoint && announcement.has_monetization"
+          v-else-if="!this.isMobileBreakpoint && announcement.has_monetization && $auth.loggedIn"
         />
         <monetization-button
           :announcement="announcement"
-          v-if="!this.isMobileBreakpoint"
+          v-if="!this.isMobileBreakpoint && !announcement.has_monetization"
         />
       </div>
     </template>
