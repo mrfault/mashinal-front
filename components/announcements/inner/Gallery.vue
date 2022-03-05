@@ -51,7 +51,7 @@
               SHOP
             </span>
             <span class="d-flex">
-                <span class="badge" v-if="announcement.images_360.length>0">
+                <span class="badge" v-if="announcement.images_360 && announcement.images_360.length>0">
                 360
                 <sup>o</sup>
 
