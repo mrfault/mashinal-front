@@ -79,7 +79,7 @@ export default {
   computed: {
     ...mapGetters(['user']),
     totalBalance() {
-      let balance =0// this.user.balance;
+      let balance = this.user.balance;
       if (this.announcement.is_autosalon)
         return this.$sum(balance, this.announcement.user.autosalon.balance);
       else if (this.announcement.is_part_salon)

@@ -88,7 +88,6 @@
     <template
       v-if="
         !brief &&
-        userIsOwner(announcement) &&
         ((!this.isMobileBreakpoint &&
           (announcement.status == 1 || announcement.has_monetization)) ||
           needToPay)
@@ -215,18 +214,9 @@ export default {
     },
     showEditButton(item) {
       if (this.$auth.loggedIn == false) {
-        if (item.status == 1 || item.status == 2) {
-          return true
-        } else {
-          return false
-        }
+        return item.status == 1 || item.status == 2
       } else {
-        if (this.$auth.user.id == item.user.id) {
-          return true
-        }
-        else{
-          return false;
-        }
+        return this.$auth.user.id == item.user.id;
       }
     },
     openModal() {
