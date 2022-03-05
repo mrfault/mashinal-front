@@ -40,7 +40,7 @@
               </client-only>
             </div>
             <!-- qrcode -->
-            <qrcode-box></qrcode-box>
+            <qrcode-box :inSellPage="true"></qrcode-box>
           </div>
         </div>
         <div class="col-lg-7">

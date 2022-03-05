@@ -3,8 +3,8 @@
     <div class="toolbar">
       <span>{{ currentSlide + 1 }} / {{ slides.main.length }}</span>
       <span class="cursor-pointer" @click.stop="$emit('close')">
-        <!-- <icon name="cross" /> -->
-        <inline-svg src="/icons/cross.svg" height="14" />
+        <icon name="cross" />
+        <!-- <inline-svg src="/icons/cross.svg" height="14" /> -->
       </span>
     </div>
     <div class="container wider">

@@ -35,8 +35,8 @@
           <icon name="check" />
         </button>
         <button class="btn-sq btn-sq--color-dark-blue-3" @click.stop="removeThumb">
-          <!-- <icon name="cross" /> -->
-          <inline-svg src="/icons/cross.svg" height="14" color="#fff"/>
+          <icon name="cross" />
+          <!-- <inline-svg src="/icons/cross.svg" height="14" color="#fff"/> -->
         </button>
       </croppa>
     </div>

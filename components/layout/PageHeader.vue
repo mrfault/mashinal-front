@@ -34,8 +34,8 @@
                 style="margin-left: 10px; cursor: pointer;"
                 @click.prevent="closePromotion"
               >
-                <!-- <icon style="color: #081a3e;" name="cross" /> -->
-                <inline-svg src="/icons/cross.svg" height="14" style="color: #081a3e;"/>
+                <icon style="color: #081a3e;" name="cross" />
+                <!-- <inline-svg src="/icons/cross.svg" height="14" style="color: #081a3e;"/> -->
               </a>
             </div>
           </div>
@@ -238,7 +238,7 @@
               </div>
               <div class="col-lg-4">
                 <div class="row justify-content-end top-header-right">
-                  <div class="col-5">
+                  <div class="col-5 col-lg-7 col-xl-5">
                     <nuxt-link
                       class="btn full-width btn--pale-green-outline"
                       :to="$localePath('/sell')"

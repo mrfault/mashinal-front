@@ -12,8 +12,8 @@
                   <img :src="titleLogo" class="ml-2" v-if="titleLogo"/>
                 </h4>
                 <span class="cursor-pointer close" @click="$emit('close')">
-                  <!-- <icon name="cross" /> -->
-                  <inline-svg src="/icons/cross.svg" height="14"/>
+                  <icon name="cross" />
+                  <!-- <inline-svg src="/icons/cross.svg" height="14"/> -->
                 </span>
               </div>
               <slot v-if="!overflowHidden" />

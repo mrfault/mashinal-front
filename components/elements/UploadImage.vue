@@ -17,8 +17,8 @@
               <inline-svg src="/icons/reset-new.svg" height="14"/>
             </button>
             <button type="button" :class="['btn-transparent ml-auto', {'disabled': loading[key]}]" @click.stop="fileDelete(key, index)">
-              <!-- <icon name="cross" /> -->
-              <inline-svg src="/icons/cross.svg" height="14"/>
+              <icon name="cross" />
+              <!-- <inline-svg src="/icons/cross.svg" height="14"/> -->
             </button>
           </div>
         </div>

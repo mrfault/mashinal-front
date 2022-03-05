@@ -2,8 +2,8 @@
   <div :class="['paid-status', (isMobileBreakpoint ? 'full-screen' : 'in-popup'), paidStatusData.type]">
     <div class="top" v-if="isMobileBreakpoint">
       <span class="cursor-pointer" @click="$removeQueryParam('success'), updatePaidStatus(false)">
-        <!-- <icon name="cross" /> -->
-        <inline-svg src="/icons/cross.svg" height="14"/>
+        <icon name="cross" />
+        <!-- <inline-svg src="/icons/cross.svg" height="14"/> -->
       </span>
     </div>
     <div class="status-text">

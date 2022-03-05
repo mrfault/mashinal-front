@@ -189,7 +189,8 @@
       }
       &.translate-fade-enter-active,
       &.translate-fade-leave-active {
-        transition: transform .3s ease-out, opacity .2s cubic-bezier(.53,2,.36,.85);
+        transition: transform 0.3s ease-out,
+          opacity 0.2s cubic-bezier(0.53, 2, 0.36, 0.85);
       }
     }
   }
@@ -200,34 +201,83 @@
     }
   }
 }
-.qr-box{
-  background:$greyish-blue-2 ;
-  padding: 14px 12px;
+.qr-box {
+  background: $greyish-blue-2;
+  padding: 14px 18px 20px 10px;
+  position: relative;
+  margin: 12px 0;
   display: flex;
-  p{
-    color: $dark-5;
-    font-size: 13px;
-    font-weight: 600;
+  &__image {
+    width: 32%;
+    height: 80px;
+    padding-right: 3px;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
   }
-  .close  img{
-    position: relative;
-    left: 2px;
-    top: -8px;
-    cursor: pointer;
+  &__content {
+    // width: calc(100% - 89px);
+    width: 68%;
+    &--text {
+      width: 100%;
+      font: 400 13px Gilroy;
+      padding: 4px 2px 0 0;
+    }
+    &--buttons {
+      display: flex;
+      justify-content: space-between;
+      a {
+        width: calc(50% - 5px);
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+        }
+      }
+    }
   }
-  .app-icons{
-    display: flex;
-    img{
-      height: 95%;
-      margin-left: 2px;
+  .btn-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 15px 3px;
+    width: auto;
+    height: auto;
+    i {
+      font-size: 12px;
     }
   }
 }
-.dark-mode{
-.qr-box{
-  background:$dark-1 ;
-  p{
-    color: $white;
+.qr-box-in-sell {
+  .qr-box {
+    &__image {
+      width: 29%;
+      height: 130px;
+    }
+    &__content {
+      width: 71%;
+      padding-left: 5px;
+      padding-top: 10px;
+      &--text {
+        font: 500 18px Gilroy;
+      }
+      &--buttons {
+        i{
+          font-size: 16px;
+        }
+      }
+    }
   }
 }
+
+.dark-mode {
+  .qr-box {
+    background: $dark-1;
+    p,
+    i {
+      color: $white;
+    }
+  }
 }

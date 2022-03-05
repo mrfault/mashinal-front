@@ -69,19 +69,17 @@
                 :count="salonsInView.length"
                 :short="!isMobileBreakpoint"
               />
-              <div class="scroll-container" v-if="salonsInView.length">
-                <vue-scroll class="white-scroll-bg">
-                  <div class="salon-card-list">
-                    <div v-for="salon in salonsInView" :key="salon.id">
-                      <nuxt-link
-                        class="keep-colors"
-                        :to="$localePath(`/salons/${salon.id}`)"
-                      >
-                        <salon-card :salon="salon" />
-                      </nuxt-link>
-                    </div>
+              <div class="salon-card-list-container" v-if="salonsInView.length">
+                <div class="salon-card-list">
+                  <div v-for="salon in salonsInView" :key="salon.id">
+                    <nuxt-link
+                      class="keep-colors"
+                      :to="$localePath(`/salons/${salon.id}`)"
+                    >
+                      <salon-card :salon="salon" />
+                    </nuxt-link>
                   </div>
-                </vue-scroll>
+                </div>
               </div>
               <no-results v-else />
             </div>
@@ -96,11 +94,7 @@
                 :height="14"
                 v-if="collapse"
               />
-              <inline-svg
-                src="/icons/chevron-left.svg"
-                :height="14"
-                v-else
-              />
+              <inline-svg src="/icons/chevron-left.svg" :height="14" v-else />
             </div>
           </div>
           <div class="map-topbar">

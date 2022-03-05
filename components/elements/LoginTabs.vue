@@ -89,11 +89,13 @@ export default {
     initialForm: {},
     tabOptions: {
       type: Object,
-      default: {
+      default() {
+        return{
         header: true,
         signInForm: true,
         confirmPhone: true,
         qrCode: true,
+      }
       },
     },
     sellCheckTokens:{
