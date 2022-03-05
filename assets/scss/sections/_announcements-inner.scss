@@ -417,11 +417,12 @@
           height: 35px;
         }
       }
-      &--right {
-        button {
-          &:hover {
-            svg {
-              path {
+      &--right{
+        button{
+          &:hover{
+            svg{
+
+              path{
                 fill: $red-1;
               }
             }
@@ -461,11 +462,12 @@
   }
 }
 
+
 .dark-mode {
   .inner-gallery {
     .gallery-overlay {
       .badge:not(.from-border) {
-        background-color: $dark-1;
+        background-color: rgba($dark-2, 0.35);
         &.squared {
           background-color: rgba($dark-1, 0.35);
         }
