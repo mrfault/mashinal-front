@@ -127,7 +127,7 @@
           />
           <deactivate-button
             :announcement="announcement"
-            v-if="showDeactivateButton(announcement)"
+            v-if="showEditButton(announcement)"
           />
         </div>
         <div class="col mt-2 mt-lg-3">
@@ -214,7 +214,6 @@ export default {
       }
     },
     showEditButton(item) {
-      console.log(this.$components)
       if (this.$auth.loggedIn == false) {
         if (item.status == 1 || item.status == 2) {
           return true
@@ -222,7 +221,12 @@ export default {
           return false
         }
       } else {
-        return true
+        if (this.$auth.user.id == item.user.id) {
+          return true
+        }
+        else{
+          return false;
+        }
       }
     },
     openModal() {
