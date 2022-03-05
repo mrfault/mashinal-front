@@ -46,7 +46,7 @@
 
 <script>
 import {LayoutMixin} from '~/mixins/layout';
-
+import { mapState } from 'vuex'
 import PageHeader from '~/components/layout/PageHeader';
 import PageFooter from '~/components/layout/PageFooter';
 import MobileMenu from '~/components/layout/MobileMenu';
@@ -69,6 +69,7 @@ export default {
     MapSwitch
   },
   computed:{
+    ...mapState(['mapView']),
     cookiesHasNotificationOn(){
       var cookie = this.$cookies.get('smartbanner_exited');
       if (cookie) {
@@ -81,7 +82,7 @@ export default {
       return this.$store.state.smartBanner;
     },
     checkRouteIfSalon(){
-      return this.$route.name == "salons___az"  || this.$route.name == "salons___ru"
+      return this.mapView && (this.$route.name == "salons___az"  || this.$route.name == "salons___ru")
     }
   },
 

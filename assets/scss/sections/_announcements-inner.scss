@@ -357,7 +357,7 @@
       pointer-events: all;
       width: 40px;
       height: 40px;
-      font-size: 20px;
+      font-size: 20px !important;
       &:not(:last-child) {
         margin-right: 20px;
       }
@@ -440,7 +440,7 @@
         background-color: rgba($dark-blue-1, 0.15);
         color: $white;
         i::before {
-          font-size: 25px;
+          font-size: 20px;
         }
         &:hover,
         &.active {
@@ -449,11 +449,6 @@
         }
       }
       button {
-        i {
-          &::before{
-            font-size: 25px !important;
-          }
-        }
         &:hover {
           svg {
             path {
