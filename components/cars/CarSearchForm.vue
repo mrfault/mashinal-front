@@ -2,14 +2,14 @@
   <div class="cars-search-form form">
     <div class="card pt-2 pt-lg-4 mb-2 mb-lg-0">
       <div class="row">
-        <div class="col-lg-4 mb-2 mb-lg-3">
+        <div class="col-lg-12 col-xl-4 mb-2 mb-lg-3">
           <form-buttons
             :options="getMileageOptions"
             :group-by="3"
             v-model="form.announce_type"
           />
         </div>
-        <div class="col-lg-6 offset-md-2 mb-2 mb-lg-3 d-none d-lg-block">
+        <div class="col-lg-12 col-xl-6 offset-xl-2 mb-2 mb-lg-3 d-none d-lg-block">
           <div class="row">
             <div class="col-4" v-if="!onlySavedSearch">
               <nuxt-link
@@ -518,7 +518,7 @@
                 </div>
               </form-range>
             </div>
-            <div class="col-lg-8" v-else>
+            <div class="col-lg-12 col-xl-8" v-else>
               <div class="row">
                 <template v-if="!advanced && !assistant && !isMobileBreakpoint">
                   <div class="col-lg-3 mb-lg-0">
@@ -589,7 +589,7 @@
             </div>
             <div
               v-if="!onlySavedSearch"
-              :class="[{ 'col-lg-4': !assistant, 'col-lg-6': assistant }]"
+              :class="[{ 'col-lg-6 col-xl-4 mt-lg-2 mt-xl-0 offset-lg-6 offset-xl-0': !assistant, 'col-lg-6': assistant }]"
             >
               <div
                 :class="[
