@@ -82,7 +82,7 @@ export default {
       return this.$store.state.smartBanner;
     },
     checkRouteIfSalon(){
-      return this.mapView && (this.$route.name == "salons___az"  || this.$route.name == "salons___ru")
+      return this.mapView && (this.$route.name == "salons___az"  || this.$route.name == "salons___ru" || this.$route.name == "parts-shops___az" || this.$route.name == "parts-shops___ru")
     }
   },
 
