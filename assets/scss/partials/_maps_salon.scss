@@ -154,6 +154,27 @@
         margin-left: auto;
         box-sizing: border-box;
         overflow: hidden;
+        .salon {
+          &-card {
+            padding: 20px 0;
+            &-list {
+              max-height: 100%;
+              padding: 25px;
+              box-sizing: border-box;
+              overflow-x: hidden;
+              overflow-y: scroll;
+              min-height: auto !important;
+              max-height: 270px !important;
+              @include mal-scrollbar;
+              &__item{
+                border-radius: none;
+              }
+              &-container {
+                height: 200px;
+              }
+            }
+          }
+        }
       }
       &_toggle {
         position: absolute;
@@ -168,21 +189,6 @@
         border-radius: 0 4px 4px 0;
         background-color: $white;
         cursor: pointer;
-      }
-      .salon {
-        &-card {
-          padding: 20px 0;
-          &-list {
-            max-height: 100%;
-            padding: 0 25px;
-            box-sizing: border-box;
-            overflow-x: hidden;
-            overflow-y: scroll;
-            &-container{
-              height: 200px;
-            }
-          }
-        }
       }
     }
     #map {
@@ -373,7 +379,7 @@
       }
     }
   }
-  .ymaps-2-1-79-controls__bottom{
+  .ymaps-2-1-79-controls__bottom {
     [title~='location'] {
       // background: red;
       display: none;
