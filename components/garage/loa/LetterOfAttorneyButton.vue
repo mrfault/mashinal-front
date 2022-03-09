@@ -248,7 +248,9 @@ export default {
       pending: false
     }
   },
-
+  mounted() {
+    if(this.$route.query.hasOwnProperty('attorney')) this.showVehicles();
+  },
   methods: {
     ...mapActions('letterOfAttorney', ['increaseStep', 'updateStep', 'resetSteps', 'resetAllSteps', 'payForSubmission', 'updateSendData', 'updateReceivedData']),
     selectVehicle(item) {
@@ -271,7 +273,7 @@ export default {
       this.$set(this, 'vehicles', data);
     },
     async showVehicles() {
-      if(!this.$auth.loggedIn) return await this.$router.push(this.$localePath('/login'));
+      if(!this.$auth.loggedIn) return await this.$router.push(this.$localePath('/login?param=attorney'));
       await this.asanLogin();
       this.showVehicleList = true;
     },

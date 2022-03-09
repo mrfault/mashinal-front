@@ -28,8 +28,10 @@
             <p class="text-medium text-dark-blue-2">{{ selectedPlan.price }} ALM - {{ $readPlural(selectedPlan.days, $t('plural_forms_day')) }}</p>
           </div>
           <div class="col-6 col-lg-4">
-            <p class="text-medium">{{ $t('balans') }}</p>
-            <p class="text-medium text-dark-blue-2">{{ totalBalance }} ALM</p>
+            <template v-if="$auth.loggedIn">
+              <p class="text-medium">{{ $t('balans') }}</p>
+              <p class="text-medium text-dark-blue-2">{{ totalBalance }} ALM</p>
+            </template>
           </div>
           <div class="col-12 col-lg-4 mt-2 mt-lg-0">
             <button :class="['btn btn--green full-width', { pending }]" @click="getAnAd">

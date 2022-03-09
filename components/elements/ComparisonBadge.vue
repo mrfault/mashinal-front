@@ -1,6 +1,6 @@
 <template>
   <transition-group name="fade">
-    <div v-if="badgeVisible && !isMobileBreakpoint" :key="'badgeVisible'">
+    <div v-if="badgeVisible" :key="'badgeVisible'">
       <div class="comparison-badge" @click="handleClick">
         <icon name="compare" />
         <span v-if="count" class="comparison-badge__count">{{ count }}</span>
@@ -52,6 +52,6 @@ export default {
       this.updateVisible()
     }
   },
-  
+
 }
 </script>
