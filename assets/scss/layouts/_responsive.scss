@@ -174,3 +174,17 @@
     }
   }
 }
+
+@media only screen and (max-width: 1279px) {
+  .page-header {
+    .navbar {
+      .menu {
+        li {
+          a {
+            padding: 0 16px !important;
+          }
+        }
+      }
+    }
+  }
+}
