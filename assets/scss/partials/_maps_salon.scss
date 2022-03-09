@@ -23,7 +23,7 @@
     [class*='balloon__tail'],
     [class*='balloon__tail']::after {
       box-shadow: none !important;
-      background: $white !important;
+      background: $white;
       border-radius: 4px;
     }
     [class*='islets_balloon_layout_panel'] {
@@ -409,3 +409,15 @@
 // ymaps-2-1-79-controls__control
 // ymaps-2-1-79-controls__control ymaps-2-1-79-user-selection-none
 // ymaps-2-1-79-controls__control
+
+
+@media only screen and (max-width: 1279px){
+  .pages-salons{
+    .map{
+      &-sidebar{
+        transform: scale(0.9) translateX(-9%);
+        
+      }
+    }
+  }
+}

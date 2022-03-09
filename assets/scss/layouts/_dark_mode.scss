@@ -24,6 +24,7 @@
       background: $dark-2;
     }
     .salon-card-list {
+      background: $dark-2 !important;
       /* Track */
       &::-webkit-scrollbar-track {
         background: $dark-2 !important;
@@ -34,6 +35,9 @@
         background: $dark-5 !important;
       }
     }
+  }
+  .ymaps-2-1-79-balloon__content {
+    background: $dark-2 !important;
   }
 }
 
