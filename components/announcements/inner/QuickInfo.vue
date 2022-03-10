@@ -93,7 +93,7 @@
           needToPay)
       "
     >
-      <hr class="mt-3" />
+      <hr class="mt-3"  v-if="!needToPay"/>
       <div :class="{ 'mb-2 mb-lg-3': !needToPay }">
         <pay-announcement-button
           :announcement="announcement"
@@ -116,7 +116,7 @@
         !(announcement.is_autosalon && announcement.status == 3)
       "
     >
-      <hr :class="{ 'mt-3': announcement.status == 3 }" />
+      <hr :class="{ 'mt-3': announcement.status == 3 }"  v-if="showEditButton(announcement) || showDeactivateButton(announcement) || announcement.status == 3"/>
       <div class="row mt-n2 mt-lg-n3">
         <div class="col mt-2 mt-lg-3">
           <restore-button

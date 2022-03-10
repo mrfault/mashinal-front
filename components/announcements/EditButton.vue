@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import { mapGetters, mapActions, mapMutations } from 'vuex';
 export default {
   props: {
     announcement: {},
@@ -23,20 +24,15 @@ export default {
         `/${this.type}/announcement/${this.$route.params.id}/edit`,
       )
     },
+    ...mapGetters(['editPath']),
   },
   methods: {
-    // gotoRoute() {
-    //   if (this.announcement.user_id === this.$auth.user.id) {
-    //     if (this.$auth.loggedIn && this.announcement.status != 3) {
-    //       // console.log(this.announcement.user_id, this.$auth.user.id)
-    //       this.$router.push(this.path)
-    //     } else {
-    //       this.$toasted.error('Sizin düzəliş etmə hüququnuz yoxdur')
-    //     }
-    //   } else {
-    //     // this.$emit('openModal', true)
-    //   }
-    // },
+    ...mapMutations(['changeEditPath', 'changeEditing','changeEditPostAuthor']),
+    gotoPath(){
+      if (!this.$auth.loggedIn) {
+
+      }
+    },
     gotoRoute() {
       if (this.$auth.loggedIn) {
         if (
@@ -47,7 +43,15 @@ export default {
         } else {
           this.$toasted.error('Sizin düzəliş etmə hüququnuz yoxdur')
         }
-      } else {
+      }
+      //--------------------------
+      else {
+        // this.changeEditPath(this.$route.params.id);
+        // this.changeEditing(true);
+        // this.changeEditPostAuthor(this.announcement.user_id);
+        // console.log(this.announcement.user_id);
+        this.changeEditPostAuthor(this.announcement.user_id);
+        this.$router.push(this.$route.path+'?ref='+this.path)
         this.$emit('openModal', true)
       }
     },

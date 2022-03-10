@@ -6,13 +6,11 @@
           <img src="/images/google-docs.png" alt="" />
           <p class="text-red mb-1 mb-lg-3">{{ $t('no_attorneys_found') }}</p>
           <add-car class="mb-lg-3" />
-          <div class="justify-end">
-            <letter-of-attorney-button></letter-of-attorney-button>
-          </div>
+          <letter-of-attorney-button></letter-of-attorney-button>
         </div>
       </div>
     </div>
-    <div class="col-12 col-md-12 col-lg-6 h-100 mb-5 mb-lg-0">
+    <div class="col-12 col-md-12 col-lg-6  h-100 mb-5 mb-lg-0">
       <div class="card height-100">
         <h2 class="title-with-line">
           <span>{{ $t('rules_of_giving_attorney') }}</span>
@@ -28,14 +26,10 @@
 <script>
 import LetterOfAttorneyButton from './loa/LetterOfAttorneyButton.vue'
 export default {
-  components: {
-    LetterOfAttorneyButton,
-  },
+  components:{
+
+    LetterOfAttorneyButton
+  }
+
 }
 </script>
-
-<style>
-.justify-end{
-  margin-top: auto;
-}
-</style>
