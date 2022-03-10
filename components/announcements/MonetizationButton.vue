@@ -28,8 +28,10 @@
             <p class="text-medium text-dark-blue-2">{{ selectedPlan.price }} ALM - {{ $readPlural(selectedPlan.days, $t('plural_forms_day')) }}</p>
           </div>
           <div class="col-6 col-lg-4">
-            <p class="text-medium">{{ $t('balans') }}</p>
-            <p class="text-medium text-dark-blue-2">{{ totalBalance }} ALM</p>
+            <template v-if="$auth.loggedIn">
+              <p class="text-medium">{{ $t('balans') }}</p>
+              <p class="text-medium text-dark-blue-2">{{ totalBalance }} ALM</p>
+            </template>
           </div>
           <div class="col-12 col-lg-4 mt-2 mt-lg-0">
             <button :class="['btn btn--green full-width', { pending }]" @click="getAnAd">
@@ -79,7 +81,7 @@ export default {
   computed: {
     ...mapGetters(['user']),
     totalBalance() {
-      let balance =0// this.user.balance;
+      let balance = this.user.balance;
       if (this.announcement.is_autosalon)
         return this.$sum(balance, this.announcement.user.autosalon.balance);
       else if (this.announcement.is_part_salon)

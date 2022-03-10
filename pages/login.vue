@@ -4,7 +4,7 @@
       <breadcrumbs :crumbs="crumbs" />
       <div class="login-card card no-pd mb-5">
         <div class="row no-gutters">
-          <div class="col-12 col-lg-8">
+          <div class="col-12 col-lg-6 col-xl-8">
             <div class="login-image">
               <h1>{{ $t('register_question1') }}</h1>
               <p>{{ $t('register_question2') }}</p>
@@ -13,7 +13,7 @@
             </div>
 
           </div>
-          <div class="col-12 col-lg-4" style="padding: 50px;">
+          <div class="col-12 col-lg-6 col-xl-4" style="padding: 50px;">
             <div class="tab-form">
               <login-tabs @update-tab="tab = $event" :skip-sign-in="true" />
             </div>
@@ -60,6 +60,7 @@ export default {
       if (!auth) return;
       this.resetSellTokens();
       let path = '/garage-services';
+      if(this.$route.query.param) path+='?'+this.$route.query.param;
       if (this.loggedIn && this.user.user_type === 3) path = '/profile/btl';
       else if (this.$route.query.ref) path = this.$route.query.ref;
       this.$router.push(this.$localePath(path));

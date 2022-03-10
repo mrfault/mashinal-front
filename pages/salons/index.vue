@@ -21,6 +21,7 @@
         />
       </div>
     </mobile-screen>
+
     <template v-if="!mapView">
       <div class="container">
         <breadcrumbs :crumbs="crumbs" />
@@ -60,6 +61,10 @@
     >
       <template v-if="!isMobileBreakpoint">
         <template v-if="mapView">
+          <!-- ././././././././././ -->
+          <!-- ././././././././././ -->
+          <!-- ././././././././././ -->
+          <!-- ././././././././././ -->
           <div
             :class="['map-sidebar', { collapse: !disableCollapse && collapse }]"
           >
@@ -69,34 +74,31 @@
                 :count="salonsInView.length"
                 :short="!isMobileBreakpoint"
               />
-              <div class="salon-card-list-container" v-if="salonsInView.length">
-                <div class="salon-card-list">
-                  <div v-for="salon in salonsInView" :key="salon.id">
-                    <nuxt-link
-                      class="keep-colors"
-                      :to="$localePath(`/salons/${salon.id}`)"
-                    >
-                      <salon-card :salon="salon" />
-                    </nuxt-link>
-                  </div>
+              <div class="salon-card-list" v-if="salonsInView.length">
+                <div class="salon-card-list__item" v-for="salon in salonsInView" :key="salon.id">
+                  <nuxt-link
+                    class="keep-colors"
+                    :to="$localePath(`/salons/${salon.id}`)"
+                  >
+                    <salon-card :salon="salon" />
+                  </nuxt-link>
                 </div>
               </div>
               <no-results v-else />
             </div>
+            <!-- ././././././././././ -->
+            <!-- ././././././././././ -->
+            <!-- ././././././././././ -->
+            <!-- ././././././././././ -->
             <div
               class="map-sidebar_toggle"
               @click="collapse = !collapse"
               v-if="!disableCollapse"
             >
-              <!-- <icon :name="collapse ? 'chevron-right' : 'chevron-left'" /> -->
-              <inline-svg
-                src="/icons/chevron-right.svg"
-                :height="14"
-                v-if="collapse"
-              />
-              <inline-svg src="/icons/chevron-left.svg" :height="14" v-else />
+              <icon :name="collapse ? 'chevron-right' : 'chevron-left'" />
             </div>
           </div>
+
           <div class="map-topbar">
             <div class="container">
               <salon-search-form

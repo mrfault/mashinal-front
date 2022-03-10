@@ -357,6 +357,7 @@
         background-color: $red-3;
 
         &::after {
+          font-family: 'icons';
           content: '\e91e';
         }
       }

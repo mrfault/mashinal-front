@@ -88,7 +88,6 @@
     <template
       v-if="
         !brief &&
-        userIsOwner(announcement) &&
         ((!this.isMobileBreakpoint &&
           (announcement.status == 1 || announcement.has_monetization)) ||
           needToPay)
@@ -102,11 +101,11 @@
         />
         <monetization-stats-button
           :announcement="announcement"
-          v-else-if="!this.isMobileBreakpoint && announcement.has_monetization"
+          v-else-if="!this.isMobileBreakpoint && announcement.has_monetization && $auth.loggedIn"
         />
         <monetization-button
           :announcement="announcement"
-          v-else-if="!this.isMobileBreakpoint && announcement.status == 1"
+          v-if="!this.isMobileBreakpoint && !announcement.has_monetization"
         />
       </div>
     </template>
@@ -127,7 +126,7 @@
           />
           <deactivate-button
             :announcement="announcement"
-            v-if="showEditButton(announcement)"
+            v-if="showDeactivateButton(announcement)"
           />
         </div>
         <div class="col mt-2 mt-lg-3">
@@ -207,26 +206,19 @@ export default {
       }
     },
     showDeactivateButton(item) {
-      if (item.status == 1) {
-        return true
+      if (this.$auth.user.id == item.user.id) {
+        if (item.status == 0 || item.status == 1) {
+          return true
+        }
       } else {
         return false
       }
     },
     showEditButton(item) {
       if (this.$auth.loggedIn == false) {
-        if (item.status == 1 || item.status == 2) {
-          return true
-        } else {
-          return false
-        }
+        return item.status == 1 || item.status == 2
       } else {
-        if (this.$auth.user.id == item.user.id) {
-          return true
-        }
-        else{
-          return false;
-        }
+        return this.$auth.user.id == item.user.id
       }
     },
     openModal() {

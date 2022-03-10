@@ -357,7 +357,6 @@
       pointer-events: all;
       width: 40px;
       height: 40px;
-      font-size: 20px;
       &:not(:last-child) {
         margin-right: 20px;
       }
@@ -413,8 +412,8 @@
         }
         .btn-compare,
         .btn-favorite {
-          width: 35px;
-          height: 35px;
+          width: 29px;
+          height: 29px;
         }
       }
       &--right{
@@ -441,7 +440,7 @@
         background-color: rgba($dark-blue-1, 0.15);
         color: $white;
         i::before {
-          font-size: 25px;
+          font-size: 14px;
         }
         &:hover,
         &.active {
@@ -450,11 +449,6 @@
         }
       }
       button {
-        i {
-          &::before{
-            font-size: 25px !important;
-          }
-        }
         &:hover {
           svg {
             path {
@@ -792,7 +786,6 @@
       .btn-sq {
         width: 34px;
         height: 34px;
-        font-size: 17px;
         &:not(:last-child) {
           margin-right: 10px;
         }

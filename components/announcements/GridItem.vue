@@ -56,14 +56,14 @@
         <div class="item-overlay" v-if="showOverlay">
           <div class="item-overlay__top">
             <div class="item-overlay__top--left">
-              <add-favorite :announcement="announcement" />
+              <add-favorite :announcement="announcement"/>
             </div>
             <div class="item-overlay__top--right">
               <span
                 class="btn-sq btn-sq--color-red active"
                 v-if="announcement.has_monetization"
               >
-                <icon name="speaker" v-tooltip="$t('ad_announcement')" />
+                <icon name="speaker" v-tooltip="$t('ad_announcement')"/>
               </span>
               <template
                 v-if="announcement.is_autosalon || announcement.is_part_salon"
@@ -167,9 +167,9 @@
             class="call-count"
             v-if="announcement.show_phone_number_count || showPhoneCount"
           >
-            <icon name="phone-call" />
+            <icon name="phone-call"/>
             {{ announcement.show_phone_number_count || 0 }}
-            <icon name="eye" />
+            <icon name="eye"/>
             {{ announcement.view_count }}
           </span>
           <div class="item-checkbox" v-if="showCheckbox" style="">
@@ -181,7 +181,7 @@
             />
           </div>
         </div>
-        <hr class="mt-1" v-if="showCheckbox && announcement.status === 1" />
+        <hr class="mt-1" v-if="showCheckbox && announcement.status === 1"/>
         <div class="item-details__actions">
           <template v-if="showCheckbox && announcement.status === 1">
             <span>
@@ -190,7 +190,7 @@
                 :announcement="announcement"
                 class-name="red-outline"
               />
-              <monetization-stats-button v-else :announcement="announcement" />
+              <monetization-stats-button v-else-if="$auth.id === announcement.user_id" :announcement="announcement"/>
             </span>
           </template>
         </div>
@@ -268,7 +268,7 @@ export default {
         else if (item.media && item.media.length)
           return this.$withBaseUrl(item.media[0].thumb || item.media[0])
         return false
-      }else{
+      } else {
         return this.$withBaseUrl(item.has_360)
       }
     },

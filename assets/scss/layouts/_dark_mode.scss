@@ -15,6 +15,26 @@
       color: $green-1;
     }
   }
+  .swiper-slide {
+    background: $dark-2 !important;
+  }
+  .map-sidebar {
+    background: $dark-2 !important;
+    nav {
+      background: $dark-2;
+    }
+    .salon-card-list {
+      /* Track */
+      &::-webkit-scrollbar-track {
+        background: $dark-2 !important;
+      }
+
+      /* Handle */
+      &::-webkit-scrollbar-thumb {
+        background: $dark-5 !important;
+      }
+    }
+  }
 }
 
 .dark-mode {

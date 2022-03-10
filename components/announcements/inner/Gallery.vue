@@ -72,7 +72,7 @@
           <span class="d-flex justify-content-between">
             <button
               id="gallery-prev"
-              class="btn-transparent"
+              class="btn-sq"
               @click.stop="slidePrev"
             >
               <!-- <inline-svg src="/icons/chevron-left.svg" :height="25"/> -->
@@ -80,7 +80,7 @@
             </button>
             <button
               id="gallery-next"
-              class="btn-transparent"
+              class="btn-sq"
               @click.stop="slideNext"
             >
               <icon name="chevron-right"/>
