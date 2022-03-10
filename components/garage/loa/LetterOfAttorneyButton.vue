@@ -33,7 +33,7 @@
                 <component
                   :is="`step-${currentRealStep}`"
                   @next="increaseStep"
-                  @confirm="finished = true, showPaymentModal = true"
+                  @confirm="finished = true; showSteps = false; showPaymentModal = true"
                 />
               </div>
             </div>
