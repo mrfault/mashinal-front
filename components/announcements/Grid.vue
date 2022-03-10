@@ -25,7 +25,7 @@
             />
           </template>
           <template v-else>
-            <div :class="['col-6 col-lg-3 col-xl-auto', {
+            <div :class="['col-12 col-sm-6 col-lg-3 col-xl-auto', {
                         'col-lg-mid': checkItemIndex(index + 2, announcement),
                         'pt-4 mt-1': checkItemTop(index, announcement),
                         'pb-4 mb-4': checkItemBottom(index, announcement) },
