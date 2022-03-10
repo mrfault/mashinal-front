@@ -165,6 +165,7 @@
               overflow-y: scroll;
               min-height: auto !important;
               max-height: 270px !important;
+              background-color: #fff;
               @include mal-scrollbar;
               &__item{
                 border-radius: none;

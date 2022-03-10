@@ -93,7 +93,7 @@
           needToPay)
       "
     >
-      <hr class="mt-3"  v-if="!needToPay"/>
+      <hr class="mt-3"  v-if="needToPay || (!this.isMobileBreakpoint && announcement.has_monetization && $auth.loggedIn) || (!this.isMobileBreakpoint && !announcement.has_monetization)"/>
       <div :class="{ 'mb-2 mb-lg-3': !needToPay }">
         <pay-announcement-button
           :announcement="announcement"
