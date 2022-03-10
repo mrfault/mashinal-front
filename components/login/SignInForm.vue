@@ -93,7 +93,6 @@ export default {
         })
     },
     loginOrRegister() {
-      console.log('./././././././././', this.sellCheckTokens)
       this.validator.$touch()
       if (this.pending || this.validator.$pending || this.validator.$error)
         return

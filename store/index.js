@@ -121,6 +121,10 @@ const getInitialState = () => ({
   balanceHasAnimation: false,
   // banner
   smartBannerIsOn: true,
+  // edit
+  editPath:"",
+  editing: false,
+  editingPostAuthor: '',
 })
 
 export const state = () => getInitialState()
@@ -265,6 +269,11 @@ export const getters = {
   mapView: (s) => s.mapView,
   // banner
   smartBanner: (s) => s.smartBannerIsOn,
+  // edit
+  editPath: (s) => s.editPath,
+  editing: (s)=> s.editing,
+  editingPostAuthor: (s) => s.editingPostAuthor,
+
 }
 
 const objectNotEmpty = (state, commit, property) => {
@@ -1146,4 +1155,14 @@ export const mutations = {
   closeSmartBanner(state, payload) {
     state.smartBanner = payload;
   },
+  // edit
+  changeEditPath(state, payload){
+    state.editPath = payload
+  },
+  changeEditing(state, payload){
+    state.editing = payload;
+  },
+  changeEditPostAuthor(state, payload){
+    state.editingPostAuthor = payload;
+  }
 }
