@@ -190,7 +190,7 @@
                 :announcement="announcement"
                 class-name="red-outline"
               />
-              <monetization-stats-button v-else-if="$auth.id === announcement.user_id" :announcement="announcement"/>
+              <monetization-stats-button v-else-if="$auth.user.id === announcement.user_id" :announcement="announcement"/>
             </span>
           </template>
         </div>
