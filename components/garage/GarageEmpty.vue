@@ -7,7 +7,7 @@
           <p class="text-red mb-1 mb-lg-3">{{ $t('no_cars_found') }}</p>
           <div class="garage_no-cars__buttons">
             <add-car class="mb-2 mb-xl-0" />
-            <button class="btn__asan-login" @click="redirectToAsanLogin()">
+            <button class="btn__asan-login" @click="redirectToAsanLogin()" v-if="false">
               <div class="btn__asan-login--image">
                 <img
                   src="img/asan-login.svg"
@@ -58,12 +58,13 @@ export default {
   components: {
     // AsanLogin,
     AddCar,
-    AnimatedSpinner
+    AnimatedSpinner,
   },
   mixins: [Asan_login],
   methods: {
     async redirectToAsanLogin() {
-      await this.asanLogin()
+      // await this.asanLogin()
+      // this.$router.push($localePath(garage))
     },
   },
 }
