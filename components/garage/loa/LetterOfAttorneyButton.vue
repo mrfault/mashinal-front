@@ -13,7 +13,7 @@
       @close="close"
     >
       <div class="letter-of-attorney">
-        <steps-progress :limit-steps="4" :finished="finished"/>
+        <steps-progress  :finished="finished"/>
         <template v-if="!finished">
           <div class="mt-2 mt-lg-0 mb-2 mb-lg-3">
             <h4 v-if="currentRealStep !== 10">{{ stepInfoTitle }}
@@ -254,6 +254,7 @@ export default {
   methods: {
     ...mapActions('letterOfAttorney', ['increaseStep', 'updateStep', 'resetSteps', 'resetAllSteps', 'payForSubmission', 'updateSendData', 'updateReceivedData']),
     selectVehicle(item) {
+
       this.updateReceivedData(
         [
           {key: 'senderFullName', value: `${item.name} ${item.surname}`},
@@ -262,8 +263,11 @@ export default {
       this.updateSendData({key: 'carNumber', value: item.vehicleNumber})
     },
     continueToSteps() {
-      if (this.stepSendData.carNumber)
+      if (this.stepSendData.carNumber){
+        this.showVehicleList = false;
         this.showSteps = true;
+      }
+
     },
     async getVehicles(isGeneral) {
       this.updateSendData({key: 'carNumber', value: null})
