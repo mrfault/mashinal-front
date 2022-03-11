@@ -2175,5 +2175,6 @@ export default {
   "asan_login_redirect": "Для оформления доверенности вы пренаправляетесь на страницу asan login",
   "no_attorneys_found": "Нет доверенности",
   "rules_of_giving_attorney": "Правила оформления доверенности",
-  "own_vehicles": "Собственное ТС"
+  "own_vehicles": "Собственное ТС",
+  "transferable_vehicles":"ТС во владении"
 }
