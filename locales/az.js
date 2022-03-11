@@ -2178,4 +2178,5 @@ export default {
   "vehicle_list": "Avtomobil seçimi",
   "asan_login_redirect":"Etibarnamənin verilməsi üçün asan login-ə yönləndirilirsiz",
   "own_vehicles": "Şəxsi NV"
+  "add_with": "ilə əlavə et",
 }
