@@ -57,7 +57,6 @@ export default {
       if(res.status === 200) {
         this.$cookies.set('asan_token',res.data.token, { maxAge: 60 * 60 * 12, path: '/' });
       }
-
       await this.checkAsanToken();
     }
   },
