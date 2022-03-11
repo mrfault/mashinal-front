@@ -39,6 +39,21 @@
   .ymaps-2-1-79-balloon__content {
     background: $dark-2 !important;
   }
+  .btn__asan-login {
+    background: $dark-2;
+    border: 1px solid #fff;
+    &--image{
+      svg{
+        path{
+
+          fill: #fff;
+        }
+      }
+    }
+    &--text {
+      color: #fff;
+    }
+  }
 }
 
 .dark-mode {
