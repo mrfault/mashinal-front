@@ -54,6 +54,13 @@
       color: #fff;
     }
   }
+  .garage_car-item{
+    .active{
+      span{
+        color: #000;
+      }
+    }
+  }
 }
 
 .dark-mode {
