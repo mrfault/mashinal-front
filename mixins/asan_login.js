@@ -49,6 +49,12 @@ export default {
         });
       }
     },
+    async asanLogout()
+    {
+      await fetch('https://asanlogintest.my.gov.az/cdsso-logout',{
+        credentials: 'include'
+      })
+    },
     async asanLogin() {
       let res = await fetch('https://asanlogintest.my.gov.az/ssoauthz/api/v1/token',{
         credentials: 'include',

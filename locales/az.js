@@ -2177,6 +2177,8 @@ export default {
   "panorama_loading": "Panorama yüklənir",
   "vehicle_list": "Avtomobil seçimi",
   "asan_login_redirect":"Etibarnamənin verilməsi üçün asan login-ə yönləndirilirsiz",
-  "own_vehicles": "Şəxsi NV"
+  "own_vehicles": "Şəxsi NV",
   "add_with": "ilə əlavə et",
+  "transferable_vehicles":"Mülkiyyətdə olanlar",
+
 }

@@ -9,27 +9,27 @@
       <img src="/icons/plus-circle-1.svg" alt="" />
       {{ $t('add_car') }}
     </div>
-    <modal-popup 
+    <modal-popup
       :toggle="showModal"
       :title="$t('add_car')"
       @close="showModal = false"
     >
       <form class="form" @submit.prevent="checkCarNumber">
-        <form-text-input 
+        <form-text-input
           class="mb-2 mb-lg-3"
-          v-model="form.car_number" 
+          v-model="form.car_number"
           :mask="'99 - A{2} - 999'"
-          :placeholder="$t('car_number')" 
+          :placeholder="$t('car_number')"
           :invalid="$v.form.car_number.$error"
         />
-        <form-text-input 
+        <form-text-input
           class="mb-2 mb-lg-3"
-          v-model="form.tech_id" 
+          v-model="form.tech_id"
           :mask="$maskAlphaNumeric('********')"
-          :placeholder="$t('tech_id')" 
+          :placeholder="$t('tech_id')"
           :invalid="$v.form.tech_id.$error"
         />
-        <div class="info-text mb-2"><icon name="alert-circle" /> 
+        <div class="info-text mb-2"><icon name="alert-circle" />
           <span>{{ $t('garage_payment_info') }}</span>
         </div>
         <button type="submit" :class="['btn btn--green full-width', {pending: pending && !showPaymentModal} ]">
@@ -37,8 +37,8 @@
         </button>
       </form>
     </modal-popup>
-    <modal-popup 
-      :toggle="showPaymentModal" 
+    <modal-popup
+      :toggle="showPaymentModal"
       :title="$t('payment')"
       :overflow-hidden="isMobileBreakpoint"
       @close="showPaymentModal = false"
@@ -62,9 +62,9 @@
         </div>
       </div>
     </modal-popup>
-    <terminal-info-popup 
+    <terminal-info-popup
       name="garage-add-popup"
-      @open="showPaymentModal = false" 
+      @open="showPaymentModal = false"
       @close="showPaymentModal = true"
     />
   </component>
@@ -140,10 +140,12 @@ export default {
     async payForCar() {
       if (this.pending) return;
       this.pending = true;
+      this.form.car_number = this.form.car_number.replace(/-|[ ]/g, '');
       try {
         const res = await this.registerNewCar({
-          ...this.form,
-          car_number: this.form.car_number.replace(/-|[ ]/g, ''),
+          vehicles:[
+            { ...this.form } ,
+          ],
           card_id: this.bankingCard,
           pay_type: this.paymentMethod,
           is_mobile: this.isMobileBreakpoint
@@ -163,10 +165,10 @@ export default {
           this.pending = false;
           this.showPaymentModal = false;
           this.bankingCard = '';
-          this.updatePaidStatus({ 
-            type: 'success', 
-            text: this.$t('car_added'), 
-            title: this.$t('success_payment') 
+          this.updatePaidStatus({
+            type: 'success',
+            text: this.$t('car_added'),
+            title: this.$t('success_payment')
           });
         }
       } catch(err) {

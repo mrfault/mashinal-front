@@ -1,6 +1,8 @@
 import { mapGetters } from 'vuex';
+import Asan_login from "~/mixins/asan_login";
 
 export const UserDataMixin = {
+  mixins:[Asan_login],
   computed: {
     ...mapGetters(['countNewMessages','countNewNotifications']),
 
@@ -23,6 +25,7 @@ export const UserDataMixin = {
         this.$router.push(this.$localePath('/'));
         this.$auth.setUser(false);
         await this.$auth.logout();
+        await this.asanLogout();
         this.$nuxt.$emit('login', false);
       });
     }
