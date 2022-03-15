@@ -25,7 +25,6 @@ export const UserDataMixin = {
         this.$router.push(this.$localePath('/'));
         this.$auth.setUser(false);
         await this.$auth.logout();
-        await this.asanLogout();
         this.$nuxt.$emit('login', false);
       });
     }
