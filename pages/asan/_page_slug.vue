@@ -16,7 +16,6 @@ export default {
     }
   },
   mixins: [ asan_login ],
-  middleware: ['guest'],
   async mounted() {
     this.pending = false;
     this.$router.push(this.$localePath(this.$route.params.page_slug))
