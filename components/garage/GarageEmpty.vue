@@ -8,7 +8,7 @@
             {{ $t('no_cars_found') }}
           </p>
           <div class="garage_no-cars__buttons">
-            <add-car class="mb-2 mb-xl-0" />
+            <add-car class="mb-2 mb-xl-0" :hasAsanLogin="hasAsanLogin"/>
             <button
               class="btn__asan-login"
               @click="redirectToAsanLogin()"

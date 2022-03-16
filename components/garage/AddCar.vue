@@ -22,7 +22,7 @@
       :title="$t('add_car')"
       @close="showModal = false"
     >
-      <asan-login-button :fullWidth="true"></asan-login-button>
+      <asan-login-button :fullWidth="true" v-if="!hasAsanLogin"></asan-login-button>
       <form class="form" @submit.prevent="checkCarNumber">
         <form-text-input
           class="mb-2 mb-lg-3"
@@ -119,6 +119,10 @@ export default {
       type: String,
       default: 'button',
     },
+    hasAsanLogin: {
+      type: Boolean,
+      default: false,
+    }
   },
   mixins: [PaymentMixin],
   data() {
