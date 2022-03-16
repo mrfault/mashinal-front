@@ -3,8 +3,8 @@ export default {
     return {
       showRedirect: false,
       timer: 5,
-      interval:null,
-      timeout:null,
+      interval: null,
+      timeout: null,
     }
   },
   methods: {
@@ -17,54 +17,72 @@ export default {
     //   res = await res.json();
     // },
 
-    async checkAsanToken() {
-      let res = await fetch('https://apiasanlogintest.my.gov.az/ssoauthz/api/v1/token/check',{
-        headers: {
-          Authorization: this.$cookies.get('asan_token')
-        }
-      })
+    async checkAsanToken(redirectPath = 'garage-services') {
+      let res = await fetch(
+        'https://apiasanlogintest.my.gov.az/ssoauthz/api/v1/token/check',
+        {
+          headers: {
+            Authorization: this.$cookies.get('asan_token'),
+          },
+        },
+      )
       res = await res.json()
-      if(res.status === 401) {
-        this.showRedirect = true;
+      if (res.status === 401) {
+        this.showRedirect = true
         await new Promise((resolve, reject) => {
-          clearTimeout(this.timeout);
-          this.timeout = setTimeout(async ()=> {
-            if(this.showRedirect) {
+          clearTimeout(this.timeout)
+          this.timeout = setTimeout(async () => {
+            if (this.showRedirect) {
               this.$cookies.remove('asan_token')
-              let origin = this.$env.IS_LOCAL ? 'http://localhost:3000/asan/garage-services' : 'https://dev.mashin.al/asan/garage-services'
-              location.href = 'https://asanlogintest.my.gov.az/auth?origin='+origin;
-            }else {
-              this.timer = 5;
+              let origin = this.$env.IS_LOCAL
+                ? 'http://localhost:3000/asan/' + redirectPath
+                : 'https://dev.mashin.al/asan/' + redirectPath
+              location.href =
+                'https://asanlogintest.my.gov.az/auth?origin=' + origin
+            } else {
+              this.timer = 5
             }
-
-
-          },5000)
-          this.timer = 5;
+          }, 5000)
+          this.timer = 5
           clearInterval(this.interval)
           this.interval = setInterval(() => {
-            if(this.timer === 1) clearInterval(this.interval)
-            this.timer--;
-          },1000)
-
-        });
+            if (this.timer === 1) clearInterval(this.interval)
+            this.timer--
+          }, 1000)
+        })
       }
     },
-    async asanLogout()
-    {
-      await fetch('https://asanlogintest.my.gov.az/cdsso-logout',{
-        credentials: 'include'
-      })
-    },
-    async asanLogin() {
-      let res = await fetch('https://asanlogintest.my.gov.az/ssoauthz/api/v1/token',{
+    async asanLogout() {
+      await fetch('https://asanlogintest.my.gov.az/cdsso-logout', {
         credentials: 'include',
       })
-      res = await res.json();
-      if(res.status === 200) {
-        this.$cookies.set('asan_token',res.data.token, { maxAge: 60 * 60 * 12, path: '/' });
+    },
+    async checkTokenOnly() {
+      let res = await fetch(
+        'https://asanlogintest.my.gov.az/ssoauthz/api/v1/token',
+        {
+          credentials: 'include',
+        },
+      )
+      res = await res.json()
+      console.log("././././res", res);
+      return res.status === 200;
+    },
+    async asanLogin(redirectPath = 'garage-services') {
+      let res = await fetch(
+        'https://asanlogintest.my.gov.az/ssoauthz/api/v1/token',
+        {
+          credentials: 'include',
+        },
+      )
+      res = await res.json()
+      if (res.status === 200) {
+        this.$cookies.set('asan_token', res.data.token, {
+          maxAge: 60 * 60 * 12,
+          path: '/',
+        })
       }
-      await this.checkAsanToken();
-    }
+      await this.checkAsanToken(redirectPath)
+    },
   },
-
 }

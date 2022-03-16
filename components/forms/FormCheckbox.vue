@@ -94,6 +94,7 @@ export default {
     hasTooltip: Boolean,
     skipTruncate: Boolean,
     hasPopover: Boolean,
+    
   },
   data() {
     return {
