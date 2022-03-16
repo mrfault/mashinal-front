@@ -89,7 +89,7 @@ export default {
         old: '',
         password: '',
         password_confirmation: '',
-        name: $auth.user.full_name,
+        name: $auth.user.name,
         lastname: $auth.user.lastname || '',
         gender: $auth.user.gender || 0,
         birthday: app.$moment($auth.user.birthday || null).format('DD.MM.YYYY'),
