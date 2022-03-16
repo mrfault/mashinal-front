@@ -5,27 +5,50 @@
     :class="{ 'full-width mb-3': fullWidth }"
   >
     <div class="btn__asan-login--image">
-      <img src="img/asan-login.svg" alt="">
+      <img src="img/asan-login.svg" alt="" />
     </div>
     <p class="btn__asan-login--text">{{ $t('add_with') }}</p>
+    <modal-popup
+      :toggle="showRedirect"
+      :title="$t('add_car')"
+      :title-logo="isDarkMode ? '/asan_logo_dark_mode.svg' : '/asan_logo.svg'"
+      :overflow-hidden="isMobileBreakpoint"
+      @close="showRedirect = false"
+    >
+      <p>{{ $t('asan_login_redirect') }}</p>
+      <div
+        class="align-items-center d-flex justify-content-center position-relative"
+      >
+        <animated-spinner />
+        <span style="position: absolute;">{{ timer }}</span>
+      </div>
+    </modal-popup>
   </button>
 </template>
 
 <script>
 import Asan_login from '~/mixins/asan_login'
-// import AnimatedSpinner from '~/components/elements/AnimatedSpinner'
+import AnimatedSpinner from '~/components/elements/AnimatedSpinner'
 export default {
   mixins: [Asan_login],
+  components:{
+    AnimatedSpinner,
+  },
   props: {
     fullWidth: Boolean,
+    redirectPath:{
+      type: String,
+      default: 'garage-services'
+    }
   },
   computed: {},
   methods: {
     async redirectToAsanLogin() {
       if (!this.$auth.loggedIn)
-        return await this.$router.push(this.$localePath('/login?param=garage'))
-      await this.asanLogin('garage')
+        return await this.$router.push(this.$localePath(`/login?param=${this.redirectPath}`))
+      await this.asanLogin(`${this.redirectPath}`)
       const data = await this.$axios.$get('/attorney/get_vehicle_list/false')
+      this.vehicleList = data
     },
   },
 }

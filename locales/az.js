@@ -2182,5 +2182,5 @@ export default {
   "transferable_vehicles":"Mülkiyyətdə olanlar",
 
 
-  "must_pay": "ödəniş etməlisiniz"
+  "must_pay": "ödəniş etməlisiniz",
 }

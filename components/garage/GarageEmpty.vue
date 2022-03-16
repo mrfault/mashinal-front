@@ -12,7 +12,7 @@
           </p>
           <div class="garage_no-cars__buttons">
             <add-car class="mb-2 mb-xl-0" :hasAsanLogin="hasAsanLogin" />
-            <button
+            <!-- <button
               class="btn__asan-login"
               @click="redirectToAsanLogin()"
               :class="{ 'full-width mb-3': false }"
@@ -22,20 +22,17 @@
                 <img src="img/asan-login.svg" alt="" />
               </div>
               <p class="btn__asan-login--text">{{ $t('add_with') }}</p>
-            </button>
+            </button> -->
+            <asan-login-button
+              v-if="!hasAsanLogin"
+              :redirectPath="'garage'"
+            ></asan-login-button>
           </div>
         </div>
       </div>
     </div>
     <div class="col-12 col-md-12 col-xl-6 h-100 mb-5 mb-lg-0">
-      <div class="card height-100" v-if="!vehicleList.ownVehicles">
-        <h2 class="title-with-line">
-          <span>{{ $t('empty_garage_title') }}</span>
-        </h2>
-        <p class="mb-2">{{ $t('empty_garage_part_1') }}</p>
-        <p class="mb-2">{{ $t('empty_garage_part_2') }}</p>
-        <p class="mb-2">{{ $t('empty_garage_part_3') }}</p>
-      </div>
+      <empty-garage-card v-if="!vehicleList.ownVehicles"></empty-garage-card>
       <asan-login-vehicles
         :vehicleList="vehicleList"
         v-if="vehicleList.ownVehicles && vehicleList.ownVehicles.length"
@@ -43,7 +40,7 @@
         @showPaymentModal="showPaymentModal = true"
       ></asan-login-vehicles>
     </div>
-    <modal-popup
+    <!-- <modal-popup
       :toggle="showRedirect"
       :title="$t('add_car')"
       :title-logo="isDarkMode ? '/asan_logo_dark_mode.svg' : '/asan_logo.svg'"
@@ -57,7 +54,7 @@
         <animated-spinner />
         <span style="position: absolute;">{{ timer }}</span>
       </div>
-    </modal-popup>
+    </modal-popup> -->
     <modal-popup
       :toggle="showPaymentModal"
       :title="$t('payment')"
@@ -107,18 +104,20 @@
 <script>
 import AddCar from '~/components/garage/AddCar'
 import Asan_login from '~/mixins/asan_login'
-import AnimatedSpinner from '~/components/elements/AnimatedSpinner'
-import AsanLoginButton from '~/components/buttons/AsanLogin'
+// import AnimatedSpinner from '~/components/elements/AnimatedSpinner'
+import AsanLoginButton from '~/components/buttons/AsanLoginButton'
 import { PaymentMixin } from '~/mixins/payment'
 import { mapActions, mapGetters } from 'vuex'
 import AsanLoginVehicles from './AsanLoginVehicles.vue'
+import EmptyGarageCard from './EmptyGarageCard.vue'
 
 export default {
   components: {
     AsanLoginButton,
     AddCar,
-    AnimatedSpinner,
+    // AnimatedSpinner,
     AsanLoginVehicles,
+    EmptyGarageCard,
   },
   props: {
     defaultVehicleList: {},
@@ -180,14 +179,13 @@ export default {
       }
     },
 
-    async redirectToAsanLogin() {
-      if (!this.$auth.loggedIn)
-        return await this.$router.push(this.$localePath('/login?param=garage'))
-      await this.asanLogin('garage')
-      const data = await this.$axios.$get('/attorney/get_vehicle_list/false')
-      this.vehicleList = data
-      console.log('1', data)
-    },
+    // async redirectToAsanLogin() {
+    //   if (!this.$auth.loggedIn)
+    //     return await this.$router.push(this.$localePath('/login?param=garage'))
+    //   await this.asanLogin('garage')
+    //   const data = await this.$axios.$get('/attorney/get_vehicle_list/false')
+    //   this.vehicleList = data
+    // },
   },
   async mounted() {
     if (await this.checkTokenOnly()) {

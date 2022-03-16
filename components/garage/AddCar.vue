@@ -22,7 +22,7 @@
       :title="$t('add_car')"
       @close="showModal = false"
     >
-      <asan-login-button :fullWidth="true" v-if="!hasAsanLogin"></asan-login-button>
+      <asan-login-button :fullWidth="true" v-if="!hasAsanLogin" :redirectPath="'garage/asan-cars'"></asan-login-button>
       <form class="form" @submit.prevent="checkCarNumber">
         <form-text-input
           class="mb-2 mb-lg-3"
