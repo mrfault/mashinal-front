@@ -142,13 +142,11 @@
 import AddCar from '~/components/garage/AddCar'
 import Asan_login from '~/mixins/asan_login'
 import AnimatedSpinner from '~/components/elements/AnimatedSpinner'
-import AsanLoginButton from '~/components/buttons/AsanLogin'
 import {PaymentMixin} from "~/mixins/payment";
 import {mapActions} from "vuex";
 
 export default {
   components: {
-    AsanLoginButton,
     AddCar,
     AnimatedSpinner,
   },
