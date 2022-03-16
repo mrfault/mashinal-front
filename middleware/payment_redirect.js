@@ -1,5 +1,5 @@
 export default function ({ route, app, redirect, store }) {
-  if (!route.query) 
+  if (!route.query)
     return true;
   let path;
   let page = route.query.page;
@@ -19,6 +19,7 @@ export default function ({ route, app, redirect, store }) {
       path = app.$localePath(`/dashboard/${id}/settings`);
     }
   } else if (page) {
+
     path = app.$localePath(page);
   }
   if (path && ['true','false'].includes(status)) {

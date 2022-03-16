@@ -201,8 +201,10 @@ export default {
           window.open(res.data.redirect_url, 'purchaseservice', 'toolbar=yes,scrollbars=yes,resizable=yes,top=50,left=100,width=494,height=718');
           this.connectEcho(`purchase.${res.data.payment_id}`, false).listen('PurchaseInitiated', async (data) => {
             const paid = data.payment.status === 1;
-            if(data.payment.operation_key === 'attorney_pay') {
-              return this.$router.push({path: this.$localePath('/garage'), query: { tab: 'attorney-list' }})
+            if(paid) {
+              if(data.payment.operation_key === 'attorney_pay') {
+                return this.$router.push({path: this.$localePath('/garage'), query: { tab: 'attorney-list' }})
+              }
             }
             if (paid) await this.fetchAnnouncementData();
             let type = paid ? 'success' : 'error';

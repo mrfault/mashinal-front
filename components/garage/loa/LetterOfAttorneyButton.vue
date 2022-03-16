@@ -45,7 +45,7 @@
                 <component
                   :is="`step-${currentRealStep}`"
                   @next="increaseStep"
-                  @confirm="finished = true, showPaymentModal = true"
+                  @confirm="finished = true; showPaymentModal = true"
                 />
               </div>
             </div>
@@ -336,7 +336,7 @@ export default {
         if (this.paymentMethod === 'card' && !this.bankingCard) {
           this.pending = false
           this.showPaymentModal = false
-          //this.close();
+          this.close();
           this.handlePayment(
             res,
             false,
