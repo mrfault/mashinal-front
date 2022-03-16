@@ -60,7 +60,12 @@ export default {
         },
       )
       res = await res.json()
-      console.log("././././res", res);
+      if (res.status === 200) {
+        this.$cookies.set('asan_token', res.data.token, {
+          maxAge: 60 * 60 * 12,
+          path: '/',
+        })
+      }
       return res.status === 200;
     },
     async asanLogin(redirectPath = 'garage-services') {

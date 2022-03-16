@@ -25,8 +25,7 @@
       </div>
     </div>
     <div class="col-12 col-md-12 col-xl-6 h-100 mb-5 mb-lg-0">
-      <!-- <div class="card height-100" v-if="!vehicleList.ownVehicles"> -->
-      <div class="card height-100" v-if="false">
+      <div class="card height-100" v-if="!vehicleList.ownVehicles">
         <h2 class="title-with-line">
           <span>{{ $t('empty_garage_title') }}</span>
         </h2>
@@ -34,17 +33,12 @@
         <p class="mb-2">{{ $t('empty_garage_part_2') }}</p>
         <p class="mb-2">{{ $t('empty_garage_part_3') }}</p>
       </div>
-      <!-- <div class="garage__asan-cars" v-if="vehicleList.ownVehicles && vehicleList.ownVehicles.length"> -->
-      <div class="garage__asan-cars" v-if="true">
+      <div class="garage__asan-cars" v-if="vehicleList.ownVehicles && vehicleList.ownVehicles.length">
+
         <div class="row mt-5 mt-lg-0">
-          <!-- <div
+           <div
             class="col-12 col-lg-6 col-xl-4"
             v-for="(item, index) in vehicleList.ownVehicles"
-            :key="index"
-          > -->
-          <div
-            class="col-12 col-lg-6 col-xl-4"
-            v-for="(item, index) in demo"
             :key="index"
           >
             <div class="asan-card">
@@ -59,23 +53,25 @@
               <div class="asan-card__bottom">
                 <p class="asan-card__bottom--number">
                   {{ item.vehicleNumber }}
-                  
+
                 </p>
                 <form-checkbox
-                  class="d-contents"
-                  transparent
-                  v-model="selectedVehicles"
+                  input-name="selected_vehicles"
+                  class="d-contents cursor-pointer"
+                  transparent="transparent"
+                  @change="selectVehicle(item,$event)"
                 ></form-checkbox>
               </div>
             </div>
+
           </div>
           <div class="col-12">
             <div class="asan-card__summary">
               <div class="asan-card__summary--info">
                 <p>{{ $t('total') }}</p>
-                <h4>8 ₼ {{ $t('must_pay') }}</h4>
+                <h4>{{ price }} ₼ {{ $t('must_pay') }}</h4>
               </div>
-              <button class="asan-card__summary--button btn btn--green px-3">
+              <button @click="showPaymentModal = true" class="asan-card__summary--button btn btn--green px-3" :class="{ pending }">
                 {{ $t('pay') }}
               </button>
             </div>
@@ -98,6 +94,47 @@
         <span style="position: absolute;">{{ timer }}</span>
       </div>
     </modal-popup>
+    <modal-popup
+      :toggle="showPaymentModal"
+      :title="$t('payment')"
+      :overflow-hidden="isMobileBreakpoint"
+      @close="showPaymentModal = false"
+    >
+      <h4 class="mb-2">{{ $t('payment_method') }}</h4>
+      <form-buttons
+        v-model="paymentMethod"
+        :options="paymentMethodOptions"
+        :group-by="2"
+      />
+      <select-banking-card
+        v-model="bankingCard"
+        class="mt-2 mt-lg-3"
+        v-show="paymentMethod === 'card'"
+      />
+      <terminal-info-button popup-name="garage-add-popup" />
+      <div :class="{ 'modal-sticky-bottom': isMobileBreakpoint }">
+        <hr />
+        <div class="row">
+          <div class="col-6">
+            <p class="text-medium mb-0">{{ $t('total') }}</p>
+            <p class="text-medium text-dark-blue-2 mb-0">{{ price }} ₼</p>
+          </div>
+          <div class="col-6">
+            <button
+              :class="['btn btn--green full-width', { pending }]"
+              @click="payForCar"
+            >
+              {{ $t('pay') }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </modal-popup>
+    <terminal-info-popup
+      name="garage-add-popup"
+      @open="showPaymentModal = false"
+      @close="showPaymentModal = true"
+    />
   </div>
 </template>
 
@@ -106,6 +143,8 @@ import AddCar from '~/components/garage/AddCar'
 import Asan_login from '~/mixins/asan_login'
 import AnimatedSpinner from '~/components/elements/AnimatedSpinner'
 import AsanLoginButton from '~/components/buttons/AsanLogin'
+import {PaymentMixin} from "~/mixins/payment";
+import {mapActions} from "vuex";
 
 export default {
   components: {
@@ -113,60 +152,82 @@ export default {
     AddCar,
     AnimatedSpinner,
   },
-  mixins: [Asan_login],
+  props:{
+    defaultVehicleList: { }
+  },
+  computed:{
+    price() {
+      return this.selectedVehicleList.filter(item => item.status).length;
+    },
+    haveBalanceToPay() {
+      return parseFloat(this.price) <= this.user.balance
+    },
+  },
+  mixins: [Asan_login,PaymentMixin],
   data() {
     return {
+      pending: false,
+      showPaymentModal: false,
       hasCars: true,
       hasAsanLogin: false,
-      vehicleList: [],
-      selectedVehicles: [],
+      selectedVehicleList:[],
+      vehicleList: this.defaultVehicleList,
       cars: [
         {
           selected: true,
         },
       ],
-      demo: [
-        {
-          name: 'MƏMMƏD',
-          surname: 'QURBANOV',
-          fatherName: 'BƏHRAM OĞLU',
-          vehicleNumber: '90GX601',
-        },
-        {
-          name: 'MƏMMƏD',
-          surname: 'QURBANOV',
-          fatherName: 'BƏHRAM OĞLU',
-          vehicleNumber: '90GX602',
-        },
-        {
-          name: 'MƏMMƏD',
-          surname: 'QURBANOV',
-          fatherName: 'BƏHRAM OĞLU',
-          vehicleNumber: '90GX603',
-        },
-        {
-          name: 'MƏMMƏD',
-          surname: 'QURBANOV',
-          fatherName: 'BƏHRAM OĞLU',
-          vehicleNumber: '90GX604',
-        },
-        {
-          name: 'MƏMMƏD',
-          surname: 'QURBANOV',
-          fatherName: 'BƏHRAM OĞLU',
-          vehicleNumber: '90GX605',
-        },
-        {
-          name: 'MƏMMƏD',
-          surname: 'QURBANOV',
-          fatherName: 'BƏHRAM OĞLU',
-          vehicleNumber: '90GX606',
-        },
-      ],
     }
   },
-
   methods: {
+
+    ...mapActions({
+      registerNewCar: 'garage/registerNewCar',
+    }),
+    async payForCar() {
+      console.log(this.pending);
+      if (this.pending) return
+      this.pending = true
+      try {
+        const res = await this.registerNewCar({
+          vehicles: this.selectedVehicleList,
+          card_id: this.bankingCard,
+          pay_type: this.paymentMethod,
+          is_mobile: this.isMobileBreakpoint,
+        })
+        if (this.paymentMethod === 'card' && !this.bankingCard) {
+          this.pending = false
+          this.showPaymentModal = false
+          this.handlePayment(res, false, this.$t('car_added'), 'v2')
+        } else {
+          await Promise.all([this.$nuxt.refresh(), this.$auth.fetchUser()])
+          this.pending = false
+          this.showPaymentModal = false
+          this.bankingCard = ''
+          this.updatePaidStatus({
+            type: 'success',
+            text: this.$t('car_added'),
+            title: this.$t('success_payment'),
+          })
+        }
+      } catch (err) {
+        console.log(err);
+        this.pending = false
+      }
+    },
+    selectVehicle(item,e) {
+      if(e) {
+        this.selectedVehicleList.push({
+          car_number: item.vehicleNumber,
+          tech_id: item.tech_id,
+          status: e,
+        })
+      }else {
+        let index = this.selectedVehicleList.findIndex(i => i.car_number === item.car_number)
+        this.selectedVehicleList.splice(index,1);
+      }
+
+    },
     async redirectToAsanLogin() {
       if (!this.$auth.loggedIn)
         return await this.$router.push(this.$localePath('/login?param=garage'))
@@ -179,15 +240,17 @@ export default {
   async mounted() {
     if (await this.checkTokenOnly()) {
       this.hasAsanLogin = true
+      if(!Object.keys(this.defaultVehicleList).length)
+        this.vehicleList = this.$set(this,'vehicleList',await this.$axios.$get('/attorney/get_vehicle_list/false'));
     } else {
       this.hasAsanLogin = false
     }
   },
-  mounted() {
-    if (this.hasAsanLogin) {
-      let data = this.$axios.$get('/attorney/get_vehicle_list/false')
-      console.log('123', data)
-    }
-  },
+  // mounted() {
+  //   if (this.hasAsanLogin) {
+  //     let data = this.$axios.$get('/attorney/get_vehicle_list/false')
+  //     console.log('123', data)
+  //   }
+  // },
 }
 </script>

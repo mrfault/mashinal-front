@@ -21,7 +21,7 @@
           />
         </template>
         <template v-else>
-          <garage-empty />
+          <garage-empty :default-vehicle-list="vehicleList" />
         </template>
         <template v-if="false">
           <template v-if="tab === 'cars' && (showNav || !isMobileBreakpoint)">
@@ -86,17 +86,29 @@ export default {
       title: this.$t('garage'),
     })
   },
-  async asyncData({ store }) {
+  async asyncData({ store,$cookies,$axios }) {
     await Promise.all([
       store.dispatch('garage/getCarList', {}),
       store.dispatch('garage/getAttorneyList'),
     ])
+    let vehicleList = {}
+
+    if($cookies.get('asan_token')) {
+      try {
+       vehicleList = await $axios.$get('/attorney/get_vehicle_list/false')
+      }catch (e) {
+      }
+
+    }
+
     return {
+      vehicleList: vehicleList,
       tab: 'cars',
       showNav: true,
     }
   },
   mounted() {
+
     if(this.$route.query.tab)
        this.tab = this.$route.query.tab;
   },
