@@ -283,3 +283,10 @@ hr {
     }
   }
 }
+
+.min-100{
+  min-height: 100% !important;
+}
+.min-100-20{
+  min-height: calc(100% - 20px);
+}

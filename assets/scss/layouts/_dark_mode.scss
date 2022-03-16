@@ -42,10 +42,9 @@
   .btn__asan-login {
     background: $dark-2;
     border: 1px solid #fff;
-    &--image{
-      svg{
-        path{
-
+    &--image {
+      svg {
+        path {
           fill: #fff;
         }
       }
@@ -54,10 +53,25 @@
       color: #fff;
     }
   }
-  .garage_car-item{
-    .active{
-      span{
-        color: #000;
+  .garage {
+    &_car-item {
+      .active {
+        span {
+          color: #000;
+        }
+      }
+    }
+    &__asan-cars{
+      .asan-card{
+        background: $dark-2;
+        &__summary{
+          background: $dark-2;
+          &--info{
+            h4{
+              color: #fff;
+            }
+          }
+        }
       }
     }
   }
