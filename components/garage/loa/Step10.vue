@@ -3,6 +3,8 @@
     <div class="row">
       <div class="col-lg-8">
         <div class="video-record_wrapper" >
+          <client-only>
+
           <video-record 
             :key="isMobileBreakpoint"
             @start="disabled = true, showText = true"
@@ -16,6 +18,7 @@
               </div>
             </transition>
           </video-record>
+          </client-only>
         </div>
       </div>
       <div class="col-lg-4" v-if="!isMobileBreakpoint">

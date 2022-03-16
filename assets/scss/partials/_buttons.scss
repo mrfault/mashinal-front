@@ -352,7 +352,7 @@
       width: 45px;
       // margin-right: 8px;
       position: relative;
-      img {
+      svg,img {
         position: absolute;
         top: 0;
         left: 0;
@@ -362,12 +362,13 @@
         margin: 0 !important;
         min-width: auto !important;
       }
+      
     }
     &--text {
       margin: 0 !important;
       font: 400 14px Gilroy;
       color: $dark-blue-2;
-      // padding-left: 9px;
+      padding-left: 9px;
     }
   }
 }

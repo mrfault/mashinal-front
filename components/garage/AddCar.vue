@@ -1,5 +1,13 @@
 <template>
-  <component :is="tag" :class="tag === 'button' ? [`btn btn--${btnClass}`, { 'full-width': isMobileBreakpoint }] : 'add-item'" @click="showModal = true">
+  <component
+    :is="tag"
+    :class="
+      tag === 'button'
+        ? [`btn btn--${btnClass}`, { 'full-width': isMobileBreakpoint }]
+        : 'add-item'
+    "
+    @click="showModal = true"
+  >
     <template v-if="tag === 'button'">
       <icon name="plus-circle" v-if="!isMobileBreakpoint" />
       {{ $t('add_car') }}
@@ -14,6 +22,7 @@
       :title="$t('add_car')"
       @close="showModal = false"
     >
+      <asan-login-button :fullWidth="true"></asan-login-button>
       <form class="form" @submit.prevent="checkCarNumber">
         <form-text-input
           class="mb-2 mb-lg-3"
@@ -29,10 +38,17 @@
           :placeholder="$t('tech_id')"
           :invalid="$v.form.tech_id.$error"
         />
-        <div class="info-text mb-2"><icon name="alert-circle" />
+        <div class="info-text mb-2">
+          <icon name="alert-circle" />
           <span>{{ $t('garage_payment_info') }}</span>
         </div>
-        <button type="submit" :class="['btn btn--green full-width', {pending: pending && !showPaymentModal} ]">
+        <button
+          type="submit"
+          :class="[
+            'btn btn--green full-width',
+            { pending: pending && !showPaymentModal },
+          ]"
+        >
           {{ $t('go_further') }}
         </button>
       </form>
@@ -44,18 +60,29 @@
       @close="showPaymentModal = false"
     >
       <h4 class="mb-2">{{ $t('payment_method') }}</h4>
-      <form-buttons v-model="paymentMethod" :options="paymentMethodOptions" :group-by="2" />
-      <select-banking-card v-model="bankingCard" class="mt-2 mt-lg-3" v-show="paymentMethod === 'card'" />
+      <form-buttons
+        v-model="paymentMethod"
+        :options="paymentMethodOptions"
+        :group-by="2"
+      />
+      <select-banking-card
+        v-model="bankingCard"
+        class="mt-2 mt-lg-3"
+        v-show="paymentMethod === 'card'"
+      />
       <terminal-info-button popup-name="garage-add-popup" />
-      <div :class="{'modal-sticky-bottom': isMobileBreakpoint}">
-        <hr/>
+      <div :class="{ 'modal-sticky-bottom': isMobileBreakpoint }">
+        <hr />
         <div class="row">
           <div class="col-6">
             <p class="text-medium mb-0">{{ $t('total') }}</p>
             <p class="text-medium text-dark-blue-2 mb-0">{{ price }} ₼</p>
           </div>
           <div class="col-6">
-            <button :class="['btn btn--green full-width', { pending }]" @click="payForCar">
+            <button
+              :class="['btn btn--green full-width', { pending }]"
+              @click="payForCar"
+            >
               {{ $t('pay') }}
             </button>
           </div>
@@ -71,22 +98,27 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions } from 'vuex'
 
-import { PaymentMixin } from '~/mixins/payment';
+import { PaymentMixin } from '~/mixins/payment'
 
-import { required } from 'vuelidate/lib/validators';
+import { required } from 'vuelidate/lib/validators'
+
+import AsanLoginButton from '~/components/buttons/AsanLogin'
 
 export default {
+  components: {
+    AsanLoginButton,
+  },
   props: {
     btnClass: {
       type: String,
-      default: 'green'
+      default: 'green',
     },
     tag: {
       type: String,
-      default: 'button'
-    }
+      default: 'button',
+    },
   },
   mixins: [PaymentMixin],
   data() {
@@ -96,85 +128,80 @@ export default {
       price: 0,
       form: {
         car_number: '',
-        tech_id: ''
-      }
+        tech_id: '',
+      },
     }
   },
   validations: {
     form: {
       car_number: { required },
-      tech_id: { required }
-    }
+      tech_id: { required },
+    },
   },
   computed: {
     haveBalanceToPay() {
-      return parseFloat(this.price) <= this.user.balance;
-    }
+      return parseFloat(this.price) <= this.user.balance
+    },
   },
   methods: {
     ...mapActions({
       checkNewCar: 'garage/checkNewCar',
-      registerNewCar: 'garage/registerNewCar'
+      registerNewCar: 'garage/registerNewCar',
     }),
 
     async checkCarNumber() {
-      this.$v.$touch();
-      if (this.pending || this.$v.$error) return;
-      this.pending = true;
+      this.$v.$touch()
+      if (this.pending || this.$v.$error) return
+      this.pending = true
       try {
         const res = await this.checkNewCar({
           ...this.form,
-          car_number: this.form.car_number.replace(/-|[ ]/g, '')
-        });
-        this.pending = false;
+          car_number: this.form.car_number.replace(/-|[ ]/g, ''),
+        })
+        this.pending = false
         if (res.data?.price) {
-          this.showModal = false;
-          this.$v.$reset();
-          this.price = res.data.price;
-          this.showPaymentModal = true;
+          this.showModal = false
+          this.$v.$reset()
+          this.price = res.data.price
+          this.showPaymentModal = true
         }
-      } catch(err) {
-        this.pending = false;
+      } catch (err) {
+        this.pending = false
       }
     },
     async payForCar() {
-      if (this.pending) return;
-      this.pending = true;
-      this.form.car_number = this.form.car_number.replace(/-|[ ]/g, '');
+      if (this.pending) return
+      this.pending = true
+      this.form.car_number = this.form.car_number.replace(/-|[ ]/g, '')
       try {
         const res = await this.registerNewCar({
-          vehicles:[
-            { ...this.form } ,
-          ],
+          vehicles: [{ ...this.form }],
           card_id: this.bankingCard,
           pay_type: this.paymentMethod,
-          is_mobile: this.isMobileBreakpoint
-        });
-        this.form.car_number = '';
-        this.form.tech_id = '';
-        this.form.card_id = '';
+          is_mobile: this.isMobileBreakpoint,
+        })
+        this.form.car_number = ''
+        this.form.tech_id = ''
+        this.form.card_id = ''
         if (this.paymentMethod === 'card' && !this.bankingCard) {
-          this.pending = false;
-          this.showPaymentModal = false;
-          this.handlePayment(res, false, this.$t('car_added'), 'v2');
+          this.pending = false
+          this.showPaymentModal = false
+          this.handlePayment(res, false, this.$t('car_added'), 'v2')
         } else {
-          await Promise.all([
-            this.$nuxt.refresh(),
-            this.$auth.fetchUser()
-          ]);
-          this.pending = false;
-          this.showPaymentModal = false;
-          this.bankingCard = '';
+          await Promise.all([this.$nuxt.refresh(), this.$auth.fetchUser()])
+          this.pending = false
+          this.showPaymentModal = false
+          this.bankingCard = ''
           this.updatePaidStatus({
             type: 'success',
             text: this.$t('car_added'),
-            title: this.$t('success_payment')
-          });
+            title: this.$t('success_payment'),
+          })
         }
-      } catch(err) {
-        this.pending = false;
+      } catch (err) {
+        this.pending = false
       }
-    }
-  }
+    },
+  },
 }
 </script>

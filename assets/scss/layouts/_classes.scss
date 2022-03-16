@@ -261,8 +261,6 @@ hr {
   top: unset;
 }
 
-
-
 .garage-icon {
   margin-right: 6px;
   background: unset !important;
@@ -274,4 +272,14 @@ hr {
 
 .white-space-pre-wrap > div > label > span {
   white-space: pre-wrap !important;
+}
+
+.d-contents {
+  display: contents;
+
+  .checkbox-input{
+    label{
+      padding: 0 !important; 
+    }
+  }
 }

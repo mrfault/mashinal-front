@@ -2181,4 +2181,6 @@ export default {
   "add_with": "ilə əlavə et",
   "transferable_vehicles":"Mülkiyyətdə olanlar",
 
+
+  "must_pay": "ödəniş etməlisiniz"
 }
