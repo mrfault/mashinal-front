@@ -99,12 +99,9 @@
 
 <script>
 import { mapActions } from 'vuex'
-
 import { PaymentMixin } from '~/mixins/payment'
-
 import { required } from 'vuelidate/lib/validators'
-
-import AsanLoginButton from '~/components/buttons/AsanLogin'
+import AsanLoginButton from '~/components/buttons/AsanLoginButton'
 
 export default {
   components: {

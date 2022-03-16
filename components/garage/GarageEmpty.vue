@@ -1,14 +1,17 @@
 <template>
   <div class="row">
     <div class="col-12 mb-4 mb-xl-0 col-xl-6">
-      <div class="garage_no-cars card" :class="{'min-100' : selectedVehicleList.length}">
+      <div
+        class="garage_no-cars card"
+        :class="{ 'min-100': selectedVehicleList.length }"
+      >
         <div class="text-center">
           <img src="/img/car-garage.svg" alt="" />
           <p class="text-red mb-1 mb-lg-3" v-if="!hasCars">
             {{ $t('no_cars_found') }}
           </p>
           <div class="garage_no-cars__buttons">
-            <add-car class="mb-2 mb-xl-0" :hasAsanLogin="hasAsanLogin"/>
+            <add-car class="mb-2 mb-xl-0" :hasAsanLogin="hasAsanLogin" />
             <button
               class="btn__asan-login"
               @click="redirectToAsanLogin()"
@@ -33,57 +36,12 @@
         <p class="mb-2">{{ $t('empty_garage_part_2') }}</p>
         <p class="mb-2">{{ $t('empty_garage_part_3') }}</p>
       </div>
-      <div
-        class="garage__asan-cars"
+      <asan-login-vehicles
+        :vehicleList="vehicleList"
         v-if="vehicleList.ownVehicles && vehicleList.ownVehicles.length"
-      >
-        <div class="row mt-5 mt-lg-0">
-          <div
-            class="col-12 col-lg-6 col-xl-4"
-            v-for="(item, index) in vehicleList.ownVehicles"
-            :key="index"
-          >
-            <div class="asan-card">
-              <div class="asan-card__top">
-                <div class="asan-card__top--image">
-                  <img
-                    src="img/asan-car.svg"
-                    alt="https://media.istockphoto.com/photos/generic-modern-suv-car-in-concrete-garage-picture-id1307086567?s=612x612"
-                  />
-                </div>
-              </div>
-              <div class="asan-card__bottom">
-                <p class="asan-card__bottom--number">
-                  {{ item.vehicleNumber }}
-                </p>
-                <form-checkbox
-                  input-name="selected_vehicles"
-                  class="d-contents cursor-pointer"
-                  transparent="transparent"
-                  @change="selectVehicle(item, $event)"
-                ></form-checkbox>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row" v-if="selectedVehicleList.length">
-          <div class="col-12">
-            <div class="asan-card__summary">
-              <div class="asan-card__summary--info">
-                <p>{{ $t('total') }}</p>
-                <h4>{{ price }} ₼ {{ $t('must_pay') }}</h4>
-              </div>
-              <button
-                @click="showPaymentModal = true"
-                class="asan-card__summary--button btn btn--green px-3"
-                :class="{ pending }"
-              >
-                {{ $t('pay') }}
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+        :pending="pending"
+        @showPaymentModal="showPaymentModal = true"
+      ></asan-login-vehicles>
     </div>
     <modal-popup
       :toggle="showRedirect"
@@ -123,7 +81,9 @@
         <div class="row">
           <div class="col-6">
             <p class="text-medium mb-0">{{ $t('total') }}</p>
-            <p class="text-medium text-dark-blue-2 mb-0">{{ price }} ₼</p>
+            <p class="text-medium text-dark-blue-2 mb-0">
+              {{ selectedVehiclesPrice }} ₼
+            </p>
           </div>
           <div class="col-6">
             <button
@@ -150,24 +110,24 @@ import Asan_login from '~/mixins/asan_login'
 import AnimatedSpinner from '~/components/elements/AnimatedSpinner'
 import AsanLoginButton from '~/components/buttons/AsanLogin'
 import { PaymentMixin } from '~/mixins/payment'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
+import AsanLoginVehicles from './AsanLoginVehicles.vue'
 
 export default {
   components: {
     AsanLoginButton,
     AddCar,
     AnimatedSpinner,
+    AsanLoginVehicles,
   },
   props: {
     defaultVehicleList: {},
   },
   computed: {
-    price() {
-      return this.selectedVehicleList.filter((item) => item.status).length
-    },
     haveBalanceToPay() {
-      return parseFloat(this.price) <= this.user.balance
+      return parseFloat(this.selectedVehiclesPrice) <= this.user.balance
     },
+    ...mapGetters(['selectedVehicleList', 'selectedVehiclesPrice']),
   },
   mixins: [Asan_login, PaymentMixin],
   data() {
@@ -176,7 +136,6 @@ export default {
       showPaymentModal: false,
       hasCars: true,
       hasAsanLogin: false,
-      selectedVehicleList: [],
       vehicleList: this.defaultVehicleList,
       cars: [
         {
@@ -220,20 +179,7 @@ export default {
         this.pending = false
       }
     },
-    selectVehicle(item, e) {
-      if (e) {
-        this.selectedVehicleList.push({
-          car_number: item.vehicleNumber,
-          tech_id: item.tech_id,
-          status: e,
-        })
-      } else {
-        let index = this.selectedVehicleList.findIndex(
-          (i) => i.car_number === item.car_number,
-        )
-        this.selectedVehicleList.splice(index, 1)
-      }
-    },
+
     async redirectToAsanLogin() {
       if (!this.$auth.loggedIn)
         return await this.$router.push(this.$localePath('/login?param=garage'))
