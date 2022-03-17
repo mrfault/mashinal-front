@@ -122,9 +122,12 @@ const getInitialState = () => ({
   // banner
   smartBannerIsOn: true,
   // edit
-  editPath:"",
+  editPath: '',
   editing: false,
   editingPostAuthor: '',
+  // garage
+  selectedVehicleList: [],
+  selectedVehiclesPrice: 0,
 })
 
 export const state = () => getInitialState()
@@ -271,9 +274,11 @@ export const getters = {
   smartBanner: (s) => s.smartBannerIsOn,
   // edit
   editPath: (s) => s.editPath,
-  editing: (s)=> s.editing,
+  editing: (s) => s.editing,
   editingPostAuthor: (s) => s.editingPostAuthor,
-
+  // garage
+  selectedVehicleList: (s) => s.selectedVehicleList,
+  selectedVehiclesPrice: (s) => s.selectedVehiclesPrice,
 }
 
 const objectNotEmpty = (state, commit, property) => {
@@ -294,12 +299,12 @@ export const actions = {
       this.$auth.setUser(false)
       await this.$auth.logout()
     }
-    if(this.$auth.loggedIn) {
+    if (this.$auth.loggedIn) {
       await Promise.all([
-         dispatch('getNotifications'),
-         dispatch('getFavorites'),
-         dispatch('getNotViewedFavorites'),
-         dispatch('getNotViewedSavedSearch')
+        dispatch('getNotifications'),
+        dispatch('getFavorites'),
+        dispatch('getNotViewedFavorites'),
+        dispatch('getNotViewedSavedSearch'),
       ])
     }
     await Promise.all([
@@ -1153,16 +1158,23 @@ export const mutations = {
   },
   // banner
   closeSmartBanner(state, payload) {
-    state.smartBanner = payload;
+    state.smartBanner = payload
   },
   // edit
-  changeEditPath(state, payload){
+  changeEditPath(state, payload) {
     state.editPath = payload
   },
-  changeEditing(state, payload){
-    state.editing = payload;
+  changeEditing(state, payload) {
+    state.editing = payload
   },
-  changeEditPostAuthor(state, payload){
-    state.editingPostAuthor = payload;
-  }
+  changeEditPostAuthor(state, payload) {
+    state.editingPostAuthor = payload
+  },
+  // garage
+  changeSelectedVehiclesPrice(state,payload){
+    state.selectedVehiclesPrice = payload;
+  },
+  changeSelectedVehicleList(state,payload){
+    state.selectedVehicleList = payload;
+  },
 }

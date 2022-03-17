@@ -18,6 +18,9 @@ export default {
   mixins: [asan_login],
   async mounted() {
     this.pending = false;
+    if(this.$route.params.page_slug === 'asan-cars') {
+      return this.$router.push(this.$localePath('/garage/asan-cars'));
+    }
     this.$router.push({
       path: this.$localePath(this.$route.params.page_slug),
       query: this.$route.params.page_slug === 'garage-services' ? { attorney: true } : null

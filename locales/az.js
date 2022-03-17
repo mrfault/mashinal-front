@@ -2182,5 +2182,6 @@ export default {
   "transferable_vehicles":"Mülkiyyətdə olanlar",
 
 
-  "must_pay": "ödəniş etməlisiniz"
+  "must_pay": "ödəniş etməlisiniz",
+  "add_car_with_asan_login":"Asan Login ilə avtomobil əlavə et",
 }
