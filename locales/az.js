@@ -2183,4 +2183,5 @@ export default {
 
 
   "must_pay": "ödəniş etməlisiniz",
+  "add_car_with_asan_login":"Asan Login ilə avtomobil əlavə et",
 }

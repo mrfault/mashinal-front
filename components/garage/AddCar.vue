@@ -22,7 +22,14 @@
       :title="$t('add_car')"
       @close="showModal = false"
     >
-      <asan-login-button :fullWidth="true" v-if="!hasAsanLogin" :redirectPath="'garage/asan-cars'"></asan-login-button>
+      <asan-login-button
+        v-if="!hasAsanLogin"
+        :redirectPath="'asan-cars'"
+        :fullWidth="true"
+        :showRedirect="true"
+        :fromGarageNav="true"
+        @closeAddCarPopup="manageModalsInLoading()"
+      ></asan-login-button>
       <form class="form" @submit.prevent="checkCarNumber">
         <form-text-input
           class="mb-2 mb-lg-3"
@@ -89,6 +96,21 @@
         </div>
       </div>
     </modal-popup>
+    <modal-popup
+      :toggle="showRedirect"
+      :title="$t('add_car_with_asan_login')"
+      :title-logo="isDarkMode ? '/asan_logo_dark_mode.svg' : '/asan_logo.svg'"
+      :overflow-hidden="isMobileBreakpoint"
+      @close="showRedirect = false"
+    >
+      <p>{{ $t('asan_login_redirect') }}</p>
+      <div
+        class="align-items-center d-flex justify-content-center position-relative"
+      >
+        <animated-spinner />
+        <span style="position: absolute;">{{ timer }}</span>
+      </div>
+    </modal-popup>
     <terminal-info-popup
       name="garage-add-popup"
       @open="showPaymentModal = false"
@@ -102,10 +124,11 @@ import { mapActions } from 'vuex'
 import { PaymentMixin } from '~/mixins/payment'
 import { required } from 'vuelidate/lib/validators'
 import AsanLoginButton from '~/components/buttons/AsanLoginButton'
-
+import AnimatedSpinner from '~/components/elements/AnimatedSpinner'
 export default {
   components: {
     AsanLoginButton,
+    AnimatedSpinner
   },
   props: {
     btnClass: {
@@ -119,7 +142,7 @@ export default {
     hasAsanLogin: {
       type: Boolean,
       default: false,
-    }
+    },
   },
   mixins: [PaymentMixin],
   data() {
@@ -127,6 +150,7 @@ export default {
       showModal: false,
       pending: false,
       price: 0,
+      showRedirect: false,
       form: {
         car_number: '',
         tech_id: '',
@@ -203,6 +227,10 @@ export default {
         this.pending = false
       }
     },
+    manageModalsInLoading(){
+      this.showModal = false;
+      this.showRedirect = true
+    }
   },
 }
 </script>

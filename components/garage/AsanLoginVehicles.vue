@@ -11,7 +11,7 @@
             <div class="asan-card__top--image">
               <img
                 src="img/asan-car.svg"
-                alt="https://media.istockphoto.com/photos/generic-modern-suv-car-in-concrete-garage-picture-id1307086567?s=612x612"
+                alt="https://mashin.al/storage/96692/conversions/ford_focus_-thumb.jpg"
               />
             </div>
           </div>
@@ -37,7 +37,7 @@
             <h4>{{ price }} ₼ {{ $t('must_pay') }}</h4>
           </div>
           <button
-            @click="showPaymentModal()"
+            @click="showPaymentModal = true"
             class="asan-card__summary--button btn btn--green px-3"
             :class="{ pending }"
           >
@@ -46,11 +46,50 @@
         </div>
       </div>
     </div>
+    <modal-popup
+      :toggle="showPaymentModal"
+      :title="$t('payment')"
+      :overflow-hidden="isMobileBreakpoint"
+      @close="showPaymentModal = false"
+    >
+      <h4 class="mb-2">{{ $t('payment_method') }}</h4>
+      <form-buttons
+        v-model="paymentMethod"
+        :options="paymentMethodOptions"
+        :group-by="2"
+      />
+      <select-banking-card
+        v-model="bankingCard"
+        class="mt-2 mt-lg-3"
+        v-show="paymentMethod === 'card'"
+      />
+      <terminal-info-button popup-name="garage-add-popup" />
+      <div :class="{ 'modal-sticky-bottom': isMobileBreakpoint }">
+        <hr />
+        <div class="row">
+          <div class="col-6">
+            <p class="text-medium mb-0">{{ $t('total') }}</p>
+            <p class="text-medium text-dark-blue-2 mb-0">
+              {{ selectedVehiclesPrice }} ₼
+            </p>
+          </div>
+          <div class="col-6">
+            <button
+              :class="['btn btn--green full-width', { pending }]"
+              @click="payForCar"
+            >
+              {{ $t('pay') }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </modal-popup>
   </div>
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapMutations, mapActions, mapGetters } from 'vuex'
+import { PaymentMixin } from '~/mixins/payment'
 export default {
   props: {
     vehicleList: {
@@ -59,15 +98,18 @@ export default {
     },
     pending: Boolean,
   },
+  mixins: [PaymentMixin],
   data() {
     return {
       selectedVehicleList: [],
+      showPaymentModal: false,
     }
   },
   computed: {
     price() {
       return this.selectedVehicleList.filter((item) => item.status).length
     },
+    ...mapGetters(['selectedVehiclesPrice']),
   },
   methods: {
     selectVehicle(item, e) {
@@ -85,18 +127,37 @@ export default {
         this.selectedVehicleList.splice(index, 1)
       }
     },
-    showPaymentModal() {
-      this.$emit('showPaymentModal', true)
+    async payForCar() {
+      console.log(this.pending)
+      if (this.pending) return
+      this.pending = true
+      try {
+        const res = await this.registerNewCar({
+          vehicles: this.selectedVehicleList,
+          card_id: this.bankingCard,
+          pay_type: this.paymentMethod,
+          is_mobile: this.isMobileBreakpoint,
+        })
+        if (this.paymentMethod === 'card' && !this.bankingCard) {
+          this.pending = false
+          this.showPaymentModal = false
+          this.handlePayment(res, false, this.$t('car_added'), 'v2')
+        } else {
+          await Promise.all([this.$nuxt.refresh(), this.$auth.fetchUser()])
+          this.pending = false
+          this.showPaymentModal = false
+          this.bankingCard = ''
+          this.updatePaidStatus({
+            type: 'success',
+            text: this.$t('car_added'),
+            title: this.$t('success_payment'),
+          })
+        }
+      } catch (err) {
+        console.log(err)
+        this.pending = false
+      }
     },
-    ...mapMutations(['changeSelectedVehiclesPrice','changeSelectedVehicleList']),
-  },
-  watch: {
-    price() {
-      this.changeSelectedVehiclesPrice(this.price)
-    },
-    selectedVehicleList(){
-        this.changeSelectedVehicleList = this.selectedVehicleList
-    }
   },
 }
 </script>
