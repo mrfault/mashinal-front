@@ -48,9 +48,10 @@ import { mapActions, mapGetters } from 'vuex'
 
 import EmptyGarageCard from './EmptyGarageCard.vue'
 import AsanLoginVehicles from "~/components/garage/AsanLoginVehicles";
-
+import AsanLoginButton from "~/components/buttons/AsanLoginButton";
 export default {
   components: {
+    AsanLoginButton,
     AddCar,
     // AnimatedSpinner,
     AsanLoginVehicles,
