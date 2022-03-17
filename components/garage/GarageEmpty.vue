@@ -42,12 +42,12 @@
 <script>
 import AddCar from '~/components/garage/AddCar'
 import Asan_login from '~/mixins/asan_login'
-// import AnimatedSpinner from '~/components/elements/AnimatedSpinner'
-import AsanLoginButton from '~/components/buttons/AsanLoginButton'
-// import { PaymentMixin } from '~/mixins/payment'
+
+
 import { mapActions, mapGetters } from 'vuex'
-import AsanLoginVehicles from './AsanLoginVehicles.vue'
+
 import EmptyGarageCard from './EmptyGarageCard.vue'
+import AsanLoginVehicles from "~/components/garage/AsanLoginVehicles";
 
 export default {
   components: {
@@ -72,7 +72,7 @@ export default {
   data() {
     return {
       pending: false,
-      // showPaymentModal: false,
+      showPaymentModal: false,
       hasCars: true,
       hasAsanLogin: false,
       vehicleList: this.defaultVehicleList,
