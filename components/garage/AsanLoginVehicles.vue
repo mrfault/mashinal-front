@@ -10,7 +10,7 @@
           <div class="asan-card__top">
             <div class="asan-card__top--image">
               <img
-                src="img/asan-car.svg"
+                src="/img/asan-car.svg"
                 alt="https://mashin.al/storage/96692/conversions/ford_focus_-thumb.jpg"
               />
             </div>
