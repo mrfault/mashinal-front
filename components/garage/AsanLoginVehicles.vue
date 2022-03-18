@@ -72,7 +72,7 @@
           <div class="col-6">
             <p class="text-medium mb-0">{{ $t('total') }}</p>
             <p class="text-medium text-dark-blue-2 mb-0">
-              {{ selectedVehiclesPrice }} ₼
+              {{ price }} ₼
             </p>
           </div>
           <div class="col-6">

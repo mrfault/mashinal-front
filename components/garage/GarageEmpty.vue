@@ -117,7 +117,6 @@ export default {
     }
   },
   async mounted() {
-
     if (await this.checkTokenOnly()) {
       this.hasAsanLogin = true
       if (!Object.keys(this.defaultVehicleList).length)

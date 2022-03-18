@@ -2177,5 +2177,6 @@ export default {
   "rules_of_giving_attorney": "Правила оформления доверенности",
   "own_vehicles": "Собственное ТС",
   "transferable_vehicles":"ТС во владении",
-  "vehicle_list":"Выбор автомобиля"
+  "vehicle_list":"Выбор автомобиля",
+  "must_pay":"Должно быть оплачено"
 }
