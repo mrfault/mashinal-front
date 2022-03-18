@@ -113,6 +113,9 @@ export default {
     ...mapGetters(['selectedVehiclesPrice', {garageCars: 'garage/cars'}]),
   },
   methods: {
+    ...mapActions({
+      registerNewCar: 'garage/registerNewCar',
+    }),
     selectVehicle(item, e) {
       this.$emit('asanLoginVehiclesObj', this.asanLoginVehiclesObj)
       if (e) {
