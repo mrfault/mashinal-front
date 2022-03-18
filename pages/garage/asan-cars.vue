@@ -10,6 +10,7 @@
               v-if="vehicleList.ownVehicles && vehicleList.ownVehicles.length"
               :pending="pending"
               @showPaymentModal="showPaymentModal = true"
+              asanCarsPage
             />
             <asan-login-vehicles
               :vehicleList="vehicleList.canTransferVehicles"
@@ -49,7 +50,11 @@ export default {
       return [{ name: this.$t('add_car_with_asan_login') }]
     },
   },
-  async asyncData({ $cookies, $axios }) {
+  async asyncData({ store, $cookies, $axios }) {
+    await Promise.all([
+      store.dispatch('garage/getCarList',{})
+
+    ])
     let vehicleList = {};
     if($cookies.get('asan_token')) {
       try {

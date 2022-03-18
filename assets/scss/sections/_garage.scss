@@ -61,7 +61,7 @@
             width: 100%;
             height: 100%;
             object-fit: contain;
-            
+
           }
         }
       }
@@ -95,6 +95,22 @@
             font: 400 15px Gilroy;
             margin-bottom: 0;
           }
+        }
+      }
+      &__disabled{
+        position: relative;
+        z-index: 0;
+        cursor: context-menu;
+        &::before{
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(#000,.2);
+          content: '';
+          z-index: 1;
+          border-radius: 4px;
         }
       }
     }

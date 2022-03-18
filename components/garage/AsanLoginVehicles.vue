@@ -1,12 +1,16 @@
 <template>
   <div class="garage__asan-cars">
+    <animated-spinner v-if="pending"></animated-spinner>
     <div class="row mt-5 mt-lg-0">
       <div
-        class="col-12 col-lg-6 col-xl-4"
+        class="col-12 col-md-6 col-lg-4"
+        :class="{'col-md-6 col-lg-4 col-xl-3':asanCarsPage}"
+
         v-for="(item, index) in vehicleList"
         :key="index"
+
       >
-        <div class="asan-card">
+        <div class="asan-card"  :class="{'asan-card__disabled': checkIfSameInGarage(item)}">
           <div class="asan-card__top">
             <div class="asan-card__top--image">
               <img
@@ -24,12 +28,13 @@
               class="d-contents cursor-pointer"
               transparent="transparent"
               @change="selectVehicle(item, $event)"
+              :disabled="checkIfSameInGarage(item)"
             ></form-checkbox>
           </div>
         </div>
       </div>
     </div>
-    <div class="row" >
+    <div class="row" v-if="vehicleList.length">
       <div class="col-12">
         <div class="asan-card__summary">
           <div class="asan-card__summary--info">
@@ -92,12 +97,15 @@
 <script>
 import { mapMutations, mapActions, mapGetters } from 'vuex'
 import { PaymentMixin } from '~/mixins/payment'
+import AnimatedSpinner from "~/components/elements/AnimatedSpinner";
 export default {
+  components: {AnimatedSpinner},
   props: {
     vehicleList: {
       default: null,
     },
     pending: Boolean,
+    asanCarsPage: Boolean,
   },
   mixins: [PaymentMixin],
   data() {
@@ -110,7 +118,8 @@ export default {
     price() {
       return this.selectedVehicleList.filter((item) => item.status).length
     },
-    ...mapGetters(['selectedVehiclesPrice', {garageCars: 'garage/cars'}]),
+    ...mapGetters({garageCars: 'garage/cars'}),
+
   },
   methods: {
     ...mapActions({
@@ -162,7 +171,19 @@ export default {
         this.pending = false
       }
     },
+    checkIfSameInGarage(item){
+     const hasItem = this.garageCars.data.find(x => x.car_number === item.vehicleNumber);
+      if(hasItem){
+        return true;
+      }else{
+        return false;
+      }
+    },
+
   },
+  mounted() {
+
+  }
 }
 </script>
 
