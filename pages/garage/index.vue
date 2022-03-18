@@ -98,7 +98,6 @@ export default {
        vehicleList = await $axios.$get('/attorney/get_vehicle_list/false')
       }catch (e) {
       }
-
     }
 
     return {

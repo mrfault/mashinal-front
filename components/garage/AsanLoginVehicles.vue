@@ -3,7 +3,7 @@
     <div class="row mt-5 mt-lg-0">
       <div
         class="col-12 col-lg-6 col-xl-4"
-        v-for="(item, index) in vehicleList.ownVehicles"
+        v-for="(item, index) in vehicleList"
         :key="index"
       >
         <div class="asan-card">
@@ -29,7 +29,7 @@
         </div>
       </div>
     </div>
-    <div class="row" v-if="selectedVehicleList.length">
+    <div class="row" >
       <div class="col-12">
         <div class="asan-card__summary">
           <div class="asan-card__summary--info">
@@ -37,9 +37,11 @@
             <h4>{{ price }} ₼ {{ $t('must_pay') }}</h4>
           </div>
           <button
+
+            :disabled="!selectedVehicleList.length"
             @click="showPaymentModal = true"
             class="asan-card__summary--button btn btn--green px-3"
-            :class="{ pending }"
+            :class="{pending ,disabled: !selectedVehicleList.length }"
           >
             {{ $t('pay') }}
           </button>
@@ -93,7 +95,6 @@ import { PaymentMixin } from '~/mixins/payment'
 export default {
   props: {
     vehicleList: {
-      type: Object,
       default: null,
     },
     pending: Boolean,
@@ -161,3 +162,4 @@ export default {
   },
 }
 </script>
+

@@ -1,28 +1,13 @@
 <template>
   <button
     class="btn__asan-login"
-    @click="redirectToAsanLogin()"
+    @click="$emit('click')"
     :class="{ 'full-width mb-3': fullWidth, pending: pending }"
   >
     <div class="btn__asan-login--image">
       <img src="img/asan-login.svg" alt="" />
     </div>
     <p class="btn__asan-login--text">{{ $t('add_with') }}</p>
-    <modal-popup
-      :toggle="showRedirect"
-      :title="$t('add_car_with_asan_login')"
-      :title-logo="isDarkMode ? '/asan_logo_dark_mode.svg' : '/asan_logo.svg'"
-      :overflow-hidden="isMobileBreakpoint"
-      @close="showRedirect = false"
-    >
-      <p>{{ $t('asan_login_redirect') }}</p>
-      <div
-        class="align-items-center d-flex justify-content-center position-relative"
-      >
-        <animated-spinner />
-        <span style="position: absolute;">{{ timer }}</span>
-      </div>
-    </modal-popup>
   </button>
 </template>
 
@@ -39,7 +24,6 @@ export default {
     redirectPath: {
       type: String,
       default: 'garage-services',
-      showRedirect: Boolean,
     },
     pending: Boolean,
     fromGarageNav: Boolean,
@@ -51,6 +35,7 @@ export default {
     // },
   methods: {
     async redirectToAsanLogin() {
+      return;
       if (this.fromGarageNav) {
         this.$emit('closeAddCarPopup', true)
       }
@@ -60,6 +45,7 @@ export default {
         )
       } else {
         // if (!hasAsanLogin) {
+
           await this.asanLogin(`${this.redirectPath}`)
           const data = await this.$axios.$get(
             '/attorney/get_vehicle_list/false',

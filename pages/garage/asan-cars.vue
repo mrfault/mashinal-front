@@ -6,11 +6,17 @@
         <div class="row">
           <div class="col-12" v-if="vehicleList">
             <asan-login-vehicles
-              :vehicleList="vehicleList"
+              :vehicleList="vehicleList.ownVehicles"
               v-if="vehicleList.ownVehicles && vehicleList.ownVehicles.length"
               :pending="pending"
               @showPaymentModal="showPaymentModal = true"
-            ></asan-login-vehicles>
+            />
+            <asan-login-vehicles
+              :vehicleList="vehicleList.canTransferVehicles"
+              v-if="vehicleList.canTransferVehicles && vehicleList.canTransferVehicles.length"
+              :pending="pending"
+              @showPaymentModal="showPaymentModal = true"
+            />
           </div>
         </div>
       </client-only>
@@ -43,6 +49,18 @@ export default {
       return [{ name: this.$t('add_car_with_asan_login') }]
     },
   },
+  async asyncData({ $cookies, $axios }) {
+    let vehicleList = {};
+    if($cookies.get('asan_token')) {
+      try {
+        vehicleList = await $axios.$get('/attorney/get_vehicle_list/false')
+      }catch (e) {
+      }
+    }
+    return {
+      vehicleList
+    }
+  },
   mixins: [Asan_login, PaymentMixin],
   data() {
     return {
@@ -50,12 +68,10 @@ export default {
       showPaymentModal: false,
       hasCars: true,
       hasAsanLogin: false,
-      vehicleList: {},
-      defaultVehicleList: {},
     }
   },
   async mounted() {
-    if (await this.checkTokenOnly()) {
+    if (await this.checkTokenOnly() && !Object.keys(this.vehicleList).length) {
       this.hasAsanLogin = true
       if (!Object.keys(this.defaultVehicleList).length)
         this.vehicleList = this.$set(
