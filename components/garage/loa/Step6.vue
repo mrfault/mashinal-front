@@ -3,7 +3,7 @@
     <div class="scrollable-text mb-2 mb-lg-3">
       <vue-scroll>
         <div class="scrollable-text_scrollview">
-          <div class="iframe mb-2" v-if="hasGeneralPower">
+          <div class="iframe mb-2" v-if="true">
             <iframe
               src="https://www.youtube.com/embed/Wo1wmo5qxeQ"
               frameborder="0"
