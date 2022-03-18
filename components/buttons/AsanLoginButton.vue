@@ -44,19 +44,31 @@ export default {
     pending: Boolean,
     fromGarageNav: Boolean,
   },
-  computed: {},
+    // computed: {
+    //   hasAsanLogin(){
+    //     return true;
+    //   }
+    // },
   methods: {
     async redirectToAsanLogin() {
       if (this.fromGarageNav) {
-        this.$emit('closeAddCarPopup', true);
+        this.$emit('closeAddCarPopup', true)
       }
-      if (!this.$auth.loggedIn)
+      if (!this.$auth.loggedIn) {
         return await this.$router.push(
           this.$localePath(`/login?param=${this.redirectPath}`),
         )
-      await this.asanLogin(`${this.redirectPath}`)
-      const data = await this.$axios.$get('/attorney/get_vehicle_list/false')
-      this.vehicleList = data
+      } else {
+        // if (!hasAsanLogin) {
+          await this.asanLogin(`${this.redirectPath}`)
+          const data = await this.$axios.$get(
+            '/attorney/get_vehicle_list/false',
+          )
+          this.vehicleList = data
+        // }else{
+          // this.$router.push(this.$localePath('/garage/asan-cars'))
+        // }
+      }
     },
   },
 }

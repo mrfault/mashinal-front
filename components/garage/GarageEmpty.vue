@@ -43,11 +43,11 @@
 import AddCar from '~/components/garage/AddCar'
 import Asan_login from '~/mixins/asan_login'
 
-
+import AsanLoginButton from '~/components/buttons/AsanLoginButton.vue'
 import { mapActions, mapGetters } from 'vuex'
 
 import EmptyGarageCard from './EmptyGarageCard.vue'
-import AsanLoginVehicles from "~/components/garage/AsanLoginVehicles";
+import AsanLoginVehicles from '~/components/garage/AsanLoginVehicles'
 import AsanLoginButton from "~/components/buttons/AsanLoginButton";
 export default {
   components: {
@@ -68,7 +68,7 @@ export default {
   },
   mixins: [
     Asan_login,
-    //  PaymentMixin
+    PaymentMixin
   ],
   data() {
     return {
