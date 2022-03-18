@@ -73,7 +73,7 @@ export default {
   async mounted() {
     if (await this.checkTokenOnly() && !Object.keys(this.vehicleList).length) {
       this.hasAsanLogin = true
-      if (!Object.keys(this.defaultVehicleList).length)
+      if (!Object.keys(this.vehicleList).length)
         this.vehicleList = this.$set(
           this,
           'vehicleList',

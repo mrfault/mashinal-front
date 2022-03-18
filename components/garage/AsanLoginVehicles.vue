@@ -110,7 +110,7 @@ export default {
     price() {
       return this.selectedVehicleList.filter((item) => item.status).length
     },
-    ...mapGetters(['selectedVehiclesPrice']),
+    ...mapGetters(['selectedVehiclesPrice', {garageCars: 'garage/cars'}]),
   },
   methods: {
     selectVehicle(item, e) {
