@@ -179,9 +179,9 @@ export default {
     },
   },
   watch: {
-    selectedVehicleList(){
-      console.log(this.selectedVehicleList);
-    }
+    selectedVehicleList() {
+      console.log(this.selectedVehicleList)
+    },
   },
 }
 </script>

@@ -24,11 +24,11 @@
     >
       <asan-login-button
         @click="redirectToAsanLogin()"
-        v-if="!hasAsanLogin"
+        v-if="!hasAsanLoginCopy"
         :fullWidth="true"
         :fromGarageNav="true"
         @closeAddCarPopup="manageModalsInLoading()"
-        :has-asan-login="hasAsanLogin"
+        :has-asan-login="hasAsanLoginCopy"
         :redirectPath="redirectPath"
       ></asan-login-button>
       <form class="form" @submit.prevent="checkCarNumber">
@@ -153,7 +153,7 @@ export default {
       showModal: false,
       pending: false,
       price: 0,
-      hasAsanLogin: false,
+      hasAsanLoginCopy: false,
       redirectPath: 'garage',
       form: {
         car_number: '',
@@ -171,6 +171,7 @@ export default {
     haveBalanceToPay() {
       return parseFloat(this.price) <= this.user.balance
     },
+
   },
   methods: {
     ...mapActions({
@@ -260,15 +261,16 @@ export default {
   },
   async mounted() {
     if (await this.checkTokenOnly()) {
-      this.hasAsanLogin = true
+      this.hasAsanLoginCopy = true
       this.vehicleList = this.$set(
         this,
         'vehicleList',
         await this.$axios.$get('/attorney/get_vehicle_list/false'),
       )
     } else {
-      this.hasAsanLogin = false
+      this.hasAsanLoginCopy = false
     }
+    this.hasAsanLoginCopy = this.hasAsanLogin
   },
 }
 </script>

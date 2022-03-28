@@ -3,22 +3,24 @@
     <div class="container">
       <client-only>
         <breadcrumbs :crumbs="crumbs" />
-        <div class="row">
-          <div class="col-12" v-if="vehicleList">
+        <div class="row" v-if="vehicleList">
+          <div class="col-12" >
             <asan-login-vehicles
-              :vehicleList="vehicleList.ownVehicles"
+              :vehicleList="allVehicles"
               v-if="vehicleList.ownVehicles && vehicleList.ownVehicles.length"
               :pending="pending"
               @showPaymentModal="showPaymentModal = true"
               asanCarsPage
             />
+          </div>
+          <!-- <div class="col-12" >
             <asan-login-vehicles
               :vehicleList="vehicleList.canTransferVehicles"
               v-if="vehicleList.canTransferVehicles && vehicleList.canTransferVehicles.length"
               :pending="pending"
               @showPaymentModal="showPaymentModal = true"
             />
-          </div>
+          </div> -->
         </div>
       </client-only>
     </div>
@@ -50,6 +52,9 @@ export default {
     crumbs() {
       return [{ name: this.$t('add_car_with_asan_login') }]
     },
+    allVehicles(){
+      return this.vehicleList.ownVehicles.concat(this.vehicleList.canTransferVehicles)
+    }
   },
   async asyncData({ store, $cookies, $axios }) {
     await Promise.all([
