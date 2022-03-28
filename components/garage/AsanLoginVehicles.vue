@@ -44,7 +44,7 @@
         <h2
           class="title-with-line full-width title-with-line__blue"
           pl-2
-          v-if="vehicleList.length"
+          v-if="showNewlyAddedHeading > 0"
         >
           <span>
             {{ $t('newly_added') }}
@@ -161,20 +161,23 @@ export default {
     return {
       selectedVehicleList: [],
       showPaymentModal: false,
+      showNewlyAddedHeading: this.vehicleList.length
     }
   },
   computed: {
     price() {
-      return this.selectedVehicleList.filter((item) => item.status).length
+      // return this.selectedVehicleList.filter((item) => item.status).length
+      return this.selectedVehicleList.length
+
     },
     ...mapGetters({ garageCars: 'garage/cars' }),
-    showNewlyAddedHeading(){
-      if (this.vehicleList.length) {
-        return true
-      }else{
-        return false;
-      }
-    }
+    // showNewlyAddedHeading(){
+    //   if (this.vehicleList.length) {
+    //       return true
+    //   }else{
+    //     return false;
+    //   }
+    // }
   },
   methods: {
     selectVehicle(item, e) {
@@ -228,6 +231,9 @@ export default {
         (x) => x.car_number === item.vehicleNumber,
       )
       if (hasItem) {
+        while (this.showNewlyAddedHeading > 0) {
+          this.showNewlyAddedHeading --
+        }
         return true
       } else {
         return false
