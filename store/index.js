@@ -188,7 +188,15 @@ export const getters = {
   carsAnnouncements: (s) => s.carsAnnouncements,
   motoAnnouncements: (s) => s.motoAnnouncements,
   commercialAnnouncements: (s) => s.commercialAnnouncements,
-  shopAnnouncements: (s) => s.shopAnnouncements,
+  shopAnnouncements:  (s) => {
+    if (!Array.isArray(s.shopAnnouncements.data)) {
+      return {
+        ...s.shopAnnouncements,
+        data: Object.values(s.shopAnnouncements.data || [])
+      }
+    }
+    return s.shopAnnouncements
+  },
   mainAnnouncements: (s) => s.mainAnnouncements,
   mainPartsAnnouncements: (s) => s.mainPartsAnnouncements,
   myAnnouncements: (s) => s.myAnnouncements,
@@ -785,9 +793,9 @@ export const actions = {
     const res = await this.$axios.$get(`/grid/same/announcements/${data.id}`)
     commit('mutate', { property: 'relativeAnnouncements', value: res })
   },
-  async getShopOtherAnnouncements({ commit }, data) {
+  async getShopOtherAnnouncements({ commit,state }, data) {
     const res = await this.$axios.$get(
-      `/grid/shop/announcements/${data.id}?page=${data.page || 1}`,
+      `/grid/shop/announcements/${data.id || state.announcement.id_unique}?page=${data.page || 1}`,
     )
     commit('mutate', { property: 'shopAnnouncements', value: res })
   },
