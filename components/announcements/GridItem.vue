@@ -56,14 +56,17 @@
         <div class="item-overlay" v-if="showOverlay">
           <div class="item-overlay__top">
             <div class="item-overlay__top--left">
-              <add-favorite :announcement="announcement"/>
+              <add-favorite
+                :announcement="announcement"
+                v-if="!isProfilePage"
+              />
             </div>
             <div class="item-overlay__top--right">
               <span
                 class="btn-sq btn-sq--color-red active"
-                v-if="announcement.has_monetization"
+                v-if="announcement.has_monetization && !isMobileBreakpoint"
               >
-                <icon name="speaker" v-tooltip="$t('ad_announcement')"/>
+                <icon name="speaker" v-tooltip="$t('ad_announcement')" />
               </span>
               <template
                 v-if="announcement.is_autosalon || announcement.is_part_salon"
@@ -117,13 +120,23 @@
                 v-if="getType === 'Car'"
               />
             </span>
+
             <div class="item-overlay__bottom--right">
               <span class="badge" v-if="announcement.has_360">
                 360
                 <sup>o</sup>
               </span>
-              <span class="badge" v-if="announcement.created_at">
+              <span
+                class="badge"
+                v-if="announcement.created_at && !isMobileBreakpoint"
+              >
                 {{ $formatDate(announcement.created_at, 'D MMM')[locale] }}
+              </span>
+              <span
+                class="btn-sq btn-sq--color-red active"
+                v-if="announcement.has_monetization && isMobileBreakpoint"
+              >
+                <icon name="speaker" v-tooltip="$t('ad_announcement')" />
               </span>
             </div>
           </div>
@@ -167,9 +180,9 @@
             class="call-count"
             v-if="announcement.show_phone_number_count || showPhoneCount"
           >
-            <icon name="phone-call"/>
+            <icon name="phone-call" />
             {{ announcement.show_phone_number_count || 0 }}
-            <icon name="eye"/>
+            <icon name="eye" />
             {{ announcement.view_count }}
           </span>
           <div class="item-checkbox" v-if="showCheckbox" style="">
@@ -181,7 +194,7 @@
             />
           </div>
         </div>
-        <hr class="mt-1" v-if="showCheckbox && announcement.status === 1"/>
+        <hr class="mt-1" v-if="showCheckbox && announcement.status === 1" />
         <div class="item-details__actions">
           <template v-if="showCheckbox && announcement.status === 1">
             <span>
@@ -190,7 +203,10 @@
                 :announcement="announcement"
                 class-name="red-outline"
               />
-              <monetization-stats-button v-else-if="$auth.user.id === announcement.user_id" :announcement="announcement"/>
+              <monetization-stats-button
+                v-else-if="$auth.user.id === announcement.user_id"
+                :announcement="announcement"
+              />
             </span>
           </template>
         </div>
@@ -216,6 +232,10 @@ export default {
     clickable: Boolean,
     trackViews: Boolean,
     colClass: String,
+    isProfilePage: {
+      type: Boolean,
+      default: false,
+    },
   },
   components: {
     MonetizationStatsButton,
