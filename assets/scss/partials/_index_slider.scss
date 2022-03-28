@@ -1,24 +1,33 @@
-.homePage-slide-item{
+.homePage-slide-item {
   height: 500px;
   display: flex;
 }
-.homePage-slide-left{
+.homePage-slide-left {
   width: 53%;
 }
-.homePage-slide-right{
+@media screen and (min-width: 1680px) {
+  .homePage-slide-left {
+    img {
+      width: 100%;
+      height: calc(100% - 2px);
+      object-fit: cover;
+    }
+  }
+}
+.homePage-slide-right {
   position: relative;
-  background: #D0DBF9;
+  background: #d0dbf9;
   width: 47%;
 }
 
 .dark-mode .homePage-slide-right {
   background: $dark-2;
 }
-.dark-mode .homePage-slide-right .before-slider-right{
+.dark-mode .homePage-slide-right .before-slider-right {
   border-top: 600px solid $dark-2 !important;
 }
-.homePage-slide-right > .before-slider-right{
-  content: "";
+.homePage-slide-right > .before-slider-right {
+  content: '';
   position: absolute;
   top: 0;
   left: 2px;
@@ -26,70 +35,65 @@
   transform: translateX(-100%);
   height: 100%;
   border-left: 135px solid transparent;
-
 }
-.homePage-slide-right{
+.homePage-slide-right {
   display: flex;
   align-items: center;
 }
-.homePage-text-section{
-width: 50%;
+.homePage-text-section {
+  width: 50%;
   margin-top: 90px;
   margin-left: 3px;
 }
-.homePage-text-section h3{
+.homePage-text-section h3 {
   font-size: 36px;
   margin-left: 9px;
 }
-.homePage-text-section p{
+.homePage-text-section p {
   font-size: 20px;
   line-height: 30px;
 }
-.homePage-text-section img{
+.homePage-text-section img {
   margin-top: -8px;
 }
-.homePage-text-section-title{
+.homePage-text-section-title {
   display: flex;
   align-items: center;
-
 }
-.swiper-pagination{
+.swiper-pagination {
   left: 77px !important;
   bottom: 25px !important;
-
 }
-.swiper-pagination-bullet-active{
-  background: #081A3E !important;
+.swiper-pagination-bullet-active {
+  background: #081a3e !important;
 }
-.dark-mode .swiper-pagination-bullet{
-  background: gray ;
+.dark-mode .swiper-pagination-bullet {
+  background: gray;
 }
-.dark-mode .swiper-pagination-bullet-active{
+.dark-mode .swiper-pagination-bullet-active {
   background: $white !important;
 }
 
-.swiper-pagination-bullet{
+.swiper-pagination-bullet {
   margin-left: 5px !important;
   width: 12px;
   height: 12px;
 }
-.mobileHomePage-slide-item{
+.mobileHomePage-slide-item {
   display: flex;
   justify-content: space-around;
   align-items: center;
-
 }
-.mobileHomePage-slide-left{
+.mobileHomePage-slide-left {
   height: auto;
   width: 50%;
   padding: 15px;
 }
-.mobileHomePage-slide-right{
+.mobileHomePage-slide-right {
   width: 50%;
   height: auto;
-
 }
-.mobileHomePage-slide-right img{
+.mobileHomePage-slide-right img {
   width: 100%;
   height: auto;
 }
