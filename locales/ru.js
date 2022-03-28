@@ -2180,5 +2180,6 @@ export default {
   "vehicle_list":"Выбор автомобиля",
   "must_pay":"Должно быть оплачено",
   "add_with":"Добавить через Асан логин",
-   "add_car_with_asan_login":"Добавить через Асан логин"
+   "add_car_with_asan_login":"Добавить через Асан логин",
+   "newly_added":"Не добавленные автомобили",
 }
