@@ -76,7 +76,7 @@
       <div :class="{ 'modal-sticky-bottom': isMobileBreakpoint }">
         <hr />
         <div class="row">
-          <div class="col-6">
+          <div class="col-6 mb-2 mb-lg-0">
             <p class="text-medium mb-0">{{ $t('total') }}</p>
             <p class="text-medium text-dark-blue-2 mb-0">{{ price }} ₼</p>
           </div>
