@@ -72,6 +72,11 @@ h2 {
         padding-left: 25px;
       }
     }
+    &__blue {
+      span {
+        background: $greyish-blue-1;
+      }
+    }
   }
 }
 
@@ -277,16 +282,16 @@ hr {
 .d-contents {
   display: contents;
 
-  .checkbox-input{
-    label{
-      padding: 0 !important; 
+  .checkbox-input {
+    label {
+      padding: 0 !important;
     }
   }
 }
 
-.min-100{
+.min-100 {
   min-height: 100% !important;
 }
-.min-100-20{
+.min-100-20 {
   min-height: calc(100% - 20px);
 }

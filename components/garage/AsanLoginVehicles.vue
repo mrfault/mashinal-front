@@ -2,15 +2,65 @@
   <div class="garage__asan-cars">
     <animated-spinner v-if="pending"></animated-spinner>
     <div class="row mt-5 mt-lg-0">
+      <div class="col-12">
+        <h2
+          class="title-with-line full-width title-with-line__blue"
+          pl-2
+          v-if="garageCars.data.length"
+        >
+          <span>
+            {{ $t('exist_in_garage') }}
+          </span>
+        </h2>
+      </div>
+      <div
+        class="col-12 col-md-6 col-lg-4"
+        :class="{ 'col-md-6 col-lg-4 col-xl-3': asanCarsPage }"
+        v-for="(item, index) in garageCars.data"
+        :key="index"
+      >
+        <div
+          class="asan-card"
+          :class="{ 'asan-card__disabled': true}"
+        >
+          <div class="asan-card__top">
+            <div class="asan-card__top--image">
+              <img
+                src="/img/asan-car.svg"
+                alt="https://mashin.al/storage/96692/conversions/ford_focus_-thumb.jpg"
+              />
+            </div>
+          </div>
+          <div class="asan-card__bottom">
+            <p class="asan-card__bottom--number">
+              {{ item.car_number }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-5 mt-lg-0">
+      <div class="col-12">
+        <h2
+          class="title-with-line full-width title-with-line__blue"
+          pl-2
+          v-if="vehicleList.length"
+        >
+          <span>
+            {{ $t('newly_added') }}
+          </span>
+        </h2>
+      </div>
       <div
         class="col-12 col-md-6 col-lg-4"
         :class="{ 'col-md-6 col-lg-4 col-xl-3': asanCarsPage }"
         v-for="(item, index) in vehicleList"
         :key="index"
       >
+          <!-- :class="{ 'asan-card__disabled': checkIfExistInGarage(item) }" -->
         <div
           class="asan-card"
-          :class="{ 'asan-card__disabled': checkIfSameInGarage(item) }"
+          v-if="!checkIfExistInGarage(item)"
         >
           <div class="asan-card__top">
             <div class="asan-card__top--image">
@@ -28,7 +78,6 @@
               :input-name="item.vehicleNumber"
               class="d-contents cursor-pointer"
               transparent
-              :disabled="checkIfSameInGarage(item)"
               v-model="selectedVehicleList"
               :checked-value="item.tech_id"
             ></form-checkbox>
@@ -119,6 +168,13 @@ export default {
       return this.selectedVehicleList.filter((item) => item.status).length
     },
     ...mapGetters({ garageCars: 'garage/cars' }),
+    showNewlyAddedHeading(){
+      if (this.vehicleList.length) {
+        return true
+      }else{
+        return false;
+      }
+    }
   },
   methods: {
     selectVehicle(item, e) {
@@ -167,7 +223,7 @@ export default {
         this.pending = false
       }
     },
-    checkIfSameInGarage(item) {
+    checkIfExistInGarage(item) {
       const hasItem = this.garageCars.data.find(
         (x) => x.car_number === item.vehicleNumber,
       )
