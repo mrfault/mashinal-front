@@ -5,7 +5,7 @@
     :class="{ 'full-width mb-3': fullWidth, pending: pending }"
   >
     <div class="btn__asan-login--image">
-      <img src="img/asan-login.svg" alt="" />
+      <img src="/img/asan-login.svg" alt="" />
     </div>
     <p class="btn__asan-login--text">{{ $t('add_with') }}</p>
   </button>

@@ -11,7 +11,7 @@
             {{ $t('no_cars_found') }}
           </p>
           <div class="garage_no-cars__buttons">
-            <add-car class="mb-2 mb-xl-0" :hasAsanLogin="hasAsanLogin"/>
+            <add-car class="mb-4 mb-xl-1" :hasAsanLogin="hasAsanLogin"/>
             <asan-login-button
               @click="showRedirect = true; asanLogin('garage')"
               v-if="!hasAsanLogin"
