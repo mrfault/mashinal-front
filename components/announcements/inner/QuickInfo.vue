@@ -106,6 +106,7 @@
         <monetization-button
           :announcement="announcement"
           v-if="!this.isMobileBreakpoint && !announcement.has_monetization"
+          @openModal="openModal"
         />
       </div>
     </template>
