@@ -28,6 +28,7 @@ export default {
       )
       res = await res.json()
       if (res.status === 401) {
+        let lang = this.locale === 'ru' ? 'ru' : '';
         this.showRedirect = true
         await new Promise((resolve, reject) => {
           clearTimeout(this.timeout)
@@ -35,8 +36,8 @@ export default {
             if (this.showRedirect) {
               this.$cookies.remove('asan_token')
               let origin = this.$env.IS_LOCAL
-                ? 'http://localhost:3000/asan/' + redirectPath
-                : 'https://dev.mashin.al/asan/' + redirectPath
+                ? `http://localhost:3000/${lang}/asan/` + redirectPath
+                : `https://dev.mashin.al/${lang}/asan/` + redirectPath
               location.href =
                 'https://asanlogintest.my.gov.az/auth?origin=' + origin
             } else {

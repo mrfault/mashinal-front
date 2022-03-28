@@ -17,13 +17,12 @@ export default {
   },
   mixins: [asan_login],
   async mounted() {
-    let lang = this.locale === 'ru' ? 'ru' : '';
     this.pending = false;
     if(this.$route.params.page_slug === 'asan-cars') {
-      return this.$router.push(this.$localePath(lang+'/garage/asan-cars'));
+      return this.$router.push(this.$localePath('/garage/asan-cars'));
     }
     this.$router.push({
-      path: lang + this.$localePath(this.$route.params.page_slug),
+      path: this.$localePath(this.$route.params.page_slug),
       query: this.$route.params.page_slug === 'garage-services' ? { attorney: true } : null
     })
   }
