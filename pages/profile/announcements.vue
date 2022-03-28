@@ -25,7 +25,7 @@
         :show-checkbox="true"
         :show-status="true"
         @change-page="changePage"
-        :isProfilePage="true"
+        isProfilePage
       />
       <no-results v-else
         :type="$route.query.type == 2 ? 'part' : 'car'"

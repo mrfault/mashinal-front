@@ -90,7 +90,7 @@
   }
   .btn {
     &__asan-login {
-      &--text{
+      &--text {
         font-size: 13px !important;
       }
     }
@@ -199,19 +199,9 @@
 }
 
 @media (min-width: 356px) and (max-width: 450px) {
-  .announcements-grid_item {
-    .item-overlay {
-      &__bottom {
-        justify-content: space-between;
-        &--right {
-          transform: scale(0.8);
-        }
-      }
-    }
-  }
   .btn {
     &__asan-login {
-      &--text{
+      &--text {
         font-size: 11px !important;
       }
     }
@@ -220,7 +210,7 @@
 @media screen and (max-width: 350px) {
   .btn {
     &__asan-login {
-      &--text{
+      &--text {
         font-size: 11px;
       }
     }
@@ -229,8 +219,25 @@
 @media screen and (max-width: 678px) {
   .btn {
     &__asan-login {
-      &--text{
+      &--text {
         font-size: 13px;
+      }
+    }
+  }
+  .announcements-grid_item {
+    .item-overlay {
+      &__top {
+        transform: scale(0.8);
+        &--right{
+          width: 100%;
+          justify-content: space-between;
+        }
+      }
+      &__bottom {
+        justify-content: space-between;
+        &--right {
+          transform: scale(0.8);
+        }
       }
     }
   }
