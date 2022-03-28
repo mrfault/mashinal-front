@@ -88,6 +88,13 @@
       max-width: 100%;
     }
   }
+  .btn {
+    &__asan-login {
+      &--text{
+        font-size: 13px !important;
+      }
+    }
+  }
 }
 
 @media only screen and (min-width: 1280px) {
@@ -202,5 +209,29 @@
       }
     }
   }
+  .btn {
+    &__asan-login {
+      &--text{
+        font-size: 11px !important;
+      }
+    }
+  }
 }
-
+@media screen and (max-width: 350px) {
+  .btn {
+    &__asan-login {
+      &--text{
+        font-size: 11px;
+      }
+    }
+  }
+}
+@media screen and (max-width: 678px) {
+  .btn {
+    &__asan-login {
+      &--text{
+        font-size: 13px;
+      }
+    }
+  }
+}

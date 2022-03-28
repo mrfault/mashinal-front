@@ -1,6 +1,6 @@
 <template>
   <button
-    class="btn__asan-login"
+    class="btn__asan-login px-2 px-md-5"
     @click="$emit('click')"
     :class="{ 'full-width mb-3': fullWidth, pending: pending }"
   >
