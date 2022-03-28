@@ -2178,5 +2178,7 @@ export default {
   "own_vehicles": "Собственное ТС",
   "transferable_vehicles":"ТС во владении",
   "vehicle_list":"Выбор автомобиля",
-  "must_pay":"Должно быть оплачено"
+  "must_pay":"Должно быть оплачено",
+  "add_with":"Добавить через Асан логин",
+   "add_car_with_asan_login":"Добавить через Асан логин"
 }

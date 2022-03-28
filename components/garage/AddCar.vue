@@ -28,6 +28,8 @@
         :fullWidth="true"
         :fromGarageNav="true"
         @closeAddCarPopup="manageModalsInLoading()"
+        :has-asan-login="hasAsanLogin"
+        :redirectPath="redirectPath"
       ></asan-login-button>
       <form class="form" @submit.prevent="checkCarNumber">
         <form-text-input
@@ -125,11 +127,11 @@ import { PaymentMixin } from '~/mixins/payment'
 import { required } from 'vuelidate/lib/validators'
 import AsanLoginButton from '~/components/buttons/AsanLoginButton'
 import AnimatedSpinner from '~/components/elements/AnimatedSpinner'
-import asan_login from "~/mixins/asan_login";
+import asan_login from '~/mixins/asan_login'
 export default {
   components: {
     AsanLoginButton,
-    AnimatedSpinner
+    AnimatedSpinner,
   },
   props: {
     btnClass: {
@@ -145,12 +147,14 @@ export default {
       default: false,
     },
   },
-  mixins: [ PaymentMixin, asan_login],
+  mixins: [PaymentMixin, asan_login],
   data() {
     return {
       showModal: false,
       pending: false,
       price: 0,
+      hasAsanLogin: false,
+      redirectPath: 'garage',
       form: {
         car_number: '',
         tech_id: '',
@@ -174,27 +178,23 @@ export default {
       registerNewCar: 'garage/registerNewCar',
     }),
     async redirectToAsanLogin() {
-
-      if(await this.checkTokenOnly()) {
-
+      if (await this.checkTokenOnly()) {
         this.$router.push(this.$localePath('/garage/asan-cars'))
-        return;
+        return
       }
       // if (this.fromGarageNav) {
       //   this.$emit('closeAddCarPopup', true)
       // }
       if (!this.$auth.loggedIn) {
         return await this.$router.push(
-          this.$localePath(`/login?param=asan-cars`),
+          this.$localePath(`/login?param=garage/asan-cars`),
         )
       } else {
         // if (!hasAsanLogin) {
-        this.showModal = false;
-        this.showRedirect = true;
-        await this.asanLogin('asan-cars')
-        const data = await this.$axios.$get(
-          '/attorney/get_vehicle_list/false',
-        )
+        this.showModal = false
+        this.showRedirect = true
+        await this.asanLogin('garage/asan-cars')
+        const data = await this.$axios.$get('/attorney/get_vehicle_list/false')
         this.vehicleList = data
         // }else{
         // this.$router.push(this.$localePath('/garage/asan-cars'))
@@ -255,7 +255,19 @@ export default {
       }
     },
     manageModalsInLoading() {
-      this.showModal = false;
+      this.showModal = false
+    },
+  },
+  async mounted() {
+    if (await this.checkTokenOnly()) {
+      this.hasAsanLogin = true
+      this.vehicleList = this.$set(
+        this,
+        'vehicleList',
+        await this.$axios.$get('/attorney/get_vehicle_list/false'),
+      )
+    } else {
+      this.hasAsanLogin = false
     }
   },
 }

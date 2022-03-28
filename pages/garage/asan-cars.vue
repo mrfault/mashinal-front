@@ -35,7 +35,7 @@ export default {
     GarageNav,
     AsanLoginVehicles,
   },
-  middleware:'payment_redirect',
+  middleware:['auth_general', 'payment_redirect'],
   nuxtI18n: {
     paths: {
       az: '/qaraj/asan-avtomobiller',

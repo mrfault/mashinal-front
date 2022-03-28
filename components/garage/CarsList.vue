@@ -48,7 +48,7 @@
             />
           </div>
           <div class="col-6 col-lg-12" v-if="isMobileBreakpoint">
-            <add-car tag="div" />
+            <add-car :has-asan-login="hasAsanLogin" tag="div" />
           </div>
         </div>
       </div>
@@ -87,6 +87,7 @@ import CarItem from '~/components/garage/CarItem'
 import CarsNav from '~/components/garage/CarsNav'
 import CarInfo from '~/components/garage/CarInfo'
 import CarProtocols from '~/components/garage/CarProtocols'
+import asan_login from '~/mixins/asan_login'
 
 export default {
   components: {
@@ -95,11 +96,13 @@ export default {
     CarInfo,
     CarProtocols,
   },
+  mixins:[asan_login],
   data() {
     let activeCars = this.$store.state.garage.cars.data?.filter(
       (car) => car.status === 1 && car.sync_status === 1,
     )
     return {
+      hasAsanLogin: false,
       tab: 'info',
       activeCarId: activeCars[0]?.id || '',
       showNoActiveCarsAlert: true,
@@ -123,6 +126,18 @@ export default {
         this.activeCars?.[0]
       )
     },
+  },
+   async mounted() {
+    if (await this.checkTokenOnly()) {
+      this.hasAsanLogin = true
+        this.vehicleList = this.$set(
+          this,
+          'vehicleList',
+          await this.$axios.$get('/attorney/get_vehicle_list/false'),
+        )
+    } else {
+      this.hasAsanLogin = false
+    }
   },
   methods: {
     updateActiveCar(id) {
