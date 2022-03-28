@@ -4,13 +4,14 @@
     <div class="row mt-5 mt-lg-0">
       <div
         class="col-12 col-md-6 col-lg-4"
-        :class="{'col-md-6 col-lg-4 col-xl-3':asanCarsPage}"
-
+        :class="{ 'col-md-6 col-lg-4 col-xl-3': asanCarsPage }"
         v-for="(item, index) in vehicleList"
         :key="index"
-
       >
-        <div class="asan-card"  :class="{'asan-card__disabled': checkIfSameInGarage(item)}">
+        <div
+          class="asan-card"
+          :class="{ 'asan-card__disabled': checkIfSameInGarage(item) }"
+        >
           <div class="asan-card__top">
             <div class="asan-card__top--image">
               <img
@@ -24,16 +25,18 @@
               {{ item.vehicleNumber }}
             </p>
             <form-checkbox
-              input-name="selected_vehicles"
+              :input-name="item.vehicleNumber"
               class="d-contents cursor-pointer"
-              transparent="transparent"
-              @change="selectVehicle(item, $event)"
+              transparent
               :disabled="checkIfSameInGarage(item)"
+              v-model="selectedVehicleList"
+              :checked-value="item.tech_id"
             ></form-checkbox>
           </div>
         </div>
       </div>
     </div>
+
     <div class="row" v-if="vehicleList.length">
       <div class="col-12">
         <div class="asan-card__summary">
@@ -42,11 +45,10 @@
             <h4>{{ price }} ₼ {{ $t('must_pay') }}</h4>
           </div>
           <button
-
             :disabled="!selectedVehicleList.length"
             @click="showPaymentModal = true"
             class="asan-card__summary--button btn btn--green px-3"
-            :class="{pending ,disabled: !selectedVehicleList.length }"
+            :class="{ pending, disabled: !selectedVehicleList.length }"
           >
             {{ $t('pay') }}
           </button>
@@ -76,9 +78,7 @@
         <div class="row">
           <div class="col-6">
             <p class="text-medium mb-0">{{ $t('total') }}</p>
-            <p class="text-medium text-dark-blue-2 mb-0">
-              {{ price }} ₼
-            </p>
+            <p class="text-medium text-dark-blue-2 mb-0">{{ price }} ₼</p>
           </div>
           <div class="col-6">
             <button
@@ -97,9 +97,9 @@
 <script>
 import { mapMutations, mapActions, mapGetters } from 'vuex'
 import { PaymentMixin } from '~/mixins/payment'
-import AnimatedSpinner from "~/components/elements/AnimatedSpinner";
+import AnimatedSpinner from '~/components/elements/AnimatedSpinner'
 export default {
-  components: {AnimatedSpinner},
+  components: { AnimatedSpinner },
   props: {
     vehicleList: {
       default: null,
@@ -118,13 +118,9 @@ export default {
     price() {
       return this.selectedVehicleList.filter((item) => item.status).length
     },
-    ...mapGetters({garageCars: 'garage/cars'}),
-
+    ...mapGetters({ garageCars: 'garage/cars' }),
   },
   methods: {
-    ...mapActions({
-      registerNewCar: 'garage/registerNewCar',
-    }),
     selectVehicle(item, e) {
       this.$emit('asanLoginVehiclesObj', this.asanLoginVehiclesObj)
       if (e) {
@@ -171,19 +167,21 @@ export default {
         this.pending = false
       }
     },
-    checkIfSameInGarage(item){
-     const hasItem = this.garageCars.data.find(x => x.car_number === item.vehicleNumber);
-      if(hasItem){
-        return true;
-      }else{
-        return false;
+    checkIfSameInGarage(item) {
+      const hasItem = this.garageCars.data.find(
+        (x) => x.car_number === item.vehicleNumber,
+      )
+      if (hasItem) {
+        return true
+      } else {
+        return false
       }
     },
-
   },
-  mounted() {
-
-  }
+  watch: {
+    selectedVehicleList(){
+      console.log(this.selectedVehicleList);
+    }
+  },
 }
 </script>
-

@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <div class="col-12 mb-4 mb-xl-0 col-xl-6">
+    <div class="col-12 col-md-12 col-xl-6 h-100 mb-5 mb-lg-0">
       <div
         class="garage_no-cars card"
         :class="{ 'min-100': selectedVehicleList.length }"
