@@ -4,14 +4,14 @@
       <icon :name="iconName" v-if="iconName" :class="{invalid, disabled}" />
       <img :src="imgSrc" v-if="imgSrc" :class="{disabled}" />
       <template v-if="inputDate">
-        <date-picker 
-          v-model="inputValue" 
-          value-type="format" 
+        <date-picker
+          v-model="inputValue"
+          value-type="format"
           :popup-style="{ top: '100%', left: 0 }"
           :append-to-body="false"
           :format="'DD.MM.YYYY'"
-          :placeholder="placeholder" 
-          :lang="locale" 
+          :placeholder="placeholder"
+          :lang="locale"
           :input-attr="{readonly: 'readonly', id, maxlength, disabled}"
           :input-class="{invalid, valid, disabled, [`${inputClass}`]:inputClass}"
           :disabled-date="disabledDate"
@@ -28,8 +28,8 @@
         <input
           :id="id"
           :type="showPassword ? 'text' : type"
-          :placeholder="placeholder" 
-          :maxlength="maxlength" 
+          :placeholder="placeholder"
+          :maxlength="maxlength"
           :disabled="disabled"
           :class="{invalid, valid, disabled, [`${inputClass}`]:inputClass}"
           :autocomplete="autocomplete"
