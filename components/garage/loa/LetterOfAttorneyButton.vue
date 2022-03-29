@@ -1,5 +1,5 @@
 <template>
-  <component :is="tag" :class="classes" @click="showVehicles">
+  <component :is="tag" :class="classes" v-if="false" @click="showVehicles">
     {{ $t('send_a_letter_of_attorney') }}
     <component
       v-if="!isMobileBreakpoint || showSteps"
