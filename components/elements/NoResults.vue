@@ -21,3 +21,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.no-results{
+  background: #fff;
+}
+</style>

@@ -18,6 +18,7 @@ export default {
     // },
 
     async checkAsanToken(redirectPath = 'garage-services') {
+      return 0;
       let res = await fetch(
         'https://apiasanlogintest.my.gov.az/ssoauthz/api/v1/token/check',
         {
@@ -54,6 +55,7 @@ export default {
       }
     },
     async checkTokenOnly() {
+      return 0;
       let res = await fetch(
         'https://asanlogintest.my.gov.az/ssoauthz/api/v1/token',
         {
@@ -70,6 +72,7 @@ export default {
       return res.status === 200;
     },
     async asanLogin(redirectPath = 'garage-services') {
+      return 0;
       let res = await fetch(
         'https://asanlogintest.my.gov.az/ssoauthz/api/v1/token',
         {
