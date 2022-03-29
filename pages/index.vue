@@ -5,9 +5,9 @@
   >
     <!-- slider desktop -->
     <div
-      class="swiper-container"
+      class="swiper-container swiper-container-desktop"
       v-swiper:gallerySwiper="swiperOps"
-      v-if="!isMobileBreakpoint"
+      v-if="!false"
     >
       <div class="swiper-wrapper">
         <div
@@ -16,11 +16,11 @@
           :key="index"
         >
           <div class="homePage-slide-item">
-            <div class="homePage-slide-left">
+            <div class="homePage-slide-item-left">
               <img :src="homePageSlider.image" />
             </div>
             <div
-              class="homePage-slide-right"
+              class="homePage-slide-item-right"
               :style="
                 !isDarkMode ? `background:${homePageSlider.overlay_color}` : ''
               "
@@ -70,7 +70,7 @@
     <div
       class="swiper-container swiper-container-mobile"
       v-swiper:gallerySwiper="swiperOps"
-      v-if="isMobileBreakpoint"
+      v-if="true"
     >
       <div class="swiper-wrapper">
         <div
