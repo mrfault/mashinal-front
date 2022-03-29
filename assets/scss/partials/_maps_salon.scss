@@ -413,12 +413,23 @@
 
 
 @media only screen and (max-width: 1279px){
-  .pages-salons{
+  // .pages-salons{
     .map{
       &-sidebar{
-        transform: scale(0.9) translateX(-9%);
+        transform: scale(0.8) translateX(-12.5%);
         
       }
     }
-  }
+  // }
 }
+
+// @media only screen and (min-height: 1110px){
+//   .pages-salons{
+//     .map{
+//       &-sidebar{
+//         transform: scale(0.5) translateX(-9%);
+        
+//       }
+//     }
+//   }
+// }
