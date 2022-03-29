@@ -185,7 +185,7 @@
     computed: {
       filteredComponents() {
         if (this.filters instanceof Array)
-          return this.filters;
+          return this.filters.filter(item => ['capacity','power'].includes(item.type_key));
         let filters = {};
         for(let i in this.filters) {
           if(this.otherOptions.includes(i)) continue;
@@ -197,7 +197,7 @@
       },
       filteredOtherComponents() {
         if (this.filters instanceof Array)
-          return this.filters;
+          return this.filters.filter(item => !['capacity','power'].includes(item.type_key));
         let filters = {};
         for(let i in this.filters) {
           if(!this.otherOptions.includes(i)) continue;
