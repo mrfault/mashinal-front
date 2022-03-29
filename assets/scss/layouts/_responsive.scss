@@ -235,6 +235,9 @@
       }
       &__bottom {
         justify-content: space-between;
+        .btn-compare{
+          transform: scale(0.8);
+        }
         &--right {
           transform: scale(0.8);
         }
