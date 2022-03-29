@@ -35,7 +35,7 @@ export default {
           hasAction: true,
           isAttorney: true,
           image: 'etibarname',
-          isAvailable: true,
+          isAvailable: false,
           checkIfSafari: true,
         },
         {

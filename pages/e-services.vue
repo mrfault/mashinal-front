@@ -42,7 +42,7 @@ export default {
           url: '/garage',
           hasAction: true,
           image: 'etibarname',
-          isAvailable: true,
+          isAvailable: false,
           isAttorney: true,
           checkIfSafari: true,
         },
