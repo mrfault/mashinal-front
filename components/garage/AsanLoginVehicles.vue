@@ -19,10 +19,7 @@
         v-for="(item, index) in garageCars.data"
         :key="index"
       >
-        <div
-          class="asan-card"
-          :class="{ 'asan-card__disabled': true}"
-        >
+        <div class="asan-card" :class="{ 'asan-card__disabled': true }">
           <div class="asan-card__top">
             <div class="asan-card__top--image">
               <img
@@ -57,11 +54,8 @@
         v-for="(item, index) in vehicleList"
         :key="index"
       >
-          <!-- :class="{ 'asan-card__disabled': checkIfExistInGarage(item) }" -->
-        <div
-          class="asan-card"
-          v-if="!checkIfExistInGarage(item)"
-        >
+        <!-- :class="{ 'asan-card__disabled': checkIfExistInGarage(item) }" -->
+        <div class="asan-card" v-if="!checkIfExistInGarage(item)">
           <div class="asan-card__top">
             <div class="asan-card__top--image">
               <img
@@ -79,7 +73,7 @@
               class="d-contents cursor-pointer"
               transparent
               v-model="selectedVehicleList"
-              :checked-value="item.tech_id"
+              :checked-value="{ car_number: item.vehicleNumber, tech_id: item.tech_id }"
             ></form-checkbox>
           </div>
         </div>
@@ -161,14 +155,13 @@ export default {
     return {
       selectedVehicleList: [],
       showPaymentModal: false,
-      showNewlyAddedHeading: this.vehicleList.length
+      showNewlyAddedHeading: this.vehicleList.length,
     }
   },
   computed: {
     price() {
       // return this.selectedVehicleList.filter((item) => item.status).length
       return this.selectedVehicleList.length
-
     },
     ...mapGetters({ garageCars: 'garage/cars' }),
     // showNewlyAddedHeading(){
@@ -195,6 +188,10 @@ export default {
         this.selectedVehicleList.splice(index, 1)
       }
     },
+    ...mapActions({
+      checkNewCar: 'garage/checkNewCar',
+      registerNewCar: 'garage/registerNewCar',
+    }),
     async payForCar() {
       console.log(this.pending)
       if (this.pending) return
@@ -232,7 +229,7 @@ export default {
       )
       if (hasItem) {
         while (this.showNewlyAddedHeading > 0) {
-          this.showNewlyAddedHeading --
+          this.showNewlyAddedHeading--
         }
         return true
       } else {

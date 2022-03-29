@@ -20,6 +20,7 @@
           :class="['btn btn--pale-red-outline', {'active': tab === 'attorney-list', 'full-width': isMobileBreakpoint}]"
           @click="$emit('change-tab', 'attorney-list')"
           v-html="$t('attorneys')"
+          v-if="false"
         />
       </div>
       <div class="col-auto ml-auto" v-if="!isMobileBreakpoint">
