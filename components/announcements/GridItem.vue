@@ -61,7 +61,7 @@
                 v-if="!isProfilePage"
               />
             </div>
-            <div class="item-overlay__top--right">
+            <div class="item-overlay__top--right" :class="{'pending-badge-centered':  (announcement.status  == 2 || announcement.status  == 5 || announcement.status ==3)}">
               <span
                 class="btn-sq btn-sq--color-red active"
                 v-if="announcement.has_monetization && !isMobileBreakpoint"
