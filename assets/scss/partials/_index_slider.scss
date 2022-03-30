@@ -110,7 +110,7 @@
 @media screen and (max-width: 1024px) {
   .homePage {
     &-slide-item {
-      height: 250px;
+      height: 320px;
       // flex-direction: row-reverse;
     }
     &-slide-right {
@@ -140,11 +140,18 @@
   }
 }
 @media screen and (max-width: 768px){
+
   .swiper-container-desktop{
-    display: none;
+    // display: none;
   }
   .swiper-container-mobile{
     display: flex;
+  }
+  .homePage {
+    &-slide-item {
+      height: 250px;
+      // flex-direction: row-reverse;
+    }
   }
 }
 @media screen and (min-width: 769px){

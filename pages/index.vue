@@ -7,7 +7,7 @@
     <div
       class="swiper-container swiper-container-desktop"
       v-swiper:gallerySwiper="swiperOps"
-      v-if="!false"
+      v-if="!absoluteMobileScreen"
     >
       <div class="swiper-wrapper">
         <div
@@ -71,7 +71,7 @@
     <div
       class="swiper-container swiper-container-mobile"
       v-swiper:gallerySwiper="swiperOps"
-      v-if="true"
+      v-if="absoluteMobileScreen"
     >
       <div class="swiper-wrapper">
         <div
@@ -179,6 +179,7 @@ export default {
           preloaderClass: 'loader',
         },
       },
+      absoluteMobileScreen: false,
     }
   },
   async asyncData({ store }) {
@@ -198,6 +199,9 @@ export default {
 
   computed: {
     ...mapGetters(['mainAnnouncements', 'homePageSliders']),
+    // absoluteMobileScreen() {
+    //   return process.client && (window.innerWidth < 769)
+    // },
   },
   methods: {
     ...mapActions(['getInfiniteMainSearch', 'clearSavedSearch']),
@@ -220,6 +224,10 @@ export default {
     },
   },
   mounted() {
+    window.addEventListener('resize', (e) => {
+      if (window.innerWidth < 769) this.absoluteMobileScreen = true
+      else this.absoluteMobileScreen = false
+    })
     setTimeout(() => {
       this.gallerySwiper.init()
       this.gallerySwiper.on('slideChange', () => {
