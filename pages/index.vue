@@ -33,14 +33,14 @@
               ></div>
               <div class="homePage-text-section">
                 <div class="homePage-text-section-title">
-                  <img :src="homePageSlider.icon" />
-                  <!-- <img
+                  <!-- <img :src="homePageSlider.icon" /> -->
+                  <img
                     :src="
                       isDarkMode
                         ? homePageSlider.icon_dark
                         : homePageSlider.icon
                     "
-                  /> -->
+                  />
                   <h3>{{ homePageSlider.title[locale] }}</h3>
                 </div>
                 <p>{{ homePageSlider.description[locale] }}</p>
@@ -179,7 +179,7 @@ export default {
           preloaderClass: 'loader',
         },
       },
-      absoluteMobileScreen: false,
+      absoluteMobileScreen: true,
     }
   },
   async asyncData({ store }) {
@@ -199,9 +199,6 @@ export default {
 
   computed: {
     ...mapGetters(['mainAnnouncements', 'homePageSliders']),
-    // absoluteMobileScreen() {
-    //   return process.client && (window.innerWidth < 769)
-    // },
   },
   methods: {
     ...mapActions(['getInfiniteMainSearch', 'clearSavedSearch']),
@@ -224,6 +221,8 @@ export default {
     },
   },
   mounted() {
+   if (window.innerWidth < 769) this.absoluteMobileScreen = true
+      else this.absoluteMobileScreen = false
     window.addEventListener('resize', (e) => {
       if (window.innerWidth < 769) this.absoluteMobileScreen = true
       else this.absoluteMobileScreen = false

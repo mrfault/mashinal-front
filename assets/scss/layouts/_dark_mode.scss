@@ -1219,11 +1219,11 @@
 .dark-mode {
   .announcements-inner {
     .price span:first-child {
-      color: $white;
+      color: $white !important;
     }
     .price span:last-child,
     .text-data {
-      color: $grey-7;
+      color: $grey-7 !important;
     }
     .breadcrumbs .socials a {
       color: $white;
@@ -1476,18 +1476,23 @@
   }
 }
 
-.dark-mode{
-  .homePage{
+.dark-mode {
+  .homePage {
     background: #000;
-    &-slide-item-left{
-      img{
-
-        height: calc(100% + 1px);
-      }
+    .swiper-slider {
+      background: $dark-2 !important;
     }
-    &-text-section{
-      h3,p{
-        color: $dark-blue-1;
+    &-slide {
+      &-item {
+        &-left {
+          img {
+            height: calc(100% + 1px);
+          }
+          background: $dark-2;
+        }
+        &-right {
+          background: $dark-2;
+        }
       }
     }
   }
