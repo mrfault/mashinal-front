@@ -3,9 +3,8 @@
     <h2 class="title-with-line">
       <span>{{ $t('empty_garage_title') }}</span>
     </h2>
-    <p class="mb-2">{{ $t('empty_garage_part_1') }}</p>
-    <p class="mb-2">{{ $t('empty_garage_part_2') }}</p>
-    <p class="mb-2">{{ $t('empty_garage_part_3') }}</p>
+    <p class="mb-2" v-html="$t('empty_garage_part_1')"></p>
+    <p class="mb-2" v-html="$t('empty_garage_part_2')"></p>
   </div>
 </template>
 
