@@ -220,7 +220,7 @@
         &.active {
           background-color: $green-1;
         }
-        &.pending {
+        &.pending, .inactive {
           background-color: $dark-blue-2;
         }
         &.inactive {
@@ -232,6 +232,15 @@
       }
       .badge-blue {
         background: $dark-blue-2;
+      }
+      .pending,.inactive {
+        width: auto;
+        max-width: calc(50% - 20px);
+        overflow: hidden;
+        display: inline-block;
+        text-overflow: ellipsis;
+        // height: 22.5px;
+        white-space: nowrap;
       }
     }
     a.abs-link {
