@@ -2186,5 +2186,5 @@ export default {
   "add_car_with_asan_login":"Asan Login ilə avtomobil əlavə et",
   "newly_added": "Yeni əlavə olunanlar",
   "exist_in_garage":"Qarajda olanlar",
-  
+  "is_loading":"Yüklənir"
 }

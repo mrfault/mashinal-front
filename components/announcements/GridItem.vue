@@ -99,6 +99,12 @@
                   {{ $t('under_consideration') }}
                 </span>
                 <span
+                  class="badge pending"
+                  v-else-if="announcement.status == 5"
+                >
+                  {{ $t('is_loading') }}
+                </span>
+                <span
                   class="badge rejected"
                   v-else-if="announcement.status == 0"
                 >

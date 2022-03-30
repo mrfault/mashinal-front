@@ -219,7 +219,7 @@ export default {
       if (this.$auth.loggedIn == false) {
         return item.status == 1 || item.status == 2
       } else {
-        return this.$auth.user.id == item.user.id
+        return this.$auth.user.id == item.user.id && item.status != 5
       }
     },
     openModal() {
