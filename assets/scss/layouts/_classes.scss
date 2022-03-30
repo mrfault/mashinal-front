@@ -296,10 +296,4 @@ hr {
   min-height: calc(100% - 20px);
 }
 
-.pending-badge-centered {
-  justify-content: center !important;
-  .pending, .inactive {
-    padding: 4px 5px 5px 5px !important;
-    text-align: center;
-  }
-}
+

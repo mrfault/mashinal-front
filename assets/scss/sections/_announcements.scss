@@ -220,7 +220,8 @@
         &.active {
           background-color: $green-1;
         }
-        &.pending, .inactive {
+        &.pending,
+        .inactive {
           background-color: $dark-blue-2;
         }
         &.inactive {
@@ -232,15 +233,6 @@
       }
       .badge-blue {
         background: $dark-blue-2;
-      }
-      .pending,.inactive {
-        width: auto;
-        max-width: calc(50% - 20px);
-        overflow: hidden;
-        display: inline-block;
-        text-overflow: ellipsis;
-        // height: 22.5px;
-        white-space: nowrap;
       }
     }
     a.abs-link {
@@ -381,15 +373,11 @@
   }
 }
 
-
-
 @include media-max-width('lg') {
   .controls-panel {
     padding: 0 25px 17px;
   }
 }
-
-
 
 @include media-max-width('lg') {
   .announcements-grid {
@@ -541,5 +529,20 @@
     .col-lg-auto:last-child {
       width: 20%;
     }
+  }
+}
+
+.pending-badge-centered {
+  justify-content: center !important;
+  .pending,
+  .inactive {
+    padding: 4px 5px 5px 5px !important;
+    text-align: center;
+    width: auto;
+    max-width: calc(50% - 20px);
+    overflow: hidden;
+    display: inline-block !important;
+    text-overflow: ellipsis;
+    white-space: nowrap !important;
   }
 }

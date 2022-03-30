@@ -61,7 +61,12 @@
                 v-if="!isProfilePage"
               />
             </div>
-            <div class="item-overlay__top--right" :class="{'pending-badge-centered':  (announcement.status  == 2 || announcement.status  == 5 || announcement.status ==3)}">
+            <div
+              class="item-overlay__top--right"
+              :class="{
+                'pending-badge-centered': checkPendingBadge(announcement),
+              }"
+            >
               <span
                 class="btn-sq btn-sq--color-red active"
                 v-if="announcement.has_monetization && !isMobileBreakpoint"
@@ -335,6 +340,18 @@ export default {
     selectAnnouncement(id, value, controls = false) {
       if (controls || id != this.announcement.id_unique) return
       this.handleChange(value)
+    },
+    checkPendingBadge(announcement) {
+      if (
+        (announcement.status == 2 ||
+          announcement.status == 5 ||
+          announcement.status == 3) &&
+        (announcement.is_autosalon == true || announcement.is_part_salon == true)
+      ) {
+        return true
+      } else {
+        return false
+      }
     },
   },
   mounted() {
