@@ -182,70 +182,7 @@
   }
 }
 
-.dark-mode {
-  .color-options {
-    .color {
-      border-color: $greyish-blue-4;
-      &.selected {
-        color: $grey-1 !important;
-        border-color: $grey-1 !important;
-        &.contrast {
-          color: #FFCE00 !important;
-          border-color: #FFCE00 !important;
-        }
-      }
-    }
-  }
 
-  .model-options {
-    .img {
-      background-color: $white;
-      border-radius: 4px;
-      padding: 1px;
-    }
-    &_option {
-      border-top-color: $dark-1;
-    }
-  }
-
-  .damage-options {
-    .car-damage {
-      &-img {
-        svg {
-          stroke: rgba($white, .35);
-        }
-        .roof .roof, 
-        .front .front,
-        .rear .rear, 
-        .left-door-rear .left-door-rear, 
-        .left-door-front .left-door-front, 
-        .right-door-rear .right-door-rear, 
-        .right-door-front .right-door-front {
-          stroke: $white;
-        }
-      }
-      &-text {
-        h4 {
-          color: $white;
-        }
-      }
-    }
-    .car-part {
-      &_point {
-        border: 1px solid $white;
-        &::after {
-          background-color: $white;
-        }
-        &:not(.selected) {
-          border-color: $grey-9;
-          &::after {
-            background-color: $grey-9;
-          }
-        }
-      }
-    }
-  }
-}
 
 @include media-max-width('lg') {
   .model-options {
@@ -303,6 +240,18 @@
       .popular-option:hover {
         color: $yellow-1;
       }
+    }
+  }
+}
+
+.dark-mode {
+  .selectable-block {
+    border-color: $grey-1;
+    &:hover {
+      background-color: $grey-6;
+    }
+    &.active {
+      background-color: $grey-2;
     }
   }
 }

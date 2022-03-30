@@ -465,27 +465,6 @@
 }
 
 
-.dark-mode {
-  .inner-gallery {
-    .gallery-overlay {
-      .badge:not(.from-border) {
-        background-color: rgba($dark-2, 0.35);
-        &.squared {
-          background-color: rgba($dark-1, 0.35);
-        }
-      }
-      &_middle {
-        .btn-sq {
-          background-color: rgba($dark-1, 0.15);
-          &:hover,
-          &.active {
-            background-color: rgba($dark-1, 0.3);
-          }
-        }
-      }
-    }
-  }
-}
 
 .iframe {
   width: 100%;
@@ -679,79 +658,7 @@
   }
 }
 
-.dark-mode {
-  .announcements-inner {
-    .price span:first-child {
-      color: $white;
-    }
-    .price span:last-child,
-    .text-data {
-      color: $grey-7;
-    }
-    .breadcrumbs .socials a {
-      color: $white;
-      &:hover {
-        color: $yellow-1;
-      }
-    }
-    .contact {
-      address {
-        color: $grey-4;
-      }
-      h2 {
-        color: $white;
-      }
-    }
-    .floating-cta {
-      &.fixed-to-bottom,
-      &.fixed-to-top {
-        background-color: $dark-2;
-        border-color: $dark-1;
-      }
-    }
-    .keywords {
-      h3 {
-        color: $grey-4;
-      }
-      .keyword {
-        border-color: $yellow-1;
-        color: $yellow-1;
-      }
-    }
-  }
 
-  .vehicle-specs {
-    span:first-child {
-      color: $grey-7;
-    }
-    li {
-      color: $white;
-      border-color: $dark-1;
-    }
-  }
-
-  .images-slider,
-  .inner-gallery {
-    .swiper-thumb-bg,
-    .swiper-slide-bg {
-      background-color: $dark-3;
-    }
-  }
-
-  .images-slider {
-    .slider-overlay {
-      &_middle {
-        .btn-sq {
-          background-color: rgba($dark-2, 0.6);
-          &:hover,
-          &.active {
-            background-color: $dark-2;
-          }
-        }
-      }
-    }
-  }
-}
 
 @include media-min-width('lg') {
   .announcements-inner {

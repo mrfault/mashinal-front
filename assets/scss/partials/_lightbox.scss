@@ -231,14 +231,7 @@
     background: rgba($dark-blue-1, 0.3);
   }
 }
-.dark-mode {
-  .fslightbox-slide-btn {
-    background: rgba($dark-1, 0.5);
-    &:hover {
-      background: $dark-1;
-    }
-  }
-}
+
 .fslightbox-slide-btn-container-previous {
   left: 0;
   padding-left: 15px;
@@ -450,11 +443,7 @@
   }
 }
 
-.dark-mode {
-  .blur-bg {
-    background-color: $dark-1;
-  }
-}
+
 
 @include media-max-width('lg') {
   .blur-bg {

@@ -220,7 +220,8 @@
         &.active {
           background-color: $green-1;
         }
-        &.pending, .inactive {
+        &.pending,
+        .inactive {
           background-color: $dark-blue-2;
         }
         &.inactive {
@@ -232,15 +233,6 @@
       }
       .badge-blue {
         background: $dark-blue-2;
-      }
-      .pending,.inactive {
-        width: auto;
-        max-width: calc(50% - 20px);
-        overflow: hidden;
-        display: inline-block;
-        text-overflow: ellipsis;
-        // height: 22.5px;
-        white-space: nowrap;
       }
     }
     a.abs-link {
@@ -381,79 +373,9 @@
   }
 }
 
-.dark-mode {
-  .controls-panel {
-    .control-icon {
-      background-color: $dark-2;
-    }
-  }
-}
-
 @include media-max-width('lg') {
   .controls-panel {
     padding: 0 25px 17px;
-  }
-}
-
-.dark-mode {
-  .grid-title {
-    background-color: $dark-2;
-  }
-  .announcements-grid {
-    &_gallery {
-      .item-bg {
-        background-color: $dark-3;
-      }
-      &:hover + .announcements-grid_item {
-        box-shadow: $shadow-dark-6;
-      }
-    }
-    &_banner {
-      background-color: $dark-2;
-      &:hover {
-        box-shadow: $shadow-dark-6;
-      }
-    }
-    &_item {
-      background-color: $dark-2;
-      &:hover {
-        box-shadow: $shadow-dark-6;
-      }
-      .item-bg {
-        background-color: $dark-3;
-      }
-      .item-details .item-info,
-      .call-count {
-        color: $grey-4;
-      }
-      .item-price span {
-        color: $white;
-      }
-      .item-overlay .badge {
-        background-color: rgba($dark-2, 0.35);
-      }
-      .item-details {
-        &__price,
-        &--infos,
-        &__year {
-          color: #fff;
-        }
-      }
-    }
-  }
-
-  .no-results {
-    span {
-      color: $grey-5;
-    }
-  }
-
-  .collapse-toggle {
-    .btn {
-      color: $white;
-      background-color: $dark-2;
-      border-color: $dark-1;
-    }
   }
 }
 
@@ -607,5 +529,20 @@
     .col-lg-auto:last-child {
       width: 20%;
     }
+  }
+}
+
+.pending-badge-centered {
+  justify-content: center !important;
+  .pending,
+  .inactive {
+    padding: 4px 5px 5px 5px !important;
+    text-align: center;
+    width: auto;
+    max-width: calc(50% - 20px);
+    overflow: hidden;
+    display: inline-block !important;
+    text-overflow: ellipsis;
+    white-space: nowrap !important;
   }
 }

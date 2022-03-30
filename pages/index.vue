@@ -33,13 +33,14 @@
               ></div>
               <div class="homePage-text-section">
                 <div class="homePage-text-section-title">
-                  <img
+                  <img :src="homePageSlider.icon" />
+                  <!-- <img
                     :src="
                       isDarkMode
                         ? homePageSlider.icon_dark
                         : homePageSlider.icon
                     "
-                  />
+                  /> -->
                   <h3>{{ homePageSlider.title[locale] }}</h3>
                 </div>
                 <p>{{ homePageSlider.description[locale] }}</p>
@@ -266,7 +267,7 @@ export default {
     box-sizing: border-box;
     overflow: hidden;
     clip-path: polygon(43% 0, 100% 0, 100% 100%, 0% 100%);
-    img{
+    img {
       width: 100%;
       height: 100%;
       object-fit: cover;

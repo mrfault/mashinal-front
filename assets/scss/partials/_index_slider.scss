@@ -63,20 +63,7 @@
 }
 
 
-.dark-mode {
-  .homePage-slide-right {
-    background: $dark-2;
-  }
-  .homePage-slide-right .before-slider-right {
-    border-top: 600px solid $dark-2 !important;
-  }
-  .swiper-pagination-bullet {
-    background: gray;
-  }
-  .swiper-pagination-bullet-active {
-    background: $white !important;
-  }
-}
+
 
 .swiper-pagination {
   left: 77px !important;

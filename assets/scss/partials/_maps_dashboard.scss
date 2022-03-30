@@ -287,72 +287,7 @@
     }
   }
 
-  .dark-mode {
-    .map-wrapper {
-      .map {
-        // [class*=ground-pane] {
-        //   filter: brightness(0.7);
-        // }
 
-        [class*='-balloon '],
-        [class*='balloon__layout'],
-        [class*='balloon__content'],
-        [class*='balloon__tail'],
-        [class*='balloon__tail']::after {
-          background: $dark-2 !important;
-        }
-
-        [class*='balloon__layout'],
-        [class*='balloon__tail'] {
-          box-shadow: $shadow-dark-2 !important;
-        }
-
-        [class*='balloon__close-button'] {
-          &::after {
-            color: $white;
-          }
-          &:hover::after {
-            color: $yellow-1;
-          }
-        }
-
-        [class*='islets_card'] {
-          color: $white !important;
-        }
-
-        [class*='organization-rating'] {
-          color: $white !important;
-        }
-
-        [class*='-link'],
-        [class*='__link'] {
-          color: $yellow-1 !important;
-        }
-
-        [class*='button-text'],
-        [class*='copyright__link'] {
-          color: $dark-1 !important;
-        }
-
-        [class*='__separator'] {
-          background-color: $dark-1 !important;
-        }
-      }
-
-      .form-group {
-        .text-input input {
-          background-color: $dark-2;
-        }
-      }
-    }
-
-    .map-fw-container {
-      .map-sidebar,
-      .map-sidebar_toggle {
-        background-color: $dark-2;
-      }
-    }
-  }
 
   [class*='map-copyrights-promo'] {
     display: none;
