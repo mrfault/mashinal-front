@@ -109,7 +109,27 @@
   }
 }
 
-
+.dark-mode {
+  .tooltip {
+    .tooltip-inner {
+      background: $white;
+      color: $dark-1;
+    }
+    .tooltip-arrow {
+      border-color: $white;
+    }
+    &.popover {
+      .popover-inner {
+        background: $white;
+        color: $dark-1;
+        box-shadow: 0 5px 30px rgba($dark-1, .1);
+      }
+      .popover-arrow {
+        border-color: $white;
+      }
+    }
+  }
+}
 
 @include media-max-width('lg') {
   .tooltip {

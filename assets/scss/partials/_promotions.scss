@@ -133,7 +133,37 @@
   padding-top: 60px;
 }
 
-
+.dark-mode {
+  .promote-announcement {
+    .announcement-details {
+      .price span:first-child {
+        color: $white;
+      }
+      .price span:last-child {
+        color: $grey-7;
+      }
+    }
+    .promotion-details strong {
+      color: $white;
+    }
+    .btn {
+      .badge {
+        span {
+          background-color: $grey-2;
+        }
+      }
+    }
+    .total-price strong,
+    .price strong {
+      color: $white;
+    }
+    &.is-screen {
+      .promote-payment-info {
+        background-color: $dark-2;
+      }
+    }
+  }
+}
 
 @include media-max-width('lg') {
   .promote-announcement {

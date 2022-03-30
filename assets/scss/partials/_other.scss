@@ -88,7 +88,12 @@
   flex: 1;
 }
 
-
+.dark-mode {
+  .stick-to-screen-bottom {
+    background-color: $dark-2;
+    border-top-color: $dark-1;
+  }
+}
 
 .select-menu-open {
   .mobile-screen {
@@ -353,7 +358,43 @@
   background-color: $white;
 }
 
+.dark-mode {
+  .card-bordered {
+    border-color: $dark-1;
+  }
+  .modal-sticky-bottom {
+    background-color: $dark-2;
+  }
+  
+  .collapse-content > h3 {
+    color: $grey-4;
+  }
 
+  .total-price {
+    strong {
+      color: $white;
+    }
+  }
+
+  .modal-popup {
+    background-color: $dark-2;
+    &_content {
+      .form {
+        .total-price {
+          strong {
+            color: $white;
+          }
+        }
+      }
+    }
+  }
+
+  .list-line-separated {
+    li {
+      border-color: $dark-1;
+    }
+  }
+}
 
 .selectable-block {
   user-select: none;
@@ -401,7 +442,17 @@
   }
 }
 
-
+.dark-mode {
+  .selectable-block {
+    border-color: $grey-1;
+    &:hover {
+      background-color: $grey-6;
+    }
+    &.active {
+      background-color: $grey-2;
+    }
+  }
+}
 
 .add-item {
   color: $green-1;
@@ -436,6 +487,20 @@
   }
 }
 
+.dark-mode {
+  .add-item {
+    color: $white;
+    background-color: $green-1;
+    @media (hover: hover) {
+      &:hover {
+        background-color: $green-2;
+      }
+    }
+    img {
+      filter: brightness(0) invert(1);
+    }
+  }
+}
 
 .loader {
   display: block;
@@ -809,7 +874,52 @@
   }
 }
 
-
+.dark-mode {
+  .upload-image {
+    .upload-image_thumbnail {
+      background-color: $dark-1;
+      &.add-image,
+      &.helper {
+        .overlay {
+          color: $grey-4;
+        }
+      }
+    }
+    &.dragover .upload-image_thumbnail {
+      &.add-image,
+      &.helper {
+        background-color: $grey-2;
+      }
+    }
+  }
+  .form-gallery {
+    .form-gallery_thumbnail {
+      background-color: $dark-1;
+      &.add-image {
+        .overlay {
+          color: $grey-4;
+        }
+      }
+    }
+    &.dragover .form-gallery_thumbnail {
+      &.add-image {
+        background-color: $grey-2;
+      }
+    }
+  }
+  .form-image {
+    background-color: $dark-1;
+  }
+  .popover {
+    &-content {
+      background-color: $dark-1;
+      box-shadow: $shadow-dark-7;
+      &_triangle {
+        color: $dark-1;
+      }
+    }
+  }
+}
 
 @include media-max-width('lg') {
   .popover {
