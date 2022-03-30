@@ -184,17 +184,4 @@
   }
 }
 
-.dark-mode {
-  .banking-cards {
-    &_item {
-      background-color: $dark-2;
-    }
-    .no-cards {
-      .banking-cards_item {
-        .card-details {
-          color: $white;
-        }
-      }
-    }
-  }
-}
+

@@ -89,9 +89,5 @@ export default {
     color: white;
   }
 }
-.dark-mode {
-  .login-image {
-    background: linear-gradient(69.9deg, #131314 0%, #202022 100%);;
-  }
-}
+
 </style>

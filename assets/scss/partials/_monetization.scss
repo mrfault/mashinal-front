@@ -73,31 +73,7 @@
    
 }
 
-.dark-mode {
-  .monetization-popup {
-    .range-slider {
-      .vue-slider {
-        &-rail {
-          background-color: $grey-1;
-        }
-        &-process {
-          background-color: $white;
-        }
-        &-dot-handle {
-          border-color: $white;
-          background-color: $white;
-          &::after {
-            border-bottom-color: $white;
-          }
-        }
-      }
-      .tooltip {
-        color: $white;
-        border-color: $grey-5;
-      }
-    }
-  }
-}
+
 
 .ad-huge-stat {
   text-align: center;

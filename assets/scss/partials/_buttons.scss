@@ -163,36 +163,6 @@
 .btn-compare-active {
   background-image: url('../../static/icons/compare-active.svg');
 }
-.dark-mode {
-  .btn-sq {
-    &--color-dark-blue {
-      color: $dark-1;
-      &.active {
-        color: $white;
-        background-color: $dark-1;
-      }
-      @media (hover: hover) {
-        &:hover {
-          color: $white;
-          background-color: $dark-1;
-        }
-      }
-    }
-    &--color-dark-blue-3 {
-      color: $grey-2;
-      &.active {
-        color: $white;
-        background-color: $dark-1;
-      }
-      @media (hover: hover) {
-        &:hover {
-          color: $white;
-          background-color: $dark-1;
-        }
-      }
-    }
-  }
-}
 
 .btn {
   border: 0;
@@ -352,17 +322,17 @@
       width: 45px;
       // margin-right: 8px;
       position: relative;
-      svg,img {
+      svg,
+      img {
         position: absolute;
         top: 0;
         left: 0;
-        width: 100%;  
+        width: 100%;
         height: 100%;
         object-fit: contain;
         margin: 0 !important;
         min-width: auto !important;
       }
-      
     }
     &--text {
       margin: 0 !important;
@@ -445,6 +415,47 @@
       );
     }
   }
+  .btn-sq {
+    &--color-dark-blue {
+      color: $dark-1;
+      &.active {
+        color: $white;
+        background-color: $dark-1;
+      }
+      @media (hover: hover) {
+        &:hover {
+          color: $white;
+          background-color: $dark-1;
+        }
+      }
+    }
+    &--color-dark-blue-3 {
+      color: $grey-2;
+      &.active {
+        color: $white;
+        background-color: $dark-1;
+      }
+      @media (hover: hover) {
+        &:hover {
+          color: $white;
+          background-color: $dark-1;
+        }
+      }
+    }
+  }
+  .card.with-btns {
+    .card-btns {
+      background-color: $dark-2;
+    }
+  }
+
+  .btn {
+    &--merged {
+      &::before {
+        border-color: $grey-1;
+      }
+    }
+  }
 }
 
 .card.with-btns {
@@ -485,22 +496,6 @@
   &.active + div .btn--merged::before,
   &:nth-child(1) .btn--merged::before {
     content: none;
-  }
-}
-
-.dark-mode {
-  .card.with-btns {
-    .card-btns {
-      background-color: $dark-2;
-    }
-  }
-
-  .btn {
-    &--merged {
-      &::before {
-        border-color: $grey-1;
-      }
-    }
   }
 }
 
