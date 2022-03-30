@@ -29,6 +29,7 @@
       <portal to="mobile-dropdown" v-if="isMobileBreakpoint">
         <action-bar class="priority-1"
           :title="getActionBarText"
+          :useBack="false"
           v-if="showOptions && isMobileBreakpoint && !inSelectMenu" 
           @back="showOptions = false" 
           @accept="showOptions = false"
