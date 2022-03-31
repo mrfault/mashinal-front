@@ -2,9 +2,6 @@
   margin-bottom: 20px;
   display: flex;
   .category {
-    flex: 1;
-    display: inline-block;
-
     &:not(:last-child) {
       margin-right: 20px;
     }
@@ -25,10 +22,26 @@
       }
     }
 
-    &.active a, &:hover a {
+    &.active a,
+    &:hover a {
       background-color: $greyish-blue-9;
       color: #000;
     }
+  }
+}
+@media only screen and (min-width: 1028px) {
+  .part-categories {
+    .category {
+      height: 72px;
+      width: auto;
+      a{
+        height: 100%;
+      }
+    }
+    box-sizing: border-box;
+    overflow-y: hidden;
+    overflow-x: scroll;
+    @include customScrollbar;
   }
 }
 
@@ -88,13 +101,13 @@
       @include media-max-width('md') {
         font-size: 11px;
       }
-      
+
       i {
         margin-left: 11px;
         font-size: 12px;
       }
     }
-    
+
     &__image {
       width: 150px;
       @include media-max-width('md') {
@@ -103,14 +116,14 @@
     }
 
     &--winter-tyres {
-      background-color: #FFCB14;
-      
+      background-color: #ffcb14;
+
       @include media-max-width('md') {
         padding-right: 10px;
       }
-        .parts-banner__image {
+      .parts-banner__image {
         width: 200px;
-        
+
         @include media-max-width('md') {
           width: 110px;
         }
@@ -118,7 +131,7 @@
     }
 
     &--online-store {
-      background-color: #44E58E;
+      background-color: #44e58e;
     }
   }
 }
@@ -151,7 +164,7 @@
 }
 
 .sell_parts-form {
-  .row [class^=col-] {
+  .row [class^='col-'] {
     display: flex;
     align-items: flex-end;
 
@@ -162,12 +175,12 @@
 
   .price-input-group {
     display: flex;
-    
+
     input {
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
     }
-    
+
     .checkbox-input label {
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
@@ -176,10 +189,9 @@
   }
 
   .parts_image-upload {
-    
     .form-gallery_thumbnail {
       padding-bottom: 80%;
-      margin: 0
+      margin: 0;
     }
 
     .upload-rules {
@@ -188,7 +200,7 @@
       background-color: $greyish-blue-2;
       display: flex;
       border-radius: 4px;
-      
+
       &__image {
         height: 100%;
         padding-left: 35px;
@@ -199,24 +211,24 @@
         border-radius: 4px;
         background-color: $white;
       }
-      
+
       &__content {
         margin-left: 12px;
-        
+
         &__title {
           font-size: 15px;
           font-weight: 500;
         }
-        
+
         &__list {
           padding-left: 20px;
           margin: 5px 0 0;
-          
+
           li {
             font-size: 14px;
             font-weight: 400;
             margin-bottom: 4px;
-            
+
             &:last-child {
               margin-bottom: 0;
             }
@@ -240,11 +252,11 @@
       &__title {
         color: $dark-2;
       }
-  
+
       &__description {
         color: $dark-2;
       }
-  
+
       &__link {
         color: $dark-blue-2;
       }
@@ -253,7 +265,8 @@
 
   .part-categories {
     .category {
-      &.active a, &:hover a {
+      &.active a,
+      &:hover a {
         background-color: rgba($grey-11, 0.2);
       }
 
