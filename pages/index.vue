@@ -160,6 +160,7 @@ export default {
       currentSlide: 0,
       swiperOps: {
         init: false,
+        speed: 1000,
         autoplay: {
           delay: 6000,
         },
