@@ -40,7 +40,7 @@ export default {
       }
     },
     updateVisible() {
-      this.badgeVisible = Boolean(this.$store.getters['comparison/count'])
+      this.badgeVisible = Boolean(this.$store.getters['comparison/count']) && !(this.$route.name == "comparison___az" || this.$route.name == "comparison___ru");
       if (!this.badgeVisible) {
         this.previewVisible = false
       }

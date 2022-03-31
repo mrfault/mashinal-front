@@ -42,7 +42,6 @@ export default {
       let usePlanB = false;
       if (this.actionB && this.getterB) {
         let prevResB = this.$store.getters[this.getterB];
-      console.log(prevResB);
         let contentBNotLoaded = (this.pageB === 1) || (prevResB.next_page_url && (prevResB.total !== prevResB.to));
         usePlanB = contentBNotLoaded && this.page === this.pageB;
       }
