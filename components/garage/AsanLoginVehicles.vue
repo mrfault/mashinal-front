@@ -193,7 +193,6 @@ export default {
       registerNewCar: 'garage/registerNewCar',
     }),
     async payForCar() {
-      console.log(this.pending)
       if (this.pending) return
       this.pending = true
       try {
@@ -219,7 +218,6 @@ export default {
           })
         }
       } catch (err) {
-        console.log(err)
         this.pending = false
       }
     },
@@ -235,11 +233,6 @@ export default {
       } else {
         return false
       }
-    },
-  },
-  watch: {
-    selectedVehicleList() {
-      console.log(this.selectedVehicleList)
     },
   },
 }
