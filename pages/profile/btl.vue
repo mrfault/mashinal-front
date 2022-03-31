@@ -3,7 +3,7 @@
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
       <div class="card with-margins">
-        <button class="btn btn--green" @click="setBtlCookie">{{ $t('start_to_work') }}</button>
+        <button class="btn btn--green" @click="setBtlCookie">{{ $auth.user.user_type === 3 ? $t('start_to_work') : $t('create_salon') }}</button>
       </div>
     </div>
   </div>
