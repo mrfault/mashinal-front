@@ -20,7 +20,7 @@
         </div>
         <hr />
       </template>
-      <form-buttons :btn-class="isCard ? 'white-outline' : 'pale-red-outline'" :options="serviceBtns" :group-by="isScreen ? 1 : 3" :value="promotion.id" 
+      <form-buttons :btn-class="isCard ? 'white-outline' : 'pale-red-outline'" :options="serviceBtns" :group-by="isScreen ? 1 : 3" :value="promotion.id"
           @input="updatePromotion({key: 'id', value: $event}), selectService()">
         <template #icon="{ button }">
           <icon :name="button.icon" />
@@ -35,25 +35,25 @@
       </h4>
       <h4 v-else >{{ $t('my_packages') }}</h4>
       <template v-if="!isCard && alreadyActive">
-        <p class="info-text"><icon name="alert-circle" /> 
-          <span v-if="selectedService.type == 4" v-html="$t('info_service_once_in_5_mins', { 
-            service: selectedService.name 
+        <p class="info-text"><icon name="alert-circle" />
+          <span v-if="selectedService.type == 4" v-html="$t('info_service_once_in_5_mins', {
+            service: selectedService.name
           })"></span>
-          <span v-else v-html="$t('info_service_is_already_active', { 
-            service: selectedService.name, 
-            date: announcement.type.info[selectedService.type] 
+          <span v-else v-html="$t('info_service_is_already_active', {
+            service: selectedService.name,
+            date: announcement.type.info[selectedService.type]
           })"></span>
         </p>
       </template>
       <div style="height: 34px" v-if="!serviceOptionBtns.length"></div>
-      <form-buttons :btn-class="isCard ? 'white-outline' : 'pale-red-outline'" :options="serviceOptionBtns" :group-by="isScreen ? 1 : 3" :value="promotion.optionId" 
+      <form-buttons :btn-class="isCard ? 'white-outline' : 'pale-red-outline'" :options="serviceOptionBtns" :group-by="isScreen ? 1 : 3" :value="promotion.optionId"
         @input="updatePromotion({key: 'optionId', value: $event}), selectServiceOption()" />
       <p :class="['mt-2 mt-lg-3', {'mb-lg-0': isCard}]" v-if="selectedServiceInfo.description">{{ selectedServiceInfo.description }}</p>
       <template v-if="!isCard">
         <template v-if="shouldPay">
           <h4>{{ $t('payment_method') }}</h4>
           <div class="pb-lg-3 mb-2 mb-lg-0">
-            <form-buttons :options="payments" :group-by="isScreen ? 1 : 3" :value="promotion.paymentId" 
+            <form-buttons :options="payments" :group-by="isScreen ? 1 : 3" :value="promotion.paymentId"
               @input="updatePromotion({key: 'paymentId', value: $event})" />
           </div>
         </template>
@@ -123,7 +123,7 @@ export default {
     },
     serviceOptionBtns() {
       if (!this.promotion.id || this.pendingSelect) return [];
-      return (this.myServiceOptions.length && this.shouldActivate)  
+      return (this.myServiceOptions.length && this.shouldActivate)
         ? this.myServiceOptions
             .map(option => ({
               id: option.id,
@@ -160,11 +160,11 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getServices', 'getMyServices', 'getMyServiceOptions', 'updatePromotion', 'updatePaidStatus', 'getAnnouncementInner']), 
+    ...mapActions(['getServices', 'getMyServices', 'getMyServiceOptions', 'updatePromotion', 'updatePaidStatus', 'getAnnouncementInner']),
 
     async getServiceData() {
       await this.getServices();
-      if (this.loggedIn && this.user.autosalon) 
+      if (this.loggedIn && this.user.autosalon)
         await this.getMyServices();
     },
     async selectService() {
@@ -201,6 +201,11 @@ export default {
           window.open(res.data.redirect_url, 'purchaseservice', 'toolbar=yes,scrollbars=yes,resizable=yes,top=50,left=100,width=494,height=718');
           this.connectEcho(`purchase.${res.data.payment_id}`, false).listen('PurchaseInitiated', async (data) => {
             const paid = data.payment.status === 1;
+            if(paid) {
+              if(data.payment.operation_key === 'attorney_pay') {
+                return this.$router.push({path: this.$localePath('/garage'), query: { tab: 'attorney-list' }})
+              }
+            }
             if (paid) await this.fetchAnnouncementData();
             let type = paid ? 'success' : 'error';
             this.updatePaidStatus({

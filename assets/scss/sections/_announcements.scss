@@ -2,14 +2,14 @@
   position: relative;
   margin: 30px 0;
   &.loading-content {
-    opacity: .4;
+    opacity: 0.4;
     pointer-events: none;
   }
   &_banner {
-    height: 100%; 
+    height: 100%;
     background-color: $white;
     border-radius: 4px;
-    transition: box-shadow .2s ease-out;
+    transition: box-shadow 0.2s ease-out;
     cursor: pointer;
     position: relative;
     &:hover {
@@ -30,7 +30,7 @@
     position: relative;
     background-color: $white;
     border-radius: 4px;
-    transition: box-shadow .2s ease-out;
+    transition: box-shadow 0.2s ease-out;
     cursor: pointer;
     &:hover {
       box-shadow: $shadow-light-6;
@@ -56,11 +56,47 @@
       flex-direction: column;
       width: 100%;
       flex: 1;
-      padding: 15px 15px 10px;
-      h3 {
-        font-size: 15px;
-        font-weight: 500;
-        margin: 0 0 4px;
+      padding: 12px 15px 15px 15px;
+      &__price {
+        font: 600 18px Gilroy;
+        color: $dark-blue-2;
+      }
+      &__title {
+        padding-bottom: 5px;
+        font: 500 15px Gilroy;
+        margin-bottom: 0;
+      }
+      &__year {
+        width: 100%;
+        font: 400 14px Gilroy;
+        color: $dark-blue-5;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+      }
+      &__options {
+        display: flex;
+        i:not(:last-child) {
+          margin-right: 16px;
+        }
+      }
+      &__actions {
+        display: flex;
+        justify-content: flex-end;
+        width: 100%;
+      }
+      &__checks {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+      }
+      &--infos {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
       }
       .item-info {
         display: block;
@@ -85,7 +121,7 @@
       display: flex;
       align-items: center;
       width: 100%;
-      margin-top: 4px;
+      margin-bottom: 4px;
       span {
         color: $dark-blue-2;
         font-size: 15px;
@@ -117,6 +153,37 @@
       flex-direction: column;
       justify-content: space-between;
       padding: 12px;
+      &__top {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        &--left {
+          span {
+            transform: scale(0.9);
+          }
+        }
+        &--right {
+          // width: 70%;
+          display: flex;
+          justify-content: flex-end;
+          span {
+            transform: scale(0.9);
+          }
+        }
+        .badge {
+          white-space: nowrap;
+        }
+      }
+      &__bottom {
+        display: flex;
+        justify-content: space-between;
+        &--right {
+          display: flex;
+          &:not(:last-child) {
+            margin-right: 10px;
+          }
+        }
+      }
       .btn-sq {
         pointer-events: all;
         &:not(:last-child) {
@@ -132,7 +199,7 @@
         height: 25px;
         min-width: 62px;
         border-radius: 4px;
-        background-color: rgba($dark-blue-1, .35);
+        background-color: rgba($dark-blue-1, 0.35);
         padding: 2px 8px 0;
         i {
           font-size: 12px;
@@ -153,7 +220,8 @@
         &.active {
           background-color: $green-1;
         }
-        &.pending {
+        &.pending,
+        .inactive {
           background-color: $dark-blue-2;
         }
         &.inactive {
@@ -163,15 +231,8 @@
           background-color: $red-1;
         }
       }
-      &_top {
-        .d-flex {
-          margin-left: auto;
-        }
-      }
-      &_bottom {
-        .d-flex {
-          margin-right: auto;
-        }
+      .badge-blue {
+        background: $dark-blue-2;
       }
     }
     a.abs-link {
@@ -206,14 +267,13 @@
       border-radius: 4px;
       cursor: pointer;
       background-color: $white;
-      transition: box-shadow .2s ease-out;
+      transition: box-shadow 0.2s ease-out;
       &.wider {
         padding-bottom: 47.5%;
       }
     }
   }
 }
-
 
 .grid-title {
   display: flex;
@@ -313,17 +373,17 @@
   }
 }
 
+@include media-max-width('lg') {
+  .controls-panel {
+    padding: 0 25px 17px;
+  }
+}
+
 .dark-mode {
   .controls-panel {
     .control-icon {
       background-color: $dark-2;
     }
-  }
-}
-
-@include media-max-width('lg') {
-  .controls-panel {
-    padding: 0 25px 17px;
   }
 }
 
@@ -362,7 +422,14 @@
         color: $white;
       }
       .item-overlay .badge {
-        background-color: rgba($dark-2, .35);
+        background-color: rgba($dark-2, 0.35);
+      }
+      .item-details {
+        &__price,
+        &--infos,
+        &__year {
+          color: #fff;
+        }
       }
     }
   }
@@ -381,16 +448,15 @@
     }
   }
 }
-
 @include media-max-width('lg') {
   .announcements-grid {
     margin: 20px -10px;
     &_item {
       .item-details {
         padding: 7px 10px 10px;
-        h3 {
-          font-size: 13px;
-        }
+        // h3 {
+        //   font-size: 13px;
+        // }
       }
       .item-info {
         font-size: 12px;
@@ -493,7 +559,7 @@
 
 @include media-min-width('lg') {
   .announcements-grid {
-    .col-lg-auto {
+    .col-xl-auto {
       width: 20%;
     }
     .col-lg-mid {
@@ -532,5 +598,20 @@
     .col-lg-auto:last-child {
       width: 20%;
     }
+  }
+}
+
+.pending-badge-centered {
+  justify-content: center !important;
+  .pending,
+  .inactive {
+    padding: 4px 5px 5px 5px !important;
+    text-align: center;
+    width: auto;
+    max-width: calc(50% - 20px);
+    overflow: hidden;
+    display: inline-block !important;
+    text-overflow: ellipsis;
+    white-space: nowrap !important;
   }
 }

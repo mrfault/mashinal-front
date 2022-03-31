@@ -20,7 +20,7 @@
     height: 423px;
     padding: 50px;
     color: $white;
-    background-color: $red-1;
+    background-color: $dark-blue-1;
     border-radius: 4px 0 0 4px;
     img {
       width: 114px;
@@ -50,15 +50,15 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  height: 423px;
+  // height: 423px;
   width: 288px;
   margin: 0 auto;
   &--popup {
     @include abs-middle(fixed, 50);
-    height: 364px;
+    // height: 442px;
     width: 338px;
     max-width: 100%;
-    padding: 0 25px;
+    padding: 20px 25px;
     background-color: $white;
     border-radius: 4px;
   }
@@ -79,7 +79,6 @@
     display: flex;
     flex-direction: column;
     margin: -20px 0 0;
-    height: 280px;
     .form-group {
       margin: 20px 0;
     }
@@ -131,7 +130,7 @@
 @include media-max-width('lg') {
   .pages-login {
     @include calc-vh(min-height, calc(100vh - 60px));
-    background: linear-gradient(180deg, $red-1 379px, $white 379px);
+    background: $white;
     padding: 0;
     .tab-info {
       height: 354px;
@@ -188,9 +187,10 @@
       &.translate-fade-enter {
         transform: translate(-50%, 50px);
       }
-      &.translate-fade-enter-active, 
+      &.translate-fade-enter-active,
       &.translate-fade-leave-active {
-        transition: transform .3s ease-out, opacity .2s cubic-bezier(.53,2,.36,.85);
+        transition: transform 0.3s ease-out,
+          opacity 0.2s cubic-bezier(0.53, 2, 0.36, 0.85);
       }
     }
   }
@@ -198,6 +198,86 @@
   .dark-mode {
     .pages-login {
       background: linear-gradient(180deg, $dark-3 379px, $dark-2 50%);
+    }
+  }
+}
+.qr-box {
+  background: $greyish-blue-2;
+  padding: 14px 18px 20px 10px;
+  position: relative;
+  margin: 12px 0;
+  display: flex;
+  &__image {
+    width: 32%;
+    height: 80px;
+    padding-right: 3px;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+  &__content {
+    // width: calc(100% - 89px);
+    width: 68%;
+    &--text {
+      width: 100%;
+      font: 400 13px Gilroy;
+      padding: 4px 2px 0 0;
+    }
+    &--buttons {
+      display: flex;
+      justify-content: space-between;
+      a {
+        width: calc(50% - 5px);
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+        }
+      }
+    }
+  }
+  .btn-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 15px 3px;
+    width: auto;
+    height: auto;
+    i {
+      font-size: 12px;
+    }
+  }
+}
+.qr-box-in-sell {
+  .qr-box {
+    &__image {
+      width: 29%;
+      height: 130px;
+    }
+    &__content {
+      width: 71%;
+      padding-left: 5px;
+      padding-top: 10px;
+      &--text {
+        font: 500 18px Gilroy;
+      }
+      &--buttons {
+        i{
+          font-size: 16px;
+        }
+      }
+    }
+  }
+}
+
+.dark-mode {
+  .qr-box {
+    background: $dark-1;
+    p,
+    i {
+      color: $white;
     }
   }
 }

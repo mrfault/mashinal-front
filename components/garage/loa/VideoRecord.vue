@@ -123,6 +123,7 @@ export default {
       this[`${this.recording ? 'stop' : 'start'}Recording`]();
     },
     startRecording() {
+      
       this.starting = true;
       this.player.record().getDevice();
     },

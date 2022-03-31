@@ -1,0 +1,68 @@
+.info-text {
+    position: relative;
+    padding-left: 40px;
+    max-width: 250px;
+  
+    .icon-alert-circle {
+      position: absolute;
+      top: 1px;
+      left: 16px;
+    }
+  
+    &.full-width {
+      max-width: 100%;
+    }
+  
+    &.less-pd {
+      padding-left: 15px;
+    }
+  
+    span.cursor-pointer.text-red:hover {
+      text-decoration: underline;
+    }
+  }
+  
+  .text-green {
+    color: $green-1;
+  }
+  
+  .text-dark-blue-2 {
+    color: $dark-blue-2;
+  }
+  
+  .text-dark-blue-3 {
+    color: $dark-blue-3;
+  }
+  
+  .text-red,
+  .text-hover-red:hover {
+    color: $red-1;
+  }
+  
+  .bg-greyish-blue-2 {
+    background-color: $greyish-blue-2;
+  }
+  
+  
+  
+  .text-yellow {
+    color: $yellow-1;
+  }
+  
+  .text {
+    &-normal {
+      font-weight: normal;
+    }
+  
+    &-medium {
+      font-weight: 500;
+    }
+  
+    &-semibold {
+      font-weight: 600;
+    }
+  
+    &-bold {
+      font-weight: 700;
+    }
+  }

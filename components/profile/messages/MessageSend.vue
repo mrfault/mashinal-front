@@ -5,20 +5,20 @@
         <span class="cursor-pointer">
           <icon name="attachment" />
         </span>
-        <input ref="input" 
-          type="file" 
+        <input ref="input"
+          type="file"
           accept="image/*"
-          multiple 
+          multiple
           @change="attachFiles"
         />
       </div>
       <div class="textarea-text">
-        <input id="textarea" 
-          @keydown="$emit('type', $event)"
-          :maxlength="1000"  
+        <textarea id="textarea"
+          @keydown="handleKeyDown"
+          :maxlength="1000"
           :disabled="disabled"
-          :placeholder="$t('write')"
-          v-model="messageValue" 
+          :placeholder="!message ? $t('write'):''"
+          v-model="messageValue"
         />
         <span class="textarea-message text-dark-blue-3" v-if="message">
           <icon name="block" v-if="blocked" />
@@ -36,6 +36,7 @@
         <div class="image-preloader" v-if="sending"></div>
         <button class="btn-sq btn-sq--color-red" @click="removeFile(key)">
           <icon name="garbage"/>
+          <!-- <inline-svg src="/icons/garbage.svg" :height="14" /> -->
         </button>
         <img src="" :ref="'attachment-'+key" alt="" />
       </div>
@@ -74,6 +75,18 @@ export default {
     }
   },
   methods: {
+    handleKeyDown(e) {
+      this.$emit('type', e);
+      const keyCode = e.which || e.keyCode;
+      if(keyCode === 13 && e.shiftKey) {
+        if(!e.target.value) e.preventDefault();
+      }
+      if (keyCode === 13 && !e.shiftKey) {
+        this.$emit('send',e);
+        this.messageValue = null;
+        e.preventDefault();
+      }
+    },
     attachFiles(event) {
       if (this.disabled) return;
 
@@ -81,7 +94,7 @@ export default {
       let maxFileSize = 25;
       let acceptFiles = ['jpg','jpeg','png','webp'].map(ext => 'image/'+ext);
       let files = Array.from(event.target.files || event.dataTransfer.files);
-      
+
       this.hasError = false;
       this.$refs.input.value = null;
 
@@ -99,11 +112,11 @@ export default {
           this.$toasted.error(this.$t('max_file_size_error', { size: maxFileSize }));
           this.hasError = true; continue;
         }
-        
+
         this.$set(this.attachments, this.fileKey, files[i]);
         this.fileKey++;
       }
-      
+
       this.$nextTick(this.updateFiles);
     },
     removeFile(key) {

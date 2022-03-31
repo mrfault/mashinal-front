@@ -185,7 +185,7 @@ Vue.use({
           return this.loggedIn && (item.id === this.user.autosalon?.id || item.id === this.user.part_salon?.id);
         },
         showMonetization(item) {
-          return this.userIsOwner(item) && item.status == 1 && !item.has_monetization;
+          return  item.status == 1 && !item.has_monetization;
         }
       },
       computed: {

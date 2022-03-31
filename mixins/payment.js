@@ -32,7 +32,7 @@ export const PaymentMixin = {
   },
   methods: {
     ...mapActions(['updatePaidStatus']),
-    
+
     callUpdatePaidStatus(paid, text) {
       let type = paid ? 'success' : 'error';
       if (!paid) text = this.$t('try_again');
@@ -47,10 +47,13 @@ export const PaymentMixin = {
           this.connectEcho(`purchase.${payment_id}`, false).listen('PurchaseInitiated', async (data) => {
             let { is_paid, status } = data.payment;
             let paid = is_paid || status === 1;
-            
+
             route = (route instanceof Array) ? (route[paid ? 0 : 1]) : route;
 
             if (paid) {
+              if(data.payment.operation_key === 'attorney_pay') {
+                return this.$router.push({path: this.$localePath('/garage'), query: { tab: 'attorney-list' }})
+              }
               if (this.loggedIn)
                 await this.$auth.fetchUser();
               if (!route) {
@@ -64,7 +67,7 @@ export const PaymentMixin = {
             const stopListening = () => {
               this.connectEcho(`purchase.${payment_id}`, false).stopListening('PurchaseInitiated');
             }
-            
+
             if (route) {
               this.$router.push(route, () => {
                 this.callUpdatePaidStatus(paid, text);
@@ -73,7 +76,7 @@ export const PaymentMixin = {
             } else {
               stopListening();
             }
-            
+
           });
         }
       } else {

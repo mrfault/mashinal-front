@@ -6,18 +6,18 @@ const getInitialState = () => ({
   stepSendData: {
     garageId: '',
     carNumber: '',
-    letterType: 1, 
-    idFinCode: '', 
+    letterType: 0,
+    idFinCode: '',
     idSerialNumber: '',
     idExpiryDate: '',
-    birthDate: '', 
+    birthDate: '',
     gender: 1,
     driverLicenseNumber: '',
     driverLicenseGivenDate: '',
     driverLicenseExpiryDate: '',
     vehicleIdNumber: '',
     vehicleIdGivenDate: '',
-    idFinCodeB: '', 
+    idFinCodeB: '',
     idSerialNumberB: '',
     driverLicenseNumberB: '',
     mobileNotariatConfirm: false,
@@ -33,6 +33,7 @@ const getInitialState = () => ({
   stepReceivedData: {
     showStepsSummary: true,
     hasDriverLicense: false,
+    maxExpiryDate: null,
     isOwnVehicle: false,
     senderFullName: '',
     senderFatherName: '',
@@ -51,15 +52,15 @@ export const state = () => getInitialState();
 export const getters = {
   currentStep: s => s.step,
   currentRealStep: (s, g) => {
-    let steps = [1,2,4,5,8,9,10];
+
+    // return 10;
+    let steps = [5,6,8,9,10];
     // check if 6th and 7th steps are required
-    if (g.hasGeneralPower) steps.splice(4,0,6,7);
-    // check if 3rd step is required
-    if (g.stepReceivedData.hasDriverLicense) steps.splice(2,0,3);
+    if (g.hasGeneralPower) steps.splice(2,0,7);
     return steps[s.step - 1];
   },
   maxSteps: (s, g) => {
-    return (g.hasGeneralPower ? 10 : 8) - (g.stepReceivedData.hasDriverLicense ? 0 : 1);
+    return (g.hasGeneralPower ? 6 : 5) ;
   },
   stepSendData: s => s.stepSendData,
   stepReceivedData: s => s.stepReceivedData,
@@ -87,7 +88,10 @@ export const actions = {
     });
   },
   resetSteps({ commit }) {
-    commit('reset', ['maxSteps','step','stepSendData','stepReceivedData']);
+    commit('reset', ['maxSteps','step']);
+  },
+  resetAllSteps({ commit }) {
+    commit('reset', ['maxSteps','step','stepReceivedData','stepSendData']);
   },
   // API
   async checkOwnInfo({ dispatch, state: { stepSendData } }) {
@@ -118,10 +122,12 @@ export const actions = {
     const res = await this.$axios.$post(`/attorney/check_user_access`, {
       idFinCode: stepSendData.idFinCode,
       idSerialNumber: stepSendData.idSerialNumber,
+      car_number: stepSendData.carNumber.replace(/-|[ ]/g, ''),
       garageId: stepSendData.garageId,
       letterType: stepSendData.letterType
     });
     dispatch('updateReceivedData', [
+      { key: 'maxExpiryDate', value: res.data.expireDate },
       { key: 'showStepsSummary', value: res.data.have_access },
       { key: 'isOwnVehicle', value: res.data.isOwnVehicle },
       { key: 'hasDriverLicense', value: res.data.haveDriverLicense },
@@ -161,6 +167,7 @@ export const actions = {
   async checkVehicleLicense({ dispatch, state: { stepSendData } }) {
     const res = await this.$axios.$post(`/attorney/check_vehicle_license`, {
       garageId: stepSendData.garageId,
+      car_number: stepSendData.carNumber.replace(/-|[ ]/g, ''),
       vehicleIdNumber: stepSendData.vehicleIdNumber,
       vehicleIdGivenDate: stepSendData.vehicleIdGivenDate
     });
@@ -169,6 +176,7 @@ export const actions = {
   async checkAllData({ dispatch, state: { stepSendData, stepReceivedData } }, data) {
     let checkData = {
       garage_id: stepSendData.garageId,
+      car_number: stepSendData.carNumber.replace(/-|[ ]/g, ''),
       idFinCode: stepSendData.idFinCode,
       idSerialNumber: stepSendData.idSerialNumber,
       driverLicenseNumber: stepSendData.driverLicenseNumber,
@@ -180,17 +188,17 @@ export const actions = {
       letterType: stepSendData.letterType,
       isOwnVehicle: stepReceivedData.isOwnVehicle,
       answers: JSON.stringify([
-        { answer: stepSendData.region, questionId: stepReceivedData.questions[0].id },
-        { answer: stepSendData.senderPhone, questionId: stepReceivedData.questions[1].id },
-        { answer: stepSendData.recepientPhone, questionId: stepReceivedData.questions[2].id }
+        { answer: stepSendData.region, questionId: 12 },
+        { answer: stepSendData.senderPhone.replace(/[^0-9]+/g, '') , questionId: 5 },
+        { answer: stepSendData.recepientPhone.replace(/[^0-9]+/g, ''), questionId: 10 }
       ])
     };
-    
+
     stepSendData.letterType === 2 && [
       'right_manage', 'right_gift', 'right_mortgage', 'right_transfer_trust',
       'right_register', 'right_unregister', 'right_on_my_behalf'
     ].map((key, i) => { checkData[key] = stepSendData.letterPermissions.includes(i + 1) });
-    
+
     const res = await this.$axios.$post(`/attorney/check_all_data`, checkData);
 
     dispatch('updateReceivedData', [
@@ -202,7 +210,7 @@ export const actions = {
   },
   async payForSubmission({ dispatch, state: { stepSendData, stepReceivedData } }, data) {
     let formData = new FormData();
-    
+
     Object.entries({
       pay_type: data.pay_type,
       card_id: data.card_id,

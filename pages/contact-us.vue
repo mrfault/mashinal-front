@@ -40,21 +40,21 @@
         <form class="form" @submit.prevent="sendMessage" novalidate>
           <div class="row">
             <div class="col-lg-4 mb-2 mb-lg-3">
-              <form-text-input 
+              <form-text-input
                 v-model="form.email"
-                autocomplete="email" 
+                autocomplete="email"
                 :maxlength="255"
-                :placeholder="$t('email')" 
-                :mask="$maskEmail()" 
+                :placeholder="$t('email')"
+                :mask="$maskEmail()"
                 :invalid="$v.form.email.$error"
               />
             </div>
             <div class="col-lg-12 mb-2 mb-lg-3">
-              <form-textarea 
-                v-model="form.message" 
-                :placeholder="$t('message')" 
+              <form-textarea
+                v-model="form.message"
+                :placeholder="$t('message')"
                 :invalid="$v.form.message.$error"
-                :maxlength="3000" 
+                :maxlength="3000"
               />
             </div>
             <div class="col-lg-2 offset-lg-10">
@@ -93,7 +93,7 @@ export default {
       },
       support: {
         phone: '*8787',
-        email: 'support@mashin.al',
+        email: 'office@al.ventures',
         worktime: this.$t('worktime_support')
       }
     }

@@ -1,30 +1,30 @@
 <template>
   <div class="garage_driver-points-check">
     <div class="garage_driver-points-form card with-margins" v-show="!isMobileBreakpoint || !protocolsChecked">
-      <div class="info-text full-width mb-3"><icon name="alert-circle" /> 
+      <div class="info-text full-width mb-3"><icon name="alert-circle" />
         <span>{{ $t('fill_form_to_check_driver_points') }}</span>
       </div>
       <form class="form" @submit.prevent="submit" novalidate>
         <div class="row">
           <div class="col-lg-3 mb-2 mb-lg-0">
-            <form-text-input 
-              v-model="form.series" 
-              :mask="$maskAlphaNumeric('*{+}', ' ')" 
-              :placeholder="$t('serial_number')" 
+            <form-text-input
+              v-model="form.series"
+              :mask="$maskAlphaNumeric('*{+}', ' ')"
+              :placeholder="$t('serial_number')"
               :invalid="$v.form.series.$error"
             />
           </div>
+<!--          <div class="col-lg-3 mb-2 mb-lg-0">-->
+<!--            <form-text-input input-date-->
+<!--              v-model="form.birth" -->
+<!--              :placeholder="$t('date_birth')" -->
+<!--              :invalid="$v.form.birth.$error"-->
+<!--            />-->
+<!--          </div>-->
           <div class="col-lg-3 mb-2 mb-lg-0">
             <form-text-input input-date
-              v-model="form.birth" 
-              :placeholder="$t('date_birth')" 
-              :invalid="$v.form.birth.$error"
-            />
-          </div>
-          <div class="col-lg-3 mb-2 mb-lg-0">
-            <form-text-input input-date 
-              v-model="form.expire" 
-              :placeholder="$t('date_till')" 
+              v-model="form.expire"
+              :placeholder="$t('date_till')"
               :invalid="$v.form.expire.$error"
             />
           </div>
@@ -39,8 +39,9 @@
     <div class="garage_go-back card with-margins mb-2 mb-lg-0" v-show="isMobileBreakpoint && protocolsChecked">
       <div class="d-flex align-items-center">
         <icon name="chevron-left" @click.native.stop="showForm" class="cursor-pointer" />
+        <!-- <inline-svg src="/icons/chevron-left.svg" :height="14"  @click.native.stop="showForm" class="cursor-pointer"/> -->
         <span class="row flex-grow-1 pr-0 align-items-center">
-          <span class="col-auto ml-2 mr-auto">{{ form.series }}</span> 
+          <span class="col-auto ml-2 mr-auto">{{ form.series }}</span>
           <span class="col-auto ml-0 mr-0">{{ $t('your_points') }}: {{ driverLicensePoints.point || 0 }}</span>
         </span>
       </div>
@@ -50,8 +51,8 @@
         <div class="garage_check-points-nav">
           <div class="row">
             <div class="col-6 col-lg-auto" v-for="tabKey in ['point_protocols','unpaid_protocols']" :key="tabKey">
-              <button 
-                :class="['btn btn--pale-red-outline', {'active': tab === tabKey, 'full-width': isMobileBreakpoint}]" 
+              <button
+                :class="['btn btn--pale-red-outline', {'active': tab === tabKey, 'full-width': isMobileBreakpoint}]"
                 @click="tab = tabKey"
                 v-html="getTabText($t(tabKey))"
               />
@@ -94,7 +95,6 @@ export default {
     form: {
       series: { required },
       expire: { required },
-      birth: { required }
     }
   },
   computed: {

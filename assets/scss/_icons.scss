@@ -2,15 +2,15 @@
   font-family: 'icons';
   src:  url('../fonts/icons/icomoon.eot?ssadd');
   src:  url('../fonts/icons/icomoon.eot?ssadd#iefix') format('embedded-opentype'),
-    url('../fonts/icons/icomoon.ttf?ssadd') format('truetype'),
-    url('../fonts/icons/icomoon.woff?ssadd') format('woff'),
-    url('../fonts/icons/icomoon.svg?ssadd#icomoon') format('svg');
+  url('../fonts/icons/icomoon.ttf?ssadd') format('truetype'),
+  url('../fonts/icons/icomoon.woff?ssadd') format('woff'),
+  url('../fonts/icons/icomoon.svg?ssadd#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
 }
 
-[class^="icon-"], 
+[class^="icon-"],
 [class*=" icon-"] {
   display: inline-flex;
   flex-shrink: 0;
@@ -52,6 +52,7 @@
 }
 .icon-garage-tab:before {
   content: "\e989";
+  margin-right: 5px;
 }
 .icon-catalog-tab:before {
   content: "\e988";
@@ -478,4 +479,94 @@
 }
 .icon-handshake:before {
   content: "\e96f";
+}
+.icon-grey-attorney:before {
+  content: "\e990";
+}
+.icon-grey-calculator:before {
+  content: "\e991";
+}
+.icon-grey-check:before {
+  content: "\e992";
+}
+.icon-grey-Customs-Officer:before {
+  content: "\e993";
+}
+.icon-grey-guide-icon:before {
+  content: "\e994";
+}
+.icon-grey-hammer:before {
+  content: "\e995";
+}
+.icon-grey-insurance-icon:before {
+  content: "\e996";
+}
+.icon-grey-list:before {
+  content: "\e997";
+}
+.icon-grey-penalty:before {
+  content: "\e998";
+}
+.icon-grey-police-icon:before {
+  content: "\e999";
+}
+
+.icon-wall-clock:before {
+  content: "\e992";
+  color: #646e95;
+}
+.icon-hand-key:before {
+  content: "\e993";
+}
+.icon-hammer:before {
+  content: "\e994";
+}
+.icon-announcement:before {
+  content: "\e995";
+}
+.icon-order-history:before {
+  content: "\e996";
+}
+.icon-stamp-rotated:before {
+  content: "\e997";
+}
+.icon-receipe:before {
+  content: "\e998";
+}
+.icon-receipe-manat:before {
+  content: "\e999";
+}
+.icon-stamp:before {
+  content: "\e99a";
+}
+.icon-globe:before {
+  content: "\e99b";
+}
+
+.icon-download:before {
+  content: "\e99c";
+}
+
+.icon-compulsory-insurance-calculator:before {
+  content: "\e99d";
+}
+.icon-customs-calculator-police:before {
+  content: "\e99e";
+}
+
+.icon-car-manat:before {
+  content: "\e99f";
+}
+
+.icon-comparisons:before {
+  content: "\e9a3";
+}
+.icon-copy-1:before {
+  content: "\e9a4";
+}
+.icon-create-shop:before {
+  content: "\e9a6";
+}
+.icon-image:before {
+  content: "\e9a0";
 }

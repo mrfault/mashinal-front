@@ -3,18 +3,19 @@
     <template v-if="announcement.is_part_salon || announcement.is_autosalon">
       <grid
         v-if="shopAnnouncements.data && shopAnnouncements.data.length"
-        :announcements="shopAnnouncements.data" 
+        :announcements="shopAnnouncements.data"
         :title="title"
       />
       <infinite-loading
-        action="getShopOtherAnnouncements" 
-        getter="shopAnnouncements" 
+        action="getShopOtherAnnouncements"
+        getter="shopAnnouncements"
+        :per-page="20"
       />
     </template>
     <template v-else>
       <grid
         v-if="relativeAnnouncements.length"
-        :announcements="relativeAnnouncements" 
+        :announcements="relativeAnnouncements"
         :title="title"
       />
     </template>
@@ -45,7 +46,7 @@
       ...mapActions(['getRelativeAnnouncements', 'getShopOtherAnnouncements'])
     },
     created() {
-      if (this.announcement.is_part_salon || this.announcement.is_autosalon) 
+      if (this.announcement.is_part_salon || this.announcement.is_autosalon)
         this.getShopOtherAnnouncements({ id: this.announcement.id_unique });
       else this.getRelativeAnnouncements({ id: this.announcement.id_unique });
     },

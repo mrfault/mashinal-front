@@ -22,12 +22,14 @@
         <span class="counter" v-if="multiple && selectValue.length > 1 && !shortNamesLabel">{{ selectValue.length }}</span>
         <span class="counter" v-else-if="custom && values.count">{{ values.count }}</span>
         <icon name="cross" v-if="allowClear && !hasNoValue" @click.native.stop="clearSelect" class="cursor-pointer" />
+        <!-- <inline-svg src="/icons/cross.svg" height="14" v-if="allowClear && !hasNoValue" @click.native.stop="clearSelect" class="cursor-pointer" /> -->
         <icon :name="iconName" v-else />
       </span>
       <icon :class="['select-menu_triangle', `anchor-${anchor} anchor-${placeOptionsAbove ? 'top' : 'bottom'}`]" name="triangle" v-if="showOptions"/>
       <portal to="mobile-dropdown" v-if="isMobileBreakpoint">
         <action-bar class="priority-1"
           :title="getActionBarText"
+          :useBack="false"
           v-if="showOptions && isMobileBreakpoint && !inSelectMenu" 
           @back="showOptions = false" 
           @accept="showOptions = false"
@@ -35,7 +37,7 @@
         />
         <div :class="['select-menu_dropdown responsive', `anchor-${anchor}`, {'show': showOptions, custom, 'custom-checkboxes': customCheckboxes}]">
           <template v-if="showOptions">
-            <div class="mt-3" v-if="hasSearch && !hasGenerations" @click.stop>
+            <div class="my-3" v-if="hasSearch && !hasGenerations" @click.stop>
               <div class="container">
                 <form-text-input 
                   v-model="search"

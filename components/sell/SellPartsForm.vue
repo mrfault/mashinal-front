@@ -88,7 +88,7 @@
             @change="removeError('brand_id')"
           />
         </div>
-        
+
         <div v-if="form.category_id" class="col-12 mt-3">
           <div class="row">
 
@@ -288,12 +288,12 @@
       <template #default="{ show }">
         <transition name="translate-fade">
           <login-tabs v-if="show"
-            :popup="true" 
-            :skip-sign-in="true"  
+            :popup="true"
+            :skip-sign-in="true"
             :action-text="{
               login: $t('login_and_publish'),
               register: $t('register_and_publish'),
-              confirm: $t('confirm_and_publish') 
+              confirm: $t('confirm_and_publish')
             }"
             :force-sell-phone="true"
             @close="showLoginPopup = false"
@@ -305,7 +305,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import {mapActions, mapState} from 'vuex';
 import { ToastErrorsMixin } from '~/mixins/toast-errors';
 
 import FormKeywords from '~/components/forms/FormKeywords'
@@ -394,11 +394,11 @@ export default {
 
       delete this.form.sub_category_id;
       delete this.form.brand_id;
-      
+
       this.filters.filters.forEach(filter => {
         delete this.form[filter.key]
       })
-      
+
       this.filters = {
         sub_categories: [],
         brands: [],
@@ -419,7 +419,7 @@ export default {
       } else {
         delete this.form.sub_category_id
       }
-      
+
       if (this.filters.brands.length) {
         const value = this.filters.brands.find(c => c.id === this?.initialForm?.brand_id)?.id
         this.$set(this.form, 'brand_id', value || null)
@@ -457,7 +457,7 @@ export default {
         this.$toasted.error(this.$t('please_wait_for_all_image_loading'));
         return false;
       }
-      
+
       if (!this.files.length) {
         this.$toasted.error(this.$t('content_component_error_image'));
         return false;
@@ -487,7 +487,7 @@ export default {
 
       const formData = new FormData()
       formData.append('data', JSON.stringify(data))
-
+      formData.append('phone',this.sellPhoneEntered.replace(/[^0-9]+/g, ''));
       this.pending = true;
       try {
         let requestURL;
@@ -497,7 +497,7 @@ export default {
           requestURL= '/sell/part/post/publish';
         }
         await this.$axios.post(requestURL, formData)
-        if (this.loggedIn) 
+        if (this.loggedIn)
           await this.$auth.fetchUser();
         this.$router.push(this.$localePath('/profile/announcements'), () => {
           this.$toasted.success(this.$t('saved_changes'));
@@ -505,7 +505,7 @@ export default {
       } catch ({response: {status, data: {data, message}}}) {
         this.clearErrors();
         this.pending = false;
-        
+
         if (status === 420) {
           this.$toasted.error(this.$t(message));
         } else {
@@ -599,6 +599,7 @@ export default {
     }
   },
   computed: {
+    ...mapState(['sellPhoneEntered']),
     conditionButtons() {
       return [
         {

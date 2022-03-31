@@ -1,0 +1,39 @@
+body {
+  color: $dark-blue-1;
+  font-size: 14px;
+  line-height: 1.35;
+  font-weight: normal;
+  font-family: 'Gilroy', 'Montserrat';
+  background-color: $greyish-blue-1;
+  overflow-y: scroll;
+}
+
+.wrapper {
+  @include calc-vh(min-height, calc(100vh));
+
+  &.loading {
+    background-color: $red-1;
+    background-image: url('/img/logo-white-2.svg');
+    background-size: 200px;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+}
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  @include calc-vh(min-height, calc(100vh));
+  min-width: 320px;
+}
+
+main {
+  position: relative;
+}
+
+.container {
+  padding: 0 25px;
+  min-width: 320px;
+}
+
+

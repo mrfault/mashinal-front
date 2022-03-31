@@ -16,15 +16,16 @@
             <span class="username-subtitle" @click.stop="$emit('go-to-announcement', group)">
               <span class="text-truncate">{{ getAnnouncementTitle(chatAnnouncement) }}</span>
               <span class="text-dark-blue-2">{{ chatAnnouncement.price || '' }}</span>
-            </span> 
+            </span>
           </template>
         </span>
         <template v-if="!isChatBot">
           <span class="cursor-pointer text-dark-blue-2" @click.stop="$emit('block-chat', group)">
             <icon :name="blocked ? 'unblock' : 'block'" />
           </span>
-          <span class="cursor-pointer text-red" @click.stop="$emit('delete-chat', group)">
+          <span class="cursor-pointer text-red" @click.stop="removeItem = group; showRemoveModal = true;">
             <icon name="garbage" />
+            <!-- <inline-svg src="/icons/garbage.svg" :height="14" /> -->
           </span>
         </template>
       </div>
@@ -52,8 +53,8 @@
                       {{ $formatDate(date, '[day], D MMM', $t('days-short'), true)[locale] }}
                     </span>
                   </div>
-                  <message-item 
-                    v-for="message in messages" 
+                  <message-item
+                    v-for="message in messages"
                     :key="message.id"
                     :message="message"
                     :raw-html="isChatBot"
@@ -83,10 +84,10 @@
                 <img :src="$withBaseUrl(attachments[currentSlide])" alt="" />
               </div>
               <div class="blur-bg_slider" :key="1" v-if="!isMobileBreakpoint">
-                <images-slider 
+                <images-slider
                   :current-slide="currentSlide"
-                  :slides="{ main: attachments }" 
-                  @close="closeLightbox" 
+                  :slides="{ main: attachments }"
+                  @close="closeLightbox"
                   @slide-change="currentSlide = $event"
                 />
               </div>
@@ -108,14 +109,25 @@
         </div>
       </div>
       <div class="suggested-messages" v-if="showSuggestedMessages">
-        <button class="btn btn--primary-outline" 
-          v-for="(title, i) in filteredSuggestedMessages" 
+        <button class="btn btn--primary-outline"
+          v-for="(title, i) in filteredSuggestedMessages"
           @click="useSuggestedMessage(title)"
-          :key="i" 
+          :key="i"
           v-html="title"
         />
       </div>
     </div>
+    <modal-popup
+      :toggle="showRemoveModal"
+      :title="$t('are_you_sure_you_want_to_delete_the_message')"
+      @close="showRemoveModal = false"
+    >
+      <form class="form" @submit.prevent="deleteGroup" novalidate>
+        <button type="submit" :class="['btn btn--green full-width', { pending }]">
+          {{ $t('confirm') }}
+        </button>
+      </form>
+    </modal-popup>
   </div>
 </template>
 
@@ -148,6 +160,9 @@ export default {
   },
   data() {
     return {
+      pending: false,
+      showRemoveModal:false,
+      removeItem:null,
       text: '',
       files: [],
       typing: false,
@@ -212,23 +227,25 @@ export default {
   },
   methods: {
     ...mapActions(['markAsRead', 'sendMessage']),
-
+    deleteGroup() {
+        this.$emit('delete-chat', this.removeItem)
+    },
     checkIfRead() {
       let message = this.group.last_message;
       if (message === null || message?.is_read) return;
       this.markAsRead(this.group.id);
     },
     goBack() {
-      if (this.$route.query.group) 
+      if (this.$route.query.group)
         this.$router.replace({query: null});
       this.$emit('go-back');
     },
     toggleTypingStatus(status = true, sending = false) {
-      this.connectEcho('typing.' + this.chatUser.id).whisper('typing', JSON.stringify({ 
-        typing: status, 
+      this.connectEcho('typing.' + this.chatUser.id).whisper('typing', JSON.stringify({
+        typing: status,
         userId: this.user.id,
         sendingAttachment: sending,
-        announceId: this.group.announce_id 
+        announceId: this.group.announce_id
       }));
     },
     toggleSendingStatus(status = true) {
@@ -291,7 +308,7 @@ export default {
           } else this.text = '';
           // after send
           const afterSendActions = () => {
-            window.scrollTo(0,0);
+            //window.scrollTo(0,0);
             if (hasAttachments) {
               this.text = '';
               this.$nuxt.$emit('clear-message-attachments');

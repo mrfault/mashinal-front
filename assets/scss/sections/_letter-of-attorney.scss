@@ -65,7 +65,7 @@
       border-radius: 100px;
       background-color: $green-1;
       &.animate {
-        transition: width .3s;
+        transition: width 0.3s;
       }
     }
   }
@@ -90,7 +90,7 @@
       padding-top: 3px;
       box-shadow: 0 0 0 2px $white;
       background-color: $white;
-      transition: border-color .3s, color .3s;
+      transition: border-color 0.3s, color 0.3s;
       &.disabled {
         color: $greyish-blue-3;
         pointer-events: none;
@@ -113,7 +113,8 @@
 .steps-summary {
   &.show-data {
     padding-top: 45px;
-    h4, p {
+    h4,
+    p {
       text-align: center;
     }
   }
@@ -205,7 +206,7 @@
     justify-content: center;
     appearance: none;
     border: 0;
-    background-color: rgba($white, .5);
+    background-color: rgba($white, 0.5);
     border-radius: 4px;
     height: 40px;
     min-width: 40px;
@@ -269,8 +270,8 @@
     z-index: 2;
     top: 14.8%;
     left: 50%;
-    height: 33.3%;
-    width: 14.8%;
+    height: 44.3%;
+    width: 27.8%;
     pointer-events: none;
     transform: translate(-50%);
     border: 2px solid $red-1;
@@ -313,13 +314,15 @@
     scrollbar-width: none;
     -ms-overflow-style: none;
     border-bottom: 1px solid $greyish-blue-2;
+    margin-bottom: 15px;
     &::-webkit-scrollbar {
       width: 0;
       height: 0;
       background: transparent;
     }
     &_bar {
-      &, .filled {
+      &,
+      .filled {
         border-radius: 4px;
       }
     }
@@ -382,7 +385,7 @@
           color: $white;
           left: 50%;
           top: 50%;
-          transform: translate(-50%,-50%);
+          transform: translate(-50%, -50%);
           pointer-events: none;
         }
       }
@@ -401,7 +404,7 @@
         position: absolute;
         left: 50%;
         top: 50%;
-        transform: translate(-50%,-50%);
+        transform: translate(-50%, -50%);
         margin-left: -85px;
         width: 50px;
         height: 50px;
@@ -431,7 +434,6 @@
 
 @include media-max-width('sm') {
   .steps-progress {
-    margin: 0 -25px;
   }
 
   @keyframes runText {
@@ -467,6 +469,33 @@
       height: 397px;
       max-height: calc(100vh - 315px);
       max-width: calc((100vh - 315px) * 1.916);
+    }
+  }
+}
+
+@media only screen and (max-width: 330px) {
+  .card-bordered {
+    padding: 23px 3px;
+    height: 175px;
+    p {
+      white-space: normal;
+    }
+    ul {
+      li {
+        display: block;
+        padding-left: 10px;
+        .wider {
+          display: block;
+        }
+        span{
+          &:last-child{
+            text-align: inherit;
+            margin-top: 5px;
+            margin-left: 0;
+            padding-left: 0;
+          }
+        }
+      }
     }
   }
 }

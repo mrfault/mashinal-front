@@ -28,9 +28,11 @@ import FormImage from '~/components/forms/FormImage';
 import ContentEditable from '~/components/forms/ContentEditable';
 // transitions
 import TransitionExpand from '~/components/transitions/TransitionExpand';
+import I360Viewer from "~/components/I360Viewer";
 // ***
 Vue.component('inline-svg', InlineSvg);
 // ***
+Vue.component('vue-three-sixty',I360Viewer)
 Vue.component('icon', Icon);
 Vue.component('timer', Timer);
 Vue.component('breadcrumbs', Breadcrumbs);

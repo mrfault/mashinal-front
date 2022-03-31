@@ -2,6 +2,8 @@ export default function ({ app, store, error, $axios }) {
   $axios.onRequest(config => {
     config.headers['locale'] = app.i18n.locale;
     config.headers['ptk'] = store.getters.ptk;
+    if(app.$cookies.get('asan_token'))
+      config.headers['asan-token'] = app.$cookies.get('asan_token');
   });
 
   $axios.onResponse(res => {
@@ -21,8 +23,10 @@ export default function ({ app, store, error, $axios }) {
     if (process.client) {
       app.store.dispatch('setLoading', false);
     }
+
     // handle global errors
     const code = parseInt(err.response && err.response.status);
+    if(code === 402) return;
     if (code === 404/* || code === 500*/) {
       error({statusCode:code});
       return true;

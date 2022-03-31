@@ -3,13 +3,17 @@
     <backdrop :class="backdropClass" @click="handleBackdropClick" v-if="toggle">
       <template #default="{ show }">
         <transition name="translate-fade">
-          <div :class="['modal-popup white-scroll-bg', {[modalClass]: modalClass}]" v-if="show" 
+          <div :class="['modal-popup white-scroll-bg', {[modalClass]: modalClass}]" v-if="show"
                @click.stop="$nuxt.$emit('modal-popup-click', $event)">
             <div class="modal-popup_content">
               <div class="title d-flex">
-                <h4 v-if="title" v-html="title"></h4>
+                <h4 v-if="title" class="d-flex">
+                  <span v-html="title" ></span>
+                  <img :src="titleLogo" class="ml-2" v-if="titleLogo"/>
+                </h4>
                 <span class="cursor-pointer close" @click="$emit('close')">
                   <icon name="cross" />
+                  <!-- <inline-svg src="/icons/cross.svg" height="14"/> -->
                 </span>
               </div>
               <slot v-if="!overflowHidden" />
@@ -29,6 +33,7 @@
 <script>
 export default {
   props: {
+    titleLogo: String,
     toggle: Boolean,
     title: String,
     backdropClass: String,

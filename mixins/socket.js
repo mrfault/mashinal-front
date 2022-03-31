@@ -8,12 +8,9 @@ export const SocketMixin = {
       window.Pusher = Pusher;
       window.Echo = new Echo({
         broadcaster: 'pusher',
-        key: 'any',
-        wsHost: this.$env.WS_HOST,
-        wsPort: 6001,
-        wssPort: 6001,
-        disableStats: true,
-        enabledTransports: ['ws', 'wss'],
+        key: 'c4c2102447c08b6c126a',
+        cluster: 'eu',
+        //wsHost: this.$env.WS_HOST,
         forceTLS: true,
         authEndpoint: this.$env.BROADCAST_URL,
         auth: {
@@ -24,6 +21,7 @@ export const SocketMixin = {
       });
     },
     connectEcho(channel = false, isPrivate = true) {
+      if(!window.Echo) this.configSocket();
       return window.Echo[isPrivate ? 'private' : 'channel'](channel || ('user.'+ this.$auth.user.id));
     }
   }

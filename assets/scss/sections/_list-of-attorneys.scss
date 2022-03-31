@@ -1,0 +1,122 @@
+.attorney-list {
+  .attorney-date {
+    width: 100%;
+    background: #fff;
+  }
+  i{
+      font-size: 20px;
+      margin-right: 9px;
+  }
+  .attorney-list{
+    &--heading{
+        display: flex;
+        flex-wrap: nowrap;
+    }
+}
+  .attorney-more {
+    color: #246eb2;
+    font-size: 14px;
+    i {
+      margin-left: 5px;
+      font-size: 10px;
+    }
+  }
+  .attorney-checked {
+    font-size: 14px;
+    white-space: nowrap;
+    padding-left: 23px;
+    &.approved {
+      color: #29a53e;
+    }
+    &.rejected_attorney {
+      color: #f81734;
+    }
+    &.pending {
+      color: #646e95;
+    }
+    i {
+      margin-right: 5px;
+      font-size: 14px;
+    }
+  }
+  .card {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .attorney {
+    &__info {
+      display: flex;
+      justify-content: space-between;
+      &--details {
+        width: 30%;
+        p {
+          margin: 0;
+          &:nth-of-type(1) {
+            font: 400 14px Gilroy;
+            margin-bottom: 5px;
+            color: $dark-blue-3;
+          }
+          &:nth-of-type(1) {
+            font: 400 15px Gilroy;
+          }
+        }
+        &:nth-of-type(1) {
+          width: 20%;
+        }
+        &:nth-of-type(2) {
+          width: 50%;
+        }
+      }
+      &--buttons {
+        width: 20%;
+        text-align: right;
+      }
+    }
+  }
+}
+@media screen and (max-width: 1024px) {
+  .dark-mode {
+    .attorney-date {
+      background: $dark-2 !important;
+    }
+  }
+  .attorney-date {
+    width: 100% !important;
+  }
+
+  .attorney-list{
+      &--heading{
+          margin-bottom: 30px !important;
+          flex-wrap: wrap !important;
+          i{
+              width: 40px;
+          }
+          h2{
+              width: calc(100% - 80px) !important;
+          }
+          span{
+              padding-left: 0 !important;
+
+          }
+      }
+  }
+  .attorney {
+    &__info {
+      flex-wrap: wrap;
+      &--details {
+          margin-bottom: 20px;
+        &:nth-of-type(1) {
+          width: 100% !important;
+        }
+        &:nth-of-type(2) {
+          width: 100% !important;
+        }
+      }
+      &--buttons {
+        width: 100% !important;
+        text-align: right;
+      }
+    }
+  }
+}

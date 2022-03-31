@@ -1,10 +1,10 @@
 <template>
   <div class="add-video row">
     <div class="col-lg-5">
-      <form-text-input 
-        :placeholder="$t('enter_the_youtube_video_link')" 
+      <form-text-input
+        :placeholder="$t('enter_the_youtube_video_link')"
         :icon-name="'link'"
-        :invalid="invalid" 
+        :invalid="invalid"
         :valid="!!youtubeUrl && !invalid"
         :value="youtubeUrl"
         @input="validateUrl"

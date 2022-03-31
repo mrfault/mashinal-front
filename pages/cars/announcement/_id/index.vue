@@ -30,7 +30,7 @@
               <template #after v-if="hasComplects || getCarHealth">
                 <hr v-if="announcement.comment" />
                 <template v-if="getCarHealth">
-                  <damage-options :selected="getCarHealth" read-only/>
+                  <damage-options :selected="getCarHealth" read-only :imageIsActive="imageIsActive" v-if="false"/>
                   <hr v-if="hasComplects" />
                 </template>
                 <car-complects :options="getComplectOptions" v-if="hasComplects" />
@@ -44,7 +44,7 @@
               <template #after v-if="hasComplects || getCarHealth">
                 <hr v-if="announcement.comment" />
                 <template v-if="getCarHealth">
-                  <damage-options :selected="getCarHealth" read-only/>
+                  <damage-options :selected="getCarHealth" read-only v-if="false"/>
                   <hr v-if="hasComplects" />
                 </template>
                 <car-complects :options="getComplectOptions" v-if="hasComplects" />
@@ -69,7 +69,6 @@ import Comment from '~/components/announcements/inner/Comment';
 import CarComplects from '~/components/announcements/inner/CarComplects';
 import DamageOptions from '~/components/options/DamageOptions';
 import Relatives from '~/components/announcements/inner/Relatives';
-
 export default {
   name: 'pages-cars-id',
   components: {
@@ -80,7 +79,7 @@ export default {
     Comment,
     CarComplects,
     DamageOptions,
-    Relatives
+    Relatives,
   },
   nuxtI18n: {
     paths: {
@@ -143,7 +142,6 @@ export default {
   },
   computed: {
     ...mapGetters(['announcement', 'catalog']),
-
     getComplectOptions() {
       return typeof this.announcement.options === 'string'
         ? JSON.parse(this.announcement.options)
@@ -157,7 +155,9 @@ export default {
         ? JSON.parse(this.announcement.car_body_health.options)
         : false;
     },
-
+    imageIsActive(){
+      return false
+    },
     crumbs() {
       return [
         { name: this.$t('cars'), route: '/cars' },

@@ -1,6 +1,6 @@
 <template>
   <transition-group name="fade">
-    <div v-if="badgeVisible && !isMobileBreakpoint" :key="'badgeVisible'">
+    <div v-if="badgeVisible" :key="'badgeVisible'">
       <div class="comparison-badge" @click="handleClick">
         <icon name="compare" />
         <span v-if="count" class="comparison-badge__count">{{ count }}</span>
@@ -14,17 +14,17 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters } from 'vuex'
 import ComparisonPreview from '~/components/elements/ComparisonPreview'
 
 export default {
   components: {
-    ComparisonPreview
+    ComparisonPreview,
   },
   data() {
     return {
       badgeVisible: false,
-      previewVisible: false
+      previewVisible: false,
     }
   },
   mounted() {
@@ -33,25 +33,28 @@ export default {
   },
   methods: {
     handleClick() {
-      this.previewVisible = !this.previewVisible
+      if (this.isMobileBreakpoint) {
+          this.$router.push(this.$localePath('/comparison'))
+      } else {
+        this.previewVisible = !this.previewVisible
+      }
     },
-    updateVisible()  {
+    updateVisible() {
       this.badgeVisible = Boolean(this.$store.getters['comparison/count'])
       if (!this.badgeVisible) {
         this.previewVisible = false
       }
-    }
+    },
   },
   computed: {
     ...mapGetters({
-      count: 'comparison/count'
-    })
+      count: 'comparison/count',
+    }),
   },
-  watch:{
+  watch: {
     count() {
       this.updateVisible()
-    }
+    },
   },
-  
 }
 </script>

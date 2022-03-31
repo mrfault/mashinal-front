@@ -6,14 +6,14 @@
       <div class="sell_cards-row row">
         <div class="col-auto">
           <div :class="{'card': !isMobileBreakpoint}">
-            <sell-selected-model v-if="showModelOptions" 
+            <sell-selected-model v-if="showModelOptions"
               :brand="brand"
               :model="model"
               :year="form.year"
               :allow-clear="showModelOptions"
               @clean="cleanForm"
             />
-            <sell-last-step type="cars" v-if="showLastStep" 
+            <sell-last-step type="cars" v-if="showLastStep"
               :key="lastStepKey"
               :initial-form="form"
               :title="`${brand.name} ${model.name}, ${form.year}`"
@@ -21,7 +21,7 @@
               @clean="cleanForm"
             />
             <year-options v-else-if="showYearOptions"
-              :years="sellYears" 
+              :years="sellYears"
               :title="$t('prod_year')"
               :value="form.year"
               @input="handleYear"
@@ -29,7 +29,7 @@
               @clean="cleanForm"
             />
             <model-options key="model" v-else-if="showModelOptions"
-              :options="models" 
+              :options="models"
               :title="$t('model')"
               :status-title="$t('select_model')"
               :input-title="$t('model_name')"
@@ -40,7 +40,7 @@
               @clean="cleanForm"
             />
             <model-options key="brand" v-else-if="showBrandOptions"
-              :options="brands" 
+              :options="brands"
               :popular-options="[129,483,8,1,767,117]"
               :title="$t('mark')"
               :status-title="$t('select_brand')"
@@ -73,6 +73,7 @@ import SellLastStep from '~/components/sell/SellLastStep';
 import SellSelectedModel from '~/components/sell/SellSelectedModel';
 import SellPreview from '~/components/sell/SellPreview';
 import SellProgress from '~/components/sell/SellProgress';
+import {email, required} from "vuelidate/lib/validators";
 
 export default {
   name: 'pages-sell-cars',
@@ -122,7 +123,7 @@ export default {
         modification: '', // transmissions/box
         transmission: '', // gearing
         capacity: '',
-        power: '',          
+        power: '',
         year: '',
         youtube: {
           id: '',
@@ -147,12 +148,12 @@ export default {
         all_options: {},
         comment: '',
         autogas: false,
-        is_new: false, 
-        beaten: false, 
-        customs_clearance: false, 
-        tradeable: false, 
+        is_new: false,
+        beaten: false,
+        customs_clearance: false,
+        tradeable: false,
         credit: false,
-        guaranty: false, 
+        guaranty: false,
         saved_images: [],
         btl_cookie: app.$cookies.get('btl') || ''
       }

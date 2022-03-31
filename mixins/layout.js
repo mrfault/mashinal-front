@@ -15,10 +15,10 @@ export const LayoutMixin = {
     }
   },
   computed: {
-    ...mapGetters(['loading','messages','paidStatusData','hideFooter'])
+    ...mapGetters(['loading','messages','paidStatusData','hideFooter','notifications'])
   },
   methods: {
-    ...mapActions(['setLoading','setGridBreakpoint','getMessages','getFavorites','resetSellTokens','resetUserData','updatePaidStatus',
+    ...mapActions(['setLoading','setGridBreakpoint','getMessages','getNotifications','getFavorites','resetSellTokens','resetUserData','updatePaidStatus',
                    'getNotViewedSavedSearch','getNotViewedFavorites']),
 
     handleResize() {
@@ -43,8 +43,10 @@ export const LayoutMixin = {
       let scrolled = window.scrollY;
       let layout = document.querySelector('.layout');
       // header
-      let headerEl = document.querySelector('.page-header');
+      let headerEl = document.querySelector('.header-menu');
       let menuHeaderEl = document.querySelector('.menu-header');
+      let promotionEl = document.querySelector('.top-promotion-row');
+      promotionEl?.classList[window.scrollY > 0 ? 'add' : 'remove']('d-none');
       [headerEl, menuHeaderEl].map(el => {
         el?.classList[window.scrollY > 0 ? 'add' : 'remove']('has-shadow');
       });
@@ -63,6 +65,11 @@ export const LayoutMixin = {
     toggleEchoListening(toggle) {
       if (toggle) {
         this.connectEcho().listen('SendMessage', this.addNewMessage);
+        this.connectEcho('global-channel.'+this.$auth.user.id).listen('GlobalFrontEndEvent',({ data }) => {
+          data.map(value => {
+            this.$store.dispatch(value)
+          })
+        })
       } else if (window.Echo) {
         this.connectEcho().stopListening('SendMessage');
       }
@@ -70,6 +77,7 @@ export const LayoutMixin = {
     async getUserData() {
       if (!this.loggedIn) return;
       if (!this.messages.length) await this.getMessages();
+      if(!this.notifications.length) await this.getNotifications();
       await Promise.all([
         this.getNotViewedSavedSearch(),
         this.getNotViewedFavorites(),
@@ -93,7 +101,7 @@ export const LayoutMixin = {
     // }
   },
   created() {
-    this.getUserData();
+    //this.getUserData();
 
     this.$nuxt.$on('login', (auth) => {
       this.getUserData();

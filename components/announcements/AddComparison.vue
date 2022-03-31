@@ -1,11 +1,16 @@
 <template>
-  <button
+  <!-- <button
     class="btn-sq btn-sq--color-red"
     :class="{'active': isActive}"
     @click.prevent.stop="handleClick"
   >
     <icon name="compare" />
-  </button>
+  </button> -->
+      <button
+      class="btn-transparent btn-compare"
+      :class="{ 'btn-compare-active': isActive }"
+      @click.prevent.stop="handleClick()"
+    ><i></i></button>
 </template>
 
 <script>

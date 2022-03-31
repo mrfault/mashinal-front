@@ -1,33 +1,36 @@
 <template>
   <div class="car-filters">
-    <div class="car-filters_row" v-for="(options, index) in carFilterOptions" :key="index">
+    <div class="car-filters_row" v-for="(options, index) in carFilterOptions" :key="options.id">
       <div class="d-flex mb-2 mb-lg-3" @click="$set(collapsed, index, !collapsed[index])">
         <h2 class="title-with-line full-width">
           <span v-if="popular">{{ $t('popular_options') }}</span>
           <span v-else>{{ getTitle(index) }}</span>
         </h2>
-        <icon :name="`chevron-${collapsed[index] ? 'down' : 'up'}`" class="cursor-pointer" />
+        <icon :name="`chevron-${collapsed[index] ? 'down' : 'up'}`" class="cursor-pointer" v-if="showIcon || (index==0 && popular)"/>
       </div>
       <transition-expand>
-        <div class="row" v-if="!collapsed[index]">
+        <div class="row" v-if=collapsed[index]>
           <div class="col-12 col-lg-4 mb-2 mb-lg-3" v-for="(input, index) in options" :key="index">
             <template v-if="form.hasOwnProperty(input.name)">
-              <form-select 
-                v-if="input.type === 'select'" 
-                v-model="form[input.name]" 
-                :label="$t(input.placeholder)" 
-                :options="input.options" 
-                :multiple="isMultiple(input)" 
+
+              <form-select
+                v-if="input.type === 'select'"
+                v-model="form[input.name]"
+                :label="$t(input.placeholder)"
+                :options="input.options"
+                :multiple="isMultiple(input)"
                 :name-in-value="!!nameInValue"
                 :translate-options="true"
                 @change="changeFilter(input, $event)"
               />
-              <form-checkbox  
+
+              <form-checkbox
                 v-else-if="input.type === 'checkbox'"
-                v-model="form[input.name]" 
+                v-model="form[input.name]"
                 :label="$t(input.label)"
                 :id="`${popular ? 'popular_' : ''}${input.name}${input.selected_key || ''}`"
-                :input-name="input.name"  
+                :input-name="input.name"
+                @input="changeFilter(input, $event)"
                 @change="changeFilter(input, $event)"
               />
             </template>
@@ -39,10 +42,18 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import {mapGetters} from 'vuex';
 
 export default {
   props: {
+    showIcon:{
+      default: true,
+      type: Boolean
+    },
+    isSearchPage:{
+      default: false,
+      type: Boolean
+    },
     values: {},
     nameInValue: Boolean,
     collapsedByDefault: Boolean,
@@ -52,8 +63,8 @@ export default {
     return {
       form: {},
       selectMultiple: [
-        'p_seats','s_ventilation','h_seats','p_windows','s_w_adjustment',
-        'p_assist_system','airbags','isofix_mounting_system','a_systems','suspension'
+        'p_seats', 's_ventilation', 'h_seats', 'p_windows', 's_w_adjustment',
+        'p_assist_system', 'airbags', 'isofix_mounting_system', 'a_systems', 'suspension'
       ],
       collapsed: {},
       titles: [
@@ -97,7 +108,7 @@ export default {
       return count ? `${title} (${count})` : title;
     },
     getValue(input, values) {
-      return values.hasOwnProperty(input.name) 
+      return values.hasOwnProperty(input.name)
         ? (input.selected_key ? (this.isMultiple(input) ? values[[input.name]].includes(input.selected_key) : input.selected_key == values[[input.name]]) : values[[input.name]])
         : (input.selected_key ? false : (this.isMultiple(input) ? [] : (input.type === 'select' ? '' : false)));
     },
@@ -126,11 +137,16 @@ export default {
   created() {
     this.setValues();
     this.$nuxt.$on('change-car-filters', this.setValues);
-    this.carFilterOptions.map((_, index) => {
-      if (this.collapsedByDefault || (!this.popular && index !== 0)) {
-        this.$set(this.collapsed, index, true);
-      }
-    });
+    if(!this.isSearchPage) {
+      this.carFilterOptions.map((_, index) => {
+        if (this.collapsedByDefault || (!this.popular && index === 0)) {
+          this.$set(this.collapsed, index, true);
+        }
+      });
+    }else {
+      this.$set(this.collapsed, 0, true);
+    }
+   
   },
   beforeDestroy() {
     this.$nuxt.$off('change-car-filters', this.setValues);

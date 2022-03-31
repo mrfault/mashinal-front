@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="36.667" height="40" viewBox="0 0 36.667 40">
+  <g id="copy" transform="translate(-1)">
+    <path id="Path_44568" data-name="Path 44568" d="M24.75,35H5.583A4.587,4.587,0,0,1,1,30.417V4.583A4.587,4.587,0,0,1,5.583,0H24.75a4.587,4.587,0,0,1,4.583,4.583V30.417A4.587,4.587,0,0,1,24.75,35Z" transform="translate(0)" fill="#1976d2"/>
+    <path id="Path_44569" data-name="Path 44569" d="M16,0H5.583A4.587,4.587,0,0,0,1,4.583V30.417A4.587,4.587,0,0,0,5.583,35H16Z" transform="translate(0)" fill="#1667b7"/>
+    <path id="Path_44570" data-name="Path 44570" d="M29.75,37.333H10.583A4.587,4.587,0,0,1,6,32.75V8.583A4.587,4.587,0,0,1,10.583,4H29.75a4.587,4.587,0,0,1,4.583,4.583V32.75A4.587,4.587,0,0,1,29.75,37.333Z" transform="translate(3.333 2.667)" fill="#eceff1"/>
+    <g id="Group_15753" data-name="Group 15753" transform="translate(16 13.333)">
+      <path id="Path_44571" data-name="Path 44571" d="M23.75,18H11.25a1.25,1.25,0,0,1,0-2.5h12.5a1.25,1.25,0,0,1,0,2.5Z" transform="translate(-10 -3)" fill="#607d8b"/>
+      <path id="Path_44572" data-name="Path 44572" d="M23.75,22H11.25a1.25,1.25,0,0,1,0-2.5h12.5a1.25,1.25,0,0,1,0,2.5Z" transform="translate(-10 -0.333)" fill="#607d8b"/>
+      <path id="Path_44573" data-name="Path 44573" d="M23.75,14.5H11.25a1.25,1.25,0,0,1,0-2.5h12.5a1.25,1.25,0,0,1,0,2.5Z" transform="translate(-10 -5.333)" fill="#607d8b"/>
+      <path id="Path_44574" data-name="Path 44574" d="M23.75,10.5H11.25a1.25,1.25,0,0,1,0-2.5h12.5a1.25,1.25,0,0,1,0,2.5Z" transform="translate(-10 -8)" fill="#607d8b"/>
+    </g>
+    <path id="Path_44575" data-name="Path 44575" d="M20.167,4H10.583A4.587,4.587,0,0,0,6,8.583V32.75a4.587,4.587,0,0,0,4.583,4.583h9.583v-5h-6.25a1.25,1.25,0,1,1,0-2.5h6.25V25.667h-6.25a1.25,1.25,0,1,1,0-2.5h6.25V19.833h-6.25a1.25,1.25,0,1,1,0-2.5h6.25V13.167h-6.25a1.25,1.25,0,0,1,0-2.5h6.25Z" transform="translate(3.333 2.667)" fill="#cdd0d2"/>
+    <path id="Path_44576" data-name="Path 44576" d="M17.5,15.5H11.25a1.25,1.25,0,0,0,0,2.5H17.5Z" transform="translate(6 10.333)" fill="#546d79"/>
+    <path id="Path_44577" data-name="Path 44577" d="M17.5,19.5H11.25a1.25,1.25,0,0,0,0,2.5H17.5Z" transform="translate(6 13)" fill="#546d79"/>
+    <path id="Path_44578" data-name="Path 44578" d="M17.5,12H11.25a1.25,1.25,0,0,0,0,2.5H17.5Z" transform="translate(6 8)" fill="#546d79"/>
+    <path id="Path_44579" data-name="Path 44579" d="M17.5,8H11.25a1.25,1.25,0,0,0,0,2.5H17.5Z" transform="translate(6 5.333)" fill="#546d79"/>
+  </g>
+</svg>

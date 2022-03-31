@@ -6,9 +6,15 @@ import VTooltip from 'v-tooltip';
 import Inputmask from 'inputmask';
 import vuescroll from 'vuescroll';
 import * as rive from 'rive-js';
+import { VueHammer } from 'vue2-hammer'
+Vue.use(VueHammer)
+//import VueThreeSixty from 'vue-360'
+
+
 
 Vue.prototype.$rive = rive;
 
+//Vue.use(VueThreeSixty)
 Vue.use(Vue2TouchEvents)
 Vue.use(VueAwesomeSwiper);
 Vue.use(VueLazyload);

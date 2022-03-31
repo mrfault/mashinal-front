@@ -1,0 +1,36 @@
+.card {
+  position: relative;
+  background-color: $white;
+  border-radius: 4px;
+  padding: 25px;
+  transition: box-shadow 0.2s ease-out;
+
+  &.no-bg {
+    background-color: transparent;
+  }
+
+  &.no-pd {
+    padding: 0;
+  }
+
+  &.has-collapse {
+    padding: 15px 25px;
+  }
+
+  p,
+  ul,
+  ol {
+    strong {
+      font-weight: 600;
+    }
+  }
+
+  &.disabled > * {
+    opacity: 0.25;
+    pointer-events: none;
+  }
+
+  &.underline {
+    box-shadow: $shadow-light-6;
+  }
+}

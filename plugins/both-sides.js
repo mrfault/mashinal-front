@@ -3,7 +3,6 @@ import Vue from 'vue';
 import Vuelidate from 'vuelidate';
 import VueScrollTo from 'vue-scrollto';
 import Croppa from 'vue-croppa';
-
 Vue.use(Vuelidate);
 
 Vue.use(VueScrollTo, {

@@ -5,11 +5,12 @@
       <div></div>
       <div></div>
     </div>
+    <slot />
   </div>
 </template>
 
 <script>
 export default {
-  
+
 }
 </script>

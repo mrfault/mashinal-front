@@ -465,6 +465,22 @@
           opacity: 1;
         }
       }
+      textarea {
+        height: 74px;
+        width: 100%;
+        color: inherit;
+        font: inherit;
+        font-size: 14px;
+        resize: none;
+        border: 0;
+        outline: none;
+        background: transparent;
+        padding: 25px 0;
+        &::placeholder {
+          color: $dark-blue-3;
+          opacity: 1;
+        }
+      }
     }
     .textarea-message {
       display: flex;
@@ -558,7 +574,7 @@
     color: $dark-2;
     background-color: $yellow-1;
   }
-  
+
   .dots {
     i {
       background-color: $yellow-1;
@@ -621,8 +637,8 @@
       }
     }
   }
-  
-  
+
+
   .message {
     &-content {
       background-color: $dark-1;
@@ -663,7 +679,7 @@
 }
 
 @include media-max-width('lg') {
- 
+
 }
 
 @include media-min-width('lg') {
@@ -684,7 +700,7 @@
     &-card {
       height: 100%;
     }
-    
+
     &_chat-list,
     &_msg-list {
       height: calc(100vh - 201px - 25px - 69px);

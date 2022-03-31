@@ -9,21 +9,21 @@
       </div>
       <div class="row mb-n2 mb-lg-n3">
         <template v-if="where === 'transport'">
-          <div class="col-12 col-lg-1-5 mb-2 mb-lg-3">
+          <div class="col-12 mb-2 col-lg-4 col-xl-1-5">
             <form-select :label="$t('mark')" :options="brands" v-model="form.brand_id"
               :clear-option="!isMobileBreakpoint" :popular-options="isMobileBreakpoint ? [129,483,8,1,767,117] : undefined" 
               @change="setBrand($event, 0), searchAutosalons()" has-search
               :img-key="isMobileBreakpoint ? 'transformed_media' : ''" :img-placeholder="`/logos/car-${colorMode}.svg`" />
           </div>
-          <div class="col-12 col-lg-1-5 mb-2 mb-lg-3">
+          <div class="col-12 mb-2 col-lg-4 col-xl-1-5">
             <form-select :label="$t('model')" :options="carModels[0]" v-model="form.model_id"
               :disabled="form.brand_id && !carModels[0].length" @change="setModel($event, 0), searchAutosalons()" has-search />
           </div>
-          <div class="col-12 col-lg-1-5 mb-2 mb-lg-3">
+          <div class="col-12 mb-2 col-lg-4 col-xl-1-5">
             <form-select :label="$t('generation')" :options="carGenerations[0]" v-model="form.generation_id"
               :disabled="form.model_id && !carGenerations[0].length" has-search has-generations @change="searchAutosalons()" />
           </div>
-          <div class="col-12 col-lg-2-5 mb-2 mb-lg-3">
+          <div class="col-12 mb-2 col-lg-5 col-xl-2-5">
             <div :class="['row', {'checkbox-row': short}]">
               <div class="col-6 col-lg-6">
                 <form-checkbox :label="$t('barter')" v-model="form.barter" 

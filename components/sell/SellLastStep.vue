@@ -20,11 +20,11 @@
           @file-rotated="rotateImage"
           @order-changed="changeOrder"
         />
-        <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-youtube">
-          <span>{{ $t('video') }}</span>
-        </h2>
-        <add-video :value="form.youtube.id" @input="$set(form, 'youtube', $event)"
-           :thumb="form.youtube.thumb" />
+<!--        <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-youtube">-->
+<!--          <span>{{ $t('video') }}</span>-->
+<!--        </h2>-->
+<!--        <add-video :value="form.youtube.id" @input="$set(form, 'youtube', $event)"-->
+<!--           :thumb="form.youtube.thumb" />-->
         <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-selectedColor">
           <span>{{ $t('color') }} <span class="star"> *</span></span>
         </h2>
@@ -38,11 +38,11 @@
           <div class="col-lg-3 mb-2 mb-lg-0">
             <div class="row flex-nowrap">
               <div class="col-auto flex-grow-1">
-                <form-numeric-input :placeholder="$t('mileage')" v-model="form.mileage" input-class="w-133" 
+                <form-numeric-input :placeholder="$t('mileage')" v-model="form.mileage" input-class="w-133"
                   :invalid="isInvalid('mileage')" @change="removeError('mileage'), updatePreview('mileage')" />
               </div>
               <div class="col-auto">
-                <form-switch :options="getMileageOptions" v-model="form.mileage_measure" 
+                <form-switch :options="getMileageOptions" v-model="form.mileage_measure"
                   @change="updatePreview('mileage_measure')" />
               </div>
             </div>
@@ -60,10 +60,10 @@
           </div>
         </div>
         <template v-if="type === 'cars'">
-          <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-body-parts">
+          <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-body-parts" v-if="false">
             <span>{{ $t('body_condition') }}</span>
           </h2>
-          <damage-options :selected="form.part" @update-car-damage="updateCarDamage" />
+          <damage-options :selected="form.part" @update-car-damage="updateCarDamage" :imageIsActive="true" v-if="false"/>
         </template>
         <template v-if="!isAutosalon">
           <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-region_id">
@@ -71,8 +71,8 @@
           </h2>
           <div class="row">
             <div class="col-lg-4 mb-2 mb-lg-0">
-              <form-select :label="$t('region')" :options="sellOptions.regions" v-model="form.region_id" has-search 
-                :invalid="isInvalid('region_id')" @change="removeError('region_id'), updatePreview('region')" 
+              <form-select :label="$t('region')" :options="sellOptions.regions" v-model="form.region_id" has-search
+                :invalid="isInvalid('region_id')" @change="removeError('region_id'), updatePreview('region')"
                 :clear-option="false" />
             </div>
             <div class="col-lg-4 mb-2 mb-lg-0">
@@ -97,7 +97,7 @@
                   :invalid="isInvalid('price')" @change="removeError('price'), updatePreview('price')" />
               </div>
               <div class="col-auto">
-                <form-switch :options="getCurrencyOptions" v-model="form.currency" 
+                <form-switch :options="getCurrencyOptions" v-model="form.currency"
                   @change="updatePreview('currency')"/>
               </div>
             </div>
@@ -109,45 +109,58 @@
             </div>
           </div>
         </div>
-        <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-owner_type">
-          <span>{{ $t('first_owner_question') }}</span>
-        </h2>
-        <div class="row">
-          <div class="col-auto mb-2 mb-lg-0">
-            <form-switch :options="getOwnerOptions" v-model="form.owner_type" auto-width />
-          </div>
-        </div>
-        <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-car_or_vin">
+<!--        <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-owner_type">-->
+<!--          <span>{{ $t('first_owner_question') }}</span>-->
+<!--        </h2>-->
+<!--        <div class="row">-->
+<!--          <div class="col-auto mb-2 mb-lg-0">-->
+<!--            <form-switch :options="getOwnerOptions" v-model="form.owner_type" auto-width />-->
+<!--          </div>-->
+<!--        </div>-->
+        <h2 v-if="type === 'cars'" class="title-with-line mt-2 mt-lg-3" id="anchor-car_or_vin">
           <span>{{ $t(form.customs_clearance ? 'vin_carcase_number' : 'license_plate_number_vin_or_carcase_number') }} <span class="star" v-if="type === 'cars'"> *</span></span>
         </h2>
-        <div class="row">
+        <div class="row" v-if="type === 'cars'">
           <div class="col-lg-4 mb-2 mb-lg-0" v-if="!form.customs_clearance">
             <form-text-input v-model="form.car_number" input-class="car-number-show-popover" img-src="/img/flag.svg"
                 :mask="type === 'cars' ? '99 - AA - 999' : '99 - A{1,2} - 999'"
                 :placeholder="type === 'cars' ? '__ - __ - ___' : '__ - _ - ___'" @focus="showCarNumberDisclaimer"
                 @change="removeError('car_number')">
-              <popover :message="$t('real-car-number-will-make-post-faster')" text-class="text-red" :width="190" 
+              <popover :message="$t('real-car-number-will-make-post-faster')" text-class="text-red" :width="190"
                   name="car-number" @click="readCarNumberDisclaimer = true" />
             </form-text-input>
-            <form-checkbox :label="$t('show_car_number_on_site')" v-model="form.show_car_number" input-name="show_car_number" 
+            <form-checkbox :label="$t('show_car_number_on_site')" v-model="form.show_car_number" input-name="show_car_number"
               transparent class="mt-2 mt-lg-3"/>
           </div>
           <div class="col-lg-4 mb-2 mb-lg-0">
-            <form-text-input v-model="form.vin" 
-                :mask="$maskAlphaNumeric('*****************')" 
+            <form-text-input v-model="form.vin"
+                :mask="$maskAlphaNumeric('*****************')"
                 :placeholder="$t('vin_carcase_number')" @change="removeError('vin')">
               <popover name="vin" :width="240">
                 <inline-svg src="/img/car-cert.svg"/>
               </popover>
             </form-text-input>
-            <form-checkbox :label="$t('show_vin_on_site')" v-model="form.show_vin" input-name="show_vin" 
+            <form-checkbox :label="$t('show_vin_on_site')" v-model="form.show_vin" input-name="show_vin"
               transparent class="mt-2 mt-lg-3"/>
           </div>
         </div>
         <div class="mt-2 mt-lg-3">
           <template v-if="type === 'cars'">
-            <car-filters :values="form.all_options" @change-filter="updateCarFilter" popular key="popular"/>
-            <car-filters :values="form.all_options" @change-filter="updateCarFilter" key="all" collapsed-by-default />
+            <car-filters :values="form.all_options" @change-filter="updateCarFilter" popular key="popular" :collapsedByDefault="true"/>
+            <div class="car-filters_row">
+              <div class="d-flex mb-2 mb-lg-3" @click="collapsed = !collapsed">
+                <h2 class="title-with-line full-width">
+                  <span>{{ $t('other_options') }}</span>
+                </h2>
+                <icon :name="`chevron-${!collapsed ? 'up' : 'down'}`" class="cursor-pointer" />
+              </div>
+              <transition-expand>
+                <div v-if="collapsed">
+                  <car-filters :show-icon="false" :values="form.all_options" @change-filter="updateCarFilter" key="all" collapsed-by-default />
+                </div>
+
+              </transition-expand>
+            </div>
           </template>
           <template v-else>
             <sell-filters
@@ -163,7 +176,7 @@
         <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-comment">
           <span>{{ $t('description_placeholder') }}</span>
         </h2>
-        <form-textarea v-model="form.comment" :placeholder="$t('description_placeholder_transport')" 
+        <form-textarea v-model="form.comment" :placeholder="$t('description_placeholder_transport')"
           :maxlength="3000" />
         <p class="info-text full-width less-pd mt-2">
           {{ $t('it_is_forbidden_to_give_links_indicate_email_addresses_mail_address_of_the_place_of_inspection_telephones_price_offer_services')}}
@@ -181,8 +194,8 @@
           <template #default="{ show }">
             <transition name="translate-fade">
               <login-tabs v-if="show"
-                :popup="true" 
-                :skip-sign-in="true"  
+                :popup="true"
+                :skip-sign-in="true"
                 :action-text="{
                   login: $t('login_and_publish'),
                   register: $t('register_and_publish'),
@@ -201,7 +214,7 @@
             </div>
           </div>
           <p class="info-text full-width mt-2">
-            <icon name="alert-circle" /> {{ $t('by_posting_an_ad_you_confirm_your_agreement_with_the_rules')}}: 
+            <icon name="alert-circle" /> {{ $t('by_posting_an_ad_you_confirm_your_agreement_with_the_rules')}}:
             <nuxt-link :to="`/page/${getRulesPage.slug[locale]}`" @click.native.prevent="showRules = true" event="">
               <strong>{{ $t('general_rules') }}</strong>
             </nuxt-link>
@@ -227,7 +240,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import {mapGetters, mapActions, mapState} from 'vuex';
 
 import { ToastErrorsMixin } from '~/mixins/toast-errors';
 import { ImageResizeMixin } from '~/mixins/img-resize';
@@ -243,7 +256,7 @@ import SellFilters from '~/components/sell/SellFilters';
 import CarFilters from '~/components/cars/CarFilters';
 
 export default {
-  components: { 
+  components: {
     SellSelectModification,
     UploadImage,
     ColorOptions,
@@ -264,6 +277,7 @@ export default {
   mixins: [ToastErrorsMixin, ImageResizeMixin, PaymentMixin],
   data() {
     return {
+      collapsed: false,
       form: this.$clone(this.initialForm),
       date: Math.floor(Date.now() / 1000),
       files: (this.announcement?.media || []).map((media, i) => ({ media, key: this.initialForm.saved_images[i]  })),
@@ -283,6 +297,7 @@ export default {
     }
   },
   computed: {
+    ...mapState(['sellPhoneEntered']),
     ...mapGetters(['sellOptions', 'sellSalonRights', 'staticPages']),
 
     progress() {
@@ -395,7 +410,7 @@ export default {
       this.$nuxt.$emit('change-car-filters');
     },
     updateSellFilter(key, value) {
-      if (value === '') 
+      if (value === '')
         this.$delete(this.form, key);
       else this.$set(this.form, key, value);
     },
@@ -407,7 +422,7 @@ export default {
     async addImages(images) {
       // passed min limit
       if ((images.length + this.savedFiles.length + this.uploading) >= this.minFiles)
-        this.removeError('saved_images'); 
+        this.removeError('saved_images');
       // upload images
       this.uploading += images.length;
       await Promise.all(
@@ -476,11 +491,12 @@ export default {
       }
       this.form.saved_images = this.savedFiles;
       this.form.is_autosalon = this.isAutosalon;
-      if (this.isAlreadySold) 
+      if (this.isAlreadySold)
         this.form.can_pay = true;
       // generate post data
       let formData = new FormData();
       formData.append('data', JSON.stringify(this.form));
+      formData.append('phone',this.sellPhoneEntered.replace(/[^0-9]+/g, ''));
       if (this.deletedFiles.length)
         formData.append('deletedImages', JSON.stringify(this.deletedFiles));
       // generate post link
@@ -494,7 +510,7 @@ export default {
       try {
         // publish or update post
         const res = await this.$axios.$post(postUrl, formData);
-        if (this.loggedIn) 
+        if (this.loggedIn)
           await this.$auth.fetchUser();
         // track event
         if (!this.edit) {
@@ -507,16 +523,16 @@ export default {
         } else {
           this.$router.push(this.$localePath('/profile/announcements'), () => {
             if (this.restore) {
-              this.updatePaidStatus({ 
-                type: 'success', 
-                text: this.$t('announcement_restored'), 
-                title: this.$t('success_payment') 
+              this.updatePaidStatus({
+                type: 'success',
+                text: this.$t('announcement_restored'),
+                title: this.$t('success_payment')
               });
             } else if (this.isAlreadySold) {
-              this.updatePaidStatus({ 
-                type: 'success', 
-                text: this.$t('announcement_paid'), 
-                title: this.$t('success_payment') 
+              this.updatePaidStatus({
+                type: 'success',
+                text: this.$t('announcement_paid'),
+                title: this.$t('success_payment')
               });
             } else {
               this.$toasted.success(this.$t('saved_changes'));
@@ -553,7 +569,7 @@ export default {
             this.$toasted.error(this.$t(message));
           }
         }
-        
+
         // check if user logged in
         if (!this.showLoginPopup && status === 499)
           this.showLoginPopup = true;

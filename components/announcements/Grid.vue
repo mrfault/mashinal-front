@@ -16,37 +16,41 @@
       <div class="row mb-n2 mb-lg-n3">
         <template v-for="(announcement, index) in announcements">
           <template v-if="where === 'catalog'">
-            <grid-item 
-              :col-class="'col-lg-6 mb-2 mb-lg-3'"
-              :announcement="announcement" 
+            <grid-item
+              :col-class="'col-lg-6 mb-2 mb-lg-4'"
+              :announcement="announcement"
               :track-views="trackViews"
               :show-gallery="true"
               :key="announcement.id_unique"
             />
           </template>
           <template v-else>
-            <div :class="['col-6 col-lg-auto', {
-                        'col-lg-mid': checkItemIndex(index + 2, announcement), 
-                        'pt-4 mt-1': checkItemTop(index, announcement), 
-                        'pb-4 mb-4': checkItemBottom(index, announcement) }, 
-                          checkItemB(index, announcement) 
-                            ? 'col-b mb-0 pb-2 mb-lg-4 mt-lg-6 pt-lg-4 pb-lg-4' 
-                            : 'mb-2 mb-lg-3' 
+            <div :class="[, {
+                        'col-lg-mid': checkItemIndex(index + 2, announcement),
+                        'pt-4 mt-1': checkItemTop(index, announcement),
+                        'pb-4 mb-4': checkItemBottom(index, announcement) ,
+                        'col-6 col-xs-12 col-lg-3 col-xl-auto': !isProfilePage, 
+                        'col-6 col-xs-6 col-lg-3 col-xl-auto': isProfilePage, 
+                        },
+                          checkItemB(index, announcement)
+                            ? 'col-b mb-0 pb-2 mb-lg-4 mt-lg-6 pt-lg-4 pb-lg-4'
+                            : 'mb-2 mb-lg-3'
                         ]"
               :key="announcement.id_unique + (escapeDuplicates ? ('_' + index) : '')">
-              <grid-item 
-                :announcement="announcement" 
-                :show-checkbox="showCheckbox" 
+              <grid-item
+                :announcement="announcement"
+                :show-checkbox="showCheckbox"
                 :show-status="showStatus"
                 :show-phone-count="showPhoneCount"
                 :show-overlay="showOverlay"
                 :clickable="clickable"
                 :track-views="trackViews"
+                :isProfilePage="isProfilePage"
               />
             </div>
             <template v-if="!isMobileBreakpoint && checkItemIndex(index + 1, announcement)">
               <div class="col-6 col-lg-auto mb-lg-4 mt-lg-6 pt-lg-4 pb-lg-4" :key="'banner_' + index">
-                <div class="announcements-grid_banner d-flex align-items-center justify-content-center" 
+                <div class="announcements-grid_banner d-flex align-items-center justify-content-center"
                     @click="$router.push($localePath(bannerLink))">
                   <div class="banner-bg" :style="{backgroundImage: `url(${getBannerImage(index + 1)})`}"></div>
                 </div>
@@ -56,7 +60,7 @@
         </template>
       </div>
     </div>
-    <pagination 
+    <pagination
       v-if="paginate && paginate.last_page > 1"
       :page-count="paginate.last_page"
       :value="paginate.current_page"
@@ -64,7 +68,13 @@
     />
   </div>
 </template>
-
+<style>
+@media (min-width: 1025px) {
+  .announcements-grid .col-lg-auto {
+    width: 20%;
+  }
+}
+</style>
 <script>
 import GridItem from '~/components/announcements/GridItem';
 
@@ -110,7 +120,8 @@ export default {
     clickable: {
       type: Boolean,
       default: true
-    }
+    },
+    isProfilePage: Boolean
   },
   components: {
     GridItem
@@ -137,17 +148,17 @@ export default {
       return this.banner && (index % this.bannerPlace === 0);
     },
     checkItemB(index, item) {
-      return this.checkItemIndex(index + 1, item) || 
-        this.checkItemIndex(index + 2, item) || 
-        this.checkItemIndex(index + 3, item) || 
+      return this.checkItemIndex(index + 1, item) ||
+        this.checkItemIndex(index + 2, item) ||
+        this.checkItemIndex(index + 3, item) ||
         this.checkItemIndex(index + 4, item);
     },
     checkItemTop(index, item) {
-      return this.checkItemIndex(index + 3, item) || 
+      return this.checkItemIndex(index + 3, item) ||
         this.checkItemIndex(index + 4, item);
     },
     checkItemBottom(index, item) {
-      return this.checkItemIndex(index + 1, item) || 
+      return this.checkItemIndex(index + 1, item) ||
         this.checkItemIndex(index + 2, item);
     },
     getBannerImage(index) {
@@ -160,7 +171,7 @@ export default {
   },
   watch: {
     '$route.query.page'(page) {
-      if (this.watchRoute) 
+      if (this.watchRoute)
         this.changePage(page);
     }
   }
