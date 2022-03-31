@@ -134,7 +134,7 @@ export default {
       hasSalon: !!this.$store.state.auth.user?.autosalon,
       contractEnded: this.$store.state.auth.user?.autosalon?.status === 0,
       form: {
-        name: this.$store.state.auth.user?.part_salon?.name || this.$store.state.auth.user?.autosalon?.name
+        name: this.$store.state.auth.user?.part_salon?.name || this.$store.state.auth.user?.autosalon?.name || ''
       }
     }
   },
