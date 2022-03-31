@@ -160,6 +160,9 @@ export default {
       currentSlide: 0,
       swiperOps: {
         init: false,
+        autoplay: {
+          delay: 6000,
+        },
         fadeEffect: {
           crossFade: true,
         },

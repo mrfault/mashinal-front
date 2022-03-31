@@ -73,6 +73,9 @@ export default {
     },
   },
   mounted() {
+    this.$nuxt.$on('closeModal',() => {
+      this.showModal = false;
+    })
     // this.handleScroll();
     // window.addEventListener('scroll', this.handleScroll);
     // window.addEventListener('resize', this.handleScroll);
