@@ -38,10 +38,11 @@ export default {
     async infiniteScroll() {
       let prevRes = this.$store.getters[this.getter];
       let isTimeToScroll = (window.scrollY + window.innerHeight) >= (document.documentElement.scrollHeight - this.triggerOffset);
-      let contentNotLoaded = prevRes.next_page_url && prevRes.total !== prevRes.to;
+      let contentNotLoaded = prevRes?.next_page_url && prevRes?.total !== prevRes.to;
       let usePlanB = false;
       if (this.actionB && this.getterB) {
         let prevResB = this.$store.getters[this.getterB];
+      console.log(prevResB);
         let contentBNotLoaded = (this.pageB === 1) || (prevResB.next_page_url && (prevResB.total !== prevResB.to));
         usePlanB = contentBNotLoaded && this.page === this.pageB;
       }
