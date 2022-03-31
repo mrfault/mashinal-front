@@ -76,7 +76,7 @@
     }
   }
   .no-results {
-    background: $dark-2;
+    background: $dark-1;
   }
   h2.title-with-line {
     span,
@@ -1484,6 +1484,7 @@
     }
     &-slide {
       &-item {
+        background: $dark-2 !important;
         &-left {
           img {
             height: calc(100% + 1px);
