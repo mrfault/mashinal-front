@@ -795,6 +795,13 @@ export const actions = {
     )
     commit('mutate', { property: 'mainPartsAnnouncements', value: res })
   },
+
+  async getInfiniteMainPartsPageSearchWithoutMutate({ commit }, data = {}) {
+    const res = await this.$axios.$post(
+      `/grid/part?page=${data.page || 1}`,
+    )
+    commit('mutate', { property: 'temporaryLazyData', value: res })
+  },
   async getInfiniteMainPartsPageSearch({ commit }, data = {}) {
     const res = await this.$axios.$post(
       `/grid/part?page=${data.page || 1}`,
