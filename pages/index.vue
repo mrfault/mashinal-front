@@ -102,6 +102,7 @@
           </div>
         </div>
       </div>
+      <div class="swiper-pagination" slot="pagination"></div>
     </div>
     <!-- car search form -->
     <div class="container">
@@ -260,6 +261,7 @@ export default {
 }
 
 .mobileHomePage-slide-item {
+  height: 170px;
   position: relative;
   justify-content: flex-start;
   .mobileHomePage-slide-left {
