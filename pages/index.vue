@@ -110,6 +110,7 @@
         :total-count="$paginate(mainAnnouncements).total"
         :pending="pending"
         @pending="pending = true"
+        :inMobileScreen="absoluteMobileScreen"
       />
     </div>
     <!-- grid -->
@@ -263,7 +264,7 @@ export default {
     padding-bottom: 40px;
     .swiper-pagination{
       left: 0 !important;
-      bottom: -25px;
+      bottom: 14px !important;
     }
   }
 
