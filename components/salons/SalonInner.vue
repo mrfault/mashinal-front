@@ -23,10 +23,10 @@
           <div :class="`col-lg-${messengers.length ? 9 : 12} mb-2`">
             <div class="profile_info-details">
               <icon name="phone-call" />
-              <span class="d-inline-flex" v-html="getConcatPhones(salonSingle.phones, 3, true, { 
-                  telegram: salonSingle.telegram || [], 
-                  whatsapp: salonSingle.whatsapp || []  
-                }, salonSingle.short_number)" 
+              <span class="d-inline-flex" v-html="getConcatPhones(salonSingle.phones, 3, true, {
+                  telegram: salonSingle.telegram || [],
+                  whatsapp: salonSingle.whatsapp || []
+                }, salonSingle.short_number)"
               ></span>
             </div>
           </div>
@@ -64,9 +64,9 @@
         <p>{{ salonSingle.description }}</p>
       </div>
     </div>
-    <grid 
-      v-if="salonSingle.announcements.data.length" 
-      :announcements="salonSingle.announcements.data" 
+    <grid
+      v-if="salonSingle.announcements.data.length"
+      :announcements="salonSingle.announcements.data"
       :paginate="$paginate(salonSingle.announcements)"
       :pending="pending"
       @pending="pending = true"
@@ -119,9 +119,9 @@ export default {
 
     async changePage() {
       this.pending = true;
-      await this.getSalonById({ 
-        id: this.$route.params.id, 
-        page: this.$route.query.page || 1 
+      await this.getSalonById({
+        id: this.$route.params.id,
+        page: this.$route.query.page || 1
       });
       this.pending = false;
       this.scrollTo('.announcements-grid');

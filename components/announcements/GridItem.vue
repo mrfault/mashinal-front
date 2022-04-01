@@ -36,7 +36,7 @@
         </div>
       </div>
     </div>
-    <div class="announcements-grid_item" @click="goToAnnouncement">
+    <div class="announcements-grid_item" :class="'id'+announcement.id_unique" @click="goToAnnouncement">
       <a
         v-if="clickable && !isMobileBreakpoint && !$env.DEV"
         target="_blank"
@@ -97,6 +97,12 @@
                   v-else-if="announcement.status == 2"
                 >
                   {{ $t('under_consideration') }}
+                </span>
+                <span
+                  class="badge pending"
+                  v-else-if="announcement.status == 5"
+                >
+                  {{ $t('is_loading') }}
                 </span>
                 <span
                   class="badge rejected"
@@ -388,6 +394,7 @@ export default {
     },
   },
   mounted() {
+
     this.$nuxt.$on('select-announcement', this.selectAnnouncement)
   },
   beforeDestroy() {

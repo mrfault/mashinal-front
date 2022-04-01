@@ -25,12 +25,12 @@
             />
           </template>
           <template v-else>
-            <div :class="[, {
+            <div :class="[ {
                         'col-lg-mid': checkItemIndex(index + 2, announcement),
                         'pt-4 mt-1': checkItemTop(index, announcement),
                         'pb-4 mb-4': checkItemBottom(index, announcement) ,
-                        'col-6 col-xs-12 col-lg-3 col-xl-auto': !isProfilePage, 
-                        'col-6 col-xs-6 col-lg-3 col-xl-auto': isProfilePage, 
+                        'col-6 col-xs-12 col-lg-3 col-xl-auto': !isProfilePage,
+                        'col-6 col-xs-6 col-lg-3 col-xl-auto': isProfilePage,
                         },
                           checkItemB(index, announcement)
                             ? 'col-b mb-0 pb-2 mb-lg-4 mt-lg-6 pt-lg-4 pb-lg-4'

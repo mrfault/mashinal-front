@@ -10,8 +10,8 @@
       />
       <banners v-if="!searchActive" reverse />
       <div class="announcements-content">
-      
-       
+
+
         <grid
           v-if="mainPartsAnnouncements.data.length"
           :title="$t('other_announcements')"
@@ -27,7 +27,7 @@
 </div> -->
 
     <infinite-loading
-      action="getInfiniteMainPartsSearch"
+      action="getInfiniteMainPartsPageSearchWithoutMutate"
       getter="mainPartsAnnouncements"
       :per-page="20"
     />
@@ -66,7 +66,7 @@ export default {
   },
   async asyncData({ store }) {
     await Promise.all([
-      store.dispatch('getInfiniteMainPartsSearch'),
+      store.dispatch('getInfiniteMainPartsPageSearch'),
     ])
     return {
       pending: false,

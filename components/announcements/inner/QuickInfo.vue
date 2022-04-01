@@ -122,7 +122,7 @@
         <div class="col mt-2 mt-lg-3">
           <restore-button
             :announcement="announcement"
-            v-if="announcement.status == 3"
+            v-if="userIsOwner(announcement) && announcement.status == 3"
             :free="type === 'parts'"
           />
           <deactivate-button
@@ -219,7 +219,7 @@ export default {
       if (this.$auth.loggedIn == false) {
         return item.status == 1 || item.status == 2
       } else {
-        return this.$auth.user.id == item.user.id
+        return this.$auth.user.id == item.user.id && item.status != 5
       }
     },
     openModal() {

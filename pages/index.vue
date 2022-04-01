@@ -127,9 +127,9 @@
       />
     </div>
     <infinite-loading
-      action="getInfiniteMainSearch"
+      action="getInfiniteMainSearchWithoutMutate"
       getter="mainAnnouncements"
-      action-b="getInfiniteMainPartsSearch"
+      action-b="getInfiniteMainPartsSearchWithoutMutate"
       getter-b="mainPartsAnnouncements"
       :per-page="20"
       :per-page-b="4"
@@ -161,6 +161,10 @@ export default {
       currentSlide: 0,
       swiperOps: {
         init: false,
+        speed: 1000,
+        autoplay: {
+          delay: 6000,
+        },
         fadeEffect: {
           crossFade: true,
         },
