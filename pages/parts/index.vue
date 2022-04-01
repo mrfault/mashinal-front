@@ -27,7 +27,7 @@
 </div> -->
 
     <infinite-loading
-      action="getInfiniteMainPartsPageSearch"
+      action="getInfiniteMainPartsPageSearchWithoutMutate"
       getter="mainPartsAnnouncements"
       :per-page="20"
     />
@@ -66,7 +66,7 @@ export default {
   },
   async asyncData({ store }) {
     await Promise.all([
-      store.dispatch('getInfiniteMainPartsSearch'),
+      store.dispatch('getInfiniteMainPartsPageSearch'),
     ])
     return {
       pending: false,
