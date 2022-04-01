@@ -306,7 +306,7 @@ computed: {
       setTimeout(() => {
         this.closeDropdownMenu = false;
       }, 1000);
-      
+
     }
   }
 }
@@ -339,6 +339,9 @@ computed: {
       }
     }
   }
+}
+.exact-active, .link-active{
+  color: #F81734 !important;
 }
 
 .header-menu {
