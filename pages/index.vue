@@ -102,6 +102,7 @@
           </div>
         </div>
       </div>
+      <div class="swiper-pagination" slot="pagination"></div>
     </div>
     <!-- car search form -->
     <div class="container">
@@ -109,6 +110,7 @@
         :total-count="$paginate(mainAnnouncements).total"
         :pending="pending"
         @pending="pending = true"
+        :inMobileScreen="absoluteMobileScreen"
       />
     </div>
     <!-- grid -->
@@ -256,14 +258,25 @@ export default {
   .btn--green {
     height: 25px !important;
   }
+
   @media screen and (max-width: 1024px) {
     .btn--green {
       height: 12px !important;
     }
   }
+  @media screen and (max-width: 768px) {
+    padding-bottom: 40px;
+    .swiper-pagination{
+      left: 0 !important;
+      bottom: 14px !important;
+    }
+  }
+
+
 }
 
 .mobileHomePage-slide-item {
+  height: 170px;
   position: relative;
   justify-content: flex-start;
   .mobileHomePage-slide-left {
