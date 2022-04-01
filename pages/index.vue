@@ -7,7 +7,6 @@
     <div
       class="swiper-container swiper-container-desktop"
       v-swiper:gallerySwiper="swiperOps"
-      v-if="!absoluteMobileScreen"
     >
       <div class="swiper-wrapper">
         <div
@@ -71,7 +70,7 @@
     <div
       class="swiper-container swiper-container-mobile"
       v-swiper:gallerySwiper="swiperOps"
-      v-if="absoluteMobileScreen"
+      v-if="false"
     >
       <div class="swiper-wrapper">
         <div
