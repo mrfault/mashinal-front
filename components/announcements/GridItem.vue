@@ -163,7 +163,7 @@
           <span class="item-details__year" v-if="getTextLine">
             <span>{{ getTextLine }}</span>
           </span>
-          <span class="item-details__options" v-if="getOdometer == null">
+          <span class="item-details__options" v-show="getOdometer == null">
             <icon
               name="percent"
               v-tooltip="$t('credit_possible')"
@@ -181,9 +181,9 @@
         <!-- 2 -->
         <div class="item-details--infos pt-1">
           <span class="item-details__year" v-if="getTextLine">
-            <span>{{ getOdometer }}</span>
+            <span v-if="!announcement.category">{{ getOdometer }}</span>
           </span>
-          <span class="item-details__options" v-if="getOdometer !== null">
+          <span class="item-details__options" v-show="getOdometer !== null">
             <icon
               name="percent"
               v-tooltip="$t('credit_possible')"
@@ -333,9 +333,12 @@ export default {
       )}`
     },
     getOdometer() {
-      return `${this.announcement.humanize_mileage} ${this.$t(
-        'char_kilometre',
-      )}`
+      if (this.showOverlay){
+        return `${this.announcement.humanize_mileage} ${this.$t(
+          'char_kilometre',
+        )}`
+      }
+
     },
   },
   methods: {
