@@ -17,13 +17,16 @@ Vue.use({
         },
         // tracking events with fb pixel
         fbTrack(eventName, options) {
-          if (this.$env.DEV) {
-            console.log('fb pixel track "' + eventName + '"', options ? JSON.stringify(options) : '');
-          } else {
-            if (!this.$fb) console.warn('fb pixel not setted');
-            else if (options) this.$fb.track(eventName, options);
-            else this.$fb.track(eventName);
-          }
+          try {
+            if (this.$env.DEV) {
+              console.log('fb pixel track "' + eventName + '"', options ? JSON.stringify(options) : '');
+            } else {
+              if (!this.$fb) console.warn('fb pixel not setted');
+              else if (options) this.$fb.track(eventName, options);
+              else this.$fb.track(eventName);
+            }
+          }catch (e){}
+
         },
         // tracking events with gtag manager
         gtagTrack(eventKey) {
