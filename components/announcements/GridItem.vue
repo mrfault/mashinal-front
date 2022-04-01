@@ -36,7 +36,7 @@
         </div>
       </div>
     </div>
-    <div class="announcements-grid_item" @click="goToAnnouncement">
+    <div class="announcements-grid_item" :class="'id'+announcement.id_unique" @click="goToAnnouncement">
       <a
         v-if="clickable && !isMobileBreakpoint && !$env.DEV"
         target="_blank"
@@ -361,6 +361,7 @@ export default {
     },
   },
   mounted() {
+
     this.$nuxt.$on('select-announcement', this.selectAnnouncement)
   },
   beforeDestroy() {

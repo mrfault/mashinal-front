@@ -126,9 +126,9 @@
       />
     </div>
     <infinite-loading
-      action="getInfiniteMainSearch"
+      action="getInfiniteMainSearchWithoutMutate"
       getter="mainAnnouncements"
-      action-b="getInfiniteMainPartsSearch"
+      action-b="getInfiniteMainPartsSearchWithoutMutate"
       getter-b="mainPartsAnnouncements"
       :per-page="20"
       :per-page-b="4"

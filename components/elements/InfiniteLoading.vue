@@ -5,6 +5,8 @@
 </template>
 
 <script>
+import {mapState} from "vuex";
+
 export default {
   props: {
     condition: {
@@ -48,12 +50,15 @@ export default {
       if (!this.loading && this.condition && contentNotLoaded && isTimeToScroll) {
         this.loading = true;
         try {
+          console.log(usePlanB ? this.actionB : this.action);
           await this.$store.dispatch((usePlanB ? this.actionB : this.action), {
             ...this.actionData, page: usePlanB ? this.pageB : (this.page + 1),
             type: this.type
           });
-          let newRes = this.$store.getters[usePlanB ? this.getterB : this.getter];
-          if (!usePlanB || newRes.data.length % this.perPageB === 0) this.mutate({ property: this.getter, key: 'data', value: [...prevRes.data, ...newRes.data] });
+
+         // this.$store.getters[usePlanB ? this.getterB : this.getter];
+          if (!usePlanB || this.temporaryLazyData.data.length % this.perPageB === 0)
+            this.mutate({ property: this.getter, key: 'data', value: [...prevRes.data, ...this.temporaryLazyData.data] });
           if (usePlanB) this.pageB = this.pageB + 1;
           else this.page = this.page + 1;
           this.loading = false;
@@ -72,6 +77,9 @@ export default {
   },
   beforeDestroy() {
     window.removeEventListener('scroll', this.infiniteScroll);
+  },
+  computed:{
+    ...mapState(['temporaryLazyData'])
   }
 }
 </script>

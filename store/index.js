@@ -6,6 +6,7 @@ const getInitialState = () => ({
   colorMode: 'light',
   breakpoint: null,
   ptk: null,
+  temporaryLazyData:[],
   menus: [],
   staticPages: [],
   pageRef: '',
@@ -774,6 +775,19 @@ export const actions = {
       `/grid/home_page_all?page=${data.page || 1}`,
     )
     commit('mutate', { property: 'mainAnnouncements', value: res })
+  },
+  async getInfiniteMainSearchWithoutMutate({ commit }, data = {}) {
+    const res =  await this.$axios.$get(
+      `/grid/home_page_all?page=${data.page || 1}`,
+    )
+
+    commit('mutate',{ property:'temporaryLazyData', value: res})
+  },
+  async getInfiniteMainPartsSearchWithoutMutate({ commit }, data = {}) {
+    const res = await this.$axios.$get(
+      `/grid/home_page_parts?per_page=4&page=${data.page || 1}`,
+    )
+    commit('mutate', { property: 'temporaryLazyData', value: res })
   },
   async getInfiniteMainPartsSearch({ commit }, data = {}) {
     const res = await this.$axios.$get(
