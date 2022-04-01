@@ -300,7 +300,7 @@ export default {
         // this.getCapacity &&
         this.showOverlay
       )
-        if (this.getCapacity != null) {
+        if (this.getCapacity) {
           text +=
             // `, ${this.getCapacity}`text +=
             // `, ${this.announcement.humanize_mileage} ${this.$t('char_kilometre')}`
@@ -326,7 +326,7 @@ export default {
         type = this.getType
       let capacity = item.car_catalog?.capacity || item.capacity
       let showLitres = ['Car', 'Commercial'].includes(type)
-      if (!capacity || capacity == '0') return false
+      if (!capacity || capacity == '0') return ''
       if (showLitres && capacity > 50) capacity = (capacity / 1000).toFixed(1)
       return `${capacity} ${this.$t(
         showLitres ? 'char_litre' : 'char_sm_cube',
