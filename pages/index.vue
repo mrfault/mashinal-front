@@ -253,11 +253,21 @@ export default {
   .btn--green {
     height: 25px !important;
   }
+
   @media screen and (max-width: 1024px) {
     .btn--green {
       height: 12px !important;
     }
   }
+  @media screen and (max-width: 768px) {
+    padding-bottom: 40px;
+    .swiper-pagination{
+      left: 0 !important;
+      bottom: -25px;
+    }
+  }
+
+
 }
 
 .mobileHomePage-slide-item {
