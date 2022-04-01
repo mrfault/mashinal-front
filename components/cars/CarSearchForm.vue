@@ -1,5 +1,5 @@
 <template>
-  <div class="cars-search-form form">
+  <div class="cars-search-form form" :class="{'pt-0': inMobileScreen}">
     <div class="card pt-2 pt-lg-4 mb-2 mb-lg-0">
       <div class="row">
         <div class="col-lg-12 col-xl-4 mb-2 mb-lg-3">
@@ -780,6 +780,10 @@ export default {
     pending: Boolean,
     advanced: Boolean,
     assistant: Boolean,
+    inMobileScreen: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {
