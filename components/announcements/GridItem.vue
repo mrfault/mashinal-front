@@ -158,11 +158,32 @@
           {{ getAnnouncementTitle(announcement) }}
         </h3>
         <!-- year, odometer, credit, barter -->
+        <!-- 1 -->
         <div class="item-details--infos">
           <span class="item-details__year" v-if="getTextLine">
             <span>{{ getTextLine }}</span>
           </span>
-          <span class="item-details__options">
+          <span class="item-details__options" v-if="getOdometer == null">
+            <icon
+              name="percent"
+              v-tooltip="$t('credit_possible')"
+              v-if="announcement.credit"
+            />
+            <icon
+              name="barter"
+              v-tooltip="$t('tradeable')"
+              v-if="announcement.tradeable || announcement.exchange_possible"
+            />
+          </span>
+        </div>
+        <!-- odometer, credit,barter
+         -->
+        <!-- 2 -->
+        <div class="item-details--infos pt-1">
+          <span class="item-details__year" v-if="getTextLine">
+            <span>{{ getOdometer }}</span>
+          </span>
+          <span class="item-details__options" v-if="getOdometer !== null">
             <icon
               name="percent"
               v-tooltip="$t('credit_possible')"
@@ -279,9 +300,12 @@ export default {
         // this.getCapacity &&
         this.showOverlay
       )
-        text +=
-          // `, ${this.getCapacity}`text +=
-          `, ${this.announcement.humanize_mileage} ${this.$t('char_kilometre')}`
+        if (this.getCapacity != null) {
+          text +=
+            // `, ${this.getCapacity}`text +=
+            // `, ${this.announcement.humanize_mileage} ${this.$t('char_kilometre')}`
+            `, ${this.getCapacity}`
+        }
       return text
     },
     getImage() {
@@ -306,6 +330,11 @@ export default {
       if (showLitres && capacity > 50) capacity = (capacity / 1000).toFixed(1)
       return `${capacity} ${this.$t(
         showLitres ? 'char_litre' : 'char_sm_cube',
+      )}`
+    },
+    getOdometer() {
+      return `${this.announcement.humanize_mileage} ${this.$t(
+        'char_kilometre',
       )}`
     },
   },
@@ -346,7 +375,8 @@ export default {
         (announcement.status == 2 ||
           announcement.status == 5 ||
           announcement.status == 3) &&
-        (announcement.is_autosalon == true || announcement.is_part_salon == true)
+        (announcement.is_autosalon == true ||
+          announcement.is_part_salon == true)
       ) {
         return true
       } else {
