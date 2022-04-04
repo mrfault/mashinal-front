@@ -1,16 +1,16 @@
 <template>
   <div :class="['form-image', {'position-relative': autoSizing}]">
-    <croppa :class="['croppa-image', {'auto-size': autoSizing, 'prevent-move': noImage}]" 
+    <croppa :class="['croppa-image', {'auto-size': autoSizing, 'prevent-move': noImage}]"
       v-if="croppable"
-      v-model="croppaValue" placeholder="" 
+      v-model="croppaValue" placeholder=""
       :initial-image="initialImage"
       :accept="'image/*'"
       :canvas-color="'transparent'"
-      :zoom-speed="15" 
+      :zoom-speed="15"
       :width="width || 200"
       :height="height || 200"
-      :quality="1"
-      :prevent-white-space="true" 
+      :quality="2"
+      :prevent-white-space="true"
       :show-remove-button="false"
       :replace-drop="true"
       :auto-sizing="autoSizing"
@@ -67,13 +67,13 @@ export default {
   methods: {
     async filesDrop(e) {
       e.preventDefault();
-      
+
       let droppedFiles = e.target.files || e.dataTransfer.files;
-      
+
       for (let i = 0; i < droppedFiles.length; i++) {
         let isImage = droppedFiles[i].type.match('image.*');
         if(!isImage) break;
-        
+
         let resizedFile = await this.getResizedImage(droppedFiles[i]);
         this.$emit('input', resizedFile);
         this.preview = URL.createObjectURL(resizedFile);
