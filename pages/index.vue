@@ -16,7 +16,16 @@
         >
           <div class="homePage-slide-item">
             <div class="homePage-slide-item-left">
+<!--              <img-->
+<!--                :srcset="`${photos.photo1_sm} 300w,${photos.photo1_lg} 1000w`"-->
+<!--                sizes="(max-width: 990px) 20vw, (max-width: 37.5em) 30vw, 300px"-->
+<!--                src="/test-images/1-800w.jpg"-->
+<!--                alt="mashinal cover image"-->
+<!--              />-->
               <img :src="homePageSlider.image" />
+
+
+
             </div>
             <div
               class="homePage-slide-item-right"
@@ -49,7 +58,7 @@
                   class="btn btn--green text-left"
                   v-if="homePageSlider.button_link"
                 >
-                  <icon name="plus-circle" />
+                  <icon name="plus-circle"/>
                   {{ homePageSlider.button_text[locale] }}
                 </nuxt-link>
                 <button
@@ -60,43 +69,6 @@
                   {{ homePageSlider.button_text[locale] }}
                 </button>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="swiper-pagination" slot="pagination"></div>
-    </div>
-    <!-- slider  mobile-->
-    <div
-      class="swiper-container swiper-container-mobile"
-      v-swiper:gallerySwiper="swiperOps"
-      v-if="false"
-    >
-      <div class="swiper-wrapper">
-        <div
-          class="swiper-slide"
-          v-for="(homePageSlider, index) in homePageSliders"
-          :key="index"
-        >
-          <div
-            class="mobileHomePage-slide-item"
-            :style="
-              !isDarkMode ? `background:${homePageSlider.overlay_color}` : ''
-            "
-          >
-            <div class="mobileHomePage-slide-left">
-              <h3>{{ homePageSlider.title[locale] }}</h3>
-              <p>{{ homePageSlider.description[locale] }}</p>
-              <nuxt-link
-                :to="$localePath(homePageSlider.button_link)"
-                class="btn btn--green text-left"
-                v-if="homePageSlider.button_link"
-              >
-                {{ homePageSlider.button_text[locale] }}
-              </nuxt-link>
-            </div>
-            <div class="mobileHomePage-slide-right">
-              <img :src="homePageSlider.image" />
             </div>
           </div>
         </div>
@@ -138,7 +110,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import {mapGetters, mapActions} from 'vuex'
 import CarSearchForm from '~/components/cars/CarSearchForm'
 import Grid from '~/components/announcements/Grid'
 
@@ -187,7 +159,7 @@ export default {
       absoluteMobileScreen: true,
     }
   },
-  async asyncData({ store }) {
+  async asyncData({store}) {
     await Promise.all([
       store.dispatch('getBrands'),
       store.dispatch('getOptions'),
@@ -204,6 +176,12 @@ export default {
 
   computed: {
     ...mapGetters(['mainAnnouncements', 'homePageSliders']),
+    photos(){
+      return{
+        photo1_sm : require('@/static/test-images/1-480w.jpg'),
+        photo1_lg : require('@/static/test-images/1-800w.jpg')
+      }
+    }
   },
   methods: {
     ...mapActions(['getInfiniteMainSearch', 'clearSavedSearch']),
@@ -217,17 +195,18 @@ export default {
     gotoRoute(link) {
       if (this.loggedIn) {
         // this.$route.push(link)
-        this.$router.push({ path: '/qaraj' })
+        this.$router.push({path: '/qaraj'})
       } else {
         // this.$route.push(link)
-        this.$router.push({ path: '/login' })
+        this.$router.push({path: '/login'})
         localStorage.setItem('loginFromSlider', true)
       }
     },
+
   },
   mounted() {
-   if (window.innerWidth < 769) this.absoluteMobileScreen = true
-      else this.absoluteMobileScreen = false
+    if (window.innerWidth < 769) this.absoluteMobileScreen = true
+    else this.absoluteMobileScreen = false
     window.addEventListener('resize', (e) => {
       if (window.innerWidth < 769) this.absoluteMobileScreen = true
       else this.absoluteMobileScreen = false
@@ -265,7 +244,7 @@ export default {
   }
   @media screen and (max-width: 768px) {
     padding-bottom: 40px;
-    .swiper-pagination{
+    .swiper-pagination {
       left: 0 !important;
       bottom: 14px !important;
     }
@@ -278,9 +257,11 @@ export default {
   height: 170px;
   position: relative;
   justify-content: flex-start;
+
   .mobileHomePage-slide-left {
     width: 50%;
   }
+
   .mobileHomePage-slide-right {
     position: absolute;
     top: 0;
@@ -290,6 +271,7 @@ export default {
     box-sizing: border-box;
     overflow: hidden;
     clip-path: polygon(43% 0, 100% 0, 100% 100%, 0% 100%);
+
     img {
       width: 100%;
       height: 100%;
