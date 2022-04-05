@@ -319,7 +319,7 @@ export default {
     },
 
     isAutosalon() {
-      return !!((this.loggedIn && this.user.autosalon) || this.sellSalonRights);
+      return !!((this.loggedIn && this.user.autosalon && this.user.autosalon.status === 1) || this.sellSalonRights);
     },
     getRulesPage() {
       return this.staticPages.find(page => page.id == 1);
