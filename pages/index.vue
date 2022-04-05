@@ -17,7 +17,7 @@
           <div class="homePage-slide-item">
             <div class="homePage-slide-item-left">
               <img
-                :srcset="`${homePageSlider.media.image[1]} 300w,${homePageSlider.media.image[0]} 1000w`"
+                :data-srcset="`${homePageSlider.media.image[1]} 300w,${homePageSlider.media.image[0]} 1000w`"
                 sizes="(max-width: 990px) 20vw, (max-width: 37.5em) 30vw, 300px"
                 :src="homePageSlider.media.image[0]"
                 alt="mashinal cover image"
