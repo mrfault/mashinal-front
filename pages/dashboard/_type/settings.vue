@@ -2,35 +2,36 @@
   <div class="pages-dashboard-settings pt-2 pt-lg-5">
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
-      <component 
-        :is="isMobileBreakpoint ? 'mobile-screen' : 'div'" 
-        :bar-title="$t('user_information_edit')" 
-        @back="$router.push(pageRef || $localePath('/dashboard/'+$route.params.type))" 
+      <component
+        :is="isMobileBreakpoint ? 'mobile-screen' : 'div'"
+        :bar-title="$t('user_information_edit')"
+        @back="$router.push(pageRef || $localePath('/dashboard/'+$route.params.type))"
         height-auto
       >
         <div class="card profile-settings-card">
           <div class="row flex-wrap position-relative cover-with-avatar_edit">
             <div class="avatar_edit col-auto mb-2" id="anchor-logo">
               <div class="avatar_edit-inner">
-                <form-image 
-                  v-model="form.logo" 
-                  :initial-image="getSalonImg('logo')" 
+                <form-image
+                  v-model="form.logo"
+                  :initial-image="getSalonImg('logo')"
                   :no-image="!hasLogo"
-                  :width="isMobileBreakpoint ? 80 : 100" 
-                  :height="isMobileBreakpoint ? 80 : 100" 
-                  croppable 
+                  :width="isMobileBreakpoint ? 80 : 100"
+                  :height="isMobileBreakpoint ? 80 : 100"
+                  croppable
                   @new-image="hasLogo = true"
+                  :autoSizing="false"
                 />
               </div>
             </div>
             <div class="avatar_edit col-auto mb-2 cover" id="anchor-cover">
               <div class="avatar_edit-inner">
-                <form-image 
-                  v-model="form.cover" 
-                  :initial-image="getSalonImg('cover')"  
+                <form-image
+                  v-model="form.cover"
+                  :initial-image="getSalonImg('cover')"
                   :no-image="!hasCover"
-                  croppable 
-                  auto-sizing 
+                  croppable
+                  auto-sizing
                   @new-image="hasCover = true"
                 />
               </div>
@@ -40,30 +41,30 @@
           <p v-html="$t('logo_and_cover_sizing_info')" v-if="isMobileBreakpoint"></p>
           <div class="row">
             <div class="col-lg-4 mb-2 mb-lg-3">
-              <form-text-input 
-                :maxlength="30" 
-                :placeholder="$t('name')" 
-                v-model="form.name" 
-                :invalid="isInvalid('name')" 
-                @change="removeError('name')" 
+              <form-text-input
+                :maxlength="30"
+                :placeholder="$t('name')"
+                v-model="form.name"
+                :invalid="isInvalid('name')"
+                @change="removeError('name')"
                 disabled
               />
             </div>
             <div class="col-lg-4 mb-2 mb-lg-3" v-for="i in 3" :key="i" :id="'anchor-phones'+(i === 1 ? '' : i)">
               <form-text-input v-if="i === 1 || typeof form.phones[i - 1] === 'string'"
                 v-model="form.phones[i - 1]"
-                autocomplete="tel" 
+                autocomplete="tel"
                 has-inputs
                 :id="'phone_'+i"
-                :placeholder="$t('contact_number')" 
-                :mask="$maskPhone()"  
-                :invalid="isInvalid('phones')" 
-                @change="removeError('phones')" 
+                :placeholder="$t('contact_number')"
+                :mask="$maskPhone()"
+                :invalid="isInvalid('phones')"
+                @change="removeError('phones')"
               >
                 <template #inputs>
-                  <form-checkbox v-model="form.telegram[i - 1]" 
+                  <form-checkbox v-model="form.telegram[i - 1]"
                     :input-name="'telegram_'+i" transparent label="<img src='/icons/telegram-circle.svg' alt='' />" />
-                  <form-checkbox v-model="form.whatsapp[i - 1]" 
+                  <form-checkbox v-model="form.whatsapp[i - 1]"
                     :input-name="'whatsapp_'+i" transparent label="<img src='/icons/whatsapp-circle.svg' alt='' />" />
                 </template>
               </form-text-input>
@@ -76,7 +77,7 @@
               <form-text-input :placeholder="$t('short_number')" v-model="form.short_number" />
             </div>
             <div class="col-lg-4 mb-2 mb-lg-3" id="anchor-region_id">
-              <form-select :label="$t('region')" :options="sellOptions.regions" v-model="form.region_id" has-search 
+              <form-select :label="$t('region')" :options="sellOptions.regions" v-model="form.region_id" has-search
                 :invalid="isInvalid('region_id')" @change="removeError('region_id')" />
             </div>
             <div class="col-lg-4 mb-2 mb-lg-3" id="anchor-address">
@@ -86,7 +87,7 @@
             <div class="col-lg-2 mb-2 mb-lg-3">
               <pick-on-map-button :lat="form.lat" :lng="form.lng" :address="form.address"
                   @change-address="updateAddress" @change-latlng="updateLatLng">
-                <form-text-input :placeholder="$t('address')" icon-name="placeholder" v-model="form.address" 
+                <form-text-input :placeholder="$t('address')" icon-name="placeholder" v-model="form.address"
                   :invalid="isInvalid('address')" @change="removeError('address')" />
               </pick-on-map-button>
             </div>
@@ -101,17 +102,17 @@
               >
                 <form class="form" @submit.prevent="changePassword" novalidate>
                   <div class="mb-2 mb-lg-3">
-                    <form-text-input type="password" autocomplete="old-password" :maxlength="255" 
+                    <form-text-input type="password" autocomplete="old-password" :maxlength="255"
                       :placeholder="$t('current_password')"  v-model="pwdForm.old"
                     />
                   </div>
                   <div class="mb-2 mb-lg-3">
-                    <form-text-input type="password" autocomplete="new-password" :maxlength="255" 
+                    <form-text-input type="password" autocomplete="new-password" :maxlength="255"
                       :placeholder="$t('new_password')"  v-model="pwdForm.password"
                     />
                   </div>
                   <div class="mb-2 mb-lg-3">
-                    <form-text-input type="password" autocomplete="new-password" :maxlength="255" 
+                    <form-text-input type="password" autocomplete="new-password" :maxlength="255"
                       :placeholder="$t('confirm_new_password')"  v-model="pwdForm.password_confirmation"
                     />
                   </div>
@@ -131,9 +132,9 @@
                 :allow-clear="false"
               >
                 <div class="form-merged">
-                  <form-select :label="$t('from_time')" :options="hoursOptions" v-model="form.working_hours.start" 
+                  <form-select :label="$t('from_time')" :options="hoursOptions" v-model="form.working_hours.start"
                     @change="removeError('working_time')" :show-label-on-select="false" :clear-option="false" :allow-clear="false" wider />
-                  <form-select :label="$t('to_time')" :options="hoursOptions" v-model="form.working_hours.end" 
+                  <form-select :label="$t('to_time')" :options="hoursOptions" v-model="form.working_hours.end"
                     @change="removeError('working_time')" :show-label-on-select="false" :clear-option="false" :allow-clear="false" wider />
                 </div>
               </form-select>
@@ -145,11 +146,11 @@
               <form-text-input type="url" placeholder="Facebook URL" icon-name="link" v-model="form.facebook" block-class="placeholder-dark-blue-3" />
             </div>
             <div class="col-lg-12 mb-2 mb-lg-3" id="anchor-short_description">
-              <form-text-input :maxlength="1000" :placeholder="$t('short_information')" v-model="form.short_description" 
+              <form-text-input :maxlength="1000" :placeholder="$t('short_information')" v-model="form.short_description"
                 @change="removeError('short_description')" :invalid="isInvalid('short_description')" />
             </div>
             <div class="col-lg-12 mb-2 mb-lg-3" id="anchor-description">
-              <form-textarea :maxlength="1000" :placeholder="$t('general_information')" v-model="form.description" 
+              <form-textarea :maxlength="1000" :placeholder="$t('general_information')" v-model="form.description"
                 @change="removeError('description')" :invalid="isInvalid('description')" />
             </div>
             <div class="col-lg-12" id="anchor-saved_gallery">
@@ -173,7 +174,7 @@
 
 <script>
   import { mapGetters, mapActions } from 'vuex';
-  import { ToastErrorsMixin } from '~/mixins/toast-errors'; 
+  import { ToastErrorsMixin } from '~/mixins/toast-errors';
 
   import PickOnMapButton from '~/components/elements/PickOnMapButton';
   import FormGallery from '~/components/forms/FormGallery';
@@ -203,7 +204,7 @@
       ]);
 
       let salon = store.getters.mySalon;
-      
+
       return {
         showPasswordModal: false,
         pending: false,
