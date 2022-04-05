@@ -5,7 +5,7 @@
         <span v-mask="$maskPhone(true)">{{ sellPhoneEntered }}</span>
       </p>
       <form-text-input
-        :placeholder="$t('name')"
+        :placeholder="$t('your_name')"
         :maxlength="30"
         :invalid="validator.name.$error"
         v-model="form.name"

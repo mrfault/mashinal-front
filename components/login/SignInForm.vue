@@ -24,7 +24,7 @@
     </button>
     <form-text-input
       v-if="form.staticPhone && !sellPhoneRegistered"
-      :placeholder="$t('name')"
+      :placeholder="$t('your_name')"
       :maxlength="30"
       v-model="form.name"
     />
