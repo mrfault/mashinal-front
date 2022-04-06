@@ -118,7 +118,11 @@
 <!--          </div>-->
 <!--        </div>-->
         <h2 v-if="type === 'cars'" class="title-with-line mt-2 mt-lg-3" id="anchor-car_or_vin">
-          <span>{{ $t(form.customs_clearance ? 'vin_carcase_number' : 'license_plate_number_vin_or_carcase_number') }} <span class="star" v-if="type === 'cars'"> *</span></span>
+          <span>{{ $t(form.customs_clearance ? 'vin_carcase_number' : 'license_plate_number_vin_or_carcase_number') }}
+            <template v-if="!loggedIn || (loggedIn && !user.autosalon) || (loggedIn && user.autosalon && user.autosalon.is_official)">
+               <span class="star" v-if="type === 'cars'"> *</span>
+            </template>
+          </span>
         </h2>
         <div class="row" v-if="type === 'cars'">
           <div class="col-lg-4 mb-2 mb-lg-0" v-if="!form.customs_clearance">
@@ -319,7 +323,7 @@ export default {
     },
 
     isAutosalon() {
-      return !!((this.loggedIn && this.user.autosalon) || this.sellSalonRights);
+      return !!((this.loggedIn && this.user.autosalon && this.user.autosalon.status === 1) || this.sellSalonRights);
     },
     getRulesPage() {
       return this.staticPages.find(page => page.id == 1);

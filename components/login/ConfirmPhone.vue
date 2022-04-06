@@ -3,7 +3,7 @@
     <div class="form-part">
       <form-text-input
         v-if="!form.staticPhone && isNewUser"
-        :placeholder="$t('name')"
+        :placeholder="$t('your_name')"
         :maxlength="30"
         v-model="form.name"
       />
@@ -127,7 +127,7 @@ export default {
           // }
         })
         .catch((err) => {
-          
+
           this.pending = false
         })
     },
