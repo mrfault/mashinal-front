@@ -7,6 +7,7 @@ const getInitialState = () => ({
   breakpoint: null,
   ptk: null,
   temporaryLazyData:[],
+  temporaryLazyDataB:[],
   menus: [],
   staticPages: [],
   pageRef: '',
@@ -190,12 +191,6 @@ export const getters = {
   motoAnnouncements: (s) => s.motoAnnouncements,
   commercialAnnouncements: (s) => s.commercialAnnouncements,
   shopAnnouncements:  (s) => {
-    if (!Array.isArray(s.shopAnnouncements.data)) {
-      return {
-        ...s.shopAnnouncements,
-        data: Object.values(s.shopAnnouncements.data || [])
-      }
-    }
     return s.shopAnnouncements
   },
   mainAnnouncements: (s) => s.mainAnnouncements,
@@ -787,7 +782,7 @@ export const actions = {
     const res = await this.$axios.$get(
       `/grid/home_page_parts?per_page=4&page=${data.page || 1}`,
     )
-    commit('mutate', { property: 'temporaryLazyData', value: res })
+    commit('mutate', { property: 'temporaryLazyDataB', value: res })
   },
   async getInfiniteMainPartsSearch({ commit }, data = {}) {
     const res = await this.$axios.$get(
@@ -820,11 +815,21 @@ export const actions = {
     const res = await this.$axios.$get(`/grid/same/announcements/${data.id}`)
     commit('mutate', { property: 'relativeAnnouncements', value: res })
   },
+  async getRelativeAnnouncementsWithoutMutate({ commit }, data) {
+    const res = await this.$axios.$get(`/grid/same/announcements/${data.id}`)
+    commit('mutate', { property: 'temporaryLazyData', value: res })
+  },
   async getShopOtherAnnouncements({ commit,state }, data) {
     const res = await this.$axios.$get(
       `/grid/shop/announcements/${data.id || state.announcement.id_unique}?page=${data.page || 1}`,
     )
     commit('mutate', { property: 'shopAnnouncements', value: res })
+  },
+  async getShopOtherAnnouncementsWithoutMutate({ commit,state }, data) {
+    const res = await this.$axios.$get(
+      `/grid/shop/announcements/${data.id || state.announcement.id_unique}?page=${data.page || 1}`,
+    )
+    commit('mutate', { property: 'temporaryLazyData', value: res })
   },
   async getUserAnnouncements({ commit }, data) {
     const res = await this.$axios.$get(`/user/${data.id}/announcements`)

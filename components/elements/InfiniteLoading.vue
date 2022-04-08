@@ -38,32 +38,45 @@ export default {
   },
   methods: {
     async infiniteScroll() {
-      let prevRes = this.$store.getters[this.getter];
+      let prevRes;
+      if(this.actionB) {
+        prevRes = this.$store.getters[this.getter];
+      }else {
+        prevRes = this.page === 1 ? this.$store.getters[this.getter]: this.temporaryLazyData;
+      }
+
       let isTimeToScroll = (window.scrollY + window.innerHeight) >= (document.documentElement.scrollHeight - this.triggerOffset);
-      let contentNotLoaded = prevRes?.next_page_url && prevRes?.total !== prevRes.to;
+      let contentNotLoaded = prevRes.next_page_url && prevRes.total !== prevRes.to;
       let usePlanB = false;
       if (this.actionB && this.getterB) {
-        let prevResB = this.$store.getters[this.getterB];
+        let prevResB = this.pageB === 1 ? this.$store.getters[this.getterB] : this.temporaryLazyDataB;
         let contentBNotLoaded = (this.pageB === 1) || (prevResB.next_page_url && (prevResB.total !== prevResB.to));
         usePlanB = contentBNotLoaded && this.page === this.pageB;
       }
       if (!this.loading && this.condition && contentNotLoaded && isTimeToScroll) {
         this.loading = true;
+
         try {
-          console.log(usePlanB ? this.actionB : this.action);
           await this.$store.dispatch((usePlanB ? this.actionB : this.action), {
             ...this.actionData, page: usePlanB ? this.pageB : (this.page + 1),
             type: this.type
           });
 
+          let newRes = usePlanB ? this.temporaryLazyDataB : this.temporaryLazyData;
          // this.$store.getters[usePlanB ? this.getterB : this.getter];
-          if (!usePlanB || this.temporaryLazyData.data.length % this.perPageB === 0)
-            this.mutate({ property: this.getter, key: 'data', value: [...prevRes.data, ...this.temporaryLazyData.data] });
+          if(!Array.isArray(newRes.data)) {
+            newRes = { ...newRes };
+            newRes.data = Object.values(newRes.data);
+          }
+          if (!usePlanB || newRes.data.length % this.perPageB === 0)
+            this.mutate({ property: this.getter, key: 'data', value: [...prevRes.data, ...newRes.data] });
           if (usePlanB) this.pageB = this.pageB + 1;
           else this.page = this.page + 1;
+          console.log(this.page);
           this.loading = false;
           this.$emit('loaded-content');
         } catch(err) {
+          console.log(err);
           this.loading = false;
         }
       }
@@ -79,7 +92,7 @@ export default {
     window.removeEventListener('scroll', this.infiniteScroll);
   },
   computed:{
-    ...mapState(['temporaryLazyData'])
+    ...mapState(['temporaryLazyData','temporaryLazyDataB'])
   }
 }
 </script>

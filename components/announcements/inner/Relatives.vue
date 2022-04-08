@@ -2,12 +2,11 @@
   <div>
     <template v-if="announcement.is_part_salon || announcement.is_autosalon">
       <grid
-        v-if="shopAnnouncements.data && shopAnnouncements.data.length"
         :announcements="shopAnnouncements.data"
         :title="title"
       />
       <infinite-loading
-        action="getShopOtherAnnouncements"
+        action="getShopOtherAnnouncementsWithoutMutate"
         getter="shopAnnouncements"
         :per-page="20"
       />

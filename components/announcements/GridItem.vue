@@ -1,4 +1,4 @@
-<template>
+`<template>
   <div :class="colClass || 'stratch-child-block'">
     <div
       class="announcements-grid_gallery"
@@ -402,3 +402,4 @@ export default {
   },
 }
 </script>
+`
