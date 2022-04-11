@@ -102,7 +102,7 @@ Vue.use({
         getAnnouncementModelName(item) {
           if (item.car_catalog) return this.$translateHard((item.car_catalog.model || item.model).name);
           else if (item.scooter_model) return item.scooter_model.name;
-          else if (item.moto_atv_model) return item.moto_atv_brand.name;
+          else if (item.moto_atv_model) return item.moto_atv_model.name;
           else if (item.moto_model) return item.moto_model.name;
           else if (item.commercial_model) return this.$translateSoft(item.commercial_model.name);
           else if (item.model) return this.$translateHard(item.model.name);

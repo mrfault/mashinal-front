@@ -19,10 +19,12 @@
         </breadcrumbs>
         <div class="row flex-column flex-lg-row">
           <div class="col-auto">
-            <gallery>
-              <quick-info type="cars" brief />
-              <announcement-specs type="cars" brief />
-            </gallery>
+            <client-only>
+              <gallery>
+                <quick-info type="cars" brief />
+                <announcement-specs type="cars" brief />
+              </gallery>
+            </client-only>
             <comment :comment="announcement.comment" v-if="!isMobileBreakpoint">
               <template #before>
                 <thumbs-gallery />
@@ -114,6 +116,9 @@ export default {
       store.dispatch('getAllOtherOptions'),
       store.dispatch('getPopularOptions')
     ]);
+  },
+  mounted() {
+    console.log('mounted id')
   },
   methods: {
     getFilterLink(type) {

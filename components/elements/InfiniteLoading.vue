@@ -39,10 +39,11 @@ export default {
   methods: {
     async infiniteScroll() {
       let prevRes;
+
       if(this.actionB) {
         prevRes = this.$store.getters[this.getter];
       }else {
-        prevRes = this.page === 1 ? this.$store.getters[this.getter]: this.temporaryLazyData;
+        prevRes = this.$store.getters[this.getter];
       }
 
       let isTimeToScroll = (window.scrollY + window.innerHeight) >= (document.documentElement.scrollHeight - this.triggerOffset);
@@ -53,6 +54,7 @@ export default {
         let contentBNotLoaded = (this.pageB === 1) || (prevResB.next_page_url && (prevResB.total !== prevResB.to));
         usePlanB = contentBNotLoaded && this.page === this.pageB;
       }
+
       if (!this.loading && this.condition && contentNotLoaded && isTimeToScroll) {
         this.loading = true;
 
@@ -89,6 +91,7 @@ export default {
     window.addEventListener('scroll', this.infiniteScroll);
   },
   beforeDestroy() {
+    console.log('beforedestroy')
     window.removeEventListener('scroll', this.infiniteScroll);
   },
   computed:{

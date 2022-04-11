@@ -133,6 +133,7 @@ export default {
     },
   },
   beforeDestroy() {
+    this.mutate({ property: 'temporaryLazyData', value: {} });
     //window.removeEventListener('scroll', this.getNextAnnouncements)
   },
 }

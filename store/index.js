@@ -47,7 +47,7 @@ const getInitialState = () => ({
   commercialAnnouncements: [],
   shopAnnouncements: {},
   announcement: {},
-  relativeAnnouncements: [],
+  relativeAnnouncements: {},
   userAnnouncements: [],
   // catalog
   catalogAnnouncements: [],
@@ -198,9 +198,6 @@ export const getters = {
   myAnnouncements: (s) => s.myAnnouncements,
   myAnnouncement: (s) => s.myAnnouncement,
   relativeAnnouncements: (s) => {
-    if (typeof s.relativeAnnouncements === 'object') {
-      return Object.values(s.relativeAnnouncements)
-    }
     return s.relativeAnnouncements
   },
   userAnnouncements: (s) => s.userAnnouncements,
@@ -812,11 +809,11 @@ export const actions = {
   },
   // Announcements
   async getRelativeAnnouncements({ commit }, data) {
-    const res = await this.$axios.$get(`/grid/same/announcements/${data.id}`)
+    const res = await this.$axios.$get(`/grid/same/announcements_new/${data.id}`)
     commit('mutate', { property: 'relativeAnnouncements', value: res })
   },
-  async getRelativeAnnouncementsWithoutMutate({ commit }, data) {
-    const res = await this.$axios.$get(`/grid/same/announcements/${data.id}`)
+  async getRelativeAnnouncementsWithoutMutate({ commit,state }, data) {
+    const res = await this.$axios.$get(`/grid/same/announcements_new/${data.id || state.announcement.id_unique}?page=${data.page || 1}`)
     commit('mutate', { property: 'temporaryLazyData', value: res })
   },
   async getShopOtherAnnouncements({ commit,state }, data) {
