@@ -117,7 +117,7 @@ export default {
 
     return {
       pending: false,
-      supportContacts: [{ phone: '*8787' }, { email: 'office@al.ventures' }],
+      supportContacts: [{ phone: '*8787' }, { email: 'sales@al.ventures' }],
     }
   },
   computed: {
