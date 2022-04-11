@@ -70,8 +70,22 @@ export default {
             newRes = { ...newRes };
             newRes.data = Object.values(newRes.data);
           }
-          if (!usePlanB || newRes.data.length % this.perPageB === 0)
+          if(!newRes.data.length) {
+            this.mutate({
+              property: this.getter,
+              key: 'total',
+              value: newRes.total
+            })
+            this.mutate({
+              property: this.getter,
+              key: 'to',
+              value: newRes.total
+            })
+          }
+          if (!usePlanB || (newRes.data.length % this.perPageB) === 0) {
             this.mutate({ property: this.getter, key: 'data', value: [...prevRes.data, ...newRes.data] });
+          }
+
           if (usePlanB) this.pageB = this.pageB + 1;
           else this.page = this.page + 1;
           console.log(this.page);
