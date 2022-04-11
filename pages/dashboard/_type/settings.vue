@@ -156,7 +156,7 @@
             <div class="col-lg-12" id="anchor-saved_gallery">
               <form-gallery
                 itemClass="col-4 col-lg-1-8 mb-lg-3 mb-2"
-                :maxFiles="21"
+                :maxFiles="24"
                 :initialFiles="initialFiles"
                 @change="filesOnChange"
                 @loading="pending = $event"
