@@ -45,7 +45,7 @@ export default {
     announcementSpecs() {
       const specs = [
         { key: 'years', value: this.announcement.year, class: 'car-year'},
-        { key: 'region', value: this.announcement.region.name[this.locale] },
+        { key: 'region', value: this.announcement.region?.name[this.locale] },
         { key: 'mileage', value: this.mileage + (this.announcement.is_new ? ', ' + this.$t('is_new').toLowerCase() : ''), class: 'car-mileage', for: ['cars', 'commercial', 'moto'] },
         { key: 'condition', value: (this.announcement.broken || this.announcement.status_id || this.announcement.beaten) && this.$t('bitie')  },
         { key: 'guaranty', value: (this.announcement.in_garanty || this.announcement.guaranty) && this.$t('in_garanty') },
