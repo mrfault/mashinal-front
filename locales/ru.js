@@ -2185,6 +2185,7 @@ export default {
    "add_car_with_asan_login":"Добавить через Асан логин",
    "newly_added":"Не добавленные автомобили",
   "is_loading":"Загружается",
-  "create_salon":"Перейти в салоны"
+  "create_salon":"Перейти в салоны",
+  "your_name":"Ваше имя"
 
 }
