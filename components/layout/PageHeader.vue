@@ -340,15 +340,11 @@ computed: {
     }
   }
 }
-//.exact-active, .link-active{
-//  color: #F81734 !important;
-//}
+
 
 .header-menu {
   transition: box-shadow 0.1s ease-out;
   border-radius: 0 0 20px 20px;
 }
-.active{
-  color: #000;
-}
+
 </style>

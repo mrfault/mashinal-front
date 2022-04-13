@@ -4,9 +4,8 @@
       <div class="cover-with-avatar">
         <div class="cover" :style="{backgroundImage: `url('${getCover(salonSingle.cover, salonSingle.type_id)}')`}">
           <img class="avatar" :src="getLogo(salonSingle.logo)" :alt="salonSingle.name || salonSingle.user.full_name" />
-          <span class="badge">SHOP</span>
           <div class="socials" @click.stop>
-            <a v-for="social in ['facebook','instagram']" :key="social" :href="salonSingle[social]" rel="noopener" target="_blank">
+            <a v-for="social in ['facebook','instagram']" :key="social" v-if="salonSingle[social]" :href="salonSingle[social]" rel="noopener" target="_blank">
               <icon :name="social" />
             </a>
           </div>
@@ -18,6 +17,7 @@
       <h2 class="title-with-line text-center">
         <span>{{ $t(isShop ? 'shop' : 'salon') }} "{{ salonSingle.name || salonSingle.user.full_name }}"</span>
       </h2>
+      <p v-if="salonSingle.description" class="mb-4">{{ salonSingle.description }}</p>
       <div class="row align-items-lg-end profile_info">
         <template v-if="salonSingle.phones && salonSingle.phones.length">
           <div :class="`col-lg-${messengers.length ? 9 : 12} mb-2`">
@@ -30,40 +30,34 @@
               ></span>
             </div>
           </div>
-          <div class="col-lg-3 mb-2" v-if="!isMobileBreakpoint && messengers.length">
+          <div class="col-lg-3 mb-2" >
             <div class="profile_info-details">
-              <img src="/icons/whatsapp-circle.svg" alt="" v-if="messengers.includes('Whatsapp')" />
-              <img src="/icons/telegram-circle.svg" alt="" v-if="messengers.includes('Telegram')" />
-              <span>{{ $t('wp_write_us', {msg: messengers}) }}</span>
+              <icon name="time" />
+              <span class="working-time" v-html="getWorkingDays(salonSingle.working_days, salonSingle.working_hours)" />
             </div>
           </div>
         </template>
-        <div :class="`col-lg-${hasWorkingHours ? 9 : 12} mb-2`" v-if="salonSingle.address">
+        <div :class="`col-lg-12 mb-2`" v-if="salonSingle.address">
           <div class="profile_info-details">
             <icon name="placeholder" />
             <span>{{ salonSingle.address }}</span>
           </div>
         </div>
-        <div class="col-lg-3 mb-2" v-if="hasWorkingHours">
-          <div class="profile_info-details">
-            <icon name="time" />
-            <span class="working-time" v-html="getWorkingDays(salonSingle.working_days, salonSingle.working_hours)" />
-          </div>
-        </div>
+
       </div>
       <template v-if="salonSingle.gallery_urls.length">
         <gallery where="salon" :media="[salonSingle.gallery_urls, salonSingle.gallery_thumbs]" :show-slider="false" />
         <thumbs-gallery where="salon" :media="salonSingle.gallery_thumbs" />
       </template>
     </div>
-    <div class="card salon-comment-card mb-2 mb-lg-3" v-if="salonSingle.description">
-      <h2 class="title-with-line">
-        <span>{{ $t('main_info') }}</span>
-      </h2>
-      <div class="comment">
-        <p>{{ salonSingle.description }}</p>
-      </div>
-    </div>
+<!--    <div class="card salon-comment-card mb-2 mb-lg-3" v-if="salonSingle.description">-->
+<!--      <h2 class="title-with-line">-->
+<!--        <span>{{ $t('main_info') }}</span>-->
+<!--      </h2>-->
+<!--      <div class="comment">-->
+<!--     -->
+<!--      </div>-->
+<!--    </div>-->
     <grid
       v-if="salonSingle.announcements.data.length"
       :announcements="salonSingle.announcements.data"

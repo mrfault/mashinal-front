@@ -162,7 +162,7 @@
                 @loading="pending = $event"
               />
             </div>
-            <div class="col-lg-2 offset-lg-10">
+            <div class="col-lg-2 offset-lg-10 mt-2">
               <button :class="['btn btn--green full-width', {pending}]" @click="submit">{{ $t('confirm') }}</button>
             </div>
           </div>

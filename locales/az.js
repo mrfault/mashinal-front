@@ -1064,7 +1064,7 @@ export default {
   "meta-descr_restore": "Elanı bərpa et və daha çox bonus qazan",
   "meta-descr_sell": "Maşını satmaq üçün 5 Dəqiqəyə Pulsuz Maşın Elanı Yarat Və Yaxşı Təkliflərdən Yararlan.",
   "meta-title_announcement-new": "Yeni {announce}",
-  "meta-title_announcement-used": "İşlənmiş {announce}",
+  "meta-title_announcement-used": "{announce}",
   "meta-title_business-profile": "Biznes profili yarat",
   "meta-title_cars": "Yeni Və İşlənmiş Maşın Elanları | Yeni Və İşlənmiş Maşın Qiymətləri",
   "meta-title_catalog": "Maşın kataloqu, maşınların xüsusiyyətləri",

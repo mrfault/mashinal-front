@@ -1057,7 +1057,7 @@ export default {
   "meta-descr_restore": "Восстановитe ваше объявление и заработайте больше бонусов",
   "meta-descr_sell": "Создайте бесплатное объявление за 5 минут, чтобы продать свой автомобиль и получить выгоду от хороших предложений.",
   "meta-title_announcement-new": "Новый {announce}",
-  "meta-title_announcement-used": "Подержанный {announce}",
+  "meta-title_announcement-used": "{announce}",
   "meta-title_business-profile": "Biznes profili yarat",
   "meta-title_cars": "Объявления о продаже новых и подержанных авто | Цены на новые и подержанные авто",
   "meta-title_catalog": "Авто каталог, характеристики машин",
