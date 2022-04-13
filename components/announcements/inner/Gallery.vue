@@ -54,7 +54,8 @@
         <div class="gallery-overlay_top d-flex">
           <template v-if="where === 'announcement'">
             <span
-              v-if="announcement.interior_360"
+
+              v-if="showInteriorCondition"
               @click="showInterior = !showInterior"
               class="badge from-border cursor-pointer" style="pointer-events: all;" >
               {{ showInterior ? 'Exterior': 'Interior' }}
@@ -335,6 +336,9 @@ export default {
   },
   computed: {
     ...mapGetters(['announcement']),
+    showInteriorCondition() {
+      return this.currentSlide === 0 && this.announcement.interior_360
+    },
     getSourcesFsLightbox() {
       if (this.slides.types[0] === 'custom') {
         return [

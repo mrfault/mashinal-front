@@ -48,7 +48,6 @@
     </div>
     <!--/ 360 Viewer Container -->
 
-
     <div class="zoom-360-wrapper" v-if="showZoom && imagesLoaded">
       <button class="btn btn--grey" @click="zoomIn">+</button>
       <button class="btn btn--grey" @click="zoomOut">-</button>
@@ -64,6 +63,10 @@ const uuidv1 = require('uuid/v1');
 export default {
   name: 'I360Viewer',
   props: {
+    showInterior:{
+      type:Boolean,
+      default:false,
+    },
     fromFsPopup:{
       type: Boolean,
       default: false,
