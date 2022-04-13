@@ -1002,6 +1002,7 @@ export default {
   "Load index": "Təkərlərin təzyiqi",
   "load_more": "daha çox göstər",
   "loading": "Yükləmə",
+  "Loading":"Yüklənir...",
   "logbook": "Jurnallar",
   "login": "Daxil ol",
   "login_and_publish": "Daxil ol və paylaş",

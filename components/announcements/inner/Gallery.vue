@@ -23,7 +23,9 @@
             >
               <div class="position-relative">
                 <no-ssr>
+                  <Interior360Viewer :url="announcement.interior_360" v-if="showInterior"/>
                   <vue-three-sixty
+                    v-else
                     :amount="announcement.images_360.length"
                     buttonClass="d-none"
                     disableZoom
@@ -51,12 +53,12 @@
       <div class="gallery-overlay" v-if="showSlider">
         <div class="gallery-overlay_top d-flex">
           <template v-if="where === 'announcement'">
-<!--            <span-->
-<!--              class="badge from-border"-->
-<!--              v-if="announcement.is_autosalon || announcement.is_part_salon"-->
-<!--            >-->
-<!--              SHOP-->
-<!--            </span>-->
+            <span
+              v-if="announcement.interior_360"
+              @click="showInterior = !showInterior"
+              class="badge from-border cursor-pointer" style="pointer-events: all;" >
+              {{ showInterior ? 'Exterior': 'Interior' }}
+            </span>
             <span class="d-flex">
               <span
                 class="badge badge-360"
@@ -196,7 +198,6 @@
 
 <script>
 import { mapGetters } from 'vuex'
-
 import FsLightbox from 'fslightbox-vue'
 import CallButton from '~/components/announcements/CallButton'
 import ChatButton from '~/components/announcements/ChatButton'
@@ -204,6 +205,7 @@ import AddFavorite from '~/components/announcements/AddFavorite'
 import AddComparison from '~/components/announcements/AddComparison'
 import AddComplaint from '~/components/announcements/AddComplaint'
 import ImagesSlider from '~/components/elements/ImagesSlider'
+import Interior360Viewer from "~/components/Interior360Viewer";
 export default {
   props: {
     where: {
@@ -219,6 +221,7 @@ export default {
     },
   },
   components: {
+    Interior360Viewer,
     FsLightbox,
     CallButton,
     ChatButton,
@@ -229,6 +232,7 @@ export default {
   },
   data() {
     return {
+      showInterior: false,
       toggleFsLightbox: false,
       showImagesSlider: false,
       showLightbox: false,
