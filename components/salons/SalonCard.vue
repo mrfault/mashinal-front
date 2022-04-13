@@ -12,7 +12,7 @@
             <span v-html="getConcatPhones(salon.phones, 1, false)"></span>
           </span>
           <span class="d-inline-flex align-items-center">
-            <icon name="img" /> 
+            <icon name="speaker" />
             <span>{{ getTotalCount(salon) }}</span>
           </span>
         </div>
