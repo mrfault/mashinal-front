@@ -337,7 +337,10 @@ export default {
   computed: {
     ...mapGetters(['announcement']),
     showInteriorCondition() {
-      return this.currentSlide === 0 && this.announcement.interior_360
+      return this.currentSlide === 0 &&
+        this.announcement.images_360 &&
+        this.announcement.images_360.length &&
+        this.announcement.interior_360
     },
     getSourcesFsLightbox() {
       if (this.slides.types[0] === 'custom') {
