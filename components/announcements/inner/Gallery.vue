@@ -356,6 +356,17 @@ export default {
           ...this.slides.main.slice(1, this.slides.main.length),
         ]
       }
+      if (this.slides.types[0] === 'custom_interior') {
+        return [
+          {
+            component: 'vue-three-sixty',
+            props: {
+              url: this.announcement.interior_360,
+            },
+          },
+          ...this.slides.main.slice(1, this.slides.main.length),
+        ]
+      }
       return this.slides.main
     },
 

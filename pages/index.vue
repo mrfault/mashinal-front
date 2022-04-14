@@ -239,7 +239,6 @@ export default {
     }
   }
   @media screen and (max-width: 768px) {
-    padding-bottom: 40px;
     .swiper-pagination {
       left: 0 !important;
       bottom: 14px !important;
