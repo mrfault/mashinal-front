@@ -1,39 +1,92 @@
 <template>
   <div class="salon-inner">
-    <div :class="['card profile-card salon-single-card overflow-hidden mt-0 mb-lg-3', salonSingle.description ? 'mb-n3' : 'mb-2']">
+    <div
+      :class="[
+        'card profile-card salon-single-card overflow-hidden mt-0 mb-lg-3',
+        salonSingle.description ? 'mb-n3' : 'mb-2',
+      ]"
+    >
       <div class="cover-with-avatar">
-        <div class="cover" :style="{backgroundImage: `url('${getCover(salonSingle.cover, salonSingle.type_id)}')`}">
-          <img class="avatar" :src="getLogo(salonSingle.logo)" :alt="salonSingle.name || salonSingle.user.full_name" />
+        <div
+          class="cover"
+          :style="{
+            backgroundImage: `url('${getCover(
+              salonSingle.cover,
+              salonSingle.type_id,
+            )}')`,
+          }"
+        >
+          <img
+            class="avatar"
+            :src="getLogo(salonSingle.logo)"
+            :alt="salonSingle.name || salonSingle.user.full_name"
+          />
           <div class="socials" @click.stop>
-            <a v-for="social in ['facebook','instagram']" :key="social" v-if="salonSingle[social]" :href="salonSingle[social]" rel="noopener" target="_blank">
+            <a
+              v-for="social in ['facebook', 'instagram']"
+              :key="social"
+              v-if="salonSingle[social]"
+              :href="salonSingle[social]"
+              rel="noopener"
+              target="_blank"
+            >
               <icon :name="social" />
             </a>
           </div>
         </div>
-        <nuxt-link class="edit-link" :to="$localePath(`/dashboard/${salonSingle.type_id}/settings`)" @click.native="setPageRef($route.path)" v-if="salonIsOwner(salonSingle)">
+        <nuxt-link
+          class="edit-link"
+          :to="$localePath(`/dashboard/${salonSingle.type_id}/settings`)"
+          @click.native="setPageRef($route.path)"
+          v-if="salonIsOwner(salonSingle)"
+        >
           <icon name="edit" />
         </nuxt-link>
       </div>
       <h2 class="title-with-line text-center">
-        <span>{{ $t(isShop ? 'shop' : 'salon') }} "{{ salonSingle.name || salonSingle.user.full_name }}"</span>
+        <span>
+          {{ $t(isShop ? 'shop' : 'salon') }} "{{
+            salonSingle.name || salonSingle.user.full_name
+          }}"
+        </span>
       </h2>
-      <p v-if="salonSingle.description" class="mb-4">{{ salonSingle.description }}</p>
+      <p v-if="salonSingle.description" class="mb-4">
+        {{ salonSingle.description }}
+      </p>
       <div class="row align-items-lg-end profile_info">
         <template v-if="salonSingle.phones && salonSingle.phones.length">
           <div :class="`col-lg-${messengers.length ? 9 : 12} mb-2`">
             <div class="profile_info-details">
               <icon name="phone-call" />
-              <span class="d-inline-flex" v-html="getConcatPhones(salonSingle.phones, 3, true, {
-                  telegram: salonSingle.telegram || [],
-                  whatsapp: salonSingle.whatsapp || []
-                }, salonSingle.short_number)"
+              <span
+                class="d-inline-flex"
+                v-html="
+                  getConcatPhones(
+                    salonSingle.phones,
+                    3,
+                    true,
+                    {
+                      telegram: salonSingle.telegram || [],
+                      whatsapp: salonSingle.whatsapp || [],
+                    },
+                    salonSingle.short_number,
+                  )
+                "
               ></span>
             </div>
           </div>
           <div class="col-lg-3 mb-2" v-if="hasWorkingHours">
             <div class="profile_info-details">
               <icon name="time" />
-              <span  class="working-time" v-html="getWorkingDays(salonSingle.working_days, salonSingle.working_hours)" />
+              <span
+                class="working-time"
+                v-html="
+                  getWorkingDays(
+                    salonSingle.working_days,
+                    salonSingle.working_hours,
+                  )
+                "
+              />
             </div>
           </div>
         </template>
@@ -43,21 +96,17 @@
             <span>{{ salonSingle.address }}</span>
           </div>
         </div>
-
       </div>
       <template v-if="salonSingle.gallery_urls.length">
-        <gallery where="salon" :media="[salonSingle.gallery_urls, salonSingle.gallery_thumbs]" :show-slider="false" />
+        <gallery
+          where="salon"
+          :media="[salonSingle.gallery_urls, salonSingle.gallery_thumbs]"
+          :show-slider="false"
+        />
         <thumbs-gallery where="salon" :media="salonSingle.gallery_thumbs" />
       </template>
     </div>
-<!--    <div class="card salon-comment-card mb-2 mb-lg-3" v-if="salonSingle.description">-->
-<!--      <h2 class="title-with-line">-->
-<!--        <span>{{ $t('main_info') }}</span>-->
-<!--      </h2>-->
-<!--      <div class="comment">-->
-<!--     -->
-<!--      </div>-->
-<!--    </div>-->
+    <span class="test" ref="scrollToMe"></span>
     <grid
       v-if="salonSingle.announcements.data.length"
       :announcements="salonSingle.announcements.data"
@@ -71,55 +120,79 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions } from 'vuex'
 
-import { SalonsMixin } from '~/mixins/salons';
+import { SalonsMixin } from '~/mixins/salons'
 
-import Grid from '~/components/announcements/Grid';
-import Gallery from '~/components/announcements/inner/Gallery';
-import ThumbsGallery from '~/components/announcements/inner/ThumbsGallery';
+import Grid from '~/components/announcements/Grid'
+import Gallery from '~/components/announcements/inner/Gallery'
+import ThumbsGallery from '~/components/announcements/inner/ThumbsGallery'
 
 export default {
   components: {
     Grid,
     Gallery,
-    ThumbsGallery
+    ThumbsGallery,
   },
   mixins: [SalonsMixin],
   data() {
     return {
-      pending: false
+      pending: false,
     }
   },
   computed: {
     ...mapGetters(['salonSingle']),
 
     hasWorkingHours() {
-      return !!this.getWorkingDays(this.salonSingle.working_days, this.salonSingle.working_hours)
+      return !!this.getWorkingDays(
+        this.salonSingle.working_days,
+        this.salonSingle.working_hours,
+      )
     },
     messengers() {
-      let msg = [];
-      let phonesLength = this.salonSingle.phones?.length || 0;
-      if (this.salonSingle.whatsapp?.slice(0, phonesLength).find(wp => wp)) msg.push('Whatsapp');
-      if (this.salonSingle.telegram?.slice(0, phonesLength).find(tg => tg)) msg.push('Telegram');
-      return msg.join('/');
+      let msg = []
+      let phonesLength = this.salonSingle.phones?.length || 0
+      if (this.salonSingle.whatsapp?.slice(0, phonesLength).find((wp) => wp))
+        msg.push('Whatsapp')
+      if (this.salonSingle.telegram?.slice(0, phonesLength).find((tg) => tg))
+        msg.push('Telegram')
+      return msg.join('/')
     },
     isShop() {
-      return this.routeName.includes('parts');
-    }
+      return this.routeName.includes('parts')
+    },
   },
   methods: {
     ...mapActions(['getSalonById']),
 
     async changePage() {
-      this.pending = true;
+      this.pending = true
       await this.getSalonById({
         id: this.$route.params.id,
-        page: this.$route.query.page || 1
-      });
-      this.pending = false;
-      this.scrollTo('.announcements-grid');
-    }
-  }
+        page: this.$route.query.page || 1,
+      })
+      this.pending = false
+      // this.scrollTo('.announcements-grid')
+    },
+    scrollFunc() {
+      setTimeout(() => {
+        const el = this.$refs.scrollToMe
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+        }
+      }, 1000)
+    },
+  },
+  mounted() {
+    this.scrollFunc()
+  },
 }
 </script>
+
+<style>
+.test {
+  width: 100%;
+  height: 500px;
+  background: #000;
+}
+</style>
