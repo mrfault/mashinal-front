@@ -127,7 +127,7 @@
     .navbar-white {
       color: $dark-1;
       background: $white !important;
-
+      transition: 1s ease-in-out;
       li:hover > a,
       li a.active {
         color: $red-1 !important;

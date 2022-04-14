@@ -40,16 +40,20 @@ export const LayoutMixin = {
       this.vhVariableSet = true;
     },
     handleScroll() {
+      console.log("scrolled");
       let scrolled = window.scrollY;
       let layout = document.querySelector('.layout');
       // header
       let headerEl = document.querySelector('.header-menu');
       let menuHeaderEl = document.querySelector('.menu-header');
       let promotionEl = document.querySelector('.top-promotion-row');
+      let headerElDesktopWhite = document.querySelector('.navbar-white');
       promotionEl?.classList[window.scrollY > 0 ? 'add' : 'remove']('d-none');
+      headerElDesktopWhite?.classList[window.scrollY > 0 ? 'add' : 'remove']('d-none');
       [headerEl, menuHeaderEl].map(el => {
         el?.classList[window.scrollY > 0 ? 'add' : 'remove']('has-shadow');
       });
+      // header white desktop
       // footer
       let footerEl = document.querySelector('.page-footer');
       if (footerEl) {
