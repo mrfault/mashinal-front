@@ -104,7 +104,7 @@
             </div>
 
             <div class="gallery-overlay_bottom--right">
-              <add-complaint :announcement="announcement" />
+<!--              <add-complaint :announcement="announcement" />-->
             </div>
           </template>
           <template v-else>
