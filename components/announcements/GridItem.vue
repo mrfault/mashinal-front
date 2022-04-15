@@ -226,7 +226,7 @@
             />
           </div>
         </div>
-        <hr class="mt-1" v-if="showCheckbox && announcement.status === 1" />
+        <hr class="mt-1" v-if="showMonetizationActions && showCheckbox && announcement.status === 1" />
         <div class="item-details__actions" v-if="showMonetizationActions">
           <template v-if="showCheckbox && announcement.status === 1">
             <span>
