@@ -20,7 +20,7 @@
 
     <div :class="{ container: hasContainer }">
       <div class="row mb-n2 mb-lg-n3">
-        <span class="test" ref="scrollToMe"></span>
+        <!-- <span class="test" ref="scrollToMe"></span> -->
         <template v-for="(announcement, index) in announcements">
           <template v-if="where === 'catalog'">
             <grid-item
@@ -207,7 +207,7 @@ export default {
       setTimeout(() => {
         const el = this.$refs.scrollToMe
         if (el) {
-          el.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' })
         }
       }, 1000)
     },

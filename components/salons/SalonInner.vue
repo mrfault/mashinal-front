@@ -102,6 +102,7 @@
         </div>
       </div>
       <!-- ------------------ -->
+      <span class="test" ref="scrollToMe"></span>
       <template v-if="salonSingle.gallery_urls.length">
         <gallery
           where="salon"
@@ -123,7 +124,6 @@
       escape-duplicates
       :needAutoScroll="true"
     />
-    <!-- <span class="test" ref="scrollToMe"></span> -->
   </div>
 </template>
 
@@ -182,19 +182,17 @@ export default {
       this.pending = false
       // this.scrollTo('.announcements-grid')
     },
-    // scrollFunc() {
-    //   setTimeout(() => {
-    //     const el = this.$refs.scrollToMe
-    //     if (el) {
-    //       el.scrollIntoView({ behavior: 'smooth', block: 'end' })
-    //     }
-    //   }, 1000)
-    // },
+    scrollFunc() {
+      setTimeout(() => {
+        const el = this.$refs.scrollToMe
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+        }
+      }, 1000)
+    },
   },
   mounted() {
-    // this.scrollFunc()
+    this.scrollFunc()
   },
 }
 </script>
-
-
