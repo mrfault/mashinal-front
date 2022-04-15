@@ -115,7 +115,7 @@
           </template>
         </div>
       </div>
-      <div class="inner-gallery-lightbox" v-touch:swipe.top="handleSwipeTop">
+      <div  class="inner-gallery-lightbox" v-touch:swipe.top="handleSwipeTop">
         <template v-if="isMobileBreakpoint">
           <h3 v-if="announcement.images_360 && announcement.images_360.length > 0" style="position: absolute; top: 0; color: #081a3e;">
             {{ $t('panorama_loading') }}
@@ -164,6 +164,9 @@
                         :announcement="announcement"
                         :className="'white-outline'"
                       />
+                    </div>
+                    <div class="col mb-2">
+                      <button class="btn btn--green" @click="switchInterior">{{ $t(!showInterior ? 'interior' : 'exterior')}}</button>
                     </div>
                     <div class="col">
                       <call-button :phone="announcement.user.phone" />
@@ -256,6 +259,14 @@ export default {
     }
   },
   methods: {
+    switchInterior() {
+      this.showInterior = !this.showInterior;
+      this.lightboxKey++
+      this.toggleFsLightbox = false
+      setTimeout(() => {
+        this.toggleFsLightbox = true;
+      },1)
+    },
     openLightbox(index) {
       if (index || index === 0) {
         this.currentSlide = index
@@ -316,7 +327,7 @@ export default {
     },
     handleSwipeTop() {
       if (document.body.classList.contains('zooming')) return
-      this.closeLightbox()
+      //this.closeLightbox()
     },
     showYtVideo(index) {
       return this.announcement?.youtube_id && index === 1
@@ -346,22 +357,12 @@ export default {
       if (this.slides.types[0] === 'custom') {
         return [
           {
-            component: 'vue-three-sixty',
+            component: this.showInterior ? 'interior360-viewer' : 'vue-three-sixty',
             props: {
+              url: this.announcement.interior_360,
               files: this.announcement.images_360,
               amount: this.announcement.images_360.length,
               fromFsPopup: true,
-            },
-          },
-          ...this.slides.main.slice(1, this.slides.main.length),
-        ]
-      }
-      if (this.slides.types[0] === 'custom_interior') {
-        return [
-          {
-            component: 'vue-three-sixty',
-            props: {
-              url: this.announcement.interior_360,
             },
           },
           ...this.slides.main.slice(1, this.slides.main.length),
