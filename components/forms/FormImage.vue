@@ -19,13 +19,15 @@
       :disable-scroll-to-zoom="noImage"
       @new-image="$emit('new-image')"
     >
-      <span @click="removeCover" v-if="showRemoveButton && $store.getters.mySalon.cover" class="drop-file" style="right: 40px;font-size: 13px;">
-            <icon name="garbage"/>
-      </span>
-      <span class="drop-file" @click="croppaValue.chooseFile()">
 
-        <!-- <icon name="camera" /> -->
-        <inline-svg src="/icons/camera.svg" :height="14" />
+      <span class="drop-file">
+        <span @click="removeCover" v-if="showRemoveButton && $store.getters.mySalon[type]" >
+            <icon name="garbage"/>
+        </span>
+        <span  @click="croppaValue.chooseFile()">
+           <inline-svg src="/icons/camera.svg" :height="14" />
+        </span>
+
       </span>
     </croppa>
     <template v-else>

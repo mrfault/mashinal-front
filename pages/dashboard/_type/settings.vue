@@ -14,6 +14,7 @@
               <div class="avatar_edit-inner">
                 <form-image
                   :refreshCroppa="refreshCroppa"
+                  @removeImage="removeImage"
                   type="logo"
                   v-model="form.logo"
                   :initial-image="getSalonImg('logo')"
@@ -278,9 +279,9 @@
     methods: {
       ...mapActions(['updateMySalon','getMySalon']),
       async removeImage(type) {
+        console.log(type);
         if(type === 'cover') {
           this.$set(this.form,'remove_cover', true);
-
         }
         else {
           this.$set(this.form,'remove_logo', true);
