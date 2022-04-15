@@ -227,7 +227,7 @@
           </div>
         </div>
         <hr class="mt-1" v-if="showCheckbox && announcement.status === 1" />
-        <div class="item-details__actions">
+        <div class="item-details__actions" v-if="showMonetizationActions">
           <template v-if="showCheckbox && announcement.status === 1">
             <span>
               <monetization-button
@@ -257,6 +257,10 @@ export default {
   props: {
     announcement: {},
     showStatus: Boolean,
+    showMonetizationActions: {
+      type: Boolean,
+      default:true,
+    },
     showCheckbox: Boolean,
     showPhoneCount: Boolean,
     showGallery: Boolean,

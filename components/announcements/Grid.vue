@@ -51,6 +51,7 @@
             >
               <grid-item
                 :announcement="announcement"
+                :show-monetization-actions="showMonetizationActions"
                 :show-checkbox="showCheckbox"
                 :show-status="showStatus"
                 :show-phone-count="showPhoneCount"
@@ -108,6 +109,10 @@ import GridItem from '~/components/announcements/GridItem'
 
 export default {
   props: {
+    showMonetizationActions: {
+      type: Boolean,
+      default: true,
+    },
     announcements: {
       type: Array,
       default: () => [],
