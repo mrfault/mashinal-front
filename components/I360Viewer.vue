@@ -870,4 +870,12 @@ export default {
     color: white;
   }
 }
+.switch-pnlm {
+  position: absolute;
+  top: 10px;
+  z-index: 1234;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
 </style>

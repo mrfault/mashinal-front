@@ -487,6 +487,10 @@ export default {
     height: 493px;
   }
 }
+.fslightbox-source {
+  width: unset !important;
+  height: unset !important;
+}
 
 .swiper-slide {
   background-color: #d6e4f8;
