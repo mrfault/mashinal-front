@@ -6,6 +6,7 @@
         salonSingle.description ? 'mb-n3' : 'mb-2',
       ]"
     >
+      <!-- ------------------ -->
       <div class="cover-with-avatar">
         <div
           class="cover"
@@ -50,9 +51,12 @@
           }}"
         </span>
       </h2>
+      <!-- ------------------ -->
+
       <p v-if="salonSingle.description" class="mb-4">
         {{ salonSingle.description }}
       </p>
+      <!-- ------------------ -->
       <div class="row align-items-lg-end profile_info">
         <template v-if="salonSingle.phones && salonSingle.phones.length">
           <div :class="`col-lg-${messengers.length ? 9 : 12} mb-2`">
@@ -97,6 +101,8 @@
           </div>
         </div>
       </div>
+      <!-- ------------------ -->
+      <span class="test" ref="scrollToMe"></span>
       <template v-if="salonSingle.gallery_urls.length">
         <gallery
           where="salon"
@@ -106,7 +112,8 @@
         <thumbs-gallery where="salon" :media="salonSingle.gallery_thumbs" />
       </template>
     </div>
-    <span class="test" ref="scrollToMe"></span>
+    <!-- ------------------ -->
+
     <grid
       v-if="salonSingle.announcements.data.length"
       :announcements="salonSingle.announcements.data"
@@ -115,6 +122,7 @@
       @pending="pending = true"
       @change-page="changePage"
       escape-duplicates
+      :needAutoScroll="true"
     />
   </div>
 </template>
@@ -188,11 +196,3 @@ export default {
   },
 }
 </script>
-
-<style>
-.test {
-  width: 100%;
-  height: 500px;
-  background: #000;
-}
-</style>
