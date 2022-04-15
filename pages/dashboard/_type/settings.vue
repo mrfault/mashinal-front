@@ -13,6 +13,8 @@
             <div class="avatar_edit col-auto mb-2" id="anchor-logo">
               <div class="avatar_edit-inner">
                 <form-image
+                  :refreshCroppa="refreshCroppa"
+                  type="logo"
                   v-model="form.logo"
                   :initial-image="getSalonImg('logo')"
                   :no-image="!hasLogo"
@@ -25,8 +27,12 @@
               </div>
             </div>
             <div class="avatar_edit col-auto mb-2 cover" id="anchor-cover">
+
               <div class="avatar_edit-inner">
                 <form-image
+                  :refreshCroppa="refreshCroppa"
+                  @removeImage="removeImage"
+                  type="cover"
                   v-model="form.cover"
                   :initial-image="getSalonImg('cover')"
                   :no-image="!hasCover"
@@ -203,6 +209,7 @@
 
       return {
         showPasswordModal: false,
+        refreshCroppa:0,
         pending: false,
         pwdForm: {
           old: '',
@@ -226,7 +233,9 @@
           cover: null,
           facebook: salon.facebook || '',
           instagram: salon.instagram || '',
-          short_number: salon.short_number || ''
+          short_number: salon.short_number || '',
+          remove_cover: false,
+          remove_logo: false,
         },
         files: [],
         hasLogo: !!salon.logo,
@@ -268,7 +277,17 @@
     },
     methods: {
       ...mapActions(['updateMySalon','getMySalon']),
+      async removeImage(type) {
+        if(type === 'cover') {
+          this.$set(this.form,'remove_cover', true);
 
+        }
+        else {
+          this.$set(this.form,'remove_logo', true);
+
+        }
+        this.refreshCroppa++;
+      },
       async submit() {
         if (this.pending) return;
         this.clearErrors();
@@ -364,6 +383,7 @@
       },
 
       getSalonImg(key) {
+        if(this.form[`remove_${key}`]) return `/img/salon-${key === 'cover' ? `${key}-${this.mySalon.type_id}` : key}-${this.colorMode}.jpg`
         return this.mySalon[key] ? this.$withBaseUrl(this.mySalon[key]) : `/img/salon-${key === 'cover' ? `${key}-${this.mySalon.type_id}` : key}-${this.colorMode}.jpg`;
       },
       getDayOption(i) {

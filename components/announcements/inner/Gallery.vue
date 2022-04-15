@@ -58,7 +58,7 @@
               v-if="showInteriorCondition"
               @click="showInterior = !showInterior"
               class="badge from-border cursor-pointer" style="pointer-events: all;" >
-              {{ showInterior ? 'Exterior': 'Interior' }}
+              {{ showInterior ? $t('exterior'): $t('interior') }}
             </span>
             <span class="d-flex">
               <span

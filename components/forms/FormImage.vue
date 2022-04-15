@@ -2,6 +2,7 @@
   <div :class="['form-image', {'position-relative': autoSizing}]">
     <croppa :class="['croppa-image', {'auto-size': autoSizing, 'prevent-move': noImage}]"
       v-if="croppable"
+      :key="refreshCroppa"
       v-model="croppaValue" placeholder=""
       :initial-image="initialImage"
       :accept="'image/*'"
@@ -18,7 +19,11 @@
       :disable-scroll-to-zoom="noImage"
       @new-image="$emit('new-image')"
     >
+      <span @click="removeCover" v-if="showRemoveButton && $store.getters.mySalon.cover" class="drop-file" style="right: 40px;font-size: 13px;">
+            <icon name="garbage"/>
+      </span>
       <span class="drop-file" @click="croppaValue.chooseFile()">
+
         <!-- <icon name="camera" /> -->
         <inline-svg src="/icons/camera.svg" :height="14" />
       </span>
@@ -27,8 +32,9 @@
       <input class="sr-only" type="file" accept="image/*" @change="filesDrop"/>
       <loader v-if="preview === '' && !initialImage" />
       <img :src="preview || initialImage" alt="" v-else />
+
       <span class="drop-file">
-        <!-- <icon name="camera" /> -->
+
         <inline-svg src="/icons/camera.svg" :height="14" />
       </span>
     </template>
@@ -40,7 +46,9 @@ import { ImageResizeMixin } from '~/mixins/img-resize';
 
 export default {
   props: {
+    refreshCroppa: 0,
     value: {},
+    type:"",
     initialImage: {},
     autoSizing: Boolean,
     croppable: Boolean,
@@ -51,7 +59,8 @@ export default {
   mixins: [ImageResizeMixin],
   data() {
     return {
-      preview: ''
+      preview: '',
+      showRemoveButton: true,
     }
   },
   computed: {
@@ -65,6 +74,12 @@ export default {
     }
   },
   methods: {
+    removeCover() {
+      if(confirm(this.$t('are_you_sure'))) {
+        this.showRemoveButton = false;
+        this.$emit('removeImage',this.type);
+      }
+    },
     async filesDrop(e) {
       e.preventDefault();
 

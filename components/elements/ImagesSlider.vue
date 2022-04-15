@@ -94,17 +94,16 @@
                     </div>
                     <div
                       class="position-relative"
-                      style="width: 100%;"
+                      style="width: 100%;overflow: hidden;"
                       v-else-if="
                         slides.types && slides.types[index] === 'custom'
                       "
                     >
                       <no-ssr>
-                        <div class="interior-switcher" :style="`${showInterior ? 'top:53px;' : 'top:10px;'}`">
-                           <span
-                             @click="showInterior = !showInterior"
+                        <div v-if="announcement.interior_360" class="interior-switcher" style="top: 20px;">
+                           <span @click="showInterior = !showInterior"
                              class="interior-btn from-border cursor-pointer" style="pointer-events: all" >
-                                {{ showInterior ? 'Exterior': 'Interior' }}
+                                {{ showInterior ? $t('exterior'): $t('interior') }}
                               </span>
                         </div>
                         <interior360-viewer :url="announcement.interior_360" v-if="showInterior"/>

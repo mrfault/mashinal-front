@@ -2184,12 +2184,12 @@ export default {
   "own_vehicles": "Şəxsi NV",
   "add_with": "ilə əlavə et",
   "transferable_vehicles":"Mülkiyyətdə olanlar",
-
-
   "must_pay": "ödəniş etməlisiniz",
   "add_car_with_asan_login":"Asan Login ilə avtomobil əlavə et",
   "newly_added": "Yeni əlavə olunanlar",
   "exist_in_garage":"Qarajda olanlar",
   "is_loading":"Yüklənir",
-  "create_salon":"Salonlara keç"
+  "create_salon":"Salonlara keç",
+  "interior": "İnteryer",
+  "exterior": "Eksteryer"
 }

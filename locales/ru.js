@@ -2186,6 +2186,8 @@ export default {
    "newly_added":"Не добавленные автомобили",
   "is_loading":"Загружается",
   "create_salon":"Перейти в салоны",
-  "your_name":"Ваше имя"
+  "your_name":"Ваше имя",
+  "interior": "Интерьер",
+  "exterior": "Экстерьер"
 
 }
