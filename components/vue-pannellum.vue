@@ -275,9 +275,6 @@ export default {
 .pnlm-ui .pnlm-orientation-button {
   display: none !important;
 }
-</style>
-
-<style scoped>
 .vue-pannellum {
   position: relative;
 }

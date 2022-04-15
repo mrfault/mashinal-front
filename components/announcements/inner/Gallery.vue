@@ -481,15 +481,14 @@ export default {
   },
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 @media only screen and (min-width: 1024px) {
   .swiper-wrapper {
     height: 493px;
   }
 }
 .fslightbox-source {
-  width: unset !important;
-  height: unset !important;
+  width: 100vh;
 }
 
 .swiper-slide {
