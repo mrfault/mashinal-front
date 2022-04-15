@@ -229,7 +229,9 @@ export default {
 </script>
 
 <style lang="scss">
-
+.pnlm-container * {
+  box-sizing: border-box;
+}
 .switch-pnlm {
   position: absolute;
   top: 10px;
