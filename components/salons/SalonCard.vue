@@ -12,7 +12,7 @@
             <span v-html="getConcatPhones(salon.phones, 1, false)"></span>
           </span>
           <span class="d-inline-flex align-items-center">
-            <icon name="speaker" />
+            <inline-svg class="salon-car-icon" src="/images/car_icon.svg"  />
             <span>{{ getTotalCount(salon) }}</span>
           </span>
         </div>
@@ -31,3 +31,17 @@ export default {
   mixins: [SalonsMixin]
 }
 </script>
+<style lang="scss">
+.salon-car-icon {
+  margin-right: 5px;
+  width: 14px;
+
+}
+.dark-mode {
+  .salon-car-icon {
+   path {
+     fill: white;
+   }
+  }
+}
+</style>
