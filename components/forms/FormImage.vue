@@ -40,6 +40,27 @@
         <inline-svg src="/icons/camera.svg" :height="14" />
       </span>
     </template>
+    <modal-popup
+      :toggle="showConfirm"
+      :title="$t('remove_image')"
+      @close="showConfirm = false"
+    >
+      <p>{{ $t('are_you_sure') }}</p><hr />
+      <form class="form" @submit.prevent="removeImage" novalidate>
+        <div class="row">
+          <div class="col">
+            <button type="button" class="btn btn--primary-outline full-width" @click="showConfirm = false">
+              {{ $t('no') }}
+            </button>
+          </div>
+          <div class="col">
+            <button type="submit" :class="['btn btn--green full-width', { pending }]">
+              {{ $t('yes') }}
+            </button>
+          </div>
+        </div>
+      </form>
+    </modal-popup>
   </div>
 </template>
 
@@ -63,6 +84,7 @@ export default {
     return {
       preview: '',
       showRemoveButton: true,
+      showConfirm: false,
     }
   },
   computed: {
@@ -77,10 +99,12 @@ export default {
   },
   methods: {
     removeCover() {
-      if(confirm(this.$t('are_you_sure'))) {
-        this.showRemoveButton = false;
-        this.$emit('removeImage',this.type);
-      }
+        this.showConfirm = true;
+    },
+    removeImage() {
+      this.showRemoveButton = false;
+      this.$emit('removeImage',this.type);
+      this.showConfirm = false;
     },
     async filesDrop(e) {
       e.preventDefault();

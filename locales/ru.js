@@ -2188,6 +2188,7 @@ export default {
   "create_salon":"Перейти в салоны",
   "your_name":"Ваше имя",
   "interior": "Интерьер",
-  "exterior": "Экстерьер"
+  "exterior": "Экстерьер",
+  "remove_image":"Удаление фотографии"
 
 }

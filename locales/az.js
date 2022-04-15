@@ -2191,5 +2191,6 @@ export default {
   "is_loading":"Yüklənir",
   "create_salon":"Salonlara keç",
   "interior": "İnteryer",
-  "exterior": "Eksteryer"
+  "exterior": "Eksteryer",
+  "remove_image":"Şəkil silinməsi"
 }
