@@ -1,6 +1,6 @@
 <template>
   <div
-    style="background: none;width:100vh;"
+    style="background: none;width:100%;"
     class="vue-pannellum"
     @mouseup="onMouseUp"
     @touchmove="onTouchMove"
