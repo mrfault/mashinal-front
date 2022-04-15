@@ -6,7 +6,8 @@
     @touchmove="onTouchMove"
     @touchend="onTouchEnd"
   >
-    <div class="info">{{ info }}</div>
+
+    <div v-if="onFsLightBox" class="switch-pnlm"><button @click="$nuxt.$emit('switchInterior')" class="btn btn--green" >{{ $t('exterior')}}</button></div>
     <div class="default-slot">
       <slot/>
     </div>
@@ -21,6 +22,7 @@ import _debounce from 'lodash.debounce'
 
 export default {
   props: {
+    onFsLightBox:{ type: Boolean, default:false },
     debug: {type: Boolean, default: false},
     src: {type: [String, Object], required: true},
     preview: {type: String, default: ''},
@@ -227,6 +229,15 @@ export default {
 </script>
 
 <style lang="scss">
+
+.switch-pnlm {
+  position: absolute;
+  top: 10px;
+  z-index: 1234;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
 .pnlm-ui .pnlm-about-msg {
   display: none !important;
 }

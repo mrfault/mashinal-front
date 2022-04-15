@@ -1,7 +1,7 @@
 <template>
   <div>
     <client-only>
-      <vue-pannellum :src="url" style="height: 100vh;"/>
+      <vue-pannellum :on-fs-light-box="onFsLightBox" :src="url" style="height: 100vh;"/>
     </client-only>
   </div>
 </template>
@@ -10,7 +10,13 @@
 const VuePannellum = () => import('~/components/vue-pannellum')
 
 export default {
-  props:['url'],
+  props:{
+    url:{},
+    onFsLightBox:{
+      type: Boolean,
+      default: false,
+    }
+  },
   components: {
     VuePannellum
   },

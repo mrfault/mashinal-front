@@ -12,6 +12,7 @@
         <h3 v-if="!fromFsPopup" style="position: absolute; top: 30%;; color: #081a3e;">{{ $t('panorama_loading') }}</h3>
         <loader><div class="percentage-center">{{ percentage }}%</div></loader>
       </div>
+      <div v-if="onFsLightBox" class="switch-pnlm"><button @click="$nuxt.$emit('switchInterior')" class="btn btn--green" >{{ $t('interior')}}</button></div>
       <!--/ Percentage Loader -->
 
       <!-- 360 viewport -->
@@ -63,6 +64,10 @@ const uuidv1 = require('uuid/v1');
 export default {
   name: 'I360Viewer',
   props: {
+    onFsLightBox: {
+      type: Boolean,
+      default:false,
+    },
     showInterior:{
       type:Boolean,
       default:false,

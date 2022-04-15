@@ -165,9 +165,6 @@
                         :className="'white-outline'"
                       />
                     </div>
-                    <div class="col mb-2">
-                      <button class="btn btn--green" @click="switchInterior">{{ $t(!showInterior ? 'interior' : 'exterior')}}</button>
-                    </div>
                     <div class="col">
                       <call-button :phone="announcement.user.phone" />
                     </div>
@@ -359,6 +356,7 @@ export default {
           {
             component: this.showInterior ? 'interior360-viewer' : 'vue-three-sixty',
             props: {
+              onFsLightBox: true,
               url: this.announcement.interior_360,
               files: this.announcement.images_360,
               amount: this.announcement.images_360.length,
@@ -423,7 +421,11 @@ export default {
   },
   mounted() {
     let swiperTouchStartX
+
     this.$nextTick(() => {
+      this.$nuxt.$on('switchInterior',() => {
+        this.switchInterior();
+      })
       if (this.showSlider) {
         setTimeout(() => {
           this.gallerySwiper.init()
