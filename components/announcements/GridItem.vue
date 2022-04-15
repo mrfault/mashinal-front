@@ -189,7 +189,7 @@
           <span class="item-details__year" v-if="getTextLine">
             <span v-if="!announcement.category">{{ getOdometer }}</span>
           </span>
-          <span class="item-details__options" v-show="getOdometer !== null">
+          <span class="item-details__options" v-show="getOdometer">
             <icon
               name="percent"
               v-tooltip="$t('credit_possible')"
