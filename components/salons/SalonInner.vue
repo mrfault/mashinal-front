@@ -184,7 +184,7 @@ export default {
     },
     scrollFunc() {
       setTimeout(() => {
-        this.$scrollTo('.profile_info')
+        this.$scrollTo('.profile_info',1000);
         // const el = this.$refs.scrollToMe
         // if (el) {
         //   el.scrollIntoView({ behavior: 'smooth', block: 'nearest' })

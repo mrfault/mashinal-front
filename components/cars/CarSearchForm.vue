@@ -493,7 +493,7 @@
               />
             </div>
           </template>
-          <div class="col-6 col-lg-2 mb-2 mb-lg-3" v-if="!isMobileBreakpoint">
+          <div class="col-6 col-lg-2 mb-2 mb-lg-3" v-if="!isMobileBreakpoint && !advanced">
             <form-checkbox
               :label="$t('with_video')"
               v-model="form.with_video"

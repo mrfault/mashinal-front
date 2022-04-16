@@ -483,7 +483,7 @@ export default {
 </script>
 <style lang="scss">
 @media only screen and (min-width: 1024px) {
-  .swiper-wrapper {
+ .inner-gallery .swiper-wrapper {
     height: 493px;
   }
 }
@@ -491,7 +491,7 @@ export default {
   width: 100vh;
 }
 
-.swiper-slide {
+.inner-gallery .swiper-slide {
   background-color: #d6e4f8;
   display: flex;
   align-items: center;
