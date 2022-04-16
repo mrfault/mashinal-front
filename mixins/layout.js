@@ -1,8 +1,8 @@
-import { mapGetters, mapActions } from 'vuex'
+import {mapActions, mapGetters} from 'vuex'
 
-import { ColorModeMixin } from '~/mixins/color-mode'
-import { SocketMixin } from '~/mixins/socket'
-import { MessagesMixin } from '~/mixins/messages'
+import {ColorModeMixin} from '~/mixins/color-mode'
+import {SocketMixin} from '~/mixins/socket'
+import {MessagesMixin} from '~/mixins/messages'
 
 export const LayoutMixin = {
   mixins: [ColorModeMixin, SocketMixin, MessagesMixin],
@@ -12,6 +12,7 @@ export const LayoutMixin = {
       showLoginPopup: false,
       loginActionKey: '',
       loginInitialForm: {},
+      scrollTimeout:null,
     }
   },
   computed: {
@@ -22,6 +23,11 @@ export const LayoutMixin = {
       'hideFooter',
       'notifications',
     ]),
+  },
+  watch:{
+    $route() {
+      this.handleHideMenu();
+    }
   },
   methods: {
     ...mapActions([
@@ -57,24 +63,40 @@ export const LayoutMixin = {
       document.documentElement.style.setProperty('--vh', `${vh}px`)
       this.vhVariableSet = true
     },
+
+    handleHideMenu() {
+      let cordY = window.scrollY;
+      let headerElDesktopWhite = document.querySelector('.navbar-white')
+      if (cordY > 350) {
+
+        if (cordY < 1000) {
+          headerElDesktopWhite.classList.add('z-index-1')
+          headerElDesktopWhite.style.top = `-${cordY - 350}px`
+          clearTimeout(this.scrollTimeout);
+        }
+
+      } else {
+        headerElDesktopWhite.style.top = "0px";
+        clearTimeout(this.scrollTimeout);
+        this.scrollTimeout = setTimeout(() => headerElDesktopWhite.classList.remove('z-index-1'),400);
+      }
+    },
     handleScroll() {
-      console.log('scrolled')
+
       let scrolled = window.scrollY
+      this.handleHideMenu()
       let layout = document.querySelector('.layout')
       // header
-      let headerEl = document.querySelector('.header-menu')
-      let menuHeaderEl = document.querySelector('.menu-header')
+
       let promotionEl = document.querySelector('.top-promotion-row')
-      let headerElDesktopWhite = document.querySelector('.navbar-white')
+
       promotionEl?.classList[window.scrollY > 0 ? 'add' : 'remove']('d-none')
-      setTimeout(() => {
-        headerElDesktopWhite?.classList[window.scrollY > 0 ? 'add' : 'remove'](
-          'd-none',
-        )
-      }, 2000)
-      ;[headerEl, menuHeaderEl].map((el) => {
-        el?.classList[window.scrollY > 0 ? 'add' : 'remove']('has-shadow')
-      })
+      // setTimeout(() => {
+      //   headerElDesktopWhite?.classList[window.scrollY > 0 ? 'add' : 'remove'](
+      //     'd-none',
+      //   )
+      // }, 2000)
+
       // header white desktop
       // footer
       let footerEl = document.querySelector('.page-footer')
@@ -86,7 +108,7 @@ export const LayoutMixin = {
             document.documentElement.clientHeight === window.innerHeight
           layout.classList[
             (scrolled > 0 || noScroll) && reachedFooter ? 'add' : 'remove'
-          ]('reached-footer')
+            ]('reached-footer')
           layout.classList[scrolled > 0 ? 'add' : 'remove']('scrolled')
         })
       }
@@ -97,7 +119,7 @@ export const LayoutMixin = {
         this.connectEcho().listen('SendMessage', this.addNewMessage)
         this.connectEcho('global-channel.' + this.$auth.user.id).listen(
           'GlobalFrontEndEvent',
-          ({ data }) => {
+          ({data}) => {
             data.map((value) => {
               this.$store.dispatch(value)
             })
@@ -146,6 +168,7 @@ export const LayoutMixin = {
   },
   mounted() {
     this.$nextTick(() => {
+      this.handleHideMenu();
       this.configSocket()
       if (this.loggedIn) this.toggleEchoListening(true)
 

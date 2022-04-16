@@ -102,7 +102,7 @@
         </div>
       </div>
       <!-- ------------------ -->
-      <span class="test" ref="scrollToMe"></span>
+
       <template v-if="salonSingle.gallery_urls.length">
         <gallery
           where="salon"
@@ -184,11 +184,12 @@ export default {
     },
     scrollFunc() {
       setTimeout(() => {
-        const el = this.$refs.scrollToMe
-        if (el) {
-          el.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
-        }
-      }, 1000)
+        this.$scrollTo('.profile_info')
+        // const el = this.$refs.scrollToMe
+        // if (el) {
+        //   el.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+        // }
+      }, 1)
     },
   },
   mounted() {

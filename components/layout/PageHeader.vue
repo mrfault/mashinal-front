@@ -160,9 +160,8 @@
         </nav>
       </div>
       <!-- navbar white -->
-      <Transition name="slide-fade">
         <div
-          class="navbar navbar-white"
+          class="navbar navbar-white position-relative"
           :class="{ 'no-border-radius': hoverMenu }"
         >
           <div class="container">
@@ -259,7 +258,6 @@
             </nav>
           </div>
         </div>
-      </Transition>
     </header>
   </div>
 </template>
