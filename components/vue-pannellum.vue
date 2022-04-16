@@ -279,15 +279,6 @@ export default {
   position: relative;
 }
 
-.info {
-  position: absolute;
-  background-color: hsla(0, 0%, 100%, 0.5);
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 2;
-}
-
 .default-slot {
   position: absolute;
   left: 0;

@@ -470,7 +470,7 @@
                 input-name="in_garanty"
               />
             </div>
-            <div class="col-6 col-lg-2 mb-2 mb-lg-3">
+            <div class="col-6 col-lg-2 mb-2 mb-lg-3" v-if="!isMobileBreakpoint">
               <form-checkbox
                 :label="$t('with_video')"
                 v-model="form.with_video"
