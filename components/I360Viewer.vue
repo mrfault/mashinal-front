@@ -12,7 +12,9 @@
         <h3 v-if="!fromFsPopup" style="position: absolute; top: 30%;; color: #081a3e;">{{ $t('panorama_loading') }}</h3>
         <loader><div class="percentage-center">{{ percentage }}%</div></loader>
       </div>
-      <div v-if="onFsLightBox  && announcement.interior_360" class="switch-pnlm"><button @click="$nuxt.$emit('switchInterior')" class="btn btn--green" >{{ $t('interior')}}</button></div>
+      <div v-if="onFsLightBox  && announcement.interior_360" class="switch-pnlm">
+        <button @click="$nuxt.$emit('switchInterior')" class="btn " style="background-color: #246EB2;color:white;" >{{ $t('interior')}}</button>
+      </div>
       <!--/ Percentage Loader -->
 
       <!-- 360 viewport -->

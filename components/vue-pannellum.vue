@@ -1,13 +1,11 @@
 <template>
   <div
-    style="background: none;width:100%;"
+    style="background: none;width:100%;height: 100vh;"
     class="vue-pannellum"
     @mouseup="onMouseUp"
     @touchmove="onTouchMove"
     @touchend="onTouchEnd"
   >
-
-    <div v-if="onFsLightBox" class="switch-pnlm"><button @click="$nuxt.$emit('switchInterior')" class="btn btn--green" >{{ $t('exterior')}}</button></div>
     <div class="default-slot">
       <slot/>
     </div>
@@ -22,7 +20,7 @@ import _debounce from 'lodash.debounce'
 
 export default {
   props: {
-    onFsLightBox:{ type: Boolean, default:false },
+    onFsLightBox: {type: Boolean, default: false},
     debug: {type: Boolean, default: false},
     src: {type: [String, Object], required: true},
     preview: {type: String, default: ''},
@@ -232,20 +230,15 @@ export default {
 .pnlm-container * {
   box-sizing: border-box;
 }
-.switch-pnlm {
-  position: absolute;
-  top: 10px;
-  z-index: 1234;
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
+
 .pnlm-ui .pnlm-about-msg {
   display: none !important;
 }
+
 .pnlm-lmsg {
   display: none;
 }
+
 .pnlm-load-box {
   position: absolute;
   top: 50%;
@@ -253,28 +246,32 @@ export default {
   width: 170px;
   height: 80px;
   margin: -75px 0 0 -100px;
-  background-color: rgba(0,0,0,0.7);
+  background-color: rgba(0, 0, 0, 0.7);
   border-radius: 3px;
   text-align: center;
   font-size: 20px;
   display: none;
   color: #fff;
 }
+
 .pnlm-lbar {
   width: 100px;
   margin: 0 auto;
   border: #fff 1px solid;
   height: 6px;
 }
+
 .pnlm-load-box {
   p {
     font-size: 13px;
     margin: 17px 0;
   }
 }
+
 .pnlm-ui .pnlm-orientation-button {
   display: none !important;
 }
+
 .vue-pannellum {
   position: relative;
 }
