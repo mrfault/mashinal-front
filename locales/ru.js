@@ -2189,6 +2189,6 @@ export default {
   "your_name":"Ваше имя",
   "interior": "Интерьер",
   "exterior": "Экстерьер",
-  "remove_image":"Удаление фотографии"
+  "remove_image":"Удаление фотографии",
 
 }
