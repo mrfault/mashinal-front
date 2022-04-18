@@ -1,7 +1,7 @@
 <template>
   <div class="pages-dashboard pt-2 pt-lg-5">
     <div class="container d-flex flex-wrap">
-      <breadcrumbs :crumbs="crumbs" />
+      <breadcrumbs :crumbs="crumbs"/>
       <template v-for="(item, index) in garageServices">
         <div class="col-12 col-lg-4 mb-2 mb-xl-3" :key="index" v-if="item.isAvailable">
           <e-service-card :item="item"></e-service-card>
@@ -13,20 +13,29 @@
 
 <script>
 import EServiceCard from '~/components/eservices/EServiceCard.vue'
+
 export default {
-  components: { EServiceCard },
+  components: {EServiceCard},
   head() {
     return this.$headMeta({
       title: this.$t('garage_services'),
     })
   },
+  async asyncData({$axios}) {
+    const data = await $axios.$get('/garage-positions')
+
+    return {
+      positions: data
+    }
+  },
   computed: {
     crumbs() {
-      return [{ name: this.$t('garage_services') }]
+      return [{name: this.$t('garage_services')}]
     },
-    garageServices() {
+    garageServiceList() {
       return [
         {
+
           title: this.$t('attorney'),
           description: null,
           value: 0,
@@ -39,6 +48,7 @@ export default {
           checkIfSafari: true,
         },
         {
+          type: 1,
           title: this.$t('check_points'),
           description: null,
           value: null,
@@ -49,6 +59,7 @@ export default {
           isAvailable: true,
         },
         {
+          type: 2,
           title: this.$t('my_announces'),
           description: null,
           value: null,
@@ -61,6 +72,7 @@ export default {
           actionLink: '/sell',
         },
         {
+          type: 3,
           title: this.$t('my_account'),
           description: this.$auth.user.full_name,
           value: null,
@@ -71,6 +83,7 @@ export default {
           isAvailable: true,
         },
         {
+          type: 4,
           title: this.$t('fines'),
           description: null,
           value: null,
@@ -81,6 +94,7 @@ export default {
           isAvailable: true,
         },
         {
+          type: 5,
           title: this.$t('balans'),
           description: this.$t('wallet_balance') + ':',
           value: this.$auth.user.balance + ' ALManat',
@@ -94,6 +108,7 @@ export default {
           hasActionMethod: true,
         },
         {
+          type: 6,
           title: this.$t('my_searches'),
           description: null,
           value: null,
@@ -104,6 +119,7 @@ export default {
           isAvailable: true,
         },
         {
+          type: 7,
           title: this.$t('helper_search'),
           description: null,
           value: null,
@@ -144,6 +160,7 @@ export default {
           isAvailable: false,
         },
         {
+          type: 8,
           title: `${this.$t('dashboard_salon')}`,
           description: null,
           value: null,
@@ -154,6 +171,7 @@ export default {
           isAvailable: !!this.$auth.user.autosalon,
         },
         {
+          type: 9,
           title: this.$t('dashboard_shop'),
           description: null,
           value: null,
@@ -164,6 +182,7 @@ export default {
           isAvailable: !!this.$auth.user.part_salon,
         },
         {
+          type: 11,
           title: this.$t('notifications'),
           description: null,
           value: null,
@@ -174,6 +193,7 @@ export default {
           isAvailable: this.isMobileBreakpoint,
         },
         {
+          type: 12,
           title: this.$t('policy'),
           description: null,
           value: null,
@@ -184,6 +204,7 @@ export default {
           isAvailable: this.isMobileBreakpoint,
         },
         {
+          type: 10,
           title: this.$t('create_eservice_and_shop'),
           description: null,
           value: null,
@@ -194,6 +215,11 @@ export default {
           isAvailable: true,
         },
       ]
+    },
+    garageServices() {
+      return this.positions.map(item => {
+        return this.garageServiceList.find(g_item => g_item.type === item.type)
+      })
     },
   },
   nuxtI18n: {
