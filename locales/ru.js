@@ -2190,5 +2190,6 @@ export default {
   "interior": "Интерьер",
   "exterior": "Экстерьер",
   "remove_image":"Удаление фотографии",
+  "Loading":"Загружается...",
 
 }
