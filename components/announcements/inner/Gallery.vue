@@ -487,6 +487,7 @@ export default {
     height: 493px;
   }
 }
+
 .fslightbox-source {
   width: 100vh;
 }
