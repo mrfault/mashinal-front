@@ -13,6 +13,7 @@ export const LayoutMixin = {
       loginActionKey: '',
       loginInitialForm: {},
       scrollTimeout:null,
+      latestScroll:0,
     }
   },
   computed: {
@@ -63,23 +64,30 @@ export const LayoutMixin = {
       document.documentElement.style.setProperty('--vh', `${vh}px`)
       this.vhVariableSet = true
     },
-
+    showMenu(el) {
+      el.style.top = "0px";
+      clearTimeout(this.scrollTimeout);
+      this.scrollTimeout = setTimeout(() => el.classList.remove('z-index-1'),400);
+    },
+    hideMenu(el) {
+      el.classList.add('z-index-1')
+      el.style.top = '-350px'
+      clearTimeout(this.scrollTimeout);
+    },
     handleHideMenu() {
       let cordY = window.scrollY;
       let headerElDesktopWhite = document.querySelector('.navbar-white')
       if (cordY > 350) {
-
-        if (cordY < 1000) {
-          headerElDesktopWhite.classList.add('z-index-1')
-          headerElDesktopWhite.style.top = `-${cordY - 350}px`
-          clearTimeout(this.scrollTimeout);
-        }
+        if(this.latestScroll > cordY)
+          this.showMenu(headerElDesktopWhite)
+        else
+          this.hideMenu(headerElDesktopWhite)
 
       } else {
-        headerElDesktopWhite.style.top = "0px";
-        clearTimeout(this.scrollTimeout);
-        this.scrollTimeout = setTimeout(() => headerElDesktopWhite.classList.remove('z-index-1'),400);
+       this.showMenu(headerElDesktopWhite)
       }
+
+      this.latestScroll = cordY;
     },
     handleScroll() {
 
