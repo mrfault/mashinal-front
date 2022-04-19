@@ -39,8 +39,8 @@ a:hover .tiktok {
         switch(social) {
           case 'instagram': return 'https://instagram.com/mashin.al';
           case 'facebook': return 'https://facebook.com/mashinal';
-          case 'telegram': return '';
-          case 'tiktok': return '';
+          case 'telegram': return 'https://t.me/mashin_al';
+          case 'tiktok': return 'https://vm.tiktok.com/ZSdSgqRuw/';
         }
       },
       getPublishLink(social) {
