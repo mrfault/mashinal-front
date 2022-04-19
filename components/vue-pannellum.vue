@@ -245,7 +245,8 @@ export default {
   left: 50%;
   width: 170px;
   height: 80px;
-  margin: -75px 0 0 -100px;
+  margin: auto;
+  transform: translate(-50%, -50%);
   background-color: rgba(0, 0, 0, 0.7);
   border-radius: 3px;
   text-align: center;

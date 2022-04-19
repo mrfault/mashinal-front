@@ -16,22 +16,24 @@
       return {
         link: encodeURI(`https://mashin.al${this.path || this.$route.path}`),
         socials: {
-          contact: ['facebook', 'instagram'],
+          contact: ['facebook', 'instagram','telegram','tiktok'],
           publish: ['facebook', 'whatsapp','telegram', 'twitter'],
         }
       }
     },
     methods: {
       getLink(social) {
-        if (this.type === 'contact') 
+        if (this.type === 'contact')
           return this.getContactLink(social);
-        else if (this.type === 'publish') 
+        else if (this.type === 'publish')
           return this.getPublishLink(social);
       },
       getContactLink(social) {
         switch(social) {
           case 'instagram': return 'https://instagram.com/mashin.al';
           case 'facebook': return 'https://facebook.com/mashinal';
+          case 'telegram': return '';
+          case 'tiktok': return '';
         }
       },
       getPublishLink(social) {

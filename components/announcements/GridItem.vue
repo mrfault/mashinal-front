@@ -168,6 +168,9 @@
         <div class="item-details--infos">
           <span class="item-details__year" v-if="getTextLine">
             <span>{{ getTextLine }}</span>
+            <span v-if="getTextLine  && isMobileBreakpoint">
+              <span v-if="!announcement.category">, {{ getOdometer }}</span>
+            </span>
           </span>
           <span class="item-details__options" v-show="getOdometer == null">
             <icon
@@ -186,8 +189,11 @@
          -->
         <!-- 2 -->
         <div class="item-details--infos pt-1">
-          <span class="item-details__year" v-if="getTextLine">
+          <span class="item-details__year" v-if="getTextLine && !isMobileBreakpoint">
             <span v-if="!announcement.category">{{ getOdometer }}</span>
+          </span>
+          <span class="item-details__year" v-if="isMobileBreakpoint">
+            <span >{{ announcement.humanize_created_at }}</span>
           </span>
           <span class="item-details__options" v-show="getOdometer">
             <icon
