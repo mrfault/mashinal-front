@@ -1,11 +1,18 @@
 <template>
   <div class="socials" @click.stop>
     <a v-for="(social, index) in socials[type]" :key="index" :href="getLink(social)" rel="noopener" target="_blank">
-      <icon :name="social" />
+      <icon v-if="social!='tiktok'" :name="social" />
+      <inline-svg class="tiktok" src="/icons/tiktok.svg" v-else />
     </a>
   </div>
 </template>
-
+<style lang="scss">
+a:hover .tiktok {
+  path {
+    fill: #1C1C1E;
+  }
+}
+</style>
 <script>
   export default {
     props: {
