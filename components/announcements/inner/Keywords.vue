@@ -1,5 +1,5 @@
 <template>
-  <div class="keywords" v-if="keywords.length">
+  <div class="keywords mt-2" v-if="keywords.length">
     <h3 v-if="title">{{ title }}</h3>
     <div class="keywords__list">
       <div
