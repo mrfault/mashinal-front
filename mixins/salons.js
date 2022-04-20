@@ -73,15 +73,22 @@ export const SalonsMixin = {
         else dayRows[++lastKey] = [day]
       }
       let strDays = this.$t('days-short')
+      let everyDay = this.$t('everyday')
+      let everyDayEnabled = false;
+
+      if(dayRows.length && dayRows[0].length === 7) {
+        everyDayEnabled = true;
+      }
       return (
         '<table>' +
         dayRows
           .map((row) =>
             row.length === 1
               ? `<tr><td>${strDays[row[0] - 1]}</td><td>${strHours}</td></tr>`
-              : `<tr><td>${strDays[row[0] - 1]} - ${
-                  strDays[row[row.length - 1] - 1]
-                }</td><td>${strHours}</td></tr>`,
+              : `<tr>
+                    <td>${everyDayEnabled ? everyDay : (strDays[row[0] - 1]+' - '+strDays[row[row.length - 1] - 1])} </td>
+                    <td>${strHours}</td>
+                </tr>`,
           )
           .join('') +
         '</table>'

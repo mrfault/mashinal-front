@@ -563,6 +563,7 @@ export default {
     "Ş.",
     "B."
   ],
+  "everyday":"Hər gün",
   "dealer": "Diler",
   "dealer_all_announcements": "Bütün elanlar",
   "dealer_announcements": "Məhsullar",

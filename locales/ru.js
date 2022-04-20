@@ -559,6 +559,7 @@ export default {
     "Сб",
     "Вс"
   ],
+  "everyday":"Ежедневно",
   "dealer": "Дилер",
   "dealer_all_announcements": "Все объявления",
   "dealer_announcements": "Товары",
