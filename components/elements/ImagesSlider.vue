@@ -101,7 +101,7 @@
                     >
                       <no-ssr>
                         <div v-if="announcement.interior_360" class="interior-switcher" >
-                          <form-switch class="interior-exterior-switcher" auto-width style="width:160px;pointer-events: all;" v-model="showInterior" :options="interiorOptions"/>
+                          <form-switch class="interior-exterior-switcher" auto-width style="width:200px;pointer-events: all;" v-model="showInterior" :options="interiorOptions"/>
                         </div>
                         <interior360-viewer :url="announcement.interior_360" v-if="showInterior"/>
                         <vue-three-sixty
