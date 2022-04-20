@@ -53,15 +53,9 @@
       <div class="gallery-overlay" v-if="showSlider">
         <div class="gallery-overlay_top d-flex">
           <template v-if="where === 'announcement'">
-            <span
-
-              v-if="showInteriorCondition"
-              @click="showInterior = !showInterior"
-              class="badge from-border cursor-pointer" style="pointer-events: all;" >
-              {{ showInterior ? $t('exterior'): $t('interior') }}
-            </span>
+            <form-switch class="interior-exterior-switcher" v-if="showInteriorCondition" auto-width style="width:160px;pointer-events: all;" v-model="showInterior" :options="interiorOptions"/>
             <span class="d-flex">
-              <span
+                 <span
                 class="badge badge-360"
                 v-if="
                   announcement.images_360 && announcement.images_360.length > 0
@@ -344,6 +338,7 @@ export default {
   },
   computed: {
     ...mapGetters(['announcement']),
+
     showInteriorCondition() {
       return this.currentSlide === 0 &&
         this.announcement.images_360 &&

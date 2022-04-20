@@ -13,7 +13,8 @@
         <loader><div class="percentage-center">{{ percentage }}%</div></loader>
       </div>
       <div v-if="onFsLightBox  && announcement.interior_360" class="switch-pnlm">
-        <button @click="$nuxt.$emit('switchInterior')" class="btn " style="background-color: #246EB2;color:white;" >{{ $t('interior')}}</button>
+        <form-switch class="interior-exterior-switcher" auto-width style="width:160px;pointer-events: all;" v-model="showInteriorSwitcher" :options="interiorOptions"/>
+<!--        <button @click="$nuxt.$emit('switchInterior')" class="btn " style="background-color: #246EB2;color:white;" >{{ $t('interior')}}</button>-->
       </div>
       <!--/ Percentage Loader -->
 
@@ -154,6 +155,7 @@ export default {
   },
   data() {
     return {
+      showInteriorSwitcher: true,
       percentage:0,
       minScale: 0.5,
       maxScale: 4,
@@ -196,6 +198,9 @@ export default {
     ...mapGetters(['announcement'])
   },
   watch: {
+    showInteriorSwitcher() {
+      this.$nuxt.$emit('switchInterior')
+    },
     zooming(value, prev) {
       if (prev < value) this.zoomIn()
       else this.zoomOut()
@@ -877,7 +882,7 @@ export default {
   top: 10px;
   z-index: 1234;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   width: 100%;
 }
 </style>

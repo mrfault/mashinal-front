@@ -1,10 +1,11 @@
 <template>
   <div>
     <div v-if="onFsLightBox" class="switch-pnlm">
-      <button @click="$nuxt.$emit('switchInterior')" class="btn" style="background-color: #246EB2;color:white;" >{{ $t('exterior')}}</button>
+      <form-switch class="interior-exterior-switcher" auto-width style="width:160px;pointer-events: all;"
+                   v-model="showInteriorSwitcher" :options="interiorOptions"/>
     </div>
     <client-only>
-        <vue-pannellum :on-fs-light-box="onFsLightBox" :src="url" />
+      <vue-pannellum :on-fs-light-box="onFsLightBox" :src="url"/>
     </client-only>
   </div>
 </template>
@@ -13,11 +14,21 @@
 const VuePannellum = () => import('~/components/vue-pannellum')
 
 export default {
-  props:{
-    url:{},
-    onFsLightBox:{
+  props: {
+    url: {},
+    onFsLightBox: {
       type: Boolean,
       default: false,
+    }
+  },
+  data() {
+    return {
+      showInteriorSwitcher: false,
+    }
+  },
+  watch:{
+    showInteriorSwitcher() {
+      this.$nuxt.$emit('switchInterior')
     }
   },
   components: {
@@ -31,9 +42,10 @@ export default {
   top: -40px;
   z-index: 1234;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   width: 100%;
 }
+
 .interior-wrapper {
   width: 100%;
   height: 100vh;

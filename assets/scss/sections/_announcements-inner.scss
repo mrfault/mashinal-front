@@ -538,6 +538,7 @@
   }
   .swiper-slide-bg {
     display: flex;
+    box-sizing: border-box;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -546,8 +547,8 @@
     background-size: contain !important;
     background-repeat: no-repeat;
     padding-bottom: 0;
-    height: calc(100vh - 120px);
-    min-height: 630px;
+    height: calc(100vh - 217px);
+    min-height: 491px;
     width: calc(100% - 120px);
     margin-left: 60px;
     img {

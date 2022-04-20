@@ -24,6 +24,7 @@ export const LayoutMixin = {
       'hideFooter',
       'notifications',
     ]),
+
   },
   watch:{
     $route() {

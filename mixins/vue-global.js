@@ -193,7 +193,12 @@ Vue.use({
       },
       computed: {
         ...mapGetters(['loggedIn', 'user', 'colorMode', 'breakpoint', 'pageRef']),
-
+        interiorOptions() {
+          return [
+            { key: true, name: this.$t('exterior') },
+            { key: false, name: this.$t('interior') },
+          ];
+        },
         routeName() {
           return this.getRouteBaseName();
         },

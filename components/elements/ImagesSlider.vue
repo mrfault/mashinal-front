@@ -100,11 +100,8 @@
                       "
                     >
                       <no-ssr>
-                        <div v-if="announcement.interior_360" class="interior-switcher" style="top: 20px;">
-                           <span @click="showInterior = !showInterior"
-                             class="interior-btn from-border cursor-pointer" style="pointer-events: all" >
-                                {{ showInterior ? $t('exterior'): $t('interior') }}
-                              </span>
+                        <div v-if="announcement.interior_360" class="interior-switcher" >
+                          <form-switch class="interior-exterior-switcher" auto-width style="width:160px;pointer-events: all;" v-model="showInterior" :options="interiorOptions"/>
                         </div>
                         <interior360-viewer :url="announcement.interior_360" v-if="showInterior"/>
                         <vue-three-sixty
@@ -310,7 +307,7 @@ export default {
 .interior-switcher {
   position: absolute;
   top: 10px;
-  left: 47px;
+  left: 75px;
   z-index: 11233;
   border-radius: 5px;
   display: flex;
