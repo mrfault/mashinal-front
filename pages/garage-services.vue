@@ -218,7 +218,7 @@ export default {
     },
     garageServices() {
       return this.positions.map(item => {
-        return this.garageServiceList.find(g_item => g_item.type === item.type)
+        return this.garageServiceList.find(g_item => g_item.type === item.type) || {}
       })
     },
   },
