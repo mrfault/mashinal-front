@@ -180,7 +180,7 @@ export default {
         page: this.$route.query.page || 1,
       })
       this.pending = false
-      // this.scrollTo('.announcements-grid')
+      this.scrollTo('.profile_info')
     },
     scrollFunc() {
       setTimeout(() => {
