@@ -35,7 +35,7 @@
                   !isDarkMode ? homePageSlider.overlay_color : '#D0DBF9'
                 };`"
               ></div>
-              <div class="homePage-text-section">
+              <div class="homePage-text-section" :style="!isMobileBreakpoint ?`margin-left: -150px;`:''">
                 <div class="homePage-text-section-title" style="margin-left: -3px;">
                   <!-- <img :src="homePageSlider.icon" /> -->
                   <img
