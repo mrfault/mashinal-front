@@ -484,7 +484,7 @@ export default {
 }
 
 .fslightbox-source {
-  width: 100vh;
+  width: 100vw;
 }
 
 .inner-gallery .swiper-slide {

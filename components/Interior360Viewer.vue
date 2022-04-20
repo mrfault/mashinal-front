@@ -40,7 +40,7 @@ export default {
 .switch-pnlm2 {
   position: absolute;
   top: -40px;
-  left: 160px;
+  left: 0;
   z-index: 1234;
   display: flex;
   justify-content: flex-start;
