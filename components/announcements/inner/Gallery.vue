@@ -488,7 +488,7 @@ export default {
 }
 
 .inner-gallery .swiper-slide {
-  background-color: #d6e4f8;
+  background-color: #fff;
   display: flex;
   align-items: center;
 }
