@@ -155,7 +155,7 @@ export default {
   },
   data() {
     return {
-      showInteriorSwitcher: true,
+      showInteriorSwitcher: false,
       percentage:0,
       minScale: 0.5,
       maxScale: 4,
@@ -879,7 +879,7 @@ export default {
 }
 .switch-pnlm {
   position: absolute;
-  top: 10px;
+  top: -40px;
   z-index: 1234;
   display: flex;
   justify-content: flex-start;

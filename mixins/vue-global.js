@@ -195,8 +195,8 @@ Vue.use({
         ...mapGetters(['loggedIn', 'user', 'colorMode', 'breakpoint', 'pageRef']),
         interiorOptions() {
           return [
-            { key: true, name: this.$t('exterior') },
-            { key: false, name: this.$t('interior') },
+            { key: false, name: this.$t('exterior') },
+            { key: true, name: this.$t('interior') },
           ];
         },
         routeName() {

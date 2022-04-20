@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="onFsLightBox" class="switch-pnlm">
+    <div v-if="onFsLightBox" class="switch-pnlm2">
       <form-switch class="interior-exterior-switcher" auto-width style="width:160px;pointer-events: all;"
                    v-model="showInteriorSwitcher" :options="interiorOptions"/>
     </div>
@@ -23,7 +23,7 @@ export default {
   },
   data() {
     return {
-      showInteriorSwitcher: false,
+      showInteriorSwitcher: true,
     }
   },
   watch:{
@@ -37,9 +37,10 @@ export default {
 }
 </script>
 <style lang="scss">
-.switch-pnlm {
+.switch-pnlm2 {
   position: absolute;
   top: -40px;
+  left: 160px;
   z-index: 1234;
   display: flex;
   justify-content: flex-start;
