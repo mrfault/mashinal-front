@@ -82,7 +82,7 @@ export default {
   "add_balance": "Пополнение баланса",
   "add_balance_through_ad_started": "Пополнение баланса",
   "add_calc_percent": "{n}% от запланированного охвата",
-  "add_car": "Добавить автомобиль",
+  "add_car": "Добавить ТС",
   "add_car_model": "Добавить модель",
   "add_cover_image": "Добавьте фото обложки",
   "add_description": "Добавить описание",

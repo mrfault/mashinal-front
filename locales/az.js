@@ -82,7 +82,7 @@ export default {
   "add_balance": "Balansın artırılması",
   "add_balance_through_ad_started": "Balansın artırılması",
   "add_calc_percent": "Planlaşdırılmış əhatə dairəsinin {n}%",
-  "add_car": "Avtomobil əlavə et",
+  "add_car": "NV əlavə et",
   "add_car_model": "Model əlavə et",
   "add_cover_image": "Şəkil yükləyin",
   "add_description": "Təsviri əlavə et",
