@@ -178,10 +178,10 @@ export default {
   "are_you_sure_you_want_to_change_salon_name": "Вы уверены, что не хотите использовать для салона название привязанного вам магазина запчастей?",
   "are_you_sure_you_want_to_deactivate_the_announcement": "Вы точно хотите деактивировать объявление?",
   "are_you_sure_you_want_to_deactivate_the_announcements": "Вы точно хотите деактивировать выбранные объявления?",
-  "are_you_sure_you_want_to_deactivate_the_car": "Вы точно хотите деактивировать автомобиль?",
+  "are_you_sure_you_want_to_deactivate_the_car": "Вы точно хотите деактивировать ТС?",
   "are_you_sure_you_want_to_delete_the_announcement": "Вы точно хотите удалить объявление?",
   "are_you_sure_you_want_to_delete_the_announcements": "Вы точно хотите удалить выбранные объявления?",
-  "are_you_sure_you_want_to_delete_the_car": "Вы точно хотите удалить автомобиль?",
+  "are_you_sure_you_want_to_delete_the_car": "Вы точно хотите удалить ТС?",
   "are_you_sure_you_want_to_delete_the_message": "Вы точно хотите удалить сообщение?",
   "are_you_sure_you_want_to_delete_the_store": "Вы точно хотите удалить магазин?",
   "are_you_sure_you_wnat_to_delete_the_card": "Вы точно хотите удалить карту?",
@@ -842,7 +842,7 @@ export default {
   "garage_error_4509": "Произошла ошибка. Пожалуйста,попробуйте еще раз.",
   "garage_error_7001": "Автомобиль не найден",
   "garage_error_7002": "Невернвй номер тех.паспорта",
-  "garage_payment_info": "За каждую добавленную вами машину будет взиматься 1 ₼ (включая НДС) в месяц.",
+  "garage_payment_info": "За каждое добавленное вами ТС будет взиматься 1 ₼ (включая НДС) в месяц.",
   "garage_register_pay": "Автомобиль зарегистрирован",
   "garage_terms_points": [
     "Внесите оплату для того, чтобы добавить автомобиль в гараж."

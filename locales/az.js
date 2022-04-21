@@ -180,10 +180,10 @@ export default {
   "are_you_sure_you_want_to_change_salon_name": "Hal-hazırda sizə şamil edilmiş Mağaza adını eyni ilə Salonlar bölümündə istifadə etməmək istədiyinizə əminsiniz?",
   "are_you_sure_you_want_to_deactivate_the_announcement": "Elanı deaktiv etmək istədiyinizə əminsiniz?",
   "are_you_sure_you_want_to_deactivate_the_announcements": "Seçilmiş elanları deaktiv etmək istədiyinizə əminsiniz?",
-  "are_you_sure_you_want_to_deactivate_the_car": "Avtomobili deaktiv etmək istədiyinizə əminsiniz?",
+  "are_you_sure_you_want_to_deactivate_the_car": "NV-sini deaktiv etmək istədiyinizə əminsiniz?",
   "are_you_sure_you_want_to_delete_the_announcement": "Elanı silmək istədiyinizə əminsiniz?",
   "are_you_sure_you_want_to_delete_the_announcements": "Seçilmiş elanları silmək istədiyinizə əminsiniz?",
-  "are_you_sure_you_want_to_delete_the_car": "Avtomobili silmək istədiyinizə əminsiniz?",
+  "are_you_sure_you_want_to_delete_the_car": "NV-sini silmək istədiyinizə əminsiniz?",
   "are_you_sure_you_want_to_delete_the_message": "Mesajı silmək istədiyinizə əminsiniz?",
   "are_you_sure_you_want_to_delete_the_store": "Mağazanı silmək istədiyinizə əminsiniz?",
   "are_you_sure_you_wnat_to_delete_the_card": "Kartı silmək istədiyinizə əminsiniz?",
@@ -848,7 +848,7 @@ export default {
   "garage_error_4509": "Səhv baş verdi. Xahiş edirik yenidən cəhd edəsiniz",
   "garage_error_7001": "Avtomobil tapılmadı",
   "garage_error_7002": "Texpasport nömrəsi yalnışdır",
-  "garage_payment_info": "Hər əlavə etdiyiniz avtomobilə görə aylıq 1 ₼ (ƏDV daxil) məbləğ tutulacaq.",
+  "garage_payment_info": "Hər əlavə etdiyiniz NV-nə görə aylıq 1 ₼ (ƏDV daxil) məbləğ tutulacaq.",
   "garage_register_pay": "Maşın qaraja əlavə olunub",
   "garage_terms_points": [
     "Ödəniş etməlisiniz ki, qaraja avtomobil əlavə edə biləsiniz."
