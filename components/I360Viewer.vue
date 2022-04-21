@@ -13,7 +13,7 @@
         <loader><div class="percentage-center">{{ percentage }}%</div></loader>
       </div>
       <div v-if="onFsLightBox  && announcement.interior_360" class="switch-pnlm">
-        <form-switch class="interior-exterior-switcher" auto-width style="width:200px;pointer-events: all;" v-model="showInteriorSwitcher" :options="interiorOptions"/>
+        <form-switch class="interior-exterior-switcher" auto-width style="width: fit-content;pointer-events: all;" v-model="showInteriorSwitcher" :options="interiorOptions"/>
 <!--        <button @click="$nuxt.$emit('switchInterior')" class="btn " style="background-color: #246EB2;color:white;" >{{ $t('interior')}}</button>-->
       </div>
       <!--/ Percentage Loader -->

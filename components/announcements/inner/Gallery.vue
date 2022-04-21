@@ -53,7 +53,7 @@
       <div class="gallery-overlay" v-if="showSlider">
         <div class="gallery-overlay_top d-flex">
           <template v-if="where === 'announcement'">
-            <form-switch class="interior-exterior-switcher" v-if="showInteriorCondition" auto-width style="width:200px;pointer-events: all;" v-model="showInterior" :options="interiorOptions"/>
+            <form-switch class="interior-exterior-switcher" v-if="showInteriorCondition" auto-width style="width: fit-content;pointer-events: all;" v-model="showInterior" :options="interiorOptions"/>
             <span class="d-flex">
                  <span
                 class="badge badge-360"

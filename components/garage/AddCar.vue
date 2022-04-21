@@ -35,7 +35,7 @@
         <form-text-input
           class="mb-2 mb-lg-3"
           v-model="form.car_number"
-          :mask="'99 - A{2} - 999'"
+          :mask="'99 - A{1,2} - 999'"
           :placeholder="$t('car_number')"
           :invalid="$v.form.car_number.$error"
         />
