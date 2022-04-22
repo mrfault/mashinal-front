@@ -2,7 +2,7 @@
   <div class="images-slider">
     <div class="toolbar">
       <span>{{ currentSlide + 1 }} / {{ slides.main.length }}</span>
-      <span class="cursor-pointer" @click.stop="$emit('close')">
+      <span class="cursor-pointer" @click.stop="$emit('close')" style="background: #081a3e94; padding: 5px; border-radius: 5px; font-size: 13px; display: flex;">
         <icon name="cross" />
         <!-- <inline-svg src="/icons/cross.svg" height="14" /> -->
       </span>
