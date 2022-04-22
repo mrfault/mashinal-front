@@ -479,7 +479,7 @@ export default {
 <style lang="scss">
 @media only screen and (min-width: 1024px) {
  .inner-gallery .swiper-wrapper {
-    height: 493px;
+   max-height: 630px;
   }
 }
 
@@ -488,7 +488,7 @@ export default {
 }
 
 .inner-gallery .swiper-slide {
-  background-color: #fff;
+
   display: flex;
   align-items: center;
 }
