@@ -252,9 +252,9 @@ export default {
           '<strong class="text-red">*</strong> ' +
           this.$t(`no_announcements_on_balance${secondLocaleEnding}`)
         thirdLine = this.$t('contact_for_more_info', {
-          phone: isSalon || isShop ? '(055) 222-13-05' : '*8787',
+          phone:'*8787',
           email:
-            isSalon || isShop ? 'elchin.m@mashin.al' : 'office@al.ventures',
+            isSalon || isShop ? 'sales@al.ventures' : 'office@al.ventures',
         })
       }
       return [firstLine, secondLine, thirdLine]

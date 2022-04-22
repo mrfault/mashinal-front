@@ -92,6 +92,7 @@
         :show-checkbox="true"
         :show-overlay="false"
         :clickable="false"
+        :show-monetization-actions="false"
       />
       <div class="modal-sticky-bottom">
         <hr/>

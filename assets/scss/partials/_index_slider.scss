@@ -91,6 +91,7 @@
     }
   }
 }
+
 .mobileHomePage {
   &-slide-item {
     display: flex;
@@ -156,7 +157,7 @@
 @media screen and (max-width: 768px) {
   .swiper-container {
     .homePage-text-section {
-      width: 120px;
+      width: 150px;
       transform: scale(1);
       &-title {
         img {
@@ -169,7 +170,7 @@
       }
       p {
         font-size: 13px !important;
-        line-height: 14px !important;
+        line-height: 18px !important;
         margin-bottom: 6px;
       }
       .btn {

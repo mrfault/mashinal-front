@@ -36,7 +36,7 @@ export default {
       default: true
     }
   },
-  components: { 
+  components: {
     SalonCard
   },
   mixins: [YMapsMixin, SalonsMixin],
@@ -56,22 +56,22 @@ export default {
   },
   methods: {
     ...mapActions(['updateSalonsInBounds']),
-    
+
     init() {
       this.map = new ymaps.Map('map', {
         center: this.cacheMapCenter,
-        zoom: 12,
+        zoom: 1,
         controls: ['zoomControl','geolocationControl','typeSelector'],
-        // autoFitToViewport: 'always' 
+        // autoFitToViewport: 'always'
       }, {
         restrictMapArea: [[85,-178.9], [-73.87011,180]],
-        geolocationControlPosition: !this.isMobileBreakpoint 
-          ? { bottom: '170px', left: '20px' } 
+        geolocationControlPosition: !this.isMobileBreakpoint
+          ? { bottom: '170px', left: '20px' }
           : { top: '20px', left: '20px' },
-        zoomControlPosition: !this.isMobileBreakpoint 
+        zoomControlPosition: !this.isMobileBreakpoint
           ? { bottom: '40px', left: '20px' }
           : { bottom: '40px', left: '20px' },
-        typeSelectorPosition: !this.isMobileBreakpoint 
+        typeSelectorPosition: !this.isMobileBreakpoint
           ? { bottom: '135px', left: '20px' }
           : { top: '20px', right: '20px' },
         typeSelectorSize: 'small',
@@ -129,7 +129,7 @@ export default {
       this.updateMapCenter(0, true);
 
       if (this.checkBounds) {
-        this.map.events.add('boundschange', (e) => { 
+        this.map.events.add('boundschange', (e) => {
           let list = this.salonsList.filter(salon => salon.lat).filter(salon => {
             let bounds = this.map.getBounds(true);
             return ymaps.util.bounds.containsPoint(bounds, [salon.lat, salon.lng]);
@@ -138,13 +138,13 @@ export default {
           this.updateSalonsInBounds(list.map(salon => salon.id));
         });
       }
-    
+
       this.$nuxt.$on('filter-salons', this.setFilters);
     },
     updatePlacemarks(filter = true) {
       this.objectManager.removeAll();
-      this.objectManager.add({ 
-        type: 'FeatureCollection', 
+      this.objectManager.add({
+        type: 'FeatureCollection',
         features: this.salonsList.filter(salon => salon.lat).map((salon) => ({
           type: 'Feature',
           id: salon.id,
@@ -180,14 +180,15 @@ export default {
         this.cacheMapCenter = this.map.getCenter();
         if (filter) this.setFilters();
         this.centerUpdated = true;
+        this.map.setZoom(12);
       }, (err) => {
         this.centerUpdated = true;
       });
-    },  
+    },
     updateMapMargin() {
-      if (!this.marginAccessors.topArea) 
+      if (!this.marginAccessors.topArea)
         this.marginAccessors.topArea = this.marginTop && this.map.margin.addArea(this.marginTop);
-      if (!this.marginAccessors.leftArea) 
+      if (!this.marginAccessors.leftArea)
         this.marginAccessors.leftArea = this.marginLeft && this.map.margin.addArea(this.marginLeft);
       if (this.marginLeft && !this.useMarginLeft) {
         this.marginAccessors.leftArea.remove();

@@ -94,13 +94,20 @@
                     </div>
                     <div
                       class="position-relative"
-                      style="width: 100%;"
+                      style="width: 100%;overflow: hidden;"
                       v-else-if="
                         slides.types && slides.types[index] === 'custom'
                       "
                     >
                       <no-ssr>
+                        <div v-if="announcement.interior_360" class="interior-switcher" >
+                          <form-switch class="interior-exterior-switcher" auto-width style="width: fit-content;pointer-events: all;" v-model="showInterior" :options="interiorOptions"/>
+                        </div>
+                        <interior360-viewer :url="announcement.interior_360" v-if="showInterior"/>
                         <vue-three-sixty
+                          @interiorChange="showInterior = !showInterior"
+                          :show-interior="showInterior"
+                          v-else
                           showZoom
                           disable-zoom
                           :amount="announcement.images_360.length"
@@ -151,7 +158,12 @@
 </template>
 
 <script>
+import Interior360Viewer from "~/components/Interior360Viewer";
+
 export default {
+  components:{
+    Interior360Viewer
+  },
   props: {
     slides: {},
     announcement: {},
@@ -160,6 +172,7 @@ export default {
   },
   data() {
     return {
+      showInterior: false,
       zoom: 0,
       swiperOps: {
         initialSlide: this.currentSlide,
@@ -278,3 +291,30 @@ export default {
   },
 }
 </script>
+<style>
+.interior-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  height: 40px;
+  min-width: 76px;
+  border-radius: 4px;
+  color: #fff;
+  background-color: #246EB2;
+  padding: 0 14px;
+}
+.interior-switcher {
+  position: absolute;
+  top: 10px;
+  left: 75px;
+  z-index: 11233;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 32px;
+  font-size: 16px;
+  text-align: center;
+}
+</style>

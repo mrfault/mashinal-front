@@ -13,6 +13,9 @@
             <div class="avatar_edit col-auto mb-2" id="anchor-logo">
               <div class="avatar_edit-inner">
                 <form-image
+                  :refreshCroppa="refreshCroppa"
+                  @removeImage="removeImage"
+                  type="logo"
                   v-model="form.logo"
                   :initial-image="getSalonImg('logo')"
                   :no-image="!hasLogo"
@@ -25,8 +28,12 @@
               </div>
             </div>
             <div class="avatar_edit col-auto mb-2 cover" id="anchor-cover">
+
               <div class="avatar_edit-inner">
                 <form-image
+                  :refreshCroppa="refreshCroppa"
+                  @removeImage="removeImage"
+                  type="cover"
                   v-model="form.cover"
                   :initial-image="getSalonImg('cover')"
                   :no-image="!hasCover"
@@ -145,24 +152,20 @@
             <div class="col-lg-4 mb-2 mb-lg-3" id="anchor-facebook">
               <form-text-input type="url" placeholder="Facebook URL" icon-name="link" v-model="form.facebook" block-class="placeholder-dark-blue-3" />
             </div>
-            <div class="col-lg-12 mb-2 mb-lg-3" id="anchor-short_description">
-              <form-text-input :maxlength="1000" :placeholder="$t('short_information')" v-model="form.short_description"
-                @change="removeError('short_description')" :invalid="isInvalid('short_description')" />
-            </div>
             <div class="col-lg-12 mb-2 mb-lg-3" id="anchor-description">
               <form-textarea :maxlength="1000" :placeholder="$t('general_information')" v-model="form.description"
                 @change="removeError('description')" :invalid="isInvalid('description')" />
             </div>
             <div class="col-lg-12" id="anchor-saved_gallery">
               <form-gallery
-                itemClass="col-4 col-lg-1-8 mb-lg-3 mb-2"
-                :maxFiles="21"
+                itemClass="col-4 col-lg-1-8 mb-lg-3 mt-2 mb-2"
+                :maxFiles="24"
                 :initialFiles="initialFiles"
                 @change="filesOnChange"
                 @loading="pending = $event"
               />
             </div>
-            <div class="col-lg-2 offset-lg-10">
+            <div class="col-lg-2 offset-lg-10 mt-2">
               <button :class="['btn btn--green full-width', {pending}]" @click="submit">{{ $t('confirm') }}</button>
             </div>
           </div>
@@ -207,6 +210,7 @@
 
       return {
         showPasswordModal: false,
+        refreshCroppa:0,
         pending: false,
         pwdForm: {
           old: '',
@@ -230,7 +234,9 @@
           cover: null,
           facebook: salon.facebook || '',
           instagram: salon.instagram || '',
-          short_number: salon.short_number || ''
+          short_number: salon.short_number || '',
+          remove_cover: false,
+          remove_logo: false,
         },
         files: [],
         hasLogo: !!salon.logo,
@@ -272,7 +278,17 @@
     },
     methods: {
       ...mapActions(['updateMySalon','getMySalon']),
+      async removeImage(type) {
+        console.log(type);
+        if(type === 'cover') {
+          this.$set(this.form,'remove_cover', true);
+        }
+        else {
+          this.$set(this.form,'remove_logo', true);
 
+        }
+        this.refreshCroppa++;
+      },
       async submit() {
         if (this.pending) return;
         this.clearErrors();
@@ -368,6 +384,7 @@
       },
 
       getSalonImg(key) {
+        if(this.form[`remove_${key}`]) return `/img/salon-${key === 'cover' ? `${key}-${this.mySalon.type_id}` : key}-${this.colorMode}.jpg`
         return this.mySalon[key] ? this.$withBaseUrl(this.mySalon[key]) : `/img/salon-${key === 'cover' ? `${key}-${this.mySalon.type_id}` : key}-${this.colorMode}.jpg`;
       },
       getDayOption(i) {

@@ -1,6 +1,9 @@
 .fslightbox-fade-in {
   animation: fslightbox-fade-in 0.3s cubic-bezier(0, 0, 0.7, 1);
 }
+.fslightbox-absoluted {
+  overflow: hidden;
+}
 .fslightbox-fade-out {
   animation: fslightbox-fade-out 0.3s ease;
 }

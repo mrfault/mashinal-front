@@ -23,7 +23,9 @@
             >
               <div class="position-relative">
                 <no-ssr>
+                  <Interior360Viewer :url="announcement.interior_360" v-if="showInterior"/>
                   <vue-three-sixty
+                    v-else
                     :amount="announcement.images_360.length"
                     buttonClass="d-none"
                     disableZoom
@@ -51,14 +53,9 @@
       <div class="gallery-overlay" v-if="showSlider">
         <div class="gallery-overlay_top d-flex">
           <template v-if="where === 'announcement'">
-            <span
-              class="badge from-border"
-              v-if="announcement.is_autosalon || announcement.is_part_salon"
-            >
-              SHOP
-            </span>
+            <form-switch class="interior-exterior-switcher" v-if="showInteriorCondition" auto-width style="width: fit-content;pointer-events: all;" v-model="showInterior" :options="interiorOptions"/>
             <span class="d-flex">
-              <span
+                 <span
                 class="badge badge-360"
                 v-if="
                   announcement.images_360 && announcement.images_360.length > 0
@@ -101,7 +98,7 @@
             </div>
 
             <div class="gallery-overlay_bottom--right">
-              <add-complaint :announcement="announcement" />
+<!--              <add-complaint :announcement="announcement" />-->
             </div>
           </template>
           <template v-else>
@@ -112,7 +109,7 @@
           </template>
         </div>
       </div>
-      <div class="inner-gallery-lightbox" v-touch:swipe.top="handleSwipeTop">
+      <div  class="inner-gallery-lightbox" v-touch:swipe.top="handleSwipeTop">
         <template v-if="isMobileBreakpoint">
           <h3 v-if="announcement.images_360 && announcement.images_360.length > 0" style="position: absolute; top: 0; color: #081a3e;">
             {{ $t('panorama_loading') }}
@@ -196,7 +193,6 @@
 
 <script>
 import { mapGetters } from 'vuex'
-
 import FsLightbox from 'fslightbox-vue'
 import CallButton from '~/components/announcements/CallButton'
 import ChatButton from '~/components/announcements/ChatButton'
@@ -204,6 +200,7 @@ import AddFavorite from '~/components/announcements/AddFavorite'
 import AddComparison from '~/components/announcements/AddComparison'
 import AddComplaint from '~/components/announcements/AddComplaint'
 import ImagesSlider from '~/components/elements/ImagesSlider'
+import Interior360Viewer from "~/components/Interior360Viewer";
 export default {
   props: {
     where: {
@@ -219,6 +216,7 @@ export default {
     },
   },
   components: {
+    Interior360Viewer,
     FsLightbox,
     CallButton,
     ChatButton,
@@ -229,6 +227,7 @@ export default {
   },
   data() {
     return {
+      showInterior: false,
       toggleFsLightbox: false,
       showImagesSlider: false,
       showLightbox: false,
@@ -251,6 +250,14 @@ export default {
     }
   },
   methods: {
+    switchInterior() {
+      this.showInterior = !this.showInterior;
+      this.lightboxKey++
+      this.toggleFsLightbox = false
+      setTimeout(() => {
+        this.toggleFsLightbox = true;
+      },1)
+    },
     openLightbox(index) {
       if (index || index === 0) {
         this.currentSlide = index
@@ -311,7 +318,7 @@ export default {
     },
     handleSwipeTop() {
       if (document.body.classList.contains('zooming')) return
-      this.closeLightbox()
+      //this.closeLightbox()
     },
     showYtVideo(index) {
       return this.announcement?.youtube_id && index === 1
@@ -331,12 +338,21 @@ export default {
   },
   computed: {
     ...mapGetters(['announcement']),
+
+    showInteriorCondition() {
+      return this.currentSlide === 0 &&
+        this.announcement.images_360 &&
+        this.announcement.images_360.length &&
+        this.announcement.interior_360
+    },
     getSourcesFsLightbox() {
       if (this.slides.types[0] === 'custom') {
         return [
           {
-            component: 'vue-three-sixty',
+            component: this.showInterior ? 'interior360-viewer' : 'vue-three-sixty',
             props: {
+              onFsLightBox: true,
+              url: this.announcement.interior_360,
               files: this.announcement.images_360,
               amount: this.announcement.images_360.length,
               fromFsPopup: true,
@@ -400,7 +416,11 @@ export default {
   },
   mounted() {
     let swiperTouchStartX
+
     this.$nextTick(() => {
+      this.$nuxt.$on('switchInterior',() => {
+        this.switchInterior();
+      })
       if (this.showSlider) {
         setTimeout(() => {
           this.gallerySwiper.init()
@@ -456,15 +476,19 @@ export default {
   },
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 @media only screen and (min-width: 1024px) {
-  .swiper-wrapper {
+ .inner-gallery .swiper-wrapper {
     height: 493px;
   }
 }
 
-.swiper-slide {
-  background-color: #d6e4f8;
+.fslightbox-source {
+  width: 100vw;
+}
+
+.inner-gallery .swiper-slide {
+  background-color: #fff;
   display: flex;
   align-items: center;
 }

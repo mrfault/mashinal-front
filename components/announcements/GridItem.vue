@@ -1,4 +1,4 @@
-<template>
+`<template>
   <div :class="colClass || 'stratch-child-block'">
     <div
       class="announcements-grid_gallery"
@@ -168,6 +168,9 @@
         <div class="item-details--infos">
           <span class="item-details__year" v-if="getTextLine">
             <span>{{ getTextLine }}</span>
+            <span v-if="getTextLine  && isMobileBreakpoint">
+              <span v-if="!announcement.category">, {{ getOdometer }}</span>
+            </span>
           </span>
           <span class="item-details__options" v-show="getOdometer == null">
             <icon
@@ -186,10 +189,13 @@
          -->
         <!-- 2 -->
         <div class="item-details--infos pt-1">
-          <span class="item-details__year" v-if="getTextLine">
+          <span class="item-details__year" v-if="getTextLine && !isMobileBreakpoint">
             <span v-if="!announcement.category">{{ getOdometer }}</span>
           </span>
-          <span class="item-details__options" v-show="getOdometer !== null">
+          <span class="item-details__year" v-if="isMobileBreakpoint">
+            <span >{{ announcement.humanize_created_at }}</span>
+          </span>
+          <span class="item-details__options" v-show="getOdometer">
             <icon
               name="percent"
               v-tooltip="$t('credit_possible')"
@@ -226,8 +232,8 @@
             />
           </div>
         </div>
-        <hr class="mt-1" v-if="showCheckbox && announcement.status === 1" />
-        <div class="item-details__actions">
+        <hr class="mt-1" v-if="showMonetizationActions && showCheckbox && announcement.status === 1" />
+        <div class="item-details__actions" v-if="showMonetizationActions">
           <template v-if="showCheckbox && announcement.status === 1">
             <span>
               <monetization-button
@@ -257,6 +263,10 @@ export default {
   props: {
     announcement: {},
     showStatus: Boolean,
+    showMonetizationActions: {
+      type: Boolean,
+      default:true,
+    },
     showCheckbox: Boolean,
     showPhoneCount: Boolean,
     showGallery: Boolean,
@@ -402,3 +412,4 @@ export default {
   },
 }
 </script>
+`

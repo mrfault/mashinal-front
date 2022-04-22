@@ -35,8 +35,8 @@
                   !isDarkMode ? homePageSlider.overlay_color : '#D0DBF9'
                 };`"
               ></div>
-              <div class="homePage-text-section">
-                <div class="homePage-text-section-title">
+              <div class="homePage-text-section" :style="!isMobileBreakpoint ?`margin-left: -150px;`:''">
+                <div class="homePage-text-section-title" style="margin-left: -3px;">
                   <!-- <img :src="homePageSlider.icon" /> -->
                   <img
                     :src="
@@ -71,8 +71,9 @@
       </div>
       <div class="swiper-pagination" slot="pagination"></div>
     </div>
+
     <!-- car search form -->
-    <div class="container">
+    <div class="container position-relative">
       <car-search-form
         :total-count="$paginate(mainAnnouncements).total"
         :pending="pending"
@@ -239,10 +240,20 @@ export default {
     }
   }
   @media screen and (max-width: 768px) {
-    padding-bottom: 40px;
     .swiper-pagination {
       left: 0 !important;
       bottom: 14px !important;
+    }
+    .swiper-pagination-bullet {
+      position: absolute;
+      top: -6px;
+      left: 44%;
+      z-index: 111;
+      &:first-child {
+        top: -6px;
+        left: 49%;
+      }
+
     }
   }
 
