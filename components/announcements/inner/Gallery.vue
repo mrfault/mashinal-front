@@ -111,9 +111,7 @@
       </div>
       <div  class="inner-gallery-lightbox" v-touch:swipe.top="handleSwipeTop">
         <template v-if="isMobileBreakpoint">
-          <h3 v-if="announcement.images_360 && announcement.images_360.length > 0" style="position: absolute; top: 0; color: #081a3e;">
-            {{ $t('panorama_loading') }}
-          </h3>
+
           <FsLightbox
             :toggler="toggleFsLightbox"
             :sources="getSourcesFsLightbox"
