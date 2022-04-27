@@ -5,6 +5,7 @@
         <h2 :class="['section-title heading-dots', {'heading-dots--left': isMobileBreakpoint}]">
           {{ $t('business_profile_packages') }}
         </h2>
+        <h3 class="section-subtitle">{{ $t('without_nds') }}</h3>
       </div>
       <div class="row packages">
         <div class="col-6 col-lg-2 mb-2 mb-lg-0" v-for="item in salonPackages" :key="item.id">

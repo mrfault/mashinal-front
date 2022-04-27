@@ -2192,5 +2192,5 @@ export default {
   "exterior": "Экстерьер",
   "remove_image":"Удаление фотографии",
   "Loading":"Загружается...",
-
+  "without_nds":"Цены указаны без учета НДС"
 }
