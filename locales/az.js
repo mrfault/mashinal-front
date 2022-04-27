@@ -2193,5 +2193,6 @@ export default {
   "create_salon":"Salonlara keç",
   "interior": "İnteryer",
   "exterior": "Eksteryer",
-  "remove_image":"Şəkil silinməsi"
+  "remove_image":"Şəkil silinməsi",
+  "without_nds":"Qiymətlərə ƏDV daxil deyildir"
 }
