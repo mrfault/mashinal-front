@@ -68,7 +68,7 @@ export const LayoutMixin = {
     showMenu(el) {
       el.style.top = "0px";
       clearTimeout(this.scrollTimeout);
-      this.scrollTimeout = setTimeout(() => el.classList.remove('z-index-1'),400);
+      this.scrollTimeout = setTimeout(() => el.classList.remove('z-index-1') ,400);
     },
     hideMenu(el) {
       el.classList.add('z-index-1')
@@ -176,7 +176,12 @@ export const LayoutMixin = {
     })
   },
   mounted() {
+
+
     this.$nextTick(() => {
+
+
+
       this.handleHideMenu();
       this.configSocket()
       if (this.loggedIn) this.toggleEchoListening(true)
@@ -215,6 +220,15 @@ export const LayoutMixin = {
         // in v-show directive without changing key sometimes
         this.setLoading(false)
       }, 0)
+      //
+      //
+      // var observer = new IntersectionObserver(function(entries) {
+      //   console.log('run')
+      //   // if(entries[0].isIntersecting !== true)
+      //   //   entries[0].target.style.display = "none"
+      // }, { threshold: [0] });
+      //
+      // observer.observe(document.querySelector(".navbar-white"));
     })
   },
   beforeDestroy() {
