@@ -1433,7 +1433,7 @@ export default {
   "Power trunk lid": "Baqajın örtüyünün elektron bağlanması",
   "Power windows": "Elektron tənzimlənən pəncərələr",
   "power_from_hp": "Mühərrik gücü min., a.g.",
-  "power_reserve_on_batteries": "Запас хода на батареях, км",
+  "power_reserve_on_batteries": "Batareya ilə yürüş məsafəsi, km",
   "premium": "Premium",
   "premium_announcements": "Premium elanlar",
   "premium-promote-text": "<p>Elanına daha çox real alıcı baxsın.</p><p>Saytda əsas səhifədə xüsusi ayrılmış \"Premium elanlar” blokuna əlavə olunacaq. Həmçinin, alıcı sənin elanına bənzər (qiymət, il, marka) elanlara baxdıqda həmin səhifədə \"Bənzər elanlar\" blokunda ön siralarda göstəriləcək.</p><ul><li><strong>10 dəfə</strong> daha çox baxış olacaq</li><li><strong>Bonus</strong> — Pulsuz olaraq bir dəfə son elanlar siyahısında irəli çəkiləcək</li><li><strong>Bonus</strong> — Pulsuz olaraq Premium xidməti müddətinə bərabər Vip xidməti aktivləşəcək.</li></ul>",
