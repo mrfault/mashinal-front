@@ -259,7 +259,7 @@ export default {
         } else {
           await Promise.all([this.$nuxt.refresh(), this.$auth.fetchUser()])
           this.pending = false
-          this.showModal = false
+          this.showPaymentModal = false
           this.updatePaidStatus({
             type: 'success',
             text: this.$t('renew_package'),
