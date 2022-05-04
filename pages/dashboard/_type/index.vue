@@ -8,7 +8,7 @@
           v-for="(item, index) in cards"
           :key="index"
         >
-          <e-service-card :item="item"></e-service-card>
+          <e-service-card :should-extend-contract="shouldExtendContract" @showPayment="showPaymentModal = true;" :item="item"></e-service-card>
         </div>
         <div class="col-lg-3 mb-2 mb-lg-3">
           <dashboard-card :key="'support'" style="height: 210px">
@@ -33,8 +33,10 @@
                 </h5>
               </div>
             </div>
+
           </dashboard-card>
         </div>
+
         <modal-popup
           :toggle="showPaymentModal"
           :title="$t('extend_subscription')"

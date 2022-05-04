@@ -33,13 +33,15 @@
     </div>
     <div class="e-service__actions">
       <div class="e-service__actions--left">
+        <a class="text-green e-service__actions--button" href="javascript:void(0);" @click="$emit('showPayment')" v-if="item.key === 'contract' && shouldExtendContract">
+          {{ $t('extend_subscription') }}
+        </a>
         <letter-of-attorney-button
           href="#"
           tag="a"
           classes=""
           v-if="item.hasAction && item.isAttorney"
         />
-
         <button
           v-if="item.hasActionMethod"
           @click="setStoreBalance(item.actionLink)"
@@ -54,6 +56,7 @@
         </nuxt-link>
       </div>
       <div class="e-service__actions--right">
+
         <nuxt-link :to="$localePath(item.url)" class="">
           {{ $t('detail') }}
           <icon name="chevron-right"/>
@@ -70,6 +73,7 @@ import LetterOfAttorneyButton from '~/components/garage/loa/LetterOfAttorneyButt
 export default {
   components: { LetterOfAttorneyButton },
   props: {
+    shouldExtendContract: Boolean,
     item: Object,
   },
   computed: {
