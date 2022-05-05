@@ -193,6 +193,16 @@ export default {
           image: 'createshop',
           isAvailable: true,
         },
+        {
+          title: 'Super təklif' ,
+          description: null,
+          value: null,
+          icon: 'create-shop',
+          url: this.$auth.user.autosalon ? '/salons/offer' : '/offer',
+          hasAction: false,
+          image: 'createshop',
+          isAvailable: true,
+        },
       ]
     },
   },
@@ -201,6 +211,9 @@ export default {
       az: '/qaraj-xidmetleri',
     },
   },
+  created() {
+    console.log( this.$auth.user )
+  }
 }
 </script>
 

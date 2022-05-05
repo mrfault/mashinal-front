@@ -2,6 +2,7 @@
   <div class="pages-index" :style="!isMobileBreakpoint ? 'margin-top: -162px;' : ''">
 
     <div class="swiper-container" v-swiper:gallerySwiper="swiperOps" v-if="!isMobileBreakpoint">
+
       <div class="swiper-wrapper">
         <div class="swiper-slide" v-for="homePageSlider in homePageSliders">
           <div class=" homePage-slide-item" >
@@ -170,7 +171,7 @@ export default {
         this.currentSlide = this.gallerySwiper.realIndex;
       });
 
-      //this.updateTouchEvents();
+
     }, 100);
     this.$nuxt.$on('logo-click', this.handleLogoClick);
   },

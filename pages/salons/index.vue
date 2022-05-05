@@ -197,7 +197,6 @@ export default {
       'updateSalonsSearchFilters',
       'updateSalonsFilters',
     ]),
-
     toggleSearch() {
       this.showSearch = !this.showSearch
     },

@@ -781,6 +781,7 @@ export default {
     advanced: Boolean,
     assistant: Boolean,
   },
+
   data() {
     return {
       showIntervalModal: false,
@@ -889,6 +890,7 @@ export default {
     },
   },
   mounted() {
+
     this.$nuxt.$on('saved-search-created', () => {
       if (this.singleSavedSearch.id) {
         this.selected.push(this.singleSavedSearch.id)
@@ -940,6 +942,8 @@ export default {
         this.$set(this.form.additional_brands[index], key, '')
       })
       if (id) await this.getModelsArray({ value: slug, index })
+
+
     },
     async setModel(id, index) {
       let model = this.carModels[index].find((option) => option.id == id)
