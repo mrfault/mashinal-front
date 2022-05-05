@@ -1037,6 +1037,12 @@ export const actions = {
     )
     commit('mutate', { property: 'myBalanceHistory', value: res })
   },
+  async getMyBalanceHistoryWithoutMutate({ commit }, data = {}) {
+    const res = await this.$axios.$get(
+      `/payment/getHistory?page=${data.page || 1}&type=${data.type || 0}`,
+    )
+    commit('mutate', { property: 'temporaryLazyData', value: res })
+  },
   async updatePromotion({ commit }, { key, value }) {
     commit('mutate', { property: 'promotion', key, value })
   },

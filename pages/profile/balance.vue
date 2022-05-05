@@ -95,7 +95,7 @@
                 ]"
                 :key="0"
               >
-                <template v-if="!isMobileBreakpoint && (myBalanceHistory.data.length || myBalanceHistory.current_page !== 1)">
+                <template v-if="!isMobileBreakpoint ">
                   <button
                     class="btn btn--grey pointer-events-none"
                     v-if="myBalanceHistory.data.length"
@@ -197,9 +197,10 @@
           </div>
           <infinite-loading
             :type="activeFilter"
-            action="getMyBalanceHistory"
+            action="getMyBalanceHistoryWithoutMutate"
             getter="myBalanceHistory"
             class-name="mt-3 mt-lg-4"
+            :per-page="10"
           />
         </div>
       </div>
@@ -227,6 +228,9 @@ export default {
     paths: {
       az: '/profil/balans',
     },
+  },
+  beforeDestroy() {
+    this.mutate({ property: 'temporaryLazyData', value: {} });
   },
   head() {
     return this.$headMeta({
@@ -271,6 +275,7 @@ export default {
   methods: {
     filterHistory(type) {
       this.activeFilter = type
+      this.mutate({ property: 'temporaryLazyData', value: {} });
       this.$store.dispatch('getMyBalanceHistory', { page: 1, type: type })
     },
     async increaseBalance() {
