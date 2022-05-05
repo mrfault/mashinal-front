@@ -1,0 +1,298 @@
+<template>
+  <div>
+    <offer-slider/>
+    <div class="salonsOffer">
+      <breadcrumbs :crumbs="crumbs" class=""/>
+      <div class=" row ">
+        <div class=" col col-md-2 background-white">
+          <div class="offerNav">
+            <ul>
+              <li @click="changePage('all')"><img src="/icons/offer/requests.svg"/> Sorğular</li>
+              <li @click="changePage('sended')"><img src="/icons/offer/send-requests.svg"/> Gönd. Təkliflər</li>
+              <li @click="changePage('favorites')"><img src="/icons/offer/favorites.svg"/> Seçilmişlər</li>
+              <li @click="changePage('deleted')"><img src="/icons/offer/bin.svg"/> Silinmişlər</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col col-md-4 background-white">
+          <div class="searchBox">
+            <icon name="search"></icon>
+
+            <input type="text" v-model="search" placeholder="Maşın və ya istifadəçi adı" class="searchInput">
+          </div>
+          <div class="offerUsers">
+            <div class="user" v-for="offer in search ? searchOffer : offers" @click="getOfferDetail(offer.id)">
+              <div class="userImg"
+                   :style="'background-image: url('+(offer.user.img ? offer.user.img : '/img/user.jpg')+')'">
+              </div>
+              <div class="userName">
+                <b>{{ offer.user.full_name }}</b>
+                <span>{{ offer.brand }} {{ offer.model }}</span>
+                <span>{{ offer.minPrice }} - {{ offer.maxPrice }}</span>
+              </div>
+              <div class="created">
+                {{ offer.created_at }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col col-md-6 col-12 col-xs-12 col-sm-12 background-white">
+          <div class="d-flex align-items-center user" v-if="offer.brand">
+            <div class="userImg"
+                 :style="'background-image: url('+(offer.user.img ? offer.user.img : '/img/user.jpg')+')'"></div>
+            <p class="mt-2 ml-2 text-bold">
+              {{ offer.user.full_name }}
+            </p>
+            <div class="actions" v-if="IsAccepted">
+              <span @click="addFavorite(offer.id)" :class="offer.isFavorite ? 'isFavorite' : null"><icon name="star"/> </span>
+              <span  @click="deleteAutoSalonOffer(offer.id)"> <icon name="garbage"></icon></span>
+            </div>
+          </div>
+          <div class="offerDetail" v-if="offer.brand">
+
+            <collapse-content :title="'Təklif'">
+
+              <div class="generations">
+                <div class="row">
+
+                  <div class="col-md-3" v-for="generation in offer.generations">
+                    <img :src="generation.img" class="generationImage" width="100%">
+                  </div>
+                  <div class="col-md-6">
+                    <div class="carName">
+
+                      <span class="carPrice">{{ offer.minPrice }} - {{ offer.maxPrice }} ₼</span>
+                      <h3>{{ offer.brand }} {{ offer.model }}</h3>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+              <div class="offerDetailContent">
+                <div class="offerDetailItem">
+                  <p>Brand</p>
+                  <span>{{ offer.brand }}</span>
+                </div>
+                <div class="offerDetailItem">
+                  <p>Model </p>
+                  <span>
+                  {{ offer.model }}
+                </span>
+                </div>
+
+                <div class="offerDetailItem">
+                  <p>Nəsil </p>
+                  <div>
+                  <span v-for=" (generation,index) in offer.generations">
+                  {{ generation.name }}
+                                      <div v-if="index != offer.generations.length - 1">,</div>
+                </span>
+
+
+                  </div>
+
+                </div>
+                <div class="offerDetailItem">
+
+                  <p>Sürətlər qutusu </p>
+                  <div>
+                <span v-for=" (gearbox,index) in offer.gear_boxes">
+                               {{ $t('box_values')[gearbox.gear_box_key] }}
+
+                  <div v-if="index != offer.gear_boxes.length - 1">,</div>
+                </span>
+
+                  </div>
+                </div>
+                <div class="offerDetailItem">
+                  <p>Yanacaq növü </p>
+                  <div>
+                <span v-for=" (fuel_type,index) in offer.fuel_types">
+
+                  {{ $t('engine_values')[fuel_type.fuel_type_key] }} <div
+                  v-if="index != offer.fuel_types.length - 1">,</div>
+
+                </span>
+                  </div>
+                </div>
+
+              </div>
+            </collapse-content>
+
+            <div class="text-right" v-if="!IsAccepted">
+              <button class="btn  btn--green mt-3" @click="accept(offer.id)">Sorğunu qəbul et</button>
+            </div>
+            <div v-else>
+              <div class="messages">
+                <div :class=" isMyMessage(message) ? 'my' :'his' " v-for="message in offerMessages">
+                  {{ message.message }} <span class="time">17:30</span>
+                  <div v-if="message.files.length>0" class="message-files">
+                    <div class="message-file" v-for="file in message.files">
+                      <img :src="file" width="51px"/>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div>
+
+              </div>
+            </div>
+
+
+          </div>
+          <div class="addons" v-if="IsAccepted">
+            <offer-message
+              @type="handleTyping"
+              @attach="handleFiles"
+              @send="submitMessage"
+
+              :sending="false"
+              :message="false"
+              v-model="chat.text"
+            />
+            <img src="" :ref="'attachment-'+key" alt=""/>
+            <div class="addLink"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import OfferSlider from "~/components/offer/OfferSlider";
+import {mapGetters} from "vuex";
+import OfferMessage from "~/components/offer/offer-message";
+import CollapseContent from "~/components/elements/CollapseContent";
+import { ImageResizeMixin } from '~/mixins/img-resize';
+import {SocketMixin} from "~/mixins/socket";
+
+export default {
+  name: "index",
+  components: {CollapseContent, OfferMessage, OfferSlider},
+  data() {
+    return {
+      offer: {},
+      IsAccepted: false,
+      chat: {
+        text: ''
+      },
+      sendingFiles: false,
+      search: "",
+      files:[]
+    }
+  },
+  mixins: [ImageResizeMixin],
+  async asyncData({store}) {
+    await Promise.all([
+      store.dispatch('getHomePageSliders'),
+      store.dispatch('getAllOffers'),
+    ]);
+  },
+  nuxtI18n: {
+    paths: {
+      az: 'salonlar/offer'
+    }
+  },
+  methods: {
+    changePage(param = null) {
+      this.$store.dispatch('getAllOffers', param)
+    },
+    isMyMessage(message) {
+      return this.user.id === message.sender.id
+    },
+    handleTyping() {
+
+    },
+    handleFiles(files) {
+      this.$set(this, 'files', files);
+    },
+    async addFavorite(id) {
+      await this.$store.dispatch('offerAddFavorite', id)
+      this.offer.isFavorite=!this.offer.isFavorite;
+    },
+    async deleteAutoSalonOffer(id){
+      await this.$axios.delete('/offer/salon/offer/delete/'+id);
+      this.checkAccepted(id)
+    },
+   async submitMessage() {
+      let formData = new FormData();
+
+      formData.append('recipient_id',this.offer.user.id)
+      formData.append('message',this.chat.text)
+      formData.append('offer_id',this.offer.id)
+
+
+      await Promise.all(this.files.map(async (file) => {
+        let resizedFile = await this.getResizedImage(file);
+        formData.append('files[]', resizedFile);
+      }));
+
+      this.$axios.$post('/offer/messages/send', formData).then((res) => {
+        this.$store.commit('appendOfferMessage', res.data.message)
+        this.chat.text = '';
+        this.scrollTo('.my:last-child', 0, 500, '.offerDetail')
+      })
+    },
+
+    async getOfferDetail(id) {
+
+      await this.checkAccepted(id)
+      this.offer = JSON.parse(JSON.stringify(this.offers.find(function (offer) {
+          return id === offer.id
+        }
+      )));
+
+
+    },
+    addFile(e) {
+      this.chat.files.append(e.target.files[0])
+
+
+    },
+    choseFile() {
+      document.getElementById("fileInput").click();
+    },
+    async checkAccepted(id) {
+      await this.$axios.$post('/offer/salon/offer/check/' + id).then((res) => {
+
+        this.IsAccepted = res.status
+
+        this.$store.commit('setOfferMessages', res.messages)
+      })
+    },
+    async accept(id) {
+      await this.$store.dispatch('salonAcceptOffer', {id})
+      this.checkAccepted(id)
+    }
+  },
+  computed: {
+    searchOffer() {
+      return this.offers.filter((item => {
+        return item.user.full_name.toUpperCase().includes(this.search.toUpperCase()) ||
+          item.brand.toUpperCase().includes(this.search.toUpperCase())
+      }))
+    },
+    crumbs() {
+      return [
+        {name: 'Super təklif paneli', route: '/salons/offer'},
+
+      ]
+    },
+    ...mapGetters({
+      offers: 'offers',
+      offerMessages: 'getOfferMessages',
+      isFavorite:'isFavorite'
+    }),
+  }
+
+}
+
+</script>
+
+<style scoped>
+
+</style>

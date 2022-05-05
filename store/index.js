@@ -97,7 +97,7 @@ const getInitialState = () => ({
   sellSalonRights: false,
   sellPartSalonRights: false,
   sellProgress: 5,
-  sellYears: [],
+  sellYears: {},
   sellBody: [],
   sellGenerations: [],
   sellEngines: [],
@@ -130,6 +130,10 @@ const getInitialState = () => ({
   // garage
   selectedVehicleList: [],
   selectedVehiclesPrice: 0,
+  offers:[],
+  OffersAcceptedByAutoSalon:{},
+  offerMessages:[],
+  isFavorite:false,
 })
 
 export const state = () => getInitialState()
@@ -280,6 +284,10 @@ export const getters = {
   // garage
   selectedVehicleList: (s) => s.selectedVehicleList,
   selectedVehiclesPrice: (s) => s.selectedVehiclesPrice,
+  offers: (s) => s.offers,
+  OffersAcceptedByAutoSalon:(s)=>s.OffersAcceptedByAutoSalon,
+  getOfferMessages:(s)=>s.offerMessages,
+  isFavorite:(s)=>s.isFavorite
 }
 
 const objectNotEmpty = (state, commit, property) => {
@@ -1116,6 +1124,30 @@ export const actions = {
       'notViewedSavedSearch',
     ])
   },
+  async getAllOffers({commit},param='all') {
+   const { data} =await this.$axios.$get(`/offer/salon/offer/all?param=`+param)
+    commit('mutate', { property: 'offers', value: data })
+  },
+
+
+  async salonAcceptOffer({},{id}){
+    const  {data} = await this.$axios.$post('/offer/salon/offer/accept/'+id)
+  },
+  async userAcceptOffer({},{id}){
+    const  {data} = await this.$axios.$post('/offer/user/offer/accept/'+id)
+  },
+  async offerAddFavorite({commit},id){
+    const  data =await this.$axios.$post(`/offer/salon/offer/add-favorite/`+id)
+
+
+  },
+  async OffersAcceptedByAutoSalon({commit},param='all'){
+    const {data} =await this.$axios.$get('/offer/user/offers-accepted-by-auto-salon/'+param)
+    commit('mutate', { property: 'OffersAcceptedByAutoSalon', value: data })
+  },
+
+
+
 }
 
 export const mutations = {
@@ -1220,4 +1252,16 @@ export const mutations = {
   changeSelectedVehicleList(state,payload){
     state.selectedVehicleList = payload;
   },
+  setOfferMessages(state,payload){
+    state.offerMessages=payload
+  },
+  appendOfferMessage(state,payload){
+    state.offerMessages.push(payload)
+  },
+  setOffers(state,payload){
+    state.offers=payload
+  },
+  setIsFavorite(state,payload){
+
+  }
 }

@@ -5,7 +5,7 @@
         <h2 class="title-with-line full-width">
           <span>{{ $t('carcase') }} <span class="star"> *</span></span>
         </h2>
-        <form-buttons v-model="form.car_body_type" :options="sellBody"  
+        <form-buttons v-model="form.car_body_type" :options="sellBody"
           :btn-class="'primary-outline select-body'" :group-by="isMobileBreakpoint ? 2 : 5"
           @change="handleChange($event, 'getSellGenerations', ['car_body_type'], ['sellGenerations','sellEngines','sellGearing','sellTransmissions','sellModifications'], 'generation_id')">
           <template #custom="{ button }">
@@ -19,7 +19,7 @@
         <h2 class="title-with-line full-width">
           <span>{{ $t('generation') }} <span class="star"> *</span></span>
         </h2>
-        <form-buttons v-model="form.generation_id" :options="sellGenerations" 
+        <form-buttons v-model="form.generation_id" :options="sellGenerations"
           :btn-class="'primary-outline select-generation'" :group-by="isMobileBreakpoint ? 2 : 5"
           @change="handleChange($event, 'getSellEngines', ['car_body_type','generation_id'], ['sellEngines','sellGearing','sellTransmissions','sellModifications'], 'gearing')">
           <template #custom="{ button }">
@@ -35,8 +35,8 @@
         <h2 class="title-with-line full-width">
           <span>{{ $t('fuel') }} <span class="star"> *</span></span>
         </h2>
-        <form-buttons v-model="form.gearing" 
-          :options="sellEngines.map(o => ({ name: $t('engine_values')[o.engine], key: o.engine }))" 
+        <form-buttons v-model="form.gearing"
+          :options="sellEngines.map(o => ({ name: $t('engine_values')[o.engine], key: o.engine }))"
           :btn-class="'primary-outline'" :group-by="isMobileBreakpoint ? 1 : 5"
           @change="handleChange($event, 'getSellGearing', ['car_body_type','generation_id','gearing'], ['sellGearing','sellTransmissions','sellModifications'], 'transmission')">
           <template #icon="{ button }">
@@ -44,7 +44,7 @@
           </template>
         </form-buttons>
         <div class="mt-2 mt-lg-3">
-          <form-checkbox :label="$t('gas_equipment')" v-model="form.autogas" transparent input-name="autogas" 
+          <form-checkbox :label="$t('gas_equipment')" v-model="form.autogas" transparent input-name="autogas"
             @change="$emit('update-form', { key: 'autogas', value: $event })" />
         </div>
       </div>
@@ -52,8 +52,8 @@
         <h2 class="title-with-line full-width">
           <span>{{ $t('type_of_drive') }} <span class="star"> *</span></span>
         </h2>
-        <form-buttons v-model="form.transmission" 
-          :options="sellGearing.map(o => ({ name: $t('type_of_drive_values')[o.type_of_drive], key: o.type_of_drive }))" 
+        <form-buttons v-model="form.transmission"
+          :options="sellGearing.map(o => ({ name: $t('type_of_drive_values')[o.type_of_drive], key: o.type_of_drive }))"
           :btn-class="'primary-outline'" :group-by="isMobileBreakpoint ? 1 : 5"
           @change="handleChange($event, 'getSellTransmissions', ['car_body_type','generation_id','gearing','transmission'], ['sellTransmissions','sellModifications'], 'modification')">
           <template #icon="{ button }">
@@ -65,8 +65,9 @@
         <h2 class="title-with-line full-width">
           <span>{{ $t('box') }} <span class="star"> *</span></span>
         </h2>
-        <form-buttons v-model="form.modification" 
-          :options="sellTransmissions.map(o => ({ name: $t('box_values')[o.box], key: o.box }))" 
+
+        <form-buttons v-model="form.modification"
+          :options="sellTransmissions.map(o => ({ name: $t('box_values')[o.box], key: o.box }))"
           :btn-class="'primary-outline'" :group-by="isMobileBreakpoint ? 1 : 5"
           @change="handleChange($event, 'getSellModifications', ['car_body_type','generation_id','gearing','transmission','modification'], ['sellModifications'], 'car_catalog_id')">
           <template #icon="{ button }">
@@ -78,8 +79,8 @@
         <h2 class="title-with-line full-width">
           <span>{{ $t('modification') }} <span class="star"> *</span></span>
         </h2>
-        <form-buttons v-model="form.car_catalog_id" 
-          :options="sellModifications.map(o => ({ name: getModificationName(o), key: o.id }))" 
+        <form-buttons v-model="form.car_catalog_id"
+          :options="sellModifications.map(o => ({ name: getModificationName(o), key: o.id }))"
           :btn-class="'primary-outline'" :group-by="isMobileBreakpoint ? 1 : 3"
           @change="handleChange($event, false, ['car_catalog_id'], [])" />
       </div>
@@ -104,7 +105,6 @@ export default {
   },
   methods: {
     ...mapActions(['getSellBody','getSellGenerations','getSellEngines','getSellGearing','getSellTransmissions','getSellModifications']),
-
     getFormValues(keys) {
       let form = {};
       keys.map(key => {
@@ -183,6 +183,9 @@ export default {
   async fetch() {
     if (!this.sellBody.length)
       await this.getSellBody(this.getFormValues(['brand','model','year']));
+  },
+  created() {
+     this.getSellBody(this.getFormValues(['brand','model','year']));
   }
 }
 </script>
