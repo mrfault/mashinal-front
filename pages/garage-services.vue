@@ -215,6 +215,7 @@ export default {
           isAvailable: true,
         },
         {
+          type: 15,
           title: 'Super təklif' ,
           description: null,
           value: null,
