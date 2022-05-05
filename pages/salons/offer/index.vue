@@ -194,7 +194,7 @@ export default {
   },
   nuxtI18n: {
     paths: {
-      az: 'salonlar/offer'
+      az: '/salonlar/offer'
     }
   },
   methods: {
