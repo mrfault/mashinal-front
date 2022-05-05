@@ -3,21 +3,21 @@
     <template v-if="announcement.is_part_salon || announcement.is_autosalon">
       <grid
         v-if="shopAnnouncements.data && shopAnnouncements.data.length"
-        :announcements="shopAnnouncements.data" 
+        :announcements="shopAnnouncements.data"
         :title="title"
-      />
-      <infinite-loading
-        action="getShopOtherAnnouncements" 
-        getter="shopAnnouncements" 
       />
     </template>
     <template v-else>
       <grid
-        v-if="relativeAnnouncements.length"
-        :announcements="relativeAnnouncements" 
+        v-if="relativeAnnouncements.data && relativeAnnouncements.data.length"
+        :announcements="relativeAnnouncements.data"
         :title="title"
       />
     </template>
+    <infinite-loading
+      :action="announcement.is_part_salon || announcement.is_autosalon ? 'getShopOtherAnnouncementsWithoutMutate': 'getRelativeAnnouncementsWithoutMutate'"
+      :getter="announcement.is_part_salon || announcement.is_autosalon ? 'shopAnnouncements': 'relativeAnnouncements'"
+    />
   </div>
 </template>
 
@@ -44,13 +44,17 @@
     methods: {
       ...mapActions(['getRelativeAnnouncements', 'getShopOtherAnnouncements'])
     },
+    mounted() {
+    console.log('mounted relative')
+    },
     created() {
-      if (this.announcement.is_part_salon || this.announcement.is_autosalon) 
+      if (this.announcement.is_part_salon || this.announcement.is_autosalon)
         this.getShopOtherAnnouncements({ id: this.announcement.id_unique });
       else this.getRelativeAnnouncements({ id: this.announcement.id_unique });
     },
     beforeDestroy() {
-      this.mutate({ property: 'relativeAnnouncements', value: [] });
+      this.mutate({ property: 'relativeAnnouncements', value: {} });
+      this.mutate({ property: 'temporaryLazyData', value: {} });
       this.mutate({ property: 'shopAnnouncements', value: {} });
     }
   }

@@ -17,13 +17,16 @@ Vue.use({
         },
         // tracking events with fb pixel
         fbTrack(eventName, options) {
-          if (this.$env.DEV) {
-            console.log('fb pixel track "' + eventName + '"', options ? JSON.stringify(options) : '');
-          } else {
-            if (!this.$fb) console.warn('fb pixel not setted');
-            else if (options) this.$fb.track(eventName, options);
-            else this.$fb.track(eventName);
-          }
+          try {
+            if (this.$env.DEV) {
+              console.log('fb pixel track "' + eventName + '"', options ? JSON.stringify(options) : '');
+            } else {
+              if (!this.$fb) console.warn('fb pixel not setted');
+              else if (options) this.$fb.track(eventName, options);
+              else this.$fb.track(eventName);
+            }
+          }catch (e){}
+
         },
         // tracking events with gtag manager
         gtagTrack(eventKey) {
@@ -57,7 +60,7 @@ Vue.use({
         },
         // other
         scrollTo(el, offset = 0, duration = 500, container = 'body') {
-          if (document.body.classList.contains('mobile-screen-open')) 
+          if (document.body.classList.contains('mobile-screen-open'))
             container = '.mobile-screen > .container';
           if (el === 0) el = 'body';
           if (typeof el === 'string' && !document.querySelector(el)) return;
@@ -99,7 +102,7 @@ Vue.use({
         getAnnouncementModelName(item) {
           if (item.car_catalog) return this.$translateHard((item.car_catalog.model || item.model).name);
           else if (item.scooter_model) return item.scooter_model.name;
-          else if (item.moto_atv_model) return item.moto_atv_brand.name;
+          else if (item.moto_atv_model) return item.moto_atv_model.name;
           else if (item.moto_model) return item.moto_model.name;
           else if (item.commercial_model) return this.$translateSoft(item.commercial_model.name);
           else if (item.model) return this.$translateHard(item.model.name);
@@ -113,8 +116,8 @@ Vue.use({
           return (brand || '') + ' ' + (model || '');
         },
         getAnnouncementContact(item) {
-          let img = item.user.avatar, 
-              name = item.user.full_name, 
+          let img = item.user.avatar,
+              name = item.user.full_name,
               link = false;
           if (item.is_autosalon) {
             img = item.user.autosalon?.logo;
@@ -135,7 +138,7 @@ Vue.use({
             link: link,
             phone: item.user.phone,
             address: item.address,
-            img: (item.is_autosalon || item.is_part_salon) 
+            img: (item.is_autosalon || item.is_part_salon)
               ? (!img || img?.includes('/images/') ? `/img/salon-logo-${this.colorMode}.jpg` : this.$withBaseUrl(img))
               : (this.$withBaseUrl(img, '/storage/') || '/img/user.jpg'),
             lat: item.latitude ? parseFloat(item.latitude) : 0,
@@ -185,12 +188,17 @@ Vue.use({
           return this.loggedIn && (item.id === this.user.autosalon?.id || item.id === this.user.part_salon?.id);
         },
         showMonetization(item) {
-          return this.userIsOwner(item) && item.status == 1 && !item.has_monetization;
+          return  item.status == 1 && !item.has_monetization;
         }
       },
       computed: {
         ...mapGetters(['loggedIn', 'user', 'colorMode', 'breakpoint', 'pageRef']),
-
+        interiorOptions() {
+          return [
+            { key: false, name: this.$t('exterior') },
+            { key: true, name: this.$t('interior') },
+          ];
+        },
         routeName() {
           return this.getRouteBaseName();
         },

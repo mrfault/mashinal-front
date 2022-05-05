@@ -6,6 +6,8 @@ const getInitialState = () => ({
   colorMode: 'light',
   breakpoint: null,
   ptk: null,
+  temporaryLazyData:[],
+  temporaryLazyDataB:[],
   menus: [],
   staticPages: [],
   pageRef: '',
@@ -45,7 +47,7 @@ const getInitialState = () => ({
   commercialAnnouncements: [],
   shopAnnouncements: {},
   announcement: {},
-  relativeAnnouncements: [],
+  relativeAnnouncements: {},
   userAnnouncements: [],
   // catalog
   catalogAnnouncements: [],
@@ -121,6 +123,13 @@ const getInitialState = () => ({
   balanceHasAnimation: false,
   // banner
   smartBannerIsOn: true,
+  // edit
+  editPath: '',
+  editing: false,
+  editingPostAuthor: '',
+  // garage
+  selectedVehicleList: [],
+  selectedVehiclesPrice: 0,
   offers:[],
   OffersAcceptedByAutoSalon:{},
   offerMessages:[],
@@ -185,15 +194,14 @@ export const getters = {
   carsAnnouncements: (s) => s.carsAnnouncements,
   motoAnnouncements: (s) => s.motoAnnouncements,
   commercialAnnouncements: (s) => s.commercialAnnouncements,
-  shopAnnouncements: (s) => s.shopAnnouncements,
+  shopAnnouncements:  (s) => {
+    return s.shopAnnouncements
+  },
   mainAnnouncements: (s) => s.mainAnnouncements,
   mainPartsAnnouncements: (s) => s.mainPartsAnnouncements,
   myAnnouncements: (s) => s.myAnnouncements,
   myAnnouncement: (s) => s.myAnnouncement,
   relativeAnnouncements: (s) => {
-    if (typeof s.relativeAnnouncements === 'object') {
-      return Object.values(s.relativeAnnouncements)
-    }
     return s.relativeAnnouncements
   },
   userAnnouncements: (s) => s.userAnnouncements,
@@ -269,6 +277,13 @@ export const getters = {
   mapView: (s) => s.mapView,
   // banner
   smartBanner: (s) => s.smartBannerIsOn,
+  // edit
+  editPath: (s) => s.editPath,
+  editing: (s) => s.editing,
+  editingPostAuthor: (s) => s.editingPostAuthor,
+  // garage
+  selectedVehicleList: (s) => s.selectedVehicleList,
+  selectedVehiclesPrice: (s) => s.selectedVehiclesPrice,
   offers: (s) => s.offers,
   OffersAcceptedByAutoSalon:(s)=>s.OffersAcceptedByAutoSalon,
   getOfferMessages:(s)=>s.offerMessages,
@@ -293,12 +308,12 @@ export const actions = {
       this.$auth.setUser(false)
       await this.$auth.logout()
     }
-    if(this.$auth.loggedIn) {
+    if (this.$auth.loggedIn) {
       await Promise.all([
-         dispatch('getNotifications'),
-         dispatch('getFavorites'),
-         dispatch('getNotViewedFavorites'),
-         dispatch('getNotViewedSavedSearch')
+        dispatch('getNotifications'),
+        dispatch('getFavorites'),
+        dispatch('getNotViewedFavorites'),
+        dispatch('getNotViewedSavedSearch'),
       ])
     }
     await Promise.all([
@@ -761,9 +776,35 @@ export const actions = {
     )
     commit('mutate', { property: 'mainAnnouncements', value: res })
   },
+  async getInfiniteMainSearchWithoutMutate({ commit }, data = {}) {
+    const res =  await this.$axios.$get(
+      `/grid/home_page_all?page=${data.page || 1}`,
+    )
+
+    commit('mutate',{ property:'temporaryLazyData', value: res})
+  },
+  async getInfiniteMainPartsSearchWithoutMutate({ commit }, data = {}) {
+    const res = await this.$axios.$get(
+      `/grid/home_page_parts?per_page=4&page=${data.page || 1}`,
+    )
+    commit('mutate', { property: 'temporaryLazyDataB', value: res })
+  },
   async getInfiniteMainPartsSearch({ commit }, data = {}) {
     const res = await this.$axios.$get(
       `/grid/home_page_parts?per_page=4&page=${data.page || 1}`,
+    )
+    commit('mutate', { property: 'mainPartsAnnouncements', value: res })
+  },
+
+  async getInfiniteMainPartsPageSearchWithoutMutate({ commit }, data = {}) {
+    const res = await this.$axios.$post(
+      `/grid/part?page=${data.page || 1}`,
+    )
+    commit('mutate', { property: 'temporaryLazyData', value: res })
+  },
+  async getInfiniteMainPartsPageSearch({ commit }, data = {}) {
+    const res = await this.$axios.$post(
+      `/grid/part?page=${data.page || 1}`,
     )
     commit('mutate', { property: 'mainPartsAnnouncements', value: res })
   },
@@ -776,14 +817,24 @@ export const actions = {
   },
   // Announcements
   async getRelativeAnnouncements({ commit }, data) {
-    const res = await this.$axios.$get(`/grid/same/announcements/${data.id}`)
+    const res = await this.$axios.$get(`/grid/same/announcements_new/${data.id}`)
     commit('mutate', { property: 'relativeAnnouncements', value: res })
   },
-  async getShopOtherAnnouncements({ commit }, data) {
+  async getRelativeAnnouncementsWithoutMutate({ commit,state }, data) {
+    const res = await this.$axios.$get(`/grid/same/announcements_new/${data.id || state.announcement.id_unique}?page=${data.page || 1}`)
+    commit('mutate', { property: 'temporaryLazyData', value: res })
+  },
+  async getShopOtherAnnouncements({ commit,state }, data) {
     const res = await this.$axios.$get(
-      `/grid/shop/announcements/${data.id}?page=${data.page || 1}`,
+      `/grid/shop/announcements/${data.id || state.announcement.id_unique}?page=${data.page || 1}`,
     )
     commit('mutate', { property: 'shopAnnouncements', value: res })
+  },
+  async getShopOtherAnnouncementsWithoutMutate({ commit,state }, data) {
+    const res = await this.$axios.$get(
+      `/grid/shop/announcements/${data.id || state.announcement.id_unique}?page=${data.page || 1}`,
+    )
+    commit('mutate', { property: 'temporaryLazyData', value: res })
   },
   async getUserAnnouncements({ commit }, data) {
     const res = await this.$axios.$get(`/user/${data.id}/announcements`)
@@ -994,6 +1045,12 @@ export const actions = {
     )
     commit('mutate', { property: 'myBalanceHistory', value: res })
   },
+  async getMyBalanceHistoryWithoutMutate({ commit }, data = {}) {
+    const res = await this.$axios.$get(
+      `/payment/getHistory?page=${data.page || 1}&type=${data.type || 0}`,
+    )
+    commit('mutate', { property: 'temporaryLazyData', value: res })
+  },
   async updatePromotion({ commit }, { key, value }) {
     commit('mutate', { property: 'promotion', key, value })
   },
@@ -1176,7 +1233,24 @@ export const mutations = {
   },
   // banner
   closeSmartBanner(state, payload) {
-    state.smartBanner = payload;
+    state.smartBanner = payload
+  },
+  // edit
+  changeEditPath(state, payload) {
+    state.editPath = payload
+  },
+  changeEditing(state, payload) {
+    state.editing = payload
+  },
+  changeEditPostAuthor(state, payload) {
+    state.editingPostAuthor = payload
+  },
+  // garage
+  changeSelectedVehiclesPrice(state,payload){
+    state.selectedVehiclesPrice = payload;
+  },
+  changeSelectedVehicleList(state,payload){
+    state.selectedVehicleList = payload;
   },
   setOfferMessages(state,payload){
     state.offerMessages=payload

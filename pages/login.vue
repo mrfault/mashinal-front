@@ -61,7 +61,7 @@ export default {
       this.resetSellTokens();
       let path = '/garage-services';
       if(this.$route.query.param) path+='?'+this.$route.query.param;
-      if (this.loggedIn && this.user.user_type === 3) path = '/profile/btl';
+      if (this.loggedIn && [3,4].includes(this.user.user_type)) path = '/profile/btl';
       else if (this.$route.query.ref) path = this.$route.query.ref;
       this.$router.push(this.$localePath(path));
     }
@@ -89,9 +89,5 @@ export default {
     color: white;
   }
 }
-.dark-mode {
-  .login-image {
-    background: linear-gradient(69.9deg, #131314 0%, #202022 100%);;
-  }
-}
+
 </style>

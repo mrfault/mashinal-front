@@ -5,6 +5,7 @@
         <h2 :class="['section-title heading-dots', {'heading-dots--left': isMobileBreakpoint}]">
           {{ $t('business_profile_packages') }}
         </h2>
+        <h3 class="section-subtitle">{{ $t('without_nds') }}</h3>
       </div>
       <div class="row packages">
         <div class="col-6 col-lg-2 mb-2 mb-lg-0" v-for="item in salonPackages" :key="item.id">
@@ -35,18 +36,18 @@
         </button>
       </div>
     </form>
-    <modal-popup 
-      :toggle="showPaymentModal" 
+    <modal-popup
+      :toggle="showPaymentModal"
       :title="`${$t('package')} - ${getPackageName(selectedPackage)}`"
       @close="showPaymentModal = false, $v.$reset()"
     >
-      <form-text-input 
+      <form-text-input
         v-if="!hasSalon"
         :maxlength="30"
-        :placeholder="$t('salon_name')" 
-        :invalid="$v.form.name.$error" 
+        :placeholder="$t('salon_name')"
+        :invalid="$v.form.name.$error"
         v-model="form.name"
-        class="mb-2 mb-lg-3" 
+        class="mb-2 mb-lg-3"
       />
       <p class="mb-2 mb-lg-3">
         {{ $t(hasSalon ? 'business_profile_package_change_info' : 'business_profile_payment_info') }}
@@ -69,9 +70,9 @@
         </div>
       </div>
     </modal-popup>
-    <terminal-info-popup 
+    <terminal-info-popup
       name="packages-popup"
-      @open="showPaymentModal = false" 
+      @open="showPaymentModal = false"
       @close="showPaymentModal = true"
     />
     <modal-popup
@@ -80,18 +81,19 @@
       @close="showMyAnnouncements = false, deselectAnnouncements()"
       :modal-class="'announcements-popup' + (isMobileBreakpoint ? ' larger' : '')"
     >
-      <p v-html="$t('you_should_deactivate_announcements', { 
-        package1: getPackageName(user.autosalon.current_package), 
+      <p v-html="$t('you_should_deactivate_announcements', {
+        package1: getPackageName(user.autosalon.current_package),
         package2: getPackageName(selectedPackage),
         n: selectedPackage.announce_count
       })" v-if="user.autosalon"></p>
-      <grid 
-        :announcements="salonAnnouncements.items" 
+      <grid
+        :announcements="salonAnnouncements.items"
         :show-title="false"
         :show-phone-count="true"
         :show-checkbox="true"
         :show-overlay="false"
         :clickable="false"
+        :show-monetization-actions="false"
       />
       <div class="modal-sticky-bottom">
         <hr/>
@@ -134,12 +136,12 @@ export default {
       hasSalon: !!this.$store.state.auth.user?.autosalon,
       contractEnded: this.$store.state.auth.user?.autosalon?.status === 0,
       form: {
-        name: this.$store.state.auth.user?.part_salon?.name || ''
+        name: this.$store.state.auth.user?.part_salon?.name || this.$store.state.auth.user?.autosalon?.name || ''
       }
     }
   },
   validations: {
-    form: { 
+    form: {
       name: { required }
     }
   },
@@ -220,10 +222,10 @@ export default {
           ]);
           this.pending = false;
           this.$router.push(this.$localePath('/dashboard/1'+(this.hasSalon ? '' : '/settings')), () => {
-            this.updatePaidStatus({ 
-              type: 'success', 
-              text: this.$t('change_package'), 
-              title: this.$t('success_payment') 
+            this.updatePaidStatus({
+              type: 'success',
+              text: this.$t('change_package'),
+              title: this.$t('success_payment')
             });
           });
         } else if (this.paymentMethod === 'card') {
@@ -238,10 +240,10 @@ export default {
           this.pending = false;
           this.showPaymentModal = false;
           this.$router.push(this.$localePath('/dashboard/1'+(this.hasSalon ? '' : '/settings')), () => {
-            this.updatePaidStatus({ 
-              type: 'success', 
-              text: this.$t(this.shouldBuy ? 'package_bought' : 'change_package'), 
-              title: this.$t('success_payment') 
+            this.updatePaidStatus({
+              type: 'success',
+              text: this.$t(this.shouldBuy ? 'package_bought' : 'change_package'),
+              title: this.$t('success_payment')
             });
           });
         }
@@ -267,9 +269,9 @@ export default {
     },
     selectAnnouncement(id, value, controls = false) {
       if (!controls) return;
-      
-      this.$set(this, 'selectedAnnouncements', value 
-        ? (this.selectedAnnouncements.includes(id) ? [...this.selectedAnnouncements] : [...this.selectedAnnouncements, id]) 
+
+      this.$set(this, 'selectedAnnouncements', value
+        ? (this.selectedAnnouncements.includes(id) ? [...this.selectedAnnouncements] : [...this.selectedAnnouncements, id])
         : this.selectedAnnouncements.filter(selected_id => selected_id != id)
       );
     },

@@ -35,7 +35,7 @@ export const actions = {
     return res;
   },
   async registerNewCar({}, data) {
-    const res = await this.$axios.$get(`/garage/register_pay${this.$queryParams(data)}`);
+    const res = await this.$axios.$post(`/garage/register_pay`,data);
     return res;
   },
   async activateCar({}, data) {

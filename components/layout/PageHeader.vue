@@ -46,6 +46,7 @@
       class="header-menu container d-none d-lg-block"
       :class="{ 'no-border-radius': hoverMenu }"
     >
+      <!-- topbar -->
       <div class="topbar">
         <nuxt-link
           class="logo"
@@ -158,102 +159,105 @@
           <theme-switch />
         </nav>
       </div>
-      <div
-        class="navbar navbar-white"
-        :class="{ 'no-border-radius': hoverMenu }"
-      >
-        <div class="container">
-          <nav class="full-width">
-            <div class="row align-items-center">
-              <div class="col-lg-8 position-static">
-                <ul class="menu position-relative">
-                  <li
-                    @mouseover="menu.children ? (hoverMenu = true) : ''"
-                    @mouseleave="
-                      hoverMenu = false
-                      activeCategory = 0
-                    "
-                    v-for="menu in navbarMenus"
-                    :key="menu.title"
-                    :class="{ dropdown: menu.children }"
-                  >
-                    <nuxt-link :to="$localePath(menu.route)">
-                      <icon
-                        style="font-size: 20px; margin-right: 10px;"
-                        class="no-transform"
-                        :name="menu.icon"
-                      />
-                      {{ $t(menu.title) }}
-                      <icon name="chevron-down" v-if="menu.children" />
-                    </nuxt-link>
-                    <div
-                      class="dropdown-content container"
-                      style="padding-left: 0;"
-                      v-if="menu.children"
-                       :class="{'dropdown-menu-click':closeDropdownMenu}"
+      <!-- navbar white -->
+        <div
+          class="navbar navbar-white position-relative"
+          :class="{ 'no-border-radius': hoverMenu }"
+        >
+          <div class="container">
+            <nav class="full-width">
+              <div class="row align-items-center">
+                <div class="col-lg-8 position-static">
+                  <ul class="menu position-relative">
+                    <li
+                      @mouseover="menu.children ? (hoverMenu = true) : ''"
+                      @mouseleave="
+                        hoverMenu = false
+                        activeCategory = 0
+                      "
+                      v-for="menu in navbarMenus"
+                      :key="menu.title"
+                      :class="{ dropdown: menu.children }"
                     >
-                      <div class="container">
-                        <div class="row">
-                          <div class="col-3" v-if="menu.categories">
-                            <ul class="dropdown-menu_categories">
-                              <li
-                                @mouseover="activeCategory = index"
-                                v-for="(category, index) in menu.categories"
-                                :key="category.title"
-                              >
-                                <nuxt-link
-                                  :to="$localePath(category.route)"
-                                  active-class="link-active"
-                                  :class="{ active: index === activeCategory }"
+                      <nuxt-link :to="$localePath(menu.route)">
+                        <icon
+                          style="font-size: 20px; margin-right: 10px;"
+                          class="no-transform"
+                          :name="menu.icon"
+                        />
+                        {{ $t(menu.title) }}
+                        <icon name="chevron-down" v-if="menu.children" />
+                      </nuxt-link>
+                      <div
+                        class="dropdown-content container"
+                        style="padding-left: 0;"
+                        v-if="menu.children"
+                        :class="{ 'dropdown-menu-click': closeDropdownMenu }"
+                      >
+                        <div class="container">
+                          <div class="row">
+                            <div class="col-3" v-if="menu.categories">
+                              <ul class="dropdown-menu_categories">
+                                <li
+                                  @mouseover="activeCategory = index"
+                                  v-for="(category, index) in menu.categories"
+                                  :key="category.title"
                                 >
-                                  {{ $t(category.title) }}
-                                  <icon name="chevron-right" />
-                                  <!-- <inline-svg src="/icons/chevron-right.svg" :height="14" /> -->
-                                </nuxt-link>
-                              </li>
-                            </ul>
-                          </div>
-                          <div :class="`col-${menu.categories ? 9 : 12}`">
-                            <ul class="dropdown-menu row">
-                              <li
-                                :class="`col-${menu.categories ? 4 : 3}`"
-                                v-for="submenu in (menu.categories ? menu.categories[activeCategory].children : menu.children)"
-                                :key="submenu.title"
-                              >
-                                <nuxt-link
-                                  :to="$localePath(submenu.route)"
-                                  exact
+                                  <nuxt-link
+                                    :to="$localePath(category.route)"
+                                    active-class="link-active"
+                                    :class="{
+                                      active: index === activeCategory,
+                                    }"
+                                  >
+                                    {{ $t(category.title) }}
+                                    <icon name="chevron-right" />
+                                    <!-- <inline-svg src="/icons/chevron-right.svg" :height="14" /> -->
+                                  </nuxt-link>
+                                </li>
+                              </ul>
+                            </div>
+                            <div :class="`col-${menu.categories ? 9 : 12}`">
+                              <ul class="dropdown-menu row">
+                                <li
+                                  :class="`col-${menu.categories ? 4 : 3}`"
+                                  v-for="submenu in (menu.categories ? menu.categories[activeCategory].children : menu.children)"
+                                  :key="submenu.title"
                                 >
-                                  <icon :name="submenu.icon" />
-                                  {{ $t(submenu.title) }}
-                                </nuxt-link>
-                              </li>
-                            </ul>
+                                  <nuxt-link
+                                    :to="$localePath(submenu.route)"
+                                    exact
+                                  >
+                                    <icon :name="submenu.icon" />
+                                    {{ $t(submenu.title) }}
+                                  </nuxt-link>
+                                </li>
+                              </ul>
+                            </div>
                           </div>
                         </div>
                       </div>
+                    </li>
+                  </ul>
+                </div>
+                <div class="col-lg-4">
+                  <div class="row justify-content-end top-header-right">
+                    <div class="col-5 col-lg-7 col-xl-5">
+                      <nuxt-link
+                        class="btn full-width btn--pale-green-outline"
+                        :to="$localePath('/sell')"
+                        @click.native="handleBtnClick('sell')"
+                      >
+                        <icon name="plus-circle" />
+                        {{ $t('to_sell') }}
+                      </nuxt-link>
                     </div>
-                  </li>
-                </ul>
-              </div>
-              <div class="col-lg-4">
-                <div class="row justify-content-end top-header-right">
-                  <div class="col-5 col-lg-7 col-xl-5">
-                    <nuxt-link
-                      class="btn full-width btn--pale-green-outline"
-                      :to="$localePath('/sell')"
-                      @click.native="handleBtnClick('sell')"
-                    >
-                      <icon name="plus-circle" />
-                      {{ $t('to_sell') }}
-                    </nuxt-link>
                   </div>
                 </div>
               </div>
-            </div>
-          </nav>
+            </nav>
+          </div>
         </div>
-      </div>
     </header>
   </div>
 </template>
@@ -293,22 +297,21 @@ export default {
       }
     },
   },
-computed: {
+  computed: {
     ...mapGetters([
       'notViewedFavorites',
       'notViewedSavedSearch',
       'homePageSliders',
     ]),
   },
-  watch:{
-    $route (to, from){
-      this.closeDropdownMenu = true;
+  watch: {
+    $route(to, from) {
+      this.closeDropdownMenu = true
       setTimeout(() => {
-        this.closeDropdownMenu = false;
-      }, 1000);
-      
-    }
-  }
+        this.closeDropdownMenu = false
+      }, 1000)
+    },
+  },
 }
 </script>
 

@@ -15,6 +15,7 @@
       />
       <label
         :for="id || inputName"
+        class="cursor-pointer"
         :class="{
           transparent,
           'pr-0': labelClick,
@@ -94,6 +95,7 @@ export default {
     hasTooltip: Boolean,
     skipTruncate: Boolean,
     hasPopover: Boolean,
+
   },
   data() {
     return {
@@ -110,7 +112,7 @@ export default {
         this.$emit('input', value)
         // check if value was changed
         if (value !== this.prevValue) {
-        
+
           this.prevValue = value
         }
           this.$emit('change', value)

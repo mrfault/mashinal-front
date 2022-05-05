@@ -93,7 +93,7 @@
           needToPay)
       "
     >
-      <hr class="mt-3" />
+      <hr class="mt-3"  v-if="needToPay || (!this.isMobileBreakpoint && announcement.has_monetization && $auth.loggedIn) || (!this.isMobileBreakpoint && !announcement.has_monetization)"/>
       <div :class="{ 'mb-2 mb-lg-3': !needToPay }">
         <pay-announcement-button
           :announcement="announcement"
@@ -101,11 +101,12 @@
         />
         <monetization-stats-button
           :announcement="announcement"
-          v-else-if="!this.isMobileBreakpoint && announcement.has_monetization && $auth.loggedIn"
+          v-else-if="!this.isMobileBreakpoint && announcement.has_monetization && $auth.loggedIn && $auth.user.id === announcement.user_id && !needToPay"
         />
         <monetization-button
           :announcement="announcement"
-          v-if="!this.isMobileBreakpoint && !announcement.has_monetization"
+          v-if=" !announcement.has_monetization && !needToPay"
+          @openModal="openModal"
         />
       </div>
     </template>
@@ -116,12 +117,12 @@
         !(announcement.is_autosalon && announcement.status == 3)
       "
     >
-      <hr :class="{ 'mt-3': announcement.status == 3 }" />
+      <hr :class="{ 'mt-3': announcement.status == 3 }"  v-if="showEditButton(announcement) || showDeactivateButton(announcement) || announcement.status == 3"/>
       <div class="row mt-n2 mt-lg-n3">
         <div class="col mt-2 mt-lg-3">
           <restore-button
             :announcement="announcement"
-            v-if="announcement.status == 3"
+            v-if="userIsOwner(announcement) && announcement.status == 3"
             :free="type === 'parts'"
           />
           <deactivate-button
@@ -218,7 +219,7 @@ export default {
       if (this.$auth.loggedIn == false) {
         return item.status == 1 || item.status == 2
       } else {
-        return this.$auth.user.id == item.user.id
+        return this.$auth.user.id == item.user.id && item.status != 5
       }
     },
     openModal() {

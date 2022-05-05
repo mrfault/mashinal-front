@@ -89,9 +89,9 @@ export const actions = {
       })
     }
   },
+  // ---------------------------------
   async getOtherAnnouncements({ dispatch, commit }, payload) {
     const { announcements, pagination } = await dispatch('getAnnouncementsReq', payload)
-
     commit('mutate', {
       property: 'otherAnnouncementsPagination',
       value: pagination

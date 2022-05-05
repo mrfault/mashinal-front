@@ -1,4 +1,4 @@
-<template>
+`<template>
   <div :class="colClass || 'stratch-child-block'">
     <div
       class="announcements-grid_gallery"
@@ -36,7 +36,7 @@
         </div>
       </div>
     </div>
-    <div class="announcements-grid_item" @click="goToAnnouncement">
+    <div class="announcements-grid_item" :class="'id'+announcement.id_unique" @click="goToAnnouncement">
       <a
         v-if="clickable && !isMobileBreakpoint && !$env.DEV"
         target="_blank"
@@ -56,14 +56,22 @@
         <div class="item-overlay" v-if="showOverlay">
           <div class="item-overlay__top">
             <div class="item-overlay__top--left">
-              <add-favorite :announcement="announcement"/>
+              <add-favorite
+                :announcement="announcement"
+                v-if="!isProfilePage"
+              />
             </div>
-            <div class="item-overlay__top--right">
+            <div
+              class="item-overlay__top--right"
+              :class="{
+                'pending-badge-centered': checkPendingBadge(announcement),
+              }"
+            >
               <span
                 class="btn-sq btn-sq--color-red active"
-                v-if="announcement.has_monetization"
+                v-if="announcement.has_monetization && !isMobileBreakpoint"
               >
-                <icon name="speaker" v-tooltip="$t('ad_announcement')"/>
+                <icon name="speaker" v-tooltip="$t('ad_announcement')" />
               </span>
               <template
                 v-if="announcement.is_autosalon || announcement.is_part_salon"
@@ -89,6 +97,12 @@
                   v-else-if="announcement.status == 2"
                 >
                   {{ $t('under_consideration') }}
+                </span>
+                <span
+                  class="badge pending"
+                  v-else-if="announcement.status == 5"
+                >
+                  {{ $t('is_loading') }}
                 </span>
                 <span
                   class="badge rejected"
@@ -117,13 +131,23 @@
                 v-if="getType === 'Car'"
               />
             </span>
+
             <div class="item-overlay__bottom--right">
               <span class="badge" v-if="announcement.has_360">
                 360
                 <sup>o</sup>
               </span>
-              <span class="badge" v-if="announcement.created_at">
+              <span
+                class="badge"
+                v-if="announcement.created_at && !isMobileBreakpoint"
+              >
                 {{ $formatDate(announcement.created_at, 'D MMM')[locale] }}
+              </span>
+              <span
+                class="btn-sq btn-sq--color-red active"
+                v-if="announcement.has_monetization && isMobileBreakpoint"
+              >
+                <icon name="speaker" v-tooltip="$t('ad_announcement')" />
               </span>
             </div>
           </div>
@@ -140,11 +164,38 @@
           {{ getAnnouncementTitle(announcement) }}
         </h3>
         <!-- year, odometer, credit, barter -->
+        <!-- 1 -->
         <div class="item-details--infos">
           <span class="item-details__year" v-if="getTextLine">
             <span>{{ getTextLine }}</span>
+            <span v-if="getTextLine  && isMobileBreakpoint">
+              <span v-if="!announcement.category">, {{ getOdometer }}</span>
+            </span>
           </span>
-          <span class="item-details__options">
+          <span class="item-details__options" v-show="getOdometer == null">
+            <icon
+              name="percent"
+              v-tooltip="$t('credit_possible')"
+              v-if="announcement.credit"
+            />
+            <icon
+              name="barter"
+              v-tooltip="$t('tradeable')"
+              v-if="announcement.tradeable || announcement.exchange_possible"
+            />
+          </span>
+        </div>
+        <!-- odometer, credit,barter
+         -->
+        <!-- 2 -->
+        <div class="item-details--infos pt-1">
+          <span class="item-details__year" v-if="getTextLine && !isMobileBreakpoint">
+            <span v-if="!announcement.category">{{ getOdometer }}</span>
+          </span>
+          <span class="item-details__year" v-if="isMobileBreakpoint">
+            <span >{{ announcement.humanize_created_at }}</span>
+          </span>
+          <span class="item-details__options" v-show="getOdometer">
             <icon
               name="percent"
               v-tooltip="$t('credit_possible')"
@@ -167,9 +218,9 @@
             class="call-count"
             v-if="announcement.show_phone_number_count || showPhoneCount"
           >
-            <icon name="phone-call"/>
+            <icon name="phone-call" />
             {{ announcement.show_phone_number_count || 0 }}
-            <icon name="eye"/>
+            <icon name="eye" />
             {{ announcement.view_count }}
           </span>
           <div class="item-checkbox" v-if="showCheckbox" style="">
@@ -181,8 +232,8 @@
             />
           </div>
         </div>
-        <hr class="mt-1" v-if="showCheckbox && announcement.status === 1"/>
-        <div class="item-details__actions">
+        <hr class="mt-1" v-if="showMonetizationActions && showCheckbox && announcement.status === 1" />
+        <div class="item-details__actions" v-if="showMonetizationActions">
           <template v-if="showCheckbox && announcement.status === 1">
             <span>
               <monetization-button
@@ -190,7 +241,10 @@
                 :announcement="announcement"
                 class-name="red-outline"
               />
-              <monetization-stats-button v-else-if="$auth.id === announcement.user_id" :announcement="announcement"/>
+              <monetization-stats-button
+                v-else-if="$auth.user.id === announcement.user_id"
+                :announcement="announcement"
+              />
             </span>
           </template>
         </div>
@@ -209,6 +263,10 @@ export default {
   props: {
     announcement: {},
     showStatus: Boolean,
+    showMonetizationActions: {
+      type: Boolean,
+      default:true,
+    },
     showCheckbox: Boolean,
     showPhoneCount: Boolean,
     showGallery: Boolean,
@@ -216,6 +274,10 @@ export default {
     clickable: Boolean,
     trackViews: Boolean,
     colClass: String,
+    isProfilePage: {
+      type: Boolean,
+      default: false,
+    },
   },
   components: {
     MonetizationStatsButton,
@@ -254,9 +316,12 @@ export default {
         // this.getCapacity &&
         this.showOverlay
       )
-        text +=
-          // `, ${this.getCapacity}`text +=
-          `, ${this.announcement.humanize_mileage} ${this.$t('char_kilometre')}`
+        if (this.getCapacity) {
+          text +=
+            // `, ${this.getCapacity}`text +=
+            // `, ${this.announcement.humanize_mileage} ${this.$t('char_kilometre')}`
+            `, ${this.getCapacity}`
+        }
       return text
     },
     getImage() {
@@ -277,11 +342,19 @@ export default {
         type = this.getType
       let capacity = item.car_catalog?.capacity || item.capacity
       let showLitres = ['Car', 'Commercial'].includes(type)
-      if (!capacity || capacity == '0') return false
+      if (!capacity || capacity == '0') return ''
       if (showLitres && capacity > 50) capacity = (capacity / 1000).toFixed(1)
       return `${capacity} ${this.$t(
         showLitres ? 'char_litre' : 'char_sm_cube',
       )}`
+    },
+    getOdometer() {
+      if (this.showOverlay){
+        return `${this.announcement.humanize_mileage} ${this.$t(
+          'char_kilometre',
+        )}`
+      }
+
     },
   },
   methods: {
@@ -316,8 +389,22 @@ export default {
       if (controls || id != this.announcement.id_unique) return
       this.handleChange(value)
     },
+    checkPendingBadge(announcement) {
+      if (
+        (announcement.status == 2 ||
+          announcement.status == 5 ||
+          announcement.status == 3) &&
+        (announcement.is_autosalon == true ||
+          announcement.is_part_salon == true)
+      ) {
+        return true
+      } else {
+        return false
+      }
+    },
   },
   mounted() {
+
     this.$nuxt.$on('select-announcement', this.selectAnnouncement)
   },
   beforeDestroy() {
@@ -325,3 +412,4 @@ export default {
   },
 }
 </script>
+`

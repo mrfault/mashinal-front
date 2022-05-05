@@ -29,6 +29,7 @@
       <portal to="mobile-dropdown" v-if="isMobileBreakpoint">
         <action-bar class="priority-1"
           :title="getActionBarText"
+          :useBack="false"
           v-if="showOptions && isMobileBreakpoint && !inSelectMenu" 
           @back="showOptions = false" 
           @accept="showOptions = false"
@@ -36,7 +37,7 @@
         />
         <div :class="['select-menu_dropdown responsive', `anchor-${anchor}`, {'show': showOptions, custom, 'custom-checkboxes': customCheckboxes}]">
           <template v-if="showOptions">
-            <div class="mt-3" v-if="hasSearch && !hasGenerations" @click.stop>
+            <div class="my-3" v-if="hasSearch && !hasGenerations" @click.stop>
               <div class="container">
                 <form-text-input 
                   v-model="search"

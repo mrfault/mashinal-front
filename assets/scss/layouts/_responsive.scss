@@ -88,6 +88,13 @@
       max-width: 100%;
     }
   }
+  .btn {
+    &__asan-login {
+      &--text {
+        font-size: 13px !important;
+      }
+    }
+  }
 }
 
 @media only screen and (min-width: 1280px) {
@@ -101,12 +108,14 @@
   }
 
   .row {
-    .col-lg-1-5, .col-xl-1-5 {
+    .col-lg-1-5,
+    .col-xl-1-5 {
       flex: 0 0 20%;
       max-width: 20%;
     }
 
-    .col-lg-2-5, .col-xl-2-5 {
+    .col-lg-2-5,
+    .col-xl-2-5 {
       flex: 0 0 40%;
       max-width: 40%;
     }
@@ -183,6 +192,61 @@
           a {
             padding: 0 16px !important;
           }
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 356px) and (max-width: 450px) {
+  .btn {
+    &__asan-login {
+      &--text {
+        font-size: 11px !important;
+      }
+    }
+  }
+}
+@media screen and (max-width: 350px) {
+  .btn {
+    &__asan-login {
+      &--text {
+        font-size: 11px;
+      }
+    }
+  }
+}
+@media screen and (max-width: 678px) {
+  .btn {
+    &__asan-login {
+      &--text {
+        font-size: 13px;
+      }
+    }
+  }
+  .announcements-grid_item {
+    .item-overlay {
+      &__top {
+        &--left {
+          span,button {
+            transform: scale(0.8);
+          }
+        }
+        &--right {
+          width: 100%;
+          justify-content: space-between;
+          span {
+            transform: scale(0.8);
+          }
+        }
+      }
+      &__bottom {
+        justify-content: space-between;
+        .btn-compare {
+          transform: scale(0.8);
+        }
+        &--right {
+          transform: scale(0.8);
         }
       }
     }

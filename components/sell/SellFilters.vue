@@ -18,7 +18,7 @@
           </div>
         </template>
         <template v-else-if="getType(item) === 'select-menu'">
-          <div class="col-lg-4">
+          <div class="col-lg-4 mb-2 mb-lg-3">
             <form-select
               v-model="form[getKey(item)]"
               :invalid="hasError(item)"
@@ -30,7 +30,7 @@
           </div>
         </template>
         <template class="form-group" :class="getError(item)" v-else-if="getType(item) === 'input-numeric'">
-          <div class="col-lg-4">
+          <div class="col-lg-4 mb-2 mb-lg-3">
             <form-numeric-input
               v-model="form[getKey(item)]"
               :invalid="hasError(item)"
@@ -39,7 +39,7 @@
               @change="selectOption(getKey(item), $event)"
             />
           </div>
-          <div class="col-lg-4"  v-if="index === 'volume'">
+          <div class="col-lg-4 mb-2 mb-lg-3"  v-if="index === 'volume'">
             <form-numeric-input
               v-model="form[getKey(filteredComponents['power'])]"
               :invalid="hasError(filteredComponents['power'])"
@@ -185,7 +185,7 @@
     computed: {
       filteredComponents() {
         if (this.filters instanceof Array)
-          return this.filters;
+          return this.filters.filter(item => ['capacity','power'].includes(item.type_key));
         let filters = {};
         for(let i in this.filters) {
           if(this.otherOptions.includes(i)) continue;
@@ -197,7 +197,7 @@
       },
       filteredOtherComponents() {
         if (this.filters instanceof Array)
-          return this.filters;
+          return this.filters.filter(item => !['capacity','power'].includes(item.type_key));
         let filters = {};
         for(let i in this.filters) {
           if(!this.otherOptions.includes(i)) continue;

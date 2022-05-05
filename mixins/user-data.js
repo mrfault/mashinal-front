@@ -1,6 +1,8 @@
 import { mapGetters } from 'vuex';
+import Asan_login from "~/mixins/asan_login";
 
 export const UserDataMixin = {
+  mixins:[Asan_login],
   computed: {
     ...mapGetters(['countNewMessages','countNewNotifications']),
 

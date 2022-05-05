@@ -1,59 +1,87 @@
 <template>
-  <div class="pages-index" :style="!isMobileBreakpoint ? 'margin-top: -162px;' : ''">
-
-    <div class="swiper-container" v-swiper:gallerySwiper="swiperOps" v-if="!isMobileBreakpoint">
-
+  <div
+    class="pages-index"
+    :style="!isMobileBreakpoint ? 'margin-top: -162px;' : ''"
+  >
+    <!-- slider desktop -->
+    <div
+      class="swiper-container swiper-container-desktop"
+      v-swiper:gallerySwiper="swiperOps"
+    >
       <div class="swiper-wrapper">
-        <div class="swiper-slide" v-for="homePageSlider in homePageSliders">
-          <div class=" homePage-slide-item" >
-            <div class="homePage-slide-left">
-              <img :src="homePageSlider.image">
+        <div
+          class="swiper-slide"
+          v-for="(homePageSlider, index) in homePageSliders"
+          :key="index"
+        >
+          <div class="homePage-slide-item">
+            <div class="homePage-slide-item-left">
+              <img
+                :srcset="`${homePageSlider.media.image[1]} 1024w,${homePageSlider.media.image[0]} 640w`"
+                :src="homePageSlider.media.image[0]"
+                sizes="(min-width: 36em) 33.3vw, 100vw"
+                alt="mashinal cover image"
+              />
             </div>
-            <div class="homePage-slide-right" :style="!isDarkMode ? `background:${homePageSlider.overlay_color}`:''">
-              <div class="before-slider-right" :style="` border-top: 600px solid ${!isDarkMode ? homePageSlider.overlay_color:'#D0DBF9'};`"></div>
-              <div class="homePage-text-section">
-                <div class="homePage-text-section-title">
-
-                  <img :src="isDarkMode ? homePageSlider.icon_dark : homePageSlider.icon">
+            <div
+              class="homePage-slide-item-right"
+              :style="
+                !isDarkMode ? `background:${homePageSlider.overlay_color}` : ''
+              "
+            >
+              <div
+                class="before-slider-right"
+                :style="` border-top: 600px solid ${
+                  !isDarkMode ? homePageSlider.overlay_color : '#D0DBF9'
+                };`"
+              ></div>
+              <div class="homePage-text-section" :style="!isMobileBreakpoint ?`margin-left: -150px;`:''">
+                <div class="homePage-text-section-title" style="margin-left: -3px;">
+                  <!-- <img :src="homePageSlider.icon" /> -->
+                  <img
+                    :src="
+                      isDarkMode
+                        ? homePageSlider.icon_dark
+                        : homePageSlider.icon
+                    "
+                  />
                   <h3>{{ homePageSlider.title[locale] }}</h3>
                 </div>
                 <p>{{ homePageSlider.description[locale] }}</p>
 
-                <nuxt-link :to="$localePath(homePageSlider.button_link)" class="btn  btn--green text-left" v-if="homePageSlider.button_link">{{homePageSlider.button_text[locale]}}</nuxt-link>
-                <button v-if="false" @click="gotoRoute($localePath(homePageSlider.button_link))" class="btn  btn--green text-left" >{{homePageSlider.button_text[locale]}}</button>
+                <nuxt-link
+                  :to="$localePath(homePageSlider.button_link)"
+                  class="btn btn--green text-left"
+                  v-if="homePageSlider.button_link"
+                >
+                  <icon name="plus-circle"/>
+                  {{ homePageSlider.button_text[locale] }}
+                </nuxt-link>
+                <button
+                  v-if="false"
+                  @click="gotoRoute($localePath(homePageSlider.button_link))"
+                  class="btn btn--green text-left"
+                >
+                  {{ homePageSlider.button_text[locale] }}
+                </button>
               </div>
             </div>
           </div>
         </div>
       </div>
       <div class="swiper-pagination" slot="pagination"></div>
-
     </div>
-    <div class="swiper-container" v-swiper:gallerySwiper="swiperOps" v-if="isMobileBreakpoint">
-      <div class="swiper-wrapper">
-        <div class="swiper-slide" v-for="homePageSlider in homePageSliders">
-          <div class=" mobileHomePage-slide-item" :style="!isDarkMode ? `background:${homePageSlider.overlay_color}`:''">
-            <div class="mobileHomePage-slide-left">
-              <h3>{{ homePageSlider.title[locale] }}</h3>
-              <p>{{ homePageSlider.description[locale] }}</p>
-              <nuxt-link :to="$localePath(homePageSlider.button_link)" class="btn  btn--green text-left" v-if="homePageSlider.button_link">{{homePageSlider.button_text[locale]}}</nuxt-link>
-            </div>
-            <div class="mobileHomePage-slide-right">
-              <img :src="homePageSlider.image">
-            </div>
-          </div>
-        </div>
-      </div>
 
-
-    </div>
-    <div class="container">
+    <!-- car search form -->
+    <div class="container position-relative">
       <car-search-form
         :total-count="$paginate(mainAnnouncements).total"
         :pending="pending"
         @pending="pending = true"
+        :inMobileScreen="absoluteMobileScreen"
       />
     </div>
+    <!-- grid -->
     <div class="overflow-hidden">
       <grid
         :escape-duplicates="true"
@@ -68,9 +96,9 @@
       />
     </div>
     <infinite-loading
-      action="getInfiniteMainSearch"
+      action="getInfiniteMainSearchWithoutMutate"
       getter="mainAnnouncements"
-      action-b="getInfiniteMainPartsSearch"
+      action-b="getInfiniteMainPartsSearchWithoutMutate"
       getter-b="mainPartsAnnouncements"
       :per-page="20"
       :per-page-b="4"
@@ -79,9 +107,9 @@
 </template>
 
 <script>
-import {mapGetters, mapActions} from 'vuex';
-import CarSearchForm from '~/components/cars/CarSearchForm';
-import Grid from '~/components/announcements/Grid';
+import {mapGetters, mapActions} from 'vuex'
+import CarSearchForm from '~/components/cars/CarSearchForm'
+import Grid from '~/components/announcements/Grid'
 
 export default {
   name: 'pages-index',
@@ -94,16 +122,20 @@ export default {
   head() {
     return this.$headMeta({
       title: this.$t('meta-title_main-page'),
-      description: this.$t('meta-descr_main-page')
-    });
+      description: this.$t('meta-descr_main-page'),
+    })
   },
   data() {
     return {
       currentSlide: 0,
       swiperOps: {
-        init:false,
+        init: false,
+        speed: 1000,
+        autoplay: {
+          delay: 6000,
+        },
         fadeEffect: {
-          crossFade: true
+          crossFade: true,
         },
         navigation: {
           nextEl: '.swiper-button-next',
@@ -112,15 +144,16 @@ export default {
         pagination: {
           el: '.swiper-pagination',
           type: 'bullets',
-          clickable: true
+          clickable: true,
         },
         loop: true,
         preloadImages: false,
         lazy: {
           loadPrevNext: false,
-          preloaderClass: 'loader'
-        }
-      }
+          preloaderClass: 'loader',
+        },
+      },
+      absoluteMobileScreen: true,
     }
   },
   async asyncData({store}) {
@@ -130,57 +163,127 @@ export default {
       store.dispatch('getBodyOptions'),
       store.dispatch('getInfiniteMainSearch'),
       store.dispatch('clearSavedSearch'),
-      store.dispatch('getHomePageSliders')
-    ]);
+      store.dispatch('getHomePageSliders'),
+    ])
 
     return {
-      pending: false
+      pending: false,
     }
   },
 
   computed: {
-    ...mapGetters(['mainAnnouncements','homePageSliders'])
+    ...mapGetters(['mainAnnouncements', 'homePageSliders']),
+    photos(){
+      return{
+        photo1_sm : require('@/static/test-images/1-480w.jpg'),
+        photo1_lg : require('@/static/test-images/1-800w.jpg')
+      }
+    }
   },
   methods: {
     ...mapActions(['getInfiniteMainSearch', 'clearSavedSearch']),
     async handleLogoClick() {
-      this.$scrollTo('body');
-      this.$nuxt.$emit('reset-search-form');
-      this.pending = true;
-      await Promise.all([
-        this.getInfiniteMainSearch(),
-        this.clearSavedSearch()
-      ]);
-      this.pending = false;
+      this.$scrollTo('body')
+      this.$nuxt.$emit('reset-search-form')
+      this.pending = true
+      await Promise.all([this.getInfiniteMainSearch(), this.clearSavedSearch()])
+      this.pending = false
     },
-    gotoRoute(link){
+    gotoRoute(link) {
       if (this.loggedIn) {
         // this.$route.push(link)
-        this.$router.push({ path: '/qaraj' })
-      }else{
+        this.$router.push({path: '/qaraj'})
+      } else {
         // this.$route.push(link)
-        this.$router.push({ path: '/login' });
-        localStorage.setItem("loginFromSlider", true)
+        this.$router.push({path: '/login'})
+        localStorage.setItem('loginFromSlider', true)
       }
-    }
+    },
+
   },
   mounted() {
+    if (window.innerWidth < 769) this.absoluteMobileScreen = true
+    else this.absoluteMobileScreen = false
+    window.addEventListener('resize', (e) => {
+      if (window.innerWidth < 769) this.absoluteMobileScreen = true
+      else this.absoluteMobileScreen = false
+    })
     setTimeout(() => {
-      this.gallerySwiper.init();
+      this.gallerySwiper.init()
       this.gallerySwiper.on('slideChange', () => {
-        this.currentSlide = this.gallerySwiper.realIndex;
-      });
+        this.currentSlide = this.gallerySwiper.realIndex
+      })
 
 
-    }, 100);
-    this.$nuxt.$on('logo-click', this.handleLogoClick);
+    }, 100)
+    this.$nuxt.$on('logo-click', this.handleLogoClick)
   },
   beforeDestroy() {
-    this.$nuxt.$off('logo-click', this.handleLogoCkick);
+    this.$nuxt.$off('logo-click', this.handleLogoCkick)
   },
   beforeRouteLeave(to, from, next) {
-    this.$nuxt.$emit('prevent-popstate');
-    next();
-  }
+    this.$nuxt.$emit('prevent-popstate')
+    next()
+  },
 }
 </script>
+
+<style lang="scss">
+.swiper-container {
+  .btn--green {
+    height: 25px !important;
+  }
+
+  @media screen and (max-width: 1024px) {
+    .btn--green {
+      height: 12px !important;
+    }
+  }
+  @media screen and (max-width: 768px) {
+    .swiper-pagination {
+      left: 0 !important;
+      bottom: 14px !important;
+    }
+    .swiper-pagination-bullet {
+      position: absolute;
+      top: -6px;
+      left: 44%;
+      z-index: 111;
+      &:first-child {
+        top: -6px;
+        left: 49%;
+      }
+
+    }
+  }
+
+
+}
+
+.mobileHomePage-slide-item {
+  height: 170px;
+  position: relative;
+  justify-content: flex-start;
+
+  .mobileHomePage-slide-left {
+    width: 50%;
+  }
+
+  .mobileHomePage-slide-right {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50%;
+    height: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    clip-path: polygon(43% 0, 100% 0, 100% 100%, 0% 100%);
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+}
+</style>

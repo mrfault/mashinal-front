@@ -158,12 +158,17 @@
         display: flex;
         justify-content: space-between;
         &--left {
-          // width: 30%;
+          span {
+            transform: scale(0.9);
+          }
         }
         &--right {
           // width: 70%;
           display: flex;
           justify-content: flex-end;
+          span {
+            transform: scale(0.9);
+          }
         }
         .badge {
           white-space: nowrap;
@@ -215,7 +220,8 @@
         &.active {
           background-color: $green-1;
         }
-        &.pending {
+        &.pending,
+        .inactive {
           background-color: $dark-blue-2;
         }
         &.inactive {
@@ -367,17 +373,17 @@
   }
 }
 
+@include media-max-width('lg') {
+  .controls-panel {
+    padding: 0 25px 17px;
+  }
+}
+
 .dark-mode {
   .controls-panel {
     .control-icon {
       background-color: $dark-2;
     }
-  }
-}
-
-@include media-max-width('lg') {
-  .controls-panel {
-    padding: 0 25px 17px;
   }
 }
 
@@ -419,7 +425,9 @@
         background-color: rgba($dark-2, 0.35);
       }
       .item-details {
-        &__price, &--infos, &__year {
+        &__price,
+        &--infos,
+        &__year {
           color: #fff;
         }
       }
@@ -440,7 +448,6 @@
     }
   }
 }
-
 @include media-max-width('lg') {
   .announcements-grid {
     margin: 20px -10px;
@@ -591,5 +598,20 @@
     .col-lg-auto:last-child {
       width: 20%;
     }
+  }
+}
+
+.pending-badge-centered {
+  justify-content: center !important;
+  .pending,
+  .inactive {
+    padding: 4px 5px 5px 5px !important;
+    text-align: center;
+    width: auto;
+    max-width: calc(50% - 20px);
+    overflow: hidden;
+    display: inline-block !important;
+    text-overflow: ellipsis;
+    white-space: nowrap !important;
   }
 }

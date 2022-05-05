@@ -1,10 +1,17 @@
 <template>
   <div class="inner-gallery">
     <div class="position-relative">
-      <div class="swiper-container" v-swiper:gallerySwiper="swiperOps" ref="gallerySwiper" v-if="showSlider">
+      <div
+        class="swiper-container"
+        v-swiper:gallerySwiper="swiperOps"
+        ref="gallerySwiper"
+        v-if="showSlider"
+      >
         <div class="swiper-wrapper">
-
-          <div class="swiper-slide" :key="index" v-for="(slide, index) in slides.main"
+          <div
+            class="swiper-slide"
+            :key="index"
+            v-for="(slide, index) in slides.main"
           >
             <div
               style="width: 100%;"
@@ -16,7 +23,9 @@
             >
               <div class="position-relative">
                 <no-ssr>
+                  <Interior360Viewer :url="announcement.interior_360" v-if="showInterior"/>
                   <vue-three-sixty
+                    v-else
                     :amount="announcement.images_360.length"
                     buttonClass="d-none"
                     disableZoom
@@ -28,15 +37,15 @@
 
             <div
               v-else
-                 :class="[
+              :class="[
                 'swiper-slide-bg swiper-lazy',
                 { 'youtube-play': showYtVideo(index) },
               ]"
-                 :data-background="
+              :data-background="
                 showYtVideo(index) ? getYtVideoImage('hq') : slide
               "
             >
-              <loader/>
+              <loader />
             </div>
           </div>
         </div>
@@ -44,46 +53,34 @@
       <div class="gallery-overlay" v-if="showSlider">
         <div class="gallery-overlay_top d-flex">
           <template v-if="where === 'announcement'">
-            <span
-              class="badge from-border"
-              v-if="announcement.is_autosalon || announcement.is_part_salon"
-            >
-              SHOP
-            </span>
+            <form-switch class="interior-exterior-switcher" v-if="showInteriorCondition" auto-width style="width: fit-content;pointer-events: all;" v-model="showInterior" :options="interiorOptions"/>
             <span class="d-flex">
-                <span class="badge badge360" v-if="announcement.images_360 && announcement.images_360.length>0">
+                 <span
+                class="badge badge-360"
+                v-if="
+                  announcement.images_360 && announcement.images_360.length > 0
+                "
+              >
                 360
                 <sup>o</sup>
-
               </span>
               <span
                 class="btn-sq btn-sq--color-red active"
                 v-if="announcement.has_monetization"
               >
-                <icon name="speaker" v-tooltip="$t('ad_announcement')"/>
+                <icon name="speaker" v-tooltip="$t('ad_announcement')" />
               </span>
-
-
             </span>
           </template>
         </div>
         <div class="gallery-overlay_middle">
-
           <span class="d-flex justify-content-between">
-            <button
-              id="gallery-prev"
-              class="btn-sq"
-              @click.stop="slidePrev"
-            >
+            <button id="gallery-prev" class="btn-sq" @click.stop="slidePrev">
               <!-- <inline-svg src="/icons/chevron-left.svg" :height="25"/> -->
-              <icon name="chevron-left"/>
+              <icon name="chevron-left" />
             </button>
-            <button
-              id="gallery-next"
-              class="btn-sq"
-              @click.stop="slideNext"
-            >
-              <icon name="chevron-right"/>
+            <button id="gallery-next" class="btn-sq" @click.stop="slideNext">
+              <icon name="chevron-right" />
               <!-- <inline-svg src="/icons/chevron-right.svg" :height="25" /> -->
             </button>
           </span>
@@ -92,25 +89,29 @@
           <template v-if="where === 'announcement'">
             <div class="gallery-overlay_bottom--left">
               <template v-if="announcement.status == 1">
-                <add-comparison :id="announcement.id_unique" v-if="announcement.car_catalog"/>
-                <add-favorite :announcement="announcement"/>
+                <add-comparison
+                  :id="announcement.id_unique"
+                  v-if="announcement.car_catalog"
+                />
+                <add-favorite :announcement="announcement" />
               </template>
             </div>
 
             <div class="gallery-overlay_bottom--right">
-              <add-complaint :announcement="announcement"/>
+<!--              <add-complaint :announcement="announcement" />-->
             </div>
           </template>
           <template v-else>
-            <add-comparison :id="announcement.id_unique" v-if="announcement.car_catalog"/>
+            <add-comparison
+              :id="announcement.id_unique"
+              v-if="announcement.car_catalog"
+            />
           </template>
         </div>
       </div>
-      <div class="inner-gallery-lightbox" v-touch:swipe.top="handleSwipeTop">
+      <div  class="inner-gallery-lightbox" v-touch:swipe.top="handleSwipeTop">
         <template v-if="isMobileBreakpoint">
-          <h3 style="position: absolute; top: 0; color: #081a3e;">
-            {{ $t('Panorama yüklənir') }}
-          </h3>
+
           <FsLightbox
             :toggler="toggleFsLightbox"
             :sources="getSourcesFsLightbox"
@@ -131,8 +132,14 @@
             "
           >
             <div class="blur-bg" :key="0">
-              <img :src="showYtVideo(currentSlide) ? getYtVideoImage('hq') : $withBaseUrl(slides.main[currentSlide])"
-                   alt=""/>
+              <img
+                :src="
+                  showYtVideo(currentSlide)
+                    ? getYtVideoImage('hq')
+                    : $withBaseUrl(slides.main[currentSlide])
+                "
+                alt=""
+              />
             </div>
             <div
               class="blur-bg_announcement-info"
@@ -145,10 +152,13 @@
                   <h4>{{ announcement.price }}</h4>
                   <div class="row" v-if="announcement.status != 3">
                     <div class="col" v-if="canSendMessage(announcement)">
-                      <chat-button :announcement="announcement" :className="'white-outline'"/>
+                      <chat-button
+                        :announcement="announcement"
+                        :className="'white-outline'"
+                      />
                     </div>
                     <div class="col">
-                      <call-button :phone="announcement.user.phone"/>
+                      <call-button :phone="announcement.user.phone" />
                     </div>
                   </div>
                 </template>
@@ -168,7 +178,7 @@
                 @slide-change="currentSlide = $event"
               >
                 <template #sidebar v-if="where === 'announcement'">
-                  <slot/>
+                  <slot />
                 </template>
               </images-slider>
             </div>
@@ -180,8 +190,7 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
-
+import { mapGetters } from 'vuex'
 import FsLightbox from 'fslightbox-vue'
 import CallButton from '~/components/announcements/CallButton'
 import ChatButton from '~/components/announcements/ChatButton'
@@ -189,6 +198,7 @@ import AddFavorite from '~/components/announcements/AddFavorite'
 import AddComparison from '~/components/announcements/AddComparison'
 import AddComplaint from '~/components/announcements/AddComplaint'
 import ImagesSlider from '~/components/elements/ImagesSlider'
+import Interior360Viewer from "~/components/Interior360Viewer";
 export default {
   props: {
     where: {
@@ -204,6 +214,7 @@ export default {
     },
   },
   components: {
+    Interior360Viewer,
     FsLightbox,
     CallButton,
     ChatButton,
@@ -214,6 +225,7 @@ export default {
   },
   data() {
     return {
+      showInterior: false,
       toggleFsLightbox: false,
       showImagesSlider: false,
       showLightbox: false,
@@ -236,6 +248,14 @@ export default {
     }
   },
   methods: {
+    switchInterior() {
+      this.showInterior = !this.showInterior;
+      this.lightboxKey++
+      this.toggleFsLightbox = false
+      setTimeout(() => {
+        this.toggleFsLightbox = true;
+      },1)
+    },
     openLightbox(index) {
       if (index || index === 0) {
         this.currentSlide = index
@@ -296,7 +316,7 @@ export default {
     },
     handleSwipeTop() {
       if (document.body.classList.contains('zooming')) return
-      this.closeLightbox()
+      //this.closeLightbox()
     },
     showYtVideo(index) {
       return this.announcement?.youtube_id && index === 1
@@ -316,18 +336,27 @@ export default {
   },
   computed: {
     ...mapGetters(['announcement']),
+
+    showInteriorCondition() {
+      return this.currentSlide === 0 &&
+        this.announcement.images_360 &&
+        this.announcement.images_360.length &&
+        this.announcement.interior_360
+    },
     getSourcesFsLightbox() {
       if (this.slides.types[0] === 'custom') {
         return [
           {
-            component: 'vue-three-sixty',
+            component: this.showInterior ? 'interior360-viewer' : 'vue-three-sixty',
             props: {
+              onFsLightBox: true,
+              url: this.announcement.interior_360,
               files: this.announcement.images_360,
               amount: this.announcement.images_360.length,
               fromFsPopup: true,
             },
           },
-           ...this.slides.main.slice(1, this.slides.main.length),
+          ...this.slides.main.slice(1, this.slides.main.length),
         ]
       }
       return this.slides.main
@@ -373,7 +402,7 @@ export default {
 
       if (hasVideo) types.splice(1, 0, 'youtube')
       if (has360) types.splice(0, 0, 'custom')
-      return {thumbs, main, types}
+      return { thumbs, main, types }
     },
   },
   watch: {
@@ -385,7 +414,11 @@ export default {
   },
   mounted() {
     let swiperTouchStartX
+
     this.$nextTick(() => {
+      this.$nuxt.$on('switchInterior',() => {
+        this.switchInterior();
+      })
       if (this.showSlider) {
         setTimeout(() => {
           this.gallerySwiper.init()
@@ -441,15 +474,19 @@ export default {
   },
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 @media only screen and (min-width: 1024px) {
-  .swiper-wrapper {
-    height: 493px;
+ .inner-gallery .swiper-wrapper {
+   max-height: 630px;
   }
 }
 
-.swiper-slide {
-  background-color: #d6e4f8;
+.fslightbox-source {
+  width: 100vw;
+}
+
+.inner-gallery .swiper-slide {
+
   display: flex;
   align-items: center;
 }

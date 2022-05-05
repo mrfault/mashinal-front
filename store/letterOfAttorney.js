@@ -52,16 +52,15 @@ export const state = () => getInitialState();
 export const getters = {
   currentStep: s => s.step,
   currentRealStep: (s, g) => {
+
     // return 10;
-    let steps = [/*1,2,*//*4,*/5,8,9,10];
+    let steps = [5,6,8,9,10];
     // check if 6th and 7th steps are required
-    if (g.hasGeneralPower) steps.splice(4,0,6,7);
-    // check if 3rd step is required
-    //if (g.stepReceivedData.hasDriverLicense) steps.splice(2,0,3);
+    if (g.hasGeneralPower) steps.splice(2,0,7);
     return steps[s.step - 1];
   },
   maxSteps: (s, g) => {
-    return (g.hasGeneralPower ? 10 : 8) - (g.stepReceivedData.hasDriverLicense ? 0 : 1);
+    return (g.hasGeneralPower ? 6 : 5) ;
   },
   stepSendData: s => s.stepSendData,
   stepReceivedData: s => s.stepReceivedData,

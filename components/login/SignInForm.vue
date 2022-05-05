@@ -24,7 +24,7 @@
     </button>
     <form-text-input
       v-if="form.staticPhone && !sellPhoneRegistered"
-      :placeholder="$t('name')"
+      :placeholder="$t('your_name')"
       :maxlength="30"
       v-model="form.name"
     />
@@ -93,7 +93,6 @@ export default {
         })
     },
     loginOrRegister() {
-      console.log('./././././././././', this.sellCheckTokens)
       this.validator.$touch()
       if (this.pending || this.validator.$pending || this.validator.$error)
         return

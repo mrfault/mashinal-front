@@ -1,6 +1,6 @@
 <template>
   <div class="car-complects">
-    <h2 class="title-with-line full-width">
+    <h2 class="title-with-line full-width"  v-if="hasAnyOption">
       <span>{{ $t('Комплектация') }}</span>
     </h2>
     <template v-if="tagSellOptions.length">
@@ -48,6 +48,7 @@ export default {
   },
   data() {
     return {
+      hasAnyOption: false,
       titles: [
         this.$t('accordeon_view'),
         this.$t('accordeon_exterior_elements'),
@@ -79,9 +80,27 @@ export default {
       return `${this.titles[index]} (${len})`;
     },
     getOptions(group) {
-      return group.filter((option) => this.options && this.options[option.name] !== undefined);
+      return group.filter((option) => {
+        let cur_option = this.options[option.name];
+        if(option.type === 'checkbox') {
+
+          if(this.options && cur_option) {
+            console.log(cur_option);
+            this.hasAnyOption = true;
+            return true;
+          }
+          return false;
+        }
+        else if(this.options && cur_option !== undefined) {
+          this.hasAnyOption = true;
+          return true;
+        }
+
+        return false;
+      });
     },
     getOptionValue(item, value) {
+
       if (item.type === 'select') {
         if (value instanceof Array && value.length > 0) {
           let options = [];

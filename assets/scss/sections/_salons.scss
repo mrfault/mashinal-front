@@ -38,7 +38,7 @@
   .salon {
     &-logo {
       flex-shrink: 0;
-      margin-right: 15px;
+      padding-right: 15px;
       img {
         border-radius: 50%;
         width: 68px;
@@ -46,7 +46,7 @@
       }
     }
     &-info {
-      width: 100%;
+      width: calc(100% - 95px);
       h3 {
         font-size: 15px;
         font-weight: 500;

@@ -1,9 +1,9 @@
 <template>
-<div>
-  <div class="btn d-flex justify-content-center p-5 m-5" :class="{ pending }">
-    Asan Login yüklənir...
+  <div>
+    <div class="btn d-flex justify-content-center p-5 m-5" :class="{ pending }">
+      Asan Login yüklənir...
+    </div>
   </div>
-</div>
 </template>
 
 <script>
@@ -15,11 +15,16 @@ export default {
       pending: true,
     }
   },
-  mixins: [ asan_login ],
-  middleware: ['guest'],
+  mixins: [asan_login],
   async mounted() {
     this.pending = false;
-    this.$router.push(this.$localePath(this.$route.params.page_slug))
+    if(this.$route.params.page_slug === 'asan-cars') {
+      return this.$router.push(this.$localePath('/garage/asan-cars'));
+    }
+    this.$router.push({
+      path: this.$localePath(this.$route.params.page_slug),
+      query: this.$route.params.page_slug === 'garage-services' ? { attorney: true } : null
+    })
   }
 }
 </script>

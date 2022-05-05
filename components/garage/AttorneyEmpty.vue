@@ -5,7 +5,7 @@
         <div class="text-center">
           <img src="/images/google-docs.png" alt="" />
           <p class="text-red mb-1 mb-lg-3">{{ $t('no_attorneys_found') }}</p>
-          <add-car class="mb-lg-3" />
+          <letter-of-attorney-button></letter-of-attorney-button>
         </div>
       </div>
     </div>
@@ -23,11 +23,12 @@
 </template>
 
 <script>
+import LetterOfAttorneyButton from './loa/LetterOfAttorneyButton.vue'
 export default {
+  components:{
+
+    LetterOfAttorneyButton
+  }
 
 }
 </script>
-
-<style>
-
-</style>

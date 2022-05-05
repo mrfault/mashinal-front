@@ -1,11 +1,18 @@
 <template>
   <div class="socials" @click.stop>
     <a v-for="(social, index) in socials[type]" :key="index" :href="getLink(social)" rel="noopener" target="_blank">
-      <icon :name="social" />
+      <icon v-if="social!='tiktok'" :name="social" />
+      <inline-svg class="tiktok" src="/icons/tiktok.svg" v-else />
     </a>
   </div>
 </template>
-
+<style lang="scss">
+a:hover .tiktok {
+  path {
+    fill: #1C1C1E;
+  }
+}
+</style>
 <script>
   export default {
     props: {
@@ -16,22 +23,24 @@
       return {
         link: encodeURI(`https://mashin.al${this.path || this.$route.path}`),
         socials: {
-          contact: ['facebook', 'instagram'],
+          contact: ['facebook', 'instagram','telegram','tiktok'],
           publish: ['facebook', 'whatsapp','telegram', 'twitter'],
         }
       }
     },
     methods: {
       getLink(social) {
-        if (this.type === 'contact') 
+        if (this.type === 'contact')
           return this.getContactLink(social);
-        else if (this.type === 'publish') 
+        else if (this.type === 'publish')
           return this.getPublishLink(social);
       },
       getContactLink(social) {
         switch(social) {
           case 'instagram': return 'https://instagram.com/mashin.al';
           case 'facebook': return 'https://facebook.com/mashinal';
+          case 'telegram': return 'https://t.me/mashin_al';
+          case 'tiktok': return 'https://vm.tiktok.com/ZSdSgqRuw/';
         }
       },
       getPublishLink(social) {

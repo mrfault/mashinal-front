@@ -33,6 +33,13 @@ export default {
       store.dispatch('getSalonById', {id: route.params.id}),
       store.dispatch('getMotoOptions'),
     ]);
+
+  },
+  mounted() {
+    this.$store.commit('mutate',{
+      property: 'announcement',
+      value: {}
+    })
   },
   computed: {
     ...mapGetters(['salonSingle']),

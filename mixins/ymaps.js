@@ -12,20 +12,20 @@ export const YMapsMixin = {
         }
 
         const yandexMapScript = document.createElement('SCRIPT');
-        
+
         const {
           apiKey = this.$env.YANDEX_MAPS_API,
-          lang = this.locale === 'az' ? 'az_AZ' : 'ru_RU',
+          lang = 'az_AZ',
           version = '2.1',
           coordorder = 'latlong',
           debug = !!this.$env.DEV,
           enterprise = false,
         } = settings;
-        
+
         const mode = debug ? 'debug' : 'release';
         const params = `lang=${lang}${apiKey && `&apikey=${apiKey}`}&mode=${mode}&coordorder=${coordorder}`;
         const link = `https://${enterprise ? 'enterprise.' : ''}api-maps.yandex.ru/${version}/?${params}`;
-        
+
         yandexMapScript.setAttribute('src', link);
         yandexMapScript.setAttribute('async', '');
         yandexMapScript.setAttribute('defer', '');

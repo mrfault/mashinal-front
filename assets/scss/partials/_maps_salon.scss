@@ -23,7 +23,7 @@
     [class*='balloon__tail'],
     [class*='balloon__tail']::after {
       box-shadow: none !important;
-      background: $white !important;
+      background: $white;
       border-radius: 4px;
     }
     [class*='islets_balloon_layout_panel'] {
@@ -165,6 +165,7 @@
               overflow-y: scroll;
               min-height: auto !important;
               max-height: 270px !important;
+              background-color: #fff;
               @include mal-scrollbar;
               &__item{
                 border-radius: none;
@@ -409,3 +410,26 @@
 // ymaps-2-1-79-controls__control
 // ymaps-2-1-79-controls__control ymaps-2-1-79-user-selection-none
 // ymaps-2-1-79-controls__control
+
+
+@media only screen and (max-width: 1279px){
+  // .pages-salons{
+    .map{
+      &-sidebar{
+        transform: scale(0.8) translateX(-12.5%);
+        
+      }
+    }
+  // }
+}
+
+// @media only screen and (min-height: 1110px){
+//   .pages-salons{
+//     .map{
+//       &-sidebar{
+//         transform: scale(0.5) translateX(-9%);
+        
+//       }
+//     }
+//   }
+// }

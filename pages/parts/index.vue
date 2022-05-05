@@ -6,33 +6,37 @@
       <part-search-form
         :pending="pending"
         @pending="pending = true"
-        @submit="searchParts" 
+        @submit="searchParts"
       />
       <banners v-if="!searchActive" reverse />
       <div class="announcements-content">
-        <grid
-          v-if="announcements.length && !showNotFound"
-          :announcements="announcements"
-          :pending="pending"
-          escape-duplicates
-        />
 
-        <no-results v-if="showNotFound" type="part"/>
 
         <grid
-          v-if="showNotFound"
+          v-if="mainPartsAnnouncements.data.length"
           :title="$t('other_announcements')"
-          :announcements="otherAnnouncements"
+          :announcements="mainPartsAnnouncements.data"
           :pending="pending"
           escape-duplicates
         />
+         <no-results v-else type="part" />
       </div>
+
+<!-- <div class="infinityLoader">
+  Loading...
+</div> -->
+
+    <infinite-loading
+      action="getInfiniteMainPartsPageSearchWithoutMutate"
+      getter="mainPartsAnnouncements"
+      :per-page="20"
+    />
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import Grid from '~/components/announcements/Grid'
 import Categories from '~/components/parts/Categories'
 import Banners from '~/components/parts/Banners'
@@ -44,48 +48,50 @@ export default {
   layout: 'search',
   nuxtI18n: {
     paths: {
-      az: '/ehtiyat-hisseleri'
-    }
+      az: '/ehtiyat-hisseleri',
+    },
   },
   head() {
     return this.$headMeta({
       title: this.$t('meta-title_parts'),
-      description: this.$t('meta-descr_parts')
-    });
+      description: this.$t('meta-descr_parts'),
+    })
   },
   components: {
     Grid,
     Categories,
     Banners,
     PartSearchForm,
-    NoResults
+    NoResults,
   },
   async asyncData({ store }) {
-    await store.dispatch('parts/getAnnouncements')
-
+    await Promise.all([
+      store.dispatch('getInfiniteMainPartsPageSearch'),
+    ])
     return {
-      pending: false
+      pending: false,
     }
   },
   mounted() {
     if (this.$route.query.parts_filter) {
       this.searchParts()
     }
-    window.addEventListener('scroll', this.getNextAnnouncements)
+    //window.addEventListener('scroll', this.getNextAnnouncements)
   },
   methods: {
+    ...mapActions(['getInfiniteMainSearch']),
     async getNextAnnouncements() {
-      if ((window.scrollY + 800 > document.body.scrollHeight) && !this.pending) {
-        this.pending = true;
-
+      if (window.scrollY + 800 > document.body.scrollHeight && !this.pending) {
+        this.pending = true
+        await Promise.all([this.getInfiniteMainSearch()])
         if (!this.showNotFound) {
           const { current_page, last_page } = this.pagination
           if (current_page < last_page) {
             await this.$store.dispatch('parts/getAnnouncements', {
               body: JSON.parse(this.$route.query.parts_filter || '{}'),
               params: {
-                page: (current_page || 0) + 1
-              }
+                page: (current_page || 0) + 1,
+              },
             })
           }
         } else {
@@ -94,22 +100,22 @@ export default {
             await this.$store.dispatch('parts/getOtherAnnouncements', {
               body: {},
               params: {
-                page: (current_page || 0) + 1
-              }
+                page: (current_page || 0) + 1,
+              },
             })
           }
         }
-        this.pending = false;
+        this.pending = false
       }
     },
     async searchParts() {
-      const data = JSON.parse(this.$route.query.parts_filter || '{}');
-      this.pending = true;
-      await this.$store.dispatch('parts/getAnnouncements', { body: data });
-      this.pending = false;
+      const data = JSON.parse(this.$route.query.parts_filter || '{}')
+      this.pending = true
+      await this.$store.dispatch('parts/getAnnouncements', { body: data })
+      this.pending = false
       await this.$store.dispatch('parts/setSearchActive', true)
-      this.scrollTo('.announcements-content', [0, -30]);
-    }
+      this.scrollTo('.announcements-content', [0, -30])
+    },
   },
   computed: {
     ...mapGetters({
@@ -119,15 +125,16 @@ export default {
       otherAnnouncementsPagination: 'parts/otherAnnouncementsPagination',
       searchActive: 'parts/searchActive',
       showNotFound: 'parts/showNotFound',
+      getOtherAnnouncements: 'parts/getOtherAnnouncements',
+      mainPartsAnnouncements:'mainPartsAnnouncements'
     }),
     crumbs() {
-      return [
-        { name: this.$t('all_parts') }
-      ]
-    }
+      return [{ name: this.$t('all_parts') }]
+    },
   },
   beforeDestroy() {
-    window.removeEventListener('scroll', this.getNextAnnouncements)
-  }
+    this.mutate({ property: 'temporaryLazyData', value: {} });
+    //window.removeEventListener('scroll', this.getNextAnnouncements)
+  },
 }
 </script>

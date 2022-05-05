@@ -11,7 +11,7 @@
         <div class="card profile-settings-card">
           <div class="avatar_edit">
             <form-image v-model="form.avatar" :initial-image="getUserAvatar"
-              croppable :width="100" :height="100" />
+                        croppable :width="100" :height="100" />
             <p class="text-center">100x100px</p>
           </div>
           <div class="row profile_edit">
@@ -89,7 +89,7 @@ export default {
         old: '',
         password: '',
         password_confirmation: '',
-        name: $auth.user.full_name,
+        name: $auth.user.name || '',
         lastname: $auth.user.lastname || '',
         gender: $auth.user.gender || 0,
         birthday: app.$moment($auth.user.birthday || null).format('DD.MM.YYYY'),

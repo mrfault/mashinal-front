@@ -1,5 +1,5 @@
 <template>
-  <div class="cars-search-form form">
+  <div class="cars-search-form form" :class="{'pt-0': inMobileScreen}">
     <div class="card pt-2 pt-lg-4 mb-2 mb-lg-0">
       <div class="row">
         <div class="col-lg-12 col-xl-4 mb-2 mb-lg-3">
@@ -294,20 +294,44 @@
                     has-search
                   />
                 </div>
-                <div class="col-6 col-lg-3 mb-2 mb-lg-3">
-                  <form-checkbox
-                    :label="$t('barter')"
-                    v-model="form.exchange_possible"
-                    input-name="exchange_possible"
-                    icon-name="barter"
+                <div class="col-6 col-lg-3 mb-2 mb-lg-3" v-if="!isMobileBreakpoint">
+                  <form-select
+                    :label="$t('fuel')"
+                    v-model="form.engine_type"
+                    :options="
+                        bodyOptions.main.default_options['tip-dvigatelya']
+                          .values
+                      "
+                    multiple
+                    name-in-value
+                    translate-options
                   />
                 </div>
                 <div class="col-6 col-lg-3 mb-2 mb-lg-3">
+                  <div class="row">
+                    <div class="col-6" >
+                      <form-checkbox
+                        v-tooltip="$t('barter')"
+                        v-model="form.exchange_possible"
+                        input-name="exchange_possible"
+                        icon-name="barter"
+                      />
+                    </div>
+                    <div class="col-6">
+                      <form-checkbox
+                        v-tooltip="$t('credit')"
+                        v-model="form.credit"
+                        input-name="credit"
+                        icon-name="percent"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-lg-2 mb-2 mb-lg-3" v-if="isMobileBreakpoint">
                   <form-checkbox
-                    :label="$t('credit')"
-                    v-model="form.credit"
-                    input-name="credit"
-                    icon-name="percent"
+                    :label="$t('with_video')"
+                    v-model="form.with_video"
+                    input-name="with_video"
                   />
                 </div>
               </div>
@@ -446,7 +470,7 @@
                 input-name="in_garanty"
               />
             </div>
-            <div class="col-6 col-lg-2 mb-2 mb-lg-3">
+            <div class="col-6 col-lg-2 mb-2 mb-lg-3" v-if="!isMobileBreakpoint">
               <form-checkbox
                 :label="$t('with_video')"
                 v-model="form.with_video"
@@ -469,13 +493,12 @@
               />
             </div>
           </template>
-          <div
-            class="col-6 col-lg-2 mb-2 mb-lg-3"
-            v-if="!isMobileBreakpoint && !advanced"
-          >
-            <div class="form-info text-green">
-              {{ $readPlural(totalCount, $t('plural_forms_announcements')) }}
-            </div>
+          <div class="col-6 col-lg-2 mb-2 mb-lg-3" v-if="!isMobileBreakpoint && !advanced">
+            <form-checkbox
+              :label="$t('with_video')"
+              v-model="form.with_video"
+              input-name="with_video"
+            />
           </div>
         </template>
       </div>
@@ -523,19 +546,6 @@
                 <template v-if="!advanced && !assistant && !isMobileBreakpoint">
                   <div class="col-lg-3 mb-lg-0">
                     <form-select
-                      :label="$t('fuel')"
-                      v-model="form.engine_type"
-                      :options="
-                        bodyOptions.main.default_options['tip-dvigatelya']
-                          .values
-                      "
-                      multiple
-                      name-in-value
-                      translate-options
-                    />
-                  </div>
-                  <div class="col-lg-3 mb-lg-0">
-                    <form-select
                       :label="$t('korobka')"
                       v-model="form.korobka"
                       :options="
@@ -567,6 +577,14 @@
                         />
                       </div>
                     </form-select>
+                  </div>
+                  <div
+                    class="col-6 col-lg-3 mb-2 mb-lg-3"
+                    v-if="!isMobileBreakpoint && !advanced"
+                  >
+                    <div class="form-info text-green">
+                      {{ $readPlural(totalCount, $t('plural_forms_announcements')) }}
+                    </div>
                   </div>
                 </template>
                 <template v-if="!onlySavedSearch">
@@ -780,6 +798,10 @@ export default {
     pending: Boolean,
     advanced: Boolean,
     assistant: Boolean,
+    inMobileScreen: {
+      type: Boolean,
+      default: false
+    }
   },
 
   data() {

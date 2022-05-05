@@ -672,7 +672,18 @@ input::-webkit-inner-spin-button {
     }
   }
 }
+.interior-exterior-switcher {
+  .form-switch {
+    background-color: $dark-blue-1;
+    button {
+      text-transform: none;
+    }
+    button.active {
+      color: $dark-blue-1;
+    }
+  }
 
+}
 .dark-mode {
   .form-switch {
     background-color: $dark-1;

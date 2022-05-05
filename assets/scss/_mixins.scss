@@ -48,3 +48,27 @@
     z-index: $zIndex;
   }
 }
+
+@mixin customScrollbar{
+    overflow-y: scroll;
+    /* width */
+    &::-webkit-scrollbar {
+      width: 3px;
+      height: 3px;
+    }
+  
+    /* Track */
+    &::-webkit-scrollbar-track {
+      background: transparent !important;
+    }
+  
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+      background: rgb(206, 206, 206);
+    }
+  
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    }
+}

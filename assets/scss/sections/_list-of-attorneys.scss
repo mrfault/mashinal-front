@@ -76,10 +76,15 @@
   }
 }
 @media screen and (max-width: 1024px) {
+  .dark-mode {
+    .attorney-date {
+      background: $dark-2 !important;
+    }
+  }
   .attorney-date {
     width: 100% !important;
-    background: $dark-2 !important;
   }
+
   .attorney-list{
       &--heading{
           margin-bottom: 30px !important;

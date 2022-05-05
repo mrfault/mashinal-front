@@ -12,6 +12,10 @@
         <h3 v-if="!fromFsPopup" style="position: absolute; top: 30%;; color: #081a3e;">{{ $t('panorama_loading') }}</h3>
         <loader><div class="percentage-center">{{ percentage }}%</div></loader>
       </div>
+      <div v-if="onFsLightBox  && announcement.interior_360" class="switch-pnlm">
+        <form-switch class="interior-exterior-switcher" auto-width style="width: fit-content;pointer-events: all;" v-model="showInteriorSwitcher" :options="interiorOptions"/>
+<!--        <button @click="$nuxt.$emit('switchInterior')" class="btn " style="background-color: #246EB2;color:white;" >{{ $t('interior')}}</button>-->
+      </div>
       <!--/ Percentage Loader -->
 
       <!-- 360 viewport -->
@@ -48,7 +52,6 @@
     </div>
     <!--/ 360 Viewer Container -->
 
-
     <div class="zoom-360-wrapper" v-if="showZoom && imagesLoaded">
       <button class="btn btn--grey" @click="zoomIn">+</button>
       <button class="btn btn--grey" @click="zoomOut">-</button>
@@ -64,6 +67,14 @@ const uuidv1 = require('uuid/v1');
 export default {
   name: 'I360Viewer',
   props: {
+    onFsLightBox: {
+      type: Boolean,
+      default:false,
+    },
+    showInterior:{
+      type:Boolean,
+      default:false,
+    },
     fromFsPopup:{
       type: Boolean,
       default: false,
@@ -144,6 +155,7 @@ export default {
   },
   data() {
     return {
+      showInteriorSwitcher: false,
       percentage:0,
       minScale: 0.5,
       maxScale: 4,
@@ -165,8 +177,8 @@ export default {
       viewPortElementWidth: null,
       movementStart: 0,
       movement: false,
-      dragSpeed: 150,
-      speedFactor: 13,
+      dragSpeed: 300,
+      speedFactor: 5,
       activeImage: 1,
       stopAtEdges: false,
       imagesLoaded: false,
@@ -186,6 +198,9 @@ export default {
     ...mapGetters(['announcement'])
   },
   watch: {
+    showInteriorSwitcher() {
+      this.$nuxt.$emit('switchInterior')
+    },
     zooming(value, prev) {
       if (prev < value) this.zoomIn()
       else this.zoomOut()
@@ -861,5 +876,13 @@ export default {
   .percentage-center {
     color: white;
   }
+}
+.switch-pnlm {
+  position: absolute;
+  top: -40px;
+  z-index: 1234;
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
 }
 </style>
