@@ -275,6 +275,7 @@ export default {
   methods: {
     filterHistory(type) {
       this.activeFilter = type
+      this.mutate({ property: 'temporaryLazyData', value: {} });
       this.$store.dispatch('getMyBalanceHistory', { page: 1, type: type })
     },
     async increaseBalance() {
