@@ -196,6 +196,7 @@
             </div>
           </div>
           <infinite-loading
+            :key="refreshInfinity"
             :type="activeFilter"
             action="getMyBalanceHistoryWithoutMutate"
             getter="myBalanceHistory"
@@ -240,6 +241,7 @@ export default {
   data() {
     return {
       activeFilter: 0,
+      refreshInfinity:0,
     }
   },
   async asyncData({ store, app, $auth }) {
@@ -276,6 +278,7 @@ export default {
     filterHistory(type) {
       this.activeFilter = type
       this.mutate({ property: 'temporaryLazyData', value: {} });
+      this.refreshInfinity++;
       this.$store.dispatch('getMyBalanceHistory', { page: 1, type: type })
     },
     async increaseBalance() {
