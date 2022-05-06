@@ -59,6 +59,10 @@ export const SearchMixin = {
         let keys = Object.keys(this.form.additional_brands).filter(key => this.form.additional_brands[key].category || this.form.additional_brands[key].brand);
         if (keys.length) this.rows = [...keys];
       }
+      if (this.form.exclude_additional_brands) {
+        let keys = Object.keys(this.form.exclude_additional_brands).filter(key => this.form.exclude_additional_brands[key].category || this.form.exclude_additional_brands[key].brand);
+        if (keys.length) this.excludeRows = [...keys];
+      }
     },
     beforeSubmitForm() {
       if (['cars-assistant'].includes(this.routeName)) {
@@ -105,7 +109,7 @@ export const SearchMixin = {
         })
       }
     },
-    submitForm() {
+    submitForm(scroll = true) {
       this.beforeSubmitForm();
       try {
         // tracking
@@ -126,9 +130,11 @@ export const SearchMixin = {
           this.$emit('submit');
           // for ex. when routing from / to /cars
           if (this.routeName !== prevRouteName) {
-            setTimeout(() => {
-              this.scrollTo('.announcements-sorting');
-            }, 100);
+            if(scroll) {
+              setTimeout(() => {
+                this.scrollTo('.announcements-sorting');
+              }, 100);
+            }
           }
           // look for a saved search
           if (this.loggedIn && this.meta.type === 'cars') {

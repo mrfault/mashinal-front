@@ -1064,8 +1064,8 @@ export default {
       ].map((key) => {
         this.$set(this.form.additional_brands[index], key, '')
       })
-      if (id) await this.getModelsArray({ value: slug, index })
-
+      if (id)  this.getModelsArray({ value: slug, index })
+      this.submitForm(false);
 
     },
     async setBrandExclude(id, index) {
@@ -1098,6 +1098,8 @@ export default {
       })
       if (id)
         await this.getModelGenerationsArray({ value: slug, brand_slug, index })
+
+      this.submitForm(false);
     },
     async setModelExclude(id, index) {
       let model = this.carModels[index].find((option) => option.id == id)
@@ -1128,6 +1130,7 @@ export default {
         'generation_name',
         generation?.name || '',
       )
+      this.submitForm(false);
     },
     async setGenerationExclude(id, index) {
       let generation = this.carGenerations[index].find(
