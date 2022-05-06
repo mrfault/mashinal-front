@@ -1,0 +1,313 @@
+<template>
+
+  <div>
+    <OfferSlider/>
+
+    <div class="container">
+      <div class="row">
+
+        <breadcrumbs :crumbs="crumbs"/>
+        <div class="col-md-10 background-white">
+          <sell-progress :form="form"/>
+          <sell-selected-model
+            :brand="brand"
+            :model="model"
+            :year="form.year"
+          />
+          <Generations :generations="generations" @change="changeGenerations"/>
+
+          <div :key="5" class="mb-3 box" ref="sell-modification">
+            <h2 class="title-with-line full-width">
+              <span>{{ $t('box') }} <span class="star"> *</span></span>
+            </h2>
+            <offer-form-buttons v-model="form.box"
+                                :options="boxValues"
+                                :btn-class="'primary-outline'" :group-by="isMobileBreakpoint ? 1 : 5"
+                                @change="changeGearBox">
+              <template #icon="{ button }">
+                <icon :name="getIcon('box', button.key)" :class="`box-${button.key}`"/>
+              </template>
+
+            </offer-form-buttons>
+          </div>
+          <div :key="5" class="mb-3 box" ref="sell-modification">
+            <h2 class="title-with-line full-width">
+              <span>{{ $t('fuel') }} <span class="star"> *</span></span>
+            </h2>
+            <offer-form-buttons v-model="form.engine"
+                                :options="engineValues"
+                                :btn-class="'primary-outline'" :group-by="isMobileBreakpoint ? 1 : 5"
+                                @change="changeFuelTypes">
+              <template #icon="{ button }">
+                <icon :name="getIcon('engine', button.key)" :class="`box-${button.key}`"/>
+              </template>
+
+            </offer-form-buttons>
+          </div>
+
+
+          <div>
+            <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-selectedColor">
+              <span>{{ $t('color') }} <span class="star"> *</span></span>
+            </h2>
+            <color-options v-model="form.selectedColor" :limit="2" :multiple=false
+                           @change-matt="form.is_matte = $event" :matt="form.is_matte"
+                           @change="removeError('selectedColor')"/>
+            <div class="row">
+              <div class="col-md-12">
+                <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-selectedColor">
+                  <span>Salon rengi <span class="star"> *</span></span>
+                </h2>
+                <interior-color-options v-model="form.selectedInteriorColor" :limit="2" :multiple=false
+
+                                        @change="removeError('selectedColor')"/>
+              </div>
+
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-6">
+                    <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-selectedColor">
+                      <span>Alış şərtləri <span class="star"> *</span></span>
+                    </h2>
+                    <div class="d-inline-flex justify-content-between">
+                      <form-radio :label="'Kredit'" input-name="buy_condition" v-model="form.buy_condition"
+                                  :value="'credit'" radio-value="credit"/>
+                      <form-radio :label="'Nağd'" input-name="buy_condition" v-model="form.buy_condition"
+                                  :value="'cash'"
+                                  radio-value="cash"/>
+
+
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-selectedColor">
+                      <span>Qiymət aralıqı <span class="star"> *</span></span>
+                    </h2>
+                    <div class="d-inline-flex justify-content-between">
+                      <div class="form-group">
+                        <label for="minPrice">Min.</label>
+                        <input id="minPrice" type="number" v-model="form.minPrice" class="textInput"  value="0">
+                        <label for="maxPrice">Max.</label>
+                        <input id="maxPrice" type="number" v-model="form.maxPrice" class="textInput"  value="25000">
+
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-comment">
+              <span>Almaq istədiyin maşının təsviri</span>
+            </h2>
+            <form-textarea v-model="form.comment" :placeholder="'Təsvir'"
+                           :maxlength="3000"/>
+            <p class="mt-5 mb-5">
+              Təsvirdə linklərinin göstərilməsi, elektron poçt ünvanının, baxış keçirmə məkanın ünvanının, telefon
+              nömrəsinin, qiymətin və xidmətlərin təklifi qadağandır.
+            </p>
+            <div class="col-md-12  text-right">
+              <button class=" btn  btn--green" @click="submitOffer">Əlavə et</button>
+            </div>
+          </div>
+
+        </div>
+        <div class="col-md-2" v-if="!isMobileBreakpoint">
+          <div class="card">
+            <sell-preview :brand="brand" :model="model" :form="form"/>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import {mapActions, mapGetters} from "vuex";
+import {ToastErrorsMixin} from '~/mixins/toast-errors';
+import YearOptions from '~/components/options/YearOptions';
+import ColorOptions from '~/components/options/ColorOptions';
+import InteriorColorOptions from '~/components/options/InteriorColorOptions';
+import SellSelectModification from '~/components/sell/SellSelectModification';
+import OfferSlider from "~/components/offer/OfferSlider";
+import SellSelectedModel from "~/components/sell/SellSelectedModel";
+import SellProgress from "~/components/sell/SellProgress";
+import SellPreview from "~/components/sell/SellPreview";
+import FormCheckbox from "~/components/forms/FormCheckbox";
+import Generations from "~/components/offer/Generations";
+import OfferFormButtons from "~/components/offer/OfferFormButtons";
+
+export default {
+  name: "add.vue",
+  components: {
+    OfferFormButtons,
+    Generations,
+    SellPreview,
+    SellProgress,
+    SellSelectedModel,
+    OfferSlider,
+    YearOptions,
+    SellSelectModification,
+    ColorOptions,
+    InteriorColorOptions,
+    FormCheckbox
+  },
+  mixins: [ToastErrorsMixin],
+  data() {
+    return {
+      showModelOptions: false,
+      refresh: 0,
+      form: {
+        brand: null,
+        model: null,
+        gearBoxes: [],
+        fuelTypes: [],
+        comment: '',
+        minPrice: '',
+        maxPrice: '',
+      },
+    }
+  },
+  async asyncData({store, app, route}) {
+
+    await store.dispatch('getColors')
+
+    await store.dispatch('getGenerations', {
+      brand: route.params.brand,
+      model: route.params.model
+    })
+  },
+  computed: {
+    ...mapGetters(['brands', 'models', 'generations']),
+    boxValues() {
+      return [{"name": "Mexaniki", "key": "1"}, {"name": "Avtomat", "key": "2"}]
+    },
+    engineValues() {
+      return [
+        {"name": "Benzin", "key": "1"},
+        {"name": "Hibrid", "key": "2"},
+        {"name": "Dizel", "key": "3"},
+        {"name": "Qaz", "key": "4"},
+        {"name": "Elektro", "key": "5"},
+
+      ]
+    },
+    brand() {
+
+      return this.brands?.find(brand => this.$parseSlug(brand.slug) === this.form.brand);
+    },
+    model() {
+      return this.models?.find(model => this.$parseSlug(model.slug) === this.form.model);
+
+    },
+    crumbs() {
+      return [
+        {name: 'Super təklif', route: '/sell'},
+        {name: this.$t('cars')}
+      ]
+    }
+
+  },
+  async created() {
+
+    this.form.brand = this.$route.params.brand;
+    this.form.model = this.$route.params.model;
+
+    await this.$store.dispatch('getSellYears', {
+      brand: this.form.brand,
+      model: this.form.model
+    })
+
+  },
+  methods: {
+    submitOffer() {
+      this.$axios.$post('offer', {
+        data: this.form
+      }).then((res) => {
+      });
+    },
+    changeGenerations(values) {
+      this.form.generations = values
+
+    },
+    changeGearBox(values) {
+      this.form.gearBoxes = values;
+
+    },
+    changeFuelTypes(values) {
+      this.form.fuelTypes = values
+
+    },
+    getIcon(key, value) {
+      return ({
+        engine: {1: 'fuel-station', 2: 'battery-charge', 3: 'diesel', 4: 'gas', 5: 'plug'},
+        type_of_drive: {1: 'drive', 2: 'drive', 3: 'drive'},
+        box: {1: 'mechanical', 2: 'automatic', 3: 'robot', 4: 'variator', 5: 'reductor'}
+      })[key][value];
+    },
+    getTitle(item) {
+      const {brand, model, generation} = {...this.$route.params};
+      if (model) {
+        if (generation)
+          return item?.car_type.name[this.locale];
+        else
+          return `${this.$translateHard(item.short_name)}<br/>${item.start_year} — ${item.end_year || this.currentYear}`;
+      } else {
+        return (!brand ? (item.parent.name + ' ') : '') + this.$translateHard(item.name);
+      }
+    },
+    getLink(item) {
+      const {brand, model, generation} = {...this.$route.params};
+      const {filter} = {...this.$route.query}
+      let path = model
+        ? (generation ? `/catalog/${brand}/${model}/${generation}/${item.car_type_id}` : `/catalog/${brand}/${model}/${item.id}`)
+        : (`/catalog/${item.parent.slug}/${item.slug}`);
+      return filter ? `${path}?filter=${filter}` : path;
+    },
+    getImage(item) {
+      const {model, generation} = {...this.$route.params};
+      if (!model) {
+        return item?.transformed_media ? this.$withBaseUrl(item.thumb || item.transformed_media) : false;
+      } else {
+        let media = generation ? item?.transformed_media?.thumb : (item?.car_type_generation?.find(type => type.car_type_id === item.fav_car_type_id) || item.car_type_generation[0])?.transformed_media?.thumb;
+        return media?.length ? this.$withBaseUrl(media[0]) : false;
+      }
+    },
+    async handleYear(year = '') {
+      this.form.year = year;
+      console.log(this.form.year)
+      if (year) {
+        this.showLastStep = true;
+      } else {
+        this.form.model = '';
+        this.showYearOptions = false;
+      }
+      this.refresh++;
+    },
+    handleModification({key, value}) {
+      this.$set(this.form, key, value);
+      if (!this.showAllOptions && key === 'car_catalog_id' && value) {
+        this.showAllOptions = true;
+        if (!this.isMobileBreakpoint) return;
+        this.$nextTick(() => {
+          setTimeout(() => {
+            this.scrollTo(this.$refs['saved_images'], -34, 500);
+          }, 0);
+        });
+      }
+    },
+    buyConditionHandleChange(value) {
+      this.form.buy_condition = 'cash'
+    },
+  },
+
+
+}
+</script>
+
+<style scoped>
+
+</style>

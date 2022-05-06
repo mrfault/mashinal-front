@@ -178,6 +178,7 @@ export default {
     async handleModel(slug = '') {
       this.form.model = slug;
       if (slug) {
+
         await this.getSellYears(this.getFormValues('brand','model'));
         this.showYearOptions = true;
       } else {
@@ -187,6 +188,7 @@ export default {
       this.scrollReset();
     },
     async handleYear(year = '') {
+
       this.form.year = year;
       if (year) {
         this.showLastStep = true;

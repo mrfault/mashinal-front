@@ -115,7 +115,7 @@ export default {
     },
     getPopularOptions() {
       if (!this.popularOptions) return [];
-      if (!this.isMobileBreakpoint) 
+      if (!this.isMobileBreakpoint)
         return this.options.filter(a => a.popular === 1).slice(0, 20);
       return this.$sortBy(this.options, (a, b) => {
         return this.popularOptions.indexOf(b.id) - this.popularOptions.indexOf(a.id)
