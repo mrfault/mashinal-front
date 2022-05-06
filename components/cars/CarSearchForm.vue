@@ -766,7 +766,7 @@
             <div class="col-6 col-lg-4">
               <div
                 :class="[
-                      'row',
+                      'row','flex-nowrap',
                       {
                         'has-add-btn': canAddRowExclude(index),
                         'has-remove-btn': canRemoveRowExclude(),
