@@ -166,6 +166,29 @@ export const SearchMixin = {
       }
       this.rows.splice(index, 1);
     },
+
+    canAddRowExclude(index) {
+      return this.excludeRows.length < 5 && index === this.excludeRows.length - 1;
+    },
+    canRemoveRowExclude() {
+      return this.excludeRows.length > 1;
+    },
+    addSearchRowExclude(key) {
+      if (this.excludeRows.length === 5) return;
+      let keys = Object.keys(this.form.additional_brands);
+      let index = this.excludeRows.indexOf(key);
+      this.excludeRows.splice(index + 1, 0, keys.filter(key => this.excludeRows.indexOf(key) === -1)[0]);
+    },
+    removeSearchRowExclude(key) {
+      if (this.excludeRows.length === 1) return;
+      let index = this.excludeRows.indexOf(key);
+      if (['commercial','moto'].includes(this.meta.type) && !this.category.id) {
+        this.setCategory('', key);
+      } else {
+        this.setBrand('', key);
+      }
+      this.excludeRows.splice(index, 1);
+    },
     getYearOptions(min, max) {
       let years = [], j = 0;
       for (let i = (max || this.currentYear); i >= (min || 1886); i--) {
