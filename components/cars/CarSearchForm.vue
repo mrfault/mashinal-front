@@ -763,7 +763,7 @@
                 has-search
               />
             </div>
-            <div class="col-lg-4" :class="{ 'col-6': index === 0 || !canAddRowExclude(index),'col-3': canAddRowExclude(index) }">
+            <div class="col-lg-4" :class="{ 'col-4': index === 0 || !canAddRowExclude(index),'col-3': canAddRowExclude(index) }">
               <div
                 :class="[
                       'row','flex-nowrap',
