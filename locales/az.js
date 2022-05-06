@@ -2196,5 +2196,5 @@ export default {
   "remove_image":"Şəkil silinməsi",
   "without_nds":"Qiymətlərə ƏDV daxil deyildir",
   "exclude": "İstisna",
-  "exclude_models": "Görmək istəmədiyiniz modelləri ististaya əlavə et"
+  "exclude_models": "Görmək istəmədiyiniz marka, modelləri istisnaya əlavə edin"
 }
