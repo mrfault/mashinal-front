@@ -739,7 +739,7 @@
       @close="showExcludeModal = false"
     >
       <template>
-        <div class="col-12 mb-3" v-for="(key, index) in excludeRows" :key="key">
+        <div class="col-12 mb-2" v-for="(key, index) in excludeRows" :key="key">
           <div class="row">
             <div class="col-3 col-lg-4">
               <form-select
@@ -807,7 +807,11 @@
                 </div>
               </div>
             </div>
+
           </div>
+        </div>
+        <div class="d-flex justify-content-end mr-1 mt-2">
+          <button @click="showExcludeModal = false;submitForm()" class="btn btn--green">OK</button>
         </div>
       </template>
     </modal-popup>
