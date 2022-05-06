@@ -2195,5 +2195,6 @@ export default {
   "exterior": "Eksteryer",
   "remove_image":"Şəkil silinməsi",
   "without_nds":"Qiymətlərə ƏDV daxil deyildir",
-  "exclude": "İstisna"
+  "exclude": "İstisna",
+  "exclude_models": "Görmək istəmədiyiniz modelləri ististaya əlavə et"
 }
