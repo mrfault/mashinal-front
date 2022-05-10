@@ -32,6 +32,7 @@ export default {
     ...mapGetters({
       faq: 'packages/faq'
     }),
+
     list() {
       return this.faq.map(item => ({ title: item.question[this.locale], text: item.answer[this.locale]}));
     },

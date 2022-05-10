@@ -214,7 +214,7 @@ export default {
         this.currentSlide = this.gallerySwiper.realIndex
       })
 
-      //this.updateTouchEvents();
+
     }, 100)
     this.$nuxt.$on('logo-click', this.handleLogoClick)
   },

@@ -2194,5 +2194,7 @@ export default {
   "interior": "İnteryer",
   "exterior": "Eksteryer",
   "remove_image":"Şəkil silinməsi",
-  "without_nds":"Qiymətlərə ƏDV daxil deyildir"
+  "without_nds":"Qiymətlərə ƏDV daxil deyildir",
+  "exclude": "İstisna",
+  "exclude_models": "Görmək istəmədiyiniz marka, modelləri istisnaya əlavə edin"
 }

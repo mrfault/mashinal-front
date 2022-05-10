@@ -361,7 +361,7 @@
                 </div>
               </form-select>
             </div>
-            <div class="col-6 col-lg-2 mb-2 mb-lg-3">
+            <div class="col-6 col-lg-2 mb-2 mb-lg-3" v-if="!advanced">
               <form-select
                 :label="$t('fuel')"
                 v-model="form.engine_type"
@@ -707,12 +707,17 @@
       v-show="routeName !== 'index' && totalCount && !(advanced || assistant)"
     >
       <div class="row">
-        <div class="col-6 col-lg-auto mt-3 mt-lg-5 mb-n6 mb-lg-n1">
+        <div class="col-6 ml-auto col-lg-2 mt-3 mt-lg-5 mb-n6 mb-lg-n1">
           <div class="form-info no-bg text-green" v-if="isMobileBreakpoint">
             {{ $readPlural(totalCount, $t('plural_forms_announcements')) }}
           </div>
         </div>
-        <div class="col-6 col-lg-auto mt-3 mt-lg-5 mb-n6 mb-lg-n1">
+        <div class="col-6 col-lg-2 mt-3 mt-lg-5 mb-n6 mb-lg-n1">
+          <button @click="showExcludeModal = true;" type="button" class="btn btn--grey full-width">
+              {{ $t('exclude') }}
+          </button>
+        </div>
+        <div class="col-6 col-lg-2 mt-3 mt-lg-5 mb-n6 mb-lg-n1">
           <form-select
             :label="$t('sorting')"
             :options="getSortingOptions"
@@ -726,7 +731,90 @@
         </div>
       </div>
     </div>
+    <modal-popup
+      :modal-class="'exclude-popup'"
+      :toggle="showExcludeModal"
+      :title="$t('exclude_models')"
+      :overflow-hidden="false"
+      @close="showExcludeModal = false"
+    >
+      <template>
+        <div class="col-12 mb-2" v-for="(key, index) in excludeRows" :key="key">
+          <div class="row">
+            <div class="col-3 col-lg-4">
+              <form-select
+                :label="$t('mark')"
+                :options="brands"
+                v-model="form.exclude_additional_brands[key]['brand']"
+                @change="setBrandExclude($event, key)"
+                has-search
+              />
+            </div>
+            <div class="col-3 col-lg-4">
+              <form-select
+                :label="$t('model')"
+                :options="carModels[key]"
+                v-model="form.exclude_additional_brands[key]['model']"
+                :disabled="
+                      form.exclude_additional_brands[key]['brand'] &&
+                      !carModels[key].length
+                    "
+                @change="setModelExclude($event, key)"
+                has-search
+              />
+            </div>
+            <div class="col-lg-4" :class="{ 'col-4': index === 0 || !canAddRowExclude(index),'col-3': canAddRowExclude(index) }">
+              <div
+                :class="[
+                      'row','flex-nowrap',
+                      {
+                        'has-add-btn': canAddRowExclude(index),
+                        'has-remove-btn': canRemoveRowExclude(),
+                      },
+                    ]"
+              >
+                <div class="col">
+                  <form-select
+                    :label="$t('generation')"
+                    :options="carGenerations[key]"
+                    v-model="form.exclude_additional_brands[key]['generation']"
+                    :disabled="
+                          form.exclude_additional_brands[key]['model'] &&
+                          !carGenerations[key].length
+                        "
+                    @change="setGenerationExclude($event, key)"
+                    has-search
+                    has-generations
+                  />
+                </div>
+                <div class="col-auto">
+                  <div class="form-counter">
+                    <div
+                      class="form-info mr-1"
+                      v-if="canAddRowExclude(index)"
+                      @click="addSearchRowExclude(key)"
+                    >
+                      <icon name="plus" />
+                    </div>
+                    <div
+                      class="form-info"
+                      v-if="canRemoveRowExclude()"
+                      @click="removeSearchRowExclude(key)"
+                    >
+                      <icon name="minus" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
+          </div>
+        </div>
+        <div class="d-flex justify-content-end mr-1 mt-2">
+          <button @click="showExcludeModal = false;submitForm()" class="btn btn--green">OK</button>
+        </div>
+      </template>
+    </modal-popup>
     <modal-popup
       :toggle="showIntervalModal"
       :title="$t('receive_notifications')"
@@ -760,7 +848,14 @@
 .btn-disabled {
   opacity: 0.2;
   pointer-events: none;
+
 }
+@media screen and (min-width: 768px) {
+  .exclude-popup {
+    width:50%;
+  }
+}
+
 </style>
 <script>
 import { mapGetters, mapActions } from 'vuex'
@@ -803,10 +898,13 @@ export default {
       default: false
     }
   },
+
   data() {
     return {
+      showExcludeModal: false,
       showIntervalModal: false,
       rows: ['0'],
+      excludeRows: ['0'],
       selected: [],
       pending2: false,
       searchAppliedCustom: false,
@@ -815,6 +913,7 @@ export default {
       form: {
         sorting: 'created_at_desc',
         additional_brands: { 0: {}, 1: {}, 2: {}, 3: {}, 4: {} },
+        exclude_additional_brands: { 0: {}, 1: {}, 2: {}, 3: {}, 4: {} },
         all_options: {},
         announce_type: 1,
         currency: 1,
@@ -911,6 +1010,7 @@ export default {
     },
   },
   mounted() {
+
     this.$nuxt.$on('saved-search-created', () => {
       if (this.singleSavedSearch.id) {
         this.selected.push(this.singleSavedSearch.id)
@@ -924,6 +1024,9 @@ export default {
       'getModelGenerationsArray',
       'updateSavedSearchNotificationsInterval',
     ]),
+    handleExclude() {
+
+    },
     saveSearch() {
       if (this.searchAppliedCustom) {
         this.submitForm()
@@ -961,6 +1064,28 @@ export default {
       ].map((key) => {
         this.$set(this.form.additional_brands[index], key, '')
       })
+      if (id)  {
+        this.getModelsArray({ value: slug, index })
+        this.submitForm(false);
+      }
+
+
+    },
+    async setBrandExclude(id, index) {
+      let brand = this.brands.find((option) => option.id == id)
+      let slug = brand?.slug || ''
+      this.$set(this.form.exclude_additional_brands[index], 'brand', id)
+      this.$set(this.form.exclude_additional_brands[index], 'brand_slug', slug)
+      ;[
+        'model',
+        'model_slug',
+        'model_name',
+        'generation',
+        'generation_slug',
+        'generation_name',
+      ].map((key) => {
+        this.$set(this.form.exclude_additional_brands[index], key, '')
+      })
       if (id) await this.getModelsArray({ value: slug, index })
     },
     async setModel(id, index) {
@@ -973,6 +1098,25 @@ export default {
       this.$set(this.form.additional_brands[index], 'model_name', name)
       ;['generation', 'generation_slug', 'generation_name'].map((key) => {
         this.$set(this.form.additional_brands[index], key, '')
+      })
+      if (id) {
+        this.submitForm(false);
+        this.getModelGenerationsArray({ value: slug, brand_slug, index })
+      }
+
+
+
+    },
+    async setModelExclude(id, index) {
+      let model = this.carModels[index].find((option) => option.id == id)
+      let slug = model?.slug || '',
+        name = model?.name || ''
+      let brand_slug = this.form.exclude_additional_brands[index].brand_slug
+      this.$set(this.form.exclude_additional_brands[index], 'model', id)
+      this.$set(this.form.exclude_additional_brands[index], 'model_slug', slug)
+      this.$set(this.form.exclude_additional_brands[index], 'model_name', name)
+      ;['generation', 'generation_slug', 'generation_name'].map((key) => {
+        this.$set(this.form.exclude_additional_brands[index], key, '')
       })
       if (id)
         await this.getModelGenerationsArray({ value: slug, brand_slug, index })
@@ -989,6 +1133,22 @@ export default {
       )
       this.$set(
         this.form.additional_brands[index],
+        'generation_name',
+        generation?.name || '',
+      )
+    },
+    async setGenerationExclude(id, index) {
+      let generation = this.carGenerations[index].find(
+        (option) => option.id == id,
+      )
+      this.$set(this.form.exclude_additional_brands[index], 'generation', id)
+      this.$set(
+        this.form.exclude_additional_brands[index],
+        'generation_slug',
+        generation?.short_name || '',
+      )
+      this.$set(
+        this.form.exclude_additional_brands[index],
         'generation_name',
         generation?.name || '',
       )

@@ -1,6 +1,6 @@
 <template>
   <div class="sell_preview">
-    <div :class="['img-bg', !sellPreviewData.image ? 'no-img--' + type : '']" 
+    <div :class="['img-bg', !sellPreviewData.image ? 'no-img--' + type : '']"
          :style="sellPreviewData.image ? {backgroundImage: `url('${sellPreviewData.image}')`} : {}">
     </div>
     <h4>{{ announcementTitle }}</h4>
@@ -47,6 +47,8 @@ export default {
       } else {
         return this.$t('announcement_name')
       }
+
+
     },
     announcementDescription() {
       if (this.form.year || this.form.selectedYear || this.sellPreviewData.mileage) {
