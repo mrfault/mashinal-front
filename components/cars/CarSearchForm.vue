@@ -361,7 +361,7 @@
                 </div>
               </form-select>
             </div>
-            <div class="col-6 col-lg-2 mb-2 mb-lg-3" v-if="!advanced">
+            <div class="col-6 col-lg-2 mb-2 mb-lg-3" v-if="isMobileBreakpoint">
               <form-select
                 :label="$t('fuel')"
                 v-model="form.engine_type"
