@@ -2194,5 +2194,6 @@ export default {
   "Loading":"Загружается...",
   "without_nds":"Цены указаны без учета НДС",
   "exclude_models": "Здесь вы можете выбрать объявления, которые не желаете видеть в результате поиска",
-  "exclude":"Исключение"
+  "exclude":"Исключение",
+  "this_car_has_already_been_added_and_is_active_on_the_site":"Этот автомобиль уже был добавлен и активен"
 }
