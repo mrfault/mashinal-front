@@ -181,7 +181,7 @@ export default {
         fadeEffect: {
           crossFade: true,
         },
-        loop: false,
+        loop: true,
         preloadImages: false,
         lazy: {
           loadPrevNext: false,
