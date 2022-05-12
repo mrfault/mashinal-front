@@ -165,7 +165,11 @@
                 :key="i + 1"
               >
                 <span class="payment-service">
-                  <span>{{ $t(row.operation_key) }}</span>
+                   <template v-if="row.what_bought && row.what_bought.car_number">
+                    ( {{ row.what_bought.car_number }} )
+                  </template>
+                  &nbsp;
+                  <span>{{ $t(row.operation_key) }} </span>
                 </span>
                 <span class="payment-price">
                   <span
