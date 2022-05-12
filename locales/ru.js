@@ -2000,7 +2000,7 @@ export default {
   "you_can_create_announcement": "По номеру <strong>{phone}</strong> вы можете разместить <strong>{left}</strong> {plural} на легковые, мото и коммерческие автомобили, а также <strong>{left_parts}</strong> {plural_parts} на запчасти.",
   "you_can_create_announcement_parts": "По номеру <strong>{phone}</strong> вы можете разместить <strong>{left_parts}</strong> {plural_parts} на запчасти.",
   "you_can_create_announcement_transport": "По номеру <strong>{phone}</strong> вы можете разместить <strong>{left}</strong> {plural} на легковые, мото и коммерческие автомобили.",
-  "you_can_only_have_some_free_announcement_within_30_days": "В течении <strong>30</strong> дней на сайте Mashin.AL можно разместить только <strong>1</strong> объявления на легковые, мото и коммерческие автомобили и <strong>6</strong> объявлений на запчасти.",
+  "you_can_only_have_some_free_announcement_within_30_days": "В течении <strong>30</strong> дней на сайте Mashin.AL можно разместить только <strong>3</strong> объявления на легковые, мото и коммерческие автомобили и <strong>безлимитно</strong> объявлений на запчасти.",
   "you_have_got_a_message": "Вам пришло сообщение",
   "you_should_deactivate_announcements": "У вас активен пакет {package1}. Для того чтобы перейти на пакет {package2} нужно довести количество объявлений до {n}.<br/>Выберите объявления, которые вы хотите деактивировать, чтобы продолжить.",
   "you_unblocked_this_user": "Вы раззаблокировали этого пользователя",

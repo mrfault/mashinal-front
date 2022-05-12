@@ -165,8 +165,17 @@
                 :key="i + 1"
               >
                 <span class="payment-service">
-                   <template v-if="row.what_bought && row.what_bought.car_number">
-                    ( {{ row.what_bought.car_number }} )
+                   <template v-if="row.what_bought && row.what_bought_type === 'App\\GarageCar'">
+                     <nuxt-link :to="$localePath('/garage')">( {{ row.what_bought.car_number }} )</nuxt-link>
+                  </template>
+                  <template v-else-if="row.what_bought && ['App\\Motorcycle','App\\Scooter','App\\MotoAtv'].includes(row.what_bought_type)">
+                    ( <nuxt-link :to="$localePath('/moto/announcement/'+row.what_bought.id_unique)">{{ row.what_bought.id_unique }}</nuxt-link> )
+                  </template>
+                  <template v-else-if="row.what_bought && row.what_bought_type === 'App\\Commercial'">
+                    ( <nuxt-link :to="$localePath('/commercial/announcement/'+row.what_bought.id_unique)">{{ row.what_bought.id_unique }}</nuxt-link> )
+                  </template>
+                  <template v-else-if="row.what_bought && row.what_bought_type === 'App\\Part'">
+                    ( <nuxt-link :to="$localePath('/parts/announcement/'+row.what_bought.id_unique)">{{ row.what_bought.id_unique }}</nuxt-link> )
                   </template>
                   &nbsp;
                   <span>{{ $t(row.operation_key) }} </span>

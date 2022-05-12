@@ -181,7 +181,7 @@ export default {
         fadeEffect: {
           crossFade: true,
         },
-        loop: true,
+        loop: false,
         preloadImages: false,
         lazy: {
           loadPrevNext: false,
@@ -204,6 +204,7 @@ export default {
       showIframe: true,
     }
   },
+
   methods: {
     slidePrev() {
       if (this.imagesSwiper.activeIndex === 0) {
@@ -239,6 +240,10 @@ export default {
       if (e.key === 'Escape') {
         this.$emit('close')
       }
+        // if(e.key === "ArrowLeft") {
+        //   this.slidePrev();
+        //   //Left arrow pressed
+        // }
     },
   },
   mounted() {
