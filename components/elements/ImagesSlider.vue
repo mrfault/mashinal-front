@@ -172,6 +172,7 @@ export default {
   },
   data() {
     return {
+      showFirst:false,
       showInterior: false,
       zoom: 0,
       swiperOps: {
@@ -244,6 +245,24 @@ export default {
         //   this.slidePrev();
         //   //Left arrow pressed
         // }
+
+        if(e.key === "ArrowRight" && this.slides.main.length-1 === this.imagesSwiper.activeIndex) {
+          if(this.showFirst) {
+            this.imagesSwiper.slideTo(0);
+            this.showFirst = false;
+          }else {
+            this.showFirst = true;
+          }
+        }
+
+        if(e.key === "ArrowLeft" && this.imagesSwiper.activeIndex === 0) {
+          if(this.showFirst) {
+            this.imagesSwiper.slideTo(this.slides.main.length - 1)
+            this.showFirst = false;
+          }else {
+            this.showFirst = true;
+          }
+        }
     },
   },
   mounted() {
@@ -258,6 +277,8 @@ export default {
 
           this.$emit('slide-change', this.imagesSwiper.realIndex)
           this.updateTouchEvents()
+
+
         })
       })
       let swiperTouchStartX

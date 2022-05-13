@@ -122,7 +122,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import {mapActions, mapGetters} from 'vuex'
 import { PaymentMixin } from '~/mixins/payment'
 import { required } from 'vuelidate/lib/validators'
 import AsanLoginButton from '~/components/buttons/AsanLoginButton'
@@ -148,8 +148,10 @@ export default {
     },
   },
   mixins: [PaymentMixin, asan_login],
+
   data() {
     return {
+      bankingCardRefresh:0,
       showModal: false,
       pending: false,
       price: 0,
@@ -168,6 +170,7 @@ export default {
     },
   },
   computed: {
+    ...mapGetters({bankingCards: 'bankingCards/bankingCards'}),
     haveBalanceToPay() {
       return parseFloat(this.price) <= this.user.balance
     },

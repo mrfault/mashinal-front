@@ -15,7 +15,7 @@ export const PaymentMixin = {
   },
   data() {
     return {
-      showPaymentModal: false,
+      showPaymentModal: true,
       paymentMethod: 'card',
       bankingCard: ''
     }

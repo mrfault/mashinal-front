@@ -35,6 +35,7 @@ export default {
   props: {
     value: {}
   },
+
   computed: {
     ...mapGetters({
       bankingCards: 'bankingCards/bankingCards'
