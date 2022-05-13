@@ -20,7 +20,13 @@ export const PaymentMixin = {
       bankingCard: ''
     }
   },
+  mounted() {
+    let item = this.bankingCards.find(item => item.default)
+    if(item)
+      this.bankingCard = item.id
+  },
   computed: {
+    ...mapGetters({bankingCards: 'bankingCards/bankingCards'}),
     ...mapGetters(['paidStatusData']),
 
     paymentMethodOptions() {

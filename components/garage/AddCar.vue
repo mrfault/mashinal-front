@@ -74,7 +74,8 @@
         :group-by="2"
       />
       <select-banking-card
-        v-model="bankingCard"
+        :value="bankingCard"
+        @input="bankingCard = $event"
         class="mt-2 mt-lg-3"
         v-show="paymentMethod === 'card'"
       />
