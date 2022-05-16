@@ -139,7 +139,7 @@
               </span>
               <span
                 class="badge"
-                v-if="announcement.created_at && !isMobileBreakpoint"
+                v-if="announcement.updated_at && !isMobileBreakpoint"
               >
                 {{ $formatDate(announcement.updated_at, 'D MMM')[locale] }}
               </span>
