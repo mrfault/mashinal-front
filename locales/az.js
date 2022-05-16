@@ -820,6 +820,7 @@ export default {
   "furgon": "Furqon ",
   "garage": "Qaraj",
   "garage_activate_pay": "NV-si aktivləşdirilib",
+  "garage_renew_pay": "NV-si yenilənib",
   "garage_error_10000": "Texniki səhv baş verdi. Xahiş edirik yenidən cəhd edəsiniz",
   "garage_error_1001": "Avtorizasiya yanlışdır",
   "garage_error_1002": "Partner blok edilib",
