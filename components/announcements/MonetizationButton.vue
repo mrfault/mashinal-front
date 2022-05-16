@@ -172,7 +172,7 @@ export default {
           await this.$nuxt.refresh();
           this.updatePaidStatus({
             type: 'success',
-            text: this.$t('announcement_paid'),
+            text: this.$t('ad_started'),
             title: this.$t('success_payment')
           });
           this.pending = false;
