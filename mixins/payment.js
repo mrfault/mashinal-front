@@ -21,9 +21,7 @@ export const PaymentMixin = {
     }
   },
   mounted() {
-    let item = this.bankingCards.find(item => item.default)
-    if(item)
-      this.bankingCard = item.id
+  this.selectDefaultCard();
   },
   computed: {
     ...mapGetters({bankingCards: 'bankingCards/bankingCards'}),
@@ -38,7 +36,11 @@ export const PaymentMixin = {
   },
   methods: {
     ...mapActions(['updatePaidStatus']),
-
+    selectDefaultCard() {
+      let item = this.bankingCards.find(item => item.default)
+      if(item)
+        this.bankingCard = item.id
+    },
     callUpdatePaidStatus(paid, text) {
       let type = paid ? 'success' : 'error';
       if (!paid) text = this.$t('try_again');
@@ -94,6 +96,9 @@ export const PaymentMixin = {
     }
   },
   watch: {
+    bankingCards(value) {
+      this.selectDefaultCard();
+    },
     haveBalanceToPay(value) {
       if (!value) {
         this.paymentMethod = 'card';

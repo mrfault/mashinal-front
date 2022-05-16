@@ -10,7 +10,7 @@
       img-key="icon"
       v-model="activeCardId"
     />
-    <div class="banking-cards_item mt-3" v-if="activeCard">
+    <div class="banking-cards_item mt-3" v-if="activeCard && showCardImage">
       <div class="card-img">
         <img :src="`/img/cards/card-${activeCard.brand.toLowerCase()}-${activeCard.img}.png`" :alt="activeCard.brand" />
       </div>
@@ -33,7 +33,11 @@ import { mapGetters, mapActions } from 'vuex';
 
 export default {
   props: {
-    value: {}
+    value: {},
+    showCardImage:{
+      type: Boolean,
+      default: true,
+    }
   },
 
   computed: {
