@@ -19,7 +19,7 @@ export default {
   },
   nuxtI18n: {
     paths: {
-      az: '/salonlar/:id'
+      az: '/salon/:id'
     }
   },
   head() {
@@ -30,7 +30,7 @@ export default {
   },
   async asyncData({ store, route }) {
     await Promise.all([
-      store.dispatch('getSalonById', {id: route.params.id}),
+      store.dispatch('getSalonById', {slug: route.params.id}),
       store.dispatch('getMotoOptions'),
     ]);
 

@@ -46,7 +46,7 @@
           >
             <nuxt-link
               class="keep-colors"
-              :to="$localePath(`/salons/${salon.id}`)"
+              :to="$localePath(`/salons/${salon.slug}`)"
             >
               <salon-card :salon="salon" />
             </nuxt-link>
@@ -78,7 +78,7 @@
                 <div class="salon-card-list__item" v-for="salon in salonsInView" :key="salon.id">
                   <nuxt-link
                     class="keep-colors"
-                    :to="$localePath(`/salons/${salon.id}`)"
+                    :to="$localePath(`/salons/${salon.slug}`)"
                   >
                     <salon-card :salon="salon" />
                   </nuxt-link>

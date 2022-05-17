@@ -1070,7 +1070,7 @@ export const actions = {
   },
   async getSalonById({ commit }, data) {
     const res = await this.$axios.$get(
-      '/auto_salon/' + data.id + '?page=' + (data.page || 1),
+      '/auto_salon/' + data.slug + '?page=' + (data.page || 1),
     )
     commit('mutate', { property: 'salonSingle', value: res })
   },
