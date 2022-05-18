@@ -240,20 +240,20 @@ export default {
         this.form.car_number = ''
         this.form.tech_id = ''
         this.form.card_id = ''
-        if (this.paymentMethod === 'card' && !this.bankingCard) {
+        if (this.paymentMethod === 'card') {
           this.pending = false
           this.showPaymentModal = false
           this.handlePayment(res, false, this.$t('car_added'), 'v2')
         } else {
-          await Promise.all([this.$nuxt.refresh(), this.$auth.fetchUser()])
-          this.pending = false
-          this.showPaymentModal = false
-          this.bankingCard = ''
-          this.updatePaidStatus({
-            type: 'success',
-            text: this.$t('car_added'),
-            title: this.$t('success_payment'),
-          })
+          // await Promise.all([this.$nuxt.refresh(), this.$auth.fetchUser()])
+          // this.pending = false
+          // this.showPaymentModal = false
+          // this.bankingCard = ''
+          // this.updatePaidStatus({
+          //   type: 'success',
+          //   text: this.$t('car_added'),
+          //   title: this.$t('success_payment'),
+          // })
         }
       } catch (err) {
         this.pending = false
