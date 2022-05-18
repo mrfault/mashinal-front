@@ -7,7 +7,7 @@
     <span v-if="model"><span>&nbsp;/</span> {{ model.name }}</span>
     <span v-if="year"><span>&nbsp;/</span> {{ year }}</span>
     <div class="ml-auto" v-if="allowClear">
-      <button @click="$emit('back')" class="btn btn--red-outline">Geri</button>
+      <button @click="$emit('back')" class="btn btn--red-outline">{{ $t('back') }}</button>
       <button class="btn btn--red-outline" @click="$emit('clean')">{{ $t('clean') }}</button>
     </div>
   </div>
