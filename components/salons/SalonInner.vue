@@ -19,6 +19,7 @@
         >
           <img
             class="avatar"
+            style="border-radius:0;"
             :src="getLogo(salonSingle.logo)"
             :alt="salonSingle.name || salonSingle.user.full_name"
           />
@@ -46,58 +47,54 @@
       </div>
       <h2 class="title-with-line text-center">
         <span>
-          {{ $t(isShop ? 'shop' : 'salon') }} "{{
+          <template v-if="!salonSingle.is_official">{{ $t(isShop ? 'shop' : 'salon') }}</template> {{
             salonSingle.name || salonSingle.user.full_name
-          }}"
+          }}
         </span>
       </h2>
       <!-- ------------------ -->
 
-      <p v-if="salonSingle.description" class="mb-4">
+      <p v-if="salonSingle.description" class="mb-4"  style="font-weight: 400;font-size: 15px;">
         {{ salonSingle.description }}
       </p>
       <!-- ------------------ -->
       <div class="row align-items-lg-end profile_info">
-        <template v-if="salonSingle.phones && salonSingle.phones.length">
-          <div :class="`col-lg-${messengers.length ? 9 : 12} mb-2`">
-            <div class="profile_info-details">
+        <div class="col-lg-12 mb-2 d-flex" >
+            <div v-if="salonSingle.phones && salonSingle.phones.length" class="profile_info-details border-padding-none mr-5">
               <icon name="phone-call" />
               <span
                 class="d-inline-flex"
                 v-html="
-                  getConcatPhones(
-                    salonSingle.phones,
-                    3,
-                    true,
-                    {
-                      telegram: salonSingle.telegram || [],
-                      whatsapp: salonSingle.whatsapp || [],
-                    },
-                    salonSingle.short_number,
-                  )
-                "
+                getConcatPhones(
+                  salonSingle.phones,
+                  3,
+                  true,
+                  {
+                    telegram: salonSingle.telegram || [],
+                    whatsapp: salonSingle.whatsapp || [],
+                  },
+                  salonSingle.short_number,
+                )
+              "
               ></span>
             </div>
-          </div>
-          <div class="col-lg-3 mb-2" v-if="hasWorkingHours">
-            <div class="profile_info-details">
+            <div v-if="hasWorkingHours" class="profile_info-details border-padding-none">
               <icon name="time" />
               <span
                 class="working-time"
                 v-html="
-                  getWorkingDays(
-                    salonSingle.working_days,
-                    salonSingle.working_hours,
-                  )
-                "
+                getWorkingDays(
+                  salonSingle.working_days,
+                  salonSingle.working_hours,
+                )
+              "
               />
             </div>
-          </div>
-        </template>
+        </div>
         <div :class="`col-lg-12 mb-2`" v-if="salonSingle.address">
-          <div class="profile_info-details">
+          <div class="profile_info-details border-padding-none">
             <icon name="placeholder" />
-            <span>{{ salonSingle.address }}</span>
+            <span style="font-weight: 500">{{ salonSingle.address }}</span>
           </div>
         </div>
       </div>
@@ -126,7 +123,12 @@
     />
   </div>
 </template>
-
+<style>
+.border-padding-none {
+  border:none !important;
+  padding-bottom: 0 !important;
+}
+</style>
 <script>
 import { mapGetters, mapActions } from 'vuex'
 
