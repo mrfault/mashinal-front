@@ -47,9 +47,12 @@
       </div>
       <h2 class="title-with-line text-center">
         <span>
-          <template v-if="!salonSingle.is_official">{{ $t(isShop ? 'shop' : 'salon') }}</template> {{
-            salonSingle.name || salonSingle.user.full_name
-          }}
+          <template v-if="!salonSingle.is_official">{{ $t(isShop ? 'shop' : 'salon') }}
+            "{{
+              salonSingle.name || salonSingle.user.full_name
+            }}"
+          </template>
+          <template v-else>{{ salonSingle.name || salonSingle.user.full_name}}</template>
         </span>
       </h2>
       <!-- ------------------ -->

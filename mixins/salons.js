@@ -61,7 +61,7 @@ export const SalonsMixin = {
     },
     getWorkingDays(days, hours) {
       if (!days && !hours) return false
-      let strHours = hours?.start ? `${hours.start} - ${hours.end}` : ''
+      let strHours = hours?.start ? `<span style="font-weight: 500;">${hours.start} - ${hours.end}</span>` : ''
       if (!days || !days.length) return strHours
       let weekDays = [...days].sort(),
         dayRows = [],

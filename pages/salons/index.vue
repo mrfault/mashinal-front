@@ -35,9 +35,9 @@
             <span>{{ $t('salons') }}</span>
           </h2>
         </div>
-        <div class="text-with-line">
+        <div class="text-with-line" v-if="officialSalons.length">
           <h2 class="title-with-line full-width mt-2">
-            <span>Rəsmi nümayəndələr</span>
+            <span>{{ $t('official_salons') }}</span>
           </h2>
         </div>
         <div
@@ -57,9 +57,9 @@
             </nuxt-link>
           </div>
         </div>
-        <div class="text-with-line">
+        <div class="text-with-line" v-if="nonOfficialSalons.length">
           <h2 class="title-with-line full-width mt-2">
-            <span>Avtosalonlar</span>
+            <span>{{ $t('auto_salons') }}</span>
           </h2>
         </div>
         <div

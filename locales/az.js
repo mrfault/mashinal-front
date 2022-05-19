@@ -2198,5 +2198,7 @@ export default {
   "without_nds":"Qiymətlərə ƏDV daxil deyildir",
   "exclude": "İstisna",
   "exclude_models": "Görmək istəmədiyiniz marka, modelləri istisnaya əlavə edin",
-  "this_car_has_already_been_added_and_is_active_on_the_site":"Bu avtomobil artıq əlavə edilib və saytda aktivdir"
+  "this_car_has_already_been_added_and_is_active_on_the_site":"Bu avtomobil artıq əlavə edilib və saytda aktivdir",
+  "auto_salons": "Avtosalonlar",
+  "official_salons":"Rəsmi nümayəndələr"
 }

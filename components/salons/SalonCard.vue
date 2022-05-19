@@ -5,7 +5,10 @@
         <img :src="getLogo(salon.logo)" :alt="salon.name" />
       </div>
       <div class="salon-info">
-        <h3>{{ salon.name }}</h3>
+        <h3>
+            <template v-if="!salon.is_official">{{ $t(isShop ? 'shop' : 'salon') }}  "{{ salon.name }}"</template>
+            <template v-else> {{ salon.name }}</template>
+        </h3>
         <div class="salon-info_bottom-line d-flex justify-content-between">
           <span class="d-inline-flex align-items-center">
             <icon name="phone-call" v-if="getConcatPhones(salon.phones, 1, false)" />
@@ -28,7 +31,12 @@ export default {
   props: {
     salon: {}
   },
-  mixins: [SalonsMixin]
+  mixins: [SalonsMixin],
+  computed: {
+    isShop() {
+      return this.routeName.includes('parts')
+    },
+  }
 }
 </script>
 <style lang="scss">
