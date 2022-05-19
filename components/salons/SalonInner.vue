@@ -42,7 +42,7 @@
         </span>
         <nuxt-link
           class="edit-link"
-          style="bottom: -12px;"
+          style="bottom: -5px;"
           :to="$localePath(`/dashboard/${salonSingle.type_id}/settings`)"
           @click.native="setPageRef($route.path)"
           v-if="salonIsOwner(salonSingle)"
@@ -137,7 +137,7 @@
   padding-bottom: 0 !important;
 }
 .items-total {
-  bottom: -12px !important;
+  bottom: -5px !important;
   display: flex;
   left: 25px !important;
   font-size: 14px !important;
