@@ -39,17 +39,3 @@ export default {
   }
 }
 </script>
-<style lang="scss">
-.salon-car-icon {
-  margin-right: 5px;
-  width: 14px;
-
-}
-.dark-mode {
-  .salon-car-icon {
-   path {
-     fill: white;
-   }
-  }
-}
-</style>

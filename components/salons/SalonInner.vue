@@ -7,7 +7,7 @@
       ]"
     >
       <!-- ------------------ -->
-      <div class="cover-with-avatar">
+      <div class="cover-with-avatar" style="margin-bottom: 5px;">
         <div
           class="cover"
           :style="{
@@ -36,8 +36,13 @@
             </a>
           </div>
         </div>
+        <span class="edit-link items-total">
+          <inline-svg class="salon-car-icon" src="/images/car_icon.svg"  />
+          <span>{{ salonSingle.announcements.total }}</span>
+        </span>
         <nuxt-link
           class="edit-link"
+          style="bottom: -12px;"
           :to="$localePath(`/dashboard/${salonSingle.type_id}/settings`)"
           @click.native="setPageRef($route.path)"
           v-if="salonIsOwner(salonSingle)"
@@ -130,6 +135,13 @@
 .border-padding-none {
   border:none !important;
   padding-bottom: 0 !important;
+}
+.items-total {
+  bottom: -12px !important;
+  display: flex;
+  left: 25px !important;
+  font-size: 14px !important;
+  font-weight: 500;
 }
 </style>
 <script>
