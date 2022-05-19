@@ -119,7 +119,7 @@ export default {
       });
 
       this.objectManager.objects.balloon.events.add('click', () => {
-        this.$emit('balloon-click', this.selectedSalon?.id || '')
+        this.$emit('balloon-click', this.selectedSalon?.slug || '')
       });
 
       this.map.geoObjects.add(this.objectManager);

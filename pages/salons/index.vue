@@ -35,13 +35,40 @@
             <span>{{ $t('salons') }}</span>
           </h2>
         </div>
+        <div class="text-with-line">
+          <h2 class="title-with-line full-width mt-2">
+            <span>Rəsmi nümayəndələr</span>
+          </h2>
+        </div>
         <div
           class="mb-lg-0 mb-n2 mt-2 mt-lg-3 row salon-card-list"
-          v-if="salonsFiltered.length"
+          v-if="officialSalons.length"
         >
           <div
             class="col-lg-4 mb-2 mb-lg-3"
-            v-for="salon in salonsFiltered"
+            v-for="salon in officialSalons"
+            :key="salon.id"
+          >
+            <nuxt-link
+              class="keep-colors"
+              :to="$localePath(`/salons/${salon.slug}`)"
+            >
+              <salon-card :salon="salon" />
+            </nuxt-link>
+          </div>
+        </div>
+        <div class="text-with-line">
+          <h2 class="title-with-line full-width mt-2">
+            <span>Avtosalonlar</span>
+          </h2>
+        </div>
+        <div
+          class="mb-lg-0 mb-n2 mt-2 mt-lg-3 row salon-card-list"
+          v-if="nonOfficialSalons.length"
+        >
+          <div
+            class="col-lg-4 mb-2 mb-lg-3"
+            v-for="salon in nonOfficialSalons"
             :key="salon.id"
           >
             <nuxt-link
@@ -124,7 +151,27 @@
     </div>
   </div>
 </template>
+<style lang="scss">
+.text-with-line {
+  h2.title-with-line {
+    span {
+      background-color: #f3f7fc;
+    }
+  }
+}
+.dark-mode {
 
+  .text-with-line {
+    background-color: #1C1C1EFF;
+    h2.title-with-line {
+      background: #1c1c1e;
+      span {
+        background: #1c1c1e;
+      }
+    }
+  }
+}
+</style>
 <script>
 import { mapGetters, mapActions } from 'vuex'
 
@@ -170,7 +217,12 @@ export default {
   },
   computed: {
     ...mapGetters(['salonsFiltered', 'salonsInBounds', 'mapView']),
-
+    nonOfficialSalons() {
+      return this.salonsFiltered.filter(item => !item.is_official);
+    },
+    officialSalons() {
+      return this.salonsFiltered.filter(item => item.is_official);
+    },
     crumbs() {
       return [{ name: this.$t('salons') }]
     },
