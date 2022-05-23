@@ -2197,5 +2197,14 @@ export default {
   "without_nds":"Qiymətlərə ƏDV daxil deyildir",
   "exclude": "İstisna",
   "exclude_models": "Görmək istəmədiyiniz marka, modelləri istisnaya əlavə edin",
-  "this_car_has_already_been_added_and_is_active_on_the_site":"Bu avtomobil artıq əlavə edilib və saytda aktivdir"
+  "this_car_has_already_been_added_and_is_active_on_the_site":"Bu avtomobil artıq əlavə edilib və saytda aktivdir",
+  "number_of_car": "Maşının nömrəsi",
+  "number_of_tech_id": "Texpasport nömrəsi",
+  "watch_your_penalties_on_mashinal":"Cərimələrinizi Mashin.AL-da izləyin",
+  "otp_number":"OTP nömrə",
+  "we_created_a_system_that_you_can_buy_a_car_only_in_one_hour":"Cəmi bir saat ərzində avtomobil almağa imkan verən sistem  yaratdıq.",
+  "download_mobile_app":"Mobil tətbiqi yüklə",
+  "chance_to_place_an_announcement_with_panorama":"Panorama ilə elan yerləşdirmə imkanı",
+  "place_panoramic_photo_from_mobile_phone":"Mobil telefonunuzdan maşınınızın Panorama (360) fotosunu yerləşdirin.",
+  "language_prefix": "az",
 }

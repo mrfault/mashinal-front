@@ -649,3 +649,36 @@
 button:focus {
   outline: none;
 }
+
+.button--scaner{
+  width: 170px;
+  height: 50px;
+  border-radius: 10px;
+  border: 2px solid #fff;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  background: transparent;
+  outline: none;
+  .icon{
+    width: 25px;
+    height: 25px;
+    img{
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+  .text{
+    text-align-last: left;
+    margin-left: 8px;
+    &__action{
+      margin: 0;
+      font: 400 12px Gilroy;
+    }
+    &__brand{
+      margin: 0;
+      font: 500 18px Gilroy;
+    }
+  }
+}

@@ -1,5 +1,5 @@
 <template>
-  <div class="form-group">
+  <div class="form-group" :class="{'ma-input--white': isPromotionsPage}">
     <div :class="['text-input', {[`${blockClass}`]:blockClass}]">
       <icon :name="iconName" v-if="iconName" :class="{invalid, disabled}" />
       <img :src="imgSrc" v-if="imgSrc" :class="{disabled}" />
@@ -102,7 +102,8 @@
       hasPopover: Boolean,
       disabledDate: {
         default: () => (() => {})
-      }
+      },
+      isPromotionsPage: Boolean,
     },
     components: {
       DatePicker
