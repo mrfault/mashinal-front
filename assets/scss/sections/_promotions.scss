@@ -1,0 +1,524 @@
+.ma-promotions {
+  background: $greyish-blue-11;
+  // position: static;
+  // top: 0;
+  // left: 0;
+  width: 100%;
+  min-height: calc(100vh - 307px);
+  z-index: 0;
+  padding-top: calc(160px + 141px);
+  margin: -210px 0 0px 0;
+  box-sizing: border-box;
+  overflow: hidden;
+  &__body {
+    min-height: 300px;
+    display: flex;
+    justify-content: space-between;
+    div[class^='ma-promotions__body--sticker'] {
+      z-index: 1;
+    }
+    &--left,
+    &--right {
+      width: calc((100% - 1300px) / 2);
+    }
+    &--left {
+      background: url(/promotions/left-shadow.svg) no-repeat;
+      background-size: contain;
+      background-position: left 70px;
+      min-height: 300px;
+    }
+    &--right {
+      width: calc((100% - 1300px) / 2);
+      background: url(/promotions/right-shadow.svg) no-repeat;
+      background-size: contain;
+      background-position: right 40px;
+      min-height: 300px;
+    }
+    &--center {
+      width: 1250px;
+
+      background: url(/promotions/center-shadow.svg) no-repeat;
+      background-size: 136px 70px;
+      background-position: 70% 20px;
+      min-height: 300px;
+      padding: 30px 30px 0 30px;
+      box-sizing: border-box;
+      overflow: hidden;
+      .content {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        &__image {
+          width: calc(100% - 450px);
+          margin-bottom: 0;
+          order: 1;
+          img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+          }
+        }
+        &__video {
+          width: calc(100% - 450px);
+          margin-bottom: 0;
+          order: 1;
+          .panorama {
+            position: relative;
+            width: 100%;
+            height: 234px;
+            border-radius: 31px;
+            box-sizing: border-box;
+            overflow: hidden;
+            &__phone {
+              &-outline {
+                border-radius: 31px;
+                width: 100%;
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 234px;
+                box-sizing: border-box;
+                overflow: hidden;
+                z-index: 2;
+                img {
+                  width: 100%;
+                  height: 100%;
+                  object-fit: contain;
+                }
+              }
+              &-buttons {
+                width: 100%;
+                position: absolute;
+                top: 0;
+                left: 20px;
+                height: 234px;
+                box-sizing: border-box;
+                overflow: hidden;
+                z-index: 2;
+                img {
+                  width: 100%;
+                  height: 100%;
+                  object-fit: contain;
+                }
+              }
+              &-background {
+                width: 100%;
+                height: 226px;
+                border-radius: 31px;
+                box-sizing: border-box;
+                overflow: hidden;
+                transform: translate(-50%, -50%);
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                img {
+                  width: 100%;
+                  height: 100%;
+                  object-fit: contain;
+                }
+              }
+            }
+            &__video {
+              width: 475px;
+              height: 217px;
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              z-index: 3;
+              background: #000;
+              box-sizing: border-box;
+              overflow: hidden;
+              border-radius: 31px;
+              video,
+              iframe {
+                position: relative;
+                top: 0;
+                left: 0;
+                opacity: 1;
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+              }
+            }
+          }
+        }
+        &__bilboard {
+          display: none;
+        }
+        &__form {
+          width: 100%;
+
+          width: 350px;
+          margin-bottom: 0;
+          order: 2;
+          &--title {
+            font: 600 34px/41px Gilroy;
+            color: $dark-blue-1;
+            padding-right: 10px;
+            margin-bottom: 18px;
+          }
+          &--subtitle {
+            font: 500 20px/30px Gilroy;
+            color: $dark-blue-1;
+            margin-bottom: 30px;
+          }
+          input {
+            margin-bottom: 20px;
+          }
+          .btn {
+            width: 100%;
+            height: 42px;
+            border-radius: 10px;
+          }
+        }
+      }
+    }
+  }
+  &__phone {
+    height: 231px;
+
+    margin: 0 auto;
+    position: relative;
+    width: 1250px;
+    @mixin phoneStyles {
+      position: absolute;
+      top: 70px;
+      left: calc(100% - 345px);
+      width: 345px;
+      height: 490px;
+      box-sizing: border-box;
+      overflow: hidden;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+    }
+    .phone-outline {
+      @include phoneStyles;
+      z-index: 4;
+    }
+    .phone-content {
+      z-index: 3;
+      @include phoneStyles;
+      transform: rotate(15deg) scale(0.91);
+    }
+  }
+  &__footer {
+    width: 100%;
+    min-height: 550px;
+    background-image: url(/promotions/footer.svg);
+    background-position: center;
+    background-size: cover;
+    &--content {
+      width: calc(100% - 345px);
+      color: #fff;
+      display: flex;
+      .info {
+        width: calc(100% - 390px);
+        padding-top: 120px;
+        &--title {
+          font: 600 34px Gilroy;
+          margin-bottom: 13px;
+        }
+        &--subtitle {
+          font: 500 20px/30px Gilroy;
+        }
+      }
+      .app-scaner {
+        width: 390px;
+        height: 123px;
+        display: flex;
+        transform: rotate(15deg);
+        margin-top: 60px;
+        display: flex;
+        justify-content: flex-end;
+        &__qr-image {
+          width: 120px;
+          height: 120px;
+          // background: #fff;
+          border-radius: 10px;
+          box-sizing: border-box;
+          overflow: hidden;
+          margin: 0;
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transform: rotate(-11deg);
+          }
+        }
+        &__buttons {
+          margin-left: 25px;
+          button {
+            margin-bottom: 10px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 1280px) {
+  .ma-promotions {
+    &__body {
+      &--left,
+      &--right {
+        width: calc((100% - 960px) / 2);
+      }
+      &--center {
+        width: 960px;
+        .content {
+          width: 100%;
+          &__image {
+            width: 60%;
+            margin-bottom: 40px;
+            padding-right: 20px;
+          }
+          &__form {
+            margin-bottom: 40px;
+            width: 40%;
+          }
+          &__video {
+            width: 100%;
+            margin-bottom: 50px;
+            .panorama {
+              &__phone {
+                &-outline {
+                  img {
+                  }
+                }
+                &-buttons {
+                  img {
+                  }
+                }
+              }
+              &__video {
+                
+              }
+            }
+          }
+        }
+      }
+    }
+    &__phone {
+      width: 960px;
+      transform: scale(0.8);
+    }
+    &__footer {
+      &--content {
+        width: 100%;
+        flex-wrap: wrap;
+        .app-scaner {
+          padding: 30px 0 0 30px;
+          order: 1;
+          width: 100%;
+          transform: scale(0.7) rotate(15deg);
+          width: 100%;
+          margin-left: 140px;
+          display: flex;
+          justify-content: flex-end;
+          padding-right: calc(100% - 400px);
+        }
+        .info {
+          order: 2;
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  .ma-promotions {
+    &__body {
+      &--left,
+      &--right {
+        width: calc((100% - 960px) / 2);
+      }
+      &--center {
+        width: 960px;
+        .content {
+          width: 100%;
+          &__image {
+            width: 100%;
+            margin-bottom: 40px;
+            padding-right: 20px;
+            display: none;
+          }
+          &__bilboard {
+            width: 100%;
+            display: block;
+            img {
+              width: 100%;
+            }
+          }
+          &__form {
+            padding-top: 40px;
+            margin-bottom: 40px;
+            width: 100%;
+          }
+          &__video {
+            width: 100%;
+            .panorama {
+              &__phone {
+                &-outline {
+                  img {
+                  }
+                }
+                &-buttons {
+                  img {
+                  }
+                }
+                &-background {
+                  img {
+                  }
+                }
+              }
+              &__video {
+                video,
+                iframe {
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    &__footer {
+      min-height: calc(100vh - 500px);
+      &--content {
+        .app-scaner {
+          padding: 0;
+          margin-left: -100px;
+        }
+      }
+    }
+  }
+}
+@media only screen and (max-width: 900px) {
+  .ma-promotions {
+    &__body {
+      &--left,
+      &--right {
+        width: calc((100% - 960px) / 2);
+      }
+      &--center {
+        width: 960px;
+        .content {
+          width: 100%;
+          &__image {
+            width: 100%;
+            margin-bottom: 40px;
+            padding-right: 20px;
+            display: none;
+          }
+          &__bilboard {
+            width: 100%;
+            display: block;
+            img {
+              width: 100%;
+            }
+          }
+          &__form {
+            padding-top: 40px;
+            margin-bottom: 40px;
+            width: 100%;
+          }
+        }
+      }
+    }
+    &__phone {
+      width: 100%;
+    }
+    &__footer {
+      &--content {
+        .app-scaner {
+          width: 100%;
+          // transform: scale(1);
+          margin-left: -80px;
+          justify-content: flex-start;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 570px) {
+  .ma-promotions {
+    .app-scaner {
+      transform: scale(0.6) rotate(15deg);
+      margin-left: -100px;
+    }
+    .content__video {
+      width: 100%;
+      .panorama {
+        &__phone {
+          &-buttons,
+          &-background,
+          &-outline,
+          &-panorama {
+            display: none;
+          }
+        }
+        &__video {
+          border-radius: 4px;
+          width: 100%;
+          height: auto;
+          background: none;
+          video,
+          iframe {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+          }
+        }
+      }
+    }
+    &__footer {
+      min-height: 800px;
+      padding: 190px 0 0 20px;
+      &--content {
+        .app-scaner {
+          padding: 0;
+          margin: 66px 0 0 0;
+          transform: scale(0.9) rotate(0deg);
+          width: 100%;
+
+          display: flex;
+          justify-content: flex-end;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .ma-promotions {
+    padding-top: 140px;
+    &__phone {
+      width: 100%;
+    }
+    &__footer {
+      .container {
+        width: 100%;
+      }
+      &--content {
+        width: 100%;
+        .app-scaner {
+          padding: 0;
+          margin: 66px 0 0 0;
+          transform: scale(0.9) rotate(0deg);
+          width: 100%;
+
+          display: flex;
+          justify-content: flex-end;
+        }
+        .info {
+          padding: 40px 0 40px 0;
+        }
+      }
+    }
+  }
+}

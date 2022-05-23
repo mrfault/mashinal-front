@@ -105,10 +105,15 @@ export default function({ app, route, store }, inject) {
   inject('maskAlphaNumeric', (mask, placeholder = '_') => {
     return { mask, showMaskOnHover: false, definitions: { '*': { casing: 'upper', validator: '[a-zA-Z0-9]' } }, placeholder };
   });
+
   inject('maskPhone', (inline = false) => {
     let mask = '+\\9\\94 (99) 999-99-99';
     return inline ? mask : { mask, showMaskOnHover: false };
   });
+  inject('maskTechIdNumber',(inline = false) => {
+    let techMask = 'AB\\№\\999999';
+    return inline ? techMask : {techMask, showMaskOnHover: false};
+  })
   inject('maskEmail', () => {
     return {
       alias: 'email',

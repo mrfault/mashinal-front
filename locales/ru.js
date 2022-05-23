@@ -2197,6 +2197,7 @@ export default {
   "exclude_models": "Здесь вы можете выбрать объявления, которые не желаете видеть в результате поиска",
   "exclude":"Исключение",
   "this_car_has_already_been_added_and_is_active_on_the_site":"Этот автомобиль уже был добавлен и активен",
+  "language_prefix": "ru",
   "auto_salons": "Автосалоны",
   "official_salons":"Официальные салоны"
 }
