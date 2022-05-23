@@ -86,7 +86,7 @@
               "
               ></span>
             </div>
-            <div v-if="hasWorkingHours" class="profile_info-details border-padding-none">
+            <div v-if="hasWorkingHours" class="ml-auto profile_info-details border-padding-none">
               <icon name="time" />
               <span
                 class="working-time"
