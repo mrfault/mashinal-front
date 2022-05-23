@@ -82,12 +82,9 @@ export default {
     return {
       pending: false,
       form: {
-        carNumber: '10ty612',
-        passport: 'AE100612',
-        phone: '+994556003994',
-        // carNumber: '',
-        // passport: '',
-        // phone: '',
+        carNumber: '',
+        passport: '',
+        phone: '',
         otp: '',
       },
       otpSent: false,

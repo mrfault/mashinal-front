@@ -27,7 +27,6 @@ export default {
   },
   methods: {
     gotoRoute() {
-      // console.log('clicked');
       this.$router.push(`/${this.$t('sell')}`)
     },
   },
