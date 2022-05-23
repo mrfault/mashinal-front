@@ -52,7 +52,7 @@
       </div>
       <h2 class="title-with-line text-center">
         <span>
-          <template v-if="!salonSingle.is_official">{{ $t(isShop ? 'shop' : 'salon') }}
+          <template v-if="!salonSingle.is_official">{{ $t(isShop ? 'shop' : 'autosalon') }}
             "{{
               salonSingle.name || salonSingle.user.full_name
             }}"

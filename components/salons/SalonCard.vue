@@ -6,7 +6,7 @@
       </div>
       <div class="salon-info">
         <h3>
-            <template v-if="!salon.is_official">{{ $t(isShop ? 'shop' : 'salon') }}  "{{ salon.name }}"</template>
+            <template v-if="!salon.is_official">{{ $t(isShop ? 'shop' : 'autosalon') }}  "{{ salon.name }}"</template>
             <template v-else> {{ salon.name }}</template>
         </h3>
         <div class="salon-info_bottom-line d-flex justify-content-between">

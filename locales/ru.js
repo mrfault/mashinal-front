@@ -202,7 +202,7 @@ export default {
   "autoloaders": "Погрузчики",
   "automatic": "Автоматическая",
   "Automatic parking system": "Система автоматической парковки",
-  "autosalon": "Салон",
+  "autosalon": "Автосалон",
   "autosalons_label": "Центры продаж",
   "autostart": "Автозапуск",
   "autostrart_record": "Автозапуск записи",
