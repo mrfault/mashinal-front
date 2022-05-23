@@ -278,10 +278,10 @@
           }
           &__form {
             margin-bottom: 40px;
-            width: 40%;
+            width: 30% ;
           }
           &__video {
-            width: 100%;
+            width: 70%;
             margin-bottom: 50px;
             .panorama {
               &__phone {
@@ -427,6 +427,7 @@
             margin-bottom: 40px;
             width: 100%;
           }
+
         }
       }
     }
@@ -443,6 +444,10 @@
         }
       }
     }
+  }
+  .content__form--panorama-mobile{
+    width: 80% !important;
+    margin: 0 auto 40px auto;
   }
 }
 
@@ -523,5 +528,11 @@
         }
       }
     }
+    .content__form--panorama-mobile{
+      width: 100% !important;
+      margin: 0 auto 40px auto;
+    }
   }
 }
+
+
