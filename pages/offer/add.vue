@@ -7,7 +7,7 @@
       <div class="row">
 
         <breadcrumbs :crumbs="crumbs"/>
-        <div class="col-md-10 background-white">
+        <div class="col-md-10 background-white p-5">
           <sell-progress :form="form"/>
           <sell-selected-model
             :brand="brand"
@@ -50,7 +50,7 @@
             <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-selectedColor">
               <span>{{ $t('color') }} <span class="star"> *</span></span>
             </h2>
-            <color-options v-model="form.selectedColor" :limit="2" :multiple=false
+            <color-options v-model="form.selectedColors" :limit="4" :multiple=true
                            @change-matt="form.is_matte = $event" :matt="form.is_matte"
                            @change="removeError('selectedColor')"/>
             <div class="row">
@@ -69,7 +69,7 @@
                     <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-selectedColor">
                       <span>Alış şərtləri <span class="star"> *</span></span>
                     </h2>
-                    <div class="d-inline-flex justify-content-between">
+                    <div class="d-inline-flex ">
                       <form-radio :label="'Kredit'" input-name="buy_condition" v-model="form.buy_condition"
                                   :value="'credit'" radio-value="credit"/>
                       <form-radio :label="'Nağd'" input-name="buy_condition" v-model="form.buy_condition"
@@ -83,15 +83,22 @@
                     <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-selectedColor">
                       <span>Qiymət aralıqı <span class="star"> *</span></span>
                     </h2>
-                    <div class="d-inline-flex justify-content-between">
-                      <div class="form-group">
-                        <label for="minPrice">Min.</label>
-                        <input id="minPrice" type="number" v-model="form.minPrice" class="textInput"  value="0">
-                        <label for="maxPrice">Max.</label>
-                        <input id="maxPrice" type="number" v-model="form.maxPrice" class="textInput"  value="25000">
+                    <div class="priceBeetwen">
+                      <div class=" mr-5">
 
+                        <label for="minPrice">Min.</label>
+                        <form-text-input :invalid="$v.form.minPrice.$error" id="minPrice" type="number"
+                                         v-model="form.minPrice" class="priceInput"/>
 
                       </div>
+                      <div class="" >
+
+                        <label for="maxPrice" >Max.</label>
+                        <form-text-input :invalid="$v.form.maxPrice.$error" id="maxPrice" type="number"
+                                         v-model="form.maxPrice" class="priceInput"/>
+                      </div>
+
+
                     </div>
                   </div>
                 </div>
@@ -126,7 +133,7 @@
 </template>
 
 <script>
-import {mapActions, mapGetters} from "vuex";
+import {mapGetters} from "vuex";
 import {ToastErrorsMixin} from '~/mixins/toast-errors';
 import YearOptions from '~/components/options/YearOptions';
 import ColorOptions from '~/components/options/ColorOptions';
@@ -139,6 +146,7 @@ import SellPreview from "~/components/sell/SellPreview";
 import FormCheckbox from "~/components/forms/FormCheckbox";
 import Generations from "~/components/offer/Generations";
 import OfferFormButtons from "~/components/offer/OfferFormButtons";
+import {required} from 'vuelidate/lib/validators';
 
 export default {
   name: "add.vue",
@@ -168,8 +176,20 @@ export default {
         comment: '',
         minPrice: '',
         maxPrice: '',
+        selectedInteriorColor: null,
+        selectedColors: [],
+        is_matte: false
+
       },
     }
+  },
+  validations: {
+    form: {
+      selectedInteriorColor: {required},
+      minPrice: {required},
+      maxPrice: {required},
+    }
+
   },
   async asyncData({store, app, route}) {
 
@@ -221,13 +241,26 @@ export default {
       model: this.form.model
     })
 
+
   },
   methods: {
     submitOffer() {
+      this.$v.$touch();
+      if (this.$v.$error) return;
+      console.log(this.$v.form.minPrice.$error)
+
+
       this.$axios.$post('offer', {
         data: this.form
       }).then((res) => {
+        if (res.status == 'success') {
+          this.$toast.success('Əlavə olundu')
+          this.$router.push('/offer')
+
+        }
       });
+
+
     },
     changeGenerations(values) {
       this.form.generations = values
