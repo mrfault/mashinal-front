@@ -90,7 +90,7 @@
           <span>{{ $t('price') }} <span class="star"> *</span></span>
         </h2>
         <div class="row">
-          <div class="col-lg-3 mb-2 mb-lg-0">
+          <div class="col-lg-auto mb-2 mb-lg-0">
             <div class="row flex-nowrap">
               <div class="col-auto flex-grow-1">
                 <form-numeric-input :placeholder="$t('price')" v-model="form.price" input-class="w-133"
@@ -333,7 +333,7 @@ export default {
       return [
         { key: 1, name: 'AZN', sign: '₼'	},
         { key: 2, name: 'USD', sign: '$'	},
-        // { key: 3, name: 'EUR', sign: '€'	}
+        { key: 3, name: 'EUR', sign: '€'	}
       ];
     },
     getMileageOptions() {
