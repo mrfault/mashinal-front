@@ -27,7 +27,7 @@
 
       </div>
       <div class="textarea-submit">
-        <button type="submit" class="btn-reset">
+        <button type="submit" class="btn-reset" >
           <icon name="send" />
         </button>
       </div>
@@ -52,6 +52,7 @@ export default {
     disabled: Boolean,
     blocked: Boolean,
     sending: Boolean,
+    sendButtonDisabled:Boolean,
     message: {}
   },
   data() {
@@ -84,7 +85,7 @@ export default {
       }
       if (keyCode === 13 && !e.shiftKey) {
         this.$emit('send',e);
-        this.messageValue = null;
+        this.messageValue = '';
         e.preventDefault();
       }
     },
@@ -145,6 +146,9 @@ export default {
   beforeDestroy() {
     this.$nuxt.$off('clear-message-attachments');
     this.$emit('attach', []);
+  },
+  messageNotNull(){
+    return this.sendButtonDisabled
   }
 }
 </script>

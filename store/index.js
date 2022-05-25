@@ -131,9 +131,13 @@ const getInitialState = () => ({
   selectedVehicleList: [],
   selectedVehiclesPrice: 0,
   offers:[],
+  offer:null,
   OffersAcceptedByAutoSalon:{},
   offerMessages:[],
   isFavorite:false,
+  offerPartners:[],
+  offerPartnersMeta:{}
+
 })
 
 export const state = () => getInitialState()
@@ -287,7 +291,11 @@ export const getters = {
   offers: (s) => s.offers,
   OffersAcceptedByAutoSalon:(s)=>s.OffersAcceptedByAutoSalon,
   getOfferMessages:(s)=>s.offerMessages,
-  isFavorite:(s)=>s.isFavorite
+  isFavorite:(s)=>s.isFavorite,
+  getOfferPartners:(s)=>s.offerPartners,
+  getOfferPartnersMeta:(s)=>s.offerPartnersMeta,
+  getOffer:(s)=>s.offer,
+
 }
 
 const objectNotEmpty = (state, commit, property) => {
@@ -1128,7 +1136,10 @@ export const actions = {
    const { data} =await this.$axios.$get(`/offer/salon/offer/all?param=`+param)
     commit('mutate', { property: 'offers', value: data })
   },
-
+  async getOffer({commit}, payload){
+    const {data} =await  this.$axios.get('/offer/offer-detail/'+payload.id+'/'+payload.type);
+    commit('mutate',{property:'offer',value:data})
+  },
 
   async salonAcceptOffer({},{id}){
     const  {data} = await this.$axios.$post('/offer/salon/offer/accept/'+id)
@@ -1146,7 +1157,13 @@ export const actions = {
     commit('mutate', { property: 'OffersAcceptedByAutoSalon', value: data })
   },
 
+  async offerPartners({commit},page=1){
+    const data= await this.$axios.get('/offer/partners?page='+page)
 
+    commit('setOfferPartners',data.data)
+
+    commit('mutate', { property: 'offerPartnersMeta', value: data.data.meta })
+  }
 
 }
 
@@ -1262,6 +1279,12 @@ export const mutations = {
     state.offers=payload
   },
   setIsFavorite(state,payload){
+
+  },
+  setOfferPartners(state,payload){
+    for (let i=0; i<payload.data.length; i++) {
+    state.offerPartners.push(payload.data[i])
+    }
 
   }
 }

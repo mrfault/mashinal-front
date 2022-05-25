@@ -4,13 +4,70 @@
     <div class="salonsOffer">
       <breadcrumbs :crumbs="crumbs" class=""/>
       <div class=" row ">
-        <div class=" col col-md-2 background-white">
+        <div class=" col col-md-2 background-white" v-if="!isMobileBreakpoint">
           <div class="offerNav">
             <ul>
-              <li @click="changePage('all')"><img src="/icons/offer/requests.svg"/> Sorğular</li>
-              <li @click="changePage('sended')"><img src="/icons/offer/send-requests.svg"/> Gönd. Təkliflər</li>
-              <li @click="changePage('favorites')"><img src="/icons/offer/favorites.svg"/> Seçilmişlər</li>
-              <li @click="changePage('deleted')"><img src="/icons/offer/bin.svg"/> Silinmişlər</li>
+              <li @click="changePage('all')"  :class="{'active-filter': $route.query.param==='all' || !$route.query.param} ">
+                <inline-svg src="/icons/offer/requests.svg" class="filter-icon"/>
+                <span>
+                  Sorğular
+                </span>
+              </li>
+
+              <li @click="changePage('sended')"  :class="{'active-filter-fill': $route.query.param==='sended'} ">
+                <inline-svg src="/icons/offer/send.svg" class="filter-icon-fill"/>
+                <span>
+                   Gönd. Təkliflər
+                </span>
+              </li>
+
+
+              <li @click="changePage('favorites')"  :class="{'active-filter': $route.query.param==='favorites'} ">
+                <inline-svg src="/icons/offer/star.svg" class="filter-icon"/>
+                <span>
+      Seçilmişlər
+                </span>
+              </li>
+              <li @click="changePage('deleted')" :class="{'active-filter-fill': $route.query.param==='deleted'} " >
+                <inline-svg src="/icons/offer/delete.svg" class="filter-icon   filter-icon-fill"/>
+                <span>
+                  Silinmişlər
+              </span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-12" v-if="isMobileBreakpoint">
+          <div class="mobile-filter">
+            <ul>
+              <li @click="changePage('all')"  :class="{'active-filter': $route.query.param==='all'} ">
+                <inline-svg src="/icons/offer/requests.svg" class="filter-icon"/>
+                <span>
+                  Sorğular
+                </span>
+              </li>
+
+              <li @click="changePage('sended')"  :class="{'active-filter-fill': $route.query.param==='sended'} ">
+                <inline-svg src="/icons/offer/send.svg" class="filter-icon-fill"/>
+                <span>
+                   Gönd. Təkliflər
+                </span>
+              </li>
+
+
+              <li @click="changePage('favorites')"  :class="{'active-filter': $route.query.param==='favorites'} ">
+                <inline-svg src="/icons/offer/star.svg" class="filter-icon"/>
+                <span>
+      Seçilmişlər
+                </span>
+              </li>
+              <li @click="changePage('deleted')" :class="{'active-filter-fill': $route.query.param==='deleted'} " >
+                <inline-svg src="/icons/offer/delete.svg" class="filter-icon   filter-icon-fill"/>
+                <span>
+                  Silinmişlər
+              </span>
+              </li>
+
             </ul>
           </div>
         </div>
@@ -119,6 +176,17 @@
                   </div>
                 </div>
 
+                <div class="offerDetailItem">
+                  <p>Rəng </p>
+                  <div>
+                <span v-for=" (color,index) in offer.colors">
+                    <span class="color-box" :style="`background-color:${color.code}`"></span>
+
+
+                </span>
+                  </div>
+                </div>
+
               </div>
             </collapse-content>
 
@@ -185,6 +253,11 @@ export default {
       files:[]
     }
   },
+  head() {
+    return this.$headMeta({
+      title: this.$t('Super teklif'),
+    })
+  },
   mixins: [ImageResizeMixin],
   async asyncData({store}) {
     await Promise.all([
@@ -199,7 +272,14 @@ export default {
   },
   methods: {
     changePage(param = null) {
-      this.$store.dispatch('getAllOffers', param)
+
+      this.$router.push({
+        path:'/salons/offer',
+        params:param,
+        query :{param:param}
+      })
+
+
     },
     isMyMessage(message) {
       return this.user.id === message.sender.id
@@ -239,13 +319,16 @@ export default {
     },
 
     async getOfferDetail(id) {
+      if (this.isMobileBreakpoint) {
+        this.$router.push(this.$localePath('/salons/offer') + '/' + id)
+      }else {
 
-      await this.checkAccepted(id)
-      this.offer = JSON.parse(JSON.stringify(this.offers.find(function (offer) {
-          return id === offer.id
-        }
-      )));
-
+        await this.checkAccepted(id)
+        this.offer = JSON.parse(JSON.stringify(this.offers.find(function (offer) {
+            return id === offer.id
+          }
+        )));
+      }
 
     },
     addFile(e) {
@@ -287,6 +370,12 @@ export default {
       offerMessages: 'getOfferMessages',
       isFavorite:'isFavorite'
     }),
+  },
+  watch:{
+    async  $route(newVal,oldVal){
+
+      await this.$store.dispatch('getAllOffers', newVal.query.param)
+    }
   }
 
 }
