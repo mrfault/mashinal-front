@@ -13,7 +13,7 @@
             <img src="/promotions/penalty-bilboard.png" alt="" />
           </div>
 
-          <div class="content__form" :class="{'w-100': isPanoramaPage}">
+          <div class="content__form" :class="{'content__form--panorama-mobile': isPanoramaPage && isMobileBreakpoint}">
             <h4 class="content__form--title" v-if="title">
               {{ title }}
             </h4>
