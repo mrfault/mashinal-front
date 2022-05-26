@@ -85,7 +85,7 @@ export default {
           url: '/check-driver-penalties',
           hasAction: false,
           image: 'check-penalty',
-          isAvailable: true,
+          isAvailable: false,
         },
         {
           title: 'Super təklif',
