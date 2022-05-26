@@ -1,26 +1,40 @@
-.ma-input{
-    &--white{
-        background: #fff;
-        border: none;
-        outline: none;
-        border-radius: 10px;
-        width: 100%;
-        height: 42px;
-        box-sizing: border-box;
-        overflow: hidden;
-        display: flex;
-        align-items: center;
-        input{
-            font: 500 16px Gilroy !important;
-            margin: 0 !important;
-            background: #fff !important;
-            &::placeholder{
-                color: $greyish-blue-4 !important;
-            }
-        }
+.ma-input {
+  &--white {
+    background: #fff;
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    width: 100%;
+    height: 42px;
+    box-sizing: border-box;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    input {
+      font: 500 16px Gilroy !important;
+      margin: 0 !important;
+      background: #fff !important;
+      &::placeholder {
+        color: $greyish-blue-4 !important;
+      }
     }
 }
+}
 
-.ma-input-error{
+.ma-input-error {
     outline: 2px solid #f3634b;
+}
+
+.dark-mode {
+    .ma-input {
+        &--white {
+            background: $dark-1 !important;
+            input {
+                background: $dark-1 !important;
+        &::placeholder {
+          color: $greyish-blue-4 !important;
+        }
+      }
+    }
+  }
 }
