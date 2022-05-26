@@ -87,7 +87,11 @@ export default {
       let mergedKeys = [
         'shine_width','diameter','height'
       ];
-      let mergedValues = {};
+      let mergedValues = {
+        shine_width:'',
+        height:'',
+        diameter:''
+      };
       // Dynamic specs
       if (this.type === 'parts') {
         Object.keys(this.announcement.filters).forEach(filter => {
