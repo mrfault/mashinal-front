@@ -2207,5 +2207,6 @@ export default {
    "place_panoramic_photo_from_mobile_ph":"Размести панораму своего автомобиля с моб.приложения",
   "auto_salons": "Автосалоны",
   "official_salons":"Официальные салоны",
-  "size":"Размер"
+  "size":"Размер",
+  "garage_error_2001":"Сервис временно не работает"
 }

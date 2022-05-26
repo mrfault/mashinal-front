@@ -2211,5 +2211,6 @@ export default {
   "auto_salons": "Avtosalonlar",
   "official_salons":"Rəsmi nümayəndələr",
   "autosalon":"Avtosalon",
-  "size":"Ölçü"
+  "size":"Ölçü",
+  "garage_error_2001":"Xidmət müvəqqəti olaraq dayandırılıb"
 }
