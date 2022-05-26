@@ -59,14 +59,26 @@ export default {
   },
   data() {
     return {
-      isPromotionsPage: false,
+
     }
   },
   mixins: [MenusDataMixin],
-  mounted() {
-    if (this.$route.meta.name == 'promotions-page') {
-      this.isPromotionsPage = true
-    }
+  watch: {
+    $route(to, from) {
+      if (this.$route.meta.name == 'promotions-page') {
+        this.isPromotionsPage = true
+      }
+    },
   },
+  computed:{
+    isPromotionsPage(){
+      if (this.$route.meta.name == 'promotions-page') {
+        return true
+      }else{
+        return false
+      }
+
+    }
+  }
 }
 </script>
