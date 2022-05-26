@@ -110,6 +110,7 @@ export const SearchMixin = {
       }
     },
     submitForm(scroll = true) {
+
       this.beforeSubmitForm();
       try {
         // tracking

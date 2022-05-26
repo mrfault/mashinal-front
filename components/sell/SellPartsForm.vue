@@ -164,13 +164,19 @@
 
             <!-- Price -->
             <div class="col-lg-8 mb-3 price-input-group">
-              <form-numeric-input
-                v-model="form.price"
-                id="anchor-price"
-                :placeholder="$t('price')"
-                :invalid="isInvalid('price')"
-                @change="removeError('price')"
-              />
+              <div class="col-auto pl-0">
+                <form-numeric-input
+                  v-model="form.price"
+                  id="anchor-price"
+                  :placeholder="$t('price')"
+                  :invalid="isInvalid('price')"
+                  @change="removeError('price')"
+                />
+              </div>
+              <div class="col-2">
+                <form-switch :options="getCurrencyOptions" v-model="form.currency"
+                             @change="updatePreview('currency')"/>
+              </div>
               <form-checkbox
                 v-model="form.is_negotiable"
                 id="anchor-is_negotiable"
@@ -339,6 +345,7 @@ export default {
         description: '',
         category_id: '',
         region_id: 1,
+        currency: 1,
         is_new: true,
         is_original: true,
         have_delivery: false,
@@ -600,6 +607,13 @@ export default {
   },
   computed: {
     ...mapState(['sellPhoneEntered']),
+    getCurrencyOptions() {
+      return [
+        { key: 1, name: 'AZN', sign: '₼'	},
+        { key: 2, name: 'USD', sign: '$'	},
+        { key: 3, name: 'EUR', sign: '€'	}
+      ];
+    },
     conditionButtons() {
       return [
         {

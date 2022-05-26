@@ -73,6 +73,7 @@ export default {
     }
   },
   mounted() {
+
     if (this.$route.query.parts_filter) {
       this.searchParts()
     }
@@ -109,6 +110,7 @@ export default {
       }
     },
     async searchParts() {
+
       const data = JSON.parse(this.$route.query.parts_filter || '{}')
       this.pending = true
       await this.$store.dispatch('parts/getAnnouncements', { body: data })
