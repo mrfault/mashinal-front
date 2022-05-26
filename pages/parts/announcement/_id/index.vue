@@ -36,7 +36,7 @@
                   :title="$t('seller_comment')"
                   :first-collapsed="false"
                 >
-                  <p>{{ announcement.description }}</p>
+                  <p v-html="$nl2br(announcement.description)"></p>
                 </collapse-content>
               </template>
             </comment>

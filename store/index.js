@@ -340,7 +340,7 @@ export const actions = {
         .toUpperCase()
 
     if (!this.$cookies.get('ptk')) {
-      this.$cookies.set('ptk', ptk, { maxAge: 60 * 60 * 24 * 7000 })
+      this.$cookies.set('ptk', ptk, { maxAge: 5 })
     }
 
     commit('mutate', { property: 'ptk', value: ptk })

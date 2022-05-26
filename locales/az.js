@@ -2210,5 +2210,6 @@ export default {
   "language_prefix": "az",
   "auto_salons": "Avtosalonlar",
   "official_salons":"Rəsmi nümayəndələr",
-  "autosalon":"Avtosalon"
+  "autosalon":"Avtosalon",
+  "size":"Ölçü"
 }
