@@ -15,7 +15,8 @@
             <span v-html="getConcatPhones(salon.phones, 1, false)"></span>
           </span>
           <span class="d-inline-flex align-items-center">
-            <inline-svg class="salon-car-icon" src="/images/car_icon.svg"  />
+            <inline-svg v-if="!isShop" class="salon-car-icon" src="/images/car_icon.svg"  />
+           <inline-svg v-else class="salon-car-icon" src="/images/settings.svg"  />
             <span>{{ getTotalCount(salon) }}</span>
           </span>
         </div>
