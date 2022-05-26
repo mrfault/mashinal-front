@@ -10,16 +10,15 @@
       />
       <banners v-if="!searchActive" reverse />
       <div class="announcements-content">
-
-
+        <no-results v-if="showNotFound" type="part" />
         <grid
           v-if="mainPartsAnnouncements.data.length"
-          :title="$t('other_announcements')"
+          :title="showNotFound ? $t('other_announcements'): $t('announcements')"
           :announcements="mainPartsAnnouncements.data"
           :pending="pending"
           escape-duplicates
         />
-         <no-results v-else type="part" />
+
       </div>
 
 <!-- <div class="infinityLoader">
