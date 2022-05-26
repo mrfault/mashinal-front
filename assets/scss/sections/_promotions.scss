@@ -278,7 +278,7 @@
           }
           &__form {
             margin-bottom: 40px;
-            width: 30% ;
+            width: 30%;
           }
           &__video {
             width: 70%;
@@ -295,7 +295,6 @@
                 }
               }
               &__video {
-                
               }
             }
           }
@@ -332,7 +331,6 @@
 
 @media only screen and (max-width: 1024px) {
   .ma-promotions {
-    
     &__body {
       &--left,
       &--right {
@@ -427,7 +425,6 @@
             margin-bottom: 40px;
             width: 100%;
           }
-
         }
       }
     }
@@ -445,7 +442,7 @@
       }
     }
   }
-  .content__form--panorama-mobile{
+  .content__form--panorama-mobile {
     width: 80% !important;
     margin: 0 auto 40px auto;
   }
@@ -502,7 +499,7 @@
 
 @media only screen and (max-width: 500px) {
   .ma-promotions {
-    &__body{
+    &__body {
       padding-top: 60px;
     }
     &__phone {
@@ -528,11 +525,127 @@
         }
       }
     }
-    .content__form--panorama-mobile{
+    .content__form--panorama-mobile {
       width: 100% !important;
       margin: 0 auto 40px auto;
     }
   }
 }
 
+.dark-mode {
+  .ma-promotions {
+    background: $dark-2;
 
+    &__body {
+      &--center {
+        background: url(/promotions/center-shadow-dark.svg) no-repeat;
+        background-size: 136px 70px;
+        background-position: 70% 20px;
+        .content {
+
+          &__form {
+            &--title {
+              color: #fff;
+            }
+            &--subtitle {
+              color: #fff;
+            }
+          }
+        }
+      }
+      &--left {
+        background: url(/promotions/left-shadow-dark.svg) no-repeat;
+        background-size: contain;
+        background-position: left 70px;
+      }
+      &--right {
+        background: url(/promotions/right-shadow-dark.svg) no-repeat;
+        background-size: contain;
+        background-position: right 40px;
+      }
+    }
+    &__phone {
+      height: 231px;
+
+      margin: 0 auto;
+      position: relative;
+      width: 1250px;
+      @mixin phoneStyles {
+        position: absolute;
+        top: 70px;
+        left: calc(100% - 345px);
+        width: 345px;
+        height: 490px;
+        box-sizing: border-box;
+        overflow: hidden;
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+        }
+      }
+      .phone-outline {
+        @include phoneStyles;
+        z-index: 4;
+      }
+      .phone-content {
+        z-index: 3;
+        @include phoneStyles;
+        transform: rotate(15deg) scale(0.91);
+      }
+    }
+    &__footer {
+      width: 100%;
+      min-height: 550px;
+      background-image: url(/promotions/footer.svg);
+      background-position: center;
+      background-size: cover;
+      &--content {
+        width: calc(100% - 345px);
+        color: #fff;
+        display: flex;
+        .info {
+          width: calc(100% - 390px);
+          padding-top: 120px;
+          &--title {
+            font: 600 34px Gilroy;
+            margin-bottom: 13px;
+          }
+          &--subtitle {
+            font: 500 20px/30px Gilroy;
+          }
+        }
+        .app-scaner {
+          width: 390px;
+          height: 123px;
+          display: flex;
+          transform: rotate(15deg);
+          margin-top: 60px;
+          display: flex;
+          justify-content: flex-end;
+          &__qr-image {
+            width: 120px;
+            height: 120px;
+            // background: #fff;
+            border-radius: 10px;
+            box-sizing: border-box;
+            overflow: hidden;
+            margin: 0;
+            img {
+              width: 100%;
+              height: 100%;
+              object-fit: contain;
+              transform: rotate(-11deg);
+            }
+          }
+          &__buttons {
+            margin-left: 25px;
+            button {
+              margin-bottom: 10px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
