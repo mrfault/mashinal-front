@@ -116,6 +116,7 @@ export default {
 
           }
         })
+        if(mergedValues['shine_width'])
         specs.push({
           key: 'size',
           value: mergedValues['shine_width'] +'/'+ mergedValues['height']+'R'+ mergedValues['diameter'],
