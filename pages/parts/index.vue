@@ -67,6 +67,7 @@ export default {
     await Promise.all([
       store.dispatch('getInfiniteMainPartsPageSearch'),
     ])
+
     return {
       pending: false,
     }

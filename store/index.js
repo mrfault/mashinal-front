@@ -814,6 +814,10 @@ export const actions = {
     const res = await this.$axios.$post(
       `/grid/part?page=${data.page || 1}`,
     )
+    commit('parts/mutate', {
+      property: 'showNotFound',
+      value: false
+    })
     commit('mutate', { property: 'mainPartsAnnouncements', value: res })
   },
   async getGridSearch({ commit }, data) {
