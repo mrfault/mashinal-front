@@ -8,7 +8,7 @@
       <template v-slot:mainForm>
         <form-text-input
           autocomplete="tel"
-          :placeholder="$t('number_of_car')"
+          :placeholder="$t('plate_number_of_vehicle')"
           :mask="'99-AA-999'"
           v-model="form.carNumber"
           class="mb-2 mb-lg-3"
@@ -48,7 +48,7 @@
           :key="123"
         />
         <h6 class="ma-error-message" v-if="hasError">
-          Məlumatlar düzgün deyil
+          {{ $t('info_is_not_correct')}}
         </h6>
         <button
           class="btn btn--green w-100"
