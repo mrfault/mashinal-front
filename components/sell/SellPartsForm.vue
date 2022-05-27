@@ -376,7 +376,8 @@ export default {
       this.form = {
         ...this.form,
         ...this.initialForm,
-        keywords: this.initialForm.tags.map(t => t.text)
+        keywords: this.initialForm.tags.map(t => t.text),
+        currency: this.initialForm.currency_id
       }
 
       this.getFilters(this.initialForm.category_id)
