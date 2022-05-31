@@ -48,7 +48,7 @@
           :key="123"
         />
         <h6 class="ma-error-message" v-if="hasError">
-          {{ $t('info_is_not_correct')}}
+          {{ $t('info_is_not_correct') }}
         </h6>
         <button
           class="btn btn--green w-100"
@@ -94,9 +94,15 @@ export default {
   },
 
   head() {
-    return this.$headMeta({
+    return{
       title: this.$t('promotions'),
-    })
+      meta: [
+        {
+          name: 'viewport',
+          content: 'width=device-width, initial-scale=1'
+        }
+      ]
+    }
   },
   mixins: [PaymentMixin],
   methods: {
