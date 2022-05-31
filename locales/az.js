@@ -2208,9 +2208,12 @@ export default {
   "chance_to_place_an_announcement_with_panorama":"Panorama ilə elan yerləşdirmə imkanı",
   "place_panoramic_photo_from_mobile_phone":"Mobil telefonunuzdan maşınınızın Panorama (360) fotosunu yerləşdirin.",
   "language_prefix": "az",
+  "plate_number_of_vehicle":"NV-nin nömrəsi",
+  "info_is_not_correct": "Məlumatlar düzgün deyil",
   "auto_salons": "Avtosalonlar",
   "official_salons":"Rəsmi nümayəndələr",
   "autosalon":"Avtosalon",
   "size":"Ölçü",
   "garage_error_2001":"Xidmət müvəqqəti olaraq dayandırılıb"
+
 }

@@ -2198,10 +2198,18 @@ export default {
   "exclude":"Исключение",
   "this_car_has_already_been_added_and_is_active_on_the_site":"Этот автомобиль уже был добавлен и активен",
   "language_prefix": "ru",
-  "watch_your_penalties_o":"Следите за штрафами в портале Mashin.Al",
+  "watch_your_penalties_on_mashinal":"Следите за штрафами в портале Mashin.Al",
    "number_of_car":"Номер ТС",
    "number_of_tech_id":"Номер и серия тех.паспорта",
    "download_mobile_app":"Установи моб.приложение",
+
+   "we_created_a_system_that_you_can_buy_a_car_only_in_one_hour":"Мы создали платформу, которая позволяет купить автомобиль всего за один час.",
+   "chance_to_place_an_announcement_with_panorama":"Возможность разместить автомобиль с панорамой",
+   "place_panoramic_photo_from_mobile_phone":"Размести панораму своего автомобиля с моб.приложения",
+   "plate_number_of_vehicle":"Номер ТС",
+   "otp_number":"OTP код",
+   "info_is_not_correct": "Данные введены неверно",
+
    "we_created_a_system_that_you_can_buy_a_car_only_in_one_hour ":"Мы создали платформу, которая позволяет купить автомобиль всего за один час.",
    "chance_to_place_an_ann":"Возможность разместить автомобиль с панорамой",
    "place_panoramic_photo_from_mobile_ph":"Размести панораму своего автомобиля с моб.приложения",
@@ -2209,4 +2217,5 @@ export default {
   "official_salons":"Официальные салоны",
   "size":"Размер",
   "garage_error_2001":"Сервис временно не работает"
+
 }
