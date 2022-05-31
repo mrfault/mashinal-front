@@ -2210,12 +2210,11 @@ export default {
    "otp_number":"OTP код",
    "info_is_not_correct": "Данные введены неверно",
 
-   "we_created_a_system_that_you_can_buy_a_car_only_in_one_hour ":"Мы создали платформу, которая позволяет купить автомобиль всего за один час.",
    "chance_to_place_an_ann":"Возможность разместить автомобиль с панорамой",
    "place_panoramic_photo_from_mobile_ph":"Размести панораму своего автомобиля с моб.приложения",
-  "auto_salons": "Автосалоны",
-  "official_salons":"Официальные салоны",
-  "size":"Размер",
-  "garage_error_2001":"Сервис временно не работает"
+   "auto_salons": "Автосалоны",
+   "official_salons":"Официальные салоны",
+   "size":"Размер",
+   "garage_error_2001":"Сервис временно не работает"
 
 }

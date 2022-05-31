@@ -173,7 +173,7 @@
                   @change="removeError('price')"
                 />
               </div>
-              <div class="col-2">
+              <div class="col-lg-2 col-3">
                 <form-switch :options="getCurrencyOptions" v-model="form.currency"
                              @change="updatePreview('currency')"/>
               </div>
