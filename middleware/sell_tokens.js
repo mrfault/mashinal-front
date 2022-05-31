@@ -4,7 +4,7 @@ export default function ({ app, $auth, store, redirect }) {
     moto: 0,
     commercial: 0,
     parts: 0,
-    parts_unlimited: $auth.loggedIn ? $auth.user?.part_salon?.is_unlimited : store.state.sellTokens.parts_unlimited,
+    parts_unlimited: $auth.loggedIn ? true : store.state.sellTokens.parts_unlimited,
     salon_unlimited: $auth.loggedIn ? $auth.user?.autosalon?.is_unlimited : store.state.sellTokens.salon_unlimited
   }
 
@@ -16,7 +16,7 @@ export default function ({ app, $auth, store, redirect }) {
     else if (store.state.sellTokens) tokens[type] = store.state.sellTokens[type];
     if (app.getRouteBaseName() === `sell-${type}` && (tokens[type] <= 0 && !tokens[type === 'parts' ? 'parts_unlimited' : 'salon_unlimited'])) {
       return redirect(app.$localePath('/sell'));
-    } 
+    }
   };
 
   return true;

@@ -135,10 +135,9 @@ export default {
         moto: 0,
         commercial: 0,
         parts: 0,
-        parts_unlimited: true, /*this.loggedIn
-          ? this.user?.part_salon?.status === 1 &&
-            this.user?.part_salon?.is_unlimited
-          : this.sellTokens.parts_unlimited,*/
+        parts_unlimited: this.loggedIn
+          ? true
+          : this.sellTokens.parts_unlimited,
         salon_unlimited: this.loggedIn
           ? this.user?.autosalon?.status === 1 &&
             this.user?.autosalon?.is_unlimited
@@ -159,6 +158,7 @@ export default {
       return ['moto', 'commercial'].includes(this.vehicleType)
     },
     vehicleOptions() {
+
       return this.searchMenus.map((menu) => ({
         ...menu,
         disabled:

@@ -961,7 +961,7 @@ export const actions = {
         commercial: res.data.announce_left_commercial,
         moto: res.data.announce_left_moto,
         parts: res.data.part_announce_count,
-        parts_unlimited: res.data.part_unlimited,
+        parts_unlimited: true,//res.data.part_unlimited,
         salon_unlimited: res.data.salon_unlimited,
       },
     })
