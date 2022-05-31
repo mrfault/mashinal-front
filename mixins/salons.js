@@ -24,7 +24,7 @@ export const SalonsMixin = {
     ) {
       return (
         (shortNumber
-          ? `<a onclick="event.stopPropagation()" href="tel:${shortNumber}">${shortNumber}</a>`
+          ? `<a style="font-weight: 500;" onclick="event.stopPropagation()" href="tel:${shortNumber}">${shortNumber}</a>`
           : '') +
         (phones || [])
           .filter((phone) => phone)
@@ -33,7 +33,7 @@ export const SalonsMixin = {
             `${phone}`
               .replace(
                 /(\d{3})(\d{2})(\d{3})(\d{2})(\d{2})/g,
-                '<span class="d-flex flex-row"><a class="ml-1" ' +
+                '<span class="d-flex flex-row"><a style="font-weight: 500;" ' +
                   (clickable
                     ? 'onclick="event.stopPropagation()" href="tel:+' +
                       phone +
@@ -61,7 +61,7 @@ export const SalonsMixin = {
     },
     getWorkingDays(days, hours) {
       if (!days && !hours) return false
-      let strHours = hours?.start ? `${hours.start} - ${hours.end}` : ''
+      let strHours = hours?.start ? `<span style="font-weight: 500;">${hours.start} - ${hours.end}</span>` : ''
       if (!days || !days.length) return strHours
       let weekDays = [...days].sort(),
         dayRows = [],
@@ -84,10 +84,10 @@ export const SalonsMixin = {
         dayRows
           .map((row) =>
             row.length === 1
-              ? `<tr><td>${strDays[row[0] - 1]}</td><td>${strHours}</td></tr>`
+              ? `<tr><td style="font-weight: 500">${strDays[row[0] - 1]}</td><td>${strHours}</td></tr>`
               : `<tr>
-                    <td>${everyDayEnabled ? everyDay : (strDays[row[0] - 1]+' - '+strDays[row[row.length - 1] - 1])} </td>
-                    <td>${strHours}</td>
+                    <td style="font-weight: 500">${everyDayEnabled ? everyDay : (strDays[row[0] - 1]+' - '+strDays[row[row.length - 1] - 1])} </td>
+                    <td style="font-weight: 500">${strHours}</td>
                 </tr>`,
           )
           .join('') +

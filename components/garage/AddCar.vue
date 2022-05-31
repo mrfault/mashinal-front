@@ -74,7 +74,8 @@
         :group-by="2"
       />
       <select-banking-card
-        v-model="bankingCard"
+        :value="bankingCard"
+        @input="bankingCard = $event"
         class="mt-2 mt-lg-3"
         v-show="paymentMethod === 'card'"
       />
@@ -122,7 +123,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import {mapActions, mapGetters} from 'vuex'
 import { PaymentMixin } from '~/mixins/payment'
 import { required } from 'vuelidate/lib/validators'
 import AsanLoginButton from '~/components/buttons/AsanLoginButton'
@@ -148,8 +149,10 @@ export default {
     },
   },
   mixins: [PaymentMixin, asan_login],
+
   data() {
     return {
+      bankingCardRefresh:0,
       showModal: false,
       pending: false,
       price: 0,
@@ -168,6 +171,7 @@ export default {
     },
   },
   computed: {
+    ...mapGetters({bankingCards: 'bankingCards/bankingCards'}),
     haveBalanceToPay() {
       return parseFloat(this.price) <= this.user.balance
     },
@@ -236,20 +240,20 @@ export default {
         this.form.car_number = ''
         this.form.tech_id = ''
         this.form.card_id = ''
-        if (this.paymentMethod === 'card' && !this.bankingCard) {
+        if (this.paymentMethod === 'card') {
           this.pending = false
           this.showPaymentModal = false
           this.handlePayment(res, false, this.$t('car_added'), 'v2')
         } else {
-          await Promise.all([this.$nuxt.refresh(), this.$auth.fetchUser()])
-          this.pending = false
-          this.showPaymentModal = false
-          this.bankingCard = ''
-          this.updatePaidStatus({
-            type: 'success',
-            text: this.$t('car_added'),
-            title: this.$t('success_payment'),
-          })
+           await Promise.all([this.$nuxt.refresh(), this.$auth.fetchUser()])
+           this.pending = false
+           this.showPaymentModal = false
+           this.bankingCard = ''
+           this.updatePaidStatus({
+             type: 'success',
+             text: this.$t('car_added'),
+             title: this.$t('success_payment'),
+           })
         }
       } catch (err) {
         this.pending = false

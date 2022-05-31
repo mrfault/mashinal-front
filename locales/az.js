@@ -820,6 +820,7 @@ export default {
   "furgon": "Furqon ",
   "garage": "Qaraj",
   "garage_activate_pay": "NV-si aktivləşdirilib",
+  "garage_renew_pay": "NV-si yenilənib",
   "garage_error_10000": "Texniki səhv baş verdi. Xahiş edirik yenidən cəhd edəsiniz",
   "garage_error_1001": "Avtorizasiya yanlışdır",
   "garage_error_1002": "Partner blok edilib",
@@ -2022,7 +2023,7 @@ export default {
   "you_can_create_announcement": "Siz <strong>{phone}</strong> nömrəsindən minik, moto və ticari avtomobillər kateqoriyalarında <strong>{left}</strong> elan, ehtiyat hissələri kateqoriyasında isə <strong>{left_parts}</strong> elan yerləşdirə bilərsiniz.",
   "you_can_create_announcement_parts": "Siz <strong>{phone}</strong> nömrəsindən ehtiyat hissələri kateqoriyasında <strong>{left_parts}</strong> elan yerləşdirə bilərsiniz.",
   "you_can_create_announcement_transport": "Siz <strong>{phone}</strong> nömrəsindən minik, moto və ticari avtomobillər kateqoriyalarında <strong>{left}</strong> elan yerləşdirə bilərsiniz.",
-  "you_can_only_have_some_free_announcement_within_30_days": "Hörmətli İstifadəçi, Siz <strong>30</strong> gün ərzində Mashin.AL portalında minik, moto və ticari avtomobillər kateqoriyalarında <strong>1</strong> elan, ehtiyat hissələri kateqoriyasında isə <strong>6</strong> elan pulsuz yerləşdirə bilərsiniz.",
+  "you_can_only_have_some_free_announcement_within_30_days": "Hörmətli İstifadəçi, Siz <strong>30</strong> gün ərzində Mashin.AL portalında minik, moto və ticari avtomobillər kateqoriyalarında <strong>3</strong> elan, ehtiyat hissələri kateqoriyasında isə <strong>limitsiz</strong> elan pulsuz yerləşdirə bilərsiniz.",
   "you_have_got_a_message": "Sizə mesaj gəldi",
   "you_should_deactivate_announcements": "Sizin {package1} paketiniz aktivdir. {package2} paketə keçid etmək üçün elanlarınızın sayını maksimum {n}-a endirməlisiniz.<br/>Davam etmək üçün deaktiv etmək istədiyiniz elanları seçin.",
   "you_unblocked_this_user": "Siz bu istifadəçini blokdan çıxarmısınız",
@@ -2209,4 +2210,10 @@ export default {
   "language_prefix": "az",
   "plate_number_of_vehicle":"NV-nin nömrəsi",
   "info_is_not_correct": "Məlumatlar düzgün deyil",
+  "auto_salons": "Avtosalonlar",
+  "official_salons":"Rəsmi nümayəndələr",
+  "autosalon":"Avtosalon",
+  "size":"Ölçü",
+  "garage_error_2001":"Xidmət müvəqqəti olaraq dayandırılıb"
+
 }

@@ -262,7 +262,7 @@
                     :values="{
                       from: form.price_from,
                       to: form.price_to,
-                      suffix: form.currency === 2 ? '$' : '₼',
+                      suffix: getSuffix,
                     }"
                     @clear=";(form.price_from = ''), (form.price_to = '')"
                   >
@@ -957,6 +957,16 @@ export default {
       'allSellOptions2',
       'singleSavedSearch',
     ]),
+    getSuffix() {
+      switch(this.form.currency) {
+        case 1:
+            return '₼';
+        case 2:
+            return '$';
+        case 3:
+            return '€';
+      }
+    },
     getNotificationOptions() {
       return [
         {

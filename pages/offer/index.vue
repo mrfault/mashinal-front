@@ -1,5 +1,5 @@
 <template>
-  <div :style="isMobileBreakpoint ? null : 'margin-top: -162px;'">
+  <div  :style="isMobileBreakpoint ? null : 'margin-top: -162px;'">
 
     <offer-slider/>
     <section class="get-offer">
@@ -20,18 +20,21 @@
         has-search
         class="get-offer-select"
       />
-      <button class="btn  btn--green" @click="getOffer()">Əlavə et</button>
+      <button class="btn  btn--green" @click="getOffer()" >Əlavə et</button>
     </section>
     <div class="container">
-      <div class="new-offer mt-5" v-if="userOffers.length>0">
+      <div class="new-offer mt-5" v-if="notAccepted()>0">
         <div class="new-offer-title mt-5">
           <h2 class="text-center"> Yeni təklif</h2>
         </div>
+
+
         <div class="new-offer-notification-box mt-5">
+
 
           <div class="notification">
             <img src="/icons/auction.svg">
-            <p>Sizin {{ userOffers.length }} yeni təklifiniz var</p>
+            <p>Sizin {{ notAccepted() }} yeni təklifiniz var</p>
           </div>
           <nuxt-link to="/offer/offers" tag="button" class="offer-button">
             Təkliflərə bax
@@ -101,82 +104,23 @@
         <div class="new-offer-title mt-5">
           <h2 class="text-center mb-5">Rəsmi tərəfdaşlar</h2>
         </div>
+
         <div class="offer-partner-container">
-          <div class="offer-partner-item">
-            <img src="/icons/offer/hyundai.svg" class="mt-5">
 
-            <span class="partner-name mt-3">Hyundai</span>
-            <p class="mt-1 partner-subname mb-5">Mazda, Mitsubishi,
-              Subaru</p>
-          </div>
-          <div class="offer-partner-item">
-            <img src="/icons/offer/hyundai.svg" class="mt-5">
 
-            <span class="partner-name mt-3">Hyundai</span>
-            <p class="mt-1 partner-subname mb-5">Mazda, Mitsubishi,
-              Subaru</p>
-          </div>
-          <div class="offer-partner-item">
-            <img src="/icons/offer/hyundai.svg" class="mt-5">
+          <div class="offer-partner-item" v-for="offerPartner in offerPartners">
 
-            <span class="partner-name mt-3">Hyundai</span>
-            <p class="mt-1 partner-subname mb-5">Mazda, Mitsubishi,
-              Subaru</p>
-          </div>
-          <div class="offer-partner-item">
-            <img src="/icons/offer/hyundai.svg" class="mt-5">
+            <img :src="offerPartner.logo" class="mt-5">
 
-            <span class="partner-name mt-3">Hyundai</span>
-            <p class="mt-1 partner-subname mb-5">Mazda, Mitsubishi,
-              Subaru</p>
-          </div>
-          <div class="offer-partner-item">
-            <img src="/icons/offer/hyundai.svg" class="mt-5">
-
-            <span class="partner-name mt-3">Hyundai</span>
-            <p class="mt-1 partner-subname mb-5">Mazda, Mitsubishi,
-              Subaru</p>
-          </div>
-          <div class="offer-partner-item">
-            <img src="/icons/offer/hyundai.svg" class="mt-5">
-
-            <span class="partner-name mt-3">Hyundai</span>
-            <p class="mt-1 partner-subname mb-5">Mazda, Mitsubishi,
-              Subaru</p>
-          </div>
-          <div class="offer-partner-item">
-            <img src="/icons/offer/hyundai.svg" class="mt-5">
-
-            <span class="partner-name mt-3">Hyundai</span>
-            <p class="mt-1 partner-subname mb-5">Mazda, Mitsubishi,
-              Subaru</p>
-          </div>
-          <div class="offer-partner-item">
-            <img src="/icons/offer/hyundai.svg" class="mt-5">
-
-            <span class="partner-name mt-3">Hyundai</span>
-            <p class="mt-1 partner-subname mb-5">Mazda, Mitsubishi,
-              Subaru</p>
-          </div>
-          <div class="offer-partner-item">
-            <img src="/icons/offer/hyundai.svg" class="mt-5">
-
-            <span class="partner-name mt-3">Hyundai</span>
-            <p class="mt-1 partner-subname mb-5">Mazda, Mitsubishi,
-              Subaru</p>
-          </div>
-          <div class="offer-partner-item">
-            <img src="/icons/offer/hyundai.svg" class="mt-5">
-
-            <span class="partner-name mt-3">Hyundai</span>
-            <p class="mt-1 partner-subname mb-5">Mazda, Mitsubishi,
-              Subaru</p>
+            <span class="partner-name mt-3">{{ offerPartner.name }}</span>
+            <p class="mt-1 partner-subname mb-5">{{ offerPartner.description }}</p>
           </div>
 
 
         </div>
         <div class="d-flex justify-content-center">
-          <button class="btn text-center  btn--dark-blue-2-outline ml-auto mr-auto mt-5">Daha cox
+          <button class="btn text-center  btn--dark-blue-2-outline ml-auto mr-auto mt-5" @click="loadOfferPartners()" v-if="offerPartnersMeta.current_page!=offerPartnersMeta.last_page">
+            Daha cox
             <icon name="top" class="rotate180"></icon>
           </button>
 
@@ -211,12 +155,21 @@
 import {mapActions, mapGetters} from "vuex";
 import Accordion from "~/components/elements/Accordion";
 import OfferSlider from "~/components/offer/OfferSlider";
+
 export default {
   name: 'Offer',
   components: {OfferSlider, Accordion},
+  middleware: ['not_auto_salon','auth_general'],
   async fetch({store}) {
     await store.dispatch('getBrands')
+    await store.dispatch('offerPartners')
     await store.dispatch('OffersAcceptedByAutoSalon')
+
+  },
+  head() {
+    return this.$headMeta({
+      title: this.$t('Super teklif'),
+    })
   },
   data() {
     return {
@@ -230,6 +183,9 @@ export default {
       userOffers: 'OffersAcceptedByAutoSalon',
       brands: 'brands',
       carModels: 'models',
+      offerPartners: 'getOfferPartners',
+      offerPartnersMeta: 'getOfferPartnersMeta',
+
     }),
 
 
@@ -259,6 +215,9 @@ export default {
       getModelGenerationsArray: 'getModelGenerationsArray',
     }),
     getOffer() {
+      if (!this.brand || !this.model){
+        return this.$toasted.error('Brend və ya model seçilməyib')
+      }
       this.$router.push({
         name: 'offer-add___az', params: {
           brand: this.brand,
@@ -273,11 +232,23 @@ export default {
 
     },
 
+    notAccepted(){
+       let notAcceptedOffers=this.userOffers.filter(function (e) {
+        return e.user_is_accepted ==false;
+      });
+       return notAcceptedOffers.length;
+    },
+
+    loadOfferPartners() {
+      this.$store.dispatch('offerPartners', this.offerPartnersMeta.current_page+1)
+
+    }
   },
+  watch: {},
+
+
 
 
 }
 </script>
-<style scoped>
 
-</style>

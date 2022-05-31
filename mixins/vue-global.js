@@ -121,11 +121,11 @@ Vue.use({
               link = false;
           if (item.is_autosalon) {
             img = item.user.autosalon?.logo;
-            link = this.$localePath(`/salons/${item.user.autosalon.id}`);
+            link = this.$localePath(`/salons/${item.user.autosalon.slug}`);
             name = item.user.autosalon.name || item.user.full_name;
           } else if (item.is_part_salon) {
             img = item.user.part_salon?.logo;
-            link = this.$localePath(`/parts/shops/${item.user.part_salon.id}`);
+            link = this.$localePath(`/parts/shops/${item.user.part_salon.slug}`);
             name = item.user.part_salon.name || item.user.full_name;
           } else if (item.user.active_announcements_count > 1) {
             link = this.$localePath(`/user/${item.user.id}/announcements`);

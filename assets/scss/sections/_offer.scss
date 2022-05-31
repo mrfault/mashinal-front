@@ -111,6 +111,7 @@
 }
 
 .offer-count {
+  width: 100%;
   height: 500px;
   background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("/images/offer/offer.jpg");
   background-size: cover;
@@ -227,7 +228,7 @@
 }
 
 .selectedGeneration {
-  background: red !important;
+  background: #ECF2F9 !important;
 }
 
 
@@ -270,40 +271,57 @@
   }
 
 }
-.textInput{
-    width: 30%;
+
+.textInput {
+  width: 30%;
+  border: 0;
+  background-color: #ECF2F9;
+  border-radius: 4px;
+  padding: 9px 15px 7px;
+}
+
+.priceInput {
+  .text-input {
+    height: 60%;
+    width: 100% !important;
     border: 0;
-    background-color: #ECF2F9;
-    padding: 9px 15px 7px;
-    border-radius: 4px;
+  }
+
+
+  border-radius: 4px;
 
 }
+
 .salonsOffer {
 
   height: 700px;
   margin-bottom: 50px;
 
 
-    .col {
-      height: 300px !important;
-      padding-left: 0 !important;
-      padding-right: 0 !important;
-      .user{
-        border: 1px solid $greyish-blue-3;
-        border-top: none;
-        border-left: none;
-        border-right: none;
-        height: 70px;
-        .actions{
-          margin-left: auto;
-          margin-right: 15px;
-          i{
-            margin-right: 10px;
-            cursor: pointer;
-          }
+  .col {
+    height: 300px !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+
+    .user {
+      border: 1px solid $greyish-blue-3;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      height: 70px;
+
+      .actions {
+        margin-left: auto;
+        margin-right: 15px;
+
+        i {
+          margin-right: 10px;
+          cursor: pointer;
         }
       }
     }
+  }
+
   .breadcrumbs {
     .exact-active {
       color: $red-1;
@@ -314,21 +332,28 @@
     background: $dark-blue-1;
     height: 640px;
     padding: 20px 5px 5px 5px;
+
     ul {
       list-style: none;
       padding: 5px 5px 5px 14px;
+
       li {
         color: white;
         margin-top: 22px;
         display: flex;
         cursor: pointer;
-        img{
+
+        img {
           margin-right: 5px;
+        }
+        span{
+          margin-left: 10px;
         }
       }
     }
   }
-  .searchBox{
+
+  .searchBox {
     display: flex;
     border: 1px solid $greyish-blue-3;
     border-top: none;
@@ -338,11 +363,13 @@
     align-items: center;
     margin-top: auto;
     margin-bottom: auto;
-    i{
+
+    i {
       position: absolute;
       left: 25px;
     }
-    .searchInput{
+
+    .searchInput {
       height: 30px;
       width: 100%;
       border: 0;
@@ -352,17 +379,24 @@
       margin-left: 12px;
       margin-right: 12px;
     }
-    .searchInput::placeholder{
+
+    .searchInput::placeholder {
       padding-left: 11px;
     }
 
   }
-  .offerUsers{
+
+  .offerUsers {
     height: 564px;
-    padding: 20px;
+    padding: 0px 20px 20px 20px;
     overflow-x: hidden;
     overflow-y: auto;
-    .user{
+    border: 1px solid $greyish-blue-3;
+    border-left: none;
+    border-top: none;
+    border-bottom: none;
+
+    .user {
       display: flex;
       height: 90px;
       border: 1px solid $greyish-blue-3;
@@ -373,8 +407,7 @@
       justify-content: center;
 
 
-
-      .userImg{
+      .userImg {
         display: flex;
         font-size: 20px;
         font-weight: bold;
@@ -387,41 +420,48 @@
         background-size: cover;
         flex-shrink: 0;
       }
-      .userName{
+
+      .userName {
         display: flex;
         margin-left: 15px;
         flex-direction: column;
-        :nth-child(3){
+
+        :nth-child(3) {
           color: $dark-blue-2;
         }
       }
-      .created{
-        margin-left:  auto;
+
+      .created {
+        margin-left: auto;
       }
 
     }
   }
 
-  .userImg{
-    display: flex;
-    font-size: 20px;
-    font-weight: bold;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    color: white;
-    align-items: center;
-    justify-content: center;
-    background-size: cover;
-    flex-shrink: 0;
 
-  }
 }
-.salonsOffer > .row{
-    background: rgba(255, 255, 255, 1);
-    height: 700px;
+
+.userImg {
+  display: flex;
+  font-size: 20px;
+  font-weight: bold;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: white;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  flex-shrink: 0;
+
 }
-.offerDetail{
+
+.salonsOffer > .row {
+  background: rgba(255, 255, 255, 1);
+  height: 700px;
+}
+
+.offerDetail {
   height: 462px;
   overflow-x: hidden;
   overflow-y: auto;
@@ -430,58 +470,68 @@
   border-bottom: none;
   border-right: none;
 
-  .collapse-content{
+  .collapse-content {
     padding: 15px;
   }
-  button{
+
+  button {
     margin-right: 15px;
   }
 
-  .generations{
-    .carPrice{
-      color:$dark-blue-2;
+  .generations {
+    .carPrice {
+      color: $dark-blue-2;
       font-size: 18px;
     }
-    h3{
+
+    h3 {
       margin-top: 10px;
       color: $dark-blue-1;
       font-size: 20px;
     }
   }
-  .offerDetailContent{
+
+  .offerDetailContent {
     margin-top: 50px;
-    .offerDetailItem{
+
+    .offerDetailItem {
       display: flex;
       justify-content: space-between;
       border: solid;
       border-width: 1px 0px 1px 0px;
       padding: 5px;
       border-color: $greyish-blue-3;
-      p{
+
+      p {
         padding: 0 !important;
         margin: 0 !important;
         color: $dark-blue-3;
       }
-      span{
-      display: flex;
+
+      span {
+        display: flex;
         align-content: flex-end;
       }
-      div{
+
+      div {
         display: flex;
         justify-content: flex-end;
-        span{
+
+        span {
           margin: 3px;
         }
       }
     }
 
   }
-  textarea{
+
+  textarea {
     width: 100%;
     border: unset;
     border-bottom: 1px solid $greyish-blue-3;
     border-top: 1px solid $green-1;
   }
+
   textarea::placeholder {
     color: $dark-blue-3;
     font-size: 14px;
@@ -489,19 +539,21 @@
     padding-top: 24px;
     padding-left: 24px;
   }
-  .addons{
-    .addFile{
+
+  .addons {
+    .addFile {
       background: red;
       width: 50px;
       height: 50px;
     }
   }
-  .messages{
+
+  .messages {
     margin-top: 40px;
     display: flex;
     flex-direction: column;
 
-    .his{
+    .his {
       display: flex;
       margin-top: 5px;
       flex-direction: row;
@@ -512,7 +564,7 @@
       width: fit-content;
 
 
-      .time{
+      .time {
         margin-left: 11px;
         color: $dark-blue-3;
         font-size: 14px;
@@ -520,7 +572,8 @@
 
 
     }
-    .my{
+
+    .my {
       display: flex;
       flex-direction: row;
       justify-content: flex-end;
@@ -532,7 +585,8 @@
       block-size: fit-content;
       color: $white;
       border-radius: 4px;
-      .time{
+
+      .time {
         margin-left: 11px;
         color: $white;
         font-size: 14px;
@@ -541,24 +595,25 @@
     }
   }
 }
-.message-files{
+
+.message-files {
   display: flex;
   flex-direction: row;
 }
+
 .offerDetail::-webkit-scrollbar {
   width: 7px;
 }
 
 
-
 .offerDetail::-webkit-scrollbar-track {
-  background:  $white;
+  background: $white;
 
 }
 
 /* Handle */
 .offerDetail::-webkit-scrollbar-thumb {
-  background:  rgba(173, 178, 200, 0.3);
+  background: rgba(173, 178, 200, 0.3);
   border-radius: 5px;
 }
 
@@ -571,14 +626,15 @@
 .offerUsers::-webkit-scrollbar {
   width: 7px;
 }
+
 .offerUsers::-webkit-scrollbar-track {
-  background:  $white;
+  background: $white;
 
 }
 
 /* Handle */
 .offerUsers::-webkit-scrollbar-thumb {
-  background:  rgba(173, 178, 200, 0.3);
+  background: rgba(173, 178, 200, 0.3);
   border-radius: 5px;
 }
 
@@ -586,10 +642,118 @@
 .offerUsers::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+.active-filter{
 
+  color: $yellow-5;
+  svg{
+    path,rect,line{
+      stroke:$yellow-5;
+    }
+  }
+}
+.active-filter-fill{
+
+  color: $yellow-5;
+  svg{
+    path,rect,line{
+      stroke:$yellow-5;
+      fill: $yellow-5;
+    }
+  }
+}
 
 /* Media Query for Mobile Devices */
 @media (max-width: 480px) {
+  .offer-step {
+    flex-direction: column;
+  }
+  .offer-count-items {
+    width: 100%;
+  }
+  .get-offer {
+    width: 100%;
+  }
+  .offerDetail {
+    height: 617px;
+
+  }
+
+  .user {
+    background: $white;
+    padding: 10px;
+  }
+  .userBar{
+    span{
+      width: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    i::before{
+      font-size: 15px;
+    }
+  }
+  .mobile-filter{
+    margin-top: 20px;
+        ul{
+        list-style: none;
+        display: flex;
+          flex-wrap: wrap;
+        width: 90%;
+        margin-left: auto;
+        margin-right: auto;
+        align-items: center;
+
+        padding: 0;
+        li{
+          margin: 10px;
+          width: 44%;
+          display: flex;
+          padding: 7px;
+          border: 1px blue solid;
+          border-radius: 4px;
+          span{
+            margin-left: 10px;
+          }
+        }
+          .active-filter{
+            background: $dark-blue-2;
+            color: $white;
+            svg{
+              path,rect,line{
+                stroke:$white;
+              }
+            }
+          }
+          .active-filter-fill{
+            background: $dark-blue-2;
+            color: $white;
+            svg{
+              path,rect,line{
+                stroke:$white;
+                fill: $white;
+              }
+            }
+          }
+    }
+  }
+  .salonsOffer .col{
+    height: unset !important;
+  }
+  .filter-icon{
+    path,rect,line{
+      stroke:$dark-blue-2;
+
+    }
+
+  }
+  .filter-icon-fill {
+    path, rect, line {
+      fill: $dark-blue-2;
+
+    }
+  }
+
 
 }
 
@@ -599,23 +763,48 @@
 }
 
 /* Media Query for Tablets Ipads portrait mode */
-@media (min-width: 768px) and (max-width: 1024px){
+@media (min-width: 768px) and (max-width: 1024px) {
 
 }
 
 /* Media Query for Laptops and Desktops */
-@media (min-width: 1025px) and (max-width: 1280px){
+@media (min-width: 1025px) and (max-width: 1280px) {
 
 }
 
 /* Media Query for Large screens */
 @media (min-width: 1281px) {
-  .salonsOffer{
+  .salonsOffer {
     width: 80%;
     margin-left: auto;
     margin-right: auto;
   }
 }
-.isFavorite{
+
+.isFavorite {
   color: red !important;
 }
+
+.color-box {
+  height: 35px;
+  width: 35px;
+  border-radius: 5px;
+}
+
+.inputInvalid {
+  border: 1px solid red;
+}
+
+.priceBeetwen {
+  display: flex;
+  justify-content: start;
+
+  div {
+    width: 60px;
+
+  }
+
+
+}
+
+

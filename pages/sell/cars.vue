@@ -12,6 +12,7 @@
               :year="form.year"
               :allow-clear="showModelOptions"
               @clean="cleanForm"
+              @back="goBack"
             />
             <sell-last-step type="cars" v-if="showLastStep"
               :key="lastStepKey"
@@ -161,7 +162,20 @@ export default {
   },
   methods: {
     ...mapActions(['getModels', 'getSellYears']),
+    goBack() {
+      if(this.form.year) {
+        this.form.year = '';
+        this.showLastStep = false;
+      }
+      else if(this.form.model) {
+        this.showYearOptions = false;
+        this.form.model = '';
+      }else if(this.form.brand) {
+        this.showModelOptions = false;
+        this.form.brand = '';
+      }
 
+    },
     getFormValues(...keys) {
       let form = {};
       keys.map(key => {form[key] = this.form[key]});
