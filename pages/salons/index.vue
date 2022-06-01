@@ -159,6 +159,12 @@
     }
   }
 }
+img {
+  -webkit-backface-visibility: hidden;
+  -ms-transform: translateZ(0); /* IE 9 */
+  -webkit-transform: translateZ(0); /* Chrome, Safari, Opera */
+  transform: translateZ(0);
+}
 .dark-mode {
 
   .text-with-line {
