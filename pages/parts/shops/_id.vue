@@ -30,7 +30,7 @@ export default {
   },
   async asyncData({ store, route }) {
     await Promise.all([
-      store.dispatch('getSalonById', {slug: route.params.id}),
+      store.dispatch('getSalonById', {slug: route.params.id,page: (route.query.page || 1)}),
       store.dispatch('getMotoOptions'),
     ]);
   },
