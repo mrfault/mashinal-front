@@ -12,8 +12,8 @@
       <div class="announcements-content">
         <no-results v-if="showNotFound" type="part" />
         <grid
-          v-if="showNotFound ? mainPartsAnnouncements.length : announcements.length"
-          :announcements="showNotFound ?  mainPartsAnnouncements : announcements"
+          v-if="mainPartsAnnouncements.data.length"
+          :announcements="mainPartsAnnouncements.data"
           :title="showNotFound ? $t('other_announcements'): $t('announcements')"
 
           :pending="pending"
