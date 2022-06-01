@@ -30,6 +30,7 @@ export const state = () => getInitialState()
 
 export const getters = {
   announcements: s => s.announcements,
+  announcementsPagination: ({ announcements, pagination }) => ({...pagination, data: announcements}),
   otherAnnouncements: s => s.otherAnnouncements,
   pagination: s => s.pagination,
   otherAnnouncementsPagination: s => s.otherAnnouncementsPagination,

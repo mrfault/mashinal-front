@@ -12,10 +12,9 @@
       <div class="announcements-content">
         <no-results v-if="showNotFound" type="part" />
         <grid
-          v-if="searchActive && announcements.length ? announcements.length : mainPartsAnnouncements.data.length"
-          :announcements="searchActive && announcements.length ? announcements : mainPartsAnnouncements.data"
+          v-if="showNotFound ? otherAnnouncements.length : partAnnouncements.total"
+          :announcements="showNotFound ? otherAnnouncements : partAnnouncements.data"
           :title="showNotFound ? $t('other_announcements'): $t('announcements')"
-
           :pending="pending"
           escape-duplicates
         />
@@ -27,9 +26,11 @@
 </div> -->
 
     <infinite-loading
+      :key="refreshInfinity"
+      :action-data="JSON.parse(this.$route.query.parts_filter || '{}')"
       action="getInfiniteMainPartsPageSearchWithoutMutate"
-      getter="mainPartsAnnouncements"
-      :per-page="20"
+      getter="partAnnouncements"
+      :per-page="40"
     />
     </div>
   </div>
@@ -57,6 +58,11 @@ export default {
       description: this.$t('meta-descr_parts'),
     })
   },
+  data() {
+    return {
+      refreshInfinity:0,
+    }
+  },
   components: {
     Grid,
     Categories,
@@ -80,41 +86,15 @@ export default {
     }
     //window.addEventListener('scroll', this.getNextAnnouncements)
   },
+
   methods: {
     ...mapActions(['getInfiniteMainSearch']),
-    async getNextAnnouncements() {
-      if (window.scrollY + 800 > document.body.scrollHeight && !this.pending) {
-        this.pending = true
-        await Promise.all([this.getInfiniteMainSearch()])
-        if (!this.showNotFound) {
-          const { current_page, last_page } = this.pagination
-          if (current_page < last_page) {
-            await this.$store.dispatch('parts/getAnnouncements', {
-              body: JSON.parse(this.$route.query.parts_filter || '{}'),
-              params: {
-                page: (current_page || 0) + 1,
-              },
-            })
-          }
-        } else {
-          const { current_page, last_page } = this.otherAnnouncementsPagination
-          if (current_page ? current_page < last_page : true) {
-            await this.$store.dispatch('parts/getOtherAnnouncements', {
-              body: {},
-              params: {
-                page: (current_page || 0) + 1,
-              },
-            })
-          }
-        }
-        this.pending = false
-      }
-    },
     async searchParts() {
-
+      this.refreshInfinity ++;
+      this.mutate({ property: 'temporaryLazyData', value: {} });
       const data = JSON.parse(this.$route.query.parts_filter || '{}')
       this.pending = true
-      await this.$store.dispatch('parts/getAnnouncements', { body: data })
+      await this.$store.dispatch('getInfiniteMainPartsPageSearch', { body: data })
       this.pending = false
       await this.$store.dispatch('parts/setSearchActive', true)
       this.scrollTo('.announcements-content', [0, -30])
@@ -122,13 +102,12 @@ export default {
   },
   computed: {
     ...mapGetters({
-      announcements: 'parts/announcements',
+      partAnnouncements: 'partAnnouncements',
       otherAnnouncements: 'parts/otherAnnouncements',
       pagination: 'parts/pagination',
       otherAnnouncementsPagination: 'parts/otherAnnouncementsPagination',
       searchActive: 'parts/searchActive',
       showNotFound: 'parts/showNotFound',
-      getOtherAnnouncements: 'parts/getOtherAnnouncements',
       mainPartsAnnouncements:'mainPartsAnnouncements'
     }),
     crumbs() {
@@ -137,6 +116,7 @@ export default {
   },
   beforeDestroy() {
     this.mutate({ property: 'temporaryLazyData', value: {} });
+
     //window.removeEventListener('scroll', this.getNextAnnouncements)
   },
 }
