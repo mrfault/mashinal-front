@@ -291,9 +291,12 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({
-      pagination: 'parts/pagination'
-    }),
+    // ...mapGetters({
+    //   pagination: 'parts/pagination'
+    // }),
+    pagination() {
+      return this.$store.getters.partAnnouncements;
+    },
     getSuffix() {
       switch(this.form.currency) {
         case 1:

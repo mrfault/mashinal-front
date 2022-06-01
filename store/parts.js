@@ -77,6 +77,7 @@ export const actions = {
       append: false,//pagination.current_page > 1,
       property: "announcements"
     })
+    commit('mutate', { property: 'partAnnouncements', value: {...pagination, data: announcements } }, { root: true})
 
     if (pagination.total === 0) {
       await dispatch('getOtherAnnouncements')

@@ -821,6 +821,7 @@ export const actions = {
       }
     }
     const res = await this.$axios.$post(`/grid/part`,body,config)
+
     commit('mutate', { property: 'temporaryLazyData', value: res })
   },
   async getInfiniteMainPartsPageSearch({ commit,dispatch }, payload = {}) {
