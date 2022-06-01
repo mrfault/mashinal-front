@@ -12,9 +12,10 @@
       <div class="announcements-content">
         <no-results v-if="showNotFound" type="part" />
         <grid
-          v-if="mainPartsAnnouncements.data.length"
+          v-if="showNotFound ? mainPartsAnnouncements.length : announcements.length"
+          :announcements="showNotFound ?  mainPartsAnnouncements : announcements"
           :title="showNotFound ? $t('other_announcements'): $t('announcements')"
-          :announcements="mainPartsAnnouncements.data"
+
           :pending="pending"
           escape-duplicates
         />
