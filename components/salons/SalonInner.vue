@@ -193,7 +193,7 @@ export default {
     async changePage() {
       this.pending = true
       await this.getSalonById({
-        id: this.$route.params.id,
+        slug: this.$route.params.id,
         page: this.$route.query.page || 1,
       })
       this.pending = false
