@@ -49,6 +49,13 @@
                     v-model="form.money"
                     :placeholder="$t('payment_amount')"
                   />
+                  <select-banking-card
+                    v-if="bankingCards.length"
+                    :show-card-image="false"
+                    :value="bankingCard"
+                    @input="bankingCard = $event"
+                    class="mt-2 mt-lg-3"
+                  />
                 </div>
                 <p>* {{ $t('enter_the_amount_in_azn', { min: minAmount }) }}</p>
                 <hr />
@@ -165,7 +172,21 @@
                 :key="i + 1"
               >
                 <span class="payment-service">
-                  <span>{{ $t(row.operation_key) }}</span>
+                    <span>{{ $t(row.operation_key) }} </span> &nbsp;
+                   <template v-if="row.what_bought && row.what_bought_type === 'App\\GarageCar'">
+                     <nuxt-link :to="$localePath('/garage')">( {{ row.what_bought.car_number }} )</nuxt-link>
+                  </template>
+                  <template v-else-if="row.what_bought && ['App\\Motorcycle','App\\Scooter','App\\MotoAtv'].includes(row.what_bought_type)">
+                    ( <nuxt-link :to="$localePath('/moto/announcement/'+row.what_bought.id_unique)">{{ row.what_bought.id_unique }}</nuxt-link> )
+                  </template>
+                  <template v-else-if="row.what_bought && row.what_bought_type === 'App\\Commercial'">
+                    ( <nuxt-link :to="$localePath('/commercial/announcement/'+row.what_bought.id_unique)">{{ row.what_bought.id_unique }}</nuxt-link> )
+                  </template>
+                  <template v-else-if="row.what_bought && row.what_bought_type === 'App\\Part'">
+                    ( <nuxt-link :to="$localePath('/parts/announcement/'+row.what_bought.id_unique)">{{ row.what_bought.id_unique }}</nuxt-link> )
+                  </template>
+                  &nbsp;
+
                 </span>
                 <span class="payment-price">
                   <span
@@ -287,11 +308,21 @@ export default {
       try {
         const res = await this.$axios.$post(
           `/payment/addBalance?is_mobile=${this.isMobileBreakpoint}`,
-          this.form,
+          {...this.form,card_id:this.bankingCard},
         )
-        this.pending = false
-        this.form.money = ''
-        this.handlePayment(res, false, this.$t('balance_increased'))
+        if (!res?.data?.redirect_url) {
+          await this.$nuxt.refresh();
+          this.updatePaidStatus({
+            type: 'success',
+            text: this.$t('balance_increased'),
+            title: this.$t('success_payment')
+          });
+          this.pending = false;
+        } else {
+          this.pending = false
+          this.form.money = ''
+          this.handlePayment(res, false, this.$t('balance_increased'))
+        }
       } catch (err) {
         this.pending = false
       }

@@ -41,6 +41,7 @@ export const getters = {
 
 export const actions = {
   async getAnnouncementsReq(store, payload = {}) {
+
     const body = payload.body ? {...payload.body} : {}
     if (body.announce_type) {
       body.is_new = body.announce_type === 1 ? true : false

@@ -30,6 +30,7 @@ export const ToastErrorsMixin = {
       this.$toasted.clear();
     },
     isInvalid(field) {
+
       return this.errors.includes(field);
     },
     hasValue(field, key) {
@@ -39,7 +40,7 @@ export const ToastErrorsMixin = {
   },
   mounted() {
     this.$nuxt.$on('clear-toast-errors', this.clearErrors);
-  }, 
+  },
   beforeDestroy() {
     this.$toasted.clear();
     this.$nuxt.$off('clear-toast-errors', this.clearErrors);

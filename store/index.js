@@ -131,9 +131,13 @@ const getInitialState = () => ({
   selectedVehicleList: [],
   selectedVehiclesPrice: 0,
   offers:[],
+  offer:null,
   OffersAcceptedByAutoSalon:{},
   offerMessages:[],
   isFavorite:false,
+  offerPartners:[],
+  offerPartnersMeta:{}
+
 })
 
 export const state = () => getInitialState()
@@ -287,7 +291,11 @@ export const getters = {
   offers: (s) => s.offers,
   OffersAcceptedByAutoSalon:(s)=>s.OffersAcceptedByAutoSalon,
   getOfferMessages:(s)=>s.offerMessages,
-  isFavorite:(s)=>s.isFavorite
+  isFavorite:(s)=>s.isFavorite,
+  getOfferPartners:(s)=>s.offerPartners,
+  getOfferPartnersMeta:(s)=>s.offerPartnersMeta,
+  getOffer:(s)=>s.offer,
+
 }
 
 const objectNotEmpty = (state, commit, property) => {
@@ -332,7 +340,7 @@ export const actions = {
         .toUpperCase()
 
     if (!this.$cookies.get('ptk')) {
-      this.$cookies.set('ptk', ptk, { maxAge: 60 * 60 * 24 * 7000 })
+      this.$cookies.set('ptk', ptk, { maxAge: 5 })
     }
 
     commit('mutate', { property: 'ptk', value: ptk })
@@ -806,6 +814,10 @@ export const actions = {
     const res = await this.$axios.$post(
       `/grid/part?page=${data.page || 1}`,
     )
+    commit('parts/mutate', {
+      property: 'showNotFound',
+      value: false
+    })
     commit('mutate', { property: 'mainPartsAnnouncements', value: res })
   },
   async getGridSearch({ commit }, data) {
@@ -949,7 +961,7 @@ export const actions = {
         commercial: res.data.announce_left_commercial,
         moto: res.data.announce_left_moto,
         parts: res.data.part_announce_count,
-        parts_unlimited: res.data.part_unlimited,
+        parts_unlimited: true,//res.data.part_unlimited,
         salon_unlimited: res.data.salon_unlimited,
       },
     })
@@ -1070,7 +1082,7 @@ export const actions = {
   },
   async getSalonById({ commit }, data) {
     const res = await this.$axios.$get(
-      '/auto_salon/' + data.id + '?page=' + (data.page || 1),
+      '/auto_salon/' + data.slug + '?page=' + (data.page || 1),
     )
     commit('mutate', { property: 'salonSingle', value: res })
   },
@@ -1128,7 +1140,10 @@ export const actions = {
    const { data} =await this.$axios.$get(`/offer/salon/offer/all?param=`+param)
     commit('mutate', { property: 'offers', value: data })
   },
-
+  async getOffer({commit}, payload){
+    const {data} =await  this.$axios.get('/offer/offer-detail/'+payload.id+'/'+payload.type);
+    commit('mutate',{property:'offer',value:data})
+  },
 
   async salonAcceptOffer({},{id}){
     const  {data} = await this.$axios.$post('/offer/salon/offer/accept/'+id)
@@ -1146,7 +1161,13 @@ export const actions = {
     commit('mutate', { property: 'OffersAcceptedByAutoSalon', value: data })
   },
 
+  async offerPartners({commit},page=1){
+    const data= await this.$axios.get('/offer/partners?page='+page)
 
+    commit('setOfferPartners',data.data)
+
+    commit('mutate', { property: 'offerPartnersMeta', value: data.data.meta })
+  }
 
 }
 
@@ -1262,6 +1283,12 @@ export const mutations = {
     state.offers=payload
   },
   setIsFavorite(state,payload){
+
+  },
+  setOfferPartners(state,payload){
+    for (let i=0; i<payload.data.length; i++) {
+    state.offerPartners.push(payload.data[i])
+    }
 
   }
 }

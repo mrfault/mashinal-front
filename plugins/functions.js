@@ -17,18 +17,23 @@ export default function({ app, route, store }, inject) {
       .split('?')[0].replace(/\/$/, '')}), {});
     return generateMetaInfo({title, description, image, path, locale, product });
   });
+   inject('nl2br' ,(str, replaceMode, isXhtml) =>  {
+    let breakTag = (isXhtml) ? '<br />' : '<br>';
+    let replaceStr = (replaceMode) ? '$1'+ breakTag : '$1'+ breakTag +'$2';
+    return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, replaceStr);
+  });
   // routing
   inject('localePath', (path, locale) => {
     if (!path) return '#0';
     // check if route name was specified and escape trailing slash
     if (!path.includes('/')) return app.localePath(path).replace(/\/+$/, '');
     // do some magic
-    if (path === '/')  
+    if (path === '/')
       return '/' + (app.i18n.locale === 'az' ? '' : app.i18n.locale);
-    else 
+    else
       path = app.localePath(('/ru'+(path === '/' ? '' : path)), locale || app.i18n.locale);
     // check if the right locale in path
-    if (path.includes('/ru/') && app.i18n.locale !== 'ru') 
+    if (path.includes('/ru/') && app.i18n.locale !== 'ru')
       path = path.replace('/ru/', '/');
     // escape trailing slash
     return path.replace(/\/+$/, '');
@@ -38,7 +43,7 @@ export default function({ app, route, store }, inject) {
     let name = app.getRouteBaseName(route);
     let params = route.params;
     let query = route.query;
-    
+
     locale = locale || app.i18n.locale;
     return app.localePath({name, params, query}, locale);
   });
@@ -90,7 +95,7 @@ export default function({ app, route, store }, inject) {
   inject('readNumber', (n, read = true) => {
     if (!read) return n;
     return (n || 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-  });  
+  });
   inject('readMoney', (n, currency, append = true) => {
     const value = this.readNumber(Math.round(parseFloat(n)));
     return `${append ? `${value} ${currency}`: `${currency} ${value}`}`;
@@ -100,19 +105,24 @@ export default function({ app, route, store }, inject) {
   });
   inject('readCarNumber', (number) => {
     return number.replace(/([A-Z]{1,2})/, ' $1 ');
-  });  
+  });
   // masks
   inject('maskAlphaNumeric', (mask, placeholder = '_') => {
     return { mask, showMaskOnHover: false, definitions: { '*': { casing: 'upper', validator: '[a-zA-Z0-9]' } }, placeholder };
   });
+
   inject('maskPhone', (inline = false) => {
     let mask = '+\\9\\94 (99) 999-99-99';
     return inline ? mask : { mask, showMaskOnHover: false };
   });
+  inject('maskTechIdNumber',(inline = false) => {
+    let techMask = 'AB\\№\\999999';
+    return inline ? techMask : {techMask, showMaskOnHover: false};
+  })
   inject('maskEmail', () => {
     return {
       alias: 'email',
-      showMaskOnHover: false, 
+      showMaskOnHover: false,
       showMaskOnFocus: false
     }
   });
@@ -152,7 +162,7 @@ export default function({ app, route, store }, inject) {
     if (array.length === 1) return array[0];
     let k = array[0];
     for (let i = 1; i < array.length; i++) {
-      k = Math.max(array[i], k);    
+      k = Math.max(array[i], k);
     }
     return k;
   });
@@ -177,7 +187,7 @@ export default function({ app, route, store }, inject) {
   inject('dataRows', (data, unite) => {
     let dataKeys = Object.keys(data).filter(k => ![null,undefined].includes(data[k]));
     let middleIndex = Math.ceil(dataKeys.length / 2);
-    let dataCols = _.chunk(dataKeys, middleIndex); 
+    let dataCols = _.chunk(dataKeys, middleIndex);
 
     let getData = (keys) => keys.reduce((a, b) => ({...a, [b]: data[b]}), {});
 

@@ -43,7 +43,7 @@
                 :label="$t('price')"
                 custom
                 suffix="AZN"
-                :values="{from: form.price_from, to: form.price_to, suffix: '₼' }"
+                :values="{from: form.price_from, to: form.price_to, suffix: getSuffix }"
                 @clear="form.price_from = '', form.price_to = ''"
               >
                 <!-- :suffix="getOptionValue('Currency', form.currency)" -->
@@ -56,14 +56,14 @@
                     :placeholder="$t('to')"
                     v-model="form.price_to"
                   />
-                  <!-- <form-select
+                   <form-select
                     :label="'AZN'"
                     :options="getCurrencyOptions"
                     v-model="form.currency"
                     :allow-clear="false"
-                    :clear-option="false" 
+                    :clear-option="false"
                     in-select-menu
-                  /> -->
+                  />
                 </div>
               </form-select>
             </div>
@@ -129,7 +129,7 @@
                             :label="brand.name"
                             :value="form.brand_ids.includes(brand.id)"
                             :checked-value="brand.id"
-                            :id="'brand-' + brand.id" 
+                            :id="'brand-' + brand.id"
                             @change="brandsOnChange(brand.id)"
                           />
                         </div>
@@ -250,7 +250,7 @@ export default {
         announce_type: 0,
         price_from: '',
         price_to: '',
-        // currency: 1,
+        currency: 1,
         text: '',
         sort: '',
         ...additionalProperties
@@ -294,6 +294,16 @@ export default {
     ...mapGetters({
       pagination: 'parts/pagination'
     }),
+    getSuffix() {
+      switch(this.form.currency) {
+        case 1:
+          return '₼';
+        case 2:
+          return '$';
+        case 3:
+          return '€';
+      }
+    },
     // meta data
     meta() {
       return {

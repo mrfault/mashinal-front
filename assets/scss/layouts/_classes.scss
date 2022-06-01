@@ -330,3 +330,21 @@ hr {
 //  transform: translateX(20px);
 //  opacity: 0;
 //}
+
+
+.mt--2 {
+  margin-top: -8px;
+}
+
+.bordered{
+  border: 1px solid red;
+}
+
+.ma-error-message{
+  font: 500 16px Gilroy;
+  color: red;
+}
+
+.w-100{
+  width: 100% !important;
+}

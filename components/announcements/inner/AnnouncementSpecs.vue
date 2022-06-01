@@ -84,10 +84,19 @@ export default {
         { key: 'have_warranty', value: this.announcement.have_warranty ? this.$t('yes') : this.$t('no'), for: ['parts'] }
       ];
 
+      let mergedKeys = [
+        'shine_width','diameter','height'
+      ];
+      let mergedValues = {
+        shine_width:'',
+        height:'',
+        diameter:''
+      };
       // Dynamic specs
       if (this.type === 'parts') {
         Object.keys(this.announcement.filters).forEach(filter => {
           let value = this.announcement.filters[filter]
+
           if (value) {
             if (typeof value === 'boolean') {
               value = value ? this.$t('yes') : this.$t('yes');
@@ -95,12 +104,23 @@ export default {
               value = this.$t(value.name)
             }
 
-            specs.push({
-              key: filter.replace('capacity', 'battery_capacity'),
-              value,
-              for: ['parts'] }
-            )
+            if(mergedKeys.includes(filter)) {
+              mergedValues[filter] = value;
+            }else {
+              specs.push({
+                key: filter.replace('capacity', 'battery_capacity'),
+                value,
+                for: ['parts'] }
+              )
+            }
+
           }
+        })
+        if(mergedValues['shine_width'])
+        specs.push({
+          key: 'size',
+          value: mergedValues['shine_width'] +'/'+ mergedValues['height']+'R'+ mergedValues['diameter'],
+          for: ['parts']
         })
       }
 

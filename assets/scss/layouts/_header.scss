@@ -351,3 +351,16 @@
   padding-right: 0px;
   padding-left: 0px;
 }
+
+.salon-car-icon {
+  margin-right: 5px;
+  width: 14px;
+
+}
+.dark-mode {
+  .salon-car-icon {
+    path {
+      fill: white;
+    }
+  }
+}

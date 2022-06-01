@@ -110,6 +110,7 @@ export const SearchMixin = {
       }
     },
     submitForm(scroll = true) {
+
       this.beforeSubmitForm();
       try {
         // tracking
@@ -283,7 +284,8 @@ export const SearchMixin = {
     getCurrencyOptions() {
       return [
         { key: 1, name: 'AZN', sign: '₼' },
-        { key: 2, name: 'USD', sign: '$' }
+        { key: 2, name: 'USD', sign: '$' },
+        { key: 3, name: 'EUR', sign: '€'	}
       ];
     },
     getDamageOptions() {

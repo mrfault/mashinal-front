@@ -1,17 +1,41 @@
 <template>
-  <div class="socials" @click.stop>
-    <a v-for="(social, index) in socials[type]" :key="index" :href="getLink(social)" rel="noopener" target="_blank">
+  <div class="socials" @click.stop style="display: flex;">
+    <a v-for="(social, index) in socials[type]" :key="index" :href="getLink(social)" rel="noopener" target="_blank" :style="social === 'tiktok' ? 'display: flex;' : ''">
       <icon v-if="social!='tiktok'" :name="social" />
       <inline-svg class="tiktok" src="/icons/tiktok.svg" v-else />
     </a>
   </div>
 </template>
 <style lang="scss">
-a:hover .tiktok {
-  path {
-    fill: #1C1C1E;
+.page-footer {
+  a:hover .tiktok {
+    path {
+      fill: #1C1C1E;
+    }
   }
 }
+.pages-contact-us {
+  .tiktok {
+    path {
+      fill: #246EB2;
+    }
+  }
+}
+.dark-mode {
+  .pages-contact-us {
+    .tiktok {
+      path {
+        fill: white;
+      }
+      &:hover {
+        path {
+          fill: #F2EABD;
+        }
+      }
+    }
+  }
+}
+
 </style>
 <script>
   export default {

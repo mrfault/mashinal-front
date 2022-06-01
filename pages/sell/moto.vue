@@ -6,19 +6,20 @@
       <div class="sell_cards-row row">
         <div class="col-auto">
           <div :class="{'card': !isMobileBreakpoint}">
-            <sell-selected-model v-if="showModelOptions" 
+            <sell-selected-model v-if="showModelOptions"
               :brand="brand"
               :model="model"
               :year="form.selectedYear"
               :allow-clear="showModelOptions"
               @clean="cleanForm"
+              @back="goBack"
             />
             <vehicle-options v-else-if="!isMobileBreakpoint" icons-only
-              :options="searchMenus[1].children" 
-              :value="form.category" 
-              @change="handleCategory($event.key)" 
+              :options="searchMenus[1].children"
+              :value="form.category"
+              @change="handleCategory($event.key)"
             />
-            <sell-last-step type="moto" v-if="showLastStep" 
+            <sell-last-step type="moto" v-if="showLastStep"
               :key="lastStepKey"
               :title="`${brand.name} ${model.name}, ${form.selectedYear}`"
               :initial-form="form"
@@ -26,7 +27,7 @@
               @clean="cleanForm"
             />
             <year-options v-else-if="showYearOptions"
-              :years="{ min: 1962, max: currentYear }" 
+              :years="{ min: 1962, max: currentYear }"
               :title="$t('prod_year')"
               :value="form.selectedYear"
               @input="handleYear"
@@ -34,7 +35,7 @@
               @clean="cleanForm"
             />
             <model-options key="model" v-else-if="showModelOptions"
-              :options="options.models" 
+              :options="options.models"
               :title="$t('model')"
               :status-title="$t('select_model')"
               :input-title="$t('model_name')"
@@ -45,7 +46,7 @@
               @clean="cleanForm"
             />
             <model-options key="brand" v-else-if="showBrandOptions"
-              :options="options.brands.filter(b => b.models_count)" 
+              :options="options.brands.filter(b => b.models_count)"
               :title="$t('mark')"
               :status-title="$t('select_brand')"
               :input-title="$t('brand_name')"
@@ -107,14 +108,14 @@ export default {
   },
   async asyncData({ route, store, app }) {
     let category = parseInt(['1','2','3'].includes(route.query.category) ? route.query.category : '1');
-    
+
     store.dispatch('setSellPreviewData', { value: {} });
     await Promise.all([
       store.dispatch('getMotoOptions'),
       store.dispatch('getOptions'),
       store.dispatch('getColors'),
     ]);
-    
+
     return {
       showBrandOptions: true,
       showModelOptions: false,
@@ -146,12 +147,12 @@ export default {
         show_vin: 0,
         all_options: {},
         comment: '',
-        is_new: false, 
-        beaten: false, 
-        customs_clearance: false, 
-        tradeable: false, 
+        is_new: false,
+        beaten: false,
+        customs_clearance: false,
+        tradeable: false,
         credit: false,
-        guaranty: false, 
+        guaranty: false,
         saved_images: [],
         btl_cookie: app.$cookies.get('btl') || ''
       }
@@ -159,7 +160,21 @@ export default {
   },
   methods: {
     ...mapActions(['getMotoModels']),
+    goBack() {
 
+      if(this.form.selectedYear) {
+        this.form.selectedYear = '';
+        this.showLastStep = false;
+      }
+      else if(this.form.selectedModel) {
+        this.showYearOptions = false;
+        this.form.selectedModel = '';
+      }else if(this.form.selectedBrand) {
+        this.showModelOptions = false;
+        this.form.selectedBrand = '';
+      }
+
+    },
     getFormValues(...keys) {
       let form = {};
       keys.map(key => {form[key] = this.form[key]});

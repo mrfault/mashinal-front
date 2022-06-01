@@ -36,7 +36,7 @@ export default function ({ app, store, error, $axios }) {
       }
     } else if (![433].includes(code)) {
       if (process.client) {
-        app.$toast.error(err.response.data.message);
+        app.$toast.error(app.i18n.t(err.response.data.message));
       }
     }
   });

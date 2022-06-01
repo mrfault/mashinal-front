@@ -136,8 +136,7 @@ export default {
         commercial: 0,
         parts: 0,
         parts_unlimited: this.loggedIn
-          ? this.user?.part_salon?.status === 1 &&
-            this.user?.part_salon?.is_unlimited
+          ? true
           : this.sellTokens.parts_unlimited,
         salon_unlimited: this.loggedIn
           ? this.user?.autosalon?.status === 1 &&
@@ -159,6 +158,7 @@ export default {
       return ['moto', 'commercial'].includes(this.vehicleType)
     },
     vehicleOptions() {
+
       return this.searchMenus.map((menu) => ({
         ...menu,
         disabled:
