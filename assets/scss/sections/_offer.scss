@@ -316,6 +316,9 @@
 
         i {
           margin-right: 10px;
+
+        }
+        span{
           cursor: pointer;
         }
       }
@@ -405,6 +408,7 @@
       border-right: none;
       align-items: center;
       justify-content: center;
+  cursor: pointer;
 
 
       .userImg {
@@ -462,14 +466,14 @@
 }
 
 .offerDetail {
-  height: 462px;
+  height: 500px;
   overflow-x: hidden;
   overflow-y: auto;
 
   border-top: none;
   border-bottom: none;
   border-right: none;
-
+  padding: 8px;
   .collapse-content {
     padding: 15px;
   }
@@ -598,7 +602,10 @@
 
 .message-files {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  .message-file{
+    width: 150px;
+  }
 }
 
 .offerDetail::-webkit-scrollbar {
@@ -798,13 +805,89 @@
 .priceBeetwen {
   display: flex;
   justify-content: start;
-
   div {
-    width: 60px;
+    width: 121px;
+  }
+}
+.offer-step-icon {
+  path:first-child {
+    fill: rgba(8, 26, 62, 0.3);
+  }
+}
+.dark-mode{
+  .offer-step-icon {
+    path:first-child {
+      fill: $white;
+    }
+  }
+  .offer-text{
+    svg{
+      width: 100px;
+      path {
+        stroke: $white;
+      }
+    }
+  }
+  .offer-partner-item{
+    background: $dark-1;
+  }
+  .questions{
+    background: $dark-1;
+    color: $white;
+    h2::before,  h2::after{
+      background: $white;
+    }
+  }
+  .background-white{
+    background: #242426;
+  }
+  .offerNav{
+    background: $dark-5;
+  }
+  .offerUsers{
+    background: $dark-2;
+    .user{
+      border-color: $dark-1;
+      .userName{
+        span:nth-of-type(2){
+          color: $white;
+        }
+      }
+
+    }
+
 
   }
+  .salonsOffer{
+    .row{
+      background : $dark-2 ;
+    }
+    .searchBox{
+      .searchInput{
+        background-color: $dark-1;
+      }
+    }
+  }
+  .generations{
+    .carName{
+      h3{
+        color: $white;
+      }
 
+    }
+    .carPrice{
+      color: $white;
+    }
+  }
+  .offerDetailContent {
+    .offerDetailItem {
+      p {
+        color: $white;
+      }
+    }
+  }
 
 }
+
 
 
