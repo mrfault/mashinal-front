@@ -233,7 +233,7 @@
           </div>
         </div>
         <hr class="mt-1" v-if="showMonetizationActions && showCheckbox && announcement.status === 1" />
-        <div class="item-details__actions" v-if="showMonetizationActions">
+        <div class="item-details__actions" style="z-index: 1" v-if="showMonetizationActions">
           <template v-if="showCheckbox && announcement.status === 1">
             <span>
               <monetization-button
