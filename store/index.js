@@ -4,6 +4,7 @@ import { mutate, reset } from '~/lib/vuex-helpers/mutations'
 const getInitialState = () => ({
   loading: true,
   colorMode: 'light',
+  partAnnouncements:{},
   breakpoint: null,
   ptk: null,
   temporaryLazyData:[],
@@ -201,6 +202,7 @@ export const getters = {
   shopAnnouncements:  (s) => {
     return s.shopAnnouncements
   },
+  partAnnouncements: (s) => s.partAnnouncements,
   mainAnnouncements: (s) => s.mainAnnouncements,
   mainPartsAnnouncements: (s) => s.mainPartsAnnouncements,
   myAnnouncements: (s) => s.myAnnouncements,
@@ -340,7 +342,7 @@ export const actions = {
         .toUpperCase()
 
     if (!this.$cookies.get('ptk')) {
-      this.$cookies.set('ptk', ptk, { maxAge: 60 * 60 * 24 * 7000 })
+      this.$cookies.set('ptk', ptk, { maxAge: 5 * 60 })
     }
 
     commit('mutate', { property: 'ptk', value: ptk })
@@ -804,17 +806,57 @@ export const actions = {
     commit('mutate', { property: 'mainPartsAnnouncements', value: res })
   },
 
-  async getInfiniteMainPartsPageSearchWithoutMutate({ commit }, data = {}) {
-    const res = await this.$axios.$post(
-      `/grid/part?page=${data.page || 1}`,
-    )
+  async getInfiniteMainPartsPageSearchWithoutMutate({ commit }, payload = {}) {
+    console.log(payload);
+    const body = payload ? {...payload} : {}
+    if (body.announce_type) {
+      body.is_new = body.announce_type === 1 ? true : false
+    }
+    delete body.announce_type;
+
+    const config = {
+      params: {
+        ...(payload.params ? payload.params : {}),
+        page: payload?.page || 1
+      }
+    }
+    const res = await this.$axios.$post(`/grid/part`,body,config)
+
     commit('mutate', { property: 'temporaryLazyData', value: res })
   },
-  async getInfiniteMainPartsPageSearch({ commit }, data = {}) {
-    const res = await this.$axios.$post(
-      `/grid/part?page=${data.page || 1}`,
-    )
-    commit('mutate', { property: 'mainPartsAnnouncements', value: res })
+  async getInfiniteMainPartsPageSearch({ commit,dispatch }, payload = {}) {
+
+    const body = payload.body ? {...payload.body} : {}
+    if (body.announce_type) {
+      body.is_new = body.announce_type === 1 ? true : false
+    }
+    delete body.announce_type;
+
+    const config = {
+      params: {
+        ...(payload.params ? payload.params : {}),
+        page: payload?.params?.page || 1
+      }
+    }
+    const res = await this.$axios.$post(`/grid/part`,body,config)
+    commit('parts/mutate', {
+      property: 'showNotFound',
+      value: res.total === 0
+    })
+
+    if (res.total === 0) {
+      await dispatch('parts/getOtherAnnouncements')
+    } else {
+      commit('parts/mutate', {
+        property: 'otherAnnouncementsPagination',
+        value: {}
+      })
+      commit('parts/setAnnouncements', {
+        announcements: [],
+        property: "otherAnnouncements"
+      })
+    }
+    commit('mutate', { property: 'partAnnouncements', value: res })
   },
   async getGridSearch({ commit }, data) {
     const res = await this.$axios.$post(
@@ -957,7 +999,7 @@ export const actions = {
         commercial: res.data.announce_left_commercial,
         moto: res.data.announce_left_moto,
         parts: res.data.part_announce_count,
-        parts_unlimited: res.data.part_unlimited,
+        parts_unlimited: true,//res.data.part_unlimited,
         salon_unlimited: res.data.salon_unlimited,
       },
     })
@@ -1078,7 +1120,7 @@ export const actions = {
   },
   async getSalonById({ commit }, data) {
     const res = await this.$axios.$get(
-      '/auto_salon/' + data.id + '?page=' + (data.page || 1),
+      '/auto_salon/' + data.slug + '?page=' + (data.page || 1),
     )
     commit('mutate', { property: 'salonSingle', value: res })
   },

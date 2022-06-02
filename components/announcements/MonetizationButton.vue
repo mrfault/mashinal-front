@@ -43,6 +43,13 @@
         :options="paymentMethodOptions"
         :group-by="2"
       />
+      <select-banking-card
+        :show-card-image="false"
+        :value="bankingCard"
+        @input="bankingCard = $event"
+        class="mt-2 mt-lg-3"
+        v-show="paymentMethod === 'card'"
+      />
       <terminal-info-button popup-name="monetization-popup" />
       <div class="modal-sticky-bottom">
         <hr />
@@ -109,6 +116,9 @@ export default {
   },
   computed: {
     ...mapGetters(['user']),
+    ...mapGetters({
+      bankingCards: 'bankingCards/bankingCards'
+    }),
     totalBalance() {
       let balance = this.user.balance
       if (this.announcement.is_autosalon)
@@ -154,12 +164,23 @@ export default {
           id_unique: this.announcement.id_unique,
           monetize_id: this.selectedPlan.id,
           type: this.paymentMethod,
+          card_id: this.bankingCard
         },
       )
       if (this.paymentMethod === 'card') {
-        this.pending = false
-        this.showPaymentModal = false
-        this.handlePayment(res, false, this.$t('ad_started'))
+        if (!res?.data?.redirect_url) {
+          await this.$nuxt.refresh();
+          this.updatePaidStatus({
+            type: 'success',
+            text: this.$t('ad_started'),
+            title: this.$t('success_payment')
+          });
+          this.pending = false;
+        }else {
+          this.pending = false
+          this.showPaymentModal = false
+          this.handlePayment(res, false, this.$t('ad_started'))
+        }
       } else {
         await Promise.all([this.$nuxt.refresh(), this.$auth.fetchUser()])
         this.pending = false

@@ -164,7 +164,7 @@
               overflow-x: hidden;
               overflow-y: scroll;
               min-height: auto !important;
-              max-height: 270px !important;
+              max-height: calc(100vh - 456px) !important;
               background-color: #fff;
               @include mal-scrollbar;
               &__item{
@@ -417,7 +417,7 @@
     .map{
       &-sidebar{
         transform: scale(0.8) translateX(-12.5%);
-        
+
       }
     }
   // }
@@ -428,7 +428,7 @@
 //     .map{
 //       &-sidebar{
 //         transform: scale(0.5) translateX(-9%);
-        
+
 //       }
 //     }
 //   }

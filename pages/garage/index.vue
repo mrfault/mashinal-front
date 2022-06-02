@@ -90,6 +90,7 @@ export default {
     await Promise.all([
       store.dispatch('garage/getCarList', {}),
       store.dispatch('garage/getAttorneyList'),
+      store.dispatch('bankingCards/getBankingCards')
     ])
     let vehicleList = {}
 

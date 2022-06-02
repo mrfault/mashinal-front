@@ -19,18 +19,18 @@ export default {
   },
   nuxtI18n: {
     paths: {
-      az: '/salonlar/:id'
+      az: '/salon/:id'
     }
   },
   head() {
     return this.$headMeta({
-      title: `${this.$t('salon')} "${this.salonSingle.name || this.salonSingle.user.full_name}" | ${this.$t('salons')}`,
+      title: `${this.$t('autosalon')} "${this.salonSingle.name || this.salonSingle.user.full_name}" | ${this.$t('salons')}`,
       description: this.salonSingle.short_description
     });
   },
   async asyncData({ store, route }) {
     await Promise.all([
-      store.dispatch('getSalonById', {id: route.params.id}),
+      store.dispatch('getSalonById', {slug: route.params.id}),
       store.dispatch('getMotoOptions'),
     ]);
 
