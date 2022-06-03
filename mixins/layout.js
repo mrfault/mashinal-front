@@ -142,6 +142,7 @@ export const LayoutMixin = {
         this.connectEcho('offer-user.'+this.$auth.user.id).listen('OfferMessageSendEvent',({ message })  => {
 
           this.$store.commit('appendOfferMessage',message)
+          this.$store.dispatch('getAllOffers')
 
         })
         this.connectEcho('global-channel.' + this.$auth.user.id).listen(
