@@ -7,7 +7,7 @@
       <div class="row">
 
         <breadcrumbs :crumbs="crumbs"/>
-        <div class="col-md-10 background-white p-5">
+        <div class="col-md-12 background-white p-5">
           <sell-progress :form="form"/>
           <sell-selected-model
             :brand="brand"
@@ -74,7 +74,7 @@
                                   :value="'credit'" radio-value="credit"/>
                       <form-radio :label="'Nağd'" input-name="buy_condition" v-model="form.buy_condition"
                                   :value="'cash'"
-                                  radio-value="cash"/>
+                                  radio-value="cash" class="ml-2"/>
 
 
                     </div>
@@ -121,11 +121,7 @@
           </div>
 
         </div>
-        <div class="col-md-2" v-if="!isMobileBreakpoint">
-          <div class="card">
-            <sell-preview :brand="brand" :model="model" :form="form"/>
-          </div>
-        </div>
+
 
       </div>
     </div>

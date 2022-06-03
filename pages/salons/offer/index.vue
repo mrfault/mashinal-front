@@ -196,12 +196,13 @@
             <div v-else>
               <div class="messages">
                 <div :class=" isMyMessage(message) ? 'my' :'his' " v-for="message in offerMessages">
-                  {{ message.message }} <span class="time">17:30</span>
                   <div v-if="message.files.length>0" class="message-files">
                     <div class="message-file" v-for="file in message.files">
-                      <img :src="file" width="51px"/>
+                      <img :src="file" width="100%"/>
                     </div>
                   </div>
+                  {{ message.message }} <span class="time">17:30</span>
+
                 </div>
               </div>
               <div>
@@ -296,7 +297,10 @@ export default {
     },
     async deleteAutoSalonOffer(id){
       await this.$axios.delete('/offer/salon/offer/delete/'+id);
+
       this.checkAccepted(id)
+      this.offer=false
+      this.IsAccepted=false
     },
    async submitMessage() {
       let formData = new FormData();

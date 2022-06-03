@@ -11,6 +11,7 @@
       <banners v-if="!searchActive" reverse />
       <div class="announcements-content">
         <no-results v-if="showNotFound" type="part" />
+
         <grid
           v-if="showNotFound ? otherAnnouncements.length : partAnnouncements.total"
           :announcements="showNotFound ? otherAnnouncements : partAnnouncements.data"

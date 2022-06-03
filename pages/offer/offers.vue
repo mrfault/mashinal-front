@@ -7,9 +7,18 @@
         <div class=" col col-md-2" v-if="!isMobileBreakpoint">
           <div class="offerNav">
             <ul>
-              <li @click="changePage('all')"><img src="/icons/offer/requests.svg"/> Təkflilər</li>
-
-              <li @click="changePage('deleted')"><img src="/icons/offer/requests.svg"/> Silinmişlər</li>
+              <li @click="changePage('all')"  :class="{'active-filter': $route.query.param==='all' || !$route.query.param} ">
+                <inline-svg src="/icons/offer/requests.svg" class="filter-icon"/>
+                <span>
+                  Təkliflər
+                </span>
+              </li>
+              <li @click="changePage('deleted')" :class="{'active-filter-fill': $route.query.param==='deleted'} " >
+                <inline-svg src="/icons/offer/delete.svg" class="filter-icon   filter-icon-fill"/>
+                <span>
+                  Silinmişlər
+              </span>
+              </li>
             </ul>
           </div>
         </div>
@@ -142,13 +151,14 @@
                 </div>
 
               </div>
+              <div class="text-right" v-if="!user_is_accepted">
+                <button class="btn  btn--green mt-3" @click="accept(userOffer.auto_salon_offer_id)">Sorğunu qəbul et
+                </button>
+              </div>
             </collapse-content>
 
-            <div class="text-right" v-if="!user_is_accepted">
-              <button class="btn  btn--green mt-3" @click="accept(userOffer.auto_salon_offer_id)">Sorğunu qəbul et
-              </button>
-            </div>
-            <div v-else>
+
+            <div v-if="user_is_accepted">
               <div class="messages">
                 <div :class="isMyMessage(message) ? 'my' :'his' " v-for="message in offerMessages">
                   {{ message.message }} <span class="time">17:30</span>
