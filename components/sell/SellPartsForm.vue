@@ -83,6 +83,7 @@
             v-model="form.brand_id"
             :label="$t('select_brand')"
             :options="brands"
+            has-search
             :invalid="isInvalid('brand_id')"
             :clear-option="false"
             @change="removeError('brand_id')"
