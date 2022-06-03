@@ -218,7 +218,7 @@
                               </ul>
                             </div>
                             <div :class="`col-${menu.categories ? 9 : 12}`">
-                              <ul class="dropdown-menu row">
+                              <ul class="dropdown-menu row" :class="{'resize-icon': activeCategory === 3}">
                                 <li
                                   :class="`col-${menu.categories ? 4 : 3}`"
                                   v-for="submenu in (menu.categories ? menu.categories[activeCategory].children : menu.children)"
@@ -316,6 +316,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.resize-icon {
+  i {
+    font-size:35px !important;
+  }
+}
 .topbar-nav {
   &__menu {
     display: flex;

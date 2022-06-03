@@ -112,9 +112,7 @@ export const MenusDataMixin = {
     },
 
     partsSubMenus() {
-      return [
-        { title: 'parts', route: '/parts', icon: 'parts' },
-      ]
+      return this.partsMenus.filter(r => r.slug !== '/');
     },
 
     hasSearchNav() {
