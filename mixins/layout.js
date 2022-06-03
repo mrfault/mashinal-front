@@ -64,16 +64,29 @@ export const LayoutMixin = {
       let vh = window.innerHeight * 0.01
       document.documentElement.style.setProperty('--vh', `${vh}px`)
       this.vhVariableSet = true
+
+    },
+    completelyHide(el) {
+      var position = el.getBoundingClientRect();
+
+      // checking whether fully visible
+      if(position.top >= 0 && position.bottom <= window.innerHeight) {
+        el.classList.add('d-none');
+      }
     },
     showMenu(el) {
       el.style.top = "0px";
       clearTimeout(this.scrollTimeout);
-      this.scrollTimeout = setTimeout(() => el.classList.remove('z-index-1') ,400);
+      this.scrollTimeout = setTimeout(() => {
+        el.classList.remove('z-index-1')
+        el.classList.remove('d-none')
+      } ,400);
     },
     hideMenu(el) {
       el.classList.add('z-index-1')
       el.style.top = '-350px'
       clearTimeout(this.scrollTimeout);
+      this.scrollTimeout = setTimeout(() => el.classList.add('d-none') ,400);
     },
     handleHideMenu() {
       let cordY = window.scrollY;

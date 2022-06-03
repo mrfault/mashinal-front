@@ -1,5 +1,5 @@
 <template>
-  <div style="margin-top: -162px;">
+  <div>
     <offer-slider/>
     <div class=" salonsOffer">
       <breadcrumbs :crumbs="crumbs"/>

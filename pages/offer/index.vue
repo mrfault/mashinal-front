@@ -1,5 +1,5 @@
 <template>
-  <div  :style="isMobileBreakpoint ? null : 'margin-top: -162px;'">
+  <div  >
 
     <offer-slider/>
     <section class="get-offer">
