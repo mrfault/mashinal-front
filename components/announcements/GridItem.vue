@@ -177,6 +177,7 @@
           </span>
           <span class="item-details__options" v-show="getOdometer == null">
             <icon
+              :style="announcement.tradeable || announcement.exchange_possible ? 'margin-right:16px':''"
               name="percent"
               v-tooltip="$t('credit_possible')"
               v-if="announcement.credit"
@@ -201,6 +202,7 @@
           <span class="item-details__options" v-show="getOdometer">
             <icon
               name="percent"
+              :style="announcement.tradeable || announcement.exchange_possible ? 'margin-right:16px':''"
               v-tooltip="$t('credit_possible')"
               v-if="announcement.credit"
             />
