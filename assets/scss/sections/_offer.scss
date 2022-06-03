@@ -860,6 +860,14 @@
 
   }
   .salonsOffer{
+    .col{
+      .user{
+        border-color: $dark-1;
+      }
+    }
+    .searchBox{
+      border-color: $dark-1;
+    }
     .row{
       background : $dark-2 ;
     }
@@ -895,6 +903,7 @@
   .offerDetail::-webkit-scrollbar-track{
     background-color: $dark-1;
   }
+
 }
 
 
