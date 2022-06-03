@@ -36,9 +36,10 @@
             </a>
           </div>
         </div>
-        <span class="edit-link items-total">
-          <inline-svg class="salon-car-icon" src="/images/car_icon.svg"  />
-          <span>{{ salonSingle.announcements.total }}</span>
+        <span class="edit-link items-total d-flex align-items-center">
+          <inline-svg v-if="salonSingle.type_id === 2" class="salon-car-icon" src="/images/settings.svg"  />
+          <inline-svg v-else class="salon-car-icon"  src="/images/car_icon.svg"  />
+          <span :style="salonSingle.type_id === 2 ? 'margin-top:2px;': '' ">{{ salonSingle.announcements.total }}</span>
         </span>
         <nuxt-link
           class="edit-link"

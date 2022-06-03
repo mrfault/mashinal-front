@@ -34,7 +34,7 @@
                   :class="[
                     'swiper-thumb-bg',
                     {
-                      [`${slides.types[index]}-play`]:
+                      [`${slides.types && slides.types[index] ? (slides.types[index]+'-play'):''}`]:
                         slides.types &&
                         ['youtube', 'video'].includes(slides.types[index]),
                     },
