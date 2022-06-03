@@ -502,7 +502,7 @@
       display: flex;
       justify-content: space-between;
       border: solid;
-      border-width: 1px 0px 1px 0px;
+      border-width: 0px 0px 1px 0px;
       padding: 5px;
       border-color: $greyish-blue-3;
 
@@ -846,6 +846,7 @@
   }
   .offerUsers{
     background: $dark-2;
+    border-right: none;
     .user{
       border-color: $dark-1;
       .userName{
@@ -881,12 +882,19 @@
   }
   .offerDetailContent {
     .offerDetailItem {
+      border-color:$dark-1 ;
       p {
         color: $white;
+
       }
     }
   }
-
+  .offerUsers::-webkit-scrollbar-track{
+    background-color: $dark-1;
+  }
+  .offerDetail::-webkit-scrollbar-track{
+    background-color: $dark-1;
+  }
 }
 
 
