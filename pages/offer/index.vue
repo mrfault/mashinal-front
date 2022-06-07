@@ -132,7 +132,7 @@
       <div class="container">
         <hr class="mt-5 mb-5">
         <section class="offer-text">
-          <img src="/icons/offer/stamp.svg" alt="">
+          <inline-svg src="/icons/offer/stamp.svg" class="offer-stamp-icon" />
           <p>
             Biz evdən çıxmadan cəmi bir saat ərzində eksklüziv ucuz qiymətə yeni avtomobil almağa imkan verən innovativ
             onlayn sistem yaratdıq. Biz sizin üçün təhlükəsiz, sürətli və rahat əməliyyata zəmanət veririk. Siz
