@@ -221,7 +221,7 @@ export default {
     },
     crumbs() {
       return [
-        {name: 'Super təklif', route: '/sell'},
+        {name: 'Super təklif', route: '/offer'},
         {name: this.$t('cars')}
       ]
     }
