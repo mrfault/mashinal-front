@@ -638,13 +638,11 @@
   background: $white;
 
 }
-
 /* Handle */
 .offerUsers::-webkit-scrollbar-thumb {
   background: rgba(173, 178, 200, 0.3);
   border-radius: 5px;
 }
-
 /* Handle on hover */
 .offerUsers::-webkit-scrollbar-thumb:hover {
   background: #555;
@@ -668,8 +666,6 @@
     }
   }
 }
-
-/* Media Query for Mobile Devices */
 @media (max-width: 480px) {
   .offer-step {
     flex-direction: column;
@@ -684,7 +680,6 @@
     height: 617px;
 
   }
-
   .user {
     background: $white;
     padding: 10px;
@@ -764,7 +759,6 @@
 
 }
 
-/* Media Query for low resolution  Tablets, Ipads */
 @media (min-width: 481px) and (max-width: 767px) {
 
 }
@@ -809,20 +803,32 @@
     width: 121px;
   }
 }
+
 .offer-step-icon {
   path:first-child {
     fill: rgba(8, 26, 62, 0.3);
   }
 }
+
 .dark-mode{
+  .selectedGeneration {
+    background: $grey-2 !important;
+  }
+  h2::before,h2::after{
+    background-color: white;
+  }
   .offer-step-icon {
+    path:first-child {
+      fill: $white;
+    }
+  }
+  .offer-stamp-icon{
     path:first-child {
       fill: $white;
     }
   }
   .offer-text{
     svg{
-      width: 100px;
       path {
         stroke: $white;
       }
@@ -856,8 +862,6 @@
       }
 
     }
-
-
   }
   .salonsOffer{
     .col{
