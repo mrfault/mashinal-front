@@ -8,13 +8,13 @@
           v-html="$t('my_cars')"
         />
       </div>
-      <div class="col-6 col-lg-auto">
-        <button
-          :class="['btn btn--pale-red-outline', {'active': tab === 'check-points', 'full-width': isMobileBreakpoint}]"
-          @click="$emit('change-tab', 'check-points')"
-          v-html="$t('check_points')"
-        />
-      </div>
+<!--      <div class="col-6 col-lg-auto">-->
+<!--        <button-->
+<!--          :class="['btn btn&#45;&#45;pale-red-outline', {'active': tab === 'check-points', 'full-width': isMobileBreakpoint}]"-->
+<!--          @click="$emit('change-tab', 'check-points')"-->
+<!--          v-html="$t('check_points')"-->
+<!--        />-->
+<!--      </div>-->
       <div class="col-6 col-lg-auto">
         <button
           :class="['btn btn--pale-red-outline', {'active': tab === 'attorney-list', 'full-width': isMobileBreakpoint}]"
