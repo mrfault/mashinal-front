@@ -5,7 +5,7 @@
       <comparison-models v-else />
     </div>
     <no-results v-else
-      :text="$t('no_cars_found')" 
+      :text="$t('no_cars_found')"
     >
       <nuxt-link :to="$localePath('/')" class="btn btn--green mt-2 mt-lg-3" v-html="$t('to_add_an_advert')" />
     </no-results>
@@ -37,9 +37,12 @@ export default {
       return this.filter.compareType === 'announcements' && !this.announcements.length
     }
   },
+
   methods: {
     updateCompareType() {
-      if (['announcements', 'models'].includes(this.$route.hash)) {
+      console.log(this.$route.hash);
+      if (['announcements', 'models'].includes(this.$route.hash?.replace('#', ''))) {
+        console.log('test');
         this.$store.commit('comparison/mutate', {
           property: 'filter',
           key: 'compareType',
