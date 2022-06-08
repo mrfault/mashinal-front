@@ -159,7 +159,6 @@
           <h3 class="item-details__price">
             {{ announcement.price }}
           </h3>
-          <p v-if="announcement.formatted_filters && announcement.formatted_filters.shine_width" class="shine-size">{{getShineSize(announcement.formatted_filters)}}</p>
         </div>
         <h3 class="item-details__title">
 
