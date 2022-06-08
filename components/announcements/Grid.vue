@@ -45,9 +45,7 @@
                   ? 'col-b mb-0 pb-2 mb-lg-4 mt-lg-6 pt-lg-4 pb-lg-4'
                   : 'mb-2 mb-lg-3',
               ]"
-              :key="
-                announcement.id_unique + (escapeDuplicates ? '_' + index : '')
-              "
+              :key="announcement.id_unique + (escapeDuplicates ? '_' + index : '')"
             >
               <grid-item
                 :announcement="announcement"

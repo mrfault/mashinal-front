@@ -56,7 +56,7 @@
           :class="{ pending }"
           v-if="!otpSent"
         >
-          {{ $t('pay_online') }}
+          {{ $t('pay_one_azn') }}
         </button>
         <button
           class="btn btn--green w-100"

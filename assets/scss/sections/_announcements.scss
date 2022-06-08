@@ -79,9 +79,6 @@
       }
       &__options {
         display: flex;
-        i:not(:last-child) {
-          margin-right: 16px;
-        }
       }
       &__actions {
         display: flex;

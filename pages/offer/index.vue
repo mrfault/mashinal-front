@@ -48,24 +48,25 @@
         <div class="offer-step-box">
           <div class="offer-step-title">Seçimlərini qeyd et <span>1</span></div>
           <p>Sizin üçün uyğun olan marka, model, avadanlıq və alış şərtlərini seçin</p>
-          <img src="/icons/offer/pencil.svg" class="offer-step-icon">
+          <inline-svg src="/icons/offer/pencil.svg" class="offer-step-icon"></inline-svg>
+
         </div>
         <div class="offer-step-box">
           <div class="offer-step-title">Uyğun təklifi seç <span>2</span></div>
           <p>Saytımız sürülmüş avtomobillərin alışı, satışı və mübadiləsi üzrə hər növ xidmətləri təklif edir. Bütün
             avtomobillər hər növ texniki diaqnostikadan və satış öncəsi hazırlıq prosedurlarından keçirilib.</p>
-          <img src="/icons/offer/pointer.svg" class="offer-step-icon">
+          <inline-svg src="/icons/offer/pointer.svg" class="offer-step-icon"></inline-svg>
         </div>
         <div class="offer-step-box">
           <div class="offer-step-title">Axtardığın maşını al <span>3</span></div>
           <p>Avtomobili dilerdən götürə və ya evinizə çatdıra bilərsiniz</p>
-
-          <img src="/icons/offer/car.svg" class="offer-step-icon">
+          <inline-svg src="/icons/offer/car.svg" class="offer-step-icon"/>
         </div>
       </section>
       <hr class="mt-5 mb-5">
       <section class="offer-text">
-        <img src="/icons/offer/wheel.svg" alt="">
+        <inline-svg src="/icons/offer/wheel.svg" width="100px"/>
+
         <p>
           Biz evdən çıxmadan cəmi bir saat ərzində eksklüziv ucuz qiymətə yeni avtomobil almağa imkan verən innovativ
           onlayn sistem yaratdıq. Biz sizin üçün təhlükəsiz, sürətli və rahat əməliyyata zəmanət veririk. Siz
@@ -131,7 +132,7 @@
       <div class="container">
         <hr class="mt-5 mb-5">
         <section class="offer-text">
-          <img src="/icons/offer/stamp.svg" alt="">
+          <inline-svg src="/icons/offer/stamp.svg" class="offer-stamp-icon" />
           <p>
             Biz evdən çıxmadan cəmi bir saat ərzində eksklüziv ucuz qiymətə yeni avtomobil almağa imkan verən innovativ
             onlayn sistem yaratdıq. Biz sizin üçün təhlükəsiz, sürətli və rahat əməliyyata zəmanət veririk. Siz

@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="pages-index"
-    :style="!isMobileBreakpoint ? 'margin-top: -162px;' : ''"
-  >
+  <div class="pages-index">
     <!-- slider desktop -->
     <div
       class="swiper-container swiper-container-desktop"

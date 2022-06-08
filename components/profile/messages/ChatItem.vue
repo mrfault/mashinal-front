@@ -31,11 +31,10 @@
             </span>
             <span class="text-truncate" v-if="isChatBot && lastMessage.text" v-html="lastMessage.text.split('<br>')[0]"></span>
             <span class="text-truncate" v-else-if="lastMessage.text">{{ lastMessage.text }}</span>
-            <span class="attachment-info" v-else-if="lastMessage.attachments.length">
+            <span class="attachment-info d-flex" v-else-if="lastMessage.attachments.length">
               <!-- <icon name="camera" /> -->
-              <inline-svg src="/icons/camera.svg" :height="14" />
+              <inline-svg style="    margin-right: 5px;height: 12px;" src="/icons/camera.svg" :height="14" />
               {{ $t('image') }}
-
             </span>
           </template>
         </div>
@@ -78,13 +77,13 @@ export default {
       return this.chatUser.id == 3;
     },
     lastMessage() {
-      if (!this.group.messages || !this.group.messages.length) 
+      if (!this.group.messages || !this.group.messages.length)
         return this.group.last_message || false;
       return this.group.messages[this.group.messages.length - 1];
     },
   },
   methods: {
-    
+
   }
 }
 </script>

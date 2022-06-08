@@ -159,21 +159,25 @@
           <h3 class="item-details__price">
             {{ announcement.price }}
           </h3>
+          <p v-if="announcement.formatted_filters && announcement.formatted_filters.shine_width" class="shine-size">{{getShineSize(announcement.formatted_filters)}}</p>
         </div>
         <h3 class="item-details__title">
+
           {{ getAnnouncementTitle(announcement) }}
         </h3>
         <!-- year, odometer, credit, barter -->
         <!-- 1 -->
         <div class="item-details--infos">
           <span class="item-details__year" v-if="getTextLine">
-            <span>{{ getTextLine }}</span>
+            <p v-if="announcement.formatted_filters && announcement.formatted_filters.shine_width" class="shine-size">{{ $t('size')}}: {{getShineSize(announcement.formatted_filters)}}</p>
+            <span v-else>{{ getTextLine }}</span>
             <span v-if="getTextLine  && isMobileBreakpoint">
               <span v-if="!announcement.category">, {{ getOdometer }}</span>
             </span>
           </span>
           <span class="item-details__options" v-show="getOdometer == null">
             <icon
+              :style="announcement.tradeable || announcement.exchange_possible ? 'margin-right:16px':''"
               name="percent"
               v-tooltip="$t('credit_possible')"
               v-if="announcement.credit"
@@ -198,6 +202,7 @@
           <span class="item-details__options" v-show="getOdometer">
             <icon
               name="percent"
+              :style="announcement.tradeable || announcement.exchange_possible ? 'margin-right:16px':''"
               v-tooltip="$t('credit_possible')"
               v-if="announcement.credit"
             />
@@ -358,6 +363,9 @@ export default {
     },
   },
   methods: {
+    getShineSize(filters)  {
+     return  filters.shine_width.name +'/'+ filters.height.name+'R'+ filters.diameter.name
+    },
     goToAnnouncement() {
       if (!this.clickable) return
 
@@ -383,6 +391,7 @@ export default {
         this.announcement.id_unique,
         value,
         true,
+
       )
     },
     selectAnnouncement(id, value, controls = false) {
@@ -404,7 +413,6 @@ export default {
     },
   },
   mounted() {
-
     this.$nuxt.$on('select-announcement', this.selectAnnouncement)
   },
   beforeDestroy() {
@@ -412,4 +420,9 @@ export default {
   },
 }
 </script>
-`
+
+<style>
+.shine-size{
+  margin-left: auto;
+}
+</style>
