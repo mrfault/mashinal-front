@@ -31,7 +31,7 @@
       />
 
       <!-- Announcements -->
-      <div :ops="announcementScrollOps" v-if="activeType === 'announcements'">
+      <div  v-if="activeType === 'announcements'">
         <div
           class="comparison-preview__list"
           :class="{ 'custom-scrollbar': announcementsList.length > 2 }"
@@ -72,8 +72,8 @@
       </div>
 
       <!-- Models -->
-      <vue-scroll :ops="modelScrollOps" v-if="activeType === 'models'">
-        <div class="comparison-preview__list">
+      <div  v-if="activeType === 'models'">
+        <div class="comparison-preview__list" :class="{ 'custom-scrollbar': modelsList.length > 2 }">
           <template v-for="(model, index) in modelsList">
             <div
               class="comparison-preview__list-item"
@@ -102,7 +102,7 @@
             <hr :key="'hr-' + model.id" v-if="index < modelsList.length - 1" />
           </template>
         </div>
-      </vue-scroll>
+      </div>
 
       <button
         class="btn btn--red btn--unaffected-by-theme full-width compare-btn"
