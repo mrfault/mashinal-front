@@ -79,14 +79,14 @@ export const LayoutMixin = {
       clearTimeout(this.scrollTimeout);
       this.scrollTimeout = setTimeout(() => {
         el.classList.remove('z-index-1')
-        el.classList.remove('d-none')
+        // el.classList.remove('d-none')
       } ,400);
     },
     hideMenu(el) {
       el.classList.add('z-index-1')
       el.style.top = '-350px'
       clearTimeout(this.scrollTimeout);
-      this.scrollTimeout = setTimeout(() => el.classList.add('d-none') ,400);
+     // this.scrollTimeout = setTimeout(() => el.classList.add('d-none') ,400);
     },
     handleHideMenu() {
       let cordY = window.scrollY;
