@@ -79,7 +79,7 @@
             </nuxt-link>
           </div>
         </div>
-        <no-results v-else />
+        <no-results v-else-if="!officialSalons.length" />
       </div>
     </template>
     <div

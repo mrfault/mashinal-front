@@ -1,5 +1,5 @@
 <template>
-  <div :class="['wrapper', { loading }, `${colorMode}-mode`]" :style="!isMobileBreakpoint && $route.path!=='/' ? 'margin-top: 162px;' : ''">
+  <div :class="['wrapper', { loading }, `${colorMode}-mode`]">
     <transition name="fade">
       <div class="layout" v-show="!loading" :class="{'layoutForMap': checkRouteIfSalon}">
         <mobile-menu/>
