@@ -1,5 +1,5 @@
 <template>
-  <div class="page-header">
+  <div class="page-header" :style="!isMobileBreakpoint ? 'height: 90px;margin-bottom: 70px;': ''">
     <div
       v-if="
         !isMobileBreakpoint && !close && !$cookies.get('smartbanner_exited')
