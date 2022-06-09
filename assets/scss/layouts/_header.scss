@@ -1,6 +1,8 @@
 .page-header {
   position: sticky;
   z-index: 10;
+  height: 90px;
+  margin-bottom: 70px;
   top:0;
   .topbar {
     display: flex;
@@ -346,6 +348,7 @@
 }
 
 .header-menu {
+  height: 90px;
   padding-right: 0px;
   padding-left: 0px;
 }
