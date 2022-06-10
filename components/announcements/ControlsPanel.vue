@@ -6,7 +6,7 @@
           transparent @input="handleSelectAll" @change="handleSelectAll"/>
       </div> -->
       <div class="col d-flex align-items-center justify-content-end">
-        <span style="border-right: 1px solid #ccc6;" :class="['control-icon cursor-pointer text-hover-red', {'disabled-ui': !selectedAnnouncements.length}]" >
+        <span v-if="user.autosalon && user.autosalon.id" style="border-right: 1px solid #ccc6;" :class="['control-icon cursor-pointer text-hover-red', {'disabled-ui': !selectedAnnouncements.length}]" >
           <monetization-button
             :multiple="true"
             :multiple-announcements="selectedAnnouncements"
