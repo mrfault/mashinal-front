@@ -199,11 +199,14 @@ export default {
         }else {
           this.pending = false
           this.showPaymentModal = false
+          this.$nuxt.$emit('refresh-my-announcements')
           this.handlePayment(res, false, this.$t('ad_started'))
         }
       } else {
         await Promise.all([this.$nuxt.refresh(), this.$auth.fetchUser()])
         this.pending = false
+        this.showPaymentModal = false
+        this.$nuxt.$emit('refresh-my-announcements')
         this.updatePaidStatus({
           type: 'success',
           text: this.$t('ad_started'),
