@@ -2216,5 +2216,6 @@ export default {
    "official_salons":"Официальные салоны",
    "size":"Размер",
    "garage_error_2001":"Сервис временно не работает",
-   "pay_one_azn":"Подключись всего за 1 AZN"
+   "pay_one_azn":"Подключись всего за 1 AZN",
+   "other":"Другие"
 }

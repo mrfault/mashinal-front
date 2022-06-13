@@ -1,4 +1,5 @@
-`<template>
+`
+<template>
   <div :class="colClass || 'stratch-child-block'">
     <div
       class="announcements-grid_gallery"
@@ -71,7 +72,7 @@
                 class="btn-sq btn-sq--color-red active"
                 v-if="announcement.has_monetization && !isMobileBreakpoint"
               >
-                <icon name="speaker" v-tooltip="$t('ad_announcement')" />
+                <icon name="speaker" v-tooltip="$t('ad_announcement')"/>
               </span>
               <template
                 v-if="announcement.is_autosalon || announcement.is_part_salon"
@@ -147,7 +148,7 @@
                 class="btn-sq btn-sq--color-red active"
                 v-if="announcement.has_monetization && isMobileBreakpoint"
               >
-                <icon name="speaker" v-tooltip="$t('ad_announcement')" />
+                <icon name="speaker" v-tooltip="$t('ad_announcement')"/>
               </span>
             </div>
           </div>
@@ -167,12 +168,16 @@
         <!-- year, odometer, credit, barter -->
         <!-- 1 -->
         <div class="item-details--infos">
-          <span class="item-details__year" v-if="getTextLine">
-            <p v-if="announcement.formatted_filters && announcement.formatted_filters.shine_width" class="shine-size">{{ $t('size')}}: {{getShineSize(announcement.formatted_filters)}}</p>
-            <span v-else>{{ getTextLine }}</span>
-            <span v-if="getTextLine  && isMobileBreakpoint">
-              <span v-if="!announcement.category">, {{ getOdometer }}</span>
-            </span>
+          <span class="item-details__year">
+            <p v-if="announcement.formatted_filters && announcement.formatted_filters.shine_width"
+               class="shine-size">{{ $t('size') }}: {{ getShineSize(announcement.formatted_filters) }}
+            </p>
+            <template v-else-if="getTextLine">
+              <span>{{ getTextLine }}</span>
+              <span v-if="getTextLine  && isMobileBreakpoint">
+                <span v-if="!announcement.category">, {{ getOdometer }}</span>
+              </span>
+            </template>
           </span>
           <span class="item-details__options" v-show="getOdometer == null">
             <icon
@@ -196,7 +201,7 @@
             <span v-if="!announcement.category">{{ getOdometer }}</span>
           </span>
           <span class="item-details__year" v-if="isMobileBreakpoint">
-            <span >{{ announcement.humanize_created_at }}</span>
+            <span>{{ announcement.humanize_created_at }}</span>
           </span>
           <span class="item-details__options" v-show="getOdometer">
             <icon
@@ -222,9 +227,9 @@
             class="call-count"
             v-if="announcement.show_phone_number_count || showPhoneCount"
           >
-            <icon name="phone-call" />
+            <icon name="phone-call"/>
             {{ announcement.show_phone_number_count || 0 }}
-            <icon name="eye" />
+            <icon name="eye"/>
             {{ announcement.view_count }}
           </span>
           <div class="item-checkbox" v-if="showCheckbox" style="">
@@ -236,7 +241,7 @@
             />
           </div>
         </div>
-        <hr class="mt-1" v-if="showMonetizationActions && showCheckbox && announcement.status === 1" />
+        <hr class="mt-1" v-if="showMonetizationActions && showCheckbox && announcement.status === 1"/>
         <div class="item-details__actions" style="z-index: 1" v-if="showMonetizationActions">
           <template v-if="showCheckbox && announcement.status === 1">
             <span>
@@ -269,7 +274,7 @@ export default {
     showStatus: Boolean,
     showMonetizationActions: {
       type: Boolean,
-      default:true,
+      default: true,
     },
     showCheckbox: Boolean,
     showPhoneCount: Boolean,
@@ -353,7 +358,7 @@ export default {
       )}`
     },
     getOdometer() {
-      if (this.showOverlay){
+      if (this.showOverlay) {
         return `${this.announcement.humanize_mileage} ${this.$t(
           'char_kilometre',
         )}`
@@ -362,8 +367,8 @@ export default {
     },
   },
   methods: {
-    getShineSize(filters)  {
-     return  filters.shine_width.name +'/'+ filters.height.name+'R'+ filters.diameter.name
+    getShineSize(filters) {
+      return filters.shine_width.name + '/' + filters.height.name + 'R' + filters.diameter.name
     },
     goToAnnouncement() {
       if (!this.clickable) return
@@ -390,7 +395,6 @@ export default {
         this.announcement.id_unique,
         value,
         true,
-
       )
     },
     selectAnnouncement(id, value, controls = false) {
@@ -421,7 +425,7 @@ export default {
 </script>
 
 <style>
-.shine-size{
+.shine-size {
   margin-left: auto;
 }
 </style>

@@ -120,6 +120,15 @@
                     <!-- Brands -->
                     <div class="checkboxes-box">
                       <div class="row">
+                        <div class="col-lg-2">
+                          <form-checkbox
+                            :label="$t('other')"
+                            :value="form.brand_ids.includes(0)"
+                            :checked-value="0"
+                            :id="'brand-' + 0"
+                            @change="brandsOnChange(0)"
+                          />
+                        </div>
                         <!-- Brand checkboxes -->
                         <div class="col-lg-2"
                           v-for="brand in visibleBrands"
