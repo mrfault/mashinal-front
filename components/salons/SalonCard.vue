@@ -12,7 +12,7 @@
         <div class="salon-info_bottom-line d-flex justify-content-between">
           <span class="d-inline-flex align-items-center">
             <icon name="phone-call" v-if="getConcatPhones(salon.phones, 1, false)" />
-            <span v-html="getConcatPhones(salon.phones, 1, false)"></span>
+            <client-only><span v-html="getConcatPhones(salon.phones, 1, false)"></span></client-only>
           </span>
           <span class="d-inline-flex align-items-center">
             <inline-svg v-if="!isShop" class="salon-car-icon" src="/images/car_icon.svg"  />
