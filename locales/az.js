@@ -663,6 +663,7 @@ export default {
   "elements": "Elementləri",
   "email": "E-mail",
   "engine": "Mühərrik növü",
+  "engine_only": "Mühərrik",
   "Engine start button": "Düymə ilə mühərrikin işə salınması",
   "engine_location": "Mühərrikin yerləşməsi",
   "engine_location_values": [

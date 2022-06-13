@@ -660,6 +660,7 @@ export default {
   "elements": "Элементы",
   "email": "E-mail",
   "engine": "Тип двигателя",
+  "engine_only": "Двигатель",
   "Engine start button": "Запуск двигателя с кнопки",
   "engine_location": "Расположение двигателя",
   "engine_location_values": [
