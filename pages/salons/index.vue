@@ -34,10 +34,12 @@
           <h2>
             <span>{{ $t('salons') }}</span>
           </h2>
+
         </div>
         <div class="text-with-line" v-if="officialSalons.length">
-          <h2 class="title-with-line full-width mt-2">
+          <h2 class="title-with-line full-width d-flex mt-2">
             <span>{{ $t('official_salons') }}</span>
+            <span style="padding-left: 25px; margin-right: 25px; padding-right: 15px;" class="ml-auto">{{ officialSalons.length }} {{ $t('item_count')}}</span>
           </h2>
         </div>
         <div
@@ -58,8 +60,9 @@
           </div>
         </div>
         <div class="text-with-line" v-if="nonOfficialSalons.length">
-          <h2 class="title-with-line full-width mt-2">
+          <h2 class="title-with-line d-flex full-width mt-2">
             <span>{{ $t('auto_salons') }}</span>
+            <span style="padding-left: 25px; margin-right: 25px; padding-right: 15px;" class="ml-auto">{{ nonOfficialSalons.length }} {{ $t('item_count')}}</span>
           </h2>
         </div>
         <div
@@ -152,6 +155,11 @@
   </div>
 </template>
 <style lang="scss">
+.salon-count {
+  position: absolute;
+  top: -8px;
+  right: 0;
+}
 .text-with-line {
   h2.title-with-line {
     span {

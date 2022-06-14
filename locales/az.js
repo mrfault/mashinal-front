@@ -2217,6 +2217,7 @@ export default {
   "size":"Ölçü",
   "garage_error_2001":"Xidmət müvəqqəti olaraq dayandırılıb",
   "pay_one_azn":"Cəmi 1 AZN-ə qoşul",
-  "other":"Digər"
+  "other":"Digər",
+  "item_count":"ədəd",
 
 }
