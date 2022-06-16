@@ -1,5 +1,7 @@
 <template>
-  <div class="page-header" :style="(!isMobileBreakpoint ? 'height: 90px;': ''), $cookies.get('smartbanner_exited') ? 'margin-bottom: 70px;' :'margin-bottom:70px;' ">
+  <div class="page-header"
+       :style="(!isMobileBreakpoint ? 'height: 90px;': ''),
+        !isMobileBreakpoint ? ($cookies.get('smartbanner_exited')  ? 'margin-bottom: 70px;' :'margin-bottom:70px;') : '' ">
     <div
       v-if="
         !isMobileBreakpoint && !close && !$cookies.get('smartbanner_exited')
