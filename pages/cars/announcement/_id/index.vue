@@ -117,8 +117,11 @@ export default {
       store.dispatch('getPopularOptions')
     ]);
   },
-  mounted() {
-    console.log('mounted id')
+  beforeDestroy() {
+    this.$store.commit('mutate',{
+      property:'announcement',
+      value: {}
+    });
   },
   methods: {
     getFilterLink(type) {
