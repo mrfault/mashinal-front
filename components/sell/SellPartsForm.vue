@@ -82,7 +82,7 @@
           <form-select
             v-model="form.brand_id"
             :label="$t('select_brand')"
-            :options="brands"
+            :options="[{id:0,name: $t('other') },...brands]"
             has-search
             :invalid="isInvalid('brand_id')"
             :clear-option="false"
@@ -167,6 +167,7 @@
             <div class="col-lg-8 mb-3 price-input-group">
               <div class="col-auto pl-0">
                 <form-numeric-input
+                  float
                   v-model="form.price"
                   id="anchor-price"
                   :placeholder="$t('price')"
@@ -542,7 +543,10 @@ export default {
         }
       }
     },
-    updatePreview() {
+    updatePreview(key) {
+      if (!key || key === 'currency')
+        this.setSellPreviewData({ value: this.getCurrencyOptions
+            .find(o => o.key === this.form.currency)?.sign, key: 'currency' });
       if (this.form.region_id && this.regions.length) {
         this.setSellPreviewData({
           key: 'region',

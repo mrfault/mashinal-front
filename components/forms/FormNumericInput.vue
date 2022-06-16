@@ -1,8 +1,8 @@
 <template>
   <div class="form-group">
     <div class="text-input">
-      <input 
-        type="text" 
+      <input
+        type="text"
         :id="id"
         :class="{invalid, disabled, [inputClass]: !!inputClass}"
         :placeholder="placeholder"
@@ -28,6 +28,10 @@
       disabled: {
         type: Boolean,
         default: false
+      },
+      float: {
+        type: Boolean,
+        default: false,
       },
       invalid: {
         type: Boolean,
@@ -81,6 +85,12 @@
         return value;
       },
       getValue(value) {
+        if(this.float) {
+          let parsedValue = value;
+          value = isNaN(parsedValue) ? this.value : parsedValue;
+          return value;
+        }
+
         let maxlength = this.readValue(this.maxValue).length;
         let parsedValue = this.$parseNumber(this.readValue(value).slice(0, maxlength));
         value = isNaN(parsedValue) ? '' : parsedValue;
@@ -105,7 +115,7 @@
       numericValue: {
         get() {
           let suffix = !this.suffix || !this.showSuffix || this.value === '' ? '' : ' ' + this.suffix;
-          return this.readValue(this.value) + suffix;
+          return !this.float ?  this.readValue(this.value) + suffix : this.value;
         },
         set(value) {
           this.$emit('input', this.getValue(value));

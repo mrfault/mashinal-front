@@ -92,6 +92,9 @@ export default function({ app, route, store }, inject) {
   inject('parseNumber', (str) => {
     return parseInt(`${str}`.replace(/ /g, ''));
   });
+  inject('parseNumberFloat', (str) => {
+    return parseFloat(`${str}`);
+  });
   inject('readNumber', (n, read = true) => {
     if (!read) return n;
     return (n || 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
