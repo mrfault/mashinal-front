@@ -83,6 +83,15 @@
                     <hr/>
 
                     <div class="row">
+                      <div class="col-lg-2 mb-3">
+                        <form-select
+                          :label="$t('select_brand')"
+                          v-model="form.brand_ids"
+                          has-search
+                          multiple
+                          :options="brands"
+                        />
+                      </div>
                       <div
                         v-for="filter in dynamicFilters"
                         :key="filter.id"
@@ -115,16 +124,6 @@
                           :placeholder="$t(filter.key === 'capacity' ? 'battery_capacity' : filter.key)"
                         />
                       </div>
-                      <div class="col-lg-2 mb-3">
-                        <form-select
-                          :label="$t('select_brand')"
-                          v-model="form.brand_ids"
-                          has-search
-                          multiple
-                          :options="brands"
-                        />
-                      </div>
-
                     </div>
                   </div>
                 </div>
