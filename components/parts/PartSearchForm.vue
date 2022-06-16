@@ -115,53 +115,16 @@
                           :placeholder="$t(filter.key === 'capacity' ? 'battery_capacity' : filter.key)"
                         />
                       </div>
-                    </div>
-
-                    <!-- Brands -->
-                    <div class="checkboxes-box">
-                      <div class="row">
-                        <div class="col-lg-2">
-                          <form-checkbox
-                            :label="$t('other')"
-                            :value="form.brand_ids.includes(0)"
-                            :checked-value="0"
-                            :id="'brand-' + 0"
-                            @change="brandsOnChange(0)"
-                          />
-                        </div>
-                        <!-- Brand checkboxes -->
-                        <div class="col-lg-2"
-                          v-for="brand in visibleBrands"
-                          :key="brand.id"
-                        >
-                          <form-checkbox
-                            :label="brand.name"
-                            :value="form.brand_ids.includes(brand.id)"
-                            :checked-value="brand.id"
-                            :id="'brand-' + brand.id"
-                            @change="brandsOnChange(brand.id)"
-                          />
-                        </div>
-                        <!-- Show more/less -->
-                        <div class="col-lg-2">
-                          <button
-                            v-if="!showAllBrands"
-                            class="btn btn--link show-more"
-                            @click="showAllBrands = true"
-                          >
-                            {{ $t('show_all') }}
-                            <icon name="chevron-down" />
-                          </button>
-                          <button
-                            v-else
-                            class="btn btn--link show-more"
-                            @click="showAllBrands = false"
-                          >
-                            {{ $t('show_less') }}
-                            <icon name="chevron-up" />
-                          </button>
-                        </div>
+                      <div class="col-lg-2 mb-3">
+                        <form-select
+                          :label="$t('select_brand')"
+                          v-model="form.brand_ids"
+                          has-search
+                          multiple
+                          :options="brands"
+                        />
                       </div>
+
                     </div>
                   </div>
                 </div>
