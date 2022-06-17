@@ -81,7 +81,9 @@ export default {
         { key: 'condition', value: this.condition, for: ['parts'] },
         { key: 'is_original', value: this.announcement.is_original ? this.$t('yes') : this.$t('no'), for: ['parts'] },
         { key: 'have_delivery', value: this.announcement.have_delivery ? this.$t('yes') : this.$t('no'), for: ['parts'] },
-        { key: 'have_warranty', value: this.announcement.have_warranty ? this.$t('yes') : this.$t('no'), for: ['parts'] }
+        { key: 'have_warranty', value: this.announcement.have_warranty ? this.$t('yes') : this.$t('no'), for: ['parts'] },
+        { key: 'commercial_size', value: this.announcement.commercial_size }
+
       ];
 
       let mergedKeys = [
@@ -122,6 +124,7 @@ export default {
           value: mergedValues['shine_width'] +'/'+ mergedValues['height']+'R'+ mergedValues['diameter'],
           for: ['parts']
         })
+
       }
 
       let filteredSpecs = specs.filter(spec => spec.value && (!spec.for || spec.for.includes(this.type)));

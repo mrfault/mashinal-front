@@ -100,7 +100,7 @@ export default {
     spinReverse: {
       type: Boolean,
       require: true,
-      default: true,
+      default: false,
     },
     amount: {
       type: Number,

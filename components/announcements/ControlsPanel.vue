@@ -101,7 +101,6 @@ export default {
     handleSelectAnnouncementObject(id) {
       let item = this.myAnnouncements.data.find(item => item.id_unique == id);
       let isSelected = this.selectedAnnouncements.findIndex(item => item.id_unique == id);
-      console.log(isSelected);
       if(isSelected !== -1) {
           this.selectedAnnouncements.splice(isSelected,1);
       }else {

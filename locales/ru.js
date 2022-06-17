@@ -2218,5 +2218,8 @@ export default {
    "size":"Размер",
    "garage_error_2001":"Сервис временно не работает",
    "pay_one_azn":"Подключись всего за 1 AZN",
-   "other":"Другие"
+   "other":"Другие",
+   "commercial_size":"Размер шины",
+   "shine_width2":"Ширина",
+   "commercial_part":"Коммерческий",
 }

@@ -89,7 +89,15 @@
             @change="removeError('brand_id')"
           />
         </div>
-
+        <div v-if="[19,20].includes(form.category_id)" class="col-lg-4 mb-3 mb-lg-0">
+          <form-checkbox
+            id="commercial_part"
+            v-model="form.commercial_part"
+            :label="$t('commercial_part')"
+            :checked-value="form.commercial_part"
+            @change="!$event ? form.commercial_size = '' : ''"
+          />
+        </div>
         <div v-if="form.category_id" class="col-12 mt-3">
           <div class="row">
 
@@ -123,6 +131,7 @@
 
             <!-- Dynamic filters -->
             <div
+              v-if="form.commercial_part ? !commercialPartDisabledOptions.includes(filter.key) : true"
               class="col-lg-4 mb-3"
               v-for="filter in dynamicFilters"
               :key="'filter-' + filter.id"
@@ -162,7 +171,6 @@
                 @change="removeError(filter.key)"
               />
             </div>
-
             <!-- Price -->
             <div class="col-lg-8 mb-3 price-input-group">
               <div class="col-auto pl-0">
@@ -188,7 +196,21 @@
                 @change="removeError('price', true), removeError('is_negotiable')"
               />
             </div>
-
+              <!-- Commercial Size -->
+            <div
+              class="col-lg-4 mb-3"
+              style="align-items: center;"
+              v-if="form.commercial_part"
+              id="anchor-commercial_size"
+            >
+              <form-text-input
+                v-model="form.commercial_size"
+                :placeholder="$t('commercial_size')"
+                :invalid="isInvalid('commercial_size')"
+                @change="removeError('commercial_size')"
+                :clear-option="false"
+              />
+            </div>
             <!-- Region -->
             <div
               class="col-lg-4 mb-3"
@@ -341,9 +363,14 @@ export default {
   },
   data() {
     return {
+      commercialPartDisabledOptions:[
+        'diameter','height','shine_width'
+      ],
       form: {
         product_code: '',
         title: '',
+        commercial_part: false,
+        commercial_size:'',
         description: '',
         category_id: '',
         region_id: 1,
