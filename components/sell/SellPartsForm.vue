@@ -363,8 +363,8 @@ export default {
   },
   data() {
     return {
-      commercialPartDisabledOptions:[
-        'diameter','height','shine_width'
+      commercialPartDisabledOptions: [
+        'diameter','height','shine_width','run_flat'
       ],
       form: {
         product_code: '',
