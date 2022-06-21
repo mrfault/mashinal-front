@@ -84,7 +84,7 @@ export const LayoutMixin = {
     },
     hideMenu(el) {
       el.classList.add('z-index-1')
-      el.style.top = '-350px'
+      el.style.top = '-90px'
       clearTimeout(this.scrollTimeout);
      // this.scrollTimeout = setTimeout(() => el.classList.add('d-none') ,400);
     },
@@ -102,6 +102,21 @@ export const LayoutMixin = {
       }
 
       this.latestScroll = cordY;
+    },
+    handleBnScroll() {
+      if(window.scrollY > 110 && !this.$store.state.bnFixed) {
+        console.log('scrolled')
+        this.$store.commit('mutate',{
+          property: 'bnFixed',
+          value: true,
+        })
+        console.log('changed')
+      }else if(window.scrollY < 111 && this.$store.state.bnFixed) {
+        this.$store.commit('mutate',{
+          property: 'bnFixed',
+          value: false,
+        })
+      }
     },
     handleScroll() {
 
@@ -217,7 +232,7 @@ export const LayoutMixin = {
         this.loginActionKey = key
         this.$set(this, 'loginInitialForm', form)
       })
-
+      window.addEventListener('scroll', this.handleBnScroll)
       window.addEventListener('resize', this.handleResize)
       window.addEventListener('resize', this.handleScroll)
       window.addEventListener('scroll', this.handleScroll)

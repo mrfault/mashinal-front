@@ -2,48 +2,49 @@
   <div class="page-header"
        :style="(!isMobileBreakpoint ? 'height: 90px;': ''),
         !isMobileBreakpoint ? ($cookies.get('smartbanner_exited')  ? 'margin-bottom: 70px;' :'margin-bottom:70px;') : '' ">
-    <div
-      v-if="
-        !isMobileBreakpoint && !close && !$cookies.get('smartbanner_exited')
-      "
-    >
-      <div class="top-promotion-row">
-        <div class="container">
-          <div class="top-promotion">
-            <div class="top-promotion-row-item">
-              <img src="/img/logo-red.svg" />
-              <p>
-                Mashin.al-dan çoxfunksiyalı yeni əlavə
-              </p>
-            </div>
-            <div class="top-promotion-row-item">
-              <a
-                target="_blank"
-                href="https://apps.apple.com/tn/app/mashin-al/id1588371190?l=az"
-              >
-                <img src="/img/app-store.svg" class="app-store-img" />
-              </a>
-              <a
-                target="_blank"
-                href="https://play.google.com/store/apps/details?id=ventures.al.mashinal&hl=az&gl=US"
-              >
-                <img src="/img/google-play.svg" class="google-play-img" />
-              </a>
-            </div>
-            <div class="top-promotion-row-item">
-              <img src="/img/mobile-app.png" class="mobile-app" />
-              <a
-                style="margin-left: 10px; cursor: pointer;"
-                @click.prevent="closePromotion"
-              >
-                <icon style="color: #081a3e;" name="cross" />
-                <!-- <inline-svg src="/icons/cross.svg" height="14" style="color: #081a3e;"/> -->
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+
+<!--    <div-->
+<!--      v-if="-->
+<!--        !isMobileBreakpoint && !close && !$cookies.get('smartbanner_exited')-->
+<!--      "-->
+<!--    >-->
+<!--      <div class="top-promotion-row">-->
+<!--        <div class="container">-->
+<!--          <div class="top-promotion">-->
+<!--            <div class="top-promotion-row-item">-->
+<!--              <img src="/img/logo-red.svg" />-->
+<!--              <p>-->
+<!--                Mashin.al-dan çoxfunksiyalı yeni əlavə-->
+<!--              </p>-->
+<!--            </div>-->
+<!--            <div class="top-promotion-row-item">-->
+<!--              <a-->
+<!--                target="_blank"-->
+<!--                href="https://apps.apple.com/tn/app/mashin-al/id1588371190?l=az"-->
+<!--              >-->
+<!--                <img src="/img/app-store.svg" class="app-store-img" />-->
+<!--              </a>-->
+<!--              <a-->
+<!--                target="_blank"-->
+<!--                href="https://play.google.com/store/apps/details?id=ventures.al.mashinal&hl=az&gl=US"-->
+<!--              >-->
+<!--                <img src="/img/google-play.svg" class="google-play-img" />-->
+<!--              </a>-->
+<!--            </div>-->
+<!--            <div class="top-promotion-row-item">-->
+<!--              <img src="/img/mobile-app.png" class="mobile-app" />-->
+<!--              <a-->
+<!--                style="margin-left: 10px; cursor: pointer;"-->
+<!--                @click.prevent="closePromotion"-->
+<!--              >-->
+<!--                <icon style="color: #081a3e;" name="cross" />-->
+<!--                &lt;!&ndash; <inline-svg src="/icons/cross.svg" height="14" style="color: #081a3e;"/> &ndash;&gt;-->
+<!--              </a>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
     <header
       class="header-menu container d-none d-lg-block"
       :class="{ 'no-border-radius': hoverMenu }"
@@ -192,11 +193,11 @@
                       </nuxt-link>
                       <div
                         class="dropdown-content container"
-                        style="padding-left: 0;"
+                        style="min-width: 1200px;"
                         v-if="menu.children"
                         :class="{ 'dropdown-menu-click': closeDropdownMenu }"
                       >
-                        <div class="container">
+                        <div class="">
                           <div class="row">
                             <div class="col-3" v-if="menu.categories">
                               <ul class="dropdown-menu_categories">
@@ -271,10 +272,12 @@ import { MenusDataMixin } from '~/mixins/menus-data'
 import { UserDataMixin } from '~/mixins/user-data'
 
 import ThemeSwitch from '~/components/elements/ThemeSwitch'
+import SiteBanner from "~/components/banners/SiteBanner";
 
 export default {
   mixins: [MenusDataMixin, UserDataMixin],
   components: {
+    SiteBanner,
     ThemeSwitch,
   },
   data() {

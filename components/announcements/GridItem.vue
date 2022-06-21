@@ -225,7 +225,7 @@
         >
           <span
             class="call-count"
-            v-if="announcement.show_phone_number_count || showPhoneCount"
+            v-if="announcement.show_phone_number_count || showPhoneCount || announcement.view_count"
           >
             <icon name="phone-call"/>
             {{ announcement.show_phone_number_count || 0 }}

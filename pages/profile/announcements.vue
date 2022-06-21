@@ -22,6 +22,7 @@
         :push-into-router="false"
         :title="$t('my_announces')"
         :show-title="false"
+
         :show-checkbox="true"
         :show-status="true"
         @change-page="changePage"

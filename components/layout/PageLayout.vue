@@ -1,14 +1,28 @@
 <template>
   <div :class="['wrapper', { loading }, `${colorMode}-mode`]">
+
     <transition name="fade">
       <div class="layout" v-show="!loading" :class="{'layoutForMap': checkRouteIfSalon}">
+        <site-banner type="top" />
         <mobile-menu/>
 
         <page-header/>
+
          <!-- v-if="!isMobileBreakpoint && !close && !$cookies.get('smartbanner_exited')" -->
         <slot name="after-header"/>
         <main :class="{'min-height-if-notification':  !cookiesHasNotificationOn || storeBannerIsOn, 'min-height-if-not-notification':  cookiesHasNotificationOn || !storeBannerIsOn, 'positionInitial' : checkRouteIfSalon}">
+
+          <site-banner
+            type="left"
+            absolute
+          />
+
           <slot name="nuxt"/>
+
+          <site-banner
+            type="right"
+            absolute
+          />
           <scroll-top v-if="!hideFooter"/>
           <map-switch v-if="['salons','parts-shops'].includes(routeName)"/>
         </main>
@@ -55,10 +69,12 @@ import PaidStatus from '~/components/payments/PaidStatus';
 import ScrollTop from '~/components/elements/ScrollTop';
 import ComparisonBadge from '~/components/elements/ComparisonBadge';
 import MapSwitch from '~/components/salons/MapSwitch';
+import SiteBanner from "~/components/banners/SiteBanner";
 
 export default {
   mixins: [LayoutMixin],
   components: {
+    SiteBanner,
     PageHeader,
     PageFooter,
     MobileMenu,
