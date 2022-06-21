@@ -1,5 +1,5 @@
 <template>
-  <div class="pages-index" :style="!isMobileBreakpoint ? 'margin-top: -20px;' : ''">
+  <div class="pages-index" :style="!isMobileBreakpoint ? 'margin-top: -40px;' : ''">
     <!-- slider desktop -->
     <div class="container " :class="{ 'p-0': isMobileBreakpoint }">
       <div
