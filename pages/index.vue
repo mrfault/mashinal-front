@@ -1,7 +1,7 @@
 <template>
   <div class="pages-index" :style="!isMobileBreakpoint ? 'margin-top: -40px;' : ''">
     <!-- slider desktop -->
-    <div class="container " :class="{ 'p-0': isMobileBreakpoint }">
+    <div class="container p-0">
       <div
         class="swiper-container swiper-container-desktop"
         v-swiper:gallerySwiper="swiperOps"
@@ -73,7 +73,7 @@
 
 
     <!-- car search form -->
-    <div class="container position-relative">
+    <div class="container position-relative p-0">
       <car-search-form
         :total-count="$paginate(mainAnnouncements).total"
         :pending="pending"

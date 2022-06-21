@@ -193,11 +193,11 @@
                       </nuxt-link>
                       <div
                         class="dropdown-content container"
-                        style="min-width: 1200px;"
+                        style="padding-left:0;"
                         v-if="menu.children"
                         :class="{ 'dropdown-menu-click': closeDropdownMenu }"
                       >
-                        <div class="">
+                        <div class="container">
                           <div class="row">
                             <div class="col-3" v-if="menu.categories">
                               <ul class="dropdown-menu_categories">

@@ -52,7 +52,7 @@ export default {
 
 <style scoped lang="scss">
 .bn-wrapper {
-  width: calc((100% - 1200px) / 2);
+  width: calc((100% - 1250px) / 2);
   top: 0;
   z-index: 1;
 }
