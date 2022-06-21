@@ -169,8 +169,8 @@
         <!-- 1 -->
         <div class="item-details--infos">
           <span class="item-details__year">
-            <p v-if="announcement.formatted_filters && announcement.formatted_filters.shine_width"
-               class="shine-size">{{ $t('size') }}: {{ getShineSize(announcement.formatted_filters) }}
+            <p v-if="announcement.formatted_filters && announcement.formatted_filters.shine_width || announcement.commercial_size"
+               class="shine-size">{{ $t('size') }}: {{ announcement.formatted_filters.shine_width ? getShineSize(announcement.formatted_filters): announcement.commercial_size  }}
             </p>
             <template v-else-if="getTextLine">
               <span>{{ getTextLine }}</span>
