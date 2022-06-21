@@ -53,7 +53,7 @@
             :options="categories"
             :invalid="isInvalid('category_id')"
             :clear-option="false"
-            @change="categorySelected($event), removeError('category_id')"
+            @change="categorySelected($event), removeError('category_id'),form.commercial_part = false;"
           />
         </div>
 
