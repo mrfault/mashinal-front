@@ -85,7 +85,7 @@ export default {
     MapSwitch
   },
   computed:{
-    ...mapState(['mapView']),
+    ...mapState(['mapView','timestamp']),
     cookiesHasNotificationOn(){
       var cookie = this.$cookies.get('smartbanner_exited');
       if (cookie) {

@@ -162,7 +162,7 @@ export default {
   "announcement_name": "Заголовок объявления",
   "announcement_not_found": "Объявление не найдено",
   "announcement_paid": "Объявление отправлено на модерацию",
-  "announcement_pending": "Объявление на рассмотрении",
+  "announcement_pending": "Объявление на проверке",
   "announcement_restored": "Объявление восстановлено",
   "announcements": "Объявления",
   "announcements_not_found": "Объявлений не найдено",

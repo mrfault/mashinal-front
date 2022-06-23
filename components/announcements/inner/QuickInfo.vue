@@ -84,6 +84,9 @@
       <div class="col-12 mt-2 mt-lg-3" v-if="!isMobileBreakpoint">
         <call-button :phone="contact.phone" />
       </div>
+      <div class="col-12 mt-2 mt-lg-3" v-if="!isMobileBreakpoint">
+        <div class="status"> {{ $t('announcement_pending') }}</div>
+      </div>
     </div>
     <template
       v-if="

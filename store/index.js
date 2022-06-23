@@ -53,6 +53,7 @@ const getInitialState = () => ({
   // catalog
   catalogAnnouncements: [],
   catalogTotal: 0,
+  timestamp: 0,
   bnFixed: false,
   catalogItems: {},
   catalogForm: {},

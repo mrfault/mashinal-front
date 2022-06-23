@@ -9,7 +9,7 @@
        ]"
 >
   <span @click="go" class="cursor-pointer" :class="`bn-image-container-${type}`" style="width: 100%;"  >
-    <img alt="" :src="data.image"/>
+    <img alt="" :src="data.image+'?v='+timestamp"/>
   </span>
 </div>
 </template>
@@ -30,18 +30,27 @@ export default {
       data:{},
     }
   },
-  async mounted() {
-    try {
-      this.data = await this.$axios.$get(`/site-banners/${this.type}`);
-    }catch (e) {}
+  beforeDestroy() {
+    this.$nuxt.$off('route-changed');
   },
-  computed:{
-    ...mapState(['bnFixed']),
+  async mounted() {
+    await this.fetchBanner();
+    this.$nuxt.$on('route-changed',() => {
+      console.log(this.type); this.fetchBanner()
+    })
+  },
+  computed: {
+    ...mapState(['bnFixed','timestamp']),
     layoutCondition() {
       return this.data && ['left','right'].includes(this.type)  ? !this.isMobileBreakpoint : this.data
     }
   },
   methods:{
+    async fetchBanner() {
+      try {
+        this.data = await this.$axios.$get(`/site-banners/${this.type}`);
+      }catch (e) {}
+    },
     go() {
       if(!this.data) return ;
       window.open(this.data.link, '_blank');
@@ -76,13 +85,14 @@ export default {
   img {
     max-width: 340px;
   }
+
 }
 .bn-top {
   width: 100%;
   img {
     width: 100%;
     max-height: 100px;
-    object-fit: cover;
+    object-fit: contain;
   }
 }
 
@@ -92,6 +102,8 @@ export default {
 .bn-sticky {
   position: absolute;
   top: -160px;
+  overflow: hidden;
+  height: 100vh;
 }
 .bn-fixed {
   position:fixed;

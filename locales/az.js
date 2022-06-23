@@ -162,7 +162,7 @@ export default {
   "announcement_name": "Elanın adı",
   "announcement_not_found": "Elan tapılmayıb",
   "announcement_paid": "Elan moderasiyaya göndərilib",
-  "announcement_pending": "Elan moderasiyadadır",
+  "announcement_pending": "Elan yoxlanılır",
   "announcement_restored": "Elan bərpa edilib",
   "announcements": "Elanlar",
   "announcements_comparison": "Elanların müqayisəsi",
