@@ -89,7 +89,7 @@ export default {
     }
   },
   head() {
-    let announcementTitle = `${this.catalog?.brand?.name} ${this.$translateHard(this.catalog?.model?.name)}`;
+    let announcementTitle = `${this.catalog.brand.name} ${this.$translateHard(this.catalog.model.name)}`;
     let title = `${this.$t(`meta-title_announcement-${this.announcement.is_new ? 'new' : 'used'}`, { announce: `${announcementTitle}, ${this.announcement.year}` })}`;
     let description = `${announcementTitle}, ${this.$t('meta-descr_announcement', { announce: `${this.announcement.price}` })}`;
     let image = this.getAnnouncementImage(this.announcement);
@@ -97,8 +97,8 @@ export default {
       category: 'Car',
       id: this.announcement.id_unique,
       autosalon: this.announcement.user.autosalon,
-      brand: this.catalog?.brand?.name,
-      model: this.catalog?.model?.name.replace('серия', 'seriya').replace('класс', 'klass'),
+      brand: this.catalog.brand.name,
+      model: this.catalog.model.name.replace('серия', 'seriya').replace('класс', 'klass'),
       year: this.announcement.year,
       price: { amount: this.announcement.price_int, currency: this.announcement.currency_id },
       services: this.announcement.type,
@@ -116,12 +116,6 @@ export default {
       store.dispatch('getAllOtherOptions'),
       store.dispatch('getPopularOptions')
     ]);
-  },
-  beforeDestroy() {
-    this.$store.commit('mutate',{
-      property:'announcement',
-      value: {}
-    });
   },
   methods: {
     getFilterLink(type) {
@@ -169,8 +163,8 @@ export default {
     crumbs() {
       return [
         { name: this.$t('cars'), route: '/cars' },
-        { name: this.catalog?.brand?.name, route: this.getFilterLink('brand') },
-        { name: this.catalog?.model?.name, route: this.getFilterLink('brand-model') },
+        { name: this.catalog.brand.name, route: this.getFilterLink('brand') },
+        { name: this.catalog.model.name, route: this.getFilterLink('brand-model') },
         { name: this.$translateHard(this.catalog.generation.name[this.locale]), route: this.getFilterLink('brand-model-generation') },
         { name: '#'+this.announcement.id_unique }
       ]
