@@ -1,7 +1,7 @@
 export const generateMetaInfo = ({ title, description, image, path, locale, product }) => {
   const getPath = (lang) => 'https://mashin.al' + path[lang];
   image = image || 'https://mashin.al/mashinal-banner.png';
-  
+
   let services = [], types = [];
   if (product) {
     services = Object.keys(product.services || {}).map(key => ({ 1: 'VIP', 2: 'Premium', 4: 'Top'})[key]);
@@ -39,7 +39,7 @@ export const generateMetaInfo = ({ title, description, image, path, locale, prod
     { hid: 'smartbanner:hide-ttl', name: 'smartbanner:hide-ttl', content: 86400000 }
   ]
 
-  return { 
+  return {
     titleTemplate: getPath('az') === '/' ? '%s' : '%s | Mashin.AL',
     htmlAttrs: {
       lang: locale
@@ -86,8 +86,8 @@ export const generateMetaInfo = ({ title, description, image, path, locale, prod
       { hid: 'alternate-lang-ru', rel: 'alternate', hreflang: 'ru', href: getPath('ru') }
     ],
     script: [
-      // TODO: code app banner using user agent instead of 3rd party script 
-      { hid: 'smartbanner-script', src: '/scripts/smartbanner.min.js' },
+      // TODO: code app banner using user agent instead of 3rd party script
+      //{ hid: 'smartbanner-script', src: '/scripts/smartbanner.min.js' },
     ]
   }
 }

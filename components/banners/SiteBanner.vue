@@ -65,7 +65,6 @@ export default {
 
 <style scoped lang="scss">
 .bn-wrapper {
-  width: calc((100% - 1250px) / 2);
   top: 0;
   z-index: 1;
 }
@@ -89,6 +88,7 @@ export default {
 
 }
 .bn-left,.bn-right {
+  width: calc((100% - 1250px) / 2);
   img {
     max-width: 340px;
   }
@@ -110,7 +110,8 @@ export default {
   img {
     width: 100%;
     max-height: 100px;
-    object-fit: contain;
+    min-height: 100px;
+    object-fit: cover;
   }
 }
 
@@ -130,4 +131,10 @@ export default {
 .bn-left {
    left:0;
  }
+
+.bn-in-announcement-list {
+ img {
+   width: 590px;
+ }
+}
 </style>

@@ -33,6 +33,7 @@
           </template>
           <template v-else>
             <div
+              v-if="checkSecondTemplate(index) ? !checkItemB(index,announcement): true"
               :class="[
                 {
                   'col-lg-mid': checkItemIndex(index + 2, announcement),
@@ -59,8 +60,14 @@
                 :isProfilePage="isProfilePage"
               />
             </div>
+            <template v-else-if="checkSecondTemplate(index)">
+              <div class="col-6 mb-4" v-if="[20,21].includes(index)">
+                <site-banner type="in-announcement-list"/>
+              </div>
+            </template>
             <template
               v-if="
+                (checkSecondTemplate(index) ? !checkItemB(index,announcement): true) &&
                 !isMobileBreakpoint && checkItemIndex(index + 1, announcement)
               "
             >
@@ -170,6 +177,7 @@ export default {
       showBanner: false,
     }
   },
+
   methods: {
     changePage(page) {
       if (this.showAll) {
@@ -198,6 +206,12 @@ export default {
         this.checkItemIndex(index + 3, item) ||
         this.checkItemIndex(index + 4, item)
       )
+    },
+    switchSecondTemplate() {
+      this.$cookies.set('show_bn',!this.$cookies.get('show_bn'));
+    },
+    checkSecondTemplate(index) {
+        return [20,21,22,23].includes(index) && this.$cookies.get('show_bn');
     },
     checkItemTop(index, item) {
       return (
@@ -233,6 +247,7 @@ export default {
     },
   },
   mounted() {
+    this.switchSecondTemplate();
     if (this.needAutoScroll) {
       this.scrollFunc()
     }
