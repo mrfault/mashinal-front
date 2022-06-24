@@ -106,12 +106,17 @@ export default {
   }
 }
 .bn-top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+  background-size: 100% 100%;
   width: 100%;
   img {
     width: 100%;
     max-height: 100px;
     min-height: 100px;
-    object-fit: cover;
+    object-fit: contain;
   }
 }
 
