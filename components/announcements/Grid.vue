@@ -61,8 +61,11 @@
               />
             </div>
             <template v-else-if="checkSecondTemplate(index)">
-              <div class="col-6 mb-4" v-if="[20,21].includes(index)">
-                <site-banner type="in-announcement-list"/>
+              <div class="col-6 mb-4" v-if="index === 20">
+                <site-banner type="in-announcement-list-left"/>
+              </div>
+              <div class="col-6 mb-4" v-if="index === 21">
+                <site-banner type="in-announcement-list-right"/>
               </div>
             </template>
             <template
