@@ -11,6 +11,7 @@
           @pending="pending = true"
           @submit="searchCatalog"
         />
+
         <catalog-grid
           v-if="catalogTotal"
           :items="catalogItems"

@@ -50,6 +50,10 @@ export default {
       try {
         this.data = await this.$axios.$get(`/site-banners/${this.type}`);
       }catch (e) {}
+
+      if(this.data) {
+        this.$emit('bannerLoaded',true);
+      }
     },
     go() {
       if(!this.data) return ;
@@ -75,6 +79,9 @@ export default {
   display: flex;
   justify-content: flex-end;
 }
+.bn-in-announcement {
+  max-width: 346px;
+}
 .bn-right {
   display: flex;
   justify-content: flex-end;
@@ -86,6 +93,17 @@ export default {
     max-width: 340px;
   }
 
+}
+.bn-in-part {
+  img {
+    max-width: 225px;
+  }
+}
+.bn-in-catalog {
+  margin-bottom: 20px;
+  img {
+    max-width: 1200px;
+  }
 }
 .bn-top {
   width: 100%;

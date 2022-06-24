@@ -23,6 +23,7 @@
           <div class="col-auto">
             <gallery>
               <quick-info type="parts" brief />
+              <site-banner v-if="!isMobileBreakpoint" class="mb-3" type="in-announcement" />
               <announcement-specs type="parts" brief />
             </gallery>
             <comment :comment="announcement.comment" v-if="!isMobileBreakpoint">

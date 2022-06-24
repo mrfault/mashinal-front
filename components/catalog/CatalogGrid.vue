@@ -5,6 +5,7 @@
         <span>{{ catalogTitle || title }}</span>
       </h2>
     </div>
+    <site-banner type="in-catalog" />
     <div class="row mb-n2 mb-lg-n3">
       <template v-for="item in catalogItems">
         <div class="col-6 col-lg-1-5 mb-2 mb-lg-3" :key="item.id">
@@ -20,7 +21,7 @@
         </div>
       </template>
     </div>
-    <pagination 
+    <pagination
       v-if="paginate && paginate.last_page > 1"
       :page-count="paginate.last_page"
       :value="paginate.current_page"
@@ -30,7 +31,9 @@
 </template>
 
 <script>
+import SiteBanner from "~/components/banners/SiteBanner";
 export default {
+  components: {SiteBanner},
   props: {
     items: {},
     title: String,
@@ -39,16 +42,16 @@ export default {
   },
   computed: {
     catalogTitle() {
-      if (!this.$route.params.model) 
+      if (!this.$route.params.model)
         return this.$t('select_model');
-      else if (!this.$route.params.generation) 
+      else if (!this.$route.params.generation)
         return this.$t('select_generation');
-      else if (!this.$route.params.body) 
+      else if (!this.$route.params.body)
         return this.$t('select_carcase');
       return '';
     },
     catalogItems() {
-      if (!this.$route.params.model) 
+      if (!this.$route.params.model)
         return Object.values(this.items?.data || []).filter(item => item.parent);
       if (!this.items.length) return [];
       if (!this.$route.params.generation)
@@ -77,9 +80,9 @@ export default {
     getTitle(item) {
       const { brand, model, generation } = {...this.$route.params};
       if (model) {
-        if (generation) 
+        if (generation)
           return item?.car_type.name[this.locale];
-        else 
+        else
           return `${this.$translateHard(item.short_name)}<br/>${item.start_year} — ${item.end_year || this.currentYear}`;
       } else {
         return (!brand ? (item.parent.name + ' ') : '') + this.$translateHard(item.name);

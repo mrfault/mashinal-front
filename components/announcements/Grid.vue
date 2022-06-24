@@ -64,14 +64,18 @@
                 !isMobileBreakpoint && checkItemIndex(index + 1, announcement)
               "
             >
+
               <div
                 class="col-6 col-lg-auto mb-lg-4 mt-lg-6 pt-lg-4 pb-lg-4"
                 :key="'banner_' + index"
               >
+                <site-banner @bannerLoaded="showBanner = true" v-show="showBanner" type="in-part" />
                 <div
+                  v-if="!showBanner"
                   class="announcements-grid_banner d-flex align-items-center justify-content-center"
                   @click="$router.push($localePath(bannerLink))"
                 >
+
                   <div
                     class="banner-bg"
                     :style="{
@@ -81,6 +85,7 @@
                 </div>
               </div>
             </template>
+
           </template>
         </template>
       </div>
@@ -104,6 +109,7 @@
 </style>
 <script>
 import GridItem from '~/components/announcements/GridItem'
+import SiteBanner from "~/components/banners/SiteBanner";
 
 export default {
   props: {
@@ -156,7 +162,13 @@ export default {
     needAutoScroll: Boolean,
   },
   components: {
+    SiteBanner,
     GridItem,
+  },
+  data() {
+    return {
+      showBanner: false,
+    }
   },
   methods: {
     changePage(page) {
