@@ -76,7 +76,7 @@
             >
 
               <div
-                class="col-6 col-xs-12 col-lg-3 col-xl-auto mb-2 mb-lg-3 d-flex align-items-center"
+                class="col-6 col-xs-12 col-lg-3 col-xl-auto mb-2 mb-lg-3 d-lg-flex align-items-center"
                 :key="'banner_' + index"
               >
                 <site-banner @bannerLoaded="showBanner = true" v-show="showBanner" type="in-part" />

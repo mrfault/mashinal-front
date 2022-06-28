@@ -73,7 +73,7 @@
 
 
     <!-- car search form -->
-    <div class="container position-relative p-0">
+    <div class="container position-relative p-lg-0">
       <car-search-form
         :total-count="$paginate(mainAnnouncements).total"
         :pending="pending"
