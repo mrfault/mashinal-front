@@ -71,17 +71,17 @@
             <template
               v-if="
                 (checkSecondTemplate(index) ? !checkItemB(index,announcement): true) &&
-                !isMobileBreakpoint && checkItemIndex(index + 1, announcement)
+                 checkItemIndex(index + 1, announcement)
               "
             >
 
               <div
-                class="col-6 col-lg-auto mb-lg-4 mt-lg-6 pt-lg-4 pb-lg-4"
+                class="col-6 col-xs-12 col-lg-3 col-xl-auto mb-2 mb-lg-3 d-flex align-items-center"
                 :key="'banner_' + index"
               >
                 <site-banner @bannerLoaded="showBanner = true" v-show="showBanner" type="in-part" />
                 <div
-                  v-if="!showBanner"
+                  v-if="!showBanner && !isMobileBreakpoint"
                   class="announcements-grid_banner d-flex align-items-center justify-content-center"
                   @click="$router.push($localePath(bannerLink))"
                 >

@@ -1,5 +1,5 @@
 <template>
-<div v-if="layoutCondition" class="bn-wrapper"
+<div v-if="layoutCondition && showBanner" class="bn-wrapper"
      :style="data.background ? `background-image:url('${data.background}')`:''"
      :class="[
        {'bn-with-background': data.background },
@@ -28,6 +28,7 @@ export default {
   data() {
     return {
       data:{},
+      showBanner: true,
     }
   },
   beforeDestroy() {
@@ -35,6 +36,13 @@ export default {
   },
   async mounted() {
     await this.fetchBanner();
+
+    if(['left','right'].includes(this.type)) {
+      this.$nuxt.$on('showMapEvent',(state) => {
+        console.log(state);
+        this.showBanner = !state;
+      })
+    }
     this.$nuxt.$on('route-changed',() => {
       console.log(this.type); this.fetchBanner()
     })
@@ -81,6 +89,13 @@ export default {
 .bn-in-announcement {
   max-width: 346px;
 }
+.bn-in-part-spare {
+  margin-left: -10px;
+  margin-right: -10px;
+  img {
+    width: 100%;
+  }
+}
 .bn-right {
   display: flex;
   justify-content: flex-end;
@@ -96,7 +111,8 @@ export default {
 }
 .bn-in-part {
   img {
-    max-width: 225px;
+    width: 100%;
+    //max-width: 225px;
   }
 }
 .bn-in-catalog {

@@ -8,8 +8,10 @@
         @pending="pending = true"
         @submit="searchParts"
       />
-      <banners v-if="!searchActive" reverse />
+<!--      <banners v-if="!searchActive" reverse />-->
+
       <div class="announcements-content">
+        <site-banner type="in-part-spare" v-if="isMobileBreakpoint"/>
         <no-results v-if="showNotFound" type="part" />
 
         <grid
@@ -44,6 +46,7 @@ import Categories from '~/components/parts/Categories'
 import Banners from '~/components/parts/Banners'
 import PartSearchForm from '~/components/parts/PartSearchForm'
 import NoResults from '~/components/elements/NoResults'
+import SiteBanner from "~/components/banners/SiteBanner";
 
 export default {
   name: 'pages-parts-index',
@@ -65,6 +68,7 @@ export default {
     }
   },
   components: {
+    SiteBanner,
     Grid,
     Categories,
     Banners,

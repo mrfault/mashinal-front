@@ -17,6 +17,7 @@ export default {
 
     callEvent() {
       this.$nextTick(() => {
+        this.$nuxt.$emit('showMapEvent',this.mapView)
         // fix floating button position by calling
         // scroll handler in layout mixin
         window.dispatchEvent(new Event('scroll'));

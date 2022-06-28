@@ -13,6 +13,7 @@
         <main :class="{'min-height-if-notification':  !cookiesHasNotificationOn || storeBannerIsOn, 'min-height-if-not-notification':  cookiesHasNotificationOn || !storeBannerIsOn, 'positionInitial' : checkRouteIfSalon}">
 
           <site-banner
+            v-if="!isMobileBreakpoint"
             type="left"
             absolute
           />
@@ -20,6 +21,7 @@
           <slot name="nuxt"/>
 
           <site-banner
+            v-if="!isMobileBreakpoint"
             type="right"
             absolute
           />
