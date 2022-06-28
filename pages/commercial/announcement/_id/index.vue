@@ -31,6 +31,7 @@
           </div>
           <div class="col-auto">
             <quick-info type="commercial" />
+            <site-banner v-if="!isMobileBreakpoint" class="mb-3" type="in-announcement" />
             <announcement-specs type="commercial" />
             <comment :comment="announcement.comment" v-if="isMobileBreakpoint" />
           </div>
@@ -50,10 +51,12 @@ import Gallery from '~/components/announcements/inner/Gallery';
 import ThumbsGallery from '~/components/announcements/inner/ThumbsGallery';
 import Comment from '~/components/announcements/inner/Comment';
 import Relatives from '~/components/announcements/inner/Relatives';
+import SiteBanner from "~/components/banners/SiteBanner";
 
 export default {
   name: 'pages-commercial-id',
   components: {
+    SiteBanner,
     QuickInfo,
     AnnouncementSpecs,
     Gallery,
