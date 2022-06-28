@@ -28,8 +28,8 @@ export const LayoutMixin = {
   },
   watch:{
     $route() {
-      this.$nuxt.$emit('route-changed');
 
+      this.$nuxt.$emit('route-changed');
       this.$store.commit('mutate',{
         property: 'timestamp',
         value: new Date().getTime()

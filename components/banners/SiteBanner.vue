@@ -44,6 +44,7 @@ export default {
       })
     }
     this.$nuxt.$on('route-changed',() => {
+      this.showBanner = true;
       console.log(this.type); this.fetchBanner()
     })
   },
