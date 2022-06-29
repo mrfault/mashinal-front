@@ -11,6 +11,7 @@ export const LayoutMixin = {
       vhVariableSet: false,
       showLoginPopup: false,
       loginActionKey: '',
+      windowWidth: null,
       loginInitialForm: {},
       scrollTimeout:null,
       latestScroll:0,
@@ -24,7 +25,6 @@ export const LayoutMixin = {
       'hideFooter',
       'notifications',
     ]),
-
   },
   watch:{
     $route() {
@@ -54,6 +54,7 @@ export const LayoutMixin = {
 
     handleResize() {
       // update grid breakpoint
+      this.windowWidth = window.innerWidth;
       let breakpoint = false
       ;['xs', 'sm', 'md', 'lg', 'xl'].map((name) => {
         let value = window
@@ -221,9 +222,6 @@ export const LayoutMixin = {
 
 
     this.$nextTick(() => {
-
-
-
       this.handleHideMenu();
       this.configSocket()
       if (this.loggedIn) this.toggleEchoListening(true)

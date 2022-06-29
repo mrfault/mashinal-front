@@ -80,7 +80,7 @@ export default {
 .bn-with-background {
   height: 100%;
   background-repeat: no-repeat;
-  background-size: 100vh 100vh;
+  background-size: 100% 100%;
   background-position: top;
 }
 .bn-image-container-left {
@@ -144,7 +144,7 @@ export default {
   position: absolute;
   top: -160px;
   overflow: hidden;
-  height: 100vh;
+  height: calc(100vh + 110px);
 }
 .bn-fixed {
   position:fixed;
