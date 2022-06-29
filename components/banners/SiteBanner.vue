@@ -60,7 +60,7 @@ export default {
         this.data = await this.$axios.$get(`/site-banners/${this.type}`);
       }catch (e) {}
 
-      if(this.data) {
+      if(this.data.image) {
         this.$emit('bannerLoaded',true);
       }
     },
