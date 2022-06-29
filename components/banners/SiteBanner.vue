@@ -51,7 +51,7 @@ export default {
   computed: {
     ...mapState(['bnFixed','timestamp']),
     layoutCondition() {
-      return this.data && ['left','right'].includes(this.type)  ? !this.isMobileBreakpoint : this.data
+      return this.data.image && ['left','right'].includes(this.type)  ? !this.isMobileBreakpoint : this.data
     }
   },
   methods:{
