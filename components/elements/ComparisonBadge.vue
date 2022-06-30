@@ -1,7 +1,7 @@
 <template>
   <transition-group name="fade">
-    <div v-if="badgeVisible" :key="'badgeVisible'">
-      <div class="comparison-badge" @click="handleClick">
+    <div v-if="badgeVisible"  :key="'badgeVisible'">
+      <div class="comparison-badge" :style="windowWidth > 1800 ? 'right: calc(((100% - 1200px) / 2) - 25px);':''" @click="handleClick">
         <icon name="compare" />
         <span v-if="count" class="comparison-badge__count">{{ count }}</span>
       </div>
@@ -21,6 +21,7 @@ export default {
   components: {
     ComparisonPreview,
   },
+  props:['windowWidth'],
   data() {
     return {
       badgeVisible: false,

@@ -25,8 +25,8 @@
             type="right"
             absolute
           />
-          <scroll-top v-if="!hideFooter"/>
-          <map-switch v-if="['salons','parts-shops'].includes(routeName)"/>
+          <scroll-top :style="windowWidth > 1800 ? 'right: calc((100% - 1200px) / 2);':''" v-if="!hideFooter"/>
+          <map-switch :style="windowWidth > 1800 ? 'right: calc((100% - 1200px) / 2);':''" v-if="['salons','parts-shops'].includes(routeName)"/>
         </main>
         <slot name="before-header"/>
         <backdrop @click="closeLogin" v-if="showLoginPopup">
@@ -52,7 +52,7 @@
         <portal-target name="mobile-screen"/>
         <portal-target name="backdrop"/>
         <!-- /portal targets -->
-        <comparison-badge/>
+        <comparison-badge :window-width="windowWidth"/>
         <mobile-nav/>
         <page-footer v-if="!hideFooter"/>
       </div>
