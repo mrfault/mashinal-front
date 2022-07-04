@@ -5,7 +5,7 @@
         <span>{{ catalogTitle || title }}</span>
       </h2>
     </div>
-    <site-banner type="in-catalog" />
+    <site-banner v-if="!isMobileBreakpoint" type="in-catalog" />
     <div class="row mb-n2 mb-lg-n3">
       <template v-for="item in catalogItems">
         <div class="col-6 col-lg-1-5 mb-2 mb-lg-3" :key="item.id">
