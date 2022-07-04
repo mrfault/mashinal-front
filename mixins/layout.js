@@ -28,13 +28,17 @@ export const LayoutMixin = {
   },
   watch:{
     $route() {
+      console.log('route changed')
+      this.$nextTick(() => {
+        setTimeout(() => {
+          this.$nuxt.$emit('route-changed');
+          this.$store.commit('mutate',{
+            property: 'timestamp',
+            value: new Date().getTime()
+          })
+        },1000)
 
-      this.$nuxt.$emit('route-changed');
-      this.$store.commit('mutate',{
-        property: 'timestamp',
-        value: new Date().getTime()
       })
-
       this.handleHideMenu();
     }
   },

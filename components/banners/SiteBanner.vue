@@ -43,9 +43,11 @@ export default {
         this.showBanner = !state;
       })
     }
+  },
+  beforeCreate() {
     this.$nuxt.$on('route-changed',() => {
       this.showBanner = true;
-      console.log(this.type); this.fetchBanner()
+      this.fetchBanner()
     })
   },
   computed: {

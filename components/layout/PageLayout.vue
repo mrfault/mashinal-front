@@ -14,6 +14,7 @@
 
           <site-banner
             v-if="windowWidth > 1800"
+            :key="timestamp"
             type="left"
             absolute
           />
@@ -22,6 +23,7 @@
 
           <site-banner
             v-if="windowWidth > 1800"
+            :key="timestamp+1"
             type="right"
             absolute
           />
