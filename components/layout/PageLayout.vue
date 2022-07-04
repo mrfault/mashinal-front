@@ -3,7 +3,7 @@
 
     <transition name="fade">
       <div class="layout" v-show="!loading" :class="{'layoutForMap': checkRouteIfSalon}">
-        <site-banner type="top" />
+        <site-banner :check-emitting="checkEmitting" type="top" />
         <mobile-menu/>
 
         <page-header/>
@@ -14,7 +14,7 @@
 
           <site-banner
             v-if="windowWidth > 1800"
-            :key="timestamp"
+            :check-emitting="checkEmitting"
             type="left"
             absolute
           />
@@ -23,7 +23,7 @@
 
           <site-banner
             v-if="windowWidth > 1800"
-            :key="timestamp+1"
+            :check-emitting="checkEmitting"
             type="right"
             absolute
           />
@@ -87,6 +87,11 @@ export default {
     ScrollTop,
     ComparisonBadge,
     MapSwitch
+  },
+  data() {
+    return {
+      checkEmitting: 0,
+    }
   },
   computed:{
     ...mapState(['mapView','timestamp']),

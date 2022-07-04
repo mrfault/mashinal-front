@@ -20,6 +20,7 @@ import {mapState} from "vuex";
 export default {
   props:{
     type:{},
+    checkEmitting:{},
     absolute:{
       type: Boolean,
       default: false
@@ -46,6 +47,7 @@ export default {
   },
   beforeCreate() {
     this.$nuxt.$on('route-changed',() => {
+      console.log('route changed worked'+ this.type);
       this.showBanner = true;
       this.fetchBanner()
     })
@@ -56,11 +58,20 @@ export default {
       return this.data.image && ['left','right'].includes(this.type)  ? !this.isMobileBreakpoint : this.data.image
     }
   },
+  watch:{
+    checkEmitting() {
+      this.showBanner = true;
+      console.log('watch works')
+      this.fetchBanner()
+    }
+  },
   methods:{
     async fetchBanner() {
       try {
         this.data = await this.$axios.$get(`/site-banners/${this.type}`);
-      }catch (e) {}
+      }catch (e) {
+        this.data = {};
+      }
 
       if(this.data.image) {
         this.$emit('bannerLoaded',true);
