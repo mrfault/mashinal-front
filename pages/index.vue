@@ -11,6 +11,7 @@
             class="swiper-slide"
             v-for="(homePageSlider, index) in homePageSliders"
             :key="index"
+            @click="$router.push($localePath(homePageSlider.button_link))"
           >
             <div class="homePage-slide-item">
               <div class="homePage-slide-item-left">
