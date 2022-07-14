@@ -18,6 +18,7 @@
               <login-tabs @update-tab="tab = $event" :skip-sign-in="true" />
             </div>
           </div>
+
         </div>
       </div>
     </div>
@@ -26,9 +27,11 @@
 
 <script>
 import { mapActions } from 'vuex';
+import MobileNav from "~/components/layout/MobileNav";
 
 export default {
   name: 'pages-login',
+  components: {MobileNav},
   middleware: 'guest',
   nuxtI18n: {
     paths: {

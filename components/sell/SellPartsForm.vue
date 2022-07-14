@@ -340,6 +340,7 @@ import { ToastErrorsMixin } from '~/mixins/toast-errors';
 
 import FormKeywords from '~/components/forms/FormKeywords'
 import FormGallery from '~/components/forms/FormGallery'
+import commercial from "~/pages/sell/commercial";
 
 export default {
   mixins: [ToastErrorsMixin],
@@ -427,7 +428,9 @@ export default {
         ...this.form,
         is_new: true,
         is_original: true,
+        commercial_size:""
       }
+
 
       delete this.form.sub_category_id;
       delete this.form.brand_id;
