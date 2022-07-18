@@ -574,6 +574,9 @@ export default {
       }
     },
     updatePreview(key) {
+      if (!key || key === 'region')
+        this.setSellPreviewData({ value: this.regions
+            .find(o => o.key === this.form.region_id)?.name[this.locale], key: 'region' });
       if (!key || key === 'currency')
         this.setSellPreviewData({ value: this.getCurrencyOptions
             .find(o => o.key === this.form.currency)?.sign, key: 'currency' });
