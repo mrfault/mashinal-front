@@ -753,11 +753,11 @@
             <div class="col-3 col-lg-4">
               <form-select
                 :label="$t('model')"
-                :options="carModels[key]"
+                :options="carModelsExclude[key]"
                 v-model="form.exclude_additional_brands[key]['model']"
                 :disabled="
                       form.exclude_additional_brands[key]['brand'] &&
-                      !carModels[key].length
+                      !carModelsExclude[key].length
                     "
                 @change="setModelExclude($event, key)"
                 has-search
@@ -776,11 +776,11 @@
                 <div class="col">
                   <form-select
                     :label="$t('generation')"
-                    :options="carGenerations[key]"
+                    :options="carGenerationsExclude[key]"
                     v-model="form.exclude_additional_brands[key]['generation']"
                     :disabled="
                           form.exclude_additional_brands[key]['model'] &&
-                          !carGenerations[key].length
+                          !carGenerationsExclude[key].length
                         "
                     @change="setGenerationExclude($event, key)"
                     has-search
@@ -951,7 +951,9 @@ export default {
     ...mapGetters([
       'brands',
       'carModels',
+      'carModelsExclude',
       'carGenerations',
+      'carGenerationsExclude',
       'bodyOptions',
       'sellOptions',
       'allSellOptions2',
@@ -1031,7 +1033,9 @@ export default {
   methods: {
     ...mapActions([
       'getModelsArray',
+      'getModelsArrayExclude',
       'getModelGenerationsArray',
+      'getModelGenerationsArrayExclude',
       'updateSavedSearchNotificationsInterval',
     ]),
     handleExclude() {
@@ -1096,7 +1100,7 @@ export default {
       ].map((key) => {
         this.$set(this.form.exclude_additional_brands[index], key, '')
       })
-      if (id) await this.getModelsArray({ value: slug, index })
+      if (id) await this.getModelsArrayExclude({ value: slug, index })
     },
     async setModel(id, index) {
       let model = this.carModels[index].find((option) => option.id == id)
@@ -1113,12 +1117,9 @@ export default {
         this.submitForm(false);
         this.getModelGenerationsArray({ value: slug, brand_slug, index })
       }
-
-
-
     },
     async setModelExclude(id, index) {
-      let model = this.carModels[index].find((option) => option.id == id)
+      let model = this.carModelsExclude[index].find((option) => option.id == id)
       let slug = model?.slug || '',
         name = model?.name || ''
       let brand_slug = this.form.exclude_additional_brands[index].brand_slug
@@ -1129,7 +1130,7 @@ export default {
         this.$set(this.form.exclude_additional_brands[index], key, '')
       })
       if (id)
-        await this.getModelGenerationsArray({ value: slug, brand_slug, index })
+        await this.getModelGenerationsArrayExclude({ value: slug, brand_slug, index })
     },
     async setGeneration(id, index) {
       let generation = this.carGenerations[index].find(
@@ -1148,15 +1149,10 @@ export default {
       )
     },
     async setGenerationExclude(id, index) {
-      let generation = this.carGenerations[index].find(
+      let generation = this.carGenerationsExclude[index].find(
         (option) => option.id == id,
       )
       this.$set(this.form.exclude_additional_brands[index], 'generation', id)
-      this.$set(
-        this.form.exclude_additional_brands[index],
-        'generation_slug',
-        generation?.short_name || '',
-      )
       this.$set(
         this.form.exclude_additional_brands[index],
         'generation_name',
