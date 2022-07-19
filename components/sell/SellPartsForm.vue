@@ -307,7 +307,7 @@
 
       <div class="row d-flex justify-content-end">
         <div class="col-12 col-lg-1-5">
-          <button class="btn btn--green mt-3" type="button" @click="submit">
+          <button class="btn btn--green mt-3" :class="{ pending }" type="button" @click="submit">
             {{ $t('place_announcement') }}
           </button>
         </div>
