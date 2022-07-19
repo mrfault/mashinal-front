@@ -67,11 +67,13 @@ const getInitialState = () => ({
   commercialModels: { 0: [], 1: [], 2: [], 3: [], 4: [] },
   scooterModels: { 0: [], 1: [], 2: [], 3: [], 4: [] },
   carModels: { 0: [], 1: [], 2: [], 3: [], 4: [] },
+  carModelsExclude: { 0: [], 1: [], 2: [], 3: [], 4: [] },
   modelDescription: false,
-  // generations
+  // generations`
   generations: [],
   generationTypes: [],
   carGenerations: { 0: [], 1: [], 2: [], 3: [], 4: [] },
+  carGenerationsExclude: { 0: [], 1: [], 2: [], 3: [], 4: [] },
   carTypeName: {},
   firstGeneration: false,
   firstGenerationEquipments: [],
@@ -160,6 +162,8 @@ export const getters = {
   hideFooter: (s) => s.hideFooter,
   // saved search & favorites
   savedSearchList: (s) => s.savedSearchList,
+  carModelsExclude: (s) => s.carModelsExclude,
+  carGenerationsExclude: (s) => s.carGenerationsExclude,
   singleSavedSearch: (s) => s.singleSavedSearch,
   notViewedSavedSearch: (s) => s.notViewedSavedSearch,
   favorites: (s) => s.favorites,
@@ -637,6 +641,16 @@ export const actions = {
       key: data.index,
     })
   },
+  async getModelsArrayExclude({ commit }, data) {
+    const res = data.value
+      ? await this.$axios.$get(`/brand/${data.value}/models`)
+      : []
+    commit('mutate', {
+      property: 'carModelsExclude',
+      value: res || [],
+      key: data.index,
+    })
+  },
   async getModelGenerationsArray({ commit }, data) {
     const res = data.value
       ? await this.$axios.$get(
@@ -645,6 +659,18 @@ export const actions = {
       : []
     commit('mutate', {
       property: 'carGenerations',
+      value: res.generations || [],
+      key: data.index,
+    })
+  },
+  async getModelGenerationsArrayExclude({ commit }, data) {
+    const res = data.value
+      ? await this.$axios.$get(
+          `/brand/${data.brand_slug}/model/${data.value}/generations`,
+        )
+      : []
+    commit('mutate', {
+      property: 'carGenerationsExclude',
       value: res.generations || [],
       key: data.index,
     })
