@@ -109,7 +109,7 @@ export const SearchMixin = {
         })
       }
     },
-    submitForm(scroll = true) {
+    async submitForm(scroll = true) {
 
       this.beforeSubmitForm();
       try {
@@ -120,11 +120,19 @@ export const SearchMixin = {
 
       // update route query params and search announcements
       let searchQuery = `${this.meta.param}=${encodeURI(JSON.stringify(this.getFormData()))}`;
-      let searchUrl = `${this.$localePath(this.meta.path)}?${searchQuery}`;
-      let searchSame = decodeURIComponent(searchUrl) === decodeURIComponent(this.$route.fullPath);
+      let advanced_path = this.$route.name.replace('___'+this.locale,'')
+
+      let searchUrl = `${this.$localePath(advanced_path === 'cars-advanced-search' ? this.$route.path : '/cars')}?${searchQuery}`;
+
+      let searchSame = true;//decodeURIComponent(searchUrl) === decodeURIComponent(this.$route.fullPath);
       this.$emit('pending');
       if (searchSame) {
-        this.$emit('submit');
+        await this.$router.push(searchUrl)
+
+          this.$emit('submit');
+
+
+
       } else {
         let prevRouteName = this.routeName;
         this.$router.push(searchUrl, () => {
@@ -204,7 +212,10 @@ export const SearchMixin = {
       return years;
     },
     goToSearch(path) {
+
+
       this.$router.push(`${path}?${this.meta.param}=${encodeURI(JSON.stringify(this.getFormData()))}`);
+
     },
     extendOptions() {
       this.collapsed = false;
@@ -319,6 +330,9 @@ export const SearchMixin = {
     }
   },
   created() {
+
+    var route=this.$route.path.split('/');
+    console.log(route)
     if (!this.routeName !== 'index') {
       this.parseFormData();
     }
