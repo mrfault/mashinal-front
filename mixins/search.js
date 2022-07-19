@@ -117,7 +117,6 @@ export const SearchMixin = {
         this.fbTrack('Search Api');
         this.gtagTrack('AW-600951956/Qeu4CILAyPIBEJSZx54C');
       }catch (e) {}
-
       // update route query params and search announcements
       let searchQuery = `${this.meta.param}=${encodeURI(JSON.stringify(this.getFormData()))}`;
       let searchUrl = `${this.$localePath(this.meta.path)}?${searchQuery}`;
