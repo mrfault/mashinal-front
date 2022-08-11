@@ -755,7 +755,13 @@
 
     }
   }
-
+  .offer-text{
+    display: flex;
+    flex-direction: column;
+    svg{
+      margin-bottom: 30px;
+    }
+  }
 
 }
 
@@ -823,11 +829,14 @@
     }
   }
   .offer-stamp-icon{
+    min-width: 40px;
     path:first-child {
       fill: $white;
     }
   }
   .offer-text{
+    display: flex;
+
     svg{
       path {
         stroke: $white;

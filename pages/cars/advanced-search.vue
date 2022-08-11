@@ -104,6 +104,7 @@ export default {
       this.pending = true;
       await this.getGridSearch({ ...this.searchParams, post, page });
       this.pending = false;
+
       if (page === 1) {
         this.scrollTo('.announcements-grid');
       } else {

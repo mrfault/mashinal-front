@@ -15,15 +15,15 @@
             <div class="package__name" :style="item.color ? ('color: ' + item.color) : ''">
               {{ item.name[locale] }}
             </div>
-            <hr />
+            <hr/>
             <div class="package__details">
               <p class="mx-0 mt-1 text-with-check">
-                <icon name="check" :style="item.color ? ('color: ' + item.color) : ''" />
+                <icon name="check" :style="item.color ? ('color: ' + item.color) : ''"/>
                 {{ $t('announcement_count') }} - {{ item.unlimited ? $t('limitless') : item.announce_count }}
               </p>
               <p class="mx-0 mt-1 text-with-check">
-                <icon name="check" :style="item.color ? ('color: ' + item.color) : ''" />
-                <icon name="wallet" />
+                <icon name="check" :style="item.color ? ('color: ' + item.color) : ''"/>
+                <icon name="wallet"/>
                 - {{ item.service_price }} ALM
               </p>
             </div>
@@ -31,7 +31,8 @@
         </div>
       </div>
       <div class="text-center">
-        <button type="submit" :class="['btn btn--green', { 'pending': downgradePlan && pending, 'disabled': activePackage && activePackage.id == selected && !shouldBuy  }]">
+        <button type="submit"
+                :class="['btn btn--green', { 'pending': downgradePlan && pending, 'disabled': activePackage && activePackage.id == selected && !shouldBuy  }]">
           {{ $t((shouldBuy) ? 'to_buy_package' : 'to_change_package') }}
         </button>
       </div>
@@ -53,8 +54,8 @@
         {{ $t(hasSalon ? 'business_profile_package_change_info' : 'business_profile_payment_info') }}
       </p>
       <h4 class="mb-2">{{ $t('payment_method') }}</h4>
-      <form-buttons v-model="paymentMethod" :options="paymentMethodOptions" :group-by="2" />
-      <terminal-info-button popup-name="packages-popup" />
+      <form-buttons v-model="paymentMethod" :options="paymentMethodOptions" :group-by="2"/>
+      <terminal-info-button popup-name="packages-popup"/>
       <div class="modal-sticky-bottom">
         <hr/>
         <div class="row">
@@ -103,7 +104,8 @@
           </div>
           <div class="d-none d-lg-block col-lg-3-5"></div>
           <div class="col-6 col-lg-1-5 mt-0">
-            <button :class="['btn btn--green full-width', { pending, disabled: leftToDeactivate !== 0 }]" @click="deactivateAnouncement">
+            <button :class="['btn btn--green full-width', { pending, disabled: leftToDeactivate !== 0 }]"
+                    @click="deactivateAnouncement">
               {{ $t('confirm') }}
             </button>
           </div>
@@ -114,11 +116,11 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import {mapActions, mapGetters} from 'vuex';
 
-import { PaymentMixin } from '~/mixins/payment';
+import {PaymentMixin} from '~/mixins/payment';
 
-import { required } from 'vuelidate/lib/validators';
+import {required} from 'vuelidate/lib/validators';
 
 import Grid from '~/components/announcements/Grid';
 
@@ -142,7 +144,7 @@ export default {
   },
   validations: {
     form: {
-      name: { required }
+      name: {required}
     }
   },
   computed: {
@@ -221,7 +223,7 @@ export default {
             this.$auth.fetchUser()
           ]);
           this.pending = false;
-          this.$router.push(this.$localePath('/dashboard/1'+(this.hasSalon ? '' : '/settings')), () => {
+          this.$router.push(this.$localePath('/dashboard/1' + (this.hasSalon ? '' : '/settings')), () => {
             this.updatePaidStatus({
               type: 'success',
               text: this.$t('change_package'),
@@ -231,7 +233,7 @@ export default {
         } else if (this.paymentMethod === 'card') {
           this.pending = false;
           this.showPaymentModal = false;
-          this.handlePayment(res, [this.$localePath('/dashboard/1'+(this.hasSalon ? '' : '/settings')), false], this.$t(this.shouldBuy ? 'package_bought' : 'change_package'));
+          this.handlePayment(res, [this.$localePath('/dashboard/1' + (this.hasSalon ? '' : '/settings')), false], this.$t(this.shouldBuy ? 'package_bought' : 'change_package'));
         } else {
           await Promise.all([
             this.$nuxt.refresh(),
@@ -239,7 +241,7 @@ export default {
           ]);
           this.pending = false;
           this.showPaymentModal = false;
-          this.$router.push(this.$localePath('/dashboard/1'+(this.hasSalon ? '' : '/settings')), () => {
+          this.$router.push(this.$localePath('/dashboard/1' + (this.hasSalon ? '' : '/settings')), () => {
             this.updatePaidStatus({
               type: 'success',
               text: this.$t(this.shouldBuy ? 'package_bought' : 'change_package'),
@@ -307,7 +309,7 @@ export default {
     this.$nextTick(() => {
       if (this.$route.query.scrollto) {
         let ref = this.$refs[this.$route.query.scrollto];
-        this.$router.replace({ query: { type: 1 } });
+        this.$router.replace({query: {type: 1}});
         if (ref) setTimeout(() => {
           this.scrollTo(ref);
         }, 300);

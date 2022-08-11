@@ -6,15 +6,12 @@ import VTooltip from 'v-tooltip';
 import Inputmask from 'inputmask';
 import vuescroll from 'vuescroll';
 import * as rive from 'rive-js';
-import { VueHammer } from 'vue2-hammer'
+import { VueHammer } from 'vue2-hammer';
 import Interior360Viewer from "~/components/Interior360Viewer";
 Vue.use(VueHammer)
 //import VueThreeSixty from 'vue-360'
-
 Vue.component('interior360-viewer',Interior360Viewer);
-
 Vue.prototype.$rive = rive;
-
 //Vue.use(VueThreeSixty)
 Vue.use(Vue2TouchEvents)
 Vue.use(VueAwesomeSwiper);
@@ -33,7 +30,6 @@ Vue.use({
     });
   }
 });
-
 Vue.use(vuescroll, {
   ops: {
     scrollPanel: {

@@ -1,5 +1,5 @@
 <template>
-  <div  :style="isMobileBreakpoint ? null : 'margin-top: -162px;'">
+  <div  :style="isMobileBreakpoint ? null : 'margin-top: -16px;'" class="container">
 
     <offer-slider/>
     <section class="get-offer">
@@ -132,7 +132,7 @@
       <div class="container">
         <hr class="mt-5 mb-5">
         <section class="offer-text">
-          <inline-svg src="/icons/offer/stamp.svg" class="offer-stamp-icon" />
+          <inline-svg src="/icons/offer/stamp.svg" class="offer-stamp-icon" width="70" />
           <p>
             Biz evdən çıxmadan cəmi bir saat ərzində eksklüziv ucuz qiymətə yeni avtomobil almağa imkan verən innovativ
             onlayn sistem yaratdıq. Biz sizin üçün təhlükəsiz, sürətli və rahat əməliyyata zəmanət veririk. Siz
