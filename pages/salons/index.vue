@@ -1,5 +1,5 @@
 <template>
-  <div :class="['pages-salons', `${mapView ? 'map' : 'list'}-view`]">
+  <div :class="['pages-salons ', `${mapView ? 'map' : 'list'}-view`]">
     <mobile-screen
       @back="showSearch = false"
       :bar-title="$t('search_salon')"

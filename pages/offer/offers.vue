@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <offer-slider/>
     <div class=" salonsOffer">
       <breadcrumbs :crumbs="crumbs"/>
