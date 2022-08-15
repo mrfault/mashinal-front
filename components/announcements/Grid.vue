@@ -31,7 +31,8 @@
               :key="announcement.id_unique"
             />
           </template>
-          <template v-else>
+          <template v-else-if="announcement.type !== 'banner'">
+
             <div
               v-if="checkSecondTemplate(index) ? !checkItemB(index,announcement): true"
               :class="[
@@ -49,6 +50,7 @@
               :key="announcement.id_unique + (escapeDuplicates ? '_' + index : '')"
             >
               <grid-item
+
                 :announcement="announcement"
                 :show-monetization-actions="showMonetizationActions"
                 :show-checkbox="showCheckbox"
@@ -76,6 +78,7 @@
             >
 
               <div
+                v-if="!isMobileBreakpoint"
                 class="col-6 col-xs-12 col-lg-3 col-xl-auto mb-2 mb-lg-3 align-items-center"
                 :class="{'col-lg-auto mb-lg-4 mt-lg-6 pt-lg-4 pb-lg-4': !showBanner,'d-lg-flex':showBanner }"
                 :key="'banner_' + index"
@@ -96,6 +99,12 @@
                 </div>
               </div>
             </template>
+
+          </template>
+          <template v-else-if="announcement.type === 'banner' && isMobileBreakpoint">
+            <div class="col-6 col-xs-6 col-lg-3 col-xl-auto mb-2 mb-lg-3">
+              <site-banner @bannerLoaded="showBanner = true" v-show="showBanner" type="in-part" />
+            </div>
 
           </template>
         </template>
@@ -215,7 +224,7 @@ export default {
       this.$cookies.set('show_bn',!this.$cookies.get('show_bn'));
     },
     checkSecondTemplate(index) {
-        return [20,21,22,23].includes(index) && this.$cookies.get('show_bn');
+        return [20,21,22,23].includes(index) && this.$cookies.get('show_bn') && !this.isMobileBreakpoint;
     },
     checkItemTop(index, item) {
       return (
