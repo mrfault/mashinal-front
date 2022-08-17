@@ -190,6 +190,7 @@
                         activeCategory = 0
                       "
                       v-for="menu in navbarMenus"
+                      v-if="user.children.length || user.parent_id ? !['eservices','salons','shops'].includes(menu.title) :true"
                       :key="menu.title"
                       :class="{ dropdown: menu.children }"
                     >
