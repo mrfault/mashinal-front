@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <div class="col-3" @click="loginToSubAccount(child.id)" v-if="child.autosalon" v-for="child in user.children">
-        <salon-login-card :salon="child.autosalon" />
+        <salon-login-card :count="child.announcements_count" :salon="child.autosalon" />
       </div>
     </div>
   </div>
