@@ -66,7 +66,11 @@ import ChangePhone from '~/components/elements/ChangePhone';
 export default {
   name: 'pages-profile-settings',
   mixins: [UserDataMixin],
-  middleware: ['auth_general'],
+  middleware: ['auth_general',({ $auth, redirect }) => {
+    if($auth.user.parent_id) {
+      return redirect('/garage-services')
+    }
+  }],
   components: {
     ChangeEmail,
     ChangePhone
@@ -81,6 +85,7 @@ export default {
       title: this.$t('user_information_edit')
     });
   },
+
   async asyncData({ $auth, app }) {
     await $auth.fetchUser();
 

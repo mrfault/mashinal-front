@@ -128,11 +128,19 @@
                   </nuxt-link>
                   <hr />
                   <ul>
-                    <li v-for="menu in userMenus" :key="menu.title">
-                      <nuxt-link :to="$localePath(menu.route)">
-                        {{ $t(menu.title) }}
-                      </nuxt-link>
-                    </li>
+                    <template v-for="menu in userMenus" >
+                      <li v-if="menu.title === 'my_account' ? !user.parent_id: true" :key="menu.title">
+                        <nuxt-link :to="$localePath(menu.route)">
+                          {{ $t(menu.title) }}
+                        </nuxt-link>
+                      </li>
+                      <li v-else>
+                        <a href="javascript:void(0);" @click="logoutToParent">
+                          {{ $t('logout_to_parent') }}
+                        </a>
+                      </li>
+                    </template>
+
                     <li key="logout">
                       <a href="javascript:void(0);" @click="logout">
                         {{ $t('logout') }}

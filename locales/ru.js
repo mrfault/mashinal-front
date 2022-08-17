@@ -2222,4 +2222,5 @@ export default {
    "commercial_size":"Размер шины",
    "shine_width2":"Ширина",
    "commercial_part":"Коммерческий",
+  "logout_to_parent": "Список автосалонов"
 }

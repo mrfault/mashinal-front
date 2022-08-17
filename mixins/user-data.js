@@ -20,6 +20,26 @@ export const UserDataMixin = {
     }
   },
   methods: {
+    async logoutToParent() {
+      this.$axios
+        .$post('/logout_sub_account')
+        .then(async (data) => {
+          // track conversion
+
+          this.$auth.setUser(data.user.original)
+          this.$emit('setFinished', true)
+          await this.$auth.setUserToken(data.meta.token)
+
+          this.$nuxt.$emit('login', true)
+
+          this.$nuxt.$emit('closeModal')
+
+          this.$router.push('/my-autosalons')
+        })
+        .catch((err) => {
+          this.pending = false
+        })
+    },
     async logout() {
       this.$router.push(this.$localePath('/') + '?logout=true', async () => {
         this.$router.push(this.$localePath('/'));

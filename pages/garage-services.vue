@@ -80,7 +80,7 @@ export default {
           url: '/profile/settings',
           hasAction: false,
           image: 'account',
-          isAvailable: true,
+          isAvailable: !this.$auth.user.parent_id,
         },
         {
           type: 4,
@@ -238,9 +238,6 @@ export default {
       az: '/qaraj-xidmetleri',
     },
   },
-  created() {
-    console.log( this.$auth.user )
-  }
 }
 </script>
 

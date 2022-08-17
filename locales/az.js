@@ -2222,4 +2222,5 @@ export default {
   "commercial_size":"Şinin ölçüləri",
   "shine_width2":"En",
   "commercial_part":"Ticari",
+  "logout_to_parent": "Avtosalonlar siyahısı"
 }
