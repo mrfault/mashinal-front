@@ -39,7 +39,7 @@ export default {
           this.$nuxt.$emit('login', true)
 
           this.$nuxt.$emit('closeModal')
-          this.$router.push('/garage-services')
+          await this.$router.push('/dashboard/1')
         })
         .catch((err) => {})
     }

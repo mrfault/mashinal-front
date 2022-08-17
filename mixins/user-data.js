@@ -25,11 +25,10 @@ export const UserDataMixin = {
         .$post('/logout_sub_account')
         .then(async (data) => {
           // track conversion
-
           this.$auth.setUser(data.user.original)
-          this.$emit('setFinished', true)
-          await this.$auth.setUserToken(data.meta.token)
 
+          await this.$auth.setUserToken(data.meta.token)
+          this.$emit('setFinished', true)
           this.$nuxt.$emit('login', true)
 
           this.$nuxt.$emit('closeModal')
