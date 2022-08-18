@@ -164,6 +164,7 @@ export const LayoutMixin = {
 
           this.$store.commit('appendOfferMessage', message)
           this.$store.dispatch('getAllOffers')
+          this.scrollTo('.my:last-child', 0, 500, '.offerDetail')
 
         })
         this.connectEcho('global-channel.' + this.$auth.user.id).listen(

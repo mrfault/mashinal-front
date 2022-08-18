@@ -187,12 +187,10 @@
   transform: rotate(180deg);
   margin-left: 5px;
 }
-
 .questions {
   background: #E0ECFB;
-  padding: 50px 0px 50px 0px;
+  padding: 50px 20px 50px 20px;
 }
-
 .get-offer {
   position: relative;
   margin-left: auto;
@@ -666,6 +664,7 @@
   }
 }
 @media (max-width: 480px) {
+
   .offer-step {
     flex-direction: column;
   }
@@ -680,7 +679,6 @@
 
   }
   .user {
-    background: $white;
     padding: 10px;
   }
   .userBar{
@@ -711,7 +709,7 @@
           width: 44%;
           display: flex;
           padding: 7px;
-          border: 1px blue solid;
+          border: 1px $dark-blue-1 solid;
           border-radius: 4px;
           span{
             margin-left: 10px;
@@ -720,11 +718,7 @@
           .active-filter{
             background: $dark-blue-2;
             color: $white;
-            svg{
-              path,rect,line{
-                stroke:$white;
-              }
-            }
+
           }
           .active-filter-fill{
             background: $dark-blue-2;
@@ -759,6 +753,12 @@
     flex-direction: column;
     svg{
       margin-bottom: 30px;
+    }
+  }
+  .offer-text{
+    width: unset;
+    p{
+      margin-left: unset;
     }
   }
 
@@ -816,6 +816,11 @@
 }
 
 .dark-mode{
+  .mobile-filter{
+    .filter-icon-fill path, .filter-icon-fill rect, .filter-icon-fill line{
+      fill: $white;
+    }
+  }
   .selectedGeneration {
     background: $grey-2 !important;
   }
@@ -861,8 +866,11 @@
   .offerUsers{
     background: $dark-2;
     border-right: none;
+
+
     .user{
       border-color: $dark-1;
+
       .userName{
         span:nth-of-type(2){
           color: $white;
@@ -875,10 +883,12 @@
     .col{
       .user{
         border-color: $dark-1;
+
       }
     }
     .searchBox{
       border-color: $dark-1;
+
     }
     .row{
       background : $dark-2 ;
@@ -915,6 +925,25 @@
   .offerDetail::-webkit-scrollbar-track{
     background-color: $dark-1;
   }
+  .messages{
+    .his{
+      background: $dark-2;
+    }
+  }
+  .mobile-filter{
+    ul{
+      li{
+        border-color: $white;
+      }
+      svg{
+        path,rect,line{
+          stroke:$white;
+
+        }
+      }
+    }
+  }
+
 
 }
 

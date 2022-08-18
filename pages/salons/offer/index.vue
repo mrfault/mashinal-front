@@ -296,7 +296,10 @@ export default {
       this.offer.isFavorite=!this.offer.isFavorite;
     },
     async deleteAutoSalonOffer(id){
-      await this.$axios.delete('/offer/salon/offer/delete/'+id);
+/*      this.$toast.
+      await this.$axios.delete('/offer/salon/offer/delete/'+id);*/
+
+
 
       this.checkAccepted(id)
       this.offer=false

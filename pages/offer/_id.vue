@@ -22,7 +22,6 @@
       </div>
     </div>
     <div class="container">
-
       <div class="row">
         <div class="col col-md-12 col-12 col-xs-12 col-sm-12">
 
@@ -145,9 +144,7 @@ export default {
       id:route.params.id,
       type:'auto_salon'
     })
-
     let res = await $axios.$post('/offer/user/offer/check/' + route.params.id)
-
     store.commit('setOfferMessages', res.messages)
     return {
       user_is_accepted: res.status
@@ -181,7 +178,6 @@ export default {
     },
 
     submitMessage() {
-
       this.$axios.$post('/offer/messages/send', {
         recipient_id: this.autoSalonOffer.auto_salon.user_id,
         message: this.chat.text,
@@ -191,7 +187,6 @@ export default {
         this.$store.commit('appendOfferMessage', res.data.message)
         this.scrollTo('.my:last-child', 0, 500, '.offerDetail')
       })
-
     },
 
     async checkAccepted(id) {
@@ -206,7 +201,6 @@ export default {
     async accept(id) {
       await this.$store.dispatch('salonAcceptOffer', {id})
       this.checkAccepted(id)
-
     },
     async getMessages(offerId) {
 
@@ -217,8 +211,6 @@ export default {
       this.offer = null
       this.user_is_accepted = false
     },
-
-
   },
   computed: {
     ...mapGetters({
@@ -232,6 +224,7 @@ export default {
     }
   }
 }
+
 </script>
 
 <style scoped>
