@@ -80,13 +80,10 @@
           </form>
         </modal-popup>
       </div>
-      <hr/>
-      <div class="row mb-n2 mb-lg-n3">
-        <div class="col-lg-3 mb-2 mb-lg-3">
-          <e-service-card/>
-        </div>
-        <div class="col-lg-3 mb-2 mb-lg-3">
-          <e-service-card/>
+      <hr v-if="user.parent_id"/>
+      <div v-if="user.parent_id" class="row mb-n2 mb-lg-n3">
+        <div class="col-lg-3 mb-2 mb-lg-3" v-for="tab in tabs">
+          <e-service-card :item="tab"/>
         </div>
       </div>
     </div>
@@ -136,6 +133,16 @@ export default {
 
     tabs() {
       return [
+        {
+          title: this.$t('fines'),
+          description: null,
+          value: null,
+          icon: 'receipe',
+          url: '/garage',
+          hasAction: false,
+          image: 'penalties',
+          isAvailable: true,
+        },
         {
           title: 'Super təklif',
           description: null,
