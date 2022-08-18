@@ -66,6 +66,7 @@ export default {
       if(this.$route.query.param) path+='?'+this.$route.query.param;
       if (this.loggedIn && [3,4].includes(this.user.user_type)) path = '/profile/btl';
       else if (this.$route.query.ref) path = this.$route.query.ref;
+      if(this.user.children.length) path = 'my-autosalons'
       this.$router.push(this.$localePath(path));
     }
   },

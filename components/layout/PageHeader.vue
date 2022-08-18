@@ -128,10 +128,21 @@
                   </nuxt-link>
                   <hr />
                   <ul>
-                    <li v-for="menu in userMenus" :key="menu.title">
-                      <nuxt-link :to="$localePath(menu.route)">
-                        {{ $t(menu.title) }}
-                      </nuxt-link>
+                    <template v-for="menu in userMenus" v-if="(user.parent_id || user.children.length) ? menu.title !== 'garage':true " >
+                      <li v-if="menu.title === 'my_account' ? !user.parent_id: true" :key="menu.title">
+                        <nuxt-link :to="$localePath(menu.route)">
+                          {{ $t(menu.title) }}
+                        </nuxt-link>
+                      </li>
+
+                      <li v-else>
+                        <a href="javascript:void(0);" @click="logoutToParent">
+                          {{ $t('logout_to_parent') }}
+                        </a>
+                      </li>
+                    </template>
+                    <li v-if="user.children.length">
+                      <nuxt-link to="/my-autosalons">{{ $t('logout_to_parent') }}</nuxt-link>
                     </li>
                     <li key="logout">
                       <a href="javascript:void(0);" @click="logout">
@@ -179,6 +190,7 @@
                         activeCategory = 0
                       "
                       v-for="menu in navbarMenus"
+                      v-if="(user.children && user.children.length) || user.parent_id ? !['eservices','salons','shops'].includes(menu.title) :true"
                       :key="menu.title"
                       :class="{ dropdown: menu.children }"
                     >

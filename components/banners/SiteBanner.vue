@@ -142,6 +142,7 @@ export default {
   height: 100px;
   background-size: 100% 100%;
   width: 100%;
+  padding: 0 5px;
   img {
     width: 100%;
     max-height: 100px;

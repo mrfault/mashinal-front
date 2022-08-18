@@ -80,6 +80,15 @@
           </form>
         </modal-popup>
       </div>
+      <hr/>
+      <div class="row mb-n2 mb-lg-n3">
+        <div class="col-lg-3 mb-2 mb-lg-3">
+          <e-service-card/>
+        </div>
+        <div class="col-lg-3 mb-2 mb-lg-3">
+          <e-service-card/>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -125,6 +134,20 @@ export default {
   computed: {
     ...mapGetters(['messages']),
 
+    tabs() {
+      return [
+        {
+          title: 'Super təklif',
+          description: null,
+          value: null,
+          icon: 'hammer',
+          url: '/super-offers',
+          hasAction: false,
+          image: 'super-offer',
+          isAvailable: false,
+        },
+      ]
+    },
     cards() {
       let type = this.$route.params.type
       let balance = type == 1 ?  this.$auth.user.autosalon.balance : this.$auth.user.part_salon.balance;
