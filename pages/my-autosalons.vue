@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="row">
-      <div class="col-3" @click="loginToSubAccount(child.id)" v-if="child.autosalon" v-for="child in user.children">
+      <div class="col-12 col-lg-3 my-3" @click="loginToSubAccount(child.id)" v-if="child.autosalon" v-for="child in user.children">
         <salon-login-card :count="child.announcements_count" :salon="child.autosalon" />
       </div>
     </div>
