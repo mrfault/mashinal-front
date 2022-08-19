@@ -16,6 +16,7 @@ import EServiceCard from '~/components/eservices/EServiceCard.vue'
 
 export default {
   components: {EServiceCard},
+  middleware: ['auth_general'],
   head() {
     return this.$headMeta({
       title: this.$t('garage_services'),
