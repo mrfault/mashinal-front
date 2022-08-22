@@ -1,76 +1,80 @@
 <template>
-  <div class="pages-index" :style="!isMobileBreakpoint ? 'margin-top: -162px;' : ''">
+  <div class="pages-index" :style="!isMobileBreakpoint ? 'margin-top: -40px;' : ''">
     <!-- slider desktop -->
-    <div
-      class="swiper-container swiper-container-desktop"
-      v-swiper:gallerySwiper="swiperOps"
-    >
-      <div class="swiper-wrapper">
-        <div
-          class="swiper-slide"
-          v-for="(homePageSlider, index) in homePageSliders"
-          :key="index"
-        >
-          <div class="homePage-slide-item">
-            <div class="homePage-slide-item-left">
-              <img
-                :srcset="`${homePageSlider.media.image[1]} 1024w,${homePageSlider.media.image[0]} 640w`"
-                :src="homePageSlider.media.image[0]"
-                sizes="(min-width: 36em) 33.3vw, 100vw"
-                alt="mashinal cover image"
-              />
-            </div>
-            <div
-              class="homePage-slide-item-right"
-              :style="
+    <div class="container p-0">
+      <div
+        class="swiper-container swiper-container-desktop"
+        v-swiper:gallerySwiper="swiperOps"
+      >
+        <div class="swiper-wrapper">
+          <div
+            class="swiper-slide"
+            v-for="(homePageSlider, index) in homePageSliders"
+            :key="index"
+            @click="$router.push($localePath(homePageSlider.button_link))"
+          >
+            <div class="homePage-slide-item">
+              <div class="homePage-slide-item-left">
+                <img
+                  :srcset="`${homePageSlider.media.image[1]} 1024w,${homePageSlider.media.image[0]} 640w`"
+                  :src="homePageSlider.media.image[0]"
+                  sizes="(min-width: 36em) 33.3vw, 100vw"
+                  alt="mashinal cover image"
+                />
+              </div>
+              <div
+                class="homePage-slide-item-right"
+                :style="
                 !isDarkMode ? `background:${homePageSlider.overlay_color}` : ''
               "
-            >
-              <div
-                class="before-slider-right"
-                :style="` border-top: 600px solid ${
+              >
+                <div
+                  class="before-slider-right"
+                  :style="` border-top: 600px solid ${
                   !isDarkMode ? homePageSlider.overlay_color : '#D0DBF9'
                 };`"
-              ></div>
-              <div class="homePage-text-section" :style="!isMobileBreakpoint ?`margin-left: -150px;`:''">
-                <div class="homePage-text-section-title" style="margin-left: -3px;">
-                  <!-- <img :src="homePageSlider.icon" /> -->
-                  <img
-                    :src="
+                ></div>
+                <div class="homePage-text-section" :style="!isMobileBreakpoint ?`margin-left: -150px;`:''">
+                  <div class="homePage-text-section-title" style="margin-left: -3px;">
+                    <!-- <img :src="homePageSlider.icon" /> -->
+                    <img
+                      :src="
                       isDarkMode
                         ? homePageSlider.icon_dark
                         : homePageSlider.icon
                     "
-                  />
-                  <h3>{{ homePageSlider.title[locale] }}</h3>
-                </div>
-                <p>{{ homePageSlider.description[locale] }}</p>
+                    />
+                    <h3>{{ homePageSlider.title[locale] }}</h3>
+                  </div>
+                  <p>{{ homePageSlider.description[locale] }}</p>
 
-                <nuxt-link
-                  :to="$localePath(homePageSlider.button_link)"
-                  class="btn btn--green text-left"
-                  v-if="homePageSlider.button_link"
-                >
-                  <icon name="plus-circle"/>
-                  {{ homePageSlider.button_text[locale] }}
-                </nuxt-link>
-                <button
-                  v-if="false"
-                  @click="gotoRoute($localePath(homePageSlider.button_link))"
-                  class="btn btn--green text-left"
-                >
-                  {{ homePageSlider.button_text[locale] }}
-                </button>
+                  <nuxt-link
+                    :to="$localePath(homePageSlider.button_link)"
+                    class="btn btn--green text-left"
+                    v-if="homePageSlider.button_link"
+                  >
+                    <icon name="plus-circle"/>
+                    {{ homePageSlider.button_text[locale] }}
+                  </nuxt-link>
+                  <button
+                    v-if="false"
+                    @click="gotoRoute($localePath(homePageSlider.button_link))"
+                    class="btn btn--green text-left"
+                  >
+                    {{ homePageSlider.button_text[locale] }}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
+        <div class="swiper-pagination" slot="pagination"></div>
       </div>
-      <div class="swiper-pagination" slot="pagination"></div>
     </div>
 
+
     <!-- car search form -->
-    <div class="container position-relative">
+    <div class="container position-relative p-lg-0">
       <car-search-form
         :total-count="$paginate(mainAnnouncements).total"
         :pending="pending"
@@ -167,7 +171,6 @@ export default {
       pending: false,
     }
   },
-
   computed: {
     ...mapGetters(['mainAnnouncements', 'homePageSliders']),
     photos(){
@@ -253,10 +256,7 @@ export default {
 
     }
   }
-
-
 }
-
 .mobileHomePage-slide-item {
   height: 170px;
   position: relative;
@@ -265,7 +265,6 @@ export default {
   .mobileHomePage-slide-left {
     width: 50%;
   }
-
   .mobileHomePage-slide-right {
     position: absolute;
     top: 0;
@@ -275,7 +274,6 @@ export default {
     box-sizing: border-box;
     overflow: hidden;
     clip-path: polygon(43% 0, 100% 0, 100% 100%, 0% 100%);
-
     img {
       width: 100%;
       height: 100%;

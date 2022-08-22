@@ -1,6 +1,6 @@
 <template>
-  <div class="pages-annoucements pt-2 pt-lg-5">
-    <div class="container"> 
+  <div class="pages-annoucements pt-2 pt-lg-5" :key="refresh">
+    <div class="container">
       <breadcrumbs :crumbs="crumbs" />
       <div class="card" v-if="isMobileBreakpoint">
         <h2 class="title-with-line mb-0">
@@ -14,14 +14,15 @@
             @change="changePage(1)" :clear-option="false" :allow-clear="false" has-no-bg />
         </div>
       </div> -->
-      <grid 
+      <grid
         v-if="myAnnouncements.data.length"
-        :announcements="myAnnouncements.data" 
+        :announcements="myAnnouncements.data"
         :paginate="$paginate(myAnnouncements)"
         :pending="pending"
         :push-into-router="false"
         :title="$t('my_announces')"
         :show-title="false"
+
         :show-checkbox="true"
         :show-status="true"
         @change-page="changePage"
@@ -29,7 +30,7 @@
       />
       <no-results v-else
         :type="$route.query.type == 2 ? 'part' : 'car'"
-        :text="statusReady !== '' ? '' : $t('add_an_ad_and_thousands_of_potential_buyers_will_see_it')" 
+        :text="statusReady !== '' ? '' : $t('add_an_ad_and_thousands_of_potential_buyers_will_see_it')"
       >
         <nuxt-link v-if="statusReady === ''" :to="$localePath('/sell')" class="btn btn--green mt-2 mt-lg-3" v-html="$t('to_sell')" />
       </no-results>
@@ -62,6 +63,9 @@ export default {
       title: this.$t('my_announces')
     });
   },
+  mounted() {
+    this.$nuxt.$on('refresh-my-announcements', () => this.refresh++);
+  },
   async asyncData({ store, route }) {
     let status = ['0','1','2','3'].includes(route.query.status) ? parseInt(route.query.status) : '';
     let shop = ['1','2'].includes(route.query.type) ? (route.query.type == 2 ? 'part' : 'salon') : false;
@@ -69,11 +73,12 @@ export default {
     await Promise.all([
       store.dispatch('getMyAllAnnouncements', { status, shop }),
     ]);
-    
-    return { 
+
+    return {
       pending: false,
       statusReady: status,
-      form: { status }
+      form: { status },
+      refresh:0,
     }
   },
   methods: {
@@ -92,7 +97,7 @@ export default {
   },
   computed: {
     ...mapGetters(['myAnnouncements']),
-    
+
     crumbs() {
       return [
         { name: this.$t('my_announces') }

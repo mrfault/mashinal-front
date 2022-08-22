@@ -162,7 +162,7 @@ export default {
   "announcement_name": "Elanın adı",
   "announcement_not_found": "Elan tapılmayıb",
   "announcement_paid": "Elan moderasiyaya göndərilib",
-  "announcement_pending": "Elan moderasiyadadır",
+  "announcement_pending": "Elan yoxlanılır",
   "announcement_restored": "Elan bərpa edilib",
   "announcements": "Elanlar",
   "announcements_comparison": "Elanların müqayisəsi",
@@ -663,6 +663,7 @@ export default {
   "elements": "Elementləri",
   "email": "E-mail",
   "engine": "Mühərrik növü",
+  "engine_only": "Mühərrik",
   "Engine start button": "Düymə ilə mühərrikin işə salınması",
   "engine_location": "Mühərrikin yerləşməsi",
   "engine_location_values": [
@@ -2215,6 +2216,11 @@ export default {
   "autosalon":"Avtosalon",
   "size":"Ölçü",
   "garage_error_2001":"Xidmət müvəqqəti olaraq dayandırılıb",
-  "pay_one_azn":"Cəmi 1 AZN-ə qoşul"
-
+  "pay_one_azn":"Cəmi 1 AZN-ə qoşul",
+  "other":"Digər",
+  "item_count":"ədəd",
+  "commercial_size":"Şinin ölçüləri",
+  "shine_width2":"En",
+  "commercial_part":"Ticari",
+  "logout_to_parent": "Avtosalonlar siyahısı"
 }

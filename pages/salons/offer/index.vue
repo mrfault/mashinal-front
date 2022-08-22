@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <offer-slider/>
     <div class="salonsOffer">
       <breadcrumbs :crumbs="crumbs" class=""/>
@@ -296,7 +296,10 @@ export default {
       this.offer.isFavorite=!this.offer.isFavorite;
     },
     async deleteAutoSalonOffer(id){
-      await this.$axios.delete('/offer/salon/offer/delete/'+id);
+/*      this.$toast.
+      await this.$axios.delete('/offer/salon/offer/delete/'+id);*/
+
+
 
       this.checkAccepted(id)
       this.offer=false
@@ -318,8 +321,10 @@ export default {
       this.$axios.$post('/offer/messages/send', formData).then((res) => {
         this.$store.commit('appendOfferMessage', res.data.message)
         this.chat.text = '';
+        this.$nuxt.$emit('clear-message-attachments');
         this.scrollTo('.my:last-child', 0, 500, '.offerDetail')
       })
+
     },
 
     async getOfferDetail(id) {

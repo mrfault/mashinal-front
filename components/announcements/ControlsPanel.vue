@@ -2,11 +2,20 @@
   <div class="controls-panel card mt-n3 mt-lg-0 mb-lg-3" v-if="showToolbar || isMobileBreakpoint">
     <div class="row flex-nowrap justify-content-between align-items-center" v-if="showToolbar">
       <!-- <div class="col-lg-2 ml-n2">
-        <form-checkbox class="fw-500" :label="$t('select_all')" v-model="selectAll" input-name="selectAll" 
+        <form-checkbox class="fw-500" :label="$t('select_all')" v-model="selectAll" input-name="selectAll"
           transparent @input="handleSelectAll" @change="handleSelectAll"/>
       </div> -->
       <div class="col d-flex align-items-center justify-content-end">
-        <span :class="['control-icon cursor-pointer text-hover-red', {'disabled-ui': !selected.length}]" 
+        <span v-if="user.autosalon && user.autosalon.id" style="border-right: 1px solid #ccc6;" :class="['control-icon cursor-pointer text-hover-red', {'disabled-ui': !selectedAnnouncements.length}]" >
+          <monetization-button
+            :multiple="true"
+            :multiple-announcements="selectedAnnouncements"
+            tag="span"
+            classes=" "
+            :announcement="myAnnouncements.data[0]"
+          />
+        </span>
+        <span :class="['control-icon cursor-pointer text-hover-red', {'disabled-ui': !selected.length}]"
             @click="showDeactivateModal = true">
           <!-- <icon name="minus-circle" /> -->
           <inline-svg src="/icons/minus-circle.svg" :height="14" />
@@ -23,7 +32,7 @@
             </form>
           </modal-popup>
         </span>
-        <span :class="['control-icon cursor-pointer text-hover-red', {'disabled-ui': !selected.length}]" 
+        <span :class="['control-icon cursor-pointer text-hover-red', {'disabled-ui': !selected.length}]"
             @click="showDeleteModal = true">
           <icon name="garbage" />
           <!-- <inline-svg src="/icons/garbage.svg" :height="14" /> -->
@@ -47,14 +56,17 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
+import MonetizationButton from "~/components/announcements/MonetizationButton";
 
 export default {
+  components: {MonetizationButton},
   props: {
     showToolbar: Boolean
   },
   data() {
     return {
       selected: [],
+      selectedAnnouncements:[],
       selectAll: false,
       showDeactivateModal: false,
       showDeleteModal: false,
@@ -69,12 +81,12 @@ export default {
 
     selectAnnouncement(id, value, controls = false) {
       if (!controls) return;
-      
-      this.$set(this, 'selected', value 
-        ? (this.selected.includes(id) ? [...this.selected] : [...this.selected, id]) 
+
+      this.$set(this, 'selected', value
+        ? (this.selected.includes(id) ? [...this.selected] : [...this.selected, id])
         : this.selected.filter(selected_id => selected_id != id)
       );
-
+      this.handleSelectAnnouncementObject(id);
       if (this.selectAll && !value) {
         this.selectAll = false;
       } else if (!this.selectAll && value && this.selected.length === this.myAnnouncements.data.length) {
@@ -86,11 +98,20 @@ export default {
         this.$nuxt.$emit('select-announcement', item.id_unique, value, false);
       });
     },
+    handleSelectAnnouncementObject(id) {
+      let item = this.myAnnouncements.data.find(item => item.id_unique == id);
+      let isSelected = this.selectedAnnouncements.findIndex(item => item.id_unique == id);
+      if(isSelected !== -1) {
+          this.selectedAnnouncements.splice(isSelected,1);
+      }else {
+        if(item.status == 1 && !item.has_monetization) this.selectedAnnouncements.push(item);
+      }
+    },
     async deactivateAnouncement() {
       if (this.pending) return;
 
       let canProceed = true;
-      
+
       this.selected.map(id => {
         let item = this.myAnnouncements.data.find(item => item.id_unique == id);
         if (![0,1].includes(item.status)) canProceed = false;
@@ -116,7 +137,7 @@ export default {
       if (this.pending) return;
 
       let canProceed = true;
-      
+
       this.selected.map(id => {
         let item = this.myAnnouncements.data.find(item => item.id_unique == id);
         if (![0,3].includes(item.status)) canProceed = false;

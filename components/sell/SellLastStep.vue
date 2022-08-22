@@ -124,7 +124,7 @@
             </template>
           </span>
         </h2>
-        <div class="row" v-if="type === 'cars'">
+        <div class="row" v-if="type === 'cars' && !user.is_autosalon">
           <div class="col-lg-4 mb-2 mb-lg-0" v-if="!form.customs_clearance">
             <form-text-input v-model="form.car_number" input-class="car-number-show-popover" img-src="/img/flag.svg"
                 :mask="type === 'cars' ? '99 - AA - 999' : '99 - A{1,2} - 999'"

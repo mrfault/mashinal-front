@@ -1,25 +1,42 @@
 <template>
   <div class="pages-cars-advanced-search">
-    <div class="container"> 
+    <div class="container">
       <breadcrumbs :crumbs="crumbs" />
-      <car-search-form 
+      <car-search-form
         :is-search-page="true"
         :advanced="true"
         :pending="pending"
         @pending="pending = true"
+        @submit="searchCars"
       />
+      <template v-if="!$route.query.saved">
+        <grid
+          v-if="carsAnnouncements.data.length"
+          :announcements="carsAnnouncements.data"
+          :paginate="$paginate(carsAnnouncements)"
+          :title="$t('announcements')"
+          :pending="pending"
+          @change-page="searchCars"
+          escape-duplicates
+        />
+        <no-results v-else />
+      </template>
     </div>
   </div>
 </template>
 
 <script>
 import CarSearchForm from '~/components/cars/CarSearchForm';
-
+import {mapActions, mapGetters} from "vuex";
+import Grid from '~/components/announcements/Grid';
+import NoResults from '~/components/elements/NoResults';
 export default {
   name: 'pages-cars-advanced-search',
   layout: 'search',
   components: {
-    CarSearchForm
+    CarSearchForm,
+    Grid,
+    NoResults
   },
   nuxtI18n: {
     paths: {
@@ -31,15 +48,17 @@ export default {
       title: this.$t('advanced_search')
     });
   },
-  async asyncData({ store, route, $auth }) {
+  async asyncData({ store, route, $auth,app,req }) {
     let post = JSON.parse(route.query.car_filter || '{}');
-
+    let page = route.query.page || 1;
+    let searchParams = { url: '/grid/cars', prefix: 'cars' }
     await Promise.all([
       store.dispatch('getBrands'),
       store.dispatch('getBodyOptions'),
       store.dispatch('getOptions'),
       store.dispatch('getAllOtherOptions', '2'),
       store.dispatch('getColors'),
+      store.dispatch('getGridSearch', { ...searchParams, post, page }),
       // get model options for brands
       ...Object.keys(post?.additional_brands || {})
         .filter(key => post?.additional_brands?.[key]?.brand)
@@ -57,22 +76,43 @@ export default {
     ]);
 
     if ($auth.loggedIn) {
-      await store.dispatch('fetchSavedSearch', { 
+      await store.dispatch('fetchSavedSearch', {
         search_url: `/cars?car_filter=${encodeURI(JSON.stringify(post))}`
       });
     }
 
-    return { 
+    return {
+      searchParams,
       pending: false
     }
   },
   computed: {
+    ...mapGetters(['carsAnnouncements']),
     crumbs() {
       return [
         { name: this.$t('cars'), route: '/cars' },
         { name: this.$t('advanced_search') }
       ]
     }
+  },
+  methods: {
+    ...mapActions(['getGridSearch']),
+
+    async searchCars(page = 1) {
+      page = this.$route.query.page || 1;
+      let post = JSON.parse(this.$route.query.car_filter || '{}');
+      this.pending = true;
+      await this.getGridSearch({ ...this.searchParams, post, page });
+      this.pending = false;
+
+      if (page === 1) {
+        this.scrollTo('.announcements-grid');
+      } else {
+        this.scrollTo('.announcements-grid.paginated', [-15, -20]);
+      }
+    }
+
+
   },
   beforeRouteLeave(to, from, next) {
     this.$nuxt.$emit('prevent-popstate');

@@ -53,7 +53,7 @@
             :options="categories"
             :invalid="isInvalid('category_id')"
             :clear-option="false"
-            @change="categorySelected($event), removeError('category_id')"
+            @change="categorySelected($event), removeError('category_id'),form.commercial_part = false;"
           />
         </div>
 
@@ -82,14 +82,22 @@
           <form-select
             v-model="form.brand_id"
             :label="$t('select_brand')"
-            :options="brands"
+            :options="[{id:0,name: $t('other') },...brands]"
             has-search
             :invalid="isInvalid('brand_id')"
             :clear-option="false"
             @change="removeError('brand_id')"
           />
         </div>
-
+        <div v-if="[19,20].includes(form.category_id)" class="col-lg-4 mb-3 mb-lg-0">
+          <form-checkbox
+            id="commercial_part"
+            v-model="form.commercial_part"
+            :label="$t('commercial_part')"
+            :checked-value="form.commercial_part"
+            @change="!$event ? form.commercial_size = '' : ''"
+          />
+        </div>
         <div v-if="form.category_id" class="col-12 mt-3">
           <div class="row">
 
@@ -123,6 +131,7 @@
 
             <!-- Dynamic filters -->
             <div
+              v-if="form.commercial_part ? !commercialPartDisabledOptions.includes(filter.key) : true"
               class="col-lg-4 mb-3"
               v-for="filter in dynamicFilters"
               :key="'filter-' + filter.id"
@@ -162,11 +171,11 @@
                 @change="removeError(filter.key)"
               />
             </div>
-
             <!-- Price -->
             <div class="col-lg-8 mb-3 price-input-group">
               <div class="col-auto pl-0">
                 <form-numeric-input
+                  float
                   v-model="form.price"
                   id="anchor-price"
                   :placeholder="$t('price')"
@@ -187,7 +196,21 @@
                 @change="removeError('price', true), removeError('is_negotiable')"
               />
             </div>
-
+              <!-- Commercial Size -->
+            <div
+              class="col-lg-4 mb-3"
+              style="align-items: center;"
+              v-if="form.commercial_part"
+              id="anchor-commercial_size"
+            >
+              <form-text-input
+                v-model="form.commercial_size"
+                :placeholder="$t('commercial_size')"
+                :invalid="isInvalid('commercial_size')"
+                @change="removeError('commercial_size')"
+                :clear-option="false"
+              />
+            </div>
             <!-- Region -->
             <div
               class="col-lg-4 mb-3"
@@ -284,7 +307,7 @@
 
       <div class="row d-flex justify-content-end">
         <div class="col-12 col-lg-1-5">
-          <button class="btn btn--green mt-3" type="button" @click="submit">
+          <button class="btn btn--green mt-3" :class="{ pending }" type="button" @click="submit">
             {{ $t('place_announcement') }}
           </button>
         </div>
@@ -317,6 +340,7 @@ import { ToastErrorsMixin } from '~/mixins/toast-errors';
 
 import FormKeywords from '~/components/forms/FormKeywords'
 import FormGallery from '~/components/forms/FormGallery'
+import commercial from "~/pages/sell/commercial";
 
 export default {
   mixins: [ToastErrorsMixin],
@@ -340,9 +364,14 @@ export default {
   },
   data() {
     return {
+      commercialPartDisabledOptions: [
+        'diameter','height','shine_width','run_flat'
+      ],
       form: {
         product_code: '',
         title: '',
+        commercial_part: false,
+        commercial_size:'',
         description: '',
         category_id: '',
         region_id: 1,
@@ -399,7 +428,9 @@ export default {
         ...this.form,
         is_new: true,
         is_original: true,
+        commercial_size:""
       }
+
 
       delete this.form.sub_category_id;
       delete this.form.brand_id;
@@ -542,7 +573,13 @@ export default {
         }
       }
     },
-    updatePreview() {
+    updatePreview(key) {
+      if (!key || key === 'region')
+        this.setSellPreviewData({ value: this.regions
+            .find(o => o.key === this.form.region_id)?.name[this.locale], key: 'region' });
+      if (!key || key === 'currency')
+        this.setSellPreviewData({ value: this.getCurrencyOptions
+            .find(o => o.key === this.form.currency)?.sign, key: 'currency' });
       if (this.form.region_id && this.regions.length) {
         this.setSellPreviewData({
           key: 'region',

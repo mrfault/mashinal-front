@@ -9,7 +9,6 @@
 
 <script>
 import { mapGetters } from 'vuex';
-
 import SalonInner from '~/components/salons/SalonInner';
 
 export default {

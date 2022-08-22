@@ -1,28 +1,29 @@
 <template>
   <div class="pages-catalog">
-    <div class="container"> 
+    <div class="container">
       <breadcrumbs :crumbs="crumbs">
         <share-it type="publish" v-if="$route.params.body" />
       </breadcrumbs>
       <template v-if="!$route.params.body">
-        <catalog-search-form 
+        <catalog-search-form
           :total-count="catalogTotal"
           :pending="pending"
           @pending="pending = true"
-          @submit="searchCatalog" 
+          @submit="searchCatalog"
         />
-        <catalog-grid 
+
+        <catalog-grid
           v-if="catalogTotal"
-          :items="catalogItems" 
+          :items="catalogItems"
           :paginate="catalogItems.data && $paginate(catalogItems)"
           :title="$t('autocatalog')"
           :pending="pending"
-          @change-page="searchCatalog" 
+          @change-page="searchCatalog"
         />
         <no-results v-else />
       </template>
       <template v-else>
-        <catalog-inner 
+        <catalog-inner
           :selected-brand="selectedBrand"
           :selected-model="selectedModel"
           :selected-car="selectedGenerationType"
@@ -75,7 +76,7 @@ export default {
       image = this.firstGeneration.generation.car_type_generation
         .find(item => this.firstGeneration.car_type_id === item.car_type_id).transformed_media?.main?.[0];
     } else if (params.model && this.catalogItems?.[0]) {
-      let item = this.catalogItems?.[0]; 
+      let item = this.catalogItems?.[0];
       image = (item?.car_type_generation?.find(type => type.car_type_id === item.fav_car_type_id) || item?.car_type_generation[0]).transformed_media?.main?.[0];
     } else if (params.brand) {
       image = this.catalogItems?.data?.[0]?.transformed_media;
@@ -98,7 +99,7 @@ export default {
         !route.params.brand && store.dispatch('getCatalogSearch', { post, page, params: { temp: 1, ...route.params}, totalCount: true })
       ]);
     }
-    return { 
+    return {
       pending: false
     }
   },
@@ -115,9 +116,15 @@ export default {
       if (scroll) this.scrollTo('.catalog-grid', [-15, -20]);
     }
   },
+  mounted() {
+    this.$store.commit('mutate',{
+      property:'announcement',
+      value: {}
+    });
+  },
   computed: {
     ...mapGetters(['catalogItems', 'catalogTotal', 'firstGeneration', 'modelDescription', 'brands', 'models']),
-    
+
     crumbs() {
       let params = Object.keys(this.$route.params).map(key => this.$route.params[key]);
       return [
@@ -125,9 +132,9 @@ export default {
       ].concat(
         ['Brand', 'Model', 'Generation', 'Body']
           .filter(part => this[`selected${part}Text`])
-          .map((part, i) => ({ 
-            name: this[`selected${part}Text`], 
-            route: (i === params.length - 1 || part === 'Body') ? '' : `/catalog/${params.slice(0, i + 1).join('/')}` 
+          .map((part, i) => ({
+            name: this[`selected${part}Text`],
+            route: (i === params.length - 1 || part === 'Body') ? '' : `/catalog/${params.slice(0, i + 1).join('/')}`
           }))
       );
     },

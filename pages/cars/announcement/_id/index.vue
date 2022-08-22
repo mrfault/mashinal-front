@@ -41,6 +41,7 @@
           </div>
           <div class="col-auto">
             <quick-info type="cars" />
+            <site-banner v-if="!isMobileBreakpoint" class="mb-3" type="in-announcement" />
             <announcement-specs type="cars" />
             <comment :comment="announcement.comment" v-if="isMobileBreakpoint">
               <template #after v-if="hasComplects || getCarHealth">
@@ -71,9 +72,11 @@ import Comment from '~/components/announcements/inner/Comment';
 import CarComplects from '~/components/announcements/inner/CarComplects';
 import DamageOptions from '~/components/options/DamageOptions';
 import Relatives from '~/components/announcements/inner/Relatives';
+import SiteBanner from "~/components/banners/SiteBanner";
 export default {
   name: 'pages-cars-id',
   components: {
+    SiteBanner,
     QuickInfo,
     AnnouncementSpecs,
     Gallery,
@@ -116,9 +119,6 @@ export default {
       store.dispatch('getAllOtherOptions'),
       store.dispatch('getPopularOptions')
     ]);
-  },
-  mounted() {
-    console.log('mounted id')
   },
   methods: {
     getFilterLink(type) {

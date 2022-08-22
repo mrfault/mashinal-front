@@ -31,8 +31,10 @@
               :key="announcement.id_unique"
             />
           </template>
-          <template v-else>
+          <template v-else-if="announcement.type !== 'banner'">
+
             <div
+              v-if="checkSecondTemplate(index) ? !checkItemB(index,announcement): true"
               :class="[
                 {
                   'col-lg-mid': checkItemIndex(index + 2, announcement),
@@ -48,6 +50,7 @@
               :key="announcement.id_unique + (escapeDuplicates ? '_' + index : '')"
             >
               <grid-item
+
                 :announcement="announcement"
                 :show-monetization-actions="showMonetizationActions"
                 :show-checkbox="showCheckbox"
@@ -59,19 +62,34 @@
                 :isProfilePage="isProfilePage"
               />
             </div>
+            <template v-else-if="checkSecondTemplate(index)">
+              <div class="col-6 mb-4" v-if="index === 20">
+                <site-banner type="in-announcement-list-left"/>
+              </div>
+              <div class="col-6 mb-4" v-if="index === 21">
+                <site-banner type="in-announcement-list-right"/>
+              </div>
+            </template>
             <template
               v-if="
-                !isMobileBreakpoint && checkItemIndex(index + 1, announcement)
+                (checkSecondTemplate(index) ? !checkItemB(index,announcement): true) &&
+                 checkItemIndex(index + 1, announcement)
               "
             >
+
               <div
-                class="col-6 col-lg-auto mb-lg-4 mt-lg-6 pt-lg-4 pb-lg-4"
+                v-if="!isMobileBreakpoint"
+                class="col-6 col-xs-12 col-lg-3 col-xl-auto mb-2 mb-lg-3 align-items-center"
+                :class="{'col-lg-auto mb-lg-4 mt-lg-6 pt-lg-4 pb-lg-4': !showBanner,'d-lg-flex':showBanner }"
                 :key="'banner_' + index"
               >
+                <site-banner @bannerLoaded="showBanner = true" v-show="showBanner" type="in-part" />
                 <div
+                  v-if="!showBanner && !isMobileBreakpoint"
                   class="announcements-grid_banner d-flex align-items-center justify-content-center"
                   @click="$router.push($localePath(bannerLink))"
                 >
+
                   <div
                     class="banner-bg"
                     :style="{
@@ -81,6 +99,13 @@
                 </div>
               </div>
             </template>
+
+          </template>
+          <template v-else-if="announcement.type === 'banner' && isMobileBreakpoint">
+            <div class="col-6 col-xs-6 col-lg-3 col-xl-auto mb-2 mb-lg-3">
+              <site-banner @bannerLoaded="showBanner = true" v-show="showBanner" type="in-part" />
+            </div>
+
           </template>
         </template>
       </div>
@@ -104,6 +129,7 @@
 </style>
 <script>
 import GridItem from '~/components/announcements/GridItem'
+import SiteBanner from "~/components/banners/SiteBanner";
 
 export default {
   props: {
@@ -156,8 +182,15 @@ export default {
     needAutoScroll: Boolean,
   },
   components: {
+    SiteBanner,
     GridItem,
   },
+  data() {
+    return {
+      showBanner: false,
+    }
+  },
+
   methods: {
     changePage(page) {
       if (this.showAll) {
@@ -186,6 +219,12 @@ export default {
         this.checkItemIndex(index + 3, item) ||
         this.checkItemIndex(index + 4, item)
       )
+    },
+    switchSecondTemplate() {
+      this.$cookies.set('show_bn',!this.$cookies.get('show_bn'));
+    },
+    checkSecondTemplate(index) {
+        return [20,21,22,23].includes(index) && this.$cookies.get('show_bn') && !this.isMobileBreakpoint;
     },
     checkItemTop(index, item) {
       return (
@@ -221,6 +260,7 @@ export default {
     },
   },
   mounted() {
+    this.switchSecondTemplate();
     if (this.needAutoScroll) {
       this.scrollFunc()
     }

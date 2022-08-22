@@ -72,7 +72,7 @@ export const ComparisonMixin = {
       }
 
       // Modification
-      
+
       return desc
     },
     getMaxSpeed(item) {
@@ -155,11 +155,7 @@ export const ComparisonMixin = {
       return '—'
     },
     getEngineType(item) {
-      if (item.specifications['dvigatel']) {
-        if (item.specifications['dvigatel']['tip-dvigatelya']) {
-          return item.specifications['dvigatel']['tip-dvigatelya'];
-        }
-      }
+      if(item.engine_id) return this.$t('engine_values')[item.engine_id]
       return '—'
     },
     getHorsePower(item) {

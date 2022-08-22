@@ -162,7 +162,7 @@ export default {
   "announcement_name": "Заголовок объявления",
   "announcement_not_found": "Объявление не найдено",
   "announcement_paid": "Объявление отправлено на модерацию",
-  "announcement_pending": "Объявление на рассмотрении",
+  "announcement_pending": "Объявление на проверке",
   "announcement_restored": "Объявление восстановлено",
   "announcements": "Объявления",
   "announcements_not_found": "Объявлений не найдено",
@@ -660,6 +660,7 @@ export default {
   "elements": "Элементы",
   "email": "E-mail",
   "engine": "Тип двигателя",
+  "engine_only": "Двигатель",
   "Engine start button": "Запуск двигателя с кнопки",
   "engine_location": "Расположение двигателя",
   "engine_location_values": [
@@ -2216,5 +2217,10 @@ export default {
    "official_salons":"Официальные салоны",
    "size":"Размер",
    "garage_error_2001":"Сервис временно не работает",
-   "pay_one_azn":"Подключись всего за 1 AZN"
+   "pay_one_azn":"Подключись всего за 1 AZN",
+   "other":"Другие",
+   "commercial_size":"Размер шины",
+   "shine_width2":"Ширина",
+   "commercial_part":"Коммерческий",
+  "logout_to_parent": "Список автосалонов"
 }

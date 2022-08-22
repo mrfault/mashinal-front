@@ -16,6 +16,7 @@ import EServiceCard from '~/components/eservices/EServiceCard.vue'
 
 export default {
   components: {EServiceCard},
+  middleware: ['auth_general'],
   head() {
     return this.$headMeta({
       title: this.$t('garage_services'),
@@ -80,7 +81,7 @@ export default {
           url: '/profile/settings',
           hasAction: false,
           image: 'account',
-          isAvailable: true,
+          isAvailable: !this.$auth.user.parent_id,
         },
         {
           type: 4,
@@ -238,9 +239,6 @@ export default {
       az: '/qaraj-xidmetleri',
     },
   },
-  created() {
-    console.log( this.$auth.user )
-  }
 }
 </script>
 

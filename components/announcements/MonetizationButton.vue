@@ -1,6 +1,6 @@
 <template>
-  <button
-    :class="`btn btn--${className} full-width`"
+  <component :is="tag"
+    :class="classes ? classes : `btn btn--${className} full-width`"
     @click.stop="openPaymentModal()"
   >
     {{ $t('get_an_ad') }}
@@ -57,7 +57,7 @@
           <div class="col-6 col-lg-4">
             <p class="text-medium">{{ $t('total') }}</p>
             <p class="text-medium text-dark-blue-2">
-              {{ selectedPlan.price }} ALM -
+              {{ multiple ? multipleAnnouncements.length * selectedPlan.price : selectedPlan.price }} ALM -
               {{ $readPlural(selectedPlan.days, $t('plural_forms_day')) }}
             </p>
           </div>
@@ -83,7 +83,7 @@
       @open="showPaymentModal = false"
       @close="showPaymentModal = true"
     />
-  </button>
+  </component>
 </template>
 
 <script>
@@ -94,6 +94,20 @@ export default {
   props: {
     className: {
       default: 'red',
+    },
+    multipleAnnouncements: {
+      default: () => []
+    },
+    multiple: {
+      type: Boolean,
+      default: false,
+    },
+    classes: {
+      default: '',
+    },
+    tag:{
+      default: 'button',
+      type: String
     },
     announcement: {},
   },
@@ -156,16 +170,22 @@ export default {
       if (!this.haveBalanceToPay) {
         this.paymentMethod = 'card'
       }
+      let form = {
+        id_unique: this.announcement.id_unique,
+        monetize_id: this.selectedPlan.id,
+        type: this.paymentMethod,
+        card_id: this.bankingCard
+      };
+
+      if(this.multiple) {
+        delete form.id_unique;
+        form['announcements'] = this.multipleAnnouncements.map(item => ({ id_unique: item.id_unique}))
+      }
       const res = await this.$axios.$post(
         `/monetization/start?is_mobile=${
           this.isMobileBreakpoint ? 'true' : 'false'
         }`,
-        {
-          id_unique: this.announcement.id_unique,
-          monetize_id: this.selectedPlan.id,
-          type: this.paymentMethod,
-          card_id: this.bankingCard
-        },
+        form,
       )
       if (this.paymentMethod === 'card') {
         if (!res?.data?.redirect_url) {
@@ -179,11 +199,14 @@ export default {
         }else {
           this.pending = false
           this.showPaymentModal = false
+          this.$nuxt.$emit('refresh-my-announcements')
           this.handlePayment(res, false, this.$t('ad_started'))
         }
       } else {
         await Promise.all([this.$nuxt.refresh(), this.$auth.fetchUser()])
         this.pending = false
+        this.showPaymentModal = false
+        this.$nuxt.$emit('refresh-my-announcements')
         this.updatePaidStatus({
           type: 'success',
           text: this.$t('ad_started'),

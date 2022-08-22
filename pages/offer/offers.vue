@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <offer-slider/>
     <div class=" salonsOffer">
       <breadcrumbs :crumbs="crumbs"/>
@@ -161,6 +161,11 @@
             <div v-if="user_is_accepted">
               <div class="messages">
                 <div :class="isMyMessage(message) ? 'my' :'his' " v-for="message in offerMessages">
+                  <div v-if="message.files.length>0" class="message-files">
+                    <div class="message-file" v-for="file in message.files">
+                      <img :src="file" width="100%"/>
+                    </div>
+                  </div>
                   {{ message.message }} <span class="time">17:30</span>
                 </div>
               </div>
@@ -193,7 +198,7 @@ import OfferSlider from "~/components/offer/OfferSlider";
 import {mapGetters} from "vuex";
 import OfferMessage from "~/components/offer/offer-message";
 import CollapseContent from "~/components/elements/CollapseContent";
-
+import { ImageResizeMixin } from '~/mixins/img-resize';
 export default {
 
 
@@ -208,6 +213,7 @@ export default {
       title: this.$t('Super teklif'),
     })
   },
+  mixins: [ImageResizeMixin],
   async asyncData({store}) {
     await Promise.all([
       store.dispatch('getHomePageSliders')
@@ -223,7 +229,8 @@ export default {
       chat: {
         text: '',
       },
-      search: ''
+      search: '',
+      files:[]
 
 
     }
@@ -255,8 +262,8 @@ export default {
     handleTyping() {
 
     },
-    handleFiles() {
-
+    handleFiles(files) {
+      this.$set(this, 'files', files);
     },
     async changePage(param) {
       this.$router.push({
@@ -266,18 +273,23 @@ export default {
       })
 
     },
-    submitMessage() {
+    async submitMessage() {
+      let formData = new FormData();
 
-      this.$axios.$post('/offer/messages/send', {
-        recipient_id: this.userOffer.auto_salon.user_id,
-        message: this.chat.text,
-        offer_id: this.offer.id
-      }).then((res) => {
+      formData.append('recipient_id',this.userOffer.auto_salon.user_id)
+      formData.append('message', this.chat.text)
+      formData.append('offer_id',this.offer.id)
+
+      await Promise.all(this.files.map(async (file) => {
+        let resizedFile = await this.getResizedImage(file);
+        formData.append('files[]', resizedFile);
+      }));
+      this.$axios.$post('/offer/messages/send', formData).then((res) => {
         this.chat.text = ''
         this.$store.commit('appendOfferMessage', res.data.message)
         this.scrollTo('.my:last-child', 0, 500, '.offerDetail')
       })
-
+      this.$nuxt.$emit('clear-message-attachments');
     },
     async getUserOfferDetail(id) {
       if (this.isMobileBreakpoint) {
@@ -290,13 +302,13 @@ export default {
         )
         this.offer = this.userOffer.offer
       }
-
     },
     async checkAccepted(id) {
       await this.$axios.$post('/offer/user/offer/check/' + id).then((res) => {
 
         this.user_is_accepted = res.status
         this.$store.commit('setOfferMessages', res.messages)
+        this.scrollTo('.my:last-child', 0, 500, '.offerDetail')
       })
 
 

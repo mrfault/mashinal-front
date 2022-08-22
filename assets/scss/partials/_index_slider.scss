@@ -1,6 +1,6 @@
 .homePage {
   &-slide-item {
-    height: 500px;
+    height: 350px;
     display: flex;
     flex-wrap: nowrap;
     width: 100%;
@@ -41,7 +41,7 @@
   }
   &-text-section {
     width: 50%;
-    margin-top: 90px;
+    margin-top: -20px;
     margin-left: 3px;
     &-title {
       display: flex;
@@ -195,7 +195,7 @@
 @media screen and (min-width: 1990px) {
   .homePage {
     &-slide-item {
-      height: 500px;
+      height: 350px;
       display: flex;
       flex-wrap: nowrap;
       width: 100%;

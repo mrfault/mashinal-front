@@ -1,16 +1,34 @@
 <template>
   <div :class="['wrapper', { loading }, `${colorMode}-mode`]">
+
     <transition name="fade">
       <div class="layout" v-show="!loading" :class="{'layoutForMap': checkRouteIfSalon}">
+        <site-banner :check-emitting="checkEmitting" type="top" />
         <mobile-menu/>
 
         <page-header/>
+
          <!-- v-if="!isMobileBreakpoint && !close && !$cookies.get('smartbanner_exited')" -->
         <slot name="after-header"/>
         <main :class="{'min-height-if-notification':  !cookiesHasNotificationOn || storeBannerIsOn, 'min-height-if-not-notification':  cookiesHasNotificationOn || !storeBannerIsOn, 'positionInitial' : checkRouteIfSalon}">
+
+          <site-banner
+            v-if="windowWidth > 1800"
+            :check-emitting="checkEmitting"
+            type="left"
+            absolute
+          />
+
           <slot name="nuxt"/>
-          <scroll-top v-if="!hideFooter"/>
-          <map-switch v-if="['salons','parts-shops'].includes(routeName)"/>
+
+          <site-banner
+            v-if="windowWidth > 1800"
+            :check-emitting="checkEmitting"
+            type="right"
+            absolute
+          />
+          <scroll-top :style="windowWidth > 1800 ? 'right: calc((100% - 1200px) / 2);':''" v-if="!hideFooter"/>
+          <map-switch :style="windowWidth > 1800 ? 'right: calc((100% - 1200px) / 2);':''" v-if="['salons','parts-shops'].includes(routeName)"/>
         </main>
         <slot name="before-header"/>
         <backdrop @click="closeLogin" v-if="showLoginPopup">
@@ -36,7 +54,7 @@
         <portal-target name="mobile-screen"/>
         <portal-target name="backdrop"/>
         <!-- /portal targets -->
-        <comparison-badge/>
+        <comparison-badge :window-width="windowWidth"/>
         <mobile-nav/>
         <page-footer v-if="!hideFooter"/>
       </div>
@@ -55,10 +73,12 @@ import PaidStatus from '~/components/payments/PaidStatus';
 import ScrollTop from '~/components/elements/ScrollTop';
 import ComparisonBadge from '~/components/elements/ComparisonBadge';
 import MapSwitch from '~/components/salons/MapSwitch';
+import SiteBanner from "~/components/banners/SiteBanner";
 
 export default {
   mixins: [LayoutMixin],
   components: {
+    SiteBanner,
     PageHeader,
     PageFooter,
     MobileMenu,
@@ -68,8 +88,13 @@ export default {
     ComparisonBadge,
     MapSwitch
   },
+  data() {
+    return {
+      checkEmitting: 0,
+    }
+  },
   computed:{
-    ...mapState(['mapView']),
+    ...mapState(['mapView','timestamp']),
     cookiesHasNotificationOn(){
       var cookie = this.$cookies.get('smartbanner_exited');
       if (cookie) {

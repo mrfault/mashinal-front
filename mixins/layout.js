@@ -11,9 +11,10 @@ export const LayoutMixin = {
       vhVariableSet: false,
       showLoginPopup: false,
       loginActionKey: '',
+      windowWidth: null,
       loginInitialForm: {},
-      scrollTimeout:null,
-      latestScroll:0,
+      scrollTimeout: null,
+      latestScroll: 0,
     }
   },
   computed: {
@@ -24,10 +25,14 @@ export const LayoutMixin = {
       'hideFooter',
       'notifications',
     ]),
-
   },
-  watch:{
+  watch: {
     $route() {
+      this.checkEmitting++;
+      this.$store.commit('mutate', {
+        property: 'timestamp',
+        value: new Date().getTime()
+      })
       this.handleHideMenu();
     }
   },
@@ -47,6 +52,7 @@ export const LayoutMixin = {
 
     handleResize() {
       // update grid breakpoint
+      this.windowWidth = window.innerWidth;
       let breakpoint = false
       ;['xs', 'sm', 'md', 'lg', 'xl'].map((name) => {
         let value = window
@@ -70,7 +76,7 @@ export const LayoutMixin = {
       var position = el.getBoundingClientRect();
 
       // checking whether fully visible
-      if(position.top >= 0 && position.bottom <= window.innerHeight) {
+      if (position.top >= 0 && position.bottom <= window.innerHeight) {
         el.classList.add('d-none');
       }
     },
@@ -80,28 +86,43 @@ export const LayoutMixin = {
       this.scrollTimeout = setTimeout(() => {
         el.classList.remove('z-index-1')
         // el.classList.remove('d-none')
-      } ,400);
+      }, 400);
     },
     hideMenu(el) {
       el.classList.add('z-index-1')
-      el.style.top = '-350px'
+      el.style.top = '-90px'
       clearTimeout(this.scrollTimeout);
-     // this.scrollTimeout = setTimeout(() => el.classList.add('d-none') ,400);
+      // this.scrollTimeout = setTimeout(() => el.classList.add('d-none') ,400);
     },
     handleHideMenu() {
       let cordY = window.scrollY;
       let headerElDesktopWhite = document.querySelector('.navbar-white')
       if (cordY > 350) {
-        if(this.latestScroll > cordY)
+        if (this.latestScroll > cordY)
           this.showMenu(headerElDesktopWhite)
         else
           this.hideMenu(headerElDesktopWhite)
 
       } else {
-       this.showMenu(headerElDesktopWhite)
+        this.showMenu(headerElDesktopWhite)
       }
 
       this.latestScroll = cordY;
+    },
+    handleBnScroll() {
+      if (window.scrollY > 110 && !this.$store.state.bnFixed) {
+        console.log('scrolled')
+        this.$store.commit('mutate', {
+          property: 'bnFixed',
+          value: true,
+        })
+        console.log('changed')
+      } else if (window.scrollY < 111 && this.$store.state.bnFixed) {
+        this.$store.commit('mutate', {
+          property: 'bnFixed',
+          value: false,
+        })
+      }
     },
     handleScroll() {
 
@@ -139,10 +160,11 @@ export const LayoutMixin = {
     toggleEchoListening(toggle) {
       if (toggle) {
         this.connectEcho().listen('SendMessage', this.addNewMessage)
-        this.connectEcho('offer-user.'+this.$auth.user.id).listen('OfferMessageSendEvent',({ message })  => {
+        this.connectEcho('offer-user.' + this.$auth.user.id).listen('OfferMessageSendEvent', ({message}) => {
 
-          this.$store.commit('appendOfferMessage',message)
+          this.$store.commit('appendOfferMessage', message)
           this.$store.dispatch('getAllOffers')
+          this.scrollTo('.my:last-child', 0, 500, '.offerDetail')
 
         })
         this.connectEcho('global-channel.' + this.$auth.user.id).listen(
@@ -154,7 +176,7 @@ export const LayoutMixin = {
           },
         )
       } else if (window.Echo) {
-        this.connectEcho('offer-user.'+this.$auth.user.id).stopListening('OfferMessageSendEvent')
+        this.connectEcho('offer-user.' + this.$auth.user.id).stopListening('OfferMessageSendEvent')
         this.connectEcho().stopListening('SendMessage')
       }
     },
@@ -199,9 +221,6 @@ export const LayoutMixin = {
 
 
     this.$nextTick(() => {
-
-
-
       this.handleHideMenu();
       this.configSocket()
       if (this.loggedIn) this.toggleEchoListening(true)
@@ -217,7 +236,7 @@ export const LayoutMixin = {
         this.loginActionKey = key
         this.$set(this, 'loginInitialForm', form)
       })
-
+      window.addEventListener('scroll', this.handleBnScroll)
       window.addEventListener('resize', this.handleResize)
       window.addEventListener('resize', this.handleScroll)
       window.addEventListener('scroll', this.handleScroll)

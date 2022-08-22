@@ -1,47 +1,50 @@
 <template>
-  <div class="page-header">
-    <div
-      v-if="
-        !isMobileBreakpoint && !close && !$cookies.get('smartbanner_exited')
-      "
-    >
-      <div class="top-promotion-row">
-        <div class="container">
-          <div class="top-promotion">
-            <div class="top-promotion-row-item">
-              <img src="/img/logo-red.svg" />
-              <p>
-                Mashin.al-dan çoxfunksiyalı yeni əlavə
-              </p>
-            </div>
-            <div class="top-promotion-row-item">
-              <a
-                target="_blank"
-                href="https://apps.apple.com/tn/app/mashin-al/id1588371190?l=az"
-              >
-                <img src="/img/app-store.svg" class="app-store-img" />
-              </a>
-              <a
-                target="_blank"
-                href="https://play.google.com/store/apps/details?id=ventures.al.mashinal&hl=az&gl=US"
-              >
-                <img src="/img/google-play.svg" class="google-play-img" />
-              </a>
-            </div>
-            <div class="top-promotion-row-item">
-              <img src="/img/mobile-app.png" class="mobile-app" />
-              <a
-                style="margin-left: 10px; cursor: pointer;"
-                @click.prevent="closePromotion"
-              >
-                <icon style="color: #081a3e;" name="cross" />
-                <!-- <inline-svg src="/icons/cross.svg" height="14" style="color: #081a3e;"/> -->
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+  <div class="page-header"
+       :style="(!isMobileBreakpoint ? 'height: 90px;': ''),
+        !isMobileBreakpoint ? ($cookies.get('smartbanner_exited')  ? 'margin-bottom: 70px;' :'margin-bottom:70px;') : '' ">
+
+<!--    <div-->
+<!--      v-if="-->
+<!--        !isMobileBreakpoint && !close && !$cookies.get('smartbanner_exited')-->
+<!--      "-->
+<!--    >-->
+<!--      <div class="top-promotion-row">-->
+<!--        <div class="container">-->
+<!--          <div class="top-promotion">-->
+<!--            <div class="top-promotion-row-item">-->
+<!--              <img src="/img/logo-red.svg" />-->
+<!--              <p>-->
+<!--                Mashin.al-dan çoxfunksiyalı yeni əlavə-->
+<!--              </p>-->
+<!--            </div>-->
+<!--            <div class="top-promotion-row-item">-->
+<!--              <a-->
+<!--                target="_blank"-->
+<!--                href="https://apps.apple.com/tn/app/mashin-al/id1588371190?l=az"-->
+<!--              >-->
+<!--                <img src="/img/app-store.svg" class="app-store-img" />-->
+<!--              </a>-->
+<!--              <a-->
+<!--                target="_blank"-->
+<!--                href="https://play.google.com/store/apps/details?id=ventures.al.mashinal&hl=az&gl=US"-->
+<!--              >-->
+<!--                <img src="/img/google-play.svg" class="google-play-img" />-->
+<!--              </a>-->
+<!--            </div>-->
+<!--            <div class="top-promotion-row-item">-->
+<!--              <img src="/img/mobile-app.png" class="mobile-app" />-->
+<!--              <a-->
+<!--                style="margin-left: 10px; cursor: pointer;"-->
+<!--                @click.prevent="closePromotion"-->
+<!--              >-->
+<!--                <icon style="color: #081a3e;" name="cross" />-->
+<!--                &lt;!&ndash; <inline-svg src="/icons/cross.svg" height="14" style="color: #081a3e;"/> &ndash;&gt;-->
+<!--              </a>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
     <header
       class="header-menu container d-none d-lg-block"
       :class="{ 'no-border-radius': hoverMenu }"
@@ -125,10 +128,21 @@
                   </nuxt-link>
                   <hr />
                   <ul>
-                    <li v-for="menu in userMenus" :key="menu.title">
-                      <nuxt-link :to="$localePath(menu.route)">
-                        {{ $t(menu.title) }}
-                      </nuxt-link>
+                    <template v-for="menu in userMenus" v-if="(user.parent_id || user.children.length) ? menu.title !== 'garage':true " >
+                      <li v-if="menu.title === 'my_account' ? !user.parent_id: true" :key="menu.title">
+                        <nuxt-link :to="$localePath(menu.route)">
+                          {{ $t(menu.title) }}
+                        </nuxt-link>
+                      </li>
+
+                      <li v-else>
+                        <a href="javascript:void(0);" @click="logoutToParent">
+                          {{ $t('logout_to_parent') }}
+                        </a>
+                      </li>
+                    </template>
+                    <li v-if="user.children.length">
+                      <nuxt-link to="/my-autosalons">{{ $t('logout_to_parent') }}</nuxt-link>
                     </li>
                     <li key="logout">
                       <a href="javascript:void(0);" @click="logout">
@@ -176,6 +190,7 @@
                         activeCategory = 0
                       "
                       v-for="menu in navbarMenus"
+                      v-if="(user.children && user.children.length) || user.parent_id ? !['eservices','salons','shops'].includes(menu.title) :true"
                       :key="menu.title"
                       :class="{ dropdown: menu.children }"
                     >
@@ -190,7 +205,7 @@
                       </nuxt-link>
                       <div
                         class="dropdown-content container"
-                        style="padding-left: 0;"
+                        style="padding-left:0;"
                         v-if="menu.children"
                         :class="{ 'dropdown-menu-click': closeDropdownMenu }"
                       >
@@ -269,10 +284,12 @@ import { MenusDataMixin } from '~/mixins/menus-data'
 import { UserDataMixin } from '~/mixins/user-data'
 
 import ThemeSwitch from '~/components/elements/ThemeSwitch'
+import SiteBanner from "~/components/banners/SiteBanner";
 
 export default {
   mixins: [MenusDataMixin, UserDataMixin],
   components: {
+    SiteBanner,
     ThemeSwitch,
   },
   data() {

@@ -23,6 +23,7 @@
           <div class="col-auto">
             <gallery>
               <quick-info type="parts" brief />
+              <site-banner v-if="!isMobileBreakpoint" class="mb-3" type="in-announcement" />
               <announcement-specs type="parts" brief />
             </gallery>
             <comment :comment="announcement.comment" v-if="!isMobileBreakpoint">
@@ -43,6 +44,7 @@
           </div>
           <div class="col-auto">
             <quick-info type="parts" />
+            <site-banner v-if="!isMobileBreakpoint" class="mb-3" type="in-announcement" />
             <announcement-specs type="parts" />
             <keywords
               class="card mb-lg-3"
@@ -71,10 +73,12 @@ import ThumbsGallery from '~/components/announcements/inner/ThumbsGallery';
 import CollapseContent from '~/components/elements/CollapseContent';
 import Keywords from '~/components/announcements/inner/Keywords';
 import Relatives from '~/components/announcements/inner/Relatives';
+import SiteBanner from "~/components/banners/SiteBanner";
 
 export default {
   name: 'pages-parts-id',
   components: {
+    SiteBanner,
     Gallery,
     Comment,
     QuickInfo,
