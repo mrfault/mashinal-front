@@ -229,6 +229,7 @@ export default {
     },
     async setBrand(slug, index) {
       let brand = this.brands.find((option) => option.slug === slug)
+      this.model=null
       if (slug) this.$store.dispatch('getModels', slug)
 
     },

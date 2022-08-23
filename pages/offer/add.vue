@@ -14,7 +14,7 @@
             :model="model"
             :year="form.year"
           />
-          <Generations :generations="generations" @change="changeGenerations"/>
+          <Generations :selected="form.generations" :generations="generations" @change="changeGenerations"/>
 
           <div :key="5" class="mb-3 box" ref="sell-modification">
             <h2 class="title-with-line full-width">
@@ -87,14 +87,14 @@
                       <div class=" mr-5">
 
                         <label for="minPrice">Min.</label>
-                        <form-text-input :invalid="$v.form.minPrice.$error" id="minPrice" type="number"
-                                         v-model="form.minPrice" class="priceInput"/>
+                        <form-text-input id="minPrice" type="number"
+                                         v-model="form.minPrice" class="priceInput"  @keypress="onlyNumber"/>
 
                       </div>
-                      <div class="" >
+                      <div class="">
 
-                        <label for="maxPrice" >Max.</label>
-                        <form-text-input :invalid="$v.form.maxPrice.$error" id="maxPrice" type="number"
+                        <label for="maxPrice">Max.</label>
+                        <form-text-input :invalid="$v.form.maxPrice.$error" id="maxPrice" type="number" @keypress="onlyNumber"
                                          v-model="form.maxPrice" class="priceInput"/>
                       </div>
 
@@ -174,7 +174,8 @@ export default {
         maxPrice: '',
         selectedInteriorColor: null,
         selectedColors: [],
-        is_matte: false
+        is_matte: false,
+        generations:[]
 
       },
     }
@@ -182,7 +183,6 @@ export default {
   validations: {
     form: {
       selectedInteriorColor: {required},
-      minPrice: {required},
       maxPrice: {required},
     }
 
@@ -236,27 +236,33 @@ export default {
       brand: this.form.brand,
       model: this.form.model
     })
-
+    if (this.generations.length==1){
+      this.form.generations.push(this.generations[0].id)
+    }
 
   },
   methods: {
+    onlyNumber($event) {
+      let keyCode = ($event.keyCode ? $event.keyCode : $event.which);
+      if ((keyCode < 48 || keyCode > 57) && keyCode !== 46) { // 46 is dot
+        $event.preventDefault();
+      }
+
+    },
     submitOffer() {
       this.$v.$touch();
       if (this.$v.$error) return;
-      console.log(this.$v.form.minPrice.$error)
-
-
       this.$axios.$post('offer', {
         data: this.form
       }).then((res) => {
         if (res.status == 'success') {
-          this.$toast.success('Əlavə olundu')
-          this.$router.push('/offer')
 
+          this.$toast.success('Əlavə olundu')
+          setTimeout(() => {
+            this.$router.push('/offer')
+          }, 2000);
         }
       });
-
-
     },
     changeGenerations(values) {
       this.form.generations = values
@@ -307,7 +313,6 @@ export default {
     },
     async handleYear(year = '') {
       this.form.year = year;
-      console.log(this.form.year)
       if (year) {
         this.showLastStep = true;
       } else {

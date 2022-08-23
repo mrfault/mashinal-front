@@ -78,7 +78,7 @@
             <input type="text" v-model="search" placeholder="Maşın və ya istifadəçi adı" class="searchInput">
           </div>
           <div class="offerUsers">
-            <div class="user" v-for="offer in search ? searchOffer : offers" @click="getOfferDetail(offer.id)">
+            <div class="user" v-for="offer in search ? searchOffer : offers" @click="!offer.deleted && getOfferDetail(offer.id)" :class="offer.deleted ? 'unclickable' : null">
               <div class="userImg"
                    :style="'background-image: url('+(offer.user.img ? offer.user.img : '/img/user.jpg')+')'">
               </div>
@@ -296,11 +296,7 @@ export default {
       this.offer.isFavorite=!this.offer.isFavorite;
     },
     async deleteAutoSalonOffer(id){
-/*      this.$toast.
-      await this.$axios.delete('/offer/salon/offer/delete/'+id);*/
-
-
-
+      await this.$axios.delete('/offer/salon/offer/delete/'+id);
       this.checkAccepted(id)
       this.offer=false
       this.IsAccepted=false
