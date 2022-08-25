@@ -38,6 +38,8 @@
           v-model="inputValue"
           @focus="$emit('focus', $event)"
           @keypress="$emit('keypress',$event)"
+
+
         />
         <span v-if="type === 'password' && !invalid" class="show-password" @click="showPassword = !showPassword">
           <icon :name="showPassword ? 'eye' : 'hide'" />

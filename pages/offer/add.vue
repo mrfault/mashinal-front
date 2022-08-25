@@ -88,13 +88,13 @@
 
                         <label for="minPrice">Min.</label>
                         <form-text-input id="minPrice" type="number"
-                                         v-model="form.minPrice" class="priceInput"  @keypress="onlyNumber"/>
+                                         v-model="form.minPrice"  class="priceInput"  @keypress="onlyNumberMinPrice"/>
 
                       </div>
                       <div class="">
 
                         <label for="maxPrice">Max.</label>
-                        <form-text-input :invalid="$v.form.maxPrice.$error" id="maxPrice" type="number" @keypress="onlyNumber"
+                        <form-text-input :invalid="$v.form.maxPrice.$error"  id="maxPrice" type="number" @keypress="onlyNumberMaxPrice"
                                          v-model="form.maxPrice" class="priceInput"/>
                       </div>
 
@@ -242,9 +242,17 @@ export default {
 
   },
   methods: {
-    onlyNumber($event) {
+    onlyNumberMaxPrice($event) {
       let keyCode = ($event.keyCode ? $event.keyCode : $event.which);
-      if ((keyCode < 48 || keyCode > 57) && keyCode !== 46) { // 46 is dot
+      if ((keyCode < 48 || keyCode > 57) && keyCode == 46 || this.form.maxPrice.length  > 6) {
+        $event.preventDefault();
+      }
+
+    },
+    onlyNumberMinPrice($event) {
+      let keyCode = ($event.keyCode ? $event.keyCode : $event.which);
+      if ((keyCode < 48 || keyCode > 57) && keyCode == 46 || this.form.minPrice.length  > 6) {
+        console.log('true')
         $event.preventDefault();
       }
 

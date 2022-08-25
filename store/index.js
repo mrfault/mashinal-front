@@ -1361,6 +1361,9 @@ export const mutations = {
     const emil=state.offers.find(offer => offer.id == id)
     console.log(id)
     console.log(emil)
-  }
+  },
+  setNullModels(state){
+    state.models=[]
 
+  }
 }
