@@ -161,10 +161,10 @@ export const LayoutMixin = {
       if (toggle) {
         this.connectEcho().listen('SendMessage', this.addNewMessage)
         this.connectEcho('offer-user.' + this.$auth.user.id).listen('OfferMessageSendEvent', ({message}) => {
-
           this.$store.commit('appendOfferMessage', message)
+/*          this.$store.commit('setNewMessage',message.offer.id)*/
           this.$store.dispatch('getAllOffers')
-          this.scrollTo('.my:last-child', 0, 500, '.offerDetail')
+          this.scrollTo('.messages > div:last-child', 0, 500, '.offerDetail')
 
         })
         this.connectEcho('global-channel.' + this.$auth.user.id).listen(

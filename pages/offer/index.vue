@@ -1,5 +1,5 @@
 <template>
-  <div  :style="isMobileBreakpoint ? null : 'margin-top: -16px;'" class="container">
+  <div :style="isMobileBreakpoint ? null : 'margin-top: -16px;'" class="container">
 
     <offer-slider/>
     <section class="get-offer">
@@ -20,7 +20,7 @@
         has-search
         class="get-offer-select"
       />
-      <button class="btn  btn--green" @click="getOffer()" >Əlavə et</button>
+      <button class="btn  btn--green" @click="getOffer()">Əlavə et</button>
     </section>
     <div class="">
       <div class="new-offer mt-5" v-if="notAccepted()>0">
@@ -120,7 +120,8 @@
 
         </div>
         <div class="d-flex justify-content-center">
-          <button class="btn text-center  btn--dark-blue-2-outline ml-auto mr-auto mt-5" @click="loadOfferPartners()" v-if="offerPartnersMeta.current_page!=offerPartnersMeta.last_page">
+          <button class="btn text-center  btn--dark-blue-2-outline ml-auto mr-auto mt-5" @click="loadOfferPartners()"
+                  v-if="offerPartnersMeta.current_page!=offerPartnersMeta.last_page">
             Daha cox
             <icon name="top" class="rotate180"></icon>
           </button>
@@ -132,7 +133,7 @@
       <div class="">
         <hr class="mt-5 mb-5">
         <section class="offer-text">
-          <inline-svg src="/icons/offer/stamp.svg" class="offer-stamp-icon" width="70" />
+          <inline-svg src="/icons/offer/stamp.svg" class="offer-stamp-icon" width="70"/>
           <p>
             Biz evdən çıxmadan cəmi bir saat ərzində eksklüziv ucuz qiymətə yeni avtomobil almağa imkan verən innovativ
             onlayn sistem yaratdıq. Biz sizin üçün təhlükəsiz, sürətli və rahat əməliyyata zəmanət veririk. Siz
@@ -160,7 +161,7 @@ import OfferSlider from "~/components/offer/OfferSlider";
 export default {
   name: 'Offer',
   components: {OfferSlider, Accordion},
-  middleware: ['not_auto_salon','auth_general'],
+  middleware: ['not_auto_salon', 'auth_general'],
   async fetch({store}) {
     await store.dispatch('getBrands')
     await store.dispatch('offerPartners')
@@ -216,7 +217,7 @@ export default {
       getModelGenerationsArray: 'getModelGenerationsArray',
     }),
     getOffer() {
-      if (!this.brand || !this.model){
+      if (!this.brand || !this.model) {
         return this.$toasted.error('Brend və ya model seçilməyib')
       }
       this.$router.push({
@@ -226,29 +227,38 @@ export default {
 
         }
       })
+      this.$store.commit('setNullModels')
     },
     async setBrand(slug, index) {
       let brand = this.brands.find((option) => option.slug === slug)
+      this.model = null
       if (slug) this.$store.dispatch('getModels', slug)
 
     },
 
-    notAccepted(){
-       let notAcceptedOffers=this.userOffers.filter(function (e) {
-        return e.user_is_accepted ==false;
+    notAccepted() {
+      let notAcceptedOffers = this.userOffers.filter(function (e) {
+        return e.user_is_accepted == false;
       });
-       return notAcceptedOffers.length;
+      return notAcceptedOffers.length;
     },
-
     loadOfferPartners() {
-      this.$store.dispatch('offerPartners', this.offerPartnersMeta.current_page+1)
+      this.$store.dispatch('offerPartners', this.offerPartnersMeta.current_page + 1)
 
     }
   },
   watch: {},
+  beforeCreate() {
+    this.brands = [];
+    this.carModels = []
 
 
-
+  },
+  beforeDestroy() {
+    this.brands = [];
+    this.carModels = []
+    console.log('des')
+  }
 
 }
 </script>

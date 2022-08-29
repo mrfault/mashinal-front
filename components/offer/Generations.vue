@@ -24,6 +24,13 @@ export default {
       selectedGenerations:[]
     }
   },
+  watch:{
+    selected() {
+      if(this.selected.length === 1) {
+        this.$set(this,'selectedGenerations',this.selected);
+      }
+    }
+  },
   methods:{
     selectGeneration(id){
       if (!this.selectedGenerations.includes(id)){
@@ -72,7 +79,10 @@ export default {
     },
   },
   props:{
-    generations:{}
+    generations:{},
+    selected: {
+      default: []
+    }
   }
 }
 </script>
