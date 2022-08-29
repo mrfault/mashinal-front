@@ -115,6 +115,8 @@ export default {
       showLastStep: false,
       lastStepKey: 0,
       form: {
+        end_date: '',
+        auction: 1,
         car_catalog_id: '',
         brand: '',
         model: '',

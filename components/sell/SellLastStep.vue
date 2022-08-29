@@ -49,13 +49,13 @@
           </div>
           <div class="col-lg-auto mb-2 mb-lg-0">
             <div class="d-flex flex-wrap flex-lg-nowrap">
-              <form-checkbox transparent :label="$t('is_new')" v-model="form.is_new" input-name="is_new" @change="updateMileage"/>
-              <form-checkbox transparent :label="$t('bitie')" v-model="form.beaten" input-name="beaten" has-popover>
-                <popover :message="$t('with_significant_damage_to_body_elements_that_do_not_move_on_their_own')" :width="175" />
+              <form-checkbox  transparent :label="$t('is_new')" v-model="form.is_new" input-name="is_new" @change="updateMileage"/>
+              <form-checkbox  transparent :label="$t('bitie')" v-model="form.beaten" input-name="beaten" has-popover>
+                <popover class="white-space-pre-wrap-span" :message="$t('with_significant_damage_to_body_elements_that_do_not_move_on_their_own')" :width="175" />
               </form-checkbox>
-              <form-checkbox transparent :label="$t('not_cleared')" v-model="form.customs_clearance" input-name="customs_clearance"
+              <form-checkbox v-if="!user.external_salon" transparent :label="$t('not_cleared')" v-model="form.customs_clearance" input-name="customs_clearance"
                 @change="removeError('car_number', true), removeError('vin', true), form.car_number = ''" />
-              <form-checkbox transparent :label="$t('in_garanty')" v-model="form.guaranty" input-name="guaranty" />
+              <form-checkbox v-if="!user.external_salon" transparent :label="$t('in_garanty')" v-model="form.guaranty" input-name="guaranty" />
             </div>
           </div>
         </div>
@@ -65,7 +65,7 @@
           </h2>
           <damage-options :selected="form.part" @update-car-damage="updateCarDamage" :imageIsActive="true" v-if="false"/>
         </template>
-        <template v-if="!isAutosalon">
+        <template v-if="!isAutosalon && !user.external_salon">
           <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-region_id">
             <span>{{ $t('region_and_place_of_inspection') }} <span class="star"> *</span></span>
           </h2>
@@ -102,13 +102,38 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-auto mb-2 mb-lg-0">
+          <div v-if="!user.external_salon" class="col-lg-auto mb-2 mb-lg-0">
             <div class="d-flex flex-wrap flex-lg-nowrap">
               <form-checkbox transparent :label="$t('tradeable')" v-model="form.tradeable" input-name="tradeable" />
               <form-checkbox transparent :label="$t('credit_possible')" v-model="form.credit" input-name="credit" />
             </div>
           </div>
         </div>
+        <template v-if="user.external_salon">
+          <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-price">
+            <span>{{ $t('Auction') }} / {{ $t('end_date') }} <span class="star"> *</span></span>
+          </h2>
+          <div class="row">
+            <div class="col-lg-auto mb-2 mb-lg-0">
+              <div class="row flex-nowrap">
+                <div class="col-auto flex-grow-1">
+                    <form-switch @change="removeError('end_date')" auto-width v-model="form.auction" :options="[{ name:'Auction', key:1 }, { name:'Sell', key:2 }]"/>
+                </div>
+                <div class="col-auto" v-if="form.auction === 1">
+                  <form-text-input
+                    @change="removeError('end_date')"
+                    date-type="datetime"
+                    value-type="datetime"
+                    date-format="DD.MM.YYYY HH:mm"
+                    v-model="form.end_date"
+                    :placeholder="$t('announcement_end_date')"
+                    input-date
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </template>
 <!--        <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-owner_type">-->
 <!--          <span>{{ $t('first_owner_question') }}</span>-->
 <!--        </h2>-->
@@ -118,14 +143,14 @@
 <!--          </div>-->
 <!--        </div>-->
         <h2 v-if="type === 'cars'" class="title-with-line mt-2 mt-lg-3" id="anchor-car_or_vin">
-          <span>{{ $t(form.customs_clearance ? 'vin_carcase_number' : 'license_plate_number_vin_or_carcase_number') }}
+          <span>{{ $t(form.customs_clearance || user.external_salon ? 'vin_carcase_number' : 'license_plate_number_vin_or_carcase_number') }}
             <template v-if="!loggedIn || (loggedIn && !user.autosalon) || (loggedIn && user.autosalon && user.autosalon.is_official)">
                <span class="star" v-if="type === 'cars'"> *</span>
             </template>
           </span>
         </h2>
         <div class="row" v-if="type === 'cars' && !user.is_autosalon">
-          <div class="col-lg-4 mb-2 mb-lg-0" v-if="!form.customs_clearance">
+          <div class="col-lg-4 mb-2 mb-lg-0" v-if="!form.customs_clearance && !user.external_salon">
             <form-text-input v-model="form.car_number" input-class="car-number-show-popover" img-src="/img/flag.svg"
                 :mask="type === 'cars' ? '99 - AA - 999' : '99 - A{1,2} - 999'"
                 :placeholder="type === 'cars' ? '__ - __ - ___' : '__ - _ - ___'" @focus="showCarNumberDisclaimer"
@@ -602,3 +627,8 @@ export default {
   }
 }
 </script>
+<style lang="scss" >
+.white-space-pre-wrap-span span {
+  white-space: pre-wrap !important;
+}
+</style>

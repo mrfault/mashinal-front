@@ -226,6 +226,17 @@ export default {
           image: 'createshop',
           isAvailable: true,
         },
+        {
+          type: 15,
+          title: `${this.$t('dashboard_external_salon')}`,
+          description: null,
+          value: null,
+          icon: 'salons-tab',
+          url: '/dashboard/3',
+          hasAction: false,
+          image: 'saloon-dashboard',
+          isAvailable: !!this.$auth.user.external_salon,
+        },
       ]
     },
     garageServices() {

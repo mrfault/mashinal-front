@@ -9,8 +9,9 @@
           value-type="format"
           :popup-style="{ top: '100%', left: 0 }"
           :append-to-body="false"
-          :format="'DD.MM.YYYY'"
+          :format="dateFormat"
           :placeholder="placeholder"
+          :type="dateType"
           :lang="locale"
           :input-attr="{readonly: 'readonly', id, maxlength, disabled}"
           :input-class="{invalid, valid, disabled, [`${inputClass}`]:inputClass}"
@@ -66,6 +67,18 @@
       type: {
         type: String,
         default: 'text'
+      },
+      dateFormat: {
+        type: String,
+        default: 'DD.MM.YYYY'
+      },
+      dateType: {
+        type: String,
+        default: 'date'
+      },
+      valueType: {
+        type: String,
+        default: 'format'
       },
       placeholder: {
         type: String,

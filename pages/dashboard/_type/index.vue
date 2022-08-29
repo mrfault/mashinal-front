@@ -242,8 +242,8 @@ export default {
     salonDetails() {
       let id = this.$getDashboardId(this.$route.params.type)
       let isShop = id == this.user.part_salon?.id
-      let myPackage = this.user.autosalon?.current_package || {}
-      let salon = this.user[isShop ? 'part_salon' : 'autosalon']
+      let myPackage = this.user.autosalon?.current_package || this.user.external_salon?.current_package || {}
+      let salon = this.user.external_salon?.id ?  this.user.external_salon :  this.user[isShop ? 'part_salon' : 'autosalon']
       return {
         isShop: isShop,
         short_description: salon.short_description || '',
