@@ -7,14 +7,15 @@
         <div class=" col col-md-2 background-white" v-if="!isMobileBreakpoint">
           <div class="offerNav">
             <ul>
-              <li @click="changePage('all')"  :class="{'active-filter': $route.query.param==='all' || !$route.query.param} ">
+              <li @click="changePage('all')"
+                  :class="{'active-filter': $route.query.param==='all' || !$route.query.param} ">
                 <inline-svg src="/icons/offer/requests.svg" class="filter-icon"/>
                 <span>
                   Sorğular
                 </span>
               </li>
 
-              <li @click="changePage('sended')"  :class="{'active-filter-fill': $route.query.param==='sended'} ">
+              <li @click="changePage('sended')" :class="{'active-filter-fill': $route.query.param==='sended'} ">
                 <inline-svg src="/icons/offer/send.svg" class="filter-icon-fill"/>
                 <span>
                    Gönd. Təkliflər
@@ -22,13 +23,13 @@
               </li>
 
 
-              <li @click="changePage('favorites')"  :class="{'active-filter': $route.query.param==='favorites'} ">
+              <li @click="changePage('favorites')" :class="{'active-filter': $route.query.param==='favorites'} ">
                 <inline-svg src="/icons/offer/star.svg" class="filter-icon"/>
                 <span>
       Seçilmişlər
                 </span>
               </li>
-              <li @click="changePage('deleted')" :class="{'active-filter-fill': $route.query.param==='deleted'} " >
+              <li @click="changePage('deleted')" :class="{'active-filter-fill': $route.query.param==='deleted'} ">
                 <inline-svg src="/icons/offer/delete.svg" class="filter-icon   filter-icon-fill"/>
                 <span>
                   Silinmişlər
@@ -40,14 +41,14 @@
         <div class="col-12" v-if="isMobileBreakpoint">
           <div class="mobile-filter">
             <ul>
-              <li @click="changePage('all')"  :class="{'active-filter': $route.query.param==='all'} ">
+              <li @click="changePage('all')" :class="{'active-filter': $route.query.param==='all'} ">
                 <inline-svg src="/icons/offer/requests.svg" class="filter-icon"/>
                 <span>
                   Sorğular
                 </span>
               </li>
 
-              <li @click="changePage('sended')"  :class="{'active-filter-fill': $route.query.param==='sended'} ">
+              <li @click="changePage('sended')" :class="{'active-filter-fill': $route.query.param==='sended'} ">
                 <inline-svg src="/icons/offer/send.svg" class="filter-icon-fill"/>
                 <span>
                    Gönd. Təkliflər
@@ -55,13 +56,13 @@
               </li>
 
 
-              <li @click="changePage('favorites')"  :class="{'active-filter': $route.query.param==='favorites'} ">
+              <li @click="changePage('favorites')" :class="{'active-filter': $route.query.param==='favorites'} ">
                 <inline-svg src="/icons/offer/star.svg" class="filter-icon"/>
                 <span>
       Seçilmişlər
                 </span>
               </li>
-              <li @click="changePage('deleted')" :class="{'active-filter-fill': $route.query.param==='deleted'} " >
+              <li @click="changePage('deleted')" :class="{'active-filter-fill': $route.query.param==='deleted'} ">
                 <inline-svg src="/icons/offer/delete.svg" class="filter-icon   filter-icon-fill"/>
                 <span>
                   Silinmişlər
@@ -78,7 +79,8 @@
             <input type="text" v-model="search" placeholder="Maşın və ya istifadəçi adı" class="searchInput">
           </div>
           <div class="offerUsers">
-            <div class="user" v-for="offer in search ? searchOffer : offers" @click="getOfferDetail(offer.id)">
+            <div class="user" v-for="offer in search ? searchOffer : offers"
+                 @click="!offer.deleted && getOfferDetail(offer.id)" :class="offer.deleted ? 'unclickable' : null">
               <div class="userImg"
                    :style="'background-image: url('+(offer.user.img ? offer.user.img : '/img/user.jpg')+')'">
               </div>
@@ -102,7 +104,7 @@
             </p>
             <div class="actions" v-if="IsAccepted">
               <span @click="addFavorite(offer.id)" :class="offer.isFavorite ? 'isFavorite' : null"><icon name="star"/> </span>
-              <span  @click="deleteAutoSalonOffer(offer.id)"> <icon name="garbage"></icon></span>
+              <span @click="deleteAutoSalonOffer(offer.id)"> <icon name="garbage"></icon></span>
             </div>
           </div>
           <div class="offerDetail" v-if="offer.brand">
@@ -200,9 +202,14 @@
                     <div class="message-file" v-for="file in message.files">
                       <img :src="file" width="100%"/>
                     </div>
-                  </div>
-                  {{ message.message }} <span class="time">17:30</span>
+                    <div class="div m-1" v-if="message.files.length>0">
+                      {{ message.message }} <span class="time">17:30</span>
+                    </div>
 
+                  </div>
+                  <span v-if="!message.files.length>0">
+                    {{ message.message }} <span class="time">17:30</span>
+                  </span>
                 </div>
               </div>
               <div>
@@ -236,8 +243,7 @@ import OfferSlider from "~/components/offer/OfferSlider";
 import {mapGetters} from "vuex";
 import OfferMessage from "~/components/offer/offer-message";
 import CollapseContent from "~/components/elements/CollapseContent";
-import { ImageResizeMixin } from '~/mixins/img-resize';
-import {SocketMixin} from "~/mixins/socket";
+import {ImageResizeMixin} from '~/mixins/img-resize';
 
 export default {
   name: "index",
@@ -251,7 +257,7 @@ export default {
       },
       sendingFiles: false,
       search: "",
-      files:[]
+      files: []
     }
   },
   head() {
@@ -275,9 +281,9 @@ export default {
     changePage(param = null) {
 
       this.$router.push({
-        path:'/salons/offer',
-        params:param,
-        query :{param:param}
+        path: '/salons/offer',
+        params: param,
+        query: {param: param}
       })
 
 
@@ -293,24 +299,20 @@ export default {
     },
     async addFavorite(id) {
       await this.$store.dispatch('offerAddFavorite', id)
-      this.offer.isFavorite=!this.offer.isFavorite;
+      this.offer.isFavorite = !this.offer.isFavorite;
     },
-    async deleteAutoSalonOffer(id){
-/*      this.$toast.
-      await this.$axios.delete('/offer/salon/offer/delete/'+id);*/
-
-
-
+    async deleteAutoSalonOffer(id) {
+      await this.$axios.delete('/offer/salon/offer/delete/' + id);
       this.checkAccepted(id)
-      this.offer=false
-      this.IsAccepted=false
+      this.offer = false
+      this.IsAccepted = false
     },
-   async submitMessage() {
+    async submitMessage() {
       let formData = new FormData();
 
-      formData.append('recipient_id',this.offer.user.id)
-      formData.append('message',this.chat.text)
-      formData.append('offer_id',this.offer.id)
+      formData.append('recipient_id', this.offer.user.id)
+      formData.append('message', this.chat.text)
+      formData.append('offer_id', this.offer.id)
 
 
       await Promise.all(this.files.map(async (file) => {
@@ -330,7 +332,7 @@ export default {
     async getOfferDetail(id) {
       if (this.isMobileBreakpoint) {
         this.$router.push(this.$localePath('/salons/offer') + '/' + id)
-      }else {
+      } else {
 
         await this.checkAccepted(id)
         this.offer = JSON.parse(JSON.stringify(this.offers.find(function (offer) {
@@ -377,11 +379,11 @@ export default {
     ...mapGetters({
       offers: 'offers',
       offerMessages: 'getOfferMessages',
-      isFavorite:'isFavorite'
+      isFavorite: 'isFavorite'
     }),
   },
-  watch:{
-    async  $route(newVal,oldVal){
+  watch: {
+    async $route(newVal, oldVal) {
 
       await this.$store.dispatch('getAllOffers', newVal.query.param)
     }

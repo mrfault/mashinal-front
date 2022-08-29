@@ -328,10 +328,9 @@
       color: $red-1;
     }
   }
-
   .offerNav {
     background: $dark-blue-1;
-    height: 640px;
+    height: 700px;
     padding: 20px 5px 5px 5px;
 
     ul {
@@ -795,6 +794,7 @@
   height: 35px;
   width: 35px;
   border-radius: 5px;
+  border: $greyish-blue-3 1px;
 }
 
 .inputInvalid {
@@ -813,6 +813,12 @@
   path:first-child {
     fill: rgba(8, 26, 62, 0.3);
   }
+}
+.addons{
+  border: 1px solid $greyish-blue-3;
+  border-left: none;
+  border-right: none;
+  border-bottom: none;
 }
 
 .dark-mode{
@@ -927,7 +933,7 @@
   }
   .messages{
     .his{
-      background: $dark-2;
+      background: $dark-1;
     }
   }
   .mobile-filter{
@@ -943,9 +949,10 @@
       }
     }
   }
-
-
 }
-
-
-
+.color-box {
+  border: 1px solid $greyish-blue-3 ;
+}
+.unclickable{
+  cursor: not-allowed !important;
+}
