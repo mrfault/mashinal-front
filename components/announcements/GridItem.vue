@@ -79,6 +79,14 @@
               >
                 <span class="badge badge-blue">SHOP</span>
               </template>
+              <template
+                v-if="announcement.is_external_salon"
+              >
+                <span class="badge badge-blue badge-external">
+                  <inline-svg class="badge-icon" src="/img/auction.svg" />
+                  Sifarişlə
+                </span>
+              </template>
               <template v-if="showStatus">
                 <span class="badge active" v-if="announcement.status == 1">
                   {{ $t('accepted') }}
@@ -425,6 +433,17 @@ export default {
 </script>
 
 <style>
+.badge-icon {
+  width: 20px;
+  margin-right: 3px;
+  margin-bottom: 1px;
+  height: 20px;
+}
+.badge-external {
+  margin-right: -17px;
+  border-bottom-right-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+}
 .shine-size {
   margin-left: auto;
 }
