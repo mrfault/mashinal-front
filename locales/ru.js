@@ -2223,5 +2223,5 @@ export default {
    "shine_width2":"Ширина",
    "commercial_part":"Коммерческий",
    "logout_to_parent": "Список автосалонов",
-   "item_count": "Салона"
+   "item_count": "Салонов"
 }

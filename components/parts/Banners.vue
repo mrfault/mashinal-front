@@ -1,5 +1,5 @@
 <template>
-  <div class="row">
+  <div class="row" v-if="false">
     <div class="col-lg-6 mb-2 mb-lg-0">
       <nuxt-link class="d-block" :to="$localePath('/business-profile?scrollto=packages&type=' + (reverse ? 2 : 1))">
         <img class="round-4 full-width" :src="`/img/create-${reverse ? 'shop' : 'salon'}-${type}-${locale}.jpg`" alt="" />

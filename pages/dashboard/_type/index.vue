@@ -165,9 +165,17 @@ export default {
     },
     cards() {
       let type = this.$route.params.type
-      let balance = type == 1 ? this.$auth.user.autosalon.balance : this.$auth.user.part_salon.balance;
-      let package_name = type == 1 ? this.$auth.user.autosalon?.current_package?.name[this.locale] : this.$auth.user.part_salon?.current_package?.name[this.locale]
-      return [
+      var balance;
+      var package_name;
+      if([1,2].includes(type)) {
+        balance = type == 1 ? this.$auth.user.autosalon.balance : this.$auth.user.part_salon.balance;
+        package_name = type == 1 ? this.$auth.user.autosalon?.current_package?.name[this.locale] : this.$auth.user.part_salon?.current_package?.name[this.locale]
+      }
+      if(type == 3) {
+        balance = this.$auth.user.external_salon.balance
+        package_name = this.$auth.user.external_salon?.current_package?.name[this.locale]
+      }
+    return [
         {
           key: 'announcements',
           title: `${this.$t('my_announces')}`,
