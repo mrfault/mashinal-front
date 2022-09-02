@@ -583,6 +583,18 @@
                     v-if="!isMobileBreakpoint && !advanced"
                   >
                     <div class="form-info text-green">
+                      <form-checkbox
+                        :label="$t('external_salon')"
+                        v-model="form.external_salon"
+                        input-name="savedSearch"
+                      />
+                    </div>
+                  </div>
+                  <div
+                    class="col-6 col-lg-3 mb-2 mb-lg-3"
+                    v-if="!isMobileBreakpoint && !advanced"
+                  >
+                    <div class="form-info text-green">
                       {{ $readPlural(totalCount, $t('plural_forms_announcements')) }}
                     </div>
                   </div>
@@ -916,6 +928,7 @@ export default {
         exclude_additional_brands: { 0: {}, 1: {}, 2: {}, 3: {}, 4: {} },
         all_options: {},
         announce_type: 1,
+        external_salon: false,
         currency: 1,
         min_capacity: '',
         max_capacity: '',

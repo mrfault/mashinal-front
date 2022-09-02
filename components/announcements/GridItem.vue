@@ -166,7 +166,7 @@
       <div class="item-details">
         <div class="d-flex">
           <h3 class="item-details__price">
-            {{ announcement.price }}
+           <span v-if="announcement.is_external_salon"> ≈ </span>{{ announcement.price }}
           </h3>
         </div>
         <h3 class="item-details__title">
