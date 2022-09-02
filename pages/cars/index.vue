@@ -16,7 +16,7 @@
           :paginate="$paginate(carsAnnouncements)"
           :title="$t('announcements')"
           :pending="pending"
-          @change-page="searchCars"
+
           escape-duplicates
         />
         <no-results v-else />
