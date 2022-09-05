@@ -189,7 +189,6 @@ export default {
   validations: {
     form: {
       maxPrice: {required},
-      minPrice: {required}
     }
 
   },
@@ -253,6 +252,7 @@ export default {
   methods: {
     onlyNumberMaxPrice($event) {
       let keyCode = ($event.keyCode ? $event.keyCode : $event.which);
+
       if ((keyCode < 48 || keyCode > 57) && keyCode == 46 || this.form.maxPrice.length > 6 ) {
         $event.preventDefault();
       }
@@ -267,7 +267,7 @@ export default {
     },
     submitOffer() {
       this.$v.$touch();
-      console.log(this.$v.form)
+
       if (this.$v.$error) return;
       this.isLoader=true
       this.$axios.$post('offer', {
