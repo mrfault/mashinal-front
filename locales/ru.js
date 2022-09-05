@@ -2223,5 +2223,10 @@ export default {
    "shine_width2":"Ширина",
    "commercial_part":"Коммерческий",
    "logout_to_parent": "Список автосалонов",
-   "item_count": "Салонов"
+   "item_count": "Салонов",
+   "auction":"Аукцион",
+   "sell":"Продажа",
+   "end_date":"Дата окончания",
+   "announcement_end_date":"Дата окончания объявления",
+   "country":"Страна"
 }

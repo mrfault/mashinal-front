@@ -2222,5 +2222,10 @@ export default {
   "commercial_size":"Şinin ölçüləri",
   "shine_width2":"En",
   "commercial_part":"Ticari",
-  "logout_to_parent": "Avtosalonlar siyahısı"
+  "logout_to_parent": "Avtosalonlar siyahısı",
+  "auction":"Auksion",
+  "sell":"Satış",
+  "end_date":"Son tarix",
+  "announcement_end_date":"Elanın son tarixi",
+  "country":"Ölkə"
 }
