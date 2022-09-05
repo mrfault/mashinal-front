@@ -102,7 +102,10 @@ export default {
         {key: 'commercial_size', value: this.announcement.commercial_size}
 
       ];
-
+      if(this.announcement.is_external_salon)  {
+        let index = specs.findIndex(item => item.key === 'region');
+        delete specs[index]
+      }
       let mergedKeys = [
         'shine_width', 'diameter', 'height'
       ];
@@ -111,6 +114,7 @@ export default {
         height: '',
         diameter: ''
       };
+
       // Dynamic specs
       if (this.type === 'parts') {
         Object.keys(this.announcement.filters).forEach(filter => {

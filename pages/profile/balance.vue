@@ -16,7 +16,7 @@
                 {{ $readNumber(totalBalance) }} ALManat
               </strong>
               <p v-if="!isMobileBreakpoint">{{ $t('wallet_balance') }}</p>
-              <template v-if="user.autosalon || user.part_salon">
+              <template v-if="user.autosalon || user.part_salon || user.external_salon">
                 <hr />
                 <div class="row justify-content-center">
                   <div class="col-12 text-medium mb-1">
@@ -29,6 +29,10 @@
                   <div class="col-auto text-medium" v-if="user.part_salon">
                     {{ $t('shop') }}:
                     {{ $readNumber(user.part_salon.balance) }} ALM
+                  </div>
+                  <div class="col-auto text-medium" v-if="user.external_salon">
+                    {{ $t('salon') }}:
+                    {{ $readNumber(user.external_salon.balance) }} ALM
                   </div>
                 </div>
               </template>

@@ -197,7 +197,7 @@ export default {
       this.$router.push(path)
     },
     getTextLines(phone) {
-      let isSalon = this.loggedIn && this.user.autosalon
+      let isSalon = this.loggedIn && this.user.autosalon || this.user.external_salon;
       let isShop = this.loggedIn && this.user.part_salon
 
       let firstLine, secondLine, thirdLine
@@ -212,7 +212,7 @@ export default {
 
       let hasTransportTokens =
         transportTokens > 0 || this.tokens.salon_unlimited
-      let hasPartsTokens = partTokens > 0 || this.tokens.parts_unlimited
+      let hasPartsTokens = this.user.external_salon ? false : (partTokens > 0 || this.tokens.parts_unlimited);
 
       let firstLocaleEnding =
         hasTransportTokens && hasPartsTokens
@@ -248,16 +248,17 @@ export default {
             : partTokens,
         })
       }
-
-      if (!hasTransportTokens || !hasPartsTokens) {
-        secondLine =
-          '<strong class="text-red">*</strong> ' +
-          this.$t(`no_announcements_on_balance${secondLocaleEnding}`)
-        thirdLine = this.$t('contact_for_more_info', {
-          phone:'*8787',
-          email:
-            isSalon || isShop ? 'sales@al.ventures' : 'office@al.ventures',
-        })
+      if(!this.user.external_salon) {
+        if (!hasTransportTokens || !hasPartsTokens) {
+          secondLine =
+            '<strong class="text-red">*</strong> ' +
+            this.$t(`no_announcements_on_balance${secondLocaleEnding}`)
+          thirdLine = this.$t('contact_for_more_info', {
+            phone:'*8787',
+            email:
+              isSalon || isShop ? 'sales@al.ventures' : 'office@al.ventures',
+          })
+        }
       }
       return [firstLine, secondLine, thirdLine]
         .filter((line) => line)
