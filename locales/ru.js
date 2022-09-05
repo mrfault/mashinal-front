@@ -2228,5 +2228,6 @@ export default {
    "sell":"Продажа",
    "end_date":"Дата окончания",
    "announcement_end_date":"Дата окончания объявления",
-   "country":"Страна"
+   "country":"Страна",
+   "dashboard_external_salon": "Профиль салона"
 }

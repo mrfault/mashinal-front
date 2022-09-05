@@ -123,13 +123,13 @@
         </div>
         <template v-if="user.external_salon">
           <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-price">
-            <span>{{ $t('Auction') }} / {{ $t('end_date') }} <span class="star"> *</span></span>
+            <span>{{ $t('auction') }} / {{ $t('end_date') }} <span class="star"> *</span></span>
           </h2>
           <div class="row">
             <div class="col-lg-auto mb-2 mb-lg-0">
               <div class="row flex-nowrap">
                 <div class="col-auto flex-grow-1">
-                    <form-switch @change="removeError('end_date')" auto-width v-model="form.auction" :options="[{ name:'Auction', key:1 }, { name:'Sell', key:2 }]"/>
+                    <form-switch @change="removeError('end_date')" auto-width v-model="form.auction" :options="[{ name:$t('auction'), key:1 }, { name:$t('sell'), key:2 }]"/>
                 </div>
                 <div class="col-auto" v-if="form.auction === 1">
                   <form-text-input

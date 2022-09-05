@@ -2227,5 +2227,6 @@ export default {
   "sell":"Satış",
   "end_date":"Son tarix",
   "announcement_end_date":"Elanın son tarixi",
-  "country":"Ölkə"
+  "country":"Ölkə",
+  "dashboard_external_salon": "Salon profili"
 }
