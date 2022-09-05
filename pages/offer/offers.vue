@@ -160,13 +160,19 @@
 
             <div v-if="user_is_accepted">
               <div class="messages">
-                <div :class="isMyMessage(message) ? 'my' :'his' " v-for="message in offerMessages">
+                <div :class=" isMyMessage(message) ? 'my' :'his' " v-for="message in offerMessages">
                   <div v-if="message.files.length>0" class="message-files">
                     <div class="message-file" v-for="file in message.files">
                       <img :src="file" width="100%"/>
                     </div>
+                    <div class="div m-1" v-if="message.files.length>0">
+                      {{ message.message }} <span class="time">17:30</span>
+                    </div>
+
                   </div>
-                  {{ message.message }} <span class="time">17:30</span>
+                  <span v-if="!message.files.length>0">
+                    {{ message.message }} <span class="time">{{message.time}}</span>
+                  </span>
                 </div>
               </div>
             </div>

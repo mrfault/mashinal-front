@@ -221,10 +221,9 @@ export default {
         return this.$toasted.error('Brend və ya model seçilməyib')
       }
       this.$router.push({
-        name: 'offer-add___az', params: {
+        name: 'offer-add___az', query: {
           brand: this.brand,
           model: this.model,
-
         }
       })
       this.$store.commit('setNullModels')

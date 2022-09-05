@@ -306,6 +306,7 @@ export default {
       this.checkAccepted(id)
       this.offer = false
       this.IsAccepted = false
+      this.$store.dispatch('getAllOffers')
     },
     async submitMessage() {
       let formData = new FormData();
