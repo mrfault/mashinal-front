@@ -86,6 +86,18 @@
             </div>
           </div>
         </template>
+        <template v-if="user.external_salon">
+          <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-region_id">
+            <span>{{ $t('country') }} <span class="star"> *</span></span>
+          </h2>
+          <div class="row">
+            <div class="col-lg-4 mb-2 mb-lg-0">
+              <form-select :label="$t('country')" :options="sellOptions.countries" v-model="form.country_id" has-search
+                           :invalid="isInvalid('region_id')" @change="removeError('region_id'), updatePreview('region')"
+                           :clear-option="false" />
+            </div>
+          </div>
+        </template>
         <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-price">
           <span>{{ $t('price') }} <span class="star"> *</span></span>
         </h2>

@@ -46,6 +46,7 @@ export default {
       const specs = [
         {key: 'years', value: this.announcement.year, class: 'car-year'},
         {key: 'region', value: this.announcement.region?.name[this.locale]},
+        {key:'country', value:this.announcement.country_name, for:['cars']},
         {
           key: 'mileage',
           value: this.mileage + (this.announcement.is_new ? ', ' + this.$t('is_new').toLowerCase() : ''),
@@ -64,6 +65,7 @@ export default {
         {key: 'the_number_of_measures', value: this.tact, for: ['moto']},
         {key: 'cylinder_block', value: this.cylinderBlock, for: ['moto']},
         {key: 'fuel_type', value: this.fuelType, for: ['moto']},
+
         {key: 'box', value: this.box},
         {key: 'privod', value: this.gear},
         {key: 'type_of_brakes', value: this.brakeType, for: ['commercial']},

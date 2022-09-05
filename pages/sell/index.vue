@@ -162,10 +162,12 @@ export default {
       return this.searchMenus.map((menu) => ({
         ...menu,
         disabled:
+          (this.user?.external_salon ? menu.title === 'parts' : false) ||
           this.tokens[menu.title] <= 0 &&
           !this.tokens[
             menu.title === 'parts' ? 'parts_unlimited' : 'salon_unlimited'
-          ],
+          ]
+
       }))
     },
   },
