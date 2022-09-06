@@ -76,8 +76,8 @@
 export default {
   props: {
     promilValue: {
-      type: String,
-      default: '5.00'
+      type: Number,
+      default: 0.00
     },
   },
 }

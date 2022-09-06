@@ -186,7 +186,7 @@
         </clipPath>
       </defs>
     </svg>
-    <speedometer-arrow></speedometer-arrow>
+    <speedometer-arrow :style="`transform: rotate(${speedometerValue}deg);`"></speedometer-arrow>
   </div>
 </template>
 
@@ -217,7 +217,6 @@ export default {
       z-index: 2;
       widows: 50%;
       width: 28%;
-      transform: rotate(90deg);
       transform-origin: 80% 50%;
     }
   }
