@@ -164,7 +164,14 @@ export const LayoutMixin = {
           this.$store.commit('appendOfferMessage', message)
 /*          this.$store.commit('setNewMessage',message.offer.id)*/
           this.$store.dispatch('getAllOffers')
-          this.scrollTo('.messages > div:last-child', 0, 500, '.offerDetail')
+          if (message.files.length > 1) {
+            const sleep = () =>{
+              this.scrollTo('.his:last-child >.message-files:last-child >.message-file', 300, 500, '.offerDetail')
+            }
+            setTimeout(sleep, 100)
+          } else {
+            this.scrollTo('.his:last-child', 0, 500, '.offerDetail')
+          }
 
         })
         this.connectEcho('global-channel.' + this.$auth.user.id).listen(

@@ -7,13 +7,14 @@
         <div class=" col col-md-2" v-if="!isMobileBreakpoint">
           <div class="offerNav">
             <ul>
-              <li @click="changePage('all')"  :class="{'active-filter': $route.query.param==='all' || !$route.query.param} ">
+              <li @click="changePage('all')"
+                  :class="{'active-filter': $route.query.param==='all' || !$route.query.param} ">
                 <inline-svg src="/icons/offer/requests.svg" class="filter-icon"/>
                 <span>
                   Təkliflər
                 </span>
               </li>
-              <li @click="changePage('deleted')" :class="{'active-filter-fill': $route.query.param==='deleted'} " >
+              <li @click="changePage('deleted')" :class="{'active-filter-fill': $route.query.param==='deleted'} ">
                 <inline-svg src="/icons/offer/delete.svg" class="filter-icon   filter-icon-fill"/>
                 <span>
                   Silinmişlər
@@ -25,13 +26,13 @@
         <div class="col-12" v-if="isMobileBreakpoint">
           <div class="mobile-filter">
             <ul>
-              <li @click="changePage('all')"  :class="{'active-filter': $route.query.param==='all'} ">
+              <li @click="changePage('all')" :class="{'active-filter': $route.query.param==='all'} ">
                 <inline-svg src="/icons/offer/requests.svg" class="filter-icon"/>
                 <span>
                   Təkflilər
                 </span>
               </li>
-              <li @click="changePage('deleted')" :class="{'active-filter-fill': $route.query.param==='deleted'} " >
+              <li @click="changePage('deleted')" :class="{'active-filter-fill': $route.query.param==='deleted'} ">
                 <inline-svg src="/icons/offer/delete.svg" class="filter-icon   filter-icon-fill"/>
                 <span>
                   Silinmişlər
@@ -163,7 +164,7 @@
                 <div :class=" isMyMessage(message) ? 'my' :'his' " v-for="message in offerMessages">
                   <div v-if="message.files.length>0" class="message-files">
                     <div class="message-file" v-for="file in message.files">
-                      <img :src="file" width="100%"/>
+                      <img :src="file" width="100%" class="p-1"/>
                     </div>
                     <div class="div m-1" v-if="message.files.length>0">
                       {{ message.message }} <span class="time">17:30</span>
@@ -171,7 +172,7 @@
 
                   </div>
                   <span v-if="!message.files.length>0">
-                    {{ message.message }} <span class="time">{{message.time}}</span>
+                    {{ message.message }} <span class="time">{{ message.time }}</span>
                   </span>
                 </div>
               </div>
@@ -204,7 +205,8 @@ import OfferSlider from "~/components/offer/OfferSlider";
 import {mapGetters} from "vuex";
 import OfferMessage from "~/components/offer/offer-message";
 import CollapseContent from "~/components/elements/CollapseContent";
-import { ImageResizeMixin } from '~/mixins/img-resize';
+import {ImageResizeMixin} from '~/mixins/img-resize';
+
 export default {
 
 
@@ -236,7 +238,7 @@ export default {
         text: '',
       },
       search: '',
-      files:[]
+      files: []
 
 
     }
@@ -273,18 +275,18 @@ export default {
     },
     async changePage(param) {
       this.$router.push({
-        path:'offers',
-        params:param,
-        query :{param:param}
+        path: 'offers',
+        params: param,
+        query: {param: param}
       })
 
     },
     async submitMessage() {
       let formData = new FormData();
 
-      formData.append('recipient_id',this.userOffer.auto_salon.user_id)
+      formData.append('recipient_id', this.userOffer.auto_salon.user_id)
       formData.append('message', this.chat.text)
-      formData.append('offer_id',this.offer.id)
+      formData.append('offer_id', this.offer.id)
 
       await Promise.all(this.files.map(async (file) => {
         let resizedFile = await this.getResizedImage(file);
@@ -293,7 +295,15 @@ export default {
       this.$axios.$post('/offer/messages/send', formData).then((res) => {
         this.chat.text = ''
         this.$store.commit('appendOfferMessage', res.data.message)
-        this.scrollTo('.my:last-child', 0, 500, '.offerDetail')
+        if (res.data.message.files.length > 1) {
+          const sleep = () =>{
+            this.scrollTo('.my:last-child >.message-files:last-child >.message-file', 300, 500, '.offerDetail')
+          }
+          setTimeout(sleep, 100)
+        } else {
+          this.scrollTo('.my:last-child', 0, 500, '.offerDetail')
+        }
+
       })
       this.$nuxt.$emit('clear-message-attachments');
     },
@@ -334,8 +344,8 @@ export default {
       this.user_is_accepted = false
     }
   },
-  watch:{
-   async  $route(newVal,oldVal){
+  watch: {
+    async $route(newVal, oldVal) {
       await this.$store.dispatch('OffersAcceptedByAutoSalon', newVal.query.param)
     }
   }

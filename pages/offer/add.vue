@@ -88,15 +88,15 @@
                       <div class=" mr-5">
 
                         <label for="minPrice">Min.</label>
-                        <form-text-input id="minPrice" type="number"
-                                         v-model="form.minPrice" class="priceInput" @keypress="onlyNumberMinPrice"/>
+                        <form-numeric-input id="minPrice" type="number"
+                                         v-model="form.minPrice" class="priceInput"/>
 
                       </div>
                       <div class="">
 
                         <label for="maxPrice">Max.</label>
-                        <form-text-input :invalid="$v.form.maxPrice.$error" id="maxPrice" type="number"
-                                         @keypress="onlyNumberMaxPrice"
+                        <form-numeric-input :invalid="$v.form.maxPrice.$error" id="maxPrice" type="number"
+
                                          v-model="form.maxPrice" class="priceInput"/>
                       </div>
 
@@ -206,6 +206,15 @@ export default {
   },
   computed: {
     ...mapGetters(['brands', 'models', 'generations']),
+
+    OnlyMin: {
+      get() {
+        return this.form.minPrice;
+      },
+      set(value) {
+        this.form.minPrice = value.replace(/[^0-9.]/g, '')
+      }
+    },
     boxValues() {
       return [{"name": "Mexaniki", "key": "1"}, {"name": "Avtomat", "key": "2"}]
     },
@@ -252,7 +261,6 @@ export default {
   methods: {
     onlyNumberMaxPrice($event) {
       let keyCode = ($event.keyCode ? $event.keyCode : $event.which);
-
       if ((keyCode < 48 || keyCode > 57) && keyCode == 46 || this.form.maxPrice.length > 6 ) {
         $event.preventDefault();
       }
@@ -261,7 +269,6 @@ export default {
     onlyNumberMinPrice($event) {
       let keyCode = ($event.keyCode ? $event.keyCode : $event.which);
       if ((keyCode < 48 || keyCode > 57) && keyCode == 46 || this.form.minPrice.length > 6 ) {
-        console.log('true')
         $event.preventDefault();
       }
     },
