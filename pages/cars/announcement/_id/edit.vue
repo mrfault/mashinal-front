@@ -5,7 +5,7 @@
       <div class="sell_cards-row row">
         <div class="col-auto">
           <div :class="{'card': !isMobileBreakpoint}">
-            <sell-last-step 
+            <sell-last-step
               type="cars"
               :edit="true"
               :restore="myAnnouncement.status == 3"
@@ -19,10 +19,10 @@
         </div>
         <div class="col-auto" v-if="!isMobileBreakpoint">
           <div class="card">
-            <sell-preview 
-              :form="form" 
-              :brand="myAnnouncement.car_catalog.brand" 
-              :model="myAnnouncement.car_catalog.model" 
+            <sell-preview
+              :form="form"
+              :brand="myAnnouncement.car_catalog.brand"
+              :model="myAnnouncement.car_catalog.model"
             />
           </div>
         </div>
@@ -70,7 +70,7 @@ export default {
     return {
       lastStepKey: 0,
       form: {
-        car_catalog_id: announcement.car_catalog_id,
+          car_catalog_id: announcement.car_catalog_id,
           brand: announcement.brand.slug,
           model: announcement.model.slug,
           generation_id: catalog.generation_id,
@@ -81,6 +81,9 @@ export default {
           capacity: catalog.capacity,
           power: catalog.power,
           year: announcement.year,
+          auction: announcement.auction,
+          end_date: announcement.end_date,
+          country_id: announcement.country_id,
           youtube: {
             id: announcement.youtube_link,
             thumb: `https://img.youtube.com/vi/${announcement.youtube_link}/hqdefault.jpg`
@@ -105,12 +108,12 @@ export default {
           badges: announcement.stickers?.map(item => item.id),
           new_badges: [],
           comment: announcement.comment || '',
-          is_new: announcement.is_new, 
-          beaten: announcement.broken, 
-          customs_clearance: announcement.customs_clearance, 
-          tradeable: announcement.exchange_possible, 
+          is_new: announcement.is_new,
+          beaten: announcement.broken,
+          customs_clearance: announcement.customs_clearance,
+          tradeable: announcement.exchange_possible,
           credit: announcement.credit,
-          guaranty: announcement.in_garanty, 
+          guaranty: announcement.in_garanty,
           saved_images: announcement.mediaIds
       }
     }

@@ -80,7 +80,7 @@
                 <span class="badge badge-blue">SHOP</span>
               </template>
               <template
-                v-if="announcement.is_external_salon"
+                v-if="announcement.is_external_salon && !showStatus"
               >
                 <span class="badge badge-blue badge-external">
                   <inline-svg class="badge-icon" src="/img/auction.svg" />
