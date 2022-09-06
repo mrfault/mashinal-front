@@ -318,6 +318,10 @@ export default {
         )
         this.offer = this.userOffer.offer
       }
+      setTimeout(()=>{
+        this.scrollTo('.my:last-child', 300, 500, '.offerDetail')
+      },100)
+
     },
     async checkAccepted(id) {
       await this.$axios.$post('/offer/user/offer/check/' + id).then((res) => {
@@ -326,7 +330,6 @@ export default {
         this.$store.commit('setOfferMessages', res.messages)
         this.scrollTo('.my:last-child', 0, 500, '.offerDetail')
       })
-
 
     },
     async accept(id) {
