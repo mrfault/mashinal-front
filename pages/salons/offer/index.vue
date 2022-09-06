@@ -327,7 +327,7 @@ export default {
           const sleep = () =>{
             this.scrollTo('.my:last-child >.message-files:last-child >.message-file', 300, 500, '.offerDetail')
           }
-          setTimeout(sleep, 100)
+          setTimeout(sleep, 1000)
         } else {
           this.scrollTo('.my:last-child', 0, 500, '.offerDetail')
         }
