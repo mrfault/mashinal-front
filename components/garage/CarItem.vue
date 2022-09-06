@@ -196,7 +196,7 @@ export default {
           pay_type: this.paymentMethod,
           is_mobile: this.isMobileBreakpoint
         });
-        if (this.paymentMethod === 'card') {
+        if (this.paymentMethod === 'card' && !this.bankingCard) {
           this.pending = false;
           this.showPaymentModal = false;
           this.handlePayment(res, false, this.$t('car_activated'), 'v2');
