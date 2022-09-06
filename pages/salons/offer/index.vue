@@ -323,6 +323,14 @@ export default {
 
       this.$axios.$post('/offer/messages/send', formData).then((res) => {
         this.$store.commit('appendOfferMessage', res.data.message)
+        if (res.data.message.files.length > 1) {
+          const sleep = () =>{
+            this.scrollTo('.my:last-child >.message-files:last-child >.message-file', 300, 500, '.offerDetail')
+          }
+          setTimeout(sleep, 1000)
+        } else {
+          this.scrollTo('.my:last-child', 0, 500, '.offerDetail')
+        }
         this.chat.text = '';
         this.$nuxt.$emit('clear-message-attachments');
         this.scrollTo('.my:last-child', 0, 500, '.offerDetail')
