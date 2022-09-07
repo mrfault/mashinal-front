@@ -2229,5 +2229,6 @@ export default {
   "end_date":"Son tarix",
   "announcement_end_date":"Elanın son tarixi",
   "country":"Ölkə",
-  "dashboard_external_salon": "Salon profili"
+  "dashboard_external_salon": "Salon profili",
+  "external_salon": "Sifarişlə avto"
 }
