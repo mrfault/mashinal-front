@@ -32,10 +32,10 @@
                   :clear-option="false"
                 />
               </div>
-              <div class="mx-1 mt-3 " >
+              <div class="mx-1 mt-3">
                 <h4 class="alco-h4 pr-1">Cinsiniz</h4>
                 <form-switch
-                  class="gender-switcher"
+                  class="gender-switcher text-transform-normal"
                   v-model="form.gender"
                   :options="genders"
                 />
@@ -69,7 +69,13 @@
               </div>
               <div class="mx-1 mt-3">
                 <h4 class="alco-h4 pr-1">Çəkiniz</h4>
-                <form-text-input v-model="form.mass" placeholder="Çəki" />
+                <form-select
+                  class=""
+                  v-model="form.mass"
+                  :options="massOptions"
+                  :label="$t('Çəki')"
+                  :clear-option="false"
+                />
               </div>
             </div>
           </div>
@@ -100,7 +106,13 @@
               </div>
               <div class="mx-1 mt-3">
                 <h4 class="alco-h4 pr-1">Neçə saat keçib?</h4>
-                <form-text-input v-model="form.time" placeholder="Saat" />
+                <form-select
+                  class=""
+                  v-model="form.time"
+                  :options="hours"
+                  :label="$t('Saat')"
+                  :clear-option="false"
+                />
               </div>
             </div>
           </div>
@@ -206,6 +218,68 @@ export default {
           key: 40,
         },
       ],
+      massOptions: [
+        {
+          name: '40 kq',
+          key: 40,
+        },
+        {
+          name: '45 kq',
+          key: 45,
+        },
+        {
+          name: '55 kq',
+          key: 55,
+        },
+        {
+          name: '60 kq',
+          key: 60,
+        },
+        {
+          name: '65 kq',
+          key: 65,
+        },
+        {
+          name: '70 kq',
+          key: 70,
+        },
+        {
+          name: '75 kq',
+          key: 75,
+        },
+        {
+          name: '80 kq',
+          key: 80,
+        },
+        {
+          name: '85 kq',
+          key: 85,
+        },
+        {
+          name: '90 kq',
+          key: 90,
+        },
+        {
+          name: '100 kq',
+          key: 100,
+        },
+        {
+          name: '105 kq',
+          key: 105,
+        },
+        {
+          name: '110 kq',
+          key: 110,
+        },
+        {
+          name: '115 kq',
+          key: 115,
+        },
+        {
+          name: '120 kq',
+          key: 120,
+        },
+      ],
       drinkAmounts: [
         {
           name: '50',
@@ -248,6 +322,80 @@ export default {
           key: 1500,
         },
       ],
+      hours: [
+        {
+          name: '0',
+          key: 0,
+        },
+        {
+          name: '0.5',
+          key: 0.5,
+        },
+        {
+          name: '1',
+          key: 1,
+        },
+        {
+          name: '1.5',
+          key: 1.5,
+        },
+        {
+          name: '2',
+          key: 2,
+        },
+        {
+          name: '2.5',
+          key: 2.5,
+        },
+        {
+          name: '3',
+          key: 3,
+        },
+        {
+          name: '4',
+          key: 4,
+        },
+        {
+          name: '5',
+          key: 5,
+        },
+        {
+          name: '6',
+          key: 6,
+        },
+        {
+          name: '7',
+          key: 7,
+        },
+        {
+          name: '8',
+          key: 8,
+        },
+        {
+          name: '9',
+          key: 9,
+        },
+        {
+          name: '10',
+          key: 10,
+        },
+        {
+          name: '12',
+          key: 12,
+        },
+        {
+          name: '14',
+          key: 14,
+        },
+        {
+          name: '18',
+          key: 18,
+        },
+        {
+          name: '24',
+          key: 24,
+        },
+      ],
       diagramValues: [0.01, 0.154, 0.6, 1.2, 2.5, 6, 10],
       genders: [
         {
@@ -262,13 +410,13 @@ export default {
       diag2: [0, 30, 60, 90, 120, 150, 180],
       showGraphs: false,
       timeToDrive: 0,
-      diagValue:0,
+      diagValue: 0,
       concentration: 0,
       concentrProm: 0,
       form: {
         gender: 'm',
-        mass: 85,
-        time: 0.5,
+        mass: 40,
+        time: 0,
         drinkValue1: 0,
         drinkType1: 0,
         drinkValue2: 0,
@@ -280,7 +428,6 @@ export default {
   },
   methods: {
     doTest() {
-      
       let r
       if (this.form.gender === 'm') {
         r = 0.68
@@ -330,7 +477,7 @@ export default {
       }
       this.timeToDrive = rul
       //if (Cor > 8) f.rul.value = f.rul.value + '';
-      this.showGraphs = true;
+      this.showGraphs = true
     },
     nrm(val, to) {
       var t = Math.round(val * to)
@@ -339,9 +486,10 @@ export default {
     },
     diag(doza) {
       for (var i = 0; i < this.diagramValues.length; i++) {
-        if (doza <= this.diagramValues[i]) return  this.diagValue = this.diag2[i];
+        if (doza <= this.diagramValues[i])
+          return (this.diagValue = this.diag2[i])
       }
-      return this.diagValue = this.diag2[6] ;
+      return (this.diagValue = this.diag2[6])
     },
   },
 }
@@ -358,5 +506,8 @@ export default {
       text-transform: normal !important;
     }
   }
+}
+.text-transform-normal button {
+  text-transform: initial !important;
 }
 </style>
