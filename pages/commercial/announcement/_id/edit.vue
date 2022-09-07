@@ -5,7 +5,7 @@
       <div class="sell_cards-row row">
         <div class="col-auto">
           <div :class="{'card': !isMobileBreakpoint}">
-            <sell-last-step 
+            <sell-last-step
               type="commercial"
               :edit="true"
               :restore="myAnnouncement.status == 3"
@@ -19,10 +19,10 @@
         </div>
         <div class="col-auto" v-if="!isMobileBreakpoint">
           <div class="card">
-            <sell-preview 
-              :form="form" 
-              :brand="getAnnouncementBrandName(myAnnouncement)" 
-              :model="getAnnouncementModelName(myAnnouncement)" 
+            <sell-preview
+              :form="form"
+              :brand="getAnnouncementBrandName(myAnnouncement)"
+              :model="getAnnouncementModelName(myAnnouncement)"
             />
           </div>
         </div>
@@ -54,7 +54,7 @@ export default {
       title: this.$t('your_announcements')
     });
   },
-  async asyncData({ store, route }) {
+  async asyncData({ store, route, app }) {
     store.dispatch('setSellPreviewData', { value: {} });
     await Promise.all([
       store.dispatch('getOptions'),
@@ -64,7 +64,7 @@ export default {
     ]);
 
     const announcement = store.state.myAnnouncement;
-    
+
     const category = announcement.commercial_type_id;
     await store.dispatch('getCommercialFilters', category);
     const filters = store.state.commercialFilters;
@@ -72,6 +72,9 @@ export default {
     return {
       lastStepKey: 0,
       form: {
+        auction: announcement.auction,
+        end_date: app.$moment(announcement.end_date).format('DD.MM.YYYY HH:mm'),
+        country_id: announcement.country_id,
         category: category,
         filters: filters.map(item => item.search_key).reduce((form, key) => ({ ...form,  [key]: announcement[key] || '' }), {}),
         selectedYear: announcement.year,
@@ -96,12 +99,12 @@ export default {
         badges: announcement.stickers?.map(item => item.id),
         new_badges: [],
         comment: announcement.comment || '',
-        is_new: announcement.is_new, 
-        beaten: announcement.beaten, 
-        customs_clearance: announcement.customed, 
-        tradeable: announcement.tradeable, 
+        is_new: announcement.is_new,
+        beaten: announcement.beaten,
+        customs_clearance: announcement.customed,
+        tradeable: announcement.tradeable,
         credit: announcement.credit,
-        guaranty: announcement.guaranty, 
+        guaranty: announcement.guaranty,
         saved_images: announcement.mediaIds
       }
     }
