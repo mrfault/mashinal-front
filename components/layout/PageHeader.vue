@@ -196,12 +196,16 @@
                     >
                       <nuxt-link :to="$localePath(menu.route)">
                         <icon
+                          v-if="menu.icon !== 'external-tab'"
                           style="font-size: 20px; margin-right: 10px;"
                           class="no-transform"
                           :name="menu.icon"
                         />
                         {{ $t(menu.title) }}
                         <icon name="chevron-down" v-if="menu.children" />
+                        <span style="position: absolute; top: 1px; right: 57px; display: flex;">
+                          <inline-svg v-if="menu.icon === 'external-tab'" src="/img/new_badge.svg" />
+                        </span>
                       </nuxt-link>
                       <div
                         class="dropdown-content container"
