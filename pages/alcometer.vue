@@ -111,7 +111,6 @@
           </button>
         </div>
       </div>
-{{azer}}
       <!-- results -->
       <div class="alco-form my-4" v-if="showGraphs">
         <div class="row">
@@ -171,7 +170,6 @@ export default {
   },
   data() {
     return {
-      showGraphs: false,
       showInterior: true,
       crumbs: [{ name: 'alcometer' }],
       drinkTypes: [
@@ -262,6 +260,7 @@ export default {
         },
       ],
       diag2: [0, 30, 60, 90, 120, 150, 180],
+      showGraphs: false,
       timeToDrive: 0,
       diagValue:0,
       concentration: 0,
@@ -279,14 +278,9 @@ export default {
       },
     }
   },
-  computed:{
-    speedometerValue(){
-      return 0
-    }
-  },
   methods: {
     doTest() {
-      this.showGraphs = true
+      
       let r
       if (this.form.gender === 'm') {
         r = 0.68
@@ -336,6 +330,7 @@ export default {
       }
       this.timeToDrive = rul
       //if (Cor > 8) f.rul.value = f.rul.value + '';
+      this.showGraphs = true;
     },
     nrm(val, to) {
       var t = Math.round(val * to)

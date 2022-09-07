@@ -135,6 +135,7 @@ export default {
   "akkumulyatory": "Akkumulyatorlar",
   "akpp": "Avtomatik",
   "Alcantara": "Alkantara",
+  "alcometer": "Alkometer",
   "all": "Bütün",
   "all seasons": "bütün mövsümlər",
   "all_announcements_of_user": "{name} istifadəçinin bütün elanları",

@@ -147,6 +147,16 @@ export default {
           image: 'createshop',
           isAvailable: true,
         },
+        {
+          title: this.$t('alcometer'),
+          description: null,
+          value: null,
+          icon: 'alco',
+          url: '/alcometer',
+          hasAction: false,
+          image: 'alcometer',
+          isAvailable: true,
+        },
       ],
     }
   },
