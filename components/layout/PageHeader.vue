@@ -181,7 +181,7 @@
           <div class="container">
             <nav class="full-width">
               <div class="row align-items-center">
-                <div class="col-lg-8 position-static">
+                <div class="col-lg-9 position-static">
                   <ul class="menu position-relative">
                     <li
                       @mouseover="menu.children ? (hoverMenu = true) : ''"
@@ -255,9 +255,9 @@
                     </li>
                   </ul>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-2 ml-auto">
                   <div class="row justify-content-end top-header-right">
-                    <div class="col-5 col-lg-7 col-xl-5">
+                    <div class="col-5 col-lg-12 col-xl-12">
                       <nuxt-link
                         class="btn full-width btn--pale-green-outline"
                         :to="$localePath('/sell')"
