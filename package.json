@@ -6,7 +6,8 @@
     "dev": "nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
-    "generate": "nuxt generate"
+    "generate": "nuxt generate",
+    "dev:host": "nuxt --hostname '10.20.120.130' --port 8000"
   },
   "dependencies": {
     "360-image-viewer": "^1.0.1",

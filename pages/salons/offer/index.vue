@@ -3,7 +3,7 @@
     <offer-slider/>
     <div class="salonsOffer">
       <breadcrumbs :crumbs="crumbs" class=""/>
-      <div class=" row ">
+      <div class=" row m-0">
         <div class=" col col-md-2 background-white" v-if="!isMobileBreakpoint">
           <div class="offerNav">
             <ul>
@@ -266,10 +266,10 @@ export default {
     })
   },
   mixins: [ImageResizeMixin],
-  async asyncData({store}) {
+  async asyncData({store,route}) {
     await Promise.all([
       store.dispatch('getHomePageSliders'),
-      store.dispatch('getAllOffers'),
+      store.dispatch('getAllOffers',route.query.param),
     ]);
   },
   nuxtI18n: {
@@ -366,6 +366,7 @@ export default {
 
         this.$store.commit('setOfferMessages', res.messages)
       })
+
     },
     async accept(id) {
       await this.$store.dispatch('salonAcceptOffer', {id})
