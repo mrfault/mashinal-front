@@ -42,11 +42,11 @@
             </ul>
           </div>
         </div>
-        <div class="col col-md-4">
+        <div class="col col-md-12 col-lg-4">
           <div class="offerUsers">
             <div class="searchBox">
 
-              <input type="text" v-model="search" placeholder="Maşın və ya istifadəçi adı" class="searchInput">
+              <input type="text" v-model="search" placeholder="Maşın və ya istifadəçi adı" class="searchInput" @focus="searchInputFocus">
 
             </div>
             <div class="user" v-for="userOffer in searchOffer"
@@ -67,7 +67,7 @@
             </div>
           </div>
         </div>
-        <div class="col col-md-6 col-12 col-xs-12 col-sm-12">
+        <div class="col col-md-6 col-12 col-xs-12 col-sm-12 offerDetailSection">
           <div class="offerDetail" v-if="offer">
             <div class="d-flex align-items-center user">
 
@@ -256,6 +256,9 @@ export default {
     },
   },
   methods: {
+    searchInputFocus(){
+      this.scrollTo('.search-offer', -300, 500, '.container')
+    },
     isMyMessage(message) {
       return this.user.id === message.sender.id
     },

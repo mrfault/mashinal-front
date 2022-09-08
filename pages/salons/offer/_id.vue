@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div class="d-flex align-items-center user userBar  mt-3 mb-3">
+    <div class="container">
+      <div class="d-flex align-items-center user userBar  mt-3 mb-3">
 
      <span @click="$router.back()">
       <a>
@@ -8,46 +9,38 @@
       </a>
   </span>
 
-      <div class="userImg"
-           :style="'background-image: url('+(offer.user.img ? offer.user.img : '/img/user.jpg')+')'"></div>
+        <div class="userImg"
+             :style="'background-image: url('+(offer.user.img ? offer.user.img : '/img/user.jpg')+')'"></div>
 
-      <p class="mt-2 ml-2 text-bold">
-        {{ offer.user.full_name }}
-      </p>
-      <div class="actions" v-if="user_is_accepted">
+        <p class="mt-2 ml-2 text-bold">
+          {{ offer.user.full_name }}
+        </p>
+        <div class="actions" v-if="user_is_accepted">
 
               <span @click="deleteUserAutoSalonOffer(offer.id)"
                     v-if="!offer.auto_salon_deleted_at || this.IsAccepted"> <icon
                 name="garbage"></icon></span>
+        </div>
       </div>
     </div>
-    <div class="container">
 
+    <div class="container">
       <div class="row">
         <div class="col col-md-12 col-12 col-xs-12 col-sm-12">
-
           <div class="offerDetail" v-if="offer">
-
             <collapse-content :title="'Təklif'">
-
               <div class="generations">
                 <div class="row">
-
                   <div class="col-md-3" v-for="generation in offer.generations">
                     <img :src="generation.img" class="generationImage" width="100%">
                   </div>
                   <div class="col-md-6">
                     <div class="carName">
-
                       <span class="carPrice">{{ offer.minPrice }} - {{ offer.maxPrice }} ₼</span>
                       <h3>{{ offer.brand }} {{ offer.model }}</h3>
-
                     </div>
-
                   </div>
-
                 </div>
-
               </div>
               <div class="offerDetailContent">
                 <div class="offerDetailItem">

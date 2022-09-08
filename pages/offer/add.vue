@@ -3,7 +3,7 @@
   <div>
     <OfferSlider/>
 
-    <div class="container">
+    <div class="container mt-3">
       <div class="row">
 
         <breadcrumbs :crumbs="crumbs"/>
