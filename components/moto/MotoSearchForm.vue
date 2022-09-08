@@ -135,7 +135,7 @@
                 </div>
                 <div class="col-6 col-lg-2 mb-2 mb-lg-3">
                   <form-checkbox
-                    :label="$t('external_salon')"
+                    :label="$t('external_moto')"
                     v-model="form.external_salon"
                     input-name="savedSearch"
                   />

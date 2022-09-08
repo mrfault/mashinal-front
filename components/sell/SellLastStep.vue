@@ -128,7 +128,7 @@
           <div class="row">
             <div class="col-lg-auto mb-2 mb-lg-0">
               <div class="row flex-nowrap">
-                <div class="col-lg-auto flex-grow-1" :style="isMobileBreakpoint ? '    max-width: 46%;': ''">
+                <div class="col-lg-auto flex-grow-1" :style="isMobileBreakpoint ? '    max-width: 57%;': ''">
                     <form-switch @change="removeError('end_date')" auto-width v-model="form.auction" :options="[{ name:$t('auction'), key:1 }, { name:$t('sell'), key:2 }]"/>
                 </div>
                 <div class="col-auto" v-if="form.auction === 1">
@@ -286,6 +286,7 @@ import {mapGetters, mapActions, mapState} from 'vuex';
 import { ToastErrorsMixin } from '~/mixins/toast-errors';
 import { ImageResizeMixin } from '~/mixins/img-resize';
 import { PaymentMixin } from '~/mixins/payment';
+import { FunctionalCalendar } from 'vue-functional-calendar';
 
 import SellSelectModification from '~/components/sell/SellSelectModification';
 import UploadImage from '~/components/elements/UploadImage';
@@ -298,6 +299,7 @@ import CarFilters from '~/components/cars/CarFilters';
 
 export default {
   components: {
+    FunctionalCalendar,
     SellSelectModification,
     UploadImage,
     ColorOptions,
@@ -318,6 +320,7 @@ export default {
   mixins: [ToastErrorsMixin, ImageResizeMixin, PaymentMixin],
   data() {
     return {
+      now: (new Date).toLocaleDateString('en-US'),
       collapsed: false,
       form: this.$clone(this.initialForm),
       date: Math.floor(Date.now() / 1000),
@@ -340,7 +343,6 @@ export default {
   computed: {
     ...mapState(['sellPhoneEntered']),
     ...mapGetters(['sellOptions', 'sellSalonRights', 'staticPages']),
-
     progress() {
       let progress = 30;
       if (this.form.mileage !== '' && ((this.form.selectedColor instanceof Array) ? (this.form.selectedColor.length) : (this.form.selectedColor !== ''))) progress += 10;

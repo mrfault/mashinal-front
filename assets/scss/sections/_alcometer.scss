@@ -92,3 +92,13 @@ $ma-blue-1: #081a3e;
   font: 500 20px Gilroy;
 }
 
+
+
+.dark-mode{
+  .ma-alco-card__bottom--body--value{
+    background: #1C1C1E !important;
+  }
+  .ma-alco-card__bottom--body--desc{
+    color: #081a3e;
+  }
+}

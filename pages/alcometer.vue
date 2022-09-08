@@ -15,7 +15,7 @@
               <span class="alco-num">1</span>
             </div>
             <div class="alc-inputs">
-              <h4 class="alco-h4 pl-1 pr-1">İçki miqdarı (1)</h4>
+              <h4 class="alco-h4 pl-1 pr-1">{{$t('drink_amount')}} (1)</h4>
               <div class="d-flex">
                 <form-select
                   class="col-6"
@@ -32,10 +32,10 @@
                   :clear-option="false"
                 />
               </div>
-              <div class="mx-1 mt-3 " >
-                <h4 class="alco-h4 pr-1">Cinsiniz</h4>
+              <div class="mx-1 mt-3">
+                <h4 class="alco-h4 pr-1">{{$t('your_gender')}}</h4>
                 <form-switch
-                  class="gender-switcher"
+                  class="gender-switcher text-transform-normal"
                   v-model="form.gender"
                   :options="genders"
                 />
@@ -50,7 +50,7 @@
               <span class="alco-num">2</span>
             </div>
             <div class="alc-inputs">
-              <h4 class="alco-h4 pl-1 pr-1">İçki miqdarı (2)</h4>
+              <h4 class="alco-h4 pl-1 pr-1">{{$t('drink_amount')}} (2)</h4>
               <div class="d-flex">
                 <form-select
                   class="col-6"
@@ -68,8 +68,14 @@
                 />
               </div>
               <div class="mx-1 mt-3">
-                <h4 class="alco-h4 pr-1">Çəkiniz</h4>
-                <form-text-input v-model="form.mass" placeholder="Çəki" />
+                <h4 class="alco-h4 pr-1">{{$t('your_weight')}}</h4>
+                <form-select
+                  class=""
+                  v-model="form.mass"
+                  :options="massOptions"
+                  :label="$t('weight')"
+                  :clear-option="false"
+                />
               </div>
             </div>
           </div>
@@ -81,7 +87,7 @@
               <span class="alco-num">3</span>
             </div>
             <div class="alc-inputs">
-              <h4 class="alco-h4 pl-1 pr-1">İçki miqdarı (3)</h4>
+              <h4 class="alco-h4 pl-1 pr-1">{{$t('drink_amount')}} (3)</h4>
               <div class="d-flex">
                 <form-select
                   class="col-6"
@@ -99,15 +105,21 @@
                 />
               </div>
               <div class="mx-1 mt-3">
-                <h4 class="alco-h4 pr-1">Neçə saat keçib?</h4>
-                <form-text-input v-model="form.time" placeholder="Saat" />
+                <h4 class="alco-h4 pr-1">{{$t('how_many_hours_passed')}}?</h4>
+                <form-select
+                  class=""
+                  v-model="form.time"
+                  :options="hours"
+                  :label="$t('hour')"
+                  :clear-option="false"
+                />
               </div>
             </div>
           </div>
         </div>
         <div class="submit-button mt-3 d-flex justify-content-end mr-1 pb-2">
           <button class="btn btn--green" @click="doTest()">
-            Nə zaman sükan arxasına keçə bilərəm?
+            {{$t('when_may_i_can_drive')}}?
           </button>
         </div>
       </div>
@@ -117,39 +129,39 @@
           <div class="col-12 col-lg-5">
             <div class="ma-alco-card__bottom">
               <h3 class="ma-alcometer-title-dotted">
-                Alkotesterin göstəriciləri
+                {{$t('indications_of_breathalyzer')}}
               </h3>
               <div class="ma-alco-card__bottom--body">
                 <alcometer-promil
                   :promilValue="parseFloat(concentrProm)"
                 ></alcometer-promil>
                 <h3 class="ma-alco-card__bottom--body--desc">
-                  Alkoqol konsentrasiyası:
+                  {{$t('alcohol_concentration')}}:
                 </h3>
                 <h3 class="ma-alco-card__bottom--body--value">
                   {{ concentration }}
                 </h3>
                 <h3 class="ma-alco-card__bottom--body--desc">
-                  çəkilmiş havanın litrinə düşən milliqram
+                  {{$t('milligrams_per_liter_of_inhaled_air')}}
                 </h3>
               </div>
             </div>
           </div>
           <div class="col-12 col-lg-7">
             <div class="ma-alco-card__bottom">
-              <h3 class="ma-alcometer-title-dotted">İntoksikasiya dərəcəsi</h3>
+              <h3 class="ma-alcometer-title-dotted">{{$t('degree_of_intoxication')}}</h3>
               <div class="ma-alco-card__bottom--body">
                 <alcometer-speedometer
-                  :speedometerValue="diagValue"
+                  :speedometerValue="diagValue" :isRussian="isRussian"
                 ></alcometer-speedometer>
                 <h3 class="ma-alco-card__bottom--body--desc">
-                  Sürmək olar:
+                   {{$t('may_drive')}}:
                 </h3>
                 <h3 class="ma-alco-card__bottom--body--value">
                   {{ timeToDrive }}
                 </h3>
                 <h3 class="ma-alco-card__bottom--body--desc">
-                  saat sonra
+                   {{$t('after_hours')}}
                 </h3>
               </div>
             </div>
@@ -174,36 +186,94 @@ export default {
       crumbs: [{ name: 'alcometer' }],
       drinkTypes: [
         {
-          name: 'Vodka',
+          name: this.$t('vodka'),
           key: 40,
         },
         {
-          name: 'Yüngül pivə',
+          name: this.$t('light_beer'),
           key: 6,
         },
         {
-          name: 'Sərt pivə',
+          name: this.$t('strong_beer'),
           key: 12,
         },
         {
-          name: 'Çaxır',
+          name: this.$t('vine'),
           key: 15,
         },
         {
-          name: 'Port şərabı',
+          name: this.$t('port_vine'),
           key: 20,
         },
         {
-          name: 'Tekila',
+          name: this.$t('tequila'),
           key: 50,
         },
         {
-          name: 'Şampan',
+          name: this.$t('champagne'),
           key: 10,
         },
+      ],
+      massOptions: [
         {
-          name: 'Konyak',
+          name: '40',
           key: 40,
+        },
+        {
+          name: '45',
+          key: 45,
+        },
+        {
+          name: '55',
+          key: 55,
+        },
+        {
+          name: '60',
+          key: 60,
+        },
+        {
+          name: '65',
+          key: 65,
+        },
+        {
+          name: '70',
+          key: 70,
+        },
+        {
+          name: '75',
+          key: 75,
+        },
+        {
+          name: '80',
+          key: 80,
+        },
+        {
+          name: '85',
+          key: 85,
+        },
+        {
+          name: '90',
+          key: 90,
+        },
+        {
+          name: '100',
+          key: 100,
+        },
+        {
+          name: '105',
+          key: 105,
+        },
+        {
+          name: '110',
+          key: 110,
+        },
+        {
+          name: '115',
+          key: 115,
+        },
+        {
+          name: '120',
+          key: 120,
         },
       ],
       drinkAmounts: [
@@ -248,27 +318,101 @@ export default {
           key: 1500,
         },
       ],
+      hours: [
+        {
+          name: '0',
+          key: 0,
+        },
+        {
+          name: '0.5',
+          key: 0.5,
+        },
+        {
+          name: '1',
+          key: 1,
+        },
+        {
+          name: '1.5',
+          key: 1.5,
+        },
+        {
+          name: '2',
+          key: 2,
+        },
+        {
+          name: '2.5',
+          key: 2.5,
+        },
+        {
+          name: '3',
+          key: 3,
+        },
+        {
+          name: '4',
+          key: 4,
+        },
+        {
+          name: '5',
+          key: 5,
+        },
+        {
+          name: '6',
+          key: 6,
+        },
+        {
+          name: '7',
+          key: 7,
+        },
+        {
+          name: '8',
+          key: 8,
+        },
+        {
+          name: '9',
+          key: 9,
+        },
+        {
+          name: '10',
+          key: 10,
+        },
+        {
+          name: '12',
+          key: 12,
+        },
+        {
+          name: '14',
+          key: 14,
+        },
+        {
+          name: '18',
+          key: 18,
+        },
+        {
+          name: '24',
+          key: 24,
+        },
+      ],
       diagramValues: [0.01, 0.154, 0.6, 1.2, 2.5, 6, 10],
       genders: [
         {
-          name: 'Kişi',
+          name: this.$t('male'),
           key: 'm',
         },
         {
-          name: 'Qadın',
+          name: this.$t('female'),
           key: 'f',
         },
       ],
       diag2: [0, 30, 60, 90, 120, 150, 180],
       showGraphs: false,
       timeToDrive: 0,
-      diagValue:0,
+      diagValue: 0,
       concentration: 0,
       concentrProm: 0,
       form: {
         gender: 'm',
-        mass: 85,
-        time: 0.5,
+        mass: 40,
+        time: 0,
         drinkValue1: 0,
         drinkType1: 0,
         drinkValue2: 0,
@@ -278,9 +422,17 @@ export default {
       },
     }
   },
+  computed:{
+    isRussian(){
+      if (this.$i18n.locale == 'ru') {
+        return true
+      }else{
+        return false
+      }
+    }
+  },
   methods: {
     doTest() {
-      
       let r
       if (this.form.gender === 'm') {
         r = 0.68
@@ -330,7 +482,7 @@ export default {
       }
       this.timeToDrive = rul
       //if (Cor > 8) f.rul.value = f.rul.value + '';
-      this.showGraphs = true;
+      this.showGraphs = true
     },
     nrm(val, to) {
       var t = Math.round(val * to)
@@ -339,11 +491,13 @@ export default {
     },
     diag(doza) {
       for (var i = 0; i < this.diagramValues.length; i++) {
-        if (doza <= this.diagramValues[i]) return  this.diagValue = this.diag2[i];
+        if (doza <= this.diagramValues[i])
+          return (this.diagValue = this.diag2[i])
       }
-      return this.diagValue = this.diag2[6] ;
+      return (this.diagValue = this.diag2[6])
     },
   },
+
 }
 </script>
 
@@ -358,5 +512,8 @@ export default {
       text-transform: normal !important;
     }
   }
+}
+.text-transform-normal button {
+  text-transform: initial !important;
 }
 </style>
