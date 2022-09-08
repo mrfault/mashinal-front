@@ -194,17 +194,18 @@
                       :key="menu.title"
                       :class="{ dropdown: menu.children }"
                     >
-                      <nuxt-link style="position: relative" :to="$localePath(menu.route)">
+                      <nuxt-link class="external_salon_hover" style="position: relative" :to="$localePath(menu.route)">
                         <icon
                           v-if="menu.icon !== 'external-tab'"
                           style="font-size: 20px; margin-right: 10px;"
-                          class="no-transform"
+                          class="no-transform "
                           :name="menu.icon"
                         />
+                        <inline-svg class="no-transform " style="width: 20px; fill:inherit; margin-right: 10px;" v-else src="/img/external_salon.svg" />
                         {{ $t(menu.title) }}
                         <icon name="chevron-down" v-if="menu.children" />
                         <span style="position: absolute; top: 3px; right: 0px; display: flex;">
-                          <inline-svg v-if="menu.icon === 'external-tab'" src="/img/new_badge.svg" />
+                          <inline-svg style="width: 31px;" v-if="menu.icon === 'external-tab'" src="/img/new_badge.svg" />
                         </span>
                       </nuxt-link>
                       <div
@@ -340,6 +341,11 @@ export default {
 .resize-icon {
   i {
     font-size:35px !important;
+  }
+}
+.external_salon_hover:hover {
+  svg, path {
+    fill:#F81734 !important;
   }
 }
 .topbar-nav {

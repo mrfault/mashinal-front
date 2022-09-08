@@ -39,12 +39,12 @@
       <component :is="isMobileBreakpoint ? 'transition-expand' : 'div'">
         <div class="row" v-if="!isMobileBreakpoint || !collapsed">
           <div class="col-6 col-lg-2 mb-2 mb-lg-3">
-            <form-select :label="$t('years')" custom 
+            <form-select :label="$t('years')" custom
               :values="{from: form.min_year, to: form.max_year, read: false }"
               @clear="form.min_year = '', form.max_year = ''"
             >
               <div class="form-merged">
-                <form-select :label="$t('from')" :options="getYearOptions(false, form.max_year)" v-model="form.min_year" 
+                <form-select :label="$t('from')" :options="getYearOptions(false, form.max_year)" v-model="form.min_year"
                   :show-label-on-select="false" :clear-option="false" in-select-menu />
                 <form-select :label="$t('to')" :options="getYearOptions(form.min_year, false)" v-model="form.max_year"
                   :show-label-on-select="false" :clear-option="false" in-select-menu />
@@ -68,11 +68,11 @@
             <form-select :label="$t('city')" :options="sellOptions.regions" v-model="form.region" has-search />
           </div>
           <div class="col-6 col-lg-2 mb-2 mb-lg-3">
-            <form-checkbox :label="$t('barter')" v-model="form.exchange_possible" 
+            <form-checkbox :label="$t('barter')" v-model="form.exchange_possible"
               input-name="exchange_possible" icon-name="barter" />
           </div>
           <div class="col-6 col-lg-2 mb-2 mb-lg-3">
-            <form-checkbox :label="$t('credit')" v-model="form.credit" 
+            <form-checkbox :label="$t('credit')" v-model="form.credit"
               input-name="credit" icon-name="percent" />
           </div>
           <div class="col-6 col-lg-2 mb-2 mb-lg-3" v-if="!isMobileBreakpoint">
@@ -103,11 +103,11 @@
                     @clear="form.capacity_from = '', form.capacity_to = ''"
                   >
                     <div class="form-merged">
-                      <form-select :label="$t('from')" v-model="form.capacity_from" 
-                        :options="getMotoCapacityOptions" 
+                      <form-select :label="$t('from')" v-model="form.capacity_from"
+                        :options="getMotoCapacityOptions"
                         :show-label-on-select="false" :clear-option="false" in-select-menu />
                       <form-select :label="$t('to')" v-model="form.capacity_to"
-                        :options="getMotoCapacityOptions" 
+                        :options="getMotoCapacityOptions"
                         :show-label-on-select="false" :clear-option="false" in-select-menu />
                     </div>
                   </form-select>
@@ -123,14 +123,21 @@
                     </div>
                   </form-select>
                 </div>
-                <div :class="['col-6 mb-2 mb-lg-3', ['cylinders','sum_cylinders'].includes(key) ? 'col-lg-3' : 'col-lg-2']"  v-for="(select, key) in getMotoSelectGroup" :key="key">
+                <div :class="['col-6 mb-2 mb-lg-3', ['cylinders','sum_cylinders'].includes(key) ? 'col-lg-2' : 'col-lg-2']"  v-for="(select, key) in getMotoSelectGroup" :key="key">
                   <form-select
-                    v-model="form[key]" 
-                    :options="motoOptions.config[select].values.filter(value => value.key !== 0)" 
-                    :multiple="motoOptions.config[select].multiple && !motoOptions.config[select].not_foreach && key !== 'tacts'" 
+                    v-model="form[key]"
+                    :options="motoOptions.config[select].values.filter(value => value.key !== 0)"
+                    :multiple="motoOptions.config[select].multiple && !motoOptions.config[select].not_foreach && key !== 'tacts'"
                     :name-in-value="motoOptions.config[select].multiple && !motoOptions.config[select].not_foreach && key !== 'tacts'"
-                    :label="$t(motoOptions.config[select].placeholder)" 
+                    :label="$t(motoOptions.config[select].placeholder)"
                     :translate-options="true"
+                  />
+                </div>
+                <div class="col-6 col-lg-2 mb-2 mb-lg-3">
+                  <form-checkbox
+                    :label="$t('external_salon')"
+                    v-model="form.external_salon"
+                    input-name="savedSearch"
                   />
                 </div>
                 <div class="col-12 mb-2 mb-lg-0">
@@ -192,7 +199,7 @@ import { SearchMixin } from '~/mixins/search';
 import ColorOptions from '~/components/options/ColorOptions';
 
 export default {
-  components: { 
+  components: {
     ColorOptions
   },
   mixins: [SearchMixin],
@@ -234,7 +241,8 @@ export default {
         customs: '',
         region: '',
         exchange_possible: false,
-        credit: false
+        credit: false,
+        external_salon: false,
       }
     }
   },
@@ -259,31 +267,32 @@ export default {
     },
     // static data
     getMotoSelectGroup() {
-      let group = { 
-        engine: 'engine', 
+      let group = {
+        engine: 'engine',
         box: 'box',
-        drive: 'drive', 
-        tacts: 'number_of_vehicles', 
-        sum_cylinders: 'cylinders', 
-        cylinders: 'cylinder_placement', 
-        status: 'used_ones', 
-        customs: 'customed_ones' 
+        drive: 'drive',
+        tacts: 'number_of_vehicles',
+        sum_cylinders: 'cylinders',
+        status: 'used_ones',
+        customs: 'customed_ones'
       }
       for(let key in group) {
+
         if (this.category.id) {
-          let categories = this.motoOptions.config[group[key]].category;
-          if (categories && categories[0] && categories.indexOf(this.category.id) === -1) 
+          console.log(this.motoOptions.config[group[key]], group[key]);
+          let categories = this.motoOptions.config[group[key]]?.category;
+          if (categories && categories[0] && categories.indexOf(this.category.id) === -1)
             delete group[key];
         } else {
-          if (['drive','tacts','sum_cylinders','cylinders'].includes(key)) 
+          if (['drive','tacts','sum_cylinders','cylinders'].includes(key))
             delete group[key];
         }
       }
       return group;
     },
     getMotoCapacityOptions() {
-      return this.motoOptions?.config.volume.values.map(o => ({
-        key: parseInt(o.name), 
+      return this.motoOptions.config.volume.values.map(o => ({
+        key: parseInt(o.name),
         name: o.name.replace(' см³', '')
       }));
     }
