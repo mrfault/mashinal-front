@@ -2223,5 +2223,29 @@ export default {
    "shine_width2":"Ширина",
    "commercial_part":"Коммерческий",
    "logout_to_parent": "Список автосалонов",
-   "item_count": "Салонов"
+   "item_count": "Салонов",
+
+   "hour": "час",
+   "drink_amount": "Количество алкоголя",
+   "how_many_hours_passed": "Сколько часов прошло",
+   "your_weight": "Ваша масса",
+   "your_gender": "Ваш пол",
+   "when_may_i_can_drive": "Когда можно за руль?",
+
+   "alcometer": "Алкотест",
+
+   "vodka": "Водки/Водки",
+   "light_beer":"Светлого пива",
+   "strong_beer":"Крепкого пива",
+   "vine":"Вина",
+   "port_vine":"Портвейна",
+   "tequila":"Текилы",
+   "champagne":"Шампанского",
+   "brandy":"Konyak",
+   "indications_of_breathalyzer":"Показания алкотестера",
+   "alcohol_concentration":"Концентрация алкоголя",
+   "milligrams_per_liter_of_inhaled_air":"миллиграмм на литр выдыхаемого воздуха",
+   "degree_of_intoxication": "Степень опьянения",
+   "may_drive":"За руль можно сесть через",
+   "after_hours":"часов",
 }
