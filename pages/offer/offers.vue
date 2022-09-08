@@ -3,7 +3,7 @@
     <offer-slider/>
     <div class=" salonsOffer">
       <breadcrumbs :crumbs="crumbs"/>
-      <div class="row">
+      <div class="row m-0">
         <div class=" col col-md-2" v-if="!isMobileBreakpoint">
           <div class="offerNav">
             <ul>
@@ -18,7 +18,7 @@
                 <inline-svg src="/icons/offer/delete.svg" class="filter-icon   filter-icon-fill"/>
                 <span>
                   Silinmişlər
-              </span>
+                </span>
               </li>
             </ul>
           </div>
@@ -208,11 +208,9 @@ import CollapseContent from "~/components/elements/CollapseContent";
 import {ImageResizeMixin} from '~/mixins/img-resize';
 
 export default {
-
-
   name: "offers",
   components: {CollapseContent, OfferMessage, OfferSlider},
-  middleware: ['auth_general'],
+  middleware: ['auth_general','not_auto_salon'],
   async fetch({store}) {
     await store.dispatch('OffersAcceptedByAutoSalon')
   },
@@ -227,7 +225,6 @@ export default {
       store.dispatch('getHomePageSliders')
     ])
   },
-
   data() {
     return {
       offers: null,
@@ -239,17 +236,13 @@ export default {
       },
       search: '',
       files: []
-
-
     }
   },
-
   computed: {
     ...mapGetters({
       userOffers: 'OffersAcceptedByAutoSalon',
       offerMessages: 'getOfferMessages'
     }),
-
     crumbs() {
       return [
         {name: 'Super təklif paneli', route: '/offer/offers'},
@@ -261,7 +254,6 @@ export default {
           item.offer.brand.toUpperCase().includes(this.search.toUpperCase())
       }))
     },
-
   },
   methods: {
     isMyMessage(message) {
@@ -325,7 +317,6 @@ export default {
     },
     async checkAccepted(id) {
       await this.$axios.$post('/offer/user/offer/check/' + id).then((res) => {
-
         this.user_is_accepted = res.status
         this.$store.commit('setOfferMessages', res.messages)
         this.scrollTo('.my:last-child', 0, 500, '.offerDetail')

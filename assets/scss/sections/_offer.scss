@@ -664,6 +664,14 @@
 }
 @media (max-width: 480px) {
 
+.get-offer{
+  padding-left: 35px;
+  padding-right: 35px;
+}
+  .homePage-slide-item-right{
+    margin-top: 75px;
+  }
+
   .offer-step {
     flex-direction: column;
   }
@@ -675,7 +683,6 @@
   }
   .offerDetail {
     height: 617px;
-
   }
   .user {
     padding: 10px;

@@ -66,7 +66,7 @@
 
               <div class="col-md-12">
                 <div class="row">
-                  <div class="col-md-6">
+                  <div class="col-lg-6 col-12">
                     <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-selectedColor">
                       <span>Alış şərtləri <span class="star"> *</span></span>
                     </h2>
@@ -76,11 +76,9 @@
                       <form-radio :label="'Nağd'" input-name="buy_condition" v-model="form.buy_condition"
                                   :value="'cash'"
                                   radio-value="cash" class="ml-2"/>
-
-
                     </div>
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-lg-6 col-12">
                     <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-selectedColor">
                       <span>Qiymət aralıqı <span class="star"> *</span></span>
                     </h2>
