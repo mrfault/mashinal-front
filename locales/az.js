@@ -2230,7 +2230,7 @@ export default {
   "your_weight": "Çəkiniz",
   "your_gender": "Cinsiniz",
   "when_may_i_can_drive": "Nə zaman sükan arxasına keçə bilərəm",
-  "vodka": "Araq",
+  "vodka": "Araq/Konyak",
   "light_beer":"Yüngül pivə",
   "strong_beer":"Sərt pivə",
   "vine":"Çaxır",

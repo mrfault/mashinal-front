@@ -152,7 +152,7 @@
               <h3 class="ma-alcometer-title-dotted">{{$t('degree_of_intoxication')}}</h3>
               <div class="ma-alco-card__bottom--body">
                 <alcometer-speedometer
-                  :speedometerValue="diagValue"
+                  :speedometerValue="diagValue" :isRussian="isRussian"
                 ></alcometer-speedometer>
                 <h3 class="ma-alco-card__bottom--body--desc">
                    {{$t('may_drive')}}:
@@ -212,10 +212,6 @@ export default {
         {
           name: this.$t('champagne'),
           key: 10,
-        },
-        {
-          name: this.$t('brandy'),
-          key: 40,
         },
       ],
       massOptions: [
@@ -426,6 +422,15 @@ export default {
       },
     }
   },
+  computed:{
+    isRussian(){
+      if (this.$i18n.locale == 'ru') {
+        return true
+      }else{
+        return false
+      }
+    }
+  },
   methods: {
     doTest() {
       let r
@@ -492,9 +497,7 @@ export default {
       return (this.diagValue = this.diag2[6])
     },
   },
-  mounted(){
-    console.log(this.$nuxt.config);
-  }
+
 }
 </script>
 
