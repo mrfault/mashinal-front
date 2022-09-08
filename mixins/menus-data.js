@@ -32,10 +32,10 @@ export const MenusDataMixin = {
       return [
         { icon: 'car-manat', title: 'announcements', route: '/cars', children: [], categories: announcementCategories },
         { icon: 'salons-tab', title: 'salons', route: '/salons' },
-        { icon: 'salons-tab', title: 'external-salons', route: '/external-salons' },
         { icon: 'shops-tab', title: 'shops', route: '/parts/shops' },
         { icon: 'catalog-tab', title: 'autocatalog', route: '/catalog' },
         { icon: 'globe', title: 'eservices', route: '/e-services' },
+        { icon: 'external-tab', title: 'external-salons', route: '/external-salons', with_badge: true },
       ]
     },
 

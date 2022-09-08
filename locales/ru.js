@@ -2230,5 +2230,7 @@ export default {
    "end_date":"Дата окончания",
    "announcement_end_date":"Дата окончания объявления",
    "country":"Страна",
-   "dashboard_external_salon": "Профиль салона"
+   "dashboard_external_salon": "Профиль салона",
+   "external_salon": "Авто по заказу",
+   "external-salons": "Авто по заказу",
 }

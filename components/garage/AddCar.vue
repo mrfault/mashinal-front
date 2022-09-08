@@ -240,7 +240,7 @@ export default {
         this.form.car_number = ''
         this.form.tech_id = ''
         this.form.card_id = ''
-        if (this.paymentMethod === 'card') {
+        if (this.paymentMethod === 'card' && !this.bankingCard) {
           this.pending = false
           this.showPaymentModal = false
           this.handlePayment(res, false, this.$t('car_added'), 'v2')

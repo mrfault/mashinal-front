@@ -135,6 +135,7 @@ export default {
   "akkumulyatory": "Akkumulyatorlar",
   "akpp": "Avtomatik",
   "Alcantara": "Alkantara",
+  "alcometer": "Alkometer",
   "all": "Bütün",
   "all seasons": "bütün mövsümlər",
   "all_announcements_of_user": "{name} istifadəçinin bütün elanları",
@@ -2228,5 +2229,7 @@ export default {
   "end_date":"Son tarix",
   "announcement_end_date":"Elanın son tarixi",
   "country":"Ölkə",
-  "dashboard_external_salon": "Salon profili"
+  "dashboard_external_salon": "Salon profili",
+  "external_salon": "Sifarişlə avto",
+  "external-salons": "Sifarişlə avto",
 }

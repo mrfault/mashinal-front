@@ -123,6 +123,9 @@ export default {
       showLastStep: false,
       lastStepKey: 0,
       form: {
+        end_date: '',
+        auction: 1,
+        country_id: null,
         category,
         selectedBrand: '',
         selectedModel: '',

@@ -82,7 +82,7 @@ export default {
           power: catalog.power,
           year: announcement.year,
           auction: announcement.auction,
-          end_date: announcement.end_date,
+          end_date: app.$moment(announcement.end_date).format('DD.MM.YYYY HH:mm'),
           country_id: announcement.country_id,
           youtube: {
             id: announcement.youtube_link,
