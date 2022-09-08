@@ -37,9 +37,9 @@
               v-if="checkSecondTemplate(index) ? !checkItemB(index,announcement): true"
               :class="[
                 {
-                  'col-lg-mid': checkItemIndex(index + 2, announcement),
-                  'pt-4 mt-1': checkItemTop(index, announcement),
-                  'pb-4 mb-4': checkItemBottom(index, announcement),
+                  'col-lg-mid': checkItemIndex(index + 2, announcement) || announcement.external,
+                  'pt-4 mt-1': checkItemTop(index, announcement) || announcement.external,
+                  'pb-4 mb-4': checkItemBottom(index, announcement) || announcement.external,
                   'col-6 col-xs-12 col-lg-3 col-xl-auto': !isProfilePage,
                   'col-6 col-xs-6 col-lg-3 col-xl-auto': isProfilePage,
                 },
@@ -101,11 +101,17 @@
             </template>
 
           </template>
+          <template v-else-if="announcement.type === 'banner' && announcement.autosalon">
+            <div class="col-6 col-xs-6 col-lg-3 col-xl-auto mb-2 mb-lg-3">
+              <div style="display: flex; align-items: center; justify-content: center; height: 100%;">
+                <img :src="announcement.autosalon.logo" />
+              </div>
+            </div>
+          </template>
           <template v-else-if="announcement.type === 'banner' && isMobileBreakpoint">
             <div class="col-6 col-xs-6 col-lg-3 col-xl-auto mb-2 mb-lg-3">
               <site-banner @bannerLoaded="showBanner = true" v-show="showBanner" type="in-part" />
             </div>
-
           </template>
         </template>
       </div>
