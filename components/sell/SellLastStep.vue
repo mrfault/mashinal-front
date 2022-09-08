@@ -127,8 +127,8 @@
           </h2>
           <div class="row">
             <div class="col-lg-auto mb-2 mb-lg-0">
-              <div class="row flex-nowrap">
-                <div class="col-lg-auto flex-grow-1" :style="isMobileBreakpoint ? '    max-width: 57%;': ''">
+              <div class="row">
+                <div class="col-lg-auto flex-grow-1" :style="isMobileBreakpoint ? '    max-width: 57%; margin-bottom:10px;': ''">
                     <form-switch @change="removeError('end_date')" auto-width v-model="form.auction" :options="[{ name:$t('auction'), key:1 }, { name:$t('sell'), key:2 }]"/>
                 </div>
                 <div class="col-auto" v-if="form.auction === 1">
