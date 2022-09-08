@@ -2253,4 +2253,6 @@ export default {
   "dashboard_external_salon": "Salon profili",
   "external_salon": "Sifarişlə avto",
   "external-salons": "Sifarişlə avto",
+  "external_commercial":"Sifarişlə ticari",
+  "external_moto": "Sifarişlə moto"
 }
