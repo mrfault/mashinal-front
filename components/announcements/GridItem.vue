@@ -84,7 +84,7 @@
               >
                 <span class="badge badge-blue badge-external">
                   <inline-svg class="badge-icon" src="/img/auction.svg" />
-                  Sifarişlə {{ announcement.external ? 'esas_sehife': '' }}
+                  Sifarişlə
                 </span>
               </template>
               <template v-if="showStatus">
