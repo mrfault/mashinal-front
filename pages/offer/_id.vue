@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div class="d-flex align-items-center user userBar  mt-3 mb-3">
+    <div class="container">
+      <div class="d-flex align-items-center user userBar  mt-3 mb-3">
 
      <span @click="$router.back()">
       <a>
@@ -8,19 +9,21 @@
       </a>
   </span>
 
-      <div class="userImg"
-           :style="'background-image: url('+(offer.user.img ? offer.user.img : '/img/user.jpg')+')'"></div>
+        <div class="userImg"
+             :style="'background-image: url('+(offer.user.img ? offer.user.img : '/img/user.jpg')+')'"></div>
 
-      <p class="mt-2 ml-2 text-bold">
-        {{ offer.user.full_name }}
-      </p>
-      <div class="actions" v-if="user_is_accepted">
+        <p class="mt-2 ml-2 text-bold">
+          {{ offer.user.full_name }}
+        </p>
+        <div class="actions" v-if="user_is_accepted">
 
               <span @click="deleteUserAutoSalonOffer(autoSalonOffer.auto_salon_offer_id)"
                     v-if="!autoSalonOffer.user_deleted_at"> <icon
                 name="garbage"></icon></span>
+        </div>
       </div>
     </div>
+
     <div class="container">
       <div class="row">
         <div class="col col-md-12 col-12 col-xs-12 col-sm-12">

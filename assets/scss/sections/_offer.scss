@@ -668,6 +668,9 @@
   padding-left: 35px;
   padding-right: 35px;
 }
+  .searchInput:focus{
+    scroll-behavior: smooth;
+  }
   .homePage-slide-item-right{
     margin-top: 75px;
   }
@@ -775,17 +778,61 @@
 }
 
 /* Media Query for Tablets Ipads portrait mode */
-@media (min-width: 768px) and (max-width: 1024px) {
+@media (min-width: 481px) and (max-width: 1024px) {
+  .mobile-filter{
+    margin-top: 20px;
+    ul{
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      width: 90%;
+      margin-left: auto;
+      margin-right: auto;
+      align-items: center;
 
+      padding: 0;
+      li{
+        margin: 10px;
+        width: 44%;
+        display: flex;
+        padding: 7px;
+        border: 1px $dark-blue-1 solid;
+        border-radius: 4px;
+        span{
+          margin-left: 10px;
+        }
+      }
+      .active-filter{
+        background: $dark-blue-2;
+        color: $white;
+
+      }
+      .active-filter-fill{
+        background: $dark-blue-2;
+        color: $white;
+        svg{
+          path,rect,line{
+            stroke:$white;
+            fill: $white;
+          }
+        }
+      }
+    }
+  }
 }
 
 /* Media Query for Laptops and Desktops */
 @media (min-width: 1025px) and (max-width: 1280px) {
-
+  .mobile-filter-section{
+    display: none;
+  }
 }
 
 /* Media Query for Large screens */
 @media (min-width: 1281px) {
+  .mobile-filter-section{
+    display: none;
+  }
   .salonsOffer {
 
     margin-left: auto;

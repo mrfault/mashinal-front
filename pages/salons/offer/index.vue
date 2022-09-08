@@ -72,7 +72,7 @@
             </ul>
           </div>
         </div>
-        <div class="col col-md-4 background-white">
+        <div class="col col-md-12 col-lg-4 background-white">
           <div class="searchBox">
             <icon name="search"></icon>
 
@@ -95,7 +95,7 @@
             </div>
           </div>
         </div>
-        <div class="col col-md-6 col-12 col-xs-12 col-sm-12 background-white">
+        <div class="col col-md-12 col-lg-6 col-xs-12 col-sm-12 background-white" v-if="!isMobileBreakpoint">
           <div class="d-flex align-items-center user" v-if="offer.brand">
             <div class="userImg"
                  :style="'background-image: url('+(offer.user.img ? offer.user.img : '/img/user.jpg')+')'"></div>
@@ -107,7 +107,7 @@
               <span @click="deleteAutoSalonOffer(offer.id)"> <icon name="garbage"></icon></span>
             </div>
           </div>
-          <div class="offerDetail" v-if="offer.brand">
+          <div class="offerDetail" v-if="offer.brand ">
 
             <collapse-content :title="'Təklif'">
 
