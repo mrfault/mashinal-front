@@ -343,7 +343,7 @@ export default {
     font-size:35px !important;
   }
 }
-.external_salon_hover:hover {
+.external_salon_hover:hover,.external_salon_hover.exact-active {
   svg, path {
     fill:#F81734 !important;
   }
