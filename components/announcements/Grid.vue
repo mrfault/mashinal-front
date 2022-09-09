@@ -104,7 +104,7 @@
           <template v-else-if="announcement.type === 'banner' && announcement.autosalon">
             <div class="col-6 col-xs-6 col-lg-3 col-xl-auto mb-1 d-flex align-items-center">
               <nuxt-link tag="div" :to="$localePath('/external-salons/'+announcement.autosalon.slug)" class="index-salon-view cursor-pointer">
-                  <img style="max-width: 203px;" :src="announcement.autosalon.logo || `/img/salon-logo-${colorMode}.jpg`" />
+                  <img style="max-width: 203px;" :src="announcement.autosalon.logo || `/img/salon-logo-light.jpg`" />
               </nuxt-link>
             </div>
           </template>

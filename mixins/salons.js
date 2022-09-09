@@ -3,7 +3,7 @@ export const SalonsMixin = {
     getLogo(logo) {
       return logo
         ? this.$withBaseUrl(logo)
-        : `/img/salon-logo-${this.colorMode}.jpg`
+        : `/img/salon-logo-light.jpg`
     },
     getCover(cover, type) {
       return cover
