@@ -585,7 +585,7 @@
                       <form-checkbox
                         :label="$t('external_salon')"
                         v-model="form.external_salon"
-                        input-name="savedSearch"
+                        input-name="external_salon"
                       />
                   </div>
                   <div
