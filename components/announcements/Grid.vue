@@ -102,10 +102,10 @@
 
           </template>
           <template v-else-if="announcement.type === 'banner' && announcement.autosalon">
-            <div class="col-6 col-xs-6 col-lg-3 col-xl-auto mb-2 mb-lg-3">
-              <div style="display: flex; align-items: center; justify-content: center; height: 100%;">
-                <img :src="announcement.autosalon.logo" />
-              </div>
+            <div class="col-6 col-xs-6 col-lg-3 col-xl-auto mb-1 d-flex align-items-center">
+              <nuxt-link tag="div" :to="$localePath('/external-salons/'+announcement.autosalon.slug)" class="index-salon-view cursor-pointer">
+                  <img style="max-width: 203px;" :src="announcement.autosalon.logo || `/img/salon-logo-${colorMode}.jpg`" />
+              </nuxt-link>
             </div>
           </template>
           <template v-else-if="announcement.type === 'banner' && isMobileBreakpoint">
@@ -126,10 +126,24 @@
   </div>
 </template>
 
-<style>
+<style lang="scss">
 @media (min-width: 1025px) {
   .announcements-grid .col-lg-auto {
     width: 20%;
+  }
+}
+.index-salon-view {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  padding: 35px 6px;
+  background-size: contain;
+  border-radius: 6px;
+}
+.dark-mode {
+  .index-salon-view {
+    background: #1C1C1E;
   }
 }
 </style>
