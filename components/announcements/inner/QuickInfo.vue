@@ -125,7 +125,7 @@
         <div class="col mt-2 mt-lg-3">
           <restore-button
             :announcement="announcement"
-            v-if="userIsOwner(announcement) && announcement.status == 3"
+            v-if="userIsOwner(announcement) && announcement.status == 3 && !announcement.is_external_salon"
             :free="true"
           />
           <deactivate-button
