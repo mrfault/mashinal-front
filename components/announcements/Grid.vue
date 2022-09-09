@@ -101,7 +101,7 @@
             </template>
 
           </template>
-          <template v-else-if="announcement.type === 'banner' && announcement.autosalon">
+          <template v-else-if="announcement.type === 'banner' && announcement.autosalon && !isMobileBreakpoint">
             <div class="col-6 col-xs-6 col-lg-3 col-xl-auto mb-1 d-flex align-items-center">
               <nuxt-link :style="(!isMobileBreakpoint ? 'min-width: 203px;':'min-width: 175px;')+'min-height: 273px;'" tag="div" :to="$localePath('/external-salons/'+announcement.autosalon.slug)" class="index-salon-view cursor-pointer">
                   <img style="width: 150px;" :src="announcement.autosalon.logo || `/img/salon-logo-${colorMode}.jpg`" />
