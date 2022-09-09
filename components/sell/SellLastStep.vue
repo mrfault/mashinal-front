@@ -136,7 +136,7 @@
                     @change="removeError('end_date')"
                     date-type="datetime"
                     value-type="datetime"
-                    date-format="DD.MM.YYYY HH"
+                    date-format="DD.MM.YYYY HH:00"
                     v-model="form.end_date"
                     :placeholder="$t('announcement_end_date')"
                     input-date
