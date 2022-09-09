@@ -286,7 +286,6 @@ import {mapGetters, mapActions, mapState} from 'vuex';
 import { ToastErrorsMixin } from '~/mixins/toast-errors';
 import { ImageResizeMixin } from '~/mixins/img-resize';
 import { PaymentMixin } from '~/mixins/payment';
-import { FunctionalCalendar } from 'vue-functional-calendar';
 
 import SellSelectModification from '~/components/sell/SellSelectModification';
 import UploadImage from '~/components/elements/UploadImage';
@@ -299,7 +298,6 @@ import CarFilters from '~/components/cars/CarFilters';
 
 export default {
   components: {
-    FunctionalCalendar,
     SellSelectModification,
     UploadImage,
     ColorOptions,
