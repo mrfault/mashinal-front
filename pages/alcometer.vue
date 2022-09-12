@@ -137,6 +137,7 @@
               <div class="ma-alco-card__bottom--body">
                 <alcometer-promil
                   :promilValue="parseFloat(concentrProm)"
+                  :isRussian="isRussian"
                 ></alcometer-promil>
                 <h3 class="ma-alco-card__bottom--body--desc">
                   {{$t('alcohol_concentration')}}:
