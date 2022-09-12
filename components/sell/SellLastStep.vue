@@ -8,7 +8,7 @@
       <div v-if="showAllOptions" :class="{'disabled-content': type === 'cars' && !form.car_catalog_id}">
         <h2 class="title-with-line mt-3 mt-lg-0" id="anchor-saved_images">
           <span>{{ $t('photos') }} ({{ $t('at_least_5_photos', { min: minFiles, max: maxFiles }).toLowerCase() }}) <span class="star"> *</span></span>
-          <br> 
+          <br>
           <small v-if="isMobileBreakpoint" class="text-red">Şəkillərin yerini sürüşdürərək dəyişmək üçün 2 saniyə basıb saxlayın</small>
         </h2>
 
@@ -157,14 +157,14 @@
 <!--            <form-switch :options="getOwnerOptions" v-model="form.owner_type" auto-width />-->
 <!--          </div>-->
 <!--        </div>-->
-        <h2 v-if="type === 'cars'" class="title-with-line mt-2 mt-lg-3" id="anchor-car_or_vin">
+        <h2 v-if="type === 'cars' || (type !=='parts' && user.external_salon)" class="title-with-line mt-2 mt-lg-3" id="anchor-car_or_vin">
           <span>{{ $t(form.customs_clearance || user.external_salon ? 'vin_carcase_number' : 'license_plate_number_vin_or_carcase_number') }}
             <template v-if="!loggedIn || (loggedIn && !user.autosalon) || (loggedIn && user.autosalon && user.autosalon.is_official)">
                <span class="star" v-if="type === 'cars'"> *</span>
             </template>
           </span>
         </h2>
-        <div class="row" v-if="type === 'cars' && !user.is_autosalon">
+        <div class="row" v-if="type === 'cars' && !user.is_autosalon || (type !=='parts' && user.external_salon)">
           <div class="col-lg-4 mb-2 mb-lg-0" v-if="!form.customs_clearance && !user.external_salon">
             <form-text-input v-model="form.car_number" input-class="car-number-show-popover" img-src="/img/flag.svg"
                 :mask="type === 'cars' ? '99 - AA - 999' : '99 - A{1,2} - 999'"
