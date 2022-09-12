@@ -100,6 +100,8 @@ export default {
           return this.$localePath('/salons')
         case '/search_templates' :
           return this.$localePath('/profile/templates')
+        case '/salons/offer' :
+          return this.$localePath('/salons/offer')
       }
       return '/';
     }

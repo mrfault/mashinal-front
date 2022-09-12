@@ -284,17 +284,13 @@
     width: 100% !important;
     border: 0;
   }
-
-
   border-radius: 4px;
 
 }
 
 .salonsOffer {
-
   height: 700px;
   margin-bottom: 50px;
-
 
   .col {
     height: 300px !important;
@@ -311,6 +307,12 @@
       .actions {
         margin-left: auto;
         margin-right: 15px;
+        .icon-star{
+          color: $dark-blue-2;
+        }
+        .icon-garbage{
+        color:$red-1 ;
+        }
 
         i {
           margin-right: 10px;
@@ -387,7 +389,7 @@
   }
 
   .offerUsers {
-    height: 564px;
+    height: 619px;
     padding: 0px 20px 20px 20px;
     overflow-x: hidden;
     overflow-y: auto;
@@ -405,7 +407,7 @@
       border-right: none;
       align-items: center;
       justify-content: center;
-  cursor: pointer;
+       cursor: pointer;
 
 
       .userImg {
@@ -435,11 +437,8 @@
       .created {
         margin-left: auto;
       }
-
     }
   }
-
-
 }
 
 .userImg {
@@ -454,7 +453,6 @@
   justify-content: center;
   background-size: cover;
   flex-shrink: 0;
-
 }
 
 .salonsOffer > .row {
@@ -463,7 +461,7 @@
 }
 
 .offerDetail {
-  height: 500px;
+  height: 538px;
   overflow-x: hidden;
   overflow-y: auto;
 
@@ -609,12 +607,9 @@
   width: 7px;
 }
 
-
 .offerDetail::-webkit-scrollbar-track {
   background: $white;
-
 }
-
 /* Handle */
 .offerDetail::-webkit-scrollbar-thumb {
   background: rgba(173, 178, 200, 0.3);
@@ -767,8 +762,15 @@
       margin-left: unset;
     }
   }
-
 }
+.offerCount{
+  background: $yellow-5;
+  padding: 4px 5px;
+  border-radius: 50%;
+  color: $dark-blue-1;
+  font-size: 13px;
+}
+
 
 @media (min-width: 481px) and (max-width: 767px) {
 
@@ -877,6 +879,12 @@
     .filter-icon-fill path, .filter-icon-fill rect, .filter-icon-fill line{
       fill: $white;
     }
+  }
+  .actions{
+    .icon-star{
+      color: $white !important;
+    }
+
   }
   .selectedGeneration {
     background: $grey-2 !important;
