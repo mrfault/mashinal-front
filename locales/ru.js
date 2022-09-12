@@ -2248,4 +2248,7 @@ export default {
    "degree_of_intoxication": "Степень опьянения",
    "may_drive":"За руль можно сесть через",
    "after_hours":"часов",
+   "ml": "мл",
+   "amount_of_ml": "Количество, мл",
+   "drink_type": "Тип алкоголя",
 }

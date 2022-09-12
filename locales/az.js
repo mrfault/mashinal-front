@@ -2244,5 +2244,7 @@ export default {
   "degree_of_intoxication": "İntoksikasiya dərəcəsi",
   "may_drive":"Sürmək olar",
   "after_hours":"saat sonra",
-
+  "ml":"ml",
+  "amount_of_ml": "Miqdarı, ml",
+  "drink_type": "İçkinin növü",
 }
