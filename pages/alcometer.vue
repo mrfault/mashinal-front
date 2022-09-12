@@ -21,23 +21,24 @@
                   class="col-6"
                   v-model="form.drinkType1"
                   :options="drinkTypes"
-                  :label="$t('type')"
-                  :clear-option="false"
+                  :label="$t('drink_type')"
+                 :allowClear="false"
                 />
                 <form-select
                   class="col-6"
                   v-model="form.drinkValue1"
                   :options="drinkAmounts"
-                  :label="$t('amount')"
-                  :clear-option="false"
+                  :label="$t('amount_of_ml')"
+                 :allowClear="false"
                 />
               </div>
               <div class="mx-1 mt-3">
-                <h4 class="alco-h4 pr-1">{{$t('your_gender')}}</h4>
+                <h4 class="alco-h4 pr-1">{{$t('your_gender')}}:</h4>
                 <form-switch
                   class="gender-switcher text-transform-normal"
                   v-model="form.gender"
                   :options="genders"
+                 :allowClear="false"
                 />
               </div>
             </div>
@@ -56,25 +57,26 @@
                   class="col-6"
                   v-model="form.drinkType2"
                   :options="drinkTypes"
-                  :label="$t('type')"
-                  :clear-option="false"
+                  :label="$t('drink_type')"
+                 :allowClear="false"
                 />
                 <form-select
                   class="col-6"
                   v-model="form.drinkValue2"
                   :options="drinkAmounts"
-                  :label="$t('amount')"
-                  :clear-option="false"
+                  :label="$t('amount_of_ml')"
+                 :allowClear="false"
                 />
               </div>
               <div class="mx-1 mt-3">
-                <h4 class="alco-h4 pr-1">{{$t('your_weight')}}</h4>
+                <h4 class="alco-h4 pr-1">{{$t('your_weight')}}:</h4>
                 <form-select
                   class=""
                   v-model="form.mass"
                   :options="massOptions"
                   :label="$t('weight')"
-                  :clear-option="false"
+                 :allowClear="false"
+                 :clear-option="false"
                 />
               </div>
             </div>
@@ -93,24 +95,25 @@
                   class="col-6"
                   v-model="form.drinkType3"
                   :options="drinkTypes"
-                  :label="$t('type')"
-                  :clear-option="false"
+                  :label="$t('drink_type')"
+                 :allowClear="false"
                 />
                 <form-select
                   class="col-6"
                   v-model="form.drinkValue3"
                   :options="drinkAmounts"
-                  :label="$t('amount')"
-                  :clear-option="false"
+                  :label="$t('amount_of_ml')"
+                 :allowClear="false"
+                 
                 />
               </div>
               <div class="mx-1 mt-3">
                 <h4 class="alco-h4 pr-1">{{$t('how_many_hours_passed')}}?</h4>
                 <form-select
-                  class=""
                   v-model="form.time"
                   :options="hours"
                   :label="$t('hour')"
+                  :allowClear="false"
                   :clear-option="false"
                 />
               </div>
@@ -278,43 +281,43 @@ export default {
       ],
       drinkAmounts: [
         {
-          name: '50',
+          name: `50 ${this.$t('ml')}`,
           key: 50,
         },
         {
-          name: '100',
+          name: `100 ${this.$t('ml')}`,
           key: 100,
         },
         {
-          name: '200',
+          name: `200 ${this.$t('ml')}`,
           key: 200,
         },
         {
-          name: '300',
+          name: `300 ${this.$t('ml')}`,
           key: 300,
         },
         {
-          name: '500',
+          name: `500 ${this.$t('ml')}`,
           key: 500,
         },
         {
-          name: '700',
+          name: `700 ${this.$t('ml')}`,
           key: 700,
         },
         {
-          name: '900',
+          name: `900 ${this.$t('ml')}`,
           key: 900,
         },
         {
-          name: '1000',
+          name: `1000 ${this.$t('ml')}`,
           key: 1000,
         },
         {
-          name: '1200',
+          name: `1200 ${this.$t('ml')}`,
           key: 1200,
         },
         {
-          name: '1500',
+          name: `1500 ${this.$t('ml')}`,
           key: 1500,
         },
       ],
