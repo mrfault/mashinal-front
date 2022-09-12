@@ -296,7 +296,10 @@ export default {
           }
           setTimeout(sleep, 1000)
         } else {
-          this.scrollTo('.my:last-child', 0, 500, '.offerDetail')
+          setTimeout(()=>{
+            this.scrollTo('.my:last-child', 0, 500, '.offerDetail')
+          },1000)
+
         }
 
       })
