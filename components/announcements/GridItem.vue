@@ -83,7 +83,7 @@
                 v-if="announcement.is_external_salon && !showStatus"
               >
                 <span class="badge badge-blue badge-external">
-                  <inline-svg class="badge-icon" src="/img/auction.svg" />
+                  <inline-svg v-if="!isMobileBreakpoint" class="badge-icon" src="/img/auction.svg" />
                   Sifarişlə
                 </span>
               </template>
