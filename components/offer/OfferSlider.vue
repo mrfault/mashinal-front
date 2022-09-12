@@ -32,7 +32,7 @@
                 };`"
               ></div>
               <div class="homePage-text-section" :style="!isMobileBreakpoint ?`margin-left: -150px;`:''">
-                <div class="homePage-text-section-title" style="margin-left: -3px;">
+                <div class="homePage-text-section-title" style="margin-left: -3px; margin-top:-100px">
                   <!-- <img :src="homePageSlider.icon" /> -->
                   <img
                     :src="
@@ -45,14 +45,7 @@
                 </div>
                 <p>{{ homePageSlider.description[locale] }}</p>
 
-                <nuxt-link
-                  :to="$localePath(homePageSlider.button_link)"
-                  class="btn btn--green text-left"
-                  v-if="homePageSlider.button_link"
-                >
-                  <icon name="plus-circle"/>
-                  {{ homePageSlider.button_text[locale] }}
-                </nuxt-link>
+
                 <button
                   v-if="false"
                   @click="gotoRoute($localePath(homePageSlider.button_link))"
@@ -181,7 +174,7 @@ export default {
 
 }
 .swiper-pagination{
-  left: 77px !important;
+  left: 92px !important;
   bottom: 135px !important;
 
 }

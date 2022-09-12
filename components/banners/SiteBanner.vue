@@ -6,8 +6,8 @@
        `bn-${type}`,
        { 'bn-sticky':absolute },
        {'bn-fixed': bnFixed && ['left','right'].includes(type) }
-       ]"
->
+       ]">
+
   <span @click="go" class="cursor-pointer" :class="`bn-image-container-${type}`" style="width: 100%;"  >
     <img alt="" :src="data.image+'?v='+timestamp"/>
   </span>
@@ -142,6 +142,7 @@ export default {
   height: 100px;
   background-size: 100% 100%;
   width: 100%;
+  padding: 0 5px;
   img {
     width: 100%;
     max-height: 100px;
@@ -149,7 +150,6 @@ export default {
     object-fit: contain;
   }
 }
-
 .bn-top-margin {
   margin-top:20px;
 }
@@ -166,7 +166,6 @@ export default {
 .bn-left {
    left:0;
  }
-
 .bn-in-announcement-list {
  img {
    width: 590px;

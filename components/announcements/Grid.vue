@@ -31,14 +31,15 @@
               :key="announcement.id_unique"
             />
           </template>
-          <template v-else>
+          <template v-else-if="announcement.type !== 'banner'">
+
             <div
               v-if="checkSecondTemplate(index) ? !checkItemB(index,announcement): true"
               :class="[
                 {
-                  'col-lg-mid': checkItemIndex(index + 2, announcement),
-                  'pt-4 mt-1': checkItemTop(index, announcement),
-                  'pb-4 mb-4': checkItemBottom(index, announcement),
+                  'col-lg-mid': checkItemIndex(index + 2, announcement) || (announcement.external && !isMobileBreakpoint),
+                  'pt-4 mt-1': checkItemTop(index, announcement) || (announcement.external && !isMobileBreakpoint),
+                  'pb-4 mb-4': checkItemBottom(index, announcement) || (announcement.external && !isMobileBreakpoint),
                   'col-6 col-xs-12 col-lg-3 col-xl-auto': !isProfilePage,
                   'col-6 col-xs-6 col-lg-3 col-xl-auto': isProfilePage,
                 },
@@ -49,6 +50,7 @@
               :key="announcement.id_unique + (escapeDuplicates ? '_' + index : '')"
             >
               <grid-item
+
                 :announcement="announcement"
                 :show-monetization-actions="showMonetizationActions"
                 :show-checkbox="showCheckbox"
@@ -76,6 +78,7 @@
             >
 
               <div
+                v-if="!isMobileBreakpoint"
                 class="col-6 col-xs-12 col-lg-3 col-xl-auto mb-2 mb-lg-3 align-items-center"
                 :class="{'col-lg-auto mb-lg-4 mt-lg-6 pt-lg-4 pb-lg-4': !showBanner,'d-lg-flex':showBanner }"
                 :key="'banner_' + index"
@@ -98,6 +101,18 @@
             </template>
 
           </template>
+          <template v-else-if="announcement.type === 'banner' && announcement.autosalon && !isMobileBreakpoint">
+            <div class="col-6 col-xs-6 col-lg-3 col-xl-auto mb-1 d-flex align-items-center">
+              <nuxt-link :style="(!isMobileBreakpoint ? 'min-width: 203px;':'min-width: 175px;')+'min-height: 273px;'" tag="div" :to="$localePath('/external-salons/'+announcement.autosalon.slug)" class="index-salon-view cursor-pointer">
+                  <img style="width: 150px;" :src="announcement.autosalon.logo || `/img/salon-logo-${colorMode}.jpg`" />
+              </nuxt-link>
+            </div>
+          </template>
+          <template v-else-if="announcement.type === 'banner' && isMobileBreakpoint">
+            <div class="col-6 col-xs-6 col-lg-3 col-xl-auto mb-2 mb-lg-3">
+              <site-banner @bannerLoaded="showBanner = true" v-show="showBanner" type="in-part" />
+            </div>
+          </template>
         </template>
       </div>
     </div>
@@ -111,10 +126,31 @@
   </div>
 </template>
 
-<style>
+<style lang="scss">
 @media (min-width: 1025px) {
   .announcements-grid .col-lg-auto {
     width: 20%;
+  }
+}
+.index-salon-view {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  padding: 35px 6px;
+  background-size: contain;
+  border-radius: 6px;
+}
+.dark-mode {
+  .index-salon-view {
+    background: #1C1C1E;
+  }
+}
+@media ( min-width: 1025px) {
+  .dark-mode {
+    .index-salon-view {
+      background: #242426;
+    }
   }
 }
 </style>
@@ -215,7 +251,7 @@ export default {
       this.$cookies.set('show_bn',!this.$cookies.get('show_bn'));
     },
     checkSecondTemplate(index) {
-        return [20,21,22,23].includes(index) && this.$cookies.get('show_bn');
+        return [20,21,22,23].includes(index) && this.$cookies.get('show_bn') && !this.isMobileBreakpoint;
     },
     checkItemTop(index, item) {
       return (

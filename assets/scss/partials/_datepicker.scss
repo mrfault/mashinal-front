@@ -454,11 +454,7 @@
   list-style: none;
 }
 
-.mx-time-column .mx-time-list::after {
-  content: "";
-  display: block;
-  height: 192px;
-}
+
 
 .mx-time-column .mx-time-item {
   cursor: pointer;
@@ -525,26 +521,26 @@
   .mx-btn {
     color: $white;
   }
-  
+
   .mx-btn:hover {
     border-color: $yellow-1;
     color: $yellow-1;
   }
-  
+
   .mx-datepicker svg {
     fill: $white;
     line {
       stroke: $white;
     }
   }
-  
+
   .mx-datepicker .mx-input:not(:placeholder-shown) ~ i svg {
     fill: $yellow-1;
     line {
       stroke: $yellow-1;
     }
   }
-  
+
   .mx-icon-clear svg {
     fill: $yellow-1;
     line {
@@ -558,64 +554,64 @@
     background-color: $dark-1;
     border: 1px solid $grey-1;
   }
-  
+
   .mx-datepicker-sidebar+.mx-datepicker-content {
     border-left: 1px solid $grey-1;
   }
-  
+
   .mx-datepicker-header {
     border-bottom: 1px solid $grey-1;
   }
-  
+
   .mx-datepicker-footer {
     border-top: 1px solid $grey-1;
   }
-  
+
   .mx-calendar+.mx-calendar {
     border-left: 1px solid $grey-1;
   }
-  
+
   .mx-calendar-content .cell:hover {
     color: $white;
     background-color: $dark-2;
   }
-  
+
   .mx-calendar-content .cell.active {
     color: $white;
     background-color: $grey-2;
     border-color: $grey-1;
   }
-  
+
   .mx-calendar-content .cell.in-range {
     color: $white;
     background-color: $greyish-blue-5;
   }
-  
+
   .mx-calendar-content .cell.disabled {
     color: $grey-1;
     background-color: $greyish-blue-1;
   }
-  
+
   .mx-calendar-week-mode .mx-date-row:hover {
     background-color: $greyish-blue-4;
   }
-  
+
   .mx-calendar-week-mode .mx-date-row.mx-active-week {
     background-color: $greyish-blue-5;
   }
-  
+
   .mx-table-date .today {
     color: $yellow-1;
   }
-  
+
   .mx-table-date .cell.not-current-month {
     color: $grey-1;
   }
-  
+
   .mx-time {
     background: $white;
   }
-  
+
   .mx-time+.mx-time {
     border-left: 1px solid $grey-1;
   }
@@ -623,34 +619,34 @@
   .mx-time-header {
     border-bottom: 1px solid $grey-1;
   }
-  
+
   .mx-time-column {
     border-left: 1px solid $grey-1;
   }
-  
+
   .mx-time-column .mx-time-item:hover {
     color: $white;
     background-color: $greyish-blue-4;
   }
-  
+
   .mx-time-column .mx-time-item.active {
     color: $yellow-1;
   }
-  
+
   .mx-time-column .mx-time-item.disabled {
     color: $grey-1;
     background-color: $greyish-blue-1;
   }
-  
+
   .mx-time-option:hover {
     color: $white;
     background-color: $greyish-blue-4;
   }
-  
+
   .mx-time-option.active {
     color: $yellow-1;
   }
-  
+
   .mx-time-option.disabled {
     color: $grey-1;
     background-color: $greyish-blue-1;

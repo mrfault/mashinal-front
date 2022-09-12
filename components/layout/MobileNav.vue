@@ -1,5 +1,5 @@
 <template>
-  <div class="mobile-nav d-lg-none" v-if="routeName !== 'login'">
+  <div class="mobile-nav d-lg-none" >
     <div class="container">
       <ul>
         <li v-for="menu in bottomMenus.filter(menu => !menu.hide)" :key="menu.title">
@@ -28,7 +28,7 @@ export default {
   },
   methods: {
     isPseudoActive(menu) {
-      return (this.hasSearchNav && menu.title === 'main') 
+      return (this.hasSearchNav && menu.title === 'main')
           || (this.routeName === 'profile-messages' && menu.title === 'messages')
           || (this.routeName === 'garage' && menu.title === 'garage')
           || (this.routeName?.includes('catalog') && menu.title === 'catalog');

@@ -11,6 +11,7 @@
             class="swiper-slide"
             v-for="(homePageSlider, index) in homePageSliders"
             :key="index"
+            @click="$router.push($localePath(homePageSlider.button_link))"
           >
             <div class="homePage-slide-item">
               <div class="homePage-slide-item-left">
@@ -170,7 +171,6 @@ export default {
       pending: false,
     }
   },
-
   computed: {
     ...mapGetters(['mainAnnouncements', 'homePageSliders']),
     photos(){
@@ -256,10 +256,7 @@ export default {
 
     }
   }
-
-
 }
-
 .mobileHomePage-slide-item {
   height: 170px;
   position: relative;
@@ -268,7 +265,6 @@ export default {
   .mobileHomePage-slide-left {
     width: 50%;
   }
-
   .mobileHomePage-slide-right {
     position: absolute;
     top: 0;
@@ -278,7 +274,6 @@ export default {
     box-sizing: border-box;
     overflow: hidden;
     clip-path: polygon(43% 0, 100% 0, 100% 100%, 0% 100%);
-
     img {
       width: 100%;
       height: 100%;

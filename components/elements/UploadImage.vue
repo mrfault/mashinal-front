@@ -7,6 +7,7 @@
       :sort="true"
       group="people"
       class="row"
+      :delay="isMobileBreakpoint ? 2 : 0"
     >
       <div class="col-6 col-lg-1-5 mb-2 mb-lg-3 draggable" v-for="(key, index) in orderdedKeys" :key="key">
         <div class="upload-image_thumbnail">

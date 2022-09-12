@@ -54,6 +54,7 @@ Vue.component('form-text-input', FormTextInput);
 Vue.component('form-textarea', FormTextarea);
 Vue.component('form-checkbox', FormCheckbox);
 Vue.component('form-radio', FormRadio);
+
 Vue.component('form-select', FormSelect);
 Vue.component('form-buttons', FormButtons);
 Vue.component('form-range', FormRange);

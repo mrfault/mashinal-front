@@ -307,7 +307,7 @@
 
       <div class="row d-flex justify-content-end">
         <div class="col-12 col-lg-1-5">
-          <button class="btn btn--green mt-3" type="button" @click="submit">
+          <button class="btn btn--green mt-3" :class="{ pending }" type="button" @click="submit">
             {{ $t('place_announcement') }}
           </button>
         </div>
@@ -340,6 +340,7 @@ import { ToastErrorsMixin } from '~/mixins/toast-errors';
 
 import FormKeywords from '~/components/forms/FormKeywords'
 import FormGallery from '~/components/forms/FormGallery'
+import commercial from "~/pages/sell/commercial";
 
 export default {
   mixins: [ToastErrorsMixin],
@@ -427,7 +428,9 @@ export default {
         ...this.form,
         is_new: true,
         is_original: true,
+        commercial_size:""
       }
+
 
       delete this.form.sub_category_id;
       delete this.form.brand_id;
@@ -571,6 +574,9 @@ export default {
       }
     },
     updatePreview(key) {
+      if (!key || key === 'region')
+        this.setSellPreviewData({ value: this.regions
+            .find(o => o.key === this.form.region_id)?.name[this.locale], key: 'region' });
       if (!key || key === 'currency')
         this.setSellPreviewData({ value: this.getCurrencyOptions
             .find(o => o.key === this.form.currency)?.sign, key: 'currency' });

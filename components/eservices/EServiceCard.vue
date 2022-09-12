@@ -59,8 +59,7 @@
         </nuxt-link>
       </div>
       <div class="e-service__actions--right">
-
-        <nuxt-link :to="$localePath(item.url)" class="">
+        <nuxt-link v-if="item.key === 'contract' ? !user.external_salon : true" :to="$localePath(item.url)" class="">
           {{ $t('detail') }}
           <icon name="chevron-right"/>
           <!-- <inline-svg src="/icons/chevron-right.svg" :height="14" /> -->

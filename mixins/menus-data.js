@@ -35,6 +35,7 @@ export const MenusDataMixin = {
         { icon: 'shops-tab', title: 'shops', route: '/parts/shops' },
         { icon: 'catalog-tab', title: 'autocatalog', route: '/catalog' },
         { icon: 'globe', title: 'eservices', route: '/e-services' },
+        { icon: 'external-tab', title: 'external-salons', route: '/external-salons', with_badge: true },
       ]
     },
 
@@ -83,9 +84,11 @@ export const MenusDataMixin = {
         { title: 'shops', route: '/parts/shops', icon: 'shops-tab' },
         { title: 'autocatalog', route: '/catalog', icon: 'catalog-tab' },
         { title: 'favorites', route: '/profile/favorites', icon: 'favorites-tab' },
+        { title: 'external-salons', route: '/external-salons', with_badge: true },
         { title: 'comparisons', route: '/comparison', icon: 'compare' },
         { title: 'my_searches', route: '/profile/templates', icon: 'template', auth: true },
         { title: 'helper_search', route: '/cars/assistant', icon: 'helper-tab' },
+
         this.pageMenus.find(menu => menu.title === 'feedback')
       ].filter(menu => menu.dev && this.$env.DEV || !menu.dev)
     },

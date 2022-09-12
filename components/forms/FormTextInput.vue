@@ -5,18 +5,19 @@
       <img :src="imgSrc" v-if="imgSrc" :class="{disabled}" />
       <template v-if="inputDate">
         <date-picker
+          @click="open = false"
           v-model="inputValue"
           value-type="format"
           :popup-style="{ top: '100%', left: 0 }"
           :append-to-body="false"
-          :format="'DD.MM.YYYY'"
+          :format="dateFormat"
           :placeholder="placeholder"
+          :type="dateType"
+          :open.sync="open"
           :lang="locale"
           :input-attr="{readonly: 'readonly', id, maxlength, disabled}"
           :input-class="{invalid, valid, disabled, [`${inputClass}`]:inputClass}"
           :disabled-date="disabledDate"
-          @open="showDatepicker(true)"
-          @close="showDatepicker(false)"
         >
           <template #icon-clear>
             <icon name="cross" />
@@ -37,6 +38,9 @@
           v-mask="mask"
           v-model="inputValue"
           @focus="$emit('focus', $event)"
+          @keypress="$emit('keypress',$event)"
+
+
         />
         <span v-if="type === 'password' && !invalid" class="show-password" @click="showPassword = !showPassword">
           <icon :name="showPassword ? 'eye' : 'hide'" />
@@ -66,6 +70,18 @@
       type: {
         type: String,
         default: 'text'
+      },
+      dateFormat: {
+        type: String,
+        default: 'DD.MM.YYYY'
+      },
+      dateType: {
+        type: String,
+        default: 'date'
+      },
+      valueType: {
+        type: String,
+        default: 'format'
       },
       placeholder: {
         type: String,
@@ -112,7 +128,8 @@
       return {
         prevValue: this.value,
         showPassword: false,
-        timeout: -1
+        timeout: -1,
+        open:false,
       }
     },
     computed: {
@@ -133,7 +150,8 @@
     },
     methods: {
       showDatepicker(show) {
-        document.body.classList[show ? 'add' : 'remove']('date-picker-open');
+        this.open = show;
+       // document.body.classList[show ? 'add' : 'remove']('date-picker-open');
       }
     },
     beforeDestroy() {

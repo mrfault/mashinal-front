@@ -13,8 +13,8 @@ export const LayoutMixin = {
       loginActionKey: '',
       windowWidth: null,
       loginInitialForm: {},
-      scrollTimeout:null,
-      latestScroll:0,
+      scrollTimeout: null,
+      latestScroll: 0,
     }
   },
   computed: {
@@ -26,10 +26,10 @@ export const LayoutMixin = {
       'notifications',
     ]),
   },
-  watch:{
+  watch: {
     $route() {
-      this.checkEmitting ++;
-      this.$store.commit('mutate',{
+      this.checkEmitting++;
+      this.$store.commit('mutate', {
         property: 'timestamp',
         value: new Date().getTime()
       })
@@ -76,7 +76,7 @@ export const LayoutMixin = {
       var position = el.getBoundingClientRect();
 
       // checking whether fully visible
-      if(position.top >= 0 && position.bottom <= window.innerHeight) {
+      if (position.top >= 0 && position.bottom <= window.innerHeight) {
         el.classList.add('d-none');
       }
     },
@@ -86,39 +86,39 @@ export const LayoutMixin = {
       this.scrollTimeout = setTimeout(() => {
         el.classList.remove('z-index-1')
         // el.classList.remove('d-none')
-      } ,400);
+      }, 400);
     },
     hideMenu(el) {
       el.classList.add('z-index-1')
       el.style.top = '-90px'
       clearTimeout(this.scrollTimeout);
-     // this.scrollTimeout = setTimeout(() => el.classList.add('d-none') ,400);
+      // this.scrollTimeout = setTimeout(() => el.classList.add('d-none') ,400);
     },
     handleHideMenu() {
       let cordY = window.scrollY;
       let headerElDesktopWhite = document.querySelector('.navbar-white')
       if (cordY > 350) {
-        if(this.latestScroll > cordY)
+        if (this.latestScroll > cordY)
           this.showMenu(headerElDesktopWhite)
         else
           this.hideMenu(headerElDesktopWhite)
 
       } else {
-       this.showMenu(headerElDesktopWhite)
+        this.showMenu(headerElDesktopWhite)
       }
 
       this.latestScroll = cordY;
     },
     handleBnScroll() {
-      if(window.scrollY > 110 && !this.$store.state.bnFixed) {
+      if (window.scrollY > 110 && !this.$store.state.bnFixed) {
         console.log('scrolled')
-        this.$store.commit('mutate',{
+        this.$store.commit('mutate', {
           property: 'bnFixed',
           value: true,
         })
         console.log('changed')
-      }else if(window.scrollY < 111 && this.$store.state.bnFixed) {
-        this.$store.commit('mutate',{
+      } else if (window.scrollY < 111 && this.$store.state.bnFixed) {
+        this.$store.commit('mutate', {
           property: 'bnFixed',
           value: false,
         })
@@ -160,10 +160,24 @@ export const LayoutMixin = {
     toggleEchoListening(toggle) {
       if (toggle) {
         this.connectEcho().listen('SendMessage', this.addNewMessage)
-        this.connectEcho('offer-user.'+this.$auth.user.id).listen('OfferMessageSendEvent',({ message })  => {
-
-          this.$store.commit('appendOfferMessage',message)
+        this.connectEcho('offer-user.' + this.$auth.user.id).listen('OfferMessageSendEvent', ({message}) => {
+          this.$store.commit('appendOfferMessage', message)
+/*          this.$store.commit('setNewMessage',message.offer.id)*/
+        if (this.user.autosalon){
           this.$store.dispatch('getAllOffers')
+        }
+
+          if (message.files.length > 1) {
+            const sleep = () =>{
+              this.scrollTo('.his:last-child >.message-files:last-child >.message-file', 300, 500, '.offerDetail')
+            }
+            setTimeout(sleep, 100)
+          } else {
+            setTimeout(()=>{
+              this.scrollTo('.his:last-child', 0, 500, '.offerDetail')
+            },1000)
+
+          }
 
         })
         this.connectEcho('global-channel.' + this.$auth.user.id).listen(
@@ -175,7 +189,7 @@ export const LayoutMixin = {
           },
         )
       } else if (window.Echo) {
-        this.connectEcho('offer-user.'+this.$auth.user.id).stopListening('OfferMessageSendEvent')
+        this.connectEcho('offer-user.' + this.$auth.user.id).stopListening('OfferMessageSendEvent')
         this.connectEcho().stopListening('SendMessage')
       }
     },

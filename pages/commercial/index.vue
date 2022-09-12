@@ -2,16 +2,16 @@
   <div class="pages-commercial-index">
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
-      <commercial-search-form 
+      <commercial-search-form
         :total-count="$paginate(commercialAnnouncements).total"
         :pending="pending"
         :category="{}"
         @pending="pending = true"
         @submit="searchCommercial"
       />
-      <grid 
+      <grid
         v-if="commercialAnnouncements.data.length"
-        :announcements="commercialAnnouncements.data" 
+        :announcements="commercialAnnouncements.data"
         :paginate="$paginate(commercialAnnouncements)"
         :title="$t('announcements')"
         :pending="pending"
@@ -25,7 +25,6 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-
 import CommercialSearchForm from '~/components/commercial/CommercialSearchForm';
 import Grid from '~/components/announcements/Grid';
 import NoResults from '~/components/elements/NoResults';

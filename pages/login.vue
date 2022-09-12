@@ -18,6 +18,7 @@
               <login-tabs @update-tab="tab = $event" :skip-sign-in="true" />
             </div>
           </div>
+
         </div>
       </div>
     </div>
@@ -26,9 +27,11 @@
 
 <script>
 import { mapActions } from 'vuex';
+import MobileNav from "~/components/layout/MobileNav";
 
 export default {
   name: 'pages-login',
+  components: {MobileNav},
   middleware: 'guest',
   nuxtI18n: {
     paths: {
@@ -63,6 +66,7 @@ export default {
       if(this.$route.query.param) path+='?'+this.$route.query.param;
       if (this.loggedIn && [3,4].includes(this.user.user_type)) path = '/profile/btl';
       else if (this.$route.query.ref) path = this.$route.query.ref;
+      if(this.user.children.length) path = 'my-autosalons'
       this.$router.push(this.$localePath(path));
     }
   },

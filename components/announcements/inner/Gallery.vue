@@ -247,6 +247,7 @@ export default {
       },
     }
   },
+
   methods: {
     switchInterior() {
       this.showInterior = !this.showInterior;
@@ -269,10 +270,12 @@ export default {
       this.setBodyOverflow('hidden')
     },
     refreshLightbox() {
+      console.log('refresh')
       this.onBeforeClose()
       this.lightboxKey++
     },
     onBeforeClose() {
+      console.log('test')
       this.showLightbox = false
       this.setBodyOverflow('scroll')
     },
@@ -310,9 +313,10 @@ export default {
           this.toggleFsLightbox = !this.toggleFsLightbox
         }
       } else {
-        this.setBodyOverflow('scroll')
+
         this.showImagesSlider = false
       }
+      this.setBodyOverflow('scroll')
     },
     handleSwipeTop() {
       if (document.body.classList.contains('zooming')) return

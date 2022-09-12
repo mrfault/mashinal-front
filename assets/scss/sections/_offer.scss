@@ -187,12 +187,10 @@
   transform: rotate(180deg);
   margin-left: 5px;
 }
-
 .questions {
   background: #E0ECFB;
-  padding: 50px 0px 50px 0px;
+  padding: 50px 20px 50px 20px;
 }
-
 .get-offer {
   position: relative;
   margin-left: auto;
@@ -286,17 +284,13 @@
     width: 100% !important;
     border: 0;
   }
-
-
   border-radius: 4px;
 
 }
 
 .salonsOffer {
-
   height: 700px;
   margin-bottom: 50px;
-
 
   .col {
     height: 300px !important;
@@ -313,6 +307,12 @@
       .actions {
         margin-left: auto;
         margin-right: 15px;
+        .icon-star{
+          color: $dark-blue-2;
+        }
+        .icon-garbage{
+        color:$red-1 ;
+        }
 
         i {
           margin-right: 10px;
@@ -330,10 +330,9 @@
       color: $red-1;
     }
   }
-
   .offerNav {
     background: $dark-blue-1;
-    height: 640px;
+    height: 700px;
     padding: 20px 5px 5px 5px;
 
     ul {
@@ -390,7 +389,7 @@
   }
 
   .offerUsers {
-    height: 564px;
+    height: 619px;
     padding: 0px 20px 20px 20px;
     overflow-x: hidden;
     overflow-y: auto;
@@ -408,7 +407,7 @@
       border-right: none;
       align-items: center;
       justify-content: center;
-  cursor: pointer;
+       cursor: pointer;
 
 
       .userImg {
@@ -438,11 +437,8 @@
       .created {
         margin-left: auto;
       }
-
     }
   }
-
-
 }
 
 .userImg {
@@ -457,7 +453,6 @@
   justify-content: center;
   background-size: cover;
   flex-shrink: 0;
-
 }
 
 .salonsOffer > .row {
@@ -466,7 +461,7 @@
 }
 
 .offerDetail {
-  height: 500px;
+  height: 538px;
   overflow-x: hidden;
   overflow-y: auto;
 
@@ -612,12 +607,9 @@
   width: 7px;
 }
 
-
 .offerDetail::-webkit-scrollbar-track {
   background: $white;
-
 }
-
 /* Handle */
 .offerDetail::-webkit-scrollbar-thumb {
   background: rgba(173, 178, 200, 0.3);
@@ -628,7 +620,6 @@
 .offerDetail::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
-
 
 .offerUsers::-webkit-scrollbar {
   width: 7px;
@@ -649,7 +640,7 @@
 }
 .active-filter{
 
-  color: $yellow-5;
+  color: $yellow-5 !important;
   svg{
     path,rect,line{
       stroke:$yellow-5;
@@ -658,7 +649,7 @@
 }
 .active-filter-fill{
 
-  color: $yellow-5;
+  color: $yellow-5 !important;
   svg{
     path,rect,line{
       stroke:$yellow-5;
@@ -667,6 +658,15 @@
   }
 }
 @media (max-width: 480px) {
+
+.get-offer{
+  padding-left: 35px;
+  padding-right: 35px;
+}
+  .searchInput:focus{
+    scroll-behavior: smooth;
+  }
+
   .offer-step {
     flex-direction: column;
   }
@@ -678,10 +678,8 @@
   }
   .offerDetail {
     height: 617px;
-
   }
   .user {
-    background: $white;
     padding: 10px;
   }
   .userBar{
@@ -712,7 +710,7 @@
           width: 44%;
           display: flex;
           padding: 7px;
-          border: 1px blue solid;
+          border: 1px $dark-blue-1 solid;
           border-radius: 4px;
           span{
             margin-left: 10px;
@@ -721,11 +719,7 @@
           .active-filter{
             background: $dark-blue-2;
             color: $white;
-            svg{
-              path,rect,line{
-                stroke:$white;
-              }
-            }
+
           }
           .active-filter-fill{
             background: $dark-blue-2;
@@ -755,28 +749,91 @@
 
     }
   }
-
-
+  .offer-text{
+    display: flex;
+    flex-direction: column;
+    svg{
+      margin-bottom: 30px;
+    }
+  }
+  .offer-text{
+    width: unset;
+    p{
+      margin-left: unset;
+    }
+  }
 }
+.offerCount{
+  background: $yellow-5;
+  padding: 4px 5px;
+  border-radius: 50%;
+  color: $dark-blue-1;
+  font-size: 13px;
+}
+
 
 @media (min-width: 481px) and (max-width: 767px) {
 
 }
 
 /* Media Query for Tablets Ipads portrait mode */
-@media (min-width: 768px) and (max-width: 1024px) {
+@media (min-width: 481px) and (max-width: 1024px) {
+  .mobile-filter{
+    margin-top: 20px;
+    ul{
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      width: 90%;
+      margin-left: auto;
+      margin-right: auto;
+      align-items: center;
 
+      padding: 0;
+      li{
+        margin: 10px;
+        width: 44%;
+        display: flex;
+        padding: 7px;
+        border: 1px $dark-blue-1 solid;
+        border-radius: 4px;
+        span{
+          margin-left: 10px;
+        }
+      }
+      .active-filter{
+        background: $dark-blue-2;
+        color: $white;
+
+      }
+      .active-filter-fill{
+        background: $dark-blue-2;
+        color: $white;
+        svg{
+          path,rect,line{
+            stroke:$white;
+            fill: $white;
+          }
+        }
+      }
+    }
+  }
 }
 
 /* Media Query for Laptops and Desktops */
 @media (min-width: 1025px) and (max-width: 1280px) {
-
+  .mobile-filter-section{
+    display: none;
+  }
 }
 
 /* Media Query for Large screens */
 @media (min-width: 1281px) {
+  .mobile-filter-section{
+    display: none;
+  }
   .salonsOffer {
-    width: 80%;
+
     margin-left: auto;
     margin-right: auto;
   }
@@ -790,6 +847,7 @@
   height: 35px;
   width: 35px;
   border-radius: 5px;
+  border: $greyish-blue-3 1px;
 }
 
 .inputInvalid {
@@ -809,8 +867,25 @@
     fill: rgba(8, 26, 62, 0.3);
   }
 }
+.addons{
+  border: 1px solid $greyish-blue-3;
+  border-left: none;
+  border-right: none;
+  border-bottom: none;
+}
 
 .dark-mode{
+  .mobile-filter{
+    .filter-icon-fill path, .filter-icon-fill rect, .filter-icon-fill line{
+      fill: $white;
+    }
+  }
+  .actions{
+    .icon-star{
+      color: $white !important;
+    }
+
+  }
   .selectedGeneration {
     background: $grey-2 !important;
   }
@@ -823,11 +898,14 @@
     }
   }
   .offer-stamp-icon{
+    min-width: 40px;
     path:first-child {
       fill: $white;
     }
   }
   .offer-text{
+    display: flex;
+
     svg{
       path {
         stroke: $white;
@@ -853,8 +931,11 @@
   .offerUsers{
     background: $dark-2;
     border-right: none;
+
+
     .user{
       border-color: $dark-1;
+
       .userName{
         span:nth-of-type(2){
           color: $white;
@@ -867,10 +948,12 @@
     .col{
       .user{
         border-color: $dark-1;
+
       }
     }
     .searchBox{
       border-color: $dark-1;
+
     }
     .row{
       background : $dark-2 ;
@@ -907,8 +990,28 @@
   .offerDetail::-webkit-scrollbar-track{
     background-color: $dark-1;
   }
+  .messages{
+    .his{
+      background: $dark-1;
+    }
+  }
+  .mobile-filter{
+    ul{
+      li{
+        border-color: $white;
+      }
+      svg{
+        path,rect,line{
+          stroke:$white;
 
+        }
+      }
+    }
+  }
 }
-
-
-
+.color-box {
+  border: 1px solid $greyish-blue-3 ;
+}
+.unclickable{
+  cursor: not-allowed !important;
+}

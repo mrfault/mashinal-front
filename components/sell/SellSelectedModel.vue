@@ -1,5 +1,5 @@
 <template>
-  <div class="sell_selected-model mb-3" v-if="!isMobileBreakpoint">
+  <div class="sell_selected-model mb-3" >
     <div class="img mr-1" v-if="brand.transformed_media">
       <img :src="$withBaseUrl(brand.transformed_media)" :alt="brand.name" />
     </div>

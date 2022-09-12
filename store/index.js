@@ -6,6 +6,7 @@ const getInitialState = () => ({
   colorMode: 'light',
   partAnnouncements:{},
   breakpoint: null,
+  newOfferCount:0,
   ptk: null,
   temporaryLazyData:[],
   temporaryLazyDataB:[],
@@ -53,7 +54,7 @@ const getInitialState = () => ({
   // catalog
   catalogAnnouncements: [],
   catalogTotal: 0,
-  timestamp: 0,
+  timestamp: new Date().getTime(),
   bnFixed: false,
   catalogItems: {},
   catalogForm: {},
@@ -67,11 +68,13 @@ const getInitialState = () => ({
   commercialModels: { 0: [], 1: [], 2: [], 3: [], 4: [] },
   scooterModels: { 0: [], 1: [], 2: [], 3: [], 4: [] },
   carModels: { 0: [], 1: [], 2: [], 3: [], 4: [] },
+  carModelsExclude: { 0: [], 1: [], 2: [], 3: [], 4: [] },
   modelDescription: false,
-  // generations
+  // generations`
   generations: [],
   generationTypes: [],
   carGenerations: { 0: [], 1: [], 2: [], 3: [], 4: [] },
+  carGenerationsExclude: { 0: [], 1: [], 2: [], 3: [], 4: [] },
   carTypeName: {},
   firstGeneration: false,
   firstGenerationEquipments: [],
@@ -160,6 +163,8 @@ export const getters = {
   hideFooter: (s) => s.hideFooter,
   // saved search & favorites
   savedSearchList: (s) => s.savedSearchList,
+  carModelsExclude: (s) => s.carModelsExclude,
+  carGenerationsExclude: (s) => s.carGenerationsExclude,
   singleSavedSearch: (s) => s.singleSavedSearch,
   notViewedSavedSearch: (s) => s.notViewedSavedSearch,
   favorites: (s) => s.favorites,
@@ -299,6 +304,7 @@ export const getters = {
   getOfferPartners:(s)=>s.offerPartners,
   getOfferPartnersMeta:(s)=>s.offerPartnersMeta,
   getOffer:(s)=>s.offer,
+  getNewOfferCount:(s)=>s.newOfferCount,
 
 }
 
@@ -637,6 +643,16 @@ export const actions = {
       key: data.index,
     })
   },
+  async getModelsArrayExclude({ commit }, data) {
+    const res = data.value
+      ? await this.$axios.$get(`/brand/${data.value}/models`)
+      : []
+    commit('mutate', {
+      property: 'carModelsExclude',
+      value: res || [],
+      key: data.index,
+    })
+  },
   async getModelGenerationsArray({ commit }, data) {
     const res = data.value
       ? await this.$axios.$get(
@@ -645,6 +661,18 @@ export const actions = {
       : []
     commit('mutate', {
       property: 'carGenerations',
+      value: res.generations || [],
+      key: data.index,
+    })
+  },
+  async getModelGenerationsArrayExclude({ commit }, data) {
+    const res = data.value
+      ? await this.$axios.$get(
+          `/brand/${data.brand_slug}/model/${data.value}/generations`,
+        )
+      : []
+    commit('mutate', {
+      property: 'carGenerationsExclude',
       value: res.generations || [],
       key: data.index,
     })
@@ -1177,8 +1205,9 @@ export const actions = {
     ])
   },
   async getAllOffers({commit},param='all') {
-   const { data} =await this.$axios.$get(`/offer/salon/offer/all?param=`+param)
-    commit('mutate', { property: 'offers', value: data })
+   const data =await this.$axios.$get(`/offer/salon/offer/all?param=`+param)
+    commit('mutate', { property: 'offers', value: data.data })
+    commit('mutate', { property: 'newOfferCount', value: data.count })
   },
   async getOffer({commit}, payload){
     const {data} =await  this.$axios.get('/offer/offer-detail/'+payload.id+'/'+payload.type);
@@ -1329,6 +1358,15 @@ export const mutations = {
     for (let i=0; i<payload.data.length; i++) {
     state.offerPartners.push(payload.data[i])
     }
+
+  },
+  setNewMessage(state,id){
+    const emil=state.offers.find(offer => offer.id == id)
+    console.log(id)
+    console.log(emil)
+  },
+  setNullModels(state){
+    state.models=[]
 
   }
 }

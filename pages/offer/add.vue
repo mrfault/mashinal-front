@@ -3,20 +3,21 @@
   <div>
     <OfferSlider/>
 
-    <div class="container">
+    <div class="container mt-3">
       <div class="row">
 
         <breadcrumbs :crumbs="crumbs"/>
         <div class="col-md-12 background-white p-5">
           <sell-progress :form="form"/>
           <sell-selected-model
-            :brand="brand"
-            :model="model"
-            :year="form.year"
+          :brand="brand"
+          :model="model"
           />
-          <Generations :generations="generations" @change="changeGenerations"/>
 
-          <div :key="5" class="mb-3 box" ref="sell-modification">
+          <div class="mt-3 mb-5">
+            <Generations :selected="form.generations" :generations="generations" @change="changeGenerations"        />
+          </div>
+          <div :key="5" class="mb-3 box " ref="sell-modification"   >
             <h2 class="title-with-line full-width">
               <span>{{ $t('box') }} <span class="star"> *</span></span>
             </h2>
@@ -65,7 +66,7 @@
 
               <div class="col-md-12">
                 <div class="row">
-                  <div class="col-md-6">
+                  <div class="col-lg-6 col-12">
                     <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-selectedColor">
                       <span>Alış şərtləri <span class="star"> *</span></span>
                     </h2>
@@ -75,11 +76,9 @@
                       <form-radio :label="'Nağd'" input-name="buy_condition" v-model="form.buy_condition"
                                   :value="'cash'"
                                   radio-value="cash" class="ml-2"/>
-
-
                     </div>
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-lg-6 col-12">
                     <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-selectedColor">
                       <span>Qiymət aralıqı <span class="star"> *</span></span>
                     </h2>
@@ -87,14 +86,15 @@
                       <div class=" mr-5">
 
                         <label for="minPrice">Min.</label>
-                        <form-text-input :invalid="$v.form.minPrice.$error" id="minPrice" type="number"
+                        <form-numeric-input id="minPrice" type="number"
                                          v-model="form.minPrice" class="priceInput"/>
 
                       </div>
-                      <div class="" >
+                      <div class="">
 
-                        <label for="maxPrice" >Max.</label>
-                        <form-text-input :invalid="$v.form.maxPrice.$error" id="maxPrice" type="number"
+                        <label for="maxPrice">Max.</label>
+                        <form-numeric-input :invalid="$v.form.maxPrice.$error" id="maxPrice" type="number"
+
                                          v-model="form.maxPrice" class="priceInput"/>
                       </div>
 
@@ -116,7 +116,10 @@
               nömrəsinin, qiymətin və xidmətlərin təklifi qadağandır.
             </p>
             <div class="col-md-12  text-right">
-              <button class=" btn  btn--green" @click="submitOffer">Əlavə et</button>
+              <button class=" btn  btn--green" @click="submitOffer" >
+                <img src="/icons/offer/load.svg" width="50px" v-if="isLoader" >
+               <span v-else> Əlavə et</span>
+              </button>
             </div>
           </div>
 
@@ -164,6 +167,7 @@ export default {
     return {
       showModelOptions: false,
       refresh: 0,
+      isLoader:false,
       form: {
         brand: null,
         model: null,
@@ -174,15 +178,14 @@ export default {
         maxPrice: '',
         selectedInteriorColor: null,
         selectedColors: [],
-        is_matte: false
+        is_matte: false,
+        generations: []
 
       },
     }
   },
   validations: {
     form: {
-      selectedInteriorColor: {required},
-      minPrice: {required},
       maxPrice: {required},
     }
 
@@ -190,14 +193,26 @@ export default {
   async asyncData({store, app, route}) {
 
     await store.dispatch('getColors')
+    await store.dispatch('getBrands')
+    await store.dispatch('getModels',app.$parseSlug(route.query.brand))
 
     await store.dispatch('getGenerations', {
-      brand: route.params.brand,
-      model: route.params.model
+      brand: route.query.brand,
+      model: route.query.model
     })
+
   },
   computed: {
     ...mapGetters(['brands', 'models', 'generations']),
+
+    OnlyMin: {
+      get() {
+        return this.form.minPrice;
+      },
+      set(value) {
+        this.form.minPrice = value.replace(/[^0-9.]/g, '')
+      }
+    },
     boxValues() {
       return [{"name": "Mexaniki", "key": "1"}, {"name": "Avtomat", "key": "2"}]
     },
@@ -208,15 +223,15 @@ export default {
         {"name": "Dizel", "key": "3"},
         {"name": "Qaz", "key": "4"},
         {"name": "Elektro", "key": "5"},
-
       ]
     },
     brand() {
+      console.log(this.brands?.find(brand => this.$parseSlug(brand.slug) === this.$route.query.brand))
 
-      return this.brands?.find(brand => this.$parseSlug(brand.slug) === this.form.brand);
+      return this.brands?.find(brand => this.$parseSlug(brand.slug) === this.$route.query.brand);
     },
     model() {
-      return this.models?.find(model => this.$parseSlug(model.slug) === this.form.model);
+      return this.models?.find(model => this.$parseSlug(model.slug) === this.$route.query.model);
 
     },
     crumbs() {
@@ -229,34 +244,51 @@ export default {
   },
   async created() {
 
-    this.form.brand = this.$route.params.brand;
-    this.form.model = this.$route.params.model;
+    this.form.brand = this.$route.query.brand;
+    this.form.model = this.$route.query.model;
 
     await this.$store.dispatch('getSellYears', {
       brand: this.form.brand,
       model: this.form.model
     })
-
+    if (this.generations.length == 1) {
+      this.form.generations.push(this.generations[0].id)
+    }
 
   },
   methods: {
+    onlyNumberMaxPrice($event) {
+      let keyCode = ($event.keyCode ? $event.keyCode : $event.which);
+      if ((keyCode < 48 || keyCode > 57) && keyCode == 46 || this.form.maxPrice.length > 6 ) {
+        $event.preventDefault();
+      }
+
+    },
+    onlyNumberMinPrice($event) {
+      let keyCode = ($event.keyCode ? $event.keyCode : $event.which);
+      if ((keyCode < 48 || keyCode > 57) && keyCode == 46 || this.form.minPrice.length > 6 ) {
+        $event.preventDefault();
+      }
+    },
     submitOffer() {
       this.$v.$touch();
+
       if (this.$v.$error) return;
-      console.log(this.$v.form.minPrice.$error)
-
-
+      this.isLoader=true
       this.$axios.$post('offer', {
         data: this.form
       }).then((res) => {
-        if (res.status == 'success') {
+        if (res.status && res.status == 'success') {
+
           this.$toast.success('Əlavə olundu')
-          this.$router.push('/offer')
+          setTimeout(() => {
+            this.$router.push('/offer')
+          }, 2000);
 
         }
+      }).catch((error)=>{
+        this.isLoader=false
       });
-
-
     },
     changeGenerations(values) {
       this.form.generations = values
@@ -278,7 +310,7 @@ export default {
       })[key][value];
     },
     getTitle(item) {
-      const {brand, model, generation} = {...this.$route.params};
+      const {brand, model, generation} = {...this.$route.query};
       if (model) {
         if (generation)
           return item?.car_type.name[this.locale];
@@ -289,7 +321,7 @@ export default {
       }
     },
     getLink(item) {
-      const {brand, model, generation} = {...this.$route.params};
+      const {brand, model, generation} = {...this.$route.query};
       const {filter} = {...this.$route.query}
       let path = model
         ? (generation ? `/catalog/${brand}/${model}/${generation}/${item.car_type_id}` : `/catalog/${brand}/${model}/${item.id}`)
@@ -297,7 +329,7 @@ export default {
       return filter ? `${path}?filter=${filter}` : path;
     },
     getImage(item) {
-      const {model, generation} = {...this.$route.params};
+      const {model, generation} = {...this.$route.query};
       if (!model) {
         return item?.transformed_media ? this.$withBaseUrl(item.thumb || item.transformed_media) : false;
       } else {
@@ -307,7 +339,6 @@ export default {
     },
     async handleYear(year = '') {
       this.form.year = year;
-      console.log(this.form.year)
       if (year) {
         this.showLastStep = true;
       } else {
@@ -332,6 +363,7 @@ export default {
       this.form.buy_condition = 'cash'
     },
   },
+
 
 
 }

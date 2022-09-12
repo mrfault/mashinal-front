@@ -128,10 +128,21 @@
                   </nuxt-link>
                   <hr />
                   <ul>
-                    <li v-for="menu in userMenus" :key="menu.title">
-                      <nuxt-link :to="$localePath(menu.route)">
-                        {{ $t(menu.title) }}
-                      </nuxt-link>
+                    <template v-for="menu in userMenus" v-if="(user.parent_id || user.children.length) ? menu.title !== 'garage':true " >
+                      <li v-if="menu.title === 'my_account' ? !user.parent_id: true" :key="menu.title">
+                        <nuxt-link :to="$localePath(menu.route)">
+                          {{ $t(menu.title) }}
+                        </nuxt-link>
+                      </li>
+
+                      <li v-else>
+                        <a href="javascript:void(0);" @click="logoutToParent">
+                          {{ $t('logout_to_parent') }}
+                        </a>
+                      </li>
+                    </template>
+                    <li v-if="user.children.length">
+                      <nuxt-link to="/my-autosalons">{{ $t('logout_to_parent') }}</nuxt-link>
                     </li>
                     <li key="logout">
                       <a href="javascript:void(0);" @click="logout">
@@ -170,7 +181,7 @@
           <div class="container">
             <nav class="full-width">
               <div class="row align-items-center">
-                <div class="col-lg-8 position-static">
+                <div class="col-lg-9 position-static">
                   <ul class="menu position-relative">
                     <li
                       @mouseover="menu.children ? (hoverMenu = true) : ''"
@@ -179,17 +190,23 @@
                         activeCategory = 0
                       "
                       v-for="menu in navbarMenus"
+                      v-if="(user.children && user.children.length) || user.parent_id ? !['eservices','salons','shops'].includes(menu.title) :true"
                       :key="menu.title"
                       :class="{ dropdown: menu.children }"
                     >
-                      <nuxt-link :to="$localePath(menu.route)">
+                      <nuxt-link class="external_salon_hover" style="position: relative" :to="$localePath(menu.route)">
                         <icon
+                          v-if="menu.icon !== 'external-tab'"
                           style="font-size: 20px; margin-right: 10px;"
-                          class="no-transform"
+                          class="no-transform "
                           :name="menu.icon"
                         />
+                        <inline-svg class="no-transform " style="width: 20px; fill:inherit; margin-right: 10px;" v-else src="/img/external_salon.svg" />
                         {{ $t(menu.title) }}
                         <icon name="chevron-down" v-if="menu.children" />
+                        <span style="position: absolute; top: 3px; right: 0px; display: flex;">
+                          <inline-svg style="width: 31px;" v-if="menu.icon === 'external-tab'" src="/img/new_badge.svg" />
+                        </span>
                       </nuxt-link>
                       <div
                         class="dropdown-content container"
@@ -243,9 +260,9 @@
                     </li>
                   </ul>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-2 ml-auto">
                   <div class="row justify-content-end top-header-right">
-                    <div class="col-5 col-lg-7 col-xl-5">
+                    <div class="col-5 col-lg-12 col-xl-12">
                       <nuxt-link
                         class="btn full-width btn--pale-green-outline"
                         :to="$localePath('/sell')"
@@ -324,6 +341,11 @@ export default {
 .resize-icon {
   i {
     font-size:35px !important;
+  }
+}
+.external_salon_hover:hover,.external_salon_hover.exact-active {
+  svg, path {
+    fill:#F81734 !important;
   }
 }
 .topbar-nav {

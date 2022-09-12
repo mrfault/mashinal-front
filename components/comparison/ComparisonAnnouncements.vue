@@ -94,23 +94,23 @@ export default {
             },
             {
               title: this.$t('years'),
-              values: this.announcements.map(a => this.getYear(a.car_catalog)),
+              values: this.announcements.map(a => this.getYear(a)),
             },
             {
               title: this.$t('mileage'),
-              values: this.announcements.map(a => this.getMileage(a.car_catalog)),
+              values: this.announcements.map(a => this.getMileage(a)),
             },
             {
               title: this.$t('color'),
-              values: this.announcements.map(a => this.getColor(a.car_catalog)),
+              values: this.announcements.map(a => this.getColor(a)),
             },
             {
               title: this.$t('customs'),
-              values: this.announcements.map(a => this.getCustomsClearance(a.car_catalog)),
+              values: this.announcements.map(a => this.getCustomsClearance(a)),
             },
             {
               title: this.$t('first_owner'),
-              values: this.announcements.map(a => this.getOwnerType(a.car_catalog)),
+              values: this.announcements.map(a => this.getOwnerType(a)),
             },
           ]
         },

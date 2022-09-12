@@ -334,6 +334,16 @@
                     input-name="with_video"
                   />
                 </div>
+                <div
+                  class="col-6 col-lg-3 mb-2 mb-lg-3"
+                  v-if="isMobileBreakpoint"
+                >
+                  <form-checkbox
+                    :label="$t('external_salon')"
+                    v-model="form.external_salon"
+                    input-name="external_salon"
+                  />
+                </div>
               </div>
             </component>
           </div>
@@ -543,6 +553,7 @@
             </div>
             <div class="col-lg-12 col-xl-8" v-else>
               <div class="row">
+
                 <template v-if="!advanced && !assistant && !isMobileBreakpoint">
                   <div class="col-lg-3 mb-lg-0">
                     <form-select
@@ -582,11 +593,22 @@
                     class="col-6 col-lg-3 mb-2 mb-lg-3"
                     v-if="!isMobileBreakpoint && !advanced"
                   >
+                      <form-checkbox
+                        :label="$t('external_salon')"
+                        v-model="form.external_salon"
+                        input-name="external_salon"
+                      />
+                  </div>
+                  <div
+                    class="col-6 col-lg-3 mb-2 mb-lg-3"
+                    v-if="!isMobileBreakpoint && !advanced"
+                  >
                     <div class="form-info text-green">
                       {{ $readPlural(totalCount, $t('plural_forms_announcements')) }}
                     </div>
                   </div>
                 </template>
+
                 <template v-if="!onlySavedSearch">
                   <div
                     class="col-lg-3 mt-2 mt-lg-0 mb-3"
@@ -753,11 +775,11 @@
             <div class="col-3 col-lg-4">
               <form-select
                 :label="$t('model')"
-                :options="carModels[key]"
+                :options="carModelsExclude[key]"
                 v-model="form.exclude_additional_brands[key]['model']"
                 :disabled="
                       form.exclude_additional_brands[key]['brand'] &&
-                      !carModels[key].length
+                      !carModelsExclude[key].length
                     "
                 @change="setModelExclude($event, key)"
                 has-search
@@ -776,11 +798,11 @@
                 <div class="col">
                   <form-select
                     :label="$t('generation')"
-                    :options="carGenerations[key]"
+                    :options="carGenerationsExclude[key]"
                     v-model="form.exclude_additional_brands[key]['generation']"
                     :disabled="
                           form.exclude_additional_brands[key]['model'] &&
-                          !carGenerations[key].length
+                          !carGenerationsExclude[key].length
                         "
                     @change="setGenerationExclude($event, key)"
                     has-search
@@ -916,6 +938,7 @@ export default {
         exclude_additional_brands: { 0: {}, 1: {}, 2: {}, 3: {}, 4: {} },
         all_options: {},
         announce_type: 1,
+        external_salon: false,
         currency: 1,
         min_capacity: '',
         max_capacity: '',
@@ -951,7 +974,9 @@ export default {
     ...mapGetters([
       'brands',
       'carModels',
+      'carModelsExclude',
       'carGenerations',
+      'carGenerationsExclude',
       'bodyOptions',
       'sellOptions',
       'allSellOptions2',
@@ -1031,7 +1056,9 @@ export default {
   methods: {
     ...mapActions([
       'getModelsArray',
+      'getModelsArrayExclude',
       'getModelGenerationsArray',
+      'getModelGenerationsArrayExclude',
       'updateSavedSearchNotificationsInterval',
     ]),
     handleExclude() {
@@ -1096,7 +1123,7 @@ export default {
       ].map((key) => {
         this.$set(this.form.exclude_additional_brands[index], key, '')
       })
-      if (id) await this.getModelsArray({ value: slug, index })
+      if (id) await this.getModelsArrayExclude({ value: slug, index })
     },
     async setModel(id, index) {
       let model = this.carModels[index].find((option) => option.id == id)
@@ -1113,12 +1140,9 @@ export default {
         this.submitForm(false);
         this.getModelGenerationsArray({ value: slug, brand_slug, index })
       }
-
-
-
     },
     async setModelExclude(id, index) {
-      let model = this.carModels[index].find((option) => option.id == id)
+      let model = this.carModelsExclude[index].find((option) => option.id == id)
       let slug = model?.slug || '',
         name = model?.name || ''
       let brand_slug = this.form.exclude_additional_brands[index].brand_slug
@@ -1129,7 +1153,7 @@ export default {
         this.$set(this.form.exclude_additional_brands[index], key, '')
       })
       if (id)
-        await this.getModelGenerationsArray({ value: slug, brand_slug, index })
+        await this.getModelGenerationsArrayExclude({ value: slug, brand_slug, index })
     },
     async setGeneration(id, index) {
       let generation = this.carGenerations[index].find(
@@ -1148,15 +1172,10 @@ export default {
       )
     },
     async setGenerationExclude(id, index) {
-      let generation = this.carGenerations[index].find(
+      let generation = this.carGenerationsExclude[index].find(
         (option) => option.id == id,
       )
       this.$set(this.form.exclude_additional_brands[index], 'generation', id)
-      this.$set(
-        this.form.exclude_additional_brands[index],
-        'generation_slug',
-        generation?.short_name || '',
-      )
       this.$set(
         this.form.exclude_additional_brands[index],
         'generation_name',
