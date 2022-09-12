@@ -33,7 +33,7 @@
                 />
               </div>
               <div class="mx-1 mt-3">
-                <h4 class="alco-h4 pr-1">{{$t('your_gender')}}</h4>
+                <h4 class="alco-h4 pr-1">{{$t('your_gender')}}:</h4>
                 <form-switch
                   class="gender-switcher text-transform-normal"
                   v-model="form.gender"
@@ -68,7 +68,7 @@
                 />
               </div>
               <div class="mx-1 mt-3">
-                <h4 class="alco-h4 pr-1">{{$t('your_weight')}}</h4>
+                <h4 class="alco-h4 pr-1">{{$t('your_weight')}}:</h4>
                 <form-select
                   class=""
                   v-model="form.mass"

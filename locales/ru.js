@@ -2230,7 +2230,7 @@ export default {
    "how_many_hours_passed": "Сколько часов прошло",
    "your_weight": "Ваша масса",
    "your_gender": "Ваш пол",
-   "when_may_i_can_drive": "Когда можно за руль?",
+   "when_may_i_can_drive": "Когда можно за руль",
 
    "alcometer": "Алкотест",
 
@@ -2239,7 +2239,7 @@ export default {
    "strong_beer":"Крепкое пиво",
    "vine":"Вино",
    "port_vine":"Портвейн",
-   "tequila":"Текило",
+   "tequila":"Текилa",
    "champagne":"Шампанское",
    "brandy":"Konyak",
    "indications_of_breathalyzer":"Показания алкотестера",
