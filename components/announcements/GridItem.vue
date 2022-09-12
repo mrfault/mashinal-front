@@ -168,7 +168,7 @@
           <h3 class="item-details__price" style="white-space: nowrap;">
            <span v-if="announcement.is_external_salon"> ≈ </span>{{ announcement.price }}
           </h3>
-          <span style="font-size: 12px;text-align: right;" v-if="announcement.is_external_salon">{{ announcement.country_name }}</span>
+          <span style="font-size: 12px;text-align: right;" v-if="announcement.is_external_salon">{{ announcement[`country_name_${locale}`] }}</span>
         </div>
         <h3 class="item-details__title">
 
