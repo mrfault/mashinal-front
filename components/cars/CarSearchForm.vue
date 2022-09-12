@@ -334,6 +334,16 @@
                     input-name="with_video"
                   />
                 </div>
+                <div
+                  class="col-6 col-lg-3 mb-2 mb-lg-3"
+                  v-if="isMobileBreakpoint"
+                >
+                  <form-checkbox
+                    :label="$t('external_salon')"
+                    v-model="form.external_salon"
+                    input-name="external_salon"
+                  />
+                </div>
               </div>
             </component>
           </div>
@@ -543,6 +553,7 @@
             </div>
             <div class="col-lg-12 col-xl-8" v-else>
               <div class="row">
+
                 <template v-if="!advanced && !assistant && !isMobileBreakpoint">
                   <div class="col-lg-3 mb-lg-0">
                     <form-select
@@ -597,6 +608,7 @@
                     </div>
                   </div>
                 </template>
+
                 <template v-if="!onlySavedSearch">
                   <div
                     class="col-lg-3 mt-2 mt-lg-0 mb-3"

@@ -190,20 +190,20 @@
         </div>
         <div class="mt-2 mt-lg-3">
           <template v-if="type === 'cars'">
-            <car-filters :values="form.all_options" @change-filter="updateCarFilter" popular key="popular" :collapsedByDefault="true"/>
+            <car-filters  :values="form.all_options" @change-filter="updateCarFilter" popular :collapsedByDefault="true"/>
             <div class="car-filters_row">
-              <div class="d-flex mb-2 mb-lg-3" @click="collapsed = !collapsed">
-                <h2 class="title-with-line full-width">
-                  <span>{{ $t('other_options') }}</span>
-                </h2>
-                <icon :name="`chevron-${!collapsed ? 'up' : 'down'}`" class="cursor-pointer" />
-              </div>
-              <transition-expand>
-                <div v-if="collapsed">
-                  <car-filters :show-icon="false" :values="form.all_options" @change-filter="updateCarFilter" key="all" collapsed-by-default />
-                </div>
+<!--              <div class="d-flex mb-2 mb-lg-3" @click="collapsed = !collapsed">-->
+<!--                <h2 class="title-with-line full-width">-->
+<!--                  <span>{{ $t('other_options') }}</span>-->
+<!--                </h2>-->
+<!--                <icon :name="`chevron-${!collapsed ? 'up' : 'down'}`" class="cursor-pointer" />-->
+<!--              </div>-->
+<!--              <transition-expand>-->
+<!--                <div v-if="collapsed">-->
+<!--                  <car-filters :show-icon="false" :values="form.all_options" @change-filter="updateCarFilter" key="all" collapsed-by-default />-->
+<!--                </div>-->
 
-              </transition-expand>
+<!--              </transition-expand>-->
             </div>
           </template>
           <template v-else>
