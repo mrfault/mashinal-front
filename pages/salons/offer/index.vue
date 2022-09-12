@@ -11,7 +11,7 @@
                   :class="{'active-filter': $route.query.param==='all' || !$route.query.param} ">
                 <inline-svg src="/icons/offer/requests.svg" class="filter-icon"/>
                 <span>
-                  Sorğular
+                  Sorğular <span class="offerCount">{{newOfferCount}}</span>
                 </span>
               </li>
 
@@ -80,7 +80,7 @@
           </div>
           <div class="offerUsers">
             <div class="user" v-for="offer in search ? searchOffer : offers"
-                 @click="!offer.deleted && getOfferDetail(offer.id)" :class="offer.deleted ? 'unclickable' : null">
+                 @click="getOfferDetail(offer.id)" >
               <div class="userImg"
                    :style="'background-image: url('+(offer.user.img ? offer.user.img : '/img/user.jpg')+')'">
               </div>
@@ -192,8 +192,9 @@
               </div>
             </collapse-content>
 
+
             <div class="text-right" v-if="!IsAccepted">
-              <button class="btn  btn--green mt-3" @click="accept(offer.id)">Sorğunu qəbul et</button>
+              <button class="btn  btn--green mt-3" @click="accept(offer.id)" v-if="!offer.deleted">Sorğunu qəbul et</button>
             </div>
             <div v-else>
               <div class="messages">
@@ -212,8 +213,22 @@
                   </span>
                 </div>
               </div>
-              <div>
 
+            </div>
+            <div class="messages" v-if="offer.deleted">
+              <div :class=" isMyMessage(message) ? 'my' :'his' " v-for="message in offerMessages">
+                <div v-if="message.files.length>0" class="message-files">
+                  <div class="message-file" v-for="file in message.files">
+                    <img :src="file" width="100%"/>
+                  </div>
+                  <div class="div m-1" v-if="message.files.length>0">
+                    {{ message.message }} <span class="time">17:30</span>
+                  </div>
+
+                </div>
+                <span v-if="!message.files.length>0">
+                    {{ message.message }} <span class="time">17:30</span>
+                  </span>
               </div>
             </div>
 
@@ -257,7 +272,7 @@ export default {
       },
       sendingFiles: false,
       search: "",
-      files: []
+      files: [],
     }
   },
   head() {
@@ -285,7 +300,8 @@ export default {
         params: param,
         query: {param: param}
       })
-
+      this.offer={}
+      this.IsAccepted=false
 
     },
     isMyMessage(message) {
@@ -329,7 +345,10 @@ export default {
           }
           setTimeout(sleep, 1000)
         } else {
-          this.scrollTo('.my:last-child', 0, 500, '.offerDetail')
+          setTimeout(()=>{
+            this.scrollTo('.my:last-child', 0, 500, '.offerDetail')
+          },1000)
+
         }
         this.chat.text = '';
         this.$nuxt.$emit('clear-message-attachments');
@@ -389,6 +408,7 @@ export default {
     ...mapGetters({
       offers: 'offers',
       offerMessages: 'getOfferMessages',
+      newOfferCount:'getNewOfferCount',
       isFavorite: 'isFavorite'
     }),
   },

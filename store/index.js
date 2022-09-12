@@ -6,6 +6,7 @@ const getInitialState = () => ({
   colorMode: 'light',
   partAnnouncements:{},
   breakpoint: null,
+  newOfferCount:0,
   ptk: null,
   temporaryLazyData:[],
   temporaryLazyDataB:[],
@@ -303,6 +304,7 @@ export const getters = {
   getOfferPartners:(s)=>s.offerPartners,
   getOfferPartnersMeta:(s)=>s.offerPartnersMeta,
   getOffer:(s)=>s.offer,
+  getNewOfferCount:(s)=>s.newOfferCount,
 
 }
 
@@ -1203,8 +1205,9 @@ export const actions = {
     ])
   },
   async getAllOffers({commit},param='all') {
-   const { data} =await this.$axios.$get(`/offer/salon/offer/all?param=`+param)
-    commit('mutate', { property: 'offers', value: data })
+   const data =await this.$axios.$get(`/offer/salon/offer/all?param=`+param)
+    commit('mutate', { property: 'offers', value: data.data })
+    commit('mutate', { property: 'newOfferCount', value: data.count })
   },
   async getOffer({commit}, payload){
     const {data} =await  this.$axios.get('/offer/offer-detail/'+payload.id+'/'+payload.type);

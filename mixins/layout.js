@@ -163,14 +163,20 @@ export const LayoutMixin = {
         this.connectEcho('offer-user.' + this.$auth.user.id).listen('OfferMessageSendEvent', ({message}) => {
           this.$store.commit('appendOfferMessage', message)
 /*          this.$store.commit('setNewMessage',message.offer.id)*/
+        if (this.user.autosalon){
           this.$store.dispatch('getAllOffers')
+        }
+
           if (message.files.length > 1) {
             const sleep = () =>{
               this.scrollTo('.his:last-child >.message-files:last-child >.message-file', 300, 500, '.offerDetail')
             }
             setTimeout(sleep, 100)
           } else {
-            this.scrollTo('.his:last-child', 0, 500, '.offerDetail')
+            setTimeout(()=>{
+              this.scrollTo('.his:last-child', 0, 500, '.offerDetail')
+            },1000)
+
           }
 
         })

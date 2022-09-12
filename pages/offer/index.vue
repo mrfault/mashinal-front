@@ -250,13 +250,11 @@ export default {
   beforeCreate() {
     this.brands = [];
     this.carModels = []
-
-
   },
   beforeDestroy() {
     this.brands = [];
     this.carModels = []
-    console.log('des')
+    this.$store.commit('setNullModels')
   }
 
 }
