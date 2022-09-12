@@ -8,7 +8,10 @@
       <div v-if="showAllOptions" :class="{'disabled-content': type === 'cars' && !form.car_catalog_id}">
         <h2 class="title-with-line mt-3 mt-lg-0" id="anchor-saved_images">
           <span>{{ $t('photos') }} ({{ $t('at_least_5_photos', { min: minFiles, max: maxFiles }).toLowerCase() }}) <span class="star"> *</span></span>
+          <br>
+          <small v-if="isMobileBreakpoint" class="text-red">Şəkillərin yerini sürüşdürərək dəyişmək üçün 2 saniyə basıb saxlayın</small>
         </h2>
+
         <upload-image
           :max-files="maxFiles"
           :min-files="minFiles"
@@ -127,16 +130,16 @@
           </h2>
           <div class="row">
             <div class="col-lg-auto mb-2 mb-lg-0">
-              <div class="row flex-nowrap">
-                <div class="col-lg-auto flex-grow-1" :style="isMobileBreakpoint ? '    max-width: 57%;': ''">
-                    <form-switch @change="removeError('end_date')" auto-width v-model="form.auction" :options="[{ name:$t('auction'), key:1 }, { name:$t('sell'), key:2 }]"/>
+              <div class="row">
+                <div class="col-lg-auto flex-grow-1" :style="isMobileBreakpoint ? '    max-width: 57%; margin-bottom:10px;': ''">
+                    <form-switch @change="removeError('end_date')" auto-width v-model="form.auction" :options="[{ name:$t('auction'), key:1 }, { name:$t('sell'), key:0 }]"/>
                 </div>
                 <div class="col-auto" v-if="form.auction === 1">
                   <form-text-input
                     @change="removeError('end_date')"
                     date-type="datetime"
                     value-type="datetime"
-                    date-format="DD.MM.YYYY HH:mm"
+                    date-format="DD.MM.YYYY HH:00"
                     v-model="form.end_date"
                     :placeholder="$t('announcement_end_date')"
                     input-date
@@ -154,14 +157,14 @@
 <!--            <form-switch :options="getOwnerOptions" v-model="form.owner_type" auto-width />-->
 <!--          </div>-->
 <!--        </div>-->
-        <h2 v-if="type === 'cars'" class="title-with-line mt-2 mt-lg-3" id="anchor-car_or_vin">
+        <h2 v-if="type === 'cars' || (type !=='parts' && user.external_salon)" class="title-with-line mt-2 mt-lg-3" id="anchor-car_or_vin">
           <span>{{ $t(form.customs_clearance || user.external_salon ? 'vin_carcase_number' : 'license_plate_number_vin_or_carcase_number') }}
             <template v-if="!loggedIn || (loggedIn && !user.autosalon) || (loggedIn && user.autosalon && user.autosalon.is_official)">
                <span class="star" v-if="type === 'cars'"> *</span>
             </template>
           </span>
         </h2>
-        <div class="row" v-if="type === 'cars' && !user.is_autosalon">
+        <div class="row" v-if="type === 'cars' && !user.is_autosalon || (type !=='parts' && user.external_salon)">
           <div class="col-lg-4 mb-2 mb-lg-0" v-if="!form.customs_clearance && !user.external_salon">
             <form-text-input v-model="form.car_number" input-class="car-number-show-popover" img-src="/img/flag.svg"
                 :mask="type === 'cars' ? '99 - AA - 999' : '99 - A{1,2} - 999'"
@@ -286,7 +289,6 @@ import {mapGetters, mapActions, mapState} from 'vuex';
 import { ToastErrorsMixin } from '~/mixins/toast-errors';
 import { ImageResizeMixin } from '~/mixins/img-resize';
 import { PaymentMixin } from '~/mixins/payment';
-import { FunctionalCalendar } from 'vue-functional-calendar';
 
 import SellSelectModification from '~/components/sell/SellSelectModification';
 import UploadImage from '~/components/elements/UploadImage';
@@ -299,7 +301,6 @@ import CarFilters from '~/components/cars/CarFilters';
 
 export default {
   components: {
-    FunctionalCalendar,
     SellSelectModification,
     UploadImage,
     ColorOptions,

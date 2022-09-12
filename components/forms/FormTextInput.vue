@@ -5,6 +5,7 @@
       <img :src="imgSrc" v-if="imgSrc" :class="{disabled}" />
       <template v-if="inputDate">
         <date-picker
+          @click="open = false"
           v-model="inputValue"
           value-type="format"
           :popup-style="{ top: '100%', left: 0 }"
@@ -12,12 +13,11 @@
           :format="dateFormat"
           :placeholder="placeholder"
           :type="dateType"
+          :open.sync="open"
           :lang="locale"
           :input-attr="{readonly: 'readonly', id, maxlength, disabled}"
           :input-class="{invalid, valid, disabled, [`${inputClass}`]:inputClass}"
           :disabled-date="disabledDate"
-          @open="showDatepicker(true)"
-          @close="showDatepicker(false)"
         >
           <template #icon-clear>
             <icon name="cross" />
@@ -128,7 +128,8 @@
       return {
         prevValue: this.value,
         showPassword: false,
-        timeout: -1
+        timeout: -1,
+        open:false,
       }
     },
     computed: {
@@ -149,7 +150,8 @@
     },
     methods: {
       showDatepicker(show) {
-        document.body.classList[show ? 'add' : 'remove']('date-picker-open');
+        this.open = show;
+       // document.body.classList[show ? 'add' : 'remove']('date-picker-open');
       }
     },
     beforeDestroy() {

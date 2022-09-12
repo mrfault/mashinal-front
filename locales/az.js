@@ -2254,5 +2254,8 @@ export default {
   "external_salon": "Sifarişlə avto",
   "external-salons": "Sifarişlə avto",
   "external_commercial":"Sifarişlə ticari",
-  "external_moto": "Sifarişlə moto"
+  "external_moto": "Sifarişlə moto",
+  "ml":"ml",
+  "amount_of_ml": "Miqdarı, ml",
+  "drink_type": "İçkinin növü",
 }
