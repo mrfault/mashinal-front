@@ -176,8 +176,8 @@
             <form-checkbox :label="$t('show_car_number_on_site')" v-model="form.show_car_number" input-name="show_car_number"
               transparent class="mt-2 mt-lg-3"/>
           </div>
-          <div class="col-lg-4 mb-2 mb-lg-0">
-            <form-text-input v-model="form.vin"
+          <div class="col-lg-4 mb-2 mb-lg-0" v-if="form.customs_clearance">
+            <form-text-input key="vin" v-model="form.vin"
                 :mask="$maskAlphaNumeric('*****************')"
                 :placeholder="$t('vin_carcase_number')" @change="removeError('vin')">
               <popover name="vin" :width="240">
@@ -635,6 +635,9 @@ export default {
       .map(property => { this.mutate({ property, value: [] }); });
 
     this.$nuxt.$on('login', this.handleAfterLogin);
+    if(this.user.external_salon) {
+      this.form.customs_clearance = true;
+    }
     this.updatePreview();
   },
   beforeDestroy() {
