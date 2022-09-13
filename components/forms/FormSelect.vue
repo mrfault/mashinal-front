@@ -106,7 +106,7 @@
             <div class="container" v-if="custom">
               <slot />
             </div>
-            <vue-scroll :ops="scrollOps" ref="vsMob" v-else :key="vsKey"  v-scroll-stop>
+            <vue-scroll :ops="scrollOps" ref="vsMob" v-else :key="vsKey"  v-scroll-stop="scrolStopTrigger">
               <div class="container">
                 <div class="row pt-3" v-if="popularOptions && !search">
                   <div
@@ -218,7 +218,7 @@
             <div v-if="custom">
               <slot />
             </div>
-            <vue-scroll :ops="scrollOps" ref="vs" v-else :key="vsKey" v-scroll-stop>
+            <vue-scroll :ops="scrollOps" ref="vs" v-else :key="vsKey" v-scroll-stop="scrolStopTrigger">
               <div class="row pt-3" v-if="popularOptions && !search">
                 <div
                   v-for="option in $sortBy(
@@ -398,6 +398,7 @@ export default {
       showOptions: false,
       placeOptionsAbove: false,
       vsKey: 0,
+      scrolStopTrigger: true,
     }
   },
   methods: {
@@ -644,6 +645,7 @@ export default {
       if (this.value === undefined) this.selectValue = undefined
     },
     showOptions(val) {
+      this.scrolStopTrigger = val;
       if (val) {
         this.blockClick = true
         setTimeout(() => {
@@ -676,7 +678,8 @@ export default {
         })
       } else {
         this.placeOptionsAbove = false
-        this.search = ''
+        this.search = '';
+        
       }
       // hide overflow when selected
       if (!this.inSelectMenu) {

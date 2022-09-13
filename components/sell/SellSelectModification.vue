@@ -140,6 +140,10 @@ export default {
       })[key][value];
     },
     async handleChange(value, action, keys, props, nextKey) {
+      if(keys[0] === 'car_catalog_id') {
+        window.location.href = '#sellLastStepUploadImage';
+        //  window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })
+      }
       clearTimeout(this.timeout);
       let $container;
       if (this.isMobileBreakpoint) {
@@ -186,6 +190,7 @@ export default {
   },
   created() {
      this.getSellBody(this.getFormValues(['brand','model','year']));
-  }
+  },
+
 }
 </script>
