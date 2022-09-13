@@ -392,12 +392,12 @@ export default {
     z-index: 1;
     .ma-speedometer-arrow {
       position: absolute;
-      bottom: 28px;
-      left: 26%;
+      bottom: 38px;
+      left: 31%;
       z-index: 2;
-      widows: 50%;
-      width: 28%;
+      width: 22%;
       transform-origin: 80% 50%;
+      transition: 0.5s ease;
     }
   }
 }
@@ -408,6 +408,17 @@ export default {
     top: 67% !important;
     width: 23%;
     left: 30.5%;
+  }
+}
+@media (max-width: 400px) {
+  .ma-alcometer {
+    &__graph {
+      .ma-speedometer-arrow {
+        top: auto !important;
+        bottom: 63px !important;
+        left: 32%;
+      }
+    }
   }
 }
 </style>
