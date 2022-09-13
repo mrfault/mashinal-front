@@ -35,12 +35,13 @@ import { SalonsMixin } from '~/mixins/salons';
 export default {
   props: {
     salon: {},
-    count:{}
+    count:{},
+    shop: false
   },
   mixins: [SalonsMixin],
   computed: {
     isShop() {
-      return this.routeName.includes('parts')
+      return this.shop;
     },
   }
 }
