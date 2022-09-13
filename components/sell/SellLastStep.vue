@@ -159,8 +159,8 @@
 <!--        </div>-->
         <h2 v-if="type === 'cars' || (type !=='parts' && user.external_salon)" class="title-with-line mt-2 mt-lg-3" id="anchor-car_or_vin">
           <span>{{ $t(form.customs_clearance || user.external_salon ? 'vin_carcase_number' : 'license_plate_number_vin_or_carcase_number') }}
-            <template v-if="!loggedIn || (loggedIn && !user.autosalon) || (loggedIn && user.autosalon && user.autosalon.is_official)">
-               <span class="star" v-if="type === 'cars'"> *</span>
+            <template v-if="!loggedIn || (loggedIn && !user.autosalon) || (loggedIn && user.autosalon && user.autosalon.is_official) || (user.external_salon)">
+               <span class="star" v-if="type === 'cars' || (type !=='parts' && user.external_salon)"> *</span>
             </template>
           </span>
         </h2>
