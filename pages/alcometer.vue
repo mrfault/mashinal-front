@@ -5,7 +5,7 @@
         <share-it type="publish" v-if="$route.params.body" />
       </breadcrumbs>
 
-      <div class="alco-form">
+      <div class="alco-form" :class="{'mb-5': !showGraphs }">
         <div class="form-items row">
           <div class="col-lg-4">
             <div
