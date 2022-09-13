@@ -22,6 +22,7 @@
           @file-deleted="deleteImage"
           @file-rotated="rotateImage"
           @order-changed="changeOrder"
+          id="sellLastStepUploadImage"
         />
 <!--        <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-youtube">-->
 <!--          <span>{{ $t('video') }}</span>-->
