@@ -3,12 +3,12 @@
     <div class="popover-title" @click.stop="showThis">
       <icon :name="icon" />
     </div>
-    <div class="popover-content" :class="{show}" :style="{width: `${width}px`}">
+    <div class="popover-content" :class="{show}" :style="{width: `${width}px`}"  style="white-space: pre-wrap">
       <span class="popover-content_triangle">
         <icon name="triangle" />
       </span>
       <p :class="['popover-message', textClass || '']">
-        <span v-html="message"></span>
+        <span v-html="message"  style="white-space: pre-wrap"></span>
         <slot />
       </p>
     </div>
