@@ -6,7 +6,8 @@
       draggable=".draggable"
       :sort="true"
       group="people"
-      class="row px-3"
+      class="row"
+      :handle="isMobileBreakpoint ? '.handle' : ''"
     >
       <div
         class="col-6 col-lg-1-5 mb-2 mb-lg-3 draggable"
@@ -15,27 +16,30 @@
       >
         <div class="upload-image_thumbnail">
           <img v-if="image[key]" :src="image[key]" alt="" />
-          <div class="overlay">
-            <button
-              type="button"
-              :class="['btn-transparent', { disabled: loading[key] }]"
-              @click.stop="fileRotate(key, index)"
-            >
-              <!-- <icon name="reset" /> -->
-              <inline-svg src="/icons/reset-new.svg" height="14" />
-            </button>
-            <button
-              type="button"
-              :class="['btn-transparent float-right', { disabled: loading[key] }]"
-              @click.stop="fileDelete(key, index)"
-            >
-              <icon name="cross" />
+          <div class="overlay overlay-with-image">
+            <div class="overlay-top-actions">
+              <button
+                type="button"
+                :class="['btn-transparent', { disabled: loading[key] }]"
+                @click.stop="fileRotate(key, index)"
+              >
+                <!-- <icon name="reset" /> -->
+                <inline-svg src="/icons/reset-new.svg" height="14" />
+              </button>
+              <button
+                type="button"
+                :class="['btn-transparent', { disabled: loading[key] }]"
+                @click.stop="fileDelete(key, index)"
+              >
+                <icon name="cross" />
 
-              <!-- <inline-svg src="/icons/cross.svg" height="14"/> -->
-            </button>
+                <!-- <inline-svg src="/icons/cross.svg" height="14"/> -->
+              </button>
+            </div>
             <button
               type="button"
-              :class="['btn-transparent mobile-drag-button']"
+              :class="['btn-transparent', {handle: isMobileBreakpoint}]"
+              v-if="isMobileBreakpoint"
             >
               <icon name="burger" style="color: #fff;" />
             </button>
@@ -315,10 +319,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.overlay {
-  .mobile-drag-button {
-    margin-top: auto;
-    float: right;
+.upload-image_thumbnail {
+  .overlay {
+    &-with-image {
+      flex-direction: column;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+    &-top-actions {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
   }
 }
 </style>
