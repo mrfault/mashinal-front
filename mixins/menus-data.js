@@ -80,11 +80,12 @@ export const MenusDataMixin = {
       return [
         { title: 'garage', route: '/garage-services', icon: 'garage-tab' },
         { title: 'eservices', route: '/e-services', icon: 'globe' },
+        { title: 'external-salons', route: '/external-salons', with_badge: true },
         { title: 'salons', route: '/salons', icon: 'salons-tab' },
         { title: 'shops', route: '/parts/shops', icon: 'shops-tab' },
         { title: 'autocatalog', route: '/catalog', icon: 'catalog-tab' },
         { title: 'favorites', route: '/profile/favorites', icon: 'favorites-tab' },
-        { title: 'external-salons', route: '/external-salons', with_badge: true },
+
         { title: 'comparisons', route: '/comparison', icon: 'compare' },
         { title: 'my_searches', route: '/profile/templates', icon: 'template', auth: true },
         { title: 'helper_search', route: '/cars/assistant', icon: 'helper-tab' },
