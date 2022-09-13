@@ -58,7 +58,7 @@
                 <inline-svg style="width: 20px;    fill: white; margin-right: 10px;" v-if="menu.title === 'external-salons'" src="/img/external_salon.svg" />
                 <span>{{ menu.title[locale] || $t(menu.title) }}</span>
                 <span>{{ (menu.title === 'comparisons') && comparisonCount ? '&nbsp;('+comparisonCount+')' : '' }}</span>
-                <span style="position: absolute; top: -13px; right: -23px; display: flex;">
+                <span v-if="isMobileBreakpoint" style="position: absolute; top: -13px; right: -23px; display: flex;">
                           <inline-svg style="width: 31px;" v-if="menu.title === 'external-salons'" src="/img/new_badge_white.svg" />
                         </span>
               </nuxt-link>
