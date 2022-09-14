@@ -126,7 +126,7 @@
         </div>
       </div>
       <!-- results -->
-      <div class="alco-form my-4" v-if="showGraphs" id="alcometerResult">
+      <div class="alco-form my-4" v-show="showGraphs" id="alcometerResult">
         <div class="row">
           <div class="col-12 col-lg-5">
             <div class="ma-alco-card__bottom">
@@ -488,8 +488,17 @@ export default {
       }
       this.timeToDrive = rul
       //if (Cor > 8) f.rul.value = f.rul.value + '';
-      this.orderScrollResult();
-
+      this.showGraphs = true
+      if (this.showGraphs && !this.isMobileBreakpoint) {
+        setTimeout(() => {
+          window.scrollTo({ top: 500, behavior: 'smooth' })
+        }, 1000)
+      }
+      else if (this.showGraphs && this.isMobileBreakpoint) {
+        setTimeout(() => {
+          window.scrollTo({ top: 1200, behavior: 'smooth' })
+        }, 1000)
+      }
     },
     nrm(val, to) {
       var t = Math.round(val * to)
@@ -503,15 +512,6 @@ export default {
       }
       return (this.diagValue = this.diag2[6])
     },
-    async orderScrollResult(){
-      await (this.showGraphs = true)
-      this.scrollToResult;
-    },
-    scrollToResult(){
-        const el = document.getElementById('alcometerResult');
-        console.log('scrolled');
-        el.scrollIntoView({ behavior: 'smooth' });
-    }
   },
 }
 </script>
