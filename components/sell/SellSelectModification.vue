@@ -141,8 +141,7 @@ export default {
     },
     async handleChange(value, action, keys, props, nextKey) {
       if(keys[0] === 'car_catalog_id') {
-        window.location.href = '#sellLastStepUploadImage';
-        //  window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })
+        window.scrollTo(0, window.scrollY - 50)
       }
       clearTimeout(this.timeout);
       let $container;
