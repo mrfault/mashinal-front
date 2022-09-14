@@ -647,6 +647,7 @@ export default {
     showOptions(val) {
       this.scrolStopTrigger = val;
       if (val) {
+        console.log("opened");
         this.blockClick = true
         setTimeout(() => {
           this.blockClick = false
@@ -677,6 +678,8 @@ export default {
           }
         })
       } else {
+        console.log("closed");
+
         this.placeOptionsAbove = false
         this.search = '';
         
