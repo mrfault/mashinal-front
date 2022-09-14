@@ -5,7 +5,7 @@
         <share-it type="publish" v-if="$route.params.body" />
       </breadcrumbs>
 
-      <div class="alco-form" :class="{'mb-5': !showGraphs }">
+      <div class="alco-form" :class="{ 'mb-5': !showGraphs }">
         <div class="form-items row">
           <div class="col-lg-4">
             <div
@@ -15,30 +15,30 @@
               <span class="alco-num">1</span>
             </div>
             <div class="alc-inputs">
-              <h4 class="alco-h4 pl-1 pr-1">{{$t('drink_amount')}} (1)</h4>
+              <h4 class="alco-h4 pl-1 pr-1">{{ $t('drink_amount') }} (1)</h4>
               <div class="d-flex">
                 <form-select
                   class="col-6"
                   v-model="form.drinkType1"
                   :options="drinkTypes"
                   :label="$t('drink_type')"
-                 :allowClear="false"
+                  :allowClear="false"
                 />
                 <form-select
                   class="col-6"
                   v-model="form.drinkValue1"
                   :options="drinkAmounts"
                   :label="$t('amount_of_ml')"
-                 :allowClear="false"
+                  :allowClear="false"
                 />
               </div>
               <div class="mx-1 mt-3">
-                <h4 class="alco-h4 pr-1">{{$t('your_gender')}}:</h4>
+                <h4 class="alco-h4 pr-1">{{ $t('your_gender') }}:</h4>
                 <form-switch
                   class="gender-switcher text-transform-normal"
                   v-model="form.gender"
                   :options="genders"
-                 :allowClear="false"
+                  :allowClear="false"
                 />
               </div>
             </div>
@@ -51,32 +51,32 @@
               <span class="alco-num">2</span>
             </div>
             <div class="alc-inputs">
-              <h4 class="alco-h4 pl-1 pr-1">{{$t('drink_amount')}} (2)</h4>
+              <h4 class="alco-h4 pl-1 pr-1">{{ $t('drink_amount') }} (2)</h4>
               <div class="d-flex">
                 <form-select
                   class="col-6"
                   v-model="form.drinkType2"
                   :options="drinkTypes"
                   :label="$t('drink_type')"
-                 :allowClear="false"
+                  :allowClear="false"
                 />
                 <form-select
                   class="col-6"
                   v-model="form.drinkValue2"
                   :options="drinkAmounts"
                   :label="$t('amount_of_ml')"
-                 :allowClear="false"
+                  :allowClear="false"
                 />
               </div>
               <div class="mx-1 mt-3">
-                <h4 class="alco-h4 pr-1">{{$t('your_weight')}}:</h4>
+                <h4 class="alco-h4 pr-1">{{ $t('your_weight') }}:</h4>
                 <form-select
                   class=""
                   v-model="form.mass"
                   :options="massOptions"
                   :label="$t('weight')"
-                 :allowClear="false"
-                 :clear-option="false"
+                  :allowClear="false"
+                  :clear-option="false"
                 />
               </div>
             </div>
@@ -89,26 +89,25 @@
               <span class="alco-num">3</span>
             </div>
             <div class="alc-inputs">
-              <h4 class="alco-h4 pl-1 pr-1">{{$t('drink_amount')}} (3)</h4>
+              <h4 class="alco-h4 pl-1 pr-1">{{ $t('drink_amount') }} (3)</h4>
               <div class="d-flex">
                 <form-select
                   class="col-6"
                   v-model="form.drinkType3"
                   :options="drinkTypes"
                   :label="$t('drink_type')"
-                 :allowClear="false"
+                  :allowClear="false"
                 />
                 <form-select
                   class="col-6"
                   v-model="form.drinkValue3"
                   :options="drinkAmounts"
                   :label="$t('amount_of_ml')"
-                 :allowClear="false"
-                 
+                  :allowClear="false"
                 />
               </div>
               <div class="mx-1 mt-3">
-                <h4 class="alco-h4 pr-1">{{$t('how_many_hours_passed')}}?</h4>
+                <h4 class="alco-h4 pr-1">{{ $t('how_many_hours_passed') }}?</h4>
                 <form-select
                   v-model="form.time"
                   :options="hours"
@@ -122,17 +121,17 @@
         </div>
         <div class="submit-button mt-3 d-flex justify-content-end mr-1 pb-2">
           <button class="btn btn--green" @click="doTest()">
-            {{$t('when_may_i_can_drive')}}?
+            {{ $t('when_may_i_can_drive') }}?
           </button>
         </div>
       </div>
       <!-- results -->
-      <div class="alco-form my-4" v-if="showGraphs">
+      <div class="alco-form my-4" v-if="showGraphs" id="alcometerResult">
         <div class="row">
           <div class="col-12 col-lg-5">
             <div class="ma-alco-card__bottom">
               <h3 class="ma-alcometer-title-dotted">
-                {{$t('indications_of_breathalyzer')}}
+                {{ $t('indications_of_breathalyzer') }}
               </h3>
               <div class="ma-alco-card__bottom--body">
                 <alcometer-promil
@@ -140,32 +139,35 @@
                   :isRussian="isRussian"
                 ></alcometer-promil>
                 <h3 class="ma-alco-card__bottom--body--desc">
-                  {{$t('alcohol_concentration')}}:
+                  {{ $t('alcohol_concentration') }}:
                 </h3>
                 <h3 class="ma-alco-card__bottom--body--value">
                   {{ concentration }}
                 </h3>
                 <h3 class="ma-alco-card__bottom--body--desc">
-                  {{$t('milligrams_per_liter_of_inhaled_air')}}
+                  {{ $t('milligrams_per_liter_of_inhaled_air') }}
                 </h3>
               </div>
             </div>
           </div>
           <div class="col-12 col-lg-7">
             <div class="ma-alco-card__bottom">
-              <h3 class="ma-alcometer-title-dotted">{{$t('degree_of_intoxication')}}</h3>
+              <h3 class="ma-alcometer-title-dotted">
+                {{ $t('degree_of_intoxication') }}
+              </h3>
               <div class="ma-alco-card__bottom--body">
                 <alcometer-speedometer
-                  :speedometerValue="diagValue" :isRussian="isRussian"
+                  :speedometerValue="diagValue"
+                  :isRussian="isRussian"
                 ></alcometer-speedometer>
                 <h3 class="ma-alco-card__bottom--body--desc">
-                   {{$t('may_drive')}}:
+                  {{ $t('may_drive') }}:
                 </h3>
                 <h3 class="ma-alco-card__bottom--body--value">
                   {{ timeToDrive }}
                 </h3>
                 <h3 class="ma-alco-card__bottom--body--desc">
-                   {{$t('after_hours')}}
+                  {{ $t('after_hours') }}
                 </h3>
               </div>
             </div>
@@ -417,23 +419,23 @@ export default {
         gender: 'm',
         mass: 40,
         time: 0,
-        drinkValue1: 0,
-        drinkType1: 0,
-        drinkValue2: 0,
-        drinkType2: 0,
-        drinkValue3: 0,
-        drinkType3: 0,
+        drinkValue1: null,
+        drinkType1: null,
+        drinkValue2: null,
+        drinkType2: null,
+        drinkValue3: null,
+        drinkType3: null,
       },
     }
   },
-  computed:{
-    isRussian(){
+  computed: {
+    isRussian() {
       if (this.$i18n.locale == 'ru') {
         return true
-      }else{
+      } else {
         return false
       }
-    }
+    },
   },
   methods: {
     doTest() {
@@ -486,7 +488,8 @@ export default {
       }
       this.timeToDrive = rul
       //if (Cor > 8) f.rul.value = f.rul.value + '';
-      this.showGraphs = true
+      this.orderScrollResult();
+
     },
     nrm(val, to) {
       var t = Math.round(val * to)
@@ -500,8 +503,16 @@ export default {
       }
       return (this.diagValue = this.diag2[6])
     },
+    async orderScrollResult(){
+      await (this.showGraphs = true)
+      this.scrollToResult;
+    },
+    scrollToResult(){
+        const el = document.getElementById('alcometerResult');
+        console.log('scrolled');
+        el.scrollIntoView({ behavior: 'smooth' });
+    }
   },
-
 }
 </script>
 
