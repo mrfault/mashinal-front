@@ -2259,5 +2259,6 @@ export default {
    "external_salon": "Авто по заказу",
    "external-salons": "Авто по заказу",
    "external_commercial":"По заказу коммерческие",
-   "external_moto": "Мото по заказу"
+   "external_moto": "Мото по заказу",
+   "alcometer" : "Алкотест"
 }

@@ -9,7 +9,6 @@
         <h2 class="title-with-line mt-3 mt-lg-0" id="anchor-saved_images">
           <span>{{ $t('photos') }} ({{ $t('at_least_5_photos', { min: minFiles, max: maxFiles }).toLowerCase() }}) <span class="star"> *</span></span>
           <br>
-          <small v-if="isMobileBreakpoint" class="text-red">Şəkillərin yerini sürüşdürərək dəyişmək üçün 2 saniyə basıb saxlayın</small>
         </h2>
 
         <upload-image
