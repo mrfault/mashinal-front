@@ -2258,4 +2258,5 @@ export default {
   "ml":"ml",
   "amount_of_ml": "Miqdarı, ml",
   "drink_type": "İçkinin növü",
+  "alcometer" : "Alkotest",
 }
