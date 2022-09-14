@@ -144,7 +144,7 @@ Vue.use({
             link: link,
             phone: item.user.phone,
             address: item.address,
-            img: (item.is_autosalon || item.is_part_salon)
+            img: (item.is_autosalon || item.is_part_salon || item.is_external_salon)
               ? (!img || img?.includes('/images/') ? `/img/salon-logo-${this.colorMode}.jpg` : this.$withBaseUrl(img))
               : (this.$withBaseUrl(img, '/storage/') || '/img/user.jpg'),
             lat: item.latitude ? parseFloat(item.latitude) : 0,

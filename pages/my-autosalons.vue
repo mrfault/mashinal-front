@@ -2,8 +2,8 @@
   <div class="container">
     <div class="row">
       <div class="col-12 col-lg-3 my-3" @click="loginToSubAccount(child.id, child.autosalon || child.part_salon)"  v-for="child in user.children">
-        <salon-login-card v-if="child.autosalon" :count="child.announcements_count" :salon="child.autosalon" />
-        <salon-login-card v-if="child.part_salon" :count="child.announcements_count" :salon="child.part_salon" :shop="true" />
+        <salon-login-card v-if="child.autosalon" :count="auto_count(child)" :salon="child.autosalon" />
+        <salon-login-card v-if="child.part_salon" :count="child.parts_count" :salon="child.part_salon" :shop="true" />
       </div>
     </div>
   </div>
@@ -28,6 +28,9 @@ export default {
     });
   },
   methods: {
+    auto_count(user) {
+     return user.announcements_count + user.moto_atvs_count + user.motorcycles_count + user.scooters_count;
+    },
     loginToSubAccount(user_id,shop) {
       this.$axios
         .$post('/login_sub_account', {
