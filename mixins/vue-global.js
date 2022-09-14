@@ -123,7 +123,13 @@ Vue.use({
             img = item.user.autosalon?.logo;
             link = this.$localePath(`/salons/${item.user.autosalon.slug}`);
             name = item.user.autosalon.name || item.user.full_name;
-          } else if (item.is_part_salon) {
+          } else if (item.is_external_salon) {
+            img = item.user.external_salon?.logo;
+            link = this.$localePath(`/salons/${item.user.external_salon.slug}`);
+            name = item.user.external_salon.name || item.user.full_name;
+          }
+
+          else if (item.is_part_salon) {
             img = item.user.part_salon?.logo;
             link = this.$localePath(`/parts/shops/${item.user.part_salon.slug}`);
             name = item.user.part_salon.name || item.user.full_name;
