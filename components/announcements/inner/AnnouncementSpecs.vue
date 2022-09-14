@@ -46,7 +46,7 @@ export default {
       const specs = [
         {key: 'years', value: this.announcement.year, class: 'car-year'},
         {key: 'region', value: this.announcement.region?.name[this.locale]},
-        {key:'country', value:this.announcement[`country_name${this.locale}`]},
+        {key:'country', value:this.announcement[`country_name_${this.locale}`], for:['cars','commercial','moto']},
         {
           key: 'mileage',
           value: this.mileage + (this.announcement.is_new ? ', ' + this.$t('is_new').toLowerCase() : ''),
