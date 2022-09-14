@@ -487,6 +487,13 @@
                 input-name="with_video"
               />
             </div>
+            <div class="col-6 col-lg-2 mb-2 mb-lg-3" v-if="!isMobileBreakpoint">
+              <form-checkbox
+                :label="$t('external_salon')"
+                v-model="form.external_salon"
+                input-name="external_salon"
+              />
+            </div>
             <div class="col-12">
               <color-options
                 v-model="form.colors"
