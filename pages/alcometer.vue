@@ -126,7 +126,7 @@
         </div>
       </div>
       <!-- results -->
-      <div class="alco-form my-4" v-show="showGraphs" >
+      <div class="alco-form my-4" v-show="showGraphs">
         <div class="row">
           <div class="col-12 col-lg-5">
             <div class="ma-alco-card__bottom">
@@ -155,18 +155,18 @@
               <h3 class="ma-alcometer-title-dotted">
                 {{ $t('degree_of_intoxication') }}
               </h3>
-              <div class="ma-alco-card__bottom--body"  >
+              <div class="ma-alco-card__bottom--body">
                 <alcometer-speedometer
                   :speedometerValue="diagValue"
                   :isRussian="isRussian"
                 ></alcometer-speedometer>
-                <h3 class="ma-alco-card__bottom--body--desc" >
+                <h3 class="ma-alco-card__bottom--body--desc">
                   {{ $t('may_drive') }}:
                 </h3>
                 <h3 class="ma-alco-card__bottom--body--value">
                   {{ timeToDrive }}
                 </h3>
-                <h3 class="ma-alco-card__bottom--body--desc" >
+                <h3 class="ma-alco-card__bottom--body--desc">
                   {{ $t('after_hours') }}
                 </h3>
               </div>
@@ -185,6 +185,11 @@ export default {
   components: {
     AlcometerPromil,
     AlcometerSpeedometer,
+  },
+  head() {
+    return this.$headMeta({
+      title: this.$t('alcometer'),
+    })
   },
   data() {
     return {
@@ -493,8 +498,7 @@ export default {
         setTimeout(() => {
           window.scrollTo({ top: 500, behavior: 'smooth' })
         }, 1000)
-      }
-      else if (this.showGraphs && this.isMobileBreakpoint) {
+      } else if (this.showGraphs && this.isMobileBreakpoint) {
         setTimeout(() => {
           // window.scrollTo({ top: 1200, behavior: 'smooth' })
           window.location.href = '#alcometerResult'
