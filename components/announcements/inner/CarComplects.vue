@@ -17,18 +17,18 @@
       </collapse-content>
       <hr v-if="filteredSellOptions.length" :key="'hr-popular'" />
     </template>
-    <template v-if="getOptions(group).length" v-for="(group, index) in filteredSellOptions">
-      <collapse-content
-        :title="getTitle(group, index)"
-        :first-collapsed="!!tagSellOptions.length || index !== 0"
-        :key="index"
-      >
-        <p v-for="(option, index) in getOptions(group)" :key="index">
-          {{ getOptionValue(option, options[option.name]) }}
-        </p>
-      </collapse-content>
-      <hr v-if="index !== filteredSellOptions.length - 1" :key="'hr-'+index" />
-    </template>
+<!--    <template v-if="getOptions(group).length" v-for="(group, index) in filteredSellOptions">-->
+<!--      <collapse-content-->
+<!--        :title="getTitle(group, index)"-->
+<!--        :first-collapsed="!!tagSellOptions.length || index !== 0"-->
+<!--        :key="index"-->
+<!--      >-->
+<!--        <p v-for="(option, index) in getOptions(group)" :key="index">-->
+<!--          {{ getOptionValue(option, options[option.name]) }}-->
+<!--        </p>-->
+<!--      </collapse-content>-->
+<!--      <hr v-if="index !== filteredSellOptions.length - 1" :key="'hr-'+index" />-->
+<!--    </template>-->
   </div>
 </template>
 
