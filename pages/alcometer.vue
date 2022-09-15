@@ -126,7 +126,7 @@
         </div>
       </div>
       <!-- results -->
-      <div class="alco-form my-4" v-show="showGraphs" id="alcometerResult">
+      <div class="alco-form my-4" v-show="showGraphs" >
         <div class="row">
           <div class="col-12 col-lg-5">
             <div class="ma-alco-card__bottom">
@@ -150,23 +150,23 @@
               </div>
             </div>
           </div>
-          <div class="col-12 col-lg-7">
+          <div class="col-12 col-lg-7" id="alcometerResult">
             <div class="ma-alco-card__bottom">
               <h3 class="ma-alcometer-title-dotted">
                 {{ $t('degree_of_intoxication') }}
               </h3>
-              <div class="ma-alco-card__bottom--body">
+              <div class="ma-alco-card__bottom--body"  >
                 <alcometer-speedometer
                   :speedometerValue="diagValue"
                   :isRussian="isRussian"
                 ></alcometer-speedometer>
-                <h3 class="ma-alco-card__bottom--body--desc">
+                <h3 class="ma-alco-card__bottom--body--desc" >
                   {{ $t('may_drive') }}:
                 </h3>
                 <h3 class="ma-alco-card__bottom--body--value">
                   {{ timeToDrive }}
                 </h3>
-                <h3 class="ma-alco-card__bottom--body--desc">
+                <h3 class="ma-alco-card__bottom--body--desc" >
                   {{ $t('after_hours') }}
                 </h3>
               </div>
@@ -496,7 +496,8 @@ export default {
       }
       else if (this.showGraphs && this.isMobileBreakpoint) {
         setTimeout(() => {
-          window.scrollTo({ top: 1200, behavior: 'smooth' })
+          // window.scrollTo({ top: 1200, behavior: 'smooth' })
+          window.location.href = '#alcometerResult'
         }, 1000)
       }
     },
