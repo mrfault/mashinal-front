@@ -106,7 +106,7 @@
             <div class="container" v-if="custom">
               <slot />
             </div>
-            <vue-scroll :ops="scrollOps" ref="vsMob" v-else :key="vsKey"  v-scroll-stop="true">
+            <vue-scroll :ops="scrollOps" ref="vsMob" v-else :key="vsKey" @handle-scroll-complete="handleScroll" @handle-scroll="handleScroll" v-scroll-stop="true">
               <div class="container">
                 <div class="row pt-3" v-if="popularOptions && !search">
                   <div
@@ -218,7 +218,7 @@
             <div v-if="custom">
               <slot />
             </div>
-            <vue-scroll :ops="scrollOps" ref="vs" v-else :key="vsKey" v-scroll-stop="scrolStopTrigger">
+            <vue-scroll :ops="scrollOps" ref="vs" v-else :key="vsKey" @handle-scroll-complete="handleScroll"  @handle-scroll="handleScroll" v-scroll-stop="true">
               <div class="row pt-3" v-if="popularOptions && !search">
                 <div
                   v-for="option in $sortBy(
@@ -402,6 +402,9 @@ export default {
     }
   },
   methods: {
+    handleScroll(v,h,event) {
+      event.stopPropagation();
+    },
     displayMenuOptions() {
       this.showOptions = this.disabled ? false : !this.showOptions
     },

@@ -506,6 +506,7 @@
                 :is-search-page="isSearchPage"
                 :values="form.all_options"
                 name-in-value
+                popular
                 @change-filter="setCarFilter"
               />
             </div>
