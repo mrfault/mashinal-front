@@ -140,7 +140,7 @@ export const MenusDataMixin = {
 
     hasSearchFilters() {
       return [
-        'salons', 'parts-shops'
+        'salons', 'parts-shops','external-salons'
       ].includes(this.routeName);
     },
 
