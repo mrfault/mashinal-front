@@ -357,8 +357,8 @@ export default {
         window.scrollTo({ top: 1200, behavior: 'smooth' })
         setTimeout(() => {
           // window.location.href = '#sellLastStepUploadImage'
-           const el = this.$refs.sellSelectModification;
-           el.scrollIntoView({block: "end", behavior: smooth});
+           const el = document.querySelector('#anchor-saved_images');
+           el.scrollIntoView({block:'start', behavior: 'smooth'});
         }, 1000)
       }
 
