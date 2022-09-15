@@ -26,7 +26,7 @@
       <div class="container">
         <breadcrumbs :crumbs="crumbs" />
         <template v-if="!isMobileBreakpoint">
-          <salon-search-form :show-barter="false" />
+          <salon-search-form :show-barter="false" where="external-transport" />
           <salon-filters-form :count="salonsFiltered.length" />
         </template>
         <banners type="2" class="mt-5" />

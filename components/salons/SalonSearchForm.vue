@@ -8,7 +8,7 @@
           :row-class="!isMobileBreakpoint ? 'no-gutters' : ''" @change="searchAutosalons()" />
       </div>
       <div class="row mb-n2 mb-lg-n3">
-        <template v-if="where === 'transport'">
+        <template v-if="['transport','external-transport'].includes(where)">
           <div class="col-12 mb-2 col-lg-4 col-xl-1-5">
             <form-select :label="$t('mark')" :options="brands" v-model="form.brand_id"
               :clear-option="!isMobileBreakpoint" :popular-options="isMobileBreakpoint ? [129,483,8,1,767,117] : undefined"
