@@ -13,7 +13,7 @@
             v-model="searchFormType"
           />
         </div>
-        <salon-search-form :show-barter="false" v-show="searchFormType === 1" />
+        <salon-search-form where="external-transport" :show-barter="false" v-show="searchFormType === 1" />
         <salon-filters-form
           v-show="searchFormType === 0"
           @filter="showSearch = false"

@@ -92,7 +92,7 @@ export default {
         brand_id: '',
         model_id: '',
         generation_id: '',
-        announce_type: this.showBarter ? 1 : 3,
+        announce_type: 1,
         barter: false,
         credit: false,
         text: '',
@@ -128,8 +128,9 @@ export default {
       }
       this.pending = true;
       try {
+        let type = this.where === 'external-transport' ? 3 : (this.where === 'transport' ? 1 : 2)
         await this.getSalonsList({
-          type: this.where === 'transport' ? 1 : 2,
+          type: type,
           params: this.$queryParams(this.form, true)
         });
         this.$nuxt.$emit('search-salons', runOnMobile);
