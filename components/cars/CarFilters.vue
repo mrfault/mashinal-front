@@ -84,7 +84,9 @@ export default {
     ...mapGetters(['allSellOptions', 'allSellOptions2', 'popularOptions']),
 
     carFilterOptions() {
-      if (this.popular)
+      if(this.isSearchPage && this.popular)
+        return [this.allSellOptions2.populars];
+      else if (this.popular)
         return [this.popularOptions];
       else if (this.nameInValue)
         return this.allSellOptions2.detailed;
