@@ -106,7 +106,7 @@
             <div class="container" v-if="custom">
               <slot />
             </div>
-            <vue-scroll :ops="scrollOps" ref="vsMob" v-else :key="vsKey"  v-scroll-stop="scrolStopTrigger">
+            <vue-scroll :ops="scrollOps" ref="vsMob" v-else :key="vsKey"  v-scroll-stop="true">
               <div class="container">
                 <div class="row pt-3" v-if="popularOptions && !search">
                   <div
@@ -682,7 +682,7 @@ export default {
 
         this.placeOptionsAbove = false
         this.search = '';
-        
+
       }
       // hide overflow when selected
       if (!this.inSelectMenu) {
