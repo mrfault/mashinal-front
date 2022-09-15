@@ -189,7 +189,7 @@ export default {
   data() {
     return {
       showInterior: true,
-      crumbs: [{ name: 'alcometer' }],
+      crumbs: [{ name: this.$t('alcometer') }],
       drinkTypes: [
         {
           name: this.$t('vodka'),
