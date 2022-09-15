@@ -500,8 +500,12 @@ export default {
         }, 1000)
       } else if (this.showGraphs && this.isMobileBreakpoint) {
         setTimeout(() => {
+          window.scrollTo({ top: 2500, behavior: 'smooth' })
           // window.scrollTo({ top: 1200, behavior: 'smooth' })
-          window.location.href = '#alcometerResult'
+          // window.location.href = '#alcometerResult'
+          // document.querySelector(this.getAttribute('href')).scrollIntoView({
+          //   behavior: 'smooth',
+          // })
         }, 1000)
       }
     },
