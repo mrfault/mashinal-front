@@ -38,7 +38,7 @@
             </div>
             <button
               type="button"
-              :class="['btn-transparent', {handle: isMobileBreakpoint}]"
+              :class="['btn-transparent handle']"
               v-if="isMobileBreakpoint"
             >
               <icon name="burger" style="color: #fff;" />
