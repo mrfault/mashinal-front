@@ -369,6 +369,8 @@ export default {
         )));
       }
 
+      this.$store.commit('mutate',{property:'offer',value:id})
+
     },
     addFile(e) {
       this.chat.files.append(e.target.files[0])

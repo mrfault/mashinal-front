@@ -102,6 +102,8 @@ export default {
           return this.$localePath('/profile/templates')
         case '/salons/offer' :
           return this.$localePath('/salons/offer')
+        case '/offer/offers' :
+          return this.user.autosalon ?  this.$localePath('/salons/offer') :  this.$localePath('/offer/offers')
       }
       return '/';
     }

@@ -43,7 +43,7 @@
           </div>
         </div>
         <div class="col col-md-12 col-lg-4">
-          <div class="offerUsers">
+          <div class="offerUsers" style="height: 692px">
             <div class="searchBox">
 
               <input type="text" v-model="search" placeholder="Maşın və ya istifadəçi adı" class="searchInput" @focus="searchInputFocus">
@@ -206,6 +206,7 @@ import {mapGetters} from "vuex";
 import OfferMessage from "~/components/offer/offer-message";
 import CollapseContent from "~/components/elements/CollapseContent";
 import {ImageResizeMixin} from '~/mixins/img-resize';
+import offer from "~/components/offer/offer";
 
 export default {
   name: "offers",
@@ -315,11 +316,12 @@ export default {
           }
         )
         this.offer = this.userOffer.offer
+
       }
       setTimeout(()=>{
         this.scrollTo('.my:last-child', 300, 500, '.offerDetail')
-      },100)
-
+      },1000)
+      this.$store.commit('mutate',{property:'offer',value:id})
     },
     async checkAccepted(id) {
       await this.$axios.$post('/offer/user/offer/check/' + id).then((res) => {
