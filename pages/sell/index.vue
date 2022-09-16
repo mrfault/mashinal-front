@@ -249,9 +249,11 @@ export default {
         })
       }
         if (!hasTransportTokens || !hasPartsTokens) {
-          secondLine =
-            '<strong class="text-red">*</strong> ' +
-            this.$t(`no_announcements_on_balance${secondLocaleEnding}`)
+          if(!(secondLocaleEnding && this.user.external_salon) || !this.user.external_salon)  {
+            secondLine =
+              '<strong class="text-red">*</strong> ' +
+              this.$t(`no_announcements_on_balance${secondLocaleEnding}`)
+          }
           thirdLine = this.$t('contact_for_more_info', {
             phone:'*8787',
             email:
