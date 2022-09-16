@@ -141,7 +141,7 @@
                         </a>
                       </li>
                     </template>
-                    <li v-if="user.children.length">
+                    <li v-if="user.children && user.children.length">
                       <nuxt-link to="/my-autosalons">{{ $t('logout_to_parent') }}</nuxt-link>
                     </li>
                     <li key="logout">
