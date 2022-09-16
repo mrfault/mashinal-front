@@ -212,7 +212,7 @@ export default {
 
       let hasTransportTokens =
         transportTokens > 0 || this.tokens.salon_unlimited
-      let hasPartsTokens = this.user.external_salon ? false : (partTokens > 0 || this.tokens.parts_unlimited);
+      let hasPartsTokens = this.user.external_salon ? 0 : (partTokens > 0 || this.tokens.parts_unlimited);
 
       let firstLocaleEnding =
         hasTransportTokens && hasPartsTokens
@@ -248,7 +248,6 @@ export default {
             : partTokens,
         })
       }
-      if(!this.user.external_salon) {
         if (!hasTransportTokens || !hasPartsTokens) {
           secondLine =
             '<strong class="text-red">*</strong> ' +
@@ -259,7 +258,6 @@ export default {
               isSalon || isShop ? 'sales@al.ventures' : 'office@al.ventures',
           })
         }
-      }
       return [firstLine, secondLine, thirdLine]
         .filter((line) => line)
         .map((line) => `${line}`)
