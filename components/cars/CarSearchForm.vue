@@ -666,7 +666,7 @@
                   <button
                     type="button"
                     :class="['btn', 'full-width', 'btn--green', { pending }]"
-                    @click="submitForm"
+                    @click="submitForm()"
                   >
                     <icon name="search" />
                     {{ $t('find') }}

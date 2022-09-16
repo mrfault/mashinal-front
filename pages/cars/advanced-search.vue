@@ -106,7 +106,7 @@ export default {
       this.pending = false;
 
       if (page === 1) {
-        this.scrollTo('.announcements-grid');
+       // this.scrollTo('.announcements-grid');
       } else {
         this.scrollTo('.announcements-grid.paginated', [-15, -20]);
       }

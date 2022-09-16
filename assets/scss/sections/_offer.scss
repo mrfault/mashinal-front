@@ -291,7 +291,6 @@
 .salonsOffer {
   height: 700px;
   margin-bottom: 50px;
-
   .col {
     height: 300px !important;
     padding-left: 0 !important;
@@ -324,7 +323,6 @@
       }
     }
   }
-
   .breadcrumbs {
     .exact-active {
       color: $red-1;
@@ -334,17 +332,14 @@
     background: $dark-blue-1;
     height: 700px;
     padding: 20px 5px 5px 5px;
-
     ul {
       list-style: none;
       padding: 5px 5px 5px 14px;
-
       li {
         color: white;
         margin-top: 22px;
         display: flex;
         cursor: pointer;
-
         img {
           margin-right: 5px;
         }
@@ -354,7 +349,6 @@
       }
     }
   }
-
   .searchBox {
     display: flex;
     border: 1px solid $greyish-blue-3;
@@ -387,9 +381,8 @@
     }
 
   }
-
   .offerUsers {
-    height: 619px;
+    height: 620px;
     padding: 0px 20px 20px 20px;
     overflow-x: hidden;
     overflow-y: auto;
@@ -440,7 +433,6 @@
     }
   }
 }
-
 .userImg {
   display: flex;
   font-size: 20px;
@@ -454,14 +446,12 @@
   background-size: cover;
   flex-shrink: 0;
 }
-
 .salonsOffer > .row {
   background: rgba(255, 255, 255, 1);
   height: 700px;
 }
-
 .offerDetail {
-  height: 538px;
+  height:540px;
   overflow-x: hidden;
   overflow-y: auto;
 
@@ -594,7 +584,6 @@
     }
   }
 }
-
 .message-files {
   display: flex;
   flex-direction: column;
@@ -602,11 +591,9 @@
     width: 150px;
   }
 }
-
 .offerDetail::-webkit-scrollbar {
   width: 7px;
 }
-
 .offerDetail::-webkit-scrollbar-track {
   background: $white;
 }
@@ -639,7 +626,6 @@
   background: #555;
 }
 .active-filter{
-
   color: $yellow-5 !important;
   svg{
     path,rect,line{
@@ -770,8 +756,6 @@
   color: $dark-blue-1;
   font-size: 13px;
 }
-
-
 @media (min-width: 481px) and (max-width: 767px) {
 
 }
