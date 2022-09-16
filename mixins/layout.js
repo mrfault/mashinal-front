@@ -162,20 +162,26 @@ export const LayoutMixin = {
         this.connectEcho().listen('SendMessage', this.addNewMessage)
         this.connectEcho('offer-user.' + this.$auth.user.id).listen('OfferMessageSendEvent', ({message}) => {
           this.$store.commit('appendOfferMessage', message)
-/*          this.$store.commit('setNewMessage',message.offer.id)*/
-        if (this.user.autosalon){
-          this.$store.dispatch('getAllOffers')
-        }
+
+          console.log(message.offer_id)
+          console.log(this.$store.state.offer)
+          if (message.offer_id == this.$store.state.offer) {
+            this.$axios.post('/offer/message/read/' + message.id)
+          }
+          /*          this.$store.commit('setNewMessage',message.offer.id)*/
+          if (this.user.autosalon) {
+            this.$store.dispatch('getAllOffers')
+          }
 
           if (message.files.length > 1) {
-            const sleep = () =>{
+            const sleep = () => {
               this.scrollTo('.his:last-child >.message-files:last-child >.message-file', 300, 500, '.offerDetail')
             }
             setTimeout(sleep, 100)
           } else {
-            setTimeout(()=>{
+            setTimeout(() => {
               this.scrollTo('.his:last-child', 0, 500, '.offerDetail')
-            },1000)
+            }, 1000)
 
           }
 

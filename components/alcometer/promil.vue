@@ -1,5 +1,5 @@
 <template>
-  <div class="ma-alcometer__graph">
+  <div class="ma-alcometer__graph ma-alcometer__graph--promil">
     <svg
       width="161"
       height="253"
