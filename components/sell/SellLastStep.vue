@@ -157,14 +157,14 @@
 <!--            <form-switch :options="getOwnerOptions" v-model="form.owner_type" auto-width />-->
 <!--          </div>-->
 <!--        </div>-->
-        <h2 v-if="type === 'cars' || (type !=='parts' && user.external_salon)" class="title-with-line mt-2 mt-lg-3" id="anchor-car_or_vin">
+        <h2 v-if="type === 'cars' || (type !=='parts' && user.external_salon)" class="title-with-line mt-2 mt-lg-3" id="anchor-car_or_vin anchor-car_number anchor-vin">
           <span>{{ $t(form.customs_clearance || user.external_salon ? 'vin_carcase_number' : 'license_plate_number_vin_or_carcase_number') }}
             <template v-if="!loggedIn || (loggedIn && !user.autosalon) || (loggedIn && user.autosalon && user.autosalon.is_official) || (user.external_salon)">
                <span class="star" v-if="type === 'cars' || (type !=='parts' && user.external_salon)"> *</span>
             </template>
           </span>
         </h2>
-        <div class="row" id="anchor-vin" v-if="type === 'cars' && !user.is_autosalon || (type !=='parts' && user.external_salon)">
+        <div class="row" v-if="type === 'cars' && !user.is_autosalon || (type !=='parts' && user.external_salon)">
           <div class="col-lg-4 mb-2 mb-lg-0" v-if="!form.customs_clearance && !user.external_salon">
             <form-text-input v-model="form.car_number" input-class="car-number-show-popover" img-src="/img/flag.svg"
                 :mask="type === 'cars' ? '99 - AA - 999' : '99 - A{1,2} - 999'"
