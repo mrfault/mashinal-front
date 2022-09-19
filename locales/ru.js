@@ -49,7 +49,7 @@ export default {
   "accordeon_other": "Прочее",
   "accordeon_security": "Безопасность",
   "accordeon_theft_protection": "Защита от угона",
-  "accordeon_view": "Обзор",
+  "accordeon_view": "Параметры",
   "account_settings": "Настройки аккаунта",
   "acoustic_type": "Тип",
   "activate": "Активировать",

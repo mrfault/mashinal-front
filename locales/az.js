@@ -49,7 +49,7 @@ export default {
   "accordeon_other": "Digər",
   "accordeon_security": "Təhlükəsizlik",
   "accordeon_theft_protection": "Oğurlanmaya qarşı müdafiə",
-  "accordeon_view": "Eksteryer / Baxış parametrləri ",
+  "accordeon_view": "Parmeterlər",
   "account_settings": "Hesabın quraşdırılması",
   "acoustic_type": "Növ",
   "activate": "Aktiv et",
