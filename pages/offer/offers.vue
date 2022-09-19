@@ -11,7 +11,7 @@
                   :class="{'active-filter': $route.query.param==='all' || !$route.query.param} ">
                 <inline-svg src="/icons/offer/requests.svg" class="filter-icon"/>
                 <span>
-                  Təkliflər
+                  Təkliflər  <span class="offerCount">{{newOfferCount}}</span>
                 </span>
               </li>
               <li @click="changePage('deleted')" :class="{'active-filter-fill': $route.query.param==='deleted'} ">
@@ -50,6 +50,7 @@
 
             </div>
             <div class="user" v-for="userOffer in searchOffer"
+
                  @click="getUserOfferDetail(userOffer.auto_salon_offer_id)">
               <div class="userImg"
                    :style="'background-image: url('+(userOffer.auto_salon.logo ? userOffer.auto_salon.logo : '/images/offer/salon_no_logo.svg') +')'">
@@ -70,14 +71,11 @@
         <div class="col col-md-6 col-12 col-xs-12 col-sm-12 offerDetailSection">
           <div class="offerDetail" v-if="offer">
             <div class="d-flex align-items-center user">
-
               <div class="userImg" :style="'background-image: url('+offer.user.img+')'"></div>
-
               <p class="mt-2 ml-2 text-bold">
                 {{ offer.user.full_name }}
               </p>
               <div class="actions" v-if="user_is_accepted">
-
                 <span @click="deleteUserAutoSalonOffer(userOffer.auto_salon_offer_id)"
                       v-if="!userOffer.user_deleted_at"> <icon name="garbage"></icon></span>
               </div>
@@ -178,7 +176,8 @@
               </div>
             </div>
           </div>
-          <div class="addons" v-if="user_is_accepted">
+
+          <div class="addons" v-if="user_is_accepted && offer.user_deleted_at==null">
             <offer-message
               @type="handleTyping"
               @attach="handleFiles"
@@ -242,8 +241,11 @@ export default {
   computed: {
     ...mapGetters({
       userOffers: 'OffersAcceptedByAutoSalon',
-      offerMessages: 'getOfferMessages'
+      offerMessages: 'getOfferMessages',
+      newOfferCount:'getNewOfferCount',
     }),
+
+
     crumbs() {
       return [
         {name: 'Super təklif paneli', route: '/offer/offers'},
@@ -278,6 +280,8 @@ export default {
 
     },
     async submitMessage() {
+
+
       let formData = new FormData();
 
       formData.append('recipient_id', this.userOffer.auto_salon.user_id)
@@ -316,6 +320,9 @@ export default {
           }
         )
         this.offer = this.userOffer.offer
+
+        this.offer.user_deleted_at=this.userOffer.user_deleted_at
+
 
       }
       setTimeout(()=>{
