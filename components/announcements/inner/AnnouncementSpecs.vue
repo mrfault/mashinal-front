@@ -1,7 +1,7 @@
 <template>
   <div :class="['vehicle-specs card pt-0 pt-lg-4', {'mb-lg-3': !brief}]">
     <ul>
-      <li v-for="spec in announcementSpecs" :key="spec.key">
+      <li v-for="spec in announcementSpecs" :key="spec.key" v-if="!(announcement.is_external_salon && spec.key === 'customs')">
         <span>
           <icon name="barter" v-if="spec.key === 'exchange'"/>
           <icon name="percent" v-else-if="spec.key === 'credit'"/>

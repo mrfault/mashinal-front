@@ -49,7 +49,7 @@ export default {
   "accordeon_other": "Прочее",
   "accordeon_security": "Безопасность",
   "accordeon_theft_protection": "Защита от угона",
-  "accordeon_view": "Обзор",
+  "accordeon_view": "Параметры",
   "account_settings": "Настройки аккаунта",
   "acoustic_type": "Тип",
   "activate": "Активировать",
@@ -2231,7 +2231,6 @@ export default {
    "your_weight": "Ваша масса",
    "your_gender": "Ваш пол",
    "when_may_i_can_drive": "Когда можно за руль",
-   "alcometer": "Алкотест",
 
    "vodka": "Водка/Коньяк",
    "light_beer":"Светлое пиво",

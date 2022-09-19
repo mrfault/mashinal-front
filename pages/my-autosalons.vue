@@ -1,8 +1,8 @@
 <template>
   <div class="container">
     <div class="row">
-      <div class="col-12 col-lg-3 my-3" @click="loginToSubAccount(child.id, child.autosalon || child.part_salon)"  v-for="child in user.children">
-        <salon-login-card v-if="child.autosalon" :count="auto_count(child)" :salon="child.autosalon" />
+      <div class="col-12 col-lg-3 my-3" @click="loginToSubAccount(child.id, child.part_salon)"  v-for="child in user.children">
+        <salon-login-card v-if="child.autosalon" :count="auto_count(child)" :salon="child.autosalon" :shop="false" />
         <salon-login-card v-if="child.part_salon" :count="child.parts_count" :salon="child.part_salon" :shop="true" />
       </div>
     </div>

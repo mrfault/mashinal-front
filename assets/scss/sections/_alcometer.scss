@@ -92,13 +92,55 @@ $ma-blue-1: #081a3e;
   font: 500 17px Gilroy;
 }
 
-
-
-.dark-mode{
-  .ma-alco-card__bottom--body--value{
-    background: #1C1C1E !important;
+.dark-mode {
+  .ma-alco-card__bottom--body--value {
+    background: #1c1c1e !important;
   }
-  .ma-alco-card__bottom--body--desc{
+  .ma-alco-card__bottom--body--desc {
     color: #081a3e;
+  }
+  .alco-form {
+    background: #242426;
+    border-top: 1px solid #242426;
+  }
+  .ma-alcometer {
+    &-title-dotted {
+      color: #f2eabd;
+      &::before,
+      &::after {
+        background: #f2eabd;
+      }
+    }
+  }
+  .ma-alco-card__bottom--body--desc {
+    color: #fff;
+  }
+  .alco-h4 {
+    color: #fff;
+  }
+  .ma-speedometer-arrow {
+    svg {
+      g {
+        fill: #fff;
+      }
+    }
+  }
+  .ma-alcometer__graph {
+    &--speedometer {
+      svg {
+        .speedometer-division {
+          path {
+            &:not(:first-of-type),&:not(:nth-of-type(1)) {
+              fill: #fff;
+            }
+          }
+        }
+      }
+    }
+    &--promil {
+      path {
+        border: 1px solid #fff;
+      }
+    }
   }
 }
