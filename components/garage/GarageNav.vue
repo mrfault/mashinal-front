@@ -16,7 +16,7 @@
             v-html="$t('my_cars')"
           />
           <div class="d-flex" style="margin-left: -20px;">
-            <div class="font-weight-bold mr-2 align-items-center d-flex" style="white-space: nowrap;">Avtomobili qeydiyyat nişanına görə axtar</div>
+            <div class="font-weight-bold mr-2 align-items-center d-flex" style="white-space: nowrap;">{{ $t('search_by_car_number') }}</div>
             <form-text-input  input-class="car-number-show-popover" img-src="/img/flag.svg"
                               :mask="'99 - A{1,2} - 999'"
                               v-model="car_number"
