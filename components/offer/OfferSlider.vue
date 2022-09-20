@@ -1,7 +1,7 @@
 <template>
   <div>
     <div
-      class="swiper-container swiper-container-desktop"
+      class="swiper-container swiper-container-desktop offerSlider"
       v-swiper:gallerySwiper="swiperOps"
     >
       <div class="swiper-wrapper">

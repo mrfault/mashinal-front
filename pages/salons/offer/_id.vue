@@ -2,10 +2,9 @@
   <div>
     <div class="container">
       <div class="d-flex align-items-center user userBar  mt-3 mb-3">
-
      <span @click="$router.back()">
       <a>
-       <icon name="chevron-left"></icon>
+       <icon name="chevron-left " class="m-1"></icon>
       </a>
   </span>
 
@@ -15,7 +14,7 @@
         <p class="mt-2 ml-2 text-bold">
           {{ offer.user.full_name }}
         </p>
-        <div class="actions" v-if="user_is_accepted">
+        <div class="actions m-1" v-if="user_is_accepted">
 
               <span @click="deleteUserAutoSalonOffer(offer.id)"
                     v-if="!offer.auto_salon_deleted_at || this.IsAccepted"> <icon

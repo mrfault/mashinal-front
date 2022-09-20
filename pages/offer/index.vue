@@ -101,7 +101,7 @@
       </div>
     </section>
     <section class="offer-partners">
-      <div class="container">
+
         <div class="new-offer-title mt-5">
           <h2 class="text-center mb-5">Rəsmi tərəfdaşlar</h2>
         </div>
@@ -127,7 +127,7 @@
           </button>
 
         </div>
-      </div>
+
     </section>
     <section class="text">
       <div class="">
@@ -221,7 +221,7 @@ export default {
         return this.$toasted.error('Brend və ya model seçilməyib')
       }
       this.$router.push({
-        name: 'offer-add___az', query: {
+        name: 'offer-add___'+this.locale, query: {
           brand: this.brand,
           model: this.model,
         }

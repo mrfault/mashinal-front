@@ -93,7 +93,7 @@
                       <div class="">
 
                         <label for="maxPrice">Max.</label>
-                        <form-numeric-input :invalid="$v.form.maxPrice.$error" id="maxPrice" type="number"
+                        <form-numeric-input  id="maxPrice" type="number"
 
                                          v-model="form.maxPrice" class="priceInput"/>
                       </div>
@@ -184,12 +184,6 @@ export default {
       },
     }
   },
-  validations: {
-    form: {
-      maxPrice: {required},
-    }
-
-  },
   async asyncData({store, app, route}) {
 
     await store.dispatch('getColors')
@@ -271,9 +265,7 @@ export default {
       }
     },
     submitOffer() {
-      this.$v.$touch();
 
-      if (this.$v.$error) return;
       this.isLoader=true
       this.$axios.$post('offer', {
         data: this.form

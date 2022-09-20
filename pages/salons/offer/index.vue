@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container ">
     <offer-slider/>
     <div class="salonsOffer">
       <breadcrumbs :crumbs="crumbs" class=""/>
@@ -73,12 +73,13 @@
           </div>
         </div>
         <div class="col col-md-12 col-lg-4 background-white">
-          <div class="searchBox">
-            <icon name="search"></icon>
 
-            <input type="text" v-model="search" placeholder="Maşın və ya istifadəçi adı" class="searchInput">
-          </div>
           <div class="offerUsers">
+            <div class="searchBox">
+              <icon name="search"></icon>
+
+              <input type="text" v-model="search" placeholder="Maşın və ya istifadəçi adı" class="searchInput">
+            </div>
             <div class="user" v-for="offer in search ? searchOffer : offers"
                  @click="getOfferDetail(offer.id)" >
               <div class="userImg"
@@ -96,19 +97,19 @@
           </div>
         </div>
         <div class="col col-md-12 col-lg-6 col-xs-12 col-sm-12 background-white" v-if="!isMobileBreakpoint">
-          <div class="d-flex align-items-center user" v-if="offer.brand">
-            <div class="userImg"
-                 :style="'background-image: url('+(offer.user.img ? offer.user.img : '/img/user.jpg')+')'"></div>
-            <p class="mt-2 ml-2 text-bold">
-              {{ offer.user.full_name }}
-            </p>
-            <div class="actions" v-if="IsAccepted">
-              <span @click="addFavorite(offer.id)" :class="offer.isFavorite ? 'isFavorite' : null"><icon name="star"/> </span>
-              <span @click="deleteAutoSalonOffer(offer.id)"> <icon name="garbage"></icon></span>
-            </div>
-          </div>
-          <div class="offerDetail" v-if="offer.brand ">
 
+          <div class="offerDetail" v-if="offer.brand ">
+            <div class="d-flex align-items-center user" v-if="offer.brand">
+              <div class="userImg"
+                   :style="'background-image: url('+(offer.user.img ? offer.user.img : '/img/user.jpg')+')'"></div>
+              <p class="mt-2 ml-2 text-bold">
+                {{ offer.user.full_name }}
+              </p>
+              <div class="actions" v-if="IsAccepted">
+                <span @click="addFavorite(offer.id)" :class="offer.isFavorite ? 'isFavorite' : null"><icon name="star"/> </span>
+                <span @click="deleteAutoSalonOffer(offer.id)"> <icon name="garbage"></icon></span>
+              </div>
+            </div>
             <collapse-content :title="'Təklif'">
 
               <div class="generations">
