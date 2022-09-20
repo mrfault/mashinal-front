@@ -2224,5 +2224,5 @@ export default {
    "commercial_part":"Коммерческий",
   "logout_to_parent": "Список автосалонов",
   "item_count": "Салонов",
-  "search_by_car_number":"Поиск автомобиля по гос. номеру"
+  "search_by_car_number":"Поиск автомобиля по Гос. номеру"
 }
