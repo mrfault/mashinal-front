@@ -2,11 +2,19 @@
   <div class="garage_nav card with-margins mb-2 mb-lg-3">
     <div class="row">
       <div class="col-6 col-lg-auto" style="margin-bottom: 10px;">
-        <button
-          :class="['btn btn--pale-red-outline', {'active': tab === 'cars', 'full-width': isMobileBreakpoint}]"
-          @click="$emit('change-tab', 'cars')"
-          v-html="$t('my_cars')"
-        />
+        <div class="d-flex">
+          <button
+            :class="['btn btn--pale-red-outline mr-2', {'active': tab === 'cars', 'full-width': isMobileBreakpoint}]"
+            @click="$emit('change-tab', 'cars')"
+            v-html="$t('my_cars')"
+          />
+          <form-text-input  input-class="car-number-show-popover" img-src="/img/flag.svg"
+                            :mask="'99 - A{1,2} - 999'"
+                            v-model="car_number"
+                            :placeholder="'__ - _ - ___'"
+                            @change="$emit('filterCarNumber')" />
+        </div>
+
       </div>
 <!--      <div class="col-6 col-lg-auto">-->
 <!--        <button-->
@@ -39,6 +47,11 @@ export default {
   },
   components: {
     AddCar
+  },
+  data() {
+    return {
+      car_number: '',
+    }
   }
 }
 </script>

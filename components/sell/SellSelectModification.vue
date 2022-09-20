@@ -361,10 +361,6 @@ export default {
         }, 500)
       }
 
-
-
-
-
       clearTimeout(this.timeout)
       let $container
       if (this.isMobileBreakpoint) {

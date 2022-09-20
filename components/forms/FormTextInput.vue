@@ -27,7 +27,9 @@
       </template>
       <template v-else>
         <input
+          ref="input"
           :id="id"
+          :autofocus="autoFocus ? 'autofocus' : ''"
           :type="showPassword ? 'text' : type"
           :placeholder="placeholder"
           :maxlength="maxlength"
@@ -65,6 +67,7 @@
     props: {
       value: {},
       id: String,
+      autoFocus: Boolean,
       iconName: String,
       imgSrc: String,
       type: {
@@ -130,6 +133,11 @@
         showPassword: false,
         timeout: -1,
         open:false,
+      }
+    },
+    mounted() {
+      if(this.autoFocus) {
+        this.$refs.input.focus()
       }
     },
     computed: {
