@@ -8,8 +8,9 @@
             v-show="showNav || !isMobileBreakpoint"
             :tab="tab"
             @change-tab="tab = $event"
+            @filterCarNumber="car_number = $event"
           />
-          <cars-list v-show="tab === 'cars'" @show-nav="showNav = $event" />
+          <cars-list :filter_car_number="car_number" v-show="tab === 'cars'" @show-nav="showNav = $event" />
           <check-driver-points
             v-show="tab === 'check-points'"
             @show-nav="showNav = $event"
@@ -105,6 +106,7 @@ export default {
       vehicleList: vehicleList,
       tab: 'cars',
       showNav: true,
+      car_number: '',
     }
   },
   mounted() {
