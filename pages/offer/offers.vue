@@ -68,7 +68,7 @@
             </div>
           </div>
         </div>
-        <div class="col col-md-6 col-12 col-xs-12 col-sm-12 offerDetailSection">
+        <div class="col col-md-6 col-12 col-xs-12 col-sm-12 offerDetailSection" v-if="!isMobileBreakpoint">
           <div class="offerDetail" v-if="offer">
             <div class="d-flex align-items-center user">
               <div class="userImg" :style="'background-image: url('+offer.user.img+')'"></div>
@@ -235,7 +235,8 @@ export default {
         text: '',
       },
       search: '',
-      files: []
+      files: [],
+      auto_salon_offer_id:null,
     }
   },
   computed: {
@@ -288,6 +289,8 @@ export default {
       formData.append('message', this.chat.text)
       formData.append('offer_id', this.offer.id)
 
+      formData.append('auto_salon_offer_id', this.auto_salon_offer_id)
+
       await Promise.all(this.files.map(async (file) => {
         let resizedFile = await this.getResizedImage(file);
         formData.append('files[]', resizedFile);
@@ -333,6 +336,7 @@ export default {
     async checkAccepted(id) {
       await this.$axios.$post('/offer/user/offer/check/' + id).then((res) => {
         this.user_is_accepted = res.status
+        this.auto_salon_offer_id=res.auto_salon_offer_id
         this.$store.commit('setOfferMessages', res.messages)
         this.scrollTo('.my:last-child', 0, 500, '.offerDetail')
       })

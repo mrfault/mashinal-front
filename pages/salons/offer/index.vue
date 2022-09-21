@@ -105,9 +105,9 @@
               <p class="mt-2 ml-2 text-bold">
                 {{ offer.user.full_name }}
               </p>
-              <div class="actions" v-if="IsAccepted">
-                <span @click="addFavorite(offer.id)" :class="offer.isFavorite ? 'isFavorite' : null"><icon name="star"/> </span>
-                <span @click="deleteAutoSalonOffer(offer.id)"> <icon name="garbage"></icon></span>
+              <div class="actions" >
+                <span @click="addFavorite(offer.id)" :class="offer.isFavorite ? 'isFavorite' : 'favorite'" ><icon name="star"/> </span>
+                <span @click="deleteAutoSalonOffer(offer.id)" v-if="IsAccepted"> <icon name="garbage"></icon></span>
               </div>
             </div>
             <collapse-content :title="'Təklif'">
@@ -274,6 +274,7 @@ export default {
       sendingFiles: false,
       search: "",
       files: [],
+      auto_salon_offer_id:null,
     }
   },
   head() {
@@ -317,13 +318,15 @@ export default {
     async addFavorite(id) {
       await this.$store.dispatch('offerAddFavorite', id)
       this.offer.isFavorite = !this.offer.isFavorite;
+      console.log(this.offer.isFavorite)
+
     },
     async deleteAutoSalonOffer(id) {
       await this.$axios.delete('/offer/salon/offer/delete/' + id);
       this.checkAccepted(id)
       this.offer = false
       this.IsAccepted = false
-      this.$store.dispatch('getAllOffers')
+      this.$store.dispatch('getAllOffers',this.$route.query.param)
     },
     async submitMessage() {
       let formData = new FormData();
@@ -331,6 +334,7 @@ export default {
       formData.append('recipient_id', this.offer.user.id)
       formData.append('message', this.chat.text)
       formData.append('offer_id', this.offer.id)
+      formData.append('auto_salon_offer_id', this.auto_salon_offer_id)
 
 
       await Promise.all(this.files.map(async (file) => {
@@ -385,8 +389,10 @@ export default {
       await this.$axios.$post('/offer/salon/offer/check/' + id).then((res) => {
 
         this.IsAccepted = res.status
+        this.auto_salon_offer_id=res.auto_salon_offer_id ? res.auto_salon_offer_id : null
 
-        this.$store.commit('setOfferMessages', res.messages)
+
+          this.$store.commit('setOfferMessages', res.messages)
       })
 
     },

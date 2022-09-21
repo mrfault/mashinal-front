@@ -30,13 +30,11 @@
 
 
         <div class="new-offer-notification-box mt-5">
-
-
           <div class="notification">
             <img src="/icons/auction.svg">
             <p>Sizin {{ notAccepted() }} yeni təklifiniz var</p>
           </div>
-          <nuxt-link to="/offer/offers" tag="button" class="offer-button">
+          <nuxt-link :to="$localePath('/offer/offers')" tag="button" class="offer-button">
             Təkliflərə bax
           </nuxt-link>
         </div>

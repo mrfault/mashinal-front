@@ -306,8 +306,11 @@
       .actions {
         margin-left: auto;
         margin-right: 15px;
-        .icon-star{
+        .favorite{
           color: $dark-blue-2;
+        }
+        .isFavorite{
+          color: $red-1;
         }
         .icon-garbage{
         color:$red-1 ;
@@ -665,7 +668,7 @@
     width: 100%;
   }
   .offerDetail {
-    height: 617px;
+    height: 524px;
   }
   .user {
     padding: 10px;
@@ -687,14 +690,14 @@
         list-style: none;
         display: flex;
           flex-wrap: wrap;
-        width: 90%;
+        width: 100%;
         margin-left: auto;
         margin-right: auto;
         align-items: center;
 
         padding: 0;
         li{
-          margin: 10px;
+          margin: 4px;
           width: 44%;
           display: flex;
           padding: 7px;
@@ -880,6 +883,7 @@
     }
   }
   .actions{
+    font-size: 20px;
     .icon-star{
       color: $white !important;
     }

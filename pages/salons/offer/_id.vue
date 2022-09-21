@@ -176,7 +176,8 @@ export default {
       },
       search: '',
       IsAccepted: false,
-      files: []
+      files: [],
+      aut0_salon_offer_id:null
 
     }
   },
@@ -197,6 +198,7 @@ export default {
       formData.append('recipient_id', this.offer.user.id)
       formData.append('message', this.chat.text)
       formData.append('offer_id', this.offer.id)
+      formData.append('auto_salon_offer_id', this.auto_salon_offer_id)
 
 
       await Promise.all(this.files.map(async (file) => {
@@ -225,6 +227,9 @@ export default {
       await this.$axios.$post('/offer/salon/offer/check/' + id).then((res) => {
 
         this.IsAccepted = res.status
+        this.auto_salon_offer_id = res.auto_salon_offer_id
+        console.log('----------------')
+        console.log(        this.auto_salon_offer_id)
         this.$store.commit('setOfferMessages', res.messages)
 
       })
@@ -233,7 +238,6 @@ export default {
     },
     async accept(id) {
       await this.$store.dispatch('salonAcceptOffer', {id})
-
       this.checkAccepted(id)
 
     },
