@@ -41,7 +41,7 @@
       </croppa>
     </div>
     <div class="car-info d-flex justify-content-between align-items-center">
-      <span>{{ $readCarNumber(car.car_number) }}</span>
+      <span>{{ $readCarNumberAlternative(car.car_number) }}</span>
       <div class="text-status text-dark-blue-2" v-if="car.sync_status !== 1">
         {{ $t('processing') }}
       </div>

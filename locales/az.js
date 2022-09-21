@@ -2257,4 +2257,5 @@ export default {
   "amount_of_ml": "Miqdarı, ml",
   "drink_type": "İçkinin növü",
   "alcometer" : "Alkotest",
+  "search_by_car_number":"Avtomobili qeydiyyat nişanına görə axtar"
 }

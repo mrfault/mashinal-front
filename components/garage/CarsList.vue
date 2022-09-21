@@ -38,7 +38,7 @@
         <div class="row">
           <div
             class="col-6 col-lg-12 lg-xl-6"
-            v-for="car in cars.data"
+            v-for="car in filteredCars.data"
             :key="car.id"
           >
             <car-item
@@ -97,6 +97,7 @@ export default {
     CarProtocols,
   },
   mixins:[asan_login],
+  props: ['filter_car_number'],
   data() {
     let activeCars = this.$store.state.garage.cars.data?.filter(
       (car) => car.status === 1 && car.sync_status === 1,
@@ -113,7 +114,12 @@ export default {
     ...mapGetters({
       cars: 'garage/cars',
     }),
-
+    filteredCars() {
+      if(this.filter_car_number) {
+        return {...this.cars, data: this.cars.data?.filter(item => item.car_number.includes(this.filter_car_number)) }
+      }
+      return this.cars;
+    },
     activeCars() {
       return (
         this.cars.data?.filter((car) => car.status === 1 && car.status === 1) ||
@@ -144,6 +150,7 @@ export default {
       this.activeCarId = id
       this.carChosen = true
       this.$emit('show-nav', false)
+      this.$scrollTo('.container')
     },
     showCarsList() {
       this.carChosen = false
