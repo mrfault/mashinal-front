@@ -177,7 +177,7 @@
             </div>
           </div>
 
-          <div class="addons" v-if="user_is_accepted && offer.user_deleted_at==null">
+          <div class="addons" v-if="user_is_accepted">
             <offer-message
               @type="handleTyping"
               @attach="handleFiles"
@@ -314,6 +314,8 @@ export default {
       this.$nuxt.$emit('clear-message-attachments');
     },
     async getUserOfferDetail(id) {
+
+
       if (this.isMobileBreakpoint) {
         this.$router.push(this.$localePath('/offer') + '/' + id)
       } else {
@@ -331,7 +333,9 @@ export default {
       setTimeout(()=>{
         this.scrollTo('.my:last-child', 300, 500, '.offerDetail')
       },1000)
-      this.$store.commit('mutate',{property:'offer',value:id})
+      console.log('---')
+      console.log(this.offer.id)
+      this.$store.commit('mutate',{property:'offer',value:this.offer.id})
     },
     async checkAccepted(id) {
       await this.$axios.$post('/offer/user/offer/check/' + id).then((res) => {

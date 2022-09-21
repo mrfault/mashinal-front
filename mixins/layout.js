@@ -111,12 +111,12 @@ export const LayoutMixin = {
     },
     handleBnScroll() {
       if (window.scrollY > 110 && !this.$store.state.bnFixed) {
-        console.log('scrolled')
+
         this.$store.commit('mutate', {
           property: 'bnFixed',
           value: true,
         })
-        console.log('changed')
+
       } else if (window.scrollY < 111 && this.$store.state.bnFixed) {
         this.$store.commit('mutate', {
           property: 'bnFixed',
@@ -161,17 +161,19 @@ export const LayoutMixin = {
       if (toggle) {
         this.connectEcho().listen('SendMessage', this.addNewMessage)
         this.connectEcho('offer-user.' + this.$auth.user.id).listen('OfferMessageSendEvent', ({message}) => {
-          this.$store.commit('appendOfferMessage', message)
 
-          console.log(message.offer_id)
-          console.log(this.$store.state.offer)
+          console.log(message)
           if (message.offer_id == this.$store.state.offer) {
+
+
+            this.$store.commit('appendOfferMessage', message)
             this.$axios.post('/offer/message/read/' + message.id)
+
           }
           /*          this.$store.commit('setNewMessage',message.offer.id)*/
-          if (this.user.autosalon) {
+/*          if (this.user.autosalon) {
             this.$store.dispatch('getAllOffers')
-          }
+          }*/
 
           if (message.files.length > 1) {
             const sleep = () => {

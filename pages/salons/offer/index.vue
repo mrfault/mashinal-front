@@ -363,6 +363,7 @@ export default {
     },
 
     async getOfferDetail(id) {
+
       if (this.isMobileBreakpoint) {
         this.$router.push(this.$localePath('/salons/offer') + '/' + id)
       } else {
