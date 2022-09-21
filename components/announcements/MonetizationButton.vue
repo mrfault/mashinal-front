@@ -44,6 +44,7 @@
         :group-by="2"
       />
       <select-banking-card
+        v-if="loggedIn"
         :show-card-image="false"
         :value="bankingCard"
         @input="bankingCard = $event"
@@ -217,11 +218,7 @@ export default {
       }
     },
     openPaymentModal() {
-      if (this.$auth.loggedIn) {
-        this.showPaymentModal = true
-      } else {
-        this.$emit('openModal', true);
-      }
+       this.showPaymentModal = true
     },
   },
   created() {

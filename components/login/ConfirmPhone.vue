@@ -5,6 +5,7 @@
         v-if="!form.staticPhone && isNewUser"
         :placeholder="$t('your_name')"
         :maxlength="30"
+        auto-focus
         v-model="form.name"
       />
       <p
@@ -16,6 +17,7 @@
       <form-text-input
         :placeholder="$t('enter_the_code')"
         :mask="'99999'"
+        auto-focus
         :invalid="validator.code.$error"
         v-model="form.code"
       />

@@ -1,15 +1,15 @@
 <template>
   <portal to="modals">
-    <backdrop :class="backdropClass" @click="handleBackdropClick" v-if="toggle">
+    <backdrop :class="backdropClass" :backdrop-class="backdropClass" @click="handleBackdropClick" v-if="toggle">
       <template #default="{ show }">
         <transition name="translate-fade">
           <div :class="['modal-popup white-scroll-bg', {[modalClass]: modalClass}]" v-if="show"
                @click.stop="$nuxt.$emit('modal-popup-click', $event)">
             <div class="modal-popup_content">
               <div class="title d-flex">
-                <h4 v-if="title" class="d-flex">
+                <h4 v-if="title || titleLogo" class="d-flex" :class="titleClass">
                   <span v-html="title" ></span>
-                  <img :src="titleLogo" class="ml-2" v-if="titleLogo"/>
+                  <img :class="titleLogoClass" :src="titleLogo" class="ml-2" v-if="titleLogo"/>
                 </h4>
                 <span class="cursor-pointer close" @click="$emit('close')">
                   <icon name="cross" />
@@ -35,6 +35,8 @@ export default {
   props: {
     titleLogo: String,
     toggle: Boolean,
+    titleLogoClass: String,
+    titleClass: String,
     title: String,
     backdropClass: String,
     modalClass: String,
