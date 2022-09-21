@@ -109,6 +109,9 @@ export default function({ app, route, store }, inject) {
   inject('readCarNumber', (number) => {
     return number.replace(/([A-Z]{1,2})/, ' $1 ');
   });
+  inject('readCarNumberAlternative', (number) => {
+    return number.replace(/([A-Z]{1,2})/, '-$1-');
+  });
   // masks
   inject('maskAlphaNumeric', (mask, placeholder = '_') => {
     return { mask, showMaskOnHover: false, definitions: { '*': { casing: 'upper', validator: '[a-zA-Z0-9]' } }, placeholder };

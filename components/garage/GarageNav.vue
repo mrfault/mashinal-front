@@ -13,12 +13,32 @@
           <div class="font-weight-bold mr-2 ml-1 align-items-center d-flex" :class="{'mb-1': isMobileBreakpoint}" style="white-space: nowrap;">
             {{ $t('search_by_car_number') }}
           </div>
-          <form-text-input input-class="car-number-show-popover" img-src="/img/flag.svg"
-                           :mask="'99 - A{1,2} - 999'"
-                           v-model="car_number"
-                           :placeholder="'__ - _ - ___'"
-                           @input="$emit('filterCarNumber',car_number.replace(/[^a-z0-9]/gi,''))"
-                           @change="$emit('filterCarNumber',car_number.replace(/[^a-z0-9]/gi,''))"/>
+        <div class="d-flex justify-content-center" >
+          <form-text-input input-class="car-number-show-popover"
+                           :mask="'99'"
+                           class="mr-1"
+                           v-model="car_number1"
+                           style="width: 50px;"
+                           :placeholder="'__'"
+                           @input="$emit('filterCarNumber', getValue)"
+                           @change="$emit('filterCarNumber', getValue)"/>
+          <form-text-input input-class="car-number-show-popover"
+                           :mask="'A{1,2}'"
+                           class="mr-1"
+                           style="width: 50px;"
+                           v-model="car_number2"
+                           :placeholder="'__'"
+                           @input="$emit('filterCarNumber', getValue)"
+                           @change="$emit('filterCarNumber', getValue)"/>
+          <form-text-input input-class="car-number-show-popover"
+                           :mask="'999'"
+                           style="width: 60px;"
+                           v-model="car_number3"
+                           class="mr-1"
+                           :placeholder="'___'"
+                           @input="$emit('filterCarNumber',getValue)"
+                           @change="$emit('filterCarNumber',getValue)"/>
+        </div>
         </div>
         <div >
           <add-car v-if="!isMobileBreakpoint"/>
@@ -40,7 +60,14 @@ export default {
   },
   data() {
     return {
-      car_number: ''
+      car_number1: '',
+      car_number2: '',
+      car_number3: '',
+    }
+  },
+  computed: {
+    getValue() {
+      return (this.car_number1 + this.car_number2 + this.car_number3).replace(/[^a-z0-9]/gi,'');
     }
   }
 }
