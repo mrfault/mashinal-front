@@ -42,6 +42,7 @@
             :key="car.id"
           >
             <car-item
+              :id="`car_${car.id}`"
               :car="car"
               @set-active="updateActiveCar"
               :active="activeCarId === car.id"
@@ -143,6 +144,9 @@ export default {
         )
     } else {
       this.hasAsanLogin = false
+    }
+    if(this.$route.query.id) {
+      this.updateActiveCar(Number(this.$route.query.id))
     }
   },
   methods: {
