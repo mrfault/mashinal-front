@@ -255,12 +255,12 @@
           <template v-if="showCheckbox && announcement.status === 1">
             <span>
               <monetization-button
-                v-if="!announcement.has_monetization"
                 :announcement="announcement"
                 class-name="red-outline"
               />
               <monetization-stats-button
-                v-else-if="$auth.user.id === announcement.user_id"
+                class="mt-2"
+                v-if="$auth.user.id === announcement.user_id && announcement.has_monetization"
                 :announcement="announcement"
               />
             </span>
