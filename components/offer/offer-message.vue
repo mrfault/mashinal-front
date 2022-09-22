@@ -27,7 +27,7 @@
 
       </div>
       <div class="textarea-submit">
-        <button type="submit" class="btn-reset" >
+        <button type="submit" class="btn-reset" :disabled="sendButtonDisabled">
           <icon name="send" />
         </button>
       </div>

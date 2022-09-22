@@ -365,7 +365,7 @@
 
     i {
       position: absolute;
-      left: 25px;
+      left: 52px;
     }
 
     .searchInput {
@@ -647,6 +647,17 @@
   }
 }
 @media (max-width: 480px) {
+  .offer-add-section{
+    margin-bottom: 30px;
+  }
+.offerUsers{
+  margin-bottom: 60px;
+}
+  .salonsOffer{
+    .row{
+      height: unset;
+    }
+  }
 .offer-partner-container{
   grid-template-columns: 1fr 1fr 1fr !important;
 }
@@ -760,6 +771,11 @@
   border-radius: 50%;
   color: $dark-blue-1;
   font-size: 13px;
+}
+.actions{
+  i{
+    font-size: 20px;
+  }
 }
 
 @media (min-width: 481px) and (max-width: 767px) {
@@ -883,7 +899,6 @@
     }
   }
   .actions{
-    font-size: 20px;
     .icon-star{
       color: $white !important;
     }

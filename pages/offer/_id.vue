@@ -109,7 +109,7 @@
 
             <div v-if="user_is_accepted">
               <div class="messages">
-                <div :class=" isMyMessage(message) ? 'my' :'his' " v-for="message in offerMessages">
+                <div class="message" :class=" isMyMessage(message) ? 'my' :'his' " v-for="message in offerMessages">
                   <div v-if="message.files.length>0" class="message-files">
                     <div class="message-file" v-for="file in message.files">
                       <img :src="file" width="100%" class="p-1"/>
@@ -200,7 +200,6 @@ export default {
     },
     async submitMessage() {
       let formData = new FormData();
-      console.log(this.auto_salon_offer_id)
 
       formData.append('recipient_id', this.userOffer.auto_salon.user_id)
       formData.append('message', this.chat.text)
@@ -230,11 +229,10 @@ export default {
       await this.$axios.$post('/offer/user/offer/check/' + id).then((res) => {
         this.user_is_accepted = res.status
         this.auto_salon_offer_id=res.auto_salon_offer_id
-        console.log(this.auto_salon_offer_id)
+
         this.$store.commit('setOfferMessages', res.messages)
         this.scrollTo('.my:last-child', 0, 500, '.offerDetail')
-        console.log('-----------------')
-        console.log(this.auto_salon_offer_id)
+
       })
 
     },
@@ -264,6 +262,7 @@ export default {
       return parseInt(this.$route.params.id) === offer.auto_salon_offer_id
     })
     this.checkAccepted(this.$route.params.id)
+
 
   },
   computed: {
