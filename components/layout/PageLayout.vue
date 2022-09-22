@@ -66,7 +66,10 @@
             :toggle="!cookiesHasNotificationOn"
             @close="closePromotion"
           >
-            Tətbiq vasitəsi ilə avtomobilinizin 360º panarama görüntüsünü, tam pulsuz şəkildə yerləşdirə bilərsən.
+            <div class="d-flex flex-column justify-content-center">
+              Tətbiq vasitəsi ilə avtomobilinizin 360º panarama görüntüsünü, tam pulsuz şəkildə yerləşdirə bilərsən.
+              <button class="btn btn--green mt-2">Pulsuz yüklə</button>
+            </div>
           </modal-popup>
         </template>
 
@@ -114,6 +117,16 @@ export default {
       showPopupBanner: true,
       checkEmitting: 0,
     }
+  },
+  mounted() {
+    const userAgent = window.navigator.userAgent;
+    const isIphone = userAgent.includes('iPhone');
+    const isAndroid = userAgent.includes('Android');
+    const isIpad = userAgent.includes('iPad');
+    if ((isIphone || isAndroid ) && !isIpad) {
+      window.location = `{yourApp}:///`;
+    }
+
   },
   methods: {
     closePromotion() {
