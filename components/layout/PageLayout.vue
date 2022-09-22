@@ -68,7 +68,7 @@
           >
             <div class="d-flex flex-column justify-content-center">
               Tətbiq vasitəsi ilə avtomobilinizin 360º panarama görüntüsünü, tam pulsuz şəkildə yerləşdirə bilərsən.
-              <button class="btn btn--green mt-2">Pulsuz yüklə</button>
+              <button @click="detectDevice" class="btn btn--green mt-2">Pulsuz yüklə</button>
             </div>
           </modal-popup>
         </template>
@@ -118,8 +118,19 @@ export default {
       checkEmitting: 0,
     }
   },
-
   methods: {
+    detectDevice() {
+      const userAgent = window.navigator.userAgent;
+      const isIphone = userAgent.includes('iPhone');
+      const isAndroid = userAgent.includes('Android');
+
+      if(isIphone) {
+        window.location.href = "https://apps.apple.com/ru/app/mashin-al/id1588371190"
+      }
+      else if (isAndroid) {
+        window.location.href = "https://play.google.com/store/apps/details?id=ventures.al.mashinal";
+      }
+    },
     closePromotion() {
       this.$cookies.set('smartbanner_exited', 1)
       this.showPopupBanner = false
