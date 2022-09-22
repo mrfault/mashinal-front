@@ -124,7 +124,7 @@ export default {
     const isAndroid = userAgent.includes('Android');
     const isIpad = userAgent.includes('iPad');
     if ((isIphone || isAndroid ) && !isIpad) {
-      window.location = `{yourApp}:///`;
+      window.location = `ventures.al.mashinal:///`;
     }
 
   },
