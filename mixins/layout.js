@@ -162,10 +162,7 @@ export const LayoutMixin = {
         this.connectEcho().listen('SendMessage', this.addNewMessage)
         this.connectEcho('offer-user.' + this.$auth.user.id).listen('OfferMessageSendEvent', ({message}) => {
 
-          console.log(message)
-          if (message.offer_id == this.$store.state.offer) {
-
-
+          if (message.offer_id ==  this.$store.state.current_offer_id) {
             this.$store.commit('appendOfferMessage', message)
             this.$axios.post('/offer/message/read/' + message.id)
 

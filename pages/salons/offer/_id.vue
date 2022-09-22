@@ -98,7 +98,7 @@
             </div>
             <div v-else>
               <div class="messages">
-                <div :class=" isMyMessage(message) ? 'my' :'his' " v-for="message in offerMessages">
+                <div class="message" :class=" isMyMessage(message) ? 'my' :'his' " v-for="message in offerMessages">
                   <div v-if="message.files.length>0" class="message-files">
                     <div class="message-file" v-for="file in message.files">
                       <img :src="file" width="100%"/>
@@ -156,7 +156,6 @@ export default {
     return {
       user_is_accepted: res.status
     }
-
   },
   head() {
     return this.$headMeta({
@@ -214,11 +213,11 @@ export default {
           }
           setTimeout(sleep, 1000)
         } else {
-          this.scrollTo('.my:last-child', 0, 500, '.offerDetail')
+          this.scrollTo('.message:last-child', 0, 500, '.offerDetail')
         }
         this.chat.text = '';
         this.$nuxt.$emit('clear-message-attachments');
-        this.scrollTo('.my:last-child', 0, 500, '.offerDetail')
+
       })
 
     },
@@ -228,8 +227,7 @@ export default {
 
         this.IsAccepted = res.status
         this.auto_salon_offer_id = res.auto_salon_offer_id
-        console.log('----------------')
-        console.log(        this.auto_salon_offer_id)
+
         this.$store.commit('setOfferMessages', res.messages)
 
       })
@@ -260,12 +258,12 @@ export default {
     }),
     offer() {
       var offer = this.$store.getters['getOffer'];
-      console.log(offer)
       return offer.data
     }
   },
   created() {
     this.checkAccepted(this.$route.params.id)
+
   }
 }
 </script>

@@ -199,7 +199,7 @@
             </div>
             <div v-else>
               <div class="messages">
-                <div :class=" isMyMessage(message) ? 'my' :'his' " v-for="message in offerMessages">
+                <div :class=" isMyMessage(message) ? 'my' :'his' " class="message" v-for="message in offerMessages">
                   <div v-if="message.files.length>0" class="message-files">
                     <div class="message-file" v-for="file in message.files">
                       <img :src="file" width="100%"/>
@@ -216,8 +216,9 @@
               </div>
 
             </div>
+
             <div class="messages" v-if="offer.deleted">
-              <div :class=" isMyMessage(message) ? 'my' :'his' " v-for="message in offerMessages">
+              <div  :class="isMyMessage(message) ? 'my' :'his' " class="message" v-for="message in offerMessages">
                 <div v-if="message.files.length>0" class="message-files">
                   <div class="message-file" v-for="file in message.files">
                     <img :src="file" width="100%"/>
@@ -244,6 +245,7 @@
               :sending="false"
               :message="false"
               v-model="chat.text"
+              :send-button-disabled="messageButtonDisabled"
             />
             <img src="" :ref="'attachment-'+key" alt=""/>
             <div class="addLink"></div>
@@ -275,6 +277,7 @@ export default {
       search: "",
       files: [],
       auto_salon_offer_id:null,
+      messageButtonDisabled:false
     }
   },
   head() {
@@ -318,7 +321,7 @@ export default {
     async addFavorite(id) {
       await this.$store.dispatch('offerAddFavorite', id)
       this.offer.isFavorite = !this.offer.isFavorite;
-      console.log(this.offer.isFavorite)
+      this.$store.dispatch('getAllOffers',this.$route.query.param)
 
     },
     async deleteAutoSalonOffer(id) {
@@ -329,7 +332,9 @@ export default {
       this.$store.dispatch('getAllOffers',this.$route.query.param)
     },
     async submitMessage() {
+      this.messageButtonDisabled=true;
       let formData = new FormData();
+
 
       formData.append('recipient_id', this.offer.user.id)
       formData.append('message', this.chat.text)
@@ -358,24 +363,25 @@ export default {
         this.chat.text = '';
         this.$nuxt.$emit('clear-message-attachments');
         this.scrollTo('.my:last-child', 0, 500, '.offerDetail')
+        this.messageButtonDisabled=false;
       })
 
     },
 
     async getOfferDetail(id) {
-
       if (this.isMobileBreakpoint) {
         this.$router.push(this.$localePath('/salons/offer') + '/' + id)
       } else {
-
         await this.checkAccepted(id)
         this.offer = JSON.parse(JSON.stringify(this.offers.find(function (offer) {
             return id === offer.id
           }
         )));
       }
-
-      this.$store.commit('mutate',{property:'offer',value:id})
+      this.$store.commit('mutate',{property:'current_offer_id',value:this.offer.id})
+      setTimeout(()=>{
+        this.scrollTo('.message:last-child', 300, 500, '.offerDetail')
+      },1000)
 
     },
     addFile(e) {
