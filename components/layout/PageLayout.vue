@@ -118,16 +118,7 @@ export default {
       checkEmitting: 0,
     }
   },
-  mounted() {
-    const userAgent = window.navigator.userAgent;
-    const isIphone = userAgent.includes('iPhone');
-    const isAndroid = userAgent.includes('Android');
-    const isIpad = userAgent.includes('iPad');
-    if ((isIphone || isAndroid ) && !isIpad) {
-      window.location = `ventures.al.mashinal:///`;
-    }
 
-  },
   methods: {
     closePromotion() {
       this.$cookies.set('smartbanner_exited', 1)
