@@ -67,7 +67,7 @@
             @close="closePromotion"
           >
             <div class="d-flex flex-column justify-content-center">
-              Tətbiq vasitəsi ilə avtomobilinizin 360º panarama görüntüsünü, tam pulsuz şəkildə yerləşdirə bilərsən.
+              Tətbiq vasitəsi ilə avtomobilinizin 360º panarama görüntüsünü, tam pulsuz şəkildə yerləşdirə bilərsiz.
               <button @click="detectDevice" class="btn btn--green mt-2">Pulsuz yüklə</button>
             </div>
           </modal-popup>
