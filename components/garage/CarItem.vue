@@ -43,13 +43,12 @@
     <div class="car-info d-flex justify-content-between align-items-center">
       <div class="d-flex flex-column w-100">
         <div class="d-flex w-100 justify-content-between align-items-center">
-          <span>{{ $readCarNumberAlternative(car.car_number) }}</span>
+          <span>{{ numerate }}) {{ $readCarNumberAlternative(car.car_number) }}</span>
           <span v-if="car.sync_status !== 1" class="car-item-process">{{ $t('processing') }}</span>
         </div>
         <div class="d-flex justify-content-between">
           <span style="color: #ADB2C8;"><icon style="margin-right: 4px;" name="calendar"/>{{ carDate }}</span>
-          <div >
-
+          <div>
             <span v-if="car.status === 1" class="cursor-pointer" :class="{ disabled: thumbSet }" @click.stop="showDeactivateModal = true"><icon name="minus-circle"/></span>
             <span
               class="cursor-pointer"
@@ -168,7 +167,8 @@ import { PaymentMixin } from '~/mixins/payment';
 export default {
   props: {
     car: {},
-    active: Boolean
+    active: Boolean,
+    numerate: Number
   },
   mixins: [PaymentMixin],
   data() {

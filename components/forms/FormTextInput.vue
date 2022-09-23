@@ -8,6 +8,7 @@
           @click="open = false"
           v-model="inputValue"
           value-type="format"
+          :inline="inline"
           :popup-style="{ top: '100%', left: 0 }"
           :append-to-body="false"
           :format="dateFormat"
@@ -65,6 +66,10 @@
 
   export default {
     props: {
+      inline: {
+        default: false,
+        type: Boolean,
+      },
       value: {},
       id: String,
       autoFocus: Boolean,

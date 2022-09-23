@@ -11,6 +11,7 @@
             @filterCarNumber="car_number = $event"
           />
           <cars-list :filter_car_number="car_number" v-show="tab === 'cars'" @show-nav="showNav = $event" />
+          <cars-list :filter_car_number="car_number" history v-show="tab === 'penalty_history'" @show-nav="showNav = $event" />
           <check-driver-points
             v-show="tab === 'check-points'"
             @show-nav="showNav = $event"

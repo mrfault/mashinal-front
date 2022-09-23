@@ -1,48 +1,36 @@
 <template>
   <div class="garage_nav card with-margins mb-2 mb-lg-3">
     <div class="row">
-      <!--      <div class="col-6 col-lg-auto">-->
-      <!--        <button-->
-      <!--          :class="['btn btn&#45;&#45;pale-red-outline', {'active': tab === 'check-points', 'full-width': isMobileBreakpoint}]"-->
-      <!--          @click="$emit('change-tab', 'check-points')"-->
-      <!--          v-html="$t('check_points')"-->
-      <!--        />-->
-      <!--      </div>-->
-      <div class="col-12 d-flex align-items-center" :class="{'justify-content-between': !isMobileBreakpoint,'justify-content-center' : isMobileBreakpoint}">
-        <div class="d-flex" :style="`margin-left: -20px;${isMobileBreakpoint ? 'flex-direction: column;':''}`" >
-          <div class="font-weight-bold mr-2 ml-1 align-items-center d-flex" :class="{'mb-1': isMobileBreakpoint}" style="white-space: nowrap;">
-            {{ $t('search_by_car_number') }}
-          </div>
-        <div class="d-flex justify-content-center" >
-          <form-text-input input-class="car-number-show-popover"
-                           :mask="'99'"
-                           class="mr-1"
-                           v-model="car_number1"
-                           style="width: 50px;"
-                           :placeholder="'__'"
-                           @input="$emit('filterCarNumber', getValue)"
-                           @change="$emit('filterCarNumber', getValue)"/>
-          <form-text-input input-class="car-number-show-popover"
-                           :mask="'A{1,2}'"
-                           class="mr-1"
-                           style="width: 50px;"
-                           v-model="car_number2"
-                           :placeholder="'__'"
-                           @input="$emit('filterCarNumber', getValue)"
-                           @change="$emit('filterCarNumber', getValue)"/>
-          <form-text-input input-class="car-number-show-popover"
-                           :mask="'999'"
-                           style="width: 60px;"
-                           v-model="car_number3"
-                           class="mr-1"
-                           :placeholder="'___'"
-                           @input="$emit('filterCarNumber',getValue)"
-                           @change="$emit('filterCarNumber',getValue)"/>
-        </div>
-        </div>
-        <div >
-          <add-car v-if="!isMobileBreakpoint"/>
-        </div>
+      <div class="col-6 col-lg-auto" style="margin-bottom: 10px;display: flex;gap: 20px;">
+        <button
+          :class="['btn btn--pale-red-outline', {'active': tab === 'cars', 'full-width': isMobileBreakpoint}]"
+          @click="$emit('change-tab', 'cars')"
+          v-html="$t('my_cars')"
+        />
+        <button
+          :class="['btn btn--pale-red-outline', {'active': tab === 'penalty_history', 'full-width': isMobileBreakpoint}]"
+          @click="$emit('change-tab', 'penalty_history')"
+          v-html="$t('penalty_history')"
+        />
+        <form-text-input input-class="car-number-show-popover"
+                         class="mr-1 d-inline-flex"
+                         icon-name="search"
+                         :placeholder="$t('car_number')"
+                         v-model="car_number"
+                         @input="$emit('filterCarNumber', getValue)"
+                         @change="$emit('filterCarNumber', getValue)"
+        />
+      </div>
+<!--      <div class="col-6 col-lg-auto">-->
+<!--        <button-->
+<!--          :class="['btn btn&#45;&#45;pale-red-outline', {'active': tab === 'check-points', 'full-width': isMobileBreakpoint}]"-->
+<!--          @click="$emit('change-tab', 'check-points')"-->
+<!--          v-html="$t('check_points')"-->
+<!--        />-->
+<!--      </div>-->
+
+      <div class="col-auto ml-auto" v-if="!isMobileBreakpoint">
+        <add-car />
       </div>
     </div>
   </div>
@@ -60,14 +48,12 @@ export default {
   },
   data() {
     return {
-      car_number1: '',
-      car_number2: '',
-      car_number3: '',
+      car_number: '',
     }
   },
   computed: {
     getValue() {
-      return (this.car_number1 + this.car_number2 + this.car_number3).replace(/[^a-z0-9]/gi,'');
+      return (this.car_number).toUpperCase().replace(/[^a-z0-9]/gi,'');
     }
   }
 }

@@ -38,12 +38,13 @@
         <div class="row">
           <div
             class="col-6 col-lg-12 lg-xl-6"
-            v-for="car in filteredCars.data"
+            v-for="(car, index) in filteredCars.data"
             :key="car.id"
           >
             <car-item
               :id="`car_${car.id}`"
               :car="car"
+              :numerate="index+1"
               @set-active="updateActiveCar"
               :active="activeCarId === car.id"
             />
@@ -57,7 +58,7 @@
     <div class="col-12 col-lg-4-5">
       <div
         class="card with-margins"
-        v-if="activeCar"
+        v-if="activeCar && !history"
         v-show="carChosen || !isMobileBreakpoint"
       >
         <p class="p-title">{{ $t('about') }}</p>
@@ -65,7 +66,8 @@
       </div>
 
       <div
-        class="card with-margins mt-4"
+        class="card with-margins"
+        :class="{'mt-4':!history }"
         v-if="activeCar"
         v-show="carChosen || !isMobileBreakpoint"
       >
@@ -98,7 +100,13 @@ export default {
     CarProtocols,
   },
   mixins:[asan_login],
-  props: ['filter_car_number'],
+  props: {
+    filter_car_number:{},
+    history: {
+      type: Boolean,
+      default: false,
+    }
+  },
   data() {
     let activeCars = this.$store.state.garage.cars.data?.filter(
       (car) => car.status === 1 && car.sync_status === 1,
