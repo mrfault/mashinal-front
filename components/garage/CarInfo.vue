@@ -18,20 +18,20 @@
     <div v-if="$env.DEV" class="d-flex justify-content-end mt-2 mt-lg-3">
       <letter-of-attorney-button :car="car"/>
     </div>
-    <modal-popup :toggle="openDateChangeModal" @close="openDateChangeModal = false">
+    <modal-popup
+      :toggle="openDateChangeModal"
+      :title="$t('insurance_end_date')"
+      @close="openDateChangeModal = false"
+    >
       <form-select
         :allow-clear="false"
         class="mb-2"
+        :clear-option="false"
         :label="$t('company')"
         v-model="form.company"
         :options="companyOptions"
       />
-      <form-select
-        :allow-clear="false"
-        :label="$t('date')"
-        :options="[{key:0,name:'elebele'}]"
-        readonly
-      />
+      <span>{{ $t('date') }}</span>
       <form-text-input
         date-type="date"
         inline
@@ -41,6 +41,7 @@
         :placeholder="$t('announcement_end_date')"
         input-date
       />
+      <button @click="confirmInsurance" :class="{ pending }" class="btn btn--green mt-2 w-100">{{ $t('confirm') }}</button>
     </modal-popup>
   </div>
 </template>
@@ -58,6 +59,7 @@ export default {
   data() {
     return {
       openDateChangeModal: false,
+      pending: false,
       form: {
         insurance_date: '',
         company: 0
@@ -65,6 +67,15 @@ export default {
     }
   },
   methods: {
+    async confirmInsurance() {
+      this.pending = true;
+      await this.$axios.$post('/insurance/set-enddate', {
+        car_id: this.car.id,
+        end_date: this.form.insurance_date,
+        company: this.form.company
+      })
+      this.pending = false;
+    },
     getInsuranceText(id) {
       return ['Sigorta'][id]
     }
