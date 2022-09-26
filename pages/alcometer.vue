@@ -22,6 +22,7 @@
                   v-model="form.drinkType1"
                   :options="drinkTypes"
                   :label="$t('drink_type')"
+                  :clearOption="false"
                   :allowClear="false"
                 />
                 <form-select
@@ -29,6 +30,8 @@
                   v-model="form.drinkValue1"
                   :options="drinkAmounts"
                   :label="$t('amount_of_ml')"
+                  :clearOption="false"
+                  :disabled="disabledDrinkValue1"
                   :allowClear="false"
                 />
               </div>
@@ -58,14 +61,18 @@
                   v-model="form.drinkType2"
                   :options="drinkTypes"
                   :label="$t('drink_type')"
-                  :allowClear="false"
+                  :clearOption="false"
+                  :disabled="(form.drinkType1 == null) || (form.drinkType1 == '') || (form.drinkValue1 == null) || (form.drinkValue1 == '')"
+                  :allowClear="(form.drinkType3 == null) || (form.drinkType3 == '')"
                 />
                 <form-select
                   class="col-6"
                   v-model="form.drinkValue2"
                   :options="drinkAmounts"
                   :label="$t('amount_of_ml')"
-                  :allowClear="false"
+                  :clearOption="false"
+                  :disabled="disabledDrinkValue2"
+                   :allowClear="false"
                 />
               </div>
               <div class="mx-1 mt-3">
@@ -74,8 +81,8 @@
                   class=""
                   v-model="form.mass"
                   :options="massOptions"
+                  :allow-clear="false"
                   :label="$t('weight')"
-                  :allowClear="false"
                   :clear-option="false"
                 />
               </div>
@@ -96,7 +103,8 @@
                   v-model="form.drinkType3"
                   :options="drinkTypes"
                   :label="$t('drink_type')"
-                  :allowClear="false"
+                  :clearOption="false"
+                  :disabled="(form.drinkType2 == null) || (form.drinkType2 == '') || (form.drinkValue2 == null) || (form.drinkValue2 == '')"
                 />
                 <form-select
                   class="col-6"
@@ -104,6 +112,8 @@
                   :options="drinkAmounts"
                   :label="$t('amount_of_ml')"
                   :allowClear="false"
+                  :clearOption="false"
+                  :disabled="disabledDrinkValue3"
                 />
               </div>
               <div class="mx-1 mt-3">
@@ -431,6 +441,13 @@ export default {
         drinkValue3: null,
         drinkType3: null,
       },
+      disabled: {
+        drinkValue1: true,
+        drinkValue2: true,
+        drinkValue3: true,
+        drinkType2: true,
+        drinkType3: true,
+      },
     }
   },
   computed: {
@@ -441,6 +458,37 @@ export default {
         return false
       }
     },
+    disabledDrinkValue1() {
+      if (
+        this.form.drinkType1 == null ||
+        this.form.drinkType1 == ''
+      ) {
+        return true
+      } else {
+        return false
+      }
+    },
+    disabledDrinkValue2() {
+      if (
+        this.form.drinkType2 == null ||
+        this.form.drinkType2 == ''
+      ) {
+        return true
+      } else {
+        return false
+      }
+    },
+    disabledDrinkValue3() {
+      if (
+        this.form.drinkType3 == null ||
+        this.form.drinkType3 == '' 
+      ) {
+        return true
+      } else {
+        return false
+      }
+    },
+
   },
   methods: {
     doTest() {
@@ -520,6 +568,32 @@ export default {
           return (this.diagValue = this.diag2[i])
       }
       return (this.diagValue = this.diag2[6])
+    },
+  },
+  watch: {
+    'form.drinkType1': {
+      deep: true,
+      handler() {
+        if (this.form.drinkType1 === null || this.form.drinkType1 === '') {
+          this.form.drinkValue1 = null
+        }
+      },
+    },
+    'form.drinkType2': {
+      deep: true,
+      handler() {
+        if (this.form.drinkType2 === null || this.form.drinkType2 === '') {
+          this.form.drinkValue2 = null
+        }
+      },
+    },
+    'form.drinkType3': {
+      deep: true,
+      handler() {
+        if (this.form.drinkType3 === null || this.form.drinkType3 === '') {
+          this.form.drinkValue3 = null
+        }
+      },
     },
   },
 }
