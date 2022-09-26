@@ -134,8 +134,9 @@
   }
   .add-item {
     position: relative;
-    padding-top: 76.78%;
-    padding-bottom: 79px;
+    padding-bottom: 74px;
+    margin-right: 11px;
+    margin-left: -6px;
     &_inner {
       width: 100%;
       @include abs-middle;
