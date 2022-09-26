@@ -2260,7 +2260,6 @@ export default {
   "amount_of_ml": "Miqdarı, ml",
   "drink_type": "İçkinin növü",
   "alcometer" : "Alkotest",
-<<<<<<< HEAD
 
   "visual_tire_calculator": "Vizual şin kalkulyatoru",
   "size_of_old_tire": "Köhnə şinin ölçüsü",
@@ -2275,7 +2274,4 @@ export default {
   "previous_version" : "Köhnə",
   "clearance_change" : "Klirens dəyişikliyi",
   "speedometer_error_percentage" : "Spidometr xəta faizi",
-=======
-  "search_by_car_number":"Avtomobili qeydiyyat nişanına görə axtar"
->>>>>>> feature/loa
 }
