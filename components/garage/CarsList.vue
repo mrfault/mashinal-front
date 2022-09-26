@@ -38,7 +38,8 @@
       <div class="garage_cars-list mb-2 mb-lg-0">
 
         <div class="row">
-          <component :is="isMobileBreakpoint ? 'div' : 'vue-scroll'"
+          <client-only>
+           <component :is="isMobileBreakpoint ? 'div' : 'vue-scroll'"
                      :class="{row : isMobileBreakpoint }"
                      :style="!isMobileBreakpoint ? 'width: 100%;' : ''"
                      :ops="scrollOps"
@@ -59,7 +60,7 @@
               />
             </div>
           </component>
-
+          </client-only>
           <div class="col-6 col-lg-12" v-if="isMobileBreakpoint">
             <add-car :has-asan-login="hasAsanLogin" tag="div" />
           </div>
