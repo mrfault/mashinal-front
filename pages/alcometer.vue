@@ -1,6 +1,6 @@
 <template>
-  <div class="pages-catalog">
-    <div class="container">
+  <div class="pages-catalog pb-5 pb-lg-0">
+    <div class="container  pb-5 pb-lg-0">
       <breadcrumbs :crumbs="crumbs">
         <share-it type="publish" v-if="$route.params.body" />
       </breadcrumbs>
