@@ -290,7 +290,7 @@
 .garage_protocol-info {
   display: flex;
   flex-direction: column;
-  height: 630px;
+  min-height: 630px;
 }
 
 .dark-mode {

@@ -2225,6 +2225,7 @@ export default {
    "commercial_part":"Коммерческий",
   "logout_to_parent": "Список автосалонов",
   "item_count": "Салонов",
+  "penalty_history":"История оплат",
   "search_by_car_number":"Поиск автомобиля по Гос. номеру",
    "hour": "час",
    "drink_amount": "Количество алкоголя",

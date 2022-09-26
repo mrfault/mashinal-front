@@ -169,7 +169,7 @@ export default {
           url: '/dashboard/1',
           hasAction: false,
           image: 'saloon-dashboard',
-          isAvailable: !!this.$auth.user.autosalon,
+          isAvailable: !!this.$auth.user.autosalon && !this.$auth.user.external_salon,
         },
         {
           type: 9,
@@ -213,7 +213,7 @@ export default {
           url: '/business-profile',
           hasAction: false,
           image: 'createshop',
-          isAvailable: true,
+          isAvailable: !this.$auth.user.external_salon,
         },
         {
           type: 14,

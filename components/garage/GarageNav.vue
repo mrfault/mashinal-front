@@ -13,14 +13,23 @@
           v-html="$t('penalty_history')"
         />
         <form-text-input input-class="car-number-show-popover"
-                         class="mr-1 d-inline-flex"
                          icon-name="search"
                          :placeholder="$t('car_number')"
                          v-model="car_number"
+                         v-if="!isMobileBreakpoint"
                          @input="$emit('filterCarNumber', getValue)"
                          @change="$emit('filterCarNumber', getValue)"
         />
       </div>
+      <form-text-input input-class="car-number-show-popover"
+                       icon-name="search"
+                       style="margin-left: 5px;margin-right: 20px;"
+                       v-if="isMobileBreakpoint"
+                       :placeholder="$t('car_number')"
+                       v-model="car_number"
+                       @input="$emit('filterCarNumber', getValue)"
+                       @change="$emit('filterCarNumber', getValue)"
+      />
 <!--      <div class="col-6 col-lg-auto">-->
 <!--        <button-->
 <!--          :class="['btn btn&#45;&#45;pale-red-outline', {'active': tab === 'check-points', 'full-width': isMobileBreakpoint}]"-->

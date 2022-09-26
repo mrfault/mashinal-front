@@ -27,9 +27,9 @@
         :allow-clear="false"
         class="mb-2"
         :clear-option="false"
-        :label="$t('company')"
+        :label="$t('insurance_company')"
         v-model="form.company"
-        :options="companyOptions"
+        :options="companies"
       />
       <span>{{ $t('date') }}</span>
       <form-text-input
@@ -41,7 +41,10 @@
         :placeholder="$t('announcement_end_date')"
         input-date
       />
-      <button @click="confirmInsurance" :class="{ pending }" class="btn btn--green mt-2 w-100">{{ $t('confirm') }}</button>
+      <button @click="confirmInsurance" :class="{ pending }" class="btn btn--green mt-2 w-100">{{
+          $t('confirm')
+        }}
+      </button>
     </modal-popup>
   </div>
 </template>
@@ -61,32 +64,47 @@ export default {
       openDateChangeModal: false,
       pending: false,
       form: {
-        insurance_date: '',
-        company: 0
-      }
+        insurance_date: this.$moment(this.car.insurance_end_date).format('DD.MM.YYYY'),
+        company: this.car.insurance_company_id
+      },
+      companies: [
+        {key: 1, name:'Azsığorta'},
+        {key: 2, name:'Ata Sığorta'},
+        {key: 3, name:'Atəşgah Sığorta'},
+        {key: 4, name:'A-qroup sığorta'},
+        {key: 5, name:'AzRe Təkrarsığorta'},
+        {key: 6, name:'Azərbaycan Sənaye Sığorta'},
+        {key: 7, name:'Azərbaycan Dövlət Sığorta'},
+        {key: 8, name:'Bakı Sığorta'},
+        {key: 9, name:'Günay Sığorta'},
+        {key: 10, name:'Xalq Sığorta'},
+        {key: 11, name:'İpək Yolu Sığorta'},
+        {key: 12, name:'Qala Sığorta'},
+        {key: 13, name:'Meqa Sığorta'},
+        {key: 14, name:'Naxçıvan sığorta'},
+        {key: 15, name:'Paşa Sığorta'},
+      ]
     }
   },
   methods: {
     async confirmInsurance() {
       this.pending = true;
-      await this.$axios.$post('/insurance/set-enddate', {
-        car_id: this.car.id,
-        end_date: this.form.insurance_date,
-        company: this.form.company
-      })
+      try {
+        await this.$axios.$post('/garage/insurance/set-enddate', {
+          car_id: this.car.id,
+          end_date: this.form.insurance_date,
+          insurance_company_id: this.form.company
+        })
+        this.$nuxt.refresh();
+        this.openDateChangeModal = false;
+      }catch (e){}
       this.pending = false;
     },
     getInsuranceText(id) {
-      return ['Sigorta'][id]
+      return this.companies.find(item => item.key == id)?.name
     }
   },
   computed: {
-    companyOptions() {
-      return [
-        {key: 0, name: 'Azersigorta'},
-        {key: 1, name: 'Ehmedrsigorta'},
-      ]
-    },
     mainSpecs() {
       let getDate = (date) => date && this.$moment((date)).format('DD.MM.YYYY');
 
@@ -94,9 +112,9 @@ export default {
         tech_id: this.car.tech_id,
         brand_model: this.car.mark,
         years: this.car.year,
-        insurance: this.getInsuranceText(this.car.insurance_id || 0),
-        has_insurance: this.car.insurance_id ? this.$t('have') : this.$t('dont_have'),
-        insurance_date: this.car.insurance_date || '20.20.2022',
+        insurance: this.getInsuranceText(this.car.insurance_company_id),
+       // has_insurance: this.car.insurance_id ? this.$t('have') : this.$t('dont_have'),
+        insurance_date: this.car.insurance_end_date ? this.$moment(this.car.insurance_end_date).format('DD.MM.YYYY') : '00.00.0000',
         auth_date: getDate(this.car.created_date),
         auth_end_date: getDate(this.car.end_date),
         tech_exp_date: getDate(this.car.tech_exp_date),
