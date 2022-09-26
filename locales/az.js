@@ -356,6 +356,8 @@ export default {
   "card_added": "Kart əlavə edildi",
   "card_deleted": "Kart silindi",
   "card_is_used_to_pay": "Yuxarıdakı avtomobillərin SMS radar xidməti abunəliyi <strong>\"{card}\"</strong> nömrəli kart vasitəsilə ödənilir.",
+  "already_paid": "Ödənilib",
+  "pay_status":"Cərimənin statusu",
   "CarPlay": "CarPlay",
   "cars": "Minik",
   "Carter protection": "Karter qoruyucusu",

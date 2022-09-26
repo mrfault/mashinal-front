@@ -34,21 +34,26 @@
       </div>
     </div>
     <div class="col-12 col-lg-1-5" v-show="!carChosen || !isMobileBreakpoint">
+
       <div class="garage_cars-list mb-2 mb-lg-0">
+
         <div class="row">
-          <div
-            class="col-6 col-lg-12 lg-xl-6"
-            v-for="(car, index) in filteredCars.data"
-            :key="car.id"
-          >
-            <car-item
-              :id="`car_${car.id}`"
-              :car="car"
-              :numerate="index+1"
-              @set-active="updateActiveCar"
-              :active="activeCarId === car.id"
-            />
-          </div>
+          <vue-scroll style="width: 100%;" :ops="scrollOps">
+            <div
+              class="col-6 col-lg-12 lg-xl-6 mb-2 mr-2"
+              v-for="(car, index) in filteredCars.data"
+              :key="car.id"
+            >
+              <car-item
+                :id="`car_${car.id}`"
+                :car="car"
+                :numerate="index+1"
+                @set-active="updateActiveCar"
+                :active="activeCarId === car.id"
+              />
+            </div>
+          </vue-scroll>
+
           <div class="col-6 col-lg-12" v-if="isMobileBreakpoint">
             <add-car :has-asan-login="hasAsanLogin" tag="div" />
           </div>
@@ -73,6 +78,7 @@
       >
         <p class="p-title">{{ $t('fines') }}</p>
         <car-protocols
+          :history="history ? 1 : 0"
           :car="activeCar"
           :key="'fines_' + activeCar.id"
           v-if="activeCar.car_id"
@@ -120,6 +126,13 @@ export default {
     }
   },
   computed: {
+    scrollOps() {
+      return {
+        scrollPanel: {
+          maxHeight: 400,
+        },
+      }
+    },
     ...mapGetters({
       cars: 'garage/cars',
     }),

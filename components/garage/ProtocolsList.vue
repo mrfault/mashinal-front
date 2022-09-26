@@ -17,7 +17,7 @@
                   <template v-for="(spec, key) in specs">
                     <li :key="key" v-if="spec">
                       <span class="w-auto">{{ $t(key) }}</span>
-                      <span>{{ spec }}</span>
+                      <span :style="key === 'pay_status' ? 'color:#1C9831;' : ''">{{ spec }}</span>
                     </li>
                   </template>
                 </ul>
@@ -56,7 +56,7 @@
                                   <template v-for="(spec, key) in specs">
                                     <li :key="key" v-if="spec">
                                       <span class="w-auto">{{ $t(key) }}</span>
-                                      <span>{{ spec }}</span>
+                                      <span >{{ spec }}</span>
                                     </li>
                                   </template>
                                 </ul>
@@ -116,6 +116,9 @@ export default {
     ProtocolFilesButton
   },
   props: {
+    history: {
+      default :0,
+    },
     protocols: {},
     tab: String,
     where: String
@@ -132,6 +135,7 @@ export default {
       let getDate = (date) => date && this.$moment(this.$parseDate(date)).format('DD.MM.YYYY');
 
       return this.$dataRows({
+        pay_status: this.history ? this.$t('already_paid') : '',
         car_number: !unite && protocol.car_number,
         fined_fullname: protocol.fullname,
         point: protocol.point,
@@ -141,6 +145,7 @@ export default {
         total_amount: !unite && protocol.total && `${protocol.total} ₼`,
         speed_max: protocol.speed_max && `${protocol.speed_max} ${this.$t('char_kilometre_hour')}`,
         speed_real: protocol.speed_real && `${protocol.speed_real} ${this.$t('char_kilometre_hour')}`,
+
         status: protocol.has_decision !== undefined && (protocol.has_decision ? this.$t('has_decision') : this.$t('no_decision')),
         date_decided: getDate(protocol.decision_date),
         date_expire: getDate(protocol.expiry_date),
