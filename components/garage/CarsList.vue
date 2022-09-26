@@ -37,11 +37,13 @@
 
       <div class="garage_cars-list mb-2 mb-lg-0">
 
-        <div class="row">
+        <div class="row" v-if="filteredCars.data.length">
           <client-only>
            <component :is="isMobileBreakpoint ? 'div' : 'vue-scroll'"
                      :class="{row : isMobileBreakpoint }"
-                     :style="!isMobileBreakpoint ? 'width: 100%;' : ''"
+                      ref="vs"
+                      :key="vsKey"
+                      :style="!isMobileBreakpoint ? 'width: 100%;' : ''"
                      :ops="scrollOps"
           >
             <div
@@ -127,6 +129,7 @@ export default {
     return {
       hasAsanLogin: false,
       tab: 'info',
+      vsKey: 0,
       activeCarId: activeCars[0]?.id || '',
       showNoActiveCarsAlert: true,
       carChosen: false,
@@ -136,7 +139,7 @@ export default {
     scrollOps() {
       return {
         scrollPanel: {
-          maxHeight: 295,
+          maxHeight: 400,
         },
       }
     },
@@ -176,6 +179,8 @@ export default {
     if(this.$route.query.id) {
       this.updateActiveCar(Number(this.$route.query.id))
     }
+    setTimeout(() => this.vsKey++ , 1);
+
   },
   methods: {
     updateActiveCar(id) {
