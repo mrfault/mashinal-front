@@ -2259,4 +2259,18 @@ export default {
   "amount_of_ml": "Miqdarı, ml",
   "drink_type": "İçkinin növü",
   "alcometer" : "Alkotest",
+
+  "visual_tire_calculator": "Vizual şin kalkulyatoru",
+  "size_of_old_tire": "Köhnə şinin ölçüsü",
+  "size_of_new_tire": "Yeni şinin ölçüsü",
+  "result_of_calculation": "Hesablama nəticələri",
+  "dimensions": "Ölçülər",
+  "change_noun": "Dəyişiklik",
+  "width_of_tire": "Şinin genişliyi (L)",
+  "height_of_profile":"Profilin hündürlüyü (H)",
+  "disc_diameter":"Diskin diametri (R)",
+  "external_diameter_of_tire":"Şinin xarici diametri (D)",
+  "previous_version" : "Köhnə",
+  "clearance_change" : "Klirens dəyişikliyi",
+  "speedometer_error_percentage" : "Spidometr xəta faizi",
 }

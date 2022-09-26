@@ -1,0 +1,125 @@
+.ma-tiremeter {
+  &__card {
+    background: #fff;
+    padding: 22px 25px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    &--input-group {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      &__title {
+        width: 100%;
+        font: 500 14px Gilroy;
+        margin-bottom: 10px;
+      }
+      &__spacer {
+        width: 20px;
+        text-align: center;
+      }
+      .form-group {
+        width: calc((100% - 40px) / 3);
+        padding-left: 0;
+      }
+      &:nth-of-type(1) {
+        margin-bottom: 17px;
+      }
+    }
+  }
+  &__tires {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+    }
+    &--left {
+      position: absolute;
+      z-index: 0;
+    }
+    &--right {
+      position: absolute;
+      z-index: 0;
+      top: 0;
+      right: 0;
+    }
+    &--right,
+    &--left {
+      width: 27%;
+    }
+    &--text{
+      font: 700 13px Gilroy;
+    }
+  }
+  &__speedometer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    &--image {
+      margin: 11px 0;
+      height: 90px;
+      width: 100%;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+    }
+  }
+  &__clearance {
+    &--image {
+      position: relative;
+      height: 90px;
+      width: 100%;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+      svg {
+        &:nth-of-type(1) {
+          position: absolute;
+          bottom: 3px;
+          left: 50%;
+          transform: translateX(-50%);
+        }
+        &:nth-of-type(2) {
+          position: absolute;
+          bottom: 0;
+          left: 50%;
+          transform: translateX(-50%);
+        }
+      }
+    }
+  }
+  &__results-table {
+    width: 100%;
+  }
+  &-small-title {
+    color: #081a3e;
+    font: 500 14px Gilroy;
+    height: 40px;
+  }
+  
+}
+
+.dark-mode {
+  .ma-tiremeter {
+    &__card{
+      background: #242426;
+    }
+    &-small-title{
+      color: #fff;
+    }
+    &__tires{
+      svg{
+        path{
+          stroke: #fff !important;
+        }
+      }
+    }
+  }
+}
