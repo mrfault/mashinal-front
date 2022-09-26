@@ -1,6 +1,6 @@
 <template>
-  <div class="pages-catalog">
-    <div class="container">
+  <div class="pages-catalog pb-5 pb-lg-0">
+    <div class="container  pb-5 pb-lg-0">
       <breadcrumbs :crumbs="crumbs">
         <share-it type="publish" v-if="$route.params.body" />
       </breadcrumbs>
@@ -22,14 +22,19 @@
                   v-model="form.drinkType1"
                   :options="drinkTypes"
                   :label="$t('drink_type')"
+                  :clearOption="false"
                   :allowClear="false"
+                  :invalid="$v.form.drinkType1.$error"
                 />
                 <form-select
                   class="col-6"
                   v-model="form.drinkValue1"
                   :options="drinkAmounts"
                   :label="$t('amount_of_ml')"
+                  :clearOption="false"
+                  :disabled="disabledDrinkValue1"
                   :allowClear="false"
+                  :invalid="$v.form.drinkValue1.$error && !disabledDrinkValue1"
                 />
               </div>
               <div class="mx-1 mt-3">
@@ -58,14 +63,24 @@
                   v-model="form.drinkType2"
                   :options="drinkTypes"
                   :label="$t('drink_type')"
-                  :allowClear="false"
+                  :clearOption="false"
+                  :disabled="
+                    form.drinkType1 == null ||
+                    form.drinkType1 == '' ||
+                    form.drinkValue1 == null ||
+                    form.drinkValue1 == ''
+                  "
+                  :allowClear="form.drinkType3 == null || form.drinkType3 == ''"
                 />
                 <form-select
                   class="col-6"
                   v-model="form.drinkValue2"
                   :options="drinkAmounts"
                   :label="$t('amount_of_ml')"
+                  :clearOption="false"
+                  :disabled="disabledDrinkValue2"
                   :allowClear="false"
+                  :invalid="$v.form.drinkValue2.$error && !disabledDrinkValue2"
                 />
               </div>
               <div class="mx-1 mt-3">
@@ -74,8 +89,8 @@
                   class=""
                   v-model="form.mass"
                   :options="massOptions"
+                  :allow-clear="false"
                   :label="$t('weight')"
-                  :allowClear="false"
                   :clear-option="false"
                 />
               </div>
@@ -96,7 +111,13 @@
                   v-model="form.drinkType3"
                   :options="drinkTypes"
                   :label="$t('drink_type')"
-                  :allowClear="false"
+                  :clearOption="false"
+                  :disabled="
+                    form.drinkType2 == null ||
+                    form.drinkType2 == '' ||
+                    form.drinkValue2 == null ||
+                    form.drinkValue2 == ''
+                  "
                 />
                 <form-select
                   class="col-6"
@@ -104,6 +125,9 @@
                   :options="drinkAmounts"
                   :label="$t('amount_of_ml')"
                   :allowClear="false"
+                  :clearOption="false"
+                  :disabled="disabledDrinkValue3"
+                  :invalid="$v.form.drinkValue3.$error && !disabledDrinkValue3"
                 />
               </div>
               <div class="mx-1 mt-3">
@@ -120,7 +144,7 @@
           </div>
         </div>
         <div class="submit-button mt-3 d-flex justify-content-end mr-1 pb-2">
-          <button class="btn btn--green" @click="doTest()">
+          <button class="btn btn--green" @click="submit()">
             {{ $t('when_may_i_can_drive') }}?
           </button>
         </div>
@@ -181,6 +205,7 @@
 <script>
 import AlcometerPromil from '~/components/alcometer/promil.vue'
 import AlcometerSpeedometer from '~/components/alcometer/speedometer.vue'
+import { required, requiredIf } from 'vuelidate/lib/validators'
 export default {
   components: {
     AlcometerPromil,
@@ -431,7 +456,36 @@ export default {
         drinkValue3: null,
         drinkType3: null,
       },
+      disabled: {
+        drinkValue1: true,
+        drinkValue2: true,
+        drinkValue3: true,
+        drinkType2: true,
+        drinkType3: true,
+      },
     }
+  },
+  validations: {
+    form: {
+      drinkType1: { required },
+      drinkValue1: {
+        required: requiredIf(function () {
+          if (this.form.drinkType1 !== null || this.form.drinkType1 !== '') {
+            return true
+          }
+        }),
+      },
+      drinkValue2: {
+        required: requiredIf(function () {
+          return this.form.drinkType2
+        })
+      },
+      drinkValue3: {
+        required: requiredIf(function () {
+          return this.form.drinkType3
+        })
+      },
+    },
   },
   computed: {
     isRussian() {
@@ -441,72 +495,97 @@ export default {
         return false
       }
     },
+    disabledDrinkValue1() {
+      if (this.form.drinkType1 == null || this.form.drinkType1 == '') {
+        return true
+      } else {
+        return false
+      }
+    },
+    disabledDrinkValue2() {
+      if (this.form.drinkType2 == null || this.form.drinkType2 == '') {
+        return true
+      } else {
+        return false
+      }
+    },
+    disabledDrinkValue3() {
+      if (this.form.drinkType3 == null || this.form.drinkType3 == '') {
+        return true
+      } else {
+        return false
+      }
+    },
   },
   methods: {
-    doTest() {
-      let r
-      if (this.form.gender === 'm') {
-        r = 0.68
-      } else if (this.form.gender === 'f') {
-        r = 0.55
-      }
+    calculate() {
+      try {
+        let r
+        if (this.form.gender === 'm') {
+          r = 0.68
+        } else if (this.form.gender === 'f') {
+          r = 0.55
+        }
 
-      let M = parseFloat(this.form.mass)
-      if (isNaN(M) || !M) {
-        this.form.mass = 70
-      }
-      var T = parseFloat(this.form.time)
-      if (isNaN(T) || !T) {
-        this.form.time = 0
-      }
-      var v = parseInt(this.form.drinkValue1)
-      var k = parseInt(this.form.drinkType1)
-      var A = 0
+        let M = parseFloat(this.form.mass)
+        if (isNaN(M) || !M) {
+          this.form.mass = 70
+        }
+        var T = parseFloat(this.form.time)
+        if (isNaN(T) || !T) {
+          this.form.time = 0
+        }
+        var v = parseInt(this.form.drinkValue1)
+        var k = parseInt(this.form.drinkType1)
+        var A = 0
 
-      if (isNaN(v) || !v) v = 0
-      if (isNaN(k) || !k) k = 0
-      A += (v * k) / 100
+        if (isNaN(v) || !v) v = 0
+        if (isNaN(k) || !k) k = 0
+        A += (v * k) / 100
 
-      v = parseInt(this.form.drinkValue2)
-      k = parseInt(this.form.drinkType2)
-      if (isNaN(v) || !v) v = 0
-      if (isNaN(k) || !k) k = 0
-      A += (v * k) / 100
+        v = parseInt(this.form.drinkValue2)
+        k = parseInt(this.form.drinkType2)
+        if (isNaN(v) || !v) v = 0
+        if (isNaN(k) || !k) k = 0
+        A += (v * k) / 100
 
-      v = parseInt(this.form.drinkValue3)
-      k = parseInt(this.form.drinkType3)
-      if (isNaN(v) || !v) v = 0
-      if (isNaN(k) || !k) k = 0
-      A += (v * k) / 100
-      A *= 0.79384
-      var C = 0.68 * (A / M / r - 0.13 * T)
-      if (C < 0) C = 0
-      this.concentration = this.nrm(C, 1000)
-      this.concentrProm = this.nrm(C / 0.45, 1000)
-      this.diag(C)
+        v = parseInt(this.form.drinkValue3)
+        k = parseInt(this.form.drinkType3)
+        if (isNaN(v) || !v) v = 0
+        if (isNaN(k) || !k) k = 0
+        A += (v * k) / 100
+        A *= 0.79384
+        var C = 0.68 * (A / M / r - 0.13 * T)
+        if (C < 0) C = 0
+        this.concentration = this.nrm(C, 1000)
+        this.concentrProm = this.nrm(C / 0.45, 1000)
+        this.diag(C)
 
-      var rul = 0
-      var Cor = C
-      while (C > this.diagramValues[1]) {
-        rul++
-        C = 0.8 * (A / M / r - 0.13 * (T + rul))
-      }
-      this.timeToDrive = rul
-      //if (Cor > 8) f.rul.value = f.rul.value + '';
-      this.showGraphs = true
-      if (this.showGraphs && !this.isMobileBreakpoint) {
-        setTimeout(() => {
-          window.scrollTo({ top: 500, behavior: 'smooth' })
-        }, 1000)
-      } else if (this.showGraphs && this.isMobileBreakpoint) {
-        setTimeout(() => {
-          window.scrollTo({ top: 2500, behavior: 'smooth' })
-          // window.scrollTo({ top: 1200, behavior: 'smooth' })
-          // window.location.href = '#alcometerResult'
-          // document.querySelector(this.getAttribute('href')).scrollIntoView({
-          //   behavior: 'smooth',
-          // })
-        }, 1000)
+        var rul = 0
+        var Cor = C
+        while (C > this.diagramValues[1]) {
+          rul++
+          C = 0.8 * (A / M / r - 0.13 * (T + rul))
+        }
+        this.timeToDrive = rul
+        //if (Cor > 8) f.rul.value = f.rul.value + '';
+        this.showGraphs = true
+        if (this.showGraphs && !this.isMobileBreakpoint) {
+          setTimeout(() => {
+            window.scrollTo({ top: 500, behavior: 'smooth' })
+          }, 1000)
+        } else if (this.showGraphs && this.isMobileBreakpoint) {
+          setTimeout(() => {
+            window.scrollTo({ top: 2500, behavior: 'smooth' })
+            // window.scrollTo({ top: 1200, behavior: 'smooth' })
+            // window.location.href = '#alcometerResult'
+            // document.querySelector(this.getAttribute('href')).scrollIntoView({
+            //   behavior: 'smooth',
+            // })
+          }, 1000)
+        }
+      } catch (error) {
+        this.$toasted.error(this.$t('info_is_not_correct'))
       }
     },
     nrm(val, to) {
@@ -520,6 +599,40 @@ export default {
           return (this.diagValue = this.diag2[i])
       }
       return (this.diagValue = this.diag2[6])
+    },
+    submit() {
+      this.$v.$touch()
+      if (this.$v.$error) {
+        this.$toasted.error(this.$t('info_is_not_correct'))
+      } else {
+        this.calculate()
+      }
+    },
+  },
+  watch: {
+    'form.drinkType1': {
+      deep: true,
+      handler() {
+        if (this.form.drinkType1 === null || this.form.drinkType1 === '') {
+          this.form.drinkValue1 = null
+        }
+      },
+    },
+    'form.drinkType2': {
+      deep: true,
+      handler() {
+        if (this.form.drinkType2 === null || this.form.drinkType2 === '') {
+          this.form.drinkValue2 = null
+        }
+      },
+    },
+    'form.drinkType3': {
+      deep: true,
+      handler() {
+        if (this.form.drinkType3 === null || this.form.drinkType3 === '') {
+          this.form.drinkValue3 = null
+        }
+      },
     },
   },
 }
@@ -539,5 +652,8 @@ export default {
 }
 .text-transform-normal button {
   text-transform: initial !important;
+}
+.border-red {
+  border: 1px solid red;
 }
 </style>
