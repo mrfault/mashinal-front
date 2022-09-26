@@ -5,7 +5,7 @@
       <div class="col" v-for="(specs, i) in mainSpecs" :key="i">
         <ul>
           <li v-for="(spec, key) in specs" :key="key">
-            <span class="w-auto">{{ $t(key) }}</span>
+            <span v-html="$t(key)" class="w-auto"></span>
             <span>{{ spec }}<button v-if="key ==='has_insurance'" @click="$nuxt.refresh()"
                                     class="ml-1 btn btn-new-blue">Yenilə</button>
               <button @click="openDateChangeModal = true" v-if="key ==='insurance_end_date'" class="ml-1 btn btn-new-blue">{{ $t('change_it') }}</button>

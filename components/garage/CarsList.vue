@@ -37,7 +37,7 @@
 
       <div class="garage_cars-list mb-2 mb-lg-0">
 
-        <div class="row" v-if="filteredCars.data.length">
+        <div :class="{row : !isMobileBreakpoint }" v-if="filteredCars.data.length">
           <client-only>
            <component :is="isMobileBreakpoint ? 'div' : 'vue-scroll'"
                      :class="{row : isMobileBreakpoint }"
