@@ -2264,6 +2264,7 @@ export default {
    "alcometer" : "Алкотест",
   "insurance_company":"Компания",
   "insurance_end_date": "Дата окончания<br> страховки",
+  "insurance_end_date_text": "Дата окончания страховки",
   "pay_status":"Статус штрафа",
   "already_paid": "Оплачено",
   "change_it": "Изменить"

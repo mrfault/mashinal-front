@@ -20,7 +20,7 @@
     </div>
     <modal-popup
       :toggle="openDateChangeModal"
-      :title="$t('insurance_end_date')"
+      :title="$t('insurance_end_date_text')"
       @close="openDateChangeModal = false"
     >
       <form-select
