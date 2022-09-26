@@ -109,7 +109,6 @@
         />
         <monetization-button
           :announcement="announcement"
-          v-if=" !announcement.has_monetization && !needToPay"
           @openModal="openModal"
         />
       </div>

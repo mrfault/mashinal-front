@@ -5,6 +5,7 @@
       <img :src="imgSrc" v-if="imgSrc" :class="{disabled}" />
       <template v-if="inputDate">
         <date-picker
+          ref="datepicker"
           @click="open = false"
           v-model="inputValue"
           value-type="format"
@@ -151,6 +152,7 @@
           return this.value;
         },
         set(value) {
+
           value = (this.disabled || (this.value.length > this.maxlength)) ? this.value : value;
           this.$emit('input', value);
           // check if value was changed
