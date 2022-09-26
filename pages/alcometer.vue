@@ -482,7 +482,7 @@ export default {
       },
       drinkValue3: {
         required: requiredIf(function () {
-          return this.form.drinkType2
+          return this.form.drinkType3
         })
       },
     },
