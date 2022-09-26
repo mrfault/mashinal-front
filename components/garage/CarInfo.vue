@@ -114,7 +114,7 @@ export default {
         years: this.car.year,
         insurance: this.getInsuranceText(this.car.insurance_company_id),
        // has_insurance: this.car.insurance_id ? this.$t('have') : this.$t('dont_have'),
-        insurance_date: this.car.insurance_end_date ? this.$moment(this.car.insurance_end_date).format('DD.MM.YYYY') : '00.00.0000',
+        insurance_end_date: this.car.insurance_end_date ? this.$moment(this.car.insurance_end_date).format('DD.MM.YYYY') : '00.00.0000',
         auth_date: getDate(this.car.created_date),
         auth_end_date: getDate(this.car.end_date),
         tech_exp_date: getDate(this.car.tech_exp_date),
