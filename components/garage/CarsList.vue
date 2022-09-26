@@ -40,7 +40,7 @@
         <div class="row">
           <vue-scroll style="width: 100%;" :ops="scrollOps">
             <div
-              class="col-6 col-lg-12 lg-xl-6 mb-2 mr-2"
+              class="col-6 col-lg-12 lg-xl-6 mb-2 mr-2 mt-1"
               v-for="(car, index) in filteredCars.data"
               :key="car.id"
             >
