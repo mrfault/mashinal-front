@@ -1,5 +1,5 @@
 <template>
-  <div class="pages-dashboard pt-2 pt-lg-5">
+  <div class="pages-dashboard pt-2 pt-lg-5 mb-5 pb-5">
     <div class="container d-flex flex-wrap">
       <breadcrumbs :crumbs="crumbs"/>
       <template v-for="(item, index) in garageServices">

@@ -1,5 +1,7 @@
 import _ from '~/lib/underscore'
 import { mutate, reset } from '~/lib/vuex-helpers/mutations'
+import offer from "~/components/offer/offer";
+
 
 const getInitialState = () => ({
   loading: true,
@@ -138,6 +140,7 @@ const getInitialState = () => ({
   selectedVehiclesPrice: 0,
   offers:[],
   offer:null,
+  current_offer_id:null,
   OffersAcceptedByAutoSalon:{},
   offerMessages:[],
   isFavorite:false,
@@ -1212,6 +1215,14 @@ export const actions = {
   async getOffer({commit}, payload){
     const {data} =await  this.$axios.get('/offer/offer-detail/'+payload.id+'/'+payload.type);
     commit('mutate',{property:'offer',value:data})
+    console.log(data)
+    if (data.data.id){
+      commit('mutate',{property:'current_offer_id',value:data.data.id})
+    }else{
+      commit('mutate',{property:'current_offer_id',value:data.data.offer.id})
+    }
+
+
   },
 
   async salonAcceptOffer({},{id}){
@@ -1226,8 +1237,10 @@ export const actions = {
 
   },
   async OffersAcceptedByAutoSalon({commit},param='all'){
-    const {data} =await this.$axios.$get('/offer/user/offers-accepted-by-auto-salon/'+param)
-    commit('mutate', { property: 'OffersAcceptedByAutoSalon', value: data })
+    const data =await this.$axios.$get('/offer/user/offers-accepted-by-auto-salon/'+param)
+    commit('mutate', { property: 'OffersAcceptedByAutoSalon', value: data.data })
+    commit('mutate', { property: 'newOfferCount', value: data.count })
+
   },
 
   async offerPartners({commit},page=1){

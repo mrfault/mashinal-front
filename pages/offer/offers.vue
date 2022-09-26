@@ -11,7 +11,7 @@
                   :class="{'active-filter': $route.query.param==='all' || !$route.query.param} ">
                 <inline-svg src="/icons/offer/requests.svg" class="filter-icon"/>
                 <span>
-                  Təkliflər
+                  Təkliflər  <span class="offerCount">{{newOfferCount}}</span>
                 </span>
               </li>
               <li @click="changePage('deleted')" :class="{'active-filter-fill': $route.query.param==='deleted'} ">
@@ -45,11 +45,12 @@
         <div class="col col-md-12 col-lg-4">
           <div class="offerUsers" style="height: 692px">
             <div class="searchBox">
-
+              <icon name="search"></icon>
               <input type="text" v-model="search" placeholder="Maşın və ya istifadəçi adı" class="searchInput" @focus="searchInputFocus">
 
             </div>
             <div class="user" v-for="userOffer in searchOffer"
+
                  @click="getUserOfferDetail(userOffer.auto_salon_offer_id)">
               <div class="userImg"
                    :style="'background-image: url('+(userOffer.auto_salon.logo ? userOffer.auto_salon.logo : '/images/offer/salon_no_logo.svg') +')'">
@@ -67,17 +68,14 @@
             </div>
           </div>
         </div>
-        <div class="col col-md-6 col-12 col-xs-12 col-sm-12 offerDetailSection">
+        <div class="col col-md-6 col-12 col-xs-12 col-sm-12 offerDetailSection" v-if="!isMobileBreakpoint">
           <div class="offerDetail" v-if="offer">
             <div class="d-flex align-items-center user">
-
               <div class="userImg" :style="'background-image: url('+offer.user.img+')'"></div>
-
               <p class="mt-2 ml-2 text-bold">
                 {{ offer.user.full_name }}
               </p>
               <div class="actions" v-if="user_is_accepted">
-
                 <span @click="deleteUserAutoSalonOffer(userOffer.auto_salon_offer_id)"
                       v-if="!userOffer.user_deleted_at"> <icon name="garbage"></icon></span>
               </div>
@@ -161,7 +159,7 @@
 
             <div v-if="user_is_accepted">
               <div class="messages">
-                <div :class=" isMyMessage(message) ? 'my' :'his' " v-for="message in offerMessages">
+                <div class="message" :class="   isMyMessage(message) ? 'my' :'his ' " v-for="message in offerMessages">
                   <div v-if="message.files.length>0" class="message-files">
                     <div class="message-file" v-for="file in message.files">
                       <img :src="file" width="100%" class="p-1"/>
@@ -178,7 +176,10 @@
               </div>
             </div>
           </div>
-          <div class="addons" v-if="user_is_accepted">
+
+
+
+          <div class="addons" v-if="user_is_accepted && auto_salon_deleted_at===null">
             <offer-message
               @type="handleTyping"
               @attach="handleFiles"
@@ -187,7 +188,7 @@
               :sending="false"
               :message="false"
               v-model="chat.text"
-              :send-button-disabled="chat.text.length<1 ? true : false"
+              :send-button-disabled="messageButtonDisabled "
             />
             <img src="" :ref="'attachment-'+key" alt=""/>
             <div class="addLink"></div>
@@ -236,14 +237,20 @@ export default {
         text: '',
       },
       search: '',
-      files: []
+      files: [],
+      auto_salon_offer_id:null,
+      auto_salon_deleted_at:null,
+      messageButtonDisabled:false
     }
   },
   computed: {
     ...mapGetters({
       userOffers: 'OffersAcceptedByAutoSalon',
-      offerMessages: 'getOfferMessages'
+      offerMessages: 'getOfferMessages',
+      newOfferCount:'getNewOfferCount',
     }),
+
+
     crumbs() {
       return [
         {name: 'Super təklif paneli', route: '/offer/offers'},
@@ -278,11 +285,15 @@ export default {
 
     },
     async submitMessage() {
+
+      this.messageButtonDisabled=true;
       let formData = new FormData();
 
       formData.append('recipient_id', this.userOffer.auto_salon.user_id)
       formData.append('message', this.chat.text)
       formData.append('offer_id', this.offer.id)
+
+      formData.append('auto_salon_offer_id', this.auto_salon_offer_id)
 
       await Promise.all(this.files.map(async (file) => {
         let resizedFile = await this.getResizedImage(file);
@@ -290,6 +301,8 @@ export default {
       }));
       this.$axios.$post('/offer/messages/send', formData).then((res) => {
         this.chat.text = ''
+        this.files=''
+        this.$nuxt.$emit('clear-message-attachments');
         this.$store.commit('appendOfferMessage', res.data.message)
         if (res.data.message.files.length > 1) {
           const sleep = () =>{
@@ -302,32 +315,45 @@ export default {
           },1000)
 
         }
+        this.messageButtonDisabled=false;
 
       })
-      this.$nuxt.$emit('clear-message-attachments');
+
     },
     async getUserOfferDetail(id) {
+
+
       if (this.isMobileBreakpoint) {
         this.$router.push(this.$localePath('/offer') + '/' + id)
       } else {
+
+
         await this.checkAccepted(id)
         this.userOffer = this.userOffers.find(function (offer) {
             return id === offer.auto_salon_offer_id
-          }
-        )
+          })
         this.offer = this.userOffer.offer
+
+
+        this.$store.commit('mutate',{property:'current_offer_id',value:this.offer.id})
+
+        this.offer.user_deleted_at=this.userOffer.user_deleted_at
+        this.auto_salon_deleted_at=this.userOffer.auto_salon_deleted_at
 
       }
       setTimeout(()=>{
-        this.scrollTo('.my:last-child', 300, 500, '.offerDetail')
+        this.scrollTo('.message:last-child', 300, 500, '.offerDetail')
       },1000)
-      this.$store.commit('mutate',{property:'offer',value:id})
+
+
+
     },
     async checkAccepted(id) {
       await this.$axios.$post('/offer/user/offer/check/' + id).then((res) => {
         this.user_is_accepted = res.status
+        this.auto_salon_offer_id=res.auto_salon_offer_id
         this.$store.commit('setOfferMessages', res.messages)
-        this.scrollTo('.my:last-child', 0, 500, '.offerDetail')
+        this.scrollTo('.message:last-child', 0, 500, '.offerDetail')
       })
 
     },
@@ -341,7 +367,8 @@ export default {
     },
     async deleteUserAutoSalonOffer(id) {
       this.$axios.delete('/offer/user/offer/delete/' + id);
-      await this.$store.dispatch('OffersAcceptedByAutoSalon')
+
+      this.$store.dispatch('OffersAcceptedByAutoSalon')
       this.offer = null
       this.user_is_accepted = false
     }

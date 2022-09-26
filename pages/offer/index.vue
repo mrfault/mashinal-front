@@ -30,13 +30,11 @@
 
 
         <div class="new-offer-notification-box mt-5">
-
-
           <div class="notification">
             <img src="/icons/auction.svg">
             <p>Sizin {{ notAccepted() }} yeni təklifiniz var</p>
           </div>
-          <nuxt-link to="/offer/offers" tag="button" class="offer-button">
+          <nuxt-link :to="$localePath('/offer/offers')" tag="button" class="offer-button">
             Təkliflərə bax
           </nuxt-link>
         </div>
@@ -101,7 +99,7 @@
       </div>
     </section>
     <section class="offer-partners">
-      <div class="container">
+
         <div class="new-offer-title mt-5">
           <h2 class="text-center mb-5">Rəsmi tərəfdaşlar</h2>
         </div>
@@ -127,7 +125,7 @@
           </button>
 
         </div>
-      </div>
+
     </section>
     <section class="text">
       <div class="">
@@ -221,7 +219,7 @@ export default {
         return this.$toasted.error('Brend və ya model seçilməyib')
       }
       this.$router.push({
-        name: 'offer-add___az', query: {
+        name: 'offer-add___'+this.locale, query: {
           brand: this.brand,
           model: this.model,
         }

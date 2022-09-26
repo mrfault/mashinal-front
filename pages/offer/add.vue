@@ -3,11 +3,11 @@
   <div>
     <OfferSlider/>
 
-    <div class="container mt-3">
+    <div class="container mt-3 mb-5">
       <div class="row">
 
         <breadcrumbs :crumbs="crumbs"/>
-        <div class="col-md-12 background-white p-5">
+        <div class="col-md-12 background-white offer-add-section p-5">
           <sell-progress :form="form"/>
           <sell-selected-model
           :brand="brand"
@@ -93,7 +93,7 @@
                       <div class="">
 
                         <label for="maxPrice">Max.</label>
-                        <form-numeric-input :invalid="$v.form.maxPrice.$error" id="maxPrice" type="number"
+                        <form-numeric-input  id="maxPrice" type="number"
 
                                          v-model="form.maxPrice" class="priceInput"/>
                       </div>
@@ -115,7 +115,7 @@
               Təsvirdə linklərinin göstərilməsi, elektron poçt ünvanının, baxış keçirmə məkanın ünvanının, telefon
               nömrəsinin, qiymətin və xidmətlərin təklifi qadağandır.
             </p>
-            <div class="col-md-12  text-right">
+            <div class="col-md-12  text-right ">
               <button class=" btn  btn--green" @click="submitOffer" >
                 <img src="/icons/offer/load.svg" width="50px" v-if="isLoader" >
                <span v-else> Əlavə et</span>
@@ -183,12 +183,6 @@ export default {
 
       },
     }
-  },
-  validations: {
-    form: {
-      maxPrice: {required},
-    }
-
   },
   async asyncData({store, app, route}) {
 
@@ -271,9 +265,7 @@ export default {
       }
     },
     submitOffer() {
-      this.$v.$touch();
 
-      if (this.$v.$error) return;
       this.isLoader=true
       this.$axios.$post('offer', {
         data: this.form

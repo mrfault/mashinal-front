@@ -49,7 +49,7 @@ export default {
   "accordeon_other": "Digər",
   "accordeon_security": "Təhlükəsizlik",
   "accordeon_theft_protection": "Oğurlanmaya qarşı müdafiə",
-  "accordeon_view": "Eksteryer / Baxış parametrləri ",
+  "accordeon_view": "Parmeterlər",
   "account_settings": "Hesabın quraşdırılması",
   "acoustic_type": "Növ",
   "activate": "Aktiv et",
@@ -135,7 +135,6 @@ export default {
   "akkumulyatory": "Akkumulyatorlar",
   "akpp": "Avtomatik",
   "Alcantara": "Alkantara",
-  "alcometer": "Alkometer",
   "all": "Bütün",
   "all seasons": "bütün mövsümlər",
   "all_announcements_of_user": "{name} istifadəçinin bütün elanları",
@@ -2223,7 +2222,6 @@ export default {
   "commercial_size":"Şinin ölçüləri",
   "shine_width2":"En",
   "commercial_part":"Ticari",
-  "logout_to_parent": "Avtosalonlar siyahısı",
   "hour": "saat",
   "drink_amount": "İçki miqdarı",
   "how_many_hours_passed": "Neçə saat keçib",
@@ -2259,6 +2257,7 @@ export default {
   "amount_of_ml": "Miqdarı, ml",
   "drink_type": "İçkinin növü",
   "alcometer" : "Alkotest",
+<<<<<<< HEAD
 
   "visual_tire_calculator": "Vizual şin kalkulyatoru",
   "size_of_old_tire": "Köhnə şinin ölçüsü",
@@ -2273,4 +2272,7 @@ export default {
   "previous_version" : "Köhnə",
   "clearance_change" : "Klirens dəyişikliyi",
   "speedometer_error_percentage" : "Spidometr xəta faizi",
+=======
+  "search_by_car_number":"Avtomobili qeydiyyat nişanına görə axtar"
+>>>>>>> feature/loa
 }

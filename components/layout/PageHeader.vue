@@ -128,7 +128,7 @@
                   </nuxt-link>
                   <hr />
                   <ul>
-                    <template v-for="menu in userMenus" v-if="(user.parent_id || user.children.length) ? menu.title !== 'garage':true " >
+                    <template v-for="menu in userMenus" v-if="(user.parent_id || (user.children && user.children.length)) ? menu.title !== 'garage':true " >
                       <li v-if="menu.title === 'my_account' ? !user.parent_id: true" :key="menu.title">
                         <nuxt-link :to="$localePath(menu.route)">
                           {{ $t(menu.title) }}
@@ -141,7 +141,7 @@
                         </a>
                       </li>
                     </template>
-                    <li v-if="user.children.length">
+                    <li v-if="user.children && user.children.length">
                       <nuxt-link to="/my-autosalons">{{ $t('logout_to_parent') }}</nuxt-link>
                     </li>
                     <li key="logout">

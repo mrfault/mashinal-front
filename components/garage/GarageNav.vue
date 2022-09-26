@@ -1,11 +1,24 @@
 <template>
   <div class="garage_nav card with-margins mb-2 mb-lg-3">
     <div class="row">
-      <div class="col-6 col-lg-auto" style="margin-bottom: 10px;">
+      <div class="col-6 col-lg-auto" style="margin-bottom: 10px;display: flex;gap: 20px;">
         <button
           :class="['btn btn--pale-red-outline', {'active': tab === 'cars', 'full-width': isMobileBreakpoint}]"
           @click="$emit('change-tab', 'cars')"
           v-html="$t('my_cars')"
+        />
+        <button
+          :class="['btn btn--pale-red-outline', {'active': tab === 'penalty_history', 'full-width': isMobileBreakpoint}]"
+          @click="$emit('change-tab', 'penalty_history')"
+          v-html="$t('penalty_history')"
+        />
+        <form-text-input input-class="car-number-show-popover"
+                         class="mr-1 d-inline-flex"
+                         icon-name="search"
+                         :placeholder="$t('car_number')"
+                         v-model="car_number"
+                         @input="$emit('filterCarNumber', getValue)"
+                         @change="$emit('filterCarNumber', getValue)"
         />
       </div>
 <!--      <div class="col-6 col-lg-auto">-->
@@ -15,14 +28,7 @@
 <!--          v-html="$t('check_points')"-->
 <!--        />-->
 <!--      </div>-->
-      <div class="col-6 col-lg-auto">
-        <button
-          :class="['btn btn--pale-red-outline', {'active': tab === 'attorney-list', 'full-width': isMobileBreakpoint}]"
-          @click="$emit('change-tab', 'attorney-list')"
-          v-html="$t('attorneys')"
-          v-if="false"
-        />
-      </div>
+
       <div class="col-auto ml-auto" v-if="!isMobileBreakpoint">
         <add-car />
       </div>
@@ -39,6 +45,16 @@ export default {
   },
   components: {
     AddCar
+  },
+  data() {
+    return {
+      car_number: '',
+    }
+  },
+  computed: {
+    getValue() {
+      return (this.car_number).toUpperCase().replace(/[^a-z0-9]/gi,'');
+    }
   }
 }
 </script>

@@ -350,8 +350,7 @@ export default {
       if (keys[0] === 'car_catalog_id' && !this.isMobileBreakpoint) {
         setTimeout(() => {
           window.scrollTo({ top: 1000, behavior: 'smooth' })
-          console.log('top')
-        }, 1000)
+        }, 500)
       }
       else if (keys[0] === 'car_catalog_id' && this.isMobileBreakpoint) {
         window.scrollTo({ top: 1200, behavior: 'smooth' })
@@ -359,12 +358,8 @@ export default {
           // window.location.href = '#sellLastStepUploadImage'
            const el = document.querySelector('#anchor-saved_images');
            el.scrollIntoView({block:'start', behavior: 'smooth'});
-        }, 1000)
+        }, 500)
       }
-
-
-
-
 
       clearTimeout(this.timeout)
       let $container

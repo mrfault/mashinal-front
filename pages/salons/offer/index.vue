@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container ">
     <offer-slider/>
     <div class="salonsOffer">
       <breadcrumbs :crumbs="crumbs" class=""/>
@@ -73,12 +73,13 @@
           </div>
         </div>
         <div class="col col-md-12 col-lg-4 background-white">
-          <div class="searchBox">
-            <icon name="search"></icon>
 
-            <input type="text" v-model="search" placeholder="Maşın və ya istifadəçi adı" class="searchInput">
-          </div>
           <div class="offerUsers">
+            <div class="searchBox">
+              <icon name="search"></icon>
+
+              <input type="text" v-model="search" placeholder="Maşın və ya istifadəçi adı" class="searchInput">
+            </div>
             <div class="user" v-for="offer in search ? searchOffer : offers"
                  @click="getOfferDetail(offer.id)" >
               <div class="userImg"
@@ -96,19 +97,19 @@
           </div>
         </div>
         <div class="col col-md-12 col-lg-6 col-xs-12 col-sm-12 background-white" v-if="!isMobileBreakpoint">
-          <div class="d-flex align-items-center user" v-if="offer.brand">
-            <div class="userImg"
-                 :style="'background-image: url('+(offer.user.img ? offer.user.img : '/img/user.jpg')+')'"></div>
-            <p class="mt-2 ml-2 text-bold">
-              {{ offer.user.full_name }}
-            </p>
-            <div class="actions" v-if="IsAccepted">
-              <span @click="addFavorite(offer.id)" :class="offer.isFavorite ? 'isFavorite' : null"><icon name="star"/> </span>
-              <span @click="deleteAutoSalonOffer(offer.id)"> <icon name="garbage"></icon></span>
-            </div>
-          </div>
-          <div class="offerDetail" v-if="offer.brand ">
 
+          <div class="offerDetail" v-if="offer.brand ">
+            <div class="d-flex align-items-center user" v-if="offer.brand">
+              <div class="userImg"
+                   :style="'background-image: url('+(offer.user.img ? offer.user.img : '/img/user.jpg')+')'"></div>
+              <p class="mt-2 ml-2 text-bold">
+                {{ offer.user.full_name }}
+              </p>
+              <div class="actions" >
+                <span @click="addFavorite(offer.id)" :class="offer.isFavorite ? 'isFavorite' : 'favorite'" ><icon name="star"/> </span>
+                <span @click="deleteAutoSalonOffer(offer.id)" v-if="IsAccepted"> <icon name="garbage"></icon></span>
+              </div>
+            </div>
             <collapse-content :title="'Təklif'">
 
               <div class="generations">
@@ -198,7 +199,7 @@
             </div>
             <div v-else>
               <div class="messages">
-                <div :class=" isMyMessage(message) ? 'my' :'his' " v-for="message in offerMessages">
+                <div :class=" isMyMessage(message) ? 'my' :'his' " class="message" v-for="message in offerMessages">
                   <div v-if="message.files.length>0" class="message-files">
                     <div class="message-file" v-for="file in message.files">
                       <img :src="file" width="100%"/>
@@ -215,8 +216,9 @@
               </div>
 
             </div>
+
             <div class="messages" v-if="offer.deleted">
-              <div :class=" isMyMessage(message) ? 'my' :'his' " v-for="message in offerMessages">
+              <div  :class="isMyMessage(message) ? 'my' :'his' " class="message" v-for="message in offerMessages">
                 <div v-if="message.files.length>0" class="message-files">
                   <div class="message-file" v-for="file in message.files">
                     <img :src="file" width="100%"/>
@@ -243,6 +245,7 @@
               :sending="false"
               :message="false"
               v-model="chat.text"
+              :send-button-disabled="messageButtonDisabled"
             />
             <img src="" :ref="'attachment-'+key" alt=""/>
             <div class="addLink"></div>
@@ -273,6 +276,8 @@ export default {
       sendingFiles: false,
       search: "",
       files: [],
+      auto_salon_offer_id:null,
+      messageButtonDisabled:false
     }
   },
   head() {
@@ -316,20 +321,25 @@ export default {
     async addFavorite(id) {
       await this.$store.dispatch('offerAddFavorite', id)
       this.offer.isFavorite = !this.offer.isFavorite;
+      this.$store.dispatch('getAllOffers',this.$route.query.param)
+
     },
     async deleteAutoSalonOffer(id) {
       await this.$axios.delete('/offer/salon/offer/delete/' + id);
       this.checkAccepted(id)
       this.offer = false
       this.IsAccepted = false
-      this.$store.dispatch('getAllOffers')
+      this.$store.dispatch('getAllOffers',this.$route.query.param)
     },
     async submitMessage() {
+      this.messageButtonDisabled=true;
       let formData = new FormData();
+
 
       formData.append('recipient_id', this.offer.user.id)
       formData.append('message', this.chat.text)
       formData.append('offer_id', this.offer.id)
+      formData.append('auto_salon_offer_id', this.auto_salon_offer_id)
 
 
       await Promise.all(this.files.map(async (file) => {
@@ -353,6 +363,7 @@ export default {
         this.chat.text = '';
         this.$nuxt.$emit('clear-message-attachments');
         this.scrollTo('.my:last-child', 0, 500, '.offerDetail')
+        this.messageButtonDisabled=false;
       })
 
     },
@@ -361,15 +372,16 @@ export default {
       if (this.isMobileBreakpoint) {
         this.$router.push(this.$localePath('/salons/offer') + '/' + id)
       } else {
-
         await this.checkAccepted(id)
         this.offer = JSON.parse(JSON.stringify(this.offers.find(function (offer) {
             return id === offer.id
           }
         )));
       }
-
-      this.$store.commit('mutate',{property:'offer',value:id})
+      this.$store.commit('mutate',{property:'current_offer_id',value:this.offer.id})
+      setTimeout(()=>{
+        this.scrollTo('.message:last-child', 300, 500, '.offerDetail')
+      },1000)
 
     },
     addFile(e) {
@@ -384,8 +396,10 @@ export default {
       await this.$axios.$post('/offer/salon/offer/check/' + id).then((res) => {
 
         this.IsAccepted = res.status
+        this.auto_salon_offer_id=res.auto_salon_offer_id ? res.auto_salon_offer_id : null
 
-        this.$store.commit('setOfferMessages', res.messages)
+
+          this.$store.commit('setOfferMessages', res.messages)
       })
 
     },

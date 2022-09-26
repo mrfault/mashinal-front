@@ -2,10 +2,9 @@
   <div>
     <div class="container">
       <div class="d-flex align-items-center user userBar  mt-3 mb-3">
-
      <span @click="$router.back()">
       <a>
-       <icon name="chevron-left"></icon>
+       <icon name="chevron-left " class="m-1"></icon>
       </a>
   </span>
 
@@ -15,7 +14,7 @@
         <p class="mt-2 ml-2 text-bold">
           {{ offer.user.full_name }}
         </p>
-        <div class="actions" v-if="user_is_accepted">
+        <div class="actions m-1" v-if="user_is_accepted">
 
               <span @click="deleteUserAutoSalonOffer(offer.id)"
                     v-if="!offer.auto_salon_deleted_at || this.IsAccepted"> <icon
@@ -99,7 +98,7 @@
             </div>
             <div v-else>
               <div class="messages">
-                <div :class=" isMyMessage(message) ? 'my' :'his' " v-for="message in offerMessages">
+                <div class="message" :class=" isMyMessage(message) ? 'my' :'his' " v-for="message in offerMessages">
                   <div v-if="message.files.length>0" class="message-files">
                     <div class="message-file" v-for="file in message.files">
                       <img :src="file" width="100%"/>
@@ -157,7 +156,6 @@ export default {
     return {
       user_is_accepted: res.status
     }
-
   },
   head() {
     return this.$headMeta({
@@ -177,7 +175,8 @@ export default {
       },
       search: '',
       IsAccepted: false,
-      files: []
+      files: [],
+      aut0_salon_offer_id:null
 
     }
   },
@@ -198,6 +197,7 @@ export default {
       formData.append('recipient_id', this.offer.user.id)
       formData.append('message', this.chat.text)
       formData.append('offer_id', this.offer.id)
+      formData.append('auto_salon_offer_id', this.auto_salon_offer_id)
 
 
       await Promise.all(this.files.map(async (file) => {
@@ -213,11 +213,11 @@ export default {
           }
           setTimeout(sleep, 1000)
         } else {
-          this.scrollTo('.my:last-child', 0, 500, '.offerDetail')
+          this.scrollTo('.message:last-child', 0, 500, '.offerDetail')
         }
         this.chat.text = '';
         this.$nuxt.$emit('clear-message-attachments');
-        this.scrollTo('.my:last-child', 0, 500, '.offerDetail')
+
       })
 
     },
@@ -226,6 +226,8 @@ export default {
       await this.$axios.$post('/offer/salon/offer/check/' + id).then((res) => {
 
         this.IsAccepted = res.status
+        this.auto_salon_offer_id = res.auto_salon_offer_id
+
         this.$store.commit('setOfferMessages', res.messages)
 
       })
@@ -234,7 +236,6 @@ export default {
     },
     async accept(id) {
       await this.$store.dispatch('salonAcceptOffer', {id})
-
       this.checkAccepted(id)
 
     },
@@ -257,12 +258,12 @@ export default {
     }),
     offer() {
       var offer = this.$store.getters['getOffer'];
-      console.log(offer)
       return offer.data
     }
   },
   created() {
     this.checkAccepted(this.$route.params.id)
+
   }
 }
 </script>

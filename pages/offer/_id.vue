@@ -109,7 +109,7 @@
 
             <div v-if="user_is_accepted">
               <div class="messages">
-                <div :class=" isMyMessage(message) ? 'my' :'his' " v-for="message in offerMessages">
+                <div class="message" :class=" isMyMessage(message) ? 'my' :'his' " v-for="message in offerMessages">
                   <div v-if="message.files.length>0" class="message-files">
                     <div class="message-file" v-for="file in message.files">
                       <img :src="file" width="100%" class="p-1"/>
@@ -184,7 +184,8 @@ export default {
       search: '',
       autoSalonOffer: null,
       files: [],
-      userOffer:null
+      userOffer:null,
+      auto_salon_offer_id:null,
     }
   },
   methods: {
@@ -203,6 +204,7 @@ export default {
       formData.append('recipient_id', this.userOffer.auto_salon.user_id)
       formData.append('message', this.chat.text)
       formData.append('offer_id', this.offer.id)
+      formData.append('auto_salon_offer_id', this.auto_salon_offer_id)
 
       await Promise.all(this.files.map(async (file) => {
         let resizedFile = await this.getResizedImage(file);
@@ -224,17 +226,19 @@ export default {
       this.$nuxt.$emit('clear-message-attachments');
     },
     async checkAccepted(id) {
-      await this.$axios.$post('/offer/salon/offer/check' + id).then((res) => {
-
+      await this.$axios.$post('/offer/user/offer/check/' + id).then((res) => {
         this.user_is_accepted = res.status
-        this.$store.commit('setOfferMessages', res.messages)
-      })
+        this.auto_salon_offer_id=res.auto_salon_offer_id
 
+        this.$store.commit('setOfferMessages', res.messages)
+        this.scrollTo('.my:last-child', 0, 500, '.offerDetail')
+
+      })
 
     },
     async accept(id) {
-      await this.$store.dispatch('salonAcceptOffer', {id})
-      this.checkAccepted(id)
+      await this.$store.dispatch('userAcceptOffer', {id})
+      this.checkAccepted(this.$route.params.id)
     },
     async getMessages(offerId) {
 
@@ -257,6 +261,9 @@ export default {
     this.userOffer = this.userOffers.find( (offer)=> {
       return parseInt(this.$route.params.id) === offer.auto_salon_offer_id
     })
+    this.checkAccepted(this.$route.params.id)
+
+
   },
   computed: {
     ...mapGetters({

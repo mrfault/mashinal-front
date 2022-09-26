@@ -49,6 +49,16 @@
                 :invalid="$v.form.email.$error"
               />
             </div>
+            <div class="col-lg-4 mb-2 mb-lg-3">
+              <form-text-input
+                v-model="form.phone"
+                autocomplete="email"
+                :maxlength="255"
+                :placeholder="$t('phone_number')"
+                :mask="$maskPhone()"
+                :invalid="$v.form.phone.$error"
+              />
+            </div>
             <div class="col-lg-12 mb-2 mb-lg-3">
               <form-textarea
                 v-model="form.message"
@@ -89,11 +99,12 @@ export default {
       pending: false,
       form: {
         email: '',
+        phone: '',
         message: ''
       },
       support: {
         phone: '*8787',
-        email: 'office@al.ventures',
+        email: 'support@mashin.al',
         worktime: this.$t('worktime_support')
       }
     }
@@ -101,7 +112,8 @@ export default {
   validations: {
     form: {
       email: { required, email },
-      message: { required }
+      phone: {  },
+      message: { required },
     }
   },
   computed: {
@@ -121,6 +133,7 @@ export default {
         this.pending = false;
         this.form.email = '';
         this.form.message = '';
+        this.form.phone = '';
         this.$v.$reset();
         this.$toasted.success(this.$t('message_sent_successfully'));
       } catch(err) {

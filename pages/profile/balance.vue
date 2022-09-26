@@ -178,7 +178,7 @@
                 <span class="payment-service">
                     <span>{{ $t(row.operation_key) }} </span> &nbsp;
                    <template v-if="row.what_bought && row.what_bought_type === 'App\\GarageCar'">
-                     <nuxt-link :to="$localePath('/garage')">( {{ row.what_bought.car_number }} )</nuxt-link>
+                     <nuxt-link :to="$localePath('/garage?id='+row.what_bought_id)">( {{ row.what_bought.car_number }} )</nuxt-link>
                   </template>
                   <template v-else-if="row.what_bought && ['App\\Motorcycle','App\\Scooter','App\\MotoAtv'].includes(row.what_bought_type)">
                     ( <nuxt-link :to="$localePath('/moto/announcement/'+row.what_bought.id_unique)">{{ row.what_bought.id_unique }}</nuxt-link> )

@@ -290,9 +290,9 @@
 
 .salonsOffer {
   height: 700px;
-  margin-bottom: 50px;
+  margin-bottom: 100px;
   .col {
-    height: 300px !important;
+    height: 100% !important;
     padding-left: 0 !important;
     padding-right: 0 !important;
 
@@ -306,8 +306,11 @@
       .actions {
         margin-left: auto;
         margin-right: 15px;
-        .icon-star{
+        .favorite{
           color: $dark-blue-2;
+        }
+        .isFavorite{
+          color: $red-1;
         }
         .icon-garbage{
         color:$red-1 ;
@@ -362,7 +365,7 @@
 
     i {
       position: absolute;
-      left: 25px;
+      left: 52px;
     }
 
     .searchInput {
@@ -382,7 +385,7 @@
 
   }
   .offerUsers {
-    height: 620px;
+    height: 100%;
     padding: 0px 20px 20px 20px;
     overflow-x: hidden;
     overflow-y: auto;
@@ -644,7 +647,20 @@
   }
 }
 @media (max-width: 480px) {
-
+  .offer-add-section{
+    margin-bottom: 30px;
+  }
+.offerUsers{
+  margin-bottom: 60px;
+}
+  .salonsOffer{
+    .row{
+      height: unset;
+    }
+  }
+.offer-partner-container{
+  grid-template-columns: 1fr 1fr 1fr !important;
+}
 .get-offer{
   padding-left: 35px;
   padding-right: 35px;
@@ -663,7 +679,7 @@
     width: 100%;
   }
   .offerDetail {
-    height: 617px;
+    height: 524px;
   }
   .user {
     padding: 10px;
@@ -685,14 +701,14 @@
         list-style: none;
         display: flex;
           flex-wrap: wrap;
-        width: 90%;
+        width: 100%;
         margin-left: auto;
         margin-right: auto;
         align-items: center;
 
         padding: 0;
         li{
-          margin: 10px;
+          margin: 4px;
           width: 44%;
           display: flex;
           padding: 7px;
@@ -704,16 +720,16 @@
         }
           .active-filter{
             background: $dark-blue-2;
-            color: $white;
+            color: $yellow-5;
 
           }
           .active-filter-fill{
             background: $dark-blue-2;
-            color: $white;
+            color: $yellow-5;
             svg{
               path,rect,line{
-                stroke:$white;
-                fill: $white;
+                stroke:$yellow-5;
+                fill: $yellow-5;
               }
             }
           }
@@ -756,6 +772,12 @@
   color: $dark-blue-1;
   font-size: 13px;
 }
+.actions{
+  i{
+    font-size: 20px;
+  }
+}
+
 @media (min-width: 481px) and (max-width: 767px) {
 
 }
@@ -785,10 +807,20 @@
           margin-left: 10px;
         }
       }
+      svg{
+        path,rect,line{
+          stroke:$dark-blue-2;
+          fill: $dark-blue-2;
+        }
+      }
       .active-filter{
         background: $dark-blue-2;
         color: $white;
-
+        svg{
+          path,rect,line{
+            stroke:$white;
+          }
+        }
       }
       .active-filter-fill{
         background: $dark-blue-2;
@@ -802,6 +834,7 @@
       }
     }
   }
+
 }
 
 /* Media Query for Laptops and Desktops */
@@ -859,6 +892,7 @@
 }
 
 .dark-mode{
+
   .mobile-filter{
     .filter-icon-fill path, .filter-icon-fill rect, .filter-icon-fill line{
       fill: $white;
@@ -998,4 +1032,9 @@
 }
 .unclickable{
   cursor: not-allowed !important;
+}
+.offerSlider{
+  .homePage-text-section{
+    margin-top: 60px;
+  }
 }

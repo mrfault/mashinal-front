@@ -8,6 +8,7 @@
           @click="open = false"
           v-model="inputValue"
           value-type="format"
+          :inline="inline"
           :popup-style="{ top: '100%', left: 0 }"
           :append-to-body="false"
           :format="dateFormat"
@@ -27,7 +28,9 @@
       </template>
       <template v-else>
         <input
+          ref="input"
           :id="id"
+          :autofocus="autoFocus ? 'autofocus' : ''"
           :type="showPassword ? 'text' : type"
           :placeholder="placeholder"
           :maxlength="maxlength"
@@ -63,8 +66,13 @@
 
   export default {
     props: {
+      inline: {
+        default: false,
+        type: Boolean,
+      },
       value: {},
       id: String,
+      autoFocus: Boolean,
       iconName: String,
       imgSrc: String,
       type: {
@@ -130,6 +138,11 @@
         showPassword: false,
         timeout: -1,
         open:false,
+      }
+    },
+    mounted() {
+      if(this.autoFocus) {
+        this.$refs.input.focus()
       }
     },
     computed: {
