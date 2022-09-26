@@ -2265,7 +2265,6 @@ export default {
   "size_of_old_tire": "Köhnə şinin ölçüsü",
   "size_of_new_tire": "Yeni şinin ölçüsü",
   "result_of_calculation": "Hesablama nəticələri",
-  "dimensions": "Ölçülər",
   "change_noun": "Dəyişiklik",
   "width_of_tire": "Şinin genişliyi (L)",
   "height_of_profile":"Profilin hündürlüyü (H)",

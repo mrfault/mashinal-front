@@ -50,6 +50,7 @@
               :key="car.id"
             >
               <car-item
+                style="margin-right: 10px;"
                 :id="`car_${car.id}`"
                 :car="car"
                 :numerate="index+1"
@@ -134,7 +135,7 @@ export default {
     scrollOps() {
       return {
         scrollPanel: {
-          maxHeight: 400,
+          maxHeight: 295,
         },
       }
     },
