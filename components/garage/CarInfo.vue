@@ -8,7 +8,7 @@
             <span class="w-auto">{{ $t(key) }}</span>
             <span>{{ spec }}<button v-if="key ==='has_insurance'" @click="$nuxt.refresh()"
                                     class="ml-1 btn btn-new-blue">Yenilə</button>
-              <button @click="openDateChangeModal = true" v-if="key ==='insurance_date'" class="ml-1 btn btn-new-blue">Dəyiş</button>
+              <button @click="openDateChangeModal = true" v-if="key ==='insurance_date'" class="ml-1 btn btn-new-blue">{{ $t('change_it') }}</button>
             </span>
           </li>
         </ul>

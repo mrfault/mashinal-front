@@ -38,9 +38,14 @@
       <div class="garage_cars-list mb-2 mb-lg-0">
 
         <div class="row">
-          <vue-scroll style="width: 100%;" :ops="scrollOps">
+          <component :is="isMobileBreakpoint ? 'div' : 'vue-scroll'"
+                     :class="{row : isMobileBreakpoint }"
+                     :style="!isMobileBreakpoint ? 'width: 100%;' : ''"
+                     :ops="scrollOps"
+          >
             <div
-              class="col-6 col-lg-12 lg-xl-6 mb-2 mr-2 mt-1"
+              class="col-6 col-lg-12 lg-xl-6 mb-2 mt-1"
+              :class="{'mr-2':!isMobileBreakpoint }"
               v-for="(car, index) in filteredCars.data"
               :key="car.id"
             >
@@ -52,7 +57,7 @@
                 :active="activeCarId === car.id"
               />
             </div>
-          </vue-scroll>
+          </component>
 
           <div class="col-6 col-lg-12" v-if="isMobileBreakpoint">
             <add-car :has-asan-login="hasAsanLogin" tag="div" />

@@ -2261,5 +2261,11 @@ export default {
    "external-salons": "Авто по заказу",
    "external_commercial":"По заказу коммерческие",
    "external_moto": "Мото по заказу",
-   "alcometer" : "Алкотест"
+   "alcometer" : "Алкотест",
+  "insurance_company":"Компания",
+  "insurance_end_date": "Дата окончания страховки",
+  "pay_status":"Статус штрафа",
+  "already_paid": "оплачено",
+  "change_it": "Изменить"
+
 }
