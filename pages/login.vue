@@ -4,6 +4,11 @@
       <breadcrumbs :crumbs="crumbs" />
       <div class="login-card card no-pd mb-5">
         <div class="row no-gutters scrolling-box">
+          <div v-if="isMobileBreakpoint" class="col-12 col-lg-6 col-xl-4" style="padding: 50px;">
+            <div class="tab-form">
+              <login-tabs @update-tab="tab = $event" :skip-sign-in="true" />
+            </div>
+          </div>
           <div class="col-12 col-lg-6 col-xl-8">
             <div class="login-image">
               <h1>{{ $t('register_question1') }}</h1>
@@ -26,7 +31,7 @@
               />
             </div>
           </div>
-          <div class="col-12 col-lg-6 col-xl-4" style="padding: 50px;">
+          <div v-if="!isMobileBreakpoint" class="col-12 col-lg-6 col-xl-4" style="padding: 50px;">
             <div class="tab-form">
               <login-tabs @update-tab="tab = $event" :skip-sign-in="true" />
             </div>
@@ -92,7 +97,7 @@ export default {
       setTimeout(() => {
         window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })
       }, 1000)
-    } 
+    }
   },
 }
 </script>
