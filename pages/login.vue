@@ -92,13 +92,6 @@ export default {
   beforeDestroy() {
     this.$nuxt.$off('login', this.handleLogin)
   },
-  mounted() {
-    if (this.isMobileBreakpoint) {
-      setTimeout(() => {
-        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })
-      }, 1000)
-    }
-  },
 }
 </script>
 <style lang="scss">
