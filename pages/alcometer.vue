@@ -1,13 +1,17 @@
 <template>
   <div class="pages-catalog pb-5 pb-lg-0">
-    <div class="container  pb-5 pb-lg-0">
+    <div class="container pb-5 pb-lg-0">
       <breadcrumbs :crumbs="crumbs">
         <share-it type="publish" v-if="$route.params.body" />
       </breadcrumbs>
 
       <div class="alco-form" :class="{ 'mb-5': !showGraphs }">
+        <div class="d-flex">
+          <pre>{{ $v.form.drinkType1.$error }}</pre>
+          <pre>{{ $v.form.drinkValue1.$error }}</pre>
+        </div>
         <div class="form-items row">
-          <div class="col-lg-4">
+          <div class="col-lg-4" id="drink1">
             <div
               class="alc-logo d-flex justify-content-center flex-column align-items-center"
             >
@@ -37,18 +41,9 @@
                   :invalid="$v.form.drinkValue1.$error && !disabledDrinkValue1"
                 />
               </div>
-              <div class="mx-1 mt-3">
-                <h4 class="alco-h4 pr-1">{{ $t('your_gender') }}:</h4>
-                <form-switch
-                  class="gender-switcher text-transform-normal"
-                  v-model="form.gender"
-                  :options="genders"
-                  :allowClear="false"
-                />
-              </div>
             </div>
           </div>
-          <div class="col-lg-4">
+          <div class="col-lg-4" id="drink2">
             <div
               class="alc-logo d-flex justify-content-center flex-column align-items-center"
             >
@@ -83,20 +78,9 @@
                   :invalid="$v.form.drinkValue2.$error && !disabledDrinkValue2"
                 />
               </div>
-              <div class="mx-1 mt-3">
-                <h4 class="alco-h4 pr-1">{{ $t('your_weight') }}:</h4>
-                <form-select
-                  class=""
-                  v-model="form.mass"
-                  :options="massOptions"
-                  :allow-clear="false"
-                  :label="$t('weight')"
-                  :clear-option="false"
-                />
-              </div>
             </div>
           </div>
-          <div class="col-lg-4">
+          <div class="col-lg-4" id="drink3">
             <div
               class="alc-logo d-flex justify-content-center flex-column align-items-center"
             >
@@ -130,16 +114,44 @@
                   :invalid="$v.form.drinkValue3.$error && !disabledDrinkValue3"
                 />
               </div>
-              <div class="mx-1 mt-3">
-                <h4 class="alco-h4 pr-1">{{ $t('how_many_hours_passed') }}?</h4>
-                <form-select
-                  v-model="form.time"
-                  :options="hours"
-                  :label="$t('hour')"
-                  :allowClear="false"
-                  :clear-option="false"
-                />
-              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-item row">
+          <div class="col-lg-4">
+            <div class="mx-1 mt-3">
+              <h4 class="alco-h4 pr-1">{{ $t('your_gender') }}:</h4>
+              <form-switch
+                class="gender-switcher text-transform-normal"
+                v-model="form.gender"
+                :options="genders"
+                :allowClear="false"
+              />
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="mx-1 mt-3">
+              <h4 class="alco-h4 pr-1">{{ $t('your_weight') }}:</h4>
+              <form-select
+                class=""
+                v-model="form.mass"
+                :options="massOptions"
+                :allow-clear="false"
+                :label="$t('weight')"
+                :clear-option="false"
+              />
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="mx-1 mt-3">
+              <h4 class="alco-h4 pr-1">{{ $t('how_many_hours_passed') }}?</h4>
+              <form-select
+                v-model="form.time"
+                :options="hours"
+                :label="$t('hour')"
+                :allowClear="false"
+                :clear-option="false"
+              />
             </div>
           </div>
         </div>
@@ -478,12 +490,12 @@ export default {
       drinkValue2: {
         required: requiredIf(function () {
           return this.form.drinkType2
-        })
+        }),
       },
       drinkValue3: {
         required: requiredIf(function () {
           return this.form.drinkType3
-        })
+        }),
       },
     },
   },
@@ -604,9 +616,45 @@ export default {
       this.$v.$touch()
       if (this.$v.$error) {
         this.$toasted.error(this.$t('info_is_not_correct'))
+        this.scrollIntoError()
       } else {
         this.calculate()
       }
+    },
+    scrollIntoError() {
+      if (this.$v.form.drinkType1.$error) {
+        setTimeout(() => {
+          const el = document.querySelector('#drink1')
+          el.scrollIntoView({ block: 'start', behavior: 'smooth' })
+        }, 300)
+      }
+      else if(this.$v.form.drinkValue1.$error && !this.disabledDrinkValue1){
+        setTimeout(() => {
+          const el = document.querySelector('#drink1')
+          el.scrollIntoView({ block: 'start', behavior: 'smooth' })
+        }, 300)
+      }
+
+      else if(this.form.drinkType3 == null || this.form.drinkType3 == ''){
+        setTimeout(() => {
+          const el = document.querySelector('#drink2')
+          el.scrollIntoView({ block: 'start', behavior: 'smooth' })
+        }, 300)
+      }
+      else if(this.$v.form.drinkValue2.$error && !this.disabledDrinkValue2){
+        setTimeout(() => {
+          const el = document.querySelector('#drink2')
+          el.scrollIntoView({ block: 'start', behavior: 'smooth' })
+        }, 300)
+      }
+
+      else if(this.$v.form.drinkValue3.$error && !this.disabledDrinkValue3){
+        setTimeout(() => {
+          const el = document.querySelector('#drink3')
+          el.scrollIntoView({ block: 'start', behavior: 'smooth' })
+        }, 300)
+      }
+
     },
   },
   watch: {
