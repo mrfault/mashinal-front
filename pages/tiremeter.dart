@@ -100,26 +100,26 @@ List<TireSizeChangesModel> a1(int speedometerErrorPercentage) {
     ];
   }
 
-  List<TireSizeChangesModel> a2(int speedometerErrorPercentage) {
-    return [
-      TireSizeChangesModel(
-        isPositive: true,
-        text: 'visual_tire_size_change_result_6',
-      ),
-      TireSizeChangesModel(
-        isPositive: false,
-        text: 'visual_tire_size_change_result_7',
-      ),
-      TireSizeChangesModel(
-        isPositive: false,
-        text: 'visual_tire_size_change_result_7'.translate.replaceFirst(r'$PERCENTAGE', '$speedometerErrorPercentage'),
-      ),
-      TireSizeChangesModel(
-        isPositive: false,
-        text: 'visual_tire_size_change_result_8'.translate.replaceFirst(r'$PERCENTAGE', '$speedometerErrorPercentage'),
-      ),
-    ];
-  }
+List<TireSizeChangesModel> a2(int speedometerErrorPercentage) {
+  return [
+    TireSizeChangesModel(
+      isPositive: true,
+      text: 'visual_tire_size_change_result_6',
+    ),
+    TireSizeChangesModel(
+      isPositive: false,
+      text: 'visual_tire_size_change_result_7',
+    ),
+    TireSizeChangesModel(
+      isPositive: false,
+      text: 'visual_tire_size_change_result_7'.translate.replaceFirst(r'$PERCENTAGE', '$speedometerErrorPercentage'),
+    ),
+    TireSizeChangesModel(
+      isPositive: false,
+      text: 'visual_tire_size_change_result_8'.translate.replaceFirst(r'$PERCENTAGE', '$speedometerErrorPercentage'),
+    ),
+  ];
+}
 
   final List<TireSizeChangesModel> c1 = [
     TireSizeChangesModel(
