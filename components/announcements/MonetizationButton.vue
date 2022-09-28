@@ -136,13 +136,24 @@ export default {
     }),
     totalBalance() {
       let balance = this.user.balance
-      if (this.announcement.is_autosalon)
-        return this.$sum(balance, this.user.autosalon.balance)
-      else if (this.announcement.is_part_salon)
-        return this.$sum(balance, this.user.part_salon.balance)
-      else if (this.announcement.is_external_salon)
-        return this.$sum(balance, this.user.external_salon.balance)
-      return balance
+      if(this.user && this.user.id === this.announcement.user_id) {
+        if (this.announcement.is_autosalon)
+          return this.$sum(balance, this.announcement.user.autosalon.balance)
+        else if (this.announcement.is_part_salon)
+          return this.$sum(balance, this.announcement.user.part_salon.balance)
+        else if (this.announcement.is_external_salon)
+          return this.$sum(balance, this.announcement.user.external_salon.balance)
+        return balance
+      }else {
+        if (this.user.autosalon)
+          return this.$sum(balance, this.user.autosalon.balance)
+        else if (this.user.part_salon)
+          return this.$sum(balance, this.user.part_salon.balance)
+        else if (this.user.external_salon)
+          return this.$sum(balance, this.user.external_salon.balance)
+        return balance
+      }
+
     },
     pricesForPlan() {
       return this.priceList.map((item) => parseFloat(item.price))
