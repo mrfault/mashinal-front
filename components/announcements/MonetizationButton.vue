@@ -137,11 +137,11 @@ export default {
     totalBalance() {
       let balance = this.user.balance
       if (this.announcement.is_autosalon)
-        return this.$sum(balance, this.announcement.user.autosalon.balance)
+        return this.$sum(balance, this.user.autosalon.balance)
       else if (this.announcement.is_part_salon)
-        return this.$sum(balance, this.announcement.user.part_salon.balance)
+        return this.$sum(balance, this.user.part_salon.balance)
       else if (this.announcement.is_external_salon)
-        return this.$sum(balance, this.announcement.user.external_salon.balance)
+        return this.$sum(balance, this.user.external_salon.balance)
       return balance
     },
     pricesForPlan() {
