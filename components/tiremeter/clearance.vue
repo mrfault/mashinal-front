@@ -28,7 +28,7 @@
         />
       </svg>
       <svg
-        width="196"
+        width="100%"
         height="7"
         viewBox="0 0 196 7"
         fill="none"
@@ -50,7 +50,7 @@
         <path d="M1 3L194 2.99998" stroke="#081A3E" stroke-linecap="round" />
       </svg>
     </div>
-    <h6 class="ma-tiremeter-small-title">
+    <h6 class="ma-tiremeter-small-title mt-1">
       {{ value }} {{ $t('char_millimetre') }}
     </h6>
   </div>
