@@ -6,7 +6,7 @@
     <div class="ma-tiremeter__clearance--image">
       <img src="/tiremeter/speedometer.png" alt="" />
     </div>
-    <h6 class="ma-tiremeter-small-title">
+    <h6 class="ma-tiremeter-small-title mt-1">
       {{percententage}} %
     </h6>
   </div>

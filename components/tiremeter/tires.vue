@@ -238,10 +238,45 @@
         stroke-linecap="round"
         stroke-dasharray="3 3"
       />
-      <text class="ma-tiremeter__tires--text" x="150" y="14" fill="#29A53E" v-text="`${firstDiameter} sm <D> ${secondDiameter} sm`"></text>
-      <text class="ma-tiremeter__tires--text" x="150" y="40" fill="#081A3E" v-text="`<R> ${radius} sm`"></text>
-      <text class="ma-tiremeter__tires--text" x="150" y="95" fill="#F81734" v-text="`${firstHeight} sm <H> ${secondHeight} sm`"></text>
-      <text class="ma-tiremeter__tires--text" x="150" y="40" fill="#246EB2" v-text="`<L> ${length} sm`"></text>
+      <text
+        class="ma-tiremeter__tires--text"
+        x="150"
+        y="14"
+        fill="#29A53E"
+        v-text="
+          `${oldExternalDiameter} ${$t('cm')} <D> ${newExternalDiameter} ${$t(
+            'cm',
+          )}`
+        "
+      ></text>
+      <text
+        class="ma-tiremeter__tires--text"
+        x="150"
+        y="55"
+        fill="#081A3E"
+        v-text="
+          `${oldDiscDiameter} ${$t('cm')} <R> ${newDiscDiameter} ${$t('cm')}`
+        "
+      ></text>
+      <text
+        class="ma-tiremeter__tires--text"
+        x="140"
+        y="97"
+        fill="#F81734"
+        v-text="
+          `${oldProfileHeight} ${$t('cm')} <H> ${newProfileHeight} ${$t('cm')}`
+        "
+      ></text>
+      <text
+        class="ma-tiremeter__tires--text"
+        x="150"
+        y="130"
+        fill="#246EB2"
+        v-text="
+          `${oldTireWidth} ${$t('cm')} <L> ${newTireWidth} ${$t('cm')}`
+        "
+      >
+      </text>
       <defs>
         <pattern
           id="pattern0"
@@ -276,31 +311,42 @@
 
 <script>
 export default {
-  props:{
-    firstDiameter:{
+  props: {
+    oldExternalDiameter: {
       type: Number,
       default: 0,
     },
-    secondDiameter:{
+    newExternalDiameter: {
       type: Number,
       default: 0,
     },
-    radius:{
+
+    oldDiscDiameter: {
       type: Number,
       default: 0,
     },
-    firstHeight:{
+    newDiscDiameter: {
       type: Number,
       default: 0,
     },
-    secondHeight:{
+
+    oldProfileHeight: {
       type: Number,
       default: 0,
     },
-    length:{
+    newProfileHeight: {
       type: Number,
       default: 0,
     },
-  }
+
+    oldTireWidth: {
+      type: Number,
+      default: 0,
+    },
+    newTireWidth: {
+      type: Number,
+      default: 0,
+    },
+  },
 }
 </script>

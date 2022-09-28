@@ -157,6 +157,16 @@ export default {
           image: 'alcometer',
           isAvailable: true,
         },
+        {
+          title: this.$t('visual_tire_calculator'),
+          description: null,
+          value: null,
+          icon: 'part-2',
+          url: '/tiremeter',
+          hasAction: false,
+          image: 'car',
+          isAvailable: true,
+        },
       ],
     }
   },

@@ -10,40 +10,87 @@
             <span>{{ $t('visual_tire_calculator') }}</span>
           </h2>
           <div class="row">
-            <div class="col-12 col-md-5 col-lg-3">
+            <div class="col-12 col-md-12 col-lg-5 col-xl-3">
               <div class="ma-tiremeter__card--input-group">
                 <h6 class="ma-tiremeter__card--input-group__title">
                   {{ $t('size_of_old_tire') }}
                 </h6>
-                <form-select :options="tireWidth" :allowClear="false" />
+                <form-select
+                  :options="tireWidth"
+                  :allowClear="false"
+                  :clearOption="false"
+                  v-model="form.tireWidth.old"
+                />
                 <span class="ma-tiremeter__card--input-group__spacer">/</span>
-                <form-select :options="profileWidth" :allowClear="false" />
+                <form-select
+                  :options="profileWidth"
+                  :allowClear="false"
+                  :clearOption="false"
+                  v-model="form.profile.old"
+                />
                 <span class="ma-tiremeter__card--input-group__spacer">R</span>
-                <form-select :options="radius" :allowClear="false" />
+                <form-select
+                  :options="radiusOptions"
+                  :allowClear="false"
+                  :clearOption="false"
+                  v-model="form.radius.old"
+                />
               </div>
               <div class="ma-tiremeter__card--input-group">
                 <h6 class="ma-tiremeter__card--input-group__title">
                   {{ $t('size_of_new_tire') }}
                 </h6>
-                <form-select :options="tireWidth" :allowClear="false" />
+                <form-select
+                  :options="tireWidth"
+                  :allowClear="false"
+                  :clearOption="false"
+                  v-model="form.tireWidth.new"
+                />
                 <span class="ma-tiremeter__card--input-group__spacer">/</span>
-                <form-select :options="profileWidth" :allowClear="false" />
+                <form-select
+                  :options="profileWidth"
+                  :allowClear="false"
+                  v-model="form.profile.new"
+                />
                 <span class="ma-tiremeter__card--input-group__spacer">R</span>
-                <form-select :options="radius" :allowClear="false" />
+                <form-select
+                  :options="radiusOptions"
+                  :allowClear="false"
+                  :clearOption="false"
+                  v-model="form.radius.new"
+                />
               </div>
             </div>
-            <div class="col-12 col-md-7 col-lg-5 pt-5 pt-lg-0 d-flex justify-content-center">
-              <tires></tires>
+            <div
+              class="col-12 col-md-12 col-lg-7 col-xl-5 pt-5 pt-lg-0 d-flex justify-content-center"
+            >
+              <tires
+                :oldExternalDiameter="oldExternalDiameter"
+                :newExternalDiameter="newExternalDiameter"
+                :oldDiscDiameter="oldDiscDiameter / 10"
+                :newDiscDiameter="newDiscDiameter / 10"
+                :oldProfileHeight="oldProfileHeight"
+                :newProfileHeight="newProfileHeight"
+                :oldTireWidth="form.tireWidth.old"
+                :newTireWidth="form.tireWidth.new"
+              ></tires>
             </div>
-            <div class="col-4 col-md-5 col-lg-1">
-              <speedometer/>
+            <div class="col-4 col-md-5 col-lg-5 col-xl-1">
+              <speedometer :percententage="speedometerErrorPercentage" />
             </div>
-            <div class="col-8 col-md-7 col-lg-3">
-              <clearance />
+            <div class="col-8 col-md-7 col-lg-7 col-xl-3">
+              <clearance :value="clearanceChange" />
             </div>
           </div>
         </div>
-        <div class="ma-tiremeter__card">
+
+        <!-- ------------------------------------------------------------------- -->
+        <!-- ------------------------------------------------------------------- -->
+        <!-- ------------------------------------------------------------------- -->
+        <div
+          class="ma-tiremeter__card"
+          v-if="lists.d.length || lists.h.length || lists.l.length"
+        >
           <h2 class="title-with-line full-width mb-2">
             <span>{{ $t('result_of_calculation') }}</span>
           </h2>
@@ -56,47 +103,82 @@
             </tr>
             <tr>
               <td>{{ $t('width_of_tire') }}</td>
-              <td>{{ results.table.tireWidth.old }} {{ $t('char_millimetre') }}</td>
-              <td>{{ results.table.tireWidth.new }} {{ $t('char_millimetre') }}</td>
+              <td>{{ form.tireWidth.old }} {{ $t('char_millimetre') }}</td>
+              <td>{{ form.tireWidth.new }} {{ $t('char_millimetre') }}</td>
               <td>
-                {{ results.table.tireWidth.difference }} {{ $t('char_millimetre') }}
+                {{ form.tireWidth.old - form.tireWidth.new }}
+                {{ $t('char_millimetre') }}
               </td>
             </tr>
             <tr>
               <td>{{ $t('height_of_profile') }}</td>
               <td>
-                {{ results.table.profileHeight.old }} {{ $t('char_millimetre') }}
+                {{ oldProfileHeight * 10 }}
+                {{ $t('char_millimetre') }}
               </td>
               <td>
-                {{ results.table.profileHeight.new }} {{ $t('char_millimetre') }}
+                {{ newProfileHeight * 10 }}
+                {{ $t('char_millimetre') }}
               </td>
               <td>
-                {{ results.table.profileHeight.difference }}
+                {{ profileHeightDifference }}
                 {{ $t('char_millimetre') }}
               </td>
             </tr>
             <tr>
               <td>{{ $t('disc_diameter') }}</td>
-              <td>{{ results.table.discDiameter.old }} {{ $t('char_millimetre') }}</td>
-              <td>{{ results.table.discDiameter.new }} {{ $t('char_millimetre') }}</td>
+              <td>{{ oldDiscDiameter }} {{ $t('char_millimetre') }}</td>
+              <td>{{ newDiscDiameter }} {{ $t('char_millimetre') }}</td>
               <td>
-                {{ results.table.discDiameter.difference }} {{ $t('char_millimetre') }}
+                {{ oldDiscDiameter - newDiscDiameter }}
+                {{ $t('char_millimetre') }}
               </td>
             </tr>
             <tr>
               <td>{{ $t('external_diameter_of_tire') }}</td>
               <td>
-                {{ results.table.externalDiameter.old }} {{ $t('char_millimetre') }}
+                {{ oldExternalDiameter * 10 }}
+                {{ $t('char_millimetre') }}
               </td>
               <td>
-                {{ results.table.externalDiameter.new }} {{ $t('char_millimetre') }}
+                {{ newExternalDiameter * 10 }}
+                {{ $t('char_millimetre') }}
               </td>
               <td>
-                {{ results.table.externalDiameter.difference }}
+                {{ externalDiameterDifference }}
                 {{ $t('char_millimetre') }}
               </td>
             </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td>{{ $t('clearance_change') }}</td>
+              <td>
+                {{ clearanceChange }}
+                {{ $t('char_millimetre') }}
+              </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td>{{ $t('speedometer_error_percentage') }}</td>
+              <td>{{ speedometerErrorPercentage }} %</td>
+            </tr>
           </table>
+          <div class="row mt-5 mt-lg-0" id="tiremeterTextResults">
+            <div class="col-12 col-lg-6">
+              <text-results
+                :listH="lists.h"
+                :listD="lists.d"
+                :listL="lists.l"
+                :errorPercentage="speedometerErrorPercentage"
+              />
+            </div>
+            <div class="col-12 col-lg-6 mt-5 mt-lg-0">
+              <how-to></how-to>
+            </div>
+          </div>
+          <span></span>
         </div>
       </div>
     </div>
@@ -107,11 +189,15 @@
 import Tires from '../components/tiremeter/tires.vue'
 import Speedometer from '~/components/tiremeter/speedometer.vue'
 import Clearance from '~/components/tiremeter/clearance.vue'
+import TextResults from '~/components/tiremeter/textResults.vue'
+import HowTo from '~/components/tiremeter/howTo.vue'
 export default {
   components: {
     Tires,
     Speedometer,
     Clearance,
+    TextResults,
+    HowTo,
   },
   head() {
     return this.$headMeta({
@@ -342,7 +428,7 @@ export default {
           key: 90,
         },
       ],
-      radius: [
+      radiusOptions: [
         { key: 12, name: 'R12' },
         { key: 13, name: 'R13' },
         { key: 14, name: 'R14' },
@@ -383,154 +469,313 @@ export default {
           },
         },
       },
+      oldSpeed: 100,
       form: {
-        oldWidth: null,
+        radius: null,
+        secondHeight: null,
+        length: null,
+        diameter: {
+          old: null,
+          new: null,
+        },
+        tireWidth: {
+          old: 165,
+          new: 165,
+        },
+        profile: {
+          old: 80,
+          new: 70,
+        },
+        radius: {
+          old: 13,
+          new: 18,
+        },
+        old: {
+          radius: null,
+        },
       },
+      lists: {
+        d: [],
+        h: [],
+        l: [],
+      },
+      tiremeterModels: {
+        a1: [
+          {
+            isPositive: true,
+            text: 'visual_tire_size_change_result_1',
+          },
+          {
+            isPositive: false,
+            text: 'visual_tire_size_change_result_2',
+          },
+          {
+            isPositive: false,
+            text: 'visual_tire_size_change_result_3',
+          },
+          {
+            isPositive: false,
+            text: 'visual_tire_size_change_result_4',
+          },
+          {
+            isPositive: false,
+            text: 'visual_tire_size_change_result_5',
+          },
+        ],
+        a2: [
+          {
+            isPositive: true,
+            text: 'visual_tire_size_change_result_6',
+          },
+          {
+            isPositive: false,
+            text: 'visual_tire_size_change_result_7',
+          },
+          {
+            isPositive: false,
+            text: 'visual_tire_size_change_result_8',
+          },
+          {
+            isPositive: false,
+            text: 'visual_tire_size_change_result_9',
+          },
+        ],
+        c1: [
+          {
+            isPositive: true,
+            text: 'visual_tire_size_change_result_10',
+          },
+          {
+            isPositive: true,
+            text: 'visual_tire_size_change_result_11',
+          },
+          {
+            isPositive: false,
+            text: 'visual_tire_size_change_result_12',
+          },
+        ],
 
-      oldA: null,
-      oldAinch: null,
-      oldWidth: null,
-      newA: null,
-      newAinch: null,
-      newWidth: null,
-      difA: null,
+        c2: [
+          {
+            isPositive: true,
+            text: 'visual_tire_size_change_result_13',
+          },
+          {
+            isPositive: false,
+            text: 'visual_tire_size_change_result_14',
+          },
+          {
+            isPositive: false,
+            text: 'visual_tire_size_change_result_15',
+          },
+        ],
 
-      oldC: null,
-      oldRadius: null,
-      newC: null,
-      newRadius: null,
-      difC: null,
+        d1: [
+          {
+            isPositive: true,
+            text: 'visual_tire_size_change_result_16',
+          },
+          {
+            isPositive: true,
+            text: 'visual_tire_size_change_result_17',
+          },
+          {
+            isPositive: true,
+            text: 'visual_tire_size_change_result_18',
+          },
+          {
+            isPositive: false,
+            text: 'visual_tire_size_change_result_19',
+          },
+          {
+            isPositive: false,
+            text: 'visual_tire_size_change_result_20',
+          },
+          {
+            isPositive: false,
+            text: 'visual_tire_size_change_result_21',
+          },
+        ],
 
-      oldD: null,
-      oldProfile: null,
-      newD: null,
-      newProfile: null,
-      difD: null,
-
-      oldB: null,
-      newB: null,
-      difB: null,
+        d2: [
+          {
+            isPositive: true,
+            text: 'visual_tire_size_change_result_22',
+          },
+          {
+            isPositive: true,
+            text: 'visual_tire_size_change_result_23',
+          },
+          {
+            isPositive: true,
+            text: 'visual_tire_size_change_result_24',
+          },
+          {
+            isPositive: false,
+            text: 'visual_tire_size_change_result_25',
+          },
+          {
+            isPositive: false,
+            text: 'visual_tire_size_change_result_26',
+          },
+        ],
+      },
     }
   },
+  computed: {
+    oldExternalDiameter() {
+      return (
+        Math.round(
+          this.form.tireWidth.old * this.form.profile.old * 0.02 +
+            this.form.radius.old * 25.4,
+        ) / 10
+      )
+    },
+    newExternalDiameter() {
+      return (
+        Math.round(
+          this.form.tireWidth.new * this.form.profile.new * 0.02 +
+            this.form.radius.new * 25.4,
+        ) / 10
+      )
+    },
+    externalDiameterDifference() {
+      return (
+        (Math.round(
+          this.oldExternalDiameter * 10 - this.newExternalDiameter * 10,
+        ) /
+          10) *
+        10
+      )
+    },
 
+    // C
+    oldDiscDiameter() {
+      return Math.round(this.form.radius.old * 25.4)
+    },
+    newDiscDiameter() {
+      return Math.round(this.form.radius.new * 25.4)
+    },
+
+    // D
+    oldProfileHeight() {
+      return (
+        Math.round(
+          ((this.oldExternalDiameter - this.oldDiscDiameter / 10) / 2) * 10,
+        ) / 10
+      )
+    },
+    newProfileHeight() {
+      return (
+        Math.round(
+          ((this.newExternalDiameter - this.newDiscDiameter / 10) / 2) * 10,
+        ) / 10
+      )
+    },
+    profileHeightDifference() {
+      return (
+        Math.round(
+          (this.oldProfileHeight * 10 - this.newProfileHeight * 10) * 10,
+        ) / 10
+      )
+    },
+
+    clearanceChange() {
+      return (
+        (Math.round(
+          this.form.tireWidth.new * this.form.profile.new * 0.02 +
+            this.form.radius.new * 25.4,
+        ) -
+          Math.round(
+            this.form.tireWidth.old * this.form.profile.old * 0.02 +
+              this.form.radius.old * 25.4,
+          )) /
+        2
+      )
+    },
+    newSpeed() {
+      return (
+        ((Math.round(
+          this.form.tireWidth.new * this.form.profile.new * 0.02 +
+            this.form.radius.new * 25.4,
+        ) /
+          Math.round(
+            this.form.tireWidth.old * this.form.profile.old * 0.02 +
+              this.form.radius.old * 25.4,
+          )) *
+          this.oldSpeed *
+          100) /
+        100
+      )
+    },
+    speedometerErrorPercentage() {
+      return Math.round(Math.round((this.newSpeed - this.oldSpeed) * 100) / 100)
+    },
+  },
   methods: {
-    calculate() {
-      if (!/d/.test(oldWidth.value)) {
-        // если старый размер в мм
-        var oldWidth2 = oldWidth.value
-        if (oldProfile.value == '0') {
-          var oldProfile2 = '82'
-        } else {
-          var oldProfile2 = oldProfile.value
-        }
+    findTextResults() {
+      var oldD = this.oldProfileHeight
+      var newD = this.newProfileHeight
+      var oldC = this.oldDiscDiameter
+      var newC = this.newDiscDiameter
 
-        oldA.innerHTML = oldWidth2 / 10
-        oldB.innerHTML = ((oldWidth2 * oldProfile2) / 100 / 10).toFixed(1)
-      } else if (/d/.test(oldWidth.value)) {
-        //если старый размер в дюймах
-        var oldWidth2 = oldWidth.value.slice(1)
-        var oldProfile2 = oldProfile.value
+      var oldB = Math.round((oldD - oldC) / 2)
+      var newB = Math.round((newD - newC) / 2)
 
-        oldA.innerHTML = (oldWidth2 * 2.54).toFixed(1)
-        oldB.innerHTML = (oldWidth2 * 2.54).toFixed(1)
+      var f = oldB / 10
+      var g = newB / 10
+
+      var c =
+        Math.round(
+          25.4 * this.form.radius.new +
+            (this.form.tireWidth.new * this.form.profile.new * 2) / 100,
+        ) / 10
+      var b =
+        Math.round(
+          25.4 * this.form.radius.old +
+            (this.form.tireWidth.old * this.form.profile.old * 2) / 100,
+        ) / 10
+
+      if (g > f) {
+        this.lists.h = this.tiremeterModels.c1
+      } else if (f > g) {
+        this.lists.h = this.tiremeterModels.c2
+      }
+
+      console.log('asdas', this.tiremeterModels.a1)
+      console.log('c>b', c > b)
+      console.log('c<b', c < b)
+      if (c > b) {
+        this.lists.d = this.tiremeterModels.a1
+      } else if (b > c) {
+        this.lists.d = this.tiremeterModels.a2
+      }
+
+      if (this.form.tireWidth.old > this.form.tireWidth.new) {
+        this.lists.l = this.tiremeterModels.d2
+      } else if (this.form.tireWidth.new > this.form.tireWidth.old) {
+        this.lists.l = this.tiremeterModels.d1
+      }
+      if (this.isMobileBreakpoint) {
+        setTimeout(() => {
+          const el = document.querySelector('#tiremeterTextResults')
+           el.scrollIntoView({block:'start', behavior: 'smooth'});
+        }, 500)
+
       } else {
-        alert('Некорректно введен старый размер')
-        return
+        setTimeout(() => {
+          const el = document.querySelector('#tiremeterTextResults')
+          window.scrollTo({ top: 800, behavior: 'smooth' })
+        }, 500)
       }
-
-      if (!/d/.test(newWidth.value) && !/d/.test(newProfile.value)) {
-        // если новый размер в мм
-        var newWidth2 = newWidth.value
-        if (newProfile.value == '0') {
-          var newProfile2 = '82'
-        } else {
-          var newProfile2 = newProfile.value
-        }
-
-        newA.innerHTML = newWidth2 / 10
-        newB.innerHTML = Math.round((newWidth2 * newProfile2) / 100) / 10
-      } else if (/d/.test(newWidth.value)) {
-        //если новый размер в дюймах
-        var newWidth2 = newWidth.value.slice(1)
-        var newProfile2 = newProfile.value
-
-        newA.innerHTML = (newWidth2 * 2.54).toFixed(1)
-        newB.innerHTML = (newWidth2 * 2.54).toFixed(1)
-      } else {
-        alert('Некорректно введен новый размер')
-        return
-      }
-
-      oldC.innerHTML = (oldRadius.value * 2.54).toFixed(1)
-      oldCd.innerHTML = oldRadius.value
-      newC.innerHTML = (newRadius.value * 2.54).toFixed(1)
-      newCd.innerHTML = newRadius.value
-      difC.innerHTML = (newC.innerHTML - oldC.innerHTML).toFixed(1)
-
-      oldAinch.innerHTML = (oldA.innerHTML / 2.54).toFixed(1)
-      newAinch.innerHTML = (newA.innerHTML / 2.54).toFixed(1)
-      difA.innerHTML = (newA.innerHTML - oldA.innerHTML).toFixed(1)
-
-      oldBd.innerHTML =
-        ((oldB.innerHTML / oldA.innerHTML) * 100).toFixed(0) + '%'
-      newBd.innerHTML =
-        ((newB.innerHTML / newA.innerHTML) * 100).toFixed(0) + '%'
-      difB.innerHTML = (newB.innerHTML - oldB.innerHTML).toFixed(1)
-
-      oldD.innerHTML = (+oldB.innerHTML * 2 + +oldC.innerHTML).toFixed(1)
-      newD.innerHTML = (+newB.innerHTML * 2 + +newC.innerHTML).toFixed(1)
-      oldDd.innerHTML = (
-        (+oldB.innerHTML * 2 + +oldC.innerHTML) /
-        2.54
-      ).toFixed(1)
-      newDd.innerHTML = (
-        (+newB.innerHTML * 2 + +newC.innerHTML) /
-        2.54
-      ).toFixed(1)
-      difD.innerHTML = (newD.innerHTML - oldD.innerHTML).toFixed(1)
-
-      var difClearense = document.getElementById('difClearense')
-
-      difClearense.innerHTML = (difD.innerHTML / 2).toFixed(1)
-
-      var newSpeed = document.getElementById('newSpeed')
-      var oldSpeed = document.getElementById('oldSpeed')
-      var difSpeed = document.getElementById('difSpeed')
-
-      difSpeed.innerHTML = Math.round(
-        ((newD.innerHTML * 3.14) / (oldD.innerHTML * 3.14) - 1) * 100,
-      )
-      newSpeed.innerHTML = Math.round(
-        +oldSpeed.value + (+oldSpeed.value * +difSpeed.innerHTML) / 100,
-      )
-      var razm1 = newWidth.value
-      var razm2 = newProfile.value
-      var nrazm1 = razm1
-      var nrazm2 = razm2
-      var nrazm22 = razm2
-      var separator = '/'
-      if (razm1.search('d') == '0') {
-        var nrazm1 = razm1.replace('d', '')
-        separator = ''
-        nrazm2 = 'all'
-        nrazm22 = ''
-      }
-      shinlink.innerHTML =
-        "<a href='/mshina-filters?quicktabs_shina_filter=1&grazm1=" +
-        nrazm1 +
-        '&grazm2=' +
-        nrazm2 +
-        '&gradius=' +
-        newRadius.value +
-        "'>Искать шины " +
-        nrazm1 +
-        ' ' +
-        separator +
-        ' ' +
-        nrazm22 +
-        ' R' +
-        newRadius.value +
-        '</a>'
+    },
+  },
+  watch: {
+    form: {
+      deep: true,
+      handler() {
+        this.findTextResults()
+      },
     },
   },
 }
