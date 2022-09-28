@@ -2263,8 +2263,10 @@ export default {
    "external_moto": "Мото по заказу",
    "alcometer" : "Алкотест",
   "insurance_company":"Компания",
-  "insurance_end_date": "Дата окончания страховки",
+  "insurance_end_date": "Дата окончания<br> страховки",
+  "insurance_end_date_text": "Дата окончания страховки",
   "pay_status":"Статус штрафа",
+
   "already_paid": "оплачено",
   "change_it": "Изменить",
 
@@ -2327,5 +2329,9 @@ export default {
   "visual_tire_size_change_result_24": "Уменьшится уровень шума",
   "visual_tire_size_change_result_25": "Ухудшится сцепление с дорогой летом",
   "visual_tire_size_change_result_26": "Сократится срок службы шины",
+
+  "already_paid": "Оплачено",
+  "change_it": "Изменить"
+
 
 }

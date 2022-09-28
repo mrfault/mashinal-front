@@ -104,10 +104,12 @@
           v-if="needToPay"
         />
         <monetization-stats-button
+
           :announcement="announcement"
           v-else-if="!this.isMobileBreakpoint && announcement.has_monetization && $auth.loggedIn && $auth.user.id === announcement.user_id && !needToPay"
         />
         <monetization-button
+          class="mt-2"
           :announcement="announcement"
           @openModal="openModal"
         />

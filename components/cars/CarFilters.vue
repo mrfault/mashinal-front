@@ -103,7 +103,7 @@ export default {
   },
   methods: {
     isMultiple(input) {
-      return this.selectMultiple.includes(input.name) || (!!this.nameInValue && input.type === 'select');
+      return  false; this.selectMultiple.includes(input.name) || (!!this.nameInValue && input.type === 'select');
     },
     getTitle(index) {
       let title = this.titles[index] || '';

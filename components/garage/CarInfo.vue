@@ -5,10 +5,10 @@
       <div class="col" v-for="(specs, i) in mainSpecs" :key="i">
         <ul>
           <li v-for="(spec, key) in specs" :key="key">
-            <span class="w-auto">{{ $t(key) }}</span>
+            <span v-html="$t(key)" class="w-auto"></span>
             <span>{{ spec }}<button v-if="key ==='has_insurance'" @click="$nuxt.refresh()"
                                     class="ml-1 btn btn-new-blue">Yenilə</button>
-              <button @click="openDateChangeModal = true" v-if="key ==='insurance_date'" class="ml-1 btn btn-new-blue">{{ $t('change_it') }}</button>
+              <button @click="openDateChangeModal = true" v-if="key ==='insurance_end_date'" class="ml-1 btn btn-new-blue">{{ $t('change_it') }}</button>
             </span>
           </li>
         </ul>
@@ -20,7 +20,7 @@
     </div>
     <modal-popup
       :toggle="openDateChangeModal"
-      :title="$t('insurance_end_date')"
+      :title="$t('insurance_end_date_text')"
       @close="openDateChangeModal = false"
     >
       <form-select
@@ -112,7 +112,7 @@ export default {
         tech_id: this.car.tech_id,
         brand_model: this.car.mark,
         years: this.car.year,
-        insurance: this.getInsuranceText(this.car.insurance_company_id),
+        insurance_company: this.getInsuranceText(this.car.insurance_company_id),
        // has_insurance: this.car.insurance_id ? this.$t('have') : this.$t('dont_have'),
         insurance_end_date: this.car.insurance_end_date ? this.$moment(this.car.insurance_end_date).format('DD.MM.YYYY') : '00.00.0000',
         auth_date: getDate(this.car.created_date),
