@@ -1,56 +1,77 @@
 <template>
   <div :class="['garage_car-item', { 'car-active': car.status === 1, 'thumb-set': thumbSet, active: active && !isMobileBreakpoint  }]" @click="showInfo">
-    <div :class="['car-bg', {'no-img': !car.thumb && !thumbPending},{ 'car-bg-custom-size': car.is_default_thumb }]"
-         :style="car.thumb && !thumbPending ? { backgroundImage: `url('${$withBaseUrl(car.thumb)}')` } : {}">
-      <div class="car-bg-inner d-flex flex-column justify-content-between" v-if="!thumbSet">
-        <div class="d-flex justify-content-end align-items-center">
-          <button v-if="car.sync_status === 1" class="btn-sq btn-sq--color-red" @click.stop="showDeleteModal = true">
-            <icon name="garbage" />
-            <!-- <inline-svg src="/icons/garbage.svg" :height="14" /> -->
-          </button>
-        </div>
-        <div class="d-flex justify-content-between align-items-center">
-          <button class="btn-sq btn-sq--color-dark-blue-3" @click.stop="thumb.chooseFile()">
-            <!-- <icon name="camera" /> -->
-            <inline-svg src="/icons/camera.svg" :height="14" />
-          </button>
-          <span class="date">{{ carDate }}</span>
-        </div>
-      </div>
-      <loader v-if="thumbPending" />
-      <croppa :class="['croppa-image auto-size']"
-        v-show="thumbSet && !thumbPending" @click.native.stop
-        v-model="thumb" placeholder=""
-        :accept="'image/*'"
-        :canvas-color="'transparent'"
-        :zoom-speed="15"
-        :quality="1"
-        :prevent-white-space="true"
-        :show-remove-button="false"
-        :replace-drop="true"
-        :auto-sizing="true"
-        @new-image="updateThumbImage"
-      >
-        <button class="btn-sq btn-sq--color-dark-blue-3" @click.stop="saveThumb">
-          <icon name="check" />
-        </button>
-        <button class="btn-sq btn-sq--color-dark-blue-3" @click.stop="removeThumb">
-          <icon name="cross" />
-          <!-- <inline-svg src="/icons/cross.svg" height="14" color="#fff"/> -->
-        </button>
-      </croppa>
-    </div>
+<!--    <div :class="['car-bg', {'no-img': !car.thumb && !thumbPending},{ 'car-bg-custom-size': car.is_default_thumb }]"-->
+<!--         :style="car.thumb && !thumbPending ? { backgroundImage: `url('${$withBaseUrl(car.thumb)}')` } : {}">-->
+<!--      <div class="car-bg-inner d-flex flex-column justify-content-between" v-if="!thumbSet">-->
+<!--        <div class="d-flex justify-content-end align-items-center">-->
+<!--          <button v-if="car.sync_status === 1" class="btn-sq btn-sq&#45;&#45;color-red" @click.stop="showDeleteModal = true">-->
+<!--            <icon name="garbage" />-->
+<!--            &lt;!&ndash; <inline-svg src="/icons/garbage.svg" :height="14" /> &ndash;&gt;-->
+<!--          </button>-->
+<!--        </div>-->
+<!--        <div class="d-flex justify-content-between align-items-center">-->
+<!--          <button class="btn-sq btn-sq&#45;&#45;color-dark-blue-3" @click.stop="thumb.chooseFile()">-->
+<!--            &lt;!&ndash; <icon name="camera" /> &ndash;&gt;-->
+<!--            <inline-svg src="/icons/camera.svg" :height="14" />-->
+<!--          </button>-->
+<!--          <span class="date">{{ carDate }}</span>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <loader v-if="thumbPending" />-->
+<!--      <croppa :class="['croppa-image auto-size']"-->
+<!--        v-show="thumbSet && !thumbPending" @click.native.stop-->
+<!--        v-model="thumb" placeholder=""-->
+<!--        :accept="'image/*'"-->
+<!--        :canvas-color="'transparent'"-->
+<!--        :zoom-speed="15"-->
+<!--        :quality="1"-->
+<!--        :prevent-white-space="true"-->
+<!--        :show-remove-button="false"-->
+<!--        :replace-drop="true"-->
+<!--        :auto-sizing="true"-->
+<!--        @new-image="updateThumbImage"-->
+<!--      >-->
+<!--        <button class="btn-sq btn-sq&#45;&#45;color-dark-blue-3" @click.stop="saveThumb">-->
+<!--          <icon name="check" />-->
+<!--        </button>-->
+<!--        <button class="btn-sq btn-sq&#45;&#45;color-dark-blue-3" @click.stop="removeThumb">-->
+<!--          <icon name="cross" />-->
+<!--          &lt;!&ndash; <inline-svg src="/icons/cross.svg" height="14" color="#fff"/> &ndash;&gt;-->
+<!--        </button>-->
+<!--      </croppa>-->
+<!--    </div>-->
     <div class="car-info d-flex justify-content-between align-items-center">
-      <span>{{ $readCarNumberAlternative(car.car_number) }}</span>
-      <div class="text-status text-dark-blue-2" v-if="car.sync_status !== 1">
-        {{ $t('processing') }}
+      <div class="d-flex flex-column w-100">
+        <div class="d-flex w-100 justify-content-between align-items-center">
+          <span>{{ numerate }}) {{ $readCarNumberAlternative(car.car_number) }}</span>
+          <span v-if="car.sync_status !== 1" class="car-item-process">{{ $t('processing') }}</span>
+        </div>
+        <div class="d-flex justify-content-between">
+          <span style="color: #ADB2C8;"><icon style="margin-right: 4px;" name="calendar"/>{{ carDate }}</span>
+          <div>
+            <span v-if="car.status === 1" class="cursor-pointer" :class="{ disabled: thumbSet }" @click.stop="showDeactivateModal = true"><icon name="minus-circle"/></span>
+            <span
+              class="cursor-pointer"
+              v-else-if="car.sync_status === 1"
+              :class="{ pending: pending && !showDeleteModal && !showDeactivateModal && !showPaymentModal, disabled: thumbSet }"
+              @click.stop="showPaymentModal = true">
+              <icon class="color:green;" name="check-circle"/>
+            </span>
+
+            <span class="cursor-pointer" v-if="car.sync_status === 1" @click.stop="showDeleteModal = true"><icon  name="garbage"/></span>
+          </div>
+        </div>
       </div>
-      <button :class="['btn btn--dark-blue-outline', { disabled: thumbSet }]" v-else-if="car.status === 1" @click.stop="showDeactivateModal = true">
-        {{ $t('inactive_make') }}
-      </button>
-      <button :class="['btn btn--green', { pending: pending && !showDeleteModal && !showDeactivateModal && !showPaymentModal, disabled: thumbSet }]" v-else @click.stop="showPaymentModal = true">
-        {{ $t('activate') }}
-      </button>
+
+<!--      <div class="text-status text-dark-blue-2" v-if="car.sync_status !== 1">-->
+<!--        {{ $t('processing') }}-->
+<!--      </div>-->
+<!--      <button :class="['btn btn&#45;&#45;dark-blue-outline', { disabled: thumbSet }]" v-else-if="car.status === 1" @click.stop="showDeactivateModal = true">-->
+<!--        {{ $t('inactive_make') }}-->
+<!--      </button>-->
+<!--      <button :class="['btn btn&#45;&#45;green', { pending: pending && !showDeleteModal && !showDeactivateModal && !showPaymentModal, disabled: thumbSet }]" v-else @click.stop="showPaymentModal = true">-->
+<!--        {{ $t('activate') }}-->
+<!--      </button>-->
     </div>
     <modal-popup
       :toggle="showDeleteModal"
@@ -108,7 +129,22 @@
     />
   </div>
 </template>
-<style scoped>
+<style scoped lang="scss">
+.car-item-process {
+  color: #246EB2;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  &:before {
+    content: '';
+    background: #246EB2;
+    width: 4px;
+    height: 4px;
+    margin-right: 3px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+}
 .alert-warning-del {
   margin-right: 2px;
   margin-left: 2px;
@@ -131,7 +167,8 @@ import { PaymentMixin } from '~/mixins/payment';
 export default {
   props: {
     car: {},
-    active: Boolean
+    active: Boolean,
+    numerate: Number
   },
   mixins: [PaymentMixin],
   data() {
@@ -196,7 +233,7 @@ export default {
           pay_type: this.paymentMethod,
           is_mobile: this.isMobileBreakpoint
         });
-        if (this.paymentMethod === 'card') {
+        if (this.paymentMethod === 'card' && !this.bankingCard) {
           this.pending = false;
           this.showPaymentModal = false;
           this.handlePayment(res, false, this.$t('car_activated'), 'v2');

@@ -3,7 +3,7 @@
     <div class="position-relative" v-if="!protocols.data">
       <loader />
     </div>
-    <protocols-list :protocols="protocols.data" where="car-protocols" v-else />
+    <protocols-list :history="history" :protocols="protocols.data" where="car-protocols" v-else />
   </div>
 </template>
 
@@ -14,7 +14,10 @@ import ProtocolsList from '~/components/garage/ProtocolsList';
 
 export default {
   props: {
-    car: {}
+    car: {},
+    history:{
+      default:0,
+    }
   },
   components: {
     ProtocolsList
@@ -31,7 +34,7 @@ export default {
     })
   },
   async fetch() {
-    await this.getProtocols({ id: this.car.id });
+    await this.getProtocols({ id: this.car.id, history: this.history });
   },
   beforeDestroy() {
     this.resetCarData();

@@ -1,0 +1,146 @@
+.alco-num {
+  margin-top: 25px;
+  margin-bottom: 25px;
+  color: white;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 500;
+  border-radius: 50%;
+  background: #f81734;
+}
+.alco-h4 {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  color: #081a3e;
+}
+.alc-logo {
+  margin-top: 40px;
+}
+.alco-form {
+  background-color: white;
+  border-top: 1px solid #ecf2f9;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+$ma-blue-1: #081a3e;
+
+.ma-alcometer-title-dotted {
+  padding: 0 20px;
+  position: relative;
+  color: $ma-blue-1;
+  font: 500 24px Gilroy;
+  display: inline;
+  text-align: center;
+  &::before,
+  &::after {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    content: '';
+    background: $ma-blue-1;
+  }
+  &::before {
+    left: 0;
+  }
+  &::after {
+    right: 0;
+  }
+}
+.ma-alco-card__bottom {
+  margin-top: 56px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  &--body {
+    padding: 38px 0 52px 0;
+    &--desc {
+      font: 500 20px Gilroy;
+      border-color: $ma-blue-1;
+      text-align: center;
+    }
+    &--value {
+      padding: 10px 10px 5px 10px;
+      background: #ecf2f9;
+      border-radius: 4px;
+      text-align: center;
+      font: 500 20px Gilroy;
+      width: 220px;
+      margin: 18px auto;
+    }
+  }
+}
+.ma-alcometer__graph {
+  width: 100%;
+  height: 250px;
+  margin-bottom: 46px;
+  svg {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+}
+.ma-alcometer__promil--text {
+  font: 500 17px Gilroy;
+}
+
+.dark-mode {
+  .ma-alco-card__bottom--body--value {
+    background: #1c1c1e !important;
+  }
+  .ma-alco-card__bottom--body--desc {
+    color: #081a3e;
+  }
+  .alco-form {
+    background: #242426;
+    border-top: 1px solid #242426;
+  }
+  .ma-alcometer {
+    &-title-dotted {
+      color: #f2eabd;
+      &::before,
+      &::after {
+        background: #f2eabd;
+      }
+    }
+  }
+  .ma-alco-card__bottom--body--desc {
+    color: #fff;
+  }
+  .alco-h4 {
+    color: #fff;
+  }
+  .ma-speedometer-arrow {
+    svg {
+      g {
+        fill: #fff;
+      }
+    }
+  }
+  .ma-alcometer__graph {
+    &--speedometer {
+      svg {
+        .speedometer-division {
+          path {
+            &:not(:first-of-type),&:not(:nth-of-type(1)) {
+              fill: #fff;
+            }
+          }
+        }
+      }
+    }
+    &--promil {
+      path {
+        border: 1px solid #fff;
+      }
+    }
+  }
+}

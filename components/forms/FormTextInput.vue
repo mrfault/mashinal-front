@@ -5,18 +5,21 @@
       <img :src="imgSrc" v-if="imgSrc" :class="{disabled}" />
       <template v-if="inputDate">
         <date-picker
+          ref="datepicker"
+          @click="open = false"
           v-model="inputValue"
           value-type="format"
+          :inline="inline"
           :popup-style="{ top: '100%', left: 0 }"
           :append-to-body="false"
-          :format="'DD.MM.YYYY'"
+          :format="dateFormat"
           :placeholder="placeholder"
+          :type="dateType"
+          :open.sync="open"
           :lang="locale"
           :input-attr="{readonly: 'readonly', id, maxlength, disabled}"
           :input-class="{invalid, valid, disabled, [`${inputClass}`]:inputClass}"
           :disabled-date="disabledDate"
-          @open="showDatepicker(true)"
-          @close="showDatepicker(false)"
         >
           <template #icon-clear>
             <icon name="cross" />
@@ -26,7 +29,9 @@
       </template>
       <template v-else>
         <input
+          ref="input"
           :id="id"
+          :autofocus="autoFocus ? 'autofocus' : ''"
           :type="showPassword ? 'text' : type"
           :placeholder="placeholder"
           :maxlength="maxlength"
@@ -62,13 +67,30 @@
 
   export default {
     props: {
+      inline: {
+        default: false,
+        type: Boolean,
+      },
       value: {},
       id: String,
+      autoFocus: Boolean,
       iconName: String,
       imgSrc: String,
       type: {
         type: String,
         default: 'text'
+      },
+      dateFormat: {
+        type: String,
+        default: 'DD.MM.YYYY'
+      },
+      dateType: {
+        type: String,
+        default: 'date'
+      },
+      valueType: {
+        type: String,
+        default: 'format'
       },
       placeholder: {
         type: String,
@@ -115,7 +137,13 @@
       return {
         prevValue: this.value,
         showPassword: false,
-        timeout: -1
+        timeout: -1,
+        open:false,
+      }
+    },
+    mounted() {
+      if(this.autoFocus) {
+        this.$refs.input.focus()
       }
     },
     computed: {
@@ -124,6 +152,7 @@
           return this.value;
         },
         set(value) {
+
           value = (this.disabled || (this.value.length > this.maxlength)) ? this.value : value;
           this.$emit('input', value);
           // check if value was changed
@@ -136,7 +165,8 @@
     },
     methods: {
       showDatepicker(show) {
-        document.body.classList[show ? 'add' : 'remove']('date-picker-open');
+        this.open = show;
+       // document.body.classList[show ? 'add' : 'remove']('date-picker-open');
       }
     },
     beforeDestroy() {

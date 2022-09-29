@@ -274,7 +274,7 @@ export default {
     },
     handleMessageLinkClick(e) {
       e.preventDefault();
-      this.$router.push(this.$localePath(e.srcElement.pathname));
+      this.$router.push(this.$localePath(e.srcElement.pathname + e.srcElement.search));
     },
     handleTyping() {
       this.toggleTypingStatus();

@@ -3,7 +3,8 @@
     <div class="car-filters_row" v-for="(options, index) in carFilterOptions" :key="options.id">
       <div class="d-flex mb-2 mb-lg-3" @click="$set(collapsed, index, !collapsed[index])">
         <h2 class="title-with-line full-width">
-          <span v-if="popular">{{ $t('popular_options') }}</span>
+          <span v-if="isSearchPage && popular">{{ $t('accordeon_view') }}</span>
+          <span v-else-if="popular">{{ $t('popular_options') }}</span>
           <span v-else>{{ getTitle(index) }}</span>
         </h2>
         <icon :name="`chevron-${collapsed[index] ? 'down' : 'up'}`" class="cursor-pointer" v-if="showIcon || (index==0 && popular)"/>
@@ -83,7 +84,9 @@ export default {
     ...mapGetters(['allSellOptions', 'allSellOptions2', 'popularOptions']),
 
     carFilterOptions() {
-      if (this.popular)
+      if(this.isSearchPage && this.popular)
+        return [this.allSellOptions2.populars];
+      else if (this.popular)
         return [this.popularOptions];
       else if (this.nameInValue)
         return this.allSellOptions2.detailed;
@@ -100,7 +103,7 @@ export default {
   },
   methods: {
     isMultiple(input) {
-      return this.selectMultiple.includes(input.name) || (!!this.nameInValue && input.type === 'select');
+      return  false; this.selectMultiple.includes(input.name) || (!!this.nameInValue && input.type === 'select');
     },
     getTitle(index) {
       let title = this.titles[index] || '';
@@ -146,7 +149,7 @@ export default {
     }else {
       this.$set(this.collapsed, 0, true);
     }
-   
+
   },
   beforeDestroy() {
     this.$nuxt.$off('change-car-filters', this.setValues);

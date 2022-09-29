@@ -1,0 +1,98 @@
+<template>
+  <div>
+    <h2 class="title-with-line full-width mb-2">
+      <span>{{ $t('result_of_tire_size_change') }}</span>
+    </h2>
+    <div class="ma-tiremeter__results-text" v-if="listD.length">
+      <h5 class="ma-tiremeter__results-text--title">
+        {{ $t('result_of_tire_size_change') }}
+        <span class="ma-tiremeter__results-text--title-d">"D"</span>
+      </h5>
+      <h6
+        class="ma-tiremeter__results-text--item"
+        v-for="(item, index) in listD"
+        :key="index + 5465"
+      >
+        <span
+          class="ma-tiremeter__results-text--item-plus"
+          v-if="item.isPositive"
+        >
+          <icon name="plus" />
+        </span>
+        <span class="ma-tiremeter__results-text--item-minus" v-else>
+          <icon name="minus" />
+        </span>
+        {{ $t(item.text).replace("PERCENTAGE",`${errorPercentage}%`) }}
+      </h6>
+    </div>
+    <div class="ma-tiremeter__results-text" v-if="listH.length">
+      <h5 class="ma-tiremeter__results-text--title">
+        {{ $t('result_of_tire_size_change_h') }}
+        <span class="ma-tiremeter__results-text--title-h">"H"</span>
+      </h5>
+      <h6
+        class="ma-tiremeter__results-text--item"
+        v-for="(item, index) in listH"
+        :key="index + 5465"
+      >
+        <span
+          class="ma-tiremeter__results-text--item-plus"
+          v-if="item.isPositive"
+        >
+          <icon name="plus" />
+        </span>
+        <span class="ma-tiremeter__results-text--item-minus" v-else>
+          <icon name="minus" />
+        </span>
+        {{ $t(item.text) }}
+      </h6>
+    </div>
+    <div class="ma-tiremeter__results-text" v-if="listL.length">
+      <h5 class="ma-tiremeter__results-text--title">
+        {{ $t('result_of_tire_size_change_l') }}
+        <span class="ma-tiremeter__results-text--title-d">"L"</span>
+      </h5>
+      <h6
+        class="ma-tiremeter__results-text--item"
+        v-for="(item, index) in listL"
+        :key="index + 5465"
+      >
+        <span
+          class="ma-tiremeter__results-text--item-plus"
+          v-if="item.isPositive"
+        >
+          <icon name="plus" />
+        </span>
+        <span class="ma-tiremeter__results-text--item-minus" v-else>
+          <icon name="minus" />
+        </span>
+        {{ $t(item.text) }}
+      </h6>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  props: {
+    listD: {
+      type: Array,
+      default: () => [],
+    },
+    listH: {
+      type: Array,
+      default: [],
+    },
+    listL: {
+      type: Array,
+      default: [],
+    },
+    errorPercentage:{
+      type: Number,
+      default: 0,
+    }
+  },
+}
+</script>
+
+<style></style>

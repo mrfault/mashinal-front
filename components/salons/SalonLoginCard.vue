@@ -22,7 +22,7 @@
          <span class="d-inline-flex align-items-center">
             <inline-svg v-if="!isShop" class="salon-car-icon" src="/images/car_icon.svg"  />
             <inline-svg v-else class="salon-car-icon" src="/images/settings.svg"  />
-            <span>{{ count }} / {{ salon.possible_announce_count }}</span>
+            <span>{{ count }} <template v-if="salon.possible_announce_count" >/ {{ salon.possible_announce_count }}</template> </span>
          </span>
       <span>{{ $t('detail') }} <icon name="chevron-right" /></span>
     </div>
@@ -35,12 +35,13 @@ import { SalonsMixin } from '~/mixins/salons';
 export default {
   props: {
     salon: {},
-    count:{}
+    count:{},
+    shop: false
   },
   mixins: [SalonsMixin],
   computed: {
     isShop() {
-      return this.routeName.includes('parts')
+      return this.shop;
     },
   }
 }

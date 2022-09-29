@@ -134,8 +134,9 @@
   }
   .add-item {
     position: relative;
-    padding-top: 76.78%;
-    padding-bottom: 79px;
+    padding-bottom: 74px;
+    margin-right: 11px;
+    margin-left: -6px;
     &_inner {
       width: 100%;
       @include abs-middle;
@@ -290,7 +291,7 @@
 .garage_protocol-info {
   display: flex;
   flex-direction: column;
-  height: 630px;
+  min-height: 630px;
 }
 
 .dark-mode {

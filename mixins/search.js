@@ -123,7 +123,7 @@ export const SearchMixin = {
       let searchSame = decodeURIComponent(searchUrl) === decodeURIComponent(this.$route.fullPath);
       this.$emit('pending');
       if (searchSame) {
-        this.$emit('submit');
+          this.$emit('submit');
       } else {
         let prevRouteName = this.routeName;
         this.$router.push(searchUrl, () => {

@@ -13,13 +13,15 @@
         />
       </div>
       <div class="textarea-text">
-        <textarea id="textarea"
-          @keydown="handleKeyDown"
-          :maxlength="1000"
-          :disabled="disabled"
-          :placeholder="!message ? $t('write'):''"
-          v-model="messageValue"
-        />
+        <vue-scroll>
+           <textarea id="textarea"
+                     @keydown="handleKeyDown"
+                     :maxlength="1000"
+                     :disabled="disabled"
+                     :placeholder="!message ? $t('write'):''"
+                     v-model="messageValue"
+           />
+        </vue-scroll>
         <span class="textarea-message text-dark-blue-3" v-if="message">
           <icon name="block" v-if="blocked" />
           {{ message }}
@@ -67,7 +69,7 @@ export default {
         return this.value;
       },
       set(value) {
-        this.$emit('input', (this.disabled || (this.value.length > 1000)) ? this.value : value);
+        this.$emit('input', (this.disabled || (this.value?.length > 1000)) ? this.value : value);
       }
     },
     attachmentsLength() {

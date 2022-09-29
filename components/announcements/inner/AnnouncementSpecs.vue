@@ -1,7 +1,7 @@
 <template>
   <div :class="['vehicle-specs card pt-0 pt-lg-4', {'mb-lg-3': !brief}]">
     <ul>
-      <li v-for="spec in announcementSpecs" :key="spec.key">
+      <li v-for="spec in announcementSpecs" :key="spec.key" v-if="!(announcement.is_external_salon && spec.key === 'customs')">
         <span>
           <icon name="barter" v-if="spec.key === 'exchange'"/>
           <icon name="percent" v-else-if="spec.key === 'credit'"/>
@@ -46,6 +46,7 @@ export default {
       const specs = [
         {key: 'years', value: this.announcement.year, class: 'car-year'},
         {key: 'region', value: this.announcement.region?.name[this.locale]},
+        {key:'country', value:this.announcement[`country_name_${this.locale}`], for:['cars','commercial','moto']},
         {
           key: 'mileage',
           value: this.mileage + (this.announcement.is_new ? ', ' + this.$t('is_new').toLowerCase() : ''),
@@ -64,6 +65,7 @@ export default {
         {key: 'the_number_of_measures', value: this.tact, for: ['moto']},
         {key: 'cylinder_block', value: this.cylinderBlock, for: ['moto']},
         {key: 'fuel_type', value: this.fuelType, for: ['moto']},
+
         {key: 'box', value: this.box},
         {key: 'privod', value: this.gear},
         {key: 'type_of_brakes', value: this.brakeType, for: ['commercial']},
@@ -100,7 +102,10 @@ export default {
         {key: 'commercial_size', value: this.announcement.commercial_size}
 
       ];
-
+      if(this.announcement.is_external_salon)  {
+        let index = specs.findIndex(item => item.key === 'region');
+        delete specs[index]
+      }
       let mergedKeys = [
         'shine_width', 'diameter', 'height'
       ];
@@ -109,6 +114,7 @@ export default {
         height: '',
         diameter: ''
       };
+
       // Dynamic specs
       if (this.type === 'parts') {
         Object.keys(this.announcement.filters).forEach(filter => {

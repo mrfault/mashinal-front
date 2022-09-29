@@ -35,6 +35,7 @@ export const MenusDataMixin = {
         { icon: 'shops-tab', title: 'shops', route: '/parts/shops' },
         { icon: 'catalog-tab', title: 'autocatalog', route: '/catalog' },
         { icon: 'globe', title: 'eservices', route: '/e-services' },
+        { icon: 'external-tab', title: 'external-salons', route: '/external-salons', with_badge: true },
       ]
     },
 
@@ -79,13 +80,16 @@ export const MenusDataMixin = {
       return [
         { title: 'garage', route: '/garage-services', icon: 'garage-tab' },
         { title: 'eservices', route: '/e-services', icon: 'globe' },
+        { title: 'external-salons', route: '/external-salons', with_badge: true },
         { title: 'salons', route: '/salons', icon: 'salons-tab' },
         { title: 'shops', route: '/parts/shops', icon: 'shops-tab' },
         { title: 'autocatalog', route: '/catalog', icon: 'catalog-tab' },
         { title: 'favorites', route: '/profile/favorites', icon: 'favorites-tab' },
+
         { title: 'comparisons', route: '/comparison', icon: 'compare' },
         { title: 'my_searches', route: '/profile/templates', icon: 'template', auth: true },
         { title: 'helper_search', route: '/cars/assistant', icon: 'helper-tab' },
+
         this.pageMenus.find(menu => menu.title === 'feedback')
       ].filter(menu => menu.dev && this.$env.DEV || !menu.dev)
     },
@@ -136,7 +140,7 @@ export const MenusDataMixin = {
 
     hasSearchFilters() {
       return [
-        'salons', 'parts-shops'
+        'salons', 'parts-shops','external-salons'
       ].includes(this.routeName);
     },
 

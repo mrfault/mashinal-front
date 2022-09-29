@@ -79,6 +79,14 @@
               >
                 <span class="badge badge-blue">SHOP</span>
               </template>
+              <template
+                v-if="announcement.is_external_salon && !showStatus"
+              >
+                <span class="badge badge-blue badge-external">
+                  <inline-svg v-if="!isMobileBreakpoint" class="badge-icon" src="/img/auction.svg" />
+                  Sifarişlə
+                </span>
+              </template>
               <template v-if="showStatus">
                 <span class="badge active" v-if="announcement.status == 1">
                   {{ $t('accepted') }}
@@ -156,10 +164,11 @@
       </div>
       <!-- price, title -->
       <div class="item-details">
-        <div class="d-flex">
-          <h3 class="item-details__price">
-            {{ announcement.price }}
+        <div class="d-flex justify-content-between">
+          <h3 class="item-details__price" style="white-space: nowrap;">
+           <span v-if="announcement.is_external_salon"> ≈ </span>{{ announcement.price }}
           </h3>
+          <span style="font-size: 12px;text-align: right;" v-if="announcement.is_external_salon">{{ announcement[`country_name_${locale}`] }}</span>
         </div>
         <h3 class="item-details__title">
 
@@ -246,12 +255,12 @@
           <template v-if="showCheckbox && announcement.status === 1">
             <span>
               <monetization-button
-                v-if="!announcement.has_monetization"
                 :announcement="announcement"
                 class-name="red-outline"
               />
               <monetization-stats-button
-                v-else-if="$auth.user.id === announcement.user_id"
+                class="mt-2"
+                v-if="$auth.user.id === announcement.user_id && announcement.has_monetization"
                 :announcement="announcement"
               />
             </span>
@@ -425,6 +434,17 @@ export default {
 </script>
 
 <style>
+.badge-icon {
+  width: 20px;
+  margin-right: 3px;
+  margin-bottom: 1px;
+  height: 20px;
+}
+.badge-external {
+  margin-right: -17px;
+  border-bottom-right-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+}
 .shine-size {
   margin-left: auto;
 }

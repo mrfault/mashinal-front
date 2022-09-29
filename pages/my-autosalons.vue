@@ -1,8 +1,9 @@
 <template>
   <div class="container">
     <div class="row">
-      <div class="col-12 col-lg-3 my-3" @click="loginToSubAccount(child.id)" v-if="child.autosalon" v-for="child in user.children">
-        <salon-login-card :count="child.announcements_count" :salon="child.autosalon" />
+      <div class="col-12 col-lg-3 my-3" @click="loginToSubAccount(child.id, child.part_salon)"  v-for="child in user.children">
+        <salon-login-card v-if="child.autosalon" :count="auto_count(child)" :salon="child.autosalon" :shop="false" />
+        <salon-login-card v-if="child.part_salon" :count="child.parts_count" :salon="child.part_salon" :shop="true" />
       </div>
     </div>
   </div>
@@ -27,7 +28,10 @@ export default {
     });
   },
   methods: {
-    loginToSubAccount(user_id) {
+    auto_count(user) {
+     return user.announcements_count + user.moto_atvs_count + user.motorcycles_count + user.scooters_count;
+    },
+    loginToSubAccount(user_id,shop) {
       this.$axios
         .$post('/login_sub_account', {
           sub_account_id: user_id
@@ -39,7 +43,8 @@ export default {
           this.$nuxt.$emit('login', true)
 
           this.$nuxt.$emit('closeModal')
-          await this.$router.push('/dashboard/1')
+          if(shop) await this.$router.push('/dashboard/2')
+          else await this.$router.push('/dashboard/1')
         })
         .catch((err) => {})
     }

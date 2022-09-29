@@ -3,15 +3,15 @@
     <div class="card-left-offset"></div>
     <div class="card with-btns">
       <div class="card-btns">
-        <form-buttons :options="getMileageOptions" :group-by="3" v-model="form.announce_type" 
-          :btn-class="!isMobileBreakpoint ? 'pale-red-outline btn--merged' : 'pale-red-outline'" 
+        <form-buttons :options="getMileageOptions" :group-by="3" v-model="form.announce_type"
+          :btn-class="!isMobileBreakpoint ? 'pale-red-outline btn--merged' : 'pale-red-outline'"
           :row-class="!isMobileBreakpoint ? 'no-gutters' : ''" @change="searchAutosalons()" />
       </div>
       <div class="row mb-n2 mb-lg-n3">
-        <template v-if="where === 'transport'">
+        <template v-if="['transport','external-transport'].includes(where)">
           <div class="col-12 mb-2 col-lg-4 col-xl-1-5">
             <form-select :label="$t('mark')" :options="brands" v-model="form.brand_id"
-              :clear-option="!isMobileBreakpoint" :popular-options="isMobileBreakpoint ? [129,483,8,1,767,117] : undefined" 
+              :clear-option="!isMobileBreakpoint" :popular-options="isMobileBreakpoint ? [129,483,8,1,767,117] : undefined"
               @change="setBrand($event, 0), searchAutosalons()" has-search
               :img-key="isMobileBreakpoint ? 'transformed_media' : ''" :img-placeholder="`/logos/car-${colorMode}.svg`" />
           </div>
@@ -23,14 +23,14 @@
             <form-select :label="$t('generation')" :options="carGenerations[0]" v-model="form.generation_id"
               :disabled="form.model_id && !carGenerations[0].length" has-search has-generations @change="searchAutosalons()" />
           </div>
-          <div class="col-12 mb-2 col-lg-5 col-xl-2-5">
+          <div v-if="showBarter" class="col-12 mb-2 col-lg-5 col-xl-2-5">
             <div :class="['row', {'checkbox-row': short}]">
               <div class="col-6 col-lg-6">
-                <form-checkbox :label="$t('barter')" v-model="form.barter" 
+                <form-checkbox :label="$t('barter')" v-model="form.barter"
                   input-name="barter" icon-name="barter" @change="searchAutosalons()" :has-tooltip="short" :transparent="isMobileBreakpoint"/>
               </div>
               <div class="col-6 col-lg-6">
-                <form-checkbox :label="$t('credit')" v-model="form.credit" 
+                <form-checkbox :label="$t('credit')" v-model="form.credit"
                   input-name="credit" icon-name="percent" @change="searchAutosalons()" :has-tooltip="short" :transparent="isMobileBreakpoint"/>
               </div>
             </div>
@@ -38,12 +38,12 @@
         </template>
         <template v-else-if="where === 'parts'">
           <div class="col-12 col-lg-4-5 mb-2 mb-lg-3">
-            <form-text-input 
-              v-model="form.text" 
-              icon-name="search" 
+            <form-text-input
+              v-model="form.text"
+              icon-name="search"
               block-class="placeholder-lighter"
               :placeholder="$t('parts_name')"
-              @change="searchAutosalons()" 
+              @change="searchAutosalons()"
             />
           </div>
           <div class="col-12 col-lg-1-5 mb-2 mb-lg-3">
@@ -52,9 +52,9 @@
               @clear="form.price_from = '', form.price_to = '', searchAutosalons()"
             >
               <div class="form-merged">
-                <form-numeric-input :placeholder="$t('from')" v-model="form.price_from" 
+                <form-numeric-input :placeholder="$t('from')" v-model="form.price_from"
                   @change="searchAutosalons()"/>
-                <form-numeric-input :placeholder="$t('to')" v-model="form.price_to" 
+                <form-numeric-input :placeholder="$t('to')" v-model="form.price_to"
                   @change="searchAutosalons()"/>
               </div>
             </form-select>
@@ -74,6 +74,10 @@ import { mapGetters, mapActions } from 'vuex';
 export default {
   props: {
     short: Boolean,
+    showBarter: {
+      type: Boolean,
+      default: true,
+    },
     where: {
       type: String,
       default: 'transport'
@@ -124,9 +128,10 @@ export default {
       }
       this.pending = true;
       try {
-        await this.getSalonsList({ 
-          type: this.where === 'transport' ? 1 : 2, 
-          params: this.$queryParams(this.form, true) 
+        let type = this.where === 'external-transport' ? 3 : (this.where === 'transport' ? 1 : 2)
+        await this.getSalonsList({
+          type: type,
+          params: this.$queryParams(this.form, true)
         });
         this.$nuxt.$emit('search-salons', runOnMobile);
         this.pending = false;

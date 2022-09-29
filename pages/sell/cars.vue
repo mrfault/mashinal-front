@@ -115,6 +115,9 @@ export default {
       showLastStep: false,
       lastStepKey: 0,
       form: {
+        end_date: '',
+        auction: 1,
+        country_id: null,
         car_catalog_id: '',
         brand: '',
         model: '',
@@ -135,6 +138,7 @@ export default {
         mileage: '',
         mileage_measure: 1,
         region_id: 1,
+
         address: '',
         lat: 0,
         lng: 0,

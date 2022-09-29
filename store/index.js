@@ -1,11 +1,14 @@
 import _ from '~/lib/underscore'
 import { mutate, reset } from '~/lib/vuex-helpers/mutations'
+import offer from "~/components/offer/offer";
+
 
 const getInitialState = () => ({
   loading: true,
   colorMode: 'light',
   partAnnouncements:{},
   breakpoint: null,
+  newOfferCount:0,
   ptk: null,
   temporaryLazyData:[],
   temporaryLazyDataB:[],
@@ -137,6 +140,7 @@ const getInitialState = () => ({
   selectedVehiclesPrice: 0,
   offers:[],
   offer:null,
+  current_offer_id:null,
   OffersAcceptedByAutoSalon:{},
   offerMessages:[],
   isFavorite:false,
@@ -303,6 +307,7 @@ export const getters = {
   getOfferPartners:(s)=>s.offerPartners,
   getOfferPartnersMeta:(s)=>s.offerPartnersMeta,
   getOffer:(s)=>s.offer,
+  getNewOfferCount:(s)=>s.newOfferCount,
 
 }
 
@@ -1203,12 +1208,21 @@ export const actions = {
     ])
   },
   async getAllOffers({commit},param='all') {
-   const { data} =await this.$axios.$get(`/offer/salon/offer/all?param=`+param)
-    commit('mutate', { property: 'offers', value: data })
+   const data =await this.$axios.$get(`/offer/salon/offer/all?param=`+param)
+    commit('mutate', { property: 'offers', value: data.data })
+    commit('mutate', { property: 'newOfferCount', value: data.count })
   },
   async getOffer({commit}, payload){
     const {data} =await  this.$axios.get('/offer/offer-detail/'+payload.id+'/'+payload.type);
     commit('mutate',{property:'offer',value:data})
+    console.log(data)
+    if (data.data.id){
+      commit('mutate',{property:'current_offer_id',value:data.data.id})
+    }else{
+      commit('mutate',{property:'current_offer_id',value:data.data.offer.id})
+    }
+
+
   },
 
   async salonAcceptOffer({},{id}){
@@ -1223,8 +1237,10 @@ export const actions = {
 
   },
   async OffersAcceptedByAutoSalon({commit},param='all'){
-    const {data} =await this.$axios.$get('/offer/user/offers-accepted-by-auto-salon/'+param)
-    commit('mutate', { property: 'OffersAcceptedByAutoSalon', value: data })
+    const data =await this.$axios.$get('/offer/user/offers-accepted-by-auto-salon/'+param)
+    commit('mutate', { property: 'OffersAcceptedByAutoSalon', value: data.data })
+    commit('mutate', { property: 'newOfferCount', value: data.count })
+
   },
 
   async offerPartners({commit},page=1){

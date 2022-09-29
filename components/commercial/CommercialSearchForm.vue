@@ -39,12 +39,12 @@
       <component :is="isMobileBreakpoint ? 'transition-expand' : 'div'">
         <div class="row" v-if="!isMobileBreakpoint || !collapsed">
           <div class="col-6 col-lg-2 mb-2 mb-lg-3">
-            <form-select :label="$t('years')" custom 
+            <form-select :label="$t('years')" custom
               :values="{from: form.year_from, to: form.year_to, read: false }"
               @clear="form.year_from = '', form.year_to = ''"
             >
               <div class="form-merged">
-                <form-select :label="$t('from')" :options="getYearOptions(false, form.year_to)" v-model="form.year_from" 
+                <form-select :label="$t('from')" :options="getYearOptions(false, form.year_to)" v-model="form.year_from"
                   :show-label-on-select="false" :clear-option="false" in-select-menu />
                 <form-select :label="$t('to')" :options="getYearOptions(form.year_from, false)" v-model="form.year_to"
                   :show-label-on-select="false" :clear-option="false" in-select-menu />
@@ -68,11 +68,11 @@
             <form-select :label="$t('city')" :options="sellOptions.regions" v-model="form.region" has-search />
           </div>
           <div class="col-6 col-lg-2 mb-2 mb-lg-3">
-            <form-checkbox :label="$t('barter')" v-model="form.exchange_possible" 
+            <form-checkbox :label="$t('barter')" v-model="form.exchange_possible"
               input-name="exchange_possible" icon-name="barter" />
           </div>
           <div class="col-6 col-lg-2 mb-2 mb-lg-3">
-            <form-checkbox :label="$t('credit')" v-model="form.credit" 
+            <form-checkbox :label="$t('credit')" v-model="form.credit"
               input-name="credit" icon-name="percent" />
           </div>
           <div class="col-6 col-lg-2 mb-2 mb-lg-3" v-if="!isMobileBreakpoint">
@@ -99,8 +99,16 @@
                         <form-select :label="$t('customs')" v-model="form.customs" :options="getCustomsOptions"
                           :show-label-on-select="false" />
                       </div>
+                      <div class="col-6 col-lg-2 mb-2 mb-lg-3">
+                        <form-checkbox
+                          :label="$t('external_commercial')"
+                          v-model="form.external_salon"
+                          input-name="savedSearch"
+                        />
+                      </div>
                     </template>
                   </commercial-filters>
+
                 </div>
                 <div class="col-12 mb-2 mb-lg-0">
                   <color-options v-model="form.colors" hide-matt />
@@ -162,7 +170,7 @@ import CommercialFilters from '~/components/commercial/CommercialFilters';
 import ColorOptions from '~/components/options/ColorOptions';
 
 export default {
-  components: { 
+  components: {
     CommercialFilters,
     ColorOptions
   },
@@ -179,6 +187,7 @@ export default {
     return {
       rows: ['0'],
       form: {
+        external_salon: false,
         sorting: 'created_at_desc',
         additional_brands: { 0: {}, 1: {}, 2: {}, 3: {}, 4: {} },
         com_type: this.category.id || '',

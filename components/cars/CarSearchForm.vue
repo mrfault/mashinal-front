@@ -334,6 +334,16 @@
                     input-name="with_video"
                   />
                 </div>
+                <div
+                  class="col-6 col-lg-3 mb-2 mb-lg-3"
+                  v-if="isMobileBreakpoint"
+                >
+                  <form-checkbox
+                    :label="$t('external_salon')"
+                    v-model="form.external_salon"
+                    input-name="external_salon"
+                  />
+                </div>
               </div>
             </component>
           </div>
@@ -477,6 +487,13 @@
                 input-name="with_video"
               />
             </div>
+            <div class="col-6 col-lg-2 mb-2 mb-lg-3" v-if="!isMobileBreakpoint">
+              <form-checkbox
+                :label="$t('external_salon')"
+                v-model="form.external_salon"
+                input-name="external_salon"
+              />
+            </div>
             <div class="col-12">
               <color-options
                 v-model="form.colors"
@@ -489,6 +506,7 @@
                 :is-search-page="isSearchPage"
                 :values="form.all_options"
                 name-in-value
+                popular
                 @change-filter="setCarFilter"
               />
             </div>
@@ -543,6 +561,7 @@
             </div>
             <div class="col-lg-12 col-xl-8" v-else>
               <div class="row">
+
                 <template v-if="!advanced && !assistant && !isMobileBreakpoint">
                   <div class="col-lg-3 mb-lg-0">
                     <form-select
@@ -582,11 +601,22 @@
                     class="col-6 col-lg-3 mb-2 mb-lg-3"
                     v-if="!isMobileBreakpoint && !advanced"
                   >
+                      <form-checkbox
+                        :label="$t('external_salon')"
+                        v-model="form.external_salon"
+                        input-name="external_salon"
+                      />
+                  </div>
+                  <div
+                    class="col-6 col-lg-3 mb-2 mb-lg-3"
+                    v-if="!isMobileBreakpoint && !advanced"
+                  >
                     <div class="form-info text-green">
                       {{ $readPlural(totalCount, $t('plural_forms_announcements')) }}
                     </div>
                   </div>
                 </template>
+
                 <template v-if="!onlySavedSearch">
                   <div
                     class="col-lg-3 mt-2 mt-lg-0 mb-3"
@@ -636,7 +666,7 @@
                   <button
                     type="button"
                     :class="['btn', 'full-width', 'btn--green', { pending }]"
-                    @click="submitForm"
+                    @click="submitForm()"
                   >
                     <icon name="search" />
                     {{ $t('find') }}
@@ -916,6 +946,7 @@ export default {
         exclude_additional_brands: { 0: {}, 1: {}, 2: {}, 3: {}, 4: {} },
         all_options: {},
         announce_type: 1,
+        external_salon: false,
         currency: 1,
         min_capacity: '',
         max_capacity: '',

@@ -16,7 +16,7 @@
                 {{ $readNumber(totalBalance) }} ALManat
               </strong>
               <p v-if="!isMobileBreakpoint">{{ $t('wallet_balance') }}</p>
-              <template v-if="user.autosalon || user.part_salon">
+              <template v-if="user.autosalon || user.part_salon || user.external_salon">
                 <hr />
                 <div class="row justify-content-center">
                   <div class="col-12 text-medium mb-1">
@@ -29,6 +29,10 @@
                   <div class="col-auto text-medium" v-if="user.part_salon">
                     {{ $t('shop') }}:
                     {{ $readNumber(user.part_salon.balance) }} ALM
+                  </div>
+                  <div class="col-auto text-medium" v-if="user.external_salon">
+                    {{ $t('salon') }}:
+                    {{ $readNumber(user.external_salon.balance) }} ALM
                   </div>
                 </div>
               </template>
@@ -174,7 +178,10 @@
                 <span class="payment-service">
                     <span>{{ $t(row.operation_key) }} </span> &nbsp;
                    <template v-if="row.what_bought && row.what_bought_type === 'App\\GarageCar'">
-                     <nuxt-link :to="$localePath('/garage')">( {{ row.what_bought.car_number }} )</nuxt-link>
+                     <nuxt-link :to="$localePath('/garage?id='+row.what_bought_id)">( {{ row.what_bought.car_number }} )</nuxt-link>
+                  </template>
+                   <template v-else-if="row.what_bought && ['App\\Announcement'].includes(row.what_bought_type)">
+                    ( <nuxt-link :to="$localePath('/cars/announcement/'+row.what_bought.id_unique)">{{ row.what_bought.id_unique }}</nuxt-link> )
                   </template>
                   <template v-else-if="row.what_bought && ['App\\Motorcycle','App\\Scooter','App\\MotoAtv'].includes(row.what_bought_type)">
                     ( <nuxt-link :to="$localePath('/moto/announcement/'+row.what_bought.id_unique)">{{ row.what_bought.id_unique }}</nuxt-link> )
@@ -292,6 +299,7 @@ export default {
         this.user.balance,
         this.user.autosalon?.balance || 0,
         this.user.part_salon?.balance || 0,
+        this.user.external_salon?.balance || 0,
       )
     },
   },

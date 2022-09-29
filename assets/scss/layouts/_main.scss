@@ -25,10 +25,12 @@ body {
   flex-direction: column;
   @include calc-vh(min-height, calc(100vh));
   min-width: 320px;
+  scroll-behavior: smooth !important;
 }
 
 main {
   position: relative;
+  padding-bottom: 92px;
 }
 
 .container {

@@ -34,19 +34,35 @@
       </div>
     </div>
     <div class="col-12 col-lg-1-5" v-show="!carChosen || !isMobileBreakpoint">
+
       <div class="garage_cars-list mb-2 mb-lg-0">
-        <div class="row">
-          <div
-            class="col-6 col-lg-12 lg-xl-6"
-            v-for="car in filteredCars.data"
-            :key="car.id"
+
+        <div :class="{row : !isMobileBreakpoint }" v-if="filteredCars.data.length">
+          <client-only>
+           <component :is="isMobileBreakpoint ? 'div' : 'vue-scroll'"
+                     :class="{row : isMobileBreakpoint }"
+                      ref="vs"
+                      :key="vsKey"
+                      :style="!isMobileBreakpoint ? 'width: 100%;' : ''"
+                     :ops="scrollOps"
           >
-            <car-item
-              :car="car"
-              @set-active="updateActiveCar"
-              :active="activeCarId === car.id"
-            />
-          </div>
+            <div
+              class="col-6 col-lg-12 lg-xl-6 mb-2 mt-1"
+              :class="{'mr-2':!isMobileBreakpoint }"
+              v-for="(car, index) in filteredCars.data"
+              :key="car.id"
+            >
+              <car-item
+                style="margin-right: 10px;"
+                :id="`car_${car.id}`"
+                :car="car"
+                :numerate="index+1"
+                @set-active="updateActiveCar"
+                :active="activeCarId === car.id"
+              />
+            </div>
+          </component>
+          </client-only>
           <div class="col-6 col-lg-12" v-if="isMobileBreakpoint">
             <add-car :has-asan-login="hasAsanLogin" tag="div" />
           </div>
@@ -56,7 +72,7 @@
     <div class="col-12 col-lg-4-5">
       <div
         class="card with-margins"
-        v-if="activeCar"
+        v-if="activeCar && !history"
         v-show="carChosen || !isMobileBreakpoint"
       >
         <p class="p-title">{{ $t('about') }}</p>
@@ -64,12 +80,14 @@
       </div>
 
       <div
-        class="card with-margins mt-4"
+        class="card with-margins"
+        :class="{'mt-4':!history }"
         v-if="activeCar"
         v-show="carChosen || !isMobileBreakpoint"
       >
         <p class="p-title">{{ $t('fines') }}</p>
         <car-protocols
+          :history="history ? 1 : 0"
           :car="activeCar"
           :key="'fines_' + activeCar.id"
           v-if="activeCar.car_id"
@@ -97,7 +115,13 @@ export default {
     CarProtocols,
   },
   mixins:[asan_login],
-  props: ['filter_car_number'],
+  props: {
+    filter_car_number:{},
+    history: {
+      type: Boolean,
+      default: false,
+    }
+  },
   data() {
     let activeCars = this.$store.state.garage.cars.data?.filter(
       (car) => car.status === 1 && car.sync_status === 1,
@@ -105,12 +129,20 @@ export default {
     return {
       hasAsanLogin: false,
       tab: 'info',
+      vsKey: 0,
       activeCarId: activeCars[0]?.id || '',
       showNoActiveCarsAlert: true,
       carChosen: false,
     }
   },
   computed: {
+    scrollOps() {
+      return {
+        scrollPanel: {
+          maxHeight: 400,
+        },
+      }
+    },
     ...mapGetters({
       cars: 'garage/cars',
     }),
@@ -144,6 +176,11 @@ export default {
     } else {
       this.hasAsanLogin = false
     }
+    if(this.$route.query.id) {
+      this.updateActiveCar(Number(this.$route.query.id))
+    }
+    setTimeout(() => this.vsKey++ , 1);
+
   },
   methods: {
     updateActiveCar(id) {

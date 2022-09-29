@@ -605,7 +605,7 @@
   }
 
   .mx-time {
-    background: $white;
+    background: #242426 !important;
   }
 
   .mx-time + .mx-time {
@@ -915,33 +915,6 @@
       [class*='balloon__layout'],
       [class*='balloon__tail'] {
         box-shadow: $shadow-dark-2 !important;
-      }
-
-      [class*='balloon__close-button'] {
-        &::after {
-          color: $white;
-        }
-        &:hover::after {
-          color: $yellow-1;
-        }
-      }
-
-      [class*='islets_card'] {
-        color: $white !important;
-      }
-
-      [class*='organization-rating'] {
-        color: $white !important;
-      }
-
-      [class*='-link'],
-      [class*='__link'] {
-        color: $yellow-1 !important;
-      }
-
-      [class*='button-text'],
-      [class*='copyright__link'] {
-        color: $dark-1 !important;
       }
 
       [class*='__separator'] {

@@ -1,6 +1,6 @@
 <template>
   <portal to="backdrop">
-    <div class="backdrop" @click.stop="$emit('click')">
+    <div :class="backdropClass" class="backdrop" @click.stop="$emit('click')">
       <div class="container">
         <slot :show="show" />
       </div>
@@ -10,6 +10,7 @@
 
 <script>
 export default {
+  props:['backdropClass'],
   data() {
     return {
       show: false

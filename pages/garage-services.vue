@@ -1,5 +1,5 @@
 <template>
-  <div class="pages-dashboard pt-2 pt-lg-5">
+  <div class="pages-dashboard pt-2 pt-lg-5 mb-5 pb-5">
     <div class="container d-flex flex-wrap">
       <breadcrumbs :crumbs="crumbs"/>
       <template v-for="(item, index) in garageServices">
@@ -169,7 +169,7 @@ export default {
           url: '/dashboard/1',
           hasAction: false,
           image: 'saloon-dashboard',
-          isAvailable: !!this.$auth.user.autosalon,
+          isAvailable: !!this.$auth.user.autosalon && !this.$auth.user.external_salon,
         },
         {
           type: 9,
@@ -213,7 +213,7 @@ export default {
           url: '/business-profile',
           hasAction: false,
           image: 'createshop',
-          isAvailable: true,
+          isAvailable: !this.$auth.user.external_salon,
         },
         {
           type: 14,
@@ -225,6 +225,17 @@ export default {
           hasAction: false,
           image: 'createshop',
           isAvailable: true,
+        },
+        {
+          type: 15,
+          title: `${this.$t('dashboard_external_salon')}`,
+          description: null,
+          value: null,
+          icon: 'salons-tab',
+          url: '/dashboard/3',
+          hasAction: false,
+          image: 'saloon-dashboard',
+          isAvailable: !!this.$auth.user.external_salon,
         },
       ]
     },

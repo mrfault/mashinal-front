@@ -61,11 +61,12 @@
           v-if="
             contact.user.active_announcements_count > 1 ||
             announcement.is_part_salon ||
-            announcement.is_autosalon
+            announcement.is_autosalon ||
+            announcement.is_external_salon
           "
         >
           <span v-if="announcement.is_part_salon">{{ $t('go_to_shop') }}</span>
-          <span v-else-if="announcement.is_autosalon">
+          <span v-else-if="announcement.is_autosalon || announcement.is_external_salon">
             {{ $t('go_to_salon') }}
           </span>
           <span v-else>{{ $t('other_announcements_of_user') }}</span>
@@ -103,12 +104,13 @@
           v-if="needToPay"
         />
         <monetization-stats-button
+
           :announcement="announcement"
           v-else-if="!this.isMobileBreakpoint && announcement.has_monetization && $auth.loggedIn && $auth.user.id === announcement.user_id && !needToPay"
         />
         <monetization-button
+          class="mt-2"
           :announcement="announcement"
-          v-if=" !announcement.has_monetization && !needToPay"
           @openModal="openModal"
         />
       </div>
@@ -120,12 +122,12 @@
         !(announcement.is_autosalon && announcement.status == 3)
       "
     >
-      <hr :class="{ 'mt-3': announcement.status == 3 }"  v-if="showEditButton(announcement) || showDeactivateButton(announcement) || announcement.status == 3"/>
+      <hr :class="{ 'mt-3': announcement.status == 3 }"  v-if="showEditButton(announcement) || showDeactivateButton(announcement) || announcement.status == 3 && !announcement.is_external_salon"/>
       <div class="row mt-n2 mt-lg-n3">
         <div class="col mt-2 mt-lg-3">
           <restore-button
             :announcement="announcement"
-            v-if="userIsOwner(announcement) && announcement.status == 3"
+            v-if="userIsOwner(announcement) && announcement.status == 3 && !announcement.is_external_salon"
             :free="true"
           />
           <deactivate-button

@@ -50,7 +50,7 @@ export default {
 
     },
     getTitle(item) {
-      const { brand, model, generation } = {...this.$route.params};
+      const { brand, model, generation } = {...this.$route.query};
       if (model) {
         if (generation)
           return item?.car_type.name[this.locale];
@@ -61,7 +61,7 @@ export default {
       }
     },
     getLink(item) {
-      const { brand, model, generation } = {...this.$route.params};
+      const { brand, model, generation } = {...this.$route.query};
       const { filter } = {...this.$route.query}
       let path = model
         ? (generation ? `/catalog/${brand}/${model}/${generation}/${item.car_type_id}` : `/catalog/${brand}/${model}/${item.id}`)
@@ -69,7 +69,7 @@ export default {
       return filter ? `${path}?filter=${filter}` : path;
     },
     getImage(item) {
-      const { model, generation } = {...this.$route.params};
+      const { model, generation } = {...this.$route.query};
       if (!model) {
         return item?.transformed_media ? this.$withBaseUrl(item.thumb || item.transformed_media) : false;
       } else {
