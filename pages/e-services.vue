@@ -165,7 +165,7 @@ export default {
           url: '/tiremeter',
           hasAction: false,
           image: 'car',
-          isAvailable: true,
+          isAvailable: false,
         },
       ],
     }
