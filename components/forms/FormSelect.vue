@@ -106,7 +106,14 @@
             <div class="container" v-if="custom">
               <slot />
             </div>
-            <vue-scroll :ops="scrollOps" ref="vsMob" v-else :key="vsKey" @handle-scroll-complete="handleScroll" @handle-scroll="handleScroll" >
+            <vue-scroll
+              :ops="scrollOps"
+              ref="vsMob"
+              v-else
+              :key="vsKey"
+              @handle-scroll-complete="handleScroll"
+              @handle-scroll="handleScroll"
+            >
               <div class="container">
                 <div class="row pt-3" v-if="popularOptions && !search">
                   <div
@@ -213,12 +220,21 @@
             },
           ]"
           ref="dropdownOptions"
+          @mouseenter="addScrollStopToBody()"
+          @mouseleave="removeScrollStopToBody()"
         >
           <template v-if="showOptions">
             <div v-if="custom">
               <slot />
             </div>
-            <vue-scroll :ops="scrollOps" ref="vs" v-else :key="vsKey" @handle-scroll-complete="handleScroll"  @handle-scroll="handleScroll" >
+            <vue-scroll
+              :ops="scrollOps"
+              ref="vs"
+              v-else
+              :key="vsKey"
+              @handle-scroll-complete="handleScroll"
+              @handle-scroll="handleScroll"
+            >
               <div class="row pt-3" v-if="popularOptions && !search">
                 <div
                   v-for="option in $sortBy(
@@ -402,8 +418,8 @@ export default {
     }
   },
   methods: {
-    handleScroll(v,h,event) {
-      event.stopPropagation();
+    handleScroll(v, h, event) {
+      event.stopPropagation()
     },
     displayMenuOptions() {
       this.showOptions = this.disabled ? false : !this.showOptions
@@ -474,6 +490,16 @@ export default {
         media && media.length > 0 ? this.$withBaseUrl(media[0]) : false
       let imgUrl = getImage(o.car_type_generation?.[0]?.transformed_media.thumb)
       return imgUrl ? { backgroundImage: `url('${imgUrl}')` } : { noImg: true }
+    },
+    addScrollStopToBody() {
+      console.log('entered')
+      const body = document.body
+      body.classList.add('ma-stop-scroll')
+    },
+    removeScrollStopToBody() {
+      console.log('leaved')
+      const body = document.body
+      body.classList.remove('ma-stop-scroll')
     },
   },
   computed: {
@@ -648,9 +674,9 @@ export default {
       if (this.value === undefined) this.selectValue = undefined
     },
     showOptions(val) {
-      this.scrolStopTrigger = val;
+      this.scrolStopTrigger = val
       if (val) {
-        console.log("opened");
+        console.log('opened')
         this.blockClick = true
         setTimeout(() => {
           this.blockClick = false
@@ -681,11 +707,10 @@ export default {
           }
         })
       } else {
-        console.log("closed");
-
+        console.log('closed')
+        this.removeScrollStopToBody()
         this.placeOptionsAbove = false
-        this.search = '';
-
+        this.search = ''
       }
       // hide overflow when selected
       if (!this.inSelectMenu) {
