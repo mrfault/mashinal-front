@@ -2276,13 +2276,8 @@ export default {
   "search_by_car_number":"Avtomobili qeydiyyat nişanına görə axtar",
   "insurance_company":"Şirkət",
   "insurance_end_date": "Sığortanın bitmə tarixi",
-  "change_it": "Dəyiş",
-
   "cm":"sm",
   "result_of_tire_dimensions_change":"Şinin ölçü dəyişikliyinin nəticəsi",
-
-
-
   "result_of_tire_size_change": "Şinin ölçü dəyişikliyinin nəticəsi",
   "result_of_tire_size_change_d": "Təkərin xarici diametri və yerdən yüksəkliyi artacaq",
   "result_of_tire_size_change_h": "Təkərin profilinin hündürlüyü artacaq",
@@ -2322,4 +2317,6 @@ export default {
   "visual_tire_size_change_result_24": "Səs səviyyəsi azalacaq",
   "visual_tire_size_change_result_25": "Yayda yol tutumu pisləşəcək",
   "visual_tire_size_change_result_26": "Təkərlərin ömrü qısalacaq",
+  "insurance_end_date_text": "Sığortanın bitmə tarixi",
+  "change_it": "Dəyiş"
 }
