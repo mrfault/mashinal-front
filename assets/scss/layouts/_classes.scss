@@ -348,3 +348,27 @@ hr {
 .w-100{
   width: 100% !important;
 }
+
+.ma-stop-scroll{
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  box-sizing: border-box;
+  overflow: hidden;
+  padding-right: 17px;
+}
+
+// addScrollStopToBody(){
+//   console.log("entered");
+//   const body = document.body;
+//   body.classList.add('ma-stop-scroll');
+// },
+// removeScrollStopToBody(){
+//   console.log("leaved");
+//   const body = document.body;
+//   body.classList.remove('ma-stop-scroll');
+// }
+
+// @mouseenter="addScrollStopToBody()" @mouseleave="removeScrollStopToBody()"
