@@ -2331,7 +2331,12 @@ export default {
   "visual_tire_size_change_result_26": "Сократится срок службы шины",
 
   "already_paid": "Оплачено",
-  "change_it": "Изменить"
+  "change_it": "Изменить",
 
 
+  "alcometer_0": "Трезв",
+  "alcometer_30": "В пределах нормы",
+  "alcometer_60": "Легкая степень",
+  "alcometer_90": "Средняя степень",
+  "alcometer_120": "Тяжелая степень",
 }

@@ -2322,4 +2322,12 @@ export default {
   "visual_tire_size_change_result_24": "Səs səviyyəsi azalacaq",
   "visual_tire_size_change_result_25": "Yayda yol tutumu pisləşəcək",
   "visual_tire_size_change_result_26": "Təkərlərin ömrü qısalacaq",
+
+  "alcometer_0": "Ayıq",
+  "alcometer_30": "Norma daxilində",
+  "alcometer_60": "Mülayim dərəcədə",
+  "alcometer_90": "Orta dərəcədə",
+  "alcometer_120": "Ağır dərəcədə",
+
+
 }

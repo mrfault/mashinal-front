@@ -6,10 +6,6 @@
       </breadcrumbs>
 
       <div class="alco-form" :class="{ 'mb-5': !showGraphs }">
-        <div class="d-flex">
-          <pre>{{ $v.form.drinkType1.$error }}</pre>
-          <pre>{{ $v.form.drinkValue1.$error }}</pre>
-        </div>
         <div class="form-items row">
           <div class="col-lg-4" id="drink1">
             <div
@@ -622,39 +618,43 @@ export default {
       }
     },
     scrollIntoError() {
-      if (this.$v.form.drinkType1.$error) {
-        setTimeout(() => {
-          const el = document.querySelector('#drink1')
-          el.scrollIntoView({ block: 'start', behavior: 'smooth' })
-        }, 300)
+      if (this.isMobileBreakpoint) {
+        if (this.$v.form.drinkType1.$error) {
+          setTimeout(() => {
+            const el = document.querySelector('#drink1')
+            el.scrollIntoView({ block: 'start', behavior: 'smooth' })
+          }, 300)
+        } else if (
+          this.$v.form.drinkValue1.$error &&
+          !this.disabledDrinkValue1
+        ) {
+          setTimeout(() => {
+            const el = document.querySelector('#drink1')
+            el.scrollIntoView({ block: 'start', behavior: 'smooth' })
+          }, 300)
+        } else if (this.form.drinkType3 == null || this.form.drinkType3 == '') {
+          setTimeout(() => {
+            const el = document.querySelector('#drink2')
+            el.scrollIntoView({ block: 'start', behavior: 'smooth' })
+          }, 300)
+        } else if (
+          this.$v.form.drinkValue2.$error &&
+          !this.disabledDrinkValue2
+        ) {
+          setTimeout(() => {
+            const el = document.querySelector('#drink2')
+            el.scrollIntoView({ block: 'start', behavior: 'smooth' })
+          }, 300)
+        } else if (
+          this.$v.form.drinkValue3.$error &&
+          !this.disabledDrinkValue3
+        ) {
+          setTimeout(() => {
+            const el = document.querySelector('#drink3')
+            el.scrollIntoView({ block: 'start', behavior: 'smooth' })
+          }, 300)
+        }
       }
-      else if(this.$v.form.drinkValue1.$error && !this.disabledDrinkValue1){
-        setTimeout(() => {
-          const el = document.querySelector('#drink1')
-          el.scrollIntoView({ block: 'start', behavior: 'smooth' })
-        }, 300)
-      }
-
-      else if(this.form.drinkType3 == null || this.form.drinkType3 == ''){
-        setTimeout(() => {
-          const el = document.querySelector('#drink2')
-          el.scrollIntoView({ block: 'start', behavior: 'smooth' })
-        }, 300)
-      }
-      else if(this.$v.form.drinkValue2.$error && !this.disabledDrinkValue2){
-        setTimeout(() => {
-          const el = document.querySelector('#drink2')
-          el.scrollIntoView({ block: 'start', behavior: 'smooth' })
-        }, 300)
-      }
-
-      else if(this.$v.form.drinkValue3.$error && !this.disabledDrinkValue3){
-        setTimeout(() => {
-          const el = document.querySelector('#drink3')
-          el.scrollIntoView({ block: 'start', behavior: 'smooth' })
-        }, 300)
-      }
-
     },
   },
   watch: {
