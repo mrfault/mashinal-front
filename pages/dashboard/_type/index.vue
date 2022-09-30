@@ -164,7 +164,7 @@ export default {
       ]
     },
     cards() {
-      let type = this.$route.params.type
+      let type = Number(this.$route.params.type)
       var balance;
       var package_name;
       if([1,2].includes(type)) {
