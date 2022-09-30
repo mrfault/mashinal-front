@@ -2329,5 +2329,7 @@ export default {
   "alcometer_90": "Orta dərəcədə",
   "alcometer_120": "Ağır dərəcədə",
 
+  "amount_of_drink_not_defined" : "İçki miqdarı seçilçəyib",
+  "type_of_drink_not_defined" : "İçki növü seçilçəyib",
 
 }

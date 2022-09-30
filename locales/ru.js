@@ -2339,4 +2339,7 @@ export default {
   "alcometer_60": "Легкая степень",
   "alcometer_90": "Средняя степень",
   "alcometer_120": "Тяжелая степень",
+
+  "amount_of_drink_not_defined" : "Количество алкоголя не выбрано",
+  "type_of_drink_not_defined": "Тип алкоголя не выбран",
 }
