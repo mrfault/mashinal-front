@@ -62,6 +62,7 @@
                     form.drinkValue1 == ''
                   "
                   :allowClear="form.drinkType3 == null || form.drinkType3 == ''"
+                  :showLabelOnSelect="false"
                 />
                 <form-select
                   class="col-6"
@@ -72,6 +73,7 @@
                   :disabled="disabledDrinkValue2"
                   :allowClear="false"
                   :invalid="$v.form.drinkValue2.$error && !disabledDrinkValue2"
+                  :showLabelOnSelect="false"
                 />
               </div>
             </div>
@@ -98,6 +100,7 @@
                     form.drinkValue2 == null ||
                     form.drinkValue2 == ''
                   "
+                  :showLabelOnSelect="false"
                 />
                 <form-select
                   class="col-6"
@@ -108,6 +111,7 @@
                   :clearOption="false"
                   :disabled="disabledDrinkValue3"
                   :invalid="$v.form.drinkValue3.$error && !disabledDrinkValue3"
+                  :showLabelOnSelect="false"
                 />
               </div>
             </div>
