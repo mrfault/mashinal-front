@@ -494,12 +494,12 @@ export default {
     addScrollStopToBody() {
       console.log('entered')
       const body = document.body
-      body.classList.add('ma-stop-scroll')
+      //body.classList.add('ma-stop-scroll')
     },
     removeScrollStopToBody() {
       console.log('leaved')
       const body = document.body
-      body.classList.remove('ma-stop-scroll')
+      //body.classList.remove('ma-stop-scroll')
     },
   },
   computed: {
