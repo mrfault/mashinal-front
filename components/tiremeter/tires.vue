@@ -61,7 +61,6 @@
         d="M311.243 123.588C311.657 123.588 311.993 123.253 311.993 122.84L311.993 117.237L317.607 117.237C318.021 117.237 318.357 116.902 318.357 116.488C318.357 116.075 318.021 115.74 317.607 115.74L311.243 115.74C310.828 115.74 310.493 116.075 310.493 116.488L310.493 122.84C310.493 123.253 310.828 123.588 311.243 123.588Z"
         fill="#081A3E"
       />
-      <!-- <rect width="100" height="100" fill="url(#pattern0)" /> -->
       <path
         d="M100 2L100 99"
         stroke="#FAA300"
@@ -144,12 +143,6 @@
         stroke="#FBFF02"
         stroke-linecap="round"
       />
-      <!-- <rect
-        width="100"
-        height="100"
-        transform="matrix(-1 0 0 1 373.5 0)"
-        fill="url(#pattern1)"
-      /> -->
       <path
         d="M273.5 2L273.5 99"
         stroke="#FAA300"
@@ -240,8 +233,10 @@
       />
       <text
         class="ma-tiremeter__tires--text"
-        x="150"
-        y="14"
+        x="50%"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        y="13"
         fill="#29A53E"
         v-text="
           `${oldExternalDiameter} ${$t('cm')} <D> ${newExternalDiameter} ${$t(
@@ -251,7 +246,9 @@
       ></text>
       <text
         class="ma-tiremeter__tires--text"
-        x="150"
+        x="50%"
+        dominant-baseline="middle"
+        text-anchor="middle"
         y="55"
         fill="#081A3E"
         v-text="
@@ -260,8 +257,10 @@
       ></text>
       <text
         class="ma-tiremeter__tires--text"
-        x="140"
-        y="97"
+        x="50%"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        y="94"
         fill="#F81734"
         v-text="
           `${oldProfileHeight} ${$t('cm')} <H> ${newProfileHeight} ${$t('cm')}`
@@ -269,14 +268,13 @@
       ></text>
       <text
         class="ma-tiremeter__tires--text"
-        x="150"
+        x="50%"
+        dominant-baseline="middle"
+        text-anchor="middle"
         y="130"
         fill="#246EB2"
-        v-text="
-          `${oldTireWidth} ${$t('cm')} <L> ${newTireWidth} ${$t('cm')}`
-        "
-      >
-      </text>
+        v-text="`${oldTireWidth} ${$t('cm')} <L> ${newTireWidth} ${$t('cm')}`"
+      ></text>
       <defs>
         <pattern
           id="pattern0"

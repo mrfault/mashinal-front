@@ -50,6 +50,7 @@
                 <form-select
                   :options="profileWidth"
                   :allowClear="false"
+                  :clearOption="false"
                   v-model="form.profile.new"
                 />
                 <span class="ma-tiremeter__card--input-group__spacer">R</span>
@@ -483,12 +484,12 @@ export default {
           new: 165,
         },
         profile: {
-          old: 80,
+          old: 70,
           new: 70,
         },
         radius: {
           old: 13,
-          new: 18,
+          new: 13,
         },
         old: {
           radius: null,

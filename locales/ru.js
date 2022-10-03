@@ -2278,10 +2278,10 @@ export default {
   "change_noun": "Изменение",
   "previous_version": "Старый",
   
-  "width_of_tire": "Ширина шины",
-  "height_of_profile": "Высота профиля",
-  "disc_diameter": "Диаметр диска",
-  "external_diameter_of_tire": "Внешний диаметр шины",
+  "width_of_tire": "Ширина шины (L)",
+  "height_of_profile": "Высота профиля (H)",
+  "disc_diameter": "Диаметр диска (R)",
+  "external_diameter_of_tire": "Внешний диаметр шины (D)",
   "result_of_calculation": "Результаты расчетов",
 
   "dimensions": "Размеры",

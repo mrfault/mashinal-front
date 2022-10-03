@@ -207,16 +207,16 @@
       {{ $t('visual_tire_calculator_how_to_description') }}
     </h6>
     <p class="ma-tiremeter__how-to--text--item">
-      {{ $t('how_to_outer_diameter_of_the_tire') }}
+      {{ $t('how_to_outer_diameter_of_the_tire')}}  "D"
     </p>
     <p class="ma-tiremeter__how-to--text--item">
-      {{ $t('how_to_rim_diameter') }}
+      {{ $t('how_to_rim_diameter') }}  "R"
     </p>
     <p class="ma-tiremeter__how-to--text--item">
-      {{ $t('how_to_tire_profile_height') }}
+      {{ $t('how_to_tire_profile_height') }} "H"
     </p>
     <p class="ma-tiremeter__how-to--text--item">
-      {{ $t('how_to_tire_width') }}
+      {{ $t('how_to_tire_width') }} "L"
     </p>
     <p class="ma-tiremeter__how-to--text--item">
       {{ $t('how_to_clearance_change') }}
