@@ -72,15 +72,15 @@
                 :newDiscDiameter="newDiscDiameter / 10"
                 :oldProfileHeight="oldProfileHeight"
                 :newProfileHeight="newProfileHeight"
-                :oldTireWidth="form.tireWidth.old"
-                :newTireWidth="form.tireWidth.new"
+                :oldTireWidth="form.tireWidth.old / 10"
+                :newTireWidth="form.tireWidth.new / 10"
               ></tires>
             </div>
             <div class="col-4 col-md-5 col-lg-5 col-xl-1">
-              <speedometer :percententage="speedometerErrorPercentage" />
+              <speedometer :percententage="speedometerErrorPercentage * -1" />
             </div>
             <div class="col-8 col-md-7 col-lg-7 col-xl-3">
-              <clearance :value="clearanceChange" />
+              <clearance :value="clearanceChange / 10" />
             </div>
           </div>
         </div>
@@ -91,6 +91,7 @@
         <div
           class="ma-tiremeter__card"
           v-if="lists.d.length || lists.h.length || lists.l.length"
+          id="tiremeterTextResults"
         >
           <h2 class="title-with-line full-width mb-2">
             <span>{{ $t('result_of_calculation') }}</span>
@@ -163,10 +164,10 @@
               <td></td>
               <td></td>
               <td>{{ $t('speedometer_error_percentage') }}</td>
-              <td>{{ speedometerErrorPercentage }} %</td>
+              <td>{{ speedometerErrorPercentage * -1}} %</td>
             </tr>
           </table>
-          <div class="row mt-5 mt-lg-0" id="tiremeterTextResults">
+          <div class="row mt-5 mt-lg-0" >
             <div class="col-12 col-lg-6">
               <text-results
                 :listH="lists.h"
@@ -354,7 +355,7 @@ export default {
       profileWidth: [
         {
           name: '9',
-          key: 10,
+          key: 9,
         },
         {
           name: '9.5',
@@ -766,7 +767,8 @@ export default {
       } else {
         setTimeout(() => {
           const el = document.querySelector('#tiremeterTextResults')
-          window.scrollTo({ top: 800, behavior: 'smooth' })
+          el.scrollIntoView({block:'start', behavior: 'smooth'});
+          window.scrollTo({ top: 360, behavior: 'smooth' })
         }, 500)
       }
     },

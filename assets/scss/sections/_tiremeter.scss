@@ -35,7 +35,7 @@
       top: 0;
       left: 0;
       z-index: 1;
-      text{
+      text {
         width: 175px;
         text-align: center;
       }
@@ -229,8 +229,7 @@
           stroke: #fff !important;
         }
         text {
-          &:nth-of-type(2){
-
+          &:nth-of-type(2) {
             fill: #fff;
           }
         }
@@ -271,6 +270,18 @@
         path {
           stroke: #fff;
         }
+      }
+    }
+  }
+}
+@media (max-width: 742px) {
+  .ma-tiremeter {
+    &__results {
+      &-text--item {
+        font-size: 13px;
+      }
+      &-table{
+       font-size: 12px;
       }
     }
   }

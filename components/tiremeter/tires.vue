@@ -239,9 +239,7 @@
         y="13"
         fill="#29A53E"
         v-text="
-          `${oldExternalDiameter} ${$t('cm')} <D> ${newExternalDiameter} ${$t(
-            'cm',
-          )}`
+         (oldExternalDiameter !== newExternalDiameter) ? `${oldExternalDiameter} ${$t('cm')} <D> ${newExternalDiameter} ${$t('cm')}` : `<D> ${newExternalDiameter} ${$t('cm')}`
         "
       ></text>
       <text
@@ -252,7 +250,7 @@
         y="55"
         fill="#081A3E"
         v-text="
-          `${oldDiscDiameter} ${$t('cm')} <R> ${newDiscDiameter} ${$t('cm')}`
+         (oldDiscDiameter !== newDiscDiameter) ?  `${oldDiscDiameter} ${$t('cm')} <R> ${newDiscDiameter} ${$t('cm')}` : `<R> ${newDiscDiameter} ${$t('cm')}`
         "
       ></text>
       <text
@@ -263,7 +261,7 @@
         y="94"
         fill="#F81734"
         v-text="
-          `${oldProfileHeight} ${$t('cm')} <H> ${newProfileHeight} ${$t('cm')}`
+         (oldProfileHeight !== newProfileHeight) ? `${oldProfileHeight} ${$t('cm')} <H> ${newProfileHeight} ${$t('cm')}` : `<H> ${newProfileHeight} ${$t('cm')}`
         "
       ></text>
       <text
@@ -273,7 +271,7 @@
         text-anchor="middle"
         y="130"
         fill="#246EB2"
-        v-text="`${oldTireWidth} ${$t('cm')} <L> ${newTireWidth} ${$t('cm')}`"
+        v-text="(oldTireWidth !== newTireWidth) ? `${oldTireWidth} ${$t('cm')} <L> ${newTireWidth} ${$t('cm')}` : `<L> ${newTireWidth} ${$t('cm')}`"
       ></text>
       <defs>
         <pattern
