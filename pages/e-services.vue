@@ -155,7 +155,7 @@ export default {
           url: '/alcometer',
           hasAction: false,
           image: 'alcometer',
-          isAvailable: true,
+          isAvailable: false,
         },
         {
           title: this.$t('visual_tire_calculator'),
@@ -165,7 +165,7 @@ export default {
           url: '/tiremeter',
           hasAction: false,
           image: 'car',
-          isAvailable: true,
+          isAvailable: false,
         },
       ],
     }
