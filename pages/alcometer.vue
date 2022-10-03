@@ -6,10 +6,6 @@
       </breadcrumbs>
 
       <div class="alco-form" :class="{ 'mb-5': !showGraphs }">
-        <div class="d-flex">
-          <pre>{{ $v.form.drinkType1.$error }}</pre>
-          <pre>{{ $v.form.drinkValue1.$error }}</pre>
-        </div>
         <div class="form-items row">
           <div class="col-lg-4" id="drink1">
             <div
@@ -66,6 +62,7 @@
                     form.drinkValue1 == ''
                   "
                   :allowClear="form.drinkType3 == null || form.drinkType3 == ''"
+                  :showLabelOnSelect="false"
                 />
                 <form-select
                   class="col-6"
@@ -76,6 +73,7 @@
                   :disabled="disabledDrinkValue2"
                   :allowClear="false"
                   :invalid="$v.form.drinkValue2.$error && !disabledDrinkValue2"
+                  :showLabelOnSelect="false"
                 />
               </div>
             </div>
@@ -102,6 +100,7 @@
                     form.drinkValue2 == null ||
                     form.drinkValue2 == ''
                   "
+                  :showLabelOnSelect="false"
                 />
                 <form-select
                   class="col-6"
@@ -112,6 +111,7 @@
                   :clearOption="false"
                   :disabled="disabledDrinkValue3"
                   :invalid="$v.form.drinkValue3.$error && !disabledDrinkValue3"
+                  :showLabelOnSelect="false"
                 />
               </div>
             </div>
@@ -615,7 +615,6 @@ export default {
     submit() {
       this.$v.$touch()
       if (this.$v.$error) {
-        this.$toasted.error(this.$t('info_is_not_correct'))
         this.scrollIntoError()
       } else {
         this.calculate()
@@ -623,38 +622,37 @@ export default {
     },
     scrollIntoError() {
       if (this.$v.form.drinkType1.$error) {
+        this.$toasted.error(this.$t('type_of_drink_not_defined'))
         setTimeout(() => {
           const el = document.querySelector('#drink1')
           el.scrollIntoView({ block: 'start', behavior: 'smooth' })
         }, 300)
-      }
-      else if(this.$v.form.drinkValue1.$error && !this.disabledDrinkValue1){
+      } else if (this.$v.form.drinkValue1.$error && !this.disabledDrinkValue1) {
+        this.$toasted.error(this.$t('amount_of_drink_not_defined'))
         setTimeout(() => {
           const el = document.querySelector('#drink1')
           el.scrollIntoView({ block: 'start', behavior: 'smooth' })
         }, 300)
-      }
+      } else if (this.form.drinkType3 == null || this.form.drinkType3 == '') {
+        this.$toasted.error(this.$t('type_of_drink_not_defined'))
 
-      else if(this.form.drinkType3 == null || this.form.drinkType3 == ''){
         setTimeout(() => {
           const el = document.querySelector('#drink2')
           el.scrollIntoView({ block: 'start', behavior: 'smooth' })
         }, 300)
-      }
-      else if(this.$v.form.drinkValue2.$error && !this.disabledDrinkValue2){
+      } else if (this.$v.form.drinkValue2.$error && !this.disabledDrinkValue2) {
+        this.$toasted.error(this.$t('amount_of_drink_not_defined'))
         setTimeout(() => {
           const el = document.querySelector('#drink2')
           el.scrollIntoView({ block: 'start', behavior: 'smooth' })
         }, 300)
-      }
-
-      else if(this.$v.form.drinkValue3.$error && !this.disabledDrinkValue3){
+      } else if (this.$v.form.drinkValue3.$error && !this.disabledDrinkValue3) {
+        this.$toasted.error(this.$t('amount_of_drink_not_defined'))
         setTimeout(() => {
           const el = document.querySelector('#drink3')
           el.scrollIntoView({ block: 'start', behavior: 'smooth' })
         }, 300)
       }
-
     },
   },
   watch: {

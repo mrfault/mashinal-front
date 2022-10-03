@@ -2317,6 +2317,13 @@ export default {
   "visual_tire_size_change_result_24": "Səs səviyyəsi azalacaq",
   "visual_tire_size_change_result_25": "Yayda yol tutumu pisləşəcək",
   "visual_tire_size_change_result_26": "Təkərlərin ömrü qısalacaq",
+  "alcometer_0": "Ayıq",
+  "alcometer_30": "Norma daxilində",
+  "alcometer_60": "Mülayim dərəcədə",
+  "alcometer_90": "Orta dərəcədə",
+  "alcometer_120": "Ağır dərəcədə",
+  "amount_of_drink_not_defined" : "İçki miqdarı seçilçəyib",
+  "type_of_drink_not_defined" : "İçki növü seçilçəyib",
   "insurance_end_date_text": "Sığortanın bitmə tarixi",
   "change_it": "Dəyiş"
 }
