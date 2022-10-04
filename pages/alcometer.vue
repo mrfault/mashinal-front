@@ -1,11 +1,14 @@
 <template>
   <div class="pages-catalog pb-5 pb-lg-0">
-    <div class="container pb-5 pb-lg-0">
+    <div class="container alcometer-container">
       <breadcrumbs :crumbs="crumbs">
         <share-it type="publish" v-if="$route.params.body" />
       </breadcrumbs>
 
       <div class="alco-form" :class="{ 'mb-5': !showGraphs }">
+        <h2 class="title-with-line full-width my-2 d-lg-none">
+          <span>{{ $t('alcometer') }}</span>
+        </h2>
         <div class="form-items row">
           <div class="col-lg-4" id="drink1">
             <div
@@ -634,7 +637,7 @@ export default {
           el.scrollIntoView({ block: 'start', behavior: 'smooth' })
         }, 300)
       } else if (this.form.drinkType3 == null || this.form.drinkType3 == '') {
-        this.$toasted.error(this.$t('type_of_drink_not_defined'))
+        this.$toasted.error(this.$t('amount_of_drink_not_defined'))
 
         setTimeout(() => {
           const el = document.querySelector('#drink2')
