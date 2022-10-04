@@ -2342,4 +2342,9 @@ export default {
 
   "amount_of_drink_not_defined" : "Количество алкоголя не выбрано",
   "type_of_drink_not_defined": "Тип алкоголя не выбран",
+   "cm" : "см",
+
+   "result_of_tire_size_change_title_1": "Увеличится внешний диаметр колеса",
+   "result_of_tire_size_change_title_2": " и дорожный просвет",
+   "new_1": "Новый",
 }
