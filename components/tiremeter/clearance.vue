@@ -51,7 +51,7 @@
       </svg>
     </div>
     <h6 class="ma-tiremeter-small-title mt-1">
-      {{ value }} {{ $t('char_millimetre') }}
+      {{ value }} {{ $t('cm') }}
     </h6>
   </div>
 </template>

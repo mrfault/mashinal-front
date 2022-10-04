@@ -35,6 +35,10 @@
       top: 0;
       left: 0;
       z-index: 1;
+      text {
+        width: 175px;
+        text-align: center;
+      }
     }
     &--left {
       position: absolute;
@@ -102,11 +106,11 @@
       &:not(:last-of-type) {
         border-bottom: 1px solid $greyish-blue-3;
       }
-      td {
-        &:last-of-type {
-          text-align: right;
-        }
-      }
+      // td {
+      //   &:last-of-type {
+      //     text-align: right;
+      //   }
+      // }
     }
     td {
       font: 400 15px Gilroy;
@@ -117,7 +121,7 @@
     th,
     td {
       color: $dark-blue-1;
-      padding: 13px 0;
+      padding: 13px 5px;
     }
   }
   &__results-text {
@@ -225,7 +229,9 @@
           stroke: #fff !important;
         }
         text {
-          fill: #fff;
+          &:nth-of-type(2) {
+            fill: #fff;
+          }
         }
       }
     }
@@ -264,6 +270,18 @@
         path {
           stroke: #fff;
         }
+      }
+    }
+  }
+}
+@media (max-width: 742px) {
+  .ma-tiremeter {
+    &__results {
+      &-text--item {
+        font-size: 13px;
+      }
+      &-table{
+       font-size: 12px;
       }
     }
   }

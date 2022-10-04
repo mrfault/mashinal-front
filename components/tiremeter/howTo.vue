@@ -1,6 +1,6 @@
 <template>
-  <div class="ma-tiremeter__how-to">
-    <h2 class="title-with-line full-width mb-2">
+  <div class="ma-tiremeter__how-to ml-0 ml-md-2 mt-2 mt-md-0">
+    <h2 class="title-with-line full-width mb-2 ml-0">
       <span>{{ $t('visual_tire_calculator_how_to_title') }}</span>
     </h2>
     <div class="ma-tiremeter__how-to--picture">
@@ -207,16 +207,16 @@
       {{ $t('visual_tire_calculator_how_to_description') }}
     </h6>
     <p class="ma-tiremeter__how-to--text--item">
-      {{ $t('how_to_outer_diameter_of_the_tire') }}
+      {{ $t('how_to_outer_diameter_of_the_tire')}}  "D"
     </p>
     <p class="ma-tiremeter__how-to--text--item">
-      {{ $t('how_to_rim_diameter') }}
+      {{ $t('how_to_rim_diameter') }}  "R"
     </p>
     <p class="ma-tiremeter__how-to--text--item">
-      {{ $t('how_to_tire_profile_height') }}
+      {{ $t('how_to_tire_profile_height') }} "H"
     </p>
     <p class="ma-tiremeter__how-to--text--item">
-      {{ $t('how_to_tire_width') }}
+      {{ $t('how_to_tire_width') }} "L"
     </p>
     <p class="ma-tiremeter__how-to--text--item">
       {{ $t('how_to_clearance_change') }}
