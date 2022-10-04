@@ -1,6 +1,6 @@
 <template>
   <div class="pages-catalog">
-    <div class="container">
+    <div class="container alcometer-container">
       <breadcrumbs :crumbs="crumbs">
         <share-it type="publish" v-if="$route.params.body" />
       </breadcrumbs>
@@ -83,6 +83,11 @@
               <clearance :value="clearanceChange / 10" />
             </div>
           </div>
+          <div class="submit-button mt-3 d-flex justify-content-end mr-1 pb-2">
+            <button class="btn btn--green" @click="findTextResults()">
+              {{ $t('calculate') }}
+            </button>
+          </div>
         </div>
 
         <!-- ------------------------------------------------------------------- -->
@@ -100,7 +105,7 @@
             <tr class="ma-tiremeter__results-table--header">
               <th>{{ $t('dimensions') }}</th>
               <th>{{ $t('previous_version') }}</th>
-              <th>{{ $t('new') }}</th>
+              <th>{{ $t('new_1') }}</th>
               <th>{{ $t('change_noun') }}</th>
             </tr>
             <tr>
@@ -154,8 +159,11 @@
             <tr>
               <td></td>
               <td></td>
-              <td>{{ $t('clearance_change') }}</td>
               <td>
+                <strong>{{ $t('clearance_change') }}</strong>
+              </td>
+              <td>
+                <template v-if="clearanceChange > 0">+</template>
                 {{ clearanceChange }}
                 {{ $t('char_millimetre') }}
               </td>
@@ -163,11 +171,16 @@
             <tr>
               <td></td>
               <td></td>
-              <td>{{ $t('speedometer_error_percentage') }}</td>
-              <td>{{ speedometerErrorPercentage * -1}} %</td>
+              <td>
+                <strong>{{ $t('speedometer_error_percentage') }}</strong>
+              </td>
+              <td>
+                <template v-if="speedometerErrorPercentage < 0">+</template>
+                {{ speedometerErrorPercentage * -1 }} %
+              </td>
             </tr>
           </table>
-          <div class="row mt-5 mt-lg-0" >
+          <div class="row mt-5 mt-lg-0">
             <div class="col-12 col-lg-6">
               <text-results
                 :listH="lists.h"
@@ -763,22 +776,13 @@ export default {
           const el = document.querySelector('#tiremeterTextResults')
            el.scrollIntoView({block:'start', behavior: 'smooth'});
         }, 500)
-
       } else {
         setTimeout(() => {
           const el = document.querySelector('#tiremeterTextResults')
-          el.scrollIntoView({block:'start', behavior: 'smooth'});
+          el.scrollIntoView({ block: 'start', behavior: 'smooth' })
           window.scrollTo({ top: 360, behavior: 'smooth' })
         }, 500)
       }
-    },
-  },
-  watch: {
-    form: {
-      deep: true,
-      handler() {
-        this.findTextResults()
-      },
     },
   },
 }

@@ -236,7 +236,7 @@
         x="50%"
         dominant-baseline="middle"
         text-anchor="middle"
-        y="13"
+        y="11"
         fill="#29A53E"
         v-text="
          (oldExternalDiameter !== newExternalDiameter) ? `${oldExternalDiameter} ${$t('cm')} <D> ${newExternalDiameter} ${$t('cm')}` : `<D> ${newExternalDiameter} ${$t('cm')}`

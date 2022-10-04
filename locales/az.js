@@ -2322,8 +2322,11 @@ export default {
   "alcometer_60": "Mülayim dərəcədə",
   "alcometer_90": "Orta dərəcədə",
   "alcometer_120": "Ağır dərəcədə",
-  "amount_of_drink_not_defined" : "İçki miqdarı seçilçəyib",
+  "amount_of_drink_not_defined" : "İçki miqdarı seçilməyib",
   "type_of_drink_not_defined" : "İçki növü seçilçəyib",
   "insurance_end_date_text": "Sığortanın bitmə tarixi",
-  "change_it": "Dəyiş"
+  "change_it": "Dəyiş",
+  "result_of_tire_size_change_title_1": "Təkərin xarici diametri ",
+  "result_of_tire_size_change_title_2": "və yerin təmizlənməsi artacaq",
+  "new_1": "Yeni",
 }
