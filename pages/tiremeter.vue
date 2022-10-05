@@ -20,6 +20,8 @@
                   :allowClear="false"
                   :clearOption="false"
                   v-model="form.tireWidth.old"
+                  :label="$t('size_of_old_tire')"
+                  showLabelOnlyOnActionBar
                 />
                 <span class="ma-tiremeter__card--input-group__spacer">/</span>
                 <form-select
@@ -27,6 +29,8 @@
                   :allowClear="false"
                   :clearOption="false"
                   v-model="form.profile.old"
+                  :label="$t('size_of_old_tire')"
+                  showLabelOnlyOnActionBar
                 />
                 <span class="ma-tiremeter__card--input-group__spacer">R</span>
                 <form-select
@@ -34,6 +38,8 @@
                   :allowClear="false"
                   :clearOption="false"
                   v-model="form.radius.old"
+                  :label="$t('size_of_old_tire')"
+                  showLabelOnlyOnActionBar
                 />
               </div>
               <div class="ma-tiremeter__card--input-group">
@@ -45,6 +51,8 @@
                   :allowClear="false"
                   :clearOption="false"
                   v-model="form.tireWidth.new"
+                  :label="$t('size_of_new_tire')"
+                  showLabelOnlyOnActionBar
                 />
                 <span class="ma-tiremeter__card--input-group__spacer">/</span>
                 <form-select
@@ -52,6 +60,8 @@
                   :allowClear="false"
                   :clearOption="false"
                   v-model="form.profile.new"
+                  :label="$t('size_of_new_tire')"
+                  showLabelOnlyOnActionBar
                 />
                 <span class="ma-tiremeter__card--input-group__spacer">R</span>
                 <form-select
@@ -59,6 +69,8 @@
                   :allowClear="false"
                   :clearOption="false"
                   v-model="form.radius.new"
+                  :label="$t('size_of_new_tire')"
+                  showLabelOnlyOnActionBar
                 />
               </div>
             </div>
@@ -95,7 +107,7 @@
         <!-- ------------------------------------------------------------------- -->
         <div
           class="ma-tiremeter__card"
-          v-if="lists.d.length || lists.h.length || lists.l.length"
+          v-if="showResults"
           id="tiremeterTextResults"
         >
           <h2 class="title-with-line full-width mb-2">
@@ -157,8 +169,8 @@
               </td>
             </tr>
             <tr>
-              <td></td>
-              <td></td>
+              <td v-if="!isMobileBreakpoint"></td>
+              <td v-if="!isMobileBreakpoint"></td>
               <td>
                 <strong>{{ $t('clearance_change') }}</strong>
               </td>
@@ -169,8 +181,8 @@
               </td>
             </tr>
             <tr>
-              <td></td>
-              <td></td>
+              <td v-if="!isMobileBreakpoint"></td>
+              <td v-if="!isMobileBreakpoint"></td>
               <td>
                 <strong>{{ $t('speedometer_error_percentage') }}</strong>
               </td>
@@ -181,7 +193,7 @@
             </tr>
           </table>
           <div class="row mt-5 mt-lg-0">
-            <div class="col-12 col-lg-6">
+            <div class="col-12 col-lg-6" v-if="speedometerErrorPercentage !== 0">
               <text-results
                 :listH="lists.h"
                 :listD="lists.d"
@@ -231,6 +243,7 @@ export default {
   data() {
     return {
       crumbs: [{ name: this.$t('visual_tire_calculator') }],
+      showResults: false,
       tireWidth: [
         {
           name: '30',
@@ -774,7 +787,7 @@ export default {
       if (this.isMobileBreakpoint) {
         setTimeout(() => {
           const el = document.querySelector('#tiremeterTextResults')
-           el.scrollIntoView({block:'start', behavior: 'smooth'});
+          el.scrollIntoView({ block: 'start', behavior: 'smooth' })
         }, 500)
       } else {
         setTimeout(() => {
@@ -783,7 +796,11 @@ export default {
           window.scrollTo({ top: 360, behavior: 'smooth' })
         }, 500)
       }
+      this.showResults = true
     },
+  },
+  mounted() {
+    this.form.radius.new = 13
   },
 }
 </script>
