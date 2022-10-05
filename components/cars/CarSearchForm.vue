@@ -1111,9 +1111,9 @@ export default {
       })
       if (id)  {
         this.getModelsArray({ value: slug, index })
-        this.submitForm(false);
       }
 
+      this.submitForm(false);
 
     },
     async setBrandExclude(id, index) {
@@ -1145,9 +1145,10 @@ export default {
         this.$set(this.form.additional_brands[index], key, '')
       })
       if (id) {
-        this.submitForm(false);
         this.getModelGenerationsArray({ value: slug, brand_slug, index })
       }
+
+      this.submitForm(false);
     },
     async setModelExclude(id, index) {
       let model = this.carModelsExclude[index].find((option) => option.id == id)
