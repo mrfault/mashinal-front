@@ -45,7 +45,7 @@ export default {
 
     crumbs() {
       return [
-        { name: this.$t('external-salons'), route: '/salons' },
+        { name: this.$t('external-salons'), route: '/external-salons' },
         { name: this.salonSingle.name || this.salonSingle.user.full_name }
       ]
     }
