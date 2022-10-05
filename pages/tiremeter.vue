@@ -193,7 +193,7 @@
             </tr>
           </table>
           <div class="row mt-5 mt-lg-0">
-            <div class="col-12 col-lg-6">
+            <div class="col-12 col-lg-6" v-if="speedometerErrorPercentage !== 0">
               <text-results
                 :listH="lists.h"
                 :listD="lists.d"
