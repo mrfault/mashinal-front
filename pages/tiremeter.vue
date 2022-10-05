@@ -20,6 +20,8 @@
                   :allowClear="false"
                   :clearOption="false"
                   v-model="form.tireWidth.old"
+                  :label="$t('size_of_old_tire')"
+                  showLabelOnlyOnActionBar
                 />
                 <span class="ma-tiremeter__card--input-group__spacer">/</span>
                 <form-select
@@ -27,6 +29,8 @@
                   :allowClear="false"
                   :clearOption="false"
                   v-model="form.profile.old"
+                  :label="$t('size_of_old_tire')"
+                  showLabelOnlyOnActionBar
                 />
                 <span class="ma-tiremeter__card--input-group__spacer">R</span>
                 <form-select
@@ -34,6 +38,8 @@
                   :allowClear="false"
                   :clearOption="false"
                   v-model="form.radius.old"
+                  :label="$t('size_of_old_tire')"
+                  showLabelOnlyOnActionBar
                 />
               </div>
               <div class="ma-tiremeter__card--input-group">
@@ -45,6 +51,8 @@
                   :allowClear="false"
                   :clearOption="false"
                   v-model="form.tireWidth.new"
+                  :label="$t('size_of_new_tire')"
+                  showLabelOnlyOnActionBar
                 />
                 <span class="ma-tiremeter__card--input-group__spacer">/</span>
                 <form-select
@@ -52,6 +60,8 @@
                   :allowClear="false"
                   :clearOption="false"
                   v-model="form.profile.new"
+                  :label="$t('size_of_new_tire')"
+                  showLabelOnlyOnActionBar
                 />
                 <span class="ma-tiremeter__card--input-group__spacer">R</span>
                 <form-select
@@ -59,6 +69,8 @@
                   :allowClear="false"
                   :clearOption="false"
                   v-model="form.radius.new"
+                  :label="$t('size_of_new_tire')"
+                  showLabelOnlyOnActionBar
                 />
               </div>
             </div>
@@ -775,7 +787,7 @@ export default {
       if (this.isMobileBreakpoint) {
         setTimeout(() => {
           const el = document.querySelector('#tiremeterTextResults')
-           el.scrollIntoView({block:'start', behavior: 'smooth'});
+          el.scrollIntoView({ block: 'start', behavior: 'smooth' })
         }, 500)
       } else {
         setTimeout(() => {
@@ -787,8 +799,8 @@ export default {
       this.showResults = true
     },
   },
-  mounted(){
+  mounted() {
     this.form.radius.new = 13
-  }
+  },
 }
 </script>
