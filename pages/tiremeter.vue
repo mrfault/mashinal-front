@@ -4,6 +4,7 @@
       <breadcrumbs :crumbs="crumbs">
         <share-it type="publish" v-if="$route.params.body" />
       </breadcrumbs>
+      {{ showTextResults }}
       <div class="ma-tiremeter">
         <div class="ma-tiremeter__card">
           <h2 class="title-with-line full-width mb-2">
@@ -96,7 +97,7 @@
             </div>
           </div>
           <div class="submit-button mt-3 d-flex justify-content-end mr-1 pb-2">
-            <button class="btn btn--green" @click="findTextResults()">
+            <button class="btn btn--green" @click="submit()">
               {{ $t('calculate') }}
             </button>
           </div>
@@ -193,16 +194,16 @@
             </tr>
           </table>
           <div class="row mt-5 mt-lg-0">
-            <div class="col-12 col-lg-6" v-if="speedometerErrorPercentage !== 0">
+            <div class="col-12 col-lg-6" v-if="showTextResults">
               <text-results
                 :listH="lists.h"
                 :listD="lists.d"
                 :listL="lists.l"
-                :errorPercentage="speedometerErrorPercentage"
+                :errorPercentage="speedometerErrorPercentageForTextResults"
               />
             </div>
             <div class="col-12 col-lg-6 mt-5 mt-lg-0">
-              <how-to></how-to>
+              <how-to :showTextResults="showTextResults" :speedometerErrorPercentage="speedometerErrorPercentage"></how-to>
             </div>
           </div>
           <span></span>
@@ -244,6 +245,7 @@ export default {
     return {
       crumbs: [{ name: this.$t('visual_tire_calculator') }],
       showResults: false,
+      showTextResults: false,
       tireWidth: [
         {
           name: '30',
@@ -648,6 +650,7 @@ export default {
           },
         ],
       },
+      speedometerErrorPercentageForTextResults: null,
     }
   },
   computed: {
@@ -768,6 +771,8 @@ export default {
         this.lists.h = this.tiremeterModels.c1
       } else if (f > g) {
         this.lists.h = this.tiremeterModels.c2
+      }else{
+        this.lists.h = [];
       }
 
       console.log('asdas', this.tiremeterModels.a1)
@@ -777,13 +782,22 @@ export default {
         this.lists.d = this.tiremeterModels.a1
       } else if (b > c) {
         this.lists.d = this.tiremeterModels.a2
+      }else{
+        this.lists.d = [];
       }
 
       if (this.form.tireWidth.old > this.form.tireWidth.new) {
         this.lists.l = this.tiremeterModels.d2
       } else if (this.form.tireWidth.new > this.form.tireWidth.old) {
         this.lists.l = this.tiremeterModels.d1
+      }else{
+        this.lists.l = [];
       }
+    },
+    async submit() {
+      await this.findTextResults()
+      this.showResults = true;
+      this.speedometerErrorPercentageForTextResults = this.speedometerErrorPercentage;
       if (this.isMobileBreakpoint) {
         setTimeout(() => {
           const el = document.querySelector('#tiremeterTextResults')
@@ -796,7 +810,23 @@ export default {
           window.scrollTo({ top: 360, behavior: 'smooth' })
         }, 500)
       }
-      this.showResults = true
+      
+      console.log(
+        '!this.lists.d.length && !this.lists.h.length && !this.lists.l.length && (this.speedometerErrorPercentage != 0)',
+        !this.lists.d.length &&
+          !this.lists.h.length &&
+          !this.lists.l.length
+      )
+      if (
+        !this.lists.d.length &&
+        !this.lists.h.length &&
+        !this.lists.l.length &&
+        this.speedometerErrorPercentage == 0
+      ) {
+        this.showTextResults = false
+      } else {
+        this.showTextResults = true
+      }
     },
   },
   mounted() {
