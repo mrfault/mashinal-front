@@ -238,7 +238,7 @@ export default {
       return this.salonsFiltered.filter(item => item.is_official).sort((a, b) => a.name.localeCompare(b.name));
     },
     crumbs() {
-      return [{ name: this.$t('salons') }]
+      return [{ name: this.$t('external-salons') }]
     },
 
     salonsInView() {
