@@ -95,7 +95,7 @@
         <!-- ------------------------------------------------------------------- -->
         <div
           class="ma-tiremeter__card"
-          v-if="lists.d.length || lists.h.length || lists.l.length"
+          v-if="showResults"
           id="tiremeterTextResults"
         >
           <h2 class="title-with-line full-width mb-2">
@@ -231,6 +231,7 @@ export default {
   data() {
     return {
       crumbs: [{ name: this.$t('visual_tire_calculator') }],
+      showResults: false,
       tireWidth: [
         {
           name: '30',
@@ -783,6 +784,7 @@ export default {
           window.scrollTo({ top: 360, behavior: 'smooth' })
         }, 500)
       }
+      this.showResults = true
     },
   },
 }
