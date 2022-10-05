@@ -51,7 +51,7 @@
     <div class="ma-tiremeter__results-text" v-if="listL.length">
       <h5 class="ma-tiremeter__results-text--title">
         {{ $t('result_of_tire_size_change_l') }}
-        <span class="ma-tiremeter__results-text--title-d">"L"</span>
+        <span class="ma-tiremeter__results-text--title-l">"L"</span>
       </h5>
       <h6
         class="ma-tiremeter__results-text--item"

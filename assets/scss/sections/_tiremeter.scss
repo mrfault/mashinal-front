@@ -307,6 +307,29 @@
         // }
       }
     }
+    &__results-table {
+      width: 100%;
+      margin-bottom: 93px;
+      tr {
+        &:not(:last-of-type) {
+          border-bottom: 1px solid $greyish-blue-3;
+        }
+      }
+      td {
+        font: 400 12px Gilroy;
+        strong {
+          font: 500 12px Gilroy;
+        }
+      }
+      th {
+        font: 500 12px Gilroy;
+      }
+      th,
+      td {
+        color: $dark-blue-1;
+        padding: 13px 5px;
+      }
+    }
   }
 }
 @media (max-width: 375px) {
