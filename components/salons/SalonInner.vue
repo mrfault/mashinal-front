@@ -63,7 +63,7 @@
       </h2>
       <!-- ------------------ -->
 
-      <p v-if="salonSingle.description" class="mb-4"  style="font-weight: 400;font-size: 15px;">
+      <p v-if="salonSingle.description" class="mb-4"  style="font-weight: 400;font-size: 15px;white-space: pre-line">
         {{ salonSingle.description }}
       </p>
       <!-- ------------------ -->
