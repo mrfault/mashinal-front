@@ -157,8 +157,8 @@
               </td>
             </tr>
             <tr>
-              <td></td>
-              <td></td>
+              <td v-if="!isMobileBreakpoint"></td>
+              <td v-if="!isMobileBreakpoint"></td>
               <td>
                 <strong>{{ $t('clearance_change') }}</strong>
               </td>
@@ -169,8 +169,8 @@
               </td>
             </tr>
             <tr>
-              <td></td>
-              <td></td>
+              <td v-if="!isMobileBreakpoint"></td>
+              <td v-if="!isMobileBreakpoint"></td>
               <td>
                 <strong>{{ $t('speedometer_error_percentage') }}</strong>
               </td>
@@ -787,5 +787,8 @@ export default {
       this.showResults = true
     },
   },
+  mounted(){
+    this.form.radius.new = 13
+  }
 }
 </script>
