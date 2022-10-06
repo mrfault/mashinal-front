@@ -1,9 +1,15 @@
 <template>
   <div class="ma-tiremeter__how-to ml-0 ml-md-2 mt-2 mt-md-0">
-    <h2 class="title-with-line full-width mb-2 ml-0">
+    <h2 class="title-with-line full-width mb-2 ml-0" v-if="showTextResults">
       <span>{{ $t('visual_tire_calculator_how_to_title') }}</span>
     </h2>
-    <div class="ma-tiremeter__how-to--picture">
+    <h2 v-else class="title-with-line-alternative">
+      {{ $t('visual_tire_calculator_how_to_title') }}
+    </h2>
+    <div
+      class="ma-tiremeter__how-to--picture"
+      :class="{ 'no-borders': !showTextResults }"
+    >
       <svg
         viewBox="0 0 370 263"
         fill="none"
@@ -202,34 +208,54 @@
       </div>
     </div>
 
-      <div class="ma-tiremeter__how-to--text">
-    <h6 class="ma-tiremeter__how-to--text--title">
-      {{ $t('visual_tire_calculator_how_to_description') }}
-    </h6>
-    <p class="ma-tiremeter__how-to--text--item">
-      {{ $t('how_to_outer_diameter_of_the_tire')}}  "D"
-    </p>
-    <p class="ma-tiremeter__how-to--text--item">
-      {{ $t('how_to_rim_diameter') }}  "R"
-    </p>
-    <p class="ma-tiremeter__how-to--text--item">
-      {{ $t('how_to_tire_profile_height') }} "H"
-    </p>
-    <p class="ma-tiremeter__how-to--text--item">
-      {{ $t('how_to_tire_width') }} "L"
-    </p>
-    <p class="ma-tiremeter__how-to--text--item">
-      {{ $t('how_to_clearance_change') }}
-    </p>
-    <p class="ma-tiremeter__how-to--text--item">
-      {{ $t('how_to_speedometer_error') }}
-    </p>
-  </div>
+    <div
+      class="ma-tiremeter__how-to--text"
+      :class="{ 'no-borders': !showTextResults }"
+    >
+      <h6 class="ma-tiremeter__how-to--text--title">
+        {{ $t('visual_tire_calculator_how_to_description') }}
+      </h6>
+      <p class="ma-tiremeter__how-to--text--item">
+        {{ $t('how_to_outer_diameter_of_the_tire') }} "D"
+      </p>
+      <p class="ma-tiremeter__how-to--text--item">
+        {{ $t('how_to_rim_diameter') }} "R"
+      </p>
+      <p class="ma-tiremeter__how-to--text--item">
+        {{ $t('how_to_tire_profile_height') }} "H"
+      </p>
+      <p class="ma-tiremeter__how-to--text--item">
+        {{ $t('how_to_tire_width') }} "L"
+      </p>
+      <p class="ma-tiremeter__how-to--text--item">
+        {{ $t('how_to_clearance_change') }}
+      </p>
+      <p class="ma-tiremeter__how-to--text--item">
+        {{ $t('how_to_speedometer_error') }}
+      </p>
+    </div>
   </div>
 </template>
 
 <script>
-export default {}
+export default {
+  props: {
+    showTextResults: Boolean,
+    speedometerErrorPercentage: {
+      type: Number,
+      default: 0,
+    },
+  },
+}
 </script>
 
-<style></style>
+<style>
+.title-with-line-alternative {
+  font: 500 18px Gilroy;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.no-borders {
+  border: none !important;
+}
+</style>
