@@ -2291,8 +2291,8 @@ export default {
   "result_of_tire_size_change": "Результаты изменения размера шин",
   "result_of_tire_size_change_d_left": "Увеличится внешний диаметр колеса ",
   "result_of_tire_size_change_d_right": " и дорожный просвет",
-  "result_of_tire_size_change_h": "Увеличится высота профиля шины",
-  "result_of_tire_size_change_l": "Ширина шины увеличится",
+  "result_of_tire_size_change_h": "INCREASE высота профиля шины",
+  "result_of_tire_size_change_l": "Ширина шины INCREASE",
   "visual_tire_calculator_how_to_title": "Как пользоваться шинным калькулятором?",
   "visual_tire_calculator_how_to_description": "Наш визуальный калькулятор шин позволяет точно рассчитать и сравнить следующие параметры шины и автомобиля:",
   "how_to_outer_diameter_of_the_tire": "1. Внешний диаметр колеса",
@@ -2344,7 +2344,9 @@ export default {
   "type_of_drink_not_defined": "Тип алкоголя не выбран",
    "cm" : "см",
 
-   "result_of_tire_size_change_title_1": "Увеличится внешний диаметр колеса",
+   "result_of_tire_size_change_title_1": " INCREASE внешний диаметр колеса",
    "result_of_tire_size_change_title_2": " и дорожный просвет",
    "new_1": "Новый",
+   "will_increase": "увеличится",
+   "will_diminish": "уменьшится ",
 }

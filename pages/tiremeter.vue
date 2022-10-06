@@ -4,7 +4,6 @@
       <breadcrumbs :crumbs="crumbs">
         <share-it type="publish" v-if="$route.params.body" />
       </breadcrumbs>
-      {{ showTextResults }}
       <div class="ma-tiremeter">
         <div class="ma-tiremeter__card">
           <h2 class="title-with-line full-width mb-2">
@@ -200,6 +199,7 @@
                 :listD="lists.d"
                 :listL="lists.l"
                 :errorPercentage="speedometerErrorPercentageForTextResults"
+                :increase="lists.increase"
               />
             </div>
             <div class="col-12 col-lg-6 mt-5 mt-lg-0">
@@ -522,6 +522,11 @@ export default {
         d: [],
         h: [],
         l: [],
+        increase:{
+          d: false,
+          h: false,
+          l: false,
+        }
       },
       tiremeterModels: {
         a1: [
@@ -780,24 +785,30 @@ export default {
 
       if (g > f) {
         this.lists.h = this.tiremeterModels.c1
+        this.lists.increase.h = true;
       } else if (f > g) {
         this.lists.h = this.tiremeterModels.c2
+        this.lists.increase.h = false;
       } else {
         this.lists.h = []
       }
 
       if (c < b) {
         this.lists.d = this.tiremeterModels.a2
+        this.lists.increase.d = false;
       } else if (c > b) {
         this.lists.d = this.tiremeterModels.a1
+        this.lists.increase.d = true;
       }else{
         this.lists.d = [];
       }
 
       if (this.form.tireWidth.old > this.form.tireWidth.new) {
         this.lists.l = this.tiremeterModels.d2
+        this.lists.increase.l = false;
       } else if (this.form.tireWidth.new > this.form.tireWidth.old) {
         this.lists.l = this.tiremeterModels.d1
+        this.lists.increase.l = true;
       }else{
         this.lists.l = [];
       }

@@ -237,7 +237,7 @@
         dominant-baseline="middle"
         text-anchor="middle"
         y="11"
-        fill="#29A53E"
+        fill="#FAA300"
         v-text="
          (oldExternalDiameter !== newExternalDiameter) ? `${oldExternalDiameter} ${$t('cm')} <D> ${newExternalDiameter} ${$t('cm')}` : `<D> ${newExternalDiameter} ${$t('cm')}`
         "
@@ -270,7 +270,7 @@
         dominant-baseline="middle"
         text-anchor="middle"
         y="130"
-        fill="#246EB2"
+        fill="#29a53e"
         v-text="(oldTireWidth !== newTireWidth) ? `${oldTireWidth} ${$t('cm')} <L> ${newTireWidth} ${$t('cm')}` : `<L> ${newTireWidth} ${$t('cm')}`"
       ></text>
       <defs>

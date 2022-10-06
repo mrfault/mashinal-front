@@ -135,13 +135,16 @@
       padding-bottom: 4px;
       font: 500 16px Gilroy;
       &-d {
-        color: #29a53e;
+        color: #FAA300;
       }
       &-h {
         color: #f81734;
       }
       &-l {
-        color: #246EB2;
+        color: #29a53e;
+      }
+      &::first-letter{
+        text-transform: uppercase;
       }
     }
     &--item {
