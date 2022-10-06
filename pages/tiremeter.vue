@@ -4,7 +4,6 @@
       <breadcrumbs :crumbs="crumbs">
         <share-it type="publish" v-if="$route.params.body" />
       </breadcrumbs>
-      {{ showTextResults }}
       <div class="ma-tiremeter">
         <div class="ma-tiremeter__card">
           <h2 class="title-with-line full-width mb-2">
