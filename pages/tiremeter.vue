@@ -203,7 +203,10 @@
               />
             </div>
             <div class="col-12 col-lg-6 mt-5 mt-lg-0">
-              <how-to :showTextResults="showTextResults" :speedometerErrorPercentage="speedometerErrorPercentage"></how-to>
+              <how-to
+                :showTextResults="showTextResults"
+                :speedometerErrorPercentage="speedometerErrorPercentage"
+              ></how-to>
             </div>
           </div>
           <span></span>
@@ -231,15 +234,6 @@ export default {
     return this.$headMeta({
       title: this.$t('visual_tire_calculator'),
     })
-  },
-  computed: {
-    isRussian() {
-      if (this.$i18n.locale == 'ru') {
-        return true
-      } else {
-        return false
-      }
-    },
   },
   data() {
     return {
@@ -654,6 +648,13 @@ export default {
     }
   },
   computed: {
+    isRussian() {
+      if (this.$i18n.locale == 'ru') {
+        return true
+      } else {
+        return false
+      }
+    },
     oldExternalDiameter() {
       return (
         Math.round(
@@ -689,6 +690,13 @@ export default {
     },
 
     // D
+    oldD(){
+      return Math.round(this.oldExternalDiameter * this.oldDiscDiameter * 0.02 + this.form.radius.old * 25.4)
+      
+    },
+    newD(){
+       return Math.round(this.newExternalDiameter * this.newDiscDiameter * 0.02 + this.form.radius.new * 25.4)
+    },
     oldProfileHeight() {
       return (
         Math.round(
@@ -745,13 +753,16 @@ export default {
   },
   methods: {
     findTextResults() {
-      var oldD = this.oldProfileHeight
-      var newD = this.newProfileHeight
+      var oldD = this.oldD
+      var newD = this.newD
       var oldC = this.oldDiscDiameter
       var newC = this.newDiscDiameter
 
       var oldB = Math.round((oldD - oldC) / 2)
       var newB = Math.round((newD - newC) / 2)
+
+      console.log(oldB)
+      console.log((oldD-oldC) / 2);
 
       var f = oldB / 10
       var g = newB / 10
@@ -771,17 +782,14 @@ export default {
         this.lists.h = this.tiremeterModels.c1
       } else if (f > g) {
         this.lists.h = this.tiremeterModels.c2
-      }else{
-        this.lists.h = [];
+      } else {
+        this.lists.h = []
       }
 
-      console.log('asdas', this.tiremeterModels.a1)
-      console.log('c>b', c > b)
-      console.log('c<b', c < b)
-      if (c > b) {
-        this.lists.d = this.tiremeterModels.a1
-      } else if (b > c) {
+      if (c < b) {
         this.lists.d = this.tiremeterModels.a2
+      } else if (c > b) {
+        this.lists.d = this.tiremeterModels.a1
       }else{
         this.lists.d = [];
       }
@@ -796,8 +804,8 @@ export default {
     },
     async submit() {
       await this.findTextResults()
-      this.showResults = true;
-      this.speedometerErrorPercentageForTextResults = this.speedometerErrorPercentage;
+      this.showResults = true
+      this.speedometerErrorPercentageForTextResults = this.speedometerErrorPercentage
       if (this.isMobileBreakpoint) {
         setTimeout(() => {
           const el = document.querySelector('#tiremeterTextResults')
@@ -810,12 +818,10 @@ export default {
           window.scrollTo({ top: 360, behavior: 'smooth' })
         }, 500)
       }
-      
+
       console.log(
         '!this.lists.d.length && !this.lists.h.length && !this.lists.l.length && (this.speedometerErrorPercentage != 0)',
-        !this.lists.d.length &&
-          !this.lists.h.length &&
-          !this.lists.l.length
+        !this.lists.d.length && !this.lists.h.length && !this.lists.l.length,
       )
       if (
         !this.lists.d.length &&

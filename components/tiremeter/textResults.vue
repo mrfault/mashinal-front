@@ -23,7 +23,7 @@
         <span class="ma-tiremeter__results-text--item-minus" v-else>
           <icon name="minus" />
         </span>
-        {{ $t(item.text).replace("PERCENTAGE",`${errorPercentage}%`) }}
+        {{ $t(item.text).replace("PERCENTAGE",`${Math.abs(errorPercentage)}%`) }}
       </h6>
     </div>
     <div class="ma-tiremeter__results-text" v-if="listH.length">
