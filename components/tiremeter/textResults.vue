@@ -29,7 +29,7 @@
               'INCREASE',
               $t('will_increase'),
             )
-          }}776142063
+          }}
         </template>
         <template v-else>
           {{
