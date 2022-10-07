@@ -3,7 +3,11 @@
   padding: 0;
   list-style: none;
 }
-
+.page-header {
+  .exact-active i::before{
+    color: $red-1;
+  }
+}
 .mobile-nav {
   position: fixed;
   z-index: 9;
