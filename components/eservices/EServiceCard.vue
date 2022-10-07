@@ -33,7 +33,7 @@
     </div>
     <div class="e-service__actions">
       <div class="e-service__actions--left">
-        <a class="text-green e-service__actions--button" href="javascript:void(0);" @click="$emit('showPayment')" v-if="item.key === 'contract' && shouldExtendContract">
+        <a class="text-green e-service__actions--button" href="javascript:void(0);" @click="$emit('showPayment')" v-if="item.key === 'contract' &&  shouldExtendContract && $route.params.type != 3">
           {{ $t('extend_subscription') }}
         </a>
         <nuxt-link class="text-green" :to="$localePath('/business-profile') + '?type=1&scrollto=packages'" v-else-if="item.key === 'contract' && $route.params.type == 1">
