@@ -48,8 +48,8 @@
                   <div class="img" v-if="imgKey">
                     <img :src="$withBaseUrl(option[imgKey]) || imgPlaceholder" :alt="getOptionName(option)" />
                   </div>
-                  <div class="text-truncate">
-                    <span :class="{'text-bold': option.popular === 1}">{{ getOptionName(option) }}</span>
+                  <div class="text-truncate" :class="{'option-highlighted': (highlightSelected && (option.slug == value)) }">
+                    <span :class="{'text-bold': option.popular === 1 && considerPopular}">{{ getOptionName(option) }}</span>
                   </div>
                 </div>
               </template>
@@ -61,8 +61,8 @@
                 <div class="img" v-if="imgKey">
                   <img :src="$withBaseUrl(option[imgKey]) || imgPlaceholder" :alt="getOptionName(option)" />
                 </div>
-                <div class="text-truncate">
-                  <span :class="{'text-bold': option.popular === 1}">{{ getOptionName(option) }}</span>
+                <div class="text-truncate" :class="{'option-highlighted': (highlightSelected && (option.slug == value)) }">
+                  <span :class="{'text-bold': option.popular === 1 && considerPopular}">{{ getOptionName(option) }}</span>
                 </div>
               </div>
             </div>
@@ -93,7 +93,16 @@ export default {
       type: Boolean,
       default: true
     },
-    disableClean: Boolean
+    disableClean: Boolean,
+    considerPopular: {
+      type: Boolean,
+      default: true,
+    },
+    highlightSelected:{
+      type: Boolean,
+      default: false,
+    }
+
   },
   data() {
     return {

@@ -264,6 +264,7 @@ import { mapGetters, mapActions } from 'vuex'
 export default {
   props: {
     form: {},
+    disableScroll: false,
   },
   data() {
     return {
@@ -343,22 +344,20 @@ export default {
       }[key][value]
     },
     async handleChange(value, action, keys, props, nextKey) {
-
-
-
-
-      if (keys[0] === 'car_catalog_id' && !this.isMobileBreakpoint) {
-        setTimeout(() => {
-          window.scrollTo({ top: 1000, behavior: 'smooth' })
-        }, 500)
-      }
-      else if (keys[0] === 'car_catalog_id' && this.isMobileBreakpoint) {
-        window.scrollTo({ top: 1200, behavior: 'smooth' })
-        setTimeout(() => {
-          // window.location.href = '#sellLastStepUploadImage'
-           const el = document.querySelector('#anchor-saved_images');
-           el.scrollIntoView({block:'start', behavior: 'smooth'});
-        }, 500)
+      
+      if (!this.disableScroll) {
+        if (keys[0] === 'car_catalog_id' && !this.isMobileBreakpoint) {
+          setTimeout(() => {
+            window.scrollTo({ top: 1000, behavior: 'smooth' })
+          }, 500)
+        } else if (keys[0] === 'car_catalog_id' && this.isMobileBreakpoint) {
+          window.scrollTo({ top: 1200, behavior: 'smooth' })
+          setTimeout(() => {
+            // window.location.href = '#sellLastStepUploadImage'
+            const el = document.querySelector('#anchor-saved_images')
+            el.scrollIntoView({ block: 'start', behavior: 'smooth' })
+          }, 500)
+        }
       }
 
       clearTimeout(this.timeout)
@@ -401,7 +400,7 @@ export default {
         } else if (this.isMobileBreakpoint) {
           this.timeout = setTimeout(() => {
             this.scrollTo(this.$refs[`sell-${nextKey}`], -34, 500)
-            console.log(this);
+            console.log(this)
             $container.style.minHeight = ''
           }, 100)
         }
