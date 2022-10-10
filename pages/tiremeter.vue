@@ -10,7 +10,7 @@
             <span>{{ $t('visual_tire_calculator') }}</span>
           </h2>
           <div class="row">
-            <div class="col-12 col-md-12 col-lg-5 col-xl-3">
+            <div class="col-12 col-md-12 col-lg-5 col-xl-3-10">
               <div class="ma-tiremeter__card--input-group">
                 <h6 class="ma-tiremeter__card--input-group__title">
                   {{ $t('size_of_old_tire') }}
@@ -75,7 +75,7 @@
               </div>
             </div>
             <div
-              class="col-12 col-md-12 col-lg-7 col-xl-5 pt-5 pt-lg-0 d-flex justify-content-center"
+              class="col-12 col-md-12 col-lg-7 col-xl-4-10 pt-5 pt-lg-0 d-flex justify-content-center"
             >
               <tires
                 :oldExternalDiameter="oldExternalDiameter"
@@ -88,10 +88,10 @@
                 :newTireWidth="form.tireWidth.new / 10"
               ></tires>
             </div>
-            <div class="col-4 col-md-5 col-lg-5 col-xl-1">
+            <div class="col-4 col-md-5 col-lg-5 col-xl-1-10">
               <speedometer :percententage="speedometerErrorPercentage * -1" />
             </div>
-            <div class="col-8 col-md-7 col-lg-7 col-xl-3">
+            <div class="col-8 col-md-7 col-lg-7 col-xl-2-10">
               <clearance :value="clearanceChange / 10" />
             </div>
           </div>
@@ -704,14 +704,14 @@ export default {
     },
     oldProfileHeight() {
       return (
-        Math.round(
+        Math.ceil(
           ((this.oldExternalDiameter - this.oldDiscDiameter / 10) / 2) * 10,
         ) / 10
       )
     },
     newProfileHeight() {
       return (
-        Math.round(
+        Math.ceil(
           ((this.newExternalDiameter - this.newDiscDiameter / 10) / 2) * 10,
         ) / 10
       )
