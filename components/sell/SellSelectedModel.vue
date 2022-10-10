@@ -18,7 +18,7 @@ export default {
   props: {
     brand: {},
     model: {},
-    year: {},
+    year:  {},
     allowClear: Boolean
   }
 }
