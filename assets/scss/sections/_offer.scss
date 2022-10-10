@@ -7,14 +7,11 @@
   border-image: linear-gradient(to right, #246EB2, #F81734) 1;
   border-radius: 4px;
   padding: 20px;
-
 }
-
 .new-offer-title {
   display: flex;
   justify-content: center;
 }
-
 .new-offer-title > h2 {
   position: relative;
 }
@@ -1037,4 +1034,60 @@
   .homePage-text-section{
     margin-top: 60px;
   }
+}
+.offer-brand{
+  font-size: 20px;
+  color: $dark-blue-1;
+  .maxPrice{
+    margin-left: 15px;
+    font-size: 18px;
+    color: $dark-blue-2;
+    font-weight: bold;
+  }
+}
+.offer-collapse-title{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.offer-collapsed{
+  border: 1px solid #C1D9FC;
+}
+.offerAddButtons{
+  margin-top: 30px;
+  width: 100% ;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+}
+.offer-payment-modal{
+  width: auto;
+}
+.offer-selected-item{
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 15px;
+  border: 1px solid $greyish-blue-3;
+  .item-img{
+    width: 50%;
+  img{
+    width: 100%;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+  }
+  }
+  .item-detail{
+    h4{
+      color: $dark-blue-2;
+    }
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 10px;
+  }
+}
+.offer-amount{
+  color:$dark-blue-2 ;
 }
