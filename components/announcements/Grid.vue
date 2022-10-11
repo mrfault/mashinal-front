@@ -93,7 +93,7 @@
                   <div
                     class="banner-bg"
                     :style="{
-                      backgroundImage: `url(${getBannerImage(index + 1)});background-size: contain;`,
+                      backgroundImage: `url(${getBannerImage(index + 1)});background-size: contain;background-repeat: no-repeat;`,
                     }"
                   ></div>
                 </div>
