@@ -1,13 +1,44 @@
 <template>
   <div>
+    
     <h2 class="title-with-line full-width mb-2">
       <span>{{ $t('result_of_tire_size_change') }}</span>
     </h2>
     <div class="ma-tiremeter__results-text" v-if="listD.length">
       <h5 class="ma-tiremeter__results-text--title">
-        {{ $t('result_of_tire_size_change_title_1') }}
+                <template v-if="increase.d">
+          {{
+            $t('result_of_tire_size_change_title_1').replace(
+              'INCREASE',
+              $t('will_increase'),
+            )
+          }}
+        </template>
+        <template v-else>
+          {{
+            $t('result_of_tire_size_change_title_1').replace(
+              'INCREASE',
+              $t('will_diminish'),
+            )
+          }}
+        </template>
         <span class="ma-tiremeter__results-text--title-d">"D"</span>
-        {{ $t('result_of_tire_size_change_title_2') }}
+        <template v-if="increase.d">
+          {{
+            $t('result_of_tire_size_change_title_2').replace(
+              'INCREASE',
+              $t('will_increase'),
+            )
+          }}
+        </template>
+        <template v-else>
+          {{
+            $t('result_of_tire_size_change_title_2').replace(
+              'INCREASE',
+              $t('will_diminish'),
+            )
+          }}
+        </template>
       </h5>
       <h6
         class="ma-tiremeter__results-text--item"
@@ -23,12 +54,29 @@
         <span class="ma-tiremeter__results-text--item-minus" v-else>
           <icon name="minus" />
         </span>
-        {{ $t(item.text).replace("PERCENTAGE",`${Math.abs(errorPercentage)}%`) }}
+        {{
+          $t(item.text).replace('PERCENTAGE', `${Math.abs(errorPercentage)}%`)
+        }}
       </h6>
     </div>
     <div class="ma-tiremeter__results-text" v-if="listH.length">
       <h5 class="ma-tiremeter__results-text--title">
-        {{ $t('result_of_tire_size_change_h') }}
+        <template v-if="increase.h">
+          {{
+            $t('result_of_tire_size_change_h').replace(
+              'INCREASE',
+              $t('will_increase'),
+            )
+          }}
+        </template>
+        <template v-else>
+          {{
+            $t('result_of_tire_size_change_h').replace(
+              'INCREASE',
+              $t('will_diminish'),
+            )
+          }}
+        </template>
         <span class="ma-tiremeter__results-text--title-h">"H"</span>
       </h5>
       <h6
@@ -50,7 +98,22 @@
     </div>
     <div class="ma-tiremeter__results-text" v-if="listL.length">
       <h5 class="ma-tiremeter__results-text--title">
-        {{ $t('result_of_tire_size_change_l') }}
+        <template v-if="increase.l">
+          {{
+            $t('result_of_tire_size_change_l').replace(
+              'INCREASE',
+              $t('will_increase'),
+            )
+          }}
+        </template>
+        <template v-else>
+          {{
+            $t('result_of_tire_size_change_l').replace(
+              'INCREASE',
+              $t('will_diminish'),
+            )
+          }}
+        </template>
         <span class="ma-tiremeter__results-text--title-l">"L"</span>
       </h5>
       <h6
@@ -88,12 +151,12 @@ export default {
       type: Array,
       default: [],
     },
-    errorPercentage:{
+    errorPercentage: {
       type: Number,
       default: 0,
-    }
+    },
+    increase: Object,
   },
 }
 </script>
 
-<style></style>

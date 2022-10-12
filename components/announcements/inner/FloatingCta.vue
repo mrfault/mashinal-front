@@ -1,9 +1,7 @@
 <template>
   <div
     v-if="
-      !userIsOwner(announcement) ||
-      showMonetization(announcement) ||
-      announcement.has_monetization
+      showMonetization(announcement)
     "
   >
     <div class="floating-cta fixed-to-bottom" ref="floating">

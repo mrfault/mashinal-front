@@ -4,14 +4,13 @@
       <breadcrumbs :crumbs="crumbs">
         <share-it type="publish" v-if="$route.params.body" />
       </breadcrumbs>
-      {{ showTextResults }}
       <div class="ma-tiremeter">
         <div class="ma-tiremeter__card">
           <h2 class="title-with-line full-width mb-2">
             <span>{{ $t('visual_tire_calculator') }}</span>
           </h2>
           <div class="row">
-            <div class="col-12 col-md-12 col-lg-5 col-xl-3">
+            <div class="col-12 col-md-12 col-lg-5 col-xl-3-10">
               <div class="ma-tiremeter__card--input-group">
                 <h6 class="ma-tiremeter__card--input-group__title">
                   {{ $t('size_of_old_tire') }}
@@ -76,7 +75,7 @@
               </div>
             </div>
             <div
-              class="col-12 col-md-12 col-lg-7 col-xl-5 pt-5 pt-lg-0 d-flex justify-content-center"
+              class="col-12 col-md-12 col-lg-7 col-xl-4-10 pt-5 pt-lg-0 d-flex justify-content-center"
             >
               <tires
                 :oldExternalDiameter="oldExternalDiameter"
@@ -89,10 +88,10 @@
                 :newTireWidth="form.tireWidth.new / 10"
               ></tires>
             </div>
-            <div class="col-4 col-md-5 col-lg-5 col-xl-1">
+            <div class="col-4 col-md-5 col-lg-5 col-xl-1-10">
               <speedometer :percententage="speedometerErrorPercentage * -1" />
             </div>
-            <div class="col-8 col-md-7 col-lg-7 col-xl-3">
+            <div class="col-8 col-md-7 col-lg-7 col-xl-2-10">
               <clearance :value="clearanceChange / 10" />
             </div>
           </div>
@@ -200,6 +199,7 @@
                 :listD="lists.d"
                 :listL="lists.l"
                 :errorPercentage="speedometerErrorPercentageForTextResults"
+                :increase="lists.increase"
               />
             </div>
             <div class="col-12 col-lg-6 mt-5 mt-lg-0">
@@ -522,6 +522,11 @@ export default {
         d: [],
         h: [],
         l: [],
+        increase:{
+          d: false,
+          h: false,
+          l: false,
+        }
       },
       tiremeterModels: {
         a1: [
@@ -699,14 +704,14 @@ export default {
     },
     oldProfileHeight() {
       return (
-        Math.round(
+        Math.ceil(
           ((this.oldExternalDiameter - this.oldDiscDiameter / 10) / 2) * 10,
         ) / 10
       )
     },
     newProfileHeight() {
       return (
-        Math.round(
+        Math.ceil(
           ((this.newExternalDiameter - this.newDiscDiameter / 10) / 2) * 10,
         ) / 10
       )
@@ -780,24 +785,30 @@ export default {
 
       if (g > f) {
         this.lists.h = this.tiremeterModels.c1
+        this.lists.increase.h = true;
       } else if (f > g) {
         this.lists.h = this.tiremeterModels.c2
+        this.lists.increase.h = false;
       } else {
         this.lists.h = []
       }
 
       if (c < b) {
         this.lists.d = this.tiremeterModels.a2
+        this.lists.increase.d = false;
       } else if (c > b) {
         this.lists.d = this.tiremeterModels.a1
+        this.lists.increase.d = true;
       }else{
         this.lists.d = [];
       }
 
       if (this.form.tireWidth.old > this.form.tireWidth.new) {
         this.lists.l = this.tiremeterModels.d2
+        this.lists.increase.l = false;
       } else if (this.form.tireWidth.new > this.form.tireWidth.old) {
         this.lists.l = this.tiremeterModels.d1
+        this.lists.increase.l = true;
       }else{
         this.lists.l = [];
       }

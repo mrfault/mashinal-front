@@ -142,8 +142,12 @@
     width: 100%;
     height: 100%;
   }
-  &:hover {
-    background-image: url('../../static/icons/star-favorite-active.svg');
+}
+@media (min-width: 800px) {
+  .btn-favorite {
+    &:hover {
+      background-image: url('../../static/icons/star-favorite-active.svg');
+    }
   }
 }
 .btn-favorite-active {

@@ -1,7 +1,7 @@
 <template>
   <div class="form-group">
     <div class="radio-input">
-      <input 
+      <input
         class="sr-only"
         :id="id || `${inputName}_${radioValue}`"
         :type="type"
