@@ -2,7 +2,6 @@
   <div class="pages-dashboard pt-2 pt-lg-5">
     <div class="container d-flex flex-wrap">
       <breadcrumbs :crumbs="crumbs" />
-      <nuxt-link to="moderator">salam</nuxt-link>
       <template v-for="(item, index) in tabs">
         <div
           class="col-12 col-md-6 col-lg-4 col-xl-3 mb-2 mb-lg-3"
@@ -166,6 +165,16 @@ export default {
           url: '/tiremeter',
           hasAction: false,
           image: 'car',
+          isAvailable: true,
+        },
+        {
+          title: this.$t('Moderator'),
+          description: null,
+          value: null,
+          icon: 'customs-calculator-police',
+          url: '/moderator',
+          hasAction: false,
+          image: 'etibarname',
           isAvailable: true,
         },
       ],
