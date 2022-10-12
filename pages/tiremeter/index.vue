@@ -217,7 +217,7 @@
 </template>
 
 <script>
-import Tires from '../components/tiremeter/tires.vue'
+import Tires from '~/components/tiremeter/tires.vue'
 import Speedometer from '~/components/tiremeter/speedometer.vue'
 import Clearance from '~/components/tiremeter/clearance.vue'
 import TextResults from '~/components/tiremeter/textResults.vue'
@@ -522,11 +522,11 @@ export default {
         d: [],
         h: [],
         l: [],
-        increase:{
+        increase: {
           d: false,
           h: false,
           l: false,
-        }
+        },
       },
       tiremeterModels: {
         a1: [
@@ -695,33 +695,38 @@ export default {
     },
 
     // D
-    oldD(){
-      return Math.round(this.oldExternalDiameter * this.oldDiscDiameter * 0.02 + this.form.radius.old * 25.4)
-      
+    oldD() {
+      return Math.round(
+        this.oldExternalDiameter * this.oldDiscDiameter * 0.02 +
+          this.form.radius.old * 25.4,
+      )
     },
-    newD(){
-       return Math.round(this.newExternalDiameter * this.newDiscDiameter * 0.02 + this.form.radius.new * 25.4)
+    newD() {
+      return Math.round(
+        this.newExternalDiameter * this.newDiscDiameter * 0.02 +
+          this.form.radius.new * 25.4,
+      )
     },
+
+    //B
     oldProfileHeight() {
       return (
-        Math.ceil(
-          ((this.oldExternalDiameter - this.oldDiscDiameter / 10) / 2) * 10,
-        ) / 10
+        Math.round((this.form.tireWidth.old * this.form.profile.old) / 100) / 10
       )
     },
     newProfileHeight() {
       return (
-        Math.ceil(
-          ((this.newExternalDiameter - this.newDiscDiameter / 10) / 2) * 10,
-        ) / 10
+        Math.round((this.form.tireWidth.new * this.form.profile.new) / 100) / 10
       )
     },
+    oldB() {
+      return this.oldProfileHeight * 10
+    },
+    newB() {
+      return this.newProfileHeight * 10
+    },
     profileHeightDifference() {
-      return (
-        Math.round(
-          (this.oldProfileHeight * 10 - this.newProfileHeight * 10) * 10,
-        ) / 10
-      )
+      return Math.round((this.oldB - this.newB) * 10) / 10
     },
 
     clearanceChange() {
@@ -758,64 +763,71 @@ export default {
   },
   methods: {
     findTextResults() {
-      var oldD = this.oldD
-      var newD = this.newD
-      var oldC = this.oldDiscDiameter
-      var newC = this.newDiscDiameter
-
-      var oldB = Math.round((oldD - oldC) / 2)
-      var newB = Math.round((newD - newC) / 2)
-
-      console.log(oldB)
-      console.log((oldD-oldC) / 2);
-
-      var f = oldB / 10
-      var g = newB / 10
-
-      var c =
-        Math.round(
-          25.4 * this.form.radius.new +
-            (this.form.tireWidth.new * this.form.profile.new * 2) / 100,
-        ) / 10
+      var f =
+        Math.round((this.form.tireWidth.old * this.form.profile.old) / 100) / 10
+      var g =
+        Math.round((this.form.tireWidth.new * this.form.profile.new) / 100) / 10
       var b =
         Math.round(
           25.4 * this.form.radius.old +
             (this.form.tireWidth.old * this.form.profile.old * 2) / 100,
         ) / 10
+      var c =
+        Math.round(
+          25.4 * this.form.radius.new +
+            (this.form.tireWidth.new * this.form.profile.new * 2) / 100,
+        ) / 10
+      var h = Math.round(25.4 * this.form.radius.old) / 10
+      var k = Math.round(25.4 * this.form.radius.new) / 10
+
+      var oldA = this.form.tireWidth.old
+      var oldB = 10 * f
+      var oldC = 10 * h
+      var oldD = 10 * b
+      var newA = this.form.tireWidth.new
+      var newB = 10 * g
+      var newC = 10 * k
+      var newD = 10 * c
+
+      var diffA = Math.round(this.form.tireWidth.old - this.form.tireWidth.new)
+      var diffB = Math.round(10 * (f - g))
+      var diffC = Math.round(10 * (h - k))
+      var diffD = Math.round(10 * (b - c))
 
       if (g > f) {
         this.lists.h = this.tiremeterModels.c1
-        this.lists.increase.h = true;
+        this.lists.increase.h = true
       } else if (f > g) {
         this.lists.h = this.tiremeterModels.c2
-        this.lists.increase.h = false;
+        this.lists.increase.h = false
       } else {
         this.lists.h = []
       }
 
       if (c < b) {
         this.lists.d = this.tiremeterModels.a2
-        this.lists.increase.d = false;
+        this.lists.increase.d = false
       } else if (c > b) {
         this.lists.d = this.tiremeterModels.a1
-        this.lists.increase.d = true;
-      }else{
-        this.lists.d = [];
+        this.lists.increase.d = true
+      } else {
+        this.lists.d = []
       }
 
       if (this.form.tireWidth.old > this.form.tireWidth.new) {
         this.lists.l = this.tiremeterModels.d2
-        this.lists.increase.l = false;
+        this.lists.increase.l = false
       } else if (this.form.tireWidth.new > this.form.tireWidth.old) {
         this.lists.l = this.tiremeterModels.d1
-        this.lists.increase.l = true;
-      }else{
-        this.lists.l = [];
+        this.lists.increase.l = true
+      } else {
+        this.lists.l = []
       }
     },
     async submit() {
       await this.findTextResults()
       this.showResults = true
+
       this.speedometerErrorPercentageForTextResults = this.speedometerErrorPercentage
       if (this.isMobileBreakpoint) {
         setTimeout(() => {
@@ -830,10 +842,6 @@ export default {
         }, 500)
       }
 
-      console.log(
-        '!this.lists.d.length && !this.lists.h.length && !this.lists.l.length && (this.speedometerErrorPercentage != 0)',
-        !this.lists.d.length && !this.lists.h.length && !this.lists.l.length,
-      )
       if (
         !this.lists.d.length &&
         !this.lists.h.length &&
@@ -846,8 +854,13 @@ export default {
       }
     },
   },
-  mounted() {
-    this.form.radius.new = 13
+  watch: {
+    form: {
+      deep: true,
+      handler() {
+        this.showResults = false
+      },
+    },
   },
 }
 </script>
