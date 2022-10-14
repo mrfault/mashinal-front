@@ -422,9 +422,6 @@
         margin-left: 15px;
         flex-direction: column;
 
-        :nth-child(3) {
-          color: $dark-blue-2;
-        }
       }
 
       .created {
@@ -451,7 +448,7 @@
   height: 700px;
 }
 .offerDetail {
-  height:540px;
+  height:625px;
   overflow-x: hidden;
   overflow-y: auto;
 
@@ -459,6 +456,30 @@
   border-bottom: none;
   border-right: none;
   padding: 8px;
+  .offer_items{
+    display: flex;
+    .active{
+      background: $greyish-blue-9;
+    }
+    .offer_item{
+      width: 100%;
+      border: 1px solid $greyish-blue-4;
+      border-radius: 4px;
+      margin: 7px;
+      display: flex;
+      flex-direction: row;
+      img{
+        width: 150px;
+      }
+      .offer_item_detail{
+        padding: 15px;
+        .offer_price{
+          color: $dark-blue-2;
+          font-weight: bold;
+        }
+      }
+    }
+  }
   .collapse-content {
     padding: 15px;
   }

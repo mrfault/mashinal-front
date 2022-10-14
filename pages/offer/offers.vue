@@ -11,7 +11,7 @@
                   :class="{'active-filter': $route.query.param==='all' || !$route.query.param} ">
                 <inline-svg src="/icons/offer/requests.svg" class="filter-icon"/>
                 <span>
-                  Təkliflər  <span class="offerCount">{{newOfferCount}}</span>
+                  Təkliflər  <span class="offerCount">{{ newOfferCount }}</span>
                 </span>
               </li>
               <li @click="changePage('deleted')" :class="{'active-filter-fill': $route.query.param==='deleted'} ">
@@ -46,19 +46,24 @@
           <div class="offerUsers" style="height: 692px">
             <div class="searchBox">
               <icon name="search"></icon>
-              <input type="text" v-model="search" placeholder="Maşın və ya istifadəçi adı" class="searchInput" @focus="searchInputFocus">
+              <input type="text" v-model="search" placeholder="Maşın və ya istifadəçi adı" class="searchInput"
+                     @focus="searchInputFocus">
 
             </div>
             <div class="user" v-for="userOffer in searchOffer"
 
                  @click="getUserOfferDetail(userOffer.auto_salon_offer_id)">
-              <div class="userImg"
-                   :style="'background-image: url('+(userOffer.auto_salon.logo ? userOffer.auto_salon.logo : '/images/offer/salon_no_logo.svg') +')'">
-              </div>
+
+
+              <div class="userImg" :style="'background-image: url('+(userOffer.auto_salon.logo ? userOffer.auto_salon.logo : '/images/offer/salon_no_logo.svg') +')'" v-if="userOffer.user_is_accepted"> </div>
+              <div class="userImg" :style="'background-image: url('+('/images/offer/salon_no_logo.svg') +')'" v-else> </div>
               <div class="userName">
-                <b> {{ userOffer.auto_salon.name }}</b>
-                <span>{{ userOffer.offer.brand }} {{ userOffer.offer.model }}</span>
-                <span>{{ userOffer.offer.minPrice }} - {{ userOffer.offer.maxPrice }}</span>
+                <b v-if="userOffer.user_is_accepted"> {{ userOffer.auto_salon.name }}</b>
+                <b v-else> Bilinməyən avtosalon</b>
+                <div v-for="offer_item in userOffer.offer.offer_items">
+                  <span>{{ offer_item.brand }} {{ offer_item.model }}</span>
+
+                </div>
 
               </div>
 
@@ -71,93 +76,24 @@
         <div class="col col-md-6 col-12 col-xs-12 col-sm-12 offerDetailSection" v-if="!isMobileBreakpoint">
           <div class="offerDetail" v-if="offer">
             <div class="d-flex align-items-center user">
-              <div class="userImg" :style="'background-image: url('+offer.user.img+')'"></div>
+              <div class="userImg" :style="'background-image: url('+(userOffer.auto_salon.logo ? userOffer.auto_salon.logo : '/images/offer/salon_no_logo.svg') +')'" v-if="userOffer.user_is_accepted"> </div>
+              <div class="userImg" :style="'background-image: url('+('/images/offer/salon_no_logo.svg') +')'" v-else> </div>
               <p class="mt-2 ml-2 text-bold">
-                {{ offer.user.full_name }}
+                {{userOffer.user_is_accepted ?  auto_salon.name : 'Bilinməyən avtosalon' }}
               </p>
+
               <div class="actions" v-if="user_is_accepted">
                 <span @click="deleteUserAutoSalonOffer(userOffer.auto_salon_offer_id)"
                       v-if="!userOffer.user_deleted_at"> <icon name="garbage"></icon></span>
               </div>
             </div>
             <collapse-content :title="'Təklif'">
+              <offer-items :offer_items="offer.offer_items" />
 
-              <div class="generations">
-                <div class="row">
-
-                  <div class="col-md-3" v-for="generation in offer.generations">
-                    <img :src="generation.img" class="generationImage" width="100%">
-                  </div>
-                  <div class="col-md-6">
-                    <div class="carName">
-
-                      <span class="carPrice">{{ offer.minPrice }} - {{ offer.maxPrice }} ₼</span>
-                      <h3>{{ offer.brand }} {{ offer.model }}</h3>
-
-                    </div>
-
-                  </div>
-
-                </div>
-
-              </div>
-              <div class="offerDetailContent">
-                <div class="offerDetailItem">
-                  <p>Brand</p>
-                  <span>{{ offer.brand }}</span>
-                </div>
-                <div class="offerDetailItem">
-                  <p>Model </p>
-                  <span>
-                  {{ offer.model }}
-                </span>
-                </div>
-
-                <div class="offerDetailItem">
-                  <p>Nəsil </p>
-                  <div>
-                  <span v-for=" (generation,index) in offer.generations">
-                  {{ generation.name }}
-                                      <div v-if="index != offer.generations.length - 1">,</div>
-                </span>
-
-
-                  </div>
-
-                </div>
-                <div class="offerDetailItem">
-
-                  <p>Sürətlər qutusu </p>
-                  <div>
-                <span v-for=" (gearbox,index) in offer.gear_boxes">
-                               {{ $t('box_values')[gearbox.gear_box_key] }}
-
-                  <div v-if="index != offer.gear_boxes.length - 1">,</div>
-                </span>
-
-                  </div>
-                </div>
-                <div class="offerDetailItem">
-                  <p>Yanacaq növü </p>
-                  <div>
-                <span v-for=" (fuel_type,index) in offer.fuel_types">
-
-                  {{ $t('engine_values')[fuel_type.fuel_type_key] }} <div
-                  v-if="index != offer.fuel_types.length - 1">,</div>
-
-                </span>
-                  </div>
-                </div>
-
-              </div>
-              <div class="text-right" v-if="!user_is_accepted">
-                <button class="btn  btn--green mt-3" @click="accept(userOffer.auto_salon_offer_id)">Sorğunu qəbul et
-                </button>
-              </div>
             </collapse-content>
 
 
-            <div v-if="user_is_accepted">
+            <div>
               <div class="messages">
                 <div class="message" :class="   isMyMessage(message) ? 'my' :'his ' " v-for="message in offerMessages">
                   <div v-if="message.files.length>0" class="message-files">
@@ -175,8 +111,11 @@
                 </div>
               </div>
             </div>
+            <div class="text-right" v-if="!user_is_accepted">
+              <button class="btn  btn--green mt-3" @click="accept(userOffer.auto_salon_offer_id)">Sorğunu qəbul et
+              </button>
+            </div>
           </div>
-
 
 
           <div class="addons" v-if="user_is_accepted && auto_salon_deleted_at===null">
@@ -207,12 +146,12 @@ import {mapGetters} from "vuex";
 import OfferMessage from "~/components/offer/offer-message";
 import CollapseContent from "~/components/elements/CollapseContent";
 import {ImageResizeMixin} from '~/mixins/img-resize';
-import offer from "~/components/offer/offer";
+import OfferItems from "~/components/offer/offerItems";
 
 export default {
   name: "offers",
-  components: {CollapseContent, OfferMessage, OfferSlider},
-  middleware: ['auth_general','not_auto_salon'],
+  components: {OfferItems, CollapseContent, OfferMessage, OfferSlider},
+  middleware: ['auth_general', 'not_auto_salon'],
   async fetch({store}) {
     await store.dispatch('OffersAcceptedByAutoSalon')
   },
@@ -232,22 +171,23 @@ export default {
       offers: null,
       userOffer: null,
       offer: null,
+      auto_salon: null,
       user_is_accepted: false,
       chat: {
         text: '',
       },
       search: '',
       files: [],
-      auto_salon_offer_id:null,
-      auto_salon_deleted_at:null,
-      messageButtonDisabled:false
+      auto_salon_offer_id: null,
+      auto_salon_deleted_at: null,
+      messageButtonDisabled: false
     }
   },
   computed: {
     ...mapGetters({
       userOffers: 'OffersAcceptedByAutoSalon',
       offerMessages: 'getOfferMessages',
-      newOfferCount:'getNewOfferCount',
+      newOfferCount: 'getNewOfferCount',
     }),
 
 
@@ -264,7 +204,7 @@ export default {
     },
   },
   methods: {
-    searchInputFocus(){
+    searchInputFocus() {
       this.scrollTo('.search-offer', -300, 500, '.container')
     },
     isMyMessage(message) {
@@ -286,7 +226,7 @@ export default {
     },
     async submitMessage() {
 
-      this.messageButtonDisabled=true;
+      this.messageButtonDisabled = true;
       let formData = new FormData();
 
       formData.append('recipient_id', this.userOffer.auto_salon.user_id)
@@ -301,21 +241,21 @@ export default {
       }));
       this.$axios.$post('/offer/messages/send', formData).then((res) => {
         this.chat.text = ''
-        this.files=''
+        this.files = ''
         this.$nuxt.$emit('clear-message-attachments');
         this.$store.commit('appendOfferMessage', res.data.message)
         if (res.data.message.files.length > 1) {
-          const sleep = () =>{
+          const sleep = () => {
             this.scrollTo('.my:last-child >.message-files:last-child >.message-file', 300, 500, '.offerDetail')
           }
           setTimeout(sleep, 1000)
         } else {
-          setTimeout(()=>{
+          setTimeout(() => {
             this.scrollTo('.my:last-child', 0, 500, '.offerDetail')
-          },1000)
+          }, 1000)
 
         }
-        this.messageButtonDisabled=false;
+        this.messageButtonDisabled = false;
 
       })
 
@@ -330,28 +270,29 @@ export default {
 
         await this.checkAccepted(id)
         this.userOffer = this.userOffers.find(function (offer) {
-            return id === offer.auto_salon_offer_id
-          })
+          return id === offer.auto_salon_offer_id
+        })
+        this.auto_salon = this.userOffer.auto_salon
         this.offer = this.userOffer.offer
 
 
-        this.$store.commit('mutate',{property:'current_offer_id',value:this.offer.id})
+        this.$store.commit('mutate', {property: 'current_offer_id', value: this.offer.id})
 
-        this.offer.user_deleted_at=this.userOffer.user_deleted_at
-        this.auto_salon_deleted_at=this.userOffer.auto_salon_deleted_at
+        this.offer.user_deleted_at = this.userOffer.user_deleted_at
+        this.auto_salon_deleted_at = this.userOffer.auto_salon_deleted_at
 
       }
-      setTimeout(()=>{
+      setTimeout(() => {
         this.scrollTo('.message:last-child', 300, 500, '.offerDetail')
-      },1000)
-
+      }, 1000)
 
 
     },
+
     async checkAccepted(id) {
       await this.$axios.$post('/offer/user/offer/check/' + id).then((res) => {
         this.user_is_accepted = res.status
-        this.auto_salon_offer_id=res.auto_salon_offer_id
+        this.auto_salon_offer_id = res.auto_salon_offer_id
         this.$store.commit('setOfferMessages', res.messages)
         this.scrollTo('.message:last-child', 0, 500, '.offerDetail')
       })
@@ -359,6 +300,7 @@ export default {
     },
     async accept(id) {
       await this.$store.dispatch('userAcceptOffer', {id})
+      this.$store.dispatch('OffersAcceptedByAutoSalon')
       this.checkAccepted(id)
 
     },
@@ -372,6 +314,9 @@ export default {
       this.offer = null
       this.user_is_accepted = false
     }
+  },
+  created(){
+    console.log(this.userOffers)
   },
   watch: {
     async $route(newVal, oldVal) {
