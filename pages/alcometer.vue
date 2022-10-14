@@ -4,7 +4,6 @@
       <breadcrumbs :crumbs="crumbs">
         <share-it type="publish" v-if="$route.params.body" />
       </breadcrumbs>
-
       <div class="alco-form" :class="{ 'mb-5': !showGraphs }">
         <h2 class="title-with-line full-width my-2 d-lg-none">
           <span>{{ $t('alcometer') }}</span>
@@ -665,6 +664,7 @@ export default {
         if (this.form.drinkType1 === null || this.form.drinkType1 === '') {
           this.form.drinkValue1 = null
         }
+        this.$v.$reset();
       },
     },
     'form.drinkType2': {
@@ -673,6 +673,7 @@ export default {
         if (this.form.drinkType2 === null || this.form.drinkType2 === '') {
           this.form.drinkValue2 = null
         }
+        this.$v.$reset();
       },
     },
     'form.drinkType3': {
@@ -681,6 +682,7 @@ export default {
         if (this.form.drinkType3 === null || this.form.drinkType3 === '') {
           this.form.drinkValue3 = null
         }
+        this.$v.$reset();
       },
     },
   },
