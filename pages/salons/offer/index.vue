@@ -100,7 +100,7 @@
         </div>
         <div class="col col-md-12 col-lg-6 col-xs-12 col-sm-12 background-white" v-if="!isMobileBreakpoint">
 
-          <div class="offerDetail" v-if="Object.keys(offer).length > 0">
+          <div class="offerDetail" v-if=" offer && Object.keys(offer).length > 0">
             <div class="d-flex align-items-center user" v-if="offer.user">
               <div class="userImg" :style="'background-image: url('+(offer.user.img ? offer.user.img : '/img/user.jpg')+')'" ></div>
               <p class="mt-2 ml-2 text-bold">
@@ -139,7 +139,7 @@
 
 
           </div>
-          <div class="addons" v-if="Object.keys(offer).length > 0">
+          <div class="addons" v-if="offer && Object.keys(offer).length > 0">
             <offer-message
               @type="handleTyping"
               @attach="handleFiles"
