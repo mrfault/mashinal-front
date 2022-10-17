@@ -1467,5 +1467,10 @@ export const mutations = {
   },
   setOfferId(state,payload){
     state.offer_id=payload.offer_id;
+  },
+  setOfferAnnouncement(state,payload) {
+
+    let form = JSON.parse(JSON.stringify(payload.form[payload.index]))
+    Vue.set(state.offer_announcements,payload.index,form)
   }
 }

@@ -37,7 +37,7 @@
     <modal-popup
       :toggle="showPaymentModalOption"
       :title="'Super təklif'"
-      @close="showPaymentModal = false"
+      @close="showPaymentModalOption = false"
       :modal-class="'offer-payment-modal'"
     >
       <div class="row">
@@ -147,6 +147,7 @@ export default {
   },
 
   methods: {
+
     getOfferSelectedModel(index) {
       return this.offerSelectedModels[index]
     },

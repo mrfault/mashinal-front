@@ -354,8 +354,6 @@ export default {
 
   },
 
-
-
   async created() {
 
     if (this.generations.length == 1) {
@@ -384,7 +382,6 @@ export default {
           year:null
         }
       })
-
     }
     if (this.index == 0) {
 
@@ -393,6 +390,14 @@ export default {
         model: this.$route.query.model
       })
 
+    }
+  },
+  watch:{
+    form:{
+      deep: true,
+      handler(newVal) {
+        this.$store.commit('setOfferAnnouncement',{index:this.index,form:newVal})
+      }
     }
   }
 

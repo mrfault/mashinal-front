@@ -1,7 +1,7 @@
 <template>
-  <div class="collapse-content" :class="{'offer-collapsed' : collapsed}">
+  <div class="collapse-content " :class="{'offer-collapsed' : collapsed}">
     <div  :class="'title-with-line'" @click="collapse">
-      <div class="d-flex align-items-center">
+      <div class="d-flex align-items-center selectedOffers">
         <slot name="title"></slot>
         <div class="text-right ml-5 mr-5">
           <icon :name="`chevron-${collapsed ? 'down' : 'up'}`" class="cursor-pointer" />
