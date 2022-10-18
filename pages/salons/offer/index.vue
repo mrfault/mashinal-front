@@ -116,7 +116,6 @@
               <offer-items :offer_items="offer.offer_items"/>
             </collapse-content>
 
-
             <div>
               <div class="messages">
                 <div :class=" isMyMessage(message) ? 'my' :'his' " class="message" v-for="message in offerMessages">
@@ -134,12 +133,9 @@
                   </span>
                 </div>
               </div>
-
             </div>
-
-
           </div>
-          <div class="addons" v-if="offer && Object.keys(offer).length > 0">
+          <div class="addons" v-if="offer && Object.keys(offer).length > 0 && !offer.deleted">
             <offer-message
               @type="handleTyping"
               @attach="handleFiles"
@@ -173,8 +169,6 @@ export default {
   data() {
     return {
       offer: null,
-
-
       IsAccepted: false,
       chat: {
         text: ''
@@ -208,6 +202,7 @@ export default {
       this.selected_offer_item = index
     },
     changePage(param = null) {
+      this.chat.text=''
 
       this.$router.push({
         path: '/salons/offer',
@@ -278,6 +273,8 @@ export default {
     },
 
     async getOfferDetail(id) {
+      this.chat.text=''
+
       if (this.isMobileBreakpoint) {
         this.$router.push(this.$localePath('/salons/offer') + '/' + id)
       } else {

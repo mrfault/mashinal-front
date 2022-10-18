@@ -55,8 +55,11 @@
                  @click="getUserOfferDetail(userOffer.auto_salon_offer_id)">
 
 
-              <div class="userImg" :style="'background-image: url('+(userOffer.auto_salon.logo ? userOffer.auto_salon.logo : '/images/offer/salon_no_logo.svg') +')'" v-if="userOffer.user_is_accepted"> </div>
-              <div class="userImg" :style="'background-image: url('+('/images/offer/salon_no_logo.svg') +')'" v-else> </div>
+              <div class="userImg"
+                   :style="'background-image: url('+(userOffer.auto_salon.logo ? userOffer.auto_salon.logo : '/images/offer/salon_no_logo.svg') +')'"
+                   v-if="userOffer.user_is_accepted"></div>
+              <div class="userImg" :style="'background-image: url('+('/images/offer/salon_no_logo.svg') +')'"
+                   v-else></div>
               <div class="userName">
                 <b v-if="userOffer.user_is_accepted"> {{ userOffer.auto_salon.name }}</b>
                 <b v-else> Bilinməyən avtosalon</b>
@@ -76,10 +79,13 @@
         <div class="col col-md-6 col-12 col-xs-12 col-sm-12 offerDetailSection" v-if="!isMobileBreakpoint">
           <div class="offerDetail" v-if="offer">
             <div class="d-flex align-items-center user">
-              <div class="userImg" :style="'background-image: url('+(userOffer.auto_salon.logo ? userOffer.auto_salon.logo : '/images/offer/salon_no_logo.svg') +')'" v-if="userOffer.user_is_accepted"> </div>
-              <div class="userImg" :style="'background-image: url('+('/images/offer/salon_no_logo.svg') +')'" v-else> </div>
+              <div class="userImg"
+                   :style="'background-image: url('+(userOffer.auto_salon.logo ? userOffer.auto_salon.logo : '/images/offer/salon_no_logo.svg') +')'"
+                   v-if="userOffer.user_is_accepted"></div>
+              <div class="userImg" :style="'background-image: url('+('/images/offer/salon_no_logo.svg') +')'"
+                   v-else></div>
               <p class="mt-2 ml-2 text-bold">
-                {{userOffer.user_is_accepted ?  auto_salon.name : 'Bilinməyən avtosalon' }}
+                {{ userOffer.user_is_accepted ? auto_salon.name : 'Bilinməyən avtosalon' }}
               </p>
 
               <div class="actions" v-if="user_is_accepted">
@@ -88,7 +94,7 @@
               </div>
             </div>
             <collapse-content :title="'Təklif'">
-              <offer-items :offer_items="offer.offer_items" />
+              <offer-items :offer_items="offer.offer_items"/>
 
             </collapse-content>
 
@@ -112,8 +118,8 @@
               </div>
             </div>
             <div class="text-right" v-if="!user_is_accepted">
-              <button class="btn  btn--green mt-3" @click="accept(userOffer.auto_salon_offer_id)">Sorğunu qəbul et
-              </button>
+              <!--              <button class="btn  btn&#45;&#45;green mt-3" @click="accept(userOffer.auto_salon_offer_id)">Sorğunu qəbul et </button>-->
+              <button class="btn  btn--green mt-3" @click="showModal=true">Sorğunu qəbul et</button>
             </div>
           </div>
 
@@ -136,7 +142,23 @@
 
       </div>
     </div>
+    <modal-popup
+      :toggle="showModal"
+      :title="'Təklifin qəbulu'"
+       @close="showModal = false"
+      :modal-class="'offer-payment-modal'"
+    >
+      <p>
+        Təklifimizi qəbul etdiyiniz təqdirdə 10 ₼ <br>
+        çıxılacaq
+      </p>
+      <hr>
+      <div class="d-flex justify-content-between">
+        <button class="btn  btn--white" @click="showModal=false">Geri qayıt</button>
+        <button class="btn  btn--green" @click="accept(userOffer.auto_salon_offer_id)">Təsdiqlə</button>
+      </div>
 
+    </modal-popup>
   </div>
 </template>
 
@@ -168,6 +190,7 @@ export default {
   },
   data() {
     return {
+      showModal: false,
       offers: null,
       userOffer: null,
       offer: null,
@@ -204,6 +227,7 @@ export default {
     },
   },
   methods: {
+
     searchInputFocus() {
       this.scrollTo('.search-offer', -300, 500, '.container')
     },
@@ -217,6 +241,8 @@ export default {
       this.$set(this, 'files', files);
     },
     async changePage(param) {
+      this.chat.text=''
+
       this.$router.push({
         path: 'offers',
         params: param,
@@ -262,6 +288,7 @@ export default {
     },
     async getUserOfferDetail(id) {
 
+      this.chat.text=''
 
       if (this.isMobileBreakpoint) {
         this.$router.push(this.$localePath('/offer') + '/' + id)
@@ -299,9 +326,11 @@ export default {
 
     },
     async accept(id) {
+      this.showModal=false
       await this.$store.dispatch('userAcceptOffer', {id})
       this.$store.dispatch('OffersAcceptedByAutoSalon')
       this.checkAccepted(id)
+
 
     },
     async getMessages(offerId) {
@@ -315,7 +344,7 @@ export default {
       this.user_is_accepted = false
     }
   },
-  created(){
+  created() {
     console.log(this.userOffers)
   },
   watch: {
