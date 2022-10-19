@@ -99,18 +99,17 @@
           </div>
         </div>
         <div class="col col-md-12 col-lg-6 col-xs-12 col-sm-12 background-white" v-if="!isMobileBreakpoint">
-      <pre>
-        {{offer}}
-      </pre>
+
           <div class="offerDetail" v-if=" offer && Object.keys(offer).length > 0">
             <div class="d-flex align-items-center user" v-if="offer.user">
               <div class="userImg" :style="'background-image: url('+(offer.user.img ? offer.user.img : '/img/user.jpg')+')'" ></div>
               <p class="mt-2 ml-2 text-bold">
                 {{ offer.user.full_name }}
+
               </p>
               <div class="actions">
                 <span @click="addFavorite(offer.id)" :class="offer.isFavorite ? 'isFavorite' : 'favorite'"><icon name="star"/> </span>
-                <span @click="deleteAutoSalonOffer(offer.id)" > <icon name="garbage"></icon></span>
+                <span @click="deleteAutoSalonOffer(offer.id)" v-if="IsAccepted"> <icon name="garbage"></icon></span>
               </div>
             </div>
             <collapse-content :title="'Təklif'">
@@ -169,6 +168,7 @@ export default {
   components: {OfferItems, CollapseContent, OfferMessage, OfferSlider},
   data() {
     return {
+      IsAccepted:false,
       offer: null,
       chat: {
         text: ''
@@ -302,6 +302,7 @@ export default {
     async checkAccepted(id) {
       await this.$axios.$post('/offer/salon/offer/check/' + id).then((res) => {
 
+        this.IsAccepted = res.status
         this.auto_salon_offer_id = res.auto_salon_offer_id ? res.auto_salon_offer_id : null
 
 
