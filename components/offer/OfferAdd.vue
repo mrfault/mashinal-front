@@ -38,7 +38,7 @@
       <Generations :selected="form.generations" :generations="generations" @change="changeGenerations"
                    v-if="index==0 || (brand_object && model_object) "/>
     </div>
-    <div  class="mb-3 box " ref="sell-modification">
+    <div class="mb-3 box " ref="sell-modification">
       <h2 class="title-with-line full-width">
         <span>{{ $t('box') }} <span class="star"> *</span></span>
       </h2>
@@ -80,7 +80,8 @@
           <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-selectedColor">
             <span>Salon rengi <span class="star"> *</span></span>
           </h2>
-          <interior-color-options v-model="form[index].selectedInteriorColor" :limit="2" :multiple=false  @change="removeError('selectedColor')"/>
+          <interior-color-options v-model="form[index].selectedInteriorColor" :limit="2" :multiple=false
+                                  @change="removeError('selectedColor')"/>
         </div>
 
         <div class="col-md-12">
@@ -92,9 +93,11 @@
               <div class="d-inline-flex ">
 
 
-                <form-radio :id="`${index}credit`" :label="'Kredit'" input-name="buy_condition" v-model="form[index].buy_condition"
+                <form-radio :id="`${index}credit`" :label="'Kredit'" input-name="buy_condition"
+                            v-model="form[index].buy_condition"
                             radio-value="credit"/>
-                <form-radio :id="`${index}cash`" :label="'Nağd'" input-name="buy_condition" v-model="form[index].buy_condition"  radio-value="cash"
+                <form-radio :id="`${index}cash`" :label="'Nağd'" input-name="buy_condition"
+                            v-model="form[index].buy_condition" radio-value="cash"
                             class="ml-2"/>
               </div>
             </div>
@@ -138,8 +141,8 @@
           </button>
         </div>
         <div>
-          <button class=" btn  btn--green " @click="submitOffer">
-            <img src="/icons/offer/load.svg" width="50px" v-if="isLoader">
+          <button class=" btn  btn--green " @click="submitOffer" :disabled="offerAddIsLoader">
+            <img src="/icons/offer/load.svg" width="50px" v-if="offerAddIsLoader">
             <span v-else> Təsdiq və ödəniş et</span>
           </button>
         </div>
@@ -200,7 +203,6 @@ export default {
   data() {
     return {
       buy_condition: '',
-      isLoader: false,
       brand_object: null,
       model_object: null,
       form: [
@@ -236,7 +238,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['brands', 'models', 'generations', 'offerAnnouncementsCount']),
+    ...mapGetters(['brands', 'models', 'generations', 'offerAnnouncementsCount', 'offerAddIsLoader']),
 
     brand() {
       return this.brands?.find(brand => this.$parseSlug(brand.slug) === this.$route.query.brand);
@@ -279,11 +281,13 @@ export default {
 
 
     addCarAnnouncement() {
-      this.$store.dispatch('offerItemValidation', {isSubmit: false, form: this.form[this.index]})
+
+      this.$store.dispatch('offerItemValidation', {isSubmit: false, form: this.form[this.index],index:this.index})
 
     },
 
     submitOffer() {
+      this.$store.commit('setOfferAddLoader', {status: true})
       this.$store.dispatch('offerItemValidation', {isSubmit: true, form: this.form[this.index]})
     },
 
@@ -311,7 +315,6 @@ export default {
       })
       this.model_object = this.models.find((option) => option.slug === slug)
       this.form[this.index].model = this.model_object.slug
-
 
 
       this.$store.commit('appendOfferSelectedModels', {
@@ -346,7 +349,7 @@ export default {
         index: this.index,
         data: {
           img: this.generations.find((option) => option.id === values[0]).car_type_generation[0].transformed_media.main[0],
-          year:this.generations.find((option) => option.id === values[0]).start_year+' - '+this.generations.find((option) => option.id === values[0]).end_year
+          year: this.generations.find((option) => option.id === values[0]).start_year + ' - ' + this.generations.find((option) => option.id === values[0]).end_year
         }
       })
 
@@ -379,7 +382,7 @@ export default {
           brand: brand.name,
           model: model.name,
           price: null,
-          year:null
+          year: null
         }
       })
     }
@@ -392,11 +395,11 @@ export default {
 
     }
   },
-  watch:{
-    form:{
+  watch: {
+    form: {
       deep: true,
       handler(newVal) {
-        this.$store.commit('setOfferAnnouncement',{index:this.index,form:newVal})
+        this.$store.commit('setOfferAnnouncement', {index: this.index, form: newVal})
       }
     }
   }

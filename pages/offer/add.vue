@@ -16,7 +16,7 @@
                 <img :src="offerSelectedModels[index].img" style="height: 50px;" v-if="offerSelectedModels[index].img">
                 <img :src="offerSelectedModels[index].logo" style="height: 50px;" v-else-if="offerSelectedModels[index].logo">
 
-                <span class="ml-2">
+                <span class="ml-2 offerSelectedBrandName">
                   {{ getOfferSelectedModel(index).brand + ' ' + getOfferSelectedModel(index).model }}
                 </span>
                 <span class="maxPrice" v-if="offerSelectedModels[index].price">
@@ -147,7 +147,6 @@ export default {
   },
 
   methods: {
-
     getOfferSelectedModel(index) {
       return this.offerSelectedModels[index]
     },
@@ -155,6 +154,7 @@ export default {
     this.$store.commit('deleteOfferAnnouncement',{index:index})
     },
     pay(){
+
       this.$axios.post('/offer/pay',{
         isMobile:this.isMobileBreakpoint,
         offer_id:this.$store.state.offer_id

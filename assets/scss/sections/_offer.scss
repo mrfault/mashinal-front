@@ -995,7 +995,9 @@
 }
 
 .dark-mode {
-
+.offerSelectedBrandName{
+  color: $white;
+}
   .mobile-filter {
     .filter-icon-fill path, .filter-icon-fill rect, .filter-icon-fill line {
       fill: $white;
