@@ -56,8 +56,9 @@
               </li>
 
 
-              <li @click="changePage('favorites')" :class="{'active-filter': $route.query.param==='favorites'} ">
+              <li @click="changePage('favorites')" :class="{'active-filter': $route.query.param==='favorites'} " >
                 <inline-svg src="/icons/offer/star.svg" class="filter-icon"/>
+
                 <span>
       Seçilmişlər
                 </span>
@@ -100,22 +101,18 @@
         </div>
         <div class="col col-md-12 col-lg-6 col-xs-12 col-sm-12 background-white" v-if="!isMobileBreakpoint">
 
-          <div class="offerDetail" v-if="Object.keys(offer).length > 0">
+          <div class="offerDetail" v-if=" offer && Object.keys(offer).length > 0">
             <div class="d-flex align-items-center user" v-if="offer.user">
               <div class="userImg" :style="'background-image: url('+(offer.user.img ? offer.user.img : '/img/user.jpg')+')'" ></div>
-              <p class="mt-2 ml-2 text-bold">
-                {{ offer.user.full_name }}
-              </p>
+              <p class="mt-2 ml-2 text-bold">  {{ offer.user.full_name }}  </p>
               <div class="actions">
-                <span @click="addFavorite(offer.id)" :class="offer.isFavorite ? 'isFavorite' : 'favorite'"><icon
-                  name="star"/> </span>
+                <span @click="addFavorite(offer.id)" :class="offer.isFavorite ? 'isFavorite' : 'favorite'" v-if="!offer.deleted"><icon name="star"/> </span>
                 <span @click="deleteAutoSalonOffer(offer.id)" v-if="IsAccepted"> <icon name="garbage"></icon></span>
               </div>
             </div>
             <collapse-content :title="'Təklif'">
               <offer-items :offer_items="offer.offer_items"/>
             </collapse-content>
-
 
             <div>
               <div class="messages">
@@ -134,12 +131,9 @@
                   </span>
                 </div>
               </div>
-
             </div>
-
-
           </div>
-          <div class="addons" v-if="Object.keys(offer).length > 0">
+          <div class="addons" v-if="offer && Object.keys(offer).length > 0 && !offer.deleted">
             <offer-message
               @type="handleTyping"
               @attach="handleFiles"
@@ -172,10 +166,8 @@ export default {
   components: {OfferItems, CollapseContent, OfferMessage, OfferSlider},
   data() {
     return {
+      IsAccepted:false,
       offer: null,
-
-
-      IsAccepted: false,
       chat: {
         text: ''
       },
@@ -208,6 +200,7 @@ export default {
       this.selected_offer_item = index
     },
     changePage(param = null) {
+      this.chat.text=''
 
       this.$router.push({
         path: '/salons/offer',
@@ -215,7 +208,7 @@ export default {
         query: {param: param}
       })
       this.offer = {}
-      this.IsAccepted = false
+
 
     },
     isMyMessage(message) {
@@ -237,11 +230,19 @@ export default {
       await this.$axios.delete('/offer/salon/offer/delete/' + id);
       this.checkAccepted(id)
       this.offer = false
-      this.IsAccepted = false
+
       this.$store.dispatch('getAllOffers', this.$route.query.param)
     },
     async submitMessage() {
       this.messageButtonDisabled = true;
+      if (!this.IsAccepted){
+        this.IsAccepted=true
+        setTimeout( ()=>{
+             this.$store.dispatch('getAllOffers', this.$route.query.param)
+        },500)
+
+
+      }
       let formData = new FormData();
 
 
@@ -278,6 +279,8 @@ export default {
     },
 
     async getOfferDetail(id) {
+      this.chat.text=''
+
       if (this.isMobileBreakpoint) {
         this.$router.push(this.$localePath('/salons/offer') + '/' + id)
       } else {
@@ -287,7 +290,7 @@ export default {
           }
         )));
       }
-      console.log(this.offer)
+
       this.$store.commit('mutate', {property: 'current_offer_id', value: this.offer.id})
       setTimeout(() => {
         this.scrollTo('.message:last-child', 300, 500, '.offerDetail')

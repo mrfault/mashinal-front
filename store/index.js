@@ -3,7 +3,6 @@ import {mutate, reset} from '~/lib/vuex-helpers/mutations'
 import Vue from 'vue'
 
 
-
 const getInitialState = () => ({
   loading: true,
   colorMode: 'light',
@@ -156,24 +155,25 @@ const getInitialState = () => ({
   offer_announcements: [],
   offer_selected_models: [
     {
-      logo:null,
+      logo: null,
       img: null,
       brand: '',
       model: '',
       price: null,
-      year:null
+      year: null
     },
     {
-      logo:null,
+      logo: null,
       img: null,
       brand: '',
       model: '',
       price: null,
-      year:null
+      year: null
     }
   ],
-  offer_id:null,
-  showOfferPaymentModal:false
+  offer_id: null,
+  showOfferPaymentModal: false,
+  offer_add_is_loader: false,
 
 })
 
@@ -339,7 +339,8 @@ export const getters = {
   offerAnnouncementsCount: (s) => s.offer_announcement_count,
   offerAnnouncements: (s) => s.offer_announcements,
   offerSelectedModels: (s) => s.offer_selected_models,
-  showOfferPaymentModal :(s)=>s.showOfferPaymentModal
+  showOfferPaymentModal: (s) => s.showOfferPaymentModal,
+  offerAddIsLoader: (s) => s.offer_add_is_loader
 
 }
 
@@ -872,7 +873,7 @@ export const actions = {
   },
 
   async getInfiniteMainPartsPageSearchWithoutMutate({commit}, payload = {}) {
-    console.log(payload);
+
     const body = payload ? {...payload} : {}
     if (body.announce_type) {
       body.is_new = body.announce_type === 1 ? true : false
@@ -1247,7 +1248,7 @@ export const actions = {
   async getOffer({commit}, payload) {
     const {data} = await this.$axios.get('/offer/offer-detail/' + payload.id + '/' + payload.type);
     commit('mutate', {property: 'offer', value: data})
-    console.log(data)
+
     if (data.data.id) {
       commit('mutate', {property: 'current_offer_id', value: data.data.id})
     } else {
@@ -1283,25 +1284,33 @@ export const actions = {
     commit('mutate', {property: 'offerPartnersMeta', value: data.data.meta})
   },
   async offerItemValidation({commit, state}, object) {
+try {
+  const data = await this.$axios.post('/offer/validation', object.form).then(async (res) => {
 
-    const data = await this.$axios.post('/offer/validation', object.form).then(async (res) => {
+    if (res.data.status == 'success') {
 
-      if (res.data.status == 'success') {
+      if (state.offer_announcements.length < 2) {
+        commit('appendOfferAnnouncement', object.form)
 
-        if (state.offer_announcements.length < 2) {
-          commit('appendOfferAnnouncement', object.form)
-        }
-
-        if (object.isSubmit) {
-          this.$axios.post('/offer', state.offer_announcements).then((res) => {
-            commit('openOfferPaymentModal')
-            commit('setOfferId',{offer_id:res.data.offer_id})
-          })
-        } else {
-          commit('incrementAnnouncementsCount')
-        }
       }
-    });
+
+      if (object.isSubmit) {
+        this.$axios.post('/offer', state.offer_announcements).then((res) => {
+          commit('openOfferPaymentModal',{status:true})
+          commit('setOfferId', {offer_id: res.data.offer_id})
+        })
+      } else {
+
+        commit('incrementAnnouncementsCount')
+      }
+    }
+  });
+}catch (e) {
+  commit('setOfferAddLoader',{status:false})
+}
+
+
+
   }
 
 }
@@ -1441,7 +1450,14 @@ export const mutations = {
     state.offer_announcement_count--
   },
   appendOfferAnnouncement(state, payload) {
+
+
+    if(typeof state.offer_announcements[payload.index]!=undefined){
+      console.log(1456)
+        state.offer_announcements.splice(payload.index, 1);
+    }
     state.offer_announcements.push(payload)
+
   },
   appendOfferSelectedModels(state, payload) {
     Vue.set(state.offer_selected_models, payload.index, {
@@ -1453,19 +1469,28 @@ export const mutations = {
       year: payload.data.year ? payload.data.year : state.offer_selected_models[payload.index].year
     })
   },
-  deleteOfferAnnouncement(state,payload){
-    let index  = payload.index;
+  deleteOfferAnnouncement(state, payload) {
+    let index = payload.index;
     if (index > -1) {
       state.offer_announcements.splice(index, 1);
       state.offer_announcement_count.splice(index, 1);
       state.offer_selected_models.splice(index, 1);
     }
   },
-  openOfferPaymentModal(state) {
-    state.showOfferPaymentModal=true
-    console.log(state.showOfferPaymentModal)
+  openOfferPaymentModal(state,payload) {
+    state.showOfferPaymentModal = payload.status
+
   },
-  setOfferId(state,payload){
-    state.offer_id=payload.offer_id;
+  setOfferId(state, payload) {
+    state.offer_id = payload.offer_id;
+  },
+  setOfferAnnouncement(state, payload) {
+    let form = JSON.parse(JSON.stringify(payload.form[payload.index]))
+
+    console.log(form)
+    Vue.set(state.offer_announcements, payload.index, form)
+  },
+  setOfferAddLoader(state, payload) {
+    state.offer_add_is_loader = payload.status
   }
 }

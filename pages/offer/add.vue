@@ -16,7 +16,7 @@
                 <img :src="offerSelectedModels[index].img" style="height: 50px;" v-if="offerSelectedModels[index].img">
                 <img :src="offerSelectedModels[index].logo" style="height: 50px;" v-else-if="offerSelectedModels[index].logo">
 
-                <span class="ml-2">
+                <span class="ml-2 offerSelectedBrandName">
                   {{ getOfferSelectedModel(index).brand + ' ' + getOfferSelectedModel(index).model }}
                 </span>
                 <span class="maxPrice" v-if="offerSelectedModels[index].price">
@@ -27,9 +27,7 @@
             <div class="offer-add-delete ml-auto">
               <button @click="deleteOfferAnnouncement(index)" class="btn btn--red-outline" v-if="offerAnnouncementsCount.length>1">Sorğunu sil</button>
             </div>
-
           </template>
-
           <offer-add :key="index" :index="index"/>
         </offer-collapse>
       </div>
@@ -37,8 +35,9 @@
     <modal-popup
       :toggle="showPaymentModalOption"
       :title="'Super təklif'"
-      @close="showPaymentModal = false"
+      @close="showPaymentModalOption = false"
       :modal-class="'offer-payment-modal'"
+      :closeable="false"
     >
       <div class="row">
         <div class="col-6">
@@ -85,7 +84,6 @@
 
     </modal-popup>
   </div>
-
 </template>
 
 <script>
@@ -154,6 +152,7 @@ export default {
     this.$store.commit('deleteOfferAnnouncement',{index:index})
     },
     pay(){
+
       this.$axios.post('/offer/pay',{
         isMobile:this.isMobileBreakpoint,
         offer_id:this.$store.state.offer_id

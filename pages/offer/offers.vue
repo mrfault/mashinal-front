@@ -38,7 +38,6 @@
                   Silinmişlər
               </span>
               </li>
-
             </ul>
           </div>
         </div>
@@ -50,23 +49,17 @@
                      @focus="searchInputFocus">
 
             </div>
-            <div class="user" v-for="userOffer in searchOffer"
+            <div class="user" v-for="userOffer in searchOffer"  @click="getUserOfferDetail(userOffer.auto_salon_offer_id)">
 
-                 @click="getUserOfferDetail(userOffer.auto_salon_offer_id)">
+              <div class="userImg" :style="'background-image: url('+(userOffer.auto_salon.logo ? userOffer.auto_salon.logo : '/images/offer/salon_no_logo.svg') +')'"  ></div>
 
-
-              <div class="userImg" :style="'background-image: url('+(userOffer.auto_salon.logo ? userOffer.auto_salon.logo : '/images/offer/salon_no_logo.svg') +')'" v-if="userOffer.user_is_accepted"> </div>
-              <div class="userImg" :style="'background-image: url('+('/images/offer/salon_no_logo.svg') +')'" v-else> </div>
               <div class="userName">
-                <b v-if="userOffer.user_is_accepted"> {{ userOffer.auto_salon.name }}</b>
-                <b v-else> Bilinməyən avtosalon</b>
+                <b> {{ userOffer.auto_salon.name }}</b>
+
                 <div v-for="offer_item in userOffer.offer.offer_items">
                   <span>{{ offer_item.brand }} {{ offer_item.model }}</span>
-
                 </div>
-
               </div>
-
               <div class="created">
                 {{ userOffer.created_at }}
               </div>
@@ -76,10 +69,11 @@
         <div class="col col-md-6 col-12 col-xs-12 col-sm-12 offerDetailSection" v-if="!isMobileBreakpoint">
           <div class="offerDetail" v-if="offer">
             <div class="d-flex align-items-center user">
-              <div class="userImg" :style="'background-image: url('+(userOffer.auto_salon.logo ? userOffer.auto_salon.logo : '/images/offer/salon_no_logo.svg') +')'" v-if="userOffer.user_is_accepted"> </div>
-              <div class="userImg" :style="'background-image: url('+('/images/offer/salon_no_logo.svg') +')'" v-else> </div>
+              <div class="userImg"
+                   :style="'background-image: url('+(userOffer.auto_salon.logo ? userOffer.auto_salon.logo : '/images/offer/salon_no_logo.svg') +')'"></div>
+
               <p class="mt-2 ml-2 text-bold">
-                {{userOffer.user_is_accepted ?  auto_salon.name : 'Bilinməyən avtosalon' }}
+                {{  auto_salon.name  }}
               </p>
 
               <div class="actions" v-if="user_is_accepted">
@@ -88,11 +82,8 @@
               </div>
             </div>
             <collapse-content :title="'Təklif'">
-              <offer-items :offer_items="offer.offer_items" />
-
+              <offer-items :offer_items="offer.offer_items"/>
             </collapse-content>
-
-
             <div>
               <div class="messages">
                 <div class="message" :class="   isMyMessage(message) ? 'my' :'his ' " v-for="message in offerMessages">
@@ -111,19 +102,12 @@
                 </div>
               </div>
             </div>
-            <div class="text-right" v-if="!user_is_accepted">
-              <button class="btn  btn--green mt-3" @click="accept(userOffer.auto_salon_offer_id)">Sorğunu qəbul et
-              </button>
-            </div>
           </div>
-
-
-          <div class="addons" v-if="user_is_accepted && auto_salon_deleted_at===null">
+          <div class="addons" v-if="userOffer && auto_salon_deleted_at===null">
             <offer-message
               @type="handleTyping"
               @attach="handleFiles"
               @send="submitMessage"
-
               :sending="false"
               :message="false"
               v-model="chat.text"
@@ -168,11 +152,12 @@ export default {
   },
   data() {
     return {
+
       offers: null,
       userOffer: null,
       offer: null,
       auto_salon: null,
-      user_is_accepted: false,
+
       chat: {
         text: '',
       },
@@ -204,6 +189,7 @@ export default {
     },
   },
   methods: {
+
     searchInputFocus() {
       this.scrollTo('.search-offer', -300, 500, '.container')
     },
@@ -217,6 +203,8 @@ export default {
       this.$set(this, 'files', files);
     },
     async changePage(param) {
+      this.chat.text=''
+
       this.$router.push({
         path: 'offers',
         params: param,
@@ -262,6 +250,7 @@ export default {
     },
     async getUserOfferDetail(id) {
 
+      this.chat.text=''
 
       if (this.isMobileBreakpoint) {
         this.$router.push(this.$localePath('/offer') + '/' + id)
@@ -291,7 +280,6 @@ export default {
 
     async checkAccepted(id) {
       await this.$axios.$post('/offer/user/offer/check/' + id).then((res) => {
-        this.user_is_accepted = res.status
         this.auto_salon_offer_id = res.auto_salon_offer_id
         this.$store.commit('setOfferMessages', res.messages)
         this.scrollTo('.message:last-child', 0, 500, '.offerDetail')
@@ -302,21 +290,12 @@ export default {
       await this.$store.dispatch('userAcceptOffer', {id})
       this.$store.dispatch('OffersAcceptedByAutoSalon')
       this.checkAccepted(id)
-
-    },
-    async getMessages(offerId) {
-
     },
     async deleteUserAutoSalonOffer(id) {
       this.$axios.delete('/offer/user/offer/delete/' + id);
-
       this.$store.dispatch('OffersAcceptedByAutoSalon')
       this.offer = null
-      this.user_is_accepted = false
     }
-  },
-  created(){
-    console.log(this.userOffers)
   },
   watch: {
     async $route(newVal, oldVal) {
