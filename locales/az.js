@@ -2018,6 +2018,7 @@ export default {
   "xenon_lamps": "Ksenon faralar",
   "Yandex.Auto": "Yandeks.Avto",
   "year": "il",
+  "year_first_letter":"İl",
   "year_from": "Buraxılış ili min.",
   "years": "Buraxılış ili",
   "yes": "Bəli",
