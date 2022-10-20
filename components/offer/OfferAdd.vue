@@ -282,7 +282,7 @@ export default {
 
     addCarAnnouncement() {
 
-      this.$store.dispatch('offerItemValidation', {isSubmit: false, form: this.form[this.index],index:this.index})
+      this.$store.dispatch('offerItemValidation', {isSubmit: false, form: this.form[this.index], index: this.index})
 
     },
 
@@ -358,7 +358,8 @@ export default {
   },
 
   async created() {
-
+    this.$store.commit('setOfferAddLoader',{status:false})
+    this.$store.commit('openOfferPaymentModal',{status:false})
     if (this.generations.length == 1) {
       this.form[this.index].generations.push(this.generations[0].id)
     }

@@ -1296,7 +1296,7 @@ try {
 
       if (object.isSubmit) {
         this.$axios.post('/offer', state.offer_announcements).then((res) => {
-          commit('openOfferPaymentModal')
+          commit('openOfferPaymentModal',{status:true})
           commit('setOfferId', {offer_id: res.data.offer_id})
         })
       } else {
@@ -1477,8 +1477,8 @@ export const mutations = {
       state.offer_selected_models.splice(index, 1);
     }
   },
-  openOfferPaymentModal(state) {
-    state.showOfferPaymentModal = true
+  openOfferPaymentModal(state,payload) {
+    state.showOfferPaymentModal = payload.status
 
   },
   setOfferId(state, payload) {

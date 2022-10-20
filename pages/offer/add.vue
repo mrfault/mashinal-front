@@ -27,9 +27,7 @@
             <div class="offer-add-delete ml-auto">
               <button @click="deleteOfferAnnouncement(index)" class="btn btn--red-outline" v-if="offerAnnouncementsCount.length>1">Sorğunu sil</button>
             </div>
-
           </template>
-
           <offer-add :key="index" :index="index"/>
         </offer-collapse>
       </div>
@@ -39,6 +37,7 @@
       :title="'Super təklif'"
       @close="showPaymentModalOption = false"
       :modal-class="'offer-payment-modal'"
+      :closeable="false"
     >
       <div class="row">
         <div class="col-6">
@@ -85,7 +84,6 @@
 
     </modal-popup>
   </div>
-
 </template>
 
 <script>

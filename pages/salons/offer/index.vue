@@ -56,8 +56,9 @@
               </li>
 
 
-              <li @click="changePage('favorites')" :class="{'active-filter': $route.query.param==='favorites'} ">
+              <li @click="changePage('favorites')" :class="{'active-filter': $route.query.param==='favorites'} " >
                 <inline-svg src="/icons/offer/star.svg" class="filter-icon"/>
+
                 <span>
       Seçilmişlər
                 </span>
@@ -103,12 +104,9 @@
           <div class="offerDetail" v-if=" offer && Object.keys(offer).length > 0">
             <div class="d-flex align-items-center user" v-if="offer.user">
               <div class="userImg" :style="'background-image: url('+(offer.user.img ? offer.user.img : '/img/user.jpg')+')'" ></div>
-              <p class="mt-2 ml-2 text-bold">
-                {{ offer.user.full_name }}
-
-              </p>
+              <p class="mt-2 ml-2 text-bold">  {{ offer.user.full_name }}  </p>
               <div class="actions">
-                <span @click="addFavorite(offer.id)" :class="offer.isFavorite ? 'isFavorite' : 'favorite'"><icon name="star"/> </span>
+                <span @click="addFavorite(offer.id)" :class="offer.isFavorite ? 'isFavorite' : 'favorite'" v-if="!offer.deleted"><icon name="star"/> </span>
                 <span @click="deleteAutoSalonOffer(offer.id)" v-if="IsAccepted"> <icon name="garbage"></icon></span>
               </div>
             </div>
@@ -237,6 +235,14 @@ export default {
     },
     async submitMessage() {
       this.messageButtonDisabled = true;
+      if (!this.IsAccepted){
+        this.IsAccepted=true
+        setTimeout( ()=>{
+             this.$store.dispatch('getAllOffers', this.$route.query.param)
+        },500)
+
+
+      }
       let formData = new FormData();
 
 
@@ -284,7 +290,7 @@ export default {
           }
         )));
       }
-      console.log(this.offer)
+
       this.$store.commit('mutate', {property: 'current_offer_id', value: this.offer.id})
       setTimeout(() => {
         this.scrollTo('.message:last-child', 300, 500, '.offerDetail')

@@ -11,7 +11,7 @@
                   <span v-html="title" ></span>
                   <img :class="titleLogoClass" :src="titleLogo" class="ml-2" v-if="titleLogo"/>
                 </h4>
-                <span class="cursor-pointer close" @click="$emit('close')">
+                <span class="cursor-pointer close" @click="$emit('close')" v-if="closeable">
                   <icon name="cross" />
                   <!-- <inline-svg src="/icons/cross.svg" height="14"/> -->
                 </span>
@@ -42,6 +42,10 @@ export default {
     modalClass: String,
     overflowHidden: {
       type: Boolean,
+      default: true
+    },
+    closeable:{
+      type:Boolean,
       default: true
     }
   },
