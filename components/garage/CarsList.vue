@@ -165,6 +165,7 @@ export default {
       )
     },
   },
+
    async mounted() {
     if (await this.checkTokenOnly()) {
       this.hasAsanLogin = true
@@ -181,12 +182,22 @@ export default {
     }
     setTimeout(() => this.vsKey++ , 1);
 
+    this.$nuxt.$on('select-car', () => {
+      let activeFilteredCars = this.filteredCars.data.filter((item) => item.status === 1)
+      if(activeFilteredCars.length) {
+
+        this.updateActiveCar(activeFilteredCars[0].id)
+      }
+    })
   },
   methods: {
     updateActiveCar(id) {
       this.activeCarId = id
       this.carChosen = true
       this.$emit('show-nav', false)
+      this.$router.push({
+        query: { id }
+      })
       this.$scrollTo('.container')
     },
     showCarsList() {

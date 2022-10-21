@@ -8,7 +8,7 @@
             v-show="showNav || !isMobileBreakpoint"
             :tab="tab"
             @change-tab="tab = $event"
-            @filterCarNumber="car_number = $event"
+            @filterCarNumber="filterCarNumber"
           />
           <cars-list :filter_car_number="car_number" v-if="tab === 'cars'" @show-nav="showNav = $event" />
           <cars-list key="history_key" :filter_car_number="car_number" history v-if="tab === 'penalty_history'" @show-nav="showNav = $event" />
@@ -114,6 +114,13 @@ export default {
 
     if(this.$route.query.tab)
        this.tab = this.$route.query.tab;
+  },
+  methods: {
+    filterCarNumber(car_number) {
+      this.car_number = car_number;
+      this.$nuxt.$emit('select-car')
+
+    }
   },
   computed: {
     ...mapGetters({
