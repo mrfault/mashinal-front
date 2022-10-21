@@ -125,7 +125,7 @@ export default {
           end_date: `${this.form.year}-${this.form.month}-${this.form.day}`,
           insurance_company_id: this.form.company
         })
-        this.$nuxt.refresh();
+        this.$emit('refresh-data')
         this.openDateChangeModal = false;
       }catch (e){}
       this.pending = false;

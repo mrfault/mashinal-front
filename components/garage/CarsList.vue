@@ -76,7 +76,7 @@
         v-show="carChosen || !isMobileBreakpoint"
       >
         <p class="p-title">{{ $t('about') }}</p>
-        <car-info :car="activeCar" :key="'info_' + activeCar.id" />
+        <car-info @refresh-data="refreshData" :car="activeCar" :key="'info_' + activeCar.id" />
       </div>
 
       <div
@@ -191,6 +191,9 @@ export default {
     })
   },
   methods: {
+    refreshData() {
+      this.$store.dispatch('garage/getCarList',{})
+    },
     updateActiveCar(id) {
       this.activeCarId = id
       this.showInfo = true;
@@ -199,7 +202,7 @@ export default {
       this.$router.push({
         query: { id }
       })
-      this.$scrollTo('.container')
+      //this.$scrollTo('.container')
     },
     showCarsList() {
       this.carChosen = false
