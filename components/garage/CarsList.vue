@@ -131,7 +131,7 @@ export default {
       hasAsanLogin: false,
       tab: 'info',
       vsKey: 0,
-      activeCarId: activeCars[0]?.id || '',
+      activeCarId: Number(this.$route.query.id) || activeCars[0]?.id || '',
       showNoActiveCarsAlert: true,
       carChosen: false,
     }
@@ -179,7 +179,7 @@ export default {
       this.hasAsanLogin = false
     }
     if(this.$route.query.id) {
-      this.updateActiveCar(Number(this.$route.query.id))
+      //this.updateActiveCar(Number(this.$route.query.id))
     }
     setTimeout(() => this.vsKey++ , 1);
 
@@ -190,9 +190,12 @@ export default {
       }
     })
   },
+  beforeDestroy() {
+    this.$nuxt.$off('select-car')
+  },
   methods: {
     refreshData() {
-      this.$store.dispatch('garage/getCarList',{})
+      //this.$store.dispatch('garage/getCarList',{})
     },
     updateActiveCar(id) {
       this.activeCarId = id
