@@ -72,7 +72,7 @@
     <div class="col-12 col-lg-4-5">
       <div
         class="card with-margins"
-        v-if="activeCar && !history"
+        v-if="activeCar && !history && showInfo"
         v-show="carChosen || !isMobileBreakpoint"
       >
         <p class="p-title">{{ $t('about') }}</p>
@@ -82,7 +82,7 @@
       <div
         class="card with-margins"
         :class="{'mt-4':!history }"
-        v-if="activeCar"
+        v-if="activeCar && showInfo"
         v-show="carChosen || !isMobileBreakpoint"
       >
         <p class="p-title">{{ $t('fines') }}</p>
@@ -90,7 +90,7 @@
           :history="history ? 1 : 0"
           :car="activeCar"
           :key="'fines_' + activeCar.id"
-          v-if="activeCar.car_id"
+          v-if="activeCar.car_id && showInfo"
         />
       </div>
     </div>
@@ -127,6 +127,7 @@ export default {
       (car) => car.status === 1 && car.sync_status === 1,
     )
     return {
+      showInfo: true,
       hasAsanLogin: false,
       tab: 'info',
       vsKey: 0,
@@ -185,7 +186,6 @@ export default {
     this.$nuxt.$on('select-car', () => {
       let activeFilteredCars = this.filteredCars.data.filter((item) => item.status === 1)
       if(activeFilteredCars.length) {
-
         this.updateActiveCar(activeFilteredCars[0].id)
       }
     })
@@ -193,6 +193,7 @@ export default {
   methods: {
     updateActiveCar(id) {
       this.activeCarId = id
+      this.showInfo = true;
       this.carChosen = true
       this.$emit('show-nav', false)
       this.$router.push({
@@ -209,6 +210,9 @@ export default {
     'activeCars.length'() {
       this.activeCarId = this.activeCar?.id || ''
     },
+    'filteredCars.data.length'(length) {
+      this.showInfo = length > 0
+    }
   },
 }
 </script>
