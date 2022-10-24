@@ -76,7 +76,7 @@
                 {{  auto_salon.name  }}
               </p>
 
-              <div class="actions" v-if="user_is_accepted">
+              <div class="actions" >
                 <span @click="deleteUserAutoSalonOffer(userOffer.auto_salon_offer_id)"
                       v-if="!userOffer.user_deleted_at"> <icon name="garbage"></icon></span>
               </div>
@@ -288,6 +288,8 @@ export default {
       this.$axios.delete('/offer/user/offer/delete/' + id);
       this.$store.dispatch('OffersAcceptedByAutoSalon',this.$route.query)
       this.offer = null
+      this.userOffer = null
+
     }
   },
   created() {
