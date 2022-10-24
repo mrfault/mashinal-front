@@ -81,7 +81,7 @@
 
               <input type="text" v-model="search" placeholder="Maşın və ya istifadəçi adı" class="searchInput">
             </div>
-            <div class="user" v-for="offer in search ? searchOffer : offers"
+            <div class="user" v-for="offer in offers"
                  @click="getOfferDetail(offer.id)">
               <div class="userImg"
                    :style="'background-image: url('+(offer.user.img ? offer.user.img : '/img/user.jpg')+')'">
@@ -187,7 +187,8 @@ export default {
   async asyncData({store, route}) {
     await Promise.all([
       store.dispatch('getHomePageSliders'),
-      store.dispatch('getAllOffers', route.query.param),
+
+      store.dispatch('getAllOffers', route.query),
     ]);
   },
   nuxtI18n: {
@@ -196,6 +197,9 @@ export default {
     }
   },
   methods: {
+
+
+
     selectOfferItem(index) {
       this.selected_offer_item = index
     },
@@ -223,7 +227,7 @@ export default {
     async addFavorite(id) {
       await this.$store.dispatch('offerAddFavorite', id)
       this.offer.isFavorite = !this.offer.isFavorite;
-      this.$store.dispatch('getAllOffers', this.$route.query.param)
+      this.$store.dispatch('getAllOffers', this.$route.query)
 
     },
     async deleteAutoSalonOffer(id) {
@@ -231,14 +235,14 @@ export default {
       this.checkAccepted(id)
       this.offer = false
 
-      this.$store.dispatch('getAllOffers', this.$route.query.param)
+      this.$store.dispatch('getAllOffers', this.$route.query)
     },
     async submitMessage() {
       this.messageButtonDisabled = true;
       if (!this.IsAccepted){
         this.IsAccepted=true
         setTimeout( ()=>{
-             this.$store.dispatch('getAllOffers', this.$route.query.param)
+             this.$store.dispatch('getAllOffers', this.$route.query)
         },500)
 
 
@@ -319,15 +323,12 @@ export default {
     async accept(id) {
       await this.$store.dispatch('salonAcceptOffer', {id})
       this.checkAccepted(id)
+    },
+    searchOffer(){
+
     }
   },
   computed: {
-    searchOffer() {
-      return this.offers.filter((item => {
-        return item.user.full_name.toUpperCase().includes(this.search.toUpperCase()) ||
-          item.brand.toUpperCase().includes(this.search.toUpperCase())
-      }))
-    },
     crumbs() {
       return [
         {name: 'Super təklif paneli', route: '/salons/offer'},
@@ -341,10 +342,29 @@ export default {
       isFavorite: 'isFavorite'
     }),
   },
+  created() {
+    if(!Object.keys(this.$route.query).length >0){
+      this.$router.push({
+        query: {
+          param:'all',
+
+        }
+      })
+    }
+  },
   watch: {
     async $route(newVal, oldVal) {
 
-      await this.$store.dispatch('getAllOffers', newVal.query.param)
+      await this.$store.dispatch('getAllOffers', newVal.query)
+    },
+
+    search(newVal){
+      this.$router.push({
+        query: {
+          param:this.$route.query.param,
+          query: newVal,
+        }
+      })
     }
   }
 

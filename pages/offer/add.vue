@@ -156,8 +156,10 @@ export default {
       this.$axios.post('/offer/pay',{
         isMobile:this.isMobileBreakpoint,
         offer_id:this.$store.state.offer_id
+
       }).then((res)=>{
         this.handlePayment(res.data, false, this.$t('car_added'), 'v2')
+        this.$store.commit('resetOfferState')
       })
     },
   },

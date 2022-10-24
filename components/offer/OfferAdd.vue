@@ -141,7 +141,7 @@
           </button>
         </div>
         <div>
-          <button class=" btn  btn--green " @click="submitOffer" :disabled="offerAddIsLoader">
+          <button class=" btn  btn--green " @click="submitOffer" :disabled="offerAddIsLoader" v-if="(index==0 && offerAnnouncementsCount.length==1) || (index==1 && offerAnnouncementsCount.length==2 )">
             <img src="/icons/offer/load.svg" width="50px" v-if="offerAddIsLoader">
             <span v-else> Təsdiq və ödəniş et</span>
           </button>

@@ -1241,7 +1241,19 @@ export const actions = {
     ])
   },
   async getAllOffers({commit}, param = 'all') {
-    const data = await this.$axios.$get(`/offer/salon/offer/all?param=` + param)
+
+    var url = `/offer/salon/offer`;
+
+    if (Object.keys(param).length > 0) {
+      url += '?param=' + param.param;
+    } else {
+      url += '?param=all';
+    }
+
+    if (param.query) {
+      url += '&query=' + param.query;
+    }
+    const data = await this.$axios.$get(url)
     commit('mutate', {property: 'offers', value: data.data})
     commit('mutate', {property: 'newOfferCount', value: data.count})
   },
@@ -1267,13 +1279,25 @@ export const actions = {
   async offerAddFavorite({commit}, id) {
     const data = await this.$axios.$post(`/offer/salon/offer/add-favorite/` + id)
 
-
   },
   async OffersAcceptedByAutoSalon({commit}, param = 'all') {
-    const data = await this.$axios.$get('/offer/user/offers-accepted-by-auto-salon/' + param)
+
+    var url='/offer/user/offers_accepted_by_auto_salon?param=';
+
+
+
+    if(param.param){
+      url+=param.param
+    }
+    if(param.query){
+      url+='&query='+param.query
+    }
+
+    const data = await this.$axios.$get(url)
+
+
     commit('mutate', {property: 'OffersAcceptedByAutoSalon', value: data.data})
     commit('mutate', {property: 'newOfferCount', value: data.count})
-
   },
 
   async offerPartners({commit}, page = 1) {
@@ -1284,31 +1308,30 @@ export const actions = {
     commit('mutate', {property: 'offerPartnersMeta', value: data.data.meta})
   },
   async offerItemValidation({commit, state}, object) {
-try {
-  const data = await this.$axios.post('/offer/validation', object.form).then(async (res) => {
+    try {
+      const data = await this.$axios.post('/offer/validation', object.form).then(async (res) => {
 
-    if (res.data.status == 'success') {
+        if (res.data.status == 'success') {
 
-      if (state.offer_announcements.length < 2) {
-        commit('appendOfferAnnouncement', object.form)
+          if (state.offer_announcements.length < 2) {
+            commit('appendOfferAnnouncement', object.form)
 
-      }
+          }
 
-      if (object.isSubmit) {
-        this.$axios.post('/offer', state.offer_announcements).then((res) => {
-          commit('openOfferPaymentModal',{status:true})
-          commit('setOfferId', {offer_id: res.data.offer_id})
-        })
-      } else {
+          if (object.isSubmit) {
+            this.$axios.post('/offer', state.offer_announcements).then((res) => {
+              commit('openOfferPaymentModal', {status: true})
+              commit('setOfferId', {offer_id: res.data.offer_id})
+            })
+          } else {
 
-        commit('incrementAnnouncementsCount')
-      }
+            commit('incrementAnnouncementsCount')
+          }
+        }
+      });
+    } catch (e) {
+      commit('setOfferAddLoader', {status: false})
     }
-  });
-}catch (e) {
-  commit('setOfferAddLoader',{status:false})
-}
-
 
 
   }
@@ -1452,9 +1475,9 @@ export const mutations = {
   appendOfferAnnouncement(state, payload) {
 
 
-    if(typeof state.offer_announcements[payload.index]!=undefined){
+    if (typeof state.offer_announcements[payload.index] != undefined) {
       console.log(1456)
-        state.offer_announcements.splice(payload.index, 1);
+      state.offer_announcements.splice(payload.index, 1);
     }
     state.offer_announcements.push(payload)
 
@@ -1477,7 +1500,7 @@ export const mutations = {
       state.offer_selected_models.splice(index, 1);
     }
   },
-  openOfferPaymentModal(state,payload) {
+  openOfferPaymentModal(state, payload) {
     state.showOfferPaymentModal = payload.status
 
   },
@@ -1492,5 +1515,28 @@ export const mutations = {
   },
   setOfferAddLoader(state, payload) {
     state.offer_add_is_loader = payload.status
+  },
+  resetOfferState(state) {
+    state.offer_announcement_count = [{collapsed: false}]
+    state.offer_announcements = [];
+    state.offer_selected_models = [
+      {
+        logo: null,
+        img: null,
+        brand: '',
+        model: '',
+        price: null,
+        year: null
+      },
+      {
+        logo: null,
+        img: null,
+        brand: '',
+        model: '',
+        price: null,
+        year: null
+      }
+    ]
+    console.log('refreshed')
   }
 }

@@ -46,10 +46,10 @@
             <div class="searchBox">
               <icon name="search"></icon>
               <input type="text" v-model="search" placeholder="Maşın və ya istifadəçi adı" class="searchInput"
-                     @focus="searchInputFocus">
+                     >
 
             </div>
-            <div class="user" v-for="userOffer in searchOffer"  @click="getUserOfferDetail(userOffer.auto_salon_offer_id)">
+            <div class="user" v-for="userOffer in userOffers"  @click="getUserOfferDetail(userOffer.auto_salon_offer_id)">
 
               <div class="userImg" :style="'background-image: url('+(userOffer.auto_salon.logo ? userOffer.auto_salon.logo : '/images/offer/salon_no_logo.svg') +')'"  ></div>
 
@@ -136,18 +136,17 @@ export default {
   name: "offers",
   components: {OfferItems, CollapseContent, OfferMessage, OfferSlider},
   middleware: ['auth_general', 'not_auto_salon'],
-  async fetch({store}) {
-    await store.dispatch('OffersAcceptedByAutoSalon')
-  },
+
   head() {
     return this.$headMeta({
       title: this.$t('Super teklif'),
     })
   },
   mixins: [ImageResizeMixin],
-  async asyncData({store}) {
+  async asyncData({store,route}) {
     await Promise.all([
-      store.dispatch('getHomePageSliders')
+      store.dispatch('getHomePageSliders'),
+      await store.dispatch('OffersAcceptedByAutoSalon', route.query)
     ])
   },
   data() {
@@ -180,12 +179,6 @@ export default {
       return [
         {name: 'Super təklif paneli', route: '/offer/offers'},
       ]
-    },
-    searchOffer() {
-      return this.userOffers.filter((item => {
-        return item.auto_salon.name.toUpperCase().includes(this.search.toUpperCase()) ||
-          item.offer.brand.toUpperCase().includes(this.search.toUpperCase())
-      }))
     },
   },
   methods: {
@@ -288,18 +281,39 @@ export default {
     },
     async accept(id) {
       await this.$store.dispatch('userAcceptOffer', {id})
-      this.$store.dispatch('OffersAcceptedByAutoSalon')
+      this.$store.dispatch('OffersAcceptedByAutoSalon',this.$route.query)
       this.checkAccepted(id)
     },
     async deleteUserAutoSalonOffer(id) {
       this.$axios.delete('/offer/user/offer/delete/' + id);
-      this.$store.dispatch('OffersAcceptedByAutoSalon')
+      this.$store.dispatch('OffersAcceptedByAutoSalon',this.$route.query)
       this.offer = null
+    }
+  },
+  created() {
+    console.log(this.userOffers)
+    if(!Object.keys(this.$route.query).length >0){
+      this.$router.push({
+        query: {
+          param:'all',
+
+        }
+      })
     }
   },
   watch: {
     async $route(newVal, oldVal) {
-      await this.$store.dispatch('OffersAcceptedByAutoSalon', newVal.query.param)
+      await this.$store.dispatch('OffersAcceptedByAutoSalon', newVal.query)
+    },
+    search(newVal){
+
+     this.$router.push({
+       query: {
+         param:this.$route.query.param,
+         query: newVal,
+       }
+      })
+
     }
   }
 }
