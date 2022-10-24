@@ -2,11 +2,15 @@
   <div class="garage_nav card with-margins mb-2 mb-lg-3">
     <div class="row">
       <div class="col-6 col-lg-auto" style="margin-bottom: 10px;display: flex;gap: 20px;">
-        <button
-          :class="['btn btn--pale-red-outline', {'active': tab === 'cars', 'full-width': isMobileBreakpoint}]"
-          @click="$emit('change-tab', 'cars')"
-          v-html="$t('my_cars')"
-        />
+        <div>
+          <button
+            :class="['btn btn--pale-red-outline', {'active': tab === 'cars', 'full-width': isMobileBreakpoint}]"
+            @click="$emit('change-tab', 'cars')"
+            v-html="$t('my_cars')+ ` (${cars.data.length})`"
+          />
+        </div>
+
+
         <button
           :class="['btn btn--pale-red-outline', {'active': tab === 'penalty_history', 'full-width': isMobileBreakpoint}]"
           @click="$emit('change-tab', 'penalty_history')"
@@ -47,6 +51,7 @@
 
 <script>
 import AddCar from '~/components/garage/AddCar';
+import {mapGetters} from "vuex";
 
 export default {
   props: {
@@ -61,6 +66,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({cars: 'garage/cars'}),
     getValue() {
       return (this.car_number).toUpperCase().replace(/[^a-z0-9]/gi,'');
     }

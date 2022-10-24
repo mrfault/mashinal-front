@@ -1993,6 +1993,7 @@ export default {
   "xenon_lamps": "Ксеноновые фары",
   "Yandex.Auto": "Яндекс.Авто",
   "year": "год",
+  "year_first_letter": "Год",
   "year_from": "Год от",
   "years": "Год выпуска",
   "yes": "Да",
@@ -2277,7 +2278,7 @@ export default {
   "clearance_change": "Изменение клиренса",
   "change_noun": "Изменение",
   "previous_version": "Старый",
-  
+
   "width_of_tire": "Ширина шины (L)",
   "height_of_profile": "Высота профиля (H)",
   "disc_diameter": "Диаметр диска (R)",
