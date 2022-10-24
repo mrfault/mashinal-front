@@ -58,8 +58,10 @@ export default {
       }
     },
     handleBackdropClick() {
-      if (this.isMobileBreakpoint) {
-        this.$emit('close');
+      if (this.closeable) {
+        if (this.isMobileBreakpoint) {
+          this.$emit('close');
+        }
       }
     }
   },

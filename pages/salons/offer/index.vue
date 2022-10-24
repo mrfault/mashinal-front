@@ -289,13 +289,14 @@ export default {
         this.$router.push(this.$localePath('/salons/offer') + '/' + id)
       } else {
         await this.checkAccepted(id)
+
         this.offer = JSON.parse(JSON.stringify(this.offers.find(function (offer) {
             return id === offer.id
           }
         )));
       }
 
-      this.$store.commit('mutate', {property: 'current_offer_id', value: this.offer.id})
+      this.$store.commit('mutate', {property: 'current_offer_id', value: id})
       setTimeout(() => {
         this.scrollTo('.message:last-child', 300, 500, '.offerDetail')
       }, 1000)

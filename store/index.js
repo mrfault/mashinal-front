@@ -1,7 +1,7 @@
 import _ from '~/lib/underscore'
 import {mutate, reset} from '~/lib/vuex-helpers/mutations'
 import Vue from 'vue'
-
+import uuid from 'uuid'
 
 const getInitialState = () => ({
   loading: true,
@@ -148,6 +148,7 @@ const getInitialState = () => ({
   offerPartnersMeta: {},
   offer_announcement_count: [
     {
+      key: uuid.v4(),
       collapsed: false
     }
   ],
@@ -1467,7 +1468,7 @@ export const mutations = {
   },
   incrementAnnouncementsCount(state) {
     state.offer_announcement_count[0].collapsed = true;
-    state.offer_announcement_count.push({collapsed: false})
+    state.offer_announcement_count.push({collapsed: false, key: uuid.v4()})
   },
   decrementAnnouncementsCount(state) {
     state.offer_announcement_count--
@@ -1492,6 +1493,7 @@ export const mutations = {
     })
   },
   deleteOfferAnnouncement(state, payload) {
+    console.log(state.offer_selected_models[index])
     let index = payload.index;
     if (index > -1) {
       state.offer_announcements.splice(index, 1);
@@ -1504,6 +1506,7 @@ export const mutations = {
         price: null,
         year: null
       };
+      console.log(state.offer_selected_models[index])
     }
   },
   openOfferPaymentModal(state, payload) {

@@ -703,6 +703,14 @@
 }
 
 @media (max-width: 480px) {
+  .offerDetail{
+    .offer_items{
+    flex-direction: column;
+    }
+  }
+  .offer-payment-modal {
+    width: 100% !important;
+  }
   .offerAddButtons {
     flex-direction: column !important;
     justify-content: center;
