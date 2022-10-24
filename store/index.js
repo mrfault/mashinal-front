@@ -1474,15 +1474,14 @@ export const mutations = {
   },
   appendOfferAnnouncement(state, payload) {
 
-
     if (typeof state.offer_announcements[payload.index] != undefined) {
-      console.log(1456)
       state.offer_announcements.splice(payload.index, 1);
     }
     state.offer_announcements.push(payload)
 
   },
   appendOfferSelectedModels(state, payload) {
+    console.log(state.offer_selected_models)
     Vue.set(state.offer_selected_models, payload.index, {
       img: payload.data.img ? payload.data.img : state.offer_selected_models[payload.index].img,
       logo: payload.data.logo ? payload.data.logo : state.offer_selected_models[payload.index].logo,
@@ -1497,7 +1496,14 @@ export const mutations = {
     if (index > -1) {
       state.offer_announcements.splice(index, 1);
       state.offer_announcement_count.splice(index, 1);
-      state.offer_selected_models.splice(index, 1);
+      state.offer_selected_models[index]={
+        logo: null,
+        img: null,
+        brand: '',
+        model: '',
+        price: null,
+        year: null
+      };
     }
   },
   openOfferPaymentModal(state, payload) {

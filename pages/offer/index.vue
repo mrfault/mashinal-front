@@ -37,7 +37,7 @@
             </p>
           </div>
           <nuxt-link :to="$localePath('/offer/offers')" tag="button" class="offer-button">
-            Sorğulara  bax
+            Sorğuya  bax
           </nuxt-link>
         </div>
       </div>
