@@ -83,9 +83,9 @@ export default {
       openDateChangeModal: false,
       pending: false,
       form: {
-        day: Number(this.$moment(this.car.insurance_end_date).format('DD')),
+        day: this.car.insurance_end_date ? Number(this.$moment(this.car.insurance_end_date).format('DD')) : "",
         month: "",
-        year: Number(this.$moment(this.car.insurance_end_date).format('YYYY')),
+        year: this.car.insurance_end_date ? Number(this.$moment(this.car.insurance_end_date).format('YYYY')) : "",
         company: this.car.insurance_company_id
       },
       companies: [
@@ -108,10 +108,10 @@ export default {
     }
   },
   mounted() {
-    this.form.month = this.months.find(item =>
+    this.form.month = this.months?.find(item =>
       item.name === this.capitalizeFirstLetter(
         this.$moment(this.car.insurance_end_date).format('MMMM')
-      )).key
+      ))?.key
   },
   methods: {
     capitalizeFirstLetter(string) {
@@ -125,7 +125,7 @@ export default {
           end_date: `${this.form.year}-${this.form.month}-${this.form.day}`,
           insurance_company_id: this.form.company
         })
-        this.$nuxt.refresh();
+        this.$emit('refresh-data')
         this.openDateChangeModal = false;
       }catch (e){}
       this.pending = false;
