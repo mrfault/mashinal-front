@@ -23,6 +23,14 @@
           @order-changed="changeOrder"
           ref="sellLastStepUploadImage"
         />
+      <template v-if="user.autosalon && user.autosalon.access_to_360">
+        <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-selectedColor">
+          <span>{{ $t('exterior') }}</span>
+        </h2>
+        <input type="file" name="file" id="file" @change="upload360Video" class="inputfile">
+        <label for="file" class="btn btn--grey-outline">{{ $t('video_choose') }}</label>
+      </template>
+
 <!--        <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-youtube">-->
 <!--          <span>{{ $t('video') }}</span>-->
 <!--        </h2>-->
@@ -391,7 +399,27 @@ export default {
   },
   methods: {
     ...mapActions(['setSellProgress', 'setSellPreviewData', 'resetSellTokens', 'getMyAllAnnouncements']),
+    upload360Video(val) {
+        var formData = new FormData();
+        formData.append("video", val.target.files[0]);
+        this.uploading = true;
+        this.$axios.post('/upload_temporary_video',
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          }
+        ).then((res)=>{
+          this.uploading = false;
+          if (res.status==200){
+            this.$toast.success(this.$t('video_360_successfully_upload'))
+            this.form.video_360_id=res.data.data.id
+          }
 
+
+        } )
+      },
     handleModification({ key, value }) {
       this.$set(this.form, key, value);
       if (!this.showAllOptions && key === 'car_catalog_id' && value) {
@@ -648,5 +676,22 @@ export default {
 <style lang="scss" >
 .white-space-pre-wrap-span span {
   white-space: pre-wrap !important;
+}
+.inputfile {
+  /* visibility: hidden etc. wont work */
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+.inputfile:focus + label {
+  /* keyboard navigation */
+  outline: 1px dotted #000;
+  outline: -webkit-focus-ring-color auto 5px;
+}
+.inputfile + label * {
+  pointer-events: none;
 }
 </style>

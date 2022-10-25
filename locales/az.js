@@ -2332,4 +2332,6 @@ export default {
   "new_1": "Yeni",
   "will_increase": "artacaq",
   "will_diminish": "azalacaq",
+  "video_360_successfully_upload":"Video uğurla yükləndi",
+  "video_choose": "Video faylı seç"
 }
