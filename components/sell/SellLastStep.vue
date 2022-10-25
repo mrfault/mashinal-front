@@ -23,12 +23,14 @@
           @order-changed="changeOrder"
           ref="sellLastStepUploadImage"
         />
-
+      <template v-if="user.autosalon && user.autosalon.access_to_360">
         <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-selectedColor">
           <span>{{ $t('exterior') }}</span>
         </h2>
         <input type="file" name="file" id="file" @change="upload360Video" class="inputfile">
         <label for="file" class="btn btn--grey-outline">{{ $t('video_choose') }}</label>
+      </template>
+
 <!--        <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-youtube">-->
 <!--          <span>{{ $t('video') }}</span>-->
 <!--        </h2>-->
