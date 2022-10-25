@@ -2319,5 +2319,7 @@ export default {
   "visual_tire_size_change_result_25": "Yayda yol tutumu pisləşəcək",
   "visual_tire_size_change_result_26": "Təkərlərin ömrü qısalacaq",
   "insurance_end_date_text": "Sığortanın bitmə tarixi",
-  "change_it": "Dəyiş"
+  "change_it": "Dəyiş",
+  "video_360_successfully_upload":"Video uğurla yükləndi",
+  "video_choose": "Video faylı seç"
 }

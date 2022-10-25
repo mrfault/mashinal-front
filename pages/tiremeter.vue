@@ -96,7 +96,7 @@
           </h2>
           <table class="ma-tiremeter__results-table">
             <tr class="ma-tiremeter__results-table--header">
-              <th>{{ $t('dimensions') }}</th>
+              <th>{{ $t('dimensions_tire') }}</th>
               <th>{{ $t('previous_version') }}</th>
               <th>{{ $t('new') }}</th>
               <th>{{ $t('change_noun') }}</th>

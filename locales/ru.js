@@ -2268,9 +2268,6 @@ export default {
   "insurance_end_date_text": "Дата окончания страховки",
   "pay_status":"Статус штрафа",
 
-  "already_paid": "оплачено",
-  "change_it": "Изменить",
-
   "visual_tire_calculator": "Визуальный шинный калькулятор",
   "size_of_old_tire": "Типоразмер старой шины",
   "size_of_new_tire": "Типоразмер новой шины",
@@ -2284,10 +2281,7 @@ export default {
   "disc_diameter": "Диаметр диска",
   "external_diameter_of_tire": "Внешний диаметр шины",
   "result_of_calculation": "Результаты расчетов",
-
-  "dimensions": "Размеры",
-
-
+  "dimensions_tire": "Размеры",
   "calculation_results": "Результаты расчетов",
   "result_of_tire_size_change": "Результаты изменения размера шин",
   "result_of_tire_size_change_d_left": "Увеличится внешний диаметр колеса ",
@@ -2330,9 +2324,10 @@ export default {
   "visual_tire_size_change_result_24": "Уменьшится уровень шума",
   "visual_tire_size_change_result_25": "Ухудшится сцепление с дорогой летом",
   "visual_tire_size_change_result_26": "Сократится срок службы шины",
-
+  "video_360_successfully_upload":"Видео успешно загружено",
   "already_paid": "Оплачено",
-  "change_it": "Изменить"
+  "change_it": "Изменить",
+  "video_choose": "Выбрать видеофайл"
 
 
 }
