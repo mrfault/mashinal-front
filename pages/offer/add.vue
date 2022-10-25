@@ -7,7 +7,7 @@
     <div class="container">
       <div class="col-md-12 background-white offer-add-section p-5">
         <sell-progress :form="form"/>
-        <offer-collapse :first-collapsed="offerAnnouncementItem.collapsed" v-for="(offerAnnouncementItem,index) in offerAnnouncementsCount" >
+        <offer-collapse :first-collapsed="offerAnnouncementItem.collapsed" v-for="(offerAnnouncementItem,index) in offerAnnouncementsCount" :index="index" >
           <template #title class="offer-collapse-title">
             <div class="offer-brand">
               <div v-if="offerSelectedModels[index]" class="d-flex align-items-center">
@@ -38,7 +38,7 @@
       :closeable="false"
     >
       <div class="row">
-        <div class="col-12 col-md-12">
+        <div class="col-12 col-md-6">
           <div class="offer-selected-box">
             <div class="offer-selected-item" v-for="offerSelectedModel in offerSelectedModels" v-if="offerSelectedModel.model && offerSelectedModel.price">
               <div class="item-img">
@@ -161,7 +161,13 @@ export default {
   },
   watch: {
     '$store.state.offer_announcement_count': function () {
-      this.scrollTo('.collapse-content')
+      if (this.$store.state.offer_announcement_count.length==2 && this.$store.state.offer_announcement_count==false ){
+
+      }else{
+        this.scrollTo('.collapse-content:last-child')
+      }
+
+
     },
     '$store.state.showOfferPaymentModal': function (newVal,oldVal) {
     this.showPaymentModalOption=newVal

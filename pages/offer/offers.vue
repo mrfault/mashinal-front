@@ -46,12 +46,14 @@
             <div class="searchBox">
               <icon name="search"></icon>
               <input type="text" v-model="search" placeholder="Maşın və ya istifadəçi adı" class="searchInput"
-                     >
+              >
 
             </div>
-            <div class="user" v-for="userOffer in userOffers"  @click="getUserOfferDetail(userOffer.auto_salon_offer_id)">
+            <div class="user" v-for="userOffer in userOffers"
+                 @click="getUserOfferDetail(userOffer.auto_salon_offer_id)">
 
-              <div class="userImg" :style="'background-image: url('+(userOffer.auto_salon.logo ? userOffer.auto_salon.logo : '/images/offer/salon_no_logo.svg') +')'"  ></div>
+              <div class="userImg"
+                   :style="'background-image: url('+(userOffer.auto_salon.logo ? userOffer.auto_salon.logo : '/images/offer/salon_no_logo.svg') +')'"></div>
 
               <div class="userName">
                 <b> {{ userOffer.auto_salon.name }}</b>
@@ -73,10 +75,10 @@
                    :style="'background-image: url('+(userOffer.auto_salon.logo ? userOffer.auto_salon.logo : '/images/offer/salon_no_logo.svg') +')'"></div>
 
               <p class="mt-2 ml-2 text-bold">
-                {{  auto_salon.name  }}
+                {{ auto_salon.name }}
               </p>
 
-              <div class="actions" >
+              <div class="actions">
                 <span @click="deleteUserAutoSalonOffer(userOffer.auto_salon_offer_id)"
                       v-if="!userOffer.user_deleted_at"> <icon name="garbage"></icon></span>
               </div>
@@ -103,6 +105,12 @@
               </div>
             </div>
           </div>
+          <div class="col-md-12">
+            <div class="offer-alert" role="alert" v-if="auto_salon_deleted_at!=null">
+              Avto salon təklifi silmişdir.
+            </div>
+          </div>
+
           <div class="addons" v-if="userOffer && auto_salon_deleted_at===null">
             <offer-message
               @type="handleTyping"
@@ -143,7 +151,7 @@ export default {
     })
   },
   mixins: [ImageResizeMixin],
-  async asyncData({store,route}) {
+  async asyncData({store, route}) {
     await Promise.all([
       store.dispatch('getHomePageSliders'),
       await store.dispatch('OffersAcceptedByAutoSalon', route.query)
@@ -196,7 +204,7 @@ export default {
       this.$set(this, 'files', files);
     },
     async changePage(param) {
-      this.chat.text=''
+      this.chat.text = ''
 
       this.$router.push({
         path: 'offers',
@@ -243,7 +251,7 @@ export default {
     },
     async getUserOfferDetail(id) {
 
-      this.chat.text=''
+      this.chat.text = ''
 
       if (this.isMobileBreakpoint) {
         this.$router.push(this.$localePath('/offer') + '/' + id)
@@ -281,12 +289,12 @@ export default {
     },
     async accept(id) {
       await this.$store.dispatch('userAcceptOffer', {id})
-      this.$store.dispatch('OffersAcceptedByAutoSalon',this.$route.query)
+      this.$store.dispatch('OffersAcceptedByAutoSalon', this.$route.query)
       this.checkAccepted(id)
     },
     async deleteUserAutoSalonOffer(id) {
       this.$axios.delete('/offer/user/offer/delete/' + id);
-      this.$store.dispatch('OffersAcceptedByAutoSalon',this.$route.query)
+      this.$store.dispatch('OffersAcceptedByAutoSalon', this.$route.query)
       this.offer = null
       this.userOffer = null
 
@@ -294,10 +302,10 @@ export default {
   },
   created() {
     console.log(this.userOffers)
-    if(!Object.keys(this.$route.query).length >0){
+    if (!Object.keys(this.$route.query).length > 0) {
       this.$router.push({
         query: {
-          param:'all',
+          param: 'all',
 
         }
       })
@@ -307,13 +315,13 @@ export default {
     async $route(newVal, oldVal) {
       await this.$store.dispatch('OffersAcceptedByAutoSalon', newVal.query)
     },
-    search(newVal){
+    search(newVal) {
 
-     this.$router.push({
-       query: {
-         param:this.$route.query.param,
-         query: newVal,
-       }
+      this.$router.push({
+        query: {
+          param: this.$route.query.param,
+          query: newVal,
+        }
       })
 
     }

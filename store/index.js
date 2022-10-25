@@ -1547,5 +1547,8 @@ export const mutations = {
       }
     ]
     console.log('refreshed')
+  },
+  setOfferAnnouncementCount(state,payload){
+    state.offer_announcement_count[payload.index].collapsed=payload.status;
   }
 }
