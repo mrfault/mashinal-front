@@ -7,9 +7,7 @@
     <div class="container">
       <div class="col-md-12 background-white offer-add-section p-5">
         <sell-progress :form="form"/>
-
-        <offer-collapse :first-collapsed="offerAnnouncementsCount[index].collapsed"
-                        v-for="(offerAnnouncementItem,index) in offerAnnouncementsCount" >
+        <offer-collapse :first-collapsed="offerAnnouncementItem.collapsed" v-for="(offerAnnouncementItem,index) in offerAnnouncementsCount" :index="index" >
           <template #title class="offer-collapse-title">
             <div class="offer-brand">
               <div v-if="offerSelectedModels[index]" class="d-flex align-items-center">
@@ -28,7 +26,7 @@
               <button @click="deleteOfferAnnouncement(index)" class="btn btn--red-outline" v-if="offerAnnouncementsCount.length>1">Sorğunu sil</button>
             </div>
           </template>
-          <offer-add :key="index" :index="index"/>
+          <offer-add :key="offerAnnouncementItem.key" :index="index"/>
         </offer-collapse>
       </div>
     </div>
@@ -40,8 +38,7 @@
       :closeable="false"
     >
       <div class="row">
-        <div class="col-6">
-
+        <div class="col-12 col-md-6">
           <div class="offer-selected-box">
             <div class="offer-selected-item" v-for="offerSelectedModel in offerSelectedModels" v-if="offerSelectedModel.model && offerSelectedModel.price">
               <div class="item-img">
@@ -52,13 +49,11 @@
                 <p>{{offerSelectedModel.brand}} {{offerSelectedModel.model}} <br>
                 <span>{{offerSelectedModel.year}}</span>
                 </p>
-
               </div>
-
             </div>
           </div>
         </div>
-        <div class="col-6">
+        <div class="col-md-6 col-12">
           <div class="offer-payment-modal-body">
             <h3 class="mb-2">Ödəniş üsulu</h3>
             <form-buttons v-model="paymentMethod" :options="paymentMethodOptions" :group-by="2"  :value="'card'" :class="'mb-2'"/>
@@ -74,7 +69,7 @@
         <div class="col-12">
           <div class="hr mt-5"></div>
           <div class="d-flex justify-content-between">
-            <div class="text-left "> Cəmi <br> <span class="offer-amount">10 ₼ </span></div>
+            <div class="text-left "> Cəmi <br> <span class="offer-amount">{{10*$store.state.offer_announcements.length}} ₼ </span></div>
             <div class="text-right">
               <button class=" btn  btn--green" @click="pay">Təsdiqlə</button>
             </div>
@@ -95,7 +90,7 @@ import SellPreview from "~/components/sell/SellPreview";
 import OfferCollapse from "~/components/offer/OfferCollapse";
 import OfferAdd from "~/components/offer/OfferAdd";
 import {PaymentMixin} from "~/mixins/payment";
-
+import uuid from 'uuid'
 
 export default {
   name: "add.vue",
@@ -132,7 +127,6 @@ export default {
     paymentMethodOptions() {
       return [
         {key: 'card', name: this.$t('pay_with_card')},
-        {key: 'balance', name: this.$t('pay_with_balance'), disabled: !this.haveBalanceToPay},
       ]
     },
     crumbs() {
@@ -140,11 +134,13 @@ export default {
         {name: 'Super təklif', route: '/offer'},
         {name: this.$t('cars')}
       ]
-    }
-
+    },
   },
 
   methods: {
+    generateKey() {
+      return uuid.v4();
+    },
     getOfferSelectedModel(index) {
       return this.offerSelectedModels[index]
     },
@@ -156,14 +152,22 @@ export default {
       this.$axios.post('/offer/pay',{
         isMobile:this.isMobileBreakpoint,
         offer_id:this.$store.state.offer_id
+
       }).then((res)=>{
         this.handlePayment(res.data, false, this.$t('car_added'), 'v2')
+        this.$store.commit('resetOfferState')
       })
     },
   },
   watch: {
     '$store.state.offer_announcement_count': function () {
-      this.scrollTo('.collapse-content')
+      if (this.$store.state.offer_announcement_count.length==2 && this.$store.state.offer_announcement_count==false ){
+
+      }else{
+        this.scrollTo('.collapse-content:last-child')
+      }
+
+
     },
     '$store.state.showOfferPaymentModal': function (newVal,oldVal) {
     this.showPaymentModalOption=newVal

@@ -51,13 +51,17 @@ export default {
   },
   methods: {
     handleEscapeKey(e) {
-      if (this.toggle && e.key === 'Escape'){
-        this.$emit('close');
+      if (this.closeable) {
+        if (this.toggle && e.key === 'Escape') {
+          this.$emit('close');
+        }
       }
     },
     handleBackdropClick() {
-      if (this.isMobileBreakpoint) {
-        this.$emit('close');
+      if (this.closeable) {
+        if (this.isMobileBreakpoint) {
+          this.$emit('close');
+        }
       }
     }
   },

@@ -27,69 +27,9 @@
       <div class="row">
         <div class="col col-md-12 col-12 col-xs-12 col-sm-12">
           <div class="offerDetail" v-if="offer">
+
             <collapse-content :title="'Təklif'">
-              <div class="generations">
-                <div class="row">
-                  <div class="col-md-3" v-for="generation in offer.generations">
-                    <img :src="generation.img" class="generationImage" width="100%">
-                  </div>
-                  <div class="col-md-6">
-                    <div class="carName">
-                      <span class="carPrice">{{ offer.minPrice }} - {{ offer.maxPrice }} ₼</span>
-                      <h3>{{ offer.brand }} {{ offer.model }}</h3>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="offerDetailContent">
-                <div class="offerDetailItem">
-                  <p>Brand</p>
-                  <span>{{ offer.brand }}</span>
-                </div>
-                <div class="offerDetailItem">
-                  <p>Model </p>
-                  <span>
-                  {{ offer.model }}
-                </span>
-                </div>
-
-                <div class="offerDetailItem">
-                  <p>Nəsil </p>
-                  <div>
-                  <span v-for=" (generation,index) in offer.generations">
-                  {{ generation.name }}
-                                      <div v-if="index != offer.generations.length - 1">,</div>
-                </span>
-
-
-                  </div>
-
-                </div>
-                <div class="offerDetailItem">
-
-                  <p>Sürətlər qutusu </p>
-                  <div>
-                <span v-for=" (gearbox,index) in offer.gear_boxes">
-                               {{ $t('box_values')[gearbox.gear_box_key] }}
-
-                  <div v-if="index != offer.gear_boxes.length - 1">,</div>
-                </span>
-
-                  </div>
-                </div>
-                <div class="offerDetailItem">
-                  <p>Yanacaq növü </p>
-                  <div>
-                <span v-for=" (fuel_type,index) in offer.fuel_types">
-
-                  {{ $t('engine_values')[fuel_type.fuel_type_key] }} <div
-                  v-if="index != offer.fuel_types.length - 1">,</div>
-
-                </span>
-                  </div>
-                </div>
-
-              </div>
+              <offer-items :offer_items="offer.offer_items"/>
             </collapse-content>
 
             <div class="text-right" v-if="!IsAccepted">
@@ -140,10 +80,11 @@ import OfferMessage from "~/components/offer/offer-message";
 import CollapseContent from "~/components/elements/CollapseContent";
 import {mapGetters} from "vuex";
 import {ImageResizeMixin} from "~/mixins/img-resize";
+import OfferItems from "~/components/offer/offerItems";
 
 export default {
   name: "salon-offer-detail",
-  components: {CollapseContent, OfferMessage},
+  components: {OfferItems, CollapseContent, OfferMessage},
   async asyncData({store, route, $axios}) {
     await store.dispatch('getOffer', {
       id:route.params.id,

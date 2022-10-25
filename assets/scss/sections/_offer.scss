@@ -378,8 +378,8 @@
     margin-bottom: auto;
 
     i {
-      position: absolute;
-      left: 52px;
+      position: relative;
+      left: 39px;
     }
 
     .searchInput {
@@ -469,7 +469,7 @@
 }
 
 .offerDetail {
-  height: 625px;
+  height: 561px;
   overflow-x: hidden;
   overflow-y: auto;
 
@@ -703,6 +703,14 @@
 }
 
 @media (max-width: 480px) {
+  .offerDetail{
+    .offer_items{
+    flex-direction: column;
+    }
+  }
+  .offer-payment-modal {
+    width: 100% !important;
+  }
   .offerAddButtons {
     flex-direction: column !important;
     justify-content: center;
@@ -750,7 +758,11 @@
   .searchInput:focus {
     scroll-behavior: smooth;
   }
-
+.offer-slider{
+  .swiper-pagination{
+    bottom:117px !important;
+  }
+}
   .offer-step {
     flex-direction: column;
   }
@@ -1239,4 +1251,14 @@
 
 .offer-amount {
   color: $dark-blue-2;
+}
+.offer-alert{
+  margin-top: 25px;
+  background: #f8d7da;
+  color: #721c24;
+  padding: 15px;
+  display: flex;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
 }

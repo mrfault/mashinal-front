@@ -23,19 +23,21 @@
       <button class="btn  btn--green" @click="getOffer()">Əlavə et</button>
     </section>
     <div class="">
-      <div class="new-offer mt-5" v-if="notAccepted()>0">
+      <div class="new-offer mt-5" v-if="userOffers.length > 0">
         <div class="new-offer-title mt-5">
-          <h2 class="text-center"> Yeni təklif</h2>
+          <h2 class="text-center"> Sorğularım</h2>
         </div>
-
-
-        <div class="new-offer-notification-box mt-5">
+        <div class="new-offer-notification-box mt-5" v-for="userOffer in userOffers">
           <div class="notification">
             <img src="/icons/auction.svg">
-            <p>Sizin {{ notAccepted() }} yeni təklifiniz var</p>
+            <p>
+              <span v-for="(offerItem,index) in userOffer.offer.offer_items">
+                <b>{{offerItem.brand}}</b> - {{offerItem.model}}  <span v-if="index != Object.keys(userOffer.offer.offer_items).length - 1">,</span>
+              </span>
+            </p>
           </div>
           <nuxt-link :to="$localePath('/offer/offers')" tag="button" class="offer-button">
-            Təkliflərə bax
+            Sorğuya  bax
           </nuxt-link>
         </div>
       </div>
@@ -233,12 +235,6 @@ export default {
 
     },
 
-    notAccepted() {
-      let notAcceptedOffers = this.userOffers.filter(function (e) {
-        return e.user_is_accepted == false;
-      });
-      return notAcceptedOffers.length;
-    },
     loadOfferPartners() {
       this.$store.dispatch('offerPartners', this.offerPartnersMeta.current_page + 1)
 
