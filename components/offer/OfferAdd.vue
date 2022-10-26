@@ -7,7 +7,7 @@
         <h2 class="title-with-line full-width">
           <span>{{ $t('mark') }} <span class="star"> *</span></span>
         </h2>
-        <form-select
+        <offer-form-select
           slug-in-value
           :label="$t('mark')"
           :options="brands"
@@ -21,7 +21,7 @@
         <h2 class="title-with-line full-width">
           <span>{{ $t('model') }} <span class="star"> *</span></span>
         </h2>
-        <form-select
+        <offer-form-select
           slug-in-value
           :label="$t('model')"
           :options="models.length > 0 ? models : []"
@@ -170,11 +170,13 @@ import ColorOptions from "~/components/options/ColorOptions";
 import InteriorColorOptions from "~/components/options/InteriorColorOptions";
 import FormCheckbox from "~/components/forms/FormCheckbox";
 import {mapGetters} from "vuex";
+import OfferFormSelect from "~/components/offer/OfferFormSelect";
 
 export default {
   name: "offer-add",
   mixins: [ToastErrorsMixin],
   components: {
+    OfferFormSelect,
     OfferFormButtons,
     Generations,
     SellPreview,

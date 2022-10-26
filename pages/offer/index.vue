@@ -3,7 +3,8 @@
 
     <offer-slider/>
     <section class="get-offer">
-      <form-select
+
+      <offer-form-select
         slug-in-value
         :label="$t('mark')"
         :options="brands"
@@ -12,7 +13,7 @@
         has-search
         class="get-offer-select"
       />
-      <form-select
+      <offer-form-select
         slug-in-value
         :label="$t('model')"
         :options="carModels.length > 0 ? carModels : []"
@@ -157,10 +158,11 @@
 import {mapActions, mapGetters} from "vuex";
 import Accordion from "~/components/elements/Accordion";
 import OfferSlider from "~/components/offer/OfferSlider";
+import OfferFormSelect from "~/components/offer/OfferFormSelect";
 
 export default {
   name: 'Offer',
-  components: {OfferSlider, Accordion},
+  components: {OfferFormSelect, OfferSlider, Accordion},
   middleware: ['not_auto_salon', 'auth_general'],
   async fetch({store}) {
     await store.dispatch('getBrands')
@@ -181,7 +183,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      faq: 'packages/faq',
+      faq: 'getOfferFaq',
       userOffers: 'OffersAcceptedByAutoSalon',
       brands: 'brands',
       carModels: 'models',
@@ -205,7 +207,7 @@ export default {
   async asyncData({store}) {
     await Promise.all([
       store.dispatch('getHomePageSliders'),
-      store.dispatch('packages/getFaq')
+      store.dispatch('offerFaq')
     ]);
     return {
       pending: false

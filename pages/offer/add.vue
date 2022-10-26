@@ -37,9 +37,9 @@
     <modal-popup
       :toggle="showPaymentModalOption"
       :title="'Super təklif'"
-      @close="showPaymentModalOption = false"
+      @close="paymentModalClose"
       :modal-class="'offer-payment-modal'"
-      :closeable="false"
+      :closeable="true"
     >
       <div class="row">
         <div class="col-12 col-md-6">
@@ -143,8 +143,17 @@ export default {
       ]
     },
   },
+  beforeDestroy() {
+    this.$store.commit('resetOfferState')
+  },
 
   methods: {
+    paymentModalClose(){
+      this.showPaymentModalOption = false
+      this.$store.commit('setOfferAddLoader',{status:false})
+      this.$store.commit('openOfferPaymentModal',{status:false})
+
+    },
     generateKey() {
       return uuid.v4();
     },
@@ -162,7 +171,7 @@ export default {
 
       }).then((res) => {
         this.handlePayment(res.data, false, this.$t('car_added'), 'v2')
-        this.$store.commit('resetOfferState')
+
       })
     },
   },

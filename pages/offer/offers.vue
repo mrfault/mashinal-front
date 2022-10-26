@@ -133,6 +133,8 @@
 </template>
 
 <script>
+
+import VueLazyLoad from 'vue-lazyload'
 import OfferSlider from "~/components/offer/OfferSlider";
 import {mapGetters} from "vuex";
 import OfferMessage from "~/components/offer/offer-message";

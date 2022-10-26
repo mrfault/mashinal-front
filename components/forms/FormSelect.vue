@@ -546,13 +546,9 @@ export default {
       },
     },
     getOptions() {
-      let addons = this.clearOption
-        ? [{ key: -1, name: this.clearOptionText || this.$t('any') }]
-        : []
+      let addons = this.clearOption ? [{ key: -1, name: this.clearOptionText || this.$t('any') }] : []
       if (this.hasGenerations && this.isMobileBreakpoint) return this.options
-      return this.clearOptionPullDown
-        ? [...this.options, ...addons]
-        : [...addons, ...this.options]
+      return this.clearOptionPullDown ? [...this.options, ...addons] : [...addons, ...this.options]
     },
     getSelectedOptions() {
       return this.options.filter(this.isSelected)

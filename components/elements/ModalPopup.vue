@@ -70,6 +70,11 @@ export default {
   },
   beforeDestroy() {
     window.removeEventListener('keydown', this.handleEscapeKey);
+  },
+  watch:{
+    '$store.state.showOfferPaymentModal': function (newVal, oldVal) {
+      this.collapse=newVal
+    }
   }
 }
 </script>
