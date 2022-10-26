@@ -18,7 +18,7 @@ export default {
   },
   nuxtI18n: {
     paths: {
-      az: '/salon/:id'
+      az: '/xaricden-avto/:id'
     }
   },
   head() {
