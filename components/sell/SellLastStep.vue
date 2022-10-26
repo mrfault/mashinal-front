@@ -405,6 +405,7 @@ export default {
   methods: {
     ...mapActions(['setSellProgress', 'setSellPreviewData', 'resetSellTokens', 'getMyAllAnnouncements']),
     upload360Video(val) {
+        if(!val.target.files[0]) return false;
         var formData = new FormData();
         formData.append("video", val.target.files[0]);
         this.uploading = true;
@@ -427,7 +428,11 @@ export default {
           }
 
 
-        } )
+        } ).catch(() => {
+          this.uploading = false;
+          this.videoUploading = false;
+          this.videoUploaded = false;
+        })
       },
     handleModification({ key, value }) {
       this.$set(this.form, key, value);
