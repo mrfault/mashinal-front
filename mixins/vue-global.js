@@ -125,7 +125,7 @@ Vue.use({
             name = item.user.autosalon.name || item.user.full_name;
           } else if (item.is_external_salon) {
             img = item.user.external_salon?.logo;
-            link = this.$localePath(`/salons/${item.user.external_salon.slug}`);
+            link = this.$localePath(`/external-salons/${item.user.external_salon.slug}`);
             name = item.user.external_salon.name || item.user.full_name;
           }
 
