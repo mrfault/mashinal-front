@@ -121,7 +121,7 @@
             </div>
           </div>
 
-          <div class="addons" v-if="userOffer && auto_salon_deleted_at===null && offer.user_deleted_at==null">
+          <div class="addons" v-if="userOffer && auto_salon_deleted_at===null && offer.user_deleted==null">
             <offer-message
               @type="handleTyping"
               @attach="handleFiles"
@@ -310,9 +310,10 @@ export default {
 
 
         this.$store.commit('mutate', {property: 'current_offer_id', value: this.offer.id})
-
-        this.offer.user_deleted_at = this.userOffer.user_deleted_at
-        this.auto_salon_deleted_at = this.userOffer.auto_salon_deleted_at
+        console.log('-----')
+        console.log(this.userOffer)
+        this.offer.user_deleted = this.userOffer.user_deleted_at ?  this.userOffer.user_deleted_at : null
+          this.auto_salon_deleted_at = this.userOffer.auto_salon_deleted_at
 
       }
       setTimeout(() => {
