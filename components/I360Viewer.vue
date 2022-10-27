@@ -110,7 +110,7 @@ export default {
     autoplay: {
       type: Boolean,
       require: false,
-      default: false
+      default: true
     },
     loop: {
       type: Number,
@@ -341,7 +341,7 @@ export default {
       this.playing = !this.playing
     },
     play() {
-      this.loopTimeoutId = window.setInterval(() => this.loopImages(), 100);
+      this.loopTimeoutId = window.setInterval(() => this.loopImages(), 40);
     },
     onSpin() {
       if (this.playing || this.loopTimeoutId) {
@@ -361,7 +361,6 @@ export default {
           this.stop()
         } else {
           this.currentLoop++
-
           this.next()
         }
       } else {
