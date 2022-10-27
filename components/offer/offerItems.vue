@@ -5,7 +5,11 @@
            v-for="(offer_item,index) in offer_items" @click="selectOfferItem(index)">
         <img :src="offer_item.generations[0].img" alt="">
         <div class="offer_item_detail">
-          <div class="offer_price">{{ offer_item.maxPrice }} ₼</div>
+          <div class="d-flex">
+            <div class="offer_price" v-if="offer_item.minPrice">{{ offer_item.minPrice }} - </div>
+            <div class="offer_price">{{ offer_item.maxPrice }} ₼</div>
+          </div>
+
           <div class="offer_brand_model">{{ offer_item.brand }} {{ offer_item.model }}</div>
           <span>{{ offer_item.generations[0].end_year }}  </span>
         </div>

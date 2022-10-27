@@ -176,6 +176,7 @@ const getInitialState = () => ({
   showOfferPaymentModal: false,
   offer_add_is_loader: false,
   offer_faq:null,
+  user_deleted_auto_salon_offers:[]
 
 })
 
@@ -344,6 +345,7 @@ export const getters = {
   showOfferPaymentModal: (s) => s.showOfferPaymentModal,
   offerAddIsLoader: (s) => s.offer_add_is_loader,
   getOfferFaq:(s)=>s.offer_faq,
+  getUserDeletedAutoSalonOffer: (s) => s.user_deleted_auto_salon_offers,
 
 }
 
@@ -1258,7 +1260,10 @@ export const actions = {
     }
     const data = await this.$axios.$get(url)
     commit('mutate', {property: 'offers', value: data.data})
+    console.log('---')
+
     commit('mutate', {property: 'newOfferCount', value: data.count})
+    commit('mutate', {property: 'user_deleted_auto_salon_offers', value: data.user_deleted_auto_salon_offers})
   },
   async getOffer({commit}, payload) {
     const {data} = await this.$axios.get('/offer/offer-detail/' + payload.id + '/' + payload.type);

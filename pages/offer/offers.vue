@@ -258,7 +258,7 @@ export default {
     },
     async submitMessage() {
 
-      this.messageButtonDisabled = true;
+
       let formData = new FormData();
 
       formData.append('recipient_id', this.userOffer.auto_salon.user_id)
@@ -287,7 +287,7 @@ export default {
           }, 1000)
 
         }
-        this.messageButtonDisabled = false;
+
 
       })
 
@@ -341,6 +341,7 @@ export default {
       this.$store.dispatch('OffersAcceptedByAutoSalon', this.$route.query)
       this.offer = null
       this.userOffer = null
+      this.auto_salon_deleted_at = null
 
     }
   },

@@ -25,15 +25,16 @@
     </section>
     <div class="">
       <div class="new-offer mt-5" v-if="userOffers.length > 0">
-        <div class="new-offer-title mt-5">
-          <h2 class="text-center"> Sorğularım</h2>
+        <div class="new-offer-title mt-5" >
+          <h2 class="text-center" v-if="issetActiveOffer"> Sorğularım</h2>
         </div>
-        <div class="new-offer-notification-box mt-5" v-for="userOffer in userOffers">
+        <div class="new-offer-notification-box mt-5" v-for="userOffer in userOffers" v-if="userOffer.offer.status && userOffer.user_deleted_at==null">
+
           <div class="notification">
             <img src="/icons/auction.svg">
             <p>
               <span v-for="(offerItem,index) in userOffer.offer.offer_items">
-                <b>{{offerItem.brand}}</b> - {{offerItem.model}}  <span v-if="index != Object.keys(userOffer.offer.offer_items).length - 1">,</span>
+                <b>{{offerItem.brand}}</b> - {{offerItem.model}}  <span v-if="index != Object.keys(userOffer.offer).length - 1">,</span>
               </span>
             </p>
           </div>
@@ -41,6 +42,7 @@
             Sorğuya  bax
           </nuxt-link>
         </div>
+
       </div>
       <div class="new-offer-title mt-5">
         <h2 class="text-center mb-5">Sistem necə işləyir?</h2>
@@ -177,6 +179,7 @@ export default {
   },
   data() {
     return {
+      offerNotFound:false,
       brand: '',
       model: '',
     }
@@ -192,6 +195,14 @@ export default {
 
     }),
 
+    issetActiveOffer(){
+        for (var i=0; i < this.userOffers.length; i++){
+          if (this.userOffers[i].offer.status==1 && this.userOffers[i].user_deleted_at==null){
+            return true
+          }
+          return false
+        }
+    },
 
     list() {
       return this.faq.map(item => ({title: item.question[this.locale], text: item.answer[this.locale]}));
