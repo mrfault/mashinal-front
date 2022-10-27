@@ -421,7 +421,7 @@ export default {
         ).then((res)=>{
           this.uploading = false;
           this.videoUploading = false;
-          this.videoUploaded = false;
+          this.videoUploaded = true;
           if (res.status==200){
             this.$toast.success(this.$t('video_360_successfully_upload'))
             this.form.video_360_id=res.data.data.id
