@@ -136,7 +136,7 @@
           </div>
 
           <div class="col-md-12">
-            <div class="offer-alert" role="alert" v-if="Object.keys(offer).length > 0 && user_deleted_at!=null">
+            <div class="offer-alert" role="alert" v-if=" offer && Object.keys(offer).length > 0 && user_deleted_at!=null">
               İstifadəçi təklifi silmişdir.
             </div>
           </div>
@@ -226,7 +226,6 @@ export default {
   async asyncData({store, route}) {
     await Promise.all([
       store.dispatch('getHomePageSliders'),
-
       store.dispatch('getAllOffers', route.query),
     ]);
   },

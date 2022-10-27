@@ -26,7 +26,7 @@
             </div>
             <div class="offer-add-delete ml-auto">
               <button @click="deleteOfferAnnouncement(index)" class="btn btn--red-outline"
-                      v-if="offerAnnouncementsCount.length>1">Sorğunu sil
+                      v-if="offerAnnouncementsCount.length && index!=0>1">Sorğunu sil
               </button>
             </div>
           </template>
