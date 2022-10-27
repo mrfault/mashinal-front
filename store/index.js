@@ -1554,12 +1554,17 @@ export const mutations = {
         year: null
       }
     ]
-    console.log('refreshed')
   },
   setOfferAnnouncementCount(state,payload){
     state.offer_announcement_count[payload.index].collapsed=payload.status;
   },
   setOfferFaq(state,payload){
     state.offer_faq=payload.data
+  },
+  resetGenerations(state){
+    console.log(state.generations)
+    state.generations=[];
+    console.log('resetted gen')
+    console.log(state.generations)
   }
 }

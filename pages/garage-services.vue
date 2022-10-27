@@ -221,7 +221,7 @@ export default {
           description: null,
           value: null,
           icon: 'create-shop',
-          url: this.$auth.user.autosalon ? '/salons/offer' : '/offer',
+          url: this.$auth.user.autosalon ? '/salons/offer?param=all' : '/offer?param=all',
           hasAction: false,
           image: 'createshop',
           isAvailable: true,

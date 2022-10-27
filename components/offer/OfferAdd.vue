@@ -141,7 +141,8 @@
           </button>
         </div>
         <div>
-          <button class=" btn  btn--green " @click="submitOffer" :disabled="offerAddIsLoader" v-if="(index==0 && offerAnnouncementsCount.length==1) || (index==1 && offerAnnouncementsCount.length==2 )">
+          <button class=" btn  btn--green " @click="submitOffer" :disabled="offerAddIsLoader"
+                  v-if="(index==0 && offerAnnouncementsCount.length==1) || (index==1 && offerAnnouncementsCount.length==2 )">
             <img src="/icons/offer/load.svg" width="50px" v-if="offerAddIsLoader">
             <span v-else> Təsdiq və ödəniş et</span>
           </button>
@@ -294,21 +295,26 @@ export default {
     },
 
     setBrand(slug) {
-      this.brand_object = this.brands.find((option) => option.slug === slug)
-      this.form[this.index].brand = this.brand_object.slug
-      this.$store.commit('appendOfferSelectedModels', {
-        index: this.index,
-        data: {
-          logo: this.brand_object.transformed_media,
-          img: null,
-          brand: this.brand_object.name,
-          model: null,
-          price: null
-        }
-      })
+      if (slug) {
+        this.brand_object = this.brands.find((option) => option.slug === slug)
+        this.form[this.index].brand = this.brand_object.slug
+        this.$store.commit('appendOfferSelectedModels', {
+          index: this.index,
+          data: {
+            logo: this.brand_object.transformed_media,
+            img: null,
+            brand: this.brand_object.name,
+            model: null,
+            price: null
+          }
+        })
 
 
-      this.$store.dispatch('getModels', slug)
+        this.$store.dispatch('getModels', slug)
+      }
+
+      this.$store.commit('resetGenerations')
+      this.generations = [];
     },
     async setModel(slug) {
       await this.$store.dispatch('getGenerations', {
@@ -360,8 +366,8 @@ export default {
   },
 
   async created() {
-    this.$store.commit('setOfferAddLoader',{status:false})
-    this.$store.commit('openOfferPaymentModal',{status:false})
+    this.$store.commit('setOfferAddLoader', {status: false})
+    this.$store.commit('openOfferPaymentModal', {status: false})
     if (this.generations.length == 1) {
       this.form[this.index].generations.push(this.generations[0].id)
     }

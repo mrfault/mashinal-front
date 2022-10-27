@@ -120,7 +120,7 @@
                 <div :class=" isMyMessage(message) ? 'my' :'his' " class="message" v-for="message in offerMessages">
                   <div v-if="message.files.length>0" class="message-files">
                     <div class="message-file" v-for="file in message.files">
-                      <img :src="file" width="100%" class="p-1">
+                      <img :src="file" width="100%" class="p-1" @click="openLightbox(file)">
                     </div>
                     <div class="div m-1" v-if="message.files.length>0">
                       {{ message.message }} <span class="time">17:30</span>
@@ -134,7 +134,14 @@
               </div>
             </div>
           </div>
-          <div class="addons" v-if="offer && Object.keys(offer).length > 0 && !offer.deleted">
+
+          <div class="col-md-12">
+            <div class="offer-alert" role="alert" v-if="Object.keys(offer).length > 0 && user_deleted_at!=null">
+              İstifadəçi təklifi silmişdir.
+            </div>
+          </div>
+
+          <div class="addons" v-if="offer && Object.keys(offer).length > 0 && !offer.deleted && user_deleted_at==null">
             <offer-message
               @type="handleTyping"
               @attach="handleFiles"
@@ -151,6 +158,35 @@
         </div>
       </div>
     </div>
+    <div class="inner-gallery-lightbox" v-touch:swipe.top="handleSwipeTop">
+      <template v-if="isMobileBreakpoint">
+        <FsLightbox
+          :toggler="toggleFsLightbox"
+          :sources="attachments"
+          :slide="currentSlide + 1"
+          :key="lightboxKey"
+          :onClose="refreshLightbox"
+          :onBeforeClose="onBeforeClose"
+          :disableThumbs="true"
+          :onSlideChange="changeLightboxSlide"
+        />
+      </template>
+      <transition-group name="fade">
+        <template v-if="(showLightbox && isMobileBreakpoint) || (!isMobileBreakpoint && showImagesSlider)">
+          <div class="blur-bg" :key="0">
+            <img :src="$withBaseUrl(attachments[currentSlide])" alt="" />
+          </div>
+          <div class="blur-bg_slider" :key="1" v-if="!isMobileBreakpoint">
+            <images-slider
+              :current-slide="currentSlide"
+              :slides="{ main: attachments }"
+              @close="closeLightbox"
+              @slide-change="currentSlide = $event"
+            />
+          </div>
+        </template>
+      </transition-group>
+    </div>
   </div>
 </template>
 
@@ -161,6 +197,7 @@ import OfferMessage from "~/components/offer/offer-message";
 import CollapseContent from "~/components/elements/CollapseContent";
 import {ImageResizeMixin} from '~/mixins/img-resize';
 import OfferItems from "~/components/offer/offerItems";
+import {offerImageView} from "~/mixins/offer-image-view";
 
 export default {
   name: "index",
@@ -168,6 +205,7 @@ export default {
   data() {
     return {
       IsAccepted:false,
+      user_deleted_at:null,
       offer: null,
       chat: {
         text: ''
@@ -184,7 +222,7 @@ export default {
       title: this.$t('Super teklif'),
     })
   },
-  mixins: [ImageResizeMixin],
+  mixins: [ImageResizeMixin,offerImageView],
   async asyncData({store, route}) {
     await Promise.all([
       store.dispatch('getHomePageSliders'),
@@ -313,12 +351,11 @@ export default {
     },
     async checkAccepted(id) {
       await this.$axios.$post('/offer/salon/offer/check/' + id).then((res) => {
-
+        this.user_deleted_at=res.user_deleted_at;
         this.IsAccepted = res.status
         this.auto_salon_offer_id = res.auto_salon_offer_id ? res.auto_salon_offer_id : null
 
-
-        this.$store.commit('setOfferMessages', res.messages)
+          this.$store.commit('setOfferMessages', res.messages)
       })
 
     },
@@ -356,7 +393,6 @@ export default {
   },
   watch: {
     async $route(newVal, oldVal) {
-
       await this.$store.dispatch('getAllOffers', newVal.query)
     },
 

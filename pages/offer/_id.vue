@@ -38,7 +38,8 @@
               <div class="messages">
                 <div class="message" :class=" isMyMessage(message) ? 'my' :'his' " v-for="message in offerMessages">
                   <div v-if="message.files.length>0" class="message-files">
-                    <div class="message-file" v-for="file in message.files">
+
+                    <div class="message-file" v-for="file in message.files"  @click="openLightbox(file)" >
                       <img :src="file" width="100%" class="p-1"/>
                     </div>
                     <div class="div m-1" v-if="message.files.length>0">
@@ -68,22 +69,54 @@
             <div class="addLink"></div>
           </div>
         </div>
+        <div class="inner-gallery-lightbox" v-touch:swipe.top="handleSwipeTop">
+          <template v-if="isMobileBreakpoint">
+            <FsLightbox
+              :toggler="toggleFsLightbox"
+              :sources="attachments"
+              :slide="currentSlide + 1"
+              :key="lightboxKey"
+              :onClose="refreshLightbox"
+              :onBeforeClose="onBeforeClose"
+              :disableThumbs="true"
+              :onSlideChange="changeLightboxSlide"
+            />
+          </template>
+          <transition-group name="fade">
+            <template v-if="(showLightbox && isMobileBreakpoint) || (!isMobileBreakpoint && showImagesSlider)">
+              <div class="blur-bg" :key="0">
+                <img :src="$withBaseUrl(attachments[currentSlide])" alt="" />
+              </div>
+              <div class="blur-bg_slider" :key="1" v-if="!isMobileBreakpoint">
+                <images-slider
+                  :current-slide="currentSlide"
+                  :slides="{ main: attachments }"
+                  @close="closeLightbox"
+                  @slide-change="currentSlide = $event"
+                />
+              </div>
+            </template>
+          </transition-group>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import FsLightbox from 'fslightbox-vue';
+import ImagesSlider from '~/components/elements/ImagesSlider';
 import OfferMessage from "~/components/offer/offer-message";
 import CollapseContent from "~/components/elements/CollapseContent";
 import {mapGetters} from "vuex";
 import {ImageResizeMixin} from "~/mixins/img-resize";
 import OfferItems from "~/components/offer/offerItems";
+import {offerImageView} from "~/mixins/offer-image-view";
 
 export default {
   name: "offer-detail",
   components: {OfferItems, CollapseContent, OfferMessage},
-  mixins: [ImageResizeMixin],
+  mixins: [ImageResizeMixin,offerImageView],
   async asyncData({store, route, $axios}) {
     await store.dispatch('getOffer', {
       id: route.params.id,

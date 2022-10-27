@@ -52,6 +52,7 @@
             <div class="user" v-for="userOffer in userOffers"
                  @click="getUserOfferDetail(userOffer.auto_salon_offer_id)">
 
+
               <div class="userImg"
                    :style="'background-image: url('+(userOffer.auto_salon.logo ? userOffer.auto_salon.logo : '/images/offer/salon_no_logo.svg') +')'"></div>
 
@@ -63,7 +64,9 @@
                 </div>
               </div>
               <div class="created">
-                {{ userOffer.created_at }}
+                <div v-if="userOffer.auto_salon_deleted_at">
+                  <span style="color: red;font-size: 25px">!</span>
+                </div>
               </div>
             </div>
           </div>
@@ -87,12 +90,19 @@
               <offer-items :offer_items="offer.offer_items"/>
             </collapse-content>
             <div>
+
               <div class="messages">
                 <div class="message" :class="   isMyMessage(message) ? 'my' :'his ' " v-for="message in offerMessages">
                   <div v-if="message.files.length>0" class="message-files">
+
+
+
+
                     <div class="message-file" v-for="file in message.files">
-                      <img :src="file" width="100%" class="p-1"/>
+                      <img :src="file" width="100%" class="p-1" @click="openLightbox(file)" />
+
                     </div>
+
                     <div class="div m-1" v-if="message.files.length>0">
                       {{ message.message }} <span class="time">17:30</span>
                     </div>
@@ -111,7 +121,7 @@
             </div>
           </div>
 
-          <div class="addons" v-if="userOffer && auto_salon_deleted_at===null">
+          <div class="addons" v-if="userOffer && auto_salon_deleted_at===null && offer.user_deleted_at==null">
             <offer-message
               @type="handleTyping"
               @attach="handleFiles"
@@ -128,23 +138,53 @@
 
       </div>
     </div>
-
+    <div class="inner-gallery-lightbox" v-touch:swipe.top="handleSwipeTop">
+      <template v-if="isMobileBreakpoint">
+        <FsLightbox
+          :toggler="toggleFsLightbox"
+          :sources="attachments"
+          :slide="currentSlide + 1"
+          :key="lightboxKey"
+          :onClose="refreshLightbox"
+          :onBeforeClose="onBeforeClose"
+          :disableThumbs="true"
+          :onSlideChange="changeLightboxSlide"
+        />
+      </template>
+      <transition-group name="fade">
+        <template v-if="(showLightbox && isMobileBreakpoint) || (!isMobileBreakpoint && showImagesSlider)">
+          <div class="blur-bg" :key="0">
+            <img :src="$withBaseUrl(attachments[currentSlide])" alt="" />
+          </div>
+          <div class="blur-bg_slider" :key="1" v-if="!isMobileBreakpoint">
+            <images-slider
+              :current-slide="currentSlide"
+              :slides="{ main: attachments }"
+              @close="closeLightbox"
+              @slide-change="currentSlide = $event"
+            />
+          </div>
+        </template>
+      </transition-group>
+    </div>
   </div>
 </template>
 
 <script>
 
-import VueLazyLoad from 'vue-lazyload'
+import FsLightbox from 'fslightbox-vue';
+import ImagesSlider from '~/components/elements/ImagesSlider';
 import OfferSlider from "~/components/offer/OfferSlider";
 import {mapGetters} from "vuex";
 import OfferMessage from "~/components/offer/offer-message";
 import CollapseContent from "~/components/elements/CollapseContent";
 import {ImageResizeMixin} from '~/mixins/img-resize';
 import OfferItems from "~/components/offer/offerItems";
+import {offerImageView} from "~/mixins/offer-image-view";
 
 export default {
   name: "offers",
-  components: {OfferItems, CollapseContent, OfferMessage, OfferSlider},
+  components: {OfferItems, CollapseContent, OfferMessage, OfferSlider, FsLightbox, ImagesSlider},
   middleware: ['auth_general', 'not_auto_salon'],
 
   head() {
@@ -152,16 +192,17 @@ export default {
       title: this.$t('Super teklif'),
     })
   },
-  mixins: [ImageResizeMixin],
+  mixins: [ImageResizeMixin,offerImageView],
   async asyncData({store, route}) {
+
     await Promise.all([
       store.dispatch('getHomePageSliders'),
       await store.dispatch('OffersAcceptedByAutoSalon', route.query)
     ])
   },
+
   data() {
     return {
-
       offers: null,
       userOffer: null,
       offer: null,
@@ -174,7 +215,8 @@ export default {
       files: [],
       auto_salon_offer_id: null,
       auto_salon_deleted_at: null,
-      messageButtonDisabled: false
+      messageButtonDisabled: false,
+
     }
   },
   computed: {
@@ -183,7 +225,6 @@ export default {
       offerMessages: 'getOfferMessages',
       newOfferCount: 'getNewOfferCount',
     }),
-
 
     crumbs() {
       return [
@@ -303,7 +344,7 @@ export default {
     }
   },
   created() {
-    console.log(this.userOffers)
+
     if (!Object.keys(this.$route.query).length > 0) {
       this.$router.push({
         query: {

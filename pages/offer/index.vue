@@ -37,7 +37,7 @@
               </span>
             </p>
           </div>
-          <nuxt-link :to="$localePath('/offer/offers')" tag="button" class="offer-button">
+          <nuxt-link :to="$localePath('/offer/offers?param=all')" tag="button" class="offer-button">
             Sorğuya  bax
           </nuxt-link>
         </div>
