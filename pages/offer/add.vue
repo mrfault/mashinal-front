@@ -166,7 +166,7 @@ export default {
     pay() {
 
       this.$axios.post('/offer/pay', {
-        isMobile: this.isMobileBreakpoint,
+        isMobile: this.isMobileBreakpoint ? 'true' : 'false',
         offer_id: this.$store.state.offer_id
 
       }).then((res) => {
