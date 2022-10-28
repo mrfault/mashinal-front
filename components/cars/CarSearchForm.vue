@@ -744,7 +744,7 @@
         </div>
         <div class="col-6 col-lg-2 mt-3 mt-lg-5 mb-n6 mb-lg-n1">
           <button @click="showExcludeModal = true;" type="button" class="btn btn--grey full-width">
-              {{ $t('exclude') }}
+              {{ $t('exclude') }} <template v-if="getExcludeCount">({{ getExcludeCount }})</template>
           </button>
         </div>
         <div class="col-6 col-lg-2 mt-3 mt-lg-5 mb-n6 mb-lg-n1">
@@ -990,6 +990,9 @@ export default {
       'allSellOptions2',
       'singleSavedSearch',
     ]),
+    getExcludeCount() {
+      return Object.values(this.form.exclude_additional_brands).filter(item => item.brand).length;
+    },
     getSuffix() {
       switch(this.form.currency) {
         case 1:

@@ -409,11 +409,11 @@ export default {
     upload360Video(val) {
         if(!val.target.files[0]) return false;
 
-        if (val.target.files[0].size > 1024 * 1024 * 50) {
-          val.preventDefault();
-          this.$toast.error(this.$t('file_size_50'));
-          return;
-        }
+        // if (val.target.files[0].size > 1024 * 1024 * 50) {
+        //   val.preventDefault();
+        //   this.$toast.error(this.$t('file_size_50'));
+        //   return;
+        // }
 
         var formData = new FormData();
         formData.append("video", val.target.files[0]);

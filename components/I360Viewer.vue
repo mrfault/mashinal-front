@@ -2,7 +2,6 @@
   <div>
     <!-- 360 Viewer Container -->
     <div class="v360-viewer-container" ref="viewerContainer" :id="identifier">
-
       <!-- 360 Viewer Header -->
       <slot name="header"></slot>
       <!--/ 360 Viewer Header -->
@@ -288,9 +287,18 @@ export default {
       if (this.imageData.length) {
         try {
           this.amount = this.imageData.length;
-          this.imageData.forEach(src => {
+         let chunked = this.$chunk(this.imageData,2);
+          chunked.forEach(chunkItem => {
+            this.addImage(chunkItem[0]);
+            chunkItem.forEach((src,index) => {
+              if(index) {
+                this.addImage(src);
+              }
+            })
+          })
+         /*this.imageData.forEach((src,index) => {
             this.addImage(src);
-          });
+          });*/
         } catch (error) {
           console.error(`Something went wrong while loading images: ${error.message}`);
         }
@@ -316,7 +324,9 @@ export default {
 
       if (this.loadedImages === this.amount) {
         this.onAllImagesLoaded(event);
-      } else if (this.loadedImages === 1) {
+      } else if (this.loadedImages === 30) {
+        this.imagesLoaded = true
+        this.initData()
         //this.onFirstImageLoaded(event);
       }
     },
@@ -341,7 +351,7 @@ export default {
       this.playing = !this.playing
     },
     play() {
-      this.loopTimeoutId = window.setInterval(() => this.loopImages(), 40);
+      this.loopTimeoutId = window.setInterval(() => this.loopImages(), 55);
     },
     onSpin() {
       if (this.playing || this.loopTimeoutId) {
