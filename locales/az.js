@@ -2333,5 +2333,6 @@ export default {
   "will_increase": "artacaq",
   "will_diminish": "azalacaq",
   "video_360_successfully_upload":"Video uğurla yükləndi",
-  "video_choose": "Video faylı seç"
+  "video_choose": "Video faylı seç",
+  "file_size_50": "Faylın maksimal həcmi 50 mb ola bilər"
 }
