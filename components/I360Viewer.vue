@@ -287,7 +287,7 @@ export default {
       if (this.imageData.length) {
         try {
           this.amount = this.imageData.length;
-         let chunked = this.$chunk(this.imageData,2);
+         let chunked = this.$chunk(this.imageData,3);
           chunked.forEach(chunkItem => {
             this.addImage(chunkItem[0]);
             chunkItem.forEach((src,index) => {
@@ -324,11 +324,11 @@ export default {
 
       if (this.loadedImages === this.amount) {
         this.onAllImagesLoaded(event);
-      } else if (this.loadedImages === 30) {
+      }/* else if (this.loadedImages === 30) {
         this.imagesLoaded = true
         this.initData()
         //this.onFirstImageLoaded(event);
-      }
+      }*/
     },
     updatePercentageInLoader(percentage) {
       this.percentage = percentage;
