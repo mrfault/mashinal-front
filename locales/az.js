@@ -1345,6 +1345,7 @@ export default {
   "please_call_to_support": "Zəhmət olmasa məlumat mərkəzi ilə əlaqə saxlayın",
   "please_make_a_payment": "Zəhmət olmasa balansınızı artırın.",
   "please_wait_for_all_image_loading": "Şəkillərin yüklənməsini gözləyin",
+  "please_wait_for_all_video_loading": "Videonun yüklənməsini gözləyin",
   "plural_forms_announcements": [
     "elan",
     "elan",

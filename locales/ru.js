@@ -1329,6 +1329,7 @@ export default {
   "please_call_to_support": "Пожалуйста, позвоните в службу поддержки",
   "please_make_a_payment": "Пожалуйста, пополните свой баланс.",
   "please_wait_for_all_image_loading": "Пожалуйста подождите пока все картинки загрузятся",
+  "please_wait_for_all_video_loading": "Пожалуйста подождите пока видео загрузится",
   "plural_forms_announcements": [
     "объявление",
     "объявления",

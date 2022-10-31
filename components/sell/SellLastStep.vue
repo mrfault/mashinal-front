@@ -587,6 +587,10 @@ export default {
         this.$toasted.error(this.$t('please_wait_for_all_image_loading'));
         return;
       }
+      if (this.videoUploading) {
+        this.$toasted.error(this.$t('please_wait_for_all_video_loading'));
+        return;
+      }
       this.form.saved_images = this.savedFiles;
       this.form.is_autosalon = this.isAutosalon;
       if (this.isAlreadySold)
