@@ -67,9 +67,10 @@ export const MenusDataMixin = {
       if (!this.loggedIn) return [];
 
       let menus = [
-        { title: 'garage', route: '/garage-services', icon: 'garage-tab', showOnCard: !this.isMobileBreakpoint },
+        { title: 'garage', route: '/garage-services', icon: 'garage-tab', showOnCard: !this.isMobileBreakpoint, isAvailable: true },
         { title: 'control_panel_title', route: this.getUserSettingsLink, icon: 'user',
-          showOnCard: this.isMobileBreakpoint && this.user && (this.user.autosalon || this.user.part_salon || this.user.external_salon)
+          showOnCard: this.isMobileBreakpoint,
+          isAvailable: !!(this.user && (this.user.autosalon || this.user.part_salon || this.user.external_salon))
         },
         // { title: 'my_announces', route: '/profile/announcements', icon: 'speaker', showOnCard: true },
         // { title: 'balans', route: '/profile/balance', icon: 'wallet', showOnCard: true }
