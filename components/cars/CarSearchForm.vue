@@ -743,7 +743,7 @@
           </div>
         </div>
         <div class="col-6 col-lg-2 mt-3 mt-lg-5 mb-n6 mb-lg-n1">
-          <button @click="showExcludeModal = true;" type="button" class="btn btn--grey full-width">
+          <button @click="showExcludeModal = true;" type="button" class="btn btn--dark-blue full-width">
               {{ $t('exclude') }} <template v-if="getExcludeCount">({{ getExcludeCount }})</template>
           </button>
         </div>
