@@ -336,7 +336,7 @@ export default {
       now: (new Date).toLocaleDateString('en-US'),
       videoUploading: false,
       uploadPercentage:0,
-      videoUploaded: false,
+      videoUploaded: this.announcement?.first_images_360 || false,
       collapsed: false,
       form: this.$clone(this.initialForm),
       date: Math.floor(Date.now() / 1000),
