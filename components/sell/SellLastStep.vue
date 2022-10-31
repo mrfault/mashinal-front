@@ -24,7 +24,7 @@
           ref="sellLastStepUploadImage"
         />
       <template v-if="user.autosalon && user.autosalon.access_to_360 && type === 'cars'">
-        <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-selectedColor">
+        <h2 class="title-with-line mt-2 mt-lg-3">
           <span>{{ $t('exterior') }}</span>
         </h2>
         <div class="d-flex align-items-center">
@@ -355,6 +355,9 @@ export default {
       showLoginPopup: false,
       pending: false
     }
+  },
+  mounted() {
+    setTimeout(() =>  this.scrollReset(),100)
   },
   computed: {
     ...mapState(['sellPhoneEntered']),
