@@ -213,7 +213,7 @@ export default {
           url: '/business-profile',
           hasAction: false,
           image: 'createshop',
-          isAvailable: !this.$auth.user.external_salon,
+          isAvailable: false/*!this.$auth.user.external_salon*/,
         },
         {
           type: 14,
