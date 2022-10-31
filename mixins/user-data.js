@@ -25,7 +25,7 @@ export const UserDataMixin = {
       if(this.user.external_salon) {
         return '/dashboard/3'
       }
-      return '/garage';
+      return '/garage-services';
     }
   },
   methods: {
