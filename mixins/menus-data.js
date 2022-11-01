@@ -26,7 +26,7 @@ export const MenusDataMixin = {
       let announcementCategories = [
         { title: 'cars', route: '/cars', children: [
             { title: 'car_plural', route: '/cars', icon: 'car-1' },
-            { title: '360', route: '/cars?car_filter=%7B"sorting"%3A"created_at_desc","additional_brands"%3A%7B"0"%3A%7B%7D,"1"%3A%7B%7D,"2"%3A%7B%7D,"3"%3A%7B%7D,"4"%3A%7B%7D%7D,"exclude_additional_brands"%3A%7B"0"%3A%7B%7D,"1"%3A%7B%7D,"2"%3A%7B%7D,"3"%3A%7B%7D,"4"%3A%7B%7D%7D,"all_options"%3A%7B%7D,"announce_type"%3A1,"currency"%3A1,"with_video"%3Atrue%7D', icon: 'car-1' }
+            { title: '360', route: '/cars?with_panorama=true', icon: 'camera360' }
           ] },
         { title: 'moto', route: '/moto', children: this.motoMenus },
         { title: 'commercial', route: '/commercial', children: this.commercialMenus },

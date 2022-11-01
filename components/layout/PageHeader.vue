@@ -248,7 +248,8 @@
                                     :to="$localePath(submenu.route)"
                                     exact
                                   >
-                                    <icon :name="submenu.icon" />
+                                    <inline-svg v-if="submenu.icon ==='camera360'" style="width: 28px;height:28px;" src="/img/camera360.svg"/>
+                                    <icon v-else :name="submenu.icon" />
                                     {{ $t(submenu.title) }}
                                   </nuxt-link>
                                 </li>
