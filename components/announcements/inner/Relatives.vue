@@ -57,7 +57,7 @@
     console.log('mounted relative')
     },
     created() {
-      if (this.announcement.is_part_salon || this.announcement.is_autosalon || this.announcement.is_external_salon)
+      if (this.isShop)
         this.getShopOtherAnnouncements({ id: this.announcement.id_unique });
       else this.getRelativeAnnouncements({ id: this.announcement.id_unique });
     },
