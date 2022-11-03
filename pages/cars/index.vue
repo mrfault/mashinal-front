@@ -61,6 +61,9 @@ export default {
   },
   async asyncData({ store, route, $auth }) {
     let post = JSON.parse(route.query.car_filter || '{}');
+    if(route.query.with_panorama == 'true') {
+      post = {...post,with_video: true}
+    }
     let page = route.query.page || 1;
     let searchParams = { url: '/grid/cars', prefix: 'cars' }
 
@@ -105,6 +108,7 @@ export default {
       if(with_panorama) {
         post = {...post,with_video: true}
       }
+      console.log(post);
       this.pending = true;
       await this.getGridSearch({ ...this.searchParams, post, page });
       this.pending = false;
