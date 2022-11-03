@@ -695,6 +695,7 @@ export default {
     "Qaz-turbin",
     "Plug-in Hibrid"
   ],
+
   "engine_volume": "Mühərrikin işçi həcmi (sm3)",
   "engine_type": "Mühərrikin növü",
   "enter_a_new_mobile_number": "Yeni əlaqə nömrəsi əlavə et",
@@ -2331,4 +2332,10 @@ export default {
   "new_1": "Yeni",
   "will_increase": "artacaq",
   "will_diminish": "azalacaq",
+  "plug_in_hybrid": "Plug-in Hibrid",
+  "360_interior": "360 interyer",
+  "transfer_to_supervisor": "Supervayzerə ötür",
+  "moderation": "Moderasiya",
+  "user_type": "İstifadəçi növü",
+  "transfer_comment": "Transfer rəyi",
 }

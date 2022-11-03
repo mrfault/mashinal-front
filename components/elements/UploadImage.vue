@@ -121,6 +121,7 @@ import draggable from 'vuedraggable'
 
 export default {
   props: {
+
     defaultFiles: {
       default: false,
     },
@@ -201,7 +202,7 @@ export default {
         let key = this.$notUndefined(file.key, i)
         this.$set(this.files, key, {
           file: new Blob(),
-          name: file.name || file.media.split('/').pop(),
+          name: file.name || file.media?.split('/').pop(),
           loaded: true,
           id: key,
         })

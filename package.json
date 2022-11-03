@@ -27,6 +27,7 @@
     "fslightbox-vue": "file:lib/fslightbox-pro",
     "inputmask": "^3.3.11",
     "laravel-echo": "^1.6.1",
+    "lodash": "^4.17.21",
     "marzipano": "^0.10.2",
     "moment": "^2.24.0",
     "nuxt": "^2.15.3",

@@ -3,7 +3,6 @@ import {mutate, reset} from '~/lib/vuex-helpers/mutations'
 import Vue from 'vue'
 
 
-
 const getInitialState = () => ({
   loading: true,
   colorMode: 'light',
@@ -156,24 +155,26 @@ const getInitialState = () => ({
   offer_announcements: [],
   offer_selected_models: [
     {
-      logo:null,
+      logo: null,
       img: null,
       brand: '',
       model: '',
       price: null,
-      year:null
+      year: null
     },
     {
-      logo:null,
+      logo: null,
       img: null,
       brand: '',
       model: '',
       price: null,
-      year:null
+      year: null
     }
   ],
-  offer_id:null,
-  showOfferPaymentModal:false
+  offer_id: null,
+  showOfferPaymentModal: false,
+
+
 
 })
 
@@ -339,7 +340,8 @@ export const getters = {
   offerAnnouncementsCount: (s) => s.offer_announcement_count,
   offerAnnouncements: (s) => s.offer_announcements,
   offerSelectedModels: (s) => s.offer_selected_models,
-  showOfferPaymentModal :(s)=>s.showOfferPaymentModal
+  showOfferPaymentModal: (s) => s.showOfferPaymentModal,
+
 
 }
 
@@ -1295,7 +1297,7 @@ export const actions = {
         if (object.isSubmit) {
           this.$axios.post('/offer', state.offer_announcements).then((res) => {
             commit('openOfferPaymentModal')
-            commit('setOfferId',{offer_id:res.data.offer_id})
+            commit('setOfferId', {offer_id: res.data.offer_id})
           })
         } else {
           commit('incrementAnnouncementsCount')
@@ -1305,6 +1307,7 @@ export const actions = {
   }
 
 }
+
 export const mutations = {
   mutate: mutate(),
   reset: reset(getInitialState()),
@@ -1453,8 +1456,8 @@ export const mutations = {
       year: payload.data.year ? payload.data.year : state.offer_selected_models[payload.index].year
     })
   },
-  deleteOfferAnnouncement(state,payload){
-    let index  = payload.index;
+  deleteOfferAnnouncement(state, payload) {
+    let index = payload.index;
     if (index > -1) {
       state.offer_announcements.splice(index, 1);
       state.offer_announcement_count.splice(index, 1);
@@ -1462,10 +1465,13 @@ export const mutations = {
     }
   },
   openOfferPaymentModal(state) {
-    state.showOfferPaymentModal=true
+    state.showOfferPaymentModal = true
     console.log(state.showOfferPaymentModal)
   },
-  setOfferId(state,payload){
-    state.offer_id=payload.offer_id;
-  }
+  setOfferId(state, payload) {
+    state.offer_id = payload.offer_id;
+  },
+
 }
+
+
