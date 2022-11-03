@@ -34,8 +34,8 @@ export default {
   methods:{
     selectGeneration(id){
       if (!this.selectedGenerations.includes(id)){
-        if (this.selectedGenerations.length==2){
-          this.$toast.error('Yalnız 2 nəsil seçə bilərsiniz')
+        if (this.selectedGenerations.length==1){
+          this.$toast.error('Yalnız 1 nəsil seçə bilərsiniz')
         }else{
           this.selectedGenerations.push(id)
 

@@ -11,7 +11,7 @@
                   <span v-html="title" ></span>
                   <img :class="titleLogoClass" :src="titleLogo" class="ml-2" v-if="titleLogo"/>
                 </h4>
-                <span class="cursor-pointer close" @click="$emit('close')">
+                <span class="cursor-pointer close" @click="$emit('close')" v-if="closeable">
                   <icon name="cross" />
                   <!-- <inline-svg src="/icons/cross.svg" height="14"/> -->
                 </span>
@@ -43,17 +43,25 @@ export default {
     overflowHidden: {
       type: Boolean,
       default: true
+    },
+    closeable:{
+      type:Boolean,
+      default: true
     }
   },
   methods: {
     handleEscapeKey(e) {
-      if (this.toggle && e.key === 'Escape'){
-        this.$emit('close');
+      if (this.closeable) {
+        if (this.toggle && e.key === 'Escape') {
+          this.$emit('close');
+        }
       }
     },
     handleBackdropClick() {
-      if (this.isMobileBreakpoint) {
-        this.$emit('close');
+      if (this.closeable) {
+        if (this.isMobileBreakpoint) {
+          this.$emit('close');
+        }
       }
     }
   },
@@ -62,6 +70,11 @@ export default {
   },
   beforeDestroy() {
     window.removeEventListener('keydown', this.handleEscapeKey);
+  },
+  watch:{
+    '$store.state.showOfferPaymentModal': function (newVal, oldVal) {
+      this.collapse=newVal
+    }
   }
 }
 </script>

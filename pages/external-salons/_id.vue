@@ -18,7 +18,7 @@ export default {
   },
   nuxtI18n: {
     paths: {
-      az: '/salon/:id'
+      az: '/xaricden-avto/:id'
     }
   },
   head() {
@@ -45,7 +45,7 @@ export default {
 
     crumbs() {
       return [
-        { name: this.$t('external-salons'), route: '/salons' },
+        { name: this.$t('external-salons'), route: '/external-salons' },
         { name: this.salonSingle.name || this.salonSingle.user.full_name }
       ]
     }

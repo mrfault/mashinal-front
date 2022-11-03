@@ -1329,6 +1329,7 @@ export default {
   "please_call_to_support": "Пожалуйста, позвоните в службу поддержки",
   "please_make_a_payment": "Пожалуйста, пополните свой баланс.",
   "please_wait_for_all_image_loading": "Пожалуйста подождите пока все картинки загрузятся",
+  "please_wait_for_all_video_loading": "Пожалуйста подождите пока видео загрузится",
   "plural_forms_announcements": [
     "объявление",
     "объявления",
@@ -1993,6 +1994,7 @@ export default {
   "xenon_lamps": "Ксеноновые фары",
   "Yandex.Auto": "Яндекс.Авто",
   "year": "год",
+  "year_first_letter": "Год",
   "year_from": "Год от",
   "years": "Год выпуска",
   "yes": "Да",
@@ -2267,9 +2269,6 @@ export default {
   "insurance_end_date_text": "Дата окончания страховки",
   "pay_status":"Статус штрафа",
 
-  "already_paid": "оплачено",
-  "change_it": "Изменить",
-
   "visual_tire_calculator": "Визуальный шинный калькулятор",
   "size_of_old_tire": "Типоразмер старой шины",
   "size_of_new_tire": "Типоразмер новой шины",
@@ -2277,22 +2276,19 @@ export default {
   "clearance_change": "Изменение клиренса",
   "change_noun": "Изменение",
   "previous_version": "Старый",
-  
+
   "width_of_tire": "Ширина шины (L)",
   "height_of_profile": "Высота профиля (H)",
   "disc_diameter": "Диаметр диска (R)",
   "external_diameter_of_tire": "Внешний диаметр шины (D)",
   "result_of_calculation": "Результаты расчетов",
-
-  "dimensions": "Размеры",
-
-
+  "dimensions_tire": "Размеры",
   "calculation_results": "Результаты расчетов",
   "result_of_tire_size_change": "Результаты изменения размера шин",
   "result_of_tire_size_change_d_left": "Увеличится внешний диаметр колеса ",
   "result_of_tire_size_change_d_right": " и дорожный просвет",
   "result_of_tire_size_change_h": "INCREASE высота профиля шины",
-  "result_of_tire_size_change_l": "Ширина шины INCREASE",
+  "result_of_tire_size_change_l": "INCREASE Ширина шины",
   "visual_tire_calculator_how_to_title": "Как пользоваться шинным калькулятором?",
   "visual_tire_calculator_how_to_description": "Наш визуальный калькулятор шин позволяет точно рассчитать и сравнить следующие параметры шины и автомобиля:",
   "how_to_outer_diameter_of_the_tire": "1. Внешний диаметр колеса",
@@ -2329,10 +2325,10 @@ export default {
   "visual_tire_size_change_result_24": "Уменьшится уровень шума",
   "visual_tire_size_change_result_25": "Ухудшится сцепление с дорогой летом",
   "visual_tire_size_change_result_26": "Сократится срок службы шины",
-
+  "video_360_successfully_upload":"Видео успешно загружено",
   "already_paid": "Оплачено",
   "change_it": "Изменить",
-
+  "video_choose": "Выбрать видеофайл",
 
   "alcometer_0": "Трезв",
   "alcometer_30": "В пределах нормы",
@@ -2349,4 +2345,5 @@ export default {
    "new_1": "Новый",
    "will_increase": "увеличится",
    "will_diminish": "уменьшится ",
+   "file_size_50": "Максимальный размер файла может быть: 50 мб"
 }

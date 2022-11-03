@@ -5,7 +5,7 @@
         <button
           :class="['btn btn--pale-red-outline', {'active': tab === 'cars', 'full-width': isMobileBreakpoint}]"
           @click="$emit('change-tab', 'cars')"
-          v-html="$t('my_cars')"
+          v-html="$t('my_cars')+ ` (${cars.data.length})`"
         />
         <button
           :class="['btn btn--pale-red-outline', {'active': tab === 'penalty_history', 'full-width': isMobileBreakpoint}]"
@@ -47,6 +47,7 @@
 
 <script>
 import AddCar from '~/components/garage/AddCar';
+import {mapGetters} from "vuex";
 
 export default {
   props: {
@@ -61,6 +62,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({cars: 'garage/cars'}),
     getValue() {
       return (this.car_number).toUpperCase().replace(/[^a-z0-9]/gi,'');
     }

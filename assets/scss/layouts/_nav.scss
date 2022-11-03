@@ -4,8 +4,10 @@
   list-style: none;
 }
 .page-header {
-  .exact-active i::before{
-    color: $red-1;
+  .topbar-nav {
+    .exact-active i::before{
+      color: $red-1;
+    }
   }
 }
 .mobile-nav {

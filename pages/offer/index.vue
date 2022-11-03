@@ -3,7 +3,8 @@
 
     <offer-slider/>
     <section class="get-offer">
-      <form-select
+
+      <offer-form-select
         slug-in-value
         :label="$t('mark')"
         :options="brands"
@@ -12,7 +13,7 @@
         has-search
         class="get-offer-select"
       />
-      <form-select
+      <offer-form-select
         slug-in-value
         :label="$t('model')"
         :options="carModels.length > 0 ? carModels : []"
@@ -23,21 +24,25 @@
       <button class="btn  btn--green" @click="getOffer()">Əlavə et</button>
     </section>
     <div class="">
-      <div class="new-offer mt-5" v-if="notAccepted()>0">
-        <div class="new-offer-title mt-5">
-          <h2 class="text-center"> Yeni təklif</h2>
+      <div class="new-offer mt-5" v-if="userOffers.length > 0">
+        <div class="new-offer-title mt-5" >
+          <h2 class="text-center" v-if="issetActiveOffer"> Sorğularım</h2>
         </div>
+        <div class="new-offer-notification-box mt-5" v-for="userOffer in userOffers" v-if="userOffer.offer.status && userOffer.user_deleted_at==null">
 
-
-        <div class="new-offer-notification-box mt-5">
           <div class="notification">
             <img src="/icons/auction.svg">
-            <p>Sizin {{ notAccepted() }} yeni təklifiniz var</p>
+            <p>
+              <span v-for="(offerItem,index) in userOffer.offer.offer_items">
+                <b>{{offerItem.brand}}</b> - {{offerItem.model}}  <span v-if="index != Object.keys(userOffer.offer).length - 1">,</span>
+              </span>
+            </p>
           </div>
-          <nuxt-link :to="$localePath('/offer/offers')" tag="button" class="offer-button">
-            Təkliflərə bax
+          <nuxt-link :to="$localePath('/offer/offers?param=all')" tag="button" class="offer-button">
+            Sorğuya  bax
           </nuxt-link>
         </div>
+
       </div>
       <div class="new-offer-title mt-5">
         <h2 class="text-center mb-5">Sistem necə işləyir?</h2>
@@ -155,10 +160,11 @@
 import {mapActions, mapGetters} from "vuex";
 import Accordion from "~/components/elements/Accordion";
 import OfferSlider from "~/components/offer/OfferSlider";
+import OfferFormSelect from "~/components/offer/OfferFormSelect";
 
 export default {
   name: 'Offer',
-  components: {OfferSlider, Accordion},
+  components: {OfferFormSelect, OfferSlider, Accordion},
   middleware: ['not_auto_salon', 'auth_general'],
   async fetch({store}) {
     await store.dispatch('getBrands')
@@ -173,13 +179,14 @@ export default {
   },
   data() {
     return {
+      offerNotFound:false,
       brand: '',
       model: '',
     }
   },
   computed: {
     ...mapGetters({
-      faq: 'packages/faq',
+      faq: 'getOfferFaq',
       userOffers: 'OffersAcceptedByAutoSalon',
       brands: 'brands',
       carModels: 'models',
@@ -188,6 +195,14 @@ export default {
 
     }),
 
+    issetActiveOffer(){
+        for (var i=0; i < this.userOffers.length; i++){
+          if (this.userOffers[i].offer.status==1 && this.userOffers[i].user_deleted_at==null){
+            return true
+          }
+          return false
+        }
+    },
 
     list() {
       return this.faq.map(item => ({title: item.question[this.locale], text: item.answer[this.locale]}));
@@ -203,7 +218,7 @@ export default {
   async asyncData({store}) {
     await Promise.all([
       store.dispatch('getHomePageSliders'),
-      store.dispatch('packages/getFaq')
+      store.dispatch('offerFaq')
     ]);
     return {
       pending: false
@@ -233,12 +248,6 @@ export default {
 
     },
 
-    notAccepted() {
-      let notAcceptedOffers = this.userOffers.filter(function (e) {
-        return e.user_is_accepted == false;
-      });
-      return notAcceptedOffers.length;
-    },
     loadOfferPartners() {
       this.$store.dispatch('offerPartners', this.offerPartnersMeta.current_page + 1)
 

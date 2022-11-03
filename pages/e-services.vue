@@ -145,7 +145,7 @@ export default {
           url: '/business-profile',
           hasAction: false,
           image: 'createshop',
-          isAvailable: true,
+          isAvailable: false,
         },
         {
           title: this.$t('alcometer'),

@@ -19,6 +19,8 @@
       <letter-of-attorney-button :car="car"/>
     </div>
     <modal-popup
+      modal-class="car-info-modal"
+      :overflow-hidden="false"
       :toggle="openDateChangeModal"
       :title="$t('insurance_end_date_text')"
       @close="openDateChangeModal = false"
@@ -32,15 +34,32 @@
         :options="companies"
       />
       <span>{{ $t('date') }}</span>
-      <form-text-input
-        date-type="date"
-        inline
-        value-type="date"
-        date-format="DD.MM.YYYY"
-        v-model="form.insurance_date"
-        :placeholder="$t('announcement_end_date')"
-        input-date
-      />
+      <div class="d-flex">
+        <form-select
+          class="mr-1"
+          :allow-clear="false"
+          :clear-option="false"
+          :label="$t('year_first_letter')"
+          :options="years"
+          v-model="form.year"
+        />
+        <form-select
+          class="mr-1"
+          :clear-option="false"
+          :allow-clear="false"
+          :label="capitalizeFirstLetter($t('plural_forms_month')[0])"
+          :options="months"
+          v-model="form.month"
+        />
+        <form-select
+          :clear-option="false"
+          :allow-clear="false"
+          :label="$t('day')"
+          :options="days"
+          v-model="form.day"
+        />
+      </div>
+
       <button @click="confirmInsurance" :class="{ pending }" class="btn btn--green mt-2 w-100">{{
           $t('confirm')
         }}
@@ -64,7 +83,9 @@ export default {
       openDateChangeModal: false,
       pending: false,
       form: {
-        insurance_date: this.$moment(this.car.insurance_end_date).format('DD.MM.YYYY'),
+        day: this.car.insurance_end_date ? Number(this.$moment(this.car.insurance_end_date).format('DD')) : "",
+        month: "",
+        year: this.car.insurance_end_date ? Number(this.$moment(this.car.insurance_end_date).format('YYYY')) : "",
         company: this.car.insurance_company_id
       },
       companies: [
@@ -86,16 +107,25 @@ export default {
       ]
     }
   },
+  mounted() {
+    this.form.month = this.months?.find(item =>
+      item.name === this.capitalizeFirstLetter(
+        this.$moment(this.car.insurance_end_date).format('MMMM')
+      ))?.key
+  },
   methods: {
+    capitalizeFirstLetter(string) {
+      return string.charAt(0).toUpperCase() + string.slice(1);
+    },
     async confirmInsurance() {
       this.pending = true;
       try {
         await this.$axios.$post('/garage/insurance/set-enddate', {
           car_id: this.car.id,
-          end_date: this.form.insurance_date,
+          end_date: `${this.form.year}-${this.form.month}-${this.form.day}`,
           insurance_company_id: this.form.company
         })
-        this.$nuxt.refresh();
+        this.$emit('refresh-data')
         this.openDateChangeModal = false;
       }catch (e){}
       this.pending = false;
@@ -105,6 +135,36 @@ export default {
     }
   },
   computed: {
+    days() {
+      let days = Array.from({length: 31}, (v, i) => 31 - i).reverse();
+      return days.map((item) => {
+        return {
+          name: item,
+          key: item
+        }
+      });
+    },
+    months() {
+      this.$moment.locale(this.locale)
+      return this.$moment.months().map((item,code) => {
+        return {
+          name: this.capitalizeFirstLetter(item),
+          key: code+1
+        }
+      });
+    },
+    years() {
+      const years = (back) => {
+        const year = new Date().getFullYear();
+        return Array.from({length: back}, (v, i) => year - back + i + 1).reverse();
+      }
+      return years(50).map(item => {
+        return {
+          name: item,
+          key: item
+        }
+      })
+    },
     mainSpecs() {
       let getDate = (date) => date && this.$moment((date)).format('DD.MM.YYYY');
 
@@ -125,6 +185,9 @@ export default {
 }
 </script>
 <style>
+.car-info-modal {
+  width: 450px;
+}
 .btn-new-blue {
   background: #D0E8FF;
   color: #246EB2;

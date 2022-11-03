@@ -2,13 +2,12 @@
   <div>
     <!-- 360 Viewer Container -->
     <div class="v360-viewer-container" ref="viewerContainer" :id="identifier">
-
       <!-- 360 Viewer Header -->
       <slot name="header"></slot>
       <!--/ 360 Viewer Header -->
 
       <!-- Percentage Loader -->
-      <div class="swiper-slide-bg v360-viewport" :class="{'mobile-version-360': fromFsPopup}" style="background-color: #d6e4f8 !important;" v-if="!imagesLoaded">
+      <div class="swiper-slide-bg v360-viewport" :class="{'mobile-version-360': fromFsPopup}" v-if="!imagesLoaded">
         <h3 v-if="!fromFsPopup" style="position: absolute; top: 30%;; color: #081a3e;">{{ $t('panorama_loading') }}</h3>
         <loader><div class="percentage-center">{{ percentage }}%</div></loader>
       </div>
@@ -110,7 +109,7 @@ export default {
     autoplay: {
       type: Boolean,
       require: false,
-      default: false
+      default: true
     },
     loop: {
       type: Number,
@@ -288,9 +287,10 @@ export default {
       if (this.imageData.length) {
         try {
           this.amount = this.imageData.length;
-          this.imageData.forEach(src => {
-            this.addImage(src);
-          });
+
+           this.imageData.forEach((src) => {
+              this.addImage(src);
+            });
         } catch (error) {
           console.error(`Something went wrong while loading images: ${error.message}`);
         }
@@ -316,9 +316,11 @@ export default {
 
       if (this.loadedImages === this.amount) {
         this.onAllImagesLoaded(event);
-      } else if (this.loadedImages === 1) {
+      }/* else if (this.loadedImages === 30) {
+        this.imagesLoaded = true
+        this.initData()
         //this.onFirstImageLoaded(event);
-      }
+      }*/
     },
     updatePercentageInLoader(percentage) {
       this.percentage = percentage;
@@ -341,7 +343,7 @@ export default {
       this.playing = !this.playing
     },
     play() {
-      this.loopTimeoutId = window.setInterval(() => this.loopImages(), 100);
+      this.loopTimeoutId = window.setInterval(() => this.loopImages(), 60);
     },
     onSpin() {
       if (this.playing || this.loopTimeoutId) {
@@ -361,7 +363,6 @@ export default {
           this.stop()
         } else {
           this.currentLoop++
-
           this.next()
         }
       } else {
@@ -633,6 +634,7 @@ export default {
       }
     },
     startMoving(evt) {
+      this.stop();
       this.movement = true
       this.movementStart = evt.pageX;
       this.$refs.viewport.classList.add('v360-grabbing');
@@ -711,6 +713,7 @@ export default {
     },
     startDragging(evt) {
       this.dragging = true
+
       document.body.style.mozUserSelect = document.body.style.webkitUserSelect = document.body.style.userSelect = 'none';
 
       if (this.isMobile) {

@@ -11,7 +11,7 @@
                   :class="{'active-filter': $route.query.param==='all' || !$route.query.param} ">
                 <inline-svg src="/icons/offer/requests.svg" class="filter-icon"/>
                 <span>
-                  Sorğular <span class="offerCount">{{newOfferCount}}</span>
+                  Sorğular <span class="offerCount">{{ newOfferCount }}</span>
                 </span>
               </li>
 
@@ -56,8 +56,9 @@
               </li>
 
 
-              <li @click="changePage('favorites')" :class="{'active-filter': $route.query.param==='favorites'} ">
+              <li @click="changePage('favorites')" :class="{'active-filter': $route.query.param==='favorites'} " >
                 <inline-svg src="/icons/offer/star.svg" class="filter-icon"/>
+
                 <span>
       Seçilmişlər
                 </span>
@@ -80,15 +81,17 @@
 
               <input type="text" v-model="search" placeholder="Maşın və ya istifadəçi adı" class="searchInput">
             </div>
-            <div class="user" v-for="offer in search ? searchOffer : offers"
-                 @click="getOfferDetail(offer.id)" >
+            <div class="user" v-for="offer in offers"
+                 @click="getOfferDetail(offer.id)">
               <div class="userImg"
                    :style="'background-image: url('+(offer.user.img ? offer.user.img : '/img/user.jpg')+')'">
               </div>
               <div class="userName">
                 <b>{{ offer.user.full_name }}</b>
-                <span>{{ offer.brand }} {{ offer.model }}</span>
-                <span>{{ offer.minPrice }} - {{ offer.maxPrice }}</span>
+                <div v-for="offer_item in offer.offer_items">
+                  <span>{{ offer_item.brand }} {{ offer_item.model }}</span>
+
+                </div>
               </div>
               <div class="created">
                 {{ offer.created_at }}
@@ -98,111 +101,26 @@
         </div>
         <div class="col col-md-12 col-lg-6 col-xs-12 col-sm-12 background-white" v-if="!isMobileBreakpoint">
 
-          <div class="offerDetail" v-if="offer.brand ">
-            <div class="d-flex align-items-center user" v-if="offer.brand">
-              <div class="userImg"
-                   :style="'background-image: url('+(offer.user.img ? offer.user.img : '/img/user.jpg')+')'"></div>
-              <p class="mt-2 ml-2 text-bold">
-                {{ offer.user.full_name }}
-              </p>
-              <div class="actions" >
-                <span @click="addFavorite(offer.id)" :class="offer.isFavorite ? 'isFavorite' : 'favorite'" ><icon name="star"/> </span>
+          <div class="offerDetail" v-if=" offer && Object.keys(offer).length > 0">
+            <div class="d-flex align-items-center user" v-if="offer.user">
+              <div class="userImg" :style="'background-image: url('+(offer.user.img ? offer.user.img : '/img/user.jpg')+')'" ></div>
+              <p class="mt-2 ml-2 text-bold">  {{ offer.user.full_name }}  </p>
+              <div class="actions">
+                <span @click="addFavorite(offer.id)" :class="offer.isFavorite ? 'isFavorite' : 'favorite'" v-if="!offer.deleted"><icon name="star"/> </span>
                 <span @click="deleteAutoSalonOffer(offer.id)" v-if="IsAccepted"> <icon name="garbage"></icon></span>
               </div>
             </div>
             <collapse-content :title="'Təklif'">
-
-              <div class="generations">
-                <div class="row">
-
-                  <div class="col-md-3" v-for="generation in offer.generations">
-                    <img :src="generation.img" class="generationImage" width="100%">
-                  </div>
-                  <div class="col-md-6">
-                    <div class="carName">
-
-                      <span class="carPrice">{{ offer.minPrice }} - {{ offer.maxPrice }} ₼</span>
-                      <h3>{{ offer.brand }} {{ offer.model }}</h3>
-
-                    </div>
-
-                  </div>
-
-                </div>
-
-              </div>
-              <div class="offerDetailContent">
-                <div class="offerDetailItem">
-                  <p>Brand</p>
-                  <span>{{ offer.brand }}</span>
-                </div>
-                <div class="offerDetailItem">
-                  <p>Model </p>
-                  <span>
-                  {{ offer.model }}
-                </span>
-                </div>
-
-                <div class="offerDetailItem">
-                  <p>Nəsil </p>
-                  <div>
-                  <span v-for=" (generation,index) in offer.generations">
-                  {{ generation.name }}
-                                      <div v-if="index != offer.generations.length - 1">,</div>
-                </span>
-
-
-                  </div>
-
-                </div>
-                <div class="offerDetailItem">
-
-                  <p>Sürətlər qutusu </p>
-                  <div>
-                <span v-for=" (gearbox,index) in offer.gear_boxes">
-                               {{ $t('box_values')[gearbox.gear_box_key] }}
-
-                  <div v-if="index != offer.gear_boxes.length - 1">,</div>
-                </span>
-
-                  </div>
-                </div>
-                <div class="offerDetailItem">
-                  <p>Yanacaq növü </p>
-                  <div>
-                <span v-for=" (fuel_type,index) in offer.fuel_types">
-
-                  {{ $t('engine_values')[fuel_type.fuel_type_key] }} <div
-                  v-if="index != offer.fuel_types.length - 1">,</div>
-
-                </span>
-                  </div>
-                </div>
-
-                <div class="offerDetailItem">
-                  <p>Rəng </p>
-                  <div>
-                <span v-for=" (color,index) in offer.colors">
-                    <span class="color-box" :style="`background-color:${color.code}`"></span>
-
-
-                </span>
-                  </div>
-                </div>
-
-              </div>
+              <offer-items :offer_items="offer.offer_items"/>
             </collapse-content>
 
-
-            <div class="text-right" v-if="!IsAccepted">
-              <button class="btn  btn--green mt-3" @click="accept(offer.id)" v-if="!offer.deleted">Sorğunu qəbul et</button>
-            </div>
-            <div v-else>
+            <div>
               <div class="messages">
+
                 <div :class=" isMyMessage(message) ? 'my' :'his' " class="message" v-for="message in offerMessages">
                   <div v-if="message.files.length>0" class="message-files">
                     <div class="message-file" v-for="file in message.files">
-                      <img :src="file" width="100%"/>
+                      <img :src="file" width="100%" class="p-1" @click="openLightbox(file)">
                     </div>
                     <div class="div m-1" v-if="message.files.length>0">
                       {{ message.message }} <span class="time">17:30</span>
@@ -214,29 +132,16 @@
                   </span>
                 </div>
               </div>
-
             </div>
-
-            <div class="messages" v-if="offer.deleted">
-              <div  :class="isMyMessage(message) ? 'my' :'his' " class="message" v-for="message in offerMessages">
-                <div v-if="message.files.length>0" class="message-files">
-                  <div class="message-file" v-for="file in message.files">
-                    <img :src="file" width="100%"/>
-                  </div>
-                  <div class="div m-1" v-if="message.files.length>0">
-                    {{ message.message }} <span class="time">17:30</span>
-                  </div>
-
-                </div>
-                <span v-if="!message.files.length>0">
-                    {{ message.message }} <span class="time">17:30</span>
-                  </span>
-              </div>
-            </div>
-
-
           </div>
-          <div class="addons" v-if="IsAccepted">
+
+          <div class="col-md-12">
+            <div class="offer-alert" role="alert" v-if=" offer && Object.keys(offer).length > 0 && user_deleted_at!=null">
+              İstifadəçi təklifi silmişdir.
+            </div>
+          </div>
+
+          <div class="addons" v-if="offer && Object.keys(offer).length > 0 && !offer.deleted && user_deleted_at==null">
             <offer-message
               @type="handleTyping"
               @attach="handleFiles"
@@ -253,6 +158,35 @@
         </div>
       </div>
     </div>
+    <div class="inner-gallery-lightbox" v-touch:swipe.top="handleSwipeTop">
+      <template v-if="isMobileBreakpoint">
+        <FsLightbox
+          :toggler="toggleFsLightbox"
+          :sources="attachments"
+          :slide="currentSlide + 1"
+          :key="lightboxKey"
+          :onClose="refreshLightbox"
+          :onBeforeClose="onBeforeClose"
+          :disableThumbs="true"
+          :onSlideChange="changeLightboxSlide"
+        />
+      </template>
+      <transition-group name="fade">
+        <template v-if="(showLightbox && isMobileBreakpoint) || (!isMobileBreakpoint && showImagesSlider)">
+          <div class="blur-bg" :key="0">
+            <img :src="$withBaseUrl(attachments[currentSlide])" alt="" />
+          </div>
+          <div class="blur-bg_slider" :key="1" v-if="!isMobileBreakpoint">
+            <images-slider
+              :current-slide="currentSlide"
+              :slides="{ main: attachments }"
+              @close="closeLightbox"
+              @slide-change="currentSlide = $event"
+            />
+          </div>
+        </template>
+      </transition-group>
+    </div>
   </div>
 </template>
 
@@ -262,22 +196,25 @@ import {mapGetters} from "vuex";
 import OfferMessage from "~/components/offer/offer-message";
 import CollapseContent from "~/components/elements/CollapseContent";
 import {ImageResizeMixin} from '~/mixins/img-resize';
+import OfferItems from "~/components/offer/offerItems";
+import {offerImageView} from "~/mixins/offer-image-view";
 
 export default {
   name: "index",
-  components: {CollapseContent, OfferMessage, OfferSlider},
+  components: {OfferItems, CollapseContent, OfferMessage, OfferSlider},
   data() {
     return {
-      offer: {},
-      IsAccepted: false,
+      IsAccepted:false,
+      user_deleted_at:null,
+      offer: null,
       chat: {
         text: ''
       },
       sendingFiles: false,
       search: "",
       files: [],
-      auto_salon_offer_id:null,
-      messageButtonDisabled:false
+      auto_salon_offer_id: null,
+      messageButtonDisabled: false
     }
   },
   head() {
@@ -285,11 +222,11 @@ export default {
       title: this.$t('Super teklif'),
     })
   },
-  mixins: [ImageResizeMixin],
-  async asyncData({store,route}) {
+  mixins: [ImageResizeMixin,offerImageView],
+  async asyncData({store, route}) {
     await Promise.all([
       store.dispatch('getHomePageSliders'),
-      store.dispatch('getAllOffers',route.query.param),
+      store.dispatch('getAllOffers', route.query),
     ]);
   },
   nuxtI18n: {
@@ -298,15 +235,22 @@ export default {
     }
   },
   methods: {
+
+
+
+    selectOfferItem(index) {
+      this.selected_offer_item = index
+    },
     changePage(param = null) {
+      this.chat.text=''
 
       this.$router.push({
         path: '/salons/offer',
         params: param,
         query: {param: param}
       })
-      this.offer={}
-      this.IsAccepted=false
+      this.offer = {}
+
 
     },
     isMyMessage(message) {
@@ -321,18 +265,26 @@ export default {
     async addFavorite(id) {
       await this.$store.dispatch('offerAddFavorite', id)
       this.offer.isFavorite = !this.offer.isFavorite;
-      this.$store.dispatch('getAllOffers',this.$route.query.param)
+      this.$store.dispatch('getAllOffers', this.$route.query)
 
     },
     async deleteAutoSalonOffer(id) {
       await this.$axios.delete('/offer/salon/offer/delete/' + id);
       this.checkAccepted(id)
       this.offer = false
-      this.IsAccepted = false
-      this.$store.dispatch('getAllOffers',this.$route.query.param)
+
+      this.$store.dispatch('getAllOffers', this.$route.query)
     },
     async submitMessage() {
-      this.messageButtonDisabled=true;
+      this.messageButtonDisabled = true;
+      if (!this.IsAccepted){
+        this.IsAccepted=true
+        setTimeout( ()=>{
+             this.$store.dispatch('getAllOffers', this.$route.query)
+        },500)
+
+
+      }
       let formData = new FormData();
 
 
@@ -350,38 +302,42 @@ export default {
       this.$axios.$post('/offer/messages/send', formData).then((res) => {
         this.$store.commit('appendOfferMessage', res.data.message)
         if (res.data.message.files.length > 1) {
-          const sleep = () =>{
+          const sleep = () => {
             this.scrollTo('.my:last-child >.message-files:last-child >.message-file', 300, 500, '.offerDetail')
           }
           setTimeout(sleep, 1000)
         } else {
-          setTimeout(()=>{
+          setTimeout(() => {
             this.scrollTo('.my:last-child', 0, 500, '.offerDetail')
-          },1000)
+          }, 1000)
 
         }
         this.chat.text = '';
         this.$nuxt.$emit('clear-message-attachments');
         this.scrollTo('.my:last-child', 0, 500, '.offerDetail')
-        this.messageButtonDisabled=false;
+        this.messageButtonDisabled = false;
       })
 
     },
 
     async getOfferDetail(id) {
+      this.chat.text=''
+
       if (this.isMobileBreakpoint) {
         this.$router.push(this.$localePath('/salons/offer') + '/' + id)
       } else {
         await this.checkAccepted(id)
+
         this.offer = JSON.parse(JSON.stringify(this.offers.find(function (offer) {
             return id === offer.id
           }
         )));
       }
-      this.$store.commit('mutate',{property:'current_offer_id',value:this.offer.id})
-      setTimeout(()=>{
+
+      this.$store.commit('mutate', {property: 'current_offer_id', value: id})
+      setTimeout(() => {
         this.scrollTo('.message:last-child', 300, 500, '.offerDetail')
-      },1000)
+      }, 1000)
 
     },
     addFile(e) {
@@ -394,10 +350,9 @@ export default {
     },
     async checkAccepted(id) {
       await this.$axios.$post('/offer/salon/offer/check/' + id).then((res) => {
-
+        this.user_deleted_at=res.user_deleted_at;
         this.IsAccepted = res.status
-        this.auto_salon_offer_id=res.auto_salon_offer_id ? res.auto_salon_offer_id : null
-
+        this.auto_salon_offer_id = res.auto_salon_offer_id ? res.auto_salon_offer_id : null
 
           this.$store.commit('setOfferMessages', res.messages)
       })
@@ -406,15 +361,12 @@ export default {
     async accept(id) {
       await this.$store.dispatch('salonAcceptOffer', {id})
       this.checkAccepted(id)
+    },
+    searchOffer(){
+
     }
   },
   computed: {
-    searchOffer() {
-      return this.offers.filter((item => {
-        return item.user.full_name.toUpperCase().includes(this.search.toUpperCase()) ||
-          item.brand.toUpperCase().includes(this.search.toUpperCase())
-      }))
-    },
     crumbs() {
       return [
         {name: 'Super təklif paneli', route: '/salons/offer'},
@@ -424,14 +376,32 @@ export default {
     ...mapGetters({
       offers: 'offers',
       offerMessages: 'getOfferMessages',
-      newOfferCount:'getNewOfferCount',
+      newOfferCount: 'getNewOfferCount',
       isFavorite: 'isFavorite'
     }),
   },
+  created() {
+    if(!Object.keys(this.$route.query).length >0){
+      this.$router.push({
+        query: {
+          param:'all',
+
+        }
+      })
+    }
+  },
   watch: {
     async $route(newVal, oldVal) {
+      await this.$store.dispatch('getAllOffers', newVal.query)
+    },
 
-      await this.$store.dispatch('getAllOffers', newVal.query.param)
+    search(newVal){
+      this.$router.push({
+        query: {
+          param:this.$route.query.param,
+          query: newVal,
+        }
+      })
     }
   }
 

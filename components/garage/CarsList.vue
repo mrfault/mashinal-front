@@ -72,17 +72,17 @@
     <div class="col-12 col-lg-4-5">
       <div
         class="card with-margins"
-        v-if="activeCar && !history"
+        v-if="activeCar && !history && showInfo"
         v-show="carChosen || !isMobileBreakpoint"
       >
         <p class="p-title">{{ $t('about') }}</p>
-        <car-info :car="activeCar" :key="'info_' + activeCar.id" />
+        <car-info @refresh-data="refreshData" :car="activeCar" :key="'info_' + activeCar.id" />
       </div>
 
       <div
         class="card with-margins"
         :class="{'mt-4':!history }"
-        v-if="activeCar"
+        v-if="activeCar && showInfo"
         v-show="carChosen || !isMobileBreakpoint"
       >
         <p class="p-title">{{ $t('fines') }}</p>
@@ -90,7 +90,7 @@
           :history="history ? 1 : 0"
           :car="activeCar"
           :key="'fines_' + activeCar.id"
-          v-if="activeCar.car_id"
+          v-if="activeCar.car_id && showInfo"
         />
       </div>
     </div>
@@ -127,10 +127,11 @@ export default {
       (car) => car.status === 1 && car.sync_status === 1,
     )
     return {
+      showInfo: true,
       hasAsanLogin: false,
       tab: 'info',
       vsKey: 0,
-      activeCarId: activeCars[0]?.id || '',
+      activeCarId: Number(this.$route.query.id) || activeCars[0]?.id || '',
       showNoActiveCarsAlert: true,
       carChosen: false,
     }
@@ -165,6 +166,7 @@ export default {
       )
     },
   },
+
    async mounted() {
     if (await this.checkTokenOnly()) {
       this.hasAsanLogin = true
@@ -177,17 +179,33 @@ export default {
       this.hasAsanLogin = false
     }
     if(this.$route.query.id) {
-      this.updateActiveCar(Number(this.$route.query.id))
+      //this.updateActiveCar(Number(this.$route.query.id))
     }
     setTimeout(() => this.vsKey++ , 1);
 
+    this.$nuxt.$on('select-car', () => {
+      let activeFilteredCars = this.filteredCars.data.filter((item) => item.status === 1)
+      if(activeFilteredCars.length) {
+        this.updateActiveCar(activeFilteredCars[0].id)
+      }
+    })
+  },
+  beforeDestroy() {
+    this.$nuxt.$off('select-car')
   },
   methods: {
+    refreshData() {
+      //this.$store.dispatch('garage/getCarList',{})
+    },
     updateActiveCar(id) {
       this.activeCarId = id
+      this.showInfo = true;
       this.carChosen = true
       this.$emit('show-nav', false)
-      this.$scrollTo('.container')
+      this.$router.push({
+        query: { id }
+      })
+      //this.$scrollTo('.container')
     },
     showCarsList() {
       this.carChosen = false
@@ -198,6 +216,9 @@ export default {
     'activeCars.length'() {
       this.activeCarId = this.activeCar?.id || ''
     },
+    'filteredCars.data.length'(length) {
+      this.showInfo = length > 0
+    }
   },
 }
 </script>

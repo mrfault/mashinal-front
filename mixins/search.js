@@ -191,7 +191,7 @@ export const SearchMixin = {
       if (['commercial','moto'].includes(this.meta.type) && !this.category.id) {
         this.setCategory('', key);
       } else {
-        this.setBrand('', key);
+        this.setBrandExclude('', key);
       }
       this.excludeRows.splice(index, 1);
     },

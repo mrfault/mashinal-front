@@ -43,7 +43,7 @@
                   />
                   <h3>{{ homePageSlider.title[locale] }}</h3>
                 </div>
-                <p>{{ homePageSlider.description[locale] }}</p>
+                <p class="mb-3">{{ homePageSlider.description[locale] }}</p>
 
 
                 <button
@@ -175,7 +175,7 @@ export default {
 }
 .swiper-pagination{
   left: 92px !important;
-  bottom: 135px !important;
+  bottom: 111px !important;
 
 }
 .swiper-pagination-bullet-active{
