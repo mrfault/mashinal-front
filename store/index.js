@@ -1,11 +1,7 @@
 import _ from '~/lib/underscore'
 import {mutate, reset} from '~/lib/vuex-helpers/mutations'
 import Vue from 'vue'
-<<<<<<< HEAD
-
-=======
 import uuid from 'uuid'
->>>>>>> feature/loa
 
 const getInitialState = () => ({
   loading: true,
