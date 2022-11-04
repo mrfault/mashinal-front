@@ -19,6 +19,8 @@
       @keyup="inputHandler"
       ref="keywordInput"
       :placeholder="$t('add_keywords')"
+      class="w-100"
+      maxlength="50"
     />
   </label>
 </template>
