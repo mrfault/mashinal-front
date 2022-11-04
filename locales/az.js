@@ -2336,5 +2336,7 @@ export default {
   "video_360_successfully_upload":"Video uğurla yükləndi",
   "video_choose": "Video faylı seç",
   "video_choosed": "Video fayl seçilib",
-  "file_size_50": "Faylın maksimal həcmi 50 mb ola bilər"
+  "file_size_50": "Faylın maksimal həcmi 50 mb ola bilər",
+  "max_50_symbol_can_be_added": "Maksimum 50 simvol yazıla bilər",
+  "max_150_symbol_can_be_added": "Maksimum 150 simvol yazıla bilər",
 }

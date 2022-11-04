@@ -3,36 +3,54 @@
     <form class="form" novalidate @submit.prevent>
       <!-- General Information -->
       <h2 class="title-with-line mt-3 mt-lg-0" id="anchor-general-information">
-        <span>{{ $t('general_informations') }} <span class="star"> *</span></span>
+        <span>
+          {{ $t('general_informations') }}
+          <span class="star">*</span>
+        </span>
       </h2>
       <div class="row">
-        <div class="col-lg-4 mb-3">
+        <div class="col-lg-4 mb-3 flex-column">
           <form-text-input
             v-model="form.product_code"
             id="anchor-product_code"
             :placeholder="$t('product_code')"
             :invalid="isInvalid('product_code')"
             @change="removeError('product_code')"
+            :maxlength="50"
+            class="w-100"
           />
+          <small
+            class="w-100 text-dark-blue-3"
+            v-show="form.product_code.length == 50"
+          >
+            {{ $t('max_50_symbol_can_be_added') }}
+          </small>
         </div>
-        <div class="col-lg-4 mb-3">
+        <div class="col-lg-4 mb-3 flex-column">
           <form-text-input
             v-model="form.title"
             :placeholder="$t('title_max_character', { max: 25 })"
             id="anchor-title"
             :invalid="isInvalid('title')"
             @change="removeError('title')"
-            maxlength="25"
+            :maxlength="25"
           />
         </div>
-        <div class="col-12 mb-2">
+        <div class="col-12 mb-2 flex-column">
           <form-textarea
             v-model="form.description"
             id="anchor-description"
             :placeholder="$t('description_placeholder_part', { max: 20 })"
             :invalid="isInvalid('description')"
             @change="removeError('description')"
+            :maxlength="150"
           />
+          <small
+            class="w-100 text-dark-blue-3"
+            v-show="form.description.length == 150"
+          >
+            {{ $t('max_150_symbol_can_be_added') }}
+          </small>
         </div>
         <div class="col-12">
           <p class="px-2">
@@ -43,7 +61,10 @@
 
       <!-- Specifications -->
       <h2 class="title-with-line mt-3 mt-lg-0" id="anchor-specification">
-        <span>{{ $t('parts') }} <span class="star"> *</span></span>
+        <span>
+          {{ $t('parts') }}
+          <span class="star">*</span>
+        </span>
       </h2>
       <div class="row">
         <!-- Category -->
@@ -54,7 +75,11 @@
             :options="categories"
             :invalid="isInvalid('category_id')"
             :clear-option="false"
-            @change="categorySelected($event), removeError('category_id'),form.commercial_part = false;"
+            @change="
+              categorySelected($event),
+                removeError('category_id'),
+                (form.commercial_part = false)
+            "
           />
         </div>
 
@@ -83,25 +108,27 @@
           <form-select
             v-model="form.brand_id"
             :label="$t('select_brand')"
-            :options="[{id:0,name: $t('other') },...brands]"
+            :options="[{ id: 0, name: $t('other') }, ...brands]"
             has-search
             :invalid="isInvalid('brand_id')"
             :clear-option="false"
             @change="removeError('brand_id')"
           />
         </div>
-        <div v-if="[19,20].includes(form.category_id)" class="col-lg-4 mb-3 mb-lg-0">
+        <div
+          v-if="[19, 20].includes(form.category_id)"
+          class="col-lg-4 mb-3 mb-lg-0"
+        >
           <form-checkbox
             id="commercial_part"
             v-model="form.commercial_part"
             :label="$t('commercial_part')"
             :checked-value="form.commercial_part"
-            @change="!$event ? form.commercial_size = '' : ''"
+            @change="!$event ? (form.commercial_size = '') : ''"
           />
         </div>
         <div v-if="form.category_id" class="col-12 mt-3">
           <div class="row">
-
             <!-- Condition -->
             <div class="col-lg-4 mb-3">
               <form-buttons
@@ -132,7 +159,11 @@
 
             <!-- Dynamic filters -->
             <div
-              v-if="form.commercial_part ? !commercialPartDisabledOptions.includes(filter.key) : true"
+              v-if="
+                form.commercial_part
+                  ? !commercialPartDisabledOptions.includes(filter.key)
+                  : true
+              "
               class="col-lg-4 mb-3"
               v-for="filter in dynamicFilters"
               :key="'filter-' + filter.id"
@@ -148,7 +179,10 @@
                 :options="filter.values"
                 :invalid="isInvalid(filter.key)"
                 :clear-option="!filter.is_required"
-                @change="removeError(filter.key), dynamicFilterOnChange(filter.key, $event)"
+                @change="
+                  removeError(filter.key),
+                    dynamicFilterOnChange(filter.key, $event)
+                "
               />
 
               <!-- Checkbox -->
@@ -166,9 +200,16 @@
               <form-numeric-input
                 v-if="filter.component === 'filter-single-input'"
                 :value="form[filter.key]"
-                :placeholder="$t(filter.key === 'capacity' ? 'battery_capacity': filter.key)"
+                :placeholder="
+                  $t(
+                    filter.key === 'capacity' ? 'battery_capacity' : filter.key,
+                  )
+                "
                 :invalid="isInvalid(filter.key)"
-                @input="form[filter.key] = String($event), dynamicFilterOnChange(filter.key, $event)"
+                @input="
+                  ;(form[filter.key] = String($event)),
+                    dynamicFilterOnChange(filter.key, $event)
+                "
                 @change="removeError(filter.key)"
               />
             </div>
@@ -185,8 +226,11 @@
                 />
               </div>
               <div class="col-lg-2 col-3">
-                <form-switch :options="getCurrencyOptions" v-model="form.currency"
-                             @change="updatePreview('currency')"/>
+                <form-switch
+                  :options="getCurrencyOptions"
+                  v-model="form.currency"
+                  @change="updatePreview('currency')"
+                />
               </div>
               <form-checkbox
                 v-model="form.is_negotiable"
@@ -194,12 +238,14 @@
                 checked-value="is_negotiable"
                 :label="$t('is_negotiable')"
                 :invalid="isInvalid('is_negotiable')"
-                @change="removeError('price', true), removeError('is_negotiable')"
+                @change="
+                  removeError('price', true), removeError('is_negotiable')
+                "
               />
             </div>
-              <!-- Commercial Size -->
+            <!-- Commercial Size -->
             <div
-              class="col-lg-4 mb-3"
+              class="col-lg-4 mb-3 flex-column"
               style="align-items: center;"
               v-if="form.commercial_part"
               id="anchor-commercial_size"
@@ -210,6 +256,7 @@
                 :invalid="isInvalid('commercial_size')"
                 @change="removeError('commercial_size')"
                 :clear-option="false"
+                :maxlength="50"
               />
             </div>
             <!-- Region -->
@@ -256,7 +303,7 @@
         </div>
 
         <div class="col-12">
-          <form-keywords v-model="form.keywords"/>
+          <form-keywords v-model="form.keywords" />
         </div>
 
         <div class="col-12">
@@ -268,11 +315,13 @@
 
       <!-- Upload image -->
       <h2 class="title-with-line mt-3 mt-lg-0" id="anchor-image">
-        <span>{{ $t('image') }} <span class="star"> *</span></span>
+        <span>
+          {{ $t('image') }}
+          <span class="star">*</span>
+        </span>
       </h2>
       <div class="row parts_image-upload">
         <div class="col-12">
-
           <!-- Gallery -->
           <form-gallery
             itemClass="col-4 col-lg-1-5 mb-lg-3 mb-2"
@@ -283,18 +332,18 @@
             @change="filesOnChange"
             @loading="upload_loading = $event"
           >
-            <template v-slot:header >
+            <template v-slot:header>
               <div class="col-12 col-lg-3-5 mb-lg-3 mb-2">
                 <div class="upload-rules">
                   <div class="upload-rules__image">
-                    <img src="/img/parts_upload_rules.png">
+                    <img src="/img/parts_upload_rules.png" />
                   </div>
                   <div class="upload-rules__content">
                     <div class="upload-rules__content__title">
                       {{ $t('terms_of_image_attachment') }}
                     </div>
                     <ul class="upload-rules__content__list">
-                      <li>{{ $t('min_image_count', { count: 1 })}}</li>
+                      <li>{{ $t('min_image_count', { count: 1 }) }}</li>
                       <li>{{ $t('max_image_count', { count: 22 }) }}</li>
                       <li>{{ $t('min_image_size', { w: 500, h: 500 }) }}</li>
                     </ul>
@@ -308,7 +357,12 @@
 
       <div class="row d-flex justify-content-end">
         <div class="col-12 col-lg-1-5">
-          <button class="btn btn--green mt-3" :class="{ pending }" type="button" @click="submit">
+          <button
+            class="btn btn--green mt-3"
+            :class="{ pending }"
+            type="button"
+            @click="submit"
+          >
             {{ $t('place_announcement') }}
           </button>
         </div>
@@ -318,13 +372,14 @@
     <backdrop @click="showLoginPopup = false" v-if="showLoginPopup">
       <template #default="{ show }">
         <transition name="translate-fade">
-          <login-tabs v-if="show"
+          <login-tabs
+            v-if="show"
             :popup="true"
             :skip-sign-in="true"
             :action-text="{
               login: $t('login_and_publish'),
               register: $t('register_and_publish'),
-              confirm: $t('confirm_and_publish')
+              confirm: $t('confirm_and_publish'),
             }"
             :force-sell-phone="true"
             @close="showLoginPopup = false"
@@ -336,25 +391,25 @@
 </template>
 
 <script>
-import {mapActions, mapState} from 'vuex';
-import { ToastErrorsMixin } from '~/mixins/toast-errors';
+import { mapActions, mapState } from 'vuex'
+import { ToastErrorsMixin } from '~/mixins/toast-errors'
 
 import FormKeywords from '~/components/forms/FormKeywords'
 import FormGallery from '~/components/forms/FormGallery'
-import commercial from "~/pages/sell/commercial";
+import commercial from '~/pages/sell/commercial'
 
 export default {
   mixins: [ToastErrorsMixin],
   props: {
     isEdit: {
       type: Boolean,
-      default: false
+      default: false,
     },
     initialForm: {
       type: Object,
       required: false,
-      default: null
-    }
+      default: null,
+    },
   },
   components: {
     FormKeywords,
@@ -366,13 +421,16 @@ export default {
   data() {
     return {
       commercialPartDisabledOptions: [
-        'diameter','height','shine_width','run_flat'
+        'diameter',
+        'height',
+        'shine_width',
+        'run_flat',
       ],
       form: {
         product_code: '',
         title: '',
         commercial_part: false,
-        commercial_size:'',
+        commercial_size: '',
         description: '',
         category_id: '',
         region_id: 1,
@@ -384,7 +442,7 @@ export default {
         price: '',
         is_negotiable: false,
         keywords: [],
-        btl_cookie: this.$cookies.get('btl') || ''
+        btl_cookie: this.$cookies.get('btl') || '',
       },
       filters: {
         sub_categories: [],
@@ -396,19 +454,19 @@ export default {
       files: [],
       upload_loading: false,
       showLoginPopup: false,
-      pending: false
+      pending: false,
     }
   },
   created() {
-    this.$nuxt.$on('login', this.handleAfterLogin);
+    this.$nuxt.$on('login', this.handleAfterLogin)
   },
   mounted() {
     if (this.initialForm) {
       this.form = {
         ...this.form,
         ...this.initialForm,
-        keywords: this.initialForm.tags.map(t => t.text),
-        currency: this.initialForm.currency_id
+        keywords: this.initialForm.tags.map((t) => t.text),
+        currency: this.initialForm.currency_id,
       }
 
       this.getFilters(this.initialForm.category_id)
@@ -429,14 +487,13 @@ export default {
         ...this.form,
         is_new: true,
         is_original: true,
-        commercial_size:""
+        commercial_size: '',
       }
 
+      delete this.form.sub_category_id
+      delete this.form.brand_id
 
-      delete this.form.sub_category_id;
-      delete this.form.brand_id;
-
-      this.filters.filters.forEach(filter => {
+      this.filters.filters.forEach((filter) => {
         delete this.form[filter.key]
       })
 
@@ -452,17 +509,23 @@ export default {
       }
     },
     async getFilters(category_id) {
-      this.filters = await this.$axios.$get(`/part/category/${category_id}/filters`)
+      this.filters = await this.$axios.$get(
+        `/part/category/${category_id}/filters`,
+      )
 
       if (this.filters.sub_categories.length) {
-        const value = this.filters.sub_categories.find(c => c.id === this.initialForm?.sub_category_id)?.id
-        this.$set(this.form, 'sub_category_id', value || null )
+        const value = this.filters.sub_categories.find(
+          (c) => c.id === this.initialForm?.sub_category_id,
+        )?.id
+        this.$set(this.form, 'sub_category_id', value || null)
       } else {
         delete this.form.sub_category_id
       }
 
       if (this.filters.brands.length) {
-        const value = this.filters.brands.find(c => c.id === this?.initialForm?.brand_id)?.id
+        const value = this.filters.brands.find(
+          (c) => c.id === this?.initialForm?.brand_id,
+        )?.id
         this.$set(this.form, 'brand_id', value || null)
       } else {
         delete this.form.brand_id
@@ -474,17 +537,17 @@ export default {
         'filter-single-input': '',
       }
 
-      this.filters.filters.forEach(filter => {
+      this.filters.filters.forEach((filter) => {
         if (!Object.keys(this.form).includes(filter.key)) {
           this.form[filter.key] = defaults[filter.component]
         }
       })
     },
     dynamicFilterOnChange(key, value) {
-      this.form = {...this.form}
+      this.form = { ...this.form }
 
       if (this.errors.includes(key) && value) {
-        this.errors = this.errors.filter(item => item !== key)
+        this.errors = this.errors.filter((item) => item !== key)
       }
     },
     submit() {
@@ -495,189 +558,209 @@ export default {
     },
     validate() {
       if (this.upload_loading) {
-        this.$toasted.error(this.$t('please_wait_for_all_image_loading'));
-        return false;
+        this.$toasted.error(this.$t('please_wait_for_all_image_loading'))
+        return false
       }
 
       if (!this.files.length) {
-        this.$toasted.error(this.$t('content_component_error_image'));
-        return false;
+        this.$toasted.error(this.$t('content_component_error_image'))
+        return false
       }
 
       return true
     },
     async publish() {
-        const saved_images = this.files.map(({ id }) => id)
-        const deletedIds = []
-        this.initialFiles.forEach(({id}) => {
-          if (!saved_images.includes(id)) {
-            deletedIds.push(id)
-          }
-        })
+      const saved_images = this.files.map(({ id }) => id)
+      const deletedIds = []
+      this.initialFiles.forEach(({ id }) => {
+        if (!saved_images.includes(id)) {
+          deletedIds.push(id)
+        }
+      })
 
       let data = {
         ...this.form,
-        tags: this.form.keywords.map(keyword => ({ text: keyword })),
+        tags: this.form.keywords.map((keyword) => ({ text: keyword })),
         saved_images,
         deletedIds,
-        price: this.form.is_negotiable ? 0 : this.form.price
+        price: this.form.is_negotiable ? 0 : this.form.price,
       }
-      delete data.keywords;
+      delete data.keywords
 
       if (!data.brand_id) delete data.brand_id
 
       const formData = new FormData()
       formData.append('data', JSON.stringify(data))
-      formData.append('phone',this.sellPhoneEntered.replace(/[^0-9]+/g, ''));
-      this.pending = true;
+      formData.append('phone', this.sellPhoneEntered.replace(/[^0-9]+/g, ''))
+      this.pending = true
       try {
-        let requestURL;
+        let requestURL
         if (this.isEdit) {
-          requestURL= '/sell/part/edit/' + this.form.id;
+          requestURL = '/sell/part/edit/' + this.form.id
         } else {
-          requestURL= '/sell/part/post/publish';
+          requestURL = '/sell/part/post/publish'
         }
         await this.$axios.post(requestURL, formData)
-        if (this.loggedIn)
-          await this.$auth.fetchUser();
+        if (this.loggedIn) await this.$auth.fetchUser()
         this.$router.push(this.$localePath('/profile/announcements'), () => {
-          this.$toasted.success(this.$t('saved_changes'));
-        });
-      } catch ({response: {status, data: {data, message}}}) {
-        this.clearErrors();
-        this.pending = false;
+          this.$toasted.success(this.$t('saved_changes'))
+        })
+      } catch ({
+        response: {
+          status,
+          data: { data, message },
+        },
+      }) {
+        this.clearErrors()
+        this.pending = false
 
         if (status === 420) {
-          this.$toasted.error(this.$t(message));
+          this.$toasted.error(this.$t(message))
         } else {
           // find errors
-          let dataLength = data && Object.keys(data).length;
+          let dataLength = data && Object.keys(data).length
           if (dataLength) {
-            let count = 0;
+            let count = 0
             for (let key in data) {
-              let errorKey = key;
-              this.errors.push(errorKey);
-              let errorIndex = this.errors.indexOf(errorKey);
-              let errorText = `(${dataLength - errorIndex}/${dataLength}) ${data[key][0]}`;
+              let errorKey = key
+              this.errors.push(errorKey)
+              let errorIndex = this.errors.indexOf(errorKey)
+              let errorText = `(${dataLength - errorIndex}/${dataLength}) ${
+                data[key][0]
+              }`
               // show error
-              this.showError(errorKey, errorText, { fieldView: key, offset: this.isMobileBreakpoint ? 30 : -20 }, count === 0);
-              count++;
+              this.showError(
+                errorKey,
+                errorText,
+                { fieldView: key, offset: this.isMobileBreakpoint ? 30 : -20 },
+                count === 0,
+              )
+              count++
             }
           } else if (message && status !== 499) {
-            this.$toasted.error(this.$t(message));
+            this.$toasted.error(this.$t(message))
           }
         }
 
         // check if user logged in
         if (!this.showLoginPopup && status === 499) {
-          this.showLoginPopup = true;
+          this.showLoginPopup = true
         }
       }
     },
     updatePreview(key) {
       if (!key || key === 'region')
-        this.setSellPreviewData({ value: this.regions
-            .find(o => o.key === this.form.region_id)?.name[this.locale], key: 'region' });
+        this.setSellPreviewData({
+          value: this.regions.find((o) => o.key === this.form.region_id)?.name[
+            this.locale
+          ],
+          key: 'region',
+        })
       if (!key || key === 'currency')
-        this.setSellPreviewData({ value: this.getCurrencyOptions
-            .find(o => o.key === this.form.currency)?.sign, key: 'currency' });
+        this.setSellPreviewData({
+          value: this.getCurrencyOptions.find(
+            (o) => o.key === this.form.currency,
+          )?.sign,
+          key: 'currency',
+        })
       if (this.form.region_id && this.regions.length) {
         this.setSellPreviewData({
           key: 'region',
-          value: this.regions.find(r => r.id === this.form.region_id)?.name
-        });
+          value: this.regions.find((r) => r.id === this.form.region_id)?.name,
+        })
       }
       this.setSellPreviewData({
         key: 'price',
-        value: this.form.price
-      });
+        value: this.form.price,
+      })
       this.setSellPreviewData({
         key: 'is_negotiable',
-        value: this.form.is_negotiable
-      });
+        value: this.form.is_negotiable,
+      })
       this.setSellPreviewData({
         key: 'title',
-        value: this.form.title
-      });
+        value: this.form.title,
+      })
       this.setSellPreviewData({
         key: 'image',
-        value: this.files[0]?.preview
-      });
+        value: this.files[0]?.preview,
+      })
 
       // For tyres and rims
       if (this.form.shine_width) {
         this.setSellPreviewData({
           key: 'shine_width',
-          value: this.dynamicFilters
-            .find(f => f.key === 'shine_width')
-            ?.values
-            ?.find(v => v.id === this.form.shine_width)
-            ?.name || ''
-        });
+          value:
+            this.dynamicFilters
+              .find((f) => f.key === 'shine_width')
+              ?.values?.find((v) => v.id === this.form.shine_width)?.name || '',
+        })
       }
       if (this.form.diameter) {
         this.setSellPreviewData({
           key: 'diameter',
-          value: this.dynamicFilters
-            .find(f => f.key === 'diameter')
-            ?.values
-            ?.find(v => v.id === this.form.diameter)
-            ?.name || ''
-        });
+          value:
+            this.dynamicFilters
+              .find((f) => f.key === 'diameter')
+              ?.values?.find((v) => v.id === this.form.diameter)?.name || '',
+        })
       }
       if (this.form.height) {
         this.setSellPreviewData({
           key: 'height',
-          value: this.dynamicFilters
-            .find(f => f.key === 'height')
-            ?.values
-            ?.find(v => v.id === this.form.height)
-            ?.name || ''
-        });
+          value:
+            this.dynamicFilters
+              .find((f) => f.key === 'height')
+              ?.values?.find((v) => v.id === this.form.height)?.name || '',
+        })
       }
     },
     handleAfterLogin() {
-      this.resetSellTokens();
-      this.showLoginPopup = false;
-      this.publish();
+      this.resetSellTokens()
+      this.showLoginPopup = false
+      this.publish()
     },
     filesOnChange(files) {
       this.files = files
-    }
+    },
   },
   computed: {
     ...mapState(['sellPhoneEntered']),
     getCurrencyOptions() {
       return [
-        { key: 1, name: 'AZN', sign: '₼'	},
-        { key: 2, name: 'USD', sign: '$'	},
-        { key: 3, name: 'EUR', sign: '€'	}
-      ];
+        { key: 1, name: 'AZN', sign: '₼' },
+        { key: 2, name: 'USD', sign: '$' },
+        { key: 3, name: 'EUR', sign: '€' },
+      ]
     },
     conditionButtons() {
       return [
         {
           key: true,
-          name: this.$t('new')
-        },{
+          name: this.$t('new'),
+        },
+        {
           key: false,
-          name: this.$t('S_H')
-        }
+          name: this.$t('S_H'),
+        },
       ]
     },
     originalityButtons() {
       return [
         {
           key: true,
-          name: this.$t('original')
-        },{
+          name: this.$t('original'),
+        },
+        {
           key: false,
-          name: this.$t('duplicate')
-        }
+          name: this.$t('duplicate'),
+        },
       ]
     },
     categories() {
-      return this.$store.getters['parts/categories'].filter(c => c.show_on_form)
+      return this.$store.getters['parts/categories'].filter(
+        (c) => c.show_on_form,
+      )
     },
     subcategories() {
       return this?.filters?.sub_categories || []
@@ -697,18 +780,25 @@ export default {
       deep: true,
       handler() {
         this.updatePreview()
-      }
+      },
     },
     files: {
       deep: true,
       handler() {
         this.updatePreview()
+      },
+    },
+    'form.commercial_size':{
+      handler(){
+        if(this.form.commercial_size.length > 49){
+          this.$toasted.error(this.$t('max_50_symbol_can_be_added'))
+        }
       }
     }
   },
   beforeDestroy() {
-    this.$nuxt.$off('login', this.handleAfterLogin);
-    this.setSellPreviewData({ value: {} });
-  }
+    this.$nuxt.$off('login', this.handleAfterLogin)
+    this.setSellPreviewData({ value: {} })
+  },
 }
 </script>
