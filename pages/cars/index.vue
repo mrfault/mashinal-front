@@ -52,8 +52,18 @@ export default {
       description: this.$t('meta-descr_cars')
     });
   },
+  watch: {
+    '$route.query'(query) {
+      if(query && query.with_panorama == 'true') {
+        this.searchCars(1,true );
+      }
+    }
+  },
   async asyncData({ store, route, $auth }) {
     let post = JSON.parse(route.query.car_filter || '{}');
+    if(route.query.with_panorama == 'true') {
+      post = {...post,with_video: true}
+    }
     let page = route.query.page || 1;
     let searchParams = { url: '/grid/cars', prefix: 'cars' }
 
@@ -92,9 +102,13 @@ export default {
   methods: {
     ...mapActions(['getGridSearch']),
 
-    async searchCars(page = 1) {
+    async searchCars(page = 1, with_panorama = false) {
       page = this.$route.query.page || 1;
       let post = JSON.parse(this.$route.query.car_filter || '{}');
+      if(with_panorama) {
+        post = {...post,with_video: true}
+      }
+      console.log(post);
       this.pending = true;
       await this.getGridSearch({ ...this.searchParams, post, page });
       this.pending = false;

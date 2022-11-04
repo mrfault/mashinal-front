@@ -37,6 +37,7 @@ $ma-blue-1: #081a3e;
   font: 500 24px Gilroy;
   display: inline;
   text-align: center;
+
   &::before,
   &::after {
     position: absolute;
@@ -106,6 +107,7 @@ $ma-blue-1: #081a3e;
   .ma-alcometer {
     &-title-dotted {
       color: #f2eabd;
+      
       &::before,
       &::after {
         background: #f2eabd;
@@ -128,9 +130,11 @@ $ma-blue-1: #081a3e;
   .ma-alcometer__graph {
     &--speedometer {
       svg {
+        overflow: visible !important;
         .speedometer-division {
           path {
-            &:not(:first-of-type),&:not(:nth-of-type(1)) {
+            &:not(:first-of-type),
+            &:not(:nth-of-type(1)) {
               fill: #fff;
             }
           }
@@ -142,5 +146,17 @@ $ma-blue-1: #081a3e;
         border: 1px solid #fff;
       }
     }
+  }
+}
+
+@media (max-width: 1024px) {
+  .alcometer-container {
+    padding-top: 50px;
+  }
+}
+
+@media (max-width: 440px){
+  .ma-alcometer-title-dotted {
+    width: min-content !important;
   }
 }

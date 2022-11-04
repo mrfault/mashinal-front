@@ -145,7 +145,7 @@ export default {
           url: '/business-profile',
           hasAction: false,
           image: 'createshop',
-          isAvailable: true,
+          isAvailable: false,
         },
         {
           title: this.$t('alcometer'),
@@ -155,7 +155,7 @@ export default {
           url: '/alcometer',
           hasAction: false,
           image: 'alcometer',
-          isAvailable: false,
+          isAvailable: true,
         },
         {
           title: this.$t('visual_tire_calculator'),
@@ -165,7 +165,7 @@ export default {
           url: '/tiremeter',
           hasAction: false,
           image: 'car',
-          isAvailable: false,
+          isAvailable: true,
         },
       ],
     }

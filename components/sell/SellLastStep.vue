@@ -24,12 +24,13 @@
           ref="sellLastStepUploadImage"
         />
       <template v-if="user.autosalon && user.autosalon.access_to_360 && type === 'cars'">
-        <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-selectedColor">
+        <h2 class="title-with-line mt-2 mt-lg-3">
           <span>{{ $t('exterior') }}</span>
         </h2>
         <div class="d-flex align-items-center">
           <input type="file" name="file" id="file" @change="upload360Video" class="inputfile">
           <label for="file" :class="{pending: videoUploading }" class="btn btn--dark-blue-2">{{ $t('video_choose') }}</label>
+          <span class="ml-1" v-if="!videoUploaded && uploadPercentage">{{ uploadPercentage }}%</span>
           <span v-if="videoUploaded" class="ml-2" style="margin-bottom: 4px;"><icon style="color:green;font-size: 20px;" name="check-circle"/></span>
         </div>
       </template>
@@ -334,7 +335,8 @@ export default {
     return {
       now: (new Date).toLocaleDateString('en-US'),
       videoUploading: false,
-      videoUploaded: false,
+      uploadPercentage:0,
+      videoUploaded: this.announcement?.first_images_360 || false,
       collapsed: false,
       form: this.$clone(this.initialForm),
       date: Math.floor(Date.now() / 1000),
@@ -353,6 +355,9 @@ export default {
       showLoginPopup: false,
       pending: false
     }
+  },
+  mounted() {
+    setTimeout(() =>  this.scrollReset(),100)
   },
   computed: {
     ...mapState(['sellPhoneEntered']),
@@ -406,6 +411,13 @@ export default {
     ...mapActions(['setSellProgress', 'setSellPreviewData', 'resetSellTokens', 'getMyAllAnnouncements']),
     upload360Video(val) {
         if(!val.target.files[0]) return false;
+
+        if (val.target.files[0].size > 1024 * 1024 * 95) {
+          val.preventDefault();
+          this.$toast.error(this.$t('file_size_50'));
+          return;
+        }
+
         var formData = new FormData();
         formData.append("video", val.target.files[0]);
         this.uploading = true;
@@ -414,6 +426,9 @@ export default {
         this.$axios.post('/upload_temporary_video',
           formData,
           {
+            onUploadProgress: function( progressEvent ) {
+              this.uploadPercentage = parseInt( Math.round( ( progressEvent.loaded / progressEvent.total ) * 100 ) );
+            }.bind(this),
             headers: {
               'Content-Type': 'multipart/form-data'
             }
@@ -421,7 +436,7 @@ export default {
         ).then((res)=>{
           this.uploading = false;
           this.videoUploading = false;
-          this.videoUploaded = false;
+          this.videoUploaded = true;
           if (res.status==200){
             this.$toast.success(this.$t('video_360_successfully_upload'))
             this.form.video_360_id=res.data.data.id
@@ -573,6 +588,10 @@ export default {
       // wait till all images uploaded
       if (this.uploading) {
         this.$toasted.error(this.$t('please_wait_for_all_image_loading'));
+        return;
+      }
+      if (this.videoUploading) {
+        this.$toasted.error(this.$t('please_wait_for_all_video_loading'));
         return;
       }
       this.form.saved_images = this.savedFiles;

@@ -35,6 +35,10 @@
       top: 0;
       left: 0;
       z-index: 1;
+      text {
+        width: 175px;
+        text-align: center;
+      }
     }
     &--left {
       position: absolute;
@@ -78,6 +82,7 @@
         width: 100%;
         height: 100%;
         object-fit: contain;
+        object-position: bottom;
       }
       svg {
         &:nth-of-type(1) {
@@ -102,14 +107,17 @@
       &:not(:last-of-type) {
         border-bottom: 1px solid $greyish-blue-3;
       }
-      td {
-        &:last-of-type {
-          text-align: right;
-        }
-      }
+      // td {
+      //   &:last-of-type {
+      //     text-align: right;
+      //   }
+      // }
     }
     td {
       font: 400 15px Gilroy;
+      strong {
+        font: 500 15px Gilroy;
+      }
     }
     th {
       font: 500 15px Gilroy;
@@ -117,7 +125,7 @@
     th,
     td {
       color: $dark-blue-1;
-      padding: 13px 0;
+      padding: 13px 5px;
     }
   }
   &__results-text {
@@ -127,13 +135,16 @@
       padding-bottom: 4px;
       font: 500 16px Gilroy;
       &-d {
-        color: #29a53e;
+        color: #FAA300;
       }
       &-h {
         color: #f81734;
       }
       &-l {
-        color: $dark-blue-1;
+        color: #29a53e;
+      }
+      &::first-letter{
+        text-transform: uppercase;
       }
     }
     &--item {
@@ -225,7 +236,9 @@
           stroke: #fff !important;
         }
         text {
-          fill: #fff;
+          &:nth-of-type(2) {
+            fill: #fff;
+          }
         }
       }
     }
@@ -268,6 +281,18 @@
     }
   }
 }
+@media (max-width: 742px) {
+  .ma-tiremeter {
+    &__results {
+      &-text--item {
+        font-size: 13px;
+      }
+      &-table {
+        font-size: 12px;
+      }
+    }
+  }
+}
 
 @media (max-width: 440px) {
   .ma-tiremeter {
@@ -276,13 +301,36 @@
     }
     &__speedometer {
       svg {
-        &:nth-of-type(1) {
-          bottom: 8%;
-          height: 16%;
+        // &:nth-of-type(1) {
+        //   bottom: 8%;
+        //   height: 16%;
+        // }
+        // &:nth-of-type(2) {
+        //   bottom: 0%;
+        // }
+      }
+    }
+    &__results-table {
+      width: 100%;
+      margin-bottom: 93px;
+      tr {
+        &:not(:last-of-type) {
+          border-bottom: 1px solid $greyish-blue-3;
         }
-        &:nth-of-type(2) {
-          bottom: 0%;
+      }
+      td {
+        font: 400 12px Gilroy;
+        strong {
+          font: 500 12px Gilroy;
         }
+      }
+      th {
+        font: 500 12px Gilroy;
+      }
+      th,
+      td {
+        color: $dark-blue-1;
+        padding: 13px 5px;
       }
     }
   }
@@ -292,11 +340,12 @@
     &__speedometer {
       svg {
         &:nth-of-type(1) {
-          bottom: 12px;
+          // bottom: 12px;
+          height: 12px;
         }
-        &:nth-of-type(2) {
-          bottom: 10px;
-        }
+        // &:nth-of-type(2) {
+        //   bottom: 10px;
+        // }
       }
     }
   }

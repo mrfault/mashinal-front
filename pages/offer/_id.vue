@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="container">
+    <div class="container" >
       <div class="d-flex align-items-center user userBar  mt-3 mb-3">
 
      <span @click="$router.back()">
@@ -9,15 +9,14 @@
       </a>
   </span>
 
-        <div class="userImg"
-             :style="'background-image: url('+(offer.user.img ? offer.user.img : '/img/user.jpg')+')'"></div>
+         <div class="userImg" :style="'background-image: url('+(autoSalonOffer.data.auto_salon ? autoSalonOffer.data.auto_salon : '/images/offer/salon_no_logo.svg') +')'" ></div>
 
-        <p class="mt-2 ml-2 text-bold">
+        <p class="mt-2 ml-2 text-bold" >
           {{ offer.user.full_name }}
         </p>
-        <div class="actions" v-if="user_is_accepted">
+        <div class="actions" >
 
-              <span @click="deleteUserAutoSalonOffer(autoSalonOffer.auto_salon_offer_id)"
+              <span @click="deleteUserAutoSalonOffer(autoSalonOffer.data.auto_salon_offer_id)"
                     v-if="!autoSalonOffer.user_deleted_at"> <icon
                 name="garbage"></icon></span>
         </div>
@@ -31,87 +30,16 @@
           <div class="offerDetail" v-if="offer">
 
             <collapse-content :title="'Təklif'">
-
-              <div class="generations">
-                <div class="row">
-
-                  <div class="col-md-3" v-for="generation in offer.generations">
-                    <img :src="generation.img" class="generationImage" width="100%">
-                  </div>
-                  <div class="col-md-6">
-                    <div class="carName">
-
-                      <span class="carPrice">{{ offer.minPrice }} - {{ offer.maxPrice }} ₼</span>
-                      <h3>{{ offer.brand }} {{ offer.model }}</h3>
-
-                    </div>
-
-                  </div>
-
-                </div>
-
-              </div>
-              <div class="offerDetailContent">
-                <div class="offerDetailItem">
-                  <p>Brand</p>
-                  <span>{{ offer.brand }}</span>
-                </div>
-                <div class="offerDetailItem">
-                  <p>Model </p>
-                  <span>
-                  {{ offer.model }}
-                </span>
-                </div>
-
-                <div class="offerDetailItem">
-                  <p>Nəsil </p>
-                  <div>
-                  <span v-for=" (generation,index) in offer.generations">
-                  {{ generation.name }}
-                                      <div v-if="index != offer.generations.length - 1">,</div>
-                </span>
-
-
-                  </div>
-
-                </div>
-                <div class="offerDetailItem">
-
-                  <p>Sürətlər qutusu </p>
-                  <div>
-                <span v-for=" (gearbox,index) in offer.gear_boxes">
-                               {{ $t('box_values')[gearbox.gear_box_key] }}
-
-                  <div v-if="index != offer.gear_boxes.length - 1">,</div>
-                </span>
-
-                  </div>
-                </div>
-                <div class="offerDetailItem">
-                  <p>Yanacaq növü </p>
-                  <div>
-                <span v-for=" (fuel_type,index) in offer.fuel_types">
-
-                  {{ $t('engine_values')[fuel_type.fuel_type_key] }} <div
-                  v-if="index != offer.fuel_types.length - 1">,</div>
-
-                </span>
-                  </div>
-                </div>
-
-              </div>
-              <div class="text-right" v-if="!user_is_accepted">
-                <button class="btn  btn--green mt-3" @click="accept(userOffer.auto_salon_offer_id)">Sorğunu qəbul et
-                </button>
-              </div>
+            <offer-items :offer_items="offer.offer_items"/>
             </collapse-content>
 
 
-            <div v-if="user_is_accepted">
+            <div >
               <div class="messages">
                 <div class="message" :class=" isMyMessage(message) ? 'my' :'his' " v-for="message in offerMessages">
                   <div v-if="message.files.length>0" class="message-files">
-                    <div class="message-file" v-for="file in message.files">
+
+                    <div class="message-file" v-for="file in message.files"  @click="openLightbox(file)" >
                       <img :src="file" width="100%" class="p-1"/>
                     </div>
                     <div class="div m-1" v-if="message.files.length>0">
@@ -126,7 +54,7 @@
               </div>
             </div>
           </div>
-          <div class="addons" v-if="user_is_accepted">
+          <div class="addons" >
             <offer-message
               @type="handleTyping"
               @attach="handleFiles"
@@ -141,21 +69,54 @@
             <div class="addLink"></div>
           </div>
         </div>
+        <div class="inner-gallery-lightbox" v-touch:swipe.top="handleSwipeTop">
+          <template v-if="isMobileBreakpoint">
+            <FsLightbox
+              :toggler="toggleFsLightbox"
+              :sources="attachments"
+              :slide="currentSlide + 1"
+              :key="lightboxKey"
+              :onClose="refreshLightbox"
+              :onBeforeClose="onBeforeClose"
+              :disableThumbs="true"
+              :onSlideChange="changeLightboxSlide"
+            />
+          </template>
+          <transition-group name="fade">
+            <template v-if="(showLightbox && isMobileBreakpoint) || (!isMobileBreakpoint && showImagesSlider)">
+              <div class="blur-bg" :key="0">
+                <img :src="$withBaseUrl(attachments[currentSlide])" alt="" />
+              </div>
+              <div class="blur-bg_slider" :key="1" v-if="!isMobileBreakpoint">
+                <images-slider
+                  :current-slide="currentSlide"
+                  :slides="{ main: attachments }"
+                  @close="closeLightbox"
+                  @slide-change="currentSlide = $event"
+                />
+              </div>
+            </template>
+          </transition-group>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import FsLightbox from 'fslightbox-vue';
+import ImagesSlider from '~/components/elements/ImagesSlider';
 import OfferMessage from "~/components/offer/offer-message";
 import CollapseContent from "~/components/elements/CollapseContent";
 import {mapGetters} from "vuex";
 import {ImageResizeMixin} from "~/mixins/img-resize";
+import OfferItems from "~/components/offer/offerItems";
+import {offerImageView} from "~/mixins/offer-image-view";
 
 export default {
   name: "offer-detail",
-  components: {CollapseContent, OfferMessage},
-  mixins: [ImageResizeMixin],
+  components: {OfferItems, CollapseContent, OfferMessage},
+  mixins: [ImageResizeMixin,offerImageView],
   async asyncData({store, route, $axios}) {
     await store.dispatch('getOffer', {
       id: route.params.id,
@@ -182,7 +143,6 @@ export default {
         text: '',
       },
       search: '',
-      autoSalonOffer: null,
       files: [],
       userOffer:null,
       auto_salon_offer_id:null,
@@ -269,11 +229,11 @@ export default {
     ...mapGetters({
       offerMessages: 'getOfferMessages',
       userOffers: 'OffersAcceptedByAutoSalon',
+      autoSalonOffer:'getOffer'
     }),
     offer() {
-      var autoSalonOffer = this.$store.getters['getOffer'];
-      this.autoSalonOffer = autoSalonOffer.data
-      return this.autoSalonOffer.offer
+      return this.autoSalonOffer.data.offer
+
 
     }
   },

@@ -32,6 +32,7 @@
       <template v-if="!isMobileBreakpoint && !isChatBot && group.announce">
         <span class="divider"></span>
         <div class="chat-inner-announcement user-select-none">
+
           <img class="cursor-pointer" :src="chatAnnouncementThumb" alt="" @click.stop="$emit('go-to-announcement', group)" />
           <span class="cursor-pointer" @click.stop="$emit('go-to-announcement', group)">
             {{ getAnnouncementTitle(chatAnnouncement) }}<br/>

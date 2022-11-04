@@ -1,6 +1,6 @@
 <template>
   <div class="pages-catalog">
-    <div class="container">
+    <div class="container alcometer-container">
       <breadcrumbs :crumbs="crumbs">
         <share-it type="publish" v-if="$route.params.body" />
       </breadcrumbs>
@@ -10,7 +10,7 @@
             <span>{{ $t('visual_tire_calculator') }}</span>
           </h2>
           <div class="row">
-            <div class="col-12 col-md-12 col-lg-5 col-xl-3">
+            <div class="col-12 col-md-12 col-lg-5 col-xl-3-10">
               <div class="ma-tiremeter__card--input-group">
                 <h6 class="ma-tiremeter__card--input-group__title">
                   {{ $t('size_of_old_tire') }}
@@ -20,6 +20,8 @@
                   :allowClear="false"
                   :clearOption="false"
                   v-model="form.tireWidth.old"
+                  :label="$t('size_of_old_tire')"
+                  showLabelOnlyOnActionBar
                 />
                 <span class="ma-tiremeter__card--input-group__spacer">/</span>
                 <form-select
@@ -27,6 +29,8 @@
                   :allowClear="false"
                   :clearOption="false"
                   v-model="form.profile.old"
+                  :label="$t('size_of_old_tire')"
+                  showLabelOnlyOnActionBar
                 />
                 <span class="ma-tiremeter__card--input-group__spacer">R</span>
                 <form-select
@@ -34,6 +38,8 @@
                   :allowClear="false"
                   :clearOption="false"
                   v-model="form.radius.old"
+                  :label="$t('size_of_old_tire')"
+                  showLabelOnlyOnActionBar
                 />
               </div>
               <div class="ma-tiremeter__card--input-group">
@@ -45,12 +51,17 @@
                   :allowClear="false"
                   :clearOption="false"
                   v-model="form.tireWidth.new"
+                  :label="$t('size_of_new_tire')"
+                  showLabelOnlyOnActionBar
                 />
                 <span class="ma-tiremeter__card--input-group__spacer">/</span>
                 <form-select
                   :options="profileWidth"
                   :allowClear="false"
+                  :clearOption="false"
                   v-model="form.profile.new"
+                  :label="$t('size_of_new_tire')"
+                  showLabelOnlyOnActionBar
                 />
                 <span class="ma-tiremeter__card--input-group__spacer">R</span>
                 <form-select
@@ -58,11 +69,13 @@
                   :allowClear="false"
                   :clearOption="false"
                   v-model="form.radius.new"
+                  :label="$t('size_of_new_tire')"
+                  showLabelOnlyOnActionBar
                 />
               </div>
             </div>
             <div
-              class="col-12 col-md-12 col-lg-7 col-xl-5 pt-5 pt-lg-0 d-flex justify-content-center"
+              class="col-12 col-md-12 col-lg-7 col-xl-4-10 pt-5 pt-lg-0 d-flex justify-content-center"
             >
               <tires
                 :oldExternalDiameter="oldExternalDiameter"
@@ -71,16 +84,21 @@
                 :newDiscDiameter="newDiscDiameter / 10"
                 :oldProfileHeight="oldProfileHeight"
                 :newProfileHeight="newProfileHeight"
-                :oldTireWidth="form.tireWidth.old"
-                :newTireWidth="form.tireWidth.new"
+                :oldTireWidth="form.tireWidth.old / 10"
+                :newTireWidth="form.tireWidth.new / 10"
               ></tires>
             </div>
-            <div class="col-4 col-md-5 col-lg-5 col-xl-1">
-              <speedometer :percententage="speedometerErrorPercentage" />
+            <div class="col-4 col-md-5 col-lg-5 col-xl-1-10">
+              <speedometer :percententage="speedometerErrorPercentage * -1" />
             </div>
-            <div class="col-8 col-md-7 col-lg-7 col-xl-3">
-              <clearance :value="clearanceChange" />
+            <div class="col-8 col-md-7 col-lg-7 col-xl-2-10">
+              <clearance :value="clearanceChange / 10" />
             </div>
+          </div>
+          <div class="submit-button mt-3 d-flex justify-content-end mr-1 pb-2">
+            <button class="btn btn--green" @click="submit()">
+              {{ $t('calculate') }}
+            </button>
           </div>
         </div>
 
@@ -89,7 +107,8 @@
         <!-- ------------------------------------------------------------------- -->
         <div
           class="ma-tiremeter__card"
-          v-if="lists.d.length || lists.h.length || lists.l.length"
+          v-if="showResults"
+          id="tiremeterTextResults"
         >
           <h2 class="title-with-line full-width mb-2">
             <span>{{ $t('result_of_calculation') }}</span>
@@ -98,7 +117,7 @@
             <tr class="ma-tiremeter__results-table--header">
               <th>{{ $t('dimensions_tire') }}</th>
               <th>{{ $t('previous_version') }}</th>
-              <th>{{ $t('new') }}</th>
+              <th>{{ $t('new_1') }}</th>
               <th>{{ $t('change_noun') }}</th>
             </tr>
             <tr>
@@ -150,32 +169,44 @@
               </td>
             </tr>
             <tr>
-              <td></td>
-              <td></td>
-              <td>{{ $t('clearance_change') }}</td>
+              <td v-if="!isMobileBreakpoint"></td>
+              <td v-if="!isMobileBreakpoint"></td>
               <td>
+                <strong>{{ $t('clearance_change') }}</strong>
+              </td>
+              <td>
+                <template v-if="clearanceChange > 0">+</template>
                 {{ clearanceChange }}
                 {{ $t('char_millimetre') }}
               </td>
             </tr>
             <tr>
-              <td></td>
-              <td></td>
-              <td>{{ $t('speedometer_error_percentage') }}</td>
-              <td>{{ speedometerErrorPercentage }} %</td>
+              <td v-if="!isMobileBreakpoint"></td>
+              <td v-if="!isMobileBreakpoint"></td>
+              <td>
+                <strong>{{ $t('speedometer_error_percentage') }}</strong>
+              </td>
+              <td>
+                <template v-if="speedometerErrorPercentage < 0">+</template>
+                {{ speedometerErrorPercentage * -1 }} %
+              </td>
             </tr>
           </table>
-          <div class="row mt-5 mt-lg-0" id="tiremeterTextResults">
-            <div class="col-12 col-lg-6">
+          <div class="row mt-5 mt-lg-0">
+            <div class="col-12 col-lg-6" v-if="showTextResults">
               <text-results
                 :listH="lists.h"
                 :listD="lists.d"
                 :listL="lists.l"
-                :errorPercentage="speedometerErrorPercentage"
+                :errorPercentage="speedometerErrorPercentageForTextResults"
+                :increase="lists.increase"
               />
             </div>
             <div class="col-12 col-lg-6 mt-5 mt-lg-0">
-              <how-to></how-to>
+              <how-to
+                :showTextResults="showTextResults"
+                :speedometerErrorPercentage="speedometerErrorPercentage"
+              ></how-to>
             </div>
           </div>
           <span></span>
@@ -186,7 +217,7 @@
 </template>
 
 <script>
-import Tires from '../components/tiremeter/tires.vue'
+import Tires from '~/components/tiremeter/tires.vue'
 import Speedometer from '~/components/tiremeter/speedometer.vue'
 import Clearance from '~/components/tiremeter/clearance.vue'
 import TextResults from '~/components/tiremeter/textResults.vue'
@@ -204,18 +235,11 @@ export default {
       title: this.$t('visual_tire_calculator'),
     })
   },
-  computed: {
-    isRussian() {
-      if (this.$i18n.locale == 'ru') {
-        return true
-      } else {
-        return false
-      }
-    },
-  },
   data() {
     return {
       crumbs: [{ name: this.$t('visual_tire_calculator') }],
+      showResults: false,
+      showTextResults: false,
       tireWidth: [
         {
           name: '30',
@@ -353,7 +377,7 @@ export default {
       profileWidth: [
         {
           name: '9',
-          key: 10,
+          key: 9,
         },
         {
           name: '9.5',
@@ -483,12 +507,12 @@ export default {
           new: 165,
         },
         profile: {
-          old: 80,
+          old: 70,
           new: 70,
         },
         radius: {
           old: 13,
-          new: 18,
+          new: 13,
         },
         old: {
           radius: null,
@@ -498,6 +522,11 @@ export default {
         d: [],
         h: [],
         l: [],
+        increase: {
+          d: false,
+          h: false,
+          l: false,
+        },
       },
       tiremeterModels: {
         a1: [
@@ -620,9 +649,17 @@ export default {
           },
         ],
       },
+      speedometerErrorPercentageForTextResults: null,
     }
   },
   computed: {
+    isRussian() {
+      if (this.$i18n.locale == 'ru') {
+        return true
+      } else {
+        return false
+      }
+    },
     oldExternalDiameter() {
       return (
         Math.round(
@@ -658,26 +695,38 @@ export default {
     },
 
     // D
+    oldD() {
+      return Math.round(
+        this.oldExternalDiameter * this.oldDiscDiameter * 0.02 +
+          this.form.radius.old * 25.4,
+      )
+    },
+    newD() {
+      return Math.round(
+        this.newExternalDiameter * this.newDiscDiameter * 0.02 +
+          this.form.radius.new * 25.4,
+      )
+    },
+
+    //B
     oldProfileHeight() {
       return (
-        Math.round(
-          ((this.oldExternalDiameter - this.oldDiscDiameter / 10) / 2) * 10,
-        ) / 10
+        Math.round((this.form.tireWidth.old * this.form.profile.old) / 100) / 10
       )
     },
     newProfileHeight() {
       return (
-        Math.round(
-          ((this.newExternalDiameter - this.newDiscDiameter / 10) / 2) * 10,
-        ) / 10
+        Math.round((this.form.tireWidth.new * this.form.profile.new) / 100) / 10
       )
     },
+    oldB() {
+      return this.oldProfileHeight * 10
+    },
+    newB() {
+      return this.newProfileHeight * 10
+    },
     profileHeightDifference() {
-      return (
-        Math.round(
-          (this.oldProfileHeight * 10 - this.newProfileHeight * 10) * 10,
-        ) / 10
-      )
+      return Math.round((this.oldB - this.newB) * 10) / 10
     },
 
     clearanceChange() {
@@ -714,59 +763,94 @@ export default {
   },
   methods: {
     findTextResults() {
-      var oldD = this.oldProfileHeight
-      var newD = this.newProfileHeight
-      var oldC = this.oldDiscDiameter
-      var newC = this.newDiscDiameter
-
-      var oldB = Math.round((oldD - oldC) / 2)
-      var newB = Math.round((newD - newC) / 2)
-
-      var f = oldB / 10
-      var g = newB / 10
-
-      var c =
-        Math.round(
-          25.4 * this.form.radius.new +
-            (this.form.tireWidth.new * this.form.profile.new * 2) / 100,
-        ) / 10
+      var f =
+        Math.round((this.form.tireWidth.old * this.form.profile.old) / 100) / 10
+      var g =
+        Math.round((this.form.tireWidth.new * this.form.profile.new) / 100) / 10
       var b =
         Math.round(
           25.4 * this.form.radius.old +
             (this.form.tireWidth.old * this.form.profile.old * 2) / 100,
         ) / 10
+      var c =
+        Math.round(
+          25.4 * this.form.radius.new +
+            (this.form.tireWidth.new * this.form.profile.new * 2) / 100,
+        ) / 10
+      var h = Math.round(25.4 * this.form.radius.old) / 10
+      var k = Math.round(25.4 * this.form.radius.new) / 10
+
+      var oldA = this.form.tireWidth.old
+      var oldB = 10 * f
+      var oldC = 10 * h
+      var oldD = 10 * b
+      var newA = this.form.tireWidth.new
+      var newB = 10 * g
+      var newC = 10 * k
+      var newD = 10 * c
+
+      var diffA = Math.round(this.form.tireWidth.old - this.form.tireWidth.new)
+      var diffB = Math.round(10 * (f - g))
+      var diffC = Math.round(10 * (h - k))
+      var diffD = Math.round(10 * (b - c))
 
       if (g > f) {
         this.lists.h = this.tiremeterModels.c1
+        this.lists.increase.h = true
       } else if (f > g) {
         this.lists.h = this.tiremeterModels.c2
+        this.lists.increase.h = false
+      } else {
+        this.lists.h = []
       }
 
-      console.log('asdas', this.tiremeterModels.a1)
-      console.log('c>b', c > b)
-      console.log('c<b', c < b)
-      if (c > b) {
-        this.lists.d = this.tiremeterModels.a1
-      } else if (b > c) {
+      if (c < b) {
         this.lists.d = this.tiremeterModels.a2
+        this.lists.increase.d = false
+      } else if (c > b) {
+        this.lists.d = this.tiremeterModels.a1
+        this.lists.increase.d = true
+      } else {
+        this.lists.d = []
       }
 
       if (this.form.tireWidth.old > this.form.tireWidth.new) {
         this.lists.l = this.tiremeterModels.d2
+        this.lists.increase.l = false
       } else if (this.form.tireWidth.new > this.form.tireWidth.old) {
         this.lists.l = this.tiremeterModels.d1
+        this.lists.increase.l = true
+      } else {
+        this.lists.l = []
       }
+    },
+    async submit() {
+      await this.findTextResults()
+      this.showResults = true
+
+      this.speedometerErrorPercentageForTextResults = this.speedometerErrorPercentage
       if (this.isMobileBreakpoint) {
         setTimeout(() => {
           const el = document.querySelector('#tiremeterTextResults')
-           el.scrollIntoView({block:'start', behavior: 'smooth'});
+          el.scrollIntoView({ block: 'start', behavior: 'smooth' })
         }, 500)
-
       } else {
         setTimeout(() => {
           const el = document.querySelector('#tiremeterTextResults')
-          window.scrollTo({ top: 800, behavior: 'smooth' })
+          el.scrollIntoView({ block: 'start', behavior: 'smooth' })
+          window.scrollTo({ top: 360, behavior: 'smooth' })
         }, 500)
+      }
+
+      if (
+        !this.lists.d.length &&
+        !this.lists.h.length &&
+        !this.lists.l.length &&
+        this.speedometerErrorPercentage == 0
+      ) {
+        this.showTextResults = false
+      } else {
+        this.showTextResults = true
       }
     },
   },
@@ -774,7 +858,7 @@ export default {
     form: {
       deep: true,
       handler() {
-        this.findTextResults()
+        this.showResults = false
       },
     },
   },

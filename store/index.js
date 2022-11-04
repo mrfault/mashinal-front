@@ -1,17 +1,17 @@
 import _ from '~/lib/underscore'
-import { mutate, reset } from '~/lib/vuex-helpers/mutations'
-import offer from "~/components/offer/offer";
-
+import {mutate, reset} from '~/lib/vuex-helpers/mutations'
+import Vue from 'vue'
+import uuid from 'uuid'
 
 const getInitialState = () => ({
   loading: true,
   colorMode: 'light',
-  partAnnouncements:{},
+  partAnnouncements: {},
   breakpoint: null,
-  newOfferCount:0,
+  newOfferCount: 0,
   ptk: null,
-  temporaryLazyData:[],
-  temporaryLazyDataB:[],
+  temporaryLazyData: [],
+  temporaryLazyDataB: [],
   menus: [],
   staticPages: [],
   pageRef: '',
@@ -62,21 +62,21 @@ const getInitialState = () => ({
   catalogForm: {},
   // brands
   brands: [],
-  commercialBrands: { 0: [], 1: [], 2: [], 3: [], 4: [] },
+  commercialBrands: {0: [], 1: [], 2: [], 3: [], 4: []},
   // models
   models: [],
-  atvModels: { 0: [], 1: [], 2: [], 3: [], 4: [] },
-  motorcycleModels: { 0: [], 1: [], 2: [], 3: [], 4: [] },
-  commercialModels: { 0: [], 1: [], 2: [], 3: [], 4: [] },
-  scooterModels: { 0: [], 1: [], 2: [], 3: [], 4: [] },
-  carModels: { 0: [], 1: [], 2: [], 3: [], 4: [] },
-  carModelsExclude: { 0: [], 1: [], 2: [], 3: [], 4: [] },
+  atvModels: {0: [], 1: [], 2: [], 3: [], 4: []},
+  motorcycleModels: {0: [], 1: [], 2: [], 3: [], 4: []},
+  commercialModels: {0: [], 1: [], 2: [], 3: [], 4: []},
+  scooterModels: {0: [], 1: [], 2: [], 3: [], 4: []},
+  carModels: {0: [], 1: [], 2: [], 3: [], 4: []},
+  carModelsExclude: {0: [], 1: [], 2: [], 3: [], 4: []},
   modelDescription: false,
   // generations`
   generations: [],
   generationTypes: [],
-  carGenerations: { 0: [], 1: [], 2: [], 3: [], 4: [] },
-  carGenerationsExclude: { 0: [], 1: [], 2: [], 3: [], 4: [] },
+  carGenerations: {0: [], 1: [], 2: [], 3: [], 4: []},
+  carGenerationsExclude: {0: [], 1: [], 2: [], 3: [], 4: []},
   carTypeName: {},
   firstGeneration: false,
   firstGenerationEquipments: [],
@@ -138,14 +138,45 @@ const getInitialState = () => ({
   // garage
   selectedVehicleList: [],
   selectedVehiclesPrice: 0,
-  offers:[],
-  offer:null,
-  current_offer_id:null,
-  OffersAcceptedByAutoSalon:{},
-  offerMessages:[],
-  isFavorite:false,
-  offerPartners:[],
-  offerPartnersMeta:{}
+  offers: [],
+  offer: null,
+  current_offer_id: null,
+  OffersAcceptedByAutoSalon: {},
+  offerMessages: [],
+  isFavorite: false,
+  offerPartners: [],
+  offerPartnersMeta: {},
+  offer_announcement_count: [
+    {
+      key: uuid.v4(),
+      collapsed: false
+    }
+  ],
+
+  offer_announcements: [],
+  offer_selected_models: [
+    {
+      logo: null,
+      img: null,
+      brand: '',
+      model: '',
+      price: null,
+      year: null
+    },
+    {
+      logo: null,
+      img: null,
+      brand: '',
+      model: '',
+      price: null,
+      year: null
+    }
+  ],
+  offer_id: null,
+  showOfferPaymentModal: false,
+  offer_add_is_loader: false,
+  offer_faq:null,
+  user_deleted_auto_salon_offers:[]
 
 })
 
@@ -209,7 +240,7 @@ export const getters = {
   carsAnnouncements: (s) => s.carsAnnouncements,
   motoAnnouncements: (s) => s.motoAnnouncements,
   commercialAnnouncements: (s) => s.commercialAnnouncements,
-  shopAnnouncements:  (s) => {
+  shopAnnouncements: (s) => {
     return s.shopAnnouncements
   },
   partAnnouncements: (s) => s.partAnnouncements,
@@ -301,20 +332,27 @@ export const getters = {
   selectedVehicleList: (s) => s.selectedVehicleList,
   selectedVehiclesPrice: (s) => s.selectedVehiclesPrice,
   offers: (s) => s.offers,
-  OffersAcceptedByAutoSalon:(s)=>s.OffersAcceptedByAutoSalon,
-  getOfferMessages:(s)=>s.offerMessages,
-  isFavorite:(s)=>s.isFavorite,
-  getOfferPartners:(s)=>s.offerPartners,
-  getOfferPartnersMeta:(s)=>s.offerPartnersMeta,
-  getOffer:(s)=>s.offer,
-  getNewOfferCount:(s)=>s.newOfferCount,
+  OffersAcceptedByAutoSalon: (s) => s.OffersAcceptedByAutoSalon,
+  getOfferMessages: (s) => s.offerMessages,
+  isFavorite: (s) => s.isFavorite,
+  getOfferPartners: (s) => s.offerPartners,
+  getOfferPartnersMeta: (s) => s.offerPartnersMeta,
+  getOffer: (s) => s.offer,
+  getNewOfferCount: (s) => s.newOfferCount,
+  offerAnnouncementsCount: (s) => s.offer_announcement_count,
+  offerAnnouncements: (s) => s.offer_announcements,
+  offerSelectedModels: (s) => s.offer_selected_models,
+  showOfferPaymentModal: (s) => s.showOfferPaymentModal,
+  offerAddIsLoader: (s) => s.offer_add_is_loader,
+  getOfferFaq:(s)=>s.offer_faq,
+  getUserDeletedAutoSalonOffer: (s) => s.user_deleted_auto_salon_offers,
 
 }
 
 const objectNotEmpty = (state, commit, property) => {
   if (state['needResetOptions'].includes(property)) {
     let arr = state['needResetOptions'].filter((p) => p !== property)
-    commit('mutate', { property: 'needResetOptions', value: arr })
+    commit('mutate', {property: 'needResetOptions', value: arr})
     return false
   }
   return (
@@ -324,7 +362,7 @@ const objectNotEmpty = (state, commit, property) => {
 }
 
 export const actions = {
-  async nuxtServerInit({ dispatch, commit }) {
+  async nuxtServerInit({dispatch, commit}) {
     if (!this.$auth.loggedIn) {
       this.$auth.setUser(false)
       await this.$auth.logout()
@@ -353,58 +391,58 @@ export const actions = {
         .toUpperCase()
 
     if (!this.$cookies.get('ptk')) {
-      this.$cookies.set('ptk', ptk, { maxAge: 5 * 60 })
+      this.$cookies.set('ptk', ptk, {maxAge: 5 * 60})
     }
 
-    commit('mutate', { property: 'ptk', value: ptk })
+    commit('mutate', {property: 'ptk', value: ptk})
   },
   // Loading
-  setLoading({ commit }, loading) {
-    commit('mutate', { property: 'loading', value: loading })
+  setLoading({commit}, loading) {
+    commit('mutate', {property: 'loading', value: loading})
   },
   // Dark/Light theme
-  setColorMode({ commit }, theme) {
-    commit('mutate', { property: 'colorMode', value: theme })
+  setColorMode({commit}, theme) {
+    commit('mutate', {property: 'colorMode', value: theme})
   },
   // Grid
-  setGridBreakpoint({ commit }, breakpoint) {
-    commit('mutate', { property: 'breakpoint', value: breakpoint })
+  setGridBreakpoint({commit}, breakpoint) {
+    commit('mutate', {property: 'breakpoint', value: breakpoint})
   },
   // Footer
-  setFooterVisibility({ commit }, show) {
-    commit('mutate', { property: 'hideFooter', value: !show })
+  setFooterVisibility({commit}, show) {
+    commit('mutate', {property: 'hideFooter', value: !show})
   },
   // Localization
-  async changeLocale({ dispatch }, locale) {
+  async changeLocale({dispatch}, locale) {
     let changed = locale !== this.$i18n.locale
     this.$i18n.setLocale(locale)
     // update options in store
     if (changed) dispatch('resetOptions')
   },
   // Pages
-  async getMenus({ commit }) {
+  async getMenus({commit}) {
     const res = await this.$axios.$get('/menus')
-    commit('mutate', { property: 'menus', value: res })
+    commit('mutate', {property: 'menus', value: res})
   },
-  async getStaticPages({ commit }) {
+  async getStaticPages({commit}) {
     const res = await this.$axios.$get('/get_static_pages')
-    commit('mutate', { property: 'staticPages', value: res })
+    commit('mutate', {property: 'staticPages', value: res})
   },
-  setPageRefs({ commit }, { index, path }) {
-    commit('mutate', { property: 'pageRefs', key: index, value: path })
+  setPageRefs({commit}, {index, path}) {
+    commit('mutate', {property: 'pageRefs', key: index, value: path})
   },
-  setPageRef({ commit }, path) {
-    commit('mutate', { property: 'pageRef', value: path })
+  setPageRef({commit}, path) {
+    commit('mutate', {property: 'pageRef', value: path})
   },
 
-  async getNotifications({ commit }, page = null) {
+  async getNotifications({commit}, page = null) {
     const data = await this.$axios.$get(
       '/notifications?with_pagination=true&' + page,
     )
-    commit('mutate', { property: 'notifications', value: data })
+    commit('mutate', {property: 'notifications', value: data})
   },
   // Messages
-  async getMessages({ commit, state }, groupId) {
+  async getMessages({commit, state}, groupId) {
     const res = await this.$axios.$get('/profile/messages')
     let messages = []
     if (groupId) {
@@ -413,20 +451,20 @@ export const actions = {
       )
     }
 
-    commit('mutate', { property: 'messages', value: res })
-    commit('appendMessagesToGroup', { setAllEmpty: true })
+    commit('mutate', {property: 'messages', value: res})
+    commit('appendMessagesToGroup', {setAllEmpty: true})
 
     if (groupId && messages.length) {
       let groupIndex = state.messages.findIndex((group) => group.id == groupId)
 
       if (groupIndex !== -1) {
         if (!state.messages[groupIndex].messages_loaded) {
-          commit('appendMessagesToGroup', { groupIndex, messages })
+          commit('appendMessagesToGroup', {groupIndex, messages})
         }
       }
     }
   },
-  async getGroupMessages({ commit, state }, groupId) {
+  async getGroupMessages({commit, state}, groupId) {
     let groupIndex = state.messages.findIndex((group) => group.id == groupId)
 
     if (groupIndex !== -1) {
@@ -434,125 +472,125 @@ export const actions = {
         const messages = await this.$axios.$get(
           '/profile/group/' + groupId + '/messages',
         )
-        commit('appendMessagesToGroup', { groupIndex, messages })
+        commit('appendMessagesToGroup', {groupIndex, messages})
       }
     }
   },
-  async getSuggestedMessages({ commit, state }) {
+  async getSuggestedMessages({commit, state}) {
     if (objectNotEmpty(state, commit, 'suggestedMessages')) return
     const res = await this.$axios.$get('/profile/suggestedMessages')
-    commit('mutate', { property: 'suggestedMessages', value: res })
+    commit('mutate', {property: 'suggestedMessages', value: res})
   },
-  async sendMessage({ commit }, data) {
+  async sendMessage({commit}, data) {
     const res = await this.$axios.$post('/profile/messages', data.form)
-    commit('appendToMessage', { group: data.activeGroup, message: res })
+    commit('appendToMessage', {group: data.activeGroup, message: res})
   },
-  async createMessagesGroup({ commit }, data) {
+  async createMessagesGroup({commit}, data) {
     const res = await this.$axios.$post(
       '/profile/messages/' + data.recipientId,
-      { id_unique: data.announceId },
+      {id_unique: data.announceId},
     )
-    commit('appendMessageToGroup', { group: res })
+    commit('appendMessageToGroup', {group: res})
     return res
   },
-  async removeMessageGroup({ commit }, id) {
+  async removeMessageGroup({commit}, id) {
     await this.$axios.$get('/profile/messages/' + id + '/remove')
-    commit('removeGroup', { groupId: id })
+    commit('removeGroup', {groupId: id})
   },
-  markAsRead({ commit }, id) {
+  markAsRead({commit}, id) {
     this.$axios.$get('/profile/messages/' + id + '/read')
-    commit('markAsRead', { groupId: id })
+    commit('markAsRead', {groupId: id})
   },
   async blockUser({}, data) {
     await this.$axios.$post('/profile/messages/' + data.id + '/block')
   },
   // Favorites
-  async getFavorites({ commit }) {
+  async getFavorites({commit}) {
     const res = await this.$axios.$get('/announce/favorites')
-    commit('mutate', { property: 'favorites', value: res })
+    commit('mutate', {property: 'favorites', value: res})
   },
-  async addToFavorites({ commit }, id) {
-    commit('addToFavorites', { id })
+  async addToFavorites({commit}, id) {
+    commit('addToFavorites', {id})
     await this.$axios.$post(`/announce/${id}/favorite`)
   },
-  async getFavoriteAnnouncements({ commit }, data = {}) {
+  async getFavoriteAnnouncements({commit}, data = {}) {
     const res = await this.$axios.$get(
       `/my/saved/all-announce?page=${data.page || 1}`,
     )
-    commit('mutate', { property: 'favoriteAnnouncements', value: res })
+    commit('mutate', {property: 'favoriteAnnouncements', value: res})
   },
-  async getNotViewedFavorites({ commit }) {
+  async getNotViewedFavorites({commit}) {
     const res = await this.$axios.$get(`/announce/saved/not-viewed-count`)
-    commit('mutate', { property: 'notViewedFavorites', value: res.data })
+    commit('mutate', {property: 'notViewedFavorites', value: res.data})
   },
-  async markViewedFavorites({ commit }) {
+  async markViewedFavorites({commit}) {
     const res = await this.$axios.$get(`/announce/saved/mark-viewed`)
-    commit('mutate', { property: 'notViewedFavorites', value: res.data })
+    commit('mutate', {property: 'notViewedFavorites', value: res.data})
   },
   // Saved search
-  async getSavedSearch({ commit }) {
+  async getSavedSearch({commit}) {
     const res = await this.$axios.$get('/saved-search')
-    commit('mutate', { property: 'savedSearchList', value: res })
+    commit('mutate', {property: 'savedSearchList', value: res})
   },
-  async createSavedSearch({ commit }, data) {
+  async createSavedSearch({commit}, data) {
     const res = await this.$axios.$post('/saved-search', data)
-    commit('mutate', { property: 'singleSavedSearch', value: res })
+    commit('mutate', {property: 'singleSavedSearch', value: res})
   },
-  async fetchSavedSearch({ commit }, data) {
+  async fetchSavedSearch({commit}, data) {
     const res = await this.$axios.$post('/one-saved-search', data)
-    commit('mutate', { property: 'singleSavedSearch', value: res || {} })
+    commit('mutate', {property: 'singleSavedSearch', value: res || {}})
   },
-  async deleteSavedSearch({ commit, state }, id) {
+  async deleteSavedSearch({commit, state}, id) {
     await this.$axios.$delete(`/saved-search/${id}`)
     const list = state.savedSearchList.filter((search) => search.id !== id)
-    commit('mutate', { property: 'savedSearchList', value: list })
-    commit('mutate', { property: 'singleSavedSearch', value: {} })
+    commit('mutate', {property: 'savedSearchList', value: list})
+    commit('mutate', {property: 'singleSavedSearch', value: {}})
   },
-  async deleteSavedSearchMultiple({ commit, state }, data) {
+  async deleteSavedSearchMultiple({commit, state}, data) {
     await this.$axios.$post(`/saved-search/delete_all`, data)
     const list = state.savedSearchList.filter(
       (search) => !data.ids.includes(search.id),
     )
-    commit('mutate', { property: 'savedSearchList', value: list })
-    commit('mutate', { property: 'singleSavedSearch', value: {} })
+    commit('mutate', {property: 'savedSearchList', value: list})
+    commit('mutate', {property: 'singleSavedSearch', value: {}})
   },
-  async updateSavedSearchNotificationsInterval({ commit, state }, data) {
+  async updateSavedSearchNotificationsInterval({commit, state}, data) {
     await this.$axios.$post('/saved-search-notification-interval', data)
     const list = state.savedSearchList.map((search) =>
       !data.id.includes(search.id)
         ? search
-        : { ...search, notification_interval: data.type },
+        : {...search, notification_interval: data.type},
     )
-    commit('mutate', { property: 'savedSearchList', value: list })
+    commit('mutate', {property: 'savedSearchList', value: list})
     commit('mutate', {
       property: 'singleSavedSearch',
       key: 'notification_interval',
       value: data.type,
     })
   },
-  clearSavedSearch({ commit }) {
-    commit('mutate', { property: 'singleSavedSearch', value: {} })
+  clearSavedSearch({commit}) {
+    commit('mutate', {property: 'singleSavedSearch', value: {}})
   },
-  async getNotViewedSavedSearch({ commit }) {
+  async getNotViewedSavedSearch({commit}) {
     const res = await this.$axios.$get(`/saved-search/not-viewed-count`)
-    commit('mutate', { property: 'notViewedSavedSearch', value: res.data })
+    commit('mutate', {property: 'notViewedSavedSearch', value: res.data})
   },
-  async markViewedSavedSearch({ commit }) {
+  async markViewedSavedSearch({commit}) {
     const res = await this.$axios.$get(`/saved-search/mark-viewed`)
-    commit('mutate', { property: 'notViewedSavedSearch', value: res.data })
+    commit('mutate', {property: 'notViewedSavedSearch', value: res.data})
   },
   // Services
-  async getMyActives({ commit }) {
+  async getMyActives({commit}) {
     const res = await this.$axios.$get(`/my/actives`)
-    commit('mutate', { property: 'actives', value: res })
+    commit('mutate', {property: 'actives', value: res})
   },
   // Brands
-  async getBrands({ commit, state }) {
+  async getBrands({commit, state}) {
     if (objectNotEmpty(state, commit, 'brands')) return
     const res = await this.$axios.$get('/brands')
-    commit('mutate', { property: 'brands', value: res })
+    commit('mutate', {property: 'brands', value: res})
   },
-  async getCommercialBrands({ commit }, data) {
+  async getCommercialBrands({commit}, data) {
     const res = await this.$axios.$get(
       `/commercial/get_brands/${data.category}`,
     )
@@ -563,11 +601,11 @@ export const actions = {
     })
   },
   // Models
-  async getModels({ commit }, name) {
+  async getModels({commit}, name) {
     const res = await this.$axios.$get(`/brand/${name}/models`)
-    commit('mutate', { property: 'models', value: res })
+    commit('mutate', {property: 'models', value: res})
   },
-  async getCommercialModels({ commit }, data) {
+  async getCommercialModels({commit}, data) {
     const res = await this.$axios.$get(
       `/commercial/type/${data.category}/brand/${data.id}/models`,
     )
@@ -577,7 +615,7 @@ export const actions = {
       key: data.index || 0,
     })
   },
-  async getMotoModels({ dispatch }, data) {
+  async getMotoModels({dispatch}, data) {
     if (data.category == 1)
       await dispatch('getMotorcycleModels', {
         id: data.id,
@@ -589,9 +627,9 @@ export const actions = {
         index: data.index || 0,
       })
     else if (data.category == 3)
-      await dispatch('getAtvModels', { id: data.id, index: data.index || 0 })
+      await dispatch('getAtvModels', {id: data.id, index: data.index || 0})
   },
-  async getMotorcycleModels({ commit }, data) {
+  async getMotorcycleModels({commit}, data) {
     const res = await this.$axios.$get(`/moto/brand/${data.id}/models`)
     commit('mutate', {
       property: 'motorcycleModels',
@@ -599,7 +637,7 @@ export const actions = {
       key: data.index || 0,
     })
   },
-  async getAtvModels({ commit }, data) {
+  async getAtvModels({commit}, data) {
     const res = await this.$axios.$get(`/moto/atv/brand/${data.id}/models`)
     commit('mutate', {
       property: 'atvModels',
@@ -607,7 +645,7 @@ export const actions = {
       key: data.index || 0,
     })
   },
-  async getScooterModels({ commit }, data) {
+  async getScooterModels({commit}, data) {
     const res = await this.$axios.$get(`/moto/scooter/brand/${data.id}/models`)
     commit('mutate', {
       property: 'scooterModels',
@@ -616,27 +654,27 @@ export const actions = {
     })
   },
   // Generations
-  async getGenerations({ commit }, data) {
+  async getGenerations({commit}, data) {
     const res = await this.$axios.$get(
       `/brand/${data.brand}/model/${data.model}/generations`,
     )
-    commit('mutate', { property: 'generations', value: res.generations })
+    commit('mutate', {property: 'generations', value: res.generations})
     commit('mutate', {
       property: 'modelDescription',
       value: res.model.description,
     })
   },
-  async getFirstGeneration({ commit }, data) {
+  async getFirstGeneration({commit}, data) {
     const res = await this.$axios.$get(
       `/brand/${data.brand}/model/${data.model}/generation/${data.generation}`,
     )
-    commit('mutate', { property: 'firstGeneration', value: res })
+    commit('mutate', {property: 'firstGeneration', value: res})
   },
-  async getModelGenerations({ commit }, slug) {
+  async getModelGenerations({commit}, slug) {
     const res = await this.$axios.$get(`/model/${slug}/generations`)
-    commit('mutate', { property: 'generations', value: res.generations })
+    commit('mutate', {property: 'generations', value: res.generations})
   },
-  async getModelsArray({ commit }, data) {
+  async getModelsArray({commit}, data) {
     const res = data.value
       ? await this.$axios.$get(`/brand/${data.value}/models`)
       : []
@@ -646,7 +684,7 @@ export const actions = {
       key: data.index,
     })
   },
-  async getModelsArrayExclude({ commit }, data) {
+  async getModelsArrayExclude({commit}, data) {
     const res = data.value
       ? await this.$axios.$get(`/brand/${data.value}/models`)
       : []
@@ -656,11 +694,11 @@ export const actions = {
       key: data.index,
     })
   },
-  async getModelGenerationsArray({ commit }, data) {
+  async getModelGenerationsArray({commit}, data) {
     const res = data.value
       ? await this.$axios.$get(
-          `/brand/${data.brand_slug}/model/${data.value}/generations`,
-        )
+        `/brand/${data.brand_slug}/model/${data.value}/generations`,
+      )
       : []
     commit('mutate', {
       property: 'carGenerations',
@@ -668,11 +706,11 @@ export const actions = {
       key: data.index,
     })
   },
-  async getModelGenerationsArrayExclude({ commit }, data) {
+  async getModelGenerationsArrayExclude({commit}, data) {
     const res = data.value
       ? await this.$axios.$get(
-          `/brand/${data.brand_slug}/model/${data.value}/generations`,
-        )
+        `/brand/${data.brand_slug}/model/${data.value}/generations`,
+      )
       : []
     commit('mutate', {
       property: 'carGenerationsExclude',
@@ -680,30 +718,30 @@ export const actions = {
       key: data.index,
     })
   },
-  async getGenerationTypes({ commit }, data) {
+  async getGenerationTypes({commit}, data) {
     const res = await this.$axios.$get(
       `/brand/${data.brand}/model/${data.model}/generation/${data.generation}/get_types`,
     )
-    commit('mutate', { property: 'generationTypes', value: res })
+    commit('mutate', {property: 'generationTypes', value: res})
   },
-  async getCarTypeName({ commit }, id) {
+  async getCarTypeName({commit}, id) {
     const res = await this.$axios.$get(`/car_type_id/${id}`)
-    commit('mutate', { property: 'carTypeName', value: res })
+    commit('mutate', {property: 'carTypeName', value: res})
   },
   // Body
-  async getBody({ commit }, data) {
+  async getBody({commit}, data) {
     const res = await this.$axios.$get(
       `/brand/${data.brand}/model/${data.model}/generation/${data.generation}/body/${data.body}`,
     )
-    commit('mutate', { property: 'firstGeneration', value: res })
+    commit('mutate', {property: 'firstGeneration', value: res})
   },
-  async getModificationsList({ commit }, data) {
+  async getModificationsList({commit}, data) {
     const res = await this.$axios.$get(
       `/brand/${data.brand}/model/${data.model}/generation/${data.generation}/get_type/${data.body}`,
     )
-    commit('mutate', { property: 'modificationsList', value: res })
+    commit('mutate', {property: 'modificationsList', value: res})
   },
-  async getBodyModification({ commit }, data) {
+  async getBodyModification({commit}, data) {
     const res = await this.$axios.$get(
       `/brand/${data.brand}/model/${data.model}/generation/${
         data.generation
@@ -711,84 +749,84 @@ export const actions = {
         data.modification ? `/catalog/${data.modification}` : ''
       }`,
     )
-    commit('mutate', { property: 'firstGeneration', value: res })
+    commit('mutate', {property: 'firstGeneration', value: res})
   },
-  async getEquipmentsList({ commit }, data) {
+  async getEquipmentsList({commit}, data) {
     const res = await this.$axios.$get(
       `/brand/${data.brand}/model/${data.model}/generation/${data.generation}/get_type/${data.body}/equipments`,
     )
-    commit('mutate', { property: 'equipmentsList', value: res })
+    commit('mutate', {property: 'equipmentsList', value: res})
   },
-  async getBodyEquipments({ commit }, data) {
+  async getBodyEquipments({commit}, data) {
     const res = await this.$axios.$get(
       `/brand/${data.brand}/model/${data.model}/generation/${data.generation}/body/${data.body}/catalog/${data.equipment}/equipments`,
     )
-    commit('mutate', { property: 'firstGenerationEquipments', value: res })
+    commit('mutate', {property: 'firstGenerationEquipments', value: res})
   },
   // Options
-  async getOptions({ state, commit }) {
+  async getOptions({state, commit}) {
     if (objectNotEmpty(state, commit, 'sellOptions')) return
     const res = await this.$axios.$get('/config/get_options')
-    commit('mutate', { property: 'sellOptions', value: res })
+    commit('mutate', {property: 'sellOptions', value: res})
   },
-  async getAllOtherOptions({ state, commit }, suffix = '') {
+  async getAllOtherOptions({state, commit}, suffix = '') {
     if (objectNotEmpty(state, commit, 'allSellOptions' + suffix)) return
     const res = await this.$axios.$get('/config/get_all_options' + suffix)
-    commit('mutate', { property: 'allSellOptions' + suffix, value: res })
+    commit('mutate', {property: 'allSellOptions' + suffix, value: res})
   },
-  async getPopularOptions({ state, commit }) {
+  async getPopularOptions({state, commit}) {
     if (objectNotEmpty(state, commit, 'popularOptions')) return
     const res = await this.$axios.$get('/config/get_popular_options')
-    commit('mutate', { property: 'popularOptions', value: res })
+    commit('mutate', {property: 'popularOptions', value: res})
   },
-  async getBodyOptions({ state, commit }) {
+  async getBodyOptions({state, commit}) {
     if (objectNotEmpty(state, commit, 'bodyOptions')) return
     const res = await this.$axios.$get('/get_body_options')
-    commit('mutate', { property: 'bodyOptions', value: res })
+    commit('mutate', {property: 'bodyOptions', value: res})
   },
-  async getMotoOptions({ state, commit }) {
+  async getMotoOptions({state, commit}) {
     if (objectNotEmpty(state, commit, 'motoOptions')) return
     const res = await this.$axios.$get(`/moto/search_options`)
-    commit('mutate', { property: 'motoOptions', value: res })
+    commit('mutate', {property: 'motoOptions', value: res})
   },
-  async getColors({ state, commit }) {
+  async getColors({state, commit}) {
     if (objectNotEmpty(state, commit, 'colors')) return
     const res = await this.$axios.$get(`/config/get_colors?formatted=false`)
-    commit('mutate', { property: 'colors', value: res })
+    commit('mutate', {property: 'colors', value: res})
   },
-  async getComplaintOptions({ state, commit }) {
+  async getComplaintOptions({state, commit}) {
     if (objectNotEmpty(state, commit, 'complaintOptions')) return
     const res = await this.$axios.$get(`/complaint-options`)
-    commit('mutate', { property: 'complaintOptions', value: res.data })
+    commit('mutate', {property: 'complaintOptions', value: res.data})
   },
-  async getBadges({ state, commit }) {
+  async getBadges({state, commit}) {
     if (objectNotEmpty(state, commit, 'badges')) return
     const res = await this.$axios.$get(`/additional/get_badges`)
-    commit('mutate', { property: 'badges', value: res })
+    commit('mutate', {property: 'badges', value: res})
   },
   // Commercial Options
-  async getCommercialAllOptions({ state, commit }) {
+  async getCommercialAllOptions({state, commit}) {
     if (objectNotEmpty(state, commit, 'commercialAllOptions')) return
     const res = await this.$axios.$get(`/commercial/get_all_options`)
-    commit('mutate', { property: 'commercialAllOptions', value: res })
+    commit('mutate', {property: 'commercialAllOptions', value: res})
   },
-  async getCommercialFilters({ commit }, id) {
+  async getCommercialFilters({commit}, id) {
     const res = await this.$axios.$get(`/commercial/type/${id}/get_filters`)
-    commit('mutate', { property: 'commercialFilters', value: res })
+    commit('mutate', {property: 'commercialFilters', value: res})
   },
-  async getCommercialSearchFilters({ commit }, id) {
+  async getCommercialSearchFilters({commit}, id) {
     const res = await this.$axios.$get(
       `/commercial/type/${id}/get_search_filters`,
     )
-    commit('mutate', { property: 'commercialSearchFilters', value: res })
+    commit('mutate', {property: 'commercialSearchFilters', value: res})
   },
-  async getCommercialTypes({ state, commit }) {
+  async getCommercialTypes({state, commit}) {
     if (objectNotEmpty(state, commit, 'commercialTypes')) return
     const res = await this.$axios.$get('/commercial/all_types')
-    commit('mutate', { property: 'commercialTypes', value: res })
+    commit('mutate', {property: 'commercialTypes', value: res})
   },
   // Reset Options
-  resetOptions({ state, commit }, property = false) {
+  resetOptions({state, commit}, property = false) {
     let arr = [
       'sellOptions',
       'allSellOptions2',
@@ -807,40 +845,40 @@ export const actions = {
     ]
     if (property) {
       arr = state['needResetOptions'].filter((p) => p !== property)
-      commit('mutate', { property: 'needResetOptions', value: arr })
+      commit('mutate', {property: 'needResetOptions', value: arr})
     } else {
-      commit('mutate', { property: 'needResetOptions', value: arr })
+      commit('mutate', {property: 'needResetOptions', value: arr})
     }
   },
   // Search
-  async getInfiniteMainSearch({ commit }, data = {}) {
+  async getInfiniteMainSearch({commit}, data = {}) {
     const res = await this.$axios.$get(
       `/grid/home_page_all?page=${data.page || 1}`,
     )
-    commit('mutate', { property: 'mainAnnouncements', value: res })
+    commit('mutate', {property: 'mainAnnouncements', value: res})
   },
-  async getInfiniteMainSearchWithoutMutate({ commit }, data = {}) {
-    const res =  await this.$axios.$get(
+  async getInfiniteMainSearchWithoutMutate({commit}, data = {}) {
+    const res = await this.$axios.$get(
       `/grid/home_page_all?page=${data.page || 1}`,
     )
 
-    commit('mutate',{ property:'temporaryLazyData', value: res})
+    commit('mutate', {property: 'temporaryLazyData', value: res})
   },
-  async getInfiniteMainPartsSearchWithoutMutate({ commit }, data = {}) {
+  async getInfiniteMainPartsSearchWithoutMutate({commit}, data = {}) {
     const res = await this.$axios.$get(
       `/grid/home_page_parts?per_page=4&page=${data.page || 1}`,
     )
-    commit('mutate', { property: 'temporaryLazyDataB', value: res })
+    commit('mutate', {property: 'temporaryLazyDataB', value: res})
   },
-  async getInfiniteMainPartsSearch({ commit }, data = {}) {
+  async getInfiniteMainPartsSearch({commit}, data = {}) {
     const res = await this.$axios.$get(
       `/grid/home_page_parts?per_page=4&page=${data.page || 1}`,
     )
-    commit('mutate', { property: 'mainPartsAnnouncements', value: res })
+    commit('mutate', {property: 'mainPartsAnnouncements', value: res})
   },
 
-  async getInfiniteMainPartsPageSearchWithoutMutate({ commit }, payload = {}) {
-    console.log(payload);
+  async getInfiniteMainPartsPageSearchWithoutMutate({commit}, payload = {}) {
+
     const body = payload ? {...payload} : {}
     if (body.announce_type) {
       body.is_new = body.announce_type === 1 ? true : false
@@ -853,11 +891,11 @@ export const actions = {
         page: payload?.page || 1
       }
     }
-    const res = await this.$axios.$post(`/grid/part`,body,config)
+    const res = await this.$axios.$post(`/grid/part`, body, config)
 
-    commit('mutate', { property: 'temporaryLazyData', value: res })
+    commit('mutate', {property: 'temporaryLazyData', value: res})
   },
-  async getInfiniteMainPartsPageSearch({ commit,dispatch }, payload = {}) {
+  async getInfiniteMainPartsPageSearch({commit, dispatch}, payload = {}) {
 
     const body = payload.body ? {...payload.body} : {}
     if (body.announce_type) {
@@ -871,7 +909,7 @@ export const actions = {
         page: payload?.params?.page || 1
       }
     }
-    const res = await this.$axios.$post(`/grid/part`,body,config)
+    const res = await this.$axios.$post(`/grid/part`, body, config)
     commit('parts/mutate', {
       property: 'showNotFound',
       value: res.total === 0
@@ -889,97 +927,97 @@ export const actions = {
         property: "otherAnnouncements"
       })
     }
-    commit('mutate', { property: 'partAnnouncements', value: res })
+    commit('mutate', {property: 'partAnnouncements', value: res})
   },
-  async getGridSearch({ commit }, data) {
+  async getGridSearch({commit}, data) {
     const res = await this.$axios.$post(
       `${data.url}?page=${data.page || 1}`,
       data.post,
     )
-    commit('mutate', { property: data.prefix + 'Announcements', value: res })
+    commit('mutate', {property: data.prefix + 'Announcements', value: res})
   },
   // Announcements
-  async getRelativeAnnouncements({ commit }, data) {
+  async getRelativeAnnouncements({commit}, data) {
     const res = await this.$axios.$get(`/grid/same/announcements_new/${data.id}`)
-    commit('mutate', { property: 'relativeAnnouncements', value: res })
+    commit('mutate', {property: 'relativeAnnouncements', value: res})
   },
-  async getRelativeAnnouncementsWithoutMutate({ commit,state }, data) {
+  async getRelativeAnnouncementsWithoutMutate({commit, state}, data) {
     const res = await this.$axios.$get(`/grid/same/announcements_new/${data.id || state.announcement.id_unique}?page=${data.page || 1}`)
-    commit('mutate', { property: 'temporaryLazyData', value: res })
+    commit('mutate', {property: 'temporaryLazyData', value: res})
   },
-  async getShopOtherAnnouncements({ commit,state }, data) {
+  async getShopOtherAnnouncements({commit, state}, data) {
     const res = await this.$axios.$get(
       `/grid/shop/announcements/${data.id || state.announcement.id_unique}?page=${data.page || 1}`,
     )
-    commit('mutate', { property: 'shopAnnouncements', value: res })
+    commit('mutate', {property: 'shopAnnouncements', value: res})
   },
-  async getShopOtherAnnouncementsWithoutMutate({ commit,state }, data) {
+  async getShopOtherAnnouncementsWithoutMutate({commit, state}, data) {
     const res = await this.$axios.$get(
       `/grid/shop/announcements/${data.id || state.announcement.id_unique}?page=${data.page || 1}`,
     )
-    commit('mutate', { property: 'temporaryLazyData', value: res })
+    commit('mutate', {property: 'temporaryLazyData', value: res})
   },
-  async getUserAnnouncements({ commit }, data) {
+  async getUserAnnouncements({commit}, data) {
     const res = await this.$axios.$get(`/user/${data.id}/announcements`)
-    commit('mutate', { property: 'userAnnouncements', value: res })
+    commit('mutate', {property: 'userAnnouncements', value: res})
   },
-  async getMyAllAnnouncements({ commit }, data = {}) {
+  async getMyAllAnnouncements({commit}, data = {}) {
     const res = await this.$axios.$get(
       `/my/all-announce-paginated?page=${data.page || 1}${
         [0, 1, 2, 3].includes(data.status) ? `&status=${data.status}` : ''
       }${data.shop ? `&${data.shop}=true` : ''}`,
     )
-    commit('mutate', { property: 'myAnnouncements', value: res })
+    commit('mutate', {property: 'myAnnouncements', value: res})
   },
-  async getAnnouncementInner({ commit }, id) {
+  async getAnnouncementInner({commit}, id) {
     const res = await this.$axios.$get(`/announce/${id}`)
-    commit('mutate', { property: 'announcement', value: res })
+    commit('mutate', {property: 'announcement', value: res})
   },
-  async getMyAnnouncement({ commit }, id) {
+  async getMyAnnouncement({commit}, id) {
     const res = await this.$axios.$get(`/announcement/edit/${id}`)
-    commit('mutate', { property: 'myAnnouncement', value: res })
+    commit('mutate', {property: 'myAnnouncement', value: res})
   },
-  async deactivateMyAnnounement({ commit }, id) {
+  async deactivateMyAnnounement({commit}, id) {
     await this.$axios.$delete(`/announcement/${id}/delete`)
-    commit('mutate', { property: 'myAnnouncement', value: {} })
+    commit('mutate', {property: 'myAnnouncement', value: {}})
   },
-  async deleteMyAnnounement({ commit }, id) {
+  async deleteMyAnnounement({commit}, id) {
     await this.$axios.$delete(`/announcement/${id}/remove`)
-    commit('mutate', { property: 'myAnnouncement', value: {} })
+    commit('mutate', {property: 'myAnnouncement', value: {}})
   },
   // Car announcements
-  async getCarAnnouncement({ commit }, data) {
+  async getCarAnnouncement({commit}, data) {
     const res = await this.$axios.$get(`/announcement/${data.id}`)
-    commit('mutate', { property: 'announcement', value: res })
+    commit('mutate', {property: 'announcement', value: res})
   },
-  async getMyCarAnnouncement({ commit }, id) {
+  async getMyCarAnnouncement({commit}, id) {
     const res = await this.$axios.$get(`/edit_announce/${id}`)
-    commit('mutate', { property: 'myAnnouncement', value: res })
+    commit('mutate', {property: 'myAnnouncement', value: res})
   },
   // Commercial Announcements
-  async getCommercialAnnouncement({ commit }, data) {
+  async getCommercialAnnouncement({commit}, data) {
     const res = await this.$axios.$get(
       `/commercial/get_single_announce/${data.id}`,
     )
-    commit('mutate', { property: 'announcement', value: res })
+    commit('mutate', {property: 'announcement', value: res})
   },
-  async getMyCommercialAnnouncement({ commit }, id) {
+  async getMyCommercialAnnouncement({commit}, id) {
     const res = await this.$axios.$get(`/commercial/edit_announce/${id}`)
-    commit('mutate', { property: 'myAnnouncement', value: res })
+    commit('mutate', {property: 'myAnnouncement', value: res})
   },
   // Moto Announcements
-  async getMotoAnnouncement({ commit }, data) {
+  async getMotoAnnouncement({commit}, data) {
     const res = await this.$axios.$get(`${data.path}/get_announce/${data.id}`)
-    commit('mutate', { property: 'announcement', value: res })
+    commit('mutate', {property: 'announcement', value: res})
   },
-  async getMyMotoAnnouncement({ commit }, data) {
+  async getMyMotoAnnouncement({commit}, data) {
     const res = await this.$axios.$get(
       `/moto/edit_announce/${data.id}?type=${data.type}`,
     )
-    commit('mutate', { property: 'myAnnouncement', value: res })
+    commit('mutate', {property: 'myAnnouncement', value: res})
   },
   // Catalog
-  async getCatalogSearch({ commit }, data) {
+  async getCatalogSearch({commit}, data) {
     if (data.params.brand) data.params.name = data.params.brand
     if (data.params.generation)
       data.params.generation = 'g_' + data.params.generation
@@ -996,7 +1034,7 @@ export const actions = {
           'body',
         ].includes(key)
       ) {
-        filteredData[key] = { key, value: data.post[key] }
+        filteredData[key] = {key, value: data.post[key]}
       } else if (key.includes('max_')) {
         let rangeKey = key.replace('max_', '')
         filteredData[rangeKey] = `${data.post['min_' + rangeKey] || 0}-${
@@ -1011,20 +1049,20 @@ export const actions = {
 
     const res = await this.$axios.$post(
       `/search_catalog?page=${data.page || 1}`,
-      { filteredData, params: data.params },
+      {filteredData, params: data.params},
     )
     if (!data.totalCount)
-      commit('mutate', { property: 'catalogItems', value: res.items })
+      commit('mutate', {property: 'catalogItems', value: res.items})
     if (data.totalCount !== false)
-      commit('mutate', { property: 'catalogTotal', value: res.total })
+      commit('mutate', {property: 'catalogTotal', value: res.total})
   },
-  async getCatalogAnnouncements({ commit }, id) {
+  async getCatalogAnnouncements({commit}, id) {
     const res = await this.$axios.$get(`/catalog/${id}/announces`)
-    commit('mutate', { property: 'catalogAnnouncements', value: res })
+    commit('mutate', {property: 'catalogAnnouncements', value: res})
   },
   // Sell
-  async checkSellTokens({ commit }, phone) {
-    const res = await this.$axios.$post('/check/user/by/phone', { phone })
+  async checkSellTokens({commit}, phone) {
+    const res = await this.$axios.$post('/check/user/by/phone', {phone})
     commit('mutate', {
       property: 'sellTokens',
       value: res.data && {
@@ -1049,155 +1087,155 @@ export const actions = {
       value: res.data && res.data.is_part_salon,
     })
   },
-  resetSellTokens({ commit }) {
-    commit('mutate', { property: 'sellTokens', value: false })
-    commit('mutate', { property: 'sellPhoneRegistered', value: false })
-    commit('mutate', { property: 'sellSalonRights', value: false })
-    commit('mutate', { property: 'sellPartsShopRights', value: false })
-    commit('mutate', { property: 'sellPhoneEntered', value: '' })
+  resetSellTokens({commit}) {
+    commit('mutate', {property: 'sellTokens', value: false})
+    commit('mutate', {property: 'sellPhoneRegistered', value: false})
+    commit('mutate', {property: 'sellSalonRights', value: false})
+    commit('mutate', {property: 'sellPartsShopRights', value: false})
+    commit('mutate', {property: 'sellPhoneEntered', value: ''})
   },
-  setSellProgress({ commit }, value) {
-    commit('mutate', { property: 'sellProgress', value })
+  setSellProgress({commit}, value) {
+    commit('mutate', {property: 'sellProgress', value})
   },
-  setSellPreviewData({ commit }, { value, key }) {
-    commit('mutate', { property: 'sellPreviewData', value, key })
+  setSellPreviewData({commit}, {value, key}) {
+    commit('mutate', {property: 'sellPreviewData', value, key})
   },
   // Sell Options
-  async getSellYears({ commit }, data) {
+  async getSellYears({commit}, data) {
     const res = await this.$axios.$get(
       `/sell/${data.brand}/${data.model}/get_years`,
     )
-    commit('mutate', { property: 'sellYears', value: res })
+    commit('mutate', {property: 'sellYears', value: res})
   },
-  async getSellBody({ commit }, data) {
+  async getSellBody({commit}, data) {
     const res = await this.$axios.$get(
       `/sell/${data.brand}/${data.model}/year/${data.year}`,
     )
-    commit('mutate', { property: 'sellBody', value: res })
+    commit('mutate', {property: 'sellBody', value: res})
   },
-  async getSellGenerations({ commit }, data) {
+  async getSellGenerations({commit}, data) {
     const res = await this.$axios.$get(
       `/sell/${data.brand}/${data.model}/year/${data.year}/body/${data.body}/generations`,
     )
-    commit('mutate', { property: 'sellGenerations', value: res })
+    commit('mutate', {property: 'sellGenerations', value: res})
   },
-  async getSellEngines({ commit }, data) {
+  async getSellEngines({commit}, data) {
     const res = await this.$axios.$get(
       `/sell/${data.brand}/${data.model}/year/${data.year}/body/${data.body}/generation/${data.generation}/engines`,
     )
-    commit('mutate', { property: 'sellEngines', value: res })
+    commit('mutate', {property: 'sellEngines', value: res})
   },
-  async getSellGearing({ commit }, data) {
+  async getSellGearing({commit}, data) {
     const res = await this.$axios.$get(
       `/sell/${data.brand}/${data.model}/body/${data.body}/generation/${data.generation}/engine/${data.engine}/gearing`,
     )
-    commit('mutate', { property: 'sellGearing', value: res })
+    commit('mutate', {property: 'sellGearing', value: res})
   },
-  async getSellTransmissions({ commit }, data) {
+  async getSellTransmissions({commit}, data) {
     const res = await this.$axios.$get(
       `/sell/${data.brand}/${data.model}/body/${data.body}/generation/${data.generation}/engine/${data.engine}/gearing/${data.gearing}/transmissions`,
     )
-    commit('mutate', { property: 'sellTransmissions', value: res })
+    commit('mutate', {property: 'sellTransmissions', value: res})
   },
-  async getSellModifications({ commit }, data) {
+  async getSellModifications({commit}, data) {
     const res = await this.$axios.$get(
       `/sell/${data.brand}/${data.model}/body/${data.body}/generation/${data.generation}/engine/${data.engine}/gearing/${data.gearing}/trns/${data.transmission}/modifications`,
     )
-    commit('mutate', { property: 'sellModifications', value: res })
+    commit('mutate', {property: 'sellModifications', value: res})
   },
   // Services
-  async getServices({ commit }) {
+  async getServices({commit}) {
     const res = await this.$axios.$get(`/marketing/getServices`)
-    commit('mutate', { property: 'services', value: res })
+    commit('mutate', {property: 'services', value: res})
   },
-  async getMyServices({ commit }) {
+  async getMyServices({commit}) {
     const res = await this.$axios.$get(`/my/actives`)
-    commit('mutate', { property: 'myServices', value: res })
+    commit('mutate', {property: 'myServices', value: res})
   },
-  async getMyServiceOptions({ commit }, type) {
+  async getMyServiceOptions({commit}, type) {
     const res = await this.$axios.$get(`/my/actives/${type}`)
-    commit('mutate', { property: 'myServiceOptions', value: res })
+    commit('mutate', {property: 'myServiceOptions', value: res})
   },
-  async getMyServiceHistory({ commit }) {
+  async getMyServiceHistory({commit}) {
     const res = await this.$axios.$get(`/my/actives/history`)
-    commit('mutate', { property: 'myServiceHistory', value: res })
+    commit('mutate', {property: 'myServiceHistory', value: res})
   },
-  async getMyBalanceHistory({ commit }, data = {}) {
+  async getMyBalanceHistory({commit}, data = {}) {
     const res = await this.$axios.$get(
       `/payment/getHistory?page=${data.page || 1}&type=${data.type || 0}`,
     )
-    commit('mutate', { property: 'myBalanceHistory', value: res })
+    commit('mutate', {property: 'myBalanceHistory', value: res})
   },
-  async getMyBalanceHistoryWithoutMutate({ commit }, data = {}) {
+  async getMyBalanceHistoryWithoutMutate({commit}, data = {}) {
     const res = await this.$axios.$get(
       `/payment/getHistory?page=${data.page || 1}&type=${data.type || 0}`,
     )
-    commit('mutate', { property: 'temporaryLazyData', value: res })
+    commit('mutate', {property: 'temporaryLazyData', value: res})
   },
-  async updatePromotion({ commit }, { key, value }) {
-    commit('mutate', { property: 'promotion', key, value })
+  async updatePromotion({commit}, {key, value}) {
+    commit('mutate', {property: 'promotion', key, value})
   },
-  async updatePaidStatus({ commit }, value) {
-    commit('mutate', { property: 'paidStatusData', value })
+  async updatePaidStatus({commit}, value) {
+    commit('mutate', {property: 'paidStatusData', value})
   },
   // Salons
-  async getSalonsList({ commit }, { type, params }) {
+  async getSalonsList({commit}, {type, params}) {
     const res = await this.$axios.$get(
       `/auto_salon_list/${type}${params || ''}`,
     )
     if (!params || params === '?part=true') {
-      commit('mutate', { property: 'salonsList', value: res })
+      commit('mutate', {property: 'salonsList', value: res})
     }
-    commit('mutate', { property: 'salonsSearched', value: res })
-    commit('mutate', { property: 'salonsFiltered', value: res })
+    commit('mutate', {property: 'salonsSearched', value: res})
+    commit('mutate', {property: 'salonsFiltered', value: res})
   },
-  async getSalonById({ commit }, data) {
+  async getSalonById({commit}, data) {
     const res = await this.$axios.$get(
       '/auto_salon/' + data.slug + '?page=' + (data.page || 1),
     )
-    commit('mutate', { property: 'salonSingle', value: res })
+    commit('mutate', {property: 'salonSingle', value: res})
   },
-  async getMySalon({ commit }, { id }) {
+  async getMySalon({commit}, {id}) {
     const res = await this.$axios.$get(`/my/autosalon/${id}/edit`)
-    commit('mutate', { property: 'mySalon', value: res })
+    commit('mutate', {property: 'mySalon', value: res})
   },
-  async getHomePageSliders({ commit }) {
+  async getHomePageSliders({commit}) {
     const res = await this.$axios.$get(`/home_page_slider`)
-    commit('mutate', { property: 'homePageSliders', value: res })
+    commit('mutate', {property: 'homePageSliders', value: res})
   },
-  async updateMySalon({}, { id, form }) {
+  async updateMySalon({}, {id, form}) {
     await this.$axios.$post(`/my/autosalon/${id}/edit`, form)
   },
-  updateSalonsFilters({ commit }, form) {
-    commit('mutate', { property: 'salonsFilters', value: form })
+  updateSalonsFilters({commit}, form) {
+    commit('mutate', {property: 'salonsFilters', value: form})
   },
-  updateSalonsSearchFilters({ commit }, form) {
-    commit('mutate', { property: 'salonsSearchFilters', value: form })
+  updateSalonsSearchFilters({commit}, form) {
+    commit('mutate', {property: 'salonsSearchFilters', value: form})
   },
-  async getAnnouncementCalls({ commit }, data = {}) {
+  async getAnnouncementCalls({commit}, data = {}) {
     const res = await this.$axios.$get(
       `/my/call-announces/${data.id}?page=${data.page || 1}`,
     )
-    commit('mutate', { property: 'myAnnouncementCalls', value: res })
+    commit('mutate', {property: 'myAnnouncementCalls', value: res})
   },
   async incrementAnnouncementCalls({}, id) {
     await this.$axios.$get(`/announce/${id}/show/phone`)
   },
-  async getAnnouncementStats({ commit }, id) {
+  async getAnnouncementStats({commit}, id) {
     const res = await this.$axios.$get(`/my/dashboard/statistics/${id}`)
-    commit('mutate', { property: 'myAnnouncementStats', value: res })
+    commit('mutate', {property: 'myAnnouncementStats', value: res})
   },
-  updateSalonsFiltered({ commit }, list) {
-    commit('mutate', { property: 'salonsFiltered', value: list })
+  updateSalonsFiltered({commit}, list) {
+    commit('mutate', {property: 'salonsFiltered', value: list})
   },
-  updateSalonsInBounds({ commit }, list) {
-    commit('mutate', { property: 'salonsInBounds', value: list })
+  updateSalonsInBounds({commit}, list) {
+    commit('mutate', {property: 'salonsInBounds', value: list})
   },
-  setMapView({ commit }, visible) {
-    commit('mutate', { property: 'mapView', value: visible })
+  setMapView({commit}, visible) {
+    commit('mutate', {property: 'mapView', value: visible})
   },
   // Reset Data on Logout
-  resetUserData({ commit }) {
+  resetUserData({commit}) {
     commit('reset', [
       'myServices',
       'myServiceHistory',
@@ -1207,52 +1245,112 @@ export const actions = {
       'notViewedSavedSearch',
     ])
   },
-  async getAllOffers({commit},param='all') {
-   const data =await this.$axios.$get(`/offer/salon/offer/all?param=`+param)
-    commit('mutate', { property: 'offers', value: data.data })
-    commit('mutate', { property: 'newOfferCount', value: data.count })
+  async getAllOffers({commit}, param = 'all') {
+
+    var url = `/offer/salon/offer`;
+
+    if (Object.keys(param).length > 0) {
+      url += '?param=' + param.param;
+    } else {
+      url += '?param=all';
+    }
+
+    if (param.query) {
+      url += '&query=' + param.query;
+    }
+    const data = await this.$axios.$get(url)
+    commit('mutate', {property: 'offers', value: data.data})
+    console.log('---')
+
+    commit('mutate', {property: 'newOfferCount', value: data.count})
+    commit('mutate', {property: 'user_deleted_auto_salon_offers', value: data.user_deleted_auto_salon_offers})
   },
-  async getOffer({commit}, payload){
-    const {data} =await  this.$axios.get('/offer/offer-detail/'+payload.id+'/'+payload.type);
-    commit('mutate',{property:'offer',value:data})
-    console.log(data)
-    if (data.data.id){
-      commit('mutate',{property:'current_offer_id',value:data.data.id})
-    }else{
-      commit('mutate',{property:'current_offer_id',value:data.data.offer.id})
+  async getOffer({commit}, payload) {
+    const {data} = await this.$axios.get('/offer/offer-detail/' + payload.id + '/' + payload.type);
+    commit('mutate', {property: 'offer', value: data})
+
+    if (data.data.id) {
+      commit('mutate', {property: 'current_offer_id', value: data.data.id})
+    } else {
+      commit('mutate', {property: 'current_offer_id', value: data.data.offer.id})
     }
 
 
   },
 
-  async salonAcceptOffer({},{id}){
-    const  {data} = await this.$axios.$post('/offer/salon/offer/accept/'+id)
+  async salonAcceptOffer({}, {id}) {
+    const {data} = await this.$axios.$post('/offer/salon/offer/accept/' + id)
   },
-  async userAcceptOffer({},{id}){
-    const  {data} = await this.$axios.$post('/offer/user/offer/accept/'+id)
+  async userAcceptOffer({}, {id}) {
+    const {data} = await this.$axios.$post('/offer/user/offer/accept/' + id)
   },
-  async offerAddFavorite({commit},id){
-    const  data =await this.$axios.$post(`/offer/salon/offer/add-favorite/`+id)
-
-
-  },
-  async OffersAcceptedByAutoSalon({commit},param='all'){
-    const data =await this.$axios.$get('/offer/user/offers-accepted-by-auto-salon/'+param)
-    commit('mutate', { property: 'OffersAcceptedByAutoSalon', value: data.data })
-    commit('mutate', { property: 'newOfferCount', value: data.count })
+  async offerAddFavorite({commit}, id) {
+    const data = await this.$axios.$post(`/offer/salon/offer/add-favorite/` + id)
 
   },
+  async OffersAcceptedByAutoSalon({commit}, param = 'all') {
 
-  async offerPartners({commit},page=1){
-    const data= await this.$axios.get('/offer/partners?page='+page)
+    var url='/offer/user/offers_accepted_by_auto_salon?param=';
 
-    commit('setOfferPartners',data.data)
 
-    commit('mutate', { property: 'offerPartnersMeta', value: data.data.meta })
+
+    if(param.param){
+      url+=param.param
+    }
+    if(param.query){
+      url+='&query='+param.query
+    }
+
+    const data = await this.$axios.$get(url)
+
+
+    commit('mutate', {property: 'OffersAcceptedByAutoSalon', value: data.data})
+    commit('mutate', {property: 'newOfferCount', value: data.count})
+  },
+
+  async offerPartners({commit}, page = 1) {
+    const data = await this.$axios.get('/offer/partners?page=' + page)
+
+    commit('setOfferPartners', data.data)
+
+    commit('mutate', {property: 'offerPartnersMeta', value: data.data.meta})
+  },
+  async offerItemValidation({commit, state}, object) {
+    try {
+      const data = await this.$axios.post('/offer/validation', object.form).then(async (res) => {
+
+        if (res.data.status == 'success') {
+
+          if (state.offer_announcements.length < 2) {
+            commit('appendOfferAnnouncement', object.form)
+
+          }
+
+          if (object.isSubmit) {
+            this.$axios.post('/offer', state.offer_announcements).then((res) => {
+              console.log(state.showOfferPaymentModal)
+              commit('openOfferPaymentModal', {status: true})
+              console.log(state.showOfferPaymentModal)
+              commit('setOfferId', {offer_id: res.data.offer_id})
+            })
+          } else {
+
+            commit('incrementAnnouncementsCount')
+          }
+        }
+      });
+    } catch (e) {
+      commit('setOfferAddLoader', {status: false})
+    }
+  },
+
+  async offerFaq({commit,state}){
+    const data=await this.$axios.$get('/offer/faq');
+    commit('setOfferFaq',{data:data})
+
   }
 
 }
-
 export const mutations = {
   mutate: mutate(),
   reset: reset(getInitialState()),
@@ -1349,37 +1447,129 @@ export const mutations = {
     state.editingPostAuthor = payload
   },
   // garage
-  changeSelectedVehiclesPrice(state,payload){
+  changeSelectedVehiclesPrice(state, payload) {
     state.selectedVehiclesPrice = payload;
   },
-  changeSelectedVehicleList(state,payload){
+  changeSelectedVehicleList(state, payload) {
     state.selectedVehicleList = payload;
   },
-  setOfferMessages(state,payload){
-    state.offerMessages=payload
+  setOfferMessages(state, payload) {
+    state.offerMessages = payload
   },
-  appendOfferMessage(state,payload){
+  appendOfferMessage(state, payload) {
     state.offerMessages.push(payload)
   },
-  setOffers(state,payload){
-    state.offers=payload
+  setOffers(state, payload) {
+    state.offers = payload
   },
-  setIsFavorite(state,payload){
+  setIsFavorite(state, payload) {
 
   },
-  setOfferPartners(state,payload){
-    for (let i=0; i<payload.data.length; i++) {
-    state.offerPartners.push(payload.data[i])
+  setOfferPartners(state, payload) {
+    for (let i = 0; i < payload.data.length; i++) {
+      state.offerPartners.push(payload.data[i])
     }
-
   },
-  setNewMessage(state,id){
-    const emil=state.offers.find(offer => offer.id == id)
+  setNewMessage(state, id) {
+    const emil = state.offers.find(offer => offer.id == id)
     console.log(id)
     console.log(emil)
   },
-  setNullModels(state){
-    state.models=[]
+  setNullModels(state) {
+    state.models = []
 
+  },
+  incrementAnnouncementsCount(state) {
+    state.offer_announcement_count[0].collapsed = true;
+    state.offer_announcement_count.push({collapsed: false, key: uuid.v4()})
+  },
+  decrementAnnouncementsCount(state) {
+    state.offer_announcement_count--
+  },
+  appendOfferAnnouncement(state, payload) {
+
+    if (typeof state.offer_announcements[payload.index] != undefined) {
+      state.offer_announcements.splice(payload.index, 1);
+    }
+    state.offer_announcements.push(payload)
+
+  },
+  appendOfferSelectedModels(state, payload) {
+    console.log(state.offer_selected_models)
+    Vue.set(state.offer_selected_models, payload.index, {
+      img: payload.data.img ? payload.data.img : state.offer_selected_models[payload.index].img,
+      logo: payload.data.logo ? payload.data.logo : state.offer_selected_models[payload.index].logo,
+      brand: payload.data.brand ? payload.data.brand : state.offer_selected_models[payload.index].brand,
+      model: payload.data.model ? payload.data.model : state.offer_selected_models[payload.index].model,
+      price: payload.data.price ? payload.data.price : state.offer_selected_models[payload.index].price,
+      year: payload.data.year ? payload.data.year : state.offer_selected_models[payload.index].year
+    })
+  },
+  deleteOfferAnnouncement(state, payload) {
+    console.log(state.offer_selected_models[index])
+    let index = payload.index;
+    if (index > -1) {
+      state.offer_announcements.splice(index, 1);
+      state.offer_announcement_count.splice(index, 1);
+      state.offer_selected_models[index]={
+        logo: null,
+        img: null,
+        brand: '',
+        model: '',
+        price: null,
+        year: null
+      };
+      console.log(state.offer_selected_models[index])
+    }
+  },
+  openOfferPaymentModal(state, payload) {
+    state.showOfferPaymentModal = payload.status
+
+  },
+  setOfferId(state, payload) {
+    state.offer_id = payload.offer_id;
+  },
+  setOfferAnnouncement(state, payload) {
+    let form = JSON.parse(JSON.stringify(payload.form[payload.index]))
+
+    console.log(form)
+    Vue.set(state.offer_announcements, payload.index, form)
+  },
+  setOfferAddLoader(state, payload) {
+    state.offer_add_is_loader = payload.status
+  },
+  resetOfferState(state) {
+    state.offer_announcement_count = [{collapsed: false}]
+    state.offer_announcements = [];
+    state.offer_selected_models = [
+      {
+        logo: null,
+        img: null,
+        brand: '',
+        model: '',
+        price: null,
+        year: null
+      },
+      {
+        logo: null,
+        img: null,
+        brand: '',
+        model: '',
+        price: null,
+        year: null
+      }
+    ]
+  },
+  setOfferAnnouncementCount(state,payload){
+    state.offer_announcement_count[payload.index].collapsed=payload.status;
+  },
+  setOfferFaq(state,payload){
+    state.offer_faq=payload.data
+  },
+  resetGenerations(state){
+    console.log(state.generations)
+    state.generations=[];
+    console.log('resetted gen')
+    console.log(state.generations)
   }
 }

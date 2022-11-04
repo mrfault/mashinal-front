@@ -53,6 +53,8 @@ export const PaymentMixin = {
         let payment_id = res?.data?.payment_id;
         if (payment_id) {
           this.connectEcho(`purchase.${payment_id}`, false).listen('PurchaseInitiated', async (data) => {
+
+            this.showPaymentModal = false;
             let { is_paid, status } = data.payment;
             let paid = is_paid || status === 1;
 
@@ -83,6 +85,11 @@ export const PaymentMixin = {
               });
             } else {
               stopListening();
+            }
+            if (data.payment.operation_key=='offer_payment_key'){
+              setTimeout(()=>{
+                this.$router.push('/offer')
+              },2000)
             }
 
           });

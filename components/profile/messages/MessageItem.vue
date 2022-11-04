@@ -2,8 +2,7 @@
   <div :class="['message-item', {'pull-right': sentByMe}]" :id="`message-${message.id}`">
     <div :class="['message-content', {'sent-by-me': sentByMe}]">
       <div class="message-attachments" v-if="message.attachments.length">
-        <div v-for="(image, i) in message.attachments" :key="image.src" 
-            :class="{'half-width': !(message.attachments.length % 2 === 1 && i === message.attachments.length - 1)}">
+        <div v-for="(image, i) in message.attachments" :key="image.src"  :class="{'half-width': !(message.attachments.length % 2 === 1 && i === message.attachments.length - 1)}">
           <img :src="$withBaseUrl(image.thumb)" alt="" @click="$emit('show-image', $withBaseUrl(image.src))" />
           <span class="message-time">
             {{ $moment(message.created_at).format('HH:mm') }}

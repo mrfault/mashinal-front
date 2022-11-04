@@ -33,12 +33,12 @@
     </div>
     <div class="e-service__actions">
       <div class="e-service__actions--left">
-        <a class="text-green e-service__actions--button" href="javascript:void(0);" @click="$emit('showPayment')" v-if="item.key === 'contract' && shouldExtendContract">
+<!--        <a class="text-green e-service__actions&#45;&#45;button" href="javascript:void(0);" @click="$emit('showPayment')" v-if="item.key === 'contract' &&  shouldExtendContract && $route.params.type != 3">
           {{ $t('extend_subscription') }}
         </a>
         <nuxt-link class="text-green" :to="$localePath('/business-profile') + '?type=1&scrollto=packages'" v-else-if="item.key === 'contract' && $route.params.type == 1">
           {{ $t('to_change_package') }}
-        </nuxt-link>
+        </nuxt-link>-->
         <letter-of-attorney-button
           href="#"
           tag="a"
@@ -59,7 +59,7 @@
         </nuxt-link>
       </div>
       <div class="e-service__actions--right">
-        <nuxt-link v-if="item.key === 'contract' ? !user.external_salon : true" :to="$localePath(item.url)" class="">
+        <nuxt-link v-if="item.key !== 'contract'" :to="$localePath(item.url)" class="">
           {{ $t('detail') }}
           <icon name="chevron-right"/>
           <!-- <inline-svg src="/icons/chevron-right.svg" :height="14" /> -->

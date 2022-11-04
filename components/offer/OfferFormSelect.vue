@@ -457,7 +457,7 @@ export default {
         this.selectValue instanceof Array &&
         (this.nameInValue
           ? this.selectValue.findIndex((val) => val && val.key == value.key) !==
-            -1
+          -1
           : this.selectValue.includes(value))
       return hasSameKey || hasSameObj
     },
@@ -465,7 +465,7 @@ export default {
       return this.isSelected(
         this.getFilteredOptions[
           index !== this.getFilteredOptions.length - 1 ? index + 1 : index
-        ],
+          ],
       )
     },
     clearSelect() {
@@ -521,12 +521,12 @@ export default {
             value = this.isSelected(option)
               ? this.multiple
                 ? (this.value || []).filter(
-                    (v) => this.getKey(v) !== this.getKey(value),
-                  )
+                  (v) => this.getKey(v) !== this.getKey(value),
+                )
                 : value
               : this.multiple
-              ? [...(this.value || []), value]
-              : value
+                ? [...(this.value || []), value]
+                : value
           }
         }
         if (!this.multiple) this.showOptions = false
@@ -546,9 +546,10 @@ export default {
       },
     },
     getOptions() {
-      let addons = this.clearOption ? [{ key: -1, name: this.clearOptionText || this.$t('any') }] : []
+
       if (this.hasGenerations && this.isMobileBreakpoint) return this.options
-      return this.clearOptionPullDown ? [...this.options, ...addons] : [...addons, ...this.options]
+
+      return this.clearOptionPullDown ? [...this.options] : [ ...this.options]
     },
     getSelectedOptions() {
       return this.options.filter(this.isSelected)
@@ -581,8 +582,8 @@ export default {
         else suffix = this.suffix || this.values.suffix
         return value && this.values.showLabel
           ? `${this.label}${
-              this.values.count ? ` (${this.values.count})` : `: ${value}`
-            }`
+            this.values.count ? ` (${this.values.count})` : `: ${value}`
+          }`
           : value || `${this.label}${suffix ? ', ' + suffix : ''}`
       }
 
@@ -591,17 +592,17 @@ export default {
       if (this.shortNamesLabel) {
         return selected.length
           ? `${this.label}: ${selected
-              .map((option) => option.nameShort)
-              .join(', ')}`
+            .map((option) => option.nameShort)
+            .join(', ')}`
           : this.label
       }
 
       return selected.length === 1
         ? `${
-            this.showLabelOnSelect && this.allowClear
-              ? this.label + ': ' + (this.suffix ? ', ' + this.suffix : '')
-              : ''
-          }${this.getOptionName(selected[0])}`
+          this.showLabelOnSelect && this.allowClear
+            ? this.label + ': ' + (this.suffix ? ', ' + this.suffix : '')
+            : ''
+        }${this.getOptionName(selected[0])}`
         : this.label
     },
     getActionBarText() {
@@ -619,8 +620,8 @@ export default {
         !(this.custom && !this.values.showLabel)
           ? ''
           : this.label
-          ? this.label + ': '
-          : ''
+            ? this.label + ': '
+            : ''
       }${this.getLabelText}`
     },
     hasNoValue() {
@@ -646,7 +647,7 @@ export default {
         !(
           this.skipSelectFirst &&
           this.getKey(this.selectValue) ===
-            this.getOptionKey(this.getOptions[0])
+          this.getOptionKey(this.getOptions[0])
         )
       )
     },

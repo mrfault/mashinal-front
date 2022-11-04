@@ -7,7 +7,7 @@
       <img src="/tiremeter/speedometer.png" alt="" />
     </div>
     <h6 class="ma-tiremeter-small-title mt-1">
-      {{percententage}} %
+      <template v-if="percententage > 0">+</template>{{percententage}} %
     </h6>
   </div>
 </template>
