@@ -18,10 +18,11 @@
         <div class="col-lg-4 mb-3">
           <form-text-input
             v-model="form.title"
-            :placeholder="$t('title_max_character', { max: 20 })"
+            :placeholder="$t('title_max_character', { max: 25 })"
             id="anchor-title"
             :invalid="isInvalid('title')"
             @change="removeError('title')"
+            maxlength="25"
           />
         </div>
         <div class="col-12 mb-2">
