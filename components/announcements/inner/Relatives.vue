@@ -35,7 +35,7 @@
       isShop() {
         if (this.announcement.is_part_salon) return true;
         else if (this.announcement.is_autosalon)
-          return this.announcement.user.autosalon.possible_announce_count > 5
+          return this.announcement.user.autosalon.possible_announce_count > 5 || this.announcement.user.autosalon.possible_announce_count == 0
         else if (this.announcement.is_external_salon)
           return true;
         return false
@@ -43,7 +43,7 @@
       title() {
         if (this.announcement.is_part_salon)
           return this.$t('shop_other_announcements', { name: this.announcement.user.part_salon.name });
-        else if (this.announcement.is_autosalon && this.announcement.user.autosalon.possible_announce_count > 5)
+        else if (this.announcement.is_autosalon && (this.announcement.user.autosalon.possible_announce_count > 5 || this.announcement.user.autosalon.possible_announce_count == 0))
           return this.$t('salon_other_announcements', { name: this.announcement.user.autosalon.name });
         else if (this.announcement.is_external_salon)
           return this.$t('salon_other_announcements', { name: this.announcement.user.external_salon.name });

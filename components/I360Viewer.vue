@@ -99,7 +99,7 @@ export default {
     spinReverse: {
       type: Boolean,
       require: true,
-      default: false,
+      default: true,
     },
     amount: {
       type: Number,
@@ -343,7 +343,7 @@ export default {
       this.playing = !this.playing
     },
     play() {
-      this.loopTimeoutId = window.setInterval(() => this.loopImages(), 60);
+      this.loopTimeoutId = window.setInterval(() => this.loopImages(), 45);
     },
     onSpin() {
       if (this.playing || this.loopTimeoutId) {
@@ -370,10 +370,10 @@ export default {
       }
     },
     next() {
-      (this.spinReverse) ? this.turnLeft() : this.turnRight()
+       this.turnRight()
     },
     prev() {
-      (this.spinReverse) ? this.turnRight() : this.turnLeft()
+       this.turnLeft()
     },
     turnLeft() {
       this.moveActiveIndexDown(1);
