@@ -343,7 +343,7 @@ export default {
       this.playing = !this.playing
     },
     play() {
-      this.loopTimeoutId = window.setInterval(() => this.loopImages(), 45);
+      this.loopTimeoutId = window.setInterval(() => this.loopImages(), 30);
     },
     onSpin() {
       if (this.playing || this.loopTimeoutId) {
