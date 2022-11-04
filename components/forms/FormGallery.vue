@@ -41,7 +41,7 @@
       
       <!-- File input -->
       <div :class="itemClass" v-if="files.length < this.maxFiles">
-        <label class="form-gallery_thumbnail add-image" for="upload-input">
+        <label class="form-gallery_thumbnail add-image cursor-pointer" for="upload-input">
           <input
             id="upload-input"
             class="sr-only"
