@@ -1,23 +1,29 @@
 <template>
   <div :class="['vehicle-specs card pt-0 pt-lg-4', {'mb-lg-3': !brief}]">
+
     <ul>
-      <li v-for="spec in announcementSpecs" :key="spec.key" v-if="!(announcement.is_external_salon && spec.key === 'customs')">
+      <li v-for="spec in announcementSpecs" v-if="!(announcement.is_external_salon && spec.key === 'customs')"
+          :key="spec.key">
         <span>
-          <icon name="barter" v-if="spec.key === 'exchange'"/>
-          <icon name="percent" v-else-if="spec.key === 'credit'"/>
+          <icon v-if="spec.key === 'exchange'" name="barter"/>
+          <icon v-else-if="spec.key === 'credit'" name="percent"/>
           {{ $t(spec.key === 'engine' ? 'engine_only' : spec.key) }}
         </span>
-        <span>
+        <span v-if="spec.key !== 'vin'">
           {{ spec.value }}
+        </span>
+        <span v-else>
+
+        <p class="mb-0 text-truncate" style="width: calc(100% - 30px)">{{ spec.value }}</p>
         </span>
       </li>
     </ul>
-    <div class="mt-2 mt-lg-3" v-if="catalog">
-      <nuxt-link :to="catalogLink" :class="['btn full-width', isDarkMode ? 'btn--pale-red' : 'btn--pale-green' ]">
+    <div v-if="catalog" class="mt-2 mt-lg-3">
+      <nuxt-link :class="['btn full-width', isDarkMode ? 'btn--pale-red' : 'btn--pale-green' ]" :to="catalogLink">
         {{ $t('catalog_model_specifications') }}
       </nuxt-link>
     </div>
-    <div class="mt-3 mt-lg-0" v-if="isMobileBreakpoint && announcement.status != 3">
+    <div v-if="isMobileBreakpoint && announcement.status != 3" class="mt-3 mt-lg-0">
       <floating-cta :announcement="announcement"/>
     </div>
   </div>
@@ -46,7 +52,7 @@ export default {
       const specs = [
         {key: 'years', value: this.announcement.year, class: 'car-year'},
         {key: 'region', value: this.announcement.region?.name[this.locale]},
-        {key:'country', value:this.announcement[`country_name_${this.locale}`], for:['cars','commercial','moto']},
+        {key: 'country', value: this.announcement[`country_name_${this.locale}`], for: ['cars', 'commercial', 'moto']},
         {
           key: 'mileage',
           value: this.mileage + (this.announcement.is_new ? ', ' + this.$t('is_new').toLowerCase() : ''),
@@ -102,7 +108,7 @@ export default {
         {key: 'commercial_size', value: this.announcement.commercial_size}
 
       ];
-      if(this.announcement.is_external_salon)  {
+      if (this.announcement.is_external_salon) {
         let index = specs.findIndex(item => item.key === 'region');
         delete specs[index]
       }
@@ -146,7 +152,7 @@ export default {
             value: mergedValues['shine_width'] + '/' + mergedValues['height'] + 'R' + mergedValues['diameter'],
             for: ['parts']
           })
-        else if(mergedValues['diameter']) {
+        else if (mergedValues['diameter']) {
           specs.push({
             key: 'diameter',
             value: mergedValues['diameter'],
