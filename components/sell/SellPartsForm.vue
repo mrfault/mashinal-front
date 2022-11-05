@@ -216,13 +216,14 @@
             <!-- Price -->
             <div class="col-lg-8 mb-3 price-input-group">
               <div class="col-auto pl-0">
-                <form-numeric-input
+                <form-price-input
                   float
                   v-model="form.price"
                   id="anchor-price"
                   :placeholder="$t('price')"
                   :invalid="isInvalid('price')"
                   @change="removeError('price')"
+                  :maxlength="9"
                 />
               </div>
               <div class="col-lg-2 col-3">

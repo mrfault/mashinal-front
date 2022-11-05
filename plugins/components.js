@@ -16,6 +16,7 @@ import InfiniteLoading from '~/components/elements/InfiniteLoading';
 import Popover from '~/components/elements/Popover';
 // forms
 import FormNumericInput from '~/components/forms/FormNumericInput';
+import FormPriceInput from '~/components/forms/FormPriceInput';
 import FormTextInput from '~/components/forms/FormTextInput';
 import FormTextarea from '~/components/forms/FormTextarea';
 import FormCheckbox from '~/components/forms/FormCheckbox';
@@ -50,6 +51,7 @@ Vue.component('popover', Popover);
 Vue.component('transition-expand', TransitionExpand);
 // ***
 Vue.component('form-numeric-input', FormNumericInput);
+Vue.component('form-price-input', FormPriceInput);
 Vue.component('form-text-input', FormTextInput);
 Vue.component('form-textarea', FormTextarea);
 Vue.component('form-checkbox', FormCheckbox);
