@@ -118,8 +118,8 @@
                     </div>
 
                     <template v-else>
-                      <img alt="" :data-src="slide" class="swiper-lazy" />
-                      <loader />
+                      <img alt="" :src="slide" class="swiper-lazy" />
+<!--                      <loader />-->
                     </template>
                   </div>
                 </div>
