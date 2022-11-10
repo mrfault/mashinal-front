@@ -641,19 +641,19 @@ export default {
         setTimeout(() => {
           const el = document.querySelector('#drink2')
           el.scrollIntoView({ block: 'start', behavior: 'smooth' })
-        }, 300)
+        }, 100)
       } else if (this.$v.form.drinkValue2.$error && !this.disabledDrinkValue2) {
         this.$toasted.error(this.$t('amount_of_drink_not_defined'))
         setTimeout(() => {
           const el = document.querySelector('#drink2')
           el.scrollIntoView({ block: 'start', behavior: 'smooth' })
-        }, 300)
+        }, 100)
       } else if (this.$v.form.drinkValue3.$error && !this.disabledDrinkValue3) {
         this.$toasted.error(this.$t('amount_of_drink_not_defined'))
         setTimeout(() => {
           const el = document.querySelector('#drink3')
           el.scrollIntoView({ block: 'start', behavior: 'smooth' })
-        }, 300)
+        }, 100)
       }
     },
   },

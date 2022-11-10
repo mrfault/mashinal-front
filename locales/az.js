@@ -2300,8 +2300,8 @@ export default {
   "visual_tire_size_change_result_5": "Yürüş sayğacı realdan PERCENTAGE daha az yürüş göstərəcək",
   "visual_tire_size_change_result_6": "Sürətlə idarəolunma yaxşılaşacaq",
   "visual_tire_size_change_result_7": "Çuxurlarda və yoldan kənarda sürülməsi daha az rahat olacaq",
-  "visual_tire_size_change_result_8": "Sayğac realdan PERCENTAGE daha az sürət göstərəcək",
-  "visual_tire_size_change_result_9": "Yürüş sayğacı realdan PERCENTAGE daha az yürüş göstərəcək",
+  "visual_tire_size_change_result_8": "Sayğac realdan PERCENTAGE daha çox sürət göstərəcək",
+  "visual_tire_size_change_result_9": "Yürüş sayğacı realdan PERCENTAGE daha çox yürüş göstərəcək",
   "visual_tire_size_change_result_10": "Maşın yumuşaq olacaq",
   "visual_tire_size_change_result_11": "Çuxurlarda təkər və ya disk zədələnməsi riski azalacaq",
   "visual_tire_size_change_result_12": "Avtomobilin yol tutumu sürətlənərkən və döngələrdə  pisləşəcək",
@@ -2336,5 +2336,7 @@ export default {
   "video_360_successfully_upload":"Video uğurla yükləndi",
   "video_choose": "Video faylı seç",
   "video_choosed": "Video fayl seçilib",
-  "file_size_50": "Faylın maksimal həcmi 50 mb ola bilər"
+  "file_size_50": "Faylın maksimal həcmi 50 mb ola bilər",
+  "max_50_symbol_can_be_added": "Maksimum 50 simvol yazıla bilər",
+  "max_150_symbol_can_be_added": "Maksimum 150 simvol yazıla bilər",
 }
