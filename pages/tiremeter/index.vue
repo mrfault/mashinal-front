@@ -858,7 +858,8 @@ export default {
     form: {
       deep: true,
       handler() {
-        this.showResults = false
+        this.showResults = false;
+        this.showTextResults = false;
       },
     },
   },
