@@ -49,7 +49,6 @@
     },
     methods: {
       isActive(option) {
-        console.log(option.key)
         return this.selectedValue === option.key;
       },
       isDisabled(option) {

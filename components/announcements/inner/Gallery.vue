@@ -272,12 +272,10 @@ export default {
       this.setBodyOverflow('hidden')
     },
     refreshLightbox() {
-      console.log('refresh')
       this.onBeforeClose()
       this.lightboxKey++
     },
     onBeforeClose() {
-      console.log('test')
       this.showLightbox = false
       this.setBodyOverflow('scroll')
     },

@@ -348,7 +348,6 @@ export default {
       })
     },
     changeGenerations(values) {
-      console.log(values)
       this.form[this.index].generations = values
 
       this.generations.find((option) => option.id === values[0]).car_type_generation[0].transformed_media.main[0]

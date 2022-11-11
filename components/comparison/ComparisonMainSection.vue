@@ -40,9 +40,7 @@ export default {
 
   methods: {
     updateCompareType() {
-      console.log(this.$route.hash);
       if (['announcements', 'models'].includes(this.$route.hash?.replace('#', ''))) {
-        console.log('test');
         this.$store.commit('comparison/mutate', {
           property: 'filter',
           key: 'compareType',
