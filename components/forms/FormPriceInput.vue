@@ -96,8 +96,6 @@ export default {
         return [tam, kesr].join(".");
       }
     },
-
-
     readValue(value) {
       return value.toString().replace(/\D+/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
     },
@@ -112,6 +110,7 @@ export default {
         clearTimeout(this.typingTimer);
       }
     },
+
     removeDecimal() {
       var n = this.numericValue
       var tam = Math.trunc(this.numericValue)
@@ -142,9 +141,23 @@ export default {
       //
       // }
       set(value) {
-        this.$emit('input', this.checkPrice(value));
+        console.log("type", typeof(value))
+        console.log("value", value)
+        if (value % 1 !== 0) {
+
+          this.$emit('input', parseFloat(value.match(/^\d+\.?\d{0,2}/)));
+        } else if ((value.toString().length > 9) && (value % 1 == 0)) {
+
+          this.$emit('input', value.toString().substring(0, 9));
+        } else if((value == null) || (value == 0) || (value == "")){
+
+          this.$emit('input', value = null)
+        }else {
+          this.$emit('input', value)
+        }
       }
     }
-  },
+  }
+  ,
 }
 </script>
