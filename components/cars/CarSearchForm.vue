@@ -418,7 +418,7 @@
                 :label="$t('damage')"
                 v-model="form.damage"
                 :options="getDamageOptions"
-                :show-label-on-select="false"
+                :show-label-on-select="true"
               />
             </div>
             <div class="col-6 col-lg-2 mb-2 mb-lg-3">
@@ -426,7 +426,7 @@
                 :label="$t('customs')"
                 v-model="form.customs"
                 :options="getCustomsOptions"
-                :show-label-on-select="false"
+                :show-label-on-select="true"
               />
             </div>
             <div class="col-6 col-lg-2 mb-2 mb-lg-3">
