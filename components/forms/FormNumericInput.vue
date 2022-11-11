@@ -14,6 +14,7 @@
         @keydown="handleKeyDown"
         @blur="handleNumeric(true)"
         @input="updateInput"
+        :maxlength="maxlength"
       />
       <icon name="alert-circle" v-if="invalid" />
     </div>
@@ -56,7 +57,8 @@
       typingInterval: {
         default: 450
       },
-      inputClass: String
+      inputClass: String,
+      maxlength: Number,
     },
     data() {
       return {
