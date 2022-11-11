@@ -10,7 +10,6 @@
         :placeholder="placeholder"
         :value="numericValue"
         type="number"
-        @blur="handleNumeric(true)"
         @focus="showSuffix = false"
         @input="updateInput"
         @keydown="handleKeyDown"
@@ -69,11 +68,33 @@ export default {
       this.numericValue = e.target.value;
       this.$forceUpdate();
     },
-    handleNumeric(appendSuffix = false) {
-      clearTimeout(this.typingTimer);
-      this.showSuffix = appendSuffix;
-      let isSame = this.prevValue === this.value;
-      this.prevValue = this.value;
+    // handleNumeric(appendSuffix = false) {
+    //   clearTimeout(this.typingTimer);
+    //   this.showSuffix = appendSuffix;
+    //   let isSame = this.prevValue === this.value;
+    //   this.prevValue = this.value;
+    // },
+    checkPrice(num) {
+      var isFloat = num % 2 == 0;
+      var isNumeric = num.match(/^[\d\.]+$/g);
+      var result = "";
+
+      if (!isFloat && isNumeric) {
+        console.log(1)
+        return num.length > 9 ? num.slice(0, 9) : num;
+
+      } else if (isFloat && isNumeric) {
+        console.log(2)
+        var [tam, kesr] = num.split(".");
+
+        tam = tam.length > 9 ? tam.slice(0, 9) : tam;
+        if (kesr) {
+
+          kesr = kesr.length > 2 ? kesr.slice(0, 2) : kesr;
+        }
+
+        return [tam, kesr].join(".");
+      }
     },
 
 
@@ -83,7 +104,7 @@ export default {
     handleKeyUp(e) {
       if (this.typingInterval) {
         clearTimeout(this.typingTimer);
-        this.typingTimer = setTimeout(this.handleNumeric, this.typingInterval);
+        // this.typingTimer = setTimeout(this.handleNumeric, this.typingInterval);
       }
     },
     handleKeyDown(e) {
@@ -95,17 +116,17 @@ export default {
       var n = this.numericValue
       var tam = Math.trunc(this.numericValue)
       var decimal = Math.abs(n - Math.floor(n))
-      var firstTwo = parseFloat(decimal.toString().substring(2,4));
+      var firstTwo = parseFloat(decimal.toString().substring(2, 4));
       var final = `${tam}.${firstTwo}`
       var final2 = parseFloat(final)
-      console.log("decimal:", decimal,"firstTwo:", firstTwo, "truncate:", tam, "final", final)
+      console.log("decimal:", decimal, "firstTwo:", firstTwo, "truncate:", tam, "final", final)
       this.numericValue = final2;
     },
     removeDecimal2() {
-      if(this.numericValue % 1 !== 0) {
+      if (this.numericValue % 1 !== 0) {
         this.numericValue = this.numericValue.toFixed(2)
       }
-     this.numericValue = parseFloat(this.numericValue).toFixed(2);
+      this.numericValue = parseFloat(this.numericValue).toFixed(2);
     }
   },
   computed: {
@@ -113,19 +134,17 @@ export default {
       get() {
         return this.value;
       },
+      // set(value) {
+      //   if (value % 1 !== 0)
+      //     this.$emit('input', value.match(/^\d+\.?\d{0,2}/));
+      //   else
+      //     this.$emit('input', value);
+      //
+      // }
       set(value) {
-        console.log(value);
-        if(value % 1 !== 0)
-          this.$emit('input',value.match(/^\d+\.?\d{0,2}/));
-        else
-          this.$emit('input',value);
-
+        this.$emit('input', this.checkPrice(value));
       }
     }
   },
-  watch: {
-    numericValue() {
-    }
-  }
 }
 </script>
