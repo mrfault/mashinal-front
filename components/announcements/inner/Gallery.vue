@@ -113,6 +113,7 @@
         <template v-if="isMobileBreakpoint">
 
           <FsLightbox
+            :zoomIncrement="0"
             :toggler="toggleFsLightbox"
             :sources="getSourcesFsLightbox"
             :types="slides.types"
@@ -122,6 +123,7 @@
             :onBeforeClose="onBeforeClose"
             :disableThumbs="true"
             :onSlideChange="changeLightboxSlide"
+
           />
         </template>
         <transition-group name="fade">

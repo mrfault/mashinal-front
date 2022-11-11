@@ -245,6 +245,7 @@
                                   :key="submenu.title"
                                 >
                                   <nuxt-link
+                                    class="svg-hover"
                                     :to="$localePath(submenu.route)"
                                     exact
                                   >
