@@ -85,7 +85,6 @@ export default {
         if(option.type === 'checkbox') {
 
           if(this.options && cur_option) {
-            console.log(cur_option);
             this.hasAnyOption = true;
             return true;
           }

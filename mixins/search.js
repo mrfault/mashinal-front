@@ -323,7 +323,6 @@ export const SearchMixin = {
   created() {
 
     var route=this.$route.path.split('/');
-    console.log(route)
     if (!this.routeName !== 'index') {
       this.parseFormData();
     }

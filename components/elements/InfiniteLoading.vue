@@ -88,11 +88,9 @@ export default {
 
           if (usePlanB) this.pageB = this.pageB + 1;
           else this.page = this.page + 1;
-          console.log(this.page);
           this.loading = false;
           this.$emit('loaded-content');
         } catch(err) {
-          console.log(err);
           this.loading = false;
         }
       }
@@ -105,7 +103,6 @@ export default {
     window.addEventListener('scroll', this.infiniteScroll);
   },
   beforeDestroy() {
-    console.log('beforedestroy')
     window.removeEventListener('scroll', this.infiniteScroll);
   },
   computed:{

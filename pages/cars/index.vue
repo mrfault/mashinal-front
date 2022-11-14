@@ -108,7 +108,6 @@ export default {
       if(with_panorama) {
         post = {...post,with_video: true}
       }
-      console.log(post);
       this.pending = true;
       await this.getGridSearch({ ...this.searchParams, post, page });
       this.pending = false;

@@ -174,15 +174,9 @@ const getInitialState = () => ({
   ],
   offer_id: null,
   showOfferPaymentModal: false,
-<<<<<<< HEAD
-
-
-=======
   offer_add_is_loader: false,
   offer_faq:null,
   user_deleted_auto_salon_offers:[]
->>>>>>> feature/loa
-
 })
 
 export const state = () => getInitialState()
@@ -348,14 +342,9 @@ export const getters = {
   offerAnnouncements: (s) => s.offer_announcements,
   offerSelectedModels: (s) => s.offer_selected_models,
   showOfferPaymentModal: (s) => s.showOfferPaymentModal,
-<<<<<<< HEAD
-
-=======
   offerAddIsLoader: (s) => s.offer_add_is_loader,
   getOfferFaq:(s)=>s.offer_faq,
   getUserDeletedAutoSalonOffer: (s) => s.user_deleted_auto_salon_offers,
->>>>>>> feature/loa
-
 }
 
 const objectNotEmpty = (state, commit, property) => {
@@ -1269,7 +1258,6 @@ export const actions = {
     }
     const data = await this.$axios.$get(url)
     commit('mutate', {property: 'offers', value: data.data})
-    console.log('---')
 
     commit('mutate', {property: 'newOfferCount', value: data.count})
     commit('mutate', {property: 'user_deleted_auto_salon_offers', value: data.user_deleted_auto_salon_offers})
@@ -1337,9 +1325,7 @@ export const actions = {
 
           if (object.isSubmit) {
             this.$axios.post('/offer', state.offer_announcements).then((res) => {
-              console.log(state.showOfferPaymentModal)
               commit('openOfferPaymentModal', {status: true})
-              console.log(state.showOfferPaymentModal)
               commit('setOfferId', {offer_id: res.data.offer_id})
             })
           } else {
@@ -1356,8 +1342,6 @@ export const actions = {
   async offerFaq({commit,state}){
     const data=await this.$axios.$get('/offer/faq');
     commit('setOfferFaq',{data:data})
-
-<<<<<<< HEAD
         if (object.isSubmit) {
           this.$axios.post('/offer', state.offer_announcements).then((res) => {
             commit('openOfferPaymentModal')
@@ -1368,8 +1352,6 @@ export const actions = {
         }
       }
     });
-=======
->>>>>>> feature/loa
   }
 
 }
@@ -1495,8 +1477,6 @@ export const mutations = {
   },
   setNewMessage(state, id) {
     const emil = state.offers.find(offer => offer.id == id)
-    console.log(id)
-    console.log(emil)
   },
   setNullModels(state) {
     state.models = []
@@ -1518,7 +1498,6 @@ export const mutations = {
 
   },
   appendOfferSelectedModels(state, payload) {
-    console.log(state.offer_selected_models)
     Vue.set(state.offer_selected_models, payload.index, {
       img: payload.data.img ? payload.data.img : state.offer_selected_models[payload.index].img,
       logo: payload.data.logo ? payload.data.logo : state.offer_selected_models[payload.index].logo,
@@ -1529,10 +1508,6 @@ export const mutations = {
     })
   },
   deleteOfferAnnouncement(state, payload) {
-<<<<<<< HEAD
-=======
-    console.log(state.offer_selected_models[index])
->>>>>>> feature/loa
     let index = payload.index;
     if (index > -1) {
       state.offer_announcements.splice(index, 1);
@@ -1545,29 +1520,17 @@ export const mutations = {
         price: null,
         year: null
       };
-      console.log(state.offer_selected_models[index])
     }
   },
-<<<<<<< HEAD
-  openOfferPaymentModal(state) {
-    state.showOfferPaymentModal = true
-    console.log(state.showOfferPaymentModal)
-=======
   openOfferPaymentModal(state, payload) {
     state.showOfferPaymentModal = payload.status
-
->>>>>>> feature/loa
   },
   setOfferId(state, payload) {
     state.offer_id = payload.offer_id;
   },
-<<<<<<< HEAD
-
-=======
   setOfferAnnouncement(state, payload) {
     let form = JSON.parse(JSON.stringify(payload.form[payload.index]))
 
-    console.log(form)
     Vue.set(state.offer_announcements, payload.index, form)
   },
   setOfferAddLoader(state, payload) {
@@ -1602,12 +1565,8 @@ export const mutations = {
     state.offer_faq=payload.data
   },
   resetGenerations(state){
-    console.log(state.generations)
     state.generations=[];
-    console.log('resetted gen')
-    console.log(state.generations)
   }
->>>>>>> feature/loa
 }
 
 

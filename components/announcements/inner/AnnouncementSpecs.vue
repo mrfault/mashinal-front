@@ -3,7 +3,7 @@
 
     <ul>
       <li v-for="spec in announcementSpecs" v-if="!(announcement.is_external_salon && spec.key === 'customs')"
-          :key="spec.key">
+          :key="spec.key" :class="{'is-vin-number': (spec.key == 'vin')}">
         <span>
           <icon v-if="spec.key === 'exchange'" name="barter"/>
           <icon v-else-if="spec.key === 'credit'" name="percent"/>
@@ -14,7 +14,7 @@
         </span>
         <span v-else>
 
-        <p class="mb-0 text-truncate" style="width: calc(100% - 30px)">{{ spec.value }}</p>
+        <p class="mb-0" style="width: calc(100% - 30px)">{{ spec.value }}</p>
         </span>
       </li>
     </ul>

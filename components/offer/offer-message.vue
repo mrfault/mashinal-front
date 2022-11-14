@@ -80,7 +80,6 @@ export default {
 
     },
     attachmentsLength() {
-      console.log(this.attachments)
       return Object.keys(this.attachments).length;
     }
   },
