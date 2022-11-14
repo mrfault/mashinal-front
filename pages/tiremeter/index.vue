@@ -2,7 +2,7 @@
   <div class="pages-catalog">
     <div class="container alcometer-container">
       <breadcrumbs :crumbs="crumbs">
-        <share-it type="publish" v-if="$route.params.body" />
+        <share-it v-if="$route.params.body" type="publish"/>
       </breadcrumbs>
       <div class="ma-tiremeter">
         <div class="ma-tiremeter__card">
@@ -16,29 +16,29 @@
                   {{ $t('size_of_old_tire') }}
                 </h6>
                 <form-select
-                  :options="tireWidth"
+                  v-model="form.tireWidth.old"
                   :allowClear="false"
                   :clearOption="false"
-                  v-model="form.tireWidth.old"
                   :label="$t('size_of_old_tire')"
+                  :options="tireWidth"
                   showLabelOnlyOnActionBar
                 />
                 <span class="ma-tiremeter__card--input-group__spacer">/</span>
                 <form-select
-                  :options="profileWidth"
+                  v-model="form.profile.old"
                   :allowClear="false"
                   :clearOption="false"
-                  v-model="form.profile.old"
                   :label="$t('size_of_old_tire')"
+                  :options="profileWidth"
                   showLabelOnlyOnActionBar
                 />
                 <span class="ma-tiremeter__card--input-group__spacer">R</span>
                 <form-select
-                  :options="radiusOptions"
+                  v-model="form.radius.old"
                   :allowClear="false"
                   :clearOption="false"
-                  v-model="form.radius.old"
                   :label="$t('size_of_old_tire')"
+                  :options="radiusOptions"
                   showLabelOnlyOnActionBar
                 />
               </div>
@@ -47,29 +47,29 @@
                   {{ $t('size_of_new_tire') }}
                 </h6>
                 <form-select
-                  :options="tireWidth"
+                  v-model="form.tireWidth.new"
                   :allowClear="false"
                   :clearOption="false"
-                  v-model="form.tireWidth.new"
                   :label="$t('size_of_new_tire')"
+                  :options="tireWidth"
                   showLabelOnlyOnActionBar
                 />
                 <span class="ma-tiremeter__card--input-group__spacer">/</span>
                 <form-select
-                  :options="profileWidth"
+                  v-model="form.profile.new"
                   :allowClear="false"
                   :clearOption="false"
-                  v-model="form.profile.new"
                   :label="$t('size_of_new_tire')"
+                  :options="profileWidth"
                   showLabelOnlyOnActionBar
                 />
                 <span class="ma-tiremeter__card--input-group__spacer">R</span>
                 <form-select
-                  :options="radiusOptions"
+                  v-model="form.radius.new"
                   :allowClear="false"
                   :clearOption="false"
-                  v-model="form.radius.new"
                   :label="$t('size_of_new_tire')"
+                  :options="radiusOptions"
                   showLabelOnlyOnActionBar
                 />
               </div>
@@ -78,21 +78,21 @@
               class="col-12 col-md-12 col-lg-7 col-xl-4-10 pt-5 pt-lg-0 d-flex justify-content-center"
             >
               <tires
-                :oldExternalDiameter="oldExternalDiameter"
-                :newExternalDiameter="newExternalDiameter"
-                :oldDiscDiameter="oldDiscDiameter / 10"
                 :newDiscDiameter="newDiscDiameter / 10"
-                :oldProfileHeight="oldProfileHeight"
+                :newExternalDiameter="newExternalDiameter"
                 :newProfileHeight="newProfileHeight"
-                :oldTireWidth="form.tireWidth.old / 10"
                 :newTireWidth="form.tireWidth.new / 10"
+                :oldDiscDiameter="oldDiscDiameter / 10"
+                :oldExternalDiameter="oldExternalDiameter"
+                :oldProfileHeight="oldProfileHeight"
+                :oldTireWidth="form.tireWidth.old / 10"
               ></tires>
             </div>
             <div class="col-4 col-md-5 col-lg-5 col-xl-1-10">
-              <speedometer :percententage="speedometerErrorPercentage * -1" />
+              <speedometer :percententage="speedometerErrorPercentage * -1"/>
             </div>
             <div class="col-8 col-md-7 col-lg-7 col-xl-2-10">
-              <clearance :value="clearanceChange / 10" />
+              <clearance :value="clearanceChange / 10"/>
             </div>
           </div>
           <div class="submit-button mt-3 d-flex justify-content-end mr-1 pb-2">
@@ -106,14 +106,14 @@
         <!-- ------------------------------------------------------------------- -->
         <!-- ------------------------------------------------------------------- -->
         <div
-          class="ma-tiremeter__card"
-          v-if="showResults"
           id="tiremeterTextResults"
+          class="ma-tiremeter__card"
         >
-          <h2 class="title-with-line full-width mb-2">
+          <h2 v-if="showResults" class="title-with-line full-width mb-2">
             <span>{{ $t('result_of_calculation') }}</span>
           </h2>
-          <table class="ma-tiremeter__results-table">
+          <table v-if="showResults" class="ma-tiremeter__results-table"
+          >
             <tr class="ma-tiremeter__results-table--header">
               <th>{{ $t('dimensions_tire') }}</th>
               <th>{{ $t('previous_version') }}</th>
@@ -193,18 +193,17 @@
             </tr>
           </table>
           <div class="row mt-5 mt-lg-0">
-            <div class="col-12 col-lg-6" v-if="showTextResults">
+            <div v-if="showTextResults" class="col-12 col-lg-6">
               <text-results
-                :listH="lists.h"
-                :listD="lists.d"
-                :listL="lists.l"
                 :errorPercentage="speedometerErrorPercentageForTextResults"
                 :increase="lists.increase"
+                :listD="lists.d"
+                :listH="lists.h"
+                :listL="lists.l"
               />
             </div>
             <div class="col-12 col-lg-6 mt-5 mt-lg-0">
               <how-to
-                :showTextResults="showTextResults"
                 :speedometerErrorPercentage="speedometerErrorPercentage"
               ></how-to>
             </div>
@@ -222,6 +221,7 @@ import Speedometer from '~/components/tiremeter/speedometer.vue'
 import Clearance from '~/components/tiremeter/clearance.vue'
 import TextResults from '~/components/tiremeter/textResults.vue'
 import HowTo from '~/components/tiremeter/howTo.vue'
+
 export default {
   components: {
     Tires,
@@ -237,7 +237,7 @@ export default {
   },
   data() {
     return {
-      crumbs: [{ name: this.$t('visual_tire_calculator') }],
+      crumbs: [{name: this.$t('visual_tire_calculator')}],
       showResults: false,
       showTextResults: false,
       tireWidth: [
@@ -453,21 +453,21 @@ export default {
         },
       ],
       radiusOptions: [
-        { key: 12, name: 'R12' },
-        { key: 13, name: 'R13' },
-        { key: 14, name: 'R14' },
-        { key: 15, name: 'R15' },
-        { key: 16, name: 'R16' },
-        { key: 17, name: 'R17' },
-        { key: 17.5, name: 'R17.5' },
-        { key: 18, name: 'R18' },
-        { key: 19, name: 'R19' },
-        { key: 19.5, name: 'R19.5' },
-        { key: 20, name: 'R20' },
-        { key: 21, name: 'R21' },
-        { key: 22, name: 'R22' },
-        { key: 22.5, name: 'R22.5' },
-        { key: 24, name: 'R24' },
+        {key: 12, name: 'R12'},
+        {key: 13, name: 'R13'},
+        {key: 14, name: 'R14'},
+        {key: 15, name: 'R15'},
+        {key: 16, name: 'R16'},
+        {key: 17, name: 'R17'},
+        {key: 17.5, name: 'R17.5'},
+        {key: 18, name: 'R18'},
+        {key: 19, name: 'R19'},
+        {key: 19.5, name: 'R19.5'},
+        {key: 20, name: 'R20'},
+        {key: 21, name: 'R21'},
+        {key: 22, name: 'R22'},
+        {key: 22.5, name: 'R22.5'},
+        {key: 24, name: 'R24'},
       ],
       results: {
         table: {
@@ -664,7 +664,7 @@ export default {
       return (
         Math.round(
           this.form.tireWidth.old * this.form.profile.old * 0.02 +
-            this.form.radius.old * 25.4,
+          this.form.radius.old * 25.4,
         ) / 10
       )
     },
@@ -672,15 +672,15 @@ export default {
       return (
         Math.round(
           this.form.tireWidth.new * this.form.profile.new * 0.02 +
-            this.form.radius.new * 25.4,
+          this.form.radius.new * 25.4,
         ) / 10
       )
     },
     externalDiameterDifference() {
       return (
         (Math.round(
-          this.oldExternalDiameter * 10 - this.newExternalDiameter * 10,
-        ) /
+            this.oldExternalDiameter * 10 - this.newExternalDiameter * 10,
+          ) /
           10) *
         10
       )
@@ -698,13 +698,13 @@ export default {
     oldD() {
       return Math.round(
         this.oldExternalDiameter * this.oldDiscDiameter * 0.02 +
-          this.form.radius.old * 25.4,
+        this.form.radius.old * 25.4,
       )
     },
     newD() {
       return Math.round(
         this.newExternalDiameter * this.newDiscDiameter * 0.02 +
-          this.form.radius.new * 25.4,
+        this.form.radius.new * 25.4,
       )
     },
 
@@ -732,12 +732,12 @@ export default {
     clearanceChange() {
       return (
         (Math.round(
-          this.form.tireWidth.new * this.form.profile.new * 0.02 +
+            this.form.tireWidth.new * this.form.profile.new * 0.02 +
             this.form.radius.new * 25.4,
-        ) -
+          ) -
           Math.round(
             this.form.tireWidth.old * this.form.profile.old * 0.02 +
-              this.form.radius.old * 25.4,
+            this.form.radius.old * 25.4,
           )) /
         2
       )
@@ -745,13 +745,13 @@ export default {
     newSpeed() {
       return (
         ((Math.round(
-          this.form.tireWidth.new * this.form.profile.new * 0.02 +
-            this.form.radius.new * 25.4,
-        ) /
-          Math.round(
-            this.form.tireWidth.old * this.form.profile.old * 0.02 +
+              this.form.tireWidth.new * this.form.profile.new * 0.02 +
+              this.form.radius.new * 25.4,
+            ) /
+            Math.round(
+              this.form.tireWidth.old * this.form.profile.old * 0.02 +
               this.form.radius.old * 25.4,
-          )) *
+            )) *
           this.oldSpeed *
           100) /
         100
@@ -770,12 +770,12 @@ export default {
       var b =
         Math.round(
           25.4 * this.form.radius.old +
-            (this.form.tireWidth.old * this.form.profile.old * 2) / 100,
+          (this.form.tireWidth.old * this.form.profile.old * 2) / 100,
         ) / 10
       var c =
         Math.round(
           25.4 * this.form.radius.new +
-            (this.form.tireWidth.new * this.form.profile.new * 2) / 100,
+          (this.form.tireWidth.new * this.form.profile.new * 2) / 100,
         ) / 10
       var h = Math.round(25.4 * this.form.radius.old) / 10
       var k = Math.round(25.4 * this.form.radius.new) / 10
@@ -832,13 +832,13 @@ export default {
       if (this.isMobileBreakpoint) {
         setTimeout(() => {
           const el = document.querySelector('#tiremeterTextResults')
-          el.scrollIntoView({ block: 'start', behavior: 'smooth' })
+          el.scrollIntoView({block: 'start', behavior: 'smooth'})
         }, 500)
       } else {
         setTimeout(() => {
           const el = document.querySelector('#tiremeterTextResults')
-          el.scrollIntoView({ block: 'start', behavior: 'smooth' })
-          window.scrollTo({ top: 360, behavior: 'smooth' })
+          el.scrollIntoView({block: 'start', behavior: 'smooth'})
+          window.scrollTo({top: 360, behavior: 'smooth'})
         }, 500)
       }
 
@@ -858,7 +858,8 @@ export default {
     form: {
       deep: true,
       handler() {
-        this.showResults = false
+        this.showResults = false;
+        this.showTextResults = false;
       },
     },
   },
