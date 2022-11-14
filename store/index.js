@@ -1351,8 +1351,6 @@ export const actions = {
           commit('incrementAnnouncementsCount')
         }
       }
-    });
-  }
 
 }
 
