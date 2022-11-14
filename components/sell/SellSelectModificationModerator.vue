@@ -1,23 +1,19 @@
 <template>
-  <div ref="sellSelectModification" class="sell_select-modification">
+  <div class="sell_select-modification" ref="sellSelectModification">
     <transition-group name="fade2">
       <div
-        v-if="form.year && sellBody.length"
         :key="1"
-        ref="sell-car_body_type"
         class="mt-3 mt-lg-0 mb-3"
+        v-if="form.year && sellBody.length"
+        ref="sell-car_body_type"
       >
-        <h2 class="title-with-line full-width">
-          <span>
-            {{ $t('carcase') }}
-            <span class="star">*</span>
-          </span>
-        </h2>
+        <title-with-line-and-reject-reason title="carcase" reject-key="carcase"  required/>
+
         <form-buttons
           v-model="form.car_body_type"
+          :options="sellBody"
           :btn-class="'primary-outline select-body'"
           :group-by="isMobileBreakpoint ? 2 : 5"
-          :options="sellBody"
           @change="
             handleChange(
               $event,
@@ -37,18 +33,18 @@
           <template #custom="{ button }">
             <div class="body-img">
               <img
-                :alt="button.name[locale]"
                 :src="$withBaseUrl(button.transformed_media)"
+                :alt="button.name[locale]"
               />
             </div>
           </template>
         </form-buttons>
       </div>
       <div
-        v-if="form.car_body_type && sellGenerations.length"
         :key="2"
-        ref="sell-generation_id"
         class="mb-3"
+        v-if="form.car_body_type && sellGenerations.length"
+        ref="sell-generation_id"
       >
         <h2 class="title-with-line full-width">
           <span>
@@ -58,9 +54,9 @@
         </h2>
         <form-buttons
           v-model="form.generation_id"
+          :options="sellGenerations"
           :btn-class="'primary-outline select-generation'"
           :group-by="isMobileBreakpoint ? 2 : 5"
-          :options="sellGenerations"
           @change="
             handleChange(
               $event,
@@ -78,11 +74,11 @@
         >
           <template #custom="{ button }">
             <div
+              :style="getGenerationStyle(button)"
               :class="[
                 'generation-bg',
                 { 'no-img': !!getGenerationStyle(button).noImg },
               ]"
-              :style="getGenerationStyle(button)"
             ></div>
             <div class="generation-info">
               <span>
@@ -94,10 +90,10 @@
         </form-buttons>
       </div>
       <div
-        v-if="form.generation_id && sellEngines.length"
         :key="3"
-        ref="sell-gearing"
         class="mb-3"
+        v-if="form.generation_id && sellEngines.length"
+        ref="sell-gearing"
       >
         <h2 class="title-with-line full-width">
           <span>
@@ -107,14 +103,14 @@
         </h2>
         <form-buttons
           v-model="form.gearing"
-          :btn-class="'primary-outline'"
-          :group-by="isMobileBreakpoint ? 1 : 5"
           :options="
             sellEngines.map((o) => ({
               name: $t('engine_values')[o.engine],
               key: o.engine,
             }))
           "
+          :btn-class="'primary-outline'"
+          :group-by="isMobileBreakpoint ? 1 : 5"
           @change="
             handleChange(
               $event,
@@ -127,28 +123,26 @@
         >
           <template #icon="{ button }">
             <icon
-              :class="`engine-${button.key}`"
               :name="getIcon('engine', button.key)"
+              :class="`engine-${button.key}`"
             />
           </template>
         </form-buttons>
-
         <div class="mt-2 mt-lg-3">
           <form-checkbox
-            v-model="form.autogas"
             :label="$t('gas_equipment')"
-            input-name="autogas"
+            v-model="form.autogas"
             transparent
+            input-name="autogas"
             @change="$emit('update-form', { key: 'autogas', value: $event })"
           />
         </div>
       </div>
-
       <div
-        v-if="form.gearing && sellGearing.length"
         :key="4"
-        ref="sell-transmission"
         class="mb-3"
+        v-if="form.gearing && sellGearing.length"
+        ref="sell-transmission"
       >
         <h2 class="title-with-line full-width">
           <span>
@@ -158,14 +152,14 @@
         </h2>
         <form-buttons
           v-model="form.transmission"
-          :btn-class="'primary-outline'"
-          :group-by="isMobileBreakpoint ? 1 : 5"
           :options="
             sellGearing.map((o) => ({
               name: $t('type_of_drive_values')[o.type_of_drive],
               key: o.type_of_drive,
             }))
           "
+          :btn-class="'primary-outline'"
+          :group-by="isMobileBreakpoint ? 1 : 5"
           @change="
             handleChange(
               $event,
@@ -178,17 +172,17 @@
         >
           <template #icon="{ button }">
             <icon
-              :class="`type-of-drive-${button.key}`"
               :name="getIcon('type_of_drive', button.key)"
+              :class="`type-of-drive-${button.key}`"
             />
           </template>
         </form-buttons>
       </div>
       <div
-        v-if="form.transmission && sellTransmissions.length"
         :key="5"
-        ref="sell-modification"
         class="mb-3"
+        v-if="form.transmission && sellTransmissions.length"
+        ref="sell-modification"
       >
         <h2 class="title-with-line full-width">
           <span>
@@ -199,14 +193,14 @@
 
         <form-buttons
           v-model="form.modification"
-          :btn-class="'primary-outline'"
-          :group-by="isMobileBreakpoint ? 1 : 5"
           :options="
             sellTransmissions.map((o) => ({
               name: $t('box_values')[o.box],
               key: o.box,
             }))
           "
+          :btn-class="'primary-outline'"
+          :group-by="isMobileBreakpoint ? 1 : 5"
           @change="
             handleChange(
               $event,
@@ -225,17 +219,17 @@
         >
           <template #icon="{ button }">
             <icon
-              :class="`box-${button.key}`"
               :name="getIcon('box', button.key)"
+              :class="`box-${button.key}`"
             />
           </template>
         </form-buttons>
       </div>
       <div
-        v-if="form.modification && sellModifications.length"
         :key="6"
-        ref="sell-car_catalog_id"
         class="mb-3"
+        v-if="form.modification && sellModifications.length"
+        ref="sell-car_catalog_id"
       >
         <h2 class="title-with-line full-width">
           <span>
@@ -245,14 +239,14 @@
         </h2>
         <form-buttons
           v-model="form.car_catalog_id"
-          :btn-class="'primary-outline'"
-          :group-by="isMobileBreakpoint ? 1 : 3"
           :options="
             sellModifications.map((o) => ({
               name: getModificationName(o),
               key: o.id,
             }))
           "
+          :btn-class="'primary-outline'"
+          :group-by="isMobileBreakpoint ? 1 : 3"
           @change="handleChange($event, false, ['car_catalog_id'], [])"
         />
       </div>
@@ -262,35 +256,41 @@
 
 <script>
 import {mapGetters, mapActions} from 'vuex'
-
+import RejectReason from "~/components/moderator/rejectReason";
+import TitleWithLineAndRejectReason from "~/components/moderator/titleWithLineAndRejectReason";
 export default {
+  components: {
+    TitleWithLineAndRejectReason,
+    RejectReason
+  },
+
   props: {
     form: {},
     disableScroll: false,
+    brand: String,
+    model: String,
+    year: Number,
+
   },
   data() {
     return {
       timeout: -1,
+      rejectArray: [],
     }
   },
   computed: {
-    ...mapGetters([
-      'sellBody',
-      'sellGenerations',
-      'sellEngines',
-      'sellGearing',
-      'sellTransmissions',
-      'sellModifications',
-    ]),
+    ...mapGetters({
+      sellBody: 'moderator/sell_bodies',
+      sellGenerations: 'moderator/generations',
+      sellEngines: 'moderator/engines',
+      sellGearing: 'moderator/boxes',
+      sellTransmissions: 'sellTransmissions',
+      sellModifications: 'moderator/modifications',
+    }),
   },
   methods: {
     ...mapActions([
-      'getSellBody',
-      'getSellGenerations',
-      'getSellEngines',
-      'getSellGearing',
       'getSellTransmissions',
-      'getSellModifications',
     ]),
     getFormValues(keys) {
       let form = {}
@@ -403,7 +403,7 @@ export default {
         } else if (this.isMobileBreakpoint) {
           this.timeout = setTimeout(() => {
             this.scrollTo(this.$refs[`sell-${nextKey}`], -34, 500)
-
+            console.log(this)
             $container.style.minHeight = ''
           }, 100)
         }
@@ -414,13 +414,23 @@ export default {
         }
       })
     },
+    changeReason(rejectKey) {
+      if (rejectKey === 'image') {
+        this.showPhotoReject = true
+      } else if (rejectKey === '360') {
+        this.show360Reject = true
+      } else {
+        if (this.rejectArray.includes(rejectKey)) {
+          this.rejectArray.splice(this.rejectArray.indexOf(rejectKey), 1)
+        } else {
+          this.rejectArray.push(rejectKey)
+        }
+      }
+    },
   },
-  async fetch() {
-    if (!this.sellBody.length)
-      await this.getSellBody(this.getFormValues(['brand', 'model', 'year']))
-  },
-  created() {
-    this.getSellBody(this.getFormValues(['brand', 'model', 'year']))
+
+  mounted() {
+    this.$store.dispatch("getSellBody", {brand: this.brand, model: this.model, year: this.year})
   },
 }
 </script>

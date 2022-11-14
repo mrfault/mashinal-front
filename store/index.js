@@ -177,7 +177,6 @@ const getInitialState = () => ({
   offer_add_is_loader: false,
   offer_faq:null,
   user_deleted_auto_salon_offers:[]
-
 })
 
 export const state = () => getInitialState()
@@ -346,7 +345,6 @@ export const getters = {
   offerAddIsLoader: (s) => s.offer_add_is_loader,
   getOfferFaq:(s)=>s.offer_faq,
   getUserDeletedAutoSalonOffer: (s) => s.user_deleted_auto_salon_offers,
-
 }
 
 const objectNotEmpty = (state, commit, property) => {
@@ -1344,10 +1342,20 @@ export const actions = {
   async offerFaq({commit,state}){
     const data=await this.$axios.$get('/offer/faq');
     commit('setOfferFaq',{data:data})
-
+        if (object.isSubmit) {
+          this.$axios.post('/offer', state.offer_announcements).then((res) => {
+            commit('openOfferPaymentModal')
+            commit('setOfferId', {offer_id: res.data.offer_id})
+          })
+        } else {
+          commit('incrementAnnouncementsCount')
+        }
+      }
+    });
   }
 
 }
+
 export const mutations = {
   mutate: mutate(),
   reset: reset(getInitialState()),
@@ -1516,7 +1524,6 @@ export const mutations = {
   },
   openOfferPaymentModal(state, payload) {
     state.showOfferPaymentModal = payload.status
-
   },
   setOfferId(state, payload) {
     state.offer_id = payload.offer_id;
@@ -1561,3 +1568,5 @@ export const mutations = {
     state.generations=[];
   }
 }
+
+

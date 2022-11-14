@@ -62,10 +62,10 @@ export default {
     },
     limit: Number,
     hideMatt: Boolean,
+    isModeratorPage:Boolean
   },
   computed: {
     ...mapGetters(['colors']),
-
     selected: {
       get() {
         return this.value
@@ -91,12 +91,14 @@ export default {
     getStyles(color) {
       return {
         backgroundColor: color.code,
-        borderColor: color.code.includes('#FFFFFF') ? '#D6E4F8' : color.code,
+        borderColor: color.code?.includes('#FFFFFF') ? '#D6E4F8' : color.code,
       }
     },
     isSelected(color) {
-      if (this.multiple) return this.selected.includes(color)
-      return this.selected === color
+      if (!this.isModeratorPage){
+        if (this.multiple) return this.selected.includes(color)
+        return this.selected === color
+      }
     },
   },
 }
