@@ -191,7 +191,7 @@ export const SearchMixin = {
       if (['commercial','moto'].includes(this.meta.type) && !this.category.id) {
         this.setCategory('', key);
       } else {
-        this.setBrand('', key);
+        this.setBrandExclude('', key);
       }
       this.excludeRows.splice(index, 1);
     },
@@ -323,7 +323,6 @@ export const SearchMixin = {
   created() {
 
     var route=this.$route.path.split('/');
-    console.log(route)
     if (!this.routeName !== 'index') {
       this.parseFormData();
     }

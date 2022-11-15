@@ -533,6 +533,7 @@ export default {
   },
   methods: {
     calculate() {
+      this.showGraphs = true
       try {
         let r
         if (this.form.gender === 'm') {
@@ -583,7 +584,7 @@ export default {
         }
         this.timeToDrive = rul
         //if (Cor > 8) f.rul.value = f.rul.value + '';
-        this.showGraphs = true
+
         if (this.showGraphs && !this.isMobileBreakpoint) {
           setTimeout(() => {
             window.scrollTo({ top: 500, behavior: 'smooth' })
@@ -628,32 +629,32 @@ export default {
         setTimeout(() => {
           const el = document.querySelector('#drink1')
           el.scrollIntoView({ block: 'start', behavior: 'smooth' })
-        }, 300)
+        }, 100)
       } else if (this.$v.form.drinkValue1.$error && !this.disabledDrinkValue1) {
         this.$toasted.error(this.$t('amount_of_drink_not_defined'))
         setTimeout(() => {
           const el = document.querySelector('#drink1')
           el.scrollIntoView({ block: 'start', behavior: 'smooth' })
-        }, 300)
+        }, 100)
       } else if (this.form.drinkType3 == null || this.form.drinkType3 == '') {
         this.$toasted.error(this.$t('amount_of_drink_not_defined'))
 
         setTimeout(() => {
           const el = document.querySelector('#drink2')
           el.scrollIntoView({ block: 'start', behavior: 'smooth' })
-        }, 300)
+        }, 100)
       } else if (this.$v.form.drinkValue2.$error && !this.disabledDrinkValue2) {
         this.$toasted.error(this.$t('amount_of_drink_not_defined'))
         setTimeout(() => {
           const el = document.querySelector('#drink2')
           el.scrollIntoView({ block: 'start', behavior: 'smooth' })
-        }, 300)
+        }, 100)
       } else if (this.$v.form.drinkValue3.$error && !this.disabledDrinkValue3) {
         this.$toasted.error(this.$t('amount_of_drink_not_defined'))
         setTimeout(() => {
           const el = document.querySelector('#drink3')
           el.scrollIntoView({ block: 'start', behavior: 'smooth' })
-        }, 300)
+        }, 100)
       }
     },
   },

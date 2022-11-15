@@ -279,7 +279,6 @@ export default {
       for(let key in group) {
 
         if (this.category.id) {
-          console.log(this.motoOptions.config[group[key]], group[key]);
           let categories = this.motoOptions.config[group[key]]?.category;
           if (categories && categories[0] && categories.indexOf(this.category.id) === -1)
             delete group[key];

@@ -24,7 +24,7 @@
           ref="sellLastStepUploadImage"
         />
       <template v-if="user.autosalon && user.autosalon.access_to_360 && type === 'cars'">
-        <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-selectedColor">
+        <h2 class="title-with-line mt-2 mt-lg-3">
           <span>{{ $t('exterior') }}</span>
         </h2>
         <div class="d-flex align-items-center">
@@ -336,7 +336,7 @@ export default {
       now: (new Date).toLocaleDateString('en-US'),
       videoUploading: false,
       uploadPercentage:0,
-      videoUploaded: false,
+      videoUploaded: this.announcement?.first_images_360 || false,
       collapsed: false,
       form: this.$clone(this.initialForm),
       date: Math.floor(Date.now() / 1000),
@@ -355,6 +355,9 @@ export default {
       showLoginPopup: false,
       pending: false
     }
+  },
+  mounted() {
+    setTimeout(() =>  this.scrollReset(),100)
   },
   computed: {
     ...mapState(['sellPhoneEntered']),
@@ -409,7 +412,7 @@ export default {
     upload360Video(val) {
         if(!val.target.files[0]) return false;
 
-        if (val.target.files[0].size > 1024 * 1024 * 50) {
+        if (val.target.files[0].size > 1024 * 1024 * 95) {
           val.preventDefault();
           this.$toast.error(this.$t('file_size_50'));
           return;
@@ -585,6 +588,10 @@ export default {
       // wait till all images uploaded
       if (this.uploading) {
         this.$toasted.error(this.$t('please_wait_for_all_image_loading'));
+        return;
+      }
+      if (this.videoUploading) {
+        this.$toasted.error(this.$t('please_wait_for_all_video_loading'));
         return;
       }
       this.form.saved_images = this.savedFiles;

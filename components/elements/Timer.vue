@@ -46,7 +46,7 @@
       padTime(time) {
         return (time < 10 ? '0' : '') + time;
       },
-      countdown() {
+      mcountdown() {
         if (this.totalTime > 0){
           this.totalTime--;
           this.saveTime();
@@ -78,7 +78,7 @@
         return this.padTime(this.totalTime - (this.hours * 3600) - (this.minutes * 60));
       },
       formatTime() {
-        if (this.format === 'i:s') 
+        if (this.format === 'i:s')
           return `${this.minutes}:${this.seconds}`;
         return `${this.hours}:${this.minutes}:${this.seconds}`;
       }
@@ -86,9 +86,9 @@
     mounted() {
       if (this.saveAs) {
         const saved = localStorage.getItem(this.saveAs);
-        this.totalTime = (saved && (saved > 3 ? saved - 3 : 0)) || this.duration; 
+        this.totalTime = (saved && (saved > 3 ? saved - 3 : 0)) || this.duration;
       }
-        
+
       this.startTimer();
     }
   }

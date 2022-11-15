@@ -1063,7 +1063,7 @@ export default {
   "meta-title_announcement-used": "{announce}",
   "meta-title_business-profile": "Biznes profili yarat",
   "meta-title_cars": "Объявления о продаже новых и подержанных авто | Цены на новые и подержанные авто",
-  "meta-title_catalog": "Авто каталог, характеристики машин",
+  "meta-title_catalog": "Автокаталог, характеристики машин",
   "meta-title_catalog-car": "{word} {car}",
   "meta-title_commercial": "Объявления о продаже коммерческих автомобилей | Цены на коммерческие автомобили",
   "meta-title_comparison": "Сравнивайте машины",
@@ -1329,6 +1329,7 @@ export default {
   "please_call_to_support": "Пожалуйста, позвоните в службу поддержки",
   "please_make_a_payment": "Пожалуйста, пополните свой баланс.",
   "please_wait_for_all_image_loading": "Пожалуйста подождите пока все картинки загрузятся",
+  "please_wait_for_all_video_loading": "Пожалуйста подождите пока видео загрузится",
   "plural_forms_announcements": [
     "объявление",
     "объявления",
@@ -2344,5 +2345,8 @@ export default {
    "new_1": "Новый",
    "will_increase": "увеличится",
    "will_diminish": "уменьшится ",
-   "file_size_50": "Максимальный размер файла может быть: 50 мб"
+   "file_size_50": "Максимальный размер файла может быть: 50 мб",
+   "anyone":"Любая",
+   "anyone_other": "Любое",
+   "anyone_other2": "Любой"
 }

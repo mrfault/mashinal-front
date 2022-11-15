@@ -695,6 +695,7 @@ export default {
     "Qaz-turbin",
     "Plug-in Hibrid"
   ],
+
   "engine_volume": "Mühərrikin işçi həcmi (sm3)",
   "engine_type": "Mühərrikin növü",
   "enter_a_new_mobile_number": "Yeni əlaqə nömrəsi əlavə et",
@@ -1345,6 +1346,7 @@ export default {
   "please_call_to_support": "Zəhmət olmasa məlumat mərkəzi ilə əlaqə saxlayın",
   "please_make_a_payment": "Zəhmət olmasa balansınızı artırın.",
   "please_wait_for_all_image_loading": "Şəkillərin yüklənməsini gözləyin",
+  "please_wait_for_all_video_loading": "Videonun yüklənməsini gözləyin",
   "plural_forms_announcements": [
     "elan",
     "elan",
@@ -2299,8 +2301,8 @@ export default {
   "visual_tire_size_change_result_5": "Yürüş sayğacı realdan PERCENTAGE daha az yürüş göstərəcək",
   "visual_tire_size_change_result_6": "Sürətlə idarəolunma yaxşılaşacaq",
   "visual_tire_size_change_result_7": "Çuxurlarda və yoldan kənarda sürülməsi daha az rahat olacaq",
-  "visual_tire_size_change_result_8": "Sayğac realdan PERCENTAGE daha az sürət göstərəcək",
-  "visual_tire_size_change_result_9": "Yürüş sayğacı realdan PERCENTAGE daha az yürüş göstərəcək",
+  "visual_tire_size_change_result_8": "Sayğac realdan PERCENTAGE daha çox sürət göstərəcək",
+  "visual_tire_size_change_result_9": "Yürüş sayğacı realdan PERCENTAGE daha çox yürüş göstərəcək",
   "visual_tire_size_change_result_10": "Maşın yumuşaq olacaq",
   "visual_tire_size_change_result_11": "Çuxurlarda təkər və ya disk zədələnməsi riski azalacaq",
   "visual_tire_size_change_result_12": "Avtomobilin yol tutumu sürətlənərkən və döngələrdə  pisləşəcək",
@@ -2334,5 +2336,18 @@ export default {
   "will_diminish": "azalacaq",
   "video_360_successfully_upload":"Video uğurla yükləndi",
   "video_choose": "Video faylı seç",
-  "file_size_50": "Faylın maksimal həcmi 50 mb ola bilər"
+  "video_choosed": "Video fayl seçilib",
+  "file_size_50": "Faylın maksimal həcmi 50 mb ola bilər",
+  "plug_in_hybrid": "Plug-in Hibrid",
+  "360_interior": "360 interyer",
+  "transfer_to_supervisor": "Supervayzerə ötür",
+  "moderation": "Moderasiya",
+  "user_type": "İstifadəçi növü",
+  "transfer_comment": "Transfer rəyi",
+  "max_50_symbol_can_be_added": "Maksimum 50 simvol yazıla bilər",
+  "max_150_symbol_can_be_added": "Maksimum 150 simvol yazıla bilər",
+  "file_size_50": "Faylın maksimal həcmi 50 mb ola bilər",
+  "anyone":"İstənilən",
+  "anyone_other": "İstənilən",
+  "anyone_other2": "İstənilən"
 }

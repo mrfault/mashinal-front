@@ -307,8 +307,6 @@ export default {
 
 
         this.$store.commit('mutate', {property: 'current_offer_id', value: this.offer.id})
-        console.log('-----')
-        console.log(this.userOffer)
         this.offer.user_deleted = this.userOffer.user_deleted_at ?  this.userOffer.user_deleted_at : null
           this.auto_salon_deleted_at = this.userOffer.auto_salon_deleted_at
 

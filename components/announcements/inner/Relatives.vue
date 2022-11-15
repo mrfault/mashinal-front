@@ -1,6 +1,6 @@
 <template>
   <div>
-    <template v-if="announcement.is_part_salon || announcement.is_autosalon || announcement.is_external_salon">
+    <template v-if="isShop">
       <grid
         v-if="shopAnnouncements.data && shopAnnouncements.data.length"
         :announcements="shopAnnouncements.data"
@@ -15,8 +15,8 @@
       />
     </template>
     <infinite-loading
-      :action="announcement.is_part_salon || announcement.is_autosalon || announcement.is_external_salon ? 'getShopOtherAnnouncementsWithoutMutate': 'getRelativeAnnouncementsWithoutMutate'"
-      :getter="announcement.is_part_salon || announcement.is_autosalon || announcement.is_external_salon ? 'shopAnnouncements': 'relativeAnnouncements'"
+      :action="isShop ? 'getShopOtherAnnouncementsWithoutMutate': 'getRelativeAnnouncementsWithoutMutate'"
+      :getter="isShop ? 'shopAnnouncements': 'relativeAnnouncements'"
     />
   </div>
 </template>
@@ -32,13 +32,20 @@
     },
     computed: {
       ...mapGetters(['announcement', 'relativeAnnouncements', 'shopAnnouncements']),
-
+      isShop() {
+        if (this.announcement.is_part_salon) return true;
+        else if (this.announcement.is_autosalon)
+          return this.announcement.user.autosalon.possible_announce_count > 5 || this.announcement.user.autosalon.possible_announce_count == 0
+        else if (this.announcement.is_external_salon)
+          return (this.announcement.user.external_salon.possible_announce_count > 5 || this.announcement.user.external_salon.possible_announce_count == 0);
+        return false
+      },
       title() {
         if (this.announcement.is_part_salon)
           return this.$t('shop_other_announcements', { name: this.announcement.user.part_salon.name });
-        else if (this.announcement.is_autosalon)
+        else if (this.announcement.is_autosalon && (this.announcement.user.autosalon.possible_announce_count > 5 || this.announcement.user.autosalon.possible_announce_count == 0))
           return this.$t('salon_other_announcements', { name: this.announcement.user.autosalon.name });
-        else if (this.announcement.is_external_salon)
+        else if (this.announcement.is_external_salon && (this.announcement.user.external_salon.possible_announce_count > 5 || this.announcement.user.external_salon.possible_announce_count == 0))
           return this.$t('salon_other_announcements', { name: this.announcement.user.external_salon.name });
         return this.$t('relative_announcements');
       }
@@ -47,10 +54,9 @@
       ...mapActions(['getRelativeAnnouncements', 'getShopOtherAnnouncements'])
     },
     mounted() {
-    console.log('mounted relative')
     },
     created() {
-      if (this.announcement.is_part_salon || this.announcement.is_autosalon || this.announcement.is_external_salon)
+      if (this.isShop)
         this.getShopOtherAnnouncements({ id: this.announcement.id_unique });
       else this.getRelativeAnnouncements({ id: this.announcement.id_unique });
     },

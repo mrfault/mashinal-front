@@ -418,7 +418,7 @@
                 :label="$t('damage')"
                 v-model="form.damage"
                 :options="getDamageOptions"
-                :show-label-on-select="false"
+                :show-label-on-select="true"
               />
             </div>
             <div class="col-6 col-lg-2 mb-2 mb-lg-3">
@@ -426,7 +426,7 @@
                 :label="$t('customs')"
                 v-model="form.customs"
                 :options="getCustomsOptions"
-                :show-label-on-select="false"
+                :show-label-on-select="true"
               />
             </div>
             <div class="col-6 col-lg-2 mb-2 mb-lg-3">
@@ -743,8 +743,8 @@
           </div>
         </div>
         <div class="col-6 col-lg-2 mt-3 mt-lg-5 mb-n6 mb-lg-n1">
-          <button @click="showExcludeModal = true;" type="button" class="btn btn--grey full-width">
-              {{ $t('exclude') }}
+          <button @click="showExcludeModal = true;" type="button" class="btn btn--dark-blue full-width">
+              {{ $t('exclude') }} <template v-if="getExcludeCount">({{ getExcludeCount }})</template>
           </button>
         </div>
         <div class="col-6 col-lg-2 mt-3 mt-lg-5 mb-n6 mb-lg-n1">
@@ -990,6 +990,9 @@ export default {
       'allSellOptions2',
       'singleSavedSearch',
     ]),
+    getExcludeCount() {
+      return Object.values(this.form.exclude_additional_brands).filter(item => item.brand).length;
+    },
     getSuffix() {
       switch(this.form.currency) {
         case 1:

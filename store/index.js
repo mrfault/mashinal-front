@@ -347,7 +347,6 @@ export const getters = {
   offerAddIsLoader: (s) => s.offer_add_is_loader,
   getOfferFaq:(s)=>s.offer_faq,
   getUserDeletedAutoSalonOffer: (s) => s.user_deleted_auto_salon_offers,
-  getActiveMyOffers :(s)=> s.active_my_offers,
 
 }
 
@@ -1350,11 +1349,6 @@ export const actions = {
     const data=await this.$axios.$get('/offer/faq');
     commit('setOfferFaq',{data:data})
 
-  },
-  async activeMyOffers({commit,state}){
-    const {data} = await this.$axios.$get('/offer/user/active-my-offers');
-
-    commit('mutate', {property: 'active_my_offers', value: data})
   }
 
 }

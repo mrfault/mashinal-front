@@ -128,7 +128,7 @@
                   </nuxt-link>
                   <hr />
                   <ul>
-                    <template v-for="menu in userMenus" v-if="(user.parent_id || (user.children && user.children.length)) ? menu.title !== 'garage':true " >
+                    <template v-for="menu in userMenus" v-if="menu.isAvailable && ((user.parent_id || (user.children && user.children.length)) ? menu.title !== 'garage':true )" >
                       <li v-if="menu.title === 'my_account' ? !user.parent_id: true" :key="menu.title">
                         <nuxt-link :to="$localePath(menu.route)">
                           {{ $t(menu.title) }}
@@ -245,10 +245,12 @@
                                   :key="submenu.title"
                                 >
                                   <nuxt-link
+                                    class="svg-hover"
                                     :to="$localePath(submenu.route)"
                                     exact
                                   >
-                                    <icon :name="submenu.icon" />
+                                    <inline-svg v-if="submenu.icon ==='camera360'" style="width: 28px;height:28px;" src="/img/camera360.svg"/>
+                                    <icon v-else :name="submenu.icon" />
                                     {{ $t(submenu.title) }}
                                   </nuxt-link>
                                 </li>
