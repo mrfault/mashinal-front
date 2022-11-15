@@ -1352,8 +1352,9 @@ export const actions = {
 
   },
   async activeMyOffers({commit,state}){
-    const data = await this.$axios.$get('/offer/user/active-my-offers');
-    console.log(data)
+    const {data} = await this.$axios.$get('/offer/user/active-my-offers');
+
+    commit('mutate', {property: 'active_my_offers', value: data})
   }
 
 }
