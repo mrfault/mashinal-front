@@ -207,7 +207,6 @@ export default {
       userOffer: null,
       offer: null,
       auto_salon: null,
-
       chat: {
         text: '',
       },
@@ -216,7 +215,6 @@ export default {
       auto_salon_offer_id: null,
       auto_salon_deleted_at: null,
       messageButtonDisabled: false,
-
     }
   },
   computed: {
@@ -225,7 +223,6 @@ export default {
       offerMessages: 'getOfferMessages',
       newOfferCount: 'getNewOfferCount',
     }),
-
     crumbs() {
       return [
         {name: 'Super təklif paneli', route: '/offer/offers'},

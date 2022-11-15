@@ -276,7 +276,6 @@ export default {
       this.$store.dispatch('getAllOffers', this.$route.query)
     },
     async submitMessage() {
-      this.messageButtonDisabled = true;
       if (!this.IsAccepted){
         this.IsAccepted=true
         setTimeout( ()=>{

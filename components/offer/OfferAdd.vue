@@ -73,7 +73,7 @@
         <span>{{ $t('color') }} <span class="star"> *</span></span>
       </h2>
       <color-options v-model="form[index].selectedColors" :limit="4" :multiple=true
-                     @change-matt="form.is_matte = $event" :matt="form.is_matte"
+                     @change-matt="form[index].is_matte = $event" :matt="form[index].is_matte"
                      @change="removeError('selectedColor')"/>
       <div class="row">
         <div class="col-md-12">
@@ -317,26 +317,28 @@ export default {
       this.generations = [];
     },
     async setModel(slug) {
-      await this.$store.dispatch('getGenerations', {
-        brand: this.brand_object.slug,
-        model: slug
-      })
-      this.model_object = this.models.find((option) => option.slug === slug)
-      this.form[this.index].model = this.model_object.slug
+if (slug){
+  await this.$store.dispatch('getGenerations', {
+    brand: this.brand_object.slug,
+    model: slug
+  })
+  this.model_object = this.models.find((option) => option.slug === slug)
+  this.form[this.index].model = this.model_object.slug
 
 
-      this.$store.commit('appendOfferSelectedModels', {
-        index: this.index,
-        data: {
-          logo: this.brand_object.transformed_media,
-          img: null,
-          brand: this.brand_object.name,
-          model: this.model_object.name,
-          price: null
+  this.$store.commit('appendOfferSelectedModels', {
+    index: this.index,
+    data: {
+      logo: this.brand_object.transformed_media,
+      img: null,
+      brand: this.brand_object.name,
+      model: this.model_object.name,
+      price: null
 
-        }
-      })
+    }
+  })
 
+}
 
     },
     changeMaxPrice() {
