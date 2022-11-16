@@ -391,6 +391,20 @@ hr {
   text-align: center;
   padding: 20px;
 
+.is-vin-number{
+  justify-content: flex-start !important;
+  span{
+    &:nth-child(1){
+      width: 70px !important;
+    }
+    &:nth-child(2){
+      width: calc(100% - 70px) !important;
+      text-align: right;
+      p{
+        width: 100% !important;
+      }
+    }
+  }
 }
 
 

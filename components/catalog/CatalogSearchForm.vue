@@ -10,20 +10,21 @@
       <div class="row mb-n2 mb-lg-n3">
         <div class="col-6 col-lg-1-5 mb-2 mb-lg-3">
           <form-select :label="$t('mark')" :options="brands" v-model="form.name"
-            @change="form.model = '', form.generation = '', submitForm(true, false)" has-search :clear-option="!isMobileBreakpoint" 
+                       :clear-option-text="$t('anyone')"
+            @change="form.model = '', form.generation = '', submitForm(true, false)" has-search :clear-option="!isMobileBreakpoint"
             :popular-options="isMobileBreakpoint ? [129,483,8,1,767,117] : undefined" slug-in-value
             :img-key="isMobileBreakpoint ? 'transformed_media' : ''" :img-placeholder="`/logos/car-${colorMode}.svg`" />
         </div>
         <div class="col-6 col-lg-1-5 mb-2 mb-lg-3">
-          <form-select :label="$t('model')" :options="models" v-model="form.model"
+          <form-select :label="$t('model')" :options="models" v-model="form.model" :clear-option-text="$t('anyone')"
             :disabled="!form.name || !$route.params.brand" @change="form.generation = '', submitForm(true, false)" has-search slug-in-value />
         </div>
         <div class="col-6 col-lg-1-5 mb-2 mb-lg-3">
-          <form-select :label="$t('generation')" :options="generations" v-model="form.generation"
+          <form-select :label="$t('generation')" :options="generations" :clear-option-text="$t('anyone_other')" v-model="form.generation"
             :disabled="!form.model || !$route.params.model" @change="submitForm(true, false)" has-search has-generations />
         </div>
         <div class="col-6 col-lg-1-5 mb-2 mb-lg-3">
-          <form-select :label="$t('body_type')" v-model="form['body']"
+          <form-select :label="$t('body_type')" v-model="form['body']" :clear-option-text="$t('anyone_other2')"
             :options="bodyOptions.main.default_options['body'].values"
             multiple name-in-value object-in-value translate-options @change="submitForm()"  />
         </div>
@@ -49,24 +50,24 @@
               @clear="form.min_capacity = '', form.max_capacity = '', submitForm()"
             >
               <div class="form-merged">
-                <form-select :label="$t('from')" v-model="form.min_capacity" 
-                  :options="bodyOptions.main.custom_options['capacity'].values" @change="submitForm()" 
+                <form-select :label="$t('from')" v-model="form.min_capacity"
+                  :options="bodyOptions.main.custom_options['capacity'].values" @change="submitForm()"
                   :show-label-on-select="false" :clear-option="false" in-select-menu :suffix="$t('char_litre')" />
                 <form-select :label="$t('to')" v-model="form.max_capacity"
-                  :options="bodyOptions.main.custom_options['capacity'].values" @change="submitForm()" 
+                  :options="bodyOptions.main.custom_options['capacity'].values" @change="submitForm()"
                   :show-label-on-select="false" :clear-option="false" in-select-menu :suffix="$t('char_litre')" />
               </div>
             </form-select>
           </div>
           <div class="col-6 col-lg-1-5 mb-2 mb-lg-3">
-            <form-select :label="$t('years')" custom 
+            <form-select :label="$t('years')" custom
               :values="{from: form.min_years, to: form.max_years, read: false }"
               @clear="form.min_years = '', form.max_years = '', submitForm()"
             >
               <div class="form-merged">
-                <form-select :label="$t('from')" v-model="form.min_years" @change="submitForm()" 
+                <form-select :label="$t('from')" v-model="form.min_years" @change="submitForm()"
                   :options="getYearOptions(false, form.max_years)" :show-label-on-select="false" :clear-option="false" in-select-menu />
-                <form-select :label="$t('to')" v-model="form.max_years" @change="submitForm()" 
+                <form-select :label="$t('to')" v-model="form.max_years" @change="submitForm()"
                   :options="getYearOptions(form.min_years, false)" :show-label-on-select="false" :clear-option="false" in-select-menu />
               </div>
             </form-select>
@@ -77,9 +78,9 @@
               @clear="form.min_racing = '', form.max_racing = '', submitForm()"
             >
               <div class="form-merged">
-                <form-numeric-input :placeholder="$t('from')" v-model="form.min_racing" :suffix="$t('char_second')" 
+                <form-numeric-input :placeholder="$t('from')" v-model="form.min_racing" :suffix="$t('char_second')"
                   @change="submitForm()" />
-                <form-numeric-input :placeholder="$t('to')" v-model="form.max_racing" :suffix="$t('char_second')" 
+                <form-numeric-input :placeholder="$t('to')" v-model="form.max_racing" :suffix="$t('char_second')"
                   @change="submitForm()" />
               </div>
             </form-select>
@@ -90,15 +91,15 @@
               @clear="form.min_power = '', form.max_power = '', submitForm()"
             >
               <div class="form-merged">
-                <form-numeric-input :placeholder="$t('from')" v-model="form.min_power" :suffix="$t('char_h_power')" 
+                <form-numeric-input :placeholder="$t('from')" v-model="form.min_power" :suffix="$t('char_h_power')"
                   @change="submitForm()" />
-                <form-numeric-input :placeholder="$t('to')" v-model="form.max_power" :suffix="$t('char_h_power')" 
+                <form-numeric-input :placeholder="$t('to')" v-model="form.max_power" :suffix="$t('char_h_power')"
                   @change="submitForm()" />
               </div>
             </form-select>
           </div>
           <div class="col-6 col-lg-1-5 mb-2 mb-lg-3">
-            <form-select :label="$t('kolichestvo-mest')" v-model="form['kolichestvo-mest']" 
+            <form-select :label="$t('kolichestvo-mest')" v-model="form['kolichestvo-mest']"
               :options="bodyOptions.specifications['kolichestvo-mest'].values"
               name-in-value object-in-value translate-options @change="submitForm()" />
           </div>
@@ -149,8 +150,8 @@ export default {
       collapsed: true,
       timeout: -1,
       form: {
-        'name': '', 
-        'model': '', 
+        'name': '',
+        'model': '',
         'generation': '',
         'min_capacity': '',
         'max_capacity': '',
@@ -207,7 +208,7 @@ export default {
       this.collapsed = collapsed;
       // get values from route query
       for (let property in this.form) {
-        if (!form.hasOwnProperty(property)) 
+        if (!form.hasOwnProperty(property))
           continue;
         let value = form[property];
         this.$set(this.form, property, value);
