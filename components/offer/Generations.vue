@@ -26,9 +26,7 @@ export default {
   },
   watch:{
     selected() {
-      if(this.selected.length === 1) {
         this.$set(this,'selectedGenerations',this.selected);
-      }
     }
   },
   methods:{

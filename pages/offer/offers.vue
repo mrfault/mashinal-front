@@ -332,11 +332,17 @@ export default {
       this.checkAccepted(id)
     },
     async deleteUserAutoSalonOffer(id) {
-      this.$axios.delete('/offer/user/offer/delete/' + id);
-      this.$store.dispatch('OffersAcceptedByAutoSalon', this.$route.query)
-      this.offer = null
-      this.userOffer = null
-      this.auto_salon_deleted_at = null
+      await this.$axios.delete('/offer/user/offer/delete/' + id).then((res)=>{
+        if (res.data.status='success'){
+
+          this.$store.dispatch('OffersAcceptedByAutoSalon', this.$route.query)
+          this.offer = null
+          this.userOffer = null
+          this.auto_salon_deleted_at = null
+        }
+
+
+      });
 
     }
   },

@@ -35,14 +35,14 @@
     </div>
 
     <div class="mt-3 mb-5">
-      <Generations :selected="form.generations" :generations="generations" @change="changeGenerations"
+      <Generations :selected="form[index].generations" :generations="generations" @change="changeGenerations"
                    v-if="index==0 || (brand_object && model_object) "/>
     </div>
     <div class="mb-3 box " ref="sell-modification">
       <h2 class="title-with-line full-width">
         <span>{{ $t('box') }} <span class="star"> *</span></span>
       </h2>
-      <offer-form-buttons v-model="form.box"
+      <offer-form-buttons v-model="form[index].box"
                           :options="boxValues"
                           :btn-class="'primary-outline'" :group-by="isMobileBreakpoint ? 1 : 5"
                           @change="changeGearBox">
@@ -56,7 +56,7 @@
       <h2 class="title-with-line full-width">
         <span>{{ $t('fuel') }} <span class="star"> *</span></span>
       </h2>
-      <offer-form-buttons v-model="form.engine"
+      <offer-form-buttons v-model="form[index].engine"
                           :options="engineValues"
                           :btn-class="'primary-outline'" :group-by="isMobileBreakpoint ? 1 : 5"
                           @change="changeFuelTypes">
@@ -109,13 +109,14 @@
                 <div class=" mr-5">
 
                   <label for="minPrice">Min.</label>
-                  <form-numeric-input id="minPrice" type="number"
+                  <form-numeric-input  :max-value="999999" id="minPrice" type="number"
                                       v-model="form[index].minPrice" class="priceInput"/>
                 </div>
                 <div class="">
 
                   <label for="maxPrice">Max.</label>
-                  <form-numeric-input id="maxPrice" type="number"
+                  <form-numeric-input :max-value="1000000"  id="maxPrice" type="number"
+
                                       v-model="form[index].maxPrice" class="priceInput" @change="changeMaxPrice()"/>
                 </div>
               </div>
@@ -317,28 +318,32 @@ export default {
       this.generations = [];
     },
     async setModel(slug) {
-if (slug){
-  await this.$store.dispatch('getGenerations', {
-    brand: this.brand_object.slug,
-    model: slug
-  })
-  this.model_object = this.models.find((option) => option.slug === slug)
-  this.form[this.index].model = this.model_object.slug
+
+      this.form[this.index].generations = []
+
+      if (slug) {
+        await this.$store.dispatch('getGenerations', {
+          brand: this.brand_object.slug,
+          model: slug
+        })
+
+        this.model_object = this.models.find((option) => option.slug === slug)
+        this.form[this.index].model = this.model_object.slug
 
 
-  this.$store.commit('appendOfferSelectedModels', {
-    index: this.index,
-    data: {
-      logo: this.brand_object.transformed_media,
-      img: null,
-      brand: this.brand_object.name,
-      model: this.model_object.name,
-      price: null
+        this.$store.commit('appendOfferSelectedModels', {
+          index: this.index,
+          data: {
+            logo: this.brand_object.transformed_media,
+            img: null,
+            brand: this.brand_object.name,
+            model: this.model_object.name,
+            price: null
 
-    }
-  })
+          }
+        })
 
-}
+      }
 
     },
     changeMaxPrice() {
@@ -350,18 +355,21 @@ if (slug){
       })
     },
     changeGenerations(values) {
-      this.form[this.index].generations = values
+      console.log(values)
+      if (values[0]) {
+        this.form[this.index].generations = values
 
-      this.generations.find((option) => option.id === values[0]).car_type_generation[0].transformed_media.main[0]
 
-      this.$store.commit('appendOfferSelectedModels', {
-        index: this.index,
-        data: {
-          img: this.generations.find((option) => option.id === values[0]).car_type_generation[0].transformed_media.main[0],
-          year: this.generations.find((option) => option.id === values[0]).start_year + ' - ' + this.generations.find((option) => option.id === values[0]).end_year
-        }
-      })
+        this.generations.find((option) => option.id === values[0]).car_type_generation[0].transformed_media.main[0]
 
+        this.$store.commit('appendOfferSelectedModels', {
+          index: this.index,
+          data: {
+            img: this.generations.find((option) => option.id === values[0]).car_type_generation[0].transformed_media.main[0],
+            year: this.generations.find((option) => option.id === values[0]).start_year + ' - ' + this.generations.find((option) => option.id === values[0]).end_year
+          }
+        })
+      }
     }
 
   },
