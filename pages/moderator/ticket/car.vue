@@ -323,7 +323,7 @@
                 <div v-if="user.admin_group == 2" class="row">
                   <div class="col-8">
                     <form-textarea
-                      v-model="initialForm.comment"
+                      v-model="initialForm.delay_comment"
                       :maxlength="3000"
                       :placeholder="$t('comment')"
                     />
@@ -617,53 +617,54 @@ export default {
     return {
       admin_user: admin_user.user,
       initialForm: {
-        car_catalog_id: incomingData?.car_catalog_id || null,
-        brand: incomingData?.brand.slug || null,
-        model: incomingData?.model.slug || null,
-        generation_id: incomingData?.car_catalog?.generation_id || null,
-        car_body_type: incomingData?.car_catalog?.car_type.id || null,
-        gearing: incomingData?.car_catalog?.main['  ']['engine'] || null, // engines
-        modification: incomingData?.car_catalog?.main[' ']['box'] || null, // transmissions/box
-        transmission: incomingData?.car_catalog?.main[' ']['type_of_drive'] || null, // gearing
-        capacity: incomingData?.car_catalog?.capacity || null,
-        power: incomingData?.car_catalog?.power || null,
-        year: incomingData?.year || null,
-        auction: incomingData?.auction || null,
-        end_date: moment(incomingData?.end_date).format('DD.MM.YYYY HH:mm') || null,
-        country_id: incomingData?.country_id || null,
+        delay_comment: '',
+        car_catalog_id: incomingData?.car_catalog_id,
+        brand: incomingData?.brand.slug,
+        model: incomingData?.model.slug,
+        generation_id: incomingData?.car_catalog?.generation_id,
+        car_body_type: incomingData?.car_catalog?.car_type.id,
+        gearing: incomingData?.car_catalog?.main['  ']['engine'], // engines
+        modification: incomingData?.car_catalog?.main[' ']['box'], // transmissions/box
+        transmission: incomingData?.car_catalog?.main[' ']['type_of_drive'], // gearing
+        capacity: incomingData?.car_catalog?.capacity,
+        power: incomingData?.car_catalog?.power,
+        year: incomingData?.year,
+        auction: incomingData?.auction,
+        end_date: moment(incomingData?.end_date).format('DD.MM.YYYY HH:mm'),
+        country_id: incomingData?.country_id,
         youtube: {
           id: incomingData?.youtube_link,
           thumb: `https://img.youtube.com/vi/${incomingData?.youtube_link}/hqdefault.jpg`,
         },
-        selectedColor: incomingData?.colors || null,
-        is_matte: incomingData?.is_matte || null,
+        selectedColor: incomingData?.colors,
+        is_matte: incomingData?.is_matte,
         mileage: parseInt(incomingData?.mileage) || 0,
         mileage_measure: incomingData?.mileage_measure || 1,
         region_id: incomingData?.region_id || 1,
-        address: incomingData?.address || null,
+        address: incomingData?.address,
         lat: parseFloat(incomingData?.latitude || 0),
         lng: parseFloat(incomingData?.longitude || 0),
         vin: incomingData?.vin || "",
         price: incomingData?.price_int || '',
         owner_type: parseInt(incomingData?.owner_type) || 0,
-        currency: incomingData?.currency_id || 1 || null,
-        car_number: incomingData?.car_number || null,
-        show_car_number: incomingData?.show_car_number || null,
-        show_vin: incomingData?.show_vin || null,
+        currency: incomingData?.currency_id || 1,
+        car_number: incomingData?.car_number,
+        show_car_number: incomingData?.show_car_number,
+        show_vin: incomingData?.show_vin,
         part: incomingData?.car_body_health
           ? JSON.parse(incomingData?.car_body_health.options)
-          : {} || null,
-        all_options: incomingData?.options || null,
-        badges: incomingData?.stickers?.map((item) => item.id) || null,
-        new_badges: [] || null,
+          : {},
+        all_options: incomingData?.options,
+        badges: incomingData?.stickers?.map((item) => item.id),
+        new_badges: [],
         comment: incomingData?.comment || '',
         is_new: incomingData?.is_new || false,
-        beaten: incomingData?.broken || null,
+        beaten: incomingData?.broken,
         customs_clearance: incomingData?.customs_clearance || false,
-        tradeable: incomingData?.exchange_possible || null,
-        credit: incomingData?.credit || null,
-        guaranty: incomingData?.in_garanty || null,
-        saved_images: incomingData?.mediaIds || null,
+        tradeable: incomingData?.exchange_possible,
+        credit: incomingData?.credit,
+        guaranty: incomingData?.in_garanty,
+        saved_images: incomingData?.mediaIds,
         engine: incomingData?.car_catalog.engine_id,
         message: "test",
       },
@@ -1017,9 +1018,10 @@ export default {
       let form = {};
 
       this.initialForm.status = this.single_announce.status;
-      this.initialForm.brand = this.single_announce.brand
+      this.initialForm.brand = this.single_announce.brand.slug;
       this.initialForm.model = this.single_announce.model.slug;
       this.initialForm.year = this.single_announce.year;
+      this.initialForm.address = this.single_announce.address;
       this.initialForm.generation = this.single_announce.car_catalog.generation_id;
       this.initialForm.rejectArray = this.rejectObj.rejectArray.concat(this.sellLastStepRejectObj.rejectArray);
 
