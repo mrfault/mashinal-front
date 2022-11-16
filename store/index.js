@@ -174,14 +174,9 @@ const getInitialState = () => ({
   ],
   offer_id: null,
   showOfferPaymentModal: false,
-<<<<<<< HEAD
-
-
-=======
   offer_add_is_loader: false,
   offer_faq:null,
   user_deleted_auto_salon_offers:[]
->>>>>>> feature/loa
 
 })
 
@@ -348,13 +343,9 @@ export const getters = {
   offerAnnouncements: (s) => s.offer_announcements,
   offerSelectedModels: (s) => s.offer_selected_models,
   showOfferPaymentModal: (s) => s.showOfferPaymentModal,
-<<<<<<< HEAD
-
-=======
   offerAddIsLoader: (s) => s.offer_add_is_loader,
   getOfferFaq:(s)=>s.offer_faq,
   getUserDeletedAutoSalonOffer: (s) => s.user_deleted_auto_salon_offers,
->>>>>>> feature/loa
 
 }
 
@@ -1357,19 +1348,6 @@ export const actions = {
     const data=await this.$axios.$get('/offer/faq');
     commit('setOfferFaq',{data:data})
 
-<<<<<<< HEAD
-        if (object.isSubmit) {
-          this.$axios.post('/offer', state.offer_announcements).then((res) => {
-            commit('openOfferPaymentModal')
-            commit('setOfferId', {offer_id: res.data.offer_id})
-          })
-        } else {
-          commit('incrementAnnouncementsCount')
-        }
-      }
-    });
-=======
->>>>>>> feature/loa
   }
 
 }
@@ -1529,10 +1507,6 @@ export const mutations = {
     })
   },
   deleteOfferAnnouncement(state, payload) {
-<<<<<<< HEAD
-=======
-    console.log(state.offer_selected_models[index])
->>>>>>> feature/loa
     let index = payload.index;
     if (index > -1) {
       state.offer_announcements.splice(index, 1);
@@ -1548,22 +1522,15 @@ export const mutations = {
       console.log(state.offer_selected_models[index])
     }
   },
-<<<<<<< HEAD
-  openOfferPaymentModal(state) {
-    state.showOfferPaymentModal = true
-    console.log(state.showOfferPaymentModal)
-=======
+
   openOfferPaymentModal(state, payload) {
     state.showOfferPaymentModal = payload.status
-
->>>>>>> feature/loa
   },
   setOfferId(state, payload) {
     state.offer_id = payload.offer_id;
   },
-<<<<<<< HEAD
 
-=======
+
   setOfferAnnouncement(state, payload) {
     let form = JSON.parse(JSON.stringify(payload.form[payload.index]))
 
@@ -1607,7 +1574,7 @@ export const mutations = {
     console.log('resetted gen')
     console.log(state.generations)
   }
->>>>>>> feature/loa
+
 }
 
 

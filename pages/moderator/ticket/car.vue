@@ -2,9 +2,6 @@
   <div class="pages-announcement-edit">
 
     <div class="container">
-      <pre>
-        {{rejectObj.rejectArray}}
-      </pre>
       <breadcrumbs :crumbs="crumbs"/>
       <div class="sell_cards-row row">
         <div class="col-auto">
@@ -14,54 +11,56 @@
                 :brand="single_announce.brand"
                 :model="single_announce.model"
                 :userData="single_announce.user"
-                :year="single_announce.year"
-                @showBrands="toggleOptions('brands')"
-                @showModels="toggleOptions('models')"
-                @showYears="toggleOptions('years')"
               />
               <!--   model options ------------->
-              <div class="mt-5">
-                <model-options
-                  v-if="show.brands"
-                  key="brand"
-                  :considerPopular="false"
-                  :img-key="'transformed_media'"
-                  :img-placeholder="`/logos/car-${colorMode}.svg`"
-                  :input-title="$t('model_name')"
-                  :options="brands"
-                  :sort-alphabetically="true"
-                  :status-title="$t('select_model')"
-                  :title="$t('mark')"
-                  :value="single_announce.brand"
-                  highlightSelected
-                  isModeration
-                  rejectKey="brand"
-                  @changeReason="changeReason"
-                />
-                <model-options
-                  v-if="show.models"
-                  key="model"
-                  :input-title="$t('model_name')"
-                  :options="models"
-                  :sort-alphabetically="false"
-                  :status-title="$t('select_model')"
-                  :title="$t('model')"
-                  :value="single_announce.model"
-                  highlightSelected
-                  isModeration
-                  rejectKey="model"
-                  @changeReason="changeReason"
-                />
+              <div class="row mt-5">
+                <div class="col-12">
+                  <title-with-line-and-reject-reason
+                    rejectKey="brand"
+                    title="mark"
+                    @change="changeReason"
+                  />
+                </div>
+                <div class="col-12 col-lg-3">
+                  <form-select
+                    v-model="single_announce.brand_id"
+                    :label="$t('mark')"
+                    :options="brands"
+                    has-search
+                    @change="setBrand($event, key)"
+                  />
+                </div>
+              </div>
+              <div class="row">
+                <!--                model -->
+                <div class="col-12">
+                  <title-with-line-and-reject-reason
+                    rejectKey="model"
+                    title="model"
+                    @change="changeReason"
+                  />
+                </div>
+                <div class="col-12 col-lg-3">
+                  <form-select
+                    v-model="single_announce.model_id"
+                    :label="$t('model')"
+                    :options="models"
+                    has-search
+                    @change="setModelExclude($event, key)"
+                  />
+                </div>
+              </div>
+              <!--              year -->
+              <div>
                 <year-options
-                  v-if="show.years"
                   :title="$t('prod_year')"
-                  :value="single_announce.year"
+                  :value="initialForm.year"
                   :years="{ min: sellYears.min, max: sellYears.max }"
+                  isModeration
+                  rejectKey="year"
+                  @changeReason="changeReason"
                   @close="handleYear()"
                   @input="handleYear"
-                  isModeration
-                  rejectKey="model"
-                  @changeReason="changeReason"
 
                 />
               </div>
@@ -73,6 +72,7 @@
                   @change="changeReason"
                 />
                 <form-buttons
+                  v-model="initialForm.car_body_type"
                   :btn-class="'primary-outline select-body'"
                   :group-by="isMobileBreakpoint ? 2 : 5"
                   :options="sell_bodies"
@@ -149,66 +149,65 @@
 
                 <title-with-line-and-reject-reason
                   :title="$t('fuel')"
-                  rejectKey="fuel"
+                  rejectKey="engine"
                   required
                   @change="changeReason"
                 />
-                <form-buttons
-                  v-model="single_announce.car_catalog.gearing_id"
-                  :btn-class="'primary-outline'"
-                  :group-by="isMobileBreakpoint ? 1 : 5"
-                  :options="
-                    engines.map((o) => ({
-                      name: $t('engine_values')[o.engine],
-                      key: o.engine,
-                    }))
-                  "
-                  @change="
-                    handleChange(
-                      $event,
-                      'getSellGearing',
-                      ['car_body_type', 'generation_id', 'gearing'],
-                      ['sellGearing', 'sellTransmissions', 'sellModifications'],
-                      'transmission',
-                    )
-                  "
-                >
-                  <template #icon="{ button }">
-                    <icon
-                      :class="`engine-${button.key}`"
-                      :name="getIcon('engine', button.key)"
-                    />
-                  </template>
-                </form-buttons>
-                <form-checkbox
-                  v-model="single_announce.autogas"
-                  :label="$t('gas_equipment')"
-                  class="mb-4"
-                  input-name="autogas"
-                  transparent
-                />
+                <div class="col-12 col-lg-3  pl-0">
 
+                  <form-select
+                    v-model="initialForm.gearing"
+                    :disabled="user.admin_group == 2"
+                    :label="$t('fuel')"
+                    :options="
+                    engines.map((o) => ({
+                        name: $t('engine_values')[o.engine],
+                        key: o.engine,
+                      }))
+                    "
+                    has-search
+                    @change="
+                    handleChange(
+                        $event,
+                        'getSellGearing',
+                        ['car_body_type', 'generation_id', 'gearing'],
+                        ['sellGearing', 'sellTransmissions', 'sellModifications'],
+                        'transmission',
+                      )
+                    "
+                  />
+                  <form-checkbox
+                    v-model="single_announce.autogas"
+                    :label="$t('gas_equipment')"
+                    class="mb-4 mt-2"
+                    input-name="autogas"
+                    transparent
+                  />
+
+                </div>
                 <title-with-line-and-reject-reason
                   :title="$t('type_of_drive')"
+                  rejectKey="gearing"
                   required
+                  @change="changeReason"
                 />
-                <template
-                  v-if="
+                <div class="col-12 col-lg-3 pl-0">
+                  <template
+                    v-if="
                     sellTransmissions && sellTransmissions.length && sellGear
                   "
-                >
-                  <form-buttons
-                    v-model="initialForm.transmission"
-                    :btn-class="'primary-outline'"
-                    :group-by="isMobileBreakpoint ? 1 : 5"
-                    :options="
+                  >
+                    <form-select
+                      v-model="initialForm.transmission"
+                      :disabled="user.admin_group == 2"
+                      :label="$t('tip-privoda')"
+                      :options="
                       sellGear.map((o) => ({
                         name: $t('type_of_drive_values')[o.type_of_drive],
                         key: o.type_of_drive,
                       }))
                     "
-                    :isModerator="user.admin_group == 2"
-                    @change="
+                      @change="
                     handleChange(
                       $event,
                       'getSellTransmissions',
@@ -217,33 +216,38 @@
                       'modification',
                     )
                   "
-                  >
-                    <template #icon="{ button }">
-                      <icon
-                        :class="`type-of-drive-${button.key}`"
-                        :name="getIcon('type_of_drive', button.key)"
-                      />
-                    </template>
-                  </form-buttons>
-                </template>
+                    >
+                      <template #icon="{ button }">
+                        <icon
+                          :class="`type-of-drive-${button.key}`"
+                          :name="getIcon('type_of_drive', button.key)"
+                        />
+                      </template>
+                    </form-select>
+                  </template>
+                </div>
+
 
                 <title-with-line-and-reject-reason
                   v-if="sellTransmissions && sellTransmissions.length"
                   :title="$t('box')"
                   rejectKey="transmission"
                   required
+                  @change="changeReason"
                 />
-                <form-buttons
-                  v-model="initialForm.modification"
-                  :btn-class="'primary-outline'"
-                  :group-by="isMobileBreakpoint ? 1 : 5"
-                  :options="
+                <div class="col-12 col-lg-3 pl-0">
+
+                  <form-select
+                    v-model="initialForm.modification"
+                    :disabled="user.admin_group == 2"
+                    :label="$t('box')"
+                    :options="
                     sellTransmissions.map((o) => ({
                       name: $t('box_values')[o.box],
                       key: o.box,
                     }))
                   "
-                  @change="
+                    @change="
                     handleChange(
                       $event,
                       'getSellModifications',
@@ -258,34 +262,40 @@
                       'car_catalog_id',
                     )
                   "
-                >
-                  <template #icon="{ button }">
-                    <icon
-                      :class="`box-${button.key}`"
-                      :name="getIcon('box', button.key)"
-                    />
-                  </template>
-                </form-buttons>
+                  >
+                    <template #icon="{ button }">
+                      <icon
+                        :class="`box-${button.key}`"
+                        :name="getIcon('box', button.key)"
+                      />
+                    </template>
+                  </form-select>
 
+                </div>
                 <title-with-line-and-reject-reason
-                  v-if="sellModifications && sellModifications.length"
+                  v-if="sellModifications"
                   :title="$t('modification')"
-                  rejectKey="transmission"
+                  rejectKey="modification"
                   required
+                  @change="changeReason"
 
                 />
-                <form-buttons
-                  v-model="initialForm.car_catalog_id"
-                  :btn-class="'primary-outline'"
-                  :group-by="isMobileBreakpoint ? 1 : 3"
-                  :options="
+                <div class="col-12 col-lg-3 pl-0">
+
+                  <form-select
+                    v-model="initialForm.car_catalog_id"
+                    :disabled="user.admin_group == 2"
+                    :label="$t('modification')"
+                    :options="
                     sellModifications.map((o) => ({
                       name: getModificationName(o),
                       key: o.id,
                     }))
                   "
-                  @change="handleChange($event, false, ['car_catalog_id'], [])"
-                />
+                    @change="handleChange($event, false, ['car_catalog_id'], [])"
+                  />
+
+                </div>
               </div>
               <!--     sell last step ------  -->
               <div v-if="single_announce">
@@ -297,61 +307,22 @@
                   :restore="single_announce.status == 3"
                   :title="$t('moderator')"
                   type="cars"
+                  @changeReason="changeReason"
                   @close="
                     $router.push(
                       pageRef || $localePath('/profile/announcements'),
                     )
                   "
+                  @getRejectObj="getSellLastStepRejectObj"
                 />
               </div>
-              <!-- actions  ------------------------->
-              <div
-                v-if="user.admin_group && user.admin_group !== 2"
-                class="moderator-actions mt-5"
-              >
-                <div class="text-right">
-                  <!--            moderator-->
-                  <button
-                    :class="['btn btn--green', { pending }]"
-                    type="button"
-                  >
-                    salam
-                  </button>
 
-                  <!--    supervisor        -->
-
-                  <button
-                    :class="['btn btn--green', { pending }]"
-                    class="mb-2"
-                    type="button"
-                    @click="transferToSupervisor()"
-                  >
-                    {{ $t('refuse') }}
-                  </button>
-                  <button
-                    :class="['btn btn--green', { pending }]"
-                    class="mb-2"
-                    type="button"
-                    @click="transferToSupervisor()"
-                  >
-                    {{ $t('this_announce_inactive') }}
-                  </button>
-                  <button
-                    :class="['btn btn--green', { pending }]"
-                    class="mb-2"
-                    type="button"
-                    @click="transferToSupervisor()"
-                  >
-                    {{ $t('back_to_list') }}
-                  </button>
-                </div>
-              </div>
-              <!-- comment   ------------------------>
+              <!-- actions   ------------------------>
               <div class="moderator-comment mt-5">
-                <div class="row">
+                <!--  moderator-->
+                <div v-if="user.admin_group == 2" class="row">
                   <div class="col-8">
                     <form-textarea
-                      v-if="getTimer.unix > 60 * 2"
                       v-model="initialForm.comment"
                       :maxlength="3000"
                       :placeholder="$t('comment')"
@@ -359,12 +330,9 @@
                   </div>
                   <div class="col-4">
                     <button
-                      v-if="
-                        rejectObj.rejectArray.filter((item) => !rejectObj.reject360.includes(item))
-                          .length === 0
-                      "
+                      v-if="!rejectObj.rejectArray.length && !sellLastStepRejectObj.rejectArray.length"
                       :class="[
-                        'btn btn--green',
+                        'btn btn--green w-50',
                         { pending },
                         { disabled: initialForm.comment.length == 0 },
                       ]"
@@ -378,7 +346,7 @@
                     <button
                       v-else
                       :class="[
-                        'btn btn--green',
+                        'btn btn--green w-50',
                         { pending },
                         { disabled: initialForm.comment.length == 0 },
                       ]"
@@ -387,10 +355,10 @@
                       type="button"
                       @click.prevent="sendData(0)"
                     >
-                      {{ $t('refuse') }}
+                      {{ $t('reject') }}
                     </button>
                     <button
-                      v-if="user.admin_group == 2 && !transfer.isOpen"
+                      v-if="!transfer.isOpen"
                       :class="['btn btn--green', { pending }]"
                       class="mb-2"
                       type="button"
@@ -405,175 +373,65 @@
                       {{ getTimer.data.replace('d', $t('day')) }}
                     </div>
                   </div>
-
                 </div>
 
+                <!--  supervisor-->
+                <div v-if="user.admin_group == 1" class="row">
+                  <div class="col float-right">
+
+                    <button
+                      v-if="
+                        rejectObj.rejectArray.filter((item) => !rejectObj.reject360.includes(item)).length === 0 && (!sellLastStepRejectObj.rejectArray.length)
+                      "
+                      :class="{ button_loading: button_loading }"
+                      class="'btn btn--green mt-2"
+                      style="padding: 10px 30px;"
+                      @click.prevent="sendData(1)"
+                    >
+                      {{ $t('confirm') }}
+                    </button>
+                    <button
+                      :class="{ button_loading: button_loading }"
+                      class="'btn btn--red mt-2"
+                      style="padding: 10px 30px;"
+                      @click.prevent="sendData(0)"
+                    >
+                      {{ $t('reject') }}
+                    </button>
+                    <button
+                      :class="{ button_loading: button_loading }"
+                      class="'btn btn--pale-red mt-2"
+                      style="padding: 10px 30px;"
+                      @click.prevent="sendData(3)"
+                    >
+                      {{ $t('deactive_announce') }}
+                    </button>
+                    <button
+                      :class="{ button_loading: button_loading }"
+                      class="'btn btn--grey mt-2"
+                      style="padding: 10px 30px;"
+                      @click.prevent="gotoList()"
+                    >
+                      {{ $t('back_to_list') }}
+                    </button>
+                  </div>
+                </div>
               </div>
 
 
               <!-- actions   ------------------------>
-              <div v-if="false">
-                <section v-if="user.admin_group === 1" class="container">
-                  <!--supervisor-->
-                  <div class="row">
-                    <div class="col-12">
-                      <button
-                        v-if="
-                rejectArray.filter((item) => !reject360.includes(item))
-                  .length === 0
-              "
-                        :class="{ button_loading: button_loading }"
-                        class="section-post__btn mt-0"
-                        style="padding: 10px 30px; background: #3a9b35;"
-                        @click.prevent="sendData(1)"
-                      >
-                        {{ $t('approve') }}
-                      </button>
-                      <button
-                        :class="{ button_loading: button_loading }"
-                        class="section-post__btn mt-0 ml-1"
-                        style="padding: 10px 30px; background: #b90026;"
-                        @click.prevent="sendData(0)"
-                      >
-                        {{ $t('reject') }}
-                      </button>
-                      <button
-                        :class="{ button_loading: button_loading }"
-                        class="section-post__btn mt-0 ml-1"
-                        style="padding: 10px 30px; background: #f56808;"
-                        @click.prevent="sendData(3)"
-                      >
-                        {{ $t('deactive_announce') }}
-                      </button>
-                      <a href="javascript:void(0);" @click="handleBackToList">
-                        <button
-                          class="section-post__btn mt-0 ml-1"
-                          style="padding: 10px 30px; background: #bfbfbf;"
-                        >
-                          {{ $t('back_to_list') }}
-                        </button>
-                      </a>
-                    </div>
-                  </div>
-                </section>
-                <!--                ----------------------------------------------------------->
-                <!--                ----------------------------------------------------------->
-                <!--                ----------------------------------------------------------->
-                <!--                ----------------------------------------------------------->
-                <!--                ----------------------------------------------------------->
-                <section v-else-if="user.admin_group === 2" class="container">
 
-                  <div class="moderator-comment mt-5">
-                    <div class="row">
-                      <div class="col-8">
-                        <form-textarea
-                          v-model="initialForm.comment"
-                          :maxlength="3000"
-                          :placeholder="$t('comment')"
-                        />
-                      </div>
-                      <div class="col-4">
-                        <button
-                          :class="[
-                        'btn btn--green',
-                        { pending },
-                        { disabled: initialForm.comment.length == 0 },
-                      ]"
-                          :disabled="initialForm.comment.length == 0"
-                          class="mb-2"
-                          type="button"
-                          @click.prevent="sendData(1)"
-                        >
-                          {{ $t('confirm') }}
-                        </button>
-                        <button
-                          :class="[
-                        'btn btn--green',
-                        { pending },
-                        { disabled: initialForm.comment.length == 0 },
-                      ]"
-                          :disabled="initialForm.comment.length == 0"
-                          class="mb-2"
-                          type="button"
-                          @click.prevent="sendData(0)"
-                        >
-                          {{ $t('reject') }}
-                        </button>
-                        <button
-                          v-if="user.admin_group && user.admin_group == 2 && !transfer.isOpen"
-                          :class="['btn btn--green', { pending }]"
-                          class="mb-2"
-                          type="button"
-                          @click="transfer.isOpen = true"
-                        >
-                          {{ $t('transfer_to_supervisor') }}
-                        </button>
-                        <div
-                          v-if="getTimer && getTimer.data"
-                          class="moderator-timer"
-                        >
-                          {{ getTimer.data.replace('d', $t('day')) }}
-                        </div>
-                      </div>
-
-                    </div>
-
-                  </div>
-
-                </section>
-                <!--                ----------------------------------------------------------->
-                <!--                ----------------------------------------------------------->
-                <!--                ----------------------------------------------------------->
-                <!--                ----------------------------------------------------------->
-                <!--                ----------------------------------------------------------->
-                <!--                ----------------------------------------------------------->
-
-                <section v-else-if="user.admin_group === 3" class="container">
-                  <!--call center-->
-                  <div class="row">
-                    <div class="col-12">
-                      <button
-                        :class="{ button_loading: button_loading }"
-                        class="section-post__btn mt-0"
-                        style="padding: 10px 30px; background: #3a9b35;"
-                        @click.prevent="sendData(2)"
-                      >
-                        {{ $t('send_to_moderate') }}
-                      </button>
-
-                      <button
-                        :class="{ button_loading: button_loading }"
-                        class="section-post__btn mt-0 ml-1"
-                        style="padding: 10px 30px; background: #f56808;"
-                        @click.prevent="sendData(3)"
-                      >
-                        {{ $t('deactive_announce') }}
-                      </button>
-                      <a href="javascript:void(0);" @click="handleBackToList">
-                        <button
-                          class="section-post__btn mt-0 ml-1"
-                          style="padding: 10px 30px; background: #bfbfbf;"
-                        >
-                          {{ $t('back_to_list') }}
-                        </button>
-                      </a>
-
-                      <button
-                        class="section-post__btn mt-0"
-                        style="padding: 10px 30px; background: #d55e13; float: right;"
-                        @click.prevent="transferModal = true"
-                      >
-                        {{ $t('Transfer to Supervisor') }}
-                      </button>
-                    </div>
-                  </div>
-                </section>
-
-              </div>
             </div>
           </div>
         </div>
       </div>
+      <pre>
+        {{ sellLastStepRejectObj.rejectArray }}
+      </pre>
+      <hr>
+      <pre>
+        {{ rejectObj.rejectArray }}
+      </pre>
     </div>
 
 
@@ -612,8 +470,6 @@
 <script>
 import {mapActions, mapGetters} from 'vuex'
 import moment from 'moment'
-
-// ./././././././././././
 import SellLastStep from '~/components/sell/SellLastStepModerator'
 import SellPreview from '~/components/sell/SellPreview'
 import Brand from '~/components/moderator/brand.vue'
@@ -666,6 +522,11 @@ export default {
         isOpen: false,
       },
       saved_images: [],
+      button_loading: false,
+      itemForm: {},
+      sellLastStepRejectObj: {
+        rejectArray: [],
+      },
     }
   },
   asyncData: async function ({store, $axios, $auth, route}) {
@@ -776,15 +637,15 @@ export default {
         },
         selectedColor: incomingData?.colors || null,
         is_matte: incomingData?.is_matte || null,
-        mileage: parseInt(incomingData?.mileage || 0) || null,
-        mileage_measure: incomingData?.mileage_measure || 1 || null,
-        region_id: incomingData?.region_id || 1 || null,
+        mileage: parseInt(incomingData?.mileage) || 0,
+        mileage_measure: incomingData?.mileage_measure || 1,
+        region_id: incomingData?.region_id || 1,
         address: incomingData?.address || null,
-        lat: parseFloat(incomingData?.latitude || 0) || null,
-        lng: parseFloat(incomingData?.longitude || 0) || null,
-        vin: incomingData?.vin || null,
+        lat: parseFloat(incomingData?.latitude || 0),
+        lng: parseFloat(incomingData?.longitude || 0),
+        vin: incomingData?.vin || "",
         price: incomingData?.price_int || '',
-        owner_type: parseInt(incomingData?.owner_type || 0) || null,
+        owner_type: parseInt(incomingData?.owner_type) || 0,
         currency: incomingData?.currency_id || 1 || null,
         car_number: incomingData?.car_number || null,
         show_car_number: incomingData?.show_car_number || null,
@@ -796,13 +657,15 @@ export default {
         badges: incomingData?.stickers?.map((item) => item.id) || null,
         new_badges: [] || null,
         comment: incomingData?.comment || '',
-        is_new: incomingData?.is_new || null,
+        is_new: incomingData?.is_new || false,
         beaten: incomingData?.broken || null,
-        customs_clearance: incomingData?.customs_clearance || null,
+        customs_clearance: incomingData?.customs_clearance || false,
         tradeable: incomingData?.exchange_possible || null,
         credit: incomingData?.credit || null,
         guaranty: incomingData?.in_garanty || null,
         saved_images: incomingData?.mediaIds || null,
+        engine: incomingData?.car_catalog.engine_id,
+        message: "test",
       },
     }
   },
@@ -874,6 +737,9 @@ export default {
             ? [1, 2, 3, 4]
             : [1, 2, 3]
       return imgs.map((n) => `/img/sell-helpers/${this.type}_${n}.png`)
+    },
+    isMorderator() {
+      return this.user.admin_group == 2
     },
   },
   methods: {
@@ -1109,6 +975,15 @@ export default {
     handleYear() {
 
     },
+    gotoList() {
+      window.location.href = "https://dev.mashin.al/alvcp/resources/announcements"
+    },
+    getSellLastStepRejectObj(value) {
+      this.sellLastStepRejectObj = value;
+      value.show360Reject = this.rejectObj.show360Reject;
+      value.showPhotoReject = this.rejectObj.showPhotoReject;
+      value.reject360 = this.rejectObj.reject360;
+    },
 
     // post
     async transferToSupervisor(withRejectReason = false) {
@@ -1146,14 +1021,13 @@ export default {
       this.initialForm.model = this.single_announce.model.slug;
       this.initialForm.year = this.single_announce.year;
       this.initialForm.generation = this.single_announce.car_catalog.generation_id;
-      this.initialForm.rejectArray = this.rejectObj.rejectArray;
+      this.initialForm.rejectArray = this.rejectObj.rejectArray.concat(this.sellLastStepRejectObj.rejectArray);
 
 
       var formData = new FormData();
 
       formData.append("data", JSON.stringify(this.initialForm))
 
-      console.log("dataaaaa", formData.get('data'))
 
       this.$nuxt.$emit('loading_status', true)
       this.pending = true
@@ -1162,14 +1036,11 @@ export default {
         await this.$axios.$post('/ticket/car/' + this.single_announce.id, formData)
 
         if (this.user.admin_group == 2) {
-          console.log("user 2", this.user)
         } else {
           // location.href = '/alvcp/resources/announcements'
-          console.log("user else", this.user)
         }
       } catch {
 
-        console.log("error")
         this.pending = false;
       }
     },
@@ -1177,6 +1048,8 @@ export default {
       if (initialForm.comment === null) initialForm.comment = ''
       initialForm.comment = initialForm.comment + e + ' '
     },
+
+
 
   },
   mounted() {
@@ -1188,5 +1061,14 @@ export default {
   created() {
     this.getColors()
   },
+  watch: {
+    single_announce: {
+      handler() {
+        if (this.single_announce.id) {
+          this.itemForm = this.single_announce
+        }
+      }
+    }
+  }
 }
 </script>

@@ -168,7 +168,7 @@ export default {
           isAvailable: true,
         },
         {
-          title: this.$t('Moderator'),
+          title: this.$t('Get moderator ticket'),
           description: null,
           value: null,
           icon: 'customs-calculator-police',
@@ -182,7 +182,7 @@ export default {
           description: null,
           value: null,
           icon: 'customs-calculator-police',
-          url: 'moderator/get/ticket/car_access/1666145231?token=615488|11ZRYakPvgsU0NK0dLOdLPfHBM2NFzKjw1M5oRoy',
+          url: '/moderator/ticket/car_access/1668649696?token=645076|ZpDV9fz58gn2reiJZgIIKOzqGFeZ49uwIrDjubyY',
           hasAction: false,
           image: 'loading_animated',
           isAvailable: true,
