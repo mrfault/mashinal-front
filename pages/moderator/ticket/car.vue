@@ -425,13 +425,6 @@
           </div>
         </div>
       </div>
-      <pre>
-        {{ sellLastStepRejectObj.rejectArray }}
-      </pre>
-      <hr>
-      <pre>
-        {{ rejectObj.rejectArray }}
-      </pre>
     </div>
 
 

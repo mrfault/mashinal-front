@@ -177,10 +177,6 @@ const getInitialState = () => ({
   offer_add_is_loader: false,
   offer_faq:null,
   user_deleted_auto_salon_offers:[]
-<<<<<<< HEAD
-
-=======
->>>>>>> 9fc303e0bd8a01ec50d8a3a47eed202bd67a6c01
 })
 
 export const state = () => getInitialState()
@@ -349,10 +345,6 @@ export const getters = {
   offerAddIsLoader: (s) => s.offer_add_is_loader,
   getOfferFaq:(s)=>s.offer_faq,
   getUserDeletedAutoSalonOffer: (s) => s.user_deleted_auto_salon_offers,
-<<<<<<< HEAD
-
-=======
->>>>>>> 9fc303e0bd8a01ec50d8a3a47eed202bd67a6c01
 }
 
 const objectNotEmpty = (state, commit, property) => {
@@ -1350,9 +1342,6 @@ export const actions = {
   async offerFaq({commit,state}){
     const data=await this.$axios.$get('/offer/faq');
     commit('setOfferFaq',{data:data})
-<<<<<<< HEAD
-
-=======
         if (object.isSubmit) {
           this.$axios.post('/offer', state.offer_announcements).then((res) => {
             commit('openOfferPaymentModal')
@@ -1362,9 +1351,6 @@ export const actions = {
           commit('incrementAnnouncementsCount')
         }
       }
-    });
->>>>>>> 9fc303e0bd8a01ec50d8a3a47eed202bd67a6c01
-  }
 
 }
 
@@ -1534,21 +1520,12 @@ export const mutations = {
       };
     }
   },
-<<<<<<< HEAD
-
-=======
->>>>>>> 9fc303e0bd8a01ec50d8a3a47eed202bd67a6c01
   openOfferPaymentModal(state, payload) {
     state.showOfferPaymentModal = payload.status
   },
   setOfferId(state, payload) {
     state.offer_id = payload.offer_id;
   },
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 9fc303e0bd8a01ec50d8a3a47eed202bd67a6c01
   setOfferAnnouncement(state, payload) {
     let form = JSON.parse(JSON.stringify(payload.form[payload.index]))
 
@@ -1588,10 +1565,6 @@ export const mutations = {
   resetGenerations(state){
     state.generations=[];
   }
-<<<<<<< HEAD
-
-=======
->>>>>>> 9fc303e0bd8a01ec50d8a3a47eed202bd67a6c01
 }
 
 
