@@ -86,17 +86,16 @@
                       v-if="!userOffer.user_deleted_at"> <icon name="garbage"></icon></span>
               </div>
             </div>
+
             <collapse-content :title="'Təklif'">
-              <offer-items :offer_items="offer.offer_items"/>
+
+              <offer-items :key="userOffer.id" :class="offer.id"  :offer_items="offer.offer_items"/>
             </collapse-content>
             <div>
 
               <div class="messages">
                 <div class="message" :class="   isMyMessage(message) ? 'my' :'his ' " v-for="message in offerMessages">
                   <div v-if="message.files.length>0" class="message-files">
-
-
-
 
                     <div class="message-file" v-for="file in message.files">
                       <img :src="file" width="100%" class="p-1" @click="openLightbox(file)" />

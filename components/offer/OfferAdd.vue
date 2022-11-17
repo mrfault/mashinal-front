@@ -129,7 +129,7 @@
         <span>Almaq istədiyin maşının təsviri</span>
       </h2>
       <form-textarea v-model="form[index].comment" :placeholder="'Təsvir'"
-                     :maxlength="3000"/>
+                     :maxlength="600"/>
       <p class="mt-5 mb-5">
         Təsvirdə linklərinin göstərilməsi, elektron poçt ünvanının, baxış keçirmə məkanın ünvanının, telefon
         nömrəsinin, qiymətin və xidmətlərin təklifi qadağandır.

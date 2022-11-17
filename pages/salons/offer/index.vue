@@ -111,7 +111,7 @@
               </div>
             </div>
             <collapse-content :title="'Təklif'">
-              <offer-items :offer_items="offer.offer_items"/>
+              <offer-items :key="offer.id" :offer_items="offer.offer_items"/>
             </collapse-content>
 
             <div>
