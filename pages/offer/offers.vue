@@ -299,8 +299,6 @@ export default {
       if (this.isMobileBreakpoint) {
         this.$router.push(this.$localePath('/offer') + '/' + id)
       } else {
-
-
         await this.checkAccepted(id)
         this.userOffer = this.userOffers.find(function (offer) {
           return id === offer.auto_salon_offer_id
@@ -336,8 +334,8 @@ export default {
     },
     async deleteUserAutoSalonOffer(id) {
       await this.$axios.delete('/offer/user/offer/delete/' + id).then((res)=>{
-        if (res.data.status='success'){
 
+        if (res.data.status='success'){
           this.$store.dispatch('OffersAcceptedByAutoSalon', this.$route.query)
           this.offer = null
           this.userOffer = null
