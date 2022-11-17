@@ -276,13 +276,12 @@ export default {
       this.$store.dispatch('getAllOffers', this.$route.query)
     },
     async submitMessage() {
+      this.messageButtonDisabled = true;
       if (!this.IsAccepted){
         this.IsAccepted=true
         setTimeout( ()=>{
              this.$store.dispatch('getAllOffers', this.$route.query)
         },500)
-
-
       }
       let formData = new FormData();
 
@@ -314,8 +313,12 @@ export default {
         this.chat.text = '';
         this.$nuxt.$emit('clear-message-attachments');
         this.scrollTo('.my:last-child', 0, 500, '.offerDetail')
-        this.messageButtonDisabled = false;
+
       })
+      setTimeout(()=>{
+        this.messageButtonDisabled = false;
+      },2000)
+
 
     },
 

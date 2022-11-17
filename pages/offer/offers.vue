@@ -254,7 +254,7 @@ export default {
     },
     async submitMessage() {
 
-
+      this.messageButtonDisabled=true;
       let formData = new FormData();
 
       formData.append('recipient_id', this.userOffer.auto_salon.user_id)
@@ -286,6 +286,10 @@ export default {
 
 
       })
+
+      setTimeout(()=>{
+        this.messageButtonDisabled = false;
+      },2000)
 
     },
     async getUserOfferDetail(id) {

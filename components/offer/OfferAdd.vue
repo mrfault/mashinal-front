@@ -107,17 +107,13 @@
               </h2>
               <div class="priceBeetwen">
                 <div class=" mr-5">
-
                   <label for="minPrice">Min.</label>
                   <form-numeric-input  :max-value="999999" id="minPrice" type="number"
                                       v-model="form[index].minPrice" class="priceInput"/>
                 </div>
                 <div class="">
-
                   <label for="maxPrice">Max.</label>
-                  <form-numeric-input :max-value="1000000"  id="maxPrice" type="number"
-
-                                      v-model="form[index].maxPrice" class="priceInput" @change="changeMaxPrice()"/>
+                  <form-numeric-input :max-value="1000000"  id="maxPrice" type="number"  v-model="form[index].maxPrice" class="priceInput" @change="changeMaxPrice()"/>
                 </div>
               </div>
             </div>
@@ -128,8 +124,7 @@
       <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-comment">
         <span>Almaq istədiyin maşının təsviri</span>
       </h2>
-      <form-textarea v-model="form[index].comment" :placeholder="'Təsvir'"
-                     :maxlength="600"/>
+      <form-textarea v-model="form[index].comment" :placeholder="'Təsvir'" :maxlength="600"/>
       <p class="mt-5 mb-5">
         Təsvirdə linklərinin göstərilməsi, elektron poçt ünvanının, baxış keçirmə məkanın ünvanının, telefon
         nömrəsinin, qiymətin və xidmətlərin təklifi qadağandır.
@@ -142,10 +137,9 @@
           </button>
         </div>
         <div>
-          <button class=" btn  btn--green " @click="submitOffer" :disabled="offerAddIsLoader"
-                  v-if="(index==0 && offerAnnouncementsCount.length==1) || (index==1 && offerAnnouncementsCount.length==2 )">
-            <img src="/icons/offer/load.svg" width="50px" v-if="offerAddIsLoader">
-            <span v-else> Təsdiq və ödəniş et</span>
+          <button class=" btn  btn--green " @click="submitOffer" :disabled="offerAddIsLoader" v-if="(index==0 && offerAnnouncementsCount.length==1) || (index==1 && offerAnnouncementsCount.length==2 )">
+              <img src="/icons/offer/load.svg" width="50px" v-if="offerAddIsLoader">
+              <span v-else> Təsdiq və ödəniş et</span>
           </button>
         </div>
 
