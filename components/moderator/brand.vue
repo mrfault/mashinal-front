@@ -33,12 +33,7 @@ export default {
         name: 'vehicle_id_mark',
       },
     },
-    model: {
-      type: Object,
-      default: {
-        name: 'model',
-      },
-    },
+
     // year: {
     //   type: Number,
     //   default: {
