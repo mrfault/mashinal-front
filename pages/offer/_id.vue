@@ -54,7 +54,7 @@
               </div>
             </div>
           </div>
-          <div class="addons" >
+          <div class="addons" v-if="userOffer && auto_salon_deleted_at===null && offer.user_deleted==null">
             <offer-message
               @type="handleTyping"
               @attach="handleFiles"
@@ -63,7 +63,7 @@
               :sending="false"
               :message="false"
               v-model="chat.text"
-              :send-button-disabled="chat.text.length<1 ? true : false"
+              :send-button-disabled="chat.text.length > 0 ||  files.length  >  0 ? false : true"
             />
             <img src="" :ref="'attachment-'+key" alt=""/>
             <div class="addLink"></div>
@@ -146,6 +146,7 @@ export default {
       files: [],
       userOffer:null,
       auto_salon_offer_id:null,
+      auto_salon_deleted_at: null,
     }
   },
   methods: {
@@ -186,6 +187,7 @@ export default {
       this.$nuxt.$emit('clear-message-attachments');
     },
     async checkAccepted(id) {
+
       await this.$axios.$post('/offer/user/offer/check/' + id).then((res) => {
         this.user_is_accepted = res.status
         this.auto_salon_offer_id=res.auto_salon_offer_id
@@ -221,6 +223,7 @@ export default {
     this.userOffer = this.userOffers.find( (offer)=> {
       return parseInt(this.$route.params.id) === offer.auto_salon_offer_id
     })
+    this.auto_salon_deleted_at = this.userOffer.auto_salon_deleted_at
     this.checkAccepted(this.$route.params.id)
 
 

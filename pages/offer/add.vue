@@ -7,8 +7,9 @@
     <div class="container">
       <div class="col-md-12 background-white offer-add-section p-5">
         <sell-progress :form="form"/>
-        <offer-collapse :first-collapsed="offerAnnouncementItem.collapsed"
-                        v-for="(offerAnnouncementItem,index) in offerAnnouncementsCount" :index="index">
+
+        <offer-collapse :first-collapsed="offerAnnouncementItem.collapsed" v-for="(offerAnnouncementItem,index) in offerAnnouncementsCount" :index="index">
+
           <template #title class="offer-collapse-title">
             <div class="offer-brand">
               <div v-if="offerSelectedModels[index]" class="d-flex align-items-center">

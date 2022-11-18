@@ -46,7 +46,7 @@
       padTime(time) {
         return (time < 10 ? '0' : '') + time;
       },
-      mcountdown() {
+      countdown() {
         if (this.totalTime > 0){
           this.totalTime--;
           this.saveTime();

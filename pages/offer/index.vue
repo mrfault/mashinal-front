@@ -24,23 +24,25 @@
       <button class="btn  btn--green" @click="getOffer()">Əlavə et</button>
     </section>
     <div class="">
-      <div class="new-offer mt-5" v-if="userOffers.length > 0">
-        <div class="new-offer-title mt-5" >
+      <div class="new-offer mt-5" v-if="activeMyOffers.length > 0">
+        <div class="new-offer-title mt-5">
           <h2 class="text-center" v-if="issetActiveOffer"> Sorğularım</h2>
         </div>
-        <div class="new-offer-notification-box mt-5" v-for="userOffer in userOffers" v-if="userOffer.offer.status && userOffer.user_deleted_at==null">
+        <div class="new-offer-notification-box mt-5" v-for="activeMyOffer in activeMyOffers">
 
           <div class="notification">
             <img src="/icons/auction.svg">
             <p>
-              <span v-for="(offerItem,index) in userOffer.offer.offer_items">
-                <b>{{offerItem.brand}}</b> - {{offerItem.model}}  <span v-if="index != Object.keys(userOffer.offer).length - 1">,</span>
-              </span>
+              <span v-for="(offerItem,index) in activeMyOffer.items">
+
+            <b>{{ offerItem.brand }}</b> - {{ offerItem.model }} <span>,</span>
+            </span>
             </p>
           </div>
-          <nuxt-link :to="$localePath('/offer/offers?param=all')" tag="button" class="offer-button">
-            Sorğuya  bax
+          <nuxt-link :to="$localePath('/offer/offers?param=all')" tag="button" class="offer-button " :class="activeMyOffer.count == 0 ? 'disabled-ui' :null" :disabled="activeMyOffer.count == 0">
+            Təkliflərə bax <span v-if="activeMyOffer.count > 0">({{activeMyOffer.count}}) </span>
           </nuxt-link>
+          <button class="btn btn--red ml-1" @click="offerDeletePromp=true; deactiveOfferId=activeMyOffer.id">Deaktiv et</button>
         </div>
 
       </div>
@@ -105,31 +107,31 @@
     </section>
     <section class="offer-partners">
 
-        <div class="new-offer-title mt-5">
-          <h2 class="text-center mb-5">Rəsmi tərəfdaşlar</h2>
+      <div class="new-offer-title mt-5">
+        <h2 class="text-center mb-5">Rəsmi tərəfdaşlar</h2>
+      </div>
+
+      <div class="offer-partner-container">
+
+
+        <div class="offer-partner-item" v-for="offerPartner in offerPartners">
+
+          <img :src="offerPartner.logo" class="mt-5">
+
+          <span class="partner-name mt-3">{{ offerPartner.name }}</span>
+          <p class="mt-1 partner-subname mb-5">{{ offerPartner.description }}</p>
         </div>
 
-        <div class="offer-partner-container">
 
+      </div>
+      <div class="d-flex justify-content-center">
+        <button class="btn text-center  btn--dark-blue-2-outline ml-auto mr-auto mt-5" @click="loadOfferPartners()"
+                v-if="offerPartnersMeta.current_page!=offerPartnersMeta.last_page">
+          Daha cox
+          <icon name="top" class="rotate180"></icon>
+        </button>
 
-          <div class="offer-partner-item" v-for="offerPartner in offerPartners">
-
-            <img :src="offerPartner.logo" class="mt-5">
-
-            <span class="partner-name mt-3">{{ offerPartner.name }}</span>
-            <p class="mt-1 partner-subname mb-5">{{ offerPartner.description }}</p>
-          </div>
-
-
-        </div>
-        <div class="d-flex justify-content-center">
-          <button class="btn text-center  btn--dark-blue-2-outline ml-auto mr-auto mt-5" @click="loadOfferPartners()"
-                  v-if="offerPartnersMeta.current_page!=offerPartnersMeta.last_page">
-            Daha cox
-            <icon name="top" class="rotate180"></icon>
-          </button>
-
-        </div>
+      </div>
 
     </section>
     <section class="text">
@@ -154,6 +156,19 @@
         <accordion :list="visibleList"/>
       </div>
     </section>
+    <modal-popup      :toggle="offerDeletePromp"
+                      :title="'Sorğunun deaktiv olunması'"
+                      @close="offerDeletePromp=false"
+                      :modal-class="'offer-payment-modal'"
+                      :closeable="true">
+
+      <p>Sorğu deaktiv etmək istdəiyinizdən əminsiniz?</p>
+      <div class="d-flex justify-content-end">
+        <button class="btn btn--blue" @click="offerDeletePromp=false">Xeyr</button>
+        <button class="btn btn--red ml-1" @click="deactiveMyOffer(deactiveOfferId)">Bəli</button>
+      </div>
+
+    </modal-popup>
   </div>
 </template>
 <script>
@@ -168,8 +183,9 @@ export default {
   middleware: ['not_auto_salon', 'auth_general'],
   async fetch({store}) {
     await store.dispatch('getBrands')
+    await store.dispatch('activeMyOffers')
     await store.dispatch('offerPartners')
-    await store.dispatch('OffersAcceptedByAutoSalon')
+
 
   },
   head() {
@@ -179,7 +195,9 @@ export default {
   },
   data() {
     return {
-      offerNotFound:false,
+      deactiveOfferId:null,
+      offerDeletePromp:false,
+      offerNotFound: false,
       brand: '',
       model: '',
     }
@@ -187,23 +205,12 @@ export default {
   computed: {
     ...mapGetters({
       faq: 'getOfferFaq',
-      userOffers: 'OffersAcceptedByAutoSalon',
       brands: 'brands',
       carModels: 'models',
       offerPartners: 'getOfferPartners',
       offerPartnersMeta: 'getOfferPartnersMeta',
-
+      activeMyOffers: 'getActiveMyOffers'
     }),
-
-    issetActiveOffer(){
-        for (var i=0; i < this.userOffers.length; i++){
-          if (this.userOffers[i].offer.status==1 && this.userOffers[i].user_deleted_at==null){
-            return true
-          }
-          return false
-        }
-    },
-
     list() {
       return this.faq.map(item => ({title: item.question[this.locale], text: item.answer[this.locale]}));
     },
@@ -229,12 +236,21 @@ export default {
       getModelsArray: 'getModelsArray',
       getModelGenerationsArray: 'getModelGenerationsArray',
     }),
+    deactiveMyOffer(id){
+      this.$axios.delete('/offer/user/deactive-offer/'+id).then((res)=>{
+        console.log(res)
+            if (res.data.status=='success'){
+              this.$store.dispatch('activeMyOffers')
+              this.offerDeletePromp=false
+            }
+      })
+    },
     getOffer() {
       if (!this.brand || !this.model) {
         return this.$toasted.error('Brend və ya model seçilməyib')
       }
       this.$router.push({
-        name: 'offer-add___'+this.locale, query: {
+        name: 'offer-add___' + this.locale, query: {
           brand: this.brand,
           model: this.model,
         }
@@ -255,12 +271,10 @@ export default {
   },
   watch: {},
   beforeCreate() {
-    this.brands = [];
-    this.carModels = []
+
   },
   beforeDestroy() {
-    this.brands = [];
-    this.carModels = []
+
     this.$store.commit('setNullModels')
   }
 

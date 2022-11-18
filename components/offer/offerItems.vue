@@ -4,7 +4,7 @@
       <div class="offer_item" :class="selected_offer_item==index ? 'active' : null"
            v-for="(offer_item,index) in offer_items" @click="selectOfferItem(index)">
         <img :src="offer_item.generations[0].img" alt="">
-        <div class="offer_item_detail">
+        <div class="offer_item_detail pl-1">
           <div class="d-flex">
             <div class="offer_price" v-if="offer_item.minPrice">{{ offer_item.minPrice }} - </div>
             <div class="offer_price">{{ offer_item.maxPrice }} ₼</div>
@@ -64,6 +64,12 @@
                 </div>
           </div>
         </div>
+        <div>
+
+          <p class="offerComment">
+            {{offer_items[selected_offer_item].comment}}
+          </p>
+        </div>
 
       </div>
     </div>
@@ -85,7 +91,8 @@ export default {
     selectOfferItem(index) {
       this.selected_offer_item = index
     },
-  }
+  },
+
 }
 </script>
 
