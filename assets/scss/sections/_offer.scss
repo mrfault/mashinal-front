@@ -478,6 +478,10 @@
   border-right: none;
   padding: 8px;
 
+  .message-attachment-preview .preview img{
+    height: 70%;
+  }
+
   .offer_items {
     display: flex;
 
@@ -498,10 +502,11 @@
       }
 
       .offer_item_detail {
-        padding: 15px;
+        padding: 5px 0px;
 
         .offer_price {
           color: $dark-blue-2;
+          font-size: 11px;
           font-weight: bold;
         }
       }
@@ -703,6 +708,18 @@
 }
 
 @media (max-width: 480px) {
+  .new-offer-notification-box{
+    flex-direction: column;
+    :nth-child(2){
+      margin-top: 7px;
+      margin-left: unset !important;
+    }
+    :nth-child(3){
+      margin-top: 7px;
+      margin-left: unset !important;
+    }
+  }
+
   .offerDetail{
     .offer_items{
     flex-direction: column;
@@ -1271,4 +1288,9 @@
     height: 100%;
     object-fit: contain;
   }
+}
+
+.offerComment{
+  margin-top: 3px;
+  word-break: break-all;
 }

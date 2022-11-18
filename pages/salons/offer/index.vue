@@ -111,7 +111,7 @@
               </div>
             </div>
             <collapse-content :title="'Təklif'">
-              <offer-items :offer_items="offer.offer_items"/>
+              <offer-items :key="offer.id" :offer_items="offer.offer_items"/>
             </collapse-content>
 
             <div>
@@ -282,8 +282,6 @@ export default {
         setTimeout( ()=>{
              this.$store.dispatch('getAllOffers', this.$route.query)
         },500)
-
-
       }
       let formData = new FormData();
 
@@ -315,8 +313,12 @@ export default {
         this.chat.text = '';
         this.$nuxt.$emit('clear-message-attachments');
         this.scrollTo('.my:last-child', 0, 500, '.offerDetail')
-        this.messageButtonDisabled = false;
+
       })
+      setTimeout(()=>{
+        this.messageButtonDisabled = false;
+      },2000)
+
 
     },
 

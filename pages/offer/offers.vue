@@ -86,17 +86,16 @@
                       v-if="!userOffer.user_deleted_at"> <icon name="garbage"></icon></span>
               </div>
             </div>
-            <collapse-content :title="'Təklif'">
-              <offer-items :offer_items="offer.offer_items"/>
+
+            <collapse-content :title="'Təklif'" >
+
+              <offer-items :key="userOffer.id" :class="offer.id"  :offer_items="offer.offer_items"/>
             </collapse-content>
             <div>
 
               <div class="messages">
                 <div class="message" :class="   isMyMessage(message) ? 'my' :'his ' " v-for="message in offerMessages">
                   <div v-if="message.files.length>0" class="message-files">
-
-
-
 
                     <div class="message-file" v-for="file in message.files">
                       <img :src="file" width="100%" class="p-1" @click="openLightbox(file)" />
@@ -207,7 +206,6 @@ export default {
       userOffer: null,
       offer: null,
       auto_salon: null,
-
       chat: {
         text: '',
       },
@@ -216,7 +214,6 @@ export default {
       auto_salon_offer_id: null,
       auto_salon_deleted_at: null,
       messageButtonDisabled: false,
-
     }
   },
   computed: {
@@ -225,7 +222,6 @@ export default {
       offerMessages: 'getOfferMessages',
       newOfferCount: 'getNewOfferCount',
     }),
-
     crumbs() {
       return [
         {name: 'Super təklif paneli', route: '/offer/offers'},
@@ -258,7 +254,7 @@ export default {
     },
     async submitMessage() {
 
-
+      this.messageButtonDisabled=true;
       let formData = new FormData();
 
       formData.append('recipient_id', this.userOffer.auto_salon.user_id)
@@ -291,6 +287,10 @@ export default {
 
       })
 
+      setTimeout(()=>{
+        this.messageButtonDisabled = false;
+      },2000)
+
     },
     async getUserOfferDetail(id) {
 
@@ -299,8 +299,6 @@ export default {
       if (this.isMobileBreakpoint) {
         this.$router.push(this.$localePath('/offer') + '/' + id)
       } else {
-
-
         await this.checkAccepted(id)
         this.userOffer = this.userOffers.find(function (offer) {
           return id === offer.auto_salon_offer_id
@@ -335,11 +333,17 @@ export default {
       this.checkAccepted(id)
     },
     async deleteUserAutoSalonOffer(id) {
-      this.$axios.delete('/offer/user/offer/delete/' + id);
-      this.$store.dispatch('OffersAcceptedByAutoSalon', this.$route.query)
-      this.offer = null
-      this.userOffer = null
-      this.auto_salon_deleted_at = null
+      await this.$axios.delete('/offer/user/offer/delete/' + id).then((res)=>{
+
+        if (res.data.status='success'){
+          this.$store.dispatch('OffersAcceptedByAutoSalon', this.$route.query)
+          this.offer = null
+          this.userOffer = null
+          this.auto_salon_deleted_at = null
+        }
+
+
+      });
 
     }
   },
