@@ -65,10 +65,8 @@
           </div>
         </div>
         <div>
-          <pre>
-            {{offer_item}}
-          </pre>
-          <p>
+
+          <p class="offerComment">
             {{offer_items[selected_offer_item].comment}}
           </p>
         </div>

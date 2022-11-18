@@ -87,7 +87,7 @@
               </div>
             </div>
 
-            <collapse-content :title="'Təklif'">
+            <collapse-content :title="'Təklif'" >
 
               <offer-items :key="userOffer.id" :class="offer.id"  :offer_items="offer.offer_items"/>
             </collapse-content>

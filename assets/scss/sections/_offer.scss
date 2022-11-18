@@ -708,6 +708,18 @@
 }
 
 @media (max-width: 480px) {
+  .new-offer-notification-box{
+    flex-direction: column;
+    :nth-child(2){
+      margin-top: 7px;
+      margin-left: unset !important;
+    }
+    :nth-child(3){
+      margin-top: 7px;
+      margin-left: unset !important;
+    }
+  }
+
   .offerDetail{
     .offer_items{
     flex-direction: column;
@@ -1278,3 +1290,7 @@
   }
 }
 
+.offerComment{
+  margin-top: 3px;
+  word-break: break-all;
+}

@@ -175,9 +175,9 @@ const getInitialState = () => ({
   offer_id: null,
   showOfferPaymentModal: false,
   offer_add_is_loader: false,
-  offer_faq:null,
-  user_deleted_auto_salon_offers:[],
-  active_my_offers:[],
+  offer_faq: null,
+  user_deleted_auto_salon_offers: [],
+  active_my_offers: [],
 
 })
 
@@ -345,9 +345,9 @@ export const getters = {
   offerSelectedModels: (s) => s.offer_selected_models,
   showOfferPaymentModal: (s) => s.showOfferPaymentModal,
   offerAddIsLoader: (s) => s.offer_add_is_loader,
-  getOfferFaq:(s)=>s.offer_faq,
+  getOfferFaq: (s) => s.offer_faq,
   getUserDeletedAutoSalonOffer: (s) => s.user_deleted_auto_salon_offers,
-  getActiveMyOffers :(s)=> s.active_my_offers,
+  getActiveMyOffers: (s) => s.active_my_offers,
 
 }
 
@@ -1292,15 +1292,14 @@ export const actions = {
   },
   async OffersAcceptedByAutoSalon({commit}, param = 'all') {
 
-    var url='/offer/user/offers_accepted_by_auto_salon?param=';
+    var url = '/offer/user/offers_accepted_by_auto_salon?param=';
 
 
-
-    if(param.param){
-      url+=param.param
+    if (param.param) {
+      url += param.param
     }
-    if(param.query){
-      url+='&query='+param.query
+    if (param.query) {
+      url += '&query=' + param.query
     }
 
     const data = await this.$axios.$get(url)
@@ -1318,13 +1317,14 @@ export const actions = {
     commit('mutate', {property: 'offerPartnersMeta', value: data.data.meta})
   },
   async offerItemValidation({commit, state}, object) {
+
     try {
       const data = await this.$axios.post('/offer/validation', object.form).then(async (res) => {
 
         if (res.data.status == 'success') {
 
           if (state.offer_announcements.length < 2) {
-            commit('appendOfferAnnouncement', object.form)
+            commit('appendOfferAnnouncement', object)
 
           }
 
@@ -1346,11 +1346,11 @@ export const actions = {
     }
   },
 
-  async offerFaq({commit,state}){
-    const data=await this.$axios.$get('/offer/faq');
-    commit('setOfferFaq',{data:data})
+  async offerFaq({commit, state}) {
+    const data = await this.$axios.$get('/offer/faq');
+    commit('setOfferFaq', {data: data})
   },
-  async activeMyOffers({commit,state}){
+  async activeMyOffers({commit, state}) {
     const {data} = await this.$axios.$get('/offer/user/active-my-offers');
 
     commit('mutate', {property: 'active_my_offers', value: data})
@@ -1492,11 +1492,13 @@ export const mutations = {
     state.offer_announcement_count--
   },
   appendOfferAnnouncement(state, payload) {
-
+    console.log(payload, 'payload');
     if (typeof state.offer_announcements[payload.index] != undefined) {
       state.offer_announcements.splice(payload.index, 1);
     }
-    state.offer_announcements.push(payload)
+
+    state.offer_announcements.push(JSON.parse(JSON.stringify(payload.form)));
+
 
   },
   appendOfferSelectedModels(state, payload) {
@@ -1516,7 +1518,7 @@ export const mutations = {
     if (index > -1) {
       state.offer_announcements.splice(index, 1);
       state.offer_announcement_count.splice(index, 1);
-      state.offer_selected_models[index]={
+      state.offer_selected_models[index] = {
         logo: null,
         img: null,
         brand: '',
@@ -1565,15 +1567,15 @@ export const mutations = {
       }
     ]
   },
-  setOfferAnnouncementCount(state,payload){
-    state.offer_announcement_count[payload.index].collapsed=payload.status;
+  setOfferAnnouncementCount(state, payload) {
+    state.offer_announcement_count[payload.index].collapsed = payload.status;
   },
-  setOfferFaq(state,payload){
-    state.offer_faq=payload.data
+  setOfferFaq(state, payload) {
+    state.offer_faq = payload.data
   },
-  resetGenerations(state){
+  resetGenerations(state) {
 
-    state.generations=[];
+    state.generations = [];
 
   }
 }

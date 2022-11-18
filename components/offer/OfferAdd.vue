@@ -109,15 +109,12 @@
                 <div class=" mr-5">
 
                   <label for="minPrice">Min.</label>
-                  <form-numeric-input  :max-value="999999" id="minPrice" type="number"
+                  <form-numeric-input  :max-value="1000000" id="minPrice" type="number"
                                       v-model="form[index].minPrice" class="priceInput"/>
                 </div>
                 <div class="">
-
                   <label for="maxPrice">Max.</label>
-                  <form-numeric-input :max-value="1000000"  id="maxPrice" type="number"
-
-                                      v-model="form[index].maxPrice" class="priceInput" @change="changeMaxPrice()"/>
+                  <form-numeric-input :max-value="1000000"  id="maxPrice" type="number"  v-model="form[index].maxPrice" class="priceInput" @change="changeMaxPrice()"/>
                 </div>
               </div>
             </div>
@@ -292,7 +289,7 @@ export default {
 
     submitOffer() {
       this.$store.commit('setOfferAddLoader', {status: true})
-      this.$store.dispatch('offerItemValidation', {isSubmit: true, form: this.form[this.index]})
+      this.$store.dispatch('offerItemValidation', {isSubmit: true, form: this.form[this.index], index: this.index})
     },
 
     setBrand(slug) {
@@ -315,7 +312,7 @@ export default {
       }
 
       this.$store.commit('resetGenerations')
-      this.generations = [];
+      this.form[this.index].generations = [];
     },
     async setModel(slug) {
 
@@ -419,6 +416,9 @@ export default {
       handler(newVal) {
         this.$store.commit('setOfferAnnouncement', {index: this.index, form: newVal})
       }
+    },
+    index(){
+      console.log(this.index)
     }
   }
 
