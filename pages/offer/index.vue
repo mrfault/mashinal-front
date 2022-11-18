@@ -185,7 +185,7 @@ export default {
     await store.dispatch('getBrands')
     await store.dispatch('activeMyOffers')
     await store.dispatch('offerPartners')
-    await store.dispatch('OffersAcceptedByAutoSalon')
+
 
   },
   head() {
@@ -205,24 +205,12 @@ export default {
   computed: {
     ...mapGetters({
       faq: 'getOfferFaq',
-      userOffers: 'OffersAcceptedByAutoSalon',
       brands: 'brands',
       carModels: 'models',
       offerPartners: 'getOfferPartners',
       offerPartnersMeta: 'getOfferPartnersMeta',
       activeMyOffers: 'getActiveMyOffers'
-
     }),
-
-    issetActiveOffer() {
-      for (var i = 0; i < this.userOffers.length; i++) {
-        if (this.userOffers[i].offer.status == 1 && this.userOffers[i].user_deleted_at == null) {
-          return true
-        }
-        return false
-      }
-    },
-
     list() {
       return this.faq.map(item => ({title: item.question[this.locale], text: item.answer[this.locale]}));
     },
@@ -283,12 +271,10 @@ export default {
   },
   watch: {},
   beforeCreate() {
-    this.brands = [];
-    this.carModels = []
+
   },
   beforeDestroy() {
-    this.brands = [];
-    this.carModels = []
+
     this.$store.commit('setNullModels')
   }
 
