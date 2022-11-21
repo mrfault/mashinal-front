@@ -7,7 +7,7 @@
     <title-with-line-and-reject-reason
       v-if="title && !isMobileBreakpoint && isModeration"
       :title="title"
-      rejectKey="body_type"
+      rejectKey="year"
       @change="changeReason"
     />
     <div class="year-options">

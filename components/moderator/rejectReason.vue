@@ -1,10 +1,10 @@
 <template>
-  <div @click="openPhotoIssuePopup" style="display: inline-block; z-index: 10;">
+  <div style="display: inline-block; z-index: 0;" @click="openPhotoIssuePopup">
     <label class="toggleButton">
       <input
+        v-model="rejectedValue"
         :disabled="toggleDisable"
         type="checkbox"
-        v-model="rejectedValue"
       />
       <div>
         <svg viewBox="0 0 44 44">
@@ -88,17 +88,21 @@ $colorGreen: green;
   transform-origin: 50% 50%;
   transform-style: preserve-3d;
   transition: transform 0.14s ease;
+
   &:active {
     transform: rotateX(30deg);
   }
+
   input {
     display: none;
+
     & + div {
       border: 3px solid rgba($color, 0.2);
       border-radius: 50%;
       position: relative;
       width: 34px;
       height: 34px;
+
       svg {
         fill: none;
         stroke-width: 3.6;
@@ -113,11 +117,12 @@ $colorGreen: green;
         top: -3px;
         right: -3px;
         bottom: -3px;
-        z-index: 1;
+        z-index: 0;
         stroke-dashoffset: 162.6 - 38;
         stroke-dasharray: 0 162.6 133 (162.6 - 133);
         transition: all 0.4s ease 0s;
       }
+
       &:before,
       &:after {
         content: '';
@@ -129,30 +134,36 @@ $colorGreen: green;
         top: 50%;
         border-radius: 5px;
       }
+
       &:before {
         opacity: 0;
         transform: scale(0.3) translate(-50%, -50%) rotate(45deg);
         animation: bounceInBefore 0.3s linear forwards 0.3s;
       }
+
       &:after {
         opacity: 0;
         transform: scale(0.3) translate(-50%, -50%) rotate(-45deg);
         animation: bounceInAfter 0.3s linear forwards 0.3s;
       }
     }
+
     &:checked + div {
       border: 3px solid rgba($colorGreen, 0.2);
+
       svg {
         stroke: $colorGreen;
         stroke-dashoffset: 162.6;
         stroke-dasharray: 0 162.6 28 (162.6 - 28);
         transition: all 0.4s ease 0.2s;
       }
+
       &:before {
         opacity: 0;
         transform: scale(0.3) translate(-50%, -50%) rotate(45deg);
         animation: bounceInBeforeDont 0.3s linear forwards 0s;
       }
+
       &:after {
         opacity: 0;
         transform: scale(0.3) translate(-50%, -50%) rotate(-45deg);
@@ -229,6 +240,7 @@ html {
 
 * {
   box-sizing: inherit;
+
   &:before,
   &:after {
     box-sizing: inherit;
