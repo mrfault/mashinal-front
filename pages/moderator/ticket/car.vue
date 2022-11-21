@@ -1,69 +1,75 @@
 <template>
   <div class="pages-announcement-edit">
-
     <div class="container">
-      <pre>
-        {{rejectObj.rejectArray}}
-      </pre>
       <breadcrumbs :crumbs="crumbs"/>
       <div class="sell_cards-row row">
         <div class="col-auto">
           <div class="card">
             <div class="mb-5">
-              <brand
-                :brand="single_announce.brand"
-                :model="single_announce.model"
-                :userData="single_announce.user"
-                :year="single_announce.year"
-                @showBrands="toggleOptions('brands')"
-                @showModels="toggleOptions('models')"
-                @showYears="toggleOptions('years')"
-              />
-              <!--   model options ------------->
-              <div class="mt-5">
-                <model-options
-                  v-if="show.brands"
-                  key="brand"
-                  :considerPopular="false"
-                  :img-key="'transformed_media'"
-                  :img-placeholder="`/logos/car-${colorMode}.svg`"
-                  :input-title="$t('model_name')"
-                  :options="brands"
-                  :sort-alphabetically="true"
-                  :status-title="$t('select_model')"
-                  :title="$t('mark')"
-                  :value="single_announce.brand"
-                  highlightSelected
-                  isModeration
-                  rejectKey="brand"
-                  @changeReason="changeReason"
+              <template v-if="form.brand">
+                <brand
+                  :brand="form.brandObj"
+                  :userData="form.user"
                 />
-                <model-options
-                  v-if="show.models"
-                  key="model"
-                  :input-title="$t('model_name')"
-                  :options="models"
-                  :sort-alphabetically="false"
-                  :status-title="$t('select_model')"
-                  :title="$t('model')"
-                  :value="single_announce.model"
-                  highlightSelected
-                  isModeration
-                  rejectKey="model"
-                  @changeReason="changeReason"
-                />
-                <year-options
-                  v-if="show.years"
-                  :title="$t('prod_year')"
-                  :value="single_announce.year"
-                  :years="{ min: sellYears.min, max: sellYears.max }"
-                  @close="handleYear()"
-                  @input="handleYear"
-                  isModeration
-                  rejectKey="model"
-                  @changeReason="changeReason"
-
-                />
+              </template>
+              <!--              brand -->
+              <div class="row mt-5">
+                <div class="col-12">
+                  <title-with-line-and-reject-reason
+                    rejectKey="brand"
+                    title="mark"
+                    @change="changeReason"
+                  />
+                </div>
+                <div class="col-12 col-lg-3">
+                  <form-select
+                    v-model="form.brand_id"
+                    :label="$t('mark')"
+                    :options="brands"
+                    has-search
+                    @change="changeBrand($event)"
+                  />
+                </div>
+              </div>
+              <!--              model -->
+              <div v-if="data.models && form.model_id" class="row">
+                <div class="col-12">
+                  <title-with-line-and-reject-reason
+                    rejectKey="model"
+                    title="model"
+                    @change="changeReason"
+                  />
+                </div>
+                <div class="col-12 col-lg-3">
+                  <form-select
+                    v-model="form.model_id"
+                    :label="$t('model')"
+                    :options="data.models"
+                    :value="form.model_id"
+                    has-search
+                    @change="changeModel($event)"
+                  />
+                </div>
+              </div>
+              <!--              year -->
+              <div v-if="data.sellYears" class="row">
+                <div class="col-12">
+                  <title-with-line-and-reject-reason
+                    rejectKey="years"
+                    title="prod_year"
+                    @change="changeReason"
+                  />
+                </div>
+                <div class="col-12 col-lg-3">
+                  <form-select
+                    v-model="form.year"
+                    :disabled="isModerator"
+                    :label="$t('prod_year')"
+                    :options="data.sellYears"
+                    :value="form.model_id"
+                    has-search
+                  />
+                </div>
               </div>
               <!--     modifications -------  -->
               <div>
@@ -72,37 +78,39 @@
                   title="body_type"
                   @change="changeReason"
                 />
-                <form-buttons
-                  :btn-class="'primary-outline select-body'"
-                  :group-by="isMobileBreakpoint ? 2 : 5"
-                  :options="sell_bodies"
-                  class="mb-4"
-                  @change="
-                    handleChange(
-                      $event,
-                      'getSellGenerations',
-                      ['car_body_type'],
-                      [
-                        'sellGenerations',
-                        'sellEngines',
-                        'sellGearing',
-                        'sellTransmissions',
-                        'sellModifications',
-                      ],
-                      'generation_id',
-                    )
-                  "
-                >
-                  <template #custom="{ button }">
-                    <div class="body-img">
-                      <img
-                        :alt="button.name[locale]"
-                        :src="$withBaseUrl(button.transformed_media)"
-                      />
-                    </div>
-                  </template>
-                </form-buttons>
-
+                <!--                <form-buttons-->
+                <!--                  v-model="form.car_body_type"-->
+                <!--                  :btn-class="'primary-outline select-body'"-->
+                <!--                  :group-by="isMobileBreakpoint ? 2 : 5"-->
+                <!--                  :options="data.sellYears"-->
+                <!--                  class="mb-4"-->
+                <!--                  @change="-->
+                <!--                    handleChange(-->
+                <!--                      $event,-->
+                <!--                      'getSellGenerations',-->
+                <!--                      ['car_body_type'],-->
+                <!--                      [-->
+                <!--                        'sellGenerations',-->
+                <!--                        'sellEngines',-->
+                <!--                        'sellGearing',-->
+                <!--                        'sellTransmissions',-->
+                <!--                        'sellModifications',-->
+                <!--                      ],-->
+                <!--                      'generation_id',-->
+                <!--                    )-->
+                <!--                  "-->
+                <!--                >-->
+                <!--                  <template #custom="{ button }">-->
+                <!--                    <div class="body-img">-->
+                <!--                      <img-->
+                <!--                        :alt="button.name[locale]"-->
+                <!--                        :src="$withBaseUrl(button.transformed_media)"-->
+                <!--                      />-->
+                <!--                    </div>-->
+                <!--                  </template>-->
+                <!--                </form-buttons>-->
+              </div>
+              <div>
                 <title-with-line-and-reject-reason
                   :title="$t('generation')"
                   rejectKey="generation"
@@ -110,7 +118,7 @@
                   @change="changeReason"
                 />
                 <form-buttons
-                  v-model="initialForm.generation_id"
+                  v-model="form.generation_id"
                   :btn-class="'primary-outline select-generation'"
                   :group-by="isMobileBreakpoint ? 2 : 5"
                   :options="sellGenerations"
@@ -149,66 +157,65 @@
 
                 <title-with-line-and-reject-reason
                   :title="$t('fuel')"
-                  rejectKey="fuel"
+                  rejectKey="engine"
                   required
                   @change="changeReason"
                 />
-                <form-buttons
-                  v-model="single_announce.car_catalog.gearing_id"
-                  :btn-class="'primary-outline'"
-                  :group-by="isMobileBreakpoint ? 1 : 5"
-                  :options="
-                    engines.map((o) => ({
-                      name: $t('engine_values')[o.engine],
-                      key: o.engine,
-                    }))
-                  "
-                  @change="
-                    handleChange(
-                      $event,
-                      'getSellGearing',
-                      ['car_body_type', 'generation_id', 'gearing'],
-                      ['sellGearing', 'sellTransmissions', 'sellModifications'],
-                      'transmission',
-                    )
-                  "
-                >
-                  <template #icon="{ button }">
-                    <icon
-                      :class="`engine-${button.key}`"
-                      :name="getIcon('engine', button.key)"
-                    />
-                  </template>
-                </form-buttons>
-                <form-checkbox
-                  v-model="single_announce.autogas"
-                  :label="$t('gas_equipment')"
-                  class="mb-4"
-                  input-name="autogas"
-                  transparent
-                />
+                <div class="col-12 col-lg-3  pl-0">
 
+                  <form-select
+                    v-model="form.gearing"
+                    :disabled="user.admin_group == 2"
+                    :label="$t('fuel')"
+                    :options="
+                    engines.map((o) => ({
+                        name: $t('engine_values')[o.engine],
+                        key: o.engine,
+                      }))
+                    "
+                    has-search
+                    @change="
+                    handleChange(
+                        $event,
+                        'getSellGearing',
+                        ['car_body_type', 'generation_id', 'gearing'],
+                        ['sellGearing', 'sellTransmissions', 'sellModifications'],
+                        'transmission',
+                      )
+                    "
+                  />
+                  <form-checkbox
+                    v-model="form.autogas"
+                    :label="$t('gas_equipment')"
+                    class="mb-4 mt-2"
+                    input-name="autogas"
+                    transparent
+                  />
+
+                </div>
                 <title-with-line-and-reject-reason
                   :title="$t('type_of_drive')"
+                  rejectKey="gearing"
                   required
+                  @change="changeReason"
                 />
-                <template
-                  v-if="
+                <div class="col-12 col-lg-3 pl-0">
+                  <template
+                    v-if="
                     sellTransmissions && sellTransmissions.length && sellGear
                   "
-                >
-                  <form-buttons
-                    v-model="initialForm.transmission"
-                    :btn-class="'primary-outline'"
-                    :group-by="isMobileBreakpoint ? 1 : 5"
-                    :options="
+                  >
+                    <form-select
+                      v-model="form.transmission"
+                      :disabled="user.admin_group == 2"
+                      :label="$t('tip-privoda')"
+                      :options="
                       sellGear.map((o) => ({
                         name: $t('type_of_drive_values')[o.type_of_drive],
                         key: o.type_of_drive,
                       }))
                     "
-                    :isModerator="user.admin_group == 2"
-                    @change="
+                      @change="
                     handleChange(
                       $event,
                       'getSellTransmissions',
@@ -217,33 +224,38 @@
                       'modification',
                     )
                   "
-                  >
-                    <template #icon="{ button }">
-                      <icon
-                        :class="`type-of-drive-${button.key}`"
-                        :name="getIcon('type_of_drive', button.key)"
-                      />
-                    </template>
-                  </form-buttons>
-                </template>
+                    >
+                      <template #icon="{ button }">
+                        <icon
+                          :class="`type-of-drive-${button.key}`"
+                          :name="getIcon('type_of_drive', button.key)"
+                        />
+                      </template>
+                    </form-select>
+                  </template>
+                </div>
+
 
                 <title-with-line-and-reject-reason
                   v-if="sellTransmissions && sellTransmissions.length"
                   :title="$t('box')"
                   rejectKey="transmission"
                   required
+                  @change="changeReason"
                 />
-                <form-buttons
-                  v-model="initialForm.modification"
-                  :btn-class="'primary-outline'"
-                  :group-by="isMobileBreakpoint ? 1 : 5"
-                  :options="
+                <div class="col-12 col-lg-3 pl-0">
+
+                  <form-select
+                    v-model="form.modification"
+                    :disabled="user.admin_group == 2"
+                    :label="$t('box')"
+                    :options="
                     sellTransmissions.map((o) => ({
                       name: $t('box_values')[o.box],
                       key: o.box,
                     }))
                   "
-                  @change="
+                    @change="
                     handleChange(
                       $event,
                       'getSellModifications',
@@ -258,117 +270,81 @@
                       'car_catalog_id',
                     )
                   "
-                >
-                  <template #icon="{ button }">
-                    <icon
-                      :class="`box-${button.key}`"
-                      :name="getIcon('box', button.key)"
-                    />
-                  </template>
-                </form-buttons>
+                  >
+                    <template #icon="{ button }">
+                      <icon
+                        :class="`box-${button.key}`"
+                        :name="getIcon('box', button.key)"
+                      />
+                    </template>
+                  </form-select>
 
+                </div>
                 <title-with-line-and-reject-reason
-                  v-if="sellModifications && sellModifications.length"
+                  v-if="sellModifications"
                   :title="$t('modification')"
-                  rejectKey="transmission"
+                  rejectKey="modification"
                   required
+                  @change="changeReason"
 
                 />
-                <form-buttons
-                  v-model="initialForm.car_catalog_id"
-                  :btn-class="'primary-outline'"
-                  :group-by="isMobileBreakpoint ? 1 : 3"
-                  :options="
+                <div class="col-12 col-lg-3 pl-0">
+
+                  <form-select
+                    v-model="form.car_catalog_id"
+                    :disabled="user.admin_group == 2"
+                    :label="$t('modification')"
+                    :options="
                     sellModifications.map((o) => ({
                       name: getModificationName(o),
                       key: o.id,
                     }))
                   "
-                  @change="handleChange($event, false, ['car_catalog_id'], [])"
-                />
-              </div>
-              <!--     sell last step ------  -->
-              <div v-if="single_announce">
-                <sell-last-step
-                  :key="lastStepKey"
-                  :announcement="single_announce"
-                  :colors="colors"
-                  :edit="true"
-                  :restore="single_announce.status == 3"
-                  :title="$t('moderator')"
-                  type="cars"
-                  @close="
-                    $router.push(
-                      pageRef || $localePath('/profile/announcements'),
-                    )
-                  "
-                />
-              </div>
-              <!-- actions  ------------------------->
-              <div
-                v-if="user.admin_group && user.admin_group !== 2"
-                class="moderator-actions mt-5"
-              >
-                <div class="text-right">
-                  <!--            moderator-->
-                  <button
-                    :class="['btn btn--green', { pending }]"
-                    type="button"
-                  >
-                    salam
-                  </button>
+                    @change="handleChange($event, false, ['car_catalog_id'], [])"
+                  />
 
-                  <!--    supervisor        -->
-
-                  <button
-                    :class="['btn btn--green', { pending }]"
-                    class="mb-2"
-                    type="button"
-                    @click="transferToSupervisor()"
-                  >
-                    {{ $t('refuse') }}
-                  </button>
-                  <button
-                    :class="['btn btn--green', { pending }]"
-                    class="mb-2"
-                    type="button"
-                    @click="transferToSupervisor()"
-                  >
-                    {{ $t('this_announce_inactive') }}
-                  </button>
-                  <button
-                    :class="['btn btn--green', { pending }]"
-                    class="mb-2"
-                    type="button"
-                    @click="transferToSupervisor()"
-                  >
-                    {{ $t('back_to_list') }}
-                  </button>
                 </div>
               </div>
-              <!-- comment   ------------------------>
+              <!--     sell last step ------  -->
+              <div v-if="form">
+                <!--                <sell-last-step-->
+                <!--                  :key="lastStepKey"-->
+                <!--                  :announcement="form"-->
+                <!--                  :colors="colors"-->
+                <!--                  :edit="true"-->
+                <!--                  :restore="form.status == 3"-->
+                <!--                  :title="$t('moderator')"-->
+                <!--                  type="cars"-->
+                <!--                  @changeReason="changeReason"-->
+                <!--                  @close="-->
+                <!--                    $router.push(-->
+                <!--                      pageRef || $localePath('/profile/announcements'),-->
+                <!--                    )-->
+                <!--                  "-->
+                <!--                  @getRejectObj="getSellLastStepRejectObj"-->
+                <!--                />-->
+              </div>
+
+              <!-- actions   ------------------------>
               <div class="moderator-comment mt-5">
-                <div class="row">
+                <!--  moderator-->
+                <div v-if="user.admin_group == 2" class="row">
                   <div class="col-8">
                     <form-textarea
-                      v-if="getTimer.unix > 60 * 2"
-                      v-model="initialForm.comment"
+                      v-model="form.delay_comment"
                       :maxlength="3000"
                       :placeholder="$t('comment')"
                     />
                   </div>
                   <div class="col-4">
                     <button
-                      v-if="
-                        rejectObj.rejectArray.filter((item) => !rejectObj.reject360.includes(item))
-                          .length === 0
-                      "
+                      v-if="!rejectObj.rejectArray.length && !sellLastStepRejectObj.rejectArray.length"
                       :class="[
-                        'btn btn--green',
+                        'btn btn--green w-50',
                         { pending },
-                        { disabled: initialForm.comment.length == 0 },
+                        { disabled: form.comment.length == 0 },
                       ]"
-                      :disabled="initialForm.comment.length == 0"
+                      :disabled="form.comment.length == 0"
                       class="mb-2"
                       type="button"
                       @click.prevent="sendData(1)"
@@ -378,19 +354,19 @@
                     <button
                       v-else
                       :class="[
-                        'btn btn--green',
+                        'btn btn--green w-50',
                         { pending },
-                        { disabled: initialForm.comment.length == 0 },
+                        { disabled: form.comment.length == 0 },
                       ]"
-                      :disabled="initialForm.comment.length == 0"
+                      :disabled="form.comment.length == 0"
                       class="mb-2"
                       type="button"
                       @click.prevent="sendData(0)"
                     >
-                      {{ $t('refuse') }}
+                      {{ $t('reject') }}
                     </button>
                     <button
-                      v-if="user.admin_group == 2 && !transfer.isOpen"
+                      v-if="!transfer.isOpen"
                       :class="['btn btn--green', { pending }]"
                       class="mb-2"
                       type="button"
@@ -405,171 +381,54 @@
                       {{ getTimer.data.replace('d', $t('day')) }}
                     </div>
                   </div>
-
                 </div>
 
+                <!--  supervisor-->
+                <div v-if="user.admin_group == 1" class="row">
+                  <div class="col float-right">
+
+                    <button
+                      v-if="
+                        rejectObj.rejectArray.filter((item) => !rejectObj.reject360.includes(item)).length === 0 && (!sellLastStepRejectObj.rejectArray.length)
+                      "
+                      :class="{ button_loading: button_loading }"
+                      class="'btn btn--green mt-2"
+                      style="padding: 10px 30px;"
+                      @click.prevent="sendData(1)"
+                    >
+                      {{ $t('confirm') }}
+                    </button>
+                    <button
+                      :class="{ button_loading: button_loading }"
+                      class="'btn btn--red mt-2"
+                      style="padding: 10px 30px;"
+                      @click.prevent="sendData(0)"
+                    >
+                      {{ $t('reject') }}
+                    </button>
+                    <button
+                      :class="{ button_loading: button_loading }"
+                      class="'btn btn--pale-red mt-2"
+                      style="padding: 10px 30px;"
+                      @click.prevent="sendData(3)"
+                    >
+                      {{ $t('deactive_announce') }}
+                    </button>
+                    <button
+                      :class="{ button_loading: button_loading }"
+                      class="'btn btn--grey mt-2"
+                      style="padding: 10px 30px;"
+                      @click.prevent="gotoList()"
+                    >
+                      {{ $t('back_to_list') }}
+                    </button>
+                  </div>
+                </div>
               </div>
 
 
               <!-- actions   ------------------------>
-              <div v-if="false">
-                <section v-if="user.admin_group === 1" class="container">
-                  <!--supervisor-->
-                  <div class="row">
-                    <div class="col-12">
-                      <button
-                        v-if="
-                rejectArray.filter((item) => !reject360.includes(item))
-                  .length === 0
-              "
-                        :class="{ button_loading: button_loading }"
-                        class="section-post__btn mt-0"
-                        style="padding: 10px 30px; background: #3a9b35;"
-                        @click.prevent="sendData(1)"
-                      >
-                        {{ $t('approve') }}
-                      </button>
-                      <button
-                        :class="{ button_loading: button_loading }"
-                        class="section-post__btn mt-0 ml-1"
-                        style="padding: 10px 30px; background: #b90026;"
-                        @click.prevent="sendData(0)"
-                      >
-                        {{ $t('reject') }}
-                      </button>
-                      <button
-                        :class="{ button_loading: button_loading }"
-                        class="section-post__btn mt-0 ml-1"
-                        style="padding: 10px 30px; background: #f56808;"
-                        @click.prevent="sendData(3)"
-                      >
-                        {{ $t('deactive_announce') }}
-                      </button>
-                      <a href="javascript:void(0);" @click="handleBackToList">
-                        <button
-                          class="section-post__btn mt-0 ml-1"
-                          style="padding: 10px 30px; background: #bfbfbf;"
-                        >
-                          {{ $t('back_to_list') }}
-                        </button>
-                      </a>
-                    </div>
-                  </div>
-                </section>
-                <!--                ----------------------------------------------------------->
-                <!--                ----------------------------------------------------------->
-                <!--                ----------------------------------------------------------->
-                <!--                ----------------------------------------------------------->
-                <!--                ----------------------------------------------------------->
-                <section v-else-if="user.admin_group === 2" class="container">
 
-                  <div class="moderator-comment mt-5">
-                    <div class="row">
-                      <div class="col-8">
-                        <form-textarea
-                          v-model="initialForm.comment"
-                          :maxlength="3000"
-                          :placeholder="$t('comment')"
-                        />
-                      </div>
-                      <div class="col-4">
-                        <button
-                          :class="[
-                        'btn btn--green',
-                        { pending },
-                        { disabled: initialForm.comment.length == 0 },
-                      ]"
-                          :disabled="initialForm.comment.length == 0"
-                          class="mb-2"
-                          type="button"
-                          @click.prevent="sendData(1)"
-                        >
-                          {{ $t('confirm') }}
-                        </button>
-                        <button
-                          :class="[
-                        'btn btn--green',
-                        { pending },
-                        { disabled: initialForm.comment.length == 0 },
-                      ]"
-                          :disabled="initialForm.comment.length == 0"
-                          class="mb-2"
-                          type="button"
-                          @click.prevent="sendData(0)"
-                        >
-                          {{ $t('reject') }}
-                        </button>
-                        <button
-                          v-if="user.admin_group && user.admin_group == 2 && !transfer.isOpen"
-                          :class="['btn btn--green', { pending }]"
-                          class="mb-2"
-                          type="button"
-                          @click="transfer.isOpen = true"
-                        >
-                          {{ $t('transfer_to_supervisor') }}
-                        </button>
-                        <div
-                          v-if="getTimer && getTimer.data"
-                          class="moderator-timer"
-                        >
-                          {{ getTimer.data.replace('d', $t('day')) }}
-                        </div>
-                      </div>
-
-                    </div>
-
-                  </div>
-
-                </section>
-                <!--                ----------------------------------------------------------->
-                <!--                ----------------------------------------------------------->
-                <!--                ----------------------------------------------------------->
-                <!--                ----------------------------------------------------------->
-                <!--                ----------------------------------------------------------->
-                <!--                ----------------------------------------------------------->
-
-                <section v-else-if="user.admin_group === 3" class="container">
-                  <!--call center-->
-                  <div class="row">
-                    <div class="col-12">
-                      <button
-                        :class="{ button_loading: button_loading }"
-                        class="section-post__btn mt-0"
-                        style="padding: 10px 30px; background: #3a9b35;"
-                        @click.prevent="sendData(2)"
-                      >
-                        {{ $t('send_to_moderate') }}
-                      </button>
-
-                      <button
-                        :class="{ button_loading: button_loading }"
-                        class="section-post__btn mt-0 ml-1"
-                        style="padding: 10px 30px; background: #f56808;"
-                        @click.prevent="sendData(3)"
-                      >
-                        {{ $t('deactive_announce') }}
-                      </button>
-                      <a href="javascript:void(0);" @click="handleBackToList">
-                        <button
-                          class="section-post__btn mt-0 ml-1"
-                          style="padding: 10px 30px; background: #bfbfbf;"
-                        >
-                          {{ $t('back_to_list') }}
-                        </button>
-                      </a>
-
-                      <button
-                        class="section-post__btn mt-0"
-                        style="padding: 10px 30px; background: #d55e13; float: right;"
-                        @click.prevent="transferModal = true"
-                      >
-                        {{ $t('Transfer to Supervisor') }}
-                      </button>
-                    </div>
-                  </div>
-                </section>
-
-              </div>
             </div>
           </div>
         </div>
@@ -612,15 +471,12 @@
 <script>
 import {mapActions, mapGetters} from 'vuex'
 import moment from 'moment'
-
-// ./././././././././././
 import SellLastStep from '~/components/sell/SellLastStepModerator'
 import SellPreview from '~/components/sell/SellPreview'
 import Brand from '~/components/moderator/brand.vue'
 import EditButton from '~/components/announcements/EditButton'
 import ModelOptions from '~/components/options/ModelOptions'
 import TitleWithLine from '~/components/global/titleWithLine.vue'
-import YearOptions from '~/components/options/YearOptions'
 import ButtonOptions from '~/components/moderator/buttonOptions'
 import UploadImage from '~/components/elements/UploadImage'
 import RejectReason from '~/components/moderator/rejectReason'
@@ -636,7 +492,6 @@ export default {
     EditButton,
     ModelOptions,
     TitleWithLine,
-    YearOptions,
     ButtonOptions,
     UploadImage,
     SellLastStep,
@@ -666,144 +521,19 @@ export default {
         isOpen: false,
       },
       saved_images: [],
-    }
-  },
-  asyncData: async function ({store, $axios, $auth, route}) {
-    await $auth.setUserToken(`Bearer ${route.query.token}`)
-    const admin_user = await $axios.$get('/user')
-    // if (!admin_user.user.is_admin) {
-    //   return false
-    // }
-    $auth.setUser(admin_user.user)
-    setInterval(() => {
-      let timer = moment().diff(moment(admin_user.user.created_at))
-      var duration = moment.duration(timer)
-      var days = duration.days(),
-        hrs = duration.hours(),
-        mins = duration.minutes(),
-        secs = duration.seconds()
-
-      if (hrs.toString().length === 1) hrs = '0' + hrs
-      if (mins.toString().length === 1) mins = '0' + mins
-      if (secs.toString().length === 1) secs = '0' + secs
-      let _return = ''
-
-      if (days > 0) _return += days + 'd. '
-
-      _return += hrs + ':' + mins + ':' + secs
-      store.commit('moderator/changeTimerData', {
-        data: _return,
-        unix: timer / 1000,
-      })
-    }, 1000)
-    let data
-    try {
-      data = await $axios.$get('/ticket/car')
-      store.commit('moderator/moderatorMutator', {
-        with: data.announce,
-        property: 'single_announce',
-      })
-      store.commit('moderator/moderatorMutator', {
-        with: data.brands,
-        property: 'brands',
-      })
-      store.commit('moderator/moderatorMutator', {
-        with: data.boxes,
-        property: 'boxes',
-      })
-      //     store.commit('moderator/moderatorMutator', {
-      //       with: data.engines,
-      //       property: 'engines',
-      //     })
-      //      store.commit('moderator/moderatorMutator', {
-      //        with: data.generations,
-      //        property: 'generations',
-      //      })
-      store.commit('moderator/moderatorMutator', {
-        with: data.models,
-        property: 'models',
-      })
-      store.commit('moderator/moderatorMutator', {
-        with: data.moderator,
-        property: 'moderator',
-      })
-      store.commit('moderator/moderatorMutator', {
-        with: data.modifications,
-        property: 'modifications',
-      })
-      store.commit('moderator/moderatorMutator', {
-        with: data.sellYears,
-        property: 'sellYears',
-      })
-      store.commit('moderator/moderatorMutator', {
-        with: data.sell_bodies,
-        property: 'sell_bodies',
-      })
-      store.commit('moderator/moderatorMutator', {
-        with: data.type_of_drives,
-        property: 'type_of_drives',
-      })
-
-
-    } catch (e) {
-      store.commit('moderator/moderatorMutator', {
-        with: {},
-        property: 'single_announce',
-      })
-    }
-
-    const incomingData = store.state.moderator.single_announce;
-    return {
-      admin_user: admin_user.user,
-      initialForm: {
-        car_catalog_id: incomingData?.car_catalog_id || null,
-        brand: incomingData?.brand.slug || null,
-        model: incomingData?.model.slug || null,
-        generation_id: incomingData?.car_catalog?.generation_id || null,
-        car_body_type: incomingData?.car_catalog?.car_type.id || null,
-        gearing: incomingData?.car_catalog?.main['  ']['engine'] || null, // engines
-        modification: incomingData?.car_catalog?.main[' ']['box'] || null, // transmissions/box
-        transmission: incomingData?.car_catalog?.main[' ']['type_of_drive'] || null, // gearing
-        capacity: incomingData?.car_catalog?.capacity || null,
-        power: incomingData?.car_catalog?.power || null,
-        year: incomingData?.year || null,
-        auction: incomingData?.auction || null,
-        end_date: moment(incomingData?.end_date).format('DD.MM.YYYY HH:mm') || null,
-        country_id: incomingData?.country_id || null,
-        youtube: {
-          id: incomingData?.youtube_link,
-          thumb: `https://img.youtube.com/vi/${incomingData?.youtube_link}/hqdefault.jpg`,
-        },
-        selectedColor: incomingData?.colors || null,
-        is_matte: incomingData?.is_matte || null,
-        mileage: parseInt(incomingData?.mileage || 0) || null,
-        mileage_measure: incomingData?.mileage_measure || 1 || null,
-        region_id: incomingData?.region_id || 1 || null,
-        address: incomingData?.address || null,
-        lat: parseFloat(incomingData?.latitude || 0) || null,
-        lng: parseFloat(incomingData?.longitude || 0) || null,
-        vin: incomingData?.vin || null,
-        price: incomingData?.price_int || '',
-        owner_type: parseInt(incomingData?.owner_type || 0) || null,
-        currency: incomingData?.currency_id || 1 || null,
-        car_number: incomingData?.car_number || null,
-        show_car_number: incomingData?.show_car_number || null,
-        show_vin: incomingData?.show_vin || null,
-        part: incomingData?.car_body_health
-          ? JSON.parse(incomingData?.car_body_health.options)
-          : {} || null,
-        all_options: incomingData?.options || null,
-        badges: incomingData?.stickers?.map((item) => item.id) || null,
-        new_badges: [] || null,
-        comment: incomingData?.comment || '',
-        is_new: incomingData?.is_new || null,
-        beaten: incomingData?.broken || null,
-        customs_clearance: incomingData?.customs_clearance || null,
-        tradeable: incomingData?.exchange_possible || null,
-        credit: incomingData?.credit || null,
-        guaranty: incomingData?.in_garanty || null,
-        saved_images: incomingData?.mediaIds || null,
+      button_loading: false,
+      itemForm: {},
+      sellLastStepRejectObj: {
+        rejectArray: [],
       },
+      form: {
+        slug: null,
+      },
+      data: {
+        models: [],
+        sellYears: [],
+      },
+      models: [],
     }
   },
   computed: {
@@ -815,16 +545,21 @@ export default {
       sellGenerations: 'sellGenerations',
       sellGear: 'sellGearing',
       generations: 'sellGenerations',
-      models: 'moderator/models',
+      modelsGeneral: 'models',
+      modelsModerator: 'moderator/models',
       moderator: 'moderator/moderator',
       sellModifications: 'sellModifications',
       sell_bodies: 'moderator/sell_bodies',
       type_of_drives: 'moderator/type_of_drives',
-      sellYears: 'moderator/sellYears',
+      sellYears: 'sellYears',
+      sellYearsModerator: 'moderator/sellYears',
       colors: 'colors',
       sellTransmissions: 'sellTransmissions',
       getTimer: 'moderator/getTimer',
     }),
+    isModerator() {
+      return this.user.admin_group && (this.user.admin_group == 2);
+    },
     crumbs() {
       return [
         // { name: this.$t('my_announces'), route: `/profile/announcements` },
@@ -833,9 +568,9 @@ export default {
       ]
     },
     files() {
-      return (this.single_announce?.media || []).map((media, i) => ({
+      return (this.form?.media || []).map((media, i) => ({
         media,
-        key: this.single_announce.media[i],
+        key: this.form.media[i],
       }))
     },
     modificationsList() {
@@ -875,16 +610,19 @@ export default {
             : [1, 2, 3]
       return imgs.map((n) => `/img/sell-helpers/${this.type}_${n}.png`)
     },
+    isMorderator() {
+      return this.user.admin_group == 2
+    },
   },
   methods: {
-    ...mapActions([
-      'getSellBody',
-      'getSellGenerations',
-      'getSellEngines',
-      'getSellGearing',
-      'getSellTransmissions',
-      'getSellModifications',
-    ]),
+    // ...mapActions([
+    //   'getSellBody',
+    //   'getSellGenerations',
+    //   'getSellEngines',
+    //   'getSellGearing',
+    //   'getSellTransmissions',
+    //   'getSellModifications',
+    // ]),
 
     // ui
     openModal(type) {
@@ -905,63 +643,213 @@ export default {
       }
     },
 
+
     // get
-    async getModels() {
-      await this.$store.dispatch('getModels', this.single_announce?.brand?.slug)
+    async getAnnounceData() {
+
+      await this.$auth.setUserToken(`Bearer ${this.$route.query.token}`)
+      const admin_user = await this.$axios.$get('/user')
+      this.$auth.setUser(admin_user.user)
+      //timer
+      setInterval(() => {
+        let timer = moment().diff(moment(admin_user.user.created_at))
+        var duration = moment.duration(timer)
+        var days = duration.days(),
+          hrs = duration.hours(),
+          mins = duration.minutes(),
+          secs = duration.seconds()
+
+        if (hrs.toString().length === 1) hrs = '0' + hrs
+        if (mins.toString().length === 1) mins = '0' + mins
+        if (secs.toString().length === 1) secs = '0' + secs
+        let _return = ''
+
+        if (days > 0) _return += days + 'd. '
+
+        _return += hrs + ':' + mins + ':' + secs
+        this.$store.commit('moderator/changeTimerData', {
+          data: _return,
+          unix: timer / 1000,
+        })
+      }, 1000)
+      let data
+      try {
+
+        data = await this.$axios.$get('/ticket/car');
+        console.log("dataaaa", data)
+
+        this.$store.commit('moderator/moderatorMutator', {
+          with: data.announce,
+          property: 'single_announce',
+        })
+        this.$store.commit('moderator/moderatorMutator', {
+          with: data.brands,
+          property: 'brands',
+        })
+        this.$store.commit('moderator/moderatorMutator', {
+          with: data.boxes,
+          property: 'boxes',
+        })
+        this.$store.commit('moderator/moderatorMutator', {
+          with: data.models,
+          property: 'models',
+        })
+        this.models = this.modelsModerator;
+        this.$store.commit('moderator/moderatorMutator', {
+          with: data.moderator,
+          property: 'moderator',
+        })
+        this.$store.commit('moderator/moderatorMutator', {
+          with: data.modifications,
+          property: 'modifications',
+        })
+        this.$store.commit('moderator/moderatorMutator', {
+          with: data.sellYears,
+          property: 'sellYears',
+        })
+        // this.data.sellYears = this.sellYearsModerator;
+        this.handleYears(this.sellYearsModerator)
+        this.$store.commit('moderator/moderatorMutator', {
+
+          with: data.sell_bodies,
+          property: 'sell_bodies',
+        })
+        this.$store.commit('moderator/moderatorMutator', {
+          with: data.type_of_drives,
+          property: 'type_of_drives',
+        })
+
+        this.form = {
+          delay_comment: '',
+          car_catalog_id: data.announce?.car_catalog_id,
+          brandObj: data.announce.brand,
+          brand: data.announce?.brand.slug,
+          brand_id: data.announce?.brand.id,
+          model: data.announce?.model.slug,
+          model_id: data.announce?.model.id,
+          generation_id: data.announce?.car_catalog?.generation_id,
+          car_body_type: data.announce?.car_catalog?.car_type.id,
+          gearing: data.announce?.car_catalog?.main['  ']['engine'], // engines
+          modification: data.announce?.car_catalog?.main[' ']['box'], // transmissions/box
+          transmission: data.announce?.car_catalog?.main[' ']['type_of_drive'], // gearing
+          capacity: data.announce?.car_catalog?.capacity,
+          power: data.announce?.car_catalog?.power,
+          year: data.announce?.year,
+          auction: data.announce?.auction,
+          end_date: moment(data.announce?.end_date).format('DD.MM.YYYY HH:mm'),
+          country_id: data.announce?.country_id,
+          youtube: {
+            id: data.announce?.youtube_link,
+            thumb: `https://img.youtube.com/vi/${data.announce?.youtube_link}/hqdefault.jpg`,
+          },
+          selectedColor: data.announce?.colors,
+          is_matte: data.announce?.is_matte,
+          mileage: parseInt(data.announce?.mileage) || 0,
+          mileage_measure: data.announce?.mileage_measure || 1,
+          region_id: data.announce?.region_id || 1,
+          address: data.announce?.address,
+          lat: parseFloat(data.announce?.latitude || 0),
+          lng: parseFloat(data.announce?.longitude || 0),
+          vin: data.announce?.vin || "",
+          price: data.announce?.price_int || '',
+          owner_type: parseInt(data.announce?.owner_type) || 0,
+          currency: data.announce?.currency_id || 1,
+          car_number: data.announce?.car_number,
+          show_car_number: data.announce?.show_car_number,
+          show_vin: data.announce?.show_vin,
+          part: data.announce?.car_body_health
+            ? JSON.parse(data.announce?.car_body_health.options)
+            : {},
+          all_options: data.announce?.options,
+          badges: data.announce?.stickers?.map((item) => item.id),
+          new_badges: [],
+          comment: data.announce?.comment || '',
+          is_new: data.announce?.is_new || false,
+          beaten: data.announce?.broken,
+          customs_clearance: data.announce?.customs_clearance || false,
+          tradeable: data.announce?.exchange_possible,
+          credit: data.announce?.credit,
+          guaranty: data.announce?.in_garanty,
+          saved_images: data.announce?.mediaIds,
+          engine: data.announce?.car_catalog.engine_id,
+          message: "test",
+          user: data.announce.user
+        };
+        this.getColors();
+        // this.getGenerations();
+      } catch (e) {
+        this.$store.commit('moderator/moderatorMutator', {
+          with: {},
+          property: 'form',
+        })
+      }
+    },
+
+    async getModels(slug) {
+      await this.$store.dispatch('getModels', slug);
+      this.data.models = this.modelsGeneral;
+    },
+    async getSellYears() {
+      await this.$store.dispatch('getSellYears', {
+        brand: this.form.brand_slug,
+        model: this.form.model_slug,
+      })
+      // this.data.sellYears = this.sellYears;
+      this.handleYears(this.sellYears);
     },
     async getColors() {
       await this.$store.dispatch('getColors')
     },
     async getGenerations() {
       await this.$store.dispatch('getSellGenerations', {
-        brand: this.single_announce?.brand?.slug,
-        model: this.single_announce?.model?.slug,
-        year: this.single_announce?.year,
-        body: this.single_announce?.car_catalog?.car_type.id,
+        brand: this.form?.brand?.slug,
+        model: this.form?.model?.slug,
+        year: this.form?.year,
+        body: this.form?.car_catalog?.car_type.id,
       })
       this.getSellEngines()
     },
     async getSellEngines() {
       await this.$store.dispatch('getSellEngines', {
-        brand: this.single_announce?.brand?.slug,
-        model: this.single_announce?.model?.slug,
-        year: this.single_announce?.year,
-        body: this.single_announce?.car_catalog?.car_type.id,
-        generation: this.single_announce?.car_catalog?.generation_id,
+        brand: this.form?.brand?.slug,
+        model: this.form?.model?.slug,
+        year: this.form?.year,
+        body: this.form?.car_catalog?.car_type.id,
+        generation: this.form?.car_catalog?.generation_id,
       })
       this.getSellTransmissions()
     },
     async getSellTransmissions() {
       await this.$store.dispatch('getSellTransmissions', {
-        brand: this.single_announce?.brand?.slug,
-        model: this.single_announce?.model?.slug,
-        year: this.single_announce?.year,
-        body: this.single_announce?.car_catalog?.car_type.id,
-        generation: this.single_announce?.car_catalog?.generation_id,
-        engine: this.single_announce?.car_catalog?.engine_id,
-        gearing: this.single_announce?.car_catalog?.gearing_id,
+        brand: this.form?.brand?.slug,
+        model: this.form?.model?.slug,
+        year: this.form?.year,
+        body: this.form?.car_catalog?.car_type.id,
+        generation: this.form?.car_catalog?.generation_id,
+        engine: this.form?.car_catalog?.engine_id,
+        gearing: this.form?.car_catalog?.gearing_id,
       })
       this.getSellGearing()
     },
     async getSellGearing() {
       await this.$store.dispatch('getSellGearing', {
-        brand: this.single_announce?.brand?.slug,
-        model: this.single_announce?.model?.slug,
-        body: this.single_announce?.car_catalog?.car_type.id,
-        generation: this.single_announce?.car_catalog?.generation_id,
-        engine: this.single_announce?.car_catalog?.engine_id,
+        brand: this.form?.brand?.slug,
+        model: this.form?.model?.slug,
+        body: this.form?.car_catalog?.car_type.id,
+        generation: this.form?.car_catalog?.generation_id,
+        engine: this.form?.car_catalog?.engine_id,
       })
       this.getSellModifications()
     },
     async getSellModifications() {
       await this.$store.dispatch('getSellModifications', {
-        brand: this.single_announce?.brand?.slug,
-        model: this.single_announce?.model?.slug,
-        body: this.single_announce?.car_catalog?.car_type.id,
-        generation: this.single_announce?.car_catalog?.generation_id,
-        engine: this.single_announce?.car_catalog?.engine_id,
-        gearing: this.single_announce?.car_catalog?.gearing_id,
-        transmission: this.single_announce?.car_catalog?.main[' '][
+        brand: this.form?.brand?.slug,
+        model: this.form?.model?.slug,
+        body: this.form?.car_catalog?.car_type.id,
+        generation: this.form?.car_catalog?.generation_id,
+        engine: this.form?.car_catalog?.engine_id,
+        gearing: this.form?.car_catalog?.gearing_id,
+        transmission: this.form?.car_catalog?.main[' '][
           'type_of_drive'
           ],
       })
@@ -989,7 +877,7 @@ export default {
     },
     getModificationName(o) {
       let generation = this.sellGenerations.find(
-        (o) => o.id === this.single_announce?.car_catalog?.generation_id,
+        (o) => o.id === this.form?.car_catalog?.generation_id,
       )
       let name = `${this.$t('box_mode_values')[o.box]}/${
         generation.start_year
@@ -1008,81 +896,81 @@ export default {
           .replace('gearing', 'engine')
           .replace('transmission', 'gearing')
           .replace('modification', 'transmission')
-        form[formKey] = initialForm[key]
+        form[formKey] = form[key]
       })
       return form
     },
     async handleChange(value, action, keys, props, nextKey) {
-      if (this.user.admin_group == 2) {
-        return
-      } else {
-        if (!this.disableScroll) {
-          if (keys[0] === 'car_catalog_id' && !this.isMobileBreakpoint) {
-            setTimeout(() => {
-              window.scrollTo({top: 1000, behavior: 'smooth'})
-            }, 500)
-          } else if (keys[0] === 'car_catalog_id' && this.isMobileBreakpoint) {
-            window.scrollTo({top: 1200, behavior: 'smooth'})
-            setTimeout(() => {
-              // window.location.href = '#sellLastStepUploadImage'
-              const el = document.querySelector('#anchor-saved_images')
-              el.scrollIntoView({block: 'start', behavior: 'smooth'})
-            }, 500)
-          }
-        }
-
-        clearTimeout(this.timeout)
-        let $container
-        if (this.isMobileBreakpoint) {
-          $container = document.querySelector('.mobile-screen .container')
-          if (action) $container.style.minHeight = `${$container.scrollHeight}px`
-        }
-        // clean store props
-        props.map((property) => {
-          this.mutate({property, value: []})
-        })
-        // update form prop
-        this.$emit('update-form', {key: keys[keys.length - 1], value})
-        // skip step for the last input
-        if (!action) return // clean form props
-          ;
-        [
-          'car_body_type',
-          'generation_id',
-          'gearing',
-          'transmission',
-          'modification',
-          'car_catalog_id',
-        ].map((key) => {
-          if (!keys.includes(key)) this.$emit('update-form', {key, value: ''})
-        })
-        // get values for the next input
-        let values = this.getFormValues([...keys, 'brand', 'model', 'year'])
-        await this[action](values)
-        // move next if only one option available
-        this.$nextTick(() => {
-          let options = this[action.replace('getSell', 'sell')]
-          if (options.length === 1 && nextKey !== 'car_catalog_id') {
-            let nextValue =
-              options[0].engine ||
-              options[0].type_of_drive ||
-              options[0].box ||
-              options[0].id
-            this.$emit('update-form', {key: nextKey, value: nextValue})
-          } else if (this.isMobileBreakpoint) {
-            this.timeout = setTimeout(() => {
-              this.scrollTo(this.$refs[`sell-${nextKey}`], -34, 500)
-              $container.style.minHeight = ''
-            }, 100)
-          }
-          if (!this.isMobileBreakpoint) {
-            this.timeout = setTimeout(() => {
-              this.scrollTo(this.$refs[`sell-${nextKey}`], -20, 500)
-            }, 100)
-          }
-        })
-
-      }
+      // if (this.user.admin_group == 2) {
+      //   return
+      // } else {
+      //   if (!this.disableScroll) {
+      //     if (keys[0] === 'car_catalog_id' && !this.isMobileBreakpoint) {
+      //       setTimeout(() => {
+      //         window.scrollTo({top: 1000, behavior: 'smooth'})
+      //       }, 500)
+      //     } else if (keys[0] === 'car_catalog_id' && this.isMobileBreakpoint) {
+      //       window.scrollTo({top: 1200, behavior: 'smooth'})
+      //       setTimeout(() => {
+      //         // window.location.href = '#sellLastStepUploadImage'
+      //         const el = document.querySelector('#anchor-saved_images')
+      //         el.scrollIntoView({block: 'start', behavior: 'smooth'})
+      //       }, 500)
+      //     }
+      //   }
+      //
+      //   clearTimeout(this.timeout)
+      //   let $container
+      //   if (this.isMobileBreakpoint) {
+      //     $container = document.querySelector('.mobile-screen .container')
+      //     if (action) $container.style.minHeight = `${$container.scrollHeight}px`
+      //   }
+      //   // clean store props
+      //   props.map((property) => {
+      //     this.mutate({property, value: []})
+      //   })
+      //   // update form prop
+      //   this.$emit('update-form', {key: keys[keys.length - 1], value})
+      //   // skip step for the last input
+      //   if (!action) return // clean form props
+      //     ;
+      //   [
+      //     'car_body_type',
+      //     'generation_id',
+      //     'gearing',
+      //     'transmission',
+      //     'modification',
+      //     'car_catalog_id',
+      //   ].map((key) => {
+      //     if (!keys.includes(key)) this.$emit('update-form', {key, value: ''})
+      //   })
+      //   // get values for the next input
+      //   let values = this.getFormValues([...keys, 'brand', 'model', 'year'])
+      //   await this[action](values)
+      //   // move next if only one option available
+      //   this.$nextTick(() => {
+      //     let options = this[action.replace('getSell', 'sell')]
+      //     if (options.length === 1 && nextKey !== 'car_catalog_id') {
+      //       let nextValue =
+      //         options[0].engine ||
+      //         options[0].type_of_drive ||
+      //         options[0].box ||
+      //         options[0].id
+      //       this.$emit('update-form', {key: nextKey, value: nextValue})
+      //     } else if (this.isMobileBreakpoint) {
+      //       this.timeout = setTimeout(() => {
+      //         this.scrollTo(this.$refs[`sell-${nextKey}`], -34, 500)
+      //         $container.style.minHeight = ''
+      //       }, 100)
+      //     }
+      //     if (!this.isMobileBreakpoint) {
+      //       this.timeout = setTimeout(() => {
+      //         this.scrollTo(this.$refs[`sell-${nextKey}`], -20, 500)
+      //       }, 100)
+      //     }
+      //   })
+      //
+      // }
     },
     async getGenerationStyle(o) {
       const getImage = (media) =>
@@ -1106,8 +994,42 @@ export default {
         }
       }
     },
-    handleYear() {
+    handleYears(obje) {
+      var obj = JSON.parse(JSON.stringify(obje))
+      var arr = [];
+      for (var i = obj.min; i <= obj.max; i++) {
+        arr.push({key: i, name: i})
+      }
+      this.data.sellYears = arr;
 
+    },
+    gotoList() {
+      window.location.href = "https://dev.mashin.al/alvcp/resources/announcements"
+    },
+    getSellLastStepRejectObj(value) {
+      this.sellLastStepRejectObj = value;
+      value.show360Reject = this.rejectObj.show360Reject;
+      value.showPhotoReject = this.rejectObj.showPhotoReject;
+      value.reject360 = this.rejectObj.reject360;
+    },
+
+    //handle change
+    async changeBrand(e) {
+      this.brands.find(f => {
+        if (f.id == e) {
+          // this.$store.dispatch('getModels', )
+          this.getModels(f.slug)
+          this.form.brand_slug = f.slug;
+        }
+      })
+    },
+    async changeModel(e) {
+      this.data.models.find(f => {
+        if (f.id == e) {
+          this.form.year = null;
+          this.form.model_slug = f.slug;
+        }
+      })
     },
 
     // post
@@ -1119,8 +1041,8 @@ export default {
       }
 
       await this.$store.dispatch('moderator/transferToSupervisor', {
-        id: this.single_announce.id,
-        comment: this.initialForm.comment,
+        id: this.form.id,
+        comment: this.form.comment,
       })
 
       if (this.user.admin_group == 2) {
@@ -1141,52 +1063,44 @@ export default {
 
       let form = {};
 
-      this.initialForm.status = this.single_announce.status;
-      this.initialForm.brand = this.single_announce.brand
-      this.initialForm.model = this.single_announce.model.slug;
-      this.initialForm.year = this.single_announce.year;
-      this.initialForm.generation = this.single_announce.car_catalog.generation_id;
-      this.initialForm.rejectArray = this.rejectObj.rejectArray;
+      this.form.status = this.form.status;
+      this.form.brand = this.form.brand.slug;
+      this.form.model = this.form.model.slug;
+      this.form.year = this.form.year;
+      this.form.address = this.form.address;
+      this.form.generation = this.form.car_catalog.generation_id;
+      this.form.rejectArray = this.rejectObj.rejectArray.concat(this.sellLastStepRejectObj.rejectArray);
 
 
       var formData = new FormData();
 
-      formData.append("data", JSON.stringify(this.initialForm))
+      formData.append("data", JSON.stringify(this.form))
 
-      console.log("dataaaaa", formData.get('data'))
 
       this.$nuxt.$emit('loading_status', true)
       this.pending = true
 
       try {
-        await this.$axios.$post('/ticket/car/' + this.single_announce.id, formData)
+        await this.$axios.$post('/ticket/car/' + this.form.id, formData)
 
         if (this.user.admin_group == 2) {
-          console.log("user 2", this.user)
         } else {
           // location.href = '/alvcp/resources/announcements'
-          console.log("user else", this.user)
         }
       } catch {
 
-        console.log("error")
         this.pending = false;
       }
     },
     addComment(e) {
-      if (initialForm.comment === null) initialForm.comment = ''
-      initialForm.comment = initialForm.comment + e + ' '
+      if (form.comment === null) form.comment = ''
+      form.comment = form.comment + e + ' '
     },
+
 
   },
   mounted() {
-    this.getModels()
-    if (this.single_announce !== {}) {
-      this.getGenerations()
-    }
-  },
-  created() {
-    this.getColors()
-  },
+    this.getAnnounceData()
+  }
 }
 </script>

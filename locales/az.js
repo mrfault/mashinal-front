@@ -2346,6 +2346,8 @@ export default {
   "transfer_comment": "Transfer rəyi",
   "max_50_symbol_can_be_added": "Maksimum 50 simvol yazıla bilər",
   "max_150_symbol_can_be_added": "Maksimum 150 simvol yazıla bilər",
+  "deactive_announce": "Elanı deaktiv et",
+  "reject": "İmtina et",
   "file_size_50": "Faylın maksimal həcmi 50 mb ola bilər",
   "anyone":"İstənilən",
   "anyone_other": "İstənilən",

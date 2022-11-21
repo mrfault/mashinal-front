@@ -1,7 +1,7 @@
 <template>
   <div class="reject-reason-with-title">
     <div
-      :class="{ 'w-100': !noApproval }"
+      :class="{ 'w-100': noApproval }"
       class="reject-reason-with-title__title"
     >
       <h2 :id="id" class="title-with-line full-width">
@@ -13,7 +13,8 @@
       </h2>
     </div>
     <div
-      style="display: inline-block; z-index: 10;"
+      v-if="!noApproval"
+      style="display: inline-block; z-index: 0;"
       @click="openPhotoIssuePopup"
       class="mb-2 ml-2"
     >

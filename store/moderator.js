@@ -26,7 +26,8 @@ const getInitialState = () => ({
   getTimer: {
     data: '',
     unix: 0,
-  }
+  },
+  announceId: null,
 })
 
 export const state = () => getInitialState()
@@ -44,7 +45,8 @@ export const getters = {
   type_of_drives: (s) => s.type_of_drives,
   sellYears: (s) => s.sellYears,
 
-  getTimer: (s) => s.getTimer
+  getTimer: (s) => s.getTimer,
+  announceId: (s) => s.announceId
 }
 
 export const actions = {
@@ -193,7 +195,11 @@ export const actions = {
 
 export const mutations = {
   moderatorMutator(state, payload) {
-    state[payload.property] = payload.with;
+    state[payload.property] = JSON.parse(JSON.stringify(payload.with));
+  },
+  changeSingleAnnounce(state, paylaod){
+    console.log("pay",paylaod)
+    state.single_announce = paylaod
   },
   reset: reset(getInitialState()),
   sell_saved_items_push(state, payload) {
@@ -205,4 +211,9 @@ export const mutations = {
       unix: payload.timer
     };
   },
+  changeAnnounceId(state, payload){
+    state.announceId = payload;
+
+  }
+
 }

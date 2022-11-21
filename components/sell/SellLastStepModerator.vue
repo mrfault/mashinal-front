@@ -1,11 +1,11 @@
 <template>
   <component
     :is="isMobileBreakpoint ? 'mobile-screen' : 'div'"
-    @back="$emit('close')"
-    @action="$emit('clean')"
-    action-icon="reset"
     :bar-title="title"
+    action-icon="reset"
     height-auto
+    @action="$emit('clean')"
+    @back="$emit('close')"
   >
     <div class="sell_last-step">
       <div
@@ -15,95 +15,101 @@
         }"
       >
         <title-with-line-and-reject-reason
-          title="photos"
-          reject-key="360"
-          required
           v-if="announcement.media.length"
+          id="360"
           :subtitle="
             $t('at_least_5_photos', {
               min: minFiles,
               max: maxFiles,
             }).toLowerCase()
           "
-          id="360"
+          reject-key="image"
+          required
+          title="photos"
+          @change="changeReason"
         />
         <upload-image
-          :max-files="announcement.media.length"
-          :min-files="minFiles"
+          ref="sellLastStepUploadImage"
           :default-files="files"
           :helpers="helperImages"
+          :max-files="announcement.media.length"
+          :min-files="minFiles"
           @files-changed="updateImages"
           @files-dropped="addImages"
           @file-deleted="deleteImage"
           @file-rotated="rotateImage"
           @order-changed="changeOrder"
-          ref="sellLastStepUploadImage"
         />
         <title-with-line-and-reject-reason
-          title="360 camera"
-          reject-key="360"
           v-if="form.images_360.length"
+          reject-key="360"
+          title="360 camera"
+          @change="changeReason"
         />
 
         <vue-three-sixty
           v-if="form.images_360.length"
           :amount="form.images_360.length"
-          buttonClass="d-none"
-          disableZoom
           :files="form.images_360"
+          buttonClass="d-none"
           class="mb-4"
+          disableZoom
         />
 
         <title-with-line-and-reject-reason
-          title="360_interior"
-          reject-key="360"
           v-if="form.interior_360"
+          reject-key="360_interior"
+          title="360_interior"
+          @change="changeReason"
         />
 
         <Interior360Viewer
-          :url="form.interior_360"
           v-if="form.interior_360"
+          :url="form.interior_360"
           class="mb-4"
         />
         <title-with-line-and-reject-reason
-          title="color"
+          :id="'anchor-selectedColor'"
           reject-key="color"
           required
-          :id="'anchor-selectedColor'"
+          title="color"
+          @change="changeReason"
         />
         <div v-if="colors && colors.length">
           <color-options
             v-model="form.colors"
-            :limit="2"
-            :multiple="type === 'cars'"
-            @change-matt="form.is_matte = $event"
-            :matt="form.is_matte"
             :hide-matt="type !== 'cars'"
-            @change="removeError('selectedColor')"
+            :limit="2"
+            :matt="form.is_matte"
+            :multiple="type === 'cars'"
             isModeratorPage
+            @change="removeError('selectedColor')"
+            @change-matt="form.is_matte = $event"
           />
         </div>
         <title-with-line-and-reject-reason
-          title="mileage"
+          no-approval
           reject-key="mileage"
           required
+          title="mileage"
+          @change="changeReason"
         />
         <div class="row">
           <div class="col-lg-3 mb-2 mb-lg-0">
             <div class="row flex-nowrap">
               <div class="col-auto flex-grow-1">
                 <form-numeric-input
-                  :placeholder="$t('mileage')"
                   v-model="announcement.mileage"
-                  input-class="w-133"
                   :invalid="isInvalid('mileage')"
+                  :placeholder="$t('mileage')"
+                  input-class="w-133"
                   @change="removeError('mileage'), updatePreview('mileage')"
                 />
               </div>
               <div class="col-auto">
                 <form-switch
-                  :options="getMileageOptions"
                   v-model="form.mileage_measure"
+                  :options="getMileageOptions"
                   @change="updatePreview('mileage_measure')"
                 />
               </div>
@@ -112,35 +118,35 @@
           <div class="col-lg-auto mb-2 mb-lg-0">
             <div class="d-flex flex-wrap flex-lg-nowrap">
               <form-checkbox
-                transparent
-                :label="$t('is_new')"
                 v-model="form.is_new"
+                :label="$t('is_new')"
                 input-name="is_new"
+                transparent
                 @change="updateMileage"
               />
               <form-checkbox
-                transparent
-                :label="$t('bitie')"
                 v-model="form.beaten"
-                input-name="beaten"
+                :label="$t('bitie')"
                 has-popover
+                input-name="beaten"
+                transparent
               >
                 <popover
-                  class="white-space-pre-wrap-span"
                   :message="
                     $t(
                       'with_significant_damage_to_body_elements_that_do_not_move_on_their_own',
                     )
                   "
                   :width="175"
+                  class="white-space-pre-wrap-span"
                 />
               </form-checkbox>
               <form-checkbox
                 v-if="!user.external_salon"
-                transparent
-                :label="$t('not_cleared')"
                 v-model="form.customs_clearance"
+                :label="$t('not_cleared')"
                 input-name="customs_clearance"
+                transparent
                 @change="
                   removeError('car_number', true),
                     removeError('vin', true),
@@ -149,61 +155,60 @@
               />
               <form-checkbox
                 v-if="!user.external_salon"
-                transparent
-                :label="$t('in_garanty')"
                 v-model="form.guaranty"
+                :label="$t('in_garanty')"
                 input-name="guaranty"
+                transparent
               />
             </div>
           </div>
         </div>
         <template v-if="type === 'cars'">
           <damage-options
+            v-if="false"
+            :imageIsActive="true"
             :selected="form.part"
             @update-car-damage="updateCarDamage"
-            :imageIsActive="true"
-            v-if="false"
           />
         </template>
         <template v-if="!isAutosalon && !user.external_salon">
           <title-with-line-and-reject-reason
-            title="region_and_place_of_inspection"
-            reject-key="mileage"
-            required
             id="anchor-region_id"
             noApproval
+            required
+            title="region_and_place_of_inspection"
           />
           <div class="row">
             <div class="col-lg-4 mb-2 mb-lg-0">
               <form-select
+                v-model="form.region_id"
+                :clear-option="false"
+                :invalid="isInvalid('region_id')"
                 :label="$t('region')"
                 :options="sellOptions.regions"
-                v-model="form.region_id"
                 has-search
-                :invalid="isInvalid('region_id')"
                 @change="removeError('region_id'), updatePreview('region')"
-                :clear-option="false"
               />
             </div>
             <div class="col-lg-4 mb-2 mb-lg-0">
               <form-text-input
+                v-model="form.address"
                 :placeholder="$t('address')"
                 icon-name="placeholder"
-                v-model="form.address"
               />
             </div>
             <div class="col-lg-4 mb-2 mb-lg-0">
               <pick-on-map-button
+                :address="form.address"
                 :lat="form.lat"
                 :lng="form.lng"
-                :address="form.address"
                 @change-address="updateAddress"
                 @change-latlng="updateLatLng"
               >
                 <form-text-input
+                  v-model="form.address"
                   :placeholder="$t('address')"
                   icon-name="placeholder"
-                  v-model="form.address"
                 />
               </pick-on-map-button>
             </div>
@@ -211,27 +216,28 @@
         </template>
         <template v-if="user.external_salon"></template>
         <title-with-line-and-reject-reason
-          title="price"
-          reject-key="price"
-          required
           :id="'anchor-price'"
+          no-approval
+          required
+          title="price"
+          @change="changeReason"
         />
         <div class="row">
           <div class="col-lg-auto mb-2 mb-lg-0">
             <div class="row flex-nowrap">
               <div class="col-auto flex-grow-1">
                 <form-numeric-input
-                  :placeholder="$t('price')"
                   v-model="announcement.price"
-                  input-class="w-133"
                   :invalid="isInvalid('price')"
+                  :placeholder="$t('price')"
+                  input-class="w-133"
                   @change="removeError('price'), updatePreview('price')"
                 />
               </div>
               <div class="col-auto">
                 <form-switch
-                  :options="getCurrencyOptions"
                   v-model="form.currency_id"
+                  :options="getCurrencyOptions"
                   @change="updatePreview('currency')"
                 />
               </div>
@@ -240,58 +246,58 @@
           <div v-if="!user.external_salon" class="col-lg-auto mb-2 mb-lg-0">
             <div class="d-flex flex-wrap flex-lg-nowrap">
               <form-checkbox
-                transparent
-                :label="$t('tradeable')"
                 v-model="form.tradeable"
+                :label="$t('tradeable')"
                 input-name="tradeable"
+                transparent
               />
               <form-checkbox
-                transparent
-                :label="$t('credit_possible')"
                 v-model="form.credit"
+                :label="$t('credit_possible')"
                 input-name="credit"
+                transparent
               />
             </div>
           </div>
         </div>
         <template v-if="user.external_salon">
           <title-with-line-and-reject-reason
+            :id="'anchor-price'"
             :title="`${$t('auction')} / ${$t('end_date')}`"
             reject-key="price"
             required
-            :id="'anchor-price'"
           />
           <div class="row">
             <div class="col-lg-auto mb-2 mb-lg-0">
               <div class="row">
                 <div
-                  class="col-lg-auto flex-grow-1"
                   :style="
                     isMobileBreakpoint
                       ? '    max-width: 57%; margin-bottom:10px;'
                       : ''
                   "
+                  class="col-lg-auto flex-grow-1"
                 >
                   <form-switch
-                    @change="removeError('end_date')"
-                    auto-width
                     v-model="form.auction"
                     :options="[
                       { name: $t('auction'), key: 1 },
                       { name: $t('sell'), key: 0 },
                     ]"
+                    auto-width
                     style="width: fit-content !important;"
+                    @change="removeError('end_date')"
                   />
                 </div>
-                <div class="col-auto" v-if="form.auction === 1">
+                <div v-if="form.auction === 1" class="col-auto">
                   <form-text-input
-                    @change="removeError('end_date')"
-                    date-type="datetime"
-                    value-type="datetime"
-                    date-format="DD.MM.YYYY HH:00"
                     v-model="form.end_date"
                     :placeholder="$t('announcement_end_date')"
+                    date-format="DD.MM.YYYY HH:00"
+                    date-type="datetime"
                     input-date
+                    value-type="datetime"
+                    @change="removeError('end_date')"
                   />
                 </div>
               </div>
@@ -302,74 +308,76 @@
           v-if="type === 'cars' || (type !== 'parts' && user.external_salon)"
         >
           <title-with-line-and-reject-reason
-            spanId="anchor-vin"
             v-if="
               !loggedIn ||
               (loggedIn && !user.autosalon) ||
               (loggedIn && user.autosalon && user.autosalon.is_official) ||
               user.external_salon
             "
-            :title="
-              form.customs_clearance || user.external_salon
-                ? 'vin_carcase_number'
-                : 'license_plate_number_vin_or_carcase_number'
-            "
-            reject-key="price"
+            id="anchor-car_or_vin"
+            :reject-key="form.car_number ? 'car_number' : 'vin'"
+            @change="changeReason"
             :required="
               type === 'cars' || (type !== 'parts' && user.external_salon)
             "
-            id="anchor-car_or_vin"
+
+            :title="
+              form.customs_clearance || user.external_salon
+                ? 'vin_carcase_number'
+                : 'license_plate_number_vin_or_carcase_number'
+            "
+            spanId="anchor-vin"
           />
           <title-with-line-and-reject-reason
-            spanId="anchor-vin"
             v-else
+            id="anchor-car_or_vin"
             :title="
               form.customs_clearance || user.external_salon
                 ? 'vin_carcase_number'
                 : 'license_plate_number_vin_or_carcase_number'
             "
             reject-key="price"
-            id="anchor-car_or_vin"
+            spanId="anchor-vin"
           />
         </template>
         <div
-          class="row"
-          id="anchor-car_number"
           v-if="
             (type === 'cars' && !user.is_autosalon) ||
             (type !== 'parts' && user.external_salon)
           "
+          id="anchor-car_number"
+          class="row"
         >
           <div
-            class="col-lg-4 mb-2 mb-lg-0"
             v-if="!form.customs_clearance && !user.external_salon"
+            class="col-lg-4 mb-2 mb-lg-0"
           >
             <form-text-input
               v-model="form.car_number"
-              input-class="car-number-show-popover"
-              img-src="/img/flag.svg"
               :mask="type === 'cars' ? '99 - AA - 999' : '99 - A{1,2} - 999'"
               :placeholder="type === 'cars' ? '__ - __ - ___' : '__ - _ - ___'"
-              @focus="showCarNumberDisclaimer"
+              img-src="/img/flag.svg"
+              input-class="car-number-show-popover"
               @change="removeError('car_number')"
+              @focus="showCarNumberDisclaimer"
             >
               <popover
                 :message="$t('real-car-number-will-make-post-faster')"
-                text-class="text-red"
                 :width="190"
                 name="car-number"
+                text-class="text-red"
                 @click="readCarNumberDisclaimer = true"
               />
             </form-text-input>
             <form-checkbox
-              :label="$t('show_car_number_on_site')"
               v-model="form.show_car_number"
+              :label="$t('show_car_number_on_site')"
+              class="mt-2 mt-lg-3"
               input-name="show_car_number"
               transparent
-              class="mt-2 mt-lg-3"
             />
           </div>
-          <div class="col-lg-4 mb-2 mb-lg-0" v-if="form.customs_clearance">
+          <div v-if="form.customs_clearance" class="col-lg-4 mb-2 mb-lg-0">
             <form-text-input
               key="vin"
               v-model="form.vin"
@@ -377,34 +385,34 @@
               :placeholder="$t('vin_carcase_number')"
               @change="removeError('vin')"
             >
-              <popover name="vin" :width="240">
-                <inline-svg src="/img/car-cert.svg" />
+              <popover :width="240" name="vin">
+                <inline-svg src="/img/car-cert.svg"/>
               </popover>
             </form-text-input>
             <form-checkbox
-              :label="$t('show_vin_on_site')"
               v-model="form.show_vin"
+              :label="$t('show_vin_on_site')"
+              class="mt-2 mt-lg-3"
               input-name="show_vin"
               transparent
-              class="mt-2 mt-lg-3"
             />
           </div>
         </div>
         <div class="mt-2 mt-lg-3">
           <template v-if="type === 'cars'">
             <car-filters
-              :values="form.all_options"
-              @change-filter="updateCarFilter"
-              popular
               :collapsedByDefault="true"
+              :values="form.all_options"
+              popular
+              @change-filter="updateCarFilter"
             />
             <div class="car-filters_row"></div>
           </template>
           <template v-else>
             <sell-filters
-              :type="type"
-              :selected="form.filters || form"
               :errors="errors"
+              :selected="form.filters || form"
+              :type="type"
               @remove-error="removeError"
               @add-form-keys="form = { ...$event, ...form }"
               @update-sell-filter="updateSellFilter"
@@ -412,15 +420,17 @@
           </template>
         </div>
         <title-with-line-and-reject-reason
-          title="description_placeholder"
-          reject-key="price"
           :id="'anchor-comment'"
+          noApproval
+          reject-key="description"
+          title="description_placeholder"
+          @change="changeReason"
         />
 
         <form-textarea
           v-model="form.comment"
-          :placeholder="$t('description_placeholder_transport')"
           :maxlength="3000"
+          :placeholder="$t('description_placeholder_transport')"
         />
         <p class="info-text full-width less-pd mt-2">
           {{
@@ -429,39 +439,39 @@
             )
           }}
         </p>
-        <hr />
+        <hr/>
         <modal-popup
           :modal-class="'wider'"
-          :toggle="showRules"
           :title="getRulesPage.title[locale]"
+          :toggle="showRules"
           @close="showRules = false"
         >
           <div v-html="getRulesPage.text[locale]"></div>
         </modal-popup>
-        <backdrop @click="showLoginPopup = false" v-if="showLoginPopup">
+        <backdrop v-if="showLoginPopup" @click="showLoginPopup = false">
           <template #default="{ show }">
             <transition name="translate-fade">
               <login-tabs
                 v-if="show"
-                :popup="true"
-                :skip-sign-in="true"
                 :action-text="{
                   login: $t('login_and_publish'),
                   register: $t('register_and_publish'),
                   confirm: $t('confirm_and_publish'),
                 }"
                 :force-sell-phone="true"
+                :popup="true"
+                :skip-sign-in="true"
                 @close="showLoginPopup = false"
               />
             </transition>
           </template>
         </backdrop>
-        <div class="publish-post mb-4" id="anchor-finish">
-          <div class="row mt-4 mb-4" v-if="showBanners && !isAlreadySold">
+        <div id="anchor-finish" class="publish-post mb-4">
+          <div v-if="showBanners && !isAlreadySold" class="row mt-4 mb-4">
             <div
-              class="service-banner col-6 col-lg-4"
               v-for="banner in ['vip', 'premium']"
               :key="banner"
+              class="service-banner col-6 col-lg-4"
             >
               <img
                 :src="`/img/card-${banner}${
@@ -473,14 +483,14 @@
             </div>
           </div>
           <p class="info-text full-width mt-2">
-            <icon name="alert-circle" />
+            <icon name="alert-circle"/>
             {{
               $t('by_posting_an_ad_you_confirm_your_agreement_with_the_rules')
             }}:
             <nuxt-link
               :to="`/page/${getRulesPage.slug[locale]}`"
-              @click.native.prevent="showRules = true"
               event=""
+              @click.native.prevent="showRules = true"
             >
               <strong>{{ $t('general_rules') }}</strong>
             </nuxt-link>
@@ -489,14 +499,14 @@
             <span class="star">*</span>
             — {{ $t('starred_fields_are_required') }}
           </p>
-          <p class="info-text full-width less-pd text-red" v-if="isAlreadySold">
+          <p v-if="isAlreadySold" class="info-text full-width less-pd text-red">
             {{
               $t(
                 'this_car_already_added_last_90_days_for_new_added_need_payment',
               )
             }}
           </p>
-          <p class="info-text full-width less-pd" v-else-if="restore">
+          <p v-else-if="restore" class="info-text full-width less-pd">
             {{ $t('edit_or_restore') }}
           </p>
 
@@ -507,11 +517,11 @@
 </template>
 
 <script>
-import { mapGetters, mapActions, mapState } from 'vuex'
+import {mapGetters, mapActions, mapState} from 'vuex'
 
-import { ToastErrorsMixin } from '~/mixins/toast-errors'
-import { ImageResizeMixin } from '~/mixins/img-resize'
-import { PaymentMixin } from '~/mixins/payment'
+import {ToastErrorsMixin} from '~/mixins/toast-errors'
+import {ImageResizeMixin} from '~/mixins/img-resize'
+import {PaymentMixin} from '~/mixins/payment'
 
 import SellSelectModification from '~/components/sell/SellSelectModificationModerator'
 import UploadImage from '~/components/elements/UploadImage'
@@ -574,6 +584,12 @@ export default {
       showLoginPopup: false,
       pending: false,
       comment: 'test',
+      rejectObj: {
+        show360Reject: false,
+        showPhotoReject: false,
+        rejectArray: [],
+        reject360: ['360_photo_reject_1'],
+      },
     }
   },
   computed: {
@@ -597,8 +613,8 @@ export default {
         this.type === 'cars'
           ? [1, 2, 3, 4, 5]
           : this.type === 'commercial'
-          ? [1, 2, 3, 4]
-          : [1, 2, 3]
+            ? [1, 2, 3, 4]
+            : [1, 2, 3]
       return imgs.map((n) => `/img/sell-helpers/${this.type}_${n}.png`)
     },
 
@@ -616,26 +632,26 @@ export default {
 
     getCurrencyOptions() {
       return [
-        { key: 1, name: 'AZN', sign: '₼' },
-        { key: 2, name: 'USD', sign: '$' },
-        { key: 3, name: 'EUR', sign: '€' },
+        {key: 1, name: 'AZN', sign: '₼'},
+        {key: 2, name: 'USD', sign: '$'},
+        {key: 3, name: 'EUR', sign: '€'},
       ]
     },
     getMileageOptions() {
       return [
-        { key: 1, name: this.$t('char_kilometre') },
-        { key: 2, name: this.$t('char_mile') },
+        {key: 1, name: this.$t('char_kilometre')},
+        {key: 2, name: this.$t('char_mile')},
       ]
     },
     getOwnerOptions() {
       return [
-        { key: 0, name: this.$t('yes') },
-        { key: 1, name: this.$t('no') },
+        {key: 0, name: this.$t('yes')},
+        {key: 1, name: this.$t('no')},
       ]
     },
     images() {
       const arr = []
-      this.announcement.media.forEach((elem) => arr.push({ name: elem }))
+      this.announcement.media.forEach((elem) => arr.push({name: elem}))
       return arr
     },
     modification() {
@@ -654,7 +670,7 @@ export default {
       'getMyAllAnnouncements',
     ]),
 
-    handleModification({ key, value }) {
+    handleModification({key, value}) {
       this.$set(this.form, key, value)
       if (!this.showAllOptions && key === 'car_catalog_id' && value) {
         this.showAllOptions = true
@@ -717,7 +733,7 @@ export default {
       this.form.address = address
       this.removeError('address')
     },
-    updateLatLng({ lat, lng }) {
+    updateLatLng({lat, lng}) {
       this.form.lat = lat
       this.form.lng = lng
     },
@@ -741,7 +757,7 @@ export default {
     // image upload
     updateImages(files) {
       this.files = files
-      this.setSellPreviewData({ value: files[0]?.image, key: 'image' })
+      this.setSellPreviewData({value: files[0]?.image, key: 'image'})
     },
     async addImages(images) {
       // passed min limit
@@ -764,7 +780,7 @@ export default {
               formData,
               {
                 progress: false,
-                headers: { 'Content-Type': 'multipart/form-data' },
+                headers: {'Content-Type': 'multipart/form-data'},
               },
             )
             this.uploading--
@@ -779,7 +795,7 @@ export default {
             this.savedFiles = [...this.savedFiles, ...data.ids]
           } catch ({
             response: {
-              data: { data },
+              data: {data},
             },
           }) {
             this.uploading--
@@ -808,7 +824,7 @@ export default {
       if (this.savedFiles[index]) {
         try {
           this.$nuxt.$loading.start()
-          const { data } = await this.$axios.$get(
+          const {data} = await this.$axios.$get(
             `/media/${this.savedFiles[index]}/rotate/right`,
           )
           this.$nuxt.$loading.finish()
@@ -816,7 +832,7 @@ export default {
           this.$nuxt.$emit('hide-image-preloader-by-key', key)
         } catch ({
           response: {
-            data: { data },
+            data: {data},
           },
         }) {
           this.$nuxt.$emit('hide-image-preloader-by-key', key)
@@ -830,7 +846,7 @@ export default {
     },
     changeOrder(sorted, preview) {
       this.$set(this, 'savedFiles', sorted)
-      this.setSellPreviewData({ value: preview, key: 'image' })
+      this.setSellPreviewData({value: preview, key: 'image'})
     },
     // post announcement
     async publishPost() {
@@ -893,7 +909,7 @@ export default {
       } catch ({
         response: {
           status,
-          data: { data, message },
+          data: {data, message},
         },
       }) {
         this.clearErrors()
@@ -924,7 +940,7 @@ export default {
               this.showError(
                 errorKey,
                 errorText,
-                { fieldView: key, offset: this.isMobileBreakpoint ? 30 : -20 },
+                {fieldView: key, offset: this.isMobileBreakpoint ? 30 : -20},
                 count === 0,
               )
               count++
@@ -944,11 +960,31 @@ export default {
       this.publishPost()
     },
 
+    changeReason(rejectKey) {
+      if (rejectKey === 'image') {
+        this.rejectObj.showPhotoReject = true
+      } else if (rejectKey === '360') {
+        this.rejectObj.show360Reject = true
+      } else {
+        if (this.rejectObj.rejectArray.includes(rejectKey)) {
+          this.rejectObj.rejectArray.splice(this.rejectObj.rejectArray.indexOf(rejectKey), 1)
+        } else {
+          this.rejectObj.rejectArray.push(rejectKey)
+        }
+      }
+    },
+
   },
   watch: {
     progress(value) {
       this.setSellProgress(value)
     },
+    rejectObj:{
+      deep: true,
+      handler(){
+        this.$emit('getRejectObj',this.rejectObj)
+      }
+    }
   },
   created() {
     ;[
@@ -959,7 +995,7 @@ export default {
       'sellTransmissions',
       'sellModifications',
     ].map((property) => {
-      this.mutate({ property, value: [] })
+      this.mutate({property, value: []})
     })
 
     this.$nuxt.$on('login', this.handleAfterLogin)
