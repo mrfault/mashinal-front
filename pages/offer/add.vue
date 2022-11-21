@@ -62,8 +62,8 @@
         <div class="col-md-6 col-12">
           <div class="offer-payment-modal-body">
             <h3 class="mb-2">Ödəniş üsulu</h3>
-            <form-buttons v-model="paymentMethod" :options="paymentMethodOptions" :group-by="2" :value="'card'"
-                          :class="'mb-2'"/>
+            <div class="d-flex col-6 active flex-column"><div class="form-group flex-grow-1 d-flex flex-column">
+              <button type="button" class="btn full-width btn--pale-red-outline active" style="cursor: unset">  <span>Bank kartı</span> </button></div></div>
             <div class="hr"></div>
             <p class="mt-5">
               72 saat ərzində təklifləri görəcəksiniz. Biz evdən çıxmadan cəmi bir saat ərzində eksklüziv ucuz qiymətə
