@@ -6,8 +6,9 @@
         <div class="col-auto">
           <div class="card">
             <div class="mb-5">
+              <!--              user details-->
               <template v-if="form.brand">
-                <brand
+                <user-details
                   :brand="form.brandObj"
                   :userData="form.user"
                 />
@@ -32,7 +33,7 @@
                 </div>
               </div>
               <!--              model -->
-              <div v-if="data.models && form.model_id" class="row">
+              <div v-if="data.models  && form.brand_id" class="row">
                 <div class="col-12">
                   <title-with-line-and-reject-reason
                     rejectKey="model"
@@ -52,7 +53,7 @@
                 </div>
               </div>
               <!--              year -->
-              <div v-if="data.sellYears" class="row">
+              <div v-if="data.sellYears &&  form.model_id" class="row">
                 <div class="col-12">
                   <title-with-line-and-reject-reason
                     rejectKey="years"
@@ -68,230 +69,150 @@
                     :options="data.sellYears"
                     :value="form.model_id"
                     has-search
+                    @change="changeYear($event)"
                   />
                 </div>
               </div>
-              <!--     modifications -------  -->
-              <div>
-                <title-with-line-and-reject-reason
-                  rejectKey="body_type"
-                  title="body_type"
-                  @change="changeReason"
-                />
-                <!--                <form-buttons-->
-                <!--                  v-model="form.car_body_type"-->
-                <!--                  :btn-class="'primary-outline select-body'"-->
-                <!--                  :group-by="isMobileBreakpoint ? 2 : 5"-->
-                <!--                  :options="data.sellYears"-->
-                <!--                  class="mb-4"-->
-                <!--                  @change="-->
-                <!--                    handleChange(-->
-                <!--                      $event,-->
-                <!--                      'getSellGenerations',-->
-                <!--                      ['car_body_type'],-->
-                <!--                      [-->
-                <!--                        'sellGenerations',-->
-                <!--                        'sellEngines',-->
-                <!--                        'sellGearing',-->
-                <!--                        'sellTransmissions',-->
-                <!--                        'sellModifications',-->
-                <!--                      ],-->
-                <!--                      'generation_id',-->
-                <!--                    )-->
-                <!--                  "-->
-                <!--                >-->
-                <!--                  <template #custom="{ button }">-->
-                <!--                    <div class="body-img">-->
-                <!--                      <img-->
-                <!--                        :alt="button.name[locale]"-->
-                <!--                        :src="$withBaseUrl(button.transformed_media)"-->
-                <!--                      />-->
-                <!--                    </div>-->
-                <!--                  </template>-->
-                <!--                </form-buttons>-->
-              </div>
-              <div>
-                <title-with-line-and-reject-reason
-                  :title="$t('generation')"
-                  rejectKey="generation"
-                  required
-                  @change="changeReason"
-                />
-                <form-buttons
-                  v-model="form.generation_id"
-                  :btn-class="'primary-outline select-generation'"
-                  :group-by="isMobileBreakpoint ? 2 : 5"
-                  :options="sellGenerations"
-                  @change="
-                    handleChange(
-                      $event,
-                      'getSellEngines',
-                      ['car_body_type', 'generation_id'],
-                      [
-                        'sellEngines',
-                        'sellGearing',
-                        'sellTransmissions',
-                        'sellModifications',
-                      ],
-                      'gearing',
-                    )
-                  "
-                >
-                  <template #custom="{ button }">
-                    <div
-                      :class="[
-                        'generation-bg',
-                        { 'no-img': !!getGenerationStyle(button).noImg },
-                      ]"
-                      :style="getGenerationStyle(button)"
-                    ></div>
-                    <div class="generation-info">
-                      <span>
-                        {{ button.start_year }} —
-                        {{ button.end_year || currentYear }}
-                      </span>
-                      <span>{{ button.short_name[locale] }}</span>
-                    </div>
-                  </template>
-                </form-buttons>
-
-                <title-with-line-and-reject-reason
-                  :title="$t('fuel')"
-                  rejectKey="engine"
-                  required
-                  @change="changeReason"
-                />
-                <div class="col-12 col-lg-3  pl-0">
-
+              <!--              body-->
+              <div v-if="data.sellBodies &&  form.year" class="row">
+                <div class="col-12">
+                  <title-with-line-and-reject-reason
+                    rejectKey="body_type"
+                    title="body_type"
+                    @change="changeReason"
+                  />
+                </div>
+                <div class="col-12 col-lg-3">
                   <form-select
-                    v-model="form.gearing"
-                    :disabled="user.admin_group == 2"
-                    :label="$t('fuel')"
-                    :options="
-                    engines.map((o) => ({
+                    v-model="form.car_body_type"
+                    :disabled="isModerator"
+                    :label="$t('body_type')"
+                    :options="data.sellBodies"
+                    :value="form.car_body_type"
+                    has-search
+                    @change="changeBodyType($event)"
+                  />
+                </div>
+              </div>
+              <!--              generations-->
+              <div v-if="data.generations && form.car_body_type" class="row">
+                <div class="col-12">
+                  <title-with-line-and-reject-reason
+                    :title="$t('generation')"
+                    rejectKey="generation"
+                    required
+                    @change="changeReason"
+                  />
+                </div>
+                <div class="col-12 col-lg-3">
+                  <form-select
+                    v-model="form.generation_id"
+                    :disabled="isModerator"
+                    :label="$t('body_type')"
+                    :options="data.generations"
+                    :value="form.generation_id"
+                    has-search
+                    @change="changeGeneration($event)"
+                  />
+                </div>
+              </div>
+              <!--              engines-->
+              <div v-if="data.engines && form.generation_id" class="row">
+                <div class="col-12">
+                  <title-with-line-and-reject-reason
+                    :title="$t('engine')"
+                    rejectKey="engine"
+                    required
+                    @change="changeReason"
+                  />
+                </div>
+                <div class="col-12 col-lg-3">
+                  <form-select
+                    v-model="form.engine"
+                    :disabled="isModerator"
+                    :label="$t('body_type')"
+                    :options="data.engines.map((o) => ({
                         name: $t('engine_values')[o.engine],
                         key: o.engine,
-                      }))
-                    "
+                      }))"
+                    :value="form.engine"
                     has-search
-                    @change="
-                    handleChange(
-                        $event,
-                        'getSellGearing',
-                        ['car_body_type', 'generation_id', 'gearing'],
-                        ['sellGearing', 'sellTransmissions', 'sellModifications'],
-                        'transmission',
-                      )
-                    "
-                  />
-                  <form-checkbox
-                    v-model="form.autogas"
-                    :label="$t('gas_equipment')"
-                    class="mb-4 mt-2"
-                    input-name="autogas"
-                    transparent
+                    @change="changeEngine($event)"
                   />
 
+
                 </div>
-                <title-with-line-and-reject-reason
-                  :title="$t('type_of_drive')"
-                  rejectKey="gearing"
-                  required
-                  @change="changeReason"
-                />
-                <div class="col-12 col-lg-3 pl-0">
-                  <template
-                    v-if="
-                    sellTransmissions && sellTransmissions.length && sellGear
-                  "
-                  >
-                    <form-select
-                      v-model="form.transmission"
-                      :disabled="user.admin_group == 2"
-                      :label="$t('tip-privoda')"
-                      :options="
-                      sellGear.map((o) => ({
-                        name: $t('type_of_drive_values')[o.type_of_drive],
-                        key: o.type_of_drive,
-                      }))
-                    "
-                      @change="
-                    handleChange(
-                      $event,
-                      'getSellTransmissions',
-                      ['car_body_type', 'generation_id', 'gearing', 'transmission'],
-                      ['sellTransmissions', 'sellModifications'],
-                      'modification',
-                    )
-                  "
-                    >
-                      <template #icon="{ button }">
-                        <icon
-                          :class="`type-of-drive-${button.key}`"
-                          :name="getIcon('type_of_drive', button.key)"
-                        />
-                      </template>
-                    </form-select>
-                  </template>
+              </div>
+              <!--              gearing-->
+              <div v-if="data.gearings && form.engine" class="row">
+                <div class="col-12">
+                  <title-with-line-and-reject-reason
+                    :title="$t('type_of_drive')"
+                    rejectKey="gearing"
+                    required
+                    @change="changeReason"
+                  />
                 </div>
-
-
-                <title-with-line-and-reject-reason
-                  v-if="sellTransmissions && sellTransmissions.length"
-                  :title="$t('box')"
-                  rejectKey="transmission"
-                  required
-                  @change="changeReason"
-                />
                 <div class="col-12 col-lg-3 pl-0">
-
                   <form-select
-                    v-model="form.modification"
-                    :disabled="user.admin_group == 2"
-                    :label="$t('box')"
+                    v-model="form.gearing"
+                    :disabled="isModerator"
+                    :label="$t('tip-privoda')"
+                    :options="data.gearings.map((o) => ({
+                      name: $t('type_of_drive_values')[o.type_of_drive],
+                      key: o.type_of_drive,
+                      }))
+                      "
+                    :value="form.gearing"
+                    has-search
+                    @change="changeGearing($event)"
+                  />
+                </div>
+              </div>
+              <!--              transmission-->
+              <div v-if="data.transmissions && form.gearing" class="row">
+                <div class="col-12">
+                  <title-with-line-and-reject-reason
+                    :title="$t('box')"
+                    rejectKey="transmission"
+                    required
+                    @change="changeReason"
+                  />
+                </div>
+                <div class="col-12 col-lg-3 pl-0">
+                  <form-select
+                    v-model="form.transmission"
+                    :disabled="isModerator"
+                    :label="$t('tip-privoda')"
                     :options="
-                    sellTransmissions.map((o) => ({
+                    data.transmissions.map((o) => ({
                       name: $t('box_values')[o.box],
                       key: o.box,
                     }))
-                  "
-                    @change="
-                    handleChange(
-                      $event,
-                      'getSellModifications',
-                      [
-                        'car_body_type',
-                        'generation_id',
-                        'gearing',
-                        'transmission',
-                        'modification',
-                      ],
-                      ['sellModifications'],
-                      'car_catalog_id',
-                    )
-                  "
-                  >
-                    <template #icon="{ button }">
-                      <icon
-                        :class="`box-${button.key}`"
-                        :name="getIcon('box', button.key)"
-                      />
-                    </template>
-                  </form-select>
-
+                    "
+                    :value="form.transmission"
+                    has-search
+                    @change="changeTransmission($event)"
+                  />
                 </div>
-                <title-with-line-and-reject-reason
-                  v-if="sellModifications"
-                  :title="$t('modification')"
-                  rejectKey="modification"
-                  required
-                  @change="changeReason"
 
-                />
+
+              </div>
+              <!--              modification-->
+              <div v-if="data.modifications && form.transmission" class="row">
+                <div class="col-12">
+                  <title-with-line-and-reject-reason
+                    v-if="sellModifications"
+                    :title="$t('modification')"
+                    rejectKey="modification"
+                    required
+                    @change="changeReason"
+
+                  />
+                </div>
                 <div class="col-12 col-lg-3 pl-0">
-
                   <form-select
-                    v-model="form.car_catalog_id"
+                    v-model="form.modification"
                     :disabled="user.admin_group == 2"
                     :label="$t('modification')"
                     :options="
@@ -300,29 +221,29 @@
                       key: o.id,
                     }))
                   "
-                    @change="handleChange($event, false, ['car_catalog_id'], [])"
+                    @change="changeModification($event, )"
                   />
 
                 </div>
               </div>
+
+              <!--              --------------------------------------------------- --------------------  ----------------->
               <!--     sell last step ------  -->
-              <div v-if="form">
-                <!--                <sell-last-step-->
-                <!--                  :key="lastStepKey"-->
-                <!--                  :announcement="form"-->
-                <!--                  :colors="colors"-->
-                <!--                  :edit="true"-->
-                <!--                  :restore="form.status == 3"-->
-                <!--                  :title="$t('moderator')"-->
-                <!--                  type="cars"-->
-                <!--                  @changeReason="changeReason"-->
-                <!--                  @close="-->
-                <!--                    $router.push(-->
-                <!--                      pageRef || $localePath('/profile/announcements'),-->
-                <!--                    )-->
-                <!--                  "-->
-                <!--                  @getRejectObj="getSellLastStepRejectObj"-->
-                <!--                />-->
+              <div v-if="form && form.media && form.media.length">
+                <sell-last-step
+                  :key="lastStepKey"
+                  :announcement="JSON.parse(JSON.stringify(form))"
+                  :colors="colors"
+                  :edit="user.admin_group !== 2"
+                  :restore="form.status == 3"
+                  :title="$t('moderator')"
+                  type="cars"
+                  @changeReason="changeReason"
+                  @close="$router.push(pageRef || $localePath('/profile/announcements'),)"
+                  @getRejectObj="getSellLastStepRejectObj"
+                  @formChanged="(e) => form = e"
+
+                />
               </div>
 
               <!-- actions   ------------------------>
@@ -473,7 +394,7 @@ import {mapActions, mapGetters} from 'vuex'
 import moment from 'moment'
 import SellLastStep from '~/components/sell/SellLastStepModerator'
 import SellPreview from '~/components/sell/SellPreview'
-import Brand from '~/components/moderator/brand.vue'
+import UserDetails from '~/components/moderator/brand.vue'
 import EditButton from '~/components/announcements/EditButton'
 import ModelOptions from '~/components/options/ModelOptions'
 import TitleWithLine from '~/components/global/titleWithLine.vue'
@@ -488,7 +409,7 @@ export default {
     TitleWithLineAndRejectReason,
     RejectReason,
     SellPreview,
-    Brand,
+    UserDetails,
     EditButton,
     ModelOptions,
     TitleWithLine,
@@ -505,7 +426,6 @@ export default {
         models: false,
         years: false,
       },
-
       type: 'cars',
       pending: false,
 
@@ -527,11 +447,31 @@ export default {
         rejectArray: [],
       },
       form: {
+        brand: null,
+        brand_id: null,
+        brandObj: {},
         slug: null,
+        model: {},
+        model_id: null,
+        sellBody: null,
+        car_body_type: null,
+        year: null,
+        generation_id: null,
+        engine: null,
+        gearing: null,
+        transmission: null,
+        modification: null,
+        media: [],
       },
       data: {
         models: [],
         sellYears: [],
+        sellBodies: [],
+        generations: [],
+        engines: [],
+        gearings: [],
+        transmissions: [],
+        modifications: [],
       },
       models: [],
     }
@@ -542,20 +482,25 @@ export default {
       brands: 'moderator/brands',
       boxes: 'moderator/boxes',
       engines: 'sellEngines',
+      enginesModerator: 'moderator/engines',
       sellGenerations: 'sellGenerations',
       sellGear: 'sellGearing',
       generations: 'sellGenerations',
+      generationsModerator: 'moderator/generations',
       modelsGeneral: 'models',
       modelsModerator: 'moderator/models',
       moderator: 'moderator/moderator',
       sellModifications: 'sellModifications',
-      sell_bodies: 'moderator/sell_bodies',
+      sellBodiesModerator: 'moderator/sell_bodies',
+      sellBodies: 'sellBody',
       type_of_drives: 'moderator/type_of_drives',
       sellYears: 'sellYears',
       sellYearsModerator: 'moderator/sellYears',
       colors: 'colors',
       sellTransmissions: 'sellTransmissions',
       getTimer: 'moderator/getTimer',
+      modificationsModerator: "moderator/modifications",
+      modificationsGeneral: "sellModifications",
     }),
     isModerator() {
       return this.user.admin_group && (this.user.admin_group == 2);
@@ -676,7 +621,6 @@ export default {
       try {
 
         data = await this.$axios.$get('/ticket/car');
-        console.log("dataaaa", data)
 
         this.$store.commit('moderator/moderatorMutator', {
           with: data.announce,
@@ -690,11 +634,23 @@ export default {
           with: data.boxes,
           property: 'boxes',
         })
+
+        this.handleTransmissions(this.boxes);
         this.$store.commit('moderator/moderatorMutator', {
           with: data.models,
           property: 'models',
         })
-        this.models = this.modelsModerator;
+        this.data.models = this.modelsModerator;
+        this.$store.commit('moderator/moderatorMutator', {
+          with: data.generations,
+          property: 'generations',
+        })
+        this.data.generations = this.generationsModerator;
+        this.$store.commit('moderator/moderatorMutator', {
+          with: data.engines,
+          property: 'engines',
+        })
+        this.handleEngines(this.enginesModerator);
         this.$store.commit('moderator/moderatorMutator', {
           with: data.moderator,
           property: 'moderator',
@@ -703,21 +659,24 @@ export default {
           with: data.modifications,
           property: 'modifications',
         })
+        this.data.modifications = this.modificationsModerator;
         this.$store.commit('moderator/moderatorMutator', {
           with: data.sellYears,
           property: 'sellYears',
         })
-        // this.data.sellYears = this.sellYearsModerator;
         this.handleYears(this.sellYearsModerator)
-        this.$store.commit('moderator/moderatorMutator', {
 
+        this.$store.commit('moderator/moderatorMutator', {
           with: data.sell_bodies,
           property: 'sell_bodies',
         })
+        this.data.sellBodies = this.sellBodiesModerator;
+
         this.$store.commit('moderator/moderatorMutator', {
           with: data.type_of_drives,
           property: 'type_of_drives',
         })
+        this.handleGearings(this.type_of_drives);
 
         this.form = {
           delay_comment: '',
@@ -771,6 +730,7 @@ export default {
           credit: data.announce?.credit,
           guaranty: data.announce?.in_garanty,
           saved_images: data.announce?.mediaIds,
+          media: data.announce.media,
           engine: data.announce?.car_catalog.engine_id,
           message: "test",
           user: data.announce.user
@@ -784,78 +744,103 @@ export default {
         })
       }
     },
-
-    async getModels(slug) {
-      await this.$store.dispatch('getModels', slug);
-      this.data.models = this.modelsGeneral;
-    },
-    async getSellYears() {
-      await this.$store.dispatch('getSellYears', {
-        brand: this.form.brand_slug,
-        model: this.form.model_slug,
-      })
-      // this.data.sellYears = this.sellYears;
-      this.handleYears(this.sellYears);
-    },
     async getColors() {
       await this.$store.dispatch('getColors')
     },
-    async getGenerations() {
-      await this.$store.dispatch('getSellGenerations', {
-        brand: this.form?.brand?.slug,
-        model: this.form?.model?.slug,
-        year: this.form?.year,
-        body: this.form?.car_catalog?.car_type.id,
-      })
-      this.getSellEngines()
+    async getModels(slug) {
+      if (this.form.brand_id) {
+
+        await this.$store.dispatch('getModels', slug);
+        this.data.models = this.modelsGeneral;
+      }
     },
-    async getSellEngines() {
-      await this.$store.dispatch('getSellEngines', {
-        brand: this.form?.brand?.slug,
-        model: this.form?.model?.slug,
-        year: this.form?.year,
-        body: this.form?.car_catalog?.car_type.id,
-        generation: this.form?.car_catalog?.generation_id,
-      })
-      this.getSellTransmissions()
+    async getSellYears() {
+      if (this.form.model_id) {
+        await this.$store.dispatch('getSellYears', {
+          brand: this.form.brand_slug,
+          model: this.form.model_slug,
+        })
+        this.handleYears(this.sellYears);
+      }
     },
-    async getSellTransmissions() {
-      await this.$store.dispatch('getSellTransmissions', {
-        brand: this.form?.brand?.slug,
-        model: this.form?.model?.slug,
-        year: this.form?.year,
-        body: this.form?.car_catalog?.car_type.id,
-        generation: this.form?.car_catalog?.generation_id,
-        engine: this.form?.car_catalog?.engine_id,
-        gearing: this.form?.car_catalog?.gearing_id,
-      })
-      this.getSellGearing()
-    },
-    async getSellGearing() {
-      await this.$store.dispatch('getSellGearing', {
-        brand: this.form?.brand?.slug,
-        model: this.form?.model?.slug,
-        body: this.form?.car_catalog?.car_type.id,
-        generation: this.form?.car_catalog?.generation_id,
-        engine: this.form?.car_catalog?.engine_id,
-      })
-      this.getSellModifications()
-    },
-    async getSellModifications() {
-      await this.$store.dispatch('getSellModifications', {
-        brand: this.form?.brand?.slug,
-        model: this.form?.model?.slug,
-        body: this.form?.car_catalog?.car_type.id,
-        generation: this.form?.car_catalog?.generation_id,
-        engine: this.form?.car_catalog?.engine_id,
-        gearing: this.form?.car_catalog?.gearing_id,
-        transmission: this.form?.car_catalog?.main[' '][
-          'type_of_drive'
-          ],
-      })
+    async getSellBodies() {
+      if (this.form.year) {
+        await this.$store.dispatch('getSellBody', {
+          brand: this.form.brand_slug,
+          model: this.form.model_slug,
+          year: this.form.year,
+        })
+        this.data.sellBodies = this.sellBodies;
+      }
     },
 
-    // handle
+    async getGenerations() {
+      if (this.form.car_body_type) {
+        await this.$store.dispatch('getSellGenerations', {
+          brand: this.form.brand_slug,
+          model: this.form.model_slug,
+          year: this.form.year,
+          body: this.form.car_body_type,
+        })
+        this.data.generations = this.sellGenerations;
+      }
+    },
+    async getSellEngines() {
+      if (this.form.generation_id) {
+        await this.$store.dispatch('getSellEngines', {
+          brand: this.form.brand_slug,
+          model: this.form.model_slug,
+          year: this.form.year,
+          body: this.form.car_body_type,
+          generation: this.form?.generation_id,
+        })
+      }
+    },
+    async getSellGearing() {
+      if (this.form.engine) {
+        await this.$store.dispatch('getSellGearing', {
+          brand: this.form.brand_slug,
+          model: this.form.model_slug,
+          year: this.form.year,
+          body: this.form.car_body_type,
+          generation: this.form?.generation_id,
+          engine: this.form?.engine,
+        })
+        this.data.gearings = this.sellGear;
+      }
+    },
+    async getSellTransmissions() {
+      if (this.form.gearing) {
+        await this.$store.dispatch('getSellTransmissions', {
+          brand: this.form.brand_slug,
+          model: this.form.model_slug,
+          year: this.form.year,
+          body: this.form.car_body_type,
+          generation: this.form?.generation_id,
+          engine: this.form?.engine,
+          gearing: this.form?.gearing,
+        })
+        this.data.transmissions = this.sellTransmissions;
+      }
+    },
+    async getSellModifications() {
+      if (this.form.transmission) {
+        await this.$store.dispatch('getSellModifications', {
+          brand: this.form.brand_slug,
+          model: this.form.model_slug,
+          year: this.form.year,
+          body: this.form.car_body_type,
+          generation: this.form?.generation_id,
+          engine: this.form?.engine,
+          gearing: this.form?.gearing,
+          transmission: this.form?.transmission
+        })
+        this.data.modifications = this.modificationsGeneral;
+      }
+
+    },
+
+    // handle lists
     getIcon(key, value) {
       return {
         engine: {
@@ -877,7 +862,7 @@ export default {
     },
     getModificationName(o) {
       let generation = this.sellGenerations.find(
-        (o) => o.id === this.form?.car_catalog?.generation_id,
+        (o) => o.id === this.form?.generation_id,
       )
       let name = `${this.$t('box_mode_values')[o.box]}/${
         generation.start_year
@@ -972,15 +957,7 @@ export default {
       //
       // }
     },
-    async getGenerationStyle(o) {
-      const getImage = (media) =>
-        media && media.length > 0 ? this.$withBaseUrl(media[0]) : false
-      let carType = o.car_type_generation.find(
-        (type) => type.car_type_id === o.pivot.car_type_id,
-      )
-      let imgUrl = getImage(carType && carType.transformed_media.thumb)
-      return imgUrl ? {backgroundImage: `url('${imgUrl}')`} : {noImg: true}
-    },
+
     changeReason(rejectKey) {
       if (rejectKey === 'image') {
         this.rejectObj.showPhotoReject = true
@@ -1003,6 +980,15 @@ export default {
       this.data.sellYears = arr;
 
     },
+    handleBody(obje) {
+      var obj = JSON.parse(JSON.stringify(obje))
+      var arr = [];
+      for (var i = obj.min; i <= obj.max; i++) {
+        arr.push({key: i, name: i})
+      }
+      this.data.sellYears = arr;
+
+    },
     gotoList() {
       window.location.href = "https://dev.mashin.al/alvcp/resources/announcements"
     },
@@ -1012,25 +998,89 @@ export default {
       value.showPhotoReject = this.rejectObj.showPhotoReject;
       value.reject360 = this.rejectObj.reject360;
     },
+    handleEngines(obj) {
+      var arr = [];
+      for (var el in obj) {
+        arr.push(obj[el]);
+      }
+      this.data.engines = arr;
+    },
+    handleGearings(obj) {
+      var arr = [];
+      for (var el in obj) {
+        arr.push(obj[el]);
+      }
+      this.data.gearings = arr;
+    },
+    handleTransmissions(obj) {
+      var arr = [];
+      for (var el in obj) {
+        arr.push(obj[el]);
+      }
+      this.data.transmissions = arr;
+    },
+
 
     //handle change
     async changeBrand(e) {
+      this.form.model_id = null;
+      this.form.model = {};
       this.brands.find(f => {
         if (f.id == e) {
           // this.$store.dispatch('getModels', )
           this.getModels(f.slug)
           this.form.brand_slug = f.slug;
+          this.form.brand_id = f.id;
+          this.form.brandObj = f;
+
         }
       })
     },
     async changeModel(e) {
-      this.data.models.find(f => {
+      this.form.year = null;
+      await this.data.models.find(f => {
         if (f.id == e) {
           this.form.year = null;
           this.form.model_slug = f.slug;
         }
       })
+      this.getSellYears();
     },
+    async changeYear(e) {
+      this.form.car_body_type = null;
+      // await this.data.models.find(f => {
+      //   if (f.id == e) {
+      //     this.form.year = null;
+      //     this.form.model_slug = f.slug;
+      //   }
+      // })
+      console.log("change year")
+      this.getSellBodies();
+    },
+    async changeBodyType(e) {
+      this.form.generation_id = null;
+      this.getGenerations();
+    },
+    async changeGeneration(e) {
+      this.form.engine = null;
+      this.getSellEngines()
+    },
+    async changeEngine(e) {
+      this.form.gearing = null;
+      this.getSellGearing()
+    },
+    async changeGearing(e) {
+      this.form.transmission = null;
+      this.getSellTransmissions()
+    },
+    async changeTransmission(e) {
+      this.form.modification = null;
+      this.getSellModifications();
+    },
+    async changeModification(e) {
+      return e;
+    },
+
 
     // post
     async transferToSupervisor(withRejectReason = false) {
@@ -1062,14 +1112,14 @@ export default {
 
 
       let form = {};
-
-      this.form.status = this.form.status;
-      this.form.brand = this.form.brand.slug;
-      this.form.model = this.form.model.slug;
-      this.form.year = this.form.year;
-      this.form.address = this.form.address;
-      this.form.generation = this.form.car_catalog.generation_id;
-      this.form.rejectArray = this.rejectObj.rejectArray.concat(this.sellLastStepRejectObj.rejectArray);
+delete this.form.generation
+      form.status = this.form.status;
+      form.brand = this.form.brand.slug;
+      form.model = this.form.model.slug;
+      form.year = this.form.year;
+      form.address = this.form.address;
+      // form.generation_id = this.form.generation_id;
+      form.rejectArray = this.rejectObj.rejectArray.concat(this.sellLastStepRejectObj.rejectArray);
 
 
       var formData = new FormData();
@@ -1081,7 +1131,7 @@ export default {
       this.pending = true
 
       try {
-        await this.$axios.$post('/ticket/car/' + this.form.id, formData)
+        await this.$axios.$post('/ticket/car/' + this.single_announce.id, formData)
 
         if (this.user.admin_group == 2) {
         } else {
@@ -1098,9 +1148,51 @@ export default {
     },
 
 
-  },
+  }
+  ,
   mounted() {
     this.getAnnounceData()
+  }
+  ,
+  watch: {
+    form: {
+      deep: true,
+      handler() {
+        if (this.form.brandObj == {}) {
+          this.form.model_id = null;
+          this.form.model = {};
+        }
+        if (this.form.brand_id == null) {
+          this.form.model_id = null;
+          this.form.model = {};
+        }
+        if (this.form.brand == null) {
+          this.form.model_id = null;
+          this.form.model = {};
+        }
+        if ((this.form.model_id == null) || (this.form.model == {})) {
+          this.form.year = null;
+        }
+        if (this.form.year == null) {
+          this.form.car_body_type = null;
+        }
+        if (this.form.car_body_type == null) {
+          this.form.generation_id = null;
+        }
+        if (this.form.generation_id == null) {
+          this.form.engine = null;
+        }
+        if (this.form.engine == null) {
+          this.form.gearing = null;
+        }
+        if (this.form.gearing == null) {
+          this.form.transmission = null;
+        }
+        if (this.form.transmission == null) {
+          this.form.modification = null;
+        }
+      }
+    }
   }
 }
 </script>
