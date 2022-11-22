@@ -228,9 +228,6 @@
               </div>
 
               <!--              --------------------------------------------------- --------------------  ----------------->
-              <pre>
-                {{form.selectedColor}}
-              </pre>
               <!--     sell last step ------  -->
               <div v-if="form && form.media && form.media.length">
                 <sell-last-step
@@ -1115,14 +1112,14 @@ export default {
 
 
       let form = {};
-
-      this.form.status = this.form.status;
-      this.form.brand = this.form.brand.slug;
-      this.form.model = this.form.model.slug;
-      this.form.year = this.form.year;
-      this.form.address = this.form.address;
-      this.form.generation = this.form.car_catalog.generation_id;
-      this.form.rejectArray = this.rejectObj.rejectArray.concat(this.sellLastStepRejectObj.rejectArray);
+delete this.form.generation
+      form.status = this.form.status;
+      form.brand = this.form.brand.slug;
+      form.model = this.form.model.slug;
+      form.year = this.form.year;
+      form.address = this.form.address;
+      // form.generation_id = this.form.generation_id;
+      form.rejectArray = this.rejectObj.rejectArray.concat(this.sellLastStepRejectObj.rejectArray);
 
 
       var formData = new FormData();
@@ -1134,7 +1131,7 @@ export default {
       this.pending = true
 
       try {
-        await this.$axios.$post('/ticket/car/' + this.form.id, formData)
+        await this.$axios.$post('/ticket/car/' + this.single_announce.id, formData)
 
         if (this.user.admin_group == 2) {
         } else {
