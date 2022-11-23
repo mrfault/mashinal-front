@@ -244,7 +244,6 @@
                   @close="$router.push(pageRef || $localePath('/profile/announcements'),)"
                   @getRejectObj="getSellLastStepRejectObj"
                   @formChanged="(e) => form = e"
-
                 />
               </div>
 
@@ -348,8 +347,6 @@
                   </div>
                 </div>
               </div>
-
-
               <!-- actions   ------------------------>
 
             </div>
@@ -424,7 +421,7 @@ export default {
     return {
       announcementIsAvailable: false,
       showModal: false,
-      lastStepKey: 0,
+      lastStepKey: 1,
       show: {
         brands: false,
         models: false,
@@ -564,15 +561,6 @@ export default {
     },
   },
   methods: {
-    // ...mapActions([
-    //   'getSellBody',
-    //   'getSellGenerations',
-    //   'getSellEngines',
-    //   'getSellGearing',
-    //   'getSellTransmissions',
-    //   'getSellModifications',
-    // ]),
-
     // ui
     openModal(type) {
       this.showModal = true
@@ -591,8 +579,6 @@ export default {
         obj[opt] = true
       }
     },
-
-
     // get
     async getAnnounceData() {
 
@@ -691,6 +677,7 @@ export default {
           model: data.announce?.model.slug,
           model_id: data.announce?.model.id,
           generation_id: data.announce?.car_catalog?.generation_id,
+          generation: data.announce?.car_catalog?.generation_id,
           car_body_type: data.announce?.car_catalog?.car_type.id,
           gearing: data.announce?.car_catalog?.main['  ']['engine'], // engines
           modification: data.announce?.car_catalog?.main[' ']['box'], // transmissions/box
@@ -737,7 +724,9 @@ export default {
           media: data.announce.media,
           engine: data.announce?.car_catalog.engine_id,
           message: "test",
-          user: data.announce.user
+          user: data.announce.user,
+          status: data.announce.status,
+          rejectArray: this.rejectObj.rejectArray,
         };
         this.getColors();
         this.announcementIsAvailable = true;
@@ -779,7 +768,6 @@ export default {
         this.data.sellBodies = this.sellBodies;
       }
     },
-
     async getGenerations() {
       if (this.form.car_body_type) {
         await this.$store.dispatch('getSellGenerations', {
@@ -1118,7 +1106,7 @@ export default {
 
 
       let form = {};
-delete this.form.generation
+
       form.status = this.form.status;
       form.brand = this.form.brand.slug;
       form.model = this.form.model.slug;
@@ -1152,14 +1140,10 @@ delete this.form.generation
       if (form.comment === null) form.comment = ''
       form.comment = form.comment + e + ' '
     },
-
-
-  }
-  ,
+  },
   mounted() {
     this.getAnnounceData()
-  }
-  ,
+  },
   watch: {
     form: {
       deep: true,
