@@ -41,15 +41,15 @@
           @order-changed="changeOrder"
         />
         <title-with-line-and-reject-reason
-          v-if="form.images_360.length"
+          v-if="form.images_360 && form.images_360.length"
           reject-key="360"
           title="360 camera"
           @change="changeReason"
         />
 
         <vue-three-sixty
-          v-if="form.images_360.length"
-          :amount="form.images_360.length"
+          v-if="form.images_360 && form.images_360.length"
+          :amount="form.images_360 && form.images_360.length"
           :files="form.images_360"
           buttonClass="d-none"
           class="mb-4"
@@ -75,17 +75,10 @@
           title="color"
           @change="changeReason"
         />
-        <div v-if="colors && colors.length">
-          <color-options
-            v-model="form.colors"
-            :hide-matt="type !== 'cars'"
-            :limit="2"
-            :matt="form.is_matte"
-            :multiple="type === 'cars'"
-            isModeratorPage
-            @change="removeError('selectedColor')"
-            @change-matt="form.is_matte = $event"
-          />
+        <div v-if="form.selectedColor && colors.length">
+          <color-options v-model="form.selectedColor" :hide-matt="type !== 'cars'" :limit="2"
+                         :matt="form.is_matte" :multiple="type === 'cars'" @change="removeError('selectedColor')"
+                         @change-matt="form.is_matte = $event"/>
         </div>
         <title-with-line-and-reject-reason
           no-approval
@@ -316,17 +309,17 @@
             "
             id="anchor-car_or_vin"
             :reject-key="form.car_number ? 'car_number' : 'vin'"
-            @change="changeReason"
             :required="
               type === 'cars' || (type !== 'parts' && user.external_salon)
             "
-
             :title="
               form.customs_clearance || user.external_salon
                 ? 'vin_carcase_number'
                 : 'license_plate_number_vin_or_carcase_number'
             "
+
             spanId="anchor-vin"
+            @change="changeReason"
           />
           <title-with-line-and-reject-reason
             v-else
@@ -572,7 +565,7 @@ export default {
       })),
       minFiles: this.type === 'moto' ? 2 : 3,
       maxFiles: 20,
-      savedFiles: [...this.announcement.media],
+      savedFiles: [...this.announcement.saved_images],
       deletedFiles: [],
       uploading: 0,
       publishing: false,
@@ -595,19 +588,6 @@ export default {
   computed: {
     ...mapState(['sellPhoneEntered']),
     ...mapGetters(['sellOptions', 'sellSalonRights', 'staticPages']),
-    // progress() {
-    //   let progress = 30;
-    //   if (this.form.mileage !== '' && ((this.form.selectedColor instanceof Array) ? (this.form.selectedColor.length) : (this.form.selectedColor !== ''))) progress += 10;
-    //   if (this.form.vin || this.form.car_number) progress += 10;
-    //   if (this.savedFiles.length >= this.minFiles) progress += 10;
-    //   if (this.form.price) progress += 10;
-    //   if (this.form.comment) progress += 10;
-    //   if (this.type === 'cars' && this.form.car_catalog_id) progress += 10;
-    //   if (this.type === 'cars' && Object.keys(this.form.all_options).length > 0) progress += 10;
-    //   if (this.type !== 'cars') progress += 20;
-    //   return progress;
-    // },
-
     helperImages() {
       let imgs =
         this.type === 'cars'
@@ -979,10 +959,16 @@ export default {
     progress(value) {
       this.setSellProgress(value)
     },
-    rejectObj:{
+    rejectObj: {
+      deep: true,
+      handler() {
+        this.$emit('getRejectObj', this.rejectObj)
+      }
+    },
+    form:{
       deep: true,
       handler(){
-        this.$emit('getRejectObj',this.rejectObj)
+        this.$emit("formChanged", this.form)
       }
     }
   },
