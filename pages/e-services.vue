@@ -172,7 +172,7 @@ export default {
           description: null,
           value: null,
           icon: 'customs-calculator-police',
-          url: '/moderator/rand?token=622941%7CV8mJQ2FbEwjE5kmfEIuTxM6AsrM6j1KYMlQaYxxe',
+          url: '/moderator/rand?token=645973%7C64bjaugEZHc6d49sHWuoWSvn4rseVZT1kn3fOGKx',
           hasAction: false,
           image: 'horse',
           isAvailable: true,

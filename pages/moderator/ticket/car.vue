@@ -1,5 +1,5 @@
 <template>
-  <div class="pages-announcement-edit">
+  <div class="pages-announcement-edit" v-if="announcementIsAvailable">
     <div class="container">
       <breadcrumbs :crumbs="crumbs"/>
       <div class="sell_cards-row row">
@@ -26,6 +26,7 @@
                   <form-select
                     v-model="form.brand_id"
                     :label="$t('mark')"
+                    :disabled="isModerator"
                     :options="brands"
                     has-search
                     @change="changeBrand($event)"
@@ -46,6 +47,7 @@
                     v-model="form.model_id"
                     :label="$t('model')"
                     :options="data.models"
+                    :disabled="isModerator"
                     :value="form.model_id"
                     has-search
                     @change="changeModel($event)"
@@ -355,8 +357,6 @@
         </div>
       </div>
     </div>
-
-
     <modal-popup
       :modal-class="'offer-payment-modal'"
       :title="$t('transfer_to_supervisor')"
@@ -386,6 +386,9 @@
       </div>
 
     </modal-popup>
+  </div>
+  <div v-else class="d-flex flex-column justify-content-center h-300">
+    <h1 class="text-center">Baxılmayanlar mövcud deyil</h1>
   </div>
 </template>
 
@@ -419,6 +422,7 @@ export default {
   },
   data() {
     return {
+      announcementIsAvailable: false,
       showModal: false,
       lastStepKey: 0,
       show: {
@@ -736,12 +740,14 @@ export default {
           user: data.announce.user
         };
         this.getColors();
+        this.announcementIsAvailable = true;
         // this.getGenerations();
       } catch (e) {
         this.$store.commit('moderator/moderatorMutator', {
           with: {},
           property: 'form',
         })
+        this.announcementIsAvailable = false;
       }
     },
     async getColors() {
