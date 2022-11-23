@@ -26,6 +26,7 @@
           :label="$t('model')"
           :options="models.length > 0 ? models : []"
           v-model="form[index].model"
+
           has-search
           @change="setModel($event,model)"
           class="get-offer-select"
@@ -305,7 +306,7 @@ export default {
 
         this.$store.dispatch('getModels', slug)
       }
-
+      this.form[this.index].model=null
 
       this.form[this.index].generations = [];
     },
