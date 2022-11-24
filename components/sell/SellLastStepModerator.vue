@@ -11,7 +11,7 @@
       <div
         v-if="showAllOptions"
         :class="{
-          'disabled-content': type === 'cars' && !form.car_catalog_id && false,
+          'disabled-content': type === 'cars' && !form.car_catalog_id && !edit,
         }"
       >
         <title-with-line-and-reject-reason
