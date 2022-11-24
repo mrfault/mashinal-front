@@ -37,7 +37,7 @@
 
     <div class="mt-3 mb-5">
       <Generations :selected="form[index].generations" :generations="offerGenerations[index]" @change="changeGenerations"
-                   v-if="(index==0 || (brand_object && model_object)) "/>
+                   v-if="(index==0 || (form[index].brand && form[index].model)) "/>
     </div>
     <div class="mb-3 box " ref="sell-modification">
       <h2 class="title-with-line full-width">
