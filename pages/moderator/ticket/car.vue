@@ -1,5 +1,5 @@
 <template>
-  <div class="pages-announcement-edit" v-if="announcementIsAvailable">
+  <div class="pages-announcement-edit" v-if="announcementIsAvailable && !loading">
     <div class="container">
       <breadcrumbs :crumbs="crumbs"/>
       <div class="sell_cards-row row">
@@ -384,8 +384,11 @@
 
     </modal-popup>
   </div>
-  <div v-else class="d-flex flex-column justify-content-center h-300">
+  <div v-else-if="!announcementIsAvailable && !loading" class="d-flex flex-column justify-content-center h-300">
     <h1 class="text-center">Baxılmayanlar mövcud deyil</h1>
+  </div>
+  <div v-else>
+    <elements-loader></elements-loader>
   </div>
 </template>
 
@@ -420,6 +423,7 @@ export default {
   data() {
     return {
       announcementIsAvailable: false,
+      loading: false,
       showModal: false,
       lastStepKey: 1,
       show: {
@@ -429,7 +433,6 @@ export default {
       },
       type: 'cars',
       pending: false,
-
       //reject reason
       rejectObj: {
         show360Reject: false,
@@ -581,7 +584,7 @@ export default {
     },
     // get
     async getAnnounceData() {
-
+      this.loading = true;
       await this.$auth.setUserToken(`Bearer ${this.$route.query.token}`)
       const admin_user = await this.$axios.$get('/user')
       this.$auth.setUser(admin_user.user)
@@ -730,6 +733,7 @@ export default {
         };
         this.getColors();
         this.announcementIsAvailable = true;
+        this.loading = false;
         // this.getGenerations();
       } catch (e) {
         this.$store.commit('moderator/moderatorMutator', {
@@ -737,6 +741,8 @@ export default {
           property: 'form',
         })
         this.announcementIsAvailable = false;
+        this.loading = false;
+
       }
     },
     async getColors() {
