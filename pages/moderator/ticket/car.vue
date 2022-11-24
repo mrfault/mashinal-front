@@ -1,5 +1,5 @@
 <template>
-  <div class="pages-announcement-edit" v-if="announcementIsAvailable && !loading">
+  <div v-if="announcementIsAvailable && !loading" class="pages-announcement-edit">
     <div class="container">
       <breadcrumbs :crumbs="crumbs"/>
       <div class="sell_cards-row row">
@@ -11,6 +11,7 @@
                 <user-details
                   :brand="form.brandObj"
                   :userData="form.user"
+                  :smsRadarData="smsRadarData"
                 />
               </template>
               <!--              brand -->
@@ -25,12 +26,20 @@
                 <div class="col-12 col-lg-3">
                   <form-select
                     v-model="form.brand_id"
-                    :label="$t('mark')"
                     :disabled="isModerator"
+                    :label="$t('mark')"
                     :options="brands"
                     has-search
                     @change="changeBrand($event)"
                   />
+                </div>
+                <div class="col-12 col-lg-9">
+                  <span
+                    v-if="smsRadarData"
+                    class="ma-smsradar"
+                  >
+                  <strong>SMSRadar: </strong>   <p>{{ smsRadarData.marka }}</p>
+                  </span>
                 </div>
               </div>
               <!--              model -->
@@ -45,9 +54,9 @@
                 <div class="col-12 col-lg-3">
                   <form-select
                     v-model="form.model_id"
+                    :disabled="isModerator"
                     :label="$t('model')"
                     :options="data.models"
-                    :disabled="isModerator"
                     :value="form.model_id"
                     has-search
                     @change="changeModel($event)"
@@ -74,6 +83,14 @@
                     @change="changeYear($event)"
                   />
                 </div>
+                <div class="col-12 col-lg-9">
+                  <span
+                    v-if="smsRadarData"
+                    class="ma-smsradar"
+                  >
+                  <strong>SMSRadar: </strong>   <p>{{ smsRadarData.manufactYear }}</p>
+                  </span>
+                </div>
               </div>
               <!--              body-->
               <div v-if="data.sellBodies &&  form.year" class="row">
@@ -94,6 +111,14 @@
                     has-search
                     @change="changeBodyType($event)"
                   />
+                </div>
+                <div class="col-12 col-lg-9">
+                  <span
+                    v-if="smsRadarData"
+                    class="ma-smsradar"
+                  >
+                  <strong>SMSRadar: </strong>   <p>{{ smsRadarData.vehBodyType }}</p>
+               </span>
                 </div>
               </div>
               <!--              generations-->
@@ -227,6 +252,14 @@
                   />
 
                 </div>
+                <div class="col-12 col-lg-9">
+                  <span
+                    v-if="smsRadarData"
+                    class="ma-smsradar"
+                  >
+                  <strong>SMSRadar: </strong>   <p>{{ smsRadarData.engincapacity / 1000 }}</p>
+               </span>
+                </div>
               </div>
 
               <!--              --------------------------------------------------- --------------------  ----------------->
@@ -238,12 +271,13 @@
                   :colors="colors"
                   :edit="user.admin_group !== 2"
                   :restore="form.status == 3"
+                  :smsRadarData="smsRadarData"
                   :title="$t('moderator')"
                   type="cars"
                   @changeReason="changeReason"
                   @close="$router.push(pageRef || $localePath('/profile/announcements'),)"
-                  @getRejectObj="getSellLastStepRejectObj"
                   @formChanged="(e) => form = e"
+                  @getRejectObj="getSellLastStepRejectObj"
                 />
               </div>
 
@@ -478,6 +512,7 @@ export default {
         modifications: [],
       },
       models: [],
+      smsRadarData: {},
     }
   },
   computed: {
@@ -562,6 +597,7 @@ export default {
     isMorderator() {
       return this.user.admin_group == 2
     },
+
   },
   methods: {
     // ui
@@ -734,6 +770,7 @@ export default {
         this.getColors();
         this.announcementIsAvailable = true;
         this.loading = false;
+        this.checkWithVin()
         // this.getGenerations();
       } catch (e) {
         this.$store.commit('moderator/moderatorMutator', {
@@ -744,6 +781,41 @@ export default {
         this.loading = false;
 
       }
+    },
+    async checkWithVin() {
+      let vin = this.form.vin
+      let car_number = this.form.car_number.replace(/[^0-9a-zA-Z]+/g, '')
+
+      let sendData = {
+        announce_id: this.single_announce.id,
+      }
+      let send = false
+      if (vin.length === 17) {
+        sendData.vin = vin
+        send = true
+      }
+      if (car_number.length === 7) {
+        sendData.car_number = car_number
+        send = true
+      }
+
+      if (!send) return false
+
+      this.$nuxt.$emit('loading_status', true)
+      this.$axios.$post('/ticket/checkSmsRadar', sendData).then((data) => {
+        data = data.data
+
+        if (data) {
+          //data.carNumber = data.carNumber.slice(0, 2) + '-' + data.carNumber.slice(2, 4) + '-' + data.carNumber.slice(4, 7);
+
+          this.smsRadarData = data
+
+          //if (data.bodyNumber && data.bodyNumber.toString().length === 17) this.getChange(data.bodyNumber, 'vin');
+        }
+
+        // this.$nuxt.$emit('loading_status', false)
+        this.loading = false;
+      })
     },
     async getColors() {
       await this.$store.dispatch('getColors')

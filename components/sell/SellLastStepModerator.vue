@@ -23,6 +23,7 @@
               max: maxFiles,
             }).toLowerCase()
           "
+          reasonOptions
           reject-key="image"
           required
           title="photos"
@@ -75,10 +76,20 @@
           title="color"
           @change="changeReason"
         />
-        <div v-if="form.selectedColor && colors.length">
-          <color-options v-model="form.selectedColor" :hide-matt="type !== 'cars'" :limit="2"
-                         :matt="form.is_matte" :multiple="type === 'cars'" @change="removeError('selectedColor')"
-                         @change-matt="form.is_matte = $event"/>
+        <div v-if="form.selectedColor && colors.length" class="row">
+          <div class="col-12 col-lg-10">
+            <color-options v-model="form.selectedColor" :hide-matt="type !== 'cars'" :limit="2"
+                           :matt="form.is_matte" :multiple="type === 'cars'" @change="removeError('selectedColor')"
+                           @change-matt="form.is_matte = $event"/>
+          </div>
+          <div class="col-12 col-lg-2">
+                  <span
+                    v-if="smsRadarData"
+                    class="ma-smsradar"
+                  >
+                  <strong>SMSRadar: </strong>   <p>{{ smsRadarData.color }}</p>
+               </span>
+          </div>
         </div>
         <title-with-line-and-reject-reason
           no-approval
@@ -333,6 +344,7 @@
             spanId="anchor-vin"
           />
         </template>
+
         <div
           v-if="
             (type === 'cars' && !user.is_autosalon) ||
@@ -389,6 +401,14 @@
               input-name="show_vin"
               transparent
             />
+          </div>
+          <div class="col-12 col-lg-8">
+                  <span
+                    v-if="smsRadarData"
+                    class="ma-smsradar"
+                  >
+                  <strong>SMSRadar: </strong>   <p>{{ smsRadarData.carNumber }} | {{ smsRadarData.bodyNumber ? smsRadarData.bodyNumber : '' }}</p>
+               </span>
           </div>
         </div>
         <div class="mt-2 mt-lg-3">
@@ -551,6 +571,7 @@ export default {
     colors: Array,
     generations: Array,
     sell_bodies: Array,
+    smsRadarData: Object,
   },
   mixins: [ToastErrorsMixin, ImageResizeMixin, PaymentMixin],
   data() {
@@ -965,9 +986,9 @@ export default {
         this.$emit('getRejectObj', this.rejectObj)
       }
     },
-    form:{
+    form: {
       deep: true,
-      handler(){
+      handler() {
         this.$emit("formChanged", this.form)
       }
     }
