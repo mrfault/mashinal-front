@@ -26,7 +26,7 @@
     <div class="">
       <div class="new-offer mt-5" v-if="activeMyOffers.length > 0">
         <div class="new-offer-title mt-5">
-          <h2 class="text-center" v-if="issetActiveOffer"> Sorğularım</h2>
+          <h2 class="text-center" > Sorğularım</h2>
         </div>
         <div class="new-offer-notification-box mt-5" v-for="activeMyOffer in activeMyOffers">
 
@@ -35,7 +35,7 @@
             <p>
               <span v-for="(offerItem,index) in activeMyOffer.items">
 
-            <b>{{ offerItem.brand }}</b> - {{ offerItem.model }} <span>,</span>
+            <b>{{ offerItem.brand }}</b> - {{ offerItem.model }} <span  v-if="activeMyOffer.items.length > 1">,</span>
             </span>
             </p>
           </div>

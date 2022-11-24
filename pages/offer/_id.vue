@@ -54,7 +54,15 @@
               </div>
             </div>
           </div>
-          <div class="addons" v-if="userOffer && auto_salon_deleted_at===null && offer.user_deleted==null">
+
+          <div class="col-md-12">
+            <div class="offer-alert" role="alert" v-if="auto_salon_deleted_at!=null ">
+              Avto salon  təklifi silmişdir.
+            </div>
+          </div>
+
+
+          <div class="addons" v-if="userOffer && !auto_salon_deleted && !user_deleted">
             <offer-message
               @type="handleTyping"
               @attach="handleFiles"
@@ -128,7 +136,10 @@ export default {
     let res = await $axios.$post('/offer/user/offer/check/' + route.params.id)
     store.commit('setOfferMessages', res.messages)
     return {
-      user_is_accepted: res.status
+      user_is_accepted: res.status,
+
+      auto_salon_deleted:res.auto_salon_deleted_at==null ? false : true,
+      user_deleted:res.user_deleted_at==null ? false : true
     }
 
   },
@@ -146,7 +157,8 @@ export default {
       files: [],
       userOffer:null,
       auto_salon_offer_id:null,
-      auto_salon_deleted_at: null,
+      auto_salon_deleted: true,
+      user_deleted:true,
     }
   },
   methods: {

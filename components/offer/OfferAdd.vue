@@ -26,6 +26,7 @@
           :label="$t('model')"
           :options="models.length > 0 ? models : []"
           v-model="form[index].model"
+
           has-search
           @change="setModel($event,model)"
           class="get-offer-select"
@@ -35,8 +36,8 @@
     </div>
 
     <div class="mt-3 mb-5">
-      <Generations :selected="form[index].generations" :generations="generations" @change="changeGenerations"
-                   v-if="index==0 || (brand_object && model_object) "/>
+      <Generations :selected="form[index].generations" :generations="offerGenerations[index]" @change="changeGenerations"
+                   v-if="(index==0 || (brand_object && model_object)) "/>
     </div>
     <div class="mb-3 box " ref="sell-modification">
       <h2 class="title-with-line full-width">
@@ -192,11 +193,6 @@ export default {
     await store.dispatch('getColors')
     await store.dispatch('getBrands')
     await store.dispatch('getModels', app.$parseSlug(route.query.brand))
-
-    await store.dispatch('getGenerations', {
-      brand: route.query.brand,
-      model: route.query.model
-    })
   },
   props: {
     index: null
@@ -239,7 +235,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['brands', 'models', 'generations', 'offerAnnouncementsCount', 'offerAddIsLoader']),
+    ...mapGetters(['brands', 'models', 'offerGenerations', 'offerAnnouncementsCount', 'offerAddIsLoader']),
 
     brand() {
       return this.brands?.find(brand => this.$parseSlug(brand.slug) === this.$route.query.brand);
@@ -310,8 +306,8 @@ export default {
 
         this.$store.dispatch('getModels', slug)
       }
+      this.form[this.index].model=null
 
-      this.$store.commit('resetGenerations')
       this.form[this.index].generations = [];
     },
     async setModel(slug) {
@@ -319,9 +315,10 @@ export default {
       this.form[this.index].generations = []
 
       if (slug) {
-        await this.$store.dispatch('getGenerations', {
+        await this.$store.dispatch('getOfferGenerations', {
           brand: this.brand_object.slug,
-          model: slug
+          model: slug,
+          index:this.index
         })
 
         this.model_object = this.models.find((option) => option.slug === slug)
@@ -357,25 +354,36 @@ export default {
         this.form[this.index].generations = values
 
 
-        this.generations.find((option) => option.id === values[0]).car_type_generation[0].transformed_media.main[0]
+        this.offerGenerations[this.index].find((option) => option.id === values[0]).car_type_generation[0].transformed_media.main[0]
 
         this.$store.commit('appendOfferSelectedModels', {
           index: this.index,
           data: {
-            img: this.generations.find((option) => option.id === values[0]).car_type_generation[0].transformed_media.main[0],
-            year: this.generations.find((option) => option.id === values[0]).start_year + ' - ' + this.generations.find((option) => option.id === values[0]).end_year
+            img: this.offerGenerations[this.index].find((option) => option.id === values[0]).car_type_generation[0].transformed_media.main[0],
+            year: this.offerGenerations[this.index].find((option) => option.id === values[0]).start_year + ' - ' + this.offerGenerations[this.index].find((option) => option.id === values[0]).end_year
           }
         })
       }
     }
 
   },
+async beforeCreate(){
 
+},
   async created() {
+   await this.$store.dispatch('getOfferGenerations', {
+      brand: this.$route.query.brand,
+      model: this.$route.query.model,
+      index:this.index
+    })
+
+
+
     this.$store.commit('setOfferAddLoader', {status: false})
     this.$store.commit('openOfferPaymentModal', {status: false})
-    if (this.generations.length == 1) {
-      this.form[this.index].generations.push(this.generations[0].id)
+    console.log(this.offerGenerations)
+    if (this.offerGenerations[this.index].length == 1) {
+      this.form[this.index].generations.push(this.offerGenerations[this.index][0].id)
     }
 
     if (this.index == 0) {
@@ -409,6 +417,7 @@ export default {
       })
 
     }
+
   },
   watch: {
     form: {

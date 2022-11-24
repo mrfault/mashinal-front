@@ -57,11 +57,30 @@
         </div>
 
         <div class="offerDetailItem">
+          <p>Alış şərti</p>
+          <div>
+            <div >
+              <span > {{offer_items[selected_offer_item].buy_type=='cash' ? 'Nağd' : 'Kredit'}}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="offerDetailItem">
           <p>Rəng </p>
           <div>
                 <div v-for=" (color,index) in offer_items[selected_offer_item].colors">
                     <span class="color-box" :style="`background-color:${color.code}`"></span>
                 </div>
+          </div>
+        </div>
+
+        <div class="offerDetailItem">
+          <p>Salon Rəngi </p>
+          <div>
+            <div>
+              <span class="color-box" :style="`background-color:${offer_items[selected_offer_item].interior_color.code}`" v-if="offer_items[selected_offer_item].interior_color!='other'"></span>
+              <span class="color-box color"     :style="'background:url(/images/offer/other-color.png);background-size:cover'" v-else></span>
+            </div>
           </div>
         </div>
         <div>

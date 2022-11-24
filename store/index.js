@@ -178,7 +178,7 @@ const getInitialState = () => ({
   offer_faq: null,
   user_deleted_auto_salon_offers: [],
   active_my_offers: [],
-
+  offer_generations:[],
 })
 
 export const state = () => getInitialState()
@@ -348,6 +348,7 @@ export const getters = {
   getOfferFaq: (s) => s.offer_faq,
   getUserDeletedAutoSalonOffer: (s) => s.user_deleted_auto_salon_offers,
   getActiveMyOffers: (s) => s.active_my_offers,
+  offerGenerations: (s)=>s.offer_generations,
 
 }
 
@@ -657,15 +658,30 @@ export const actions = {
   },
   // Generations
   async getGenerations({commit}, data) {
+
     const res = await this.$axios.$get(
       `/brand/${data.brand}/model/${data.model}/generations`,
     )
+
     commit('mutate', {property: 'generations', value: res.generations})
     commit('mutate', {
       property: 'modelDescription',
       value: res.model.description,
     })
   },
+
+  async getOfferGenerations({commit}, data) {
+    const res = await this.$axios.$get(
+      `/brand/${data.brand}/model/${data.model}/generations`,
+    )
+
+    commit('setOfferGenerations',{index:data.index,data:res.generations})
+
+
+
+  },
+
+
   async getFirstGeneration({commit}, data) {
     const res = await this.$axios.$get(
       `/brand/${data.brand}/model/${data.model}/generation/${data.generation}`,
@@ -1573,9 +1589,9 @@ export const mutations = {
   setOfferFaq(state, payload) {
     state.offer_faq = payload.data
   },
-  resetGenerations(state) {
 
-    state.generations = [];
+  setOfferGenerations(state,payload){
+    Vue.set(state.offer_generations,payload.index,payload.data)
 
   }
 }

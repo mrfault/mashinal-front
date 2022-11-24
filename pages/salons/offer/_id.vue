@@ -14,10 +14,9 @@
         <p class="mt-2 ml-2 text-bold">
           {{ offer.user.full_name }}
         </p>
-        <div class="actions m-1" v-if="user_is_accepted">
+        <div class="actions m-1" v-if="IsAccepted">
 
-              <span @click="deleteUserAutoSalonOffer(offer.id)"
-                    v-if="!offer.auto_salon_deleted_at || this.IsAccepted"> <icon
+              <span @click="deleteUserAutoSalonOffer(offer.id)"  v-if="!offer.auto_salon_deleted_at || this.IsAccepted"> <icon
                 name="garbage"></icon></span>
         </div>
       </div>
@@ -28,15 +27,13 @@
         <div class="col col-md-12 col-12 col-xs-12 col-sm-12">
           <div class="offerDetail" v-if="offer">
 
+
             <collapse-content :title="'Təklif'">
               <offer-items :offer_items="offer.offer_items"/>
             </collapse-content>
 
-            <div class="text-right" v-if="!IsAccepted">
-              <button class="btn  btn--green mt-3" @click="accept(offer.id)">Sorğunu qəbul et
-              </button>
-            </div>
-            <div v-else>
+
+
               <div class="messages">
                 <div class="message" :class=" isMyMessage(message) ? 'my' :'his' " v-for="message in offerMessages">
                   <div v-if="message.files.length>0" class="message-files">
@@ -53,9 +50,16 @@
                   </span>
                 </div>
               </div>
+
+          </div>
+
+          <div class="col-md-12">
+            <div class="offer-alert" role="alert" v-if="user_deleted">
+              İstifadəçi təklifi silmişdir.
             </div>
           </div>
-          <div class="addons" v-if="IsAccepted">
+
+          <div class="addons" v-if="!auto_salon_deleted && !user_deleted">
             <offer-message
               @type="handleTyping"
               @attach="handleFiles"
@@ -125,7 +129,9 @@ export default {
 
     store.commit('setOfferMessages', res.messages)
     return {
-      user_is_accepted: res.status
+      user_is_accepted: res.status,
+      auto_salon_deleted:res.auto_salon_deleted_at==null ? false : true,
+      user_deleted:res.user_deleted_at==null ? false : true
     }
   },
   head() {
@@ -147,7 +153,9 @@ export default {
       search: '',
       IsAccepted: false,
       files: [],
-      aut0_salon_offer_id:null
+      auto_salon_offer_id:null,
+      user_deleted:true,
+      auto_salon_deleted:true,
 
     }
   },
@@ -188,6 +196,7 @@ export default {
         }
         this.chat.text = '';
         this.$nuxt.$emit('clear-message-attachments');
+        this.checkAccepted(this.$route.params.id)
 
       })
 
@@ -195,6 +204,9 @@ export default {
 
     async checkAccepted(id) {
       await this.$axios.$post('/offer/salon/offer/check/' + id).then((res) => {
+
+        this.auto_salon_deleted=res.auto_salon_deleted_at==null ? false : true
+        this.user_deleted=res.user_deleted_at==null ? false : true
 
         this.IsAccepted = res.status
         this.auto_salon_offer_id = res.auto_salon_offer_id
