@@ -695,6 +695,7 @@ export default {
     "Qaz-turbin",
     "Plug-in Hibrid"
   ],
+
   "engine_volume": "Mühərrikin işçi həcmi (sm3)",
   "engine_type": "Mühərrikin növü",
   "enter_a_new_mobile_number": "Yeni əlaqə nömrəsi əlavə et",
@@ -2337,6 +2338,18 @@ export default {
   "video_choose": "Video faylı seç",
   "video_choosed": "Video fayl seçilib",
   "file_size_50": "Faylın maksimal həcmi 50 mb ola bilər",
+  "plug_in_hybrid": "Plug-in Hibrid",
+  "360_interior": "360 interyer",
+  "transfer_to_supervisor": "Supervayzerə ötür",
+  "moderation": "Moderasiya",
+  "user_type": "İstifadəçi növü",
+  "transfer_comment": "Transfer rəyi",
   "max_50_symbol_can_be_added": "Maksimum 50 simvol yazıla bilər",
   "max_150_symbol_can_be_added": "Maksimum 150 simvol yazıla bilər",
+  "deactive_announce": "Elanı deaktiv et",
+  "reject": "İmtina et",
+  "file_size_50": "Faylın maksimal həcmi 50 mb ola bilər",
+  "anyone":"İstənilən",
+  "anyone_other": "İstənilən",
+  "anyone_other2": "İstənilən"
 }
