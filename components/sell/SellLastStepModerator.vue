@@ -240,7 +240,7 @@
               </div>
               <div class="col-auto">
                 <form-switch
-                  v-model="form.currency_id"
+                  v-model="form.currency"
                   :options="getCurrencyOptions"
                   @change="updatePreview('currency')"
                 />
@@ -404,7 +404,7 @@
           </div>
           <div class="col-12 col-lg-8">
                   <span
-                    v-if="smsRadarData"
+                    v-if="smsRadarData && (smsRadarData.carNumber || smsRadarData.bodyNumber)"
                     class="ma-smsradar"
                   >
                   <strong>SMSRadar: </strong>   <p>{{ smsRadarData.carNumber }} | {{ smsRadarData.bodyNumber ? smsRadarData.bodyNumber : '' }}</p>
@@ -692,29 +692,29 @@ export default {
       }
     },
     updatePreview(key) {
-      // if (!key || key === 'region')
-      //   this.setSellPreviewData({
-      //     value: this.announcement.region_id,
-      //     key: 'region',
-      //   })
-      // if (!key || key === 'price')
-      //   this.setSellPreviewData({ value: this.form.price, key: 'price' })
-      // if (!key || key === 'currency')
-      //   this.setSellPreviewData({
-      //     value: this.getCurrencyOptions.find(
-      //       (o) => o.key === this.form.currency,
-      //     )?.sign,
-      //     key: 'currency',
-      //   })
-      // if (!key || key === 'mileage')
-      //   this.setSellPreviewData({ value: this.form.mileage, key: 'mileage' })
-      // if (!key || key === 'mileage_measure')
-      //   this.setSellPreviewData({
-      //     value: this.getMileageOptions.find(
-      //       (o) => o.key === this.form.mileage_measure,
-      //     )?.name,
-      //     key: 'mileage_measure',
-      //   })
+      if (!key || key === 'region')
+        this.setSellPreviewData({
+          value: this.announcement.region_id,
+          key: 'region',
+        })
+      if (!key || key === 'price')
+        this.setSellPreviewData({ value: this.form.price, key: 'price' })
+      if (!key || key === 'currency')
+        this.setSellPreviewData({
+          value: this.getCurrencyOptions.find(
+            (o) => o.key === this.form.currency,
+          )?.sign,
+          key: 'currency',
+        })
+      if (!key || key === 'mileage')
+        this.setSellPreviewData({ value: this.form.mileage, key: 'mileage' })
+      if (!key || key === 'mileage_measure')
+        this.setSellPreviewData({
+          value: this.getMileageOptions.find(
+            (o) => o.key === this.form.mileage_measure,
+          )?.name,
+          key: 'mileage_measure',
+        })
       return
     },
     updateMileage(is_new) {
