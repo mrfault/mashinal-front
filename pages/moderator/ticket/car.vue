@@ -749,7 +749,7 @@ export default {
           part: data.announce?.car_body_health
             ? JSON.parse(data.announce?.car_body_health.options)
             : {},
-          all_options: data.announce?.options,
+          options: data.announce?.options,
           badges: data.announce?.stickers?.map((item) => item.id),
           new_badges: [],
           comment: data.announce?.comment || '',
@@ -771,6 +771,7 @@ export default {
         this.announcementIsAvailable = true;
         this.loading = false;
         this.checkWithVin()
+        
         // this.getGenerations();
       } catch (e) {
         this.$store.commit('moderator/moderatorMutator', {

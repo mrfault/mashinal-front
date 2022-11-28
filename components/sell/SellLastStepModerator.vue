@@ -412,10 +412,10 @@
           </div>
         </div>
         <div class="mt-2 mt-lg-3">
-          <template v-if="type === 'cars'">
+          <template v-if="(type === 'cars') && popularOptions && popularOptions.length">
             <car-filters
               :collapsedByDefault="true"
-              :values="form.all_options"
+              :values="form.options"
               popular
               @change-filter="updateCarFilter"
             />
@@ -608,7 +608,7 @@ export default {
   },
   computed: {
     ...mapState(['sellPhoneEntered']),
-    ...mapGetters(['sellOptions', 'sellSalonRights', 'staticPages']),
+    ...mapGetters(['sellOptions', 'sellSalonRights', 'staticPages','popularOptions']),
     helperImages() {
       let imgs =
         this.type === 'cars'
@@ -747,8 +747,8 @@ export default {
         value === '' ||
         (typeof value === 'object' && !Object.keys(value).length)
       )
-        this.$delete(this.form.all_options, key)
-      else this.$set(this.form.all_options, key, value)
+        this.$delete(this.form.options, key)
+      else this.$set(this.form.options, key, value)
       this.$nuxt.$emit('change-car-filters')
     },
     updateSellFilter(key, value) {
@@ -1015,6 +1015,9 @@ export default {
   beforeDestroy() {
     this.$nuxt.$off('login', this.handleAfterLogin)
   },
+  mounted() {
+    this.$store.dispatch('getPopularOptions');
+  }
 }
 </script>
 
