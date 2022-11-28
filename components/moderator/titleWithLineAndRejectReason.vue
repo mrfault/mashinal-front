@@ -7,6 +7,7 @@
       <h2 :id="id" class="title-with-line full-width">
         <span :id="spanId">
           {{ $t(title) }}
+          {{ modalToggled }}
           <template v-if="subtitle">({{ $t(subtitle) }})</template>
           <span v-if="required" class="star">*</span>
         </span>
@@ -14,9 +15,9 @@
     </div>
     <div
       v-if="!noApproval"
+      class="mb-2 ml-2"
       style="display: inline-block; z-index: 0;"
       @click="openPhotoIssuePopup"
-      class="mb-2 ml-2"
     >
       <label class="toggleButton">
         <input
@@ -34,6 +35,7 @@
         </div>
       </label>
     </div>
+
   </div>
 </template>
 
@@ -63,6 +65,9 @@ export default {
       type: Boolean,
     },
     rejectKey: {},
+    imageRejected: Boolean,
+    imageReject: Boolean,
+    modalToggled: Boolean
   },
   computed: {
     toggleDisable() {
@@ -92,16 +97,20 @@ export default {
       }
     },
     click() {
-      this.rejected = !this.rejected
+      if (this.imageReject) {
+        this.rejected = this.rejected;
+      } else {
+        this.rejected = !this.rejected
+      }
+
       this.$emit('change', this.rejectKey)
     },
   },
   mounted() {
     this.disabled = this.disabledValue
-
     if (this.rejectKey === 'image') {
       this.$nuxt.$on('image-checkbox-change', (toggle) => {
-        this.rejectedValue = toggle
+        this.rejectedValue = toggle;
       })
     }
     if (this.rejectKey === '360') {
@@ -110,6 +119,19 @@ export default {
       })
     }
   },
+  watch: {
+    'modalToggled': {
+      handler() {
+        console.log(this.modalToggled)
+        if (this.imageRejected && this.imageReject) {
+          this.rejected = true;
+        } else if (this.imageReject && !this.imageRejected) {
+          this.rejected = false;
+        }
+      }
+    }
+  }
+
 }
 </script>
 

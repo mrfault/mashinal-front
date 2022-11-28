@@ -17,18 +17,23 @@
         <title-with-line-and-reject-reason
           v-if="announcement.media.length"
           id="360"
+          :imageRejects="imageModal.imageRejects"
           :subtitle="
             $t('at_least_5_photos', {
               min: minFiles,
               max: maxFiles,
             }).toLowerCase()
           "
+          imageReject
           reasonOptions
           reject-key="image"
           required
           title="photos"
           @change="changeReason"
+          :image-rejected="imageModal.imageRejected"
+          :modalToggled="imageModal.modalToggled"
         />
+        <pre>{{ imageModal.imageRejects }}</pre>
         <upload-image
           ref="sellLastStepUploadImage"
           :default-files="files"
@@ -407,7 +412,9 @@
                     v-if="smsRadarData && (smsRadarData.carNumber || smsRadarData.bodyNumber)"
                     class="ma-smsradar"
                   >
-                  <strong>SMSRadar: </strong>   <p>{{ smsRadarData.carNumber }} | {{ smsRadarData.bodyNumber ? smsRadarData.bodyNumber : '' }}</p>
+                  <strong>SMSRadar: </strong>   <p>{{
+                      smsRadarData.carNumber
+                    }} | {{ smsRadarData.bodyNumber ? smsRadarData.bodyNumber : '' }}</p>
                </span>
           </div>
         </div>
@@ -415,7 +422,7 @@
           <template v-if="(type === 'cars') && popularOptions && popularOptions.length">
             <car-filters
               :collapsedByDefault="true"
-              :values="form.options"
+              :values="form.all_options"
               popular
               @change-filter="updateCarFilter"
             />
@@ -460,6 +467,23 @@
           @close="showRules = false"
         >
           <div v-html="getRulesPage.text[locale]"></div>
+        </modal-popup>
+        <modal-popup
+          :modal-class="'wider'"
+          :title="$t('image_reject_reason')"
+          :toggle="imageModal.isOpen"
+          @close="toggleImageRejectModal(false)"
+        >
+          {{ imageModal.modalToggled }}
+          <div v-for="(input, index) in imageModal.options" :key="index" class="col-12 mb-2">
+            <form-checkbox
+              :id="input"
+              v-model="rejectObj.rejectArray[input]"
+              :input-name="input"
+              :label="$t(input)"
+              @change="changeReason(input)"
+            />
+          </div>
         </modal-popup>
         <backdrop v-if="showLoginPopup" @click="showLoginPopup = false">
           <template #default="{ show }">
@@ -604,11 +628,26 @@ export default {
         rejectArray: [],
         reject360: ['360_photo_reject_1'],
       },
+      imageModal: {
+        isOpen: false,
+        options: [
+          'front_error',
+          'back_error',
+          'left_error',
+          'right_error',
+          'interior_error',
+          'not_this_car_error',
+          'logo_on_the_picture',
+        ],
+        imageRejects: [],
+        imageRejected: false,
+        modalToggled: false,
+      }
     }
   },
   computed: {
     ...mapState(['sellPhoneEntered']),
-    ...mapGetters(['sellOptions', 'sellSalonRights', 'staticPages','popularOptions']),
+    ...mapGetters(['sellOptions', 'sellSalonRights', 'staticPages', 'popularOptions']),
     helperImages() {
       let imgs =
         this.type === 'cars'
@@ -618,7 +657,6 @@ export default {
             : [1, 2, 3]
       return imgs.map((n) => `/img/sell-helpers/${this.type}_${n}.png`)
     },
-
     isAutosalon() {
       return !!(
         (this.loggedIn &&
@@ -630,7 +668,6 @@ export default {
     getRulesPage() {
       return this.staticPages.find((page) => page.id == 1)
     },
-
     getCurrencyOptions() {
       return [
         {key: 1, name: 'AZN', sign: '₼'},
@@ -698,7 +735,7 @@ export default {
           key: 'region',
         })
       if (!key || key === 'price')
-        this.setSellPreviewData({ value: this.form.price, key: 'price' })
+        this.setSellPreviewData({value: this.form.price, key: 'price'})
       if (!key || key === 'currency')
         this.setSellPreviewData({
           value: this.getCurrencyOptions.find(
@@ -707,7 +744,7 @@ export default {
           key: 'currency',
         })
       if (!key || key === 'mileage')
-        this.setSellPreviewData({ value: this.form.mileage, key: 'mileage' })
+        this.setSellPreviewData({value: this.form.mileage, key: 'mileage'})
       if (!key || key === 'mileage_measure')
         this.setSellPreviewData({
           value: this.getMileageOptions.find(
@@ -747,8 +784,8 @@ export default {
         value === '' ||
         (typeof value === 'object' && !Object.keys(value).length)
       )
-        this.$delete(this.form.options, key)
-      else this.$set(this.form.options, key, value)
+        this.$delete(this.form.all_options, key)
+      else this.$set(this.form.all_options, key, value)
       this.$nuxt.$emit('change-car-filters')
     },
     updateSellFilter(key, value) {
@@ -960,12 +997,17 @@ export default {
       this.showLoginPopup = false
       this.publishPost()
     },
-
     changeReason(rejectKey) {
       if (rejectKey === 'image') {
-        this.rejectObj.showPhotoReject = true
+        this.toggleImageRejectModal(true)
       } else if (rejectKey === '360') {
         this.rejectObj.show360Reject = true
+      } else if ((rejectKey == "front_error") || (rejectKey == "back_error") || (rejectKey == "left_error") || (rejectKey == "right_error") || (rejectKey == "interior_error") || (rejectKey == "not_this_car_error") || (rejectKey == "logo_on_the_picture")) {
+        if (this.imageModal.imageRejects.includes(rejectKey)) {
+          this.imageModal.imageRejects.splice(this.imageModal.imageRejects.indexOf(rejectKey), 1)
+        } else {
+          this.imageModal.imageRejects.push(rejectKey)
+        }
       } else {
         if (this.rejectObj.rejectArray.includes(rejectKey)) {
           this.rejectObj.rejectArray.splice(this.rejectObj.rejectArray.indexOf(rejectKey), 1)
@@ -974,7 +1016,18 @@ export default {
         }
       }
     },
-
+    changeImageOption(rejectKey) {
+      this.changeReason(rejectKey)
+    },
+    toggleImageRejectModal(toggle) {
+      this.imageModal.modalToggled = !this.imageModal.modalToggled
+      if (this.imageModal.imageRejects.length) {
+        this.imageModal.imageRejected = true;
+      } else {
+        this.imageModal.imageRejected = false;
+      }
+      this.imageModal.isOpen = toggle
+    },
   },
   watch: {
     progress(value) {
@@ -983,6 +1036,7 @@ export default {
     rejectObj: {
       deep: true,
       handler() {
+        console.log("ra ro", this.rejectObj.rejectArray)
         this.$emit('getRejectObj', this.rejectObj)
       }
     },
@@ -1017,7 +1071,7 @@ export default {
   },
   mounted() {
     this.$store.dispatch('getPopularOptions');
-  }
+  },
 }
 </script>
 

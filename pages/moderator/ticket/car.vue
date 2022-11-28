@@ -388,6 +388,9 @@
         </div>
       </div>
     </div>
+    <pre>
+      {{rejectObj.rejectArray}}
+    </pre>
     <modal-popup
       :modal-class="'offer-payment-modal'"
       :title="$t('transfer_to_supervisor')"
@@ -749,7 +752,7 @@ export default {
           part: data.announce?.car_body_health
             ? JSON.parse(data.announce?.car_body_health.options)
             : {},
-          options: data.announce?.options,
+          all_options: data.announce?.options,
           badges: data.announce?.stickers?.map((item) => item.id),
           new_badges: [],
           comment: data.announce?.comment || '',
@@ -771,7 +774,7 @@ export default {
         this.announcementIsAvailable = true;
         this.loading = false;
         this.checkWithVin()
-        
+
         // this.getGenerations();
       } catch (e) {
         this.$store.commit('moderator/moderatorMutator', {
