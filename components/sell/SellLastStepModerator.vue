@@ -84,7 +84,7 @@
           </div>
           <div class="col-12 col-lg-2">
                   <span
-                    v-if="smsRadarData"
+                    v-if="smsRadarData && smsRadarData.color"
                     class="ma-smsradar"
                   >
                   <strong>SMSRadar: </strong>   <p>{{ smsRadarData.color }}</p>

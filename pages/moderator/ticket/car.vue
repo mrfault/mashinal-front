@@ -35,7 +35,7 @@
                 </div>
                 <div class="col-12 col-lg-9">
                   <span
-                    v-if="smsRadarData"
+                    v-if="smsRadarData && smsRadarData.marka"
                     class="ma-smsradar"
                   >
                   <strong>SMSRadar: </strong>   <p>{{ smsRadarData.marka }}</p>
@@ -85,7 +85,7 @@
                 </div>
                 <div class="col-12 col-lg-9">
                   <span
-                    v-if="smsRadarData"
+                    v-if="smsRadarData && smsRadarData.manufactYear"
                     class="ma-smsradar"
                   >
                   <strong>SMSRadar: </strong>   <p>{{ smsRadarData.manufactYear }}</p>
@@ -114,7 +114,7 @@
                 </div>
                 <div class="col-12 col-lg-9">
                   <span
-                    v-if="smsRadarData"
+                    v-if="smsRadarData && smsRadarData.vehBodyType"
                     class="ma-smsradar"
                   >
                   <strong>SMSRadar: </strong>   <p>{{ smsRadarData.vehBodyType }}</p>
@@ -254,7 +254,7 @@
                 </div>
                 <div class="col-12 col-lg-9">
                   <span
-                    v-if="smsRadarData"
+                    v-if="smsRadarData && smsRadarData.engincapacity"
                     class="ma-smsradar"
                   >
                   <strong>SMSRadar: </strong>   <p>{{ smsRadarData.engincapacity / 1000 }}</p>
