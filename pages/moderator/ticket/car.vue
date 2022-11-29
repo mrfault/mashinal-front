@@ -10,8 +10,8 @@
               <template v-if="form.brand">
                 <user-details
                   :brand="form.brandObj"
-                  :userData="form.user"
                   :smsRadarData="smsRadarData"
+                  :userData="form.user"
                 />
               </template>
               <!--              brand -->
@@ -158,23 +158,23 @@
                     v-model="form.engine"
                     :disabled="isModerator"
                     :label="$t('engine')"
-                    :options="data.engines.map((o) => ({
-                        name: $t('engine_values')[o.engine_id],
-                        key: o.engine_id,
-                      }))"
+                    :options="
+                      data.engines.map((o) => ({
+                        name: $t('engine_values')[o.engine],
+                        key: o.engine,
+                      }))
+                    "
                     :value="form.engine"
                     has-search
                     @change="changeEngine($event)"
                   />
-
-
                 </div>
               </div>
               <!--              gearing-->
               <div v-if="data.gearings && form.engine" class="row">
                 <div class="col-12">
                   <title-with-line-and-reject-reason
-                    :title="$t('type_of_drive')"
+                    :title="$t('box')"
                     rejectKey="gearing"
                     required
                     @change="changeReason"
@@ -182,25 +182,28 @@
                 </div>
                 <div class="col-12 col-lg-3 pl-0">
                   <form-select
-                    v-model="form.transmission"
+                    v-model="form.gearing"
                     :disabled="isModerator"
-                    :label="$t('tip-privoda')"
-                    :options="data.gearings.map((o) => ({
-                      name: $t('type_of_drive_values')[o.type_of_drive],
-                      key: o.type_of_drive,
-                      }))
-                      "
+                    :label="$t('box')"
+                    :options="
+                    data.gearings.map((o) => ({
+                      name: $t('box_values')[o.box],
+                      key: parseInt(o.box),
+                    }))
+                    "
                     :value="form.gearing"
                     has-search
                     @change="changeGearing($event)"
                   />
                 </div>
+
+
               </div>
               <!--              transmission-->
               <div v-if="data.transmissions && form.gearing" class="row">
                 <div class="col-12">
                   <title-with-line-and-reject-reason
-                    :title="$t('box')"
+                    :title="$t('type_of_drive')"
                     rejectKey="transmission"
                     required
                     @change="changeReason"
@@ -210,23 +213,21 @@
                   <form-select
                     v-model="form.transmission"
                     :disabled="isModerator"
-                    :label="$t('tip-privoda')"
+                    :label="$t('type_of_drive')"
                     :options="
-                    data.transmissions.map((o) => ({
-                      name: $t('box_values')[o.box],
-                      key: o.box,
-                    }))
+                      data.gearings.map((o) => ({
+                        name: $t('type_of_drive_values')[o.type_of_drive],
+                        key: o.type_of_drive,
+                      }))
                     "
                     :value="form.transmission"
-                    has-search
                     @change="changeTransmission($event)"
                   />
                 </div>
-
-
               </div>
+
               <!--              modification-->
-              <div v-if="data.modifications && form.transmission" class="row">
+              <div v-if="data.modifications && data.modifications.length && form.gearing" class="row">
                 <div class="col-12">
                   <title-with-line-and-reject-reason
                     v-if="sellModifications"
@@ -234,7 +235,6 @@
                     rejectKey="modification"
                     required
                     @change="changeReason"
-
                   />
                 </div>
                 <div class="col-12 col-lg-3 pl-0">
@@ -245,10 +245,10 @@
                     :options="
                     sellModifications.map((o) => ({
                       name: getModificationName(o),
-                      key: o.id,
+                      key: parseInt(o.id),
                     }))
                   "
-                    @change="changeModification($event, )"
+                    @change="changeModification($event)"
                   />
 
                 </div>
@@ -688,7 +688,8 @@ export default {
           with: data.modifications,
           property: 'modifications',
         })
-        this.data.modifications = this.modificationsModerator;
+        this.handleModificationsData(this.modificationsModerator);
+
         this.$store.commit('moderator/moderatorMutator', {
           with: data.sellYears,
           property: 'sellYears',
@@ -718,8 +719,8 @@ export default {
           generation_id: data.announce?.car_catalog?.generation_id,
           generation: data.announce?.car_catalog?.generation_id,
           car_body_type: data.announce?.car_catalog?.car_type.id,
-          gearing: data.announce?.car_catalog?.main['  ']['engine'], // engines
-          modification: data.announce?.car_catalog?.main[' ']['box'], // transmissions/box
+          gearing: data.announce?.car_catalog?.box_id, // engines
+          modification: data.announce.car_catalog.main[' ']['box'],
           transmission: data.announce?.car_catalog?.main[' ']['type_of_drive'], // gearing
           capacity: data.announce?.car_catalog?.capacity,
           power: data.announce?.car_catalog?.power,
@@ -867,10 +868,11 @@ export default {
           body: this.form.car_body_type,
           generation: this.form?.generation_id,
         })
+        this.data.engines = this.engines;
       }
     },
     async getSellGearing() {
-      if (this.form.engine) {
+      if (this.form.transmission) {
         await this.$store.dispatch('getSellGearing', {
           brand: this.form.brand_slug,
           model: this.form.model_slug,
@@ -883,7 +885,7 @@ export default {
       }
     },
     async getSellTransmissions() {
-      if (this.form.gearing) {
+      if (this.form.engine) {
         await this.$store.dispatch('getSellTransmissions', {
           brand: this.form.brand_slug,
           model: this.form.model_slug,
@@ -896,6 +898,7 @@ export default {
         this.data.transmissions = this.sellTransmissions;
       }
     },
+
     async getSellModifications() {
       if (this.form.transmission) {
         await this.$store.dispatch('getSellModifications', {
@@ -1092,7 +1095,16 @@ export default {
       }
       this.data.transmissions = arr;
     },
+    handleModificationsData(obj) {
+      var arr = []
+      for (var i = 0; i < Object.keys(obj).length; i++) {
+        var item = obj[Object.keys(obj)[i]];
+        console.log(item)
+        arr.push(item);
+      }
+      this.data.modifications = arr;
 
+    },
 
     //handle change
     async changeBrand(e) {
@@ -1150,6 +1162,7 @@ export default {
       this.form.modification = null;
       this.getSellModifications();
     },
+
     async changeModification(e) {
       return e;
     },

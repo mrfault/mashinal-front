@@ -33,7 +33,6 @@
           :image-rejected="imageModal.imageRejected"
           :modalToggled="imageModal.modalToggled"
         />
-        <pre>{{ imageModal.imageRejects }}</pre>
         <upload-image
           ref="sellLastStepUploadImage"
           :default-files="files"
