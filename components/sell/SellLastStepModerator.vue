@@ -45,6 +45,7 @@
           @file-deleted="deleteImage"
           @file-rotated="rotateImage"
           @order-changed="changeOrder"
+          isModeationPage
         />
         <title-with-line-and-reject-reason
           v-if="form.images_360 && form.images_360.length"

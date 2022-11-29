@@ -7,7 +7,6 @@
       <h2 :id="id" class="title-with-line full-width">
         <span :id="spanId">
           {{ $t(title) }}
-          {{ modalToggled }}
           <template v-if="subtitle">({{ $t(subtitle) }})</template>
           <span v-if="required" class="star">*</span>
         </span>

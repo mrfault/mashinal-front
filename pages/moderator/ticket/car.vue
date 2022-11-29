@@ -157,10 +157,10 @@
                   <form-select
                     v-model="form.engine"
                     :disabled="isModerator"
-                    :label="$t('body_type')"
+                    :label="$t('engine')"
                     :options="data.engines.map((o) => ({
-                        name: $t('engine_values')[o.engine],
-                        key: o.engine,
+                        name: $t('engine_values')[o.engine_id],
+                        key: o.engine_id,
                       }))"
                     :value="form.engine"
                     has-search
@@ -182,7 +182,7 @@
                 </div>
                 <div class="col-12 col-lg-3 pl-0">
                   <form-select
-                    v-model="form.gearing"
+                    v-model="form.transmission"
                     :disabled="isModerator"
                     :label="$t('tip-privoda')"
                     :options="data.gearings.map((o) => ({
@@ -388,9 +388,6 @@
         </div>
       </div>
     </div>
-    <pre>
-      {{rejectObj.rejectArray}}
-    </pre>
     <modal-popup
       :modal-class="'offer-payment-modal'"
       :title="$t('transfer_to_supervisor')"
