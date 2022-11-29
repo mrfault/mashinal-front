@@ -474,7 +474,6 @@
           :toggle="imageModal.isOpen"
           @close="toggleImageRejectModal(false)"
         >
-          {{ imageModal.modalToggled }}
           <div v-for="(input, index) in imageModal.options" :key="index" class="col-12 mb-2">
             <form-checkbox
               :id="input"

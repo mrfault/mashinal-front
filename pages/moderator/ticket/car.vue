@@ -478,7 +478,6 @@ export default {
         comment: '',
         isOpen: false,
       },
-      saved_images: [],
       button_loading: false,
       itemForm: {},
       sellLastStepRejectObj: {
@@ -513,6 +512,11 @@ export default {
       },
       models: [],
       smsRadarData: {},
+      // send data
+      errors: [],
+      imagesBase64: [],
+      main_image: null,
+      saved_images: [],
     }
   },
   computed: {
@@ -1189,43 +1193,65 @@ export default {
       }
     },
     async sendData(status = 2) {
-      // if (this.saved_images?.length !== this.imagesBase64.length) {
-      //   this.$toasted.show(this.$t('please_wait_for_all_image_loading'), {
-      //     type: 'error',
-      //   })
-      //   return false
-      // }
+      if (this.saved_images.length !== this.imagesBase64.length) {
+        this.$toasted.show(this.$t('please_wait_for_all_image_loading'), {
+          type: 'error',
+        })
+        return false
+      }
 
+      let formData = new FormData()
 
-      let form = {};
+      this.form.status = status
+      // this.form.brand = this.brand
+      // this.form.model = this.model
+      // this.form.year = this.year
+      // this.form.generation = this.generation
+      // this.form.car_catalog_id = this.modification
+      // this.form.rejectArray = this.rejectArray
+      // this.form.main_image = this.main_image
+      // this.form.saved_images = this.saved_images
+      formData.append('data', JSON.stringify(this.form))
+      formData.append('deletedImages', JSON.stringify(this.deleteArr))
 
-      form.status = this.form.status;
-      form.brand = this.form.brand.slug;
-      form.model = this.form.model.slug;
-      form.year = this.form.year;
-      form.address = this.form.address;
-      // form.generation_id = this.form.generation_id;
-      form.rejectArray = this.rejectObj.rejectArray.concat(this.sellLastStepRejectObj.rejectArray);
-
-
-      var formData = new FormData();
-
-      formData.append("data", JSON.stringify(this.form))
-
-
-      this.$nuxt.$emit('loading_status', true)
-      this.pending = true
-
+      this.loading = true;
+      this.button_loading = true
       try {
         await this.$axios.$post('/ticket/car/' + this.single_announce.id, formData)
 
         if (this.user.admin_group == 2) {
+          location.href = '/'
         } else {
-          // location.href = '/alvcp/resources/announcements'
+          location.href = '/'
         }
-      } catch {
-
-        this.pending = false;
+      } catch ({
+        response: {
+          data: {data},
+        },
+      }) {
+        this.loading = false;
+        this.button_loading = false
+        this.errors = []
+        this.$toasted.clear()
+        Object.keys(data)
+          .reverse()
+          .map((key) => {
+            this.errors.push(key)
+            this.$toasted.show(data[key][0], {
+              type: 'error',
+              duration: 0,
+              action: {
+                text: 'Go to fix',
+                onClick: (e, toastObject) => {
+                  if (document.querySelector('#' + key))
+                    document
+                      .querySelector('#' + key)
+                      .scrollIntoView({behavior: 'smooth', block: 'center'})
+                  toastObject.goAway(0)
+                },
+              },
+            })
+          })
       }
     },
     addComment(e) {
