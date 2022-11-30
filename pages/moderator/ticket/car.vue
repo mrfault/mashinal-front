@@ -521,6 +521,7 @@ export default {
       imagesBase64: [],
       main_image: null,
       saved_images: [],
+      deleteArr:[]
     }
   },
   computed: {
@@ -840,7 +841,7 @@ export default {
     async getSellYears() {
       if (this.form.model_id) {
         await this.$store.dispatch('getSellYears', {
-          brand: this.form.brand_slug,
+          brand: this.form.brand_slug || this.form.brandObj.slug,
           model: this.form.model_slug,
         })
         this.handleYears(this.sellYears);
@@ -849,7 +850,7 @@ export default {
     async getSellBodies() {
       if (this.form.year) {
         await this.$store.dispatch('getSellBody', {
-          brand: this.form.brand_slug,
+          brand: this.form.brand_slug || this.form.brandObj.slug,
           model: this.form.model_slug,
           year: this.form.year,
         })
@@ -870,7 +871,7 @@ export default {
     async getSellEngines() {
       if (this.form.generation_id) {
         await this.$store.dispatch('getSellEngines', {
-          brand: this.form.brand_slug,
+          brand: this.form.brand_slug || this.form.brandObj.slug,
           model: this.form.model_slug,
           year: this.form.year,
           body: this.form.car_body_type,
@@ -882,7 +883,7 @@ export default {
     async getSellGearing() {
       if (this.form.engine) {
         await this.$store.dispatch('getSellGearing', {
-          brand: this.form.brand_slug,
+          brand: this.form.brand_slug || this.form.brandObj.slug,
           model: this.form.model_slug,
           year: this.form.year,
           body: this.form.car_body_type,
@@ -895,7 +896,7 @@ export default {
     async getSellTransmissions() {
       if (this.form.engine) {
         await this.$store.dispatch('getSellTransmissions', {
-          brand: this.form.brand_slug,
+          brand: this.form.brand_slug || this.form.brandObj.slug,
           model: this.form.model_slug,
           year: this.form.year,
           body: this.form.car_body_type,
@@ -910,7 +911,7 @@ export default {
     async getSellModifications() {
       if (this.form.transmission) {
         await this.$store.dispatch('getSellModifications', {
-          brand: this.form.brand_slug,
+          brand: this.form.brand_slug || this.form.brandObj.slug,
           model: this.form.model_slug,
           year: this.form.year,
           body: this.form.car_body_type,
@@ -1210,7 +1211,7 @@ export default {
 
       this.form.status = status
       // this.form.brand = this.brand
-      // this.form.model = this.model
+      // this.form.model = this.form.model_id
       // this.form.year = this.year
       // this.form.generation = this.generation
       // this.form.car_catalog_id = this.modification
