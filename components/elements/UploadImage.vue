@@ -163,9 +163,9 @@
 
       </template>
     </transition-group>
-    <pre>
-      {{slider}}
-    </pre>
+<!--    <pre>-->
+<!--      {{slider}}-->
+<!--    </pre>-->
   </div>
 </template>
 

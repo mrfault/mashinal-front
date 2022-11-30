@@ -12,6 +12,9 @@
                   :brand="form.brandObj"
                   :smsRadarData="smsRadarData"
                   :userData="form.user"
+                  :createdAt="single_announce.created_at"
+                  :is-autosalon="single_announce.is_autosalon"
+                  :is-external-salon="single_announce.is_external_salon"
                 />
               </template>
               <!--              brand -->
@@ -752,7 +755,7 @@ export default {
           vin: data.announce?.vin || "",
           price: data.announce?.price_int || '',
           owner_type: parseInt(data.announce?.owner_type) || 0,
-          currency: data.announce?.currency || 1,
+          currency: data.announce?.currency_id || 1,
           car_number: data.announce?.car_number,
           show_car_number: data.announce?.show_car_number,
           show_vin: data.announce?.show_vin,
