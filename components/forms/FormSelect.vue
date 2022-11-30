@@ -425,6 +425,7 @@ export default {
       this.showOptions = this.disabled ? false : !this.showOptions
     },
     getValue(option, onlykey = false) {
+      console.log("asdasd", option)
       const name = option.name[this.locale] || option.name.ru || option.name
       const key = this.$notUndefined(option.id, option.key)
       if (!onlykey && this.slugInValue) return option.slug || key

@@ -78,7 +78,7 @@
                     :disabled="isModerator"
                     :label="$t('prod_year')"
                     :options="data.sellYears"
-                    :value="form.model_id"
+                    :value="form.year"
                     has-search
                     @change="changeYear($event)"
                   />
@@ -187,8 +187,8 @@
                     :label="$t('box')"
                     :options="
                     data.gearings.map((o) => ({
-                      name: $t('box_values')[o.box],
-                      key: parseInt(o.box),
+                      name: $t('box_values')[o.type_of_drive],
+                      key: parseInt(o.type_of_drive),
                     }))
                     "
                     :value="form.gearing"
@@ -215,9 +215,9 @@
                     :disabled="isModerator"
                     :label="$t('type_of_drive')"
                     :options="
-                      data.gearings.map((o) => ({
-                        name: $t('type_of_drive_values')[o.type_of_drive],
-                        key: o.type_of_drive,
+                      data.transmissions.map((o) => ({
+                        name: $t('type_of_drive_values')[o.box],
+                        key: o.box,
                       }))
                     "
                     :value="form.transmission"
@@ -227,7 +227,7 @@
               </div>
 
               <!--              modification-->
-              <div v-if="data.modifications && data.modifications.length && form.gearing" class="row">
+              <div v-if="data.modifications && data.modifications.length && form.transmission" class="row">
                 <div class="col-12">
                   <title-with-line-and-reject-reason
                     v-if="sellModifications"
@@ -248,6 +248,7 @@
                       key: parseInt(o.id),
                     }))
                   "
+                    :value="form.modification"
                     @change="changeModification($event)"
                   />
 
@@ -263,6 +264,9 @@
               </div>
 
               <!--              --------------------------------------------------- --------------------  ----------------->
+<!--              <pre>-->
+<!--                {{form}}-->
+<!--              </pre>-->
               <!--     sell last step ------  -->
               <div v-if="form && form.media && form.media.length">
                 <sell-last-step
@@ -855,7 +859,7 @@ export default {
     async getGenerations() {
       if (this.form.car_body_type) {
         await this.$store.dispatch('getSellGenerations', {
-          brand: this.form.brand_slug,
+          brand: this.form.brand_slug || this.form.brandObj.slug,
           model: this.form.model_slug,
           year: this.form.year,
           body: this.form.car_body_type,
@@ -876,7 +880,7 @@ export default {
       }
     },
     async getSellGearing() {
-      if (this.form.transmission) {
+      if (this.form.engine) {
         await this.$store.dispatch('getSellGearing', {
           brand: this.form.brand_slug,
           model: this.form.model_slug,
@@ -1057,6 +1061,8 @@ export default {
       for (var i = obj.min; i <= obj.max; i++) {
         arr.push({key: i, name: i})
       }
+
+
       this.data.sellYears = arr;
 
     },
