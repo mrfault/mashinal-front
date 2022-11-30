@@ -1,104 +1,104 @@
 <template>
-  <div class="upload-image" :class="{ dragover: onDragover }">
+  <div :class="{ dragover: onDragover }" class="upload-image">
     <draggable
       v-model="orderdedKeys"
-      @end="dragFile"
-      draggable=".draggable"
-      :sort="true"
-      group="people"
-      class="row"
       :handle="isMobileBreakpoint ? '.handle' : ''"
+      :sort="true"
+      class="row"
+      draggable=".draggable"
+      group="people"
+      @end="dragFile"
     >
       <div
-        class="col-6 col-lg-1-5 mb-2 mb-lg-3 draggable"
         v-for="(key, index) in orderdedKeys"
         :key="key"
+        class="col-6 col-lg-1-5 mb-2 mb-lg-3 draggable"
       >
         <div class="upload-image_thumbnail">
-          <img v-if="image[key]" :src="image[key]" alt="" />
-          <div class="overlay overlay-with-image">
+          <img v-if="image[key]" :src="image[key]" alt=""/>
+          <div class="overlay overlay-with-image" @click.prevent="openImageSlider(image,key)">
             <div class="overlay-top-actions">
               <button
-                type="button"
                 :class="{ disabled: loading[key], 'button-new-tab' : isModeationPage, 'btn-transparent' : !isModeationPage }"
+                type="button"
                 @click.stop="fileRotate(key, index)"
               >
                 <!-- <icon name="reset" /> -->
-                <inline-svg src="/icons/reset-new.svg" height="14" />
+                <inline-svg height="14" src="/icons/reset-new.svg"/>
               </button>
               <button
                 v-if="isModeationPage"
-                type="button"
                 :class="['button-new-tab', { disabled: loading[key] }]"
+                type="button"
                 @click.stop="toggleModal(image, key, true)"
               >
-                <icon name="edit" />
+                <icon name="edit"/>
               </button>
               <button
                 v-if="isModeationPage"
-                type="button"
                 :class="['button-new-tab', { disabled: loading[key] }]"
+                type="button"
                 @click.stop="openInNewTab(key)"
               >
                 D
               </button>
               <button
-                type="button"
                 :class="{ disabled: loading[key], 'button-new-tab' : isModeationPage, 'btn-transparent' : !isModeationPage }"
+                type="button"
                 @click.stop="fileDelete(key, index)"
               >
-                <icon name="cross" />
+                <icon name="cross"/>
 
                 <!-- <inline-svg src="/icons/cross.svg" height="14"/> -->
               </button>
             </div>
             <button
-              type="button"
-              :class="['btn-transparent-drag handle']"
               v-if="isMobileBreakpoint"
+              :class="['btn-transparent-drag handle']"
+              type="button"
             >
-              <icon name="burger" style="color: #fff;" />
+              <icon name="burger" style="color: #fff;"/>
             </button>
           </div>
         </div>
       </div>
       <template v-if="isMobileBreakpoint">
         <div
-          class="col-6 col-lg-1-5 mb-2 mb-lg-3"
-          key="loading"
           v-if="filesLength !== filesLoadedLength"
+          key="loading"
+          class="col-6 col-lg-1-5 mb-2 mb-lg-3"
         >
           <div class="upload-image_thumbnail">
-            <loader />
+            <loader/>
           </div>
         </div>
       </template>
       <template v-else>
         <template v-for="(img, index) in helpers.slice(filesLoadedLength)">
-          <div class="col-6 col-lg-1-5 mb-2 mb-lg-3" :key="img">
+          <div :key="img" class="col-6 col-lg-1-5 mb-2 mb-lg-3">
             <div
-              class="upload-image_thumbnail"
               v-if="index + 1 <= filesLength - filesLoadedLength"
+              class="upload-image_thumbnail"
             >
-              <loader />
+              <loader/>
             </div>
             <div
+              v-else
               class="upload-image_thumbnail helper"
               @click.stop="input.click()"
-              v-else
             >
-              <img :src="img" alt="" />
+              <img :src="img" alt=""/>
             </div>
           </div>
         </template>
         <template v-if="filesLength > helpers.length">
           <div
-            class="col-6 col-lg-1-5 mb-2 mb-lg-3"
-            :key="'loading_' + i"
             v-for="i in (filesLength - filesLoadedLength - helpers.slice(filesLoadedLength).length)"
+            :key="'loading_' + i"
+            class="col-6 col-lg-1-5 mb-2 mb-lg-3"
           >
             <div class="upload-image_thumbnail">
-              <loader />
+              <loader/>
             </div>
           </div>
         </template>
@@ -108,14 +108,14 @@
           canUpload && (isMobileBreakpoint || filesLength >= helpers.length)
         "
       >
-        <div class="col-6 col-lg-1-5 mb-2 mb-lg-3" key="add-image">
+        <div key="add-image" class="col-6 col-lg-1-5 mb-2 mb-lg-3">
           <div
             class="upload-image_thumbnail add-image"
             @click.stop="input.click()"
           >
             <div class="overlay">
               <!-- <icon name="camera" /> -->
-              <inline-svg src="/icons/camera.svg" :height="14" />
+              <inline-svg :height="14" src="/icons/camera.svg"/>
               <p>{{ $t('add_image') }}</p>
             </div>
           </div>
@@ -123,11 +123,11 @@
       </template>
     </draggable>
     <input
-      type="file"
       :id="'upload-image_input--' + inputId"
       accept="image/*"
       hidden
       multiple
+      type="file"
     />
     <modal-popup
       :modal-class="'wider'"
@@ -136,16 +136,36 @@
       @close="toggleModal(false)"
     >
       <h1>salam</h1>
-<!--      <car-view-for-croppa-->
-<!--        v-if="modal.image"-->
-<!--        :announce="modal.image"-->
-<!--        :key="modal.image"-->
-<!--        :image="modal.image"-->
-<!--        :saved_images="modal.image"-->
-<!--        :croppaSelectedKey="modal.image"-->
-<!--        @newThumb="newThumb"-->
-<!--      />-->
+      <!--      <car-view-for-croppa-->
+      <!--        v-if="modal.image"-->
+      <!--        :announce="modal.image"-->
+      <!--        :key="modal.image"-->
+      <!--        :image="modal.image"-->
+      <!--        :saved_images="modal.image"-->
+      <!--        :croppaSelectedKey="modal.image"-->
+      <!--        @newThumb="newThumb"-->
+      <!--      />-->
     </modal-popup>
+    <!--    ---------------------------   -->
+    <transition-group name="fade">
+      <template v-if="(slider.showLightbox && isMobileBreakpoint) || (!isMobileBreakpoint && slider.showImagesSlider)">
+<!--        <div :key="0" class="blur-bg">-->
+<!--          <img :src="$withBaseUrl(attachments[slider.currentSlide])" alt=""/>-->
+<!--        </div>-->
+<!--        <div v-if="!isMobileBreakpoint" :key="1" class="blur-bg_slider">-->
+<!--          <images-slider-->
+<!--            :current-slide="slider.currentSlide"-->
+<!--            :slides="{ main: slider.allSlides }"-->
+<!--            @close="slider.showLightbox = false"-->
+<!--            @slide-change="slider.currentSlide = $event"-->
+<!--          />-->
+<!--        </div>-->
+
+      </template>
+    </transition-group>
+    <pre>
+      {{slider}}
+    </pre>
   </div>
 </template>
 
@@ -218,11 +238,17 @@ export default {
           },
         },
       },
-      modal:{
+      modal: {
         isOpen: false,
         image: null,
         croppaSelectedKey: false,
         saved_images: [],
+      },
+      slider: {
+        showLightbox: false,
+        showImagesSlider: false,
+        currentSlide: 0,
+        allSlides: [],
       }
     }
   },
@@ -282,7 +308,7 @@ export default {
 
         let key = this.index
 
-        newFiles.push({ file: droppedFiles[i], key })
+        newFiles.push({file: droppedFiles[i], key})
         this.$set(this.files, key, {
           name: droppedFiles[i].name,
           file: droppedFiles[i],
@@ -332,20 +358,43 @@ export default {
       if (!rotated) this.$set(this.orderdedKeys, this.orderdedKeys.length, key)
       this.$emit('files-changed', this.imagesLoaded)
     },
-    openInNewTab(url){
+    openInNewTab(url) {
       window.open(url, '_blank').focus();
     },
-    toggleModal(image,key,toggle){
+    toggleModal(image, key, toggle) {
       this.modal.isOpen = toggle;
       this.modal.image = image[key];
     },
-    newThumb(newThumb){
+    newThumb(newThumb) {
       // this.isOpenCroppa = false;
-      this.$store.commit('setSavedImageUrlWithKey',{
-        key:this.croppaSelectedKey,
+      this.$store.commit('setSavedImageUrlWithKey', {
+        key: this.croppaSelectedKey,
         value: newThumb
       })
       this.$set(this.image, this.croppaSelectedKey, newThumb);
+    },
+
+    //slider
+    openImageSlider(image,key) {
+      if (this.isModeationPage){
+        var arr = [];
+        this.defaultFiles.forEach(el =>{
+          arr.push(el.key);
+        })
+        console.log(arr)
+        this.slider.allSlides = arr
+        this.slider.currentSlide = image[key];
+        this.slider.showLightbox = true;
+        this.showImagesSlider = true;
+      }
+
+      else return
+    },
+    onSwiper() {
+      console.log(swiper);
+    },
+    onSlideChange(){
+      console.log('slide change');
     },
   },
   computed: {
@@ -383,6 +432,7 @@ export default {
       flex-wrap: wrap;
       justify-content: space-between;
     }
+
     &-top-actions {
       width: 100%;
       display: flex;
