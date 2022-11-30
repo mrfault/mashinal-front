@@ -15,7 +15,11 @@
           >
             <div class="homePage-slide-item">
               <div class="homePage-slide-item-left">
+                <video width="400" v-if="homePageSlider.video" controls loop id="sliderVideo">
+                  <source :src="homePageSlider.video" type="video/mp4">
+                </video>
                 <img
+                  v-else
                   :srcset="`${homePageSlider.media.image[1]} 1024w,${homePageSlider.media.image[0]} 640w`"
                   :src="homePageSlider.media.image[0]"
                   sizes="(min-width: 36em) 33.3vw, 100vw"
@@ -133,8 +137,9 @@ export default {
         init: false,
         speed: 1000,
         autoplay: {
-          delay: 6000,
+          delay: 8000,
         },
+        videoAutoplay: false,
         fadeEffect: {
           crossFade: true,
         },
@@ -217,6 +222,11 @@ export default {
 
     }, 100)
     this.$nuxt.$on('logo-click', this.handleLogoClick)
+
+      this.$nextTick(function () {
+        var vid = document.getElementById("sliderVideo");
+        vid.play();
+      })
   },
   beforeDestroy() {
     this.$nuxt.$off('logo-click', this.handleLogoCkick)
@@ -227,6 +237,7 @@ export default {
   },
 }
 </script>
+
 
 <style lang="scss">
 .swiper-container {
