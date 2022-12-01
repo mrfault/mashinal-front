@@ -2353,7 +2353,7 @@ export default {
   "announcement_created_at": "Elan yaradılıb",
   "owner_type": "Sahibin tipi",
   "image_reject_reason": "Şəklin imtina səbəbi",
-  "front_error": "Nəqliyyat vasitəsinin qabağ hissəsi tapılmadı və ya uyğun gəlmir",
+  "front_error": "Nəqliyyat vasitəsinin qabaq hissəsi tapılmadı və ya uyğun gəlmir",
   "back_error": "Nəqliyyat vasitəsinin arxa hissəsi tapılmadı və ya uyğun gəlmir",
   "left_error": "Nəqliyyat vasitəsinin sol hissəsi tapılmadı və ya uyğun gəlmir",
   "right_error": "Nəqliyyat vasitəsinin sağ hissəsi tapılmadı və ya uyğun gəlmir",
