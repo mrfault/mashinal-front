@@ -161,16 +161,19 @@ export const LayoutMixin = {
       if (toggle) {
         this.connectEcho().listen('SendMessage', this.addNewMessage)
         this.connectEcho('offer-user.' + this.$auth.user.id).listen('OfferMessageSendEvent', ({message}) => {
+          if (message.offer_id !=  this.$store.state.current_offer_id){
+            this.$store.commit('IncrementMessageCount', message)
+          }
 
           if (message.offer_id ==  this.$store.state.current_offer_id) {
             this.$store.commit('appendOfferMessage', message)
-            this.$axios.post('/offer/message/read/' + message.id)
+
+            this.$store.dispatch('readOfferMessage',{id:message.id})
+
+
 
           }
-          /*          this.$store.commit('setNewMessage',message.offer.id)*/
-/*          if (this.user.autosalon) {
-            this.$store.dispatch('getAllOffers')
-          }*/
+
 
           if (message.files.length > 1) {
             const sleep = () => {

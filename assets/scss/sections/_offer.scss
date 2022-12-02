@@ -417,7 +417,7 @@
       border-top: none;
       border-right: none;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       cursor: pointer;
 
 
@@ -445,6 +445,22 @@
       .created {
         margin-left: auto;
       }
+    }
+    .messageCount{
+      margin-left: auto;
+      background: $yellow-6;
+      color: $dark-blue-1;
+
+      border-radius: 50%;
+      display: inline-flex;
+      flex-shrink: 0;
+      width: 23px;
+      height: 23px;
+      justify-content: center;
+
+      font-size: 13px;
+      align-items: center;
+
     }
   }
 }
@@ -879,7 +895,6 @@
   }
   .offer-text {
     width: unset;
-
     p {
       margin-left: unset;
     }
@@ -887,11 +902,16 @@
 }
 
 .offerCount {
-  background: $yellow-5;
-  padding: 4px 5px;
+  background: #f5da3f;
   border-radius: 50%;
-  color: $dark-blue-1;
+  display: inline-flex;
+  flex-shrink: 0;
+  width: 23px;
+  height: 23px;
+  justify-content: center;
+  color: #081a3e;
   font-size: 13px;
+  align-items: center;
 }
 
 .actions {

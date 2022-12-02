@@ -47,7 +47,6 @@
 
 <script>
 import {mapGetters} from "vuex";
-import {LayoutMixin} from "~/mixins/layout";
 import NotFound from "~/components/elements/NotFound";
 
 export default {
@@ -69,8 +68,8 @@ export default {
   },
   methods: {
     async changePage(page) {
-          await this.$store.dispatch('getNotifications','page='+page)
-          this.scrollTo('.vehicle-specs', [-15, -20]);
+      await this.$store.dispatch('getNotifications', 'page=' + page)
+      this.scrollTo('.vehicle-specs', [-15, -20]);
     },
     getAnnounceTypePath(type) {
       switch (type) {
@@ -87,6 +86,7 @@ export default {
       }
     },
     getRoutePath(n) {
+
       switch (n.route) {
         case '/messages_bnb' :
           return this.$localePath('/profile/messages?group=' + n.value)
@@ -101,9 +101,40 @@ export default {
         case '/search_templates' :
           return this.$localePath('/profile/templates')
         case '/salons/offer' :
-          return this.$localePath('/salons/offer')
+
+          var url = this.$localePath('/salons/offer?param=all&c=');
+
+          var offerId = n.hasOwnProperty('notifiable_id') && n.notifiable_id != null ? n.notifiable_id : false
+
+          if (offerId) {
+            url += offerId
+          }
+          return url
+
+        case '/salons/offer/new-message' :
+
+          var url = this.$localePath('/salons/offer?param=sended&c=');
+
+          var offerId = n.hasOwnProperty('notifiable_id') && n.notifiable_id != null ? n.notifiable_id : false
+
+          if (offerId) {
+            url += offerId
+          }
+          return url
+
+        case '/offer/offers/new-message' :
+
+          var url = this.$localePath('/offer/offers?param=all&c=');
+
+          var offerId = n.hasOwnProperty('notifiable_id') && n.notifiable_id != null ? n.notifiable_id : false
+
+          if (offerId) {
+            url += offerId
+          }
+          return url
+
         case '/offer/offers' :
-          return this.user.autosalon ?  this.$localePath('/salons/offer?param=all') :  this.$localePath('/offer/offers?param=all')
+          return this.user.autosalon ? this.$localePath('/salons/offer?param=all') : this.$localePath('/offer/offers?param=all')
       }
       return '/';
     }
@@ -112,7 +143,7 @@ export default {
     await this.$axios.$post('/notifications/read_all')
     setTimeout(() => {
       this.$store.dispatch('getNotifications')
-    },1000)
+    }, 1000)
   },
   computed: {
     ...mapGetters(['notifications']),
