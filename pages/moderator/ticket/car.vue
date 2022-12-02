@@ -1,8 +1,12 @@
 <template>
-  <div v-if="announcementIsAvailable && !loading" class="pages-announcement-edit">
+  <div
+    v-if="announcementIsAvailable && !loading"
+    class="pages-announcement-edit"
+  >
     <div class="container">
       <breadcrumbs :crumbs="crumbs"/>
       <div class="sell_cards-row row">
+
         <div class="col-auto">
           <div class="card">
             <div class="mb-5">
@@ -10,6 +14,9 @@
               <template v-if="form.brand">
                 <user-details
                   :brand="form.brandObj"
+                  :createdAt="single_announce.created_at"
+                  :is-autosalon="single_announce.is_autosalon"
+                  :is-external-salon="single_announce.is_external_salon"
                   :smsRadarData="smsRadarData"
                   :userData="form.user"
                 />
@@ -38,12 +45,13 @@
                     v-if="smsRadarData && smsRadarData.marka"
                     class="ma-smsradar"
                   >
-                  <strong>SMSRadar: </strong>   <p>{{ smsRadarData.marka }}</p>
+                    <strong>SMSRadar:</strong>
+                    <p>{{ smsRadarData.marka }}</p>
                   </span>
                 </div>
               </div>
               <!--              model -->
-              <div v-if="data.models  && form.brand_id" class="row">
+              <div v-if="data.models && form.brand_id" class="row">
                 <div class="col-12">
                   <title-with-line-and-reject-reason
                     rejectKey="model"
@@ -64,7 +72,7 @@
                 </div>
               </div>
               <!--              year -->
-              <div v-if="data.sellYears &&  form.model_id" class="row">
+              <div v-if="data.sellYears && form.model_id" class="row">
                 <div class="col-12">
                   <title-with-line-and-reject-reason
                     rejectKey="years"
@@ -88,12 +96,13 @@
                     v-if="smsRadarData && smsRadarData.manufactYear"
                     class="ma-smsradar"
                   >
-                  <strong>SMSRadar: </strong>   <p>{{ smsRadarData.manufactYear }}</p>
+                    <strong>SMSRadar:</strong>
+                    <p>{{ smsRadarData.manufactYear }}</p>
                   </span>
                 </div>
               </div>
               <!--              body-->
-              <div v-if="data.sellBodies &&  form.year" class="row">
+              <div v-if="data.sellBodies && form.year" class="row">
                 <div class="col-12">
                   <title-with-line-and-reject-reason
                     rejectKey="body_type"
@@ -117,8 +126,9 @@
                     v-if="smsRadarData && smsRadarData.vehBodyType"
                     class="ma-smsradar"
                   >
-                  <strong>SMSRadar: </strong>   <p>{{ smsRadarData.vehBodyType }}</p>
-               </span>
+                    <strong>SMSRadar:</strong>
+                    <p>{{ smsRadarData.vehBodyType }}</p>
+                  </span>
                 </div>
               </div>
               <!--              generations-->
@@ -186,18 +196,16 @@
                     :disabled="isModerator"
                     :label="$t('box')"
                     :options="
-                    data.gearings.map((o) => ({
-                      name: $t('box_values')[o.type_of_drive],
-                      key: parseInt(o.type_of_drive),
-                    }))
+                      data.gearings.map((o) => ({
+                        name: $t('box_values')[o.type_of_drive],
+                        key: o.type_of_drive,
+                      }))
                     "
                     :value="form.gearing"
                     has-search
                     @change="changeGearing($event)"
                   />
                 </div>
-
-
               </div>
               <!--              transmission-->
               <div v-if="data.transmissions && form.gearing" class="row">
@@ -227,7 +235,14 @@
               </div>
 
               <!--              modification-->
-              <div v-if="data.modifications && data.modifications.length && form.transmission" class="row">
+              <div
+                v-if="
+                  data.modifications &&
+                  data.modifications.length &&
+                  form.transmission && false
+                "
+                class="row"
+              >
                 <div class="col-12">
                   <title-with-line-and-reject-reason
                     v-if="sellModifications"
@@ -243,30 +258,25 @@
                     :disabled="user.admin_group == 2"
                     :label="$t('modification')"
                     :options="
-                    sellModifications.map((o) => ({
-                      name: getModificationName(o),
-                      key: parseInt(o.id),
-                    }))
-                  "
+                      data.modifications.map((o) => ({
+                        name: getModificationName(o),
+                        key: o.id,
+                      }))
+                    "
                     :value="form.modification"
                     @change="changeModification($event)"
                   />
-
                 </div>
                 <div class="col-12 col-lg-9">
                   <span
                     v-if="smsRadarData && smsRadarData.engincapacity"
                     class="ma-smsradar"
                   >
-                  <strong>SMSRadar: </strong>   <p>{{ smsRadarData.engincapacity / 1000 }}</p>
-               </span>
+                    <strong>SMSRadar:</strong>
+                    <p>{{ smsRadarData.engincapacity / 1000 }}</p>
+                  </span>
                 </div>
               </div>
-
-              <!--              --------------------------------------------------- --------------------  ----------------->
-<!--              <pre>-->
-<!--                {{form}}-->
-<!--              </pre>-->
               <!--     sell last step ------  -->
               <div v-if="form && form.media && form.media.length">
                 <sell-last-step
@@ -279,8 +289,12 @@
                   :title="$t('moderator')"
                   type="cars"
                   @changeReason="changeReason"
-                  @close="$router.push(pageRef || $localePath('/profile/announcements'),)"
-                  @formChanged="(e) => form = e"
+                  @close="
+                    $router.push(
+                      pageRef || $localePath('/profile/announcements'),
+                    )
+                  "
+                  @formChanged="(e) => (form = e)"
                   @getRejectObj="getSellLastStepRejectObj"
                 />
               </div>
@@ -298,7 +312,10 @@
                   </div>
                   <div class="col-4">
                     <button
-                      v-if="!rejectObj.rejectArray.length && !sellLastStepRejectObj.rejectArray.length"
+                      v-if="
+                        !rejectObj.rejectArray.length &&
+                        !sellLastStepRejectObj.rejectArray.length
+                      "
                       :class="[
                         'btn btn--green w-50',
                         { pending },
@@ -346,10 +363,12 @@
                 <!--  supervisor-->
                 <div v-if="user.admin_group == 1" class="row">
                   <div class="col float-right">
-
                     <button
                       v-if="
-                        rejectObj.rejectArray.filter((item) => !rejectObj.reject360.includes(item)).length === 0 && (!sellLastStepRejectObj.rejectArray.length)
+                        rejectObj.rejectArray.filter(
+                          (item) => !rejectObj.reject360.includes(item),
+                        ).length === 0 &&
+                        !sellLastStepRejectObj.rejectArray.length
                       "
                       :class="{ button_loading: button_loading }"
                       class="'btn btn--green mt-2"
@@ -386,7 +405,6 @@
                 </div>
               </div>
               <!-- actions   ------------------------>
-
             </div>
           </div>
         </div>
@@ -416,13 +434,14 @@
           >
             {{ $t('transfer_to_supervisor') }}
           </button>
-
         </div>
       </div>
-
     </modal-popup>
   </div>
-  <div v-else-if="!announcementIsAvailable && !loading" class="d-flex flex-column justify-content-center h-300">
+  <div
+    v-else-if="!announcementIsAvailable && !loading"
+    class="d-flex flex-column justify-content-center h-300"
+  >
     <h1 class="text-center">Baxılmayanlar mövcud deyil</h1>
   </div>
   <div v-else>
@@ -521,7 +540,7 @@ export default {
       imagesBase64: [],
       main_image: null,
       saved_images: [],
-      deleteArr:[]
+      deleteArr: []
     }
   },
   computed: {
@@ -717,6 +736,7 @@ export default {
         })
         this.handleGearings(this.type_of_drives);
 
+
         this.form = {
           delay_comment: '',
           car_catalog_id: data.announce?.car_catalog_id,
@@ -728,9 +748,9 @@ export default {
           generation_id: data.announce?.car_catalog?.generation_id,
           generation: data.announce?.car_catalog?.generation_id,
           car_body_type: data.announce?.car_catalog?.car_type.id,
-          gearing: data.announce?.car_catalog?.box_id, // engines
-          modification: data.announce.car_catalog.main[' ']['box'],
-          transmission: data.announce?.car_catalog?.main[' ']['type_of_drive'], // gearing
+          gearing: data.announce.car_catalog.main['  ']['engine'].toString(), // engines
+          modification: data.modifications[0],
+          transmission: data.announce.car_catalog.box_id.toString(), // gearing
           capacity: data.announce?.car_catalog?.capacity,
           power: data.announce?.car_catalog?.power,
           year: data.announce?.year,
@@ -752,7 +772,7 @@ export default {
           vin: data.announce?.vin || "",
           price: data.announce?.price_int || '',
           owner_type: parseInt(data.announce?.owner_type) || 0,
-          currency: data.announce?.currency || 1,
+          currency: data.announce?.currency_id || 1,
           car_number: data.announce?.car_number,
           show_car_number: data.announce?.show_car_number,
           show_vin: data.announce?.show_vin,
@@ -771,7 +791,8 @@ export default {
           guaranty: data.announce?.in_garanty,
           saved_images: data.announce?.mediaIds,
           media: data.announce.media,
-          engine: data.announce?.car_catalog.engine_id,
+          engine: data.announce?.car_catalog.engine_id.toString(),
+          engine_id: data.announce?.car_catalog.engine_id.toString(),
           message: "test",
           user: data.announce.user,
           status: data.announce.status,
@@ -842,7 +863,7 @@ export default {
       if (this.form.model_id) {
         await this.$store.dispatch('getSellYears', {
           brand: this.form.brand_slug || this.form.brandObj.slug,
-          model: this.form.model_slug,
+          model: this.form.model_slug || this.form.model,
         })
         this.handleYears(this.sellYears);
       }
@@ -851,7 +872,7 @@ export default {
       if (this.form.year) {
         await this.$store.dispatch('getSellBody', {
           brand: this.form.brand_slug || this.form.brandObj.slug,
-          model: this.form.model_slug,
+          model: this.form.model_slug || this.form.model,
           year: this.form.year,
         })
         this.data.sellBodies = this.sellBodies;
@@ -861,7 +882,7 @@ export default {
       if (this.form.car_body_type) {
         await this.$store.dispatch('getSellGenerations', {
           brand: this.form.brand_slug || this.form.brandObj.slug,
-          model: this.form.model_slug,
+          model: this.form.model_slug || this.form.model,
           year: this.form.year,
           body: this.form.car_body_type,
         })
@@ -872,7 +893,7 @@ export default {
       if (this.form.generation_id) {
         await this.$store.dispatch('getSellEngines', {
           brand: this.form.brand_slug || this.form.brandObj.slug,
-          model: this.form.model_slug,
+          model: this.form.model_slug || this.form.model,
           year: this.form.year,
           body: this.form.car_body_type,
           generation: this.form?.generation_id,
@@ -884,7 +905,7 @@ export default {
       if (this.form.engine) {
         await this.$store.dispatch('getSellGearing', {
           brand: this.form.brand_slug || this.form.brandObj.slug,
-          model: this.form.model_slug,
+          model: this.form.model_slug || this.form.model,
           year: this.form.year,
           body: this.form.car_body_type,
           generation: this.form?.generation_id,
@@ -894,10 +915,10 @@ export default {
       }
     },
     async getSellTransmissions() {
-      if (this.form.engine) {
+      if (this.form.gearing && this.form.engine) {
         await this.$store.dispatch('getSellTransmissions', {
           brand: this.form.brand_slug || this.form.brandObj.slug,
-          model: this.form.model_slug,
+          model: this.form.model_slug || this.form.model,
           year: this.form.year,
           body: this.form.car_body_type,
           generation: this.form?.generation_id,
@@ -909,10 +930,10 @@ export default {
     },
 
     async getSellModifications() {
-      if (this.form.transmission) {
+      if (this.form.transmission && this.form.gearing) {
         await this.$store.dispatch('getSellModifications', {
           brand: this.form.brand_slug || this.form.brandObj.slug,
-          model: this.form.model_slug,
+          model: this.form.model_slug || this.form.model,
           year: this.form.year,
           body: this.form.car_body_type,
           generation: this.form?.generation_id,
@@ -946,12 +967,11 @@ export default {
       }[key][value]
     },
     getModificationName(o) {
-      let generation = this.sellGenerations.find(
-        (o) => o.id === this.form?.generation_id,
+      let generation = this.data.generations.find(
+        (o) => o.id === this.form.generation_id,
       )
-      let name = `${this.$t('box_mode_values')[o.box]}/${
-        generation.start_year
-      } - ${generation.end_year || this.currentYear}`
+      let name = `${this.$t('box_mode_values')[o.box]}/
+      ${generation.start_year} - ${generation.end_year || this.currentYear}`
       if (o.capacity) name = `${o.capacity} ${name}`
       if (o.power) name = `${o.power} ${this.$t('char_h_power')}/${name}`
       if (o.complect_type) name += `/${o.complect_type}`
@@ -1120,7 +1140,7 @@ export default {
     //handle change
     async changeBrand(e) {
       this.form.model_id = null;
-      this.form.model = {};
+      this.form.model = "";
       this.brands.find(f => {
         if (f.id == e) {
           // this.$store.dispatch('getModels', )
@@ -1134,8 +1154,13 @@ export default {
     },
     async changeModel(e) {
       this.form.year = null;
+      console.log("e", e);
+      console.log("models", this.data.models)
       await this.data.models.find(f => {
+        console.log("f", f)
         if (f.id == e) {
+          console.log("fid", f);
+          this.form.model = f.slug
           this.form.year = null;
           this.form.model_slug = f.slug;
         }
@@ -1207,17 +1232,32 @@ export default {
         return false
       }
 
-      let formData = new FormData()
+      console.log("1", this.form)
+
 
       this.form.status = status
-      // this.form.brand = this.brand
-      // this.form.model = this.form.model_id
-      // this.form.year = this.year
+      this.form.id = this.single_announce.id;
+      this.form.month = this.single_announce.month || "";
+      this.form.sell_store = this.single_announce.sell_store || 0;
+      this.form.video_360_id = this.single_announce.video_360_id || "";
+      this.form.modification = "";
+      // this.form.model = this.form.model_slug;
+
+      console.log("2", this.form)
+      delete this.form.model_slug;
+      delete this.form.brand_slug;
+      // console.log(this.form)
+      // delete this.form.brand_id;
+      // delete this.form.brand_slug;
+      this.form.id_unique = this.single_announce.id;
+      this.form.interior_360_id = this.single_announce.interior_360_id || "";
+      this.form.main_image = this.form.main_image || null;
       // this.form.generation = this.generation
       // this.form.car_catalog_id = this.modification
-      // this.form.rejectArray = this.rejectArray
+      this.form.rejectArray = this.rejectObj.rejectArray;
       // this.form.main_image = this.main_image
       // this.form.saved_images = this.saved_images
+      let formData = new FormData()
       formData.append('data', JSON.stringify(this.form))
       formData.append('deletedImages', JSON.stringify(this.deleteArr))
 
@@ -1227,9 +1267,9 @@ export default {
         await this.$axios.$post('/ticket/car/' + this.single_announce.id, formData)
 
         if (this.user.admin_group == 2) {
-          location.href = '/'
+          location.href = 'https://dev.mashin.al/alvcp/resources/announcements'
         } else {
-          location.href = '/'
+          location.href = 'https://dev.mashin.al/alvcp/resources/announcements'
         }
       } catch ({
         response: {
@@ -1275,15 +1315,15 @@ export default {
       handler() {
         if (this.form.brandObj == {}) {
           this.form.model_id = null;
-          this.form.model = {};
+          // this.form.model = {};
         }
         if (this.form.brand_id == null) {
           this.form.model_id = null;
-          this.form.model = {};
+          // this.form.model = {};
         }
         if (this.form.brand == null) {
           this.form.model_id = null;
-          this.form.model = {};
+          // this.form.model = {};
         }
         if ((this.form.model_id == null) || (this.form.model == {})) {
           this.form.year = null;
@@ -1307,7 +1347,10 @@ export default {
           this.form.modification = null;
         }
       }
-    }
+    },
   }
 }
 </script>
+
+
+<!--90zz258-->

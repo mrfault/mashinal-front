@@ -14,10 +14,13 @@
           'disabled-content': type === 'cars' && !form.car_catalog_id && !edit,
         }"
       >
+
         <title-with-line-and-reject-reason
           v-if="announcement.media.length"
           id="360"
-          :imageRejects="imageModal.imageRejects"
+          :imageRejected="imageRejected"
+          :modalToggled="imageModal.modalToggled"
+          :rejectArray="imageModal.rejectArray"
           :subtitle="
             $t('at_least_5_photos', {
               min: minFiles,
@@ -30,21 +33,30 @@
           required
           title="photos"
           @change="changeReason"
-          :image-rejected="imageModal.imageRejected"
-          :modalToggled="imageModal.modalToggled"
         />
+        <transition name="fade">
+          <photo-reject-reason
+            v-if="imageModal.isOpen"
+            :default_data="rejectObj.rejectArray"
+            :modal__title="$t('image_reject_reason')"
+            :type="'car'"
+            @close="closeImageRejectModal"
+            @save="saveImageRejects"
+          />
+        </transition>
+        <pre>{{imageRejected}}</pre>
         <upload-image
           ref="sellLastStepUploadImage"
           :default-files="files"
           :helpers="helperImages"
           :max-files="announcement.media.length"
           :min-files="minFiles"
+          isModeationPage
           @files-changed="updateImages"
           @files-dropped="addImages"
           @file-deleted="deleteImage"
           @file-rotated="rotateImage"
           @order-changed="changeOrder"
-          isModeationPage
         />
         <title-with-line-and-reject-reason
           v-if="form.images_360 && form.images_360.length"
@@ -468,22 +480,7 @@
         >
           <div v-html="getRulesPage.text[locale]"></div>
         </modal-popup>
-        <modal-popup
-          :modal-class="'wider'"
-          :title="$t('image_reject_reason')"
-          :toggle="imageModal.isOpen"
-          @close="toggleImageRejectModal(false)"
-        >
-          <div v-for="(input, index) in imageModal.options" :key="index" class="col-12 mb-2">
-            <form-checkbox
-              :id="input"
-              v-model="rejectObj.rejectArray[input]"
-              :input-name="input"
-              :label="$t(input)"
-              @change="changeReason(input)"
-            />
-          </div>
-        </modal-popup>
+
         <backdrop v-if="showLoginPopup" @click="showLoginPopup = false">
           <template #default="{ show }">
             <transition name="translate-fade">
@@ -570,10 +567,12 @@ import CarFilters from '~/components/cars/CarFilters'
 import TitleWithLineAndRejectReason from '~/components/moderator/titleWithLineAndRejectReason'
 
 import Interior360Viewer from '~/components/Interior360Viewer'
+import PhotoRejectReason from "~/pages/moderator/photoReject/PhotoRejectReason";
 
 
 export default {
   components: {
+    PhotoRejectReason,
     TitleWithLineAndRejectReason,
     SellSelectModification,
     UploadImage,
@@ -638,8 +637,18 @@ export default {
           'not_this_car_error',
           'logo_on_the_picture',
         ],
-        imageRejects: [],
-        imageRejected: false,
+        initialOptions: [
+          'front_error',
+          'back_error',
+          'left_error',
+          'right_error',
+          'interior_error',
+          'not_this_car_error',
+          'logo_on_the_picture',
+        ],
+        rejectArray: ['front_error',
+          'back_error',
+          'left_error',],
         modalToggled: false,
       }
     }
@@ -698,6 +707,23 @@ export default {
         model: this.announcement.model.slug,
       }
     },
+    imageRejected() {
+      // if(
+      return
+      this.rejectObj.rejectArray.includes('front_error') 
+      // this.rejectObj.rejectArray.includes('back_error') ||
+      // this.rejectObj.rejectArray.includes('left_error') ||
+      // this.rejectObj.rejectArray.includes('right_error') ||
+      // this.rejectObj.rejectArray.includes('interior_error') ||
+      // this.rejectObj.rejectArray.includes('not_this_car_error') ||
+      // this.rejectObj.rejectArray.includes('logo_on_the_picture')
+      // ){
+      //   return true
+      // }else{
+      //   return  false
+      // }
+    }
+
   },
   methods: {
     ...mapActions([
@@ -998,15 +1024,9 @@ export default {
     },
     changeReason(rejectKey) {
       if (rejectKey === 'image') {
-        this.toggleImageRejectModal(true)
+        this.openImageRejectModal()
       } else if (rejectKey === '360') {
         this.rejectObj.show360Reject = true
-      } else if ((rejectKey == "front_error") || (rejectKey == "back_error") || (rejectKey == "left_error") || (rejectKey == "right_error") || (rejectKey == "interior_error") || (rejectKey == "not_this_car_error") || (rejectKey == "logo_on_the_picture")) {
-        if (this.imageModal.imageRejects.includes(rejectKey)) {
-          this.imageModal.imageRejects.splice(this.imageModal.imageRejects.indexOf(rejectKey), 1)
-        } else {
-          this.imageModal.imageRejects.push(rejectKey)
-        }
       } else {
         if (this.rejectObj.rejectArray.includes(rejectKey)) {
           this.rejectObj.rejectArray.splice(this.rejectObj.rejectArray.indexOf(rejectKey), 1)
@@ -1015,18 +1035,50 @@ export default {
         }
       }
     },
-    changeImageOption(rejectKey) {
-      this.changeReason(rejectKey)
-    },
-    toggleImageRejectModal(toggle) {
-      this.imageModal.modalToggled = !this.imageModal.modalToggled
-      if (this.imageModal.imageRejects.length) {
-        this.imageModal.imageRejected = true;
-      } else {
-        this.imageModal.imageRejected = false;
+
+    //image reject
+
+
+    openImageRejectModal() {
+
+      this.imageModal.isOpen = true;
+
+
+      var opts = this.imageModal.options;
+      var arr = this.rejectObj.rejectArray;
+      var tempArr = this.imageModal.rejectArray;
+
+      for (var i = 0; i < opts.length; i++) {
+        console.log(i, opts[i])
       }
-      this.imageModal.isOpen = toggle
     },
+    closeImageRejectModal() {
+      this.imageModal.isOpen = false
+      this.imageModal.rejectArray = [];
+      this.removeDuplicates()
+    },
+
+    //fills temporary array
+    changeImageRejectReason(rejectKey) {
+      var oldArr = this.imageModal.rejectArray;
+      var editingArr = this.imageModal.rejectArray;
+      if (editingArr.includes(rejectKey)) {
+        editingArr.splice(editingArr.indexOf(rejectKey), 1)
+      } else {
+        editingArr.push(rejectKey)
+      }
+    },
+    saveImageRejects() {
+      this.rejectObj.rejectArray = this.rejectObj.rejectArray.concat(this.imageModal.rejectArray);
+      this.removeDuplicates()
+      this.closeImageRejectModal();
+      this.imageModal.rejectArray = [];
+    },
+    removeDuplicates() {
+      var arr = this.rejectObj.rejectArray
+      this.rejectObj.rejectArray = [...new Set(arr)]
+    },
+
   },
   watch: {
     progress(value) {
@@ -1035,7 +1087,6 @@ export default {
     rejectObj: {
       deep: true,
       handler() {
-        console.log("ra ro", this.rejectObj.rejectArray)
         this.$emit('getRejectObj', this.rejectObj)
       }
     },
