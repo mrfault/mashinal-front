@@ -112,6 +112,7 @@
             </div>
             <collapse-content :title="'Təklif'">
               <offer-items :key="offer.id" :offer_items="offer.offer_items"/>
+
             </collapse-content>
 
             <div>
