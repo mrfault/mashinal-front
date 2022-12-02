@@ -2360,5 +2360,7 @@ export default {
   "interior_error": "Avtomobilin salonu aşkar olunmur və ya uyğun gəlmir",
   "not_this_car_error": "Göstərilən şəkillər elandakı maşına aid deyil",
   "logo_on_the_picture":"Şəkilin üzərində loqo var",
-  "edit_image": "Şəkli redaktə et"
+  "edit_image": "Şəkli redaktə et",
+  "reject": "İmtina et",
+  "deavtive_announce":"Elanı deaktiv et",
 }

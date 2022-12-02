@@ -10,9 +10,6 @@
         <div class="col-auto">
           <div class="card">
             <div class="mb-5">
-                      <pre>
-                        {{ form }}
-                        </pre>
               <!--              user details-->
               <template v-if="form.brand">
                 <user-details
@@ -1257,7 +1254,7 @@ export default {
       this.form.main_image = this.form.main_image || null;
       // this.form.generation = this.generation
       // this.form.car_catalog_id = this.modification
-      // this.form.rejectArray = this.rejectArray
+      this.form.rejectArray = this.rejectObj.rejectArray;
       // this.form.main_image = this.main_image
       // this.form.saved_images = this.saved_images
       let formData = new FormData()
