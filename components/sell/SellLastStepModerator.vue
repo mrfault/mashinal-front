@@ -44,14 +44,15 @@
             @save="saveImageRejects"
           />
         </transition>
-        <pre>{{imageRejected}}</pre>
         <upload-image
           ref="sellLastStepUploadImage"
+          :announce="single_announce"
           :default-files="files"
           :helpers="helperImages"
           :max-files="announcement.media.length"
           :min-files="minFiles"
           isModeationPage
+          load-croppa
           @files-changed="updateImages"
           @files-dropped="addImages"
           @file-deleted="deleteImage"
@@ -594,6 +595,7 @@ export default {
     generations: Array,
     sell_bodies: Array,
     smsRadarData: Object,
+    single_announce: Object,
   },
   mixins: [ToastErrorsMixin, ImageResizeMixin, PaymentMixin],
   data() {
@@ -655,7 +657,7 @@ export default {
   },
   computed: {
     ...mapState(['sellPhoneEntered']),
-    ...mapGetters(['sellOptions', 'sellSalonRights', 'staticPages', 'popularOptions']),
+    ...mapGetters(['sellOptions', 'sellSalonRights', 'staticPages', 'popularOptions',]),
     helperImages() {
       let imgs =
         this.type === 'cars'
@@ -710,7 +712,7 @@ export default {
     imageRejected() {
       // if(
       return
-      this.rejectObj.rejectArray.includes('front_error') 
+      this.rejectObj.rejectArray.includes('front_error')
       // this.rejectObj.rejectArray.includes('back_error') ||
       // this.rejectObj.rejectArray.includes('left_error') ||
       // this.rejectObj.rejectArray.includes('right_error') ||
@@ -872,6 +874,8 @@ export default {
       )
     },
     async deleteImage(index) {
+
+      this.$emit('imageDeleted', index)
       if (this.savedFiles[index]) {
         if (
           this.edit &&

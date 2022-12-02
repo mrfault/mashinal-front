@@ -279,24 +279,27 @@
               </div>
               <!--     sell last step ------  -->
               <div v-if="form && form.media && form.media.length">
-                <sell-last-step
-                  :key="lastStepKey"
-                  :announcement="JSON.parse(JSON.stringify(form))"
-                  :colors="colors"
-                  :edit="user.admin_group !== 2"
-                  :restore="form.status == 3"
-                  :smsRadarData="smsRadarData"
-                  :title="$t('moderator')"
-                  type="cars"
-                  @changeReason="changeReason"
-                  @close="
-                    $router.push(
-                      pageRef || $localePath('/profile/announcements'),
-                    )
-                  "
-                  @formChanged="(e) => (form = e)"
-                  @getRejectObj="getSellLastStepRejectObj"
-                />
+            <sell-last-step
+              :key="lastStepKey"
+              :announcement="JSON.parse(JSON.stringify(form))"
+              :announce="JSON.parse(JSON.stringify(single_announce))"
+              :colors="colors"
+              :edit="user.admin_group !== 2"
+              :restore="form.status == 3"
+              :smsRadarData="smsRadarData"
+              :title="$t('moderator')"
+              type="cars"
+              @changeReason="changeReason"
+              @close="
+                $router.push(
+                  pageRef || $localePath('/profile/announcements'),
+                )
+              "
+              @formChanged="(e) => (form = e)"
+              @getRejectObj="getSellLastStepRejectObj"
+              @imageDeleted="addDeletedImagesToList"
+              :single_announce="single_announce"
+            />
               </div>
 
               <!-- actions   ------------------------>
@@ -1201,6 +1204,10 @@ export default {
 
     async changeModification(e) {
       return e;
+    },
+    addDeletedImagesToList(e){
+      console.log(e)
+      this.deleteArr.push(e)
     },
 
 
