@@ -4,15 +4,29 @@
       <img :src="brand.transformed_media ? brand.transformed_media : '/images/car-placeholder.png'" alt="o"/>
     </div>
     <h6 class="moderator-car-brand__title">
-      <span v-if="userData">{{ userData.name }}</span>
-      <template v-if="userData && userData.phone">
-      /
-      </template>
-      <span v-if="userData && userData.phone">{{ userData.phone }}</span>
-      <template v-if="userData && userData.email">
+      <span>{{ $t('name') }}: </span>
+      <span v-if="userData"><strong>{{ userData.name }}</strong></span>
+      <template>
         /
       </template>
-      <span v-if="userData && userData.email">{{ userData.email }}</span>
+      <span>{{ $t('mobile_phone_number') }}: </span>
+      <strong v-if="userData && userData.phone">{{ userData.phone }}</strong>
+      <template>
+        /
+        <span>{{ $t('email') }}:</span>
+        <strong v-if="userData && userData.email"> {{ userData.email }}</strong>
+        <span v-else>{{ $t('not_set') }}</span>
+      </template>
+      <template>
+        /
+      </template>
+      <span>{{ $t('announcement_created_at') }}:</span>
+      <strong>{{ formattedDate }}</strong>
+      <template v-if="smsRadarData && smsRadarData.ownerType">
+        /
+      </template>
+      <span v-if="smsRadarData && smsRadarData.ownerType">{{ $t('owner_type') }}:</span>
+      <strong v-if="smsRadarData && smsRadarData.ownerType">{{ smsRadarData.ownerType }}</strong>
       <!--      /-->
       <!--      <span @click="showBrands">{{ $t(brand.name) }}</span>-->
       <!--      /-->
@@ -33,6 +47,7 @@ export default {
         name: 'vehicle_id_mark',
       },
     },
+    smsRadarData: Object,
 
     // year: {
     //   type: Number,
@@ -53,6 +68,11 @@ export default {
       this.$emit('showYears', true)
     },
   },
+  computed: {
+    formattedDate() {
+      return this.$moment(this.userData.created_at).add(3, 'hour').format(`DD.MM.YYYY  hh:mm`)
+    }
+  }
 }
 </script>
 

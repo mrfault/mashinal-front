@@ -1,5 +1,5 @@
 <template>
-  <div class="pages-announcement-edit" v-if="announcementIsAvailable">
+  <div v-if="announcementIsAvailable && !loading" class="pages-announcement-edit">
     <div class="container">
       <breadcrumbs :crumbs="crumbs"/>
       <div class="sell_cards-row row">
@@ -10,6 +10,7 @@
               <template v-if="form.brand">
                 <user-details
                   :brand="form.brandObj"
+                  :smsRadarData="smsRadarData"
                   :userData="form.user"
                 />
               </template>
@@ -25,12 +26,20 @@
                 <div class="col-12 col-lg-3">
                   <form-select
                     v-model="form.brand_id"
-                    :label="$t('mark')"
                     :disabled="isModerator"
+                    :label="$t('mark')"
                     :options="brands"
                     has-search
                     @change="changeBrand($event)"
                   />
+                </div>
+                <div class="col-12 col-lg-9">
+                  <span
+                    v-if="smsRadarData && smsRadarData.marka"
+                    class="ma-smsradar"
+                  >
+                  <strong>SMSRadar: </strong>   <p>{{ smsRadarData.marka }}</p>
+                  </span>
                 </div>
               </div>
               <!--              model -->
@@ -45,9 +54,9 @@
                 <div class="col-12 col-lg-3">
                   <form-select
                     v-model="form.model_id"
+                    :disabled="isModerator"
                     :label="$t('model')"
                     :options="data.models"
-                    :disabled="isModerator"
                     :value="form.model_id"
                     has-search
                     @change="changeModel($event)"
@@ -69,10 +78,18 @@
                     :disabled="isModerator"
                     :label="$t('prod_year')"
                     :options="data.sellYears"
-                    :value="form.model_id"
+                    :value="form.year"
                     has-search
                     @change="changeYear($event)"
                   />
+                </div>
+                <div class="col-12 col-lg-9">
+                  <span
+                    v-if="smsRadarData && smsRadarData.manufactYear"
+                    class="ma-smsradar"
+                  >
+                  <strong>SMSRadar: </strong>   <p>{{ smsRadarData.manufactYear }}</p>
+                  </span>
                 </div>
               </div>
               <!--              body-->
@@ -94,6 +111,14 @@
                     has-search
                     @change="changeBodyType($event)"
                   />
+                </div>
+                <div class="col-12 col-lg-9">
+                  <span
+                    v-if="smsRadarData && smsRadarData.vehBodyType"
+                    class="ma-smsradar"
+                  >
+                  <strong>SMSRadar: </strong>   <p>{{ smsRadarData.vehBodyType }}</p>
+               </span>
                 </div>
               </div>
               <!--              generations-->
@@ -132,24 +157,24 @@
                   <form-select
                     v-model="form.engine"
                     :disabled="isModerator"
-                    :label="$t('body_type')"
-                    :options="data.engines.map((o) => ({
+                    :label="$t('engine')"
+                    :options="
+                      data.engines.map((o) => ({
                         name: $t('engine_values')[o.engine],
                         key: o.engine,
-                      }))"
+                      }))
+                    "
                     :value="form.engine"
                     has-search
                     @change="changeEngine($event)"
                   />
-
-
                 </div>
               </div>
               <!--              gearing-->
               <div v-if="data.gearings && form.engine" class="row">
                 <div class="col-12">
                   <title-with-line-and-reject-reason
-                    :title="$t('type_of_drive')"
+                    :title="$t('box')"
                     rejectKey="gearing"
                     required
                     @change="changeReason"
@@ -159,23 +184,26 @@
                   <form-select
                     v-model="form.gearing"
                     :disabled="isModerator"
-                    :label="$t('tip-privoda')"
-                    :options="data.gearings.map((o) => ({
-                      name: $t('type_of_drive_values')[o.type_of_drive],
-                      key: o.type_of_drive,
-                      }))
-                      "
+                    :label="$t('box')"
+                    :options="
+                    data.gearings.map((o) => ({
+                      name: $t('box_values')[o.type_of_drive],
+                      key: parseInt(o.type_of_drive),
+                    }))
+                    "
                     :value="form.gearing"
                     has-search
                     @change="changeGearing($event)"
                   />
                 </div>
+
+
               </div>
               <!--              transmission-->
               <div v-if="data.transmissions && form.gearing" class="row">
                 <div class="col-12">
                   <title-with-line-and-reject-reason
-                    :title="$t('box')"
+                    :title="$t('type_of_drive')"
                     rejectKey="transmission"
                     required
                     @change="changeReason"
@@ -185,23 +213,21 @@
                   <form-select
                     v-model="form.transmission"
                     :disabled="isModerator"
-                    :label="$t('tip-privoda')"
+                    :label="$t('type_of_drive')"
                     :options="
-                    data.transmissions.map((o) => ({
-                      name: $t('box_values')[o.box],
-                      key: o.box,
-                    }))
+                      data.transmissions.map((o) => ({
+                        name: $t('type_of_drive_values')[o.box],
+                        key: o.box,
+                      }))
                     "
                     :value="form.transmission"
-                    has-search
                     @change="changeTransmission($event)"
                   />
                 </div>
-
-
               </div>
+
               <!--              modification-->
-              <div v-if="data.modifications && form.transmission" class="row">
+              <div v-if="data.modifications && data.modifications.length && form.transmission" class="row">
                 <div class="col-12">
                   <title-with-line-and-reject-reason
                     v-if="sellModifications"
@@ -209,7 +235,6 @@
                     rejectKey="modification"
                     required
                     @change="changeReason"
-
                   />
                 </div>
                 <div class="col-12 col-lg-3 pl-0">
@@ -220,16 +245,28 @@
                     :options="
                     sellModifications.map((o) => ({
                       name: getModificationName(o),
-                      key: o.id,
+                      key: parseInt(o.id),
                     }))
                   "
-                    @change="changeModification($event, )"
+                    :value="form.modification"
+                    @change="changeModification($event)"
                   />
 
+                </div>
+                <div class="col-12 col-lg-9">
+                  <span
+                    v-if="smsRadarData && smsRadarData.engincapacity"
+                    class="ma-smsradar"
+                  >
+                  <strong>SMSRadar: </strong>   <p>{{ smsRadarData.engincapacity / 1000 }}</p>
+               </span>
                 </div>
               </div>
 
               <!--              --------------------------------------------------- --------------------  ----------------->
+<!--              <pre>-->
+<!--                {{form}}-->
+<!--              </pre>-->
               <!--     sell last step ------  -->
               <div v-if="form && form.media && form.media.length">
                 <sell-last-step
@@ -238,12 +275,13 @@
                   :colors="colors"
                   :edit="user.admin_group !== 2"
                   :restore="form.status == 3"
+                  :smsRadarData="smsRadarData"
                   :title="$t('moderator')"
                   type="cars"
                   @changeReason="changeReason"
                   @close="$router.push(pageRef || $localePath('/profile/announcements'),)"
-                  @getRejectObj="getSellLastStepRejectObj"
                   @formChanged="(e) => form = e"
+                  @getRejectObj="getSellLastStepRejectObj"
                 />
               </div>
 
@@ -384,8 +422,11 @@
 
     </modal-popup>
   </div>
-  <div v-else class="d-flex flex-column justify-content-center h-300">
+  <div v-else-if="!announcementIsAvailable && !loading" class="d-flex flex-column justify-content-center h-300">
     <h1 class="text-center">Baxılmayanlar mövcud deyil</h1>
+  </div>
+  <div v-else>
+    <elements-loader></elements-loader>
   </div>
 </template>
 
@@ -420,6 +461,7 @@ export default {
   data() {
     return {
       announcementIsAvailable: false,
+      loading: false,
       showModal: false,
       lastStepKey: 1,
       show: {
@@ -429,7 +471,6 @@ export default {
       },
       type: 'cars',
       pending: false,
-
       //reject reason
       rejectObj: {
         show360Reject: false,
@@ -441,7 +482,6 @@ export default {
         comment: '',
         isOpen: false,
       },
-      saved_images: [],
       button_loading: false,
       itemForm: {},
       sellLastStepRejectObj: {
@@ -475,6 +515,13 @@ export default {
         modifications: [],
       },
       models: [],
+      smsRadarData: {},
+      // send data
+      errors: [],
+      imagesBase64: [],
+      main_image: null,
+      saved_images: [],
+      deleteArr:[]
     }
   },
   computed: {
@@ -559,6 +606,7 @@ export default {
     isMorderator() {
       return this.user.admin_group == 2
     },
+
   },
   methods: {
     // ui
@@ -581,7 +629,7 @@ export default {
     },
     // get
     async getAnnounceData() {
-
+      this.loading = true;
       await this.$auth.setUserToken(`Bearer ${this.$route.query.token}`)
       const admin_user = await this.$axios.$get('/user')
       this.$auth.setUser(admin_user.user)
@@ -649,7 +697,8 @@ export default {
           with: data.modifications,
           property: 'modifications',
         })
-        this.data.modifications = this.modificationsModerator;
+        this.handleModificationsData(this.modificationsModerator);
+
         this.$store.commit('moderator/moderatorMutator', {
           with: data.sellYears,
           property: 'sellYears',
@@ -679,8 +728,8 @@ export default {
           generation_id: data.announce?.car_catalog?.generation_id,
           generation: data.announce?.car_catalog?.generation_id,
           car_body_type: data.announce?.car_catalog?.car_type.id,
-          gearing: data.announce?.car_catalog?.main['  ']['engine'], // engines
-          modification: data.announce?.car_catalog?.main[' ']['box'], // transmissions/box
+          gearing: data.announce?.car_catalog?.box_id, // engines
+          modification: data.announce.car_catalog.main[' ']['box'],
           transmission: data.announce?.car_catalog?.main[' ']['type_of_drive'], // gearing
           capacity: data.announce?.car_catalog?.capacity,
           power: data.announce?.car_catalog?.power,
@@ -703,7 +752,7 @@ export default {
           vin: data.announce?.vin || "",
           price: data.announce?.price_int || '',
           owner_type: parseInt(data.announce?.owner_type) || 0,
-          currency: data.announce?.currency_id || 1,
+          currency: data.announce?.currency || 1,
           car_number: data.announce?.car_number,
           show_car_number: data.announce?.show_car_number,
           show_vin: data.announce?.show_vin,
@@ -730,6 +779,9 @@ export default {
         };
         this.getColors();
         this.announcementIsAvailable = true;
+        this.loading = false;
+        this.checkWithVin()
+
         // this.getGenerations();
       } catch (e) {
         this.$store.commit('moderator/moderatorMutator', {
@@ -737,7 +789,44 @@ export default {
           property: 'form',
         })
         this.announcementIsAvailable = false;
+        this.loading = false;
+
       }
+    },
+    async checkWithVin() {
+      let vin = this.form.vin
+      let car_number = this.form.car_number.replace(/[^0-9a-zA-Z]+/g, '')
+
+      let sendData = {
+        announce_id: this.single_announce.id,
+      }
+      let send = false
+      if (vin.length === 17) {
+        sendData.vin = vin
+        send = true
+      }
+      if (car_number.length === 7) {
+        sendData.car_number = car_number
+        send = true
+      }
+
+      if (!send) return false
+
+      this.$nuxt.$emit('loading_status', true)
+      this.$axios.$post('/ticket/checkSmsRadar', sendData).then((data) => {
+        data = data.data
+
+        if (data) {
+          //data.carNumber = data.carNumber.slice(0, 2) + '-' + data.carNumber.slice(2, 4) + '-' + data.carNumber.slice(4, 7);
+
+          this.smsRadarData = data
+
+          //if (data.bodyNumber && data.bodyNumber.toString().length === 17) this.getChange(data.bodyNumber, 'vin');
+        }
+
+        // this.$nuxt.$emit('loading_status', false)
+        this.loading = false;
+      })
     },
     async getColors() {
       await this.$store.dispatch('getColors')
@@ -752,7 +841,7 @@ export default {
     async getSellYears() {
       if (this.form.model_id) {
         await this.$store.dispatch('getSellYears', {
-          brand: this.form.brand_slug,
+          brand: this.form.brand_slug || this.form.brandObj.slug,
           model: this.form.model_slug,
         })
         this.handleYears(this.sellYears);
@@ -761,7 +850,7 @@ export default {
     async getSellBodies() {
       if (this.form.year) {
         await this.$store.dispatch('getSellBody', {
-          brand: this.form.brand_slug,
+          brand: this.form.brand_slug || this.form.brandObj.slug,
           model: this.form.model_slug,
           year: this.form.year,
         })
@@ -771,7 +860,7 @@ export default {
     async getGenerations() {
       if (this.form.car_body_type) {
         await this.$store.dispatch('getSellGenerations', {
-          brand: this.form.brand_slug,
+          brand: this.form.brand_slug || this.form.brandObj.slug,
           model: this.form.model_slug,
           year: this.form.year,
           body: this.form.car_body_type,
@@ -782,18 +871,19 @@ export default {
     async getSellEngines() {
       if (this.form.generation_id) {
         await this.$store.dispatch('getSellEngines', {
-          brand: this.form.brand_slug,
+          brand: this.form.brand_slug || this.form.brandObj.slug,
           model: this.form.model_slug,
           year: this.form.year,
           body: this.form.car_body_type,
           generation: this.form?.generation_id,
         })
+        this.data.engines = this.engines;
       }
     },
     async getSellGearing() {
       if (this.form.engine) {
         await this.$store.dispatch('getSellGearing', {
-          brand: this.form.brand_slug,
+          brand: this.form.brand_slug || this.form.brandObj.slug,
           model: this.form.model_slug,
           year: this.form.year,
           body: this.form.car_body_type,
@@ -804,9 +894,9 @@ export default {
       }
     },
     async getSellTransmissions() {
-      if (this.form.gearing) {
+      if (this.form.engine) {
         await this.$store.dispatch('getSellTransmissions', {
-          brand: this.form.brand_slug,
+          brand: this.form.brand_slug || this.form.brandObj.slug,
           model: this.form.model_slug,
           year: this.form.year,
           body: this.form.car_body_type,
@@ -817,10 +907,11 @@ export default {
         this.data.transmissions = this.sellTransmissions;
       }
     },
+
     async getSellModifications() {
       if (this.form.transmission) {
         await this.$store.dispatch('getSellModifications', {
-          brand: this.form.brand_slug,
+          brand: this.form.brand_slug || this.form.brandObj.slug,
           model: this.form.model_slug,
           year: this.form.year,
           body: this.form.car_body_type,
@@ -971,6 +1062,8 @@ export default {
       for (var i = obj.min; i <= obj.max; i++) {
         arr.push({key: i, name: i})
       }
+
+
       this.data.sellYears = arr;
 
     },
@@ -1013,7 +1106,16 @@ export default {
       }
       this.data.transmissions = arr;
     },
+    handleModificationsData(obj) {
+      var arr = []
+      for (var i = 0; i < Object.keys(obj).length; i++) {
+        var item = obj[Object.keys(obj)[i]];
+        console.log(item)
+        arr.push(item);
+      }
+      this.data.modifications = arr;
 
+    },
 
     //handle change
     async changeBrand(e) {
@@ -1071,6 +1173,7 @@ export default {
       this.form.modification = null;
       this.getSellModifications();
     },
+
     async changeModification(e) {
       return e;
     },
@@ -1097,43 +1200,65 @@ export default {
       }
     },
     async sendData(status = 2) {
-      // if (this.saved_images?.length !== this.imagesBase64.length) {
-      //   this.$toasted.show(this.$t('please_wait_for_all_image_loading'), {
-      //     type: 'error',
-      //   })
-      //   return false
-      // }
+      if (this.saved_images.length !== this.imagesBase64.length) {
+        this.$toasted.show(this.$t('please_wait_for_all_image_loading'), {
+          type: 'error',
+        })
+        return false
+      }
 
+      let formData = new FormData()
 
-      let form = {};
+      this.form.status = status
+      // this.form.brand = this.brand
+      // this.form.model = this.form.model_id
+      // this.form.year = this.year
+      // this.form.generation = this.generation
+      // this.form.car_catalog_id = this.modification
+      // this.form.rejectArray = this.rejectArray
+      // this.form.main_image = this.main_image
+      // this.form.saved_images = this.saved_images
+      formData.append('data', JSON.stringify(this.form))
+      formData.append('deletedImages', JSON.stringify(this.deleteArr))
 
-      form.status = this.form.status;
-      form.brand = this.form.brand.slug;
-      form.model = this.form.model.slug;
-      form.year = this.form.year;
-      form.address = this.form.address;
-      // form.generation_id = this.form.generation_id;
-      form.rejectArray = this.rejectObj.rejectArray.concat(this.sellLastStepRejectObj.rejectArray);
-
-
-      var formData = new FormData();
-
-      formData.append("data", JSON.stringify(this.form))
-
-
-      this.$nuxt.$emit('loading_status', true)
-      this.pending = true
-
+      this.loading = true;
+      this.button_loading = true
       try {
         await this.$axios.$post('/ticket/car/' + this.single_announce.id, formData)
 
         if (this.user.admin_group == 2) {
+          location.href = '/'
         } else {
-          // location.href = '/alvcp/resources/announcements'
+          location.href = '/'
         }
-      } catch {
-
-        this.pending = false;
+      } catch ({
+        response: {
+          data: {data},
+        },
+      }) {
+        this.loading = false;
+        this.button_loading = false
+        this.errors = []
+        this.$toasted.clear()
+        Object.keys(data)
+          .reverse()
+          .map((key) => {
+            this.errors.push(key)
+            this.$toasted.show(data[key][0], {
+              type: 'error',
+              duration: 0,
+              action: {
+                text: 'Go to fix',
+                onClick: (e, toastObject) => {
+                  if (document.querySelector('#' + key))
+                    document
+                      .querySelector('#' + key)
+                      .scrollIntoView({behavior: 'smooth', block: 'center'})
+                  toastObject.goAway(0)
+                },
+              },
+            })
+          })
       }
     },
     addComment(e) {

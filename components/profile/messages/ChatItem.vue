@@ -63,7 +63,11 @@ export default {
       return this.group.announce || {};
     },
     chatUser() {
-      return this.group.sender_id == this.user.id ? this.group.recipient : this.group.sender;
+      if(this.group) {
+        return this.group.recipients.length  === 2 ?
+          this.group.recipients.find(item => item.id != this.user.id) : {};
+      }
+      return {};
     },
     chatAvatar() {
       let isUserAvatar = this.group.sender_id == this.user.id;

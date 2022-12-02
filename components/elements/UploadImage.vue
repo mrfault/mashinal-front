@@ -20,15 +20,31 @@
             <div class="overlay-top-actions">
               <button
                 type="button"
-                :class="['btn-transparent', { disabled: loading[key] }]"
+                :class="{ disabled: loading[key], 'button-new-tab' : isModeationPage, 'btn-transparent' : !isModeationPage }"
                 @click.stop="fileRotate(key, index)"
               >
                 <!-- <icon name="reset" /> -->
                 <inline-svg src="/icons/reset-new.svg" height="14" />
               </button>
               <button
+                v-if="isModeationPage"
                 type="button"
-                :class="['btn-transparent', { disabled: loading[key] }]"
+                :class="['button-new-tab', { disabled: loading[key] }]"
+                @click.stop="toggleModal(image, key, true)"
+              >
+                <icon name="edit" />
+              </button>
+              <button
+                v-if="isModeationPage"
+                type="button"
+                :class="['button-new-tab', { disabled: loading[key] }]"
+                @click.stop="openInNewTab(key)"
+              >
+                D
+              </button>
+              <button
+                type="button"
+                :class="{ disabled: loading[key], 'button-new-tab' : isModeationPage, 'btn-transparent' : !isModeationPage }"
                 @click.stop="fileDelete(key, index)"
               >
                 <icon name="cross" />
@@ -113,15 +129,32 @@
       hidden
       multiple
     />
+    <modal-popup
+      :modal-class="'wider'"
+      :title="$t('edit_image')"
+      :toggle="modal.isOpen"
+      @close="toggleModal(false)"
+    >
+      <h1>salam</h1>
+<!--      <car-view-for-croppa-->
+<!--        v-if="modal.image"-->
+<!--        :announce="modal.image"-->
+<!--        :key="modal.image"-->
+<!--        :image="modal.image"-->
+<!--        :saved_images="modal.image"-->
+<!--        :croppaSelectedKey="modal.image"-->
+<!--        @newThumb="newThumb"-->
+<!--      />-->
+    </modal-popup>
   </div>
 </template>
 
 <script>
 import draggable from 'vuedraggable'
+// import carViewForCroppa from '../../moderator/carViewForCroppa.vue'
 
 export default {
   props: {
-
     defaultFiles: {
       default: false,
     },
@@ -151,9 +184,11 @@ export default {
       default: 25600,
     },
     helpers: Array,
+    isModeationPage: Boolean,
   },
   components: {
     draggable,
+    // carViewForCroppa
   },
   data() {
     return {
@@ -183,6 +218,12 @@ export default {
           },
         },
       },
+      modal:{
+        isOpen: false,
+        image: null,
+        croppaSelectedKey: false,
+        saved_images: [],
+      }
     }
   },
   created() {
@@ -290,6 +331,21 @@ export default {
       if (id) this.$set(this.files[key], 'id', id)
       if (!rotated) this.$set(this.orderdedKeys, this.orderdedKeys.length, key)
       this.$emit('files-changed', this.imagesLoaded)
+    },
+    openInNewTab(url){
+      window.open(url, '_blank').focus();
+    },
+    toggleModal(image,key,toggle){
+      this.modal.isOpen = toggle;
+      this.modal.image = image[key];
+    },
+    newThumb(newThumb){
+      // this.isOpenCroppa = false;
+      this.$store.commit('setSavedImageUrlWithKey',{
+        key:this.croppaSelectedKey,
+        value: newThumb
+      })
+      this.$set(this.image, this.croppaSelectedKey, newThumb);
     },
   },
   computed: {
