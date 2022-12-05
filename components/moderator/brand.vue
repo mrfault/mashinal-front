@@ -4,11 +4,22 @@
       <img :src="brand.transformed_media ? brand.transformed_media : '/images/car-placeholder.png'" alt="o"/>
     </div>
     <h6 class="moderator-car-brand__title">
-      <span v-if="!isAutosalon && !isExternalSalon">{{ $t('name') }}: </span>
-      <span v-if="isAutosalon">{{ $t('autosalon') }}: </span>
+<!--      <span v-if="!isAutosalon && !isExternalSalon">{{ $t('name') }}: </span>-->
+      <span v-if="true">{{ $t('name') }}: </span>
+<!--      <span v-if="isAutosalon">{{ $t('autosalon') }}: </span>-->
       <span v-if="isExternalSalon">{{ $t('external_salon') }}: </span>
       <span v-if="userData"><strong>{{ userData.name }}</strong></span>
       <template>
+        /
+      </template>
+      <span v-if="isAutosalon">{{ $t('autosalon') }}: </span>
+      <span v-if="isAutosalon"><strong>{{ userData.autosalon.name }}</strong></span>
+      <template v-if="isAutosalon ">
+        /
+      </template>
+      <span v-if="isAutosalon">{{ $t('external_salon') }}: </span>
+      <span v-if="isExternalSalon"><strong>{{ userData.external_salon.name }}</strong></span>
+      <template v-if="isExternalSalon ">
         /
       </template>
       <span>{{ $t('mobile_phone_number') }}: </span>
