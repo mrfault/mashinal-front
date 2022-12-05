@@ -91,7 +91,7 @@
               <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-selectedColor3">
                 <span>Alış şərtləri <span class="star"> *</span></span>
               </h2>
-              <div class="d-inline-flex ">
+              <div class="d-inline-flex w-100 buy-condition-section">
 
 
                 <form-radio :id="`${index}credit`" :label="'Kredit'" input-name="buy_condition"
@@ -99,7 +99,7 @@
                             radio-value="credit"/>
                 <form-radio :id="`${index}cash`" :label="'Nağd'" input-name="buy_condition"
                             v-model="form[index].buy_condition" radio-value="cash"
-                            class="ml-2"/>
+                            class=""/>
               </div>
             </div>
             <div class="col-lg-6 col-12">
@@ -107,15 +107,13 @@
                 <span>Qiymət aralıqı <span class="star"> *</span></span>
               </h2>
               <div class="priceBeetwen">
-                <div class=" mr-5">
-
-                  <label for="minPrice">Min.</label>
+                <div class="w-100">
                   <form-numeric-input  :max-value="1000000" id="minPrice" type="number"
-                                      v-model="form[index].minPrice" class="priceInput"/>
+                                      v-model="form[index].minPrice" class="priceInput" placeholder="Qiymət aralığı min."/>
                 </div>
                 <div class="">
-                  <label for="maxPrice">Max.</label>
-                  <form-numeric-input :max-value="1000000"  id="maxPrice" type="number"  v-model="form[index].maxPrice" class="priceInput" @change="changeMaxPrice()"/>
+
+                  <form-numeric-input :max-value="1000000"  id="maxPrice" type="number" placeholder="maks."  v-model="form[index].maxPrice" class="priceInput" @change="changeMaxPrice()"/>
                 </div>
               </div>
             </div>
