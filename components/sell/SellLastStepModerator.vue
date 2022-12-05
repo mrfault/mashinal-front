@@ -164,7 +164,7 @@
                 />
               </form-checkbox>
               <form-checkbox
-                v-if="!user.external_salon"
+                v-if="!single_announce.is_external_salon"
                 v-model="form.customs_clearance"
                 :label="$t('not_cleared')"
                 input-name="customs_clearance"
@@ -176,7 +176,7 @@
                 "
               />
               <form-checkbox
-                v-if="!user.external_salon"
+                v-if="!single_announce.is_external_salon"
                 v-model="form.guaranty"
                 :label="$t('in_garanty')"
                 input-name="guaranty"
@@ -201,13 +201,24 @@
             title="region_and_place_of_inspection"
           />
           <div class="row">
-            <div class="col-lg-4 mb-2 mb-lg-0">
+            <div v-if="!single_announce.is_external_salon" class="col-lg-4 mb-2 mb-lg-0">
               <form-select
                 v-model="form.region_id"
                 :clear-option="false"
                 :invalid="isInvalid('region_id')"
                 :label="$t('region')"
                 :options="sellOptions.regions"
+                has-search
+                @change="removeError('region_id'), updatePreview('region')"
+              />
+            </div>
+            <div v-if="single_announce.is_external_salon" class="col-lg-4 mb-2 mb-lg-0">
+              <form-select
+                v-model="form.country_id"
+                :clear-option="false"
+                :invalid="isInvalid('region_id')"
+                :label="$t('sale_region_country')"
+                :options="sellOptions.countries"
                 has-search
                 @change="removeError('region_id'), updatePreview('region')"
               />
@@ -236,7 +247,6 @@
             </div>
           </div>
         </template>
-        <template v-if="user.external_salon"></template>
         <title-with-line-and-reject-reason
           :id="'anchor-price'"
           no-approval
@@ -265,15 +275,17 @@
               </div>
             </div>
           </div>
-          <div v-if="!user.external_salon" class="col-lg-auto mb-2 mb-lg-0">
+          <div class="col-lg-auto mb-2 mb-lg-0">
             <div class="d-flex flex-wrap flex-lg-nowrap">
               <form-checkbox
+                v-if="!single_announce.is_external_salon"
                 v-model="form.tradeable"
                 :label="$t('tradeable')"
                 input-name="tradeable"
                 transparent
               />
               <form-checkbox
+                v-if="!single_announce.is_external_salon"
                 v-model="form.credit"
                 :label="$t('credit_possible')"
                 input-name="credit"
@@ -282,7 +294,7 @@
             </div>
           </div>
         </div>
-        <template v-if="user.external_salon">
+        <template v-if="!single_announce.is_external_salon">
           <title-with-line-and-reject-reason
             :id="'anchor-price'"
             :title="`${$t('auction')} / ${$t('end_date')}`"

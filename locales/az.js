@@ -2363,4 +2363,5 @@ export default {
   "edit_image": "Şəkli redaktə et",
   "reject": "İmtina et",
   "deavtive_announce":"Elanı deaktiv et",
+  "sale_region_country": "Satış ölkəsi",
 }
