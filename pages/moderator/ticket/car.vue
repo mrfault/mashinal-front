@@ -145,7 +145,7 @@
                   <form-select
                     v-model="form.generation_id"
                     :disabled="isModerator"
-                    :label="$t('body_type')"
+                    :label="$t('generation')"
                     :options="data.generations"
                     :value="form.generation_id"
                     has-search
@@ -279,27 +279,44 @@
               </div>
               <!--     sell last step ------  -->
               <div v-if="form && form.media && form.media.length">
-            <sell-last-step
-              :key="lastStepKey"
-              :announcement="JSON.parse(JSON.stringify(form))"
-              :announce="JSON.parse(JSON.stringify(single_announce))"
-              :colors="colors"
-              :edit="user.admin_group !== 2"
-              :restore="form.status == 3"
-              :smsRadarData="smsRadarData"
-              :title="$t('moderator')"
-              type="cars"
-              @changeReason="changeReason"
-              @close="
+                <upload-image-moderator
+                  :announce="single_announce"
+                  :changePosition="saved_images.length === imagesBase64.length"
+                  :default-images="single_announce.media"
+                  :is-edit="false"
+                  :load-croppa="true"
+                  :max_files="30"
+                  :saved_images="saved_images"
+                  :stopUploading="imagesBase64.length >= 20"
+                  page="sell"
+                  url="/"
+                  @addFiles="addFiles"
+                  @change="addImages"
+                  @delete="removeImage"
+                  @deletedIndex="deleteByIndex"
+                  @passBase64Images="passBase64Images"
+                  @replaceImage="replaceImage"
+                />
+                <sell-last-step
+                  :key="lastStepKey"
+                  :announcement="JSON.parse(JSON.stringify(form))"
+                  :colors="colors"
+                  :edit="user.admin_group !== 2"
+                  :restore="form.status == 3"
+                  :single_announce="single_announce"
+                  :smsRadarData="smsRadarData"
+                  :title="$t('moderator')"
+                  type="cars"
+                  @changeReason="changeReason"
+                  @close="
                 $router.push(
                   pageRef || $localePath('/profile/announcements'),
                 )
               "
-              @formChanged="(e) => (form = e)"
-              @getRejectObj="getSellLastStepRejectObj"
-              @imageDeleted="addDeletedImagesToList"
-              :single_announce="single_announce"
-            />
+                  @formChanged="(e) => (form = e)"
+                  @getRejectObj="getSellLastStepRejectObj"
+                  @imageDeleted="addDeletedImagesToList"
+                />
               </div>
 
               <!-- actions   ------------------------>
@@ -465,6 +482,8 @@ import ButtonOptions from '~/components/moderator/buttonOptions'
 import UploadImage from '~/components/elements/UploadImage'
 import RejectReason from '~/components/moderator/rejectReason'
 import TitleWithLineAndRejectReason from '~/components/moderator/titleWithLineAndRejectReason'
+import UploadImageModerator from '~/components/moderator/UploadImageModerator'
+
 
 export default {
   layout: 'ticket',
@@ -479,6 +498,8 @@ export default {
     ButtonOptions,
     UploadImage,
     SellLastStep,
+    UploadImageModerator,
+
   },
   data() {
     return {
@@ -543,7 +564,12 @@ export default {
       imagesBase64: [],
       main_image: null,
       saved_images: [],
-      deleteArr: []
+      deleteArr: [],
+      files: {},
+
+      //  image
+      date: Math.floor(Date.now() / 1000),
+
     }
   },
   computed: {
@@ -581,12 +607,6 @@ export default {
         // { name: `#${this.myAnnouncement.id_unique}`, route: `/cars/announcement/16642054490` },
         {name: this.$t('moderator')},
       ]
-    },
-    files() {
-      return (this.form?.media || []).map((media, i) => ({
-        media,
-        key: this.form.media[i],
-      }))
     },
     modificationsList() {
       let arr = []
@@ -792,7 +812,8 @@ export default {
           tradeable: data.announce?.exchange_possible,
           credit: data.announce?.credit,
           guaranty: data.announce?.in_garanty,
-          saved_images: data.announce?.mediaIds,
+          // saved_images: data.announce?.mediaIds,
+          saved_images: data.announce.mediaIds,
           media: data.announce.media,
           engine: data.announce?.car_catalog.engine_id.toString(),
           engine_id: data.announce?.car_catalog.engine_id.toString(),
@@ -801,6 +822,8 @@ export default {
           status: data.announce.status,
           rejectArray: this.rejectObj.rejectArray,
         };
+        this.saved_images = data.announce.mediaIds;
+
         this.getColors();
         this.announcementIsAvailable = true;
         this.loading = false;
@@ -1133,11 +1156,104 @@ export default {
       var arr = []
       for (var i = 0; i < Object.keys(obj).length; i++) {
         var item = obj[Object.keys(obj)[i]];
-        console.log(item)
         arr.push(item);
       }
       this.data.modifications = arr;
 
+    },
+
+    //handle actions
+    async deleteByIndex(index) {
+      if (this.saved_images[index]) {
+        this.deleteArr.push(this.saved_images[index])
+      } else {
+        await this.$axios.$post(
+          '/remove_temporary_image/' + this.saved_images[index],
+        )
+      }
+      this.saved_images.splice(index, 1)
+    },
+    addDeletedImagesToList(e) {
+      this.deleteArr.push(e)
+    },
+
+    //handle image
+    async addFiles(v) {
+      await Promise.all(
+        v.map(async (image) => {
+          let formData = new FormData()
+          formData.append('temp_id', this.date)
+          formData.append('images[]', image)
+          try {
+            const data = await this.$axios.$post(
+              '/upload_temporary_images',
+              formData,
+              {
+                headers: {
+                  'Content-Type': 'multipart/form-data',
+                },
+              },
+            )
+            this.saved_images = this.saved_images.concat(data.ids)
+            this.$store.commit('setSavedImageUrls', data.images)
+            this.$nuxt.$emit(
+              'remove_image_loading_by_index',
+              this.saved_images.length,
+            )
+          } catch ({
+            response: {
+              data: {data},
+            },
+          }) {
+            this.$nuxt.$emit('remove_image_by_index', this.saved_images.length)
+            this.$nuxt.$emit('remove_image_on_catch')
+            this.errors = []
+            this.$toasted.clear()
+            Object.keys(data).map((key) => {
+              this.$toasted.show(data[key], {type: 'error'})
+            })
+          }
+        }),
+      )
+    },
+    addImages(v) {
+      this.files = v
+      this.getInfo()
+      this.$nuxt.$emit('progress_change', {
+        type: 'images',
+        count: Object.keys(this.files).length,
+      })
+    },
+    passBase64Images(val) {
+      this.imagesBase64 = val
+    },
+    replaceImage(object) {
+      if (this.saved_images.length !== this.imagesBase64.length) return
+      this.imagesBase64 = object.images
+      this.move(this.saved_images, object.v.oldIndex, object.v.newIndex)
+    },
+    removeImage(v) {
+      this.files = v
+      this.$nuxt.$emit('progress_change', {
+        type: 'images',
+        count: Object.keys(this.files).length,
+      })
+      this.getInfo()
+    },
+    getInfo() {
+      let i = -3
+      Object.keys(this.form).map((key) => {
+        if (typeof this.form[key] !== 'object') {
+          if (this.form[key] !== '') {
+            if (key !== 'currency') i++
+          }
+        } else {
+          // if(Object.keys(this.form[key]).length) i++;
+        }
+      })
+      if (this.files.length) i += 1
+
+      this.$nuxt.$emit('progress_change', {type: 'all', count: i, all: 33})
     },
 
     //handle change
@@ -1157,12 +1273,8 @@ export default {
     },
     async changeModel(e) {
       this.form.year = null;
-      console.log("e", e);
-      console.log("models", this.data.models)
       await this.data.models.find(f => {
-        console.log("f", f)
         if (f.id == e) {
-          console.log("fid", f);
           this.form.model = f.slug
           this.form.year = null;
           this.form.model_slug = f.slug;
@@ -1178,7 +1290,6 @@ export default {
       //     this.form.model_slug = f.slug;
       //   }
       // })
-      console.log("change year")
       this.getSellBodies();
     },
     async changeBodyType(e) {
@@ -1201,13 +1312,8 @@ export default {
       this.form.modification = null;
       this.getSellModifications();
     },
-
     async changeModification(e) {
       return e;
-    },
-    addDeletedImagesToList(e){
-      console.log(e)
-      this.deleteArr.push(e)
     },
 
 
@@ -1239,8 +1345,6 @@ export default {
         return false
       }
 
-      console.log("1", this.form)
-
 
       this.form.status = status
       this.form.id = this.single_announce.id;
@@ -1250,12 +1354,8 @@ export default {
       this.form.modification = "";
       // this.form.model = this.form.model_slug;
 
-      console.log("2", this.form)
       delete this.form.model_slug;
       delete this.form.brand_slug;
-      // console.log(this.form)
-      // delete this.form.brand_id;
-      // delete this.form.brand_slug;
       this.form.id_unique = this.single_announce.id;
       this.form.interior_360_id = this.single_announce.interior_360_id || "";
       this.form.main_image = this.form.main_image || null;
