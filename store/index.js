@@ -2,6 +2,7 @@ import _ from '~/lib/underscore'
 import {mutate, reset} from '~/lib/vuex-helpers/mutations'
 import Vue from 'vue'
 import uuid from 'uuid'
+import offer from "~/components/offer/offer";
 
 const getInitialState = () => ({
   loading: true,
@@ -1370,6 +1371,10 @@ export const actions = {
     const {data} = await this.$axios.$get('/offer/user/active-my-offers');
 
     commit('mutate', {property: 'active_my_offers', value: data})
+  },
+
+  async readOfferMessage({commit,state},payload){
+    await this.$axios.$post('/offer/message/read/'+payload.id)
   }
 
 }
@@ -1478,8 +1483,54 @@ export const mutations = {
   setOfferMessages(state, payload) {
     state.offerMessages = payload
   },
+  IncrementMessageCount(state, payload) {
+    if (this.$auth.user.autosalon){
+      var offerIndex = state.offers.findIndex(item => item.id == payload.offer_id);
+
+      Vue.set(state.offers[offerIndex],'unread_messages',state.offers[offerIndex]['unread_messages']+1)
+
+      let firstOffer = state.offers[offerIndex];
+
+      state.offers.splice(offerIndex,1);
+
+      Vue.set(state,'offers',[firstOffer, ...state.offers])
+
+    }else {
+
+      var offerIndex = state.OffersAcceptedByAutoSalon.findIndex(item => item.offer.id == payload.offer_id);
+
+
+      Vue.set(state.OffersAcceptedByAutoSalon[offerIndex],'unread_messages',state.OffersAcceptedByAutoSalon[offerIndex]['unread_messages']+1)
+      let firstOffer = state.OffersAcceptedByAutoSalon[offerIndex];
+      state.OffersAcceptedByAutoSalon.splice(offerIndex,1);
+      Vue.set(state,'OffersAcceptedByAutoSalon',[firstOffer, ...state.OffersAcceptedByAutoSalon])
+    }
+  },
+  readAllMessage(state, payload) {
+    if (this.$auth.user.autosalon){
+      var offerIndex = state.offers.findIndex(item => item.id == payload.offer_id);
+
+      Vue.set(state.offers[offerIndex],'unread_messages',state.offers[offerIndex]['unread_messages']=0)
+
+
+    }else {
+
+      var offerIndex = state.OffersAcceptedByAutoSalon.findIndex(item => item.auto_salon_offer_id == payload.offer_id);
+
+      Vue.set(state.OffersAcceptedByAutoSalon[offerIndex],'unread_messages',state.OffersAcceptedByAutoSalon[offerIndex]['unread_messages']=0)
+
+    }
+
+
+
+
+
+  },
+
+
   appendOfferMessage(state, payload) {
-    state.offerMessages.push(payload)
+    state.offerMessages.push(payload);
+
   },
   setOffers(state, payload) {
     state.offers = payload
