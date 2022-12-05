@@ -4,7 +4,9 @@
       <img :src="brand.transformed_media ? brand.transformed_media : '/images/car-placeholder.png'" alt="o"/>
     </div>
     <h6 class="moderator-car-brand__title">
-      <span>{{ $t('name') }}: </span>
+      <span v-if="!isAutosalon && !isExternalSalon">{{ $t('name') }}: </span>
+      <span v-if="isAutosalon">{{ $t('autosalon') }}: </span>
+      <span v-if="isExternalSalon">{{ $t('external_salon') }}: </span>
       <span v-if="userData"><strong>{{ userData.name }}</strong></span>
       <template>
         /
@@ -48,7 +50,9 @@ export default {
       },
     },
     smsRadarData: Object,
-
+    createdAt: String,
+    isAutosalon: Boolean,
+    isExternalSalon: Boolean,
     // year: {
     //   type: Number,
     //   default: {
@@ -70,7 +74,7 @@ export default {
   },
   computed: {
     formattedDate() {
-      return this.$moment(this.userData.created_at).add(3, 'hour').format(`DD.MM.YYYY  hh:mm`)
+      return this.$moment(this.createdAt).format(`DD.MM.YYYY  HH:mm`)
     }
   }
 }
