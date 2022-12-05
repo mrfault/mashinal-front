@@ -179,11 +179,7 @@
 
       activeGroupInterlocutor() {
         let group = this.messagesByGroup(this.activeGroupId);
-        if(group) {
-          return group.recipients.length  === 2 ?
-            group.recipients.find(item => item.id != this.user.id) : {};
-        }
-        return {};
+        return !group ? {} : group.sender_id == this.user.id ? group.recipient : group.sender;
       },
 
       getBlockedUserIds() {
