@@ -1,4 +1,5 @@
 <template>
+
   <div class="reject-reason-with-title">
     <div
       :class="{ 'w-100': noApproval }"
@@ -14,9 +15,9 @@
     </div>
     <div
       v-if="!noApproval"
+      class="mb-2 ml-2"
       style="display: inline-block; z-index: 0;"
       @click="openPhotoIssuePopup"
-      class="mb-2 ml-2"
     >
       <label class="toggleButton">
         <input
@@ -34,7 +35,9 @@
         </div>
       </label>
     </div>
+
   </div>
+
 </template>
 
 <script>
@@ -63,6 +66,9 @@ export default {
       type: Boolean,
     },
     rejectKey: {},
+    imageRejected: Boolean,
+    imageReject: Boolean,
+    modalToggled: Boolean
   },
   computed: {
     toggleDisable() {
@@ -92,16 +98,20 @@ export default {
       }
     },
     click() {
-      this.rejected = !this.rejected
+      if (this.imageReject) {
+        this.rejected = this.rejected;
+      } else {
+        this.rejected = !this.rejected
+      }
+
       this.$emit('change', this.rejectKey)
     },
   },
   mounted() {
     this.disabled = this.disabledValue
-
     if (this.rejectKey === 'image') {
       this.$nuxt.$on('image-checkbox-change', (toggle) => {
-        this.rejectedValue = toggle
+        this.rejectedValue = toggle;
       })
     }
     if (this.rejectKey === '360') {
@@ -110,6 +120,16 @@ export default {
       })
     }
   },
+  watch: {
+    'imageRejected': {
+      handler() {
+        if (this.rejectKey = "image") {
+          this.rejected = this.imageRejected;
+        }
+      }
+    }
+  }
+
 }
 </script>
 
@@ -292,4 +312,6 @@ html {
     box-sizing: inherit;
   }
 }
+
+
 </style>

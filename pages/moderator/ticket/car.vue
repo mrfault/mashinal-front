@@ -1,8 +1,12 @@
 <template>
-  <div class="pages-announcement-edit" v-if="announcementIsAvailable">
+  <div
+    v-if="announcementIsAvailable && !loading"
+    class="pages-announcement-edit"
+  >
     <div class="container">
       <breadcrumbs :crumbs="crumbs"/>
       <div class="sell_cards-row row">
+
         <div class="col-auto">
           <div class="card">
             <div class="mb-5">
@@ -10,6 +14,10 @@
               <template v-if="form.brand">
                 <user-details
                   :brand="form.brandObj"
+                  :createdAt="single_announce.created_at"
+                  :is-autosalon="single_announce.is_autosalon"
+                  :is-external-salon="single_announce.is_external_salon"
+                  :smsRadarData="smsRadarData"
                   :userData="form.user"
                 />
               </template>
@@ -25,16 +33,25 @@
                 <div class="col-12 col-lg-3">
                   <form-select
                     v-model="form.brand_id"
-                    :label="$t('mark')"
                     :disabled="isModerator"
+                    :label="$t('mark')"
                     :options="brands"
                     has-search
                     @change="changeBrand($event)"
                   />
                 </div>
+                <div class="col-12 col-lg-9">
+                  <span
+                    v-if="smsRadarData && smsRadarData.marka"
+                    class="ma-smsradar"
+                  >
+                    <strong>SMSRadar:</strong>
+                    <p>{{ smsRadarData.marka }}</p>
+                  </span>
+                </div>
               </div>
               <!--              model -->
-              <div v-if="data.models  && form.brand_id" class="row">
+              <div v-if="data.models && form.brand_id" class="row">
                 <div class="col-12">
                   <title-with-line-and-reject-reason
                     rejectKey="model"
@@ -45,9 +62,9 @@
                 <div class="col-12 col-lg-3">
                   <form-select
                     v-model="form.model_id"
+                    :disabled="isModerator"
                     :label="$t('model')"
                     :options="data.models"
-                    :disabled="isModerator"
                     :value="form.model_id"
                     has-search
                     @change="changeModel($event)"
@@ -55,7 +72,7 @@
                 </div>
               </div>
               <!--              year -->
-              <div v-if="data.sellYears &&  form.model_id" class="row">
+              <div v-if="data.sellYears && form.model_id" class="row">
                 <div class="col-12">
                   <title-with-line-and-reject-reason
                     rejectKey="years"
@@ -69,14 +86,23 @@
                     :disabled="isModerator"
                     :label="$t('prod_year')"
                     :options="data.sellYears"
-                    :value="form.model_id"
+                    :value="form.year"
                     has-search
                     @change="changeYear($event)"
                   />
                 </div>
+                <div class="col-12 col-lg-9">
+                  <span
+                    v-if="smsRadarData && smsRadarData.manufactYear"
+                    class="ma-smsradar"
+                  >
+                    <strong>SMSRadar:</strong>
+                    <p>{{ smsRadarData.manufactYear }}</p>
+                  </span>
+                </div>
               </div>
               <!--              body-->
-              <div v-if="data.sellBodies &&  form.year" class="row">
+              <div v-if="data.sellBodies && form.year" class="row">
                 <div class="col-12">
                   <title-with-line-and-reject-reason
                     rejectKey="body_type"
@@ -95,6 +121,15 @@
                     @change="changeBodyType($event)"
                   />
                 </div>
+                <div class="col-12 col-lg-9">
+                  <span
+                    v-if="smsRadarData && smsRadarData.vehBodyType"
+                    class="ma-smsradar"
+                  >
+                    <strong>SMSRadar:</strong>
+                    <p>{{ smsRadarData.vehBodyType }}</p>
+                  </span>
+                </div>
               </div>
               <!--              generations-->
               <div v-if="data.generations && form.car_body_type" class="row">
@@ -110,7 +145,7 @@
                   <form-select
                     v-model="form.generation_id"
                     :disabled="isModerator"
-                    :label="$t('body_type')"
+                    :label="$t('generation')"
                     :options="data.generations"
                     :value="form.generation_id"
                     has-search
@@ -132,24 +167,24 @@
                   <form-select
                     v-model="form.engine"
                     :disabled="isModerator"
-                    :label="$t('body_type')"
-                    :options="data.engines.map((o) => ({
+                    :label="$t('engine')"
+                    :options="
+                      data.engines.map((o) => ({
                         name: $t('engine_values')[o.engine],
                         key: o.engine,
-                      }))"
+                      }))
+                    "
                     :value="form.engine"
                     has-search
                     @change="changeEngine($event)"
                   />
-
-
                 </div>
               </div>
               <!--              gearing-->
               <div v-if="data.gearings && form.engine" class="row">
                 <div class="col-12">
                   <title-with-line-and-reject-reason
-                    :title="$t('type_of_drive')"
+                    :title="$t('box')"
                     rejectKey="gearing"
                     required
                     @change="changeReason"
@@ -159,12 +194,13 @@
                   <form-select
                     v-model="form.gearing"
                     :disabled="isModerator"
-                    :label="$t('tip-privoda')"
-                    :options="data.gearings.map((o) => ({
-                      name: $t('type_of_drive_values')[o.type_of_drive],
-                      key: o.type_of_drive,
+                    :label="$t('box')"
+                    :options="
+                      data.gearings.map((o) => ({
+                        name: $t('box_values')[o.type_of_drive],
+                        key: o.type_of_drive,
                       }))
-                      "
+                    "
                     :value="form.gearing"
                     has-search
                     @change="changeGearing($event)"
@@ -175,7 +211,7 @@
               <div v-if="data.transmissions && form.gearing" class="row">
                 <div class="col-12">
                   <title-with-line-and-reject-reason
-                    :title="$t('box')"
+                    :title="$t('type_of_drive')"
                     rejectKey="transmission"
                     required
                     @change="changeReason"
@@ -185,23 +221,28 @@
                   <form-select
                     v-model="form.transmission"
                     :disabled="isModerator"
-                    :label="$t('tip-privoda')"
+                    :label="$t('type_of_drive')"
                     :options="
-                    data.transmissions.map((o) => ({
-                      name: $t('box_values')[o.box],
-                      key: o.box,
-                    }))
+                      data.transmissions.map((o) => ({
+                        name: $t('type_of_drive_values')[o.box],
+                        key: o.box,
+                      }))
                     "
                     :value="form.transmission"
-                    has-search
                     @change="changeTransmission($event)"
                   />
                 </div>
-
-
               </div>
+
               <!--              modification-->
-              <div v-if="data.modifications && form.transmission" class="row">
+              <div
+                v-if="
+                  data.modifications &&
+                  data.modifications.length &&
+                  form.transmission && false
+                "
+                class="row"
+              >
                 <div class="col-12">
                   <title-with-line-and-reject-reason
                     v-if="sellModifications"
@@ -209,7 +250,6 @@
                     rejectKey="modification"
                     required
                     @change="changeReason"
-
                   />
                 </div>
                 <div class="col-12 col-lg-3 pl-0">
@@ -218,32 +258,64 @@
                     :disabled="user.admin_group == 2"
                     :label="$t('modification')"
                     :options="
-                    sellModifications.map((o) => ({
-                      name: getModificationName(o),
-                      key: o.id,
-                    }))
-                  "
-                    @change="changeModification($event, )"
+                      data.modifications.map((o) => ({
+                        name: getModificationName(o),
+                        key: o.id,
+                      }))
+                    "
+                    :value="form.modification"
+                    @change="changeModification($event)"
                   />
-
+                </div>
+                <div class="col-12 col-lg-9">
+                  <span
+                    v-if="smsRadarData && smsRadarData.engincapacity"
+                    class="ma-smsradar"
+                  >
+                    <strong>SMSRadar:</strong>
+                    <p>{{ smsRadarData.engincapacity / 1000 }}</p>
+                  </span>
                 </div>
               </div>
-
-              <!--              --------------------------------------------------- --------------------  ----------------->
               <!--     sell last step ------  -->
               <div v-if="form && form.media && form.media.length">
+                <upload-image-moderator
+                  :announce="single_announce"
+                  :changePosition="saved_images.length === imagesBase64.length"
+                  :default-images="single_announce.media"
+                  :is-edit="false"
+                  :load-croppa="true"
+                  :max_files="30"
+                  :saved_images="saved_images"
+                  :stopUploading="imagesBase64.length >= 20"
+                  page="sell"
+                  url="/"
+                  @addFiles="addFiles"
+                  @change="addImages"
+                  @delete="removeImage"
+                  @deletedIndex="deleteByIndex"
+                  @passBase64Images="passBase64Images"
+                  @replaceImage="replaceImage"
+                />
                 <sell-last-step
                   :key="lastStepKey"
                   :announcement="JSON.parse(JSON.stringify(form))"
                   :colors="colors"
                   :edit="user.admin_group !== 2"
                   :restore="form.status == 3"
+                  :single_announce="single_announce"
+                  :smsRadarData="smsRadarData"
                   :title="$t('moderator')"
                   type="cars"
                   @changeReason="changeReason"
-                  @close="$router.push(pageRef || $localePath('/profile/announcements'),)"
+                  @close="
+                $router.push(
+                  pageRef || $localePath('/profile/announcements'),
+                )
+              "
+                  @formChanged="(e) => (form = e)"
                   @getRejectObj="getSellLastStepRejectObj"
-                  @formChanged="(e) => form = e"
+                  @imageDeleted="addDeletedImagesToList"
                 />
               </div>
 
@@ -260,7 +332,10 @@
                   </div>
                   <div class="col-4">
                     <button
-                      v-if="!rejectObj.rejectArray.length && !sellLastStepRejectObj.rejectArray.length"
+                      v-if="
+                        !rejectObj.rejectArray.length &&
+                        !sellLastStepRejectObj.rejectArray.length
+                      "
                       :class="[
                         'btn btn--green w-50',
                         { pending },
@@ -308,10 +383,12 @@
                 <!--  supervisor-->
                 <div v-if="user.admin_group == 1" class="row">
                   <div class="col float-right">
-
                     <button
                       v-if="
-                        rejectObj.rejectArray.filter((item) => !rejectObj.reject360.includes(item)).length === 0 && (!sellLastStepRejectObj.rejectArray.length)
+                        rejectObj.rejectArray.filter(
+                          (item) => !rejectObj.reject360.includes(item),
+                        ).length === 0 &&
+                        !sellLastStepRejectObj.rejectArray.length
                       "
                       :class="{ button_loading: button_loading }"
                       class="'btn btn--green mt-2"
@@ -348,7 +425,6 @@
                 </div>
               </div>
               <!-- actions   ------------------------>
-
             </div>
           </div>
         </div>
@@ -378,14 +454,18 @@
           >
             {{ $t('transfer_to_supervisor') }}
           </button>
-
         </div>
       </div>
-
     </modal-popup>
   </div>
-  <div v-else class="d-flex flex-column justify-content-center h-300">
+  <div
+    v-else-if="!announcementIsAvailable && !loading"
+    class="d-flex flex-column justify-content-center h-300"
+  >
     <h1 class="text-center">Baxılmayanlar mövcud deyil</h1>
+  </div>
+  <div v-else>
+    <elements-loader></elements-loader>
   </div>
 </template>
 
@@ -402,6 +482,8 @@ import ButtonOptions from '~/components/moderator/buttonOptions'
 import UploadImage from '~/components/elements/UploadImage'
 import RejectReason from '~/components/moderator/rejectReason'
 import TitleWithLineAndRejectReason from '~/components/moderator/titleWithLineAndRejectReason'
+import UploadImageModerator from '~/components/moderator/UploadImageModerator'
+
 
 export default {
   layout: 'ticket',
@@ -416,10 +498,13 @@ export default {
     ButtonOptions,
     UploadImage,
     SellLastStep,
+    UploadImageModerator,
+
   },
   data() {
     return {
       announcementIsAvailable: false,
+      loading: false,
       showModal: false,
       lastStepKey: 1,
       show: {
@@ -429,7 +514,6 @@ export default {
       },
       type: 'cars',
       pending: false,
-
       //reject reason
       rejectObj: {
         show360Reject: false,
@@ -441,7 +525,6 @@ export default {
         comment: '',
         isOpen: false,
       },
-      saved_images: [],
       button_loading: false,
       itemForm: {},
       sellLastStepRejectObj: {
@@ -475,6 +558,18 @@ export default {
         modifications: [],
       },
       models: [],
+      smsRadarData: {},
+      // send data
+      errors: [],
+      imagesBase64: [],
+      main_image: null,
+      saved_images: [],
+      deleteArr: [],
+      files: {},
+
+      //  image
+      date: Math.floor(Date.now() / 1000),
+
     }
   },
   computed: {
@@ -512,12 +607,6 @@ export default {
         // { name: `#${this.myAnnouncement.id_unique}`, route: `/cars/announcement/16642054490` },
         {name: this.$t('moderator')},
       ]
-    },
-    files() {
-      return (this.form?.media || []).map((media, i) => ({
-        media,
-        key: this.form.media[i],
-      }))
     },
     modificationsList() {
       let arr = []
@@ -559,6 +648,7 @@ export default {
     isMorderator() {
       return this.user.admin_group == 2
     },
+
   },
   methods: {
     // ui
@@ -581,7 +671,7 @@ export default {
     },
     // get
     async getAnnounceData() {
-
+      this.loading = true;
       await this.$auth.setUserToken(`Bearer ${this.$route.query.token}`)
       const admin_user = await this.$axios.$get('/user')
       this.$auth.setUser(admin_user.user)
@@ -649,7 +739,8 @@ export default {
           with: data.modifications,
           property: 'modifications',
         })
-        this.data.modifications = this.modificationsModerator;
+        this.handleModificationsData(this.modificationsModerator);
+
         this.$store.commit('moderator/moderatorMutator', {
           with: data.sellYears,
           property: 'sellYears',
@@ -668,6 +759,7 @@ export default {
         })
         this.handleGearings(this.type_of_drives);
 
+
         this.form = {
           delay_comment: '',
           car_catalog_id: data.announce?.car_catalog_id,
@@ -679,9 +771,9 @@ export default {
           generation_id: data.announce?.car_catalog?.generation_id,
           generation: data.announce?.car_catalog?.generation_id,
           car_body_type: data.announce?.car_catalog?.car_type.id,
-          gearing: data.announce?.car_catalog?.main['  ']['engine'], // engines
-          modification: data.announce?.car_catalog?.main[' ']['box'], // transmissions/box
-          transmission: data.announce?.car_catalog?.main[' ']['type_of_drive'], // gearing
+          gearing: data.announce.car_catalog.main['  ']['engine'].toString(), // engines
+          modification: data.modifications[0],
+          transmission: data.announce.car_catalog.box_id.toString(), // gearing
           capacity: data.announce?.car_catalog?.capacity,
           power: data.announce?.car_catalog?.power,
           year: data.announce?.year,
@@ -720,16 +812,23 @@ export default {
           tradeable: data.announce?.exchange_possible,
           credit: data.announce?.credit,
           guaranty: data.announce?.in_garanty,
-          saved_images: data.announce?.mediaIds,
+          // saved_images: data.announce?.mediaIds,
+          saved_images: data.announce.mediaIds,
           media: data.announce.media,
-          engine: data.announce?.car_catalog.engine_id,
+          engine: data.announce?.car_catalog.engine_id.toString(),
+          engine_id: data.announce?.car_catalog.engine_id.toString(),
           message: "test",
           user: data.announce.user,
           status: data.announce.status,
           rejectArray: this.rejectObj.rejectArray,
         };
+        this.saved_images = data.announce.mediaIds;
+
         this.getColors();
         this.announcementIsAvailable = true;
+        this.loading = false;
+        this.checkWithVin()
+
         // this.getGenerations();
       } catch (e) {
         this.$store.commit('moderator/moderatorMutator', {
@@ -737,7 +836,44 @@ export default {
           property: 'form',
         })
         this.announcementIsAvailable = false;
+        this.loading = false;
+
       }
+    },
+    async checkWithVin() {
+      let vin = this.form.vin
+      let car_number = this.form.car_number.replace(/[^0-9a-zA-Z]+/g, '')
+
+      let sendData = {
+        announce_id: this.single_announce.id,
+      }
+      let send = false
+      if (vin.length === 17) {
+        sendData.vin = vin
+        send = true
+      }
+      if (car_number.length === 7) {
+        sendData.car_number = car_number
+        send = true
+      }
+
+      if (!send) return false
+
+      this.$nuxt.$emit('loading_status', true)
+      this.$axios.$post('/ticket/checkSmsRadar', sendData).then((data) => {
+        data = data.data
+
+        if (data) {
+          //data.carNumber = data.carNumber.slice(0, 2) + '-' + data.carNumber.slice(2, 4) + '-' + data.carNumber.slice(4, 7);
+
+          this.smsRadarData = data
+
+          //if (data.bodyNumber && data.bodyNumber.toString().length === 17) this.getChange(data.bodyNumber, 'vin');
+        }
+
+        // this.$nuxt.$emit('loading_status', false)
+        this.loading = false;
+      })
     },
     async getColors() {
       await this.$store.dispatch('getColors')
@@ -752,8 +888,8 @@ export default {
     async getSellYears() {
       if (this.form.model_id) {
         await this.$store.dispatch('getSellYears', {
-          brand: this.form.brand_slug,
-          model: this.form.model_slug,
+          brand: this.form.brand_slug || this.form.brandObj.slug,
+          model: this.form.model_slug || this.form.model,
         })
         this.handleYears(this.sellYears);
       }
@@ -761,8 +897,8 @@ export default {
     async getSellBodies() {
       if (this.form.year) {
         await this.$store.dispatch('getSellBody', {
-          brand: this.form.brand_slug,
-          model: this.form.model_slug,
+          brand: this.form.brand_slug || this.form.brandObj.slug,
+          model: this.form.model_slug || this.form.model,
           year: this.form.year,
         })
         this.data.sellBodies = this.sellBodies;
@@ -771,8 +907,8 @@ export default {
     async getGenerations() {
       if (this.form.car_body_type) {
         await this.$store.dispatch('getSellGenerations', {
-          brand: this.form.brand_slug,
-          model: this.form.model_slug,
+          brand: this.form.brand_slug || this.form.brandObj.slug,
+          model: this.form.model_slug || this.form.model,
           year: this.form.year,
           body: this.form.car_body_type,
         })
@@ -782,19 +918,20 @@ export default {
     async getSellEngines() {
       if (this.form.generation_id) {
         await this.$store.dispatch('getSellEngines', {
-          brand: this.form.brand_slug,
-          model: this.form.model_slug,
+          brand: this.form.brand_slug || this.form.brandObj.slug,
+          model: this.form.model_slug || this.form.model,
           year: this.form.year,
           body: this.form.car_body_type,
           generation: this.form?.generation_id,
         })
+        this.data.engines = this.engines;
       }
     },
     async getSellGearing() {
       if (this.form.engine) {
         await this.$store.dispatch('getSellGearing', {
-          brand: this.form.brand_slug,
-          model: this.form.model_slug,
+          brand: this.form.brand_slug || this.form.brandObj.slug,
+          model: this.form.model_slug || this.form.model,
           year: this.form.year,
           body: this.form.car_body_type,
           generation: this.form?.generation_id,
@@ -804,10 +941,10 @@ export default {
       }
     },
     async getSellTransmissions() {
-      if (this.form.gearing) {
+      if (this.form.gearing && this.form.engine) {
         await this.$store.dispatch('getSellTransmissions', {
-          brand: this.form.brand_slug,
-          model: this.form.model_slug,
+          brand: this.form.brand_slug || this.form.brandObj.slug,
+          model: this.form.model_slug || this.form.model,
           year: this.form.year,
           body: this.form.car_body_type,
           generation: this.form?.generation_id,
@@ -817,11 +954,12 @@ export default {
         this.data.transmissions = this.sellTransmissions;
       }
     },
+
     async getSellModifications() {
-      if (this.form.transmission) {
+      if (this.form.transmission && this.form.gearing) {
         await this.$store.dispatch('getSellModifications', {
-          brand: this.form.brand_slug,
-          model: this.form.model_slug,
+          brand: this.form.brand_slug || this.form.brandObj.slug,
+          model: this.form.model_slug || this.form.model,
           year: this.form.year,
           body: this.form.car_body_type,
           generation: this.form?.generation_id,
@@ -855,12 +993,11 @@ export default {
       }[key][value]
     },
     getModificationName(o) {
-      let generation = this.sellGenerations.find(
-        (o) => o.id === this.form?.generation_id,
+      let generation = this.data.generations.find(
+        (o) => o.id === this.form.generation_id,
       )
-      let name = `${this.$t('box_mode_values')[o.box]}/${
-        generation.start_year
-      } - ${generation.end_year || this.currentYear}`
+      let name = `${this.$t('box_mode_values')[o.box]}/
+      ${generation.start_year} - ${generation.end_year || this.currentYear}`
       if (o.capacity) name = `${o.capacity} ${name}`
       if (o.power) name = `${o.power} ${this.$t('char_h_power')}/${name}`
       if (o.complect_type) name += `/${o.complect_type}`
@@ -971,6 +1108,8 @@ export default {
       for (var i = obj.min; i <= obj.max; i++) {
         arr.push({key: i, name: i})
       }
+
+
       this.data.sellYears = arr;
 
     },
@@ -1013,12 +1152,120 @@ export default {
       }
       this.data.transmissions = arr;
     },
+    handleModificationsData(obj) {
+      var arr = []
+      for (var i = 0; i < Object.keys(obj).length; i++) {
+        var item = obj[Object.keys(obj)[i]];
+        arr.push(item);
+      }
+      this.data.modifications = arr;
 
+    },
+
+    //handle actions
+    async deleteByIndex(index) {
+      if (this.saved_images[index]) {
+        this.deleteArr.push(this.saved_images[index])
+      } else {
+        await this.$axios.$post(
+          '/remove_temporary_image/' + this.saved_images[index],
+        )
+      }
+      this.saved_images.splice(index, 1)
+    },
+    addDeletedImagesToList(e) {
+      this.deleteArr.push(e)
+    },
+
+    //handle image
+    async addFiles(v) {
+      await Promise.all(
+        v.map(async (image) => {
+          let formData = new FormData()
+          formData.append('temp_id', this.date)
+          formData.append('images[]', image)
+          try {
+            const data = await this.$axios.$post(
+              '/upload_temporary_images',
+              formData,
+              {
+                headers: {
+                  'Content-Type': 'multipart/form-data',
+                },
+              },
+            )
+            this.saved_images = this.saved_images.concat(data.ids)
+            this.$store.commit('setSavedImageUrls', data.images)
+            this.$nuxt.$emit(
+              'remove_image_loading_by_index',
+              this.saved_images.length,
+            )
+          } catch ({
+            response: {
+              data: {data},
+            },
+          }) {
+            this.$nuxt.$emit('remove_image_by_index', this.saved_images.length)
+            this.$nuxt.$emit('remove_image_on_catch')
+            this.errors = []
+            this.$toasted.clear()
+            Object.keys(data).map((key) => {
+              this.$toasted.show(data[key], {type: 'error'})
+            })
+          }
+        }),
+      )
+    },
+    addImages(v) {
+      this.files = v
+      this.getInfo()
+      this.$nuxt.$emit('progress_change', {
+        type: 'images',
+        count: Object.keys(this.files).length,
+      })
+    },
+    passBase64Images(val) {
+      this.imagesBase64 = val
+    },
+    replaceImage(object) {
+      if (this.saved_images.length !== this.imagesBase64.length) return
+      this.imagesBase64 = object.images
+      this.move(this.saved_images, object.v.oldIndex, object.v.newIndex)
+    },
+    removeImage(v) {
+      this.files = v
+      this.$nuxt.$emit('progress_change', {
+        type: 'images',
+        count: Object.keys(this.files).length,
+      })
+      this.getInfo()
+    },
+    getInfo() {
+      let i = -3
+      Object.keys(this.form).map((key) => {
+        if (typeof this.form[key] !== 'object') {
+          if (this.form[key] !== '') {
+            if (key !== 'currency') i++
+          }
+        } else {
+          // if(Object.keys(this.form[key]).length) i++;
+        }
+      })
+      if (this.files.length) i += 1
+
+      this.$nuxt.$emit('progress_change', {type: 'all', count: i, all: 33})
+    },
+    move(input, from, to) {
+      let numberOfDeletedElm = 1
+      const elm = input.splice(from, numberOfDeletedElm)[0]
+      numberOfDeletedElm = 0
+      input.splice(to, numberOfDeletedElm, elm)
+    },
 
     //handle change
     async changeBrand(e) {
       this.form.model_id = null;
-      this.form.model = {};
+      this.form.model = "";
       this.brands.find(f => {
         if (f.id == e) {
           // this.$store.dispatch('getModels', )
@@ -1034,6 +1281,7 @@ export default {
       this.form.year = null;
       await this.data.models.find(f => {
         if (f.id == e) {
+          this.form.model = f.slug
           this.form.year = null;
           this.form.model_slug = f.slug;
         }
@@ -1048,7 +1296,6 @@ export default {
       //     this.form.model_slug = f.slug;
       //   }
       // })
-      console.log("change year")
       this.getSellBodies();
     },
     async changeBodyType(e) {
@@ -1097,43 +1344,74 @@ export default {
       }
     },
     async sendData(status = 2) {
-      // if (this.saved_images?.length !== this.imagesBase64.length) {
-      //   this.$toasted.show(this.$t('please_wait_for_all_image_loading'), {
-      //     type: 'error',
-      //   })
-      //   return false
-      // }
+      if (this.saved_images.length !== this.imagesBase64.length) {
+        this.$toasted.show(this.$t('please_wait_for_all_image_loading'), {
+          type: 'error',
+        })
+        return false
+      }
 
 
-      let form = {};
+      this.form.status = status
+      this.form.id = this.single_announce.id;
+      this.form.month = this.single_announce.month || "";
+      this.form.sell_store = this.single_announce.sell_store || 0;
+      this.form.video_360_id = this.single_announce.video_360_id || "";
+      this.form.modification = "";
+      // this.form.model = this.form.model_slug;
 
-      form.status = this.form.status;
-      form.brand = this.form.brand.slug;
-      form.model = this.form.model.slug;
-      form.year = this.form.year;
-      form.address = this.form.address;
-      // form.generation_id = this.form.generation_id;
-      form.rejectArray = this.rejectObj.rejectArray.concat(this.sellLastStepRejectObj.rejectArray);
+      delete this.form.model_slug;
+      delete this.form.brand_slug;
+      this.form.id_unique = this.single_announce.id;
+      this.form.interior_360_id = this.single_announce.interior_360_id || "";
+      this.form.main_image = this.form.main_image || null;
+      // this.form.generation = this.generation
+      // this.form.car_catalog_id = this.modification
+      this.form.rejectArray = this.rejectObj.rejectArray;
+      // this.form.main_image = this.main_image
+      // this.form.saved_images = this.saved_images
+      let formData = new FormData()
+      formData.append('data', JSON.stringify(this.form))
+      formData.append('deletedImages', JSON.stringify(this.deleteArr))
 
-
-      var formData = new FormData();
-
-      formData.append("data", JSON.stringify(this.form))
-
-
-      this.$nuxt.$emit('loading_status', true)
-      this.pending = true
-
+      this.loading = true;
+      this.button_loading = true
       try {
         await this.$axios.$post('/ticket/car/' + this.single_announce.id, formData)
 
         if (this.user.admin_group == 2) {
+          location.href = 'https://dev.mashin.al/alvcp/resources/announcements'
         } else {
-          // location.href = '/alvcp/resources/announcements'
+          location.href = 'https://dev.mashin.al/alvcp/resources/announcements'
         }
-      } catch {
-
-        this.pending = false;
+      } catch ({
+        response: {
+          data: {data},
+        },
+      }) {
+        this.loading = false;
+        this.button_loading = false
+        this.errors = []
+        this.$toasted.clear()
+        Object.keys(data)
+          .reverse()
+          .map((key) => {
+            this.errors.push(key)
+            this.$toasted.show(data[key][0], {
+              type: 'error',
+              duration: 0,
+              action: {
+                text: 'Go to fix',
+                onClick: (e, toastObject) => {
+                  if (document.querySelector('#' + key))
+                    document
+                      .querySelector('#' + key)
+                      .scrollIntoView({behavior: 'smooth', block: 'center'})
+                  toastObject.goAway(0)
+                },
+              },
+            })
+          })
       }
     },
     addComment(e) {
@@ -1150,15 +1428,15 @@ export default {
       handler() {
         if (this.form.brandObj == {}) {
           this.form.model_id = null;
-          this.form.model = {};
+          // this.form.model = {};
         }
         if (this.form.brand_id == null) {
           this.form.model_id = null;
-          this.form.model = {};
+          // this.form.model = {};
         }
         if (this.form.brand == null) {
           this.form.model_id = null;
-          this.form.model = {};
+          // this.form.model = {};
         }
         if ((this.form.model_id == null) || (this.form.model == {})) {
           this.form.year = null;
@@ -1182,7 +1460,10 @@ export default {
           this.form.modification = null;
         }
       }
-    }
+    },
   }
 }
 </script>
+
+
+<!--90zz258-->

@@ -14,32 +14,51 @@
           'disabled-content': type === 'cars' && !form.car_catalog_id && !edit,
         }"
       >
+
         <title-with-line-and-reject-reason
           v-if="announcement.media.length"
           id="360"
+          :imageRejected="imageRejected"
+          :modalToggled="imageModal.modalToggled"
+          :rejectArray="imageModal.rejectArray"
           :subtitle="
             $t('at_least_5_photos', {
               min: minFiles,
               max: maxFiles,
             }).toLowerCase()
           "
+          imageReject
+          reasonOptions
           reject-key="image"
           required
           title="photos"
           @change="changeReason"
         />
-        <upload-image
-          ref="sellLastStepUploadImage"
-          :default-files="files"
-          :helpers="helperImages"
-          :max-files="announcement.media.length"
-          :min-files="minFiles"
-          @files-changed="updateImages"
-          @files-dropped="addImages"
-          @file-deleted="deleteImage"
-          @file-rotated="rotateImage"
-          @order-changed="changeOrder"
-        />
+        <transition name="fade">
+          <photo-reject-reason
+            v-if="imageModal.isOpen"
+            :default_data="rejectObj.rejectArray"
+            :modal__title="$t('image_reject_reason')"
+            :type="'car'"
+            @close="closeImageRejectModal"
+            @save="saveImageRejects"
+          />
+        </transition>
+<!--        <upload-image-->
+<!--          ref="sellLastStepUploadImage"-->
+<!--          :announce="single_announce"-->
+<!--          :default-files="files"-->
+<!--          :helpers="helperImages"-->
+<!--          :max-files="announcement.media.length"-->
+<!--          :min-files="minFiles"-->
+<!--          isModeationPage-->
+<!--          load-croppa-->
+<!--          @files-changed="updateImages"-->
+<!--          @files-dropped="addImages"-->
+<!--          @file-deleted="deleteImage"-->
+<!--          @file-rotated="rotateImage"-->
+<!--          @order-changed="changeOrder"-->
+<!--        />-->
         <title-with-line-and-reject-reason
           v-if="form.images_360 && form.images_360.length"
           reject-key="360"
@@ -75,10 +94,20 @@
           title="color"
           @change="changeReason"
         />
-        <div v-if="form.selectedColor && colors.length">
-          <color-options v-model="form.selectedColor" :hide-matt="type !== 'cars'" :limit="2"
-                         :matt="form.is_matte" :multiple="type === 'cars'" @change="removeError('selectedColor')"
-                         @change-matt="form.is_matte = $event"/>
+        <div v-if="form.selectedColor && colors.length" class="row">
+          <div class="col-12 col-lg-10">
+            <color-options v-model="form.selectedColor" :hide-matt="type !== 'cars'" :limit="2"
+                           :matt="form.is_matte" :multiple="type === 'cars'" @change="removeError('selectedColor')"
+                           @change-matt="form.is_matte = $event"/>
+          </div>
+          <div class="col-12 col-lg-2">
+                  <span
+                    v-if="smsRadarData && smsRadarData.color"
+                    class="ma-smsradar"
+                  >
+                  <strong>SMSRadar: </strong>   <p>{{ smsRadarData.color }}</p>
+               </span>
+          </div>
         </div>
         <title-with-line-and-reject-reason
           no-approval
@@ -135,7 +164,7 @@
                 />
               </form-checkbox>
               <form-checkbox
-                v-if="!user.external_salon"
+                v-if="!single_announce.is_external_salon"
                 v-model="form.customs_clearance"
                 :label="$t('not_cleared')"
                 input-name="customs_clearance"
@@ -147,7 +176,7 @@
                 "
               />
               <form-checkbox
-                v-if="!user.external_salon"
+                v-if="!single_announce.is_external_salon"
                 v-model="form.guaranty"
                 :label="$t('in_garanty')"
                 input-name="guaranty"
@@ -172,7 +201,7 @@
             title="region_and_place_of_inspection"
           />
           <div class="row">
-            <div class="col-lg-4 mb-2 mb-lg-0">
+            <div v-if="!single_announce.is_external_salon" class="col-lg-4 mb-2 mb-lg-0">
               <form-select
                 v-model="form.region_id"
                 :clear-option="false"
@@ -183,7 +212,22 @@
                 @change="removeError('region_id'), updatePreview('region')"
               />
             </div>
+<<<<<<< HEAD
             <div class="col-lg-4 mb-2 mb-lg-0" v-if="!single_announce.is_external_salon">
+=======
+            <div v-if="single_announce.is_external_salon" class="col-lg-4 mb-2 mb-lg-0">
+              <form-select
+                v-model="form.country_id"
+                :clear-option="false"
+                :invalid="isInvalid('region_id')"
+                :label="$t('sale_region_country')"
+                :options="sellOptions.countries"
+                has-search
+                @change="removeError('region_id'), updatePreview('region')"
+              />
+            </div>
+            <div class="col-lg-4 mb-2 mb-lg-0">
+>>>>>>> 1fe89e34e23a7a51bc36b662c5b8496131733a27
               <form-text-input
                 v-model="form.address"
                 :placeholder="$t('address')"
@@ -207,7 +251,6 @@
             </div>
           </div>
         </template>
-        <template v-if="user.external_salon"></template>
         <title-with-line-and-reject-reason
           :id="'anchor-price'"
           no-approval
@@ -229,22 +272,24 @@
               </div>
               <div class="col-auto">
                 <form-switch
-                  v-model="form.currency_id"
+                  v-model="form.currency"
                   :options="getCurrencyOptions"
                   @change="updatePreview('currency')"
                 />
               </div>
             </div>
           </div>
-          <div v-if="!user.external_salon" class="col-lg-auto mb-2 mb-lg-0">
+          <div class="col-lg-auto mb-2 mb-lg-0">
             <div class="d-flex flex-wrap flex-lg-nowrap">
               <form-checkbox
+                v-if="!single_announce.is_external_salon"
                 v-model="form.tradeable"
                 :label="$t('tradeable')"
                 input-name="tradeable"
                 transparent
               />
               <form-checkbox
+                v-if="!single_announce.is_external_salon"
                 v-model="form.credit"
                 :label="$t('credit_possible')"
                 input-name="credit"
@@ -253,7 +298,7 @@
             </div>
           </div>
         </div>
-        <template v-if="user.external_salon">
+        <template v-if="!single_announce.is_external_salon">
           <title-with-line-and-reject-reason
             :id="'anchor-price'"
             :title="`${$t('auction')} / ${$t('end_date')}`"
@@ -333,6 +378,7 @@
             spanId="anchor-vin"
           />
         </template>
+
         <div
           v-if="
             (type === 'cars' && !user.is_autosalon) ||
@@ -390,9 +436,19 @@
               transparent
             />
           </div>
+          <div class="col-12 col-lg-8">
+                  <span
+                    v-if="smsRadarData && (smsRadarData.carNumber || smsRadarData.bodyNumber)"
+                    class="ma-smsradar"
+                  >
+                  <strong>SMSRadar: </strong>   <p>{{
+                      smsRadarData.carNumber
+                    }} | {{ smsRadarData.bodyNumber ? smsRadarData.bodyNumber : '' }}</p>
+               </span>
+          </div>
         </div>
         <div class="mt-2 mt-lg-3">
-          <template v-if="type === 'cars'">
+          <template v-if="(type === 'cars') && popularOptions && popularOptions.length">
             <car-filters
               :collapsedByDefault="true"
               :values="form.all_options"
@@ -441,6 +497,7 @@
         >
           <div v-html="getRulesPage.text[locale]"></div>
         </modal-popup>
+
         <backdrop v-if="showLoginPopup" @click="showLoginPopup = false">
           <template #default="{ show }">
             <transition name="translate-fade">
@@ -527,10 +584,12 @@ import CarFilters from '~/components/cars/CarFilters'
 import TitleWithLineAndRejectReason from '~/components/moderator/titleWithLineAndRejectReason'
 
 import Interior360Viewer from '~/components/Interior360Viewer'
+import PhotoRejectReason from "~/pages/moderator/photoReject/PhotoRejectReason";
 
 
 export default {
   components: {
+    PhotoRejectReason,
     TitleWithLineAndRejectReason,
     SellSelectModification,
     UploadImage,
@@ -551,6 +610,8 @@ export default {
     colors: Array,
     generations: Array,
     sell_bodies: Array,
+    smsRadarData: Object,
+    single_announce: Object,
   },
   mixins: [ToastErrorsMixin, ImageResizeMixin, PaymentMixin],
   data() {
@@ -583,11 +644,36 @@ export default {
         rejectArray: [],
         reject360: ['360_photo_reject_1'],
       },
+      imageModal: {
+        isOpen: false,
+        options: [
+          'front_error',
+          'back_error',
+          'left_error',
+          'right_error',
+          'interior_error',
+          'not_this_car_error',
+          'logo_on_the_picture',
+        ],
+        initialOptions: [
+          'front_error',
+          'back_error',
+          'left_error',
+          'right_error',
+          'interior_error',
+          'not_this_car_error',
+          'logo_on_the_picture',
+        ],
+        rejectArray: ['front_error',
+          'back_error',
+          'left_error',],
+        modalToggled: false,
+      }
     }
   },
   computed: {
     ...mapState(['sellPhoneEntered']),
-    ...mapGetters(['sellOptions', 'sellSalonRights', 'staticPages']),
+    ...mapGetters(['sellOptions', 'sellSalonRights', 'staticPages', 'popularOptions',]),
     helperImages() {
       let imgs =
         this.type === 'cars'
@@ -597,7 +683,6 @@ export default {
             : [1, 2, 3]
       return imgs.map((n) => `/img/sell-helpers/${this.type}_${n}.png`)
     },
-
     isAutosalon() {
       return !!(
         (this.loggedIn &&
@@ -609,7 +694,6 @@ export default {
     getRulesPage() {
       return this.staticPages.find((page) => page.id == 1)
     },
-
     getCurrencyOptions() {
       return [
         {key: 1, name: 'AZN', sign: '₼'},
@@ -641,6 +725,23 @@ export default {
         model: this.announcement.model.slug,
       }
     },
+    imageRejected() {
+      // if(
+      return
+      this.rejectObj.rejectArray.includes('front_error')
+      // this.rejectObj.rejectArray.includes('back_error') ||
+      // this.rejectObj.rejectArray.includes('left_error') ||
+      // this.rejectObj.rejectArray.includes('right_error') ||
+      // this.rejectObj.rejectArray.includes('interior_error') ||
+      // this.rejectObj.rejectArray.includes('not_this_car_error') ||
+      // this.rejectObj.rejectArray.includes('logo_on_the_picture')
+      // ){
+      //   return true
+      // }else{
+      //   return  false
+      // }
+    }
+
   },
   methods: {
     ...mapActions([
@@ -671,29 +772,29 @@ export default {
       }
     },
     updatePreview(key) {
-      // if (!key || key === 'region')
-      //   this.setSellPreviewData({
-      //     value: this.announcement.region_id,
-      //     key: 'region',
-      //   })
-      // if (!key || key === 'price')
-      //   this.setSellPreviewData({ value: this.form.price, key: 'price' })
-      // if (!key || key === 'currency')
-      //   this.setSellPreviewData({
-      //     value: this.getCurrencyOptions.find(
-      //       (o) => o.key === this.form.currency,
-      //     )?.sign,
-      //     key: 'currency',
-      //   })
-      // if (!key || key === 'mileage')
-      //   this.setSellPreviewData({ value: this.form.mileage, key: 'mileage' })
-      // if (!key || key === 'mileage_measure')
-      //   this.setSellPreviewData({
-      //     value: this.getMileageOptions.find(
-      //       (o) => o.key === this.form.mileage_measure,
-      //     )?.name,
-      //     key: 'mileage_measure',
-      //   })
+      if (!key || key === 'region')
+        this.setSellPreviewData({
+          value: this.announcement.region_id,
+          key: 'region',
+        })
+      if (!key || key === 'price')
+        this.setSellPreviewData({value: this.form.price, key: 'price'})
+      if (!key || key === 'currency')
+        this.setSellPreviewData({
+          value: this.getCurrencyOptions.find(
+            (o) => o.key === this.form.currency,
+          )?.sign,
+          key: 'currency',
+        })
+      if (!key || key === 'mileage')
+        this.setSellPreviewData({value: this.form.mileage, key: 'mileage'})
+      if (!key || key === 'mileage_measure')
+        this.setSellPreviewData({
+          value: this.getMileageOptions.find(
+            (o) => o.key === this.form.mileage_measure,
+          )?.name,
+          key: 'mileage_measure',
+        })
       return
     },
     updateMileage(is_new) {
@@ -789,6 +890,8 @@ export default {
       )
     },
     async deleteImage(index) {
+
+      this.$emit('imageDeleted', index)
       if (this.savedFiles[index]) {
         if (
           this.edit &&
@@ -939,10 +1042,9 @@ export default {
       this.showLoginPopup = false
       this.publishPost()
     },
-
     changeReason(rejectKey) {
       if (rejectKey === 'image') {
-        this.rejectObj.showPhotoReject = true
+        this.openImageRejectModal()
       } else if (rejectKey === '360') {
         this.rejectObj.show360Reject = true
       } else {
@@ -952,6 +1054,49 @@ export default {
           this.rejectObj.rejectArray.push(rejectKey)
         }
       }
+    },
+
+    //image reject
+
+
+    openImageRejectModal() {
+
+      this.imageModal.isOpen = true;
+
+
+      var opts = this.imageModal.options;
+      var arr = this.rejectObj.rejectArray;
+      var tempArr = this.imageModal.rejectArray;
+
+      for (var i = 0; i < opts.length; i++) {
+        console.log(i, opts[i])
+      }
+    },
+    closeImageRejectModal() {
+      this.imageModal.isOpen = false
+      this.imageModal.rejectArray = [];
+      this.removeDuplicates()
+    },
+
+    //fills temporary array
+    changeImageRejectReason(rejectKey) {
+      var oldArr = this.imageModal.rejectArray;
+      var editingArr = this.imageModal.rejectArray;
+      if (editingArr.includes(rejectKey)) {
+        editingArr.splice(editingArr.indexOf(rejectKey), 1)
+      } else {
+        editingArr.push(rejectKey)
+      }
+    },
+    saveImageRejects() {
+      this.rejectObj.rejectArray = this.rejectObj.rejectArray.concat(this.imageModal.rejectArray);
+      this.removeDuplicates()
+      this.closeImageRejectModal();
+      this.imageModal.rejectArray = [];
+    },
+    removeDuplicates() {
+      var arr = this.rejectObj.rejectArray
+      this.rejectObj.rejectArray = [...new Set(arr)]
     },
 
   },
@@ -965,9 +1110,9 @@ export default {
         this.$emit('getRejectObj', this.rejectObj)
       }
     },
-    form:{
+    form: {
       deep: true,
-      handler(){
+      handler() {
         this.$emit("formChanged", this.form)
       }
     }
@@ -993,6 +1138,9 @@ export default {
   },
   beforeDestroy() {
     this.$nuxt.$off('login', this.handleAfterLogin)
+  },
+  mounted() {
+    this.$store.dispatch('getPopularOptions');
   },
 }
 </script>

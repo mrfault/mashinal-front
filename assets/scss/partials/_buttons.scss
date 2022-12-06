@@ -692,3 +692,17 @@ button:focus {
     }
   }
 }
+
+.button-new-tab{
+  border: 1px solid #dadada;
+  border-radius: 6px;
+  font-weight: 500;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  i{
+    color: #000;
+  }
+}
