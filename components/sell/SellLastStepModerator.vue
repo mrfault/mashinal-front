@@ -223,14 +223,14 @@
                 @change="removeError('region_id'), updatePreview('region')"
               />
             </div>
-            <div class="col-lg-4 mb-2 mb-lg-0">
+            <div class="col-lg-4 mb-2 mb-lg-0" v-if="!single_announce.is_external_salon">
               <form-text-input
                 v-model="form.address"
                 :placeholder="$t('address')"
                 icon-name="placeholder"
               />
             </div>
-            <div class="col-lg-4 mb-2 mb-lg-0">
+            <div class="col-lg-4 mb-2 mb-lg-0" v-if="!single_announce.is_external_salon">
               <pick-on-map-button
                 :address="form.address"
                 :lat="form.lat"
