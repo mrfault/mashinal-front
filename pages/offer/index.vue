@@ -25,10 +25,10 @@
     </section>
     <div class="">
       <div class="new-offer mt-5" v-if="activeMyOffers.length > 0">
-        <div class="new-offer-title mt-5">
+        <div class="new-offer-title">
           <h2 class="text-center" > Sorğularım</h2>
         </div>
-        <div class="new-offer-notification-box mt-5" v-for="activeMyOffer in activeMyOffers">
+        <div class="new-offer-notification-box" v-for="activeMyOffer in activeMyOffers">
 
           <div class="notification">
             <img src="/icons/auction.svg">
@@ -71,7 +71,6 @@
       <hr class="mt-5 mb-5">
       <section class="offer-text">
         <inline-svg src="/icons/offer/wheel.svg" width="100px"/>
-
         <p>
           Biz evdən çıxmadan cəmi bir saat ərzində eksklüziv ucuz qiymətə yeni avtomobil almağa imkan verən innovativ
           onlayn sistem yaratdıq. Biz sizin üçün təhlükəsiz, sürətli və rahat əməliyyata zəmanət veririk. Siz
@@ -136,7 +135,7 @@
     </section>
     <section class="text">
       <div class="">
-        <hr class="mt-5 mb-5">
+        <hr class="">
         <section class="offer-text">
           <inline-svg src="/icons/offer/stamp.svg" class="offer-stamp-icon" width="70"/>
           <p>
