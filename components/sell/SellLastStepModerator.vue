@@ -44,20 +44,21 @@
             @save="saveImageRejects"
           />
         </transition>
-        <pre>{{imageRejected}}</pre>
-        <upload-image
-          ref="sellLastStepUploadImage"
-          :default-files="files"
-          :helpers="helperImages"
-          :max-files="announcement.media.length"
-          :min-files="minFiles"
-          isModeationPage
-          @files-changed="updateImages"
-          @files-dropped="addImages"
-          @file-deleted="deleteImage"
-          @file-rotated="rotateImage"
-          @order-changed="changeOrder"
-        />
+<!--        <upload-image-->
+<!--          ref="sellLastStepUploadImage"-->
+<!--          :announce="single_announce"-->
+<!--          :default-files="files"-->
+<!--          :helpers="helperImages"-->
+<!--          :max-files="announcement.media.length"-->
+<!--          :min-files="minFiles"-->
+<!--          isModeationPage-->
+<!--          load-croppa-->
+<!--          @files-changed="updateImages"-->
+<!--          @files-dropped="addImages"-->
+<!--          @file-deleted="deleteImage"-->
+<!--          @file-rotated="rotateImage"-->
+<!--          @order-changed="changeOrder"-->
+<!--        />-->
         <title-with-line-and-reject-reason
           v-if="form.images_360 && form.images_360.length"
           reject-key="360"
@@ -163,7 +164,7 @@
                 />
               </form-checkbox>
               <form-checkbox
-                v-if="!user.external_salon"
+                v-if="!single_announce.is_external_salon"
                 v-model="form.customs_clearance"
                 :label="$t('not_cleared')"
                 input-name="customs_clearance"
@@ -175,7 +176,7 @@
                 "
               />
               <form-checkbox
-                v-if="!user.external_salon"
+                v-if="!single_announce.is_external_salon"
                 v-model="form.guaranty"
                 :label="$t('in_garanty')"
                 input-name="guaranty"
@@ -200,13 +201,24 @@
             title="region_and_place_of_inspection"
           />
           <div class="row">
-            <div class="col-lg-4 mb-2 mb-lg-0">
+            <div v-if="!single_announce.is_external_salon" class="col-lg-4 mb-2 mb-lg-0">
               <form-select
                 v-model="form.region_id"
                 :clear-option="false"
                 :invalid="isInvalid('region_id')"
                 :label="$t('region')"
                 :options="sellOptions.regions"
+                has-search
+                @change="removeError('region_id'), updatePreview('region')"
+              />
+            </div>
+            <div v-if="single_announce.is_external_salon" class="col-lg-4 mb-2 mb-lg-0">
+              <form-select
+                v-model="form.country_id"
+                :clear-option="false"
+                :invalid="isInvalid('region_id')"
+                :label="$t('sale_region_country')"
+                :options="sellOptions.countries"
                 has-search
                 @change="removeError('region_id'), updatePreview('region')"
               />
@@ -235,7 +247,6 @@
             </div>
           </div>
         </template>
-        <template v-if="user.external_salon"></template>
         <title-with-line-and-reject-reason
           :id="'anchor-price'"
           no-approval
@@ -264,15 +275,17 @@
               </div>
             </div>
           </div>
-          <div v-if="!user.external_salon" class="col-lg-auto mb-2 mb-lg-0">
+          <div class="col-lg-auto mb-2 mb-lg-0">
             <div class="d-flex flex-wrap flex-lg-nowrap">
               <form-checkbox
+                v-if="!single_announce.is_external_salon"
                 v-model="form.tradeable"
                 :label="$t('tradeable')"
                 input-name="tradeable"
                 transparent
               />
               <form-checkbox
+                v-if="!single_announce.is_external_salon"
                 v-model="form.credit"
                 :label="$t('credit_possible')"
                 input-name="credit"
@@ -281,7 +294,7 @@
             </div>
           </div>
         </div>
-        <template v-if="user.external_salon">
+        <template v-if="!single_announce.is_external_salon">
           <title-with-line-and-reject-reason
             :id="'anchor-price'"
             :title="`${$t('auction')} / ${$t('end_date')}`"
@@ -594,6 +607,7 @@ export default {
     generations: Array,
     sell_bodies: Array,
     smsRadarData: Object,
+    single_announce: Object,
   },
   mixins: [ToastErrorsMixin, ImageResizeMixin, PaymentMixin],
   data() {
@@ -655,7 +669,7 @@ export default {
   },
   computed: {
     ...mapState(['sellPhoneEntered']),
-    ...mapGetters(['sellOptions', 'sellSalonRights', 'staticPages', 'popularOptions']),
+    ...mapGetters(['sellOptions', 'sellSalonRights', 'staticPages', 'popularOptions',]),
     helperImages() {
       let imgs =
         this.type === 'cars'
@@ -710,7 +724,7 @@ export default {
     imageRejected() {
       // if(
       return
-      this.rejectObj.rejectArray.includes('front_error') 
+      this.rejectObj.rejectArray.includes('front_error')
       // this.rejectObj.rejectArray.includes('back_error') ||
       // this.rejectObj.rejectArray.includes('left_error') ||
       // this.rejectObj.rejectArray.includes('right_error') ||
@@ -872,6 +886,8 @@ export default {
       )
     },
     async deleteImage(index) {
+
+      this.$emit('imageDeleted', index)
       if (this.savedFiles[index]) {
         if (
           this.edit &&
