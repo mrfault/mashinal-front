@@ -1,5 +1,6 @@
 <template>
   <div :class="['message-item', {'pull-right': sentByMe}]" :id="`message-${message.id}`">
+
     <div :class="['message-content', {'sent-by-me': sentByMe}]">
       <div class="message-attachments" v-if="message.attachments.length">
         <div v-for="(image, i) in message.attachments" :key="image.src"  :class="{'half-width': !(message.attachments.length % 2 === 1 && i === message.attachments.length - 1)}">
@@ -32,7 +33,7 @@ export default {
   },
   computed: {
     sentByMe() {
-      return this.message.recipient_id != this.user.id;
+      return this.message.sender_id == this.user.id;
     }
   }
 }

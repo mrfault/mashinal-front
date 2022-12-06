@@ -7,9 +7,14 @@
   border-image: linear-gradient(to right, #246EB2, #F81734) 1;
   border-radius: 4px;
   padding: 20px;
+  margin-top: 19px;
+}
+.offer-partners{
+  margin-top: 66px;
 }
 
 .new-offer-title {
+  margin-top: 66px;
   display: flex;
   justify-content: center;
 }
@@ -98,6 +103,8 @@
 .offer-text {
   align-items: center;
   justify-content: center;
+  margin-top: 62px;
+  margin-bottom: 59px;
   width: 80%;
   margin-left: auto;
   margin-right: auto;
@@ -417,7 +424,7 @@
       border-top: none;
       border-right: none;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       cursor: pointer;
 
 
@@ -445,6 +452,23 @@
       .created {
         margin-left: auto;
       }
+    }
+
+    .messageCount {
+      margin-left: auto;
+      background: $yellow-6;
+      color: $dark-blue-1;
+
+      border-radius: 50%;
+      display: inline-flex;
+      flex-shrink: 0;
+      width: 23px;
+      height: 23px;
+      justify-content: center;
+
+      font-size: 13px;
+      align-items: center;
+
     }
   }
 }
@@ -478,7 +502,7 @@
   border-right: none;
   padding: 8px;
 
-  .message-attachment-preview .preview img{
+  .message-attachment-preview .preview img {
     height: 70%;
   }
 
@@ -699,6 +723,7 @@
 
 .active-filter-fill {
   color: $yellow-5 !important;
+
   svg {
     path, rect, line {
       stroke: $yellow-5;
@@ -708,21 +733,23 @@
 }
 
 @media (max-width: 480px) {
-  .new-offer-notification-box{
+  .new-offer-notification-box {
     flex-direction: column;
-    :nth-child(2){
+
+    :nth-child(2) {
       margin-top: 7px;
       margin-left: unset !important;
     }
-    :nth-child(3){
+
+    :nth-child(3) {
       margin-top: 7px;
       margin-left: unset !important;
     }
   }
 
-  .offerDetail{
-    .offer_items{
-    flex-direction: column;
+  .offerDetail {
+    .offer_items {
+      flex-direction: column;
     }
   }
   .offer-payment-modal {
@@ -732,23 +759,27 @@
     flex-direction: column !important;
     justify-content: center;
     align-items: center;
-    div:nth-child(2){
+
+    div:nth-child(2) {
       margin-top: 15px;
     }
   }
-  .selectedOffers{
-    img{
+  .selectedOffers {
+    img {
       height: 80px !important;
     }
+
     display: flex;
     flex-direction: column !important;
     justify-content: center;
     align-items: center;
-    .d-flex{
+
+    .d-flex {
       flex-direction: column;
       align-items: center !important;
     }
-    .offer-add-delete{
+
+    .offer-add-delete {
       margin-top: 15px;
       margin-bottom: 15px;
       margin-right: auto;
@@ -775,11 +806,11 @@
   .searchInput:focus {
     scroll-behavior: smooth;
   }
-.offer-slider{
-  .swiper-pagination{
-    bottom:117px !important;
+  .offer-slider {
+    .swiper-pagination {
+      bottom: 117px !important;
+    }
   }
-}
   .offer-step {
     flex-direction: column;
   }
@@ -887,11 +918,16 @@
 }
 
 .offerCount {
-  background: $yellow-5;
-  padding: 4px 5px;
+  background: #f5da3f;
   border-radius: 50%;
-  color: $dark-blue-1;
+  display: inline-flex;
+  flex-shrink: 0;
+  width: 23px;
+  height: 23px;
+  justify-content: center;
+  color: #081a3e;
   font-size: 13px;
+  align-items: center;
 }
 
 .actions {
@@ -1006,7 +1042,33 @@
   justify-content: start;
 
   div {
-    width: 121px;
+    width: 100%;
+  }
+
+  .priceInput {
+    #minPrice {
+      border-radius: 0px;
+      border-top-left-radius: 4px;
+      border-bottom-left-radius: 4px;
+
+    }
+
+    #maxPrice {
+      border-radius: 0px;
+      border:2px solid #97C5FF7C;
+      border-top: none;
+      border-bottom: none;
+      border-right: none;
+      border-top-right-radius: 4px;
+      border-bottom-right-radius: 4px;
+    }
+  }
+
+}
+.buy-condition-section{
+  .form-group:first-child{
+    position: relative;
+    left: 3px;
   }
 }
 
@@ -1024,8 +1086,13 @@
 }
 
 .dark-mode {
-.offerSelectedBrandName{
-  color: $white;
+  .offerSelectedBrandName {
+    color: $white;
+  }
+.offer_items{
+  .active{
+    background: $dark-1;
+  }
 }
   .mobile-filter {
     .filter-icon-fill path, .filter-icon-fill rect, .filter-icon-fill line {
@@ -1271,7 +1338,8 @@
   font-weight: bold;
   font-size: 18px;
 }
-.offer-alert{
+
+.offer-alert {
   margin-top: 25px;
   background: #f8d7da;
   color: #721c24;
@@ -1281,18 +1349,19 @@
   margin-left: auto;
   margin-right: auto;
 }
-.images-wrapper{
+
+.images-wrapper {
   width: 150px;
   margin-bottom: 16px;
 
-  .image{
+  .image {
     width: 100%;
     height: 100%;
     object-fit: contain;
   }
 }
 
-.offerComment{
+.offerComment {
   margin-top: 3px;
   word-break: break-all;
 }

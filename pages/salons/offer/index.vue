@@ -92,10 +92,10 @@
                   <span>{{ offer_item.brand }} {{ offer_item.model }}</span>
 
                 </div>
+
               </div>
-              <div class="created">
-                {{ offer.created_at }}
-              </div>
+              <div class="messageCount" v-if="offer.unread_messages > 0">{{offer.unread_messages}}</div>
+
             </div>
           </div>
         </div>
@@ -112,6 +112,7 @@
             </div>
             <collapse-content :title="'Təklif'">
               <offer-items :key="offer.id" :offer_items="offer.offer_items"/>
+
             </collapse-content>
 
             <div>
@@ -122,13 +123,15 @@
                     <div class="message-file" v-for="file in message.files">
                       <img :src="file" width="100%" class="p-1" @click="openLightbox(file)">
                     </div>
-                    <div class="div m-1" v-if="message.files.length>0">
-                      {{ message.message }} <span class="time">17:30</span>
+                    <div class="div m-1" v-if="message.files.length > 0 ">
+
+                      {{ message.message }} <span class="time">{{message.time}}</span>
                     </div>
 
                   </div>
                   <span v-if="!message.files.length>0">
-                    {{ message.message }} <span class="time">17:30</span>
+
+                    {{ message.message }} <span class="time">{{message.time}}</span>
                   </span>
                 </div>
               </div>
@@ -205,6 +208,7 @@ export default {
   data() {
     return {
       IsAccepted:false,
+      readedOfferId: null,
       user_deleted_at:null,
       offer: null,
       chat: {
@@ -236,12 +240,11 @@ export default {
   },
   methods: {
 
-
-
     selectOfferItem(index) {
       this.selected_offer_item = index
     },
     changePage(param = null) {
+
       this.chat.text=''
 
       this.$router.push({
@@ -323,7 +326,9 @@ export default {
     },
 
     async getOfferDetail(id) {
+      console.log(id)
       this.chat.text=''
+
 
       if (this.isMobileBreakpoint) {
         this.$router.push(this.$localePath('/salons/offer') + '/' + id)
@@ -335,7 +340,7 @@ export default {
           }
         )));
       }
-
+      this.$store.commit('readAllMessage',{offer_id:id})
       this.$store.commit('mutate', {property: 'current_offer_id', value: id})
       setTimeout(() => {
         this.scrollTo('.message:last-child', 300, 500, '.offerDetail')
@@ -382,7 +387,13 @@ export default {
       isFavorite: 'isFavorite'
     }),
   },
+
   created() {
+    if (this.$route.query.c && this.$route.query.c!=null){
+      this.getOfferDetail(parseInt(this.$route.query.c))
+    }
+
+
     if(!Object.keys(this.$route.query).length >0){
       this.$router.push({
         query: {
@@ -395,6 +406,7 @@ export default {
   watch: {
     async $route(newVal, oldVal) {
       await this.$store.dispatch('getAllOffers', newVal.query)
+      console.log(newVal)
     },
 
     search(newVal){
