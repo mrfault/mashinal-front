@@ -44,21 +44,21 @@
             @save="saveImageRejects"
           />
         </transition>
-        <upload-image
-          ref="sellLastStepUploadImage"
-          :announce="single_announce"
-          :default-files="files"
-          :helpers="helperImages"
-          :max-files="announcement.media.length"
-          :min-files="minFiles"
-          isModeationPage
-          load-croppa
-          @files-changed="updateImages"
-          @files-dropped="addImages"
-          @file-deleted="deleteImage"
-          @file-rotated="rotateImage"
-          @order-changed="changeOrder"
-        />
+<!--        <upload-image-->
+<!--          ref="sellLastStepUploadImage"-->
+<!--          :announce="single_announce"-->
+<!--          :default-files="files"-->
+<!--          :helpers="helperImages"-->
+<!--          :max-files="announcement.media.length"-->
+<!--          :min-files="minFiles"-->
+<!--          isModeationPage-->
+<!--          load-croppa-->
+<!--          @files-changed="updateImages"-->
+<!--          @files-dropped="addImages"-->
+<!--          @file-deleted="deleteImage"-->
+<!--          @file-rotated="rotateImage"-->
+<!--          @order-changed="changeOrder"-->
+<!--        />-->
         <title-with-line-and-reject-reason
           v-if="form.images_360 && form.images_360.length"
           reject-key="360"
