@@ -33,7 +33,7 @@
                     :class="{'loadCroppa':loadCroppa}"
                     :style="imagePreloaderContainer[imagePreloaderContainer.length-1] === false ? 'cursor: move' : ''"
                     class="announcement-category__overlay__generation__item announcement-category__photo mb-20 cursor-pointer"
-                    style="margin-right: 16px;"
+
               >
                 <div
                   :class="{'imagePreloaderContainer':imagePreloaderContainer[key]}"
@@ -41,34 +41,30 @@
                   class="upload_image_form__thumbnail upload_image_form__thumbnail_fixed"
                 >
                   <div class="imagePreloader"></div>
-                  <div style="position: absolute;right: 0px;display: flex;top: 5px;">
-                    <a v-if="loadCroppa" :href="findOriginalImage(setSavedImageUrls[key], key)" class="cursor-pointer"
-                       style="margin-right:10px;position:relative;top:unset;left:unset;" target="_blank"
+                  <div class="w-100 d-flex justify-content-between p-2">
+                    <span v-if="loadCroppa" @click="findOriginalImage(setSavedImageUrls[key], key)"
+                       class="cursor-pointer button-new-tab" target="_blank"
+                       style="background: #dadada !important"
                        @click.stop>
-                      <span style="right: 0 !important;">
-                        D
-                      </span>
-                    </a>
-                    <span v-if="!imagePreloaderContainer[key]" class="cursor-pointer"
-                          style="margin-right:10px;position:relative;top:unset;left:unset;"
+                                            <icon name="image"/>
+                    </span>
+                    <span v-if="!imagePreloaderContainer[key]" class="cursor-pointer button-new-tab"
                           @click.stop="rotateLeft($event,key)">
-                      <icon name="rotate_left" style="width: 16px; height: 16px;"/>
+                         <icon name="reset" style="transform: scaleX(-1)"/>
                     </span>
-                    <span v-if="!imagePreloaderContainer[key]" class="cursor-pointer"
-                          style="margin-right:10px;position:relative;top:unset;left:unset;"
+                    <span v-if="!imagePreloaderContainer[key]" class="cursor-pointer button-new-tab"
                           @click.stop="rotateRight($event,key)">
-                      <icon name="rotate_right" style="width: 16px; height: 16px;"/>
+<!--                      <icon name="reset"></icon>-->
+                      <icon name="reset"></icon>
                     </span>
-                    <span v-if="!imagePreloaderContainer[key] && loadCroppa" class="cursor-pointer"
-                          style="margin-right:10px;position:relative;top:unset;left:unset;"
+                    <span v-if="!imagePreloaderContainer[key] && loadCroppa" class="cursor-pointer button-new-tab"
                           @click.stop="openCroppa($event, key)">
-                      &#x270E;
+                     <icon name="edit"/>
                     </span>
                     <span v-if="!imagePreloaderContainer[key]"
-                          class="cursor-pointer"
-                          style="margin-right:10px;position:relative;top:unset;left:unset;"
+                          class="cursor-pointer button-new-tab"
                           @click.stop="fileDelete($event, setSavedImageUrls[key],key)">
-                      &#x2716;
+                      <icon name="cross"/>
                     </span>
                   </div>
                   <img :class="{ 'show': setSavedImageUrls[key] }" :src="setSavedImageUrls[key]"
@@ -78,15 +74,11 @@
               <a
                 v-if="!stopUploading"
                 key="add_photo"
-                class="announcement-category__overlay__generation__item announcement-category__photo mb-20 cursor-pointer"
+                class=" announcement-category__photo announcement-category__photo-1 mb-20 cursor-pointer"
                 @click="handleFormClick" @drag.prevent.stop="" @dragstart.prevent.stop="">
                 <div class="no-photo">
-                  <div class="announcement-category__photo__circle">
-                    <span>+</span>
-                  </div>
-                  <div class="announcement-category__photo__text">
-                    <span>﻿{{ $t('add_photo') }}</span>
-                  </div>
+                  <img src="/img/sell-helpers/cars_4.png" alt="">
+
                 </div>
               </a>
             </draggable>
@@ -96,6 +88,7 @@
         </form>
       </div>
     </div>
+
     <form v-else v-bind:id="'upload_image_form--' + input_id" enctype="multipart/form-data">
       <div :style="loadCroppa ? 'margin-left: 0px;' : ''"
            class="upload_image_form__thumbnails announcement-category__overlay__generation row"
@@ -113,17 +106,17 @@
           >
             <div class="imagePreloader"></div>
             <div style="position: absolute;right: 0px;display: flex;top: 5px;">
-              <a v-if="loadCroppa" :href="findOriginalImage(setSavedImageUrls[key], key)" class="cursor-pointer"
-                 style="margin-right:10px;position:relative;top:unset;left:unset;"
+              <a v-if="loadCroppa" :href="findOriginalImage(setSavedImageUrls[key], key)" class="button-new-tab"
+
                  target="_blank" @click.stop>
-                <span style="right: 0 !important;">
                   D
-                </span>
               </a>
               <span v-if="!imagePreloaderContainer[key]" class="cursor-pointer"
                     style="margin-right:10px;position:relative;top:unset;left:unset;"
                     @click.stop="rotateLeft($event,key)">
-                <icon name="rotate_left" style="width: 16px; height: 16px;"/>
+                <span style="transform: scaleX(-1);">
+                 <icon name="reset"></icon>
+                </span>
               </span>
               <span v-if="!imagePreloaderContainer[key]" class="cursor-pointer"
                     style="margin-right:10px;position:relative;top:unset;left:unset;"
@@ -131,14 +124,13 @@
                 <icon name="rotate_right" style="width: 16px; height: 16px;"/>
               </span>
               <span v-if="!imagePreloaderContainer[key] && loadCroppa" class="cursor-pointer"
-                    style="margin-right:10px;position:relative;top:unset;left:unset;"
                     @click.stop="openCroppa($event, key)">
-                &#x270E;
+                    <icon name="edit"/>
               </span>
-              <span v-if="!imagePreloaderContainer[key]" class="cursor-pointer"
-                    style="margin-right:10px;position:relative;top:unset;left:unset;"
+              <span v-if="!imagePreloaderContainer[key]" class="cursor-pointer button-new-tab"
+
                     @click.stop="fileDelete($event, setSavedImageUrls[key],key)">
-                &#x2716;
+                    <icon name="cross"/>
               </span>
             </div>
             <img :class="{ 'show': setSavedImageUrls[key] }" :src="setSavedImageUrls[key]"
@@ -187,6 +179,7 @@
 <script>
 import draggable from 'vuedraggable';
 import {mapState} from "vuex";
+import CarViewForCroppa from "~/components/moderator/carViewForCroppa";
 
 
 export default {
@@ -252,12 +245,13 @@ export default {
     },
   },
   components: {
+    CarViewForCroppa,
     draggable,
   },
   data: function () {
     return {
       isOpenCroppa: false,
-      croppaSelectedKey: false,
+      croppaSelectedKey: 0,
       imagePreloaderContainer: [],
       list: [],
       deleteArr: [],
@@ -408,7 +402,7 @@ export default {
         let imageId = this.saved_images[key];
 
         if (this.announce.original_media[imageId] !== undefined) {
-          return this.announce.original_media[imageId];
+          return this.announce.original_media[imageId]
         }
       }
 
@@ -620,6 +614,9 @@ export default {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  width: 100%;
+  height: 100%;
+
 }
 
 .upload_image_form__thumbnail_fixed {
@@ -686,19 +683,18 @@ export default {
 }
 
 .vue_component__upload--image .upload_image_form__thumbnail span {
-  position: absolute;
-  top: -5px;
-  left: 0;
+  width: 30px;
+  height: 30px;
   z-index: 1;
   padding: 0 1px;
   border-radius: 2px;
-  background-color: grey;
+  background-color: #dadada;
 
   &:hover {
     color: #e6e6e6;
-    border: 1px solid black;
+    border: 1px solid #fff;
     background-image: none;
-    background-color: black;
+    background-color: #fff;
 
     svg {
       fill: #e6e6e6;
@@ -786,6 +782,13 @@ export default {
     }
   }
 
+}
+
+.announcement-category__photo-1{
+  width: 308px;
+  background: #dadada;
+  border-radius: 6px;
+  height: 210px;
 }
 
 </style>

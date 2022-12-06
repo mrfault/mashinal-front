@@ -121,7 +121,7 @@
 // import AddToCompareButton from "./AddToCompareButton";
 import VueCropper from 'vue-cropperjs';
 import 'cropperjs/dist/cropper.css';
-
+import axios from 'axios'
 export default {
 
   components: {
@@ -169,8 +169,12 @@ export default {
     cropperCrop(){
       let getData = this.$refs.cropper.getData();
       this.button_loading = true;
-      this.$axios
-        .$post('/ticket/media/'+this.saved_images[this.croppaSelectedKey]+'/manipulate', getData)
+      console.log( this.$route.query.token);
+      axios.post(this.$env.API_BASE_URL+'/ticket/media/'+this.saved_images[this.croppaSelectedKey]+'/manipulate', getData,{
+          headers:{
+            Authorization:'Bearer '+ this.$route.query.token
+          }
+        })
         .then( (data) => {
           this.$emit('newThumb', data.data.thumb);
           this.button_loading = false;

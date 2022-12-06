@@ -23,8 +23,6 @@
                 type="button"
                 @click.stop="fileRotate(key, index)"
               >
-                <!-- <icon name="reset" /> -->
-                <inline-svg height="14" src="/icons/reset-new.svg"/>
               </button>
               <button
                 v-if="isModeationPage"

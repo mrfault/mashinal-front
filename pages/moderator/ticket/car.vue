@@ -1255,6 +1255,12 @@ export default {
 
       this.$nuxt.$emit('progress_change', {type: 'all', count: i, all: 33})
     },
+    move(input, from, to) {
+      let numberOfDeletedElm = 1
+      const elm = input.splice(from, numberOfDeletedElm)[0]
+      numberOfDeletedElm = 0
+      input.splice(to, numberOfDeletedElm, elm)
+    },
 
     //handle change
     async changeBrand(e) {
