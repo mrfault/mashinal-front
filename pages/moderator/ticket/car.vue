@@ -771,7 +771,7 @@ export default {
           generation_id: data.announce?.car_catalog?.generation_id,
           generation: data.announce?.car_catalog?.generation_id,
           car_body_type: data.announce?.car_catalog?.car_type.id,
-          gearing: data.announce.car_catalog.main['  ']['engine'].toString(), // engines
+          gearing: data.announce.car_catalog.gearing_id.toString(), // engines
           modification: data.modifications[0],
           transmission: data.announce.car_catalog.box_id.toString(), // gearing
           capacity: data.announce?.car_catalog?.capacity,
