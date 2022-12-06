@@ -14,36 +14,28 @@
           'disabled-content': type === 'cars' && !form.car_catalog_id && !edit,
         }"
       >
+<template v-if="false">
 
-        <title-with-line-and-reject-reason
-          v-if="announcement.media.length"
-          id="360"
-          :imageRejected="imageRejected"
-          :modalToggled="imageModal.modalToggled"
-          :rejectArray="imageModal.rejectArray"
-          :subtitle="
-            $t('at_least_5_photos', {
-              min: minFiles,
-              max: maxFiles,
-            }).toLowerCase()
-          "
-          imageReject
-          reasonOptions
-          reject-key="image"
-          required
-          title="photos"
-          @change="changeReason"
-        />
-        <transition name="fade">
-          <photo-reject-reason
-            v-if="imageModal.isOpen"
-            :default_data="rejectObj.rejectArray"
-            :modal__title="$t('image_reject_reason')"
-            :type="'car'"
-            @close="closeImageRejectModal"
-            @save="saveImageRejects"
-          />
-        </transition>
+<!--        <title-with-line-and-reject-reason-->
+<!--          v-if="announcement.media.length"-->
+<!--          id="360"-->
+<!--          :imageRejected="imageRejected"-->
+<!--          :modalToggled="imageModal.modalToggled"-->
+<!--          :rejectArray="imageModal.rejectArray"-->
+<!--          :subtitle="-->
+<!--            $t('at_least_5_photos', {-->
+<!--              min: minFiles,-->
+<!--              max: maxFiles,-->
+<!--            }).toLowerCase()-->
+<!--          "-->
+<!--          imageReject-->
+<!--          reasonOptions-->
+<!--          reject-key="image"-->
+<!--          required-->
+<!--          title="photos"-->
+<!--          @change="changeReason"-->
+<!--        />-->
+</template>
         <slot></slot>
         <upload-image
           v-if="false"
@@ -582,12 +574,12 @@ import CarFilters from '~/components/cars/CarFilters'
 import TitleWithLineAndRejectReason from '~/components/moderator/titleWithLineAndRejectReason'
 
 import Interior360Viewer from '~/components/Interior360Viewer'
-import PhotoRejectReason from "~/pages/moderator/photoReject/PhotoRejectReason";
+
 
 
 export default {
   components: {
-    PhotoRejectReason,
+
     TitleWithLineAndRejectReason,
     SellSelectModification,
     UploadImage,
@@ -610,6 +602,7 @@ export default {
     sell_bodies: Array,
     smsRadarData: Object,
     single_announce: Object,
+    showPhotoReject: Boolean,
   },
   mixins: [ToastErrorsMixin, ImageResizeMixin, PaymentMixin],
   data() {
@@ -642,31 +635,7 @@ export default {
         rejectArray: [],
         reject360: ['360_photo_reject_1'],
       },
-      imageModal: {
-        isOpen: false,
-        options: [
-          'front_error',
-          'back_error',
-          'left_error',
-          'right_error',
-          'interior_error',
-          'not_this_car_error',
-          'logo_on_the_picture',
-        ],
-        initialOptions: [
-          'front_error',
-          'back_error',
-          'left_error',
-          'right_error',
-          'interior_error',
-          'not_this_car_error',
-          'logo_on_the_picture',
-        ],
-        rejectArray: ['front_error',
-          'back_error',
-          'left_error',],
-        modalToggled: false,
-      }
+
     }
   },
   computed: {
@@ -1041,9 +1010,7 @@ export default {
       this.publishPost()
     },
     changeReason(rejectKey) {
-      if (rejectKey === 'image') {
-        this.openImageRejectModal()
-      } else if (rejectKey === '360') {
+    if (rejectKey === '360') {
         this.rejectObj.show360Reject = true
       } else {
         if (this.rejectObj.rejectArray.includes(rejectKey)) {
@@ -1057,41 +1024,41 @@ export default {
     //image reject
 
 
-    openImageRejectModal() {
-
-      this.imageModal.isOpen = true;
-
-
-      var opts = this.imageModal.options;
-      var arr = this.rejectObj.rejectArray;
-      var tempArr = this.imageModal.rejectArray;
-
-      for (var i = 0; i < opts.length; i++) {
-        console.log(i, opts[i])
-      }
-    },
-    closeImageRejectModal() {
-      this.imageModal.isOpen = false
-      this.imageModal.rejectArray = [];
-      this.removeDuplicates()
-    },
-
-    //fills temporary array
-    changeImageRejectReason(rejectKey) {
-      var oldArr = this.imageModal.rejectArray;
-      var editingArr = this.imageModal.rejectArray;
-      if (editingArr.includes(rejectKey)) {
-        editingArr.splice(editingArr.indexOf(rejectKey), 1)
-      } else {
-        editingArr.push(rejectKey)
-      }
-    },
-    saveImageRejects() {
-      this.rejectObj.rejectArray = this.rejectObj.rejectArray.concat(this.imageModal.rejectArray);
-      this.removeDuplicates()
-      this.closeImageRejectModal();
-      this.imageModal.rejectArray = [];
-    },
+    // openImageRejectModal() {
+    //
+    //   this.imageModal.isOpen = true;
+    //
+    //
+    //   var opts = this.imageModal.options;
+    //   var arr = this.rejectObj.rejectArray;
+    //   var tempArr = this.imageModal.rejectArray;
+    //
+    //   for (var i = 0; i < opts.length; i++) {
+    //     console.log(i, opts[i])
+    //   }
+    // },
+    // closeImageRejectModal() {
+    //   this.imageModal.isOpen = false
+    //   this.imageModal.rejectArray = [];
+    //   this.removeDuplicates()
+    // },
+    //
+    // //fills temporary array
+    // changeImageRejectReason(rejectKey) {
+    //   var oldArr = this.imageModal.rejectArray;
+    //   var editingArr = this.imageModal.rejectArray;
+    //   if (editingArr.includes(rejectKey)) {
+    //     editingArr.splice(editingArr.indexOf(rejectKey), 1)
+    //   } else {
+    //     editingArr.push(rejectKey)
+    //   }
+    // },
+    // saveImageRejects() {
+    //   this.rejectObj.rejectArray = this.rejectObj.rejectArray.concat(this.imageModal.rejectArray);
+    //   this.removeDuplicates()
+    //   this.closeImageRejectModal();
+    //   this.imageModal.rejectArray = [];
+    // },
     removeDuplicates() {
       var arr = this.rejectObj.rejectArray
       this.rejectObj.rejectArray = [...new Set(arr)]
@@ -1113,7 +1080,7 @@ export default {
       handler() {
         this.$emit("formChanged", this.form)
       }
-    }
+    },
   },
   created() {
     ;[
