@@ -1,5 +1,5 @@
 <template>
-  <div style="z-index:2;position: absolute;left: 50%;top: 30px;padding: 20px;background: rgb(242, 242, 242);margin-left: -175px;box-shadow: 0px 0px 13px 4px;border-radius: 7px;">
+  <div style="z-index:2;position: fixed;left: 50%;top: 170px;padding: 20px;background: rgb(242, 242, 242);margin-left: -175px;box-shadow: 0px 0px 13px 4px;border-radius: 7px;">
     <div class="item" style="width: 307px;margin: 0;">
       <span class="d-block">
         <div class="swiper-container js-inner__slider swiper-container-initialized swiper-container-horizontal" style="position: relative;">

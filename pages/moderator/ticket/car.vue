@@ -279,24 +279,7 @@
               </div>
               <!--     sell last step ------  -->
               <div v-if="form && form.media && form.media.length">
-                <upload-image-moderator
-                  :announce="single_announce"
-                  :changePosition="saved_images.length === imagesBase64.length"
-                  :default-images="single_announce.media"
-                  :is-edit="false"
-                  :load-croppa="true"
-                  :max_files="30"
-                  :saved_images="saved_images"
-                  :stopUploading="imagesBase64.length >= 20"
-                  page="sell"
-                  url="/"
-                  @addFiles="addFiles"
-                  @change="addImages"
-                  @delete="removeImage"
-                  @deletedIndex="deleteByIndex"
-                  @passBase64Images="passBase64Images"
-                  @replaceImage="replaceImage"
-                />
+
                 <sell-last-step
                   :key="lastStepKey"
                   :announcement="JSON.parse(JSON.stringify(form))"
@@ -316,7 +299,26 @@
                   @formChanged="(e) => (form = e)"
                   @getRejectObj="getSellLastStepRejectObj"
                   @imageDeleted="addDeletedImagesToList"
-                />
+                >
+                  <upload-image-moderator
+                    :announce="single_announce"
+                    :changePosition="saved_images.length === imagesBase64.length"
+                    :default-images="single_announce.media"
+                    :is-edit="false"
+                    :load-croppa="true"
+                    :max_files="30"
+                    :saved_images="saved_images"
+                    :stopUploading="imagesBase64.length >= 20"
+                    page="sell"
+                    url="/"
+                    @addFiles="addFiles"
+                    @change="addImages"
+                    @delete="removeImage"
+                    @deletedIndex="deleteByIndex"
+                    @passBase64Images="passBase64Images"
+                    @replaceImage="replaceImage"
+                  />
+                </sell-last-step>
               </div>
 
               <!-- actions   ------------------------>
@@ -669,6 +671,7 @@ export default {
         obj[opt] = true
       }
     },
+
     // get
     async getAnnounceData() {
       this.loading = true;
@@ -954,7 +957,6 @@ export default {
         this.data.transmissions = this.sellTransmissions;
       }
     },
-
     async getSellModifications() {
       if (this.form.transmission && this.form.gearing) {
         await this.$store.dispatch('getSellModifications', {
@@ -1368,8 +1370,8 @@ export default {
       // this.form.generation = this.generation
       // this.form.car_catalog_id = this.modification
       this.form.rejectArray = this.rejectObj.rejectArray;
-      // this.form.main_image = this.main_image
-      // this.form.saved_images = this.saved_images
+      this.form.main_image = this.main_image
+      this.form.saved_images = this.saved_images
       let formData = new FormData()
       formData.append('data', JSON.stringify(this.form))
       formData.append('deletedImages', JSON.stringify(this.deleteArr))
