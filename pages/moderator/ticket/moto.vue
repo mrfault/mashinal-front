@@ -4,7 +4,7 @@
     class="pages-announcement-edit"
   >
     <div class="container">
-      <breadcrumbs :crumbs="crumbs" />
+      <breadcrumbs :crumbs="crumbs"/>
       <div class="sell_cards-row row">
         <div class="col-auto">
           <div class="card">
@@ -30,6 +30,7 @@
                   />
                 </div>
                 <div class="col-12 col-lg-3">
+                  <pre>{{ options }}</pre>
                   <form-select
                     v-model="form.brand_id"
                     :disabled="isModerator"
@@ -47,6 +48,27 @@
                     <strong>SMSRadar:</strong>
                     <p>{{ smsRadarData.marka }}</p>
                   </span>
+                </div>
+              </div>
+              <!--              model -->
+              <div v-if="data.models && form.brand_id" class="row">
+                <div class="col-12">
+                  <title-with-line-and-reject-reason
+                    rejectKey="model"
+                    title="model"
+                    @change="changeReason"
+                  />
+                </div>
+                <div v-if="showModelOptions" class="col-12 col-lg-3">
+                  <form-select
+                    v-model="form.model_id"
+                    :disabled="isModerator"
+                    :label="$t('model')"
+                    :options="options.brands.filter((b) => b.models_count)"
+                    :value="form.model_id"
+                    has-search
+                    @change="changeModel($event)"
+                  />
                 </div>
               </div>
 
@@ -174,7 +196,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import {mapActions, mapGetters} from 'vuex'
 import moment from 'moment'
 import SellLastStep from '~/components/sell/SellLastStepModerator'
 import SellPreview from '~/components/sell/SellPreview'
@@ -303,6 +325,9 @@ export default {
       //  moto
       default_data: {},
       admin_user: null,
+
+      //  toggle
+      showModelOptions: false,
     }
   },
   computed: {
@@ -344,34 +369,34 @@ export default {
       return [
         // { name: this.$t('my_announces'), route: `/profile/announcements` },
         // { name: `#${this.myAnnouncement.id_unique}`, route: `/cars/announcement/16642054490` },
-        { name: this.$t('moderator') },
+        {name: this.$t('moderator')},
       ]
     },
     modificationsList() {
       let arr = []
       for (const prop in this.modifications) {
-        arr.push({ id: prop, obj: this.modifications[prop] })
+        arr.push({id: prop, obj: this.modifications[prop]})
       }
       return arr
     },
     boxesList() {
       let arr = []
       for (const prop in this.boxes) {
-        arr.push({ id: prop, obj: this.boxes[prop] })
+        arr.push({id: prop, obj: this.boxes[prop]})
       }
       return arr
     },
     enginesList() {
       let arr = []
       for (const prop in this.engines) {
-        arr.push({ id: prop, obj: this.engines[prop] })
+        arr.push({id: prop, obj: this.engines[prop]})
       }
       return arr
     },
     type_of_drivesList() {
       let arr = []
       for (const prop in this.type_of_drives) {
-        arr.push({ id: prop, obj: this.type_of_drives[prop] })
+        arr.push({id: prop, obj: this.type_of_drives[prop]})
       }
       return arr
     },
@@ -380,8 +405,8 @@ export default {
         this.type === 'cars'
           ? [1, 2, 3, 4, 5]
           : this.type === 'commercial'
-          ? [1, 2, 3, 4]
-          : [1, 2, 3]
+            ? [1, 2, 3, 4]
+            : [1, 2, 3]
       return imgs.map((n) => `/img/sell-helpers/${this.type}_${n}.png`)
     },
     isMorderator() {
@@ -406,10 +431,10 @@ export default {
           models: this.atvModels[0],
         }
       }
-      return { brands: [], models: [] }
+      return {brands: [], models: []}
     },
   },
-  async asyncData({ store, route }) {
+  async asyncData({store, route}) {
     await Promise.all([
       store.dispatch('getMotoOptions'),
       store.dispatch('getOptions'),
@@ -532,253 +557,9 @@ export default {
         this.loading = false
       }
     },
-    // async checkWithVin() {
-    //   let vin = this.form.vin
-    //   let car_number = this.form.car_number.replace(/[^0-9a-zA-Z]+/g, '')
-    //
-    //   let sendData = {
-    //     announce_id: this.single_announce.id,
-    //   }
-    //   let send = false
-    //   if (vin.length === 17) {
-    //     sendData.vin = vin
-    //     send = true
-    //   }
-    //   if (car_number.length === 7) {
-    //     sendData.car_number = car_number
-    //     send = true
-    //   }
-    //
-    //   if (!send) return false
-    //
-    //   this.$nuxt.$emit('loading_status', true)
-    //   this.$axios.$post('/ticket/checkSmsRadar', sendData).then((data) => {
-    //     data = data.data
-    //
-    //     if (data) {
-    //       //data.carNumber = data.carNumber.slice(0, 2) + '-' + data.carNumber.slice(2, 4) + '-' + data.carNumber.slice(4, 7);
-    //
-    //       this.smsRadarData = data
-    //
-    //       //if (data.bodyNumber && data.bodyNumber.toString().length === 17) this.getChange(data.bodyNumber, 'vin');
-    //     }
-    //
-    //     // this.$nuxt.$emit('loading_status', false)
-    //     this.loading = false;
-    //   })
-    // },
-    async getMotoBrands() {},
-    async getColors() {
-      await this.$store.dispatch('getColors')
-    },
-    async getModels(slug) {
-      if (this.form.brand_id) {
-        await this.$store.dispatch('getModels', slug)
-        this.data.models = this.modelsGeneral
-      }
-    },
-    async getSellYears() {
-      if (this.form.model_id) {
-        await this.$store.dispatch('getSellYears', {
-          brand: this.form.brand_slug || this.form.brandObj.slug,
-          model: this.form.model_slug || this.form.model,
-        })
-        this.handleYears(this.sellYears)
-      }
-    },
-    async getSellBodies() {
-      if (this.form.year) {
-        await this.$store.dispatch('getSellBody', {
-          brand: this.form.brand_slug || this.form.brandObj.slug,
-          model: this.form.model_slug || this.form.model,
-          year: this.form.year,
-        })
-        this.data.sellBodies = this.sellBodies
-      }
-    },
-    async getGenerations() {
-      if (this.form.car_body_type) {
-        await this.$store.dispatch('getSellGenerations', {
-          brand: this.form.brand_slug || this.form.brandObj.slug,
-          model: this.form.model_slug || this.form.model,
-          year: this.form.year,
-          body: this.form.car_body_type,
-        })
-        this.data.generations = this.sellGenerations
-      }
-    },
-    async getSellEngines() {
-      if (this.form.generation_id) {
-        await this.$store.dispatch('getSellEngines', {
-          brand: this.form.brand_slug || this.form.brandObj.slug,
-          model: this.form.model_slug || this.form.model,
-          year: this.form.year,
-          body: this.form.car_body_type,
-          generation: this.form?.generation_id,
-        })
-        this.data.engines = this.engines
-      }
-    },
-    async getSellGearing() {
-      if (this.form.engine) {
-        await this.$store.dispatch('getSellGearing', {
-          brand: this.form.brand_slug || this.form.brandObj.slug,
-          model: this.form.model_slug || this.form.model,
-          year: this.form.year,
-          body: this.form.car_body_type,
-          generation: this.form?.generation_id,
-          engine: this.form?.engine,
-        })
-        this.data.gearings = this.sellGear
-      }
-    },
-    async getSellTransmissions() {
-      if (this.form.gearing && this.form.engine) {
-        await this.$store.dispatch('getSellTransmissions', {
-          brand: this.form.brand_slug || this.form.brandObj.slug,
-          model: this.form.model_slug || this.form.model,
-          year: this.form.year,
-          body: this.form.car_body_type,
-          generation: this.form?.generation_id,
-          engine: this.form?.engine,
-          gearing: this.form?.gearing,
-        })
-        this.data.transmissions = this.sellTransmissions
-      }
-    },
-    async getSellModifications() {
-      if (this.form.transmission && this.form.gearing) {
-        await this.$store.dispatch('getSellModifications', {
-          brand: this.form.brand_slug || this.form.brandObj.slug,
-          model: this.form.model_slug || this.form.model,
-          year: this.form.year,
-          body: this.form.car_body_type,
-          generation: this.form?.generation_id,
-          engine: this.form?.engine,
-          gearing: this.form?.gearing,
-          transmission: this.form?.transmission,
-        })
-        this.data.modifications = this.modificationsGeneral
-      }
-    },
+
 
     // handle lists
-    getIcon(key, value) {
-      return {
-        engine: {
-          1: 'fuel-station',
-          2: 'battery-charge',
-          3: 'diesel',
-          4: 'gas',
-          5: 'plug',
-        },
-        type_of_drive: { 1: 'drive', 2: 'drive', 3: 'drive' },
-        box: {
-          1: 'mechanical',
-          2: 'automatic',
-          3: 'robot',
-          4: 'variator',
-          5: 'reductor',
-        },
-      }[key][value]
-    },
-    getModificationName(o) {
-      let generation = this.data.generations.find(
-        (o) => o.id === this.form.generation_id,
-      )
-      let name = `${this.$t('box_mode_values')[o.box]}/
-      ${generation.start_year} - ${generation.end_year || this.currentYear}`
-      if (o.capacity) name = `${o.capacity} ${name}`
-      if (o.power) name = `${o.power} ${this.$t('char_h_power')}/${name}`
-      if (o.complect_type) name += `/${o.complect_type}`
-      return name
-    },
-    getFormValues(keys) {
-      let form = {}
-      keys.map((key) => {
-        let formKey = key
-          .replace('car_body_type', 'body')
-          .replace('generation_id', 'generation')
-          .replace('gearing', 'engine')
-          .replace('transmission', 'gearing')
-          .replace('modification', 'transmission')
-        form[formKey] = form[key]
-      })
-      return form
-    },
-    async handleChange(value, action, keys, props, nextKey) {
-      // if (this.user.admin_group == 2) {
-      //   return
-      // } else {
-      //   if (!this.disableScroll) {
-      //     if (keys[0] === 'car_catalog_id' && !this.isMobileBreakpoint) {
-      //       setTimeout(() => {
-      //         window.scrollTo({top: 1000, behavior: 'smooth'})
-      //       }, 500)
-      //     } else if (keys[0] === 'car_catalog_id' && this.isMobileBreakpoint) {
-      //       window.scrollTo({top: 1200, behavior: 'smooth'})
-      //       setTimeout(() => {
-      //         // window.location.href = '#sellLastStepUploadImage'
-      //         const el = document.querySelector('#anchor-saved_images')
-      //         el.scrollIntoView({block: 'start', behavior: 'smooth'})
-      //       }, 500)
-      //     }
-      //   }
-      //
-      //   clearTimeout(this.timeout)
-      //   let $container
-      //   if (this.isMobileBreakpoint) {
-      //     $container = document.querySelector('.mobile-screen .container')
-      //     if (action) $container.style.minHeight = `${$container.scrollHeight}px`
-      //   }
-      //   // clean store props
-      //   props.map((property) => {
-      //     this.mutate({property, value: []})
-      //   })
-      //   // update form prop
-      //   this.$emit('update-form', {key: keys[keys.length - 1], value})
-      //   // skip step for the last input
-      //   if (!action) return // clean form props
-      //     ;
-      //   [
-      //     'car_body_type',
-      //     'generation_id',
-      //     'gearing',
-      //     'transmission',
-      //     'modification',
-      //     'car_catalog_id',
-      //   ].map((key) => {
-      //     if (!keys.includes(key)) this.$emit('update-form', {key, value: ''})
-      //   })
-      //   // get values for the next input
-      //   let values = this.getFormValues([...keys, 'brand', 'model', 'year'])
-      //   await this[action](values)
-      //   // move next if only one option available
-      //   this.$nextTick(() => {
-      //     let options = this[action.replace('getSell', 'sell')]
-      //     if (options.length === 1 && nextKey !== 'car_catalog_id') {
-      //       let nextValue =
-      //         options[0].engine ||
-      //         options[0].type_of_drive ||
-      //         options[0].box ||
-      //         options[0].id
-      //       this.$emit('update-form', {key: nextKey, value: nextValue})
-      //     } else if (this.isMobileBreakpoint) {
-      //       this.timeout = setTimeout(() => {
-      //         this.scrollTo(this.$refs[`sell-${nextKey}`], -34, 500)
-      //         $container.style.minHeight = ''
-      //       }, 100)
-      //     }
-      //     if (!this.isMobileBreakpoint) {
-      //       this.timeout = setTimeout(() => {
-      //         this.scrollTo(this.$refs[`sell-${nextKey}`], -20, 500)
-      //       }, 100)
-      //     }
-      //   })
-      //
-      // }
-    },
-
     changeReason(rejectKey) {
       if (rejectKey === 'image') {
         this.imageModal.isOpen = true
@@ -799,7 +580,7 @@ export default {
       var obj = JSON.parse(JSON.stringify(obje))
       var arr = []
       for (var i = obj.min; i <= obj.max; i++) {
-        arr.push({ key: i, name: i })
+        arr.push({key: i, name: i})
       }
 
       this.data.sellYears = arr
@@ -808,7 +589,7 @@ export default {
       var obj = JSON.parse(JSON.stringify(obje))
       var arr = []
       for (var i = obj.min; i <= obj.max; i++) {
-        arr.push({ key: i, name: i })
+        arr.push({key: i, name: i})
       }
       this.data.sellYears = arr
     },
@@ -892,7 +673,7 @@ export default {
             )
           } catch ({
             response: {
-              data: { data },
+              data: {data},
             },
           }) {
             this.$nuxt.$emit('remove_image_by_index', this.saved_images.length)
@@ -900,7 +681,7 @@ export default {
             this.errors = []
             this.$toasted.clear()
             Object.keys(data).map((key) => {
-              this.$toasted.show(data[key], { type: 'error' })
+              this.$toasted.show(data[key], {type: 'error'})
             })
           }
         }),
@@ -943,7 +724,7 @@ export default {
       })
       if (this.files.length) i += 1
 
-      this.$nuxt.$emit('progress_change', { type: 'all', count: i, all: 33 })
+      this.$nuxt.$emit('progress_change', {type: 'all', count: i, all: 33})
     },
     move(input, from, to) {
       let numberOfDeletedElm = 1
@@ -985,62 +766,13 @@ export default {
     },
 
     //handle change
-    async changeBrand(e) {
-      this.form.model_id = null
-      this.form.model = ''
-      this.brands.find((f) => {
-        if (f.id == e) {
-          // this.$store.dispatch('getModels', )
-          this.getModels(f.slug)
-          this.form.brand_slug = f.slug
-          this.form.brand_id = f.id
-          this.form.brandObj = f
-        }
-      })
-    },
-    async changeModel(e) {
-      this.form.year = null
-      await this.data.models.find((f) => {
-        if (f.id == e) {
-          this.form.model = f.slug
-          this.form.year = null
-          this.form.model_slug = f.slug
-        }
-      })
-      this.getSellYears()
-    },
-    async changeYear(e) {
-      this.form.car_body_type = null
-      // await this.data.models.find(f => {
-      //   if (f.id == e) {
-      //     this.form.year = null;
-      //     this.form.model_slug = f.slug;
-      //   }
-      // })
-      this.getSellBodies()
-    },
-    async changeBodyType(e) {
-      this.form.generation_id = null
-      this.getGenerations()
-    },
-    async changeGeneration(e) {
-      this.form.engine = null
-      this.getSellEngines()
-    },
-    async changeEngine(e) {
-      this.form.gearing = null
-      this.getSellGearing()
-    },
-    async changeGearing(e) {
-      this.form.transmission = null
-      this.getSellTransmissions()
-    },
-    async changeTransmission(e) {
-      this.form.modification = null
-      this.getSellModifications()
-    },
-    async changeModification(e) {
-      return e
+    async handleBrand(id = '') {
+      this.form.brand_id = id;
+      if (id) {
+        await this.getMotoModels({category: `${this.form.category}`, id});
+        this.showModelOptions = true;
+      }
+      this.scrollReset();
     },
 
     // post
@@ -1057,7 +789,7 @@ export default {
       })
 
       if (this.user.admin_group == 2) {
-        this.$router.push({ path: this.localePath('/e-services') })
+        this.$router.push({path: this.localePath('/e-services')})
       } else {
         // location.href = '/alvcp/resources/announcements'
         this.$router.push($t('e-services'))
@@ -1108,7 +840,7 @@ export default {
         }
       } catch ({
         response: {
-          data: { data },
+          data: {data},
         },
       }) {
         this.loading = false
@@ -1128,7 +860,7 @@ export default {
                   if (document.querySelector('#' + key))
                     document
                       .querySelector('#' + key)
-                      .scrollIntoView({ behavior: 'smooth', block: 'center' })
+                      .scrollIntoView({behavior: 'smooth', block: 'center'})
                   toastObject.goAway(0)
                 },
               },
