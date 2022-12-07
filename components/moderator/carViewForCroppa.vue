@@ -20,12 +20,12 @@
           </div>
 
           <div class="swiper-row" style="width: auto; padding: 0; top: 10px; left: 10px;">
-            <div class="myPrice" @mouseenter="changeToggle" @mouseleave="changeToggle">
+            <div class="myPrice" @mouseenter="changeToggle" @mouseleave="changeToggle" v-if="false">
               <span class="swiper-row__cost" v-if="toggle" >{{ announce.price }}</span>
               <span class="swiper-row__cost" v-else>{{ announce.price_converted }}</span>
             </div>
             <span>
-              <div style="display: flex">
+              <div style="display: flex" v-if="false">
               <span v-if="announce.credit" class="credit" :hover-title="$t('credit')" style="width:30px;height: 30px; margin: 0 5px 0 0;">%</span>
               <span v-if="announce.exchange_possible || announce.tradeable" :hover-title="$t('exchange_possible')" class="barter" style="width:30px;height: 30px; margin: 0 5px 0 0;">
                 <svg xmlns="http://www.w3.org/2000/svg" width="13.642" height="13.56" viewBox="0 0 13.642 13.56">
@@ -40,7 +40,7 @@
           </div>
           <div class="catalog-result__text">
             <div>
-              <div v-if="!dayOfMonth">
+              <div v-if="!dayOfMonth && false">
                 <span class="catalog-result__text-day">{{ day }}</span>
               </div>
               <div v-else style="display: flex;flex-direction: column;">
@@ -49,12 +49,12 @@
               </div>
             </div>
           </div>
-          <div class="swiper-pagination swiper-pagination-bullets" style="cursor: default; bottom: 14px !important; height: 3px !important; display: flex; justify-content: center;">
+          <div class="swiper-pagination swiper-pagination-bullets" style="cursor: default; bottom: 14px !important; height: 3px !important; display: flex; justify-content: center;" v-if="false">
             <span class="swiper-pagination-bullet swiper-pagination-bullet-active"></span><span class="swiper-pagination-bullet"></span><span class="swiper-pagination-bullet"></span><span class="swiper-pagination-bullet"></span><span class="swiper-pagination-bullet"></span>
           </div>
         </div>
 
-        <div class="swiper-description">
+        <div class="swiper-description" v-if="false">
           <div class="swiper-description__row">
             <div class="swiper-description__img" v-if="announce.brand && announce.brand.transformed_media != ''">
               <img style="width:50px" :src="$env.baseUrl+announce.brand.transformed_media" :alt="brand(announce,'')">
@@ -181,6 +181,7 @@ export default {
         })
         .catch((data) => {
           this.button_loading = false;
+          this.$toasted.error(this.$t('Высота не может быть меньше 210, Ширина не может быть меньше 308. Вы отправили Высоту: 188.61 Ширину: 276.63'));
         });
     },
     imageExists(image_url) {
