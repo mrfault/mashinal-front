@@ -42,10 +42,10 @@
                 >
                   <div class="imagePreloader"></div>
                   <div class="w-100 d-flex justify-content-between p-2">
-                    <span v-if="loadCroppa" @click="findOriginalImage(setSavedImageUrls[key], key)"
-                       class="cursor-pointer button-new-tab" target="_blank"
-                       style="background: #dadada !important"
-                       @click.stop>
+                    <span v-if="loadCroppa" class="cursor-pointer button-new-tab"
+                          style="background: #dadada !important" target="_blank"
+                          @click="findOriginalImage(setSavedImageUrls[key], key)"
+                          @click.stop>
                                             <icon name="image"/>
                     </span>
                     <span v-if="!imagePreloaderContainer[key]" class="cursor-pointer button-new-tab"
@@ -77,7 +77,7 @@
                 class=" announcement-category__photo announcement-category__photo-1 mb-20 cursor-pointer"
                 @click="handleFormClick" @drag.prevent.stop="" @dragstart.prevent.stop="">
                 <div class="no-photo">
-                  <img src="/img/sell-helpers/cars_4.png" alt="">
+                  <img alt="" src="/img/sell-helpers/cars_4.png">
 
                 </div>
               </a>
@@ -155,8 +155,6 @@
     </form>
 
     <div v-if="isOpenCroppa && loadCroppa" class="custom_modal">
-      <div style="position: fixed; left: 0; top: 0; width: 100%; overflow: hidden; height: 100vh;z-index: 1"
-           @click="isOpenCroppa = false"></div>
       <car-view-for-croppa
         v-if="announce"
         :key="announce.id"
@@ -784,11 +782,21 @@ export default {
 
 }
 
-.announcement-category__photo-1{
+.announcement-category__photo-1 {
   width: 308px;
   background: #dadada;
   border-radius: 6px;
   height: 210px;
+}
+
+.custom-modal-style {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  overflow: hidden;
+  height: 100vh;
+  z-index: 1
 }
 
 </style>

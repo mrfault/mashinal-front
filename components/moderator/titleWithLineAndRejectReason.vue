@@ -14,7 +14,7 @@
       </h2>
     </div>
     <div
-      v-if="!noApproval"
+      v-if="!noApproval && !hideRejectReason"
       class="mb-2 ml-2"
       style="display: inline-block; z-index: 0;"
       @click="openPhotoIssuePopup"
@@ -35,6 +35,7 @@
         </div>
       </label>
     </div>
+    <slot></slot>
 
   </div>
 
@@ -68,7 +69,8 @@ export default {
     rejectKey: {},
     imageRejected: Boolean,
     imageReject: Boolean,
-    modalToggled: Boolean
+    modalToggled: Boolean,
+    hideRejectReason: Boolean,
   },
   computed: {
     toggleDisable() {

@@ -279,44 +279,76 @@
               </div>
               <!--     sell last step ------  -->
               <div v-if="form && form.media && form.media.length">
-                <upload-image-moderator
-                  :announce="single_announce"
-                  :changePosition="saved_images.length === imagesBase64.length"
-                  :default-images="single_announce.media"
-                  :is-edit="false"
-                  :load-croppa="true"
-                  :max_files="30"
-                  :saved_images="saved_images"
-                  :stopUploading="imagesBase64.length >= 20"
-                  page="sell"
-                  url="/"
-                  @addFiles="addFiles"
-                  @change="addImages"
-                  @delete="removeImage"
-                  @deletedIndex="deleteByIndex"
-                  @passBase64Images="passBase64Images"
-                  @replaceImage="replaceImage"
-                />
+                <title-with-line-and-reject-reason
+                  v-if="form.media.length"
+                  :subtitle="
+                      $t('at_least_5_photos', {
+                        min: minFiles,
+                        max: maxFiles,
+                      }).toLowerCase()
+                    "
+                  hideRejectReason
+                  title="photos"
+                >
+                  <div class="mb-2 ml-2" style="display: inline-block; z-index: 0;">
+                    <reject-reason
+                      :disabled-value="true"
+                      rejectKey="image"
+                      @change="changeReason"
+                    />
+                  </div>
+
+                </title-with-line-and-reject-reason>
                 <sell-last-step
                   :key="lastStepKey"
                   :announcement="JSON.parse(JSON.stringify(form))"
                   :colors="colors"
                   :edit="user.admin_group !== 2"
                   :restore="form.status == 3"
+                  :showPhotoReject="rejectObj.showPhotoReject"
                   :single_announce="single_announce"
                   :smsRadarData="smsRadarData"
                   :title="$t('moderator')"
                   type="cars"
                   @changeReason="changeReason"
                   @close="
-                $router.push(
-                  pageRef || $localePath('/profile/announcements'),
-                )
-              "
+                    $router.push(
+                      pageRef || $localePath('/profile/announcements'),
+                    )
+                  "
                   @formChanged="(e) => (form = e)"
                   @getRejectObj="getSellLastStepRejectObj"
                   @imageDeleted="addDeletedImagesToList"
-                />
+                >
+                  <transition name="fade">
+                    <photo-reject-reason
+                      v-if="imageModal.isOpen"
+                      :default_data="rejectObj.rejectArray"
+                      :modal__title="$t('image_reject_reason')"
+                      :type="'car'"
+                      @close="imageModal.isOpen = false"
+                      @save="savePhotoIssues"
+                    />
+                  </transition>
+                  <upload-image-moderator
+                    :announce="single_announce"
+                    :changePosition="saved_images.length === imagesBase64.length"
+                    :default-images="single_announce.media"
+                    :is-edit="false"
+                    :load-croppa="true"
+                    :max_files="30"
+                    :saved_images="saved_images"
+                    :stopUploading="imagesBase64.length >= 20"
+                    page="sell"
+                    url="/"
+                    @addFiles="addFiles"
+                    @change="addImages"
+                    @delete="removeImage"
+                    @deletedIndex="deleteByIndex"
+                    @passBase64Images="passBase64Images"
+                    @replaceImage="replaceImage"
+                  />
+                </sell-last-step>
               </div>
 
               <!-- actions   ------------------------>
@@ -483,7 +515,7 @@ import UploadImage from '~/components/elements/UploadImage'
 import RejectReason from '~/components/moderator/rejectReason'
 import TitleWithLineAndRejectReason from '~/components/moderator/titleWithLineAndRejectReason'
 import UploadImageModerator from '~/components/moderator/UploadImageModerator'
-
+import PhotoRejectReason from "~/pages/moderator/photoReject/PhotoRejectReason";
 
 export default {
   layout: 'ticket',
@@ -499,6 +531,7 @@ export default {
     UploadImage,
     SellLastStep,
     UploadImageModerator,
+    PhotoRejectReason,
 
   },
   data() {
@@ -569,6 +602,34 @@ export default {
 
       //  image
       date: Math.floor(Date.now() / 1000),
+      minFiles: this.type === 'moto' ? 2 : 3,
+      maxFiles: 20,
+      //  image reject
+      imageModal: {
+        isOpen: false,
+        options: [
+          'front_error',
+          'back_error',
+          'left_error',
+          'right_error',
+          'interior_error',
+          'not_this_car_error',
+          'logo_on_the_picture',
+        ],
+        initialOptions: [
+          'front_error',
+          'back_error',
+          'left_error',
+          'right_error',
+          'interior_error',
+          'not_this_car_error',
+          'logo_on_the_picture',
+        ],
+        rejectArray: ['front_error',
+          'back_error',
+          'left_error',],
+        modalToggled: false,
+      }
 
     }
   },
@@ -669,6 +730,7 @@ export default {
         obj[opt] = true
       }
     },
+
     // get
     async getAnnounceData() {
       this.loading = true;
@@ -771,7 +833,7 @@ export default {
           generation_id: data.announce?.car_catalog?.generation_id,
           generation: data.announce?.car_catalog?.generation_id,
           car_body_type: data.announce?.car_catalog?.car_type.id,
-          gearing: data.announce.car_catalog.main['  ']['engine'].toString(), // engines
+          gearing: data.announce.car_catalog.gearing_id.toString(), // engines
           modification: data.modifications[0],
           transmission: data.announce.car_catalog.box_id.toString(), // gearing
           capacity: data.announce?.car_catalog?.capacity,
@@ -954,7 +1016,6 @@ export default {
         this.data.transmissions = this.sellTransmissions;
       }
     },
-
     async getSellModifications() {
       if (this.form.transmission && this.form.gearing) {
         await this.$store.dispatch('getSellModifications', {
@@ -1091,7 +1152,7 @@ export default {
 
     changeReason(rejectKey) {
       if (rejectKey === 'image') {
-        this.rejectObj.showPhotoReject = true
+        this.imageModal.isOpen = true
       } else if (rejectKey === '360') {
         this.rejectObj.show360Reject = true
       } else {
@@ -1262,6 +1323,34 @@ export default {
       input.splice(to, numberOfDeletedElm, elm)
     },
 
+
+    // handle image reject
+    saveImageRejects() {
+      this.rejectObj.rejectArray = this.rejectObj.rejectArray.concat(this.imageModal.rejectArray);
+      this.removeDuplicates()
+      this.closeImageRejectModal();
+      this.imageModal.rejectArray = [];
+    },
+    removeDuplicates() {
+      var arr = this.rejectObj.rejectArray
+      this.rejectObj.rejectArray = [...new Set(arr)]
+    },
+    savePhotoIssues(v) {
+      var validCheckbox = true
+      Object.keys(v.data).map((key) => {
+        if (this.rejectObj.rejectArray.includes(key)) {
+          this.rejectObj.rejectArray.splice(this.rejectObj.rejectArray.indexOf(key), 1)
+        }
+
+        if (v.data[key]) {
+          validCheckbox = false
+          this.rejectObj.rejectArray.push(key)
+        }
+      })
+
+      this.$nuxt.$emit('image-checkbox-change', validCheckbox)
+    },
+
     //handle change
     async changeBrand(e) {
       this.form.model_id = null;
@@ -1368,8 +1457,8 @@ export default {
       // this.form.generation = this.generation
       // this.form.car_catalog_id = this.modification
       this.form.rejectArray = this.rejectObj.rejectArray;
-      // this.form.main_image = this.main_image
-      // this.form.saved_images = this.saved_images
+      this.form.main_image = this.main_image
+      this.form.saved_images = this.saved_images
       let formData = new FormData()
       formData.append('data', JSON.stringify(this.form))
       formData.append('deletedImages', JSON.stringify(this.deleteArr))

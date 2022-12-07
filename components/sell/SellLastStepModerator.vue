@@ -14,51 +14,45 @@
           'disabled-content': type === 'cars' && !form.car_catalog_id && !edit,
         }"
       >
+<template v-if="false">
 
-        <title-with-line-and-reject-reason
-          v-if="announcement.media.length"
-          id="360"
-          :imageRejected="imageRejected"
-          :modalToggled="imageModal.modalToggled"
-          :rejectArray="imageModal.rejectArray"
-          :subtitle="
-            $t('at_least_5_photos', {
-              min: minFiles,
-              max: maxFiles,
-            }).toLowerCase()
-          "
-          imageReject
-          reasonOptions
-          reject-key="image"
-          required
-          title="photos"
-          @change="changeReason"
-        />
-        <transition name="fade">
-          <photo-reject-reason
-            v-if="imageModal.isOpen"
-            :default_data="rejectObj.rejectArray"
-            :modal__title="$t('image_reject_reason')"
-            :type="'car'"
-            @close="closeImageRejectModal"
-            @save="saveImageRejects"
-          />
-        </transition>
-<!--        <upload-image-->
-<!--          ref="sellLastStepUploadImage"-->
-<!--          :announce="single_announce"-->
-<!--          :default-files="files"-->
-<!--          :helpers="helperImages"-->
-<!--          :max-files="announcement.media.length"-->
-<!--          :min-files="minFiles"-->
-<!--          isModeationPage-->
-<!--          load-croppa-->
-<!--          @files-changed="updateImages"-->
-<!--          @files-dropped="addImages"-->
-<!--          @file-deleted="deleteImage"-->
-<!--          @file-rotated="rotateImage"-->
-<!--          @order-changed="changeOrder"-->
+<!--        <title-with-line-and-reject-reason-->
+<!--          v-if="announcement.media.length"-->
+<!--          id="360"-->
+<!--          :imageRejected="imageRejected"-->
+<!--          :modalToggled="imageModal.modalToggled"-->
+<!--          :rejectArray="imageModal.rejectArray"-->
+<!--          :subtitle="-->
+<!--            $t('at_least_5_photos', {-->
+<!--              min: minFiles,-->
+<!--              max: maxFiles,-->
+<!--            }).toLowerCase()-->
+<!--          "-->
+<!--          imageReject-->
+<!--          reasonOptions-->
+<!--          reject-key="image"-->
+<!--          required-->
+<!--          title="photos"-->
+<!--          @change="changeReason"-->
 <!--        />-->
+</template>
+        <slot></slot>
+        <upload-image
+          v-if="false"
+          ref="sellLastStepUploadImage"
+          :announce="single_announce"
+          :default-files="files"
+          :helpers="helperImages"
+          :max-files="announcement.media.length"
+          :min-files="minFiles"
+          isModeationPage
+          load-croppa
+          @files-changed="updateImages"
+          @files-dropped="addImages"
+          @file-deleted="deleteImage"
+          @file-rotated="rotateImage"
+          @order-changed="changeOrder"
+        />
         <title-with-line-and-reject-reason
           v-if="form.images_360 && form.images_360.length"
           reject-key="360"
@@ -223,14 +217,14 @@
                 @change="removeError('region_id'), updatePreview('region')"
               />
             </div>
-            <div class="col-lg-4 mb-2 mb-lg-0">
+            <div class="col-lg-4 mb-2 mb-lg-0" v-if="!single_announce.is_external_salon">
               <form-text-input
                 v-model="form.address"
                 :placeholder="$t('address')"
                 icon-name="placeholder"
               />
             </div>
-            <div class="col-lg-4 mb-2 mb-lg-0">
+            <div class="col-lg-4 mb-2 mb-lg-0" v-if="!single_announce.is_external_salon">
               <pick-on-map-button
                 :address="form.address"
                 :lat="form.lat"
@@ -580,12 +574,12 @@ import CarFilters from '~/components/cars/CarFilters'
 import TitleWithLineAndRejectReason from '~/components/moderator/titleWithLineAndRejectReason'
 
 import Interior360Viewer from '~/components/Interior360Viewer'
-import PhotoRejectReason from "~/pages/moderator/photoReject/PhotoRejectReason";
+
 
 
 export default {
   components: {
-    PhotoRejectReason,
+
     TitleWithLineAndRejectReason,
     SellSelectModification,
     UploadImage,
@@ -608,6 +602,7 @@ export default {
     sell_bodies: Array,
     smsRadarData: Object,
     single_announce: Object,
+    showPhotoReject: Boolean,
   },
   mixins: [ToastErrorsMixin, ImageResizeMixin, PaymentMixin],
   data() {
@@ -640,31 +635,7 @@ export default {
         rejectArray: [],
         reject360: ['360_photo_reject_1'],
       },
-      imageModal: {
-        isOpen: false,
-        options: [
-          'front_error',
-          'back_error',
-          'left_error',
-          'right_error',
-          'interior_error',
-          'not_this_car_error',
-          'logo_on_the_picture',
-        ],
-        initialOptions: [
-          'front_error',
-          'back_error',
-          'left_error',
-          'right_error',
-          'interior_error',
-          'not_this_car_error',
-          'logo_on_the_picture',
-        ],
-        rejectArray: ['front_error',
-          'back_error',
-          'left_error',],
-        modalToggled: false,
-      }
+
     }
   },
   computed: {
@@ -1039,9 +1010,7 @@ export default {
       this.publishPost()
     },
     changeReason(rejectKey) {
-      if (rejectKey === 'image') {
-        this.openImageRejectModal()
-      } else if (rejectKey === '360') {
+    if (rejectKey === '360') {
         this.rejectObj.show360Reject = true
       } else {
         if (this.rejectObj.rejectArray.includes(rejectKey)) {
@@ -1055,41 +1024,41 @@ export default {
     //image reject
 
 
-    openImageRejectModal() {
-
-      this.imageModal.isOpen = true;
-
-
-      var opts = this.imageModal.options;
-      var arr = this.rejectObj.rejectArray;
-      var tempArr = this.imageModal.rejectArray;
-
-      for (var i = 0; i < opts.length; i++) {
-        console.log(i, opts[i])
-      }
-    },
-    closeImageRejectModal() {
-      this.imageModal.isOpen = false
-      this.imageModal.rejectArray = [];
-      this.removeDuplicates()
-    },
-
-    //fills temporary array
-    changeImageRejectReason(rejectKey) {
-      var oldArr = this.imageModal.rejectArray;
-      var editingArr = this.imageModal.rejectArray;
-      if (editingArr.includes(rejectKey)) {
-        editingArr.splice(editingArr.indexOf(rejectKey), 1)
-      } else {
-        editingArr.push(rejectKey)
-      }
-    },
-    saveImageRejects() {
-      this.rejectObj.rejectArray = this.rejectObj.rejectArray.concat(this.imageModal.rejectArray);
-      this.removeDuplicates()
-      this.closeImageRejectModal();
-      this.imageModal.rejectArray = [];
-    },
+    // openImageRejectModal() {
+    //
+    //   this.imageModal.isOpen = true;
+    //
+    //
+    //   var opts = this.imageModal.options;
+    //   var arr = this.rejectObj.rejectArray;
+    //   var tempArr = this.imageModal.rejectArray;
+    //
+    //   for (var i = 0; i < opts.length; i++) {
+    //     console.log(i, opts[i])
+    //   }
+    // },
+    // closeImageRejectModal() {
+    //   this.imageModal.isOpen = false
+    //   this.imageModal.rejectArray = [];
+    //   this.removeDuplicates()
+    // },
+    //
+    // //fills temporary array
+    // changeImageRejectReason(rejectKey) {
+    //   var oldArr = this.imageModal.rejectArray;
+    //   var editingArr = this.imageModal.rejectArray;
+    //   if (editingArr.includes(rejectKey)) {
+    //     editingArr.splice(editingArr.indexOf(rejectKey), 1)
+    //   } else {
+    //     editingArr.push(rejectKey)
+    //   }
+    // },
+    // saveImageRejects() {
+    //   this.rejectObj.rejectArray = this.rejectObj.rejectArray.concat(this.imageModal.rejectArray);
+    //   this.removeDuplicates()
+    //   this.closeImageRejectModal();
+    //   this.imageModal.rejectArray = [];
+    // },
     removeDuplicates() {
       var arr = this.rejectObj.rejectArray
       this.rejectObj.rejectArray = [...new Set(arr)]
@@ -1111,7 +1080,7 @@ export default {
       handler() {
         this.$emit("formChanged", this.form)
       }
-    }
+    },
   },
   created() {
     ;[
