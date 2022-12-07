@@ -1475,6 +1475,11 @@ export default {
         } else {
           location.href = 'https://dev.mashin.al/alvcp/resources/announcements'
         }
+        if(status == 0){
+          this.$toasted.show(this.$t('your_announce_rejected'), {
+            type: 'success',
+          })
+        }
       } catch ({
         response: {
           data: {data},
@@ -1557,4 +1562,3 @@ export default {
 </script>
 
 
-<!--90zz258-->

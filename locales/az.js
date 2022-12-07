@@ -2362,7 +2362,7 @@ export default {
   "not_this_car_error": "Göstərilən şəkillər elandakı maşına aid deyil",
   "logo_on_the_picture":"Şəkilin üzərində loqo var",
   "edit_image": "Şəkli redaktə et",
-  "reject": "İmtina et",
   "deavtive_announce":"Elanı deaktiv et",
   "sale_region_country": "Satış ölkəsi",
+  "your_announce_rejected": "Elanın dərc edilməsindən imtina edildi",
 }
