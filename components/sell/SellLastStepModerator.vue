@@ -725,7 +725,7 @@ export default {
         if (!this.isMobileBreakpoint) return
         this.$nextTick(() => {
           setTimeout(() => {
-            this.scrollTo(this.$refs['saved_images'], -34, 500)
+            // this.scrollTo(this.$refs['saved_images'], -34, 500)
           }, 0)
         })
       }
@@ -969,7 +969,7 @@ export default {
           this.$toasted.error(this.$t(message))
           if (data.need_pay) {
             this.isAlreadySold = true
-            this.scrollTo('.publish-post')
+            // this.scrollTo('.publish-post')
           }
         } else {
           // find errors
@@ -1106,6 +1106,7 @@ export default {
   },
   mounted() {
     this.$store.dispatch('getPopularOptions');
+    window.scrollTo(0,0)
   },
 }
 </script>

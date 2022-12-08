@@ -1910,7 +1910,6 @@ export default {
     "Arxa",
     "Ön",
     "Tam",
-    "Ön",
   ],
   "type_of_motos": "Moto növü",
   "type_of_mount": "Bərkitmə növü",
@@ -2366,4 +2365,10 @@ export default {
   "deavtive_announce":"Elanı deaktiv et",
   "sale_region_country": "Satış ölkəsi",
   "your_announce_rejected": "Elanın dərc edilməsindən imtina edildi",
+  "show_logs": "Loqları göstər",
+  "logs": "Loqlar",
+  "old_value": "Əvvəlki məna",
+  "new_value": "Yeni məna",
+  "created_at": "Yaradılıb",
+
 }

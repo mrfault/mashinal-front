@@ -4,22 +4,37 @@
     class="pages-announcement-edit"
   >
     <div class="container">
-      <breadcrumbs :crumbs="crumbs"/>
+      <breadcrumbs id="brdcrmbs1" :crumbs="crumbs"/>
       <div class="sell_cards-row row">
-
         <div class="col-auto">
           <div class="card">
             <div class="mb-5">
+
               <!--              user details-->
               <template v-if="form.brand">
-                <user-details
-                  :brand="form.brandObj"
-                  :createdAt="single_announce.created_at"
-                  :is-autosalon="single_announce.is_autosalon"
-                  :is-external-salon="single_announce.is_external_salon"
-                  :smsRadarData="smsRadarData"
-                  :userData="form.user"
-                />
+                <div class="row">
+                  <div class="col-12 col-md-6 col-lg-9">
+                    <user-details
+                      :brand="form.brandObj"
+                      :createdAt="single_announce.created_at"
+                      :is-autosalon="single_announce.is_autosalon"
+                      :is-external-salon="single_announce.is_external_salon"
+                      :smsRadarData="smsRadarData"
+                      :userData="form.user"
+                    />
+                  </div>
+                  <div class="col-12 col-md-6 col-lg-3 d-flex justify-content-end">
+                    <button
+                      :class="{ button_loading: button_loading }"
+                      class="'btn btn--green"
+                      style="padding: 5px 20px;"
+                      @click.prevent="openLog = true"
+                    >
+                      {{ $t('show_logs') }}
+                    </button>
+                  </div>
+                </div>
+
               </template>
               <!--              brand -->
               <div class="row mt-5">
@@ -278,6 +293,7 @@
                   :key="lastStepKey"
                   :announcement="JSON.parse(JSON.stringify(form))"
                   :colors="colors"
+                  :edit="true"
                   :restore="form.status == 3"
                   :showPhotoReject="rejectObj.showPhotoReject"
                   :single_announce="single_announce"
@@ -485,6 +501,49 @@
         </div>
       </div>
     </modal-popup>
+
+
+    <!--    logs-->
+    <modal-popup
+      :modal-class="''"
+      :title="`${$t('logs')}`"
+      :toggle="openLog"
+      @close="openLog = false"
+    >
+      <div class="log">
+        <small class="w-100 mb-4 text-right text-red">* {{$t('old_value')}} <icon name="arrow-right"></icon> {{$t('new_value')}}</small>
+        <div class="body">
+          <div
+            v-if="single_announce.btl_announces.length"
+          >
+            <!--            BTL : {{ getBtlUserName }}-->
+          </div>
+          <div
+            v-for="changeLog in single_announce.change_log"
+            v-if="
+                  (!changeLog.changes.open_count &&
+                    changeLog.user_id === single_announce.user_id) ||
+                  changeLog.user.is_admin
+                "
+            :key="changeLog.id"
+          >
+            {{ changeLog.user.name }} {{ changeLog.user.lastname }} /
+            {{ formatDate(changeLog.created_at) }}
+            <br/>
+            <div
+              v-for="(value, key) in changeLog.original"
+              :key="key + '_changes'"
+            >
+              <div v-if="!['admin_user_id'].includes(key)" class="my-2" style="border-bottom: 1px solid #dadada">
+                {{ $t(key) }}: {{ (key === 'created_at') ? formatDate(value) : value}}
+                <icon name="arrow-right"></icon>
+                {{ (key === 'created_at') ? formatDate(changeLog.changes[key]) :  changeLog.changes[key]}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </modal-popup>
   </div>
   <div
     v-else-if="!announcementIsAvailable && !loading"
@@ -625,8 +684,8 @@ export default {
           'back_error',
           'left_error',],
         modalToggled: false,
-      }
-
+      },
+      openLog: false,
     }
   },
   computed: {
@@ -727,6 +786,10 @@ export default {
       } else {
         obj[opt] = true
       }
+    },
+    async scrollToTop() {
+      await window.scrollTo(0, 0)
+
     },
 
     // get
@@ -900,6 +963,8 @@ export default {
         this.loading = false;
 
       }
+      this.scrollToTop();
+
     },
     async checkWithVin() {
       let vin = this.form.vin
@@ -1030,6 +1095,18 @@ export default {
         this.data.modifications = this.modificationsGeneral;
       }
     },
+    async getValue(key, value) {
+      if (key === 'status') {
+        let status = [
+          this.$t('rejected'),
+          this.$t('active'),
+          this.$t('pending'),
+        ]
+        return status[value]
+      } else {
+        return value
+      }
+    },
 
     // handle lists
     getIcon(key, value) {
@@ -1074,78 +1151,6 @@ export default {
         form[formKey] = form[key]
       })
       return form
-    },
-    async handleChange(value, action, keys, props, nextKey) {
-      // if (this.user.admin_group == 2) {
-      //   return
-      // } else {
-      //   if (!this.disableScroll) {
-      //     if (keys[0] === 'car_catalog_id' && !this.isMobileBreakpoint) {
-      //       setTimeout(() => {
-      //         window.scrollTo({top: 1000, behavior: 'smooth'})
-      //       }, 500)
-      //     } else if (keys[0] === 'car_catalog_id' && this.isMobileBreakpoint) {
-      //       window.scrollTo({top: 1200, behavior: 'smooth'})
-      //       setTimeout(() => {
-      //         // window.location.href = '#sellLastStepUploadImage'
-      //         const el = document.querySelector('#anchor-saved_images')
-      //         el.scrollIntoView({block: 'start', behavior: 'smooth'})
-      //       }, 500)
-      //     }
-      //   }
-      //
-      //   clearTimeout(this.timeout)
-      //   let $container
-      //   if (this.isMobileBreakpoint) {
-      //     $container = document.querySelector('.mobile-screen .container')
-      //     if (action) $container.style.minHeight = `${$container.scrollHeight}px`
-      //   }
-      //   // clean store props
-      //   props.map((property) => {
-      //     this.mutate({property, value: []})
-      //   })
-      //   // update form prop
-      //   this.$emit('update-form', {key: keys[keys.length - 1], value})
-      //   // skip step for the last input
-      //   if (!action) return // clean form props
-      //     ;
-      //   [
-      //     'car_body_type',
-      //     'generation_id',
-      //     'gearing',
-      //     'transmission',
-      //     'modification',
-      //     'car_catalog_id',
-      //   ].map((key) => {
-      //     if (!keys.includes(key)) this.$emit('update-form', {key, value: ''})
-      //   })
-      //   // get values for the next input
-      //   let values = this.getFormValues([...keys, 'brand', 'model', 'year'])
-      //   await this[action](values)
-      //   // move next if only one option available
-      //   this.$nextTick(() => {
-      //     let options = this[action.replace('getSell', 'sell')]
-      //     if (options.length === 1 && nextKey !== 'car_catalog_id') {
-      //       let nextValue =
-      //         options[0].engine ||
-      //         options[0].type_of_drive ||
-      //         options[0].box ||
-      //         options[0].id
-      //       this.$emit('update-form', {key: nextKey, value: nextValue})
-      //     } else if (this.isMobileBreakpoint) {
-      //       this.timeout = setTimeout(() => {
-      //         this.scrollTo(this.$refs[`sell-${nextKey}`], -34, 500)
-      //         $container.style.minHeight = ''
-      //       }, 100)
-      //     }
-      //     if (!this.isMobileBreakpoint) {
-      //       this.timeout = setTimeout(() => {
-      //         this.scrollTo(this.$refs[`sell-${nextKey}`], -20, 500)
-      //       }, 100)
-      //     }
-      //   })
-      //
-      // }
     },
 
     changeReason(rejectKey) {
@@ -1204,23 +1209,12 @@ export default {
       }
       this.data.gearings = arr;
     },
-    async handleTransmissions(obj) {
+    handleTransmissions(obj) {
       var arr = [];
       for (var el in obj) {
         arr.push(obj[el]);
       }
       this.data.transmissions = arr;
-    },
-    getTransmission() {
-      let dates = []
-      for (const key in this.data.transmissions) {
-        dates.push({
-          key: parseInt(key),
-          name: this.$t('box_values')[key],
-        })
-      }
-      console.log("dates", dates)
-      this.data.transmissions = dates;
     },
     handleModificationsData(obj) {
       var arr = []
@@ -1245,6 +1239,9 @@ export default {
     },
     addDeletedImagesToList(e) {
       this.deleteArr.push(e)
+    },
+    formatDate(dte) {
+      return moment(dte).format('DD.MM.YYYY HH:mm')
     },
 
     //handle image
@@ -1515,6 +1512,9 @@ export default {
               },
             })
           })
+        document
+          .getElementById('brdcrmbs1')
+          .scrollIntoView({behavior: 'smooth', block: 'center'})
       }
     },
     addComment(e) {
@@ -1523,8 +1523,10 @@ export default {
     },
   },
   mounted() {
-    this.getAnnounceData()
+    this.getAnnounceData();
   },
+
+
   watch: {
     form: {
       deep: true,
