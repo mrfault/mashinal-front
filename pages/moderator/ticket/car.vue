@@ -297,7 +297,7 @@
                   :key="lastStepKey"
                   :announcement="JSON.parse(JSON.stringify(form))"
                   :colors="colors"
-                  :edit="user.admin_group !== 2"
+                  :edit="!isModerator"
                   :restore="form.status == 3"
                   :showPhotoReject="rejectObj.showPhotoReject"
                   :single_announce="single_announce"
