@@ -208,7 +208,7 @@
                 </div>
               </div>
               <!--              transmission-->
-              <div v-if="data.transmissions && form.gearing" class="row">
+              <div v-if="data.transmissions && data.transmissions.length && form.gearing" class="row">
                 <div class="col-12">
                   <title-with-line-and-reject-reason
                     :title="$t('type_of_drive')"
@@ -217,31 +217,25 @@
                     @change="changeReason"
                   />
                 </div>
-                <div class="col-12 col-lg-3 pl-0">
+                <div v-if="true" class="col-12 col-lg-3 pl-0">
                   <form-select
                     v-model="form.transmission"
                     :disabled="isModerator"
                     :label="$t('type_of_drive')"
                     :options="
-                      data.transmissions.map((o) => ({
-                        name: $t('type_of_drive_values')[o.box],
-                        key: o.box,
-                      }))
-                    "
+                     data.transmissions.map((o) => ({
+                       name: $t('type_of_drive_values')[o.box || ''] ,
+                       key: Number(o.box),
+                     }))"
                     :value="form.transmission"
                     @change="changeTransmission($event)"
                   />
+
                 </div>
               </div>
-
               <!--              modification-->
               <div
-                v-if="
-                  data.modifications &&
-                  data.modifications.length &&
-                  form.transmission && false
-                "
-                class="row"
+                v-if="data.modifications && data.modifications.length && form.transmission " class="row"
               >
                 <div class="col-12">
                   <title-with-line-and-reject-reason
@@ -255,7 +249,7 @@
                 <div class="col-12 col-lg-3 pl-0">
                   <form-select
                     v-model="form.modification"
-                    :disabled="user.admin_group == 2"
+                    :disabled="isModerator"
                     :label="$t('modification')"
                     :options="
                       data.modifications.map((o) => ({
@@ -278,9 +272,8 @@
                 </div>
               </div>
               <!--     sell last step ------  -->
-              <div v-if="form && form.media && form.media.length">
+              <div>
                 <title-with-line-and-reject-reason
-                  v-if="form.media.length"
                   :subtitle="
                       $t('at_least_5_photos', {
                         min: minFiles,
@@ -292,6 +285,7 @@
                 >
                   <div class="mb-2 ml-2" style="display: inline-block; z-index: 0;">
                     <reject-reason
+                      v-if="form.media.length"
                       :disabled-value="true"
                       rejectKey="image"
                       @change="changeReason"
@@ -320,34 +314,36 @@
                   @getRejectObj="getSellLastStepRejectObj"
                   @imageDeleted="addDeletedImagesToList"
                 >
-                  <transition name="fade">
-                    <photo-reject-reason
-                      v-if="imageModal.isOpen"
-                      :default_data="rejectObj.rejectArray"
-                      :modal__title="$t('image_reject_reason')"
-                      :type="'car'"
-                      @close="imageModal.isOpen = false"
-                      @save="savePhotoIssues"
+                  <template>
+                    <transition name="fade">
+                      <photo-reject-reason
+                        v-if="imageModal.isOpen"
+                        :default_data="rejectObj.rejectArray"
+                        :modal__title="$t('image_reject_reason')"
+                        :type="'car'"
+                        @close="imageModal.isOpen = false"
+                        @save="savePhotoIssues"
+                      />
+                    </transition>
+                    <upload-image-moderator
+                      :announce="single_announce"
+                      :changePosition="saved_images.length === imagesBase64.length"
+                      :default-images="single_announce.media"
+                      :is-edit="false"
+                      :load-croppa="true"
+                      :max_files="30"
+                      :saved_images="saved_images"
+                      :stopUploading="imagesBase64.length >= 20"
+                      page="sell"
+                      url="/"
+                      @addFiles="addFiles"
+                      @change="addImages"
+                      @delete="removeImage"
+                      @deletedIndex="deleteByIndex"
+                      @passBase64Images="passBase64Images"
+                      @replaceImage="replaceImage"
                     />
-                  </transition>
-                  <upload-image-moderator
-                    :announce="single_announce"
-                    :changePosition="saved_images.length === imagesBase64.length"
-                    :default-images="single_announce.media"
-                    :is-edit="false"
-                    :load-croppa="true"
-                    :max_files="30"
-                    :saved_images="saved_images"
-                    :stopUploading="imagesBase64.length >= 20"
-                    page="sell"
-                    url="/"
-                    @addFiles="addFiles"
-                    @change="addImages"
-                    @delete="removeImage"
-                    @deletedIndex="deleteByIndex"
-                    @passBase64Images="passBase64Images"
-                    @replaceImage="replaceImage"
-                  />
+                  </template>
                 </sell-last-step>
               </div>
 
@@ -655,6 +651,7 @@ export default {
       sellYearsModerator: 'moderator/sellYears',
       colors: 'colors',
       sellTransmissions: 'sellTransmissions',
+      moderatorTransmissions: 'moderator/transmissions',
       getTimer: 'moderator/getTimer',
       modificationsModerator: "moderator/modifications",
       modificationsGeneral: "sellModifications",
@@ -709,7 +706,6 @@ export default {
     isMorderator() {
       return this.user.admin_group == 2
     },
-
 
 
   },
@@ -776,10 +772,11 @@ export default {
         })
         this.$store.commit('moderator/moderatorMutator', {
           with: data.boxes,
-          property: 'boxes',
+          property: 'transmissions',
         })
 
-        this.handleTransmissions(this.boxes);
+        this.handleTransmissions(this.moderatorTransmissions);
+
         this.$store.commit('moderator/moderatorMutator', {
           with: data.models,
           property: 'models',
@@ -836,8 +833,8 @@ export default {
           generation: data.announce?.car_catalog?.generation_id,
           car_body_type: data.announce?.car_catalog?.car_type.id,
           gearing: data.announce.car_catalog.gearing_id.toString(), // engines
-          modification: data.modifications[0],
-          transmission: data.announce.car_catalog.box_id.toString(), // gearing
+          modification: data.announce.car_catalog.id,
+          transmission: data.announce.car_catalog.box_id,
           capacity: data.announce?.car_catalog?.capacity,
           power: data.announce?.car_catalog?.power,
           year: data.announce?.year,
@@ -1032,7 +1029,6 @@ export default {
         })
         this.data.modifications = this.modificationsGeneral;
       }
-
     },
 
     // handle lists
@@ -1208,12 +1204,23 @@ export default {
       }
       this.data.gearings = arr;
     },
-    handleTransmissions(obj) {
+    async handleTransmissions(obj) {
       var arr = [];
       for (var el in obj) {
         arr.push(obj[el]);
       }
       this.data.transmissions = arr;
+    },
+    getTransmission() {
+      let dates = []
+      for (const key in this.data.transmissions) {
+        dates.push({
+          key: parseInt(key),
+          name: this.$t('box_values')[key],
+        })
+      }
+      console.log("dates", dates)
+      this.data.transmissions = dates;
     },
     handleModificationsData(obj) {
       var arr = []
@@ -1475,7 +1482,7 @@ export default {
         } else {
           location.href = 'https://dev.mashin.al/alvcp/resources/announcements'
         }
-        if(status == 0){
+        if (status == 0) {
           this.$toasted.show(this.$t('your_announce_rejected'), {
             type: 'success',
           })

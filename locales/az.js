@@ -1909,7 +1909,8 @@ export default {
     "-",
     "Arxa",
     "Ön",
-    "Tam"
+    "Tam",
+    "Ön",
   ],
   "type_of_motos": "Moto növü",
   "type_of_mount": "Bərkitmə növü",

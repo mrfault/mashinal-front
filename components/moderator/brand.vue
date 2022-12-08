@@ -8,7 +8,6 @@
       <!--      <span v-if="!isAutosalon && !isExternalSalon">{{ $t('name') }}: </span>-->
       <span v-if="true">{{ $t('name') }}: </span>
       <!--      <span v-if="isAutosalon">{{ $t('autosalon') }}: </span>-->
-      <span v-if="isExternalSalon">{{ $t('external_salon') }}: </span>
       <span v-if="userData"><strong>{{ userData.name }}</strong></span>
       <template>
         /
@@ -18,7 +17,7 @@
       <template v-if="isAutosalon ">
         /
       </template>
-      <span v-if="isAutosalon">{{ $t('external_salon') }}: </span>
+      <span v-if="isExternalSalon">{{ $t('external_salon') }}: </span>
       <span v-if="isExternalSalon"><strong>{{ userData.external_salon.name }}</strong></span>
       <template v-if="isExternalSalon ">
         /

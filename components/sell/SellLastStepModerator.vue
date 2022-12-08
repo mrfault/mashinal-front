@@ -288,7 +288,7 @@
             </div>
           </div>
         </div>
-        <template v-if="!single_announce.is_external_salon">
+        <template v-if="!single_announce.is_external_salon && (single_announce.user.user_type == 3)">
           <title-with-line-and-reject-reason
             :id="'anchor-price'"
             :title="`${$t('auction')} / ${$t('end_date')}`"
