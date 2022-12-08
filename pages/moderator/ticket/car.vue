@@ -273,31 +273,11 @@
               </div>
               <!--     sell last step ------  -->
               <div>
-                <title-with-line-and-reject-reason
-                  :subtitle="
-                      $t('at_least_5_photos', {
-                        min: minFiles,
-                        max: maxFiles,
-                      }).toLowerCase()
-                    "
-                  hideRejectReason
-                  title="photos"
-                >
-                  <div class="mb-2 ml-2" style="display: inline-block; z-index: 0;">
-                    <reject-reason
-                      v-if="form.media.length"
-                      :disabled-value="true"
-                      rejectKey="image"
-                      @change="changeReason"
-                    />
-                  </div>
 
-                </title-with-line-and-reject-reason>
                 <sell-last-step
                   :key="lastStepKey"
                   :announcement="JSON.parse(JSON.stringify(form))"
                   :colors="colors"
-                  :edit="!isModerator"
                   :restore="form.status == 3"
                   :showPhotoReject="rejectObj.showPhotoReject"
                   :single_announce="single_announce"
@@ -315,6 +295,26 @@
                   @imageDeleted="addDeletedImagesToList"
                 >
                   <template>
+                    <title-with-line-and-reject-reason
+                      :subtitle="
+                      $t('at_least_5_photos', {
+                        min: minFiles,
+                        max: maxFiles,
+                      }).toLowerCase()
+                    "
+                      hideRejectReason
+                      title="photos"
+                    >
+                      <div class="mb-2 ml-2" style="display: inline-block; z-index: 0;">
+                        <reject-reason
+                          v-if="form.media.length"
+                          :disabled-value="true"
+                          rejectKey="image"
+                          @change="changeReason"
+                        />
+                      </div>
+
+                    </title-with-line-and-reject-reason>
                     <transition name="fade">
                       <photo-reject-reason
                         v-if="imageModal.isOpen"
