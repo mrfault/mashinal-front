@@ -237,11 +237,10 @@
                     v-model="form.transmission"
                     :disabled="isModerator"
                     :label="$t('type_of_drive')"
-                    :options="
-                     data.transmissions.map((o) => ({
-                       name: $t('type_of_drive_values')[o.box || ''] ,
-                       key: Number(o.box),
-                     }))"
+                    :options="data.transmissions.map((o) => ({
+                        name: $t('type_of_drive_values')[o.box],
+                        key: o.box,
+                      }))"
                     :value="form.transmission"
                     @change="changeTransmission($event)"
                   />
@@ -250,7 +249,8 @@
               </div>
               <!--              modification-->
               <div
-                v-if="data.modifications && data.modifications.length && form.transmission " class="row"
+                v-if="data.modifications && data.modifications.length && form.transmission  && form.modification"
+                class="row"
               >
                 <div class="col-12">
                   <title-with-line-and-reject-reason
@@ -506,7 +506,9 @@
       @close="openLog = false"
     >
       <div class="log">
-        <small class="w-100 mb-4 text-right text-red">* {{$t('old_value')}} <icon name="arrow-right"></icon> {{$t('new_value')}}</small>
+        <small class="w-100 mb-4 text-right text-red">* {{ $t('old_value') }}
+          <icon name="arrow-right"></icon>
+          {{ $t('new_value') }}</small>
         <div class="body">
           <div
             v-if="single_announce.btl_announces.length"
@@ -530,9 +532,9 @@
               :key="key + '_changes'"
             >
               <div v-if="!['admin_user_id'].includes(key)" class="my-2" style="border-bottom: 1px solid #dadada">
-                {{ $t(key) }}: {{ (key === 'created_at') ? formatDate(value) : value}}
+                {{ $t(key) }}: {{ (key === 'created_at') ? formatDate(value) : value }}
                 <icon name="arrow-right"></icon>
-                {{ (key === 'created_at') ? formatDate(changeLog.changes[key]) :  changeLog.changes[key]}}
+                {{ (key === 'created_at') ? formatDate(changeLog.changes[key]) : changeLog.changes[key] }}
               </div>
             </div>
           </div>
@@ -892,7 +894,7 @@ export default {
           car_body_type: data.announce?.car_catalog?.car_type.id,
           gearing: data.announce.car_catalog.gearing_id.toString(), // engines
           modification: data.announce.car_catalog.id,
-          transmission: data.announce.car_catalog.box_id,
+          transmission: (data.announce.car_catalog.box_id == 4) ? "1" : data.announce.car_catalog.box_id.toString(),
           capacity: data.announce?.car_catalog?.capacity,
           power: data.announce?.car_catalog?.power,
           year: data.announce?.year,
@@ -1220,8 +1222,16 @@ export default {
       this.data.modifications = arr;
 
     },
+    getDataTransmissions(obj) {
+      console.log("salam", obj)
+      console.log(obj.map((o) => ({
+        name: this.$t('type_of_drive_values')[o.box_id],
+        key: o.box_id,
+      })))
 
-    //handle actions
+    },
+
+//handle actions
     async deleteByIndex(index) {
       if (this.saved_images[index]) {
         this.deleteArr.push(this.saved_images[index])
@@ -1231,15 +1241,18 @@ export default {
         )
       }
       this.saved_images.splice(index, 1)
-    },
+    }
+    ,
     addDeletedImagesToList(e) {
       this.deleteArr.push(e)
-    },
+    }
+    ,
     formatDate(dte) {
       return moment(dte).format('DD.MM.YYYY HH:mm')
-    },
+    }
+    ,
 
-    //handle image
+//handle image
     async addFiles(v) {
       await Promise.all(
         v.map(async (image) => {
@@ -1277,7 +1290,8 @@ export default {
           }
         }),
       )
-    },
+    }
+    ,
     addImages(v) {
       this.files = v
       this.getInfo()
@@ -1285,15 +1299,18 @@ export default {
         type: 'images',
         count: Object.keys(this.files).length,
       })
-    },
+    }
+    ,
     passBase64Images(val) {
       this.imagesBase64 = val
-    },
+    }
+    ,
     replaceImage(object) {
       if (this.saved_images.length !== this.imagesBase64.length) return
       this.imagesBase64 = object.images
       this.move(this.saved_images, object.v.oldIndex, object.v.newIndex)
-    },
+    }
+    ,
     removeImage(v) {
       this.files = v
       this.$nuxt.$emit('progress_change', {
@@ -1301,7 +1318,8 @@ export default {
         count: Object.keys(this.files).length,
       })
       this.getInfo()
-    },
+    }
+    ,
     getInfo() {
       let i = -3
       Object.keys(this.form).map((key) => {
@@ -1316,26 +1334,30 @@ export default {
       if (this.files.length) i += 1
 
       this.$nuxt.$emit('progress_change', {type: 'all', count: i, all: 33})
-    },
+    }
+    ,
     move(input, from, to) {
       let numberOfDeletedElm = 1
       const elm = input.splice(from, numberOfDeletedElm)[0]
       numberOfDeletedElm = 0
       input.splice(to, numberOfDeletedElm, elm)
-    },
+    }
+    ,
 
 
-    // handle image reject
+// handle image reject
     saveImageRejects() {
       this.rejectObj.rejectArray = this.rejectObj.rejectArray.concat(this.imageModal.rejectArray);
       this.removeDuplicates()
       this.closeImageRejectModal();
       this.imageModal.rejectArray = [];
-    },
+    }
+    ,
     removeDuplicates() {
       var arr = this.rejectObj.rejectArray
       this.rejectObj.rejectArray = [...new Set(arr)]
-    },
+    }
+    ,
     savePhotoIssues(v) {
       var validCheckbox = true
       Object.keys(v.data).map((key) => {
@@ -1350,9 +1372,10 @@ export default {
       })
 
       this.$nuxt.$emit('image-checkbox-change', validCheckbox)
-    },
+    }
+    ,
 
-    //handle change
+//handle change
     async changeBrand(e) {
       this.form.model_id = null;
       this.form.model = "";
@@ -1366,7 +1389,8 @@ export default {
 
         }
       })
-    },
+    }
+    ,
     async changeModel(e) {
       this.form.year = null;
       await this.data.models.find(f => {
@@ -1377,7 +1401,8 @@ export default {
         }
       })
       this.getSellYears();
-    },
+    }
+    ,
     async changeYear(e) {
       this.form.car_body_type = null;
       // await this.data.models.find(f => {
@@ -1387,33 +1412,40 @@ export default {
       //   }
       // })
       this.getSellBodies();
-    },
+    }
+    ,
     async changeBodyType(e) {
       this.form.generation_id = null;
       this.getGenerations();
-    },
+    }
+    ,
     async changeGeneration(e) {
       this.form.engine = null;
       this.getSellEngines()
-    },
+    }
+    ,
     async changeEngine(e) {
       this.form.gearing = null;
       this.getSellGearing()
-    },
+    }
+    ,
     async changeGearing(e) {
       this.form.transmission = null;
       this.getSellTransmissions()
-    },
+    }
+    ,
     async changeTransmission(e) {
       this.form.modification = null;
       this.getSellModifications();
-    },
+    }
+    ,
     async changeModification(e) {
       return e;
-    },
+    }
+    ,
 
 
-    // post
+// post
     async transferToSupervisor(withRejectReason = false) {
       this.button_loading = true
 
@@ -1432,7 +1464,8 @@ export default {
         // location.href = '/alvcp/resources/announcements'
         this.$router.push($t('e-services'))
       }
-    },
+    }
+    ,
     async sendData(status = 2) {
       if (this.saved_images.length !== this.imagesBase64.length) {
         this.$toasted.show(this.$t('please_wait_for_all_image_loading'), {
@@ -1500,16 +1533,19 @@ export default {
           })
 
       }
-    },
+    }
+    ,
     addComment(e) {
       if (form.comment === null) form.comment = ''
       form.comment = form.comment + e + ' '
-    },
+    }
+    ,
   },
   mounted() {
     this.getAnnounceData();
     window.scrollTo(0, 0)
-  },
+  }
+  ,
 
 
   watch: {
@@ -1550,7 +1586,8 @@ export default {
           this.form.modification = null;
         }
       }
-    },
+    }
+    ,
   }
 }
 </script>
