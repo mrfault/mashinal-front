@@ -301,11 +301,6 @@
                   :title="$t('moderator')"
                   type="cars"
                   @changeReason="changeReason"
-                  @close="
-                    $router.push(
-                      pageRef || $localePath('/profile/announcements'),
-                    )
-                  "
                   @formChanged="(e) => (form = e)"
                   @getRejectObj="getSellLastStepRejectObj"
                   @imageDeleted="addDeletedImagesToList"
@@ -1500,21 +1495,10 @@ export default {
             this.$toasted.show(data[key][0], {
               type: 'error',
               duration: 0,
-              action: {
-                text: 'Go to fix',
-                onClick: (e, toastObject) => {
-                  if (document.querySelector('#' + key))
-                    document
-                      .querySelector('#' + key)
-                      .scrollIntoView({behavior: 'smooth', block: 'center'})
-                  toastObject.goAway(0)
-                },
-              },
+
             })
           })
-        document
-          .getElementById('brdcrmbs1')
-          .scrollIntoView({behavior: 'smooth', block: 'center'})
+
       }
     },
     addComment(e) {
@@ -1524,6 +1508,7 @@ export default {
   },
   mounted() {
     this.getAnnounceData();
+    window.scrollTo(0, 0)
   },
 
 
