@@ -1,3 +1,4 @@
+<!--http://10.20.120.106:3000/-->
 <template>
   <component
     :is="isMobileBreakpoint ? 'mobile-screen' : 'div'"
@@ -14,14 +15,15 @@
           'disabled-content': type === 'cars' && !form.car_catalog_id && !edit,
         }"
       >
-        <slot></slot>
+
+        <slot name="image"></slot>
+
         <title-with-line-and-reject-reason
-          v-if="form.images_360 && form.images_360.length"
-          reject-key="360"
-          title="360 camera"
+          :no-approval="!single_announce.images_360.length"
+          title="360_exterior"
           @change="changeReason"
         />
-
+        <slot name="360_exterior" v-if="!form.images_360"></slot>
         <vue-three-sixty
           v-if="form.images_360 && form.images_360.length"
           :amount="form.images_360 && form.images_360.length"
@@ -31,16 +33,34 @@
           disableZoom
         />
 
+
         <title-with-line-and-reject-reason
-          v-if="form.interior_360"
-          reject-key="360_interior"
+          :no-approval="!form.interior_360_url"
           title="360_interior"
           @change="changeReason"
         />
-
+<!--        <slot name="360_interior" v-if="!form.interior_360"></slot>-->
+        <section class="mb-4">
+          <div
+            class="section-part__container"
+            style="display: flex; justify-content: space-between;"
+          >
+            <div class="col-md-4">
+              <input class="btn" type="file" v-on:change="add360Interior"/>
+            </div>
+            <button
+              v-if="single_announce.interior_360"
+              class="btn btn-danger mb-2"
+              style="float: right;"
+              @click="handleRemoveInterior"
+            >
+              360 İnteryeri sil
+            </button>
+          </div>
+        </section>
         <Interior360Viewer
-          v-if="form.interior_360"
-          :url="form.interior_360"
+          v-if="single_announce.interior_360"
+          :url="single_announce.interior_360"
           class="mb-4"
         />
         <title-with-line-and-reject-reason
@@ -375,21 +395,21 @@
             />
           </div>
           <div v-if="form.customs_clearance" class="col-lg-4 mb-2 mb-lg-0">
-          <!--        -------------------------------------------------------------------------------------->
-          <!--        -------------------------------------------------------------------------------------->
+            <!--        -------------------------------------------------------------------------------------->
+            <!--        -------------------------------------------------------------------------------------->
             <template v-if="form && form.vin">
-            <form-textarea
-              key="vin"
-              v-model="form.vin"
-              :mask="$maskAlphaNumeric('*****************')"
-              :placeholder="$t('vin_carcase_number')"
-              @change="removeError('vin')"
-             class="textfield-like-textarea"
-            >
-              <popover :width="240" name="vin">
-                <inline-svg src="/img/car-cert.svg"/>
-              </popover>
-            </form-textarea>
+              <form-textarea
+                key="vin"
+                v-model="form.vin"
+                :mask="$maskAlphaNumeric('*****************')"
+                :placeholder="$t('vin_carcase_number')"
+                class="textfield-like-textarea"
+                @change="removeError('vin')"
+              >
+                <popover :width="240" name="vin">
+                  <inline-svg src="/img/car-cert.svg"/>
+                </popover>
+              </form-textarea>
             </template>
             <!--        -------------------------------------------------------------------------------------->
             <!--        -------------------------------------------------------------------------------------->
@@ -894,6 +914,62 @@ export default {
     removeDuplicates() {
       var arr = this.rejectObj.rejectArray
       this.rejectObj.rejectArray = [...new Set(arr)]
+    },
+
+
+  //  ----------
+    add360Interior(val) {
+      var formData = new FormData()
+      formData.append('image', val.target.files[0])
+
+      this.$axios
+        .post('/upload_temporary_interior_image', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then((res) => {
+          if (res.status == 200) {
+            this.$toast.success(this.$t('interior_360_successfully_upload'))
+            console.log("res.data.data.id",res.data.data)
+            this.form['interior_360_id'] = res.data.data.id
+            this.form['interior_360_url'] = res.data.data.url
+            console.log("this.form.interior_360_id",this.form)
+            console.log("this.form.interior_360_url",this.form.interior_360_url)
+            this.$emit("interior_360_id_changed", res.data.data.id)
+          }
+        })
+    },
+    async handleRemoveInterior() {
+      try {
+        this.button_loading = true
+        await this.$axios.$post('/announce/remove_360_interior', {
+          announcement_id: this.single_announce.id,
+        })
+        this.$emit('remove360', 'success')
+        let data = await this.$axios.$get('/ticket/car')
+        this.$store.commit('mutate', {
+          with: data.announce,
+          property: 'single_announce',
+        })
+        this.$toasted.success('Silindi')
+      } catch (e) {
+        this.$toasted.error('Silinmede problem yarandi')
+      }
+      this.button_loading = false
+    },
+    async remove360(param) {
+      if (param == 'success') {
+        let data = await this.$axios.$get('/ticket/car')
+
+        let video360section = document.getElementById('video360section')
+        video360section.remove()
+
+        this.$store.commit('mutate', {
+          with: data.announce,
+          property: 'single_announce',
+        })
+      }
     },
 
   },

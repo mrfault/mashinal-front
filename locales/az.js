@@ -2339,6 +2339,7 @@ export default {
   "video_choosed": "Video fayl seçilib",
   "plug_in_hybrid": "Plug-in Hibrid",
   "360_interior": "360 interyer",
+  "360_exterior": "360 eksteryer",
   "transfer_to_supervisor": "Supervayzerə ötür",
   "moderation": "Moderasiya",
   "user_type": "İstifadəçi növü",
@@ -2370,5 +2371,9 @@ export default {
   "old_value": "Əvvəlki məna",
   "new_value": "Yeni məna",
   "created_at": "Yaradılıb",
+  "video_360_successfully_upload":"Video uğurla yükləndi",
+  "interior_360_successfully_upload":"İnteryer 360 uğurla yükləndi",
+  "add_video_360":"360 (video) Əlavə et",
+  "add_interior_360": "360 interior əlavə et",
 
 }

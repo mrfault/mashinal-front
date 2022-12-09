@@ -9,7 +9,6 @@
         <div class="col-auto">
           <div class="card">
             <div class="mb-5">
-
               <!--              user details-->
               <template v-if="form.brand">
                 <div class="row">
@@ -238,7 +237,7 @@
                     :disabled="isModerator"
                     :label="$t('type_of_drive')"
                     :options="data.transmissions.map((o) => ({
-                        name: $t('type_of_drive_values')[o.box],
+                        name: $t('type_of_drive_values')[o.box] || '',
                         key: o.box,
                       }))"
                     :value="form.transmission"
@@ -286,77 +285,96 @@
                   </span>
                 </div>
               </div>
+              <pre>
+                {{ form.interior_360_id }}
+                {{ form.interior_360_url }}
+              </pre>
               <!--     sell last step ------  -->
-              <div>
+              <sell-last-step
+                :key="lastStepKey"
+                :announcement="JSON.parse(JSON.stringify(form))"
+                :colors="colors"
+                :edit="true"
+                :restore="form.status == 3"
+                :showPhotoReject="rejectObj.showPhotoReject"
+                :single_announce="single_announce"
+                :smsRadarData="smsRadarData"
+                :title="$t('moderator')"
+                type="cars"
+                @changeReason="changeReason"
+                @formChanged="(e) => (form = e)"
+                @getRejectObj="getSellLastStepRejectObj"
+                @imageDeleted="addDeletedImagesToList"
+                @interior_360_id_changed="(e) => (form.interior_360_id = e)"
+              >
 
-                <sell-last-step
-                  :key="lastStepKey"
-                  :announcement="JSON.parse(JSON.stringify(form))"
-                  :colors="colors"
-                  :edit="true"
-                  :restore="form.status == 3"
-                  :showPhotoReject="rejectObj.showPhotoReject"
-                  :single_announce="single_announce"
-                  :smsRadarData="smsRadarData"
-                  :title="$t('moderator')"
-                  type="cars"
-                  @changeReason="changeReason"
-                  @formChanged="(e) => (form = e)"
-                  @getRejectObj="getSellLastStepRejectObj"
-                  @imageDeleted="addDeletedImagesToList"
-                >
-                  <template>
-                    <title-with-line-and-reject-reason
-                      :subtitle="
+                <template v-slot:image>
+                  <title-with-line-and-reject-reason
+                    :subtitle="
                       $t('at_least_5_photos', {
                         min: minFiles,
                         max: maxFiles,
                       }).toLowerCase()
                     "
-                      hideRejectReason
-                      title="photos"
-                    >
-                      <div class="mb-2 ml-2" style="display: inline-block; z-index: 0;">
-                        <reject-reason
-                          v-if="form.media.length"
-                          :disabled-value="true"
-                          rejectKey="image"
-                          @change="changeReason"
-                        />
-                      </div>
-
-                    </title-with-line-and-reject-reason>
-                    <transition name="fade">
-                      <photo-reject-reason
-                        v-if="imageModal.isOpen"
-                        :default_data="rejectObj.rejectArray"
-                        :modal__title="$t('image_reject_reason')"
-                        :type="'car'"
-                        @close="imageModal.isOpen = false"
-                        @save="savePhotoIssues"
+                    hideRejectReason
+                    title="photos"
+                  >
+                    <div class="mb-2 ml-2" style="display: inline-block; z-index: 0;">
+                      <reject-reason
+                        v-if="form.media.length"
+                        :disabled-value="true"
+                        rejectKey="image"
+                        @change="changeReason"
                       />
-                    </transition>
-                    <upload-image-moderator
-                      :announce="single_announce"
-                      :changePosition="saved_images.length === imagesBase64.length"
-                      :default-images="single_announce.media"
-                      :is-edit="false"
-                      :load-croppa="true"
-                      :max_files="30"
-                      :saved_images="saved_images"
-                      :stopUploading="imagesBase64.length >= 20"
-                      page="sell"
-                      url="/"
-                      @addFiles="addFiles"
-                      @change="addImages"
-                      @delete="removeImage"
-                      @deletedIndex="deleteByIndex"
-                      @passBase64Images="passBase64Images"
-                      @replaceImage="replaceImage"
+                    </div>
+
+                  </title-with-line-and-reject-reason>
+                  <transition name="fade">
+                    <photo-reject-reason
+                      v-if="imageModal.isOpen"
+                      :default_data="rejectObj.rejectArray"
+                      :modal__title="$t('image_reject_reason')"
+                      :type="'car'"
+                      @close="imageModal.isOpen = false"
+                      @save="savePhotoIssues"
                     />
-                  </template>
-                </sell-last-step>
-              </div>
+                  </transition>
+                  <upload-image-moderator
+                    :announce="single_announce"
+                    :changePosition="saved_images.length === imagesBase64.length"
+                    :default-images="single_announce.media"
+                    :is-edit="false"
+                    :load-croppa="true"
+                    :max_files="30"
+                    :saved_images="saved_images"
+                    :stopUploading="imagesBase64.length >= 20"
+                    page="sell"
+                    url="/"
+                    @addFiles="addFiles"
+                    @change="addImages"
+                    @delete="removeImage"
+                    @deletedIndex="deleteByIndex"
+                    @passBase64Images="passBase64Images"
+                    @replaceImage="replaceImage"
+                  />
+                </template>
+                <!--                  ------------------------    ------------------------    ------------------------    ------------------------    ------------------------    -------------------------->
+                <template v-slot:360_exterior>
+                  <div
+                    class="mb-4"
+                  >
+                    <div class="section-part__container">
+                      <div class="col-md-4">
+                        <input class="btn" type="file" v-on:change="add360Video"/>
+                      </div>
+                    </div>
+                  </div>
+                </template>
+                <!--                  ------------------------    ------------------------    ------------------------    ------------------------    ------------------------    -------------------------->
+
+                <!--                  ------------------------    ------------------------    ------------------------    ------------------------    ------------------------    -------------------------->
+
+              </sell-last-step>
 
               <!-- actions   ------------------------>
               <div class="moderator-comment mt-5">
@@ -519,8 +537,7 @@
             v-for="changeLog in single_announce.change_log"
             v-if="
                   (!changeLog.changes.open_count &&
-                    changeLog.user_id === single_announce.user_id) ||
-                  changeLog.user.is_admin
+                    changeLog.user_id === single_announce.user_id)
                 "
             :key="changeLog.id"
           >
@@ -568,8 +585,16 @@ import RejectReason from '~/components/moderator/rejectReason'
 import TitleWithLineAndRejectReason from '~/components/moderator/titleWithLineAndRejectReason'
 import UploadImageModerator from '~/components/moderator/UploadImageModerator'
 import PhotoRejectReason from "~/pages/moderator/photoReject/PhotoRejectReason";
+import Interior360Viewer from "~/components/Interior360Viewer";
+
 
 export default {
+  name: 'moderatorCar',
+  head() {
+    return this.$headMeta({
+      title: `${this.$t('moderation')}`,
+    });
+  },
   layout: 'ticket',
   components: {
     TitleWithLineAndRejectReason,
@@ -584,6 +609,7 @@ export default {
     SellLastStep,
     UploadImageModerator,
     PhotoRejectReason,
+    Interior360Viewer
 
   },
   data() {
@@ -631,6 +657,10 @@ export default {
         transmission: null,
         modification: null,
         media: [],
+        images_360: [],
+        video_360_url: null,
+        interior_360_id: null,
+        interior_360_url: null,
       },
       data: {
         models: [],
@@ -683,6 +713,12 @@ export default {
         modalToggled: false,
       },
       openLog: false,
+
+      //  360
+      showInterior: true,
+      uploadedVideo360: null,
+      uploadedInterior360: null,
+      uploadedInterior360id: null,
     }
   },
   computed: {
@@ -938,6 +974,7 @@ export default {
           media: data.announce.media,
           engine: data.announce?.car_catalog.engine_id.toString(),
           engine_id: data.announce?.car_catalog.engine_id.toString(),
+          images_360: data.announce.images_360,
           message: "test",
           user: data.announce.user,
           status: data.announce.status,
@@ -1231,7 +1268,7 @@ export default {
 
     },
 
-//handle actions
+    //handle actions
     async deleteByIndex(index) {
       if (this.saved_images[index]) {
         this.deleteArr.push(this.saved_images[index])
@@ -1241,18 +1278,15 @@ export default {
         )
       }
       this.saved_images.splice(index, 1)
-    }
-    ,
+    },
     addDeletedImagesToList(e) {
       this.deleteArr.push(e)
-    }
-    ,
+    },
     formatDate(dte) {
       return moment(dte).format('DD.MM.YYYY HH:mm')
-    }
-    ,
+    },
 
-//handle image
+    //handle image
     async addFiles(v) {
       await Promise.all(
         v.map(async (image) => {
@@ -1290,8 +1324,7 @@ export default {
           }
         }),
       )
-    }
-    ,
+    },
     addImages(v) {
       this.files = v
       this.getInfo()
@@ -1299,18 +1332,15 @@ export default {
         type: 'images',
         count: Object.keys(this.files).length,
       })
-    }
-    ,
+    },
     passBase64Images(val) {
       this.imagesBase64 = val
-    }
-    ,
+    },
     replaceImage(object) {
       if (this.saved_images.length !== this.imagesBase64.length) return
       this.imagesBase64 = object.images
       this.move(this.saved_images, object.v.oldIndex, object.v.newIndex)
-    }
-    ,
+    },
     removeImage(v) {
       this.files = v
       this.$nuxt.$emit('progress_change', {
@@ -1318,8 +1348,7 @@ export default {
         count: Object.keys(this.files).length,
       })
       this.getInfo()
-    }
-    ,
+    },
     getInfo() {
       let i = -3
       Object.keys(this.form).map((key) => {
@@ -1334,15 +1363,35 @@ export default {
       if (this.files.length) i += 1
 
       this.$nuxt.$emit('progress_change', {type: 'all', count: i, all: 33})
-    }
-    ,
+    },
     move(input, from, to) {
       let numberOfDeletedElm = 1
       const elm = input.splice(from, numberOfDeletedElm)[0]
       numberOfDeletedElm = 0
       input.splice(to, numberOfDeletedElm, elm)
-    }
-    ,
+    },
+
+    //    handle 360
+    add360Video(val) {
+      var formData = new FormData()
+      formData.append('video', val.target.files[0])
+      // this.uploadedVideo360 = formData;
+      this.$axios
+        .post('' + '/upload_temporary_video', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then((res) => {
+          if (res.status == 200) {
+            this.$toast.success(this.$t('video_360_successfully_upload'))
+            this.form.video_360_url = res.data.data.url
+            this.form.video_360_id = res.data.data.id
+            console.log(formData)
+          }
+        })
+    },
+
 
 
 // handle image reject
@@ -1351,13 +1400,11 @@ export default {
       this.removeDuplicates()
       this.closeImageRejectModal();
       this.imageModal.rejectArray = [];
-    }
-    ,
+    },
     removeDuplicates() {
       var arr = this.rejectObj.rejectArray
       this.rejectObj.rejectArray = [...new Set(arr)]
-    }
-    ,
+    },
     savePhotoIssues(v) {
       var validCheckbox = true
       Object.keys(v.data).map((key) => {
@@ -1372,8 +1419,7 @@ export default {
       })
 
       this.$nuxt.$emit('image-checkbox-change', validCheckbox)
-    }
-    ,
+    },
 
 //handle change
     async changeBrand(e) {
@@ -1389,8 +1435,7 @@ export default {
 
         }
       })
-    }
-    ,
+    },
     async changeModel(e) {
       this.form.year = null;
       await this.data.models.find(f => {
@@ -1401,8 +1446,7 @@ export default {
         }
       })
       this.getSellYears();
-    }
-    ,
+    },
     async changeYear(e) {
       this.form.car_body_type = null;
       // await this.data.models.find(f => {
@@ -1412,37 +1456,30 @@ export default {
       //   }
       // })
       this.getSellBodies();
-    }
-    ,
+    },
     async changeBodyType(e) {
       this.form.generation_id = null;
       this.getGenerations();
-    }
-    ,
+    },
     async changeGeneration(e) {
       this.form.engine = null;
       this.getSellEngines()
-    }
-    ,
+    },
     async changeEngine(e) {
       this.form.gearing = null;
       this.getSellGearing()
-    }
-    ,
+    },
     async changeGearing(e) {
       this.form.transmission = null;
       this.getSellTransmissions()
-    }
-    ,
+    },
     async changeTransmission(e) {
       this.form.modification = null;
       this.getSellModifications();
-    }
-    ,
+    },
     async changeModification(e) {
       return e;
-    }
-    ,
+    },
 
 
 // post
@@ -1464,8 +1501,7 @@ export default {
         // location.href = '/alvcp/resources/announcements'
         this.$router.push($t('e-services'))
       }
-    }
-    ,
+    },
     async sendData(status = 2) {
       if (this.saved_images.length !== this.imagesBase64.length) {
         this.$toasted.show(this.$t('please_wait_for_all_image_loading'), {
@@ -1486,14 +1522,15 @@ export default {
       delete this.form.model_slug;
       delete this.form.brand_slug;
       this.form.id_unique = this.single_announce.id;
-      this.form.interior_360_id = this.single_announce.interior_360_id || "";
       this.form.main_image = this.form.main_image || null;
       // this.form.generation = this.generation
       // this.form.car_catalog_id = this.modification
       this.form.rejectArray = this.rejectObj.rejectArray;
       this.form.main_image = this.main_image
-      this.form.saved_images = this.saved_images
+      this.form.saved_images = this.saved_images;
       let formData = new FormData()
+      // formData.append('images_360', this.uploadedVideo360);
+      // formData.append('interior_360', this.uploadedInterior360);
       formData.append('data', JSON.stringify(this.form))
       formData.append('deletedImages', JSON.stringify(this.deleteArr))
 
@@ -1533,25 +1570,23 @@ export default {
           })
 
       }
-    }
-    ,
+    },
     addComment(e) {
       if (form.comment === null) form.comment = ''
       form.comment = form.comment + e + ' '
-    }
-    ,
+    },
   },
   mounted() {
     this.getAnnounceData();
     window.scrollTo(0, 0)
-  }
-  ,
+  },
 
 
   watch: {
     form: {
       deep: true,
       handler() {
+        console.log("form salam",this.form)
         if (this.form.brandObj == {}) {
           this.form.model_id = null;
           // this.form.model = {};
@@ -1586,8 +1621,7 @@ export default {
           this.form.modification = null;
         }
       }
-    }
-    ,
+    },
   }
 }
 </script>
