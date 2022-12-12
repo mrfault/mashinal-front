@@ -1,5 +1,7 @@
 <template>
-  <div :class="['wrapper', { loading }, `${colorMode}-mode`, { newYearConditionalCss: loading }]" >
+  <div :class="['wrapper', { loading }, `${colorMode}-mode`]"
+  :style="loading ? 'background-image: url(' + ($env.NEW_YEAR_SOON ? ('/img/logo-white-newyear.svg') : ('/img/logo-white-2.svg')) + ')' : ''"
+  >
 
     <transition name="fade">
       <div class="layout" v-show="!loading" :class="{'layoutForMap': checkRouteIfSalon}">
