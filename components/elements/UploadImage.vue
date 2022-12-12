@@ -23,8 +23,6 @@
                 type="button"
                 @click.stop="fileRotate(key, index)"
               >
-                <!-- <icon name="reset" /> -->
-                <inline-svg height="14" src="/icons/reset-new.svg"/>
               </button>
               <button
                 v-if="isModeationPage"
@@ -135,7 +133,6 @@
       :toggle="modal.isOpen"
       @close="toggleModal(false)"
     >
-      <h1>salam</h1>
       <!--      <car-view-for-croppa-->
       <!--        v-if="modal.image"-->
       <!--        :announce="modal.image"-->
