@@ -3,7 +3,7 @@ export default {
   data() {
     return {
       percent: 0,
-      show: false,
+      show: true,
       canSucceed: true,
       reversed: false,
       skipTimerCount: 0,
