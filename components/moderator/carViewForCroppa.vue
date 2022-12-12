@@ -24,7 +24,7 @@
               <span class="swiper-row__cost" v-if="toggle" >{{ announce.price }}</span>
               <span class="swiper-row__cost" v-else>{{ announce.price_converted }}</span>
             </div>
-            <span>
+            <span v-if="false">
               <div style="display: flex" v-if="false">
               <span v-if="announce.credit" class="credit" :hover-title="$t('credit')" style="width:30px;height: 30px; margin: 0 5px 0 0;">%</span>
               <span v-if="announce.exchange_possible || announce.tradeable" :hover-title="$t('exchange_possible')" class="barter" style="width:30px;height: 30px; margin: 0 5px 0 0;">
@@ -38,7 +38,7 @@
             </div>
             </span>
           </div>
-          <div class="catalog-result__text">
+          <div class="catalog-result__text" v-if="false">
             <div>
               <div v-if="!dayOfMonth && false">
                 <span class="catalog-result__text-day">{{ day }}</span>

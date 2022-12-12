@@ -43,19 +43,19 @@
                   <div class="imagePreloader"></div>
                   <div class="w-100 d-flex justify-content-between p-2">
                     <span v-if="loadCroppa" class="cursor-pointer button-new-tab"
-                          style="background: #dadada !important" target="_blank"
-                          @click="findOriginalImage(setSavedImageUrls[key], key)"
+                          style="background: #dadada !important"
+                          @click="openInNewTab(setSavedImageUrls[key], key)"
                           @click.stop>
                                             <icon name="image"/>
                     </span>
                     <span v-if="!imagePreloaderContainer[key]" class="cursor-pointer button-new-tab"
                           @click.stop="rotateLeft($event,key)">
-                         <icon name="reset" style="transform: scaleX(-1)"/>
+                         <icon name="reset" />
                     </span>
                     <span v-if="!imagePreloaderContainer[key]" class="cursor-pointer button-new-tab"
                           @click.stop="rotateRight($event,key)">
 <!--                      <icon name="reset"></icon>-->
-                      <icon name="reset"></icon>
+                      <icon name="reset" style="transform: scaleX(-1)"></icon>
                     </span>
                     <span v-if="!imagePreloaderContainer[key] && loadCroppa" class="cursor-pointer button-new-tab"
                           @click.stop="openCroppa($event, key)">
@@ -89,70 +89,6 @@
       </div>
     </div>
 
-    <form v-else v-bind:id="'upload_image_form--' + input_id" enctype="multipart/form-data">
-      <div :style="loadCroppa ? 'margin-left: 0px;' : ''"
-           class="upload_image_form__thumbnails announcement-category__overlay__generation row"
-      >
-        <span v-for="(value, key) in image" v-if="value" :key="`form_`+(new Date().getTime()+key)"
-              :class="{'loadCroppa':loadCroppa}"
-              :style="imagePreloaderContainer[imagePreloaderContainer.length-1] === false ? 'cursor: move' : ''"
-              class="announcement-category__overlay__generation__item announcement-category__photo mb-20 cursor-pointer"
-              style="margin-right: 16px;"
-        >
-          <div
-            :class="{'imagePreloaderContainer':imagePreloaderContainer[key]}"
-            :style="'background-image:url('+((imagePreloaderContainer[key] === undefined || !imagePreloaderContainer[key]) ? setSavedImageUrls[key] : '')+')'"
-            class="upload_image_form__thumbnail upload_image_form__thumbnail_fixed"
-          >
-            <div class="imagePreloader"></div>
-            <div style="position: absolute;right: 0px;display: flex;top: 5px;">
-              <a v-if="loadCroppa" :href="findOriginalImage(setSavedImageUrls[key], key)" class="button-new-tab"
-
-                 target="_blank" @click.stop>
-                  D
-              </a>
-              <span v-if="!imagePreloaderContainer[key]" class="cursor-pointer"
-                    style="margin-right:10px;position:relative;top:unset;left:unset;"
-                    @click.stop="rotateLeft($event,key)">
-                <span style="transform: scaleX(-1);">
-                 <icon name="reset"></icon>
-                </span>
-              </span>
-              <span v-if="!imagePreloaderContainer[key]" class="cursor-pointer"
-                    style="margin-right:10px;position:relative;top:unset;left:unset;"
-                    @click.stop="rotateRight($event,key)">
-                <icon name="rotate_right" style="width: 16px; height: 16px;"/>
-              </span>
-              <span v-if="!imagePreloaderContainer[key] && loadCroppa" class="cursor-pointer"
-                    @click.stop="openCroppa($event, key)">
-                    <icon name="edit"/>
-              </span>
-              <span v-if="!imagePreloaderContainer[key]" class="cursor-pointer button-new-tab"
-
-                    @click.stop="fileDelete($event, setSavedImageUrls[key],key)">
-                    <icon name="cross"/>
-              </span>
-            </div>
-            <img :class="{ 'show': setSavedImageUrls[key] }" :src="setSavedImageUrls[key]"
-                 style="opacity: 0" @click.stop="openFancyBox(key)">
-          </div>
-        </span>
-        <a v-if="!stopUploading"
-           class="announcement-category__overlay__generation__item announcement-category__photo mb-20 cursor-pointer"
-           @click="fileView($event, image.length+1)">
-          <div class="no-photo">
-            <div class="announcement-category__photo__circle">
-              <span>+</span>
-            </div>
-            <div class="announcement-category__photo__text">
-              <span>﻿{{ $t('add_photos') }}</span>
-              <p>﻿{{ $t('no_less_5_item') }}</p>
-            </div>
-          </div>
-        </a>
-      </div>
-      <input :id="'upload_image_form__input--' + input_id" hidden multiple type="file"/>
-    </form>
 
     <div v-if="isOpenCroppa && loadCroppa" class="custom_modal">
       <car-view-for-croppa
@@ -405,6 +341,9 @@ export default {
       }
 
       return value;
+    },
+    openInNewTab(value, key) {
+      window.open(this.findOriginalImage(value, key))
     },
     newThumb(newThumb) {
       this.isOpenCroppa = false;

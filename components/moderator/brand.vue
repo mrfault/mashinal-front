@@ -1,13 +1,13 @@
 <template>
   <div class="moderator-car-brand">
     <div class="moderator-car-brand__image">
-      <img :src="brand.transformed_media ? brand.transformed_media : '/images/car-placeholder.png'" alt="o"/>
+      <img v-if="isMoto" :src="'/images/moto-placeholder.jpg'" alt="o"/>
+      <img v-else :src="brand.transformed_media ? brand.transformed_media : '/images/car-placeholder.png'" alt="o"/>
     </div>
     <h6 class="moderator-car-brand__title">
-<!--      <span v-if="!isAutosalon && !isExternalSalon">{{ $t('name') }}: </span>-->
+      <!--      <span v-if="!isAutosalon && !isExternalSalon">{{ $t('name') }}: </span>-->
       <span v-if="true">{{ $t('name') }}: </span>
-<!--      <span v-if="isAutosalon">{{ $t('autosalon') }}: </span>-->
-      <span v-if="isExternalSalon">{{ $t('external_salon') }}: </span>
+      <!--      <span v-if="isAutosalon">{{ $t('autosalon') }}: </span>-->
       <span v-if="userData"><strong>{{ userData.name }}</strong></span>
       <template>
         /
@@ -17,7 +17,7 @@
       <template v-if="isAutosalon ">
         /
       </template>
-      <span v-if="isAutosalon">{{ $t('external_salon') }}: </span>
+      <span v-if="isExternalSalon">{{ $t('external_salon') }}: </span>
       <span v-if="isExternalSalon"><strong>{{ userData.external_salon.name }}</strong></span>
       <template v-if="isExternalSalon ">
         /
@@ -55,33 +55,20 @@ export default {
   props: {
     brand: {
       type: Object,
-      default: {
-        transformed_media: '/images/car-placeholder.png',
-        name: 'vehicle_id_mark',
+      default() {
+        return {
+
+          transformed_media: '/images/car-placeholder.png',
+          name: 'vehicle_id_mark',
+        }
       },
     },
     smsRadarData: Object,
     createdAt: String,
     isAutosalon: Boolean,
     isExternalSalon: Boolean,
-    // year: {
-    //   type: Number,
-    //   default: {
-    //     name: 'year',
-    //   },
-    // },
     userData: Object,
-  },
-  methods: {
-    showModels() {
-      this.$emit('showModels', true)
-    },
-    showBrands() {
-      this.$emit('showBrands', true)
-    },
-    showYears() {
-      this.$emit('showYears', true)
-    },
+    isMoto: Boolean,
   },
   computed: {
     formattedDate() {

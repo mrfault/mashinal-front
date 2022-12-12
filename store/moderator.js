@@ -22,6 +22,7 @@ const getInitialState = () => ({
   sellYears: {},
   sell_bodies: [],
   type_of_drives: {},
+  transmissions: [],
   //  --------
   getTimer: {
     data: '',
@@ -42,6 +43,7 @@ export const getters = {
   moderator: (s) => s.moderator,
   modifications: (s) => s.modifications,
   sell_bodies: (s) => s.sell_bodies,
+  transmissions: (s) => s.transmissions,
   type_of_drives: (s) => s.type_of_drives,
   sellYears: (s) => s.sellYears,
 

@@ -1,3 +1,4 @@
+<!--http://10.20.120.106:3000/-->
 <template>
   <component
     :is="isMobileBreakpoint ? 'mobile-screen' : 'div'"
@@ -14,52 +15,15 @@
           'disabled-content': type === 'cars' && !form.car_catalog_id && !edit,
         }"
       >
-<template v-if="false">
 
-<!--        <title-with-line-and-reject-reason-->
-<!--          v-if="announcement.media.length"-->
-<!--          id="360"-->
-<!--          :imageRejected="imageRejected"-->
-<!--          :modalToggled="imageModal.modalToggled"-->
-<!--          :rejectArray="imageModal.rejectArray"-->
-<!--          :subtitle="-->
-<!--            $t('at_least_5_photos', {-->
-<!--              min: minFiles,-->
-<!--              max: maxFiles,-->
-<!--            }).toLowerCase()-->
-<!--          "-->
-<!--          imageReject-->
-<!--          reasonOptions-->
-<!--          reject-key="image"-->
-<!--          required-->
-<!--          title="photos"-->
-<!--          @change="changeReason"-->
-<!--        />-->
-</template>
-        <slot></slot>
-        <upload-image
-          v-if="false"
-          ref="sellLastStepUploadImage"
-          :announce="single_announce"
-          :default-files="files"
-          :helpers="helperImages"
-          :max-files="announcement.media.length"
-          :min-files="minFiles"
-          isModeationPage
-          load-croppa
-          @files-changed="updateImages"
-          @files-dropped="addImages"
-          @file-deleted="deleteImage"
-          @file-rotated="rotateImage"
-          @order-changed="changeOrder"
-        />
+        <slot name="image"></slot>
+
         <title-with-line-and-reject-reason
-          v-if="form.images_360 && form.images_360.length"
-          reject-key="360"
-          title="360 camera"
+          :no-approval="!single_announce.images_360.length"
+          title="360_exterior"
           @change="changeReason"
         />
-
+        <slot name="360_exterior" v-if="!form.images_360"></slot>
         <vue-three-sixty
           v-if="form.images_360 && form.images_360.length"
           :amount="form.images_360 && form.images_360.length"
@@ -69,16 +33,34 @@
           disableZoom
         />
 
+
         <title-with-line-and-reject-reason
-          v-if="form.interior_360"
-          reject-key="360_interior"
+          :no-approval="!form.interior_360_url"
           title="360_interior"
           @change="changeReason"
         />
-
+<!--        <slot name="360_interior" v-if="!form.interior_360"></slot>-->
+        <section class="mb-4">
+          <div
+            class="section-part__container"
+            style="display: flex; justify-content: space-between;"
+          >
+            <div class="col-md-4">
+              <input class="btn" type="file" v-on:change="add360Interior"/>
+            </div>
+            <button
+              v-if="single_announce.interior_360"
+              class="btn btn-danger mb-2"
+              style="float: right;"
+              @click="handleRemoveInterior"
+            >
+              360 İnteryeri sil
+            </button>
+          </div>
+        </section>
         <Interior360Viewer
-          v-if="form.interior_360"
-          :url="form.interior_360"
+          v-if="single_announce.interior_360"
+          :url="single_announce.interior_360"
           class="mb-4"
         />
         <title-with-line-and-reject-reason
@@ -217,14 +199,14 @@
                 @change="removeError('region_id'), updatePreview('region')"
               />
             </div>
-            <div class="col-lg-4 mb-2 mb-lg-0" v-if="!single_announce.is_external_salon">
+            <div v-if="!single_announce.is_external_salon" class="col-lg-4 mb-2 mb-lg-0">
               <form-text-input
                 v-model="form.address"
                 :placeholder="$t('address')"
                 icon-name="placeholder"
               />
             </div>
-            <div class="col-lg-4 mb-2 mb-lg-0" v-if="!single_announce.is_external_salon">
+            <div v-if="!single_announce.is_external_salon" class="col-lg-4 mb-2 mb-lg-0">
               <pick-on-map-button
                 :address="form.address"
                 :lat="form.lat"
@@ -241,6 +223,7 @@
             </div>
           </div>
         </template>
+
         <title-with-line-and-reject-reason
           :id="'anchor-price'"
           no-approval
@@ -288,7 +271,7 @@
             </div>
           </div>
         </div>
-        <template v-if="!single_announce.is_external_salon">
+        <template v-if="single_announce.is_external_salon">
           <title-with-line-and-reject-reason
             :id="'anchor-price'"
             :title="`${$t('auction')} / ${$t('end_date')}`"
@@ -369,6 +352,11 @@
           />
         </template>
 
+
+        <!--        -------------------------->
+        <!--        -------------------------->
+        <!--        -------------------------->
+        <!--        -------------------------->
         <div
           v-if="
             (type === 'cars' && !user.is_autosalon) ||
@@ -407,17 +395,24 @@
             />
           </div>
           <div v-if="form.customs_clearance" class="col-lg-4 mb-2 mb-lg-0">
-            <form-text-input
-              key="vin"
-              v-model="form.vin"
-              :mask="$maskAlphaNumeric('*****************')"
-              :placeholder="$t('vin_carcase_number')"
-              @change="removeError('vin')"
-            >
-              <popover :width="240" name="vin">
-                <inline-svg src="/img/car-cert.svg"/>
-              </popover>
-            </form-text-input>
+            <!--        -------------------------------------------------------------------------------------->
+            <!--        -------------------------------------------------------------------------------------->
+            <template v-if="form && form.vin">
+              <form-textarea
+                key="vin"
+                v-model="form.vin"
+                :mask="$maskAlphaNumeric('*****************')"
+                :placeholder="$t('vin_carcase_number')"
+                class="textfield-like-textarea"
+                @change="removeError('vin')"
+              >
+                <popover :width="240" name="vin">
+                  <inline-svg src="/img/car-cert.svg"/>
+                </popover>
+              </form-textarea>
+            </template>
+            <!--        -------------------------------------------------------------------------------------->
+            <!--        -------------------------------------------------------------------------------------->
             <form-checkbox
               v-model="form.show_vin"
               :label="$t('show_vin_on_site')"
@@ -426,6 +421,7 @@
               transparent
             />
           </div>
+
           <div class="col-12 col-lg-8">
                   <span
                     v-if="smsRadarData && (smsRadarData.carNumber || smsRadarData.bodyNumber)"
@@ -437,6 +433,10 @@
                </span>
           </div>
         </div>
+        <!--        -------------------------->
+        <!--        -------------------------->
+        <!--        -------------------------->
+        <!--        -------------------------->
         <div class="mt-2 mt-lg-3">
           <template v-if="(type === 'cars') && popularOptions && popularOptions.length">
             <car-filters
@@ -574,7 +574,6 @@ import CarFilters from '~/components/cars/CarFilters'
 import TitleWithLineAndRejectReason from '~/components/moderator/titleWithLineAndRejectReason'
 
 import Interior360Viewer from '~/components/Interior360Viewer'
-
 
 
 export default {
@@ -717,19 +716,6 @@ export default {
       'resetSellTokens',
       'getMyAllAnnouncements',
     ]),
-
-    handleModification({key, value}) {
-      this.$set(this.form, key, value)
-      if (!this.showAllOptions && key === 'car_catalog_id' && value) {
-        this.showAllOptions = true
-        if (!this.isMobileBreakpoint) return
-        this.$nextTick(() => {
-          setTimeout(() => {
-            this.scrollTo(this.$refs['saved_images'], -34, 500)
-          }, 0)
-        })
-      }
-    },
     showCarNumberDisclaimer() {
       if (this.readCarNumberDisclaimer) {
         this.$nuxt.$emit('close-popover', 'car-number')
@@ -802,102 +788,6 @@ export default {
       if (value === '') this.$delete(this.form, key)
       else this.$set(this.form, key, value)
     },
-    // image upload
-    updateImages(files) {
-      this.files = files
-      this.setSellPreviewData({value: files[0]?.image, key: 'image'})
-    },
-    async addImages(images) {
-      // passed min limit
-      if (
-        images.length + this.savedFiles.length + this.uploading >=
-        this.minFiles
-      )
-        this.removeError('saved_images')
-      // upload images
-      this.uploading += images.length
-      await Promise.all(
-        images.map(async (image) => {
-          let formData = new FormData()
-          let file = await this.getResizedImage(image.file)
-          formData.append('temp_id', this.date)
-          formData.append('images[]', file)
-          try {
-            const data = await this.$axios.$post(
-              '/upload_temporary_images',
-              formData,
-              {
-                progress: false,
-                headers: {'Content-Type': 'multipart/form-data'},
-              },
-            )
-            this.uploading--
-            this.$nuxt.$emit(
-              'image-uploaded',
-              image.key,
-              false,
-              data.images[0],
-              data.ids[0],
-            )
-            this.$nuxt.$emit('hide-image-preloader-by-key', image.key)
-            this.savedFiles = [...this.savedFiles, ...data.ids]
-          } catch ({
-            response: {
-              data: {data},
-            },
-          }) {
-            this.uploading--
-            this.$nuxt.$emit('delete-image-by-key', image.key)
-            this.clearErrors()
-            for (let key in data) {
-              this.$toasted.error(data[key])
-            }
-          }
-        }),
-      )
-    },
-    async deleteImage(index) {
-
-      this.$emit('imageDeleted', index)
-      if (this.savedFiles[index]) {
-        if (
-          this.edit &&
-          this.form.saved_images.includes(this.savedFiles[index])
-        )
-          this.deletedFiles.push(this.savedFiles[index])
-        else
-          this.$axios.$post('/remove_temporary_image/' + this.savedFiles[index])
-        this.$delete(this.savedFiles, index)
-      }
-    },
-    async rotateImage(index, key) {
-      if (this.savedFiles[index]) {
-        try {
-          this.$nuxt.$loading.start()
-          const {data} = await this.$axios.$get(
-            `/media/${this.savedFiles[index]}/rotate/right`,
-          )
-          this.$nuxt.$loading.finish()
-          this.$nuxt.$emit('image-uploaded', key, true, data.thumb)
-          this.$nuxt.$emit('hide-image-preloader-by-key', key)
-        } catch ({
-          response: {
-            data: {data},
-          },
-        }) {
-          this.$nuxt.$emit('hide-image-preloader-by-key', key)
-          this.$nuxt.$loading.finish()
-          this.clearErrors()
-          for (let key in data) {
-            this.$toasted.error(data[key])
-          }
-        }
-      }
-    },
-    changeOrder(sorted, preview) {
-      this.$set(this, 'savedFiles', sorted)
-      this.setSellPreviewData({value: preview, key: 'image'})
-    },
     // post announcement
     async publishPost() {
       if (this.pending) return
@@ -969,7 +859,7 @@ export default {
           this.$toasted.error(this.$t(message))
           if (data.need_pay) {
             this.isAlreadySold = true
-            this.scrollTo('.publish-post')
+            // this.scrollTo('.publish-post')
           }
         } else {
           // find errors
@@ -1010,7 +900,7 @@ export default {
       this.publishPost()
     },
     changeReason(rejectKey) {
-    if (rejectKey === '360') {
+      if (rejectKey === '360') {
         this.rejectObj.show360Reject = true
       } else {
         if (this.rejectObj.rejectArray.includes(rejectKey)) {
@@ -1021,47 +911,65 @@ export default {
       }
     },
 
-    //image reject
-
-
-    // openImageRejectModal() {
-    //
-    //   this.imageModal.isOpen = true;
-    //
-    //
-    //   var opts = this.imageModal.options;
-    //   var arr = this.rejectObj.rejectArray;
-    //   var tempArr = this.imageModal.rejectArray;
-    //
-    //   for (var i = 0; i < opts.length; i++) {
-    //     console.log(i, opts[i])
-    //   }
-    // },
-    // closeImageRejectModal() {
-    //   this.imageModal.isOpen = false
-    //   this.imageModal.rejectArray = [];
-    //   this.removeDuplicates()
-    // },
-    //
-    // //fills temporary array
-    // changeImageRejectReason(rejectKey) {
-    //   var oldArr = this.imageModal.rejectArray;
-    //   var editingArr = this.imageModal.rejectArray;
-    //   if (editingArr.includes(rejectKey)) {
-    //     editingArr.splice(editingArr.indexOf(rejectKey), 1)
-    //   } else {
-    //     editingArr.push(rejectKey)
-    //   }
-    // },
-    // saveImageRejects() {
-    //   this.rejectObj.rejectArray = this.rejectObj.rejectArray.concat(this.imageModal.rejectArray);
-    //   this.removeDuplicates()
-    //   this.closeImageRejectModal();
-    //   this.imageModal.rejectArray = [];
-    // },
     removeDuplicates() {
       var arr = this.rejectObj.rejectArray
       this.rejectObj.rejectArray = [...new Set(arr)]
+    },
+
+
+  //  ----------
+    add360Interior(val) {
+      var formData = new FormData()
+      formData.append('image', val.target.files[0])
+
+      this.$axios
+        .post('/upload_temporary_interior_image', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then((res) => {
+          if (res.status == 200) {
+            this.$toast.success(this.$t('interior_360_successfully_upload'))
+            console.log("res.data.data.id",res.data.data)
+            this.form['interior_360_id'] = res.data.data.id
+            this.form['interior_360_url'] = res.data.data.url
+            console.log("this.form.interior_360_id",this.form)
+            console.log("this.form.interior_360_url",this.form.interior_360_url)
+            this.$emit("interior_360_id_changed", res.data.data.id)
+          }
+        })
+    },
+    async handleRemoveInterior() {
+      try {
+        this.button_loading = true
+        await this.$axios.$post('/announce/remove_360_interior', {
+          announcement_id: this.single_announce.id,
+        })
+        this.$emit('remove360', 'success')
+        let data = await this.$axios.$get('/ticket/car')
+        this.$store.commit('mutate', {
+          with: data.announce,
+          property: 'single_announce',
+        })
+        this.$toasted.success('Silindi')
+      } catch (e) {
+        this.$toasted.error('Silinmede problem yarandi')
+      }
+      this.button_loading = false
+    },
+    async remove360(param) {
+      if (param == 'success') {
+        let data = await this.$axios.$get('/ticket/car')
+
+        let video360section = document.getElementById('video360section')
+        video360section.remove()
+
+        this.$store.commit('mutate', {
+          with: data.announce,
+          property: 'single_announce',
+        })
+      }
     },
 
   },
@@ -1083,18 +991,7 @@ export default {
     },
   },
   created() {
-    ;[
-      'sellBody',
-      'sellGenerations',
-      'sellEngines',
-      'sellGearing',
-      'sellTransmissions',
-      'sellModifications',
-    ].map((property) => {
-      this.mutate({property, value: []})
-    })
-
-    this.$nuxt.$on('login', this.handleAfterLogin)
+    // this.$nuxt.$on('login', this.handleAfterLogin)
     if (this.user.external_salon) {
       this.form.customs_clearance = true
     }

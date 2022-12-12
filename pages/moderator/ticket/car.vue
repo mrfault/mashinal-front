@@ -4,22 +4,36 @@
     class="pages-announcement-edit"
   >
     <div class="container">
-      <breadcrumbs :crumbs="crumbs"/>
+      <breadcrumbs id="brdcrmbs1" :crumbs="crumbs"/>
       <div class="sell_cards-row row">
-
         <div class="col-auto">
           <div class="card">
             <div class="mb-5">
               <!--              user details-->
               <template v-if="form.brand">
-                <user-details
-                  :brand="form.brandObj"
-                  :createdAt="single_announce.created_at"
-                  :is-autosalon="single_announce.is_autosalon"
-                  :is-external-salon="single_announce.is_external_salon"
-                  :smsRadarData="smsRadarData"
-                  :userData="form.user"
-                />
+                <div class="row">
+                  <div class="col-12 col-md-6 col-lg-9">
+                    <user-details
+                      :brand="form.brandObj"
+                      :createdAt="single_announce.created_at"
+                      :is-autosalon="single_announce.is_autosalon"
+                      :is-external-salon="single_announce.is_external_salon"
+                      :smsRadarData="smsRadarData"
+                      :userData="form.user"
+                    />
+                  </div>
+                  <div class="col-12 col-md-6 col-lg-3 d-flex justify-content-end">
+                    <button
+                      :class="{ button_loading: button_loading }"
+                      class="'btn btn--green"
+                      style="padding: 5px 20px;"
+                      @click.prevent="openLog = true"
+                    >
+                      {{ $t('show_logs') }}
+                    </button>
+                  </div>
+                </div>
+
               </template>
               <!--              brand -->
               <div class="row mt-5">
@@ -208,7 +222,7 @@
                 </div>
               </div>
               <!--              transmission-->
-              <div v-if="data.transmissions && form.gearing" class="row">
+              <div v-if="data.transmissions && data.transmissions.length && form.gearing" class="row">
                 <div class="col-12">
                   <title-with-line-and-reject-reason
                     :title="$t('type_of_drive')"
@@ -217,30 +231,24 @@
                     @change="changeReason"
                   />
                 </div>
-                <div class="col-12 col-lg-3 pl-0">
+                <div v-if="true" class="col-12 col-lg-3 pl-0">
                   <form-select
                     v-model="form.transmission"
                     :disabled="isModerator"
                     :label="$t('type_of_drive')"
-                    :options="
-                      data.transmissions.map((o) => ({
-                        name: $t('type_of_drive_values')[o.box],
+                    :options="data.transmissions.map((o) => ({
+                        name: $t('type_of_drive_values')[o.box] || '',
                         key: o.box,
-                      }))
-                    "
+                      }))"
                     :value="form.transmission"
                     @change="changeTransmission($event)"
                   />
+
                 </div>
               </div>
-
               <!--              modification-->
               <div
-                v-if="
-                  data.modifications &&
-                  data.modifications.length &&
-                  form.transmission && false
-                "
+                v-if="data.modifications && data.modifications.length && form.transmission  && form.modification"
                 class="row"
               >
                 <div class="col-12">
@@ -255,7 +263,7 @@
                 <div class="col-12 col-lg-3 pl-0">
                   <form-select
                     v-model="form.modification"
-                    :disabled="user.admin_group == 2"
+                    :disabled="isModerator"
                     :label="$t('modification')"
                     :options="
                       data.modifications.map((o) => ({
@@ -277,49 +285,50 @@
                   </span>
                 </div>
               </div>
+              <pre>
+                {{ form.interior_360_id }}
+                {{ form.interior_360_url }}
+              </pre>
               <!--     sell last step ------  -->
-              <div v-if="form && form.media && form.media.length">
-                <title-with-line-and-reject-reason
-                  v-if="form.media.length"
-                  :subtitle="
+              <sell-last-step
+                :key="lastStepKey"
+                :announcement="JSON.parse(JSON.stringify(form))"
+                :colors="colors"
+                :edit="true"
+                :restore="form.status == 3"
+                :showPhotoReject="rejectObj.showPhotoReject"
+                :single_announce="single_announce"
+                :smsRadarData="smsRadarData"
+                :title="$t('moderator')"
+                type="cars"
+                @changeReason="changeReason"
+                @formChanged="(e) => (form = e)"
+                @getRejectObj="getSellLastStepRejectObj"
+                @imageDeleted="addDeletedImagesToList"
+                @interior_360_id_changed="(e) => (form.interior_360_id = e)"
+              >
+
+                <template v-slot:image>
+                  <title-with-line-and-reject-reason
+                    :subtitle="
                       $t('at_least_5_photos', {
                         min: minFiles,
                         max: maxFiles,
                       }).toLowerCase()
                     "
-                  hideRejectReason
-                  title="photos"
-                >
-                  <div class="mb-2 ml-2" style="display: inline-block; z-index: 0;">
-                    <reject-reason
-                      :disabled-value="true"
-                      rejectKey="image"
-                      @change="changeReason"
-                    />
-                  </div>
+                    hideRejectReason
+                    title="photos"
+                  >
+                    <div class="mb-2 ml-2" style="display: inline-block; z-index: 0;">
+                      <reject-reason
+                        v-if="form.media.length"
+                        :disabled-value="true"
+                        rejectKey="image"
+                        @change="changeReason"
+                      />
+                    </div>
 
-                </title-with-line-and-reject-reason>
-                <sell-last-step
-                  :key="lastStepKey"
-                  :announcement="JSON.parse(JSON.stringify(form))"
-                  :colors="colors"
-                  :edit="user.admin_group !== 2"
-                  :restore="form.status == 3"
-                  :showPhotoReject="rejectObj.showPhotoReject"
-                  :single_announce="single_announce"
-                  :smsRadarData="smsRadarData"
-                  :title="$t('moderator')"
-                  type="cars"
-                  @changeReason="changeReason"
-                  @close="
-                    $router.push(
-                      pageRef || $localePath('/profile/announcements'),
-                    )
-                  "
-                  @formChanged="(e) => (form = e)"
-                  @getRejectObj="getSellLastStepRejectObj"
-                  @imageDeleted="addDeletedImagesToList"
-                >
+                  </title-with-line-and-reject-reason>
                   <transition name="fade">
                     <photo-reject-reason
                       v-if="imageModal.isOpen"
@@ -348,8 +357,24 @@
                     @passBase64Images="passBase64Images"
                     @replaceImage="replaceImage"
                   />
-                </sell-last-step>
-              </div>
+                </template>
+                <!--                  ------------------------    ------------------------    ------------------------    ------------------------    ------------------------    -------------------------->
+                <template v-slot:360_exterior>
+                  <div
+                    class="mb-4"
+                  >
+                    <div class="section-part__container">
+                      <div class="col-md-4">
+                        <input class="btn" type="file" v-on:change="add360Video"/>
+                      </div>
+                    </div>
+                  </div>
+                </template>
+                <!--                  ------------------------    ------------------------    ------------------------    ------------------------    ------------------------    -------------------------->
+
+                <!--                  ------------------------    ------------------------    ------------------------    ------------------------    ------------------------    -------------------------->
+
+              </sell-last-step>
 
               <!-- actions   ------------------------>
               <div class="moderator-comment mt-5">
@@ -489,6 +514,50 @@
         </div>
       </div>
     </modal-popup>
+
+
+    <!--    logs-->
+    <modal-popup
+      :modal-class="''"
+      :title="`${$t('logs')}`"
+      :toggle="openLog"
+      @close="openLog = false"
+    >
+      <div class="log">
+        <small class="w-100 mb-4 text-right text-red">* {{ $t('old_value') }}
+          <icon name="arrow-right"></icon>
+          {{ $t('new_value') }}</small>
+        <div class="body">
+          <div
+            v-if="single_announce.btl_announces.length"
+          >
+            <!--            BTL : {{ getBtlUserName }}-->
+          </div>
+          <div
+            v-for="changeLog in single_announce.change_log"
+            v-if="
+                  (!changeLog.changes.open_count &&
+                    changeLog.user_id === single_announce.user_id)
+                "
+            :key="changeLog.id"
+          >
+            {{ changeLog.user.name }} {{ changeLog.user.lastname }} /
+            {{ formatDate(changeLog.created_at) }}
+            <br/>
+            <div
+              v-for="(value, key) in changeLog.original"
+              :key="key + '_changes'"
+            >
+              <div v-if="!['admin_user_id'].includes(key)" class="my-2" style="border-bottom: 1px solid #dadada">
+                {{ $t(key) }}: {{ (key === 'created_at') ? formatDate(value) : value }}
+                <icon name="arrow-right"></icon>
+                {{ (key === 'created_at') ? formatDate(changeLog.changes[key]) : changeLog.changes[key] }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </modal-popup>
   </div>
   <div
     v-else-if="!announcementIsAvailable && !loading"
@@ -516,8 +585,16 @@ import RejectReason from '~/components/moderator/rejectReason'
 import TitleWithLineAndRejectReason from '~/components/moderator/titleWithLineAndRejectReason'
 import UploadImageModerator from '~/components/moderator/UploadImageModerator'
 import PhotoRejectReason from "~/pages/moderator/photoReject/PhotoRejectReason";
+import Interior360Viewer from "~/components/Interior360Viewer";
+
 
 export default {
+  name: 'moderatorCar',
+  head() {
+    return this.$headMeta({
+      title: `${this.$t('moderation')}`,
+    });
+  },
   layout: 'ticket',
   components: {
     TitleWithLineAndRejectReason,
@@ -532,6 +609,7 @@ export default {
     SellLastStep,
     UploadImageModerator,
     PhotoRejectReason,
+    Interior360Viewer
 
   },
   data() {
@@ -579,6 +657,10 @@ export default {
         transmission: null,
         modification: null,
         media: [],
+        images_360: [],
+        video_360_url: null,
+        interior_360_id: null,
+        interior_360_url: null,
       },
       data: {
         models: [],
@@ -629,8 +711,14 @@ export default {
           'back_error',
           'left_error',],
         modalToggled: false,
-      }
+      },
+      openLog: false,
 
+      //  360
+      showInterior: true,
+      uploadedVideo360: null,
+      uploadedInterior360: null,
+      uploadedInterior360id: null,
     }
   },
   computed: {
@@ -655,6 +743,7 @@ export default {
       sellYearsModerator: 'moderator/sellYears',
       colors: 'colors',
       sellTransmissions: 'sellTransmissions',
+      moderatorTransmissions: 'moderator/transmissions',
       getTimer: 'moderator/getTimer',
       modificationsModerator: "moderator/modifications",
       modificationsGeneral: "sellModifications",
@@ -710,6 +799,7 @@ export default {
       return this.user.admin_group == 2
     },
 
+
   },
   methods: {
     // ui
@@ -729,6 +819,10 @@ export default {
       } else {
         obj[opt] = true
       }
+    },
+    async scrollToTop() {
+      await window.scrollTo(0, 0)
+
     },
 
     // get
@@ -774,10 +868,11 @@ export default {
         })
         this.$store.commit('moderator/moderatorMutator', {
           with: data.boxes,
-          property: 'boxes',
+          property: 'transmissions',
         })
 
-        this.handleTransmissions(this.boxes);
+        this.handleTransmissions(this.moderatorTransmissions);
+
         this.$store.commit('moderator/moderatorMutator', {
           with: data.models,
           property: 'models',
@@ -834,8 +929,8 @@ export default {
           generation: data.announce?.car_catalog?.generation_id,
           car_body_type: data.announce?.car_catalog?.car_type.id,
           gearing: data.announce.car_catalog.gearing_id.toString(), // engines
-          modification: data.modifications[0],
-          transmission: data.announce.car_catalog.box_id.toString(), // gearing
+          modification: data.announce.car_catalog.id,
+          transmission: (data.announce.car_catalog.box_id == 4) ? "1" : data.announce.car_catalog.box_id.toString(),
           capacity: data.announce?.car_catalog?.capacity,
           power: data.announce?.car_catalog?.power,
           year: data.announce?.year,
@@ -879,6 +974,7 @@ export default {
           media: data.announce.media,
           engine: data.announce?.car_catalog.engine_id.toString(),
           engine_id: data.announce?.car_catalog.engine_id.toString(),
+          images_360: data.announce.images_360,
           message: "test",
           user: data.announce.user,
           status: data.announce.status,
@@ -901,6 +997,8 @@ export default {
         this.loading = false;
 
       }
+      this.scrollToTop();
+
     },
     async checkWithVin() {
       let vin = this.form.vin
@@ -1030,7 +1128,18 @@ export default {
         })
         this.data.modifications = this.modificationsGeneral;
       }
-
+    },
+    async getValue(key, value) {
+      if (key === 'status') {
+        let status = [
+          this.$t('rejected'),
+          this.$t('active'),
+          this.$t('pending'),
+        ]
+        return status[value]
+      } else {
+        return value
+      }
     },
 
     // handle lists
@@ -1076,78 +1185,6 @@ export default {
         form[formKey] = form[key]
       })
       return form
-    },
-    async handleChange(value, action, keys, props, nextKey) {
-      // if (this.user.admin_group == 2) {
-      //   return
-      // } else {
-      //   if (!this.disableScroll) {
-      //     if (keys[0] === 'car_catalog_id' && !this.isMobileBreakpoint) {
-      //       setTimeout(() => {
-      //         window.scrollTo({top: 1000, behavior: 'smooth'})
-      //       }, 500)
-      //     } else if (keys[0] === 'car_catalog_id' && this.isMobileBreakpoint) {
-      //       window.scrollTo({top: 1200, behavior: 'smooth'})
-      //       setTimeout(() => {
-      //         // window.location.href = '#sellLastStepUploadImage'
-      //         const el = document.querySelector('#anchor-saved_images')
-      //         el.scrollIntoView({block: 'start', behavior: 'smooth'})
-      //       }, 500)
-      //     }
-      //   }
-      //
-      //   clearTimeout(this.timeout)
-      //   let $container
-      //   if (this.isMobileBreakpoint) {
-      //     $container = document.querySelector('.mobile-screen .container')
-      //     if (action) $container.style.minHeight = `${$container.scrollHeight}px`
-      //   }
-      //   // clean store props
-      //   props.map((property) => {
-      //     this.mutate({property, value: []})
-      //   })
-      //   // update form prop
-      //   this.$emit('update-form', {key: keys[keys.length - 1], value})
-      //   // skip step for the last input
-      //   if (!action) return // clean form props
-      //     ;
-      //   [
-      //     'car_body_type',
-      //     'generation_id',
-      //     'gearing',
-      //     'transmission',
-      //     'modification',
-      //     'car_catalog_id',
-      //   ].map((key) => {
-      //     if (!keys.includes(key)) this.$emit('update-form', {key, value: ''})
-      //   })
-      //   // get values for the next input
-      //   let values = this.getFormValues([...keys, 'brand', 'model', 'year'])
-      //   await this[action](values)
-      //   // move next if only one option available
-      //   this.$nextTick(() => {
-      //     let options = this[action.replace('getSell', 'sell')]
-      //     if (options.length === 1 && nextKey !== 'car_catalog_id') {
-      //       let nextValue =
-      //         options[0].engine ||
-      //         options[0].type_of_drive ||
-      //         options[0].box ||
-      //         options[0].id
-      //       this.$emit('update-form', {key: nextKey, value: nextValue})
-      //     } else if (this.isMobileBreakpoint) {
-      //       this.timeout = setTimeout(() => {
-      //         this.scrollTo(this.$refs[`sell-${nextKey}`], -34, 500)
-      //         $container.style.minHeight = ''
-      //       }, 100)
-      //     }
-      //     if (!this.isMobileBreakpoint) {
-      //       this.timeout = setTimeout(() => {
-      //         this.scrollTo(this.$refs[`sell-${nextKey}`], -20, 500)
-      //       }, 100)
-      //     }
-      //   })
-      //
-      // }
     },
 
     changeReason(rejectKey) {
@@ -1222,6 +1259,14 @@ export default {
       this.data.modifications = arr;
 
     },
+    getDataTransmissions(obj) {
+      console.log("salam", obj)
+      console.log(obj.map((o) => ({
+        name: this.$t('type_of_drive_values')[o.box_id],
+        key: o.box_id,
+      })))
+
+    },
 
     //handle actions
     async deleteByIndex(index) {
@@ -1236,6 +1281,9 @@ export default {
     },
     addDeletedImagesToList(e) {
       this.deleteArr.push(e)
+    },
+    formatDate(dte) {
+      return moment(dte).format('DD.MM.YYYY HH:mm')
     },
 
     //handle image
@@ -1323,8 +1371,30 @@ export default {
       input.splice(to, numberOfDeletedElm, elm)
     },
 
+    //    handle 360
+    add360Video(val) {
+      var formData = new FormData()
+      formData.append('video', val.target.files[0])
+      // this.uploadedVideo360 = formData;
+      this.$axios
+        .post('' + '/upload_temporary_video', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then((res) => {
+          if (res.status == 200) {
+            this.$toast.success(this.$t('video_360_successfully_upload'))
+            this.form.video_360_url = res.data.data.url
+            this.form.video_360_id = res.data.data.id
+            console.log(formData)
+          }
+        })
+    },
 
-    // handle image reject
+
+
+// handle image reject
     saveImageRejects() {
       this.rejectObj.rejectArray = this.rejectObj.rejectArray.concat(this.imageModal.rejectArray);
       this.removeDuplicates()
@@ -1351,7 +1421,7 @@ export default {
       this.$nuxt.$emit('image-checkbox-change', validCheckbox)
     },
 
-    //handle change
+//handle change
     async changeBrand(e) {
       this.form.model_id = null;
       this.form.model = "";
@@ -1412,7 +1482,7 @@ export default {
     },
 
 
-    // post
+// post
     async transferToSupervisor(withRejectReason = false) {
       this.button_loading = true
 
@@ -1452,14 +1522,15 @@ export default {
       delete this.form.model_slug;
       delete this.form.brand_slug;
       this.form.id_unique = this.single_announce.id;
-      this.form.interior_360_id = this.single_announce.interior_360_id || "";
       this.form.main_image = this.form.main_image || null;
       // this.form.generation = this.generation
       // this.form.car_catalog_id = this.modification
       this.form.rejectArray = this.rejectObj.rejectArray;
       this.form.main_image = this.main_image
-      this.form.saved_images = this.saved_images
+      this.form.saved_images = this.saved_images;
       let formData = new FormData()
+      // formData.append('images_360', this.uploadedVideo360);
+      // formData.append('interior_360', this.uploadedInterior360);
       formData.append('data', JSON.stringify(this.form))
       formData.append('deletedImages', JSON.stringify(this.deleteArr))
 
@@ -1472,6 +1543,11 @@ export default {
           location.href = 'https://dev.mashin.al/alvcp/resources/announcements'
         } else {
           location.href = 'https://dev.mashin.al/alvcp/resources/announcements'
+        }
+        if (status == 0) {
+          this.$toasted.show(this.$t('your_announce_rejected'), {
+            type: 'success',
+          })
         }
       } catch ({
         response: {
@@ -1489,18 +1565,10 @@ export default {
             this.$toasted.show(data[key][0], {
               type: 'error',
               duration: 0,
-              action: {
-                text: 'Go to fix',
-                onClick: (e, toastObject) => {
-                  if (document.querySelector('#' + key))
-                    document
-                      .querySelector('#' + key)
-                      .scrollIntoView({behavior: 'smooth', block: 'center'})
-                  toastObject.goAway(0)
-                },
-              },
+
             })
           })
+
       }
     },
     addComment(e) {
@@ -1509,12 +1577,16 @@ export default {
     },
   },
   mounted() {
-    this.getAnnounceData()
+    this.getAnnounceData();
+    window.scrollTo(0, 0)
   },
+
+
   watch: {
     form: {
       deep: true,
       handler() {
+        console.log("form salam",this.form)
         if (this.form.brandObj == {}) {
           this.form.model_id = null;
           // this.form.model = {};
@@ -1555,4 +1627,3 @@ export default {
 </script>
 
 
-<!--90zz258-->

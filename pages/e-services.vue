@@ -182,7 +182,7 @@ export default {
           description: null,
           value: null,
           icon: 'customs-calculator-police',
-          url: '/moderator/ticket/car_access/1669254876?token=646177|7M7CjWifxGhRkHuSqd34gowx6b9RxOB8D0fCDzV4',
+          url: '/moderator/ticket/moto?token=662042%7CWzf6CSenwnrxqyEgDoo6UOvCN5S6sFidldaDCTrK&type=moto',
           hasAction: false,
           image: 'loading_animated',
           isAvailable: true,
