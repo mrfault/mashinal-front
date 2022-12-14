@@ -798,8 +798,6 @@ export default {
     isMorderator() {
       return this.user.admin_group == 2
     },
-
-
   },
   methods: {
     // ui

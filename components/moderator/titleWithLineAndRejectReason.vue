@@ -12,6 +12,7 @@
           <span v-if="required" class="star">*</span>
         </span>
       </h2>
+      <small v-if="oldValue" class="reject-reason-with-title__old-value">{{ $t('old_value') }} :{{oldValue}}</small>
     </div>
     <div
       v-if="!noApproval && !hideRejectReason"
@@ -71,6 +72,7 @@ export default {
     imageReject: Boolean,
     modalToggled: Boolean,
     hideRejectReason: Boolean,
+    oldValue: String,
   },
   computed: {
     toggleDisable() {
@@ -144,6 +146,12 @@ export default {
 
   &__title {
     width: calc(100% - 51px);
+  }
+  &__old-value{
+    position: absolute;
+    bottom: 8px;
+    left: 11px;
+    color: #246EB2;
   }
 }
 

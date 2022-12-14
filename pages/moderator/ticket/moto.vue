@@ -1,369 +1,1757 @@
 <template>
-  <div
-    v-if="announcementIsAvailable && !loading"
-    class="pages-announcement-edit"
-  >
-    <div class="container">
-      <breadcrumbs :crumbs="crumbs"/>
-      <div class="sell_cards-row row">
-        <div class="col-auto">
-          <div class="card">
-            <div class="mb-5">
-              <!--              user details -->
-              <template v-if="form.brand">
-                <user-details
-                  :createdAt="single_announce.created_at"
-                  :is-autosalon="single_announce.is_autosalon"
-                  :is-external-salon="single_announce.is_external_salon"
-                  :smsRadarData="smsRadarData"
-                  :userData="form.user"
-                  is-moto
-                />
-              </template>
-              <!--              brand -->
-              <div class="row mt-5">
-                <div class="col-12">
-                  <title-with-line-and-reject-reason
-                    rejectKey="brand"
-                    title="mark"
-                    @change="changeReason"
-                  />
-                </div>
-                <div class="col-12 col-lg-3">
-                  <pre>{{ options }}</pre>
-                  <form-select
-                    v-model="form.brand_id"
-                    :disabled="isModerator"
-                    :label="$t('mark')"
-                    :options="options.brands.filter((b) => b.models_count)"
-                    has-search
-                    @change="changeBrand($event)"
-                  />
-                </div>
-                <div class="col-12 col-lg-9">
-                  <span
-                    v-if="smsRadarData && smsRadarData.marka"
-                    class="ma-smsradar"
-                  >
-                    <strong>SMSRadar:</strong>
-                    <p>{{ smsRadarData.marka }}</p>
-                  </span>
-                </div>
-              </div>
-              <!--              model -->
-              <div v-if="data.models && form.brand_id" class="row">
-                <div class="col-12">
-                  <title-with-line-and-reject-reason
-                    rejectKey="model"
-                    title="model"
-                    @change="changeReason"
-                  />
-                </div>
-                <div v-if="showModelOptions" class="col-12 col-lg-3">
-                  <form-select
-                    v-model="form.model_id"
-                    :disabled="isModerator"
-                    :label="$t('model')"
-                    :options="options.brands.filter((b) => b.models_count)"
-                    :value="form.model_id"
-                    has-search
-                    @change="changeModel($event)"
-                  />
-                </div>
-              </div>
 
-              <!-- actions   ------------------------>
-              <div class="moderator-comment mt-5">
-                <!--  moderator-->
-                <div v-if="user.admin_group == 2" class="row">
-                  <div class="col-8">
-                    <form-textarea
-                      v-model="form.delay_comment"
-                      :maxlength="3000"
-                      :placeholder="$t('comment')"
+  <div class="container">
+    <breadcrumbs id="brdcrmbs1" :crumbs="crumbs"/>
+    <div class="card w-100">
+
+      <!--        userdata-->
+      <template v-if="single_announce">
+        <div class="row">
+          <div class="col-12 col-md-6 col-lg-9">
+            <user-details
+              :brand="form.brandObj"
+              :createdAt="single_announce.created_at"
+              :is-autosalon="single_announce.is_autosalon"
+              :is-external-salon="single_announce.is_external_salon"
+              :userData="single_announce.user"
+            />
+          </div>
+          <div v-if="single_announce.change_log && single_announce.change_log.length"
+               class="col-12 col-md-6 col-lg-3 d-flex justify-content-end">
+            <button
+              :class="{ button_loading: button_loading }"
+              class="'btn btn--green"
+              style="padding: 5px 20px;"
+              @click.prevent="openLog = true"
+            >
+              {{ $t('show_logs') }}
+            </button>
+          </div>
+        </div>
+      </template>
+
+      <!--    brand  -->
+      <div class="row mt-5">
+        <div class="col-12">
+          <title-with-line-and-reject-reason
+            :no-approval="!(admin_user.admin_group === 1 || admin_user.admin_group === 2)"
+            :old-value="admin_user.admin_group !== 2 ? old_brand : ''"
+            rejectKey="brand"
+            title="mark"
+            @change="changeReason"
+          />
+        </div>
+        <div class="col-12 col-lg-3">
+          <form-select
+            :key="refresh+1"
+            v-model="form.brand"
+            :disabled="isModerator"
+            :label="$t('mark')"
+            :options="getBrands"
+            has-search
+            @change="handleChange({key:'brand',value: form.brand, name: getBrandName(form.brand, getBrands)})"
+          />
+        </div>
+        <div class="mb-4">
+          <!--          <multiselect-component-->
+          <!--            :key="refresh+1"-->
+          <!--            :default-value="brand"-->
+          <!--            :multiple="false"-->
+          <!--            :options="getBrands"-->
+          <!--            :placeholder="$t('brand')"-->
+          <!--            :with-all-option="false"-->
+          <!--            class="multiselect&#45;&#45;tires "-->
+          <!--            hasTranslation-->
+          <!--            selected-key="brand"-->
+          <!--            @select-changed="handleChange"-->
+          <!--          />-->
+        </div>
+      </div>
+      <!--    model  -->
+      <div class="row mt-5">
+        <div class="col-12">
+          <title-with-line-and-reject-reason
+            :no-approval="!(admin_user.admin_group === 1 || admin_user.admin_group === 2)"
+            :old-value="admin_user.admin_group !== 2 ? old_model : ''"
+            rejectKey="model"
+            title="model"
+            @change="changeReason"
+          />
+        </div>
+        <div class="col-12 col-lg-3">
+          <form-select
+            :key="refresh+1"
+            v-model="form.model"
+            :disabled="isModerator"
+            :label="$t('model')"
+            :options="getModels"
+            has-search
+            @change="handleChange({key:'brand',value: form.brand, name: getBrandName(form.brand, getModels)})"
+          />
+        </div>
+        <div class="mb-4">
+          <!--          <multiselect-component-->
+          <!--            :with-all-option="false"-->
+          <!--            hasTranslation-->
+          <!--            :key="refresh+1"-->
+          <!--            @select-changed="handleChange"-->
+          <!--            :placeholder="$t('model')"-->
+          <!--            :multiple="false"-->
+          <!--            :default-value="model"-->
+          <!--            selected-key="model"-->
+          <!--            class="multiselect&#45;&#45;tires "-->
+          <!--            :options="getModels"-->
+          <!--          />-->
+        </div>
+      </div>
+      <!--    year  -->
+      <div class="row mt-5">
+        <div class="col-12">
+          <title-with-line-and-reject-reason
+            :no-approval="!(admin_user.admin_group === 1 || admin_user.admin_group === 2)"
+            :old-value="admin_user.admin_group !== 2 ? single_announce.year.toString() : ''"
+            rejectKey="year"
+            title="year"
+            @change="changeReason"
+          />
+        </div>
+        <div class="col-12 col-lg-3">
+          <form-select
+            :key="refresh+1"
+            v-model="form.year"
+            :disabled="isModerator"
+            :label="$t('model')"
+            :options="getYears"
+            has-search
+            @change="handleChange({key:'brand',value: form.brand, name: getBrandName(form.brand, getModels)})"
+          />
+        </div>
+        <div class="mb-4">
+          <!--          <multiselect-component-->
+          <!--            :with-all-option="false"-->
+          <!--            hasTranslation-->
+          <!--            :key="refresh+1"-->
+          <!--            @select-changed="handleChange"-->
+          <!--            :placeholder="$t('year')"-->
+          <!--            :multiple="false"-->
+          <!--            :default-value="year"-->
+          <!--            selected-key="year"-->
+          <!--            class="multiselect&#45;&#45;tires "-->
+          <!--            :options="getYears"-->
+          <!--          />-->
+        </div>
+      </div>
+      <!--      image-->
+      <div class="row mt-5">
+        <div class="col-12">
+          <title-with-line-and-reject-reason
+            :subtitle="
+                      $t('at_least_5_photos', {
+                        min: minFiles,
+                        max: maxFiles,
+                      }).toLowerCase()
+                    "
+            hideRejectReason
+            title="photos"
+          >
+            <div class="mb-2 ml-2" style="display: inline-block; z-index: 0;">
+              <reject-reason
+                :disabled-value="true"
+                rejectKey="image"
+                @change="changeReason"
+              />
+            </div>
+
+          </title-with-line-and-reject-reason>
+        </div>
+        <div class="col-12">
+          <upload-image-moderator
+            :announce="single_announce"
+            :changePosition="saved_images.length === imagesBase64.length"
+            :default-images="single_announce.media"
+            :is-edit="false"
+            :load-croppa="true"
+            :max_files="30"
+            :saved_images="saved_images"
+            :stopUploading="imagesBase64.length >= 20"
+            page="sell"
+            url="/"
+            @addFiles="addFiles"
+            @change="addImages"
+            @deletedIndex="deleteByIndex"
+            @passBase64Images="passBase64Images"
+            @replaceImage="replaceImage"
+          />
+        </div>
+      </div>
+      <!--    color  -->
+      <div class="row mt-5">
+        <div class="col-12">
+          <title-with-line-and-reject-reason
+            :no-approval="!(admin_user.admin_group === 1 || admin_user.admin_group === 2)"
+            rejectKey="color"
+            title="color"
+            @change="changeReason"
+          />
+        </div>
+
+        <div v-if="form.selectedColor && colors.length" class="col-12">
+          <color-options v-model="form.selectedColor" :hide-matt="type !== 'cars'" :limit="2"
+                         :matt="form.is_matte" :multiple="type === 'cars'" @change="removeError('selectedColor')"
+                         @change-matt="form.is_matte = $event"/>
+        </div>
+      </div>
+      <!--      mileage-->
+      <div class="row mt-5">
+        <div class="col-12">
+          <title-with-line-and-reject-reason
+            no-approval
+            reject-key="mileage"
+            required
+            title="mileage"
+            @change="changeReason"
+          />
+        </div>
+        <div class="col-12">
+          <form-numeric-input
+            v-model="form.mileage"
+            :invalid="isInvalid('mileage')"
+            :placeholder="$t('mileage')"
+            input-class="w-133"
+            @change="removeError('mileage'), updatePreview('mileage')"
+          />
+        </div>
+      </div>
+    </div>
+    <!--    ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+    <!--    ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+    <!--    ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+    <!--    ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+    <div v-if="false">
+      <div v-if="single_announce.id" id="my-announcements-moto-edit" class="sell-car container">
+        <div v-if="admin_user.admin_group === 1 && single_announce.transferred"
+             style="background: rgb(41, 165, 62); display: inline-block; padding: 4px 10px 7px 10px; color: #fff; cursor: pointer; margin-bottom: 10px;"
+             @click="transferModal = true">
+          {{ $t('Show comment') }}
+        </div>
+        <!--        transfer modal-->
+
+        <!--        transfer modal-->
+        <transition v-else name="fade">
+          <div v-if="transferModal" class="logs">
+            <div class="log" style="min-width: 400px;">
+              <div class="title" style="padding-right: 40px;">{{ $t('Transfer to Supervisor') }} <span
+                @click="transferModal = false">X</span></div>
+              <div class="body">
+                <textarea v-model="transferComment" :placeholder="$t('Transfer comment')"
+                          style="height: 150px;width: 100%"></textarea>
+              </div>
+              <div class="foot">
+                <button :class="{'button_loading':button_loading}" class="section-post__btn mt-0"
+                        style="padding: 10px 30px;background:#d55e13;"
+                        @click.prevent="transferToSupervisor()">{{ $t('Transfer to Supervisor') }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </transition>
+
+
+        <section :class="{'disable':admin_user.admin_group === 2}">
+          <!--    ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+          <div>
+            <div class="announcement-category__overlay__title mb-3">
+              <span>{{ $t('user') }}</span>
+            </div>
+            <div class="mb-4" style="display: flex; align-items: center;">
+              <title-with-line-and-reject-reason
+                :no-approval="!(admin_user.admin_group === 1 || admin_user.admin_group === 2)"
+                class="mr-3"
+                rejectKey="user_name" @change="changeReason"/>
+              <span v-if="single_announce.user.autosalon">
+              <span
+                style="border: 3px solid #2f80cc; padding: 1px 14px; color: #2f80cc; font-weight: 600; font-size: 16px;">AUTOSALON</span>
+              |
+            </span>
+              <span v-if="single_announce.type.info|| single_announce.restored_announce">
+              <span
+                style="border: 3px solid #149447; padding: 1px 14px; color: #149447; font-weight: 600; font-size: 16px;">Ödənişli elan</span>
+              |
+            </span>
+              {{
+                single_announce.user.autosalon ? single_announce.user.autosalon.name : single_announce.user.full_name
+              }} | {{ $t('phone') }} : {{ single_announce.user.phone }} | {{ $t('email') }} :
+              {{ single_announce.user.email }}
+            </div>
+          </div>
+          <!--        <div v-if="$route.query.type !== 'scooters'">
+                    <div class="announcement-category__overlay__title mb-3">
+                      <span>{{ $t('type') }}</span>
+                    </div>
+                    <span class="old_value" v-if="admin_user.admin_group !== 2">
+                          {{$t('old_value')}} : {{ getOldType.name }}
+                        </span>
+                    <div class="mb-4" style="display: flex; align-items: center;">
+                      <title-with-line-and-reject-reason :no-approval="!(admin_user.admin_group === 1 || admin_user.admin_group === 2)" rejectKey="type" @change="changeReason" class="mr-3"/>
+                      <multiselect-component
+                        :with-all-option="false"
+                        hasTranslation
+                        :key="refresh+1"
+                        @select-changed="handleChange"
+                        :placeholder="$t('type')"
+                        :multiple="false"
+                        :default-value="type"
+                        selected-key="type"
+                        class="multiselect&#45;&#45;tires "
+                        :options="getTypes"
+                      />
+                    </div>
+                  </div>-->
+        </section>
+
+        <section :class="{'disable':admin_user.admin_group === 2}">
+          <div>
+            <section class="container section-module">
+              <div class="section-part__title first-title">{{ $t('car_color') }}</div>
+              <div class="section-part__container d-flex " style="align-items: center;z-index: 10;">
+                <title-with-line-and-reject-reason
+                  :no-approval="!(admin_user.admin_group === 1 || admin_user.admin_group === 2)"
+                  class="mr-3"
+                  rejectKey="color" @change="changeReason"/>
+                <a v-for="(c,i) in colors"
+                   id="selectedColor" :key="i"
+                   :class="{'border_color':i === 0, 'exactly-selected':form.selectedColor===c.id }"
+                   :style="`background-color: ${c.code};`+ (i === 1 ? 'border: 1px solid #ccc;':'' )"
+                   class="section-part__color"
+                   href="#"
+                   @click.prevent="getChange(c.id,'selectedColor')"
+                >
+                </a>
+
+              </div>
+              <div class="section-part__title">{{ $t('mileage') }}</div>
+              <div class="section-part__container">
+                <div class="d-flex align-items-center">
+
+                  <animated-input :default-value="form.mileage" :has-error="errors.includes('mileage')"
+                                  :min="0" input-type="number" placeholder="км"
+                                  selected-key="mileage" @change="getChange($event,'mileage')"/>
+
+                  <div class="section-part__checkbox" style="margin-left:20px;">
+                    <search-checkbox
+                      :day="$t('noviy')"
+                      :default-checked="single_announce.is_new"
+                      class="overlay-checkbox__search"
+                      item_key="is_new"
+                      @select-checked="checkboxChanged"
+                    />
+
+                  </div>
+                  <div class="section-part__checkbox" style="margin-left:20px;">
+                    <search-checkbox
+                      :default-checked="single_announce.guaranty"
+                      class="overlay-checkbox__search"
+                      day="На гарантии"
+                      item_key="guaranty"
+                      style="margin-left:20px;"
+                      @select-checked="checkboxChanged"
                     />
                   </div>
-                  <div class="col-4">
-                    <button
-                      v-if="
-                        !rejectObj.rejectArray.length &&
-                        !sellLastStepRejectObj.rejectArray.length
-                      "
-                      :class="[
-                        'btn btn--green w-50',
-                        { pending },
-                        { disabled: form.comment.length == 0 },
-                      ]"
-                      :disabled="form.comment.length == 0"
-                      class="mb-2"
-                      type="button"
-                      @click.prevent="sendData(1)"
-                    >
-                      {{ $t('confirm') }}
-                    </button>
-                    <button
-                      v-else
-                      :class="[
-                        'btn btn--green w-50',
-                        { pending },
-                        { disabled: form.comment.length == 0 },
-                      ]"
-                      :disabled="form.comment.length == 0"
-                      class="mb-2"
-                      type="button"
-                      @click.prevent="sendData(0)"
-                    >
-                      {{ $t('reject') }}
-                    </button>
-                    <button
-                      v-if="!transfer.isOpen"
-                      :class="['btn btn--green', { pending }]"
-                      class="mb-2"
-                      type="button"
-                      @click="transfer.isOpen = true"
-                    >
-                      {{ $t('transfer_to_supervisor') }}
-                    </button>
-                    <div
-                      v-if="getTimer && getTimer.data"
-                      class="moderator-timer"
-                    >
-                      {{ getTimer.data.replace('d', $t('day')) }}
+                  <div class="section-part__checkbox" style="margin-left:20px;">
+                    <search-checkbox
+                      :default-checked="single_announce.customed_id"
+                      class="overlay-checkbox__search"
+                      day="Не растаможен"
+                      item_key="customs_clearance"
+                      @select-checked="checkboxChanged"
+                    />
+                  </div>
+                  <div class="section-part__checkbox d-flex align-items-center" style="margin-left: 20px;">
+
+                    <search-checkbox
+                      :day="$t('beaten_or_cant_move')"
+                      :default-checked="single_announce.status_id"
+                      class="overlay-checkbox__search text-dark-reddish"
+                      item_key="beaten"
+                      @select-checked="checkboxChanged"
+                    />
+
+                    <div class="popover__wrapper">
+                      <div class="popover__hover">
+                        <div class="popover__title">
+                          <svg-icon name="question" style="width: 16px; height: 16px; vertical-align: sub;"/>
+                        </div>
+                      </div>
+                      <div class="popover__content" style="left: -52px; top: 27px;">
+                        <p>{{ $t('cars_with_damage_sentence') }}</p>
+                      </div>
                     </div>
                   </div>
                 </div>
+              </div>
+            </section>
+            <section class="container section-module">
+              <div class="section-part__title first-title">{{ $t('personal_details_and_place_of_inspection') }}</div>
+              <div class="section-part__container">
+                <div class="d-flex align-items-center mb-10">
 
-                <!--  supervisor-->
-                <div v-if="user.admin_group == 1" class="row">
-                  <div class="col float-right">
-                    <button
-                      v-if="
-                        rejectObj.rejectArray.filter(
-                          (item) => !rejectObj.reject360.includes(item),
-                        ).length === 0 &&
-                        !sellLastStepRejectObj.rejectArray.length
-                      "
-                      :class="{ button_loading: button_loading }"
-                      class="'btn btn--green mt-2"
-                      style="padding: 10px 30px;"
-                      @click.prevent="sendData(1)"
-                    >
-                      {{ $t('confirm') }}
-                    </button>
-                    <button
-                      :class="{ button_loading: button_loading }"
-                      class="'btn btn--red mt-2"
-                      style="padding: 10px 30px;"
-                      @click.prevent="sendData(0)"
-                    >
-                      {{ $t('reject') }}
-                    </button>
-                    <button
-                      :class="{ button_loading: button_loading }"
-                      class="'btn btn--pale-red mt-2"
-                      style="padding: 10px 30px;"
-                      @click.prevent="sendData(3)"
-                    >
-                      {{ $t('deactive_announce') }}
-                    </button>
-                    <button
-                      :class="{ button_loading: button_loading }"
-                      class="'btn btn--grey mt-2"
-                      style="padding: 10px 30px;"
-                      @click.prevent="gotoList()"
-                    >
-                      {{ $t('back_to_list') }}
-                    </button>
+                  <multiselect-component
+                    id="region_id"
+                    :default-value="single_announce.region_id"
+                    :has-error="errors.includes('region_id')"
+                    :multiple="false"
+                    :options="sell_options.regions"
+                    :placeholder="$t('sale_city')"
+                    :with-all-option="false"
+                    selected-key="region_id"
+                    style="position: relative;display: inherit;"
+                    @select-changed="handleMultiselect"
+
+                  />
+
+                  <span class="side-text">
+						{{ $t('will_not_possible_change_city') }}
+            </span>
+
+                </div>
+                <div class="d-flex align-items-center mb-10">
+               <span style="cursor:pointer;" @click="openModal">
+                  <animated-input :defaultValue="form.address" :has-error="errors.includes('address')"
+                                  placeholder="Место осмотра"
+                                  selected-key="address" style="pointer-events: none"
+                                  @change="getChange($event,'address')"/>
+               </span>
+                  <a class="side-text" href="#" style="position: relative; color: #0b78e6;"
+                     @click.prevent="openModal">
+                    <svg-icon :class="{'left70':errors.includes('address')}" class="pinpoint" name="pinpoint"/>
+                    Уточнить место на карте
+                  </a>
+                  <modal-form v-if="modalIsActive" :is_creators="false" :latdef="form.lat" :lngdef="form.lng"
+                              @close="closeModal" @getAddress="getAddress" @latLng="getLatLng"/>
+                </div>
+
+              </div>
+              <div class="section-part__title">Цена</div>
+              <div class="section-part__container" style="display: flex">
+                <price-input-component
+                  :currency="single_announce.currency"
+                  :has-error="errors.includes('price')"
+                  :price="numericPrice()"
+                  class="mb-10"
+                  selected-key="price"
+                  @change="getChange($event,'price')"
+                  @curreny-change="getCurrency"
+                />
+                <search-checkbox
+                  :day="$t('exchange_possible')"
+                  :default-checked="single_announce.tradeable"
+                  class="overlay-checkbox__search"
+                  item_key="tradeable"
+                  style="margin: 0 0 0 20px;flex: unset;"
+                  @select-checked="checkboxChanged"
+                />
+                <search-checkbox
+                  :day="$t('credit')"
+                  :default-checked="single_announce.credit"
+                  class="overlay-checkbox__search"
+                  item_key="credit"
+                  style="margin: 0 0 0 20px;flex: unset;"
+                  @select-checked="checkboxChanged"
+                />
+              </div>
+              <template v-if="single_announce.is_external_salon">
+                <div class="section-part__title">Ölkə</div>
+                <div class="section-part__container">
+                  <multiselect-component
+                    :default-value="single_announce.country_id"
+                    :has-error="errors.includes('country_id')"
+                    :multiple="false"
+                    :options="sell_options.countries"
+                    :with-all-option="false"
+                    placeholder="Ölkə"
+                    selected-key="country_id"
+                    @select-changed="handleMultiselect"
+
+                  />
+                </div>
+                <div class="section-part__title mt-10">Auksion</div>
+                <div class="section-part__container" style="display:flex">
+                  <two-buttons :default-checked="single_announce.auction" leftText="Satış" rightText="Auksion"
+                               @change="getChange($event,'auction')"/>
+                  <datetime v-if="form.auction" v-model="form.end_date" class="customDatepickerColor animated"
+                            format="dd-LL-yyyy H:mm"
+                            style="margin-left: 20px;"
+                            type="datetime"/>
+                </div>
+              </template>
+
+            </section>
+            <section class="container section-module">
+              <div class="d-flex justify-content-between">
+                <div>
+                  <div class="section-part__title">{{ $t('what_owner_are_you') }}</div>
+                  <div class="section-part__container">
+                    <two-buttons :default-checked="single_announce.owners" :leftText="$t('first')"
+                                 :rightText="$t('second_and_more')"
+                                 @change="getChange($event,'owner_type')"/>
+                  </div>
+
+                  <div class="section-part__title">{{ $t('enter_license_plate_number_or_body_number') }}</div>
+                  <div class="section-part__container">
+                    <div v-if="form.customs_clearance != true && !single_announce.is_external_salon"
+                         class="d-flex align-items-center">
+                      <title-with-line-and-reject-reason
+                        :no-approval="!(admin_user.admin_group === 1 || admin_user.admin_group === 2)"
+                        class="mr-3" rejectKey="car_number" @change="changeReason"/>
+                      <passport-component id="car_number" :default-value="single_announce.car_number"
+                                          @change="getChange($event,'car_number')"/>
+                      <div class="popover__wrapper">
+                        <div class="popover__hover">
+                          <div class="popover__title">
+                            <svg-icon name="question" style="width: 16px; height: 16px; vertical-align: sub;"/>
+                          </div>
+                        </div>
+                        <div class="popover__content" style="left: -144px; top: 27px; width: 300px;">
+                          <p class="text-not-daltonic-red" style="margin: 0;">
+                            {{ $t('real-car-number-will-make-post-faster') }}</p>
+                        </div>
+                      </div>
+                      <search-checkbox :day="$t('show_on_site')"
+                                       :default-checked="single_announce.show_car_number"
+                                       class="overlay-checkbox__search"
+                                       item_key="show_car_number"
+                                       style="margin-left:10px;"
+                                       vehicleType="moto"
+                                       @select-checked="checkboxChanged"
+                      />
+                    </div>
+                    <div class="d-flex align-items-center" style="margin-top: 10px;">
+                      <title-with-line-and-reject-reason
+                        :no-approval="!(admin_user.admin_group === 1 || admin_user.admin_group === 2)" class="mr-3"
+                        rejectKey="vin" @change="changeReason"/>
+                      <animated-input :default-value="form.vin" :has-error="errors.includes('vin')"
+                                      :placeholder="$t('body_vin')"
+                                      :uppercase="true" selected-key="vin"
+                                      @change="getChange($event,'vin')"/>
+
+                      <search-checkbox :day="$t('show_on_site')"
+                                       :default-checked="single_announce.show_vin"
+                                       class="overlay-checkbox__search"
+                                       item_key="show_vin"
+                                       style="margin-left:10px;"
+                                       vehicleType="moto"
+                                       @select-checked="checkboxChanged"
+                      />
+                    </div>
+                    <div>
+                    <span class="side-text m-0">
+                      {{ $t('where_see_vin') }}
+                      <div class="popover__wrapper">
+                        <div class="popover__hover">
+                          <div class="popover__title">
+                            <svg-icon name="question" style="width: 16px; height: 16px;"/>
+                          </div>
+                        </div>
+                        <div class="popover__content">
+                          <svg-icon name="passport" style="width: 480px; height: 335px;"/>
+                        </div>
+                      </div>
+                    </span>
+                    </div>
                   </div>
                 </div>
               </div>
-              <!-- actions   ------------------------>
+            </section>
+          </div>
+        </section>
+
+
+        <section :class="{'disable':admin_user.admin_group === 2}" class="container section-module">
+          <div v-for="(item, index) in moto_options.config"
+               v-if="(item.category && item.category.includes(parseInt(category))) || !item.hasOwnProperty('category')"
+               :key="index">
+            <div :class="{'is_required': item.required}" class="first-title section-part__title">{{
+                $t(item.placeholder)
+              }}
+            </div>
+            <div class="section-part__container">
+              <div class="container-fluid">
+                <div class="row">
+                  <component
+                    :is="item.component"
+                    :default-value="default_data[index]"
+                    :has-error="errors.includes(index)"
+                    :max="5"
+                    :options="item.sell_values ? item.sell_values[parseInt(default_data['category'])] : item.values"
+                    :placeholder="$t(item.placeholder)"
+                    inputType="number"
+                    @change="componentValueChange($event,index)"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="first-title section-part__title">{{ $t('moshchnost') }}</div>
+            <div class="section-part__container">
+              <div class="container-fluid">
+                <div class="row">
+                  <animated-input :default-value="default_data.power" :max="5" :placeholder="$t('moshchnost')"
+                                  inputType="number"
+                                  @change="handleChange($event,'power')"/>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="container section-module comments-section">
+          <div class="section-part__title first-title">{{ $t('comment') }}</div>
+          <div class="section-part__container paper-label-area d-flex-wrap">
+            <textarea id="comment" v-model="form.comment" :class="{'w100' : ifPopularCommentsEmpty()}"
+                      :placeholder="$t('describe_your_car')" class="comments-area" maxlength="3000"> </textarea>
+            <popular-comments v-on:getComment="addComment"/>
+            <span class="inform">{{ $t('forbidden_give_links_text') }}</span>
+          </div>
+        </section>
+
+        <car-quick-info
+          v-if="item.id"
+          :added_badges="selectedBadges"
+          :images="imagesBase64"
+          :item="item"
+          :new_badges="form.new_badges"
+          action="edit"
+          type="moto"
+        />
+
+        <section>
+          <hr>
+        </section>
+
+        <section v-if="admin_user.admin_group === 1" class="container"> <!--supervisor-->
+          <div class="row">
+            <div class="col-12">
+              <button v-if="rejectArray.length === 0" :class="{'button_loading':button_loading}"
+                      class="section-post__btn mt-0"
+                      style="padding: 10px 30px;background:#3a9b35;"
+                      @click.prevent="sendData(1)">{{ $t('approve') }}
+              </button>
+              <button :class="{'button_loading':button_loading}" class="section-post__btn mt-0 ml-1"
+                      style="padding: 10px 30px;background:#b90026;"
+                      @click.prevent="sendData(0)">{{ $t('reject') }}
+              </button>
+              <button :class="{'button_loading':button_loading}" class="section-post__btn mt-0 ml-1"
+                      style="padding: 10px 30px;background:#F56808;"
+                      @click.prevent="sendData(3)"
+              >
+                {{ $t('deactive_announce') }}
+              </button>
+              <a href="javascript:void(0);" @click="handleBackToList">
+                <button class="section-post__btn mt-0 ml-1" style="padding: 10px 30px;background:#bfbfbf;">
+                  {{ $t('back_to_list') }}
+                </button>
+              </a>
+            </div>
+          </div>
+        </section>
+        <section v-else-if="admin_user.admin_group === 2" class="container"> <!--moderator-->
+          <div class="row">
+            <div class="col-3 text-center">
+            <span class="timer">
+              {{ getTimer.data }}
+            </span>
+            </div>
+            <div class="col-3">
+              <input v-if="getTimer.unix > 60*2" v-model="form.delay_comment" :placeholder="$t('delay_comment')"
+                     style="height: 46px;width: 100%;padding: 0 8px;" type="text">
+            </div>
+
+            <div class="col-6 text-center">
+            <span v-if="getTimer.unix < 60*2 || (getTimer.unix > 60*2 && form.delay_comment.length)">
+              <button v-if="rejectArray.length === 0" :class="{'button_loading':button_loading}"
+                      class="section-post__btn mt-0"
+                      style="padding: 10px 30px;background:#3a9b35;"
+                      @click.prevent="sendData(1)">{{ $t('approve') }}</button>
+
+              <!-- sendData(0) -->
+              <button v-else :class="{'button_loading':button_loading}" class="section-post__btn mt-0 ml-5"
+                      style="padding: 10px 30px;background:#b90026;"
+                      @click.prevent="transferToSupervisor(true)">{{ $t('reject') }}</button>
+            </span>
+
+              <button :class="{'button_loading':button_loading}" class="section-post__btn mt-0"
+                      style="padding: 10px 30px;background:#d55e13;float: right"
+                      @click.prevent="transferModal = true">{{ $t('Transfer to Supervisor') }}
+              </button>
+            </div>
+          </div>
+        </section>
+        <section v-else-if="admin_user.admin_group === 3" class="container"> <!--call center-->
+          <div class="row">
+            <div class="col-12">
+              <button :class="{'button_loading':button_loading}" class="section-post__btn mt-0"
+                      style="padding: 10px 30px;background:#3a9b35;"
+                      @click.prevent="sendData(2)">{{ $t('send_to_moderate') }}
+              </button>
+
+              <button :class="{'button_loading':button_loading}" class="section-post__btn mt-0 ml-1"
+                      style="padding: 10px 30px;background:#F56808;"
+                      @click.prevent="sendData(3)"
+              >
+                {{ $t('deactive_announce') }}
+              </button>
+
+              <a href="javascript:void(0);" @click="handleBackList">
+                <button class="section-post__btn mt-0 ml-1" style="padding: 10px 30px;background:#bfbfbf;">
+                  {{ $t('back_to_list') }}
+                </button>
+              </a>
+
+              <button class="section-post__btn mt-0" style="padding: 10px 30px;background:#d55e13;float: right"
+                      @click.prevent="transferModal = true">{{ $t('Transfer to Supervisor') }}
+              </button>
+
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+    <!--    ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+    <!--    ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+    <!--    ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+    <!--    ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+    <!--    empty announce-->
+    <div v-if="!single_announce.id">
+      <div style="text-align: center">
+        <br><br>
+        <h2>{{ $t('not_have_pending') }} {{ $route.query.type }}</h2>
+        <!--<a :href="$route.fullPath">
+          <button class="section-post__btn add_announce">Get car ticket</button>
+        </a>
+        &nbsp;&nbsp;-->
+        <a href="javascript:void(0);" @click="handleBackList">
+          <button class="section-post__btn add_announce">{{ $t('back_to_list') }}</button>
+        </a>
+        <br><br>
+      </div>
+    </div>
+    <!--    logs modal-->
+    <modal-popup
+      :modal-class="''"
+      :title="`${$t('logs')}`"
+      :toggle="openLog"
+      @close="openLog = false"
+    >
+      <div class="log">
+        <small class="w-100 mb-4 text-right text-red">* {{ $t('old_value') }}
+          <icon name="arrow-right"></icon>
+          {{ $t('new_value') }}</small>
+        <div class="body">
+          <div
+            v-if="single_announce.btl_announces.length"
+          >
+            <!--            BTL : {{ getBtlUserName }}-->
+          </div>
+          <div
+            v-for="changeLog in single_announce.change_log"
+            v-if="
+                  (!changeLog.changes.open_count &&
+                    changeLog.user_id === single_announce.user_id)
+                "
+            :key="changeLog.id"
+          >
+            {{ changeLog.user.name }} {{ changeLog.user.lastname }} /
+            {{ formatDate(changeLog.created_at) }}
+            <br/>
+            <div
+              v-for="(value, key) in changeLog.original"
+              :key="key + '_changes'"
+            >
+              <div v-if="!['admin_user_id'].includes(key)" class="my-2" style="border-bottom: 1px solid #dadada">
+                {{ $t(key) }}: {{ (key === 'created_at') ? formatDate(value) : value }}
+                <icon name="arrow-right"></icon>
+                {{ (key === 'created_at') ? formatDate(changeLog.changes[key]) : changeLog.changes[key] }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="body">
+          <div
+            v-if="single_announce.btl_announces.length">
+            BTL : {{ getBtlUserName }}
+          </div>
+          <div v-for="changeLog in single_announce.change_log" :key="changeLog.id">
+            {{ changeLog.user.name }} {{ changeLog.user.lastname }} / {{ formatDate(changeLog.created_at) }}
+            <br>
+            <div v-for="(value, key) in changeLog.original" :key="key+'_changes'">
+              <div v-if="!['admin_user_id'].includes(key)">
+                {{ $t(key) }}: {{ getValue(key, value) }} -> {{ getValue(key, changeLog.changes[key]) }}
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-  <div
-    v-else-if="!announcementIsAvailable && !loading"
-    class="d-flex flex-column justify-content-center h-300"
-  >
-    <h1 class="text-center">Baxılmayanlar mövcud deyil</h1>
-  </div>
-  <div v-else>
-    <elements-loader></elements-loader>
+    </modal-popup>
+    <!--    transfer modal-->
+    <modal-popup
+      :modal-class="''"
+      :title="`${$t('Comment')}`"
+      :toggle="(admin_user.admin_group === 1) && transferModal"
+      @close="openLog = false"
+    >
+      <div class="logs">
+        <div class="log" >
+          <div class="body" v-html="(single_announce.transferred && single_announce.transferred.comment) ?  single_announce.transferred.comment: ''"></div>
+        </div>
+      </div>
+    </modal-popup>
+
   </div>
 </template>
 
+
 <script>
-import {mapActions, mapGetters} from 'vuex'
-import moment from 'moment'
-import SellLastStep from '~/components/sell/SellLastStepModerator'
-import SellPreview from '~/components/sell/SellPreview'
+import {mapGetters} from "vuex";
 import UserDetails from '~/components/moderator/brand.vue'
-import EditButton from '~/components/announcements/EditButton'
-import ModelOptions from '~/components/options/ModelOptions'
-import TitleWithLine from '~/components/global/titleWithLine.vue'
-import ButtonOptions from '~/components/moderator/buttonOptions'
-import UploadImage from '~/components/elements/UploadImage'
+import MultiselectComponent from '~/components/moderator/multiselectComponent.vue'
 import RejectReason from '~/components/moderator/rejectReason'
-import TitleWithLineAndRejectReason from '~/components/moderator/titleWithLineAndRejectReason'
+import PhotoRejectReason from "~/pages/moderator/photoReject/PhotoRejectReason";
 import UploadImageModerator from '~/components/moderator/UploadImageModerator'
-import PhotoRejectReason from '~/pages/moderator/photoReject/PhotoRejectReason'
+import ColorOptions from '~/components/options/ColorOptions'
+// import YearComponent from "~/components/elements/sell/YearComponent";
+// import UploadImage from '~/components/elements/upload_image';
+// import OptionComponent from "~/components/elements/sell/OptionComponent";
+// import RejectReason from "~/components/elements/RejectReason";
+// import ModalForm from "~/components/global/search/ModalForm";
+// import ModalSellForm from "~/components/elements/sell/ModalSellForm";
+// import SelectBrand from "~/components/elements/sell/moto/SelectBrand";
+// import SelectModel from "~/components/elements/sell/moto/SelectModel";
+// import SelectMotoType from "~/components/elements/sell/moto/SelectMotoType";
+// import SelectYear from "~/components/elements/sell/moto/SelectYear";
+// import SelectCheckbox from "~/components/elements/sell/moto/SelectCheckbox";
+// import loginComponent from "~/components/elements/loginComponent";
+// import PhotoRejectReason from "../../../components/elements/sell/PhotoRejectReason";
+import moment from "moment";
+import TitleWithLineAndRejectReason from '~/components/moderator/titleWithLineAndRejectReason'
+
+// import { Datetime } from 'vue-datetime';
 
 export default {
+  name: "ModerationMoto",
   layout: 'ticket',
   components: {
-    TitleWithLineAndRejectReason,
-    RejectReason,
-    SellPreview,
     UserDetails,
-    EditButton,
-    ModelOptions,
-    TitleWithLine,
-    ButtonOptions,
-    UploadImage,
-    SellLastStep,
-    UploadImageModerator,
+    TitleWithLineAndRejectReason,
+    MultiselectComponent,
+    RejectReason,
     PhotoRejectReason,
+    UploadImageModerator,
+    ColorOptions,
+    // loginComponent,
+    // Datetime,
+    // PhotoRejectReason,
+    // RejectReason,
+    // SelectCheckbox,
+    // SelectYear,
+    // SelectModel,
+    // SelectBrand,
+    // SelectMotoType,
+    // YearComponent,
+    // ModalForm,
+    // UploadImage,
+    // ModalSellForm,
+    // OptionComponent
   },
+  async fetch({store}) {
+    await store.dispatch('getOptions');
+    await store.dispatch('getScooterOptions');
+    await store.dispatch('getAllOtherOptions');
+    await store.dispatch('getColors');
+    await store.dispatch('getBadges');
+  },
+
+  async asyncData({route, store, $auth, $axios}) {
+    await $auth.setUserToken(`Bearer ${route.query.token}`);
+    const admin_user = await $axios.$get('/user');
+
+
+    if (!admin_user.user.is_admin) {
+      return false;
+    }
+
+    await store.dispatch('getMotoOptions');
+
+    let data;
+    try {
+      data = await $axios.$get(`/ticket/moto?type=${route.query.type}`);
+      store.commit('mutate', {
+        property: 'single_announce',
+        value: data.announce,
+      })
+
+      let default_data = {};
+      let s_ann = store.state.single_announce;
+      let brand;
+      let model;
+      let type;
+      default_data['engine'] = s_ann.engine_type_id;
+      default_data['volume'] = s_ann.capacity;
+      default_data['power'] = s_ann.power;
+      default_data['cylinders'] = s_ann.cylinders;
+      default_data['box'] = s_ann.box_id;
+      default_data['cylinder_placement'] = s_ann.cylinder_type_id;
+      default_data['number_of_vehicles'] = s_ann.tact;
+      default_data['drive'] = s_ann.gear_id;
+      default_data['capacity'] = s_ann.capacity;
+
+      if (s_ann.moto_brand !== undefined) {
+        default_data['category'] = "1";
+        await store.dispatch('getMotoModels', {id: s_ann.moto_brand.id, index: 0})
+        brand = s_ann.moto_brand;
+        model = s_ann.moto_model;
+        /*  type  = s_ann.moto_type_id;*/
+      }
+      if (s_ann.scooter_brand !== undefined) {
+        default_data['category'] = "2";
+        await store.dispatch('getScooterModels', {id: s_ann.scooter_brand.id, index: 0})
+        brand = s_ann.scooter_brand;
+        model = s_ann.scooter_model;
+      }
+      if (s_ann.moto_atv_brand !== undefined) {
+        default_data['category'] = "3";
+        await store.dispatch('getMotoAtvModels', {id: s_ann.moto_atv_brand.id, index: 0})
+        brand = s_ann.moto_atv_brand;
+        model = s_ann.moto_atv_model;
+        /*  type  = s_ann.moto_atv_type_id;*/
+      }
+      return {
+        admin_user: admin_user.user,
+        default_data: default_data,
+        old_brand: brand.name,
+        old_model: model.name,
+        old_type: type,
+        brand: brand.id,
+        model: model.id,
+        year: s_ann.year,
+        /*type,*/
+        moderator: data ? data.moderator : {},
+        //old_model: data.announce.model.name,
+      }
+    } catch (e) {
+      store.commit('moderator/moderatorMutator', {
+        with: {},
+        property: 'single_announce'
+      })
+    }
+    return {
+      admin_user: admin_user.user,
+      moderator: data ? data.moderator : {},
+      incomingData: data.announce,
+    }
+    // await store.dispatch('editMoto',{ id:route.params.edit, type:route.query.type });
+
+  },
+
   data() {
     return {
-      announcementIsAvailable: false,
-      loading: false,
-      showModal: false,
-      lastStepKey: 1,
-      show: {
-        brands: false,
-        models: false,
-        years: false,
-      },
-      type: 'moto',
-      pending: false,
-      //reject reason
-      rejectObj: {
-        show360Reject: false,
-        showPhotoReject: false,
-        rejectArray: [],
-        reject360: ['360_photo_reject_1'],
-      },
-      transfer: {
-        comment: '',
-        isOpen: false,
-      },
       button_loading: false,
-      itemForm: {},
-      sellLastStepRejectObj: {
-        rejectArray: [],
+      openLog: false,
+      transferModal: false,
+      transferComment: '',
+      announceId: false,
+      getTimer: {
+        data: '',
+        unix: 0
       },
-      form: {
-        brand: null,
-        brand_id: null,
-        brandObj: {},
-        slug: null,
-        model: {},
-        model_id: null,
-        sellBody: null,
-        car_body_type: null,
-        year: null,
-        generation_id: null,
-        engine: null,
-        gearing: null,
-        transmission: null,
-        modification: null,
-        media: [],
-      },
-      data: {
-        models: [],
-        sellYears: [],
-        sellBodies: [],
-        generations: [],
-        engines: [],
-        gearings: [],
-        transmissions: [],
-        modifications: [],
-      },
-      models: [],
-      smsRadarData: {},
-      // send data
-      errors: [],
-      imagesBase64: [],
-      main_image: null,
-      saved_images: [],
-      deleteArr: [],
-      files: {},
-
-      //  image
+      rejectArray: [],
+      refresh: 1,
       date: Math.floor(Date.now() / 1000),
+      saved_images: [],
+      popup: false,
+      deleteArr: [],
+      errors: [],
+      progress_width: 0,
+      progress_index: 0,
+      color_selected: 0,
+      price_selected: 0,
+      status_selected: 0,
+      complect_selected: 0,
+      desc_selected: 0,
+      images_selected: 0,
+
+      progress: [this.$t('make_and_model'), this.$t('photo_and_video'), this.$t('color_and_mileage'), this.$t('price_and_contacts'), this.$t('condition'), this.$t('equipment'), this.$t('description')],
+      mmm: '',
+      cookie_keys: ['engine', 'generation', 'year'],
+      breadcrumbs: [],
+      show: {},
+      category: "1",
+      address: '',
+      selectedIndex: {},
+      option_toggle: 1,
+      cars_parts: [
+        {
+          name: this.$t('front_bamp'),
+          classes: 'state__front'
+        },
+        {
+          name: this.$t('front_left_door'),
+          classes: 'state__FrontLeftDoor'
+        },
+        {
+          name: this.$t('back_right_door'),
+          classes: 'state__FrontRearRight'
+        },
+        {
+          name: this.$t('front_right_door'),
+          classes: 'state__FrontRightDoor'
+        },
+        {
+          name: this.$t('back_left_door'),
+          classes: 'state__FrontRearLeft'
+        },
+        {
+          name: this.$t('roof'),
+          classes: 'state__roof'
+        },
+        {
+          name: this.$t('back_bamp'),
+          classes: 'state__rear'
+        },
+      ],
+      titles: [
+        this.$t('overview'),
+        this.$t('exterior_elements'),
+        this.$t('theif_protection'),
+        this.$t('multimedia'),
+        this.$t('salon'),
+        this.$t('comfort'),
+        this.$t('safety'),
+        this.$t('other')
+      ],
+      selectedBadges: [],
+      modalIsActive: false,
+      files: {},
+      imagesBase64: [],
+      form: {
+        auction: '',
+        end_date: '',
+        country_id: '',
+        delay_comment: '',
+        address: '',
+        lat: '',
+        comment: '',
+        lng: '',
+        tradeable: 0,
+        beaten: 0,
+        guaranty: 0,
+        category: '1',
+        volume: '',
+        power: '',
+        car_number: '',
+        show_car_number: false,
+        show_vin: false,
+        selectedColor: '',
+        all_options: {},
+        badges: {},
+        region_id: '',
+        year: '',
+        month: '',
+        mileage: '',
+        is_new: 0,
+        customs_clearance: 0,
+        passport: 0,
+        vin: '',
+        number_of_vehicles: -1,
+        cylinders: -1,
+        cylinder_placement: -1,
+        drive: -1,
+        engine: -1,
+        used_ones: -1,
+        customed_ones: -1,
+        box: -1,
+        price: '',
+        new_badges: [],
+        owner_type: 0,
+        currency: 0,
+        youtube: {
+          id: '',
+          thumb: ''
+        },
+      },
+      showPhotoReject: false,
       minFiles: this.type === 'moto' ? 2 : 3,
       maxFiles: 20,
-      //  image reject
-      imageModal: {
-        isOpen: false,
-        options: [
-          'front_error',
-          'back_error',
-          'left_error',
-          'right_error',
-          'interior_error',
-          'not_this_car_error',
-          'logo_on_the_picture',
-        ],
-        initialOptions: [
-          'front_error',
-          'back_error',
-          'left_error',
-          'right_error',
-          'interior_error',
-          'not_this_car_error',
-          'logo_on_the_picture',
-        ],
-        rejectArray: ['front_error', 'back_error', 'left_error'],
-        modalToggled: false,
-      },
-
-      //  moto
-      default_data: {},
-      admin_user: null,
-
-      //  toggle
-      showModelOptions: false,
     }
   },
-  computed: {
-    ...mapGetters({
-      single_announce: 'moderator/single_announce',
-      brands: 'moderator/brands',
-      boxes: 'moderator/boxes',
-      engines: 'sellEngines',
-      enginesModerator: 'moderator/engines',
-      sellGenerations: 'sellGenerations',
-      sellGear: 'sellGearing',
-      generations: 'sellGenerations',
-      generationsModerator: 'moderator/generations',
-      modelsGeneral: 'models',
-      modelsModerator: 'moderator/models',
-      moderator: 'moderator/moderator',
-      sellModifications: 'sellModifications',
-      sellBodiesModerator: 'moderator/sell_bodies',
-      sellBodies: 'sellBody',
-      type_of_drives: 'moderator/type_of_drives',
-      sellYears: 'sellYears',
-      sellYearsModerator: 'moderator/sellYears',
-      colors: 'colors',
-      sellTransmissions: 'sellTransmissions',
-      getTimer: 'moderator/getTimer',
-      modificationsModerator: 'moderator/modifications',
-      modificationsGeneral: 'sellModifications',
 
-      motoOptions: 'motoOptions',
-      motorcycleModels: 'motorcycleModels',
-      scooterModels: 'scooterModels',
-      atvModels: 'atvModels',
+  async created() {
+    await this.$auth.setUserToken(`Bearer ${this.$route.query.token}`);
+    this.$axios.setHeader('Authorization', `Bearer ${this.$route.query.token}`)
+
+    if (this.admin_user.admin_group == 2) {
+      setInterval(() => {
+        let timer = moment().diff(moment(this.moderator.created_at));
+        var duration = moment.duration(timer);
+        var days = duration.days(),
+          hrs = duration.hours(),
+          mins = duration.minutes(),
+          secs = duration.seconds();
+
+        if (hrs.toString().length === 1) hrs = '0' + hrs;
+        if (mins.toString().length === 1) mins = '0' + mins;
+        if (secs.toString().length === 1) secs = '0' + secs;
+        let _return = '';
+
+        if (days > 0) _return += days + 'd. ';
+
+        _return += hrs + ':' + mins + ':' + secs;
+
+        this.getTimer.data = _return;
+        this.getTimer.unix = timer / 1000;
+      }, 1000);
+    }
+    if (this.single_announce.id) {
+
+      let announce = JSON.parse(JSON.stringify(this.single_announce));
+
+      this.form.end_date = announce.end_date;
+      this.form.auction = announce.auction;
+      this.form.country_id = announce.country_id;
+      this.announceId = announce.id;
+      this.form.id = announce.id;
+      this.form.id_unique = announce.id_unique;
+      this.form.category = this.default_data.category || 1;
+      this.category = this.default_data?.category || 1;
+      /*   this.form = this.default_data;
+         this.form.youtube =  { id:'', thumb:'' };*/
+      this.saved_images = announce.mediaIds;
+      this.form.selectedColor = announce.color_id;
+      this.form.mileage = announce.mileage;
+      this.form.address = announce.address;
+      this.form.beaten = announce.status_id;
+      this.form.is_new = announce.is_new;
+      this.form.customs_clearance = announce.customed_id;
+      this.form.region_id = announce.region_id;
+      this.form.lat = parseFloat(announce.latitude);
+      this.form.lng = parseFloat(announce.longitude);
+      this.form.price = this.numericPrice();
+      this.form.currency = announce.currency_id;
+      this.form.tradeable = announce.tradeable;
+
+      this.form.owner_type = announce.owners;
+      this.form.year = announce.year;
+
+      this.form.guaranty = announce.guaranty;
+      this.form.car_number = announce.car_number;
+      this.form.show_car_number = announce.show_car_number;
+      this.form.show_vin = announce.show_vin;
+      this.form.vin = announce.vin;
+      /*this.form.selectedBrand = announce.moto_brand.slug;
+      this.form.selectedModel = announce.moto_model.slug;*/
+      this.form.engine = announce.engine_type_id;
+      this.form.power = announce.power;
+      this.form.comment = announce.comment;
+
+
+      this.form.engine = this.default_data['engine']
+      this.form.volume = this.default_data['volume'];
+      this.form.power = this.default_data['power'];
+      this.form.cylinders = this.default_data['cylinders'];
+      this.form.box = this.default_data['box'];
+      this.form.cylinder_placement = this.default_data['cylinder_placement'];
+      this.form.number_of_vehicles = this.default_data['number_of_vehicles'];
+      this.form.drive = this.default_data['drive'];
+      this.form.capacity = this.default_data['capacity'];
+
+      if (announce.youtube_id) this.getYoutube(announce.youtube_id);
+
+    }
+  },
+
+  mounted() {
+
+    this.$nuxt.$on('custom_modal_open', (val) => {
+
+      if (val) {
+        this.popup = true;
+        document.querySelector('body').classList.add('popup_open')
+      } else {
+        this.popup = false;
+        document.querySelector('body').classList.remove('popup_open')
+      }
+    });
+    document.body.addEventListener('click', () => {
+      this.show = {};
+    });
+  },
+  beforeDestroy() {
+    this.$nuxt.$off('publish_post')
+    this.$toasted.clear();
+  },
+  methods: {
+    handleBackList() {
+      if (this.admin_user.admin_group == 2) {
+        location.href = '/alvcp/resources/announce-moderators';
+      } else {
+        location.href = '/alvcp/resources/announcements';
+      }
+    },
+    async handleBackToList() {
+      await this.$axios.$post('/ticket/detach/' + this.announceId + '/' + this.getRedirectUrl)
+      location.href = '/alvcp/resources/' + this.getRedirectUrl;
+    },
+
+    ifPopularCommentsEmpty() {
+      if (this.getPopularComments.length) {
+        return this.getPopularComments
+      } else {
+        return {}
+      }
+    },
+    getValue(key, value) {
+      if (key === 'status') {
+        let status = [this.$t('rejected'), this.$t('active'), this.$t('pending')];
+        return status[value];
+      } else {
+        return value;
+      }
+    },
+    addComment(e) {
+      if (this.form.comment === null) this.form.comment = '';
+      this.form.comment = this.form.comment + e + ' ';
+    },
+    async deleteByIndex(index) {
+      if (this.saved_images[index]) {
+        this.deleteArr.push(this.saved_images[index])
+      } else {
+        await this.$axios.$post('/remove_temporary_image/' + this.saved_images[index]);
+      }
+      this.saved_images.splice(index, 1);
+    },
+    changeReason(rejectKey) {
+      if (rejectKey === 'image') {
+        this.showPhotoReject = true;
+      } else {
+        if (this.rejectArray.includes(rejectKey)) {
+          this.rejectArray.splice(this.rejectArray.indexOf(rejectKey), 1);
+        } else {
+          this.rejectArray.push(rejectKey);
+        }
+      }
+    },
+    async addFiles(v) {
+      await Promise.all(
+        v.map(async (image) => {
+          let formData = new FormData()
+          formData.append('temp_id', this.date)
+          formData.append('images[]', image);
+          try {
+            const data = await this.$axios.$post('/upload_temporary_images', formData, {
+              headers: {
+                'Content-Type': 'multipart/form-data'
+              }
+            })
+            this.saved_images = this.saved_images.concat(data.ids)
+            this.$store.commit('setSavedImageUrls', data.images);
+            this.$nuxt.$emit('remove_image_loading_by_index', this.saved_images.length);
+          } catch ({response: {data: {data}}}) {
+            this.$nuxt.$emit('remove_image_by_index', this.saved_images.length);
+            this.$nuxt.$emit('remove_image_on_catch');
+            this.errors = []
+            this.$toasted.clear()
+            Object.keys(data).map((key) => {
+              this.$toasted.show(data[key], {type: 'error'});
+            })
+          }
+        })
+      )
+    },
+    deleteArrHandler(v) {
+      this.deleteArr = v;
+    },
+    progressing(i) {
+      if (i === 0) this.progress_width = 0;
+      else this.progress_width = (100 / 10) * i;
+    },
+
+    getOldYears(first, second) {
+      let dates = [];
+      for (let i = (new Date().getFullYear()); i >= 1900; i--) {
+        dates.push(i);
+      }
+      return dates.slice(first, second);
+      if (first === 11) {
+        return dates.slice(first, dates.length);
+      }
+    },
+    changeCategory(v) {
+      this.form.category = v;
+      this.breadcrumbs = [];
+      this.form.selectedBrand = '';
+      this.form.selectedModel = '';
+      this.form.selectedType = '';
+    },
+    async componentValueChange(id, item) {
+      this.form[item] = id;
+    },
+    async handleChange(v) {
+      switch (v.key) {
+        case 'brand':
+          this.brand = 0;
+          console.log("brand", v);
+          if (this.default_data.category === "1")
+            await this.$store.dispatch('getMotoModels', {id: v.value, index: 0})
+          else if (this.default_data.category === "2")
+            await this.$store.dispatch('getScooterModels', {id: v.value.key, index: 0})
+          else
+            await this.$store.dispatch('getMotoAtvModels', {id: v.value.key, index: 0})
+        case 'model':
+          this.model = 0;
+        case 'type':
+          this.type = 0;
+        case 'year':
+          this.year = 0;
+      }
+      this[v.key] = v.value.key;
+      this.refresh += 15;
+    },
+    Sections(col, items) {
+      return items.slice(col * Math.ceil(items.length / 4), (col + 1) * Math.ceil(items.length / 4));
+    },
+    passBase64Images(val) {
+      this.imagesBase64 = val;
+
+    },
+
+    getColor() {
+      return this.colors.find(item => item.id === this.form.selectedColor);
+    },
+    getLatLng(latLng) {
+      this.form.lat = latLng.lat;
+      this.form.lng = latLng.lng;
+      this.lat = latLng.lat;
+      this.lng = latLng.lng;
+    },
+    getAddress(address) {
+      this.removeFromError('address');
+      this.form.address = address;
+      this.address = address;
+
+    },
+    closeModal() {
+      this.modalIsActive = false;
+    },
+    openModal() {
+      this.modalIsActive = true;
+    },
+    closePopup() {
+      this.showPhotoReject = false;
+      this.show = {};
+    },
+
+    handleMultiselect(v) {
+      this.removeFromError(v.key);
+      this.form[v.key] = v.value.key;
+
+    },
+
+    saveToData(v) {
+      this.selectedIndex[v.index] = v.index;
+      this.form.part[v.index] = v.data;
+      this.changeProgressSingle('part')
+
+    },
+
+    removeFromData(v) {
+      delete this.selectedIndex[v.index];
+      delete this.form.part[v.index];
+      this.changeProgressSingle('part')
+    },
+
+    savePhotoIssues(v) {
+      var validCheckbox = true;
+      Object.keys(v.data).map((key) => {
+        if (this.rejectArray.includes(key)) {
+          this.rejectArray.splice(this.rejectArray.indexOf(key), 1);
+        }
+
+        if (v.data[key]) {
+          validCheckbox = false;
+          this.rejectArray.push(key);
+        }
+      })
+
+      this.$nuxt.$emit('image-checkbox-change', validCheckbox);
+    },
+
+    handleAllOptions(v) {
+      let key = Object.keys(v)[0];
+      if (v[key] || (v.value && v.value.key)) {
+        if (v.key) this.form.all_options[v.key] = v.value.key;
+        else this.form.all_options[key] = v[key];
+      } else {
+        if (v.key) delete this.form.all_options[v.key];
+        else delete this.form.all_options[key];
+      }
+
+      this.changeProgressSingle('all_options')
+    },
+
+    showSellModal(index) {
+      this.show = {};
+      this.show[index] = index;
+    },
+
+    _can_upload_file(key) {
+      let file = this.files[key];
+
+      if (file.attempted || file.bad_size) {
+        return false;
+      }
+      return true;
+    },
+    async transferToSupervisor(withRejectReason = false) {
+      this.button_loading = true;
+
+      if (withRejectReason) {
+        this.transferComment = this.rejectArray;
+      }
+
+      await this.$axios.$post('/ticket/transfer/moto/' + this.announceId + '/' + this.$route.query.type, {comment: this.transferComment});
+
+      let moto = {
+        'moto': 'motorcycles',
+        'scooters': 'scooters',
+        'moto_atv': 'moto-atvs',
+      };
+
+      if (this.admin_user.admin_group == 2) {
+        location.href = '/alvcp/resources/announce-moderators';
+      } else {
+        location.href = '/alvcp/resources/' + moto[this.$route.query.type];
+      }
+    },
+    async sendData(status = 2) {
+      if (this.saved_images.length !== this.imagesBase64.length) {
+        this.$toasted.show(this.$t('please_wait_for_all_image_loading'), {type: 'error'});
+        return false;
+      }
+      let formData = new FormData();
+
+      this.form.status = status;
+      this.form.brand = this.brand;
+      this.form.model = this.model;
+      this.form.year = this.year;
+      this.form.type = this.type;
+      this.form.rejectArray = this.rejectArray;
+
+      this.form.saved_images = this.saved_images;
+      formData.append('data', JSON.stringify(this.form));
+      formData.append('deletedImages', JSON.stringify(this.deleteArr));
+
+      this.$nuxt.$emit('loading_status', true);
+      this.button_loading = true;
+      try {
+        await this.$axios.$post('/ticket/moto/' + this.announceId + '/' + this.$route.query.type,
+          formData
+        );
+        let moto = {
+          'moto': 'motorcycles',
+          'scooters': 'scooters',
+          'moto_atv': 'moto-atvs',
+        };
+
+        if (this.admin_user.admin_group == 2) {
+          location.href = '/alvcp/resources/announce-moderators';
+        } else {
+          location.href = '/alvcp/resources/' + moto[this.$route.query.type];
+        }
+
+      } catch ({response: {data: {data}}}) {
+        this.$nuxt.$emit('loading_status', false);
+        this.button_loading = false;
+        this.errors = [];
+        this.$toasted.clear();
+        Object.keys(data).reverse().map((key) => {
+          this.errors.push(key);
+          this.$toasted.show(data[key][0], {
+            type: 'error',
+            duration: 0,
+            action: {
+              text: 'Go to fix',
+              onClick: (e, toastObject) => {
+                if (document.querySelector('#' + key))
+                  document.querySelector('#' + key).scrollIntoView({behavior: 'smooth', block: 'center'});
+                toastObject.goAway(0);
+
+              }
+            }
+          })
+        })
+      }
+
+
+    },
+    addImages(v) {
+      this.files = v;
+
+      this.$nuxt.$emit('progress_change', {type: 'images', count: Object.keys(this.files).length});
+    },
+    move(input, from, to) {
+      let numberOfDeletedElm = 1;
+      const elm = input.splice(from, numberOfDeletedElm)[0];
+      numberOfDeletedElm = 0;
+      input.splice(to, numberOfDeletedElm, elm);
+    },
+    replaceImage(object) {
+      if (this.saved_images.length !== this.imagesBase64.length) return;
+      this.imagesBase64 = object.images;
+      this.move(this.saved_images, object.v.oldIndex, object.v.newIndex);
+    },
+    removeImage(v) {
+      this.files = v;
+    },
+    getChangeOption(v) {
+      if (v) this.option_toggle = 0;
+      else this.option_toggle = 1;
+    },
+    checkboxChanged(v) {
+      let key = Object.keys(v)[0];
+      this.form[key] = v[key];
+      if (key === 'customs_clearance') this.form.car_number = '';
+    },
+    getCurrency(v) {
+      this.form.currency = v.key;
+
+    },
+    addNewBadge(v) {
+      this.selectedBadges.push(...v);
+      this.form.new_badges = v;
+
+    },
+    changeBadge(v) {
+      this.selectedBadges.push(...v);
+      this.form.badges = v;
+
+    },
+    removeFromError(type) {
+      var index = this.errors.indexOf(type);
+      if (index !== -1) this.errors.splice(index, 1);
+    },
+    getChange(v, type) {
+      this.removeFromError(type);
+      this.form[type] = v;
+
+      if (type === 'mileage' || type === 'selectedColor')
+        this.changeProgress('mileage', 'selectedColor');
+      if (type === 'price' || type === 'name')
+        this.changeProgress('price', 'name');
+    },
+    changeProgressSingle(key) {
+      let status = 0;
+      if (Object.keys(this.form[key]).length) {
+        status = 2;
+      }
+      this.$nuxt.$emit('progress_change', {type: key, count: status})
+    },
+    changeProgress(key1, key2) {
+      let status = 0;
+
+      if (this.form[key1]) {
+        status = 1;
+
+      }
+      if (this.form[key2]) {
+        status = 1;
+
+      }
+      if (this.form[key1] && this.form[key2]) {
+        status = 2;
+
+      }
+      this.$nuxt.$emit('progress_change', {type: key1 + '_' + key2, count: status})
+    },
+
+    getYoutube(val) {
+      this.form.youtube.id = val;
+      this.form.youtube.thumb = `https://img.youtube.com/vi/${val}/hqdefault.jpg`
+
+    },
+
+    numericPrice() {
+      return this.single_announce.price.replace(/\D/g, '');
+    },
+
+    //  ------------
+    formatDate(dte) {
+      return moment(dte).format('DD.MM.YYYY HH:mm')
+    },
+    getBrandName(id, arr) {
+      return arr.find(element => element.key == id);
+    },
+    removeError(field, force = false) {
+      if (!force && (!this.form[field] || this.form[field] === '')) return;
+      if (this.errors.includes(field)) {
+        this.errors = this.errors.filter(key => key !== field);
+        this.toasts[field].goAway(100);
+
+      }
+    },
+    updatePreview(key) {
+      if (!key || key === 'region')
+        this.setSellPreviewData({
+          value: this.form.region_id,
+          key: 'region',
+        })
+      if (!key || key === 'price')
+        this.setSellPreviewData({value: this.form.price, key: 'price'})
+      if (!key || key === 'currency')
+        this.setSellPreviewData({
+          value: this.getCurrencyOptions.find(
+            (o) => o.key === this.form.currency,
+          )?.sign,
+          key: 'currency',
+        })
+      if (!key || key === 'mileage')
+        this.setSellPreviewData({value: this.form.mileage, key: 'mileage'})
+      if (!key || key === 'mileage_measure')
+        this.setSellPreviewData({
+          value: this.getMileageOptions.find(
+            (o) => o.key === this.form.mileage_measure,
+          )?.name,
+          key: 'mileage_measure',
+        })
+      return
+    },
+    updateMileage(is_new) {
+      if (!is_new) {
+        this.isInvalid('mileage') && this.removeError('mileage')
+      } else {
+        let mileage = this.form.mileage
+        this.form.mileage =
+          mileage > (this.form.mileage_measure === 2 ? 310.686 : 500) ||
+          !mileage
+            ? 0
+            : mileage
+      }
+      this.updatePreview('mileage')
+    },
+    isInvalid(field) {
+      return this.errors.includes(field);
+    },
+  },
+
+  computed: {
+    getBrands() {
+      let types = {
+        moto: '',
+        moto_atv: 'atv_',
+      }
+      let dates = [];
+      let brands = this.moto_options[types[this.$route.query.type] + 'brands'] || this.scooter_options.brands;
+      for (const key in brands) {
+        dates.push({
+          key: brands[key].id,
+          name: brands[key].name,
+        });
+      }
+      return dates;
+    },
+    getBtlUserName() {
+      return this.single_announce.btl_announces.length ? this.single_announce.btl_announces.find(item => item.announce_id === this.single_announce.id).get_user.full_name : ''
+    },
+
+    getModels() {
+      let types = {
+        moto: 'moto_',
+        scooters: 'scooter_',
+        moto_atv: 'moto_atv_',
+      }
+      let dates = [];
+      let models = this[types[this.$route.query.type] + 'models'][0];
+      for (const key in models) {
+        dates.push({
+          key: models[key].id,
+          name: models[key].name,
+        });
+      }
+      return dates;
+    },
+    getOldType() {
+      return this.getTypes.find(item => item.key === this.old_type)
+    },
+    getYears() {
+      let dates = [];
+      for (let i = (new Date().getFullYear()); i >= 1900; i--) {
+        dates.push({
+          key: i,
+          name: i,
+        });
+      }
+      return dates
+    },
+    getTypes() {
+      let types = {
+        moto: '',
+        moto_atv: 'atv_',
+      }
+      let dates = [];
+      let moto_types = this.moto_options[types[this.$route.query.type] + 'types'];
+      for (const key in moto_types) {
+        dates.push({
+          key: moto_types[key].id,
+          name: moto_types[key].name[this.locale],
+        });
+      }
+      return dates;
+    },
+    item() {
+      return {
+        ...this.form, color: this.getColor(), car_catalog: {
+          brand: this.single_announce.moto_brand || this.single_announce.scooter_brand || this.single_announce.moto_atv_brand,
+          model: this.single_announce.moto_model || this.single_announce.scooter_model || this.single_announce.moto_atv_model,
+          moto_options: this.moto_options.config
+        }
+      };
+    },
+    getTitle() {
+      if (this.single_announce.moto_brand) return this.single_announce.moto_brand.name + ' ' + this.single_announce.moto_model.name;
+      if (this.single_announce.scooter_brand) return this.single_announce.scooter_brand.name + ' ' + this.single_announce.scooter_model.name;
+    },
+    semiActiveModel() {
+      return this.form.selectedBrand && !this.form.selectedModel
+    },
+    exactlyActiveModel() {
+
+      return this.form.selectedBrand && this.form.selectedModel
+    },
+    getRedirectUrl() {
+      let moto = {
+        'moto': 'motorcycles',
+        'scooters': 'scooters',
+        'moto_atv': 'moto-atvs',
+      };
+
+      return moto[this.$route.query.type];
+    },
+    ...mapGetters({
+      colors: 'colors',
+      sell_options: 'sellOptions',
+      all_sell_options: 'allSellOptions',
+      badges: 'badges',
+      moto_options: 'motoOptions',
+      scooter_options: 'scooterOptions',
+      single_announce: 'single_announce',
+      moto_models: 'motorcycleModels',
+      scooter_models: 'scooterModels',
+      moto_atv_models: 'atvModels',
+      getPopularComments: 'getPopularComments'
     }),
-    ...mapActions(['getMotoModels']),
-    isModerator() {
-      return this.user.admin_group && this.user.admin_group == 2
+
+    color() {
+      return this.getColor();
     },
     crumbs() {
       return [
@@ -372,554 +1760,108 @@ export default {
         {name: this.$t('moderator')},
       ]
     },
-    modificationsList() {
-      let arr = []
-      for (const prop in this.modifications) {
-        arr.push({id: prop, obj: this.modifications[prop]})
-      }
-      return arr
+    isModerator() {
+      return this.user.admin_group && (this.user.admin_group == 2);
     },
-    boxesList() {
-      let arr = []
-      for (const prop in this.boxes) {
-        arr.push({id: prop, obj: this.boxes[prop]})
-      }
-      return arr
-    },
-    enginesList() {
-      let arr = []
-      for (const prop in this.engines) {
-        arr.push({id: prop, obj: this.engines[prop]})
-      }
-      return arr
-    },
-    type_of_drivesList() {
-      let arr = []
-      for (const prop in this.type_of_drives) {
-        arr.push({id: prop, obj: this.type_of_drives[prop]})
-      }
-      return arr
-    },
-    helperImages() {
-      let imgs =
-        this.type === 'cars'
-          ? [1, 2, 3, 4, 5]
-          : this.type === 'commercial'
-            ? [1, 2, 3, 4]
-            : [1, 2, 3]
-      return imgs.map((n) => `/img/sell-helpers/${this.type}_${n}.png`)
-    },
-    isMorderator() {
-      return this.user.admin_group == 2
-    },
-
-    //moto
-    options() {
-      if (this.form.category == 1) {
-        return {
-          brands: this.motoOptions.brands,
-          models: this.motorcycleModels[0],
-        }
-      } else if (this.form.category == 2) {
-        return {
-          brands: this.motoOptions.scooter_brands,
-          models: this.scooterModels[0],
-        }
-      } else if (this.form.category == 3) {
-        return {
-          brands: this.motoOptions.atv_brands,
-          models: this.atvModels[0],
-        }
-      }
-      return {brands: [], models: []}
-    },
-  },
-  async asyncData({store, route}) {
-    await Promise.all([
-      store.dispatch('getMotoOptions'),
-      store.dispatch('getOptions'),
-      store.dispatch('getColors'),
-    ])
-  },
-  methods: {
-    // ui
-    openModal(type) {
-      this.showModal = true
-      if (type == 'models') {
-        this.getModels()
-      } else return
-    },
-    toggleOptions(opt) {
-      var obj = this.show
-      for (const key in obj) {
-        obj[key] = false
-      }
-      if (obj[opt] == true) {
-        obj[opt] = false
-      } else {
-        obj[opt] = true
-      }
-    },
-
-    // get
-    async getAnnounceData() {
-      this.loading = true
-      await this.$auth.setUserToken(`Bearer ${this.$route.query.token}`)
-      const admin_user = await this.$axios.$get('/user')
-      this.$auth.setUser(admin_user.user)
-      //timer
-      let data
-      try {
-        data = await this.$axios.$get(
-          `/ticket/moto?type=${this.$route.query.type}`,
-        )
-        this.$store.commit('moderator/moderatorMutator', {
-          with: data.announce,
-          property: 'single_announce',
-        })
-
-        let default_data = {}
-        // let s_ann = this.$store.state.single_announce;
-        let s_ann = data.announce
-        let brand
-        let model
-        let type
-        default_data['engine'] = s_ann.engine_type_id
-        default_data['volume'] = s_ann.capacity
-        default_data['power'] = s_ann.power
-        default_data['cylinders'] = s_ann.cylinders
-        default_data['box'] = s_ann.box_id
-        default_data['cylinder_placement'] = s_ann.cylinder_type_id
-        default_data['number_of_vehicles'] = s_ann.tact
-        default_data['drive'] = s_ann.gear_id
-        default_data['capacity'] = s_ann.capacity
-
-        if (s_ann.moto_brand !== undefined) {
-          default_data['category'] = '1'
-          await this.$store.dispatch('getMotoModels', {
-            id: s_ann.moto_brand.id,
-            index: 0,
-          })
-          brand = s_ann.moto_brand
-          model = s_ann.moto_model
-          /*  type  = s_ann.moto_type_id;*/
-        }
-        if (s_ann.scooter_brand !== undefined) {
-          default_data['category'] = '2'
-          await this.$store.dispatch('getScooterModels', {
-            id: s_ann.scooter_brand.id,
-            index: 0,
-          })
-          brand = s_ann.scooter_brand
-          model = s_ann.scooter_model
-        }
-        if (s_ann.moto_atv_brand !== undefined) {
-          default_data['category'] = '3'
-          await this.$store.dispatch('getMotoAtvModels', {
-            id: s_ann.moto_atv_brand.id,
-            index: 0,
-          })
-          brand = s_ann.moto_atv_brand
-          model = s_ann.moto_atv_model
-          /*  type  = s_ann.moto_atv_type_id;*/
-        }
-
-        this.form = default_data
-        this.admin_user = admin_user.user
-        this.form.user = data.announce.user
-        this.form.brand_id = data.announce.moto_brand_id
-        this.form.brandObj = default_data.moto_brand
-        this.form.old_brand = brand.name
-        this.form.old_model = model.name
-        this.form.old_type = type
-        this.form.brand = brand.id
-        this.form.model = model.id
-        this.form.year = s_ann.year
-        this.form.moderator = data ? data.moderator : {}
-
-        // return {
-        /*type,*/
-        //old_model: data.announce.model.name,
-        // }
-
-        this.loading = false
-        this.getColors()
-        this.announcementIsAvailable = true
-
-        // this.getGenerations();
-      } catch (e) {
-        console.log('error', e)
-        this.$store.commit('moderator/moderatorMutator', {
-          with: {},
-          property: 'form',
-        })
-        this.announcementIsAvailable = false
-        this.loading = false
-      }
-    },
-
-
-    // handle lists
-    changeReason(rejectKey) {
-      if (rejectKey === 'image') {
-        this.imageModal.isOpen = true
-      } else if (rejectKey === '360') {
-        this.rejectObj.show360Reject = true
-      } else {
-        if (this.rejectObj.rejectArray.includes(rejectKey)) {
-          this.rejectObj.rejectArray.splice(
-            this.rejectObj.rejectArray.indexOf(rejectKey),
-            1,
-          )
-        } else {
-          this.rejectObj.rejectArray.push(rejectKey)
-        }
-      }
-    },
-    handleYears(obje) {
-      var obj = JSON.parse(JSON.stringify(obje))
-      var arr = []
-      for (var i = obj.min; i <= obj.max; i++) {
-        arr.push({key: i, name: i})
-      }
-
-      this.data.sellYears = arr
-    },
-    handleBody(obje) {
-      var obj = JSON.parse(JSON.stringify(obje))
-      var arr = []
-      for (var i = obj.min; i <= obj.max; i++) {
-        arr.push({key: i, name: i})
-      }
-      this.data.sellYears = arr
-    },
-    gotoList() {
-      window.location.href =
-        'https://dev.mashin.al/alvcp/resources/announcements'
-    },
-    getSellLastStepRejectObj(value) {
-      this.sellLastStepRejectObj = value
-      value.show360Reject = this.rejectObj.show360Reject
-      value.showPhotoReject = this.rejectObj.showPhotoReject
-      value.reject360 = this.rejectObj.reject360
-    },
-    handleEngines(obj) {
-      var arr = []
-      for (var el in obj) {
-        arr.push(obj[el])
-      }
-      this.data.engines = arr
-    },
-    handleGearings(obj) {
-      var arr = []
-      for (var el in obj) {
-        arr.push(obj[el])
-      }
-      this.data.gearings = arr
-    },
-    handleTransmissions(obj) {
-      var arr = []
-      for (var el in obj) {
-        arr.push(obj[el])
-      }
-      this.data.transmissions = arr
-    },
-    handleModificationsData(obj) {
-      var arr = []
-      for (var i = 0; i < Object.keys(obj).length; i++) {
-        var item = obj[Object.keys(obj)[i]]
-        arr.push(item)
-      }
-      this.data.modifications = arr
-    },
-
-    //handle actions
-    async deleteByIndex(index) {
-      if (this.saved_images[index]) {
-        this.deleteArr.push(this.saved_images[index])
-      } else {
-        await this.$axios.$post(
-          '/remove_temporary_image/' + this.saved_images[index],
-        )
-      }
-      this.saved_images.splice(index, 1)
-    },
-    addDeletedImagesToList(e) {
-      this.deleteArr.push(e)
-    },
-
-    //handle image
-    async addFiles(v) {
-      await Promise.all(
-        v.map(async (image) => {
-          let formData = new FormData()
-          formData.append('temp_id', this.date)
-          formData.append('images[]', image)
-          try {
-            const data = await this.$axios.$post(
-              '/upload_temporary_images',
-              formData,
-              {
-                headers: {
-                  'Content-Type': 'multipart/form-data',
-                },
-              },
-            )
-            this.saved_images = this.saved_images.concat(data.ids)
-            this.$store.commit('setSavedImageUrls', data.images)
-            this.$nuxt.$emit(
-              'remove_image_loading_by_index',
-              this.saved_images.length,
-            )
-          } catch ({
-            response: {
-              data: {data},
-            },
-          }) {
-            this.$nuxt.$emit('remove_image_by_index', this.saved_images.length)
-            this.$nuxt.$emit('remove_image_on_catch')
-            this.errors = []
-            this.$toasted.clear()
-            Object.keys(data).map((key) => {
-              this.$toasted.show(data[key], {type: 'error'})
-            })
-          }
-        }),
-      )
-    },
-    addImages(v) {
-      this.files = v
-      this.getInfo()
-      this.$nuxt.$emit('progress_change', {
-        type: 'images',
-        count: Object.keys(this.files).length,
-      })
-    },
-    passBase64Images(val) {
-      this.imagesBase64 = val
-    },
-    replaceImage(object) {
-      if (this.saved_images.length !== this.imagesBase64.length) return
-      this.imagesBase64 = object.images
-      this.move(this.saved_images, object.v.oldIndex, object.v.newIndex)
-    },
-    removeImage(v) {
-      this.files = v
-      this.$nuxt.$emit('progress_change', {
-        type: 'images',
-        count: Object.keys(this.files).length,
-      })
-      this.getInfo()
-    },
-    getInfo() {
-      let i = -3
-      Object.keys(this.form).map((key) => {
-        if (typeof this.form[key] !== 'object') {
-          if (this.form[key] !== '') {
-            if (key !== 'currency') i++
-          }
-        } else {
-          // if(Object.keys(this.form[key]).length) i++;
-        }
-      })
-      if (this.files.length) i += 1
-
-      this.$nuxt.$emit('progress_change', {type: 'all', count: i, all: 33})
-    },
-    move(input, from, to) {
-      let numberOfDeletedElm = 1
-      const elm = input.splice(from, numberOfDeletedElm)[0]
-      numberOfDeletedElm = 0
-      input.splice(to, numberOfDeletedElm, elm)
-    },
-
-    // handle image reject
-    saveImageRejects() {
-      this.rejectObj.rejectArray = this.rejectObj.rejectArray.concat(
-        this.imageModal.rejectArray,
-      )
-      this.removeDuplicates()
-      this.closeImageRejectModal()
-      this.imageModal.rejectArray = []
-    },
-    removeDuplicates() {
-      var arr = this.rejectObj.rejectArray
-      this.rejectObj.rejectArray = [...new Set(arr)]
-    },
-    savePhotoIssues(v) {
-      var validCheckbox = true
-      Object.keys(v.data).map((key) => {
-        if (this.rejectObj.rejectArray.includes(key)) {
-          this.rejectObj.rejectArray.splice(
-            this.rejectObj.rejectArray.indexOf(key),
-            1,
-          )
-        }
-
-        if (v.data[key]) {
-          validCheckbox = false
-          this.rejectObj.rejectArray.push(key)
-        }
-      })
-
-      this.$nuxt.$emit('image-checkbox-change', validCheckbox)
-    },
-
-    //handle change
-    async handleBrand(id = '') {
-      this.form.brand_id = id;
-      if (id) {
-        await this.getMotoModels({category: `${this.form.category}`, id});
-        this.showModelOptions = true;
-      }
-      this.scrollReset();
-    },
-
-    // post
-    async transferToSupervisor(withRejectReason = false) {
-      this.button_loading = true
-
-      if (withRejectReason) {
-        this.transferComment = this.rejectArray
-      }
-
-      await this.$store.dispatch('moderator/transferToSupervisor', {
-        id: this.form.id,
-        comment: this.form.comment,
-      })
-
-      if (this.user.admin_group == 2) {
-        this.$router.push({path: this.localePath('/e-services')})
-      } else {
-        // location.href = '/alvcp/resources/announcements'
-        this.$router.push($t('e-services'))
-      }
-    },
-    async sendData(status = 2) {
-      if (this.saved_images.length !== this.imagesBase64.length) {
-        this.$toasted.show(this.$t('please_wait_for_all_image_loading'), {
-          type: 'error',
-        })
-        return false
-      }
-
-      this.form.status = status
-      this.form.id = this.single_announce.id
-      this.form.month = this.single_announce.month || ''
-      this.form.sell_store = this.single_announce.sell_store || 0
-      this.form.video_360_id = this.single_announce.video_360_id || ''
-      this.form.modification = ''
-      // this.form.model = this.form.model_slug;
-
-      delete this.form.model_slug
-      delete this.form.brand_slug
-      this.form.id_unique = this.single_announce.id
-      this.form.interior_360_id = this.single_announce.interior_360_id || ''
-      this.form.main_image = this.form.main_image || null
-      // this.form.generation = this.generation
-      // this.form.car_catalog_id = this.modification
-      this.form.rejectArray = this.rejectObj.rejectArray
-      this.form.main_image = this.main_image
-      this.form.saved_images = this.saved_images
-      let formData = new FormData()
-      formData.append('data', JSON.stringify(this.form))
-      formData.append('deletedImages', JSON.stringify(this.deleteArr))
-
-      this.loading = true
-      this.button_loading = true
-      try {
-        await this.$axios.$post(
-          '/ticket/car/' + this.single_announce.id,
-          formData,
-        )
-
-        if (this.user.admin_group == 2) {
-          location.href = 'https://dev.mashin.al/alvcp/resources/announcements'
-        } else {
-          location.href = 'https://dev.mashin.al/alvcp/resources/announcements'
-        }
-      } catch ({
-        response: {
-          data: {data},
-        },
-      }) {
-        this.loading = false
-        this.button_loading = false
-        this.errors = []
-        this.$toasted.clear()
-        Object.keys(data)
-          .reverse()
-          .map((key) => {
-            this.errors.push(key)
-            this.$toasted.show(data[key][0], {
-              type: 'error',
-              duration: 0,
-              action: {
-                text: 'Go to fix',
-                onClick: (e, toastObject) => {
-                  if (document.querySelector('#' + key))
-                    document
-                      .querySelector('#' + key)
-                      .scrollIntoView({behavior: 'smooth', block: 'center'})
-                  toastObject.goAway(0)
-                },
-              },
-            })
-          })
-      }
-    },
-    addComment(e) {
-      if (form.comment === null) form.comment = ''
-      form.comment = form.comment + e + ' '
-    },
-
-    // moto
-    updateSellFilter() {
-      return
-    },
-  },
-  mounted() {
-    this.getAnnounceData()
-  },
-  watch: {
-    form: {
-      deep: true,
-      handler() {
-        if (this.form.brandObj == {}) {
-          this.form.model_id = null
-          // this.form.model = {};
-        }
-        if (this.form.brand_id == null) {
-          this.form.model_id = null
-          // this.form.model = {};
-        }
-        if (this.form.brand == null) {
-          this.form.model_id = null
-          // this.form.model = {};
-        }
-        if (this.form.model_id == null || this.form.model == {}) {
-          this.form.year = null
-        }
-        if (this.form.year == null) {
-          this.form.car_body_type = null
-        }
-        if (this.form.car_body_type == null) {
-          this.form.generation_id = null
-        }
-        if (this.form.generation_id == null) {
-          this.form.engine = null
-        }
-        if (this.form.engine == null) {
-          this.form.gearing = null
-        }
-        if (this.form.gearing == null) {
-          this.form.transmission = null
-        }
-        if (this.form.transmission == null) {
-          this.form.modification = null
-        }
-      },
-    },
+    // single_announce:{
+    //   get() {
+    //     return this.value;
+    //   },
+    //   set(value) {
+    //     this.$emit('input', (this.disabled || (this.value.length > 1000)) ? this.value : value);
+    //   }
+    // }
   },
 }
 </script>
+
+
+<style lang="scss" scoped>
+section {
+  position: relative;
+
+  &.disable:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+  }
+}
+
+.timer {
+  font-family: 'Aldrich', sans-serif;
+  font-size: 27px;
+  color: green;
+  letter-spacing: 2px;
+  background: #050a25;
+  padding: 6px 10px 0 10px;
+  display: inline-block;
+}
+
+.old_value {
+  position: relative;
+  left: -16px;
+  font-size: 14px;
+}
+
+.logs {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+
+  .log {
+    background: #fff;
+    display: inline-block;
+    margin-top: 20px;
+    max-height: 80%;
+    overflow-y: auto;
+
+    & > div {
+      padding: 10px;
+    }
+
+    .title {
+      position: relative;
+
+      span {
+        position: absolute;
+        right: 0;
+        top: 0;
+        padding: 5px 10px;
+        cursor: pointer;
+        color: #b90026;
+      }
+    }
+
+    .body {
+      border-top: 1px solid rgba(0, 0, 0, 0.5);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+      text-align: left;
+
+      & > div {
+        border-bottom: 1px dashed #000000;
+        margin: 5px 0;
+        padding: 5px 0;
+      }
+    }
+
+    .foot {
+      .closeBtn {
+        display: inline-block;
+        padding: 5px 22px;
+        background: #b90026;
+        color: #fff;
+        cursor: pointer;
+      }
+    }
+  }
+}
+</style>
