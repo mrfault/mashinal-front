@@ -20,7 +20,8 @@
                 </video>
                 <img
                   v-else
-                  :srcset="`${ homePageSlider.media.image[1]} 1024w,${homePageSlider.media.image[0]} 640w`"
+                  :srcset="`${homePageSlider.media.image[1]} 1024w,${homePageSlider.media.image[0]} 640w`"
+                  :src="homePageSlider.media.image[0]"
                   sizes="(min-width: 36em) 33.3vw, 100vw"
                   alt="mashinal cover image"
                 />
