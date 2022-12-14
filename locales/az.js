@@ -2337,6 +2337,7 @@ export default {
   "video_360_successfully_upload":"Video uğurla yükləndi",
   "video_choose": "Video faylı seç",
   "video_choosed": "Video fayl seçilib",
+  "file_size_50": "Faylın maksimal həcmi 50 mb ola bilər",
   "plug_in_hybrid": "Plug-in Hibrid",
   "360_interior": "360 interyer",
   "360_exterior": "360 eksteryer",
