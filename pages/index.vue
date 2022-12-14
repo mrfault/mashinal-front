@@ -31,6 +31,7 @@
                 !isDarkMode ? `background:${homePageSlider.overlay_color}` : ''
               "
               >
+              
                 <div
                   class="before-slider-right"
                   :style="` border-top: 600px solid ${
