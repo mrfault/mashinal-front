@@ -64,9 +64,14 @@
                 </div>
               </div>
               <div class="created">
+
                 <div v-if="userOffer.auto_salon_deleted_at">
                   <span style="color: red;font-size: 25px">!</span>
                 </div>
+              </div>
+              <div class="messageCount"
+                   v-if="userOffer.unread_messages > 0 ">
+                {{ userOffer.unread_messages }}
               </div>
             </div>
           </div>
@@ -86,8 +91,10 @@
                       v-if="!userOffer.user_deleted_at"> <icon name="garbage"></icon></span>
               </div>
             </div>
+
             <collapse-content :title="'Təklif'">
-              <offer-items :offer_items="offer.offer_items"/>
+
+              <offer-items :key="userOffer.id" :class="offer.id" :offer_items="offer.offer_items"/>
             </collapse-content>
             <div>
 
@@ -95,11 +102,8 @@
                 <div class="message" :class="   isMyMessage(message) ? 'my' :'his ' " v-for="message in offerMessages">
                   <div v-if="message.files.length>0" class="message-files">
 
-
-
-
                     <div class="message-file" v-for="file in message.files">
-                      <img :src="file" width="100%" class="p-1" @click="openLightbox(file)" />
+                      <img :src="file" width="100%" class="p-1" @click="openLightbox(file)"/>
 
                     </div>
 
@@ -154,7 +158,7 @@
       <transition-group name="fade">
         <template v-if="(showLightbox && isMobileBreakpoint) || (!isMobileBreakpoint && showImagesSlider)">
           <div class="blur-bg" :key="0">
-            <img :src="$withBaseUrl(attachments[currentSlide])" alt="" />
+            <img :src="$withBaseUrl(attachments[currentSlide])" alt=""/>
           </div>
           <div class="blur-bg_slider" :key="1" v-if="!isMobileBreakpoint">
             <images-slider
@@ -192,7 +196,7 @@ export default {
       title: this.$t('Super teklif'),
     })
   },
-  mixins: [ImageResizeMixin,offerImageView],
+  mixins: [ImageResizeMixin, offerImageView],
   async asyncData({store, route}) {
 
     await Promise.all([
@@ -203,11 +207,11 @@ export default {
 
   data() {
     return {
+
       offers: null,
       userOffer: null,
       offer: null,
       auto_salon: null,
-
       chat: {
         text: '',
       },
@@ -216,7 +220,6 @@ export default {
       auto_salon_offer_id: null,
       auto_salon_deleted_at: null,
       messageButtonDisabled: false,
-
     }
   },
   computed: {
@@ -225,7 +228,6 @@ export default {
       offerMessages: 'getOfferMessages',
       newOfferCount: 'getNewOfferCount',
     }),
-
     crumbs() {
       return [
         {name: 'Super təklif paneli', route: '/offer/offers'},
@@ -258,7 +260,7 @@ export default {
     },
     async submitMessage() {
 
-
+      this.messageButtonDisabled = true;
       let formData = new FormData();
 
       formData.append('recipient_id', this.userOffer.auto_salon.user_id)
@@ -291,29 +293,32 @@ export default {
 
       })
 
+      setTimeout(() => {
+        this.messageButtonDisabled = false;
+      }, 2000)
+
     },
     async getUserOfferDetail(id) {
-
       this.chat.text = ''
+
 
       if (this.isMobileBreakpoint) {
         this.$router.push(this.$localePath('/offer') + '/' + id)
       } else {
-
-
         await this.checkAccepted(id)
+
+
         this.userOffer = this.userOffers.find(function (offer) {
           return id === offer.auto_salon_offer_id
         })
+
         this.auto_salon = this.userOffer.auto_salon
         this.offer = this.userOffer.offer
 
 
         this.$store.commit('mutate', {property: 'current_offer_id', value: this.offer.id})
-        console.log('-----')
-        console.log(this.userOffer)
-        this.offer.user_deleted = this.userOffer.user_deleted_at ?  this.userOffer.user_deleted_at : null
-          this.auto_salon_deleted_at = this.userOffer.auto_salon_deleted_at
+        this.offer.user_deleted = this.userOffer.user_deleted_at ? this.userOffer.user_deleted_at : null
+        this.auto_salon_deleted_at = this.userOffer.auto_salon_deleted_at
 
       }
       setTimeout(() => {
@@ -328,6 +333,10 @@ export default {
         this.auto_salon_offer_id = res.auto_salon_offer_id
         this.$store.commit('setOfferMessages', res.messages)
         this.scrollTo('.message:last-child', 0, 500, '.offerDetail')
+
+
+          this.$store.commit('readAllMessage', {offer_id: id})
+
       })
 
     },
@@ -337,17 +346,30 @@ export default {
       this.checkAccepted(id)
     },
     async deleteUserAutoSalonOffer(id) {
-      this.$axios.delete('/offer/user/offer/delete/' + id);
-      this.$store.dispatch('OffersAcceptedByAutoSalon', this.$route.query)
-      this.offer = null
-      this.userOffer = null
-      this.auto_salon_deleted_at = null
+      await this.$axios.delete('/offer/user/offer/delete/' + id).then((res) => {
+
+        if (res.data.status = 'success') {
+          this.$store.dispatch('OffersAcceptedByAutoSalon', this.$route.query)
+          this.offer = null
+          this.userOffer = null
+          this.auto_salon_deleted_at = null
+        }
+
+
+      });
 
     }
   },
   created() {
 
+    if (this.$route.query.c && this.$route.query.c != null) {
+      console.log('created')
+      this.getUserOfferDetail(parseInt(this.$route.query.c))
+    }
+
+
     if (!Object.keys(this.$route.query).length > 0) {
+      console.log(11111111111111111111111111111111111111111)
       this.$router.push({
         query: {
           param: 'all',

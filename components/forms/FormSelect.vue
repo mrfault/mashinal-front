@@ -492,12 +492,10 @@ export default {
       return imgUrl ? { backgroundImage: `url('${imgUrl}')` } : { noImg: true }
     },
     addScrollStopToBody() {
-      console.log('entered')
       const body = document.body
       //body.classList.add('ma-stop-scroll')
     },
     removeScrollStopToBody() {
-      console.log('leaved')
       const body = document.body
       //body.classList.remove('ma-stop-scroll')
     },
@@ -672,7 +670,6 @@ export default {
     showOptions(val) {
       this.scrolStopTrigger = val
       if (val) {
-        console.log('opened')
         this.blockClick = true
         setTimeout(() => {
           this.blockClick = false
@@ -703,7 +700,6 @@ export default {
           }
         })
       } else {
-        console.log('closed')
         this.removeScrollStopToBody()
         this.placeOptionsAbove = false
         this.search = ''

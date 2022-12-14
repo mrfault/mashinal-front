@@ -25,7 +25,7 @@ export default {
     titleWithLine: Boolean,
     titleWithHr: Boolean,
     animate: Boolean,
-    index:String
+    index: Number
   },
   data() {
     return {

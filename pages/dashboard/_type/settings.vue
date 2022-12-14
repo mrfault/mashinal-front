@@ -279,7 +279,6 @@
     methods: {
       ...mapActions(['updateMySalon','getMySalon']),
       async removeImage(type) {
-        console.log(type);
         if(type === 'cover') {
           this.$set(this.form,'remove_cover', true);
         }

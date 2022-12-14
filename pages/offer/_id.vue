@@ -54,7 +54,15 @@
               </div>
             </div>
           </div>
-          <div class="addons" >
+
+          <div class="col-md-12">
+            <div class="offer-alert" role="alert" v-if="auto_salon_deleted_at!=null ">
+              Avto salon  təklifi silmişdir.
+            </div>
+          </div>
+
+
+          <div class="addons" v-if="userOffer && !auto_salon_deleted && !user_deleted">
             <offer-message
               @type="handleTyping"
               @attach="handleFiles"
@@ -63,7 +71,7 @@
               :sending="false"
               :message="false"
               v-model="chat.text"
-              :send-button-disabled="chat.text.length<1 ? true : false"
+              :send-button-disabled="chat.text.length > 0 ||  files.length  >  0 ? false : true"
             />
             <img src="" :ref="'attachment-'+key" alt=""/>
             <div class="addLink"></div>
@@ -128,7 +136,10 @@ export default {
     let res = await $axios.$post('/offer/user/offer/check/' + route.params.id)
     store.commit('setOfferMessages', res.messages)
     return {
-      user_is_accepted: res.status
+      user_is_accepted: res.status,
+
+      auto_salon_deleted:res.auto_salon_deleted_at==null ? false : true,
+      user_deleted:res.user_deleted_at==null ? false : true
     }
 
   },
@@ -146,6 +157,8 @@ export default {
       files: [],
       userOffer:null,
       auto_salon_offer_id:null,
+      auto_salon_deleted: true,
+      user_deleted:true,
     }
   },
   methods: {
@@ -186,6 +199,7 @@ export default {
       this.$nuxt.$emit('clear-message-attachments');
     },
     async checkAccepted(id) {
+
       await this.$axios.$post('/offer/user/offer/check/' + id).then((res) => {
         this.user_is_accepted = res.status
         this.auto_salon_offer_id=res.auto_salon_offer_id
@@ -221,6 +235,7 @@ export default {
     this.userOffer = this.userOffers.find( (offer)=> {
       return parseInt(this.$route.params.id) === offer.auto_salon_offer_id
     })
+    this.auto_salon_deleted_at = this.userOffer.auto_salon_deleted_at
     this.checkAccepted(this.$route.params.id)
 
 

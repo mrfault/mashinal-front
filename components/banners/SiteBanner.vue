@@ -40,14 +40,12 @@ export default {
 
     if(['left','right'].includes(this.type)) {
       this.$nuxt.$on('showMapEvent',(state) => {
-        console.log(state);
         this.showBanner = !state;
       })
     }
   },
   beforeCreate() {
     this.$nuxt.$on('route-changed',() => {
-      console.log('route changed worked'+ this.type);
       this.showBanner = true;
       this.fetchBanner()
     })
@@ -61,7 +59,6 @@ export default {
   watch:{
     checkEmitting() {
       this.showBanner = true;
-      console.log('watch works')
       this.fetchBanner()
     }
   },

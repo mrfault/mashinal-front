@@ -26,6 +26,7 @@
           :label="$t('model')"
           :options="models.length > 0 ? models : []"
           v-model="form[index].model"
+
           has-search
           @change="setModel($event,model)"
           class="get-offer-select"
@@ -35,14 +36,14 @@
     </div>
 
     <div class="mt-3 mb-5">
-      <Generations :selected="form.generations" :generations="generations" @change="changeGenerations"
-                   v-if="index==0 || (brand_object && model_object) "/>
+      <Generations :selected="form[index].generations" :generations="offerGenerations[index]" @change="changeGenerations"
+                   v-if="(index==0 || (form[index].brand && form[index].model)) "/>
     </div>
     <div class="mb-3 box " ref="sell-modification">
       <h2 class="title-with-line full-width">
         <span>{{ $t('box') }} <span class="star"> *</span></span>
       </h2>
-      <offer-form-buttons v-model="form.box"
+      <offer-form-buttons v-model="form[index].box"
                           :options="boxValues"
                           :btn-class="'primary-outline'" :group-by="isMobileBreakpoint ? 1 : 5"
                           @change="changeGearBox">
@@ -56,7 +57,7 @@
       <h2 class="title-with-line full-width">
         <span>{{ $t('fuel') }} <span class="star"> *</span></span>
       </h2>
-      <offer-form-buttons v-model="form.engine"
+      <offer-form-buttons v-model="form[index].engine"
                           :options="engineValues"
                           :btn-class="'primary-outline'" :group-by="isMobileBreakpoint ? 1 : 5"
                           @change="changeFuelTypes">
@@ -73,7 +74,7 @@
         <span>{{ $t('color') }} <span class="star"> *</span></span>
       </h2>
       <color-options v-model="form[index].selectedColors" :limit="4" :multiple=true
-                     @change-matt="form.is_matte = $event" :matt="form.is_matte"
+                     @change-matt="form[index].is_matte = $event" :matt="form[index].is_matte"
                      @change="removeError('selectedColor')"/>
       <div class="row">
         <div class="col-md-12">
@@ -90,7 +91,7 @@
               <h2 class="title-with-line mt-2 mt-lg-3" id="anchor-selectedColor3">
                 <span>Alış şərtləri <span class="star"> *</span></span>
               </h2>
-              <div class="d-inline-flex ">
+              <div class="d-inline-flex w-100 buy-condition-section">
 
 
                 <form-radio :id="`${index}credit`" :label="'Kredit'" input-name="buy_condition"
@@ -98,7 +99,7 @@
                             radio-value="credit"/>
                 <form-radio :id="`${index}cash`" :label="'Nağd'" input-name="buy_condition"
                             v-model="form[index].buy_condition" radio-value="cash"
-                            class="ml-2"/>
+                            class=""/>
               </div>
             </div>
             <div class="col-lg-6 col-12">
@@ -106,17 +107,13 @@
                 <span>Qiymət aralıqı <span class="star"> *</span></span>
               </h2>
               <div class="priceBeetwen">
-                <div class=" mr-5">
-
-                  <label for="minPrice">Min.</label>
-                  <form-numeric-input id="minPrice" type="number"
-                                      v-model="form[index].minPrice" class="priceInput"/>
+                <div class="w-100">
+                  <form-numeric-input  :max-value="1000000" id="minPrice" type="number"
+                                      v-model="form[index].minPrice" class="priceInput" placeholder="Qiymət aralığı min."/>
                 </div>
                 <div class="">
 
-                  <label for="maxPrice">Max.</label>
-                  <form-numeric-input id="maxPrice" type="number"
-                                      v-model="form[index].maxPrice" class="priceInput" @change="changeMaxPrice()"/>
+                  <form-numeric-input :max-value="1000000"  id="maxPrice" type="number" placeholder="maks."  v-model="form[index].maxPrice" class="priceInput" @change="changeMaxPrice()"/>
                 </div>
               </div>
             </div>
@@ -128,7 +125,7 @@
         <span>Almaq istədiyin maşının təsviri</span>
       </h2>
       <form-textarea v-model="form[index].comment" :placeholder="'Təsvir'"
-                     :maxlength="3000"/>
+                     :maxlength="600"/>
       <p class="mt-5 mb-5">
         Təsvirdə linklərinin göstərilməsi, elektron poçt ünvanının, baxış keçirmə məkanın ünvanının, telefon
         nömrəsinin, qiymətin və xidmətlərin təklifi qadağandır.
@@ -194,11 +191,6 @@ export default {
     await store.dispatch('getColors')
     await store.dispatch('getBrands')
     await store.dispatch('getModels', app.$parseSlug(route.query.brand))
-
-    await store.dispatch('getGenerations', {
-      brand: route.query.brand,
-      model: route.query.model
-    })
   },
   props: {
     index: null
@@ -241,7 +233,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['brands', 'models', 'generations', 'offerAnnouncementsCount', 'offerAddIsLoader']),
+    ...mapGetters(['brands', 'models', 'offerGenerations', 'offerAnnouncementsCount', 'offerAddIsLoader']),
 
     brand() {
       return this.brands?.find(brand => this.$parseSlug(brand.slug) === this.$route.query.brand);
@@ -291,7 +283,7 @@ export default {
 
     submitOffer() {
       this.$store.commit('setOfferAddLoader', {status: true})
-      this.$store.dispatch('offerItemValidation', {isSubmit: true, form: this.form[this.index]})
+      this.$store.dispatch('offerItemValidation', {isSubmit: true, form: this.form[this.index], index: this.index})
     },
 
     setBrand(slug) {
@@ -312,31 +304,38 @@ export default {
 
         this.$store.dispatch('getModels', slug)
       }
+      this.form[this.index].model=null
 
-      this.$store.commit('resetGenerations')
-      this.generations = [];
+      this.form[this.index].generations = [];
     },
     async setModel(slug) {
-      await this.$store.dispatch('getGenerations', {
-        brand: this.brand_object.slug,
-        model: slug
-      })
-      this.model_object = this.models.find((option) => option.slug === slug)
-      this.form[this.index].model = this.model_object.slug
+
+      this.form[this.index].generations = []
+
+      if (slug) {
+        await this.$store.dispatch('getOfferGenerations', {
+          brand: this.brand_object.slug,
+          model: slug,
+          index:this.index
+        })
+
+        this.model_object = this.models.find((option) => option.slug === slug)
+        this.form[this.index].model = this.model_object.slug
 
 
-      this.$store.commit('appendOfferSelectedModels', {
-        index: this.index,
-        data: {
-          logo: this.brand_object.transformed_media,
-          img: null,
-          brand: this.brand_object.name,
-          model: this.model_object.name,
-          price: null
+        this.$store.commit('appendOfferSelectedModels', {
+          index: this.index,
+          data: {
+            logo: this.brand_object.transformed_media,
+            img: null,
+            brand: this.brand_object.name,
+            model: this.model_object.name,
+            price: null
 
-        }
-      })
+          }
+        })
 
+      }
 
     },
     changeMaxPrice() {
@@ -349,27 +348,40 @@ export default {
     },
     changeGenerations(values) {
       console.log(values)
-      this.form[this.index].generations = values
+      if (values[0]) {
+        this.form[this.index].generations = values
 
-      this.generations.find((option) => option.id === values[0]).car_type_generation[0].transformed_media.main[0]
 
-      this.$store.commit('appendOfferSelectedModels', {
-        index: this.index,
-        data: {
-          img: this.generations.find((option) => option.id === values[0]).car_type_generation[0].transformed_media.main[0],
-          year: this.generations.find((option) => option.id === values[0]).start_year + ' - ' + this.generations.find((option) => option.id === values[0]).end_year
-        }
-      })
+        this.offerGenerations[this.index].find((option) => option.id === values[0]).car_type_generation[0].transformed_media.main[0]
 
+        this.$store.commit('appendOfferSelectedModels', {
+          index: this.index,
+          data: {
+            img: this.offerGenerations[this.index].find((option) => option.id === values[0]).car_type_generation[0].transformed_media.main[0],
+            year: this.offerGenerations[this.index].find((option) => option.id === values[0]).start_year + ' - ' + this.offerGenerations[this.index].find((option) => option.id === values[0]).end_year
+          }
+        })
+      }
     }
 
   },
+async beforeCreate(){
 
+},
   async created() {
+   await this.$store.dispatch('getOfferGenerations', {
+      brand: this.$route.query.brand,
+      model: this.$route.query.model,
+      index:this.index
+    })
+
+
+
     this.$store.commit('setOfferAddLoader', {status: false})
     this.$store.commit('openOfferPaymentModal', {status: false})
-    if (this.generations.length == 1) {
-      this.form[this.index].generations.push(this.generations[0].id)
+    console.log(this.offerGenerations)
+    if (this.offerGenerations[this.index].length == 1) {
+      this.form[this.index].generations.push(this.offerGenerations[this.index][0].id)
     }
 
     if (this.index == 0) {
@@ -403,6 +415,7 @@ export default {
       })
 
     }
+
   },
   watch: {
     form: {
@@ -410,6 +423,9 @@ export default {
       handler(newVal) {
         this.$store.commit('setOfferAnnouncement', {index: this.index, form: newVal})
       }
+    },
+    index(){
+      console.log(this.index)
     }
   }
 
