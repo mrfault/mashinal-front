@@ -4,7 +4,7 @@
       <div class="offer_item" :class="selected_offer_item==index ? 'active' : null"
            v-for="(offer_item,index) in offer_items" @click="selectOfferItem(index)">
         <img :src="offer_item.generations[0].img" alt="">
-        <div class="offer_item_detail">
+        <div class="offer_item_detail pl-1">
           <div class="d-flex">
             <div class="offer_price" v-if="offer_item.minPrice">{{ offer_item.minPrice }} - </div>
             <div class="offer_price">{{ offer_item.maxPrice }} ₼</div>
@@ -57,12 +57,37 @@
         </div>
 
         <div class="offerDetailItem">
+          <p>Alış şərti</p>
+          <div>
+            <div >
+              <span > {{offer_items[selected_offer_item].buy_type=='cash' ? 'Nağd' : 'Kredit'}}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="offerDetailItem">
           <p>Rəng </p>
           <div>
                 <div v-for=" (color,index) in offer_items[selected_offer_item].colors">
                     <span class="color-box" :style="`background-color:${color.code}`"></span>
                 </div>
           </div>
+        </div>
+
+        <div class="offerDetailItem">
+          <p>Salon Rəngi </p>
+          <div>
+            <div>
+              <span class="color-box" :style="`background-color:${offer_items[selected_offer_item].interior_color.code}`" v-if="offer_items[selected_offer_item].interior_color!='other'"></span>
+              <span class="color-box color"     :style="'background:url(/images/offer/other-color.png);background-size:cover'" v-else></span>
+            </div>
+          </div>
+        </div>
+        <div>
+
+          <p class="offerComment">
+            {{offer_items[selected_offer_item].comment}}
+          </p>
         </div>
 
       </div>
@@ -85,7 +110,8 @@ export default {
     selectOfferItem(index) {
       this.selected_offer_item = index
     },
-  }
+  },
+
 }
 </script>
 

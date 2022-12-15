@@ -86,7 +86,7 @@ export const PaymentMixin = {
             } else {
               stopListening();
             }
-            if (data.payment.operation_key=='offer_payment_key'){
+            if (data.payment.operation_key=='offer_payment_key' && paid){
               setTimeout(()=>{
                 this.$router.push('/offer')
               },2000)

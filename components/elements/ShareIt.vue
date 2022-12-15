@@ -64,7 +64,7 @@
           case 'instagram': return 'https://instagram.com/mashin.al';
           case 'facebook': return 'https://facebook.com/mashinal';
           case 'telegram': return 'https://t.me/mashin_al';
-          case 'tiktok': return 'https://vm.tiktok.com/ZSdSgqRuw/';
+          case 'tiktok': return 'https://www.tiktok.com/@mashin.al?_t=8YADho8g5mU&_r=1';
         }
       },
       getPublishLink(social) {

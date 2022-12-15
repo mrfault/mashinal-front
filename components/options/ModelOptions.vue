@@ -1,11 +1,20 @@
 <template>
   <component :is="isMobileBreakpoint ? 'mobile-screen' : 'div'" @back="goBack" @action="$emit('clean')" action-icon="reset" :disable-action="disableClean" :bar-title="statusTitle" hide-container>
-    <h2 class="title-with-line full-width" v-if="title && !isMobileBreakpoint">
+    <h2 class="title-with-line full-width" v-if="title && !isMobileBreakpoint && !isModeration">
       <span>{{ title }}</span>
     </h2>
+    <title-with-line-and-reject-reason
+      v-if="title && !isMobileBreakpoint && isModeration"
+      rejectKey="body_type"
+      :title="title"
+      @change="changeReason"
+    />
     <div class="model-options">
       <div :class="isMobileBreakpoint ? 'mt-3' : `row ${search || !popularOptions ? 'mb-1' : ''}`" @click.stop>
-        <div :class="isMobileBreakpoint ? 'container' : 'col-4'">
+        <div :class="isMobileBreakpoint ? 'container' : 'col-4'" v-if="!enlargeColumns">
+          <form-text-input :placeholder="inputTitle" icon-name="search" v-model="search"/>
+        </div>
+        <div class="col-12" v-if="enlargeColumns">
           <form-text-input :placeholder="inputTitle" icon-name="search" v-model="search"/>
         </div>
       </div>
@@ -42,14 +51,14 @@
             </template>
           </template>
           <template v-else-if="sortAlphabetically">
-            <div class="col-lg-2" v-for="(col, i) in $chunk(getFilteredOptions, Math.ceil(getFilteredOptions.length / 6))" :key="i">
+            <div class="col-lg-2" v-for="(col, i) in $chunk(getFilteredOptions, Math.ceil(getFilteredOptions.length / 6))" :key="i"  :class="{'col-lg-6': enlargeColumns}">
               <template v-for="(option, index) in col">
                 <div :key="index" class="model-options_option mb-n1" @click.stop="optionsValue = option">
                   <div class="img" v-if="imgKey">
                     <img :src="$withBaseUrl(option[imgKey]) || imgPlaceholder" :alt="getOptionName(option)" />
                   </div>
-                  <div class="text-truncate">
-                    <span :class="{'text-bold': option.popular === 1}">{{ getOptionName(option) }}</span>
+                  <div class="text-truncate" :class="{'option-highlighted': (highlightSelected && (option.slug == value)) }">
+                    <span :class="{'text-bold': option.popular === 1 && considerPopular}">{{ getOptionName(option) }}</span>
                   </div>
                 </div>
               </template>
@@ -61,8 +70,8 @@
                 <div class="img" v-if="imgKey">
                   <img :src="$withBaseUrl(option[imgKey]) || imgPlaceholder" :alt="getOptionName(option)" />
                 </div>
-                <div class="text-truncate">
-                  <span :class="{'text-bold': option.popular === 1}">{{ getOptionName(option) }}</span>
+                <div class="text-truncate" :class="{'option-highlighted': (highlightSelected && (option.slug == value)) }">
+                  <span :class="{'text-bold': option.popular === 1 && considerPopular}">{{ getOptionName(option) }}</span>
                 </div>
               </div>
             </div>
@@ -79,6 +88,8 @@
 </template>
 
 <script>
+import TitleWithLineAndRejectReason from '~/components/moderator/titleWithLineAndRejectReason'
+
 export default {
   props: {
     value: {},
@@ -93,7 +104,21 @@ export default {
       type: Boolean,
       default: true
     },
-    disableClean: Boolean
+    disableClean: Boolean,
+    considerPopular: {
+      type: Boolean,
+      default: true,
+    },
+    highlightSelected:{
+      type: Boolean,
+      default: false,
+    },
+    enlargeColumns:Boolean,
+    isModeration: Boolean,
+    rejectKey: String,
+  },
+  components:{
+    TitleWithLineAndRejectReason
   },
   data() {
     return {
@@ -128,6 +153,9 @@ export default {
     },
     getOptionName(option) {
       return this.$translateHard(option.name);
+    },
+    changeReason(){
+      this.$emit('changeReason', this.rejectKey)
     }
   }
 }

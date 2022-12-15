@@ -72,6 +72,7 @@ h2 {
         padding-left: 25px;
       }
     }
+
     &__blue {
       span {
         background: $greyish-blue-1;
@@ -113,6 +114,7 @@ hr {
     background-color: transparent;
   }
 }
+
 .cursor-pointer {
   cursor: pointer;
 }
@@ -233,7 +235,7 @@ hr {
 .translate-fade-enter-active,
 .translate-fade-leave-active {
   transition: transform 0.5s cubic-bezier(0.53, 2, 0.36, 0.85),
-    opacity 0.5s cubic-bezier(0.53, 2, 0.36, 0.85);
+  opacity 0.5s cubic-bezier(0.53, 2, 0.36, 0.85);
 }
 
 .translate-fade-enter,
@@ -249,7 +251,8 @@ hr {
 }
 
 .list-complete-enter, .list-complete-leave-to
-  /* .list-complete-leave-active below version 2.1.8 */ {
+  /* .list-complete-leave-active below version 2.1.8 */
+{
   opacity: 0;
   transform: translateY(30px);
 }
@@ -292,6 +295,7 @@ hr {
 .min-100 {
   min-height: 100% !important;
 }
+
 .min-100-20 {
   min-height: calc(100% - 20px);
 }
@@ -300,11 +304,13 @@ hr {
   margin-top: -100%;
   transition: 1s ease-in-out;
 }
+
 .z-index-1 {
   z-index: -1;
 }
- .navbar-white {
-  transition: .5s ease-in-out !important;
+
+.navbar-white {
+  transition: 0.5s ease-in-out !important;
   transition-duration: 0.4s !important;
 }
 
@@ -331,25 +337,24 @@ hr {
 //  opacity: 0;
 //}
 
-
 .mt--2 {
   margin-top: -8px;
 }
 
-.bordered{
+.bordered {
   border: 1px solid red;
 }
 
-.ma-error-message{
+.ma-error-message {
   font: 500 16px Gilroy;
   color: red;
 }
 
-.w-100{
+.w-100 {
   width: 100% !important;
 }
 
-.ma-stop-scroll{
+.ma-stop-scroll {
   position: sticky;
   top: 0;
   left: 0;
@@ -372,3 +377,67 @@ hr {
 // }
 
 // @mouseenter="addScrollStopToBody()" @mouseleave="removeScrollStopToBody()"
+
+.option-highlighted {
+  color: #646e95;
+  background-color: #d6e4f8;
+  border: 1px solid #b6bbd5;
+  width: calc(100% - 56px);
+  padding: 4px;
+  border-radius: 6px;
+  margin-left: -4px;
+}
+
+.moderator-timer {
+  width: 100%;
+  font: 500 20px Gilroy;
+  color: #fff;
+  border-radius: 6px;
+  background: #000;
+  text-align: center;
+  padding: 20px;
+}
+
+.is-vin-number {
+  justify-content: flex-start !important;
+
+  span {
+    &:nth-child(1) {
+      width: 70px !important;
+    }
+
+    &:nth-child(2) {
+      width: calc(100% - 70px) !important;
+      text-align: right;
+
+      p {
+        width: 100% !important;
+      }
+    }
+  }
+}
+
+.h-300 {
+  height: 300px;
+}
+
+.ma-smsradar {
+  background: #ffffc5;
+  min-height: 34px;
+  display: flex;
+  align-items: center;
+  border-radius: 6px;
+  padding: 0 15px;
+  width: fit-content;
+  p{
+    padding-left: 10px;
+    margin-bottom: 0;
+  }
+}
+
+
+.textfield-like-textarea{
+  textarea{
+    height: 34px !important;
+  }
+}

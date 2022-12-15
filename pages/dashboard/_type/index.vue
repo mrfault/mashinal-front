@@ -83,7 +83,7 @@
       </div>
       <hr class="dashboard-line" v-if="user.parent_id"/>
       <div v-if="user.parent_id" class="row mb-n2 mb-lg-n3">
-        <div class="col-lg-3 mb-2 mb-lg-3" v-for="tab in tabs">
+        <div class="col-lg-3 mb-2 mb-lg-3" v-for="tab in tabs" v-if="tab.isAvailable">
           <e-service-card :item="tab"/>
         </div>
       </div>

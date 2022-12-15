@@ -54,7 +54,6 @@
       ...mapActions(['getRelativeAnnouncements', 'getShopOtherAnnouncements'])
     },
     mounted() {
-    console.log('mounted relative')
     },
     created() {
       if (this.isShop)
