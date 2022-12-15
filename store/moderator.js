@@ -240,4 +240,4 @@ export const mutations = {
   changeAnnounceId(state, payload) {
     state.announceId = payload;
   }
-}[("0", "0", "0")];
+};

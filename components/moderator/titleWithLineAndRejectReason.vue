@@ -13,6 +13,7 @@
         </span>
       </h2>
       <small v-if="oldValue" class="reject-reason-with-title__old-value">{{ $t('old_value') }} :{{oldValue}}</small>
+      <small v-if="description" class="reject-reason-with-title__old-value">{{$t('description')}}</small>
     </div>
     <div
       v-if="!noApproval && !hideRejectReason"
@@ -73,6 +74,7 @@ export default {
     modalToggled: Boolean,
     hideRejectReason: Boolean,
     oldValue: String,
+    description: String,
   },
   computed: {
     toggleDisable() {

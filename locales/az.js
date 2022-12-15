@@ -2376,4 +2376,6 @@ export default {
   "add_video_360":"360 (video) Əlavə et",
   "add_interior_360": "360 interior əlavə et",
 
+  "cars_with_damage_sentence": "ban elementlərində zədə mövcud olan avtomobillər",
+
 }

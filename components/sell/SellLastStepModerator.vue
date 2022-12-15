@@ -229,7 +229,6 @@
           no-approval
           required
           title="price"
-          @change="changeReason"
         />
         <div class="row">
           <div class="col-lg-auto mb-2 mb-lg-0">
@@ -931,11 +930,8 @@ export default {
         .then((res) => {
           if (res.status == 200) {
             this.$toast.success(this.$t('interior_360_successfully_upload'))
-            console.log("res.data.data.id",res.data.data)
             this.form['interior_360_id'] = res.data.data.id
             this.form['interior_360_url'] = res.data.data.url
-            console.log("this.form.interior_360_id",this.form)
-            console.log("this.form.interior_360_url",this.form.interior_360_url)
             this.$emit("interior_360_id_changed", res.data.data.id)
           }
         })
