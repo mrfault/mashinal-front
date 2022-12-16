@@ -11,7 +11,12 @@
             :to="$localePath('/')"
             @click.native="$nuxt.$emit('logo-click')"
           >
-            <img src="/img/logo-white.svg" alt="logo" v-if="!btlCookie" />
+            <img
+              :src="$env.NEW_YEAR_SOON ? '/img/logo-white-newyear.svg' : '/img/logo-white.svg'"
+              alt="logo"
+              :style="$env.NEW_YEAR_SOON ? 'height: 50px;': ''"
+              v-if="!btlCookie"
+            />
           </nuxt-link>
           <p>{{ $t('learn_about_emerging_product_text') }}</p>
           <newsletter />

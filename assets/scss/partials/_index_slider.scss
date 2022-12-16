@@ -8,11 +8,14 @@
     &-left {
       width: 50%;
       background: #d0dbf9;
-      img {
+      img,video {
         clip-path: polygon(0 0, 90% 0, 100% 100%, 0 100%);
         width: 100%;
         height: 100%;
         object-fit: cover;
+      }
+      video{
+        transform: scale(1.01);
       }
     }
     &-right {

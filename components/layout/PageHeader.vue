@@ -57,10 +57,9 @@
           @click.native="$nuxt.$emit('logo-click')"
         >
           <img
-            :src="`/img/${
-              isDarkMode ? 'logo-dark-mode' : 'logo-dark-blue-white'
-            }.svg`"
+            :src="$env.NEW_YEAR_SOON ? '/img/logo-white-newyear.svg' : '/img/logo-dark-mode.svg'"
             alt="logo"
+            :style="$env.NEW_YEAR_SOON ? 'height: unset;': ''"
             v-if="!btlCookie"
           />
         </nuxt-link>
