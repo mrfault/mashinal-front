@@ -328,7 +328,8 @@ export default {
     title: String,
     type: String,
     initialForm: {},
-    announcement: {}
+    announcement: {},
+    isModeration: Boolean,
   },
   mixins: [ToastErrorsMixin, ImageResizeMixin, PaymentMixin],
   data() {

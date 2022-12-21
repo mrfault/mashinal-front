@@ -627,6 +627,7 @@ export const actions = {
     });
   },
   async getMotoModels({ dispatch }, data) {
+    console.log("getMotoModels")
     if (data.category == 1)
       await dispatch("getMotorcycleModels", {
         id: data.id,
