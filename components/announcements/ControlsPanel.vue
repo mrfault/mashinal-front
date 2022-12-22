@@ -6,6 +6,10 @@
           transparent @input="handleSelectAll" @change="handleSelectAll"/>
       </div> -->
       <div class="col d-flex align-items-center justify-content-end">
+         <span :class="['control-icon cursor-pointer text-hover-red', {'disabled-ui': !selected.length}]"
+               @click="showChatModal = true">
+           <span>MashinAL Business</span>
+         </span>
         <span v-if="user.autosalon && user.autosalon.id" style="border-right: 1px solid #ccc6;" :class="['control-icon cursor-pointer text-hover-red', {'disabled-ui': !selectedAnnouncements.length}]" >
           <monetization-button
             :multiple="true"
@@ -15,6 +19,7 @@
             :announcement="myAnnouncements.data[0]"
           />
         </span>
+
         <span :class="['control-icon cursor-pointer text-hover-red', {'disabled-ui': !selected.length}]"
             @click="showDeactivateModal = true">
           <!-- <icon name="minus-circle" /> -->
@@ -26,6 +31,39 @@
             @close="showDeactivateModal = false"
           >
             <form class="form" @submit.prevent="deactivateAnouncement" novalidate>
+              <button type="submit" :class="['btn btn--green full-width', { pending }]">
+                {{ $t('confirm') }}
+              </button>
+            </form>
+          </modal-popup>
+          <modal-popup
+            :toggle="showChatModal"
+            :title="$t('mashinal_chat')"
+            @close="showChatModal = false"
+          >
+            <form class="form" @submit.prevent="sendToChat" novalidate>
+              <p class="mb-2 mb-lg-3">
+                Müştəri ilə Mashin Chat-da alış verişə davam etmək üçün
+                mobil nömrə və ya email daxil etməlisiniz.
+              </p>
+              <form-switch v-model="chat.user_type" :options="userTypes" auto-width />
+
+              <form-text-input
+                key="phone"
+                v-if="chat.user_type === 1"
+                class="mt-2 mb-2"
+                v-model="chat.phone"
+                :placeholder="$t('phone')"
+                :mask="$maskPhone()"
+              />
+              <form-text-input
+                key="email"
+                v-if="chat.user_type === 2"
+                class="mt-2 mb-2"
+                v-model="chat.email"
+                :placeholder="$t('email')"
+                :mask="$maskEmail()"
+              />
               <button type="submit" :class="['btn btn--green full-width', { pending }]">
                 {{ $t('confirm') }}
               </button>
@@ -65,20 +103,47 @@ export default {
   },
   data() {
     return {
+      chat: {
+        user_type: 1,
+        phone:'',
+        email:''
+      },
       selected: [],
       selectedAnnouncements:[],
       selectAll: false,
       showDeactivateModal: false,
+      showChatModal: false,
       showDeleteModal: false,
       pending: false
     }
   },
   computed: {
-    ...mapGetters(['myAnnouncements'])
+    ...mapGetters(['myAnnouncements']),
+    userTypes() {
+      return [
+        { key: 1, name: this.$t('phone') },
+        { key: 2, name: this.$t('email') }
+      ];
+    },
   },
   methods: {
     ...mapActions(['deactivateMyAnnounement','deleteMyAnnounement']),
+    async sendToChat() {
+      this.pending = true;
+      try {
+        await this.$axios.$post('/deactivate_and_send',{
+          announcements: this.selected,
+          user_type: this.chat.user_type,
+          phone: this.chat.phone.replace(/[^0-9]+/g, ''),
+          email: this.chat.email
+        })
+      }catch (e){}
 
+
+      this.pending = false;
+      this.showChatModal = false;
+      this.$nuxt.refresh();
+    },
     selectAnnouncement(id, value, controls = false) {
       if (!controls) return;
 
