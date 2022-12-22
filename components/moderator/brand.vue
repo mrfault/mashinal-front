@@ -12,8 +12,8 @@
       <template>
         /
       </template>
-      <span v-if="isAutosalon">{{ $t('autosalon') }}: </span>
-      <span v-if="isAutosalon"><strong>{{ userData.autosalon.name }}</strong></span>
+      <span v-if="isAutosalon && userData.autosalon">{{ $t('autosalon') }}: </span>
+      <span v-if="isAutosalon && userData.autosalon"><strong>{{ userData.autosalon.name }}</strong></span>
       <template v-if="isAutosalon ">
         /
       </template>

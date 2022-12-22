@@ -73,6 +73,8 @@ const getInitialState = () => ({
   carModels: { 0: [], 1: [], 2: [], 3: [], 4: [] },
   carModelsExclude: { 0: [], 1: [], 2: [], 3: [], 4: [] },
   modelDescription: false,
+  popularComments: [],
+
   // generations`
   generations: [],
   generationTypes: [],
@@ -91,6 +93,7 @@ const getInitialState = () => ({
   popularOptions: [],
   bodyOptions: {},
   motoOptions: [],
+  scooterOptions: [],
   complaintOptions: [],
   badges: [],
   needResetOptions: [],
@@ -181,12 +184,14 @@ const getInitialState = () => ({
   active_my_offers: [],
   offer_generations: [],
   //  moderator
-  savedImageUrls: []
+  savedImageUrls: [],
+  single_announce: {},
 });
 
 export const state = () => getInitialState();
 
 export const getters = {
+  single_announce: s => s.single_announce,
   homePageSliders: s => s.homePageSliders,
   loading: s => s.loading,
   colorMode: s => s.colorMode,
@@ -272,6 +277,7 @@ export const getters = {
   scooterModels: s => s.scooterModels,
   carModels: s => s.carModels,
   modelDescription: s => s.modelDescription,
+  getPopularComments: s => s.popularComments,
   // generations
   generations: s => s.generations,
   generationTypes: s => s.generationTypes,
@@ -289,7 +295,9 @@ export const getters = {
   popularOptions: s => s.popularOptions,
   bodyOptions: s => s.bodyOptions,
   motoOptions: s => s.motoOptions,
+  scooterOptions: s => s.scooterOptions,
   complaintOptions: s => s.complaintOptions,
+  badges: s=> s.badges,
   // commercial
   commercialTypes: s => s.commercialTypes,
   commercialAllOptions: s => s.commercialAllOptions,
@@ -619,6 +627,7 @@ export const actions = {
     });
   },
   async getMotoModels({ dispatch }, data) {
+    console.log("getMotoModels")
     if (data.category == 1)
       await dispatch("getMotorcycleModels", {
         id: data.id,
@@ -633,12 +642,14 @@ export const actions = {
       await dispatch("getAtvModels", { id: data.id, index: data.index || 0 });
   },
   async getMotorcycleModels({ commit }, data) {
+    console.log("getMotorcycleModels")
     const res = await this.$axios.$get(`/moto/brand/${data.id}/models`);
     commit("mutate", {
       property: "motorcycleModels",
       value: res,
       key: data.index || 0
     });
+    console.log("getMotorcycleModels",this.motorcycleModels)
   },
   async getAtvModels({ commit }, data) {
     const res = await this.$axios.$get(`/moto/atv/brand/${data.id}/models`);
@@ -655,6 +666,13 @@ export const actions = {
       value: res,
       key: data.index || 0
     });
+  },
+  async popularComments({commit}){
+    let data = await this.$axios.$get('/get-popular-comments');
+    commit('mutate', {
+      property: "popularComments",
+      value: data
+    })
   },
   // Generations
   async getGenerations({ commit }, data) {
@@ -801,6 +819,13 @@ export const actions = {
     if (objectNotEmpty(state, commit, "motoOptions")) return;
     const res = await this.$axios.$get(`/moto/search_options`);
     commit("mutate", { property: "motoOptions", value: res });
+  },
+  async getScooterOptions({ commit }) {
+    const data = await this.$axios.$get(`/moto/scooter_options`);
+    commit('mutate', {
+      property: 'scooterOptions',
+      with: data
+    })
   },
   async getColors({ state, commit }) {
     if (objectNotEmpty(state, commit, "colors")) return;

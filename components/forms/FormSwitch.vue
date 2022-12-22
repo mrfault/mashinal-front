@@ -3,7 +3,10 @@
     <div :class="['form-switch', {'auto-width': autoWidth}]">
       <button type="button" :class="[{'active': isActive(option), 'disabled':isDisabled(option)}]" v-for="(option, index) in options" :key="index"
           @click="selectedValue = option.key">
-        <icon :name="option.icon" v-if="option.icon" />{{ option.sign || option.name || '' }}
+        <icon  :name="option.icon" v-if="option.icon && !translated" />
+
+        <template v-if="!translated">{{ option.sign || option.name || '' }}</template>
+        <p v-if="translated" class="text-capitalize">{{$t(option.name)}}</p>
       </button>
     </div>
   </div>
@@ -15,7 +18,8 @@
       value: {},
       options: {},
       disabled: Boolean,
-      autoWidth: Boolean
+      autoWidth: Boolean,
+      translated: Boolean,
     },
     data() {
       return {
