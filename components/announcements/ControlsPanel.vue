@@ -144,7 +144,7 @@ export default {
           email: this.chat.email
         })
         this.pending = false;
-        this.showChatModal = false;
+        this.closeChatModal();
         this.$nuxt.refresh();
       }catch (e){
         this.pending = false;
