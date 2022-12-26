@@ -143,12 +143,15 @@ export default {
           phone: this.chat.phone.replace(/[^0-9]+/g, ''),
           email: this.chat.email
         })
-      }catch (e){}
-
+        this.pending = false;
+        this.showChatModal = false;
+        this.$nuxt.refresh();
+      }catch (e){
+        this.pending = false;
+      }
 
       this.pending = false;
-      this.showChatModal = false;
-      this.$nuxt.refresh();
+
     },
     selectAnnouncement(id, value, controls = false) {
       if (!controls) return;
