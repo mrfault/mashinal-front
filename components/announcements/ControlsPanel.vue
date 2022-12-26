@@ -38,8 +38,8 @@
           </modal-popup>
           <modal-popup
             :toggle="showChatModal"
-            :title="$t('mashinal_chat')"
-            @close="showChatModal = false"
+            :title="'MashinAL Business'"
+            @close="closeChatModal"
           >
             <form class="form" @submit.prevent="sendToChat" novalidate>
               <p class="mb-2 mb-lg-3">
@@ -53,7 +53,7 @@
                 v-if="chat.user_type === 1"
                 class="mt-2 mb-2"
                 v-model="chat.phone"
-                :placeholder="$t('phone')"
+                :placeholder="$t('mobile_number')"
                 :mask="$maskPhone()"
               />
               <form-text-input
@@ -121,12 +121,18 @@ export default {
     ...mapGetters(['myAnnouncements']),
     userTypes() {
       return [
-        { key: 1, name: this.$t('phone') },
+        { key: 1, name: this.$t('mobile_number') },
         { key: 2, name: this.$t('email') }
       ];
     },
   },
   methods: {
+    closeChatModal() {
+      this.showChatModal = false;
+      this.chat.user_type = 1;
+      this.chat.phone = '';
+      this.chat.email = '';
+    },
     ...mapActions(['deactivateMyAnnounement','deleteMyAnnounement']),
     async sendToChat() {
       this.pending = true;
