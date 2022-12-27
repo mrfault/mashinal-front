@@ -145,6 +145,7 @@ export default {
         })
         this.pending = false;
         this.closeChatModal();
+        this.selected = [];
         this.$nuxt.refresh();
       }catch (e){
         this.pending = false;
