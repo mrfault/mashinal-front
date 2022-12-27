@@ -1,7 +1,7 @@
-import _ from '~/lib/underscore'
-import {mutate, reset} from '~/lib/vuex-helpers/mutations'
-import Vue from 'vue'
-import uuid from 'uuid'
+import _ from "~/lib/underscore";
+import { mutate, reset } from "~/lib/vuex-helpers/mutations";
+import Vue from "vue";
+import uuid from "uuid";
 import offer from "~/components/offer/offer";
 
 const getInitialState = () => ({
@@ -185,7 +185,7 @@ const getInitialState = () => ({
   offer_generations: [],
   //  moderator
   savedImageUrls: [],
-  single_announce: {},
+  single_announce: {}
 });
 
 export const state = () => getInitialState();
@@ -297,7 +297,8 @@ export const getters = {
   motoOptions: s => s.motoOptions,
   scooterOptions: s => s.scooterOptions,
   complaintOptions: s => s.complaintOptions,
-  badges: s=> s.badges,
+  badges: s => s.badges,
+
   // commercial
   commercialTypes: s => s.commercialTypes,
   commercialAllOptions: s => s.commercialAllOptions,
@@ -627,7 +628,6 @@ export const actions = {
     });
   },
   async getMotoModels({ dispatch }, data) {
-    console.log("getMotoModels")
     if (data.category == 1)
       await dispatch("getMotorcycleModels", {
         id: data.id,
@@ -642,14 +642,12 @@ export const actions = {
       await dispatch("getAtvModels", { id: data.id, index: data.index || 0 });
   },
   async getMotorcycleModels({ commit }, data) {
-    console.log("getMotorcycleModels")
     const res = await this.$axios.$get(`/moto/brand/${data.id}/models`);
     commit("mutate", {
       property: "motorcycleModels",
       value: res,
       key: data.index || 0
     });
-    console.log("getMotorcycleModels",this.motorcycleModels)
   },
   async getAtvModels({ commit }, data) {
     const res = await this.$axios.$get(`/moto/atv/brand/${data.id}/models`);
@@ -667,12 +665,12 @@ export const actions = {
       key: data.index || 0
     });
   },
-  async popularComments({commit}){
-    let data = await this.$axios.$get('/get-popular-comments');
-    commit('mutate', {
+  async popularComments({ commit }) {
+    let data = await this.$axios.$get("/get-popular-comments");
+    commit("mutate", {
       property: "popularComments",
       value: data
-    })
+    });
   },
   // Generations
   async getGenerations({ commit }, data) {
@@ -822,10 +820,10 @@ export const actions = {
   },
   async getScooterOptions({ commit }) {
     const data = await this.$axios.$get(`/moto/scooter_options`);
-    commit('mutate', {
-      property: 'scooterOptions',
+    commit("mutate", {
+      property: "scooterOptions",
       with: data
-    })
+    });
   },
   async getColors({ state, commit }) {
     if (objectNotEmpty(state, commit, "colors")) return;
@@ -849,6 +847,7 @@ export const actions = {
     commit("mutate", { property: "commercialAllOptions", value: res });
   },
   async getCommercialFilters({ commit }, id) {
+    console.log("getCommercialFilters");
     const res = await this.$axios.$get(`/commercial/type/${id}/get_filters`);
     commit("mutate", { property: "commercialFilters", value: res });
   },
@@ -1396,12 +1395,11 @@ export const actions = {
   async activeMyOffers({ commit, state }) {
     const { data } = await this.$axios.$get("/offer/user/active-my-offers");
 
-
-    commit('mutate', {property: 'active_my_offers', value: data})
+    commit("mutate", { property: "active_my_offers", value: data });
   },
 
-  async readOfferMessage({commit,state},payload){
-    await this.$axios.$post('/offer/message/read/'+payload.id)
+  async readOfferMessage({ commit, state }, payload) {
+    await this.$axios.$post("/offer/message/read/" + payload.id);
   }
 };
 export const mutations = {
@@ -1510,49 +1508,63 @@ export const mutations = {
     state.offerMessages = payload;
   },
   IncrementMessageCount(state, payload) {
-    if (this.$auth.user.autosalon){
-      var offerIndex = state.offers.findIndex(item => item.id == payload.offer_id);
+    if (this.$auth.user.autosalon) {
+      var offerIndex = state.offers.findIndex(
+        item => item.id == payload.offer_id
+      );
 
-      Vue.set(state.offers[offerIndex],'unread_messages',state.offers[offerIndex]['unread_messages']+1)
+      Vue.set(
+        state.offers[offerIndex],
+        "unread_messages",
+        state.offers[offerIndex]["unread_messages"] + 1
+      );
 
       let firstOffer = state.offers[offerIndex];
 
-      state.offers.splice(offerIndex,1);
+      state.offers.splice(offerIndex, 1);
 
-      Vue.set(state,'offers',[firstOffer, ...state.offers])
+      Vue.set(state, "offers", [firstOffer, ...state.offers]);
+    } else {
+      var offerIndex = state.OffersAcceptedByAutoSalon.findIndex(
+        item => item.offer.id == payload.offer_id
+      );
 
-    }else {
-
-      var offerIndex = state.OffersAcceptedByAutoSalon.findIndex(item => item.offer.id == payload.offer_id);
-
-
-      Vue.set(state.OffersAcceptedByAutoSalon[offerIndex],'unread_messages',state.OffersAcceptedByAutoSalon[offerIndex]['unread_messages']+1)
+      Vue.set(
+        state.OffersAcceptedByAutoSalon[offerIndex],
+        "unread_messages",
+        state.OffersAcceptedByAutoSalon[offerIndex]["unread_messages"] + 1
+      );
       let firstOffer = state.OffersAcceptedByAutoSalon[offerIndex];
-      state.OffersAcceptedByAutoSalon.splice(offerIndex,1);
-      Vue.set(state,'OffersAcceptedByAutoSalon',[firstOffer, ...state.OffersAcceptedByAutoSalon])
+      state.OffersAcceptedByAutoSalon.splice(offerIndex, 1);
+      Vue.set(state, "OffersAcceptedByAutoSalon", [
+        firstOffer,
+        ...state.OffersAcceptedByAutoSalon
+      ]);
     }
   },
   readAllMessage(state, payload) {
-    if (this.$auth.user.autosalon){
-      var offerIndex = state.offers.findIndex(item => item.id == payload.offer_id);
+    if (this.$auth.user.autosalon) {
+      var offerIndex = state.offers.findIndex(
+        item => item.id == payload.offer_id
+      );
 
-      Vue.set(state.offers[offerIndex],'unread_messages',state.offers[offerIndex]['unread_messages']=0)
+      Vue.set(
+        state.offers[offerIndex],
+        "unread_messages",
+        (state.offers[offerIndex]["unread_messages"] = 0)
+      );
+    } else {
+      var offerIndex = state.OffersAcceptedByAutoSalon.findIndex(
+        item => item.auto_salon_offer_id == payload.offer_id
+      );
 
-
-    }else {
-
-      var offerIndex = state.OffersAcceptedByAutoSalon.findIndex(item => item.auto_salon_offer_id == payload.offer_id);
-
-      Vue.set(state.OffersAcceptedByAutoSalon[offerIndex],'unread_messages',state.OffersAcceptedByAutoSalon[offerIndex]['unread_messages']=0)
-
+      Vue.set(
+        state.OffersAcceptedByAutoSalon[offerIndex],
+        "unread_messages",
+        (state.OffersAcceptedByAutoSalon[offerIndex]["unread_messages"] = 0)
+      );
     }
-
-
-
-
-
   },
-
 
   appendOfferMessage(state, payload) {
     state.offerMessages.push(payload);
@@ -1580,7 +1592,6 @@ export const mutations = {
     state.offer_announcement_count--;
   },
   appendOfferAnnouncement(state, payload) {
-    console.log(payload, "payload");
     if (typeof state.offer_announcements[payload.index] != undefined) {
       state.offer_announcements.splice(payload.index, 1);
     }
@@ -1671,19 +1682,19 @@ export const mutations = {
     Vue.set(state.offer_generations, payload.index, payload.data);
   },
   //  moderator
-  setSavedImageUrls(state,data) {
+  setSavedImageUrls(state, data) {
     state.savedImageUrls = state.savedImageUrls.concat(data);
   },
   resetSavedImages(state) {
-    Vue.set(state,'savedImageUrls',[]);
+    Vue.set(state, "savedImageUrls", []);
   },
-  setSavedImageUrlWithKey(state,data) {
-    Vue.set(state.savedImageUrls,data.key,data.value);
+  setSavedImageUrlWithKey(state, data) {
+    Vue.set(state.savedImageUrls, data.key, data.value);
   },
-  deleteSavedImageUrlWithKey(state,key) {
-    state.savedImageUrls.splice(key,1);
+  deleteSavedImageUrlWithKey(state, key) {
+    state.savedImageUrls.splice(key, 1);
   },
   mutateSavedImageUrls(state, payload) {
     state[payload.property] = payload.with;
-  },
+  }
 };

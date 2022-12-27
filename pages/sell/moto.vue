@@ -1,7 +1,7 @@
 <template>
   <div class="pages-sell">
     <div class="container">
-      <breadcrumbs :crumbs="crumbs" />
+      <breadcrumbs id="breadcrumbModerationMoto" :crumbs="crumbs" />
       <sell-progress :form="form" />
       <div class="sell_cards-row row">
         <div class="col-auto">
@@ -240,8 +240,7 @@ export default {
 
     crumbs() {
       return [
-        { name: this.$t('place_an_ad'), route: '/sell' },
-        { name: this.$t('moto') }
+        { name: this.$t('moderation'), route: '/' },
       ]
     }
   }

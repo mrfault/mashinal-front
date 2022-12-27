@@ -8,7 +8,7 @@
     @action="$emit('clean')"
     @back="$emit('close')"
   >
-    <div class="sell_last-step">
+    <div class="sell_last-step" v-if="single_announce">
       <div
         v-if="showAllOptions"
         :class="{
@@ -17,15 +17,18 @@
       >
 
         <slot name="image"></slot>
+        <template v-if="!no360">
 
-        <title-with-line-and-reject-reason
-          :no-approval="!single_announce.images_360.length"
-          title="360_exterior"
-          @change="changeReason"
-        />
-        <slot name="360_exterior" v-if="!form.images_360"></slot>
+          <title-with-line-and-reject-reason
+            v-if="!no360"
+            :no-approval="!single_announce.images_360.length"
+            title="360_exterior"
+            @change="changeReason"
+          />
+          <slot v-if="!form.images_360 && !no360" name="360_exterior"></slot>
+        </template>
         <vue-three-sixty
-          v-if="form.images_360 && form.images_360.length"
+          v-if="form.images_360 && form.images_360.length && no360"
           :amount="form.images_360 && form.images_360.length"
           :files="form.images_360"
           buttonClass="d-none"
@@ -33,36 +36,37 @@
           disableZoom
         />
 
+        <template v-if="!no360">
+          <title-with-line-and-reject-reason
+            :no-approval="!form.interior_360_url"
+            title="360_interior"
+            @change="changeReason"
+          />
 
-        <title-with-line-and-reject-reason
-          :no-approval="!form.interior_360_url"
-          title="360_interior"
-          @change="changeReason"
-        />
-<!--        <slot name="360_interior" v-if="!form.interior_360"></slot>-->
-        <section class="mb-4">
-          <div
-            class="section-part__container"
-            style="display: flex; justify-content: space-between;"
-          >
-            <div class="col-md-4">
-              <input class="btn" type="file" v-on:change="add360Interior"/>
-            </div>
-            <button
-              v-if="single_announce.interior_360"
-              class="btn btn-danger mb-2"
-              style="float: right;"
-              @click="handleRemoveInterior"
+          <section class="mb-4">
+            <div
+              class="section-part__container"
+              style="display: flex; justify-content: space-between;"
             >
-              360 İnteryeri sil
-            </button>
-          </div>
-        </section>
-        <Interior360Viewer
-          v-if="single_announce.interior_360"
-          :url="single_announce.interior_360"
-          class="mb-4"
-        />
+              <div class="col-md-4">
+                <input class="btn" type="file" v-on:change="add360Interior"/>
+              </div>
+              <button
+                v-if="single_announce.interior_360"
+                class="btn btn-danger mb-2"
+                style="float: right;"
+                @click="handleRemoveInterior"
+              >
+                360 İnteryeri sil
+              </button>
+            </div>
+          </section>
+          <Interior360Viewer
+            v-if="single_announce.interior_360 && !no360"
+            :url="single_announce.interior_360"
+            class="mb-4"
+          />
+        </template>
         <title-with-line-and-reject-reason
           :id="'anchor-selectedColor'"
           reject-key="color"
@@ -601,6 +605,8 @@ export default {
     smsRadarData: Object,
     single_announce: Object,
     showPhotoReject: Boolean,
+    no360: Boolean,
+    isCommercial: Boolean,
   },
   mixins: [ToastErrorsMixin, ImageResizeMixin, PaymentMixin],
   data() {
@@ -615,7 +621,7 @@ export default {
       })),
       minFiles: this.type === 'moto' ? 2 : 3,
       maxFiles: 20,
-      savedFiles: [...this.announcement.saved_images],
+      savedFiles: (this.announcement.saved_images?.length) ? [...this.announcement.saved_images] : [],
       deletedFiles: [],
       uploading: 0,
       publishing: false,
@@ -858,7 +864,7 @@ export default {
           this.$toasted.error(this.$t(message))
           if (data.need_pay) {
             this.isAlreadySold = true
-            // this.scrollTo('.publish-post')
+            this.scrollTo('.publish-post')
           }
         } else {
           // find errors
@@ -916,7 +922,7 @@ export default {
     },
 
 
-  //  ----------
+    //  ----------
     add360Interior(val) {
       var formData = new FormData()
       formData.append('image', val.target.files[0])

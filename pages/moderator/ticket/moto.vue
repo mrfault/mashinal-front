@@ -457,7 +457,6 @@
                     <div v-if="moto_options.config" class="row">
                       <div v-for="input in moto_options.config.engine.sell_values['1']" :key="input.name"
                            class="col-lg-4 mb-2 mb-lg-3">
-                        <pre>{{input}}</pre>
                         <form-radio
                           v-model="form.engine"
                           :input-name="getKey(item)"
