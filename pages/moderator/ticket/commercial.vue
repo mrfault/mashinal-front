@@ -893,6 +893,9 @@ export default {
         country_id: '',
         delay_comment: '',
         brand: null,
+        bulldozer_type_id: "",
+        bus_type_id: "",
+        cabin_type_id: "",
         address: '',
         lat: '',
         comment: '',
@@ -940,7 +943,21 @@ export default {
         selectedYear: null,
         btl_cookie: "",
         credit: false,
-        media: []
+        media: [],
+        email: "",
+        excavator_type_id: '',
+        forklift_type_id: "",
+        gear_id: null,
+        machinery_type_id: "",
+        model: null,
+        phone_number: "",
+        seat_counts: '',
+        trailer_type_id: "",
+        truck_type_id: "",
+        utility_type_id: "",
+        wheel_formula: "",
+        construction_type_id: "",
+        name: "",
       },
       showPhotoReject: false,
       minFiles: this.$route.query.type === 'moto' ? 2 : 3,
@@ -978,6 +995,7 @@ export default {
       },
       showLastStep: false,
       lastStepKey: 132,
+
     }
   },
 
@@ -1318,6 +1336,9 @@ export default {
         location.href = '/alvcp/resources/commercials';
       }
     },
+    //sendData
+    //sendData
+    //sendData
     async sendData(status = 2) {
       if (this.saved_images.length !== this.imagesBase64.length) {
         this.$toasted.show(this.$t('please_wait_for_all_image_loading'), {type: 'error'});
@@ -1327,11 +1348,28 @@ export default {
       let formData = new FormData();
 
       this.form.status = status;
-      this.form.category = this.com_cat;
+      this.form.category = this.form.commercial_type_id;
       this.form.rejectArray = this.rejectArray;
-      this.form.brand = this.brand;
-      this.form.model = this.model;
-      this.form.year = this.year;
+
+      delete this.form.box;
+      delete this.form.btl_cookie;
+      delete this.form.com_cat;
+      delete this.form.commercial_type_id;
+      delete this.form.credit;
+      delete this.form.customed_ones;
+      delete this.form.cylinder_placement;
+      delete this.form.cylinders;
+      delete this.form.drive;
+      delete this.form.engine;
+      delete this.form.fuel_type;
+      delete this.form.is_autosalon;
+      delete this.form.media;
+      delete this.form.mileage_measure;
+      delete this.form.number_of_vehicles;
+      delete this.form.saved_images;
+      delete this.form.selectedYear;
+      delete this.form.used_ones;
+      delete this.form.false;
 
       this.form.saved_images = this.saved_images;
       formData.append('data', JSON.stringify(this.form));
@@ -1374,6 +1412,9 @@ export default {
       }
       // this.$router.push('/')
     },
+    //sendData
+    //sendData
+    //sendData
     addImages(v) {
       this.files = v;
       this.$nuxt.$emit('progress_change', {type: 'images', count: Object.keys(this.files).length});
