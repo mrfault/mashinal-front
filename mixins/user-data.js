@@ -11,7 +11,7 @@ export const UserDataMixin = {
       else if (this.user.avatar?.includes('/logo.jpg'))
         return `/img/salon-logo-${this.colorMode}.jpg`;
       else if (this.user.avatar)
-        return this.$withBaseUrl(`/storage/${this.user.avatar}`);
+        return this.$withBaseUrl(this.user.avatar,'/storage/');
       return '/img/user.jpg';
     },
     getUserSettingsLink() {
