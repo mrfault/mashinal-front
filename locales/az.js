@@ -2379,5 +2379,5 @@ export default {
   "cars_with_damage_sentence": "ban elementlərində zədə mövcud olan avtomobillər",
   "second_or_more": "Xeyr",
   "forbidden_give_links_text": "Məlumatda linklərinin göstərilməsi, elektron poçt ünvanının, baxış keçirmə məkanın ünvanının, telefon nömrəsinin, qiymətin və xidmətlərin təklifi qadağandır.",
-
+  "user_add_successfully": "İstifadəçi uğurla əlavə edildi"
 }

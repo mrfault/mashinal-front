@@ -2348,5 +2348,6 @@ export default {
    "file_size_50": "Максимальный размер файла может быть: 50 мб",
    "anyone":"Любая",
    "anyone_other": "Любое",
-   "anyone_other2": "Любой"
+   "anyone_other2": "Любой",
+   "user_add_successfully": "Пользователь успешно добавлен"
 }
