@@ -354,24 +354,15 @@ export default {
       this.$set(this.image, this.croppaSelectedKey, newThumb);
     },
     rotateLeft(e, key) {
-      this.$set(this.imagePreloaderContainer, key, true);
-      this.$axios
-        .$get('/media/' + this.saved_images[key] + '/rotate/left')
-        .then((data) => {
-          this.$store.commit('setSavedImageUrlWithKey', {
-            key: key,
-            value: data.data.thumb
-          })
-          this.$set(this.imagePreloaderContainer, key, false);
-        })
-        .catch((data) => {
-          this.$set(this.imagePreloaderContainer, key, false);
-        });
+      this.rotateDirection('left',e, key)
     },
     rotateRight(e, key) {
+      this.rotateDirection('right',e, key)
+    },
+    rotateDirection(dir,e, key){
       this.$set(this.imagePreloaderContainer, key, true);
       this.$axios
-        .$get('/media/' + this.saved_images[key] + '/rotate/right')
+        .$get('/media/' + this.saved_images[key] + '/rotate/' + dir)
         .then((data) => {
           this.$store.commit('setSavedImageUrlWithKey', {
             key: key,

@@ -185,7 +185,8 @@ const getInitialState = () => ({
   offer_generations: [],
   //  moderator
   savedImageUrls: [],
-  single_announce: {}
+  single_announce: {},
+  partCategories: [],
 });
 
 export const state = () => getInitialState();
@@ -358,7 +359,10 @@ export const getters = {
   getOfferFaq: s => s.offer_faq,
   getUserDeletedAutoSalonOffer: s => s.user_deleted_auto_salon_offers,
   getActiveMyOffers: s => s.active_my_offers,
-  offerGenerations: s => s.offer_generations
+  offerGenerations: s => s.offer_generations,
+//  moderator
+  partCategories: s => s.partCategories
+
 };
 
 const objectNotEmpty = (state, commit, property) => {
