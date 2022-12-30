@@ -145,6 +145,7 @@ export default {
         })
         this.pending = false;
         this.closeChatModal();
+        this.$toasted.success(this.$t('saved_changes'))
         this.selected = [];
         this.$nuxt.refresh();
       }catch (e){
