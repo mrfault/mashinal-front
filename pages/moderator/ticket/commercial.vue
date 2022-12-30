@@ -654,40 +654,11 @@
       :toggle="openLog"
       @close="openLog = false"
     >
-      <div class="log">
-        <small class="w-100 mb-4 text-right text-red">* {{ $t('old_value') }}
-          <icon name="arrow-right"></icon>
-          {{ $t('new_value') }}</small>
-        <div class="body">
-          <div
-            v-if="single_announce.btl_announces.length"
-          >
-            <!--            BTL : {{ getBtlUserName }}-->
-          </div>
-          <div
-            v-for="changeLog in single_announce.change_log"
-            v-if="
-                  (!changeLog.changes.open_count &&
-                    changeLog.user_id === single_announce.user_id)
-                "
-            :key="changeLog.id"
-          >
-            {{ changeLog.user.name }} {{ changeLog.user.lastname }} /
-            {{ formatDate(changeLog.created_at) }}
-            <br/>
-            <div
-              v-for="(value, key) in changeLog.original"
-              :key="key + '_changes'"
-            >
-              <div v-if="!['admin_user_id'].includes(key)" class="my-2" style="border-bottom: 1px solid #dadada">
-                {{ $t(key) }}: {{ (key === 'created_at') ? formatDate(value) : value }}
-                <icon name="arrow-right"></icon>
-                {{ (key === 'created_at') ? formatDate(changeLog.changes[key]) : changeLog.changes[key] }}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <change-log
+        :logs="single_announce.change_log"
+        :btl="single_announce.btl_announces"
+        :user-id="single_announce.user_id"
+      />
     </modal-popup>
   </div>
 </template>
@@ -710,7 +681,7 @@ import SellFilters from '~/components/sell/SellFilters'
 import TitleWithLine from "~/components/global/titleWithLine";
 import FormRadioGroup from "~/components/forms/FormRadioGroup";
 import SellLastStep from '~/components/sell/SellLastStep';
-
+import ChangeLog from "~/components/moderator/changeLog";
 export default {
 
   name: 'commercial-pages-moderation',
@@ -732,6 +703,7 @@ export default {
     SellFilters,
     PopularComments,
     FormRadioGroup,
+    ChangeLog
   },
 
 
