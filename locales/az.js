@@ -2460,7 +2460,6 @@ export default {
   old_value: "Əvvəlki məna",
   new_value: "Yeni məna",
   created_at: "Yaradılıb",
-  video_360_successfully_upload: "Video uğurla yükləndi",
   interior_360_successfully_upload: "İnteryer 360 uğurla yükləndi",
   add_video_360: "360 (video) Əlavə et",
   add_interior_360: "360 interior əlavə et",
@@ -2468,5 +2467,6 @@ export default {
   cars_with_damage_sentence: "ban elementlərində zədə mövcud olan avtomobillər",
   second_or_more: "Xeyr",
   forbidden_give_links_text:
-    "Məlumatda linklərinin göstərilməsi, elektron poçt ünvanının, baxış keçirmə məkanın ünvanının, telefon nömrəsinin, qiymətin və xidmətlərin təklifi qadağandır."
+    "Məlumatda linklərinin göstərilməsi, elektron poçt ünvanının, baxış keçirmə məkanın ünvanının, telefon nömrəsinin, qiymətin və xidmətlərin təklifi qadağandır.",
+  customs_clearance: 'Gömrük rəsmiləşdirilməsi',
 };

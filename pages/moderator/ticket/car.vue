@@ -523,40 +523,11 @@
       :toggle="openLog"
       @close="openLog = false"
     >
-      <div class="log">
-        <small class="w-100 mb-4 text-right text-red">* {{ $t('old_value') }}
-          <icon name="arrow-right"></icon>
-          {{ $t('new_value') }}</small>
-        <div class="body">
-          <div
-            v-if="single_announce.btl_announces.length"
-          >
-            <!--            BTL : {{ getBtlUserName }}-->
-          </div>
-          <div
-            v-for="changeLog in single_announce.change_log"
-            v-if="
-                  (!changeLog.changes.open_count &&
-                    changeLog.user_id === single_announce.user_id)
-                "
-            :key="changeLog.id"
-          >
-            {{ changeLog.user.name }} {{ changeLog.user.lastname }} /
-            {{ formatDate(changeLog.created_at) }}
-            <br/>
-            <div
-              v-for="(value, key) in changeLog.original"
-              :key="key + '_changes'"
-            >
-              <div v-if="!['admin_user_id'].includes(key)" class="my-2" style="border-bottom: 1px solid #dadada">
-                {{ $t(key) }}: {{ (key === 'created_at') ? formatDate(value) : value }}
-                <icon name="arrow-right"></icon>
-                {{ (key === 'created_at') ? formatDate(changeLog.changes[key]) : changeLog.changes[key] }}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <change-log
+        :logs="single_announce.change_log"
+        :btl="single_announce.btl_announces"
+        :user-id="single_announce.user_id"
+      />
     </modal-popup>
   </div>
   <div
@@ -586,6 +557,7 @@ import TitleWithLineAndRejectReason from '~/components/moderator/titleWithLineAn
 import UploadImageModerator from '~/components/moderator/UploadImageModerator'
 import PhotoRejectReason from "~/pages/moderator/photoReject/PhotoRejectReason";
 import Interior360Viewer from "~/components/Interior360Viewer";
+import ChangeLog from "~/components/moderator/changeLog";
 
 
 export default {
@@ -609,8 +581,8 @@ export default {
     SellLastStep,
     UploadImageModerator,
     PhotoRejectReason,
-    Interior360Viewer
-
+    Interior360Viewer,
+    ChangeLog,
   },
   data() {
     return {
@@ -1280,9 +1252,7 @@ export default {
     addDeletedImagesToList(e) {
       this.deleteArr.push(e)
     },
-    formatDate(dte) {
-      return moment(dte).format('DD.MM.YYYY HH:mm')
-    },
+
 
     //handle image
     async addFiles(v) {
