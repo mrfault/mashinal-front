@@ -248,7 +248,7 @@
               </div>
               <!--              modification-->
               <div
-                v-if="data.modifications && data.modifications.length && form.transmission  && form.modification"
+                v-if="data.modifications && data.modifications.length && form.transmission "
                 class="row"
               >
                 <div class="col-12">
@@ -1229,14 +1229,7 @@ export default {
       this.data.modifications = arr;
 
     },
-    getDataTransmissions(obj) {
-      console.log("salam", obj)
-      console.log(obj.map((o) => ({
-        name: this.$t('type_of_drive_values')[o.box_id],
-        key: o.box_id,
-      })))
 
-    },
 
     //handle actions
     async deleteByIndex(index) {
@@ -1355,7 +1348,6 @@ export default {
             this.$toast.success(this.$t('video_360_successfully_upload'))
             this.form.video_360_url = res.data.data.url
             this.form.video_360_id = res.data.data.id
-            console.log(formData)
           }
         })
     },
@@ -1554,7 +1546,6 @@ export default {
     form: {
       deep: true,
       handler() {
-        console.log("form salam",this.form)
         if (this.form.brandObj == {}) {
           this.form.model_id = null;
           // this.form.model = {};
