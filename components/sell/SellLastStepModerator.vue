@@ -8,7 +8,7 @@
     @action="$emit('clean')"
     @back="$emit('close')"
   >
-    <div class="sell_last-step" v-if="single_announce">
+    <div v-if="single_announce" class="sell_last-step">
       <div
         v-if="showAllOptions"
         :class="{
@@ -27,6 +27,9 @@
           />
           <slot v-if="!form.images_360 && !no360" name="360_exterior"></slot>
         </template>
+          <slot v-if="form.images_360 && form.images_360.length" name="360_exterior_content"></slot>
+
+
         <title-with-line-and-reject-reason
           :no-approval="!single_announce.images_360.length"
           title="360_exterior"
@@ -52,19 +55,25 @@
           <section class="mb-4">
             <div
               class="section-part__container"
-              style="display: flex; justify-content: space-between;"
             >
-              <div class="col-md-4">
-                <input class="btn" type="file" v-on:change="add360Interior"/>
+              <div class="row justify-content-between align-items-center">
+
+                <div class="col-auto">
+                  <input class="btn" type="file" v-on:change="add360Interior"/>
+                </div>
+                <div class="col-auto mt-2 mt-lg-0">
+                  <button
+                    v-if="single_announce.interior_360"
+                    class="btn btn-danger mb-2"
+                    style="float: right;"
+                    @click="handleRemoveInterior"
+                  >
+                    360 İnteryeri sil
+                  </button>
+                </div>
+
+
               </div>
-              <button
-                v-if="single_announce.interior_360"
-                class="btn btn-danger mb-2"
-                style="float: right;"
-                @click="handleRemoveInterior"
-              >
-                360 İnteryeri sil
-              </button>
             </div>
           </section>
           <Interior360Viewer

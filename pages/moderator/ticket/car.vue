@@ -371,6 +371,17 @@
                     </div>
                   </div>
                 </template>
+                <template v-slot:360_exterior_content>
+                  <vue-three-sixty
+                    showZoom
+                    disable-zoom
+                    :amount="single_announce.images_360.length"
+                    buttonClass="d-none"
+                    :files="single_announce.images_360"
+                    putMainImage
+                  />
+                </template>
+
                 <!--                  ------------------------    ------------------------    ------------------------    ------------------------    ------------------------    -------------------------->
 
                 <!--                  ------------------------    ------------------------    ------------------------    ------------------------    ------------------------    -------------------------->
@@ -525,8 +536,8 @@
       @close="openLog = false"
     >
       <change-log
-        :logs="single_announce.change_log"
         :btl="single_announce.btl_announces"
+        :logs="single_announce.change_log"
         :user-id="single_announce.user_id"
       />
     </modal-popup>
@@ -1352,7 +1363,6 @@ export default {
           }
         })
     },
-
 
 
 // handle image reject
