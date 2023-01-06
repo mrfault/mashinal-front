@@ -1,625 +1,626 @@
 <template>
-  <div class="container">
-    <!--    breadcrumbs-->
-    <breadcrumbs id="brdcrmbs1" :crumbs="crumbs"/>
-    <!--    details-->
-    <div class="card w-100">
-      <template v-if="single_announce">
-        <!--        userdata-->
-        <section class="row">
-          <div class="col-12 col-md-6 col-lg-9">
-            <user-details
-              :brand="form.brandObj"
-              :createdAt="single_announce.created_at"
-              :is-autosalon="single_announce.is_autosalon"
-              :is-external-salon="single_announce.is_external_salon"
-              :userData="single_announce.user"
-            />
-          </div>
-          <div v-if="single_announce.change_log && single_announce.change_log.length"
-               class="col-12 col-md-6 col-lg-3 d-flex justify-content-end">
-            <button
-              :class="{ button_loading: button_loading }"
-              class="'btn btn--green"
-              @click.prevent="openLog = true"
-            >
-              {{ $t('show_logs') }}
-            </button>
-          </div>
-        </section>
+  <div class="pages-announcement-edit">
+    <div class="w-100  px-3 px-md-0">
+      <!--    breadcrumbs-->
+      <breadcrumbs id="brdcrmbs1" :crumbs="crumbs"/>
+      <!--    details-->
+      <div class="card w-100">
+        <template v-if="single_announce">
+          <!--        userdata-->
+          <section class="row">
+            <div class="col-12 col-lg-9">
+              <user-details
+                :brand="form.brandObj"
+                :createdAt="single_announce.created_at"
+                :is-autosalon="single_announce.is_autosalon"
+                :is-external-salon="single_announce.is_external_salon"
+                :userData="single_announce.user"
+              />
+            </div>
+            <div v-if="single_announce.change_log && single_announce.change_log.length"
+                 class="col-12 col-lg-3 d-flex justify-content-end">
+              <button
+                :class="{ button_loading: button_loading }"
+                class="'btn btn--green"
+                @click.prevent="openLog = true"
+              >
+                {{ $t('show_logs') }}
+              </button>
+            </div>
+          </section>
 
-        <!--    brand  -->
-        <section class="row">
-          <div class="col-12">
-            <title-with-line-and-reject-reason
-              :no-approval="!(admin_user.admin_group === 1 || admin_user.admin_group === 2)"
-              :old-value="(admin_user.admin_group !== 2 && old_brand) ? old_brand : ''"
-              rejectKey="brand"
-              title="mark"
-              @change="changeReason"
-            />
-          </div>
-          <div v-if="getBrands && getBrands.length" class="col-12 col-lg-3">
-            <form-select
-              :key="refresh+1"
-              v-model="form.brand"
-              :disabled="isModerator"
-              :label="$t('mark')"
-              :options="getBrands"
-              has-search
-              @change="handleChange({key:'brand',value: form.brand, name: getBrandName(form.brand, getBrands)})"
-            />
-          </div>
-        </section>
-        <!--    model  -->
-        <section class="row">
-          <div class="col-12">
-            <title-with-line-and-reject-reason
-              :no-approval="!(admin_user.admin_group === 1 || admin_user.admin_group === 2)"
-              :old-value="admin_user.admin_group !== 2 ? old_model : ''"
-              rejectKey="model"
-              title="model"
-              @change="changeReason"
-            />
-          </div>
-          <div v-if="getModels && getModels.length" class="col-12 col-lg-3">
-            <form-select
-              :key="refresh+1"
-              v-model="form.model"
-              :disabled="isModerator"
-              :label="$t('model')"
-              :options="getModels"
-              has-search
-              @change="handleChange({key:'model',value: form.model, name: getBrandName(form.model, getModels)})"
-            />
-          </div>
-          <div class="mb-4">
-            <!--          <multiselect-component-->
-            <!--            :with-all-option="false"-->
-            <!--            hasTranslation-->
-            <!--            :key="refresh+1"-->
-            <!--            @select-changed="handleChange"-->
-            <!--            :placeholder="$t('model')"-->
-            <!--            :multiple="false"-->
-            <!--            :default-value="model"-->
-            <!--            selected-key="model"-->
-            <!--            class="multiselect&#45;&#45;tires "-->
-            <!--            :options="getModels"-->
-            <!--          />-->
-          </div>
-        </section>
-        <!--    year  -->
-        <section class="row">
-          <div class="col-12">
-            <title-with-line-and-reject-reason
-              :no-approval="!(admin_user.admin_group === 1 || admin_user.admin_group === 2)"
-              :old-value="admin_user.admin_group !== 2 ? single_announce.year.toString() : ''"
-              rejectKey="year"
-              title="year"
-              @change="changeReason"
-            />
-          </div>
-          <div v-if="getYears && getYears.length" class="col-12 col-lg-3">
-            <form-select
-              :key="refresh+1"
-              v-model="form.year"
-              :disabled="isModerator"
-              :label="$t('year')"
-              :options="getYears"
-              has-search
-              @change="handleChange({key:'year',value: form.year, name: getBrandName(form.year, getModels)})"
-            />
-          </div>
-          <div class="mb-4">
-            <!--          <multiselect-component-->
-            <!--            :with-all-option="false"-->
-            <!--            hasTranslation-->
-            <!--            :key="refresh+1"-->
-            <!--            @select-changed="handleChange"-->
-            <!--            :placeholder="$t('year')"-->
-            <!--            :multiple="false"-->
-            <!--            :default-value="year"-->
-            <!--            selected-key="year"-->
-            <!--            class="multiselect&#45;&#45;tires "-->
-            <!--            :options="getYears"-->
-            <!--          />-->
-          </div>
-        </section>
-        <!--      image-->
-        <section v-if="single_announce && single_announce.media" class="row">
-          <div class="col-12">
-            <title-with-line-and-reject-reason
-              :subtitle="
+          <!--    brand  -->
+          <section class="row">
+            <div class="col-12">
+              <title-with-line-and-reject-reason
+                :no-approval="!(admin_user.admin_group === 1 || admin_user.admin_group === 2)"
+                :old-value="(admin_user.admin_group !== 2 && old_brand) ? old_brand : ''"
+                rejectKey="brand"
+                title="mark"
+                @change="changeReason"
+              />
+            </div>
+            <div v-if="getBrands && getBrands.length" class="col-12 col-lg-3">
+              <form-select
+                :key="refresh+1"
+                v-model="form.brand"
+                :disabled="isModerator"
+                :label="$t('mark')"
+                :options="getBrands"
+                has-search
+                @change="handleChange({key:'brand',value: form.brand, name: getBrandName(form.brand, getBrands)})"
+              />
+            </div>
+          </section>
+          <!--    model  -->
+          <section class="row">
+            <div class="col-12">
+              <title-with-line-and-reject-reason
+                :no-approval="!(admin_user.admin_group === 1 || admin_user.admin_group === 2)"
+                :old-value="admin_user.admin_group !== 2 ? old_model : ''"
+                rejectKey="model"
+                title="model"
+                @change="changeReason"
+              />
+            </div>
+            <div v-if="getModels && getModels.length" class="col-12 col-lg-3">
+              <form-select
+                :key="refresh+1"
+                v-model="form.model"
+                :disabled="isModerator"
+                :label="$t('model')"
+                :options="getModels"
+                has-search
+                @change="handleChange({key:'model',value: form.model, name: getBrandName(form.model, getModels)})"
+              />
+            </div>
+            <div class="mb-4">
+              <!--          <multiselect-component-->
+              <!--            :with-all-option="false"-->
+              <!--            hasTranslation-->
+              <!--            :key="refresh+1"-->
+              <!--            @select-changed="handleChange"-->
+              <!--            :placeholder="$t('model')"-->
+              <!--            :multiple="false"-->
+              <!--            :default-value="model"-->
+              <!--            selected-key="model"-->
+              <!--            class="multiselect&#45;&#45;tires "-->
+              <!--            :options="getModels"-->
+              <!--          />-->
+            </div>
+          </section>
+          <!--    year  -->
+          <section class="row">
+            <div class="col-12">
+              <title-with-line-and-reject-reason
+                :no-approval="!(admin_user.admin_group === 1 || admin_user.admin_group === 2)"
+                :old-value="admin_user.admin_group !== 2 ? single_announce.year.toString() : ''"
+                rejectKey="year"
+                title="year"
+                @change="changeReason"
+              />
+            </div>
+            <div v-if="getYears && getYears.length" class="col-12 col-lg-3">
+              <form-select
+                :key="refresh+1"
+                v-model="form.year"
+                :disabled="isModerator"
+                :label="$t('year')"
+                :options="getYears"
+                has-search
+                @change="handleChange({key:'year',value: form.year, name: getBrandName(form.year, getModels)})"
+              />
+            </div>
+            <div class="mb-4">
+              <!--          <multiselect-component-->
+              <!--            :with-all-option="false"-->
+              <!--            hasTranslation-->
+              <!--            :key="refresh+1"-->
+              <!--            @select-changed="handleChange"-->
+              <!--            :placeholder="$t('year')"-->
+              <!--            :multiple="false"-->
+              <!--            :default-value="year"-->
+              <!--            selected-key="year"-->
+              <!--            class="multiselect&#45;&#45;tires "-->
+              <!--            :options="getYears"-->
+              <!--          />-->
+            </div>
+          </section>
+          <!--      image-->
+          <section v-if="single_announce && single_announce.media" class="row">
+            <div class="col-12">
+              <title-with-line-and-reject-reason
+                :subtitle="
                       $t('at_least_5_photos', {
                         min: minFiles,
                         max: maxFiles,
                       }).toLowerCase()
                     "
-              hideRejectReason
-              title="photos"
-            >
-              <div class="mb-2 ml-2" style="display: inline-block; z-index: 0;">
-                <reject-reason
-                  :disabled-value="true"
-                  rejectKey="image"
-                  @change="changeReason"
-                />
-              </div>
+                hideRejectReason
+                title="photos"
+              >
+                <div class="mb-2 ml-2" style="display: inline-block; z-index: 0;">
+                  <reject-reason
+                    :disabled-value="true"
+                    rejectKey="image"
+                    @change="changeReason"
+                  />
+                </div>
 
-            </title-with-line-and-reject-reason>
-          </div>
-          <div class="col-12">
-            <upload-image-moderator
-              :announce="single_announce"
-              :changePosition="saved_images.length === imagesBase64.length"
-              :default-images="single_announce.media"
-              :is-edit="false"
-              :load-croppa="true"
-              :max_files="30"
-              :saved_images="saved_images"
-              :stopUploading="imagesBase64.length >= 20"
-              page="sell"
-              url="/"
-              @addFiles="addFiles"
-              @change="addImages"
-              @deletedIndex="deleteByIndex"
-              @passBase64Images="passBase64Images"
-              @replaceImage="replaceImage"
-            />
-          </div>
-        </section>
-        <!--    color  -->
-        <section class="row">
-          <div class="col-12">
-            <title-with-line-and-reject-reason
-              :no-approval="!(admin_user.admin_group === 1 || admin_user.admin_group === 2)"
-              rejectKey="color"
-              title="color"
-              @change="changeReason"
-            />
-          </div>
+              </title-with-line-and-reject-reason>
+            </div>
+            <div class="col-12">
+              <upload-image-moderator
+                :announce="single_announce"
+                :changePosition="saved_images.length === imagesBase64.length"
+                :default-images="single_announce.media"
+                :is-edit="false"
+                :load-croppa="true"
+                :max_files="30"
+                :saved_images="saved_images"
+                :stopUploading="imagesBase64.length >= 20"
+                page="sell"
+                url="/"
+                @addFiles="addFiles"
+                @change="addImages"
+                @deletedIndex="deleteByIndex"
+                @passBase64Images="passBase64Images"
+                @replaceImage="replaceImage"
+              />
+            </div>
+          </section>
+          <!--    color  -->
+          <section class="row">
+            <div class="col-12">
+              <title-with-line-and-reject-reason
+                :no-approval="!(admin_user.admin_group === 1 || admin_user.admin_group === 2)"
+                rejectKey="color"
+                title="color"
+                @change="changeReason"
+              />
+            </div>
 
-          <div v-if="form.selectedColor && colors.length" class="col-12">
-            <color-options v-model="form.selectedColor" :hide-matt="type !== 'cars'" :limit="2"
-                           :matt="form.is_matte" :multiple="type === 'cars'" @change="removeError('selectedColor')"
-                           @change-matt="form.is_matte = $event"/>
-          </div>
-        </section>
-        <!--      mileage-->
-        <section class="row">
-          <div class="col-12">
-            <title-with-line-and-reject-reason
-              no-approval
-              reject-key="mileage"
-              required
-              title="mileage"
-              @change="changeReason"
-            />
-          </div>
-          <div class="col-12 d-flex align-items-center">
-            <form-numeric-input
-              v-model="single_announce.mileage"
-              :invalid="isInvalid('mileage')"
-              :min="0"
-              :placeholder="$t('mileage')"
-              input-class="w-133"
-              @change="getChange($event,'mileage')"
-            />
+            <div v-if="form.selectedColor && colors.length" class="col-12">
+              <color-options v-model="form.selectedColor" :hide-matt="type !== 'cars'" :limit="2"
+                             :matt="form.is_matte" :multiple="type === 'cars'" @change="removeError('selectedColor')"
+                             @change-matt="form.is_matte = $event"/>
+            </div>
+          </section>
+          <!--      mileage-->
+          <section class="row">
+            <div class="col-12">
+              <title-with-line-and-reject-reason
+                no-approval
+                reject-key="mileage"
+                required
+                title="mileage"
+                @change="changeReason"
+              />
+            </div>
+            <div class="col-12 d-flex align-items-center">
+              <form-numeric-input
+                v-model="single_announce.mileage"
+                :invalid="isInvalid('mileage')"
+                :min="0"
+                :placeholder="$t('mileage')"
+                input-class="w-133"
+                @change="getChange($event,'mileage')"
+              />
 
-            <form-checkbox
-              :label="$t('is_new')"
-              :value="single_announce.is_new"
-              input-name="is_new"
-              transparent
-              @change="checkboxChanged"
-            />
+              <form-checkbox
+                :label="$t('is_new')"
+                :value="single_announce.is_new"
+                input-name="is_new"
+                transparent
+                @change="checkboxChanged"
+              />
 
-            <form-checkbox
-              v-if="!single_announce.is_external_salon"
-              :label="$t('in_garanty')"
-              :value="single_announce.guaranty"
-              input-name="guaranty"
-              transparent
-              @change="checkboxChanged"
-            />
+              <form-checkbox
+                v-if="!single_announce.is_external_salon"
+                :label="$t('in_garanty')"
+                :value="single_announce.guaranty"
+                input-name="guaranty"
+                transparent
+                @change="checkboxChanged"
+              />
 
-            <form-checkbox
-              v-if="!single_announce.is_external_salon"
-              :label="$t('not_cleared')"
-              :value="single_announce.customed_id"
-              input-name="customs_clearance"
-              transparent
-              @change="checkboxChanged"
-            />
+              <form-checkbox
+                v-if="!single_announce.is_external_salon"
+                :label="$t('not_cleared')"
+                :value="single_announce.customed_id"
+                input-name="customs_clearance"
+                transparent
+                @change="checkboxChanged"
+              />
 
-            <form-checkbox
-              :label="$t('bitie')"
-              :value="single_announce.status_id"
-              input-name="bitie"
-              transparent
-              @change="checkboxChanged"
-            >
-              <popover
-                :message="
+              <form-checkbox
+                :label="$t('bitie')"
+                :value="single_announce.status_id"
+                input-name="bitie"
+                transparent
+                @change="checkboxChanged"
+              >
+                <popover
+                  :message="
                     $t(
                       'with_significant_damage_to_body_elements_that_do_not_move_on_their_own',
                     )
                   "
-                :width="175"
-                class="white-space-pre-wrap-span"
+                  :width="175"
+                  class="white-space-pre-wrap-span"
+                />
+              </form-checkbox>
+            </div>
+          </section>
+          <!--      region-->
+          <section class="row">
+            <div class="col-12">
+              <title-with-line-and-reject-reason
+                description="it_will_not_be_possible_to_change_the_city_after_accommodation"
+                no-approval
+                title="region_and_place_of_inspection"/>
+            </div>
+
+            <div v-if="!single_announce.is_external_salon" class="col-4 col-md-6 col-lg-3">
+              <form-select
+                id="region_id"
+                :key="refresh+1"
+                v-model="form.region_id"
+                :disabled="isModerator"
+                :has-error="errors.includes('region_id')"
+                :label="$t('region')"
+                :options="sell_options.regions"
+                :value="single_announce.region_id"
+                has-search
+                selected-key="region_id"
+                @change="removeError('region_id'), updatePreview('region')"
               />
-            </form-checkbox>
-          </div>
-        </section>
-        <!--      region-->
-        <section class="row">
-          <div class="col-12">
-            <title-with-line-and-reject-reason
-              description="it_will_not_be_possible_to_change_the_city_after_accommodation"
-              no-approval
-              title="region_and_place_of_inspection"/>
-          </div>
-
-          <div v-if="!single_announce.is_external_salon" class="col-4 col-md-6 col-lg-3">
-            <form-select
-              id="region_id"
-              :key="refresh+1"
-              v-model="form.region_id"
-              :disabled="isModerator"
-              :has-error="errors.includes('region_id')"
-              :label="$t('region')"
-              :options="sell_options.regions"
-              :value="single_announce.region_id"
-              has-search
-              selected-key="region_id"
-              @change="removeError('region_id'), updatePreview('region')"
-            />
-          </div>
-          <div v-if="single_announce.is_external_salon" class="col-lg-4 mb-2 mb-lg-0">
-            <form-select
-              v-model="form.country_id"
-              :clear-option="false"
-              :invalid="isInvalid('region_id')"
-              :label="$t('sale_region_country')"
-              :options="sellOptions.countries"
-              has-search
-              @change="removeError('region_id'), updatePreview('region')"
-            />
-          </div>
-          <div v-if="!single_announce.is_external_salon" class="col-4 col-md-6 col-lg-3">
-            <pick-on-map-button
-              :address="form.address"
-              :lat="Number(form.lat)"
-              :lng="Number(form.lng)"
-              @change-address="updateAddress"
-              @change-latlng="updateLatLng"
-            >
-              <form-text-input
-                v-model="form.address"
-                :placeholder="$t('address')"
-                icon-name="placeholder"
+            </div>
+            <div v-if="single_announce.is_external_salon" class="col-lg-4 mb-2 mb-lg-0">
+              <form-select
+                v-model="form.country_id"
+                :clear-option="false"
+                :invalid="isInvalid('region_id')"
+                :label="$t('sale_region_country')"
+                :options="sellOptions.countries"
+                has-search
+                @change="removeError('region_id'), updatePreview('region')"
               />
-            </pick-on-map-button>
-          </div>
-        </section>
-        <!--      price-->
-        <section class="row">
-          <div class="col-12">
-            <title-with-line-and-reject-reason
-              no-approval
-              title="price"/>
-          </div>
+            </div>
+            <div v-if="!single_announce.is_external_salon" class="col-4 col-md-6 col-lg-3">
+              <pick-on-map-button
+                :address="form.address"
+                :lat="Number(form.lat)"
+                :lng="Number(form.lng)"
+                @change-address="updateAddress"
+                @change-latlng="updateLatLng"
+              >
+                <form-text-input
+                  v-model="form.address"
+                  :placeholder="$t('address')"
+                  icon-name="placeholder"
+                />
+              </pick-on-map-button>
+            </div>
+          </section>
+          <!--      price-->
+          <section class="row">
+            <div class="col-12">
+              <title-with-line-and-reject-reason
+                no-approval
+                title="price"/>
+            </div>
 
-          <div class="col-auto">
-            <form-numeric-input
-              v-model="form.price"
-              :invalid="isInvalid('price')"
-              :placeholder="$t('price')"
-              input-class="w-133"
-              @change="removeError('price'), updatePreview('price')"
-            />
-          </div>
-          <div class="col-auto">
-            <form-switch
-              v-model="form.currency"
-              :options="getCurrencyOptions"
-              @change="updatePreview('currency')"
-            />
-          </div>
-        </section>
-        <!--      owner-->
-        <section class="row">
-          <div class="col-12">
-            <title-with-line-and-reject-reason
-              no-approval
-              title="first_owner_question"/>
-          </div>
+            <div class="col-auto">
+              <form-numeric-input
+                v-model="form.price"
+                :invalid="isInvalid('price')"
+                :placeholder="$t('price')"
+                input-class="w-133"
+                @change="removeError('price'), updatePreview('price')"
+              />
+            </div>
+            <div class="col-auto">
+              <form-switch
+                v-model="form.currency"
+                :options="getCurrencyOptions"
+                @change="updatePreview('currency')"
+              />
+            </div>
+          </section>
+          <!--      owner-->
+          <section class="row">
+            <div class="col-12">
+              <title-with-line-and-reject-reason
+                no-approval
+                title="first_owner_question"/>
+            </div>
 
-          <div class="col-auto">
-            <form-switch
-              v-model="form.owners"
-              :options="getOwnerOptions"
-              :value="single_announce.owners"
-              autoWidth
-              translated
-              @change="getChange($event,'owner_type')"
-            />
-          </div>
-        </section>
-        <!--      number/vin-->
-        <section class="row">
-          <div class="col-12">
-            <title-with-line-and-reject-reason
-              v-if="
+            <div class="col-auto">
+              <form-switch
+                v-model="form.owners"
+                :options="getOwnerOptions"
+                :value="single_announce.owners"
+                autoWidth
+                translated
+                @change="getChange($event,'owner_type')"
+              />
+            </div>
+          </section>
+          <!--      number/vin-->
+          <section class="row">
+            <div class="col-12">
+              <title-with-line-and-reject-reason
+                v-if="
               !loggedIn ||
               (loggedIn && !user.autosalon) ||
               (loggedIn && user.autosalon && user.autosalon.is_official) ||
               user.external_salon
             "
-              id="anchor-car_or_vin"
-              :reject-key="form.car_number ? 'car_number' : 'vin'"
-              :required="
+                id="anchor-car_or_vin"
+                :reject-key="form.car_number ? 'car_number' : 'vin'"
+                :required="
               type === 'cars' || (type !== 'parts' && user.external_salon)
             "
-              :title="
+                :title="
               form.customs_clearance || user.external_salon
                 ? 'vin_carcase_number'
                 : 'license_plate_number_vin_or_carcase_number'
             "
 
-              spanId="anchor-vin"
-              @change="changeReason"
-            />
-            <title-with-line-and-reject-reason
-              v-else
-              id="anchor-car_or_vin"
-              :title="
+                spanId="anchor-vin"
+                @change="changeReason"
+              />
+              <title-with-line-and-reject-reason
+                v-else
+                id="anchor-car_or_vin"
+                :title="
               form.customs_clearance || user.external_salon
                 ? 'vin_carcase_number'
                 : 'license_plate_number_vin_or_carcase_number'
             "
-              reject-key="price"
-              spanId="anchor-vin"
-            />
-          </div>
-          <div class="col-auto">
-            <div
-              v-if="!form.customs_clearance && !user.external_salon"
-              id="anchor-car_number"
-            >
-              <form-text-input
-                v-model="form.car_number"
-                :mask="type === 'cars' ? '99 - AA - 999' : '99 - A{1,2} - 999'"
-                :placeholder="type === 'cars' ? '__ - __ - ___' : '__ - _ - ___'"
-                img-src="/img/flag.svg"
-                input-class="car-number-show-popover"
-                @change="removeError('car_number')"
-                @focus="showCarNumberDisclaimer"
-              >
-                <popover
-                  :message="$t('real-car-number-will-make-post-faster')"
-                  :width="190"
-                  name="car-number"
-                  text-class="text-red"
-                  @click="readCarNumberDisclaimer = true"
-                />
-              </form-text-input>
-              <form-checkbox
-                v-model="form.show_car_number"
-                :label="$t('show_car_number_on_site')"
-                class="mt-2 mt-lg-3"
-                input-name="show_car_number"
-                transparent
+                reject-key="price"
+                spanId="anchor-vin"
               />
             </div>
-            <div v-if="form.customs_clearance">
-              <template v-if="form && form.vin">
-                <form-textarea
-                  key="vin"
-                  v-model="form.vin"
-                  :mask="$maskAlphaNumeric('*****************')"
-                  :placeholder="$t('vin_carcase_number')"
-                  class="textfield-like-textarea"
-                  @change="removeError('vin')"
+            <div class="col-auto">
+              <div
+                v-if="!form.customs_clearance && !user.external_salon"
+                id="anchor-car_number"
+              >
+                <form-text-input
+                  v-model="form.car_number"
+                  :mask="type === 'cars' ? '99 - AA - 999' : '99 - A{1,2} - 999'"
+                  :placeholder="type === 'cars' ? '__ - __ - ___' : '__ - _ - ___'"
+                  img-src="/img/flag.svg"
+                  input-class="car-number-show-popover"
+                  @change="removeError('car_number')"
+                  @focus="showCarNumberDisclaimer"
                 >
-                  <popover :width="240" name="vin">
-                    <inline-svg src="/img/car-cert.svg"/>
-                  </popover>
-                </form-textarea>
-              </template>
-              <form-checkbox
-                v-model="form.show_vin"
-                :label="$t('show_vin_on_site')"
-                class="mt-2 mt-lg-3"
-                input-name="show_vin"
-                transparent
-              />
-            </div>
-          </div>
-        </section>
-        <!--      sell filters-->
-        <section class="row">
-          <div class="col-12">
-            <div class="sell-filters">
-              <div class="mt-2 mt-lg-3 car-filters_row">
-                <div class="d-flex mb-2 mb-lg-3" @click="collapsed = !collapsed;">
-                  <h2 class="title-with-line full-width">
-                    <span>{{ $t('other_options') }}</span>
-                  </h2>
-                  <icon :name="collapsed ? 'chevron-up' : 'chevron-down'" class="cursor-pointer"/>
-                </div>
+                  <popover
+                    :message="$t('real-car-number-will-make-post-faster')"
+                    :width="190"
+                    name="car-number"
+                    text-class="text-red"
+                    @click="readCarNumberDisclaimer = true"
+                  />
+                </form-text-input>
+                <form-checkbox
+                  v-model="form.show_car_number"
+                  :label="$t('show_car_number_on_site')"
+                  class="mt-2 mt-lg-3"
+                  input-name="show_car_number"
+                  transparent
+                />
               </div>
-              <transition-expand>
-                <div v-if="collapsed" class="w-100">
-                  <!--                power-->
-                  <div>
-                    <title-with-line-and-reject-reason no-approval title="engine_power_system"/>
-                    <div v-if="moto_options.config" class="row">
-                      <div v-for="input in moto_options.config.engine.sell_values['1']" :key="input.name"
-                           class="col-lg-4 mb-2 mb-lg-3">
-                        <pre>{{input}}</pre>
-                        <form-radio
-                          v-model="form.engine"
-                          :input-name="getKey(item)"
-                          :invalid="hasError(item)"
-                          :label="input.name[locale] || $t(input.name)"
-                          :radio-value="$notUndefined(input.id,input.key)"
-                          :id="`${input.name}-engine-${index}`"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <!--              cylinders-->
-                  <div>
-                    <title-with-line-and-reject-reason no-approval title="number_of_cylinders"/>
-                    <div v-if="moto_options.config" class="row">
-                      <div v-for="(input,index) in moto_options.config.cylinders.sell_values['1']" :key="input.name"
-                           class="col-lg-4 mb-2 mb-lg-3">
-                        <form-radio
-                          v-model="form.cylinders"
-                          :input-name="getKey(item)"
-                          :invalid="hasError(item)"
-                          :label="input.name[locale] || $t(input.name)"
-                          :radio-value="$notUndefined(input.id,input.key)"
-                          :id="`${input.name}-cylinders-${index}`"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <!--                gearing-Ötürücü -->
-                  <div>
-                    <title-with-line-and-reject-reason no-approval title="gearing"/>
-                    <div v-if="moto_options.config" class="row">
-                      <div v-for="(input,index) in moto_options.config.drive.sell_values['1']" :key="input.name"
-                           class="col-lg-4 mb-2 mb-lg-3">
-                        <form-radio
-                          v-model="form.drive"
-                          :input-name="getKey(item)"
-                          :invalid="hasError(item)"
-                          :label="input.name[locale] || $t(input.name)"
-                          :radio-value="$notUndefined(input.id,input.key)"
-                          :id="`${input.name}-drive-${index}`"
-                        />
-                      </div>
-                    </div>
-
-                  </div>
-                  <!--                fuel-->
-                  <div>
-                    <title-with-line-and-reject-reason no-approval title="fuel"/>
-                    <div v-if="moto_options.config" class="row">
-                      <div v-for="(input,index)  in moto_options.config.fuel_type.values" :key="input.name"
-                           class="col-lg-4 mb-2 mb-lg-3">
-                        <form-radio
-                          v-model="form.fuel_type"
-                          :input-name="getKey(item)"
-                          :invalid="hasError(item)"
-                          :label="input.name[locale] || $t(input.name)"
-                          :radio-value="$notUndefined(input.id,input.key)"
-                          :id="`${input.name}-fuel_type-${index}`"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <!--                box-->
-                  <div>
-                    <title-with-line-and-reject-reason no-approval title="box"/>
-                    <div v-if="moto_options.config" class="row">
-                      <div v-for="(input,index)  in moto_options.config.box.sell_values['1']" :key="input.name"
-                           class="col-lg-4 mb-2 mb-lg-3">
-                        <form-radio
-                          v-model="form.box"
-                          :input-name="getKey(item)"
-                          :invalid="hasError(item)"
-                          :label="input.name[locale] || $t(input.name)"
-                          :radio-value="$notUndefined(input.id,input.key)"
-                          :id="`${input.name}-box-${index}`"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <!--                the_number_of_measures /tact-->
-                  <div>
-                    <title-with-line-and-reject-reason no-approval title="the_number_of_measures"/>
-                    <div v-if="moto_options.config" class="row">
-                      <div v-for="(input,index)  in moto_options.config.number_of_vehicles.values" :key="input.name"
-                           class="col-lg-4 mb-2 mb-lg-3">
-                        <form-radio
-                          v-model="form.number_of_vehicles"
-                          :input-name="getKey(item)"
-                          :invalid="hasError(item)"
-                          :label="input.name[locale] || $t(input.name)"
-                          :radio-value="$notUndefined(input.id,input.key)"
-                          :id="`${input.name}-number_of_vehicles-${index}`"
-                        />
-                      </div>
-                    </div>
+              <div v-if="form.customs_clearance">
+                <template v-if="form && form.vin">
+                  <form-textarea
+                    key="vin"
+                    v-model="form.vin"
+                    :mask="$maskAlphaNumeric('*****************')"
+                    :placeholder="$t('vin_carcase_number')"
+                    class="textfield-like-textarea"
+                    @change="removeError('vin')"
+                  >
+                    <popover :width="240" name="vin">
+                      <inline-svg src="/img/car-cert.svg"/>
+                    </popover>
+                  </form-textarea>
+                </template>
+                <form-checkbox
+                  v-model="form.show_vin"
+                  :label="$t('show_vin_on_site')"
+                  class="mt-2 mt-lg-3"
+                  input-name="show_vin"
+                  transparent
+                />
+              </div>
+            </div>
+          </section>
+          <!--      sell filters-->
+          <section class="row">
+            <div class="col-12">
+              <div class="sell-filters">
+                <div class="mt-2 mt-lg-3 car-filters_row">
+                  <div class="d-flex mb-2 mb-lg-3" @click="collapsed = !collapsed;">
+                    <h2 class="title-with-line full-width">
+                      <span>{{ $t('other_options') }}</span>
+                    </h2>
+                    <icon :name="collapsed ? 'chevron-up' : 'chevron-down'" class="cursor-pointer"/>
                   </div>
                 </div>
-              </transition-expand>
+                <transition-expand>
+                  <div v-if="collapsed" class="w-100">
+                    <!--                power-->
+                    <div>
+                      <title-with-line-and-reject-reason no-approval title="engine_power_system"/>
+                      <div v-if="moto_options.config" class="row">
+                        <div v-for="input in moto_options.config.engine.sell_values['1']" :key="input.name"
+                             class="col-lg-4 mb-2 mb-lg-3">
+                          <pre>{{ input }}</pre>
+                          <form-radio
+                            :id="`${input.name}-engine-${index}`"
+                            v-model="form.engine"
+                            :input-name="getKey(item)"
+                            :invalid="hasError(item)"
+                            :label="input.name[locale] || $t(input.name)"
+                            :radio-value="$notUndefined(input.id,input.key)"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <!--              cylinders-->
+                    <div>
+                      <title-with-line-and-reject-reason no-approval title="number_of_cylinders"/>
+                      <div v-if="moto_options.config" class="row">
+                        <div v-for="(input,index) in moto_options.config.cylinders.sell_values['1']" :key="input.name"
+                             class="col-lg-4 mb-2 mb-lg-3">
+                          <form-radio
+                            :id="`${input.name}-cylinders-${index}`"
+                            v-model="form.cylinders"
+                            :input-name="getKey(item)"
+                            :invalid="hasError(item)"
+                            :label="input.name[locale] || $t(input.name)"
+                            :radio-value="$notUndefined(input.id,input.key)"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <!--                gearing-Ötürücü -->
+                    <div>
+                      <title-with-line-and-reject-reason no-approval title="gearing"/>
+                      <div v-if="moto_options.config" class="row">
+                        <div v-for="(input,index) in moto_options.config.drive.sell_values['1']" :key="input.name"
+                             class="col-lg-4 mb-2 mb-lg-3">
+                          <form-radio
+                            :id="`${input.name}-drive-${index}`"
+                            v-model="form.drive"
+                            :input-name="getKey(item)"
+                            :invalid="hasError(item)"
+                            :label="input.name[locale] || $t(input.name)"
+                            :radio-value="$notUndefined(input.id,input.key)"
+                          />
+                        </div>
+                      </div>
+
+                    </div>
+                    <!--                fuel-->
+                    <div>
+                      <title-with-line-and-reject-reason no-approval title="fuel"/>
+                      <div v-if="moto_options.config" class="row">
+                        <div v-for="(input,index)  in moto_options.config.fuel_type.values" :key="input.name"
+                             class="col-lg-4 mb-2 mb-lg-3">
+                          <form-radio
+                            :id="`${input.name}-fuel_type-${index}`"
+                            v-model="form.fuel_type"
+                            :input-name="getKey(item)"
+                            :invalid="hasError(item)"
+                            :label="input.name[locale] || $t(input.name)"
+                            :radio-value="$notUndefined(input.id,input.key)"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <!--                box-->
+                    <div>
+                      <title-with-line-and-reject-reason no-approval title="box"/>
+                      <div v-if="moto_options.config" class="row">
+                        <div v-for="(input,index)  in moto_options.config.box.sell_values['1']" :key="input.name"
+                             class="col-lg-4 mb-2 mb-lg-3">
+                          <form-radio
+                            :id="`${input.name}-box-${index}`"
+                            v-model="form.box"
+                            :input-name="getKey(item)"
+                            :invalid="hasError(item)"
+                            :label="input.name[locale] || $t(input.name)"
+                            :radio-value="$notUndefined(input.id,input.key)"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <!--                the_number_of_measures /tact-->
+                    <div>
+                      <title-with-line-and-reject-reason no-approval title="the_number_of_measures"/>
+                      <div v-if="moto_options.config" class="row">
+                        <div v-for="(input,index)  in moto_options.config.number_of_vehicles.values" :key="input.name"
+                             class="col-lg-4 mb-2 mb-lg-3">
+                          <form-radio
+                            :id="`${input.name}-number_of_vehicles-${index}`"
+                            v-model="form.number_of_vehicles"
+                            :input-name="getKey(item)"
+                            :invalid="hasError(item)"
+                            :label="input.name[locale] || $t(input.name)"
+                            :radio-value="$notUndefined(input.id,input.key)"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </transition-expand>
+              </div>
             </div>
+          </section>
+        </template>
+        <!--      comment-->
+        <div class="row mt-5">
+          <div class="col-12">
+            <title-with-line-and-reject-reason
+              description="forbidden_give_links_text"
+              no-approval
+              title="comment"
+            />
           </div>
-        </section>
-      </template>
-      <!--      comment-->
-      <div class="row mt-5">
-        <div class="col-12">
-          <title-with-line-and-reject-reason
-            description="forbidden_give_links_text"
-            no-approval
-            title="comment"
-          />
+          <div class="col-8">
+            <form-textarea
+              id="comment"
+              v-model="form.comment"
+              :class="{'w100' : ifPopularCommentsEmpty()}"
+              :maxlength="3000"
+              :placeholder="$t('comment')"
+            />
+            <popular-comments v-on:getComment="addComment"/>
+          </div>
         </div>
-        <div class="col-8">
-          <form-textarea
-            id="comment"
-            v-model="form.comment"
-            :class="{'w100' : ifPopularCommentsEmpty()}"
-            :maxlength="3000"
-            :placeholder="$t('comment')"
-          />
-          <popular-comments v-on:getComment="addComment"/>
-        </div>
-      </div>
-      <!--      actions-->
-      <div class="row mt-5">
-        <section v-if="admin_user.admin_group === 1" class="container"> <!--supervisor-->
-          <div class="row">
-            <div class="col-12">
-              <button v-if="rejectArray.length === 0" :class="{'button_loading':button_loading}"
-                      class="btn btn--green w-50"
+        <!--      actions-->
+        <div class="row mt-5">
+          <section v-if="admin_user.admin_group === 1" class="container"> <!--supervisor-->
+            <div class="row">
+              <div class="col-12">
+                <button v-if="rejectArray.length === 0" :class="{'button_loading':button_loading}"
+                        class="btn btn--green w-50"
 
-                      @click.prevent="sendData(1)">{{ $t('confirm') }}
-              </button>
-              <button :class="{'button_loading':button_loading}" class="btn btn--red w-50 ml-1"
+                        @click.prevent="sendData(1)">{{ $t('confirm') }}
+                </button>
+                <button :class="{'button_loading':button_loading}" class="btn btn--red w-50 ml-1"
 
-                      @click.prevent="sendData(0)">{{ $t('reject') }}
-              </button>
-              <button :class="{'button_loading':button_loading}" class="btn btn--pale-red w-50 ml-1"
+                        @click.prevent="sendData(0)">{{ $t('reject') }}
+                </button>
+                <button :class="{'button_loading':button_loading}" class="btn btn--pale-red w-50 ml-1"
 
-                      @click.prevent="sendData(3)"
-              >
-                {{ $t('deactive_announce') }}
-              </button>
-              <button class="btn btn--yellow w-50 ml-1" @click="handleBackToList">
-                {{ $t('back_to_list') }}
-              </button>
+                        @click.prevent="sendData(3)"
+                >
+                  {{ $t('deactive_announce') }}
+                </button>
+                <button class="btn btn--yellow w-50 ml-1" @click="handleBackToList">
+                  {{ $t('back_to_list') }}
+                </button>
+              </div>
             </div>
-          </div>
-        </section>
-        <section v-else-if="admin_user.admin_group === 2" class="container"> <!--moderator-->
-          <div class="row">
-            <div class="col-3 text-center">
+          </section>
+          <section v-else-if="admin_user.admin_group === 2" class="container"> <!--moderator-->
+            <div class="row">
+              <div class="col-3 text-center">
             <span class="timer">
               {{ getTimer.data }}
             </span>
-            </div>
-            <div class="col-3">
-              <input v-if="getTimer.unix > 60*2" v-model="form.delay_comment" :placeholder="$t('delay_comment')"
-                     type="text">
-            </div>
+              </div>
+              <div class="col-3">
+                <input v-if="getTimer.unix > 60*2" v-model="form.delay_comment" :placeholder="$t('delay_comment')"
+                       type="text">
+              </div>
 
-            <div class="col-6 text-center">
+              <div class="col-6 text-center">
             <span v-if="getTimer.unix < 60*2 || (getTimer.unix > 60*2 && form.delay_comment.length)">
               <button v-if="rejectArray.length === 0" :class="{'button_loading':button_loading}"
                       class="btn btn--green w-50"
@@ -633,65 +634,66 @@
                       @click.prevent="transferToSupervisor(true)">{{ $t('reject') }}</button>
             </span>
 
-              <button :class="{'button_loading':button_loading}" class="btn btn--green w-50"
+                <button :class="{'button_loading':button_loading}" class="btn btn--green w-50"
 
-                      @click.prevent="transferModal = true">{{ $t('Transfer to Supervisor') }}
-              </button>
+                        @click.prevent="transferModal = true">{{ $t('Transfer to Supervisor') }}
+                </button>
+              </div>
             </div>
-          </div>
-        </section>
-        <section v-else-if="admin_user.admin_group === 3" class="container"> <!--call center-->
-          <div class="row">
-            <div class="col-12">
-              <button :class="{'button_loading':button_loading}" class="btn btn--green w-50"
+          </section>
+          <section v-else-if="admin_user.admin_group === 3" class="container"> <!--call center-->
+            <div class="row">
+              <div class="col-12">
+                <button :class="{'button_loading':button_loading}" class="btn btn--green w-50"
 
-                      @click.prevent="sendData(2)">{{ $t('send_to_moderate') }}
-              </button>
+                        @click.prevent="sendData(2)">{{ $t('send_to_moderate') }}
+                </button>
 
-              <button :class="{'button_loading':button_loading}" class="btn btn--pale-red w-50 ml-1"
+                <button :class="{'button_loading':button_loading}" class="btn btn--pale-red w-50 ml-1"
 
-                      @click.prevent="sendData(3)"
-              >
-                {{ $t('deactive_announce') }}
-              </button>
+                        @click.prevent="sendData(3)"
+                >
+                  {{ $t('deactive_announce') }}
+                </button>
 
-              <button class="btn btn--yellow w-50 ml-1" @click="handleBackList">
-                {{ $t('back_to_list') }}
-              </button>
+                <button class="btn btn--yellow w-50 ml-1" @click="handleBackList">
+                  {{ $t('back_to_list') }}
+                </button>
 
-              <button class="btn btn--green w-50"
-                      @click.prevent="transferModal = true">{{ $t('Transfer to Supervisor') }}
-              </button>
+                <button class="btn btn--green w-50"
+                        @click.prevent="transferModal = true">{{ $t('Transfer to Supervisor') }}
+                </button>
 
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        </div>
+
       </div>
-
-    </div>
-    <!--    comment-->
-    <template
-      v-if="single_announce && single_announce.id  && admin_user.admin_group === 1 && single_announce.transferred">
-      <button
-        class="'btn btn--green"
-        @click="transferModal = true"
-      >
-        {{ $t('Show comment') }}
-      </button>
-    </template>
-    <!--    empty announce-->
-    <div v-if="!single_announce.id">
-      <div style="text-align: center">
-        <br><br>
-        <h2>{{ $t('not_have_pending') }} {{ $route.query.type }}</h2>
-        <!--<a :href="$route.fullPath">
-          <button class="section-post__btn add_announce">Get car ticket</button>
-        </a>
-        &nbsp;&nbsp;-->
-        <a href="javascript:void(0);">
-          <button class="btn btn--yellow w-50" @click="handleBackList">{{ $t('back_to_list') }}</button>
-        </a>
-        <br><br>
+      <!--    comment-->
+      <template
+        v-if="single_announce && single_announce.id  && admin_user.admin_group === 1 && single_announce.transferred">
+        <button
+          class="'btn btn--green"
+          @click="transferModal = true"
+        >
+          {{ $t('Show comment') }}
+        </button>
+      </template>
+      <!--    empty announce-->
+      <div v-if="!single_announce.id">
+        <div style="text-align: center">
+          <br><br>
+          <h2>{{ $t('not_have_pending') }} {{ $route.query.type }}</h2>
+          <!--<a :href="$route.fullPath">
+            <button class="section-post__btn add_announce">Get car ticket</button>
+          </a>
+          &nbsp;&nbsp;-->
+          <a href="javascript:void(0);">
+            <button class="btn btn--yellow w-50" @click="handleBackList">{{ $t('back_to_list') }}</button>
+          </a>
+          <br><br>
+        </div>
       </div>
     </div>
     <!--    logs modal-->

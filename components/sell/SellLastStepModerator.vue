@@ -15,7 +15,7 @@
           'disabled-content': type === 'cars' && !form.car_catalog_id && !edit,
         }"
       >
-
+        <slot name="form-inputs"/>
         <slot name="image"></slot>
 
         <title-with-line-and-reject-reason
@@ -23,7 +23,7 @@
           title="360_exterior"
           @change="changeReason"
         />
-        <slot name="360_exterior" v-if="!form.images_360"></slot>
+        <slot name="360_exterior"></slot>
         <vue-three-sixty
           v-if="form.images_360 && form.images_360.length"
           :amount="form.images_360 && form.images_360.length"
@@ -39,7 +39,7 @@
           title="360_interior"
           @change="changeReason"
         />
-<!--        <slot name="360_interior" v-if="!form.interior_360"></slot>-->
+        <!--        <slot name="360_interior" v-if="!form.interior_360"></slot>-->
         <section class="mb-4">
           <div
             class="section-part__container"
@@ -916,7 +916,7 @@ export default {
     },
 
 
-  //  ----------
+    //  ----------
     add360Interior(val) {
       var formData = new FormData()
       formData.append('image', val.target.files[0])
