@@ -413,8 +413,6 @@
                   transparent
                 />
               </div>
-<<<<<<< HEAD
-              <transition-expand>
                 <div v-if="collapsed" class="w-100">
                   <!--                power-->
                   <div>
@@ -518,43 +516,6 @@
                         />
                       </div>
                     </div>
-=======
-              <div v-if="form.customs_clearance">
-                <template v-if="form && form.vin">
-                  <form-textarea
-                    key="vin"
-                    v-model="form.vin"
-                    :mask="$maskAlphaNumeric('*****************')"
-                    :placeholder="$t('vin_carcase_number')"
-                    class="textfield-like-textarea"
-                    @change="removeError('vin')"
-                  >
-                    <popover :width="240" name="vin">
-                      <inline-svg src="/img/car-cert.svg"/>
-                    </popover>
-                  </form-textarea>
-                </template>
-                <form-checkbox
-                  v-model="form.show_vin"
-                  :label="$t('show_vin_on_site')"
-                  class="mt-2 mt-lg-3"
-                  input-name="show_vin"
-                  transparent
-                />
-              </div>
-            </div>
-          </section>
-          <!--      sell filters-->
-          <section class="row">
-            <div class="col-12">
-              <div class="sell-filters">
-                <div class="mt-2 mt-lg-3 car-filters_row">
-                  <div class="d-flex mb-2 mb-lg-3" @click="collapsed = !collapsed;">
-                    <h2 class="title-with-line full-width">
-                      <span>{{ $t('other_options') }}</span>
-                    </h2>
-                    <icon :name="collapsed ? 'chevron-up' : 'chevron-down'" class="cursor-pointer"/>
->>>>>>> feature/loa
                   </div>
                 </div>
                 <transition-expand>
@@ -665,7 +626,6 @@
                     </div>
                   </div>
                 </transition-expand>
-              </div>
             </div>
           </section>
         </template>
