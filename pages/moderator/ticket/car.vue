@@ -271,11 +271,11 @@
                         key: o.id,
                       }))
                     "
-                    :value="form.modification"
-                    @change="changeModification($event)"
-                  />
-                </div>
-                <div class="col-12 col-lg-9">
+                          :value="form.modification"
+                          @change="changeModification($event)"
+                        />
+                      </div>
+                      <div class="col-12 col-lg-9">
                   <span
                     v-if="smsRadarData && smsRadarData.engincapacity"
                     class="ma-smsradar"
@@ -1482,11 +1482,9 @@ export default {
       delete this.form.model_slug;
       delete this.form.brand_slug;
       this.form.id_unique = this.single_announce.id;
-      this.form.main_image = this.form.main_image || null;
       // this.form.generation = this.generation
       // this.form.car_catalog_id = this.modification
       this.form.rejectArray = this.rejectObj.rejectArray;
-      this.form.main_image = this.main_image
       this.form.saved_images = this.saved_images;
       let formData = new FormData()
       // formData.append('images_360', this.uploadedVideo360);

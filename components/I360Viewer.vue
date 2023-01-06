@@ -1,46 +1,55 @@
 <template>
   <div>
     <!-- 360 Viewer Container -->
-    <div class="v360-viewer-container" ref="viewerContainer" :id="identifier">
+    <div :id="identifier" ref="viewerContainer" class="v360-viewer-container">
       <!-- 360 Viewer Header -->
       <slot name="header"></slot>
       <!--/ 360 Viewer Header -->
 
       <!-- Percentage Loader -->
-      <div class="swiper-slide-bg v360-viewport" :class="{'mobile-version-360': fromFsPopup}" v-if="!imagesLoaded">
+      <div v-if="!imagesLoaded" :class="{'mobile-version-360': fromFsPopup}" class="swiper-slide-bg v360-viewport">
         <h3 v-if="!fromFsPopup" style="position: absolute; top: 30%;; color: #081a3e;">{{ $t('panorama_loading') }}</h3>
-        <loader><div class="percentage-center">{{ percentage }}%</div></loader>
+        <loader>
+          <div class="percentage-center">{{ percentage }}%</div>
+        </loader>
       </div>
       <div v-if="onFsLightBox  && announcement.interior_360" class="switch-pnlm">
-        <form-switch class="interior-exterior-switcher" auto-width style="width: fit-content;pointer-events: all;" v-model="showInteriorSwitcher" :options="interiorOptions"/>
-<!--        <button @click="$nuxt.$emit('switchInterior')" class="btn " style="background-color: #246EB2;color:white;" >{{ $t('interior')}}</button>-->
+        <form-switch v-model="showInteriorSwitcher" :options="interiorOptions" auto-width
+                     class="interior-exterior-switcher" style="width: fit-content;pointer-events: all;"/>
+        <!--        <button @click="$nuxt.$emit('switchInterior')" class="btn " style="background-color: #246EB2;color:white;" >{{ $t('interior')}}</button>-->
       </div>
       <!--/ Percentage Loader -->
 
       <!-- 360 viewport -->
-      <div class="v360-viewport" style="background-color: transparent;" ref="viewport" v-show="imagesLoaded">
+      <div v-show="imagesLoaded" ref="viewport" class="v360-viewport" style="background-color: transparent;">
         <canvas
-          class="v360-image-container"
           ref="imageContainer"
           v-hammer:pinch="onPinch"
           v-hammer:pinchend="onPinch"
-          v-hammer:pinchout="onPinchOut"
           v-hammer:pinchin="onPinchIn"
+          v-hammer:pinchout="onPinchOut"
+          class="v360-image-container"
         ></canvas>
-        <div class="v360-product-box-shadow"
-             v-if="boxShadow"
+        <div v-if="boxShadow"
              v-hammer:pinch="onPinch"
              v-hammer:pinchend="onPinch"
-             v-hammer:pinchout="onPinchOut"
              v-hammer:pinchin="onPinchIn"
+             v-hammer:pinchout="onPinchOut"
+             class="v360-product-box-shadow"
         ></div>
+        <div v-if="putMainImage" class="main-image-container-360">
+          <button class="btn btn--red selectMainImage" @click="selectMainImage()">Əsas şəkil et</button>
+          <button :disabled="deleteButton" class="btn btn--red selectMainImage" style="left: -20px;"
+                  @click="delete360()">Sil
+          </button>
+        </div>
       </div>
       <!--/ 360 viewport -->
 
       <!-- Fullscreen Button -->
       <abbr title="Fullscreen Toggle">
         <div class="v360-fullscreen-toggle text-center" @click="toggleFullScreen">
-          <div class="v360-fullscreen-toggle-btn" :class="(buttonClass == 'dark') ? 'text-light' : 'text-dark'">
+          <div :class="(buttonClass == 'dark') ? 'text-light' : 'text-dark'" class="v360-fullscreen-toggle-btn">
             <i :class="(!isFullScreen) ? 'fas fa-expand text-lg' : 'fas fa-compress text-lg'"></i>
           </div>
         </div>
@@ -51,7 +60,7 @@
     </div>
     <!--/ 360 Viewer Container -->
 
-    <div class="zoom-360-wrapper" v-if="showZoom && imagesLoaded">
+    <div v-if="showZoom && imagesLoaded" class="zoom-360-wrapper">
       <button class="btn btn--grey" @click="zoomIn">+</button>
       <button class="btn btn--grey" @click="zoomOut">-</button>
     </div>
@@ -68,13 +77,13 @@ export default {
   props: {
     onFsLightBox: {
       type: Boolean,
-      default:false,
+      default: false,
     },
-    showInterior:{
-      type:Boolean,
-      default:false,
+    showInterior: {
+      type: Boolean,
+      default: false,
     },
-    fromFsPopup:{
+    fromFsPopup: {
       type: Boolean,
       default: false,
     },
@@ -150,12 +159,14 @@ export default {
       type: Boolean,
       require: false,
       default: false
-    }
+    },
+    putMainImage: Boolean,
   },
   data() {
     return {
+      deleteButton:false,
       showInteriorSwitcher: false,
-      percentage:0,
+      percentage: 0,
       minScale: 0.5,
       maxScale: 4,
       scale: 0.2,
@@ -288,9 +299,9 @@ export default {
         try {
           this.amount = this.imageData.length;
 
-           this.imageData.forEach((src) => {
-              this.addImage(src);
-            });
+          this.imageData.forEach((src) => {
+            this.addImage(src);
+          });
         } catch (error) {
           console.error(`Something went wrong while loading images: ${error.message}`);
         }
@@ -300,7 +311,7 @@ export default {
     addImage(resultSrc) {
       const image = new Image();
 
-      image.src = resultSrc+'?cache=false';
+      image.src = resultSrc + '?cache=false';
       image.crossOrigin = 'anonymous'
       image.onload = this.onImageLoad.bind(this);
       image.onerror = this.onImageLoad.bind(this);
@@ -369,10 +380,10 @@ export default {
       }
     },
     next() {
-       this.turnRight()
+      this.turnRight()
     },
     prev() {
-       this.turnLeft()
+      this.turnLeft()
     },
     turnLeft() {
       this.moveActiveIndexDown(1);
@@ -488,7 +499,7 @@ export default {
 
       if (!cached) {
         this.currentCanvasImage = new Image()
-       // this.currentCanvasImage.crossOrigin = 'anonymous'
+        // this.currentCanvasImage.crossOrigin = 'anonymous'
         this.currentCanvasImage.src = this.currentImage
 
         this.currentCanvasImage.onload = () => {
@@ -858,6 +869,25 @@ export default {
     toggleFullScreen() {
       this.isFullScreen = !this.isFullScreen
     },
+
+    //main image
+    selectMainImage() {
+      this.$emit('mainSelecDted', this.currentCanvasImage.src)
+      this.$toasted.success('Əsas şəkil təyin olundu')
+    },
+    async delete360() {
+      try {
+        this.deleteButton = true;
+        await this.$axios.$post('/announce/remove_360', {
+          announcement_id: this.singleAnnounce.id
+        })
+        this.$emit('remove360', 'success')
+
+        this.$toasted.success('Silindi')
+      } catch (e) {
+        this.$toasted.error('Silinmədə problem yarandi')
+      }
+    },
   }
 }
 </script>
@@ -869,11 +899,13 @@ export default {
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
 .mobile-version-360 {
   .percentage-center {
     color: white;
   }
 }
+
 .switch-pnlm {
   position: absolute;
   top: -40px;
@@ -881,5 +913,15 @@ export default {
   display: flex;
   justify-content: flex-start;
   width: 100%;
+}
+
+.main-image-container-360 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
 }
 </style>

@@ -15,7 +15,7 @@
           'disabled-content': type === 'cars' && !form.car_catalog_id && !edit,
         }"
       >
-
+        <slot name="form-inputs"/>
         <slot name="image"></slot>
         <template v-if="!no360">
 
@@ -27,6 +27,12 @@
           />
           <slot v-if="!form.images_360 && !no360" name="360_exterior"></slot>
         </template>
+        <title-with-line-and-reject-reason
+          :no-approval="!single_announce.images_360.length"
+          title="360_exterior"
+          @change="changeReason"
+        />
+        <slot name="360_exterior"></slot>
         <vue-three-sixty
           v-if="form.images_360 && form.images_360.length && no360"
           :amount="form.images_360 && form.images_360.length"
