@@ -57,13 +57,11 @@
         <div class="item-overlay" v-if="showOverlay">
           <div class="item-overlay__top">
             <div class="item-overlay__top--left">
-              <div class="white-background"   v-if="!isProfilePage">
                 <add-favorite
+                  v-if="!isProfilePage"
                   :announcement="announcement"
 
                 />
-              </div>
-
             </div>
             <div
               class="item-overlay__top--right"
@@ -138,12 +136,10 @@
                 announcement.status === undefined || announcement.status == 1
               "
             >
-              <div class="white-background" v-if="getType === 'Car'">
                 <add-comparison
                   :id="announcement.id_unique"
+                  v-if="getType === 'Car'"
                 />
-              </div>
-
             </span>
 
             <div class="item-overlay__bottom--right">
@@ -439,23 +435,7 @@ export default {
 </script>
 
 <style lang="scss">
-.white-background {
-  background: #fff;
-  width: 22px;
-  height: 22px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 4px;
-  button {
-    width: 10px;
-    height: 17px;
-  }
-  .btn-compare {
-    width: 20px;
-    height: 20px;
-  }
-}
+
 .badge-icon {
   width: 20px;
   margin-right: 3px;

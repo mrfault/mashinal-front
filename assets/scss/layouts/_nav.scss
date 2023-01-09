@@ -8,6 +8,17 @@
     .exact-active i::before{
       color: $red-1;
     }
+    a,svg {
+      outline: none;
+    }
+    .exact-active {
+      svg {
+        outline: none;
+        path {
+          stroke: $red-1
+        }
+      }
+    }
   }
 }
 .mobile-nav {
@@ -273,5 +284,22 @@
         }
       }
     }
+  }
+}
+.white-background {
+  background: #fff;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  button {
+    width: 10px;
+    height: 17px;
+  }
+  .btn-compare {
+    width: 20px;
+    height: 20px;
   }
 }
