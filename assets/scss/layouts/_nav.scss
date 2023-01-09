@@ -286,6 +286,16 @@
     }
   }
 }
+.compare-icon-white {
+  svg {
+    margin-right: 5px;
+    margin-bottom: 2px;
+    path {
+      fill: white;
+      stroke: white;
+    }
+  }
+}
 .white-background {
   background: #fff;
   width: 22px;
