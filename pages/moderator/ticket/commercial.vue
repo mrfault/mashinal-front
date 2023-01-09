@@ -1,15 +1,726 @@
 <template>
-  <div style="margin: 10px 0 20px 0;">
-    <h1>Commercial</h1>
+  <div class="container">
+    <!--    breadcrumbs-->
+    <breadcrumbs id="brdcrmbs1" :crumbs="crumbs"/>
+
+    <!--    empty announce-->
+    <div v-if="!single_announce.id">
+      <div style="text-align: center">
+        <br><br>
+        <h2>{{ $t('not_have_pending') }} {{ $route.query.type }}</h2>
+        <!--<a :href="$route.fullPath">
+          <button class="section-post__btn add_announce">Get car ticket</button>
+        </a>
+        &nbsp;&nbsp;-->
+        <a href="javascript:void(0);">
+          <button class="btn btn--yellow w-50" @click="handleBackList">{{ $t('back_to_list') }}</button>
+        </a>
+        <br><br>
+      </div>
+    </div>
+    <!----------------------------------------Announce------------------------------------------------------------------------------------------------------------------------------------------->
+    <!----------------------------------------Announce------------------------------------------------------------------------------------------------------------------------------------------->
+
+    <!--    details-->
+    <div class="card w-100">
+
+      <!--        userdata-->
+      <section class="row">
+        <div class="col-12 col-md-6 col-lg-9">
+          <user-details
+            :brand="form.brandObj"
+            :createdAt="single_announce.created_at"
+            :is-autosalon="single_announce.is_autosalon"
+            :is-external-salon="single_announce.is_external_salon"
+            :userData="single_announce.user"
+          />
+        </div>
+        <div v-if="single_announce.change_log && single_announce.change_log.length"
+             class="col-12 col-md-6 col-lg-3 d-flex justify-content-end">
+          <button
+            :class="{ button_loading: button_loading }"
+            class="'btn btn--green px-2 py-1"
+            @click.prevent="openLog = true"
+          >
+            {{ $t('show_logs') }}
+          </button>
+        </div>
+      </section>
+
+      <!--    category  -->
+      <section class="row">
+        <div class="col-12">
+          <title-with-line-and-reject-reason
+            :no-approval="!isAdmin"
+            :oldValue="getOldCategory"
+            rejectKey="brand"
+            title="category"
+            @change="changeReason"
+          />
+        </div>
+        <div v-if="commercial_types && commercial_types.length" class="col-12 col-lg-3">
+          <form-select
+            v-model="form.commercial_type_id"
+            :disabled="isModerator"
+            :label="$t('category')"
+            :options="commercial_types.map((o) => ({
+                name: o.name,
+                key: o.id,
+              }))"
+            :value="form.category"
+            has-search
+            @change="handleCategoryChange($event)"
+          />
+        </div>
+      </section>
+
+      <!--        brand-->
+      <section class="row">
+        <div class="col-12">
+          <title-with-line-and-reject-reason
+            :no-approval="!(admin_user.admin_group === 1 || admin_user.admin_group === 2)"
+            rejectKey="brand"
+            title="mark"
+            @change="changeReason"
+          />
+        </div>
+        <div v-if="com_brands && com_brands[0].length" class="col-12 col-lg-3">
+          <form-select
+            v-model="form.brand"
+            :disabled="isModerator"
+            :label="$t('mark')"
+            :options="com_brands[0].map((o) => ({
+                name: o.name,
+                key: o.id,
+              }))"
+            :value="form.brand"
+            has-search
+            @change="handleBrandChange($event)"
+          />
+        </div>
+      </section>
+
+      <!--        model-->
+      <section class="row">
+        <div class="col-12">
+          <title-with-line-and-reject-reason
+            :no-approval="!(admin_user.admin_group === 1 || admin_user.admin_group === 2)"
+            rejectKey="model"
+            title="model"
+            @change="changeReason"
+          />
+        </div>
+        <div v-if="com_models && com_models[0].length" class="col-12 col-lg-3">
+          <form-select
+            v-model="form.model"
+            :disabled="isModerator"
+            :label="$t('model')"
+            :options="com_models[0].map((o) => ({
+                name: o.name,
+                key: o.id,
+              }))"
+            :value="form.model"
+            has-search
+            @change="handleChange($event)"
+          />
+        </div>
+      </section>
+
+      <!--    year  -->
+      <section class="row">
+        <div class="col-12">
+          <title-with-line-and-reject-reason
+            :no-approval="!isAdmin"
+            :old-value="(admin_user.admin_group !== 2 &&  single_announce.old_year) ? single_announce.old_year : ''"
+            rejectKey="year"
+            title="year"
+            @change="changeReason"
+          />
+        </div>
+        <div v-if="commercial_types && commercial_types.length" class="col-12 col-lg-3">
+          <form-select
+            v-model="form.year"
+            :disabled="isModerator"
+            :label="$t('year')"
+            :options="getYears"
+            :value="form.year"
+            has-search
+            @change="handleChange($event)"
+          />
+        </div>
+      </section>
+
+      <!--       photo-->
+      <section>
+
+        <title-with-line-and-reject-reason
+          :subtitle="
+                      $t('at_least_5_photos', {
+                        min: minFiles,
+                        max: maxFiles,
+                      }).toLowerCase()
+                    "
+          hideRejectReason
+          title="photos"
+        >
+          <div class="mb-2 ml-2" style="display: inline-block; z-index: 0;">
+            <reject-reason
+              :disabled-value="true"
+              rejectKey="image"
+              @change="changeReason"
+            />
+          </div>
+        </title-with-line-and-reject-reason>
+
+        <transition name="fade">
+          <photo-reject-reason
+            v-if="imageModal.isOpen"
+            :default_data="rejectObj.rejectArray"
+            :modal__title="$t('image_reject_reason')"
+            :type="'commercial'"
+            @close="imageModal.isOpen = false"
+            @save="savePhotoIssues"
+          />
+        </transition>
+        <upload-image-moderator
+          :announce="single_announce"
+          :changePosition="saved_images.length === imagesBase64.length"
+          :default-images="single_announce.media"
+          :is-edit="false"
+          :load-croppa="true"
+          :max_files="30"
+          :saved_images="saved_images" :stopUploading="imagesBase64.length >= 20"
+          page="sell"
+          url="/"
+          @addFiles="addFiles"
+          @change="addImages"
+          @deletedIndex="deleteByIndex"
+          @passBase64Images="passBase64Images"
+          @replaceImage="replaceImage"
+        />
+
+      </section>
+
+      <!--       color-->
+      <section class="row">
+        <div class="col-12">
+          <title-with-line-and-reject-reason
+            :no-approval="!(admin_user.admin_group === 1 || admin_user.admin_group === 2)"
+            rejectKey="color"
+            title="color"
+            @change="changeReason"
+          />
+        </div>
+
+        <div v-if="form.selectedColor && colors.length" class="col-12">
+          <color-options v-model="form.selectedColor" :limit="2"
+                         :matt="form.is_matte" :multiple="type === 'cars'" @change="removeError('selectedColor')"
+                         @change-matt="form.is_matte = $event"/>
+        </div>
+      </section>
+
+      <!--      mileage-->
+      <section class="row">
+        <div class="col-12">
+          <title-with-line-and-reject-reason
+            no-approval
+            reject-key="mileage"
+            required
+            title="mileage"
+            @change="changeReason"
+          />
+        </div>
+        <div class="col-auto">
+          <form-numeric-input
+            v-model="form.mileage"
+            :invalid="isInvalid('mileage')"
+            :min="0"
+            :placeholder="$t('mileage')"
+            input-class="w-133"
+            @change="getChange($event,'mileage')"
+          />
+        </div>
+        <div class="col-auto">
+          <form-checkbox
+            :label="$t('is_new')"
+            :value="single_announce.is_new"
+            input-name="is_new"
+            transparent
+            @change="checkboxChanged"
+          />
+        </div>
+        <div class="col-auto">
+          <form-checkbox
+            v-if="!single_announce.is_external_salon"
+            :label="$t('in_garanty')"
+            :value="single_announce.guaranty"
+            input-name="guaranty"
+            transparent
+            @change="checkboxChanged"
+          />
+        </div>
+        <div class="col-auto">
+          <form-checkbox
+            v-if="!single_announce.is_external_salon"
+            :label="$t('not_cleared')"
+            :value="single_announce.customed_id"
+            input-name="customs_clearance"
+            transparent
+            @change="checkboxChanged"
+          />
+        </div>
+        <div class="col-6 col-md-4 col-lg-2">
+          <form-checkbox
+            :label="$t('bitie')"
+            :value="single_announce.status_id"
+            input-name="bitie"
+            transparent
+            @change="checkboxChanged"
+          >
+            <popover
+              :message="
+                    $t(
+                      'with_significant_damage_to_body_elements_that_do_not_move_on_their_own',
+                    )
+                  "
+              :width="175"
+              class="white-space-pre-wrap-span"
+            />
+          </form-checkbox>
+        </div>
+      </section>
+
+
+      <!--      region-->
+      <section class="row">
+        <div class="col-12">
+          <title-with-line-and-reject-reason
+            description="it_will_not_be_possible_to_change_the_city_after_accommodation"
+            no-approval
+            title="region_and_place_of_inspection"/>
+        </div>
+
+        <div v-if="!single_announce.is_external_salon" class="col-4 col-md-6 col-lg-3">
+          <form-select
+            id="region_id"
+            :key="refresh+1"
+            v-model="form.region_id"
+            :disabled="isModerator"
+            :has-error="errors.includes('region_id')"
+            :label="$t('region')"
+            :options="sell_options.regions"
+            :value="single_announce.region_id"
+            has-search
+            selected-key="region_id"
+            @change="removeError('region_id'), updatePreview('region')"
+          />
+        </div>
+        <div v-if="single_announce.is_external_salon" class="col-lg-4 mb-2 mb-lg-0">
+          <form-select
+            v-model="form.country_id"
+            :clear-option="false"
+            :invalid="isInvalid('region_id')"
+            :label="$t('sale_region_country')"
+            :options="sell_options.countries"
+            has-search
+            @change="removeError('region_id'), updatePreview('region')"
+          />
+        </div>
+        <div v-if="!single_announce.is_external_salon" class="col-4 col-md-6 col-lg-3">
+          <pick-on-map-button
+            :address="form.address"
+            :lat="Number(form.lat)"
+            :lng="Number(form.lng)"
+            @change-address="updateAddress"
+            @change-latlng="updateLatLng"
+          >
+            <form-text-input
+              v-model="form.address"
+              :placeholder="$t('address')"
+              icon-name="placeholder"
+            />
+          </pick-on-map-button>
+        </div>
+      </section>
+
+      <!--      price-->
+      <section class="row">
+        <div class="col-12">
+          <title-with-line-and-reject-reason
+            no-approval
+            title="price"/>
+        </div>
+
+        <div class="col-auto">
+          <form-numeric-input
+            v-model="form.price"
+            :invalid="isInvalid('price')"
+            :placeholder="$t('price')"
+            input-class="w-133"
+            @change="removeError('price'), updatePreview('price')"
+          />
+        </div>
+        <div class="col-auto">
+          <form-switch
+            v-model="form.currency"
+            :options="getCurrencyOptions"
+            @change="updatePreview('currency')"
+          />
+        </div>
+      </section>
+
+      <!--      owner-->
+      <section class="row">
+        <div class="col-12">
+          <title-with-line-and-reject-reason
+            no-approval
+            title="first_owner_question"/>
+        </div>
+
+        <div class="col-auto">
+          <form-switch
+            v-model="form.owners"
+            :options="getOwnerOptions"
+            :value="single_announce.owners"
+            autoWidth
+            translated
+            @change="getChange($event,'owner_type')"
+          />
+        </div>
+      </section>
+
+      <!--      number/vin-->
+      <section class="row">
+        <div class="col-12">
+          <title-with-line-and-reject-reason
+            v-if="
+              !loggedIn ||
+              (loggedIn && !user.autosalon) ||
+              (loggedIn && user.autosalon && user.autosalon.is_official) ||
+              user.external_salon
+            "
+            id="anchor-car_or_vin"
+            :reject-key="form.car_number ? 'car_number' : 'vin'"
+            :required="
+              type === 'cars' || (type !== 'parts' && user.external_salon)
+            "
+            :title="
+              form.customs_clearance || user.external_salon
+                ? 'vin_carcase_number'
+                : 'license_plate_number_vin_or_carcase_number'
+            "
+
+            spanId="anchor-vin"
+            @change="changeReason"
+          />
+          <title-with-line-and-reject-reason
+            v-else
+            id="anchor-car_or_vin"
+            :title="
+              form.customs_clearance || user.external_salon
+                ? 'vin_carcase_number'
+                : 'license_plate_number_vin_or_carcase_number'
+            "
+            reject-key="price"
+            spanId="anchor-vin"
+          />
+        </div>
+        <div class="col-auto">
+          <div
+            v-if="!form.customs_clearance && !user.external_salon"
+            id="anchor-car_number"
+          >
+            <form-text-input
+              v-model="form.car_number"
+              :mask="type === 'cars' ? '99 - AA - 999' : '99 - A{1,2} - 999'"
+              :placeholder="type === 'cars' ? '__ - __ - ___' : '__ - _ - ___'"
+              img-src="/img/flag.svg"
+              input-class="car-number-show-popover"
+              @change="removeError('car_number')"
+              @focus="showCarNumberDisclaimer"
+            >
+              <popover
+                :message="$t('real-car-number-will-make-post-faster')"
+                :width="190"
+                name="car-number"
+                text-class="text-red"
+                @click="readCarNumberDisclaimer = true"
+              />
+            </form-text-input>
+            <form-checkbox
+              v-model="form.show_car_number"
+              :label="$t('show_car_number_on_site')"
+              class="mt-2 mt-lg-3"
+              input-name="show_car_number"
+              transparent
+            />
+          </div>
+          <div v-if="form.customs_clearance">
+            <template v-if="form && form.vin">
+              <form-textarea
+                key="vin"
+                v-model="form.vin"
+                :mask="$maskAlphaNumeric('*****************')"
+                :placeholder="$t('vin_carcase_number')"
+                class="textfield-like-textarea"
+                @change="removeError('vin')"
+              >
+                <popover :width="240" name="vin">
+                  <inline-svg src="/img/car-cert.svg"/>
+                </popover>
+              </form-textarea>
+            </template>
+            <form-checkbox
+              v-model="form.show_vin"
+              :label="$t('show_vin_on_site')"
+              class="mt-2 mt-lg-3"
+              input-name="show_vin"
+              transparent
+            />
+          </div>
+        </div>
+      </section>
+
+      <!--      sell filters-->
+      <section class="row">
+        <div class="col-12">
+          <div class="sell-filters">
+            <div class="mt-2 mt-lg-3 car-filters_row">
+              <div class="d-flex mb-2 mb-lg-3" @click="collapsed = !collapsed;">
+                <h2 class="title-with-line full-width">
+                  <span>{{ $t('other_options') }}</span>
+                </h2>
+                <icon :name="collapsed ? 'chevron-up' : 'chevron-down'" class="cursor-pointer"/>
+              </div>
+            </div>
+            <transition-expand>
+              <div v-if="collapsed" class="w-100">
+                <!--                power-->
+                <div class="row">
+                  <div class="col-12">
+                    <title-with-line-and-reject-reason no-approval title="horse_power"/>
+                  </div>
+                  <div class="col-auto">
+                    <form-numeric-input
+                      v-model="form.power"
+                      :invalid="hasError(item)"
+                      placeholder="horse_power"
+                      @change="handleChange($event)"
+                    />
+                  </div>
+                </div>
+                <!--                capacity -->
+                <div class="row">
+                  <div class="col-12">
+                    <title-with-line-and-reject-reason no-approval title="volume"/>
+                  </div>
+                  <div v-if="form.capacity" class="col-auto">
+                    <form-numeric-input
+                      v-model="form.capacity"
+                      :invalid="hasError(item)"
+                      placeholder="volume"
+                      @change="handleChange($event)"
+                    />
+                  </div>
+                </div>
+                <!--                sell filters radio-->
+                <div v-for="(item,indx) in com_filters" :key="indx">
+                  <title-with-line-and-reject-reason v-if="com_filters[indx].values && com_filters[indx].values.length"
+                                                     :title="item.type_key" no-approval/>
+                  <div v-if="com_filters[indx].values" class="row">
+                    <div v-for="(input,index)  in com_filters[indx].values" :key="input.name"
+                         class="col-lg-4 mb-2 mb-lg-3">
+                      <form-radio
+                        :id="`${input.name}-box-${index}`"
+                        v-model="form[item.search_key]"
+                        :input-name="getKey(item)"
+                        :invalid="hasError(item)"
+                        :label="input.name[locale] || $t(input.name)"
+                        :radio-value="$notUndefined(input.id,input.key)"
+                      />
+                    </div>
+                  </div>
+
+                </div>
+
+
+                <!--                comment-->
+                <div class="row">
+                  <div class="col-12">
+                    <title-with-line-and-reject-reason no-approval title="comment"/>
+                  </div>
+                  <div class="col-12 col-lg-8">
+                    <form-textarea v-model="form.comment"/>
+                  </div>
+                </div>
+              </div>
+            </transition-expand>
+          </div>
+        </div>
+      </section>
+
+
+      <!-------------------------------ACTIONS---------------------------------->
+      <section v-if="user && user.admin_group == 1" class="container mt-5 pl-0"> <!--supervisor-->
+        <div class="row">
+          <div class="col-12">
+            <button v-if="rejectArray.length == 0" :class="{'loading':button_loading}"
+                    class="'btn btn--green px-2 py-1"
+                    @click.prevent="sendData(1)">{{ $t('confirm') }}
+            </button>
+            <button :class="{'loading':button_loading}" class="'btn btn--red px-2 py-1"
+
+                    @click.prevent="sendData(0)">{{ $t('reject') }}
+            </button>
+            <button :class="{'loading':button_loading}" class="'btn btn--pale-red px-2 py-1"
+                    @click.prevent="sendData(3)"
+            >
+              {{ $t('deactive_announce') }}
+            </button>
+            <button
+              class="'btn btn--grey px-2 py-1"
+              @click="handleBackToList">
+              {{ $t('back_to_list') }}
+            </button>
+          </div>
+        </div>
+      </section>
+      <section v-if="user && user.admin_group == 2" class="container mt-5 pl-0"> <!--moderator-->
+        <div class="row">
+          <div class="col-3 text-center">
+            <span class="timer">
+              {{ getTimer.data }}
+            </span>
+          </div>
+          <div class="col-3">
+            <input v-if="getTimer.unix > 60*2" v-model="form.delay_comment" :placeholder="$t('delay_comment')"
+                   style="height: 46px;width: 100%;padding: 0 8px;" type="text">
+          </div>
+
+          <div class="col-6 text-center">
+            <span v-if="getTimer.unix < 60*2 || (getTimer.unix > 60*2 && form.delay_comment.length)">
+              <button v-if="rejectArray.length === 0" :class="{'loading':button_loading}"
+                      class="'btn btn--green px-2 py-1"
+                      @click.prevent="sendData(1)">{{ $t('confirm') }}
+            </button>
+
+              <!-- sendData(0) -->
+              <button v-else :class="{'loading':button_loading}" class="'btn btn--red mt-2"
+                      @click.prevent="transferToSupervisor(true)">{{ $t('reject') }}</button>
+            </span>
+
+            <button :class="{'loading':button_loading}" class="'btn btn--green px-2 py-1"
+                    @click.prevent="transferModal = true">{{ $t('Transfer to Supervisor') }}
+            </button>
+          </div>
+        </div>
+      </section>
+      <section v-if="user && user.admin_group == 3" class="container mt-5 pl-0"> <!--call center-->
+        <div class="row">
+          <div class="col-12">
+            <button :class="{'loading':button_loading}" class="'btn btn--green px-2 py-1"
+
+                    @click.prevent="sendData(2)">{{ $t('send_to_moderate') }}
+            </button>
+
+            <button :class="{'loading':button_loading}" class="'btn btn--pale-red px-2 py-1"
+                    @click.prevent="sendData(3)"
+            >
+              {{ $t('deactive_announce') }}
+            </button>
+
+            <button
+              class="'btn btn--grey px-2 py-1"
+              @click="handleBackToList">
+              {{ $t('back_to_list') }}
+            </button>
+
+            <button class="'btn btn--green px-2 py-1"
+                    @click.prevent="transferModal = true">{{ $t('Transfer to Supervisor') }}
+            </button>
+          </div>
+        </div>
+      </section>
+
+
+    </div>
+    <!----------------------------------------Announce------------------------------------------------------------------------------------------------------------------------------------------->
+    <!----------------------------------------Announce------------------------------------------------------------------------------------------------------------------------------------------->
+
+    <!--    logs-->
+    <modal-popup
+      :modal-class="''"
+      :title="`${$t('logs')}`"
+      :toggle="openLog"
+      @close="openLog = false"
+    >
+      <change-log
+        :logs="single_announce.change_log"
+        :btl="single_announce.btl_announces"
+        :user-id="single_announce.user_id"
+      />
+    </modal-popup>
   </div>
 </template>
+
+
 <script>
-
-
+import {mapActions, mapGetters} from "vuex";
+import UserDetails from '~/components/moderator/brand.vue'
+import MultiselectComponent from '~/components/moderator/multiselectComponent.vue'
+import RejectReason from '~/components/moderator/rejectReason'
+import PhotoRejectReason from "~/pages/moderator/photoReject/PhotoRejectReason";
+import UploadImageModerator from '~/components/moderator/UploadImageModerator'
+import PopularComments from '~/components/moderator/popularComments'
+import ColorOptions from '~/components/options/ColorOptions'
+import PickOnMapButton from '~/components/elements/PickOnMapButton'
+import moment from "moment";
+import TitleWithLineAndRejectReason from '~/components/moderator/titleWithLineAndRejectReason'
+import SellLastStepModerator from '~/components/sell/SellLastStepModerator'
+import SellFilters from '~/components/sell/SellFilters'
+import TitleWithLine from "~/components/global/titleWithLine";
+import FormRadioGroup from "~/components/forms/FormRadioGroup";
+import SellLastStep from '~/components/sell/SellLastStep';
+import ChangeLog from "~/components/moderator/changeLog";
 export default {
-  layout:'ticket',
+
+  name: 'commercial-pages-moderation',
+
+  layout: 'ticket',
+
+  components: {
+    TitleWithLine,
+    UserDetails,
+    TitleWithLineAndRejectReason,
+    MultiselectComponent,
+    RejectReason,
+    PhotoRejectReason,
+    UploadImageModerator,
+    ColorOptions,
+    PickOnMapButton,
+    SellLastStepModerator,
+    SellLastStep,
+    SellFilters,
+    PopularComments,
+    FormRadioGroup,
+    ChangeLog
+  },
 
 
+  async fetch({store, route}) {
+    await store.dispatch('getCommercialAllOptions');
+    await store.dispatch('getCommercialTypes');
+    await store.dispatch('getOptions');
+    await store.dispatch('getAllOtherOptions');
+    await store.dispatch('getColors');
+    await store.dispatch('getBadges');
+  },
+
+  //------------------------------------------------------------asyncData------------------------------------------------------------------------------------------------------------
+  //------------------------------------------------------------asyncData------------------------------------------------------------------------------------------------------------
+  //------------------------------------------------------------asyncData------------------------------------------------------------------------------------------------------------
+  //------------------------------------------------------------asyncData------------------------------------------------------------------------------------------------------------
+  //------------------------------------------------------------asyncData------------------------------------------------------------------------------------------------------------
   async asyncData({store, $axios, $auth, route}) {
     await $auth.setUserToken(`Bearer ${route.query.token}`);
     const admin_user = await $axios.$get('/user');
@@ -17,24 +728,25 @@ export default {
       return false;
     }
     let _return = false;
-    let data;
+    let data = {};
     try {
       data = await $axios.$get('/ticket/commercial');
-      store.commit('mutate', {
+      store.commit('moderator/moderatorMutator', {
         with: data.announce,
-        property: 'single_announce'
+        property: 'single_announce',
       })
 
       if (!store.getters.single_announce.id) return;
 
-      await store.dispatch('getComFilters',data.announce.commercial_type_id);
+      await store.dispatch('getCommercialFilters', data.announce.commercial_type_id);
 
-      await store.dispatch('getComBrands',{id:data.announce.commercial_type_id});
-      await store.dispatch('getComModels',{
-        index:0,
-        type:data.announce.commercial_type_id,
+      await store.dispatch('getCommercialBrands', {category: data.announce.commercial_type_id});
+      await store.dispatch('getCommercialModels', {
+        index: 0,
+        type: data.announce.commercial_type_id,
         id: data.announce.commercial_brand.id
       })
+
 
       return {
         com_cat: data.announce.commercial_type_id,
@@ -49,9 +761,9 @@ export default {
         moderator: data ? data.moderator : {},
       }
     } catch (e) {
-      store.commit('mutate', {
-        with: {},
-        property: 'single_announce'
+      store.commit('moderator/moderatorMutator', {
+        with: data.announce,
+        property: 'single_announce',
       })
 
       return {
@@ -61,84 +773,78 @@ export default {
     }
 
   },
-
-  async fetch({ store,route }) {
-    await store.dispatch('getComAllOptions');
-    await store.dispatch('getCommercialTypes');
-    await store.dispatch('getOptions');
-    await store.dispatch('getAllOtherOptions');
-    await store.dispatch('getColors');
-    await store.dispatch('getBadges');
-  },
-
-
+  //-----------------------------------------------------------------asyncData^------------------------------------------------------------------------------------------------------
+  //-----------------------------------------------------------------asyncData^------------------------------------------------------------------------------------------------------
+  //-----------------------------------------------------------------asyncData^------------------------------------------------------------------------------------------------------
+  //-----------------------------------------------------------------asyncData^------------------------------------------------------------------------------------------------------
+  //-----------------------------------------------------------------asyncData^------------------------------------------------------------------------------------------------------
   data() {
     return {
       button_loading: false,
-      openLog:false,
-      transferModal:false,
-      transferComment:'',
+      openLog: false,
+      transferModal: false,
+      transferComment: '',
+      announceId: false,
       getTimer: {
         data: '',
         unix: 0
       },
       rejectArray: [],
       refresh: 1,
-
-
-      date:Math.floor(Date.now() / 1000),
-      saved_images:[],
+      date: Math.floor(Date.now() / 1000),
+      saved_images: [],
       popup: false,
-      deleteArr:[],
-      errors:[],
+      deleteArr: [],
+      errors: [],
       progress_width: 0,
-      progress_index:0,
-      color_selected:0,
-      price_selected:0,
-      status_selected:0,
-      complect_selected:0,
-      desc_selected:0,
-      images_selected:0,
+      progress_index: 0,
+      color_selected: 0,
+      price_selected: 0,
+      status_selected: 0,
+      complect_selected: 0,
+      desc_selected: 0,
+      images_selected: 0,
+
       progress: [this.$t('make_and_model'), this.$t('photo_and_video'), this.$t('color_and_mileage'), this.$t('price_and_contacts'), this.$t('condition'), this.$t('equipment'), this.$t('description')],
       mmm: '',
       cookie_keys: ['engine', 'generation', 'year'],
-      breadcrumbs:[],
-      show:{},
-      category:"1",
-      address:'',
-      selectedIndex:{},
-      option_toggle:1,
+      breadcrumbs: [],
+      show: {},
+      category: "1",
+      address: '',
+      selectedIndex: {},
+      option_toggle: 1,
       cars_parts: [
         {
           name: this.$t('front_bamp'),
-          classes:'state__front'
+          classes: 'state__front'
         },
         {
           name: this.$t('front_left_door'),
-          classes:'state__FrontLeftDoor'
-        },
-        {
-          name: this.$t('back_left_door'),
-          classes:'state__FrontRearRight'
-        },
-        {
-          name: this.$t('front_right_door'),
-          classes:'state__FrontRightDoor'
+          classes: 'state__FrontLeftDoor'
         },
         {
           name: this.$t('back_right_door'),
-          classes:'state__FrontRearLeft'
+          classes: 'state__FrontRearRight'
+        },
+        {
+          name: this.$t('front_right_door'),
+          classes: 'state__FrontRightDoor'
+        },
+        {
+          name: this.$t('back_left_door'),
+          classes: 'state__FrontRearLeft'
         },
         {
           name: this.$t('roof'),
-          classes:'state__roof'
+          classes: 'state__roof'
         },
         {
           name: this.$t('back_bamp'),
-          classes:'state__rear'
+          classes: 'state__rear'
         },
       ],
-      titles:[
+      titles: [
         this.$t('overview'),
         this.$t('exterior_elements'),
         this.$t('theif_protection'),
@@ -148,78 +854,129 @@ export default {
         this.$t('safety'),
         this.$t('other')
       ],
-      selectedBadges:[],
-      modalIsActive:false,
-      files:{},
+      selectedBadges: [],
+      modalIsActive: false,
+      files: {},
       imagesBase64: [],
-      showStoreSelect: false,
       form: {
-        auction:'',
-        end_date:'',
-        country_id:'',
+        com_cat: null,
+        auction: '',
+        end_date: '',
+        country_id: '',
         delay_comment: '',
-        lat:'',
-        comment:'',
-        lng:'',
-        tradeable:0,
-        beaten:0,
-        guaranty:0,
-        category:1,
-        volume:'',
-        power:'',
-        box_id: '',
-        wheel_formula: '',
-        capacity:'',
-        seat_counts:'',
-        engine_id: '',
-        truck_type_id: '',
-        gear_id: '',
-        cabin_type_id: '',
-        bus_type_id: '',
-        trailer_type_id: '',
-        machinery_type_id: '',
-        construction_type_id: '',
-        forklift_type_id: '',
-        excavator_type_id: '',
-        utility_type_id: '',
-        bulldozer_type_id: '',
-
-        car_number:'',
+        brand: null,
+        bulldozer_type_id: "",
+        bus_type_id: "",
+        cabin_type_id: "",
+        address: '',
+        lat: '',
+        comment: '',
+        lng: '',
+        tradeable: 0,
+        beaten: 0,
+        guaranty: 0,
+        category: '1',
+        volume: '',
+        power: '',
+        car_number: '',
         show_car_number: false,
         show_vin: false,
-        selectedColor:'',
-        all_options:{},
-        badges:{},
-        phone_number:'',
-        address:'',
-        name:'',
-        email:'',
-        region_id:'',
-        year:'',
-        month:'',
-        mileage:'',
-        vin:'',
-        is_new:0,
-        customs_clearance:0,
-        passport:0,
-        price:'',
-        new_badges:[],
-        owner_type:0,
-        currency:0,
+        selectedColor: '',
+        all_options: {},
+        badges: {},
+        region_id: '',
+        year: '',
+        month: '',
+        mileage: '',
+        is_new: 0,
+        customs_clearance: 0,
+        passport: 0,
+        vin: '',
+        number_of_vehicles: -1,
+        cylinders: -1,
+        cylinder_placement: -1,
+        drive: -1,
+        engine: -1,
+        used_ones: -1,
+        customed_ones: -1,
+        box: -1,
+        price: '',
+        new_badges: [],
+        owner_type: 0,
+        currency: 0,
         youtube: {
-          id:'',
-          thumb:''
+          id: '',
+          thumb: ''
         },
+        saved_images: [],
+        fuel_type: null,
+        is_autosalon: false,
+        mileage_measure: 0,
+        selectedYear: null,
+        btl_cookie: "",
+        credit: false,
+        media: [],
+        email: "",
+        excavator_type_id: '',
+        forklift_type_id: "",
+        gear_id: null,
+        machinery_type_id: "",
+        model: null,
+        phone_number: "",
+        seat_counts: '',
+        trailer_type_id: "",
+        truck_type_id: "",
+        utility_type_id: "",
+        wheel_formula: "",
+        construction_type_id: "",
+        name: "",
       },
-      showPhotoReject: false
+      showPhotoReject: false,
+      minFiles: this.$route.query.type === 'moto' ? 2 : 3,
+      maxFiles: 20,
+      readCarNumberDisclaimer: false,
+      collapsed: true,
+      admin_user: {},
+      rejectObj: {
+        rejectArray: [],
+      },
+      imageModal: {
+        isOpen: false,
+        options: [
+          'front_error',
+          'back_error',
+          'left_error',
+          'right_error',
+          'interior_error',
+          'not_this_car_error',
+          'logo_on_the_picture',
+        ],
+        initialOptions: [
+          'front_error',
+          'back_error',
+          'left_error',
+          'right_error',
+          'interior_error',
+          'not_this_car_error',
+          'logo_on_the_picture',
+        ],
+        rejectArray: ['front_error',
+          'back_error',
+          'left_error',],
+        modalToggled: false,
+      },
+      showLastStep: false,
+      lastStepKey: 132,
+
     }
   },
 
   async created() {
+    this.admin_user = await this.$axios.$get('/user');
     await this.$auth.setUserToken(`Bearer ${this.$route.query.token}`);
     this.$axios.setHeader('Authorization', `Bearer ${this.$route.query.token}`)
 
-    if (this.admin_user.admin_group == 2) {
+    if ((this.admin_user) && (this.admin_user.admin_group == 2)) {
       setInterval(() => {
         let timer = moment().diff(moment(this.moderator.created_at));
         var duration = moment.duration(timer);
@@ -247,17 +1004,17 @@ export default {
       this.form.end_date = announce.end_date;
       this.form.auction = announce.auction;
       this.form.country_id = announce.country_id;
-      this.announceId  = announce.id;
+      this.announceId = announce.id;
       this.saved_images = announce.mediaIds;
       this.form.id = announce.id;
       this.form.id_unique = announce.id_unique;
       this.form.selectedColor = announce.color_id;
       this.form.mileage = announce.mileage;
       this.form.address = announce.address;
-      this.form.beaten  = announce.beaten;
-      this.form.is_new  = announce.is_new;
-      this.form.customs_clearance  = announce.customed;
-      this.form.region_id  = announce.region_id;
+      this.form.beaten = announce.beaten;
+      this.form.is_new = announce.is_new;
+      this.form.customs_clearance = announce.customed;
+      this.form.region_id = announce.region_id;
       this.form.lat = parseFloat(announce.latitude);
       this.form.lng = parseFloat(announce.longitude);
       this.form.price = this.numericPrice();
@@ -270,11 +1027,16 @@ export default {
       this.form.show_car_number = announce.show_car_number;
       this.form.show_vin = announce.show_vin;
       this.form.vin = announce.vin;
-      this.form.power = announce.power;
+      this.form.power = Number(announce.power)
+      this.form.capacity = parseInt(announce.capacity)
       this.form.comment = announce.comment;
       this.form.sell_store = announce.store_id;
-      if(announce.youtube_id)  this.getYoutube(announce.youtube_id)
-      this.com_filters.map( (item) => {
+      this.form.commercial_type_id = announce.commercial_type_id;
+      this.form.brand = announce.commercial_brand_id;
+      this.form.model = announce.commercial_model_id;
+      this.form.year = announce.year;
+      if (announce.youtube_id) this.getYoutube(announce.youtube_id)
+      this.com_filters.map((item) => {
         let value = announce[item.search_key];
         this.$set(this.form, item.search_key, value);
       });
@@ -282,49 +1044,57 @@ export default {
     }
   },
 
-  mounted() {
 
-  },
   beforeDestroy() {
 
     this.$toasted.clear();
   },
+
   methods: {
+    ...mapActions([
+      'setSellPreviewData',
+    ]),
     nonRequiredField(item) {
       if (!item.required && item.component_add === 'any-type-selector')
-        return [...item.values, {'key':null, 'name':this.$t('not_set')}];
+        return [...item.values, {'key': null, 'name': this.$t('not_set')}];
+    },
+    updateSellFilter(key, value) {
+      if (value === '')
+        this.$delete(this.form, key);
+      else this.$set(this.form, key, value);
     },
     async handleBackToList() {
-      await this.$axios.$post('/ticket/detach/'+this.announceId+'/commercials')
+      await this.$axios.$post('/ticket/detach/' + this.announceId + '/commercials')
       location.href = '/alvcp/resources/commercials';
     },
     handleBackList() {
-      if(this.admin_user.admin_group == 2){
+      if (this.admin_user.admin_group == 2) {
         location.href = '/alvcp/resources/announce-moderators';
-      }else{
+      } else {
         location.href = '/alvcp/resources/announcements';
       }
     },
-    ifPopularCommentsEmpty(){
+    ifPopularCommentsEmpty() {
       return _.isEmpty(this.getPopularComments);
     },
-    getValue(key, value){
-      if(key === 'status'){
+    getValue(key, value) {
+      if (key === 'status') {
         let status = [this.$t('rejected'), this.$t('active'), this.$t('pending')];
         return status[value];
-      }else{
+      } else {
         return value;
       }
     },
     changeReason(rejectKey) {
       if (rejectKey === 'image') {
-        this.showPhotoReject = true;
-      }
-      else {
-        if (this.rejectArray.includes(rejectKey)) {
-          this.rejectArray.splice(this.rejectArray.indexOf(rejectKey), 1);
+        this.imageModal.isOpen = true
+      } else if (rejectKey === '360') {
+        this.rejectObj.show360Reject = true
+      } else {
+        if (this.rejectObj.rejectArray.includes(rejectKey)) {
+          this.rejectObj.rejectArray.splice(this.rejectObj.rejectArray.indexOf(rejectKey), 1)
         } else {
-          this.rejectArray.push(rejectKey);
+          this.rejectObj.rejectArray.push(rejectKey)
         }
       }
     },
@@ -341,14 +1111,16 @@ export default {
         }
       }
     },
-    addComment(e){
+    addComment(e) {
       if (this.form.comment === null) this.form.comment = '';
       this.form.comment = this.form.comment + e + ' ';
     },
     numericPrice() {
       return this.single_announce.price.replace(/\D/g, '');
     },
-
+    isInvalid(field) {
+      return this.errors.includes(field);
+    },
     removeFromError(type) {
       var index = this.errors.indexOf(type);
       if (index !== -1) this.errors.splice(index, 1);
@@ -356,12 +1128,12 @@ export default {
     async deleteByIndex(index) {
       if (this.saved_images[index]) {
         this.deleteArr.push(this.saved_images[index])
-      }else {
-        await this.$axios.$post('/remove_temporary_image/'+this.saved_images[index]);
+      } else {
+        await this.$axios.$post('/remove_temporary_image/' + this.saved_images[index]);
       }
-      this.saved_images.splice( index,1);
+      this.saved_images.splice(index, 1);
     },
-    async addFiles (v) {
+    async addFiles(v) {
       await Promise.all(
         v.map(async (image) => {
           let formData = new FormData()
@@ -390,8 +1162,8 @@ export default {
 
     },
     progressing(i) {
-      if(i ===0 ) this.progress_width = 0;
-      else this.progress_width = (100/10) * i;
+      if (i === 0) this.progress_width = 0;
+      else this.progress_width = (100 / 10) * i;
     },
 
     getOldYears(first, second) {
@@ -418,38 +1190,38 @@ export default {
           this.brand = 0;
           this.model = 0;
           this.year = 0;
-          await this.$store.dispatch('getComBrands',{id:v.value.key})
-          await this.$store.dispatch('getComFilters',v.value.key)
-          this.$set(this.form,v.key,v.value.key);
+          await this.$store.dispatch('getComBrands', {id: v.value.key})
+          await this.$store.dispatch('getComFilters', v.value.key)
+          this.$set(this.form, v.key, v.value.key);
           break;
         case 'brand':
           this.brand = v.value.key;
           this.model = 0;
           this.year = 0;
-          await this.$store.dispatch('getComModels',{
-            index:0,
-            type:this.com_cat,
+          await this.$store.dispatch('getComModels', {
+            index: 0,
+            type: this.com_cat,
             id: v.value.key
           });
-          this.$set(this.form,v.key,v.value.key);
+          this.$set(this.form, v.key, v.value.key);
           break;
         case 'model':
           this.model = v.value.key;
           this.year = 0;
-          this.$set(this.form,v.key,v.value.key);
+          this.$set(this.form, v.key, v.value.key);
           break;
         case 'year':
           this.year = v.value.key;
-          this.$set(this.form,v.key,v.value.key);
+          this.$set(this.form, v.key, v.value.key);
           break;
       }
-      if(!v.value)  this.$set(this.form,item,v);
+      if (!v.value) this.$set(this.form, item, v);
 
-      this.refresh +=15;
+      this.refresh += 15;
     },
-    Sections(col ,items ) {
+    Sections(col, items) {
 
-      return items.slice(col * Math.ceil(items.length / 4), (col+1) * Math.ceil(items.length / 4));
+      return items.slice(col * Math.ceil(items.length / 4), (col + 1) * Math.ceil(items.length / 4));
     },
     passBase64Images(val) {
       this.imagesBase64 = val;
@@ -457,7 +1229,7 @@ export default {
     },
 
     getColor() {
-      return this.colors.find(item => item.id===this.form.selectedColor);
+      return this.colors.find(item => item.id === this.form.selectedColor);
     },
     deleteArrHandler(v) {
       this.deleteArr = v;
@@ -503,7 +1275,7 @@ export default {
       this.form[v.key] = v.value.key;
     },
 
-    handleAllOptions(v,key) {
+    handleAllOptions(v, key) {
       this.form[key] = v;
       this.changeProgressSingle('all_options')
     },
@@ -516,28 +1288,31 @@ export default {
     _can_upload_file(key) {
       let file = this.files[key];
 
-      if(file.attempted || file.bad_size){
+      if (file.attempted || file.bad_size) {
         return false;
       }
       return true;
     },
-    async transferToSupervisor(withRejectReason = false){
+    async transferToSupervisor(withRejectReason = false) {
       this.button_loading = true;
 
-      if (withRejectReason){
+      if (withRejectReason) {
         this.transferComment = this.rejectArray;
       }
 
-      await this.$axios.$post('/ticket/transfer/commercial/' + this.announceId, {comment:this.transferComment});
+      await this.$axios.$post('/ticket/transfer/commercial/' + this.announceId, {comment: this.transferComment});
 
-      if(this.admin_user.admin_group == 2){
+      if (this.admin_user.admin_group == 2) {
         location.href = '/alvcp/resources/announce-moderators';
-      }else{
+      } else {
         location.href = '/alvcp/resources/commercials';
       }
     },
+    //sendData
+    //sendData
+    //sendData
     async sendData(status = 2) {
-      if (this.saved_images.length !== this.imagesBase64.length){
+      if (this.saved_images.length !== this.imagesBase64.length) {
         this.$toasted.show(this.$t('please_wait_for_all_image_loading'), {type: 'error'});
         return false;
       }
@@ -545,15 +1320,32 @@ export default {
       let formData = new FormData();
 
       this.form.status = status;
-      this.form.category = this.com_cat;
+      this.form.category = this.form.commercial_type_id;
       this.form.rejectArray = this.rejectArray;
-      this.form.brand = this.brand;
-      this.form.model = this.model;
-      this.form.year  = this.year;
+
+      delete this.form.box;
+      delete this.form.btl_cookie;
+      delete this.form.com_cat;
+      delete this.form.commercial_type_id;
+      delete this.form.credit;
+      delete this.form.customed_ones;
+      delete this.form.cylinder_placement;
+      delete this.form.cylinders;
+      delete this.form.drive;
+      delete this.form.engine;
+      delete this.form.fuel_type;
+      delete this.form.is_autosalon;
+      delete this.form.media;
+      delete this.form.mileage_measure;
+      delete this.form.number_of_vehicles;
+      delete this.form.saved_images;
+      delete this.form.selectedYear;
+      delete this.form.used_ones;
+      delete this.form.false;
 
       this.form.saved_images = this.saved_images;
-      formData.append('data',JSON.stringify(this.form));
-      formData.append('deletedImages',JSON.stringify(this.deleteArr));
+      formData.append('data', JSON.stringify(this.form));
+      formData.append('deletedImages', JSON.stringify(this.deleteArr));
       this.$nuxt.$emit('loading_status', true);
       this.button_loading = true;
       try {
@@ -561,29 +1353,28 @@ export default {
           formData
         );
 
-        if(this.admin_user.admin_group == 2){
+        if (this.admin_user.admin_group == 2) {
           location.href = '/alvcp/resources/announce-moderators';
-        }else{
+        } else {
           location.href = '/alvcp/resources/commercials';
         }
-      }
-      catch ({response:{data:{data}}}) {
+      } catch ({response: {data: {data}}}) {
         this.$nuxt.$emit('loading_status', false);
         this.button_loading = false;
 
         this.errors = [];
         this.$toasted.clear();
-        Object.keys(data).reverse().map( (key) => {
+        Object.keys(data).reverse().map((key) => {
           this.errors.push(key);
 
-          this.$toasted.show(data[key][0],{
-            type:'error',
-            duration:0,
-            action : {
-              text : 'Go to fix',
-              onClick : (e, toastObject) => {
-                if(document.querySelector('#'+key))
-                  document.querySelector('#'+key).scrollIntoView({ behavior:'smooth',block:'center' });
+          this.$toasted.show(data[key][0], {
+            type: 'error',
+            duration: 0,
+            action: {
+              text: 'Go to fix',
+              onClick: (e, toastObject) => {
+                if (document.querySelector('#' + key))
+                  document.querySelector('#' + key).scrollIntoView({behavior: 'smooth', block: 'center'});
                 toastObject.goAway(0);
 
               }
@@ -593,9 +1384,12 @@ export default {
       }
       // this.$router.push('/')
     },
+    //sendData
+    //sendData
+    //sendData
     addImages(v) {
       this.files = v;
-      this.$nuxt.$emit('progress_change',{type:'images', count: Object.keys(this.files).length});
+      this.$nuxt.$emit('progress_change', {type: 'images', count: Object.keys(this.files).length});
     },
     move(input, from, to) {
       let numberOfDeletedElm = 1;
@@ -604,11 +1398,12 @@ export default {
       input.splice(to, numberOfDeletedElm, elm);
     },
     replaceImage(object) {
-      if (this.saved_images.length !== this.imagesBase64.length) return; this.imagesBase64 = object.images;
-      this.move(this.saved_images,object.v.oldIndex,object.v.newIndex);
+      if (this.saved_images.length !== this.imagesBase64.length) return;
+      this.imagesBase64 = object.images;
+      this.move(this.saved_images, object.v.oldIndex, object.v.newIndex);
     },
     getChangeOption(v) {
-      if(v) this.option_toggle = 0;
+      if (v) this.option_toggle = 0;
       else this.option_toggle = 1;
     },
     checkboxChanged(v) {
@@ -627,68 +1422,165 @@ export default {
       this.selectedBadges.push(...v);
       this.form.badges = v;
     },
-    getChange(v,type) {
+    getChange(v, type) {
 
       this.form[type] = v;
-      if(type === 'mileage' || type === 'selectedColor')
-        this.changeProgress('mileage','selectedColor');
-      if (type ==='price' || type === 'name')
-        this.changeProgress('price','name');
+      if (type === 'mileage' || type === 'selectedColor')
+        this.changeProgress('mileage', 'selectedColor');
+      if (type === 'price' || type === 'name')
+        this.changeProgress('price', 'name');
     },
     changeProgressSingle(key) {
       let status = 0;
-      if(Object.keys(this.form[key]).length) {
+      if (Object.keys(this.form[key]).length) {
         status = 2;
       }
-      this.$nuxt.$emit('progress_change',{ type:key, count: status })
+      this.$nuxt.$emit('progress_change', {type: key, count: status})
     },
-    changeProgress(key1,key2) {
+    changeProgress(key1, key2) {
       let status = 0;
 
-      if(this.form[key1]) {
+      if (this.form[key1]) {
         status = 1;
 
       }
-      if(this.form[key2]) {
+      if (this.form[key2]) {
         status = 1;
 
       }
-      if(this.form[key1] && this.form[key2]) {
+      if (this.form[key1] && this.form[key2]) {
         status = 2;
 
       }
-      this.$nuxt.$emit('progress_change',{ type:key1+'_'+key2, count: status })
+      this.$nuxt.$emit('progress_change', {type: key1 + '_' + key2, count: status})
     },
     getYoutube(val) {
       this.form.youtube.id = val;
       this.form.youtube.thumb = `https://img.youtube.com/vi/${val}/hqdefault.jpg`
     },
+    formatDate(dte) {
+      return moment(dte).format('DD.MM.YYYY HH:mm')
+    },
+    updateAddress(address) {
+      this.form.address = address
+      this.removeError('address')
+    },
+    updateLatLng({lat, lng}) {
+      this.form.lat = lat
+      this.form.lng = lng
+    },
+    removeError(field, force = false) {
+      if (!force && (!this.form[field] || this.form[field] === '')) return;
+      if (this.errors.includes(field)) {
+        this.errors = this.errors.filter(key => key !== field);
+        this.toasts[field].goAway(100);
+
+      }
+    },
+    updatePreview(key) {
+      if (!key || key === 'region')
+        this.setSellPreviewData({
+          value: this.form.region_id,
+          key: 'region',
+        })
+      if (!key || key === 'price')
+        this.setSellPreviewData({value: this.form.price, key: 'price'})
+      if (!key || key === 'currency')
+        this.setSellPreviewData({
+          value: this.getCurrencyOptions.find(
+            (o) => o.key === this.form.currency,
+          )?.sign,
+          key: 'currency',
+        })
+      if (!key || key === 'mileage')
+        this.setSellPreviewData({value: this.form.mileage, key: 'mileage'})
+      if (!key || key === 'mileage_measure')
+        this.setSellPreviewData({
+          value: this.getMileageOptions.find(
+            (o) => o.key === this.form.mileage_measure,
+          )?.name,
+          key: 'mileage_measure',
+        })
+      return
+    },
+
+
+    showCarNumberDisclaimer() {
+      if (this.readCarNumberDisclaimer) {
+        this.$nuxt.$emit('close-popover', 'car-number')
+      } else {
+        this.$nuxt.$emit('show-popover', 'car-number')
+        this.readCarNumberDisclaimer = true
+      }
+    },
+    hasError(item) {
+      let field = this.getKey(item);
+      return this.errors.includes(field);
+    },
+    getKey(item) {
+      return item.search_key || item.field;
+    },
+    async handleCategoryChange(e) {
+      if (this.form.commercial_type_id) {
+
+        await this.$store.dispatch('getCommercialBrands', {category: this.form.commercial_type_id})
+        this.form.brand = null;
+        this.form.model = null;
+      } else return
+    },
+    async handleBrandChange(e) {
+      await this.$store.dispatch('getCommercialModels', {
+        index: 0,
+        category: this.form.commercial_type_id,
+        id: this.form.brand,
+      })
+      this.form.model = null;
+    },
+
   },
 
-  computed:{
-    ...mapGetters([
-      'com_filters',
-      'com_all_options',
-      'colors',
-      'com_brands',
-      'com_models',
-      'commercial_types',
-      'single_announce',
-      'com_brands',
-      'sell_options',
-      'all_sell_options',
-      'badges',
-      'getPopularComments'
-    ]),
+  computed: {
+    ...mapGetters({
+      com_filters: 'commercialFilters',
+      com_all_options: 'commercialAllOptions',
+      colors: 'colors',
+      com_brands: 'commercialBrands',
+      com_models: 'commercialModels',
+      commercial_types: 'commercialTypes',
+      single_announce: 'moderator/single_announce',
+      sell_options: 'sellOptions',
+      all_sell_options: 'allSellOptions',
+      badges: 'badges',
+      getPopularComments: 'getPopularComments',
+    }),
+    isAdmin() {
+      return (this.admin_user.admin_group == 1 || this.admin_user.admin_group == 2)
+    },
+    isModerator() {
+      return this.user.admin_group && (this.user.admin_group == 2);
+    },
+    getCurrencyOptions() {
+      return [
+        {key: 1, name: 'AZN', sign: '₼'},
+        {key: 2, name: 'USD', sign: '$'},
+        {key: 3, name: 'EUR', sign: '€'},
+      ]
+    },
+    getOwnerOptions() {
+      return [
+        {key: "0", name: 'first',},
+        {key: "1", name: 'second_and_more',},
+      ]
+    },
     getBtlUserName() {
-      return this.single_announce.btl_announces.find(item => item.announce_id === this.single_announce.id).get_user.full_name
+      return this.single_announce.btl_announces.length ? this.single_announce.btl_announces.find(item => item.announce_id === this.single_announce.id).get_user.full_name : ''
     },
     getBrands() {
       let dates = [];
       for (const key in this.com_brands) {
         dates.push({
           key: this.com_brands[key].id,
-          name: this.com_brands[key].name,
+          name: this.com_brands[key]?.name || '',
         });
       }
       return dates;
@@ -718,7 +1610,7 @@ export default {
       for (const key in this.commercial_types) {
         dates.push({
           key: this.commercial_types[key].id,
-          name: this.commercial_types[key].name[this.locale],
+          name: this.commercial_types[key].name,
         });
       }
       return dates;
@@ -730,15 +1622,15 @@ export default {
       return {
         ...this.form,
         color: this.getColor(),
-        car_catalog:{
-          brand:this.single_announce.commercial_brand,
-          model:this.single_announce.commercial_model,
+        car_catalog: {
+          brand: this.single_announce.commercial_brand,
+          model: this.single_announce.commercial_model,
           comm_options: this.sell_options
         },
-        commercial_types:this.commercial_types,
-        com_filters:this.com_filters,
-        com_all_options:this.com_all_options,
-        commercial_type:this.single_announce.commercial_type,
+        commercial_types: this.commercial_types,
+        com_filters: this.com_filters,
+        com_all_options: this.com_all_options,
+        commercial_type: this.single_announce.commercial_type,
       };
     },
     sumItems() {
@@ -752,21 +1644,19 @@ export default {
     semiActiveModel() {
       let el = this.form.selectedBrand;
 
-      if(el && !this.form.selectedModel) {
-        this.progressing(1/2);
+      if (el && !this.form.selectedModel) {
+        this.progressing(1 / 2);
         return true;
-      }
-
-      else if(!el) {
+      } else if (!el) {
         this.progressing(0);
         return false;
       }
       return el;
     },
     exactlyActiveModel() {
-      let el =  this.form.selectedBrand;
+      let el = this.form.selectedBrand;
 
-      if(el && this.form.selectedModel) {
+      if (el && this.form.selectedModel) {
         this.progressing(1);
         return true;
       }
@@ -775,90 +1665,33 @@ export default {
     color() {
       return this.getColor();
     },
+    crumbs() {
+      return [
+        {name: this.$t('moderation'), route: '/'},
+      ]
+    },
+    type() {
+      if (this.single_announce) {
+        return this.single_announce.commercial_type.name.az || this.single_announce.commercial_type.name.ru || ""
+      } else return ""
+    }
   },
+
+
+  mounted() {
+    if (Object.keys(this.single_announce).length !== 0) {
+      this.$store.dispatch('getCommercialBrands', {category: this.single_announce.commercial_type_id});
+      this.$store.dispatch('getCommercialBrands', {category: this.single_announce.commercial_type_id});
+      this.$store.dispatch('getCommercialModels', {
+        index: 0,
+        category: this.single_announce.commercial_type_id,
+        id: this.single_announce.commercial_brand.id
+      })
+      this.$store.dispatch('getCommercialFilters', this.single_announce.commercial_type_id);
+    }
+  }
+
 }
 </script>
-<style lang="scss" scoped>
-section{
-  position: relative;
-  &.disable:before{
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 2;
-  }
-}
-.timer {
-  font-family: 'Aldrich', sans-serif;
-  font-size: 27px;
-  color: green;
-  letter-spacing: 2px;
-  background: #050a25;
-  padding: 6px 10px 0 10px;
-  display: inline-block;
-}
 
-.old_value {
-  position: relative;
-  left: -16px;
-  font-size: 14px;
-}
 
-.logs{
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 9999;
-
-  .log{
-    background: #fff;
-    display: inline-block;
-    margin-top: 20px;
-    max-height: 80%;
-    overflow-y: auto;
-
-    &> div{
-      padding: 10px;
-    }
-
-    .title{
-      position: relative;
-      span{
-        position: absolute;
-        right: 0;
-        top: 0;
-        padding: 5px 10px;
-        cursor: pointer;
-        color: #b90026;
-      }
-    }
-    .body{
-      border-top: 1px solid rgba(0, 0, 0, 0.5);
-      border-bottom: 1px solid rgba(0, 0, 0, 0.5);
-      text-align: left;
-
-      &> div{
-        border-bottom: 1px dashed #000000;
-        margin: 5px 0;
-        padding: 5px 0;
-      }
-    }
-    .foot{
-      .closeBtn{
-        display: inline-block;
-        padding: 5px 22px;
-        background: #b90026;
-        color: #fff;
-        cursor: pointer;
-      }
-    }
-  }
-}
-</style>
