@@ -80,7 +80,7 @@
               <template
                 v-if="announcement.is_autosalon || announcement.is_part_salon"
               >
-                <span class="badge badge-blue">SHOP</span>
+                <span class="badge badge-blue">{{ announcement.is_autosalon ? 'SALON': 'SHOP'}}</span>
               </template>
               <template
                 v-if="announcement.is_external_salon && !showStatus"
