@@ -72,9 +72,11 @@
             <li v-for="menu in topbarMenus" :key="menu.title">
               <nuxt-link :to="$localePath(menu.route)">
                 <icon
+                  v-if="!['favorites','templates'].includes(menu.title)"
                   :name="menu.icon"
                   v-b-tooltip="$t('tooltip_' + menu.title)"
                 />
+                <inline-svg v-else :src="`/icons/${menu.icon}`"></inline-svg>
                 <template
                   v-if="menu.title === 'messages' && countNewMessages > 0"
                 >
