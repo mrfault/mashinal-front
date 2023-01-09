@@ -105,7 +105,7 @@
       </div>
 
       <button
-        class="btn btn--red btn--unaffected-by-theme full-width compare-btn"
+        class="btn btn--red btn--unaffected-by-theme full-width compare-btn compare-icon-white"
         v-if="
           activeType === 'announcements'
             ? announcementsList.length > 1
@@ -113,7 +113,7 @@
         "
         @click="compare"
       >
-        <icon name="compare" />
+        <inline-svg src="/icons/compare-icon.svg" />
         {{ $t('compare') }}
       </button>
     </div>
@@ -215,10 +215,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .comparison-preview__list {
   max-height: 320px;
   overflow-y: hidden;
 }
+
 .custom-scrollbar {
   overflow-y: scroll;
   /* width */
