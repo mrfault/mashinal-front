@@ -9,7 +9,7 @@
     </button> -->
   <div class="white-background">
     <button
-      class=" btn-favorite"
+      class="btn-transparent btn-favorite"
       :class="{ 'btn-favorite-active': isAdded }"
       @click.stop="handleClick()"
       v-if="announcement.status !== 2"

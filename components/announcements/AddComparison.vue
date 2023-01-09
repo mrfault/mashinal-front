@@ -8,7 +8,7 @@
   </button> -->
     <div class="white-background">
       <button
-        class=" btn-compare"
+        class=" btn-compare btn-transparent"
         :class="{ 'btn-compare-active': isActive }"
         @click.prevent.stop="handleClick()"
       ><i></i></button>
