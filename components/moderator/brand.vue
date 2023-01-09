@@ -8,12 +8,13 @@
       <!--      <span v-if="!isAutosalon && !isExternalSalon">{{ $t('name') }}: </span>-->
       <span v-if="true">{{ $t('name') }}: </span>
       <!--      <span v-if="isAutosalon">{{ $t('autosalon') }}: </span>-->
-      <span v-if="userData"><strong>{{ userData.name }}</strong></span>
+      <span v-if="userData && userData.name"><strong>{{ userData.name }}</strong></span>
+      <span v-else-if="userData && userData.full_name"><strong>{{ userData.full_name }}</strong></span>
       <template>
         /
       </template>
-      <span v-if="isAutosalon">{{ $t('autosalon') }}: </span>
-      <span v-if="isAutosalon"><strong>{{ userData.autosalon.name }}</strong></span>
+      <span v-if="isAutosalon && userData.autosalon">{{ $t('autosalon') }}: </span>
+      <span v-if="isAutosalon && userData.autosalon"><strong>{{ userData.autosalon.name }}</strong></span>
       <template v-if="isAutosalon ">
         /
       </template>
@@ -69,6 +70,7 @@ export default {
     isExternalSalon: Boolean,
     userData: Object,
     isMoto: Boolean,
+    changeLog: Object
   },
   computed: {
     formattedDate() {

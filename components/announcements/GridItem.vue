@@ -57,10 +57,11 @@
         <div class="item-overlay" v-if="showOverlay">
           <div class="item-overlay__top">
             <div class="item-overlay__top--left">
-              <add-favorite
-                :announcement="announcement"
-                v-if="!isProfilePage"
-              />
+                <add-favorite
+                  v-if="!isProfilePage"
+                  :announcement="announcement"
+
+                />
             </div>
             <div
               class="item-overlay__top--right"
@@ -77,7 +78,7 @@
               <template
                 v-if="announcement.is_autosalon || announcement.is_part_salon"
               >
-                <span class="badge badge-blue">SHOP</span>
+                <span class="badge badge-blue">{{ announcement.is_autosalon ? 'SALON': 'SHOP'}}</span>
               </template>
               <template
                 v-if="announcement.is_external_salon && !showStatus"
@@ -135,10 +136,10 @@
                 announcement.status === undefined || announcement.status == 1
               "
             >
-              <add-comparison
-                :id="announcement.id_unique"
-                v-if="getType === 'Car'"
-              />
+                <add-comparison
+                  :id="announcement.id_unique"
+                  v-if="getType === 'Car'"
+                />
             </span>
 
             <div class="item-overlay__bottom--right">
@@ -433,7 +434,8 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+
 .badge-icon {
   width: 20px;
   margin-right: 3px;

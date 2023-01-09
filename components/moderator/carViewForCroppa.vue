@@ -176,7 +176,7 @@ export default {
           }
         })
         .then( (data) => {
-          this.$emit('newThumb', data.data.thumb);
+          this.$emit('newThumb', data.data.data.thumb);
           this.button_loading = false;
         })
         .catch((data) => {

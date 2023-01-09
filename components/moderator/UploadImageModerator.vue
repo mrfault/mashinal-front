@@ -50,7 +50,7 @@
                     </span>
                     <span v-if="!imagePreloaderContainer[key]" class="cursor-pointer button-new-tab"
                           @click.stop="rotateLeft($event,key)">
-                         <icon name="reset" />
+                         <icon name="reset"/>
                     </span>
                     <span v-if="!imagePreloaderContainer[key]" class="cursor-pointer button-new-tab"
                           @click.stop="rotateRight($event,key)">
@@ -107,6 +107,7 @@
                 :startAt="LighBoxStart" @onClosed="active_box = false"
                 @onOpened="toggleFancyBox"/>
     </no-ssr>
+
   </div>
 </template>
 
@@ -347,37 +348,33 @@ export default {
     },
     newThumb(newThumb) {
       this.isOpenCroppa = false;
+      console.log("new thumb ",newThumb)
       this.$store.commit('setSavedImageUrlWithKey', {
         key: this.croppaSelectedKey,
         value: newThumb
       })
       this.$set(this.image, this.croppaSelectedKey, newThumb);
     },
-    rotateLeft(e, key) {
-      this.$set(this.imagePreloaderContainer, key, true);
-      this.$axios
-        .$get('/media/' + this.saved_images[key] + '/rotate/left')
-        .then((data) => {
-          this.$store.commit('setSavedImageUrlWithKey', {
-            key: key,
-            value: data.data.thumb
-          })
-          this.$set(this.imagePreloaderContainer, key, false);
-        })
-        .catch((data) => {
-          this.$set(this.imagePreloaderContainer, key, false);
-        });
+    async rotateLeft(e, key) {
+     await this.rotateDirection('left', e, key)
+     this.$emit('loading', false)
     },
-    rotateRight(e, key) {
+    async rotateRight(e, key) {
+     await this.rotateDirection('right', e, key)
+     this.$emit('loading', false)
+    },
+    rotateDirection(dir, e, key) {
+      console.log('rotateDirection', true)
+     this.$emit('loading', true)
       this.$set(this.imagePreloaderContainer, key, true);
       this.$axios
-        .$get('/media/' + this.saved_images[key] + '/rotate/right')
+        .$get('/media/' + this.saved_images[key] + '/rotate/' + dir)
         .then((data) => {
           this.$store.commit('setSavedImageUrlWithKey', {
             key: key,
             value: data.data.thumb
           })
-
+          this.$emit('loading', false)
           this.$set(this.imagePreloaderContainer, key, false);
         })
         .catch((data) => {

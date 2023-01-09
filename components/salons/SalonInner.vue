@@ -103,7 +103,7 @@
         <div :class="`col-lg-12 mb-2`" v-if="salonSingle.address">
           <div class="profile_info-details border-padding-none">
             <icon name="placeholder" />
-            <span style="font-weight: 500">{{ salonSingle.address }}</span>
+            <a :href="`https://www.google.com/maps?q=${salonSingle.lat}%2C${salonSingle.lng}&ll=${salonSingle.lat}%2C${salonSingle.lng}&z=15`" target="_blank" style="font-weight: 500">{{ salonSingle.address }}</a>
           </div>
         </div>
       </div>

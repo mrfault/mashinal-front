@@ -413,10 +413,18 @@
             margin-right: 20px;
           }
         }
-        .btn-compare,
-        .btn-favorite {
-          width: 29px;
-          height: 29px;
+        .white-background {
+          width: 39px;
+          height: 39px;
+          margin-right: 10px;
+          .btn-compare {
+            width: 28px;
+            height: 28px;
+          }
+          .btn-favorite {
+            width: 22px;
+            height: 28px;
+          }
         }
       }
       &--right {

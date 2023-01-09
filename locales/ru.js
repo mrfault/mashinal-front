@@ -1107,7 +1107,7 @@ export default {
   "min_image_count": "Минимум - {count} фото",
   "min_image_size": "Минимальный размер - {w}x{h} px",
   "miniven": "Минивэн",
-  "mobile_number": "Номер моб. телефона",
+  "mobile_number": "Моб. номер",
   "mobile_number_your": "Номер телефона",
   "model": "Модель",
   "model_card": "Карточка модели",
@@ -2348,5 +2348,6 @@ export default {
    "file_size_50": "Максимальный размер файла может быть: 50 мб",
    "anyone":"Любая",
    "anyone_other": "Любое",
-   "anyone_other2": "Любой"
+   "anyone_other2": "Любой",
+   "user_add_successfully": "Пользователь успешно добавлен"
 }

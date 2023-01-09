@@ -29,6 +29,7 @@
     "inputmask": "^3.3.11",
     "laravel-echo": "^1.6.1",
     "lodash": "^4.17.21",
+    "lodash.debounce": "^4.0.8",
     "marzipano": "^0.10.2",
     "moment": "^2.24.0",
     "nuxt": "^2.15.3",
