@@ -676,7 +676,6 @@ import ColorOptions from '~/components/options/ColorOptions'
 import PickOnMapButton from '~/components/elements/PickOnMapButton'
 import moment from "moment";
 import TitleWithLineAndRejectReason from '~/components/moderator/titleWithLineAndRejectReason'
-import SellLastStepModerator from '~/components/sell/SellLastStepModerator'
 import SellFilters from '~/components/sell/SellFilters'
 import TitleWithLine from "~/components/global/titleWithLine";
 import FormRadioGroup from "~/components/forms/FormRadioGroup";
@@ -698,7 +697,6 @@ export default {
     UploadImageModerator,
     ColorOptions,
     PickOnMapButton,
-    SellLastStepModerator,
     SellLastStep,
     SellFilters,
     PopularComments,

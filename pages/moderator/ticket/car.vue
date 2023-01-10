@@ -359,27 +359,38 @@
                     @replaceImage="replaceImage"
                   />
                 </template>
-                <!--                  ------------------------    ------------------------    ------------------------    ------------------------    ------------------------    -------------------------->
-                <template v-slot:360_exterior>
+
+                <!--                360 exterior-->
+                <!--                 --------------(add input)-->
+                <template v-slot:360_exterior_input>
                   <div
                     class="mb-4"
                   >
                     <div class="section-part__container">
-                      <div class="col-md-4">
+                      <div class="col-md-4 pl-0">
                         <input class="btn" type="file" v-on:change="add360Video"/>
                       </div>
                     </div>
                   </div>
                 </template>
+
+                <!--                 --------------(exterior 360 view)-->
                 <template v-slot:360_exterior_content>
-                  <vue-three-sixty
-                    showZoom
-                    disable-zoom
-                    :amount="single_announce.images_360.length"
-                    buttonClass="d-none"
-                    :files="single_announce.images_360"
-                    putMainImage
-                  />
+                  <div>
+                    <div id="video360section">
+                      <vue-three-sixty
+                        :amount="single_announce.images_360.length"
+                        :files="single_announce.images_360"
+                        buttonClass="d-none"
+                        disable-zoom
+                        putMainImage
+                        showZoom
+                        @mainSelected="selectMainImage"
+                        @remove360="remove360"
+                        :id="single_announce.id"
+                      />
+                    </div>
+                  </div>
                 </template>
 
                 <!--                  ------------------------    ------------------------    ------------------------    ------------------------    ------------------------    -------------------------->
@@ -643,8 +654,10 @@ export default {
         media: [],
         images_360: [],
         video_360_url: null,
+        video_360_id: null,
         interior_360_id: null,
         interior_360_url: null,
+        main_image: null,
       },
       data: {
         models: [],
@@ -661,7 +674,6 @@ export default {
       // send data
       errors: [],
       imagesBase64: [],
-      main_image: null,
       saved_images: [],
       deleteArr: [],
       files: {},
@@ -813,6 +825,7 @@ export default {
       await this.$auth.setUserToken(`Bearer ${this.$route.query.token}`)
       const admin_user = await this.$axios.$get('/user')
       this.$auth.setUser(admin_user.user)
+      window.scrollTo({top: 0, left: 0})
       //timer
       setInterval(() => {
         let timer = moment().diff(moment(admin_user.user.created_at))
@@ -1148,8 +1161,10 @@ export default {
       let generation = this.data.generations.find(
         (o) => o.id === this.form.generation_id,
       )
-      let name = `${this.$t('box_mode_values')[o.box]}/
-      ${generation.start_year} - ${generation.end_year || this.currentYear}`
+      if (generation && generation.start_year) {
+        let name = `${this.$t('box_mode_values')[o.box]}/${generation.start_year} - ${generation.end_year || this.currentYear}`
+
+      }
       if (o.capacity) name = `${o.capacity} ${name}`
       if (o.power) name = `${o.power} ${this.$t('char_h_power')}/${name}`
       if (o.complect_type) name += `/${o.complect_type}`
@@ -1344,6 +1359,7 @@ export default {
       input.splice(to, numberOfDeletedElm, elm)
     },
 
+
     //    handle 360
     add360Video(val) {
       var formData = new FormData()
@@ -1358,10 +1374,32 @@ export default {
         .then((res) => {
           if (res.status == 200) {
             this.$toast.success(this.$t('video_360_successfully_upload'))
+            console.log(" res.data.url", res.data.data.id)
+            console.log(" res.data.id", res.data.data.url)
             this.form.video_360_url = res.data.data.url
             this.form.video_360_id = res.data.data.id
           }
         })
+    },
+    selectMainImage(param) {
+      this.form.main_image = param
+    },
+    async remove360(param) {
+
+      if (param == 'success') {
+        let data = await this.$axios.$get('/ticket/car');
+
+        let video360section = document.getElementById('video360section');
+        video360section.remove();
+
+
+        this.$store.commit('mutate', {
+          with: data.announce,
+          property: 'single_announce'
+        })
+
+
+      }
     },
 
 
@@ -1486,7 +1524,7 @@ export default {
       this.form.id = this.single_announce.id;
       this.form.month = this.single_announce.month || "";
       this.form.sell_store = this.single_announce.sell_store || 0;
-      this.form.video_360_id = this.single_announce.video_360_id || "";
+      // this.form.video_360_id = this.single_announce.video_360_id || "";
       this.form.modification = "";
       // this.form.model = this.form.model_slug;
 

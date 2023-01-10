@@ -1,4 +1,3 @@
-<!--http://10.20.120.106:3000/-->
 <template>
   <component
     :is="isMobileBreakpoint ? 'mobile-screen' : 'div'"
@@ -20,32 +19,13 @@
         <template v-if="!no360">
 
           <title-with-line-and-reject-reason
-            v-if="!no360"
             :no-approval="!single_announce.images_360.length"
             title="360_exterior"
             @change="changeReason"
           />
-          <slot v-if="!form.images_360 && !no360" name="360_exterior"></slot>
-        </template>
-          <slot v-if="form.images_360 && form.images_360.length" name="360_exterior_content"></slot>
 
-
-        <title-with-line-and-reject-reason
-          :no-approval="!single_announce.images_360.length"
-          title="360_exterior"
-          @change="changeReason"
-        />
-        <slot name="360_exterior"></slot>
-        <vue-three-sixty
-          v-if="form.images_360 && form.images_360.length && no360"
-          :amount="form.images_360 && form.images_360.length"
-          :files="form.images_360"
-          buttonClass="d-none"
-          class="mb-4"
-          disableZoom
-        />
-
-        <template v-if="!no360">
+          <slot name="360_exterior_input"   v-if="form.images_360"></slot>
+          <slot name="360_exterior_content" v-if="form.images_360 && form.images_360.length"></slot>
           <title-with-line-and-reject-reason
             :no-approval="!form.interior_360_url"
             title="360_interior"
@@ -77,11 +57,13 @@
             </div>
           </section>
           <Interior360Viewer
-            v-if="single_announce.interior_360 && !no360"
+            v-if="single_announce.interior_360 && !no360 && !interior360removed"
             :url="single_announce.interior_360"
             class="mb-4"
+
           />
         </template>
+
         <title-with-line-and-reject-reason
           :id="'anchor-selectedColor'"
           reject-key="color"
@@ -581,7 +563,6 @@ import {ToastErrorsMixin} from '~/mixins/toast-errors'
 import {ImageResizeMixin} from '~/mixins/img-resize'
 import {PaymentMixin} from '~/mixins/payment'
 
-import SellSelectModification from '~/components/sell/SellSelectModificationModerator'
 import UploadImage from '~/components/elements/UploadImage'
 import ColorOptions from '~/components/options/ColorOptions'
 import DamageOptions from '~/components/options/DamageOptions'
@@ -598,7 +579,6 @@ export default {
   components: {
 
     TitleWithLineAndRejectReason,
-    SellSelectModification,
     UploadImage,
     ColorOptions,
     DamageOptions,
@@ -626,6 +606,7 @@ export default {
   mixins: [ToastErrorsMixin, ImageResizeMixin, PaymentMixin],
   data() {
     return {
+      interior360removed: false,
       now: new Date().toLocaleDateString('en-US'),
       collapsed: false,
       form: this.$clone(this.announcement),
@@ -731,7 +712,7 @@ export default {
   },
   methods: {
     ...mapActions([
-      'setSellProgress',
+      // 'setSellProgress',
       'setSellPreviewData',
       'resetSellTokens',
       'getMyAllAnnouncements',
@@ -970,6 +951,7 @@ export default {
           property: 'single_announce',
         })
         this.$toasted.success('Silindi')
+        this.interior360removed = true;
       } catch (e) {
         this.$toasted.error('Silinmede problem yarandi')
       }
@@ -991,9 +973,9 @@ export default {
 
   },
   watch: {
-    progress(value) {
-      this.setSellProgress(value)
-    },
+    // progress(value) {
+    //   this.setSellProgress(value)
+    // },
     rejectObj: {
       deep: true,
       handler() {
@@ -1020,6 +1002,7 @@ export default {
   },
   mounted() {
     this.$store.dispatch('getPopularOptions');
+
   },
 }
 </script>
