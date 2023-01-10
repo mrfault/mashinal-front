@@ -7,7 +7,7 @@
       <form-text-input
         v-else
         autocomplete="tel"
-        auto-focus
+        :auto-focus="!isMobileBreakpoint"
         :placeholder="$t('contact_number')"
         :invalid="validator.phone.$error"
         :mask="$maskPhone()"
@@ -28,7 +28,7 @@
       :placeholder="$t('your_name')"
       :maxlength="30"
       v-model="form.name"
-      auto-focus
+      :auto-focus="!isMobileBreakpoint"
     />
     <confirm-phone
       v-if="form.staticPhone"
