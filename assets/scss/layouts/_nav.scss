@@ -8,6 +8,17 @@
     .exact-active i::before{
       color: $red-1;
     }
+    a,svg {
+      outline: none;
+    }
+    .exact-active {
+      svg {
+        outline: none;
+        path {
+          stroke: $red-1
+        }
+      }
+    }
   }
 }
 .mobile-nav {
@@ -251,6 +262,7 @@
       padding: 0 0 40px;
 
       li {
+
         margin-bottom: 25px;
 
         &.login {
@@ -263,15 +275,42 @@
 
         a {
           display: inline-flex;
+          align-items: center;
           font-size: 16px;
-
-          i {
+          svg {
             width: 16px;
+            margin-right: 14px;
+          }
+          i {
             justify-content: center;
+            width: 16px;
             margin-right: 14px;
           }
         }
       }
     }
+  }
+}
+.compare-icon-white {
+  svg {
+    margin-right: 5px;
+    margin-bottom: 2px;
+    path {
+      fill: white;
+      stroke: white;
+    }
+  }
+}
+.white-background {
+  background: #fff;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  .btn-compare {
+    width: 20px;
+    height: 20px;
   }
 }

@@ -413,41 +413,109 @@
                   transparent
                 />
               </div>
-              <div v-if="form.customs_clearance">
-                <template v-if="form && form.vin">
-                  <form-textarea
-                    key="vin"
-                    v-model="form.vin"
-                    :mask="$maskAlphaNumeric('*****************')"
-                    :placeholder="$t('vin_carcase_number')"
-                    class="textfield-like-textarea"
-                    @change="removeError('vin')"
-                  >
-                    <popover :width="240" name="vin">
-                      <inline-svg src="/img/car-cert.svg"/>
-                    </popover>
-                  </form-textarea>
-                </template>
-                <form-checkbox
-                  v-model="form.show_vin"
-                  :label="$t('show_vin_on_site')"
-                  class="mt-2 mt-lg-3"
-                  input-name="show_vin"
-                  transparent
-                />
-              </div>
-            </div>
-          </section>
-          <!--      sell filters-->
-          <section class="row">
-            <div class="col-12">
-              <div class="sell-filters">
-                <div class="mt-2 mt-lg-3 car-filters_row">
-                  <div class="d-flex mb-2 mb-lg-3" @click="collapsed = !collapsed;">
-                    <h2 class="title-with-line full-width">
-                      <span>{{ $t('other_options') }}</span>
-                    </h2>
-                    <icon :name="collapsed ? 'chevron-up' : 'chevron-down'" class="cursor-pointer"/>
+                <div v-if="collapsed" class="w-100">
+                  <!--                power-->
+                  <div>
+                    <title-with-line-and-reject-reason no-approval title="engine_power_system"/>
+                    <div v-if="moto_options.config" class="row">
+                      <div v-for="input in moto_options.config.engine.sell_values['1']" :key="input.name"
+                           class="col-lg-4 mb-2 mb-lg-3">
+                        <form-radio
+                          v-model="form.engine"
+                          :input-name="getKey(item)"
+                          :invalid="hasError(item)"
+                          :label="input.name[locale] || $t(input.name)"
+                          :radio-value="$notUndefined(input.id,input.key)"
+                          :id="`${input.name}-engine-${index}`"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <!--              cylinders-->
+                  <div>
+                    <title-with-line-and-reject-reason no-approval title="number_of_cylinders"/>
+                    <div v-if="moto_options.config" class="row">
+                      <div v-for="(input,index) in moto_options.config.cylinders.sell_values['1']" :key="input.name"
+                           class="col-lg-4 mb-2 mb-lg-3">
+                        <form-radio
+                          v-model="form.cylinders"
+                          :input-name="getKey(item)"
+                          :invalid="hasError(item)"
+                          :label="input.name[locale] || $t(input.name)"
+                          :radio-value="$notUndefined(input.id,input.key)"
+                          :id="`${input.name}-cylinders-${index}`"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <!--                gearing-Ötürücü -->
+                  <div>
+                    <title-with-line-and-reject-reason no-approval title="gearing"/>
+                    <div v-if="moto_options.config" class="row">
+                      <div v-for="(input,index) in moto_options.config.drive.sell_values['1']" :key="input.name"
+                           class="col-lg-4 mb-2 mb-lg-3">
+                        <form-radio
+                          v-model="form.drive"
+                          :input-name="getKey(item)"
+                          :invalid="hasError(item)"
+                          :label="input.name[locale] || $t(input.name)"
+                          :radio-value="$notUndefined(input.id,input.key)"
+                          :id="`${input.name}-drive-${index}`"
+                        />
+                      </div>
+                    </div>
+
+                  </div>
+                  <!--                fuel-->
+                  <div>
+                    <title-with-line-and-reject-reason no-approval title="fuel"/>
+                    <div v-if="moto_options.config" class="row">
+                      <div v-for="(input,index)  in moto_options.config.fuel_type.values" :key="input.name"
+                           class="col-lg-4 mb-2 mb-lg-3">
+                        <form-radio
+                          v-model="form.fuel_type"
+                          :input-name="getKey(item)"
+                          :invalid="hasError(item)"
+                          :label="input.name[locale] || $t(input.name)"
+                          :radio-value="$notUndefined(input.id,input.key)"
+                          :id="`${input.name}-fuel_type-${index}`"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <!--                box-->
+                  <div>
+                    <title-with-line-and-reject-reason no-approval title="box"/>
+                    <div v-if="moto_options.config" class="row">
+                      <div v-for="(input,index)  in moto_options.config.box.sell_values['1']" :key="input.name"
+                           class="col-lg-4 mb-2 mb-lg-3">
+                        <form-radio
+                          v-model="form.box"
+                          :input-name="getKey(item)"
+                          :invalid="hasError(item)"
+                          :label="input.name[locale] || $t(input.name)"
+                          :radio-value="$notUndefined(input.id,input.key)"
+                          :id="`${input.name}-box-${index}`"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <!--                the_number_of_measures /tact-->
+                  <div>
+                    <title-with-line-and-reject-reason no-approval title="the_number_of_measures"/>
+                    <div v-if="moto_options.config" class="row">
+                      <div v-for="(input,index)  in moto_options.config.number_of_vehicles.values" :key="input.name"
+                           class="col-lg-4 mb-2 mb-lg-3">
+                        <form-radio
+                          v-model="form.number_of_vehicles"
+                          :input-name="getKey(item)"
+                          :invalid="hasError(item)"
+                          :label="input.name[locale] || $t(input.name)"
+                          :radio-value="$notUndefined(input.id,input.key)"
+                          :id="`${input.name}-number_of_vehicles-${index}`"
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <transition-expand>
@@ -558,7 +626,6 @@
                     </div>
                   </div>
                 </transition-expand>
-              </div>
             </div>
           </section>
         </template>
@@ -703,55 +770,11 @@
       :toggle="openLog"
       @close="openLog = false"
     >
-      <div class="log">
-        <small class="w-100 mb-4 text-right text-red">* {{ $t('old_value') }}
-          <icon name="arrow-right"></icon>
-          {{ $t('new_value') }}</small>
-        <div class="body">
-          <div
-            v-if="single_announce.btl_announces.length"
-          >
-            <!--            BTL : {{ getBtlUserName }}-->
-          </div>
-          <div
-            v-for="changeLog in single_announce.change_log"
-            v-if="
-                  (!changeLog.changes.open_count &&
-                    changeLog.user_id === single_announce.user_id)
-                "
-            :key="changeLog.id"
-          >
-            {{ changeLog.user.name }} {{ changeLog.user.lastname }} /
-            {{ formatDate(changeLog.created_at) }}
-            <br/>
-            <div
-              v-for="(value, key) in changeLog.original"
-              :key="key + '_changes'"
-            >
-              <div v-if="!['admin_user_id'].includes(key)" class="my-2" style="border-bottom: 1px solid #dadada">
-                {{ $t(key) }}: {{ (key === 'created_at') ? formatDate(value) : value }}
-                <icon name="arrow-right"></icon>
-                {{ (key === 'created_at') ? formatDate(changeLog.changes[key]) : changeLog.changes[key] }}
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="body">
-          <div
-            v-if="single_announce.btl_announces.length">
-            BTL : {{ getBtlUserName }}
-          </div>
-          <div v-for="changeLog in single_announce.change_log" :key="changeLog.id">
-            {{ changeLog.user.name }} {{ changeLog.user.lastname }} / {{ formatDate(changeLog.created_at) }}
-            <br>
-            <div v-for="(value, key) in changeLog.original" :key="key+'_changes'">
-              <div v-if="!['admin_user_id'].includes(key)">
-                {{ $t(key) }}: {{ getValue(key, value) }} -> {{ getValue(key, changeLog.changes[key]) }}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <change-log
+        :logs="single_announce.change_log"
+        :btl="single_announce.btl_announces"
+        :user-id="single_announce.user_id"
+      />
     </modal-popup>
     <!--    transfer modal 1-->
     <modal-popup
@@ -797,20 +820,7 @@ import SellLastStep from '~/components/sell/SellLastStepModerator'
 import SellFilters from '~/components/sell/SellFilters'
 import TitleWithLine from "~/components/global/titleWithLine";
 import FormRadioGroup from "~/components/forms/FormRadioGroup";
-// import YearComponent from "~/components/elements/sell/YearComponent";
-// import UploadImage from '~/components/elements/upload_image';
-// import OptionComponent from "~/components/elements/sell/OptionComponent";
-// import RejectReason from "~/components/elements/RejectReason";
-// import ModalForm from "~/components/global/search/ModalForm";
-// import ModalSellForm from "~/components/elements/sell/ModalSellForm";
-// import SelectBrand from "~/components/elements/sell/moto/SelectBrand";
-// import SelectModel from "~/components/elements/sell/moto/SelectModel";
-// import SelectMotoType from "~/components/elements/sell/moto/SelectMotoType";
-// import SelectYear from "~/components/elements/sell/moto/SelectYear";
-// import SelectCheckbox from "~/components/elements/sell/moto/SelectCheckbox";
-// import loginComponent from "~/components/elements/loginComponent";
-// import PhotoRejectReason from "../../../components/elements/sell/PhotoRejectReason";
-// import { Datetime } from 'vue-datetime';
+import ChangeLog from "~/components/moderator/changeLog";
 
 export default {
 
@@ -832,20 +842,7 @@ export default {
     SellFilters,
     PopularComments,
     FormRadioGroup,
-    // loginComponent,
-    // Datetime,
-    // PhotoRejectReason,
-    // RejectReason,
-    // SelectCheckbox,
-    // SelectYear,
-    // SelectModel,
-    // SelectBrand,
-    // SelectMotoType,
-    // YearComponent,
-    // ModalForm,
-    // UploadImage,
-    // ModalSellForm,
-    // OptionComponent
+    ChangeLog
   },
 
   async fetch({store}) {

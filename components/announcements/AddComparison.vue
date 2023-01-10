@@ -6,11 +6,14 @@
   >
     <icon name="compare" />
   </button> -->
+    <div class="white-background">
       <button
-      class="btn-transparent btn-compare"
-      :class="{ 'btn-compare-active': isActive }"
-      @click.prevent.stop="handleClick()"
-    ><i></i></button>
+        class=" btn-compare btn-transparent"
+        :class="{ 'btn-compare-active': isActive }"
+        @click.prevent.stop="handleClick()"
+      ><i></i></button>
+    </div>
+
 </template>
 
 <script>

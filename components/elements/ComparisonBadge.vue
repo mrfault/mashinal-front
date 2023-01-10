@@ -2,7 +2,7 @@
   <transition-group name="fade">
     <div v-if="badgeVisible"  :key="'badgeVisible'">
       <div class="comparison-badge" :style="windowWidth > 1800 ? 'right: calc(((100% - 1200px) / 2) - 25px);':''" @click="handleClick">
-        <icon name="compare" />
+        <inline-svg class="comparison-white" src="/icons/compare-icon.svg" />
         <span v-if="count" class="comparison-badge__count">{{ count }}</span>
       </div>
       <comparison-preview
@@ -12,7 +12,17 @@
     </div>
   </transition-group>
 </template>
-
+<style lang="scss">
+.comparison-white {
+  fill: white;
+  width: 35px;
+  height: 35px;
+  path {
+    fill:white;
+    stroke:white;
+  }
+}
+</style>
 <script>
 import { mapGetters } from 'vuex'
 import ComparisonPreview from '~/components/elements/ComparisonPreview'

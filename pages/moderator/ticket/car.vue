@@ -269,7 +269,7 @@
                     </div>
                     <!--              modification-->
                     <div
-                      v-if="data.modifications && data.modifications.length && form.transmission  && form.modification"
+                      v-if="data.modifications && data.modifications.length && form.transmission "
                       class="row"
                     >
                       <div class="col-12">
@@ -307,8 +307,8 @@
                       </div>
                     </div>
                   </div>
-
                 </template>
+
                 <template v-slot:image>
                   <title-with-line-and-reject-reason
                     :subtitle="
@@ -365,24 +365,22 @@
                     class="mb-4"
                   >
                     <div class="section-part__container">
-                      <div class="col-md-4 mb-2">
+                      <div class="col-md-4">
                         <input class="btn" type="file" v-on:change="add360Video"/>
-                      </div>
-                      <div v-if="single_announce.images_360 && single_announce.images_360.length" class="col-12">
-                        <vue-three-sixty
-                          :amount="single_announce.images_360.length"
-                          :files="single_announce.images_360"
-                          :singleAnnounce="single_announce"
-                          disableZoom
-                          putMainImage
-                          @mainSelected="selectMainImage"
-                          @remove360="remove360"
-                        />
                       </div>
                     </div>
                   </div>
                 </template>
-
+                <template v-slot:360_exterior_content>
+                  <vue-three-sixty
+                    showZoom
+                    disable-zoom
+                    :amount="single_announce.images_360.length"
+                    buttonClass="d-none"
+                    :files="single_announce.images_360"
+                    putMainImage
+                  />
+                </template>
 
                 <!--                  ------------------------    ------------------------    ------------------------    ------------------------    ------------------------    -------------------------->
 
@@ -537,40 +535,11 @@
       :toggle="openLog"
       @close="openLog = false"
     >
-      <div class="log">
-        <small class="w-100 mb-4 text-right text-red">* {{ $t('old_value') }}
-          <icon name="arrow-right"></icon>
-          {{ $t('new_value') }}</small>
-        <div class="body">
-          <div
-            v-if="single_announce.btl_announces.length"
-          >
-            <!--            BTL : {{ getBtlUserName }}-->
-          </div>
-          <div
-            v-for="changeLog in single_announce.change_log"
-            v-if="
-                  (!changeLog.changes.open_count &&
-                    changeLog.user_id === single_announce.user_id)
-                "
-            :key="changeLog.id"
-          >
-            {{ changeLog.user.name }} {{ changeLog.user.lastname }} /
-            {{ formatDate(changeLog.created_at) }}
-            <br/>
-            <div
-              v-for="(value, key) in changeLog.original"
-              :key="key + '_changes'"
-            >
-              <div v-if="!['admin_user_id'].includes(key)" class="my-2" style="border-bottom: 1px solid #dadada">
-                {{ $t(key) }}: {{ (key === 'created_at') ? formatDate(value) : value }}
-                <icon name="arrow-right"></icon>
-                {{ (key === 'created_at') ? formatDate(changeLog.changes[key]) : changeLog.changes[key] }}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <change-log
+        :btl="single_announce.btl_announces"
+        :logs="single_announce.change_log"
+        :user-id="single_announce.user_id"
+      />
     </modal-popup>
   </div>
   <div
@@ -600,6 +569,7 @@ import TitleWithLineAndRejectReason from '~/components/moderator/titleWithLineAn
 import UploadImageModerator from '~/components/moderator/UploadImageModerator'
 import PhotoRejectReason from "~/pages/moderator/photoReject/PhotoRejectReason";
 import Interior360Viewer from "~/components/Interior360Viewer";
+import ChangeLog from "~/components/moderator/changeLog";
 
 
 export default {
@@ -623,8 +593,8 @@ export default {
     SellLastStep,
     UploadImageModerator,
     PhotoRejectReason,
-    Interior360Viewer
-
+    Interior360Viewer,
+    ChangeLog,
   },
   data() {
     return {
@@ -673,10 +643,8 @@ export default {
         media: [],
         images_360: [],
         video_360_url: null,
-        video_360_id: null,
         interior_360_id: null,
         interior_360_url: null,
-        main_image: null,
       },
       data: {
         models: [],
@@ -1273,14 +1241,7 @@ export default {
       this.data.modifications = arr;
 
     },
-    getDataTransmissions(obj) {
-      console.log("salam", obj)
-      console.log(obj.map((o) => ({
-        name: this.$t('type_of_drive_values')[o.box_id],
-        key: o.box_id,
-      })))
 
-    },
 
     //handle actions
     async deleteByIndex(index) {
@@ -1296,9 +1257,7 @@ export default {
     addDeletedImagesToList(e) {
       this.deleteArr.push(e)
     },
-    formatDate(dte) {
-      return moment(dte).format('DD.MM.YYYY HH:mm')
-    },
+
 
     //handle image
     async addFiles(v) {
@@ -1401,49 +1360,8 @@ export default {
             this.$toast.success(this.$t('video_360_successfully_upload'))
             this.form.video_360_url = res.data.data.url
             this.form.video_360_id = res.data.data.id
-            console.log(formData)
           }
         })
-    },
-    selectMainImage(param) {
-      this.form.main_image = param
-    },
-    async remove360(param) {
-
-      if (param == 'success') {
-        let data = await this.$axios.$get('/ticket/car');
-
-        let video360section = document.getElementById('video360section');
-        video360section.remove();
-
-
-        this.$store.commit('mutate', {
-          with: data.announce,
-          property: 'single_announce'
-        })
-
-
-      }
-    },
-    add360Interior(val) {
-
-      var formData = new FormData();
-      formData.append("image", val.target.files[0]);
-
-      this.$axios.post('/upload_temporary_interior_image',
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        }
-      ).then((res) => {
-        if (res.status == 200) {
-          this.$toast.success(this.$t('interior_360_successfully_upload'))
-          this.form.interior_360_id = res.data.data.id
-        }
-
-      })
     },
 
 
@@ -1637,7 +1555,6 @@ export default {
     form: {
       deep: true,
       handler() {
-        console.log("form salam", this.form)
         if (this.form.brandObj == {}) {
           this.form.model_id = null;
           // this.form.model = {};
