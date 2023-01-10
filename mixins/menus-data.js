@@ -46,8 +46,8 @@ export const MenusDataMixin = {
     topbarMenus() {
       return [
         //{ title: 'comparisons', route: '/comparison', icon: 'compare' },
-        { title: 'favorites', route: '/profile/favorites', icon: 'star' },
-        { title: 'templates', route: '/profile/templates', icon: 'template' },
+        { title: 'favorites', route: '/profile/favorites', icon: 'favorite.svg' },
+        { title: 'templates', route: '/profile/templates', icon: 'receipt-search.svg' },
         { title: 'messages', route: '/profile/messages', icon: 'chat' },
         { title: 'notifications', route: '/notifications', icon: 'bell' },
       ];
@@ -91,10 +91,10 @@ export const MenusDataMixin = {
         { title: 'salons', route: '/salons', icon: 'salons-tab' },
         { title: 'shops', route: '/parts/shops', icon: 'shops-tab' },
         { title: 'autocatalog', route: '/catalog', icon: 'catalog-tab' },
-        { title: 'favorites', route: '/profile/favorites', icon: 'favorites-tab' },
+        { title: 'favorites', route: '/profile/favorites', icon: 'favorite.svg' },
 
-        { title: 'comparisons', route: '/comparison', icon: 'compare' },
-        { title: 'my_searches', route: '/profile/templates', icon: 'template', auth: true },
+        { title: 'comparisons', route: '/comparison', icon: 'compare-icon-white.svg' },
+        { title: 'my_searches', route: '/profile/templates',  icon: 'template', auth: true },
         { title: 'helper_search', route: '/cars/assistant', icon: 'helper-tab' },
 
         this.pageMenus.find(menu => menu.title === 'feedback')

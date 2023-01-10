@@ -1096,7 +1096,7 @@ export const actions = {
       `/search_catalog?page=${data.page || 1}`,
       { filteredData, params: data.params }
     );
-    if (!data.totalCount)
+
       commit("mutate", { property: "catalogItems", value: res.items });
     if (data.totalCount !== false)
       commit("mutate", { property: "catalogTotal", value: res.total });
