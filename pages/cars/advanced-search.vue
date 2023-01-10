@@ -52,13 +52,15 @@ export default {
     let post = JSON.parse(route.query.car_filter || '{}');
     let page = route.query.page || 1;
     let searchParams = { url: '/grid/cars', prefix: 'cars' }
+
+    if(!store.state.carsAnnouncements.total)
+      await store.dispatch('getGridSearch', { ...searchParams, post, page })
     await Promise.all([
       store.dispatch('getBrands'),
       store.dispatch('getBodyOptions'),
       store.dispatch('getOptions'),
       store.dispatch('getAllOtherOptions', '2'),
       store.dispatch('getColors'),
-      store.dispatch('getGridSearch', { ...searchParams, post, page }),
       // get model options for brands
       ...Object.keys(post?.additional_brands || {})
         .filter(key => post?.additional_brands?.[key]?.brand)
