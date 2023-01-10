@@ -226,10 +226,10 @@ export default {
       let calculatedPower;
       let combinedPower = mod.specifications.dvigatel.combined_power;
       let electricPower = mod.specifications.dvigatel.electric_motor_power;
-      if(combinedPower && combinedPower[0])
-        calculatedPower = combinedPower[0] + ' ' + this.$t('char_h_power');
-      else if (electricPower && electricPower[0])
-        calculatedPower = electricPower[0] + ' ' + this.$t('char_h_power')
+      if(combinedPower && combinedPower[0] && combinedPower[0] != '0')
+        calculatedPower = Math.ceil(combinedPower[0]) + ' ' + this.$t('char_h_power');
+      else if (electricPower && electricPower[0] && electricPower[0]!= '0')
+        calculatedPower = Math.ceil(electricPower[0]) + ' ' + this.$t('char_h_power')
       else
         calculatedPower = (mod.main['  ']['moshchnost'] && (mod.main['  ']['moshchnost'] + ' ' + this.$t('char_h_power'))) || '—';
       return calculatedPower;
