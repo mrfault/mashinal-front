@@ -38,14 +38,12 @@
             <div
               v-else
               :class="[
-                'swiper-slide-bg swiper-lazy',
+                'swiper-slide-bg',
                 { 'youtube-play': showYtVideo(index) },
               ]"
-              :data-background="
-                showYtVideo(index) ? getYtVideoImage('hq') : slide
-              "
+              :style="`background-image:url(${showYtVideo(index) ? getYtVideoImage('hq') : slide})`"
             >
-              <loader />
+<!--              <loader />-->
             </div>
           </div>
         </div>
@@ -242,10 +240,7 @@ export default {
         },
         loop: false,
         preloadImages: false,
-        lazy: {
-          loadPrevNext: false,
-          preloaderClass: 'loader',
-        },
+
       },
     }
   },
