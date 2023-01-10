@@ -11,9 +11,6 @@ export default {
       store.dispatch('getBrands'),
       store.dispatch('getBodyOptions'),
       store.dispatch('getCatalogSearch', { post, page, params: { temp: 1, ...route.params}, totalCount: true }),
-      store.dispatch('getCatalogSearch', { post, page, 
-        params: Object.keys(post).length ? { temp: 1, ...route.params} : {...route.params}, totalCount: false
-      })
     ]);
   }
 }

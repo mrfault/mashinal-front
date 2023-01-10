@@ -77,7 +77,7 @@ export default {
         .find(item => this.firstGeneration.car_type_id === item.car_type_id).transformed_media?.main?.[0];
     } else if (params.model && this.catalogItems?.[0]) {
       let item = this.catalogItems?.[0];
-      image = (item?.car_type_generation?.find(type => type.car_type_id === item.fav_car_type_id) || item?.car_type_generation[0]).transformed_media?.main?.[0];
+      image = (item?.car_type_generation?.find(type => type.car_type_id === item.fav_car_type_id) || item?.car_type_generation[0])?.transformed_media?.main?.[0];
     } else if (params.brand) {
       image = this.catalogItems?.data?.[0]?.transformed_media;
     }
@@ -95,8 +95,8 @@ export default {
         // route.params.generation && store.dispatch('getGenerationTypes', route.params),
         route.params.body && store.dispatch('getBodyModification', route.params),
         route.params.body && store.dispatch('getModificationsList', route.params),
-        store.dispatch('getCatalogSearch', { post, page, params: Object.keys(post).length ? { temp: 1, ...route.params} : {...route.params}, totalCount: !!route.params.brand }),
-        !route.params.brand && store.dispatch('getCatalogSearch', { post, page, params: { temp: 1, ...route.params}, totalCount: true })
+      /*  store.dispatch('getCatalogSearch', { post, page, params: Object.keys(post).length ? { temp: 1, ...route.params} : {...route.params}, totalCount: !!route.params.brand }),
+        !route.params.brand ? store.dispatch('getCatalogSearch', { post, page, params: { temp: 1, ...route.params}, totalCount: true }) : []*/
       ]);
     }
     return {
