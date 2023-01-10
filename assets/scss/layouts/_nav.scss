@@ -262,6 +262,7 @@
       padding: 0 0 40px;
 
       li {
+
         margin-bottom: 25px;
 
         &.login {
@@ -274,11 +275,15 @@
 
         a {
           display: inline-flex;
+          align-items: center;
           font-size: 16px;
-
-          i {
+          svg {
             width: 16px;
+            margin-right: 14px;
+          }
+          i {
             justify-content: center;
+            width: 16px;
             margin-right: 14px;
           }
         }

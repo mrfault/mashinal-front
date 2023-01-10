@@ -134,7 +134,7 @@
                   :key="mod.id" @click.prevent="handleModClick(mod)"
                 >
                   <span class="col">{{ modName(mod.main) }}</span>
-                  <span class="col">{{ modPower(mod.main) }}</span>
+                  <span class="col">{{ modPower(mod) }}</span>
                   <span class="col">{{ modBox(mod.main) }}</span>
                   <span class="col-auto">
                     <add-comparison has-border :id="mod.id" type="model"/>
@@ -222,8 +222,18 @@ export default {
       let box = this.$t('box_mode_values')[main[' ']['box']];
       return (main[' ']['obem'] && (main[' ']['obem'] + ' ' + box)) || box;
     },
-    modPower(main) {
-      return (main['  ']['moshchnost'] && (main['  ']['moshchnost'] + ' ' + this.$t('char_h_power'))) || '—';
+    modPower(mod) {
+      let calculatedPower;
+      let combinedPower = mod.specifications.dvigatel.combined_power;
+      let electricPower = mod.specifications.dvigatel.electric_motor_power;
+      if(combinedPower && combinedPower[0])
+        calculatedPower = combinedPower[0] + ' ' + this.$t('char_h_power');
+      else if (electricPower && electricPower[0])
+        calculatedPower = electricPower[0] + ' ' + this.$t('char_h_power')
+      else
+        calculatedPower = (mod.main['  ']['moshchnost'] && (mod.main['  ']['moshchnost'] + ' ' + this.$t('char_h_power'))) || '—';
+      return calculatedPower;
+
     },
     modBox(main) {
       return this.$t('box_values')[main[' ']['box']];

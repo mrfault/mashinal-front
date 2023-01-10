@@ -916,6 +916,7 @@ export default {
   "hub": "Ступица",
   "Hub (DIA)": "Ступица (DIA)",
   "hybrid": "Гибрид",
+  "Plug-in hybrid": "Plug-in гибрид",
   "if_you_do_not_have_an_account": "Если у Вас нет аккаунта",
   "if_you_have_an_account": "Если у Вас есть аккаунт",
   "image": "Фото",
