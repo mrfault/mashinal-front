@@ -54,8 +54,13 @@
           <template v-for="menu in sidebarMenus">
             <li :key="menu.title[locale] || menu.title" v-if="(menu.auth && loggedIn) || !menu.auth">
               <nuxt-link  style="position:relative" :to="$localePath(menu.route)" @click.native="toggleSidebarMenu(false)">
-                <icon :name="menu.icon" v-if="menu.icon" />
                 <inline-svg style="width: 20px;    fill: white; margin-right: 10px;" v-if="menu.title === 'external-salons'" src="/img/external_salon.svg" />
+                <icon
+                  v-else-if="!['favorites','comparisons'].includes(menu.title)"
+                  :name="menu.icon"
+                />
+                <inline-svg  v-else :src="`/icons/${menu.icon}`"/>
+
                 <span>{{ menu.title[locale] || $t(menu.title) }}</span>
                 <span>{{ (menu.title === 'comparisons') && comparisonCount ? '&nbsp;('+comparisonCount+')' : '' }}</span>
                 <span v-if="isMobileBreakpoint" style="position: absolute; top: -13px; right: -23px; display: flex;">
