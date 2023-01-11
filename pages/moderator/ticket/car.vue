@@ -9,7 +9,284 @@
         <div class="col-auto">
           <div class="card">
             <div class="mb-5">
+              <div>
+                <!--              user details-->
+                <template v-if="form.brand">
+                  <div class="row">
+                    <div class="col-12 col-md-6 col-lg-9">
+                      <user-details
+                        :brand="form.brandObj"
+                        :createdAt="single_announce.created_at"
+                        :is-autosalon="single_announce.is_autosalon"
+                        :is-external-salon="single_announce.is_external_salon"
+                        :smsRadarData="smsRadarData"
+                        :userData="form.user"
+                      />
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-3 d-flex justify-content-end">
+                      <button
+                        :class="{ button_loading: button_loading }"
+                        class="'btn btn--green"
+                        style="padding: 5px 20px;"
+                        @click.prevent="openLog = true"
+                      >
+                        {{ $t('show_logs') }}
+                      </button>
+                    </div>
+                  </div>
 
+                </template>
+                <!--              brand -->
+                <div class="row mt-5">
+                  <div class="col-12">
+                    <title-with-line-and-reject-reason
+                      rejectKey="brand"
+                      title="mark"
+                      @change="changeReason"
+                    />
+                  </div>
+                  <div class="col-12 col-lg-3">
+                    <form-select
+                      v-model="form.brand_id"
+                      :disabled="isModerator"
+                      :label="$t('mark')"
+                      :options="brands"
+                      has-search
+                      @change="changeBrand($event)"
+                    />
+                  </div>
+                  <div class="col-12 col-lg-9">
+                  <span
+                    v-if="smsRadarData && smsRadarData.marka"
+                    class="ma-smsradar"
+                  >
+                    <strong>SMSRadar:</strong>
+                    <p>{{ smsRadarData.marka }}</p>
+                  </span>
+                  </div>
+                </div>
+                <!--              model -->
+                <div v-if="data.models && form.brand_id" class="row">
+                  <div class="col-12">
+                    <title-with-line-and-reject-reason
+                      rejectKey="model"
+                      title="model"
+                      @change="changeReason"
+                    />
+                  </div>
+                  <div class="col-12 col-lg-3">
+                    <form-select
+                      v-model="form.model_id"
+                      :disabled="isModerator"
+                      :label="$t('model')"
+                      :options="data.models"
+                      :value="form.model_id"
+                      has-search
+                      @change="changeModel($event)"
+                    />
+                  </div>
+                </div>
+                <!--              year -->
+                <div v-if="data.sellYears && form.model_id" class="row">
+                  <div class="col-12">
+                    <title-with-line-and-reject-reason
+                      rejectKey="years"
+                      title="prod_year"
+                      @change="changeReason"
+                    />
+                  </div>
+                  <div class="col-12 col-lg-3">
+                    <form-select
+                      v-model="form.year"
+                      :disabled="isModerator"
+                      :label="$t('prod_year')"
+                      :options="data.sellYears"
+                      :value="form.year"
+                      has-search
+                      @change="changeYear($event)"
+                    />
+                  </div>
+                  <div class="col-12 col-lg-9">
+                  <span
+                    v-if="smsRadarData && smsRadarData.manufactYear"
+                    class="ma-smsradar"
+                  >
+                    <strong>SMSRadar:</strong>
+                    <p>{{ smsRadarData.manufactYear }}</p>
+                  </span>
+                  </div>
+                </div>
+                <!--              body-->
+                <div v-if="data.sellBodies && form.year" class="row">
+                  <div class="col-12">
+                    <title-with-line-and-reject-reason
+                      rejectKey="body_type"
+                      title="body_type"
+                      @change="changeReason"
+                    />
+                  </div>
+                  <div class="col-12 col-lg-3">
+                    <form-select
+                      v-model="form.car_body_type"
+                      :disabled="isModerator"
+                      :label="$t('body_type')"
+                      :options="data.sellBodies"
+                      :value="form.car_body_type"
+                      has-search
+                      @change="changeBodyType($event)"
+                    />
+                  </div>
+                  <div class="col-12 col-lg-9">
+                  <span
+                    v-if="smsRadarData && smsRadarData.vehBodyType"
+                    class="ma-smsradar"
+                  >
+                    <strong>SMSRadar:</strong>
+                    <p>{{ smsRadarData.vehBodyType }}</p>
+                  </span>
+                  </div>
+                </div>
+                <!--              generations-->
+                <div v-if="data.generations && form.car_body_type" class="row">
+                  <div class="col-12">
+                    <title-with-line-and-reject-reason
+                      :title="$t('generation')"
+                      rejectKey="generation"
+                      required
+                      @change="changeReason"
+                    />
+                  </div>
+                  <div class="col-12 col-lg-3">
+                    <form-select
+                      v-model="form.generation_id"
+                      :disabled="isModerator"
+                      :label="$t('generation')"
+                      :options="data.generations"
+                      :value="form.generation_id"
+                      has-search
+                      @change="changeGeneration($event)"
+                    />
+                  </div>
+                </div>
+                <!--              engines-->
+                <div v-if="data.engines && form.generation_id" class="row">
+                  <div class="col-12">
+                    <title-with-line-and-reject-reason
+                      :title="$t('engine')"
+                      rejectKey="engine"
+                      required
+                      @change="changeReason"
+                    />
+                  </div>
+                  <div class="col-12 col-lg-3">
+                    <form-select
+                      v-model="form.engine"
+                      :disabled="isModerator"
+                      :label="$t('engine')"
+                      :options="
+                      data.engines.map((o) => ({
+                        name: $t('engine_values')[o.engine],
+                        key: o.engine,
+                      }))
+                    "
+                      :value="form.engine"
+                      has-search
+                      @change="changeEngine($event)"
+                    />
+                  </div>
+                </div>
+                <!--              gearing-->
+                <div v-if="data.gearings && form.engine" class="row">
+                  <div class="col-12">
+                    <title-with-line-and-reject-reason
+                      :title="$t('box')"
+                      rejectKey="gearing"
+                      required
+                      @change="changeReason"
+                    />
+                  </div>
+                  <div class="col-12 col-lg-3 pl-0">
+                    <form-select
+                      v-model="form.gearing"
+                      :disabled="isModerator"
+                      :label="$t('box')"
+                      :options="
+                      data.gearings.map((o) => ({
+                        name: $t('box_values')[o.type_of_drive],
+                        key: o.type_of_drive,
+                      }))
+                    "
+                      :value="form.gearing"
+                      has-search
+                      @change="changeGearing($event)"
+                    />
+                  </div>
+                </div>
+                <!--              transmission-->
+                <div v-if="data.transmissions && data.transmissions.length && form.gearing" class="row">
+                  <div class="col-12">
+                    <title-with-line-and-reject-reason
+                      :title="$t('type_of_drive')"
+                      rejectKey="transmission"
+                      required
+                      @change="changeReason"
+                    />
+                  </div>
+                  <div v-if="true" class="col-12 col-lg-3 pl-0">
+                    <form-select
+                      v-model="form.transmission"
+                      :disabled="isModerator"
+                      :label="$t('type_of_drive')"
+                      :options="data.transmissions.map((o) => ({
+                        name: $t('type_of_drive_values')[o.box] || '',
+                        key: o.box,
+                      }))"
+                      :value="form.transmission"
+                      @change="changeTransmission($event)"
+                    />
+
+                  </div>
+                </div>
+                <!--              modification-->
+                <div
+                  v-if="data.modifications && data.modifications.length && form.transmission "
+                  class="row"
+                >
+                  <div class="col-12">
+                    <title-with-line-and-reject-reason
+                      v-if="sellModifications"
+                      :title="$t('modification')"
+                      rejectKey="modification"
+                      required
+                      @change="changeReason"
+                    />
+                  </div>
+                  <div class="col-12 col-lg-3 pl-0">
+                    <form-select
+                      v-model="form.modification"
+                      :disabled="isModerator"
+                      :label="$t('modification')"
+                      :options="
+                      data.modifications.map((o) => ({
+                        name: getModificationName(o),
+                        key: o.id,
+                      }))
+                    "
+                      :value="form.modification"
+                      @change="changeModification($event)"
+                    />
+                  </div>
+                  <div class="col-12 col-lg-9">
+                  <span
+                    v-if="smsRadarData && smsRadarData.engincapacity"
+                    class="ma-smsradar"
+                  >
+                    <strong>SMSRadar:</strong>
+                    <p>{{ smsRadarData.engincapacity / 1000 }}</p>
+                  </span>
+                  </div>
+                </div>
+              </div>
               <!--     sell last step ------  -->
               <sell-last-step
                 :key="lastStepKey"
@@ -28,287 +305,6 @@
                 @imageDeleted="addDeletedImagesToList"
                 @interior_360_id_changed="(e) => (form.interior_360_id = e)"
               >
-                <template v-slot:form-inputs>
-                  <div>
-                    <!--              user details-->
-                    <template v-if="form.brand">
-                      <div class="row">
-                        <div class="col-12 col-md-6 col-lg-9">
-                          <user-details
-                            :brand="form.brandObj"
-                            :createdAt="single_announce.created_at"
-                            :is-autosalon="single_announce.is_autosalon"
-                            :is-external-salon="single_announce.is_external_salon"
-                            :smsRadarData="smsRadarData"
-                            :userData="form.user"
-                          />
-                        </div>
-                        <div class="col-12 col-md-6 col-lg-3 d-flex justify-content-end">
-                          <button
-                            :class="{ button_loading: button_loading }"
-                            class="'btn btn--green"
-                            style="padding: 5px 20px;"
-                            @click.prevent="openLog = true"
-                          >
-                            {{ $t('show_logs') }}
-                          </button>
-                        </div>
-                      </div>
-
-                    </template>
-                    <!--              brand -->
-                    <div class="row mt-5">
-                      <div class="col-12">
-                        <title-with-line-and-reject-reason
-                          rejectKey="brand"
-                          title="mark"
-                          @change="changeReason"
-                        />
-                      </div>
-                      <div class="col-12 col-lg-3">
-                        <form-select
-                          v-model="form.brand_id"
-                          :disabled="isModerator"
-                          :label="$t('mark')"
-                          :options="brands"
-                          has-search
-                          @change="changeBrand($event)"
-                        />
-                      </div>
-                      <div class="col-12 col-lg-9">
-                  <span
-                    v-if="smsRadarData && smsRadarData.marka"
-                    class="ma-smsradar"
-                  >
-                    <strong>SMSRadar:</strong>
-                    <p>{{ smsRadarData.marka }}</p>
-                  </span>
-                      </div>
-                    </div>
-                    <!--              model -->
-                    <div v-if="data.models && form.brand_id" class="row">
-                      <div class="col-12">
-                        <title-with-line-and-reject-reason
-                          rejectKey="model"
-                          title="model"
-                          @change="changeReason"
-                        />
-                      </div>
-                      <div class="col-12 col-lg-3">
-                        <form-select
-                          v-model="form.model_id"
-                          :disabled="isModerator"
-                          :label="$t('model')"
-                          :options="data.models"
-                          :value="form.model_id"
-                          has-search
-                          @change="changeModel($event)"
-                        />
-                      </div>
-                    </div>
-                    <!--              year -->
-                    <div v-if="data.sellYears && form.model_id" class="row">
-                      <div class="col-12">
-                        <title-with-line-and-reject-reason
-                          rejectKey="years"
-                          title="prod_year"
-                          @change="changeReason"
-                        />
-                      </div>
-                      <div class="col-12 col-lg-3">
-                        <form-select
-                          v-model="form.year"
-                          :disabled="isModerator"
-                          :label="$t('prod_year')"
-                          :options="data.sellYears"
-                          :value="form.year"
-                          has-search
-                          @change="changeYear($event)"
-                        />
-                      </div>
-                      <div class="col-12 col-lg-9">
-                  <span
-                    v-if="smsRadarData && smsRadarData.manufactYear"
-                    class="ma-smsradar"
-                  >
-                    <strong>SMSRadar:</strong>
-                    <p>{{ smsRadarData.manufactYear }}</p>
-                  </span>
-                      </div>
-                    </div>
-                    <!--              body-->
-                    <div v-if="data.sellBodies && form.year" class="row">
-                      <div class="col-12">
-                        <title-with-line-and-reject-reason
-                          rejectKey="body_type"
-                          title="body_type"
-                          @change="changeReason"
-                        />
-                      </div>
-                      <div class="col-12 col-lg-3">
-                        <form-select
-                          v-model="form.car_body_type"
-                          :disabled="isModerator"
-                          :label="$t('body_type')"
-                          :options="data.sellBodies"
-                          :value="form.car_body_type"
-                          has-search
-                          @change="changeBodyType($event)"
-                        />
-                      </div>
-                      <div class="col-12 col-lg-9">
-                  <span
-                    v-if="smsRadarData && smsRadarData.vehBodyType"
-                    class="ma-smsradar"
-                  >
-                    <strong>SMSRadar:</strong>
-                    <p>{{ smsRadarData.vehBodyType }}</p>
-                  </span>
-                      </div>
-                    </div>
-                    <!--              generations-->
-                    <div v-if="data.generations && form.car_body_type" class="row">
-                      <div class="col-12">
-                        <title-with-line-and-reject-reason
-                          :title="$t('generation')"
-                          rejectKey="generation"
-                          required
-                          @change="changeReason"
-                        />
-                      </div>
-                      <div class="col-12 col-lg-3">
-                        <form-select
-                          v-model="form.generation_id"
-                          :disabled="isModerator"
-                          :label="$t('generation')"
-                          :options="data.generations"
-                          :value="form.generation_id"
-                          has-search
-                          @change="changeGeneration($event)"
-                        />
-                      </div>
-                    </div>
-                    <!--              engines-->
-                    <div v-if="data.engines && form.generation_id" class="row">
-                      <div class="col-12">
-                        <title-with-line-and-reject-reason
-                          :title="$t('engine')"
-                          rejectKey="engine"
-                          required
-                          @change="changeReason"
-                        />
-                      </div>
-                      <div class="col-12 col-lg-3">
-                        <form-select
-                          v-model="form.engine"
-                          :disabled="isModerator"
-                          :label="$t('engine')"
-                          :options="
-                      data.engines.map((o) => ({
-                        name: $t('engine_values')[o.engine],
-                        key: o.engine,
-                      }))
-                    "
-                          :value="form.engine"
-                          has-search
-                          @change="changeEngine($event)"
-                        />
-                      </div>
-                    </div>
-                    <!--              gearing-->
-                    <div v-if="data.gearings && form.engine" class="row">
-                      <div class="col-12">
-                        <title-with-line-and-reject-reason
-                          :title="$t('box')"
-                          rejectKey="gearing"
-                          required
-                          @change="changeReason"
-                        />
-                      </div>
-                      <div class="col-12 col-lg-3 pl-0">
-                        <form-select
-                          v-model="form.gearing"
-                          :disabled="isModerator"
-                          :label="$t('box')"
-                          :options="
-                      data.gearings.map((o) => ({
-                        name: $t('box_values')[o.type_of_drive],
-                        key: o.type_of_drive,
-                      }))
-                    "
-                          :value="form.gearing"
-                          has-search
-                          @change="changeGearing($event)"
-                        />
-                      </div>
-                    </div>
-                    <!--              transmission-->
-                    <div v-if="data.transmissions && data.transmissions.length && form.gearing" class="row">
-                      <div class="col-12">
-                        <title-with-line-and-reject-reason
-                          :title="$t('type_of_drive')"
-                          rejectKey="transmission"
-                          required
-                          @change="changeReason"
-                        />
-                      </div>
-                      <div v-if="true" class="col-12 col-lg-3 pl-0">
-                        <form-select
-                          v-model="form.transmission"
-                          :disabled="isModerator"
-                          :label="$t('type_of_drive')"
-                          :options="data.transmissions.map((o) => ({
-                        name: $t('type_of_drive_values')[o.box] || '',
-                        key: o.box,
-                      }))"
-                          :value="form.transmission"
-                          @change="changeTransmission($event)"
-                        />
-
-                      </div>
-                    </div>
-                    <!--              modification-->
-                    <div
-                      v-if="data.modifications && data.modifications.length && form.transmission "
-                      class="row"
-                    >
-                      <div class="col-12">
-                        <title-with-line-and-reject-reason
-                          v-if="sellModifications"
-                          :title="$t('modification')"
-                          rejectKey="modification"
-                          required
-                          @change="changeReason"
-                        />
-                      </div>
-                      <div class="col-12 col-lg-3 pl-0">
-                        <form-select
-                          v-model="form.modification"
-                          :disabled="isModerator"
-                          :label="$t('modification')"
-                          :options="
-                      data.modifications.map((o) => ({
-                        name: getModificationName(o),
-                        key: o.id,
-                      }))
-                    "
-                          :value="form.modification"
-                          @change="changeModification($event)"
-                        />
-                      </div>
-                      <div class="col-12 col-lg-9">
-                  <span
-                    v-if="smsRadarData && smsRadarData.engincapacity"
-                    class="ma-smsradar"
-                  >
-                    <strong>SMSRadar:</strong>
-                    <p>{{ smsRadarData.engincapacity / 1000 }}</p>
-                  </span>
-                      </div>
-                    </div>
-                  </div>
-                </template>
-
                 <template v-slot:image>
                   <title-with-line-and-reject-reason
                     :subtitle="
@@ -930,7 +926,7 @@ export default {
           power: data.announce?.car_catalog?.power,
           year: data.announce?.year,
           auction: data.announce?.auction,
-          end_date: moment(data.announce?.end_date).format('DD.MM.YYYY HH:mm'),
+          end_date: moment(data.announce?.end_date).format('DD.MM.YYYY HH:mm') || null,
           country_id: data.announce?.country_id,
           youtube: {
             id: data.announce?.youtube_link,
@@ -945,7 +941,7 @@ export default {
           lat: parseFloat(data.announce?.latitude || 0),
           lng: parseFloat(data.announce?.longitude || 0),
           vin: data.announce?.vin || "",
-          price: data.announce?.price_int || '',
+          price: data.announce?.price_int.toString() || '',
           owner_type: parseInt(data.announce?.owner_type) || 0,
           currency: data.announce?.currency_id || 1,
           car_number: data.announce?.car_number,
@@ -960,7 +956,7 @@ export default {
           comment: data.announce?.comment || '',
           is_new: data.announce?.is_new || false,
           beaten: data.announce?.broken,
-          customs_clearance: data.announce?.customs_clearance || false,
+          customs_clearance: data.announce?.customs_clearance || 0,
           tradeable: data.announce?.exchange_possible,
           credit: data.announce?.credit,
           guaranty: data.announce?.in_garanty,
@@ -1530,12 +1526,13 @@ export default {
 
       delete this.form.model_slug;
       delete this.form.brand_slug;
-      this.form.id_unique = this.single_announce.id;
+      this.form.id_unique = this.single_announce.id.toString();
       // this.form.generation = this.generation
       // this.form.car_catalog_id = this.modification
       this.form.rejectArray = this.rejectObj.rejectArray;
       this.form.saved_images = this.saved_images;
       let formData = new FormData()
+      delete this.form.user
       // formData.append('images_360', this.uploadedVideo360);
       // formData.append('interior_360', this.uploadedInterior360);
       formData.append('data', JSON.stringify(this.form))
@@ -1628,6 +1625,12 @@ export default {
         }
       }
     },
+    'form.brandObj':{
+      deep: true,
+      handler(){
+        this.form.brand = this.form.brandObj.slug
+      }
+    }
   }
 }
 </script>
