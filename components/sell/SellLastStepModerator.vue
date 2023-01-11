@@ -487,25 +487,7 @@
         >
           <div v-html="getRulesPage.text[locale]"></div>
         </modal-popup>
-
-        <backdrop v-if="showLoginPopup" @click="showLoginPopup = false">
-          <template #default="{ show }">
-            <transition name="translate-fade">
-              <login-tabs
-                v-if="show"
-                :action-text="{
-                  login: $t('login_and_publish'),
-                  register: $t('register_and_publish'),
-                  confirm: $t('confirm_and_publish'),
-                }"
-                :force-sell-phone="true"
-                :popup="true"
-                :skip-sign-in="true"
-                @close="showLoginPopup = false"
-              />
-            </transition>
-          </template>
-        </backdrop>
+        
         <div id="anchor-finish" class="publish-post mb-4">
           <div v-if="showBanners && !isAlreadySold" class="row mt-4 mb-4">
             <div
@@ -712,7 +694,6 @@ export default {
   },
   methods: {
     ...mapActions([
-      // 'setSellProgress',
       'setSellPreviewData',
       'resetSellTokens',
       'getMyAllAnnouncements',
@@ -973,9 +954,6 @@ export default {
 
   },
   watch: {
-    // progress(value) {
-    //   this.setSellProgress(value)
-    // },
     rejectObj: {
       deep: true,
       handler() {
