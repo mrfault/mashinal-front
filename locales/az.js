@@ -992,8 +992,7 @@ export default {
   "Isofix mounting system": "İsofix bərkitmə sistemi",
   it_is_forbidden_to_give_links_indicate_email_addresses_mail_address_of_the_place_of_inspection_telephones_price_offer_services:
     "Məlumat bölməsində qeyd olunması qadağa olunmuş məlumatlar(link,e-poçt,qiymət və xidmət təklifi).",
-  it_will_not_be_possible_to_change_the_city_after_accommodation:
-    "Elanı paylaşandan sonra şəhəri deyişdirmək mümkün olmayacağ",
+  it_will_not_be_possible_to_change_the_city_after_accommodation: "Elanı paylaşandan sonra şəhəri deyişdirmək mümkün olmayacaq",
   jack_type: "Avtomobil aləti",
   journal: "Jurnallar",
   kabriolet: "Kabriolet",
@@ -2467,5 +2466,6 @@ export default {
   "cars_with_damage_sentence": "ban elementlərində zədə mövcud olan avtomobillər",
   "second_or_more": "Xeyr",
   "forbidden_give_links_text": "Məlumatda linklərinin göstərilməsi, elektron poçt ünvanının, baxış keçirmə məkanın ünvanının, telefon nömrəsinin, qiymətin və xidmətlərin təklifi qadağandır.",
-  "user_add_successfully": "İstifadəçi uğurla əlavə edildi"
+  "user_add_successfully": "İstifadəçi uğurla əlavə edildi",
+  "delay_comment": "Şərh yazmaq",
 }
