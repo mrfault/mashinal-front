@@ -76,11 +76,13 @@
                   :name="menu.icon"
                   v-b-tooltip="$t('tooltip_' + menu.title)"
                 />
-                <inline-svg
-                  v-b-tooltip="$t('tooltip_' + menu.title)"
-                  v-else
-                  :src="`/icons/${menu.icon}`"
-                />
+                <div  v-else>
+                  <inline-svg
+                    v-b-tooltip="$t('tooltip_' + menu.title)"
+                    :src="`/icons/${menu.icon}`"
+                  />
+                </div>
+
                 <template
                   v-if="menu.title === 'messages' && countNewMessages > 0"
                 >
