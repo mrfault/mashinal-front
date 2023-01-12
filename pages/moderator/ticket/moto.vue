@@ -42,6 +42,7 @@
             </div>
             <div v-if="getBrands && getBrands.length" class="col-12 col-lg-3">
               <form-select
+                :clearOption="false"
                 :key="refresh+1"
                 v-model="form.brand"
                 :disabled="isModerator"
@@ -65,6 +66,7 @@
             </div>
             <div v-if="getModels && getModels.length" class="col-12 col-lg-3">
               <form-select
+                :clearOption="false"
                 :key="refresh+1"
                 v-model="form.model"
                 :disabled="isModerator"
@@ -102,6 +104,7 @@
             </div>
             <div v-if="getYears && getYears.length" class="col-12 col-lg-3">
               <form-select
+                :clearOption="false"
                 :key="refresh+1"
                 v-model="form.year"
                 :disabled="isModerator"
@@ -263,6 +266,7 @@
 
             <div v-if="!single_announce.is_external_salon" class="col-4 col-md-6 col-lg-3">
               <form-select
+                :clearOption="false"
                 id="region_id"
                 :key="refresh+1"
                 v-model="form.region_id"
@@ -278,6 +282,7 @@
             </div>
             <div v-if="single_announce.is_external_salon" class="col-lg-4 mb-2 mb-lg-0">
               <form-select
+                :clearOption="false"
                 v-model="form.country_id"
                 :clear-option="false"
                 :invalid="isInvalid('region_id')"

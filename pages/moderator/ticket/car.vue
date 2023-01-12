@@ -67,6 +67,7 @@
                       </div>
                       <div class="col-12 col-lg-3">
                         <form-select
+                          :clearOption="false"
                           v-model="form.brand_id"
                           :disabled="isModerator"
                           :label="$t('mark')"
@@ -96,6 +97,7 @@
                       </div>
                       <div class="col-12 col-lg-3">
                         <form-select
+                          :clearOption="false"
                           v-model="form.model_id"
                           :disabled="isModerator"
                           :label="$t('model')"
@@ -117,6 +119,7 @@
                       </div>
                       <div class="col-12 col-lg-3">
                         <form-select
+                          :clearOption="false"
                           v-model="form.year"
                           :disabled="isModerator"
                           :label="$t('prod_year')"
@@ -147,6 +150,7 @@
                       </div>
                       <div class="col-12 col-lg-3">
                         <form-select
+                          :clearOption="false"
                           v-model="form.car_body_type"
                           :disabled="isModerator"
                           :label="$t('body_type')"
@@ -178,6 +182,7 @@
                       </div>
                       <div class="col-12 col-lg-3">
                         <form-select
+                          :clearOption="false"
                           v-model="form.generation_id"
                           :disabled="isModerator"
                           :label="$t('generation')"
@@ -200,6 +205,7 @@
                       </div>
                       <div class="col-12 col-lg-3">
                         <form-select
+                          :clearOption="false"
                           v-model="form.engine"
                           :disabled="isModerator"
                           :label="$t('engine')"
@@ -227,6 +233,7 @@
                       </div>
                       <div class="col-12 col-lg-3 pl-0">
                         <form-select
+                          :clearOption="false"
                           v-model="form.gearing"
                           :disabled="isModerator"
                           :label="$t('box')"
@@ -254,6 +261,7 @@
                       </div>
                       <div v-if="true" class="col-12 col-lg-3 pl-0">
                         <form-select
+                          :clearOption="false"
                           v-model="form.transmission"
                           :disabled="isModerator"
                           :label="$t('type_of_drive')"
@@ -283,6 +291,7 @@
                       </div>
                       <div class="col-12 col-lg-3 pl-0">
                         <form-select
+                          :clearOption="false"
                           v-model="form.modification"
                           :disabled="isModerator"
                           :label="$t('modification')"
@@ -516,25 +525,28 @@
       :toggle="transfer.isOpen"
       @close="transfer.isOpen = false"
     >
-      <div class="row">
-        <div class="col-12 mt-2">
-          <form-textarea
-            v-model="transfer.comment"
-            :maxlength="3000"
-            :placeholder="$t('transfer_comment')"
-          />
+      <div class="body">
+        <div class="row">
+          <div class="col-12 mt-2">
+            <form-textarea
+              v-model="transfer.comment"
+              :maxlength="3000"
+              :placeholder="$t('transfer_comment')"
+            />
+          </div>
+          <div class="col-12 mt-2">
+            <button
+              v-if="user.admin_group && user.admin_group == 2"
+              :class="['btn btn--green', { pending }]"
+              class="mb-2"
+              type="button"
+              @click="transferToSupervisor()"
+            >
+              {{ $t('transfer_to_supervisor') }}
+            </button>
+          </div>
         </div>
-        <div class="col-12 mt-2">
-          <button
-            v-if="user.admin_group && user.admin_group == 2"
-            :class="['btn btn--green', { pending }]"
-            class="mb-2"
-            type="button"
-            @click="transferToSupervisor()"
-          >
-            {{ $t('transfer_to_supervisor') }}
-          </button>
-        </div>
+
       </div>
     </modal-popup>
 
