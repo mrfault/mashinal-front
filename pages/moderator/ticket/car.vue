@@ -393,7 +393,6 @@
                         buttonClass="d-none"
                         disable-zoom
                         putMainImage
-                        showZoom
                         @mainSelected="selectMainImage"
                         @remove360="remove360"
                       />
