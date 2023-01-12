@@ -1,6 +1,6 @@
 <template>
-  <div class="pages-announcement-edit">
-    <div class="w-100  px-3 px-md-0">
+  <div class="w-100" style="box-sizing: border-box;overflow: hidden">
+    <div class="container  px-3 px-md-0">
       <!--    breadcrumbs-->
       <breadcrumbs id="brdcrmbs1" :crumbs="crumbs"/>
       <!--    details-->
@@ -42,6 +42,7 @@
             </div>
             <div v-if="getBrands && getBrands.length" class="col-12 col-lg-3">
               <form-select
+                :clearOption="false"
                 :key="refresh+1"
                 v-model="form.brand"
                 :disabled="isModerator"
@@ -65,6 +66,7 @@
             </div>
             <div v-if="getModels && getModels.length" class="col-12 col-lg-3">
               <form-select
+                :clearOption="false"
                 :key="refresh+1"
                 v-model="form.model"
                 :disabled="isModerator"
@@ -102,6 +104,7 @@
             </div>
             <div v-if="getYears && getYears.length" class="col-12 col-lg-3">
               <form-select
+                :clearOption="false"
                 :key="refresh+1"
                 v-model="form.year"
                 :disabled="isModerator"
@@ -263,6 +266,7 @@
 
             <div v-if="!single_announce.is_external_salon" class="col-4 col-md-6 col-lg-3">
               <form-select
+                :clearOption="false"
                 id="region_id"
                 :key="refresh+1"
                 v-model="form.region_id"
@@ -278,6 +282,7 @@
             </div>
             <div v-if="single_announce.is_external_salon" class="col-lg-4 mb-2 mb-lg-0">
               <form-select
+                :clearOption="false"
                 v-model="form.country_id"
                 :clear-option="false"
                 :invalid="isInvalid('region_id')"
@@ -347,45 +352,22 @@
               />
             </div>
           </section>
+
           <!--      number/vin-->
-          <section class="row">
+          <section id="moderation-moto-number-vin" class="row">
             <div class="col-12">
               <title-with-line-and-reject-reason
-                v-if="
-              !loggedIn ||
-              (loggedIn && !user.autosalon) ||
-              (loggedIn && user.autosalon && user.autosalon.is_official) ||
-              user.external_salon
-            "
+
                 id="anchor-car_or_vin"
                 :reject-key="form.car_number ? 'car_number' : 'vin'"
-                :required="
-              type === 'cars' || (type !== 'parts' && user.external_salon)
-            "
-                :title="
-              form.customs_clearance || user.external_salon
-                ? 'vin_carcase_number'
-                : 'license_plate_number_vin_or_carcase_number'
-            "
-
+                :required="user.external_salon"
+                :title="'license_plate_number_vin_or_carcase_number'"
                 spanId="anchor-vin"
                 @change="changeReason"
               />
-              <title-with-line-and-reject-reason
-                v-else
-                id="anchor-car_or_vin"
-                :title="
-              form.customs_clearance || user.external_salon
-                ? 'vin_carcase_number'
-                : 'license_plate_number_vin_or_carcase_number'
-            "
-                reject-key="price"
-                spanId="anchor-vin"
-              />
             </div>
-            <div class="col-auto">
+            <div class="col-12 col-md-6 col-lg-3">
               <div
-                v-if="!form.customs_clearance && !user.external_salon"
                 id="anchor-car_number"
               >
                 <form-text-input
@@ -413,6 +395,35 @@
                   transparent
                 />
               </div>
+            </div>
+            <div v-if="form.customs_clearance && form && form.vin" class="col-12 col-md-6 col-lg-3">
+              <form-textarea
+                key="vin"
+                v-model="form.vin"
+                :mask="$maskAlphaNumeric('*****************')"
+                :placeholder="$t('vin_carcase_number')"
+                class="textfield-like-textarea"
+                @change="removeError('vin')"
+              >
+                <popover :width="240" name="vin">
+                  <inline-svg src="/img/car-cert.svg"/>
+                </popover>
+              </form-textarea>
+              <form-checkbox
+                v-model="form.show_vin"
+                :label="$t('show_vin_on_site')"
+                class="mt-2 mt-lg-3"
+                input-name="show_vin"
+                transparent
+              />
+            </div>
+          </section>
+
+
+          <!--          options-->
+          <section id="moderation-moto-options" class="row">
+            <div class="col-12">
+              <transition-expand>
                 <div v-if="collapsed" class="w-100">
                   <!--                power-->
                   <div>
@@ -421,12 +432,12 @@
                       <div v-for="input in moto_options.config.engine.sell_values['1']" :key="input.name"
                            class="col-lg-4 mb-2 mb-lg-3">
                         <form-radio
+                          :id="`${input.name}-engine-${index}`"
                           v-model="form.engine"
                           :input-name="getKey(item)"
                           :invalid="hasError(item)"
                           :label="input.name[locale] || $t(input.name)"
                           :radio-value="$notUndefined(input.id,input.key)"
-                          :id="`${input.name}-engine-${index}`"
                         />
                       </div>
                     </div>
@@ -438,12 +449,12 @@
                       <div v-for="(input,index) in moto_options.config.cylinders.sell_values['1']" :key="input.name"
                            class="col-lg-4 mb-2 mb-lg-3">
                         <form-radio
+                          :id="`${input.name}-cylinders-${index}`"
                           v-model="form.cylinders"
                           :input-name="getKey(item)"
                           :invalid="hasError(item)"
                           :label="input.name[locale] || $t(input.name)"
                           :radio-value="$notUndefined(input.id,input.key)"
-                          :id="`${input.name}-cylinders-${index}`"
                         />
                       </div>
                     </div>
@@ -455,12 +466,12 @@
                       <div v-for="(input,index) in moto_options.config.drive.sell_values['1']" :key="input.name"
                            class="col-lg-4 mb-2 mb-lg-3">
                         <form-radio
+                          :id="`${input.name}-drive-${index}`"
                           v-model="form.drive"
                           :input-name="getKey(item)"
                           :invalid="hasError(item)"
                           :label="input.name[locale] || $t(input.name)"
                           :radio-value="$notUndefined(input.id,input.key)"
-                          :id="`${input.name}-drive-${index}`"
                         />
                       </div>
                     </div>
@@ -473,12 +484,12 @@
                       <div v-for="(input,index)  in moto_options.config.fuel_type.values" :key="input.name"
                            class="col-lg-4 mb-2 mb-lg-3">
                         <form-radio
+                          :id="`${input.name}-fuel_type-${index}`"
                           v-model="form.fuel_type"
                           :input-name="getKey(item)"
                           :invalid="hasError(item)"
                           :label="input.name[locale] || $t(input.name)"
                           :radio-value="$notUndefined(input.id,input.key)"
-                          :id="`${input.name}-fuel_type-${index}`"
                         />
                       </div>
                     </div>
@@ -490,12 +501,12 @@
                       <div v-for="(input,index)  in moto_options.config.box.sell_values['1']" :key="input.name"
                            class="col-lg-4 mb-2 mb-lg-3">
                         <form-radio
+                          :id="`${input.name}-box-${index}`"
                           v-model="form.box"
                           :input-name="getKey(item)"
                           :invalid="hasError(item)"
                           :label="input.name[locale] || $t(input.name)"
                           :radio-value="$notUndefined(input.id,input.key)"
-                          :id="`${input.name}-box-${index}`"
                         />
                       </div>
                     </div>
@@ -507,125 +518,18 @@
                       <div v-for="(input,index)  in moto_options.config.number_of_vehicles.values" :key="input.name"
                            class="col-lg-4 mb-2 mb-lg-3">
                         <form-radio
+                          :id="`${input.name}-number_of_vehicles-${index}`"
                           v-model="form.number_of_vehicles"
                           :input-name="getKey(item)"
                           :invalid="hasError(item)"
                           :label="input.name[locale] || $t(input.name)"
                           :radio-value="$notUndefined(input.id,input.key)"
-                          :id="`${input.name}-number_of_vehicles-${index}`"
                         />
                       </div>
                     </div>
                   </div>
                 </div>
-                <transition-expand>
-                  <div v-if="collapsed" class="w-100">
-                    <!--                power-->
-                    <div>
-                      <title-with-line-and-reject-reason no-approval title="engine_power_system"/>
-                      <div v-if="moto_options.config" class="row">
-                        <div v-for="input in moto_options.config.engine.sell_values['1']" :key="input.name"
-                             class="col-lg-4 mb-2 mb-lg-3">
-                          <pre>{{ input }}</pre>
-                          <form-radio
-                            :id="`${input.name}-engine-${index}`"
-                            v-model="form.engine"
-                            :input-name="getKey(item)"
-                            :invalid="hasError(item)"
-                            :label="input.name[locale] || $t(input.name)"
-                            :radio-value="$notUndefined(input.id,input.key)"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <!--              cylinders-->
-                    <div>
-                      <title-with-line-and-reject-reason no-approval title="number_of_cylinders"/>
-                      <div v-if="moto_options.config" class="row">
-                        <div v-for="(input,index) in moto_options.config.cylinders.sell_values['1']" :key="input.name"
-                             class="col-lg-4 mb-2 mb-lg-3">
-                          <form-radio
-                            :id="`${input.name}-cylinders-${index}`"
-                            v-model="form.cylinders"
-                            :input-name="getKey(item)"
-                            :invalid="hasError(item)"
-                            :label="input.name[locale] || $t(input.name)"
-                            :radio-value="$notUndefined(input.id,input.key)"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <!--                gearing-Ötürücü -->
-                    <div>
-                      <title-with-line-and-reject-reason no-approval title="gearing"/>
-                      <div v-if="moto_options.config" class="row">
-                        <div v-for="(input,index) in moto_options.config.drive.sell_values['1']" :key="input.name"
-                             class="col-lg-4 mb-2 mb-lg-3">
-                          <form-radio
-                            :id="`${input.name}-drive-${index}`"
-                            v-model="form.drive"
-                            :input-name="getKey(item)"
-                            :invalid="hasError(item)"
-                            :label="input.name[locale] || $t(input.name)"
-                            :radio-value="$notUndefined(input.id,input.key)"
-                          />
-                        </div>
-                      </div>
-
-                    </div>
-                    <!--                fuel-->
-                    <div>
-                      <title-with-line-and-reject-reason no-approval title="fuel"/>
-                      <div v-if="moto_options.config" class="row">
-                        <div v-for="(input,index)  in moto_options.config.fuel_type.values" :key="input.name"
-                             class="col-lg-4 mb-2 mb-lg-3">
-                          <form-radio
-                            :id="`${input.name}-fuel_type-${index}`"
-                            v-model="form.fuel_type"
-                            :input-name="getKey(item)"
-                            :invalid="hasError(item)"
-                            :label="input.name[locale] || $t(input.name)"
-                            :radio-value="$notUndefined(input.id,input.key)"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <!--                box-->
-                    <div>
-                      <title-with-line-and-reject-reason no-approval title="box"/>
-                      <div v-if="moto_options.config" class="row">
-                        <div v-for="(input,index)  in moto_options.config.box.sell_values['1']" :key="input.name"
-                             class="col-lg-4 mb-2 mb-lg-3">
-                          <form-radio
-                            :id="`${input.name}-box-${index}`"
-                            v-model="form.box"
-                            :input-name="getKey(item)"
-                            :invalid="hasError(item)"
-                            :label="input.name[locale] || $t(input.name)"
-                            :radio-value="$notUndefined(input.id,input.key)"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <!--                the_number_of_measures /tact-->
-                    <div>
-                      <title-with-line-and-reject-reason no-approval title="the_number_of_measures"/>
-                      <div v-if="moto_options.config" class="row">
-                        <div v-for="(input,index)  in moto_options.config.number_of_vehicles.values" :key="input.name"
-                             class="col-lg-4 mb-2 mb-lg-3">
-                          <form-radio
-                            :id="`${input.name}-number_of_vehicles-${index}`"
-                            v-model="form.number_of_vehicles"
-                            :input-name="getKey(item)"
-                            :invalid="hasError(item)"
-                            :label="input.name[locale] || $t(input.name)"
-                            :radio-value="$notUndefined(input.id,input.key)"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </transition-expand>
+              </transition-expand>
             </div>
           </section>
         </template>
@@ -645,6 +549,7 @@
               :class="{'w100' : ifPopularCommentsEmpty()}"
               :maxlength="3000"
               :placeholder="$t('comment')"
+
             />
             <popular-comments v-on:getComment="addComment"/>
           </div>
@@ -677,17 +582,18 @@
           </section>
           <section v-else-if="admin_user.admin_group === 2" class="container"> <!--moderator-->
             <div class="row">
-              <div class="col-3 text-center">
+              <div class="col-6 col-lg-2">
             <span class="timer">
               {{ getTimer.data }}
             </span>
               </div>
-              <div class="col-3">
-                <input v-if="getTimer.unix > 60*2" v-model="form.delay_comment" :placeholder="$t('delay_comment')"
-                       type="text">
+              <div class="col-auto">
+                <form-text-input v-if="getTimer.unix > 60*2" v-model="form.delay_comment"
+                                 :placeholder="$t('delay_comment')"
+                                 type="text"/>
               </div>
 
-              <div class="col-6 text-center">
+              <div class="col-auto">
             <span v-if="getTimer.unix < 60*2 || (getTimer.unix > 60*2 && form.delay_comment.length)">
               <button v-if="rejectArray.length === 0" :class="{'button_loading':button_loading}"
                       class="btn btn--green w-50"
@@ -771,8 +677,8 @@
       @close="openLog = false"
     >
       <change-log
-        :logs="single_announce.change_log"
         :btl="single_announce.btl_announces"
+        :logs="single_announce.change_log"
         :user-id="single_announce.user_id"
       />
     </modal-popup>
@@ -781,23 +687,28 @@
       :modal-class="''"
       :title="`${$t('Comment')}`"
       :toggle="(admin_user.admin_group === 1) && transferModal"
-      @close="openLog = false"
+      @close="transferModal = false"
+      closeable
     >
-      <div class="log">
         <div class="body"
-             v-html="(single_announce.transferred && single_announce.transferred.comment) ?  single_announce.transferred.comment: ''"></div>
+             v-html="(single_announce.transferred && single_announce.transferred.comment) ?  single_announce.transferred.comment: ''">
       </div>
     </modal-popup>
     <!--    transfer modal 2-->
     <modal-popup
       :modal-class="''"
-      :title="`${$t('Comment')}`"
-      :toggle="(admin_user.admin_group !== 1) && transferModal"
-      @close="openLog = false"
+      :title="`${$t('transfer_comment')}`"
+      :toggle="transferModal"
+      @close="transferModal = false"
+      closeable
     >
-      <div class="logs">
-                <textarea v-model="transferComment" :placeholder="$t('Transfer comment')"
-                          style="height: 150px;width: 100%"></textarea>
+      <div class="body">
+        <textarea
+          class="ma-input"
+          key="ma-moderation-comment-2"
+          v-model="transferComment"
+          :placeholder="$t('transfer_comment')"
+        />
       </div>
     </modal-popup>
   </div>
@@ -1076,6 +987,7 @@ export default {
         selectedYear: null,
         btl_cookie: "",
         credit: false,
+        owners: 0,
       },
       showPhotoReject: false,
       minFiles: this.$route.query.type === 'moto' ? 2 : 3,
@@ -1130,7 +1042,7 @@ export default {
       this.form.mileage = announce.mileage;
       this.form.address = announce.address;
       this.form.beaten = announce.status_id;
-      this.form.fuel_type = announce.fuel_type;
+      this.form.fuel_type = announce.fuel_type || 1;
       this.form.is_new = announce.is_new;
       this.form.customs_clearance = announce.customed_id;
       this.form.region_id = announce.region_id;
@@ -1141,6 +1053,7 @@ export default {
       this.form.tradeable = announce.tradeable;
 
       this.form.owner_type = announce.owners;
+      this.form.owners = announce.owners;
       this.form.year = announce.year;
 
       this.form.guaranty = announce.guaranty;
@@ -1935,13 +1848,15 @@ section {
 }
 
 .timer {
-  font-family: 'Aldrich', sans-serif;
-  font-size: 27px;
-  color: green;
+  font-size: 18px;
+  color: #fff;
   letter-spacing: 2px;
   background: #050a25;
   padding: 6px 10px 0 10px;
   display: inline-block;
+  height: 34px;
+  border-radius: 4px;
+  width: 160px;
 }
 
 .old_value {

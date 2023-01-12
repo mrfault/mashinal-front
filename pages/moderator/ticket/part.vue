@@ -19,10 +19,10 @@
           />
         </div>
         <div v-if="single_announce.change_log && single_announce.change_log.length"
-             class="col-12 col-md-6 col-lg-3 d-flex justify-content-end">
+             class="col-12 col-lg-3 d-flex justify-content-end">
           <button
             :class="{ button_loading: button_loading }"
-            class="'btn btn--green px-2 py-1"
+            class="'btn btn--green"
             @click.prevent="openLog = true"
           >
             {{ $t('show_logs') }}
@@ -493,7 +493,6 @@
         <br><br>
       </div>
     </div>
-    <div v-if="false">
       <!--    logs-->
       <modal-popup
         :modal-class="''"
@@ -502,13 +501,12 @@
         @close="openLog = false"
       >
         <change-log
-          :logs="single_announce.change_log"
           :btl="single_announce.btl_announces"
+          :logs="single_announce.change_log"
           :user-id="single_announce.user_id"
         />
       </modal-popup>
 
-    </div>
   </div>
 
 </template>

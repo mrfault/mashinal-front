@@ -223,7 +223,7 @@
                   :placeholder="$t('price')"
                   :invalid="isInvalid('price')"
                   @change="removeError('price')"
-                  :maxlength="8"
+                  :maxlength="5"
                 />
               </div>
               <div class="col-lg-2 col-3">
