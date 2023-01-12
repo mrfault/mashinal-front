@@ -54,7 +54,10 @@ export default {
       default: 450
     },
     inputClass: String,
-    maxlength: Number,
+    maxlength: {
+      type: Number,
+      default: 9
+    },
   },
   data() {
     return {
@@ -81,13 +84,13 @@ export default {
 
       if (!isFloat && isNumeric) {
         console.log(1)
-        return num.length > 9 ? num.slice(0, 9) : num;
+        return num.length > this.maxlength ? num.slice(0, this.maxlength) : num;
 
       } else if (isFloat && isNumeric) {
         console.log(2)
         var [tam, kesr] = num.split(".");
 
-        tam = tam.length > 9 ? tam.slice(0, 9) : tam;
+        tam = tam.length > this.maxlength ? tam.slice(0, this.maxlength) : tam;
         if (kesr) {
 
           kesr = kesr.length > 2 ? kesr.slice(0, 2) : kesr;
@@ -146,9 +149,9 @@ export default {
         if (value % 1 !== 0) {
 
           this.$emit('input', parseFloat(value.match(/^\d+\.?\d{0,2}/)));
-        } else if ((value.toString().length > 9) && (value % 1 == 0)) {
+        } else if ((value.toString().length > this.maxlength) && (value % 1 == 0)) {
 
-          this.$emit('input', value.toString().substring(0, 9));
+          this.$emit('input', value.toString().substring(0, this.maxlength));
         } else if((value == null) || (value == 0) || (value == "")){
 
           this.$emit('input', value = null)
