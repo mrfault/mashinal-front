@@ -8,7 +8,7 @@
       <div class="sell_cards-row row">
         <div class="col-auto">
           <div class="card">
-            <div class="mb-5">
+            <div ref="page-top-ae" class="mb-5">
 
               <!--     sell last step ------  -->
               <sell-last-step
@@ -378,6 +378,7 @@
                   <div>
                     <div id="video360section">
                       <vue-three-sixty
+                        :id="single_announce.id"
                         :amount="single_announce.images_360.length"
                         :files="single_announce.images_360"
                         buttonClass="d-none"
@@ -386,11 +387,11 @@
                         showZoom
                         @mainSelected="selectMainImage"
                         @remove360="remove360"
-                        :id="single_announce.id"
                       />
                     </div>
                   </div>
                 </template>
+
 
                 <!--                  ------------------------    ------------------------    ------------------------    ------------------------    ------------------------    -------------------------->
 
@@ -813,8 +814,10 @@ export default {
         obj[opt] = true
       }
     },
-    async scrollToTop() {
-      await window.scrollTo(0, 0)
+    scrollToTop() {
+      setTimeout(() => {
+        Vue.prototype.$scrollToTop = () => window.scrollTo(0,0)
+      }, 1000)
 
     },
 
@@ -824,7 +827,6 @@ export default {
       await this.$auth.setUserToken(`Bearer ${this.$route.query.token}`)
       const admin_user = await this.$axios.$get('/user')
       this.$auth.setUser(admin_user.user)
-      window.scrollTo({top: 0, left: 0})
       //timer
       setInterval(() => {
         let timer = moment().diff(moment(admin_user.user.created_at))
@@ -849,7 +851,6 @@ export default {
       }, 1000)
       let data
       try {
-
         data = await this.$axios.$get('/ticket/car');
 
         this.$store.commit('moderator/moderatorMutator', {
@@ -991,7 +992,7 @@ export default {
         this.loading = false;
 
       }
-      this.scrollToTop();
+
 
     },
     async checkWithVin() {
@@ -1585,7 +1586,11 @@ export default {
   },
   mounted() {
     this.getAnnounceData();
-    window.scrollTo(0, 0)
+    this.scrollToTop()
+
+  },
+
+  beforeMount() {
   },
 
 
@@ -1628,9 +1633,9 @@ export default {
         }
       }
     },
-    'form.brandObj':{
+    'form.brandObj': {
       deep: true,
-      handler(){
+      handler() {
         this.form.brand = this.form.brandObj.slug
       }
     }

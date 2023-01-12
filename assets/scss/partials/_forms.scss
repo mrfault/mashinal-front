@@ -101,7 +101,7 @@ input::-webkit-inner-spin-button {
   }
 }
 
-.text-input {
+.text-input,.ma-input {
   position: relative;
   width: 100%;
   input,
@@ -1080,5 +1080,27 @@ input::-webkit-inner-spin-button {
 @include media-max-width('lg') {
   .range-slider {
     padding: 10px 25px 0;
+  }
+}
+
+.ma-input {
+  width: 100%;
+  border: 0;
+  background-color: $greyish-blue-2;
+  padding: 9px 15px 7px;
+  border-radius: 4px;
+  &.invalid {
+    &:not(:focus) {
+      color: $red-1;
+    }
+    padding-right: 34px;
+  }
+  &.valid {
+    padding-right: 34px;
+  }
+  &.disabled {
+    color: $grey-3;
+    -webkit-text-fill-color: $grey-3;
+    opacity: 1;
   }
 }
