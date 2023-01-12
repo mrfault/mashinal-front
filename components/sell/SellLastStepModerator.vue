@@ -1,51 +1,26 @@
-<!--http://10.20.120.106:3000/-->
 <template>
-  <component
-    :is="isMobileBreakpoint ? 'mobile-screen' : 'div'"
-    :bar-title="title"
-    action-icon="reset"
-    height-auto
-    @action="$emit('clean')"
-    @back="$emit('close')"
-  >
-    <div v-if="single_announce" class="sell_last-step">
-      <div
-        v-if="showAllOptions"
-        :class="{
+  <div v-if="single_announce">
+    <div
+      v-if="showAllOptions"
+      :class="{
           'disabled-content': type === 'cars' && !form.car_catalog_id && !edit,
         }"
-      >
-        <slot name="form-inputs"/>
+    >
+
+      <slot name="form-inputs"/>
+
+      <section name="media">
         <slot name="image"></slot>
         <template v-if="!no360">
 
           <title-with-line-and-reject-reason
-            v-if="!no360"
             :no-approval="!single_announce.images_360.length"
             title="360_exterior"
             @change="changeReason"
           />
-          <slot v-if="!form.images_360 && !no360" name="360_exterior"></slot>
-        </template>
+
+          <slot v-if="form.images_360" name="360_exterior_input"></slot>
           <slot v-if="form.images_360 && form.images_360.length" name="360_exterior_content"></slot>
-
-
-        <title-with-line-and-reject-reason
-          :no-approval="!single_announce.images_360.length"
-          title="360_exterior"
-          @change="changeReason"
-        />
-        <slot name="360_exterior"></slot>
-        <vue-three-sixty
-          v-if="form.images_360 && form.images_360.length && no360"
-          :amount="form.images_360 && form.images_360.length"
-          :files="form.images_360"
-          buttonClass="d-none"
-          class="mb-4"
-          disableZoom
-        />
-
-        <template v-if="!no360">
           <title-with-line-and-reject-reason
             :no-approval="!form.interior_360_url"
             title="360_interior"
@@ -77,11 +52,16 @@
             </div>
           </section>
           <Interior360Viewer
-            v-if="single_announce.interior_360 && !no360"
+            v-if="single_announce.interior_360 && !no360 && !interior360removed"
             :url="single_announce.interior_360"
             class="mb-4"
+
           />
         </template>
+      </section>
+
+      <!--      color-->
+      <section name="color">
         <title-with-line-and-reject-reason
           :id="'anchor-selectedColor'"
           reject-key="color"
@@ -104,6 +84,11 @@
                </span>
           </div>
         </div>
+      </section>
+
+
+      <!--      mileage-->
+      <section id="mileage-section-1">
         <title-with-line-and-reject-reason
           no-approval
           reject-key="mileage"
@@ -111,6 +96,7 @@
           title="mileage"
           @change="changeReason"
         />
+
         <div class="row">
           <div class="col-lg-3 mb-2 mb-lg-0">
             <div class="row flex-nowrap">
@@ -180,69 +166,19 @@
             </div>
           </div>
         </div>
-        <template v-if="type === 'cars'">
+        <div v-if="type === 'cars'">
           <damage-options
             v-if="false"
             :imageIsActive="true"
             :selected="form.part"
             @update-car-damage="updateCarDamage"
           />
-        </template>
-        <template v-if="!isAutosalon && !user.external_salon">
-          <title-with-line-and-reject-reason
-            id="anchor-region_id"
-            noApproval
-            required
-            title="region_and_place_of_inspection"
-          />
-          <div class="row">
-            <div v-if="!single_announce.is_external_salon" class="col-lg-4 mb-2 mb-lg-0">
-              <form-select
-                v-model="form.region_id"
-                :clear-option="false"
-                :invalid="isInvalid('region_id')"
-                :label="$t('region')"
-                :options="sellOptions.regions"
-                has-search
-                @change="removeError('region_id'), updatePreview('region')"
-              />
-            </div>
-            <div v-if="single_announce.is_external_salon" class="col-lg-4 mb-2 mb-lg-0">
-              <form-select
-                v-model="form.country_id"
-                :clear-option="false"
-                :invalid="isInvalid('region_id')"
-                :label="$t('sale_region_country')"
-                :options="sellOptions.countries"
-                has-search
-                @change="removeError('region_id'), updatePreview('region')"
-              />
-            </div>
-            <div v-if="!single_announce.is_external_salon" class="col-lg-4 mb-2 mb-lg-0">
-              <form-text-input
-                v-model="form.address"
-                :placeholder="$t('address')"
-                icon-name="placeholder"
-              />
-            </div>
-            <div v-if="!single_announce.is_external_salon" class="col-lg-4 mb-2 mb-lg-0">
-              <pick-on-map-button
-                :address="form.address"
-                :lat="form.lat"
-                :lng="form.lng"
-                @change-address="updateAddress"
-                @change-latlng="updateLatLng"
-              >
-                <form-text-input
-                  v-model="form.address"
-                  :placeholder="$t('address')"
-                  icon-name="placeholder"
-                />
-              </pick-on-map-button>
-            </div>
-          </div>
-        </template>
+        </div>
 
+      </section>
+
+      <!--      price-->
+      <section id="price-section-1">
         <title-with-line-and-reject-reason
           :id="'anchor-price'"
           no-approval
@@ -289,7 +225,7 @@
             </div>
           </div>
         </div>
-        <template v-if="single_announce.is_external_salon">
+        <div v-if="single_announce.is_external_salon">
           <title-with-line-and-reject-reason
             :id="'anchor-price'"
             :title="`${$t('auction')} / ${$t('end_date')}`"
@@ -320,6 +256,7 @@
                 </div>
                 <div v-if="form.auction === 1" class="col-auto">
                   <form-text-input
+                    ref="form_end_date"
                     v-model="form.end_date"
                     :placeholder="$t('announcement_end_date')"
                     date-format="DD.MM.YYYY HH:00"
@@ -332,10 +269,80 @@
               </div>
             </div>
           </div>
-        </template>
-        <template
-          v-if="type === 'cars' || (type !== 'parts' && user.external_salon)"
-        >
+        </div>
+      </section>
+
+      <!---------------------------------------------------------------------------------------------------------------------------------------------->
+      <!---------------------------------------------------------------------------------------------------------------------------------------------->
+      <!---------------------------------------------------------------------------------------------------------------------------------------------->
+      <!---------------------------------------------------------------------------------------------------------------------------------------------->
+      <!---------------------------------------------------------------------------------------------------------------------------------------------->
+      <!--      region-->
+      <section id="region-section-1">
+        <div v-if="!isAutosalon && !user.external_salon">
+          <title-with-line-and-reject-reason
+            id="anchor-region_id"
+            noApproval
+            required
+            title="region_and_place_of_inspection"
+          />
+          <div class="row">
+            <div v-if="!single_announce.is_external_salon" class="col-lg-4 mb-2 mb-lg-0">
+              <form-select
+                v-model="form.region_id"
+                :clear-option="false"
+                :invalid="isInvalid('region_id')"
+                :label="$t('region')"
+                :options="sellOptions.regions"
+                has-search
+                @change="removeError('region_id'), updatePreview('region')"
+              />
+            </div>
+            <div v-if="single_announce.is_external_salon" class="col-lg-4 mb-2 mb-lg-0">
+              <form-select
+                v-model="form.country_id"
+                :clear-option="false"
+                :invalid="isInvalid('region_id')"
+                :label="$t('sale_region_country')"
+                :options="sellOptions.countries"
+                has-search
+                @change="removeError('region_id'), updatePreview('region')"
+              />
+            </div>
+            <div v-if="!single_announce.is_external_salon" class="col-lg-4 mb-2 mb-lg-0">
+              <!---------------------------------------------------------------------------------------------------------------------------------------------->
+
+              <input
+                ref="moderation-adress-input-1"
+                v-model="form.address"
+                :auto-focus="false"
+                :placeholder="$t('address')"
+                icon-name="placeholder"
+                class="ma-input"
+              />
+              <!---------------------------------------------------------------------------------------------------------------------------------------------->
+            </div>
+            <div v-if="!single_announce.is_external_salon" class="col-lg-4 mb-2 mb-lg-0">
+              <pick-on-map-button
+                :address="form.address"
+                :lat="form.lat"
+                :lng="form.lng"
+                @change-address="updateAddress"
+                @change-latlng="updateLatLng"
+              >
+                <form-text-input
+                  v-model="form.address"
+                  :placeholder="$t('address')"
+                  icon-name="placeholder"
+                />
+              </pick-on-map-button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!--      number plate-->
+      <section id="number-section-1">
+        <div v-if="type === 'cars' || (type !== 'parts' && user.external_salon)">
           <title-with-line-and-reject-reason
             v-if="
               !loggedIn ||
@@ -368,42 +375,21 @@
             reject-key="price"
             spanId="anchor-vin"
           />
-        </template>
-
-
-        <!--        -------------------------->
-        <!--        -------------------------->
-        <!--        -------------------------->
-        <!--        -------------------------->
-        <div
-          v-if="
-            (type === 'cars' && !user.is_autosalon) ||
-            (type !== 'parts' && user.external_salon)
-          "
-          id="anchor-car_number"
-          class="row"
-        >
-          <div
-            v-if="!form.customs_clearance && !user.external_salon"
-            class="col-lg-4 mb-2 mb-lg-0"
-          >
-            <form-text-input
+        </div>
+        <div v-if="(type === 'cars' && !user.is_autosalon) || (type !== 'parts' && user.external_salon)"
+             id="anchor-car_number" class="row">
+          <div v-if="!form.customs_clearance && !user.external_salon" class="col-lg-4 mb-2 mb-lg-0">
+            <!---------------------------------------------------------------------------------------------------------------------------------------------->
+            <input
+              ref="moderation-car-number-input-1"
               v-model="form.car_number"
-              :mask="type === 'cars' ? '99 - AA - 999' : '99 - A{1,2} - 999'"
-              :placeholder="type === 'cars' ? '__ - __ - ___' : '__ - _ - ___'"
-              img-src="/img/flag.svg"
-              input-class="car-number-show-popover"
-              @change="removeError('car_number')"
-              @focus="showCarNumberDisclaimer"
-            >
-              <popover
-                :message="$t('real-car-number-will-make-post-faster')"
-                :width="190"
-                name="car-number"
-                text-class="text-red"
-                @click="readCarNumberDisclaimer = true"
-              />
-            </form-text-input>
+              :mask="'99 - A{1,2} - 999'"
+              :placeholder="$t('car_number')"
+              class="ma-input"
+            />
+
+            <!---------------------------------------------------------------------------------------------------------------------------------------------->
+
             <form-checkbox
               v-model="form.show_car_number"
               :label="$t('show_car_number_on_site')"
@@ -413,8 +399,6 @@
             />
           </div>
           <div v-if="form.customs_clearance" class="col-lg-4 mb-2 mb-lg-0">
-            <!--        -------------------------------------------------------------------------------------->
-            <!--        -------------------------------------------------------------------------------------->
             <template v-if="form && form.vin">
               <form-textarea
                 key="vin"
@@ -429,8 +413,6 @@
                 </popover>
               </form-textarea>
             </template>
-            <!--        -------------------------------------------------------------------------------------->
-            <!--        -------------------------------------------------------------------------------------->
             <form-checkbox
               v-model="form.show_vin"
               :label="$t('show_vin_on_site')"
@@ -451,10 +433,16 @@
                </span>
           </div>
         </div>
-        <!--        -------------------------->
-        <!--        -------------------------->
-        <!--        -------------------------->
-        <!--        -------------------------->
+      </section>
+
+      <!---------------------------------------------------------------------------------------------------------------------------------------------->
+      <!---------------------------------------------------------------------------------------------------------------------------------------------->
+      <!---------------------------------------------------------------------------------------------------------------------------------------------->
+      <!---------------------------------------------------------------------------------------------------------------------------------------------->
+      <!---------------------------------------------------------------------------------------------------------------------------------------------->
+
+      <!--      popular,comment-->
+      <section name="popular">
         <div class="mt-2 mt-lg-3">
           <template v-if="(type === 'cars') && popularOptions && popularOptions.length">
             <car-filters
@@ -496,82 +484,66 @@
             )
           }}
         </p>
-        <hr/>
-        <modal-popup
-          :modal-class="'wider'"
-          :title="getRulesPage.title[locale]"
-          :toggle="showRules"
-          @close="showRules = false"
-        >
-          <div v-html="getRulesPage.text[locale]"></div>
-        </modal-popup>
+      </section>
 
-        <backdrop v-if="showLoginPopup" @click="showLoginPopup = false">
-          <template #default="{ show }">
-            <transition name="translate-fade">
-              <login-tabs
-                v-if="show"
-                :action-text="{
-                  login: $t('login_and_publish'),
-                  register: $t('register_and_publish'),
-                  confirm: $t('confirm_and_publish'),
-                }"
-                :force-sell-phone="true"
-                :popup="true"
-                :skip-sign-in="true"
-                @close="showLoginPopup = false"
-              />
-            </transition>
-          </template>
-        </backdrop>
-        <div id="anchor-finish" class="publish-post mb-4">
-          <div v-if="showBanners && !isAlreadySold" class="row mt-4 mb-4">
-            <div
-              v-for="banner in ['vip', 'premium']"
-              :key="banner"
-              class="service-banner col-6 col-lg-4"
-            >
-              <img
-                :src="`/img/card-${banner}${
+
+      <hr/>
+      <modal-popup
+        :modal-class="'wider'"
+        :title="getRulesPage.title[locale]"
+        :toggle="showRules"
+        @close="showRules = false"
+      >
+        <div v-html="getRulesPage.text[locale]"></div>
+      </modal-popup>
+
+      <div id="anchor-finish" class="publish-post mb-4">
+        <div v-if="showBanners && !isAlreadySold" class="row mt-4 mb-4">
+          <div
+            v-for="banner in ['vip', 'premium']"
+            :key="banner"
+            class="service-banner col-6 col-lg-4"
+          >
+            <img
+              :src="`/img/card-${banner}${
                   isMobileBreakpoint ? '-mobile' : ''
                 }-${locale}.png`"
-                alt="banner"
-                @click="publishPost"
-              />
-            </div>
+              alt="banner"
+              @click="publishPost"
+            />
           </div>
-          <p class="info-text full-width mt-2">
-            <icon name="alert-circle"/>
-            {{
-              $t('by_posting_an_ad_you_confirm_your_agreement_with_the_rules')
-            }}:
-            <nuxt-link
-              :to="`/page/${getRulesPage.slug[locale]}`"
-              event=""
-              @click.native.prevent="showRules = true"
-            >
-              <strong>{{ $t('general_rules') }}</strong>
-            </nuxt-link>
-          </p>
-          <p class="info-text full-width less-pd mt-2">
-            <span class="star">*</span>
-            — {{ $t('starred_fields_are_required') }}
-          </p>
-          <p v-if="isAlreadySold" class="info-text full-width less-pd text-red">
-            {{
-              $t(
-                'this_car_already_added_last_90_days_for_new_added_need_payment',
-              )
-            }}
-          </p>
-          <p v-else-if="restore" class="info-text full-width less-pd">
-            {{ $t('edit_or_restore') }}
-          </p>
-
         </div>
+        <p class="info-text full-width mt-2">
+          <icon name="alert-circle"/>
+          {{
+            $t('by_posting_an_ad_you_confirm_your_agreement_with_the_rules')
+          }}:
+          <nuxt-link
+            :to="`/page/${getRulesPage.slug[locale]}`"
+            event=""
+            @click.native.prevent="showRules = true"
+          >
+            <strong>{{ $t('general_rules') }}</strong>
+          </nuxt-link>
+        </p>
+        <p class="info-text full-width less-pd mt-2">
+          <span class="star">*</span>
+          — {{ $t('starred_fields_are_required') }}
+        </p>
+        <p v-if="isAlreadySold" class="info-text full-width less-pd text-red">
+          {{
+            $t(
+              'this_car_already_added_last_90_days_for_new_added_need_payment',
+            )
+          }}
+        </p>
+        <p v-else-if="restore" class="info-text full-width less-pd">
+          {{ $t('edit_or_restore') }}
+        </p>
+
       </div>
     </div>
-  </component>
+  </div>
 </template>
 
 <script>
@@ -581,7 +553,6 @@ import {ToastErrorsMixin} from '~/mixins/toast-errors'
 import {ImageResizeMixin} from '~/mixins/img-resize'
 import {PaymentMixin} from '~/mixins/payment'
 
-import SellSelectModification from '~/components/sell/SellSelectModificationModerator'
 import UploadImage from '~/components/elements/UploadImage'
 import ColorOptions from '~/components/options/ColorOptions'
 import DamageOptions from '~/components/options/DamageOptions'
@@ -598,7 +569,6 @@ export default {
   components: {
 
     TitleWithLineAndRejectReason,
-    SellSelectModification,
     UploadImage,
     ColorOptions,
     DamageOptions,
@@ -626,6 +596,7 @@ export default {
   mixins: [ToastErrorsMixin, ImageResizeMixin, PaymentMixin],
   data() {
     return {
+      interior360removed: false,
       now: new Date().toLocaleDateString('en-US'),
       collapsed: false,
       form: this.$clone(this.announcement),
@@ -731,7 +702,6 @@ export default {
   },
   methods: {
     ...mapActions([
-      'setSellProgress',
       'setSellPreviewData',
       'resetSellTokens',
       'getMyAllAnnouncements',
@@ -770,6 +740,7 @@ export default {
         })
       return
     },
+
     updateMileage(is_new) {
       if (!is_new) {
         this.isInvalid('mileage') && this.removeError('mileage')
@@ -970,6 +941,7 @@ export default {
           property: 'single_announce',
         })
         this.$toasted.success('Silindi')
+        this.interior360removed = true;
       } catch (e) {
         this.$toasted.error('Silinmede problem yarandi')
       }
@@ -991,9 +963,6 @@ export default {
 
   },
   watch: {
-    progress(value) {
-      this.setSellProgress(value)
-    },
     rejectObj: {
       deep: true,
       handler() {
@@ -1016,11 +985,13 @@ export default {
     this.$store.dispatch('getOptions')
   },
   beforeDestroy() {
-    this.$nuxt.$off('login', this.handleAfterLogin)
+    this.$nuxt.$off('login', this.handleAfterLogin);
   },
   mounted() {
     this.$store.dispatch('getPopularOptions');
+
   },
+
 }
 </script>
 

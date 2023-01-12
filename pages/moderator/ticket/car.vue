@@ -8,7 +8,7 @@
       <div class="sell_cards-row row">
         <div class="col-auto">
           <div class="card">
-            <div class="mb-5">
+            <div ref="page-top-ae" class="mb-5">
 
               <!--     sell last step ------  -->
               <sell-last-step
@@ -308,7 +308,6 @@
                     </div>
                   </div>
                 </template>
-
                 <template v-slot:image>
                   <title-with-line-and-reject-reason
                     :subtitle="
@@ -359,28 +358,40 @@
                     @replaceImage="replaceImage"
                   />
                 </template>
-                <!--                  ------------------------    ------------------------    ------------------------    ------------------------    ------------------------    -------------------------->
-                <template v-slot:360_exterior>
+
+                <!--                360 exterior-->
+                <!--                 --------------(add input)-->
+                <template v-slot:360_exterior_input>
                   <div
                     class="mb-4"
                   >
                     <div class="section-part__container">
-                      <div class="col-md-4">
+                      <div class="col-md-4 pl-0">
                         <input class="btn" type="file" v-on:change="add360Video"/>
                       </div>
                     </div>
                   </div>
                 </template>
+
+                <!--                 --------------(exterior 360 view)-->
                 <template v-slot:360_exterior_content>
-                  <vue-three-sixty
-                    showZoom
-                    disable-zoom
-                    :amount="single_announce.images_360.length"
-                    buttonClass="d-none"
-                    :files="single_announce.images_360"
-                    putMainImage
-                  />
+                  <div>
+                    <div id="video360section">
+                      <vue-three-sixty
+                        :id="single_announce.id"
+                        :amount="single_announce.images_360.length"
+                        :files="single_announce.images_360"
+                        buttonClass="d-none"
+                        disable-zoom
+                        putMainImage
+                        showZoom
+                        @mainSelected="selectMainImage"
+                        @remove360="remove360"
+                      />
+                    </div>
+                  </div>
                 </template>
+
 
                 <!--                  ------------------------    ------------------------    ------------------------    ------------------------    ------------------------    -------------------------->
 
@@ -643,8 +654,10 @@ export default {
         media: [],
         images_360: [],
         video_360_url: null,
+        video_360_id: null,
         interior_360_id: null,
         interior_360_url: null,
+        main_image: null,
       },
       data: {
         models: [],
@@ -661,7 +674,6 @@ export default {
       // send data
       errors: [],
       imagesBase64: [],
-      main_image: null,
       saved_images: [],
       deleteArr: [],
       files: {},
@@ -802,8 +814,10 @@ export default {
         obj[opt] = true
       }
     },
-    async scrollToTop() {
-      await window.scrollTo(0, 0)
+    scrollToTop() {
+      setTimeout(() => {
+        Vue.prototype.$scrollToTop = () => window.scrollTo(0,0)
+      }, 1000)
 
     },
 
@@ -837,7 +851,6 @@ export default {
       }, 1000)
       let data
       try {
-
         data = await this.$axios.$get('/ticket/car');
 
         this.$store.commit('moderator/moderatorMutator', {
@@ -917,7 +930,7 @@ export default {
           power: data.announce?.car_catalog?.power,
           year: data.announce?.year,
           auction: data.announce?.auction,
-          end_date: moment(data.announce?.end_date).format('DD.MM.YYYY HH:mm'),
+          end_date: moment(data.announce?.end_date).format('DD.MM.YYYY HH:mm') || null,
           country_id: data.announce?.country_id,
           youtube: {
             id: data.announce?.youtube_link,
@@ -932,7 +945,7 @@ export default {
           lat: parseFloat(data.announce?.latitude || 0),
           lng: parseFloat(data.announce?.longitude || 0),
           vin: data.announce?.vin || "",
-          price: data.announce?.price_int || '',
+          price: data.announce?.price_int.toString() || '',
           owner_type: parseInt(data.announce?.owner_type) || 0,
           currency: data.announce?.currency_id || 1,
           car_number: data.announce?.car_number,
@@ -947,7 +960,7 @@ export default {
           comment: data.announce?.comment || '',
           is_new: data.announce?.is_new || false,
           beaten: data.announce?.broken,
-          customs_clearance: data.announce?.customs_clearance || false,
+          customs_clearance: data.announce?.customs_clearance || 0,
           tradeable: data.announce?.exchange_possible,
           credit: data.announce?.credit,
           guaranty: data.announce?.in_garanty,
@@ -979,7 +992,7 @@ export default {
         this.loading = false;
 
       }
-      this.scrollToTop();
+
 
     },
     async checkWithVin() {
@@ -1148,8 +1161,10 @@ export default {
       let generation = this.data.generations.find(
         (o) => o.id === this.form.generation_id,
       )
-      let name = `${this.$t('box_mode_values')[o.box]}/
-      ${generation.start_year} - ${generation.end_year || this.currentYear}`
+      if (generation && generation.start_year) {
+        let name = `${this.$t('box_mode_values')[o.box]}/${generation.start_year} - ${generation.end_year || this.currentYear}`
+
+      }
       if (o.capacity) name = `${o.capacity} ${name}`
       if (o.power) name = `${o.power} ${this.$t('char_h_power')}/${name}`
       if (o.complect_type) name += `/${o.complect_type}`
@@ -1344,6 +1359,7 @@ export default {
       input.splice(to, numberOfDeletedElm, elm)
     },
 
+
     //    handle 360
     add360Video(val) {
       var formData = new FormData()
@@ -1358,10 +1374,32 @@ export default {
         .then((res) => {
           if (res.status == 200) {
             this.$toast.success(this.$t('video_360_successfully_upload'))
+            console.log(" res.data.url", res.data.data.id)
+            console.log(" res.data.id", res.data.data.url)
             this.form.video_360_url = res.data.data.url
             this.form.video_360_id = res.data.data.id
           }
         })
+    },
+    selectMainImage(param) {
+      this.form.main_image = param
+    },
+    async remove360(param) {
+
+      if (param == 'success') {
+        let data = await this.$axios.$get('/ticket/car');
+
+        let video360section = document.getElementById('video360section');
+        video360section.remove();
+
+
+        this.$store.commit('mutate', {
+          with: data.announce,
+          property: 'single_announce'
+        })
+
+
+      }
     },
 
 
@@ -1486,18 +1524,19 @@ export default {
       this.form.id = this.single_announce.id;
       this.form.month = this.single_announce.month || "";
       this.form.sell_store = this.single_announce.sell_store || 0;
-      this.form.video_360_id = this.single_announce.video_360_id || "";
+      // this.form.video_360_id = this.single_announce.video_360_id || "";
       this.form.modification = "";
       // this.form.model = this.form.model_slug;
 
       delete this.form.model_slug;
       delete this.form.brand_slug;
-      this.form.id_unique = this.single_announce.id;
+      this.form.id_unique = this.single_announce.id.toString();
       // this.form.generation = this.generation
       // this.form.car_catalog_id = this.modification
       this.form.rejectArray = this.rejectObj.rejectArray;
       this.form.saved_images = this.saved_images;
       let formData = new FormData()
+      delete this.form.user
       // formData.append('images_360', this.uploadedVideo360);
       // formData.append('interior_360', this.uploadedInterior360);
       formData.append('data', JSON.stringify(this.form))
@@ -1547,7 +1586,11 @@ export default {
   },
   mounted() {
     this.getAnnounceData();
-    window.scrollTo(0, 0)
+    this.scrollToTop()
+
+  },
+
+  beforeMount() {
   },
 
 
@@ -1590,6 +1633,12 @@ export default {
         }
       }
     },
+    'form.brandObj': {
+      deep: true,
+      handler() {
+        this.form.brand = this.form.brandObj.slug
+      }
+    }
   }
 }
 </script>

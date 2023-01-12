@@ -526,11 +526,9 @@ import ColorOptions from '~/components/options/ColorOptions'
 import PickOnMapButton from '~/components/elements/PickOnMapButton'
 import moment from "moment";
 import TitleWithLineAndRejectReason from '~/components/moderator/titleWithLineAndRejectReason'
-import SellLastStepModerator from '~/components/sell/SellLastStepModerator'
 import SellFilters from '~/components/sell/SellFilters'
 import TitleWithLine from "~/components/global/titleWithLine";
 import FormRadioGroup from "~/components/forms/FormRadioGroup";
-import SellLastStep from '~/components/sell/SellLastStep';
 import FormKeywords from '~/components/forms/FormKeywords'
 import ChangeLog from "~/components/moderator/changeLog";
 export default {
@@ -549,8 +547,6 @@ export default {
     UploadImageModerator,
     ColorOptions,
     PickOnMapButton,
-    SellLastStepModerator,
-    SellLastStep,
     SellFilters,
     PopularComments,
     FormRadioGroup,

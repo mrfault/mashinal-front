@@ -161,6 +161,7 @@ export default {
       default: false
     },
     putMainImage: Boolean,
+    id: Number,
   },
   data() {
     return {
@@ -872,17 +873,17 @@ export default {
 
     //main image
     selectMainImage() {
-      this.$emit('mainSelecDted', this.currentCanvasImage.src)
+      this.$emit('mainSelected', this.currentCanvasImage.src)
       this.$toasted.success('Əsas şəkil təyin olundu')
     },
     async delete360() {
       try {
         this.deleteButton = true;
         await this.$axios.$post('/announce/remove_360', {
-          announcement_id: this.singleAnnounce.id
+          announcement_id: this.id
         })
-        this.$emit('remove360', 'success')
 
+        this.$emit('remove360', 'success')
         this.$toasted.success('Silindi')
       } catch (e) {
         this.$toasted.error('Silinmədə problem yarandi')
