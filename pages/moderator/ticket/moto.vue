@@ -42,9 +42,9 @@
             </div>
             <div v-if="getBrands && getBrands.length" class="col-12 col-lg-3">
               <form-select
-                :clearOption="false"
                 :key="refresh+1"
                 v-model="form.brand"
+                :clearOption="false"
                 :disabled="isModerator"
                 :label="$t('mark')"
                 :options="getBrands"
@@ -66,9 +66,9 @@
             </div>
             <div v-if="getModels && getModels.length" class="col-12 col-lg-3">
               <form-select
-                :clearOption="false"
                 :key="refresh+1"
                 v-model="form.model"
+                :clearOption="false"
                 :disabled="isModerator"
                 :label="$t('model')"
                 :options="getModels"
@@ -104,9 +104,9 @@
             </div>
             <div v-if="getYears && getYears.length" class="col-12 col-lg-3">
               <form-select
-                :clearOption="false"
                 :key="refresh+1"
                 v-model="form.year"
+                :clearOption="false"
                 :disabled="isModerator"
                 :label="$t('year')"
                 :options="getYears"
@@ -266,10 +266,10 @@
 
             <div v-if="!single_announce.is_external_salon" class="col-4 col-md-6 col-lg-3">
               <form-select
-                :clearOption="false"
                 id="region_id"
                 :key="refresh+1"
                 v-model="form.region_id"
+                :clearOption="false"
                 :disabled="isModerator"
                 :has-error="errors.includes('region_id')"
                 :label="$t('region')"
@@ -282,9 +282,9 @@
             </div>
             <div v-if="single_announce.is_external_salon" class="col-lg-4 mb-2 mb-lg-0">
               <form-select
-                :clearOption="false"
                 v-model="form.country_id"
                 :clear-option="false"
+                :clearOption="false"
                 :invalid="isInvalid('region_id')"
                 :label="$t('sale_region_country')"
                 :options="sellOptions.countries"
@@ -419,9 +419,11 @@
             </div>
           </section>
 
-
+          <!-------------------------------------------------------------->
+          <!-------------------------------------------------------------->
+          <!-------------------------------------------------------------->
           <!--          options-->
-          <section id="moderation-moto-options" class="row">
+          <section v-if="false" id="moderation-moto-options" class="row">
             <div class="col-12">
               <transition-expand>
                 <div v-if="collapsed" class="w-100">
@@ -532,6 +534,55 @@
               </transition-expand>
             </div>
           </section>
+
+
+          <section id="moderation-moto-radio-options">
+            <div>
+              <!--                sell filters radio-->
+
+              <div v-for="(item,indx) in Object.entries(moto_options.config)" :key="indx">
+                <template v-if="(item[1].component == 'select-checkbox') || (item[1].component == 'animated-input')">
+                  <title-with-line-and-reject-reason
+                    v-if="item[1].values && item[1].values.length"
+                    :title="item[1].placeholder" no-approval/>
+                </template>
+
+
+                <div v-if="item[1].values" class="row">
+                  <template v-if="item[1].component == 'animated-input'">
+                    <div class="col-12 col-md-4 col-lg-3">
+
+                      <form-text-input
+                        :id="`animated-input-moto-${index}`"
+                        v-model="form[item[0]]"
+                        :invalid="hasError(item)"
+                        :placeholder="form[item.placeholder]"
+                      />
+                    </div>
+                  </template>
+                  <template v-if="item[1].component == 'select-checkbox'">
+                    <div v-for="(input,index)  in item[1].values" :key="input.name"
+                         class="col-lg-4 mb-2 mb-lg-3">
+                      <form-radio
+                        :id="`${input.name}-box-${index}`"
+                        v-model="form[item[0]]"
+                        :input-name="getKey(item)"
+                        :invalid="hasError(item)"
+                        :label="input.name[locale] || $t(input.name)"
+                        :radio-value="$notUndefined(input.id,input.key)"
+                      />
+                    </div>
+                  </template>
+                </div>
+
+
+              </div>
+
+            </div>
+          </section>
+          <!-------------------------------------------------------------->
+          <!-------------------------------------------------------------->
+          <!-------------------------------------------------------------->
         </template>
         <!--      comment-->
         <div class="row mt-5">
@@ -687,11 +738,11 @@
       :modal-class="''"
       :title="`${$t('Comment')}`"
       :toggle="(admin_user.admin_group === 1) && transferModal"
-      @close="transferModal = false"
       closeable
+      @close="transferModal = false"
     >
-        <div class="body"
-             v-html="(single_announce.transferred && single_announce.transferred.comment) ?  single_announce.transferred.comment: ''">
+      <div class="body"
+           v-html="(single_announce.transferred && single_announce.transferred.comment) ?  single_announce.transferred.comment: ''">
       </div>
     </modal-popup>
     <!--    transfer modal 2-->
@@ -699,15 +750,15 @@
       :modal-class="''"
       :title="`${$t('transfer_comment')}`"
       :toggle="transferModal"
-      @close="transferModal = false"
       closeable
+      @close="transferModal = false"
     >
       <div class="body">
         <textarea
-          class="ma-input"
           key="ma-moderation-comment-2"
           v-model="transferComment"
           :placeholder="$t('transfer_comment')"
+          class="ma-input"
         />
       </div>
     </modal-popup>
