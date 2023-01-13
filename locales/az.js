@@ -2468,4 +2468,5 @@ export default {
   "forbidden_give_links_text": "Məlumatda linklərinin göstərilməsi, elektron poçt ünvanının, baxış keçirmə məkanın ünvanının, telefon nömrəsinin, qiymətin və xidmətlərin təklifi qadağandır.",
   "user_add_successfully": "İstifadəçi uğurla əlavə edildi",
   "delay_comment": "Şərh yazmaq",
+  "comment_to_supervisor": "Supervayzerə rəy ver və ötür",
 }

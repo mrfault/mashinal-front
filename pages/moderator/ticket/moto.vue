@@ -660,7 +660,7 @@
 
                 <button :class="{'button_loading':button_loading}" class="btn btn--green w-50"
 
-                        @click.prevent="transferModal = true">{{ $t('Transfer to Supervisor') }}
+                        @click.prevent="transferModal = true">{{ $t('comment_to_supervisor') }}
                 </button>
               </div>
             </div>
@@ -736,18 +736,6 @@
     <!--    transfer modal 1-->
     <modal-popup
       :modal-class="''"
-      :title="`${$t('Comment')}`"
-      :toggle="(admin_user.admin_group === 1) && transferModal"
-      closeable
-      @close="transferModal = false"
-    >
-      <div class="body"
-           v-html="(single_announce.transferred && single_announce.transferred.comment) ?  single_announce.transferred.comment: ''">
-      </div>
-    </modal-popup>
-    <!--    transfer modal 2-->
-    <modal-popup
-      :modal-class="''"
       :title="`${$t('transfer_comment')}`"
       :toggle="transferModal"
       closeable
@@ -760,6 +748,15 @@
           :placeholder="$t('transfer_comment')"
           class="ma-input"
         />
+        <div class="row justify-content-center">
+          <button
+            :class="{'button_loading':button_loading}"
+            class="btn btn--green  mt-1"
+            @click.prevent="transferToSupervisor()"
+          >
+            {{ $t('transfer_to_supervisor') }}
+          </button>
+        </div>
       </div>
     </modal-popup>
   </div>
@@ -1171,7 +1168,7 @@ export default {
     ]),
     handleBackList() {
       if (this.admin_user.admin_group == 2) {
-        location.href = '/alvcp/resources/announce-moderators';
+        location.href = '/alvcp/resources/announcements';
       } else {
         location.href = '/alvcp/resources/announcements';
       }
