@@ -407,145 +407,123 @@
 
               </sell-last-step>
 
-              <!-- actions   ------------------------>
-              <div class="moderator-comment mt-5">
-                <!--  moderator-->
-                <div v-if="user.admin_group == 2" class="row">
-                  <div class="col-8">
-                    <form-textarea
-                      v-model="form.delay_comment"
-                      :maxlength="3000"
-                      :placeholder="$t('comment')"
-                    />
-                  </div>
-                  <div class="col-4">
-                    <button
-                      v-if="
-                        !rejectObj.rejectArray.length &&
-                        !sellLastStepRejectObj.rejectArray.length
-                      "
-                      :class="[
-                        'btn btn--green w-50',
-                        { pending },
-                        { disabled: form.comment.length == 0 },
-                      ]"
-                      :disabled="form.comment.length == 0"
-                      class="mb-2"
-                      type="button"
-                      @click.prevent="sendData(1)"
-                    >
-                      {{ $t('confirm') }}
-                    </button>
-                    <button
-                      v-else
-                      :class="[
-                        'btn btn--green w-50',
-                        { pending },
-                        { disabled: form.comment.length == 0 },
-                      ]"
-                      :disabled="form.comment.length == 0"
-                      class="mb-2"
-                      type="button"
-                      @click.prevent="sendData(0)"
-                    >
-                      {{ $t('reject') }}
-                    </button>
-                    <button
-                      v-if="!transfer.isOpen"
-                      :class="['btn btn--green', { pending }]"
-                      class="mb-2"
-                      type="button"
-                      @click="transfer.isOpen = true"
-                    >
-                      {{ $t('transfer_to_supervisor') }}
-                    </button>
-                    <div
-                      v-if="getTimer && getTimer.data"
-                      class="moderator-timer"
-                    >
-                      {{ getTimer.data.replace('d', $t('day')) }}
+              <!--      actions-->
+              <div class="row mt-5">
+                <section v-if="user.admin_group === 1" class="container"> <!--supervisor-->
+                  <div class="row">
+                    <div class="col-12">
+                      <button v-if="rejectObj.rejectArray.length === 0" :class="{'button_loading':button_loading}"
+                              class="btn btn--green w-50"
+
+                              @click.prevent="sendData(1)">{{ $t('confirm') }}
+                      </button>
+                      <button :class="{'button_loading':button_loading}" class="btn btn--red w-50 ml-1"
+
+                              @click.prevent="sendData(0)">{{ $t('reject') }}
+                      </button>
+                      <button :class="{'button_loading':button_loading}" class="btn btn--pale-red w-50 ml-1"
+
+                              @click.prevent="sendData(3)"
+                      >
+                        {{ $t('deactive_announce') }}
+                      </button>
+                      <button class="btn btn--yellow w-50 ml-1" @click="handleBackToList">
+                        {{ $t('back_to_list') }}
+                      </button>
                     </div>
                   </div>
-                </div>
+                </section>
+                <section v-else-if="user.admin_group === 2" class="container"> <!--moderator-->
+                  <div class="row">
+                    <div class="col-6 col-lg-2">
+            <span class="timer">
+              {{ getTimer.data }}
+            </span>
+                    </div>
+                    <div class="col-auto">
+                      <form-text-input v-if="getTimer.unix > 60*2" v-model="form.delay_comment"
+                                       :placeholder="$t('delay_comment')"
+                                       type="text"/>
+                    </div>
 
-                <!--  supervisor-->
-                <div v-if="user.admin_group == 1" class="row">
-                  <div class="col float-right">
-                    <button
-                      v-if="
-                        rejectObj.rejectArray.filter(
-                          (item) => !rejectObj.reject360.includes(item),
-                        ).length === 0 &&
-                        !sellLastStepRejectObj.rejectArray.length
-                      "
-                      :class="{ button_loading: button_loading }"
-                      class="'btn btn--green mt-2"
-                      style="padding: 10px 30px;"
-                      @click.prevent="sendData(1)"
-                    >
-                      {{ $t('confirm') }}
-                    </button>
-                    <button
-                      :class="{ button_loading: button_loading }"
-                      class="'btn btn--red mt-2"
-                      style="padding: 10px 30px;"
-                      @click.prevent="sendData(0)"
-                    >
-                      {{ $t('reject') }}
-                    </button>
-                    <button
-                      :class="{ button_loading: button_loading }"
-                      class="'btn btn--pale-red mt-2"
-                      style="padding: 10px 30px;"
-                      @click.prevent="sendData(3)"
-                    >
-                      {{ $t('deactive_announce') }}
-                    </button>
-                    <button
-                      :class="{ button_loading: button_loading }"
-                      class="'btn btn--grey mt-2"
-                      style="padding: 10px 30px;"
-                      @click.prevent="gotoList()"
-                    >
-                      {{ $t('back_to_list') }}
-                    </button>
+                    <div class="col-auto">
+            <span v-if="getTimer.unix < 60*2 || (getTimer.unix > 60*2 && form.delay_comment.length)">
+              <button v-if="rejectObj.rejectArray.length === 0" :class="{'button_loading':button_loading}"
+                      class="btn btn--green w-50"
+
+                      @click.prevent="sendData(1)">{{ $t('confirm') }}</button>
+
+              <!-- sendData(0) -->
+              <button v-else :class="{'button_loading':button_loading}" class="btn btn--red w-50 ml-5"
+
+
+                      @click.prevent="transferToSupervisor(true)">{{ $t('reject') }}</button>
+            </span>
+
+                      <button :class="{'button_loading':button_loading}" class="btn btn--green w-50"
+
+                              @click.prevent="transferModal = true">{{ $t('comment_to_supervisor') }}
+                      </button>
+                    </div>
                   </div>
-                </div>
+                </section>
+                <section v-else-if="user.admin_group === 3" class="container"> <!--call center-->
+                  <div class="row">
+                    <div class="col-12">
+                      <button :class="{'button_loading':button_loading}" class="btn btn--green w-50"
+
+                              @click.prevent="sendData(2)">{{ $t('send_to_moderate') }}
+                      </button>
+
+                      <button :class="{'button_loading':button_loading}" class="btn btn--pale-red w-50 ml-1"
+
+                              @click.prevent="sendData(3)"
+                      >
+                        {{ $t('deactive_announce') }}
+                      </button>
+
+                      <button class="btn btn--yellow w-50 ml-1" @click="handleBackList">
+                        {{ $t('back_to_list') }}
+                      </button>
+
+                      <button class="btn btn--green w-50"
+                              @click.prevent="transferModal = true">{{ $t('Transfer to Supervisor') }}
+                      </button>
+
+                    </div>
+                  </div>
+                </section>
               </div>
-              <!-- actions   ------------------------>
             </div>
           </div>
         </div>
       </div>
     </div>
+
+    <!--    transfer modal-->
     <modal-popup
-      :modal-class="'offer-payment-modal'"
-      :title="$t('transfer_to_supervisor')"
-      :toggle="transfer.isOpen"
-      @close="transfer.isOpen = false"
+      :modal-class="''"
+      :title="`${$t('transfer_comment')}`"
+      :toggle="transferModal"
+      closeable
+      @close="transferModal = false"
     >
       <div class="body">
-        <div class="row">
-          <div class="col-12 mt-2">
-            <form-textarea
-              v-model="transfer.comment"
-              :maxlength="3000"
-              :placeholder="$t('transfer_comment')"
-            />
-          </div>
-          <div class="col-12 mt-2">
-            <button
-              v-if="user.admin_group && user.admin_group == 2"
-              :class="['btn btn--green', { pending }]"
-              class="mb-2"
-              type="button"
-              @click="transferToSupervisor()"
-            >
-              {{ $t('transfer_to_supervisor') }}
-            </button>
-          </div>
+        <textarea
+          key="ma-moderation-comment-2"
+          v-model="transferComment"
+          :placeholder="$t('transfer_comment')"
+          class="ma-input"
+        />
+        <div class="row justify-content-center">
+          <button
+            :class="{'button_loading':button_loading}"
+            class="btn btn--green  mt-1"
+            @click.prevent="transferToSupervisor()"
+          >
+            {{ $t('transfer_to_supervisor') }}
+          </button>
         </div>
-
       </div>
     </modal-popup>
 
@@ -688,7 +666,7 @@ export default {
       saved_images: [],
       deleteArr: [],
       files: {},
-
+      transferModal: false,
       //  image
       date: Math.floor(Date.now() / 1000),
       minFiles: this.type === 'moto' ? 2 : 3,
@@ -726,6 +704,7 @@ export default {
       uploadedVideo360: null,
       uploadedInterior360: null,
       uploadedInterior360id: null,
+      transferComment: '',
     }
   },
   computed: {
@@ -1507,7 +1486,7 @@ export default {
       this.button_loading = true
 
       if (withRejectReason) {
-        this.transferComment = this.rejectArray
+        this.transferComment = this.rejectObj.rejectArray
       }
 
       await this.$store.dispatch('moderator/transferToSupervisor', {
@@ -1593,6 +1572,17 @@ export default {
     addComment(e) {
       if (form.comment === null) form.comment = ''
       form.comment = form.comment + e + ' '
+    },
+    handleBackList() {
+      if (this.admin_user.admin_group == 2) {
+        location.href = '/alvcp/resources/announcements';
+      } else {
+        location.href = '/alvcp/resources/announcements';
+      }
+    },
+    async handleBackToList() {
+      await this.$axios.$post('/ticket/detach/'+this.announceId+'/car')
+      return location.href = '/alvcp/resources/announcements';
     },
   },
   mounted() {
