@@ -67,8 +67,9 @@
                       </div>
                       <div class="col-12 col-lg-3">
                         <form-select
-                          :clearOption="false"
                           v-model="form.brand_id"
+                          :allow-clear="false"
+                          :clearOption="false"
                           :disabled="isModerator"
                           :label="$t('mark')"
                           :options="brands"
@@ -97,8 +98,9 @@
                       </div>
                       <div class="col-12 col-lg-3">
                         <form-select
-                          :clearOption="false"
                           v-model="form.model_id"
+                          :allow-clear="false"
+                          :clearOption="false"
                           :disabled="isModerator"
                           :label="$t('model')"
                           :options="data.models"
@@ -119,8 +121,9 @@
                       </div>
                       <div class="col-12 col-lg-3">
                         <form-select
-                          :clearOption="false"
                           v-model="form.year"
+                          :allow-clear="false"
+                          :clearOption="false"
                           :disabled="isModerator"
                           :label="$t('prod_year')"
                           :options="data.sellYears"
@@ -150,8 +153,9 @@
                       </div>
                       <div class="col-12 col-lg-3">
                         <form-select
-                          :clearOption="false"
                           v-model="form.car_body_type"
+                          :allow-clear="false"
+                          :clearOption="false"
                           :disabled="isModerator"
                           :label="$t('body_type')"
                           :options="data.sellBodies"
@@ -182,8 +186,9 @@
                       </div>
                       <div class="col-12 col-lg-3">
                         <form-select
-                          :clearOption="false"
                           v-model="form.generation_id"
+                          :allow-clear="false"
+                          :clearOption="false"
                           :disabled="isModerator"
                           :label="$t('generation')"
                           :options="data.generations"
@@ -205,8 +210,9 @@
                       </div>
                       <div class="col-12 col-lg-3">
                         <form-select
-                          :clearOption="false"
                           v-model="form.engine"
+                          :allow-clear="false"
+                          :clearOption="false"
                           :disabled="isModerator"
                           :label="$t('engine')"
                           :options="
@@ -233,8 +239,9 @@
                       </div>
                       <div class="col-12 col-lg-3 pl-0">
                         <form-select
-                          :clearOption="false"
                           v-model="form.gearing"
+                          :allow-clear="false"
+                          :clearOption="false"
                           :disabled="isModerator"
                           :label="$t('box')"
                           :options="
@@ -261,8 +268,9 @@
                       </div>
                       <div v-if="true" class="col-12 col-lg-3 pl-0">
                         <form-select
-                          :clearOption="false"
                           v-model="form.transmission"
+                          :allow-clear="false"
+                          :clearOption="false"
                           :disabled="isModerator"
                           :label="$t('type_of_drive')"
                           :options="data.transmissions.map((o) => ({
@@ -291,8 +299,9 @@
                       </div>
                       <div class="col-12 col-lg-3 pl-0">
                         <form-select
-                          :clearOption="false"
                           v-model="form.modification"
+                          :allow-clear="false"
+                          :clearOption="false"
                           :disabled="isModerator"
                           :label="$t('modification')"
                           :options="
@@ -412,22 +421,22 @@
                 <section v-if="user.admin_group === 1" class="container"> <!--supervisor-->
                   <div class="row">
                     <div class="col-12">
-                      <button v-if="rejectObj.rejectArray.length === 0" :class="{'button_loading':button_loading}"
+                      <button :disabled="notValid" v-if="rejectObj.rejectArray.length === 0" :class="{'button_loading':button_loading, 'disabled': notValid}"
                               class="btn btn--green w-50"
 
                               @click.prevent="sendData(1)">{{ $t('confirm') }}
                       </button>
-                      <button :class="{'button_loading':button_loading}" class="btn btn--red w-50 ml-1"
+                      <button :disabled="notValid" :class="{'button_loading':button_loading, 'disabled': notValid}" class="btn btn--red w-50 ml-1"
 
                               @click.prevent="sendData(0)">{{ $t('reject') }}
                       </button>
-                      <button :class="{'button_loading':button_loading}" class="btn btn--pale-red w-50 ml-1"
+                      <button :disabled="notValid" :class="{'button_loading':button_loading, 'disabled': notValid}" class="btn btn--pale-red w-50 ml-1"
 
                               @click.prevent="sendData(3)"
                       >
                         {{ $t('deactive_announce') }}
                       </button>
-                      <button class="btn btn--yellow w-50 ml-1" @click="handleBackToList">
+                      <button :disabled="notValid" class="btn btn--yellow w-50 ml-1" @click="handleBackToList">
                         {{ $t('back_to_list') }}
                       </button>
                     </div>
@@ -448,19 +457,19 @@
 
                     <div class="col-auto">
             <span v-if="getTimer.unix < 60*2 || (getTimer.unix > 60*2 && form.delay_comment.length)">
-              <button v-if="rejectObj.rejectArray.length === 0" :class="{'button_loading':button_loading}"
+              <button :disabled="notValid" v-if="rejectObj.rejectArray.length === 0" :class="{'button_loading':button_loading, 'disabled': notValid}"
                       class="btn btn--green w-50"
 
                       @click.prevent="sendData(1)">{{ $t('confirm') }}</button>
 
               <!-- sendData(0) -->
-              <button v-else :class="{'button_loading':button_loading}" class="btn btn--red w-50 ml-5"
+              <button :disabled="notValid" v-else :class="{'button_loading':button_loading, 'disabled': notValid}" class="btn btn--red w-50 ml-5"
 
 
                       @click.prevent="transferToSupervisor(true)">{{ $t('reject') }}</button>
             </span>
 
-                      <button :class="{'button_loading':button_loading}" class="btn btn--green w-50"
+                      <button :disabled="notValid" :class="{'button_loading':button_loading, 'disabled': notValid}" class="btn btn--green w-50"
 
                               @click.prevent="transferModal = true">{{ $t('comment_to_supervisor') }}
                       </button>
@@ -470,23 +479,23 @@
                 <section v-else-if="user.admin_group === 3" class="container"> <!--call center-->
                   <div class="row">
                     <div class="col-12">
-                      <button :class="{'button_loading':button_loading}" class="btn btn--green w-50"
+                      <button :disabled="notValid" :class="{'button_loading':button_loading, 'disabled': notValid}" class="btn btn--green w-50"
 
                               @click.prevent="sendData(2)">{{ $t('send_to_moderate') }}
                       </button>
 
-                      <button :class="{'button_loading':button_loading}" class="btn btn--pale-red w-50 ml-1"
+                      <button :disabled="notValid" :class="{'button_loading':button_loading, 'disabled': notValid}" class="btn btn--pale-red w-50 ml-1"
 
                               @click.prevent="sendData(3)"
                       >
                         {{ $t('deactive_announce') }}
                       </button>
 
-                      <button class="btn btn--yellow w-50 ml-1" @click="handleBackList">
+                      <button :disabled="notValid" class="btn btn--yellow w-50 ml-1" @click="handleBackList" :class="{'disabled': notValid}">
                         {{ $t('back_to_list') }}
                       </button>
 
-                      <button class="btn btn--green w-50"
+                      <button :disabled="notValid" class="btn btn--green w-50"
                               @click.prevent="transferModal = true">{{ $t('Transfer to Supervisor') }}
                       </button>
 
@@ -517,7 +526,7 @@
         />
         <div class="row justify-content-center">
           <button
-            :class="{'button_loading':button_loading}"
+            :class="{'button_loading':button_loading, 'disabled': notValid}"
             class="btn btn--green  mt-1"
             @click.prevent="transferToSupervisor()"
           >
@@ -784,6 +793,19 @@ export default {
     isMorderator() {
       return this.user.admin_group == 2
     },
+    notValid() {
+      if (
+        !this.form.brand ||
+        !this.form.model ||
+        !this.form.year ||
+        !this.form.car_body_type ||
+        !this.form.generation_id ||
+        !this.form.engine ||
+        !this.form.gearing ||
+        !this.form.transmission
+      ) return true
+      else return false
+    }
   },
   methods: {
     // ui
@@ -806,7 +828,7 @@ export default {
     },
     scrollToTop() {
       setTimeout(() => {
-        Vue.prototype.$scrollToTop = () => window.scrollTo(0,0)
+        Vue.prototype.$scrollToTop = () => window.scrollTo(0, 0)
       }, 1000)
 
     },
@@ -1574,27 +1596,24 @@ export default {
       form.comment = form.comment + e + ' '
     },
     handleBackList() {
-      if (this.admin_user.admin_group == 2) {
+      if (this.user.admin_group == 2) {
         location.href = '/alvcp/resources/announcements';
       } else {
         location.href = '/alvcp/resources/announcements';
       }
     },
     async handleBackToList() {
-      await this.$axios.$post('/ticket/detach/'+this.announceId+'/car')
+      await this.$axios.$post('/ticket/detach/' + this.announceId + '/car')
       return location.href = '/alvcp/resources/announcements';
     },
   },
   mounted() {
     this.getAnnounceData();
-    this.scrollToTop()
+    // this.scrollToTop()
 
   },
-
   beforeMount() {
   },
-
-
   watch: {
     form: {
       deep: true,

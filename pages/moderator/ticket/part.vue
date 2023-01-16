@@ -74,6 +74,7 @@
         <div v-if="partCategories && partCategories.length && form.category_id" id="anchor-category_id"
              class="col-lg-4 mb-3 mb-lg-0">
           <form-select
+            :allow-clear="false"
             v-model="form.category_id"
             :clear-option="false"
             :invalid="isInvalid('category_id')"
@@ -96,6 +97,7 @@
           class="col-lg-4 mb-3 mb-lg-0"
         >
           <form-select
+            :allow-clear="false"
             v-model="form.sub_category_id"
             :clear-option="false"
             :invalid="isInvalid('sub_category')"
@@ -115,6 +117,7 @@
           class="col-lg-4 mb-3 mb-lg-0"
         >
           <form-select
+            :allow-clear="false"
             v-model="form.brand_id"
             :clear-option="false"
             :invalid="isInvalid('brand_id')"
@@ -185,6 +188,7 @@
               <pre>{{ filter[0] }}</pre>
               <!-- Select -->
               <form-select
+                :allow-clear="false"
                 v-if="filter.component === 'multiselect-component'"
                 v-model="form.filter[filter.key]"
                 :clear-option="!filter.is_required"
@@ -288,6 +292,7 @@
               class="col-lg-4 mb-3"
             >
               <form-select
+                :allow-clear="false"
                 v-model="form.region_id"
                 :clear-option="false"
                 :invalid="isInvalid('region_id')"
@@ -1138,7 +1143,7 @@ export default {
         this.errors = this.errors.filter((item) => item !== key)
       }
     },
-    
+
     //image
     removeImage(v) {
       this.files = v

@@ -289,6 +289,7 @@
           <div class="row">
             <div v-if="!single_announce.is_external_salon" class="col-lg-4 mb-2 mb-lg-0">
               <form-select
+                :allow-clear="false"
                 v-model="form.region_id"
                 :clear-option="false"
                 :invalid="isInvalid('region_id')"
@@ -300,6 +301,7 @@
             </div>
             <div v-if="single_announce.is_external_salon" class="col-lg-4 mb-2 mb-lg-0">
               <form-select
+                :allow-clear="false"
                 v-model="form.country_id"
                 :clear-option="false"
                 :invalid="isInvalid('region_id')"
