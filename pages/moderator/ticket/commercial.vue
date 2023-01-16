@@ -61,6 +61,7 @@
         <div v-if="commercial_types && commercial_types.length" class="col-12 col-lg-3">
           <form-select
             v-model="form.commercial_type_id"
+            :allow-clear="false"
             :disabled="isModerator"
             :label="$t('category')"
             :options="commercial_types.map((o) => ({
@@ -87,6 +88,7 @@
         <div v-if="com_brands && com_brands[0].length" class="col-12 col-lg-3">
           <form-select
             v-model="form.brand"
+            :allow-clear="false"
             :disabled="isModerator"
             :label="$t('mark')"
             :options="com_brands[0].map((o) => ({
@@ -113,6 +115,7 @@
         <div v-if="com_models && com_models[0].length" class="col-12 col-lg-3">
           <form-select
             v-model="form.model"
+            :allow-clear="false"
             :disabled="isModerator"
             :label="$t('model')"
             :options="com_models[0].map((o) => ({
@@ -140,6 +143,7 @@
         <div v-if="commercial_types && commercial_types.length" class="col-12 col-lg-3">
           <form-select
             v-model="form.year"
+            :allow-clear="false"
             :disabled="isModerator"
             :label="$t('year')"
             :options="getYears"
@@ -305,6 +309,7 @@
             id="region_id"
             :key="refresh+1"
             v-model="form.region_id"
+            :allow-clear="false"
             :disabled="isModerator"
             :has-error="errors.includes('region_id')"
             :label="$t('region')"
@@ -318,6 +323,7 @@
         <div v-if="single_announce.is_external_salon" class="col-lg-4 mb-2 mb-lg-0">
           <form-select
             v-model="form.country_id"
+            :allow-clear="false"
             :clear-option="false"
             :invalid="isInvalid('region_id')"
             :label="$t('sale_region_country')"
@@ -566,22 +572,25 @@
         <section v-if="user.admin_group === 1" class="container"> <!--supervisor-->
           <div class="row">
             <div class="col-12">
-              <button v-if="rejectArray.length === 0" :class="{'button_loading':button_loading}"
+              <button v-if="rejectArray.length === 0" :class="{'button_loading':button_loading, 'disabled':notValid}"
+                      :disabled="notValid"
                       class="btn btn--green w-50"
 
                       @click.prevent="sendData(1)">{{ $t('confirm') }}
               </button>
-              <button :class="{'button_loading':button_loading}" class="btn btn--red w-50 ml-1"
+              <button :class="{'button_loading':button_loading, 'disabled':notValid}" :disabled="notValid"
+                      class="btn btn--red w-50 ml-1"
 
                       @click.prevent="sendData(0)">{{ $t('reject') }}
               </button>
-              <button :class="{'button_loading':button_loading}" class="btn btn--pale-red w-50 ml-1"
+              <button :class="{'button_loading':button_loading, 'disabled':notValid}" :disabled="notValid"
+                      class="btn btn--pale-red w-50 ml-1"
 
                       @click.prevent="sendData(3)"
               >
                 {{ $t('deactive_announce') }}
               </button>
-              <button class="btn btn--yellow w-50 ml-1" @click="handleBackToList">
+              <button :disabled="notValid" class="btn btn--yellow w-50 ml-1" @click="handleBackToList">
                 {{ $t('back_to_list') }}
               </button>
             </div>
@@ -602,19 +611,22 @@
 
             <div class="col-auto">
             <span v-if="getTimer.unix < 60*2 || (getTimer.unix > 60*2 && form.delay_comment.length)">
-              <button v-if="rejectArray.length === 0" :class="{'button_loading':button_loading}"
+              <button v-if="rejectArray.length === 0" :class="{'button_loading':button_loading, 'disabled':notValid}"
+                      :disabled="notValid"
                       class="btn btn--green w-50"
 
                       @click.prevent="sendData(1)">{{ $t('confirm') }}</button>
 
               <!-- sendData(0) -->
-              <button v-else :class="{'button_loading':button_loading}" class="btn btn--red w-50 ml-5"
+              <button v-else :class="{'button_loading':button_loading, 'disabled':notValid}" :disabled="notValid"
+                      class="btn btn--red w-50 ml-5"
 
 
                       @click.prevent="transferToSupervisor(true)">{{ $t('reject') }}</button>
             </span>
 
-              <button :class="{'button_loading':button_loading}" class="btn btn--green w-50"
+              <button :class="{'button_loading':button_loading, 'disabled':notValid}" :disabled="notValid"
+                      class="btn btn--green w-50"
 
                       @click.prevent="transferModal = true">{{ $t('comment_to_supervisor') }}
               </button>
@@ -624,23 +636,25 @@
         <section v-else-if="user.admin_group === 3" class="container"> <!--call center-->
           <div class="row">
             <div class="col-12">
-              <button :class="{'button_loading':button_loading}" class="btn btn--green w-50"
+              <button :class="{'button_loading':button_loading, 'disabled':notValid}" :disabled="notValid"
+                      class="btn btn--green w-50"
 
                       @click.prevent="sendData(2)">{{ $t('send_to_moderate') }}
               </button>
 
-              <button :class="{'button_loading':button_loading}" class="btn btn--pale-red w-50 ml-1"
+              <button :class="{'button_loading':button_loading, 'disabled':notValid}" :disabled="notValid"
+                      class="btn btn--pale-red w-50 ml-1"
 
                       @click.prevent="sendData(3)"
               >
                 {{ $t('deactive_announce') }}
               </button>
 
-              <button class="btn btn--yellow w-50 ml-1" @click="handleBackList">
+              <button :disabled="notValid" class="btn btn--yellow w-50 ml-1" @click="handleBackList">
                 {{ $t('back_to_list') }}
               </button>
 
-              <button class="btn btn--green w-50"
+              <button :disabled="notValid" class="btn btn--green w-50"
                       @click.prevent="transferModal = true">{{ $t('Transfer to Supervisor') }}
               </button>
 
@@ -662,8 +676,8 @@
       @close="openLog = false"
     >
       <change-log
-        :logs="single_announce.change_log"
         :btl="single_announce.btl_announces"
+        :logs="single_announce.change_log"
         :user-id="single_announce.user_id"
       />
     </modal-popup>
@@ -684,7 +698,7 @@
         />
         <div class="row justify-content-center">
           <button
-            :class="{'button_loading':button_loading}"
+            :class="{'button_loading':button_loading, 'disabled':notValid}"
             class="btn btn--green  mt-1"
             @click.prevent="transferToSupervisor()"
           >
@@ -714,6 +728,7 @@ import TitleWithLine from "~/components/global/titleWithLine";
 import FormRadioGroup from "~/components/forms/FormRadioGroup";
 import SellLastStep from '~/components/sell/SellLastStep';
 import ChangeLog from "~/components/moderator/changeLog";
+
 export default {
 
   name: 'commercial-pages-moderation',
@@ -1058,7 +1073,7 @@ export default {
       this.form.show_car_number = announce.show_car_number;
       this.form.show_vin = announce.show_vin;
       this.form.vin = announce.vin;
-      this.form.power = Number(announce.power)
+      this.form.power = announce.power ? Number(announce.power) : 0;
       this.form.capacity = parseInt(announce.capacity)
       this.form.comment = announce.comment;
       this.form.sell_store = announce.store_id;
@@ -1705,7 +1720,16 @@ export default {
       if (this.single_announce) {
         return this.single_announce.commercial_type.name.az || this.single_announce.commercial_type.name.ru || ""
       } else return ""
-    }
+    },
+    notValid() {
+      if (
+        !this.form.commercial_type_id ||
+        !this.form.brand ||
+        !this.form.model ||
+        !this.form.year
+      ) return true
+      else return false
+    },
   },
 
 

@@ -43,6 +43,7 @@
             </div>
             <div v-if="getBrands && getBrands.length" class="col-12 col-lg-3">
               <form-select
+                :allow-clear="false"
                 :key="refresh+1"
                 v-model="form.brand"
                 :clearOption="false"
@@ -67,6 +68,7 @@
             </div>
             <div v-if="getModels && getModels.length" class="col-12 col-lg-3">
               <form-select
+                :allow-clear="false"
                 :key="refresh+1"
                 v-model="form.model"
                 :clearOption="false"
@@ -93,7 +95,7 @@
             </div>
           </section>
           <!--    year  -->
-          <section class="row">
+          <section class="row" v-if="form.model">
             <div class="col-12">
               <title-with-line-and-reject-reason
                 :no-approval="!(admin_user.admin_group === 1 || admin_user.admin_group === 2)"
@@ -105,6 +107,7 @@
             </div>
             <div v-if="getYears && getYears.length" class="col-12 col-lg-3">
               <form-select
+                :allow-clear="false"
                 :key="refresh+1"
                 v-model="form.year"
                 :clearOption="false"
@@ -267,6 +270,7 @@
 
             <div v-if="!single_announce.is_external_salon" class="col-4 col-md-6 col-lg-3">
               <form-select
+                :allow-clear="false"
                 id="region_id"
                 :key="refresh+1"
                 v-model="form.region_id"
@@ -283,6 +287,7 @@
             </div>
             <div v-if="single_announce.is_external_salon" class="col-lg-4 mb-2 mb-lg-0">
               <form-select
+                :allow-clear="false"
                 v-model="form.country_id"
                 :clear-option="false"
                 :clearOption="false"
@@ -514,22 +519,22 @@
           <section v-if="user.admin_group === 1" class="container"> <!--supervisor-->
             <div class="row">
               <div class="col-12">
-                <button v-if="rejectArray.length === 0" :class="{'button_loading':button_loading}"
+                <button :disabled="notValid" v-if="rejectArray.length === 0" :class="{'button_loading':button_loading, 'disabled': notValid}"
                         class="btn btn--green w-50"
 
                         @click.prevent="sendData(1)">{{ $t('confirm') }}
                 </button>
-                <button :class="{'button_loading':button_loading}" class="btn btn--red w-50 ml-1"
+                <button :disabled="notValid" :class="{'button_loading':button_loading, 'disabled': notValid}" class="btn btn--red w-50 ml-1"
 
                         @click.prevent="sendData(0)">{{ $t('reject') }}
                 </button>
-                <button :class="{'button_loading':button_loading}" class="btn btn--pale-red w-50 ml-1"
+                <button :disabled="notValid" :class="{'button_loading':button_loading, 'disabled': notValid}" class="btn btn--pale-red w-50 ml-1"
 
                         @click.prevent="sendData(3)"
                 >
                   {{ $t('deactive_announce') }}
                 </button>
-                <button class="btn btn--yellow w-50 ml-1" @click="handleBackToList">
+                <button :disabled="notValid" class="btn btn--yellow w-50 ml-1" @click="handleBackToList">
                   {{ $t('back_to_list') }}
                 </button>
               </div>
@@ -550,19 +555,19 @@
 
               <div class="col-auto">
             <span v-if="getTimer.unix < 60*2 || (getTimer.unix > 60*2 && form.delay_comment.length)">
-              <button v-if="rejectArray.length === 0" :class="{'button_loading':button_loading}"
+              <button :disabled="notValid" v-if="rejectArray.length === 0" :class="{'button_loading':button_loading, 'disabled': notValid}"
                       class="btn btn--green w-50"
 
                       @click.prevent="sendData(1)">{{ $t('confirm') }}</button>
 
               <!-- sendData(0) -->
-              <button v-else :class="{'button_loading':button_loading}" class="btn btn--red w-50 ml-5"
+              <button :disabled="notValid" v-else :class="{'button_loading':button_loading, 'disabled': notValid}" class="btn btn--red w-50 ml-5"
 
 
                       @click.prevent="transferToSupervisor(true)">{{ $t('reject') }}</button>
             </span>
 
-                <button :class="{'button_loading':button_loading}" class="btn btn--green w-50"
+                <button :disabled="notValid" :class="{'button_loading':button_loading, 'disabled': notValid}" class="btn btn--green w-50"
 
                         @click.prevent="transferModal = true">{{ $t('comment_to_supervisor') }}
                 </button>
@@ -572,23 +577,23 @@
           <section v-else-if="user.admin_group === 3" class="container"> <!--call center-->
             <div class="row">
               <div class="col-12">
-                <button :class="{'button_loading':button_loading}" class="btn btn--green w-50"
+                <button :disabled="notValid" :class="{'button_loading':button_loading, 'disabled': notValid}" class="btn btn--green w-50"
 
                         @click.prevent="sendData(2)">{{ $t('send_to_moderate') }}
                 </button>
 
-                <button :class="{'button_loading':button_loading}" class="btn btn--pale-red w-50 ml-1"
+                <button :disabled="notValid" :class="{'button_loading':button_loading, 'disabled': notValid}" class="btn btn--pale-red w-50 ml-1"
 
                         @click.prevent="sendData(3)"
                 >
                   {{ $t('deactive_announce') }}
                 </button>
 
-                <button class="btn btn--yellow w-50 ml-1" @click="handleBackList">
+                <button :disabled="notValid" class="btn btn--yellow w-50 ml-1" @click="handleBackList">
                   {{ $t('back_to_list') }}
                 </button>
 
-                <button class="btn btn--green w-50"
+                <button :disabled="notValid" class="btn btn--green w-50"
                         @click.prevent="transferModal = true">{{ $t('Transfer to Supervisor') }}
                 </button>
 
@@ -654,7 +659,7 @@
         />
         <div class="row justify-content-center">
           <button
-            :class="{'button_loading':button_loading}"
+            :class="{'button_loading':button_loading, 'disabled': notValid}"
             class="btn btn--green  mt-1"
             @click.prevent="transferToSupervisor()"
           >
@@ -1769,6 +1774,14 @@ export default {
       } else if (lastDigit == 5) {
         return 'part'
       } else return 'moto'
+    },
+    notValid() {
+      if (
+        !this.form.brand ||
+        !this.form.model ||
+        !this.form.year
+      ) return true
+      else return false
     },
     // single_announce:{
     //   get() {
