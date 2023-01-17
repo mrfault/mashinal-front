@@ -71,9 +71,13 @@
         />
         <div v-if="form.selectedColor && colors.length" class="row">
           <div class="col-12 col-lg-10">
-            <color-options v-model="form.selectedColor" :hide-matt="type !== 'cars'" :limit="2"
-                           :matt="form.is_matte" :multiple="type === 'cars'" @change="removeError('selectedColor')"
-                           @change-matt="form.is_matte = $event"/>
+            <color-options
+              v-model="form.selectedColor"
+              :limit="2"
+              :matt="form.is_matte"
+              multiple
+              @change="removeError('selectedColor')"
+              @change-matt="form.is_matte = $event"/>
           </div>
           <div class="col-12 col-lg-2">
                   <span
@@ -289,8 +293,8 @@
           <div class="row">
             <div v-if="!single_announce.is_external_salon" class="col-lg-4 mb-2 mb-lg-0">
               <form-select
-                :allow-clear="false"
                 v-model="form.region_id"
+                :allow-clear="false"
                 :clear-option="false"
                 :invalid="isInvalid('region_id')"
                 :label="$t('region')"
@@ -301,8 +305,8 @@
             </div>
             <div v-if="single_announce.is_external_salon" class="col-lg-4 mb-2 mb-lg-0">
               <form-select
-                :allow-clear="false"
                 v-model="form.country_id"
+                :allow-clear="false"
                 :clear-option="false"
                 :invalid="isInvalid('region_id')"
                 :label="$t('sale_region_country')"
@@ -319,8 +323,8 @@
                 v-model="form.address"
                 :auto-focus="false"
                 :placeholder="$t('address')"
-                icon-name="placeholder"
                 class="ma-input"
+                icon-name="placeholder"
               />
               <!---------------------------------------------------------------------------------------------------------------------------------------------->
             </div>
@@ -380,22 +384,27 @@
         </div>
         <div v-if="(type === 'cars' && !user.is_autosalon) || (type !== 'parts' && user.external_salon)"
              id="anchor-car_number" class="row">
-          <div v-if="!form.customs_clearance && !user.external_salon" class="col-lg-4 mb-2 mb-lg-0">
+          <div v-if="!form.customs_clearance && !user.external_salon" class="col-lg-2 mb-2 mb-lg-0">
             <!---------------------------------------------------------------------------------------------------------------------------------------------->
-            <input
+            <form-text-input
               ref="moderation-car-number-input-1"
               v-model="form.car_number"
-              :mask="'99 - A{1,2} - 999'"
-              :placeholder="$t('car_number')"
-              class="ma-input"
+              :mask="type === 'cars' ? '99 - AA - 999' : '99 - A{1,2} - 999'"
+              :placeholder="'__ - _ - ___'"
+              @focus="scrollToTop"
             />
+            <!--              class="ma-input"-->
+
 
             <!---------------------------------------------------------------------------------------------------------------------------------------------->
 
+
+          </div>
+          <div class="col-12 mt-0 ">
             <form-checkbox
               v-model="form.show_car_number"
               :label="$t('show_car_number_on_site')"
-              class="mt-2 mt-lg-3"
+              class="mt-0 pl-0"
               input-name="show_car_number"
               transparent
             />
@@ -962,7 +971,12 @@ export default {
         })
       }
     },
+    scrollToTop() {
+      setTimeout(() => {
+        Vue.prototype.$scrollToTop = () => window.scrollTo(0, 0)
+      }, 1000)
 
+    },
   },
   watch: {
     rejectObj: {

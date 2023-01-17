@@ -71,6 +71,7 @@
             :value="form.category"
             has-search
             @change="handleCategoryChange($event)"
+            :clearOption="false"
           />
         </div>
       </section>
@@ -97,6 +98,7 @@
               }))"
             :value="form.brand"
             has-search
+            :clearOption="false"
             @change="handleBrandChange($event)"
           />
         </div>
@@ -125,6 +127,7 @@
             :value="form.model"
             has-search
             @change="handleChange($event)"
+            :clearOption="false"
           />
         </div>
       </section>
@@ -150,6 +153,7 @@
             :value="form.year"
             has-search
             @change="handleChange($event)"
+            :clearOption="false"
           />
         </div>
       </section>
@@ -306,6 +310,7 @@
 
         <div v-if="!single_announce.is_external_salon" class="col-4 col-md-6 col-lg-3">
           <form-select
+            :clearOption="false"
             id="region_id"
             :key="refresh+1"
             v-model="form.region_id"
@@ -322,6 +327,7 @@
         </div>
         <div v-if="single_announce.is_external_salon" class="col-lg-4 mb-2 mb-lg-0">
           <form-select
+            :clearOption="false"
             v-model="form.country_id"
             :allow-clear="false"
             :clear-option="false"
@@ -438,7 +444,7 @@
           >
             <form-text-input
               v-model="form.car_number"
-              :mask="type === 'cars' ? '99 - AA - 999' : '99 - A{1,2} - 999'"
+              :mask="type === 'cars' ? '99 - BB - 999' : '99 - A{1,2} - 999'"
               :placeholder="type === 'cars' ? '__ - __ - ___' : '__ - _ - ___'"
               img-src="/img/flag.svg"
               input-class="car-number-show-popover"

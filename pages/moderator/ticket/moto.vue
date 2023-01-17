@@ -37,15 +37,16 @@
                 :no-approval="!(admin_user.admin_group === 1 || admin_user.admin_group === 2)"
                 :old-value="(admin_user.admin_group !== 2 && old_brand) ? old_brand : ''"
                 rejectKey="brand"
+                required
                 title="mark"
                 @change="changeReason"
               />
             </div>
             <div v-if="getBrands && getBrands.length" class="col-12 col-lg-3">
               <form-select
-                :allow-clear="false"
                 :key="refresh+1"
                 v-model="form.brand"
+                :allow-clear="false"
                 :clearOption="false"
                 :disabled="isModerator"
                 :label="$t('mark')"
@@ -53,6 +54,7 @@
                 has-search
                 @change="handleChange({key:'brand',value: form.brand, name: getBrandName(form.brand, getBrands)})"
               />
+              <small v-if="!form.brand" class="text-red">{{ $t('starred_fields_are_required') }}</small>
             </div>
           </section>
           <!--    model  -->
@@ -62,15 +64,16 @@
                 :no-approval="!(admin_user.admin_group === 1 || admin_user.admin_group === 2)"
                 :old-value="admin_user.admin_group !== 2 ? old_model : ''"
                 rejectKey="model"
+                required
                 title="model"
                 @change="changeReason"
               />
             </div>
             <div v-if="getModels && getModels.length" class="col-12 col-lg-3">
               <form-select
-                :allow-clear="false"
                 :key="refresh+1"
                 v-model="form.model"
+                :allow-clear="false"
                 :clearOption="false"
                 :disabled="isModerator"
                 :label="$t('model')"
@@ -78,6 +81,7 @@
                 has-search
                 @change="handleChange({key:'model',value: form.model, name: getBrandName(form.model, getModels)})"
               />
+              <small v-if="!form.model" class="text-red">{{ $t('starred_fields_are_required') }}</small>
             </div>
             <div class="mb-4">
               <!--          <multiselect-component-->
@@ -95,21 +99,22 @@
             </div>
           </section>
           <!--    year  -->
-          <section class="row" v-if="form.model">
+          <section v-if="form.model" class="row">
             <div class="col-12">
               <title-with-line-and-reject-reason
                 :no-approval="!(admin_user.admin_group === 1 || admin_user.admin_group === 2)"
                 :old-value="admin_user.admin_group !== 2 ? single_announce.year.toString() : ''"
                 rejectKey="year"
+                required
                 title="year"
                 @change="changeReason"
               />
             </div>
             <div v-if="getYears && getYears.length" class="col-12 col-lg-3">
               <form-select
-                :allow-clear="false"
                 :key="refresh+1"
                 v-model="form.year"
+                :allow-clear="false"
                 :clearOption="false"
                 :disabled="isModerator"
                 :label="$t('year')"
@@ -117,6 +122,8 @@
                 has-search
                 @change="handleChange({key:'year',value: form.year, name: getBrandName(form.year, getModels)})"
               />
+              <small v-if="!form.year" class="text-red">{{ $t('starred_fields_are_required') }}</small>
+
             </div>
             <div class="mb-4">
               <!--          <multiselect-component-->
@@ -187,10 +194,16 @@
               />
             </div>
 
-            <div v-if="form.selectedColor && colors.length" class="col-12">
-              <color-options v-model="form.selectedColor" :hide-matt="type !== 'cars'" :limit="2"
-                             :matt="form.is_matte" :multiple="type === 'cars'" @change="removeError('selectedColor')"
-                             @change-matt="form.is_matte = $event"/>
+            <div v-if="colors.length" class="col-12">
+              <color-options
+                v-model="form.selectedColor"
+                :hide-matt="type !== 'cars'"
+                :limit="2"
+                :matt="form.is_matte"
+                :multiple="type === 'cars'"
+                @change="removeError('selectedColor')"
+                @change-matt="form.is_matte = $event"
+              />
             </div>
           </section>
           <!--      mileage-->
@@ -270,10 +283,10 @@
 
             <div v-if="!single_announce.is_external_salon" class="col-4 col-md-6 col-lg-3">
               <form-select
-                :allow-clear="false"
                 id="region_id"
                 :key="refresh+1"
                 v-model="form.region_id"
+                :allow-clear="false"
                 :clearOption="false"
                 :disabled="isModerator"
                 :has-error="errors.includes('region_id')"
@@ -287,8 +300,8 @@
             </div>
             <div v-if="single_announce.is_external_salon" class="col-lg-4 mb-2 mb-lg-0">
               <form-select
-                :allow-clear="false"
                 v-model="form.country_id"
+                :allow-clear="false"
                 :clear-option="false"
                 :clearOption="false"
                 :invalid="isInvalid('region_id')"
@@ -378,8 +391,8 @@
               >
                 <form-text-input
                   v-model="form.car_number"
-                  :mask="type === 'cars' ? '99 - AA - 999' : '99 - A{1,2} - 999'"
-                  :placeholder="type === 'cars' ? '__ - __ - ___' : '__ - _ - ___'"
+                  :mask="'99 - A - 999'"
+                  :placeholder="'__ - _ - ___'"
                   img-src="/img/flag.svg"
                   input-class="car-number-show-popover"
                   @change="removeError('car_number')"
@@ -402,7 +415,7 @@
                 />
               </div>
             </div>
-            <div v-if="form.customs_clearance && form && form.vin" class="col-12 col-md-6 col-lg-3">
+            <div v-if="form.customs_clearance" class="col-12 col-md-6 col-lg-3">
               <form-textarea
                 key="vin"
                 v-model="form.vin"
@@ -435,8 +448,8 @@
               <title-with-line-and-reject-reason no-approval title="horse_power"/>
             </div>
             <div class="col-12 col-md-4 col-lg-3">
-              <form-text-input
-                :id="`animated-input-moto-${index}`"
+              <form-numeric-input
+                :id="`animated-input-moto-power`"
                 v-model="form.power"
                 :invalid="hasError(item)"
                 :placeholder="form[item.placeholder]"
@@ -461,8 +474,8 @@
                   <template v-if="item[1].component == 'animated-input'">
                     <div class="col-12 col-md-4 col-lg-3">
 
-                      <form-text-input
-                        :id="`animated-input-moto-${index}`"
+                      <form-numeric-input
+                        :id="`animated-input-moto-${indx}`"
                         v-model="form[item[0]]"
                         :invalid="hasError(item)"
                         :placeholder="form[item.placeholder]"
@@ -470,10 +483,10 @@
                     </div>
                   </template>
                   <template v-if="item[1].component == 'select-checkbox'">
-                    <div v-for="(input,index)  in item[1].values" :key="input.name"
+                    <div v-for="(input,checkboxIndex)  in item[1].values" :key="input.name"
                          class="col-lg-4 mb-2 mb-lg-3">
                       <form-radio
-                        :id="`${input.name}-box-${index}`"
+                        :id="`${input.name}-box-${checkboxIndex}`"
                         v-model="form[item[0]]"
                         :input-name="getKey(item)"
                         :invalid="hasError(item)"
@@ -519,16 +532,19 @@
           <section v-if="user.admin_group === 1" class="container"> <!--supervisor-->
             <div class="row">
               <div class="col-12">
-                <button :disabled="notValid" v-if="rejectArray.length === 0" :class="{'button_loading':button_loading, 'disabled': notValid}"
+                <button v-if="rejectArray.length === 0" :class="{'button_loading':button_loading, 'disabled': notValid}"
+                        :disabled="notValid"
                         class="btn btn--green w-50"
 
                         @click.prevent="sendData(1)">{{ $t('confirm') }}
                 </button>
-                <button :disabled="notValid" :class="{'button_loading':button_loading, 'disabled': notValid}" class="btn btn--red w-50 ml-1"
+                <button :class="{'button_loading':button_loading, 'disabled': notValid}" :disabled="notValid"
+                        class="btn btn--red w-50 ml-1"
 
                         @click.prevent="sendData(0)">{{ $t('reject') }}
                 </button>
-                <button :disabled="notValid" :class="{'button_loading':button_loading, 'disabled': notValid}" class="btn btn--pale-red w-50 ml-1"
+                <button :class="{'button_loading':button_loading, 'disabled': notValid}" :disabled="notValid"
+                        class="btn btn--pale-red w-50 ml-1"
 
                         @click.prevent="sendData(3)"
                 >
@@ -555,19 +571,22 @@
 
               <div class="col-auto">
             <span v-if="getTimer.unix < 60*2 || (getTimer.unix > 60*2 && form.delay_comment.length)">
-              <button :disabled="notValid" v-if="rejectArray.length === 0" :class="{'button_loading':button_loading, 'disabled': notValid}"
+              <button v-if="rejectArray.length === 0" :class="{'button_loading':button_loading, 'disabled': notValid}"
+                      :disabled="notValid"
                       class="btn btn--green w-50"
 
                       @click.prevent="sendData(1)">{{ $t('confirm') }}</button>
 
               <!-- sendData(0) -->
-              <button :disabled="notValid" v-else :class="{'button_loading':button_loading, 'disabled': notValid}" class="btn btn--red w-50 ml-5"
+              <button v-else :class="{'button_loading':button_loading, 'disabled': notValid}" :disabled="notValid"
+                      class="btn btn--red w-50 ml-5"
 
 
                       @click.prevent="transferToSupervisor(true)">{{ $t('reject') }}</button>
             </span>
 
-                <button :disabled="notValid" :class="{'button_loading':button_loading, 'disabled': notValid}" class="btn btn--green w-50"
+                <button :class="{'button_loading':button_loading, 'disabled': notValid}" :disabled="notValid"
+                        class="btn btn--green w-50"
 
                         @click.prevent="transferModal = true">{{ $t('comment_to_supervisor') }}
                 </button>
@@ -577,12 +596,14 @@
           <section v-else-if="user.admin_group === 3" class="container"> <!--call center-->
             <div class="row">
               <div class="col-12">
-                <button :disabled="notValid" :class="{'button_loading':button_loading, 'disabled': notValid}" class="btn btn--green w-50"
+                <button :class="{'button_loading':button_loading, 'disabled': notValid}" :disabled="notValid"
+                        class="btn btn--green w-50"
 
                         @click.prevent="sendData(2)">{{ $t('send_to_moderate') }}
                 </button>
 
-                <button :disabled="notValid" :class="{'button_loading':button_loading, 'disabled': notValid}" class="btn btn--pale-red w-50 ml-1"
+                <button :class="{'button_loading':button_loading, 'disabled': notValid}" :disabled="notValid"
+                        class="btn btn--pale-red w-50 ml-1"
 
                         @click.prevent="sendData(3)"
                 >
@@ -674,6 +695,7 @@
 
 <script>
 import {mapActions, mapGetters} from "vuex";
+import {ToastErrorsMixin} from '~/mixins/toast-errors';
 import UserDetails from '~/components/moderator/brand.vue'
 import MultiselectComponent from '~/components/moderator/multiselectComponent.vue'
 import RejectReason from '~/components/moderator/rejectReason'
@@ -688,6 +710,7 @@ import SellFilters from '~/components/sell/SellFilters'
 import TitleWithLine from "~/components/global/titleWithLine";
 import FormRadioGroup from "~/components/forms/FormRadioGroup";
 import ChangeLog from "~/components/moderator/changeLog";
+
 
 export default {
 
@@ -710,6 +733,8 @@ export default {
     FormRadioGroup,
     ChangeLog
   },
+
+  mixins: [ToastErrorsMixin],
 
   async fetch({store}) {
     await store.dispatch('getOptions');
@@ -737,7 +762,6 @@ export default {
     let data;
     try {
       data = await $axios.$get(`/ticket/moto?type=${route.query.type}`);
-      console.log("asyncdata data", data)
       store.commit('mutate', {
         property: 'single_announce',
         value: data.announce,
@@ -1106,13 +1130,13 @@ export default {
       if (this.form.comment === null) this.form.comment = '';
       this.form.comment = this.form.comment + e + ' ';
     },
-    async deleteByIndex(index) {
-      if (this.saved_images[index]) {
-        this.deleteArr.push(this.saved_images[index])
+    async deleteByIndex(deleteIndex) {
+      if (this.saved_images[deleteIndex]) {
+        this.deleteArr.push(this.saved_images[deleteIndex])
       } else {
-        await this.$axios.$post('/remove_temporary_image/' + this.saved_images[index]);
+        await this.$axios.$post('/remove_temporary_image/' + this.saved_images[deleteIndex]);
       }
-      this.saved_images.splice(index, 1);
+      this.saved_images.splice(deleteIndex, 1);
     },
     changeReason(rejectKey) {
       if (rejectKey === 'image') {
@@ -1183,9 +1207,6 @@ export default {
     async handleChange(v) {
       switch (v.key) {
         case 'brand':
-          // console.log("braand", this.brand)
-          // console.log("--v---", v)
-          // console.log("this.default_data.category", this.default_data.category)
           this.brand = 0;
           this.form.model = null;
           if (this.default_data.category == "1")
@@ -1295,9 +1316,9 @@ export default {
       this.changeProgressSingle('all_options')
     },
 
-    showSellModal(index) {
+    showSellModal(sellIndex) {
       this.show = {};
-      this.show[index] = index;
+      this.show[sellIndex] = sellIndex;
     },
 
     _can_upload_file(key) {
@@ -1339,21 +1360,22 @@ export default {
       let formData = new FormData();
       this.form.status = status;
       // this.form.model = this.model;
-      this.form.year = this.year;
+      // this.form.year = this.year;
       this.form.type = this.type;
       this.form.rejectArray = this.rejectArray;
       this.form.selectedYear = this.form.year;
 
       this.form.saved_images = this.saved_images;
-      // delete this.form.btl_cookie;
-      // delete this.form.credit;
-      // delete this.form.fuel_type;
-      // delete this.form.is_autosalon;
-      // delete this.form.mileage_measure;
-      // delete this.form.selectedBrand;
-      // delete this.form.selectedModel;
-      // delete this.form.selectedYear;
-      // delete this.form.type;
+      delete this.form.btl_cookie;
+      delete this.form.credit;
+      delete this.form.fuel_type;
+      delete this.form.is_autosalon;
+      delete this.form.mileage_measure;
+      delete this.form.owners;
+      delete this.form.selectedBrand;
+      delete this.form.selectedModel;
+      delete this.form.selectedYear;
+      delete this.form.type;
 
 
       formData.append('data', JSON.stringify(this.form));
@@ -1446,8 +1468,8 @@ export default {
 
     },
     removeFromError(type) {
-      var index = this.errors.indexOf(type);
-      if (index !== -1) this.errors.splice(index, 1);
+      var errorIndex = this.errors.indexOf(type);
+      if (errorIndex !== -1) this.errors.splice(errorIndex, 1);
     },
     getChange(v, type) {
       this.removeFromError(type);
@@ -1498,14 +1520,6 @@ export default {
     },
     getBrandName(id, arr) {
       return arr.find(element => element.key == id);
-    },
-    removeError(field, force = false) {
-      if (!force && (!this.form[field] || this.form[field] === '')) return;
-      if (this.errors.includes(field)) {
-        this.errors = this.errors.filter(key => key !== field);
-        this.toasts[field].goAway(100);
-
-      }
     },
     updatePreview(key) {
       if (!key || key === 'region')
