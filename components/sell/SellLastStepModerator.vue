@@ -400,7 +400,7 @@
 
 
           </div>
-          <div class="col-12 mt-0 ">
+          <div class="col-12 mt-2 " v-if="!form.customs_clearance && !user.external_salon" >
             <form-checkbox
               v-model="form.show_car_number"
               :label="$t('show_car_number_on_site')"

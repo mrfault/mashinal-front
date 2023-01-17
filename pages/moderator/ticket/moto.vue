@@ -373,7 +373,7 @@
           </section>
 
           <!--      number/vin-->
-          <section id="moderation-moto-number-vin" class="row">
+          <section id="moderation-moto-number-vin" class="row" v-if="false">
             <div class="col-12">
               <title-with-line-and-reject-reason
 
@@ -445,7 +445,7 @@
           <section id="moderation-moto-options" class="row">
             <!--             horse   power-->
             <div class="col-12">
-              <title-with-line-and-reject-reason no-approval title="horse_power"/>
+              <title-with-line-and-reject-reason no-approval title="moshchnost"/>
             </div>
             <div class="col-12 col-md-4 col-lg-3">
               <form-numeric-input
@@ -1394,9 +1394,9 @@ export default {
         };
 
         if (this.admin_user.admin_group == 2) {
-          // location.href = '/alvcp/resources/announce-moderators';
+          location.href = '/alvcp/resources/announce-moderators';
         } else {
-          // location.href = '/alvcp/resources/' + moto[this.$route.query.type];
+          location.href = '/alvcp/resources/' + moto[this.$route.query.type];
         }
 
       } catch ({response: {data: {data}}}) {

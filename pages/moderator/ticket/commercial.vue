@@ -62,6 +62,7 @@
           <form-select
             v-model="form.commercial_type_id"
             :allow-clear="false"
+            :clearOption="false"
             :disabled="isModerator"
             :label="$t('category')"
             :options="commercial_types.map((o) => ({
@@ -71,13 +72,12 @@
             :value="form.category"
             has-search
             @change="handleCategoryChange($event)"
-            :clearOption="false"
           />
         </div>
       </section>
 
       <!--        brand-->
-      <section class="row">
+      <section v-if="form.commercial_type_id" class="row">
         <div class="col-12">
           <title-with-line-and-reject-reason
             :no-approval="!(admin_user.admin_group === 1 || admin_user.admin_group === 2)"
@@ -90,6 +90,7 @@
           <form-select
             v-model="form.brand"
             :allow-clear="false"
+            :clearOption="false"
             :disabled="isModerator"
             :label="$t('mark')"
             :options="com_brands[0].map((o) => ({
@@ -98,14 +99,13 @@
               }))"
             :value="form.brand"
             has-search
-            :clearOption="false"
             @change="handleBrandChange($event)"
           />
         </div>
       </section>
 
       <!--        model-->
-      <section class="row">
+      <section v-if="form.brand" class="row">
         <div class="col-12">
           <title-with-line-and-reject-reason
             :no-approval="!(admin_user.admin_group === 1 || admin_user.admin_group === 2)"
@@ -118,6 +118,7 @@
           <form-select
             v-model="form.model"
             :allow-clear="false"
+            :clearOption="false"
             :disabled="isModerator"
             :label="$t('model')"
             :options="com_models[0].map((o) => ({
@@ -127,13 +128,12 @@
             :value="form.model"
             has-search
             @change="handleChange($event)"
-            :clearOption="false"
           />
         </div>
       </section>
 
       <!--    year  -->
-      <section class="row">
+      <section v-if="form.model" class="row">
         <div class="col-12">
           <title-with-line-and-reject-reason
             :no-approval="!isAdmin"
@@ -147,13 +147,13 @@
           <form-select
             v-model="form.year"
             :allow-clear="false"
+            :clearOption="false"
             :disabled="isModerator"
             :label="$t('year')"
             :options="getYears"
             :value="form.year"
             has-search
             @change="handleChange($event)"
-            :clearOption="false"
           />
         </div>
       </section>
@@ -252,6 +252,7 @@
           <form-checkbox
             :label="$t('is_new')"
             :value="single_announce.is_new"
+            v-model="form.is_new"
             input-name="is_new"
             transparent
             @change="checkboxChanged"
@@ -262,6 +263,7 @@
             v-if="!single_announce.is_external_salon"
             :label="$t('in_garanty')"
             :value="single_announce.guaranty"
+            v-model="form.guaranty"
             input-name="guaranty"
             transparent
             @change="checkboxChanged"
@@ -271,7 +273,8 @@
           <form-checkbox
             v-if="!single_announce.is_external_salon"
             :label="$t('not_cleared')"
-            :value="single_announce.customed_id"
+            :value="single_announce.customed"
+            v-model="form.customs_clearance"
             input-name="customs_clearance"
             transparent
             @change="checkboxChanged"
@@ -310,11 +313,11 @@
 
         <div v-if="!single_announce.is_external_salon" class="col-4 col-md-6 col-lg-3">
           <form-select
-            :clearOption="false"
             id="region_id"
             :key="refresh+1"
             v-model="form.region_id"
             :allow-clear="false"
+            :clearOption="false"
             :disabled="isModerator"
             :has-error="errors.includes('region_id')"
             :label="$t('region')"
@@ -327,10 +330,10 @@
         </div>
         <div v-if="single_announce.is_external_salon" class="col-lg-4 mb-2 mb-lg-0">
           <form-select
-            :clearOption="false"
             v-model="form.country_id"
             :allow-clear="false"
             :clear-option="false"
+            :clearOption="false"
             :invalid="isInvalid('region_id')"
             :label="$t('sale_region_country')"
             :options="sell_options.countries"
@@ -391,7 +394,7 @@
 
         <div class="col-auto">
           <form-switch
-            v-model="form.owners"
+            v-model="form.owner_type"
             :options="getOwnerOptions"
             :value="single_announce.owners"
             autoWidth
@@ -402,8 +405,8 @@
       </section>
 
       <!--      number/vin-->
-      <section class="row">
-        <div class="col-12">
+      <section id="number-section-commercial" v-if="false">
+        <div>
           <title-with-line-and-reject-reason
             v-if="
               !loggedIn ||
@@ -416,59 +419,21 @@
             :required="
               type === 'cars' || (type !== 'parts' && user.external_salon)
             "
-            :title="
-              form.customs_clearance || user.external_salon
-                ? 'vin_carcase_number'
-                : 'license_plate_number_vin_or_carcase_number'
-            "
-
+            :title=" 'license_plate_number_vin_or_carcase_number'"
             spanId="anchor-vin"
             @change="changeReason"
           />
-          <title-with-line-and-reject-reason
-            v-else
-            id="anchor-car_or_vin"
-            :title="
-              form.customs_clearance || user.external_salon
-                ? 'vin_carcase_number'
-                : 'license_plate_number_vin_or_carcase_number'
-            "
-            reject-key="price"
-            spanId="anchor-vin"
-          />
         </div>
-        <div class="col-auto">
+        <div
+          id="anchor-car_number"
+          class="row"
+        >
           <div
-            v-if="!form.customs_clearance && !user.external_salon"
-            id="anchor-car_number"
+            v-if="form.customs_clearance"
+            class="col-lg-4 mb-2 mb-lg-0"
           >
-            <form-text-input
-              v-model="form.car_number"
-              :mask="type === 'cars' ? '99 - BB - 999' : '99 - A{1,2} - 999'"
-              :placeholder="type === 'cars' ? '__ - __ - ___' : '__ - _ - ___'"
-              img-src="/img/flag.svg"
-              input-class="car-number-show-popover"
-              @change="removeError('car_number')"
-              @focus="showCarNumberDisclaimer"
-            >
-              <popover
-                :message="$t('real-car-number-will-make-post-faster')"
-                :width="190"
-                name="car-number"
-                text-class="text-red"
-                @click="readCarNumberDisclaimer = true"
-              />
-            </form-text-input>
-            <form-checkbox
-              v-model="form.show_car_number"
-              :label="$t('show_car_number_on_site')"
-              class="mt-2 mt-lg-3"
-              input-name="show_car_number"
-              transparent
-            />
-          </div>
-          <div v-if="form.customs_clearance">
-            <template v-if="form && form.vin">
+            <template>
+
               <form-textarea
                 key="vin"
                 v-model="form.vin"
@@ -490,11 +455,23 @@
               transparent
             />
           </div>
+          <div
+            v-if="!form.customs_clearance == true"
+            class="col-lg-4 mb-2 mb-lg-0"
+          >
+            <form-text-input
+              ref="moderation-car-number-input-1"
+              v-model="form.car_number"
+              :mask="'99 - A{1,2} - 999'"
+              :placeholder="'__ - _ - ___'"
+            />
+          </div>
+
         </div>
       </section>
 
       <!--      sell filters-->
-      <section class="row">
+      <section class="row mt-3">
         <div class="col-12">
           <div class="sell-filters">
             <div class="mt-2 mt-lg-3 car-filters_row">
@@ -954,7 +931,7 @@ export default {
         box: -1,
         price: '',
         new_badges: [],
-        owner_type: 0,
+        owner_type: null,
         currency: 0,
         youtube: {
           id: '',
@@ -1073,7 +1050,7 @@ export default {
       this.form.currency = announce.currency_id;
       this.form.tradeable = announce.tradeable;
       this.form.passport = announce.passport;
-      this.form.owner_type = announce.owner || 0;
+      this.form.owner_type = announce.owner.toString() || '0';
       this.form.guaranty = announce.guaranty;
       this.form.car_number = announce.car_number;
       this.form.show_car_number = announce.show_car_number;
