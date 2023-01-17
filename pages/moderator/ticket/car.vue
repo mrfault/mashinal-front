@@ -54,18 +54,18 @@
                           </button>
                         </div>
                       </div>
-
                     </template>
                     <!--              brand -->
                     <div class="row mt-5">
                       <div class="col-12">
                         <title-with-line-and-reject-reason
                           rejectKey="brand"
+                          required
                           title="mark"
                           @change="changeReason"
                         />
                       </div>
-                      <div class="col-12 col-lg-3">
+                      <div class="col-12 col-lg-3 ">
                         <form-select
                           v-model="form.brand_id"
                           :allow-clear="false"
@@ -92,11 +92,12 @@
                       <div class="col-12">
                         <title-with-line-and-reject-reason
                           rejectKey="model"
+                          required
                           title="model"
                           @change="changeReason"
                         />
                       </div>
-                      <div class="col-12 col-lg-3">
+                      <div class="col-12 col-lg-3  ">
                         <form-select
                           v-model="form.model_id"
                           :allow-clear="false"
@@ -115,11 +116,12 @@
                       <div class="col-12">
                         <title-with-line-and-reject-reason
                           rejectKey="years"
+                          required
                           title="prod_year"
                           @change="changeReason"
                         />
                       </div>
-                      <div class="col-12 col-lg-3">
+                      <div class="col-12 col-lg-3 ">
                         <form-select
                           v-model="form.year"
                           :allow-clear="false"
@@ -147,11 +149,12 @@
                       <div class="col-12">
                         <title-with-line-and-reject-reason
                           rejectKey="body_type"
+                          required
                           title="body_type"
                           @change="changeReason"
                         />
                       </div>
-                      <div class="col-12 col-lg-3">
+                      <div class="col-12 col-lg-3 ">
                         <form-select
                           v-model="form.car_body_type"
                           :allow-clear="false"
@@ -184,7 +187,7 @@
                           @change="changeReason"
                         />
                       </div>
-                      <div class="col-12 col-lg-3">
+                      <div class="col-12 col-lg-3 ">
                         <form-select
                           v-model="form.generation_id"
                           :allow-clear="false"
@@ -208,7 +211,7 @@
                           @change="changeReason"
                         />
                       </div>
-                      <div class="col-12 col-lg-3">
+                      <div class="col-12 col-lg-3 ">
                         <form-select
                           v-model="form.engine"
                           :allow-clear="false"
@@ -237,7 +240,7 @@
                           @change="changeReason"
                         />
                       </div>
-                      <div class="col-12 col-lg-3 pl-0">
+                      <div class="col-12 col-lg-3 ">
                         <form-select
                           v-model="form.gearing"
                           :allow-clear="false"
@@ -266,7 +269,7 @@
                           @change="changeReason"
                         />
                       </div>
-                      <div v-if="true" class="col-12 col-lg-3 pl-0">
+                      <div v-if="true" class="col-12 col-lg-3">
                         <form-select
                           v-model="form.transmission"
                           :allow-clear="false"
@@ -297,7 +300,7 @@
                           @change="changeReason"
                         />
                       </div>
-                      <div class="col-12 col-lg-3 pl-0">
+                      <div class="col-12 col-lg-3">
                         <form-select
                           v-model="form.modification"
                           :allow-clear="false"
@@ -305,11 +308,11 @@
                           :disabled="isModerator"
                           :label="$t('modification')"
                           :options="
-                      data.modifications.map((o) => ({
-                        name: getModificationName(o),
-                        key: o.id,
-                      }))
-                    "
+                            data.modifications.map((o) => ({
+                              name: getModificationName(o),
+                              key: o.id,
+                            }))
+                          "
                           :value="form.modification"
                           @change="changeModification($event)"
                         />
@@ -327,6 +330,8 @@
                   </div>
                 </template>
                 <template v-slot:image>
+
+
                   <title-with-line-and-reject-reason
                     :subtitle="
                       $t('at_least_5_photos', {
@@ -357,24 +362,26 @@
                       @save="savePhotoIssues"
                     />
                   </transition>
-                  <upload-image-moderator
-                    :announce="single_announce"
-                    :changePosition="saved_images.length === imagesBase64.length"
-                    :default-images="single_announce.media"
-                    :is-edit="false"
-                    :load-croppa="true"
-                    :max_files="30"
-                    :saved_images="saved_images"
-                    :stopUploading="imagesBase64.length >= 20"
-                    page="sell"
-                    url="/"
-                    @addFiles="addFiles"
-                    @change="addImages"
-                    @delete="removeImage"
-                    @deletedIndex="deleteByIndex"
-                    @passBase64Images="passBase64Images"
-                    @replaceImage="replaceImage"
-                  />
+                  <div style="padding-left: 7px">
+                    <upload-image-moderator
+                      :announce="single_announce"
+                      :changePosition="saved_images.length === imagesBase64.length"
+                      :default-images="single_announce.media"
+                      :is-edit="false"
+                      :load-croppa="true"
+                      :max_files="30"
+                      :saved_images="saved_images"
+                      :stopUploading="imagesBase64.length >= 20"
+                      page="sell"
+                      url="/"
+                      @addFiles="addFiles"
+                      @change="addImages"
+                      @delete="removeImage"
+                      @deletedIndex="deleteByIndex"
+                      @passBase64Images="passBase64Images"
+                      @replaceImage="replaceImage"
+                    />
+                  </div>
                 </template>
 
                 <!--                360 exterior-->
@@ -421,16 +428,19 @@
                 <section v-if="user.admin_group === 1" class="container"> <!--supervisor-->
                   <div class="row">
                     <div class="col-12">
-                      <button :disabled="notValid" v-if="rejectObj.rejectArray.length === 0" :class="{'button_loading':button_loading, 'disabled': notValid}"
+                      <button v-if="rejectObj.rejectArray.length === 0" :class="{'button_loading':button_loading, 'disabled': notValid}"
+                              :disabled="notValid"
                               class="btn btn--green w-50"
 
                               @click.prevent="sendData(1)">{{ $t('confirm') }}
                       </button>
-                      <button :disabled="notValid" :class="{'button_loading':button_loading, 'disabled': notValid}" class="btn btn--red w-50 ml-1"
+                      <button :class="{'button_loading':button_loading, 'disabled': notValid}" :disabled="notValid"
+                              class="btn btn--red w-50 ml-1"
 
                               @click.prevent="sendData(0)">{{ $t('reject') }}
                       </button>
-                      <button :disabled="notValid" :class="{'button_loading':button_loading, 'disabled': notValid}" class="btn btn--pale-red w-50 ml-1"
+                      <button :class="{'button_loading':button_loading, 'disabled': notValid}" :disabled="notValid"
+                              class="btn btn--pale-red w-50 ml-1"
 
                               @click.prevent="sendData(3)"
                       >
@@ -457,19 +467,22 @@
 
                     <div class="col-auto">
             <span v-if="getTimer.unix < 60*2 || (getTimer.unix > 60*2 && form.delay_comment.length)">
-              <button :disabled="notValid" v-if="rejectObj.rejectArray.length === 0" :class="{'button_loading':button_loading, 'disabled': notValid}"
+              <button v-if="rejectObj.rejectArray.length === 0" :class="{'button_loading':button_loading, 'disabled': notValid}"
+                      :disabled="notValid"
                       class="btn btn--green w-50"
 
                       @click.prevent="sendData(1)">{{ $t('confirm') }}</button>
 
               <!-- sendData(0) -->
-              <button :disabled="notValid" v-else :class="{'button_loading':button_loading, 'disabled': notValid}" class="btn btn--red w-50 ml-5"
+              <button v-else :class="{'button_loading':button_loading, 'disabled': notValid}" :disabled="notValid"
+                      class="btn btn--red w-50 ml-5"
 
 
                       @click.prevent="transferToSupervisor(true)">{{ $t('reject') }}</button>
             </span>
 
-                      <button :disabled="notValid" :class="{'button_loading':button_loading, 'disabled': notValid}" class="btn btn--green w-50"
+                      <button :class="{'button_loading':button_loading, 'disabled': notValid}" :disabled="notValid"
+                              class="btn btn--green w-50"
 
                               @click.prevent="transferModal = true">{{ $t('comment_to_supervisor') }}
                       </button>
@@ -479,19 +492,22 @@
                 <section v-else-if="user.admin_group === 3" class="container"> <!--call center-->
                   <div class="row">
                     <div class="col-12">
-                      <button :disabled="notValid" :class="{'button_loading':button_loading, 'disabled': notValid}" class="btn btn--green w-50"
+                      <button :class="{'button_loading':button_loading, 'disabled': notValid}" :disabled="notValid"
+                              class="btn btn--green w-50"
 
                               @click.prevent="sendData(2)">{{ $t('send_to_moderate') }}
                       </button>
 
-                      <button :disabled="notValid" :class="{'button_loading':button_loading, 'disabled': notValid}" class="btn btn--pale-red w-50 ml-1"
+                      <button :class="{'button_loading':button_loading, 'disabled': notValid}" :disabled="notValid"
+                              class="btn btn--pale-red w-50 ml-1"
 
                               @click.prevent="sendData(3)"
                       >
                         {{ $t('deactive_announce') }}
                       </button>
 
-                      <button :disabled="notValid" class="btn btn--yellow w-50 ml-1" @click="handleBackList" :class="{'disabled': notValid}">
+                      <button :class="{'disabled': notValid}" :disabled="notValid" class="btn btn--yellow w-50 ml-1"
+                              @click="handleBackList">
                         {{ $t('back_to_list') }}
                       </button>
 
@@ -802,7 +818,8 @@ export default {
         !this.form.generation_id ||
         !this.form.engine ||
         !this.form.gearing ||
-        !this.form.transmission
+        !this.form.transmission ||
+        !this.form.modification
       ) return true
       else return false
     }
@@ -1173,10 +1190,9 @@ export default {
       let generation = this.data.generations.find(
         (o) => o.id === this.form.generation_id,
       )
-      if (generation && generation.start_year) {
-        let name = `${this.$t('box_mode_values')[o.box]}/${generation.start_year} - ${generation.end_year || this.currentYear}`
-
-      }
+      let name = `${this.$t('box_mode_values')[o.box]}/${
+        generation.start_year
+      } - ${generation.end_year || this.currentYear}`
       if (o.capacity) name = `${o.capacity} ${name}`
       if (o.power) name = `${o.power} ${this.$t('char_h_power')}/${name}`
       if (o.complect_type) name += `/${o.complect_type}`
