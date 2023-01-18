@@ -220,7 +220,7 @@
           />
         </div>
 
-        <div v-if="form.selectedColor && colors.length" class="col-12">
+        <div v-if="colors.length" class="col-12">
           <color-options v-model="form.selectedColor" :limit="2"
                          :matt="form.is_matte" :multiple="type === 'cars'" @change="removeError('selectedColor')"
                          @change-matt="form.is_matte = $event"/>

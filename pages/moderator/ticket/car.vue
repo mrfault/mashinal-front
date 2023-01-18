@@ -428,7 +428,8 @@
                 <section v-if="user.admin_group === 1" class="container"> <!--supervisor-->
                   <div class="row">
                     <div class="col-12">
-                      <button v-if="rejectObj.rejectArray.length === 0" :class="{'button_loading':button_loading, 'disabled': notValid}"
+                      <button v-if="rejectObj.rejectArray.length === 0"
+                              :class="{'button_loading':button_loading, 'disabled': notValid}"
                               :disabled="notValid"
                               class="btn btn--green w-50"
 
@@ -467,7 +468,8 @@
 
                     <div class="col-auto">
             <span v-if="getTimer.unix < 60*2 || (getTimer.unix > 60*2 && form.delay_comment.length)">
-              <button v-if="rejectObj.rejectArray.length === 0" :class="{'button_loading':button_loading, 'disabled': notValid}"
+              <button v-if="rejectObj.rejectArray.length === 0"
+                      :class="{'button_loading':button_loading, 'disabled': notValid}"
                       :disabled="notValid"
                       class="btn btn--green w-50"
 
@@ -975,7 +977,7 @@ export default {
           lng: parseFloat(data.announce?.longitude || 0),
           vin: data.announce?.vin || "",
           price: data.announce?.price_int.toString() || '',
-          owner_type: parseInt(data.announce?.owner_type) || 0,
+          owner_type: (data.announce?.owner_type).toString() || '0',
           currency: data.announce?.currency_id || 1,
           car_number: data.announce?.car_number,
           show_car_number: data.announce?.show_car_number,
@@ -1553,7 +1555,7 @@ export default {
       this.form.month = this.single_announce.month || "";
       this.form.sell_store = this.single_announce.sell_store || 0;
       // this.form.video_360_id = this.single_announce.video_360_id || "";
-      this.form.modification = "";
+      // this.form.modification = "";
       // this.form.model = this.form.model_slug;
 
       delete this.form.model_slug;
@@ -1573,18 +1575,23 @@ export default {
       this.loading = true;
       this.button_loading = true
       try {
-        await this.$axios.$post('/ticket/car/' + this.single_announce.id, formData)
-
-        if (this.user.admin_group == 2) {
-          location.href = 'https://dev.mashin.al/alvcp/resources/announcements'
+        if (!this.form.is_new && this.form.mileage < 500) {
+          this.$toast.error('Yürüş xanası 500 dən çox olmamalıdır.')
         } else {
-          location.href = 'https://dev.mashin.al/alvcp/resources/announcements'
+          await this.$axios.$post('/ticket/car/' + this.single_announce.id, formData)
+
+          if (this.user.admin_group == 2) {
+            location.href = 'https://dev.mashin.al/alvcp/resources/announcements'
+          } else {
+            location.href = 'https://dev.mashin.al/alvcp/resources/announcements'
+          }
+          if (status == 0) {
+            this.$toasted.show(this.$t('your_announce_rejected'), {
+              type: 'success',
+            })
+          }
         }
-        if (status == 0) {
-          this.$toasted.show(this.$t('your_announce_rejected'), {
-            type: 'success',
-          })
-        }
+
       } catch ({
         response: {
           data: {data},
