@@ -250,9 +250,9 @@
         </div>
         <div class="col-auto">
           <form-checkbox
+            v-model="form.is_new"
             :label="$t('is_new')"
             :value="single_announce.is_new"
-            v-model="form.is_new"
             input-name="is_new"
             transparent
             @change="checkboxChanged"
@@ -261,9 +261,9 @@
         <div class="col-auto">
           <form-checkbox
             v-if="!single_announce.is_external_salon"
+            v-model="form.guaranty"
             :label="$t('in_garanty')"
             :value="single_announce.guaranty"
-            v-model="form.guaranty"
             input-name="guaranty"
             transparent
             @change="checkboxChanged"
@@ -272,9 +272,9 @@
         <div class="col-auto">
           <form-checkbox
             v-if="!single_announce.is_external_salon"
+            v-model="form.customs_clearance"
             :label="$t('not_cleared')"
             :value="single_announce.customed"
-            v-model="form.customs_clearance"
             input-name="customs_clearance"
             transparent
             @change="checkboxChanged"
@@ -405,7 +405,7 @@
       </section>
 
       <!--      number/vin-->
-      <section id="number-section-commercial" v-if="false">
+      <section v-if="false" id="number-section-commercial">
         <div>
           <title-with-line-and-reject-reason
             v-if="
@@ -809,6 +809,7 @@ export default {
   //-----------------------------------------------------------------asyncData^------------------------------------------------------------------------------------------------------
   data() {
     return {
+      loading: false,
       button_loading: false,
       openLog: false,
       transferModal: false,
@@ -1341,6 +1342,7 @@ export default {
     //sendData
     //sendData
     async sendData(status = 2) {
+      this.loading = false;
       if (this.saved_images.length !== this.imagesBase64.length) {
         this.$toasted.show(this.$t('please_wait_for_all_image_loading'), {type: 'error'});
         return false;
@@ -1378,14 +1380,21 @@ export default {
       this.$nuxt.$emit('loading_status', true);
       this.button_loading = true;
       try {
-        await this.$axios.$post('/ticket/commercial/' + this.announceId,
-          formData
-        );
-
-        if (this.admin_user.admin_group == 2) {
-          location.href = '/alvcp/resources/announce-moderators';
+        if (this.form.is_new && this.form.mileage > 500) {
+          this.$toast.error('Yürüş xanası 500 dən çox olmamalıdır.')
+          this.loading = false;
         } else {
-          location.href = '/alvcp/resources/commercials';
+
+
+          await this.$axios.$post('/ticket/commercial/' + this.announceId,
+            formData
+          );
+
+          if (this.admin_user.admin_group == 2) {
+            location.href = '/alvcp/resources/announce-moderators';
+          } else {
+            location.href = '/alvcp/resources/commercials';
+          }
         }
       } catch ({response: {data: {data}}}) {
         this.$nuxt.$emit('loading_status', false);

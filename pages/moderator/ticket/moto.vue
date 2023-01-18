@@ -837,6 +837,7 @@ export default {
   //-----------------------------------------------------------------asyncData^------------------------------------------------------------------------------------------------------
   data() {
     return {
+      loading: false,
       button_loading: false,
       openLog: false,
       transferModal: false,
@@ -1353,6 +1354,7 @@ export default {
     },
 
     async sendData(status = 2) {
+      this.loading = true;
       if (this.saved_images.length !== this.imagesBase64.length) {
         this.$toasted.show(this.$t('please_wait_for_all_image_loading'), {type: 'error'});
         return false;
@@ -1384,19 +1386,25 @@ export default {
       this.$nuxt.$emit('loading_status', true);
       this.button_loading = true;
       try {
-        await this.$axios.$post('/ticket/moto/' + this.announceId + '/' + this.type,
-          formData
-        );
-        let moto = {
-          'moto': 'motorcycles',
-          'scooters': 'scooters',
-          'moto_atv': 'moto-atvs',
-        };
+        if (this.form.is_new && this.form.mileage > 500) {
+          this.$toast.error('Yürüş xanası 500 dən çox olmamalıdır.')
+          this.loading = false;
+        }else{
+          await this.$axios.$post('/ticket/moto/' + this.announceId + '/' + this.type,
+            formData
+          );
+          let moto = {
+            'moto': 'motorcycles',
+            'scooters': 'scooters',
+            'moto_atv': 'moto-atvs',
+          };
 
-        if (this.admin_user.admin_group == 2) {
-          location.href = '/alvcp/resources/announce-moderators';
-        } else {
-          location.href = '/alvcp/resources/' + moto[this.$route.query.type];
+          if (this.admin_user.admin_group == 2) {
+            location.href = '/alvcp/resources/announce-moderators';
+          } else {
+            location.href = '/alvcp/resources/' + moto[this.$route.query.type];
+          }
+          this.loading = false;
         }
 
       } catch ({response: {data: {data}}}) {
@@ -1404,6 +1412,7 @@ export default {
         this.button_loading = false;
         this.errors = [];
         this.$toasted.clear();
+        this.loading = false;
         Object.keys(data).reverse().map((key) => {
           this.errors.push(key);
           this.$toasted.show(data[key][0], {
