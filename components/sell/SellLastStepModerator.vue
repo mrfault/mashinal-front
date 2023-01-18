@@ -393,7 +393,6 @@
               v-model="form.car_number"
               :mask="'99 - AA - 999'"
               :placeholder="'__ - __ - ___'"
-              @focus="scrollToTop"
             />
             <!--              class="ma-input"-->
 
@@ -992,12 +991,7 @@ export default {
         })
       }
     },
-    scrollToTop() {
-      setTimeout(() => {
-        Vue.prototype.$scrollToTop = () => window.scrollTo(0, 0)
-      }, 1000)
 
-    },
   },
   watch: {
     rejectObj: {
