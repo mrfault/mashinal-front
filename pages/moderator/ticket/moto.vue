@@ -1,5 +1,8 @@
 <template>
-  <div class="w-100" style="box-sizing: border-box;overflow: hidden">
+  <div v-if="loading">
+    <elements-loader></elements-loader>
+  </div>
+  <div v-else class="w-100" style="box-sizing: border-box;overflow: hidden">
     <div class="container  px-3 px-md-0">
       <!--    breadcrumbs-->
       <breadcrumbs id="brdcrmbs1" :crumbs="crumbs"/>
@@ -226,7 +229,11 @@
                 input-class="w-133"
                 @change="getChange($event,'mileage')"
               />
-
+              <form-switch
+                v-model="form.mileage_measure"
+                :options="getMileageOptions"
+                @change="updatePreview('mileage_measure')"
+              />
               <form-checkbox
                 :label="$t('is_new')"
                 :value="single_announce.is_new"
@@ -373,7 +380,7 @@
           </section>
 
           <!--      number/vin-->
-          <section id="moderation-moto-number-vin" class="row" v-if="false">
+          <section v-if="false" id="moderation-moto-number-vin" class="row">
             <div class="col-12">
               <title-with-line-and-reject-reason
 
@@ -837,7 +844,7 @@ export default {
   //-----------------------------------------------------------------asyncData^------------------------------------------------------------------------------------------------------
   data() {
     return {
-      loading: false,
+      loading: true,
       button_loading: false,
       openLog: false,
       transferModal: false,
@@ -1089,6 +1096,9 @@ export default {
     document.body.addEventListener('click', () => {
       this.show = {};
     });
+    setTimeout(() => {
+      this.loading = false;
+    }, 2000)
   },
 
   beforeDestroy() {
@@ -1389,7 +1399,12 @@ export default {
         if (this.form.is_new && this.form.mileage > 500) {
           this.$toast.error('Yürüş xanası 500 dən çox olmamalıdır.')
           this.loading = false;
-        }else{
+        } else if (!this.form.is_new && this.form.mileage == 0) {
+          this.$toasted.show(this.$t('Nəqliyyat vasitəsi yeni deyilsə yürüş 500-dən çox olmalıdır.'), {
+            type: 'error',
+          })
+          this.loading = false;
+        } else {
           await this.$axios.$post('/ticket/moto/' + this.announceId + '/' + this.type,
             formData
           );
@@ -1646,6 +1661,12 @@ export default {
   },
 
   computed: {
+    getMileageOptions() {
+      return [
+        {key: 1, name: this.$t('char_kilometre')},
+        {key: 2, name: this.$t('char_mile')},
+      ]
+    },
     getBrands() {
       let types = {
         moto: '',

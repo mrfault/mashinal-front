@@ -1576,7 +1576,14 @@ export default {
       this.button_loading = true
       try {
         if (this.form.is_new && this.form.mileage > 500) {
-          this.$toast.error('Yürüş xanası 500 dən çox olmamalıdır.')
+          this.$toasted.show(this.$t('Yürüş xanası 500 dən çox olmamalıdır.'), {
+            type: 'error',
+          })
+          this.loading = false;
+        } else if (!this.form.is_new && this.form.mileage == 0) {
+          this.$toasted.show(this.$t('Nəqliyyat vasitəsi yeni deyilsə yürüş 500-dən çox olmalıdır.'), {
+            type: 'error',
+          })
           this.loading = false;
         } else {
           await this.$axios.$post('/ticket/car/' + this.single_announce.id, formData)

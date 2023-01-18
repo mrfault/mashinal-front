@@ -1,47 +1,55 @@
 <template>
+
   <div class="vue_component__upload--image" v-bind:class="{ 'dragover': onDragover }">
 
-    <div v-if="page === 'sell'" class="row sell-page">
 
-      <div :style="loadCroppa ? 'width: 85%;padding:0;' : ''" class="component-add-photo">
-        <form v-bind:id="'upload_image_form--' + input_id" enctype="multipart/form-data">
-          <div class="hologram cursor-pointer d-flex mt-0" @click="handleFormClick">
+    <div>
+      <div v-if="page === 'sell'" class="row sell-page">
 
-            <a v-for="i in sellImageCount"
-               class="single-hologram announcement-category__overlay__generation__item announcement-category__photo"
-               href="javascript:void(0);" style="justify-content: end;">
-              <div class="icon"
-                   style="height: 88px; width: 100%; display: flex; align-items: center; justify-content: center;">
-                <img v-if="isCar" :src="'/images/sell/car_'+i+'.png'" alt="" style="width: auto;height: auto;">
-                <img v-else-if="isMoto" :src="'/images/sell/moto_'+i+'.png'" alt="" style="width: auto;height: auto;">
-                <img v-else-if="isCommetcial" :src="'/images/sell/comm_'+i+'.png'" alt=""
-                     style="width: auto;height: auto;">
-              </div>
-              <div style="margin-top: 13px; font-size: 13px;">{{ $t('add_image_name_' + i) }}</div>
-            </a>
+        <div :style="loadCroppa ? 'width: 85%;padding:0;' : ''" class="component-add-photo">
+          <form v-bind:id="'upload_image_form--' + input_id" enctype="multipart/form-data">
+            <div class="hologram cursor-pointer d-flex mt-0" @click="handleFormClick">
 
-          </div>
+              <a v-for="i in sellImageCount"
+                 class="single-hologram announcement-category__overlay__generation__item announcement-category__photo"
+                 href="javascript:void(0);" style="justify-content: end;">
+                <div class="icon"
+                     style="height: 88px; width: 100%; display: flex; align-items: center; justify-content: center;">
+                  <img v-if="isCar" :src="'/images/sell/car_'+i+'.png'" alt="" style="width: auto;height: auto;">
+                  <img v-else-if="isMoto" :src="'/images/sell/moto_'+i+'.png'" alt="" style="width: auto;height: auto;">
+                  <img v-else-if="isCommetcial" :src="'/images/sell/comm_'+i+'.png'" alt=""
+                       style="width: auto;height: auto;">
+                </div>
+                <div style="margin-top: 13px; font-size: 13px;">{{ $t('add_image_name_' + i) }}</div>
+              </a>
 
-          <div :class="{'disable': !draggableEnabled}" class="image-load-content" @click="handleDisabledContentClick">
-            <draggable v-model="setSavedImageUrls" :sort="true" :style="loadCroppa ? 'margin-left: 0px;' : ''"
-                       class="upload_image_form__thumbnails announcement-category__overlay__generation row"
+            </div>
 
-                       group="people"
-                       @end="handleMove"
-            >
+            <div :class="{'disable': !draggableEnabled}" class="image-load-content" @click="handleDisabledContentClick">
+              <draggable v-model="setSavedImageUrls" :sort="true" :style="loadCroppa ? 'margin-left: 0px;' : ''"
+                         class="upload_image_form__thumbnails announcement-category__overlay__generation row"
+
+                         group="people"
+                         @end="handleMove"
+              >
               <span v-for="(value, key) in image" :key="(new Date().getTime()+key)"
                     :class="{'loadCroppa':loadCroppa}"
                     :style="imagePreloaderContainer[imagePreloaderContainer.length-1] === false ? 'cursor: move' : ''"
                     class="announcement-category__overlay__generation__item announcement-category__photo mb-20 cursor-pointer"
 
               >
+                    <div v-if="loading && (rotateKey == key)" style="height: 200px;position: relative">
+                      <elements-loader></elements-loader>
+                    </div>
                 <div
+
+                  v-else
                   :class="{'imagePreloaderContainer':imagePreloaderContainer[key]}"
                   :style="'background-image:url('+((imagePreloaderContainer[key] === undefined || !imagePreloaderContainer[key]) ? setSavedImageUrls[key] : '')+')'"
                   class="upload_image_form__thumbnail upload_image_form__thumbnail_fixed"
                 >
                   <div class="imagePreloader"></div>
-                  <div class="w-100 d-flex justify-content-between p-2">
+                  <div class="w-100 d-flex justify-content-between p-2" v-if="!loading">
                     <span v-if="loadCroppa" class="cursor-pointer button-new-tab"
                           style="background: #dadada !important"
                           @click="openInNewTab(setSavedImageUrls[key], key)"
@@ -71,42 +79,43 @@
                        style="opacity: 0" @click.stop="openFancyBox(key)">
                 </div>
               </span>
-              <a
-                v-if="!stopUploading"
-                key="add_photo"
-                class=" announcement-category__photo announcement-category__photo-1 mb-20 cursor-pointer"
-                @click="handleFormClick" @drag.prevent.stop="" @dragstart.prevent.stop="">
-                <div class="no-photo">
-                  <img alt="" src="/img/sell-helpers/cars_4.png">
+                <a
+                  v-if="!stopUploading"
+                  key="add_photo"
+                  class=" announcement-category__photo announcement-category__photo-1 mb-20 cursor-pointer"
+                  @click="handleFormClick" @drag.prevent.stop="" @dragstart.prevent.stop="">
+                  <div class="no-photo">
+                    <img alt="" src="/img/sell-helpers/cars_4.png">
 
-                </div>
-              </a>
-            </draggable>
+                  </div>
+                </a>
+              </draggable>
 
-          </div>
-          <input :id="'upload_image_form__input--' + input_id" hidden multiple type="file"/>
-        </form>
+            </div>
+            <input v-if="!loading" :id="'upload_image_form__input--' + input_id" hidden multiple type="file"/>
+          </form>
+        </div>
       </div>
+
+
+      <div v-if="isOpenCroppa && loadCroppa" class="custom_modal">
+        <car-view-for-croppa
+          v-if="announce"
+          :key="announce.id"
+          :announce="announce"
+          :croppaSelectedKey="croppaSelectedKey"
+          :image="savedImageUrls"
+          :saved_images="saved_images"
+          @newThumb="newThumb"
+        />
+      </div>
+
+      <no-ssr>
+        <LightBox v-if="active_box" :key="'LB'+lbIndex" :media="fancyBoxMedia" :showLightBox="active_box"
+                  :startAt="LighBoxStart" @onClosed="active_box = false"
+                  @onOpened="toggleFancyBox"/>
+      </no-ssr>
     </div>
-
-
-    <div v-if="isOpenCroppa && loadCroppa" class="custom_modal">
-      <car-view-for-croppa
-        v-if="announce"
-        :key="announce.id"
-        :announce="announce"
-        :croppaSelectedKey="croppaSelectedKey"
-        :image="savedImageUrls"
-        :saved_images="saved_images"
-        @newThumb="newThumb"
-      />
-    </div>
-
-    <no-ssr>
-      <LightBox v-if="active_box" :key="'LB'+lbIndex" :media="fancyBoxMedia" :showLightBox="active_box"
-                :startAt="LighBoxStart" @onClosed="active_box = false"
-                @onOpened="toggleFancyBox"/>
-    </no-ssr>
 
   </div>
 </template>
@@ -185,6 +194,8 @@ export default {
   },
   data: function () {
     return {
+      loading: false,
+      rotateKey: null,
       isOpenCroppa: false,
       croppaSelectedKey: 0,
       imagePreloaderContainer: [],
@@ -278,7 +289,6 @@ export default {
     ...mapState(['savedImageUrls']),
     fancyBoxMedia() {
       if (!this.active_box) return [];
-      console.log('active box')
       let _return = [];
       let img = this.savedImageUrls;
       for (const key in this.savedImageUrls) {
@@ -348,7 +358,7 @@ export default {
     },
     newThumb(newThumb) {
       this.isOpenCroppa = false;
-      console.log("new thumb ",newThumb)
+      console.log("new thumb ", newThumb)
       this.$store.commit('setSavedImageUrlWithKey', {
         key: this.croppaSelectedKey,
         value: newThumb
@@ -356,16 +366,14 @@ export default {
       this.$set(this.image, this.croppaSelectedKey, newThumb);
     },
     async rotateLeft(e, key) {
-     await this.rotateDirection('left', e, key)
-     this.$emit('loading', false)
+      await this.rotateDirection('left', e, key)
     },
     async rotateRight(e, key) {
-     await this.rotateDirection('right', e, key)
-     this.$emit('loading', false)
+      await this.rotateDirection('right', e, key)
     },
     rotateDirection(dir, e, key) {
-      console.log('rotateDirection', true)
-     this.$emit('loading', true)
+      this.rotateKey = key;
+      this.loading = true;
       this.$set(this.imagePreloaderContainer, key, true);
       this.$axios
         .$get('/media/' + this.saved_images[key] + '/rotate/' + dir)
@@ -375,6 +383,12 @@ export default {
             value: data.data.thumb
           })
           this.$emit('loading', false)
+
+          setTimeout(() => {
+            this.loading = false;
+            this.rotateKey = null;
+          }, 2000)
+
           this.$set(this.imagePreloaderContainer, key, false);
         })
         .catch((data) => {
@@ -386,6 +400,8 @@ export default {
       this.croppaSelectedKey = key;
     },
     openFancyBox(i) {
+
+      console.log('openFancyBox')
       this.LighBoxStart = i;
       this.active_box = true;
       this.lbIndex++;
@@ -473,6 +489,7 @@ export default {
       }
     },
     fileRead: function (key) {
+      console.log("fileRead")
       let reader = new FileReader();
 
       reader.addEventListener("load", (e) => {
