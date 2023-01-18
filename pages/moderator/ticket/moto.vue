@@ -220,46 +220,56 @@
                 @change="changeReason"
               />
             </div>
-            <div class="col-12 d-flex align-items-center">
+            <div class="col-auto">
               <form-numeric-input
-                v-model="single_announce.mileage"
+                v-model="form.mileage"
                 :invalid="isInvalid('mileage')"
                 :min="0"
                 :placeholder="$t('mileage')"
                 input-class="w-133"
                 @change="getChange($event,'mileage')"
               />
+            </div>
+            <div class="col-auto">
               <form-switch
                 v-model="form.mileage_measure"
                 :options="getMileageOptions"
                 @change="updatePreview('mileage_measure')"
               />
+            </div>
+            <div class="col-auto">
               <form-checkbox
+                v-model="form.is_new"
                 :label="$t('is_new')"
                 :value="single_announce.is_new"
                 input-name="is_new"
                 transparent
                 @change="checkboxChanged"
               />
-
+            </div>
+            <div class="col-auto">
               <form-checkbox
                 v-if="!single_announce.is_external_salon"
+                v-model="form.guaranty"
                 :label="$t('in_garanty')"
                 :value="single_announce.guaranty"
                 input-name="guaranty"
                 transparent
                 @change="checkboxChanged"
               />
-
+            </div>
+            <div class="col-auto">
               <form-checkbox
                 v-if="!single_announce.is_external_salon"
+                v-model="form.customs_clearance"
                 :label="$t('not_cleared')"
-                :value="single_announce.customed_id"
+                :value="single_announce.customed"
                 input-name="customs_clearance"
                 transparent
                 @change="checkboxChanged"
               />
-
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
               <form-checkbox
                 :label="$t('bitie')"
                 :value="single_announce.status_id"
@@ -280,7 +290,7 @@
             </div>
           </section>
           <!--      region-->
-          <section class="row">
+          <section ref="form_region_field" class="row">
             <div class="col-12">
               <title-with-line-and-reject-reason
                 description="it_will_not_be_possible_to_change_the_city_after_accommodation"
@@ -360,7 +370,7 @@
             </div>
           </section>
           <!--      owner-->
-          <section class="row">
+          <section class="row" v-if="false">
             <div class="col-12">
               <title-with-line-and-reject-reason
                 no-approval
@@ -972,7 +982,7 @@ export default {
         saved_images: [],
         fuel_type: null,
         is_autosalon: false,
-        mileage_measure: 0,
+        mileage_measure: "0",
         selectedYear: null,
         btl_cookie: "",
         credit: false,
@@ -1023,6 +1033,7 @@ export default {
       this.form.id = announce.id;
       this.form.id_unique = announce.id_unique;
       this.form.category = this.default_data.category;
+      this.form.mileage_measure = announce?.mileage_measure || "0";
       this.category = this.default_data.category;
       /*   this.form = this.default_data;
          this.form.youtube =  { id:'', thumb:'' };*/
@@ -1397,13 +1408,20 @@ export default {
       this.button_loading = true;
       try {
         if (this.form.is_new && this.form.mileage > 500) {
-          this.$toast.error('Yürüş xanası 500 dən çox olmamalıdır.')
+          this.$toast.error('Yürüş xanası 500-dən çox olmamalıdır.')
           this.loading = false;
         } else if (!this.form.is_new && this.form.mileage == 0) {
           this.$toasted.show(this.$t('Nəqliyyat vasitəsi yeni deyilsə yürüş 500-dən çox olmalıdır.'), {
             type: 'error',
           })
+
+
           this.loading = false;
+        }else if(this.form.price == 0){
+          this.$toasted.show(this.$t('Qiymət minimum bir olmalıdır'), {
+            type: 'error',
+          })
+          this.$refs["form_region_field"].scrollIntoView({ behavior: "smooth" })
         } else {
           await this.$axios.$post('/ticket/moto/' + this.announceId + '/' + this.type,
             formData
