@@ -276,6 +276,26 @@
         </div>
       </section>
 
+      <!--      owner-->
+      <section id="owner-section-1" class="row">
+        <div class="col-12">
+          <title-with-line-and-reject-reason
+            no-approval
+            title="first_owner_question"/>
+        </div>
+
+        <div class="col-auto">
+          <form-switch
+            v-model="form.owner_type"
+            :options="getOwnerOptions"
+            :value="single_announce.owner_type"
+            autoWidth
+            translated
+            @change="getChange($event,'owner_type')"
+          />
+        </div>
+      </section>
+
       <!---------------------------------------------------------------------------------------------------------------------------------------------->
       <!---------------------------------------------------------------------------------------------------------------------------------------------->
       <!---------------------------------------------------------------------------------------------------------------------------------------------->
@@ -346,8 +366,10 @@
           </div>
         </div>
       </section>
+      <!---------------------------------------------------------------------------------------------------------------------------------------------->
+      <!---------------------------------------------------------------------------------------------------------------------------------------------->
       <!--      number plate-->
-      <section id="number-section-1">
+      <section v-if="!form.customs_clearance && !user.external_salon" id="number-section-1">
         <div v-if="type === 'cars' || (type !== 'parts' && user.external_salon)">
           <title-with-line-and-reject-reason
             v-if="
@@ -357,40 +379,22 @@
               user.external_salon
             "
             id="anchor-car_or_vin"
-            :reject-key="form.car_number ? 'car_number' : 'vin'"
-            :required="
-              type === 'cars' || (type !== 'parts' && user.external_salon)
-            "
-            :title="
-              form.customs_clearance || user.external_salon
-                ? 'vin_carcase_number'
-                : 'license_plate_number_vin_or_carcase_number'
-            "
-
+            :reject-key="'car_number'"
+            :required="user.external_salon"
             spanId="anchor-vin"
+            title="vehicle_id_sign"
             @change="changeReason"
           />
-          <title-with-line-and-reject-reason
-            v-else
-            id="anchor-car_or_vin"
-            :title="
-              form.customs_clearance || user.external_salon
-                ? 'vin_carcase_number'
-                : 'license_plate_number_vin_or_carcase_number'
-            "
-            reject-key="price"
-            spanId="anchor-vin"
-          />
         </div>
-        <div v-if="(type === 'cars' && !user.is_autosalon) || (type !== 'parts' && user.external_salon)"
+        <div v-if="(!user.is_autosalon) || (type !== 'parts' && user.external_salon)"
              id="anchor-car_number" class="row">
           <div v-if="!form.customs_clearance && !user.external_salon" class="col-lg-2 mb-2 mb-lg-0">
             <!---------------------------------------------------------------------------------------------------------------------------------------------->
             <form-text-input
               ref="moderation-car-number-input-1"
               v-model="form.car_number"
-              :mask="type === 'cars' ? '99 - AA - 999' : '99 - A{1,2} - 999'"
-              :placeholder="'__ - _ - ___'"
+              :mask="'99 - AA - 999'"
+              :placeholder="'__ - __ - ___'"
               @focus="scrollToTop"
             />
             <!--              class="ma-input"-->
@@ -400,7 +404,7 @@
 
 
           </div>
-          <div class="col-12 mt-2 " v-if="!form.customs_clearance && !user.external_salon" >
+          <div v-if="!form.customs_clearance && !user.external_salon" class="col-12 mt-2 ">
             <form-checkbox
               v-model="form.show_car_number"
               :label="$t('show_car_number_on_site')"
@@ -409,29 +413,7 @@
               transparent
             />
           </div>
-          <div v-if="form.customs_clearance" class="col-lg-4 mb-2 mb-lg-0">
-            <template v-if="form && form.vin">
-              <form-textarea
-                key="vin"
-                v-model="form.vin"
-                :mask="$maskAlphaNumeric('*****************')"
-                :placeholder="$t('vin_carcase_number')"
-                class="textfield-like-textarea"
-                @change="removeError('vin')"
-              >
-                <popover :width="240" name="vin">
-                  <inline-svg src="/img/car-cert.svg"/>
-                </popover>
-              </form-textarea>
-            </template>
-            <form-checkbox
-              v-model="form.show_vin"
-              :label="$t('show_vin_on_site')"
-              class="mt-2 mt-lg-3"
-              input-name="show_vin"
-              transparent
-            />
-          </div>
+
 
           <div class="col-12 col-lg-8">
                   <span
@@ -445,7 +427,48 @@
           </div>
         </div>
       </section>
-
+      <!--      vin-->
+      <section id="vin-section-1">
+        <div v-if="type === 'cars' || (type !== 'parts' && user.external_salon)">
+          <title-with-line-and-reject-reason
+            v-if="
+              !loggedIn ||
+              (loggedIn && !user.autosalon) ||
+              (loggedIn && user.autosalon && user.autosalon.is_official) ||
+              user.external_salon
+            "
+            id="anchor-car_or_vin"
+            :reject-key="form.car_number ? 'car_number' : 'vin'"
+            :required="
+              type === 'cars' || (type !== 'parts' && user.external_salon)
+            "
+            spanId="anchor-vin"
+            title="vin_carcase_number"
+            @change="changeReason"
+          />
+        </div>
+        <div class="col-lg-4 mb-2 mb-lg-0 pl-0">
+          <form-textarea
+            key="vin"
+            v-model="form.vin"
+            :mask="$maskAlphaNumeric('*****************')"
+            :placeholder="$t('vin_carcase_number')"
+            class="textfield-like-textarea"
+            @change="removeError('vin')"
+          >
+            <popover :width="240" name="vin">
+              <inline-svg src="/img/car-cert.svg"/>
+            </popover>
+          </form-textarea>
+          <form-checkbox
+            v-model="form.show_vin"
+            :label="$t('show_vin_on_site')"
+            class="mt-2 mt-lg-3"
+            input-name="show_vin"
+            transparent
+          />
+        </div>
+      </section>
       <!---------------------------------------------------------------------------------------------------------------------------------------------->
       <!---------------------------------------------------------------------------------------------------------------------------------------------->
       <!---------------------------------------------------------------------------------------------------------------------------------------------->
@@ -677,8 +700,8 @@ export default {
     },
     getOwnerOptions() {
       return [
-        {key: 0, name: this.$t('yes')},
-        {key: 1, name: this.$t('no')},
+        {key: "0", name: 'first',},
+        {key: "1", name: 'second_and_more',},
       ]
     },
     images() {

@@ -975,7 +975,7 @@ export default {
           lng: parseFloat(data.announce?.longitude || 0),
           vin: data.announce?.vin || "",
           price: data.announce?.price_int.toString() || '',
-          owner_type: parseInt(data.announce?.owner_type) || 0,
+          owner_type: (data.announce?.owner_type).toString() || '0',
           currency: data.announce?.currency_id || 1,
           car_number: data.announce?.car_number,
           show_car_number: data.announce?.show_car_number,
@@ -1553,7 +1553,7 @@ export default {
       this.form.month = this.single_announce.month || "";
       this.form.sell_store = this.single_announce.sell_store || 0;
       // this.form.video_360_id = this.single_announce.video_360_id || "";
-      this.form.modification = "";
+      // this.form.modification = "";
       // this.form.model = this.form.model_slug;
 
       delete this.form.model_slug;
