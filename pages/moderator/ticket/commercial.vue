@@ -1,5 +1,8 @@
 <template>
-  <div class="container">
+  <div v-if="loading">
+    <elements-loader></elements-loader>
+  </div>
+  <div v-else class="container">
     <!--    breadcrumbs-->
     <breadcrumbs id="brdcrmbs1" :crumbs="crumbs"/>
 
@@ -69,7 +72,6 @@
                 name: o.name,
                 key: o.id,
               }))"
-            :value="form.category"
             has-search
             @change="handleCategoryChange($event)"
           />
@@ -222,7 +224,7 @@
 
         <div v-if="colors.length" class="col-12">
           <color-options v-model="form.selectedColor" :limit="2"
-                         :matt="form.is_matte" :multiple="type === 'cars'" @change="removeError('selectedColor')"
+                         :multiple="type === 'cars'" hide-matt @change="removeError('selectedColor')"
                          @change-matt="form.is_matte = $event"/>
         </div>
       </section>
@@ -246,6 +248,13 @@
             :placeholder="$t('mileage')"
             input-class="w-133"
             @change="getChange($event,'mileage')"
+          />
+        </div>
+        <div class="col-auto">
+          <form-switch
+            v-model="form.mileage_measure"
+            :options="getMileageOptions"
+            @change="updatePreview('mileage_measure')"
           />
         </div>
         <div class="col-auto">
@@ -303,7 +312,7 @@
 
 
       <!--      region-->
-      <section class="row">
+      <section class="row" ref="form_region_field">
         <div class="col-12">
           <title-with-line-and-reject-reason
             description="it_will_not_be_possible_to_change_the_city_after_accommodation"
@@ -359,7 +368,7 @@
       </section>
 
       <!--      price-->
-      <section class="row">
+      <section class="row" ref="form_price_field">
         <div class="col-12">
           <title-with-line-and-reject-reason
             no-approval
@@ -1065,6 +1074,7 @@ export default {
       this.form.brand = announce.commercial_brand_id;
       this.form.model = announce.commercial_model_id;
       this.form.year = announce.year;
+      this.form.mileage_measure = announce.mileage_measure;
       if (announce.youtube_id) this.getYoutube(announce.youtube_id)
       this.com_filters.map((item) => {
         let value = announce[item.search_key];
@@ -1381,8 +1391,23 @@ export default {
       this.button_loading = true;
       try {
         if (this.form.is_new && this.form.mileage > 500) {
-          this.$toast.error('Yürüş xanası 500 dən çox olmamalıdır.')
+          this.$toast.error('Yürüş xanası 500-dən çox olmamalıdır.')
           this.loading = false;
+          this.form.commercial_type_id = this.single_announce.commercial_type_id;
+        } else if (!this.form.is_new && this.form.mileage == 0) {
+          this.$toasted.show(this.$t('Nəqliyyat vasitəsi yeni deyilsə yürüş 500-dən çox olmalıdır.'), {
+            type: 'error',
+          })
+          this.form.commercial_type_id = this.single_announce.commercial_type_id;
+
+
+          this.loading = false;
+        }else if(this.form.price == 0){
+          this.$toasted.show(this.$t('Qiymət minimum bir olmalıdır'), {
+            type: 'error',
+          })
+          this.form.commercial_type_id = this.single_announce.commercial_type_id;
+          this.$refs["form_region_field"].scrollIntoView({ behavior: "smooth" })
         } else {
 
 
@@ -1604,6 +1629,12 @@ export default {
         {key: 3, name: 'EUR', sign: '€'},
       ]
     },
+    getMileageOptions() {
+      return [
+        {key: 1, name: this.$t('char_kilometre')},
+        {key: 2, name: this.$t('char_mile')},
+      ]
+    },
     getOwnerOptions() {
       return [
         {key: "0", name: 'first',},
@@ -1735,6 +1766,22 @@ export default {
         id: this.single_announce.commercial_brand.id
       })
       this.$store.dispatch('getCommercialFilters', this.single_announce.commercial_type_id);
+    }
+    ;
+    this.loading = true;
+    setTimeout(() => {
+      this.loading = false;
+    }, 2000)
+  },
+
+  watch: {
+    'form.is_new': {
+      deep: true,
+      handler() {
+        if (this.form.is_new) {
+          this.form.mileage = 0;
+        }
+      }
     }
   }
 
