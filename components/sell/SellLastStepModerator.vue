@@ -106,12 +106,10 @@
             <div class="row flex-nowrap">
               <div class="col-auto flex-grow-1">
                 <form-numeric-input
-                  v-model="announcement.mileage"
+                  v-model="form.mileage"
                   :invalid="isInvalid('mileage')"
                   :placeholder="$t('mileage')"
-                  input-class="w-133"
-                  @change="removeError('mileage'), updatePreview('mileage')"
-                />
+                  input-class="w-133" @change="removeError('mileage'), updatePreview('mileage')"/>
               </div>
               <div class="col-auto">
                 <form-switch
@@ -1012,6 +1010,15 @@ export default {
       deep: true,
       handler() {
         this.$emit("formChanged", this.form)
+      },
+
+    },
+    'form.mileage':{
+      deep:true,
+      handler(){
+        if (this.form.mileage == null){
+          this.form.mileage = 0
+        }
       }
     },
   },
