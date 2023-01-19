@@ -207,6 +207,7 @@
           @deletedIndex="deleteByIndex"
           @passBase64Images="passBase64Images"
           @replaceImage="replaceImage"
+          type="part"
         />
 
       </section>
@@ -394,7 +395,7 @@
       </section>
 
       <!--      owner-->
-      <section class="row">
+      <section class="row" v-if="false">
         <div class="col-12">
           <title-with-line-and-reject-reason
             no-approval
@@ -566,10 +567,12 @@
         :button_loading="button_loading"
         :getTimer="getTimer"
         :notValid="notValid"
-        :rejectObj="rejectObj"
+        :rejectArray="rejectArray"
         @formChanged="(e) => (form = e)"
         @openTransferModal="transferModal = true"
         @sendData="sendData"
+        @handleLoading="handleLoading"
+        type="commercial"
       />
 
 
@@ -1013,6 +1016,9 @@ export default {
     ...mapActions([
       'setSellPreviewData',
     ]),
+    handleLoading(e){
+      this.loading = e;
+    },
     nonRequiredField(item) {
       if (!item.required && item.component_add === 'any-type-selector')
         return [...item.values, {'key': null, 'name': this.$t('not_set')}];
@@ -1309,27 +1315,6 @@ export default {
       this.$nuxt.$emit('loading_status', true);
       this.button_loading = true;
       try {
-        if (this.form.is_new && this.form.mileage > 500) {
-          this.$toast.error('Yürüş xanası 500-dən çox olmamalıdır.')
-          this.loading = false;
-          this.form.commercial_type_id = this.single_announce.commercial_type_id;
-        } else if (!this.form.is_new && this.form.mileage == 0) {
-          this.$toasted.show(this.$t('Nəqliyyat vasitəsi yeni deyilsə yürüş 500-dən çox olmalıdır.'), {
-            type: 'error',
-          })
-          this.form.commercial_type_id = this.single_announce.commercial_type_id;
-
-
-          this.loading = false;
-        }else if(this.form.price == 0){
-          this.$toasted.show(this.$t('Qiymət minimum bir olmalıdır'), {
-            type: 'error',
-          })
-          this.form.commercial_type_id = this.single_announce.commercial_type_id;
-          this.$refs["form_region_field"].scrollIntoView({ behavior: "smooth" })
-        } else {
-
-
           await this.$axios.$post('/ticket/commercial/' + this.announceId,
             formData
           );
@@ -1339,7 +1324,7 @@ export default {
           } else {
             location.href = '/alvcp/resources/commercials';
           }
-        }
+
       } catch ({response: {data: {data}}}) {
         this.$nuxt.$emit('loading_status', false);
         this.button_loading = false;

@@ -92,7 +92,9 @@
                   @click.prevent="openTransferModal">{{ $t('Transfer to Supervisor') }}
           </button>
 
+
         </div>
+
       </div>
     </section>
   </div>
@@ -129,17 +131,19 @@ export default {
           type: 'error',
         })
         this.$emit('handleLoading', false)
-      } else if ((this.type == 'cars') && this.form.customs_clearance && !this.form.vin) {
+      } else if ((this.type == 'cars') && this.form.customs_clearance && !this.form.vin.length) {
         this.$toasted.show(this.$t('Nəqliyyat vasitəsi gömrükdən keçməyibsə ban nömrəsini yazmaq mütləqdir'), {
           type: 'error',
         })
-      }else if(this.form.price == 0) {
+      } else if ((this.type == 'cars') && (this.form.vin.length !== 0) && this.form.vin.length !== 17) {
+        this.$toasted.show(this.$t('VIN nömrənin formatı düzgün deyil'), {
+          type: 'error',
+        })
+      } else if (this.form.price == 0) {
         this.$toasted.show(this.$t('Minimal Qiymət 1 olmalıdır.'), {
           type: 'error',
         })
-      }
-
-        else {
+      } else {
         this.$emit('sendData', status)
       }
     },
@@ -151,7 +155,6 @@ export default {
       }
     },
     async handleBackToList() {
-      await this.$axios.$post('/ticket/detach/' + this.id + '/car')
       return location.href = '/alvcp/resources/announcements';
     },
     openTransferModal() {
@@ -165,6 +168,12 @@ export default {
         this.$emit("formChanged", this.form)
       },
     },
+    announcement:{
+      deep: true,
+      handler(){
+        this.form = this.announcement
+      }
+    }
   }
 }
 </script>

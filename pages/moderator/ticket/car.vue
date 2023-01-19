@@ -1109,8 +1109,8 @@ export default {
         (o) => o.id === this.form.generation_id,
       )
       let name = `${this.$t('box_mode_values')[o.box]}/${
-        generation.start_year
-      } - ${generation.end_year || this.currentYear}`
+        generation?.start_year || this.data.sellYears[0].key
+      } - ${generation?.end_year || this.currentYear}`
       if (o.capacity) name = `${o.capacity} ${name}`
       if (o.power) name = `${o.power} ${this.$t('char_h_power')}/${name}`
       if (o.complect_type) name += `/${o.complect_type}`

@@ -129,6 +129,7 @@ import CarViewForCroppa from "~/components/moderator/carViewForCroppa";
 export default {
   name: 'upload-image',
   props: {
+
     changePosition: {
       type: Boolean,
       default: false
@@ -142,6 +143,10 @@ export default {
       default: false
     },
     isCommetcial: {
+      type: Boolean,
+      default: false
+    },
+    isPart:{
       type: Boolean,
       default: false
     },

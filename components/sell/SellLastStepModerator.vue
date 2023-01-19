@@ -441,19 +441,17 @@
             @change="changeReason"
           />
         </div>
-        <div class="col-lg-4 mb-2 mb-lg-0 pl-0">
-          <form-textarea
+        <div class="col-lg-2 mb-2 mb-lg-0 pl-0">
+          <input
             key="vin"
             v-model="form.vin"
-            :mask="$maskAlphaNumeric('*****************')"
+            v-mask="$maskAlphaNumeric('*****************')"
             :placeholder="$t('vin_carcase_number')"
-            class="textfield-like-textarea"
+            class="textfield-like-textarea ma-input"
             @change="removeError('vin')"
           >
-            <popover :width="240" name="vin">
-              <inline-svg src="/img/car-cert.svg"/>
-            </popover>
-          </form-textarea>
+        </div>
+          <div class="col-12">
           <form-checkbox
             v-model="form.show_vin"
             :label="$t('show_vin_on_site')"

@@ -40,14 +40,17 @@
           />
         </div>
         <div class="col-12 col-md-6 col-lg-3">
-          <form-text-input v-model="form.product_code" placeholder="product_code"/>
+          <label>{{$t('product_code')}}</label>
+          <form-text-input v-model="form.product_code" :placeholder="$t('product_code')"/>
         </div>
         <div class="col-12 col-md-6 col-lg-3">
-          <form-text-input v-model="form.title" :placeholder="$t('title_max_character', { max: 25 })"/>
+          <label>{{$t('headline')}}</label>
+          <form-text-input v-model="form.title" :maxlength="25" :placeholder="$t('title_max_character', { max: 25 })"/>
         </div>
         <div class="col-12 mt-3">
+          <label>{{$t('description_placeholder_part')}}</label>
           <form-textarea v-model="form.description" :maxlength="3000"
-                         placeholder="description_placeholder_part"/>
+                         :placeholder="$t('description_placeholder_part')"/>
         </div>
         <div class="col-12">
           <small class="px-2">
@@ -74,15 +77,11 @@
         <div v-if="partCategories && partCategories.length && form.category_id" id="anchor-category_id"
              class="col-lg-4 mb-3 mb-lg-0">
           <form-select
-            :allow-clear="false"
             v-model="form.category_id"
-            :clear-option="false"
-            :invalid="isInvalid('category_id')"
             :label="$t('category')"
-            :options="partCategories.map((o) => ({
-                name: o.name,
-                key: o.id,
-              }))"
+            :options="categories"
+            :invalid="isInvalid('category_id')"
+            :clear-option="false"
             @change="
               categorySelected($event),
                 removeError('category_id'),
@@ -407,12 +406,13 @@
         :button_loading="button_loading"
         :getTimer="getTimer"
         :notValid="notValid"
-        :rejectObj="rejectObj"
+        :rejectArray="rejectArray"
         @formChanged="(e) => (form = e)"
         @openTransferModal="transferModal = true"
         @sendData="sendData"
+        @handleLoading="handleLoading"
+        type="part"
       />
-
 
     </div>
     <!--    EMPTY Announce-->
@@ -648,6 +648,9 @@ export default {
   },
 
   methods: {
+    handleLoading(e){
+      this.loading = e;
+    },
     async getAnnounceData() {
       this.loading = true;
       await this.$auth.setUserToken(`Bearer ${this.$route.query.token}`);
@@ -1104,6 +1107,13 @@ export default {
       all_sell_options: 'allSellOptions',
       partCategories: 'partCategories',
     }),
+    notValid() {
+      if (
+        !this.form.product_code||
+        !this.form.title
+      ) return true
+      else return false
+    },
     crumbs() {
       return [
         {name: this.$t('moderation')},
@@ -1152,6 +1162,11 @@ export default {
     regions() {
       return this?.filter_data?.regions || []
     },
+    categories() {
+      return this.$store.getters['parts/categories'].filter(
+        (c) => c.show_on_form,
+      )
+    },
   },
 
   mounted() {
@@ -1163,7 +1178,11 @@ export default {
       this.getFilters(this.single_announce.category_id)
     }
 
-  }
+  },
+
+  async fetch() {
+    await this.$store.dispatch('parts/getCategories')
+  },
 
 
 }
