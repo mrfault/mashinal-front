@@ -436,6 +436,7 @@
                 @sendData="sendData"
                 @handleLoading="handleLoading"
                 type="cars"
+                @transferToSupervisor="transferToSupervisor"
               />
 
             </div>
@@ -1439,6 +1440,7 @@ export default {
 
 // post
     async transferToSupervisor(withRejectReason = false) {
+      console.log('transferToSupervisor')
       this.button_loading = true
 
       if (withRejectReason) {
@@ -1453,8 +1455,7 @@ export default {
       if (this.user.admin_group == 2) {
         this.$router.push({path: this.localePath('/e-services')});
       } else {
-        // location.href = '/alvcp/resources/announcements'
-        this.$router.push($t('e-services'))
+        location.href = '/alvcp/resources/announcements'
       }
     },
     async sendData(status = 2) {

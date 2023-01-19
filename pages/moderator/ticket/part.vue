@@ -374,23 +374,25 @@
             />
           </transition>
         </div>
-        <upload-image-moderator
-          :announce="single_announce"
-          :changePosition="saved_images.length === imagesBase64.length"
-          :default-images="single_announce.media"
-          :is-edit="false"
-          :load-croppa="true"
-          :max_files="30"
-          :saved_images="saved_images"
-          :stopUploading="imagesBase64.length >= 20"
-          page="sell"
-          url="/"
-          @addFiles="addFiles"
-          @change="addImages"
-          @deletedIndex="deleteByIndex"
-          @passBase64Images="passBase64Images"
-          @replaceImage="replaceImage"
-        />
+        <div class="col-12 pl-2">
+          <upload-image-moderator
+            :announce="single_announce"
+            :changePosition="saved_images.length === imagesBase64.length"
+            :default-images="single_announce.media"
+            :is-edit="false"
+            :load-croppa="true"
+            :max_files="30"
+            :saved_images="saved_images"
+            :stopUploading="imagesBase64.length >= 20"
+            page="sell"
+            url="/"
+            @addFiles="addFiles"
+            @change="addImages"
+            @deletedIndex="deleteByIndex"
+            @passBase64Images="passBase64Images"
+            @replaceImage="replaceImage"
+          />
+        </div>
       </section>
 
 
@@ -408,6 +410,7 @@
         @sendData="sendData"
         @handleLoading="handleLoading"
         type="part"
+        @transferToSupervisor="transferToSupervisor"
       />
 
     </div>
@@ -579,7 +582,7 @@ export default {
         'run_flat',
       ],
       //  image
-      minFiles: this.type === 'moto' ? 2 : 3,
+      minFiles: 1,
       maxFiles: 20,
       imageModal: {
         isOpen: false,
@@ -1105,8 +1108,8 @@ export default {
     }),
     notValid() {
       if (
-        !this.form.product_code||
-        !this.form.title
+        !this.form.title ||
+        !this.form.category_id
       ) return true
       else return false
     },

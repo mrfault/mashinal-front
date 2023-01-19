@@ -573,6 +573,7 @@
         @sendData="sendData"
         @handleLoading="handleLoading"
         type="commercial"
+        @transferToSupervisor="transferToSupervisor"
       />
 
 

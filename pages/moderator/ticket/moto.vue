@@ -557,6 +557,7 @@
           @sendData="sendData"
           @handleLoading="handleLoading"
           :type="$route.query.type"
+          @transferToSupervisor="transferToSupervisor"
         />
 
       </div>
@@ -1767,97 +1768,7 @@ export default {
 </script>
 
 
-<style lang="scss" scoped>
-section {
-  position: relative;
 
-  &.disable:before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 2;
-  }
-}
-
-.timer {
-  font-size: 18px;
-  color: #fff;
-  letter-spacing: 2px;
-  background: #050a25;
-  padding: 6px 10px 0 10px;
-  display: inline-block;
-  height: 34px;
-  border-radius: 4px;
-  width: 160px;
-}
-
-.old_value {
-  position: relative;
-  left: -16px;
-  font-size: 14px;
-}
-
-.logs {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 9999;
-
-  .log {
-    background: #fff;
-    display: inline-block;
-    margin-top: 20px;
-    max-height: 80%;
-    overflow-y: auto;
-
-    & > div {
-      padding: 10px;
-    }
-
-    .title {
-      position: relative;
-
-      span {
-        position: absolute;
-        right: 0;
-        top: 0;
-        padding: 5px 10px;
-        cursor: pointer;
-        color: #b90026;
-      }
-    }
-
-    .body {
-      border-top: 1px solid rgba(0, 0, 0, 0.5);
-      border-bottom: 1px solid rgba(0, 0, 0, 0.5);
-      text-align: left;
-
-      & > div {
-        border-bottom: 1px dashed #000000;
-        margin: 5px 0;
-        padding: 5px 0;
-      }
-    }
-
-    .foot {
-      .closeBtn {
-        display: inline-block;
-        padding: 5px 22px;
-        background: #b90026;
-        color: #fff;
-        cursor: pointer;
-      }
-    }
-  }
-}
-</style>
 
 
 <!--moto 1-->
