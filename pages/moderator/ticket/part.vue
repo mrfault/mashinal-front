@@ -116,16 +116,12 @@
           class="col-lg-4 mb-3 mb-lg-0"
         >
           <form-select
-            :allow-clear="false"
             v-model="form.brand_id"
-            :clear-option="false"
-            :invalid="isInvalid('brand_id')"
             :label="$t('select_brand')"
-            :options="filter_data.brands.map((o) => ({
-                name: o.name,
-                key: o.id,
-              }))"
+            :options="[{ id: 0, name: $t('other') }, ...brands]"
             has-search
+            :invalid="isInvalid('brand_id')"
+            :clear-option="false"
             @change="removeError('brand_id')"
           />
         </div>
@@ -1166,6 +1162,9 @@ export default {
       return this.$store.getters['parts/categories'].filter(
         (c) => c.show_on_form,
       )
+    },
+    brands() {
+      return this?.filter_data?.brands || []
     },
   },
 
