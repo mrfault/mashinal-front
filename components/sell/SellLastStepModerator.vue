@@ -192,7 +192,7 @@
             <div class="row flex-nowrap">
               <div class="col-auto flex-grow-1">
                 <form-numeric-input
-                  v-model="announcement.price"
+                  v-model="form.price"
                   :invalid="isInvalid('price')"
                   :placeholder="$t('price')"
                   input-class="w-133"
@@ -300,7 +300,7 @@
       <!---------------------------------------------------------------------------------------------------------------------------------------------->
       <!---------------------------------------------------------------------------------------------------------------------------------------------->
       <!--      region-->
-      <section id="region-section-1">
+      <section ref="region_section_1" id="region-section-1">
         <div v-if="!isAutosalon && !user.external_salon">
           <title-with-line-and-reject-reason
             id="anchor-region_id"
@@ -386,7 +386,7 @@
         </div>
         <div v-if="(!user.is_autosalon) || (type !== 'parts' && user.external_salon)"
              id="anchor-car_number" class="row">
-          <div v-if="!form.customs_clearance && !user.external_salon" class="col-lg-2 mb-2 mb-lg-0">
+          <div v-if="!form.customs_clearance && !user.external_salon" class="col-12 col-lg-2 mb-2 mb-lg-0">
             <!---------------------------------------------------------------------------------------------------------------------------------------------->
             <form-text-input
               ref="moderation-car-number-input-1"
@@ -399,19 +399,7 @@
 
             <!---------------------------------------------------------------------------------------------------------------------------------------------->
 
-
           </div>
-          <div v-if="!form.customs_clearance && !user.external_salon" class="col-12 mt-2 ">
-            <form-checkbox
-              v-model="form.show_car_number"
-              :label="$t('show_car_number_on_site')"
-              class="mt-0 pl-0"
-              input-name="show_car_number"
-              transparent
-            />
-          </div>
-
-
           <div class="col-12 col-lg-8">
                   <span
                     v-if="smsRadarData && (smsRadarData.carNumber || smsRadarData.bodyNumber)"
@@ -421,6 +409,15 @@
                       smsRadarData.carNumber
                     }} | {{ smsRadarData.bodyNumber ? smsRadarData.bodyNumber : '' }}</p>
                </span>
+          </div>
+          <div v-if="!form.customs_clearance && !user.external_salon" class="col-12 mt-2 ">
+            <form-checkbox
+              v-model="form.show_car_number"
+              :label="$t('show_car_number_on_site')"
+              class="mt-0 pl-0"
+              input-name="show_car_number"
+              transparent
+            />
           </div>
         </div>
       </section>

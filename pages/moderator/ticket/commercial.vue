@@ -401,7 +401,7 @@
             title="first_owner_question"/>
         </div>
 
-        <div class="col-auto">
+        <div class="col-auto" v-if="false">
           <form-switch
             v-model="form.owner_type"
             :options="getOwnerOptions"

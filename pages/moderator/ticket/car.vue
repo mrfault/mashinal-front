@@ -424,103 +424,19 @@
               </sell-last-step>
 
               <!--      actions-->
-              <div class="row mt-5">
-                <section v-if="user.admin_group === 1" class="container"> <!--supervisor-->
-                  <div class="row">
-                    <div class="col-12">
-                      <button v-if="rejectObj.rejectArray.length === 0"
-                              :class="{'button_loading':button_loading, 'disabled': notValid}"
-                              :disabled="notValid"
-                              class="btn btn--green w-50"
+              <moderator-actions
+                :rejectObj="rejectObj"
+                :button_loading="button_loading"
+                :notValid="notValid"
+                :getTimer="getTimer"
+                :announcement="form"
+                :id="single_announce.id"
+                @sendData="sendData"
+                @formChanged="(e) => (form = e)"
+                @openTransferModal="transferModal = true"
 
-                              @click.prevent="sendData(1)">{{ $t('confirm') }}
-                      </button>
-                      <button :class="{'button_loading':button_loading, 'disabled': notValid}" :disabled="notValid"
-                              class="btn btn--red w-50 ml-1"
+              />
 
-                              @click.prevent="sendData(0)">{{ $t('reject') }}
-                      </button>
-                      <button :class="{'button_loading':button_loading, 'disabled': notValid}" :disabled="notValid"
-                              class="btn btn--pale-red w-50 ml-1"
-
-                              @click.prevent="sendData(3)"
-                      >
-                        {{ $t('deactive_announce') }}
-                      </button>
-                      <button :disabled="notValid" class="btn btn--yellow w-50 ml-1" @click="handleBackToList">
-                        {{ $t('back_to_list') }}
-                      </button>
-                    </div>
-                  </div>
-                </section>
-                <section v-else-if="user.admin_group === 2" class="container"> <!--moderator-->
-                  <div class="row">
-                    <div class="col-6 col-lg-2">
-            <span class="timer">
-              {{ getTimer.data }}
-            </span>
-                    </div>
-                    <div class="col-auto">
-                      <form-text-input v-if="getTimer.unix > 60*2" v-model="form.delay_comment"
-                                       :placeholder="$t('delay_comment')"
-                                       type="text"/>
-                    </div>
-
-                    <div class="col-auto">
-            <span v-if="getTimer.unix < 60*2 || (getTimer.unix > 60*2 && form.delay_comment.length)">
-              <button v-if="rejectObj.rejectArray.length === 0"
-                      :class="{'button_loading':button_loading, 'disabled': notValid}"
-                      :disabled="notValid"
-                      class="btn btn--green w-50"
-
-                      @click.prevent="sendData(1)">{{ $t('confirm') }}</button>
-
-              <!-- sendData(0) -->
-              <button v-else :class="{'button_loading':button_loading, 'disabled': notValid}" :disabled="notValid"
-                      class="btn btn--red w-50 ml-5"
-
-
-                      @click.prevent="transferToSupervisor(true)">{{ $t('reject') }}</button>
-            </span>
-
-                      <button :class="{'button_loading':button_loading, 'disabled': notValid}" :disabled="notValid"
-                              class="btn btn--green w-50"
-
-                              @click.prevent="transferModal = true">{{ $t('comment_to_supervisor') }}
-                      </button>
-                    </div>
-                  </div>
-                </section>
-                <section v-else-if="user.admin_group === 3" class="container"> <!--call center-->
-                  <div class="row">
-                    <div class="col-12">
-                      <button :class="{'button_loading':button_loading, 'disabled': notValid}" :disabled="notValid"
-                              class="btn btn--green w-50"
-
-                              @click.prevent="sendData(2)">{{ $t('send_to_moderate') }}
-                      </button>
-
-                      <button :class="{'button_loading':button_loading, 'disabled': notValid}" :disabled="notValid"
-                              class="btn btn--pale-red w-50 ml-1"
-
-                              @click.prevent="sendData(3)"
-                      >
-                        {{ $t('deactive_announce') }}
-                      </button>
-
-                      <button :class="{'disabled': notValid}" :disabled="notValid" class="btn btn--yellow w-50 ml-1"
-                              @click="handleBackList">
-                        {{ $t('back_to_list') }}
-                      </button>
-
-                      <button :disabled="notValid" class="btn btn--green w-50"
-                              @click.prevent="transferModal = true">{{ $t('Transfer to Supervisor') }}
-                      </button>
-
-                    </div>
-                  </div>
-                </section>
-              </div>
             </div>
           </div>
         </div>
@@ -586,6 +502,7 @@ import moment from 'moment'
 import SellLastStep from '~/components/sell/SellLastStepModerator'
 import SellPreview from '~/components/sell/SellPreview'
 import UserDetails from '~/components/moderator/brand.vue'
+import ModeratorActions from '~/components/moderator/actions.vue'
 import EditButton from '~/components/announcements/EditButton'
 import ModelOptions from '~/components/options/ModelOptions'
 import TitleWithLine from '~/components/global/titleWithLine.vue'
@@ -622,6 +539,7 @@ export default {
     PhotoRejectReason,
     Interior360Viewer,
     ChangeLog,
+    ModeratorActions,
   },
   data() {
     return {
@@ -827,6 +745,9 @@ export default {
     }
   },
   methods: {
+    sendData2(status){
+      console.log("sendData2",status)
+    },
     // ui
     openModal(type) {
       this.showModal = true
@@ -1585,6 +1506,10 @@ export default {
             type: 'error',
           })
           this.loading = false;
+        } else if (form.customs_clearance && !form.vin) {
+          this.$toasted.show(this.$t('Nəqliyyat vasitəsi gömrükdən keçməyibsə ban nömrəsini yazmaq mütləqdir'), {
+            type: 'error',
+          })
         } else {
           await this.$axios.$post('/ticket/car/' + this.single_announce.id, formData)
 
@@ -1626,17 +1551,8 @@ export default {
       if (form.comment === null) form.comment = ''
       form.comment = form.comment + e + ' '
     },
-    handleBackList() {
-      if (this.user.admin_group == 2) {
-        location.href = '/alvcp/resources/announcements';
-      } else {
-        location.href = '/alvcp/resources/announcements';
-      }
-    },
-    async handleBackToList() {
-      await this.$axios.$post('/ticket/detach/' + this.announceId + '/car')
-      return location.href = '/alvcp/resources/announcements';
-    },
+
+
   },
   mounted() {
     this.getAnnounceData();
