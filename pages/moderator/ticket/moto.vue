@@ -323,7 +323,7 @@
                 :clearOption="false"
                 :invalid="isInvalid('region_id')"
                 :label="$t('sale_region_country')"
-                :options="sellOptions.countries"
+                :options="sell_options.countries"
                 has-search
                 @change="removeError('region_id'), updatePreview('region')"
               />
@@ -545,100 +545,20 @@
           </div>
         </div>
         <!--      actions-->
-        <div class="row mt-5">
-          <section v-if="user.admin_group === 1" class="container"> <!--supervisor-->
-            <div class="row">
-              <div class="col-12">
-                <button v-if="rejectArray.length === 0" :class="{'button_loading':button_loading, 'disabled': notValid}"
-                        :disabled="notValid"
-                        class="btn btn--green w-50"
-
-                        @click.prevent="sendData(1)">{{ $t('confirm') }}
-                </button>
-                <button :class="{'button_loading':button_loading, 'disabled': notValid}" :disabled="notValid"
-                        class="btn btn--red w-50 ml-1"
-
-                        @click.prevent="sendData(0)">{{ $t('reject') }}
-                </button>
-                <button :class="{'button_loading':button_loading, 'disabled': notValid}" :disabled="notValid"
-                        class="btn btn--pale-red w-50 ml-1"
-
-                        @click.prevent="sendData(3)"
-                >
-                  {{ $t('deactive_announce') }}
-                </button>
-                <button :disabled="notValid" class="btn btn--yellow w-50 ml-1" @click="handleBackToList">
-                  {{ $t('back_to_list') }}
-                </button>
-              </div>
-            </div>
-          </section>
-          <section v-else-if="user.admin_group === 2" class="container"> <!--moderator-->
-            <div class="row">
-              <div class="col-6 col-lg-2">
-            <span class="timer">
-              {{ getTimer.data }}
-            </span>
-              </div>
-              <div class="col-auto">
-                <form-text-input v-if="getTimer.unix > 60*2" v-model="form.delay_comment"
-                                 :placeholder="$t('delay_comment')"
-                                 type="text"/>
-              </div>
-
-              <div class="col-auto">
-            <span v-if="getTimer.unix < 60*2 || (getTimer.unix > 60*2 && form.delay_comment.length)">
-              <button v-if="rejectArray.length === 0" :class="{'button_loading':button_loading, 'disabled': notValid}"
-                      :disabled="notValid"
-                      class="btn btn--green w-50"
-
-                      @click.prevent="sendData(1)">{{ $t('confirm') }}</button>
-
-              <!-- sendData(0) -->
-              <button v-else :class="{'button_loading':button_loading, 'disabled': notValid}" :disabled="notValid"
-                      class="btn btn--red w-50 ml-5"
-
-
-                      @click.prevent="transferToSupervisor(true)">{{ $t('reject') }}</button>
-            </span>
-
-                <button :class="{'button_loading':button_loading, 'disabled': notValid}" :disabled="notValid"
-                        class="btn btn--green w-50"
-
-                        @click.prevent="transferModal = true">{{ $t('comment_to_supervisor') }}
-                </button>
-              </div>
-            </div>
-          </section>
-          <section v-else-if="user.admin_group === 3" class="container"> <!--call center-->
-            <div class="row">
-              <div class="col-12">
-                <button :class="{'button_loading':button_loading, 'disabled': notValid}" :disabled="notValid"
-                        class="btn btn--green w-50"
-
-                        @click.prevent="sendData(2)">{{ $t('send_to_moderate') }}
-                </button>
-
-                <button :class="{'button_loading':button_loading, 'disabled': notValid}" :disabled="notValid"
-                        class="btn btn--pale-red w-50 ml-1"
-
-                        @click.prevent="sendData(3)"
-                >
-                  {{ $t('deactive_announce') }}
-                </button>
-
-                <button :disabled="notValid" class="btn btn--yellow w-50 ml-1" @click="handleBackList">
-                  {{ $t('back_to_list') }}
-                </button>
-
-                <button :disabled="notValid" class="btn btn--green w-50"
-                        @click.prevent="transferModal = true">{{ $t('Transfer to Supervisor') }}
-                </button>
-
-              </div>
-            </div>
-          </section>
-        </div>
+        <moderator-actions
+          :id="single_announce.id"
+          :announcement="form"
+          :button_loading="button_loading"
+          :getTimer="getTimer"
+          :notValid="notValid"
+          :rejectArray="rejectArray"
+          @formChanged="(e) => (form = e)"
+          @openTransferModal="transferModal = true"
+          @sendData="sendData"
+          @handleLoading="handleLoading"
+          :type="$route.query.type"
+          @transferToSupervisor="transferToSupervisor"
+        />
 
       </div>
       <!--    comment-->
@@ -727,6 +647,7 @@ import SellFilters from '~/components/sell/SellFilters'
 import TitleWithLine from "~/components/global/titleWithLine";
 import FormRadioGroup from "~/components/forms/FormRadioGroup";
 import ChangeLog from "~/components/moderator/changeLog";
+import ModeratorActions from '~/components/moderator/actions.vue'
 
 
 export default {
@@ -748,7 +669,8 @@ export default {
     SellFilters,
     PopularComments,
     FormRadioGroup,
-    ChangeLog
+    ChangeLog,
+    ModeratorActions,
   },
 
   mixins: [ToastErrorsMixin],
@@ -1121,6 +1043,9 @@ export default {
     ...mapActions([
       'setSellPreviewData',
     ]),
+    handleLoading(e){
+      this.loading = e;
+    },
     handleBackList() {
       if (this.admin_user.admin_group == 2) {
         location.href = '/alvcp/resources/announcements';
@@ -1407,22 +1332,7 @@ export default {
       this.$nuxt.$emit('loading_status', true);
       this.button_loading = true;
       try {
-        if (this.form.is_new && this.form.mileage > 500) {
-          this.$toast.error('Yürüş xanası 500-dən çox olmamalıdır.')
-          this.loading = false;
-        } else if (!this.form.is_new && this.form.mileage == 0) {
-          this.$toasted.show(this.$t('Nəqliyyat vasitəsi yeni deyilsə yürüş 500-dən çox olmalıdır.'), {
-            type: 'error',
-          })
 
-
-          this.loading = false;
-        }else if(this.form.price == 0){
-          this.$toasted.show(this.$t('Qiymət minimum bir olmalıdır'), {
-            type: 'error',
-          })
-          this.$refs["form_region_field"].scrollIntoView({ behavior: "smooth" })
-        } else {
           await this.$axios.$post('/ticket/moto/' + this.announceId + '/' + this.type,
             formData
           );
@@ -1438,7 +1348,6 @@ export default {
             location.href = '/alvcp/resources/' + moto[this.$route.query.type];
           }
           this.loading = false;
-        }
 
       } catch ({response: {data: {data}}}) {
         this.$nuxt.$emit('loading_status', false);
@@ -1859,97 +1768,7 @@ export default {
 </script>
 
 
-<style lang="scss" scoped>
-section {
-  position: relative;
 
-  &.disable:before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 2;
-  }
-}
-
-.timer {
-  font-size: 18px;
-  color: #fff;
-  letter-spacing: 2px;
-  background: #050a25;
-  padding: 6px 10px 0 10px;
-  display: inline-block;
-  height: 34px;
-  border-radius: 4px;
-  width: 160px;
-}
-
-.old_value {
-  position: relative;
-  left: -16px;
-  font-size: 14px;
-}
-
-.logs {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 9999;
-
-  .log {
-    background: #fff;
-    display: inline-block;
-    margin-top: 20px;
-    max-height: 80%;
-    overflow-y: auto;
-
-    & > div {
-      padding: 10px;
-    }
-
-    .title {
-      position: relative;
-
-      span {
-        position: absolute;
-        right: 0;
-        top: 0;
-        padding: 5px 10px;
-        cursor: pointer;
-        color: #b90026;
-      }
-    }
-
-    .body {
-      border-top: 1px solid rgba(0, 0, 0, 0.5);
-      border-bottom: 1px solid rgba(0, 0, 0, 0.5);
-      text-align: left;
-
-      & > div {
-        border-bottom: 1px dashed #000000;
-        margin: 5px 0;
-        padding: 5px 0;
-      }
-    }
-
-    .foot {
-      .closeBtn {
-        display: inline-block;
-        padding: 5px 22px;
-        background: #b90026;
-        color: #fff;
-        cursor: pointer;
-      }
-    }
-  }
-}
-</style>
 
 
 <!--moto 1-->

@@ -40,14 +40,17 @@
           />
         </div>
         <div class="col-12 col-md-6 col-lg-3">
-          <form-text-input v-model="form.product_code" placeholder="product_code"/>
+          <label>{{$t('product_code')}}</label>
+          <form-text-input v-model="form.product_code" :placeholder="$t('product_code')"/>
         </div>
         <div class="col-12 col-md-6 col-lg-3">
-          <form-text-input v-model="form.title" :placeholder="$t('title_max_character', { max: 25 })"/>
+          <label>{{$t('headline')}}</label>
+          <form-text-input v-model="form.title" :maxlength="25" :placeholder="$t('title_max_character', { max: 25 })"/>
         </div>
         <div class="col-12 mt-3">
+          <label>{{$t('description_placeholder_part')}}</label>
           <form-textarea v-model="form.description" :maxlength="3000"
-                         placeholder="description_placeholder_part"/>
+                         :placeholder="$t('description_placeholder_part')"/>
         </div>
         <div class="col-12">
           <small class="px-2">
@@ -74,15 +77,11 @@
         <div v-if="partCategories && partCategories.length && form.category_id" id="anchor-category_id"
              class="col-lg-4 mb-3 mb-lg-0">
           <form-select
-            :allow-clear="false"
             v-model="form.category_id"
-            :clear-option="false"
-            :invalid="isInvalid('category_id')"
             :label="$t('category')"
-            :options="partCategories.map((o) => ({
-                name: o.name,
-                key: o.id,
-              }))"
+            :options="categories"
+            :invalid="isInvalid('category_id')"
+            :clear-option="false"
             @change="
               categorySelected($event),
                 removeError('category_id'),
@@ -117,16 +116,12 @@
           class="col-lg-4 mb-3 mb-lg-0"
         >
           <form-select
-            :allow-clear="false"
             v-model="form.brand_id"
-            :clear-option="false"
-            :invalid="isInvalid('brand_id')"
             :label="$t('select_brand')"
-            :options="filter_data.brands.map((o) => ({
-                name: o.name,
-                key: o.id,
-              }))"
+            :options="[{ id: 0, name: $t('other') }, ...brands]"
             has-search
+            :invalid="isInvalid('brand_id')"
+            :clear-option="false"
             @change="removeError('brand_id')"
           />
         </div>
@@ -379,115 +374,44 @@
             />
           </transition>
         </div>
-        <upload-image-moderator
-          :announce="single_announce"
-          :changePosition="saved_images.length === imagesBase64.length"
-          :default-images="single_announce.media"
-          :is-edit="false"
-          :load-croppa="true"
-          :max_files="30"
-          :saved_images="saved_images"
-          :stopUploading="imagesBase64.length >= 20"
-          page="sell"
-          url="/"
-          @addFiles="addFiles"
-          @change="addImages"
-          @deletedIndex="deleteByIndex"
-          @passBase64Images="passBase64Images"
-          @replaceImage="replaceImage"
-        />
+        <div class="col-12 pl-2">
+          <upload-image-moderator
+            :announce="single_announce"
+            :changePosition="saved_images.length === imagesBase64.length"
+            :default-images="single_announce.media"
+            :is-edit="false"
+            :load-croppa="true"
+            :max_files="30"
+            :saved_images="saved_images"
+            :stopUploading="imagesBase64.length >= 20"
+            page="sell"
+            url="/"
+            @addFiles="addFiles"
+            @change="addImages"
+            @deletedIndex="deleteByIndex"
+            @passBase64Images="passBase64Images"
+            @replaceImage="replaceImage"
+          />
+        </div>
       </section>
 
 
       <!-------------------------------ACTIONS---------------------------------->
       <!--      actions-->
-      <div class="row mt-5">
-        <section v-if="user.admin_group === 1" class="container"> <!--supervisor-->
-          <div class="row">
-            <div class="col-12">
-              <button v-if="rejectArray.length === 0" :class="{'button_loading':button_loading}"
-                      class="btn btn--green w-50"
-
-                      @click.prevent="sendData(1)">{{ $t('confirm') }}
-              </button>
-              <button :class="{'button_loading':button_loading}" class="btn btn--red w-50 ml-1"
-
-                      @click.prevent="sendData(0)">{{ $t('reject') }}
-              </button>
-              <button :class="{'button_loading':button_loading}" class="btn btn--pale-red w-50 ml-1"
-
-                      @click.prevent="sendData(3)"
-              >
-                {{ $t('deactive_announce') }}
-              </button>
-              <button class="btn btn--yellow w-50 ml-1" @click="handleBackToList">
-                {{ $t('back_to_list') }}
-              </button>
-            </div>
-          </div>
-        </section>
-        <section v-else-if="user.admin_group === 2" class="container"> <!--moderator-->
-          <div class="row">
-            <div class="col-6 col-lg-2">
-            <span class="timer">
-              {{ getTimer.data }}
-            </span>
-            </div>
-            <div class="col-auto">
-              <form-text-input v-if="getTimer.unix > 60*2" v-model="form.delay_comment"
-                               :placeholder="$t('delay_comment')"
-                               type="text"/>
-            </div>
-
-            <div class="col-auto">
-            <span v-if="getTimer.unix < 60*2 || (getTimer.unix > 60*2 && form.delay_comment.length)">
-              <button v-if="rejectArray.length === 0" :class="{'button_loading':button_loading}"
-                      class="btn btn--green w-50"
-
-                      @click.prevent="sendData(1)">{{ $t('confirm') }}</button>
-
-              <!-- sendData(0) -->
-              <button v-else :class="{'button_loading':button_loading}" class="btn btn--red w-50 ml-5"
-
-
-                      @click.prevent="transferToSupervisor(true)">{{ $t('reject') }}</button>
-            </span>
-
-              <button :class="{'button_loading':button_loading}" class="btn btn--green w-50"
-
-                      @click.prevent="transferModal = true">{{ $t('comment_to_supervisor') }}
-              </button>
-            </div>
-          </div>
-        </section>
-        <section v-else-if="user.admin_group === 3" class="container"> <!--call center-->
-          <div class="row">
-            <div class="col-12">
-              <button :class="{'button_loading':button_loading}" class="btn btn--green w-50"
-
-                      @click.prevent="sendData(2)">{{ $t('send_to_moderate') }}
-              </button>
-
-              <button :class="{'button_loading':button_loading}" class="btn btn--pale-red w-50 ml-1"
-
-                      @click.prevent="sendData(3)"
-              >
-                {{ $t('deactive_announce') }}
-              </button>
-
-              <button class="btn btn--yellow w-50 ml-1" @click="handleBackList">
-                {{ $t('back_to_list') }}
-              </button>
-
-              <button class="btn btn--green w-50"
-                      @click.prevent="transferModal = true">{{ $t('Transfer to Supervisor') }}
-              </button>
-
-            </div>
-          </div>
-        </section>
-      </div>
-
+      <moderator-actions
+        :id="single_announce.id"
+        :announcement="form"
+        :button_loading="button_loading"
+        :getTimer="getTimer"
+        :notValid="notValid"
+        :rejectArray="rejectArray"
+        @formChanged="(e) => (form = e)"
+        @openTransferModal="transferModal = true"
+        @sendData="sendData"
+        @handleLoading="handleLoading"
+        type="part"
+        @transferToSupervisor="transferToSupervisor"
+      />
 
     </div>
     <!--    EMPTY Announce-->
@@ -567,6 +491,7 @@ import TitleWithLine from "~/components/global/titleWithLine";
 import FormRadioGroup from "~/components/forms/FormRadioGroup";
 import FormKeywords from '~/components/forms/FormKeywords'
 import ChangeLog from "~/components/moderator/changeLog";
+import ModeratorActions from '~/components/moderator/actions.vue'
 export default {
 
   name: 'parts-pages-moderation',
@@ -588,6 +513,7 @@ export default {
     FormRadioGroup,
     FormKeywords,
     ChangeLog,
+    ModeratorActions
   },
 
 
@@ -656,7 +582,7 @@ export default {
         'run_flat',
       ],
       //  image
-      minFiles: this.type === 'moto' ? 2 : 3,
+      minFiles: 1,
       maxFiles: 20,
       imageModal: {
         isOpen: false,
@@ -721,6 +647,9 @@ export default {
   },
 
   methods: {
+    handleLoading(e){
+      this.loading = e;
+    },
     async getAnnounceData() {
       this.loading = true;
       await this.$auth.setUserToken(`Bearer ${this.$route.query.token}`);
@@ -1177,6 +1106,13 @@ export default {
       all_sell_options: 'allSellOptions',
       partCategories: 'partCategories',
     }),
+    notValid() {
+      if (
+        !this.form.title ||
+        !this.form.category_id
+      ) return true
+      else return false
+    },
     crumbs() {
       return [
         {name: this.$t('moderation')},
@@ -1225,6 +1161,14 @@ export default {
     regions() {
       return this?.filter_data?.regions || []
     },
+    categories() {
+      return this.$store.getters['parts/categories'].filter(
+        (c) => c.show_on_form,
+      )
+    },
+    brands() {
+      return this?.filter_data?.brands || []
+    },
   },
 
   mounted() {
@@ -1236,7 +1180,11 @@ export default {
       this.getFilters(this.single_announce.category_id)
     }
 
-  }
+  },
+
+  async fetch() {
+    await this.$store.dispatch('parts/getCategories')
+  },
 
 
 }

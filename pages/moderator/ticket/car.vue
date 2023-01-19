@@ -424,103 +424,21 @@
               </sell-last-step>
 
               <!--      actions-->
-              <div class="row mt-5">
-                <section v-if="user.admin_group === 1" class="container"> <!--supervisor-->
-                  <div class="row">
-                    <div class="col-12">
-                      <button v-if="rejectObj.rejectArray.length === 0"
-                              :class="{'button_loading':button_loading, 'disabled': notValid}"
-                              :disabled="notValid"
-                              class="btn btn--green w-50"
+              <moderator-actions
+                :id="single_announce.id"
+                :announcement="form"
+                :button_loading="button_loading"
+                :getTimer="getTimer"
+                :notValid="notValid"
+                :rejectArray="rejectObj.rejectArray"
+                @formChanged="(e) => (form = e)"
+                @openTransferModal="transferModal = true"
+                @sendData="sendData"
+                @handleLoading="handleLoading"
+                type="cars"
+                @transferToSupervisor="transferToSupervisor"
+              />
 
-                              @click.prevent="sendData(1)">{{ $t('confirm') }}
-                      </button>
-                      <button :class="{'button_loading':button_loading, 'disabled': notValid}" :disabled="notValid"
-                              class="btn btn--red w-50 ml-1"
-
-                              @click.prevent="sendData(0)">{{ $t('reject') }}
-                      </button>
-                      <button :class="{'button_loading':button_loading, 'disabled': notValid}" :disabled="notValid"
-                              class="btn btn--pale-red w-50 ml-1"
-
-                              @click.prevent="sendData(3)"
-                      >
-                        {{ $t('deactive_announce') }}
-                      </button>
-                      <button :disabled="notValid" class="btn btn--yellow w-50 ml-1" @click="handleBackToList">
-                        {{ $t('back_to_list') }}
-                      </button>
-                    </div>
-                  </div>
-                </section>
-                <section v-else-if="user.admin_group === 2" class="container"> <!--moderator-->
-                  <div class="row">
-                    <div class="col-6 col-lg-2">
-            <span class="timer">
-              {{ getTimer.data }}
-            </span>
-                    </div>
-                    <div class="col-auto">
-                      <form-text-input v-if="getTimer.unix > 60*2" v-model="form.delay_comment"
-                                       :placeholder="$t('delay_comment')"
-                                       type="text"/>
-                    </div>
-
-                    <div class="col-auto">
-            <span v-if="getTimer.unix < 60*2 || (getTimer.unix > 60*2 && form.delay_comment.length)">
-              <button v-if="rejectObj.rejectArray.length === 0"
-                      :class="{'button_loading':button_loading, 'disabled': notValid}"
-                      :disabled="notValid"
-                      class="btn btn--green w-50"
-
-                      @click.prevent="sendData(1)">{{ $t('confirm') }}</button>
-
-              <!-- sendData(0) -->
-              <button v-else :class="{'button_loading':button_loading, 'disabled': notValid}" :disabled="notValid"
-                      class="btn btn--red w-50 ml-5"
-
-
-                      @click.prevent="transferToSupervisor(true)">{{ $t('reject') }}</button>
-            </span>
-
-                      <button :class="{'button_loading':button_loading, 'disabled': notValid}" :disabled="notValid"
-                              class="btn btn--green w-50"
-
-                              @click.prevent="transferModal = true">{{ $t('comment_to_supervisor') }}
-                      </button>
-                    </div>
-                  </div>
-                </section>
-                <section v-else-if="user.admin_group === 3" class="container"> <!--call center-->
-                  <div class="row">
-                    <div class="col-12">
-                      <button :class="{'button_loading':button_loading, 'disabled': notValid}" :disabled="notValid"
-                              class="btn btn--green w-50"
-
-                              @click.prevent="sendData(2)">{{ $t('send_to_moderate') }}
-                      </button>
-
-                      <button :class="{'button_loading':button_loading, 'disabled': notValid}" :disabled="notValid"
-                              class="btn btn--pale-red w-50 ml-1"
-
-                              @click.prevent="sendData(3)"
-                      >
-                        {{ $t('deactive_announce') }}
-                      </button>
-
-                      <button :class="{'disabled': notValid}" :disabled="notValid" class="btn btn--yellow w-50 ml-1"
-                              @click="handleBackList">
-                        {{ $t('back_to_list') }}
-                      </button>
-
-                      <button :disabled="notValid" class="btn btn--green w-50"
-                              @click.prevent="transferModal = true">{{ $t('Transfer to Supervisor') }}
-                      </button>
-
-                    </div>
-                  </div>
-                </section>
-              </div>
             </div>
           </div>
         </div>
@@ -586,6 +504,7 @@ import moment from 'moment'
 import SellLastStep from '~/components/sell/SellLastStepModerator'
 import SellPreview from '~/components/sell/SellPreview'
 import UserDetails from '~/components/moderator/brand.vue'
+import ModeratorActions from '~/components/moderator/actions.vue'
 import EditButton from '~/components/announcements/EditButton'
 import ModelOptions from '~/components/options/ModelOptions'
 import TitleWithLine from '~/components/global/titleWithLine.vue'
@@ -622,6 +541,7 @@ export default {
     PhotoRejectReason,
     Interior360Viewer,
     ChangeLog,
+    ModeratorActions,
   },
   data() {
     return {
@@ -844,12 +764,6 @@ export default {
       } else {
         obj[opt] = true
       }
-    },
-    scrollToTop() {
-      setTimeout(() => {
-        Vue.prototype.$scrollToTop = () => window.scrollTo(0, 0)
-      }, 1000)
-
     },
 
     // get
@@ -1169,6 +1083,9 @@ export default {
     },
 
     // handle lists
+    handleLoading(e){
+      this.loading = e;
+    },
     getIcon(key, value) {
       return {
         engine: {
@@ -1193,8 +1110,8 @@ export default {
         (o) => o.id === this.form.generation_id,
       )
       let name = `${this.$t('box_mode_values')[o.box]}/${
-        generation.start_year
-      } - ${generation.end_year || this.currentYear}`
+        generation?.start_year || this.data.sellYears[0].key
+      } - ${generation?.end_year || this.currentYear}`
       if (o.capacity) name = `${o.capacity} ${name}`
       if (o.power) name = `${o.power} ${this.$t('char_h_power')}/${name}`
       if (o.complect_type) name += `/${o.complect_type}`
@@ -1523,6 +1440,7 @@ export default {
 
 // post
     async transferToSupervisor(withRejectReason = false) {
+      console.log('transferToSupervisor')
       this.button_loading = true
 
       if (withRejectReason) {
@@ -1537,8 +1455,7 @@ export default {
       if (this.user.admin_group == 2) {
         this.$router.push({path: this.localePath('/e-services')});
       } else {
-        // location.href = '/alvcp/resources/announcements'
-        this.$router.push($t('e-services'))
+        location.href = '/alvcp/resources/announcements'
       }
     },
     async sendData(status = 2) {
@@ -1554,38 +1471,25 @@ export default {
       this.form.id = this.single_announce.id;
       this.form.month = this.single_announce.month || "";
       this.form.sell_store = this.single_announce.sell_store || 0;
-      // this.form.video_360_id = this.single_announce.video_360_id || "";
-      // this.form.modification = "";
-      // this.form.model = this.form.model_slug;
+      this.form.id_unique = this.single_announce.id.toString();
+      this.form.rejectArray = this.rejectObj.rejectArray;
+      this.form.saved_images = this.saved_images;
 
       delete this.form.model_slug;
       delete this.form.brand_slug;
-      this.form.id_unique = this.single_announce.id.toString();
-      // this.form.generation = this.generation
-      // this.form.car_catalog_id = this.modification
-      this.form.rejectArray = this.rejectObj.rejectArray;
-      this.form.saved_images = this.saved_images;
-      let formData = new FormData()
       delete this.form.user
-      // formData.append('images_360', this.uploadedVideo360);
-      // formData.append('interior_360', this.uploadedInterior360);
+
+
+      let formData = new FormData()
+
       formData.append('data', JSON.stringify(this.form))
       formData.append('deletedImages', JSON.stringify(this.deleteArr))
 
       this.loading = true;
       this.button_loading = true
-      try {
-        if (this.form.is_new && this.form.mileage > 500) {
-          this.$toasted.show(this.$t('Yürüş xanası 500 dən çox olmamalıdır.'), {
-            type: 'error',
-          })
-          this.loading = false;
-        } else if (!this.form.is_new && this.form.mileage == 0) {
-          this.$toasted.show(this.$t('Nəqliyyat vasitəsi yeni deyilsə yürüş 500-dən çox olmalıdır.'), {
-            type: 'error',
-          })
-          this.loading = false;
-        } else {
+
+        try {
+
           await this.$axios.$post('/ticket/car/' + this.single_announce.id, formData)
 
           if (this.user.admin_group == 2) {
@@ -1598,50 +1502,40 @@ export default {
               type: 'success',
             })
           }
+
+
+        } catch ({
+          response: {
+            data: {data},
+          },
+        }) {
+          this.loading = false;
+          this.button_loading = false
+          this.errors = []
+          this.$toasted.clear()
+          Object.keys(data)
+            .reverse()
+            .map((key) => {
+              this.errors.push(key)
+              this.$toasted.show(data[key][0], {
+                type: 'error',
+                duration: 0,
+
+              })
+            })
+
         }
 
-      } catch ({
-        response: {
-          data: {data},
-        },
-      }) {
-        this.loading = false;
-        this.button_loading = false
-        this.errors = []
-        this.$toasted.clear()
-        Object.keys(data)
-          .reverse()
-          .map((key) => {
-            this.errors.push(key)
-            this.$toasted.show(data[key][0], {
-              type: 'error',
-              duration: 0,
-
-            })
-          })
-
-      }
     },
     addComment(e) {
       if (form.comment === null) form.comment = ''
       form.comment = form.comment + e + ' '
     },
-    handleBackList() {
-      if (this.user.admin_group == 2) {
-        location.href = '/alvcp/resources/announcements';
-      } else {
-        location.href = '/alvcp/resources/announcements';
-      }
-    },
-    async handleBackToList() {
-      await this.$axios.$post('/ticket/detach/' + this.announceId + '/car')
-      return location.href = '/alvcp/resources/announcements';
-    },
+
+
   },
   mounted() {
     this.getAnnounceData();
-    // this.scrollToTop()
-
   },
   beforeMount() {
   },

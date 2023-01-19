@@ -2,7 +2,7 @@
 
   <div class="vue_component__upload--image" v-bind:class="{ 'dragover': onDragover }">
 
-
+    <div v-if="loading" class="vue_component__upload--image__overlay"></div>
     <div>
       <div v-if="page === 'sell'" class="row sell-page">
 
@@ -49,7 +49,7 @@
                   class="upload_image_form__thumbnail upload_image_form__thumbnail_fixed"
                 >
                   <div class="imagePreloader"></div>
-                  <div class="w-100 d-flex justify-content-between p-2" v-if="!loading">
+                  <div v-if="!loading" class="w-100 d-flex justify-content-between p-2">
                     <span v-if="loadCroppa" class="cursor-pointer button-new-tab"
                           style="background: #dadada !important"
                           @click="openInNewTab(setSavedImageUrls[key], key)"
@@ -129,6 +129,7 @@ import CarViewForCroppa from "~/components/moderator/carViewForCroppa";
 export default {
   name: 'upload-image',
   props: {
+
     changePosition: {
       type: Boolean,
       default: false
@@ -142,6 +143,10 @@ export default {
       default: false
     },
     isCommetcial: {
+      type: Boolean,
+      default: false
+    },
+    isPart: {
       type: Boolean,
       default: false
     },
@@ -750,6 +755,20 @@ export default {
   overflow: hidden;
   height: 100vh;
   z-index: 1
+}
+
+.vue_component__upload--image {
+  position: relative;
+  z-index: 0;
+}
+
+.vue_component__upload--image__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
 }
 
 </style>
