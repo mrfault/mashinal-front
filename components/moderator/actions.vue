@@ -3,7 +3,7 @@
     <section v-if="user.admin_group === 1" class="container"> <!--supervisor-->
       <div class="row">
         <div class="col-12">
-          <button v-if="rejectObj.rejectArray.length === 0"
+          <button v-if="rejectArray && rejectArray.length === 0"
                   :class="{'button_loading':button_loading, 'disabled': notValid}"
                   :disabled="notValid"
                   class="btn btn--green w-50"
@@ -43,7 +43,7 @@
 
         <div class="col-auto">
             <span v-if="getTimer.unix < 60*2 || (getTimer.unix > 60*2 && form.delay_comment.length)">
-              <button v-if="rejectObj.rejectArray.length === 0"
+              <button v-if="rejectArray && rejectArray.length === 0"
                       :class="{'button_loading':button_loading, 'disabled': notValid}"
                       :disabled="notValid"
                       class="btn btn--green w-50"
@@ -101,21 +101,47 @@
 <script>
 export default {
   props: {
-    rejectObj: Object,
-    button_loading:Boolean,
+    rejectArray: Array,
+    button_loading: Boolean,
     notValid: Boolean,
     getTimer: Object,
     announcement: Object,
     id: Number,
+    type: {
+      type: String,
+      default: 'cars'
+    },
   },
-  data(){
-    return{
+  data() {
+    return {
       form: this.$clone(this.announcement),
     }
   },
-  methods:{
-    sendData(status){
-      this.$emit('sendData', status)
+  methods: {
+    sendData(status) {
+      if (this.form.is_new && this.form.mileage > 500) {
+        this.$toasted.show(this.$t('Yürüş xanası 500 dən çox olmamalıdır.'), {
+          type: 'error',
+        })
+        this.$emit('handleLoading', false)
+      } else if (!this.form.is_new && this.form.mileage == 0) {
+        this.$toasted.show(this.$t('Nəqliyyat vasitəsi yeni deyilsə yürüş 500-dən çox olmalıdır.'), {
+          type: 'error',
+        })
+        this.$emit('handleLoading', false)
+      } else if ((this.type == 'cars') && this.form.customs_clearance && !this.form.vin) {
+        this.$toasted.show(this.$t('Nəqliyyat vasitəsi gömrükdən keçməyibsə ban nömrəsini yazmaq mütləqdir'), {
+          type: 'error',
+        })
+      }else if(this.form.price == 0) {
+        this.$toasted.show(this.$t('Minimal Qiymət 1 olmalıdır.'), {
+          type: 'error',
+        })
+      }
+
+        else {
+        this.$emit('sendData', status)
+      }
     },
     handleBackList() {
       if (this.user.admin_group == 2) {
@@ -128,11 +154,11 @@ export default {
       await this.$axios.$post('/ticket/detach/' + this.id + '/car')
       return location.href = '/alvcp/resources/announcements';
     },
-    openTransferModal(){
-      this.$emit('openTransferModal',true)
+    openTransferModal() {
+      this.$emit('openTransferModal', true)
     }
   },
-  watch:{
+  watch: {
     form: {
       deep: true,
       handler() {

@@ -560,100 +560,17 @@
 
       <!-------------------------------ACTIONS---------------------------------->
       <!--      actions-->
-      <div class="row mt-5">
-        <section v-if="user.admin_group === 1" class="container"> <!--supervisor-->
-          <div class="row">
-            <div class="col-12">
-              <button v-if="rejectArray.length === 0" :class="{'button_loading':button_loading, 'disabled':notValid}"
-                      :disabled="notValid"
-                      class="btn btn--green w-50"
-
-                      @click.prevent="sendData(1)">{{ $t('confirm') }}
-              </button>
-              <button :class="{'button_loading':button_loading, 'disabled':notValid}" :disabled="notValid"
-                      class="btn btn--red w-50 ml-1"
-
-                      @click.prevent="sendData(0)">{{ $t('reject') }}
-              </button>
-              <button :class="{'button_loading':button_loading, 'disabled':notValid}" :disabled="notValid"
-                      class="btn btn--pale-red w-50 ml-1"
-
-                      @click.prevent="sendData(3)"
-              >
-                {{ $t('deactive_announce') }}
-              </button>
-              <button :disabled="notValid" class="btn btn--yellow w-50 ml-1" @click="handleBackToList">
-                {{ $t('back_to_list') }}
-              </button>
-            </div>
-          </div>
-        </section>
-        <section v-else-if="user.admin_group === 2" class="container"> <!--moderator-->
-          <div class="row">
-            <div class="col-6 col-lg-2">
-            <span class="timer">
-              {{ getTimer.data }}
-            </span>
-            </div>
-            <div class="col-auto">
-              <form-text-input v-if="getTimer.unix > 60*2" v-model="form.delay_comment"
-                               :placeholder="$t('delay_comment')"
-                               type="text"/>
-            </div>
-
-            <div class="col-auto">
-            <span v-if="getTimer.unix < 60*2 || (getTimer.unix > 60*2 && form.delay_comment.length)">
-              <button v-if="rejectArray.length === 0" :class="{'button_loading':button_loading, 'disabled':notValid}"
-                      :disabled="notValid"
-                      class="btn btn--green w-50"
-
-                      @click.prevent="sendData(1)">{{ $t('confirm') }}</button>
-
-              <!-- sendData(0) -->
-              <button v-else :class="{'button_loading':button_loading, 'disabled':notValid}" :disabled="notValid"
-                      class="btn btn--red w-50 ml-5"
-
-
-                      @click.prevent="transferToSupervisor(true)">{{ $t('reject') }}</button>
-            </span>
-
-              <button :class="{'button_loading':button_loading, 'disabled':notValid}" :disabled="notValid"
-                      class="btn btn--green w-50"
-
-                      @click.prevent="transferModal = true">{{ $t('comment_to_supervisor') }}
-              </button>
-            </div>
-          </div>
-        </section>
-        <section v-else-if="user.admin_group === 3" class="container"> <!--call center-->
-          <div class="row">
-            <div class="col-12">
-              <button :class="{'button_loading':button_loading, 'disabled':notValid}" :disabled="notValid"
-                      class="btn btn--green w-50"
-
-                      @click.prevent="sendData(2)">{{ $t('send_to_moderate') }}
-              </button>
-
-              <button :class="{'button_loading':button_loading, 'disabled':notValid}" :disabled="notValid"
-                      class="btn btn--pale-red w-50 ml-1"
-
-                      @click.prevent="sendData(3)"
-              >
-                {{ $t('deactive_announce') }}
-              </button>
-
-              <button :disabled="notValid" class="btn btn--yellow w-50 ml-1" @click="handleBackList">
-                {{ $t('back_to_list') }}
-              </button>
-
-              <button :disabled="notValid" class="btn btn--green w-50"
-                      @click.prevent="transferModal = true">{{ $t('Transfer to Supervisor') }}
-              </button>
-
-            </div>
-          </div>
-        </section>
-      </div>
+      <moderator-actions
+        :id="single_announce.id"
+        :announcement="form"
+        :button_loading="button_loading"
+        :getTimer="getTimer"
+        :notValid="notValid"
+        :rejectObj="rejectObj"
+        @formChanged="(e) => (form = e)"
+        @openTransferModal="transferModal = true"
+        @sendData="sendData"
+      />
 
 
     </div>
@@ -720,6 +637,7 @@ import TitleWithLine from "~/components/global/titleWithLine";
 import FormRadioGroup from "~/components/forms/FormRadioGroup";
 import SellLastStep from '~/components/sell/SellLastStep';
 import ChangeLog from "~/components/moderator/changeLog";
+import ModeratorActions from '~/components/moderator/actions.vue'
 
 export default {
 
@@ -741,7 +659,8 @@ export default {
     SellFilters,
     PopularComments,
     FormRadioGroup,
-    ChangeLog
+    ChangeLog,
+    ModeratorActions,
   },
 
 

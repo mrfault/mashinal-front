@@ -425,16 +425,17 @@
 
               <!--      actions-->
               <moderator-actions
-                :rejectObj="rejectObj"
-                :button_loading="button_loading"
-                :notValid="notValid"
-                :getTimer="getTimer"
-                :announcement="form"
                 :id="single_announce.id"
-                @sendData="sendData"
+                :announcement="form"
+                :button_loading="button_loading"
+                :getTimer="getTimer"
+                :notValid="notValid"
+                :rejectArray="rejectObj.rejectArray"
                 @formChanged="(e) => (form = e)"
                 @openTransferModal="transferModal = true"
-
+                @sendData="sendData"
+                @handleLoading="handleLoading"
+                type="cars"
               />
 
             </div>
@@ -745,9 +746,6 @@ export default {
     }
   },
   methods: {
-    sendData2(status){
-      console.log("sendData2",status)
-    },
     // ui
     openModal(type) {
       this.showModal = true
@@ -765,12 +763,6 @@ export default {
       } else {
         obj[opt] = true
       }
-    },
-    scrollToTop() {
-      setTimeout(() => {
-        Vue.prototype.$scrollToTop = () => window.scrollTo(0, 0)
-      }, 1000)
-
     },
 
     // get
@@ -1090,6 +1082,9 @@ export default {
     },
 
     // handle lists
+    handleLoading(e){
+      this.loading = e;
+    },
     getIcon(key, value) {
       return {
         engine: {
@@ -1475,42 +1470,25 @@ export default {
       this.form.id = this.single_announce.id;
       this.form.month = this.single_announce.month || "";
       this.form.sell_store = this.single_announce.sell_store || 0;
-      // this.form.video_360_id = this.single_announce.video_360_id || "";
-      // this.form.modification = "";
-      // this.form.model = this.form.model_slug;
+      this.form.id_unique = this.single_announce.id.toString();
+      this.form.rejectArray = this.rejectObj.rejectArray;
+      this.form.saved_images = this.saved_images;
 
       delete this.form.model_slug;
       delete this.form.brand_slug;
-      this.form.id_unique = this.single_announce.id.toString();
-      // this.form.generation = this.generation
-      // this.form.car_catalog_id = this.modification
-      this.form.rejectArray = this.rejectObj.rejectArray;
-      this.form.saved_images = this.saved_images;
-      let formData = new FormData()
       delete this.form.user
-      // formData.append('images_360', this.uploadedVideo360);
-      // formData.append('interior_360', this.uploadedInterior360);
+
+
+      let formData = new FormData()
+
       formData.append('data', JSON.stringify(this.form))
       formData.append('deletedImages', JSON.stringify(this.deleteArr))
 
       this.loading = true;
       this.button_loading = true
-      try {
-        if (this.form.is_new && this.form.mileage > 500) {
-          this.$toasted.show(this.$t('Yürüş xanası 500 dən çox olmamalıdır.'), {
-            type: 'error',
-          })
-          this.loading = false;
-        } else if (!this.form.is_new && this.form.mileage == 0) {
-          this.$toasted.show(this.$t('Nəqliyyat vasitəsi yeni deyilsə yürüş 500-dən çox olmalıdır.'), {
-            type: 'error',
-          })
-          this.loading = false;
-        } else if (form.customs_clearance && !form.vin) {
-          this.$toasted.show(this.$t('Nəqliyyat vasitəsi gömrükdən keçməyibsə ban nömrəsini yazmaq mütləqdir'), {
-            type: 'error',
-          })
-        } else {
+
+        try {
+
           await this.$axios.$post('/ticket/car/' + this.single_announce.id, formData)
 
           if (this.user.admin_group == 2) {
@@ -1523,29 +1501,30 @@ export default {
               type: 'success',
             })
           }
+
+
+        } catch ({
+          response: {
+            data: {data},
+          },
+        }) {
+          this.loading = false;
+          this.button_loading = false
+          this.errors = []
+          this.$toasted.clear()
+          Object.keys(data)
+            .reverse()
+            .map((key) => {
+              this.errors.push(key)
+              this.$toasted.show(data[key][0], {
+                type: 'error',
+                duration: 0,
+
+              })
+            })
+
         }
 
-      } catch ({
-        response: {
-          data: {data},
-        },
-      }) {
-        this.loading = false;
-        this.button_loading = false
-        this.errors = []
-        this.$toasted.clear()
-        Object.keys(data)
-          .reverse()
-          .map((key) => {
-            this.errors.push(key)
-            this.$toasted.show(data[key][0], {
-              type: 'error',
-              duration: 0,
-
-            })
-          })
-
-      }
     },
     addComment(e) {
       if (form.comment === null) form.comment = ''
@@ -1556,8 +1535,6 @@ export default {
   },
   mounted() {
     this.getAnnounceData();
-    // this.scrollToTop()
-
   },
   beforeMount() {
   },
