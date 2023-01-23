@@ -370,7 +370,7 @@
             </div>
           </section>
           <!--      owner-->
-          <section class="row" v-if="false">
+          <section v-if="false" class="row">
             <div class="col-12">
               <title-with-line-and-reject-reason
                 no-approval
@@ -552,11 +552,11 @@
           :getTimer="getTimer"
           :notValid="notValid"
           :rejectArray="rejectArray"
+          :type="$route.query.type"
           @formChanged="(e) => (form = e)"
+          @handleLoading="handleLoading"
           @openTransferModal="transferModal = true"
           @sendData="sendData"
-          @handleLoading="handleLoading"
-          :type="$route.query.type"
           @transferToSupervisor="transferToSupervisor"
         />
 
@@ -856,6 +856,7 @@ export default {
       files: {},
       imagesBase64: [],
       form: {
+        model: null,
         auction: '',
         end_date: '',
         country_id: '',
@@ -1043,7 +1044,7 @@ export default {
     ...mapActions([
       'setSellPreviewData',
     ]),
-    handleLoading(e){
+    handleLoading(e) {
       this.loading = e;
     },
     handleBackList() {
@@ -1333,21 +1334,21 @@ export default {
       this.button_loading = true;
       try {
 
-          await this.$axios.$post('/ticket/moto/' + this.announceId + '/' + this.type,
-            formData
-          );
-          let moto = {
-            'moto': 'motorcycles',
-            'scooters': 'scooters',
-            'moto_atv': 'moto-atvs',
-          };
+        await this.$axios.$post('/ticket/moto/' + this.announceId + '/' + this.type,
+          formData
+        );
+        let moto = {
+          'moto': 'motorcycles',
+          'scooters': 'scooters',
+          'moto_atv': 'moto-atvs',
+        };
 
-          if (this.admin_user.admin_group == 2) {
-            location.href = '/alvcp/resources/announce-moderators';
-          } else {
-            location.href = '/alvcp/resources/' + moto[this.$route.query.type];
-          }
-          this.loading = false;
+        if (this.admin_user.admin_group == 2) {
+          location.href = '/alvcp/resources/announce-moderators';
+        } else {
+          location.href = '/alvcp/resources/' + moto[this.$route.query.type];
+        }
+        this.loading = false;
 
       } catch ({response: {data: {data}}}) {
         this.$nuxt.$emit('loading_status', false);
@@ -1747,12 +1748,7 @@ export default {
       } else return 'moto'
     },
     notValid() {
-      if (
-        !this.form.brand ||
-        !this.form.model ||
-        !this.form.year
-      ) return true
-      else return false
+      return this.form.brand == null || this.form.model == null
     },
     // single_announce:{
     //   get() {
@@ -1766,9 +1762,6 @@ export default {
 
 }
 </script>
-
-
-
 
 
 <!--moto 1-->
