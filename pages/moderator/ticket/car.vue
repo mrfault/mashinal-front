@@ -1459,10 +1459,14 @@ export default {
       }
     },
     async sendData(status = 2) {
-      if (this.form.saved_images.length !== this.imagesBase64.length) {
-        this.$toast.error(this.$t('please_wait_for_all_image_loading'))
-        return false;
+      if (this.saved_images.length !== this.imagesBase64.length) {
+        this.$toasted.show(this.$t('please_wait_for_all_image_loading'), {
+          type: 'error',
+        })
+        return false
       }
+
+      
 
 
       this.form.status = status
