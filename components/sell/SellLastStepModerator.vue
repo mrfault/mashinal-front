@@ -441,7 +441,7 @@
             @change="changeReason"
           />
         </div>
-        <div class="col-lg-2 mb-2 mb-lg-0 pl-0">
+        <div class="col-lg-3 mb-2 mb-lg-0 pl-0">
           <input
             key="vin"
             v-model="form.vin"
