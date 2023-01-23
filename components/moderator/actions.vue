@@ -126,6 +126,12 @@ export default {
           type: 'error',
         })
         this.$emit('handleLoading', false)
+      }
+      if ((this.type == 'cars') && (!this.form.car_number && !this.form.vin) ) {
+        this.$toasted.show(this.$t('Avtomobilin nömrəsi və ya VİN nömrə" boş ola bilməz.'), {
+          type: 'error',
+        })
+        this.$emit('handleLoading', false)
       } else if (!this.form.is_new && this.form.mileage == 0) {
         this.$toasted.show(this.$t('Nəqliyyat vasitəsi yeni deyilsə yürüş 500-dən çox olmalıdır.'), {
           type: 'error',
@@ -160,8 +166,8 @@ export default {
     openTransferModal() {
       this.$emit('openTransferModal', true)
     },
-    transferToSupervisor(cs){
-      this.$emit('transferToSupervisor',cs)
+    transferToSupervisor(cs) {
+      this.$emit('transferToSupervisor', cs)
     }
   },
   watch: {
@@ -171,9 +177,9 @@ export default {
         this.$emit("formChanged", this.form)
       },
     },
-    announcement:{
+    announcement: {
       deep: true,
-      handler(){
+      handler() {
         this.form = this.announcement
       }
     }
