@@ -40,15 +40,15 @@
           />
         </div>
         <div class="col-12 col-md-6 col-lg-3">
-          <label>{{$t('product_code')}}</label>
+          <label>{{ $t('product_code') }}</label>
           <form-text-input v-model="form.product_code" :placeholder="$t('product_code')"/>
         </div>
         <div class="col-12 col-md-6 col-lg-3">
-          <label>{{$t('headline')}}</label>
+          <label>{{ $t('headline') }}</label>
           <form-text-input v-model="form.title" :maxlength="25" :placeholder="$t('title_max_character', { max: 25 })"/>
         </div>
         <div class="col-12 mt-3">
-          <label>{{$t('description_placeholder_part')}}</label>
+          <label>{{ $t('description_placeholder_part') }}</label>
           <form-textarea v-model="form.description" :maxlength="3000"
                          :placeholder="$t('description_placeholder_part')"/>
         </div>
@@ -74,14 +74,15 @@
       </h2>
       <div class="row">
         <!-- Category -->
-        <div v-if="partCategories && partCategories.length && form.category_id" id="anchor-category_id"
+        <div v-if="partCategories && partCategories.length" id="anchor-category_id"
              class="col-lg-4 mb-3 mb-lg-0">
           <form-select
             v-model="form.category_id"
+            :clear-option="false"
+            :invalid="isInvalid('category_id')"
             :label="$t('category')"
             :options="categories"
-            :invalid="isInvalid('category_id')"
-            :clear-option="false"
+            :allow-clear="false"
             @change="
               categorySelected($event),
                 removeError('category_id'),
@@ -96,8 +97,8 @@
           class="col-lg-4 mb-3 mb-lg-0"
         >
           <form-select
-            :allow-clear="false"
             v-model="form.sub_category_id"
+            :allow-clear="false"
             :clear-option="false"
             :invalid="isInvalid('sub_category')"
             :label="$t('sub_category')"
@@ -116,12 +117,13 @@
           class="col-lg-4 mb-3 mb-lg-0"
         >
           <form-select
+            :allow-clear="false"
             v-model="form.brand_id"
+            :clear-option="false"
+            :invalid="isInvalid('brand_id')"
             :label="$t('select_brand')"
             :options="[{ id: 0, name: $t('other') }, ...brands]"
             has-search
-            :invalid="isInvalid('brand_id')"
-            :clear-option="false"
             @change="removeError('brand_id')"
           />
         </div>
@@ -180,12 +182,12 @@
               :key="'filter-' + filter.id"
               class="col-lg-4 mb-3"
             >
-              <pre>{{ filter[0] }}</pre>
+              <label>{{ $t(filter.key) }}</label>
               <!-- Select -->
               <form-select
-                :allow-clear="false"
                 v-if="filter.component === 'multiselect-component'"
                 v-model="form.filter[filter.key]"
+                :allow-clear="false"
                 :clear-option="!filter.is_required"
                 :invalid="isInvalid(filter.key)"
                 :label="$t(filter.key)"
@@ -229,6 +231,13 @@
             <!-- Price -->
             <div class="col-12 mb-3">
               <div class="row">
+                <div class="col-12">
+                  <title-with-line-and-reject-reason
+                    no-approval
+                    title="price"
+                    @change="changeReason"
+                  />
+                </div>
                 <div class="col-auto">
                   <form-price-input
                     id="anchor-price"
@@ -242,7 +251,7 @@
                 </div>
                 <div class="col-auto">
                   <form-switch
-                    v-model="form.currency"
+                    v-model="form.currency_id"
                     :options="getCurrencyOptions"
                     @change="updatePreview('currency')"
                   />
@@ -279,48 +288,61 @@
               </div>
             </div>
 
+            <div class="col-12">
+              <div class="row">
 
-            <!-- Region -->
-            <div
-              v-if="regions.length"
-              id="anchor-region_id"
-              class="col-lg-4 mb-3"
-            >
-              <form-select
-                :allow-clear="false"
-                v-model="form.region_id"
-                :clear-option="false"
-                :invalid="isInvalid('region_id')"
-                :label="$t('region')"
-                :options="regions"
-                has-search
-                @change="removeError('region_id')"
-              />
+                <div class="col-12">
+                  <title-with-line-and-reject-reason
+                    no-approval
+                    title="region"
+                    @change="changeReason"
+                  />
+                </div>
+
+                <!-- Region -->
+                <div
+                  v-if="regions.length"
+                  id="anchor-region_id"
+                  class="col-lg-4 mb-3"
+                >
+                  <form-select
+                    v-model="form.region_id"
+                    :allow-clear="false"
+                    :clear-option="false"
+                    :invalid="isInvalid('region_id')"
+                    :label="$t('region')"
+                    :options="regions"
+                    has-search
+                    @change="removeError('region_id')"
+                  />
+                </div>
+
+                <!-- Delivery -->
+                <div class="col-lg-4 mb-3">
+                  <form-checkbox
+                    id="anchor-have_delivery"
+                    v-model="form.have_delivery"
+                    :invalid="isInvalid('have_delivery')"
+                    :label="$t('have_delivery')"
+                    checked-value="delivery"
+                    @change="removeError('have_delivery')"
+                  />
+                </div>
+
+                <!-- Warranty -->
+                <div class="col-lg-4 mb-3">
+                  <form-checkbox
+                    id="anchor-have_warranty"
+                    v-model="form.have_warranty"
+                    :invalid="isInvalid('have_warranty')"
+                    :label="$t('have_warranty')"
+                    checked-value="warranty"
+                    @change="removeError('have_warranty')"
+                  />
+                </div>
+              </div>
             </div>
 
-            <!-- Delivery -->
-            <div class="col-lg-4 mb-3">
-              <form-checkbox
-                id="anchor-have_delivery"
-                v-model="form.have_delivery"
-                :invalid="isInvalid('have_delivery')"
-                :label="$t('have_delivery')"
-                checked-value="delivery"
-                @change="removeError('have_delivery')"
-              />
-            </div>
-
-            <!-- Warranty -->
-            <div class="col-lg-4 mb-3">
-              <form-checkbox
-                id="anchor-have_warranty"
-                v-model="form.have_warranty"
-                :invalid="isInvalid('have_warranty')"
-                :label="$t('have_warranty')"
-                checked-value="warranty"
-                @change="removeError('have_warranty')"
-              />
-            </div>
           </div>
         </div>
 
@@ -388,6 +410,7 @@
             url="/"
             @addFiles="addFiles"
             @change="addImages"
+            @delete="removeImage"
             @deletedIndex="deleteByIndex"
             @passBase64Images="passBase64Images"
             @replaceImage="replaceImage"
@@ -405,11 +428,11 @@
         :getTimer="getTimer"
         :notValid="notValid"
         :rejectArray="rejectArray"
+        type="part"
         @formChanged="(e) => (form = e)"
+        @handleLoading="handleLoading"
         @openTransferModal="transferModal = true"
         @sendData="sendData"
-        @handleLoading="handleLoading"
-        type="part"
         @transferToSupervisor="transferToSupervisor"
       />
 
@@ -429,19 +452,19 @@
         <br><br>
       </div>
     </div>
-      <!--    logs-->
-      <modal-popup
-        :modal-class="''"
-        :title="`${$t('logs')}`"
-        :toggle="openLog"
-        @close="openLog = false"
-      >
-        <change-log
-          :btl="single_announce.btl_announces"
-          :logs="single_announce.change_log"
-          :user-id="single_announce.user_id"
-        />
-      </modal-popup>
+    <!--    logs-->
+    <modal-popup
+      :modal-class="''"
+      :title="`${$t('logs')}`"
+      :toggle="openLog"
+      @close="openLog = false"
+    >
+      <change-log
+        :btl="single_announce.btl_announces"
+        :logs="single_announce.change_log"
+        :user-id="single_announce.user_id"
+      />
+    </modal-popup>
     <!--    transfer modal-->
     <modal-popup
       :modal-class="''"
@@ -492,6 +515,7 @@ import FormRadioGroup from "~/components/forms/FormRadioGroup";
 import FormKeywords from '~/components/forms/FormKeywords'
 import ChangeLog from "~/components/moderator/changeLog";
 import ModeratorActions from '~/components/moderator/actions.vue'
+
 export default {
 
   name: 'parts-pages-moderation',
@@ -570,6 +594,7 @@ export default {
         filter: {},
         media: [],
         saved_images: [],
+        currency_id: 1,
       },
       announceId: null,
       admin_user: {},
@@ -647,7 +672,7 @@ export default {
   },
 
   methods: {
-    handleLoading(e){
+    handleLoading(e) {
       this.loading = e;
     },
     async getAnnounceData() {
@@ -687,7 +712,7 @@ export default {
 
         this.announceId = announce.id;
         this.form.delay_comment = "";
-        this.form.category_id = announce.category_id;
+        this.form.category_id = parseInt(announce.category_id);
         this.form.sub_category_id = announce.sub_category_id;
         this.form.region_id = announce.region_id;
         this.form.brand_id = announce.brand_id;
@@ -798,39 +823,46 @@ export default {
       this.form.saved_images.splice(index, 1);
     },
     async addFiles(v) {
-    await Promise.all(
+      await Promise.all(
         v.map(async (image) => {
           let formData = new FormData()
           formData.append('temp_id', this.date)
-          formData.append('images[]', image);
+          formData.append('images[]', image)
           try {
-            const data = await this.$axios.$post('/upload_temporary_images', formData, {
-              headers: {
-                'Content-Type': 'multipart/form-data'
-              }
-            })
-            this.form.saved_images = this.form.saved_images.concat(data.ids)
-            this.$store.commit('setSavedImageUrls', data.images);
-            this.$nuxt.$emit('remove_image_loading_by_index', this.form.saved_images.length);
-          } catch ({response: {data: {data}}}) {
-            this.$nuxt.$emit('remove_image_by_index', this.form.saved_images.length);
-            this.$nuxt.$emit('remove_image_on_catch');
+            const data = await this.$axios.$post(
+              '/upload_temporary_images',
+              formData,
+              {
+                headers: {
+                  'Content-Type': 'multipart/form-data',
+                },
+              },
+            )
+            this.saved_images = this.saved_images.concat(data.ids)
+            this.$store.commit('setSavedImageUrls', data.images)
+            this.$nuxt.$emit(
+              'remove_image_loading_by_index',
+              this.saved_images.length,
+            )
+          } catch ({
+            response: {
+              data: {data},
+            },
+          }) {
+            this.$nuxt.$emit('remove_image_by_index', this.saved_images.length)
+            this.$nuxt.$emit('remove_image_on_catch')
             this.errors = []
             this.$toasted.clear()
             Object.keys(data).map((key) => {
-              this.$toasted.show(data[key], {type: 'error'});
+              this.$toasted.show(data[key], {type: 'error'})
             })
           }
-        })
+        }),
       )
-
     },
     progressing(i) {
       if (i === 0) this.progress_width = 0;
       else this.progress_width = (100 / 10) * i;
-    },
-    getCurrency(v) {
-      this.form.currency = v.key;
     },
     async handleChange(object) {
       if (object.key === 'category_id') {
@@ -928,13 +960,15 @@ export default {
 
 
       for (const [key, value] of Object.entries(this.form.filter)) {
-        console.log(`${key}: ${value}`);
         this.form[key] = value;
       }
 
       let formData = new FormData();
       this.form.status = status;
+
       delete this.form['filter-undefined']
+
+
       formData.append('data', JSON.stringify(this.form));
       formData.append('deletedImages', JSON.stringify(this.deleteArr));
       this.$nuxt.$emit('loading_status', true);
@@ -955,6 +989,9 @@ export default {
 
         this.errors = [];
         this.$toasted.clear();
+        if (data){
+
+
         Object.keys(data).reverse().map((key) => {
           this.errors.push(key);
 
@@ -972,12 +1009,17 @@ export default {
             }
           })
         })
+        }else return
       }
       // this.$router.push('/')
     },
     addImages(v) {
-      this.files = v;
-      this.$nuxt.$emit('progress_change', {type: 'images', count: Object.keys(this.files).length});
+      this.files = v
+      this.getInfo()
+      this.$nuxt.$emit('progress_change', {
+        type: 'images',
+        count: Object.keys(this.files).length,
+      })
     },
     move(input, from, to) {
       let numberOfDeletedElm = 1;
@@ -1003,7 +1045,6 @@ export default {
       }
     },
     categorySelected(id) {
-      console.log("categorySelected")
       this.form = {
         ...this.form,
         is_new: true,
@@ -1011,7 +1052,7 @@ export default {
         commercial_size: '',
       }
 
-      delete this.form.sub_category_id
+      // delete this.form.sub_category_id
       delete this.form.brand_id
       if (this.filter_data.filters && this.filter_data.filters.length) {
         this.filter_data.filters.forEach((filter) => {
@@ -1109,8 +1150,7 @@ export default {
     notValid() {
       if (
         !this.form.title ||
-        !this.form.category_id
-      ) return true
+        !this.form.category_id ) return true
       else return false
     },
     crumbs() {
