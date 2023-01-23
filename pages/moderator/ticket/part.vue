@@ -40,15 +40,15 @@
           />
         </div>
         <div class="col-12 col-md-6 col-lg-3">
-          <label>{{$t('product_code')}}</label>
+          <label>{{ $t('product_code') }}</label>
           <form-text-input v-model="form.product_code" :placeholder="$t('product_code')"/>
         </div>
         <div class="col-12 col-md-6 col-lg-3">
-          <label>{{$t('headline')}}</label>
+          <label>{{ $t('headline') }}</label>
           <form-text-input v-model="form.title" :maxlength="25" :placeholder="$t('title_max_character', { max: 25 })"/>
         </div>
         <div class="col-12 mt-3">
-          <label>{{$t('description_placeholder_part')}}</label>
+          <label>{{ $t('description_placeholder_part') }}</label>
           <form-textarea v-model="form.description" :maxlength="3000"
                          :placeholder="$t('description_placeholder_part')"/>
         </div>
@@ -78,10 +78,10 @@
              class="col-lg-4 mb-3 mb-lg-0">
           <form-select
             v-model="form.category_id"
+            :clear-option="false"
+            :invalid="isInvalid('category_id')"
             :label="$t('category')"
             :options="categories"
-            :invalid="isInvalid('category_id')"
-            :clear-option="false"
             @change="
               categorySelected($event),
                 removeError('category_id'),
@@ -96,8 +96,8 @@
           class="col-lg-4 mb-3 mb-lg-0"
         >
           <form-select
-            :allow-clear="false"
             v-model="form.sub_category_id"
+            :allow-clear="false"
             :clear-option="false"
             :invalid="isInvalid('sub_category')"
             :label="$t('sub_category')"
@@ -117,11 +117,11 @@
         >
           <form-select
             v-model="form.brand_id"
+            :clear-option="false"
+            :invalid="isInvalid('brand_id')"
             :label="$t('select_brand')"
             :options="[{ id: 0, name: $t('other') }, ...brands]"
             has-search
-            :invalid="isInvalid('brand_id')"
-            :clear-option="false"
             @change="removeError('brand_id')"
           />
         </div>
@@ -183,9 +183,9 @@
               <pre>{{ filter[0] }}</pre>
               <!-- Select -->
               <form-select
-                :allow-clear="false"
                 v-if="filter.component === 'multiselect-component'"
                 v-model="form.filter[filter.key]"
+                :allow-clear="false"
                 :clear-option="!filter.is_required"
                 :invalid="isInvalid(filter.key)"
                 :label="$t(filter.key)"
@@ -287,8 +287,8 @@
               class="col-lg-4 mb-3"
             >
               <form-select
-                :allow-clear="false"
                 v-model="form.region_id"
+                :allow-clear="false"
                 :clear-option="false"
                 :invalid="isInvalid('region_id')"
                 :label="$t('region')"
@@ -388,6 +388,7 @@
             url="/"
             @addFiles="addFiles"
             @change="addImages"
+            @delete="removeImage"
             @deletedIndex="deleteByIndex"
             @passBase64Images="passBase64Images"
             @replaceImage="replaceImage"
@@ -405,11 +406,11 @@
         :getTimer="getTimer"
         :notValid="notValid"
         :rejectArray="rejectArray"
+        type="part"
         @formChanged="(e) => (form = e)"
+        @handleLoading="handleLoading"
         @openTransferModal="transferModal = true"
         @sendData="sendData"
-        @handleLoading="handleLoading"
-        type="part"
         @transferToSupervisor="transferToSupervisor"
       />
 
@@ -429,19 +430,19 @@
         <br><br>
       </div>
     </div>
-      <!--    logs-->
-      <modal-popup
-        :modal-class="''"
-        :title="`${$t('logs')}`"
-        :toggle="openLog"
-        @close="openLog = false"
-      >
-        <change-log
-          :btl="single_announce.btl_announces"
-          :logs="single_announce.change_log"
-          :user-id="single_announce.user_id"
-        />
-      </modal-popup>
+    <!--    logs-->
+    <modal-popup
+      :modal-class="''"
+      :title="`${$t('logs')}`"
+      :toggle="openLog"
+      @close="openLog = false"
+    >
+      <change-log
+        :btl="single_announce.btl_announces"
+        :logs="single_announce.change_log"
+        :user-id="single_announce.user_id"
+      />
+    </modal-popup>
     <!--    transfer modal-->
     <modal-popup
       :modal-class="''"
@@ -492,6 +493,7 @@ import FormRadioGroup from "~/components/forms/FormRadioGroup";
 import FormKeywords from '~/components/forms/FormKeywords'
 import ChangeLog from "~/components/moderator/changeLog";
 import ModeratorActions from '~/components/moderator/actions.vue'
+
 export default {
 
   name: 'parts-pages-moderation',
@@ -647,7 +649,7 @@ export default {
   },
 
   methods: {
-    handleLoading(e){
+    handleLoading(e) {
       this.loading = e;
     },
     async getAnnounceData() {
@@ -798,32 +800,42 @@ export default {
       this.form.saved_images.splice(index, 1);
     },
     async addFiles(v) {
-    await Promise.all(
+      await Promise.all(
         v.map(async (image) => {
           let formData = new FormData()
           formData.append('temp_id', this.date)
-          formData.append('images[]', image);
+          formData.append('images[]', image)
           try {
-            const data = await this.$axios.$post('/upload_temporary_images', formData, {
-              headers: {
-                'Content-Type': 'multipart/form-data'
-              }
-            })
-            this.form.saved_images = this.form.saved_images.concat(data.ids)
-            this.$store.commit('setSavedImageUrls', data.images);
-            this.$nuxt.$emit('remove_image_loading_by_index', this.form.saved_images.length);
-          } catch ({response: {data: {data}}}) {
-            this.$nuxt.$emit('remove_image_by_index', this.form.saved_images.length);
-            this.$nuxt.$emit('remove_image_on_catch');
+            const data = await this.$axios.$post(
+              '/upload_temporary_images',
+              formData,
+              {
+                headers: {
+                  'Content-Type': 'multipart/form-data',
+                },
+              },
+            )
+            this.saved_images = this.saved_images.concat(data.ids)
+            this.$store.commit('setSavedImageUrls', data.images)
+            this.$nuxt.$emit(
+              'remove_image_loading_by_index',
+              this.saved_images.length,
+            )
+          } catch ({
+            response: {
+              data: {data},
+            },
+          }) {
+            this.$nuxt.$emit('remove_image_by_index', this.saved_images.length)
+            this.$nuxt.$emit('remove_image_on_catch')
             this.errors = []
             this.$toasted.clear()
             Object.keys(data).map((key) => {
-              this.$toasted.show(data[key], {type: 'error'});
+              this.$toasted.show(data[key], {type: 'error'})
             })
           }
-        })
+        }),
       )
-
     },
     progressing(i) {
       if (i === 0) this.progress_width = 0;
@@ -976,8 +988,12 @@ export default {
       // this.$router.push('/')
     },
     addImages(v) {
-      this.files = v;
-      this.$nuxt.$emit('progress_change', {type: 'images', count: Object.keys(this.files).length});
+      this.files = v
+      this.getInfo()
+      this.$nuxt.$emit('progress_change', {
+        type: 'images',
+        count: Object.keys(this.files).length,
+      })
     },
     move(input, from, to) {
       let numberOfDeletedElm = 1;
