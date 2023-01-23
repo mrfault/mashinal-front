@@ -83,11 +83,9 @@ export default {
       var result = "";
 
       if (!isFloat && isNumeric) {
-        console.log(1)
         return num.length > this.maxlength ? num.slice(0, this.maxlength) : num;
 
       } else if (isFloat && isNumeric) {
-        console.log(2)
         var [tam, kesr] = num.split(".");
 
         tam = tam.length > this.maxlength ? tam.slice(0, this.maxlength) : tam;
@@ -121,7 +119,6 @@ export default {
       var firstTwo = parseFloat(decimal.toString().substring(2, 4));
       var final = `${tam}.${firstTwo}`
       var final2 = parseFloat(final)
-      console.log("decimal:", decimal, "firstTwo:", firstTwo, "truncate:", tam, "final", final)
       this.numericValue = final2;
     },
     removeDecimal2() {
@@ -144,8 +141,7 @@ export default {
       //
       // }
       set(value) {
-        console.log("type", typeof(value))
-        console.log("value", value)
+
         if (value % 1 !== 0) {
 
           this.$emit('input', parseFloat(value.match(/^\d+\.?\d{0,2}/)));
