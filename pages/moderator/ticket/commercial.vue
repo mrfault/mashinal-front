@@ -199,7 +199,8 @@
           :is-edit="false"
           :load-croppa="true"
           :max_files="30"
-          :saved_images="saved_images" :stopUploading="imagesBase64.length >= 20"
+          :saved_images="saved_images"
+          :stopUploading="imagesBase64.length >= 20"
           page="sell"
           url="/"
           @addFiles="addFiles"
@@ -207,7 +208,6 @@
           @deletedIndex="deleteByIndex"
           @passBase64Images="passBase64Images"
           @replaceImage="replaceImage"
-          type="part"
         />
 
       </section>
@@ -1091,13 +1091,13 @@ export default {
       var index = this.errors.indexOf(type);
       if (index !== -1) this.errors.splice(index, 1);
     },
-    async deleteByIndex(index) {
-      if (this.saved_images[index]) {
-        this.deleteArr.push(this.saved_images[index])
+    async deleteByIndex(deleteIndex) {
+      if (this.saved_images[deleteIndex]) {
+        this.deleteArr.push(this.saved_images[deleteIndex])
       } else {
-        await this.$axios.$post('/remove_temporary_image/' + this.saved_images[index]);
+        await this.$axios.$post('/remove_temporary_image/' + this.saved_images[deleteIndex]);
       }
-      this.saved_images.splice(index, 1);
+      this.saved_images.splice(deleteIndex, 1);
     },
     async addFiles(v) {
       await Promise.all(
@@ -1125,7 +1125,6 @@ export default {
           }
         })
       )
-
     },
     progressing(i) {
       if (i === 0) this.progress_width = 0;
@@ -1357,6 +1356,7 @@ export default {
     //sendData
     addImages(v) {
       this.files = v;
+
       this.$nuxt.$emit('progress_change', {type: 'images', count: Object.keys(this.files).length});
     },
     move(input, from, to) {
