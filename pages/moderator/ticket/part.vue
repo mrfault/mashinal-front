@@ -815,12 +815,14 @@ export default {
       if (index !== -1) this.errors.splice(index, 1);
     },
     async deleteByIndex(index) {
-      if (this.form.saved_images[index]) {
-        this.deleteArr.push(this.form.saved_images[index])
+      if (this.saved_images[index]) {
+        this.deleteArr.push(this.saved_images[index])
       } else {
-        await this.$axios.$post('/remove_temporary_image/' + this.form.saved_images[index]);
+        await this.$axios.$post(
+          '/remove_temporary_image/' + this.saved_images[index],
+        )
       }
-      this.form.saved_images.splice(index, 1);
+      this.saved_images.splice(index, 1)
     },
     async addFiles(v) {
       await Promise.all(
@@ -873,7 +875,12 @@ export default {
     },
 
     passBase64Images(val) {
-      this.imagesBase64 = val;
+      this.imagesBase64 = val
+    },
+    replaceImage(object) {
+      if (this.saved_images.length !== this.imagesBase64.length) return
+      this.imagesBase64 = object.images
+      this.move(this.saved_images, object.v.oldIndex, object.v.newIndex)
     },
 
     deleteArrHandler(v) {
@@ -953,9 +960,11 @@ export default {
       }
     },
     async sendData(status = 2) {
-      if (this.form.saved_images.length !== this.imagesBase64.length) {
-        this.$toast.error(this.$t('please_wait_for_all_image_loading'))
-        return false;
+      if (this.saved_images.length !== this.imagesBase64.length) {
+        this.$toasted.show(this.$t('please_wait_for_all_image_loading'), {
+          type: 'error',
+        })
+        return false
       }
 
 
@@ -1027,11 +1036,7 @@ export default {
       numberOfDeletedElm = 0;
       input.splice(to, numberOfDeletedElm, elm);
     },
-    replaceImage(object) {
-      if (this.form.saved_images.length !== this.imagesBase64.length) return;
-      this.imagesBase64 = object.images;
-      this.move(this.form.saved_images, object.v.oldIndex, object.v.newIndex);
-    },
+
 
     //  --------------
     isInvalid(field) {
