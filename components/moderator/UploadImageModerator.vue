@@ -97,8 +97,12 @@
         </div>
       </div>
 
-
-      <div v-if="isOpenCroppa && loadCroppa" class="custom_modal">
+      <modal-popup
+        :modal-class="''"
+        :toggle="isOpenCroppa && loadCroppa"
+        closeable
+        @close="!isOpenCroppa && !loadCroppa"
+      >
         <car-view-for-croppa
           v-if="announce"
           :key="announce.id"
@@ -108,7 +112,8 @@
           :saved_images="saved_images"
           @newThumb="newThumb"
         />
-      </div>
+      </modal-popup>
+
 
       <no-ssr>
         <LightBox v-if="active_box" :key="'LB'+lbIndex" :media="fancyBoxMedia" :showLightBox="active_box"
