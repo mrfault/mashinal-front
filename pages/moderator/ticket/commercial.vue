@@ -567,7 +567,7 @@
         :button_loading="button_loading"
         :getTimer="getTimer"
         :notValid="notValid"
-        :rejectArray="rejectArray"
+        :rejectArray="rejectObj.rejectArray"
         @formChanged="(e) => (form = e)"
         @openTransferModal="transferModal = true"
         @sendData="sendData"
@@ -1292,7 +1292,7 @@ export default {
       delete this.form.box;
       delete this.form.btl_cookie;
       delete this.form.com_cat;
-      delete this.form.commercial_type_id;
+      // delete this.form.commercial_type_id;
       delete this.form.credit;
       delete this.form.customed_ones;
       delete this.form.cylinder_placement;

@@ -127,6 +127,12 @@ export default {
         })
         this.$emit('handleLoading', false)
       }
+      if ((this.type !== 'part') && (this.form.saved_images.length < 3)) {
+        this.$toasted.show(this.$t('Şəkillər 3-dən az olmamalıdır.'), {
+          type: 'error',
+        })
+        this.$emit('handleLoading', false)
+      }
       if ((this.type == 'cars') && (!this.form.car_number && !this.form.vin)) {
         this.$toasted.show(this.$t('Avtomobilin nömrəsi və ya VİN nömrə" boş ola bilməz.'), {
           type: 'error',
