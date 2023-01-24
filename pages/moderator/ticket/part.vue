@@ -6,6 +6,7 @@
     <div v-if="loading">
       <elements-loader></elements-loader>
     </div>
+
     <div
       v-else-if="!single_announce.id && !loading"
       class="d-flex flex-column justify-content-center h-300"
@@ -24,7 +25,7 @@
             :userData="single_announce.user"
           />
         </div>
-        <div v-if="single_announce.change_log && single_announce.change_log.length"
+        <div v-if="single_announce.change_log && single_announce.change_log.length && (user.admin_group !== 2)"
              class="col-12 col-lg-3 d-flex justify-content-end">
           <button
             :class="{ button_loading: button_loading }"
@@ -457,18 +458,20 @@
       </div>
     </div>
     <!--    logs-->
-    <modal-popup
-      :modal-class="''"
-      :title="`${$t('logs')}`"
-      :toggle="openLog"
-      @close="openLog = false"
-    >
-      <change-log
-        :btl="single_announce.btl_announces ? single_announce.btl_announces : []"
-        :logs="single_announce.change_log"
-        :user-id="single_announce.user_id"
-      />
-    </modal-popup>
+      <modal-popup
+        :modal-class="''"
+        :title="`${$t('logs')}`"
+        :toggle="(user.admin_group !== 2) && openLog"
+        @close="openLog = false"
+      >
+        <template v-if="single_announce && single_announce.btl_announces">
+          <change-log
+            :btl="single_announce.btl_announces"
+            :logs="single_announce.change_log"
+            :user-id="single_announce.user_id"
+          />
+        </template>
+      </modal-popup>
     <!--    transfer modal-->
     <modal-popup
       :modal-class="''"
@@ -676,8 +679,8 @@ export default {
   },
 
   methods: {
-    changeIsNegotiable(e){
-      if (e == true){
+    changeIsNegotiable(e) {
+      if (e == true) {
         this.form.price = 0;
       }
     },

@@ -598,7 +598,7 @@
     <modal-popup
       :modal-class="''"
       :title="`${$t('logs')}`"
-      :toggle="openLog"
+      :toggle=" (user.admin_group !== 2) && openLog"
       @close="openLog = false"
     >
       <change-log
