@@ -151,7 +151,11 @@ export default {
         this.$toasted.show(this.$t('VIN nömrənin formatı düzgün deyil'), {
           type: 'error',
         })
-      } else if (this.form.price == 0) {
+      } else if ((this.type == 'part') && (!this.form.is_negotiable) && (this.form.price < 1)) {
+        this.$toasted.show(this.$t('Minimal Qiymət 1 olmalıdır.'), {
+          type: 'error',
+        })
+      }else if ((this.type !== 'part') && this.form.price == 0) {
         this.$toasted.show(this.$t('Minimal Qiymət 1 olmalıdır.'), {
           type: 'error',
         })
@@ -172,8 +176,12 @@ export default {
         }
         if (this.type == 'moto-atv') {
           location.href = '/alvcp/resources/moto-atvs';
-        } else {
-          location.href = `/alvcp/resources/${this.type}`;
+        }
+        if (this.type == 'part') {
+          location.href = '/alvcp/resources/parts';
+        }
+        if (this.type == 'scooters') {
+          location.href = '/alvcp/resources/scooters';
         }
       } else {
         location.href = '/alvcp/resources/announce-moderators';
