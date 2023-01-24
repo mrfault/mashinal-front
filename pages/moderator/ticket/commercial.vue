@@ -438,6 +438,7 @@
             :title=" 'license_plate_number_vin_or_carcase_number'"
             spanId="anchor-vin"
             @change="changeReason"
+            img-src="/img/flag.svg"
           />
         </div>
         <div

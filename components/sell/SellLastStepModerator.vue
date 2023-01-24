@@ -393,7 +393,9 @@
               v-model="form.car_number"
               :mask="'99 - AA - 999'"
               :placeholder="'__ - __ - ___'"
+              img-src="/img/flag.svg"
             />
+
             <!--              class="ma-input"-->
 
 
