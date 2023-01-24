@@ -1484,10 +1484,17 @@ export default {
       this.form.id_unique = this.single_announce.id.toString();
       this.form.rejectArray = this.rejectObj.rejectArray;
       this.form.saved_images = this.saved_images;
+      this.form.end_date = null;
+      this.form.video_360_id = '';
+      this.form.owner_type = 0;
+      this.form.generation =  this.form.generation_id;
 
       delete this.form.model_slug;
       delete this.form.brand_slug;
-      delete this.form.user
+      delete this.form.user;
+      delete this.form.brandObj
+      delete this.form.brand_id
+      delete this.form.brand_id
 
 
       let formData = new FormData()
@@ -1502,11 +1509,7 @@ export default {
 
           await this.$axios.$post('/ticket/car/' + this.single_announce.id, formData)
 
-          if (this.user.admin_group == 2) {
-            location.href = 'https://dev.mashin.al/alvcp/resources/announcements'
-          } else {
-            location.href = 'https://dev.mashin.al/alvcp/resources/announcements'
-          }
+
           if (status == 0) {
             this.$toasted.show(this.$t('your_announce_rejected'), {
               type: 'success',

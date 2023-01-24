@@ -275,7 +275,7 @@
       </section>
 
       <!--      owner-->
-      <section id="owner-section-1" class="row">
+      <section id="owner-section-1" class="row" v-if="false">
         <div class="col-12">
           <title-with-line-and-reject-reason
             no-approval
