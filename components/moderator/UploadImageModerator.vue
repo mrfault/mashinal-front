@@ -38,7 +38,7 @@
                     class="announcement-category__overlay__generation__item announcement-category__photo mb-20 cursor-pointer"
 
               >
-                    <div v-if="loading && (rotateKey == key)" style="height: 200px;position: relative;z-index:99">
+                    <div v-if="rotateKey == key" style="height: 200px;position: relative;z-index:99">
                       <elements-loader></elements-loader>
                     </div>
                 <div

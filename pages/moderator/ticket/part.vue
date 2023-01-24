@@ -241,6 +241,7 @@
                 <div class="col-auto">
                   <form-price-input
                     id="anchor-price"
+                    :disabled="form.is_negotiable"
                     v-model="form.price"
                     :invalid="isInvalid('price')"
                     :maxlength="9"
@@ -974,6 +975,7 @@ export default {
 
       let formData = new FormData();
       this.form.status = status;
+      this.form.saved_images = this.saved_images;
 
       delete this.form['filter-undefined']
 
