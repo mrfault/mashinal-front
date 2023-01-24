@@ -1,6 +1,12 @@
 <template>
-  <div v-if="loading">
+  <div v-if="loading && single_announce.id">
     <elements-loader></elements-loader>
+  </div>
+  <div
+    v-else-if="!single_announce.id && !loading"
+    class="d-flex flex-column justify-content-center h-300"
+  >
+    <h1 class="text-center">Baxılmayanlar mövcud deyil</h1>
   </div>
   <div v-else class="w-100" style="box-sizing: border-box;overflow: hidden">
     <div class="container  px-3 px-md-0">
@@ -400,6 +406,7 @@
                 :title="'license_plate_number_vin_or_carcase_number'"
                 spanId="anchor-vin"
                 @change="changeReason"
+                img-src="/img/flag.svg"
               />
             </div>
             <div class="col-12 col-md-6 col-lg-3">

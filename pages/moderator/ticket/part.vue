@@ -6,6 +6,12 @@
     <div v-if="loading">
       <elements-loader></elements-loader>
     </div>
+    <div
+      v-else-if="!single_announce.id && !loading"
+      class="d-flex flex-column justify-content-center h-300"
+    >
+      <h1 class="text-center">Baxılmayanlar mövcud deyil</h1>
+    </div>
     <!--    ANNOUNCE-->
     <div v-else-if="single_announce && single_announce.id && !loading" class="card w-100">
       <!--        userdata-->
@@ -461,7 +467,7 @@
       @close="openLog = false"
     >
       <change-log
-        :btl="single_announce.btl_announces"
+        :btl="single_announce.btl_announces ? single_announce.btl_announces : []"
         :logs="single_announce.change_log"
         :user-id="single_announce.user_id"
       />
@@ -1233,6 +1239,16 @@ export default {
     await this.$store.dispatch('parts/getCategories')
   },
 
+  watch:{
+    'form.price':{
+      deep: true,
+      handler(){
+        if (this.form.price == null){
+          this.form.price = 0;
+        }
+      }
+    }
+  }
 
 }
 </script>
