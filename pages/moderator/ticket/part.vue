@@ -461,7 +461,7 @@
       @close="openLog = false"
     >
       <change-log
-        :btl="single_announce.btl_announces"
+        :btl="single_announce.btl_announces ? single_announce.btl_announces : []"
         :logs="single_announce.change_log"
         :user-id="single_announce.user_id"
       />
@@ -1233,6 +1233,16 @@ export default {
     await this.$store.dispatch('parts/getCategories')
   },
 
+  watch:{
+    'form.price':{
+      deep: true,
+      handler(){
+        if (this.form.price == null){
+          this.form.price = 0;
+        }
+      }
+    }
+  }
 
 }
 </script>
