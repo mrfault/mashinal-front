@@ -38,8 +38,9 @@
                     class="announcement-category__overlay__generation__item announcement-category__photo mb-20 cursor-pointer"
 
               >
-                    <div v-if="rotateKey == key" style="height: 200px;position: relative;z-index:99">
-                      <elements-loader></elements-loader>
+                    <div v-if="rotateKey == key" class="moderator-image-loader">
+<!--                      <elements-loader></elements-loader>-->
+                      <img alt="" class="show" src="/images/loading-78.gif">
                     </div>
                 <div
 
@@ -777,4 +778,15 @@ export default {
   cursor: no-drop;
 }
 
+
+.moderator-image-loader {
+  height: 200px;
+  position: relative;
+  z-index: 99;
+  img{
+    width: 308px;
+    height: 210px;
+    object-fit: cover;
+  }
+}
 </style>
