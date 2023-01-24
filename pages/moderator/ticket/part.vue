@@ -84,11 +84,11 @@
              class="col-lg-4 mb-3 mb-lg-0">
           <form-select
             v-model="form.category_id"
+            :allow-clear="false"
             :clear-option="false"
             :invalid="isInvalid('category_id')"
             :label="$t('category')"
             :options="categories"
-            :allow-clear="false"
             @change="
               categorySelected($event),
                 removeError('category_id'),
@@ -123,8 +123,8 @@
           class="col-lg-4 mb-3 mb-lg-0"
         >
           <form-select
-            :allow-clear="false"
             v-model="form.brand_id"
+            :allow-clear="false"
             :clear-option="false"
             :invalid="isInvalid('brand_id')"
             :label="$t('select_brand')"
@@ -247,10 +247,9 @@
                 <div class="col-auto">
                   <form-price-input
                     id="anchor-price"
-                    :disabled="form.is_negotiable"
                     v-model="form.price"
                     :invalid="isInvalid('price')"
-                    :maxlength="9"
+                    :maxlength="5"
                     :placeholder="$t('price')"
                     float
                     @change="removeError('price')"
@@ -270,9 +269,7 @@
                     :invalid="isInvalid('is_negotiable')"
                     :label="$t('is_negotiable')"
                     checked-value="is_negotiable"
-                    @change="
-                  removeError('price', true), removeError('is_negotiable')
-                "
+                    @change=" changeIsNegotiable($event), removeError('is_negotiable')"
                   />
                 </div>
                 <!-- Commercial Size -->
@@ -679,6 +676,11 @@ export default {
   },
 
   methods: {
+    changeIsNegotiable(e){
+      if (e == true){
+        this.form.price = 0;
+      }
+    },
     handleLoading(e) {
       this.loading = e;
     },
@@ -1006,27 +1008,27 @@ export default {
 
         this.errors = [];
         this.$toasted.clear();
-        if (data){
+        if (data) {
 
 
-        Object.keys(data).reverse().map((key) => {
-          this.errors.push(key);
+          Object.keys(data).reverse().map((key) => {
+            this.errors.push(key);
 
-          this.$toasted.show(data[key][0], {
-            type: 'error',
-            duration: 0,
-            action: {
-              text: 'Go to fix',
-              onClick: (e, toastObject) => {
-                if (document.querySelector('#' + key))
-                  document.querySelector('#' + key).scrollIntoView({behavior: 'smooth', block: 'center'});
-                toastObject.goAway(0);
+            this.$toasted.show(data[key][0], {
+              type: 'error',
+              duration: 0,
+              action: {
+                text: 'Go to fix',
+                onClick: (e, toastObject) => {
+                  if (document.querySelector('#' + key))
+                    document.querySelector('#' + key).scrollIntoView({behavior: 'smooth', block: 'center'});
+                  toastObject.goAway(0);
 
+                }
               }
-            }
+            })
           })
-        })
-        }else return
+        } else return
       }
       // this.$router.push('/')
     },
@@ -1163,7 +1165,7 @@ export default {
     notValid() {
       if (
         !this.form.title ||
-        !this.form.category_id ) return true
+        !this.form.category_id) return true
       else return false
     },
     crumbs() {
@@ -1239,15 +1241,15 @@ export default {
     await this.$store.dispatch('parts/getCategories')
   },
 
-  watch:{
-    'form.price':{
-      deep: true,
-      handler(){
-        if (this.form.price == null){
-          this.form.price = 0;
-        }
-      }
-    }
+  watch: {
+    // 'form.price':{
+    //   deep: true,
+    //   handler(){
+    //     if (this.form.price == null){
+    //       this.form.price = 0;
+    //     }
+    //   }
+    // }
   }
 
 }
