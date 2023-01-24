@@ -6,6 +6,12 @@
     <div v-if="loading">
       <elements-loader></elements-loader>
     </div>
+    <div
+      v-else-if="!single_announce.id && !loading"
+      class="d-flex flex-column justify-content-center h-300"
+    >
+      <h1 class="text-center">Baxılmayanlar mövcud deyil</h1>
+    </div>
     <!--    ANNOUNCE-->
     <div v-else-if="single_announce && single_announce.id && !loading" class="card w-100">
       <!--        userdata-->

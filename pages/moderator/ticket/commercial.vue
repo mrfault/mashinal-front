@@ -2,6 +2,12 @@
   <div v-if="loading">
     <elements-loader></elements-loader>
   </div>
+  <div
+    v-else-if="!single_announce.id && !loading"
+    class="d-flex flex-column justify-content-center h-300"
+  >
+    <h1 class="text-center">Baxılmayanlar mövcud deyil</h1>
+  </div>
   <div v-else class="container">
     <!--    breadcrumbs-->
     <breadcrumbs id="brdcrmbs1" :crumbs="crumbs"/>
