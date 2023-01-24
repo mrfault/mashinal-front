@@ -174,7 +174,7 @@ export default {
         if (this.type == 'commercial') {
           location.href = '/alvcp/resources/commercials';
         }
-        if (this.type == 'moto-atv') {
+        if (this.type == 'moto_atv') {
           location.href = '/alvcp/resources/moto-atvs';
         }
         if (this.type == 'part') {
@@ -183,6 +183,7 @@ export default {
         if (this.type == 'scooters') {
           location.href = '/alvcp/resources/scooters';
         }
+
       } else {
         location.href = '/alvcp/resources/announce-moderators';
       }
