@@ -111,7 +111,18 @@
     </div>
 
     <div class="cropper_buttons">
-      <span @click="cropperCrop" :class="{'button_loading':button_loading}">crop</span>
+      <button
+        type="button"
+        :class="['mt-2',
+                      'btn',
+                      'full-width',
+                      'btn--green',
+                      { pending: button_loading },
+                    ]"
+        @click="cropperCrop"
+      >
+        {{ $t('Crop') }}
+      </button>
     </div>
 
   </div>

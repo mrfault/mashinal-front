@@ -102,7 +102,7 @@
         :modal-class="''"
         :toggle="isOpenCroppa && loadCroppa"
         closeable
-        @close="!isOpenCroppa && !loadCroppa"
+        @close="(isOpenCroppa = false) && (loadCroppa = false)"
       >
         <car-view-for-croppa
           v-if="announce"
