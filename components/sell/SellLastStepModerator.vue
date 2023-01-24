@@ -70,7 +70,7 @@
           @change="changeReason"
         />
         <div v-if="form.selectedColor && colors.length" class="row">
-          <div class="col-12 col-lg-10">
+          <div class="col-12">
             <color-options
               v-model="form.selectedColor"
               :limit="2"
@@ -432,7 +432,7 @@
               user.external_salon
             "
             id="anchor-car_or_vin"
-            :reject-key="form.car_number ? 'car_number' : 'vin'"
+            :reject-key="'vin'"
             :required="
               type === 'cars' || (type !== 'parts' && user.external_salon)
             "
@@ -649,7 +649,7 @@ export default {
         show360Reject: false,
         showPhotoReject: false,
         rejectArray: [],
-        reject360: ['360_photo_reject_1'],
+        reject360: [],
       },
 
     }
@@ -708,22 +708,6 @@ export default {
         model: this.announcement.model.slug,
       }
     },
-    imageRejected() {
-      // if(
-      return
-      this.rejectObj.rejectArray.includes('front_error')
-      // this.rejectObj.rejectArray.includes('back_error') ||
-      // this.rejectObj.rejectArray.includes('left_error') ||
-      // this.rejectObj.rejectArray.includes('right_error') ||
-      // this.rejectObj.rejectArray.includes('interior_error') ||
-      // this.rejectObj.rejectArray.includes('not_this_car_error') ||
-      // this.rejectObj.rejectArray.includes('logo_on_the_picture')
-      // ){
-      //   return true
-      // }else{
-      //   return  false
-      // }
-    }
 
   },
   methods: {
@@ -917,6 +901,7 @@ export default {
       this.publishPost()
     },
     changeReason(rejectKey) {
+      this.$emit('getRejectObj', rejectKey)
       if (rejectKey === '360') {
         this.rejectObj.show360Reject = true
       } else {
@@ -989,12 +974,12 @@ export default {
 
   },
   watch: {
-    rejectObj: {
-      deep: true,
-      handler() {
-        this.$emit('getRejectObj', this.rejectObj)
-      }
-    },
+    // rejectObj: {
+    //   deep: true,
+    //   handler() {
+    //     this.$emit('getRejectObj', this.rejectObj)
+    //   }
+    // },
     form: {
       deep: true,
       handler() {

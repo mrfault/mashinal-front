@@ -22,7 +22,7 @@
           >
             {{ $t('deactive_announce') }}
           </button>
-          <button :disabled="notValid" class="btn btn--yellow w-50 ml-1" @click="handleBackToList">
+          <button :disabled="notValid" class="btn btn--yellow w-50 ml-1" @click="handleBackList">
             {{ $t('back_to_list') }}
           </button>
         </div>
@@ -127,7 +127,13 @@ export default {
         })
         this.$emit('handleLoading', false)
       }
-      if ((this.type == 'cars') && (!this.form.car_number && !this.form.vin) ) {
+      if ((this.type !== 'part') && (this.form.saved_images.length < 3)) {
+        this.$toasted.show(this.$t('Şəkillər 3-dən az olmamalıdır.'), {
+          type: 'error',
+        })
+        this.$emit('handleLoading', false)
+      }
+      if ((this.type == 'cars') && (!this.form.car_number && !this.form.vin)) {
         this.$toasted.show(this.$t('Avtomobilin nömrəsi və ya VİN nömrə" boş ola bilməz.'), {
           type: 'error',
         })
@@ -154,14 +160,24 @@ export default {
       }
     },
     handleBackList() {
-      if (this.user.admin_group == 2) {
-        location.href = '/alvcp/resources/announcements';
+      if (this.user.admin_group == 1) {
+        if (this.type == 'cars') {
+          location.href = '/alvcp/resources/announcements';
+        }
+        if (this.type == 'moto') {
+          location.href = '/alvcp/resources/motorcycles';
+        }
+        if (this.type == 'commercial') {
+          location.href = '/alvcp/resources/commercials';
+        }
+        if (this.type == 'moto-atv') {
+          location.href = '/alvcp/resources/moto-atvs';
+        } else {
+          location.href = `/alvcp/resources/${this.type}`;
+        }
       } else {
-        location.href = '/alvcp/resources/announcements';
+        location.href = '/alvcp/resources/announce-moderators';
       }
-    },
-    async handleBackToList() {
-      return location.href = '/alvcp/resources/announcements';
     },
     openTransferModal() {
       this.$emit('openTransferModal', true)

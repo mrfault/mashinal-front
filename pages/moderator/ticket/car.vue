@@ -1168,10 +1168,18 @@ export default {
       window.location.href = "https://dev.mashin.al/alvcp/resources/announcements"
     },
     getSellLastStepRejectObj(value) {
-      this.sellLastStepRejectObj = value;
-      value.show360Reject = this.rejectObj.show360Reject;
-      value.showPhotoReject = this.rejectObj.showPhotoReject;
-      value.reject360 = this.rejectObj.reject360;
+      console.log('value',value)
+      console.log('this.rejectObj.rejectArray',this.rejectObj.rejectArray)
+      if (!this.rejectObj.rejectArray.includes(value)){
+        this.rejectObj.rejectArray.push(value)
+      }else{
+        const index = this.rejectObj.rejectArray.indexOf(value);
+        this.rejectObj.rejectArray.splice(index, 1);
+      }
+      // this.sellLastStepRejectObj = value;
+      // value.show360Reject = this.rejectObj.show360Reject;
+      // value.showPhotoReject = this.rejectObj.showPhotoReject;
+      // value.reject360 = this.rejectObj.reject360;
     },
     handleEngines(obj) {
       var arr = [];
@@ -1466,7 +1474,7 @@ export default {
         return false
       }
 
-      
+
 
 
       this.form.status = status
