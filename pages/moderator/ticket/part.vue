@@ -207,6 +207,7 @@
                 "
               />
 
+
               <!-- Checkbox -->
               <form-checkbox
                 v-if="filter.component === 'checkbox-component'"
@@ -233,6 +234,21 @@
                   ;(form[filter.key] = String($event)),
                     dynamicFilterOnChange(filter.key, $event)
                 "
+              />
+            </div>
+            <div
+              class="col-lg-4 mb-3"
+              v-if="form.commercial_part"
+              id="anchor-commercial_size"
+              style="align-items: center;"
+            >
+              <form-text-input
+                v-model="form.commercial_size"
+                :clear-option="false"
+                :invalid="isInvalid('commercial_size')"
+                :maxlength="50"
+                :placeholder="$t('commercial_size')"
+                @change="removeError('commercial_size')"
               />
             </div>
             <!-- Price -->
@@ -275,20 +291,7 @@
                 </div>
                 <!-- Commercial Size -->
                 <div class="col-auto">
-                  <div
-                    v-if="form.commercial_part"
-                    id="anchor-commercial_size"
-                    style="align-items: center;"
-                  >
-                    <form-text-input
-                      v-model="form.commercial_size"
-                      :clear-option="false"
-                      :invalid="isInvalid('commercial_size')"
-                      :maxlength="50"
-                      :placeholder="$t('commercial_size')"
-                      @change="removeError('commercial_size')"
-                    />
-                  </div>
+
                 </div>
               </div>
             </div>
