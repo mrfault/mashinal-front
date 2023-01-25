@@ -530,7 +530,7 @@ export default {
 
   name: 'parts-pages-moderation',
 
-  layout: 'ticket',
+  layout: 'moderator',
 
   components: {
     TitleWithLine,

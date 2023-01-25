@@ -654,7 +654,7 @@ export default {
 
   name: 'commercial-pages-moderation',
 
-  layout: 'ticket',
+  layout: 'moderator',
 
   components: {
     TitleWithLine,

@@ -661,7 +661,7 @@ export default {
 
   name: "ModerationMoto",
 
-  layout: 'ticket',
+  layout: 'moderator',
 
   components: {
     TitleWithLine,

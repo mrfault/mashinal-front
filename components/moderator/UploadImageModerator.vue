@@ -769,7 +769,7 @@ export default {
 
 .vue_component__upload--image {
   position: relative;
-  z-index: 0;
+  z-index: 1;
 }
 
 .vue_component__upload--image__overlay {
