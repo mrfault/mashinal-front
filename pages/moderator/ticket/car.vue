@@ -1509,6 +1509,11 @@ export default {
 
           await this.$axios.$post('/ticket/car/' + this.single_announce.id, formData)
 
+          if (this.user.admin_group == 2) {
+            location.href = '/alvcp/resources/announce-moderators';
+          } else {
+            location.href = '/alvcp/resources/cars';
+          }
 
           if (status == 0) {
             this.$toasted.show(this.$t('your_announce_rejected'), {

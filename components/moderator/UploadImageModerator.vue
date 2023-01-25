@@ -50,6 +50,7 @@
                   class="upload_image_form__thumbnail upload_image_form__thumbnail_fixed"
                 >
                   <div class="imagePreloader"></div>
+                  <!--                  actions-->
                   <div v-if="!loading" class="w-100 d-flex justify-content-between p-2">
                     <span v-if="loadCroppa" class="cursor-pointer button-new-tab"
                           style="background: #dadada !important"
@@ -76,8 +77,11 @@
                       <icon name="cross"/>
                     </span>
                   </div>
+
                   <img :class="{ 'show': setSavedImageUrls[key] }" :src="setSavedImageUrls[key]"
                        style="opacity: 0" @click.stop="openFancyBox(key)">
+
+
                 </div>
               </span>
                 <a
@@ -102,7 +106,7 @@
         :modal-class="''"
         :toggle="isOpenCroppa && loadCroppa"
         closeable
-        @close="!isOpenCroppa && !loadCroppa"
+        @close="(isOpenCroppa = false) && (loadCroppa = false)"
       >
         <car-view-for-croppa
           v-if="announce"
@@ -783,7 +787,8 @@ export default {
   height: 200px;
   position: relative;
   z-index: 99;
-  img{
+
+  img {
     width: 308px;
     height: 210px;
     object-fit: cover;

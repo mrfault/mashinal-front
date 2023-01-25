@@ -6,6 +6,7 @@
     <div v-if="loading">
       <elements-loader></elements-loader>
     </div>
+
     <div
       v-else-if="!single_announce.id && !loading"
       class="d-flex flex-column justify-content-center h-300"
@@ -24,7 +25,7 @@
             :userData="single_announce.user"
           />
         </div>
-        <div v-if="single_announce.change_log && single_announce.change_log.length"
+        <div v-if="single_announce.change_log && single_announce.change_log.length && (user.admin_group !== 2)"
              class="col-12 col-lg-3 d-flex justify-content-end">
           <button
             :class="{ button_loading: button_loading }"
@@ -84,11 +85,11 @@
              class="col-lg-4 mb-3 mb-lg-0">
           <form-select
             v-model="form.category_id"
+            :allow-clear="false"
             :clear-option="false"
             :invalid="isInvalid('category_id')"
             :label="$t('category')"
             :options="categories"
-            :allow-clear="false"
             @change="
               categorySelected($event),
                 removeError('category_id'),
@@ -123,8 +124,8 @@
           class="col-lg-4 mb-3 mb-lg-0"
         >
           <form-select
-            :allow-clear="false"
             v-model="form.brand_id"
+            :allow-clear="false"
             :clear-option="false"
             :invalid="isInvalid('brand_id')"
             :label="$t('select_brand')"
@@ -247,10 +248,9 @@
                 <div class="col-auto">
                   <form-price-input
                     id="anchor-price"
-                    :disabled="form.is_negotiable"
                     v-model="form.price"
                     :invalid="isInvalid('price')"
-                    :maxlength="9"
+                    :maxlength="5"
                     :placeholder="$t('price')"
                     float
                     @change="removeError('price')"
@@ -270,9 +270,7 @@
                     :invalid="isInvalid('is_negotiable')"
                     :label="$t('is_negotiable')"
                     checked-value="is_negotiable"
-                    @change="
-                  removeError('price', true), removeError('is_negotiable')
-                "
+                    @change=" changeIsNegotiable($event), removeError('is_negotiable')"
                   />
                 </div>
                 <!-- Commercial Size -->
@@ -460,18 +458,20 @@
       </div>
     </div>
     <!--    logs-->
-    <modal-popup
-      :modal-class="''"
-      :title="`${$t('logs')}`"
-      :toggle="openLog"
-      @close="openLog = false"
-    >
-      <change-log
-        :btl="single_announce.btl_announces ? single_announce.btl_announces : []"
-        :logs="single_announce.change_log"
-        :user-id="single_announce.user_id"
-      />
-    </modal-popup>
+      <modal-popup
+        :modal-class="''"
+        :title="`${$t('logs')}`"
+        :toggle="(user.admin_group !== 2) && openLog"
+        @close="openLog = false"
+      >
+        <template v-if="single_announce && single_announce.btl_announces">
+          <change-log
+            :btl="single_announce.btl_announces"
+            :logs="single_announce.change_log"
+            :user-id="single_announce.user_id"
+          />
+        </template>
+      </modal-popup>
     <!--    transfer modal-->
     <modal-popup
       :modal-class="''"
@@ -679,6 +679,11 @@ export default {
   },
 
   methods: {
+    changeIsNegotiable(e) {
+      if (e == true) {
+        this.form.price = 0;
+      }
+    },
     handleLoading(e) {
       this.loading = e;
     },
@@ -1006,27 +1011,27 @@ export default {
 
         this.errors = [];
         this.$toasted.clear();
-        if (data){
+        if (data) {
 
 
-        Object.keys(data).reverse().map((key) => {
-          this.errors.push(key);
+          Object.keys(data).reverse().map((key) => {
+            this.errors.push(key);
 
-          this.$toasted.show(data[key][0], {
-            type: 'error',
-            duration: 0,
-            action: {
-              text: 'Go to fix',
-              onClick: (e, toastObject) => {
-                if (document.querySelector('#' + key))
-                  document.querySelector('#' + key).scrollIntoView({behavior: 'smooth', block: 'center'});
-                toastObject.goAway(0);
+            this.$toasted.show(data[key][0], {
+              type: 'error',
+              duration: 0,
+              action: {
+                text: 'Go to fix',
+                onClick: (e, toastObject) => {
+                  if (document.querySelector('#' + key))
+                    document.querySelector('#' + key).scrollIntoView({behavior: 'smooth', block: 'center'});
+                  toastObject.goAway(0);
 
+                }
               }
-            }
+            })
           })
-        })
-        }else return
+        } else return
       }
       // this.$router.push('/')
     },
@@ -1163,7 +1168,7 @@ export default {
     notValid() {
       if (
         !this.form.title ||
-        !this.form.category_id ) return true
+        !this.form.category_id) return true
       else return false
     },
     crumbs() {
@@ -1239,15 +1244,15 @@ export default {
     await this.$store.dispatch('parts/getCategories')
   },
 
-  watch:{
-    'form.price':{
-      deep: true,
-      handler(){
-        if (this.form.price == null){
-          this.form.price = 0;
-        }
-      }
-    }
+  watch: {
+    // 'form.price':{
+    //   deep: true,
+    //   handler(){
+    //     if (this.form.price == null){
+    //       this.form.price = 0;
+    //     }
+    //   }
+    // }
   }
 
 }
