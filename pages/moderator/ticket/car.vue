@@ -162,7 +162,6 @@
                           :disabled="isModerator"
                           :label="$t('body_type')"
                           :options="data.sellBodies"
-                          :value="form.car_body_type"
                           has-search
                           @change="changeBodyType($event)"
                         />
@@ -195,7 +194,6 @@
                           :disabled="isModerator"
                           :label="$t('generation')"
                           :options="data.generations"
-                          :value="form.generation_id"
                           has-search
                           @change="changeGeneration($event)"
                         />
@@ -253,7 +251,6 @@
                         key: o.type_of_drive,
                       }))
                     "
-                          :value="form.gearing"
                           has-search
                           @change="changeGearing($event)"
                         />
@@ -280,7 +277,6 @@
                         name: $t('type_of_drive_values')[o.box] || '',
                         key: o.box,
                       }))"
-                          :value="form.transmission"
                           @change="changeTransmission($event)"
                         />
 
@@ -313,7 +309,6 @@
                               key: o.id,
                             }))
                           "
-                          :value="form.modification"
                           @change="changeModification($event)"
                         />
                       </div>
