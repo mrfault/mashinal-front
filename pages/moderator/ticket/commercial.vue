@@ -618,7 +618,7 @@
         />
         <div class="row justify-content-center">
           <button
-            :class="{'button_loading':button_loading, 'disabled':notValid}"
+            :class="{'pending':button_loading, 'disabled':notValid}"
             class="btn btn--green  mt-1"
             @click.prevent="transferToSupervisor()"
           >
@@ -702,6 +702,11 @@ export default {
       store.commit('moderator/moderatorMutator', {
         with: data.announce,
         property: 'single_announce',
+      })
+
+      store.commit('moderator/moderatorMutator', {
+        with: data.moderator,
+        property: 'moderator',
       })
 
       if (!store.getters.single_announce.id) return;
@@ -945,8 +950,9 @@ export default {
     await this.$auth.setUserToken(`Bearer ${this.$route.query.token}`);
     this.$axios.setHeader('Authorization', `Bearer ${this.$route.query.token}`)
 
-    if ((this.admin_user) && (this.admin_user.admin_group == 2)) {
+    if ((this.admin_user) && (this.admin_user.user.admin_group == 2)) {
       setInterval(() => {
+
         let timer = moment().diff(moment(this.moderator.created_at));
         var duration = moment.duration(timer);
         var days = duration.days(),
@@ -1526,6 +1532,7 @@ export default {
       sell_options: 'sellOptions',
       all_sell_options: 'allSellOptions',
       badges: 'badges',
+      moderator: 'moderator/moderator',
       getPopularComments: 'getPopularComments',
     }),
     isAdmin() {

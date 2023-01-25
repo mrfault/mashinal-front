@@ -470,7 +470,7 @@
         />
         <div class="row justify-content-center">
           <button
-            :class="{'button_loading':button_loading, 'disabled': notValid}"
+            :class="{'pending':button_loading, 'disabled': notValid}"
             class="btn btn--green  mt-1"
             @click.prevent="transferToSupervisor()"
           >
@@ -783,9 +783,11 @@ export default {
       await this.$auth.setUserToken(`Bearer ${this.$route.query.token}`)
       const admin_user = await this.$axios.$get('/user')
       this.$auth.setUser(admin_user.user)
+
       //timer
       setInterval(() => {
-        let timer = moment().diff(moment(admin_user.user.created_at))
+        let timer = moment().diff(moment(this.moderator.created_at))
+
         var duration = moment.duration(timer)
         var days = duration.days(),
           hrs = duration.hours(),
@@ -1463,7 +1465,7 @@ export default {
 
 // post
     async transferToSupervisor(withRejectReason = false) {
-      console.log('transferToSupervisor')
+
       this.button_loading = true
 
       if (withRejectReason) {
@@ -1474,7 +1476,7 @@ export default {
         id: this.single_announce.id,
         comment: this.form.comment,
       })
-
+      this.button_loading = false
       if (this.user.admin_group == 2) {
         location.href = '/alvcp/resources/announce-moderators'
       } else {
