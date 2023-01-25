@@ -572,6 +572,7 @@
         :id="single_announce.id"
         :announcement="form"
         :button_loading="button_loading"
+        :saved-images="saved_images"
         :getTimer="getTimer"
         :notValid="notValid"
         :rejectArray="rejectObj.rejectArray"
@@ -984,10 +985,11 @@ export default {
       this.form.id = announce.id;
       this.form.id_unique = announce.id_unique;
       this.form.selectedColor = announce.color_id;
+      this.form.is_new = announce.is_new;
       this.form.mileage = announce.mileage;
       this.form.address = announce.address;
       this.form.beaten = announce.beaten;
-      this.form.is_new = announce.is_new;
+
       this.form.customs_clearance = announce.customed;
       this.form.region_id = announce.region_id;
       this.form.lat = parseFloat(announce.latitude);

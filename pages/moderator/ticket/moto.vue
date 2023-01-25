@@ -555,6 +555,7 @@
         <moderator-actions
           :id="single_announce.id"
           :announcement="form"
+          :saved-images="saved_images"
           :button_loading="button_loading"
           :getTimer="getTimer"
           :notValid="notValid"

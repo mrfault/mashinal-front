@@ -436,6 +436,7 @@
         :getTimer="getTimer"
         :notValid="notValid"
         :rejectArray="rejectArray"
+        :saved-images="saved_images"
         type="part"
         @formChanged="(e) => (form = e)"
         @handleLoading="handleLoading"

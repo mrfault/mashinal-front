@@ -108,6 +108,7 @@ export default {
     notValid: Boolean,
     getTimer: Object,
     announcement: Object,
+    savedImages: Array,
     id: Number,
     type: {
       type: String,
@@ -127,7 +128,7 @@ export default {
         })
         this.$emit('handleLoading', false)
       }
-      if ((this.type !== 'part') && (this.form.saved_images.length < 2)) {
+      if ((this.type !== 'part') && (this.savedImages.length < 2)) {
         this.$toasted.show(this.$t('Şəkillər 3-dən az olmamalıdır.'), {
           type: 'error',
         })
