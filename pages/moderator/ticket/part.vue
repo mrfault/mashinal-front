@@ -228,7 +228,7 @@
                     filter.key === 'capacity' ? 'battery_capacity' : filter.key,
                   )
                 "
-                :value="form.filter[Number(filter.key)]"
+                :value="form.filter[filter.key]"
                 @change="removeError(filter.key)"
                 @input="
                   ;(form[filter.key] = String($event)),
@@ -748,7 +748,7 @@ export default {
         if (announce.filters) {
           this.form.filter = announce.filters
         }
-        announce.all_tags.map(e => this.form.tags(e.text))
+        this.form.tags = announce.all_tags.map(item => item.text);
 
 
         // if (announce.filters) {
@@ -992,7 +992,9 @@ export default {
       let formData = new FormData();
       this.form.status = status;
       this.form.saved_images = this.saved_images;
-
+      this.form.tags = this.form.tags.map(item => {
+        return { text: item }
+      })
       delete this.form['filter-undefined']
 
 
