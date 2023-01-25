@@ -81,12 +81,14 @@ export const LayoutMixin = {
       }
     },
     showMenu(el) {
-      el.style.top = "0px";
-      clearTimeout(this.scrollTimeout);
-      this.scrollTimeout = setTimeout(() => {
-        el.classList.remove('z-index-1')
-        // el.classList.remove('d-none')
-      }, 400);
+      if(el) {
+        el.style.top = "0px";
+        clearTimeout(this.scrollTimeout);
+        this.scrollTimeout = setTimeout(() => {
+          el.classList.remove('z-index-1')
+          // el.classList.remove('d-none')
+        }, 400);
+      }
     },
     hideMenu(el) {
       el.classList.add('z-index-1')

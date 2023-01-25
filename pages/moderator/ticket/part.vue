@@ -739,11 +739,13 @@ export default {
         this.form.description = announce.description;
         this.form.media = announce.mediaIds;
         this.form.saved_images = announce.mediaIds;
+        this.form.commercial_part = parseInt(announce.commercial_size) > 0;
+        this.form.commercial_size = announce.commercial_size;
         this.saved_images = announce.mediaIds;
         if (announce.filters) {
           this.form.filter = announce.filters
         }
-        announce.all_tags.forEach(e => this.form.tags(e.text))
+        announce.all_tags.map(e => this.form.tags(e.text))
 
 
         // if (announce.filters) {

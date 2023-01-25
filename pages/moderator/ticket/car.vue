@@ -11,7 +11,7 @@
             <div ref="page-top-ae" class="mb-5">
 
               <!--     sell last step ------  -->
-              <sell-last-step
+              <sell-last-step-moderator
                 :key="lastStepKey"
                 :announcement="JSON.parse(JSON.stringify(form))"
                 :colors="colors"
@@ -391,9 +391,17 @@
                     class="mb-4"
                   >
                     <div class="section-part__container">
-                      <div class="col-md-4 pl-0">
-                        <input class="btn" type="file" v-on:change="add360Video"/>
+                      <div class="col-md-4 pl-0 d-flex align-items-center">
+                        <input style="width: 200px;" class="btn" type="file" v-on:change="add360Video"/>
+                        <div v-if="uploadPercentage > 0 && uploadPercentage < 100">
+                          {{ uploadPercentage }}%
+                        </div>
+                        <div v-if="uploadPercentage === 100">
+                          <span  class="ml-2" style="margin-bottom: 4px;"><icon style="color:green;font-size: 20px;" name="check-circle"/></span>
+                        </div>
+
                       </div>
+
                     </div>
                   </div>
                 </template>
@@ -421,7 +429,7 @@
 
                 <!--                  ------------------------    ------------------------    ------------------------    ------------------------    ------------------------    -------------------------->
 
-              </sell-last-step>
+              </sell-last-step-moderator>
 
               <!--      actions-->
               <moderator-actions
@@ -501,7 +509,8 @@
 <script>
 import {mapActions, mapGetters} from 'vuex'
 import moment from 'moment'
-import SellLastStep from '~/components/sell/SellLastStepModerator'
+
+import SellLastStepModerator from '~/components/sell/SellLastStepModerator'
 import SellPreview from '~/components/sell/SellPreview'
 import UserDetails from '~/components/moderator/brand.vue'
 import ModeratorActions from '~/components/moderator/actions.vue'
@@ -520,12 +529,13 @@ import ChangeLog from "~/components/moderator/changeLog";
 
 export default {
   name: 'moderatorCar',
+
   head() {
     return this.$headMeta({
       title: `${this.$t('moderation')}`,
     });
   },
-  layout: 'ticket',
+  layout: 'moderator',
   components: {
     TitleWithLineAndRejectReason,
     RejectReason,
@@ -536,7 +546,7 @@ export default {
     TitleWithLine,
     ButtonOptions,
     UploadImage,
-    SellLastStep,
+    SellLastStepModerator,
     UploadImageModerator,
     PhotoRejectReason,
     Interior360Viewer,
@@ -547,6 +557,7 @@ export default {
     return {
       announcementIsAvailable: false,
       loading: false,
+      uploadPercentage: 0,
       showModal: false,
       lastStepKey: 1,
       show: {
@@ -1322,9 +1333,13 @@ export default {
       // this.uploadedVideo360 = formData;
       this.$axios
         .post('' + '/upload_temporary_video', formData, {
+          onUploadProgress: function( progressEvent ) {
+            this.uploadPercentage = parseInt( Math.round( ( progressEvent.loaded / progressEvent.total ) * 100 ) );
+
+          }.bind(this),
           headers: {
-            'Content-Type': 'multipart/form-data',
-          },
+            'Content-Type': 'multipart/form-data'
+          }
         })
         .then((res) => {
           if (res.status == 200) {
@@ -1456,12 +1471,12 @@ export default {
       }
 
       await this.$store.dispatch('moderator/transferToSupervisor', {
-        id: this.form.id,
+        id: this.single_announce.id,
         comment: this.form.comment,
       })
 
       if (this.user.admin_group == 2) {
-        this.$router.push({path: this.localePath('/e-services')});
+        location.href = '/alvcp/resources/announce-moderators'
       } else {
         location.href = '/alvcp/resources/announcements'
       }
@@ -1485,7 +1500,6 @@ export default {
       this.form.rejectArray = this.rejectObj.rejectArray;
       this.form.saved_images = this.saved_images;
       this.form.end_date = null;
-      this.form.video_360_id = '';
       this.form.owner_type = 0;
       this.form.generation =  this.form.generation_id;
 
@@ -1512,7 +1526,7 @@ export default {
           if (this.user.admin_group == 2) {
             location.href = '/alvcp/resources/announce-moderators';
           } else {
-            location.href = '/alvcp/resources/cars';
+            location.href = '/alvcp/resources/announcements';
           }
 
           if (status == 0) {

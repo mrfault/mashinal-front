@@ -76,9 +76,8 @@
                   :name="menu.icon"
                   v-b-tooltip="$t('tooltip_' + menu.title)"
                 />
-                <div  v-else>
+                <div  v-else v-b-tooltip="$t('tooltip_' + menu.title)">
                   <inline-svg
-                    v-b-tooltip="$t('tooltip_' + menu.title)"
                     :src="`/icons/${menu.icon}`"
                   />
                 </div>
