@@ -228,7 +228,7 @@
                     filter.key === 'capacity' ? 'battery_capacity' : filter.key,
                   )
                 "
-                :value="form.filter[filter.key]"
+                v-model="form.filter[filter.key]"
                 @change="removeError(filter.key)"
                 @input="
                   ;(form[filter.key] = String($event)),
