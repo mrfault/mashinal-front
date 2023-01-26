@@ -30,7 +30,7 @@
     </section>
     <section v-else-if="user.admin_group === 2" class="container"> <!--moderator-->
       <div class="row">
-        <div class="col-6 col-lg-2" v-if="moderator">
+        <div v-if="moderator" class="col-6 col-lg-2">
             <span class="timer">
               {{ getTimer.data }}
             </span>
@@ -103,6 +103,7 @@
 <script>
 import {mapGetters} from "vuex";
 import moment from 'moment'
+
 export default {
   props: {
     rejectArray: Array,
@@ -131,7 +132,7 @@ export default {
     })
   },
   mounted() {
-    if (this.id && (this.user.admin_group == 2)){
+    if (this.id && (this.user.admin_group == 2)) {
       setInterval(() => {
         let timer = moment().diff(moment(this.moderator.created_at));
         var duration = moment.duration(timer);
@@ -163,39 +164,45 @@ export default {
         })
         this.$emit('handleLoading', false)
       }
-      if ((this.type !== 'part') && (this.form.saved_images.length < 3)) {
+      else if ((this.type !== 'part') && (this.form.saved_images.length < 3)) {
         this.$toasted.show(this.$t('Şəkillər 3-dən az olmamalıdır.'), {
           type: 'error',
         })
         this.$emit('handleLoading', false)
       }
-      if ((this.type == 'cars') && (!this.form.car_number && !this.form.vin)) {
+      else if ((this.type == 'cars') && (!this.form.car_number && !this.form.vin)) {
         this.$toasted.show(this.$t('Avtomobilin nömrəsi və ya VİN nömrə" boş ola bilməz.'), {
           type: 'error',
         })
         this.$emit('handleLoading', false)
-      } else if (!this.form.is_new && this.form.mileage == 0) {
+      }
+      else if (!this.form.is_new && this.form.mileage == 0) {
         this.$toasted.show(this.$t('Nəqliyyat vasitəsi yeni deyilsə yürüş 500-dən çox olmalıdır.'), {
           type: 'error',
         })
         this.$emit('handleLoading', false)
-      } else if ((this.type == 'cars') && this.form.customs_clearance && !this.form.vin.length) {
+      }
+      else if ((this.type == 'cars') && this.form.customs_clearance && !this.form.vin.length) {
         this.$toasted.show(this.$t('Nəqliyyat vasitəsi gömrükdən keçməyibsə ban nömrəsini yazmaq mütləqdir'), {
           type: 'error',
         })
-      } else if ((this.type == 'cars') && (this.form.vin.length !== 0) && this.form.vin.length !== 17) {
+      }
+      else if ((this.type == 'cars') && (this.form.vin.length !== 0) && this.form.vin.length !== 17) {
         this.$toasted.show(this.$t('VIN nömrənin formatı düzgün deyil'), {
           type: 'error',
         })
-      } else if ((this.type == 'part') && (!this.form.is_negotiable) && (this.form.price < 1)) {
+      }
+      else if ((this.type == 'part') && (!this.form.is_negotiable) && (this.form.price < 1)) {
         this.$toasted.show(this.$t('Minimal Qiymət 1 olmalıdır.'), {
           type: 'error',
         })
-      } else if ((this.type !== 'part') && this.form.price == 0) {
+      }
+      else if ((this.type !== 'part') && this.form.price == 0) {
         this.$toasted.show(this.$t('Minimal Qiymət 1 olmalıdır.'), {
           type: 'error',
         })
-      } else {
+      }
+      else {
         this.$emit('sendData', status)
       }
     },
