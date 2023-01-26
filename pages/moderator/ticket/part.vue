@@ -355,7 +355,7 @@
         </div>
 
         <div class="col-12">
-          <form-keywords v-model="form.tags" class="w-100"/>
+          <form-keywords is-moderator v-model="form.tags" class="w-100"/>
         </div>
 
         <div class="col-12">

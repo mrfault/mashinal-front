@@ -111,7 +111,6 @@
                 :no-approval="!(admin_user.admin_group === 1 || admin_user.admin_group === 2)"
                 :old-value="admin_user.admin_group !== 2 ? single_announce.year.toString() : ''"
                 rejectKey="year"
-                required
                 title="year"
                 @change="changeReason"
               />
@@ -151,7 +150,7 @@
             <div class="col-12">
               <title-with-line-and-reject-reason
                 :subtitle="
-                      $t('at_least_5_photos', {
+                      $t('at_least_2_photos', {
                         min: minFiles,
                         max: maxFiles,
                       }).toLowerCase()

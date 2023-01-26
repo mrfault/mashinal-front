@@ -217,6 +217,7 @@ export default {
   ASR: "Yerində fırlanma əleyhinə (ASR)",
   at: "{value}-də",
   at_least_5_photos: "Minimum {min} və maksimum {max}",
+  at_least_2_photos: "Minimum 2 şəkil yüklənməlidir",
   athermal: "Atermal",
   attach: "Birləşdirmək",
   attachment: "Asma təhcizat",
