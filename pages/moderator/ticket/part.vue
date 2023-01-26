@@ -433,7 +433,6 @@
         :id="single_announce.id"
         :announcement="form"
         :button_loading="button_loading"
-        :getTimer="getTimer"
         :notValid="notValid"
         :rejectArray="rejectArray"
         :saved-images="saved_images"
@@ -559,10 +558,6 @@ export default {
       openLog: false,
       transferModal: false,
       transferComment: '',
-      getTimer: {
-        data: '',
-        unix: 0
-      },
       rejectArray: [],
       refresh: 1,
       date: Math.floor(Date.now() / 1000),
@@ -609,7 +604,6 @@ export default {
       },
       announceId: null,
       admin_user: {},
-      moderator: {},
       imagesBase64: [],
       commercialPartDisabledOptions: [
         'diameter',
@@ -652,28 +646,7 @@ export default {
     await this.$auth.setUserToken(`Bearer ${this.$route.query.token}`);
     this.$axios.setHeader('Authorization', `Bearer ${this.$route.query.token}`)
 
-    if (this.user.admin_group == 2) {
-      setInterval(() => {
-        let timer = moment().diff(moment(this.moderator.created_at));
-        var duration = moment.duration(timer);
-        var days = duration.days(),
-          hrs = duration.hours(),
-          mins = duration.minutes(),
-          secs = duration.seconds();
 
-        if (hrs.toString().length === 1) hrs = '0' + hrs;
-        if (mins.toString().length === 1) mins = '0' + mins;
-        if (secs.toString().length === 1) secs = '0' + secs;
-        let _return = '';
-
-        if (days > 0) _return += days + 'd. ';
-
-        _return += hrs + ':' + mins + ':' + secs;
-
-        this.getTimer.data = _return;
-        this.getTimer.unix = timer / 1000;
-      }, 1000);
-    }
 
 
   },
@@ -709,6 +682,10 @@ export default {
         this.$store.commit('mutate', {
           property: 'single_announce',
           value: data.announce,
+        })
+        this.$store.commit('moderator/moderatorMutator', {
+          with: data.moderator,
+          property: 'moderator',
         })
 
 
@@ -759,7 +736,6 @@ export default {
         // }
 
         this.admin_user = admin_user.user;
-        this.moderator = data ? data.moderator : {};
         this.loading = false;
 
 
@@ -1172,6 +1148,7 @@ export default {
       sell_options: 'sellOptions',
       all_sell_options: 'allSellOptions',
       partCategories: 'partCategories',
+      moderator: 'moderator/moderator',
     }),
     notValid() {
       if (

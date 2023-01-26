@@ -207,6 +207,8 @@ export default {
     },
     async handleYear(year = '') {
       this.form.selectedYear = year;
+
+      console.log("year",year)
       if (year) {
         this.showLastStep = true;
       } else {
