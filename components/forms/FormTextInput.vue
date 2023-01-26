@@ -31,7 +31,7 @@
         <input
           ref="input"
           :id="id"
-          :autofocus="autoFocus ? 'autofocus' : ''"
+          :autofocus="autoFocus ? 'autofocus' : false"
           :type="showPassword ? 'text' : type"
           :placeholder="placeholder"
           :maxlength="maxlength"

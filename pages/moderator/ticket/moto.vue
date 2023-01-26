@@ -30,7 +30,7 @@
             <div v-if="single_announce.change_log && single_announce.change_log.length"
                  class="col-12 col-lg-3 d-flex justify-content-end">
               <button
-                :class="{ button_loading: button_loading }"
+                :class="{ pending: button_loading }"
                 class="'btn btn--green"
                 @click.prevent="openLog = true"
               >
@@ -555,6 +555,7 @@
         <moderator-actions
           :id="single_announce.id"
           :announcement="form"
+          :saved-images="saved_images"
           :button_loading="button_loading"
           :getTimer="getTimer"
           :notValid="notValid"
@@ -661,7 +662,7 @@ export default {
 
   name: "ModerationMoto",
 
-  layout: 'ticket',
+  layout: 'moderator',
 
   components: {
     TitleWithLine,

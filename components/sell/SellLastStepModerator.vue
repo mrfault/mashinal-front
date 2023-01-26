@@ -339,7 +339,6 @@
               <input
                 ref="moderation-adress-input-1"
                 v-model="form.address"
-                :auto-focus="false"
                 :placeholder="$t('address')"
                 class="ma-input"
                 icon-name="placeholder"
@@ -391,6 +390,7 @@
             <form-text-input
               ref="moderation-car-number-input-1"
               v-model="form.car_number"
+              :auto-focus="false"
               :mask="'99 - AA - 999'"
               :placeholder="'__ - __ - ___'"
               img-src="/img/flag.svg"

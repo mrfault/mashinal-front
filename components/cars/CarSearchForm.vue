@@ -1114,7 +1114,7 @@ export default {
       })
       if (id)  {
         this.getModelsArray({ value: slug, index })
-        this.submitForm(false);
+
       }
 
 
@@ -1148,7 +1148,6 @@ export default {
         this.$set(this.form.additional_brands[index], key, '')
       })
       if (id) {
-        this.submitForm(false);
         this.getModelGenerationsArray({ value: slug, brand_slug, index })
       }
     },

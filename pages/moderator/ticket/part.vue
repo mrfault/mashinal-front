@@ -28,7 +28,7 @@
         <div v-if="single_announce.change_log && single_announce.change_log.length && (user.admin_group !== 2)"
              class="col-12 col-lg-3 d-flex justify-content-end">
           <button
-            :class="{ button_loading: button_loading }"
+            :class="{ pending: button_loading }"
             class="'btn btn--green"
             @click.prevent="openLog = true"
           >
@@ -207,6 +207,7 @@
                 "
               />
 
+
               <!-- Checkbox -->
               <form-checkbox
                 v-if="filter.component === 'checkbox-component'"
@@ -227,12 +228,27 @@
                     filter.key === 'capacity' ? 'battery_capacity' : filter.key,
                   )
                 "
-                :value="form.filter[Number(filter.key)]"
+                :value="form.filter[filter.key]"
                 @change="removeError(filter.key)"
                 @input="
                   ;(form[filter.key] = String($event)),
                     dynamicFilterOnChange(filter.key, $event)
                 "
+              />
+            </div>
+            <div
+              class="col-lg-4 mb-3"
+              v-if="form.commercial_part"
+              id="anchor-commercial_size"
+              style="align-items: center;"
+            >
+              <form-text-input
+                v-model="form.commercial_size"
+                :clear-option="false"
+                :invalid="isInvalid('commercial_size')"
+                :maxlength="50"
+                :placeholder="$t('commercial_size')"
+                @change="removeError('commercial_size')"
               />
             </div>
             <!-- Price -->
@@ -275,20 +291,7 @@
                 </div>
                 <!-- Commercial Size -->
                 <div class="col-auto">
-                  <div
-                    v-if="form.commercial_part"
-                    id="anchor-commercial_size"
-                    style="align-items: center;"
-                  >
-                    <form-text-input
-                      v-model="form.commercial_size"
-                      :clear-option="false"
-                      :invalid="isInvalid('commercial_size')"
-                      :maxlength="50"
-                      :placeholder="$t('commercial_size')"
-                      @change="removeError('commercial_size')"
-                    />
-                  </div>
+
                 </div>
               </div>
             </div>
@@ -433,6 +436,7 @@
         :getTimer="getTimer"
         :notValid="notValid"
         :rejectArray="rejectArray"
+        :saved-images="saved_images"
         type="part"
         @formChanged="(e) => (form = e)"
         @handleLoading="handleLoading"
@@ -527,7 +531,7 @@ export default {
 
   name: 'parts-pages-moderation',
 
-  layout: 'ticket',
+  layout: 'moderator',
 
   components: {
     TitleWithLine,
@@ -739,11 +743,13 @@ export default {
         this.form.description = announce.description;
         this.form.media = announce.mediaIds;
         this.form.saved_images = announce.mediaIds;
+        this.form.commercial_part = parseInt(announce.commercial_size) > 0;
+        this.form.commercial_size = announce.commercial_size;
         this.saved_images = announce.mediaIds;
         if (announce.filters) {
           this.form.filter = announce.filters
         }
-        announce.all_tags.forEach(e => this.form.tags(e.text))
+        this.form.tags = announce.all_tags.map(item => item.text);
 
 
         // if (announce.filters) {
@@ -987,7 +993,9 @@ export default {
       let formData = new FormData();
       this.form.status = status;
       this.form.saved_images = this.saved_images;
-
+      this.form.tags = this.form.tags.map(item => {
+        return { text: item }
+      })
       delete this.form['filter-undefined']
 
 

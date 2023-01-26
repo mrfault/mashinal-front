@@ -134,10 +134,9 @@
 import draggable from 'vuedraggable';
 import {mapState} from "vuex";
 import CarViewForCroppa from "~/components/moderator/carViewForCroppa";
-
+const LightBox = () => import('vue-image-lightbox/src/components/LightBox.vue');
 
 export default {
-  name: 'upload-image',
   props: {
 
     changePosition: {
@@ -206,6 +205,7 @@ export default {
   components: {
     CarViewForCroppa,
     draggable,
+    LightBox
   },
   data: function () {
     return {
@@ -308,8 +308,8 @@ export default {
       let img = this.savedImageUrls;
       for (const key in this.savedImageUrls) {
 
-        let original = img[key].replace('/conversions', '').replace('-thumb', '').replace('-upload_thumb', '');
-        if (!this.imageExists(original)) original = original.replace('.jpg', '.png')
+        let original = img[key].replace('-thumb', '-main').replace('-upload_thumb', '-thumb');
+     //   if (!this.imageExists(original)) original = original.replace('.jpg', '.png')
         /*
         if (img[key].includes('-upload_thumb')){
           let original = img[key].replace('-upload_thumb', '-thumb');
@@ -769,7 +769,7 @@ export default {
 
 .vue_component__upload--image {
   position: relative;
-  z-index: 0;
+  z-index: 1;
 }
 
 .vue_component__upload--image__overlay {

@@ -572,6 +572,7 @@
         :id="single_announce.id"
         :announcement="form"
         :button_loading="button_loading"
+        :saved-images="saved_images"
         :getTimer="getTimer"
         :notValid="notValid"
         :rejectArray="rejectObj.rejectArray"
@@ -618,7 +619,7 @@
         />
         <div class="row justify-content-center">
           <button
-            :class="{'button_loading':button_loading, 'disabled':notValid}"
+            :class="{'pending':button_loading, 'disabled':notValid}"
             class="btn btn--green  mt-1"
             @click.prevent="transferToSupervisor()"
           >
@@ -654,7 +655,7 @@ export default {
 
   name: 'commercial-pages-moderation',
 
-  layout: 'ticket',
+  layout: 'moderator',
 
   components: {
     TitleWithLine,
@@ -702,6 +703,11 @@ export default {
       store.commit('moderator/moderatorMutator', {
         with: data.announce,
         property: 'single_announce',
+      })
+
+      store.commit('moderator/moderatorMutator', {
+        with: data.moderator,
+        property: 'moderator',
       })
 
       if (!store.getters.single_announce.id) return;
@@ -945,8 +951,9 @@ export default {
     await this.$auth.setUserToken(`Bearer ${this.$route.query.token}`);
     this.$axios.setHeader('Authorization', `Bearer ${this.$route.query.token}`)
 
-    if ((this.admin_user) && (this.admin_user.admin_group == 2)) {
+    if ((this.admin_user) && (this.admin_user.user.admin_group == 2)) {
       setInterval(() => {
+
         let timer = moment().diff(moment(this.moderator.created_at));
         var duration = moment.duration(timer);
         var days = duration.days(),
@@ -978,10 +985,11 @@ export default {
       this.form.id = announce.id;
       this.form.id_unique = announce.id_unique;
       this.form.selectedColor = announce.color_id;
+      this.form.is_new = announce.is_new;
       this.form.mileage = announce.mileage;
       this.form.address = announce.address;
       this.form.beaten = announce.beaten;
-      this.form.is_new = announce.is_new;
+
       this.form.customs_clearance = announce.customed;
       this.form.region_id = announce.region_id;
       this.form.lat = parseFloat(announce.latitude);
@@ -1526,6 +1534,7 @@ export default {
       sell_options: 'sellOptions',
       all_sell_options: 'allSellOptions',
       badges: 'badges',
+      moderator: 'moderator/moderator',
       getPopularComments: 'getPopularComments',
     }),
     isAdmin() {
