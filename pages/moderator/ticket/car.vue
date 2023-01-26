@@ -297,7 +297,7 @@
                       </div>
                       <div class="col-12 col-lg-3">
                         <form-select
-                          v-model="form.modification"
+                          v-model="form.car_catalog_id"
                           :allow-clear="false"
                           :clearOption="false"
                           :disabled="isModerator"
@@ -732,7 +732,7 @@ export default {
         !this.form.engine ||
         !this.form.gearing ||
         !this.form.transmission ||
-        !this.form.modification
+        !this.form.car_catalog_id
       ) return true
       else return false
     }
@@ -1464,10 +1464,11 @@ export default {
       delete this.form.brandObj
       delete this.form.brand_id
 
-
+      let newForm = this.form;
+      newForm.car_body_type = this.single_announce.car_catalog.car_type.id;
       let formData = new FormData()
 
-      formData.append('data', JSON.stringify(this.form))
+      formData.append('data', JSON.stringify(newForm))
       formData.append('deletedImages', JSON.stringify(this.deleteArr))
 
       this.loading = true;
