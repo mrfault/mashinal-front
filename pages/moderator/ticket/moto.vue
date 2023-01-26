@@ -1,14 +1,11 @@
 <template>
-  <div v-if="loading && single_announce.id">
+  <div v-if="loading">
     <elements-loader></elements-loader>
   </div>
-  <div
-    v-else-if="!single_announce.id && !loading"
-    class="d-flex flex-column justify-content-center h-300"
-  >
-    <h1 class="text-center">Baxılmayanlar mövcud deyil</h1>
-  </div>
-  <div v-else class="w-100" style="box-sizing: border-box;overflow: hidden">
+
+
+  <div v-else-if="single_announce && single_announce.id && !loading" class="w-100"
+       style="box-sizing: border-box;overflow: hidden">
     <div class="container  px-3 px-md-0">
       <!--    breadcrumbs-->
       <breadcrumbs id="brdcrmbs1" :crumbs="crumbs"/>
@@ -114,7 +111,6 @@
                 :no-approval="!(admin_user.admin_group === 1 || admin_user.admin_group === 2)"
                 :old-value="admin_user.admin_group !== 2 ? single_announce.year.toString() : ''"
                 rejectKey="year"
-                required
                 title="year"
                 @change="changeReason"
               />
@@ -154,7 +150,7 @@
             <div class="col-12">
               <title-with-line-and-reject-reason
                 :subtitle="
-                      $t('at_least_5_photos', {
+                      $t('at_least_2_photos', {
                         min: minFiles,
                         max: maxFiles,
                       }).toLowerCase()
@@ -404,9 +400,9 @@
                 :reject-key="form.car_number ? 'car_number' : 'vin'"
                 :required="user.external_salon"
                 :title="'license_plate_number_vin_or_carcase_number'"
+                img-src="/img/flag.svg"
                 spanId="anchor-vin"
                 @change="changeReason"
-                img-src="/img/flag.svg"
               />
             </div>
             <div class="col-12 col-md-6 col-lg-3">
@@ -555,11 +551,11 @@
         <moderator-actions
           :id="single_announce.id"
           :announcement="form"
-          :saved-images="saved_images"
           :button_loading="button_loading"
           :getTimer="getTimer"
           :notValid="notValid"
           :rejectArray="rejectArray"
+          :saved-images="saved_images"
           :type="$route.query.type"
           @formChanged="(e) => (form = e)"
           @handleLoading="handleLoading"
@@ -580,20 +576,6 @@
         </button>
       </template>
       <!--    empty announce-->
-      <div v-if="!single_announce.id">
-        <div style="text-align: center">
-          <br><br>
-          <h2>{{ $t('not_have_pending') }} {{ $route.query.type }}</h2>
-          <!--<a :href="$route.fullPath">
-            <button class="section-post__btn add_announce">Get car ticket</button>
-          </a>
-          &nbsp;&nbsp;-->
-          <a href="javascript:void(0);">
-            <button class="btn btn--yellow w-50" @click="handleBackList">{{ $t('back_to_list') }}</button>
-          </a>
-          <br><br>
-        </div>
-      </div>
     </div>
     <!--    logs modal-->
     <modal-popup
@@ -634,6 +616,11 @@
         </div>
       </div>
     </modal-popup>
+  </div>
+  <div v-else
+       class="d-flex flex-column justify-content-center h-300"
+  >
+    <h1 class="text-center">Baxılmayanlar mövcud deyil</h1>
   </div>
 </template>
 
@@ -712,6 +699,10 @@ export default {
       store.commit('mutate', {
         property: 'single_announce',
         value: data.announce,
+      })
+      store.commit('moderator/moderatorMutator', {
+        with: data.moderator,
+        property: 'moderator',
       })
 
       let default_data = {};
@@ -931,29 +922,8 @@ export default {
     await this.$auth.setUserToken(`Bearer ${this.$route.query.token}`);
     this.$axios.setHeader('Authorization', `Bearer ${this.$route.query.token}`)
 
-    if (this.admin_user.admin_group == 2) {
-      setInterval(() => {
-        let timer = moment().diff(moment(this.moderator.created_at));
-        var duration = moment.duration(timer);
-        var days = duration.days(),
-          hrs = duration.hours(),
-          mins = duration.minutes(),
-          secs = duration.seconds();
 
-        if (hrs.toString().length === 1) hrs = '0' + hrs;
-        if (mins.toString().length === 1) mins = '0' + mins;
-        if (secs.toString().length === 1) secs = '0' + secs;
-        let _return = '';
-
-        if (days > 0) _return += days + 'd. ';
-
-        _return += hrs + ':' + mins + ':' + secs;
-
-        this.getTimer.data = _return;
-        this.getTimer.unix = timer / 1000;
-      }, 1000);
-    }
-    if (this.single_announce.id) {
+    if (this.single_announce && this.single_announce.id) {
 
       let announce = JSON.parse(JSON.stringify(this.single_announce));
 

@@ -30,7 +30,7 @@
     </section>
     <section v-else-if="user.admin_group === 2" class="container"> <!--moderator-->
       <div class="row">
-        <div class="col-6 col-lg-2">
+        <div v-if="moderator" class="col-6 col-lg-2">
             <span class="timer">
               {{ getTimer.data }}
             </span>
@@ -101,14 +101,15 @@
 </template>
 
 <script>
+import {mapGetters} from "vuex";
+import moment from 'moment'
+
 export default {
   props: {
     rejectArray: Array,
     button_loading: Boolean,
     notValid: Boolean,
-    getTimer: Object,
     announcement: Object,
-    savedImages: Array,
     id: Number,
     type: {
       type: String,
@@ -118,7 +119,42 @@ export default {
   data() {
     return {
       form: this.$clone(this.announcement),
+      getTimer: {
+        data: '',
+        unix: 0
+      },
     }
+  },
+  computed: {
+    ...mapGetters({
+      moderator: 'moderator/moderator',
+      single_announce: 'moderator/single_announce',
+    })
+  },
+  mounted() {
+    if (this.id && (this.user.admin_group == 2)) {
+      setInterval(() => {
+        let timer = moment().diff(moment(this.moderator.created_at));
+        var duration = moment.duration(timer);
+        var days = duration.days(),
+          hrs = duration.hours(),
+          mins = duration.minutes(),
+          secs = duration.seconds();
+
+        if (hrs.toString().length === 1) hrs = '0' + hrs;
+        if (mins.toString().length === 1) mins = '0' + mins;
+        if (secs.toString().length === 1) secs = '0' + secs;
+        let _return = '';
+
+        if (days > 0) _return += days + 'd. ';
+
+        _return += hrs + ':' + mins + ':' + secs;
+
+        this.getTimer.data = _return;
+        this.getTimer.unix = timer / 1000;
+      }, 1000);
+    }
+
   },
   methods: {
     sendData(status) {
@@ -128,39 +164,51 @@ export default {
         })
         this.$emit('handleLoading', false)
       }
-      if ((this.type !== 'part') && (this.savedImages.length < 2)) {
+      else if (((this.type !== 'part') && (this.type !== 'moto') && (this.type !== 'moto_atv') && (this.type !== 'scooter')) && (this.form.saved_images.length < 3)) {
         this.$toasted.show(this.$t('Şəkillər 3-dən az olmamalıdır.'), {
           type: 'error',
         })
         this.$emit('handleLoading', false)
       }
-      if ((this.type == 'cars') && (!this.form.car_number && !this.form.vin)) {
+      else if (((this.type == 'moto') || (this.type == 'moto_atv') || (this.type == 'scooter')) && (this.form.saved_images.length < 2)) {
+        this.$toasted.show(this.$t('Şəkillər 2-dən az olmamalıdır.'), {
+          type: 'error',
+        })
+        this.$emit('handleLoading', false)
+      }
+      else if ((this.type == 'cars') && (!this.form.car_number && !this.form.vin)) {
         this.$toasted.show(this.$t('Avtomobilin nömrəsi və ya VİN nömrə" boş ola bilməz.'), {
           type: 'error',
         })
         this.$emit('handleLoading', false)
-      } else if (!this.form.is_new && this.form.mileage == 0) {
+      }
+      else if (!this.form.is_new && this.form.mileage == 0) {
         this.$toasted.show(this.$t('Nəqliyyat vasitəsi yeni deyilsə yürüş 500-dən çox olmalıdır.'), {
           type: 'error',
         })
         this.$emit('handleLoading', false)
-      } else if ((this.type == 'cars') && this.form.customs_clearance && !this.form.vin.length) {
+      }
+      else if ((this.type == 'cars') && this.form.customs_clearance && !this.form.vin.length) {
         this.$toasted.show(this.$t('Nəqliyyat vasitəsi gömrükdən keçməyibsə ban nömrəsini yazmaq mütləqdir'), {
           type: 'error',
         })
-      } else if ((this.type == 'cars') && (this.form.vin.length !== 0) && this.form.vin.length !== 17) {
+      }
+      else if ((this.type == 'cars') && (this.form.vin.length !== 0) && this.form.vin.length !== 17) {
         this.$toasted.show(this.$t('VIN nömrənin formatı düzgün deyil'), {
           type: 'error',
         })
-      } else if ((this.type == 'part') && (!this.form.is_negotiable) && (this.form.price < 1)) {
+      }
+      else if ((this.type == 'part') && (!this.form.is_negotiable) && (this.form.price < 1)) {
         this.$toasted.show(this.$t('Minimal Qiymət 1 olmalıdır.'), {
           type: 'error',
         })
-      }else if ((this.type !== 'part') && this.form.price == 0) {
+      }
+      else if ((this.type !== 'part') && this.form.price == 0) {
         this.$toasted.show(this.$t('Minimal Qiymət 1 olmalıdır.'), {
           type: 'error',
         })
-      } else {
+      }
+      else {
         this.$emit('sendData', status)
       }
     },

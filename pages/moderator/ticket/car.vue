@@ -11,7 +11,7 @@
             <div ref="page-top-ae" class="mb-5">
 
               <!--     sell last step ------  -->
-              <sell-last-step-moderator
+              <sell-last-step
                 :key="lastStepKey"
                 :announcement="JSON.parse(JSON.stringify(form))"
                 :colors="colors"
@@ -145,7 +145,7 @@
                       </div>
                     </div>
                     <!--              body-->
-                    <div v-if="data.sellBodies && form.year" class="row">
+                    <div v-if="data.sellBodies && data.sellBodies.length && form.year" class="row">
                       <div class="col-12">
                         <title-with-line-and-reject-reason
                           rejectKey="body_type"
@@ -222,7 +222,6 @@
                         key: o.engine,
                       }))
                     "
-                          :value="form.engine"
                           has-search
                           @change="changeEngine($event)"
                         />
@@ -309,6 +308,7 @@
                               key: o.id,
                             }))
                           "
+                          :value="form.modification"
                           @change="changeModification($event)"
                         />
                       </div>
@@ -324,6 +324,8 @@
                     </div>
                   </div>
                 </template>
+
+                <!--                image-->
                 <template v-slot:image>
 
 
@@ -378,29 +380,19 @@
                     />
                   </div>
                 </template>
-
                 <!--                360 exterior-->
                 <!--                 --------------(add input)-->
                 <template v-slot:360_exterior_input>
                   <div
                     class="mb-4"
                   >
-                    <div class="section-part__container">
-                      <div class="col-md-4 pl-0 d-flex align-items-center">
-                        <input style="width: 200px;" class="btn" type="file" v-on:change="add360Video"/>
-                        <div v-if="uploadPercentage > 0 && uploadPercentage < 100">
-                          {{ uploadPercentage }}%
-                        </div>
-                        <div v-if="uploadPercentage === 100">
-                          <span  class="ml-2" style="margin-bottom: 4px;"><icon style="color:green;font-size: 20px;" name="check-circle"/></span>
-                        </div>
-
+                    <div class="section-exterior_360__container">
+                      <div class="col-auto pl-0">
+                        <input class="btn" style="width: auto !important;" type="file" v-on:change="add360Video"/>
                       </div>
-
                     </div>
                   </div>
                 </template>
-
                 <!--                 --------------(exterior 360 view)-->
                 <template v-slot:360_exterior_content>
                   <div>
@@ -418,28 +410,22 @@
                     </div>
                   </div>
                 </template>
-
-
                 <!--                  ------------------------    ------------------------    ------------------------    ------------------------    ------------------------    -------------------------->
-
                 <!--                  ------------------------    ------------------------    ------------------------    ------------------------    ------------------------    -------------------------->
-
-              </sell-last-step-moderator>
+              </sell-last-step>
 
               <!--      actions-->
               <moderator-actions
                 :id="single_announce.id"
                 :announcement="form"
-                :saved-images="saved_images"
                 :button_loading="button_loading"
-                :getTimer="getTimer"
                 :notValid="notValid"
                 :rejectArray="rejectObj.rejectArray"
+                type="cars"
                 @formChanged="(e) => (form = e)"
+                @handleLoading="handleLoading"
                 @openTransferModal="transferModal = true"
                 @sendData="sendData"
-                @handleLoading="handleLoading"
-                type="cars"
                 @transferToSupervisor="transferToSupervisor"
               />
 
@@ -466,7 +452,7 @@
         />
         <div class="row justify-content-center">
           <button
-            :class="{'pending':button_loading, 'disabled': notValid}"
+            :class="{'button_loading':button_loading, 'disabled': notValid}"
             class="btn btn--green  mt-1"
             @click.prevent="transferToSupervisor()"
           >
@@ -505,8 +491,7 @@
 <script>
 import {mapActions, mapGetters} from 'vuex'
 import moment from 'moment'
-
-import SellLastStepModerator from '~/components/sell/SellLastStepModerator'
+import SellLastStep from '~/components/sell/SellLastStepModerator'
 import SellPreview from '~/components/sell/SellPreview'
 import UserDetails from '~/components/moderator/brand.vue'
 import ModeratorActions from '~/components/moderator/actions.vue'
@@ -525,13 +510,12 @@ import ChangeLog from "~/components/moderator/changeLog";
 
 export default {
   name: 'moderatorCar',
-
   head() {
     return this.$headMeta({
       title: `${this.$t('moderation')}`,
     });
   },
-  layout: 'moderator',
+  layout: 'ticket',
   components: {
     TitleWithLineAndRejectReason,
     RejectReason,
@@ -542,7 +526,7 @@ export default {
     TitleWithLine,
     ButtonOptions,
     UploadImage,
-    SellLastStepModerator,
+    SellLastStep,
     UploadImageModerator,
     PhotoRejectReason,
     Interior360Viewer,
@@ -553,7 +537,6 @@ export default {
     return {
       announcementIsAvailable: false,
       loading: false,
-      uploadPercentage: 0,
       showModal: false,
       lastStepKey: 1,
       show: {
@@ -659,6 +642,8 @@ export default {
       uploadedInterior360: null,
       uploadedInterior360id: null,
       transferComment: '',
+      //  timer
+
     }
   },
   computed: {
@@ -684,7 +669,6 @@ export default {
       colors: 'colors',
       sellTransmissions: 'sellTransmissions',
       moderatorTransmissions: 'moderator/transmissions',
-      getTimer: 'moderator/getTimer',
       modificationsModerator: "moderator/modifications",
       modificationsGeneral: "sellModifications",
     }),
@@ -779,34 +763,12 @@ export default {
       await this.$auth.setUserToken(`Bearer ${this.$route.query.token}`)
       const admin_user = await this.$axios.$get('/user')
       this.$auth.setUser(admin_user.user)
-
       //timer
-      setInterval(() => {
-        let timer = moment().diff(moment(this.moderator.created_at))
 
-        var duration = moment.duration(timer)
-        var days = duration.days(),
-          hrs = duration.hours(),
-          mins = duration.minutes(),
-          secs = duration.seconds()
-
-        if (hrs.toString().length === 1) hrs = '0' + hrs
-        if (mins.toString().length === 1) mins = '0' + mins
-        if (secs.toString().length === 1) secs = '0' + secs
-        let _return = ''
-
-        if (days > 0) _return += days + 'd. '
-
-        _return += hrs + ':' + mins + ':' + secs
-        this.$store.commit('moderator/changeTimerData', {
-          data: _return,
-          unix: timer / 1000,
-        })
-      }, 1000)
       let data
       try {
         data = await this.$axios.$get('/ticket/car');
-
+        console.log("data", data)
         this.$store.commit('moderator/moderatorMutator', {
           with: data.announce,
           property: 'single_announce',
@@ -857,7 +819,7 @@ export default {
           with: data.sell_bodies,
           property: 'sell_bodies',
         })
-        this.data.sellBodies = this.sellBodiesModerator;
+        this.data.sellBodies = data.sell_bodies;
 
         this.$store.commit('moderator/moderatorMutator', {
           with: data.type_of_drives,
@@ -1092,7 +1054,7 @@ export default {
     },
 
     // handle lists
-    handleLoading(e){
+    handleLoading(e) {
       this.loading = e;
     },
     getIcon(key, value) {
@@ -1177,11 +1139,11 @@ export default {
       window.location.href = "https://dev.mashin.al/alvcp/resources/announcements"
     },
     getSellLastStepRejectObj(value) {
-      console.log('value',value)
-      console.log('this.rejectObj.rejectArray',this.rejectObj.rejectArray)
-      if (!this.rejectObj.rejectArray.includes(value)){
+      console.log('value', value)
+      console.log('this.rejectObj.rejectArray', this.rejectObj.rejectArray)
+      if (!this.rejectObj.rejectArray.includes(value)) {
         this.rejectObj.rejectArray.push(value)
-      }else{
+      } else {
         const index = this.rejectObj.rejectArray.indexOf(value);
         this.rejectObj.rejectArray.splice(index, 1);
       }
@@ -1331,13 +1293,9 @@ export default {
       // this.uploadedVideo360 = formData;
       this.$axios
         .post('' + '/upload_temporary_video', formData, {
-          onUploadProgress: function( progressEvent ) {
-            this.uploadPercentage = parseInt( Math.round( ( progressEvent.loaded / progressEvent.total ) * 100 ) );
-
-          }.bind(this),
           headers: {
-            'Content-Type': 'multipart/form-data'
-          }
+            'Content-Type': 'multipart/form-data',
+          },
         })
         .then((res) => {
           if (res.status == 200) {
@@ -1461,7 +1419,7 @@ export default {
 
 // post
     async transferToSupervisor(withRejectReason = false) {
-
+      console.log('transferToSupervisor')
       this.button_loading = true
 
       if (withRejectReason) {
@@ -1469,12 +1427,12 @@ export default {
       }
 
       await this.$store.dispatch('moderator/transferToSupervisor', {
-        id: this.single_announce.id,
+        id: this.form.id,
         comment: this.form.comment,
       })
-      this.button_loading = false
+
       if (this.user.admin_group == 2) {
-        location.href = '/alvcp/resources/announce-moderators'
+        this.$router.push({path: this.localePath('/e-services')});
       } else {
         location.href = '/alvcp/resources/announcements'
       }
@@ -1488,8 +1446,6 @@ export default {
       }
 
 
-
-
       this.form.status = status
       this.form.id = this.single_announce.id;
       this.form.month = this.single_announce.month || "";
@@ -1498,14 +1454,14 @@ export default {
       this.form.rejectArray = this.rejectObj.rejectArray;
       this.form.saved_images = this.saved_images;
       this.form.end_date = null;
+      this.form.video_360_id = '';
       this.form.owner_type = 0;
-      this.form.generation =  this.form.generation_id;
+      this.form.generation = this.form.generation_id;
 
       delete this.form.model_slug;
       delete this.form.brand_slug;
       delete this.form.user;
       delete this.form.brandObj
-      delete this.form.brand_id
       delete this.form.brand_id
 
 
@@ -1517,44 +1473,44 @@ export default {
       this.loading = true;
       this.button_loading = true
 
-        try {
+      try {
 
-          await this.$axios.$post('/ticket/car/' + this.single_announce.id, formData)
+        await this.$axios.$post('/ticket/car/' + this.single_announce.id, formData)
 
-          if (this.user.admin_group == 2) {
-            location.href = '/alvcp/resources/announce-moderators';
-          } else {
-            location.href = '/alvcp/resources/announcements';
-          }
-
-          if (status == 0) {
-            this.$toasted.show(this.$t('your_announce_rejected'), {
-              type: 'success',
-            })
-          }
-
-
-        } catch ({
-          response: {
-            data: {data},
-          },
-        }) {
-          this.loading = false;
-          this.button_loading = false
-          this.errors = []
-          this.$toasted.clear()
-          Object.keys(data)
-            .reverse()
-            .map((key) => {
-              this.errors.push(key)
-              this.$toasted.show(data[key][0], {
-                type: 'error',
-                duration: 0,
-
-              })
-            })
-
+        if (this.user.admin_group == 2) {
+          location.href = '/alvcp/resources/announce-moderators';
+        } else {
+          location.href = '/alvcp/resources/cars';
         }
+
+        if (status == 0) {
+          this.$toasted.show(this.$t('your_announce_rejected'), {
+            type: 'success',
+          })
+        }
+
+
+      } catch ({
+        response: {
+          data: {data},
+        },
+      }) {
+        this.loading = false;
+        this.button_loading = false
+        this.errors = []
+        this.$toasted.clear()
+        Object.keys(data)
+          .reverse()
+          .map((key) => {
+            this.errors.push(key)
+            this.$toasted.show(data[key][0], {
+              type: 'error',
+              duration: 0,
+
+            })
+          })
+
+      }
 
     },
     addComment(e) {
