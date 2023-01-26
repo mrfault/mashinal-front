@@ -145,7 +145,7 @@
                       </div>
                     </div>
                     <!--              body-->
-                    <div v-if="data.sellBodies && form.year" class="row">
+                    <div v-if="data.sellBodies && data.sellBodies.length && form.year" class="row">
                       <div class="col-12">
                         <title-with-line-and-reject-reason
                           rejectKey="body_type"
@@ -162,7 +162,6 @@
                           :disabled="isModerator"
                           :label="$t('body_type')"
                           :options="data.sellBodies"
-                          :value="form.car_body_type"
                           has-search
                           @change="changeBodyType($event)"
                         />
@@ -195,7 +194,6 @@
                           :disabled="isModerator"
                           :label="$t('generation')"
                           :options="data.generations"
-                          :value="form.generation_id"
                           has-search
                           @change="changeGeneration($event)"
                         />
@@ -224,7 +222,6 @@
                         key: o.engine,
                       }))
                     "
-                          :value="form.engine"
                           has-search
                           @change="changeEngine($event)"
                         />
@@ -253,7 +250,6 @@
                         key: o.type_of_drive,
                       }))
                     "
-                          :value="form.gearing"
                           has-search
                           @change="changeGearing($event)"
                         />
@@ -280,7 +276,6 @@
                         name: $t('type_of_drive_values')[o.box] || '',
                         key: o.box,
                       }))"
-                          :value="form.transmission"
                           @change="changeTransmission($event)"
                         />
 
@@ -329,6 +324,8 @@
                     </div>
                   </div>
                 </template>
+
+                <!--                image-->
                 <template v-slot:image>
 
 
@@ -383,7 +380,6 @@
                     />
                   </div>
                 </template>
-
                 <!--                360 exterior-->
                 <!--                 --------------(add input)-->
                 <template v-slot:360_exterior_input>
@@ -392,12 +388,11 @@
                   >
                     <div class="section-exterior_360__container">
                       <div class="col-auto pl-0">
-                        <input style="width: auto !important;" class="btn" type="file" v-on:change="add360Video"/>
+                        <input class="btn" style="width: auto !important;" type="file" v-on:change="add360Video"/>
                       </div>
                     </div>
                   </div>
                 </template>
-
                 <!--                 --------------(exterior 360 view)-->
                 <template v-slot:360_exterior_content>
                   <div>
@@ -415,12 +410,8 @@
                     </div>
                   </div>
                 </template>
-
-
                 <!--                  ------------------------    ------------------------    ------------------------    ------------------------    ------------------------    -------------------------->
-
                 <!--                  ------------------------    ------------------------    ------------------------    ------------------------    ------------------------    -------------------------->
-
               </sell-last-step>
 
               <!--      actions-->
@@ -430,11 +421,11 @@
                 :button_loading="button_loading"
                 :notValid="notValid"
                 :rejectArray="rejectObj.rejectArray"
+                type="cars"
                 @formChanged="(e) => (form = e)"
+                @handleLoading="handleLoading"
                 @openTransferModal="transferModal = true"
                 @sendData="sendData"
-                @handleLoading="handleLoading"
-                type="cars"
                 @transferToSupervisor="transferToSupervisor"
               />
 
@@ -651,7 +642,7 @@ export default {
       uploadedInterior360: null,
       uploadedInterior360id: null,
       transferComment: '',
-    //  timer
+      //  timer
 
     }
   },
@@ -777,7 +768,7 @@ export default {
       let data
       try {
         data = await this.$axios.$get('/ticket/car');
-
+        console.log("data", data)
         this.$store.commit('moderator/moderatorMutator', {
           with: data.announce,
           property: 'single_announce',
@@ -828,7 +819,7 @@ export default {
           with: data.sell_bodies,
           property: 'sell_bodies',
         })
-        this.data.sellBodies = this.sellBodiesModerator;
+        this.data.sellBodies = data.sell_bodies;
 
         this.$store.commit('moderator/moderatorMutator', {
           with: data.type_of_drives,
@@ -1063,7 +1054,7 @@ export default {
     },
 
     // handle lists
-    handleLoading(e){
+    handleLoading(e) {
       this.loading = e;
     },
     getIcon(key, value) {
@@ -1148,11 +1139,11 @@ export default {
       window.location.href = "https://dev.mashin.al/alvcp/resources/announcements"
     },
     getSellLastStepRejectObj(value) {
-      console.log('value',value)
-      console.log('this.rejectObj.rejectArray',this.rejectObj.rejectArray)
-      if (!this.rejectObj.rejectArray.includes(value)){
+      console.log('value', value)
+      console.log('this.rejectObj.rejectArray', this.rejectObj.rejectArray)
+      if (!this.rejectObj.rejectArray.includes(value)) {
         this.rejectObj.rejectArray.push(value)
-      }else{
+      } else {
         const index = this.rejectObj.rejectArray.indexOf(value);
         this.rejectObj.rejectArray.splice(index, 1);
       }
@@ -1455,8 +1446,6 @@ export default {
       }
 
 
-
-
       this.form.status = status
       this.form.id = this.single_announce.id;
       this.form.month = this.single_announce.month || "";
@@ -1467,13 +1456,12 @@ export default {
       this.form.end_date = null;
       this.form.video_360_id = '';
       this.form.owner_type = 0;
-      this.form.generation =  this.form.generation_id;
+      this.form.generation = this.form.generation_id;
 
       delete this.form.model_slug;
       delete this.form.brand_slug;
       delete this.form.user;
       delete this.form.brandObj
-      delete this.form.brand_id
       delete this.form.brand_id
 
 
@@ -1485,44 +1473,44 @@ export default {
       this.loading = true;
       this.button_loading = true
 
-        try {
+      try {
 
-          await this.$axios.$post('/ticket/car/' + this.single_announce.id, formData)
+        await this.$axios.$post('/ticket/car/' + this.single_announce.id, formData)
 
-          if (this.user.admin_group == 2) {
-            location.href = '/alvcp/resources/announce-moderators';
-          } else {
-            location.href = '/alvcp/resources/cars';
-          }
-
-          if (status == 0) {
-            this.$toasted.show(this.$t('your_announce_rejected'), {
-              type: 'success',
-            })
-          }
-
-
-        } catch ({
-          response: {
-            data: {data},
-          },
-        }) {
-          this.loading = false;
-          this.button_loading = false
-          this.errors = []
-          this.$toasted.clear()
-          Object.keys(data)
-            .reverse()
-            .map((key) => {
-              this.errors.push(key)
-              this.$toasted.show(data[key][0], {
-                type: 'error',
-                duration: 0,
-
-              })
-            })
-
+        if (this.user.admin_group == 2) {
+          location.href = '/alvcp/resources/announce-moderators';
+        } else {
+          location.href = '/alvcp/resources/cars';
         }
+
+        if (status == 0) {
+          this.$toasted.show(this.$t('your_announce_rejected'), {
+            type: 'success',
+          })
+        }
+
+
+      } catch ({
+        response: {
+          data: {data},
+        },
+      }) {
+        this.loading = false;
+        this.button_loading = false
+        this.errors = []
+        this.$toasted.clear()
+        Object.keys(data)
+          .reverse()
+          .map((key) => {
+            this.errors.push(key)
+            this.$toasted.show(data[key][0], {
+              type: 'error',
+              duration: 0,
+
+            })
+          })
+
+      }
 
     },
     addComment(e) {

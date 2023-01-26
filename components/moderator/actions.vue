@@ -170,7 +170,7 @@ export default {
         })
         this.$emit('handleLoading', false)
       }
-      else if ((this.type == 'moto') && (this.form.saved_images.length < 2)) {
+      else if (((this.type == 'moto') || (this.type == 'moto_atv') || (this.type == 'scooter')) && (this.form.saved_images.length < 2)) {
         this.$toasted.show(this.$t('Şəkillər 2-dən az olmamalıdır.'), {
           type: 'error',
         })
