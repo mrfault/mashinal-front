@@ -390,9 +390,9 @@
                   <div
                     class="mb-4"
                   >
-                    <div class="section-part__container">
-                      <div class="col-md-4 pl-0">
-                        <input class="btn" type="file" v-on:change="add360Video"/>
+                    <div class="section-exterior_360__container">
+                      <div class="col-auto pl-0">
+                        <input style="width: auto !important;" class="btn" type="file" v-on:change="add360Video"/>
                       </div>
                     </div>
                   </div>

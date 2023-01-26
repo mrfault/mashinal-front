@@ -29,7 +29,7 @@
 
           <section class="mb-4">
             <div
-              class="section-part__container"
+              class="section-sell-last-step_360_exterior__container"
             >
               <div class="row justify-content-between align-items-center">
 
