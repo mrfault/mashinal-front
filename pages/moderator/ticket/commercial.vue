@@ -502,7 +502,7 @@
             <transition-expand>
               <div v-if="collapsed" class="w-100">
                 <!--                power-->
-                <div class="row">
+                <div class="row" v-if="form.commercial_type_id !== 43">
                   <div class="col-12">
                     <title-with-line-and-reject-reason no-approval title="horse_power"/>
                   </div>
@@ -516,7 +516,7 @@
                   </div>
                 </div>
                 <!--                capacity -->
-                <div class="row">
+                <div class="row" v-if="form.commercial_type_id !== 43">
                   <div class="col-12">
                     <title-with-line-and-reject-reason no-approval title="volume"/>
                   </div>
