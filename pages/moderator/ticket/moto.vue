@@ -178,6 +178,8 @@
                 :max_files="30"
                 :saved_images="saved_images"
                 :stopUploading="imagesBase64.length >= 20"
+                :imageIsUploading="imageIsUploading"
+
                 page="sell"
                 url="/"
                 @addFiles="addFiles"
@@ -557,6 +559,7 @@
           :rejectArray="rejectArray"
           :saved-images="saved_images"
           :type="$route.query.type"
+          :imageCount="imagesBase64.length"
           @formChanged="(e) => (form = e)"
           @handleLoading="handleLoading"
           @openTransferModal="transferModal = true"
@@ -915,6 +918,7 @@ export default {
       maxFiles: 20,
       readCarNumberDisclaimer: false,
       collapsed: true,
+      imageIsUploading: false,
     }
   },
 
@@ -1056,13 +1060,15 @@ export default {
       if (this.form.comment === null) this.form.comment = '';
       this.form.comment = this.form.comment + e + ' ';
     },
-    async deleteByIndex(deleteIndex) {
-      if (this.saved_images[deleteIndex]) {
-        this.deleteArr.push(this.saved_images[deleteIndex])
+    async deleteByIndex(index) {
+      if (this.saved_images[index]) {
+        this.deleteArr.push(this.saved_images[index])
       } else {
-        await this.$axios.$post('/remove_temporary_image/' + this.saved_images[deleteIndex]);
+        await this.$axios.$post(
+          '/remove_temporary_image/' + this.saved_images[index],
+        )
       }
-      this.saved_images.splice(deleteIndex, 1);
+      this.saved_images.splice(index, 1)
     },
     changeReason(rejectKey) {
       if (rejectKey === 'image') {
@@ -1076,6 +1082,7 @@ export default {
       }
     },
     async addFiles(v) {
+      this.imageIsUploading = true;
       await Promise.all(
         v.map(async (image) => {
           let formData = new FormData()
@@ -1087,10 +1094,13 @@ export default {
                 'Content-Type': 'multipart/form-data'
               }
             })
+            this.imageIsUploading = false;
             this.saved_images = this.saved_images.concat(data.ids)
             this.$store.commit('setSavedImageUrls', data.images);
             this.$nuxt.$emit('remove_image_loading_by_index', this.saved_images.length);
           } catch ({response: {data: {data}}}) {
+            this.imageIsUploading = false;
+
             this.$nuxt.$emit('remove_image_by_index', this.saved_images.length);
             this.$nuxt.$emit('remove_image_on_catch');
             this.errors = []

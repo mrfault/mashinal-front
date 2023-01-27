@@ -297,7 +297,7 @@
                       </div>
                       <div class="col-12 col-lg-3">
                         <form-select
-                          v-model="form.modification"
+                          v-model="form.car_catalog_id"
                           :allow-clear="false"
                           :clearOption="false"
                           :disabled="isModerator"
@@ -364,6 +364,7 @@
                       :announce="single_announce"
                       :changePosition="saved_images.length === imagesBase64.length"
                       :default-images="single_announce.media"
+                      :imageIsUploading="imageIsUploading"
                       :is-edit="false"
                       :load-croppa="true"
                       :max_files="30"
@@ -422,6 +423,7 @@
                 :notValid="notValid"
                 :rejectArray="rejectObj.rejectArray"
                 type="cars"
+                :imageCount="imagesBase64.length"
                 @formChanged="(e) => (form = e)"
                 @handleLoading="handleLoading"
                 @openTransferModal="transferModal = true"
@@ -608,6 +610,7 @@ export default {
       date: Math.floor(Date.now() / 1000),
       minFiles: this.type === 'moto' ? 2 : 3,
       maxFiles: 20,
+      imageIsUploading: false,
       //  image reject
       imageModal: {
         isOpen: false,
@@ -732,7 +735,7 @@ export default {
         !this.form.engine ||
         !this.form.gearing ||
         !this.form.transmission ||
-        !this.form.modification
+        !this.form.car_catalog_id
       ) return true
       else return false
     }
@@ -1202,6 +1205,7 @@ export default {
 
     //handle image
     async addFiles(v) {
+      this.imageIsUploading = true;
       await Promise.all(
         v.map(async (image) => {
           let formData = new FormData()
@@ -1219,6 +1223,7 @@ export default {
             )
             this.saved_images = this.saved_images.concat(data.ids)
             this.$store.commit('setSavedImageUrls', data.images)
+            this.imageIsUploading = false;
             this.$nuxt.$emit(
               'remove_image_loading_by_index',
               this.saved_images.length,
@@ -1228,6 +1233,7 @@ export default {
               data: {data},
             },
           }) {
+            this.imageIsUploading = false;
             this.$nuxt.$emit('remove_image_by_index', this.saved_images.length)
             this.$nuxt.$emit('remove_image_on_catch')
             this.errors = []
@@ -1454,8 +1460,6 @@ export default {
       this.form.rejectArray = this.rejectObj.rejectArray;
       this.form.saved_images = this.saved_images;
       this.form.end_date = null;
-      this.form.video_360_id = '';
-      this.form.owner_type = 0;
       this.form.generation = this.form.generation_id;
 
       delete this.form.model_slug;
@@ -1464,10 +1468,11 @@ export default {
       delete this.form.brandObj
       delete this.form.brand_id
 
-
+      let newForm = this.form;
+      newForm.car_body_type = this.single_announce.car_catalog.car_type.id;
       let formData = new FormData()
 
-      formData.append('data', JSON.stringify(this.form))
+      formData.append('data', JSON.stringify(newForm))
       formData.append('deletedImages', JSON.stringify(this.deleteArr))
 
       this.loading = true;

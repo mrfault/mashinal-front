@@ -207,6 +207,8 @@
           :max_files="30"
           :saved_images="saved_images"
           :stopUploading="imagesBase64.length >= 20"
+          :imageIsUploading="imageIsUploading"
+          :imageCount="imagesBase64.length"
           page="sell"
           url="/"
           @addFiles="addFiles"
@@ -574,6 +576,7 @@
         :button_loading="button_loading"
         :saved-images="saved_images"
         :notValid="notValid"
+        :imageCount="imagesBase64.length"
         :rejectArray="rejectObj.rejectArray"
         @formChanged="(e) => (form = e)"
         @openTransferModal="transferModal = true"
@@ -757,6 +760,7 @@ export default {
   //-----------------------------------------------------------------asyncData^------------------------------------------------------------------------------------------------------
   data() {
     return {
+      imageIsUploading: false,
       loading: false,
       button_loading: false,
       openLog: false,
@@ -1091,6 +1095,7 @@ export default {
       this.saved_images.splice(deleteIndex, 1);
     },
     async addFiles(v) {
+      this.imageIsUploading = true;
       await Promise.all(
         v.map(async (image) => {
           let formData = new FormData()
@@ -1102,12 +1107,14 @@ export default {
                 'Content-Type': 'multipart/form-data'
               }
             })
+            this.imageIsUploading = false;
             this.saved_images = this.saved_images.concat(data.ids)
             this.$store.commit('setSavedImageUrls', data.images);
             this.$nuxt.$emit('remove_image_loading_by_index', this.saved_images.length);
           } catch ({response: {data: {data}}}) {
             this.$nuxt.$emit('remove_image_by_index', this.saved_images.length);
             this.$nuxt.$emit('remove_image_on_catch');
+            this.imageIsUploading = false;
             this.errors = []
             this.$toasted.clear()
             Object.keys(data).map((key) => {

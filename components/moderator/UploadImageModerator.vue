@@ -1,7 +1,6 @@
 <template>
 
   <div class="vue_component__upload--image" v-bind:class="{ 'dragover': onDragover }">
-
     <div v-if="loading" class="vue_component__upload--image__overlay"></div>
     <div>
       <div v-if="page === 'sell'" class="row sell-page">
@@ -77,11 +76,11 @@
                       <icon name="cross"/>
                     </span>
                   </div>
+                    <img v-if="imageIsUploading && (key == saved_images.length)" alt="" class="show" src="/images/loading-78.gif"
+                         style=" width: 100%; height: 100%; object-fit: cover;">
 
-                  <img :class="{ 'show': setSavedImageUrls[key] }" :src="setSavedImageUrls[key]"
+                   <img v-else :class="{ 'show': setSavedImageUrls[key] }" :src="setSavedImageUrls[key]"
                        style="opacity: 0" @click.stop="openFancyBox(key)">
-
-
                 </div>
               </span>
                 <a
@@ -91,7 +90,6 @@
                   @click="handleFormClick" @drag.prevent.stop="" @dragstart.prevent.stop="">
                   <div class="no-photo">
                     <img alt="" src="/img/sell-helpers/cars_4.png">
-
                   </div>
                 </a>
               </draggable>
@@ -134,11 +132,12 @@
 import draggable from 'vuedraggable';
 import {mapState} from "vuex";
 import CarViewForCroppa from "~/components/moderator/carViewForCroppa";
+
 const LightBox = () => import('vue-image-lightbox/src/components/LightBox.vue');
 
 export default {
   props: {
-
+    imageIsUploading: Boolean,
     changePosition: {
       type: Boolean,
       default: false
@@ -309,7 +308,7 @@ export default {
       for (const key in this.savedImageUrls) {
 
         let original = img[key].replace('-thumb', '-main').replace('-upload_thumb', '-thumb');
-     //   if (!this.imageExists(original)) original = original.replace('.jpg', '.png')
+        //   if (!this.imageExists(original)) original = original.replace('.jpg', '.png')
         /*
         if (img[key].includes('-upload_thumb')){
           let original = img[key].replace('-upload_thumb', '-thumb');
