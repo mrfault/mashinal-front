@@ -2470,4 +2470,8 @@ export default {
   "user_add_successfully": "İstifadəçi uğurla əlavə edildi",
   "delay_comment": "Şərh yazmaq",
   "comment_to_supervisor": "Supervayzerə rəy ver və ötür",
+  "part_photo_reject_1":"Fotoşəkillər saytın qaydalarına uyğun deyil.",
+  "part_photo_reject_2":"Şəkillərdə görüntü aydın deyil.",
+  "part_photo_reject_3":"Şəkil qeyd olunan ehtiyyat hissəsinə aid deyil.",
+  "part_photo_reject_4":"Təsvirdə ətraflı məlumat qeyd olunmayıb.",
 }

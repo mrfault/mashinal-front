@@ -7,12 +7,7 @@
       <elements-loader></elements-loader>
     </div>
 
-    <div
-      v-else-if="!single_announce.id && !loading"
-      class="d-flex flex-column justify-content-center h-300"
-    >
-      <h1 class="text-center">Baxılmayanlar mövcud deyil</h1>
-    </div>
+
     <!--    ANNOUNCE-->
     <div v-else-if="single_announce && single_announce.id && !loading" class="card w-100">
       <!--        userdata-->
@@ -222,13 +217,13 @@
               <!-- Input -->
               <form-numeric-input
                 v-if="filter.component === 'filter-single-input'"
+                v-model="form.filter[filter.key]"
                 :invalid="isInvalid(filter.key)"
                 :placeholder="
                   $t(
                     filter.key === 'capacity' ? 'battery_capacity' : filter.key,
                   )
                 "
-                v-model="form.filter[filter.key]"
                 @change="removeError(filter.key)"
                 @input="
                   ;(form[filter.key] = String($event)),
@@ -237,9 +232,9 @@
               />
             </div>
             <div
-              class="col-lg-4 mb-3"
               v-if="form.commercial_part"
               id="anchor-commercial_size"
+              class="col-lg-4 mb-3"
               style="align-items: center;"
             >
               <form-text-input
@@ -355,7 +350,7 @@
         </div>
 
         <div class="col-12">
-          <form-keywords is-moderator v-model="form.tags" class="w-100"/>
+          <form-keywords v-model="form.tags" class="w-100" is-moderator/>
         </div>
 
         <div class="col-12">
@@ -385,18 +380,16 @@
           >
             <div class="mb-2 ml-2" style="display: inline-block; z-index: 0;">
               <reject-reason
-                v-if="form.media.length"
                 :disabled-value="true"
                 rejectKey="image"
                 @change="changeReason"
               />
             </div>
-
           </title-with-line-and-reject-reason>
           <transition name="fade">
             <photo-reject-reason
               v-if="imageModal.isOpen"
-              :default_data="rejectObj.rejectArray"
+              :default_data="rejectArray"
               :modal__title="$t('image_reject_reason')"
               :type="'car'"
               @close="imageModal.isOpen = false"
@@ -409,12 +402,12 @@
             :announce="single_announce"
             :changePosition="saved_images.length === imagesBase64.length"
             :default-images="single_announce.media"
+            :imageIsUploading="imageIsUploading"
             :is-edit="false"
             :load-croppa="true"
             :max_files="30"
             :saved_images="saved_images"
             :stopUploading="imagesBase64.length >= 20"
-            :imageIsUploading="imageIsUploading"
             page="sell"
             url="/"
             @addFiles="addFiles"
@@ -434,11 +427,11 @@
         :id="single_announce.id"
         :announcement="form"
         :button_loading="button_loading"
+        :imageCount="imagesBase64.length"
         :notValid="notValid"
         :rejectArray="rejectArray"
         :saved-images="saved_images"
         type="part"
-        :imageCount="imagesBase64.length"
         @formChanged="(e) => (form = e)"
         @handleLoading="handleLoading"
         @openTransferModal="transferModal = true"
@@ -448,10 +441,11 @@
 
     </div>
     <!--    EMPTY Announce-->
+
     <div v-else>
       <div style="text-align: center">
         <br><br>
-        <h2>{{ $t('not_have_pending') }} {{ $route.query.type }}</h2>
+        <h2>{{ $t('Baxılmayanlar mövcud deyil') }} {{ $route.query.type }}</h2>
         <!--<a :href="$route.fullPath">
           <button class="section-post__btn add_announce">Get car ticket</button>
         </a>
@@ -463,20 +457,20 @@
       </div>
     </div>
     <!--    logs-->
-      <modal-popup
-        :modal-class="''"
-        :title="`${$t('logs')}`"
-        :toggle="(user.admin_group !== 2) && openLog"
-        @close="openLog = false"
-      >
-        <template v-if="single_announce && single_announce.btl_announces">
-          <change-log
-            :btl="single_announce.btl_announces"
-            :logs="single_announce.change_log"
-            :user-id="single_announce.user_id"
-          />
-        </template>
-      </modal-popup>
+    <modal-popup
+      :modal-class="''"
+      :title="`${$t('logs')}`"
+      :toggle="(user.admin_group !== 2) && openLog"
+      @close="openLog = false"
+    >
+      <template v-if="single_announce && single_announce.btl_announces">
+        <change-log
+          :btl="single_announce.btl_announces"
+          :logs="single_announce.change_log"
+          :user-id="single_announce.user_id"
+        />
+      </template>
+    </modal-popup>
     <!--    transfer modal-->
     <modal-popup
       :modal-class="''"
@@ -620,13 +614,10 @@ export default {
       imageModal: {
         isOpen: false,
         options: [
-          'front_error',
-          'back_error',
-          'left_error',
-          'right_error',
-          'interior_error',
-          'not_this_car_error',
-          'logo_on_the_picture',
+          "part_photo_reject_1",
+          "part_photo_reject_2",
+          "part_photo_reject_3",
+          "part_photo_reject_4",
         ],
         initialOptions: [
           'front_error',
@@ -648,8 +639,6 @@ export default {
   async created() {
     await this.$auth.setUserToken(`Bearer ${this.$route.query.token}`);
     this.$axios.setHeader('Authorization', `Bearer ${this.$route.query.token}`)
-
-
 
 
   },
@@ -790,7 +779,7 @@ export default {
     },
     changeReason(rejectKey) {
       if (rejectKey === 'image') {
-        this.showPhotoReject = true;
+        this.imageModal.isOpen = true
       } else {
         if (this.rejectArray.includes(rejectKey)) {
           this.rejectArray.splice(this.rejectArray.indexOf(rejectKey), 1);
@@ -976,7 +965,7 @@ export default {
       this.form.status = status;
       this.form.saved_images = this.saved_images;
       this.form.tags = this.form.tags.map(item => {
-        return { text: item }
+        return {text: item}
       })
       delete this.form['filter-undefined']
 

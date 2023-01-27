@@ -28,6 +28,7 @@
         </div>
       </div>
     </section>
+
     <section v-else-if="user.admin_group === 2" class="container"> <!--moderator-->
       <div class="row">
         <div v-if="moderator" class="col-6 col-lg-2">
@@ -51,7 +52,7 @@
                       @click.prevent="sendData(1)">{{ $t('confirm') }}</button>
 
               <!-- sendData(0) -->
-              <button v-else :class="{'button_loading':button_loading, 'disabled': notValid}" :disabled="notValid"
+              <button v-if="rejectArray.length" :class="{'button_loading':button_loading, 'disabled': notValid}" :disabled="notValid"
                       class="btn btn--red w-50 ml-5"
 
 
@@ -66,6 +67,7 @@
         </div>
       </div>
     </section>
+
     <section v-else-if="user.admin_group === 3" class="container"> <!--call center-->
       <div class="row">
         <div class="col-12">
