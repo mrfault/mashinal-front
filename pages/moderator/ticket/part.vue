@@ -438,6 +438,7 @@
         :rejectArray="rejectArray"
         :saved-images="saved_images"
         type="part"
+        :imageCount="imagesBase64.length"
         @formChanged="(e) => (form = e)"
         @handleLoading="handleLoading"
         @openTransferModal="transferModal = true"

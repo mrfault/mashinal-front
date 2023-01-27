@@ -179,6 +179,7 @@
                 :saved_images="saved_images"
                 :stopUploading="imagesBase64.length >= 20"
                 :imageIsUploading="imageIsUploading"
+
                 page="sell"
                 url="/"
                 @addFiles="addFiles"
@@ -558,6 +559,7 @@
           :rejectArray="rejectArray"
           :saved-images="saved_images"
           :type="$route.query.type"
+          :imageCount="imagesBase64.length"
           @formChanged="(e) => (form = e)"
           @handleLoading="handleLoading"
           @openTransferModal="transferModal = true"
@@ -1058,13 +1060,15 @@ export default {
       if (this.form.comment === null) this.form.comment = '';
       this.form.comment = this.form.comment + e + ' ';
     },
-    async deleteByIndex(deleteIndex) {
-      if (this.saved_images[deleteIndex]) {
-        this.deleteArr.push(this.saved_images[deleteIndex])
+    async deleteByIndex(index) {
+      if (this.saved_images[index]) {
+        this.deleteArr.push(this.saved_images[index])
       } else {
-        await this.$axios.$post('/remove_temporary_image/' + this.saved_images[deleteIndex]);
+        await this.$axios.$post(
+          '/remove_temporary_image/' + this.saved_images[index],
+        )
       }
-      this.saved_images.splice(deleteIndex, 1);
+      this.saved_images.splice(index, 1)
     },
     changeReason(rejectKey) {
       if (rejectKey === 'image') {

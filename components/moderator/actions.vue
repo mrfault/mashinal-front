@@ -163,19 +163,25 @@ export default {
   methods: {
     sendData(status) {
       if (this.form.is_new && this.form.mileage > 500) {
-        this.$toasted.show(this.$t('Yürüş xanası 500 dən çox olmamalıdır.'), {
+        this.$toasted.show(this.$t('Əgər nəqliyyat vasitəsi yenidirsə yürüş xanası 500 dən çox olmamalıdır.'), {
           type: 'error',
         })
         this.$emit('handleLoading', false)
       }
-      else if (((this.type !== 'part') && (this.type !== 'moto') && (this.type !== 'moto_atv') && (this.type !== 'scooter')) && (this.imageCount.length < 3)) {
+      else if (((this.type == 'cars') || (this.type == 'commercial')) && (this.imageCount < 3)) {
         this.$toasted.show(this.$t('Şəkillər 3-dən az olmamalıdır.'), {
           type: 'error',
         })
         this.$emit('handleLoading', false)
       }
-      else if (((this.type == 'moto') || (this.type == 'moto_atv') || (this.type == 'scooter')) && (this.imageCount.length < 2)) {
+      else if (((this.type == 'moto') || (this.type == 'moto_atv') || (this.type == 'scooter')) && (this.imageCount < 2)) {
         this.$toasted.show(this.$t('Şəkillər 2-dən az olmamalıdır.'), {
+          type: 'error',
+        })
+        this.$emit('handleLoading', false)
+      }
+      else if (((this.type == 'part')) && (this.imageCount < 1)) {
+        this.$toasted.show(this.$t('Ən az 1 şəkil yüklənməlidir'), {
           type: 'error',
         })
         this.$emit('handleLoading', false)
