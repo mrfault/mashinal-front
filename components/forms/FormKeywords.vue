@@ -10,7 +10,7 @@
       >
         <icon name="cross"/>
         <!-- <inline-svg src="/icons/cross.svg" height="14"/> -->
-        <template v-if="!isModerator">
+        <template v-if="!keyword.text">
           {{ keyword }}
         </template>
         <template v-else>
