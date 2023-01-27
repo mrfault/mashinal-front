@@ -327,7 +327,6 @@
 
                 <!--                image-->
                 <template v-slot:image>
-                  <h1>{{ imageIsUploading }}</h1>
 
 
                   <title-with-line-and-reject-reason

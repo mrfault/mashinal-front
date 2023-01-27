@@ -1,7 +1,6 @@
 <template>
 
   <div class="vue_component__upload--image" v-bind:class="{ 'dragover': onDragover }">
-    {{ imageIsUploading }}
     <div v-if="loading" class="vue_component__upload--image__overlay"></div>
     <div>
       <div v-if="page === 'sell'" class="row sell-page">
