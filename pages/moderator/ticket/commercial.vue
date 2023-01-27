@@ -169,35 +169,36 @@
       <!--       photo-->
       <section>
 
-        <title-with-line-and-reject-reason
-          :subtitle="
-                      $t('at_least_5_photos', {
+
+          <title-with-line-and-reject-reason
+            :subtitle="
+                      $t('at_least_3_photos', {
                         min: minFiles,
                         max: maxFiles,
                       }).toLowerCase()
                     "
-          hideRejectReason
-          title="photos"
-        >
-          <div class="mb-2 ml-2" style="display: inline-block; z-index: 0;">
-            <reject-reason
-              :disabled-value="true"
-              rejectKey="image"
-              @change="changeReason"
-            />
-          </div>
-        </title-with-line-and-reject-reason>
+            hideRejectReason
+            title="photos"
+          >
+            <div class="mb-2 ml-2" style="display: inline-block; z-index: 0;">
+              <reject-reason
+                :disabled-value="true"
+                rejectKey="image"
+                @change="changeReason"
+              />
+            </div>
 
-        <transition name="fade">
-          <photo-reject-reason
-            v-if="imageModal.isOpen"
-            :default_data="rejectObj.rejectArray"
-            :modal__title="$t('image_reject_reason')"
-            :type="'commercial'"
-            @close="imageModal.isOpen = false"
-            @save="savePhotoIssues"
-          />
-        </transition>
+          </title-with-line-and-reject-reason>
+          <transition name="fade">
+            <photo-reject-reason
+              v-if="imageModal.isOpen"
+              :default_data="rejectArray"
+              :modal__title="$t('image_reject_reason')"
+              :type="'car'"
+              @close="imageModal.isOpen = false"
+              @save="savePhotoIssues"
+            />
+          </transition>
         <upload-image-moderator
           :announce="single_announce"
           :changePosition="saved_images.length === imagesBase64.length"
@@ -577,7 +578,7 @@
         :saved-images="saved_images"
         :notValid="notValid"
         :imageCount="imagesBase64.length"
-        :rejectArray="rejectObj.rejectArray"
+        :rejectArray="rejectArray"
         @formChanged="(e) => (form = e)"
         @openTransferModal="transferModal = true"
         @sendData="sendData"
@@ -1052,10 +1053,10 @@ export default {
       } else if (rejectKey === '360') {
         this.rejectObj.show360Reject = true
       } else {
-        if (this.rejectObj.rejectArray.includes(rejectKey)) {
-          this.rejectObj.rejectArray.splice(this.rejectObj.rejectArray.indexOf(rejectKey), 1)
+        if (this.rejectArray.includes(rejectKey)) {
+          this.rejectArray.splice(this.rejectArray.indexOf(rejectKey), 1)
         } else {
-          this.rejectObj.rejectArray.push(rejectKey)
+          this.rejectArray.push(rejectKey)
         }
       }
     },

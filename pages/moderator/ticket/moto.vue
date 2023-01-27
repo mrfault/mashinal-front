@@ -167,6 +167,16 @@
                 </div>
 
               </title-with-line-and-reject-reason>
+              <transition name="fade">
+                <photo-reject-reason
+                  v-if="imageModal.isOpen"
+                  :default_data="rejectArray"
+                  :modal__title="$t('image_reject_reason')"
+                  :type="'car'"
+                  @close="imageModal.isOpen = false"
+                  @save="savePhotoIssues"
+                />
+              </transition>
             </div>
             <div class="col-12">
               <upload-image-moderator
@@ -778,6 +788,31 @@ export default {
   //-----------------------------------------------------------------asyncData^------------------------------------------------------------------------------------------------------
   data() {
     return {
+      imageModal: {
+        isOpen: false,
+        options: [
+          'front_error',
+          'back_error',
+          'left_error',
+          'right_error',
+          'interior_error',
+          'not_this_car_error',
+          'logo_on_the_picture',
+        ],
+        initialOptions: [
+          'front_error',
+          'back_error',
+          'left_error',
+          'right_error',
+          'interior_error',
+          'not_this_car_error',
+          'logo_on_the_picture',
+        ],
+        rejectArray: ['front_error',
+          'back_error',
+          'left_error',],
+        modalToggled: false,
+      },
       loading: true,
       button_loading: false,
       openLog: false,
@@ -1072,7 +1107,7 @@ export default {
     },
     changeReason(rejectKey) {
       if (rejectKey === 'image') {
-        this.showPhotoReject = true;
+        this.imageModal.isOpen = true
       } else {
         if (this.rejectArray.includes(rejectKey)) {
           this.rejectArray.splice(this.rejectArray.indexOf(rejectKey), 1);
@@ -1129,6 +1164,21 @@ export default {
       if (first === 11) {
         return dates.slice(first, dates.length);
       }
+    },
+    savePhotoIssues(v) {
+      var validCheckbox = true
+      Object.keys(v.data).map((key) => {
+        if (this.rejectArray.includes(key)) {
+          this.rejectArray.splice(this.rejectArray.indexOf(key), 1)
+        }
+
+        if (v.data[key]) {
+          validCheckbox = false
+          this.rejectArray.push(key)
+        }
+      })
+
+      this.$nuxt.$emit('image-checkbox-change', validCheckbox)
     },
     changeCategory(v) {
       this.form.category = v;
@@ -1223,20 +1273,11 @@ export default {
       this.changeProgressSingle('part')
     },
 
-    savePhotoIssues(v) {
-      var validCheckbox = true;
-      Object.keys(v.data).map((key) => {
-        if (this.rejectArray.includes(key)) {
-          this.rejectArray.splice(this.rejectArray.indexOf(key), 1);
-        }
-
-        if (v.data[key]) {
-          validCheckbox = false;
-          this.rejectArray.push(key);
-        }
-      })
-
-      this.$nuxt.$emit('image-checkbox-change', validCheckbox);
+    saveImageRejects() {
+      this.rejectArray = this.rejectArray.concat(this.imageModal.rejectArray);
+      this.removeDuplicates()
+      this.closeImageRejectModal();
+      this.imageModal.rejectArray = [];
     },
 
     handleAllOptions(v) {

@@ -265,7 +265,7 @@
                           @change="changeReason"
                         />
                       </div>
-                      <div v-if="true" class="col-12 col-lg-3">
+                      <div class="col-12 col-lg-3">
                         <form-select
                           v-model="form.transmission"
                           :allow-clear="false"
@@ -283,8 +283,7 @@
                     </div>
                     <!--              modification-->
                     <div
-                      v-if="data.modifications && data.modifications.length && form.transmission "
-                      class="row"
+                      v-if="data.modifications && data.modifications.length && form.transmission"   class="row"
                     >
                       <div class="col-12">
                         <title-with-line-and-reject-reason
@@ -1432,12 +1431,12 @@ export default {
       }
 
       await this.$store.dispatch('moderator/transferToSupervisor', {
-        id: this.form.id,
+        id: this.single_announce.id,
         comment: this.form.comment,
       })
 
       if (this.user.admin_group == 2) {
-        this.$router.push({path: this.localePath('/e-services')});
+        this.$router.push({path: this.localePath('/resources/announce-moderators')});
       } else {
         location.href = '/alvcp/resources/announcements'
       }

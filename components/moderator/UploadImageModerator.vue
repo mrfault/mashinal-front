@@ -1,7 +1,7 @@
 <template>
 
   <div class="vue_component__upload--image" v-bind:class="{ 'dragover': onDragover }">
-    <div v-if="loading" class="vue_component__upload--image__overlay"></div>
+    <div v-if="loading || imageIsUploading" class="vue_component__upload--image__overlay"></div>
     <div>
       <div v-if="page === 'sell'" class="row sell-page">
 
@@ -50,7 +50,7 @@
                 >
                   <div class="imagePreloader"></div>
                   <!--                  actions-->
-                  <div v-if="!loading" class="w-100 d-flex justify-content-between p-2">
+                  <div v-if="!loading && !imageIsUploading" class="w-100 d-flex justify-content-between p-2">
                     <span v-if="loadCroppa" class="cursor-pointer button-new-tab"
                           style="background: #dadada !important"
                           @click="openInNewTab(setSavedImageUrls[key], key)"
