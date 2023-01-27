@@ -115,6 +115,10 @@ export default {
       type: String,
       default: 'cars'
     },
+    imageCount: {
+      type: Number,
+      default:0,
+    },
   },
   data() {
     return {
@@ -164,13 +168,13 @@ export default {
         })
         this.$emit('handleLoading', false)
       }
-      else if (((this.type !== 'part') && (this.type !== 'moto') && (this.type !== 'moto_atv') && (this.type !== 'scooter')) && (this.form.saved_images.length < 3)) {
+      else if (((this.type !== 'part') && (this.type !== 'moto') && (this.type !== 'moto_atv') && (this.type !== 'scooter')) && (this.imageCount.length < 3)) {
         this.$toasted.show(this.$t('Şəkillər 3-dən az olmamalıdır.'), {
           type: 'error',
         })
         this.$emit('handleLoading', false)
       }
-      else if (((this.type == 'moto') || (this.type == 'moto_atv') || (this.type == 'scooter')) && (this.form.saved_images.length < 2)) {
+      else if (((this.type == 'moto') || (this.type == 'moto_atv') || (this.type == 'scooter')) && (this.imageCount.length < 2)) {
         this.$toasted.show(this.$t('Şəkillər 2-dən az olmamalıdır.'), {
           type: 'error',
         })

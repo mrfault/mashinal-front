@@ -178,6 +178,7 @@
                 :max_files="30"
                 :saved_images="saved_images"
                 :stopUploading="imagesBase64.length >= 20"
+                :imageIsUploading="imageIsUploading"
                 page="sell"
                 url="/"
                 @addFiles="addFiles"
@@ -915,6 +916,7 @@ export default {
       maxFiles: 20,
       readCarNumberDisclaimer: false,
       collapsed: true,
+      imageIsUploading: false,
     }
   },
 
@@ -1076,6 +1078,7 @@ export default {
       }
     },
     async addFiles(v) {
+      this.imageIsUploading = true;
       await Promise.all(
         v.map(async (image) => {
           let formData = new FormData()
@@ -1087,10 +1090,13 @@ export default {
                 'Content-Type': 'multipart/form-data'
               }
             })
+            this.imageIsUploading = false;
             this.saved_images = this.saved_images.concat(data.ids)
             this.$store.commit('setSavedImageUrls', data.images);
             this.$nuxt.$emit('remove_image_loading_by_index', this.saved_images.length);
           } catch ({response: {data: {data}}}) {
+            this.imageIsUploading = false;
+
             this.$nuxt.$emit('remove_image_by_index', this.saved_images.length);
             this.$nuxt.$emit('remove_image_on_catch');
             this.errors = []

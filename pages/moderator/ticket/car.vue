@@ -327,6 +327,7 @@
 
                 <!--                image-->
                 <template v-slot:image>
+                  <h1>{{ imageIsUploading }}</h1>
 
 
                   <title-with-line-and-reject-reason
@@ -364,6 +365,7 @@
                       :announce="single_announce"
                       :changePosition="saved_images.length === imagesBase64.length"
                       :default-images="single_announce.media"
+                      :imageIsUploading="imageIsUploading"
                       :is-edit="false"
                       :load-croppa="true"
                       :max_files="30"
@@ -608,6 +610,7 @@ export default {
       date: Math.floor(Date.now() / 1000),
       minFiles: this.type === 'moto' ? 2 : 3,
       maxFiles: 20,
+      imageIsUploading: false,
       //  image reject
       imageModal: {
         isOpen: false,
@@ -1202,6 +1205,7 @@ export default {
 
     //handle image
     async addFiles(v) {
+      this.imageIsUploading = true;
       await Promise.all(
         v.map(async (image) => {
           let formData = new FormData()
@@ -1219,6 +1223,7 @@ export default {
             )
             this.saved_images = this.saved_images.concat(data.ids)
             this.$store.commit('setSavedImageUrls', data.images)
+            this.imageIsUploading = false;
             this.$nuxt.$emit(
               'remove_image_loading_by_index',
               this.saved_images.length,
@@ -1228,6 +1233,7 @@ export default {
               data: {data},
             },
           }) {
+            this.imageIsUploading = false;
             this.$nuxt.$emit('remove_image_by_index', this.saved_images.length)
             this.$nuxt.$emit('remove_image_on_catch')
             this.errors = []
