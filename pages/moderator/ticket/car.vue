@@ -308,7 +308,6 @@
                               key: o.id,
                             }))
                           "
-                          :value="form.modification"
                           @change="changeModification($event)"
                         />
                       </div>
@@ -1415,7 +1414,7 @@ export default {
       this.getSellTransmissions()
     },
     async changeTransmission(e) {
-      this.form.modification = null;
+      this.form.car_catalog_id = null;
       this.getSellModifications();
     },
     async changeModification(e) {
@@ -1485,7 +1484,7 @@ export default {
         if (this.user.admin_group == 2) {
           location.href = '/alvcp/resources/announce-moderators';
         } else {
-          location.href = '/alvcp/resources/cars';
+          location.href = '/alvcp/resources/announcements';
         }
 
         if (status == 0) {
@@ -1565,7 +1564,7 @@ export default {
           this.form.transmission = null;
         }
         if (this.form.transmission == null) {
-          this.form.modification = null;
+          this.form.car_cata = null;
         }
       }
     },
