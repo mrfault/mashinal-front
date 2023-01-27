@@ -1459,8 +1459,6 @@ export default {
       this.form.rejectArray = this.rejectObj.rejectArray;
       this.form.saved_images = this.saved_images;
       this.form.end_date = null;
-      this.form.video_360_id = '';
-      this.form.owner_type = 0;
       this.form.generation = this.form.generation_id;
 
       delete this.form.model_slug;
