@@ -1326,7 +1326,7 @@ export default {
       };
 
       if (this.admin_user.admin_group == 2) {
-        this.$router.push({path: this.localePath('/alvcp/resources/announce-moderators')});
+        location.href = '/alvcp/resources/announce-moderators';
       } else {
         location.href = '/alvcp/resources/' + moto[this.$route.query.type];
       }
