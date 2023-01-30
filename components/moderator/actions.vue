@@ -200,12 +200,12 @@ export default {
         })
         this.$emit('handleLoading', false)
       }
-      else if (((this.type == 'moto') || (this.type == 'moto_atv') || (this.type == 'scooter')) && (this.form.car_number != '') && !(/^[0-9]{2} - {1}[a-zA-Z]{1,2} - {1}[0-9]{3}$/.test(this.form.car_number) )) {
-        this.$toasted.show(this.$t('Qeydiyyat nişanının formatı standarta uyğun deyil'), {
-          type: 'error',
-        })
-        this.$emit('handleLoading', false)
-      }
+      // else if (((this.type == 'moto') || (this.type == 'moto_atv') || (this.type == 'scooter')) && ((this.form.car_number != '') || !this.form.car_number || (this.form.car_number == null)) && !(/^[0-9]{2} - {1}[a-zA-Z]{1,2} - {1}[0-9]{3}$/.test(this.form.car_number) )) {
+      //   this.$toasted.show(this.$t('Qeydiyyat nişanının formatı standarta uyğun deyil'), {
+      //     type: 'error',
+      //   })
+      //   this.$emit('handleLoading', false)
+      // }
       else if (!this.form.is_new && this.form.mileage == 0) {
         this.$toasted.show(this.$t('Nəqliyyat vasitəsi yeni deyilsə yürüş 500-dən çox olmalıdır.'), {
           type: 'error',
