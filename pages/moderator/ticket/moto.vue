@@ -1325,7 +1325,7 @@ export default {
         'moto_atv': 'moto-atvs',
       };
 
-      if (this.admin_user.admin_group == 2) {
+      if (this.user.admin_group == 2) {
         location.href = '/alvcp/resources/announce-moderators';
       } else {
         location.href = '/alvcp/resources/' + moto[this.$route.query.type];

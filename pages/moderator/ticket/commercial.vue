@@ -1319,7 +1319,7 @@ export default {
             formData
           );
 
-          if (this.admin_user.admin_group == 2) {
+          if (this.user.admin_group == 2) {
             location.href = '/alvcp/resources/announce-moderators';
           } else {
             location.href = '/alvcp/resources/commercials';
@@ -1523,7 +1523,7 @@ export default {
       getPopularComments: 'getPopularComments',
     }),
     isAdmin() {
-      return (this.admin_user.admin_group == 1 || this.admin_user.admin_group == 2)
+      return (this.user.admin_group == 1 || this.user.admin_group == 2)
     },
     isModerator() {
       return this.user.admin_group && (this.user.admin_group == 2);
