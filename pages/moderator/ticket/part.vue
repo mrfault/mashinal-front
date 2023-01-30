@@ -944,7 +944,7 @@ export default {
       await this.$axios.$post('/ticket/transfer/part/' + this.announceId, {comment: this.transferComment});
 
       if (this.user.admin_group == 2) {
-        this.$router.push({path: this.localePath('/alvcp/resources/announce-moderators')});
+        location.href = '/alvcp/resources/announce-moderators';
       } else {
         location.href = '/alvcp/resources/parts';
       }
