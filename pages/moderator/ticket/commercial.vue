@@ -535,7 +535,7 @@
                 <!--                sell filters radio-->
                 <div v-for="(item,indx) in com_filters" :key="indx">
                   <title-with-line-and-reject-reason v-if="com_filters[indx].values && com_filters[indx].values.length"
-                                                     :title="item.type_key" no-approval/>
+                                                     :title="item.type_key" no-approval :required="item.required"/>
                   <div v-if="com_filters[indx].values" class="row">
                     <div v-for="(input,index)  in com_filters[indx].values" :key="input.name"
                          class="col-lg-4 mb-2 mb-lg-3">
@@ -1319,7 +1319,7 @@ export default {
             formData
           );
 
-          if (this.admin_user.admin_group == 2) {
+          if (this.user.admin_group == 2) {
             location.href = '/alvcp/resources/announce-moderators';
           } else {
             location.href = '/alvcp/resources/commercials';
@@ -1523,7 +1523,7 @@ export default {
       getPopularComments: 'getPopularComments',
     }),
     isAdmin() {
-      return (this.admin_user.admin_group == 1 || this.admin_user.admin_group == 2)
+      return (this.user.admin_group == 1 || this.user.admin_group == 2)
     },
     isModerator() {
       return this.user.admin_group && (this.user.admin_group == 2);

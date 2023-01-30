@@ -394,6 +394,7 @@
               :type="'car'"
               @close="imageModal.isOpen = false"
               @save="savePhotoIssues"
+              type="part"
             />
           </transition>
         </div>

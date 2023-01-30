@@ -207,7 +207,7 @@ export default {
         //       type: 'error',
         //     })
         //     this.$emit('handleLoading', false)
-      } else if (((this.type == 'moto') || (this.type == 'moto_atv') || (this.type == 'scooter')) && ((this.form.volume == '') || !this.form.volume || (this.form.volume == 0))) {
+      } else if (this.form.volume && ((this.form.volume == '') || !this.form.volume || (this.form.volume == 0))) {
         this.$toasted.show(this.$t('Həcm boş ola bilməz'), {
           type: 'error',
         })
