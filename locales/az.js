@@ -2474,4 +2474,5 @@ export default {
   "part_photo_reject_2":"Şəkillərdə görüntü aydın deyil.",
   "part_photo_reject_3":"Şəkil qeyd olunan ehtiyyat hissəsinə aid deyil.",
   "part_photo_reject_4":"Təsvirdə ətraflı məlumat qeyd olunmayıb.",
+  "recheck_sms_radar": "SMS Radarda yenidən yoxla",
 }

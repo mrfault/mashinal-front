@@ -127,7 +127,7 @@
                 has-search
                 @change="handleChange({key:'year',value: form.year, name: getBrandName(form.year, getModels)})"
               />
-              <small v-if="!form.year" class="text-red">{{ $t('starred_fields_are_required') }}</small>
+<!--              <small v-if="!form.year" class="text-red">{{ $t('starred_fields_are_required') }}</small>-->
 
             </div>
             <div class="mb-4">

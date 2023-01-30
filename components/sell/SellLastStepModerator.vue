@@ -365,6 +365,7 @@
       </section>
       <!---------------------------------------------------------------------------------------------------------------------------------------------->
       <!---------------------------------------------------------------------------------------------------------------------------------------------->
+
       <!--      number plate-->
       <section v-if="!form.customs_clearance && !user.external_salon" id="number-section-1">
         <div v-if="type === 'cars' || (type !== 'parts' && user.external_salon)">
@@ -462,6 +463,17 @@
             transparent
           />
         </div>
+      </section>
+
+      <section>
+        <button
+          :class="{ pending: button_loading }"
+          class="mt-2 btn btn--green"
+          style="padding: 5px 20px;"
+          @click.prevent="checkWithDin()"
+        >
+          {{ $t('recheck_sms_radar') }}
+        </button>
       </section>
       <!---------------------------------------------------------------------------------------------------------------------------------------------->
       <!---------------------------------------------------------------------------------------------------------------------------------------------->
@@ -624,6 +636,7 @@ export default {
   mixins: [ToastErrorsMixin, ImageResizeMixin, PaymentMixin],
   data() {
     return {
+      button_loading: false,
       interior360removed: false,
       now: new Date().toLocaleDateString('en-US'),
       collapsed: false,
@@ -718,6 +731,44 @@ export default {
       'resetSellTokens',
       'getMyAllAnnouncements',
     ]),
+    checkWithDin(){
+      let vin = this.form.vin;
+      let car_number = this.form.car_number.replace(/[^0-9a-zA-Z]+/g, '');
+
+      let sendData = {
+        announce_id: this.single_announce.id
+      };
+      let send = false;
+      if (vin.length === 17){
+        sendData.vin = vin;
+        send = true;
+      }
+      if (car_number.length === 7){
+        sendData.car_number = car_number;
+        send = true;
+      }
+
+      if(!send) return false;
+
+      this.button_loading = true;
+      this.$axios.$post('/ticket/checkSmsRadar', sendData)
+        .then((data) => {
+          data = data.data;
+
+          if(data) {
+            //data.carNumber = data.carNumber.slice(0, 2) + '-' + data.carNumber.slice(2, 4) + '-' + data.carNumber.slice(4, 7);
+
+            this.smsRadarData = data;
+
+            //if (data.bodyNumber && data.bodyNumber.toString().length === 17) this.getChange(data.bodyNumber, 'vin');
+          }else{
+            this.$toasted.error(this.$t('SMS Radarda məlumat tapılmadı'))
+          }
+
+          this.button_loading = false
+        });
+
+    },
     showCarNumberDisclaimer() {
       if (this.readCarNumberDisclaimer) {
         this.$nuxt.$emit('close-popover', 'car-number')

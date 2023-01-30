@@ -650,6 +650,7 @@ export default {
   },
 
   methods: {
+
     changeIsNegotiable(e) {
       if (e == true) {
         this.form.price = 0;

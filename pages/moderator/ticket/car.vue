@@ -742,6 +742,7 @@ export default {
   },
   methods: {
     // ui
+
     openModal(type) {
       this.showModal = true
       if (type == 'models') {
