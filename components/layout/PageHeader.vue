@@ -99,14 +99,14 @@
                     menu.title === 'favorites' && notViewedFavorites > 0
                   "
                 >
-                  <span class="badge-counter">{{ notViewedFavorites }}</span>
+                  <span class="badge-counter" style="top: -3px;right:-12px;">{{ notViewedFavorites }}</span>
                 </template>
                 <template
                   v-else-if="
                     menu.title === 'templates' && notViewedSavedSearch > 0
                   "
                 >
-                  <span class="badge-counter">{{ notViewedSavedSearch }}</span>
+                  <span class="badge-counter" style="top: -3px;right:-12px;">{{ notViewedSavedSearch }}</span>
                 </template>
               </nuxt-link>
             </li>
