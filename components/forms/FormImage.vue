@@ -4,7 +4,7 @@
       v-if="croppable"
       :key="refreshCroppa"
       v-model="croppaValue" placeholder=""
-      :initial-image="initialImage"
+      :initial-image="initialImage+'?v=2'"
       :accept="'image/*'"
       :canvas-color="'transparent'"
       :zoom-speed="15"
