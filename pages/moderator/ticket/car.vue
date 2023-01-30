@@ -1432,13 +1432,13 @@ export default {
         this.transferComment = this.rejectObj.rejectArray
       }
 
-      await this.$store.dispatch('/alvcp/moderator/transferToSupervisor', {
+      await this.$store.dispatch('moderator/transferToSupervisor', {
         id: this.single_announce.id,
         comment: this.form.comment,
       })
 
       if (this.user.admin_group == 2) {
-        this.$router.push({path: this.localePath('resources/announce-moderators')});
+        this.$router.push({path: this.localePath('/alvcp/resources/announce-moderators')});
       } else {
         location.href = '/alvcp/resources/announcements'
       }
