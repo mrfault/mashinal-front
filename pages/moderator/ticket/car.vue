@@ -453,7 +453,8 @@
         />
         <div class="row justify-content-center">
           <button
-            :class="{'button_loading':button_loading, 'disabled': notValid}"
+            :class="{'pending':button_loading, 'disabled': (transferComment === ''),'disabled': notValid,}"
+            :disabled="notValid || (transferComment == null) || (transferComment === '')"
             class="btn btn--green  mt-1"
             @click.prevent="transferToSupervisor()"
           >
