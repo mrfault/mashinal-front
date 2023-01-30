@@ -4,18 +4,18 @@
       <div class="row">
         <div class="col-12">
           <button v-if="rejectArray && rejectArray.length === 0"
-                  :class="{'button_loading':button_loading, 'disabled': notValid}"
+                  :class="{'pending':button_loading, 'disabled': notValid}"
                   :disabled="notValid"
                   class="btn btn--green w-50"
 
                   @click.prevent="sendData(1)">{{ $t('confirm') }}
           </button>
-          <button :class="{'button_loading':button_loading, 'disabled': notValid}" :disabled="notValid"
+          <button :class="{'pending':button_loading, 'disabled': notValid}" :disabled="notValid"
                   class="btn btn--red w-50 ml-1"
 
                   @click.prevent="sendData(0)">{{ $t('reject') }}
           </button>
-          <button :class="{'button_loading':button_loading, 'disabled': notValid}" :disabled="notValid"
+          <button :class="{'pending':button_loading, 'disabled': notValid}" :disabled="notValid"
                   class="btn btn--pale-red w-50 ml-1"
 
                   @click.prevent="sendData(3)"
@@ -45,14 +45,14 @@
         <div class="col-auto">
             <span v-if="getTimer.unix < 60*2 || (getTimer.unix > 60*2 && form.delay_comment.length)">
               <button v-if="rejectArray && rejectArray.length === 0"
-                      :class="{'button_loading':button_loading, 'disabled': notValid}"
+                      :class="{'pending':button_loading, 'disabled': notValid}"
                       :disabled="notValid"
                       class="btn btn--green w-50"
 
                       @click.prevent="sendData(1)">{{ $t('confirm') }}</button>
 
               <!-- sendData(0) -->
-              <button v-if="rejectArray.length" :class="{'button_loading':button_loading, 'disabled': notValid}"
+              <button v-if="rejectArray.length" :class="{'pending':button_loading, 'disabled': notValid}"
                       :disabled="notValid"
                       class="btn btn--red w-50 ml-5"
 
@@ -60,7 +60,7 @@
                       @click.prevent="transferToSupervisor(true)">{{ $t('reject') }}</button>
             </span>
 
-          <button :class="{'button_loading':button_loading, 'disabled': notValid}" :disabled="notValid"
+          <button :class="{'pending':button_loading, 'disabled': notValid}" :disabled="notValid"
                   class="btn btn--green w-50"
 
                   @click.prevent="openTransferModal">{{ $t('comment_to_supervisor') }}
@@ -72,13 +72,13 @@
     <section v-else-if="user.admin_group === 3" class="container"> <!--call center-->
       <div class="row">
         <div class="col-12">
-          <button :class="{'button_loading':button_loading, 'disabled': notValid}" :disabled="notValid"
+          <button :class="{'pending':button_loading, 'disabled': notValid}" :disabled="notValid"
                   class="btn btn--green w-50"
 
                   @click.prevent="sendData(2)">{{ $t('send_to_moderate') }}
           </button>
 
-          <button :class="{'button_loading':button_loading, 'disabled': notValid}" :disabled="notValid"
+          <button :class="{'pending':button_loading, 'disabled': notValid}" :disabled="notValid"
                   class="btn btn--pale-red w-50 ml-1"
 
                   @click.prevent="sendData(3)"
@@ -201,14 +201,18 @@ export default {
           type: 'error',
         })
         this.$emit('handleLoading', false)
-      }
-        // else if (((this.type == 'moto') || (this.type == 'moto_atv') || (this.type == 'scooter')) && ((this.form.car_number != '') || !this.form.car_number || (this.form.car_number == null)) && !(/^[0-9]{2} - {1}[a-zA-Z]{1,2} - {1}[0-9]{3}$/.test(this.form.car_number) )) {
-        //   this.$toasted.show(this.$t('Qeydiyyat nişanının formatı standarta uyğun deyil'), {
-        //     type: 'error',
-        //   })
-        //   this.$emit('handleLoading', false)
-      // }
-      else if (!this.form.is_new && this.form.mileage == 0) {
+        // }
+        //   else if (((this.type == 'moto') || (this.type == 'moto_atv') || (this.type == 'scooter')) && ((this.form.car_number != '') || !this.form.car_number || (this.form.car_number == null)) && !(/^[0-9]{2} - {1}[a-zA-Z]{1,2} - {1}[0-9]{3}$/.test(this.form.car_number) )) {
+        //     this.$toasted.show(this.$t('Qeydiyyat nişanının formatı standarta uyğun deyil'), {
+        //       type: 'error',
+        //     })
+        //     this.$emit('handleLoading', false)
+      } else if (((this.type == 'moto') || (this.type == 'moto_atv') || (this.type == 'scooter')) && ((this.form.volume == '') || !this.form.volume || (this.form.volume == 0))) {
+        this.$toasted.show(this.$t('Həcm boş ola bilməz'), {
+          type: 'error',
+        })
+        this.$emit('handleLoading', false)
+      } else if (!this.form.is_new && this.form.mileage == 0) {
         this.$toasted.show(this.$t('Nəqliyyat vasitəsi yeni deyilsə yürüş 500-dən çox olmalıdır.'), {
           type: 'error',
         })

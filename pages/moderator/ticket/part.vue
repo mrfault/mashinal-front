@@ -488,7 +488,7 @@
         />
         <div class="row justify-content-center">
           <button
-            :class="{'pending':button_loading, 'disabled': (transferComment === ''),'disabled': notValid,}"
+            :class="{'pending':button_loading, 'disabled': (transferComment == '' || notValid)}"
             :disabled="notValid || (transferComment == null) || (transferComment === '')"
             class="btn btn--green  mt-1"
             @click.prevent="transferToSupervisor()"
@@ -944,7 +944,7 @@ export default {
       await this.$axios.$post('/ticket/transfer/part/' + this.announceId, {comment: this.transferComment});
 
       if (this.user.admin_group == 2) {
-        location.href = '/alvcp/resources/announce-moderators';
+        this.$router.push({path: this.localePath('/alvcp/resources/announce-moderators')});
       } else {
         location.href = '/alvcp/resources/parts';
       }

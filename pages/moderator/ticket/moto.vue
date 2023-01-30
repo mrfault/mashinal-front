@@ -498,7 +498,9 @@
                 <template v-if="(item[1].component == 'select-checkbox') || (item[1].component == 'animated-input')">
                   <title-with-line-and-reject-reason
                     v-if="item[1].values && item[1].values.length"
-                    :title="item[1].placeholder" no-approval/>
+                    :title="item[1].placeholder" no-approval
+                    :required="item[1].required"
+                  />
                 </template>
 
 
@@ -620,7 +622,8 @@
         />
         <div class="row justify-content-center">
           <button
-            :class="{'button_loading':button_loading, 'disabled': notValid}"
+            :class="{'pending':button_loading, 'disabled': (transferComment == '' || notValid)}"
+            :disabled="notValid || (transferComment == null) || (transferComment === '')"
             class="btn btn--green  mt-1"
             @click.prevent="transferToSupervisor()"
           >
@@ -1323,7 +1326,7 @@ export default {
       };
 
       if (this.admin_user.admin_group == 2) {
-        location.href = '/alvcp/resources/announce-moderators';
+        this.$router.push({path: this.localePath('/alvcp/resources/announce-moderators')});
       } else {
         location.href = '/alvcp/resources/' + moto[this.$route.query.type];
       }
