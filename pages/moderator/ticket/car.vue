@@ -27,6 +27,7 @@
                 @getRejectObj="getSellLastStepRejectObj"
                 @imageDeleted="addDeletedImagesToList"
                 @interior_360_id_changed="(e) => (form.interior_360_id = e)"
+                @smsRadarDataChanged="smsRadarDataChanged"
               >
                 <template v-slot:form-inputs>
                   <div>
@@ -1187,7 +1188,9 @@ export default {
 
     },
 
-
+    smsRadarDataChanged(obj){
+      this.smsRadarData = obj;
+    },
     //handle actions
     async deleteByIndex(index) {
       if (this.saved_images[index]) {

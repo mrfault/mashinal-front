@@ -275,7 +275,7 @@
       </section>
 
       <!--      owner-->
-      <section id="owner-section-1" class="row" v-if="false">
+      <section v-if="false" id="owner-section-1" class="row">
         <div class="col-12">
           <title-with-line-and-reject-reason
             no-approval
@@ -300,7 +300,7 @@
       <!---------------------------------------------------------------------------------------------------------------------------------------------->
       <!---------------------------------------------------------------------------------------------------------------------------------------------->
       <!--      region-->
-      <section ref="region_section_1" id="region-section-1">
+      <section id="region-section-1" ref="region_section_1">
         <div v-if="!isAutosalon && !user.external_salon">
           <title-with-line-and-reject-reason
             id="anchor-region_id"
@@ -454,7 +454,7 @@
             @change="removeError('vin')"
           >
         </div>
-          <div class="col-12">
+        <div class="col-12">
           <form-checkbox
             v-model="form.show_vin"
             :label="$t('show_vin_on_site')"
@@ -731,7 +731,7 @@ export default {
       'resetSellTokens',
       'getMyAllAnnouncements',
     ]),
-    checkWithDin(){
+    checkWithDin() {
       let vin = this.form.vin;
       let car_number = this.form.car_number.replace(/[^0-9a-zA-Z]+/g, '');
 
@@ -739,29 +739,30 @@ export default {
         announce_id: this.single_announce.id
       };
       let send = false;
-      if (vin.length === 17){
+      if (vin.length === 17) {
         sendData.vin = vin;
         send = true;
       }
-      if (car_number.length === 7){
+      if (car_number.length === 7) {
         sendData.car_number = car_number;
         send = true;
       }
 
-      if(!send) return false;
+      if (!send) return false;
 
       this.button_loading = true;
       this.$axios.$post('/ticket/checkSmsRadar', sendData)
         .then((data) => {
           data = data.data;
 
-          if(data) {
+          if (data) {
             //data.carNumber = data.carNumber.slice(0, 2) + '-' + data.carNumber.slice(2, 4) + '-' + data.carNumber.slice(4, 7);
 
             this.smsRadarData = data;
 
+
             //if (data.bodyNumber && data.bodyNumber.toString().length === 17) this.getChange(data.bodyNumber, 'vin');
-          }else{
+          } else {
             this.$toasted.error(this.$t('SMS Radarda məlumat tapılmadı'))
           }
 
@@ -1033,6 +1034,12 @@ export default {
     //     this.$emit('getRejectObj', this.rejectObj)
     //   }
     // },
+    smsRadarData: {
+      deep: true,
+      handler() {
+        this.$emit('smsRadarDataChanged', this.smsRadarData)
+      }
+    },
     form: {
       deep: true,
       handler() {
@@ -1040,10 +1047,10 @@ export default {
       },
 
     },
-    'form.mileage':{
-      deep:true,
-      handler(){
-        if (this.form.mileage == null){
+    'form.mileage': {
+      deep: true,
+      handler() {
+        if (this.form.mileage == null) {
           this.form.mileage = 0
         }
       }
