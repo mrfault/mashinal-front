@@ -523,7 +523,7 @@
                   <div class="col-12">
                     <title-with-line-and-reject-reason no-approval title="volume"/>
                   </div>
-                  <div v-if="form.capacity" class="col-auto">
+                  <div class="col-auto">
                     <form-numeric-input
                       v-model="form.capacity"
                       :invalid="hasError(item)"
