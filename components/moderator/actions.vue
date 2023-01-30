@@ -217,7 +217,7 @@ export default {
         this.$toasted.show(this.$t('Nəqliyyat vasitəsi gömrükdən keçməyibsə ban nömrəsini yazmaq mütləqdir'), {
           type: 'error',
         })
-      } else if ((this.form.vin) && (this.originalVinLength !== 0) && this.originalVinLength < 17) {
+      } else if (((this.type == 'cars') || (this.type == 'commercial')) && (this.form.vin) && (this.originalVinLength !== 0) && this.originalVinLength < 17) {
         this.$toasted.show(this.$t('VIN nömrənin formatı düzgün deyil'), {
           type: 'error',
         })
