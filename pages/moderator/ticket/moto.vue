@@ -1789,6 +1789,17 @@ export default {
     // }
   },
 
+  watch:{
+    'form.is_new':{
+      deep: true,
+      handler(){
+        if (this.form.is_new == true){
+          this.form.mileage = 0
+        }
+      }
+    }
+  }
+
 }
 </script>
 

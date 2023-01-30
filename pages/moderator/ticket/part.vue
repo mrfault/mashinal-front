@@ -488,7 +488,8 @@
         />
         <div class="row justify-content-center">
           <button
-            :class="{'button_loading':button_loading}"
+            :class="{'pending':button_loading, 'disabled': (transferComment === ''),'disabled': notValid,}"
+            :disabled="notValid || (transferComment == null) || (transferComment === '')"
             class="btn btn--green  mt-1"
             @click.prevent="transferToSupervisor()"
           >
@@ -958,7 +959,7 @@ export default {
 
 
       for (const [key, value] of Object.entries(this.form.filter)) {
-        this.form[key] = value;
+        this.form[key] = value.toString();
       }
 
       let formData = new FormData();
