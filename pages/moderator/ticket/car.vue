@@ -453,7 +453,7 @@
         />
         <div class="row justify-content-center">
           <button
-            :class="{'pending':button_loading, 'disabled': (transferComment === ''),'disabled': notValid,}"
+            :class="{'pending':button_loading, 'disabled': (transferComment == '' || notValid)}"
             :disabled="notValid || (transferComment == null) || (transferComment === '')"
             class="btn btn--green  mt-1"
             @click.prevent="transferToSupervisor()"
@@ -1432,13 +1432,13 @@ export default {
         this.transferComment = this.rejectObj.rejectArray
       }
 
-      await this.$store.dispatch('moderator/transferToSupervisor', {
+      await this.$store.dispatch('/alvcp/moderator/transferToSupervisor', {
         id: this.single_announce.id,
         comment: this.form.comment,
       })
 
       if (this.user.admin_group == 2) {
-        this.$router.push({path: this.localePath('/resources/announce-moderators')});
+        this.$router.push({path: this.localePath('resources/announce-moderators')});
       } else {
         location.href = '/alvcp/resources/announcements'
       }
