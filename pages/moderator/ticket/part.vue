@@ -958,7 +958,7 @@ export default {
 
 
       for (const [key, value] of Object.entries(this.form.filter)) {
-        this.form[key] = value;
+        this.form[key] = value.toString();
       }
 
       let formData = new FormData();
