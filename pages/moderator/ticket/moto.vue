@@ -498,7 +498,9 @@
                 <template v-if="(item[1].component == 'select-checkbox') || (item[1].component == 'animated-input')">
                   <title-with-line-and-reject-reason
                     v-if="item[1].values && item[1].values.length"
-                    :title="item[1].placeholder" no-approval/>
+                    :title="item[1].placeholder" no-approval
+                    :required="item[1].required"
+                  />
                 </template>
 
 
