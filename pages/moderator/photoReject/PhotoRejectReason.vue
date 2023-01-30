@@ -112,7 +112,7 @@ export default {
   components: {
     SearchCheckbox
   },
-  props: ['modal__title', 'default_data', 'type'],
+  props: ['modal__title', 'default_data', 'type',],
   data() {
     return {
       data:
