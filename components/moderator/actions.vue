@@ -52,7 +52,8 @@
                       @click.prevent="sendData(1)">{{ $t('confirm') }}</button>
 
               <!-- sendData(0) -->
-              <button v-if="rejectArray.length" :class="{'button_loading':button_loading, 'disabled': notValid}" :disabled="notValid"
+              <button v-if="rejectArray.length" :class="{'button_loading':button_loading, 'disabled': notValid}"
+                      :disabled="notValid"
                       class="btn btn--red w-50 ml-5"
 
 
@@ -119,7 +120,7 @@ export default {
     },
     imageCount: {
       type: Number,
-      default:0,
+      default: 0,
     },
   },
   data() {
@@ -135,8 +136,14 @@ export default {
     ...mapGetters({
       moderator: 'moderator/moderator',
       single_announce: 'moderator/single_announce',
-    })
+    }),
+    originalVinLength() {
+      if (this.announcement.vin) {
+        return this.announcement.vin.replace(/[^a-zA-Z,0-9 ]/g, "").length
+      } else return 0
+    }
   },
+
   mounted() {
     if (this.id && (this.user.admin_group == 2)) {
       setInterval(() => {
@@ -169,70 +176,60 @@ export default {
           type: 'error',
         })
         this.$emit('handleLoading', false)
-      }
-      else if (((this.type == 'cars') || (this.type == 'commercial')) && (this.imageCount < 3)) {
+      } else if (((this.type == 'cars') || (this.type == 'commercial')) && (this.imageCount < 3)) {
         this.$toasted.show(this.$t('Şəkillər 3-dən az olmamalıdır.'), {
           type: 'error',
         })
         this.$emit('handleLoading', false)
-      }
-      else if (((this.type == 'moto') || (this.type == 'moto_atv') || (this.type == 'scooter')) && (this.imageCount < 2)) {
+      } else if (((this.type == 'moto') || (this.type == 'moto_atv') || (this.type == 'scooter')) && (this.imageCount < 2)) {
         this.$toasted.show(this.$t('Şəkillər 2-dən az olmamalıdır.'), {
           type: 'error',
         })
         this.$emit('handleLoading', false)
-      }
-      else if (((this.type == 'part')) && (this.imageCount < 1)) {
+      } else if (((this.type == 'part')) && (this.imageCount < 1)) {
         this.$toasted.show(this.$t('Ən az 1 şəkil yüklənməlidir'), {
           type: 'error',
         })
         this.$emit('handleLoading', false)
-      }
-      else if ((this.type == 'cars') && (!this.form.car_number && !this.form.vin)) {
+      } else if ((this.type == 'cars') && (!this.form.car_number && !this.form.vin)) {
         this.$toasted.show(this.$t('Avtomobilin nömrəsi və ya VİN nömrə" boş ola bilməz.'), {
           type: 'error',
         })
         this.$emit('handleLoading', false)
-      }
-      else if ((this.type == 'cars') && (this.form.car_number != '') && !(/^[0-9]{2} - {1}[a-zA-Z]{2} - {1}[0-9]{3}$/.test(this.form.car_number) )) {
+      } else if ((this.type == 'cars') && (this.form.car_number != '') && !(/^[0-9]{2} - {1}[a-zA-Z]{2} - {1}[0-9]{3}$/.test(this.form.car_number))) {
         this.$toasted.show(this.$t('Qeydiyyat nişanının formatı standarta uyğun deyil'), {
           type: 'error',
         })
         this.$emit('handleLoading', false)
       }
-      // else if (((this.type == 'moto') || (this.type == 'moto_atv') || (this.type == 'scooter')) && ((this.form.car_number != '') || !this.form.car_number || (this.form.car_number == null)) && !(/^[0-9]{2} - {1}[a-zA-Z]{1,2} - {1}[0-9]{3}$/.test(this.form.car_number) )) {
-      //   this.$toasted.show(this.$t('Qeydiyyat nişanının formatı standarta uyğun deyil'), {
-      //     type: 'error',
-      //   })
-      //   this.$emit('handleLoading', false)
+        // else if (((this.type == 'moto') || (this.type == 'moto_atv') || (this.type == 'scooter')) && ((this.form.car_number != '') || !this.form.car_number || (this.form.car_number == null)) && !(/^[0-9]{2} - {1}[a-zA-Z]{1,2} - {1}[0-9]{3}$/.test(this.form.car_number) )) {
+        //   this.$toasted.show(this.$t('Qeydiyyat nişanının formatı standarta uyğun deyil'), {
+        //     type: 'error',
+        //   })
+        //   this.$emit('handleLoading', false)
       // }
       else if (!this.form.is_new && this.form.mileage == 0) {
         this.$toasted.show(this.$t('Nəqliyyat vasitəsi yeni deyilsə yürüş 500-dən çox olmalıdır.'), {
           type: 'error',
         })
         this.$emit('handleLoading', false)
-      }
-      else if ((this.type == 'cars') && this.form.customs_clearance && !this.form.vin.length) {
+      } else if ((this.type == 'cars') && this.form.customs_clearance && !this.form.vin.length) {
         this.$toasted.show(this.$t('Nəqliyyat vasitəsi gömrükdən keçməyibsə ban nömrəsini yazmaq mütləqdir'), {
           type: 'error',
         })
-      }
-      else if ((this.type == 'cars') && (this.form.vin.length !== 0) && this.form.vin.length !== 17) {
+      } else if ((this.form.vin) && (this.originalVinLength !== 0) && this.originalVinLength < 17) {
         this.$toasted.show(this.$t('VIN nömrənin formatı düzgün deyil'), {
           type: 'error',
         })
-      }
-      else if ((this.type == 'part') && (!this.form.is_negotiable) && (this.form.price < 1)) {
+      } else if ((this.type == 'part') && (!this.form.is_negotiable) && (this.form.price < 1)) {
         this.$toasted.show(this.$t('Minimal Qiymət 1 olmalıdır.'), {
           type: 'error',
         })
-      }
-      else if ((this.type !== 'part') && this.form.price == 0) {
+      } else if ((this.type !== 'part') && this.form.price == 0) {
         this.$toasted.show(this.$t('Minimal Qiymət 1 olmalıdır.'), {
           type: 'error',
         })
-      }
-      else {
+      } else {
         this.$emit('sendData', status)
       }
     },
