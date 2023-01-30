@@ -535,7 +535,7 @@
                 <!--                sell filters radio-->
                 <div v-for="(item,indx) in com_filters" :key="indx">
                   <title-with-line-and-reject-reason v-if="com_filters[indx].values && com_filters[indx].values.length"
-                                                     :title="item.type_key" no-approval/>
+                                                     :title="item.type_key" no-approval :required="item.required"/>
                   <div v-if="com_filters[indx].values" class="row">
                     <div v-for="(input,index)  in com_filters[indx].values" :key="input.name"
                          class="col-lg-4 mb-2 mb-lg-3">
