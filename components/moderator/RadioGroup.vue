@@ -1,6 +1,6 @@
 <template>
 <div class="row">
-  <form-radio class="mt-2 col-12 col-lg-4" :id="option.key + 'ma-moderation' + option.name" :radio-value="option.key" v-model="computedValue" :label="$t(option.name)" v-for="option in options" bigLabel/>
+  <form-radio class="mt-2 col-12 col-lg-4"  :radio-value="option.key" v-model="computedValue" :label="$t(option.name)" v-for="(option,index) in options" :id="option.key + 'ma-moderation' + option.name + keyItem" bigLabel/>
 </div>
 </template>
 
@@ -16,7 +16,8 @@ export default {
     value: Number,
     options: Array,
     form: Object,
-    keyValue: String
+    keyValue: String,
+    keyItem: String,
   },
   computed: {
     computedValue: {
