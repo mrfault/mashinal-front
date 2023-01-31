@@ -308,7 +308,7 @@ export default {
       let img = this.savedImageUrls;
       for (const key in this.savedImageUrls) {
 
-        let original = img[key].replace('-thumb', '-main').replace('-upload_thumb', '-thumb');
+        let original = img[key].replace('-main', '-thumb').replace('-upload_thumb', '-thumb');
      //   if (!this.imageExists(original)) original = original.replace('.jpg', '.png')
         /*
         if (img[key].includes('-upload_thumb')){
