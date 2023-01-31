@@ -522,6 +522,7 @@
                   <div class="row">
                     <div class="col-12 col-md-auto pl-0" v-if="item.component == 'animated-input'">
                       <component
+
                         :is="getComponent(item.component)"
                         v-model="form[index]"
                         :form="single_announce"
@@ -535,6 +536,7 @@
                     </div>
                     <div class="col-12 pl-0" v-else>
                       <component
+                        :keyItem="form[index]"
                         :is="getComponent(item.component)"
                         v-model="form[index]"
                         :form="single_announce"
