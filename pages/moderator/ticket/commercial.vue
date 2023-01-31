@@ -257,6 +257,7 @@
             :min="0"
             :placeholder="$t('mileage')"
             input-class="w-133"
+            :disabled="isModerator"
             @change="getChange($event,'mileage')"
           />
         </div>
@@ -264,6 +265,7 @@
           <form-switch
             v-model="form.mileage_measure"
             :options="getMileageOptions"
+            :disabled="isModerator"
             @change="updatePreview('mileage_measure')"
           />
         </div>
@@ -272,6 +274,7 @@
             v-model="form.is_new"
             :label="$t('is_new')"
             :value="single_announce.is_new"
+            :disabled="isModerator"
             input-name="is_new"
             transparent
             @change="checkboxChanged"
@@ -283,6 +286,7 @@
             v-model="form.guaranty"
             :label="$t('in_garanty')"
             :value="single_announce.guaranty"
+            :disabled="isModerator"
             input-name="guaranty"
             transparent
             @change="checkboxChanged"
@@ -295,6 +299,7 @@
             :label="$t('not_cleared')"
             :value="single_announce.customed"
             input-name="customs_clearance"
+            :disabled="isModerator"
             transparent
             @change="checkboxChanged"
           />
@@ -305,6 +310,7 @@
             :value="single_announce.status_id"
             input-name="bitie"
             transparent
+            :disabled="isModerator"
             @change="checkboxChanged"
           >
             <popover
@@ -356,6 +362,7 @@
             :invalid="isInvalid('region_id')"
             :label="$t('sale_region_country')"
             :options="sell_options.countries"
+            :disabled="isModerator"
             has-search
             @change="removeError('region_id'), updatePreview('region')"
           />
@@ -372,6 +379,7 @@
               v-model="form.address"
               :placeholder="$t('address')"
               icon-name="placeholder"
+              :disabled="isModerator"
             />
           </pick-on-map-button>
         </div>
@@ -392,12 +400,14 @@
             :placeholder="$t('price')"
             input-class="w-133"
             @change="removeError('price'), updatePreview('price')"
+            :disabled="isModerator"
           />
         </div>
         <div class="col-auto">
           <form-switch
             v-model="form.currency"
             :options="getCurrencyOptions"
+            :disabled="isModerator"
             @change="updatePreview('currency')"
           />
         </div>
@@ -416,6 +426,7 @@
             v-model="form.owner_type"
             :options="getOwnerOptions"
             :value="single_announce.owners"
+            :disabled="isModerator"
             autoWidth
             translated
             @change="getChange($event,'owner_type')"
@@ -460,6 +471,7 @@
                 :mask="$maskAlphaNumeric('*****************')"
                 :placeholder="$t('vin_carcase_number')"
                 class="textfield-like-textarea"
+                :disabled="isModerator"
                 @change="removeError('vin')"
               >
                 <popover :width="240" name="vin">
@@ -470,6 +482,7 @@
             <form-checkbox
               v-model="form.show_vin"
               :label="$t('show_vin_on_site')"
+              :disabled="isModerator"
               class="mt-2 mt-lg-3"
               input-name="show_vin"
               transparent
@@ -484,6 +497,7 @@
               v-model="form.car_number"
               :mask="'99 - A{1,2} - 999'"
               :placeholder="'__ - _ - ___'"
+              :disabled="isModerator"
             />
           </div>
 
@@ -514,6 +528,7 @@
                       v-model="form.power"
                       :invalid="hasError(item)"
                       placeholder="horse_power"
+                      :disabled="isModerator"
                       @change="handleChange($event)"
                     />
                   </div>
@@ -527,6 +542,7 @@
                     <form-numeric-input
                       v-model="form.capacity"
                       :invalid="hasError(item)"
+                      :disabled="isModerator"
                       placeholder="volume"
                       @change="handleChange($event)"
                     />
@@ -546,6 +562,7 @@
                         :invalid="hasError(item)"
                         :label="input.name[locale] || $t(input.name)"
                         :radio-value="$notUndefined(input.id,input.key)"
+                        :disabled="isModerator"
                       />
                     </div>
                   </div>
@@ -559,7 +576,7 @@
                     <title-with-line-and-reject-reason no-approval title="comment"/>
                   </div>
                   <div class="col-12 col-lg-8">
-                    <form-textarea v-model="form.comment"/>
+                    <form-textarea  :disabled="isModerator" v-model="form.comment"/>
                   </div>
                 </div>
               </div>

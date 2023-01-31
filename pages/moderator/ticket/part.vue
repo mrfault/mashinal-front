@@ -43,15 +43,15 @@
         </div>
         <div class="col-12 col-md-6 col-lg-3">
           <label>{{ $t('product_code') }}</label>
-          <form-text-input v-model="form.product_code" :placeholder="$t('product_code')"/>
+          <form-text-input :disabled="isModerator" v-model="form.product_code" :placeholder="$t('product_code')"/>
         </div>
         <div class="col-12 col-md-6 col-lg-3">
           <label>{{ $t('headline') }}</label>
-          <form-text-input v-model="form.title" :maxlength="25" :placeholder="$t('title_max_character', { max: 25 })"/>
+          <form-text-input :disabled="isModerator" v-model="form.title" :maxlength="25" :placeholder="$t('title_max_character', { max: 25 })"/>
         </div>
         <div class="col-12 mt-3">
           <label>{{ $t('description_placeholder_part') }}</label>
-          <form-textarea v-model="form.description" :maxlength="3000"
+          <form-textarea :disabled="isModerator" v-model="form.description" :maxlength="3000"
                          :placeholder="$t('description_placeholder_part')"/>
         </div>
         <div class="col-12">
@@ -85,6 +85,7 @@
             :invalid="isInvalid('category_id')"
             :label="$t('category')"
             :options="categories"
+            :disabled="isModerator"
             @change="
               categorySelected($event),
                 removeError('category_id'),
@@ -104,6 +105,7 @@
             :clear-option="false"
             :invalid="isInvalid('sub_category')"
             :label="$t('sub_category')"
+            :disabled="isModerator"
             :options="filter_data.sub_categories.map((o) => ({
                 name: o.name,
                 key: o.id,
@@ -125,6 +127,7 @@
             :invalid="isInvalid('brand_id')"
             :label="$t('select_brand')"
             :options="[{ id: 0, name: $t('other') }, ...brands]"
+            :disabled="isModerator"
             has-search
             @change="removeError('brand_id')"
           />
@@ -138,6 +141,7 @@
             v-model="form.commercial_part"
             :checked-value="form.commercial_part"
             :label="$t('commercial_part')"
+            :disabled="isModerator"
             @change="!$event ? (form.commercial_size = '') : ''"
           />
         </div>
@@ -153,6 +157,7 @@
                 :label="`${$t('new')}/${$t('S_H')}`"
                 :options="conditionButtons"
                 btn-class="primary-outline"
+                :disabled="isModerator"
                 @change="removeError('is_new')"
               />
             </div>
@@ -166,6 +171,7 @@
                 :invalid="isInvalid('is_original')"
                 :label="`${$t('original')}/${$t('duplicate')}`"
                 :options="originalityButtons"
+                :disabled="isModerator"
                 btn-class="primary-outline"
                 @change="removeError('is_original')"
               />
@@ -195,6 +201,7 @@
                 :label="$t(filter.key)"
                 :options="filter.values"
                 :translateOptions="(typeof filter.values[0].name !== 'number')"
+                :disabled="isModerator"
                 has-search
                 @change="
                   removeError(filter.key),
@@ -211,6 +218,7 @@
                 :checked-value="form.filter[filter.key]"
                 :invalid="isInvalid(filter.key)"
                 :label="$t(filter.key)"
+                :disabled="isModerator"
                 @change="removeError(filter.key)"
               />
 
@@ -219,6 +227,7 @@
                 v-if="filter.component === 'filter-single-input'"
                 v-model="form.filter[filter.key]"
                 :invalid="isInvalid(filter.key)"
+                :disabled="isModerator"
                 :placeholder="
                   $t(
                     filter.key === 'capacity' ? 'battery_capacity' : filter.key,
@@ -243,6 +252,7 @@
                 :invalid="isInvalid('commercial_size')"
                 :maxlength="50"
                 :placeholder="$t('commercial_size')"
+                :disabled="isModerator"
                 @change="removeError('commercial_size')"
               />
             </div>
@@ -263,6 +273,7 @@
                     :invalid="isInvalid('price')"
                     :maxlength="5"
                     :placeholder="$t('price')"
+                    :disabled="isModerator"
                     float
                     @change="removeError('price')"
                   />
@@ -271,6 +282,7 @@
                   <form-switch
                     v-model="form.currency_id"
                     :options="getCurrencyOptions"
+                    :disabled="isModerator"
                     @change="updatePreview('currency')"
                   />
                 </div>
@@ -281,6 +293,7 @@
                     :invalid="isInvalid('is_negotiable')"
                     :label="$t('is_negotiable')"
                     checked-value="is_negotiable"
+                    :disabled="isModerator"
                     @change=" changeIsNegotiable($event), removeError('is_negotiable')"
                   />
                 </div>
@@ -316,6 +329,7 @@
                     :label="$t('region')"
                     :options="regions"
                     has-search
+                    :disabled="isModerator"
                     @change="removeError('region_id')"
                   />
                 </div>
@@ -328,6 +342,7 @@
                     :invalid="isInvalid('have_delivery')"
                     :label="$t('have_delivery')"
                     checked-value="delivery"
+                    :disabled="isModerator"
                     @change="removeError('have_delivery')"
                   />
                 </div>
@@ -340,6 +355,7 @@
                     :invalid="isInvalid('have_warranty')"
                     :label="$t('have_warranty')"
                     checked-value="warranty"
+                    :disabled="isModerator"
                     @change="removeError('have_warranty')"
                   />
                 </div>
@@ -350,7 +366,7 @@
         </div>
 
         <div class="col-12">
-          <form-keywords v-model="form.tags" class="w-100" is-moderator/>
+          <form-keywords  :disabled="isModerator" v-model="form.tags" class="w-100" is-moderator/>
         </div>
 
         <div class="col-12">
