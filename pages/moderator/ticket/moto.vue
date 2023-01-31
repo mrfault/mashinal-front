@@ -127,7 +127,7 @@
                 has-search
                 @change="handleChange({key:'year',value: form.year, name: getBrandName(form.year, getModels)})"
               />
-<!--              <small v-if="!form.year" class="text-red">{{ $t('starred_fields_are_required') }}</small>-->
+              <!--              <small v-if="!form.year" class="text-red">{{ $t('starred_fields_are_required') }}</small>-->
 
             </div>
             <div class="mb-4">
@@ -183,12 +183,12 @@
                 :announce="single_announce"
                 :changePosition="saved_images.length === imagesBase64.length"
                 :default-images="single_announce.media"
+                :imageIsUploading="imageIsUploading"
                 :is-edit="false"
                 :load-croppa="true"
                 :max_files="30"
                 :saved_images="saved_images"
                 :stopUploading="imagesBase64.length >= 20"
-                :imageIsUploading="imageIsUploading"
 
                 page="sell"
                 url="/"
@@ -237,16 +237,19 @@
             <div class="col-auto">
               <form-numeric-input
                 v-model="form.mileage"
+                :disabled="isModerator"
                 :invalid="isInvalid('mileage')"
                 :min="0"
                 :placeholder="$t('mileage')"
                 input-class="w-133"
                 @change="getChange($event,'mileage')"
+
               />
             </div>
             <div class="col-auto">
               <form-switch
                 v-model="form.mileage_measure"
+                :disabled="isModerator"
                 :options="getMileageOptions"
                 @change="updatePreview('mileage_measure')"
               />
@@ -254,6 +257,7 @@
             <div class="col-auto">
               <form-checkbox
                 v-model="form.is_new"
+                :disabled="isModerator"
                 :label="$t('is_new')"
                 :value="single_announce.is_new"
                 input-name="is_new"
@@ -265,6 +269,7 @@
               <form-checkbox
                 v-if="!single_announce.is_external_salon"
                 v-model="form.guaranty"
+                :disabled="isModerator"
                 :label="$t('in_garanty')"
                 :value="single_announce.guaranty"
                 input-name="guaranty"
@@ -276,6 +281,7 @@
               <form-checkbox
                 v-if="!single_announce.is_external_salon"
                 v-model="form.customs_clearance"
+                :disabled="isModerator"
                 :label="$t('not_cleared')"
                 :value="single_announce.customed"
                 input-name="customs_clearance"
@@ -285,6 +291,7 @@
             </div>
             <div class="col-6 col-md-4 col-lg-2">
               <form-checkbox
+                :disabled="isModerator"
                 :label="$t('bitie')"
                 :value="single_announce.status_id"
                 input-name="bitie"
@@ -335,6 +342,7 @@
                 :allow-clear="false"
                 :clear-option="false"
                 :clearOption="false"
+                :disabled="isModerator"
                 :invalid="isInvalid('region_id')"
                 :label="$t('sale_region_country')"
                 :options="sell_options.countries"
@@ -352,6 +360,7 @@
               >
                 <form-text-input
                   v-model="form.address"
+                  :disabled="isModerator"
                   :placeholder="$t('address')"
                   icon-name="placeholder"
                 />
@@ -369,6 +378,7 @@
             <div class="col-auto">
               <form-numeric-input
                 v-model="form.price"
+                :disabled="isModerator"
                 :invalid="isInvalid('price')"
                 :placeholder="$t('price')"
                 input-class="w-133"
@@ -378,6 +388,7 @@
             <div class="col-auto">
               <form-switch
                 v-model="form.currency"
+                :disabled="isModerator"
                 :options="getCurrencyOptions"
                 @change="updatePreview('currency')"
               />
@@ -394,6 +405,7 @@
             <div class="col-auto">
               <form-switch
                 v-model="form.owners"
+                :disabled="isModerator"
                 :options="getOwnerOptions"
                 :value="single_announce.owners"
                 autoWidth
@@ -423,6 +435,7 @@
               >
                 <form-text-input
                   v-model="form.car_number"
+                  :disabled="isModerator"
                   :mask="'99 - A - 999'"
                   :placeholder="'__ - _ - ___'"
                   img-src="/img/flag.svg"
@@ -440,6 +453,7 @@
                 </form-text-input>
                 <form-checkbox
                   v-model="form.show_car_number"
+                  :disabled="isModerator"
                   :label="$t('show_car_number_on_site')"
                   class="mt-2 mt-lg-3"
                   input-name="show_car_number"
@@ -451,6 +465,7 @@
               <form-textarea
                 key="vin"
                 v-model="form.vin"
+                :disabled="isModerator"
                 :mask="$maskAlphaNumeric('*****************')"
                 :placeholder="$t('vin_carcase_number')"
                 class="textfield-like-textarea"
@@ -462,6 +477,7 @@
               </form-textarea>
               <form-checkbox
                 v-model="form.show_vin"
+                :disabled="isModerator"
                 :label="$t('show_vin_on_site')"
                 class="mt-2 mt-lg-3"
                 input-name="show_vin"
@@ -483,6 +499,7 @@
               <form-numeric-input
                 :id="`animated-input-moto-power`"
                 v-model="form.power"
+                :disabled="isModerator"
                 :invalid="hasError(item)"
                 :placeholder="form[item.placeholder]"
               />
@@ -491,49 +508,47 @@
 
 
           <section id="moderation-moto-radio-options">
-            <div>
-              <!--                sell filters radio-->
-
-              <div v-for="(item,indx) in Object.entries(moto_options.config)" :key="indx">
-                <template v-if="(item[1].component == 'select-checkbox') || (item[1].component == 'animated-input')">
-                  <title-with-line-and-reject-reason
-                    v-if="item[1].values && item[1].values.length"
-                    :title="item[1].placeholder" no-approval
-                    :required="item[1].required"
-                  />
-                </template>
-
-
-                <div v-if="item[1].values" class="row">
-                  <template v-if="item[1].component == 'animated-input'">
-                    <div class="col-12 col-md-4 col-lg-3">
-
-                      <form-numeric-input
-                        :id="`animated-input-moto-${indx}`"
-                        v-model="form[item[0]]"
-                        :invalid="hasError(item)"
-                        :placeholder="form[item.placeholder]"
+            <div v-for="(item, index) in moto_options.config"
+                 v-if="(item.category && item.category.includes(parseInt(category))) || !item.hasOwnProperty('category')"
+                 :key="index">
+              <h2 class="title-with-line mt-2"><span>
+                {{
+                  $t(item.placeholder)
+                }}
+              </span>
+              </h2>
+              <div class="section-part__container">
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="col-12 col-md-auto pl-0" v-if="item.component == 'animated-input'">
+                      <component
+                        :is="getComponent(item.component)"
+                        v-model="form[index]"
+                        :form="single_announce"
+                        :has-error="errors.includes(index)"
+                        :keyValue="index"
+                        :max="5"
+                        :options="item.sell_values ? item.sell_values[parseInt(default_data['category'])] : item.values"
+                        :placeholder="$t(item.placeholder)"
+                        inputType="number"
                       />
                     </div>
-                  </template>
-                  <template v-if="item[1].component == 'select-checkbox'">
-                    <div v-for="(input,checkboxIndex)  in item[1].values" :key="input.name"
-                         class="col-lg-4 mb-2 mb-lg-3">
-                      <form-radio
-                        :id="`${input.name}-box-${checkboxIndex}`"
-                        v-model="form[item[0]]"
-                        :input-name="getKey(item)"
-                        :invalid="hasError(item)"
-                        :label="input.name[locale] || $t(input.name)"
-                        :radio-value="$notUndefined(input.id,input.key)"
+                    <div class="col-12 pl-0" v-else>
+                      <component
+                        :is="getComponent(item.component)"
+                        v-model="form[index]"
+                        :form="single_announce"
+                        :has-error="errors.includes(index)"
+                        :keyValue="index"
+                        :max="5"
+                        :options="item.sell_values ? item.sell_values[parseInt(default_data['category'])] : item.values"
+                        :placeholder="$t(item.placeholder)"
+                        inputType="number"
                       />
                     </div>
-                  </template>
+                  </div>
                 </div>
-
-
               </div>
-
             </div>
           </section>
           <!-------------------------------------------------------------->
@@ -554,6 +569,7 @@
               id="comment"
               v-model="form.comment"
               :class="{'w100' : ifPopularCommentsEmpty()}"
+              :disabled="isModerator"
               :maxlength="3000"
               :placeholder="$t('comment')"
 
@@ -567,11 +583,11 @@
           :announcement="form"
           :button_loading="button_loading"
           :getTimer="getTimer"
+          :imageCount="imagesBase64.length"
           :notValid="notValid"
           :rejectArray="rejectArray"
           :saved-images="saved_images"
           :type="$route.query.type"
-          :imageCount="imagesBase64.length"
           @formChanged="(e) => (form = e)"
           @handleLoading="handleLoading"
           @openTransferModal="transferModal = true"
@@ -659,7 +675,7 @@ import TitleWithLine from "~/components/global/titleWithLine";
 import FormRadioGroup from "~/components/forms/FormRadioGroup";
 import ChangeLog from "~/components/moderator/changeLog";
 import ModeratorActions from '~/components/moderator/actions.vue'
-
+import RadioGroup from "~/components/moderator/RadioGroup";
 
 export default {
 
@@ -668,6 +684,7 @@ export default {
   layout: 'moderator',
 
   components: {
+    RadioGroup,
     TitleWithLine,
     UserDetails,
     TitleWithLineAndRejectReason,
@@ -791,6 +808,7 @@ export default {
   //-----------------------------------------------------------------asyncData^------------------------------------------------------------------------------------------------------
   data() {
     return {
+      configOptions: {},
       imageModal: {
         isOpen: false,
         options: [
@@ -934,6 +952,7 @@ export default {
         used_ones: -1,
         customed_ones: -1,
         box: -1,
+        tact: -1,
         price: '',
         new_badges: [],
         owner_type: 0,
@@ -985,7 +1004,7 @@ export default {
       this.form.mileage = announce.mileage;
       this.form.address = announce.address;
       this.form.beaten = announce.status_id;
-      this.form.fuel_type = announce.fuel_type || 1;
+      this.form.fuel_type = announce.fuel_type;
       this.form.is_new = announce.is_new;
       this.form.customs_clearance = announce.customed_id;
       this.form.region_id = announce.region_id;
@@ -998,7 +1017,7 @@ export default {
       this.form.owner_type = announce.owners;
       this.form.owners = announce.owners;
       this.form.year = announce.year;
-
+      this.form.tact = announce.tact;
       this.form.guaranty = announce.guaranty;
       this.form.car_number = announce.car_number;
       this.form.show_car_number = announce.show_car_number;
@@ -1061,6 +1080,14 @@ export default {
   },
 
   methods: {
+    getComponent(component) {
+      switch (component) {
+        case 'select-checkbox':
+          return 'radio-group'
+        case 'animated-input':
+          return 'form-numeric-input'
+      }
+    },
     ...mapActions([
       'setSellPreviewData',
     ]),
@@ -1703,7 +1730,7 @@ export default {
         ...this.form, color: this.getColor(), car_catalog: {
           brand: this.single_announce.moto_brand || this.single_announce.scooter_brand || this.single_announce.moto_atv_brand,
           model: this.single_announce.moto_model || this.single_announce.scooter_model || this.single_announce.moto_atv_model,
-          moto_options: this.moto_options.config
+          moto_options: this.moto_options.config,
         }
       };
     },
@@ -1792,11 +1819,11 @@ export default {
     // }
   },
 
-  watch:{
-    'form.is_new':{
+  watch: {
+    'form.is_new': {
       deep: true,
-      handler(){
-        if (this.form.is_new == true){
+      handler() {
+        if (this.form.is_new == true) {
           this.form.mileage = 0
         }
       }

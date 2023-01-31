@@ -15,6 +15,7 @@
         <span class="radio-point"></span>
         <span class="text-truncate">{{ label }}</span>
       </label>
+
       <slot />
     </div>
   </div>

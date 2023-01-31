@@ -27,6 +27,7 @@
                 @getRejectObj="getSellLastStepRejectObj"
                 @imageDeleted="addDeletedImagesToList"
                 @interior_360_id_changed="(e) => (form.interior_360_id = e)"
+                @smsRadarDataChanged="smsRadarDataChanged"
               >
                 <template v-slot:form-inputs>
                   <div>
@@ -381,13 +382,14 @@
                 </template>
                 <!--                360 exterior-->
                 <!--                 --------------(add input)-->
-                <template v-slot:360_exterior_input>
+                <template v-slot:360_exterior_input
+                >
                   <div
                     class="mb-4"
                   >
                     <div class="section-exterior_360__container">
                       <div class="col-auto pl-0">
-                        <input class="btn" style="width: auto !important;" type="file" v-on:change="add360Video"/>
+                        <input class="btn" style="width: auto !important;" type="file" v-on:change="add360Video" :disabled="isModerator"/>
                       </div>
                     </div>
                   </div>
@@ -721,9 +723,6 @@ export default {
             ? [1, 2, 3, 4]
             : [1, 2, 3]
       return imgs.map((n) => `/img/sell-helpers/${this.type}_${n}.png`)
-    },
-    isMorderator() {
-      return this.user.admin_group == 2
     },
     notValid() {
       if (
@@ -1187,7 +1186,9 @@ export default {
 
     },
 
-
+    smsRadarDataChanged(obj){
+      this.smsRadarData = obj;
+    },
     //handle actions
     async deleteByIndex(index) {
       if (this.saved_images[index]) {

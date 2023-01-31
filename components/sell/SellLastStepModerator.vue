@@ -34,13 +34,14 @@
               <div class="row justify-content-between align-items-center">
 
                 <div class="col-auto">
-                  <input class="btn" type="file" v-on:change="add360Interior"/>
+                  <input class="btn" type="file" v-on:change="add360Interior" :disabled="isModerator"/>
                 </div>
                 <div class="col-auto mt-2 mt-lg-0">
                   <button
                     v-if="single_announce.interior_360"
                     class="btn btn-danger mb-2"
                     style="float: right;"
+                    :disabled="isModerator"
                     @click="handleRemoveInterior"
                   >
                     360 İnteryeri sil
@@ -109,6 +110,7 @@
                   v-model="form.mileage"
                   :invalid="isInvalid('mileage')"
                   :placeholder="$t('mileage')"
+                  :disabled="isModerator"
                   input-class="w-133" @change="removeError('mileage'), updatePreview('mileage')"/>
               </div>
               <div class="col-auto">
@@ -116,6 +118,7 @@
                   v-model="form.mileage_measure"
                   :options="getMileageOptions"
                   @change="updatePreview('mileage_measure')"
+                  :disabled="isModerator"
                 />
               </div>
             </div>
@@ -128,6 +131,7 @@
                 input-name="is_new"
                 transparent
                 @change="updateMileage"
+                :disabled="isModerator"
               />
               <form-checkbox
                 v-model="form.beaten"
@@ -152,6 +156,7 @@
                 :label="$t('not_cleared')"
                 input-name="customs_clearance"
                 transparent
+                :disabled="isModerator"
                 @change="
                   removeError('car_number', true),
                     removeError('vin', true),
@@ -164,6 +169,7 @@
                 :label="$t('in_garanty')"
                 input-name="guaranty"
                 transparent
+                :disabled="isModerator"
               />
             </div>
           </div>
@@ -197,6 +203,7 @@
                   :placeholder="$t('price')"
                   input-class="w-133"
                   @change="removeError('price'), updatePreview('price')"
+                  :disabled="isModerator"
                 />
               </div>
               <div class="col-auto">
@@ -204,6 +211,7 @@
                   v-model="form.currency"
                   :options="getCurrencyOptions"
                   @change="updatePreview('currency')"
+                  :disabled="isModerator"
                 />
               </div>
             </div>
@@ -216,6 +224,7 @@
                 :label="$t('tradeable')"
                 input-name="tradeable"
                 transparent
+                :disabled="isModerator"
               />
               <form-checkbox
                 v-if="!single_announce.is_external_salon"
@@ -223,6 +232,7 @@
                 :label="$t('credit_possible')"
                 input-name="credit"
                 transparent
+                :disabled="isModerator"
               />
             </div>
           </div>
@@ -254,6 +264,7 @@
                     auto-width
                     style="width: fit-content !important;"
                     @change="removeError('end_date')"
+                    :disabled="isModerator"
                   />
                 </div>
                 <div v-if="form.auction === 1" class="col-auto">
@@ -266,6 +277,7 @@
                     input-date
                     value-type="datetime"
                     @change="removeError('end_date')"
+                    :disabled="isModerator"
                   />
                 </div>
               </div>
@@ -275,7 +287,7 @@
       </section>
 
       <!--      owner-->
-      <section id="owner-section-1" class="row" v-if="false">
+      <section v-if="false" id="owner-section-1" class="row">
         <div class="col-12">
           <title-with-line-and-reject-reason
             no-approval
@@ -290,6 +302,7 @@
             autoWidth
             translated
             @change="getChange($event,'owner_type')"
+            :disabled="isModerator"
           />
         </div>
       </section>
@@ -300,7 +313,7 @@
       <!---------------------------------------------------------------------------------------------------------------------------------------------->
       <!---------------------------------------------------------------------------------------------------------------------------------------------->
       <!--      region-->
-      <section ref="region_section_1" id="region-section-1">
+      <section id="region-section-1" ref="region_section_1">
         <div v-if="!isAutosalon && !user.external_salon">
           <title-with-line-and-reject-reason
             id="anchor-region_id"
@@ -319,6 +332,7 @@
                 :options="sellOptions.regions"
                 has-search
                 @change="removeError('region_id'), updatePreview('region')"
+                :disabled="isModerator"
               />
             </div>
             <div v-if="single_announce.is_external_salon" class="col-lg-4 mb-2 mb-lg-0">
@@ -331,6 +345,7 @@
                 :options="sellOptions.countries"
                 has-search
                 @change="removeError('region_id'), updatePreview('region')"
+                :disabled="isModerator"
               />
             </div>
             <div v-if="!single_announce.is_external_salon" class="col-lg-4 mb-2 mb-lg-0">
@@ -357,6 +372,7 @@
                   v-model="form.address"
                   :placeholder="$t('address')"
                   icon-name="placeholder"
+                  :disabled="isModerator"
                 />
               </pick-on-map-button>
             </div>
@@ -395,6 +411,7 @@
               :mask="'99 - AA - 999'"
               :placeholder="'__ - __ - ___'"
               img-src="/img/flag.svg"
+              :disabled="isModerator"
             />
 
             <!--              class="ma-input"-->
@@ -420,6 +437,7 @@
               class="mt-0 pl-0"
               input-name="show_car_number"
               transparent
+              :disabled="isModerator"
             />
           </div>
         </div>
@@ -454,13 +472,14 @@
             @change="removeError('vin')"
           >
         </div>
-          <div class="col-12">
+        <div class="col-12">
           <form-checkbox
             v-model="form.show_vin"
             :label="$t('show_vin_on_site')"
             class="mt-2 mt-lg-3"
             input-name="show_vin"
             transparent
+            :disabled="isModerator"
           />
         </div>
       </section>
@@ -516,6 +535,7 @@
           v-model="form.comment"
           :maxlength="3000"
           :placeholder="$t('description_placeholder_transport')"
+          :disabled="isModerator"
         />
         <p class="info-text full-width less-pd mt-2">
           {{
@@ -672,6 +692,9 @@ export default {
   computed: {
     ...mapState(['sellPhoneEntered']),
     ...mapGetters(['sellOptions', 'sellSalonRights', 'staticPages', 'popularOptions',]),
+    isModerator() {
+      return this.user.admin_group && (this.user.admin_group == 2);
+    },
     helperImages() {
       let imgs =
         this.type === 'cars'
@@ -731,7 +754,7 @@ export default {
       'resetSellTokens',
       'getMyAllAnnouncements',
     ]),
-    checkWithDin(){
+    checkWithDin() {
       let vin = this.form.vin;
       let car_number = this.form.car_number.replace(/[^0-9a-zA-Z]+/g, '');
 
@@ -739,29 +762,30 @@ export default {
         announce_id: this.single_announce.id
       };
       let send = false;
-      if (vin.length === 17){
+      if (vin.length === 17) {
         sendData.vin = vin;
         send = true;
       }
-      if (car_number.length === 7){
+      if (car_number.length === 7) {
         sendData.car_number = car_number;
         send = true;
       }
 
-      if(!send) return false;
+      if (!send) return false;
 
       this.button_loading = true;
       this.$axios.$post('/ticket/checkSmsRadar', sendData)
         .then((data) => {
           data = data.data;
 
-          if(data) {
+          if (data) {
             //data.carNumber = data.carNumber.slice(0, 2) + '-' + data.carNumber.slice(2, 4) + '-' + data.carNumber.slice(4, 7);
 
             this.smsRadarData = data;
 
+
             //if (data.bodyNumber && data.bodyNumber.toString().length === 17) this.getChange(data.bodyNumber, 'vin');
-          }else{
+          } else {
             this.$toasted.error(this.$t('SMS Radarda məlumat tapılmadı'))
           }
 
@@ -1033,6 +1057,12 @@ export default {
     //     this.$emit('getRejectObj', this.rejectObj)
     //   }
     // },
+    smsRadarData: {
+      deep: true,
+      handler() {
+        this.$emit('smsRadarDataChanged', this.smsRadarData)
+      }
+    },
     form: {
       deep: true,
       handler() {
@@ -1040,10 +1070,10 @@ export default {
       },
 
     },
-    'form.mileage':{
-      deep:true,
-      handler(){
-        if (this.form.mileage == null){
+    'form.mileage': {
+      deep: true,
+      handler() {
+        if (this.form.mileage == null) {
           this.form.mileage = 0
         }
       }
