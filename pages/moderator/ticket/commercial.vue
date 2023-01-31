@@ -169,35 +169,36 @@
       <!--       photo-->
       <section>
 
-        <title-with-line-and-reject-reason
-          :subtitle="
-                      $t('at_least_5_photos', {
+
+          <title-with-line-and-reject-reason
+            :subtitle="
+                      $t('at_least_3_photos', {
                         min: minFiles,
                         max: maxFiles,
                       }).toLowerCase()
                     "
-          hideRejectReason
-          title="photos"
-        >
-          <div class="mb-2 ml-2" style="display: inline-block; z-index: 0;">
-            <reject-reason
-              :disabled-value="true"
-              rejectKey="image"
-              @change="changeReason"
-            />
-          </div>
-        </title-with-line-and-reject-reason>
+            hideRejectReason
+            title="photos"
+          >
+            <div class="mb-2 ml-2" style="display: inline-block; z-index: 0;">
+              <reject-reason
+                :disabled-value="true"
+                rejectKey="image"
+                @change="changeReason"
+              />
+            </div>
 
-        <transition name="fade">
-          <photo-reject-reason
-            v-if="imageModal.isOpen"
-            :default_data="rejectObj.rejectArray"
-            :modal__title="$t('image_reject_reason')"
-            :type="'commercial'"
-            @close="imageModal.isOpen = false"
-            @save="savePhotoIssues"
-          />
-        </transition>
+          </title-with-line-and-reject-reason>
+          <transition name="fade">
+            <photo-reject-reason
+              v-if="imageModal.isOpen"
+              :default_data="rejectArray"
+              :modal__title="$t('image_reject_reason')"
+              :type="'car'"
+              @close="imageModal.isOpen = false"
+              @save="savePhotoIssues"
+            />
+          </transition>
         <upload-image-moderator
           :announce="single_announce"
           :changePosition="saved_images.length === imagesBase64.length"
@@ -207,6 +208,8 @@
           :max_files="30"
           :saved_images="saved_images"
           :stopUploading="imagesBase64.length >= 20"
+          :imageIsUploading="imageIsUploading"
+          :imageCount="imagesBase64.length"
           page="sell"
           url="/"
           @addFiles="addFiles"
@@ -502,7 +505,7 @@
             <transition-expand>
               <div v-if="collapsed" class="w-100">
                 <!--                power-->
-                <div class="row">
+                <div class="row" v-if="form.commercial_type_id !== 43">
                   <div class="col-12">
                     <title-with-line-and-reject-reason no-approval title="horse_power"/>
                   </div>
@@ -516,11 +519,11 @@
                   </div>
                 </div>
                 <!--                capacity -->
-                <div class="row">
+                <div class="row" v-if="form.commercial_type_id !== 43">
                   <div class="col-12">
                     <title-with-line-and-reject-reason no-approval title="volume"/>
                   </div>
-                  <div v-if="form.capacity" class="col-auto">
+                  <div class="col-auto">
                     <form-numeric-input
                       v-model="form.capacity"
                       :invalid="hasError(item)"
@@ -532,7 +535,7 @@
                 <!--                sell filters radio-->
                 <div v-for="(item,indx) in com_filters" :key="indx">
                   <title-with-line-and-reject-reason v-if="com_filters[indx].values && com_filters[indx].values.length"
-                                                     :title="item.type_key" no-approval/>
+                                                     :title="item.type_key" no-approval :required="item.required"/>
                   <div v-if="com_filters[indx].values" class="row">
                     <div v-for="(input,index)  in com_filters[indx].values" :key="input.name"
                          class="col-lg-4 mb-2 mb-lg-3">
@@ -573,9 +576,9 @@
         :announcement="form"
         :button_loading="button_loading"
         :saved-images="saved_images"
-        :getTimer="getTimer"
         :notValid="notValid"
-        :rejectArray="rejectObj.rejectArray"
+        :imageCount="imagesBase64.length"
+        :rejectArray="rejectArray"
         @formChanged="(e) => (form = e)"
         @openTransferModal="transferModal = true"
         @sendData="sendData"
@@ -619,7 +622,8 @@
         />
         <div class="row justify-content-center">
           <button
-            :class="{'pending':button_loading, 'disabled':notValid}"
+            :class="{'pending':button_loading, 'disabled': (transferComment == '' || notValid)}"
+            :disabled="notValid || (transferComment == null) || (transferComment === '')"
             class="btn btn--green  mt-1"
             @click.prevent="transferToSupervisor()"
           >
@@ -704,6 +708,10 @@ export default {
         with: data.announce,
         property: 'single_announce',
       })
+      store.commit('moderator/moderatorMutator', {
+        with: data.moderator,
+        property: 'moderator',
+      })
 
       store.commit('moderator/moderatorMutator', {
         with: data.moderator,
@@ -754,16 +762,13 @@ export default {
   //-----------------------------------------------------------------asyncData^------------------------------------------------------------------------------------------------------
   data() {
     return {
+      imageIsUploading: false,
       loading: false,
       button_loading: false,
       openLog: false,
       transferModal: false,
       transferComment: '',
       announceId: false,
-      getTimer: {
-        data: '',
-        unix: 0
-      },
       rejectArray: [],
       refresh: 1,
       date: Math.floor(Date.now() / 1000),
@@ -951,29 +956,6 @@ export default {
     await this.$auth.setUserToken(`Bearer ${this.$route.query.token}`);
     this.$axios.setHeader('Authorization', `Bearer ${this.$route.query.token}`)
 
-    if ((this.admin_user) && (this.admin_user.user.admin_group == 2)) {
-      setInterval(() => {
-
-        let timer = moment().diff(moment(this.moderator.created_at));
-        var duration = moment.duration(timer);
-        var days = duration.days(),
-          hrs = duration.hours(),
-          mins = duration.minutes(),
-          secs = duration.seconds();
-
-        if (hrs.toString().length === 1) hrs = '0' + hrs;
-        if (mins.toString().length === 1) mins = '0' + mins;
-        if (secs.toString().length === 1) secs = '0' + secs;
-        let _return = '';
-
-        if (days > 0) _return += days + 'd. ';
-
-        _return += hrs + ':' + mins + ':' + secs;
-
-        this.getTimer.data = _return;
-        this.getTimer.unix = timer / 1000;
-      }, 1000);
-    }
 
     if (this.single_announce.id) {
       let announce = JSON.parse(JSON.stringify(this.single_announce));
@@ -1072,10 +1054,10 @@ export default {
       } else if (rejectKey === '360') {
         this.rejectObj.show360Reject = true
       } else {
-        if (this.rejectObj.rejectArray.includes(rejectKey)) {
-          this.rejectObj.rejectArray.splice(this.rejectObj.rejectArray.indexOf(rejectKey), 1)
+        if (this.rejectArray.includes(rejectKey)) {
+          this.rejectArray.splice(this.rejectArray.indexOf(rejectKey), 1)
         } else {
-          this.rejectObj.rejectArray.push(rejectKey)
+          this.rejectArray.push(rejectKey)
         }
       }
     },
@@ -1115,6 +1097,7 @@ export default {
       this.saved_images.splice(deleteIndex, 1);
     },
     async addFiles(v) {
+      this.imageIsUploading = true;
       await Promise.all(
         v.map(async (image) => {
           let formData = new FormData()
@@ -1126,12 +1109,14 @@ export default {
                 'Content-Type': 'multipart/form-data'
               }
             })
+            this.imageIsUploading = false;
             this.saved_images = this.saved_images.concat(data.ids)
             this.$store.commit('setSavedImageUrls', data.images);
             this.$nuxt.$emit('remove_image_loading_by_index', this.saved_images.length);
           } catch ({response: {data: {data}}}) {
             this.$nuxt.$emit('remove_image_by_index', this.saved_images.length);
             this.$nuxt.$emit('remove_image_on_catch');
+            this.imageIsUploading = false;
             this.errors = []
             this.$toasted.clear()
             Object.keys(data).map((key) => {
@@ -1334,7 +1319,7 @@ export default {
             formData
           );
 
-          if (this.admin_user.admin_group == 2) {
+          if (this.user.admin_group == 2) {
             location.href = '/alvcp/resources/announce-moderators';
           } else {
             location.href = '/alvcp/resources/commercials';
@@ -1538,7 +1523,7 @@ export default {
       getPopularComments: 'getPopularComments',
     }),
     isAdmin() {
-      return (this.admin_user.admin_group == 1 || this.admin_user.admin_group == 2)
+      return (this.user.admin_group == 1 || this.user.admin_group == 2)
     },
     isModerator() {
       return this.user.admin_group && (this.user.admin_group == 2);

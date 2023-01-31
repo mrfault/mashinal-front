@@ -16,9 +16,11 @@
             :key="key + '_changes'"
           >
             <div v-if="!['admin_user_id'].includes(key)" class="my-2" style="border-bottom: 1px solid #dadada">
-              {{ $t(key) }}: {{ (key === 'created_at') ? formatDate(value) : value }}
+              {{ $t(key) }}: {{ (key == 'created_at') && (key !== 'status') ? formatDate(value) : value }}
+              {{ (key === 'status') ? getStatus(value) : value }}
               <icon name="arrow-right"></icon>
-              {{ (key === 'created_at') ? formatDate(log.changes[key]) : log.changes[key] }}
+              {{ (key === 'created_at' && (key !== 'status')) ? formatDate(log.changes[key]) : log.changes[key] }}
+              {{ (key === 'status') ? getStatus(log.changes[key]) : log.changes[key] }}
             </div>
           </div>
         </template>
@@ -41,6 +43,16 @@ export default {
     formatDate(dte) {
       return moment(dte).format('DD.MM.YYYY HH:mm')
     },
+    getStatus(stat){
+      switch (stat) {
+          case 0: return 'Reject';
+          case 1: return 'Active';
+          case 2: return 'Pending';
+          case 3: return 'Sold';
+          default: stat;
+      }
+
+    }
   }
 }
 </script>

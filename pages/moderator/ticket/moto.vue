@@ -1,14 +1,11 @@
 <template>
-  <div v-if="loading && single_announce.id">
+  <div v-if="loading">
     <elements-loader></elements-loader>
   </div>
-  <div
-    v-else-if="!single_announce.id && !loading"
-    class="d-flex flex-column justify-content-center h-300"
-  >
-    <h1 class="text-center">Baxılmayanlar mövcud deyil</h1>
-  </div>
-  <div v-else class="w-100" style="box-sizing: border-box;overflow: hidden">
+
+
+  <div v-else-if="single_announce && single_announce.id && !loading" class="w-100"
+       style="box-sizing: border-box;overflow: hidden">
     <div class="container  px-3 px-md-0">
       <!--    breadcrumbs-->
       <breadcrumbs id="brdcrmbs1" :crumbs="crumbs"/>
@@ -114,7 +111,6 @@
                 :no-approval="!(admin_user.admin_group === 1 || admin_user.admin_group === 2)"
                 :old-value="admin_user.admin_group !== 2 ? single_announce.year.toString() : ''"
                 rejectKey="year"
-                required
                 title="year"
                 @change="changeReason"
               />
@@ -131,7 +127,7 @@
                 has-search
                 @change="handleChange({key:'year',value: form.year, name: getBrandName(form.year, getModels)})"
               />
-              <small v-if="!form.year" class="text-red">{{ $t('starred_fields_are_required') }}</small>
+<!--              <small v-if="!form.year" class="text-red">{{ $t('starred_fields_are_required') }}</small>-->
 
             </div>
             <div class="mb-4">
@@ -154,7 +150,7 @@
             <div class="col-12">
               <title-with-line-and-reject-reason
                 :subtitle="
-                      $t('at_least_5_photos', {
+                      $t('at_least_2_photos', {
                         min: minFiles,
                         max: maxFiles,
                       }).toLowerCase()
@@ -171,6 +167,16 @@
                 </div>
 
               </title-with-line-and-reject-reason>
+              <transition name="fade">
+                <photo-reject-reason
+                  v-if="imageModal.isOpen"
+                  :default_data="rejectArray"
+                  :modal__title="$t('image_reject_reason')"
+                  :type="'car'"
+                  @close="imageModal.isOpen = false"
+                  @save="savePhotoIssues"
+                />
+              </transition>
             </div>
             <div class="col-12">
               <upload-image-moderator
@@ -182,6 +188,8 @@
                 :max_files="30"
                 :saved_images="saved_images"
                 :stopUploading="imagesBase64.length >= 20"
+                :imageIsUploading="imageIsUploading"
+
                 page="sell"
                 url="/"
                 @addFiles="addFiles"
@@ -404,9 +412,9 @@
                 :reject-key="form.car_number ? 'car_number' : 'vin'"
                 :required="user.external_salon"
                 :title="'license_plate_number_vin_or_carcase_number'"
+                img-src="/img/flag.svg"
                 spanId="anchor-vin"
                 @change="changeReason"
-                img-src="/img/flag.svg"
               />
             </div>
             <div class="col-12 col-md-6 col-lg-3">
@@ -490,7 +498,9 @@
                 <template v-if="(item[1].component == 'select-checkbox') || (item[1].component == 'animated-input')">
                   <title-with-line-and-reject-reason
                     v-if="item[1].values && item[1].values.length"
-                    :title="item[1].placeholder" no-approval/>
+                    :title="item[1].placeholder" no-approval
+                    :required="item[1].required"
+                  />
                 </template>
 
 
@@ -555,12 +565,13 @@
         <moderator-actions
           :id="single_announce.id"
           :announcement="form"
-          :saved-images="saved_images"
           :button_loading="button_loading"
           :getTimer="getTimer"
           :notValid="notValid"
           :rejectArray="rejectArray"
+          :saved-images="saved_images"
           :type="$route.query.type"
+          :imageCount="imagesBase64.length"
           @formChanged="(e) => (form = e)"
           @handleLoading="handleLoading"
           @openTransferModal="transferModal = true"
@@ -580,20 +591,6 @@
         </button>
       </template>
       <!--    empty announce-->
-      <div v-if="!single_announce.id">
-        <div style="text-align: center">
-          <br><br>
-          <h2>{{ $t('not_have_pending') }} {{ $route.query.type }}</h2>
-          <!--<a :href="$route.fullPath">
-            <button class="section-post__btn add_announce">Get car ticket</button>
-          </a>
-          &nbsp;&nbsp;-->
-          <a href="javascript:void(0);">
-            <button class="btn btn--yellow w-50" @click="handleBackList">{{ $t('back_to_list') }}</button>
-          </a>
-          <br><br>
-        </div>
-      </div>
     </div>
     <!--    logs modal-->
     <modal-popup
@@ -625,7 +622,8 @@
         />
         <div class="row justify-content-center">
           <button
-            :class="{'button_loading':button_loading, 'disabled': notValid}"
+            :class="{'pending':button_loading, 'disabled': (transferComment == '' || notValid)}"
+            :disabled="notValid || (transferComment == null) || (transferComment === '')"
             class="btn btn--green  mt-1"
             @click.prevent="transferToSupervisor()"
           >
@@ -634,6 +632,11 @@
         </div>
       </div>
     </modal-popup>
+  </div>
+  <div v-else
+       class="d-flex flex-column justify-content-center h-300"
+  >
+    <h1 class="text-center">Baxılmayanlar mövcud deyil</h1>
   </div>
 </template>
 
@@ -713,6 +716,10 @@ export default {
         property: 'single_announce',
         value: data.announce,
       })
+      store.commit('moderator/moderatorMutator', {
+        with: data.moderator,
+        property: 'moderator',
+      })
 
       let default_data = {};
       let singleAnnounce = store.state.single_announce;
@@ -784,6 +791,31 @@ export default {
   //-----------------------------------------------------------------asyncData^------------------------------------------------------------------------------------------------------
   data() {
     return {
+      imageModal: {
+        isOpen: false,
+        options: [
+          'front_error',
+          'back_error',
+          'left_error',
+          'right_error',
+          'interior_error',
+          'not_this_car_error',
+          'logo_on_the_picture',
+        ],
+        initialOptions: [
+          'front_error',
+          'back_error',
+          'left_error',
+          'right_error',
+          'interior_error',
+          'not_this_car_error',
+          'logo_on_the_picture',
+        ],
+        rejectArray: ['front_error',
+          'back_error',
+          'left_error',],
+        modalToggled: false,
+      },
       loading: true,
       button_loading: false,
       openLog: false,
@@ -924,6 +956,7 @@ export default {
       maxFiles: 20,
       readCarNumberDisclaimer: false,
       collapsed: true,
+      imageIsUploading: false,
     }
   },
 
@@ -931,29 +964,8 @@ export default {
     await this.$auth.setUserToken(`Bearer ${this.$route.query.token}`);
     this.$axios.setHeader('Authorization', `Bearer ${this.$route.query.token}`)
 
-    if (this.admin_user.admin_group == 2) {
-      setInterval(() => {
-        let timer = moment().diff(moment(this.moderator.created_at));
-        var duration = moment.duration(timer);
-        var days = duration.days(),
-          hrs = duration.hours(),
-          mins = duration.minutes(),
-          secs = duration.seconds();
 
-        if (hrs.toString().length === 1) hrs = '0' + hrs;
-        if (mins.toString().length === 1) mins = '0' + mins;
-        if (secs.toString().length === 1) secs = '0' + secs;
-        let _return = '';
-
-        if (days > 0) _return += days + 'd. ';
-
-        _return += hrs + ':' + mins + ':' + secs;
-
-        this.getTimer.data = _return;
-        this.getTimer.unix = timer / 1000;
-      }, 1000);
-    }
-    if (this.single_announce.id) {
+    if (this.single_announce && this.single_announce.id) {
 
       let announce = JSON.parse(JSON.stringify(this.single_announce));
 
@@ -1086,17 +1098,19 @@ export default {
       if (this.form.comment === null) this.form.comment = '';
       this.form.comment = this.form.comment + e + ' ';
     },
-    async deleteByIndex(deleteIndex) {
-      if (this.saved_images[deleteIndex]) {
-        this.deleteArr.push(this.saved_images[deleteIndex])
+    async deleteByIndex(index) {
+      if (this.saved_images[index]) {
+        this.deleteArr.push(this.saved_images[index])
       } else {
-        await this.$axios.$post('/remove_temporary_image/' + this.saved_images[deleteIndex]);
+        await this.$axios.$post(
+          '/remove_temporary_image/' + this.saved_images[index],
+        )
       }
-      this.saved_images.splice(deleteIndex, 1);
+      this.saved_images.splice(index, 1)
     },
     changeReason(rejectKey) {
       if (rejectKey === 'image') {
-        this.showPhotoReject = true;
+        this.imageModal.isOpen = true
       } else {
         if (this.rejectArray.includes(rejectKey)) {
           this.rejectArray.splice(this.rejectArray.indexOf(rejectKey), 1);
@@ -1106,6 +1120,7 @@ export default {
       }
     },
     async addFiles(v) {
+      this.imageIsUploading = true;
       await Promise.all(
         v.map(async (image) => {
           let formData = new FormData()
@@ -1117,10 +1132,13 @@ export default {
                 'Content-Type': 'multipart/form-data'
               }
             })
+            this.imageIsUploading = false;
             this.saved_images = this.saved_images.concat(data.ids)
             this.$store.commit('setSavedImageUrls', data.images);
             this.$nuxt.$emit('remove_image_loading_by_index', this.saved_images.length);
           } catch ({response: {data: {data}}}) {
+            this.imageIsUploading = false;
+
             this.$nuxt.$emit('remove_image_by_index', this.saved_images.length);
             this.$nuxt.$emit('remove_image_on_catch');
             this.errors = []
@@ -1149,6 +1167,21 @@ export default {
       if (first === 11) {
         return dates.slice(first, dates.length);
       }
+    },
+    savePhotoIssues(v) {
+      var validCheckbox = true
+      Object.keys(v.data).map((key) => {
+        if (this.rejectArray.includes(key)) {
+          this.rejectArray.splice(this.rejectArray.indexOf(key), 1)
+        }
+
+        if (v.data[key]) {
+          validCheckbox = false
+          this.rejectArray.push(key)
+        }
+      })
+
+      this.$nuxt.$emit('image-checkbox-change', validCheckbox)
     },
     changeCategory(v) {
       this.form.category = v;
@@ -1243,20 +1276,11 @@ export default {
       this.changeProgressSingle('part')
     },
 
-    savePhotoIssues(v) {
-      var validCheckbox = true;
-      Object.keys(v.data).map((key) => {
-        if (this.rejectArray.includes(key)) {
-          this.rejectArray.splice(this.rejectArray.indexOf(key), 1);
-        }
-
-        if (v.data[key]) {
-          validCheckbox = false;
-          this.rejectArray.push(key);
-        }
-      })
-
-      this.$nuxt.$emit('image-checkbox-change', validCheckbox);
+    saveImageRejects() {
+      this.rejectArray = this.rejectArray.concat(this.imageModal.rejectArray);
+      this.removeDuplicates()
+      this.closeImageRejectModal();
+      this.imageModal.rejectArray = [];
     },
 
     handleAllOptions(v) {
@@ -1301,7 +1325,7 @@ export default {
         'moto_atv': 'moto-atvs',
       };
 
-      if (this.admin_user.admin_group == 2) {
+      if (this.user.admin_group == 2) {
         location.href = '/alvcp/resources/announce-moderators';
       } else {
         location.href = '/alvcp/resources/' + moto[this.$route.query.type];
@@ -1767,6 +1791,17 @@ export default {
     //   }
     // }
   },
+
+  watch:{
+    'form.is_new':{
+      deep: true,
+      handler(){
+        if (this.form.is_new == true){
+          this.form.mileage = 0
+        }
+      }
+    }
+  }
 
 }
 </script>
