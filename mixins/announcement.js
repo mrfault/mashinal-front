@@ -179,7 +179,10 @@ export const AnnouncementDataMixin = {
       return this.getAnnouncementCapacity(this.announcement);
     },
     power() {
-      let power = (this.catalog || this.announcement).power;
+      let combined_power = this.catalog?.specifications?.dvigatel?.combined_power;
+
+      combined_power = combined_power ? combined_power[0] : null;
+      let power = combined_power || (this.catalog || this.announcement).power;
       return (!power || power == 0) ? false : `${power} ${this.$t('char_h_power')}`
     },
     engineSpecs() {
