@@ -186,6 +186,11 @@ export default {
           type: 'error',
         })
         this.$emit('handleLoading', false)
+      }else if (((this.type == 'moto') || (this.type == 'moto_atv') || (this.type == 'scooter')) && (this.form.volume <= 0)) {
+        this.$toasted.show(this.$t('Həcm boş olmamalıdır.'), {
+          type: 'error',
+        })
+        this.$emit('handleLoading', false)
       } else if (((this.type == 'part')) && (this.imageCount < 1)) {
         this.$toasted.show(this.$t('Ən az 1 şəkil yüklənməlidir'), {
           type: 'error',
