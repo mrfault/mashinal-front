@@ -511,12 +511,11 @@
             <div v-for="(item, index) in moto_options.config"
                  v-if="(item.category && item.category.includes(parseInt(category))) || !item.hasOwnProperty('category')"
                  :key="index">
-              <h2 class="title-with-line mt-2"><span>
-                {{
-                  $t(item.placeholder)
-                }}
-              </span>
-              </h2>
+              <title-with-line-and-reject-reason
+                no-approval
+                :title="item.placeholder"
+                :required="item.required"
+              />
               <div class="section-part__container">
                 <div class="container-fluid">
                   <div class="row">

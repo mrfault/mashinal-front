@@ -186,6 +186,11 @@ export default {
           type: 'error',
         })
         this.$emit('handleLoading', false)
+      }else if (((this.type == 'moto') || (this.type == 'moto_atv') || (this.type == 'scooter')) && (this.form.volume <= 0)) {
+        this.$toasted.show(this.$t('Həcm boş olmamalıdır.'), {
+          type: 'error',
+        })
+        this.$emit('handleLoading', false)
       } else if (((this.type == 'part')) && (this.imageCount < 1)) {
         this.$toasted.show(this.$t('Ən az 1 şəkil yüklənməlidir'), {
           type: 'error',
@@ -209,6 +214,16 @@ export default {
         //     this.$emit('handleLoading', false)
       } else if (this.form.volume && ((this.form.volume == '') || !this.form.volume || (this.form.volume == 0))) {
         this.$toasted.show(this.$t('Həcm boş ola bilməz'), {
+          type: 'error',
+        })
+        this.$emit('handleLoading', false)
+      }else if ((this.type == 'cars') && !this.form.selectedColor.length ) {
+        this.$toasted.show(this.$t('Rəng boş ola bilməz'), {
+          type: 'error',
+        })
+        this.$emit('handleLoading', false)
+      }else if (((this.type == 'moto') || (this.type == 'moto_atv') || (this.type == 'scooter') || (this.type == 'commercial')) && !this.form.selectedColor ) {
+        this.$toasted.show(this.$t('Rəng boş ola bilməz'), {
           type: 'error',
         })
         this.$emit('handleLoading', false)

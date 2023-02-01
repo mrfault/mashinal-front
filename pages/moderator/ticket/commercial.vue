@@ -541,10 +541,8 @@
                   <div class="col-auto">
                     <form-numeric-input
                       v-model="form.capacity"
-                      :invalid="hasError(item)"
                       :disabled="isModerator"
                       placeholder="volume"
-                      @change="handleChange($event)"
                     />
                   </div>
                 </div>
@@ -856,6 +854,7 @@ export default {
       files: {},
       imagesBase64: [],
       form: {
+        capacity: null,
         com_cat: null,
         auction: '',
         end_date: '',
