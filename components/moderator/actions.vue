@@ -217,7 +217,12 @@ export default {
           type: 'error',
         })
         this.$emit('handleLoading', false)
-      }else if ((this.type !== 'part') && !this.form.selectedColor.length ) {
+      }else if ((this.type == 'cars') && !this.form.selectedColor.length ) {
+        this.$toasted.show(this.$t('Rəng boş ola bilməz'), {
+          type: 'error',
+        })
+        this.$emit('handleLoading', false)
+      }else if (((this.type == 'moto') || (this.type == 'moto_atv') || (this.type == 'scooter') || (this.type == 'commercial')) && !this.form.selectedColor ) {
         this.$toasted.show(this.$t('Rəng boş ola bilməz'), {
           type: 'error',
         })
