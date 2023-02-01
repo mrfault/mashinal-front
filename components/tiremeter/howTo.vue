@@ -251,7 +251,7 @@ export default {
 
 <style>
 .title-with-line-alternative {
-  font: 500 18px Gilroy;
+  font: 500 18px TTHoves;
   margin: 0 !important;
   padding: 0 !important;
 }

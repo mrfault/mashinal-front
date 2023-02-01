@@ -105,7 +105,7 @@ export default {
 
   &__title {
     width: calc(100% - 90px);
-    font: 500 15px Gilroy;
+    font: 500 15px TTHoves;
     margin-bottom: 0;
 
     span {

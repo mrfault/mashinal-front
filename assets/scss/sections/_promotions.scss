@@ -153,13 +153,13 @@
           margin-bottom: 0;
           order: 2;
           &--title {
-            font: 600 34px/41px Gilroy;
+            font: 600 34px/41px TTHoves;
             color: $dark-blue-1;
             padding-right: 10px;
             margin-bottom: 18px;
           }
           &--subtitle {
-            font: 500 20px/30px Gilroy;
+            font: 500 20px/30px TTHoves;
             color: $dark-blue-1;
             margin-bottom: 30px;
           }
@@ -219,11 +219,11 @@
         width: calc(100% - 390px);
         padding-top: 120px;
         &--title {
-          font: 600 34px Gilroy;
+          font: 600 34px TTHoves;
           margin-bottom: 13px;
         }
         &--subtitle {
-          font: 500 20px/30px Gilroy;
+          font: 500 20px/30px TTHoves;
         }
       }
       .app-scaner {

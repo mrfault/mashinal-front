@@ -1,50 +1,52 @@
 body {
-  color: $dark-blue-1;
-  font-size: 14px;
-  line-height: 1.35;
-  font-weight: normal;
-  font-family: 'Gilroy', 'Montserrat';
-  background-color: $greyish-blue-1;
-  overflow-y: scroll;
+    color: $dark-blue-1;
+    font-size: 14px;
+    line-height: 1.35;
+    font-weight: normal;
+    //font-family: 'Gilroy', 'Montserrat';
+    font-family: 'TTHoves', sans-serif;
+    background-color: $greyish-blue-1;
+    overflow-y: scroll;
 }
 
 .wrapper {
-  @include calc-vh(min-height, calc(100vh));
+    @include calc-vh(min-height, calc(100vh));
 
-  &.loading {
-    background-color: $red-1;
-    background-image: url('/img/logo-white-2.svg');
-    background-size: 200px;
-    background-position: center;
-    background-repeat: no-repeat;
-  }
+    &.loading {
+        background-color: $red-1;
+        background-image: url('/img/logo-white-2.svg');
+        background-size: 200px;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
 }
 
 .layout {
-  display: flex;
-  flex-direction: column;
-  @include calc-vh(min-height, calc(100vh));
-  min-width: 320px;
-  scroll-behavior: smooth !important;
+    display: flex;
+    flex-direction: column;
+    @include calc-vh(min-height, calc(100vh));
+    min-width: 320px;
+    scroll-behavior: smooth !important;
 }
 
 main {
-  position: relative;
-  padding-bottom: 92px;
+    position: relative;
+    padding-bottom: 92px;
 }
 
 .container {
-  padding: 0 25px;
-  min-width: 320px;
+    padding: 0 25px;
+    min-width: 320px;
 }
+
 .dropdown-menu .exact-active svg,
 .dropdown-menu .svg-hover:hover svg,
-.dropdown-menu li:hover .svg-hover
-{
-  color: #f81834 !important;
-  svg {
-    fill: #f81834;
-  }
+.dropdown-menu li:hover .svg-hover {
+    color: #f81834 !important;
+
+    svg {
+        fill: #f81834;
+    }
 }
 
 

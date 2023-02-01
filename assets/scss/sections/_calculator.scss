@@ -4,7 +4,7 @@
     background: #fff;
     border-radius: 4px;
     &--heading {
-      font: 400 18px Gilroy;
+      font: 400 18px TTHoves;
       margin-bottom: 18px;
       width: 100%;
       padding-right: 64px;
@@ -23,12 +23,12 @@
       margin-bottom: 20px;
     }
     .secondary--heading {
-      font: 400 14px Gilroy !important;
+      font: 400 14px TTHoves !important;
       color: $dark-blue-1;
     }
     .dollar__exchange {
       span {
-        font: 400 16px Gilroy;
+        font: 400 16px TTHoves;
         &:nth-child(1) {
           color: $dark-blue-1;
         }
@@ -50,11 +50,11 @@
       position: relative;
       margin-bottom: 20px;
       h3 {
-        font: 400 18px Gilroy;
+        font: 400 18px TTHoves;
       }
       h4 {
         color: $dark-blue-2;
-        font: 400 18px Gilroy;
+        font: 400 18px TTHoves;
       }
       .label {
         background: $red-1;
@@ -64,7 +64,7 @@
         right: -17px;
         color: #fff;
         padding: 8px 14px 7px 28px;
-        font: 400 14px Gilroy;
+        font: 400 14px TTHoves;
         clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 10% 50%);
         &-flip {
           position: absolute;
@@ -95,7 +95,7 @@
       .sum {
         display: flex;
         justify-content: space-between;
-        font: 400 18px Gilroy;
+        font: 400 18px TTHoves;
         span {
           &:nth-child(1) {
             color: $dark-blue-1;
@@ -127,13 +127,13 @@
       }
     }
     &--message{
-        font: 400 18px Gilroy;
+        font: 400 18px TTHoves;
         color: $red-1;
     }
   }
   &__info{
     &--paragraph{
-      font: 400 14px Gilroy;
+      font: 400 14px TTHoves;
       line-height: 19px;
     }
   }
@@ -149,7 +149,7 @@
       }
       .dollar__exchange {
         span {
-          font: 400 16px Gilroy;
+          font: 400 16px TTHoves;
           &:nth-child(1) {
             color: #fff;
           }
@@ -177,7 +177,7 @@
           right: -17px;
           color: #fff;
           padding: 8px 14px 7px 41px;
-          font: 400 14px Gilroy;
+          font: 400 14px TTHoves;
           clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 10% 50%);
 
           &-flip {

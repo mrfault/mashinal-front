@@ -153,7 +153,7 @@ export default {
 <style lang="scss" scoped>
 
 .ma-modal-title {
-  font: 500 20px Gilroy !important;
+  font: 500 20px TTHoves !important;
 }
 
 .state {
@@ -193,7 +193,7 @@ export default {
         font-size: 12px;
         font-weight: 700;
         line-height: 18px;
-        font-family: 'Gilroy';
+        font-family: 'TTHoves', sans-serif;
       }
     }
 

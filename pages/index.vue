@@ -1,8 +1,6 @@
 <template>
-  <div
-    :style="!isMobileBreakpoint ? 'margin-top: -40px;' : ''"
-    class="pages-index"
-  >
+<!--    :style="!isMobileBreakpoint ? 'margin-top: -40px;' : ''"-->
+  <div class="pages-index">
     <!-- slider desktop -->
     <div class="container p-0">
       <client-only>

@@ -23,12 +23,12 @@
 
           <slot name="nuxt"/>
 
-          <site-banner
-            v-if="windowWidth > 1800"
-            :check-emitting="checkEmitting"
-            type="right"
-            absolute
-          />
+<!--          <site-banner-->
+<!--            v-if="windowWidth > 1800"-->
+<!--            :check-emitting="checkEmitting"-->
+<!--            type="right"-->
+<!--            absolute-->
+<!--          />-->
           <scroll-top :style="windowWidth > 1800 ? 'right: calc((100% - 1614px) / 2);':''" v-if="!hideFooter"/>
           <map-switch :style="windowWidth > 1800 ? 'right: calc((100% - 1614px) / 2);':''" v-if="['salons','parts-shops'].includes(routeName)"/>
         </main>

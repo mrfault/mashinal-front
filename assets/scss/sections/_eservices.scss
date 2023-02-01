@@ -12,7 +12,7 @@
     height: 50px;
     margin-bottom: 10px;
     &--title {
-      font: 400 18px Gilroy;
+      font: 400 18px TTHoves;
       color: $dark-blue-1;
       margin-bottom: 0;
     }
@@ -39,13 +39,13 @@
     &--description {
       .key {
         color: $dark-blue-1;
-        font: 400 14px Gilroy;
+        font: 400 14px TTHoves;
         line-height: 19px;
         margin-bottom: 2px;
       }
       .value {
         color: $dark-blue-2;
-        font: 400 16px Gilroy;
+        font: 400 16px TTHoves;
       }
       .description-red-7{
         color: $red-7;
@@ -55,7 +55,7 @@
         padding-left: 20px;
         margin-top: -44px;
         li{
-          font: 500 14px Gilroy;
+          font: 500 14px TTHoves;
           &:nth-of-type(1){
             margin-bottom: 8px;
           }
@@ -77,7 +77,7 @@
       margin-bottom: 10px;
       a {
         color: $green-1;
-        font: 400 14px Gilroy;
+        font: 400 14px TTHoves;
         text-decoration: underline;
       }
     }
@@ -92,7 +92,7 @@
     }
     &--button{
       color: $green-1;
-      font: 400 14px Gilroy;
+      font: 400 14px TTHoves;
       text-decoration: underline;
       background: transparent;
       border: none;

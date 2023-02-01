@@ -34,7 +34,7 @@ $ma-blue-1: #081a3e;
   padding: 0 20px;
   position: relative;
   color: $ma-blue-1;
-  font: 500 24px Gilroy;
+  font: 500 24px TTHoves;
   display: inline;
   text-align: center;
 
@@ -64,7 +64,7 @@ $ma-blue-1: #081a3e;
   &--body {
     padding: 38px 0 52px 0;
     &--desc {
-      font: 500 20px Gilroy;
+      font: 500 20px TTHoves;
       border-color: $ma-blue-1;
       text-align: center;
     }
@@ -73,7 +73,7 @@ $ma-blue-1: #081a3e;
       background: #ecf2f9;
       border-radius: 4px;
       text-align: center;
-      font: 500 20px Gilroy;
+      font: 500 20px TTHoves;
       width: 220px;
       margin: 18px auto;
     }
@@ -90,7 +90,7 @@ $ma-blue-1: #081a3e;
   }
 }
 .ma-alcometer__promil--text {
-  font: 500 17px Gilroy;
+  font: 500 17px TTHoves;
 }
 
 .dark-mode {

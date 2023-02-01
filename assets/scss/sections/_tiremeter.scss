@@ -10,7 +10,7 @@
       align-items: center;
       &__title {
         width: 100%;
-        font: 500 14px Gilroy;
+        font: 500 14px TTHoves;
         margin-bottom: 10px;
       }
       &__spacer {
@@ -55,7 +55,7 @@
       width: 27%;
     }
     &--text {
-      font: 500 12px Gilroy;
+      font: 500 12px TTHoves;
     }
   }
   &__speedometer {
@@ -114,13 +114,13 @@
       // }
     }
     td {
-      font: 400 15px Gilroy;
+      font: 400 15px TTHoves;
       strong {
-        font: 500 15px Gilroy;
+        font: 500 15px TTHoves;
       }
     }
     th {
-      font: 500 15px Gilroy;
+      font: 500 15px TTHoves;
     }
     th,
     td {
@@ -133,7 +133,7 @@
     &--title {
       color: $dark-blue-2;
       padding-bottom: 4px;
-      font: 500 16px Gilroy;
+      font: 500 16px TTHoves;
       &-d {
         color: #FAA300;
       }
@@ -149,7 +149,7 @@
     }
     &--item {
       padding: 4px 0;
-      font: 400 15px Gilroy;
+      font: 400 15px TTHoves;
       color: $dark-blue-1;
       margin: 0;
       &-plus {
@@ -170,18 +170,18 @@
     }
     &--text {
       width: 100%;
-      font: 400 15px Gilroy;
+      font: 400 15px TTHoves;
       color: $dark-blue-1;
       border-left: 1px solid #d6e4f8;
       padding-left: 26px;
       padding-top: 21px;
       &--title {
-        font: 400 15px Gilroy;
+        font: 400 15px TTHoves;
         color: $dark-blue-1;
         margin-bottom: 27px;
       }
       &--item {
-        font: 400 15px Gilroy;
+        font: 400 15px TTHoves;
         color: $dark-blue-1;
         margin-bottom: 5px;
       }
@@ -217,7 +217,7 @@
   }
   &-small-title {
     color: #081a3e;
-    font: 500 14px Gilroy;
+    font: 500 14px TTHoves;
     height: 40px;
   }
 }
@@ -319,13 +319,13 @@
         }
       }
       td {
-        font: 400 12px Gilroy;
+        font: 400 12px TTHoves;
         strong {
-          font: 500 12px Gilroy;
+          font: 500 12px TTHoves;
         }
       }
       th {
-        font: 500 12px Gilroy;
+        font: 500 12px TTHoves;
       }
       th,
       td {
