@@ -212,6 +212,11 @@ export default {
           type: 'error',
         })
         this.$emit('handleLoading', false)
+      }else if ((this.type !== 'part') && !this.form.selectedColor.length ) {
+        this.$toasted.show(this.$t('Rəng boş ola bilməz'), {
+          type: 'error',
+        })
+        this.$emit('handleLoading', false)
       } else if (!this.form.is_new && this.form.mileage == 0) {
         this.$toasted.show(this.$t('Nəqliyyat vasitəsi yeni deyilsə yürüş 500-dən çox olmalıdır.'), {
           type: 'error',
