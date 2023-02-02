@@ -1,5 +1,6 @@
 <template>
   <label class="form-keywords" for="keywords">
+    <div v-if="disabled" class="form-keywords-overlay"/>
     <div class="keywords">
       <span
         v-for="(keyword, index) in keywords"
@@ -26,6 +27,7 @@
       maxlength="50"
       type="text"
       @keyup="inputHandler"
+      v-if="!disabled"
     />
   </label>
 </template>
@@ -34,6 +36,7 @@
 export default {
   props: {
     isModerator: Boolean,
+    disabled: Boolean,
     value: {
       type: Array,
       required: true
@@ -87,3 +90,28 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.form-keywords {
+  position: relative;
+  z-index: 0;
+
+  input {
+    z-index: 1;
+  }
+
+  .keyword {
+    z-index: 1;
+  }
+
+  &-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 4;
+    background: rgba(grey, 0.3);
+  }
+}
+</style>
