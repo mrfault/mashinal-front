@@ -519,7 +519,7 @@ export default {
       title: `${this.$t('moderation')}`,
     });
   },
-  layout: 'ticket',
+  layout: 'moderator',
   components: {
     TitleWithLineAndRejectReason,
     RejectReason,
