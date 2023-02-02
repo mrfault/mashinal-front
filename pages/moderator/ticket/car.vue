@@ -284,7 +284,7 @@
                     </div>
                     <!--              modification-->
                     <div
-                      v-if="data.modifications && data.modifications.length && form.transmission"   class="row"
+                      v-if="data.modifications && data.modifications.length && form.transmission" class="row"
                     >
                       <div class="col-12">
                         <title-with-line-and-reject-reason
@@ -388,8 +388,16 @@
                     class="mb-4"
                   >
                     <div class="section-exterior_360__container">
-                      <div class="col-auto pl-0">
-                        <input class="btn" style="width: auto !important;" type="file" v-on:change="add360Video" :disabled="isModerator"/>
+                      <div class="col-md-4 pl-0 d-flex align-items-center">
+                        <input class="btn" style="width: 200px;" type="file" v-on:change="add360Video"/>
+                        <div v-if="uploadPercentage > 0 && uploadPercentage < 100">
+                          {{ uploadPercentage }}%
+                        </div>
+                        <div v-if="uploadPercentage === 100">
+                          <span class="ml-2" style="margin-bottom: 4px;"><icon name="check-circle"
+                                                                               style="color:green;font-size: 20px;"/></span>
+                        </div>
+
                       </div>
                     </div>
                   </div>
@@ -421,10 +429,10 @@
                 :id="single_announce.id"
                 :announcement="form"
                 :button_loading="button_loading"
+                :imageCount="imagesBase64.length"
                 :notValid="notValid"
                 :rejectArray="rejectObj.rejectArray"
                 type="cars"
-                :imageCount="imagesBase64.length"
                 @formChanged="(e) => (form = e)"
                 @handleLoading="handleLoading"
                 @openTransferModal="transferModal = true"
@@ -540,6 +548,7 @@ export default {
   data() {
     return {
       announcementIsAvailable: false,
+      uploadPercentage: 0,
       loading: false,
       showModal: false,
       lastStepKey: 1,
@@ -1186,7 +1195,7 @@ export default {
 
     },
 
-    smsRadarDataChanged(obj){
+    smsRadarDataChanged(obj) {
       this.smsRadarData = obj;
     },
     //handle actions
@@ -1301,9 +1310,12 @@ export default {
       // this.uploadedVideo360 = formData;
       this.$axios
         .post('' + '/upload_temporary_video', formData, {
+          onUploadProgress: function (progressEvent) {
+            this.uploadPercentage = parseInt(Math.round((progressEvent.loaded / progressEvent.total) * 100));
+          }.bind(this),
           headers: {
-            'Content-Type': 'multipart/form-data',
-          },
+            'Content-Type': 'multipart/form-data'
+          }
         })
         .then((res) => {
           if (res.status == 200) {
