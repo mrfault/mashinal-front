@@ -1,5 +1,14 @@
 <template>
-  <div class="container">
+  <div v-if="loading">
+    <elements-loader></elements-loader>
+  </div>
+  <div
+    v-else-if="!single_announce.id && !loading"
+    class="d-flex flex-column justify-content-center h-300"
+  >
+    <h1 class="text-center">Baxılmayanlar mövcud deyil</h1>
+  </div>
+  <div v-else class="container">
     <!--    breadcrumbs-->
     <breadcrumbs id="brdcrmbs1" :crumbs="crumbs"/>
 
@@ -61,13 +70,14 @@
         <div v-if="commercial_types && commercial_types.length" class="col-12 col-lg-3">
           <form-select
             v-model="form.commercial_type_id"
+            :allow-clear="false"
+            :clearOption="false"
             :disabled="isModerator"
             :label="$t('category')"
             :options="commercial_types.map((o) => ({
                 name: o.name,
                 key: o.id,
               }))"
-            :value="form.category"
             has-search
             @change="handleCategoryChange($event)"
           />
@@ -75,7 +85,7 @@
       </section>
 
       <!--        brand-->
-      <section class="row">
+      <section v-if="form.commercial_type_id" class="row">
         <div class="col-12">
           <title-with-line-and-reject-reason
             :no-approval="!(admin_user.admin_group === 1 || admin_user.admin_group === 2)"
@@ -87,6 +97,8 @@
         <div v-if="com_brands && com_brands[0].length" class="col-12 col-lg-3">
           <form-select
             v-model="form.brand"
+            :allow-clear="false"
+            :clearOption="false"
             :disabled="isModerator"
             :label="$t('mark')"
             :options="com_brands[0].map((o) => ({
@@ -101,7 +113,7 @@
       </section>
 
       <!--        model-->
-      <section class="row">
+      <section v-if="form.brand" class="row">
         <div class="col-12">
           <title-with-line-and-reject-reason
             :no-approval="!(admin_user.admin_group === 1 || admin_user.admin_group === 2)"
@@ -113,6 +125,8 @@
         <div v-if="com_models && com_models[0].length" class="col-12 col-lg-3">
           <form-select
             v-model="form.model"
+            :allow-clear="false"
+            :clearOption="false"
             :disabled="isModerator"
             :label="$t('model')"
             :options="com_models[0].map((o) => ({
@@ -127,7 +141,7 @@
       </section>
 
       <!--    year  -->
-      <section class="row">
+      <section v-if="form.model" class="row">
         <div class="col-12">
           <title-with-line-and-reject-reason
             :no-approval="!isAdmin"
@@ -140,6 +154,8 @@
         <div v-if="commercial_types && commercial_types.length" class="col-12 col-lg-3">
           <form-select
             v-model="form.year"
+            :allow-clear="false"
+            :clearOption="false"
             :disabled="isModerator"
             :label="$t('year')"
             :options="getYears"
@@ -153,35 +169,36 @@
       <!--       photo-->
       <section>
 
-        <title-with-line-and-reject-reason
-          :subtitle="
-                      $t('at_least_5_photos', {
+
+          <title-with-line-and-reject-reason
+            :subtitle="
+                      $t('at_least_3_photos', {
                         min: minFiles,
                         max: maxFiles,
                       }).toLowerCase()
                     "
-          hideRejectReason
-          title="photos"
-        >
-          <div class="mb-2 ml-2" style="display: inline-block; z-index: 0;">
-            <reject-reason
-              :disabled-value="true"
-              rejectKey="image"
-              @change="changeReason"
-            />
-          </div>
-        </title-with-line-and-reject-reason>
+            hideRejectReason
+            title="photos"
+          >
+            <div class="mb-2 ml-2" style="display: inline-block; z-index: 0;">
+              <reject-reason
+                :disabled-value="true"
+                rejectKey="image"
+                @change="changeReason"
+              />
+            </div>
 
-        <transition name="fade">
-          <photo-reject-reason
-            v-if="imageModal.isOpen"
-            :default_data="rejectObj.rejectArray"
-            :modal__title="$t('image_reject_reason')"
-            :type="'commercial'"
-            @close="imageModal.isOpen = false"
-            @save="savePhotoIssues"
-          />
-        </transition>
+          </title-with-line-and-reject-reason>
+          <transition name="fade">
+            <photo-reject-reason
+              v-if="imageModal.isOpen"
+              :default_data="rejectArray"
+              :modal__title="$t('image_reject_reason')"
+              :type="'car'"
+              @close="imageModal.isOpen = false"
+              @save="savePhotoIssues"
+            />
+          </transition>
         <upload-image-moderator
           :announce="single_announce"
           :changePosition="saved_images.length === imagesBase64.length"
@@ -189,7 +206,10 @@
           :is-edit="false"
           :load-croppa="true"
           :max_files="30"
-          :saved_images="saved_images" :stopUploading="imagesBase64.length >= 20"
+          :saved_images="saved_images"
+          :stopUploading="imagesBase64.length >= 20"
+          :imageIsUploading="imageIsUploading"
+          :imageCount="imagesBase64.length"
           page="sell"
           url="/"
           @addFiles="addFiles"
@@ -212,9 +232,9 @@
           />
         </div>
 
-        <div v-if="form.selectedColor && colors.length" class="col-12">
+        <div v-if="colors.length" class="col-12">
           <color-options v-model="form.selectedColor" :limit="2"
-                         :matt="form.is_matte" :multiple="type === 'cars'" @change="removeError('selectedColor')"
+                         :multiple="type === 'cars'" hide-matt @change="removeError('selectedColor')"
                          @change-matt="form.is_matte = $event"/>
         </div>
       </section>
@@ -237,13 +257,24 @@
             :min="0"
             :placeholder="$t('mileage')"
             input-class="w-133"
+            :disabled="isModerator"
             @change="getChange($event,'mileage')"
           />
         </div>
         <div class="col-auto">
+          <form-switch
+            v-model="form.mileage_measure"
+            :options="getMileageOptions"
+            :disabled="isModerator"
+            @change="updatePreview('mileage_measure')"
+          />
+        </div>
+        <div class="col-auto">
           <form-checkbox
+            v-model="form.is_new"
             :label="$t('is_new')"
             :value="single_announce.is_new"
+            :disabled="isModerator"
             input-name="is_new"
             transparent
             @change="checkboxChanged"
@@ -252,8 +283,10 @@
         <div class="col-auto">
           <form-checkbox
             v-if="!single_announce.is_external_salon"
+            v-model="form.guaranty"
             :label="$t('in_garanty')"
             :value="single_announce.guaranty"
+            :disabled="isModerator"
             input-name="guaranty"
             transparent
             @change="checkboxChanged"
@@ -262,9 +295,11 @@
         <div class="col-auto">
           <form-checkbox
             v-if="!single_announce.is_external_salon"
+            v-model="form.customs_clearance"
             :label="$t('not_cleared')"
-            :value="single_announce.customed_id"
+            :value="single_announce.customed"
             input-name="customs_clearance"
+            :disabled="isModerator"
             transparent
             @change="checkboxChanged"
           />
@@ -275,6 +310,7 @@
             :value="single_announce.status_id"
             input-name="bitie"
             transparent
+            :disabled="isModerator"
             @change="checkboxChanged"
           >
             <popover
@@ -292,7 +328,7 @@
 
 
       <!--      region-->
-      <section class="row">
+      <section class="row" ref="form_region_field">
         <div class="col-12">
           <title-with-line-and-reject-reason
             description="it_will_not_be_possible_to_change_the_city_after_accommodation"
@@ -305,6 +341,8 @@
             id="region_id"
             :key="refresh+1"
             v-model="form.region_id"
+            :allow-clear="false"
+            :clearOption="false"
             :disabled="isModerator"
             :has-error="errors.includes('region_id')"
             :label="$t('region')"
@@ -318,10 +356,13 @@
         <div v-if="single_announce.is_external_salon" class="col-lg-4 mb-2 mb-lg-0">
           <form-select
             v-model="form.country_id"
+            :allow-clear="false"
             :clear-option="false"
+            :clearOption="false"
             :invalid="isInvalid('region_id')"
             :label="$t('sale_region_country')"
             :options="sell_options.countries"
+            :disabled="isModerator"
             has-search
             @change="removeError('region_id'), updatePreview('region')"
           />
@@ -338,13 +379,14 @@
               v-model="form.address"
               :placeholder="$t('address')"
               icon-name="placeholder"
+              :disabled="isModerator"
             />
           </pick-on-map-button>
         </div>
       </section>
 
       <!--      price-->
-      <section class="row">
+      <section class="row" ref="form_price_field">
         <div class="col-12">
           <title-with-line-and-reject-reason
             no-approval
@@ -358,30 +400,33 @@
             :placeholder="$t('price')"
             input-class="w-133"
             @change="removeError('price'), updatePreview('price')"
+            :disabled="isModerator"
           />
         </div>
         <div class="col-auto">
           <form-switch
             v-model="form.currency"
             :options="getCurrencyOptions"
+            :disabled="isModerator"
             @change="updatePreview('currency')"
           />
         </div>
       </section>
 
       <!--      owner-->
-      <section class="row">
+      <section class="row" v-if="false">
         <div class="col-12">
           <title-with-line-and-reject-reason
             no-approval
             title="first_owner_question"/>
         </div>
 
-        <div class="col-auto">
+        <div class="col-auto" v-if="false">
           <form-switch
-            v-model="form.owners"
+            v-model="form.owner_type"
             :options="getOwnerOptions"
             :value="single_announce.owners"
+            :disabled="isModerator"
             autoWidth
             translated
             @change="getChange($event,'owner_type')"
@@ -390,8 +435,8 @@
       </section>
 
       <!--      number/vin-->
-      <section class="row">
-        <div class="col-12">
+      <section v-if="false" id="number-section-commercial">
+        <div>
           <title-with-line-and-reject-reason
             v-if="
               !loggedIn ||
@@ -404,65 +449,29 @@
             :required="
               type === 'cars' || (type !== 'parts' && user.external_salon)
             "
-            :title="
-              form.customs_clearance || user.external_salon
-                ? 'vin_carcase_number'
-                : 'license_plate_number_vin_or_carcase_number'
-            "
-
+            :title=" 'license_plate_number_vin_or_carcase_number'"
             spanId="anchor-vin"
             @change="changeReason"
-          />
-          <title-with-line-and-reject-reason
-            v-else
-            id="anchor-car_or_vin"
-            :title="
-              form.customs_clearance || user.external_salon
-                ? 'vin_carcase_number'
-                : 'license_plate_number_vin_or_carcase_number'
-            "
-            reject-key="price"
-            spanId="anchor-vin"
+            img-src="/img/flag.svg"
           />
         </div>
-        <div class="col-auto">
+        <div
+          id="anchor-car_number"
+          class="row"
+        >
           <div
-            v-if="!form.customs_clearance && !user.external_salon"
-            id="anchor-car_number"
+            v-if="form.customs_clearance"
+            class="col-lg-4 mb-2 mb-lg-0"
           >
-            <form-text-input
-              v-model="form.car_number"
-              :mask="type === 'cars' ? '99 - AA - 999' : '99 - A{1,2} - 999'"
-              :placeholder="type === 'cars' ? '__ - __ - ___' : '__ - _ - ___'"
-              img-src="/img/flag.svg"
-              input-class="car-number-show-popover"
-              @change="removeError('car_number')"
-              @focus="showCarNumberDisclaimer"
-            >
-              <popover
-                :message="$t('real-car-number-will-make-post-faster')"
-                :width="190"
-                name="car-number"
-                text-class="text-red"
-                @click="readCarNumberDisclaimer = true"
-              />
-            </form-text-input>
-            <form-checkbox
-              v-model="form.show_car_number"
-              :label="$t('show_car_number_on_site')"
-              class="mt-2 mt-lg-3"
-              input-name="show_car_number"
-              transparent
-            />
-          </div>
-          <div v-if="form.customs_clearance">
-            <template v-if="form && form.vin">
+            <template>
+
               <form-textarea
                 key="vin"
                 v-model="form.vin"
                 :mask="$maskAlphaNumeric('*****************')"
                 :placeholder="$t('vin_carcase_number')"
                 class="textfield-like-textarea"
+                :disabled="isModerator"
                 @change="removeError('vin')"
               >
                 <popover :width="240" name="vin">
@@ -473,16 +482,30 @@
             <form-checkbox
               v-model="form.show_vin"
               :label="$t('show_vin_on_site')"
+              :disabled="isModerator"
               class="mt-2 mt-lg-3"
               input-name="show_vin"
               transparent
             />
           </div>
+          <div
+            v-if="!form.customs_clearance == true"
+            class="col-lg-4 mb-2 mb-lg-0"
+          >
+            <form-text-input
+              ref="moderation-car-number-input-1"
+              v-model="form.car_number"
+              :mask="'99 - A{1,2} - 999'"
+              :placeholder="'__ - _ - ___'"
+              :disabled="isModerator"
+            />
+          </div>
+
         </div>
       </section>
 
       <!--      sell filters-->
-      <section class="row">
+      <section class="row mt-3">
         <div class="col-12">
           <div class="sell-filters">
             <div class="mt-2 mt-lg-3 car-filters_row">
@@ -496,7 +519,7 @@
             <transition-expand>
               <div v-if="collapsed" class="w-100">
                 <!--                power-->
-                <div class="row">
+                <div class="row" v-if="form.commercial_type_id !== 43">
                   <div class="col-12">
                     <title-with-line-and-reject-reason no-approval title="horse_power"/>
                   </div>
@@ -505,28 +528,28 @@
                       v-model="form.power"
                       :invalid="hasError(item)"
                       placeholder="horse_power"
+                      :disabled="isModerator"
                       @change="handleChange($event)"
                     />
                   </div>
                 </div>
                 <!--                capacity -->
-                <div class="row">
+                <div class="row" v-if="form.commercial_type_id !== 43">
                   <div class="col-12">
                     <title-with-line-and-reject-reason no-approval title="volume"/>
                   </div>
-                  <div v-if="form.capacity" class="col-auto">
+                  <div class="col-auto">
                     <form-numeric-input
                       v-model="form.capacity"
-                      :invalid="hasError(item)"
+                      :disabled="isModerator"
                       placeholder="volume"
-                      @change="handleChange($event)"
                     />
                   </div>
                 </div>
                 <!--                sell filters radio-->
                 <div v-for="(item,indx) in com_filters" :key="indx">
                   <title-with-line-and-reject-reason v-if="com_filters[indx].values && com_filters[indx].values.length"
-                                                     :title="item.type_key" no-approval/>
+                                                     :title="item.type_key" no-approval :required="item.required"/>
                   <div v-if="com_filters[indx].values" class="row">
                     <div v-for="(input,index)  in com_filters[indx].values" :key="input.name"
                          class="col-lg-4 mb-2 mb-lg-3">
@@ -537,6 +560,7 @@
                         :invalid="hasError(item)"
                         :label="input.name[locale] || $t(input.name)"
                         :radio-value="$notUndefined(input.id,input.key)"
+                        :disabled="isModerator"
                       />
                     </div>
                   </div>
@@ -550,7 +574,7 @@
                     <title-with-line-and-reject-reason no-approval title="comment"/>
                   </div>
                   <div class="col-12 col-lg-8">
-                    <form-textarea v-model="form.comment"/>
+                    <form-textarea  :disabled="isModerator" v-model="form.comment"/>
                   </div>
                 </div>
               </div>
@@ -561,86 +585,22 @@
 
 
       <!-------------------------------ACTIONS---------------------------------->
-      <section v-if="user && user.admin_group == 1" class="container mt-5 pl-0"> <!--supervisor-->
-        <div class="row">
-          <div class="col-12">
-            <button v-if="rejectArray.length == 0" :class="{'loading':button_loading}"
-                    class="'btn btn--green px-2 py-1"
-                    @click.prevent="sendData(1)">{{ $t('confirm') }}
-            </button>
-            <button :class="{'loading':button_loading}" class="'btn btn--red px-2 py-1"
-
-                    @click.prevent="sendData(0)">{{ $t('reject') }}
-            </button>
-            <button :class="{'loading':button_loading}" class="'btn btn--pale-red px-2 py-1"
-                    @click.prevent="sendData(3)"
-            >
-              {{ $t('deactive_announce') }}
-            </button>
-            <button
-              class="'btn btn--grey px-2 py-1"
-              @click="handleBackToList">
-              {{ $t('back_to_list') }}
-            </button>
-          </div>
-        </div>
-      </section>
-      <section v-if="user && user.admin_group == 2" class="container mt-5 pl-0"> <!--moderator-->
-        <div class="row">
-          <div class="col-3 text-center">
-            <span class="timer">
-              {{ getTimer.data }}
-            </span>
-          </div>
-          <div class="col-3">
-            <input v-if="getTimer.unix > 60*2" v-model="form.delay_comment" :placeholder="$t('delay_comment')"
-                   style="height: 46px;width: 100%;padding: 0 8px;" type="text">
-          </div>
-
-          <div class="col-6 text-center">
-            <span v-if="getTimer.unix < 60*2 || (getTimer.unix > 60*2 && form.delay_comment.length)">
-              <button v-if="rejectArray.length === 0" :class="{'loading':button_loading}"
-                      class="'btn btn--green px-2 py-1"
-                      @click.prevent="sendData(1)">{{ $t('confirm') }}
-            </button>
-
-              <!-- sendData(0) -->
-              <button v-else :class="{'loading':button_loading}" class="'btn btn--red mt-2"
-                      @click.prevent="transferToSupervisor(true)">{{ $t('reject') }}</button>
-            </span>
-
-            <button :class="{'loading':button_loading}" class="'btn btn--green px-2 py-1"
-                    @click.prevent="transferModal = true">{{ $t('Transfer to Supervisor') }}
-            </button>
-          </div>
-        </div>
-      </section>
-      <section v-if="user && user.admin_group == 3" class="container mt-5 pl-0"> <!--call center-->
-        <div class="row">
-          <div class="col-12">
-            <button :class="{'loading':button_loading}" class="'btn btn--green px-2 py-1"
-
-                    @click.prevent="sendData(2)">{{ $t('send_to_moderate') }}
-            </button>
-
-            <button :class="{'loading':button_loading}" class="'btn btn--pale-red px-2 py-1"
-                    @click.prevent="sendData(3)"
-            >
-              {{ $t('deactive_announce') }}
-            </button>
-
-            <button
-              class="'btn btn--grey px-2 py-1"
-              @click="handleBackToList">
-              {{ $t('back_to_list') }}
-            </button>
-
-            <button class="'btn btn--green px-2 py-1"
-                    @click.prevent="transferModal = true">{{ $t('Transfer to Supervisor') }}
-            </button>
-          </div>
-        </div>
-      </section>
+      <!--      actions-->
+      <moderator-actions
+        :id="single_announce.id"
+        :announcement="form"
+        :button_loading="button_loading"
+        :saved-images="saved_images"
+        :notValid="notValid"
+        :imageCount="imagesBase64.length"
+        :rejectArray="rejectArray"
+        @formChanged="(e) => (form = e)"
+        @openTransferModal="transferModal = true"
+        @sendData="sendData"
+        @handleLoading="handleLoading"
+        type="commercial"
+        @transferToSupervisor="transferToSupervisor"
+      />
 
 
     </div>
@@ -655,10 +615,37 @@
       @close="openLog = false"
     >
       <change-log
-        :logs="single_announce.change_log"
         :btl="single_announce.btl_announces"
+        :logs="single_announce.change_log"
         :user-id="single_announce.user_id"
       />
+    </modal-popup>
+    <!--    transfer modal 1-->
+    <modal-popup
+      :modal-class="''"
+      :title="`${$t('transfer_comment')}`"
+      :toggle="transferModal"
+      closeable
+      @close="transferModal = false"
+    >
+      <div class="body">
+        <textarea
+          key="ma-moderation-comment-2"
+          v-model="transferComment"
+          :placeholder="$t('transfer_comment')"
+          class="ma-input"
+        />
+        <div class="row justify-content-center">
+          <button
+            :class="{'pending':button_loading, 'disabled': (transferComment == '' || notValid)}"
+            :disabled="notValid || (transferComment == null) || (transferComment === '')"
+            class="btn btn--green  mt-1"
+            @click.prevent="transferToSupervisor()"
+          >
+            {{ $t('transfer_to_supervisor') }}
+          </button>
+        </div>
+      </div>
     </modal-popup>
   </div>
 </template>
@@ -676,17 +663,18 @@ import ColorOptions from '~/components/options/ColorOptions'
 import PickOnMapButton from '~/components/elements/PickOnMapButton'
 import moment from "moment";
 import TitleWithLineAndRejectReason from '~/components/moderator/titleWithLineAndRejectReason'
-import SellLastStepModerator from '~/components/sell/SellLastStepModerator'
 import SellFilters from '~/components/sell/SellFilters'
 import TitleWithLine from "~/components/global/titleWithLine";
 import FormRadioGroup from "~/components/forms/FormRadioGroup";
 import SellLastStep from '~/components/sell/SellLastStep';
 import ChangeLog from "~/components/moderator/changeLog";
+import ModeratorActions from '~/components/moderator/actions.vue'
+
 export default {
 
   name: 'commercial-pages-moderation',
 
-  layout: 'ticket',
+  layout: 'moderator',
 
   components: {
     TitleWithLine,
@@ -698,12 +686,12 @@ export default {
     UploadImageModerator,
     ColorOptions,
     PickOnMapButton,
-    SellLastStepModerator,
     SellLastStep,
     SellFilters,
     PopularComments,
     FormRadioGroup,
-    ChangeLog
+    ChangeLog,
+    ModeratorActions,
   },
 
 
@@ -734,6 +722,15 @@ export default {
       store.commit('moderator/moderatorMutator', {
         with: data.announce,
         property: 'single_announce',
+      })
+      store.commit('moderator/moderatorMutator', {
+        with: data.moderator,
+        property: 'moderator',
+      })
+
+      store.commit('moderator/moderatorMutator', {
+        with: data.moderator,
+        property: 'moderator',
       })
 
       if (!store.getters.single_announce.id) return;
@@ -780,15 +777,13 @@ export default {
   //-----------------------------------------------------------------asyncData^------------------------------------------------------------------------------------------------------
   data() {
     return {
+      imageIsUploading: false,
+      loading: false,
       button_loading: false,
       openLog: false,
       transferModal: false,
       transferComment: '',
       announceId: false,
-      getTimer: {
-        data: '',
-        unix: 0
-      },
       rejectArray: [],
       refresh: 1,
       date: Math.floor(Date.now() / 1000),
@@ -859,6 +854,7 @@ export default {
       files: {},
       imagesBase64: [],
       form: {
+        capacity: null,
         com_cat: null,
         auction: '',
         end_date: '',
@@ -902,7 +898,7 @@ export default {
         box: -1,
         price: '',
         new_badges: [],
-        owner_type: 0,
+        owner_type: null,
         currency: 0,
         youtube: {
           id: '',
@@ -976,28 +972,6 @@ export default {
     await this.$auth.setUserToken(`Bearer ${this.$route.query.token}`);
     this.$axios.setHeader('Authorization', `Bearer ${this.$route.query.token}`)
 
-    if ((this.admin_user) && (this.admin_user.admin_group == 2)) {
-      setInterval(() => {
-        let timer = moment().diff(moment(this.moderator.created_at));
-        var duration = moment.duration(timer);
-        var days = duration.days(),
-          hrs = duration.hours(),
-          mins = duration.minutes(),
-          secs = duration.seconds();
-
-        if (hrs.toString().length === 1) hrs = '0' + hrs;
-        if (mins.toString().length === 1) mins = '0' + mins;
-        if (secs.toString().length === 1) secs = '0' + secs;
-        let _return = '';
-
-        if (days > 0) _return += days + 'd. ';
-
-        _return += hrs + ':' + mins + ':' + secs;
-
-        this.getTimer.data = _return;
-        this.getTimer.unix = timer / 1000;
-      }, 1000);
-    }
 
     if (this.single_announce.id) {
       let announce = JSON.parse(JSON.stringify(this.single_announce));
@@ -1009,10 +983,11 @@ export default {
       this.form.id = announce.id;
       this.form.id_unique = announce.id_unique;
       this.form.selectedColor = announce.color_id;
+      this.form.is_new = announce.is_new;
       this.form.mileage = announce.mileage;
       this.form.address = announce.address;
       this.form.beaten = announce.beaten;
-      this.form.is_new = announce.is_new;
+
       this.form.customs_clearance = announce.customed;
       this.form.region_id = announce.region_id;
       this.form.lat = parseFloat(announce.latitude);
@@ -1021,13 +996,13 @@ export default {
       this.form.currency = announce.currency_id;
       this.form.tradeable = announce.tradeable;
       this.form.passport = announce.passport;
-      this.form.owner_type = announce.owner || 0;
+      this.form.owner_type = announce.owner.toString() || '0';
       this.form.guaranty = announce.guaranty;
       this.form.car_number = announce.car_number;
       this.form.show_car_number = announce.show_car_number;
       this.form.show_vin = announce.show_vin;
       this.form.vin = announce.vin;
-      this.form.power = Number(announce.power)
+      this.form.power = announce.power ? Number(announce.power) : 0;
       this.form.capacity = parseInt(announce.capacity)
       this.form.comment = announce.comment;
       this.form.sell_store = announce.store_id;
@@ -1035,6 +1010,7 @@ export default {
       this.form.brand = announce.commercial_brand_id;
       this.form.model = announce.commercial_model_id;
       this.form.year = announce.year;
+      this.form.mileage_measure = announce.mileage_measure;
       if (announce.youtube_id) this.getYoutube(announce.youtube_id)
       this.com_filters.map((item) => {
         let value = announce[item.search_key];
@@ -1054,6 +1030,9 @@ export default {
     ...mapActions([
       'setSellPreviewData',
     ]),
+    handleLoading(e){
+      this.loading = e;
+    },
     nonRequiredField(item) {
       if (!item.required && item.component_add === 'any-type-selector')
         return [...item.values, {'key': null, 'name': this.$t('not_set')}];
@@ -1091,10 +1070,10 @@ export default {
       } else if (rejectKey === '360') {
         this.rejectObj.show360Reject = true
       } else {
-        if (this.rejectObj.rejectArray.includes(rejectKey)) {
-          this.rejectObj.rejectArray.splice(this.rejectObj.rejectArray.indexOf(rejectKey), 1)
+        if (this.rejectArray.includes(rejectKey)) {
+          this.rejectArray.splice(this.rejectArray.indexOf(rejectKey), 1)
         } else {
-          this.rejectObj.rejectArray.push(rejectKey)
+          this.rejectArray.push(rejectKey)
         }
       }
     },
@@ -1125,15 +1104,16 @@ export default {
       var index = this.errors.indexOf(type);
       if (index !== -1) this.errors.splice(index, 1);
     },
-    async deleteByIndex(index) {
-      if (this.saved_images[index]) {
-        this.deleteArr.push(this.saved_images[index])
+    async deleteByIndex(deleteIndex) {
+      if (this.saved_images[deleteIndex]) {
+        this.deleteArr.push(this.saved_images[deleteIndex])
       } else {
-        await this.$axios.$post('/remove_temporary_image/' + this.saved_images[index]);
+        await this.$axios.$post('/remove_temporary_image/' + this.saved_images[deleteIndex]);
       }
-      this.saved_images.splice(index, 1);
+      this.saved_images.splice(deleteIndex, 1);
     },
     async addFiles(v) {
+      this.imageIsUploading = true;
       await Promise.all(
         v.map(async (image) => {
           let formData = new FormData()
@@ -1145,12 +1125,14 @@ export default {
                 'Content-Type': 'multipart/form-data'
               }
             })
+            this.imageIsUploading = false;
             this.saved_images = this.saved_images.concat(data.ids)
             this.$store.commit('setSavedImageUrls', data.images);
             this.$nuxt.$emit('remove_image_loading_by_index', this.saved_images.length);
           } catch ({response: {data: {data}}}) {
             this.$nuxt.$emit('remove_image_by_index', this.saved_images.length);
             this.$nuxt.$emit('remove_image_on_catch');
+            this.imageIsUploading = false;
             this.errors = []
             this.$toasted.clear()
             Object.keys(data).map((key) => {
@@ -1159,7 +1141,6 @@ export default {
           }
         })
       )
-
     },
     progressing(i) {
       if (i === 0) this.progress_width = 0;
@@ -1312,6 +1293,7 @@ export default {
     //sendData
     //sendData
     async sendData(status = 2) {
+      this.loading = false;
       if (this.saved_images.length !== this.imagesBase64.length) {
         this.$toasted.show(this.$t('please_wait_for_all_image_loading'), {type: 'error'});
         return false;
@@ -1326,7 +1308,7 @@ export default {
       delete this.form.box;
       delete this.form.btl_cookie;
       delete this.form.com_cat;
-      delete this.form.commercial_type_id;
+      // delete this.form.commercial_type_id;
       delete this.form.credit;
       delete this.form.customed_ones;
       delete this.form.cylinder_placement;
@@ -1349,15 +1331,16 @@ export default {
       this.$nuxt.$emit('loading_status', true);
       this.button_loading = true;
       try {
-        await this.$axios.$post('/ticket/commercial/' + this.announceId,
-          formData
-        );
+          await this.$axios.$post('/ticket/commercial/' + this.announceId,
+            formData
+          );
 
-        if (this.admin_user.admin_group == 2) {
-          location.href = '/alvcp/resources/announce-moderators';
-        } else {
-          location.href = '/alvcp/resources/commercials';
-        }
+          if (this.user.admin_group == 2) {
+            location.href = '/alvcp/resources/announce-moderators';
+          } else {
+            location.href = '/alvcp/resources/commercials';
+          }
+
       } catch ({response: {data: {data}}}) {
         this.$nuxt.$emit('loading_status', false);
         this.button_loading = false;
@@ -1389,6 +1372,7 @@ export default {
     //sendData
     addImages(v) {
       this.files = v;
+
       this.$nuxt.$emit('progress_change', {type: 'images', count: Object.keys(this.files).length});
     },
     move(input, from, to) {
@@ -1551,10 +1535,11 @@ export default {
       sell_options: 'sellOptions',
       all_sell_options: 'allSellOptions',
       badges: 'badges',
+      moderator: 'moderator/moderator',
       getPopularComments: 'getPopularComments',
     }),
     isAdmin() {
-      return (this.admin_user.admin_group == 1 || this.admin_user.admin_group == 2)
+      return (this.user.admin_group == 1 || this.user.admin_group == 2)
     },
     isModerator() {
       return this.user.admin_group && (this.user.admin_group == 2);
@@ -1564,6 +1549,12 @@ export default {
         {key: 1, name: 'AZN', sign: '₼'},
         {key: 2, name: 'USD', sign: '$'},
         {key: 3, name: 'EUR', sign: '€'},
+      ]
+    },
+    getMileageOptions() {
+      return [
+        {key: 1, name: this.$t('char_kilometre')},
+        {key: 2, name: this.$t('char_mile')},
       ]
     },
     getOwnerOptions() {
@@ -1674,7 +1665,16 @@ export default {
       if (this.single_announce) {
         return this.single_announce.commercial_type.name.az || this.single_announce.commercial_type.name.ru || ""
       } else return ""
-    }
+    },
+    notValid() {
+      if (
+        !this.form.commercial_type_id ||
+        !this.form.brand ||
+        !this.form.model ||
+        !this.form.year
+      ) return true
+      else return false
+    },
   },
 
 
@@ -1688,6 +1688,22 @@ export default {
         id: this.single_announce.commercial_brand.id
       })
       this.$store.dispatch('getCommercialFilters', this.single_announce.commercial_type_id);
+    }
+    ;
+    this.loading = true;
+    setTimeout(() => {
+      this.loading = false;
+    }, 2000)
+  },
+
+  watch: {
+    'form.is_new': {
+      deep: true,
+      handler() {
+        if (this.form.is_new) {
+          this.form.mileage = 0;
+        }
+      }
     }
   }
 

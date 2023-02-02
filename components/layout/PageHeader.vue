@@ -76,11 +76,12 @@
                                         :name="menu.icon"
                                         v-b-tooltip="$t('tooltip_' + menu.title)"
                                     />
-                                    <inline-svg
-                                        v-b-tooltip="$t('tooltip_' + menu.title)"
-                                        v-else
-                                        :src="`/icons/${menu.icon}`"
-                                    />
+                                    <div  v-else
+                                        v-b-tooltip="$t('tooltip_' + menu.title)">
+                                        <inline-svg
+                                        :src="`/icons/${menu.icon}`"/>
+                </div>
+
                                     <template
                                         v-if="menu.title === 'messages' && countNewMessages > 0"
                                     >
@@ -98,14 +99,14 @@
                     menu.title === 'favorites' && notViewedFavorites > 0
                   "
                                     >
-                                        <span class="badge-counter">{{ notViewedFavorites }}</span>
+                                        <span class="badge-counter" style="top: -3px;right:-12px;">{{ notViewedFavorites }}</span>
                                     </template>
                                     <template
                                         v-else-if="
                     menu.title === 'templates' && notViewedSavedSearch > 0
                   "
                                     >
-                                        <span class="badge-counter">{{ notViewedSavedSearch }}</span>
+                                        <span class="badge-counter" style="top: -3px;right:-12px;">{{ notViewedSavedSearch }}</span>
                                     </template>
                                 </nuxt-link>
                             </li>

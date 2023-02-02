@@ -6,6 +6,8 @@
     <div v-if="loading">
       <elements-loader></elements-loader>
     </div>
+
+
     <!--    ANNOUNCE-->
     <div v-else-if="single_announce && single_announce.id && !loading" class="card w-100">
       <!--        userdata-->
@@ -18,11 +20,11 @@
             :userData="single_announce.user"
           />
         </div>
-        <div v-if="single_announce.change_log && single_announce.change_log.length"
-             class="col-12 col-md-6 col-lg-3 d-flex justify-content-end">
+        <div v-if="single_announce.change_log && single_announce.change_log.length && (user.admin_group !== 2)"
+             class="col-12 col-lg-3 d-flex justify-content-end">
           <button
-            :class="{ button_loading: button_loading }"
-            class="'btn btn--green px-2 py-1"
+            :class="{ pending: button_loading }"
+            class="'btn btn--green"
             @click.prevent="openLog = true"
           >
             {{ $t('show_logs') }}
@@ -40,14 +42,17 @@
           />
         </div>
         <div class="col-12 col-md-6 col-lg-3">
-          <form-text-input v-model="form.product_code" placeholder="product_code"/>
+          <label>{{ $t('product_code') }}</label>
+          <form-text-input :disabled="isModerator" v-model="form.product_code" :placeholder="$t('product_code')"/>
         </div>
         <div class="col-12 col-md-6 col-lg-3">
-          <form-text-input v-model="form.title" :placeholder="$t('title_max_character', { max: 25 })"/>
+          <label>{{ $t('headline') }}</label>
+          <form-text-input :disabled="isModerator" v-model="form.title" :maxlength="25" :placeholder="$t('title_max_character', { max: 25 })"/>
         </div>
         <div class="col-12 mt-3">
-          <form-textarea v-model="form.description" :maxlength="3000"
-                         placeholder="description_placeholder_part"/>
+          <label>{{ $t('description_placeholder_part') }}</label>
+          <form-textarea :disabled="isModerator" v-model="form.description" :maxlength="3000"
+                         :placeholder="$t('description_placeholder_part')"/>
         </div>
         <div class="col-12">
           <small class="px-2">
@@ -71,17 +76,16 @@
       </h2>
       <div class="row">
         <!-- Category -->
-        <div v-if="partCategories && partCategories.length && form.category_id" id="anchor-category_id"
+        <div v-if="partCategories && partCategories.length" id="anchor-category_id"
              class="col-lg-4 mb-3 mb-lg-0">
           <form-select
             v-model="form.category_id"
+            :allow-clear="false"
             :clear-option="false"
             :invalid="isInvalid('category_id')"
             :label="$t('category')"
-            :options="partCategories.map((o) => ({
-                name: o.name,
-                key: o.id,
-              }))"
+            :options="categories"
+            :disabled="isModerator"
             @change="
               categorySelected($event),
                 removeError('category_id'),
@@ -97,9 +101,11 @@
         >
           <form-select
             v-model="form.sub_category_id"
+            :allow-clear="false"
             :clear-option="false"
             :invalid="isInvalid('sub_category')"
             :label="$t('sub_category')"
+            :disabled="isModerator"
             :options="filter_data.sub_categories.map((o) => ({
                 name: o.name,
                 key: o.id,
@@ -116,13 +122,12 @@
         >
           <form-select
             v-model="form.brand_id"
+            :allow-clear="false"
             :clear-option="false"
             :invalid="isInvalid('brand_id')"
             :label="$t('select_brand')"
-            :options="filter_data.brands.map((o) => ({
-                name: o.name,
-                key: o.id,
-              }))"
+            :options="[{ id: 0, name: $t('other') }, ...brands]"
+            :disabled="isModerator"
             has-search
             @change="removeError('brand_id')"
           />
@@ -136,6 +141,7 @@
             v-model="form.commercial_part"
             :checked-value="form.commercial_part"
             :label="$t('commercial_part')"
+            :disabled="isModerator"
             @change="!$event ? (form.commercial_size = '') : ''"
           />
         </div>
@@ -151,6 +157,7 @@
                 :label="`${$t('new')}/${$t('S_H')}`"
                 :options="conditionButtons"
                 btn-class="primary-outline"
+                :disabled="isModerator"
                 @change="removeError('is_new')"
               />
             </div>
@@ -164,6 +171,7 @@
                 :invalid="isInvalid('is_original')"
                 :label="`${$t('original')}/${$t('duplicate')}`"
                 :options="originalityButtons"
+                :disabled="isModerator"
                 btn-class="primary-outline"
                 @change="removeError('is_original')"
               />
@@ -182,22 +190,25 @@
               :key="'filter-' + filter.id"
               class="col-lg-4 mb-3"
             >
-              <pre>{{ filter[0] }}</pre>
+              <label>{{ $t(filter.key) }}</label>
               <!-- Select -->
               <form-select
                 v-if="filter.component === 'multiselect-component'"
                 v-model="form.filter[filter.key]"
+                :allow-clear="false"
                 :clear-option="!filter.is_required"
                 :invalid="isInvalid(filter.key)"
                 :label="$t(filter.key)"
                 :options="filter.values"
                 :translateOptions="(typeof filter.values[0].name !== 'number')"
+                :disabled="isModerator"
                 has-search
                 @change="
                   removeError(filter.key),
                     dynamicFilterOnChange(filter.key, $event)
                 "
               />
+
 
               <!-- Checkbox -->
               <form-checkbox
@@ -207,19 +218,21 @@
                 :checked-value="form.filter[filter.key]"
                 :invalid="isInvalid(filter.key)"
                 :label="$t(filter.key)"
+                :disabled="isModerator"
                 @change="removeError(filter.key)"
               />
 
               <!-- Input -->
               <form-numeric-input
                 v-if="filter.component === 'filter-single-input'"
+                v-model="form.filter[filter.key]"
                 :invalid="isInvalid(filter.key)"
+                :disabled="isModerator"
                 :placeholder="
                   $t(
                     filter.key === 'capacity' ? 'battery_capacity' : filter.key,
                   )
                 "
-                :value="form.filter[Number(filter.key)]"
                 @change="removeError(filter.key)"
                 @input="
                   ;(form[filter.key] = String($event)),
@@ -227,24 +240,49 @@
                 "
               />
             </div>
+            <div
+              v-if="form.commercial_part"
+              id="anchor-commercial_size"
+              class="col-lg-4 mb-3"
+              style="align-items: center;"
+            >
+              <form-text-input
+                v-model="form.commercial_size"
+                :clear-option="false"
+                :invalid="isInvalid('commercial_size')"
+                :maxlength="50"
+                :placeholder="$t('commercial_size')"
+                :disabled="isModerator"
+                @change="removeError('commercial_size')"
+              />
+            </div>
             <!-- Price -->
             <div class="col-12 mb-3">
               <div class="row">
+                <div class="col-12">
+                  <title-with-line-and-reject-reason
+                    no-approval
+                    title="price"
+                    @change="changeReason"
+                  />
+                </div>
                 <div class="col-auto">
                   <form-price-input
                     id="anchor-price"
                     v-model="form.price"
                     :invalid="isInvalid('price')"
-                    :maxlength="9"
+                    :maxlength="5"
                     :placeholder="$t('price')"
+                    :disabled="isModerator"
                     float
                     @change="removeError('price')"
                   />
                 </div>
                 <div class="col-auto">
                   <form-switch
-                    v-model="form.currency"
+                    v-model="form.currency_id"
                     :options="getCurrencyOptions"
+                    :disabled="isModerator"
                     @change="updatePreview('currency')"
                   />
                 </div>
@@ -255,77 +293,80 @@
                     :invalid="isInvalid('is_negotiable')"
                     :label="$t('is_negotiable')"
                     checked-value="is_negotiable"
-                    @change="
-                  removeError('price', true), removeError('is_negotiable')
-                "
+                    :disabled="isModerator"
+                    @change=" changeIsNegotiable($event), removeError('is_negotiable')"
                   />
                 </div>
                 <!-- Commercial Size -->
                 <div class="col-auto">
-                  <div
-                    v-if="form.commercial_part"
-                    id="anchor-commercial_size"
-                    style="align-items: center;"
-                  >
-                    <form-text-input
-                      v-model="form.commercial_size"
-                      :clear-option="false"
-                      :invalid="isInvalid('commercial_size')"
-                      :maxlength="50"
-                      :placeholder="$t('commercial_size')"
-                      @change="removeError('commercial_size')"
-                    />
-                  </div>
+
                 </div>
               </div>
             </div>
 
+            <div class="col-12">
+              <div class="row">
 
-            <!-- Region -->
-            <div
-              v-if="regions.length"
-              id="anchor-region_id"
-              class="col-lg-4 mb-3"
-            >
-              <form-select
-                v-model="form.region_id"
-                :clear-option="false"
-                :invalid="isInvalid('region_id')"
-                :label="$t('region')"
-                :options="regions"
-                has-search
-                @change="removeError('region_id')"
-              />
+                <div class="col-12">
+                  <title-with-line-and-reject-reason
+                    no-approval
+                    title="region"
+                    @change="changeReason"
+                  />
+                </div>
+
+                <!-- Region -->
+                <div
+                  v-if="regions.length"
+                  id="anchor-region_id"
+                  class="col-lg-4 mb-3"
+                >
+                  <form-select
+                    v-model="form.region_id"
+                    :allow-clear="false"
+                    :clear-option="false"
+                    :invalid="isInvalid('region_id')"
+                    :label="$t('region')"
+                    :options="regions"
+                    has-search
+                    :disabled="isModerator"
+                    @change="removeError('region_id')"
+                  />
+                </div>
+
+                <!-- Delivery -->
+                <div class="col-lg-4 mb-3">
+                  <form-checkbox
+                    id="anchor-have_delivery"
+                    v-model="form.have_delivery"
+                    :invalid="isInvalid('have_delivery')"
+                    :label="$t('have_delivery')"
+                    checked-value="delivery"
+                    :disabled="isModerator"
+                    @change="removeError('have_delivery')"
+                  />
+                </div>
+
+                <!-- Warranty -->
+                <div class="col-lg-4 mb-3">
+                  <form-checkbox
+                    id="anchor-have_warranty"
+                    v-model="form.have_warranty"
+                    :invalid="isInvalid('have_warranty')"
+                    :label="$t('have_warranty')"
+                    checked-value="warranty"
+                    :disabled="isModerator"
+                    @change="removeError('have_warranty')"
+                  />
+                </div>
+              </div>
             </div>
 
-            <!-- Delivery -->
-            <div class="col-lg-4 mb-3">
-              <form-checkbox
-                id="anchor-have_delivery"
-                v-model="form.have_delivery"
-                :invalid="isInvalid('have_delivery')"
-                :label="$t('have_delivery')"
-                checked-value="delivery"
-                @change="removeError('have_delivery')"
-              />
-            </div>
-
-            <!-- Warranty -->
-            <div class="col-lg-4 mb-3">
-              <form-checkbox
-                id="anchor-have_warranty"
-                v-model="form.have_warranty"
-                :invalid="isInvalid('have_warranty')"
-                :label="$t('have_warranty')"
-                checked-value="warranty"
-                @change="removeError('have_warranty')"
-              />
-            </div>
           </div>
         </div>
 
         <div class="col-12">
-          <form-keywords v-model="form.tags" class="w-100"/>
+          <form-keywords  :disabled="isModerator" v-model="form.tags" class="w-100" is-moderator/>
         </div>
 
         <div class="col-12">
@@ -355,134 +396,73 @@
           >
             <div class="mb-2 ml-2" style="display: inline-block; z-index: 0;">
               <reject-reason
-                v-if="form.media.length"
                 :disabled-value="true"
                 rejectKey="image"
                 @change="changeReason"
               />
             </div>
-
           </title-with-line-and-reject-reason>
           <transition name="fade">
             <photo-reject-reason
               v-if="imageModal.isOpen"
-              :default_data="rejectObj.rejectArray"
+              :default_data="rejectArray"
               :modal__title="$t('image_reject_reason')"
               :type="'car'"
               @close="imageModal.isOpen = false"
               @save="savePhotoIssues"
+              type="part"
             />
           </transition>
         </div>
-        <upload-image-moderator
-          :announce="single_announce"
-          :changePosition="saved_images.length === imagesBase64.length"
-          :default-images="single_announce.media"
-          :is-edit="false"
-          :load-croppa="true"
-          :max_files="30"
-          :saved_images="saved_images"
-          :stopUploading="imagesBase64.length >= 20"
-          page="sell"
-          url="/"
-          @addFiles="addFiles"
-          @change="addImages"
-          @deletedIndex="deleteByIndex"
-          @passBase64Images="passBase64Images"
-          @replaceImage="replaceImage"
-        />
+        <div class="col-12 pl-2">
+          <upload-image-moderator
+            :announce="single_announce"
+            :changePosition="saved_images.length === imagesBase64.length"
+            :default-images="single_announce.media"
+            :imageIsUploading="imageIsUploading"
+            :is-edit="false"
+            :load-croppa="true"
+            :max_files="30"
+            :saved_images="saved_images"
+            :stopUploading="imagesBase64.length >= 20"
+            page="sell"
+            url="/"
+            @addFiles="addFiles"
+            @change="addImages"
+            @delete="removeImage"
+            @deletedIndex="deleteByIndex"
+            @passBase64Images="passBase64Images"
+            @replaceImage="replaceImage"
+          />
+        </div>
       </section>
 
 
       <!-------------------------------ACTIONS---------------------------------->
-      <section v-if="user && user.admin_group == 1" class="container mt-5 pl-0"> <!--supervisor-->
-        <div class="row">
-          <div class="col-12">
-            <button v-if="rejectArray.length == 0" :class="{'loading':button_loading}"
-                    class="'btn btn--green px-2 py-1"
-                    @click.prevent="sendData(1)">{{ $t('confirm') }}
-            </button>
-            <button :class="{'loading':button_loading}" class="'btn btn--red px-2 py-1"
-
-                    @click.prevent="sendData(0)">{{ $t('reject') }}
-            </button>
-            <button :class="{'loading':button_loading}" class="'btn btn--pale-red px-2 py-1"
-                    @click.prevent="sendData(3)"
-            >
-              {{ $t('deactive_announce') }}
-            </button>
-            <button
-              class="'btn btn--grey px-2 py-1"
-              @click="handleBackToList">
-              {{ $t('back_to_list') }}
-            </button>
-          </div>
-        </div>
-      </section>
-      <section v-if="user && user.admin_group == 2" class="container mt-5 pl-0"> <!--moderator-->
-        <div class="row">
-          <div class="col-3 text-center">
-            <span class="timer">
-              {{ getTimer.data }}
-            </span>
-          </div>
-          <div class="col-3">
-            <input v-if="getTimer.unix > 60*2" v-model="form.delay_comment" :placeholder="$t('delay_comment')"
-                   style="height: 46px;width: 100%;padding: 0 8px;" type="text">
-          </div>
-
-          <div class="col-6 text-center">
-            <span v-if="getTimer.unix < 60*2 || (getTimer.unix > 60*2 && form.delay_comment.length)">
-              <button v-if="rejectArray.length === 0" :class="{'loading':button_loading}"
-                      class="'btn btn--green px-2 py-1"
-                      @click.prevent="sendData(1)">{{ $t('confirm') }}
-            </button>
-
-              <!-- sendData(0) -->
-              <button v-else :class="{'loading':button_loading}" class="'btn btn--red mt-2"
-                      @click.prevent="transferToSupervisor(true)">{{ $t('reject') }}</button>
-            </span>
-
-            <button :class="{'loading':button_loading}" class="'btn btn--green px-2 py-1"
-                    @click.prevent="transferModal = true">{{ $t('Transfer to Supervisor') }}
-            </button>
-          </div>
-        </div>
-      </section>
-      <section v-if="user && user.admin_group == 3" class="container mt-5 pl-0"> <!--call center-->
-        <div class="row">
-          <div class="col-12">
-            <button :class="{'loading':button_loading}" class="'btn btn--green px-2 py-1"
-
-                    @click.prevent="sendData(2)">{{ $t('send_to_moderate') }}
-            </button>
-
-            <button :class="{'loading':button_loading}" class="'btn btn--pale-red px-2 py-1"
-                    @click.prevent="sendData(3)"
-            >
-              {{ $t('deactive_announce') }}
-            </button>
-
-            <button
-              class="'btn btn--grey px-2 py-1"
-              @click="handleBackToList">
-              {{ $t('back_to_list') }}
-            </button>
-
-            <button class="'btn btn--green px-2 py-1"
-                    @click.prevent="transferModal = true">{{ $t('Transfer to Supervisor') }}
-            </button>
-          </div>
-        </div>
-      </section>
-
+      <!--      actions-->
+      <moderator-actions
+        :id="single_announce.id"
+        :announcement="form"
+        :button_loading="button_loading"
+        :imageCount="imagesBase64.length"
+        :notValid="notValid"
+        :rejectArray="rejectArray"
+        :saved-images="saved_images"
+        type="part"
+        @formChanged="(e) => (form = e)"
+        @handleLoading="handleLoading"
+        @openTransferModal="transferModal = true"
+        @sendData="sendData"
+        @transferToSupervisor="transferToSupervisor"
+      />
 
     </div>
     <!--    EMPTY Announce-->
+
     <div v-else>
       <div style="text-align: center">
         <br><br>
-        <h2>{{ $t('not_have_pending') }} {{ $route.query.type }}</h2>
+        <h2>{{ $t('Baxılmayanlar mövcud deyil') }} {{ $route.query.type }}</h2>
         <!--<a :href="$route.fullPath">
           <button class="section-post__btn add_announce">Get car ticket</button>
         </a>
@@ -493,22 +473,49 @@
         <br><br>
       </div>
     </div>
-    <div v-if="false">
-      <!--    logs-->
-      <modal-popup
-        :modal-class="''"
-        :title="`${$t('logs')}`"
-        :toggle="openLog"
-        @close="openLog = false"
-      >
+    <!--    logs-->
+    <modal-popup
+      :modal-class="''"
+      :title="`${$t('logs')}`"
+      :toggle="(user.admin_group !== 2) && openLog"
+      @close="openLog = false"
+    >
+      <template v-if="single_announce && single_announce.btl_announces">
         <change-log
-          :logs="single_announce.change_log"
           :btl="single_announce.btl_announces"
+          :logs="single_announce.change_log"
           :user-id="single_announce.user_id"
         />
-      </modal-popup>
+      </template>
+    </modal-popup>
+    <!--    transfer modal-->
+    <modal-popup
+      :modal-class="''"
+      :title="`${$t('transfer_comment')}`"
+      :toggle="transferModal"
+      closeable
+      @close="transferModal = false"
+    >
+      <div class="body">
+        <textarea
+          key="ma-moderation-comment-2"
+          v-model="transferComment"
+          :placeholder="$t('transfer_comment')"
+          class="ma-input"
+        />
+        <div class="row justify-content-center">
+          <button
+            :class="{'pending':button_loading, 'disabled': (transferComment == '' || notValid)}"
+            :disabled="notValid || (transferComment == null) || (transferComment === '')"
+            class="btn btn--green  mt-1"
+            @click.prevent="transferToSupervisor()"
+          >
+            {{ $t('transfer_to_supervisor') }}
+          </button>
+        </div>
+      </div>
+    </modal-popup>
 
-    </div>
   </div>
 
 </template>
@@ -526,18 +533,18 @@ import ColorOptions from '~/components/options/ColorOptions'
 import PickOnMapButton from '~/components/elements/PickOnMapButton'
 import moment from "moment";
 import TitleWithLineAndRejectReason from '~/components/moderator/titleWithLineAndRejectReason'
-import SellLastStepModerator from '~/components/sell/SellLastStepModerator'
 import SellFilters from '~/components/sell/SellFilters'
 import TitleWithLine from "~/components/global/titleWithLine";
 import FormRadioGroup from "~/components/forms/FormRadioGroup";
-import SellLastStep from '~/components/sell/SellLastStep';
 import FormKeywords from '~/components/forms/FormKeywords'
 import ChangeLog from "~/components/moderator/changeLog";
+import ModeratorActions from '~/components/moderator/actions.vue'
+
 export default {
 
   name: 'parts-pages-moderation',
 
-  layout: 'ticket',
+  layout: 'moderator',
 
   components: {
     TitleWithLine,
@@ -549,27 +556,23 @@ export default {
     UploadImageModerator,
     ColorOptions,
     PickOnMapButton,
-    SellLastStepModerator,
-    SellLastStep,
     SellFilters,
     PopularComments,
     FormRadioGroup,
     FormKeywords,
     ChangeLog,
+    ModeratorActions
   },
 
 
   data() {
     return {
+      imageIsUploading: false,
       loading: false,
       button_loading: false,
       openLog: false,
       transferModal: false,
       transferComment: '',
-      getTimer: {
-        data: '',
-        unix: 0
-      },
       rejectArray: [],
       refresh: 1,
       date: Math.floor(Date.now() / 1000),
@@ -612,10 +615,10 @@ export default {
         filter: {},
         media: [],
         saved_images: [],
+        currency_id: 1,
       },
       announceId: null,
       admin_user: {},
-      moderator: {},
       imagesBase64: [],
       commercialPartDisabledOptions: [
         'diameter',
@@ -624,18 +627,15 @@ export default {
         'run_flat',
       ],
       //  image
-      minFiles: this.type === 'moto' ? 2 : 3,
+      minFiles: 1,
       maxFiles: 20,
       imageModal: {
         isOpen: false,
         options: [
-          'front_error',
-          'back_error',
-          'left_error',
-          'right_error',
-          'interior_error',
-          'not_this_car_error',
-          'logo_on_the_picture',
+          "part_photo_reject_1",
+          "part_photo_reject_2",
+          "part_photo_reject_3",
+          "part_photo_reject_4",
         ],
         initialOptions: [
           'front_error',
@@ -658,29 +658,6 @@ export default {
     await this.$auth.setUserToken(`Bearer ${this.$route.query.token}`);
     this.$axios.setHeader('Authorization', `Bearer ${this.$route.query.token}`)
 
-    if (this.user.admin_group == 2) {
-      setInterval(() => {
-        let timer = moment().diff(moment(this.moderator.created_at));
-        var duration = moment.duration(timer);
-        var days = duration.days(),
-          hrs = duration.hours(),
-          mins = duration.minutes(),
-          secs = duration.seconds();
-
-        if (hrs.toString().length === 1) hrs = '0' + hrs;
-        if (mins.toString().length === 1) mins = '0' + mins;
-        if (secs.toString().length === 1) secs = '0' + secs;
-        let _return = '';
-
-        if (days > 0) _return += days + 'd. ';
-
-        _return += hrs + ':' + mins + ':' + secs;
-
-        this.getTimer.data = _return;
-        this.getTimer.unix = timer / 1000;
-      }, 1000);
-    }
-
 
   },
 
@@ -689,6 +666,15 @@ export default {
   },
 
   methods: {
+
+    changeIsNegotiable(e) {
+      if (e == true) {
+        this.form.price = 0;
+      }
+    },
+    handleLoading(e) {
+      this.loading = e;
+    },
     async getAnnounceData() {
       this.loading = true;
       await this.$auth.setUserToken(`Bearer ${this.$route.query.token}`);
@@ -708,6 +694,10 @@ export default {
           property: 'single_announce',
           value: data.announce,
         })
+        this.$store.commit('moderator/moderatorMutator', {
+          with: data.moderator,
+          property: 'moderator',
+        })
 
 
         const partCategories = await this.$axios.$get('/part/categories');
@@ -726,7 +716,7 @@ export default {
 
         this.announceId = announce.id;
         this.form.delay_comment = "";
-        this.form.category_id = announce.category_id;
+        this.form.category_id = parseInt(announce.category_id);
         this.form.sub_category_id = announce.sub_category_id;
         this.form.region_id = announce.region_id;
         this.form.brand_id = announce.brand_id;
@@ -741,11 +731,13 @@ export default {
         this.form.description = announce.description;
         this.form.media = announce.mediaIds;
         this.form.saved_images = announce.mediaIds;
+        this.form.commercial_part = parseInt(announce.commercial_size) > 0;
+        this.form.commercial_size = announce.commercial_size;
         this.saved_images = announce.mediaIds;
         if (announce.filters) {
           this.form.filter = announce.filters
         }
-        announce.all_tags.forEach(e => this.form.tags(e.text))
+        this.form.tags = announce.all_tags.map(item => item.text);
 
 
         // if (announce.filters) {
@@ -755,7 +747,6 @@ export default {
         // }
 
         this.admin_user = admin_user.user;
-        this.moderator = data ? data.moderator : {};
         this.loading = false;
 
 
@@ -807,7 +798,7 @@ export default {
     },
     changeReason(rejectKey) {
       if (rejectKey === 'image') {
-        this.showPhotoReject = true;
+        this.imageModal.isOpen = true
       } else {
         if (this.rejectArray.includes(rejectKey)) {
           this.rejectArray.splice(this.rejectArray.indexOf(rejectKey), 1);
@@ -829,47 +820,59 @@ export default {
       if (index !== -1) this.errors.splice(index, 1);
     },
     async deleteByIndex(index) {
-      if (this.form.saved_images[index]) {
-        this.deleteArr.push(this.form.saved_images[index])
+      if (this.saved_images[index]) {
+        this.deleteArr.push(this.saved_images[index])
       } else {
-        await this.$axios.$post('/remove_temporary_image/' + this.form.saved_images[index]);
+        await this.$axios.$post(
+          '/remove_temporary_image/' + this.saved_images[index],
+        )
       }
-      this.form.saved_images.splice(index, 1);
+      this.saved_images.splice(index, 1)
     },
     async addFiles(v) {
-    await Promise.all(
+      this.imageIsUploading = true;
+      await Promise.all(
         v.map(async (image) => {
           let formData = new FormData()
           formData.append('temp_id', this.date)
-          formData.append('images[]', image);
+          formData.append('images[]', image)
           try {
-            const data = await this.$axios.$post('/upload_temporary_images', formData, {
-              headers: {
-                'Content-Type': 'multipart/form-data'
-              }
-            })
-            this.form.saved_images = this.form.saved_images.concat(data.ids)
-            this.$store.commit('setSavedImageUrls', data.images);
-            this.$nuxt.$emit('remove_image_loading_by_index', this.form.saved_images.length);
-          } catch ({response: {data: {data}}}) {
-            this.$nuxt.$emit('remove_image_by_index', this.form.saved_images.length);
-            this.$nuxt.$emit('remove_image_on_catch');
+            const data = await this.$axios.$post(
+              '/upload_temporary_images',
+              formData,
+              {
+                headers: {
+                  'Content-Type': 'multipart/form-data',
+                },
+              },
+            )
+            this.imageIsUploading = false;
+            this.saved_images = this.saved_images.concat(data.ids)
+            this.$store.commit('setSavedImageUrls', data.images)
+            this.$nuxt.$emit(
+              'remove_image_loading_by_index',
+              this.saved_images.length,
+            )
+          } catch ({
+            response: {
+              data: {data},
+            },
+          }) {
+            this.imageIsUploading = false;
+            this.$nuxt.$emit('remove_image_by_index', this.saved_images.length)
+            this.$nuxt.$emit('remove_image_on_catch')
             this.errors = []
             this.$toasted.clear()
             Object.keys(data).map((key) => {
-              this.$toasted.show(data[key], {type: 'error'});
+              this.$toasted.show(data[key], {type: 'error'})
             })
           }
-        })
+        }),
       )
-
     },
     progressing(i) {
       if (i === 0) this.progress_width = 0;
       else this.progress_width = (100 / 10) * i;
-    },
-    getCurrency(v) {
-      this.form.currency = v.key;
     },
     async handleChange(object) {
       if (object.key === 'category_id') {
@@ -880,7 +883,12 @@ export default {
     },
 
     passBase64Images(val) {
-      this.imagesBase64 = val;
+      this.imagesBase64 = val
+    },
+    replaceImage(object) {
+      if (this.saved_images.length !== this.imagesBase64.length) return
+      this.imagesBase64 = object.images
+      this.move(this.saved_images, object.v.oldIndex, object.v.newIndex)
     },
 
     deleteArrHandler(v) {
@@ -960,20 +968,27 @@ export default {
       }
     },
     async sendData(status = 2) {
-      if (this.form.saved_images.length !== this.imagesBase64.length) {
-        this.$toast.error(this.$t('please_wait_for_all_image_loading'))
-        return false;
+      if (this.saved_images.length !== this.imagesBase64.length) {
+        this.$toasted.show(this.$t('please_wait_for_all_image_loading'), {
+          type: 'error',
+        })
+        return false
       }
 
 
       for (const [key, value] of Object.entries(this.form.filter)) {
-        console.log(`${key}: ${value}`);
-        this.form[key] = value;
+        this.form[key] = value.toString();
       }
 
       let formData = new FormData();
       this.form.status = status;
+      this.form.saved_images = this.saved_images;
+      this.form.tags = this.form.tags.map(item => {
+        return {text: item}
+      })
       delete this.form['filter-undefined']
+
+
       formData.append('data', JSON.stringify(this.form));
       formData.append('deletedImages', JSON.stringify(this.deleteArr));
       this.$nuxt.$emit('loading_status', true);
@@ -994,29 +1009,37 @@ export default {
 
         this.errors = [];
         this.$toasted.clear();
-        Object.keys(data).reverse().map((key) => {
-          this.errors.push(key);
+        if (data) {
 
-          this.$toasted.show(data[key][0], {
-            type: 'error',
-            duration: 0,
-            action: {
-              text: 'Go to fix',
-              onClick: (e, toastObject) => {
-                if (document.querySelector('#' + key))
-                  document.querySelector('#' + key).scrollIntoView({behavior: 'smooth', block: 'center'});
-                toastObject.goAway(0);
 
+          Object.keys(data).reverse().map((key) => {
+            this.errors.push(key);
+
+            this.$toasted.show(data[key][0], {
+              type: 'error',
+              duration: 0,
+              action: {
+                text: 'Go to fix',
+                onClick: (e, toastObject) => {
+                  if (document.querySelector('#' + key))
+                    document.querySelector('#' + key).scrollIntoView({behavior: 'smooth', block: 'center'});
+                  toastObject.goAway(0);
+
+                }
               }
-            }
+            })
           })
-        })
+        } else return
       }
       // this.$router.push('/')
     },
     addImages(v) {
-      this.files = v;
-      this.$nuxt.$emit('progress_change', {type: 'images', count: Object.keys(this.files).length});
+      this.files = v
+      this.getInfo()
+      this.$nuxt.$emit('progress_change', {
+        type: 'images',
+        count: Object.keys(this.files).length,
+      })
     },
     move(input, from, to) {
       let numberOfDeletedElm = 1;
@@ -1024,11 +1047,7 @@ export default {
       numberOfDeletedElm = 0;
       input.splice(to, numberOfDeletedElm, elm);
     },
-    replaceImage(object) {
-      if (this.form.saved_images.length !== this.imagesBase64.length) return;
-      this.imagesBase64 = object.images;
-      this.move(this.form.saved_images, object.v.oldIndex, object.v.newIndex);
-    },
+
 
     //  --------------
     isInvalid(field) {
@@ -1042,7 +1061,6 @@ export default {
       }
     },
     categorySelected(id) {
-      console.log("categorySelected")
       this.form = {
         ...this.form,
         is_new: true,
@@ -1050,7 +1068,7 @@ export default {
         commercial_size: '',
       }
 
-      delete this.form.sub_category_id
+      // delete this.form.sub_category_id
       delete this.form.brand_id
       if (this.filter_data.filters && this.filter_data.filters.length) {
         this.filter_data.filters.forEach((filter) => {
@@ -1144,7 +1162,14 @@ export default {
       sell_options: 'sellOptions',
       all_sell_options: 'allSellOptions',
       partCategories: 'partCategories',
+      moderator: 'moderator/moderator',
     }),
+    notValid() {
+      if (
+        !this.form.title ||
+        !this.form.category_id) return true
+      else return false
+    },
     crumbs() {
       return [
         {name: this.$t('moderation')},
@@ -1193,6 +1218,14 @@ export default {
     regions() {
       return this?.filter_data?.regions || []
     },
+    categories() {
+      return this.$store.getters['parts/categories'].filter(
+        (c) => c.show_on_form,
+      )
+    },
+    brands() {
+      return this?.filter_data?.brands || []
+    },
   },
 
   mounted() {
@@ -1204,8 +1237,22 @@ export default {
       this.getFilters(this.single_announce.category_id)
     }
 
-  }
+  },
 
+  async fetch() {
+    await this.$store.dispatch('parts/getCategories')
+  },
+
+  watch: {
+    // 'form.price':{
+    //   deep: true,
+    //   handler(){
+    //     if (this.form.price == null){
+    //       this.form.price = 0;
+    //     }
+    //   }
+    // }
+  }
 
 }
 </script>
