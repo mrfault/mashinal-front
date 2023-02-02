@@ -990,6 +990,12 @@ export default {
       for (const [key, value] of Object.entries(this.form.filter)) {
         this.form[key] = value;
       }
+      if (!this.form.brand_id){
+        delete this.form.brand_id
+      }
+      if (!this.form.sub_category_id){
+        delete this.form.sub_category_id
+      }
       let formData = new FormData();
       this.form.status = status;
       this.form.saved_images = this.saved_images;
