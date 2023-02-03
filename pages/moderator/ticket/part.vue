@@ -367,7 +367,7 @@
         </div>
 
         <div class="col-12">
-          <form-keywords v-model="form.tags" :disabled="isModerator" class="w-100" is-moderator/>
+          <form-keywords-moderator v-model="form.tags" :disabled="isModerator" class="w-100" is-moderator/>
         </div>
 
         <div class="col-12">
@@ -537,7 +537,7 @@ import TitleWithLineAndRejectReason from '~/components/moderator/titleWithLineAn
 import SellFilters from '~/components/sell/SellFilters'
 import TitleWithLine from "~/components/global/titleWithLine";
 import FormRadioGroup from "~/components/forms/FormRadioGroup";
-import FormKeywords from '~/components/forms/FormKeywords'
+import FormKeywordsModerator from '~/components/moderator/FormKeywordsModerator'
 import ChangeLog from "~/components/moderator/changeLog";
 import ModeratorActions from '~/components/moderator/actions.vue'
 
@@ -560,9 +560,9 @@ export default {
     SellFilters,
     PopularComments,
     FormRadioGroup,
-    FormKeywords,
     ChangeLog,
-    ModeratorActions
+    ModeratorActions,
+    FormKeywordsModerator
   },
 
 
@@ -749,6 +749,7 @@ export default {
           this.form.filter = announce.filters
         }
         // this.form.tags = announce.all_tags.map(item => item.text);
+
         this.form.tags = announce.all_tags;
 
 
@@ -986,18 +987,19 @@ export default {
         })
         return false
       }
-
-
       for (const [key, value] of Object.entries(this.form.filter)) {
-        this.form[key] = value.toString();
+        this.form[key] = value;
       }
-
+      if (!this.form.brand_id){
+        delete this.form.brand_id
+      }
+      if (!this.form.sub_category_id){
+        delete this.form.sub_category_id
+      }
       let formData = new FormData();
       this.form.status = status;
       this.form.saved_images = this.saved_images;
-
       delete this.form['filter-undefined']
-
       formData.append('data', JSON.stringify(this.form));
       formData.append('deletedImages', JSON.stringify(this.deleteArr));
       this.$nuxt.$emit('loading_status', true);
@@ -1006,7 +1008,6 @@ export default {
         await this.$axios.$post('/ticket/part/' + this.announceId,
           formData
         );
-
         if (this.user.admin_group == 2) {
           location.href = '/alvcp/resources/announce-moderators';
         } else {
@@ -1015,15 +1016,11 @@ export default {
       } catch ({response: {data: {data}}}) {
         this.$nuxt.$emit('loading_status', false);
         this.button_loading = false;
-
         this.errors = [];
         this.$toasted.clear();
         if (data) {
-
-
           Object.keys(data).reverse().map((key) => {
             this.errors.push(key);
-
             this.$toasted.show(data[key][0], {
               type: 'error',
               duration: 0,
@@ -1033,7 +1030,6 @@ export default {
                   if (document.querySelector('#' + key))
                     document.querySelector('#' + key).scrollIntoView({behavior: 'smooth', block: 'center'});
                   toastObject.goAway(0);
-
                 }
               }
             })
@@ -1070,7 +1066,6 @@ export default {
       }
     },
     checkCategoryValidation(id) {
-      console.log("id......", id)
       this.categories.forEach(obj => {
         if (obj.id == id) {
           this.category.selected = obj;
@@ -1081,7 +1076,7 @@ export default {
       })
     },
     categorySelected(id) {
-      // delete this.form.brand_id
+      delete this.form.brand_id
       // delete this.form.sub_category_id
       this.checkCategoryValidation(id)
       this.form = {
@@ -1268,16 +1263,6 @@ export default {
     await this.$store.dispatch('parts/getCategories')
   },
 
-  watch: {
-    // 'form.price':{
-    //   deep: true,
-    //   handler(){
-    //     if (this.form.price == null){
-    //       this.form.price = 0;
-    //     }
-    //   }
-    // }
-  }
 
 }
 </script>
