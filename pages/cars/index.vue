@@ -11,7 +11,7 @@
       />
       <template v-if="!$route.query.saved">
         <grid
-          v-if="carsAnnouncements.data.length"
+          v-if="carsAnnouncements.total > 0"
           :announcements="carsAnnouncements.data"
           :paginate="$paginate(carsAnnouncements)"
           :title="$t('announcements')"
@@ -66,12 +66,13 @@ export default {
     }
     let page = route.query.page || 1;
     let searchParams = { url: '/grid/cars', prefix: 'cars' }
-
+    if(!store.state.carsAnnouncements.total)
+     await store.dispatch('getGridSearch', { ...searchParams, post, page })
     await Promise.all([
       store.dispatch('getBrands'),
       store.dispatch('getBodyOptions'),
       store.dispatch('getOptions'),
-      store.dispatch('getGridSearch', { ...searchParams, post, page }),
+
       // get model options for brands
       ...Object.keys(post?.additional_brands || {})
         .filter(key => post?.additional_brands?.[key]?.brand)

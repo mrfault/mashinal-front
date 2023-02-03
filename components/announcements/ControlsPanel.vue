@@ -6,7 +6,7 @@
           transparent @input="handleSelectAll" @change="handleSelectAll"/>
       </div> -->
       <div class="col d-flex align-items-center justify-content-end">
-         <span v-if="false" :class="['control-icon cursor-pointer text-hover-red', {'disabled-ui': !selected.length}]"
+         <span :class="['control-icon cursor-pointer text-hover-red', {'disabled-ui': !selected.length}]"
                @click="showChatModal = true">
            <span>MashinAL Business</span>
          </span>

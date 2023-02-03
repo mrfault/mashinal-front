@@ -31,7 +31,7 @@
         <input
           ref="input"
           :id="id"
-          :autofocus="autoFocus ? 'autofocus' : ''"
+          :autofocus="autoFocus ? 'autofocus' : false"
           :type="showPassword ? 'text' : type"
           :placeholder="placeholder"
           :maxlength="maxlength"
@@ -143,7 +143,7 @@
     },
     mounted() {
       if(this.autoFocus) {
-        this.$refs.input.focus()
+        // this.$refs.input.focus()
       }
     },
     computed: {
