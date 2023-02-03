@@ -607,14 +607,14 @@
                         input-name="external_salon"
                       />
                   </div>
-                  <div
+<!--                  <div
                     class="col-6 col-lg-3 mb-2 mb-lg-3"
                     v-if="!isMobileBreakpoint && !advanced"
                   >
                     <div class="form-info text-green">
                       {{ $readPlural(totalCount, $t('plural_forms_announcements')) }}
                     </div>
-                  </div>
+                  </div>-->
                 </template>
 
                 <template v-if="!onlySavedSearch">
