@@ -2475,5 +2475,7 @@ export default {
   "part_photo_reject_3":"Şəkil qeyd olunan ehtiyyat hissəsinə aid deyil.",
   "part_photo_reject_4":"Təsvirdə ətraflı məlumat qeyd olunmayıb.",
   "recheck_sms_radar": "SMS Radarda yenidən yoxla",
-  "at_least_3_photos": "Ən azı 3 şəkil"
+  "at_least_3_photos": "Ən azı 3 şəkil",
+  "category_id": "Kateqoriya ID",
+  "brand_id": "Marka ID",
 }

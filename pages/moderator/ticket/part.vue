@@ -43,15 +43,16 @@
         </div>
         <div class="col-12 col-md-6 col-lg-3">
           <label>{{ $t('product_code') }}</label>
-          <form-text-input :disabled="isModerator" v-model="form.product_code" :placeholder="$t('product_code')"/>
+          <form-text-input v-model="form.product_code" :disabled="isModerator" :placeholder="$t('product_code')"/>
         </div>
         <div class="col-12 col-md-6 col-lg-3">
           <label>{{ $t('headline') }}</label>
-          <form-text-input :disabled="isModerator" v-model="form.title" :maxlength="25" :placeholder="$t('title_max_character', { max: 25 })"/>
+          <form-text-input v-model="form.title" :disabled="isModerator" :maxlength="25"
+                           :placeholder="$t('title_max_character', { max: 25 })"/>
         </div>
         <div class="col-12 mt-3">
           <label>{{ $t('description_placeholder_part') }}</label>
-          <form-textarea :disabled="isModerator" v-model="form.description" :maxlength="3000"
+          <form-textarea v-model="form.description" :disabled="isModerator" :maxlength="3000"
                          :placeholder="$t('description_placeholder_part')"/>
         </div>
         <div class="col-12">
@@ -76,16 +77,16 @@
       </h2>
       <div class="row">
         <!-- Category -->
-        <div v-if="partCategories && partCategories.length" id="anchor-category_id"
+        <div v-if="categories && categories.length" id="anchor-category_id"
              class="col-lg-4 mb-3 mb-lg-0">
           <form-select
             v-model="form.category_id"
             :allow-clear="false"
             :clear-option="false"
+            :disabled="isModerator"
             :invalid="isInvalid('category_id')"
             :label="$t('category')"
             :options="categories"
-            :disabled="isModerator"
             @change="
               categorySelected($event),
                 removeError('category_id'),
@@ -103,9 +104,9 @@
             v-model="form.sub_category_id"
             :allow-clear="false"
             :clear-option="false"
+            :disabled="isModerator"
             :invalid="isInvalid('sub_category')"
             :label="$t('sub_category')"
-            :disabled="isModerator"
             :options="filter_data.sub_categories.map((o) => ({
                 name: o.name,
                 key: o.id,
@@ -124,10 +125,10 @@
             v-model="form.brand_id"
             :allow-clear="false"
             :clear-option="false"
+            :disabled="isModerator"
             :invalid="isInvalid('brand_id')"
             :label="$t('select_brand')"
             :options="[{ id: 0, name: $t('other') }, ...brands]"
-            :disabled="isModerator"
             has-search
             @change="removeError('brand_id')"
           />
@@ -140,8 +141,8 @@
             id="commercial_part"
             v-model="form.commercial_part"
             :checked-value="form.commercial_part"
-            :label="$t('commercial_part')"
             :disabled="isModerator"
+            :label="$t('commercial_part')"
             @change="!$event ? (form.commercial_size = '') : ''"
           />
         </div>
@@ -152,12 +153,12 @@
               <form-buttons
                 id="anchor-is_new"
                 v-model="form.is_new"
+                :disabled="isModerator"
                 :group-by="2"
                 :invalid="isInvalid('is_new')"
                 :label="`${$t('new')}/${$t('S_H')}`"
                 :options="conditionButtons"
                 btn-class="primary-outline"
-                :disabled="isModerator"
                 @change="removeError('is_new')"
               />
             </div>
@@ -167,11 +168,11 @@
               <form-buttons
                 id="anchor-is_original"
                 v-model="form.is_original"
+                :disabled="isModerator"
                 :group-by="2"
                 :invalid="isInvalid('is_original')"
                 :label="`${$t('original')}/${$t('duplicate')}`"
                 :options="originalityButtons"
-                :disabled="isModerator"
                 btn-class="primary-outline"
                 @change="removeError('is_original')"
               />
@@ -197,11 +198,11 @@
                 v-model="form.filter[filter.key]"
                 :allow-clear="false"
                 :clear-option="!filter.is_required"
+                :disabled="isModerator"
                 :invalid="isInvalid(filter.key)"
                 :label="$t(filter.key)"
                 :options="filter.values"
                 :translateOptions="(typeof filter.values[0].name !== 'number')"
-                :disabled="isModerator"
                 has-search
                 @change="
                   removeError(filter.key),
@@ -216,9 +217,9 @@
                 :id="filter.key"
                 v-model="form.filter[filter.key]"
                 :checked-value="form.filter[filter.key]"
+                :disabled="isModerator"
                 :invalid="isInvalid(filter.key)"
                 :label="$t(filter.key)"
-                :disabled="isModerator"
                 @change="removeError(filter.key)"
               />
 
@@ -226,8 +227,8 @@
               <form-numeric-input
                 v-if="filter.component === 'filter-single-input'"
                 v-model="form.filter[filter.key]"
-                :invalid="isInvalid(filter.key)"
                 :disabled="isModerator"
+                :invalid="isInvalid(filter.key)"
                 :placeholder="
                   $t(
                     filter.key === 'capacity' ? 'battery_capacity' : filter.key,
@@ -249,10 +250,10 @@
               <form-text-input
                 v-model="form.commercial_size"
                 :clear-option="false"
+                :disabled="isModerator"
                 :invalid="isInvalid('commercial_size')"
                 :maxlength="50"
                 :placeholder="$t('commercial_size')"
-                :disabled="isModerator"
                 @change="removeError('commercial_size')"
               />
             </div>
@@ -270,10 +271,10 @@
                   <form-price-input
                     id="anchor-price"
                     v-model="form.price"
+                    :disabled="isModerator"
                     :invalid="isInvalid('price')"
                     :maxlength="5"
                     :placeholder="$t('price')"
-                    :disabled="isModerator"
                     float
                     @change="removeError('price')"
                   />
@@ -281,8 +282,8 @@
                 <div class="col-auto">
                   <form-switch
                     v-model="form.currency_id"
-                    :options="getCurrencyOptions"
                     :disabled="isModerator"
+                    :options="getCurrencyOptions"
                     @change="updatePreview('currency')"
                   />
                 </div>
@@ -290,10 +291,10 @@
                   <form-checkbox
                     id="anchor-is_negotiable"
                     v-model="form.is_negotiable"
+                    :disabled="isModerator"
                     :invalid="isInvalid('is_negotiable')"
                     :label="$t('is_negotiable')"
                     checked-value="is_negotiable"
-                    :disabled="isModerator"
                     @change=" changeIsNegotiable($event), removeError('is_negotiable')"
                   />
                 </div>
@@ -325,11 +326,11 @@
                     v-model="form.region_id"
                     :allow-clear="false"
                     :clear-option="false"
+                    :disabled="isModerator"
                     :invalid="isInvalid('region_id')"
                     :label="$t('region')"
                     :options="regions"
                     has-search
-                    :disabled="isModerator"
                     @change="removeError('region_id')"
                   />
                 </div>
@@ -339,10 +340,10 @@
                   <form-checkbox
                     id="anchor-have_delivery"
                     v-model="form.have_delivery"
+                    :disabled="isModerator"
                     :invalid="isInvalid('have_delivery')"
                     :label="$t('have_delivery')"
                     checked-value="delivery"
-                    :disabled="isModerator"
                     @change="removeError('have_delivery')"
                   />
                 </div>
@@ -352,10 +353,10 @@
                   <form-checkbox
                     id="anchor-have_warranty"
                     v-model="form.have_warranty"
+                    :disabled="isModerator"
                     :invalid="isInvalid('have_warranty')"
                     :label="$t('have_warranty')"
                     checked-value="warranty"
-                    :disabled="isModerator"
                     @change="removeError('have_warranty')"
                   />
                 </div>
@@ -366,7 +367,7 @@
         </div>
 
         <div class="col-12">
-          <form-keywords  :disabled="isModerator" v-model="form.tags" class="w-100" is-moderator/>
+          <form-keywords-moderator v-model="form.tags" :disabled="isModerator" class="w-100" is-moderator/>
         </div>
 
         <div class="col-12">
@@ -408,9 +409,9 @@
               :default_data="rejectArray"
               :modal__title="$t('image_reject_reason')"
               :type="'car'"
+              type="part"
               @close="imageModal.isOpen = false"
               @save="savePhotoIssues"
-              type="part"
             />
           </transition>
         </div>
@@ -536,7 +537,7 @@ import TitleWithLineAndRejectReason from '~/components/moderator/titleWithLineAn
 import SellFilters from '~/components/sell/SellFilters'
 import TitleWithLine from "~/components/global/titleWithLine";
 import FormRadioGroup from "~/components/forms/FormRadioGroup";
-import FormKeywords from '~/components/forms/FormKeywords'
+import FormKeywordsModerator from '~/components/moderator/FormKeywordsModerator'
 import ChangeLog from "~/components/moderator/changeLog";
 import ModeratorActions from '~/components/moderator/actions.vue'
 
@@ -559,9 +560,9 @@ export default {
     SellFilters,
     PopularComments,
     FormRadioGroup,
-    FormKeywords,
     ChangeLog,
-    ModeratorActions
+    ModeratorActions,
+    FormKeywordsModerator
   },
 
 
@@ -617,6 +618,7 @@ export default {
         saved_images: [],
         currency_id: 1,
       },
+      newForm: {},
       announceId: null,
       admin_user: {},
       imagesBase64: [],
@@ -651,6 +653,10 @@ export default {
           'left_error',],
         modalToggled: false,
       },
+      category: {
+        selected: {},
+        hasChild: false,
+      }
     }
   },
 
@@ -709,6 +715,8 @@ export default {
 
         let announce = JSON.parse(JSON.stringify(this.single_announce));
 
+        this.checkCategoryValidation(parseInt(announce.category_id))
+
         if (announce.category_id) {
           this.getFilters(announce.category_id)
           this.filter_data = this.getPartFilters(announce.category_id);
@@ -720,6 +728,9 @@ export default {
         this.form.sub_category_id = announce.sub_category_id;
         this.form.region_id = announce.region_id;
         this.form.brand_id = announce.brand_id;
+        if (this.category.hasChild) {
+          this.form.brand_id = null
+        }
         this.form.is_new = announce.is_new;
         this.form.is_original = announce.is_original;
         this.form.is_negotiable = announce.is_negotiable;
@@ -737,7 +748,9 @@ export default {
         if (announce.filters) {
           this.form.filter = announce.filters
         }
-        this.form.tags = announce.all_tags.map(item => item.text);
+        // this.form.tags = announce.all_tags.map(item => item.text);
+
+        this.form.tags = announce.all_tags;
 
 
         // if (announce.filters) {
@@ -974,21 +987,19 @@ export default {
         })
         return false
       }
-
-
       for (const [key, value] of Object.entries(this.form.filter)) {
-        this.form[key] = value.toString();
+        this.form[key] = value;
       }
-
+      if (!this.form.brand_id){
+        delete this.form.brand_id
+      }
+      if (!this.form.sub_category_id){
+        delete this.form.sub_category_id
+      }
       let formData = new FormData();
       this.form.status = status;
       this.form.saved_images = this.saved_images;
-      this.form.tags = this.form.tags.map(item => {
-        return {text: item}
-      })
       delete this.form['filter-undefined']
-
-
       formData.append('data', JSON.stringify(this.form));
       formData.append('deletedImages', JSON.stringify(this.deleteArr));
       this.$nuxt.$emit('loading_status', true);
@@ -997,7 +1008,6 @@ export default {
         await this.$axios.$post('/ticket/part/' + this.announceId,
           formData
         );
-
         if (this.user.admin_group == 2) {
           location.href = '/alvcp/resources/announce-moderators';
         } else {
@@ -1006,15 +1016,11 @@ export default {
       } catch ({response: {data: {data}}}) {
         this.$nuxt.$emit('loading_status', false);
         this.button_loading = false;
-
         this.errors = [];
         this.$toasted.clear();
         if (data) {
-
-
           Object.keys(data).reverse().map((key) => {
             this.errors.push(key);
-
             this.$toasted.show(data[key][0], {
               type: 'error',
               duration: 0,
@@ -1024,7 +1030,6 @@ export default {
                   if (document.querySelector('#' + key))
                     document.querySelector('#' + key).scrollIntoView({behavior: 'smooth', block: 'center'});
                   toastObject.goAway(0);
-
                 }
               }
             })
@@ -1060,7 +1065,20 @@ export default {
         this.toasts[field].goAway(100);
       }
     },
+    checkCategoryValidation(id) {
+      this.categories.forEach(obj => {
+        if (obj.id == id) {
+          this.category.selected = obj;
+          if (obj.child.length) {
+            this.category.hasChild = true
+          } else this.category.hasChild = false
+        }
+      })
+    },
     categorySelected(id) {
+      delete this.form.brand_id
+      // delete this.form.sub_category_id
+      this.checkCategoryValidation(id)
       this.form = {
         ...this.form,
         is_new: true,
@@ -1068,8 +1086,6 @@ export default {
         commercial_size: '',
       }
 
-      // delete this.form.sub_category_id
-      delete this.form.brand_id
       if (this.filter_data.filters && this.filter_data.filters.length) {
         this.filter_data.filters.forEach((filter) => {
           delete this.form[filter.key]
@@ -1167,8 +1183,12 @@ export default {
     notValid() {
       if (
         !this.form.title ||
-        !this.form.category_id) return true
-      else return false
+        !this.form.category_id
+        // || (this.category.hasChild && !this.form.sub_category_id)
+        // || (!this.category.hasChild && !this.form.brand_id)
+      ) {
+        return true
+      } else return false
     },
     crumbs() {
       return [
@@ -1243,16 +1263,6 @@ export default {
     await this.$store.dispatch('parts/getCategories')
   },
 
-  watch: {
-    // 'form.price':{
-    //   deep: true,
-    //   handler(){
-    //     if (this.form.price == null){
-    //       this.form.price = 0;
-    //     }
-    //   }
-    // }
-  }
 
 }
 </script>

@@ -463,14 +463,19 @@
           />
         </div>
         <div class="col-lg-3 mb-2 mb-lg-0 pl-0">
-          <input
+          <form-text-input
             key="vin"
             v-model="form.vin"
-            v-mask="$maskAlphaNumeric('*****************')"
+            :disabled="isModerator"
+            :mask="$maskAlphaNumeric('*****************')"
             :placeholder="$t('vin_carcase_number')"
-            class="textfield-like-textarea ma-input"
+            class="textfield-like-textarea"
             @change="removeError('vin')"
           >
+            <popover :width="240" name="vin">
+              <inline-svg src="/img/car-cert.svg"/>
+            </popover>
+          </form-text-input>
         </div>
         <div class="col-12">
           <form-checkbox

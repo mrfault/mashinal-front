@@ -284,7 +284,7 @@
                     </div>
                     <!--              modification-->
                     <div
-                      v-if="data.modifications && data.modifications.length && form.transmission"   class="row"
+                      v-if="data.modifications && data.modifications.length && form.transmission" class="row"
                     >
                       <div class="col-12">
                         <title-with-line-and-reject-reason
@@ -388,8 +388,16 @@
                     class="mb-4"
                   >
                     <div class="section-exterior_360__container">
-                      <div class="col-auto pl-0">
-                        <input class="btn" style="width: auto !important;" type="file" v-on:change="add360Video" :disabled="isModerator"/>
+                      <div class="col-md-4 pl-0 d-flex align-items-center">
+                        <input class="btn" style="width: 200px;" type="file" v-on:change="add360Video"/>
+                        <div v-if="uploadPercentage > 0 && uploadPercentage < 100">
+                          {{ uploadPercentage }}%
+                        </div>
+                        <div v-if="uploadPercentage === 100">
+                          <span class="ml-2" style="margin-bottom: 4px;"><icon name="check-circle"
+                                                                               style="color:green;font-size: 20px;"/></span>
+                        </div>
+
                       </div>
                     </div>
                   </div>
@@ -421,10 +429,10 @@
                 :id="single_announce.id"
                 :announcement="form"
                 :button_loading="button_loading"
+                :imageCount="imagesBase64.length"
                 :notValid="notValid"
                 :rejectArray="rejectObj.rejectArray"
                 type="cars"
-                :imageCount="imagesBase64.length"
                 @formChanged="(e) => (form = e)"
                 @handleLoading="handleLoading"
                 @openTransferModal="transferModal = true"
@@ -519,7 +527,7 @@ export default {
       title: `${this.$t('moderation')}`,
     });
   },
-  layout: 'ticket',
+  layout: 'moderator',
   components: {
     TitleWithLineAndRejectReason,
     RejectReason,
@@ -540,6 +548,7 @@ export default {
   data() {
     return {
       announcementIsAvailable: false,
+      uploadPercentage: 0,
       loading: false,
       showModal: false,
       lastStepKey: 1,
@@ -771,7 +780,7 @@ export default {
       let data
       try {
         data = await this.$axios.$get('/ticket/car');
-        console.log("data", data)
+
         this.$store.commit('moderator/moderatorMutator', {
           with: data.announce,
           property: 'single_announce',
@@ -792,16 +801,19 @@ export default {
           property: 'models',
         })
         this.data.models = this.modelsModerator;
+
         this.$store.commit('moderator/moderatorMutator', {
           with: data.generations,
           property: 'generations',
         })
         this.data.generations = this.generationsModerator;
+
         this.$store.commit('moderator/moderatorMutator', {
           with: data.engines,
           property: 'engines',
         })
         this.handleEngines(this.enginesModerator);
+
         this.$store.commit('moderator/moderatorMutator', {
           with: data.moderator,
           property: 'moderator',
@@ -855,21 +867,41 @@ export default {
             id: data.announce?.youtube_link,
             thumb: `https://img.youtube.com/vi/${data.announce?.youtube_link}/hqdefault.jpg`,
           },
+
+
+
+
+
+
           selectedColor: data.announce?.colors,
           is_matte: data.announce?.is_matte,
           mileage: parseInt(data.announce?.mileage) || 0,
+
           mileage_measure: data.announce?.mileage_measure || 1,
           region_id: data.announce?.region_id || 1,
           address: data.announce?.address,
+
           lat: parseFloat(data.announce?.latitude || 0),
           lng: parseFloat(data.announce?.longitude || 0),
           vin: data.announce?.vin || "",
+          //-------------------------------------------------------------------
+          //-------------------------------------------------------------------
+          //-------------------------------------------------------------------
           price: data.announce?.price_int.toString() || '',
-          owner_type: (data.announce?.owner_type).toString() || '0',
+          // owner_type: (data.announce?.owner_type).toString() || '0',
           currency: data.announce?.currency_id || 1,
+
+          //-------------------------------------------------------------------
+          //-------------------------------------------------------------------
+          //-------------------------------------------------------------------
           car_number: data.announce?.car_number,
           show_car_number: data.announce?.show_car_number,
           show_vin: data.announce?.show_vin,
+
+
+
+
+
           part: data.announce?.car_body_health
             ? JSON.parse(data.announce?.car_body_health.options)
             : {},
@@ -897,11 +929,11 @@ export default {
         this.saved_images = data.announce.mediaIds;
 
         this.getColors();
-        this.announcementIsAvailable = true;
-        this.loading = false;
-        this.checkWithVin()
 
-        // this.getGenerations();
+        this.checkWithVin()
+        this.getGenerations();
+        this.loading = false;
+        this.announcementIsAvailable = true;
       } catch (e) {
         this.$store.commit('moderator/moderatorMutator', {
           with: {},
@@ -1186,7 +1218,7 @@ export default {
 
     },
 
-    smsRadarDataChanged(obj){
+    smsRadarDataChanged(obj) {
       this.smsRadarData = obj;
     },
     //handle actions
@@ -1301,9 +1333,12 @@ export default {
       // this.uploadedVideo360 = formData;
       this.$axios
         .post('' + '/upload_temporary_video', formData, {
+          onUploadProgress: function (progressEvent) {
+            this.uploadPercentage = parseInt(Math.round((progressEvent.loaded / progressEvent.total) * 100));
+          }.bind(this),
           headers: {
-            'Content-Type': 'multipart/form-data',
-          },
+            'Content-Type': 'multipart/form-data'
+          }
         })
         .then((res) => {
           if (res.status == 200) {
@@ -1462,6 +1497,7 @@ export default {
       this.form.rejectArray = this.rejectObj.rejectArray;
       this.form.saved_images = this.saved_images;
       this.form.end_date = null;
+      this.form.owner_type = 1;
       this.form.generation = this.form.generation_id;
 
       delete this.form.model_slug;

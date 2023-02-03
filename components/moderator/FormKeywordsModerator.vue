@@ -1,7 +1,7 @@
 <template>
   <label class="form-keywords" for="keywords">
+    <div v-if="disabled" class="form-keywords-overlay"/>
     <div class="keywords">
-      <div class="form-keywords-overlay"></div>
       <span
         v-for="(keyword, index) in keywords"
         :key="keyword"
@@ -11,15 +11,11 @@
       >
         <icon name="cross"/>
         <!-- <inline-svg src="/icons/cross.svg" height="14"/> -->
-        <template v-if="!keyword.text">
-          {{ keyword }}
-        </template>
-        <template v-else>
           {{ keyword.text }}
-        </template>
       </span>
     </div>
     <input
+      v-if="!disabled"
       id="keywords"
       ref="keywordInput"
       :placeholder="$t('add_keywords')"
@@ -68,7 +64,7 @@ export default {
 
       if (value) {
         if (!this.keywords.includes(value)) {
-          this.keywords.push(value)
+          this.keywords.push({text:value})
         }
       }
       this.$refs.keywordInput.value = ''
@@ -91,15 +87,26 @@ export default {
 </script>
 
 <style lang="scss">
-.form-keywords{
+.form-keywords {
+  position: relative;
+  z-index: 0;
 
-&-overlay{
-  position: absolute;
-  top:0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-}
+  input {
+    z-index: 1;
+  }
+
+  .keyword {
+    z-index: 1;
+  }
+
+  &-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 4;
+    background: rgba(grey, 0.3);
+  }
 }
 </style>
