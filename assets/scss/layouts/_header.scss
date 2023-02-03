@@ -20,23 +20,6 @@
             align-items: center;
             //height: 50px;
         }
-        .logo {
-            position: relative;
-            img {
-                height: 40px;
-                width: auto;
-            }
-            &:after {
-                content: '';
-                position: absolute;
-                top: 0;
-                right: -24px;
-                width: 1px;
-                height: 100%;
-                background-color: #FFFFFF;
-                cursor: default;
-            }
-        }
         .store-badges {
             height: 50px;
             width: 80px;
@@ -243,6 +226,9 @@
         border-bottom: 1px solid #CDD5DF;
         //border-radius: 0 0 20px 20px;
 
+        .iconNovelties {
+            margin-left: 4px;
+        }
         //& > .container {
             //display: flex;
             //justify-content: space-between;

@@ -63,10 +63,12 @@
                             v-if="!btlCookie"
                         />
                     </nuxt-link>
+
                     <div class="call-center">
                         <img src="/icons/subtract.svg"/>
                         <span>*8787</span>
                     </div>
+
                     <nav class="topbar-nav">
                         <ul class="topbar-nav__menu">
                             <li v-for="menu in topbarMenus" :key="menu.title">
@@ -80,7 +82,7 @@
                                         v-b-tooltip="$t('tooltip_' + menu.title)">
                                         <inline-svg
                                         :src="`/icons/${menu.icon}`"/>
-                </div>
+                                    </div>
 
                                     <template
                                         v-if="menu.title === 'messages' && countNewMessages > 0"
@@ -233,9 +235,11 @@
 
                                             <icon name="chevron-down" v-if="menu.children" />
 
-                                            <span style="position: absolute; top: 3px; right: 0; display: flex;">
-                                                <inline-svg style="width: 31px;" v-if="menu.icon === 'external-tab'" src="/img/new_badge.svg"/>
-                                            </span>
+                                            <IconNovelties v-if="menu.icon === 'external-tab'" />
+
+<!--                                            <span style="position: absolute; top: 3px; right: 0; display: flex;">-->
+<!--                                                <inline-svg style="width: 31px;" v-if="menu.icon === 'external-tab'" src="/img/new_badge.svg"/>-->
+<!--                                            </span>-->
                                         </nuxt-link>
 
                                         <div
@@ -326,10 +330,12 @@ import {UserDataMixin} from '~/mixins/user-data'
 import ThemeSwitch from '~/components/elements/ThemeSwitch'
 import SiteBanner from "~/components/banners/SiteBanner";
 import CustomDropdown from "~/components/elements/CustomDropdown.vue";
+import IconNovelties from "~/components/elements/IconNovelties.vue";
 
 export default {
     mixins: [MenusDataMixin, UserDataMixin],
     components: {
+        IconNovelties,
         CustomDropdown,
         SiteBanner,
         ThemeSwitch,
