@@ -512,14 +512,14 @@
                  v-if="(item.category && item.category.includes(parseInt(category))) || !item.hasOwnProperty('category')"
                  :key="index">
               <title-with-line-and-reject-reason
-                no-approval
-                :title="item.placeholder"
                 :required="item.required"
+                :title="item.placeholder"
+                no-approval
               />
               <div class="section-part__container">
                 <div class="container-fluid">
                   <div class="row">
-                    <div class="col-12 col-md-auto pl-0" v-if="item.component == 'animated-input'">
+                    <div v-if="item.component == 'animated-input'" class="col-12 col-md-auto pl-0">
                       <component
 
                         :is="getComponent(item.component)"
@@ -533,13 +533,13 @@
                         inputType="number"
                       />
                     </div>
-                    <div class="col-12 pl-0" v-else>
+                    <div v-else class="col-12 pl-0">
                       <component
-                        :keyItem="form[index]"
                         :is="getComponent(item.component)"
                         v-model="form[index]"
                         :form="single_announce"
                         :has-error="errors.includes(index)"
+                        :keyItem="form[index]"
                         :keyValue="index"
                         :max="5"
                         :options="item.sell_values ? item.sell_values[parseInt(default_data['category'])] : item.values"
@@ -565,7 +565,7 @@
               title="comment"
             />
           </div>
-          <div class="col-8">
+          <div class="col-12">
             <form-textarea
               id="comment"
               v-model="form.comment"
@@ -580,6 +580,7 @@
         </div>
         <!--      actions-->
         <moderator-actions
+          :single_announce="single_announce"
           :id="single_announce.id"
           :announcement="form"
           :button_loading="button_loading"
@@ -597,16 +598,6 @@
         />
 
       </div>
-      <!--    comment-->
-      <template
-        v-if="single_announce && single_announce.id  && admin_user.admin_group === 1 && single_announce.transferred">
-        <button
-          class="'btn btn--green"
-          @click="transferModal = true"
-        >
-          {{ $t('Show comment') }}
-        </button>
-      </template>
       <!--    empty announce-->
     </div>
     <!--    logs modal-->

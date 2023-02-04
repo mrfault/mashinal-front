@@ -442,6 +442,7 @@
       <!-------------------------------ACTIONS---------------------------------->
       <!--      actions-->
       <moderator-actions
+        :single_announce="single_announce"
         :id="single_announce.id"
         :announcement="form"
         :button_loading="button_loading"
