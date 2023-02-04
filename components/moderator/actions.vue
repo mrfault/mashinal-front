@@ -296,23 +296,29 @@ export default {
       } else {
         if (this.type == 'cars') {
           await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/car')
+           location.href = '/alvcp/resources/announce-moderators';
         }
         if (this.type == 'moto') {
           await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/motorcycles')
+           location.href = '/alvcp/resources/announce-moderators';
         }
         if (this.type == 'commercial') {
           await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/commercials')
+           location.href = '/alvcp/resources/announce-moderators';
         }
         if (this.type == 'moto_atv') {
           await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/moto-atvs')
+           location.href = '/alvcp/resources/announce-moderators';
         }
         if (this.type == 'part') {
           await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/parts')
+           location.href = '/alvcp/resources/announce-moderators';
         }
         if (this.type == 'scooters') {
           await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/scooters')
+           location.href = '/alvcp/resources/announce-moderators';
         }
-        location.href = '/alvcp/resources/announce-moderators';
+
       }
     },
     openTransferModal() {
