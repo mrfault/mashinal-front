@@ -24,8 +24,12 @@
                 :userData="single_announce.user"
               />
             </div>
-            <div v-if="single_announce.change_log && single_announce.change_log.length"
-                 class="col-12 col-lg-3 d-flex justify-content-end">
+            <div
+              class="col-12 col-lg-3 d-flex justify-content-end">
+              <show-comment
+                v-if="user.admin_group === 1 && single_announce.transferred"
+                :single_announce="single_announce"
+              />
               <button
                 :class="{ pending: button_loading }"
                 class="'btn btn--green"
@@ -33,6 +37,7 @@
               >
                 {{ $t('show_logs') }}
               </button>
+
             </div>
           </section>
 
@@ -580,7 +585,6 @@
         </div>
         <!--      actions-->
         <moderator-actions
-          :single_announce="single_announce"
           :id="single_announce.id"
           :announcement="form"
           :button_loading="button_loading"
@@ -589,6 +593,7 @@
           :notValid="notValid"
           :rejectArray="rejectArray"
           :saved-images="saved_images"
+          :single_announce="single_announce"
           :type="$route.query.type"
           @formChanged="(e) => (form = e)"
           @handleLoading="handleLoading"
@@ -657,6 +662,7 @@ import MultiselectComponent from '~/components/moderator/multiselectComponent.vu
 import RejectReason from '~/components/moderator/rejectReason'
 import PhotoRejectReason from "~/pages/moderator/photoReject/PhotoRejectReason";
 import UploadImageModerator from '~/components/moderator/UploadImageModerator'
+import showComment from '~/components/moderator/showComment'
 import PopularComments from '~/components/moderator/popularComments'
 import ColorOptions from '~/components/options/ColorOptions'
 import PickOnMapButton from '~/components/elements/PickOnMapButton'
@@ -691,6 +697,7 @@ export default {
     FormRadioGroup,
     ChangeLog,
     ModeratorActions,
+    showComment,
   },
 
   mixins: [ToastErrorsMixin],

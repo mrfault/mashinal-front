@@ -45,6 +45,10 @@
                           />
                         </div>
                         <div class="col-12 col-md-6 col-lg-3 d-flex justify-content-end">
+                          <show-comment
+                            v-if="user.admin_group === 1 && single_announce.transferred"
+                            :single_announce="single_announce"
+                          />
                           <button
                             :class="{ button_loading: button_loading }"
                             class="'btn btn--green"
@@ -53,6 +57,7 @@
                           >
                             {{ $t('show_logs') }}
                           </button>
+
                         </div>
                       </div>
                     </template>
@@ -518,6 +523,7 @@ import UploadImageModerator from '~/components/moderator/UploadImageModerator'
 import PhotoRejectReason from "~/pages/moderator/photoReject/PhotoRejectReason";
 import Interior360Viewer from "~/components/Interior360Viewer";
 import ChangeLog from "~/components/moderator/changeLog";
+import showComment from '~/components/moderator/showComment'
 
 
 export default {
@@ -544,6 +550,7 @@ export default {
     Interior360Viewer,
     ChangeLog,
     ModeratorActions,
+    showComment
   },
   data() {
     return {

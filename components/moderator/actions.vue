@@ -25,18 +25,6 @@
           <button :disabled="notValid" class="btn btn--yellow w-50 ml-1" @click="handleBackList">
             {{ $t('back_to_list') }}
           </button>
-          <button
-            v-if="user.admin_group === 1 && single_announce.transferred"
-            :disabled="showTransferComment"
-            class="btn btn--green w-50"
-            @click="showTransferComment = true"
-          >
-            {{ $t('Show comment') }}
-          </button>
-
-        </div>
-        <div v-if="showTransferComment" class="col-6 mt-2">
-          <textarea class="ma-input" v-html="single_announce.transferred.comment"/>
         </div>
       </div>
     </section>

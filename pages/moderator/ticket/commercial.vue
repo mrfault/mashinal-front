@@ -44,15 +44,21 @@
             :userData="single_announce.user"
           />
         </div>
-        <div v-if="single_announce.change_log && single_announce.change_log.length"
-             class="col-12 col-md-6 col-lg-3 d-flex justify-content-end">
+        <div
+          class="col-12 col-md-6 col-lg-3 d-flex justify-content-end">
+          <show-comment
+            v-if="user.admin_group === 1 && single_announce.transferred"
+            :single_announce="single_announce"
+          />
           <button
+            v-if="single_announce.change_log && single_announce.change_log.length"
             :class="{ button_loading: button_loading }"
             class="'btn btn--green px-2 py-1"
             @click.prevent="openLog = true"
           >
             {{ $t('show_logs') }}
           </button>
+
         </div>
       </section>
 
@@ -170,46 +176,46 @@
       <section>
 
 
-          <title-with-line-and-reject-reason
-            :subtitle="
+        <title-with-line-and-reject-reason
+          :subtitle="
                       $t('at_least_3_photos', {
                         min: minFiles,
                         max: maxFiles,
                       }).toLowerCase()
                     "
-            hideRejectReason
-            title="photos"
-          >
-            <div class="mb-2 ml-2" style="display: inline-block; z-index: 0;">
-              <reject-reason
-                :disabled-value="true"
-                rejectKey="image"
-                @change="changeReason"
-              />
-            </div>
-
-          </title-with-line-and-reject-reason>
-          <transition name="fade">
-            <photo-reject-reason
-              v-if="imageModal.isOpen"
-              :default_data="rejectArray"
-              :modal__title="$t('image_reject_reason')"
-              :type="'car'"
-              @close="imageModal.isOpen = false"
-              @save="savePhotoIssues"
+          hideRejectReason
+          title="photos"
+        >
+          <div class="mb-2 ml-2" style="display: inline-block; z-index: 0;">
+            <reject-reason
+              :disabled-value="true"
+              rejectKey="image"
+              @change="changeReason"
             />
-          </transition>
+          </div>
+
+        </title-with-line-and-reject-reason>
+        <transition name="fade">
+          <photo-reject-reason
+            v-if="imageModal.isOpen"
+            :default_data="rejectArray"
+            :modal__title="$t('image_reject_reason')"
+            :type="'car'"
+            @close="imageModal.isOpen = false"
+            @save="savePhotoIssues"
+          />
+        </transition>
         <upload-image-moderator
           :announce="single_announce"
           :changePosition="saved_images.length === imagesBase64.length"
           :default-images="single_announce.media"
+          :imageCount="imagesBase64.length"
+          :imageIsUploading="imageIsUploading"
           :is-edit="false"
           :load-croppa="true"
           :max_files="30"
           :saved_images="saved_images"
           :stopUploading="imagesBase64.length >= 20"
-          :imageIsUploading="imageIsUploading"
-          :imageCount="imagesBase64.length"
           page="sell"
           url="/"
           @addFiles="addFiles"
@@ -253,28 +259,28 @@
         <div class="col-auto">
           <form-numeric-input
             v-model="form.mileage"
+            :disabled="isModerator"
             :invalid="isInvalid('mileage')"
             :min="0"
             :placeholder="$t('mileage')"
             input-class="w-133"
-            :disabled="isModerator"
             @change="getChange($event,'mileage')"
           />
         </div>
         <div class="col-auto">
           <form-switch
             v-model="form.mileage_measure"
-            :options="getMileageOptions"
             :disabled="isModerator"
+            :options="getMileageOptions"
             @change="updatePreview('mileage_measure')"
           />
         </div>
         <div class="col-auto">
           <form-checkbox
             v-model="form.is_new"
+            :disabled="isModerator"
             :label="$t('is_new')"
             :value="single_announce.is_new"
-            :disabled="isModerator"
             input-name="is_new"
             transparent
             @change="checkboxChanged"
@@ -284,9 +290,9 @@
           <form-checkbox
             v-if="!single_announce.is_external_salon"
             v-model="form.guaranty"
+            :disabled="isModerator"
             :label="$t('in_garanty')"
             :value="single_announce.guaranty"
-            :disabled="isModerator"
             input-name="guaranty"
             transparent
             @change="checkboxChanged"
@@ -296,21 +302,21 @@
           <form-checkbox
             v-if="!single_announce.is_external_salon"
             v-model="form.customs_clearance"
+            :disabled="isModerator"
             :label="$t('not_cleared')"
             :value="single_announce.customed"
             input-name="customs_clearance"
-            :disabled="isModerator"
             transparent
             @change="checkboxChanged"
           />
         </div>
         <div class="col-6 col-md-4 col-lg-2">
           <form-checkbox
+            :disabled="isModerator"
             :label="$t('bitie')"
             :value="single_announce.status_id"
             input-name="bitie"
             transparent
-            :disabled="isModerator"
             @change="checkboxChanged"
           >
             <popover
@@ -328,7 +334,7 @@
 
 
       <!--      region-->
-      <section class="row" ref="form_region_field">
+      <section ref="form_region_field" class="row">
         <div class="col-12">
           <title-with-line-and-reject-reason
             description="it_will_not_be_possible_to_change_the_city_after_accommodation"
@@ -359,10 +365,10 @@
             :allow-clear="false"
             :clear-option="false"
             :clearOption="false"
+            :disabled="isModerator"
             :invalid="isInvalid('region_id')"
             :label="$t('sale_region_country')"
             :options="sell_options.countries"
-            :disabled="isModerator"
             has-search
             @change="removeError('region_id'), updatePreview('region')"
           />
@@ -377,16 +383,16 @@
           >
             <form-text-input
               v-model="form.address"
+              :disabled="isModerator"
               :placeholder="$t('address')"
               icon-name="placeholder"
-              :disabled="isModerator"
             />
           </pick-on-map-button>
         </div>
       </section>
 
       <!--      price-->
-      <section class="row" ref="form_price_field">
+      <section ref="form_price_field" class="row">
         <div class="col-12">
           <title-with-line-and-reject-reason
             no-approval
@@ -396,37 +402,37 @@
         <div class="col-auto">
           <form-numeric-input
             v-model="form.price"
+            :disabled="isModerator"
             :invalid="isInvalid('price')"
             :placeholder="$t('price')"
             input-class="w-133"
             @change="removeError('price'), updatePreview('price')"
-            :disabled="isModerator"
           />
         </div>
         <div class="col-auto">
           <form-switch
             v-model="form.currency"
-            :options="getCurrencyOptions"
             :disabled="isModerator"
+            :options="getCurrencyOptions"
             @change="updatePreview('currency')"
           />
         </div>
       </section>
 
       <!--      owner-->
-      <section class="row" v-if="false">
+      <section v-if="false" class="row">
         <div class="col-12">
           <title-with-line-and-reject-reason
             no-approval
             title="first_owner_question"/>
         </div>
 
-        <div class="col-auto" v-if="false">
+        <div v-if="false" class="col-auto">
           <form-switch
             v-model="form.owner_type"
+            :disabled="isModerator"
             :options="getOwnerOptions"
             :value="single_announce.owners"
-            :disabled="isModerator"
             autoWidth
             translated
             @change="getChange($event,'owner_type')"
@@ -450,9 +456,9 @@
               type === 'cars' || (type !== 'parts' && user.external_salon)
             "
             :title=" 'license_plate_number_vin_or_carcase_number'"
+            img-src="/img/flag.svg"
             spanId="anchor-vin"
             @change="changeReason"
-            img-src="/img/flag.svg"
           />
         </div>
         <div
@@ -468,10 +474,10 @@
               <form-textarea
                 key="vin"
                 v-model="form.vin"
+                :disabled="isModerator"
                 :mask="$maskAlphaNumeric('*****************')"
                 :placeholder="$t('vin_carcase_number')"
                 class="textfield-like-textarea"
-                :disabled="isModerator"
                 @change="removeError('vin')"
               >
                 <popover :width="240" name="vin">
@@ -481,8 +487,8 @@
             </template>
             <form-checkbox
               v-model="form.show_vin"
-              :label="$t('show_vin_on_site')"
               :disabled="isModerator"
+              :label="$t('show_vin_on_site')"
               class="mt-2 mt-lg-3"
               input-name="show_vin"
               transparent
@@ -495,9 +501,9 @@
             <form-text-input
               ref="moderation-car-number-input-1"
               v-model="form.car_number"
+              :disabled="isModerator"
               :mask="'99 - A{1,2} - 999'"
               :placeholder="'__ - _ - ___'"
-              :disabled="isModerator"
             />
           </div>
 
@@ -519,22 +525,22 @@
             <transition-expand>
               <div v-if="collapsed" class="w-100">
                 <!--                power-->
-                <div class="row" v-if="form.commercial_type_id !== 43">
+                <div v-if="form.commercial_type_id !== 43" class="row">
                   <div class="col-12">
                     <title-with-line-and-reject-reason no-approval title="horse_power"/>
                   </div>
                   <div class="col-auto">
                     <form-numeric-input
                       v-model="form.power"
+                      :disabled="isModerator"
                       :invalid="hasError(item)"
                       placeholder="horse_power"
-                      :disabled="isModerator"
                       @change="handleChange($event)"
                     />
                   </div>
                 </div>
                 <!--                capacity -->
-                <div class="row" v-if="form.commercial_type_id !== 43">
+                <div v-if="form.commercial_type_id !== 43" class="row">
                   <div class="col-12">
                     <title-with-line-and-reject-reason no-approval title="volume"/>
                   </div>
@@ -549,18 +555,18 @@
                 <!--                sell filters radio-->
                 <div v-for="(item,indx) in com_filters" :key="indx">
                   <title-with-line-and-reject-reason v-if="com_filters[indx].values && com_filters[indx].values.length"
-                                                     :title="item.type_key" no-approval :required="item.required"/>
+                                                     :required="item.required" :title="item.type_key" no-approval/>
                   <div v-if="com_filters[indx].values" class="row">
                     <div v-for="(input,index)  in com_filters[indx].values" :key="input.name"
                          class="col-lg-4 mb-2 mb-lg-3">
                       <form-radio
                         :id="`${input.name}-box-${index}`"
                         v-model="form[item.search_key]"
+                        :disabled="isModerator"
                         :input-name="getKey(item)"
                         :invalid="hasError(item)"
                         :label="input.name[locale] || $t(input.name)"
                         :radio-value="$notUndefined(input.id,input.key)"
-                        :disabled="isModerator"
                       />
                     </div>
                   </div>
@@ -574,7 +580,7 @@
                     <title-with-line-and-reject-reason no-approval title="comment"/>
                   </div>
                   <div class="col-12 col-lg-8">
-                    <form-textarea  :disabled="isModerator" v-model="form.comment"/>
+                    <form-textarea v-model="form.comment" :disabled="isModerator"/>
                   </div>
                 </div>
               </div>
@@ -587,19 +593,19 @@
       <!-------------------------------ACTIONS---------------------------------->
       <!--      actions-->
       <moderator-actions
-        :single_announce="single_announce"
         :id="single_announce.id"
         :announcement="form"
         :button_loading="button_loading"
-        :saved-images="saved_images"
-        :notValid="notValid"
         :imageCount="imagesBase64.length"
+        :notValid="notValid"
         :rejectArray="rejectArray"
+        :saved-images="saved_images"
+        :single_announce="single_announce"
+        type="commercial"
         @formChanged="(e) => (form = e)"
+        @handleLoading="handleLoading"
         @openTransferModal="transferModal = true"
         @sendData="sendData"
-        @handleLoading="handleLoading"
-        type="commercial"
         @transferToSupervisor="transferToSupervisor"
       />
 
@@ -669,7 +675,8 @@ import TitleWithLine from "~/components/global/titleWithLine";
 import FormRadioGroup from "~/components/forms/FormRadioGroup";
 import SellLastStep from '~/components/sell/SellLastStep';
 import ChangeLog from "~/components/moderator/changeLog";
-import ModeratorActions from '~/components/moderator/actions.vue'
+import ModeratorActions from '~/components/moderator/actions.vue';
+import showComment from '~/components/moderator/showComment'
 
 export default {
 
@@ -693,6 +700,7 @@ export default {
     FormRadioGroup,
     ChangeLog,
     ModeratorActions,
+    showComment,
   },
 
 
@@ -1031,7 +1039,7 @@ export default {
     ...mapActions([
       'setSellPreviewData',
     ]),
-    handleLoading(e){
+    handleLoading(e) {
       this.loading = e;
     },
     nonRequiredField(item) {
@@ -1332,15 +1340,15 @@ export default {
       this.$nuxt.$emit('loading_status', true);
       this.button_loading = true;
       try {
-          await this.$axios.$post('/ticket/commercial/' + this.announceId,
-            formData
-          );
+        await this.$axios.$post('/ticket/commercial/' + this.announceId,
+          formData
+        );
 
-          if (this.user.admin_group == 2) {
-            location.href = '/alvcp/resources/announce-moderators';
-          } else {
-            location.href = '/alvcp/resources/commercials';
-          }
+        if (this.user.admin_group == 2) {
+          location.href = '/alvcp/resources/announce-moderators';
+        } else {
+          location.href = '/alvcp/resources/commercials';
+        }
 
       } catch ({response: {data: {data}}}) {
         this.$nuxt.$emit('loading_status', false);

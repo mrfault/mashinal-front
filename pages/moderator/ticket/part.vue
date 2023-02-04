@@ -20,15 +20,21 @@
             :userData="single_announce.user"
           />
         </div>
-        <div v-if="single_announce.change_log && single_announce.change_log.length && (user.admin_group !== 2)"
-             class="col-12 col-lg-3 d-flex justify-content-end">
+        <div
+          class="col-12 col-lg-3 d-flex justify-content-end">
+          <show-comment
+            v-if="user.admin_group === 1 && single_announce.transferred"
+            :single_announce="single_announce"
+          />
           <button
+            v-if="single_announce.change_log && single_announce.change_log.length && (user.admin_group !== 2)"
             :class="{ pending: button_loading }"
             class="'btn btn--green"
             @click.prevent="openLog = true"
           >
             {{ $t('show_logs') }}
           </button>
+
         </div>
       </section>
 
@@ -442,7 +448,6 @@
       <!-------------------------------ACTIONS---------------------------------->
       <!--      actions-->
       <moderator-actions
-        :single_announce="single_announce"
         :id="single_announce.id"
         :announcement="form"
         :button_loading="button_loading"
@@ -450,6 +455,7 @@
         :notValid="notValid"
         :rejectArray="rejectArray"
         :saved-images="saved_images"
+        :single_announce="single_announce"
         type="part"
         @formChanged="(e) => (form = e)"
         @handleLoading="handleLoading"
@@ -541,6 +547,7 @@ import FormRadioGroup from "~/components/forms/FormRadioGroup";
 import FormKeywordsModerator from '~/components/moderator/FormKeywordsModerator'
 import ChangeLog from "~/components/moderator/changeLog";
 import ModeratorActions from '~/components/moderator/actions.vue'
+import showComment from '~/components/moderator/showComment'
 
 export default {
 
@@ -563,7 +570,8 @@ export default {
     FormRadioGroup,
     ChangeLog,
     ModeratorActions,
-    FormKeywordsModerator
+    FormKeywordsModerator,
+    showComment,
   },
 
 
@@ -991,10 +999,10 @@ export default {
       for (const [key, value] of Object.entries(this.form.filter)) {
         this.form[key] = value;
       }
-      if (!this.form.brand_id){
+      if (!this.form.brand_id) {
         delete this.form.brand_id
       }
-      if (!this.form.sub_category_id){
+      if (!this.form.sub_category_id) {
         delete this.form.sub_category_id
       }
       let formData = new FormData();

@@ -2479,4 +2479,5 @@ export default {
   "category_id": "Kateqoriya ID",
   "brand_id": "Marka ID",
   "show_comment": "Rəyi göstər",
+  "show_transfer_comment": "Transfer rəyini göstər",
 }
