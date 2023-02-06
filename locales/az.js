@@ -2478,4 +2478,6 @@ export default {
   "at_least_3_photos": "Ən azı 3 şəkil",
   "category_id": "Kateqoriya ID",
   "brand_id": "Marka ID",
+  "show_comment": "Rəyi göstər",
+  "show_transfer_comment": "Transfer rəyini göstər",
 }

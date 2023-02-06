@@ -45,6 +45,10 @@
                           />
                         </div>
                         <div class="col-12 col-md-6 col-lg-3 d-flex justify-content-end">
+                          <show-comment
+                            v-if="user.admin_group === 1 && single_announce.transferred"
+                            :single_announce="single_announce"
+                          />
                           <button
                             :class="{ button_loading: button_loading }"
                             class="'btn btn--green"
@@ -53,6 +57,7 @@
                           >
                             {{ $t('show_logs') }}
                           </button>
+
                         </div>
                       </div>
                     </template>
@@ -425,7 +430,7 @@
 
               <!--      actions-->
               <moderator-actions
-
+                :single_announce="single_announce"
                 :id="single_announce.id"
                 :announcement="form"
                 :button_loading="button_loading"
@@ -518,6 +523,7 @@ import UploadImageModerator from '~/components/moderator/UploadImageModerator'
 import PhotoRejectReason from "~/pages/moderator/photoReject/PhotoRejectReason";
 import Interior360Viewer from "~/components/Interior360Viewer";
 import ChangeLog from "~/components/moderator/changeLog";
+import showComment from '~/components/moderator/showComment'
 
 
 export default {
@@ -544,6 +550,7 @@ export default {
     Interior360Viewer,
     ChangeLog,
     ModeratorActions,
+    showComment
   },
   data() {
     return {
@@ -1497,7 +1504,24 @@ export default {
       this.form.rejectArray = this.rejectObj.rejectArray;
       this.form.saved_images = this.saved_images;
       this.form.end_date = null;
+
+
       this.form.owner_type = 1;
+      // this.form.youtube_link  = ""
+      // this.form.angle         = null;
+      // this.form.owner_type    = 1;
+      // this.form.national_number = 1;
+      // this.form.not_registered = false;
+      // this.form.type      = 0;
+      // this.form.guarantee = false;
+      // this.form.color_id  = 0;
+      // this.form.phone_number = "";
+      // this.form.fullname   = "fullname";
+      // this.form.email      = "email";
+      // this.form.store_id   = "store_id";
+      // this.form.is_free    = "is_free";
+      // this.form.youtube_id = "youtube_id";
+
       this.form.generation = this.form.generation_id;
 
       delete this.form.model_slug;

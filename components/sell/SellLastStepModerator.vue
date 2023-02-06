@@ -295,15 +295,15 @@
         </div>
 
         <div class="col-auto">
-          <form-switch
-            v-model="form.owner_type"
-            :options="getOwnerOptions"
-            :value="single_announce.owner_type"
-            autoWidth
-            translated
-            @change="getChange($event,'owner_type')"
-            :disabled="isModerator"
-          />
+<!--          <form-switch-->
+<!--            v-model="form.owner_type"-->
+<!--            :options="getOwnerOptions"-->
+<!--            :value="single_announce.owner_type"-->
+<!--            autoWidth-->
+<!--            translated-->
+<!--            @change="getChange($event,'owner_type')"-->
+<!--            :disabled="isModerator"-->
+<!--          />-->
         </div>
       </section>
 

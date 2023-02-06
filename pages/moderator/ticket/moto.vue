@@ -24,8 +24,12 @@
                 :userData="single_announce.user"
               />
             </div>
-            <div v-if="single_announce.change_log && single_announce.change_log.length"
-                 class="col-12 col-lg-3 d-flex justify-content-end">
+            <div
+              class="col-12 col-lg-3 d-flex justify-content-end">
+              <show-comment
+                v-if="user.admin_group === 1 && single_announce.transferred"
+                :single_announce="single_announce"
+              />
               <button
                 :class="{ pending: button_loading }"
                 class="'btn btn--green"
@@ -33,6 +37,7 @@
               >
                 {{ $t('show_logs') }}
               </button>
+
             </div>
           </section>
 
@@ -512,14 +517,14 @@
                  v-if="(item.category && item.category.includes(parseInt(category))) || !item.hasOwnProperty('category')"
                  :key="index">
               <title-with-line-and-reject-reason
-                no-approval
-                :title="item.placeholder"
                 :required="item.required"
+                :title="item.placeholder"
+                no-approval
               />
               <div class="section-part__container">
                 <div class="container-fluid">
                   <div class="row">
-                    <div class="col-12 col-md-auto pl-0" v-if="item.component == 'animated-input'">
+                    <div v-if="item.component == 'animated-input'" class="col-12 col-md-auto pl-0">
                       <component
 
                         :is="getComponent(item.component)"
@@ -533,13 +538,13 @@
                         inputType="number"
                       />
                     </div>
-                    <div class="col-12 pl-0" v-else>
+                    <div v-else class="col-12 pl-0">
                       <component
-                        :keyItem="form[index]"
                         :is="getComponent(item.component)"
                         v-model="form[index]"
                         :form="single_announce"
                         :has-error="errors.includes(index)"
+                        :keyItem="form[index]"
                         :keyValue="index"
                         :max="5"
                         :options="item.sell_values ? item.sell_values[parseInt(default_data['category'])] : item.values"
@@ -565,7 +570,7 @@
               title="comment"
             />
           </div>
-          <div class="col-8">
+          <div class="col-12">
             <form-textarea
               id="comment"
               v-model="form.comment"
@@ -588,6 +593,7 @@
           :notValid="notValid"
           :rejectArray="rejectArray"
           :saved-images="saved_images"
+          :single_announce="single_announce"
           :type="$route.query.type"
           @formChanged="(e) => (form = e)"
           @handleLoading="handleLoading"
@@ -597,16 +603,6 @@
         />
 
       </div>
-      <!--    comment-->
-      <template
-        v-if="single_announce && single_announce.id  && admin_user.admin_group === 1 && single_announce.transferred">
-        <button
-          class="'btn btn--green"
-          @click="transferModal = true"
-        >
-          {{ $t('Show comment') }}
-        </button>
-      </template>
       <!--    empty announce-->
     </div>
     <!--    logs modal-->
@@ -666,6 +662,7 @@ import MultiselectComponent from '~/components/moderator/multiselectComponent.vu
 import RejectReason from '~/components/moderator/rejectReason'
 import PhotoRejectReason from "~/pages/moderator/photoReject/PhotoRejectReason";
 import UploadImageModerator from '~/components/moderator/UploadImageModerator'
+import showComment from '~/components/moderator/showComment'
 import PopularComments from '~/components/moderator/popularComments'
 import ColorOptions from '~/components/options/ColorOptions'
 import PickOnMapButton from '~/components/elements/PickOnMapButton'
@@ -700,6 +697,7 @@ export default {
     FormRadioGroup,
     ChangeLog,
     ModeratorActions,
+    showComment,
   },
 
   mixins: [ToastErrorsMixin],

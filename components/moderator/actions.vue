@@ -1,6 +1,6 @@
 <template>
   <div class="row mt-5">
-    <section v-if="user.admin_group === 1" class="container"> <!--supervisor-->
+    <section v-if="user.admin_group === 1" class="container px-1"> <!--supervisor-->
       <div class="row">
         <div class="col-12">
           <button v-if="rejectArray && rejectArray.length === 0"
@@ -109,6 +109,9 @@ import moment from 'moment'
 
 export default {
   props: {
+    single_announce: Object,
+
+    showTransferComment: false,
     rejectArray: Array,
     button_loading: Boolean,
     notValid: Boolean,
@@ -135,7 +138,6 @@ export default {
   computed: {
     ...mapGetters({
       moderator: 'moderator/moderator',
-      single_announce: 'moderator/single_announce',
     }),
     originalVinLength() {
       if (this.announcement.vin) {
@@ -186,7 +188,7 @@ export default {
           type: 'error',
         })
         this.$emit('handleLoading', false)
-      }else if (((this.type == 'moto') || (this.type == 'moto_atv') || (this.type == 'scooter')) && (this.form.volume <= 0)) {
+      } else if (((this.type == 'moto') || (this.type == 'moto_atv') || (this.type == 'scooter')) && (this.form.volume <= 0)) {
         this.$toasted.show(this.$t('Həcm boş olmamalıdır.'), {
           type: 'error',
         })
@@ -217,12 +219,12 @@ export default {
           type: 'error',
         })
         this.$emit('handleLoading', false)
-      }else if ((this.type == 'cars') && !this.form.selectedColor.length ) {
+      } else if ((this.type == 'cars') && !this.form.selectedColor.length) {
         this.$toasted.show(this.$t('Rəng boş ola bilməz'), {
           type: 'error',
         })
         this.$emit('handleLoading', false)
-      }else if (((this.type == 'moto') || (this.type == 'moto_atv') || (this.type == 'scooter') || (this.type == 'commercial')) && !this.form.selectedColor ) {
+      } else if (((this.type == 'moto') || (this.type == 'moto_atv') || (this.type == 'scooter') || (this.type == 'commercial')) && !this.form.selectedColor) {
         this.$toasted.show(this.$t('Rəng boş ola bilməz'), {
           type: 'error',
         })
@@ -252,29 +254,59 @@ export default {
         this.$emit('sendData', status)
       }
     },
-    handleBackList() {
+    async handleBackList() {
       if (this.user.admin_group == 1) {
         if (this.type == 'cars') {
+          await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/car')
           location.href = '/alvcp/resources/announcements';
         }
         if (this.type == 'moto') {
+          await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/motorcycles')
           location.href = '/alvcp/resources/motorcycles';
         }
         if (this.type == 'commercial') {
+          await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/commercials')
           location.href = '/alvcp/resources/commercials';
         }
         if (this.type == 'moto_atv') {
+          await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/moto-atvs')
           location.href = '/alvcp/resources/moto-atvs';
         }
         if (this.type == 'part') {
+          await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/parts')
           location.href = '/alvcp/resources/parts';
         }
         if (this.type == 'scooters') {
+          await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/scooters')
           location.href = '/alvcp/resources/scooters';
         }
 
       } else {
-        location.href = '/alvcp/resources/announce-moderators';
+        if (this.type == 'cars') {
+          await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/car')
+           location.href = '/alvcp/resources/announce-moderators';
+        }
+        if (this.type == 'moto') {
+          await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/motorcycles')
+           location.href = '/alvcp/resources/announce-moderators';
+        }
+        if (this.type == 'commercial') {
+          await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/commercials')
+           location.href = '/alvcp/resources/announce-moderators';
+        }
+        if (this.type == 'moto_atv') {
+          await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/moto-atvs')
+           location.href = '/alvcp/resources/announce-moderators';
+        }
+        if (this.type == 'part') {
+          await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/parts')
+           location.href = '/alvcp/resources/announce-moderators';
+        }
+        if (this.type == 'scooters') {
+          await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/scooters')
+           location.href = '/alvcp/resources/announce-moderators';
+        }
+
       }
     },
     openTransferModal() {
