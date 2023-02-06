@@ -10,33 +10,14 @@
 
     <!--    ANNOUNCE-->
     <div v-else-if="single_announce && single_announce.id && !loading" class="card w-100">
-      <!--        userdata-->
-      <section class="row">
-        <div class="col-12 col-md-6 col-lg-9">
-          <user-details
-            :createdAt="single_announce.created_at"
-            :is-autosalon="single_announce.is_autosalon"
-            :is-external-salon="single_announce.is_external_salon"
-            :userData="single_announce.user"
-          />
-        </div>
-        <div
-          class="col-12 col-lg-3 d-flex justify-content-end">
-          <show-comment
-            v-if="user.admin_group === 1 && single_announce.transferred"
-            :single_announce="single_announce"
-          />
-          <button
-            v-if="single_announce.change_log && single_announce.change_log.length && (user.admin_group !== 2)"
-            :class="{ pending: button_loading }"
-            class="'btn btn--green"
-            @click.prevent="openLog = true"
-          >
-            {{ $t('show_logs') }}
-          </button>
+      <!--              header-->
+      <template>
+        <moderation-header
+          :single_announce="single_announce"
+          :form="form"
+        />
+      </template>
 
-        </div>
-      </section>
 
       <!--      general info-->
       <section class="row mb-4">
@@ -539,15 +520,14 @@ import UploadImageModerator from '~/components/moderator/UploadImageModerator'
 import PopularComments from '~/components/moderator/popularComments'
 import ColorOptions from '~/components/options/ColorOptions'
 import PickOnMapButton from '~/components/elements/PickOnMapButton'
-import moment from "moment";
 import TitleWithLineAndRejectReason from '~/components/moderator/titleWithLineAndRejectReason'
 import SellFilters from '~/components/sell/SellFilters'
 import TitleWithLine from "~/components/global/titleWithLine";
 import FormRadioGroup from "~/components/forms/FormRadioGroup";
 import FormKeywordsModerator from '~/components/moderator/FormKeywordsModerator'
-import ChangeLog from "~/components/moderator/changeLog";
 import ModeratorActions from '~/components/moderator/actions.vue'
-import showComment from '~/components/moderator/showComment'
+import ModerationHeader from '~/components/moderator/moderationHeader'
+
 
 export default {
 
@@ -568,10 +548,9 @@ export default {
     SellFilters,
     PopularComments,
     FormRadioGroup,
-    ChangeLog,
     ModeratorActions,
     FormKeywordsModerator,
-    showComment,
+    ModerationHeader,
   },
 
 

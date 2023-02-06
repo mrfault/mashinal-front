@@ -13,33 +13,14 @@
       <div class="card w-100">
         <template v-if="single_announce">
 
-          <!--        userdata-->
-          <section class="row">
-            <div class="col-12 col-lg-9">
-              <user-details
-                :brand="form.brandObj"
-                :createdAt="single_announce.created_at"
-                :is-autosalon="single_announce.is_autosalon"
-                :is-external-salon="single_announce.is_external_salon"
-                :userData="single_announce.user"
-              />
-            </div>
-            <div
-              class="col-12 col-lg-3 d-flex justify-content-end">
-              <show-comment
-                v-if="user.admin_group === 1 && single_announce.transferred"
-                :single_announce="single_announce"
-              />
-              <button
-                :class="{ pending: button_loading }"
-                class="'btn btn--green"
-                @click.prevent="openLog = true"
-              >
-                {{ $t('show_logs') }}
-              </button>
-
-            </div>
-          </section>
+          <!--              header-->
+          <template>
+            <moderation-header
+              :single_announce="single_announce"
+              :form="form"
+              :button_loading="button_loading"
+            />
+          </template>
 
           <!--    brand  -->
           <section class="row">
@@ -657,12 +638,10 @@
 <script>
 import {mapActions, mapGetters} from "vuex";
 import {ToastErrorsMixin} from '~/mixins/toast-errors';
-import UserDetails from '~/components/moderator/brand.vue'
 import MultiselectComponent from '~/components/moderator/multiselectComponent.vue'
 import RejectReason from '~/components/moderator/rejectReason'
 import PhotoRejectReason from "~/pages/moderator/photoReject/PhotoRejectReason";
 import UploadImageModerator from '~/components/moderator/UploadImageModerator'
-import showComment from '~/components/moderator/showComment'
 import PopularComments from '~/components/moderator/popularComments'
 import ColorOptions from '~/components/options/ColorOptions'
 import PickOnMapButton from '~/components/elements/PickOnMapButton'
@@ -671,9 +650,10 @@ import TitleWithLineAndRejectReason from '~/components/moderator/titleWithLineAn
 import SellFilters from '~/components/sell/SellFilters'
 import TitleWithLine from "~/components/global/titleWithLine";
 import FormRadioGroup from "~/components/forms/FormRadioGroup";
-import ChangeLog from "~/components/moderator/changeLog";
 import ModeratorActions from '~/components/moderator/actions.vue'
 import RadioGroup from "~/components/moderator/RadioGroup";
+import ModerationHeader from '~/components/moderator/moderationHeader'
+
 
 export default {
 
@@ -684,7 +664,6 @@ export default {
   components: {
     RadioGroup,
     TitleWithLine,
-    UserDetails,
     TitleWithLineAndRejectReason,
     MultiselectComponent,
     RejectReason,
@@ -695,9 +674,9 @@ export default {
     SellFilters,
     PopularComments,
     FormRadioGroup,
-    ChangeLog,
     ModeratorActions,
-    showComment,
+    ModerationHeader
+
   },
 
   mixins: [ToastErrorsMixin],

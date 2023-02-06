@@ -17,9 +17,10 @@
       <div class="body">
         <textarea
           key="ma-moderation-comment-2"
-          v-model="single_announce.transferred.comment"
+          v-html="single_announce.transferred.comment ? single_announce.transferred.comment : $t('not_commented')"
           :placeholder="$t('transfer_comment')"
           class="ma-input"
+          disabled
         />
       </div>
     </modal-popup>

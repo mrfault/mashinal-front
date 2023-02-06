@@ -33,34 +33,14 @@
     <!--    details-->
     <div class="card w-100">
 
-      <!--        userdata-->
-      <section class="row">
-        <div class="col-12 col-md-6 col-lg-9">
-          <user-details
-            :brand="form.brandObj"
-            :createdAt="single_announce.created_at"
-            :is-autosalon="single_announce.is_autosalon"
-            :is-external-salon="single_announce.is_external_salon"
-            :userData="single_announce.user"
-          />
-        </div>
-        <div
-          class="col-12 col-md-6 col-lg-3 d-flex justify-content-end">
-          <show-comment
-            v-if="user.admin_group === 1 && single_announce.transferred"
-            :single_announce="single_announce"
-          />
-          <button
-            v-if="single_announce.change_log && single_announce.change_log.length"
-            :class="{ button_loading: button_loading }"
-            class="'btn btn--green px-2 py-1"
-            @click.prevent="openLog = true"
-          >
-            {{ $t('show_logs') }}
-          </button>
-
-        </div>
-      </section>
+      <!--              header-->
+      <template>
+        <moderation-header
+          :single_announce="single_announce"
+          :form="form"
+          :button_loading="button_loading"
+        />
+      </template>
 
       <!--    category  -->
       <section class="row">
@@ -660,7 +640,6 @@
 
 <script>
 import {mapActions, mapGetters} from "vuex";
-import UserDetails from '~/components/moderator/brand.vue'
 import MultiselectComponent from '~/components/moderator/multiselectComponent.vue'
 import RejectReason from '~/components/moderator/rejectReason'
 import PhotoRejectReason from "~/pages/moderator/photoReject/PhotoRejectReason";
@@ -674,9 +653,9 @@ import SellFilters from '~/components/sell/SellFilters'
 import TitleWithLine from "~/components/global/titleWithLine";
 import FormRadioGroup from "~/components/forms/FormRadioGroup";
 import SellLastStep from '~/components/sell/SellLastStep';
-import ChangeLog from "~/components/moderator/changeLog";
 import ModeratorActions from '~/components/moderator/actions.vue';
-import showComment from '~/components/moderator/showComment'
+import ModerationHeader from '~/components/moderator/moderationHeader'
+
 
 export default {
 
@@ -686,7 +665,6 @@ export default {
 
   components: {
     TitleWithLine,
-    UserDetails,
     TitleWithLineAndRejectReason,
     MultiselectComponent,
     RejectReason,
@@ -698,9 +676,8 @@ export default {
     SellFilters,
     PopularComments,
     FormRadioGroup,
-    ChangeLog,
     ModeratorActions,
-    showComment,
+    ModerationHeader
   },
 
 

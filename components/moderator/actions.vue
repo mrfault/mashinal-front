@@ -208,12 +208,6 @@ export default {
           type: 'error',
         })
         this.$emit('handleLoading', false)
-        // }
-        //   else if (((this.type == 'moto') || (this.type == 'moto_atv') || (this.type == 'scooter')) && ((this.form.car_number != '') || !this.form.car_number || (this.form.car_number == null)) && !(/^[0-9]{2} - {1}[a-zA-Z]{1,2} - {1}[0-9]{3}$/.test(this.form.car_number) )) {
-        //     this.$toasted.show(this.$t('Qeydiyyat nişanının formatı standarta uyğun deyil'), {
-        //       type: 'error',
-        //     })
-        //     this.$emit('handleLoading', false)
       } else if (this.form.volume && ((this.form.volume == '') || !this.form.volume || (this.form.volume == 0))) {
         this.$toasted.show(this.$t('Həcm boş ola bilməz'), {
           type: 'error',
@@ -254,6 +248,7 @@ export default {
         this.$emit('sendData', status)
       }
     },
+
     async handleBackList() {
       if (this.user.admin_group == 1) {
         if (this.type == 'cars') {
@@ -284,34 +279,50 @@ export default {
       } else {
         if (this.type == 'cars') {
           await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/car')
+          if (!this.single_announce.transferred){
            location.href = '/alvcp/resources/announce-moderators';
+          }
         }
         if (this.type == 'moto') {
           await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/motorcycles')
+          if (!this.single_announce.transferred){
            location.href = '/alvcp/resources/announce-moderators';
+          }
         }
         if (this.type == 'commercial') {
           await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/commercials')
+          if (!this.single_announce.transferred){
            location.href = '/alvcp/resources/announce-moderators';
+          }
         }
         if (this.type == 'moto_atv') {
           await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/moto-atvs')
+          if (!this.single_announce.transferred){
            location.href = '/alvcp/resources/announce-moderators';
+          }
         }
         if (this.type == 'part') {
           await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/parts')
+          if (!this.single_announce.transferred){
            location.href = '/alvcp/resources/announce-moderators';
+          }
         }
         if (this.type == 'scooters') {
           await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/scooters')
+          if (!this.single_announce.transferred){
            location.href = '/alvcp/resources/announce-moderators';
+          }
         }
-
+      }
+      if (this.single_announce.transferred){
+        location.href = '/alvcp/resources/transferred-announces';
       }
     },
+
     openTransferModal() {
       this.$emit('openTransferModal', true)
     },
+
     transferToSupervisor(cs) {
       this.$emit('transferToSupervisor', cs)
     }
