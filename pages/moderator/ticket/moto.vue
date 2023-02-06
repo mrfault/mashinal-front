@@ -40,7 +40,7 @@
                 v-model="form.brand"
                 :allow-clear="false"
                 :clearOption="false"
-                :disabled="isModerator"
+                :disabled="ismoderator"
                 :label="$t('mark')"
                 :options="getBrands"
                 has-search
@@ -67,27 +67,13 @@
                 v-model="form.model"
                 :allow-clear="false"
                 :clearOption="false"
-                :disabled="isModerator"
+                :disabled="ismoderator"
                 :label="$t('model')"
                 :options="getModels"
                 has-search
                 @change="handleChange({key:'model',value: form.model, name: getBrandName(form.model, getModels)})"
               />
               <small v-if="!form.model" class="text-red">{{ $t('starred_fields_are_required') }}</small>
-            </div>
-            <div class="mb-4">
-              <!--          <multiselect-component-->
-              <!--            :with-all-option="false"-->
-              <!--            hasTranslation-->
-              <!--            :key="refresh+1"-->
-              <!--            @select-changed="handleChange"-->
-              <!--            :placeholder="$t('model')"-->
-              <!--            :multiple="false"-->
-              <!--            :default-value="model"-->
-              <!--            selected-key="model"-->
-              <!--            class="multiselect&#45;&#45;tires "-->
-              <!--            :options="getModels"-->
-              <!--          />-->
             </div>
           </section>
           <!--    year  -->
@@ -107,7 +93,7 @@
                 v-model="form.year"
                 :allow-clear="false"
                 :clearOption="false"
-                :disabled="isModerator"
+                :disabled="ismoderator"
                 :label="$t('year')"
                 :options="getYears"
                 has-search
@@ -223,7 +209,7 @@
             <div class="col-auto">
               <form-numeric-input
                 v-model="form.mileage"
-                :disabled="isModerator"
+
                 :invalid="isInvalid('mileage')"
                 :min="0"
                 :placeholder="$t('mileage')"
@@ -235,7 +221,7 @@
             <div class="col-auto">
               <form-switch
                 v-model="form.mileage_measure"
-                :disabled="isModerator"
+
                 :options="getMileageOptions"
                 @change="updatePreview('mileage_measure')"
               />
@@ -243,7 +229,7 @@
             <div class="col-auto">
               <form-checkbox
                 v-model="form.is_new"
-                :disabled="isModerator"
+
                 :label="$t('is_new')"
                 :value="single_announce.is_new"
                 input-name="is_new"
@@ -255,7 +241,7 @@
               <form-checkbox
                 v-if="!single_announce.is_external_salon"
                 v-model="form.guaranty"
-                :disabled="isModerator"
+
                 :label="$t('in_garanty')"
                 :value="single_announce.guaranty"
                 input-name="guaranty"
@@ -267,7 +253,7 @@
               <form-checkbox
                 v-if="!single_announce.is_external_salon"
                 v-model="form.customs_clearance"
-                :disabled="isModerator"
+
                 :label="$t('not_cleared')"
                 :value="single_announce.customed"
                 input-name="customs_clearance"
@@ -277,7 +263,7 @@
             </div>
             <div class="col-6 col-md-4 col-lg-2">
               <form-checkbox
-                :disabled="isModerator"
+
                 :label="$t('bitie')"
                 :value="single_announce.status_id"
                 input-name="bitie"
@@ -312,7 +298,7 @@
                 v-model="form.region_id"
                 :allow-clear="false"
                 :clearOption="false"
-                :disabled="isModerator"
+
                 :has-error="errors.includes('region_id')"
                 :label="$t('region')"
                 :options="sell_options.regions"
@@ -328,7 +314,7 @@
                 :allow-clear="false"
                 :clear-option="false"
                 :clearOption="false"
-                :disabled="isModerator"
+
                 :invalid="isInvalid('region_id')"
                 :label="$t('sale_region_country')"
                 :options="sell_options.countries"
@@ -346,7 +332,7 @@
               >
                 <form-text-input
                   v-model="form.address"
-                  :disabled="isModerator"
+
                   :placeholder="$t('address')"
                   icon-name="placeholder"
                 />
@@ -364,7 +350,7 @@
             <div class="col-auto">
               <form-numeric-input
                 v-model="form.price"
-                :disabled="isModerator"
+
                 :invalid="isInvalid('price')"
                 :placeholder="$t('price')"
                 input-class="w-133"
@@ -374,7 +360,7 @@
             <div class="col-auto">
               <form-switch
                 v-model="form.currency"
-                :disabled="isModerator"
+
                 :options="getCurrencyOptions"
                 @change="updatePreview('currency')"
               />
@@ -391,7 +377,7 @@
             <div class="col-auto">
               <form-switch
                 v-model="form.owners"
-                :disabled="isModerator"
+
                 :options="getOwnerOptions"
                 :value="single_announce.owners"
                 autoWidth
@@ -421,7 +407,7 @@
               >
                 <form-text-input
                   v-model="form.car_number"
-                  :disabled="isModerator"
+
                   :mask="'99 - A - 999'"
                   :placeholder="'__ - _ - ___'"
                   img-src="/img/flag.svg"
@@ -439,7 +425,7 @@
                 </form-text-input>
                 <form-checkbox
                   v-model="form.show_car_number"
-                  :disabled="isModerator"
+
                   :label="$t('show_car_number_on_site')"
                   class="mt-2 mt-lg-3"
                   input-name="show_car_number"
@@ -451,7 +437,7 @@
               <form-textarea
                 key="vin"
                 v-model="form.vin"
-                :disabled="isModerator"
+
                 :mask="$maskAlphaNumeric('*****************')"
                 :placeholder="$t('vin_carcase_number')"
                 class="textfield-like-textarea"
@@ -463,7 +449,7 @@
               </form-textarea>
               <form-checkbox
                 v-model="form.show_vin"
-                :disabled="isModerator"
+
                 :label="$t('show_vin_on_site')"
                 class="mt-2 mt-lg-3"
                 input-name="show_vin"
@@ -485,7 +471,7 @@
               <form-numeric-input
                 :id="`animated-input-moto-power`"
                 v-model="form.power"
-                :disabled="isModerator"
+
                 :invalid="hasError(item)"
                 :placeholder="form[item.placeholder]"
               />
@@ -556,7 +542,7 @@
               id="comment"
               v-model="form.comment"
               :class="{'w100' : ifPopularCommentsEmpty()}"
-              :disabled="isModerator"
+
               :maxlength="3000"
               :placeholder="$t('comment')"
 

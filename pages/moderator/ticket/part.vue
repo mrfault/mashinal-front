@@ -15,6 +15,7 @@
         <moderation-header
           :single_announce="single_announce"
           :form="form"
+          :button_loading="button_loading"
         />
       </template>
 
