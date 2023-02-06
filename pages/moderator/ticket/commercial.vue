@@ -33,34 +33,14 @@
     <!--    details-->
     <div class="card w-100">
 
-      <!--        userdata-->
-      <section class="row">
-        <div class="col-12 col-md-6 col-lg-9">
-          <user-details
-            :brand="form.brandObj"
-            :createdAt="single_announce.created_at"
-            :is-autosalon="single_announce.is_autosalon"
-            :is-external-salon="single_announce.is_external_salon"
-            :userData="single_announce.user"
-          />
-        </div>
-        <div
-          class="col-12 col-md-6 col-lg-3 d-flex justify-content-end">
-          <show-comment
-            v-if="user.admin_group === 1 && single_announce.transferred"
-            :single_announce="single_announce"
-          />
-          <button
-            v-if="single_announce.change_log && single_announce.change_log.length"
-            :class="{ button_loading: button_loading }"
-            class="'btn btn--green px-2 py-1"
-            @click.prevent="openLog = true"
-          >
-            {{ $t('show_logs') }}
-          </button>
-
-        </div>
-      </section>
+      <!--              header-->
+      <template>
+        <moderation-header
+          :single_announce="single_announce"
+          :form="form"
+          :button_loading="button_loading"
+        />
+      </template>
 
       <!--    category  -->
       <section class="row">
@@ -78,7 +58,7 @@
             v-model="form.commercial_type_id"
             :allow-clear="false"
             :clearOption="false"
-            :disabled="isModerator"
+            :disabled="ismoderator"
             :label="$t('category')"
             :options="commercial_types.map((o) => ({
                 name: o.name,
@@ -259,7 +239,7 @@
         <div class="col-auto">
           <form-numeric-input
             v-model="form.mileage"
-            :disabled="isModerator"
+
             :invalid="isInvalid('mileage')"
             :min="0"
             :placeholder="$t('mileage')"
@@ -270,7 +250,7 @@
         <div class="col-auto">
           <form-switch
             v-model="form.mileage_measure"
-            :disabled="isModerator"
+
             :options="getMileageOptions"
             @change="updatePreview('mileage_measure')"
           />
@@ -278,7 +258,7 @@
         <div class="col-auto">
           <form-checkbox
             v-model="form.is_new"
-            :disabled="isModerator"
+
             :label="$t('is_new')"
             :value="single_announce.is_new"
             input-name="is_new"
@@ -290,7 +270,7 @@
           <form-checkbox
             v-if="!single_announce.is_external_salon"
             v-model="form.guaranty"
-            :disabled="isModerator"
+
             :label="$t('in_garanty')"
             :value="single_announce.guaranty"
             input-name="guaranty"
@@ -302,7 +282,7 @@
           <form-checkbox
             v-if="!single_announce.is_external_salon"
             v-model="form.customs_clearance"
-            :disabled="isModerator"
+
             :label="$t('not_cleared')"
             :value="single_announce.customed"
             input-name="customs_clearance"
@@ -312,7 +292,7 @@
         </div>
         <div class="col-6 col-md-4 col-lg-2">
           <form-checkbox
-            :disabled="isModerator"
+
             :label="$t('bitie')"
             :value="single_announce.status_id"
             input-name="bitie"
@@ -349,7 +329,7 @@
             v-model="form.region_id"
             :allow-clear="false"
             :clearOption="false"
-            :disabled="isModerator"
+
             :has-error="errors.includes('region_id')"
             :label="$t('region')"
             :options="sell_options.regions"
@@ -365,7 +345,7 @@
             :allow-clear="false"
             :clear-option="false"
             :clearOption="false"
-            :disabled="isModerator"
+
             :invalid="isInvalid('region_id')"
             :label="$t('sale_region_country')"
             :options="sell_options.countries"
@@ -383,7 +363,7 @@
           >
             <form-text-input
               v-model="form.address"
-              :disabled="isModerator"
+
               :placeholder="$t('address')"
               icon-name="placeholder"
             />
@@ -402,7 +382,7 @@
         <div class="col-auto">
           <form-numeric-input
             v-model="form.price"
-            :disabled="isModerator"
+
             :invalid="isInvalid('price')"
             :placeholder="$t('price')"
             input-class="w-133"
@@ -412,7 +392,7 @@
         <div class="col-auto">
           <form-switch
             v-model="form.currency"
-            :disabled="isModerator"
+
             :options="getCurrencyOptions"
             @change="updatePreview('currency')"
           />
@@ -430,7 +410,7 @@
         <div v-if="false" class="col-auto">
           <form-switch
             v-model="form.owner_type"
-            :disabled="isModerator"
+
             :options="getOwnerOptions"
             :value="single_announce.owners"
             autoWidth
@@ -474,7 +454,7 @@
               <form-textarea
                 key="vin"
                 v-model="form.vin"
-                :disabled="isModerator"
+
                 :mask="$maskAlphaNumeric('*****************')"
                 :placeholder="$t('vin_carcase_number')"
                 class="textfield-like-textarea"
@@ -487,7 +467,7 @@
             </template>
             <form-checkbox
               v-model="form.show_vin"
-              :disabled="isModerator"
+
               :label="$t('show_vin_on_site')"
               class="mt-2 mt-lg-3"
               input-name="show_vin"
@@ -501,7 +481,7 @@
             <form-text-input
               ref="moderation-car-number-input-1"
               v-model="form.car_number"
-              :disabled="isModerator"
+
               :mask="'99 - A{1,2} - 999'"
               :placeholder="'__ - _ - ___'"
             />
@@ -532,7 +512,7 @@
                   <div class="col-auto">
                     <form-numeric-input
                       v-model="form.power"
-                      :disabled="isModerator"
+
                       :invalid="hasError(item)"
                       placeholder="horse_power"
                       @change="handleChange($event)"
@@ -547,7 +527,7 @@
                   <div class="col-auto">
                     <form-numeric-input
                       v-model="form.capacity"
-                      :disabled="isModerator"
+
                       placeholder="volume"
                     />
                   </div>
@@ -562,7 +542,7 @@
                       <form-radio
                         :id="`${input.name}-box-${index}`"
                         v-model="form[item.search_key]"
-                        :disabled="isModerator"
+
                         :input-name="getKey(item)"
                         :invalid="hasError(item)"
                         :label="input.name[locale] || $t(input.name)"
@@ -580,7 +560,7 @@
                     <title-with-line-and-reject-reason no-approval title="comment"/>
                   </div>
                   <div class="col-12 col-lg-8">
-                    <form-textarea v-model="form.comment" :disabled="isModerator"/>
+                    <form-textarea v-model="form.comment"/>
                   </div>
                 </div>
               </div>
@@ -607,6 +587,8 @@
         @openTransferModal="transferModal = true"
         @sendData="sendData"
         @transferToSupervisor="transferToSupervisor"
+        :reject-array="rejectArray"
+        @changeReason="changeReason"
       />
 
 
@@ -660,7 +642,6 @@
 
 <script>
 import {mapActions, mapGetters} from "vuex";
-import UserDetails from '~/components/moderator/brand.vue'
 import MultiselectComponent from '~/components/moderator/multiselectComponent.vue'
 import RejectReason from '~/components/moderator/rejectReason'
 import PhotoRejectReason from "~/pages/moderator/photoReject/PhotoRejectReason";
@@ -674,9 +655,9 @@ import SellFilters from '~/components/sell/SellFilters'
 import TitleWithLine from "~/components/global/titleWithLine";
 import FormRadioGroup from "~/components/forms/FormRadioGroup";
 import SellLastStep from '~/components/sell/SellLastStep';
-import ChangeLog from "~/components/moderator/changeLog";
 import ModeratorActions from '~/components/moderator/actions.vue';
-import showComment from '~/components/moderator/showComment'
+import ModerationHeader from '~/components/moderator/moderationHeader'
+
 
 export default {
 
@@ -686,7 +667,6 @@ export default {
 
   components: {
     TitleWithLine,
-    UserDetails,
     TitleWithLineAndRejectReason,
     MultiselectComponent,
     RejectReason,
@@ -698,9 +678,8 @@ export default {
     SellFilters,
     PopularComments,
     FormRadioGroup,
-    ChangeLog,
     ModeratorActions,
-    showComment,
+    ModerationHeader
   },
 
 

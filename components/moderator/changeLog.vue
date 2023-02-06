@@ -6,6 +6,10 @@
       {{ $t('new_value') }}</small>
     <!--    content-->
     <div class="body">
+      <strong v-if="getBtlUserName">
+        BTL : {{ getBtlUserName }}
+        <hr>
+      </strong>
       <div v-for="log in logs" :key="log.id">
         <template v-if="(!log.changes.open_count)">
           {{ log.user.name }} {{ log.user.lastname }} /
@@ -47,6 +51,7 @@ export default {
     logs: Array,
     btl: Array,
     userId: Number,
+    getBtlUserName: String,
   },
   methods: {
     formatDate(dte) {
@@ -66,7 +71,7 @@ export default {
           stat;
       }
 
-    }
+    },
   }
 }
 </script>

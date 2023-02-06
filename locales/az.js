@@ -2480,4 +2480,6 @@ export default {
   "brand_id": "Marka ID",
   "show_comment": "Rəyi göstər",
   "show_transfer_comment": "Transfer rəyini göstər",
+  "not_commented": "Rəy verilməyib",
+  "announce_is_exist": "Elan artıq mövcuddur",
 }
