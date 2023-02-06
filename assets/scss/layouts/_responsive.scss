@@ -259,11 +259,11 @@
     .announcements-grid_item {
         .item-overlay {
             &__top {
-                &--left {
-                    span, button {
-                        transform: scale(0.8);
-                    }
-                }
+                //&--left {
+                //    span, button {
+                //        transform: scale(0.8);
+                //    }
+                //}
 
                 &--right {
                     width: 100%;
@@ -283,7 +283,7 @@
                 }
 
                 &--right {
-                    transform: scale(0.8);
+                    transform: scale(0.9);
                 }
             }
         }

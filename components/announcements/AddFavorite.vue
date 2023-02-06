@@ -7,14 +7,16 @@
     >
       <icon name="star-favorite" />
     </button> -->
-  <div class="white-background">
+<!--  <div class="white-background">-->
     <button
       class="btn-transparent btn-favorite"
       :class="{ 'btn-favorite-active': isAdded }"
       @click.stop="handleClick()"
       v-if="announcement.status !== 2"
-    ><i></i></button>
-  </div>
+    >
+<!--        <i></i>-->
+    </button>
+<!--  </div>-->
 
   <!-- </div> -->
 </template>
