@@ -4,49 +4,54 @@
       <img v-if="isMoto" :src="'/images/moto-placeholder.jpg'" alt="o"/>
       <img v-else :src="brand.transformed_media ? brand.transformed_media : '/images/car-placeholder.png'" alt="o"/>
     </div>
-    <h6 class="moderator-car-brand__title">
-      <!--      <span v-if="!isAutosalon && !isExternalSalon">{{ $t('name') }}: </span>-->
-      <span v-if="true">{{ $t('name') }}: </span>
-      <!--      <span v-if="isAutosalon">{{ $t('autosalon') }}: </span>-->
-      <span v-if="userData && userData.name"><strong>{{ userData.name }}</strong></span>
-      <span v-else-if="userData && userData.full_name"><strong>{{ userData.full_name }}</strong></span>
-      <template>
-        /
-      </template>
-      <span v-if="isAutosalon && userData.autosalon">{{ $t('autosalon') }}: </span>
-      <span v-if="isAutosalon && userData.autosalon"><strong>{{ userData.autosalon.name }}</strong></span>
-      <template v-if="isAutosalon ">
-        /
-      </template>
-      <span v-if="isExternalSalon">{{ $t('external_salon') }}: </span>
-      <span v-if="isExternalSalon"><strong>{{ userData.external_salon.name }}</strong></span>
-      <template v-if="isExternalSalon ">
-        /
-      </template>
-      <span>{{ $t('mobile_phone_number') }}: </span>
-      <strong v-if="userData && userData.phone">{{ userData.phone }}</strong>
-      <template>
-        /
-        <span>{{ $t('email') }}:</span>
-        <strong v-if="userData && userData.email"> {{ userData.email }}</strong>
-        <span v-else>{{ $t('not_set') }}</span>
-      </template>
-      <template>
-        /
-      </template>
-      <span>{{ $t('announcement_created_at') }}:</span>
-      <strong>{{ formattedDate }}</strong>
-      <template v-if="smsRadarData && smsRadarData.ownerType">
-        /
-      </template>
-      <span v-if="smsRadarData && smsRadarData.ownerType">{{ $t('owner_type') }}:</span>
-      <strong v-if="smsRadarData && smsRadarData.ownerType">{{ smsRadarData.ownerType }}</strong>
-      <!--      /-->
-      <!--      <span @click="showBrands">{{ $t(brand.name) }}</span>-->
-      <!--      /-->
-      <!--      <span @click="showModels">{{ $t(model.name) }}</span>-->
-      <!--      /-->
-      <!--      <span @click="showYears">{{ year }}</span>-->
+    <h6 class="moderator-car-brand__title row">
+      <div class="col-12 col-md-auto px-0">
+        <span>{{ $t('name') }}: </span>
+        <span v-if="userData && userData.name"><strong>{{ userData.name }}</strong></span>
+        <span v-else-if="userData && userData.full_name"><strong>{{ userData.full_name }}</strong></span>
+      </div>
+      <div class="col-12 col-md-auto px-0">
+        <template>
+          /
+        </template>
+        <span v-if="isAutosalon && userData.autosalon">{{ $t('autosalon') }}: </span>
+        <span v-if="isAutosalon && userData.autosalon"><strong>{{ userData.autosalon.name }}</strong></span>
+      </div>
+      <div class="col-12 col-md-auto px-0">
+        <template v-if="isAutosalon ">
+          /
+        </template>
+        <span v-if="isExternalSalon">{{ $t('external_salon') }}: </span>
+        <span v-if="isExternalSalon"><strong>{{ userData.external_salon.name }}</strong></span>
+      </div>
+      <div class="col-12 col-md-auto px-0">
+        <template v-if="isExternalSalon ">
+          /
+        </template>
+        <span>{{ $t('mobile_phone_number') }}: </span>
+        <strong v-if="userData && userData.phone">{{ userData.phone }}</strong>
+      </div>
+      <div class="col-12 col-md-auto px-0">
+        <template v-if="userData && userData.email">
+          /
+          <span>{{ $t('email') }}:</span>
+          <strong> {{ userData.email }}</strong>
+        </template>
+      </div>
+      <div class="col-12 col-md-auto px-0">
+        <template>
+          /
+        </template>
+        <span>{{ $t('announcement_created_at') }}:</span>
+        <strong>{{ formattedDate }}</strong>
+      </div>
+      <div class="col-12 col-md-auto px-0">
+        <template v-if="smsRadarData && smsRadarData.ownerType">
+          /
+        </template>
+        <span v-if="smsRadarData && smsRadarData.ownerType">{{ $t('owner_type') }}:</span>
+        <strong v-if="smsRadarData && smsRadarData.ownerType">{{ smsRadarData.ownerType }}</strong>
+      </div>
     </h6>
   </div>
 </template>

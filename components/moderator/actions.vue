@@ -1,8 +1,9 @@
 <template>
   <div class="row mt-5">
-    <section v-if="user.admin_group === 1" class="container"> <!--supervisor-->
-      <div class="row">
-        <div class="col-12">
+    <section v-if="user.admin_group === 1" class="container px-1"> <!--supervisor-->
+      <div class="row px-1">
+        <div class="col-auto px-0">
+
           <button v-if="rejectArray && rejectArray.length === 0"
                   :class="{'pending':button_loading, 'disabled': notValid}"
                   :disabled="notValid"
@@ -10,11 +11,15 @@
 
                   @click.prevent="sendData(1)">{{ $t('confirm') }}
           </button>
+        </div>
+        <div class="col-auto px-0">
           <button :class="{'pending':button_loading, 'disabled': notValid}" :disabled="notValid"
                   class="btn btn--red w-50 ml-1"
 
                   @click.prevent="sendData(0)">{{ $t('reject') }}
           </button>
+        </div>
+        <div class="col-auto px-0">
           <button :class="{'pending':button_loading, 'disabled': notValid}" :disabled="notValid"
                   class="btn btn--pale-red w-50 ml-1"
 
@@ -22,15 +27,26 @@
           >
             {{ $t('deactive_announce') }}
           </button>
+        </div>
+        <div class="col-auto px-0">
           <button :disabled="notValid" class="btn btn--yellow w-50 ml-1" @click="handleBackList">
             {{ $t('back_to_list') }}
           </button>
+        </div>
+        <div v-if="type !== 'cars'" class="col-auto">
+          <form-checkbox
+            :label="$t('announce_is_exist')"
+            :value="rejectArray.includes('announce_is_exist')"
+            input-name="announce_is_exist"
+            transparent
+            @change="changeReason('announce_is_exist')"
+          />
         </div>
       </div>
     </section>
 
     <section v-else-if="user.admin_group === 2" class="container"> <!--moderator-->
-      <div class="row">
+      <div class="row px-1">
         <div v-if="moderator" class="col-6 col-lg-2">
             <span class="timer">
               {{ getTimer.data }}
@@ -66,18 +82,20 @@
                   @click.prevent="openTransferModal">{{ $t('comment_to_supervisor') }}
           </button>
         </div>
+
       </div>
     </section>
 
     <section v-else-if="user.admin_group === 3" class="container"> <!--call center-->
-      <div class="row">
-        <div class="col-12">
+      <div class="row px-1">
+        <div class="col-auto">
           <button :class="{'pending':button_loading, 'disabled': notValid}" :disabled="notValid"
                   class="btn btn--green w-50"
 
                   @click.prevent="sendData(2)">{{ $t('send_to_moderate') }}
           </button>
-
+        </div>
+        <div class="col-auto">
           <button :class="{'pending':button_loading, 'disabled': notValid}" :disabled="notValid"
                   class="btn btn--pale-red w-50 ml-1"
 
@@ -85,17 +103,27 @@
           >
             {{ $t('deactive_announce') }}
           </button>
-
+        </div>
+        <div class="col-auto">
           <button :class="{'disabled': notValid}" :disabled="notValid" class="btn btn--yellow w-50 ml-1"
                   @click="handleBackList">
             {{ $t('back_to_list') }}
           </button>
-
+        </div>
+        <div class="col-auto">
           <button :disabled="notValid" class="btn btn--green w-50"
                   @click.prevent="openTransferModal">{{ $t('Transfer to Supervisor') }}
           </button>
+        </div>
 
-
+        <div v-if="type !== 'cars'" class="col-auto">
+          <form-checkbox
+            :label="$t('announce_is_exist')"
+            :value="rejectArray.includes('announce_is_exist')"
+            input-name="announce_is_exist"
+            transparent
+            @change="changeReason('announce_is_exist')"
+          />
         </div>
 
       </div>
@@ -109,6 +137,9 @@ import moment from 'moment'
 
 export default {
   props: {
+    single_announce: Object,
+
+    showTransferComment: false,
     rejectArray: Array,
     button_loading: Boolean,
     notValid: Boolean,
@@ -135,7 +166,6 @@ export default {
   computed: {
     ...mapGetters({
       moderator: 'moderator/moderator',
-      single_announce: 'moderator/single_announce',
     }),
     originalVinLength() {
       if (this.announcement.vin) {
@@ -186,7 +216,7 @@ export default {
           type: 'error',
         })
         this.$emit('handleLoading', false)
-      }else if (((this.type == 'moto') || (this.type == 'moto_atv') || (this.type == 'scooter')) && (this.form.volume <= 0)) {
+      } else if (((this.type == 'moto') || (this.type == 'moto_atv') || (this.type == 'scooter')) && (this.form.volume <= 0)) {
         this.$toasted.show(this.$t('Həcm boş olmamalıdır.'), {
           type: 'error',
         })
@@ -206,23 +236,17 @@ export default {
           type: 'error',
         })
         this.$emit('handleLoading', false)
-        // }
-        //   else if (((this.type == 'moto') || (this.type == 'moto_atv') || (this.type == 'scooter')) && ((this.form.car_number != '') || !this.form.car_number || (this.form.car_number == null)) && !(/^[0-9]{2} - {1}[a-zA-Z]{1,2} - {1}[0-9]{3}$/.test(this.form.car_number) )) {
-        //     this.$toasted.show(this.$t('Qeydiyyat nişanının formatı standarta uyğun deyil'), {
-        //       type: 'error',
-        //     })
-        //     this.$emit('handleLoading', false)
       } else if (this.form.volume && ((this.form.volume == '') || !this.form.volume || (this.form.volume == 0))) {
         this.$toasted.show(this.$t('Həcm boş ola bilməz'), {
           type: 'error',
         })
         this.$emit('handleLoading', false)
-      }else if ((this.type == 'cars') && !this.form.selectedColor.length ) {
+      } else if ((this.type == 'cars') && !this.form.selectedColor.length) {
         this.$toasted.show(this.$t('Rəng boş ola bilməz'), {
           type: 'error',
         })
         this.$emit('handleLoading', false)
-      }else if (((this.type == 'moto') || (this.type == 'moto_atv') || (this.type == 'scooter') || (this.type == 'commercial')) && !this.form.selectedColor ) {
+      } else if (((this.type == 'moto') || (this.type == 'moto_atv') || (this.type == 'scooter') || (this.type == 'commercial')) && !this.form.selectedColor) {
         this.$toasted.show(this.$t('Rəng boş ola bilməz'), {
           type: 'error',
         })
@@ -252,36 +276,87 @@ export default {
         this.$emit('sendData', status)
       }
     },
-    handleBackList() {
+
+    async handleBackList() {
       if (this.user.admin_group == 1) {
         if (this.type == 'cars') {
+          await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/car')
           location.href = '/alvcp/resources/announcements';
         }
         if (this.type == 'moto') {
+          await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/motorcycles')
           location.href = '/alvcp/resources/motorcycles';
         }
         if (this.type == 'commercial') {
+          await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/commercials')
           location.href = '/alvcp/resources/commercials';
         }
         if (this.type == 'moto_atv') {
+          await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/moto-atvs')
           location.href = '/alvcp/resources/moto-atvs';
         }
         if (this.type == 'part') {
+          await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/parts')
           location.href = '/alvcp/resources/parts';
         }
         if (this.type == 'scooters') {
+          await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/scooters')
           location.href = '/alvcp/resources/scooters';
         }
 
       } else {
-        location.href = '/alvcp/resources/announce-moderators';
+        if (this.type == 'cars') {
+          await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/car')
+          if (!this.single_announce.transferred) {
+            location.href = '/alvcp/resources/announce-moderators';
+          }
+        }
+        if (this.type == 'moto') {
+          await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/motorcycles')
+          if (!this.single_announce.transferred) {
+            location.href = '/alvcp/resources/announce-moderators';
+          }
+        }
+        if (this.type == 'commercial') {
+          await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/commercials')
+          if (!this.single_announce.transferred) {
+            location.href = '/alvcp/resources/announce-moderators';
+          }
+        }
+        if (this.type == 'moto_atv') {
+          await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/moto-atvs')
+          if (!this.single_announce.transferred) {
+            location.href = '/alvcp/resources/announce-moderators';
+          }
+        }
+        if (this.type == 'part') {
+          await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/parts')
+          if (!this.single_announce.transferred) {
+            location.href = '/alvcp/resources/announce-moderators';
+          }
+        }
+        if (this.type == 'scooters') {
+          await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/scooters')
+          if (!this.single_announce.transferred) {
+            location.href = '/alvcp/resources/announce-moderators';
+          }
+        }
+      }
+      if (this.single_announce.transferred) {
+        location.href = '/alvcp/resources/transferred-announces';
       }
     },
+
     openTransferModal() {
       this.$emit('openTransferModal', true)
     },
+
     transferToSupervisor(cs) {
       this.$emit('transferToSupervisor', cs)
+    },
+
+    changeReason(e) {
+      this.$emit('changeReason', e)
     }
   },
   watch: {
