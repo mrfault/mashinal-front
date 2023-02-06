@@ -436,6 +436,7 @@
               type === 'cars' || (type !== 'parts' && user.external_salon)
             "
             :title=" 'license_plate_number_vin_or_carcase_number'"
+            :disabled="isModerator"
             img-src="/img/flag.svg"
             spanId="anchor-vin"
             @change="changeReason"
@@ -454,7 +455,7 @@
               <form-textarea
                 key="vin"
                 v-model="form.vin"
-
+                :disabled="isModerator"
                 :mask="$maskAlphaNumeric('*****************')"
                 :placeholder="$t('vin_carcase_number')"
                 class="textfield-like-textarea"
@@ -467,7 +468,7 @@
             </template>
             <form-checkbox
               v-model="form.show_vin"
-
+              :disabled="isModerator"
               :label="$t('show_vin_on_site')"
               class="mt-2 mt-lg-3"
               input-name="show_vin"
