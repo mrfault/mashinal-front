@@ -13,9 +13,9 @@
               <!--              header-->
               <template>
                 <moderation-header
-                  :single_announce="single_announce"
-                  :form="form"
                   :button_loading="button_loading"
+                  :form="form"
+                  :single_announce="single_announce"
                   :smsRadarData="smsRadarData"
                 />
               </template>
@@ -460,7 +460,6 @@
         </div>
       </div>
     </modal-popup>
-
 
 
   </div>

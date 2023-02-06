@@ -567,6 +567,8 @@
           @openTransferModal="transferModal = true"
           @sendData="sendData"
           @transferToSupervisor="transferToSupervisor"
+          :reject-array="rejectArray"
+          @changeReason="changeReason"
         />
 
       </div>
