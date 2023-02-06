@@ -10,6 +10,17 @@
           <div class="card">
             <div ref="page-top-ae" class="mb-5">
 
+              <!--              header-->
+              <template>
+                <moderation-header
+                  :button_loading="button_loading"
+                  :form="form"
+                  :single_announce="single_announce"
+                  :smsRadarData="smsRadarData"
+                />
+              </template>
+
+
               <!--     sell last step ------  -->
               <sell-last-step
                 :key="lastStepKey"
@@ -31,31 +42,7 @@
               >
                 <template v-slot:form-inputs>
                   <div>
-                    <!--              user details-->
-                    <template v-if="form.brand">
-                      <div class="row">
-                        <div class="col-12 col-md-6 col-lg-9">
-                          <user-details
-                            :brand="form.brandObj"
-                            :createdAt="single_announce.created_at"
-                            :is-autosalon="single_announce.is_autosalon"
-                            :is-external-salon="single_announce.is_external_salon"
-                            :smsRadarData="smsRadarData"
-                            :userData="form.user"
-                          />
-                        </div>
-                        <div class="col-12 col-md-6 col-lg-3 d-flex justify-content-end">
-                          <button
-                            :class="{ button_loading: button_loading }"
-                            class="'btn btn--green"
-                            style="padding: 5px 20px;"
-                            @click.prevent="openLog = true"
-                          >
-                            {{ $t('show_logs') }}
-                          </button>
-                        </div>
-                      </div>
-                    </template>
+
                     <!--              brand -->
                     <div class="row mt-5">
                       <div class="col-12">
@@ -425,13 +412,13 @@
 
               <!--      actions-->
               <moderator-actions
-
                 :id="single_announce.id"
                 :announcement="form"
                 :button_loading="button_loading"
                 :imageCount="imagesBase64.length"
                 :notValid="notValid"
                 :rejectArray="rejectObj.rejectArray"
+                :single_announce="single_announce"
                 type="cars"
                 @formChanged="(e) => (form = e)"
                 @handleLoading="handleLoading"
@@ -475,19 +462,6 @@
     </modal-popup>
 
 
-    <!--    logs-->
-    <modal-popup
-      :modal-class="''"
-      :title="`${$t('logs')}`"
-      :toggle="openLog"
-      @close="openLog = false"
-    >
-      <change-log
-        :btl="single_announce.btl_announces"
-        :logs="single_announce.change_log"
-        :user-id="single_announce.user_id"
-      />
-    </modal-popup>
   </div>
   <div
     v-else-if="!announcementIsAvailable && !loading"
@@ -505,7 +479,7 @@ import {mapActions, mapGetters} from 'vuex'
 import moment from 'moment'
 import SellLastStep from '~/components/sell/SellLastStepModerator'
 import SellPreview from '~/components/sell/SellPreview'
-import UserDetails from '~/components/moderator/brand.vue'
+
 import ModeratorActions from '~/components/moderator/actions.vue'
 import EditButton from '~/components/announcements/EditButton'
 import ModelOptions from '~/components/options/ModelOptions'
@@ -517,7 +491,7 @@ import TitleWithLineAndRejectReason from '~/components/moderator/titleWithLineAn
 import UploadImageModerator from '~/components/moderator/UploadImageModerator'
 import PhotoRejectReason from "~/pages/moderator/photoReject/PhotoRejectReason";
 import Interior360Viewer from "~/components/Interior360Viewer";
-import ChangeLog from "~/components/moderator/changeLog";
+import ModerationHeader from '~/components/moderator/moderationHeader'
 
 
 export default {
@@ -532,7 +506,6 @@ export default {
     TitleWithLineAndRejectReason,
     RejectReason,
     SellPreview,
-    UserDetails,
     EditButton,
     ModelOptions,
     TitleWithLine,
@@ -542,8 +515,8 @@ export default {
     UploadImageModerator,
     PhotoRejectReason,
     Interior360Viewer,
-    ChangeLog,
     ModeratorActions,
+    ModerationHeader,
   },
   data() {
     return {
@@ -648,7 +621,7 @@ export default {
           'left_error',],
         modalToggled: false,
       },
-      openLog: false,
+
 
       //  360
       showInterior: true,
@@ -869,10 +842,6 @@ export default {
           },
 
 
-
-
-
-
           selectedColor: data.announce?.colors,
           is_matte: data.announce?.is_matte,
           mileage: parseInt(data.announce?.mileage) || 0,
@@ -897,9 +866,6 @@ export default {
           car_number: data.announce?.car_number,
           show_car_number: data.announce?.show_car_number,
           show_vin: data.announce?.show_vin,
-
-
-
 
 
           part: data.announce?.car_body_health
@@ -1497,7 +1463,24 @@ export default {
       this.form.rejectArray = this.rejectObj.rejectArray;
       this.form.saved_images = this.saved_images;
       this.form.end_date = null;
+
+
       this.form.owner_type = 1;
+      // this.form.youtube_link  = ""
+      // this.form.angle         = null;
+      // this.form.owner_type    = 1;
+      // this.form.national_number = 1;
+      // this.form.not_registered = false;
+      // this.form.type      = 0;
+      // this.form.guarantee = false;
+      // this.form.color_id  = 0;
+      // this.form.phone_number = "";
+      // this.form.fullname   = "fullname";
+      // this.form.email      = "email";
+      // this.form.store_id   = "store_id";
+      // this.form.is_free    = "is_free";
+      // this.form.youtube_id = "youtube_id";
+
       this.form.generation = this.form.generation_id;
 
       delete this.form.model_slug;

@@ -824,7 +824,6 @@ export const actions = {
   },
   async getScooterOptions({ commit }) {
     const data = await this.$axios.$get(`/moto/scooter_options`);
-    console.log("dataa",data)
     commit("mutate", {
       property: "scooterOptions",
       value: data
