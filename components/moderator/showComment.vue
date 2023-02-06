@@ -17,7 +17,7 @@
       <div class="body">
         <textarea
           key="ma-moderation-comment-2"
-          v-model="transferComment"
+          v-model="single_announce.transferred.comment"
           :placeholder="$t('transfer_comment')"
           class="ma-input"
         />

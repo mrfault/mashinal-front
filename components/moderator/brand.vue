@@ -25,11 +25,10 @@
       </template>
       <span>{{ $t('mobile_phone_number') }}: </span>
       <strong v-if="userData && userData.phone">{{ userData.phone }}</strong>
-      <template>
+      <template v-if="userData && userData.email">
         /
         <span>{{ $t('email') }}:</span>
-        <strong v-if="userData && userData.email"> {{ userData.email }}</strong>
-        <span v-else>{{ $t('not_set') }}</span>
+        <strong > {{ userData.email }}</strong>
       </template>
       <template>
         /
