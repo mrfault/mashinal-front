@@ -2,9 +2,9 @@
   <div style="text-align: center">
     <br><br>
     <span v-if="!data.access">
-      <h3>{{ data.reason }}</h3>
+      <h3>{{ $t(`${data.reason}`) }}</h3>
       <br><br>
-      {{ $t('auto_reload_with') }} : {{ timer }} {{ $t('seconds') }}
+     {{ timer }} : {{ $t('after_seconds_auto_reload_with') }}
     </span>
   </div>
 </template>

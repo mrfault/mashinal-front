@@ -2482,4 +2482,6 @@ export default {
   "show_transfer_comment": "Transfer rəyini göstər",
   "not_commented": "Rəy verilməyib",
   "announce_is_exist": "Elan artıq mövcuddur",
+  "this_announce_opened_with_another_user" : "Bu elan başqa istifadəçi tərəfindən açılıb",
+  "after_seconds_auto_reload_with": "saniyə sonra avtomatik yenilənəcəkdir"
 }
