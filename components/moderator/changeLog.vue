@@ -6,10 +6,12 @@
       {{ $t('new_value') }}</small>
     <!--    content-->
     <div class="body">
-      <strong v-if="getBtlUserName">
-        BTL : {{ getBtlUserName }}
-        <hr>
-      </strong>
+      <div class="w-100 my-2" v-if="single_announce && single_announce.btl_announces && single_announce.btl_announces.length">
+        <strong >
+          BTL : {{ getBtlUserName }}
+        </strong>
+          <hr class="m-0">
+      </div>
       <div v-for="log in logs" :key="log.id">
         <template v-if="(!log.changes.open_count)">
           {{ log.user.name }} {{ log.user.lastname }} /
@@ -51,7 +53,11 @@ export default {
     logs: Array,
     btl: Array,
     userId: Number,
-    getBtlUserName: String,
+    single_announce: Object,
+    btlUserName: {
+      type: String,
+      default: "btlusrname"
+    },
   },
   methods: {
     formatDate(dte) {
@@ -71,6 +77,13 @@ export default {
           stat;
       }
 
+    },
+  },
+  computed:{
+    getBtlUserName() {
+      if (this.single_announce.btl_announces.length)
+        return this.single_announce.btl_announces.find(item => item.announce_id === this.single_announce.id).get_user.full_name
+      else return null
     },
   }
 }
