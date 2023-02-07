@@ -424,7 +424,7 @@
                 @handleLoading="handleLoading"
                 @openTransferModal="transferModal = true"
                 @sendData="sendData"
-                @transferToSupervisor="transferToSupervisor"
+                @transferToSupervisor="transferToSupervisor(false)"
               />
 
             </div>
@@ -1428,7 +1428,6 @@ export default {
 
 // post
     async transferToSupervisor(withRejectReason = false) {
-      console.log('transferToSupervisor')
       this.button_loading = true
 
       if (withRejectReason) {
