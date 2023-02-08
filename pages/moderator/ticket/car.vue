@@ -238,7 +238,7 @@
                         name: $t('type_of_drive_values')[o.type_of_drive] || '',
                         key: o.type_of_drive,
                       }))"
-                          @change="changeTransmission($event)"
+                          @change="changeGearing($event)"
                         />
 
                       </div>
@@ -266,7 +266,7 @@
                       }))
                     "
                           has-search
-                          @change="changeGearing($event)"
+                          @change="changeTransmission($event)"
                         />
                       </div>
                     </div>
