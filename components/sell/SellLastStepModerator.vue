@@ -156,7 +156,7 @@
                 :label="$t('not_cleared')"
                 input-name="customs_clearance"
                 transparent
-
+                :disabled="isModerator"
                 @change="
                   removeError('car_number', true),
                     removeError('vin', true),
@@ -169,19 +169,12 @@
                 :label="$t('in_garanty')"
                 input-name="guaranty"
                 transparent
-
+                :disabled="isModerator"
               />
             </div>
           </div>
         </div>
-        <div v-if="type === 'cars'">
-          <damage-options
-            v-if="false"
-            :imageIsActive="true"
-            :selected="form.part"
-            @update-car-damage="updateCarDamage"
-          />
-        </div>
+
 
       </section>
 
@@ -466,7 +459,7 @@
           <form-text-input
             key="vin"
             v-model="form.vin"
-
+            :disabled="isModerator"
             :mask="$maskAlphaNumeric('*****************')"
             :placeholder="$t('vin_carcase_number')"
             class="textfield-like-textarea"

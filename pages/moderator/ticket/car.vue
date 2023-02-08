@@ -216,35 +216,9 @@
                       </div>
                     </div>
                     <!--              gearing-->
-                    <div v-if="data.gearings && form.engine" class="row">
-                      <div class="col-12">
-                        <title-with-line-and-reject-reason
-                          :title="$t('box')"
-                          rejectKey="gearing"
-                          required
-                          @change="changeReason"
-                        />
-                      </div>
-                      <div class="col-12 col-lg-3 ">
-                        <form-select
-                          v-model="form.gearing"
-                          :allow-clear="false"
-                          :clearOption="false"
-                          :disabled="isModerator"
-                          :label="$t('box')"
-                          :options="
-                      data.gearings.map((o) => ({
-                        name: $t('box_values')[o.type_of_drive],
-                        key: o.type_of_drive,
-                      }))
-                    "
-                          has-search
-                          @change="changeGearing($event)"
-                        />
-                      </div>
-                    </div>
+
                     <!--              transmission-->
-                    <div v-if="data.transmissions && data.transmissions.length && form.gearing" class="row">
+                    <div v-if="data.gearings && form.engine" class="row">
                       <div class="col-12">
                         <title-with-line-and-reject-reason
                           :title="$t('type_of_drive')"
@@ -255,18 +229,45 @@
                       </div>
                       <div class="col-12 col-lg-3">
                         <form-select
-                          v-model="form.transmission"
+                          v-model="form.gearing"
                           :allow-clear="false"
                           :clearOption="false"
                           :disabled="isModerator"
                           :label="$t('type_of_drive')"
-                          :options="data.transmissions.map((o) => ({
-                        name: $t('type_of_drive_values')[o.box] || '',
-                        key: o.box,
+                          :options="data.gearings.map((o) => ({
+                        name: $t('type_of_drive_values')[o.type_of_drive] || '',
+                        key: o.type_of_drive,
                       }))"
-                          @change="changeTransmission($event)"
+                          @change="changeGearing($event)"
                         />
 
+                      </div>
+                    </div>
+                    <div v-if="data.transmissions && data.transmissions.length && form.gearing" class="row">
+                      <div class="col-12">
+                        <title-with-line-and-reject-reason
+                          :title="$t('box')"
+                          rejectKey="gearing"
+                          required
+                          @change="changeReason"
+                        />
+                      </div>
+                      <div class="col-12 col-lg-3 ">
+                        <form-select
+                          v-model="form.transmission"
+                          :allow-clear="false"
+                          :clearOption="false"
+                          :disabled="isModerator"
+                          :label="$t('box')"
+                          :options="
+                      data.transmissions.map((o) => ({
+                        name: $t('box_values')[o.box],
+                        key: o.box,
+                      }))
+                    "
+                          has-search
+                          @change="changeTransmission($event)"
+                        />
                       </div>
                     </div>
                     <!--              modification-->
@@ -1437,7 +1438,7 @@ export default {
 
       await this.$store.dispatch('moderator/transferToSupervisor', {
         id: this.single_announce.id,
-        comment: this.form.comment,
+        comment: this.transferComment,
       })
 
       if (this.user.admin_group == 2) {
