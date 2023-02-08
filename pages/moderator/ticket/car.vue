@@ -1438,7 +1438,7 @@ export default {
 
       await this.$store.dispatch('moderator/transferToSupervisor', {
         id: this.single_announce.id,
-        comment: this.form.comment,
+        comment: this.transferComment,
       })
 
       if (this.user.admin_group == 2) {
