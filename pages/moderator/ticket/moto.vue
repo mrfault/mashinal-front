@@ -407,7 +407,7 @@
               >
                 <form-text-input
                   v-model="form.car_number"
-
+                  :disabled="isModerator"
                   :mask="'99 - A - 999'"
                   :placeholder="'__ - _ - ___'"
                   img-src="/img/flag.svg"
@@ -425,7 +425,7 @@
                 </form-text-input>
                 <form-checkbox
                   v-model="form.show_car_number"
-
+                  :disabled="isModerator"
                   :label="$t('show_car_number_on_site')"
                   class="mt-2 mt-lg-3"
                   input-name="show_car_number"
@@ -437,7 +437,7 @@
               <form-textarea
                 key="vin"
                 v-model="form.vin"
-
+                :disabled="isModerator"
                 :mask="$maskAlphaNumeric('*****************')"
                 :placeholder="$t('vin_carcase_number')"
                 class="textfield-like-textarea"
@@ -449,7 +449,7 @@
               </form-textarea>
               <form-checkbox
                 v-model="form.show_vin"
-
+                :disabled="isModerator"
                 :label="$t('show_vin_on_site')"
                 class="mt-2 mt-lg-3"
                 input-name="show_vin"
