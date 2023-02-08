@@ -2042,7 +2042,7 @@ export default {
   work_time_5: "Şənbə",
   work_time_6: "Bazar günü",
   working_hours: "Mühərrik saatları",
-  worktime_support: "B.e. — C. 09:00 — 18:00",
+  worktime_support: "Hər gün. 09:00 — 18:00",
   worldwide_search: "Beynəlxalq axtarış",
   wp_write_us: "{msg}-dan yaz",
   wrap_size: "Başlıq ölçüsü",
