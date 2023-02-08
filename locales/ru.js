@@ -1986,7 +1986,7 @@ export default {
   "work_time_5": "Суббота",
   "work_time_6": "Воскресенье",
   "working_hours": "Моточасы",
-  "worktime_support": "Пн — Пт 09:00 — 18:00",
+  "worktime_support": "Каждый день 09:00 — 18:00",
   "worldwide_search": "Международный поиск",
   "wp_write_us": "Пишите в {msg}",
   "wrap_size": "Размер воротка",
