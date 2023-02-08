@@ -59,6 +59,10 @@
                             <template v-if="announcement.is_autosalon || announcement.is_part_salon">
                                 <span class="badge badge-blue">{{ announcement.is_autosalon ? 'SALON' : 'SHOP' }}</span>
                             </template>
+
+                            <template v-if="announcement.is_external_salon">
+                                <span class="badge badge-blue">Sifarişlə</span>
+                            </template>
                         </div>
 
                         <div :class="['item-overlay__top--right', {'pending-badge-centered': checkPendingBadge(announcement)}]">
@@ -139,54 +143,57 @@
                               </svg>
                             </span>
 
-                                            <template
-                                                v-if="announcement.is_external_salon && !showStatus"
-                                            >
-                                            <span class="badge badge-blue badge-external">
-                                              <inline-svg v-if="!isMobileBreakpoint" class="badge-icon" src="/img/auction.svg" />
-                                              Sifarişlə
-                                            </span>
-                                            </template>
+<!--                            <template v-if="announcement.is_external_salon && !showStatus">-->
+<!--                                <span class="badge badge-blue badge-external">-->
+<!--                                  <inline-svg v-if="!isMobileBreakpoint" class="badge-icon" src="/img/auction.svg" />-->
+<!--                                  Sifarişlə-->
+<!--                                </span>-->
+<!--                            </template>-->
 
-                            <template v-if="showStatus">
-                    <span class="badge active" v-if="announcement.status == 1">
-                      {{ $t('accepted') }}
-                    </span>
-                                <span
-                                    class="badge pending"
-                                    v-else-if="
-                                announcement.status == 2 &&
-                                announcement.system_paid_announce &&
-                                !announcement.system_paid_announce.is_paid
-                              "
-                                >
-                      {{ $t('need_pay') }}
-                    </span>
-                                <span
-                                    class="badge pending"
-                                    v-else-if="announcement.status == 2"
-                                >
-                      {{ $t('under_consideration') }}
-                    </span>
-                                <span
-                                    class="badge pending"
-                                    v-else-if="announcement.status == 5"
-                                >
-                      {{ $t('is_loading') }}
-                    </span>
-                                <span
-                                    class="badge rejected"
-                                    v-else-if="announcement.status == 0"
-                                >
-                      {{ $t('rejected') }}
-                    </span>
-                                <span
-                                    class="badge inactive"
-                                    v-else-if="announcement.status == 3"
-                                >
-                      {{ $t('inactive') }}
-                    </span>
-                            </template>
+<!--                            <template v-if="showStatus">-->
+<!--                                <span class="badge active" v-if="announcement.status == 1">-->
+<!--                                  {{ $t('accepted') }}-->
+<!--                                </span>-->
+
+<!--                                <span-->
+<!--                                    class="badge pending"-->
+<!--                                    v-else-if="-->
+<!--                                                announcement.status == 2 &&-->
+<!--                                                announcement.system_paid_announce &&-->
+<!--                                                !announcement.system_paid_announce.is_paid-->
+<!--                                              "-->
+<!--                                >-->
+<!--                                  {{ $t('need_pay') }}-->
+<!--                                </span>-->
+
+<!--                                <span-->
+<!--                                    class="badge pending"-->
+<!--                                    v-else-if="announcement.status == 2"-->
+<!--                                >-->
+<!--                                  {{ $t('under_consideration') }}-->
+<!--                                </span>-->
+
+<!--                                <span-->
+<!--                                    class="badge pending"-->
+<!--                                    v-else-if="announcement.status == 5"-->
+<!--                                >-->
+<!--                                  {{ $t('is_loading') }}-->
+<!--                                </span>-->
+
+<!--                                <span-->
+<!--                                    class="badge rejected"-->
+<!--                                    v-else-if="announcement.status == 0"-->
+<!--                                >-->
+<!--                                  {{ $t('rejected') }}-->
+<!--                                </span>-->
+
+<!--                                <span-->
+<!--                                    class="badge inactive"-->
+<!--                                    v-else-if="announcement.status == 3"-->
+<!--                                >-->
+<!--                                  {{ $t('inactive') }}-->
+<!--                                </span>-->
+<!--                            </template>-->
                         </div>
                     </div>
                 </div>

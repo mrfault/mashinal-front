@@ -203,6 +203,31 @@
             }
         }
     }
+
+    .announcements-grid {
+        .layout,
+        .container {
+            min-width: 1280px;
+        }
+    }
+}
+
+@media (min-width: 1270px) {
+    .announcements-grid {
+        .layout,
+        .container {
+            min-width: 1280px;
+        }
+    }
+}
+
+@media (min-width: 1025px) {
+    .announcements-grid {
+        .layout,
+        .container {
+            min-width: 970px;
+        }
+    }
 }
 
 @media (min-width: 1616px) {

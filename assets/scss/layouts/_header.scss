@@ -2,7 +2,7 @@
     position: sticky;
     z-index: 10;
     top: 0;
-    margin-bottom: 30px;
+    margin-bottom: 108px;
 
     .topbar {
         display: flex;
@@ -361,15 +361,16 @@
 }
 
 .header-menu {
-    //height: 96px;
+    height: 96px;
     padding-right: 0;
     padding-left: 0;
+    transition: box-shadow 0.1s ease-out;
+    border-radius: 0 0 20px 20px;
 }
 
 .salon-car-icon {
     margin-right: 5px;
     width: 14px;
-
 }
 
 .dark-mode {

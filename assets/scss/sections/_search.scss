@@ -177,6 +177,40 @@
         padding-left: 15px;
         padding-right: 15px;
     }
+    .form-buttons {
+        .btn {
+            height: 48px;
+            padding: 15px 8px;
+            border-radius: 8px;
+            border: none;
+            color: #4B5565;
+            background-color: transparent;
+            &.active {
+                color: #FFFFFF;
+                background-color: #155EEF;
+            }
+            span {
+                font-size: 15px;
+                line-height: 18px;
+            }
+        }
+    }
+    .customCheckbox {
+        label {
+            width: 100%;
+        }
+    }
+    .btn {
+        border-radius: 8px;
+    }
+    .btn-close, .btn-advancedSearch {
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 20px;
+        color: #697586;
+        border: 1px solid #CDD5DF;
+        background-color: transparent;
+    }
 }
 
 .car-filters {

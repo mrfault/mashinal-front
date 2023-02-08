@@ -1,68 +1,67 @@
 <template>
     <div class="form-group">
         <div :class="['select-menu', { 'no-bg': hasNoBg, invalid, wider }]">
-      <span
-          :class="[
-          'select-menu_label',
-          {
-            selected: hasSelectedValue,
-            disabled: disabled,
-            active: showOptions,
-          },
-        ]"
-          @click="displayMenuOptions"
-      >
-        <span :class="['text-truncate', { 'full-width': hasSearch }]">
-          <template v-if="hasCards && getSelectedOptions[0]">
+          <span
+              :class="['select-menu_label',
+              {
+                selected: hasSelectedValue,
+                disabled: disabled,
+                active: showOptions
+              }
+              ]"
+              @click="displayMenuOptions"
+          >
+            <span :class="['text-truncate', { 'full-width': hasSearch }]">
+              <template v-if="hasCards && getSelectedOptions[0]">
+                <span
+                    class="d-flex align-items-center"
+                    v-if="getSelectedOptions[0]"
+                >
+                  <img
+                      :src="getSelectedOptions[0].icon"
+                      :alt="getSelectedOptions[0].brand"
+                      width="32"
+                      height="16"
+                      class="mr-1"
+                  />
+                  <span class="placeholder">
+                    {{ getSelectedOptions[0].name.slice(10) }}
+                  </span>
+                </span>
+              </template>
+              <template v-else-if="hasCards">{{ clearOptionText }}</template>
+              <template v-else-if="hasSearch && showOptions && !isMobileBreakpoint">
+                <span class="search-input">
+                  <span class="placeholder">{{ label }}:</span>
+                  <input
+                      type="text"
+                      @click.stop
+                      v-model="search"
+                      ref="searchInput"
+                      @keyup.enter="handleSearchSubmit"
+                  />
+                </span>
+              </template>
+              <template v-else>{{ getLabelText }}</template>
+            </span>
             <span
-                class="d-flex align-items-center"
-                v-if="getSelectedOptions[0]"
+                class="counter"
+                v-if="multiple && selectValue.length > 1 && !shortNamesLabel"
             >
-              <img
-                  :src="getSelectedOptions[0].icon"
-                  :alt="getSelectedOptions[0].brand"
-                  width="32"
-                  height="16"
-                  class="mr-1"
-              />
-              <span class="placeholder">
-                {{ getSelectedOptions[0].name.slice(10) }}
-              </span>
+              {{ selectValue.length }}
             </span>
-          </template>
-          <template v-else-if="hasCards">{{ clearOptionText }}</template>
-          <template v-else-if="hasSearch && showOptions && !isMobileBreakpoint">
-            <span class="search-input">
-              <span class="placeholder">{{ label }}:</span>
-              <input
-                  type="text"
-                  @click.stop
-                  v-model="search"
-                  ref="searchInput"
-                  @keyup.enter="handleSearchSubmit"
-              />
+            <span class="counter" v-else-if="custom && values.count">
+              {{ values.count }}
             </span>
-          </template>
-          <template v-else>{{ getLabelText }}</template>
-        </span>
-        <span
-            class="counter"
-            v-if="multiple && selectValue.length > 1 && !shortNamesLabel"
-        >
-          {{ selectValue.length }}
-        </span>
-        <span class="counter" v-else-if="custom && values.count">
-          {{ values.count }}
-        </span>
-        <icon
-            name="cross"
-            v-if="allowClear && !hasNoValue"
-            @click.native.stop="clearSelect"
-            class="cursor-pointer"
-        />
-          <!-- <inline-svg src="/icons/cross.svg" height="14" v-if="allowClear && !hasNoValue" @click.native.stop="clearSelect" class="cursor-pointer" /> -->
-        <icon :name="iconName" v-else/>
-      </span>
+            <icon
+                name="cross"
+                v-if="allowClear && !hasNoValue"
+                @click.native.stop="clearSelect"
+                class="cursor-pointer"
+            />
+              <!-- <inline-svg src="/icons/cross.svg" height="14" v-if="allowClear && !hasNoValue" @click.native.stop="clearSelect" class="cursor-pointer" /> -->
+            <icon :name="iconName" v-else />
+          </span>
             <!--            <icon-->
             <!--                :class="[-->
             <!--          'select-menu_triangle',-->
@@ -205,7 +204,10 @@
             <template v-else>
                 <div
                     :class="['select-menu_dropdown',
-                                { show: showOptions, custom, 'custom-checkboxes': customCheckboxes }
+                            { show: showOptions,
+                              custom,
+                              'custom-checkboxes': customCheckboxes
+                            }
                             ]"
                     ref="dropdownOptions"
                     @mouseenter="addScrollStopToBody()"

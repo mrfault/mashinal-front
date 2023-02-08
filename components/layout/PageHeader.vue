@@ -167,6 +167,7 @@
                         </nuxt-link>
 
                         <CustomDropdown
+                            :className="'lang'"
                             :value="locale"
                             :items="locales"
                         />
@@ -434,10 +435,5 @@ export default {
         right: 50px;
         //margin-left: 10px;
     }
-}
-
-.header-menu {
-    transition: box-shadow 0.1s ease-out;
-    border-radius: 0 0 20px 20px;
 }
 </style>

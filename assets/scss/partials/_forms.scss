@@ -498,7 +498,12 @@ input::-webkit-inner-spin-button {
         }
 
         &.disabled {
-            color: $grey-3;
+            .text-truncate {
+                color: $grey-3;
+            }
+            .icon-chevron-down {
+                color: $grey-3;
+            }
         }
 
         .icon-cross {
