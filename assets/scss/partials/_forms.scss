@@ -824,14 +824,23 @@ input::-webkit-inner-spin-button {
 
 .interior-exterior-switcher {
     .form-switch {
-        background-color: $dark-blue-1;
-
+        padding: 8px;
+        border-radius: 12px;
+        background-color: rgba(32, 41, 57, 0.88);
         button {
+            height: unset;
+            padding: 8px 10px;
+            font-weight: 500;
+            font-size: 15px;
+            line-height: 18px;
             text-transform: none;
+            border-radius: 8px;
         }
-
-        button.active {
-            color: $dark-blue-1;
+        button {
+            &.active {
+                color: $white;
+                background-color: #4B5565;
+            }
         }
     }
 

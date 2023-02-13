@@ -303,7 +303,7 @@ export default {
 
 <style lang="scss">
 .swiper-container {
-    border-radius: 16px;
+    border-radius: 12px;
     overflow: hidden;
     .btn--green {
         height: 25px !important;

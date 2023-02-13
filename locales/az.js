@@ -905,7 +905,7 @@ export default {
   get_a_business_profile: "Biznes profil əldə et",
   get_a_loan_of_up_to_azn_2000000_to_buy_a_car_on_mashinal_without_a_down_payment_all_you_need_is_a_passport_and_a_drivers_license:
     "Maşin.al'da bir avtomobil almaq üçün ilkin ödəniş olmadan 2.000.000 AZN-dək yalnız pasport və sürücülük vəsiqəsi ilə kredit alın.",
-  get_an_ad: "Reklam et",
+  get_an_ad: "Elanı reklam et",
   get_code: "Kod əldə etmək",
   get_sms: "SMS al",
   glonass: "GLONASS",
@@ -1322,6 +1322,7 @@ export default {
   options_default: "Seçimlər",
   original: "Orijinal",
   other_announcements: "Digər elanlar",
+  other_parameters: "Digər parametrlər",
   other_announcements_of_user: "İstifadəçinin digər elanları",
   other_card: "Digər bank kartı",
   other_configurations: "Digər komplektasiyalar",
@@ -1670,7 +1671,7 @@ export default {
   sell_parts_keywords_info:
     "Açar sözlər əlavə etməklə elanınızı axtarış zamanı ilk sıralarda göstərilməsinə nail olacaqsınız.",
   seller: "Satıcı",
-  seller_comment: "Satıcının rəyi",
+  seller_comment: "Əlavə məlumatlar",
   semiautomatic: "Yarı-avtomat",
   send: "Göndər",
   send_a_letter_of_attorney: "Etibarnamə ver",
@@ -2422,7 +2423,6 @@ export default {
   new_1: "Yeni",
   will_increase: "artacaq",
   will_diminish: "azalacaq",
-  video_360_successfully_upload: "Video uğurla yükləndi",
   video_choose: "Video faylı seç",
   video_choosed: "Video fayl seçilib",
   plug_in_hybrid: "Plug-in Hibrid",

@@ -1,11 +1,13 @@
 <template>
-    <div :class="['announcements-grid',{ 'loading-content': pending, paginated: paginate }]">
+    <div :class="['announcements-grid', { 'loading-content': pending, paginated: paginate }]">
         <div :class="{ container: hasContainer }">
-            <div class="title grid-title" v-if="title && showTitle">
+<!--            grid-title-->
+            <div class="announcements-grid__title" v-if="title && showTitle">
                 <h2>
                     <icon :name="iconName" v-if="iconName"/>
                     <span>{{ title }}</span>
                 </h2>
+
                 <nuxt-link v-if="showAll" :to="showAll">
                     {{ $t('all') }}
                     <icon name="arrow-right"/>

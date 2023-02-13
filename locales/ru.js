@@ -1244,6 +1244,7 @@ export default {
   "original": "Оригинал",
   "ot5_mest": "От 5 мест",
   "other_announcements": "Другие объявления",
+  "other_parameters": "Другие параметры",
   "other_announcements_of_user": "Другие объявления пользователя",
   "other_card": "Другая банковская карта",
   "other_configurations": "Другие комплектации",

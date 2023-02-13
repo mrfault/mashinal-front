@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div style="height: 100%">
     <!-- 360 Viewer Container -->
-    <div :id="identifier" ref="viewerContainer" class="v360-viewer-container">
+    <div :id="identifier" ref="viewerContainer" class="v360-viewer-container" style="height: 100%">
       <!-- 360 Viewer Header -->
       <slot name="header"></slot>
       <!--/ 360 Viewer Header -->

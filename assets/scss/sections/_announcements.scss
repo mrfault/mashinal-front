@@ -1,6 +1,17 @@
 .announcements-grid {
     position: relative;
-    margin: 30px 0;
+    margin: 64px 0;
+
+    &__title {
+        margin-bottom: 32px;
+        h2 {
+            font-weight: 600;
+            font-size: 24px;
+            line-height: 28px;
+            color: #202939;
+            margin: 0;
+        }
+    }
 
     &.loading-content {
         opacity: 0.4;

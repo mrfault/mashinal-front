@@ -100,9 +100,9 @@
                                 :options="carModels[rows[0]]"
                                 v-model="form.additional_brands[rows[0]]['model']"
                                 :disabled="
-                  form.additional_brands[rows[0]]['brand'] &&
-                  !carModels[rows[0]].length
-                "
+                                  form.additional_brands[rows[0]]['brand'] &&
+                                  !carModels[rows[0]].length
+                                "
                                 @change="setModel($event, rows[0])"
                                 has-search
                             />
