@@ -6,7 +6,7 @@
                     <div @click="$nuxt.$emit('show-lightbox', index)"
                          @mouseenter="$nuxt.$emit('show-gallery-slide', index)"
                          :class="['swiper-slide-bg', {'youtube-play': where === 'announcement' && announcement.youtube_id && index === 1}]"
-                         :style="{backgroundImage: `url('${slide}')` }"
+                         :style="{backgroundImage: `url('${slide}?width=96')` }"
                          role="img"
                          aria-label="">
                         <span class="image-360-pin"
@@ -55,7 +55,7 @@ export default {
                 let media = this.announcement.media;
                 let yt_video = this.announcement.youtube_id;
                 if (media.length === 0) return [];
-                thumbs = this.getMediaByKey(media, 'thumb_inner');
+                thumbs = JSON.parse(JSON.stringify(media))
                 if (yt_video) {
                     thumbs.splice(1, 0, `https://img.youtube.com/vi/${yt_video}/hqdefault.jpg`);
                 }

@@ -445,8 +445,8 @@ export default {
             let item = this.announcement
 
             if (item.has_360 == false || !item.has_360) {
-                if (item.media && item.media.thumb && item.media.thumb.length)
-                    return this.$withBaseUrl(item.media.thumb[0])
+                if (item.media && item.media.original && item.media.original.length)
+                    return this.$withBaseUrl(item.media.original[0])
                 else if (item.media && item.media.length)
                     return this.$withBaseUrl(item.media[0].thumb || item.media[0])
                 return false

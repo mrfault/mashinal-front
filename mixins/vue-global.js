@@ -156,7 +156,10 @@ Vue.use({
             return item.media.main_inner[0]
           } else if (item.media[0] instanceof Object) {
             return item.media[0][Object.keys(item.media[0])[0]];
-          } else {
+          }else if (item.media.length) {
+            return item.media[0];
+          }
+          else {
             return item.media[Object.keys(item.media)[0]][0];
           }
         },
