@@ -41,7 +41,7 @@
                                 'swiper-slide-bg',
                                 { 'youtube-play': showYtVideo(index) },
                               ]"
-                            :style="`background-image:url(${showYtVideo(index) ? getYtVideoImage('hq') : slide})`"
+                            :style="`background-image:url(${showYtVideo(index) ? getYtVideoImage('hq') : slide}?width=848)`"
                         >
                             <!--              <loader />-->
                         </div>
@@ -513,8 +513,7 @@ export default {
             } else if (this.where === 'announcement') {
                 let media = this.announcement.media
                 if (media.length === 0) return []
-                thumbs = this.getMediaByKey(media, 'thumb_inner')
-                main = this.getMediaByKey(media, 'main_inner')
+                main = JSON.parse(JSON.stringify(media));
                 if (this.announcement.youtube_id) {
                     hasVideo = true
                     thumbs.splice(1, 0, this.getYtVideoImage('hq'))
