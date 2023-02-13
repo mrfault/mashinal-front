@@ -1,11 +1,12 @@
 <template>
     <component
         :is="tag"
-        :class="classes ? classes : `btn btn--${className} full-width`"
+        :class="classes ? classes : `btn btn--add btn--${className} full-width`"
         @click.stop="openPaymentModal()"
     >
         {{ $t('get_an_ad') }}
         <img src="/icons/get_an_ad.svg" alt="icon">
+
         <modal-popup
             :toggle="showPaymentModal"
             :title="$t('get_an_ad')"
@@ -82,6 +83,7 @@
                 </div>
             </div>
         </modal-popup>
+
         <terminal-info-popup
             name="monetization-popup"
             @open="showPaymentModal = false"
@@ -91,8 +93,8 @@
 </template>
 
 <script>
-import {PaymentMixin} from '~/mixins/payment'
-import {mapGetters} from 'vuex'
+import { PaymentMixin } from '~/mixins/payment'
+import { mapGetters } from 'vuex'
 
 export default {
     props: {
@@ -232,7 +234,7 @@ export default {
             }
         },
         openPaymentModal() {
-            this.showPaymentModal = true
+            this.showPaymentModal = true;
         },
     },
     created() {

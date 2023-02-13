@@ -1,82 +1,91 @@
 <template>
-  <!-- <div>
+    <!-- <div>
+      <button
+        :class="['btn-sq btn-sq--color-dark-blue', { active: isAdded }]"
+        @click.stop="handleClick()"
+        v-if="announcement.status !== 2"
+      >
+        <icon name="star-favorite" />
+      </button> -->
+    <!--  <div class="white-background">-->
     <button
-      :class="['btn-sq btn-sq--color-dark-blue', { active: isAdded }]"
-      @click.stop="handleClick()"
-      v-if="announcement.status !== 2"
+        class="btn-favorite btn-transparent"
+        :class="{ 'btn-favorite-active': isAdded }"
+        @click.stop="handleClick()"
+        v-if="announcement.status !== 2"
     >
-      <icon name="star-favorite" />
-    </button> -->
-<!--  <div class="white-background">-->
-    <button
-      class="btn-transparent btn-favorite"
-      :class="{ 'btn-favorite-active': isAdded }"
-      @click.stop="handleClick()"
-      v-if="announcement.status !== 2"
-    >
-<!--        <i></i>-->
+        <span v-if="text">{{ text }}</span>
+        <img v-if="img" src="/icons/star-favorite_new.svg" alt="icon">
+        <!--        <i></i>-->
     </button>
-<!--  </div>-->
+    <!--  </div>-->
 
-  <!-- </div> -->
+    <!-- </div> -->
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+    import {mapGetters, mapActions} from 'vuex'
 
-export default {
-  props: {
-    announcement: {},
-  },
-  methods: {
-    ...mapActions(['addToFavorites', 'getNotViewedFavorites']),
-
-    async handleClick(skipIfAdded = false) {
-      if (skipIfAdded && this.isAdded) return
-      if (!this.loggedIn) {
-        this.$nuxt.$emit(
-          'login-popup',
-          'favorite' + this.announcement.id_unique,
-        )
-      } else {
-        await this.addToFavorites(this.announcement.id_unique)
-        this.getNotViewedFavorites()
-        this.$store.dispatch(
-          'getAnnouncementInner',
-          this.announcement.id_unique,
-        )
-        this.$nuxt.$emit('favorites-updated')
-        if (this.isAdded) {
-          this.$toasted.success(this.$t('my_favorites_added'), {
-            action: !this.routeName === 'profile-favorites' && {
-              text: this.$t('show'),
-              onClick: () => {
-                this.$router.push(this.$localePath('/profile/favorites'))
-              },
+    export default {
+        props: {
+            announcement: {},
+            text: {
+                type: String
             },
-          })
-        } else {
-          this.$toasted.success(this.$t('my_favorites_removed'))
-        }
-      }
-    },
-    handleAfterLogin(key) {
-      if (key === 'favorite' + this.announcement.id_unique)
-        this.handleClick(true)
-    },
-  },
-  computed: {
-    ...mapGetters(['favorites']),
+            img: {
+                type: Boolean,
+                default: false
+            }
+        },
+        methods: {
+            ...mapActions(['addToFavorites', 'getNotViewedFavorites']),
 
-    isAdded() {
-      return this.favorites.includes(this.announcement.id_unique)
-    },
-  },
-  mounted() {
-    this.$nuxt.$on('after-login', this.handleAfterLogin)
-  },
-  beforeDestroy() {
-    this.$nuxt.$off('after-login', this.handleAfterLogin)
-  },
-}
+            async handleClick(skipIfAdded = false) {
+                if (skipIfAdded && this.isAdded) return
+                if (!this.loggedIn) {
+                    this.$nuxt.$emit(
+                        'login-popup',
+                        'favorite' + this.announcement.id_unique,
+                    )
+                } else {
+                    await this.addToFavorites(this.announcement.id_unique)
+                    this.getNotViewedFavorites()
+                    this.$store.dispatch(
+                        'getAnnouncementInner',
+                        this.announcement.id_unique,
+                    )
+                    this.$nuxt.$emit('favorites-updated')
+                    if (this.isAdded) {
+                        this.$toasted.success(this.$t('my_favorites_added'), {
+                            action: !this.routeName === 'profile-favorites' && {
+                                text: this.$t('show'),
+                                onClick: () => {
+                                    this.$router.push(this.$localePath('/profile/favorites'))
+                                },
+                            },
+                        })
+                    } else {
+                        this.$toasted.success(this.$t('my_favorites_removed'))
+                    }
+                }
+            },
+            handleAfterLogin(key) {
+                if (key === 'favorite' + this.announcement.id_unique)
+                    this.handleClick(true)
+            },
+        },
+        computed: {
+            ...mapGetters(['favorites']),
+
+            isAdded() {
+                return this.favorites.includes(this.announcement.id_unique)
+            },
+        },
+        mounted() {
+            this.$nuxt.$on('after-login', this.handleAfterLogin)
+        },
+        beforeDestroy() {
+            this.$nuxt.$off('after-login', this.handleAfterLogin)
+        },
+    }
 </script>

@@ -3,7 +3,7 @@
         <div class="container">
             <div class="announcements-inner">
                 <breadcrumbs :crumbs="crumbs">
-                    <share-it type="publish"/>
+<!--                    <share-it type="publish"/>-->
                 </breadcrumbs>
 
                 <div class="row flex-column flex-lg-row">
@@ -66,31 +66,54 @@
                             </div>
                         </template>
 
-                        <template v-if="announcement.status != 2 && !(announcement.is_autosalon && announcement.status == 3)">
-                            <!--            <hr :class="{ 'mt-3': announcement.status == 3 }"-->
-                            <!--                v-if="showEditButton(announcement) || showDeactivateButton(announcement) || announcement.status == 3 && !announcement.is_external_salon"-->
-                            <!--            />-->
-                            <div class="row mt-n2 mt-lg-n3">
-                                <div class="col mt-2 mt-lg-3">
-                                    <restore-button
-                                        :announcement="announcement"
-                                        v-if="userIsOwner(announcement) && announcement.status == 3 && !announcement.is_external_salon"
-                                        :free="true"
-                                    />
-                                    <deactivate-button
-                                        :announcement="announcement"
-                                        v-if="showDeactivateButton(announcement)"
-                                    />
-                                </div>
-                                <div class="col mt-2 mt-lg-3">
-                                    <edit-button
-                                        :announcement="announcement"
-                                        v-if="showEditButton(announcement)"
-                                        @openModal="openModal"
-                                    />
-                                </div>
-                            </div>
-                        </template>
+<!--                        <template v-if="announcement.status != 2 && !(announcement.is_autosalon && announcement.status == 3)">-->
+<!--                            &lt;!&ndash;            <hr :class="{ 'mt-3': announcement.status == 3 }"&ndash;&gt;-->
+<!--                            &lt;!&ndash;                v-if="showEditButton(announcement) || showDeactivateButton(announcement) || announcement.status == 3 && !announcement.is_external_salon"&ndash;&gt;-->
+<!--                            &lt;!&ndash;            />&ndash;&gt;-->
+<!--                            <div class="row mt-n2 mt-lg-n3">-->
+<!--                                <div class="col mt-2 mt-lg-3">-->
+<!--                                    <restore-button-->
+<!--                                        :announcement="announcement"-->
+<!--                                        v-if="userIsOwner(announcement) && announcement.status == 3 && !announcement.is_external_salon"-->
+<!--                                        :free="true"-->
+<!--                                    />-->
+
+<!--                                    <deactivate-button-->
+<!--                                        :announcement="announcement"-->
+<!--                                        v-if="showDeactivateButton(announcement)"-->
+<!--                                    />-->
+<!--                                </div>-->
+
+<!--                                <div class="col mt-2 mt-lg-3">-->
+<!--                                    <edit-button-->
+<!--                                        :announcement="announcement"-->
+<!--                                        v-if="showEditButton(announcement)"-->
+<!--                                        @openModal="openModal"-->
+<!--                                    />-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </template>-->
+
+                        <div class="btns">
+                            <template v-if="announcement.status === 1">
+                                <add-favorite
+                                    :text="'Seçilmiş et'"
+                                    :img="true"
+                                    :announcement="announcement"
+                                />
+
+                                <add-comparison
+                                    :text="'Müqayisə et'"
+                                    :img="true"
+                                    :id="announcement.id_unique"
+                                    v-if="announcement.car_catalog"
+                                />
+                            </template>
+                        </div>
+
+                        <CheckVinCode />
+
+                        <InsureCar />
 
                         <modal-popup :toggle="showModal" @close="showModal = false">
                             <login-tabs></login-tabs>
@@ -135,10 +158,18 @@ import PayAnnouncementButton from "~/components/announcements/PayAnnouncementBut
 import RestoreButton from "~/components/announcements/RestoreButton.vue";
 import DeactivateButton from "~/components/announcements/DeactivateButton.vue";
 import EditButton from "~/components/announcements/EditButton.vue";
+import AddFavorite from "~/components/announcements/AddFavorite.vue";
+import AddComparison from "~/components/announcements/AddComparison.vue";
+import CheckVinCode from "~/components/elements/CheckVinCode.vue";
+import InsureCar from "~/components/elements/InsureCar.vue";
 
 export default {
     name: 'pages-cars-id',
     components: {
+        InsureCar,
+        CheckVinCode,
+        AddFavorite,
+        AddComparison,
         MonetizationButton,
         MonetizationStatsButton,
         PayAnnouncementButton,
