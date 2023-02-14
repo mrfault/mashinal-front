@@ -19,21 +19,21 @@
                     <div
                         class="item-bg"
                         role="img"
-                        v-lazy:background-image="$withBaseUrl(announcement.media.thumb[0])"
+                        v-lazy:background-image="(announcement.media.original)"
                     ></div>
-                </div>
+                </div><!--
                 <div>
                     <div
                         class="item-bg wider"
                         role="img"
-                        v-lazy:background-image="$withBaseUrl(announcement.media.thumb[1])"
+                        v-lazy:background-image="(announcement.media.original)"
                     ></div>
                     <div
                         class="item-bg wider"
                         role="img"
-                        v-lazy:background-image="$withBaseUrl(announcement.media.thumb[2])"
+                        v-lazy:background-image="(announcement.media.original)"
                     ></div>
-                </div>
+                </div>-->
             </div>
         </div>
         <div class="announcements-grid_item" :class="'id'+announcement.id_unique" @click="goToAnnouncement">
@@ -74,15 +74,6 @@
                     </div>
 
                     <div class="item-overlay__bottom">
-                        <!--            <span-->
-                        <!--              class="d-flex"-->
-                        <!--              v-if="announcement.status === undefined || announcement.status == 1"-->
-                        <!--            >-->
-                        <!--                <add-comparison-->
-                        <!--                  :id="announcement.id_unique"-->
-                        <!--                  v-if="getType === 'Car'"-->
-                        <!--                />-->
-                        <!--            </span>-->
 
                         <div class="item-overlay__bottom--left">
                           <span
@@ -142,58 +133,6 @@
                                     fill="white"/>
                               </svg>
                             </span>
-
-<!--                            <template v-if="announcement.is_external_salon && !showStatus">-->
-<!--                                <span class="badge badge-blue badge-external">-->
-<!--                                  <inline-svg v-if="!isMobileBreakpoint" class="badge-icon" src="/img/auction.svg" />-->
-<!--                                  Sifarişlə-->
-<!--                                </span>-->
-<!--                            </template>-->
-
-<!--                            <template v-if="showStatus">-->
-<!--                                <span class="badge active" v-if="announcement.status == 1">-->
-<!--                                  {{ $t('accepted') }}-->
-<!--                                </span>-->
-
-<!--                                <span-->
-<!--                                    class="badge pending"-->
-<!--                                    v-else-if="-->
-<!--                                                announcement.status == 2 &&-->
-<!--                                                announcement.system_paid_announce &&-->
-<!--                                                !announcement.system_paid_announce.is_paid-->
-<!--                                              "-->
-<!--                                >-->
-<!--                                  {{ $t('need_pay') }}-->
-<!--                                </span>-->
-
-<!--                                <span-->
-<!--                                    class="badge pending"-->
-<!--                                    v-else-if="announcement.status == 2"-->
-<!--                                >-->
-<!--                                  {{ $t('under_consideration') }}-->
-<!--                                </span>-->
-
-<!--                                <span-->
-<!--                                    class="badge pending"-->
-<!--                                    v-else-if="announcement.status == 5"-->
-<!--                                >-->
-<!--                                  {{ $t('is_loading') }}-->
-<!--                                </span>-->
-
-<!--                                <span-->
-<!--                                    class="badge rejected"-->
-<!--                                    v-else-if="announcement.status == 0"-->
-<!--                                >-->
-<!--                                  {{ $t('rejected') }}-->
-<!--                                </span>-->
-
-<!--                                <span-->
-<!--                                    class="badge inactive"-->
-<!--                                    v-else-if="announcement.status == 3"-->
-<!--                                >-->
-<!--                                  {{ $t('inactive') }}-->
-<!--                                </span>-->
-<!--                            </template>-->
                         </div>
                     </div>
                 </div>
@@ -445,8 +384,8 @@ export default {
             let item = this.announcement
 
             if (item.has_360 == false || !item.has_360) {
-                if (item.media && item.media.original && item.media.original.length)
-                    return this.$withBaseUrl(item.media.original[0])
+                if (item.media && item.media.original)
+                    return item.media.original
                 else if (item.media && item.media.length)
                     return this.$withBaseUrl(item.media[0].thumb || item.media[0])
                 return false
