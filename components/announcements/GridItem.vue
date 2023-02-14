@@ -19,21 +19,21 @@
                     <div
                         class="item-bg"
                         role="img"
-                        v-lazy:background-image="$withBaseUrl(announcement.media.original[0])"
+                        v-lazy:background-image="(announcement.media.original)"
                     ></div>
-                </div>
+                </div><!--
                 <div>
                     <div
                         class="item-bg wider"
                         role="img"
-                        v-lazy:background-image="$withBaseUrl(announcement.media.original[1])"
+                        v-lazy:background-image="(announcement.media.original)"
                     ></div>
                     <div
                         class="item-bg wider"
                         role="img"
-                        v-lazy:background-image="$withBaseUrl(announcement.media.original[2])"
+                        v-lazy:background-image="(announcement.media.original)"
                     ></div>
-                </div>
+                </div>-->
             </div>
         </div>
         <div class="announcements-grid_item" :class="'id'+announcement.id_unique" @click="goToAnnouncement">
@@ -445,10 +445,10 @@ export default {
             let item = this.announcement
 
             if (item.has_360 == false || !item.has_360) {
-                if (item.media && item.media.original && item.media.original.length)
-                    return this.$withBaseUrl(item.media.original[0])
+                if (item.media && item.media.original)
+                    return item.media.original
                 else if (item.media && item.media.length)
-                    return this.$withBaseUrl(item.media[0].original || item.media[0])
+                    return this.$withBaseUrl(item.media[0].thumb || item.media[0])
                 return false
             } else {
                 return this.$withBaseUrl(item.has_360)
