@@ -19,19 +19,19 @@
                     <div
                         class="item-bg"
                         role="img"
-                        v-lazy:background-image="$withBaseUrl(announcement.media.thumb[0])"
+                        v-lazy:background-image="$withBaseUrl(announcement.media.original[0])"
                     ></div>
                 </div>
                 <div>
                     <div
                         class="item-bg wider"
                         role="img"
-                        v-lazy:background-image="$withBaseUrl(announcement.media.thumb[1])"
+                        v-lazy:background-image="$withBaseUrl(announcement.media.original[1])"
                     ></div>
                     <div
                         class="item-bg wider"
                         role="img"
-                        v-lazy:background-image="$withBaseUrl(announcement.media.thumb[2])"
+                        v-lazy:background-image="$withBaseUrl(announcement.media.original[2])"
                     ></div>
                 </div>
             </div>
@@ -448,7 +448,7 @@ export default {
                 if (item.media && item.media.original && item.media.original.length)
                     return this.$withBaseUrl(item.media.original[0])
                 else if (item.media && item.media.length)
-                    return this.$withBaseUrl(item.media[0].thumb || item.media[0])
+                    return this.$withBaseUrl(item.media[0].original || item.media[0])
                 return false
             } else {
                 return this.$withBaseUrl(item.has_360)

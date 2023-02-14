@@ -48,6 +48,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="gallery-overlay" v-if="showSlider">
                 <div class="gallery-overlay_top d-flex">
                     <template v-if="where === 'announcement'">
@@ -135,9 +136,9 @@
                     </template>
                 </div>
             </div>
+
             <div class="inner-gallery-lightbox" v-touch:swipe.top="handleSwipeTop">
                 <template v-if="isMobileBreakpoint">
-
                     <FsLightbox
                         :zoomIncrement="0"
                         :toggler="toggleFsLightbox"
@@ -149,26 +150,21 @@
                         :onBeforeClose="onBeforeClose"
                         :disableThumbs="true"
                         :onSlideChange="changeLightboxSlide"
-
                     />
                 </template>
+
                 <transition-group name="fade">
-                    <template
-                        v-if="
-              (showLightbox && isMobileBreakpoint) ||
-              (!isMobileBreakpoint && showImagesSlider)
-            "
-                    >
-                        <div class="blur-bg" :key="0">
-                            <img
-                                :src="
-                  showYtVideo(currentSlide)
-                    ? getYtVideoImage('hq')
-                    : $withBaseUrl(slides.main[currentSlide])
-                "
-                                alt=""
-                            />
-                        </div>
+                    <template v-if="(showLightbox && isMobileBreakpoint) || (!isMobileBreakpoint && showImagesSlider)">
+<!--                        <div class="blur-bg" :key="0">-->
+<!--                            <img-->
+<!--                                :src="-->
+<!--                                  showYtVideo(currentSlide)-->
+<!--                                    ? getYtVideoImage('hq')-->
+<!--                                    : $withBaseUrl(slides.main[currentSlide])-->
+<!--                                "-->
+<!--                                alt=""-->
+<!--                            />-->
+<!--                        </div>-->
                         <div
                             class="blur-bg_announcement-info"
                             :key="1"
@@ -196,6 +192,7 @@
                                 </template>
                             </div>
                         </div>
+
                         <div class="blur-bg_slider" :key="2" v-else>
                             <images-slider
                                 :announcement="announcement"
@@ -206,7 +203,7 @@
                                 @slide-change="currentSlide = $event"
                             >
                                 <template #sidebar v-if="where === 'announcement'">
-                                    <slot/>
+                                    <slot />
                                 </template>
                             </images-slider>
                         </div>
@@ -604,19 +601,19 @@ export default {
 }
 </script>
 <style lang="scss">
-@media only screen and (min-width: 1024px) {
-    .inner-gallery .swiper-wrapper {
-        height: 600px;
+    @media only screen and (min-width: 1024px) {
+        .inner-gallery .swiper-wrapper {
+            height: 600px;
+        }
     }
-}
 
-.fslightbox-source {
-    width: 100vw !important;
-}
+    .fslightbox-source {
+        width: 100vw !important;
+    }
 
-.inner-gallery .swiper-slide {
+    .inner-gallery .swiper-slide {
 
-    display: flex;
-    align-items: center;
-}
+        display: flex;
+        align-items: center;
+    }
 </style>

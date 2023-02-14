@@ -209,7 +209,7 @@
         background: #FEF3F2;
         border: 1px solid #F81734;
         border-radius: 8px;
-        img {
+        svg {
             margin-left: 9px;
         }
     }
@@ -517,7 +517,7 @@
             width: 100%;
             height: 100%;
             //padding-bottom: 59.23%;
-            background-size: contain;
+            background-size: cover;
             background-repeat: no-repeat;
             background-position: center;
             border-radius: 4px;
@@ -724,9 +724,9 @@
 }
 
 .images-slider {
-    width: 100%;
-    min-height: 690px;
-    padding-top: 40px;
+    //width: 100%;
+    //min-height: 690px;
+    //padding-top: 40px;
 
     .iframe {
         padding-bottom: 62%;
@@ -748,15 +748,16 @@
     .toolbar {
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        position: absolute;
-        top: 22px;
-        left: 50%;
-        transform: translate(-50%);
-        padding: 0 25px;
+        justify-content: flex-end;
+        //position: absolute;
+        //top: 22px;
+        //left: 50%;
+        //transform: translate(-50%);
+        //padding: 0 25px;
         color: $white;
         width: 100%;
-        max-width: 1616px;
+        //max-width: 1616px;
+        margin-bottom: 40px;
     }
 
     .swiper-thumb-bg,
@@ -784,8 +785,9 @@
         padding-bottom: 0;
         height: 100%;
         min-height: 491px;
-        width: calc(100% - 120px);
-        margin-left: 60px;
+        //width: calc(100% - 120px);
+        width: 100%;
+        //margin-left: 60px;
 
         img {
             max-width: 100%;
@@ -795,11 +797,72 @@
 
     }
 
+    .quick-info {
+        border: none;
+        background-color: #121926;
+        margin-bottom: 44px !important;
+        h1, h2, span, address {
+            color: #CDD5DF !important;
+        }
+        hr {
+            background-color: #364152;
+        }
+        .chat-button {
+            color: $white;
+            background-color: #030A17;
+            svg {
+                path {
+                    fill: $white;
+                }
+            }
+        }
+        .call-button {
+            span {
+                color: $white !important;
+            }
+        }
+    }
+
+    .btn--add {
+        color: $white;
+        border: none;
+        background-color: rgba(248, 23, 52, 0.72);
+        svg {
+            path {
+                fill: $white;
+            }
+        }
+    }
+
+    .btns {
+        button {
+            color: $white;
+            border: none;
+            background-color: #202939;
+            svg {
+                path {
+                    stroke: #CDD5DF;
+                }
+            }
+        }
+    }
+
+    .vehicle-specs {
+        display: none;
+    }
+
     @media only screen and (min-width: 1024px) {
         .swiper-slide-bg {
             img {
-                max-height: 630px;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                //max-height: 630px;
             }
+        }
+
+        .swiper-wrapper {
+            height: 800px !important;
         }
     }
 
@@ -837,7 +900,15 @@
         }
 
         &_middle {
-            margin: auto 0;
+            margin: auto 24px;
+
+            button {
+                width: 64px;
+                height: 64px;
+                border-radius: 50%;
+                z-index: 10;
+                background: rgba(18, 25, 38, 0.64);
+            }
 
             .d-flex {
                 width: 100%;
@@ -862,14 +933,14 @@
 
     & > .container > .row {
         flex-wrap: nowrap;
-        align-items: center;
+        //align-items: center;
 
         & > .col-auto {
             &:nth-child(1) {
                 width: 150px;
-                height: 630px;
-                padding-top: 34px;
-                padding-bottom: 34px;
+                //height: 630px;
+                //padding-top: 34px;
+                //padding-bottom: 34px;
 
                 .swiper-container {
                     height: 100%;
@@ -906,6 +977,7 @@
         & > .col-auto {
             &:nth-child(2) {
                 width: calc(100% - 150px);
+                //width: 100%;
             }
         }
 
@@ -913,6 +985,7 @@
             & > .col-auto {
                 &:nth-child(2) {
                     max-width: calc(100% - 494px);
+                    //max-width: 1268px;
                 }
             }
 
