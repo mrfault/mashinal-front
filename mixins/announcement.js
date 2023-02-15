@@ -29,7 +29,7 @@ export const AnnouncementDataMixin = {
     box() {
       switch(this.type) {
         case 'cars':
-          if(!this.catalog) return false;
+          if(!this.catalog) return this.$t(this.announcement.box.name);
           return this.$t('box_values')[this.catalog.main[' ']['box']];
         case 'moto':
           if (!this.motoOptions.config) return false;
@@ -182,7 +182,7 @@ export const AnnouncementDataMixin = {
       return this.getAnnouncementCapacity(this.announcement);
     },
     power() {
-      if(!this.catalog) return this.announcement.power;
+      if(!this.catalog) return this.announcement.power + ' ' + this.$t('char_h_power');
       let combined_power = this.catalog?.specifications?.dvigatel?.combined_power;
 
       combined_power = combined_power ? combined_power[0] : null;
