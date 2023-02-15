@@ -197,7 +197,7 @@ export default {
         }
     },
     head() {
-        let announcementTitle = `${this.catalog.brand.name} ${this.$translateHard(this.catalog.model.name)}`;
+        let announcementTitle = `${this.announcement.brand.name} ${this.$translateHard(this.announcement.model.name)}`;
         let title = `${this.$t(`meta-title_announcement-${this.announcement.is_new ? 'new' : 'used'}`, {announce: `${announcementTitle}, ${this.announcement.year}`})}`;
         let description = `${announcementTitle}, ${this.$t('meta-descr_announcement', {announce: `${this.announcement.price}`})}`;
         let image = this.getAnnouncementImage(this.announcement);
@@ -205,8 +205,8 @@ export default {
             category: 'Car',
             id: this.announcement.id_unique,
             autosalon: this.announcement.user.autosalon,
-            brand: this.catalog.brand.name,
-            model: this.catalog.model.name.replace('серия', 'seriya').replace('класс', 'klass'),
+            brand: this.announcement.brand.name,
+            model: this.announcement.model.name.replace('серия', 'seriya').replace('класс', 'klass'),
             year: this.announcement.year,
             price: {amount: this.announcement.price_int, currency: this.announcement.currency_id},
             services: this.announcement.type,
@@ -255,14 +255,14 @@ export default {
             }
             // insert announcement data into form
             if (type.includes('brand')) {
-                form.additional_brands[0].brand = this.catalog.brand.id;
-                form.additional_brands[0].brand_slug = this.catalog.brand.slug;
+                form.additional_brands[0].brand = this.announcement.brand.id;
+                form.additional_brands[0].brand_slug = this.announcement.brand.slug;
             }
             if (type.includes('model')) {
-                form.additional_brands[0].model = this.catalog.model.id;
-                form.additional_brands[0].model_slug = this.catalog.model.slug;
+                form.additional_brands[0].model = this.announcement.model.id;
+                form.additional_brands[0].model_slug = this.announcement.model.slug;
             }
-            if (type.includes('generation')) {
+            if (type.includes('generation') && this.catalog) {
                 form.additional_brands[0].generation = this.catalog.generation.id;
             }
 
@@ -284,6 +284,7 @@ export default {
                 : this.announcement.options;
         },
         hasComplects() {
+            if(!this.getComplectOptions) return false;
             return Object.keys(this.getComplectOptions).length;
         },
         getCarHealth() {
@@ -297,12 +298,12 @@ export default {
         crumbs() {
             return [
                 {name: this.$t('cars'), route: '/cars'},
-                {name: this.catalog.brand.name, route: this.getFilterLink('brand')},
-                {name: this.catalog.model.name, route: this.getFilterLink('brand-model')},
-                {
-                    name: this.$translateHard(this.catalog.generation.name[this.locale]),
+                {name: this.announcement.brand.name, route: this.getFilterLink('brand')},
+                {name: this.announcement.model.name, route: this.getFilterLink('brand-model')},
+                /*{
+                    name: this.$translateHard(this.announcement.generation.name[this.locale]),
                     route: this.getFilterLink('brand-model-generation')
-                },
+                },*/
                 {name: '#' + this.announcement.id_unique}
             ]
         }

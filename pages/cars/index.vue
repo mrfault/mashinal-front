@@ -11,7 +11,7 @@
       />
       <template v-if="!$route.query.saved">
         <grid
-          v-if="carsAnnouncements.total > 0"
+          v-if="carsAnnouncements.data.length > 0"
           :announcements="carsAnnouncements.data"
           :paginate="$paginate(carsAnnouncements)"
           :title="$t('announcements')"
