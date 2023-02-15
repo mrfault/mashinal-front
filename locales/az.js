@@ -1313,6 +1313,7 @@ export default {
   only_3_free_ads_can_be_added_in_the_last_90_days:
     "Son 90 gün ərzində 3 pulsuz elan yerləşdirmək olar",
   only_official: "Ancaq rəsmi",
+  only_official_salons: "Yalnız rəsmi avtosalonlar",
   "Opening trunk without hands": "Baqajın əlsiz açılması",
   operating: "İşlək",
   operating_fee: "Əməliyyat haqqı",
@@ -2290,6 +2291,7 @@ export default {
   info_is_not_correct: "Məlumatlar düzgün deyil",
   auto_salons: "Avtosalonlar",
   official_salons: "Rəsmi nümayəndələr",
+  official_salons_2: "rəsmi nümayəndə",
   autosalon: "Avtosalon",
   size: "Ölçü",
   garage_error_2001: "Xidmət müvəqqəti olaraq dayandırılıb",

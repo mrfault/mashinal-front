@@ -155,11 +155,11 @@
   </div>
 </template>
 <style lang="scss">
-.salon-count {
-  padding-left: 25px;
-  margin-right: 25px;
-  padding-right: 15px !important;
-}
+//.salon-count {
+//  padding-left: 25px;
+//  margin-right: 25px;
+//  padding-right: 15px !important;
+//}
 .text-with-line {
   h2.title-with-line {
     span {

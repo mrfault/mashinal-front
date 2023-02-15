@@ -1,0 +1,70 @@
+<template>
+    <div class="salonBanner" :style="`background: url('${bg}') center center / cover no-repeat`">
+        <slot name="content" />
+
+        <h4 class="salonBanner__title">{{ title }}</h4>
+    </div>
+</template>
+
+<script>
+    export default {
+        props: {
+            bg: {
+                type: String,
+                default: '/img/salon-bg.png'
+            },
+            title: {
+                type: String,
+                default: 'Title'
+            }
+        }
+    }
+</script>
+
+<style lang="scss">
+    .salonBanner {
+        position: relative;
+        width: 100%;
+        height: 280px;
+        padding: 48px 64px;
+        border-radius: 16px;
+        overflow: hidden;
+        &:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(90deg, #081A3E -10.98%, rgba(0, 0, 0, 0) 100%);
+        }
+        &__title {
+            position: absolute;
+            font-weight: 700;
+            font-size: 40px;
+            line-height: 48px;
+            color: #FFFFFF;
+            margin: 0;
+            bottom: 48px;
+            z-index: 2;
+        }
+
+        .breadcrumbs {
+            position: absolute;
+            z-index: 2;
+            bottom: 104px;
+            margin: 0;
+            ul {
+                li {
+                    a, span, i {
+                        color: #FFFFFF;
+                        opacity: 0.9;
+                    }
+                    span,i {
+                        margin-top: 3px;
+                    }
+                }
+            }
+        }
+    }
+</style>

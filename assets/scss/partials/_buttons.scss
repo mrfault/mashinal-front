@@ -517,15 +517,16 @@
 }
 
 .card.with-btns {
-    margin-top: 35px;
-    border-top-left-radius: 0;
+    margin-top: 32px;
+    border-radius: 12px;
+    //border-top-left-radius: 0;
 
     .card-btns {
-        margin: -59px -25px 25px;
-        border-radius: 4px 4px 0 0;
+        //margin: -59px -25px 25px;
+        //border-radius: 4px 4px 0 0;
         overflow: hidden;
         background-color: $white;
-        max-width: 300px;
+        max-width: 240px;
     }
 }
 
@@ -548,6 +549,25 @@
         &:hover:before,
         &.active::before {
             content: none;
+        }
+    }
+}
+
+.form-buttons {
+    .btn {
+        height: 48px;
+        padding: 15px 8px;
+        border-radius: 8px;
+        border: none;
+        color: #4B5565;
+        background-color: transparent;
+        &.active {
+            color: #FFFFFF;
+            background-color: #155EEF;
+        }
+        span {
+            font-size: 15px;
+            line-height: 18px;
         }
     }
 }

@@ -78,29 +78,22 @@
                                         >
                                             <iframe
                                                 v-if="showIframe"
-                                                :src="`https://www.youtube.com/embed/${
-                          slide.split('?v=')[1]
-                        }`"
+                                                :src="`https://www.youtube.com/embed/${slide.split('?v=')[1]}`"
                                                 frameborder="0"
                                                 allowfullscreen
                                             ></iframe>
                                         </div>
                                         <div
                                             class="video"
-                                            v-else-if="
-                        slides.types && slides.types[index] === 'video'
-                      "
-                                        >
+                                            v-else-if="slides.types && slides.types[index] === 'video'">
                                             <video ref="video" controls>
                                                 <source :src="slide"/>
                                             </video>
                                         </div>
                                         <div
                                             class="position-relative"
-                                            style="width: 100%;overflow: hidden;"
-                                            v-else-if="
-                        slides.types && slides.types[index] === 'custom'
-                      "
+                                            style="width: 100%; height: 100%; overflow: hidden;"
+                                            v-else-if="slides.types && slides.types[index] === 'custom'"
                                         >
                                             <no-ssr>
                                                 <div v-if="announcement.interior_360" class="interior-switcher">

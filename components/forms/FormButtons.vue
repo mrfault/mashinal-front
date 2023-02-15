@@ -6,9 +6,9 @@
 
         <div
             :class="['d-flex',
-                         `col${groupBy > 0 ? ('-' + ([1,2,3,4,6,12].includes(groupBy) ? 12 / groupBy : 'auto')) : ''}`,
-                         {'mb-2 mb-lg-3': isMultirow}, {'active': isActive(option)},
-                         {'flex-column':  !singleRow}
+                    `col${groupBy > 0 ? ('-' + ([1,2,3,4,6,12].includes(groupBy) ? 12 / groupBy : 'auto')) : ''}`,
+                     {'mb-2 mb-lg-3': isMultirow}, {'active': isActive(option)},
+                     {'flex-column':  !singleRow}
                      ]"
              v-for="(option, index) in formattedOptions"
              :key="index"
