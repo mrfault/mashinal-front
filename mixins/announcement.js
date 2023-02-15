@@ -29,6 +29,7 @@ export const AnnouncementDataMixin = {
     box() {
       switch(this.type) {
         case 'cars':
+          if(!this.catalog) return this.$t(this.announcement.box.name);
           return this.$t('box_values')[this.catalog.main[' ']['box']];
         case 'moto':
           if (!this.motoOptions.config) return false;
@@ -48,6 +49,7 @@ export const AnnouncementDataMixin = {
     gear() {
       switch(this.type) {
         case 'cars':
+          if(!this.catalog) return false;
           return this.$t('type_of_drive_values')[this.catalog.main[' ']['type_of_drive']];
         case 'moto':
           if (!this.motoOptions.config) return false;
@@ -68,6 +70,7 @@ export const AnnouncementDataMixin = {
     engine() {
       switch(this.type) {
         case 'cars':
+          if(!this.catalog) return false;
           return this.$t('engine_values')[this.catalog.main['  ']['engine']];
         case 'moto':
           if (!this.motoOptions.config) return false;
@@ -179,6 +182,7 @@ export const AnnouncementDataMixin = {
       return this.getAnnouncementCapacity(this.announcement);
     },
     power() {
+      if(!this.catalog) return this.announcement.power + ' ' + this.$t('char_h_power');
       let combined_power = this.catalog?.specifications?.dvigatel?.combined_power;
 
       combined_power = combined_power ? combined_power[0] : null;
