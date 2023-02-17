@@ -13,7 +13,7 @@ export const SalonsMixin = {
           }.jpg`
     },
     getTotalCount(salon) {
-      return salon.announcements?.total || salon.announcement_count || 0
+      return salon.announcements?.total || salon.announcements_count || 0
     },
     getConcatPhones(
       phones,
