@@ -14,21 +14,21 @@
         <slot name="after-header"/>
         <main :class="{'min-height-if-notification':  !cookiesHasNotificationOn || storeBannerIsOn, 'min-height-if-not-notification':  cookiesHasNotificationOn || !storeBannerIsOn, 'positionInitial' : checkRouteIfSalon}">
 
-          <site-banner
-            v-if="windowWidth > 1800"
-            :check-emitting="checkEmitting"
-            type="left"
-            absolute
-          />
+<!--          <site-banner-->
+<!--            v-if="windowWidth > 1800"-->
+<!--            :check-emitting="checkEmitting"-->
+<!--            type="left"-->
+<!--            absolute-->
+<!--          />-->
 
           <slot name="nuxt"/>
 
-          <site-banner
-            v-if="windowWidth > 1800"
-            :check-emitting="checkEmitting"
-            type="right"
-            absolute
-          />
+<!--          <site-banner-->
+<!--            v-if="windowWidth > 1800"-->
+<!--            :check-emitting="checkEmitting"-->
+<!--            type="right"-->
+<!--            absolute-->
+<!--          />-->
           <scroll-top :style="windowWidth > 1800 ? 'right: calc((100% - 1614px) / 2);':''" v-if="!hideFooter"/>
           <map-switch :style="windowWidth > 1800 ? 'right: calc((100% - 1614px) / 2);':''" v-if="['salons','parts-shops'].includes(routeName)"/>
         </main>

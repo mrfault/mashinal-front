@@ -343,6 +343,12 @@
             }
         }
 
+        .btn-favorite {
+            svg {
+                display: none;
+            }
+        }
+
         a.abs-link {
             z-index: 1;
         }

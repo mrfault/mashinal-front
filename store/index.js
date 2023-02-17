@@ -317,10 +317,8 @@ export const getters = {
   sellGenerations: s => s.sellGenerations,
   sellEngines: s => Object.keys(s.sellEngines).map(key => s.sellEngines[key]),
   sellGearing: s => Object.keys(s.sellGearing).map(key => s.sellGearing[key]),
-  sellTransmissions: s =>
-    Object.keys(s.sellTransmissions).map(key => s.sellTransmissions[key]),
-  sellModifications: s =>
-    Object.keys(s.sellModifications).map(key => s.sellModifications[key]),
+  sellTransmissions: s => Object.keys(s.sellTransmissions).map(key => s.sellTransmissions[key]),
+  sellModifications: s => Object.keys(s.sellModifications).map(key => s.sellModifications[key]),
   sellPreviewData: s => s.sellPreviewData,
   // salons
   salonsList: s => s.salonsList,

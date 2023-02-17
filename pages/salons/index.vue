@@ -39,7 +39,7 @@
 <!--                    <salon-filters-form :count="salonsFiltered.length"/>-->
                 </template>
 
-                <banners type="2" class="mt-5"/>
+                <banners type="2" class="mt-5" />
 
                 <div class="title grid-title mt-2" v-if="isMobileBreakpoint">
                     <h2>
