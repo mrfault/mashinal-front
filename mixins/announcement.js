@@ -49,9 +49,9 @@ export const AnnouncementDataMixin = {
     gear() {
       switch(this.type) {
         case 'cars':
-          if(!this.catalog) return false;
+          if(!this.catalog) return this.$t(this.announcement.gear.name);
           return this.$t('type_of_drive_values')[this.catalog.main[' ']['type_of_drive']];
-        case 'moto':
+      /*  case 'moto':
           if (!this.motoOptions.config) return false;
           return this.$t(getName(this.announcement.gear_id, this.motoOptions.config.drive.sell_values[this.motoTypeKey]));
         case 'commercial':
@@ -62,7 +62,7 @@ export const AnnouncementDataMixin = {
             {name: this.$t('polnyy'), key: 4},
             {name: this.$t('polnyy_podkluchayemiy'), key: 5},
             {name: this.$t('permanent_vvvall_wheel_drive'), key: 6}
-          ]);
+          ]);*/
         default:
           return null;
       }
