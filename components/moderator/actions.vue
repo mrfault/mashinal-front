@@ -226,7 +226,7 @@ export default {
           type: 'error',
         })
         this.$emit('handleLoading', false)
-      } else if ((this.type == 'cars') && (!this.form.car_number && !this.form.vin)) {
+      } else if ((this.type == 'cars') && (!this.form.car_number && !this.form.vin) && !this.user.is_autosalon) {
         this.$toasted.show(this.$t('Avtomobilin nömrəsi və ya VİN nömrə" boş ola bilməz.'), {
           type: 'error',
         })
