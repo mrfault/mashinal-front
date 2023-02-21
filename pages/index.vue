@@ -1,6 +1,7 @@
 <template>
     <!--    :style="!isMobileBreakpoint ? 'margin-top: -40px;' : ''"-->
     <div class="pages-index">
+
         <!-- slider desktop -->
         <div class="container">
             <client-only>
@@ -113,6 +114,7 @@
                 @pending="pending = true"
             />
         </div>
+
         <!-- grid -->
         <div class="overflow-hidden">
             <grid
@@ -127,6 +129,7 @@
                 :pending="pending"
             />
         </div>
+
         <infinite-loading
             :per-page="20"
             :per-page-b="4"

@@ -2220,6 +2220,7 @@ export default {
    "chance_to_place_an_ann":"Возможность разместить автомобиль с панорамой",
    "place_panoramic_photo_from_mobile_ph":"Размести панораму своего автомобиля с моб.приложения",
    "auto_salons": "Автосалоны",
+  "auto_salon_ads": "Объявления автосалона",
    "official_salons":"Официальные салоны",
    "official_salons_2":"официальных салона",
    "size":"Размер",

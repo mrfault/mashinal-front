@@ -10,8 +10,8 @@
                     />
                 </div>
 
-                <div class="col-lg-12 col-xl-6 offset-xl-2 mb-2 mb-lg-3 d-none d-lg-block">
-                    <div class="row">
+<!--                <div class="col-lg-12 col-xl-6 offset-xl-2 mb-2 mb-lg-3 d-none d-lg-block">-->
+<!--                    <div class="row">-->
 <!--                        <div class="col-4" v-if="!onlySavedSearch">-->
 <!--                            <nuxt-link-->
 <!--                                custom-->
@@ -68,8 +68,8 @@
 <!--                                </a>-->
 <!--                            </nuxt-link>-->
 <!--                        </div>-->
-                    </div>
-                </div>
+<!--                    </div>-->
+<!--                </div>-->
 
                 <template v-if="assistant">
                     <div class="col-12">
@@ -236,9 +236,9 @@
                                             :label="$t('fuel')"
                                             v-model="form.engine_type"
                                             :options="
-                        bodyOptions.main.default_options['tip-dvigatelya']
-                          .values
-                      "
+                                                bodyOptions.main.default_options['tip-dvigatelya']
+                                                  .values
+                                              "
                                             multiple
                                             name-in-value
                                             translate-options
@@ -249,8 +249,8 @@
                                             :label="$t('korobka')"
                                             v-model="form.korobka"
                                             :options="
-                        bodyOptions.main.default_options['korobka'].values
-                      "
+                                                bodyOptions.main.default_options['korobka'].values
+                                              "
                                             multiple
                                             name-in-value
                                             translate-options
@@ -261,6 +261,7 @@
                                 <div class="col-3">
                                     <MinMaxSearch
                                         :placeholder="['Qiymət, min.', 'maks.']"
+                                        :selectedValue="{ min: form.price_from, max: form.price_to }"
                                         @change="form.price_from = $event[0].value, form.price_to = $event[1].value"
                                     />
 
@@ -299,6 +300,7 @@
                                 <div class="col-3">
                                     <MinMaxSearch
                                         :placeholder="['Yürüş, min.', 'maks.']"
+                                        :selectedValue="{ min: form.mileage_from, max: form.mileage_to }"
                                         @change="form.mileage_from = $event[0].value, form.mileage_to = $event[1].value"
                                     />
 
@@ -313,6 +315,7 @@
                                 <div class="col-3">
                                     <MinMaxSearch
                                         :placeholder="['Motor, min.', 'maks.']"
+                                        :selectedValue="{ min: form.min_capacity, max: form.max_capacity }"
                                         @change="form.min_capacity = $event[0].value, form.max_capacity = $event[1].value"
                                     />
 
@@ -1210,7 +1213,6 @@ export default {
         },
     },
     mounted() {
-
         this.$nuxt.$on('saved-search-created', () => {
             if (this.singleSavedSearch.id) {
                 this.selected.push(this.singleSavedSearch.id)
@@ -1252,11 +1254,13 @@ export default {
             }
         },
         async setBrand(id, index) {
-            let brand = this.brands.find((option) => option.id == id)
-            let slug = brand?.slug || ''
-            this.$set(this.form.additional_brands[index], 'brand', id)
-            this.$set(this.form.additional_brands[index], 'brand_slug', slug)
-            ;[
+            let brand = this.brands.find((option) => option.id == id);
+            let slug = brand?.slug || '';
+
+            this.$set(this.form.additional_brands[index], 'brand', id);
+            this.$set(this.form.additional_brands[index], 'brand_slug', slug);
+
+            [
                 'model',
                 'model_slug',
                 'model_name',

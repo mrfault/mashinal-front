@@ -164,20 +164,20 @@
     </div>
 </template>
 <style lang="scss">
-    .salon-count {
-        font-weight: 600;
-        font-size: 20px;
-        line-height: 24px;
-        color: #4B5565;
-    }
-
-    .text-with-line {
-        h2.title-with-line {
-            span {
-                background-color: #f3f7fc;
-            }
-        }
-    }
+    //.salon-count {
+    //    font-weight: 600;
+    //    font-size: 20px;
+    //    line-height: 24px;
+    //    color: #4B5565;
+    //}
+    //
+    //.text-with-line {
+    //    h2.title-with-line {
+    //        span {
+    //            background-color: #f3f7fc;
+    //        }
+    //    }
+    //}
 
     img {
         -webkit-backface-visibility: hidden;

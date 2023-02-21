@@ -1,10 +1,10 @@
 <template>
     <div :class="['minMaxSearch', className]">
         <template v-if="className === 'dropdown'">
-            <div :class="['minMaxSearch__divider', {selected: selectedItems.min}]" @click.stop="addActive">
+            <div :class="['minMaxSearch__divider', { selected: dropdownItems.min }]" @click.stop="addActive">
                 <div class="minMaxSearch__head">
                     <span>{{ placeholder[0] }}</span>
-                    <span v-if="selectedItems.min">{{ selectedItems.min }}</span>
+                    <span v-if="dropdownItems.min">{{ dropdownItems.min }}</span>
 
                     <icon :name="'chevron-down'"/>
                 </div>
@@ -21,10 +21,10 @@
                 </ul>
             </div>
 
-            <div :class="['minMaxSearch__divider', {selected: selectedItems.max}]" @click.stop="addActive">
+            <div :class="['minMaxSearch__divider', { selected: dropdownItems.max }]" @click.stop="addActive">
                 <div class="minMaxSearch__head">
                     <span>{{ placeholder[1] }}</span>
-                    <span v-if="selectedItems.max">{{ selectedItems.max }}</span>
+                    <span v-if="dropdownItems.max">{{ dropdownItems.max }}</span>
 
                     <icon :name="'chevron-down'"/>
                 </div>
@@ -48,12 +48,14 @@
                 v-for="item in items"
                 :key="item.id"
             >
+<!--                <pre>{{selectedValue}}</pre>-->
                 <span class="label" v-if="item.value">{{ item.placeholder }}</span>
 <!--                <span class="value" v-if="item.value">{{ numberWithSpaces(item.value) }}</span>-->
                 <input
-                    type="text"
+                    type="number"
                     :placeholder="item.placeholder"
                     v-model.trim="item.value"
+                    @input="$emit('change', items)"
                 >
             </div>
         </template>
@@ -69,7 +71,7 @@
                     { id: 1, placeholder: '', value: '' },
                     { id: 2, placeholder: '', value: '' }
                 ],
-                selectedItems: {
+                dropdownItems: {
                     min: '',
                     max: ''
                 }
@@ -87,8 +89,8 @@
                 e.target.closest('.minMaxSearch__divider').classList.toggle('active');
             },
             selectItem(type, item) {
-                (type === 'min') ? this.selectedItems.min = item : this.selectedItems.max = item;
-                this.$emit('change', this.selectedItems);
+                (type === 'min') ? this.dropdownItems.min = item : this.dropdownItems.max = item;
+                this.$emit('change', this.dropdownItems);
             },
             close() {
                 document.querySelectorAll('.minMaxSearch__divider').forEach(item => {
@@ -107,6 +109,8 @@
             this.items[1].placeholder = this.placeholder[1];
 
             this.initialOptions = this.options;
+            this.items[0].value = this.selectedValue.min;
+            this.items[1].value = this.selectedValue.max;
 
             window.addEventListener('click', this.close);
         },
@@ -129,6 +133,10 @@
                 default() {
                     return []
                 }
+            },
+            selectedValue: {
+                type: Object,
+                default() { return {} }
             }
         }
     }

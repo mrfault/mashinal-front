@@ -10,7 +10,10 @@
                          role="img"
                          aria-label="">
                         <span class="image-360-pin"
-                              v-if="index === 0 && announcement.images_360 && announcement.images_360.length">360<sup>&#176;</sup></span>
+                              v-if="index === 0 && announcement.images_360 && announcement.images_360.length"
+                        >
+                            360<sup>&#176;</sup>
+                        </span>
                     </div>
                 </div>
             </div>

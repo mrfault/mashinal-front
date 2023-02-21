@@ -2290,6 +2290,7 @@ export default {
   plate_number_of_vehicle: "NV-nin nömrəsi",
   info_is_not_correct: "Məlumatlar düzgün deyil",
   auto_salons: "Avtosalonlar",
+  auto_salon_ads: "Avtosalonun elanları",
   official_salons: "Rəsmi nümayəndələr",
   official_salons_2: "rəsmi nümayəndə",
   autosalon: "Avtosalon",
