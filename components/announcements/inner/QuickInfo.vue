@@ -83,7 +83,8 @@
         <chat-button :announcement="announcement" has-after-login />
       </div>
       <div class="col-12 mt-2 mt-lg-3" v-if="!isMobileBreakpoint">
-        <call-button :phone="contact.phone" />
+        <call-button-multiple v-if="announcement.is_autosalon" :phones="announcement.user.autosalon.phones" />
+        <call-button v-else :phone="contact.phone" />
       </div>
       <div class="col-12 mt-2 mt-lg-3" v-if="!isMobileBreakpoint && announcement.status === 2">
         <div class="status"> {{ $t('announcement_pending') }}</div>
@@ -163,6 +164,7 @@ import MonetizationButton from '~/components/announcements/MonetizationButton'
 import MonetizationStatsButton from '~/components/announcements/MonetizationStatsButton'
 import PayAnnouncementButton from '~/components/announcements/PayAnnouncementButton'
 import ShowMapButton from '~/components/elements/ShowMapButton'
+import CallButtonMultiple from "~/components/announcements/CallButtonMultiple.vue";
 
 export default {
   props: {
@@ -175,6 +177,7 @@ export default {
     }
   },
   components: {
+    CallButtonMultiple,
     RestoreButton,
     DeactivateButton,
     EditButton,
