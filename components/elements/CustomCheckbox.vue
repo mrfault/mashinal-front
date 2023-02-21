@@ -24,12 +24,19 @@
             text: {
                 type: String,
                 default: 'Text'
+            },
+            checkedValue: {
+                type: Boolean,
+                default: false
             }
         },
         watch: {
             checked() {
                 this.$emit('check', this.checked);
             }
+        },
+        mounted() {
+            this.checked = this.checkedValue;
         }
     }
 </script>

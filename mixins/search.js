@@ -144,8 +144,31 @@ export const SearchMixin = {
       }
     },
     resetForm(submit = false) {
-      this.setFormData({});
-      if (submit) this.submitForm();
+      // this.setFormData({});
+      // if (submit) this.submitForm();
+
+      this.form.additional_brands[0].brand = '';
+      this.form.additional_brands[0].brand_slug = '';
+      this.form.additional_brands[0].model = '';
+      this.form.additional_brands[0].model_name = '';
+      this.form.additional_brands[0].model_slug = '';
+      this.form.additional_brands[0].generation = '';
+      this.form.additional_brands[0].generation_name = '';
+      this.form.additional_brands[0].generation_slug = '';
+
+      this.form.min_year = '';
+      this.form.max_year = '';
+
+      this.form.price_from = '';
+      this.form.price_to = '';
+
+      console.log('this.form', this.form);
+      console.log('car_filter', this.$route)
+      // this.$route.query.car_filter = ''
+
+      // console.log('car_filter', this.$route.query.car_filter)
+
+      // this.submitForm();
     },
     getOptionValue(name, key) {
       return this[`get${name}Options`].find(option => option.key === key)?.name || '';
@@ -203,10 +226,7 @@ export const SearchMixin = {
       return years;
     },
     goToSearch(path) {
-
-
       this.$router.push(`${path}?${this.meta.param}=${encodeURI(JSON.stringify(this.getFormData()))}`);
-
     },
     extendOptions() {
       this.collapsed = false;

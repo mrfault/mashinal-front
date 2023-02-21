@@ -192,8 +192,10 @@
                                         :className="'dropdown'"
                                         :placeholder="['İl , min.', 'maks.']"
                                         :options="getYearOptions(false, form.min_year)"
+                                        :selectedValue="{ min: form.min_year, max: form.max_year }"
                                         @change="form.min_year = $event.min, form.max_year = $event.max"
                                     />
+
 <!--                                    <form-select-->
 <!--                                        :label="$t('years')"-->
 <!--                                        custom-->
@@ -347,6 +349,7 @@
                                             <CustomCheckbox
                                                 :id="'credit'"
                                                 :text="$t('credit')"
+                                                :checkedValue="form.credit"
                                                 @check="form.credit = $event"
                                             />
 
@@ -362,6 +365,7 @@
                                             <CustomCheckbox
                                                 :id="'barter'"
                                                 :text="$t('barter')"
+                                                :checkedValue="form.exchange_possible"
                                                 @check="form.exchange_possible = $event"
                                             />
 <!--                                            <form-checkbox-->
@@ -376,6 +380,7 @@
                                             <CustomCheckbox
                                                 :id="'with_video'"
                                                 :text="'360'"
+                                                :checkedValue="form.with_video"
                                                 @check="form.with_video = $event"
                                             />
 <!--                                            <form-checkbox-->
@@ -423,7 +428,6 @@
                                         <path d="M9.97 14.53L2.5 22" stroke="#F81734" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                         <path d="M22.5 2L15.03 9.47" stroke="#F81734" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                     </svg>
-
                                     <!--                                    <icon name="options"/>-->
                                 </div>
                             </div>
@@ -431,20 +435,15 @@
                             <div class="col-3">
                                 <button
                                     type="button"
-                                    :class="[
-                                      'btn',
-                                      'btn-close',
-                                      'full-width',
-                                      { 'pointer-events-none': pending },
-                                    ]"
-                                    @click="resetForm(!(advanced || assistant))"
+                                    :class="['btn', 'btn-close', 'full-width', { 'pointer-events-none': pending }]"
+                                    @click="resetForm"
                                 >
+<!--                                    @click="resetForm(!(advanced || assistant))"-->
                                     {{ $t('clear_search') }}
 
                                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M12.8877 1.12784C12.8491 1.08925 12.8033 1.05864 12.7529 1.03776C12.7025 1.01687 12.6485 1.00611 12.5939 1.00611C12.5393 1.00611 12.4853 1.01687 12.4349 1.03776C12.3845 1.05864 12.3387 1.08925 12.3001 1.12784L7.00926 6.41872L1.71838 1.12784C1.64179 1.0482 1.53671 1.00224 1.42624 1.00008C1.31577 0.997921 1.20897 1.03974 1.12933 1.11632C1.0497 1.19291 1.00374 1.29799 1.00158 1.40846C0.999418 1.51893 1.04123 1.62573 1.11782 1.70537L1.12784 1.71537L6.41872 7.00626L1.12784 12.2971C1.0482 12.3737 1.00224 12.4788 1.00008 12.5893C0.997921 12.6997 1.03974 12.8065 1.11632 12.8862C1.19291 12.9658 1.29799 13.0118 1.40846 13.0139C1.51893 13.0161 1.62573 12.9743 1.70537 12.8977L1.71537 12.8877L7.00626 7.59681L12.2971 12.8877C12.3751 12.9656 12.4807 13.0094 12.5909 13.0094C12.7011 13.0094 12.8068 12.9656 12.8847 12.8877C12.9626 12.8098 13.0064 12.7041 13.0064 12.5939C13.0064 12.4837 12.9626 12.3781 12.8847 12.3002L7.5938 7.00926L12.8847 1.71838C12.9233 1.6798 12.9539 1.634 12.9748 1.5836C12.9957 1.53319 13.0064 1.47917 13.0064 1.4246C13.0064 1.37004 12.9957 1.31602 12.9748 1.26561C12.9539 1.21521 12.9233 1.1694 12.8847 1.13083L12.8877 1.12784Z" fill="#081A3E" stroke="#081A3E" stroke-width="0.9"/>
                                     </svg>
-
                                     <!--                                    <icon name="close"/>-->
                                 </button>
                             </div>
@@ -587,8 +586,8 @@
                                         :label="$t('from')"
                                         v-model="form.min_capacity"
                                         :options="
-                                      bodyOptions.main.custom_options['capacity'].values
-                                    "
+                                          bodyOptions.main.custom_options['capacity'].values
+                                        "
                                         :show-label-on-select="false"
                                         :clear-option="false"
                                         in-select-menu
@@ -598,8 +597,8 @@
                                         :label="$t('to')"
                                         v-model="form.max_capacity"
                                         :options="
-                      bodyOptions.main.custom_options['capacity'].values
-                    "
+                                          bodyOptions.main.custom_options['capacity'].values
+                                        "
                                         :show-label-on-select="false"
                                         :clear-option="false"
                                         in-select-menu
@@ -1026,20 +1025,6 @@
     </div>
 </template>
 
-<style>
-.btn-disabled {
-    opacity: 0.2;
-    pointer-events: none;
-
-}
-
-@media screen and (min-width: 768px) {
-    .exclude-popup {
-        width: 50%;
-    }
-}
-
-</style>
 <script>
 import {mapGetters, mapActions} from 'vuex'
 
@@ -1372,3 +1357,17 @@ export default {
     },
 }
 </script>
+
+<style>
+    .btn-disabled {
+        opacity: 0.2;
+        pointer-events: none;
+
+    }
+
+    @media screen and (min-width: 768px) {
+        .exclude-popup {
+            width: 50%;
+        }
+    }
+</style>

@@ -10,6 +10,13 @@
                 </div>
 
                 <ul class="minMaxSearch__list">
+                    <li class="minMaxSearch__list-item" @click="dropdownItems.min = ''">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 4L4 12" stroke="#2970FF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M4 4L12 12" stroke="#2970FF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>Sıfırla</span>
+                    </li>
                     <li
                         class="minMaxSearch__list-item"
                         v-for="item in initialOptions"
@@ -30,6 +37,13 @@
                 </div>
 
                 <ul class="minMaxSearch__list">
+                    <li class="minMaxSearch__list-item" @click="dropdownItems.max = ''">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 4L4 12" stroke="#2970FF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M4 4L12 12" stroke="#2970FF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>Sıfırla</span>
+                    </li>
                     <li
                         class="minMaxSearch__list-item"
                         v-for="item in initialOptions"
@@ -66,15 +80,15 @@
     export default {
         data() {
             return {
+                dropdownItems: {
+                    min: '',
+                    max: ''
+                },
                 initialOptions: [],
                 items: [
                     { id: 1, placeholder: '', value: '' },
                     { id: 2, placeholder: '', value: '' }
-                ],
-                dropdownItems: {
-                    min: '',
-                    max: ''
-                }
+                ]
             }
         },
         methods: {
@@ -91,31 +105,16 @@
             selectItem(type, item) {
                 (type === 'min') ? this.dropdownItems.min = item : this.dropdownItems.max = item;
                 this.$emit('change', this.dropdownItems);
+
+                this.close();
             },
             close() {
-                document.querySelectorAll('.minMaxSearch__divider').forEach(item => {
-                    item.classList.remove('active');
-                })
+                setTimeout(() => {
+                    document.querySelectorAll('.minMaxSearch__divider').forEach(item => {
+                        item.classList.remove('active');
+                    });
+                }, 10);
             }
-        },
-        // computed: {
-        //     aaa(value) {
-        //         return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
-        //         // this.$emit('change', this.items);
-        //     },
-        // },
-        mounted() {
-            this.items[0].placeholder = this.placeholder[0];
-            this.items[1].placeholder = this.placeholder[1];
-
-            this.initialOptions = this.options;
-            this.items[0].value = this.selectedValue.min;
-            this.items[1].value = this.selectedValue.max;
-
-            window.addEventListener('click', this.close);
-        },
-        beforeDestroy() {
-            window.addEventListener('click', this.close);
         },
         props: {
             className: {
@@ -138,6 +137,38 @@
                 type: Object,
                 default() { return {} }
             }
+        },
+        watch: {
+            dropdownItems: {
+                handler(newVal, oldVan) {
+                    console.log('newVal', newVal)
+                    console.log('oldVan', oldVan)
+                },
+                deep: true
+            }
+        },
+        // computed: {
+        //     aaa(value) {
+        //         return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
+        //         // this.$emit('change', this.items);
+        //     },
+        // },
+        mounted() {
+            this.items[0].placeholder = this.placeholder[0];
+            this.items[1].placeholder = this.placeholder[1];
+
+            this.initialOptions = this.options;
+
+            this.items[0].value = this.selectedValue.min;
+            this.items[1].value = this.selectedValue.max;
+
+            this.dropdownItems.min = this.selectedValue.min;
+            this.dropdownItems.max = this.selectedValue.max;
+
+            window.addEventListener('click', this.close);
+        },
+        beforeDestroy() {
+            window.addEventListener('click', this.close);
         }
     }
 </script>
@@ -252,6 +283,22 @@
                 z-index: 10;
                 overflow-y: auto;
                 //opacity: 0;
+
+                &::-webkit-scrollbar {
+                    width: 5px; // Ширина скролла.
+                }
+                //&::-webkit-scrollbar-track {
+                //    background-color: silver; // Цвет трека.
+                //}
+                &::-webkit-scrollbar-thumb {
+                    background-color: #9AA4B2; // Цвет скролла.
+                    border-radius: 4px;  // Округление скролла.
+                    border: 3px solid #9AA4B2; // Обводка скролла.
+                }
+                //&::-webkit-scrollbar-thumb:hover {
+                //    background-color: rgb(196, 189, 230); // Цвет скролла при наведении.
+                //}
+
                 &-item {
                     font-size: 16px;
                     line-height: 20px;
@@ -266,6 +313,14 @@
 
                     &:not(:first-child) {
                         margin-top: 5px;
+                    }
+
+                    &:first-child {
+                        display: flex;
+                        align-items: center;
+                        svg {
+                            margin-right: 4px;
+                        }
                     }
                 }
             }
