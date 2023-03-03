@@ -123,6 +123,10 @@ input::-webkit-inner-spin-button {
         border: 1px solid #CDD5DF;
         border-radius: 8px;
 
+        &::placeholder {
+            color: #697586;
+        }
+
         &.invalid {
             &:not(:focus) {
                 color: $red-1;

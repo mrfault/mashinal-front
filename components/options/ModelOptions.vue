@@ -50,6 +50,7 @@
               </div>
             </template>
           </template>
+
           <template v-else-if="sortAlphabetically">
             <div class="col-lg-2" v-for="(col, i) in $chunk(getFilteredOptions, Math.ceil(getFilteredOptions.length / 6))" :key="i"  :class="{'col-lg-6': enlargeColumns}">
               <template v-for="(option, index) in col">
@@ -65,6 +66,7 @@
             </div>
           </template>
           <template v-else>
+<!--             <pre>{{getFilteredOptions}}</pre>-->
             <div class="col-lg-2" v-for="(option, index) in getFilteredOptions" :key="index">
               <div class="model-options_option mb-n1" @click.stop="optionsValue = option">
                 <div class="img" v-if="imgKey">

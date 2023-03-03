@@ -29,6 +29,7 @@
               @close="handleYear()"
               @clean="cleanForm"
             />
+
             <model-options key="model" v-else-if="showModelOptions"
               :options="models"
               :title="$t('model')"

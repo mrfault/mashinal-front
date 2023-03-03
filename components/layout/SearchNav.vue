@@ -4,9 +4,9 @@
       <div class="search-types">
         <div class="container">
           <ul>
-            <li v-for="menu in searchMenus" :key="menu.title">
-              <nuxt-link :to="$localePath(menu.route)" :class="{'active': menu.title === activeType }">
-                {{ $t(menu.title).replace(' Avtomobillər', '') }}
+            <li v-for="menu in searchMenus" :key="menu.name">
+              <nuxt-link :to="$localePath(menu.route)" :class="{'active': menu.name === activeType }">
+                {{ $t(menu.name).replace(' Avtomobillər', '') }}
               </nuxt-link>
             </li>
           </ul>
@@ -62,7 +62,7 @@ export default {
       return 'cars';
     },
     activeMenu() {
-      return this.searchMenus.find(menu => menu.title === this.activeType);
+      return this.searchMenus.find(menu => menu.name === this.activeType);
     },
     activeSlide() {
       return this.activeMenu?.children?.findIndex(menu => {

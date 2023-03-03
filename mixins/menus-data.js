@@ -8,10 +8,10 @@ export const MenusDataMixin = {
 
         searchMenus() {
             return [
-                {title: 'cars', route: '/cars', icon: 'car-1'},
-                {title: 'moto', route: '/moto', children: this.motoMenus, icon: 'moto-1'},
-                {title: 'commercial', route: '/commercial', children: this.commercialMenus, icon: 'commercial-1'},
-                {title: 'parts', route: '/parts', children: this.partsMenus, icon: 'parts'}
+                {name: 'cars', route: '/cars', icon: 'car-1'},
+                {name: 'moto', route: '/moto', children: this.motoMenus, icon: 'moto-1'},
+                {name: 'commercial', route: '/commercial', children: this.commercialMenus, icon: 'commercial-1'},
+                {name: 'parts', route: '/parts', children: this.partsMenus, icon: 'parts'}
             ];
         },
 

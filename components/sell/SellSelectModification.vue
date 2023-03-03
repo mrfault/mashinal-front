@@ -13,6 +13,7 @@
             <span class="star">*</span>
           </span>
         </h2>
+<!--         <pre>{{sellBody}}</pre>-->
         <form-buttons
           v-model="form.car_body_type"
           :btn-class="'primary-outline select-body'"

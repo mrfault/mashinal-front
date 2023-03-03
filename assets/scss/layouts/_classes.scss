@@ -444,3 +444,11 @@ hr {
         height: 34px !important;
     }
 }
+
+.divider {
+    display: flex;
+    gap: 61px;
+    &__item {
+        width: 50%;
+    }
+}

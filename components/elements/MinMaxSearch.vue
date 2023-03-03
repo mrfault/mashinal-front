@@ -138,15 +138,15 @@
                 default() { return {} }
             }
         },
-        watch: {
-            dropdownItems: {
-                handler(newVal, oldVan) {
-                    console.log('newVal', newVal)
-                    console.log('oldVan', oldVan)
-                },
-                deep: true
-            }
-        },
+        // watch: {
+        //     dropdownItems: {
+        //         handler(newVal, oldVan) {
+        //             console.log('newVal', newVal)
+        //             console.log('oldVan', oldVan)
+        //         },
+        //         deep: true
+        //     }
+        // },
         // computed: {
         //     aaa(value) {
         //         return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')

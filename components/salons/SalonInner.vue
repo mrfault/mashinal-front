@@ -205,7 +205,7 @@
 
                 <CustomDropdown
                     :items="filters"
-                    @selected=""
+                    v-model="filter"
                 />
             </h2>
         </div>
@@ -243,6 +243,7 @@ export default {
     data() {
         return {
             pending: false,
+            filter: 'Əvvəlcə ucuz',
             filters: [
                 { id: 1, name: 'Əvvəlcə ucuz' },
                 { id: 2, name: 'Əvvəlcə baha' }

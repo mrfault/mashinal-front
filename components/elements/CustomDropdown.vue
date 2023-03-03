@@ -1,190 +1,331 @@
 <template>
-    <div :class="['customDropdown', className]">
-        <template v-if="className === 'lang'">
-            <div class="customDropdown__head">
-                <span class="customDropdown__selected">{{ selected }}</span>
-                <icon name="chevron-down"/>
-            </div>
+   <div
+      :class="['customDropdown', className, { 'selected' : value, 'disabled' : disabled }]"
+      @click.stop="onClick($event)"
+   >
+      <template>
+         <div class="customDropdown__head">
+            <span class="customDropdown__placeholder">{{ placeholder }}</span>
+            <span class="customDropdown__selected">
+               <template v-if="translate">
+                  {{ (value.name) ? $t(value.name) : $t(value) }}
+               </template>
 
-            <ul class="customDropdown__list">
-                <li
-                    class="customDropdown__list-item"
-                    v-for="(item, i) in items"
-                    :key="i"
-                    @click="selectItem(item)"
-                >{{ item }}
-                </li>
-            </ul>
-        </template>
+               <template v-else>
+                  {{ (value.name) ? value.name : value }}
+               </template>
+             </span>
 
-        <template v-else>
-            <div class="customDropdown__head">
-                <span class="customDropdown__selected">
-                    {{ (typeof selected === 'object') ? selected.name : selected }}
-                </span>
+            <icon name="chevron-down"/>
+         </div>
 
-                <icon name="chevron-down" />
-            </div>
+         <ul class="customDropdown__main">
+            <li
+               class="customDropdown__main-item remove"
+               @click="removeValue"
+            >
+               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 4L4 12" stroke="#697586" stroke-width="1.6" stroke-linecap="round"
+                        stroke-linejoin="round"/>
+                  <path d="M4 4L12 12" stroke="#697586" stroke-width="1.6" stroke-linecap="round"
+                        stroke-linejoin="round"/>
+               </svg>
 
-            <ul class="customDropdown__list">
-                <li
-                    class="customDropdown__list-item"
-                    v-for="(item, i) in items"
-                    :key="i"
-                    @click="selectItem(item)"
-                >
-                    {{ (typeof items === 'object') ? item.name : item }}
-                </li>
-            </ul>
-        </template>
-    </div>
+               <span>Sıfırla</span>
+            </li>
+
+            <li
+               class="customDropdown__main-item"
+               v-for="(item, i) in items"
+               :key="i"
+               @click="selectItem(item)"
+            >
+               <template v-if="translate">
+                  {{ (item.name) ? $t(item.name) : $t(item) }}
+               </template>
+
+               <template v-else>
+                  {{ (item.name) ? item.name : item }}
+               </template>
+            </li>
+         </ul>
+      </template>
+   </div>
 </template>
 
 <script>
-    import { mapActions } from "vuex";
+export default {
+   methods: {
+      onClick(e) {
+         document.querySelectorAll('.customDropdown').forEach(dropdown => {
+            dropdown.classList.remove('active');
+         });
+         e.currentTarget.classList.toggle('active');
+      },
 
-    export default {
-        data() {
-            return {
-                selected: ''
-            }
-        },
-        methods: {
-            selectItem(item) {
-                this.selected = item;
-                if (this.className === 'lang') {
-                    this.changeLocale(item);
-                } else {
-                    this.$emit('selected', item);
-                }
-            },
-            ...mapActions(['changeLocale'])
-        },
-        mounted() {
-            this.selected = this.value;
-        },
-        props: {
-            className: {
-                type: String,
-                default: ''
-            },
-            value: {
-                default: 'Selected'
-            },
-            items: {
-                type: Array,
-                default() {
-                    return ['111', '222', '333']
-                }
-            }
-        }
-    }
+      selectItem(item) {
+         if (this.getFullDetails) {
+            this.setValue = item;
+         } else {
+            item.name ? this.setValue = item.name : this.setValue = item;
+         }
+
+         setTimeout(() => this.close(), 0);
+      },
+
+      removeValue() {
+         this.setValue = '';
+      },
+
+      close() {
+         document.querySelectorAll('.customDropdown').forEach(dropdown => {
+            dropdown.classList.remove('active');
+         });
+      }
+   },
+
+   computed: {
+      setValue: {
+         get() {
+            return this.value;
+         },
+         set(value) {
+            this.$emit('input', value);
+         }
+      },
+      // setPlaceholder: {
+      //    get() {
+      //       return this.placeholder;
+      //    },
+      //    set(value) {
+      //       this.$emit('input', value);
+      //    }
+      // }
+   },
+
+   props: {
+      className: {
+         type: String,
+         default: ''
+      },
+      value: {
+         default: ''
+      },
+      placeholder: {
+         type: String,
+         default: ''
+      },
+      getFullDetails: {
+         type: Boolean,
+         default: false
+      },
+      disabled: {
+         type: Boolean,
+         default: false
+      },
+      translate: {
+         type: Boolean,
+         default: true
+      },
+      items: {
+         type: Array,
+         default() {
+            return []
+         }
+      }
+   },
+
+   watch: {
+      disabled(val) {
+         if (val) this.removeValue();
+      }
+   },
+
+   mounted() {
+      // if (this.value) this.setPlaceholder = this.value;
+
+      window.addEventListener('click', this.close);
+   },
+
+   beforeDestroy() {
+      window.addEventListener('click', this.close);
+   }
+}
 </script>
 
 <style lang="scss" scoped>
-    .customDropdown {
-        min-width: 66px;
-        max-height: 48px;
-        z-index: 10;
-        border-radius: 8px;
-        border: 1px solid #CDD5DF;
-        background-color: #FFFFFF;
-        overflow: hidden;
-        &:hover {
-            max-height: unset !important;
+.customDropdown {
+   position: relative;
+   min-width: 66px;
+   z-index: 10;
+   border-radius: 8px;
 
-            .customDropdown__head {
-                i {
-                    transform: rotate(-180deg);
-                }
-            }
-        }
+   &__head {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 52px;
+      padding: 15px 16px;
+      border-radius: 8px;
+      border: 1px solid #CDD5DF;
+      transition: all .3s;
 
-        &__head {
+      .icon-chevron-down {
+         position: absolute;
+         top: 50%;
+         right: 16px;
+         transform: translateY(-50%);
+         transition: all .3s;
+
+         &:before {
+            margin-left: 0;
+         }
+      }
+   }
+
+   &__selected {
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 20px;
+      color: #202939;
+   }
+
+   &__main {
+      position: absolute;
+      top: 62px;
+      left: 0;
+      width: 100%;
+      max-height: 240px;
+      margin: 0;
+      padding: 8px 2px 8px 8px;
+      list-style: none;
+      overflow-y: auto;
+      border-radius: 8px;
+      border: 1px solid #CDD5DF;
+      background-color: #FFFFFF;
+      z-index: 13;
+
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity .1s, visibility .1s;
+
+      &::-webkit-scrollbar {
+         width: 15px; // Ширина скролла.
+      }
+
+      &::-webkit-scrollbar-track {
+         background-color: transparent; // Цвет трека.
+      }
+
+      &::-webkit-scrollbar-thumb:vertical {
+         height: 30px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+         border: 4px solid transparent;
+         background-clip: padding-box;
+         border-radius: 9999px;
+         background-color: #9AA4B2;
+      }
+
+      //&::-webkit-scrollbar-thumb:hover {
+      //   background-color: #9AA4B2; // Цвет скролла при наведении.
+      //}
+
+      &-item {
+         padding: 12px 8px;
+         font-weight: 400;
+         font-size: 16px;
+         line-height: 20px;
+         color: #202939;
+         border-radius: 8px;
+         cursor: pointer;
+         transition: all .3s;
+
+         &:hover {
+            background-color: #EEF2F6;
+         }
+
+         &.remove {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            padding: 14px 16px 0 14px;
 
-            .icon-chevron-down {
-                &:before {
-                    margin-left: 0;
-                }
+            svg {
+               margin: 1px 6px 0 0;
             }
-        }
+         }
+      }
+   }
 
-        &__selected {
-            font-weight: 400;
-            font-size: 16px;
-            line-height: 20px;
-            color: #202939;
-        }
+   &.active {
+      z-index: 11;
 
-        &__list {
-            margin: 0;
-            padding: 8px;
-            list-style: none;
-            &-item {
-                padding: 8px;
-                font-weight: 400;
-                font-size: 16px;
-                line-height: 20px;
-                color: #202939;
-                border-radius: 8px;
-                cursor: pointer;
-                transition: all .3s;
-                &:hover {
-                    background-color: #EEF2F6;
-                }
+      &:hover {
+         .customDropdown__head {
+            border-color: #155EEF;
+
+         }
+      }
+
+      .customDropdown__head {
+         border-color: #155EEF;
+
+         i {
+            transform: translateY(-50%) rotate(-180deg);
+         }
+      }
+
+      .customDropdown__main {
+         border-color: #155EEF;
+
+         opacity: 1;
+         visibility: visible;
+         transition: opacity .3s, visibility;
+      }
+   }
+
+   &.selected {
+      .customDropdown__placeholder {
+         position: absolute;
+         top: 9px;
+         font-weight: 400;
+         font-size: 12px;
+         line-height: 14px;
+         color: #4B5565;
+      }
+
+      .customDropdown__selected {
+         //position: absolute;
+         //bottom: 9px;
+         margin-top: 15px;
+      }
+   }
+
+   &.disabled {
+      pointer-events: none;
+
+      .customDropdown__head {
+         .icon-chevron-down {
+            &:before {
+               color: #CDD5DF;
             }
-        }
+         }
+      }
 
-        &.lang {
-            font-weight: 500;
-            font-size: 16px;
-            line-height: 19px;
-            color: #FFFFFF;
-            max-height: 40px;
-            padding: 6.5px 12px;
-            border-radius: 4px;
-            border: 1px solid #9AA4B2;
-            background-color: #081A3E;
+      .customDropdown__placeholder {
+         color: #4B5565;
+      }
+   }
 
-            .customDropdown__head {
-                margin-top: 2px;
-                padding: 0;
-                text-transform: uppercase;
+   &:hover {
+      .customDropdown__head {
+         border-color: #84ADFF;
+      }
+   }
 
-                span {
-                    margin-right: 6px;
-                }
-
-                i {
-                    font-size: 24px;
-
-                    &:before {
-                        margin: 0;
-                    }
-                }
-            }
-
-            .customDropdown__selected {
-                color: #FFFFFF;
-            }
-
-            .customDropdown__list {
-                padding: 0;
-                &-item {
-                    color: #FFFFFF;
-                    margin-top: 15px;
-                    padding: 0;
-                    text-transform: uppercase;
-                    &:hover {
-                        color: #f81734;
-                        background-color: unset;
-                    }
-                }
-            }
-        }
-    }
+   &::-webkit-scrollbar {
+      width: 0; // Ширина скролла.
+   }
+}
 </style>
