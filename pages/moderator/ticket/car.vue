@@ -168,11 +168,21 @@
                     <div v-if="data.generations && form.car_body_type" class="row">
                       <div class="col-12">
                         <title-with-line-and-reject-reason
+                          :oldGeneration="form.generation_id"
                           :title="$t('generation')"
                           rejectKey="generation"
                           required
                           @change="changeReason"
                         />
+                      </div>
+                      <div class="col-12 mb-1">
+                        <small
+                          v-if="single_announce.generation.id !== form.generation_id"
+                          class="mb-1"
+                          style="color: #081A3E"
+                        >
+                          {{ $t('old_value_2') }}: {{ single_announce.generation.name[locale] }}
+                        </small>
                       </div>
                       <div class="col-12 col-lg-3 ">
                         <form-select
@@ -216,8 +226,6 @@
                       </div>
                     </div>
                     <!--              gearing-->
-
-                    <!--              transmission-->
                     <div v-if="data.gearings && form.engine" class="row">
                       <div class="col-12">
                         <title-with-line-and-reject-reason
@@ -243,6 +251,7 @@
 
                       </div>
                     </div>
+                    <!--              transmission-->
                     <div v-if="data.transmissions && data.transmissions.length && form.gearing" class="row">
                       <div class="col-12">
                         <title-with-line-and-reject-reason

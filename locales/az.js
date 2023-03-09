@@ -2457,6 +2457,7 @@ export default {
   "show_logs": "Loqları göstər",
   "logs": "Loqlar",
   "old_value": "Əvvəlki məna",
+  "old_value_2": "Əvvəlki dəyər",
   "new_value": "Yeni məna",
   "created_at": "Yaradılıb",
   "video_360_successfully_upload":"Video uğurla yükləndi",
