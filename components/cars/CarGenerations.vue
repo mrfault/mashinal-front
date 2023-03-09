@@ -1,21 +1,26 @@
 <template>
-   <div class="carBody">
-      <h4 class="carBody__title">Ban növü</h4>
+   <div class="carGenerations">
+      <h4 class="carGenerations__title">Nəsil</h4>
 
-      <ul class="carBody__items">
-         <li class="carBody__items-item" v-for="item in items" :key="item.id">
+      <ul class="carGenerations__items">
+         <li
+            class="carGenerations__items-item"
+            v-for="item in items"
+            :key="item.id"
+         >
             <input
-               :id="`radio${item.id}`"
+               :id="item.id"
                type="radio"
-               name="carBodyRadio"
+               name="carGenerationsRadio"
                @input="selectItem(item)"
                ref="input"
             >
 
-            <label :for="`radio${item.id}`">
-               <img :src="item.transformed_media" alt="carBody_icon">
-
-               <span>{{ item.name[locale] }}</span>
+            <label
+               :for="item.id"
+               :style="`background: url('${item.car_type_generation[0].transformed_media.main[0]}') center center / cover no-repeat`"
+            >
+               <span>{{ item.short_name[locale] }}</span>
             </label>
          </li>
       </ul>
@@ -27,15 +32,13 @@
       methods: {
          selectItem(item) {
             this.$emit('selected', item.id);
-         },
+         }
       },
 
       props: {
          items: {
             type: Array,
-            default() {
-               return []
-            }
+            default() { return [] }
          },
          disabled: {
             type: Boolean,
@@ -58,8 +61,8 @@
 </script>
 
 <style lang="scss" scoped>
-   .carBody {
-      padding: 16px 16px 0 16px;
+   .carGenerations {
+      padding: 16px;
       border-radius: 8px;
       border: 1px solid #CDD5DF;
       background-color: #FFFFFF;
@@ -81,15 +84,31 @@
          padding: 0;
 
          &-item {
+            position: relative;
+            overflow: hidden;
+            &:before {
+               content: '';
+               position: absolute;
+               left: 1px;
+               bottom: 16px;
+               width: 100%;
+               height: 56px;
+               border-radius: 8px;
+               background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #081A3E 100%);
+               z-index: 2;
+            }
+
             input {
                display: none;
                &:checked {
                   & + {
                      label {
-                        border-color: #155EEF;
-
                         &:before, &:after {
                            content: '';
+                        }
+
+                        span {
+                           left: 34px;
                         }
                      }
                   }
@@ -102,43 +121,41 @@
                align-items: center;
                flex-direction: column;
                margin-bottom: 16px;
-               padding-top: 35px;
                width: 196px;
-               height: 104px;
+               height: 120px;
                border-radius: 8px;
-               border: 1px solid transparent;
-               background-color: #EFF4FF;
                cursor: pointer;
                transition: all .3s;
 
                &:before {
                   position: absolute;
-                  top: 12px;
+                  bottom: 12px;
                   left: 12px;
                   width: 16px;
                   height: 16px;
                   border-radius: 50%;
                   background-color: #155EEF;
+                  z-index: 3;
                }
 
                &:after {
                   position: absolute;
-                  top: 16px;
+                  bottom: 16px;
                   left: 16px;
                   width: 8px;
                   height: 8px;
                   background: url("/icons/check_white.svg") center center / cover no-repeat;
-               }
-
-               img {
-                  max-width: 82px;
+                  z-index: 3;
                }
 
                span {
-                  margin-top: 10px;
+                  position: absolute;
+                  bottom: 12px;
+                  left: 12px;
                   font-size: 13px;
                   line-height: 16px;
-                  color: #202939;
+                  color: #FFFFFF;
+                  z-index: 3;
                }
             }
          }

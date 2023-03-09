@@ -57,6 +57,8 @@
             <span class="star">*</span>
           </span>
         </h2>
+
+<!--         <pre>{{sellGenerations}}</pre>-->
         <form-buttons
           v-model="form.generation_id"
           :btn-class="'primary-outline select-generation'"
@@ -106,6 +108,8 @@
             <span class="star">*</span>
           </span>
         </h2>
+
+<!--         <pre>{{sellEngines}}</pre>-->
         <form-buttons
           v-model="form.gearing"
           :btn-class="'primary-outline'"
