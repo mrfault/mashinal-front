@@ -40,9 +40,9 @@
         :btl="single_announce.btl_announces"
         :logs="single_announce.change_log"
         :user-id="single_announce.user_id"
-        :btlUserName="getBtlUserName"
         :single_announce="single_announce"
       />
+<!--        :btlUserName="getBtlUserName"-->
     </modal-popup>
   </div>
 </template>
