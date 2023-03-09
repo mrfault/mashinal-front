@@ -75,6 +75,7 @@ export default {
     hideRejectReason: Boolean,
     oldValue: String,
     description: String,
+    oldGeneration: Number,
   },
   computed: {
     toggleDisable() {
