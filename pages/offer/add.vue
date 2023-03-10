@@ -8,7 +8,8 @@
       <div class="col-md-12 background-white offer-add-section p-5">
         <sell-progress :form="form"/>
 
-        <offer-collapse :first-collapsed="offerAnnouncementItem.collapsed" v-for="(offerAnnouncementItem,index) in offerAnnouncementsCount" :index="index">
+        <offer-collapse :first-collapsed="offerAnnouncementItem.collapsed"
+                        v-for="(offerAnnouncementItem,index) in offerAnnouncementsCount" :index="index">
 
           <template #title class="offer-collapse-title">
             <div class="offer-brand">
@@ -62,8 +63,12 @@
         <div class="col-md-6 col-12">
           <div class="offer-payment-modal-body">
             <h3 class="mb-2">Ödəniş üsulu</h3>
-            <div class="d-flex col-6 active flex-column"><div class="form-group flex-grow-1 d-flex flex-column">
-              <button type="button" class="btn full-width btn--pale-red-outline active" style="cursor: unset">  <span>Bank kartı</span> </button></div></div>
+            <div class="d-flex col-6 active flex-column">
+              <div class="form-group flex-grow-1 d-flex flex-column">
+                <button type="button" class="btn full-width btn--pale-red-outline active" style="cursor: unset"><span>Bank kartı</span>
+                </button>
+              </div>
+            </div>
             <div class="hr"></div>
             <p class="mt-5">
               72 saat ərzində təklifləri görəcəksiniz. Biz evdən çıxmadan cəmi bir saat ərzində eksklüziv ucuz qiymətə
@@ -149,10 +154,10 @@ export default {
   },
 
   methods: {
-    paymentModalClose(){
+    paymentModalClose() {
       this.showPaymentModalOption = false
-      this.$store.commit('setOfferAddLoader',{status:false})
-      this.$store.commit('openOfferPaymentModal',{status:false})
+      this.$store.commit('setOfferAddLoader', {status: false})
+      this.$store.commit('openOfferPaymentModal', {status: false})
 
     },
     generateKey() {

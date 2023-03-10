@@ -1337,6 +1337,9 @@ export const actions = {
     const data = await this.$axios.$post(
       `/offer/salon/offer/add-favorite/` + id
     );
+
+    commit('offerAddFavorite')
+
   },
   async OffersAcceptedByAutoSalon({ commit }, param = "all") {
     var url = "/offer/user/offers_accepted_by_auto_salon?param=";
@@ -1375,13 +1378,21 @@ export const actions = {
             }
 
             if (object.isSubmit) {
-              this.$axios
-                .post("/offer", state.offer_announcements)
-                .then(res => {
-                  commit("openOfferPaymentModal", { status: true });
 
-                  commit("setOfferId", { offer_id: res.data.offer_id });
-                });
+              try {
+                 await this.$axios
+                      .post("/offer", state.offer_announcements)
+                      .then(res => {
+                        console.log('Post error')
+                        commit("openOfferPaymentModal", { status: true });
+                        commit("setOfferId", { offer_id: res.data.offer_id });
+                      });
+              }
+              catch (e) {
+
+                commit("setOfferAddLoader", { status: false });
+              }
+
             } else {
               commit("incrementAnnouncementsCount");
             }
@@ -1409,6 +1420,13 @@ export const actions = {
 export const mutations = {
   mutate: mutate(),
   reset: reset(getInitialState()),
+
+
+  offerAddFavorite(state){
+
+    state.offer.data.isFavorite=!state.offer.data.isFavorite
+
+  },
 
   // messages
   appendToMessage(state, payload) {

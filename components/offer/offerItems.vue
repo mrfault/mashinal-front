@@ -78,7 +78,7 @@
           <p>Salon Rəngi </p>
           <div>
             <div>
-              <span class="color-box" :style="`background-color:${offer_items[selected_offer_item].interior_color.code}`" v-if="offer_items[selected_offer_item].interior_color!='other'"></span>
+              <span class="color-box" :style="`background-color:${offer_items[selected_offer_item].interior_color}`" v-if="offer_items[selected_offer_item].interior_color!='other'"> </span>
               <span class="color-box color"     :style="'background:url(/images/offer/other-color.png);background-size:cover'" v-else></span>
             </div>
           </div>
