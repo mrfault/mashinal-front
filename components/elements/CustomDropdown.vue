@@ -1,6 +1,14 @@
 <template>
    <div
-      :class="['customDropdown', className, { 'selected' : value, 'disabled' : disabled, 'search' : search }]"
+      :class="[
+         'customDropdown', className,
+         {
+            'selected' : value,
+            'disabled' : disabled,
+            'search' : search,
+            'color' : color,
+         }
+      ]"
       @click.stop="onClick($event)"
    >
       <template>
@@ -16,7 +24,11 @@
             >
 
             <span class="customDropdown__selected">
-               <template v-if="translate">
+               <template v-if="translateLocale">
+                  {{ value && value.name[locale] }}
+               </template>
+
+               <template v-else-if="translate">
                   {{ (value.name) ? $t(value.name) : $t(value) }}
                </template>
 
@@ -49,8 +61,17 @@
                :key="i"
                @click="selectItem(item)"
             >
-<!--               <pre>{{item}}</pre>-->
-               <template v-if="translate">
+               <div
+                  v-if="color"
+                  class="customDropdown__main-itemColor"
+                  :style="{backgroundColor: `${item.code}`}"
+               ></div>
+
+               <template v-if="translateLocale">
+                  {{ item && item.name[locale] }}
+               </template>
+
+               <template v-else-if="translate">
                   {{ (item.name) ? $t(item.name) : $t(item) }}
                </template>
 
@@ -186,7 +207,15 @@
          },
          translate: {
             type: Boolean,
-            default: true
+            default: false
+         },
+         translateLocale: {
+            type: Boolean,
+            default: false
+         },
+         color: {
+            type: Boolean,
+            default: false
          },
          search: {
             type: Boolean,
@@ -262,6 +291,11 @@
          font-size: 16px;
          line-height: 20px;
          color: #202939;
+         padding-right: 20px;
+
+         text-overflow: ellipsis;
+         overflow: hidden;
+         white-space: nowrap;
       }
 
       &__main {
@@ -328,6 +362,13 @@
                   margin: 1px 6px 0 0;
                }
             }
+         }
+
+         &-itemColor {
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+            border-radius: 50%;
          }
       }
 
@@ -398,6 +439,14 @@
 
          .customDropdown__placeholder {
             color: #4B5565;
+         }
+      }
+
+      &.color {
+         .customDropdown__main {
+            &-item {
+               display: flex;
+            }
          }
       }
 

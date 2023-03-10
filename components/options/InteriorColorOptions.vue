@@ -6,9 +6,7 @@
       :key="color.id"
     >
       <span
-        :class="[
-          'color',
-          { selected: isSelected(color.id), contrast: index > 8 }        ]"
+        :class="['color',{ selected: isSelected(color.id), contrast: index > 8 }]"
         :style="getStyles(color)"
         @click="selectedInteriorColor = color.id"
         v-tooltip="color.name[locale]"

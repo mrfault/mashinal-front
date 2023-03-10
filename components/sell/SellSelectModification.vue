@@ -58,7 +58,7 @@
           </span>
         </h2>
 
-<!--         <pre>{{sellGenerations}}</pre>-->
+<!--         <pre>{{form}}</pre>-->
         <form-buttons
           v-model="form.generation_id"
           :btn-class="'primary-outline select-generation'"

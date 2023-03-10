@@ -78,7 +78,8 @@
               :matt="form.is_matte"
               multiple
               @change="removeError('selectedColor')"
-              @change-matt="form.is_matte = $event"/>
+              @change-matt="form.is_matte = $event"
+            />
           </div>
           <div class="col-12 col-lg-2">
                   <span

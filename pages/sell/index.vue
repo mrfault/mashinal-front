@@ -123,6 +123,7 @@
                         <CustomDropdown
                            :items="vehicleOptions"
                            :placeholder="'Elanın növü'"
+                           :translate="true"
                            v-model="form.vehicleType"
                         />
 
@@ -134,7 +135,6 @@
                            :disabled="disabledItem(form.vehicleType)"
                            :search="true"
                            v-model="form.brand"
-                           :translate="false"
                         />
 
                         <CustomDropdown
@@ -152,7 +152,6 @@
                            :items="sellYears.years"
                            :placeholder="'Buraxılış ili'"
                            :disabled="disabledItem(form.model)"
-                           :translate="false"
                            :search="true"
                            v-model="form.year"
                         />
@@ -179,7 +178,6 @@
                            }))"
                            :placeholder="'Yanacaq növü'"
                            :disabled="disabledItem(form.car_generations)"
-                           :translate="false"
                            :getFullDetails="true"
                            v-model="form.fuel_type"
                         />
@@ -191,32 +189,31 @@
                            @check="form.autogas = $event"
                         />
 
-                        <span
-                           class="customRadio__title"
-                           v-show="form.fuel_type"
-                        >
-
-                        </span>
-
                         <CustomRadio
                            v-show="form.fuel_type"
+                           :className="'fuelType'"
                         >
                            <template #title>
                               <span>Ötürücü növü</span>
                            </template>
 
-                           <template #content
-                           >
+                           <template #content>
                               <div
                                  class="customRadio__content"
                                  v-for="item in sellGearing.map((o) => ({
                                     name: $t('type_of_drive_values')[o.type_of_drive],
-                                    key: o.type_of_drive,
+                                    key: o.type_of_drive
                                  }))"
                               >
-                                 <input type="radio" name="aaa" :id="`radio${item.key}`">
+                                 <input
+                                    type="radio"
+                                    name="radioItem"
+                                    ref="radioInput"
+                                    :id="`radio_${item.key}`"
+                                    @input="form.type_of_drive = item.key"
+                                 >
 
-                                 <label :for="`radio${item.key}`">
+                                 <label :for="`radio_${item.key}`">
                                     <icon
                                        :class="`type-of-drive-${item.key}`"
                                        :name="getIcon('type_of_drive', item.key)"
@@ -227,15 +224,46 @@
                               </div>
                            </template>
                         </CustomRadio>
+
+                        <CustomDropdown
+                           v-show="form.type_of_drive"
+                           :items="sellTransmissions.map((o) => ({
+                              name: $t('box_values')[o.box],
+                              key: o.box,
+                           }))"
+                           :placeholder="'Sürətlər qutusu'"
+                           :disabled="disabledItem(form.type_of_drive)"
+                           :getFullDetails="true"
+                           v-model="form.gearing"
+                        />
+
+                        <CustomDropdown
+                           v-show="form.gearing"
+                           :items="sellModifications.map((o) => ({
+                             name: getModificationName(o),
+                             key: o.id,
+                           }))"
+                           :placeholder="'Modifikasiya'"
+                           :disabled="disabledItem(form.gearing)"
+                           :getFullDetails="true"
+                           v-model="form.modification"
+                        />
+
+                        <CustomDropdown
+                           v-show="form.modification"
+                           :items="colors"
+                           :placeholder="'Rəng'"
+                           :disabled="disabledItem(form.modification)"
+                           :getFullDetails="true"
+                           :translateLocale="true"
+                           :color="true"
+                           v-model="form.color"
+                        />
                      </div>
 
                      <div class="divider__item">
-<!--                        <pre>{{ form }}</pre>-->
-<!--                        <pre>{{ sellGearing }}</pre>-->
-<!--                        <pre>{{ sellGearing.map((o) => ({-->
-<!--                           name: $t('type_of_drive_values')[o.type_of_drive],-->
-<!--                           key: o.type_of_drive,-->
-<!--                        })) }}</pre>-->
+                        <pre>{{ form }}</pre>
+<!--                        <pre>{{colors}}</pre>-->
                      </div>
                   </div>
                </div>
@@ -292,7 +320,11 @@ export default {
             car_body_type: '',
             car_generations: '',
             fuel_type: '',
-            autogas: ''
+            autogas: '',
+            type_of_drive: '',
+            gearing: '',
+            modification: '',
+            color: ''
          },
          tabOptions: {
             header: false,
@@ -344,13 +376,45 @@ export default {
          );
       },
       'form.fuel_type'() {
-         if (this.form.fuel_type) this.$store.dispatch('getSellGearing',
+         if (this.form.fuel_type) {
+            this.$store.dispatch('getSellGearing',
+               {
+                  brand: this.form.brand.slug,
+                  model: this.form.model.slug,
+                  body: this.form.car_body_type,
+                  generation: this.form.car_generations,
+                  engine: this.form.fuel_type.key
+               }
+            )
+         } else {
+            this.form.type_of_drive = '';
+            [...this.$refs.radioInput].forEach(item => {
+               item.checked = false
+            })
+         }
+      },
+      'form.type_of_drive'() {
+         if (this.form.type_of_drive) this.$store.dispatch('getSellTransmissions',
             {
                brand: this.form.brand.slug,
                model: this.form.model.slug,
                body: this.form.car_body_type,
                generation: this.form.car_generations,
-               engine: this.form.fuel_type.key
+               engine: this.form.fuel_type.key,
+               gearing: this.form.type_of_drive,
+            }
+         );
+      },
+      'form.gearing'() {
+         if (this.form.gearing) this.$store.dispatch('getSellModifications',
+            {
+               brand: this.form.brand.slug,
+               model: this.form.model.slug,
+               body: this.form.car_body_type,
+               generation: this.form.car_generations,
+               engine: this.form.fuel_type.key,
+               gearing: this.form.type_of_drive,
+               transmission: this.form.gearing.key,
             }
          );
       },
@@ -368,7 +432,7 @@ export default {
          await Promise.all([
             store.dispatch('getBrands'),
             store.dispatch('resetSellTokens'),
-            // store.dispatch('getSellGearing'),
+            store.dispatch('getColors'),
          ]);
       }
 
@@ -378,6 +442,7 @@ export default {
       //    selectedIndex: '',
       // }
    },
+
    computed: {
       ...mapGetters([
          'sellTokens',
@@ -388,7 +453,10 @@ export default {
          'sellBody',
          'sellGenerations',
          'sellEngines',
-         'sellGearing'
+         'sellGearing',
+         'sellTransmissions',
+         'sellModifications',
+         'colors'
       ]),
 
       crumbs() {
@@ -437,6 +505,14 @@ export default {
       },
    },
    methods: {
+      disabledItem(item) {
+         if (item) {
+            return false;
+         } else {
+            return true;
+         }
+      },
+
       getIcon(key, value) {
          return {
             engine: {
@@ -446,24 +522,31 @@ export default {
                4: 'gas',
                5: 'plug',
             },
-            type_of_drive: {1: 'drive', 2: 'drive', 3: 'drive'},
+            type_of_drive: {
+               1: 'drive',
+               2: 'drive',
+               3: 'drive'
+            },
             box: {
                1: 'mechanical',
                2: 'automatic',
                3: 'robot',
                4: 'variator',
                5: 'reductor',
-            },
+            }
          }[key][value]
       },
 
-      disabledItem(item) {
-         if (item) {
-            return false;
-         } else {
-            return true;
-         }
+      getModificationName(o) {
+         let generation = this.sellGenerations.find((o) => o.id === this.form.car_generations);
+
+         let name = `${this.$t('box_mode_values')[o.box]}/${generation.start_year} - ${generation.end_year || this.currentYear}`
+         if (o.capacity) name = `${o.capacity} ${name}`
+         if (o.power) name = `${o.power} ${this.$t('char_h_power')}/${name}`
+         if (o.complect_type) name += `/${o.complect_type}`
+         return name
       },
+
       handleVehicleType(e) {
          // this.vehicleCategory = ''
          // this.vehicleType = e.value
@@ -480,10 +563,12 @@ export default {
              this.nextSteps()
          }
       },
+
       handleVehicleCategory(e) {
          this.form.vehicleCategory = e.value
          this.nextSteps()
       },
+
       nextSteps() {
          let path = this.$localePath(
             `/sell/${this.form.vehicleType}${
@@ -492,6 +577,7 @@ export default {
          )
          this.$router.push(path)
       },
+
       getTextLines(phone) {
          let isSalon = this.loggedIn && this.user.autosalon || this.user.external_salon;
          let isShop = this.loggedIn && this.user.part_salon
@@ -504,10 +590,9 @@ export default {
             this.tokens.commercial,
             0,
          ])
-         let partTokens = this.$maxInArray([this.tokens.parts, 0])
 
-         let hasTransportTokens =
-            transportTokens > 0 || this.tokens.salon_unlimited
+         let partTokens = this.$maxInArray([this.tokens.parts, 0])
+         let hasTransportTokens = transportTokens > 0 || this.tokens.salon_unlimited;
          let hasPartsTokens = this.user.external_salon ? 0 : (partTokens > 0 || this.tokens.parts_unlimited);
 
          let firstLocaleEnding =
@@ -560,7 +645,7 @@ export default {
             .filter((line) => line)
             .map((line) => `${line}`)
             .join('<br/><br/>')
-      },
+      }
    },
 }
 </script>
@@ -664,6 +749,12 @@ export default {
 
          .carBody, .carGenerations, .customCheckbox, .customRadio {
             margin-top: 20px;
+         }
+
+         .customRadio {
+            &.fuelType {
+               margin-top: 32px;
+            }
          }
       }
    }

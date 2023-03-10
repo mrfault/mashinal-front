@@ -37,7 +37,7 @@
       }
 
       &__content {
-         &:not(first-child) {
+         &:not(:first-child) {
             margin-left: 16px;
          }
       }
@@ -47,16 +47,30 @@
          &:checked {
             & + label {
                border-color: #155EEF;
+
+               span {
+                  font-weight: 500;
+                  color: #121926;
+               }
             }
          }
       }
 
       label {
+         display: flex;
+         align-items: center;
          margin: 0;
-         padding: 16px;
+         padding: 14px 16px;
          border-radius: 8px;
          border: 1px solid #CDD5DF;
          background-color: #FFFFFF;
+         cursor: pointer;
+
+         span {
+            margin-left: 10px;
+            font-size: 16px;
+            color: #364152;
+         }
       }
    }
 </style>
