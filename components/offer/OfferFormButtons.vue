@@ -96,3 +96,11 @@ export default {
 
 }
 </script>
+<style>
+@media (min-width: 481px) and (max-width: 1024px) {
+  .btn--primary-outline:hover{
+    background: unset;
+  }
+}
+
+</style>

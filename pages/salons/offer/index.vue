@@ -376,7 +376,7 @@ export default {
   computed: {
     crumbs() {
       return [
-        {name: 'Super təklif paneli', route: '/salons/offer'},
+        {name: 'Super təklif paneli', route: '/salons/offer?param=all'},
 
       ]
     },
@@ -408,7 +408,6 @@ export default {
       await this.$store.dispatch('getAllOffers', newVal.query)
       console.log(newVal)
     },
-
     search(newVal){
       this.$router.push({
         query: {
@@ -417,6 +416,7 @@ export default {
         }
       })
     }
+
   }
 
 }
