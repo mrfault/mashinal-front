@@ -64,7 +64,7 @@
                <div
                   v-if="color"
                   class="customDropdown__main-itemColor"
-                  :style="{backgroundColor: `${item.code}`}"
+                  :style="{ backgroundColor: `${item.code }`}"
                ></div>
 
                <template v-if="translateLocale">
@@ -190,37 +190,50 @@
             type: String,
             default: ''
          },
+
          value: {
             default: ''
          },
+
          placeholder: {
             type: String,
             default: ''
          },
+
          getFullDetails: {
             type: Boolean,
             default: false
          },
+
          disabled: {
             type: Boolean,
             default: false
          },
+
+         clearValue: {
+            required: false
+         },
+
          translate: {
             type: Boolean,
             default: false
          },
+
          translateLocale: {
             type: Boolean,
             default: false
          },
+
          color: {
             type: Boolean,
             default: false
          },
+
          search: {
             type: Boolean,
             default: false
          },
+
          items: {
             type: Array,
             default() {
@@ -232,12 +245,26 @@
       watch: {
          disabled(val) {
             if (val) this.removeValue();
+         },
+
+         clearValue(newVal, oldVal) {
+            if (oldVal) {
+               if (typeof newVal === 'object') {
+                  if (newVal.id !== oldVal.id) {
+                     this.removeValue();
+                  } else if (newVal.key !== oldVal.key) {
+                     this.removeValue();
+                  }
+               } else {
+                  if (newVal !== oldVal) {
+                     this.removeValue();
+                  }
+               }
+            }
          }
       },
 
       mounted() {
-         // if (this.value) this.setPlaceholder = this.value;
-
          window.addEventListener('click', this.close);
       },
 

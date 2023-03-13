@@ -1,8 +1,6 @@
 <template>
    <div :class="['customRadio', className]">
-      <h4 class="customRadio__title">
-         <slot name="title" />
-      </h4>
+      <slot name="title" />
 
       <div class="customRadio__inner">
          <slot name="content" />
@@ -70,6 +68,62 @@
             margin-left: 10px;
             font-size: 16px;
             color: #364152;
+         }
+      }
+
+      &.circle {
+         width: 100%;
+
+         .customRadio__content {
+            width: 50%;
+         }
+
+         input {
+            &:checked {
+               & + label {
+                  &:before {
+                     border-color: #155EEF;
+                     background-color: #EFF4FF;
+                  }
+
+                  &:after {
+                     background-color: #155EEF;
+                  }
+               }
+            }
+         }
+
+         label {
+            position: relative;
+            transition: all .3s;
+
+            &:before, &:after {
+               content: '';
+               position: absolute;
+               transform: translateY(-50%);
+               border-radius: 50%;
+               transition: all .3s;
+            }
+
+            &:before {
+               left: 22px;
+               top: 50%;
+               width: 24px;
+               height: 24px;
+               border: 1px solid #CDD5DF;
+            }
+
+            &:after {
+               left: 30px;
+               top: 50%;
+               transform: translateY(-50%);
+               width: 8px;
+               height: 8px;
+            }
+
+            span {
+               margin-left: 40px;
+            }
          }
       }
    }

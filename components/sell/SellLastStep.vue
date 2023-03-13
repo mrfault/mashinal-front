@@ -68,16 +68,24 @@
                <div class="col-lg-3 mb-2 mb-lg-0">
                   <div class="row flex-nowrap">
                      <div class="col-auto flex-grow-1">
-                        <form-numeric-input :placeholder="$t('mileage')" v-model="form.mileage" input-class="w-133"
-                                            :invalid="isInvalid('mileage')"
-                                            @change="removeError('mileage'), updatePreview('mileage')"/>
+                        <form-numeric-input
+                           :placeholder="$t('mileage')"
+                           v-model="form.mileage"
+                           input-class="w-133"
+                           :invalid="isInvalid('mileage')"
+                           @change="removeError('mileage'), updatePreview('mileage')"
+                        />
                      </div>
                      <div class="col-auto">
-                        <form-switch :options="getMileageOptions" v-model="form.mileage_measure"
-                                     @change="updatePreview('mileage_measure')"/>
+                        <form-switch
+                           :options="getMileageOptions"
+                           v-model="form.mileage_measure"
+                           @change="updatePreview('mileage_measure')"
+                        />
                      </div>
                   </div>
                </div>
+
                <div class="col-lg-auto mb-2 mb-lg-0">
                   <div class="d-flex flex-wrap flex-lg-nowrap">
                      <form-checkbox transparent :label="$t('is_new')" v-model="form.is_new" input-name="is_new"

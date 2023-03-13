@@ -123,6 +123,7 @@
                         <CustomDropdown
                            :items="vehicleOptions"
                            :placeholder="'Elanın növü'"
+                           :clearValue="form.vehicleType"
                            :translate="true"
                            v-model="form.vehicleType"
                         />
@@ -132,7 +133,8 @@
                            :items="brands"
                            :placeholder="'Marka'"
                            :getFullDetails="true"
-                           :disabled="disabledItem(form.vehicleType)"
+                           :disabled="correctValue(form.vehicleType)"
+                           :clearValue="form.vehicleType"
                            :search="true"
                            v-model="form.brand"
                         />
@@ -142,7 +144,8 @@
                            :items="models"
                            :placeholder="'Model'"
                            :getFullDetails="true"
-                           :disabled="disabledItem(form.brand)"
+                           :disabled="correctValue(form.brand)"
+                           :clearValue="form.brand"
                            :search="true"
                            v-model="form.model"
                         />
@@ -151,7 +154,8 @@
                            v-show="form.model"
                            :items="sellYears.years"
                            :placeholder="'Buraxılış ili'"
-                           :disabled="disabledItem(form.model)"
+                           :disabled="correctValue(form.model)"
+                           :clearValue="form.model"
                            :search="true"
                            v-model="form.year"
                         />
@@ -159,14 +163,16 @@
                         <CarBody
                            v-show="form.year"
                            :items="sellBody"
-                           :disabled="disabledItem(form.year)"
+                           :disabled="correctValue(form.year)"
+                           :clearValue="form.year"
                            @selected="form.car_body_type = $event"
                         />
 
                         <CarGenerations
                            v-show="form.car_body_type"
                            :items="sellGenerations"
-                           :disabled="disabledItem(form.car_body_type)"
+                           :disabled="correctValue(form.car_body_type)"
+                           :clearValue="form.car_body_type"
                            @selected="form.car_generations = $event"
                         />
 
@@ -177,7 +183,8 @@
                               key: o.engine
                            }))"
                            :placeholder="'Yanacaq növü'"
-                           :disabled="disabledItem(form.car_generations)"
+                           :disabled="correctValue(form.car_generations)"
+                           :clearValue="form.car_generations"
                            :getFullDetails="true"
                            v-model="form.fuel_type"
                         />
@@ -194,7 +201,7 @@
                            :className="'fuelType'"
                         >
                            <template #title>
-                              <span>Ötürücü növü</span>
+                              <h4 class="customRadio__title">Ötürücü növü</h4>
                            </template>
 
                            <template #content>
@@ -232,7 +239,8 @@
                               key: o.box,
                            }))"
                            :placeholder="'Sürətlər qutusu'"
-                           :disabled="disabledItem(form.type_of_drive)"
+                           :disabled="correctValue(form.type_of_drive)"
+                           :clearValue="form.type_of_drive"
                            :getFullDetails="true"
                            v-model="form.gearing"
                         />
@@ -244,7 +252,8 @@
                              key: o.id,
                            }))"
                            :placeholder="'Modifikasiya'"
-                           :disabled="disabledItem(form.gearing)"
+                           :disabled="correctValue(form.gearing)"
+                           :clearValue="form.gearing"
                            :getFullDetails="true"
                            v-model="form.modification"
                         />
@@ -253,12 +262,65 @@
                            v-show="form.modification"
                            :items="colors"
                            :placeholder="'Rəng'"
-                           :disabled="disabledItem(form.modification)"
+                           :disabled="correctValue(form.modification)"
                            :getFullDetails="true"
                            :translateLocale="true"
                            :color="true"
                            v-model="form.color"
                         />
+
+                        <div class="content d-flex mt20">
+                           <CustomInput
+                              :type="'number'"
+                              :placeholder="'Yürüş'"
+                              v-model="form.mileage"
+                           />
+
+                           <CustomRadio
+                              :className="'circle'"
+                              style="width: 50%"
+                           >
+                              <template #content>
+                                 <div
+                                    class="customRadio__content"
+                                    v-for="item in getMileageOptions"
+                                 >
+                                    <input
+                                       type="radio"
+                                       name="radioMileage"
+                                       :id="`radio_a${item.id}`"
+                                       @input="form.mileage_measure = item.id"
+                                    >
+
+                                    <label :for="`radio_a${item.id}`">
+                                       <span>{{ item.name }}</span>
+                                    </label>
+                                 </div>
+                              </template>
+                           </CustomRadio>
+                        </div>
+
+                        <div class="content d-flex mt20">
+                           <CustomRadio :className="'circle'">
+                              <template #content>
+                                 <div
+                                    class="customRadio__content"
+                                    v-for="item in getСarСondition"
+                                 >
+                                    <input
+                                       type="radio"
+                                       name="radioCondition"
+                                       :id="`radio_b${item.id}`"
+                                       @input="form.is_new = item.id"
+                                    >
+
+                                    <label :for="`radio_b${item.id}`">
+                                       <span>{{ item.name }}</span>
+                                    </label>
+                                 </div>
+                              </template>
+                           </CustomRadio>
+                        </div>
                      </div>
 
                      <div class="divider__item">
@@ -287,10 +349,12 @@ import CustomCheckbox from "~/components/elements/CustomCheckbox.vue";
 import CarBody from "~/components/cars/CarBody.vue";
 import CarGenerations from "~/components/cars/CarGenerations.vue";
 import CustomRadio from "~/components/elements/CustomRadio.vue";
+import CustomInput from "~/components/elements/CustomInput.vue";
 
 export default {
    name: 'pages-sell-index',
    components: {
+      CustomInput,
       CustomRadio,
       CarGenerations,
       SellCheckTokens,
@@ -324,7 +388,10 @@ export default {
             type_of_drive: '',
             gearing: '',
             modification: '',
-            color: ''
+            color: '',
+            mileage: '',
+            mileage_measure: '',
+            is_new: ''
          },
          tabOptions: {
             header: false,
@@ -389,7 +456,7 @@ export default {
          } else {
             this.form.type_of_drive = '';
             [...this.$refs.radioInput].forEach(item => {
-               item.checked = false
+               item.checked = false;
             })
          }
       },
@@ -459,6 +526,20 @@ export default {
          'colors'
       ]),
 
+      getMileageOptions() {
+         return [
+            { id: 1, name: this.$t('char_kilometre') },
+            { id: 2, name: this.$t('char_mile') }
+         ];
+      },
+
+      getСarСondition() {
+         return [
+            { id: 1, name: this.$t('is_new') },
+            { id: 2, name: this.$t('bitie') }
+         ];
+      },
+
       crumbs() {
          return [{name: this.$t('place_an_ad')}]
       },
@@ -505,7 +586,7 @@ export default {
       },
    },
    methods: {
-      disabledItem(item) {
+      correctValue(item) {
          if (item) {
             return false;
          } else {
@@ -540,7 +621,7 @@ export default {
       getModificationName(o) {
          let generation = this.sellGenerations.find((o) => o.id === this.form.car_generations);
 
-         let name = `${this.$t('box_mode_values')[o.box]}/${generation.start_year} - ${generation.end_year || this.currentYear}`
+         let name = `${this.$t('box_mode_values')[o.box]}/${generation?.start_year} - ${generation?.end_year || this.currentYear}`
          if (o.capacity) name = `${o.capacity} ${name}`
          if (o.power) name = `${o.power} ${this.$t('char_h_power')}/${name}`
          if (o.complect_type) name += `/${o.complect_type}`
@@ -754,6 +835,14 @@ export default {
          .customRadio {
             &.fuelType {
                margin-top: 32px;
+            }
+         }
+
+         .content {
+            gap: 16px;
+
+            .customRadio {
+               margin-top: 0;
             }
          }
       }

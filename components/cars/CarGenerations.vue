@@ -32,6 +32,16 @@
       methods: {
          selectItem(item) {
             this.$emit('selected', item.id);
+         },
+
+         removeValue() {
+            this.$emit('selected', '');
+
+            if (this.$refs.input) {
+               [...this.$refs.input].forEach(item => {
+                  item.checked = false;
+               })
+            }
          }
       },
 
@@ -43,17 +53,28 @@
          disabled: {
             type: Boolean,
             default: false
+         },
+         clearValue: {
+            required: false
          }
       },
 
       watch: {
          disabled(val) {
-            if (val) this.$emit('selected', '');
+            if (val) this.removeValue();
+         },
 
-            if (this.$refs.input) {
-               [...this.$refs.input].forEach(item => {
-                  item.checked = false;
-               })
+         clearValue(newVal, oldVal) {
+            if (oldVal) {
+               if (typeof newVal === 'object') {
+                  if (newVal.id !== oldVal.id) {
+                     this.removeValue();
+                  }
+               } else {
+                  if (newVal !== oldVal) {
+                     this.removeValue();
+                  }
+               }
             }
          }
       }
