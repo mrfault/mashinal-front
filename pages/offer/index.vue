@@ -29,14 +29,12 @@
           <h2 class="text-center" > Sorğularım</h2>
         </div>
         <div class="new-offer-notification-box" v-for="activeMyOffer in activeMyOffers">
-
           <div class="notification">
             <img src="/icons/auction.svg">
             <p>
               <span v-for="(offerItem,index) in activeMyOffer.items">
-
-            <b>{{ offerItem.brand }}</b> - {{ offerItem.model }} <span  v-if="activeMyOffer.items.length > 1">,</span>
-            </span>
+                  <b>{{ offerItem.brand }}</b> - {{ offerItem.model }} <span  v-if="activeMyOffer.items.length > 1">,</span>
+              </span>
             </p>
           </div>
           <nuxt-link :to="$localePath('/offer/offers?param=all')" tag="button" class="offer-button " :class="activeMyOffer.count == 0 ? 'disabled-ui' :null" :disabled="activeMyOffer.count == 0">
@@ -244,7 +242,7 @@ export default {
             }
       })
     },
-    getOffer() {
+     getOffer() {
       if (!this.brand || !this.model) {
         return this.$toasted.error('Brend və ya model seçilməyib')
       }
@@ -254,7 +252,10 @@ export default {
           model: this.model,
         }
       })
-      this.$store.commit('setNullModels')
+     setTimeout(function (){
+       this.$store.commit('setNullModels')
+     },1500)
+
     },
     async setBrand(slug, index) {
       let brand = this.brands.find((option) => option.slug === slug)

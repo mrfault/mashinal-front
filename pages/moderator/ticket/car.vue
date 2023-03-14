@@ -170,7 +170,7 @@
                         <small v-if="single_announce.car_catalog.car_type.id !== form.car_body_type"
                                class="input_old_value">
                           {{ $t('old_value_2') }} :
-                          {{ getCarBodyName(single_announce.car_catalog.car_type.id, oldValues.sell_bodies) }}
+                          {{ getCarBodyName(single_announce.car_catalog.car_type.id, oldSellBodies) }}
                         </small>
                       </div>
                       <div class="col-12 col-lg-3 ">
@@ -699,7 +699,8 @@ export default {
       transferComment: '',
 
       //old values
-      oldModifications: {},
+      oldModifications: [],
+      oldSellBodies:[]
     }
   },
   computed: {
@@ -823,6 +824,7 @@ export default {
       try {
         data = await this.$axios.$get('/ticket/car');
         this.oldModifications = data.modifications;
+        this.oldSellBodies = data.sell_bodies;
 
         this.$store.commit('moderator/moderatorMutator', {
           with: data.announce,

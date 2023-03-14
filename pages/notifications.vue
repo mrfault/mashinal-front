@@ -102,7 +102,7 @@ export default {
           return this.$localePath('/profile/templates')
         case '/salons/offer' :
 
-          var url = this.$localePath('/salons/offer?param=all&c=');
+          var url =this.isMobileBreakpoint ? '/salons/offer/' : this.$localePath('/salons/offer?param=all&c=');
 
           var offerId = n.hasOwnProperty('notifiable_id') && n.notifiable_id != null ? n.notifiable_id : false
 
@@ -113,7 +113,7 @@ export default {
 
         case '/salons/offer/new-message' :
 
-          var url = this.$localePath('/salons/offer?param=sended&c=');
+          var url = this.isMobileBreakpoint ? '/salons/offer/' : this.$localePath('/salons/offer?param=sended&c=');
 
           var offerId = n.hasOwnProperty('notifiable_id') && n.notifiable_id != null ? n.notifiable_id : false
 
@@ -124,7 +124,7 @@ export default {
 
         case '/offer/offers/new-message' :
 
-          var url = this.$localePath('/offer/offers?param=all&c=');
+          var url = this.isMobileBreakpoint ? '/offer/' : this.$localePath('/offer/offers?param=all&c=');
 
           var offerId = n.hasOwnProperty('notifiable_id') && n.notifiable_id != null ? n.notifiable_id : false
 

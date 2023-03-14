@@ -68,13 +68,13 @@
                       style="margin-left: -3px;"
                     >
                       <!-- <img :src="homePageSlider.icon" /> -->
-                      <img
-                        :src="
+                      <img class="swiper-lazy"
+                        :data-src="
                           isDarkMode
                             ? homePageSlider.icon_dark
                             : homePageSlider.icon
-                        "
-                      />
+                        "/>
+
                       <h3>{{ homePageSlider.title[locale] }}</h3>
                     </div>
                     <p>{{ homePageSlider.description[locale] }}</p>
@@ -177,6 +177,7 @@ export default {
           nextEl: '.swiper-button-next',
           prevEl: '.swiper-button-prev',
         },
+        lazy: true,
         pagination: {
           el: '.swiper-pagination',
           type: 'bullets',
@@ -184,10 +185,10 @@ export default {
         },
         loop: true,
         preloadImages: false,
-        lazy: {
+/*        lazy: {
           loadPrevNext: false,
           preloaderClass: 'loader',
-        },
+        },*/
       },
       absoluteMobileScreen: true,
 

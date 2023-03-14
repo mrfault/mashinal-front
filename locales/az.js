@@ -2460,7 +2460,6 @@ export default {
   "old_value_2": "Əvvəlki dəyər",
   "new_value": "Yeni məna",
   "created_at": "Yaradılıb",
-  "video_360_successfully_upload":"Video uğurla yükləndi",
   "interior_360_successfully_upload":"İnteryer 360 uğurla yükləndi",
   "add_video_360":"360 (video) Əlavə et",
   "add_interior_360": "360 interior əlavə et",
