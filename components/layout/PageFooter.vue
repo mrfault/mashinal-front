@@ -3,6 +3,11 @@
     class="page-footer d-none d-lg-block"
     :class="{ 'mt--2': isPromotionsPage }"
   >
+    <a style="display: none" href="https://www.liveinternet.ru/click"
+                                  target="_blank"><img id="licntBC4A" width="88" height="31" style="border:0"
+                                                       title="LiveInternet: number of pageviews for 24 hours, of visitors for 24 hours and for today is shown"
+                                                       src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                                                       alt=""/></a>
     <div class="container">
       <div class="row">
         <div class="col-6">
@@ -67,13 +72,28 @@ export default {
 
     }
   },
+  mounted() {
+    (function(d,s){d.getElementById("licntBC4A").src=
+      "https://counter.yadro.ru/hit?t12.6;r"+escape(d.referrer)+
+      ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+        (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+      ";h"+escape(d.title.substring(0,150))+";"+Math.random()})
+    (document,screen)
+  },
   mixins: [MenusDataMixin],
   watch: {
     $route(to, from) {
       if (this.$route.meta.name == 'promotions-page') {
         this.isPromotionsPage = true
       }
+      (function(d,s){d.getElementById("licntBC4A").src=
+        "https://counter.yadro.ru/hit?t12.6;r"+escape(d.referrer)+
+        ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+          (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+        ";h"+escape(d.title.substring(0,150))+";"+Math.random()})
+      (document,screen)
     },
+
   },
   computed:{
     isPromotionsPage(){
