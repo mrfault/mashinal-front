@@ -63,7 +63,6 @@ export default {
       type: Object,
       default() {
         return {
-
           transformed_media: '/images/car-placeholder.png',
           name: 'vehicle_id_mark',
         }
