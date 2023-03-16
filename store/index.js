@@ -379,10 +379,10 @@ const objectNotEmpty = (state, commit, property) => {
 
 export const actions = {
   async nuxtServerInit({ dispatch, commit }) {
-   /* if (!this.$auth.loggedIn) {
+    if (!this.$auth.loggedIn) {
       this.$auth.setUser(false);
       await this.$auth.logout();
-    }*/
+    }
     if (this.$auth.loggedIn) {
       await Promise.all([
         dispatch("getNotifications"),
