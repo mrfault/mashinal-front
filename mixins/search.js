@@ -110,17 +110,23 @@ export const SearchMixin = {
       }
     },
     async submitForm(scroll = true) {
-
       this.beforeSubmitForm();
+
       try {
         // tracking
         this.fbTrack('Search Api');
         this.gtagTrack('AW-600951956/Qeu4CILAyPIBEJSZx54C');
-      }catch (e) {}
+      } catch (e) {}
+
       // update route query params and search announcements
       let searchQuery = `${this.meta.param}=${encodeURI(JSON.stringify(this.getFormData()))}`;
       let searchUrl = `${this.$localePath(this.meta.path)}?${searchQuery}`;
       let searchSame = decodeURIComponent(searchUrl) === decodeURIComponent(this.$route.fullPath);
+
+
+      console.log(`${this.meta.param}=${JSON.stringify(this.getFormData())}`)
+
+
       this.$emit('pending');
       if (searchSame) {
           this.$emit('submit');

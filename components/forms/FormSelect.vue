@@ -552,10 +552,17 @@ export default {
       return this.options.filter(this.isSelected)
     },
     getFilteredOptions() {
-      if (!this.search || !this.hasSearch) return this.getOptions
-      return this.options.filter((option) =>
-        this.$search(this.getOptionName(option), this.search),
-      )
+      // if (!this.search || !this.hasSearch) return this.getOptions;
+
+      // return this.options.filter((option) =>
+      //   this.$search(this.getOptionName(option), this.search),
+      // )
+
+       let searchLength = this.search.length;
+       return this.options.filter(item => {
+          let itemName = item.name.toLowerCase().split('').slice(0, searchLength).join('');
+          if (itemName === this.search) return item.name;
+       })
     },
     getLabelText() {
       if (this.custom) {

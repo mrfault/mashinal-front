@@ -48,27 +48,33 @@
          Grid,
          NoResults
       },
+
       nuxtI18n: {
          paths: {
             az: '/masinlar'
          }
       },
+
       head() {
          return this.$headMeta({
             // title: this.$t('meta-title_cars'),
             // description: this.$t('meta-descr_cars'),
 
-            title: `${this.getCarDetails?.brand} ${this.getCarDetails?.model} ${this.getCarDetails?.generation && this.getCarDetails?.generation[this.locale]}`,
-            description: `${this.getCarDetails?.brand} ${this.getCarDetails?.model} ${this.getCarDetails?.generation && this.getCarDetails?.generation[this.locale]}`
+            title: this.getHeadDetails,
+            description: this.getHeadDetails
          });
       },
+
       watch: {
          '$route.query'(query) {
             if (query && query.with_panorama == 'true') {
                this.searchCars(1, true);
             }
+
+            console.log(JSON.parse(this.$route.query.car_filter || '{}'))
          }
       },
+
       async asyncData({store, route, $auth}) {
          let post = JSON.parse(route.query.car_filter || '{}');
          if (route.query.with_panorama == 'true') {
@@ -114,6 +120,7 @@
             pending: false
          }
       },
+
       methods: {
          ...mapActions(['getGridSearch']),
 
@@ -133,6 +140,7 @@
             }
          }
       },
+
       computed: {
          ...mapGetters(['carsAnnouncements', 'brands']),
 
@@ -142,7 +150,7 @@
 
          crumbs() {
             return [
-               {name: this.$t('cars')}
+               { name: this.$t('cars') }
             ]
          },
 
@@ -158,8 +166,21 @@
                   }
                }
             }
+         },
+
+         getHeadDetails() {
+            if (this.getCarDetails?.brand) {
+               return `
+                  ${this.getCarDetails?.brand}
+                  ${this.getCarDetails?.model ? this.getCarDetails?.model : ''}
+                  ${this.getCarDetails?.generation ? this.getCarDetails?.generation[this.locale] : '' }
+               `
+            } else {
+               return this.$t('meta-title_cars');
+            }
          }
       },
+
       beforeRouteLeave(to, from, next) {
          this.$nuxt.$emit('prevent-popstate');
          next();
