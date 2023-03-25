@@ -19,11 +19,12 @@
    export default {
       methods: {
          formatNumber(e) {
-            e.target.value = e.target.value.replace(/[a-zа-я]/gi, '');
-            e.target.value = e.target.value.replace(/\./g, '');
-            e.target.value = e.target.value.replace(/\,/g, '');
-            e.target.value = e.target.value.replace(/\//g, '');
-            e.target.value = e.target.value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            e.target.value = e.target.value
+               .replace(/[a-zа-я]/gi, '')
+               .replace(/\./g, '')
+               .replace(/\,/g, '')
+               .replace(/\//g, '')
+               .replace(/\D+/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 
             this.setValue = e.target.value;
          }

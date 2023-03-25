@@ -18,7 +18,7 @@
 
             <label
                :for="item.id"
-               :style="`background: url('${item.car_type_generation[0].transformed_media.main[0]}') center center / cover no-repeat`"
+               :style="`backgroundImage: url('${item.car_type_generation[0].transformed_media.main[0]}')`"
             >
                <span>{{ item.short_name[locale] }}</span>
             </label>
@@ -117,6 +117,7 @@
                border-radius: 8px;
                background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #081A3E 100%);
                z-index: 2;
+               cursor: pointer;
             }
 
             input {
@@ -130,6 +131,8 @@
 
                         span {
                            left: 34px;
+                           width: 162px;
+                           padding: 30px 5px 12px 0;
                         }
                      }
                   }
@@ -147,6 +150,10 @@
                border-radius: 8px;
                cursor: pointer;
                transition: all .3s;
+
+               background-repeat: no-repeat;
+               background-position: center;
+               background-size: cover;
 
                &:before {
                   position: absolute;
@@ -171,12 +178,18 @@
 
                span {
                   position: absolute;
-                  bottom: 12px;
-                  left: 12px;
+                  bottom: 0;
+                  left: 0;
+                  width: 100%;
+                  padding: 30px 5px 12px 12px;
                   font-size: 13px;
                   line-height: 16px;
                   color: #FFFFFF;
                   z-index: 3;
+
+                  text-overflow: ellipsis;
+                  overflow: hidden;
+                  white-space: nowrap;
                }
             }
          }

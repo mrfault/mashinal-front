@@ -1,5 +1,5 @@
 <template>
-   <div :class="['customCheckbox', {'checkbox' : checkbox}]">
+   <div :class="['customCheckbox', className, {'checkbox' : checkbox}]">
       <input
          type="checkbox"
          :id="id"
@@ -18,10 +18,20 @@
          }
       },
 
+      methods: {
+         removeValue() {
+            this.checked = false;
+         },
+      },
+
       props: {
          id: {
             type: String,
             default: 'id'
+         },
+         className: {
+            type: String,
+            default: ''
          },
          text: {
             type: String,
@@ -34,12 +44,31 @@
          checkbox: {
             type: Boolean,
             default: false
-         }
+         },
+         clearValue: {
+            required: false
+         },
       },
 
       watch: {
          checked() {
             this.$emit('check', this.checked);
+         },
+
+         clearValue(newVal, oldVal) {
+            if (oldVal) {
+               if (typeof newVal === 'object') {
+                  if (newVal.id !== oldVal.id) {
+                     this.removeValue();
+                  } else if (newVal.key !== oldVal.key) {
+                     this.removeValue();
+                  }
+               } else {
+                  if (newVal !== oldVal) {
+                     this.removeValue();
+                  }
+               }
+            }
          }
       },
 
@@ -52,6 +81,7 @@
 <style lang="scss" scoped>
    .customCheckbox {
       position: relative;
+      width: 100%;
 
       input {
          display: none;
@@ -64,6 +94,7 @@
       }
 
       label {
+         height: 52px;
          font-weight: 400;
          font-size: 15px;
          line-height: 18px;

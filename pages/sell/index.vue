@@ -53,8 +53,11 @@
                                  fill="#155EEF"/>
                            </svg>
 
-                           <p class="pages-sell__loginInfo-text">
-                              {{ $t('you_can_only_have_some_free_announcement_within_30_days') }} </p>
+                           <div class="content">
+                              <p class="pages-sell__loginInfo-text">
+                                 {{ $t('you_can_only_have_some_free_announcement_within_30_days') }}
+                              </p>
+                           </div>
                         </div>
 
                         <div class="pages-sell__loginInfo-item">
@@ -85,33 +88,33 @@
                </div>
             </div>
 
-<!--            <div class="col-lg-7">-->
-<!--               <div class="card mt-2 mt-lg-0">-->
-<!--                  <h2 class="title-with-line full-width">-->
-<!--                     <span>{{ $t('vehicle_type') }}</span>-->
-<!--                  </h2>-->
+            <div class="col-lg-7">
+               <div class="card mt-2 mt-lg-0">
+                  <h2 class="title-with-line full-width">
+                     <span>{{ $t('vehicle_type') }}</span>
+                  </h2>
 
-<!--                  <vehicle-options-->
-<!--                     :group-by="2"-->
-<!--                     :options="vehicleOptions"-->
-<!--                     :value="form.vehicleType"-->
-<!--                     @change="handleVehicleType"-->
-<!--                  />-->
+                  <vehicle-options
+                     :group-by="2"
+                     :options="vehicleOptions"
+                     :value="form.vehicleType"
+                     @change="handleVehicleType"
+                  />
 
-<!--                  <template v-if="hasCategories">-->
-<!--                     <h2 class="title-with-line full-width mt-3" ref="categories">-->
-<!--                        <span>{{ $t(vehicleOptions[selectedIndex].name) }}</span>-->
-<!--                     </h2>-->
+                  <template v-if="hasCategories">
+                     <h2 class="title-with-line full-width mt-3" ref="categories">
+                        <span>{{ $t(vehicleOptions[selectedIndex].name) }}</span>
+                     </h2>
 
-<!--                     <vehicle-options-->
-<!--                        :group-by="2"-->
-<!--                        :options="vehicleOptions[selectedIndex].children"-->
-<!--                        :value="vehicleCategory"-->
-<!--                        @change="handleVehicleCategory"-->
-<!--                     />-->
-<!--                  </template>-->
-<!--               </div>-->
-<!--            </div>-->
+                     <vehicle-options
+                        :group-by="2"
+                        :options="vehicleOptions[selectedIndex].children"
+                        :value="vehicleCategory"
+                        @change="handleVehicleCategory"
+                     />
+                  </template>
+               </div>
+            </div>
          </div>
 
          <div class="row">
@@ -123,13 +126,12 @@
                         <CustomDropdown
                            :items="vehicleOptions"
                            :placeholder="'Elanın növü'"
-                           :clearValue="form.vehicleType"
                            :translate="true"
                            v-model="form.vehicleType"
                         />
 
                         <CustomDropdown
-                           v-show="form.vehicleType"
+                           v-if="form.vehicleType"
                            :items="brands"
                            :placeholder="'Marka'"
                            :getFullDetails="true"
@@ -140,7 +142,7 @@
                         />
 
                         <CustomDropdown
-                           v-show="form.brand"
+                           v-if="form.brand"
                            :items="models"
                            :placeholder="'Model'"
                            :getFullDetails="true"
@@ -151,7 +153,7 @@
                         />
 
                         <CustomDropdown
-                           v-show="form.model"
+                           v-if="form.model"
                            :items="sellYears.years"
                            :placeholder="'Buraxılış ili'"
                            :disabled="correctValue(form.model)"
@@ -161,7 +163,7 @@
                         />
 
                         <CarBody
-                           v-show="form.year"
+                           v-if="form.year && sellBody[0]"
                            :items="sellBody"
                            :disabled="correctValue(form.year)"
                            :clearValue="form.year"
@@ -169,7 +171,7 @@
                         />
 
                         <CarGenerations
-                           v-show="form.car_body_type"
+                           v-if="form.car_body_type && sellGenerations[0]"
                            :items="sellGenerations"
                            :disabled="correctValue(form.car_body_type)"
                            :clearValue="form.car_body_type"
@@ -177,7 +179,7 @@
                         />
 
                         <CustomDropdown
-                           v-show="form.car_generations"
+                           v-if="form.car_generations"
                            :items="sellEngines.map((o) => ({
                               name: $t('engine_values')[o.engine],
                               key: o.engine
@@ -190,14 +192,16 @@
                         />
 
                         <CustomCheckbox
-                           v-show="form.car_generations"
-                           :checkbox="true"
+                           v-if="form.car_generations"
+                           :id="'autogas'"
                            :text="'Qaz balon avadanlıqları'"
+                           :checkbox="true"
+                           :clearValue="form.car_generations"
                            @check="form.autogas = $event"
                         />
 
                         <CustomRadio
-                           v-show="form.fuel_type"
+                           v-if="form.fuel_type"
                            :className="'fuelType'"
                         >
                            <template #title>
@@ -233,7 +237,7 @@
                         </CustomRadio>
 
                         <CustomDropdown
-                           v-show="form.type_of_drive"
+                           v-if="form.type_of_drive"
                            :items="sellTransmissions.map((o) => ({
                               name: $t('box_values')[o.box],
                               key: o.box,
@@ -246,7 +250,7 @@
                         />
 
                         <CustomDropdown
-                           v-show="form.gearing"
+                           v-if="form.gearing"
                            :items="sellModifications.map((o) => ({
                              name: getModificationName(o),
                              key: o.id,
@@ -259,17 +263,18 @@
                         />
 
                         <CustomDropdown
-                           v-show="form.modification"
+                           v-if="form.modification"
                            :items="colors"
                            :placeholder="'Rəng'"
                            :disabled="correctValue(form.modification)"
+                           :clearValue="form.modification"
                            :getFullDetails="true"
                            :translateLocale="true"
                            :color="true"
                            v-model="form.color"
                         />
 
-                        <div class="content d-flex mt20">
+                        <div class="content d-flex mt20" v-if="form.modification">
                            <CustomInput
                               :type="'number'"
                               :placeholder="'Yürüş'"
@@ -300,8 +305,8 @@
                            </CustomRadio>
                         </div>
 
-                        <div class="content d-flex mt20">
-                           <CustomRadio :className="'circle'">
+                        <div class="content d-flex mt20" v-if="form.modification">
+                           <CustomRadio :className="'circle position-relative'">
                               <template #content>
                                  <div
                                     class="customRadio__content"
@@ -318,9 +323,46 @@
                                        <span>{{ item.name }}</span>
                                     </label>
                                  </div>
+
+                                 <CustomTooltip>
+                                    <template #content>
+                                       Öz-özünə hərəkət etməyən ban hissələrinə
+                                       əhəmiyyətli dərəcədə ziyan vurmaqla
+                                    </template>
+                                 </CustomTooltip>
                               </template>
                            </CustomRadio>
                         </div>
+
+                        <div class="content d-flex" v-if="form.modification">
+                           <CustomCheckbox
+                              :checkbox="true"
+                              :id="'customs_clearance'"
+                              :className="'clearance'"
+                              :text="'Gömrükdən keçməyib'"
+                              @check="form.customs_clearance = $event"
+                           />
+
+                           <CustomCheckbox
+                              :checkbox="true"
+                              :id="'guaranty'"
+                              :text="'Zəmanətli'"
+                              @check="form.guaranty = $event"
+                           />
+                        </div>
+
+<!--                        v-if="form.is_new"-->
+<!--                        :disabled="correctValue(form.is_new)"-->
+                        <CustomDropdown
+
+                           :items="sellOptions"
+                           :placeholder="'Satış şəhəri'"
+
+                           :clearValue="form.is_new"
+                           :getFullDetails="true"
+                           v-model="form.region_id"
+                        />
+
                      </div>
 
                      <div class="divider__item">
@@ -350,10 +392,12 @@ import CarBody from "~/components/cars/CarBody.vue";
 import CarGenerations from "~/components/cars/CarGenerations.vue";
 import CustomRadio from "~/components/elements/CustomRadio.vue";
 import CustomInput from "~/components/elements/CustomInput.vue";
+import CustomTooltip from "~/components/elements/CustomTooltip.vue";
 
 export default {
    name: 'pages-sell-index',
    components: {
+      CustomTooltip,
       CustomInput,
       CustomRadio,
       CarGenerations,
@@ -384,14 +428,18 @@ export default {
             car_body_type: '',
             car_generations: '',
             fuel_type: '',
-            autogas: '',
+            autogas: false,
             type_of_drive: '',
             gearing: '',
             modification: '',
             color: '',
             mileage: '',
             mileage_measure: '',
-            is_new: ''
+            is_new: '',
+            customs_clearance: false,
+            guaranty: false,
+            region_id: '',
+            address: '',
          },
          tabOptions: {
             header: false,
@@ -402,47 +450,63 @@ export default {
       }
    },
    watch: {
+      'form.vehicleType'(val) {
+         if (!val) this.form.brand = ''
+      },
       'form.brand'() {
-         if (this.form.brand) this.$store.dispatch('getModels', this.form.brand.slug);
+         if (this.form.brand) {
+            this.$store.dispatch('getModels', this.form.brand.slug);
+         } else {
+            this.form.model = '';
+         }
       },
       'form.model'() {
-         if (this.form.model) this.$store.dispatch('getSellYears',
-            { brand: this.form.brand.slug,
+         if (this.form.model) {
+            this.$store.dispatch('getSellYears', {
+               brand: this.form.brand.slug,
                model: this.form.model.slug
-            }
-         );
+            });
+         } else {
+            this.form.year = '';
+         }
       },
       'form.year'() {
-         if (this.form.year) this.$store.dispatch('getSellBody',
-            {
+         if (this.form.year) {
+            this.$store.dispatch('getSellBody', {
                brand: this.form.brand.slug,
                model: this.form.model.slug,
                year: this.form.year
-            }
-         );
+            });
+         } else {
+            this.form.car_body_type = '';
+         }
       },
       'form.car_body_type'() {
-         if (this.form.car_body_type) this.$store.dispatch('getSellGenerations',
-            {
+         if (this.form.car_body_type) {
+            this.$store.dispatch('getSellGenerations', {
                brand: this.form.brand.slug,
                model: this.form.model.slug,
                year: this.form.year,
                body: this.form.car_body_type,
-            }
-         );
+            });
+         } else {
+            this.form.car_generations = '';
+         }
       },
       'form.car_generations'() {
-         if (this.form.car_generations) this.$store.dispatch('getSellEngines',
-            {
+         if (this.form.car_generations) {
+            this.$store.dispatch('getSellEngines', {
                brand: this.form.brand.slug,
                model: this.form.model.slug,
                year: this.form.year,
                body: this.form.car_body_type,
                generation: this.form.car_generations
-            }
-         );
+            });
+         } else {
+            this.form.fuel_type = '';
+         }
       },
-      'form.fuel_type'() {
+      'form.fuel_type'(newVal, oldVal) {
          if (this.form.fuel_type) {
             this.$store.dispatch('getSellGearing',
                {
@@ -455,36 +519,70 @@ export default {
             )
          } else {
             this.form.type_of_drive = '';
+
+            [...this.$refs.radioInput].forEach(item => {
+               item.checked = false;
+            })
+         }
+
+         if (oldVal) {
+            this.clearValue(newVal, oldVal);
+
             [...this.$refs.radioInput].forEach(item => {
                item.checked = false;
             })
          }
       },
       'form.type_of_drive'() {
-         if (this.form.type_of_drive) this.$store.dispatch('getSellTransmissions',
-            {
-               brand: this.form.brand.slug,
-               model: this.form.model.slug,
-               body: this.form.car_body_type,
-               generation: this.form.car_generations,
-               engine: this.form.fuel_type.key,
-               gearing: this.form.type_of_drive,
-            }
-         );
+         if (this.form.type_of_drive) {
+            this.$store.dispatch('getSellTransmissions',
+               {
+                  brand: this.form.brand.slug,
+                  model: this.form.model.slug,
+                  body: this.form.car_body_type,
+                  generation: this.form.car_generations,
+                  engine: this.form.fuel_type.key,
+                  gearing: this.form.type_of_drive,
+               }
+            );
+         } else {
+            this.form.gearing = '';
+         }
       },
       'form.gearing'() {
-         if (this.form.gearing) this.$store.dispatch('getSellModifications',
-            {
-               brand: this.form.brand.slug,
-               model: this.form.model.slug,
-               body: this.form.car_body_type,
-               generation: this.form.car_generations,
-               engine: this.form.fuel_type.key,
-               gearing: this.form.type_of_drive,
-               transmission: this.form.gearing.key,
-            }
-         );
+         if (this.form.gearing) {
+            this.$store.dispatch('getSellModifications',
+               {
+                  brand: this.form.brand.slug,
+                  model: this.form.model.slug,
+                  body: this.form.car_body_type,
+                  generation: this.form.car_generations,
+                  engine: this.form.fuel_type.key,
+                  gearing: this.form.type_of_drive,
+                  transmission: this.form.gearing.key,
+               }
+            );
+         } else {
+            this.form.modification = '';
+         }
       },
+      // 'form.modification'() {
+      //    if (this.form.modification) {
+      //       // this.$store.dispatch('getSellModifications',
+      //       //    {
+      //       //       brand: this.form.brand.slug,
+      //       //       model: this.form.model.slug,
+      //       //       body: this.form.car_body_type,
+      //       //       generation: this.form.car_generations,
+      //       //       engine: this.form.fuel_type.key,
+      //       //       gearing: this.form.type_of_drive,
+      //       //       transmission: this.form.gearing.key,
+      //       //    }
+      //       // );
+      //    } else {
+      //       this.form.color = '';
+      //    }
+      // },
    },
 
    head() {
@@ -523,7 +621,8 @@ export default {
          'sellGearing',
          'sellTransmissions',
          'sellModifications',
-         'colors'
+         'colors',
+         'sellOptions'
       ]),
 
       getMileageOptions() {
@@ -586,6 +685,20 @@ export default {
       },
    },
    methods: {
+      clearValue(newVal, oldVal) {
+         if (typeof newVal === 'object') {
+            if (newVal.id !== oldVal.id) {
+               this.form.type_of_drive = '';
+            } else if (newVal.key !== oldVal.key) {
+               this.form.type_of_drive = '';
+            }
+         } else {
+            if (newVal !== oldVal) {
+               this.form.type_of_drive = '';
+            }
+         }
+      },
+
       correctValue(item) {
          if (item) {
             return false;
@@ -731,7 +844,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
    .pages-sell {
       &__title {
          font-size: 28px;
@@ -836,6 +949,10 @@ export default {
             &.fuelType {
                margin-top: 32px;
             }
+
+            .customTooltip {
+               right: 17px;
+            }
          }
 
          .content {
@@ -843,6 +960,15 @@ export default {
 
             .customRadio {
                margin-top: 0;
+            }
+         }
+
+         .customCheckbox {
+            &.clearance {
+               label {
+                  font-size: 14px;
+                  //padding: 16px 8px 16px 48px;
+               }
             }
          }
       }
