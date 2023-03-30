@@ -417,15 +417,22 @@
     pointer-events: none;
   }
   .block-info {
-    display: block;
+    display: flex;
+    align-items: center;
     width: 100%;
     font-weight: 500;
     hyphens: auto;
+    svg {
+      margin-left: 8px;
+    }
   }
   .block-icon {
     flex-shrink: 0;
     font-size: 55px;
     margin-right: 10px;
+    &:has(svg) {
+      font-size: unset;
+    }
     i {
       display: flex;
       &.icon-parts {

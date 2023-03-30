@@ -29,11 +29,12 @@
 
    export default {
       methods: {
-         searchBrand(brand) {
-            const url = {
+         async searchBrand(brand) {
+            let qty = 1;
+            let url = {
                "sorting": "created_at_desc",
                "additional_brands": {
-                  "0":{ "brand": 129, "brand_slug": "bmw" },
+                  "0":{ "brand": brand.id, "brand_slug": brand.slug },
                   "1":{},
                   "2":{},
                   "3":{},
@@ -51,21 +52,45 @@
                "currency":1
             }
 
+            // first = 2;
             this.$router.push({
                path: 'masinlar',
                query: { car_filter: JSON.stringify(url) }
+            }, () => {
+               // if (this.loggedIn && this.meta.type === 'cars') {
+               //    this.fetchSavedSearch({ car_filter: `masinlar?${JSON.stringify(url)}` });
+               // }
+               window.location.reload(true);
+               // window.location.replace();
+               // this.$router.go(-100)
+               // this.$router.go(100)
+               // if (!first) {
+               //    console.log('aaaaaaaaaaaaaaaa')
+               //    window.location.assign(`masinlar${window.location.search}`)
+               // }
+               // console.log('search', window.location.search);
+
+               this.scrollTo('.cars-search-form', [0, 0], 1000)
+
+               // console.log('window.location', window.location)
             })
          }
       },
 
+      // created() {
+      //    let urlParams = new URLSearchParams(window.location.search);
+      //    console.log(urlParams.has('yourParam')); // true
+      //    console.log(urlParams.get('yourParam')); // "MyParam"
+      // },
+
       computed: {
          ...mapGetters({
-            brands: 'comparison/brands'
+            brands: 'brands'
          })
       },
 
       async fetch() {
-         await this.$store.dispatch('comparison/getBrands');
+         await this.$store.dispatch('getBrands');
       }
    }
 </script>

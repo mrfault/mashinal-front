@@ -243,8 +243,7 @@
           color: inherit;
           font-weight: 500;
 
-          &.active,
-          &:hover {
+          &.active {
             color: $red-1;
           }
         }
@@ -272,6 +271,17 @@
     .menu > li:hover {
       & > a {
         color: $red-1;
+
+        svg {
+          &:not(.not-hover) {
+            path {
+              fill: $red-1;
+            }
+            rect {
+              stroke: $red-1;
+            }
+          }
+        }
 
         i {
           transform: scaleY(-1);
@@ -356,6 +366,7 @@
   width: 14px;
 
 }
+
 .dark-mode {
   .salon-car-icon {
     path {

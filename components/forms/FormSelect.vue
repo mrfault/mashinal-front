@@ -360,6 +360,10 @@ export default {
       type: String,
       default: '',
     },
+     clearPlaceholder: {
+      type: Boolean,
+      default: false,
+    },
     iconName: {
       type: String,
       default: 'chevron-down',
@@ -552,22 +556,23 @@ export default {
       return this.options.filter(this.isSelected)
     },
     getFilteredOptions() {
-      // if (!this.search || !this.hasSearch) return this.getOptions;
+      if (!this.search || !this.hasSearch) return this.getOptions;
 
       // return this.options.filter((option) =>
       //   this.$search(this.getOptionName(option), this.search),
       // )
 
        let searchLength = this.search.length;
-       return this.options.filter(item => {
-          let itemName = item.name.toLowerCase().split('').slice(0, searchLength).join('');
-          if (itemName === this.search) return item.name;
+       return this.options?.filter(item => {
+          let itemName = item?.name.toLowerCase().split('').slice(0, searchLength).join('');
+          if (itemName === this.search) return item?.name;
        })
     },
     getLabelText() {
       if (this.custom) {
-        let value
-        let read = this.values.read !== false
+        let value;
+        let read = this.values.read !== false;
+
         if (this.values.from && this.values.to)
           value = `${this.$readNumber(
             this.values.from,
@@ -592,7 +597,6 @@ export default {
       }
 
       let selected = this.getSelectedOptions
-
       if (this.shortNamesLabel) {
         return selected.length
           ? `${this.label}: ${selected
@@ -600,6 +604,14 @@ export default {
               .join(', ')}`
           : this.label
       }
+
+       if (this.clearPlaceholder) {
+          if (!selected.length) {
+              return this.label
+          } else {
+             return selected[0]?.name;
+          }
+       }
 
       return selected.length === 1
         ? `${

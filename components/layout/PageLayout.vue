@@ -67,7 +67,7 @@
             <!-- /portal targets -->
             <comparison-badge :window-width="windowWidth"/>
             <mobile-nav/>
-            <brands-list />
+<!--            <brands-list />-->
             <page-footer v-if="!hideFooter"/>
             <template v-if="isMobileBreakpoint && showPopupBanner">
                <modal-popup

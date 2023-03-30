@@ -43,11 +43,13 @@
             <qrcode-box :inSellPage="true"></qrcode-box>
           </div>
         </div>
+
         <div class="col-lg-7">
           <div class="card mt-2 mt-lg-0">
             <h2 class="title-with-line full-width">
               <span>{{ $t('vehicle_type') }}</span>
             </h2>
+<!--             <pre>{{vehicleOptions}}</pre>-->
             <vehicle-options
               :group-by="2"
               :options="vehicleOptions"
@@ -135,6 +137,8 @@ export default {
         moto: 0,
         commercial: 0,
         parts: 0,
+         registration_marks: 0,
+
         parts_unlimited: this.loggedIn
           ? true
           : this.sellTokens.parts_unlimited,
@@ -144,12 +148,14 @@ export default {
           : this.sellTokens.salon_unlimited,
       }
 
-      for (let type of ['cars', 'moto', 'commercial', 'parts']) {
-        let tokenKey = `announce_left_${type}`
-        if (type === 'cars') tokenKey = tokenKey.slice(0, -1)
-        else if (type === 'parts') tokenKey = 'part_announce_left'
-        if (this.loggedIn) tokens[type] = this.user[tokenKey]
-        else if (this.sellTokens) tokens[type] = this.sellTokens[type]
+      for (let type of ['cars', 'moto', 'commercial', 'parts', 'registration_marks']) {
+        let tokenKey = `announce_left_${type}`;
+
+        if (type === 'cars') tokenKey = tokenKey.slice(0, -1);
+        else if (type === 'parts') tokenKey = 'part_announce_left';
+
+        if (this.loggedIn) tokens[type] = this.user[tokenKey];
+        else if (this.sellTokens) tokens[type] = this.sellTokens[type];
       }
 
       return tokens
@@ -158,23 +164,16 @@ export default {
       return ['moto', 'commercial'].includes(this.vehicleType)
     },
     vehicleOptions() {
-
       return this.searchMenus.map((menu) => ({
         ...menu,
-        disabled:
-          (this.user?.external_salon ? menu.title === 'parts' : false) ||
-          this.tokens[menu.title] <= 0 &&
-          !this.tokens[
-            menu.title === 'parts' ? 'parts_unlimited' : 'salon_unlimited'
-          ]
-
+         disabled: (this.user?.external_salon ? menu.title === 'parts' : false) || this.tokens[menu.title] <= 0 && !this.tokens[menu.title === 'parts' ? 'parts_unlimited' : 'salon_unlimited']
       }))
     },
   },
   methods: {
     handleVehicleType(e) {
       this.vehicleCategory = ''
-      this.vehicleType = e.value
+       e.value === "registration_marks" ? this.vehicleType = '/registration-marks/create' : this.vehicleType = e.value;
       this.selectedIndex = e.index
       if (this.hasCategories) {
         this.$nextTick(() => {
@@ -189,12 +188,13 @@ export default {
       this.nextSteps()
     },
     nextSteps() {
-      let path = this.$localePath(
-        `/sell/${this.vehicleType}${
-          this.vehicleCategory ? `?category=${this.vehicleCategory}` : ''
-        }`,
-      )
-      this.$router.push(path)
+       let path;
+       if (this.vehicleType === '/registration-marks/create') {
+          path = this.$localePath(`${this.vehicleType}${this.vehicleCategory ? `?category=${this.vehicleCategory}` : ''}`);
+       } else {
+          path = this.$localePath(`/sell/${this.vehicleType}${this.vehicleCategory ? `?category=${this.vehicleCategory}` : ''}`);
+       }
+      this.$router.push(path);
     },
     getTextLines(phone) {
       let isSalon = this.loggedIn && this.user.autosalon || this.user.external_salon;
