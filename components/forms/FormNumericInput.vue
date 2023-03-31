@@ -53,6 +53,10 @@ export default {
       type: String,
       default: ' '
     },
+     defaultValue: {
+      type: String,
+      default: 1
+    },
     typingInterval: {
       default: 450
     },
@@ -99,7 +103,13 @@ export default {
     readValue(value) {
       if (value) {
         return value.toString().replace(/\D+/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-      }else return '0'
+      } else {
+         if (this.defaultValue) {
+            return '0'
+         } else {
+            return ''
+         }
+      }
     },
     handleKeyUp(e) {
       if (this.typingInterval) {

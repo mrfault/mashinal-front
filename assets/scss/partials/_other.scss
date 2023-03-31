@@ -417,15 +417,24 @@
     pointer-events: none;
   }
   .block-info {
-    display: block;
+    display: flex;
+    align-items: center;
     width: 100%;
     font-weight: 500;
     hyphens: auto;
+    svg {
+      max-width: 39px;
+      width: 100%;
+      margin-left: 8px;
+    }
   }
   .block-icon {
     flex-shrink: 0;
     font-size: 55px;
     margin-right: 10px;
+    &:has(svg) {
+      font-size: unset;
+    }
     i {
       display: flex;
       &.icon-parts {
@@ -955,5 +964,21 @@
     font-size: 18px;
     font-weight: 500;
     margin: 25px 0;
+  }
+}
+
+@media (max-width: 400px) {
+  .selectable-block {
+    position: relative;
+    .block-info {
+      svg {
+        position: absolute;
+        top: 6px;
+        right: 8px;
+        width: 24px;
+        height: 14px;
+        margin: 0;
+      }
+    }
   }
 }

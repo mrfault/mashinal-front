@@ -104,9 +104,9 @@
       @close="showPaymentModal = false"
     >
       <h4 class="mb-2">{{ $t('payment_method') }}</h4>
-      <form-buttons v-model="paymentMethod" :options="paymentMethodOptions" :group-by="2" />
-      <select-banking-card v-model="bankingCard" class="mt-2 mt-lg-3" v-show="paymentMethod === 'card'" />
-      <terminal-info-button popup-name="garage-activate-popup" />
+<!--      <form-buttons v-model="paymentMethod" :options="paymentMethodOptions" :group-by="2" />-->
+<!--      <select-banking-card v-model="bankingCard" class="mt-2 mt-lg-3" v-show="paymentMethod === 'card'" />-->
+<!--      <terminal-info-button popup-name="garage-activate-popup" />-->
       <div :class="{'modal-sticky-bottom': isMobileBreakpoint}">
         <hr/>
         <div class="row">
