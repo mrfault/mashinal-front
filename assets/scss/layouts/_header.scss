@@ -222,6 +222,7 @@
   }
 
   .navbar {
+    padding: 11px 0;
     background-color: $white;
     border-radius: 0 0 20px 20px;
 
@@ -245,6 +246,17 @@
 
           &.active {
             color: $red-1;
+
+            svg {
+              &:not(.not-hover) {
+                path {
+                  fill: $red-1;
+                }
+                rect {
+                  stroke: $red-1;
+                }
+              }
+            }
           }
         }
 

@@ -32,7 +32,6 @@
             />
           </template>
           <template v-else-if="announcement.type !== 'banner'">
-
             <div
               v-if="checkSecondTemplate(index) ? !checkItemB(index,announcement): true"
               :class="[
@@ -50,7 +49,6 @@
               :key="announcement.id_unique + (escapeDuplicates ? '_' + index : '')"
             >
               <grid-item
-
                 :announcement="announcement"
                 :show-monetization-actions="showMonetizationActions"
                 :show-checkbox="showCheckbox"

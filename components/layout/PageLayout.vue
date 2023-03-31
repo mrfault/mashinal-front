@@ -65,7 +65,7 @@
             <portal-target name="backdrop"/>
 
             <!-- /portal targets -->
-            <comparison-badge :window-width="windowWidth"/>
+            <comparison-badge :window-width="windowWidth" />
             <mobile-nav/>
 <!--            <brands-list />-->
             <page-footer v-if="!hideFooter"/>

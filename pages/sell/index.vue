@@ -269,9 +269,25 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-.login-forms {
-  margin: 0;
-  width: 100%;
-}
+<style lang="scss">
+   .pages-sell {
+      .card {
+         .item {
+            &:last-child {
+               .selectable-block {
+                  justify-content: center;
+                  width: calc(200% + 20px);
+                  .block-info {
+                     width: unset;
+                  }
+               }
+            }
+         }
+      }
+   }
+
+   .login-forms {
+     margin: 0;
+     width: 100%;
+   }
 </style>

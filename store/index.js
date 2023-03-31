@@ -188,12 +188,14 @@ const getInitialState = () => ({
   single_announce: {},
   partCategories: [],
 
+  regionNumbers: [],
   registrationMarks: []
 });
 
 export const state = () => getInitialState();
 
 export const getters = {
+  getRegionNumbers: s => s.regionNumbers,
   getRegistrationMarks: s => s.registrationMarks,
   single_announce: s => s.single_announce,
   homePageSliders: s => s.homePageSliders,
@@ -365,7 +367,6 @@ export const getters = {
   offerGenerations: s => s.offer_generations,
 //  moderator
   partCategories: s => s.partCategories
-
 };
 
 const objectNotEmpty = (state, commit, property) => {
@@ -379,10 +380,15 @@ const objectNotEmpty = (state, commit, property) => {
     Object.keys(state[property]).length > 0
   );
 };
-
 export const actions = {
-  async fetchRegistrationMarks({ commit }) {
+  async fetchRegionNumbers({ commit }) {
     const res = await this.$axios.$get("/regions-and-serial-number")
+    commit("mutate", { property: "regionNumbers", value: res.data || [] })
+  },
+
+  async fetchRegistrationMarks({ commit }) {
+    // const res = await this.$axios.$get("/plates?serial_number=88&serial_letter1=g&serial_letter2=h&car_number=171")
+    const res = await this.$axios.$get("/plates")
     commit("mutate", { property: "registrationMarks", value: res.data || [] })
   },
 

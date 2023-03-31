@@ -8,6 +8,7 @@
       <icon name="star-favorite" />
     </button> -->
   <div class="white-background">
+<!--     <pre>{{announcement}}</pre>-->
     <button
       class="btn-transparent btn-favorite"
       :class="{ 'btn-favorite-active': isAdded }"
@@ -31,6 +32,7 @@ export default {
 
     async handleClick(skipIfAdded = false) {
       if (skipIfAdded && this.isAdded) return
+
       if (!this.loggedIn) {
         this.$nuxt.$emit(
           'login-popup',

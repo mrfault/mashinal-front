@@ -201,19 +201,19 @@
                       :class="{ dropdown: menu.children }"
                     >
                       <nuxt-link class="external_salon_hover" style="position: relative" :to="$localePath(menu.route)">
-                         <icon
-                          v-if="menu.icon && menu.icon !== 'external-tab'"
-                          style="font-size: 20px; margin-right: 10px;"
-                          class="no-transform "
-                          :name="menu.icon"
-                        />
+<!--                         <icon-->
+<!--                          v-if="menu.icon && menu.icon !== 'external-tab'"-->
+<!--                          style="font-size: 20px; margin-right: 10px;"-->
+<!--                          class="no-transform "-->
+<!--                          :name="menu.icon"-->
+<!--                        />-->
 
-                        <inline-svg
-                           v-else
-                           class="no-transform"
-                           src="/icons/registration_marks.svg"
-                           style="margin-right: 10px;"
-                        />
+<!--                        <inline-svg-->
+<!--                           v-else-->
+<!--                           class="no-transform"-->
+<!--                           src="/icons/registration_marks.svg"-->
+<!--                           style="margin-right: 10px;"-->
+<!--                        />-->
 
                         {{ $t(menu.title) }}
 

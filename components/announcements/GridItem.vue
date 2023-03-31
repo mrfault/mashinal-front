@@ -1,4 +1,3 @@
-`
 <template>
   <div :class="colClass || 'stratch-child-block'">
     <div
@@ -57,10 +56,10 @@
         <div class="item-overlay" v-if="showOverlay">
           <div class="item-overlay__top">
             <div class="item-overlay__top--left">
+<!--               <pre style="background-color: white">{{announcement}}</pre>-->
                 <add-favorite
                   v-if="!isProfilePage"
                   :announcement="announcement"
-
                 />
             </div>
             <div

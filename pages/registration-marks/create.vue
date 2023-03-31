@@ -17,7 +17,7 @@
                         <div class="col-6 col-xl-5">
                            <form-select
                               :label="'01 - Abşeron'"
-                              :options="registrationMarks"
+                              :options="getRegionNumbers"
                               :invalid="$v.region_id.$error"
                               :clearPlaceholder="true"
                               v-model="region_id"
@@ -83,9 +83,9 @@
                            <form-select
                               :label="$t('city')"
                               :options="cities.regions"
-                              :invalid="$v.form.city_id.$error"
+                              :invalid="$v.form.region_id.$error"
                               :clearPlaceholder="true"
-                              v-model="form.city_id"
+                              v-model="form.region_id"
                               has-search
                            />
                         </div>
@@ -96,7 +96,6 @@
                            <form-textarea
                               :placeholder="$t('description2')"
                               :maxlength="3000"
-                              :invalid="$v.form.comment.$error"
                               v-model="form.comment"
                            />
                         </div>
@@ -119,11 +118,6 @@
                         </div>
                      </div>
                   </div>
-
-<!--                  <div class="col-4">-->
-<!--                     <div class="row">-->
-<!--                     </div>-->
-<!--                  </div>-->
                </form>
             </div>
          </div>
@@ -184,7 +178,7 @@
                car_number: '',
                price: '',
                currency_id: '',
-               city_id: '',
+               region_id: '',
                comment: ''
             }
          }
@@ -215,7 +209,7 @@
                region = this.region_id.split('-')[0].slice(0, -1);
             }
 
-            this.form.car_number = `${region}${this.region_letter1.toLowerCase()}${this.region_letter2.toLowerCase()}${this.region_number}`;
+            this.form.car_number = `${region}-${this.region_letter1}${this.region_letter2}-${this.region_number}`;
 
             try {
                const res = await this.$axios.$post(`/sell/plate/post/publish?is_mobile=${this.isMobileBreakpoint}`, this.form)
@@ -238,7 +232,7 @@
 
       computed: {
          ...mapGetters({
-            registrationMarks: 'getRegistrationMarks',
+            getRegionNumbers: 'getRegionNumbers',
             cities: 'sellOptions'
          }),
 
@@ -248,7 +242,7 @@
       },
 
       async fetch({ store }) {
-         await store.dispatch('fetchRegistrationMarks');
+         await store.dispatch('fetchRegionNumbers');
          await store.dispatch('getOptions');
       },
 
@@ -260,8 +254,7 @@
          form: {
             price: { required },
             currency_id: { required },
-            city_id: { required },
-            comment: { required }
+            region_id: { required }
          }
       }
    }
@@ -336,10 +329,6 @@
             border-radius: 4px;
             border: none;
             outline: none;
-         }
-
-         &-form {
-            //display: flex;
          }
       }
    }

@@ -423,6 +423,8 @@
     font-weight: 500;
     hyphens: auto;
     svg {
+      max-width: 39px;
+      width: 100%;
       margin-left: 8px;
     }
   }
@@ -962,5 +964,21 @@
     font-size: 18px;
     font-weight: 500;
     margin: 25px 0;
+  }
+}
+
+@media (max-width: 400px) {
+  .selectable-block {
+    position: relative;
+    .block-info {
+      svg {
+        position: absolute;
+        top: 6px;
+        right: 8px;
+        width: 24px;
+        height: 14px;
+        margin: 0;
+      }
+    }
   }
 }

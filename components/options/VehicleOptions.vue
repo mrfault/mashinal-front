@@ -1,22 +1,22 @@
 <template>
    <div :class="['row', iconsOnly || groupBy === 5 ? '' : 'mb-n2 mb-lg-n3']">
       <div
-         :class="['mb-2 mb-lg-3', iconsOnly ? 'col-2 col-lg-1' : `col-6 col-lg-${groupBy === 5 ? '1-5' : ([1,2,3,4,6,12].includes(groupBy) ? 12 / groupBy : 4)}`]"
-         v-for="(option, index) in options" :key="option.title"
+         :class="[
+            'item mb-2 mb-lg-3',
+            iconsOnly ? 'col-2 col-lg-1' : `col-6 col-lg-${groupBy === 5 ? '1-5' : ([1,2,3,4,6,12].includes(groupBy) ? 12 / groupBy : 4)}`
+         ]"
+         v-for="(option, index) in options"
+         :key="option.title"
       >
          <div
             :class="['selectable-block', {'disabled': option.disabled, 'active': selected === option.title || selected === getKey(option), 'icons-only': iconsOnly}]"
             @click.stop="selected = { value: option.id || option.title, index, key: getKey(option) }"
             v-tooltip="iconsOnly && $t(option.title)"
          >
-<!--            <pre>{{option}}</pre>-->
             <div class="block-icon">
                <icon v-if="option.title !== 'registration_marks'" :name="option.icon"/>
 
-               <inline-svg
-                  v-else
-                  :src="option.icon"
-               />
+               <inline-svg v-else :src="option.icon" />
             </div>
 
             <span class="block-info" v-if="!iconsOnly">
@@ -25,6 +25,7 @@
                <inline-svg
                   v-if="option.title === 'registration_marks'"
                   src="/icons/new_badge_2.svg"
+                  :width="'39px'"
                />
            </span>
          </div>
