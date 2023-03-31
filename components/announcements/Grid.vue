@@ -220,6 +220,7 @@ export default {
   },
 
   methods: {
+
     changePage(page) {
       if (this.showAll) {
         this.$emit('pending')

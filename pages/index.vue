@@ -276,7 +276,6 @@ export default {
       observer.observe(this.$refs.theVideo);
     },
   },
-
   mounted() {
     if (window.innerWidth < 769) this.absoluteMobileScreen = true
     else this.absoluteMobileScreen = false
@@ -293,6 +292,8 @@ export default {
     this.$nuxt.$on('logo-click', this.handleLogoClick)
 
     this.getSliderData()
+
+
   },
   beforeDestroy() {
     this.$nuxt.$off('logo-click', this.handleLogoCkick)

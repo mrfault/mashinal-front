@@ -7,36 +7,38 @@
     <modal-popup
       :toggle="showPaymentModal"
       :title="$t('get_an_ad')"
-      :modal-class="'larger monetization-popup'"
+      :modal-class="'larger monetization-popup'"min_view
       @close="showPaymentModal = false"
     >
-      <p class="text-dark-blue-3">{{ $t('ad_views_count') }}</p>
-      <h4 class="text-dark-blue-2">
-        {{ selectedPlan.min_view }} - {{ selectedPlan.max_view }}
-      </h4>
+
+      <div class="ads_statics">
+        <div>Elanınız təqribən <span> {{ selectedPlan.min_view }} - {{ selectedPlan.max_view }} </span> dəfə alıcılara göstəriləcək.</div>
+      </div>
+
       <hr />
-      <h4>{{ $t('daily_budget') }}</h4>
-      <form-range
-        v-model="price.value"
-        :min="price.min"
-        :max="price.max"
-        :step="0.1"
-        :data="pricesForPlan"
-        :tooltip-template="`{value} ALM`"
-      />
-      <h4>{{ $t('duration') }}</h4>
-      <form-range
-        v-model="day.value"
-        :min="day.min"
-        :max="day.max"
-        :step="1"
-        :data="daysForPlan"
-        :tooltip-template="`{value} day`"
-      />
-      <p class="mb-2 mb-lg-3">
-        <span class="star">*</span>
-        {{ $t('ad_can_be_paused') }}
-      </p>
+
+      <div class="radio-items">
+        <label class="radio-container">
+          7 gün | 6.00 ₼
+          <input type="radio"    checked="checked" name="package">
+          <span class="checkmark"></span>
+        </label>
+
+        <label class="radio-container">
+          15 gün | 13.00  ₼
+          <input type="radio"   name="package">
+          <span class="checkmark"></span>
+        </label>
+
+        <label class="radio-container">
+          30 gün | 25.00  ₼
+          <input type="radio"   name="package">
+          <span class="checkmark"></span>
+        </label>
+      </div>
+
+
+
       <h4>{{ $t('payment_method') }}</h4>
       <form-buttons
         v-model="paymentMethod"
@@ -178,6 +180,9 @@ export default {
     },
   },
   methods: {
+    packageChange(e){
+      console.log(e)
+    },
     async getAnAd() {
       if (this.pending) return
       this.pending = true
