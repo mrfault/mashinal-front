@@ -199,8 +199,8 @@
          },
 
          async handleSubmit() {
-            this.$v.$touch();
-            if (this.$v.$error) return;
+            // this.$v.$touch();
+            // if (this.$v.$error) return;
 
             let region;
             if (this.region_id.split('-')[0].length < 3) {
@@ -209,24 +209,26 @@
                region = this.region_id.split('-')[0].slice(0, -1);
             }
 
+            console.log(region)
+
             this.form.car_number = `${region}-${this.region_letter1}${this.region_letter2}-${this.region_number}`;
 
-            try {
-               const res = await this.$axios.$post(`/sell/plate/post/publish?is_mobile=${this.isMobileBreakpoint}`, this.form)
-               if (!res?.data?.redirect_url) {
-                  await this.$nuxt.refresh();
-                  this.updatePaidStatus({
-                     type: 'success',
-                     text: this.$t('announcement_paid'),
-                     title: this.$t('success_payment')
-                  });
-               } else {
-                  this.handlePayment(res, false, this.$t('announcement_paid'));
-                  this.resetForm();
-               }
-            } catch (err) {
-               console.log(err)
-            }
+            // try {
+            //    const res = await this.$axios.$post(`/sell/plate/post/publish?is_mobile=${this.isMobileBreakpoint}`, this.form)
+            //    if (!res?.data?.redirect_url) {
+            //       await this.$nuxt.refresh();
+            //       this.updatePaidStatus({
+            //          type: 'success',
+            //          text: this.$t('announcement_paid'),
+            //          title: this.$t('success_payment')
+            //       });
+            //    } else {
+            //       this.handlePayment(res, false, this.$t('announcement_paid'));
+            //       this.resetForm();
+            //    }
+            // } catch (err) {
+            //    console.log(err)
+            // }
          }
       },
 
