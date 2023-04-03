@@ -46,10 +46,26 @@
          font-size: 32px;
          line-height: 40px;
          color: #000000;
+         margin: 0;
       }
 
       &__items {
          margin: 40px 0 0 -20px;
+      }
+   }
+
+   @media (max-width: 540px) {
+      .registrationMarksGrid {
+         &__title {
+            font-size: 28px;
+         }
+
+         &__items {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 40px 0 0 0;
+         }
       }
    }
 </style>

@@ -189,7 +189,8 @@ const getInitialState = () => ({
   partCategories: [],
 
   regionNumbers: [],
-  registrationMarks: []
+  registrationMarks: [],
+  registrationMark: []
 });
 
 export const state = () => getInitialState();
@@ -197,6 +198,7 @@ export const state = () => getInitialState();
 export const getters = {
   getRegionNumbers: s => s.regionNumbers,
   getRegistrationMarks: s => s.registrationMarks,
+  getRegistrationMark: s => s.registrationMark,
   single_announce: s => s.single_announce,
   homePageSliders: s => s.homePageSliders,
   loading: s => s.loading,
@@ -386,10 +388,14 @@ export const actions = {
     commit("mutate", { property: "regionNumbers", value: res.data || [] })
   },
 
-  async fetchRegistrationMarks({ commit }) {
-    // const res = await this.$axios.$get("/plates?serial_number=88&serial_letter1=g&serial_letter2=h&car_number=171")
-    const res = await this.$axios.$get("/plates")
-    commit("mutate", { property: "registrationMarks", value: res.data || [] })
+  async fetchRegistrationMarks({ commit }, data = '') {
+    const res = await this.$axios.$get(`/plates${data}`)
+    commit("mutate", { property: "registrationMarks", value: res || [] })
+  },
+
+  async fetchRegistrationMark({ commit }, id) {
+    const res = await this.$axios.$get(`/plate/announce/${id}`)
+    commit("mutate", { property: "registrationMark", value: res.data || [] })
   },
 
   async createRegistrationMarks({}, data) {

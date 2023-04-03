@@ -354,6 +354,10 @@ export default {
       type: String,
       default: 'left',
     },
+     valueType: {
+      type: String,
+      default: '',
+    },
     multiple: Boolean,
     disabled: Boolean,
     label: {
@@ -532,9 +536,8 @@ export default {
           }
         }
         if (!this.multiple) this.showOptions = false
-        // emit changes
-        this.$emit('input', value)
-        this.$emit('change', value)
+         this.$emit('input', value)
+         this.$emit('change', value)
       },
     },
     selectGeneration: {
