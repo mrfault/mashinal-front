@@ -187,11 +187,16 @@ const getInitialState = () => ({
   savedImageUrls: [],
   single_announce: {},
   partCategories: [],
+
+  regionNumbers: [],
+  registrationMarks: []
 });
 
 export const state = () => getInitialState();
 
 export const getters = {
+  getRegionNumbers: s => s.regionNumbers,
+  getRegistrationMarks: s => s.registrationMarks,
   single_announce: s => s.single_announce,
   homePageSliders: s => s.homePageSliders,
   loading: s => s.loading,
@@ -362,7 +367,6 @@ export const getters = {
   offerGenerations: s => s.offer_generations,
 //  moderator
   partCategories: s => s.partCategories
-
 };
 
 const objectNotEmpty = (state, commit, property) => {
@@ -376,8 +380,31 @@ const objectNotEmpty = (state, commit, property) => {
     Object.keys(state[property]).length > 0
   );
 };
-
 export const actions = {
+  async fetchRegionNumbers({ commit }) {
+    const res = await this.$axios.$get("/regions-and-serial-number")
+    commit("mutate", { property: "regionNumbers", value: res.data || [] })
+  },
+
+  async fetchRegistrationMarks({ commit }) {
+    // const res = await this.$axios.$get("/plates?serial_number=88&serial_letter1=g&serial_letter2=h&car_number=171")
+    const res = await this.$axios.$get("/plates")
+    commit("mutate", { property: "registrationMarks", value: res.data || [] })
+  },
+
+  async createRegistrationMarks({}, data) {
+    await this.$axios.$post("/sell/plate/post/publish", data)
+       .then((res) => {
+         if (res.data.redirect_url) {
+           // window.open(res.data.redirect_url, '_blank');
+           this.handlePayment(res, false, this.$t('car_activated'), 'v2');
+         }
+       })
+       .catch(error => {
+         console.log(error)
+       })
+  },
+
   async nuxtServerInit({ dispatch, commit }) {
     if (!this.$auth.loggedIn) {
       this.$auth.setUser(false);

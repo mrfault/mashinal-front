@@ -131,15 +131,15 @@ export default {
       }
       // insert announcement data into form
       if (type.includes('brand')) {
-        form.additional_brands[0].brand = this.catalog.brand.id;
-        form.additional_brands[0].brand_slug = this.catalog.brand.slug;
+        form.additional_brands[0].brand = this.catalog?.brand?.id;
+        form.additional_brands[0].brand_slug = this.catalog?.brand?.slug;
       }
       if (type.includes('model')) {
-        form.additional_brands[0].model = this.catalog.model.id;
-        form.additional_brands[0].model_slug = this.catalog.model.slug;
+        form.additional_brands[0].model = this.catalog?.model?.id;
+        form.additional_brands[0].model_slug = this.catalog?.model?.slug;
       }
       if (type.includes('generation')) {
-        form.additional_brands[0].generation = this.catalog.generation.id;
+        form.additional_brands[0].generation = this.catalog?.generation?.id;
       }
 
       return `/cars?car_filter=${encodeURI(JSON.stringify(form))}`
@@ -160,15 +160,15 @@ export default {
         ? JSON.parse(this.announcement.car_body_health.options)
         : false;
     },
-    imageIsActive(){
+    imageIsActive() {
       return false
     },
     crumbs() {
       return [
         { name: this.$t('cars'), route: '/cars' },
-        { name: this.catalog.brand.name, route: this.getFilterLink('brand') },
-        { name: this.catalog.model.name, route: this.getFilterLink('brand-model') },
-        { name: this.$translateHard(this.catalog.generation.name[this.locale]), route: this.getFilterLink('brand-model-generation') },
+        { name: this.catalog?.brand?.name, route: this.getFilterLink('brand') },
+        { name: this.catalog?.model?.name, route: this.getFilterLink('brand-model') },
+        { name: this.$translateHard(this.catalog?.generation?.name[this.locale]), route: this.getFilterLink('brand-model-generation') },
         { name: '#'+this.announcement.id_unique }
       ]
     }
