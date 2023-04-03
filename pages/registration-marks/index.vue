@@ -105,7 +105,7 @@
                </RegistrationMarksGrid>
 
                <pagination
-                  v-if="getRegistrationMarks.meta"
+                  v-if="getRegistrationMarks?.meta.to"
                   :page-count="getRegistrationMarks.meta.to"
                   :value="form.page"
                   @change-page="changePage"

@@ -29,7 +29,7 @@
    }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
    .registrationMarksGrid {
       &__head {
          display: flex;
@@ -65,6 +65,44 @@
             flex-wrap: wrap;
             justify-content: center;
             margin: 40px 0 0 0;
+         }
+      }
+   }
+
+   @media (max-width: 500px) {
+      .registrationMarksGrid {
+         &__title {
+            font-size: 24px;
+         }
+      }
+   }
+
+   @media (max-width: 430px) {
+      .registrationMarksGrid {
+         &__head {
+            .form-group {
+               width: 130px;
+            }
+
+            .select-menu_label {
+               padding: 22px 10px !important;
+            }
+         }
+
+         &__title {
+            font-size: 22px;
+         }
+      }
+   }
+
+   @media (max-width: 370px) {
+      .registrationMarksGrid {
+         &__head {
+            margin: 0 -10px;
+         }
+
+         &__title {
+            font-size: 17px;
          }
       }
    }
