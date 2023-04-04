@@ -1,7 +1,7 @@
 <template>
    <div class="registrationMarks">
       <div class="container">
-         <breadcrumbs :crumbs="crumbs" />
+         <breadcrumbs :crumbs="crumbs"/>
 
          <div class="registrationMarks__create">
             <h4 class="registrationMarks__create-title">Qeydiyyat nişanı elanı yerləşdirmək</h4>
@@ -104,9 +104,10 @@
                      <div class="row mt-5">
                         <div class="col-12 col-xl-11">
                            <h5 class="registrationMarks__create-note">
-                              <inline-svg src="/icons/reason.svg" />
+                              <inline-svg src="/icons/reason.svg"/>
                               <p>
-                                 Qeydiyyat nişanı elanı yerləşdirmək <span> ödənişlidir</span>. 1 elanın qiyməti <span> 2 AZN</span>-dir
+                                 Qeydiyyat nişanı elanı yerləşdirmək <span> ödənişlidir</span>. 1 elanın qiyməti
+                                 <span> 2 AZN</span>-dir
                               </p>
                            </h5>
                         </div>
@@ -126,10 +127,10 @@
 </template>
 
 <script>
-   import { mapGetters } from "vuex";
-   import { required, minLength } from "vuelidate/lib/validators";
+   import {mapGetters} from "vuex";
+   import {required, minLength} from "vuelidate/lib/validators";
 
-   import { PaymentMixin } from '~/mixins/payment';
+   import {PaymentMixin} from '~/mixins/payment';
 
    export default {
       mixins: [PaymentMixin],
@@ -141,36 +142,36 @@
             region_number: '',
 
             numbers: [
-               { name: 'A' },
-               { name: 'B' },
-               { name: 'C' },
-               { name: 'D' },
-               { name: 'E' },
-               { name: 'F' },
-               { name: 'G' },
-               { name: 'H' },
-               { name: 'I' },
-               { name: 'J' },
-               { name: 'K' },
-               { name: 'L' },
-               { name: 'M' },
-               { name: 'N' },
-               { name: 'O' },
-               { name: 'P' },
-               { name: 'Q' },
-               { name: 'R' },
-               { name: 'S' },
-               { name: 'T' },
-               { name: 'U' },
-               { name: 'V' },
-               { name: 'W' },
-               { name: 'X' },
-               { name: 'Y' },
-               { name: 'Z' }
+               {name: 'A'},
+               {name: 'B'},
+               {name: 'C'},
+               {name: 'D'},
+               {name: 'E'},
+               {name: 'F'},
+               {name: 'G'},
+               {name: 'H'},
+               {name: 'I'},
+               {name: 'J'},
+               {name: 'K'},
+               {name: 'L'},
+               {name: 'M'},
+               {name: 'N'},
+               {name: 'O'},
+               {name: 'P'},
+               {name: 'Q'},
+               {name: 'R'},
+               {name: 'S'},
+               {name: 'T'},
+               {name: 'U'},
+               {name: 'V'},
+               {name: 'W'},
+               {name: 'X'},
+               {name: 'Y'},
+               {name: 'Z'}
             ],
             currency: [
-               { id: 1, name: 'AZN' },
-               { id: 2, name: 'USD' },
+               {id: 1, name: 'AZN'},
+               {id: 2, name: 'USD'},
                // { id: 3, name: 'EUR' }
             ],
 
@@ -204,7 +205,7 @@
 
             let region;
             if (this.region_id.split('-')[0].length < 3) {
-                region = `0${this.region_id.split('-')[0].slice(0, -1)}`;
+               region = `0${this.region_id.split('-')[0].slice(0, -1)}`;
             } else {
                region = this.region_id.split('-')[0].slice(0, -1);
             }
@@ -237,24 +238,24 @@
          }),
 
          crumbs() {
-            return [{ name: this.$t('place_an_ad') }]
+            return [{name: this.$t('place_an_ad')}]
          }
       },
 
-      async fetch({ store }) {
+      async fetch({store}) {
          await store.dispatch('fetchRegionNumbers');
          await store.dispatch('getOptions');
       },
 
       validations: {
-         region_id: { required },
-         region_letter1: { required },
-         region_letter2: { required },
-         region_number: { required, minLength: minLength(3) },
+         region_id: {required},
+         region_letter1: {required},
+         region_letter2: {required},
+         region_number: {required, minLength: minLength(3)},
          form: {
-            price: { required },
-            currency_id: { required },
-            region_id: { required }
+            price: {required},
+            currency_id: {required},
+            region_id: {required}
          }
       }
    }
@@ -267,6 +268,7 @@
          padding: 24px 24px 48px 24px;
          border-radius: 6px;
          background-color: #FFFFFF;
+
          &-title {
             position: relative;
             font-weight: 600;

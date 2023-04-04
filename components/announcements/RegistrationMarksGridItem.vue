@@ -1,5 +1,5 @@
 <template>
-   <nuxt-link class="registrationMarksGridItem" :to="localePath(`/products/${item.id}`)">
+   <nuxt-link class="registrationMarksGridItem" :to="localePath(`/registration-marks/${item.id}`)" target="_blank">
       <div class="registrationMarksGridItem__head">
          <div class="divider">
 <!--            <inline-svg src="/icons/registrationMarks_icons.svg" />-->
@@ -134,6 +134,43 @@
 
          p {
             margin: 0;
+         }
+      }
+   }
+
+   @media (max-width: 1250px) {
+      .registrationMarksGridItem {
+         width: 212px;
+
+         &__head {
+            h3 {
+               font-size: 36px;
+            }
+         }
+      }
+   }
+
+   @media (max-width: 1025px) {
+      .registrationMarksGridItem {
+         width: 235px;
+
+         &__head {
+            h3 {
+               font-size: 38px;
+            }
+         }
+      }
+   }
+
+   @media (max-width: 520px) {
+      .registrationMarksGridItem {
+         margin: 0 0 25px 0;
+         width: 240px;
+
+         &__head {
+            h3 {
+               font-size: 40px;
+            }
          }
       }
    }
