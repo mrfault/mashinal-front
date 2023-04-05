@@ -122,7 +122,7 @@ export const LayoutMixin = {
       } else if (window.scrollY < 111 && this.$store.state.bnFixed) {
         this.$store.commit('mutate', {
           property: 'bnFixed',
-          value: false,
+          value: true,
         })
       }
     },
