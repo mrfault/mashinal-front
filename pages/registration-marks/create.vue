@@ -222,8 +222,8 @@
                      title: this.$t('success_payment')
                   });
                } else {
-                  this.handlePayment(res, false, this.$t('announcement_paid'));
-                  this.resetForm();
+                  await this.handlePayment(res, this.$localePath('/profile/announcements'), this.$t('announcement_paid'));
+                  await this.resetForm();
                }
             } catch (err) {
                console.log(err)
