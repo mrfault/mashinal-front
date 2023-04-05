@@ -4,7 +4,11 @@
          <breadcrumbs :crumbs="crumbs"/>
 
          <div class="registrationMarks__create">
-            <h4 class="registrationMarks__create-title">Qeydiyyat nişanı elanı yerləşdirmək</h4>
+            <h4 class="registrationMarks__create-title">
+               <span>{{ $t('post_registration') }}</span>
+               <span></span>
+<!--               {{ $t('post_registration') }}-->
+            </h4>
 
             <div class="registrationMarks__create-inner">
                <form
@@ -115,7 +119,11 @@
 
                      <div class="row mt-5">
                         <div class="col-12 col-xl-11">
-                           <button class="registrationMarks__create-btn">Elanı yerləşdir</button>
+                           <button
+                              :class="['btn', {'pending' : pending}]"
+                           >
+                              {{ $t('place_announcement') }}
+                           </button>
                         </div>
                      </div>
                   </div>
@@ -136,6 +144,8 @@
       mixins: [PaymentMixin],
       data() {
          return {
+            pending: false,
+
             region_id: '',
             region_letter1: '',
             region_letter2: '',
@@ -203,6 +213,8 @@
             this.$v.$touch();
             if (this.$v.$error) return;
 
+            this.pending = true;
+
             let region;
             if (this.region_id.split('-')[0].length < 3) {
                region = `0${this.region_id.split('-')[0].slice(0, -1)}`;
@@ -210,9 +222,9 @@
                region = this.region_id.split('-')[0].slice(0, -1);
             }
 
-            this.form.car_number = `${region}-${this.region_letter1}${this.region_letter2}-${this.region_number}`;
-
+            this.form.car_number = `${region} - ${this.region_letter1}${this.region_letter2} - ${this.region_number}`;
             try {
+               console.log('1111')
                const res = await this.$axios.$post(`/sell/plate/post/publish?is_mobile=${this.isMobileBreakpoint}`, this.form)
                if (!res?.data?.redirect_url) {
                   await this.$nuxt.refresh();
@@ -221,12 +233,16 @@
                      text: this.$t('announcement_paid'),
                      title: this.$t('success_payment')
                   });
+                  console.log('2222')
                } else {
                   await this.handlePayment(res, this.$localePath('/profile/announcements'), this.$t('announcement_paid'));
                   await this.resetForm();
+                  this.pending = false;
+                  console.log('3333')
                }
             } catch (err) {
-               console.log(err)
+               console.log('err', err)
+               console.log('444')
             }
          }
       },
@@ -270,7 +286,8 @@
          background-color: #FFFFFF;
 
          &-title {
-            position: relative;
+            display: flex;
+            align-items: center;
             font-weight: 600;
             font-size: 18px;
             line-height: 22px;
@@ -278,15 +295,15 @@
             margin-bottom: 32px;
             overflow: hidden;
 
-            &:after {
-               content: '';
-               position: absolute;
-               right: 0;
-               top: 50%;
-               transform: translateY(-50%);
-               width: calc(100% - 310px);
-               height: 1px;
-               background-color: #9AA4B2;
+            span {
+               position: relative;
+               white-space: nowrap;
+               &:last-child {
+                  width: 100%;
+                  height: 2px;
+                  background-color: #9AA4B2;
+                  margin-left: 23px;
+               }
             }
          }
 
@@ -319,12 +336,13 @@
             }
          }
 
-         &-btn {
+         .btn {
             width: 100%;
             font-weight: 600;
             font-size: 14px;
             line-height: 18px;
             padding: 11px;
+            height: 40px;
             color: #FFFFFF;
             background: #29A53E;
             backdrop-filter: blur(10px);

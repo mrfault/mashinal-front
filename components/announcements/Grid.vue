@@ -125,171 +125,177 @@
   </div>
 </template>
 
-<style lang="scss">
-@media (min-width: 1025px) {
-  .announcements-grid .col-lg-auto {
-    width: 20%;
-  }
-}
-.index-salon-view {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: white;
-  padding: 35px 6px;
-  background-size: contain;
-  border-radius: 6px;
-}
-.dark-mode {
-  .index-salon-view {
-    background: #1C1C1E;
-  }
-}
-@media ( min-width: 1025px) {
-  .dark-mode {
-    .index-salon-view {
-      background: #242426;
-    }
-  }
-}
-</style>
 <script>
-import GridItem from '~/components/announcements/GridItem'
-import SiteBanner from "~/components/banners/SiteBanner";
+   import GridItem from '~/components/announcements/GridItem'
+   import SiteBanner from "~/components/banners/SiteBanner";
 
-export default {
-  props: {
-    showMonetizationActions: {
-      type: Boolean,
-      default: true,
-    },
-    announcements: {
-      type: Array,
-      default: () => [],
-    },
-    title: String,
-    iconName: String,
-    showAll: String,
-    showTitle: {
-      type: Boolean,
-      default: true,
-    },
-    trackViews: {
-      type: Boolean,
-      default: true,
-    },
-    pushIntoRouter: {
-      type: Boolean,
-      default: true,
-    },
-    showStatus: Boolean,
-    showCheckbox: Boolean,
-    showPhoneCount: Boolean,
-    paginate: {},
-    pending: Boolean,
-    watchRoute: Boolean,
-    escapeDuplicates: Boolean,
-    hasContainer: Boolean,
-    banner: String,
-    bannerPlace: Number,
-    bannerCount: Number,
-    bannerFor: String,
-    bannerLink: String,
-    where: String,
-    showOverlay: {
-      type: Boolean,
-      default: true,
-    },
-    clickable: {
-      type: Boolean,
-      default: true,
-    },
-    isProfilePage: Boolean,
-    needAutoScroll: Boolean,
-  },
-  components: {
-    SiteBanner,
-    GridItem,
-  },
-  data() {
-    return {
-      showBanner: false,
-    }
-  },
+   export default {
+     props: {
+       showMonetizationActions: {
+         type: Boolean,
+         default: true,
+       },
+       announcements: {
+         type: Array,
+         default: () => [],
+       },
+       title: String,
+       iconName: String,
+       showAll: String,
+       showTitle: {
+         type: Boolean,
+         default: true,
+       },
+       trackViews: {
+         type: Boolean,
+         default: true,
+       },
+       pushIntoRouter: {
+         type: Boolean,
+         default: true,
+       },
+       showStatus: Boolean,
+       showCheckbox: Boolean,
+       showPhoneCount: Boolean,
+       paginate: {},
+       pending: Boolean,
+       watchRoute: Boolean,
+       escapeDuplicates: Boolean,
+       hasContainer: Boolean,
+       banner: String,
+       bannerPlace: Number,
+       bannerCount: Number,
+       bannerFor: String,
+       bannerLink: String,
+       where: String,
+       showOverlay: {
+         type: Boolean,
+         default: true,
+       },
+       clickable: {
+         type: Boolean,
+         default: true,
+       },
+       isProfilePage: Boolean,
+       needAutoScroll: Boolean,
+     },
 
-  methods: {
-    changePage(page) {
-      if (this.showAll) {
-        this.$emit('pending')
-        this.$router.push({ path: this.showAll, query: { page } }, () => {
-          this.scrollTo('.announcements-grid', [-15, -20])
-        })
-      } else {
-        if (!this.pushIntoRouter) {
-          this.$emit('change-page', page)
-        } else {
-          this.$router.push({ query: { ...this.$route.query, page } }, () => {
-            this.$emit('change-page', page)
-          })
-        }
-      }
-    },
-    checkItemIndex(index, item) {
-      if (this.getAnnouncementType(item) !== this.bannerFor) return false
-      return this.banner && index % this.bannerPlace === 0
-    },
-    checkItemB(index, item) {
-      return (
-        this.checkItemIndex(index + 1, item) ||
-        this.checkItemIndex(index + 2, item) ||
-        this.checkItemIndex(index + 3, item) ||
-        this.checkItemIndex(index + 4, item)
-      )
-    },
-    switchSecondTemplate() {
-      this.$cookies.set('show_bn',!this.$cookies.get('show_bn'));
-    },
-    checkSecondTemplate(index) {
-        return [20,21,22,23].includes(index) && this.$cookies.get('show_bn') && !this.isMobileBreakpoint;
-    },
-    checkItemTop(index, item) {
-      return (
-        this.checkItemIndex(index + 3, item) ||
-        this.checkItemIndex(index + 4, item)
-      )
-    },
-    checkItemBottom(index, item) {
-      return (
-        this.checkItemIndex(index + 1, item) ||
-        this.checkItemIndex(index + 2, item)
-      )
-    },
-    getBannerImage(index) {
-      let count = (index / this.bannerPlace) % this.bannerCount
-      count = count === 0 ? this.bannerCount : count
-      return this.banner
-        .replace('{count}', count)
-        .replace('{locale}', this.locale)
-    },
-    scrollFunc() {
-      setTimeout(() => {
-        const el = this.$refs.scrollToMe
-        if (el) {
-          el.scrollIntoView({ behavior: 'smooth', block: 'start' })
-        }
-      }, 1000)
-    },
-  },
-  watch: {
-    '$route.query.page'(page) {
-      if (this.watchRoute) this.changePage(page)
-    },
-  },
-  mounted() {
-    this.switchSecondTemplate();
-    if (this.needAutoScroll) {
-      this.scrollFunc()
-    }
-  },
-}
+     components: {
+       SiteBanner,
+       GridItem,
+     },
+
+     data() {
+       return {
+         showBanner: false,
+       }
+     },
+
+     methods: {
+       changePage(page) {
+         if (this.showAll) {
+           this.$emit('pending')
+           this.$router.push({ path: this.showAll, query: { page } }, () => {
+             this.scrollTo('.announcements-grid', [-15, -20])
+           })
+         } else {
+           if (!this.pushIntoRouter) {
+             this.$emit('change-page', page)
+           } else {
+             this.$router.push({ query: { ...this.$route.query, page } }, () => {
+               this.$emit('change-page', page)
+             })
+           }
+         }
+       },
+       checkItemIndex(index, item) {
+         if (this.getAnnouncementType(item) !== this.bannerFor) return false
+         return this.banner && index % this.bannerPlace === 0
+       },
+       checkItemB(index, item) {
+         return (
+           this.checkItemIndex(index + 1, item) ||
+           this.checkItemIndex(index + 2, item) ||
+           this.checkItemIndex(index + 3, item) ||
+           this.checkItemIndex(index + 4, item)
+         )
+       },
+       switchSecondTemplate() {
+         this.$cookies.set('show_bn',!this.$cookies.get('show_bn'));
+       },
+       checkSecondTemplate(index) {
+           return [20,21,22,23].includes(index) && this.$cookies.get('show_bn') && !this.isMobileBreakpoint;
+       },
+       checkItemTop(index, item) {
+         return (
+           this.checkItemIndex(index + 3, item) ||
+           this.checkItemIndex(index + 4, item)
+         )
+       },
+       checkItemBottom(index, item) {
+         return (
+           this.checkItemIndex(index + 1, item) ||
+           this.checkItemIndex(index + 2, item)
+         )
+       },
+       getBannerImage(index) {
+         let count = (index / this.bannerPlace) % this.bannerCount
+         count = count === 0 ? this.bannerCount : count
+         return this.banner
+           .replace('{count}', count)
+           .replace('{locale}', this.locale)
+       },
+       scrollFunc() {
+         setTimeout(() => {
+           const el = this.$refs.scrollToMe
+           if (el) {
+             el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+           }
+         }, 1000)
+       },
+     },
+
+     watch: {
+       '$route.query.page'(page) {
+         if (this.watchRoute) this.changePage(page)
+       },
+     },
+
+     mounted() {
+       this.switchSecondTemplate();
+       if (this.needAutoScroll) {
+         this.scrollFunc()
+       }
+     },
+   }
 </script>
+
+<style lang="scss">
+   .index-salon-view {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: white;
+      padding: 35px 6px;
+      background-size: contain;
+      border-radius: 6px;
+   }
+
+   .dark-mode {
+      .index-salon-view {
+         background: #1C1C1E;
+      }
+   }
+
+   @media ( min-width: 1025px) {
+      .announcements-grid .col-lg-auto {
+         width: 20%;
+      }
+
+      .dark-mode {
+         .index-salon-view {
+            background: #242426;
+         }
+      }
+   }
+</style>

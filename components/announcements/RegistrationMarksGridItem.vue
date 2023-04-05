@@ -23,9 +23,10 @@
 
          <div class="divider info">
             <p v-if="!moreInfo" class="d-flex align-items-center justify-content-between w-100">
-               <span>{{ item.created_at }}</span>
+               <span v-if="shortDate">{{ item.humanize_short_created_at }}</span>
+               <span>{{item.humanize_created_at }}</span>
 
-               <span>{{ item.region }}</span>
+               <span>{{ item.region.name[locale] }}</span>
             </p>
 
             <p v-else class="d-flex align-items-center justify-content-between w-100">
@@ -51,10 +52,10 @@
 
          <div class="divider" v-if="moreInfo">
             <div class="registrationMarksGridItem__status">
-               <span v-if="item.status === 0">Imtina</span>
-               <span v-else-if="item.status === 1">Activ</span>
-               <span v-else-if="item.status === 2">Baxilir</span>
-               <span v-else>Satilib</span>
+               <span v-if="item.status === 0">{{ $t('rejected_2') }}</span>
+               <span v-else-if="item.status === 1">{{ $t('Active') }}</span>
+               <span v-else-if="item.status === 2">{{ $t('under_consideration') }}</span>
+               <span v-else>{{ $t('sold') }}</span>
             </div>
          </div>
       </div>
@@ -81,6 +82,11 @@
          },
 
          moreInfo: {
+            type: Boolean,
+            default: false
+         },
+
+         shortDate: {
             type: Boolean,
             default: false
          }

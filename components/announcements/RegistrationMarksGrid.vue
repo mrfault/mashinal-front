@@ -5,11 +5,12 @@
       </div>
 
       <div class="registrationMarksGrid__items">
-         <registration-marks-grid-item
+         <RegistrationMarksGridItem
             v-for="item in filteredItems"
             :key="item.id"
             :item="item"
             :moreInfo="moreInfo"
+            :short-date="shortDate"
          />
 
 <!--         <pre>{{filteredItems[0]}}</pre>-->
@@ -35,6 +36,11 @@
          },
 
          moreInfo: {
+            type: Boolean,
+            default: false
+         },
+
+         shortDate: {
             type: Boolean,
             default: false
          }

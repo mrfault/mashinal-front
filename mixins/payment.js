@@ -54,7 +54,6 @@ export const PaymentMixin = {
 
         if (payment_id) {
           this.connectEcho(`purchase.${payment_id}`, false).listen('PurchaseInitiated', async (data) => {
-
             this.showPaymentModal = false;
             let { is_paid, status } = data.payment;
             let paid = is_paid || status === 1;
@@ -80,6 +79,7 @@ export const PaymentMixin = {
             }
 
             if (route) {
+               console.log('aaaaaaaaaaaa', route)
               this.$router.push(route, () => {
                 this.callUpdatePaidStatus(paid, text);
                 stopListening();
