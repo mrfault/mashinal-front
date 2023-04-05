@@ -29,8 +29,8 @@
             type="right"
             absolute
           />
-          <scroll-top :style="windowWidth > 1800 ? 'right: calc((100% - 1614px) / 2);':''" v-if="!hideFooter"/>
-          <map-switch :style="windowWidth > 1800 ? 'right: calc((100% - 1614px) / 2);':''" v-if="['salons','parts-shops'].includes(routeName)"/>
+          <scroll-top :style="windowWidth > 1800 ? 'right: calc((100% - 1244px) / 2);':''" v-if="!hideFooter"/>
+          <map-switch :style="windowWidth > 1800 ? 'right: calc((100% - 1244px) / 2);':''" v-if="['salons','parts-shops'].includes(routeName)"/>
         </main>
         <slot name="before-header"/>
         <backdrop @click="closeLogin" v-if="showLoginPopup">
