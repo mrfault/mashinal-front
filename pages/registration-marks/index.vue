@@ -89,7 +89,7 @@
                </div>
 
                <RegistrationMarksGrid
-                  :items="getRegistrationMarks.data"
+                  :items="getRegistrationMarks?.data"
                >
                   <template #head>
                      <h4 class="registrationMarksGrid__title">{{ $t('search_result') }}</h4>
@@ -105,8 +105,8 @@
                </RegistrationMarksGrid>
 
                <pagination
-                  v-if="getRegistrationMarks?.meta.to"
-                  :page-count="getRegistrationMarks.meta.to"
+                  v-if="getRegistrationMarks?.meta?.last_page > 1"
+                  :page-count="getRegistrationMarks?.meta?.last_page"
                   :value="form.page"
                   @change-page="changePage"
                />

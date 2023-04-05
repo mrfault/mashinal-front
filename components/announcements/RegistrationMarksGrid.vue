@@ -2,15 +2,17 @@
    <div class="registrationMarksGrid">
       <div class="registrationMarksGrid__head">
          <slot name="head"/>
-
       </div>
 
       <div class="registrationMarksGrid__items">
          <registration-marks-grid-item
-            v-for="item in items"
+            v-for="item in filteredItems"
             :key="item.id"
             :item="item"
+            :moreInfo="moreInfo"
          />
+
+<!--         <pre>{{filteredItems[0]}}</pre>-->
       </div>
    </div>
 </template>
@@ -20,10 +22,31 @@
 
    export default {
       components: { RegistrationMarksGridItem },
+
       props: {
+         isFiltered: {
+            type: Boolean,
+            default: false
+         },
+
          items: {
             type: Array,
             default() { return [] }
+         },
+
+         moreInfo: {
+            type: Boolean,
+            default: false
+         }
+      },
+
+      computed: {
+         filteredItems() {
+            if(!this.isFiltered) {
+               return this.items;
+            } else {
+               return this.items.filter(item => item.type === 6);
+            }
          }
       }
    }

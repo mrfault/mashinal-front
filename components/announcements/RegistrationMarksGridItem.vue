@@ -1,5 +1,5 @@
 <template>
-   <nuxt-link class="registrationMarksGridItem" :to="localePath(`/registration-marks/${item.id}`)" target="_blank">
+   <div class="registrationMarksGridItem" @click="goToRegistrationMark(item.id)">
       <div class="registrationMarksGridItem__head">
          <div class="divider">
 <!--            <inline-svg src="/icons/registrationMarks_icons.svg" />-->
@@ -14,21 +14,51 @@
          <div class="divider">
             <p>{{ item.price }}</p>
 
-            <add-favorite :announcement="item" />
+            <add-favorite :announcement="item" v-if="!moreInfo" />
          </div>
 
-         <div class="divider">
+         <div class="divider" v-if="!moreInfo">
             <p>{{ item.user.full_name }}</p>
          </div>
 
-         <div class="divider">
-            <p>{{ item.created_at }}</p>
-            <p>{{ item.region }}</p>
+         <div class="divider info">
+            <p v-if="!moreInfo" class="d-flex align-items-center justify-content-between w-100">
+               <span>{{ item.created_at }}</span>
+
+               <span>{{ item.region }}</span>
+            </p>
+
+            <p v-else class="d-flex align-items-center justify-content-between w-100">
+               <span class="d-flex align-items-center">
+                  <inline-svg :src="'/icons/calendar-2.svg'" :width="'20px'" :height="'20px'"/>
+
+                  <span>{{ modifiedDate(item.humanize_created_at) }}</span>
+               </span>
+
+               <span class="d-flex align-items-center">
+                  <inline-svg :src="'/icons/eye-2.svg'" :width="'20px'" :height="'20px'"/>
+
+                  <span>{{ item.view_count }}</span>
+               </span>
+
+               <span class="d-flex align-items-center">
+                  <inline-svg :src="'/icons/phone-2.svg'" :width="'20px'" :height="'20px'"/>
+
+                  <span>{{ item.show_phone_number_count }}</span>
+               </span>
+            </p>
+         </div>
+
+         <div class="divider" v-if="moreInfo">
+            <div class="registrationMarksGridItem__status">
+               <span v-if="item.status === 0">Imtina</span>
+               <span v-else-if="item.status === 1">Activ</span>
+               <span v-else-if="item.status === 2">Baxilir</span>
+               <span v-else>Satilib</span>
+            </div>
          </div>
       </div>
-
-<!--      <pre>{{item}}</pre>-->
-   </nuxt-link>
+   </div>
 </template>
 
 <script>
@@ -38,14 +68,32 @@
       components: {
          AddFavorite
       },
+
       props: {
          items: {
             type: Array,
             default() { return [] }
          },
+
          item: {
             type: Object,
             default() { return {} }
+         },
+
+         moreInfo: {
+            type: Boolean,
+            default: false
+         }
+      },
+
+      methods: {
+         goToRegistrationMark(id) {
+            // this.$router.push(this.localePath(`/registration-marks/${id}`));
+            window.open(this.localePath(`/registration-marks/${id}`), '_blank');
+         },
+
+         modifiedDate(date) {
+            return `${date.split(' ')[0]} ${date.split(' ')[1].slice(0, 3)}`;
          }
       }
    }
@@ -60,6 +108,7 @@
       background-color: #FFFFFF;
       height: max-content;
       margin: 0 0 45px 20px;
+      cursor: pointer;
 
       &__head {
          display: flex;
@@ -73,16 +122,16 @@
 
          .divider {
             &:first-child {
-               margin-right: 10px;
+               margin-right: 7px;
             }
          }
 
          h3 {
             font-family: 'Din', sans-serif;
             font-weight: 400;
-            font-size: 38px;
+            font-size: 37px;
             line-height: 44px;
-            letter-spacing: -0.602151px;
+            letter-spacing: -1px;
             color: #1B2434;
             margin: 0;
          }
@@ -92,15 +141,15 @@
          padding: 18px 16px 12.5px 16px;
 
          .divider {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
             &:not(:first-child) {
-               margin-top: 7px;
+               margin-top: 8px;
             }
 
             &:first-child {
-               display: flex;
-               align-items: center;
-               justify-content: space-between;
-
                p {
                   font-weight: 700;
                   font-size: 18px;
@@ -119,10 +168,6 @@
             }
 
             &:last-child {
-               display: flex;
-               align-items: center;
-               justify-content: space-between;
-
                p {
                   font-weight: 500;
                   font-size: 14px;
@@ -130,10 +175,49 @@
                   color: #697586;
                }
             }
+
+            &.info {
+               p {
+                  font-weight: 500;
+                  font-size: 14px;
+                  line-height: 17px;
+                  color: #697586;
+
+                  span {
+                     font-weight: 400;
+
+                     &:not(:first-child) {
+                        margin-left: 8px;
+                     }
+
+                     span {
+                        margin-left: 5px !important;
+                     }
+                  }
+               }
+            }
          }
 
          p {
             margin: 0;
+         }
+      }
+
+      &__status {
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         margin-top: 5px;
+         width: 100%;
+         padding: 8px;
+         border-radius: 6px;
+         background-color: #E3E8EF;
+
+         span {
+            font-weight: 600;
+            font-size: 15px;
+            line-height: 18px;
+            color: #121926;
          }
       }
    }
