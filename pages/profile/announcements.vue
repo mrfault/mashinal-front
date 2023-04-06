@@ -18,7 +18,6 @@
          </div> -->
          <h4 class="pages-annoucements__title">Nəqliyyat vasitəsi elanlarım</h4>
 
-         <!--       <pre>{{myAnnouncements.data}}</pre>-->
          <grid
             v-if="myAnnouncements.data.length"
             :announcements="myAnnouncements.data"
@@ -33,6 +32,7 @@
             @change-page="changePage"
             isProfilePage
          />
+
          <no-results v-else
                      :type="$route.query.type == 2 ? 'part' : 'car'"
                      :text="statusReady !== '' ? '' : $t('add_an_ad_and_thousands_of_potential_buyers_will_see_it')"
@@ -45,17 +45,10 @@
             :items="myAnnouncements.data"
             :is-filtered="true"
             :moreInfo="true"
+            :short-date="true"
          >
             <template #head>
                <h4 class="registrationMarksGrid__title">Qeydiyyat nişanı elanlarım</h4>
-
-<!--               <form-select-->
-<!--                  :label="$t('show_cheap_first')"-->
-<!--                  :options="sortItems"-->
-<!--                  :clearPlaceholder="true"-->
-<!--                  v-model="form.order"-->
-<!--                  has-search-->
-<!--               />-->
             </template>
          </RegistrationMarksGrid>
       </div>
@@ -69,6 +62,7 @@ import Grid from '~/components/announcements/Grid';
 import NoResults from '~/components/elements/NoResults';
 import ControlsPanel from '~/components/announcements/ControlsPanel';
 import RegistrationMarksGrid from "~/components/announcements/RegistrationMarksGrid.vue";
+import tr from "vue2-datepicker/locale/es/tr";
 
 export default {
    name: 'pages-profile-announcements',
@@ -122,6 +116,9 @@ export default {
       }
    },
    computed: {
+      tr() {
+         return tr
+      },
       ...mapGetters(['myAnnouncements']),
 
       crumbs() {

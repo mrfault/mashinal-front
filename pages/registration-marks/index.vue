@@ -4,7 +4,7 @@
          <div class="registrationMarks__hero-text">
             <breadcrumbs :crumbs="crumbs" />
 
-            <h4 class="registrationMarks__hero-title">Qeydiyyat nişanları</h4>
+            <h4 class="registrationMarks__hero-title">{{ $t('registration_marks') }}</h4>
          </div>
       </div>
 
@@ -15,7 +15,7 @@
                   <div class="registrationMarks__hero-text">
                      <breadcrumbs :crumbs="crumbs" />
 
-                     <h4 class="registrationMarks__hero-title">Qeydiyyat nişanları</h4>
+                     <h4 class="registrationMarks__hero-title">{{ $t('registration_marks') }}</h4>
                   </div>
                </div>
 
@@ -70,7 +70,7 @@
 
                   <div class="divider">
                      <form-select
-                        :label="'Valyuta'"
+                        :label="$t('currency')"
                         :options="currency"
                         :clearPlaceholder="true"
                         v-model="form.currency_id"
@@ -184,8 +184,8 @@
                // { id: 3, name: 'EUR' }
             ],
             sortItems: [
-               { id: 'asc', name: 'Əvvəlcə ucuz' },
-               { id: 'desc', name: 'Əvvəlcə bahalı' }
+               { id: 'price_asc', name: this.$t('show_cheap_first') },
+               { id: 'price_desc', name: this.$t('show_expensive_first') }
             ]
          }
       },
@@ -202,17 +202,10 @@
                let queryArray = [],
                    query;
 
-               if (this.form.region) {
-                  if (this.form.region.split('-')[0].length < 3) {
-                     this.form.serial_number = `0${this.form.region.split('-')[0].slice(0, -1)}`;
-                  } else {
-                     this.form.serial_number = this.form.region.split('-')[0].slice(0, -1);
-                  }
-               }
-
                if (this.form.page) queryArray.push(`?page=${this.form.page}`);
                if (this.form.region) {
                   queryArray.push(`&region=${this.form.region}`);
+                  this.form.serial_number = this.form.region.split('-')[0];
                } else {
                   this.form.serial_number = '';
                }
@@ -224,7 +217,7 @@
                if (this.form.price_to) queryArray.push(`&price_to=${this.form.price_to}`);
                if (this.form.currency_id) queryArray.push(`&currency_id=${this.form.currency_id}`);
                if (this.form.region_id) queryArray.push(`&region_id=${this.form.region_id}`);
-               if (this.form.order) queryArray.push(`&order=${this.form.order}`);
+               if (this.form.order) queryArray.push(`&sorting=${this.form.order}`);
 
                query = queryArray.join('');
 
