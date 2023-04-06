@@ -3,43 +3,53 @@
       <div class="container">
          <breadcrumbs :crumbs="crumbs"/>
 
-         <h4 class="pages-favorites__title">Nəqliyyat vasitəsi elanlarım</h4>
+         <ul class="tabs">
+            <li
+               :class="['tabs__item', {'active' : tab.id === activeTab }]"
+               v-for="tab in tabs"
+               :key="tab.id"
+               @click="activeTab = tab.id"
+            >{{ tab.name }}</li>
+         </ul>
 
-<!--         :title="$t('favorites')"-->
-<!--         :show-title="isMobileBreakpoint"-->
-         <grid
-            v-if="favoriteAnnouncements.data.length"
-            :announcements="favoriteAnnouncements.data"
-            :paginate="$paginate(favoriteAnnouncements)"
-            :pending="pending"
-            :watch-route="true"
-            @change-page="changePage"
-         />
+         <div class="tabContent">
+            <div class="tabContent__item" v-if="activeTab === 1">
+               <!--         :title="$t('favorites')"-->
+               <!--         :show-title="isMobileBreakpoint"-->
+               <grid
+                  v-if="favoriteAnnouncements.data.length"
+                  :announcements="favoriteAnnouncements.data"
+                  :paginate="$paginate(favoriteAnnouncements)"
+                  :pending="pending"
+                  :watch-route="true"
+                  @change-page="changePage"
+               />
 
-         <no-results :text="$t('no_favorites')" v-else>
-            <nuxt-link class="active btn btn--pale-green-outline d-flex full-width mt-2"
-                       style="max-width: 200px;"
-                       :to="$localePath('/')">
-               <i aria-hidden="true" class="icon-plus-circle"></i> {{ $t('my_favorites_add') }}
-            </nuxt-link>
-         </no-results>
+               <no-results :text="$t('no_favorites')" v-else>
+                  <nuxt-link class="active btn btn--pale-green-outline d-flex full-width mt-2"
+                             style="max-width: 200px;"
+                             :to="$localePath('/')">
+                     <i aria-hidden="true" class="icon-plus-circle"></i> {{ $t('my_favorites_add') }}
+                  </nuxt-link>
+               </no-results>
+            </div>
 
-         <RegistrationMarksGrid
-            :items="favoriteAnnouncements.data"
-            :is-filtered="true"
-            :short-date="true"
-         >
-            <template #head>
-               <h4 class="registrationMarksGrid__title">Qeydiyyat nişanı elanlarım</h4>
-            </template>
-         </RegistrationMarksGrid>
+            <div class="tabContent__item" v-if="activeTab === 2">
+               <RegistrationMarksGrid
+                  :items="getMySavedPlates.data"
+                  :moreInfo="true"
+                  :short-date="true"
+               >
+               </RegistrationMarksGrid>
 
-<!--         <pagination-->
-<!--            v-if="$paginate(favoriteAnnouncements) && $paginate(favoriteAnnouncements).last_page > 1"-->
-<!--            :page-count="$paginate(favoriteAnnouncements).last_page"-->
-<!--            :value="$paginate(favoriteAnnouncements).current_page"-->
-<!--            @change-page="changePage"-->
-<!--         />-->
+               <pagination
+                  v-if="getMySavedPlates?.meta?.last_page > 1"
+                  :page-count="getMySavedPlates?.meta?.last_page"
+                  @change-page="changePageMarks"
+               />
+               <!--               :value="page"-->
+            </div>
+         </div>
       </div>
    </div>
 </template>
@@ -67,6 +77,12 @@
          }
       },
 
+      data() {
+         return {
+            activeTab: 1
+         }
+      },
+
       head() {
          return this.$headMeta({
             title: this.$t('favorites')
@@ -78,6 +94,7 @@
 
          await Promise.all([
             store.dispatch('getFavoriteAnnouncements', {page}),
+            store.dispatch('fetchMySavedPlates')
          ]);
 
          return {
@@ -87,6 +104,10 @@
 
       methods: {
          ...mapActions(['getFavoriteAnnouncements', 'markViewedFavorites']),
+
+         changePageMarks(page) {
+            this.$store.dispatch('fetchMySavedPlates', `?page=${page}`);
+         },
 
          async changePage(page = 1) {
             page = this.$route.query.page || 1;
@@ -125,11 +146,18 @@
       },
 
       computed: {
-         ...mapGetters(['favoriteAnnouncements']),
+         ...mapGetters(['favoriteAnnouncements', 'getMySavedPlates']),
 
          crumbs() {
             return [
                {name: this.$t('favorites')}
+            ]
+         },
+
+         tabs() {
+            return [
+               { id: 1, name: this.$t('my_vehicles') },
+               { id: 2, name: this.$t('registration_badges') }
             ]
          }
       },
@@ -151,40 +179,6 @@
 
 <style lang="scss" scoped>
    .pages-favorites {
-      &__title {
-         margin-top: 48px;
-         font-weight: 700;
-         font-size: 28px;
-         line-height: 32px;
-         color: #1B2434;
-      }
 
-      .registrationMarksGrid {
-         margin-top: 48px;
-      }
-   }
-
-   @media (max-width: 1025px) {
-      .pages-favorites {
-         &__title {
-            margin-left: -10px;
-         }
-      }
-   }
-
-   @media (max-width: 500px) {
-      .pages-favorites {
-         &__title {
-            font-size: 25px;
-         }
-      }
-   }
-
-   @media (max-width: 425px) {
-      .pages-favorites {
-         &__title {
-            font-size: 20px;
-         }
-      }
    }
 </style>
