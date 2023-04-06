@@ -925,19 +925,36 @@ export const actions = {
     }
   },
   // Search
-  async getInfiniteMainSearch({ commit }, data = {}) {
-    const res = await this.$axios.$get(
-      `/grid/home_page_all?page=${data.page || 1}`
-    );
-    commit("mutate", { property: "mainAnnouncements", value: res });
-  },
-  async getInfiniteMainSearchWithoutMutate({ commit }, data = {}) {
+  async getInfiniteMainSearch({ commit,dispatch }, data = {}) {
     const res = await this.$axios.$get(
       `/grid/home_page_all?page=${data.page || 1}`
     );
 
+    commit("mutate", { property: "mainAnnouncements", value: res });
+
+  },
+  async getInfiniteMainSearchWithoutMutate({ commit,dispatch }, data = {}) {
+    const res = await this.$axios.$get(
+      `/grid/home_page_all?page=${data.page || 1}`
+    );
     commit("mutate", { property: "temporaryLazyData", value: res });
   },
+
+  announcementViewed({commit},data){
+
+     let announcementIds = data.announcements.map(a=>a.id);
+
+     this.$axios.$post('announcement-view',{ids:announcementIds,type:data.type})
+
+  },
+
+  announcementOpen(announcementId){
+
+    console.log(announcementId)
+  },
+
+
+
   async getInfiniteMainPartsSearchWithoutMutate({ commit }, data = {}) {
     const res = await this.$axios.$get(
       `/grid/home_page_parts?per_page=4&page=${data.page || 1}`
@@ -1001,11 +1018,13 @@ export const actions = {
     }
     commit("mutate", { property: "partAnnouncements", value: res });
   },
-  async getGridSearch({ commit }, data) {
+  async getGridSearch({ commit,dispatch }, data) {
     const res = await this.$axios.$post(
       `${data.url}?page=${data.page || 1}`,
       data.post
     );
+
+    dispatch('announcementViewed',{announcements:res.data,type:data.type})
     commit("mutate", { property: data.prefix + "Announcements", value: res });
   },
   // Announcements

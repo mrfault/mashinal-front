@@ -2,16 +2,16 @@
   <div class="pages-moto">
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
-      <moto-search-form 
+      <moto-search-form
         :total-count="$paginate(motoAnnouncements).total"
         :pending="pending"
         :category="category"
         @pending="pending = true"
         @submit="searchMoto"
       />
-      <grid 
+      <grid
         v-if="motoAnnouncements.data.length"
-        :announcements="motoAnnouncements.data" 
+        :announcements="motoAnnouncements.data"
         :paginate="$paginate(motoAnnouncements)"
         :title="$t('announcements')"
         :pending="pending"
@@ -58,7 +58,7 @@ export default {
       'atvs': 'atvs',
       'atvler': 'atvs'
     })[route.params.moto];
-    
+
     if (!slug) return error({ statusCode: 404 });
 
     const category = ({
@@ -67,9 +67,9 @@ export default {
       'atvs': { id: 3, type: 'atvs', url: '/grid/atv' }
     })[slug];
 
-    await store.dispatch('i18n/setRouteParams', { 
-      az: { moto: app.i18n.t('slug_'+slug, 'az') }, 
-      ru: { moto: app.i18n.t('slug_'+slug, 'ru') } 
+    await store.dispatch('i18n/setRouteParams', {
+      az: { moto: app.i18n.t('slug_'+slug, 'az') },
+      ru: { moto: app.i18n.t('slug_'+slug, 'ru') }
     });
 
     let post = JSON.parse(route.query.filter || '{}');
@@ -80,7 +80,7 @@ export default {
       store.dispatch('getOptions'),
       store.dispatch('getMotoOptions'),
       store.dispatch('getColors'),
-      store.dispatch('getGridSearch', { ...searchParams, post, page }),
+      store.dispatch('getGridSearch', { ...searchParams, post, page,type:category.type }),
       // get model options for brands
       ...Object.keys(post?.additional_brands || {})
         .filter(key => post?.additional_brands?.[key]?.brand)
@@ -90,7 +90,7 @@ export default {
         }),
     ]);
 
-    return { 
+    return {
       category,
       searchParams,
       pending: false
@@ -103,7 +103,7 @@ export default {
       page = this.$route.query.page || 1;
       let post = JSON.parse(this.$route.query.filter || '{}');
       this.pending = true;
-      await this.getGridSearch({ ...this.searchParams, post, page });
+      await this.getGridSearch({ ...this.searchParams, post, page,type:this.category.type});
       this.pending = false;
       if (page === 1) {
         this.scrollTo('.announcements-sorting');
@@ -114,7 +114,7 @@ export default {
   },
   computed: {
     ...mapGetters(['motoAnnouncements']),
-    
+
     crumbs() {
       return [
         { name: this.$t('moto'), route: '/moto' },

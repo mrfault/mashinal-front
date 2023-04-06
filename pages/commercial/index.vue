@@ -54,7 +54,7 @@ export default {
     let searchParams = { url: '/grid/commercial', prefix: 'commercial' }
 
     await Promise.all([
-      store.dispatch('getGridSearch', { ...searchParams, post, page }),
+      store.dispatch('getGridSearch', { ...searchParams, post, page,type:'commercials' }),
       // get brand options for category
       ...Object.keys(post?.additional_brands || {})
         .filter(key => post?.additional_brands?.[key]?.category)
@@ -83,7 +83,7 @@ export default {
       page = this.$route.query.page || 1;
       let post = JSON.parse(this.$route.query.filter || '{}');
       this.pending = true;
-      await this.getGridSearch({ ...this.searchParams, post, page });
+      await this.getGridSearch({ ...this.searchParams, post, page,type:'commercials' });
       this.pending = false;
       this.scrollTo('.announcements-grid.paginated', [-15, -20]);
     }

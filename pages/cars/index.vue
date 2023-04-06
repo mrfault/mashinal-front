@@ -156,7 +156,7 @@
 
          getCarDetails() {
             const carInfo = JSON.parse(this.$route.query.car_filter || '{}');
-
+            if(!carInfo?.additional_brands) return {};
             for (let i = 0; i < this.brands.length; i++) {
                if (this.brands[i].id == carInfo.additional_brands[0].brand) {
                   return {
