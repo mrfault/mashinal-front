@@ -714,6 +714,8 @@ export default {
    "eservices": "Эл.-сервисы",
    "excavators": "Экскаваторы",
    "exchange": "Бартер",
+   "my_vehicles": "Мои автомобили",
+   "registration_badges": "Мои регистрационные номера",
    "exhaust_class": "Класс выхлопа",
    "extend_package": "Продлить пакет",
    "extend_subscription": "Продлить контракт",

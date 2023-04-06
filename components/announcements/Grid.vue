@@ -31,7 +31,7 @@
               :key="announcement.id_unique"
             />
           </template>
-          <template v-else-if="announcement.type !== 'banner' && announcement.type !== 6">
+          <template v-else-if="announcement.type !== 'banner'">
             <div
               v-if="checkSecondTemplate(index) ? !checkItemB(index,announcement): true"
               :class="[

@@ -748,6 +748,8 @@ export default {
    eservices: "E-xidmətlər",
    excavators: "Ekskavatorlar",
    exchange: "Barter",
+   my_vehicles: "Nəqliyyat vasitələrim",
+   registration_badges: "Qeydiyyat nişanlarım",
    excise_tax: "Aksiz vergisi",
    exhaust_class: "Tükənmə sinfi",
    extend_package: "Paketi yenilə",

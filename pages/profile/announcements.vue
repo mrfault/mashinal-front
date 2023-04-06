@@ -16,41 +16,57 @@
                @change="changePage(1)" :clear-option="false" :allow-clear="false" has-no-bg />
            </div>
          </div> -->
-         <h4 class="pages-annoucements__title">Nəqliyyat vasitəsi elanlarım</h4>
 
-         <grid
-            v-if="myAnnouncements.data.length"
-            :announcements="myAnnouncements.data"
-            :paginate="$paginate(myAnnouncements)"
-            :pending="pending"
-            :push-into-router="false"
-            :title="$t('my_announces')"
-            :show-title="false"
+         <ul class="tabs">
+            <li
+               :class="['tabs__item', {'active' : tab.id === activeTab }]"
+               v-for="tab in tabs"
+               :key="tab.id"
+               @click="activeTab = tab.id"
+            >{{ tab.name }}</li>
+         </ul>
 
-            :show-checkbox="true"
-            :show-status="true"
-            @change-page="changePage"
-            isProfilePage
-         />
+         <div class="tabContent">
+            <div class="tabContent__item" v-if="activeTab === 1">
+               <grid
+                  v-if="myAnnouncements.data.length"
+                  :announcements="myAnnouncements.data"
+                  :paginate="$paginate(myAnnouncements)"
+                  :pending="pending"
+                  :push-into-router="false"
+                  :title="$t('my_announces')"
+                  :show-title="false"
+                  :show-checkbox="true"
+                  :show-status="true"
+                  @change-page="changePage"
+                  isProfilePage
+               />
 
-         <no-results v-else
-                     :type="$route.query.type == 2 ? 'part' : 'car'"
-                     :text="statusReady !== '' ? '' : $t('add_an_ad_and_thousands_of_potential_buyers_will_see_it')"
-         >
-            <nuxt-link v-if="statusReady === ''" :to="$localePath('/sell')" class="btn btn--green mt-2 mt-lg-3"
-                       v-html="$t('to_sell')"/>
-         </no-results>
+               <no-results v-else
+                           :type="$route.query.type == 2 ? 'part' : 'car'"
+                           :text="statusReady !== '' ? '' : $t('add_an_ad_and_thousands_of_potential_buyers_will_see_it')"
+               >
+                  <nuxt-link v-if="statusReady === ''" :to="$localePath('/sell')" class="btn btn--green mt-2 mt-lg-3"
+                             v-html="$t('to_sell')"/>
+               </no-results>
+            </div>
 
-         <RegistrationMarksGrid
-            :items="myAnnouncements.data"
-            :is-filtered="true"
-            :moreInfo="true"
-            :short-date="true"
-         >
-            <template #head>
-               <h4 class="registrationMarksGrid__title">Qeydiyyat nişanı elanlarım</h4>
-            </template>
-         </RegistrationMarksGrid>
+            <div class="tabContent__item" v-if="activeTab === 2">
+               <RegistrationMarksGrid
+                  :items="getMyPlates.data"
+                  :moreInfo="true"
+                  :short-date="true"
+               >
+               </RegistrationMarksGrid>
+
+               <pagination
+                  v-if="getMyPlates?.meta?.last_page > 1"
+                  :page-count="getMyPlates?.meta?.last_page"
+                  @change-page="changePageMarks"
+               />
+<!--               :value="page"-->
+            </div>
+         </div>
       </div>
    </div>
 </template>
@@ -67,6 +83,11 @@ import tr from "vue2-datepicker/locale/es/tr";
 export default {
    name: 'pages-profile-announcements',
    middleware: 'auth_general',
+   data() {
+      return {
+         activeTab: 1
+      }
+   },
    components: {
       Grid,
       NoResults,
@@ -92,6 +113,7 @@ export default {
 
       await Promise.all([
          store.dispatch('getMyAllAnnouncements', {status, shop}),
+         store.dispatch('fetchPlates'),
       ]);
 
       return {
@@ -103,6 +125,10 @@ export default {
    },
    methods: {
       ...mapActions(['getMyAllAnnouncements']),
+
+      changePageMarks(page) {
+         this.$store.dispatch('fetchPlates', `?page=${page}`);
+      },
 
       async changePage(page = 1) {
          this.pending = true;
@@ -119,7 +145,7 @@ export default {
       tr() {
          return tr
       },
-      ...mapGetters(['myAnnouncements']),
+      ...mapGetters(['myAnnouncements', 'getMyPlates']),
 
       crumbs() {
          return [
@@ -134,47 +160,18 @@ export default {
             {key: 0, name: this.$t('rejected_many')},
             {key: 3, name: this.$t('inactive')}
          ]
+      },
+
+      tabs() {
+         return [
+            { id: 1, name: this.$t('my_vehicles') },
+            { id: 2, name: this.$t('registration_badges') }
+         ]
       }
    }
 }
 </script>
 
 <style lang="scss">
-   .pages-annoucements {
-      &__title {
-         margin-top: 48px;
-         font-weight: 700;
-         font-size: 28px;
-         line-height: 32px;
-         color: #1B2434;
-      }
 
-      .registrationMarksGrid {
-         margin-top: 40px;
-      }
-   }
-
-   @media (max-width: 1025px) {
-      .pages-annoucements {
-         &__title {
-            margin-left: -10px;
-         }
-      }
-   }
-
-   @media (max-width: 500px) {
-      .pages-annoucements {
-         &__title {
-            font-size: 25px;
-         }
-      }
-   }
-
-   @media (max-width: 425px) {
-      .pages-annoucements {
-         &__title {
-            font-size: 20px;
-         }
-      }
-   }
 </style>

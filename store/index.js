@@ -190,12 +190,16 @@ const getInitialState = () => ({
 
   regionNumbers: [],
   registrationMarks: [],
+  myPlates: [],
+  mySavedPlates: [],
   registrationMark: []
 });
 
 export const state = () => getInitialState();
 
 export const getters = {
+  getMyPlates: s => s.myPlates,
+  getMySavedPlates: s => s.mySavedPlates,
   getRegionNumbers: s => s.regionNumbers,
   getRegistrationMarks: s => s.registrationMarks,
   getRegistrationMark: s => s.registrationMark,
@@ -397,6 +401,16 @@ export const actions = {
     const res = await this.$axios.$get(`/plate/announce/${id}`)
     commit("mutate", { property: "registrationMark", value: res.data || [] })
   },
+
+   async fetchPlates({ commit }, data = '') {
+      const res = await this.$axios.$get(`/my/plates${data}`)
+      commit("mutate", { property: "myPlates", value: res || [] })
+   },
+
+   async fetchMySavedPlates({ commit }, data = '') {
+      const res = await this.$axios.$get(`/my/saved/plates${data}`)
+      commit("mutate", { property: "mySavedPlates", value: res || [] })
+   },
 
   async createRegistrationMarks({}, data) {
     await this.$axios.$post("/sell/plate/post/publish", data)
