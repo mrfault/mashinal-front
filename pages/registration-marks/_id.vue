@@ -1,64 +1,69 @@
 <template>
    <div class="pages-cars-id">
       <div class="container">
-         <pre>{{registrationMark}}</pre>
-<!--         <div class="announcements-inner">-->
-<!--            <breadcrumbs :crumbs="crumbs">-->
-<!--               <share-it type="publish"/>-->
-<!--               <span class="text-data">-->
-<!--            <icon name="eye"/>-->
-<!--            {{ announcement.view_count }}-->
-<!--            <icon name="cursor"/>-->
-<!--            {{ announcement.open_count }}-->
-<!--            <icon name="star"/>-->
-<!--            {{ announcement.favorites_count }}-->
-<!--          </span>-->
-<!--               <span class="text-data">-->
-<!--            <icon name="calendar"/>-->
-<!--            {{ announcement.humanize_created_at }}-->
-<!--          </span>-->
-<!--            </breadcrumbs>-->
-<!--            <div class="row flex-column flex-lg-row">-->
-<!--               <div class="col-auto">-->
-<!--                  <client-only>-->
-<!--                     <gallery>-->
-<!--                        <quick-info type="cars" brief/>-->
-<!--                        <announcement-specs type="cars" brief/>-->
-<!--                     </gallery>-->
-<!--                  </client-only>-->
-<!--                  <comment :comment="announcement.comment" v-if="!isMobileBreakpoint">-->
-<!--                     <template #before>-->
-<!--                        <thumbs-gallery/>-->
-<!--                     </template>-->
-<!--                     <template #after v-if="hasComplects || getCarHealth">-->
-<!--                        <hr v-if="announcement.comment"/>-->
-<!--                        <template v-if="getCarHealth">-->
-<!--                           <damage-options :selected="getCarHealth" read-only :imageIsActive="imageIsActive"-->
-<!--                                           v-if="false"/>-->
-<!--                           <hr v-if="hasComplects"/>-->
-<!--                        </template>-->
-<!--                        <car-complects :options="getComplectOptions" v-if="hasComplects"/>-->
-<!--                     </template>-->
-<!--                  </comment>-->
-<!--               </div>-->
-<!--               <div class="col-auto">-->
-<!--                  <quick-info type="cars"/>-->
-<!--                  <site-banner v-if="!isMobileBreakpoint" class="mb-3" type="in-announcement"/>-->
-<!--                  <announcement-specs type="cars"/>-->
-<!--                  <comment :comment="announcement.comment" v-if="isMobileBreakpoint">-->
-<!--                     <template #after v-if="hasComplects || getCarHealth">-->
-<!--                        <hr v-if="announcement.comment"/>-->
-<!--                        <template v-if="getCarHealth">-->
-<!--                           <damage-options :selected="getCarHealth" read-only v-if="false"/>-->
-<!--                           <hr v-if="hasComplects"/>-->
-<!--                        </template>-->
-<!--                        <car-complects :options="getComplectOptions" v-if="hasComplects"/>-->
-<!--                     </template>-->
-<!--                  </comment>-->
-<!--               </div>-->
-<!--            </div>-->
-<!--            <relatives/>-->
-<!--         </div>-->
+         <div class="announcements-inner">
+            <breadcrumbs :crumbs="crumbs">
+               <share-it type="publish"/>
+
+               <!--               <span class="text-data">-->
+               <!--                  <icon name="eye"/>-->
+               <!--                  {{ registrationMark.view_count }}-->
+               <!--                  <icon name="cursor"/>-->
+               <!--                  {{ registrationMark.show_phone_number_count }}-->
+               <!--                  <icon name="star"/>-->
+               <!--                  {{ registrationMark.favorites_count }}-->
+               <!--               </span>-->
+
+               <span class="text-data">
+                  <icon name="calendar"/>
+
+                  {{ registrationMark.humanize_created_at }}
+               </span>
+            </breadcrumbs>
+
+            <div class="row flex-column flex-lg-row">
+               <div class="col-auto">
+                  <!--                  <client-only>-->
+                  <!--                     <gallery>-->
+                  <!--                        <quick-info type="cars" brief/>-->
+                  <!--                        <announcement-specs type="cars" brief/>-->
+                  <!--                     </gallery>-->
+                  <!--                  </client-only>-->
+                  <!--                  <comment :comment="registrationMark.comment" v-if="!isMobileBreakpoint">-->
+                  <!--                     <template #before>-->
+                  <!--                        <thumbs-gallery/>-->
+                  <!--                     </template>-->
+                  <!--                     <template #after v-if="hasComplects || getCarHealth">-->
+                  <!--                        <hr v-if="registrationMark.comment"/>-->
+                  <!--                        <template v-if="getCarHealth">-->
+                  <!--                           <damage-options :selected="getCarHealth" read-only :imageIsActive="imageIsActive"-->
+                  <!--                                           v-if="false"/>-->
+                  <!--                           <hr v-if="hasComplects"/>-->
+                  <!--                        </template>-->
+                  <!--                        <car-complects :options="getComplectOptions" v-if="hasComplects"/>-->
+                  <!--                     </template>-->
+                  <!--                  </comment>-->
+               </div>
+                  <div class="col-auto">
+                     <quick-info type="cars"/>
+                     <site-banner v-if="!isMobileBreakpoint" class="mb-3" type="in-announcement"/>
+                     <announcement-specs type="plate"/>
+<!--                                 <comment :comment="announcement.comment" v-if="isMobileBreakpoint">-->
+<!--                                    <template #after v-if="hasComplects || getCarHealth">-->
+<!--                                       <hr v-if="announcement.comment"/>-->
+<!--                                       <template v-if="getCarHealth">-->
+<!--                                          <damage-options :selected="getCarHealth" read-only v-if="false"/>-->
+<!--                                          <hr v-if="hasComplects"/>-->
+<!--                                       </template>-->
+<!--                                       <car-complects :options="getComplectOptions" v-if="hasComplects"/>-->
+<!--                                    </template>-->
+<!--                                 </comment>-->
+                  </div>
+            </div>
+            <!--            <relatives/>-->
+
+            <pre>{{ registrationMark }}</pre>
+         </div>
       </div>
    </div>
 </template>
@@ -78,22 +83,22 @@ import SiteBanner from "~/components/banners/SiteBanner";
 
 export default {
    name: 'pages-marks-id',
-   // components: {
-   //    SiteBanner,
-   //    QuickInfo,
-   //    AnnouncementSpecs,
-   //    Gallery,
-   //    ThumbsGallery,
-   //    Comment,
-   //    CarComplects,
-   //    DamageOptions,
-   //    Relatives,
-   // },
-   // nuxtI18n: {
-   //    paths: {
-   //       az: '/masinlar/elan/:id'
-   //    }
-   // },
+   components: {
+      SiteBanner,
+      QuickInfo,
+      AnnouncementSpecs,
+      Gallery,
+      ThumbsGallery,
+      Comment,
+      CarComplects,
+      DamageOptions,
+      Relatives,
+   },
+   nuxtI18n: {
+      paths: {
+         az: '/masinlar/elan/:id'
+      }
+   },
    // head() {
    //    let announcementTitle = `${this.catalog.brand.name} ${this.$translateHard(this.catalog.model.name)}`;
    //    let title = `${this.$t(`meta-title_announcement-${this.announcement.is_new ? 'new' : 'used'}`, {announce: `${announcementTitle}, ${this.announcement.year}`})}`;
@@ -114,17 +119,13 @@ export default {
    //       credit: this.announcement.credit
    //    });
    // },
-   async asyncData({store, route}) {
+   async asyncData({ store, route }) {
       await Promise.all([
-         store.dispatch('fetchRegistrationMark', route.params.id),
+         store.dispatch('fetchRegistrationMark', route.params.id.slice(0, route.params.id.length - 1)),
+         // store.dispatch('fetchRegistrationMark', route.params.id),
       ]);
    },
 
-   computed: {
-      ...mapGetters({
-         registrationMark: 'getRegistrationMark',
-      }),
-   },
    // methods: {
    //    getFilterLink(type) {
    //       let form = {
@@ -150,36 +151,39 @@ export default {
    //       return `/cars?car_filter=${encodeURI(JSON.stringify(form))}`
    //    }
    // },
-   // computed: {
-   //    ...mapGetters(['announcement', 'catalog']),
-   //    getComplectOptions() {
-   //       return typeof this.announcement.options === 'string'
-   //          ? JSON.parse(this.announcement.options)
-   //          : this.announcement.options;
-   //    },
-   //    hasComplects() {
-   //       return Object.keys(this.getComplectOptions).length;
-   //    },
-   //    getCarHealth() {
-   //       return this.announcement.car_body_health
-   //          ? JSON.parse(this.announcement.car_body_health.options)
-   //          : false;
-   //    },
-   //    imageIsActive() {
-   //       return false
-   //    },
-   //    crumbs() {
-   //       return [
-   //          {name: this.$t('cars'), route: '/cars'},
-   //          {name: this.catalog?.brand?.name, route: this.getFilterLink('brand')},
-   //          {name: this.catalog?.model?.name, route: this.getFilterLink('brand-model')},
-   //          {
-   //             name: this.$translateHard(this.catalog?.generation?.name[this.locale]),
-   //             route: this.getFilterLink('brand-model-generation')
-   //          },
-   //          {name: '#' + this.announcement.id_unique}
-   //       ]
-   //    }
-   // },
+   computed: {
+      ...mapGetters({
+         registrationMark: 'announcement',
+      }),
+      //    ...mapGetters(['announcement', 'catalog']),
+      //    getComplectOptions() {
+      //       return typeof this.announcement.options === 'string'
+      //          ? JSON.parse(this.announcement.options)
+      //          : this.announcement.options;
+      //    },
+      //    hasComplects() {
+      //       return Object.keys(this.getComplectOptions).length;
+      //    },
+      //    getCarHealth() {
+      //       return this.announcement.car_body_health
+      //          ? JSON.parse(this.announcement.car_body_health.options)
+      //          : false;
+      //    },
+      //    imageIsActive() {
+      //       return false
+      //    },
+      crumbs() {
+         return [
+            { name: this.$t('registration_marks'), route: '/registration-marks' },
+            { name: this.registrationMark.car_number },
+            // {name: this.catalog?.model?.name, route: this.getFilterLink('brand-model')},
+            // {
+            //    name: this.$translateHard(this.catalog?.generation?.name[this.locale]),
+            //    route: this.getFilterLink('brand-model-generation')
+            // },
+            // {name: '#' + this.announcement.id_unique}
+         ]
+      }
+   },
 }
 </script>

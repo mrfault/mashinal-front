@@ -65,6 +65,13 @@
                   @change-page="changePageMarks"
                />
 <!--               :value="page"-->
+
+               <no-results
+                  v-if="!getMyPlates.data.length"
+                  :text="$t('empty_plates')"
+                  :template="'new'"
+                  :url="'/images/empty_plates.svg'"
+               ></no-results>
             </div>
          </div>
       </div>
@@ -174,5 +181,33 @@ export default {
 </script>
 
 <style lang="scss">
+   @media (max-width: 500px) {
+      .pages-annoucements {
+         .tabContent {
+            &__item {
+               .no-results {
+                  svg {
+                     width: 300px;
+                     height: 80px;
+                  }
+               }
+            }
+         }
+      }
+   }
 
+   @media (max-width: 375px) {
+      .pages-annoucements {
+         .tabContent {
+            &__item {
+               .no-results {
+                  svg {
+                     width: 260px;
+                     height: 55px;
+                  }
+               }
+            }
+         }
+      }
+   }
 </style>

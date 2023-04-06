@@ -1,5 +1,5 @@
 <template>
-   <div class="registrationMarksGridItem" @click="goToRegistrationMark(item.id)">
+   <div class="registrationMarksGridItem" @click="goToRegistrationMark(item.id_unique)">
       <div class="registrationMarksGridItem__head">
          <div class="divider">
 <!--            <inline-svg src="/icons/registrationMarks_icons.svg" />-->

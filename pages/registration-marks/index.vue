@@ -21,8 +21,9 @@
 
                <div class="registrationMarks__filters">
                   <div class="divider">
+<!--                     :className="'new notAny'"-->
                      <form-select
-                        :className="'new notAny'"
+                        :className="'new'"
                         :label="'01 - Abşeron'"
                         :options="getRegionNumbers"
                         :clearPlaceholder="true"
@@ -31,7 +32,7 @@
                      />
 
                      <form-select
-                        :className="'new notAny'"
+                        :className="'new'"
                         :label="'A'"
                         :options="numbers"
                         :clearPlaceholder="true"
@@ -40,7 +41,7 @@
                      />
 
                      <form-select
-                        :className="'new notAny'"
+                        :className="'new'"
                         :label="'A'"
                         :options="numbers"
                         :clearPlaceholder="true"
@@ -73,7 +74,7 @@
 
                   <div class="divider">
                      <form-select
-                        :className="'new notAny'"
+                        :className="'new'"
                         :label="$t('currency')"
                         :options="currency"
                         :clearPlaceholder="true"
@@ -82,7 +83,7 @@
                      />
 
                      <form-select
-                        :className="'new notAny'"
+                        :className="'new'"
                         :label="$t('city')"
                         :options="cities.regions"
                         :clearPlaceholder="true"
@@ -102,11 +103,11 @@
                      <h4 class="registrationMarksGrid__title">{{ $t('search_result') }}</h4>
 
                      <form-select
-                        :className="'new notAny'"
+                        :className="'new'"
                         :label="$t('show_cheap_first')"
                         :options="sortItems"
                         :clearPlaceholder="true"
-                        v-model="form.order"
+                        v-model="form.sorting"
                         has-search
                      />
                   </template>
@@ -164,7 +165,7 @@
                price_to: '',
                currency_id: '',
                region_id: '',
-               order: '',
+               sorting: '',
                page: 1
             },
 
@@ -236,7 +237,7 @@
                if (this.form.price_to) queryArray.push(`&price_to=${this.form.price_to}`);
                if (this.form.currency_id) queryArray.push(`&currency_id=${this.form.currency_id}`);
                if (this.form.region_id) queryArray.push(`&region_id=${this.form.region_id}`);
-               if (this.form.order) queryArray.push(`&sorting=${this.form.order}`);
+               if (this.form.sorting) queryArray.push(`&sorting=${this.form.sorting}`);
 
                query = queryArray.join('');
 
