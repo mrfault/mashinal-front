@@ -128,6 +128,7 @@ export default {
 
       changePageMarks(page) {
          this.$store.dispatch('fetchPlates', `?page=${page}`);
+         this.scrollTo('.pages-annoucements', [-15, -20]);
       },
 
       async changePage(page = 1) {

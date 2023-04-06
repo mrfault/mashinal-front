@@ -79,11 +79,19 @@ export const PaymentMixin = {
             }
 
             if (route) {
-               console.log('aaaaaaaaaaaa', route)
-              this.$router.push(route, () => {
-                this.callUpdatePaidStatus(paid, text);
-                stopListening();
-              });
+               if (paid) {
+                  console.log('aaaaaaaaaaaa', route)
+                  console.log('aaaaaaaaaaaapaid', paid)
+                  this.$router.push(route, () => {
+                     this.callUpdatePaidStatus(paid, text);
+                     stopListening();
+                  });
+               } else {
+                  console.log('ccccccccccc', route)
+                  console.log('cccccccccccpaid', paid)
+                  this.callUpdatePaidStatus(paid, text);
+                  stopListening();
+               }
             } else {
               stopListening();
             }

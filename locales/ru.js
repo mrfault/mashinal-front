@@ -2143,6 +2143,7 @@ export default {
    "last_month": "За месяц",
    "last_6_month": "За полгода",
    "not_selected": "Не выбрано",
+   "empty_result": "Результаты поиска не найдены",
    "garage_services": "Гаражи",
    "filled_in_at_will": "Заполняется по желанию",
    "production_year": "Год выпуска",

@@ -2209,6 +2209,7 @@ export default {
    trolleybus: "Trolleybuslar və tramvaylar",
    juridical_person: "Hüquqi şəxs",
 
+   empty_result: "Axtarışa uyğun nəticə tapılmadı",
    garage_services: "Qaraj xidmətləri",
    notifications: "Bildirişlər",
    notification: "Bildiriş",

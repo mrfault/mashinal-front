@@ -22,6 +22,7 @@
                <div class="registrationMarks__filters">
                   <div class="divider">
                      <form-select
+                        :className="'new notAny'"
                         :label="'01 - Abşeron'"
                         :options="getRegionNumbers"
                         :clearPlaceholder="true"
@@ -30,6 +31,7 @@
                      />
 
                      <form-select
+                        :className="'new notAny'"
                         :label="'A'"
                         :options="numbers"
                         :clearPlaceholder="true"
@@ -38,6 +40,7 @@
                      />
 
                      <form-select
+                        :className="'new notAny'"
                         :label="'A'"
                         :options="numbers"
                         :clearPlaceholder="true"
@@ -70,6 +73,7 @@
 
                   <div class="divider">
                      <form-select
+                        :className="'new notAny'"
                         :label="$t('currency')"
                         :options="currency"
                         :clearPlaceholder="true"
@@ -78,6 +82,7 @@
                      />
 
                      <form-select
+                        :className="'new notAny'"
                         :label="$t('city')"
                         :options="cities.regions"
                         :clearPlaceholder="true"
@@ -90,11 +95,14 @@
 
                <RegistrationMarksGrid
                   :items="getRegistrationMarks?.data"
+                  :showFavoriteBtn="true"
+                  v-if="getRegistrationMarks?.data.length"
                >
                   <template #head>
                      <h4 class="registrationMarksGrid__title">{{ $t('search_result') }}</h4>
 
                      <form-select
+                        :className="'new notAny'"
                         :label="$t('show_cheap_first')"
                         :options="sortItems"
                         :clearPlaceholder="true"
@@ -110,6 +118,14 @@
                   :value="form.page"
                   @change-page="changePage"
                />
+
+               <no-results
+                  :text="$t('empty_result')"
+                  :template="'new'"
+                  :url="'/images/empty_result.svg'"
+                  v-if="!getRegistrationMarks?.data.length"
+               >
+               </no-results>
             </div>
          </div>
       </div>
@@ -120,10 +136,12 @@
    import { mapGetters } from "vuex";
    import { minLength } from "vuelidate/lib/validators";
    import RegistrationMarksGrid from "~/components/announcements/RegistrationMarksGrid.vue";
+   import NoResults from "~/components/elements/NoResults.vue";
 
    export default {
       components: {
          RegistrationMarksGrid,
+         NoResults
       },
 
       head() {
@@ -193,6 +211,7 @@
       methods: {
          changePage(e) {
             this.form.page = e;
+            this.scrollTo('.registrationMarks__filters', [-15, -20]);
          }
       },
 
@@ -606,6 +625,10 @@
 
             .registrationMarksGrid {
                margin-top: 300px;
+            }
+
+            .no-results {
+               margin: 280px 0 80px 0;
             }
          }
       }

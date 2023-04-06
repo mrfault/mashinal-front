@@ -20,6 +20,7 @@
                      <div class="row">
                         <div class="col-6 col-xl-5">
                            <form-select
+                              :className="'notAny'"
                               :label="'01 - Abşeron'"
                               :options="getRegionNumbers"
                               :invalid="$v.region_id.$error"
@@ -32,6 +33,7 @@
 
                         <div class="col-2 col-xl-2">
                            <form-select
+                              :className="'notAny'"
                               :label="'A'"
                               :options="numbers"
                               :invalid="$v.region_letter1.$error"
@@ -43,6 +45,7 @@
 
                         <div class="col-2 col-xl-2">
                            <form-select
+                              :className="'notAny'"
                               :label="'A'"
                               :options="numbers"
                               :invalid="$v.region_letter2.$error"
@@ -74,6 +77,7 @@
 
                         <div class="col-3 col-xl-2">
                            <form-select
+                              :className="'notAny'"
                               :label="'AZN'"
                               :options="currency"
                               :invalid="$v.form.currency_id.$error"
@@ -85,6 +89,7 @@
 
                         <div class="col-3 col-xl-4">
                            <form-select
+                              :className="'notAny'"
                               :label="$t('city')"
                               :options="cities.regions"
                               :invalid="$v.form.region_id.$error"
@@ -215,16 +220,9 @@
 
             this.pending = true;
 
-            let region;
-            if (this.region_id.split('-')[0].length < 3) {
-               region = `0${this.region_id.split('-')[0].slice(0, -1)}`;
-            } else {
-               region = this.region_id.split('-')[0].slice(0, -1);
-            }
+            this.form.car_number = `${this.region_id.split('-')[0].slice(0, -1)} - ${this.region_letter1}${this.region_letter2} - ${this.region_number}`;
 
-            this.form.car_number = `${region} - ${this.region_letter1}${this.region_letter2} - ${this.region_number}`;
             try {
-               console.log('1111')
                const res = await this.$axios.$post(`/sell/plate/post/publish?is_mobile=${this.isMobileBreakpoint}`, this.form)
                if (!res?.data?.redirect_url) {
                   await this.$nuxt.refresh();
@@ -233,16 +231,13 @@
                      text: this.$t('announcement_paid'),
                      title: this.$t('success_payment')
                   });
-                  console.log('2222')
                } else {
                   await this.handlePayment(res, this.$localePath('/profile/announcements'), this.$t('announcement_paid'));
                   await this.resetForm();
                   this.pending = false;
-                  console.log('3333')
                }
             } catch (err) {
-               console.log('err', err)
-               console.log('444')
+               console.log(err)
             }
          }
       },

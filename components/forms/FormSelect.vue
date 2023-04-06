@@ -1,5 +1,5 @@
 <template>
-  <div class="form-group">
+  <div :class="['form-group', className]">
     <div :class="['select-menu', { 'no-bg': hasNoBg, invalid, wider }]">
       <span
         :class="[
@@ -347,6 +347,9 @@ export default {
     options: {
       type: Array,
       default: () => [],
+    },
+     className: {
+      type: String
     },
     custom: Boolean,
     customCheckboxes: Boolean,
@@ -748,3 +751,23 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+   .form-group {
+      &.notAny {
+         .select-menu_dropdown-option {
+            &:first-child {
+               display: none;
+            }
+         }
+      }
+
+      &.new {
+         .select-menu_dropdown {
+            &.anchor-bottom {
+               top: 65px;
+            }
+         }
+      }
+   }
+</style>
