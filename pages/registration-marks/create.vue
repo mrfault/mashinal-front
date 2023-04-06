@@ -4,6 +4,7 @@
          <breadcrumbs :crumbs="crumbs"/>
 
          <div class="registrationMarks__create">
+            <pre>{{getResetForm}}</pre>
             <h4 class="registrationMarks__create-title">
                <span>{{ $t('post_registration') }}</span>
                <span></span>
@@ -19,8 +20,8 @@
                   <div class="col-12 col-xl-6">
                      <div class="row">
                         <div class="col-6 col-xl-5">
+<!--                           :className="'notAny'"-->
                            <form-select
-                              :className="'notAny'"
                               :label="'01 - Abşeron'"
                               :options="getRegionNumbers"
                               :invalid="$v.region_id.$error"
@@ -28,13 +29,10 @@
                               v-model="region_id"
                               has-search
                            />
-
                         </div>
 
                         <div class="col-2 col-xl-2">
                            <form-select
-                              :className="'notAny'"
-                              :label="'A'"
                               :options="numbers"
                               :invalid="$v.region_letter1.$error"
                               :clearPlaceholder="true"
@@ -45,7 +43,6 @@
 
                         <div class="col-2 col-xl-2">
                            <form-select
-                              :className="'notAny'"
                               :label="'A'"
                               :options="numbers"
                               :invalid="$v.region_letter2.$error"
@@ -77,7 +74,6 @@
 
                         <div class="col-3 col-xl-2">
                            <form-select
-                              :className="'notAny'"
                               :label="'AZN'"
                               :options="currency"
                               :invalid="$v.form.currency_id.$error"
@@ -89,7 +85,6 @@
 
                         <div class="col-3 col-xl-4">
                            <form-select
-                              :className="'notAny'"
                               :label="$t('city')"
                               :options="cities.regions"
                               :invalid="$v.form.region_id.$error"
@@ -193,8 +188,8 @@
             form: {
                car_number: '',
                price: '',
-               currency_id: '',
-               region_id: '',
+               currency_id: 1,
+               region_id: 1,
                comment: ''
             }
          }
@@ -233,7 +228,7 @@
                   });
                } else {
                   await this.handlePayment(res, this.$localePath('/profile/announcements'), this.$t('announcement_paid'));
-                  await this.resetForm();
+                  if (this.getResetForm) await this.resetForm();
                   this.pending = false;
                }
             } catch (err) {
@@ -245,7 +240,8 @@
       computed: {
          ...mapGetters({
             getRegionNumbers: 'getRegionNumbers',
-            cities: 'sellOptions'
+            cities: 'sellOptions',
+            getResetForm: 'getResetForm'
          }),
 
          crumbs() {

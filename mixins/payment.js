@@ -80,15 +80,13 @@ export const PaymentMixin = {
 
             if (route) {
                if (paid) {
-                  console.log('aaaaaaaaaaaa', route)
-                  console.log('aaaaaaaaaaaapaid', paid)
                   this.$router.push(route, () => {
                      this.callUpdatePaidStatus(paid, text);
                      stopListening();
+                     // this.$store.dispatch('fetchResetForm', true);
                   });
                } else {
-                  console.log('ccccccccccc', route)
-                  console.log('cccccccccccpaid', paid)
+                  this.$store.dispatch('fetchResetForm', false);
                   this.callUpdatePaidStatus(paid, text);
                   stopListening();
                }

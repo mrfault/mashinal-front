@@ -757,7 +757,14 @@ export default {
       &.notAny {
          .select-menu_dropdown-option {
             &:first-child {
-               display: none;
+               //.text-truncate {
+               //   span {
+                     display: none;
+                     //opacity: 0;
+                  //}
+               //}
+               //height: 0;
+               //opacity: 0;
             }
          }
       }

@@ -189,6 +189,7 @@ const getInitialState = () => ({
   partCategories: [],
 
   regionNumbers: [],
+  resetForm: false,
   registrationMarks: [],
   myPlates: [],
   mySavedPlates: [],
@@ -198,6 +199,7 @@ const getInitialState = () => ({
 export const state = () => getInitialState();
 
 export const getters = {
+  getResetForm: s => s.resetForm,
   getMyPlates: s => s.myPlates,
   getMySavedPlates: s => s.mySavedPlates,
   getRegionNumbers: s => s.regionNumbers,
@@ -387,6 +389,11 @@ const objectNotEmpty = (state, commit, property) => {
   );
 };
 export const actions = {
+   async fetchResetForm({ commit }, data) {
+      // const res = await this.$axios.$get("/regions-and-serial-number")
+      commit("mutate", { property: "resetForm", value: data })
+   },
+
   async fetchRegionNumbers({ commit }) {
     const res = await this.$axios.$get("/regions-and-serial-number")
     commit("mutate", { property: "regionNumbers", value: res.data || [] })
@@ -399,7 +406,7 @@ export const actions = {
 
   async fetchRegistrationMark({ commit }, id) {
     const res = await this.$axios.$get(`/plate/announce/${id}`)
-    commit("mutate", { property: "registrationMark", value: res.data || [] })
+    commit("mutate", { property: "announcement", value: res.data || [] })
   },
 
    async fetchPlates({ commit }, data = '') {
@@ -411,19 +418,6 @@ export const actions = {
       const res = await this.$axios.$get(`/my/saved/plates${data}`)
       commit("mutate", { property: "mySavedPlates", value: res || [] })
    },
-
-  async createRegistrationMarks({}, data) {
-    await this.$axios.$post("/sell/plate/post/publish", data)
-       .then((res) => {
-         if (res.data.redirect_url) {
-           // window.open(res.data.redirect_url, '_blank');
-           this.handlePayment(res, false, this.$t('car_activated'), 'v2');
-         }
-       })
-       .catch(error => {
-         console.log(error)
-       })
-  },
 
   async nuxtServerInit({ dispatch, commit }) {
     if (!this.$auth.loggedIn) {

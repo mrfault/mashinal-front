@@ -2210,6 +2210,7 @@ export default {
    juridical_person: "Hüquqi şəxs",
 
    empty_result: "Axtarışa uyğun nəticə tapılmadı",
+   empty_plates: "Qeydiyyat nişanı elanınız yoxdur",
    garage_services: "Qaraj xidmətləri",
    notifications: "Bildirişlər",
    notification: "Bildiriş",

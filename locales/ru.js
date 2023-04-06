@@ -2144,6 +2144,7 @@ export default {
    "last_6_month": "За полгода",
    "not_selected": "Не выбрано",
    "empty_result": "Результаты поиска не найдены",
+   "empty_plates": "У вас нет регистрационных номеров",
    "garage_services": "Гаражи",
    "filled_in_at_will": "Заполняется по желанию",
    "production_year": "Год выпуска",
