@@ -37,8 +37,7 @@
             <div class="tabContent__item" v-if="activeTab === 2">
                <RegistrationMarksGrid
                   :items="getMySavedPlates.data"
-                  :moreInfo="true"
-                  :short-date="true"
+                  :showFavoriteBtn="true"
                >
                </RegistrationMarksGrid>
 
@@ -47,7 +46,22 @@
                   :page-count="getMySavedPlates?.meta?.last_page"
                   @change-page="changePageMarks"
                />
-               <!--               :value="page"-->
+<!--               :value="page"-->
+
+               <no-results
+                  :text="$t('no_favorites')"
+                  :template="'new'"
+                  :url="'/images/empty_result_favorites.svg'"
+                  v-if="!getMySavedPlates.data.length"
+               >
+                  <nuxt-link class="active btn btn--pale-green-outline d-flex full-width mt-2"
+                             style="max-width: 200px;"
+                             :to="$localePath('/registration-marks')"
+                  >
+                     <i aria-hidden="true" class="icon-plus-circle"></i>
+                     {{ $t('my_favorites_add') }}
+                  </nuxt-link>
+               </no-results>
             </div>
          </div>
       </div>
@@ -107,6 +121,7 @@
 
          changePageMarks(page) {
             this.$store.dispatch('fetchMySavedPlates', `?page=${page}`);
+            this.scrollTo('.tabs', [-15, -20]);
          },
 
          async changePage(page = 1) {

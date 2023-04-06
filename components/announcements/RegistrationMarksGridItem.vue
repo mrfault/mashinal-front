@@ -14,7 +14,7 @@
          <div class="divider">
             <p>{{ item.price }}</p>
 
-            <add-favorite :announcement="item" v-if="!moreInfo" />
+            <add-favorite :announcement="item" v-if="showFavoriteBtn" />
          </div>
 
          <div class="divider" v-if="!moreInfo">
@@ -89,13 +89,18 @@
          shortDate: {
             type: Boolean,
             default: false
+         },
+
+         showFavoriteBtn: {
+            type: Boolean,
+            default: false
          }
       },
 
       methods: {
          goToRegistrationMark(id) {
-            // this.$router.push(this.localePath(`/registration-marks/${id}`));
-            window.open(this.localePath(`/registration-marks/${id}`), '_blank');
+            this.$router.push(this.localePath(`/registration-marks/${id}`));
+            // window.open(this.localePath(`/registration-marks/${id}`), '_blank');
          },
 
          modifiedDate(date) {

@@ -11,6 +11,7 @@
             :item="item"
             :moreInfo="moreInfo"
             :short-date="shortDate"
+            :showFavoriteBtn="showFavoriteBtn"
          />
 
 <!--         <pre>{{filteredItems[0]}}</pre>-->
@@ -41,6 +42,11 @@
          },
 
          shortDate: {
+            type: Boolean,
+            default: false
+         },
+
+         showFavoriteBtn: {
             type: Boolean,
             default: false
          }

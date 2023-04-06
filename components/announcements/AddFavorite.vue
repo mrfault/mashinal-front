@@ -39,13 +39,11 @@ export default {
           'favorite' + this.announcement.id_unique,
         )
       } else {
-        await this.addToFavorites(this.announcement.id_unique)
-        this.getNotViewedFavorites()
-        this.$store.dispatch(
-          'getAnnouncementInner',
-          this.announcement.id_unique,
-        )
-        this.$nuxt.$emit('favorites-updated')
+        await this.addToFavorites(this.announcement.id_unique);
+        await this.getNotViewedFavorites();
+        await this.$store.dispatch('getAnnouncementInner', this.announcement.id_unique);
+        await this.$store.dispatch('fetchMySavedPlates');
+        this.$nuxt.$emit('favorites-updated');
         if (this.isAdded) {
           this.$toasted.success(this.$t('my_favorites_added'), {
             action: !this.routeName === 'profile-favorites' && {
