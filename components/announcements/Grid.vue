@@ -129,6 +129,18 @@
                      ]"
                      :key="announcement.id_unique + (escapeDuplicates ? '_' + index : '')"
                   >
+<!--                     <div class="registrationMarks__title">-->
+<!--                        <div class="divider">Qeydiyyat nişanları</div>-->
+
+<!--                        <div class="divider">-->
+<!--                           <nuxt-link :to="$localePath('/registration-marks')">-->
+<!--                              <span>{{ $t('see_all') }}</span>-->
+
+<!--                              <inline-svg :src="'/icons/arrow-right.svg'" :width="'15px'" />-->
+<!--                           </nuxt-link>-->
+<!--                        </div>-->
+<!--                     </div>-->
+
                      <RegistrationMarksGridItem
                         :item="announcement"
                         :showFavoriteBtn="true"
@@ -318,6 +330,24 @@ export default {
 </script>
 
 <style lang="scss">
+   .announcements-grid {
+      .col-lg-mid {
+         .registrationMarks__title {
+            display: none;
+         }
+
+         &:first-child {
+            .registrationMarks__title {
+               position: absolute;
+               top: 52px;
+               width: 1220px;
+               display: flex;
+               align-items: center;
+               justify-content: space-between;
+            }
+         }
+      }
+   }
    .index-salon-view {
       display: flex;
       align-items: center;
