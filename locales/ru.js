@@ -200,6 +200,7 @@ export default {
    "auth_date": "Дата регистрации",
    "auth_end_date": "Дата окончания сервиса",
    "auto_accessories": "Автоаксессуары",
+   "see_all": "Посмотреть всё",
    "autocatalog": "Автокаталог",
    "autoloaders": "Погрузчики",
    "automatic": "Автоматическая",

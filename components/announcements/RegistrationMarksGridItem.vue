@@ -1,51 +1,51 @@
 <template>
-   <div class="registrationMarksGridItem" @click="goToRegistrationMark(item.id_unique)">
+   <div class="registrationMarksGridItem" @click="goToRegistrationMark(item?.id_unique)">
       <div class="registrationMarksGridItem__head">
          <div class="divider">
 <!--            <inline-svg src="/icons/registrationMarks_icons.svg" />-->
             <img src="/icons/registrationMarks_icons.svg" alt="icons">
          </div>
          <div class="divider">
-            <h3>{{ item.car_number }}</h3>
+            <h3>{{ item?.car_number }}</h3>
          </div>
       </div>
 
       <div class="registrationMarksGridItem__main">
          <div class="divider">
-            <p>{{ item.price }}</p>
+            <p>{{ item?.price }}</p>
 
             <add-favorite :announcement="item" v-if="showFavoriteBtn" />
          </div>
 
          <div class="divider" v-if="!moreInfo">
-            <p>{{ item.user.full_name }}</p>
+            <p>{{ item?.user?.full_name }}</p>
          </div>
 
          <div class="divider info">
             <p v-if="!moreInfo" class="d-flex align-items-center justify-content-between w-100">
-               <span v-if="shortDate">{{ item.humanize_short_created_at }}</span>
-               <span>{{item.humanize_created_at }}</span>
+               <span v-if="shortDate">{{ item?.humanize_short_created_at }}</span>
+               <span v-else>{{ item?.humanize_created_at }}</span>
 
-               <span>{{ item.region.name[locale] }}</span>
+               <span>{{ item?.region?.name[locale] }}</span>
             </p>
 
             <p v-else class="d-flex align-items-center justify-content-between w-100">
                <span class="d-flex align-items-center">
                   <inline-svg :src="'/icons/calendar-2.svg'" :width="'20px'" :height="'20px'"/>
 
-                  <span>{{ modifiedDate(item.humanize_created_at) }}</span>
+                  <span>{{ modifiedDate(item?.humanize_created_at) }}</span>
                </span>
 
                <span class="d-flex align-items-center">
                   <inline-svg :src="'/icons/eye-2.svg'" :width="'20px'" :height="'20px'"/>
 
-                  <span>{{ item.view_count }}</span>
+                  <span>{{ item?.view_count }}</span>
                </span>
 
                <span class="d-flex align-items-center">
                   <inline-svg :src="'/icons/phone-2.svg'" :width="'20px'" :height="'20px'"/>
 
-                  <span>{{ item.show_phone_number_count }}</span>
+                  <span>{{ item?.show_phone_number_count }}</span>
                </span>
             </p>
          </div>
@@ -55,7 +55,8 @@
                <span v-if="item.status === 0">{{ $t('rejected_2') }}</span>
                <span v-else-if="item.status === 1">{{ $t('Active') }}</span>
                <span v-else-if="item.status === 2">{{ $t('under_consideration') }}</span>
-               <span v-else>{{ $t('sold') }}</span>
+               <span v-else-if="item.status === 3">{{ $t('sold') }}</span>
+               <span v-else-if="item.status === 7">{{ $t('need_pay') }}</span>
             </div>
          </div>
       </div>
@@ -71,10 +72,10 @@
       },
 
       props: {
-         items: {
-            type: Array,
-            default() { return [] }
-         },
+         // items: {
+         //    type: Array,
+         //    default() { return [] }
+         // },
 
          item: {
             type: Object,

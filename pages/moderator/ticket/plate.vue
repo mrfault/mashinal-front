@@ -5,6 +5,7 @@
    >
       <div class="container">
          <breadcrumbs id="brdcrmbs1" :crumbs="crumbs"/>
+
          <div class="sell_cards-row row">
             <div class="col-auto">
                <div class="card">
@@ -1427,7 +1428,7 @@ export default {
       async remove360(param) {
 
          if (param == 'success') {
-            let data = await this.$axios.$get('/ticket/car');
+            let data = await this.$axios.$get('/ticket/plate');
 
             let video360section = document.getElementById('video360section');
             video360section.remove();
@@ -1606,7 +1607,7 @@ export default {
 
          try {
 
-            await this.$axios.$post('/ticket/car/' + this.single_announce.id, formData)
+            await this.$axios.$post('/ticket/plates/' + this.single_announce.id, formData)
 
             if (this.user.admin_group == 2) {
                location.href = '/alvcp/resources/announce-moderators';
