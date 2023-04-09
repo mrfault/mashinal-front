@@ -20,9 +20,11 @@ export default {
   },
   computed: {
     path() {
-      return this.$localePath(
-        `/${this.type}/announcement/${this.$route.params.id}/edit`,
-      )
+       if (this.type === 'registration-marks') {
+          return this.$localePath(`/${this.type}/${this.$route.params.id}/edit`);
+       } else {
+          return this.$localePath(`/${this.type}/announcement/${this.$route.params.id}/edit`);
+       }
     },
     ...mapGetters(['editPath']),
   },
@@ -35,10 +37,7 @@ export default {
     },
     gotoRoute() {
       if (this.$auth.loggedIn) {
-        if (
-          this.announcement.user_id === this.$auth.user.id &&
-          this.announcement.status != 3
-        ) {
+        if (this.announcement.user_id === this.$auth.user.id && this.announcement.status != 3) {
           this.$router.push(this.path)
         } else {
           this.$toasted.error('Sizin düzəliş etmə hüququnuz yoxdur')

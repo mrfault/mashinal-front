@@ -219,12 +219,13 @@
 
                         <icon name="chevron-down" v-if="menu.children" />
 
-                        <span style="position: absolute; top: 3px; right: 0; display: flex;">
+                        <span style="position: absolute; top: 5px; right: -2px; display: flex;">
                           <inline-svg
                              class="not-hover"
-                             style="width: 31px;"
+                             :width="'25px'"
+                             :height="'15px'"
                              v-if="menu.title === 'registration_marks'"
-                             src="/img/new_badge.svg"
+                             src="/icons/new_badge_2.svg"
                           />
                         </span>
                       </nuxt-link>

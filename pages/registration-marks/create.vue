@@ -4,11 +4,9 @@
          <breadcrumbs :crumbs="crumbs"/>
 
          <div class="registrationMarks__create">
-            <pre>{{getResetForm}}</pre>
             <h4 class="registrationMarks__create-title">
                <span>{{ $t('post_registration') }}</span>
                <span></span>
-<!--               {{ $t('post_registration') }}-->
             </h4>
 
             <div class="registrationMarks__create-inner">
@@ -33,6 +31,7 @@
 
                         <div class="col-2 col-xl-2">
                            <form-select
+                              :label="'A'"
                               :options="numbers"
                               :invalid="$v.region_letter1.$error"
                               :clearPlaceholder="true"
@@ -269,94 +268,5 @@
 </script>
 
 <style lang="scss">
-   .registrationMarks {
-      &__create {
-         width: 100%;
-         padding: 24px 24px 48px 24px;
-         border-radius: 6px;
-         background-color: #FFFFFF;
 
-         &-title {
-            display: flex;
-            align-items: center;
-            font-weight: 600;
-            font-size: 18px;
-            line-height: 22px;
-            color: #081A3E;
-            margin-bottom: 32px;
-            overflow: hidden;
-
-            span {
-               position: relative;
-               white-space: nowrap;
-               &:last-child {
-                  width: 100%;
-                  height: 2px;
-                  background-color: #9AA4B2;
-                  margin-left: 23px;
-               }
-            }
-         }
-
-         &-note {
-            display: flex;
-            align-items: center;
-            padding: 12px;
-            border-radius: 4px;
-            border: 1px solid #CDD5DF;
-            margin: 0;
-
-            svg {
-               max-width: 22px;
-               width: 100%;
-               height: 22px;
-               margin-right: 11px;
-            }
-
-            p {
-               font-weight: 400;
-               font-size: 15px;
-               color: #4B5565;
-               margin: 0;
-
-               span {
-                  font-weight: 700;
-                  color: #0f0f0f;
-                  margin-left: 4px;
-               }
-            }
-         }
-
-         .btn {
-            width: 100%;
-            font-weight: 600;
-            font-size: 14px;
-            line-height: 18px;
-            padding: 11px;
-            height: 40px;
-            color: #FFFFFF;
-            background: #29A53E;
-            backdrop-filter: blur(10px);
-            border-radius: 4px;
-            border: none;
-            outline: none;
-         }
-      }
-   }
-
-   @media (min-width: 320px) {
-      .registrationMarks {
-         &__create {
-            margin-top: 24px;
-         }
-      }
-   }
-
-   @media (min-width: 1025px) {
-      .registrationMarks {
-         &__create {
-            margin-top: 0;
-         }
-      }
-   }
 </style>

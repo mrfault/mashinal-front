@@ -165,12 +165,13 @@ Vue.use({
           }
         },
         getAnnouncementType(item) {
-          if(item.moto_brand) return 'Motorcycle';
+          if (item.moto_brand) return 'Motorcycle';
           else if(item.scooter_brand) return 'Scooter';
           else if(item.moto_atv_brand) return 'Atv';
           else if(item.commercial_brand) return 'Commercial';
           else if(item.car_catalog) return 'Car';
           else if(item.title) return 'Part';
+          else if(item.type === 6) return 'Plate';
           return '';
         },
         getAnnouncementTextLine(item) {
