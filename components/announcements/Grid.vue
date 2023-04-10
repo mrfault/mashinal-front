@@ -96,7 +96,7 @@
                      </div>
                   </template>
                </template>
-               <template v-else-if="announcement.type === 'banner' && announcement.autosalon && !isMobileBreakpoint">
+               <template v-else-if="announcement.type === 'banner' && announcement.autosalon && !isMobileBreakpoint && announcement.type !== 6">
                   <div class="col-6 col-xs-6 col-lg-3 col-xl-auto mb-1 d-flex align-items-center">
                      <nuxt-link
                         :style="(!isMobileBreakpoint ? 'min-width: 203px;':'min-width: 175px;')+'min-height: 273px;'"
@@ -107,17 +107,17 @@
                      </nuxt-link>
                   </div>
                </template>
-               <template v-else-if="announcement.type === 'banner' && isMobileBreakpoint">
+               <template v-else-if="announcement.type === 'banner' && isMobileBreakpoint && announcement.type !== 6">
                   <div class="col-6 col-xs-6 col-lg-3 col-xl-auto mb-2 mb-lg-3">
                      <site-banner @bannerLoaded="showBanner = true" v-show="showBanner" type="in-part"/>
                   </div>
                </template>
-               <template v-else-if="announcement.type === 6">
+               <template v-else-if="announcement.type === 6 && announcements.filter(item => item.type === 6).length === 5">
                   <div
                      v-if="checkSecondTemplate(index) ? !checkItemB(index, announcement) : true"
-                     :class="[
+                     :class="['registrationMarks__grid',
                          {
-                           'col-lg-mid': true,
+                           'col-lg-mid': checkItemIndex(index + 2, announcement) || (announcement.type === 6 && !isMobileBreakpoint),
                            'pt-4 mt-1': checkItemTop(index, announcement) || (announcement.external && !isMobileBreakpoint),
                            'pb-4 mb-4': checkItemBottom(index, announcement) || (announcement.external && !isMobileBreakpoint),
                            'col-6 col-xs-12 col-lg-3 col-xl-auto': !isProfilePage,
@@ -129,36 +129,22 @@
                      ]"
                      :key="announcement.id_unique + (escapeDuplicates ? '_' + index : '')"
                   >
-<!--                     <div class="registrationMarks__title">-->
-<!--                        <div class="divider">Qeydiyyat nişanları</div>-->
+                     <div class="registrationMarks__title">
+                        <div class="divider">Qeydiyyat nişanları</div>
 
-<!--                        <div class="divider">-->
-<!--                           <nuxt-link :to="$localePath('/registration-marks')">-->
-<!--                              <span>{{ $t('see_all') }}</span>-->
+                        <div class="divider">
+                           <nuxt-link :to="$localePath('/registration-marks')">
+                              <span>{{ $t('see_all') }}</span>
 
-<!--                              <inline-svg :src="'/icons/arrow-right.svg'" :width="'15px'" />-->
-<!--                           </nuxt-link>-->
-<!--                        </div>-->
-<!--                     </div>-->
+                              <inline-svg :src="'/icons/arrow-right.svg'" :width="'15px'" />
+                           </nuxt-link>
+                        </div>
+                     </div>
 
                      <RegistrationMarksGridItem
                         :item="announcement"
                         :showFavoriteBtn="true"
                      />
-<!--                     <RegistrationMarksGrid-->
-<!--                        :items="registrationMarks"-->
-<!--                        :showFavoriteBtn="true"-->
-<!--                     >-->
-<!--                        <template #head>-->
-<!--&lt;!&ndash;                           <h4 class="registrationMarksGrid__title">{{ $t('registration_marks') }}</h4>&ndash;&gt;-->
-
-<!--&lt;!&ndash;                           <nuxt-link :to="$localePath('/registration-marks')">&ndash;&gt;-->
-<!--&lt;!&ndash;                              <span>{{ $t('see_all') }}</span>&ndash;&gt;-->
-
-<!--&lt;!&ndash;                              <inline-svg :src="'/icons/arrow-right.svg'" :width="'15px'" />&ndash;&gt;-->
-<!--&lt;!&ndash;                           </nuxt-link>&ndash;&gt;-->
-<!--                        </template>-->
-<!--                     </RegistrationMarksGrid>-->
                   </div>
                </template>
             </template>
@@ -277,7 +263,7 @@ export default {
          this.$cookies.set('show_bn', !this.$cookies.get('show_bn'));
       },
       checkSecondTemplate(index) {
-         return [20, 21, 22, 23].includes(index) && this.$cookies.get('show_bn') && !this.isMobileBreakpoint;
+         return [25, 26, 27, 28].includes(index) && this.$cookies.get('show_bn') && !this.isMobileBreakpoint;
       },
       checkItemTop(index, item) {
          return (
@@ -294,6 +280,7 @@ export default {
       getBannerImage(index) {
          let count = (index / this.bannerPlace) % this.bannerCount
          count = count === 0 ? this.bannerCount : count
+         console.log(count,'banner count');
          return this.banner
             .replace('{count}', count)
             .replace('{locale}', this.locale)
@@ -331,7 +318,7 @@ export default {
 
 <style lang="scss">
    .announcements-grid {
-      .col-lg-mid {
+      .registrationMarks__grid {
          .registrationMarks__title {
             display: none;
          }

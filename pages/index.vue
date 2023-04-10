@@ -123,7 +123,7 @@
         :banner-count="4"
         :banner-for="'Part'"
         :banner-link="'/parts'"
-        :banner-place="24"
+        :banner-place="29"
         :escape-duplicates="true"
         :has-container="true"
         :pending="pending"

@@ -67,7 +67,6 @@
                   </nuxt-link>
                </template>
             </RegistrationMarksGrid>
-<!--            <pre>{{ registrationMarks }}</pre>-->
          </div>
       </div>
    </div>
@@ -172,7 +171,7 @@
       .registrationMarks__number {
          position: absolute;
          top: 297px;
-         left: 319px;
+         left: 326px;
          display: flex;
          align-items: center;
          padding: 0 6px;
