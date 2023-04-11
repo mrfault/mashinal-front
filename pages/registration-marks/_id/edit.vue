@@ -101,10 +101,12 @@
                         </div>
                      </div>
                   </div>
+
+                  <div class="col-12 col-xl-6 d-none d-xl-block">
+                     <img src="/images/registrationMarks_banner.jpg" alt="registrationMarks_banner">
+                  </div>
                </form>
             </div>
-
-<!--            <pre>{{registrationMark}}</pre>-->
          </div>
       </div>
    </div>

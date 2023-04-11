@@ -85,7 +85,7 @@ import Grid from '~/components/announcements/Grid';
 import NoResults from '~/components/elements/NoResults';
 import ControlsPanel from '~/components/announcements/ControlsPanel';
 import RegistrationMarksGrid from "~/components/announcements/RegistrationMarksGrid.vue";
-import tr from "vue2-datepicker/locale/es/tr";
+// import tr from "vue2-datepicker/locale/es/tr";
 
 export default {
    name: 'pages-profile-announcements',
@@ -150,9 +150,9 @@ export default {
       }
    },
    computed: {
-      tr() {
-         return tr
-      },
+      // tr() {
+      //    return tr
+      // },
       ...mapGetters(['myAnnouncements', 'getMyPlates']),
 
       crumbs() {
