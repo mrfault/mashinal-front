@@ -61,7 +61,7 @@ export const PaymentMixin = {
             route = (route instanceof Array) ? (route[paid ? 0 : 1]) : route;
 
             if (paid) {
-              if(data.payment.operation_key === 'attorney_pay') {
+              if (data.payment.operation_key === 'attorney_pay') {
                 return this.$router.push({path: this.$localePath('/garage'), query: { tab: 'attorney-list' }})
               }
               if (this.loggedIn)
@@ -83,7 +83,6 @@ export const PaymentMixin = {
                   this.$router.push(route, () => {
                      this.callUpdatePaidStatus(paid, text);
                      stopListening();
-                     // this.$store.dispatch('fetchResetForm', true);
                   });
                } else {
                   this.$store.dispatch('fetchResetForm', false);

@@ -22,8 +22,8 @@
                               :options="getRegionNumbers"
                               :invalid="$v.region_id.$error"
                               :clearPlaceholder="true"
+                              :disabled="true"
                               v-model="region_id"
-                              has-search
                            />
                         </div>
 
@@ -33,6 +33,7 @@
                               :options="numbers"
                               :invalid="$v.region_letter1.$error"
                               :clearPlaceholder="true"
+                              :disabled="true"
                               v-model="region_letter1"
                            />
                         </div>
@@ -43,6 +44,7 @@
                               :options="numbers"
                               :invalid="$v.region_letter2.$error"
                               :clearPlaceholder="true"
+                              :disabled="true"
                               v-model="region_letter2"
                            />
                         </div>
@@ -51,6 +53,7 @@
                            <form-numeric-input
                               :max-value="999"
                               :invalid="$v.region_number.$error"
+                              :disabled="true"
                               v-model="region_number"
                            />
                         </div>
@@ -255,7 +258,14 @@
                   .then(() => {
                      this.pending = false;
                      this.$toasted.success(this.$t('success_payment'));
-                     this.$router.push(this.$localePath('/alvcp/resources/announce-moderators'));
+                     // this.$router.push(this.$localePath('/alvcp/resources/announce-moderators'));
+                     // window.location.href = '/alvcp/resources/announce-moderators';
+
+                     if (this.user.admin_group == 2) {
+                        location.href = '/alvcp/resources/announce-moderators';
+                     } else {
+                        location.href = '/alvcp/resources/plates';
+                     }
                   })
                   .catch(() => {
                      this.$toasted.error(this.$t('error'))

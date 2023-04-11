@@ -112,7 +112,7 @@
                      <site-banner @bannerLoaded="showBanner = true" v-show="showBanner" type="in-part"/>
                   </div>
                </template>
-               <div class="first" v-else-if="announcement.type === 6 && announcements.filter(item => item.type === 6).length === 5">
+               <template v-else-if="announcement.type === 6 && announcements.filter(item => item.type === 6).length === 5">
                   <div
                      v-if="checkSecondTemplate(index) ? !checkItemB(index, announcement) : true"
                      :class="[{'registrationMarks-grid' : announcements.filter(item => item.type === 6)[0]},
@@ -129,7 +129,7 @@
                      ]"
                      :key="announcement.id_unique + (escapeDuplicates ? '_' + index : '')"
                   >
-                     <pre>{{announcements.filter(item => item.type === 6)}}</pre>
+<!--                     <pre>{{announcements.filter(item => item.type === 6)}}</pre>-->
                      <div class="registrationMarks__title">
                         <div class="divider">Qeydiyyat nişanları</div>
 
@@ -147,7 +147,7 @@
                         :showFavoriteBtn="true"
                      />
                   </div>
-               </div>
+               </template>
             </template>
          </div>
       </div>
@@ -318,29 +318,28 @@ export default {
 </script>
 
 <style lang="scss">
-   //.announcements-grid {
-   //   .registrationMarks-grid {
-   //      .registrationMarksGridItem {
-   //         width: 214px;
-   //      }
-   //
-   //      .registrationMarks__title {
-   //         display: none;
-   //      }
-   //
-   //      &:nth-child(1) {
-   //         background-color: red;
-   //         .registrationMarks__title {
-   //            //position: absolute;
-   //            //top: 52px;
-   //            //width: 1220px;
-   //            display: flex !important;
-   //            //align-items: center;
-   //            //justify-content: space-between;
-   //         }
-   //      }
-   //   }
-   //}
+   .announcements-grid {
+      .registrationMarks-grid {
+         .registrationMarksGridItem {
+            width: 214px;
+         }
+
+         .registrationMarks__title {
+            display: none;
+         }
+
+         &:last-child {
+            .registrationMarks__title {
+               //position: absolute;
+               //top: 52px;
+               //width: 1220px;
+               display: flex;
+               //align-items: center;
+               //justify-content: space-between;
+            }
+         }
+      }
+   }
 
    .index-salon-view {
       display: flex;
