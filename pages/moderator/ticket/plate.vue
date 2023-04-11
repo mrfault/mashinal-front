@@ -13,7 +13,6 @@
                <form
                   class="registrationMarks__create-form"
                   ref="form"
-                  @submit.prevent="handleSubmit"
                >
                   <div class="col-12 col-xl-6">
                      <div class="row">
@@ -98,29 +97,27 @@
                      </div>
 
                      <div class="row mt-5">
-                        <div class="col-12 col-xl-11">
+                        <div class="col-1 col-xl-1 btns" style="width: 46%; flex: 0 0 46%; max-width: 46%;">
                            <button
                               :class="['btn', {'pending' : pending}]"
+                              @click="handleSubmit(1)"
                            >
-                              {{ $t('edit_ad') }}
+                              {{ $t('confirm') }}
+                           </button>
+                        </div>
+
+                        <div class="col-1 col-xl-1 btns" style="width: 46%; flex: 0 0 46%; max-width: 46%;">
+                           <button
+                              :class="['btn red', {'pending' : pending}]"
+                              @click="handleSubmit(0)"
+                           >
+                              {{ $t('reject') }}
                            </button>
                         </div>
                      </div>
                   </div>
-
-<!--                  <div class="col-12 col-xl-6">-->
-<!--                     <pre>{{region_id}}</pre>region_id-->
-<!--                     <pre>{{region_name}}</pre>region_name-->
-<!--                     <pre>{{city_name}}</pre>city_name-->
-<!--                     <pre>{{region_letter1}}</pre>region_letter1-->
-<!--                     <pre>{{region_letter2}}</pre>region_letter2-->
-<!--                     <pre>{{region_number}}</pre>region_number-->
-<!--                     <pre>{{form}}</pre>-->
-<!--                  </div>-->
                </form>
             </div>
-
-<!--            <pre>{{plates}}</pre>-->
          </div>
       </div>
    </div>
@@ -244,22 +241,21 @@
             }
          },
 
-         async handleSubmit() {
+         async handleSubmit(status) {
             this.$v.$touch();
             if (this.$v.$error) return;
 
-            // this.pending = true;
+            this.pending = true;
 
+            this.form.status = status;
             this.form.car_number = `${this.region_id.split('-')[0]}- ${this.region_letter1}${this.region_letter2} - ${this.region_number}`;
 
-            console.log(this.form)
-
             try {
-               await this.$axios.$post('/ticket/car/' + this.announce_id, this.form)
+               await this.$axios.$post('/ticket/plate/' + this.announce_id, this.form)
                   .then(() => {
-                     // this.pending = false;
+                     this.pending = false;
                      this.$toasted.success(this.$t('success_payment'));
-                     // this.$router.push(this.$localePath('/profile/announcements'));
+                     this.$router.push(this.$localePath('/alvcp/resources/announce-moderators'));
                   })
                   .catch(() => {
                      this.$toasted.error(this.$t('error'))
@@ -296,8 +292,23 @@
 <style lang="scss">
    .registrationMarks {
       &__create {
-         &-form {
-            display: flex;
+         .btn {
+            &.red {
+               background-color: #F81734;
+               border: 1px solid #F81734;
+            }
+         }
+      }
+   }
+
+   @media (max-width: 1250px) {
+      .registrationMarks {
+         &__create {
+            .btns {
+               width: 50% !important;
+               flex: 0 0 50% !important;
+               max-width: 50% !important;
+            }
          }
       }
    }
