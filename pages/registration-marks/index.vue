@@ -103,7 +103,7 @@
                      <h4 class="registrationMarksGrid__title">{{ $t('search_result') }}</h4>
 
                      <form-select
-                        :className="'new'"
+                        :className="'new bg'"
                         :label="$t('show_cheap_first')"
                         :options="sortItems"
                         :clearPlaceholder="true"
@@ -665,6 +665,14 @@
       .registrationMarks {
          &__filters {
             padding: 20px 12px;
+         }
+      }
+   }
+
+   .dark-mode {
+      .registrationMarks {
+         &__filters {
+            //background-color: $dark-2;
          }
       }
    }

@@ -56,6 +56,14 @@
          }
       }
 
+      &-form {
+         display: flex;
+
+         img {
+            width: 100%;
+         }
+      }
+
       .btn {
          width: 100%;
          font-weight: 600;
@@ -75,9 +83,21 @@
 
 @media (min-width: 320px) {
    .registrationMarks {
+      .container {
+         padding: 0;
+      }
+
       &__create {
          margin-top: 24px;
          padding: 16px 16px 48px 16px;
+      }
+   }
+}
+
+@media (min-width: 768px) {
+   .registrationMarks {
+      .container {
+         padding: 0 25px;
       }
    }
 }

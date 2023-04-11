@@ -18,7 +18,6 @@
                   <div class="col-12 col-xl-6">
                      <div class="row">
                         <div class="col-6 col-xl-5">
-<!--                           :className="'notAny'"-->
                            <form-select
                               :label="'01 - Abşeron'"
                               :options="getRegionNumbers"
@@ -123,6 +122,10 @@
                            </button>
                         </div>
                      </div>
+                  </div>
+
+                  <div class="col-12 col-xl-6 d-none d-xl-block">
+                     <img src="/images/registrationMarks_banner.jpg" alt="registrationMarks_banner">
                   </div>
                </form>
             </div>
