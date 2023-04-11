@@ -263,7 +263,7 @@ export default {
          this.$cookies.set('show_bn', !this.$cookies.get('show_bn'));
       },
       checkSecondTemplate(index) {
-         return [25, 26, 27, 28].includes(index) && this.$cookies.get('show_bn') && !this.isMobileBreakpoint;
+         return [20, 21, 22, 23].includes(index) && this.$cookies.get('show_bn') && !this.isMobileBreakpoint;
       },
       checkItemTop(index, item) {
          return (
@@ -321,20 +321,27 @@ export default {
       .registrationMarks__grid {
          .registrationMarks__title {
             display: none;
+
+            //&:first-child {
+            //   display: block;
+            //}
          }
 
          &:first-child {
+            //background-color: red;
+
             .registrationMarks__title {
-               position: absolute;
-               top: 52px;
-               width: 1220px;
-               display: flex;
-               align-items: center;
-               justify-content: space-between;
+               //position: absolute;
+               //top: 52px;
+               //width: 1220px;
+               //display: flex !important;
+               //align-items: center;
+               //justify-content: space-between;
             }
          }
       }
    }
+
    .index-salon-view {
       display: flex;
       align-items: center;

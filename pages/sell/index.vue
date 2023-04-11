@@ -284,10 +284,10 @@ export default {
             }
          }
       }
-   }
 
-   .login-forms {
-     margin: 0;
-     width: 100%;
+      .login-forms {
+         margin: 0;
+         width: 100%;
+      }
    }
 </style>

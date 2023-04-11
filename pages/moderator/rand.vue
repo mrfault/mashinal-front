@@ -19,7 +19,7 @@
     layout: 'ticket',
     data() {
       return {
-        types: ['car', 'moto', 'moto_atv', 'scooters', 'commercial', 'part']
+        types: ['car', 'moto', 'moto_atv', 'scooters', 'commercial', 'part', 'plate']
       }
     },
     async mounted() {

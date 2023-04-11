@@ -2340,6 +2340,7 @@ export default {
    external_salon: "Sifarişlə avto",
    "external-salons": "Sifarişlə avto",
    registration_marks: "Qeydiyyat nişanları",
+   registration_marks_text: "Qeydiyyat nişanı elanı yerləşdirmək <span>ödənişlidir.</span> 1 elanın qiyməti <span>2 AZN</span>-dir",
    external_commercial: "Sifarişlə ticari",
    external_moto: "Sifarişlə moto",
    ml: "ml",

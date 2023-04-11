@@ -347,6 +347,13 @@
         }
       }
     }
+
+     &__icon {
+        position: absolute;
+        top: 0;
+        right: -15px;
+        display: flex;
+     }
   }
 }
 
@@ -385,4 +392,14 @@
       fill: white;
     }
   }
+}
+
+@media (max-width: 1280px) {
+   .page-header {
+      .navbar {
+         &__icon {
+            right: -22px;
+         }
+      }
+   }
 }
