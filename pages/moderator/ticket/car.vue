@@ -494,7 +494,6 @@
                 @sendData="sendData"
                 @transferToSupervisor="transferToSupervisor"
               />
-
             </div>
           </div>
         </div>
@@ -528,8 +527,6 @@
         </div>
       </div>
     </modal-popup>
-
-
   </div>
   <div
     v-else-if="!announcementIsAvailable && !loading"
@@ -1437,8 +1434,6 @@ export default {
           with: data.announce,
           property: 'single_announce'
         })
-
-
       }
     },
 

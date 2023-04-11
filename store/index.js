@@ -54,6 +54,7 @@ const getInitialState = () => ({
   announcement: {},
   relativeAnnouncements: {},
   userAnnouncements: [],
+   userRegistrationMarks: [],
   // catalog
   catalogAnnouncements: [],
   catalogTotal: 0,
@@ -200,6 +201,7 @@ export const state = () => getInitialState();
 
 export const getters = {
   getResetForm: s => s.resetForm,
+  getUserRegistrationMarks: s => s.userRegistrationMarks,
   getMyPlates: s => s.myPlates,
   getMySavedPlates: s => s.mySavedPlates,
   getRegionNumbers: s => s.regionNumbers,
@@ -392,6 +394,11 @@ export const actions = {
    async fetchResetForm({ commit }, data) {
       // const res = await this.$axios.$get("/regions-and-serial-number")
       commit("mutate", { property: "resetForm", value: data })
+   },
+
+   async fetchUserRegistrationMarks({ commit }, id) {
+      const res = await this.$axios.$get(`/user/${id}/plates`);
+      commit("mutate", { property: "userRegistrationMarks", value: res });
    },
 
   async fetchRegionNumbers({ commit }) {

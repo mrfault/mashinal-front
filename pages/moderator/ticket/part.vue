@@ -507,9 +507,7 @@
         </div>
       </div>
     </modal-popup>
-
   </div>
-
 </template>
 
 

@@ -3,7 +3,9 @@
       <div class="e-service__header">
          <h5 class="e-service__header--title">{{ item.title }}</h5>
          <span class="e-service__header--icon">
-        <icon :name="item.icon"/>
+         <icon v-if="item.icon !== 'external_salon'" :name="item.icon"/>
+
+         <inline-svg v-else :src="'/icons/external_salon.svg'" />
       </span>
       </div>
       <div class="e-service__body">

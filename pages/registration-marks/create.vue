@@ -108,10 +108,8 @@
                         <div class="col-12 col-xl-11">
                            <h5 class="registrationMarks__create-note">
                               <inline-svg src="/icons/reason.svg"/>
-                              <p>
-                                 Qeydiyyat nişanı elanı yerləşdirmək <span> ödənişlidir</span>. 1 elanın qiyməti
-                                 <span> 2 AZN</span>-dir
-                              </p>
+
+                              <p v-html="$t('registration_marks_text')" />
                            </h5>
                         </div>
                      </div>

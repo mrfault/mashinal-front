@@ -2274,6 +2274,7 @@ export default {
    "external_salon": "Авто по заказу",
    "external-salons": "Авто по заказу",
    "registration_marks": "Регистрационные номера",
+   "registration_marks_text": "Размещение регистрационного номера <span>платная услуга.</span> Цена одного объявления <span>2 AZN</span>",
    "external_commercial": "По заказу коммерческие",
    "external_moto": "Мото по заказу",
    "alcometer": "Алкотест",

@@ -58,20 +58,23 @@
                               :invalid="$v.form.price.$error"
                               v-model="form.price"
                            />
+                           <pre>{{form.price}}</pre>
                         </div>
 
                         <div class="col-3 col-xl-2">
                            <form-select
-                              :label="registrationMark.curreny.name[locale]"
-                              :disabled="true"
+                              :label="currency.name[registrationMark.currency]"
+                              :options="currencyList"
+                              :invalid="$v.form.currency_id.$error"
                               v-model="form.currency_id"
                            />
                         </div>
 
                         <div class="col-3 col-xl-4">
                            <form-select
-                              :label="registrationMark.region.name[locale]"
-                              :disabled="true"
+                              :label="$t('city')"
+                              :options="cities.regions"
+                              :invalid="$v.form.region_id.$error"
                               v-model="form.region_id"
                            />
                         </div>
@@ -107,86 +110,101 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
-import {required, minLength} from "vuelidate/lib/validators";
+   import { mapGetters } from "vuex";
+   import {minLength, required} from "vuelidate/lib/validators";
+   import { PaymentMixin } from '~/mixins/payment';
 
-import {PaymentMixin} from '~/mixins/payment';
+   export default {
+      mixins: [ PaymentMixin ],
+      data() {
+         return {
+            pending: false,
 
-export default {
-   mixins: [ PaymentMixin ],
-   data() {
-      return {
-         pending: false,
+            region_id: '',
+            region_letter1: '',
+            region_letter2: '',
+            region_number: '',
 
-         region_id: '',
-         region_letter1: '',
-         region_letter2: '',
-         region_number: '',
+            form: {
+               car_number: '',
+               price: '',
+               currency_id: '',
+               region_id: '',
+               comment: ''
+            },
 
+            currency: {
+               name: {
+                  1: 'AZN',
+                  2: 'USD'
+               }
+            },
+            currencyList: [
+               {id: 1, name: 'AZN'},
+               {id: 2, name: 'USD'},
+               // { id: 3, name: 'EUR' }
+            ]
+         }
+      },
+
+      methods: {
+         async handleSubmit() {
+            this.$v.$touch();
+            if (this.$v.$error) return;
+
+            this.pending = true;
+
+            this.form.car_number = `${this.region_id.split('-')[0]} - ${this.region_letter1}${this.region_letter2} - ${this.region_number}`;
+
+            try {
+               await this.$axios.$post(`/sell/plate/edit/${this.$route.params.id.slice(0, -1)}`, this.form)
+                  .then(() => {
+                     this.pending = false;
+                     this.$toasted.success(this.$t('success_payment'));
+                     this.$router.push(this.$localePath('/profile/announcements'));
+                  })
+                  .catch(() => {
+                     this.$toasted.error(this.$t('error'));
+                  })
+            } catch (err) {
+               console.error(err)
+            }
+         }
+      },
+
+      computed: {
+         ...mapGetters({
+            registrationMark: 'announcement',
+            cities: 'sellOptions'
+         }),
+
+         crumbs() {
+            return [{name: this.$t('edit_ad')}]
+         }
+      },
+
+      async fetch({ store, route }) {
+         await store.dispatch('fetchRegistrationMark', route.params.id.slice(0, route.params.id.length - 1));
+         await store.dispatch('getOptions');
+      },
+
+      mounted() {
+         this.region_id = this.registrationMark.car_number.split('-')[0];
+         this.region_letter1 =  this.registrationMark.car_number.split('-')[1][0];
+         this.region_letter2 =  this.registrationMark.car_number.split('-')[1][1];
+         this.region_number =  this.registrationMark.car_number.split('-')[2];
+         this.form.price =  this.registrationMark.price.split(' ').slice(0, -1).join('');
+         this.form.currency_id =  this.registrationMark.currency;
+         this.form.region_id =  this.registrationMark.region.id;
+         this.form.comment =  this.registrationMark.comment;
+      },
+
+      validations: {
          form: {
-            car_number: '',
-            price: '',
-            currency_id: 1,
-            region_id: 1,
-            comment: ''
+            price: { minLength: minLength(2) },
+            currency_id: { required },
+            region_id: { required }
          }
-      }
-   },
-
-   methods: {
-      async handleSubmit() {
-         this.$v.$touch();
-         if (this.$v.$error) return;
-
-         this.pending = true;
-
-         this.form.car_number = `${this.region_id.split('-')[0]} - ${this.region_letter1}${this.region_letter2} - ${this.region_number}`;
-
-         try {
-            await this.$axios.$post(`/sell/plate/edit/${this.$route.params.id.slice(0, -1)}`, this.form)
-               .then(res => {
-                  this.pending = false;
-                  this.$toasted.success(this.$t('success_payment'));
-                  this.$router.push(this.$localePath('/profile/announcements'));
-               })
-               .catch(err => {
-                  this.$toasted.success(this.$t('error'))
-               })
-         } catch (err) {
-            console.log(err)
-         }
-      }
-   },
-
-   computed: {
-      ...mapGetters({
-         registrationMark: 'announcement'
-      }),
-
-      crumbs() {
-         return [{name: this.$t('edit_ad')}]
-      }
-   },
-
-   async fetch({ store, route }) {
-      await store.dispatch('fetchRegistrationMark', route.params.id.slice(0, route.params.id.length - 1));
-   },
-
-   mounted() {
-      this.region_id = this.registrationMark.car_number.split('-')[0];
-      this.region_letter1 =  this.registrationMark.car_number.split('-')[1][0];
-      this.region_letter2 =  this.registrationMark.car_number.split('-')[1][1];
-      this.region_number =  this.registrationMark.car_number.split('-')[2];
-      this.form.price =  this.registrationMark.price.split(' ').slice(0, -1).join('');
-      this.form.currency_id =  this.registrationMark.curreny.id;
-      this.form.region_id =  this.registrationMark.region.id;
-      this.form.comment =  this.registrationMark.comment;
-   },
-
-   validations: {
-      form: {
-         price: { required }
       }
    }
-}
 </script>

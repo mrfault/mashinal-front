@@ -219,11 +219,11 @@
 
                         <icon name="chevron-down" v-if="menu.children" />
 
-                        <span style="position: absolute; top: 5px; right: -2px; display: flex;">
+                        <span class="navbar__icon">
                           <inline-svg
                              class="not-hover"
-                             :width="'25px'"
-                             :height="'15px'"
+                             :width="'35px'"
+                             :height="'25px'"
                              v-if="menu.title === 'registration_marks'"
                              src="/icons/new_badge_2.svg"
                           />

@@ -123,7 +123,7 @@
         :banner-count="4"
         :banner-for="'Part'"
         :banner-link="'/parts'"
-        :banner-place="29"
+        :banner-place="24"
         :escape-duplicates="true"
         :has-container="true"
         :pending="pending"
@@ -144,7 +144,6 @@
 import {mapGetters, mapActions} from 'vuex'
 import CarSearchForm from '~/components/cars/CarSearchForm'
 import Grid from '~/components/announcements/Grid'
-
 
 export default {
   name: 'pages-index',
@@ -306,60 +305,60 @@ export default {
 </script>
 
 <style lang="scss">
-.swiper-container {
-  .btn--green {
-    height: 25px !important;
-  }
+   .swiper-container {
+     .btn--green {
+       height: 25px !important;
+     }
 
-  @media screen and (max-width: 1024px) {
-    .btn--green {
-      height: 12px !important;
-    }
-  }
-  @media screen and (max-width: 768px) {
-    .swiper-pagination {
-      left: 0 !important;
-      bottom: 14px !important;
-    }
-    .swiper-pagination-bullet {
-      position: absolute;
-      top: -6px;
-      left: 44%;
-      z-index: 111;
+     @media screen and (max-width: 1024px) {
+       .btn--green {
+         height: 12px !important;
+       }
+     }
+     @media screen and (max-width: 768px) {
+       .swiper-pagination {
+         left: 0 !important;
+         bottom: 14px !important;
+       }
+       .swiper-pagination-bullet {
+         position: absolute;
+         top: -6px;
+         left: 44%;
+         z-index: 111;
 
-      &:first-child {
-        top: -6px;
-        left: 49%;
-      }
-    }
-  }
-}
+         &:first-child {
+           top: -6px;
+           left: 49%;
+         }
+       }
+     }
+   }
 
-.mobileHomePage-slide-item {
-  height: 170px;
-  position: relative;
-  justify-content: flex-start;
+   .mobileHomePage-slide-item {
+     height: 170px;
+     position: relative;
+     justify-content: flex-start;
 
-  .mobileHomePage-slide-left {
-    width: 50%;
-  }
+     .mobileHomePage-slide-left {
+       width: 50%;
+     }
 
-  .mobileHomePage-slide-right {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 50%;
-    height: 100%;
-    box-sizing: border-box;
-    overflow: hidden;
-    clip-path: polygon(43% 0, 100% 0, 100% 100%, 0% 100%);
+     .mobileHomePage-slide-right {
+       position: absolute;
+       top: 0;
+       right: 0;
+       width: 50%;
+       height: 100%;
+       box-sizing: border-box;
+       overflow: hidden;
+       clip-path: polygon(43% 0, 100% 0, 100% 100%, 0% 100%);
 
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-  }
-}
+       img {
+         width: 100%;
+         height: 100%;
+         object-fit: cover;
+       }
+     }
+   }
 </style>
 
