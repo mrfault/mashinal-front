@@ -44,7 +44,7 @@
                      </div>
                   </div>
 
-                  <comment :comment="registrationMark.comment" v-if="!isMobileBreakpoint"></comment>
+                  <comment :comment="registrationMark.comment" v-if="registrationMark.comment && !isMobileBreakpoint"></comment>
                </div>
 
                <div class="col-auto">
