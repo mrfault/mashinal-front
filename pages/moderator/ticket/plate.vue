@@ -251,15 +251,13 @@
             this.pending = true;
 
             this.form.status = status;
-            this.form.car_number = `${this.region_id.split('-')[0]}- ${this.region_letter1}${this.region_letter2} - ${this.region_number}`;
+            this.form.car_number = `${this.region_id.split('-')[0]} - ${this.region_letter1}${this.region_letter2} - ${this.region_number}`;
 
             try {
                await this.$axios.$post('/ticket/plate/' + this.announce_id, this.form)
                   .then(() => {
                      this.pending = false;
                      this.$toasted.success(this.$t('success_payment'));
-                     // this.$router.push(this.$localePath('/alvcp/resources/announce-moderators'));
-                     // window.location.href = '/alvcp/resources/announce-moderators';
 
                      if (this.user.admin_group == 2) {
                         location.href = '/alvcp/resources/announce-moderators';

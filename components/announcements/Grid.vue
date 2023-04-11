@@ -115,7 +115,7 @@
                <template v-else-if="announcement.type === 6 && announcements.filter(item => item.type === 6).length === 5">
                   <div
                      v-if="checkSecondTemplate(index) ? !checkItemB(index, announcement) : true"
-                     :class="[{'registrationMarks-grid' : announcements.filter(item => item.type === 6)[0]},
+                     :class="[`registrationMarks-grid`,
                          {
                            'col-lg-mid': checkItemIndex(index + 2, announcement) || (announcement.type === 6 && !isMobileBreakpoint),
                            'pt-4 mt-1': checkItemTop(index, announcement) || (announcement.external && !isMobileBreakpoint),
@@ -129,7 +129,7 @@
                      ]"
                      :key="announcement.id_unique + (escapeDuplicates ? '_' + index : '')"
                   >
-<!--                     <pre>{{announcements.filter(item => item.type === 6)}}</pre>-->
+<!--                     <pre>{{ announcements.filter((item, q) => item.type === 6) }}</pre>-->
                      <div class="registrationMarks__title">
                         <div class="divider">Qeydiyyat nişanları</div>
 
@@ -328,7 +328,7 @@ export default {
             display: none;
          }
 
-         &:last-child {
+         &:last-of-type {
             .registrationMarks__title {
                //position: absolute;
                //top: 52px;
