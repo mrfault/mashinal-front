@@ -225,7 +225,7 @@
                              :width="'35px'"
                              :height="'25px'"
                              v-if="menu.title === 'registration_marks'"
-                             src="/icons/new_badge_2.svg"
+                             src="/icons/new_badge.svg"
                           />
                         </span>
                       </nuxt-link>

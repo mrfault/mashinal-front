@@ -228,8 +228,13 @@
                   if (this.getResetForm) await this.resetForm();
                   this.pending = false;
                }
-            } catch (err) {
-               console.log(err)
+            } catch (error) {
+               this.pending = false;
+
+               this.updatePaidStatus({
+                  type: 'error',
+                  title: error.response.data.data[0][0]
+               });
             }
          }
       },

@@ -58,14 +58,14 @@
                               :invalid="$v.form.price.$error"
                               v-model="form.price"
                            />
-                           <pre>{{form.price}}</pre>
                         </div>
 
                         <div class="col-3 col-xl-2">
                            <form-select
-                              :label="currency.name[registrationMark.currency]"
+                              :label="'AZN'"
                               :options="currencyList"
                               :invalid="$v.form.currency_id.$error"
+                              :clearPlaceholder="true"
                               v-model="form.currency_id"
                            />
                         </div>
@@ -75,6 +75,7 @@
                               :label="$t('city')"
                               :options="cities.regions"
                               :invalid="$v.form.region_id.$error"
+                              :clearPlaceholder="true"
                               v-model="form.region_id"
                            />
                         </div>
