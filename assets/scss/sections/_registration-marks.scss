@@ -77,6 +77,20 @@
    .registrationMarks {
       &__create {
          margin-top: 24px;
+         padding: 16px 16px 24px 16px;
+         margin: 0 -10px;
+      }
+   }
+}
+
+@media (min-width: 576px) {
+   .registrationMarks {
+      &__create {
+         padding: 24px 24px 48px 24px;
+      }
+
+      &-form {
+         //margin: 0;
       }
    }
 }

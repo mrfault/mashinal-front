@@ -316,3 +316,35 @@
     }
   }
 }
+
+.announcements-grid .registrationMarks-grid:first-of-type .registrationMarks__title {
+   display: none;
+}
+
+.announcements-grid:first-of-type .registrationMarks__title {
+   //display: block;
+}
+
+.announcements-grid {
+   .registrationMarks-grid {
+      .registrationMarksGridItem {
+         //width: 214px;
+      }
+
+      //.registrationMarks__title {
+      //   display: none;
+      //}
+
+      &:nth-child(1) {
+         //background-color: red;
+         .registrationMarks__title {
+            //position: absolute;
+            //top: 52px;
+            //width: 1220px;
+            //display: flex !important;
+            //align-items: center;
+            //justify-content: space-between;
+         }
+      }
+   }
+}
