@@ -5,15 +5,6 @@
             <breadcrumbs :crumbs="crumbs">
                <share-it type="publish"/>
 
-               <!--               <span class="text-data">-->
-               <!--                  <icon name="eye"/>-->
-               <!--                  {{ registrationMark.view_count }}-->
-               <!--                  <icon name="cursor"/>-->
-               <!--                  {{ registrationMark.show_phone_number_count }}-->
-               <!--                  <icon name="star"/>-->
-               <!--                  {{ registrationMark.favorites_count }}-->
-               <!--               </span>-->
-
                <span class="text-data">
                   <icon name="calendar"/>
 
@@ -82,6 +73,12 @@
 
    export default {
       name: 'pages-marks-id',
+
+      head() {
+         return this.$headMeta({
+            title: this.$t('meta-registration_marks'),
+         });
+      },
 
       components: {
          QuickInfo,
@@ -305,6 +302,190 @@
 
                .price {
                   margin-top: 110px;
+               }
+            }
+         }
+      }
+   }
+
+   @media (max-width: 540px) {
+      .pages-cars-id {
+         .registrationMarks__number {
+            left: 50%;
+            transform: translateX(-50%);
+
+            .divider {
+               p {
+                  font-size: 20px;
+                  line-height: 24px;
+               }
+            }
+         }
+
+         .quick-info {
+            &.registration-marks {
+               .registration-marks__number {
+                  .divider {
+                     p {
+                        font-size: 80px;
+                        line-height: 80px;
+                     }
+                  }
+               }
+            }
+         }
+      }
+   }
+
+   @media (max-width: 480px) {
+      .pages-cars-id {
+         .registrationMarks__number {
+            top: 218px;
+         }
+
+         .quick-info {
+            &.registration-marks {
+               .registration-marks__number {
+                  .divider {
+                     p {
+                        font-size: 75px;
+                        line-height: 75px;
+                     }
+                  }
+               }
+            }
+         }
+      }
+   }
+
+   @media (max-width: 440px) {
+      .pages-cars-id {
+         .registrationMarks__number {
+            top: 216px;
+
+            .divider {
+               img {
+                  width: 10px;
+               }
+
+               p {
+                  font-size: 19px;
+                  line-height: 22px;
+               }
+            }
+         }
+
+         .quick-info {
+            &.registration-marks {
+               .registration-marks__number {
+                  .divider {
+                     img {
+                        width: 35px;
+                     }
+
+                     p {
+                        font-size: 70px;
+                        line-height: 70px;
+                     }
+                  }
+               }
+            }
+         }
+      }
+   }
+
+   @media (max-width: 420px) {
+      .pages-cars-id {
+         .registrationMarks__number {
+            top: 214px;
+
+            .divider {
+               p {
+                  font-size: 18px;
+                  line-height: 20px;
+               }
+            }
+         }
+      }
+   }
+
+   @media (max-width: 400px) {
+      .pages-cars-id {
+         .registrationMarks__number {
+            top: 212px;
+         }
+
+         .quick-info {
+            &.registration-marks {
+               .registration-marks__number {
+                  .divider {
+                     img {
+                        width: 32px;
+                     }
+
+                     p {
+                        font-size: 65px;
+                        line-height: 65px;
+                     }
+                  }
+               }
+
+               .price {
+                  margin-top: 100px;
+               }
+            }
+         }
+      }
+   }
+
+   @media (max-width: 375px) {
+      .pages-cars-id {
+         .registrationMarks__number {
+            top: 210px;
+         }
+
+         .quick-info {
+            &.registration-marks {
+               .registration-marks__number {
+                  .divider {
+                     img {
+                        width: 30px;
+                     }
+
+                     p {
+                        font-size: 60px;
+                        line-height: 60px;
+                     }
+                  }
+               }
+
+               .price {
+                  margin-top: 90px;
+               }
+            }
+         }
+      }
+   }
+
+   @media (max-width: 355px) {
+      .pages-cars-id {
+         .quick-info {
+            &.registration-marks {
+               .registration-marks__number {
+                  .divider {
+                     img {
+                        width: 25px;
+                     }
+
+                     p {
+                        font-size: 55px;
+                        line-height: 55px;
+                     }
+                  }
+               }
+
+               .price {
+                  margin-top: 80px;
                }
             }
          }

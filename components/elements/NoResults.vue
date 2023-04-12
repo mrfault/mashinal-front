@@ -10,6 +10,13 @@
       <span>{{ text || $t('no_results_found') }}</span>
       <slot/>
    </div>
+
+   <div class="no-results" v-else-if="template === 'new-img'">
+      <img class="light-mode" :src="url" alt="img">
+      <img class="dark-mode" :src="urlDarkMode" alt="img">
+      <span>{{ text || $t('no_results_found') }}</span>
+      <slot/>
+   </div>
 </template>
 
 <script>
@@ -32,6 +39,11 @@ export default {
       },
 
       url: {
+         type: String,
+         default: ''
+      },
+
+      urlDarkMode: {
          type: String,
          default: ''
       }

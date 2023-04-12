@@ -171,8 +171,8 @@
 
          tabs() {
             return [
-               { id: 1, name: this.$t('my_vehicles') },
-               { id: 2, name: this.$t('registration_badges') }
+               { id: 1, name: this.$t('vehicles') },
+               { id: 2, name: this.$t('registration_badges_2') }
             ]
          }
       },

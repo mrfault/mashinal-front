@@ -1,7 +1,8 @@
 .registrationMarks {
    &__create {
+      margin-top: 24px;
       width: 100%;
-      padding: 24px 24px 48px 24px;
+      padding: 24px 0 48px 0;
       border-radius: 6px;
       background-color: #FFFFFF;
 
@@ -12,7 +13,7 @@
          font-size: 18px;
          line-height: 22px;
          color: #081A3E;
-         margin-bottom: 32px;
+         margin: 0 0 24px 10px;
          overflow: hidden;
 
          span {
@@ -44,7 +45,7 @@
 
          p {
             font-weight: 400;
-            font-size: 15px;
+            font-size: 14px;
             color: #4B5565;
             margin: 0;
 
@@ -79,33 +80,36 @@
          outline: none;
       }
    }
+
+   .container {
+      padding: 0;
+   }
 }
 
-@media (min-width: 320px) {
+@media (min-width: 374px) {
    .registrationMarks {
-      .container {
-         padding: 0;
-      }
-
       &__create {
-         margin-top: 24px;
-         padding: 16px 16px 48px 16px;
+         &-note {
+            p {
+               font-size: 15px;
+            }
+         }
       }
    }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 424px) {
+   .registrationMarks {
+      &__create {
+         padding: 24px 14px 48px 14px;
+      }
+   }
+}
+
+@media (min-width: 576px) {
    .registrationMarks {
       .container {
          padding: 0 25px;
-      }
-   }
-}
-
-@media (min-width: 1025px) {
-   .registrationMarks {
-      &__create {
-         margin-top: 0;
       }
    }
 }

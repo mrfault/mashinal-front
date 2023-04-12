@@ -1,6 +1,6 @@
 <template>
    <div :class="['quick-info card mb-lg-3', {'registration-marks' : type === 'registration-marks'}]">
-      <div class="registration-marks__number">
+      <div class="registration-marks__number" v-if="type === 'registration-marks'">
          <div class="divider">
             <img src="/icons/registrationMarks_icons.svg" alt="icons">
          </div>

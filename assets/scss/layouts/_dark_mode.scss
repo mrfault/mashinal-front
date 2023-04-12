@@ -1436,6 +1436,13 @@
       span {
          color: $grey-5;
       }
+
+      .light-mode {
+         display: none;
+      }
+      .dark-mode {
+         display: block;
+      }
    }
 
    .collapse-toggle {
@@ -1616,6 +1623,29 @@
       }
    }
 
+   .announcements-inner {
+      .wrapp {
+         background-color: #ffffff1f;
+      }
+   }
+
+   .pages-favorites {
+      .no-results {
+         svg {
+            path {
+               &:first-child {
+                  fill: #1B2434;
+               }
+            }
+            g {
+               path {
+                  fill: #364152 !important;
+               }
+            }
+         }
+      }
+   }
+
    .registrationMarks {
       &__filters {
          background-color: $dark-2;
@@ -1641,11 +1671,38 @@
             }
          }
       }
+
+      &.index {
+         .no-results {
+            svg {
+               path {
+                  fill: #364152;
+               }
+               g {
+                  path {
+                     fill: #1B2434 !important;
+                  }
+               }
+            }
+         }
+      }
    }
 
    .registrationMarksGrid {
+      &__head {
+         a {
+            color: $white !important;
+
+            svg {
+               path {
+                  fill: $white;
+               }
+            }
+         }
+      }
+
       &__title {
-         color: #FFFFFF;
+         color: $white;
       }
    }
 

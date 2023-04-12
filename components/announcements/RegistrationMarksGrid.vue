@@ -13,8 +13,6 @@
             :short-date="shortDate"
             :showFavoriteBtn="showFavoriteBtn"
          />
-
-<!--         <pre>{{filteredItems[0]}}</pre>-->
       </div>
    </div>
 </template>

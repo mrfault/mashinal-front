@@ -53,7 +53,7 @@
          <div class="divider" v-if="moreInfo">
             <div class="registrationMarksGridItem__status">
                <span v-if="item.status === 0">{{ $t('rejected_2') }}</span>
-               <span v-else-if="item.status === 1">{{ $t('Active') }}</span>
+               <span v-else-if="item.status === 1">{{ $t('active_2') }}</span>
                <span v-else-if="item.status === 2">{{ $t('under_consideration') }}</span>
                <span v-else-if="item.status === 3">{{ $t('sold') }}</span>
                <span v-else-if="item.status === 7">{{ $t('need_pay') }}</span>
@@ -72,11 +72,6 @@
       },
 
       props: {
-         // items: {
-         //    type: Array,
-         //    default() { return [] }
-         // },
-
          item: {
             type: Object,
             default() { return {} }
