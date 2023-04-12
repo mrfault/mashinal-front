@@ -115,8 +115,9 @@
                <template v-else-if="announcement.type === 6 && announcements.filter(item => item.type === 6).length === 5">
                   <div
                      v-if="checkSecondTemplate(index) ? !checkItemB(index, announcement) : true"
-                     :class="[`registrationMarks-grid`,
+                     :class="['registrationMarks-grid',
                          {
+                           'active' : index === 15,
                            'col-lg-mid': checkItemIndex(index + 2, announcement) || (announcement.type === 6 && !isMobileBreakpoint),
                            'pt-4 mt-1': checkItemTop(index, announcement) || (announcement.external && !isMobileBreakpoint),
                            'pb-4 mb-4': checkItemBottom(index, announcement) || (announcement.external && !isMobileBreakpoint),
@@ -129,9 +130,14 @@
                      ]"
                      :key="announcement.id_unique + (escapeDuplicates ? '_' + index : '')"
                   >
-<!--                     <pre>{{ announcements.filter((item, q) => item.type === 6) }}</pre>-->
+<!--                     <pre>{{index}}</pre>-->
+
                      <div class="registrationMarks__title">
-                        <div class="divider">Qeydiyyat nişanları</div>
+                        <div class="divider">
+                           <span>{{ $t('registration_badges_2') }}</span>
+
+                           <inline-svg :src="'/icons/new_badge_3.svg'" />
+                        </div>
 
                         <div class="divider">
                            <nuxt-link :to="$localePath('/registration-marks')">
@@ -322,20 +328,58 @@ export default {
       .registrationMarks-grid {
          .registrationMarksGridItem {
             width: 214px;
+            margin: 129px 0 48px 0 !important;
+
+            &__head {
+               h3 {
+                  font-size: 35px;
+               }
+            }
          }
 
          .registrationMarks__title {
+            position: absolute;
+            top: 52px;
+            width: 1185px;
             display: none;
+
+            .divider {
+               display: flex;
+               align-items: center;
+
+               &:first-child {
+                  span {
+                     margin-top: -5px;
+                     font-weight: 700;
+                     font-size: 32px;
+                     line-height: 40px;
+                     color: #000000;
+                     margin-right: 12px;
+                  }
+               }
+
+               a {
+                  display: flex;
+                  align-items: center;
+                  font-weight: 600;
+                  font-size: 18px;
+                  line-height: 20px;
+                  text-decoration-line: underline;
+                  color: #121926;
+                  z-index: 10;
+
+                  svg {
+                     margin-left: 9px;
+                  }
+               }
+            }
          }
 
-         &:last-of-type {
+         &.active {
             .registrationMarks__title {
-               //position: absolute;
-               //top: 52px;
-               //width: 1220px;
-               display: flex;
-               //align-items: center;
-               //justify-content: space-between;
+               //display: flex;
+               align-items: center;
+               justify-content: space-between;
             }
          }
       }
@@ -354,6 +398,16 @@ export default {
    .dark-mode {
       .index-salon-view {
          background: #1C1C1E;
+      }
+   }
+
+   @media (max-width: 1250px) {
+      .announcements-grid {
+         .registrationMarks-grid {
+            .registrationMarks__title {
+               width: 900px;
+            }
+         }
       }
    }
 

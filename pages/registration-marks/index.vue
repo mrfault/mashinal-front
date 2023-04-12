@@ -121,10 +121,10 @@
                />
 
                <no-results
+                  v-if="!getRegistrationMarks?.data.length"
                   :text="$t('empty_result')"
                   :template="'new'"
                   :url="'/images/empty_result.svg'"
-                  v-if="!getRegistrationMarks?.data.length"
                >
                </no-results>
             </div>
@@ -140,15 +140,15 @@
    import NoResults from "~/components/elements/NoResults.vue";
 
    export default {
+      head() {
+         return this.$headMeta({
+            title: this.$t('meta-registration_marks'),
+         });
+      },
+
       components: {
          RegistrationMarksGrid,
          NoResults
-      },
-
-      head() {
-         return this.$headMeta({
-            title: this.$t('advanced_search')
-         });
       },
 
       data() {

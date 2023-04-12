@@ -294,7 +294,9 @@ export default {
 
       this.getSliderData()
 
-
+      if (this.$route.query.page === 'plate-announce') {
+         this.$router.push(this.$localePath('/profile/announcements'));
+      }
    },
    beforeDestroy() {
       this.$nuxt.$off('logo-click', this.handleLogoCkick)

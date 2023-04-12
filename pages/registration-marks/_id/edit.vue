@@ -17,7 +17,7 @@
                >
                   <div class="col-12 col-xl-6">
                      <div class="row">
-                        <div class="col-6 col-xl-5">
+                        <div class="col-5 col-md-5">
                            <form-select
                               :label="registrationMark.serial_region"
                               :disabled="true"
@@ -25,7 +25,7 @@
                            />
                         </div>
 
-                        <div class="col-2 col-xl-2">
+                        <div class="col-1 col-md-2" style="width: 19.4%; flex: 0 0 19.4%; max-width: 19.4%">
                            <form-select
                               :label="region_letter1"
                               :disabled="true"
@@ -33,7 +33,7 @@
                            />
                         </div>
 
-                        <div class="col-2 col-xl-2">
+                        <div class="col-1 col-md-2" style="width: 19.4%; flex: 0 0 19.4%; max-width: 19.4%">
                            <form-select
                               :label="region_letter2"
                               :disabled="true"
@@ -41,7 +41,7 @@
                            />
                         </div>
 
-                        <div class="col-2 col-xl-2">
+                        <div class="col-1 col-md-2" style="width: 19.4%; flex: 0 0 19.4%; max-width: 19.4%">
                            <form-numeric-input
                               :max-value="999"
                               :defaultValue="region_number"
@@ -52,7 +52,7 @@
                      </div>
 
                      <div class="row mt-5">
-                        <div class="col-6 col-xl-5">
+                        <div class="col-5 col-md-5">
                            <form-numeric-input
                               :placeholder="$t('price')"
                               :invalid="$v.form.price.$error"
@@ -60,7 +60,7 @@
                            />
                         </div>
 
-                        <div class="col-3 col-xl-2">
+                        <div class="col-3" style="width: 29.1%; flex: 0 0 29.1%; max-width: 29.1%">
                            <form-select
                               :label="'AZN'"
                               :options="currencyList"
@@ -70,19 +70,20 @@
                            />
                         </div>
 
-                        <div class="col-3 col-xl-4">
+                        <div class="col-3 col-md-4" style="width: 29.1%; flex: 0 0 29.1%; max-width: 29.1%">
                            <form-select
                               :label="$t('city')"
                               :options="cities.regions"
                               :invalid="$v.form.region_id.$error"
                               :clearPlaceholder="true"
                               v-model="form.region_id"
+                              has-search
                            />
                         </div>
                      </div>
 
                      <div class="row mt-5">
-                        <div class="col-12 col-xl-11">
+                        <div class="col-12 col-xl-12">
                            <form-textarea
                               :placeholder="$t('description2')"
                               :maxlength="3000"
@@ -92,7 +93,7 @@
                      </div>
 
                      <div class="row mt-5">
-                        <div class="col-12 col-xl-11">
+                        <div class="col-12 col-lg-6">
                            <button
                               :class="['btn', {'pending' : pending}]"
                            >
@@ -118,7 +119,14 @@
    import { PaymentMixin } from '~/mixins/payment';
 
    export default {
+      head() {
+         return this.$headMeta({
+            title: this.$t('meta-registration_marks'),
+         });
+      },
+
       mixins: [ PaymentMixin ],
+
       data() {
          return {
             pending: false,
