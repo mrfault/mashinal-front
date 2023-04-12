@@ -7,10 +7,10 @@
   >
     <div class="phone-section">
       <div class="phone">
-        {{ $parsePhone(user.phone) }}
+        {{ $parsePhone(announcement.user.phone) }}
       </div>
       <span>
-        Sizin mobil nömrəniz
+        Mobil nömrəniz
       </span>
     </div>
     <hr>
@@ -47,6 +47,8 @@
 </template>
 
 <script>
+import {mapGetters} from "vuex";
+
 export default {
   props: {
     name: {
@@ -59,6 +61,9 @@ export default {
       showTerminalInfo: false
     }
   },
+   computed: {
+      ...mapGetters(['announcement'])
+   },
   methods: {
     open(name) {
       if (name !== this.name) return;

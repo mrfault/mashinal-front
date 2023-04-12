@@ -43,14 +43,14 @@
 
       <label class="radio-container">
             {{$t('pay_with_card')}}
-        <input type="radio"   name="package" @change="paymentMethod='card'">
+        <input type="radio"   name="payment_type" @change="paymentMethod='card'">
         <span class="checkmark"></span>
       </label>
 
 
-      <label class="radio-container">
+      <label class="radio-container" v-if="this.$auth.loggedIn">
         {{$t('balans')}}
-        <input type="radio"   name="package" @change="paymentMethod='balance'">
+        <input type="radio"   name="payment_type" @change="paymentMethod='balance'">
         <span class="checkmark"></span>
       </label>
       <hr/>
@@ -60,6 +60,8 @@
         </div>
         <div class="col-md-8">
           <p class="description">*Reklam işə salındıqdan sonra istənilən vaxt xərcləri dayandıra bilərsiniz.</p>
+
+
         </div>
       </div>
 
