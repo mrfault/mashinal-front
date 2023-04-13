@@ -50,8 +50,8 @@
                   :class="['cursor-pointer', {'d-flex align-items-center' : group.announce.type === 6 }]"
                   @click.stop="$emit('go-to-announcement', group)"
                >
-                  <span v-if="group.announce.brand">{{ getAnnouncementTitle(chatAnnouncement) }}</span>
-                  <br v-if="group.announce.brand"/>
+                  <span v-if="group.announce.type !== 6">{{ getAnnouncementTitle(chatAnnouncement) }}</span>
+                  <br v-if="group.announce.type !== 6" />
 
                   <div class="registrationMarks__number" v-if="group.announce.type === 6">
                      <div class="divider">
@@ -63,7 +63,10 @@
                      </div>
                   </div>
 
-                  <span class="text-dark-blue-2" style="white-space: nowrap">{{ chatAnnouncement.price || '' }}</span>
+                  <span
+                     :class="['text-dark-blue-2', {'style' : group.announce.type === 6}]"
+                     style="white-space: nowrap"
+                  >{{ chatAnnouncement.price || '' }}</span>
                </span>
             </div>
          </template>
