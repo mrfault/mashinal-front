@@ -1744,6 +1744,18 @@
       }
    }
 
+   .registrationMarks-grid {
+      span, a {
+         color: $white !important;
+      }
+
+      svg {
+         path {
+            fill: $white;
+         }
+      }
+   }
+
    .form-group {
       &.bg {
          .select-menu_label {
@@ -1755,6 +1767,16 @@
    .tabs {
       &__item {
          color: $white;
+      }
+   }
+
+   .pages-profile-messages {
+      .registrationMarks__number {
+         border-color: #364152;
+
+         h3 {
+            color: $white;
+         }
       }
    }
 }

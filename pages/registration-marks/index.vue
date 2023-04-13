@@ -143,6 +143,7 @@
       head() {
          return this.$headMeta({
             title: this.$t('meta-registration_marks'),
+            description: this.$t('meta-registration_marks')
          });
       },
 

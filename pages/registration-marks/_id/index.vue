@@ -24,24 +24,26 @@
             <div class="row flex-column flex-lg-row">
                <div class="col-auto">
                   <div class="wrapp">
-                     <div
-                        class="pages-cars-id__registrationMark"
-                        :style="{ background: `url(/images/registration-marks/car_${count}.png) center center / contain no-repeat`}"
-                     >
-                        <div class="registrationMarks__number">
-                           <div class="divider">
-                              <img src="/icons/registrationMarks_icons.svg" alt="icons">
+                     <client-only>
+                        <div
+                           class="pages-cars-id__registrationMark"
+                           :style="{ background: `url(/images/registration-marks/car_${count}.png) center center / contain no-repeat`}"
+                        >
+                           <div class="registrationMarks__number">
+                              <div class="divider">
+                                 <img src="/icons/registrationMarks_icons.svg" alt="icons">
+                              </div>
+
+                              <div class="divider">
+                                 <p>{{ registrationMark.car_number }}</p>
+                              </div>
+
+                              <span class="registrationMarks__number-description">MASHIN.AL</span>
                            </div>
 
-                           <div class="divider">
-                              <p>{{ registrationMark.car_number }}</p>
-                           </div>
-
-                           <span class="registrationMarks__number-description">MASHIN.AL</span>
+                           <add-favorite :announcement="registrationMark" />
                         </div>
-
-                        <add-favorite :announcement="registrationMark" />
-                     </div>
+                     </client-only>
                   </div>
 
                   <comment :comment="registrationMark.comment" v-if="registrationMark.comment && !isMobileBreakpoint"></comment>
@@ -86,6 +88,7 @@
       head() {
          return this.$headMeta({
             title: this.$t('meta-registration_marks'),
+            description: this.$t('meta-registration_marks')
          });
       },
 
@@ -109,19 +112,15 @@
       },
 
       methods: {
-         // aaa () {
-         //   if(this.count < 10) {
-         //      this.count ++
-         //   } else {
-         //      this.count = 1;
-         //   }
-         // },
          changeCarImg() {
-            if (window.localStorage.getItem('registrationCount') < 11) {
+            let local = window.localStorage.getItem('registrationCount');
+            if (local && Number(local) < 11) {
+               let currentCount = Number(local);
+
+               window.localStorage.setItem('registrationCount', currentCount + 1);
                this.count = Number(window.localStorage.getItem('registrationCount'));
-               window.localStorage.setItem('registrationCount', this.count + 1);
             } else {
-               window.localStorage.setItem('registrationCount', '1');
+               window.localStorage.setItem('registrationCount', 1);
             }
          }
       },

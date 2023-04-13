@@ -324,7 +324,7 @@ export default {
          display: flex;
          align-items: center;
          margin-right: 20px;
-         height: 44px;
+         height: 42px;
          padding: 0 8px;
          border-radius: 5px;
          border: 3px solid #000000;
@@ -349,7 +349,7 @@ export default {
          h3 {
             font-family: 'DinMittelschriftgepraegt', sans-serif;
             font-weight: 400;
-            font-size: 37px;
+            font-size: 35px;
             line-height: 44px;
             letter-spacing: -1px;
             color: #1B2434;
