@@ -9,7 +9,7 @@ export const MenusDataMixin = {
       searchMenus() {
          return [
             {title: 'cars', route: '/cars', icon: 'car-1'},
-            {title: 'registration_marks', route: '/registration-marks/create', icon: '/icons/registration_marks.svg'},
+            {title: 'registration_marks', route: '/registration-marks', icon: '/icons/registration_marks.svg'},
             {title: 'commercial', route: '/commercial', children: this.commercialMenus, icon: 'commercial-1'},
             {title: 'moto', route: '/moto', children: this.motoMenus, icon: 'moto-1'},
             {title: 'parts', route: '/parts', children: this.partsMenus, icon: 'parts'}
@@ -107,7 +107,7 @@ export const MenusDataMixin = {
          return [
             {title: 'garage', route: '/garage-services', icon: 'garage-tab'},
             {title: 'eservices', route: '/e-services', icon: 'globe'},
-            {title: 'external-salons', route: '/external-salons', with_badge: true},
+            {title: 'registration_marks', route: '/registration-marks', with_badge: true},
             {title: 'salons', route: '/salons', icon: 'salons-tab'},
             {title: 'shops', route: '/parts/shops', icon: 'shops-tab'},
             {title: 'autocatalog', route: '/catalog', icon: 'catalog-tab'},

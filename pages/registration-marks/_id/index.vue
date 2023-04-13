@@ -6,6 +6,15 @@
                <share-it type="publish"/>
 
                <span class="text-data">
+                  <icon name="eye" />
+                  {{ registrationMark.view_count }}
+                  <icon name="cursor" />
+                  {{ registrationMark.show_phone_number_count }}
+                  <icon name="star" />
+                  {{ registrationMark.favorites_count }}
+               </span>
+
+               <span class="text-data">
                   <icon name="calendar"/>
 
                   {{ registrationMark.humanize_created_at }}
@@ -183,7 +192,7 @@
             left: 50%;
             bottom: -12px;
             transform: translateX(-50%);
-            font-family: 'Din', sans-serif;
+            font-family: 'DinMittelschriftgepraegt', sans-serif;
             font-size: 8px;
             line-height: 9px;
             color: #FFFFFF;
@@ -199,7 +208,7 @@
             }
 
             p {
-               font-family: 'Din', sans-serif;
+               font-family: 'DinMittelschriftgepraegt', sans-serif;
                font-weight: 400;
                font-size: 32px;
                line-height: 32px;
