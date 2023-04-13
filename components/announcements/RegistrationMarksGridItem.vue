@@ -96,7 +96,6 @@
       methods: {
          goToRegistrationMark(id) {
             this.$router.push(this.localePath(`/registration-marks/${id}`));
-            // window.open(this.localePath(`/registration-marks/${id}`), '_blank');
          },
 
          modifiedDate(date) {
@@ -134,7 +133,9 @@
          }
 
          h3 {
-            font-family: 'Din', sans-serif;
+            //font-family: 'Din', sans-serif;
+            //font-family: 'DinMittelschrift', sans-serif;
+            font-family: 'DinMittelschriftgepraegt', sans-serif;
             font-weight: 400;
             font-size: 37px;
             line-height: 44px;

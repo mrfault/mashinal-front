@@ -6,42 +6,71 @@
                <img class="chat-avatar" :src="chatAvatar" alt=""/>
             </div>
             <span class="username">
-          <span>{{ chatUser.full_name }}</span>
-          <span class="typing-status text-dark-blue-3" v-if="sending || typing">
-            <template v-if="sending">{{ $t('is_sending') }}</template>
-            <template v-else-if="typing">{{ $t('is_typing') }}</template>
-          </span>
-          <template v-if="isMobileBreakpoint">
-            <br/>
-            <span class="username-subtitle" @click.stop="$emit('go-to-announcement', group)">
-              <span class="text-truncate">{{ getAnnouncementTitle(chatAnnouncement) }}</span>
-              <span class="text-dark-blue-2">{{ chatAnnouncement.price || '' }}</span>
+               <span>{{ chatUser.full_name }}</span>
+
+               <span class="typing-status text-dark-blue-3" v-if="sending || typing">
+                 <template v-if="sending">{{ $t('is_sending') }}</template>
+                 <template v-else-if="typing">{{ $t('is_typing') }}</template>
+               </span>
+
+               <template v-if="isMobileBreakpoint">
+                  <br/>
+                  <span class="username-subtitle" @click.stop="$emit('go-to-announcement', group)">
+                    <span class="text-truncate">{{ getAnnouncementTitle(chatAnnouncement) }}</span>
+                    <span class="text-dark-blue-2">{{ chatAnnouncement.price || '' }}</span>
+                  </span>
+               </template>
             </span>
-          </template>
-        </span>
+
             <template v-if="!isChatBot">
-          <span class="cursor-pointer text-dark-blue-2" @click.stop="$emit('block-chat', group)">
-            <icon :name="blocked ? 'unblock' : 'block'"/>
-          </span>
+               <span class="cursor-pointer text-dark-blue-2" @click.stop="$emit('block-chat', group)">
+                  <icon :name="blocked ? 'unblock' : 'block'"/>
+               </span>
+
                <span class="cursor-pointer text-red" @click.stop="removeItem = group; showRemoveModal = true;">
-            <icon name="garbage"/>
+                  <icon name="garbage"/>
                   <!-- <inline-svg src="/icons/garbage.svg" :height="14" /> -->
-          </span>
+               </span>
             </template>
          </div>
+
          <template v-if="!isMobileBreakpoint && !isChatBot && group.announce">
             <span class="divider"></span>
+
             <div class="chat-inner-announcement user-select-none">
-               <img class="cursor-pointer" :src="chatAnnouncementThumb" alt=""
-                    @click.stop="$emit('go-to-announcement', group)"/>
-               <span class="cursor-pointer" @click.stop="$emit('go-to-announcement', group)">
-            {{ getAnnouncementTitle(chatAnnouncement) }}<br/>
-            <span class="text-dark-blue-2">{{ chatAnnouncement.price || '' }}</span>
-          </span>
+               <img
+                  v-if="group.announce.type !== 6"
+                  class="cursor-pointer"
+                  :src="chatAnnouncementThumb"
+                  alt="img"
+                  @click.stop="$emit('go-to-announcement', group)"
+               />
+
+               <span
+                  :class="['cursor-pointer', {'d-flex align-items-center' : group.announce.type === 6 }]"
+                  @click.stop="$emit('go-to-announcement', group)"
+               >
+                  <span v-if="group.announce.brand">{{ getAnnouncementTitle(chatAnnouncement) }}</span>
+                  <br v-if="group.announce.brand"/>
+
+                  <div class="registrationMarks__number" v-if="group.announce.type === 6">
+                     <div class="divider">
+                        <img src="/icons/registrationMarks_icons.svg" alt="icons">
+                     </div>
+
+                     <div class="divider">
+                        <h3>{{ group.announce.car_number.replace(/\s/g, '') }}</h3>
+                     </div>
+                  </div>
+
+                  <span class="text-dark-blue-2" style="white-space: nowrap">{{ chatAnnouncement.price || '' }}</span>
+               </span>
             </div>
          </template>
       </div>
+
       <hr class="mt-0 mb-0"/>
+
       <div class="messages_msg-list">
          <div :class="['messages-list', {'attachments-preview-active': !!Object.keys(files).length}]">
             <div class="scroll-container">
@@ -119,6 +148,7 @@
             />
          </div>
       </div>
+
       <modal-popup
          :toggle="showRemoveModal"
          :title="$t('are_you_sure_you_want_to_delete_the_message')"

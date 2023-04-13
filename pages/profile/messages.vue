@@ -168,7 +168,7 @@ export default {
 
       crumbs() {
          return [
-            {name: this.$t('messages')}
+            { name: this.$t('messages') }
          ]
       },
 
@@ -234,7 +234,6 @@ export default {
 
       goToAnnouncement(group) {
          let announcement = group.announce;
-         console.log('group', group)
          if (announcement.status !== 1) return;
          let type = group.announce_type.replace('App\\', '').toLowerCase();
 
@@ -243,9 +242,13 @@ export default {
          else if (['motorcycle', 'scooter', 'motoatv'].includes(type)) type = 'moto';
          else if (type === 'commercial') type = 'commercial';
          else if (type === 'part') type = 'parts';
-         console.log('type', type)
-         console.log('group.announce_type', group.announce_type)
-         // this.$router.push(this.$localePath(`/${type}/announcement/${announcement.id_unique}`));
+         if (group.announce.type === 6) {
+            type = 'registration-marks';
+            this.$router.push(this.$localePath(`/${type}/${announcement.id_unique}`));
+         } else {
+            this.$router.push(this.$localePath(`/${type}/announcement/${announcement.id_unique}`));
+
+         }
       },
 
       async deleteChat(group) {
@@ -314,3 +317,62 @@ export default {
    }
 }
 </script>
+
+<style lang="scss">
+   .pages-profile-messages {
+      .registrationMarks__number {
+         display: flex;
+         align-items: center;
+         margin-right: 20px;
+         height: 44px;
+         padding: 0 8px;
+         border-radius: 5px;
+         border: 3px solid #000000;
+
+         .divider {
+            height: unset;
+            border: unset;
+            margin: 0;
+
+            img {
+               width: 20px;
+               height: unset;
+               margin: 0;
+               border-radius: unset;
+            }
+
+            &:first-child {
+               margin-right: 7px;
+            }
+         }
+
+         h3 {
+            font-family: 'DinMittelschriftgepraegt', sans-serif;
+            font-weight: 400;
+            font-size: 37px;
+            line-height: 44px;
+            letter-spacing: -1px;
+            color: #1B2434;
+            margin: 0;
+         }
+      }
+   }
+
+   @media (max-width: 1250px) {
+      .pages-profile-messages {
+         .registrationMarks__number {
+            height: 40px;
+
+            .divider {
+               img {
+                  width: 17px;
+               }
+            }
+
+            h3 {
+               font-size: 30px;
+            }
+         }
+      }
+   }
+</style>
