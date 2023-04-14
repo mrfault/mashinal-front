@@ -10,9 +10,7 @@
         </h2>
         <div class="form-items row">
           <div class="col-lg-4" id="drink1">
-            <div
-              class="alc-logo d-flex justify-content-center flex-column align-items-center"
-            >
+            <div class="alc-logo d-flex justify-content-center flex-column align-items-center" >
               <img src="/img/alco.svg" />
               <span class="alco-num">1</span>
             </div>

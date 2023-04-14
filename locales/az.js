@@ -2498,5 +2498,11 @@ export default {
    "not_commented": "Rəy verilməyib",
    "announce_is_exist": "Elan artıq mövcuddur",
    "this_announce_opened_with_another_user": "Bu elan başqa istifadəçi tərəfindən açılıb",
-   "after_seconds_auto_reload_with": "saniyə sonra avtomatik yenilənəcəkdir"
+   "after_seconds_auto_reload_with": "saniyə sonra avtomatik yenilənəcəkdir",
+   "terminal_payment_rules" : "terminalları vasitəsilə balans artırılması aşağıdakı qaydadadır.",
+   "ads_statistics" : "Elanınız təqribən {count} dəfə alıcılara göstəriləcək",
+   "terminal_help_description" : "Xidmət dərhal tətbiq olunacaq. Hər hansı çətinlik yarandıqda *8787 Çağrı Mərkəzi ilə əlaqə saxlayın.",
+   "ads_description" : "Reklam işə salındıqdan sonra istənilən vaxt xərcləri dayandıra bilərsiniz"
+
+
 }

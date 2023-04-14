@@ -2345,17 +2345,14 @@ export default {
    "already_paid": "Оплачено",
    "change_it": "Изменить",
    "video_choose": "Выбрать видеофайл",
-
    "alcometer_0": "Трезв",
    "alcometer_30": "В пределах нормы",
    "alcometer_60": "Легкая степень",
    "alcometer_90": "Средняя степень",
    "alcometer_120": "Тяжелая степень",
-
    "amount_of_drink_not_defined": "Количество алкоголя не выбрано",
    "type_of_drink_not_defined": "Тип алкоголя не выбран",
    "cm": "см",
-
    "result_of_tire_size_change_title_1": " INCREASE внешний диаметр колеса",
    "result_of_tire_size_change_title_2": " и дорожный просвет",
    "new_1": "Новый",
@@ -2365,5 +2362,9 @@ export default {
    "anyone": "Любая",
    "anyone_other": "Любое",
    "anyone_other2": "Любой",
-   "user_add_successfully": "Пользователь успешно добавлен"
+   "user_add_successfully": "Пользователь успешно добавлен",
+   "terminal_payment_rules" : "Правила пополнения баланса через терминалы ",
+   "ads_statistics" : "Примерно {count} раз объявление будет показано покупателям",
+   "terminal_help_description" : "В случае возникновения каких-либо затруднений звоните на короткий номер *8787.",
+   "ads_description" : "После запуска рекламы вы в любое время можете приостановить его"
 }

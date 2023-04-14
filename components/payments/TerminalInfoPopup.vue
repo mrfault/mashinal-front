@@ -10,7 +10,7 @@
         {{ $parsePhone(announcement.user.phone) }}
       </div>
       <span>
-        Mobil nömrəniz
+        {{$t('mobile_number_your')}}
       </span>
     </div>
     <hr>

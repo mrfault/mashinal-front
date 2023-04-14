@@ -965,7 +965,7 @@ export const actions = {
 
   announcementOpen(announcementId){
 
-    console.log(announcementId)
+
   },
 
 

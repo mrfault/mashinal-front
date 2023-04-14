@@ -7,12 +7,12 @@
     <modal-popup
       :toggle="showPaymentModal"
       :title="$t('get_an_ad')"
-      :modal-class="'larger monetization-popup'"min_view
+      :modal-class="'larger monetization-popup'"
       @close="showPaymentModal = false"
     >
 
       <div class="ads_statics">
-        <div>Elanınız təqribən <span> {{ selectedPlan.min_view }} - {{ selectedPlan.max_view }} </span> dəfə alıcılara göstəriləcək.</div>
+        <div>{{$t('ads_statistics',{count:selectedPlan.min_view +' - '+ selectedPlan.max_view})}}</div>
       </div>
 
       <hr />
@@ -43,7 +43,7 @@
 
       <label class="radio-container">
             {{$t('pay_with_card')}}
-        <input type="radio"   name="payment_type" @change="paymentMethod='card'">
+        <input type="radio"   name="payment_type" checked @change="paymentMethod='card'">
         <span class="checkmark"></span>
       </label>
 
@@ -59,7 +59,7 @@
           <terminal-info-button popup-name="monetization-popup" />
         </div>
         <div class="col-md-8">
-          <p class="description">*Reklam işə salındıqdan sonra istənilən vaxt xərcləri dayandıra bilərsiniz.</p>
+          <p class="description">{{$t('ad_can_be_paused')}}</p>
 
 
         </div>
