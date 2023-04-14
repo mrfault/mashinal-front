@@ -69,6 +69,8 @@
                   </nuxt-link>
                </template>
             </RegistrationMarksGrid>
+
+<!--            <floating-cta :announcement="registrationMarks.data"/>-->
          </div>
       </div>
    </div>
@@ -81,6 +83,7 @@
    import Comment from '~/components/announcements/inner/Comment.vue';
    import AddFavorite from "~/components/announcements/AddFavorite.vue";
    import RegistrationMarksGrid from "~/components/announcements/RegistrationMarksGrid.vue";
+   import FloatingCta from "~/components/announcements/inner/FloatingCta.vue";
 
    export default {
       name: 'pages-marks-id',
@@ -96,7 +99,8 @@
          QuickInfo,
          Comment,
          AddFavorite,
-         RegistrationMarksGrid
+         RegistrationMarksGrid,
+         FloatingCta
       },
 
       nuxtI18n: {

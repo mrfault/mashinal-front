@@ -14,6 +14,8 @@
             :showFavoriteBtn="showFavoriteBtn"
          />
       </div>
+
+
    </div>
 </template>
 

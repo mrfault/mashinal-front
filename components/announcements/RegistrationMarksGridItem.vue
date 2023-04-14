@@ -130,6 +130,10 @@
             &:first-child {
                margin-right: 7px;
             }
+
+            &:last-child {
+               margin: 0 auto;
+            }
          }
 
          h3 {
