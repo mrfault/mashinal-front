@@ -5,7 +5,7 @@
     @close="close"
   >
     <p>{{ $t('terminal_pay_info') }}</p>
-    <div class="form-info text-green mb-2">{{ $t('mobile_number_your')}}: {{ $parsePhone(user.phone) }}</div>
+    <div class="form-info text-green mb-2" v-if="user">{{ $t('mobile_number_your')}}: {{ $parsePhone(user.phone) }}</div>
     <ol>
       <li v-for="(step, i) in $t('terminal_pay_steps')" :key="i">{{ step }}</li>
     </ol>
