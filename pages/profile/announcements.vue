@@ -69,8 +69,9 @@
                <no-results
                   v-if="!getMyPlates.data.length"
                   :text="$t('empty_plates')"
-                  :template="'new'"
-                  :url="'/images/empty_plates.svg'"
+                  :template="'new-img'"
+                  :url="'/img/empty_plates.png'"
+                  :urlDarkMode="'/img/empty_plates_dark-mode.png'"
                ></no-results>
             </div>
          </div>

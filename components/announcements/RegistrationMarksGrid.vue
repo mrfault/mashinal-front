@@ -13,8 +13,6 @@
             :short-date="shortDate"
             :showFavoriteBtn="showFavoriteBtn"
          />
-
-<!--         <pre>{{filteredItems[0]}}</pre>-->
       </div>
    </div>
 </template>
@@ -130,12 +128,24 @@
       }
    }
 
-   @media (max-width: 370px) {
+   @media (max-width: 400px) {
       .registrationMarksGrid {
          &__head {
             margin: 0 -10px;
+
+            a {
+               font-size: 16px !important;
+            }
          }
 
+         &__title {
+            font-size: 20px;
+         }
+      }
+   }
+
+   @media (max-width: 370px) {
+      .registrationMarksGrid {
          &__title {
             font-size: 17px;
          }

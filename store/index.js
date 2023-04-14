@@ -533,9 +533,7 @@ export const actions = {
 
     if (groupIndex !== -1) {
       if (!state.messages[groupIndex].messages_loaded) {
-        const messages = await this.$axios.$get(
-          "/profile/group/" + groupId + "/messages"
-        );
+        const messages = await this.$axios.$get("/profile/group/" + groupId + "/messages");
         commit("appendMessagesToGroup", { groupIndex, messages });
       }
     }
@@ -550,10 +548,7 @@ export const actions = {
     commit("appendToMessage", { group: data.activeGroup, message: res });
   },
   async createMessagesGroup({ commit }, data) {
-    const res = await this.$axios.$post(
-      "/profile/messages/" + data.recipientId,
-      { id_unique: data.announceId }
-    );
+    const res = await this.$axios.$post("/profile/messages/" + data.recipientId, { id_unique: data.announceId });
     commit("appendMessageToGroup", { group: res });
     return res;
   },

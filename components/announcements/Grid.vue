@@ -115,8 +115,10 @@
                <template v-else-if="announcement.type === 6 && announcements.filter(item => item.type === 6).length === 5">
                   <div
                      v-if="checkSecondTemplate(index) ? !checkItemB(index, announcement) : true"
-                     :class="[`registrationMarks-grid`,
+                     :class="['registrationMarks-grid',
                          {
+                           'active' : (index === 15),
+                           'not-mt' : (index === 17 || index === 18 || index === 19),
                            'col-lg-mid': checkItemIndex(index + 2, announcement) || (announcement.type === 6 && !isMobileBreakpoint),
                            'pt-4 mt-1': checkItemTop(index, announcement) || (announcement.external && !isMobileBreakpoint),
                            'pb-4 mb-4': checkItemBottom(index, announcement) || (announcement.external && !isMobileBreakpoint),
@@ -129,9 +131,14 @@
                      ]"
                      :key="announcement.id_unique + (escapeDuplicates ? '_' + index : '')"
                   >
-<!--                     <pre>{{ announcements.filter((item, q) => item.type === 6) }}</pre>-->
+<!--                     <pre>{{index}}</pre>-->
+
                      <div class="registrationMarks__title">
-                        <div class="divider">Qeydiyyat nişanları</div>
+                        <div class="divider">
+                           <span>{{ $t('registration_badges_2') }}</span>
+
+                           <inline-svg :src="'/icons/new_badge_3.svg'" />
+                        </div>
 
                         <div class="divider">
                            <nuxt-link :to="$localePath('/registration-marks')">
@@ -322,20 +329,64 @@ export default {
       .registrationMarks-grid {
          .registrationMarksGridItem {
             width: 214px;
+            margin: 0 0 1.5rem 0 !important;
+
+            &__head {
+               h3 {
+                  font-size: 35px;
+               }
+            }
          }
 
          .registrationMarks__title {
-            display: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 1185px;
+            visibility: hidden;
+            margin: 52px 0 40px 0;
+
+            .divider {
+               display: flex;
+               align-items: center;
+
+               &:first-child {
+                  span {
+                     margin-top: -5px;
+                     font-weight: 700;
+                     font-size: 32px;
+                     line-height: 40px;
+                     color: #000000;
+                     margin-right: 12px;
+                  }
+               }
+
+               a {
+                  display: flex;
+                  align-items: center;
+                  font-weight: 600;
+                  font-size: 18px;
+                  line-height: 20px;
+                  text-decoration-line: underline;
+                  color: #121926;
+                  z-index: 10;
+
+                  svg {
+                     margin-left: 9px;
+                  }
+               }
+            }
          }
 
-         &:last-of-type {
+         &.active {
             .registrationMarks__title {
-               //position: absolute;
-               //top: 52px;
-               //width: 1220px;
-               display: flex;
-               //align-items: center;
-               //justify-content: space-between;
+               visibility: visible;
+            }
+         }
+
+         &.not-mt {
+            .registrationMarks__title {
+               //display: none;
             }
          }
       }
@@ -354,6 +405,246 @@ export default {
    .dark-mode {
       .index-salon-view {
          background: #1C1C1E;
+      }
+   }
+
+   @media (max-width: 1250px) {
+      .announcements-grid {
+         .registrationMarks-grid {
+            .registrationMarks__title {
+               width: 900px;
+            }
+         }
+      }
+   }
+
+   @media (max-width: 1025px) {
+      .announcements-grid {
+         .registrationMarks-grid {
+            .registrationMarks__title {
+               width: 490px;
+
+               .divider {
+                  &:first-child {
+                     span {
+                        font-size: 25px;
+                     }
+                  }
+               }
+            }
+
+            .registrationMarksGridItem {
+               width: 238px;
+
+               &__head {
+                  h3 {
+                     font-size: 38px;
+                  }
+               }
+            }
+         }
+      }
+   }
+
+   @media (max-width: 520px) {
+      .announcements-grid {
+         .registrationMarks-grid {
+            .registrationMarks__title {
+               width: 205%;
+
+               .divider {
+                  &:first-child {
+                     span {
+                        margin-top: 1px;
+                        font-size: 22px;
+                     }
+
+                     svg {
+                        display: none;
+                     }
+                  }
+               }
+            }
+
+            .registrationMarksGridItem {
+               width: 100%;
+
+               &__head {
+                  h3 {
+                     font-size: 35px;
+                  }
+               }
+            }
+         }
+      }
+   }
+
+   @media (max-width: 460px) {
+      .announcements-grid {
+         .registrationMarks-grid {
+            .registrationMarks__title {
+               //width: 205%;
+
+               .divider {
+                  &:first-child {
+                     span {
+                        //margin-top: 1px;
+                        //font-size: 22px;
+                     }
+
+                     svg {
+                        //display: none;
+                     }
+                  }
+               }
+            }
+
+            .registrationMarksGridItem {
+               //width: 100%;
+
+               &__head {
+                  h3 {
+                     font-size: 32px;
+                  }
+               }
+            }
+         }
+      }
+   }
+
+   @media (max-width: 430px) {
+      .announcements-grid {
+         .registrationMarks-grid {
+            .registrationMarks__title {
+               //width: 205%;
+
+               .divider {
+                  &:first-child {
+                     span {
+                        //margin-top: 1px;
+                        //font-size: 22px;
+                     }
+
+                     svg {
+                        //display: none;
+                     }
+                  }
+               }
+            }
+
+            .registrationMarksGridItem {
+               //width: 100%;
+
+               &__head {
+                  h3 {
+                     font-size: 29px;
+                  }
+               }
+            }
+         }
+      }
+   }
+
+   @media (max-width: 400px) {
+      .announcements-grid {
+         .registrationMarks-grid {
+            .registrationMarks__title {
+               //width: 205%;
+
+               .divider {
+                  a {
+                     font-size: 16px;
+                  }
+               }
+            }
+
+            .registrationMarksGridItem {
+               //width: 100%;
+
+               &__head {
+                  img {
+                     width: 17px;
+                  }
+
+                  h3 {
+                     font-size: 27px;
+                  }
+               }
+            }
+         }
+      }
+   }
+
+   @media (max-width: 375px) {
+      .announcements-grid {
+         .registrationMarks-grid {
+            .registrationMarks__title {
+               //width: 205%;
+
+               .divider {
+                  &:first-child {
+                     span {
+                        font-size: 20px;
+                     }
+                  }
+                  a {
+                     font-size: 14px;
+                  }
+               }
+            }
+
+            .registrationMarksGridItem {
+               //width: 100%;
+
+               &__head {
+                  img {
+                     width: 15px;
+                  }
+
+                  h3 {
+                     font-size: 25px;
+                  }
+               }
+            }
+         }
+      }
+   }
+
+   @media (max-width: 355px) {
+      .announcements-grid {
+         .registrationMarks-grid {
+            .registrationMarks__title {
+               //width: 205%;
+
+               .divider {
+                  &:first-child {
+                     span {
+                        //font-size: 20px;
+                     }
+                  }
+                  a {
+                     //font-size: 14px;
+                  }
+               }
+            }
+
+            .registrationMarksGridItem {
+               //width: 100%;
+
+               &__head {
+                  height: 60px;
+                  padding: 0 12px;
+
+                  img {
+                     width: 30px;
+                  }
+
+                  h3 {
+                     font-size: 50px;
+                  }
+               }
+            }
+         }
       }
    }
 

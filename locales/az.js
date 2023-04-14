@@ -54,6 +54,7 @@ export default {
    acoustic_type: "Növ",
    activate: "Aktiv et",
    active: "Aktiv",
+   active_2: "Aktiv",
    Active: "Aktiv",
    "Active power steering": "Aktiv sükan gücləndiricisi",
    ad_active: "Aktiv",

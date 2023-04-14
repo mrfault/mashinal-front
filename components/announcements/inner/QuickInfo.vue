@@ -1,6 +1,6 @@
 <template>
    <div :class="['quick-info card mb-lg-3', {'registration-marks' : type === 'registration-marks'}]">
-      <div class="registration-marks__number">
+      <div class="registration-marks__number" v-if="type === 'registration-marks'">
          <div class="divider">
             <img src="/icons/registrationMarks_icons.svg" alt="icons">
          </div>
@@ -278,7 +278,7 @@ export default {
                left: 50%;
                bottom: -19px;
                transform: translateX(-50%);
-               font-family: 'Din', sans-serif;
+               font-family: 'DinMittelschriftgepraegt', sans-serif;
                font-size: 15px;
                line-height: 17px;
                color: #FFFFFF;
@@ -294,7 +294,7 @@ export default {
                }
 
                p {
-                  font-family: 'Din', sans-serif;
+                  font-family: 'DinMittelschriftgepraegt', sans-serif;
                   font-weight: 400;
                   font-size: 56px;
                   line-height: 68px;

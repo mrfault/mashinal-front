@@ -53,7 +53,7 @@
          <div class="divider" v-if="moreInfo">
             <div class="registrationMarksGridItem__status">
                <span v-if="item.status === 0">{{ $t('rejected_2') }}</span>
-               <span v-else-if="item.status === 1">{{ $t('Active') }}</span>
+               <span v-else-if="item.status === 1">{{ $t('active_2') }}</span>
                <span v-else-if="item.status === 2">{{ $t('under_consideration') }}</span>
                <span v-else-if="item.status === 3">{{ $t('sold') }}</span>
                <span v-else-if="item.status === 7">{{ $t('need_pay') }}</span>
@@ -72,11 +72,6 @@
       },
 
       props: {
-         // items: {
-         //    type: Array,
-         //    default() { return [] }
-         // },
-
          item: {
             type: Object,
             default() { return {} }
@@ -101,7 +96,6 @@
       methods: {
          goToRegistrationMark(id) {
             this.$router.push(this.localePath(`/registration-marks/${id}`));
-            // window.open(this.localePath(`/registration-marks/${id}`), '_blank');
          },
 
          modifiedDate(date) {
@@ -139,7 +133,9 @@
          }
 
          h3 {
-            font-family: 'Din', sans-serif;
+            //font-family: 'Din', sans-serif;
+            //font-family: 'DinMittelschrift', sans-serif;
+            font-family: 'DinMittelschriftgepraegt', sans-serif;
             font-weight: 400;
             font-size: 37px;
             line-height: 44px;

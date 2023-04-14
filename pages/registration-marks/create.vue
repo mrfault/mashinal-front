@@ -17,7 +17,7 @@
                >
                   <div class="col-12 col-xl-6">
                      <div class="row">
-                        <div class="col-6 col-xl-5">
+                        <div class="col-5 col-md-5">
                            <form-select
                               :label="'01 - Abşeron'"
                               :options="getRegionNumbers"
@@ -28,7 +28,7 @@
                            />
                         </div>
 
-                        <div class="col-2 col-xl-2">
+                        <div class="col-1 col-md-2" style="width: 19.4%; flex: 0 0 19.4%; max-width: 19.4%">
                            <form-select
                               :label="'A'"
                               :options="numbers"
@@ -39,7 +39,7 @@
                            />
                         </div>
 
-                        <div class="col-2 col-xl-2">
+                        <div class="col-1 col-md-2" style="width: 19.4%; flex: 0 0 19.4%; max-width: 19.4%">
                            <form-select
                               :label="'A'"
                               :options="numbers"
@@ -50,7 +50,7 @@
                            />
                         </div>
 
-                        <div class="col-2 col-xl-2">
+                        <div class="col-1 col-md-2" style="width: 19.4%; flex: 0 0 19.4%; max-width: 19.4%">
                            <form-numeric-input
                               :max-value="999"
                               :invalid="$v.region_number.$error"
@@ -61,7 +61,7 @@
                      </div>
 
                      <div class="row mt-5">
-                        <div class="col-6 col-xl-5">
+                        <div class="col-5 col-md-5">
                            <form-numeric-input
                               :placeholder="$t('price')"
                               :invalid="$v.form.price.$error"
@@ -70,7 +70,7 @@
                            />
                         </div>
 
-                        <div class="col-3 col-xl-2">
+                        <div class="col-3" style="width: 29.1%; flex: 0 0 29.1%; max-width: 29.1%">
                            <form-select
                               :label="'AZN'"
                               :options="currency"
@@ -81,7 +81,7 @@
                            />
                         </div>
 
-                        <div class="col-3 col-xl-4">
+                        <div class="col-3 col-md-4" style="width: 29.1%; flex: 0 0 29.1%; max-width: 29.1%">
                            <form-select
                               :label="$t('city')"
                               :options="cities.regions"
@@ -94,7 +94,7 @@
                      </div>
 
                      <div class="row mt-5">
-                        <div class="col-12 col-xl-11">
+                        <div class="col-12 col-xl-12">
                            <form-textarea
                               :placeholder="$t('description2')"
                               :maxlength="3000"
@@ -104,7 +104,7 @@
                      </div>
 
                      <div class="row mt-5">
-                        <div class="col-12 col-xl-11">
+                        <div class="col-12 col-lg-6 col-xl-12">
                            <h5 class="registrationMarks__create-note">
                               <inline-svg src="/icons/reason.svg"/>
 
@@ -114,7 +114,7 @@
                      </div>
 
                      <div class="row mt-5">
-                        <div class="col-12 col-xl-11">
+                        <div class="col-12 col-lg-6">
                            <button
                               :class="['btn', {'pending' : pending}]"
                            >
@@ -124,7 +124,7 @@
                      </div>
                   </div>
 
-                  <div class="col-12 col-xl-6 d-none d-xl-block">
+                  <div class="col-12 col-md-6 d-none d-xl-block">
                      <img src="/images/registrationMarks_banner.jpg" alt="registrationMarks_banner">
                   </div>
                </form>
@@ -141,7 +141,14 @@
    import {PaymentMixin} from '~/mixins/payment';
 
    export default {
+      head() {
+         return this.$headMeta({
+            title: this.$t('meta-registration_marks'),
+         });
+      },
+
       mixins: [PaymentMixin],
+
       data() {
          return {
             pending: false,
@@ -233,11 +240,6 @@
                }
             } catch (error) {
                this.pending = false;
-
-               this.updatePaidStatus({
-                  type: 'error',
-                  title: error.response.data.data[0][0]
-               });
             }
          }
       },
@@ -272,7 +274,3 @@
       }
    }
 </script>
-
-<style lang="scss">
-
-</style>

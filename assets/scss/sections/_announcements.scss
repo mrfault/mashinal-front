@@ -328,13 +328,6 @@
          }
       }
    }
-
-   .registrationMarksGridItem {
-      //position: absolute;
-      //left: calc(0 + 30px);
-      //bottom: 25px;
-      margin: 100px 0 48px 0 !important;
-   }
 }
 
 .grid-title {
@@ -396,6 +389,18 @@
       font-weight: 500;
       margin-top: 22px;
       max-width: 300px;
+   }
+
+   .dark-mode {
+      display: none;
+   }
+}
+
+@media (max-width: 576px) {
+   .no-results {
+      img {
+         width: 100%;
+      }
    }
 }
 
@@ -621,9 +626,9 @@
          font-size: 16px;
       }
 
-      img {
-         width: 50px;
-      }
+      //img {
+         //width: 50px;
+      //}
    }
 
    .announcements-sorting {
