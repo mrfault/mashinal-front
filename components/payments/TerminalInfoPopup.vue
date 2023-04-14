@@ -6,7 +6,7 @@
     :modal-class="'terminal-info-popup'"
   >
     <div class="phone-section">
-      <div class="phone">
+      <div class="phone" v-if="announcement.user">
         {{ $parsePhone(announcement.user.phone) }}
       </div>
       <span>
