@@ -29,6 +29,8 @@
             />
             <no-results v-else/>
          </template>
+
+         <HandleIds :items="carsAnnouncements.data" />
       </div>
    </div>
 </template>
@@ -39,6 +41,7 @@
    import Grid from '~/components/announcements/Grid';
    import NoResults from '~/components/elements/NoResults';
    import brand from "../../components/moderator/brand.vue";
+   import HandleIds from "~/components/announcements/HandleIds.vue";
 
    export default {
       name: 'pages-cars-index',
@@ -46,7 +49,8 @@
       components: {
          CarSearchForm,
          Grid,
-         NoResults
+         NoResults,
+         HandleIds
       },
 
       nuxtI18n: {

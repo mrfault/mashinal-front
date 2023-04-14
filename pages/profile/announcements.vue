@@ -62,9 +62,9 @@
                <pagination
                   v-if="getMyPlates?.meta?.last_page > 1"
                   :page-count="getMyPlates?.meta?.last_page"
+                  :value="getMyPlates?.meta?.current_page"
                   @change-page="changePageMarks"
                />
-<!--               :value="page"-->
 
                <no-results
                   v-if="!getMyPlates.data.length"

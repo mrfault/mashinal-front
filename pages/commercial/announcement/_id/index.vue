@@ -37,6 +37,7 @@
           </div>
         </div>
         <relatives />
+         <HandleIds :single="true" :type="'commercials'" :items="[{ id: announcement.id }]" />
       </div>
     </div>
   </div>
@@ -52,6 +53,7 @@ import ThumbsGallery from '~/components/announcements/inner/ThumbsGallery';
 import Comment from '~/components/announcements/inner/Comment';
 import Relatives from '~/components/announcements/inner/Relatives';
 import SiteBanner from "~/components/banners/SiteBanner";
+import HandleIds from "~/components/announcements/HandleIds.vue";
 
 export default {
   name: 'pages-commercial-id',
@@ -62,7 +64,8 @@ export default {
     Gallery,
     ThumbsGallery,
     Comment,
-    Relatives
+    Relatives,
+     HandleIds
   },
   nuxtI18n: {
     paths: {
