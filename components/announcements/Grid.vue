@@ -112,7 +112,7 @@
                      <site-banner @bannerLoaded="showBanner = true" v-show="showBanner" type="in-part"/>
                   </div>
                </template>
-               <template v-else-if="announcement.type === 6 && announcements.filter(item => item.type === 6).length === 5">
+               <template v-else-if="announcement.type === 6">
                   <div
                      v-if="checkSecondTemplate(index) ? !checkItemB(index, announcement) : true"
                      :class="['registrationMarks-grid',
