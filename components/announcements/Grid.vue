@@ -117,7 +117,7 @@
                      v-if="checkSecondTemplate(index) ? !checkItemB(index, announcement) : true"
                      :class="['registrationMarks-grid',
                          {
-                           'active' : (index === 15),
+                           'active' : (isMobileBreakpoint ? index === 16 : index === 15),
                            'not-mt' : (index === 17 || index === 18 || index === 19),
                            'col-lg-mid': checkItemIndex(index + 2, announcement) || (announcement.type === 6 && !isMobileBreakpoint),
                            'pt-4 mt-1': checkItemTop(index, announcement) || (announcement.external && !isMobileBreakpoint),

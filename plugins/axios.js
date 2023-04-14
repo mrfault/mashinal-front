@@ -1,7 +1,12 @@
 export default function ({ app, store, error, $axios }) {
   $axios.onRequest(config => {
+
     config.headers['locale'] = app.i18n.locale;
     config.headers['breakpointm'] = ['xs', 'sm', 'md'].includes(store.getters.breakpoint);
+
+    if(process.server) {
+       config.headers['breakpointm'] = config.headers.common['user-agent'].includes('Android') || config.headers.common['user-agent'].includes('IOS')
+    }
     config.headers['ptk'] = store.getters.ptk;
     if(app.$cookies.get('asan_token'))
       config.headers['asan-token'] = app.$cookies.get('asan_token');
