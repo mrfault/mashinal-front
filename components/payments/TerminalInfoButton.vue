@@ -1,5 +1,5 @@
 <template>
-  <p class="info-text"><icon name="alert-circle" />
+  <p class="info-text">
     <span class="text-medium cursor-pointer text-red" @click="show">{{ $t('pay_with_terminal') }}</span>
   </p>
 </template>
