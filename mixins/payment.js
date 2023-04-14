@@ -26,7 +26,6 @@ export const PaymentMixin = {
   computed: {
     ...mapGetters({bankingCards: 'bankingCards/bankingCards'}),
     ...mapGetters(['paidStatusData']),
-
     paymentMethodOptions() {
       return [
         { key: 'card', name: this.$t('pay_with_card') },
