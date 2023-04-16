@@ -70,7 +70,9 @@
                </template>
             </RegistrationMarksGrid>
 
-<!--            <floating-cta :announcement="registrationMarks.data"/>-->
+            <div v-if="isMobileBreakpoint && registrationMark.status != 3" class="mt-3 mt-lg-0">
+               <floating-cta :announcement="registrationMark"/>
+            </div>
          </div>
       </div>
    </div>

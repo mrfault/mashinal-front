@@ -394,6 +394,7 @@ export default {
       }
 
       if (!this.isMobileBreakpoint && this.$env.DEV) return this.$router.push(this.getLink)
+      // if (this.isMobileBreakpoint && this.$env.DEV) return this.$router.push(this.getLink)
     },
     handleChange(value) {
       this.selected = value

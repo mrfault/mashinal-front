@@ -399,7 +399,9 @@
 @media (max-width: 576px) {
    .no-results {
       img {
-         width: 100%;
+         &.light-mode, .dark-mode {
+            width: 100%;
+         }
       }
    }
 }
