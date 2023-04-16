@@ -234,6 +234,7 @@
                      title: this.$t('success_payment')
                   });
                } else {
+                  console.log('this.$localePath(/profile/announcements', this.$localePath('/profile/announcements'))
                   await this.handlePayment(res, this.$localePath('/profile/announcements'), this.$t('announcement_paid'));
                   if (this.getResetForm) await this.resetForm();
                   this.pending = false;

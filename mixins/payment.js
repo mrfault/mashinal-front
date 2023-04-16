@@ -79,7 +79,9 @@ export const PaymentMixin = {
 
             if (route) {
                if (paid) {
-                  this.$router.push(route, () => {
+                  console.log('route', route)
+                  console.log('this.$localePath(route)', this.$localePath(route))
+                  this.$router.push(this.$localePath(route), () => {
                      this.callUpdatePaidStatus(paid, text);
                      stopListening();
                   });
