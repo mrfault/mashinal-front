@@ -51,7 +51,7 @@ export const MenusDataMixin = {
             {icon: 'shops-tab', title: 'shops', route: '/parts/shops'},
             {icon: 'catalog-tab', title: 'autocatalog', route: '/catalog'},
             {icon: 'globe', title: 'eservices', route: '/e-services'},
-            // {icon: 'external-tab', title: 'external-salons', route: '/external-salons', with_badge: true},
+            {icon: 'external-tab', title: 'external-salons', route: '/external-salons', with_badge: true},
             {title: 'registration_marks', route: '/registration-marks', with_badge: true}
          ]
       },
