@@ -92,7 +92,7 @@ export const PaymentMixin = {
               stopListening();
             }
             if (data.payment.operation_key=='offer_payment_key' && paid) {
-              setTimeout(()=>{
+              setTimeout(() => {
                 this.$router.push('/offer');
               },2000)
             }
@@ -101,6 +101,8 @@ export const PaymentMixin = {
       }
       else {
         // redirect to kapital bank page
+        //  console.log(this.$route.path)
+        //  console.log(this.$route.path.split('/').includes('ru'))
         this.$nuxt.$loading.start();
 
         setTimeout(() => this.$nuxt.$loading.finish(), 500);
