@@ -435,7 +435,6 @@ export const actions = {
    },
 
    async nuxtServerInit({dispatch, commit}) {
-
       if (this.$auth.loggedIn) {
          await Promise.all([
             dispatch("getNotifications"),
