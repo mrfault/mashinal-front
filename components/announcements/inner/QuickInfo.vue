@@ -237,13 +237,16 @@ export default {
          }
       },
       showDeactivateButton(item) {
-         if (this.$auth.user.id == item.user.id) {
-            if (item.status == 0 || item.status == 1) {
-               return true
+         if(this.$auth.user) {
+            if (this.$auth.user.id == item.user.id) {
+               if (item.status == 0 || item.status == 1) {
+                  return true
+               }
+            } else {
+               return false
             }
-         } else {
-            return false
          }
+         return false;
       },
       showEditButton(item) {
          if (this.$auth.loggedIn == false) {
