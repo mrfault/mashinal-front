@@ -2506,7 +2506,8 @@ export default {
    "terminal_help_description" : "Xidmət dərhal tətbiq olunacaq. Hər hansı çətinlik yarandıqda *8787 Çağrı Mərkəzi ilə əlaqə saxlayın.",
    "ads_description" : "Reklam işə salındıqdan sonra istənilən vaxt xərcləri dayandıra bilərsiniz",
    "ads_day":"gün",
-   "terminal_popup_title" : "terminalları vasitəsilə balans artırılması aşağıdakı qaydadadır:"
+   "terminal_popup_title" : "terminalları vasitəsilə balans artırılması aşağıdakı qaydadadır:",
+   "plate_announce_key" : "Elan yerləşdirildi",
 
 
 }
