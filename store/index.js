@@ -395,8 +395,9 @@ const objectNotEmpty = (state, commit, property) => {
 export const actions = {
    async fetchHandleIds({commit}, data) {
       let announcementIds = data.ids.map(a => a.id);
-
-      const res = await this.$axios.$post('/announcement-view', { ids: announcementIds, type: data.type });
+      let link = 'announcement-view';
+      if(data.single)  link = 'announcement-open'
+      const res = await this.$axios.$post(link, { ids: announcementIds, type: data.type });
       commit("mutate", { property: "resetForm", value: res });
    },
 
