@@ -197,6 +197,9 @@
 
                   span {
                      font-weight: 400;
+                     text-overflow: ellipsis;
+                     overflow: hidden;
+                     white-space: nowrap;
 
                      &:not(:first-child) {
                         margin-left: 8px;

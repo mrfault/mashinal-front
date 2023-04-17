@@ -225,7 +225,8 @@
             this.form.car_number = `${this.region_id.split('-')[0].slice(0, -1)} - ${this.region_letter1}${this.region_letter2} - ${this.region_number}`;
 
             try {
-               const res = await this.$axios.$post(`/sell/plate/post/publish?is_mobile=${this.isMobileBreakpoint}`, this.form)
+               const res = await this.$axios.$post(`/sell/plate/post/publish?is_mobile=${this.isMobileBreakpoint}`, this.form);
+
                if (!res?.data?.redirect_url) {
                   await this.$nuxt.refresh();
                   this.updatePaidStatus({
@@ -234,7 +235,6 @@
                      title: this.$t('success_payment')
                   });
                } else {
-                  console.log('this.$localePath(/profile/announcements', this.$localePath('/profile/announcements'))
                   await this.handlePayment(res, this.$localePath('/profile/announcements'), this.$t('announcement_paid'));
                   if (this.getResetForm) await this.resetForm();
                   this.pending = false;

@@ -41,7 +41,7 @@
                               <span class="registrationMarks__number-description">MASHIN.AL</span>
                            </div>
 
-                           <add-favorite :announcement="registrationMark" />
+                           <add-favorite :announcement="registrationMark"  :type="'registrationMark'"/>
                         </div>
                      </client-only>
                   </div>
@@ -119,14 +119,14 @@
 
       methods: {
          changeCarImg() {
-            let local = window.localStorage.getItem('registrationCount');
-            if (local && Number(local) < 11) {
+            let local = localStorage.getItem('registrationCount');
+            if (local && Number(local) < 10) {
                let currentCount = Number(local);
 
-               window.localStorage.setItem('registrationCount', currentCount + 1);
-               this.count = Number(window.localStorage.getItem('registrationCount'));
+               localStorage.setItem('registrationCount', currentCount + 1);
+               this.count = Number(localStorage.getItem('registrationCount'));
             } else {
-               window.localStorage.setItem('registrationCount', 1);
+               localStorage.setItem('registrationCount', 1);
             }
          }
       },
