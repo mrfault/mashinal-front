@@ -137,7 +137,7 @@ export default {
       bankingCards: 'bankingCards/bankingCards'
     }),
     totalBalance() {
-      let balance = this.user.balance
+      let balance = this.user ? this.user.balance : 0;
       if(this.user && this.user.id === this.announcement.user_id) {
         if (this.announcement.is_autosalon)
           return this.$sum(balance, this.announcement.user.autosalon.balance)
