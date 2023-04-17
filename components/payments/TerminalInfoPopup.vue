@@ -15,7 +15,7 @@
     </div>
     <hr>
       <div class="description">
-        <img src="/images/milli-on.svg" alt=""> <span>terminalları vasitəsilə balans artırılması aşağıdakı qaydadadır.</span>
+        <img src="/images/milli-on.svg" alt=""> <span>{{$t('terminal_popup_title')}}</span>
       </div>
 
     <div class="steps">
@@ -32,8 +32,7 @@
 
       <div class="col-md-7">
         <p>
-          Xidmət dərhal tətbiq olunacaq. Hər hansı çətinlik
-          yarandıqda <b>*8787 Çağrı Mərkəzi</b> ilə əlaqə saxlayın.
+         {{$t('terminal_help_description')}}
         </p>
       </div>
 

@@ -963,8 +963,6 @@ export const actions = {
 
   },
 
-
-
   async getInfiniteMainPartsSearchWithoutMutate({ commit }, data = {}) {
     const res = await this.$axios.$get(
       `/grid/home_page_parts?per_page=4&page=${data.page || 1}`

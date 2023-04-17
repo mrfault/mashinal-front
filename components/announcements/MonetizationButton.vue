@@ -12,26 +12,27 @@
     >
 
       <div class="ads_statics">
-        <div>{{$t('ads_statistics',{count:selectedPlan.min_view +' - '+ selectedPlan.max_view})}}</div>
+        <div>{{$t('ads_title')}}</div>
       </div>
 
       <hr />
 
       <div class="radio-items">
         <label class="radio-container">
-          7 gün | 6.00 ₼
+
+           7 {{$t('ads_day')}} - 10 AZN
           <input type="radio" checked="checked" name="package" @change="selectPackage(7)">
           <span class="checkmark"></span>
         </label>
 
         <label class="radio-container">
-          15 gün | 13.00  ₼
+           15 {{$t('ads_day')}} - 18 AZN
           <input type="radio"   name="package" @change="selectPackage(15)">
           <span class="checkmark"></span>
         </label>
 
         <label class="radio-container">
-          30 gün | 25.00  ₼
+           30 {{$t('ads_day')}} - 35 AZN
           <input type="radio"   name="package" @change="selectPackage(30)">
           <span class="checkmark"></span>
         </label>
@@ -241,6 +242,8 @@ export default {
   created() {
     this.$axios.$get('/monetization/price/list').then((res) => {
       this.priceList = res
+
+       console.log(res)
       this.price.min = this.pricesForPlan[0]
       this.price.value = this.pricesForPlan[2]
       this.price.max = this.pricesForPlan[this.pricesForPlan.length - 1]
