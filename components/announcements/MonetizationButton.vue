@@ -186,11 +186,14 @@ export default {
 
     },
     async getAnAd() {
+       console.log(this.paymentMethod)
       if (this.pending) return
       this.pending = true
       if (!this.haveBalanceToPay) {
         this.paymentMethod = 'card'
       }
+
+
       let form = {
         id_unique: this.announcement.id_unique,
         monetize_id: this.selectedPlan.id,
@@ -247,7 +250,7 @@ export default {
       this.price.min = this.pricesForPlan[0]
       this.price.value = this.pricesForPlan[2]
       this.price.max = this.pricesForPlan[this.pricesForPlan.length - 1]
-      if (this.haveBalanceToPay) this.paymentMethod = 'balance'
+
     })
   },
 }
