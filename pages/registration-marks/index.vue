@@ -666,6 +666,12 @@
                }
             }
          }
+
+         &.index {
+            .container {
+               padding: 0 10px;
+            }
+         }
       }
    }
 
