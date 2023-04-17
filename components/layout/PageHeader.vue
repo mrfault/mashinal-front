@@ -201,19 +201,35 @@
                       :class="{ dropdown: menu.children }"
                     >
                       <nuxt-link class="external_salon_hover" style="position: relative" :to="$localePath(menu.route)">
-                        <icon
-                          v-if="menu.icon !== 'external-tab'"
-                          style="font-size: 20px; margin-right: 10px;"
-                          class="no-transform "
-                          :name="menu.icon"
-                        />
-                        <inline-svg class="no-transform " style="width: 20px; fill:inherit; margin-right: 10px;" v-else src="/img/external_salon.svg" />
+<!--                         <icon-->
+<!--                          v-if="menu.icon && menu.icon !== 'external-tab'"-->
+<!--                          style="font-size: 20px; margin-right: 10px;"-->
+<!--                          class="no-transform "-->
+<!--                          :name="menu.icon"-->
+<!--                        />-->
+
+<!--                        <inline-svg-->
+<!--                           v-else-->
+<!--                           class="no-transform"-->
+<!--                           src="/icons/registration_marks.svg"-->
+<!--                           style="margin-right: 10px;"-->
+<!--                        />-->
+
                         {{ $t(menu.title) }}
+
                         <icon name="chevron-down" v-if="menu.children" />
-                        <span style="position: absolute; top: 3px; right: 0px; display: flex;">
-                          <inline-svg style="width: 31px;" v-if="menu.icon === 'external-tab'" src="/img/new_badge.svg" />
+
+                        <span class="navbar__icon">
+                          <inline-svg
+                             class="not-hover"
+                             :width="'35px'"
+                             :height="'25px'"
+                             v-if="menu.title === 'registration_marks'"
+                             src="/icons/new_badge.svg"
+                          />
                         </span>
                       </nuxt-link>
+
                       <div
                         class="dropdown-content container"
                         style="padding-left:0;"
@@ -351,11 +367,11 @@ export default {
     font-size:35px !important;
   }
 }
-.external_salon_hover:hover,.external_salon_hover.exact-active {
-  svg, path {
-    fill:#F81734 !important;
-  }
-}
+//.external_salon_hover:hover,.external_salon_hover.exact-active {
+//  svg, path {
+//    fill:#F81734 !important;
+//  }
+//}
 .topbar-nav {
   &__menu {
     display: flex;

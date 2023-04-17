@@ -53,6 +53,14 @@
                           @change="changeReason"
                         />
                       </div>
+                      <div class="col-12 mb-1">
+                        <small
+                          v-if="single_announce.brand.id !== form.brand_id"
+                          class="input_old_value"
+                        >
+                          {{ $t('old_value_2') }}: {{ single_announce.brand.name }}
+                        </small>
+                      </div>
                       <div class="col-12 col-lg-3 ">
                         <form-select
                           v-model="form.brand_id"
@@ -85,6 +93,14 @@
                           @change="changeReason"
                         />
                       </div>
+                      <div class="col-12 mb-1">
+                        <small
+                          v-if="single_announce.model.id !== form.model_id"
+                          class="input_old_value"
+                        >
+                          {{ $t('old_value_2') }}: {{ single_announce.model.name }}
+                        </small>
+                      </div>
                       <div class="col-12 col-lg-3  ">
                         <form-select
                           v-model="form.model_id"
@@ -108,6 +124,14 @@
                           title="prod_year"
                           @change="changeReason"
                         />
+                      </div>
+                      <div class="col-12 mb-1">
+                        <small
+                          v-if="single_announce.year !== form.year"
+                          class="input_old_value"
+                        >
+                          {{ $t('old_value_2') }}: {{ single_announce.year }}
+                        </small>
                       </div>
                       <div class="col-12 col-lg-3 ">
                         <form-select
@@ -142,6 +166,13 @@
                           @change="changeReason"
                         />
                       </div>
+                      <div class="col-12 mb-1">
+                        <small v-if="single_announce.car_catalog.car_type.id !== form.car_body_type"
+                               class="input_old_value">
+                          {{ $t('old_value_2') }} :
+                          {{ getCarBodyName(single_announce.car_catalog.car_type.id, oldSellBodies) }}
+                        </small>
+                      </div>
                       <div class="col-12 col-lg-3 ">
                         <form-select
                           v-model="form.car_body_type"
@@ -175,11 +206,11 @@
                           @change="changeReason"
                         />
                       </div>
+
                       <div class="col-12 mb-1">
                         <small
                           v-if="single_announce.generation.id !== form.generation_id"
-                          class="mb-1"
-                          style="color: #081A3E"
+                          class="input_old_value"
                         >
                           {{ $t('old_value_2') }}: {{ single_announce.generation.name[locale] }}
                         </small>
@@ -207,6 +238,11 @@
                           @change="changeReason"
                         />
                       </div>
+                      <div class="col-12 mb-1">
+                        <small v-if="single_announce.car_catalog.engine_id != form.engine" class="input_old_value">
+                          {{ $t('old_value_2') }}: {{ $t('engine_values')[single_announce.car_catalog.engine_id] }}
+                        </small>
+                      </div>
                       <div class="col-12 col-lg-3 ">
                         <form-select
                           v-model="form.engine"
@@ -215,11 +251,11 @@
                           :disabled="isModerator"
                           :label="$t('engine')"
                           :options="
-                      data.engines.map((o) => ({
-                        name: $t('engine_values')[o.engine],
-                        key: o.engine,
-                      }))
-                    "
+                            data.engines.map((o) => ({
+                              name: $t('engine_values')[o.engine],
+                              key: o.engine,
+                            }))
+                          "
                           has-search
                           @change="changeEngine($event)"
                         />
@@ -235,6 +271,12 @@
                           @change="changeReason"
                         />
                       </div>
+                      <div class="col-12 mb-1">
+                        <small v-if="single_announce.car_catalog.gearing_id !== form.gearing" class="input_old_value">
+                          {{ $t('old_value_2') }}:
+                          {{ $t('type_of_drive_values')[single_announce.car_catalog.gearing_id] }}
+                        </small>
+                      </div>
                       <div class="col-12 col-lg-3">
                         <form-select
                           v-model="form.gearing"
@@ -243,9 +285,9 @@
                           :disabled="isModerator"
                           :label="$t('type_of_drive')"
                           :options="data.gearings.map((o) => ({
-                        name: $t('type_of_drive_values')[o.type_of_drive] || '',
-                        key: o.type_of_drive,
-                      }))"
+                            name: $t('type_of_drive_values')[o.type_of_drive] || '',
+                            key: o.type_of_drive,
+                          }))"
                           @change="changeGearing($event)"
                         />
 
@@ -260,6 +302,12 @@
                           required
                           @change="changeReason"
                         />
+                      </div>
+                      <div class="col-12 mb-1">
+                        <small v-if="single_announce.car_catalog.box_id !== form.transmission"
+                               class="input_old_value">
+                          {{ $t('old_value_2') }}: {{ $t('box_values')[single_announce.car_catalog.box_id] }}
+                        </small>
                       </div>
                       <div class="col-12 col-lg-3 ">
                         <form-select
@@ -291,6 +339,16 @@
                           required
                           @change="changeReason"
                         />
+                      </div>
+                      <div class="col-12 mb-1">
+                        <small v-if="single_announce.car_catalog_id !== form.car_catalog_id"
+                               class="input_old_value">
+                          {{ $t('old_value_2') }}:
+                          <!--                          {{ getModificationName(single_announce.car_catalog.car_catalog_id) }}-->
+                          {{
+                            getNameByKey(single_announce.car_catalog_id)
+                          }}
+                        </small>
                       </div>
                       <div class="col-12 col-lg-3">
                         <form-select
@@ -436,7 +494,6 @@
                 @sendData="sendData"
                 @transferToSupervisor="transferToSupervisor"
               />
-
             </div>
           </div>
         </div>
@@ -470,8 +527,6 @@
         </div>
       </div>
     </modal-popup>
-
-
   </div>
   <div
     v-else-if="!announcementIsAvailable && !loading"
@@ -639,8 +694,10 @@ export default {
       uploadedInterior360: null,
       uploadedInterior360id: null,
       transferComment: '',
-      //  timer
 
+      //old values
+      oldModifications: [],
+      oldSellBodies:[]
     }
   },
   computed: {
@@ -763,6 +820,8 @@ export default {
       let data
       try {
         data = await this.$axios.$get('/ticket/car');
+        this.oldModifications = data.modifications;
+        this.oldSellBodies = data.sell_bodies;
 
         this.$store.commit('moderator/moderatorMutator', {
           with: data.announce,
@@ -1064,6 +1123,52 @@ export default {
       }
     },
 
+    //handle name
+    getModificationName(o) {
+      let generation = this.data.generations.find(
+        (o) => o.id === this.form.generation_id,
+      )
+      let name = `${this.$t('box_mode_values')[o.box]}/${
+        generation?.start_year || this.data.sellYears[0].key
+      } - ${generation?.end_year || this.currentYear}`
+      if (o.capacity) name = `${o.capacity} ${name}`
+      if (o.power) name = `${o.power} ${this.$t('char_h_power')}/${name}`
+      if (o.complect_type) name += `/${o.complect_type}`
+      return name
+    },
+    getCarBodyName(id, arr) {
+      var temp = '';
+      for (let i = 0; i < arr.length; i++) {
+        if (id == arr[i].id) {
+          temp = arr[i].name[this.locale]
+        }
+      }
+      return temp
+    },
+    getNameByKey(id) {
+      var name;
+      var arr = Object.values(JSON.parse(JSON.stringify(this.oldModifications)));
+      var generation = this.data.generations.find(
+        (o) => o.id === this.form.generation_id,
+      )
+      for (let i = 0; i < arr.length; i++) {
+        var element = arr[i]
+        console.log("element", element)
+        if (id == element.id) {
+          var o = element;
+          console.log("ahey ahey", id)
+          name = `${this.$t('box_mode_values')[o.box]}/${
+            generation?.start_year || this.data.sellYears[0].key
+          } - ${generation?.end_year || this.currentYear}`
+          if (o.capacity) name = `${o.capacity} ${name}`
+          if (o.power) name = `${o.power} ${this.$t('char_h_power')}/${name}`
+          if (o.complect_type) name += `/${o.complect_type}`
+
+        }
+      }
+      return name;
+    },
+
     // handle lists
     handleLoading(e) {
       this.loading = e;
@@ -1087,18 +1192,6 @@ export default {
         },
       }[key][value]
     },
-    getModificationName(o) {
-      let generation = this.data.generations.find(
-        (o) => o.id === this.form.generation_id,
-      )
-      let name = `${this.$t('box_mode_values')[o.box]}/${
-        generation?.start_year || this.data.sellYears[0].key
-      } - ${generation?.end_year || this.currentYear}`
-      if (o.capacity) name = `${o.capacity} ${name}`
-      if (o.power) name = `${o.power} ${this.$t('char_h_power')}/${name}`
-      if (o.complect_type) name += `/${o.complect_type}`
-      return name
-    },
     getFormValues(keys) {
       let form = {}
       keys.map((key) => {
@@ -1112,7 +1205,6 @@ export default {
       })
       return form
     },
-
     changeReason(rejectKey) {
       if (rejectKey === 'image') {
         this.imageModal.isOpen = true
@@ -1342,13 +1434,11 @@ export default {
           with: data.announce,
           property: 'single_announce'
         })
-
-
       }
     },
 
 
-// handle image reject
+    // handle image reject
     saveImageRejects() {
       this.rejectObj.rejectArray = this.rejectObj.rejectArray.concat(this.imageModal.rejectArray);
       this.removeDuplicates()
@@ -1375,7 +1465,7 @@ export default {
       this.$nuxt.$emit('image-checkbox-change', validCheckbox)
     },
 
-//handle change
+    //handle change
     async changeBrand(e) {
       this.form.model_id = null;
       this.form.model = "";
@@ -1436,7 +1526,7 @@ export default {
     },
 
 
-// post
+    // post
     async transferToSupervisor(withRejectReason = false) {
       console.log('transferToSupervisor')
       this.button_loading = true

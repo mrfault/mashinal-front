@@ -230,7 +230,7 @@ export default {
     }),
     crumbs() {
       return [
-        {name: 'Super təklif paneli', route: '/offer/offers'},
+        {name: 'Super təklif paneli', route: '/offer/offers?param=all'},
       ]
     },
   },
@@ -249,8 +249,8 @@ export default {
       this.$set(this, 'files', files);
     },
     async changePage(param) {
-      this.chat.text = ''
 
+      this.chat.text = ''
       this.$router.push({
         path: 'offers',
         params: param,
@@ -305,7 +305,7 @@ export default {
       if (this.isMobileBreakpoint) {
         this.$router.push(this.$localePath('/offer') + '/' + id)
       } else {
-        await this.checkAccepted(id)
+       // await this.checkAccepted(id)
 
 
         this.userOffer = this.userOffers.find(function (offer) {
@@ -342,7 +342,7 @@ export default {
     },
     async accept(id) {
       await this.$store.dispatch('userAcceptOffer', {id})
-      this.$store.dispatch('OffersAcceptedByAutoSalon', this.$route.query)
+      //this.$store.dispatch('OffersAcceptedByAutoSalon', this.$route.query)
       this.checkAccepted(id)
     },
     async deleteUserAutoSalonOffer(id) {
@@ -363,13 +363,13 @@ export default {
   created() {
 
     if (this.$route.query.c && this.$route.query.c != null) {
-      console.log('created')
+
       this.getUserOfferDetail(parseInt(this.$route.query.c))
     }
 
 
     if (!Object.keys(this.$route.query).length > 0) {
-      console.log(11111111111111111111111111111111111111111)
+
       this.$router.push({
         query: {
           param: 'all',
@@ -379,8 +379,8 @@ export default {
     }
   },
   watch: {
-    async $route(newVal, oldVal) {
-      await this.$store.dispatch('OffersAcceptedByAutoSalon', newVal.query)
+     '$route.query'(newVal, oldVal) {
+       this.$store.dispatch('OffersAcceptedByAutoSalon', newVal)
     },
     search(newVal) {
 

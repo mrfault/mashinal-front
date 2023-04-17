@@ -1,4 +1,3 @@
-`
 <template>
   <div :class="colClass || 'stratch-child-block'">
     <div
@@ -15,6 +14,7 @@
       >
         <span class="sr-only">{{ getAnnouncementTitle(announcement) }}</span>
       </a>
+
       <div class="d-flex">
         <div>
           <div
@@ -47,6 +47,7 @@
       >
         <span class="sr-only">{{ getAnnouncementTitle(announcement) }}</span>
       </a>
+
       <div
         class="item-bg"
         role="img"
@@ -57,10 +58,10 @@
         <div class="item-overlay" v-if="showOverlay">
           <div class="item-overlay__top">
             <div class="item-overlay__top--left">
+<!--               <pre style="background-color: white">{{announcement}}</pre>-->
                 <add-favorite
                   v-if="!isProfilePage"
                   :announcement="announcement"
-
                 />
             </div>
             <div
@@ -381,22 +382,19 @@ export default {
       return filters.shine_width.name + '/' + filters.height.name + 'R' + filters.diameter.name
     },
     goToAnnouncement() {
-      if (!this.clickable) return
+      if (!this.clickable) return;
 
       if (this.trackViews) {
         this.fbTrack('ViewContent', {
           content_type: 'product',
           content_category: this.getType,
           content_ids: [this.announcement.id_unique],
-          content_name:
-            this.getAnnouncementTitle(this.announcement) +
-            ', ' +
-            this.announcement.year,
+          content_name: this.getAnnouncementTitle(this.announcement) + ', ' + this.announcement.year
         })
       }
 
-      if (!this.isMobileBreakpoint && !this.$env.DEV) return
-      this.$router.push(this.getLink)
+      if (!this.isMobileBreakpoint && this.$env.DEV) return this.$router.push(this.getLink)
+      // if (this.isMobileBreakpoint && this.$env.DEV) return this.$router.push(this.getLink)
     },
     handleChange(value) {
       this.selected = value

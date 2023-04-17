@@ -38,6 +38,7 @@ export default {
   },
   methods: {
     async infiniteScroll() {
+
       let prevRes;
 
       if(this.actionB) {

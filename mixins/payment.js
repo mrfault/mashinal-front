@@ -1,7 +1,5 @@
 import { mapGetters, mapActions } from 'vuex';
-
 import { SocketMixin } from '~/mixins/socket';
-
 import SelectBankingCard from '~/components/payments/SelectBankingCard';
 import TerminalInfoButton from '~/components/payments/TerminalInfoButton';
 import TerminalInfoPopup from '~/components/payments/TerminalInfoPopup';
@@ -26,7 +24,6 @@ export const PaymentMixin = {
   computed: {
     ...mapGetters({bankingCards: 'bankingCards/bankingCards'}),
     ...mapGetters(['paidStatusData']),
-
     paymentMethodOptions() {
       return [
         { key: 'card', name: this.$t('pay_with_card') },
@@ -51,9 +48,9 @@ export const PaymentMixin = {
         let size = ({ v1: 'width=494,height=718', v2: 'width=1042,height=725' })[version];
         window.open((res?.data?.redirect_url || res), 'purchaseservice', 'toolbar=yes,scrollbars=yes,resizable=yes,top=50,left=100,'+size);
         let payment_id = res?.data?.payment_id;
+
         if (payment_id) {
           this.connectEcho(`purchase.${payment_id}`, false).listen('PurchaseInitiated', async (data) => {
-
             this.showPaymentModal = false;
             let { is_paid, status } = data.payment;
             let paid = is_paid || status === 1;
@@ -61,7 +58,7 @@ export const PaymentMixin = {
             route = (route instanceof Array) ? (route[paid ? 0 : 1]) : route;
 
             if (paid) {
-              if(data.payment.operation_key === 'attorney_pay') {
+              if (data.payment.operation_key === 'attorney_pay') {
                 return this.$router.push({path: this.$localePath('/garage'), query: { tab: 'attorney-list' }})
               }
               if (this.loggedIn)
@@ -70,6 +67,7 @@ export const PaymentMixin = {
                 await this.$nuxt.refresh();
                 this.callUpdatePaidStatus(paid, text);
               }
+
             } else {
               this.callUpdatePaidStatus(paid);
             }
@@ -79,24 +77,32 @@ export const PaymentMixin = {
             }
 
             if (route) {
-              this.$router.push(route, () => {
-                this.callUpdatePaidStatus(paid, text);
-                stopListening();
-              });
+               if (paid) {
+                  this.$router.push(route, () => {
+                     this.callUpdatePaidStatus(paid, text);
+                     stopListening();
+                  });
+               }
+               else {
+                  this.$store.dispatch('fetchResetForm', false);
+                  this.callUpdatePaidStatus(paid, text);
+                  stopListening();
+               }
             } else {
               stopListening();
             }
-            if (data.payment.operation_key=='offer_payment_key' && paid){
+            if (data.payment.operation_key=='offer_payment_key' && paid) {
               setTimeout(()=>{
-                this.$router.push('/offer')
+                this.$router.push('/offer');
               },2000)
             }
-
           });
         }
-      } else {
+      }
+      else {
         // redirect to kapital bank page
         this.$nuxt.$loading.start();
+
         setTimeout(() => this.$nuxt.$loading.finish(), 500);
         window.location = res?.data?.redirect_url || res;
       }

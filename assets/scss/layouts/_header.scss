@@ -222,6 +222,7 @@
   }
 
   .navbar {
+    padding: 11px 0;
     background-color: $white;
     border-radius: 0 0 20px 20px;
 
@@ -243,9 +244,19 @@
           color: inherit;
           font-weight: 500;
 
-          &.active,
-          &:hover {
+          &.active {
             color: $red-1;
+
+            svg {
+              &:not(.not-hover) {
+                path {
+                  fill: $red-1;
+                }
+                rect {
+                  stroke: $red-1;
+                }
+              }
+            }
           }
         }
 
@@ -272,6 +283,17 @@
     .menu > li:hover {
       & > a {
         color: $red-1;
+
+        svg {
+          &:not(.not-hover) {
+            path {
+              fill: $red-1;
+            }
+            rect {
+              stroke: $red-1;
+            }
+          }
+        }
 
         i {
           transform: scaleY(-1);
@@ -325,6 +347,13 @@
         }
       }
     }
+
+     &__icon {
+        position: absolute;
+        top: -4px;
+        right: 17px;
+        display: flex;
+     }
   }
 }
 
@@ -356,10 +385,21 @@
   width: 14px;
 
 }
+
 .dark-mode {
   .salon-car-icon {
     path {
       fill: white;
     }
   }
+}
+
+@media (max-width: 1280px) {
+   .page-header {
+      .navbar {
+         &__icon {
+            right: 10px;
+         }
+      }
+   }
 }

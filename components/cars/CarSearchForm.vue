@@ -48,6 +48,7 @@
                 </a>
               </nuxt-link>
             </div>
+
             <div class="col-4" v-if="!onlySavedSearch">
               <nuxt-link
                 custom
@@ -298,10 +299,7 @@
                   <form-select
                     :label="$t('fuel')"
                     v-model="form.engine_type"
-                    :options="
-                        bodyOptions.main.default_options['tip-dvigatelya']
-                          .values
-                      "
+                    :options="bodyOptions.main.default_options['tip-dvigatelya'].values"
                     multiple
                     name-in-value
                     translate-options
@@ -1101,8 +1099,8 @@ export default {
       let brand = this.brands.find((option) => option.id == id)
       let slug = brand?.slug || ''
       this.$set(this.form.additional_brands[index], 'brand', id)
-      this.$set(this.form.additional_brands[index], 'brand_slug', slug)
-      ;[
+      this.$set(this.form.additional_brands[index], 'brand_slug', slug);
+      [
         'model',
         'model_slug',
         'model_name',
@@ -1112,19 +1110,18 @@ export default {
       ].map((key) => {
         this.$set(this.form.additional_brands[index], key, '')
       })
+
       if (id)  {
         this.getModelsArray({ value: slug, index })
-
       }
-
-
     },
+
     async setBrandExclude(id, index) {
       let brand = this.brands.find((option) => option.id == id)
       let slug = brand?.slug || ''
       this.$set(this.form.exclude_additional_brands[index], 'brand', id)
-      this.$set(this.form.exclude_additional_brands[index], 'brand_slug', slug)
-      ;[
+      this.$set(this.form.exclude_additional_brands[index], 'brand_slug', slug);
+      [
         'model',
         'model_slug',
         'model_name',

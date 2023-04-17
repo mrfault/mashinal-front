@@ -62,9 +62,13 @@ Vue.use({
         scrollTo(el, offset = 0, duration = 500, container = 'body') {
           if (document.body.classList.contains('mobile-screen-open'))
             container = '.mobile-screen > .container';
+
           if (el === 0) el = 'body';
+
           if (typeof el === 'string' && !document.querySelector(el)) return;
+
           if (typeof offset === 'object') offset = this.isMobileBreakpoint ? offset[0] : offset[1];
+
           offset += (this.isMobileBreakpoint ? -60 : -141);
           this.$scrollTo(el, duration, { offset, container });
         },
@@ -161,12 +165,13 @@ Vue.use({
           }
         },
         getAnnouncementType(item) {
-          if(item.moto_brand) return 'Motorcycle';
+          if (item.moto_brand) return 'Motorcycle';
           else if(item.scooter_brand) return 'Scooter';
           else if(item.moto_atv_brand) return 'Atv';
           else if(item.commercial_brand) return 'Commercial';
           else if(item.car_catalog) return 'Car';
           else if(item.title) return 'Part';
+          else if(item.type === 6) return 'Plate';
           return '';
         },
         getAnnouncementTextLine(item) {

@@ -36,14 +36,15 @@
     </div>
 
     <div class="mt-3 mb-5">
-      <Generations :selected="form[index].generations" :generations="offerGenerations[index]" @change="changeGenerations"
+      <Generations :selected="form[index].generations" :generations="offerGenerations[index]"
+                   @change="changeGenerations"
                    v-if="(index==0 || (form[index].brand && form[index].model)) "/>
     </div>
     <div class="mb-3 box " ref="sell-modification">
       <h2 class="title-with-line full-width">
         <span>{{ $t('box') }} <span class="star"> *</span></span>
       </h2>
-      <offer-form-buttons v-model="form[index].box"
+      <offer-form-buttons v-model="form[index].gearBoxes"
                           :options="boxValues"
                           :btn-class="'primary-outline'" :group-by="isMobileBreakpoint ? 1 : 5"
                           @change="changeGearBox">
@@ -57,7 +58,7 @@
       <h2 class="title-with-line full-width">
         <span>{{ $t('fuel') }} <span class="star"> *</span></span>
       </h2>
-      <offer-form-buttons v-model="form[index].engine"
+      <offer-form-buttons v-model="form[index].fuelTypes"
                           :options="engineValues"
                           :btn-class="'primary-outline'" :group-by="isMobileBreakpoint ? 1 : 5"
                           @change="changeFuelTypes">
@@ -108,12 +109,14 @@
               </h2>
               <div class="priceBeetwen">
                 <div class="w-100">
-                  <form-numeric-input  :max-value="1000000" id="minPrice" type="number"
-                                      v-model="form[index].minPrice" class="priceInput" placeholder="Qiymət aralığı min."/>
+                  <form-numeric-input :max-value="1000000" id="minPrice" type="number"
+                                      v-model="form[index].minPrice" class="priceInput"
+                                      placeholder="Min."/>
                 </div>
                 <div class="">
 
-                  <form-numeric-input :max-value="1000000"  id="maxPrice" type="number" placeholder="maks."  v-model="form[index].maxPrice" class="priceInput" @change="changeMaxPrice()"/>
+                  <form-numeric-input :max-value="1000000" id="maxPrice" type="number" placeholder="maks."
+                                      v-model="form[index].maxPrice" class="priceInput" @change="changeMaxPrice()"/>
                 </div>
               </div>
             </div>
@@ -213,7 +216,8 @@ export default {
           selectedInteriorColor: null,
           selectedColors: [],
           is_matte: false,
-          generations: []
+          generations: [],
+
         },
         {
           brand: null,
@@ -227,7 +231,8 @@ export default {
           selectedInteriorColor: null,
           selectedColors: [],
           is_matte: false,
-          generations: []
+          generations: [],
+
         }
       ]
     }
@@ -258,11 +263,13 @@ export default {
   },
   methods: {
     changeGearBox(values) {
+      console.log(this.form[this.index].box)
       this.form[this.index].gearBoxes = values;
 
     },
 
     changeFuelTypes(values) {
+      console.log(values)
       this.form[this.index].fuelTypes = values
 
     },
@@ -304,7 +311,7 @@ export default {
 
         this.$store.dispatch('getModels', slug)
       }
-      this.form[this.index].model=null
+      this.form[this.index].model = null
 
       this.form[this.index].generations = [];
     },
@@ -316,8 +323,11 @@ export default {
         await this.$store.dispatch('getOfferGenerations', {
           brand: this.brand_object.slug,
           model: slug,
-          index:this.index
+          index: this.index
         })
+        if (this.offerGenerations[this.index].length == 1) {
+          this.form[this.index].generations.push(this.offerGenerations[this.index][0].id)
+        }
 
         this.model_object = this.models.find((option) => option.slug === slug)
         this.form[this.index].model = this.model_object.slug
@@ -365,23 +375,37 @@ export default {
     }
 
   },
-async beforeCreate(){
+  async beforeCreate() {
 
-},
+  },
   async created() {
-   await this.$store.dispatch('getOfferGenerations', {
+    await this.$store.dispatch('getOfferGenerations', {
       brand: this.$route.query.brand,
       model: this.$route.query.model,
-      index:this.index
+      index: this.index
     })
-
 
 
     this.$store.commit('setOfferAddLoader', {status: false})
     this.$store.commit('openOfferPaymentModal', {status: false})
-    console.log(this.offerGenerations)
+
+
+
+
     if (this.offerGenerations[this.index].length == 1) {
       this.form[this.index].generations.push(this.offerGenerations[this.index][0].id)
+
+
+
+      this.$store.commit('appendOfferSelectedModels', {
+        index: this.index,
+        data: {
+          img: this.offerGenerations[this.index].find((option) => option.id === this.offerGenerations[this.index][0].id).car_type_generation[0].transformed_media.main[0],
+          year: this.offerGenerations[this.index].find((option) => option.id === this.offerGenerations[this.index][0].id).start_year + ' - ' + this.offerGenerations[this.index].find((option) => option.id === this.offerGenerations[this.index][0].id).end_year
+        }
+      })
+
+
     }
 
     if (this.index == 0) {
@@ -424,7 +448,7 @@ async beforeCreate(){
         this.$store.commit('setOfferAnnouncement', {index: this.index, form: newVal})
       }
     },
-    index(){
+    index() {
       console.log(this.index)
     }
   }

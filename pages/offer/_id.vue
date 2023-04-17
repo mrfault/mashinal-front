@@ -12,12 +12,12 @@
          <div class="userImg" :style="'background-image: url('+(autoSalonOffer.data.auto_salon ? autoSalonOffer.data.auto_salon : '/images/offer/salon_no_logo.svg') +')'" ></div>
 
         <p class="mt-2 ml-2 text-bold" >
-          {{ offer.user.full_name }}
+          {{autoSalonOffer.data.auto_salon.name}}
         </p>
         <div class="actions" >
 
               <span @click="deleteUserAutoSalonOffer(autoSalonOffer.data.auto_salon_offer_id)"
-                    v-if="!autoSalonOffer.user_deleted_at"> <icon
+                    v-if="!autoSalonOffer.data.user_deleted_at"> <icon
                 name="garbage"></icon></span>
         </div>
       </div>
@@ -71,7 +71,8 @@
               :sending="false"
               :message="false"
               v-model="chat.text"
-              :send-button-disabled="chat.text.length > 0 ||  files.length  >  0 ? false : true"
+              :send-button-disabled="messageButtonDisabled"
+
             />
             <img src="" :ref="'attachment-'+key" alt=""/>
             <div class="addLink"></div>
@@ -130,7 +131,8 @@ export default {
       id: route.params.id,
       type: 'auto_salon'
     })
-    await store.dispatch('OffersAcceptedByAutoSalon',route.params.id)
+    if(process.server)
+      await store.dispatch('OffersAcceptedByAutoSalon',route.params.id)
 
 
     let res = await $axios.$post('/offer/user/offer/check/' + route.params.id)
@@ -159,6 +161,7 @@ export default {
       auto_salon_offer_id:null,
       auto_salon_deleted: true,
       user_deleted:true,
+      messageButtonDisabled: false,
     }
   },
   methods: {
@@ -172,6 +175,7 @@ export default {
       this.$set(this, 'files', files);
     },
     async submitMessage() {
+      this.messageButtonDisabled = true;
       let formData = new FormData();
 
       formData.append('recipient_id', this.userOffer.auto_salon.user_id)
@@ -197,6 +201,9 @@ export default {
 
       })
       this.$nuxt.$emit('clear-message-attachments');
+      setTimeout(() => {
+        this.messageButtonDisabled = false;
+      }, 2000)
     },
     async checkAccepted(id) {
 
@@ -254,7 +261,7 @@ export default {
   },
   watch: {
     async $route(newVal, oldVal) {
-      await this.$store.dispatch('OffersAcceptedByAutoSalon', newVal.query.param)
+     // await this.$store.dispatch('OffersAcceptedByAutoSalon', newVal.query.param)
     }
   }
 }

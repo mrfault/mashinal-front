@@ -71,9 +71,10 @@ export const SearchMixin = {
         this.rows.map(this.removeSearchRow);
         this.setBrand('', this.rows[0]);
         // reset other options
-        ['min_year','max_year','price_from','price_to','region',
-         'min_capacity','max_capacity','mileage_from','mileage_to','damage','customs']
-          .map(key => { this.$set(this.form, key, ''); });
+        [
+           'min_year', 'max_year', 'price_from', 'price_to', 'region', 'min_capacity',
+           'max_capacity', 'mileage_from', 'mileage_to', 'damage', 'customs'
+        ].map(key => { this.$set(this.form, key, ''); });
         ['body','korobka','engine_type','gearing','n_of_seats','colors']
           .map(key => { this.$set(this.form, key, []); });
         ['credit','exchange_possible','is_matte','in_garanty','with_video']
@@ -110,17 +111,19 @@ export const SearchMixin = {
       }
     },
     async submitForm(scroll = true) {
-
       this.beforeSubmitForm();
+
       try {
         // tracking
         this.fbTrack('Search Api');
         this.gtagTrack('AW-600951956/Qeu4CILAyPIBEJSZx54C');
-      }catch (e) {}
+      } catch (e) {}
+
       // update route query params and search announcements
       let searchQuery = `${this.meta.param}=${encodeURI(JSON.stringify(this.getFormData()))}`;
       let searchUrl = `${this.$localePath(this.meta.path)}?${searchQuery}`;
       let searchSame = decodeURIComponent(searchUrl) === decodeURIComponent(this.$route.fullPath);
+
       this.$emit('pending');
       if (searchSame) {
           this.$emit('submit');

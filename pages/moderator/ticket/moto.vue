@@ -3,7 +3,6 @@
     <elements-loader></elements-loader>
   </div>
 
-
   <div v-else-if="single_announce && single_announce.id && !loading" class="w-100"
        style="box-sizing: border-box;overflow: hidden">
     <div class="container  px-3 px-md-0">

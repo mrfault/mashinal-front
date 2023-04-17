@@ -14,8 +14,8 @@
         <p class="mt-2 ml-2 text-bold">
           {{ offer.user.full_name }}
         </p>
-        <div class="actions m-1" v-if="IsAccepted">
-
+        <div class="actions m-1 d-flex" v-if="IsAccepted">
+          <span @click="addFavorite(offer.id)" :class="offer.isFavorite ? 'isFavorite' : 'favorite'" v-if="!offer.deleted"><icon name="star"/> </span>
               <span @click="deleteUserAutoSalonOffer(offer.id)"  v-if="!offer.auto_salon_deleted_at || this.IsAccepted"> <icon
                 name="garbage"></icon></span>
         </div>
@@ -160,6 +160,12 @@ export default {
     }
   },
   methods: {
+    async addFavorite(id) {
+      await this.$store.dispatch('offerAddFavorite', id)
+
+      this.$store.dispatch('getAllOffers', this.$route.query)
+
+    },
     isMyMessage(message) {
       return this.user.id === message.sender.id
     },

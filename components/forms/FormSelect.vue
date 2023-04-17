@@ -1,5 +1,5 @@
 <template>
-  <div class="form-group">
+  <div :class="['form-group', className]">
     <div :class="['select-menu', { 'no-bg': hasNoBg, invalid, wider }]">
       <span
         :class="[
@@ -348,17 +348,28 @@ export default {
       type: Array,
       default: () => [],
     },
+     className: {
+      type: String
+    },
     custom: Boolean,
     customCheckboxes: Boolean,
     anchor: {
       type: String,
       default: 'left',
     },
+     valueType: {
+      type: String,
+      default: '',
+    },
     multiple: Boolean,
     disabled: Boolean,
     label: {
       type: String,
       default: '',
+    },
+     clearPlaceholder: {
+      type: Boolean,
+      default: false,
     },
     iconName: {
       type: String,
@@ -528,9 +539,8 @@ export default {
           }
         }
         if (!this.multiple) this.showOptions = false
-        // emit changes
-        this.$emit('input', value)
-        this.$emit('change', value)
+         this.$emit('input', value)
+         this.$emit('change', value)
       },
     },
     selectGeneration: {
@@ -552,15 +562,23 @@ export default {
       return this.options.filter(this.isSelected)
     },
     getFilteredOptions() {
-      if (!this.search || !this.hasSearch) return this.getOptions
-      return this.options.filter((option) =>
-        this.$search(this.getOptionName(option), this.search),
-      )
+      if (!this.search || !this.hasSearch) return this.getOptions;
+
+      // return this.options.filter((option) =>
+      //   this.$search(this.getOptionName(option), this.search),
+      // )
+
+       let searchLength = this.search.length;
+       return this.options?.filter(item => {
+          let itemName = item?.name.toLowerCase().split('').slice(0, searchLength).join('');
+          if (itemName === this.search) return item?.name;
+       })
     },
     getLabelText() {
       if (this.custom) {
-        let value
-        let read = this.values.read !== false
+        let value;
+        let read = this.values.read !== false;
+
         if (this.values.from && this.values.to)
           value = `${this.$readNumber(
             this.values.from,
@@ -585,7 +603,6 @@ export default {
       }
 
       let selected = this.getSelectedOptions
-
       if (this.shortNamesLabel) {
         return selected.length
           ? `${this.label}: ${selected
@@ -593,6 +610,14 @@ export default {
               .join(', ')}`
           : this.label
       }
+
+       if (this.clearPlaceholder) {
+          if (!selected.length) {
+              return this.label
+          } else {
+             return selected[0]?.name;
+          }
+       }
 
       return selected.length === 1
         ? `${
@@ -726,3 +751,30 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+   .form-group {
+      &.notAny {
+         .select-menu_dropdown-option {
+            &:first-child {
+               //.text-truncate {
+               //   span {
+                     display: none;
+                     //opacity: 0;
+                  //}
+               //}
+               //height: 0;
+               //opacity: 0;
+            }
+         }
+      }
+
+      &.new {
+         .select-menu_dropdown {
+            &.anchor-bottom {
+               top: 65px;
+            }
+         }
+      }
+   }
+</style>
