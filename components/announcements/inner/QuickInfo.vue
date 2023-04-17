@@ -186,6 +186,10 @@ export default {
    props: {
       type: String,
       brief: Boolean,
+      // item: {
+      //    type: Object,
+      //    default() { return {} }
+      // }
    },
    data() {
       return {
@@ -287,7 +291,7 @@ export default {
 
             .divider {
                &:not(:first-child) {
-                  margin-left: 15px;
+                  margin: 0 auto;
                }
 
                img {

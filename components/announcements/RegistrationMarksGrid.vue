@@ -93,6 +93,7 @@
       .registrationMarksGrid {
          &__title {
             font-size: 28px;
+            line-height: 30px;
          }
 
          &__items {
@@ -142,6 +143,7 @@
 
          &__title {
             font-size: 20px;
+            line-height: 22px;
          }
       }
    }

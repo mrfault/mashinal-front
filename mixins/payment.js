@@ -44,7 +44,6 @@ export const PaymentMixin = {
       this.updatePaidStatus({ type, text, title: this.$t(`${type}_payment`) });
     },
     handlePayment(res, route = false, text = '', version = 'v1') {
-
       if (!this.isMobileBreakpoint) {
         let size = ({ v1: 'width=494,height=718', v2: 'width=1042,height=725' })[version];
         window.open((res?.data?.redirect_url || res), 'purchaseservice', 'toolbar=yes,scrollbars=yes,resizable=yes,top=50,left=100,'+size);
@@ -79,13 +78,12 @@ export const PaymentMixin = {
 
             if (route) {
                if (paid) {
-                  console.log('route', route)
-                  console.log('this.$localePath(route)', this.$localePath(route))
-                  this.$router.push(this.$localePath(route), () => {
+                  this.$router.push(route, () => {
                      this.callUpdatePaidStatus(paid, text);
                      stopListening();
                   });
-               } else {
+               }
+               else {
                   this.$store.dispatch('fetchResetForm', false);
                   this.callUpdatePaidStatus(paid, text);
                   stopListening();
@@ -93,14 +91,15 @@ export const PaymentMixin = {
             } else {
               stopListening();
             }
-            if (data.payment.operation_key=='offer_payment_key' && paid){
+            if (data.payment.operation_key=='offer_payment_key' && paid) {
               setTimeout(()=>{
-                this.$router.push('/offer')
+                this.$router.push('/offer');
               },2000)
             }
           });
         }
-      } else {
+      }
+      else {
         // redirect to kapital bank page
         this.$nuxt.$loading.start();
 
