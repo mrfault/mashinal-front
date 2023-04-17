@@ -964,19 +964,18 @@ export const actions = {
 
    },
 
-
-   async getInfiniteMainPartsSearchWithoutMutate({commit}, data = {}) {
-      const res = await this.$axios.$get(
-         `/grid/home_page_parts?per_page=4&page=${data.page || 1}`
-      );
-      commit("mutate", {property: "temporaryLazyDataB", value: res});
-   },
-   async getInfiniteMainPartsSearch({commit}, data = {}) {
-      const res = await this.$axios.$get(
-         `/grid/home_page_parts?per_page=4&page=${data.page || 1}`
-      );
-      commit("mutate", {property: "mainPartsAnnouncements", value: res});
-   },
+  async getInfiniteMainPartsSearchWithoutMutate({ commit }, data = {}) {
+    const res = await this.$axios.$get(
+      `/grid/home_page_parts?per_page=4&page=${data.page || 1}`
+    );
+    commit("mutate", { property: "temporaryLazyDataB", value: res });
+  },
+  async getInfiniteMainPartsSearch({ commit }, data = {}) {
+    const res = await this.$axios.$get(
+      `/grid/home_page_parts?per_page=4&page=${data.page || 1}`
+    );
+    commit("mutate", { property: "mainPartsAnnouncements", value: res });
+  },
 
    async getInfiniteMainPartsPageSearchWithoutMutate({commit}, payload = {}) {
       const body = payload ? {...payload} : {};

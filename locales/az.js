@@ -2502,8 +2502,11 @@ export default {
    "after_seconds_auto_reload_with": "saniyə sonra avtomatik yenilənəcəkdir",
    "terminal_payment_rules" : "terminalları vasitəsilə balans artırılması aşağıdakı qaydadadır.",
    "ads_statistics" : "Elanınız təqribən {count} dəfə alıcılara göstəriləcək",
+   "ads_title" : "Elanınız ana səhifədə önə çıxarılacaq və daha çox müştəriyə göstəriləcək.",
    "terminal_help_description" : "Xidmət dərhal tətbiq olunacaq. Hər hansı çətinlik yarandıqda *8787 Çağrı Mərkəzi ilə əlaqə saxlayın.",
-   "ads_description" : "Reklam işə salındıqdan sonra istənilən vaxt xərcləri dayandıra bilərsiniz"
+   "ads_description" : "Reklam işə salındıqdan sonra istənilən vaxt xərcləri dayandıra bilərsiniz",
+   "ads_day":"gün",
+   "terminal_popup_title" : "terminalları vasitəsilə balans artırılması aşağıdakı qaydadadır:"
 
 
 }
