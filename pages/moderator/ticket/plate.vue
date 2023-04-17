@@ -1,5 +1,5 @@
 <template>
-   <div class="registrationMarks">
+   <div class="registrationMarks moderator">
       <div class="container p-0">
          <breadcrumbs :crumbs="crumbs" />
 
@@ -100,7 +100,7 @@
                      </div>
 
                      <div class="row mt-5">
-                        <div class="col-1 col-xl-1 btns" style="width: 46%; flex: 0 0 46%; max-width: 46%;">
+                        <div class="col-1 col-xl-1 mb-1 btns" style="width: 30.5%; flex: 0 0 30.5%; max-width: 30.5%;">
                            <button
                               :class="['btn', {'pending' : pending}]"
                               @click="handleSubmit(1)"
@@ -109,12 +109,21 @@
                            </button>
                         </div>
 
-                        <div class="col-1 col-xl-1 btns" style="width: 46%; flex: 0 0 46%; max-width: 46%;">
+                        <div class="col-1 col-xl-1 mb-1 btns" style="width: 30.5%; flex: 0 0 30.5%; max-width: 30.5%;">
                            <button
                               :class="['btn red', {'pending' : pending}]"
                               @click="handleSubmit(0)"
                            >
                               {{ $t('reject') }}
+                           </button>
+                        </div>
+
+                        <div class="col-1 col-xl-1 btns" style="width: 30.5%; flex: 0 0 30.5%; max-width: 30.5%;">
+                           <button
+                              :class="['btn', { 'pending' : pending }]"
+                              @click="handleSubmit(3)"
+                           >
+                              {{ $t('sold') }}
                            </button>
                         </div>
                      </div>

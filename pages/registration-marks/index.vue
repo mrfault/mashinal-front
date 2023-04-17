@@ -107,6 +107,7 @@
                         :label="$t('show_cheap_first')"
                         :options="sortItems"
                         :clearPlaceholder="true"
+                        :clear-option="false"
                         v-model="form.sorting"
                         has-search
                      />
@@ -145,8 +146,8 @@
    export default {
       head() {
          return this.$headMeta({
-            title: this.$t('meta-registration_marks'),
-            description: this.$t('meta-registration_marks')
+            title: this.$t('registration_marks'),
+            // description: this.$t('meta-registration_marks')
          });
       },
 
@@ -170,7 +171,7 @@
                price_to: '',
                currency_id: '',
                region_id: '',
-               sorting: '',
+               sorting: 'created_at_desc',
                page: 1
             },
 
@@ -208,6 +209,7 @@
                // { id: 3, name: 'EUR' }
             ],
             sortItems: [
+               { id: 'created_at_desc', name: this.$t('show_by_date') },
                { id: 'price_asc', name: this.$t('show_cheap_first') },
                { id: 'price_desc', name: this.$t('show_expensive_first') }
             ]
@@ -287,7 +289,7 @@
 
       async asyncData({ store }) {
          await store.dispatch('fetchRegionNumbers');
-         await store.dispatch('fetchRegistrationMarks');
+         await store.dispatch('fetchRegistrationMarks', `?page=1&sorting=created_at_desc`);
          await store.dispatch('getOptions');
       },
 
@@ -670,14 +672,6 @@
       .registrationMarks {
          &__filters {
             padding: 20px 12px;
-         }
-      }
-   }
-
-   .dark-mode {
-      .registrationMarks {
-         &__filters {
-            //background-color: $dark-2;
          }
       }
    }

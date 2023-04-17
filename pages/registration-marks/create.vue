@@ -52,9 +52,10 @@
 
                         <div class="col-1 col-md-2" style="width: 19.4%; flex: 0 0 19.4%; max-width: 19.4%">
                            <form-numeric-input
-                              :max-value="999"
                               :invalid="$v.region_number.$error"
                               :defaultValue="''"
+                              :maxlength="3"
+                              :float="true"
                               v-model="region_number"
                            />
                         </div>
@@ -143,7 +144,7 @@
    export default {
       head() {
          return this.$headMeta({
-            title: this.$t('meta-registration_marks'),
+            title: this.$t('registration_marks'),
          });
       },
 

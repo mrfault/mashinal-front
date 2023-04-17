@@ -92,8 +92,7 @@
 
       head() {
          return this.$headMeta({
-            title: this.$t('meta-registration_marks'),
-            description: this.$t('meta-registration_marks')
+            title: this.$t('registration_marks'),
          });
       },
 
@@ -120,7 +119,7 @@
       methods: {
          changeCarImg() {
             let local = localStorage.getItem('registrationCount');
-            if (local && Number(local) < 10) {
+            if (local && Number(local) <= 9) {
                let currentCount = Number(local);
 
                localStorage.setItem('registrationCount', currentCount + 1);
