@@ -50,7 +50,8 @@
                      />
 
                      <form-numeric-input
-                        :max-value="999"
+                        :maxlength="3"
+                        :float="true"
                         :defaultValue="''"
                         :invalid="$v.car_number.$error"
                         @change="$v.$touch()"
