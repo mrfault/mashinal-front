@@ -119,7 +119,7 @@
       methods: {
          changeCarImg() {
             let local = localStorage.getItem('registrationCount');
-            if (local && Number(local) < 10) {
+            if (local && Number(local) <= 9) {
                let currentCount = Number(local);
 
                localStorage.setItem('registrationCount', currentCount + 1);
