@@ -1,11 +1,11 @@
 <template>
    <div class="registrationMarks">
-      <div class="container">
+      <div class="container p-0">
          <breadcrumbs :crumbs="crumbs"/>
 
          <div class="registrationMarks__create">
             <h4 class="registrationMarks__create-title">
-               <span>{{ $t('post_registration') }}</span>
+               <span>{{ $t('place_an_ad') }}</span>
                <span></span>
             </h4>
 

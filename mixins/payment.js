@@ -1,7 +1,5 @@
 import { mapGetters, mapActions } from 'vuex';
-
 import { SocketMixin } from '~/mixins/socket';
-
 import SelectBankingCard from '~/components/payments/SelectBankingCard';
 import TerminalInfoButton from '~/components/payments/TerminalInfoButton';
 import TerminalInfoPopup from '~/components/payments/TerminalInfoPopup';
@@ -69,6 +67,7 @@ export const PaymentMixin = {
                 await this.$nuxt.refresh();
                 this.callUpdatePaidStatus(paid, text);
               }
+
             } else {
               this.callUpdatePaidStatus(paid);
             }
@@ -83,7 +82,8 @@ export const PaymentMixin = {
                      this.callUpdatePaidStatus(paid, text);
                      stopListening();
                   });
-               } else {
+               }
+               else {
                   this.$store.dispatch('fetchResetForm', false);
                   this.callUpdatePaidStatus(paid, text);
                   stopListening();
@@ -91,17 +91,20 @@ export const PaymentMixin = {
             } else {
               stopListening();
             }
-            if (data.payment.operation_key=='offer_payment_key' && paid){
-              setTimeout(()=>{
-                this.$router.push('/offer')
+            if (data.payment.operation_key=='offer_payment_key' && paid) {
+              setTimeout(() => {
+                this.$router.push('/offer');
               },2000)
             }
-
           });
         }
-      } else {
+      }
+      else {
         // redirect to kapital bank page
+        //  console.log(this.$route.path)
+        //  console.log(this.$route.path.split('/').includes('ru'))
         this.$nuxt.$loading.start();
+
         setTimeout(() => this.$nuxt.$loading.finish(), 500);
         window.location = res?.data?.redirect_url || res;
       }

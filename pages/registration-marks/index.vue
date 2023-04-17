@@ -127,6 +127,8 @@
                   :url="'/images/empty_result.svg'"
                >
                </no-results>
+
+               <HandleIds :type="'plate'" :items="getRegistrationMarks.data" />
             </div>
          </div>
       </div>
@@ -138,6 +140,7 @@
    import { minLength } from "vuelidate/lib/validators";
    import RegistrationMarksGrid from "~/components/announcements/RegistrationMarksGrid.vue";
    import NoResults from "~/components/elements/NoResults.vue";
+   import HandleIds from "~/components/announcements/HandleIds.vue";
 
    export default {
       head() {
@@ -149,7 +152,8 @@
 
       components: {
          RegistrationMarksGrid,
-         NoResults
+         NoResults,
+         HandleIds
       },
 
       data() {

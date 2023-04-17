@@ -1,11 +1,11 @@
 <template>
    <div class="registrationMarks">
-      <div class="container">
+      <div class="container p-0">
          <breadcrumbs :crumbs="crumbs"/>
 
          <div class="registrationMarks__create">
             <h4 class="registrationMarks__create-title">
-               <span>{{ $t('post_registration') }}</span>
+               <span>{{ $t('place_an_ad') }}</span>
                <span></span>
             </h4>
 
@@ -225,7 +225,8 @@
             this.form.car_number = `${this.region_id.split('-')[0].slice(0, -1)} - ${this.region_letter1}${this.region_letter2} - ${this.region_number}`;
 
             try {
-               const res = await this.$axios.$post(`/sell/plate/post/publish?is_mobile=${this.isMobileBreakpoint}`, this.form)
+               const res = await this.$axios.$post(`/sell/plate/post/publish?is_mobile=${this.isMobileBreakpoint}`, this.form);
+
                if (!res?.data?.redirect_url) {
                   await this.$nuxt.refresh();
                   this.updatePaidStatus({

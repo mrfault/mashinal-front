@@ -112,13 +112,13 @@
                      <site-banner @bannerLoaded="showBanner = true" v-show="showBanner" type="in-part"/>
                   </div>
                </template>
-               <template v-else-if="announcement.type === 6 && announcements.filter(item => item.type === 6).length === 5">
+               <template v-else-if="announcement.type === 6">
                   <div
                      v-if="checkSecondTemplate(index) ? !checkItemB(index, announcement) : true"
                      :class="['registrationMarks-grid',
                          {
-                           'active' : (index === 15),
-                           'not-mt' : (index === 17 || index === 18 || index === 19),
+                           'active' : (isMobileBreakpoint ? index === 16 : index === 15) || (isMobileBreakpoint && index === 16) ,
+                           'not-mt' : (isMobileBreakpoint && (index === 18 || index === 19)),
                            'col-lg-mid': checkItemIndex(index + 2, announcement) || (announcement.type === 6 && !isMobileBreakpoint),
                            'pt-4 mt-1': checkItemTop(index, announcement) || (announcement.external && !isMobileBreakpoint),
                            'pb-4 mb-4': checkItemBottom(index, announcement) || (announcement.external && !isMobileBreakpoint),
@@ -131,7 +131,7 @@
                      ]"
                      :key="announcement.id_unique + (escapeDuplicates ? '_' + index : '')"
                   >
-<!--                     <pre>{{index}}</pre>-->
+<!--                     <pre>{{index }} {{isMobileBreakpoint}}</pre>-->
 
                      <div class="registrationMarks__title">
                         <div class="divider">
@@ -336,6 +336,20 @@ export default {
                   font-size: 35px;
                }
             }
+
+            &__main {
+               .divider {
+                  &.info {
+                     p {
+                        span {
+                           text-overflow: ellipsis;
+                           overflow: hidden;
+                           white-space: nowrap;
+                        }
+                     }
+                  }
+               }
+            }
          }
 
          .registrationMarks__title {
@@ -369,7 +383,7 @@ export default {
                   line-height: 20px;
                   text-decoration-line: underline;
                   color: #121926;
-                  z-index: 10;
+                  z-index: 5;
 
                   svg {
                      margin-left: 9px;
@@ -386,7 +400,7 @@ export default {
 
          &.not-mt {
             .registrationMarks__title {
-               //display: none;
+               display: none;
             }
          }
       }
@@ -426,8 +440,26 @@ export default {
 
                .divider {
                   &:first-child {
+                     text-overflow: ellipsis;
+                     overflow: hidden;
+                     white-space: nowrap;
+
                      span {
-                        font-size: 25px;
+                        font-size: 20px;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
+                        white-space: nowrap;
+                     }
+
+                     svg {
+                        display: none;
+                     }
+                  }
+
+                  a {
+                     font-size: 16px;
+                     span {
+                        white-space: nowrap;
                      }
                   }
                }
@@ -456,11 +488,6 @@ export default {
                   &:first-child {
                      span {
                         margin-top: 1px;
-                        font-size: 22px;
-                     }
-
-                     svg {
-                        display: none;
                      }
                   }
                }

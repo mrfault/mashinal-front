@@ -26,10 +26,11 @@
          <div class="more-data d-flex">
             <span class="text-data">№ {{ announcement.id_unique }}</span>
             <span class="text-data">
+<!--               <pre>{{announcement}}</pre>-->
           <icon name="eye"/>
           {{ announcement.view_count }}
           <icon name="cursor"/>
-          {{ announcement.open_count }}
+          {{ announcement.open_count || announcement.show_phone_number_count }}
           <icon name="star"/>
           {{ announcement.favorites_count }}
         </span>
@@ -185,6 +186,10 @@ export default {
    props: {
       type: String,
       brief: Boolean,
+      // item: {
+      //    type: Object,
+      //    default() { return {} }
+      // }
    },
    data() {
       return {
@@ -286,7 +291,7 @@ export default {
 
             .divider {
                &:not(:first-child) {
-                  margin-left: 15px;
+                  margin: 0 auto;
                }
 
                img {

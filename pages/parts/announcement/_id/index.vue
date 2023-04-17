@@ -56,7 +56,10 @@
             />
           </div>
         </div>
+
         <relatives />
+
+         <HandleIds :single="true" :type="'parts'" :items="[{ id: announcement.id }]" />
       </div>
     </div>
   </div>
@@ -74,6 +77,7 @@ import CollapseContent from '~/components/elements/CollapseContent';
 import Keywords from '~/components/announcements/inner/Keywords';
 import Relatives from '~/components/announcements/inner/Relatives';
 import SiteBanner from "~/components/banners/SiteBanner";
+import HandleIds from "~/components/announcements/HandleIds.vue";
 
 export default {
   name: 'pages-parts-id',
@@ -86,7 +90,8 @@ export default {
     ThumbsGallery,
     CollapseContent,
     Keywords,
-    Relatives
+    Relatives,
+     HandleIds
   },
   nuxtI18n: {
     paths: {

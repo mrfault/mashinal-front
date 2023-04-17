@@ -41,7 +41,7 @@
                               <span class="registrationMarks__number-description">MASHIN.AL</span>
                            </div>
 
-                           <add-favorite :announcement="registrationMark" />
+                           <add-favorite :announcement="registrationMark"  :type="'registrationMark'"/>
                         </div>
                      </client-only>
                   </div>
@@ -69,6 +69,10 @@
                   </nuxt-link>
                </template>
             </RegistrationMarksGrid>
+
+            <div v-if="isMobileBreakpoint && registrationMark.status != 3" class="mt-3 mt-lg-0">
+               <floating-cta :announcement="registrationMark"/>
+            </div>
          </div>
       </div>
    </div>
@@ -81,6 +85,7 @@
    import Comment from '~/components/announcements/inner/Comment.vue';
    import AddFavorite from "~/components/announcements/AddFavorite.vue";
    import RegistrationMarksGrid from "~/components/announcements/RegistrationMarksGrid.vue";
+   import FloatingCta from "~/components/announcements/inner/FloatingCta.vue";
 
    export default {
       name: 'pages-marks-id',
@@ -96,7 +101,8 @@
          QuickInfo,
          Comment,
          AddFavorite,
-         RegistrationMarksGrid
+         RegistrationMarksGrid,
+         FloatingCta
       },
 
       nuxtI18n: {
@@ -113,14 +119,14 @@
 
       methods: {
          changeCarImg() {
-            let local = window.localStorage.getItem('registrationCount');
-            if (local && Number(local) < 11) {
+            let local = localStorage.getItem('registrationCount');
+            if (local && Number(local) < 10) {
                let currentCount = Number(local);
 
-               window.localStorage.setItem('registrationCount', currentCount + 1);
-               this.count = Number(window.localStorage.getItem('registrationCount'));
+               localStorage.setItem('registrationCount', currentCount + 1);
+               this.count = Number(localStorage.getItem('registrationCount'));
             } else {
-               window.localStorage.setItem('registrationCount', 1);
+               localStorage.setItem('registrationCount', 1);
             }
          }
       },
