@@ -25,7 +25,6 @@
                               <i v-show="!item.read_at" class="new-notification-dot"></i>{{ $t(item.title) }}
                            </div>
                            <span>{{ $formatDate(item.created_at, 'HH:mm | D.MM.YYYY')[locale] }}</span>
-                           <span>{{ item?.notifiable?.type }} type</span>
                         </div>
                         <div class="full-width" v-html="item.body"></div>
                      </nuxt-link>
