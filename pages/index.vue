@@ -117,6 +117,22 @@
       </div>
 
       <!-- grid -->
+      <div class="overflow-hidden" v-if="getMainMonetized.length">
+         <grid
+            :announcements="getMainMonetized"
+            :banner="'/img/parts-{count}-{locale}.jpg'"
+            :banner-count="4"
+            :banner-for="'Part'"
+            :banner-link="'/parts'"
+            :banner-place="24"
+            :escape-duplicates="true"
+            :has-container="true"
+            :pending="pending"
+            :title="$t('featured_ads')"
+            :show-title="true"
+         />
+      </div>
+
       <div class="overflow-hidden">
          <grid
             :announcements="mainAnnouncements.data"
@@ -128,6 +144,8 @@
             :escape-duplicates="true"
             :has-container="true"
             :pending="pending"
+            :title="$t('recent_uploads')"
+            :show-title="true"
          />
       </div>
 
@@ -139,6 +157,8 @@
          getter="mainAnnouncements"
          getter-b="mainPartsAnnouncements"
       />
+
+      <HandleIds v-if="getMainMonetized.length" :items="getMainMonetized" :watchIds="false" />
    </div>
 </template>
 
@@ -146,6 +166,7 @@
 import {mapGetters, mapActions} from 'vuex'
 import CarSearchForm from '~/components/cars/CarSearchForm'
 import Grid from '~/components/announcements/Grid'
+import HandleIds from "~/components/announcements/HandleIds.vue";
 
 export default {
    name: 'pages-index',
@@ -154,6 +175,7 @@ export default {
    components: {
       CarSearchForm,
       Grid,
+      HandleIds
    },
    head() {
       return this.$headMeta({
@@ -213,7 +235,7 @@ export default {
       }
    },
    computed: {
-      ...mapGetters(['mainAnnouncements', 'homePageSliders']),
+      ...mapGetters(['mainAnnouncements', 'homePageSliders', 'getMainMonetized']),
       photos() {
          return {
             photo1_sm: require('@/static/test-images/1-480w.jpg'),
@@ -222,12 +244,12 @@ export default {
       },
    },
    methods: {
-      ...mapActions(['getInfiniteMainSearch', 'clearSavedSearch']),
+      ...mapActions(['getInfiniteMainSearch', 'clearSavedSearch', 'fetchInfiniteMainMonetized']),
       async handleLogoClick() {
          this.$scrollTo('body')
          this.$nuxt.$emit('reset-search-form')
          this.pending = true
-         await Promise.all([this.getInfiniteMainSearch(), this.clearSavedSearch()])
+         await Promise.all([this.getInfiniteMainSearch(), this.clearSavedSearch(), this.fetchInfiniteMainMonetized()])
          this.pending = false
       },
       gotoRoute(link) {
@@ -278,6 +300,8 @@ export default {
       },
    },
    mounted() {
+      this.$store.dispatch('fetchInfiniteMainMonetized');
+
       if (window.innerWidth < 769) this.absoluteMobileScreen = true
       else this.absoluteMobileScreen = false
       window.addEventListener('resize', (e) => {

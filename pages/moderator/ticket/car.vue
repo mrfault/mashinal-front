@@ -1153,10 +1153,10 @@ export default {
       )
       for (let i = 0; i < arr.length; i++) {
         var element = arr[i]
-        console.log("element", element)
+        // console.log("element", element)
         if (id == element.id) {
           var o = element;
-          console.log("ahey ahey", id)
+          // console.log("ahey ahey", id)
           name = `${this.$t('box_mode_values')[o.box]}/${
             generation?.start_year || this.data.sellYears[0].key
           } - ${generation?.end_year || this.currentYear}`

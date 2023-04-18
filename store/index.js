@@ -46,6 +46,7 @@ const getInitialState = () => ({
    myAnnouncements: {},
    myAnnouncement: {},
    mainAnnouncements: {},
+   mainMonetized: [],
    mainPartsAnnouncements: {},
    carsAnnouncements: [],
    motoAnnouncements: [],
@@ -203,6 +204,7 @@ export const state = () => getInitialState();
 export const getters = {
    getHandleIds: s => s.handleIds,
    getResetForm: s => s.resetForm,
+   getMainMonetized: s => s.mainMonetized,
    getUserRegistrationMarks: s => s.userRegistrationMarks,
    getMyPlates: s => s.myPlates,
    getMySavedPlates: s => s.mySavedPlates,
@@ -394,9 +396,11 @@ const objectNotEmpty = (state, commit, property) => {
 };
 export const actions = {
    async fetchHandleIds({commit}, data) {
-      let announcementIds = data.ids.map(a => a.id);
-      let link = 'announcement-view';
-      if(data.single)  link = 'announcement-open'
+      let announcementIds = data.ids.map(a => a.id),
+          link = 'announcement-view';
+
+      if (data.single) link = 'announcement-open';
+
       const res = await this.$axios.$post(link, { ids: announcementIds, type: data.type });
       commit("mutate", { property: "resetForm", value: res });
    },
@@ -899,7 +903,7 @@ export const actions = {
       commit("mutate", {property: "commercialAllOptions", value: res});
    },
    async getCommercialFilters({commit}, id) {
-      console.log("getCommercialFilters");
+      // console.log("getCommercialFilters");
       const res = await this.$axios.$get(`/commercial/type/${id}/get_filters`);
       commit("mutate", {property: "commercialFilters", value: res});
    },
@@ -948,17 +952,16 @@ export const actions = {
       commit("mutate", {property: "mainAnnouncements", value: res});
 
    },
+   async fetchInfiniteMainMonetized({commit, dispatch}, data = {}) {
+      const res = await this.$axios.$get(`/grid/home_page_monetized`);
+      commit("mutate", {property: "mainMonetized", value: res});
+   },
+
    async getInfiniteMainSearchWithoutMutate({commit, dispatch}, data = {}) {
       const res = await this.$axios.$get(
          `/grid/home_page_all?page=${data.page || 1}`
       );
       commit("mutate", {property: "temporaryLazyData", value: res});
-   },
-
-
-   announcementOpen(announcementId) {
-
-
    },
 
   async getInfiniteMainPartsSearchWithoutMutate({ commit }, data = {}) {

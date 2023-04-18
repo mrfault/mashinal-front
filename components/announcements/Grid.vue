@@ -288,7 +288,6 @@ export default {
       getBannerImage(index) {
          let count = (index / this.bannerPlace) % this.bannerCount
          count = count === 0 ? this.bannerCount : count
-         console.log(count,'banner count');
          return this.banner
             .replace('{count}', count)
             .replace('{locale}', this.locale)

@@ -23,9 +23,11 @@
                   <client-only>
                      <gallery>
                         <quick-info type="cars" brief/>
+
                         <announcement-specs type="cars" brief/>
                      </gallery>
                   </client-only>
+
                   <comment :comment="announcement.comment" v-if="!isMobileBreakpoint">
                      <template #before>
                         <thumbs-gallery/>
@@ -41,6 +43,7 @@
                      </template>
                   </comment>
                </div>
+
                <div class="col-auto">
                   <quick-info type="cars"/>
                   <site-banner v-if="!isMobileBreakpoint" class="mb-3" type="in-announcement"/>

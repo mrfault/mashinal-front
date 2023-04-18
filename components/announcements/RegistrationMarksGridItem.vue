@@ -15,6 +15,16 @@
             <p>{{ item?.price }}</p>
 
             <add-favorite :announcement="item" v-if="showFavoriteBtn" />
+
+            <form-checkbox
+               v-if="checkbox"
+               :value="check"
+               :input-name="`selected_${item.id_unique}`"
+               :stop-propagation="true"
+               transparent
+               @input="handleChange"
+
+            />
          </div>
 
          <div class="divider" v-if="!moreInfo">
@@ -71,6 +81,12 @@
          AddFavorite
       },
 
+      data() {
+        return {
+           check: false
+        }
+      },
+
       props: {
          item: {
             type: Object,
@@ -90,6 +106,11 @@
          showFavoriteBtn: {
             type: Boolean,
             default: false
+         },
+
+         checkbox: {
+            type: Boolean,
+            default: false
          }
       },
 
@@ -100,12 +121,18 @@
 
          modifiedDate(date) {
             return `${date.split(' ')[0]} ${date.split(' ')[1].slice(0, 3)}`;
+         },
+
+         handleChange(value) {
+            console.log('this.item.id_unique', this.item.id_unique)
+            // this.check = value;
+            // this.$nuxt.$emit('select-announcement', this.item.id_unique, value, true);
          }
       }
    }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
    .registrationMarksGridItem {
       display: inline-block;
       width: 224px;
@@ -219,6 +246,19 @@
 
          p {
             margin: 0;
+         }
+
+         .form-group {
+            width: unset;
+            z-index: 10;
+
+            .cursor-pointer {
+               padding: 0;
+
+               .checkbox {
+                  margin: 0;
+               }
+            }
          }
       }
 

@@ -52,7 +52,7 @@
         class="item-bg"
         role="img"
         :aria-label="getAnnouncementTitle(announcement)"
-        v-lazy:background-image="getImage+'&width=200'"
+        v-lazy:background-image="getImage+'?width=308'"
         v-if="!showGallery"
       >
         <div class="item-overlay" v-if="showOverlay">
@@ -74,7 +74,7 @@
                 class="btn-sq btn-sq--color-red active"
                 v-if="announcement.has_monetization && !isMobileBreakpoint"
               >
-                <icon name="speaker" v-tooltip="$t('ad_announcement')"/>
+                <icon name="speaker" v-tooltip="$t('featured_ads_2')"/>
               </span>
               <template
                 v-if="announcement.is_autosalon || announcement.is_part_salon"
@@ -243,7 +243,8 @@
             <icon name="eye"/>
             {{ announcement.view_count }}
           </span>
-          <div class="item-checkbox" v-if="showCheckbox" style="">
+
+          <div class="item-checkbox" v-if="showCheckbox">
             <form-checkbox
               :value="selected"
               :input-name="`selected_${announcement.id_unique}`"
@@ -398,13 +399,8 @@ export default {
 
     },
     handleChange(value) {
-      this.selected = value
-      this.$nuxt.$emit(
-        'select-announcement',
-        this.announcement.id_unique,
-        value,
-        true,
-      )
+      this.selected = value;
+      this.$nuxt.$emit('select-announcement', this.announcement.id_unique, value, true);
     },
     selectAnnouncement(id, value, controls = false) {
       if (controls || id != this.announcement.id_unique) return
