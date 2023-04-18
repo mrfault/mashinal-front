@@ -51,7 +51,7 @@
 
 
 
-      <label class="radio-container" v-if="this.$auth.loggedIn && this.user.balance>7 && this.user.balance>this.price.value">
+      <label class="radio-container" v-if="this.$auth.loggedIn && this.user.balance>10 && this.user.balance>this.price.value">
         {{$t('balans')}}
         <input type="radio"   name="payment_type" :checked="paymentMethod=='balance'" @change="paymentMethod='balance'">
         <span class="checkmark"></span>
