@@ -99,7 +99,7 @@
          &__items {
             display: flex;
             flex-wrap: wrap;
-            justify-content: center;
+            gap: 14px;
             margin: 40px 0 0 0;
          }
       }
@@ -134,7 +134,7 @@
    @media (max-width: 400px) {
       .registrationMarksGrid {
          &__head {
-            margin: 0 -10px;
+            //margin: 0 -10px;
 
             a {
                font-size: 16px !important;
