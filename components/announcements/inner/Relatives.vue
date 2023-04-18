@@ -14,10 +14,6 @@
         :title="title"
       />
     </template>
-    <infinite-loading
-      :action="isShop ? 'getShopOtherAnnouncementsWithoutMutate': 'getRelativeAnnouncementsWithoutMutate'"
-      :getter="isShop ? 'shopAnnouncements': 'relativeAnnouncements'"
-    />
   </div>
 </template>
 
