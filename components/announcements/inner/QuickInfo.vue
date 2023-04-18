@@ -102,7 +102,7 @@
          </div>
          <div class="col-12 mt-2 mt-lg-3" v-if="!isMobileBreakpoint">
             <call-button-multiple v-if="announcement.is_autosalon" :phones="announcement.user.autosalon.phones" />
-        <call-button v-else :phone="contact.phone"/>
+            <call-button v-else :phone="contact.phone"/>
          </div>
          <div class="col-12 mt-2 mt-lg-3" v-if="!isMobileBreakpoint && announcement.status === 2">
             <div class="status"> {{ $t('announcement_pending') }}</div>

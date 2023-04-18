@@ -757,6 +757,8 @@ export default {
    "first_sticker": "Первый стикер",
    "Folding rear seat": "Складывающееся заднее сидение",
    "for_ads": "Для рекламы",
+   "featured_ads": "Рекомендуемые объявления",
+   "featured_ads_2": "Рекламировать",
    "forgot_your_password": "Восстановить пароль",
    "forklift": "Самопогрузчики",
    "form_rating": "Внешний вид",
