@@ -172,6 +172,10 @@
 
             &:nth-child(2) {
                p {
+                  text-overflow: ellipsis;
+                  overflow: hidden;
+                  white-space: nowrap;
+
                   font-weight: 600;
                   font-size: 15px;
                   line-height: 18px;
@@ -310,9 +314,19 @@
          margin: 0 0 15px 0;
 
          &__head {
+            height: 40px;
+
+            img {
+               width: 18px;
+            }
+
             h3 {
                font-size: 25px;
             }
+         }
+
+         &__main {
+            padding: 18px 12px 12px 12px;
          }
       }
    }
