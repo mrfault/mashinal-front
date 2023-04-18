@@ -21,19 +21,19 @@
         <label class="radio-container">
 
            7 {{$t('ads_day')}} - 10 AZN
-          <input type="radio" checked="checked" name="package" @change="selectPackage(7)">
+          <input type="radio" checked="checked" name="package" @change="selectPackage(7,10)">
           <span class="checkmark"></span>
         </label>
 
         <label class="radio-container">
            15 {{$t('ads_day')}} - 18 AZN
-          <input type="radio"   name="package" @change="selectPackage(15)">
+          <input type="radio"   name="package" @change="selectPackage(15,18)">
           <span class="checkmark"></span>
         </label>
 
         <label class="radio-container">
            30 {{$t('ads_day')}} - 35 AZN
-          <input type="radio"   name="package" @change="selectPackage(30)">
+          <input type="radio"   name="package" @change="selectPackage(30,35)">
           <span class="checkmark"></span>
         </label>
       </div>
@@ -44,14 +44,16 @@
 
       <label class="radio-container">
             {{$t('pay_with_card')}}
-        <input type="radio"   name="payment_type" checked @change="paymentMethod='card'">
+        <input type="radio"   name="payment_type" :checked="paymentMethod=='card'" @change="paymentMethod='card'">
         <span class="checkmark"></span>
       </label>
 
 
-      <label class="radio-container" v-if="this.$auth.loggedIn">
+
+
+      <label class="radio-container" v-if="this.$auth.loggedIn && this.user.balance>7 && this.user.balance>this.price.value">
         {{$t('balans')}}
-        <input type="radio"   name="payment_type" @change="paymentMethod='balance'">
+        <input type="radio"   name="payment_type" :checked="paymentMethod=='balance'" @change="paymentMethod='balance'">
         <span class="checkmark"></span>
       </label>
       <hr/>
@@ -181,9 +183,13 @@ export default {
   },
   methods: {
 
-    selectPackage(day){
+    selectPackage(day,price){
     this.day.value=day
+    this.price.value=day
 
+       if (this.user.balance < price && this.paymentMethod=='balance'){
+          this.paymentMethod='card'
+       }
     },
     async getAnAd() {
        console.log(this.paymentMethod)
