@@ -52,7 +52,7 @@
         class="item-bg"
         role="img"
         :aria-label="getAnnouncementTitle(announcement)"
-        v-lazy:background-image="getImage+'&width=200'"
+        v-lazy:background-image="getImage+'&width=214'"
         v-if="!showGallery"
       >
         <div class="item-overlay" v-if="showOverlay">
@@ -243,7 +243,8 @@
             <icon name="eye"/>
             {{ announcement.view_count }}
           </span>
-          <div class="item-checkbox" v-if="showCheckbox" style="">
+
+          <div class="item-checkbox" v-if="showCheckbox">
             <form-checkbox
               :value="selected"
               :input-name="`selected_${announcement.id_unique}`"
