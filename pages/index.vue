@@ -157,6 +157,8 @@
          getter="mainAnnouncements"
          getter-b="mainPartsAnnouncements"
       />
+
+      <HandleIds v-if="getMainMonetized.length" :items="getMainMonetized" :watchIds="false" />
    </div>
 </template>
 
@@ -164,6 +166,7 @@
 import {mapGetters, mapActions} from 'vuex'
 import CarSearchForm from '~/components/cars/CarSearchForm'
 import Grid from '~/components/announcements/Grid'
+import HandleIds from "~/components/announcements/HandleIds.vue";
 
 export default {
    name: 'pages-index',
@@ -172,6 +175,7 @@ export default {
    components: {
       CarSearchForm,
       Grid,
+      HandleIds
    },
    head() {
       return this.$headMeta({
@@ -224,7 +228,6 @@ export default {
          store.dispatch('getBodyOptions'),
          store.dispatch('getInfiniteMainSearch'),
          store.dispatch('clearSavedSearch'),
-         // store.dispatch('fetchInfiniteMainMonetized'),
       ])
 
       return {
