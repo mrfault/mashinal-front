@@ -56,6 +56,7 @@
                   :items="getMyPlates.data"
                   :moreInfo="true"
                   :short-date="true"
+                  :checkbox="true"
                >
                </RegistrationMarksGrid>
 

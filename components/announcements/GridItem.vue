@@ -399,13 +399,8 @@ export default {
 
     },
     handleChange(value) {
-      this.selected = value
-      this.$nuxt.$emit(
-        'select-announcement',
-        this.announcement.id_unique,
-        value,
-        true,
-      )
+      this.selected = value;
+      this.$nuxt.$emit('select-announcement', this.announcement.id_unique, value, true);
     },
     selectAnnouncement(id, value, controls = false) {
       if (controls || id != this.announcement.id_unique) return
