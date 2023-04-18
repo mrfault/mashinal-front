@@ -3,10 +3,10 @@
     :class="classes ? classes : `btn btn--${className} full-width`"
     @click.stop="openPaymentModal()"
   >
-    {{ $t('get_an_ad') }}
+    {{ $t('featured_ads_2') }}
     <modal-popup
       :toggle="showPaymentModal"
-      :title="$t('get_an_ad')"
+      :title="$t('featured_ads_2')"
       :modal-class="'larger monetization-popup'"
       @close="showPaymentModal = false"
     >
