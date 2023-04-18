@@ -52,7 +52,7 @@
         class="item-bg"
         role="img"
         :aria-label="getAnnouncementTitle(announcement)"
-        v-lazy:background-image="getImage+'&width=214'"
+        v-lazy:background-image="getImage+'?width=308'"
         v-if="!showGallery"
       >
         <div class="item-overlay" v-if="showOverlay">
