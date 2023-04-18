@@ -10,12 +10,7 @@
       <div class="cover-with-avatar" style="margin-bottom: 5px;">
         <div
           class="cover"
-          :style="{
-            backgroundImage: `url('${getCover(
-              salonSingle.cover,
-              salonSingle.type_id,
-            )}')`,
-          }"
+          :style="{backgroundImage: `url('${getCover(salonSingle.cover,salonSingle.type_id)}')`}"
         >
           <img
             class="avatar"
