@@ -19,7 +19,7 @@ Vue.use({
         fbTrack(eventName, options) {
           try {
             if (this.$env.DEV) {
-              console.log('fb pixel track "' + eventName + '"', options ? JSON.stringify(options) : '');
+              // console.log('fb pixel track "' + eventName + '"', options ? JSON.stringify(options) : '');
             } else {
               if (!this.$fb) console.warn('fb pixel not setted');
               else if (options) this.$fb.track(eventName, options);
@@ -31,7 +31,7 @@ Vue.use({
         // tracking events with gtag manager
         gtagTrack(eventKey) {
           if (this.$env.DEV) {
-            console.log('gtag track "' + eventKey + '"');
+            // console.log('gtag track "' + eventKey + '"');
           } else {
             if (!this.$gtag) console.warn('gtag not setted');
             else this.$gtag('event', 'conversion', { send_to: eventKey });
