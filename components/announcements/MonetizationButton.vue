@@ -194,13 +194,7 @@ export default {
           this.paymentMethod='card'
        }
 
-       console.log(this.priceList)
-       console.log(this.price.value)
 
-       console.log(this.priceList.find(
-          (item) => item.price == this.price.value,
-       ))
-       console.log('---------------')
 
     },
     async getAnAd() {
