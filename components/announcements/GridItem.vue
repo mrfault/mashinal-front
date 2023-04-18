@@ -74,7 +74,7 @@
                 class="btn-sq btn-sq--color-red active"
                 v-if="announcement.has_monetization && !isMobileBreakpoint"
               >
-                <icon name="speaker" v-tooltip="$t('featured_ads_2')"/>
+                <icon name="speaker" v-tooltip="$t('featured_ads_3')"/>
               </span>
               <template
                 v-if="announcement.is_autosalon || announcement.is_part_salon"
