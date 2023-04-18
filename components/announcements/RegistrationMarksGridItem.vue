@@ -141,7 +141,7 @@
             //font-family: 'DinMittelschrift', sans-serif;
             font-family: 'DinMittelschriftgepraegt', sans-serif;
             font-weight: 400;
-            font-size: 37px;
+            font-size: 36px;
             line-height: 44px;
             letter-spacing: -1px;
             color: #1B2434;
@@ -172,6 +172,10 @@
 
             &:nth-child(2) {
                p {
+                  text-overflow: ellipsis;
+                  overflow: hidden;
+                  white-space: nowrap;
+
                   font-weight: 600;
                   font-size: 15px;
                   line-height: 18px;
@@ -243,7 +247,7 @@
 
          &__head {
             h3 {
-               font-size: 36px;
+               font-size: 34px;
             }
          }
       }
@@ -261,14 +265,79 @@
       }
    }
 
-   @media (max-width: 520px) {
+   @media (max-width: 540px) {
       .registrationMarksGridItem {
+         justify-content: unset;
          margin: 0 0 25px 0;
-         width: 240px;
+         width: 48%;
 
          &__head {
             h3 {
-               font-size: 40px;
+               font-size: 35px;
+            }
+         }
+      }
+   }
+
+   @media (max-width: 500px) {
+      .registrationMarksGridItem {
+         &__head {
+            h3 {
+               font-size: 32px;
+            }
+         }
+      }
+   }
+
+   @media (max-width: 470px) {
+      .registrationMarksGridItem {
+         &__head {
+            h3 {
+               font-size: 30px;
+            }
+         }
+      }
+   }
+
+   @media (max-width: 450px) {
+      .registrationMarksGridItem {
+         &__head {
+            h3 {
+               font-size: 28px;
+            }
+         }
+      }
+   }
+
+   @media (max-width: 425px) {
+      .registrationMarksGridItem {
+         margin: 0 0 15px 0;
+
+         &__head {
+            height: 40px;
+
+            img {
+               width: 18px;
+            }
+
+            h3 {
+               font-size: 25px;
+            }
+         }
+
+         &__main {
+            padding: 18px 12px 12px 12px;
+         }
+      }
+   }
+
+   @media (max-width: 370px) {
+      .registrationMarksGridItem {
+         width: 47%;
+
+         &__head {
+            h3 {
+               font-size: 20px;
             }
          }
       }
