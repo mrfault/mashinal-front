@@ -163,9 +163,11 @@ export default {
       return this.priceList.map((item) => parseFloat(item.price))
     },
     availablePlans() {
+
+
       return (
         this.priceList.find(
-          (item) => parseFloat(item.price) === this.price.value,
+          (item) => item.price == this.price.value,
         )?.prices || []
       )
     },
@@ -173,6 +175,7 @@ export default {
       return this.availablePlans.map((item) => item.days)
     },
     selectedPlan() {
+
       return (
         this.availablePlans.find((item) => item.days === this.day.value) || {}
       )
@@ -185,14 +188,17 @@ export default {
 
     selectPackage(day,price){
     this.day.value=day
-    this.price.value=day
+    this.price.value=price
 
        if (this.user.balance < price && this.paymentMethod=='balance'){
           this.paymentMethod='card'
        }
+
+
+
     },
     async getAnAd() {
-       console.log(this.paymentMethod)
+
       if (this.pending) return
       this.pending = true
       if (!this.haveBalanceToPay) {
@@ -252,7 +258,6 @@ export default {
     this.$axios.$get('/monetization/price/list').then((res) => {
       this.priceList = res
 
-       console.log(res)
       this.price.min = this.pricesForPlan[0]
       this.price.value = this.pricesForPlan[2]
       this.price.max = this.pricesForPlan[this.pricesForPlan.length - 1]
