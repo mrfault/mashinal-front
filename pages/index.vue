@@ -128,7 +128,7 @@
             :escape-duplicates="true"
             :has-container="true"
             :pending="pending"
-            :title="'Önə çəkilmiş elanlar'"
+            :title="$t('featured_ads')"
             :show-title="true"
          />
       </div>
@@ -241,12 +241,12 @@ export default {
       },
    },
    methods: {
-      ...mapActions(['getInfiniteMainSearch', 'clearSavedSearch']),
+      ...mapActions(['getInfiniteMainSearch', 'clearSavedSearch', 'fetchInfiniteMainMonetized']),
       async handleLogoClick() {
          this.$scrollTo('body')
          this.$nuxt.$emit('reset-search-form')
          this.pending = true
-         await Promise.all([this.getInfiniteMainSearch(), this.clearSavedSearch()])
+         await Promise.all([this.getInfiniteMainSearch(), this.clearSavedSearch(), this.fetchInfiniteMainMonetized()])
          this.pending = false
       },
       gotoRoute(link) {

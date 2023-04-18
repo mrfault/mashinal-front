@@ -793,6 +793,8 @@ export default {
    first_sticker: "Birinci stiker",
    "Folding rear seat": "Qatlanan arxa oturacaq",
    for_ads: "Reklam üçün",
+   featured_ads: "Önə çəkilmiş elanlar",
+   featured_ads_2: "Önə çək",
    for_the_provision_of_electronic_customs_service:
       "Elektron gömrük xidmətinin göstərilməsinə görə",
    forgot_your_password: "Şifrəni bərpa et",
