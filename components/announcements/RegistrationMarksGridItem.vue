@@ -20,8 +20,10 @@
                v-if="checkbox"
                :value="check"
                :input-name="`selected_${item.id_unique}`"
+               :stop-propagation="true"
                transparent
                @input="handleChange"
+
             />
          </div>
 
@@ -121,8 +123,10 @@
             return `${date.split(' ')[0]} ${date.split(' ')[1].slice(0, 3)}`;
          },
 
-         handleChange(e) {
-            console.log(e)
+         handleChange(value) {
+            console.log('this.item.id_unique', this.item.id_unique)
+            // this.check = value;
+            // this.$nuxt.$emit('select-announcement', this.item.id_unique, value, true);
          }
       }
    }

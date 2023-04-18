@@ -117,6 +117,22 @@
       </div>
 
       <!-- grid -->
+      <div class="overflow-hidden" v-if="getMainMonetized.length">
+         <grid
+            :announcements="getMainMonetized"
+            :banner="'/img/parts-{count}-{locale}.jpg'"
+            :banner-count="4"
+            :banner-for="'Part'"
+            :banner-link="'/parts'"
+            :banner-place="24"
+            :escape-duplicates="true"
+            :has-container="true"
+            :pending="pending"
+            :title="'Önə çəkilmiş elanlar'"
+            :show-title="true"
+         />
+      </div>
+
       <div class="overflow-hidden">
          <grid
             :announcements="mainAnnouncements.data"
@@ -128,6 +144,8 @@
             :escape-duplicates="true"
             :has-container="true"
             :pending="pending"
+            :title="$t('recent_uploads')"
+            :show-title="true"
          />
       </div>
 
@@ -206,6 +224,7 @@ export default {
          store.dispatch('getBodyOptions'),
          store.dispatch('getInfiniteMainSearch'),
          store.dispatch('clearSavedSearch'),
+         // store.dispatch('fetchInfiniteMainMonetized'),
       ])
 
       return {
@@ -213,7 +232,7 @@ export default {
       }
    },
    computed: {
-      ...mapGetters(['mainAnnouncements', 'homePageSliders']),
+      ...mapGetters(['mainAnnouncements', 'homePageSliders', 'getMainMonetized']),
       photos() {
          return {
             photo1_sm: require('@/static/test-images/1-480w.jpg'),
@@ -278,6 +297,8 @@ export default {
       },
    },
    mounted() {
+      this.$store.dispatch('fetchInfiniteMainMonetized');
+
       if (window.innerWidth < 769) this.absoluteMobileScreen = true
       else this.absoluteMobileScreen = false
       window.addEventListener('resize', (e) => {
