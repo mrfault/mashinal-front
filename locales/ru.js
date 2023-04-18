@@ -759,6 +759,7 @@ export default {
    "for_ads": "Для рекламы",
    "featured_ads": "Рекомендуемые объявления",
    "featured_ads_2": "Рекламировать",
+   "featured_ads_3": "Рекламное объявление",
    "forgot_your_password": "Восстановить пароль",
    "forklift": "Самопогрузчики",
    "form_rating": "Внешний вид",
