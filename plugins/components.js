@@ -1,35 +1,36 @@
 import Vue from 'vue';
 import InlineSvg from 'vue-inline-svg';
 // elements
-const Icon  = () => import( '~/components/elements/Icon');
-const Timer  = () => import( '~/components/elements/Timer');
-const Breadcrumbs  = () => import( '~/components/elements/Breadcrumbs');
-const Pagination  = () => import( '~/components/elements/Pagination');
-const LoginTabs  = () => import( '~/components/elements/LoginTabs');
-const ActionBar  = () => import( '~/components/elements/ActionBar');
-const MobileScreen  = () => import( '~/components/elements/MobileScreen');
-const ModalPopup  = () => import( '~/components/elements/ModalPopup');
-const Backdrop  = () => import( '~/components/elements/Backdrop');
-const ShareIt  = () => import( '~/components/elements/ShareIt');
-const Loader  = () => import( '~/components/elements/Loader');
-const InfiniteLoading  = () => import( '~/components/elements/InfiniteLoading');
-const Popover  = () => import( '~/components/elements/Popover');
+import Icon from '~/components/elements/Icon';
+import Timer from '~/components/elements/Timer';
+import Breadcrumbs from '~/components/elements/Breadcrumbs';
+import Pagination from '~/components/elements/Pagination';
+import LoginTabs from '~/components/elements/LoginTabs';
+import ActionBar from '~/components/elements/ActionBar';
+import MobileScreen from '~/components/elements/MobileScreen';
+import ModalPopup from '~/components/elements/ModalPopup';
+import Backdrop from '~/components/elements/Backdrop';
+import ShareIt from '~/components/elements/ShareIt';
+import Loader from '~/components/elements/Loader';
+import InfiniteLoading from '~/components/elements/InfiniteLoading';
+import Popover from '~/components/elements/Popover';
 // forms
-const FormNumericInput  = () => import( '~/components/forms/FormNumericInput');
-const FormPriceInput  = () => import( '~/components/forms/FormPriceInput');
-const FormTextInput  = () => import( '~/components/forms/FormTextInput');
-const FormTextarea  = () => import( '~/components/forms/FormTextarea');
-const FormCheckbox  = () => import( '~/components/forms/FormCheckbox');
-const FormRadio  = () => import( '~/components/forms/FormRadio');
-const FormSelect  = () => import( '~/components/forms/FormSelect');
-const FormButtons  = () => import( '~/components/forms/FormButtons');
-const FormRange  = () => import( '~/components/forms/FormRange');
-const FormSwitch  = () => import( '~/components/forms/FormSwitch');
-const FormImage  = () => import( '~/components/forms/FormImage');
-const ContentEditable  = () => import( '~/components/forms/ContentEditable');
+import FormNumericInput from '~/components/forms/FormNumericInput';
+import FormPriceInput from '~/components/forms/FormPriceInput';
+import FormTextInput from '~/components/forms/FormTextInput';
+import FormTextarea from '~/components/forms/FormTextarea';
+import FormCheckbox from '~/components/forms/FormCheckbox';
+import FormRadio from '~/components/forms/FormRadio';
+import FormSelect from '~/components/forms/FormSelect';
+import FormButtons from '~/components/forms/FormButtons';
+import FormRange from '~/components/forms/FormRange';
+import FormSwitch from '~/components/forms/FormSwitch';
+import FormImage from '~/components/forms/FormImage';
+import ContentEditable from '~/components/forms/ContentEditable';
 // transitions
-const TransitionExpand  = () => import( '~/components/transitions/TransitionExpand');
-const I360Viewer  = () => import( "~/components/I360Viewer")// ***
+import TransitionExpand from '~/components/transitions/TransitionExpand';
+import I360Viewer from "~/components/I360Viewer";
+// ***
 Vue.component('inline-svg', InlineSvg);
 // ***
 Vue.component('vue-three-sixty',I360Viewer)
