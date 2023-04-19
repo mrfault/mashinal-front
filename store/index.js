@@ -395,11 +395,14 @@ const objectNotEmpty = (state, commit, property) => {
    );
 };
 export const actions = {
-   async fetchHandleIds({commit}, data) {
+   async fetchHandleIds({ commit }, data) {
       let announcementIds = data.ids.map(a => a.id),
           link = 'announcement-view';
 
-      if (data.single) link = 'announcement-open';
+      if (data.single) {
+         link = 'announcement-open';
+         announcementIds = data.ids;
+      }
 
       const res = await this.$axios.$post(link, { ids: announcementIds, type: data.type });
       commit("mutate", { property: "resetForm", value: res });
@@ -952,8 +955,14 @@ export const actions = {
       commit("mutate", {property: "mainAnnouncements", value: res});
 
    },
-   async fetchInfiniteMainMonetized({commit, dispatch}, data = {}) {
+
+   async fetchInfiniteMainMonetizedHome({ commit }, data = {}) {
       const res = await this.$axios.$get(`/grid/home_page_monetized`);
+      commit("mutate", {property: "mainMonetized", value: res});
+   },
+
+   async fetchInfiniteMainMonetized({ commit }, data = {}) {
+      const res = await this.$axios.$post(`/grid/monetized-${data.type}`);
       commit("mutate", {property: "mainMonetized", value: res});
    },
 

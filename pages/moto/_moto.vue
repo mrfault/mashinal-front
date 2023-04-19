@@ -12,6 +12,14 @@
          />
 
          <grid
+            v-if="getMainMonetized.length"
+            :announcements="getMainMonetized"
+            :title="$t('featured_ads')"
+            :show-title="true"
+            escape-duplicates
+         />
+
+         <grid
             v-if="motoAnnouncements.data.length"
             :announcements="motoAnnouncements.data"
             :paginate="$paginate(motoAnnouncements)"
@@ -120,7 +128,7 @@ export default {
       }
    },
    computed: {
-      ...mapGetters(['motoAnnouncements']),
+      ...mapGetters(['motoAnnouncements', 'getMainMonetized']),
 
       crumbs() {
          return [
@@ -128,6 +136,9 @@ export default {
             {name: this.$t(this.category.type)}
          ]
       }
+   },
+   mounted() {
+      this.$store.dispatch('fetchInfiniteMainMonetized', { type: 'moto' });
    },
    beforeRouteLeave(to, from, next) {
       this.$nuxt.$emit('prevent-popstate');

@@ -1,7 +1,7 @@
 <template>
    <div class="pages-moto-index">
       <div class="container">
-         <breadcrumbs :crumbs="crumbs"/>
+         <breadcrumbs :crumbs="crumbs" />
 
          <moto-search-form
             :total-count="$paginate(motoAnnouncements).total"
@@ -9,6 +9,14 @@
             :category="{}"
             @pending="pending = true"
             @submit="searchMoto"
+         />
+
+         <grid
+            v-if="getMainMonetized.length"
+            :announcements="getMainMonetized"
+            :title="$t('featured_ads')"
+            :show-title="true"
+            escape-duplicates
          />
 
          <grid
@@ -92,14 +100,19 @@ export default {
          this.scrollTo('.announcements-grid.paginated', [-15, -20]);
       }
    },
+
    computed: {
-      ...mapGetters(['motoAnnouncements']),
+      ...mapGetters(['motoAnnouncements', 'getMainMonetized']),
 
       crumbs() {
          return [
             {name: this.$t('moto')}
          ]
       }
+   },
+
+   mounted() {
+      this.$store.dispatch('fetchInfiniteMainMonetized', { type: 'moto' });
    },
 
    beforeRouteLeave(to, from, next) {

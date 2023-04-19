@@ -59,7 +59,7 @@
 
         <relatives />
 
-         <HandleIds :single="true" :type="'parts'" :items="[{ id: announcement.id }]" />
+         <HandleIds :single="true" :type="'parts'" :items="[announcement.id]" />
       </div>
     </div>
   </div>

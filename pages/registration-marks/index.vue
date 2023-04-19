@@ -21,7 +21,6 @@
 
                <div class="registrationMarks__filters">
                   <div class="divider">
-<!--                     :className="'new notAny'"-->
                      <form-select
                         :className="'new'"
                         :label="'01 - Abşeron'"
