@@ -16,15 +16,14 @@
 
             <add-favorite :announcement="item" v-if="showFavoriteBtn" />
 
-            <form-checkbox
-               v-if="checkbox"
-               :value="check"
-               :input-name="`selected_${item.id_unique}`"
-               :stop-propagation="true"
-               transparent
-               @input="handleChange"
-
-            />
+<!--            <form-checkbox-->
+<!--               v-if="checkbox"-->
+<!--               :value="check"-->
+<!--               :input-name="`selected_${item.id_unique}`"-->
+<!--               :stop-propagation="true"-->
+<!--               transparent-->
+<!--               @input="handleChange"-->
+<!--            />-->
          </div>
 
          <div class="divider" v-if="!moreInfo">
@@ -250,7 +249,6 @@
 
          .form-group {
             width: unset;
-            z-index: 10;
 
             .cursor-pointer {
                padding: 0;

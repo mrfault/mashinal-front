@@ -12,6 +12,14 @@
          />
 
          <grid
+            v-if="getMainMonetized.length"
+            :announcements="getMainMonetized"
+            :title="$t('featured_ads')"
+            :show-title="true"
+            escape-duplicates
+         />
+
+         <grid
             v-if="commercialAnnouncements.data.length"
             :announcements="commercialAnnouncements.data"
             :paginate="$paginate(commercialAnnouncements)"
@@ -96,13 +104,17 @@ export default {
       }
    },
    computed: {
-      ...mapGetters(['commercialAnnouncements']),
+      ...mapGetters(['commercialAnnouncements', 'getMainMonetized']),
 
       crumbs() {
          return [
             {name: this.$t('commercial')}
          ]
       }
+   },
+
+   mounted() {
+      this.$store.dispatch('fetchInfiniteMainMonetized', { type: 'commercial' });
    },
 
    beforeRouteLeave(to, from, next) {

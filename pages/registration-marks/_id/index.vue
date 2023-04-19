@@ -73,6 +73,8 @@
             <div v-if="isMobileBreakpoint && registrationMark.status != 3" class="mt-3 mt-lg-0">
                <floating-cta :announcement="registrationMark"/>
             </div>
+
+            <HandleIds :type="'plate'" :single="true" :items="[registrationMark.id]" />
          </div>
       </div>
    </div>
@@ -80,12 +82,12 @@
 
 <script>
    import { mapGetters } from 'vuex';
-
    import QuickInfo from '~/components/announcements/inner/QuickInfo.vue';
    import Comment from '~/components/announcements/inner/Comment.vue';
    import AddFavorite from "~/components/announcements/AddFavorite.vue";
    import RegistrationMarksGrid from "~/components/announcements/RegistrationMarksGrid.vue";
    import FloatingCta from "~/components/announcements/inner/FloatingCta.vue";
+   import HandleIds from "~/components/announcements/HandleIds.vue";
 
    export default {
       name: 'pages-marks-id',
@@ -101,7 +103,8 @@
          Comment,
          AddFavorite,
          RegistrationMarksGrid,
-         FloatingCta
+         FloatingCta,
+         HandleIds
       },
 
       nuxtI18n: {

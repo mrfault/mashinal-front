@@ -17,6 +17,16 @@
             @submit="searchCars"
          />
 
+         <template v-if="getMainMonetized.length">
+            <grid
+               v-if="getMainMonetized.length"
+               :announcements="getMainMonetized"
+               :title="$t('featured_ads')"
+               :show-title="true"
+               escape-duplicates
+            />
+         </template>
+
          <template v-if="!$route.query.saved">
             <grid
                v-if="carsAnnouncements.total > 0"
@@ -125,6 +135,10 @@
          }
       },
 
+      mounted() {
+         this.$store.dispatch('fetchInfiniteMainMonetized', { type: 'cars' });
+      },
+
       methods: {
          ...mapActions(['getGridSearch']),
 
@@ -146,7 +160,7 @@
       },
 
       computed: {
-         ...mapGetters(['carsAnnouncements', 'brands']),
+         ...mapGetters(['carsAnnouncements', 'brands', 'getMainMonetized']),
 
          brand() {
             return brand

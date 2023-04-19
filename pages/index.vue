@@ -1,8 +1,5 @@
 <template>
-   <div
-      :style="!isMobileBreakpoint ? 'margin-top: -40px;' : ''"
-      class="pages-index"
-   >
+   <div class="pages-index" :style="!isMobileBreakpoint ? 'margin-top: -40px;' : ''">
       <!-- slider desktop -->
       <div class="container p-0">
          <client-only>
@@ -152,6 +149,7 @@
       <infinite-loading
          :per-page="20"
          :per-page-b="4"
+         :offset="5000"
          action="getInfiniteMainSearchWithoutMutate"
          action-b="getInfiniteMainPartsSearchWithoutMutate"
          getter="mainAnnouncements"
@@ -236,6 +234,7 @@ export default {
    },
    computed: {
       ...mapGetters(['mainAnnouncements', 'homePageSliders', 'getMainMonetized']),
+
       photos() {
          return {
             photo1_sm: require('@/static/test-images/1-480w.jpg'),
@@ -244,12 +243,12 @@ export default {
       },
    },
    methods: {
-      ...mapActions(['getInfiniteMainSearch', 'clearSavedSearch', 'fetchInfiniteMainMonetized']),
+      ...mapActions(['getInfiniteMainSearch', 'clearSavedSearch', 'fetchInfiniteMainMonetizedHome']),
       async handleLogoClick() {
          this.$scrollTo('body')
          this.$nuxt.$emit('reset-search-form')
          this.pending = true
-         await Promise.all([this.getInfiniteMainSearch(), this.clearSavedSearch(), this.fetchInfiniteMainMonetized()])
+         await Promise.all([this.getInfiniteMainSearch(), this.clearSavedSearch(), this.fetchInfiniteMainMonetizedHome()])
          this.pending = false
       },
       gotoRoute(link) {
@@ -299,8 +298,9 @@ export default {
          observer.observe(this.$refs.theVideo);
       },
    },
+
    mounted() {
-      this.$store.dispatch('fetchInfiniteMainMonetized');
+      this.$store.dispatch('fetchInfiniteMainMonetizedHome');
 
       if (window.innerWidth < 769) this.absoluteMobileScreen = true
       else this.absoluteMobileScreen = false
