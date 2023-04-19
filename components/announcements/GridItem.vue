@@ -74,7 +74,7 @@
                 class="btn-sq btn-sq--color-red active"
                 v-if="announcement.has_monetization && !isMobileBreakpoint"
               >
-                <icon name="speaker" v-tooltip="$t('ad_announcement')"/>
+                <icon name="speaker" v-tooltip="$t('featured_ads_3')"/>
               </span>
               <template
                 v-if="announcement.is_autosalon || announcement.is_part_salon"
@@ -399,13 +399,8 @@ export default {
 
     },
     handleChange(value) {
-      this.selected = value
-      this.$nuxt.$emit(
-        'select-announcement',
-        this.announcement.id_unique,
-        value,
-        true,
-      )
+      this.selected = value;
+      this.$nuxt.$emit('select-announcement', this.announcement.id_unique, value, true);
     },
     selectAnnouncement(id, value, controls = false) {
       if (controls || id != this.announcement.id_unique) return

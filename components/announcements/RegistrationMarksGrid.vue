@@ -12,6 +12,7 @@
             :moreInfo="moreInfo"
             :short-date="shortDate"
             :showFavoriteBtn="showFavoriteBtn"
+            :checkbox="checkbox"
          />
       </div>
 
@@ -47,6 +48,11 @@
          },
 
          showFavoriteBtn: {
+            type: Boolean,
+            default: false
+         },
+
+         checkbox: {
             type: Boolean,
             default: false
          }
