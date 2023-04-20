@@ -111,7 +111,10 @@
             :total-count="$paginate(mainAnnouncements).total"
             @pending="pending = true"
          />
+<!--         <pre>{{singleSavedSearch}} sssssssssss</pre>-->
+
       </div>
+
 
       <!-- grid -->
       <div class="overflow-hidden" v-if="getMainMonetized.length">
@@ -233,7 +236,7 @@ export default {
       }
    },
    computed: {
-      ...mapGetters(['mainAnnouncements', 'homePageSliders', 'getMainMonetized']),
+      ...mapGetters(['mainAnnouncements', 'homePageSliders', 'getMainMonetized', 'singleSavedSearch']),
 
       photos() {
          return {

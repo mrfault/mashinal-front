@@ -99,6 +99,7 @@ export default {
          let post = JSON.parse(this.$route.query.filter || '{}');
          this.pending = true;
          await this.getGridSearch({...this.searchParams, post, page, type: 'commercials'});
+         await this.$store.dispatch('fetchInfiniteMainMonetized', { type: 'commercial', data: post });
          this.pending = false;
          this.scrollTo('.announcements-grid.paginated', [-15, -20]);
       }

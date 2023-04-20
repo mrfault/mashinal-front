@@ -619,6 +619,7 @@ export const actions = {
    },
    async fetchSavedSearch({commit}, data) {
       const res = await this.$axios.$post("/one-saved-search", data);
+      console.log('data', data)
       commit("mutate", {property: "singleSavedSearch", value: res || {}});
    },
    async deleteSavedSearch({commit, state}, id) {
@@ -972,7 +973,7 @@ export const actions = {
    },
 
    async fetchInfiniteMainMonetized({ commit }, data = {}) {
-      const res = await this.$axios.$post(`/grid/monetized-${data.type}`);
+      const res = await this.$axios.$post(`/grid/monetized-${data.type}`, data.data);
       commit("mutate", {property: "mainMonetized", value: res});
    },
 

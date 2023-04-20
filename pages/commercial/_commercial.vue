@@ -117,6 +117,7 @@ export default {
          let post = {...JSON.parse(this.$route.query.filter || '{}'), com_type: this.category.id};
          this.pending = true;
          await this.getGridSearch({...this.searchParams, post, page});
+         await this.$store.dispatch('fetchInfiniteMainMonetized', { type: 'commercial', data: post });
          this.pending = false;
          if (page === 1) {
             this.scrollTo('.announcements-sorting');

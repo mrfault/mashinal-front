@@ -245,12 +245,9 @@ export default {
   created() {
     this.$axios.$get('/monetization/price/list').then((res) => {
       this.priceList = res
-
-       console.log(res)
       this.price.min = this.pricesForPlan[0]
       this.price.value = this.pricesForPlan[2]
       this.price.max = this.pricesForPlan[this.pricesForPlan.length - 1]
-
     })
   },
 }

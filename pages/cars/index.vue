@@ -150,17 +150,21 @@
             }
             this.pending = true;
             await this.getGridSearch({...this.searchParams, post, page});
+            await this.$store.dispatch('fetchInfiniteMainMonetized', { type: 'cars', data: post });
+
             this.pending = false;
             if (page === 1) {
                this.scrollTo('.announcements-sorting');
             } else {
                this.scrollTo('.announcements-grid.paginated', [-15, -20]);
             }
+
+            console.log(post)
          }
       },
 
       computed: {
-         ...mapGetters(['carsAnnouncements', 'brands', 'getMainMonetized']),
+         ...mapGetters(['carsAnnouncements', 'brands', 'getMainMonetized', 'singleSavedSearch']),
 
          brand() {
             return brand
