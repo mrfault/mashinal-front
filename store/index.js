@@ -619,7 +619,6 @@ export const actions = {
    },
    async fetchSavedSearch({commit}, data) {
       const res = await this.$axios.$post("/one-saved-search", data);
-      console.log('data', data)
       commit("mutate", {property: "singleSavedSearch", value: res || {}});
    },
    async deleteSavedSearch({commit, state}, id) {

@@ -137,6 +137,7 @@ export const SearchMixin = {
          this.$emit('pending');
          if (searchSame) {
             this.$emit('submit');
+            console.log('2222222222', JSON.parse(this.$route.query.car_filter || '{}'))
          } else {
             let prevRouteName = this.routeName;
             this.$router.push(searchUrl, () => {
@@ -154,6 +155,8 @@ export const SearchMixin = {
                   this.fetchSavedSearch({search_url: `${this.meta.path}?${searchQuery}`});
                }
             });
+            console.log('prevRouteName', prevRouteName)
+            await console.log('111111', this.$route)
          }
       },
       resetForm(submit = false) {

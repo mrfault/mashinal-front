@@ -9,7 +9,7 @@
                   <icon name="eye" />
                   {{ registrationMark.view_count }}
                   <icon name="cursor" />
-                  {{ registrationMark.show_phone_number_count }}
+                  {{ registrationMark.open_count }}
                   <icon name="star" />
                   {{ registrationMark.favorites_count }}
                </span>

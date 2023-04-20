@@ -118,6 +118,16 @@
       }
    }
 
+   .dark-mode {
+      .registrationMarksGrid {
+         &.loading {
+            &:before {
+               background-color: rgba(28, 28, 30, 0.50);
+            }
+         }
+      }
+   }
+
    @media (max-width: 540px) {
       .registrationMarksGrid {
          &__title {

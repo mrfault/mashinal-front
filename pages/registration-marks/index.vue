@@ -444,9 +444,26 @@
                      color: unset;
                      background: #F9FAFB;
                      border-radius: 8px;
+                     border: 1px solid #00000021;
 
                      &:after {
                         content: unset;
+                     }
+                  }
+               }
+            }
+         }
+      }
+   }
+
+   .dark-mode {
+      .registrationMarks {
+         &.index {
+            .pagination {
+               li {
+                  &.active {
+                     button {
+                        color: #000000;
                      }
                   }
                }

@@ -126,6 +126,15 @@
                               {{ $t('sold') }}
                            </button>
                         </div>
+
+<!--                        <div class="col-1 col-xl-1 btns" style="width: 30.5%; flex: 0 0 30.5%; max-width: 30.5%;">-->
+<!--                           <button-->
+<!--                              :class="['btn', { 'pending' : pending }]"-->
+<!--                              @click="handleSubmit(3)"-->
+<!--                           >-->
+<!--                              {{ $t('back_to_list') }}-->
+<!--                           </button>-->
+<!--                        </div>-->
                      </div>
                   </div>
                </form>
@@ -295,7 +304,7 @@
       validations: {
          region_id: { required },
          region_letter1: { required },
-         region_letter2: { required },
+         // region_letter2: { required },
          region_number: { required, minLength: minLength(3) },
          form: {
             price: { minLength: minLength(2) },
