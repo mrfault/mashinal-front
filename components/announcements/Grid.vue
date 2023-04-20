@@ -131,8 +131,6 @@
                      ]"
                      :key="announcement.id_unique + (escapeDuplicates ? '_' + index : '')"
                   >
-<!--                     <pre>{{index }} {{isMobileBreakpoint}}</pre>-->
-
                      <div class="registrationMarks__title">
                         <div class="divider">
                            <span>{{ $t('registration_badges_2') }}</span>

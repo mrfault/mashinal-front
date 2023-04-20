@@ -43,11 +43,11 @@
                            <form-select
                               :label="'A'"
                               :options="numbers"
-                              :invalid="$v.region_letter2.$error"
                               :clearPlaceholder="true"
                               v-model="region_letter2"
                               has-search
                            />
+<!--                           :invalid="$v.region_letter2.$error"-->
                         </div>
 
                         <div class="col-1 col-md-2" style="width: 19.4%; flex: 0 0 19.4%; max-width: 19.4%">
@@ -266,7 +266,7 @@
       validations: {
          region_id: {required},
          region_letter1: {required},
-         region_letter2: {required},
+         // region_letter2: {required},
          region_number: {required, minLength: minLength(3)},
          form: {
             price: {required},

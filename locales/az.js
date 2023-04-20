@@ -2074,7 +2074,7 @@ export default {
    you_can_add_a_maximum_of_count_photos:
       "Maksimum {count} şəkil əlavə edə bilərsiniz",
    you_can_create_announcement:
-      "Siz <strong>{phone}</strong> nömrəsindən minik, moto və ticari avtomobillər kateqoriyalarında <strong>{left}</strong> elan, ehtiyat hissələri kateqoriyasında isə <strong>{left_parts}</strong> elan yerləşdirə bilərsiniz.",
+      "Siz <strong>{phone}</strong> nömrəsindən minik, moto və ticari avtomobillər kateqoriyalarında <strong>{left}</strong> elan, ehtiyat hissələri ve qeydiyyat nişanlarında isə <strong>{left_parts}</strong> elan yerləşdirə bilərsiniz.",
    you_can_create_announcement_parts:
       "Siz <strong>{phone}</strong> nömrəsindən ehtiyat hissələri kateqoriyasında <strong>{left_parts}</strong> elan yerləşdirə bilərsiniz.",
    you_can_create_announcement_transport:
