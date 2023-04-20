@@ -21,7 +21,6 @@
 
                <div class="registrationMarks__filters">
                   <div class="divider">
-<!--                     :className="'new notAny'"-->
                      <form-select
                         :className="'new'"
                         :label="'01 - Abşeron'"
@@ -98,6 +97,7 @@
                <RegistrationMarksGrid
                   :items="getRegistrationMarks?.data"
                   :showFavoriteBtn="true"
+                  v-model="loading"
                   v-if="getRegistrationMarks?.data.length"
                >
                   <template #head>
@@ -219,6 +219,7 @@
 
       methods: {
          changePage(e) {
+            this.$store.commit('mutate',{ property: 'loadingData', value: true });
             this.form.page = e;
             this.scrollTo('.registrationMarks__filters', [-15, -20]);
          }
@@ -280,7 +281,8 @@
          ...mapGetters({
             getRegionNumbers: 'getRegionNumbers',
             getRegistrationMarks: 'getRegistrationMarks',
-            cities: 'sellOptions'
+            cities: 'sellOptions',
+            loading: 'loadingData'
          }),
 
          crumbs() {

@@ -70,9 +70,14 @@
     "vuescroll": "^4.17.3"
   },
   "devDependencies": {
+    "@nuxtjs/pwa": "^3.3.5",
     "autoprefixer": "^9.7.3",
+    "bunnycdnjs": "^1.0.6",
+    "cdn-webpack-plugin": "^1.0.3",
     "cssnano": "^4.1.10",
+    "html-webpack-plugin": "^5.5.1",
     "node-sass": "^4.13.0",
-    "sass-loader": "^8.0.0"
+    "sass-loader": "^8.0.0",
+    "uglifyjs-webpack-plugin": "^2.2.0"
   }
 }

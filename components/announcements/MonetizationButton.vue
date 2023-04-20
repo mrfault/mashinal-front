@@ -58,10 +58,10 @@
       </label>
       <hr/>
       <div class="row terminal-section">
-        <div class="col-md-4">
+        <div class="col-md-5">
           <terminal-info-button popup-name="monetization-popup" />
         </div>
-        <div class="col-md-8">
+        <div class="col-md-7">
           <p class="description">{{$t('ad_can_be_paused')}}</p>
 
 

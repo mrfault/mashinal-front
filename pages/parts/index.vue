@@ -17,6 +17,14 @@
             <no-results v-if="showNotFound" type="part"/>
 
             <grid
+               v-if="getMainMonetized.length"
+               :announcements="getMainMonetized"
+               :title="$t('featured_ads')"
+               :show-title="true"
+               escape-duplicates
+            />
+
+            <grid
                v-if="showNotFound ? otherAnnouncements.length : partAnnouncements.total"
                :announcements="showNotFound ? otherAnnouncements : partAnnouncements.data"
                :title="showNotFound ? $t('other_announcements'): $t('announcements')"
@@ -91,6 +99,7 @@ export default {
    },
    mounted() {
       if (this.$route.query.parts_filter) this.searchParts();
+      this.$store.dispatch('fetchInfiniteMainMonetized', { type: 'parts' });
       //window.addEventListener('scroll', this.getNextAnnouncements)
    },
 
@@ -116,7 +125,8 @@ export default {
          otherAnnouncementsPagination: 'parts/otherAnnouncementsPagination',
          searchActive: 'parts/searchActive',
          showNotFound: 'parts/showNotFound',
-         mainPartsAnnouncements: 'mainPartsAnnouncements'
+         mainPartsAnnouncements: 'mainPartsAnnouncements',
+         getMainMonetized: 'getMainMonetized'
       }),
       crumbs() {
          return [{name: this.$t('all_parts')}]

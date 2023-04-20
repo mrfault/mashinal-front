@@ -2,8 +2,8 @@
    <div class="registrationMarksGridItem" @click="goToRegistrationMark(item?.id_unique)">
       <div class="registrationMarksGridItem__head">
          <div class="divider">
-<!--            <inline-svg src="/icons/registrationMarks_icons.svg" />-->
-            <img src="/icons/registrationMarks_icons.svg" alt="icons">
+            <inline-svg src="/icons/registrationMarks_icons.svg" />
+<!--            <img src="/icons/registrationMarks_icons.svg" alt="icons">-->
          </div>
          <div class="divider">
             <h3>{{ item?.car_number }}</h3>
@@ -16,15 +16,14 @@
 
             <add-favorite :announcement="item" v-if="showFavoriteBtn" />
 
-            <form-checkbox
-               v-if="checkbox"
-               :value="check"
-               :input-name="`selected_${item.id_unique}`"
-               :stop-propagation="true"
-               transparent
-               @input="handleChange"
-
-            />
+<!--            <form-checkbox-->
+<!--               v-if="checkbox"-->
+<!--               :value="check"-->
+<!--               :input-name="`selected_${item.id_unique}`"-->
+<!--               :stop-propagation="true"-->
+<!--               transparent-->
+<!--               @input="handleChange"-->
+<!--            />-->
          </div>
 
          <div class="divider" v-if="!moreInfo">
@@ -250,7 +249,6 @@
 
          .form-group {
             width: unset;
-            z-index: 10;
 
             .cursor-pointer {
                padding: 0;
@@ -356,7 +354,7 @@
          &__head {
             height: 40px;
 
-            img {
+            svg {
                width: 18px;
             }
 
