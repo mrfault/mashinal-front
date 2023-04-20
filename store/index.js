@@ -6,6 +6,7 @@ import offer from "~/components/offer/offer";
 
 const getInitialState = () => ({
    loading: true,
+   loadingData: false,
    colorMode: "light",
    partAnnouncements: {},
    breakpoint: null,
@@ -214,6 +215,7 @@ export const getters = {
    single_announce: s => s.single_announce,
    homePageSliders: s => s.homePageSliders,
    loading: s => s.loading,
+   loadingData: s => s.loadingData,
    colorMode: s => s.colorMode,
    breakpoint: s => s.breakpoint,
    ptk: s => s.ptk,
@@ -423,8 +425,13 @@ export const actions = {
    },
 
    async fetchRegistrationMarks({commit}, data = '') {
-      const res = await this.$axios.$get(`/plates${data}`)
-      commit("mutate", {property: "registrationMarks", value: res || []})
+      const res = await this.$axios.$get(`/plates${data}`);
+
+      if (res.data.length) {
+         commit("mutate", { property: "loadingData", value: false });
+      }
+
+      commit("mutate", {property: "registrationMarks", value: res || []});
    },
 
    async fetchRegistrationMark({commit}, id) {
@@ -473,6 +480,9 @@ export const actions = {
       commit("mutate", {property: "ptk", value: ptk});
    },
    // Loading
+   loadingData({commit}, loading) {
+      commit("mutate", {property: "loading", value: loading});
+   },
    setLoading({commit}, loading) {
       commit("mutate", {property: "loading", value: loading});
    },
@@ -1489,11 +1499,8 @@ export const mutations = {
    mutate: mutate(),
    reset: reset(getInitialState()),
 
-
    offerAddFavorite(state) {
-
       state.offer.data.isFavorite = !state.offer.data.isFavorite
-
    },
 
    // messages

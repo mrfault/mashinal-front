@@ -1,5 +1,5 @@
 <template>
-   <div class="registrationMarksGrid">
+   <div :class="['registrationMarksGrid', { 'loading' : value }]">
       <div class="registrationMarksGrid__head">
          <slot name="head"/>
       </div>
@@ -15,8 +15,6 @@
             :checkbox="checkbox"
          />
       </div>
-
-
    </div>
 </template>
 
@@ -26,7 +24,17 @@
    export default {
       components: { RegistrationMarksGridItem },
 
+      data() {
+         return {
+            loading: false
+         }
+      },
+
       props: {
+         value: {
+            type: Boolean
+         },
+
          isFiltered: {
             type: Boolean,
             default: false
@@ -72,6 +80,8 @@
 
 <style lang="scss">
    .registrationMarksGrid {
+      position: relative;
+
       &__head {
          display: flex;
          align-items: center;
@@ -92,6 +102,19 @@
 
       &__items {
          margin: 40px 0 0 -20px;
+      }
+
+      &.loading {
+         &:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(243, 247, 252, 0.6);
+            z-index: 5;
+         }
       }
    }
 

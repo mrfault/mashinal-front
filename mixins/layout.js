@@ -1,5 +1,4 @@
 import {mapActions, mapGetters} from 'vuex'
-
 import {ColorModeMixin} from '~/mixins/color-mode'
 import {SocketMixin} from '~/mixins/socket'
 import {MessagesMixin} from '~/mixins/messages'
