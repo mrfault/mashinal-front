@@ -83,13 +83,15 @@
 
    &.moderator {
       .btns {
-         &:last-child {
-            width: 100% !important;
-            flex: 0 0 100% !important;
-            max-width: 100% !important;
-
+         &:nth-child(3) {
             .btn {
                background-color: #dfc71c;
+            }
+         }
+         &:last-child {
+            .btn {
+               color: $black;
+               background-color: rgba(192, 192, 192, 0.5);
             }
          }
       }
@@ -128,14 +130,14 @@
    .registrationMarks {
       &.moderator {
          .btns {
-            width: 33.2% !important;
-            flex: 0 0 33.2% !important;
-            max-width: 33.2% !important;
+            width: 50% !important;
+            flex: 0 0 50% !important;
+            max-width: 50% !important;
 
             &:last-child {
-               width: 33.2% !important;
-               flex: 0 0 33.2% !important;
-               max-width: 33.2% !important;
+               width: 50% !important;
+               flex: 0 0 50% !important;
+               max-width: 50% !important;
             }
          }
       }
@@ -146,14 +148,14 @@
    .registrationMarks {
       &.moderator {
          .btns {
-            width: 30.3% !important;
-            flex: 0 0 30.3% !important;
-            max-width: 30.3% !important;
+            width: 46% !important;
+            flex: 0 0 46% !important;
+            max-width: 46% !important;
 
             &:last-child {
-               width: 30.3% !important;
-               flex: 0 0 30.3% !important;
-               max-width: 30.3% !important;
+               width: 46% !important;
+               flex: 0 0 46% !important;
+               max-width: 46% !important;
             }
          }
       }

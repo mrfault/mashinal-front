@@ -42,7 +42,6 @@
                            <form-select
                               :label="'A'"
                               :options="numbers"
-                              :invalid="$v.region_letter2.$error"
                               :clearPlaceholder="true"
                               :disabled="true"
                               v-model="region_letter2"
@@ -127,14 +126,14 @@
                            </button>
                         </div>
 
-<!--                        <div class="col-1 col-xl-1 btns" style="width: 30.5%; flex: 0 0 30.5%; max-width: 30.5%;">-->
-<!--                           <button-->
-<!--                              :class="['btn', { 'pending' : pending }]"-->
-<!--                              @click="handleSubmit(3)"-->
-<!--                           >-->
-<!--                              {{ $t('back_to_list') }}-->
-<!--                           </button>-->
-<!--                        </div>-->
+                        <div class="col-1 col-xl-1 btns" style="width: 30.5%; flex: 0 0 30.5%; max-width: 30.5%;">
+                           <button
+                              :class="['btn', { 'pending' : pending }]"
+                              @click="back"
+                           >
+                              {{ $t('back_to_list') }}
+                           </button>
+                        </div>
                      </div>
                   </div>
                </form>
@@ -288,6 +287,14 @@
                   })
             } catch (err) {
                console.log(err)
+            }
+         },
+
+         back() {
+            if (this.user.admin_group == 2) {
+               location.href = '/alvcp/resources/announce-moderators';
+            } else {
+               location.href = '/alvcp/resources/plates';
             }
          }
       },
