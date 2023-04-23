@@ -224,10 +224,8 @@ export default {
          store.dispatch('getBrands'),
          store.dispatch('getOptions'),
          store.dispatch('getBodyOptions'),
-         store.dispatch('getInfiniteMainSearch'),
          store.dispatch('clearSavedSearch'),
       ])
-
       return {
          pending: false,
       }
@@ -300,6 +298,7 @@ export default {
    },
 
    mounted() {
+      this.$store.dispatch('getInfiniteMainSearch')
       this.$store.dispatch('fetchInfiniteMainMonetizedHome');
 
       if (window.innerWidth < 769) this.absoluteMobileScreen = true
