@@ -10,6 +10,7 @@
             <h2>
                <icon :name="iconName" v-if="iconName"/>
                <span>{{ title }}</span>
+               <span v-if="numberOfAds">: {{ numberOfAds }}</span>
             </h2>
             <nuxt-link v-if="showAll" :to="showAll">
                {{ $t('all') }}
@@ -183,6 +184,7 @@ export default {
          default: () => [],
       },
       title: String,
+      numberOfAds: [Number, String],
       iconName: String,
       showAll: String,
       showTitle: {

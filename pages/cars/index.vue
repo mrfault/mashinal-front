@@ -22,7 +22,7 @@
                v-if="getMainMonetized.length"
                :announcements="getMainMonetized"
                :title="$t('featured_ads')"
-               :show-title="true"
+               :numberOfAds="getMainMonetized.length"
                escape-duplicates
             />
          </template>
@@ -33,6 +33,7 @@
                :announcements="carsAnnouncements.data"
                :paginate="$paginate(carsAnnouncements)"
                :title="$t('announcements')"
+               :numberOfAds="carsAnnouncements.data.length"
                :pending="pending"
                @change-page="searchCars"
                escape-duplicates
