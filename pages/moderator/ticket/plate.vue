@@ -129,7 +129,7 @@
                         <div class="col-1 col-xl-1 btns" style="width: 30.5%; flex: 0 0 30.5%; max-width: 30.5%;">
                            <button
                               :class="['btn', { 'pending' : pending }]"
-                              @click="back"
+                              @click.prevent="back"
                            >
                               {{ $t('back_to_list') }}
                            </button>
@@ -255,6 +255,7 @@
                      this.region_number = res.data.car_number.split('-')[2];
                      this.form.price = res.data.price.split(' ').slice(0, -1).join('');
                      this.form.comment = res.data.comment;
+                     console.log('res', res)
                   })
             } catch (e) {
                console.log(e)
@@ -290,10 +291,12 @@
             }
          },
 
-         back() {
+         async back() {
             if (this.user.admin_group == 2) {
+               await this.$axios.$post('/ticket/detach/' + this.announce_id + '/car');
                location.href = '/alvcp/resources/announce-moderators';
             } else {
+               await this.$axios.$post('/ticket/detach/' + this.announce_id + '/car');
                location.href = '/alvcp/resources/plates';
             }
          }

@@ -111,10 +111,7 @@
             :total-count="$paginate(mainAnnouncements).total"
             @pending="pending = true"
          />
-<!--         <pre>{{singleSavedSearch}} sssssssssss</pre>-->
-
       </div>
-
 
       <!-- grid -->
       <div class="overflow-hidden" v-if="getMainMonetized.length">
