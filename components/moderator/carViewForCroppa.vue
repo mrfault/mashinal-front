@@ -205,7 +205,7 @@ export default {
       let getData = this.$refs.cropper.getData();
       this.button_loading = true;
       console.log(this.$route.query.token);
-      axios.post(this.$env.API_BASE_URL + '/ticket/media/' + this.saved_images[this.croppaSelectedKey] + '/manipulate', getData, {
+      this.$axios.post('/ticket/media/' + this.saved_images[this.croppaSelectedKey] + '/manipulate', getData, {
         headers: {
           Authorization: 'Bearer ' + this.$route.query.token
         }
