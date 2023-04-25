@@ -138,6 +138,7 @@ export default {
             body: data,
             params: {page}
          })
+         await this.$store.dispatch('fetchInfiniteMainMonetized', { type: 'parts', data: data });
          this.pending = false;
          this.scrollTo('.announcements-content', [0, -30]);
       }

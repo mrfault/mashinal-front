@@ -112,6 +112,7 @@ export default {
          const data = JSON.parse(this.$route.query.parts_filter || '{}')
          this.pending = true
          await this.$store.dispatch('getInfiniteMainPartsPageSearch', {body: data})
+         await this.$store.dispatch('fetchInfiniteMainMonetized', { type: 'parts', data: data });
          this.pending = false
          await this.$store.dispatch('parts/setSearchActive', true)
          this.scrollTo('.announcements-content', [0, -30])

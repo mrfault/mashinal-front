@@ -161,21 +161,22 @@
             </div>
           </nuxt-link>
           <div class="langs-menu btn btn--dark-white-outline">
-            <span>{{ locale }}</span>
-            <icon name="chevron-down" />
-            <div class="langs-menu_list">
-              <div class="langs-menu_list-inner">
-                <span
-                  class="cursor-pointer"
-                  v-for="code in locales"
-                  :key="code"
-                  @click="changeLocale(code)"
-                >
-                  {{ code }}
-                </span>
-              </div>
-            </div>
+            <span @click="changeLoc">{{ locale === 'ru' ? 'az' : 'ru' }}</span>
+
+<!--            <icon name="chevron-down" />-->
+
+<!--             <div class="langs-menu_list">-->
+<!--              <div class="langs-menu_list-inner">-->
+<!--                <span-->
+<!--                  class="cursor-pointer"-->
+<!--                  v-for="code in locales"-->
+<!--                  :key="code"-->
+<!--                  @click="changeLocale(code)"-->
+<!--                >{{ code }}</span>-->
+<!--              </div>-->
+<!--            </div>-->
           </div>
+
           <theme-switch />
         </nav>
       </div>
@@ -332,6 +333,13 @@ export default {
   },
   methods: {
     ...mapActions(['changeLocale']),
+     changeLoc() {
+       if (this.locale === 'ru') {
+          this.changeLocale('az')
+       } else {
+          this.changeLocale('ru')
+       }
+     },
     closePromotion() {
       this.$cookies.set('smartbanner_exited', 1)
       this.close = true

@@ -213,11 +213,7 @@ export default {
    computed: {
       ...mapGetters(['announcement']),
       getAddress() {
-         return this.announcement.is_autosalon
-            ? this.announcement.user?.autosalon?.address
-            : this.announcement.is_part_salon
-               ? this.announcement.user?.part_salon?.address
-               : this.announcement.address
+         return this.announcement.is_autosalon ? this.announcement.user?.autosalon?.address : this.announcement.is_part_salon ? this.announcement.user?.part_salon?.address : this.announcement.address
       },
       contact() {
          return this.getAnnouncementContact(this.announcement)

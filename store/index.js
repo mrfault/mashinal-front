@@ -972,7 +972,7 @@ export const actions = {
    },
 
    async fetchInfiniteMainMonetized({ commit }, data = {}) {
-      const res = await this.$axios.$post(`/grid/monetized-${data.type}`);
+      const res = await this.$axios.$post(`/grid/monetized-${data.type}`, data.data);
       commit("mutate", {property: "mainMonetized", value: res});
    },
 
