@@ -2312,6 +2312,7 @@ export default {
    pay_one_azn: "Cəmi 1 AZN-ə qoşul",
    other: "Digər",
    item_count: "ədəd",
+   things: "ədəd",
    commercial_size: "Şinin ölçüləri",
    shine_width2: "En",
    commercial_part: "Ticari",

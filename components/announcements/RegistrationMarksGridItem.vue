@@ -123,7 +123,7 @@
          },
 
          handleChange(value) {
-            console.log('this.item.id_unique', this.item.id_unique)
+            // console.log('this.item.id_unique', this.item.id_unique)
             // this.check = value;
             // this.$nuxt.$emit('select-announcement', this.item.id_unique, value, true);
          }

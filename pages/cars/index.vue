@@ -33,7 +33,7 @@
                :announcements="carsAnnouncements.data"
                :paginate="$paginate(carsAnnouncements)"
                :title="$t('announcements')"
-               :numberOfAds="carsAnnouncements.data.length"
+               :numberOfAds="carsAnnouncements.total"
                :pending="pending"
                @change-page="searchCars"
                escape-duplicates
@@ -85,8 +85,6 @@
             if (query && query.with_panorama == 'true') {
                this.searchCars(1, true);
             }
-
-            console.log(JSON.parse(this.$route.query.car_filter || '{}'))
          }
       },
 
@@ -137,7 +135,11 @@
       },
 
       mounted() {
-         this.$store.dispatch('fetchInfiniteMainMonetized', { type: 'cars' });
+         if (!Object.keys(this.$route.query).length) {
+            this.$store.dispatch('fetchInfiniteMainMonetized', { type: 'cars' });
+         }
+
+         console.log(this.$route)
       },
 
       methods: {
@@ -152,15 +154,13 @@
             this.pending = true;
             await this.getGridSearch({...this.searchParams, post, page});
             await this.$store.dispatch('fetchInfiniteMainMonetized', { type: 'cars', data: post });
-
+            console.log('post', post)
             this.pending = false;
             if (page === 1) {
                this.scrollTo('.announcements-sorting');
             } else {
                this.scrollTo('.announcements-grid.paginated', [-15, -20]);
             }
-
-            console.log(post)
          }
       },
 
