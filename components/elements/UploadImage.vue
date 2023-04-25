@@ -378,7 +378,7 @@ export default {
         this.defaultFiles.forEach(el =>{
           arr.push(el.key);
         })
-        console.log(arr)
+        // console.log(arr)
         this.slider.allSlides = arr
         this.slider.currentSlide = image[key];
         this.slider.showLightbox = true;

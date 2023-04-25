@@ -186,7 +186,7 @@ export default {
 
     },
     async getAnAd() {
-       console.log(this.paymentMethod)
+       // console.log(this.paymentMethod)
       if (this.pending) return
       this.pending = true
       if (!this.haveBalanceToPay) {

@@ -115,7 +115,9 @@ export default {
    },
 
    mounted() {
-      this.$store.dispatch('fetchInfiniteMainMonetized', { type: 'commercial' });
+      if (!Object.keys(this.$route.query).length) {
+         this.$store.dispatch('fetchInfiniteMainMonetized', { type: 'commercial' });
+      }
    },
 
    beforeRouteLeave(to, from, next) {

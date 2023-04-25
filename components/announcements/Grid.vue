@@ -10,7 +10,7 @@
             <h2>
                <icon :name="iconName" v-if="iconName"/>
                <span>{{ title }}</span>
-               <span v-if="numberOfAds">: {{ numberOfAds }}</span>
+               <span v-if="numberOfAds">: {{ numberOfAds }} {{ $t('things') }}</span>
             </h2>
             <nuxt-link v-if="showAll" :to="showAll">
                {{ $t('all') }}
