@@ -22,6 +22,26 @@ export default function({ app, route, store }, inject) {
     let replaceStr = (replaceMode) ? '$1'+ breakTag : '$1'+ breakTag +'$2';
     return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, replaceStr);
   });
+   inject('env',() => {
+      let conf = {
+         isDev: false,
+         isProd: true,
+         useBaseUrl: true
+      }
+      return {
+         DEV: conf.isDev ,
+         BASE_URL: conf.useBaseUrl ? (conf.isProd ? 'https://mashin.al' : 'https://dev.mashin.al') : '',
+         API_BASE_URL: conf.isProd ? '/api' : 'https://dev.mashin.al/api',
+         WEBSITE_URL: conf.isProd ? 'https://mashin.al' : 'https://dev.mashin.al',
+         WS_HOST: conf.isProd ? 'mashin.al' : 'dev.mashin.al',
+         BROADCAST_URL: conf.isProd ? '/broadcasting/auth' : 'https://dev.mashin.al/broadcasting/auth',
+         YANDEX_MAPS_API: '606cbf2e-0ebb-48e4-b785-a39f959143ef',
+         YANDEX_STATIC_MAPS_API: 'dd74bc7c-fb4c-4260-9f70-086ce90ef79d',
+         YANDEX_GEOCODING_API: 'f90c2034-652c-4117-b195-a88245d91823',
+         NEW_YEAR_SOON: false
+      }
+
+   });
   // routing
   inject('localePath', (path, locale) => {
     if (!path) return '#0';

@@ -1,6 +1,6 @@
 <template>
-  <p class="info-text">
-    <span class="text-medium cursor-pointer text-red" @click="show">{{ $t('pay_with_terminal') }}</span>
+  <p class="info-text text-left">
+   <inline-svg src="/icons/alert-circle.svg"/> <span class="text-medium cursor-pointer text-red" @click="show">{{ $t('pay_with_terminal') }}</span>
   </p>
 </template>
 
