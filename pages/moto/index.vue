@@ -113,7 +113,9 @@ export default {
    },
 
    mounted() {
-      this.$store.dispatch('fetchInfiniteMainMonetized', { type: 'moto' });
+      if (!Object.keys(this.$route.query).length) {
+         this.$store.dispatch('fetchInfiniteMainMonetized', { type: 'moto' });
+      }
    },
 
    beforeRouteLeave(to, from, next) {

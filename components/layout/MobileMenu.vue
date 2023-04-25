@@ -30,7 +30,7 @@
             <button
                :class="['btn','btn--pale-red-outline']"
                @click="changeLoc"
-            >{{ locale === 'ru' ? 'az' : 'ru' }}</button>
+            >{{ locale === 'ru' ? 'AZ' : 'RU' }}</button>
           </div>
           <theme-switch v-if="isMobileBreakpoint" />
           <span class="cursor-pointer close d-inline-flex align-top" @click="toggleSidebarMenu(false)">

@@ -198,7 +198,6 @@ export default {
 
     },
     async getAnAd() {
-
       if (this.pending) return
       this.pending = true
       if (!this.haveBalanceToPay) {
