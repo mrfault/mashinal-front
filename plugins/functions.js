@@ -22,7 +22,7 @@ export default function({ app, route, store }, inject) {
     let replaceStr = (replaceMode) ? '$1'+ breakTag : '$1'+ breakTag +'$2';
     return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, replaceStr);
   });
-   inject('env',() => {
+  /* inject('env',() => {
       let conf = {
          isDev: false,
          isProd: true,
@@ -41,7 +41,7 @@ export default function({ app, route, store }, inject) {
          NEW_YEAR_SOON: false
       }
 
-   });
+   });*/
   // routing
   inject('localePath', (path, locale) => {
     if (!path) return '#0';
