@@ -28,6 +28,7 @@
     "cropperjs": "^1.5.13",
     "downloadjs": "^1.4.7",
     "fslightbox-vue": "file:lib/fslightbox-pro",
+    "generate": "^0.14.0",
     "inputmask": "^3.3.11",
     "laravel-echo": "^1.6.1",
     "lodash": "^4.17.21",

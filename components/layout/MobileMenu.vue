@@ -27,8 +27,10 @@
       <div class="menu-sidebar_content">
         <div class="d-flex align-items-center justify-content-between">
           <div class="langs-menu">
-            <button :class="['btn','btn--pale-red-outline',{'active': code === locale}]" v-for="code in locales" :key="code"
-              @click="changeLocale(code)">{{ code }}</button>
+            <button
+               :class="['btn','btn--pale-red-outline']"
+               @click="changeLoc"
+            >{{ locale === 'ru' ? 'az' : 'ru' }}</button>
           </div>
           <theme-switch v-if="isMobileBreakpoint" />
           <span class="cursor-pointer close d-inline-flex align-top" @click="toggleSidebarMenu(false)">
@@ -110,7 +112,13 @@ export default {
   },
   methods: {
     ...mapActions(['changeLocale']),
-
+     changeLoc() {
+        if (this.locale === 'ru') {
+           this.changeLocale('az')
+        } else {
+           this.changeLocale('ru')
+        }
+     },
     toggleSidebarMenu(show) {
       this.showSidebar = show;
       this.setBodyOverflow(show ? 'hidden' : 'scroll');

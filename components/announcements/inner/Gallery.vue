@@ -133,14 +133,7 @@
             "
                >
                   <div class="blur-bg" :key="0">
-                     <img
-                        :src="
-                  showYtVideo(currentSlide)
-                    ? getYtVideoImage('hq')
-                    : $withBaseUrl(slides.main[currentSlide])
-                "
-                        alt=""
-                     />
+<!--                     <img :src="showYtVideo(currentSlide)? getYtVideoImage('hq'): $withBaseUrl(slides.main[currentSlide])" alt="" />-->
                   </div>
                   <div
                      class="blur-bg_announcement-info"

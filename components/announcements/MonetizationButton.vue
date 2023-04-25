@@ -261,7 +261,6 @@ export default {
       this.price.min = this.pricesForPlan[0]
       this.price.value = this.pricesForPlan[2]
       this.price.max = this.pricesForPlan[this.pricesForPlan.length - 1]
-
     })
   },
 }
