@@ -463,19 +463,6 @@ export const actions = {
    },
 
    async nuxtServerInit({dispatch, commit}) {
-      if (this.$auth.loggedIn) {
-         await Promise.all([
-            dispatch("getNotifications"),
-            dispatch("getFavorites"),
-            dispatch("getNotViewedFavorites"),
-            dispatch("getNotViewedSavedSearch")
-         ]);
-      }
-      await Promise.all([
-         dispatch("getStaticPages"),
-         dispatch("getCommercialTypes")
-      ]);
-
       let ptk =
          this.$cookies.get("ptk") ||
          "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx"
