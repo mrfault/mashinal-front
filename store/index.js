@@ -15,7 +15,20 @@ const getInitialState = () => ({
    temporaryLazyData: [],
    temporaryLazyDataB: [],
    menus: [],
-   staticPages: [],
+   staticPages: [
+      {
+         id:1,
+         title: {},
+         text: {},
+         slug: {}
+      },
+      {
+         id:1,
+         title: {},
+         text: {},
+         slug: {}
+      }
+   ],
    pageRef: "",
    pageRefs: ["", ""],
    hideFooter: false,
