@@ -70,7 +70,7 @@
             <mobile-nav/>
 <!--            <brands-list />-->
             <page-footer v-if="!hideFooter"/>
-            <template v-if="isMobileBreakpoint && showPopupBanner">
+<!--            <template v-if="isMobileBreakpoint && showPopupBanner">
                <modal-popup
                   backdrop-class="smartb-background"
                   title-logo-class="small-logo"
@@ -82,10 +82,10 @@
                   <div class="d-flex flex-column justify-content-center">
                      Tətbiq vasitəsi ilə avtomobilinizin 360º panarama görüntüsünü, tam pulsuz şəkildə yerləşdirə
                      bilərsiz.
-                     <button @click="detectDevice" class="btn btn--green mt-2">Pulsuz yüklə</button>
+                     <button @click="detectDevice" class="btn btn&#45;&#45;green mt-2">Pulsuz yüklə</button>
                   </div>
                </modal-popup>
-            </template>
+            </template>-->
          </div>
       </transition>
    </div>
