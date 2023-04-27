@@ -2284,6 +2284,7 @@ export default {
    "dashboard_external_salon": "Профиль салона",
    "external_salon": "Авто по заказу",
    "external-salons": "Авто по заказу",
+   "registration2": "Оформление",
    "registration_marks": "Регистрационные номера",
    "registration_marks_text": "Размещение регистрационного номера <span>платная услуга.</span> Цена одного объявления <span>2 AZN</span>",
    "external_commercial": "По заказу коммерческие",
