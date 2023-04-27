@@ -1543,6 +1543,7 @@ export default {
    "register": "Зарегистрироваться",
    "register_and_publish": "Зарегистрироваться и опубликовать",
    "registration": "Регистрация",
+   "registration2": "Оформление",
    "regular_search": "Обычный поиск",
    "rejected": "Отклонен",
    "rejected_2": "Отклонен",

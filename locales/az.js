@@ -1573,6 +1573,7 @@ export default {
    register: "Qeydiyyatdan keç",
    register_and_publish: "Qeydiyyatdan keç və elan yerləşdir",
    registration: "Qeydiyyat",
+   registration2: "Rəsmiləşdirmə",
    regular_search: "Sadə axtarış",
    rejected: "İmtina edildi",
    rejected_2: "İmtina",
