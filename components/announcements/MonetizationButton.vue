@@ -21,19 +21,19 @@
         <label class="radio-container">
 
            7 {{$t('ads_day')}} - 10 AZN
-          <input type="radio" checked="checked" name="package" @change="selectPackage(7)">
+          <input type="radio" checked="checked" name="package" @change="selectPackage(7,10)">
           <span class="checkmark"></span>
         </label>
 
         <label class="radio-container">
            15 {{$t('ads_day')}} - 18 AZN
-          <input type="radio"   name="package" @change="selectPackage(15)">
+          <input type="radio"   name="package" @change="selectPackage(15,18)">
           <span class="checkmark"></span>
         </label>
 
         <label class="radio-container">
            30 {{$t('ads_day')}} - 35 AZN
-          <input type="radio"   name="package" @change="selectPackage(30)">
+          <input type="radio"   name="package" @change="selectPackage(30,35)">
           <span class="checkmark"></span>
         </label>
       </div>
@@ -44,22 +44,24 @@
 
       <label class="radio-container">
             {{$t('pay_with_card')}}
-        <input type="radio"   name="payment_type" checked @change="paymentMethod='card'">
+        <input type="radio"   name="payment_type" :checked="paymentMethod=='card'" @change="paymentMethod='card'">
         <span class="checkmark"></span>
       </label>
 
 
-      <label class="radio-container" v-if="this.$auth.loggedIn">
+
+
+      <label class="radio-container" v-if="this.$auth.loggedIn && this.user.balance>10 && this.user.balance>this.price.value">
         {{$t('balans')}}
-        <input type="radio"   name="payment_type" @change="paymentMethod='balance'">
+        <input type="radio"   name="payment_type" :checked="paymentMethod=='balance'" @change="paymentMethod='balance'">
         <span class="checkmark"></span>
       </label>
       <hr/>
       <div class="row terminal-section">
-        <div class="col-md-4">
+        <div class="col-md-5">
           <terminal-info-button popup-name="monetization-popup" />
         </div>
-        <div class="col-md-8">
+        <div class="col-md-7">
           <p class="description">{{$t('ad_can_be_paused')}}</p>
 
 
@@ -161,9 +163,11 @@ export default {
       return this.priceList.map((item) => parseFloat(item.price))
     },
     availablePlans() {
+
+
       return (
         this.priceList.find(
-          (item) => parseFloat(item.price) === this.price.value,
+          (item) => item.price == this.price.value,
         )?.prices || []
       )
     },
@@ -171,6 +175,7 @@ export default {
       return this.availablePlans.map((item) => item.days)
     },
     selectedPlan() {
+
       return (
         this.availablePlans.find((item) => item.days === this.day.value) || {}
       )
@@ -181,12 +186,18 @@ export default {
   },
   methods: {
 
-    selectPackage(day){
+    selectPackage(day,price){
     this.day.value=day
+    this.price.value=price
+
+       if (this.user.balance < price && this.paymentMethod=='balance'){
+          this.paymentMethod='card'
+       }
+
+
 
     },
     async getAnAd() {
-       // console.log(this.paymentMethod)
       if (this.pending) return
       this.pending = true
       if (!this.haveBalanceToPay) {
@@ -245,6 +256,7 @@ export default {
   created() {
     this.$axios.$get('/monetization/price/list').then((res) => {
       this.priceList = res
+
       this.price.min = this.pricesForPlan[0]
       this.price.value = this.pricesForPlan[2]
       this.price.max = this.pricesForPlan[this.pricesForPlan.length - 1]
