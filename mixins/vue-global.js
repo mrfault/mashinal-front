@@ -39,6 +39,7 @@ Vue.use({
         },
         // copy text to clipboard
         copyToClipboard(text) {
+          text = window.document.URL;
           try {
             navigator.clipboard.writeText(text);
             this.$toasted.success(this.$t('copied_to_clipboard'));

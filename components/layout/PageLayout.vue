@@ -137,6 +137,20 @@
             checkEmitting: 0,
          }
       },
+      async mounted() {
+         if (this.$auth.loggedIn) {
+            await Promise.all([
+               this.$store.dispatch("getNotifications"),
+               this.$store.dispatch("getFavorites"),
+               this.$store.dispatch("getNotViewedFavorites"),
+               this.$store.dispatch("getNotViewedSavedSearch")
+            ]);
+         }
+         await Promise.all([
+            this.$store.dispatch("getStaticPages"),
+            this.$store.dispatch("getCommercialTypes")
+         ]);
+      },
       methods: {
          detectDevice() {
             const userAgent = window.navigator.userAgent;
