@@ -297,6 +297,7 @@ export default {
       "Avtomat (Variator)",
       "Reduktor"
    ],
+   reduktor: "Reduktor",
    brand_country: "Marka ölkəsi",
    brand_country_values: [
       "-",

@@ -82,7 +82,7 @@
             <div class="col-6 mb-2">
               <form-select
                 :label="$t('mark')"
-                :options="brands"
+                :options="existsBrands"
                 v-model="form.additional_brands[rows[0]]['brand']"
                 @change="setBrand($event, rows[0])"
                 has-search
@@ -125,7 +125,7 @@
                 <div class="col-4">
                   <form-select
                     :label="$t('mark')"
-                    :options="brands"
+                    :options="existsBrands"
                     v-model="form.additional_brands[key]['brand']"
                     @change="setBrand($event, key)"
                     has-search
@@ -772,7 +772,7 @@
             <div class="col-3 col-lg-4">
               <form-select
                 :label="$t('mark')"
-                :options="brands"
+                :options="existsBrands"
                 v-model="form.exclude_additional_brands[key]['brand']"
                 @change="setBrandExclude($event, key)"
                 has-search
@@ -979,6 +979,7 @@ export default {
   computed: {
     ...mapGetters([
       'brands',
+      'existsBrands',
       'carModels',
       'carModelsExclude',
       'carGenerations',
@@ -1096,7 +1097,7 @@ export default {
       }
     },
     async setBrand(id, index) {
-      let brand = this.brands.find((option) => option.id == id)
+      let brand = this.existsBrands.find((option) => option.id == id)
       let slug = brand?.slug || ''
       this.$set(this.form.additional_brands[index], 'brand', id)
       this.$set(this.form.additional_brands[index], 'brand_slug', slug);
@@ -1117,7 +1118,7 @@ export default {
     },
 
     async setBrandExclude(id, index) {
-      let brand = this.brands.find((option) => option.id == id)
+      let brand = this.existsBrands.find((option) => option.id == id)
       let slug = brand?.slug || ''
       this.$set(this.form.exclude_additional_brands[index], 'brand', id)
       this.$set(this.form.exclude_additional_brands[index], 'brand_slug', slug);
