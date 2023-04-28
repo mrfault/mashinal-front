@@ -254,7 +254,10 @@
          }),
 
          crumbs() {
-            return [{name: this.$t('place_an_ad')}]
+            return [
+               { name: this.$t('place_an_ad'), route: '/sell' },
+               { name: this.$t('place_an_ad') }
+            ]
          }
       },
 
