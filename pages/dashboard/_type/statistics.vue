@@ -1,75 +1,149 @@
 <template>
-  <div class="pages-dashboard-statistics pt-2 pt-lg-5">
-    <div class="container">
-      <breadcrumbs :crumbs="crumbs" />
-      <div class="card mb-2 mb-lg-3" v-if="isMobileBreakpoint">
-        <h2 class="title-with-line mb-n1 mt-n1">
-          <span>{{ $t('statistics') }}</span>
-        </h2>
-      </div>
-      <div class="card full-height mb-2 mb-lg-0">
-        <div class="statistics-announcements larger full-height">
-          <div class="circle-bar" v-for="(stat, i) in countStats" :key="i">
-            <div class="circle-bar_filled" :style="{borderColor: stat.color, color: stat.color}">
-              <strong>{{ stat.value }}</strong>
+   <div class="pages-dashboard-statistics pt-2 pt-lg-5">
+      <div class="container">
+         <breadcrumbs :crumbs="crumbs"/>
+
+         <div class="card mb-2 mb-lg-3" v-if="isMobileBreakpoint">
+            <h2 class="title-with-line mb-n1 mt-n1">
+               <span>{{ $t('statistics') }}</span>
+            </h2>
+         </div>
+
+         <div class="pages-dashboard-statistics__inner">
+            <div class="divider">
+               <div class="pages-dashboard-statistics__content">
+                  <h4 class="pages-dashboard-statistics__content-text">Elanların sıralanması</h4>
+
+               </div>
+
+               <div class="pages-dashboard-statistics__content">
+                  <inline-svg :src="'/icons/phone-3.svg'" />
+
+                  <h4 class="pages-dashboard-statistics__content-text">Ümumi zəng sayı</h4>
+
+                  <h4 class="pages-dashboard-statistics__content-subtext">192</h4>
+               </div>
             </div>
-            <div class="circle-bar_info">
-              <span>{{ $t(stat.label) }}</span>
+
+            <div class="card full-height mb-2 mb-lg-0">
+               <div class="statistics-announcements full-height py-5">
+                  <div class="circle-bar" v-for="(stat, i) in countStats" :key="i">
+                     <div class="circle-bar_filled" :style="{borderColor: stat.color, color: stat.color}">
+                        <strong>{{ stat.value }}</strong>
+                     </div>
+
+                     <div class="circle-bar_info">
+                        <span>{{ $t(stat.label) }}</span>
+                     </div>
+                  </div>
+               </div>
             </div>
-          </div>
-        </div>
+         </div>
+
+         <grid
+            v-if="mostViewed.length"
+            :announcements="mostViewed"
+            :title="$t('most_viewed_announcements')"
+            :show-phone-count="true"
+            :track-views="false"
+         />
       </div>
-      <grid 
-        v-if="mostViewed.length"
-        :announcements="mostViewed" 
-        :title="$t('most_viewed_announcements')"
-        :show-phone-count="true"
-        :track-views="false"
-      />
-    </div>
-  </div>
+   </div>
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex';
+import {mapGetters, mapActions} from 'vuex';
 
-  import { StatsMixin } from '~/mixins/statistics';
+import {StatsMixin} from '~/mixins/statistics';
 
-  import Grid from '~/components/announcements/Grid';
+import Grid from '~/components/announcements/Grid';
 
-  export default {
-    name: 'pages-dashboard-statistics',
-    middleware: 'auth_salon',
-    mixins: [StatsMixin],
-    components: {
+export default {
+   name: 'pages-dashboard-statistics',
+   middleware: 'auth_salon',
+   mixins: [StatsMixin],
+   components: {
       Grid
-    },
-    nuxtI18n: {
+   },
+   nuxtI18n: {
       paths: {
-        az: '/idareetme-paneli/:type/statistika'
+         az: '/idareetme-paneli/:type/statistika'
       }
-    },
-    head() {
+   },
+   head() {
       return this.$headMeta({
-        title: this.$t('statistics')
+         title: this.$t('statistics')
       });
-    },
-    async asyncData({store, route, app}) {
-      await store.dispatch('getAnnouncementStats', app.$getDashboardId(route.params.type)); 
-    },
-    computed: {
+   },
+   async asyncData({store, route, app}) {
+      await store.dispatch('getAnnouncementStats', app.$getDashboardId(route.params.type));
+   },
+   computed: {
       ...mapGetters([]),
 
       crumbs() {
-        return [
-          { name: this.$t('dashboard'), route: '/dashboard/' + this.$route.params.type },
-          { name: this.$t('statistics') }
-        ]
+         return [
+            {name: this.$t('dashboard'), route: '/dashboard/' + this.$route.params.type},
+            {name: this.$t('statistics')}
+         ]
       }
-    },
-    methods: {
+   },
+   methods: {
       ...mapActions([]),
-     
-    }
-  }
+
+   }
+}
 </script>
+
+<style lang="scss" scoped>
+   .pages-dashboard-statistics {
+      &__inner {
+         display: flex;
+         justify-content: space-between;
+         gap: 20px;
+
+         .divider {
+            width: 100%;
+            max-width: 220px;
+         }
+      }
+
+      &__content {
+         padding: 18px;
+         border-radius: 4px;
+         text-align: center;
+         background-color: #FFFFFF;
+
+         &:not(:first-child) {
+            margin-top: 20px;
+
+            .pages-dashboard-statistics__content {
+               &-text {
+                  margin: 10px 0 20px 0;
+               }
+            }
+         }
+
+         &-text {
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 18px;
+            color: #081A3E;
+            margin: 0;
+         }
+
+         &-subtext {
+            font-weight: 500;
+            font-size: 18.9555px;
+            line-height: 23px;
+            color: #F81734;
+            margin: 0;
+         }
+      }
+
+      .card {
+         width: 100%;
+         max-width: 956px;
+      }
+   }
+</style>

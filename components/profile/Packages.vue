@@ -14,7 +14,7 @@
 
             <ul class="customPackages__info">
                <li
-                  class="customPackages__info-item"
+                  :class="['customPackages__info-item', {'opacity' : !info.checked}]"
                   v-for="info in item.list"
                   :key="info.id"
                >
@@ -22,7 +22,6 @@
                   <inline-svg :src="'/icons/close2.svg'" v-else />
 
                   <span>{{ info.name }}</span>
-
                </li>
 
                <li class="customPackages__info-item btnWrapper">
@@ -187,6 +186,12 @@
             line-height: 17px;
             color: #081A3E;
 
+            &.opacity {
+               span {
+                  opacity: 0.3;
+               }
+            }
+
             &:not(:first-child) {
                margin-top: 28px;
             }
@@ -212,7 +217,7 @@
          }
       }
 
-      h1, h2, h3, h4, h5, h6, ul {
+      h1, h2, h3, h4, h5, h6, ul, p {
          margin: 0;
          padding: 0;
          list-style: none;
