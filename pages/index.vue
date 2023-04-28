@@ -221,7 +221,7 @@ export default {
    },
    async asyncData({store}) {
       await Promise.all([
-         store.dispatch('getBrands'),
+         store.dispatch('getBrandsOnlyExists'),
          store.dispatch('getOptions'),
          store.dispatch('getBodyOptions'),
          store.dispatch('clearSavedSearch'),

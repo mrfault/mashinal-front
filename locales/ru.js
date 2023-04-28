@@ -277,6 +277,7 @@ export default {
       "Автомат (Вариатор)",
       "Редуктор"
    ],
+   "reduktor": "Редуктор",
    "brand_country": "Страна марки",
    "brand_country_values": [
       "-",

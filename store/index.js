@@ -79,6 +79,7 @@ const getInitialState = () => ({
    catalogForm: {},
    // brands
    brands: [],
+   existsBrands: [],
    commercialBrands: {0: [], 1: [], 2: [], 3: [], 4: []},
    // models
    models: [],
@@ -303,6 +304,7 @@ export const getters = {
    catalogForm: s => s.catalogForm,
    // brands
    brands: s => s.brands,
+   existsBrands: s => s.existsBrands,
    commercialBrands: s => s.commercialBrands,
    // models
    models: s => s.models,
@@ -670,6 +672,12 @@ export const actions = {
       if (objectNotEmpty(state, commit, "brands")) return;
       const res = await this.$axios.$get("/brands");
       commit("mutate", {property: "brands", value: res});
+   },
+
+   async getBrandsOnlyExists({commit, state}) {
+      if (objectNotEmpty(state, commit, "existsBrands")) return;
+      const res = await this.$axios.$get("/brands?whereHas=1");
+      commit("mutate", {property: "existsBrands", value: res});
    },
    async getCommercialBrands({commit}, data) {
       const res = await this.$axios.$get(
