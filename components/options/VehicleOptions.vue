@@ -9,7 +9,16 @@
          :key="option.title"
       >
          <div
-            :class="['selectable-block', {'disabled': option.disabled, 'active': selected === option.title || selected === getKey(option), 'icons-only': iconsOnly}]"
+            :class="
+               ['selectable-block',
+                  {
+                     'disabled': option.disabled,
+                     'active': selected === option.title || selected === getKey(option),
+                     'icons-only': iconsOnly,
+                     'custom-width' : option.title === 'parts'
+                  }
+               ]
+            "
             @click.stop="selected = { value: option.id || option.title, index, key: getKey(option) }"
             v-tooltip="iconsOnly && $t(option.title)"
          >

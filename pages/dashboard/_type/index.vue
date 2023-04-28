@@ -1,7 +1,7 @@
 <template>
    <div class="pages-dashboard pt-2 pt-lg-5">
       <div class="container">
-         <breadcrumbs :crumbs="crumbs" />
+         <breadcrumbs :crumbs="crumbs"/>
 
          <div class="row mb-n2 mb-lg-n3">
             <div
@@ -85,7 +85,9 @@
                </form>
             </modal-popup>
          </div>
+
          <hr class="dashboard-line" v-if="user.parent_id"/>
+
          <div v-if="user.parent_id" class="row mb-n2 mb-lg-n3">
             <div class="col-lg-3 mb-2 mb-lg-3" v-for="tab in tabs" v-if="tab.isAvailable">
                <e-service-card :item="tab"/>
@@ -96,9 +98,9 @@
 </template>
 
 <script>
-   import { mapGetters } from 'vuex'
-   import { StatsMixin } from '~/mixins/statistics'
-   import { PaymentMixin } from '~/mixins/payment'
+   import {mapGetters} from 'vuex'
+   import {StatsMixin} from '~/mixins/statistics'
+   import {PaymentMixin} from '~/mixins/payment'
    import DashboardCard from '~/components/profile/DashboardCard'
    import EServiceCard from '~/components/eservices/EServiceCard.vue'
 
@@ -106,31 +108,33 @@
       name: 'pages-dashboard',
       middleware: ['auth_general', 'auth_salon'],
       mixins: [StatsMixin, PaymentMixin],
+
       components: {
          DashboardCard,
          EServiceCard,
       },
+
       nuxtI18n: {
          paths: {
             az: '/idareetme-paneli/:type',
          },
       },
+
       head() {
          return this.$headMeta({
             title: this.$t('dashboard'),
          })
       },
+
       async asyncData({store, route, app}) {
-         await store.dispatch(
-            'getAnnouncementStats',
-            app.$getDashboardId(route.params.type),
-         )
+         await store.dispatch('getAnnouncementStats', app.$getDashboardId(route.params.type));
 
          return {
             pending: false,
             supportContacts: [{phone: '*8787'}, {email: 'sales@al.ventures'}],
          }
       },
+
       computed: {
          ...mapGetters(['messages']),
 
@@ -158,10 +162,12 @@
                },
             ]
          },
+
          cards() {
             let type = Number(this.$route.params.type)
             var balance;
             var package_name;
+
             if ([1, 2].includes(type)) {
                balance = type == 1 ? this.$auth.user.autosalon.balance : this.$auth.user.part_salon.balance;
                package_name = type == 1 ? this.$auth.user.autosalon?.current_package?.name[this.locale] : this.$auth.user.part_salon?.current_package?.name[this.locale]
@@ -170,6 +176,7 @@
                balance = this.$auth.user.external_salon.balance
                package_name = this.$auth.user.external_salon?.current_package?.name[this.locale]
             }
+
             return [
                {
                   key: 'announcements',
@@ -183,7 +190,7 @@
                },
                {
                   key: 'balance',
-                  title: `${this.$t('balans')}`,
+                  title: `${this.$t('ads_balans')}`,
                   url: '/profile/balance',
                   icon: 'wallet',
                   image: 'wallet',
@@ -195,7 +202,7 @@
                },
                {
                   key: 'statistics',
-                  title: `${this.$t('statistics')}`,
+                  title: `${this.$t('statistics_ads')}`,
                   url: '/dashboard/' + type + '/statistics',
                   icon: 'analytics',
                   image: 'pie-chart',
@@ -220,10 +227,10 @@
                },
                {
                   key: 'salon',
-                  title: `${this.$t('my_profile')}`,
+                  title: `${this.$t('salon_profile')}`,
                   url: '/dashboard/' + type + '/settings',
-                  icon: 'user',
-                  image: 'account',
+                  icon: 'salon_profile',
+                  image: 'salon_profile',
                   description: `${this.$t('salon')} “${this.salonDetails.name}”`
                },
                {
@@ -282,6 +289,7 @@
             )
          },
       },
+
       methods: {
          async extendContract() {
             if (this.pending) return

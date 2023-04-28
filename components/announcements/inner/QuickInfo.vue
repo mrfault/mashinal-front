@@ -26,7 +26,6 @@
          <div class="more-data d-flex">
             <span class="text-data">№ {{ announcement.id_unique }}</span>
             <span class="text-data">
-<!--               <pre>{{announcement}}</pre>-->
           <icon name="eye"/>
           {{ announcement.view_count }}
           <icon name="cursor"/>
@@ -48,7 +47,8 @@
             </template>
          </div>
          <div class="d-flex">
-            <share-it type="publish" class="btns"/>
+            <share-it type="publish" class="btns" />
+
             <button
                class="btn btn--dark-blue-2-outline full-width"
                @click.stop="copyToClipboard($route.path)"

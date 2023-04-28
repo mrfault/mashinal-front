@@ -273,8 +273,8 @@ export default {
    .pages-sell {
       .card {
          .item {
-            &:last-child {
-               .selectable-block {
+            .selectable-block {
+               &.custom-width {
                   justify-content: center;
                   width: calc(200% + 20px);
                   .block-info {

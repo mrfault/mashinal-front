@@ -2,10 +2,10 @@
   <div class="pages-dashboard-calls pt-lg-5">
     <div class="container">
       <breadcrumbs :crumbs="crumbs" />
-      <grid 
+      <grid
         v-if="myAnnouncementCalls.items.length"
         :title="$t('phone_call_count')"
-        :announcements="myAnnouncementCalls.items" 
+        :announcements="myAnnouncementCalls.items"
         :paginate="$paginate(myAnnouncementCalls)"
         :show-title="isMobileBreakpoint"
         :watch-route="true"
@@ -15,8 +15,8 @@
         @change-page="changePage"
       />
       <no-results v-else
-        :type="$route.params.type == 2 ? 'part' : 'car'" 
-        :text="$t('add_an_ad_and_thousands_of_potential_buyers_will_see_it')" 
+        :type="$route.params.type == 2 ? 'part' : 'car'"
+        :text="$t('add_an_ad_and_thousands_of_potential_buyers_will_see_it')"
       >
         <nuxt-link :to="$localePath('/sell')" class="btn btn--green mt-2 mt-lg-3" v-html="$t('to_sell')" />
       </no-results>
