@@ -138,8 +138,6 @@
          if (!Object.keys(this.$route.query).length) {
             this.$store.dispatch('fetchInfiniteMainMonetized', { type: 'cars' });
          }
-
-         console.log(this.$route)
       },
 
       methods: {
