@@ -700,7 +700,6 @@ export default {
   //------------------------------------------------------------asyncData------------------------------------------------------------------------------------------------------------
   async asyncData({store, $axios, $auth, route}) {
     await $auth.setUserToken(`Bearer ${route.query.token}`);
-    $axios.setHeader('Authorization', `Bearer ${route.query.token}`)
     const admin_user = await $axios.$get('/user');
     if (!admin_user.user.is_admin) {
       return false;
@@ -1670,7 +1669,6 @@ export default {
 
      await this.$auth.setUserToken(`Bearer ${this.$route.query.token}`);
 
-     this.$axios.setHeader('Authorization', `Bearer ${this.$route.query.token}`)
      this.admin_user = await this.$axios.$get('/user');
     if (Object.keys(this.single_announce).length !== 0) {
       this.$store.dispatch('getCommercialBrands', {category: this.single_announce.commercial_type_id});
