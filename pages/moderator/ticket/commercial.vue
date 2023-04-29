@@ -700,6 +700,7 @@ export default {
   //------------------------------------------------------------asyncData------------------------------------------------------------------------------------------------------------
   async asyncData({store, $axios, $auth, route}) {
     await $auth.setUserToken(`Bearer ${route.query.token}`);
+    $axios.setHeader('Authorization', `Bearer ${route.query.token}`)
     const admin_user = await $axios.$get('/user');
     if (!admin_user.user.is_admin) {
       return false;
