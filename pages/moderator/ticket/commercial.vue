@@ -1669,7 +1669,6 @@ export default {
 
      await this.$auth.setUserToken(`Bearer ${this.$route.query.token}`);
 
-     this.$axios.setHeader('Authorization', `Bearer ${this.$route.query.token}`)
      this.admin_user = await this.$axios.$get('/user');
     if (Object.keys(this.single_announce).length !== 0) {
       this.$store.dispatch('getCommercialBrands', {category: this.single_announce.commercial_type_id});
