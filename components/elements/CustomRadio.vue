@@ -17,11 +17,6 @@
                >
 
                <label :for="`radio_${radio.key}`">
-                  <!--                              <icon-->
-                  <!--                                 :class="`type-of-drive-${radio.key}`"-->
-                  <!--                                 :name="getIcon('type_of_drive', radio.key)"-->
-                  <!--                              />-->
-
                   <span>{{ radio.name }}</span>
                </label>
             </div>
@@ -42,8 +37,8 @@
                   ref="radioInput"
                   :id="`radio_${radio.key}`"
                   @input="setValue = radio.key"
+                  :checked="radio.key == setValue"
                >
-
                <label :for="`radio_${radio.key}`">
                   <!--                              <icon-->
                   <!--                                 :class="`type-of-drive-${radio.key}`"-->
@@ -153,8 +148,6 @@
       }
 
       &.template-2 {
-         //width: 100%;
-
          .customRadio__inner {
             border-radius: 100px;
             background-color: #F81734;
@@ -170,48 +163,18 @@
             &:checked {
                & + label {
                   background-color: #FFFFFF;
-
-                  //&:after {
-                  //   background-color: #155EEF;
-                  //}
                }
             }
          }
 
          label {
-            height: 36px;
+            margin: 1px;
+            height: 34px;
             border: unset;
             background-color: unset;
             justify-content: center;
             border-radius: 100px;
-            border-width: 3px;
-            //position: relative;
-            //transition: all .3s;
 
-            //&:before, &:after {
-            //   content: '';
-            //   position: absolute;
-            //   transform: translateY(-50%);
-            //   border-radius: 50%;
-            //   transition: all .3s;
-            //}
-            //
-            //&:before {
-            //   left: 22px;
-            //   top: 50%;
-            //   width: 24px;
-            //   height: 24px;
-            //   border: 1px solid #CDD5DF;
-            //}
-            //
-            //&:after {
-            //   left: 30px;
-            //   top: 50%;
-            //   transform: translateY(-50%);
-            //   width: 8px;
-            //   height: 8px;
-            //}
-            //
             span {
                font-size: 12px;
                line-height: 18px;

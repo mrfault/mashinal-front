@@ -1919,6 +1919,8 @@ export default {
    "universal": "Универсал",
    "unlimited_count": "неограниченное количество",
    "unpaid_protocols": "Неоплаченные штрафы",
+   "unpaid_invoice": "У вас есть неоплаченный счет!",
+   "not_active_package": "У вас нет активных пакетов!",
    "update": "Исправить",
    "updated": "Обновлено",
    "USB": "USB",

@@ -1968,6 +1968,8 @@ export default {
    universal: "Universal",
    unlimited_count: "limitsiz",
    unpaid_protocols: "Ödənilməmiş cərimələr",
+   unpaid_invoice: "Ödənilməmiş invoysunuz var!",
+   not_active_package: "Sizin aktiv paketiniz yoxdur!",
    update: "Düzəltmək",
    updated: "Yeniləndi",
    USB: "USB",

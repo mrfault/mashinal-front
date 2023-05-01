@@ -84,10 +84,10 @@
 
       data() {
         return {
-           sorting: '',
+           sorting: 2,
            radioOptions: [
               { key: 1, name: 'Baxışa görə' },
-              { key: 2, name: 'Zəngə görə' },
+              { key: 2, name: 'Zəngə görə' }
            ]
         }
       },

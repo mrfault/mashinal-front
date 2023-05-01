@@ -8,7 +8,7 @@
                <icon name="notification" />
 
                <div class="myPackages__notification-text">
-                  <p>Ödənilməmiş invoysunuz var!</p>
+                  <p>{{ $t('unpaid_invoice') }}</p>
                   <p>“Standart” paketi, 24.03.2023-dən 24.04.2023-dək, <span>300 AZN</span></p>
                </div>
             </div>
@@ -18,7 +18,7 @@
             </div>
          </div>
 
-         <div class="myPackages__title">Sizin aktiv paketiniz yoxdur!</div>
+         <div class="myPackages__title">{{ $t('not_active_package') }}</div>
 
          <div class="myPackages__subtitle">Yeni paket əldə et</div>
 
