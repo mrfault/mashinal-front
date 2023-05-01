@@ -209,7 +209,6 @@ export const LayoutMixin = {
       await Promise.all([
         this.getNotViewedSavedSearch(),
         this.getNotViewedFavorites(),
-        this.getFavorites(),
       ])
     },
     closeLogin() {
