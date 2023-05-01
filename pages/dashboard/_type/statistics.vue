@@ -12,8 +12,12 @@
          <div class="pages-dashboard-statistics__inner">
             <div class="divider">
                <div class="pages-dashboard-statistics__content">
-                  <h4 class="pages-dashboard-statistics__content-text">Elanların sıralanması</h4>
-
+                  <CustomRadio
+                     :type="'template-1'"
+                     :title="'Elanların sıralanması'"
+                     :options="radioOptions"
+                     v-model="sorting"
+                  />
                </div>
 
                <div class="pages-dashboard-statistics__content">
@@ -52,47 +56,61 @@
 </template>
 
 <script>
-import {mapGetters, mapActions} from 'vuex';
+   import {mapGetters, mapActions} from 'vuex';
+   import {StatsMixin} from '~/mixins/statistics';
+   import Grid from '~/components/announcements/Grid';
+   import CustomRadio from "~/components/elements/CustomRadio.vue";
 
-import {StatsMixin} from '~/mixins/statistics';
+   export default {
+      name: 'pages-dashboard-statistics',
+      middleware: 'auth_salon',
+      mixins: [StatsMixin],
+      components: {
+         Grid,
+         CustomRadio
+      },
 
-import Grid from '~/components/announcements/Grid';
+      nuxtI18n: {
+         paths: {
+            az: '/idareetme-paneli/:type/statistika'
+         }
+      },
 
-export default {
-   name: 'pages-dashboard-statistics',
-   middleware: 'auth_salon',
-   mixins: [StatsMixin],
-   components: {
-      Grid
-   },
-   nuxtI18n: {
-      paths: {
-         az: '/idareetme-paneli/:type/statistika'
+      head() {
+         return this.$headMeta({
+            title: this.$t('statistics')
+         });
+      },
+
+      data() {
+        return {
+           sorting: '',
+           radioOptions: [
+              { key: 1, name: 'Baxışa görə' },
+              { key: 2, name: 'Zəngə görə' },
+           ]
+        }
+      },
+
+      async asyncData({store, route, app}) {
+         await store.dispatch('getAnnouncementStats', app.$getDashboardId(route.params.type));
+      },
+
+      computed: {
+         ...mapGetters([]),
+
+         crumbs() {
+            return [
+               {name: this.$t('dashboard'), route: '/dashboard/' + this.$route.params.type},
+               {name: this.$t('statistics')}
+            ]
+         }
+      },
+
+      methods: {
+         ...mapActions([]),
       }
-   },
-   head() {
-      return this.$headMeta({
-         title: this.$t('statistics')
-      });
-   },
-   async asyncData({store, route, app}) {
-      await store.dispatch('getAnnouncementStats', app.$getDashboardId(route.params.type));
-   },
-   computed: {
-      ...mapGetters([]),
-
-      crumbs() {
-         return [
-            {name: this.$t('dashboard'), route: '/dashboard/' + this.$route.params.type},
-            {name: this.$t('statistics')}
-         ]
-      }
-   },
-   methods: {
-      ...mapActions([]),
-
    }
-}
 </script>
 
 <style lang="scss" scoped>
