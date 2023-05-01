@@ -8,7 +8,7 @@
             <h1 v-html="title"></h1>
             <div class="d-flex">
               <share-it type="publish" class="btns" />
-              <button class="btn btn--dark-blue-2-outline full-width" @click.stop="copyToClipboard($env.WEBSITE_URL + $route.path)">
+              <button class="btn btn--dark-blue-2-outline full-width" @click.stop="copyToClipboard($route.path)">
                 <icon name="link" /> {{ $t('copy_to_clipboard') }}
               </button>
             </div>

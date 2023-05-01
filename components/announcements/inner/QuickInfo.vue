@@ -51,7 +51,7 @@
 
             <button
                class="btn btn--dark-blue-2-outline full-width"
-               @click.stop="copyToClipboard($env.WEBSITE_URL + $route.path)"
+               @click.stop="copyToClipboard($route.path)"
             >
                <icon name="link"/>
                {{ $t('copy_to_clipboard') }}

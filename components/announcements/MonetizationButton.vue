@@ -42,20 +42,23 @@
       <hr>
       <h4 class="paymentMethods mt-5 mb-3">{{ $t('payment_method') }}</h4>
 
-      <label class="radio-container">
-            {{$t('pay_with_card')}}
-        <input type="radio"   name="payment_type" :checked="paymentMethod=='card'" @change="paymentMethod='card'">
-        <span class="checkmark"></span>
-      </label>
+       <div class="d-flex">
+          <label class="radio-container" style="width: 50%;">
+             {{$t('pay_with_card')}}
+             <input type="radio"   name="payment_type" :checked="paymentMethod=='card'" @change="paymentMethod='card'">
+             <span class="checkmark"></span>
+          </label>
 
 
 
 
-      <label class="radio-container" v-if="this.$auth.loggedIn && this.user.balance>10 && this.user.balance>this.price.value">
-        {{$t('balans')}}
-        <input type="radio"   name="payment_type" :checked="paymentMethod=='balance'" @change="paymentMethod='balance'">
-        <span class="checkmark"></span>
-      </label>
+          <label class="radio-container" v-if="this.$auth.loggedIn && this.user.balance>10 && this.user.balance>this.price.value">
+             {{$t('balans')}}
+             <input type="radio"   name="payment_type" :checked="paymentMethod=='balance'" @change="paymentMethod='balance'">
+             <span class="checkmark"></span>
+          </label>
+       </div>
+
       <hr/>
       <div class="row terminal-section">
         <div class="col-md-5">
