@@ -945,8 +945,6 @@ export default {
   },
 
   async created() {
-    await this.$auth.setUserToken(`Bearer ${this.$route.query.token}`);
-    this.$axios.setHeader('Authorization', `Bearer ${this.$route.query.token}`)
 
 
     if (this.single_announce && this.single_announce.id) {
@@ -1019,8 +1017,10 @@ export default {
     }
   },
 
-  mounted() {
+  async mounted() {
+     await this.$auth.setUserToken(`Bearer ${this.$route.query.token}`);
 
+     this.admin_user = await this.$axios.$get('/user');
     this.$nuxt.$on('custom_modal_open', (val) => {
 
       if (val) {
