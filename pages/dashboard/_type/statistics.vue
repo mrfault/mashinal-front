@@ -19,9 +19,9 @@
           </div>
         </div>
       </div>
-      <grid 
+      <grid
         v-if="mostViewed.length"
-        :announcements="mostViewed" 
+        :announcements="mostViewed"
         :title="$t('most_viewed_announcements')"
         :show-phone-count="true"
         :track-views="false"
@@ -55,7 +55,7 @@
       });
     },
     async asyncData({store, route, app}) {
-      await store.dispatch('getAnnouncementStats', app.$getDashboardId(route.params.type)); 
+      await store.dispatch('getAnnouncementStats', app.$getDashboardId(route.params.type));
     },
     computed: {
       ...mapGetters([]),
@@ -69,7 +69,6 @@
     },
     methods: {
       ...mapActions([]),
-     
     }
   }
 </script>
