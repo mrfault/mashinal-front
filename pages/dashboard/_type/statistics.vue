@@ -13,7 +13,7 @@
             <div class="divider">
                <div class="pages-dashboard-statistics__content">
                   <CustomRadio
-                     :type="'template-1'"
+                     :type="'template-2'"
                      :title="'Elanların sıralanması'"
                      :options="radioOptions"
                      v-model="sorting"
