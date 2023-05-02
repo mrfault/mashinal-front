@@ -18,25 +18,15 @@
       <hr />
 
       <div class="radio-items">
-        <label class="radio-container">
 
-           7 {{$t('ads_day')}} - 10 AZN
-          <input type="radio" checked="checked" name="package" @change="selectPackage(7,10)">
-          <span class="checkmark"></span>
-        </label>
+        <label class="radio-container" v-for="(priceItem,index) in priceList">
 
-        <label class="radio-container">
-           15 {{$t('ads_day')}} - 18 AZN
-          <input type="radio"   name="package" @change="selectPackage(15,18)">
-          <span class="checkmark"></span>
-        </label>
-
-        <label class="radio-container">
-           30 {{$t('ads_day')}} - 35 AZN
-          <input type="radio"   name="package" @change="selectPackage(30,35)">
+           {{priceItem.days}} {{$t('ads_day')}} - {{ priceItem.price }} AZN
+          <input type="radio" :checked="index==0 ? 'checked' : null" name="package" @change="selectPackage(priceItem.days,priceItem.price)">
           <span class="checkmark"></span>
         </label>
       </div>
+
 
 
       <hr>
@@ -166,8 +156,6 @@ export default {
       return this.priceList.map((item) => parseFloat(item.price))
     },
     availablePlans() {
-
-
       return (
         this.priceList.find(
           (item) => item.price == this.price.value,
@@ -178,9 +166,8 @@ export default {
       return this.availablePlans.map((item) => item.days)
     },
     selectedPlan() {
-
       return (
-        this.availablePlans.find((item) => item.days === this.day.value) || {}
+        this.priceList.find((item) => item.days === this.day.value) || {}
       )
     },
     haveBalanceToPay() {
@@ -207,6 +194,7 @@ export default {
         this.paymentMethod = 'card'
       }
 
+       console.log(this.selectedPlan)
 
       let form = {
         id_unique: this.announcement.id_unique,
@@ -258,11 +246,16 @@ export default {
   },
   created() {
     this.$axios.$get('/monetization/price/list').then((res) => {
+
       this.priceList = res
 
-      this.price.min = this.pricesForPlan[0]
+
+       this.price.value=res[0].price
+       this.day.value=res[0].days
+
+/*      this.price.min = this.pricesForPlan[0]
       this.price.value = this.pricesForPlan[2]
-      this.price.max = this.pricesForPlan[this.pricesForPlan.length - 1]
+      this.price.max = this.pricesForPlan[this.pricesForPlan.length - 1]*/
     })
   },
 }
