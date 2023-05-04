@@ -236,9 +236,10 @@
                {
                   key: 'contract',
                   title: `${this.$t('contract')}`,
-                  url: '/business-profile?type=' + type,
+                  url: '/agreement',
                   icon: 'calendar-1',
                   image: 'calendar',
+                  hasAction: true,
                   isContract: true,
                   contractName: package_name,
                   contractEndDate: this.myAnnouncementStats.agreement_end_date
