@@ -108,7 +108,7 @@
                         :label="$t('show_cheap_first')"
                         :options="sortItems"
                         :clearPlaceholder="true"
-                        :clear-option="false"
+                        :allowClear="false"
                         v-model="form.sorting"
                         has-search
                      />

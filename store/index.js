@@ -192,6 +192,7 @@ const getInitialState = () => ({
    partCategories: [],
 
    regionNumbers: [],
+   agreements: [],
    resetForm: false,
    registrationMarks: [],
    myPlates: [],
@@ -203,7 +204,7 @@ const getInitialState = () => ({
 export const state = () => getInitialState();
 
 export const getters = {
-   getHandleIds: s => s.handleIds,
+   getAgreements: s => s.agreements,
    getResetForm: s => s.resetForm,
    getMainMonetized: s => s.mainMonetized,
    getUserRegistrationMarks: s => s.userRegistrationMarks,
@@ -397,6 +398,11 @@ const objectNotEmpty = (state, commit, property) => {
    );
 };
 export const actions = {
+   async fetchAgreements({commit}) {
+      const res = await this.$axios.$get("/agreements")
+      commit("mutate", {property: "agreements", value: res.data || []})
+   },
+
    async fetchHandleIds({ commit }, data) {
       let announcementIds = data.ids.map(a => a.id),
           link = 'announcement-view';

@@ -14,7 +14,7 @@
                <div class="pages-dashboard-statistics__content">
                   <CustomRadio
                      :type="'template-2'"
-                     :title="'Elanların sıralanması'"
+                     :title="$t('ad_sorting')"
                      :options="radioOptions"
                      v-model="sorting"
                   />
@@ -23,7 +23,7 @@
                <div class="pages-dashboard-statistics__content">
                   <inline-svg :src="'/icons/phone-3.svg'" />
 
-                  <h4 class="pages-dashboard-statistics__content-text">Ümumi zəng sayı</h4>
+                  <h4 class="pages-dashboard-statistics__content-text">{{ $t('total_calls') }}</h4>
 
                   <h4 class="pages-dashboard-statistics__content-subtext">192</h4>
                </div>
@@ -86,8 +86,8 @@
         return {
            sorting: 2,
            radioOptions: [
-              { key: 1, name: 'Baxışa görə' },
-              { key: 2, name: 'Zəngə görə' }
+              { key: 1, name: this.$t('sorting_view') },
+              { key: 2, name: this.$t('sorting_call') }
            ]
         }
       },

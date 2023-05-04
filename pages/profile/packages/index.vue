@@ -1,37 +1,31 @@
 <template>
    <div class="myPackages">
       <div class="container">
+         <ComeBack :text="$t('my_packages')" v-if="isMobileBreakpoint" />
+
          <breadcrumbs :crumbs="crumbs" />
 
-         <div class="myPackages__notification">
-            <div class="divider">
-               <icon name="notification" />
+<!--         <CustomNotifications-->
+<!--            :title="$t('unpaid_invoice')"-->
+<!--         />-->
 
-               <div class="myPackages__notification-text">
-                  <p>{{ $t('unpaid_invoice') }}</p>
-                  <p>“Standart” paketi, 24.03.2023-dən 24.04.2023-dək, <span>300 AZN</span></p>
-               </div>
-            </div>
+         <h4 class="myPackages__title">{{ $t('not_active_package') }}</h4>
 
-            <div class="divider">
-               <nuxt-link to="/profile/packages/buy" class="btn">{{ $t('pay') }}</nuxt-link>
-            </div>
-         </div>
+         <h5 class="myPackages__subtitle">{{ $t('get_new_package') }}</h5>
 
-         <div class="myPackages__title">{{ $t('not_active_package') }}</div>
-
-         <div class="myPackages__subtitle">Yeni paket əldə et</div>
-
-         <Packages />
+         <Packages :packages="getPackages" />
       </div>
    </div>
 </template>
 
 <script>
    import Packages from "~/components/profile/Packages.vue";
+   import CustomNotifications from "~/components/elements/CustomNotifications.vue";
+   import ComeBack from "~/components/elements/ComeBack.vue";
+   import { mapGetters } from "vuex";
 
    export default {
-      components: { Packages },
+      components: { Packages, CustomNotifications, ComeBack },
 
       head() {
          return this.$headMeta({
@@ -46,70 +40,27 @@
       },
 
       computed: {
+         ...mapGetters({
+            getPackages: 'packages/getPackages'
+         }),
+
          crumbs() {
             return [
                { name: this.$t('dashboard'), route: '/dashboard/3' },
                { name: this.$t('my_packages') }
             ]
          }
+      },
+
+      async asyncData({ store }) {
+         await store.dispatch('packages/getPackages');
       }
    }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
    .myPackages {
-      &__notification {
-         display: flex;
-         align-items: center;
-         justify-content: space-between;
-         padding: 21px 24px;
-         border-radius: 4px;
-         background-color: #FFFFFF;
-
-         &-text {
-            p {
-               font-weight: 500;
-               margin: 0;
-
-               &:first-child {
-                  font-size: 16px;
-                  line-height: 19px;
-                  color: #081A3E;
-                  margin-bottom: 4px;
-               }
-
-               &:last-child {
-                  font-size: 14px;
-                  line-height: 17px;
-                  color: #246EB2;
-
-                  span {
-                     color: red;
-                  }
-               }
-            }
-         }
-
-         .divider {
-            display: flex;
-            align-items: center;
-
-            i {
-               margin-right: 12px;
-
-               &:before {
-                  font-size: 20px;
-               }
-            }
-
-            .btn {
-               height: 42px;
-               padding: 0 36px;
-               color: #FFFFFF;
-               background-color: #246EB2;
-            }
-         }
-      }
+      padding-bottom: 100px;
 
       &__title {
          margin: 36px 0 8px 0;
@@ -124,10 +75,82 @@
          font-size: 14px;
          line-height: 17px;
          color: #246EB2;
+         margin: 0;
       }
 
       .customPackages {
-         margin-top: 45px;
+         margin: 45px -25px 0 -25px;
+      }
+
+      .swiper-container {
+         padding-top: 25px;
+
+         .swiper-wrapper {
+            align-items: stretch;
+            height: unset !important;
+         }
+      }
+
+      * {
+         box-sizing: border-box;
+      }
+   }
+
+   @media (max-width: 1250px) {
+      .myPackages {
+         .customPackages {
+            &__info {
+               &-item {
+                  font-size: 13px;
+               }
+            }
+         }
+      }
+   }
+
+   @media (max-width: 992px) {
+      .myPackages {
+         .customPackages {
+            &__info {
+               &-item {
+                  font-size: 12px;
+
+                  svg {
+                     max-width: 20px;
+                     width: 100%;
+                  }
+               }
+            }
+         }
+      }
+   }
+
+   @media (max-width: 370px) {
+      .myPackages {
+         .customPackages {
+            &__subtitle {
+               font-size: 35px;
+            }
+
+            &__info {
+               &-item {
+                  font-size: 12px;
+
+                  svg {
+                     max-width: 20px;
+                     width: 100%;
+                  }
+               }
+            }
+         }
+      }
+   }
+
+   @media (min-width: 550px) {
+      .myPackages {
+         .customPackages {
+            margin: 45px 0 0 0;
+         }
       }
    }
 </style>

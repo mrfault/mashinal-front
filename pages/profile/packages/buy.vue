@@ -1,24 +1,26 @@
 <template>
    <div class="myPackagesBuy">
       <div class="container">
+         <ComeBack :text="$t('registration2')" v-if="isMobileBreakpoint" />
+
          <breadcrumbs :crumbs="crumbs" />
 
          <div class="myPackagesBuy__inner">
             <div class="divider">
                <div class="myPackagesBuy__package myPackagesBuy__cart">
-                  <h4 class="myPackagesBuy__cart-title">Rəsmiləşdirmə</h4>
-                  <h4 class="myPackagesBuy__cart-subtitle">Standart paket</h4>
+                  <h4 class="myPackagesBuy__cart-title">{{ $t('registration2') }}</h4>
+                  <h4 class="myPackagesBuy__cart-subtitle">{{ selectedPackage.name }} {{ $t('package2') }}</h4>
 
                   <ul class="myPackagesBuy__package-list">
                      <li
                         :class="['myPackagesBuy__package-list_item', {'opacity' : !option.checked}]"
-                        v-for="option in options.list"
+                        v-for="option in selectedPackage.items"
                         :key="option.id"
                      >
                         <inline-svg :src="'/icons/check2.svg'" v-if="option.checked" />
                         <inline-svg :src="'/icons/close2.svg'" v-else />
 
-                        <span>{{ option.name }}</span>
+                        <span>{{ option.text }}</span>
                      </li>
                   </ul>
                </div>
@@ -26,8 +28,8 @@
 
             <div class="divider">
                <div class="myPackagesBuy__duration myPackagesBuy__cart">
-                  <h4 class="myPackagesBuy__cart-title">Paketin müddəti</h4>
-                  <h4 class="myPackagesBuy__cart-subtitle">Seçim edin</h4>
+                  <h4 class="myPackagesBuy__cart-title">{{ $t('duration_package') }}</h4>
+                  <h4 class="myPackagesBuy__cart-subtitle">{{ $t('choose') }}</h4>
 
                   <form-buttons
                      :options="durations"
@@ -42,36 +44,133 @@
                </div>
 
                <div class="myPackagesBuy__salon myPackagesBuy__cart">
-                  <h4 class="myPackagesBuy__cart-title">Avtosalon adı</h4>
-                  <h4 class="myPackagesBuy__cart-subtitle">Adı daxil edin</h4>
+                  <h4 class="myPackagesBuy__cart-title">{{ $t('autosalon_name') }}</h4>
 
-                  <div class="myPackagesBuy__salon-info">Best Cars</div>
+                  <h5 class="myPackagesBuy__cart-subtitle">{{ $t('enter_name') }}</h5>
+
+                  <form-text-input
+                     v-model="salon_name"
+                     :placeholder="'Salon name'"
+                     :invalid="$v.salon_name.$error"
+                     type="text"
+                  />
                </div>
             </div>
 
             <div class="divider">
                <div class="myPackagesBuy__receipt myPackagesBuy__cart">
                   <ul class="myPackagesBuy__receipt-list">
-                     <li
-                        class="myPackagesBuy__receipt-list_item"
-                        v-for="item in receipt"
-                        :key="item.id"
-                     >
-                        <span>{{ item.key }}</span>
-                        <span>{{ item.value }}</span>
+                     <li class="myPackagesBuy__receipt-list_item">
+                        <span>{{ $t('package') }}:</span>
+                        <span>{{ selectedPackage.name }}</span>
+                     </li>
+
+                     <li class="myPackagesBuy__receipt-list_item">
+                        <span>{{ $t('period_time') }}:</span>
+                        <span>{{ duration * 30 }}</span>
+                     </li>
+
+                     <li class="myPackagesBuy__receipt-list_item">
+                        <span>{{ $t('start_date') }}:</span>
+                        <span>{{ $moment(new Date()).format('DD.MM.YYYY') }}</span>
+                     </li>
+
+                     <li class="myPackagesBuy__receipt-list_item">
+                        <span>{{ $t('total2') }}:</span>
+                        <span>{{ selectedPackage.price * duration }} AZN</span>
                      </li>
                   </ul>
 
-                  <nuxt-link to="/dashboard/3/statistics" class="btn btn--green full-width">{{ $t('pay') }}</nuxt-link>
+                  <button
+                     class="btn btn--green full-width"
+                     @click="nextStep"
+                  >{{ $t('pay') }}</button>
                </div>
             </div>
          </div>
+
+         <modal-popup
+            :toggle="openModal"
+            :title="$t('ads_balans')"
+            :modal-class="'larger packages'"
+            @close="openModal = false"
+         >
+<!--            <div class="radio-items">-->
+<!--               <label class="radio-container">-->
+<!--                  300.00 <inline-svg :src="'/icons/currency.svg'" />-->
+<!--                  <input type="radio" checked="checked" name="package" @change="price = 300">-->
+<!--                  <span class="checkmark"></span>-->
+<!--               </label>-->
+
+<!--               <label class="radio-container">-->
+<!--                  500.00 <inline-svg :src="'/icons/currency.svg'" />-->
+<!--                  <input type="radio" name="package" @change="price = 500">-->
+<!--                  <span class="checkmark"></span>-->
+<!--               </label>-->
+
+<!--               <label class="radio-container">-->
+<!--                  1000.00 <inline-svg :src="'/icons/currency.svg'" />-->
+<!--                  <input type="radio" name="package" @change="price = 1000">-->
+<!--                  <span class="checkmark"></span>-->
+<!--               </label>-->
+
+<!--               <form-text-input-->
+<!--                  v-model="price"-->
+<!--                  :placeholder="'Məbləğ'"-->
+<!--                  type="text"-->
+<!--               />-->
+<!--            </div>-->
+
+<!--            <hr>-->
+
+            <h4 class="paymentMethods mb-3">{{ $t('payment_method') }}</h4>
+
+            <label class="radio-container">
+               {{$t('pay_with_card')}}
+               <input type="radio" name="payment_type" checked @change="payment_type = 'card'">
+               <span class="checkmark"></span>
+            </label>
+
+            <label class="radio-container" v-if="this.$auth.loggedIn">
+               {{$t('balans')}}
+               <input type="radio" name="payment_type" @change="payment_type = 'balance'">
+               <span class="checkmark"></span>
+            </label>
+
+            <hr/>
+
+            <div class="terminal-section">Balans: <span>{{ totalBalance }}</span></div>
+
+            <div class="modal-sticky-bottom">
+               <hr />
+
+               <div class="row">
+                  <div class="col-12 col-lg-12 mt-2 mt-lg-0">
+                     <button
+                        :class="['btn btn--green full-width', { pending }]"
+                        @click="handleSubmit"
+                     >
+                        {{ $t('pay') }}
+                     </button>
+                  </div>
+               </div>
+            </div>
+         </modal-popup>
       </div>
    </div>
 </template>
 
 <script>
+   import { mapGetters } from "vuex";
+   import { required } from "vuelidate/lib/validators";
+   import { PaymentMixin } from "~/mixins/payment";
+   import ComeBack from "~/components/elements/ComeBack.vue";
+
    export default {
+      components: {
+         ComeBack
+      },
+
       head() {
          return this.$headMeta({
             title: this.$t('my_packages'),
@@ -85,57 +184,113 @@
          }
       },
 
+      mixins: [PaymentMixin],
+
       data() {
          return {
-            options: {
-               id: 1,
-               title: 'Standart paket',
-               list: [
-                  { id: 1, name: '50 elan', checked: true },
-                  { id: 2, name: '150 AZN reklam büdcəsi', checked: true },
-                  { id: 3, name: 'Avtosalon üçün korporativ səhifə', checked: true },
-                  { id: 4, name: 'Platforma daxili mesaj sistemi', checked: true },
-                  { id: 5, name: 'Xüsusi fərdi köməkçi və ay ərzində  2 dəfə sayt-vizit', checked: true },
-                  { id: 6, name: 'Statistik və analitik məlumatlar', checked: true },
-                  { id: 7, name: 'Zəng tarixçəsi', checked: true },
-                  { id: 8, name: 'Sosial şəbəkələrdə reklam (büdcəsiz)', checked: true },
-                  { id: 9, name: 'Sosial şəbəkələrdə reklam (50 AZN büdcə ilə)', checked: false },
-                  { id: 10, name: 'Sosial şəbəkələr üçün foto çəkiliş', checked: false }
-               ]
-            },
-
+            openModal: false,
+            pending: false,
             duration: 1,
+            payment_type: 'card',
+            salon_name: '',
             durations: [
-               { key: 1, name: '30 gün' },
-               { key: 2, name: '60 gün' },
-               { key: 3, name: '90 gün' }
+               { key: 1, name: `30 ${this.$t('ads_day')}` },
+               { key: 2, name: `60 ${this.$t('ads_day')}` },
+               { key: 3, name: `90 ${this.$t('ads_day')}` }
             ],
-            receipt: [
-               { id: 1, key: 'Paket:', value: 'Standart' },
-               { id: 2, key: 'Müddət:', value: '30 gün' },
-               { id: 3, key: 'Başlama tarixi:', value: '23.03.2023' },
-               { id: 4, key: 'Yekun:', value: '300 AZN' }
-            ]
+            selectedPackage: {}
+         }
+      },
+
+      methods: {
+         nextStep() {
+            this.$v.$touch();
+            if (this.$v.$error) return;
+
+            this.openModal = true;
+         },
+
+         async handleSubmit() {
+            this.pending = true;
+
+            try {
+               const res = await this.$axios.$post(`/payment/package?is_mobile=${this.isMobileBreakpoint}`, {
+                  package_id: this.selectedPackage.id,
+                  payment_type: this.payment_type,
+                  name: this.salon_name,
+                  days_type: this.duration
+               });
+
+               if (!res?.data?.redirect_url) {
+                  await this.$nuxt.refresh();
+                  await this.updatePaidStatus({
+                     type: 'success',
+                     text: this.$t('announcement_paid'),
+                     title: this.$t('success_payment')
+                  });
+
+                  console.log('2222222')
+               } else {
+                  await this.handlePayment(res, this.$localePath('/agreement'), this.$t('announcement_paid'));
+                  this.pending = false;
+
+                  console.log('33333333')
+               }
+            } catch (error) {
+               this.pending = false;
+
+               // const response = error.response.data;
+               // if (response.data && Object.keys(response.data).length) {
+               //    for (let key in response.data) {
+               //       this.$toast.error(response.data[key][0])
+               //    }
+               // }
+            }
          }
       },
 
       computed: {
+         ...mapGetters({
+            // selectedPackage: 'packages/getSelectedPackage',
+            getResetForm: 'getResetForm'
+         }),
+
          crumbs() {
             return [
                { name: this.$t('dashboard'), route: '/dashboard/3' },
                { name: this.$t('my_packages'), route: '/profile/packages' },
                { name: this.$t('registration2') }
             ]
-         }
+         },
+
+         totalBalance() {
+            return this.$sum(
+               this.user.balance,
+               this.user.autosalon?.balance || 0,
+               this.user.part_salon?.balance || 0,
+               this.user.external_salon?.balance || 0,
+            )
+         },
+      },
+
+      mounted() {
+         this.selectedPackage = JSON.parse(localStorage.getItem('selectedPackage'));
+      },
+
+      validations: {
+         salon_name: { required }
       }
    }
 </script>
 
 <style lang="scss">
    .myPackagesBuy {
+      padding-bottom: 100px;
+
       &__inner {
          display: flex;
          justify-content: space-between;
+         gap: 20px;
 
          .divider {
             width: 100%;
@@ -176,6 +331,11 @@
                   margin-top: 27px;
                }
 
+               svg {
+                  width: 100%;
+                  max-width: 24px;
+               }
+
                span {
                   margin-left: 12px;
                }
@@ -187,7 +347,7 @@
          margin-bottom: 16px;
 
          &-description {
-            margin-top: 85px !important;
+            margin-top: 81px !important;
 
             font-weight: 400;
             font-size: 12px;
@@ -200,25 +360,13 @@
          }
 
          .form-buttons {
-            margin-top: 24px;
+            margin-top: 8px;
 
             .form-group {
                .btn {
                   height: 42px;
                }
             }
-         }
-      }
-
-      &__salon {
-         &-info {
-            margin-top: 16px;
-            padding: 15px 16px;
-            border-radius: 4px;
-            font-weight: 500;
-            line-height: 17px;
-            color: #081A3E;
-            background-color: #F3F7FC;
          }
       }
 
@@ -263,6 +411,25 @@
          padding: 20px;
          border-radius: 4px;
          background-color: #FFFFFF;
+
+         .form-group {
+            margin-top: 16px;
+
+            .text-input {
+               input {
+                  height: 42px;
+                  border: none;
+                  outline: none;
+                  font-weight: 500;
+                  color: #081A3E;
+                  background-color: #F3F7FC;
+
+                  &::placeholder {
+                     color: #ADADAD;
+                  }
+               }
+            }
+         }
       }
 
       &__cart-title {
@@ -286,6 +453,42 @@
          margin: 0;
          padding: 0;
          list-style: none;
+      }
+   }
+
+   @media (max-width: 1250px) {
+      .myPackagesBuy {
+         &__package {
+            &-list {
+               &_item {
+                  font-size: 13px;
+               }
+            }
+         }
+      }
+   }
+
+   @media (max-width: 1025px) {
+      .myPackagesBuy {
+         &__inner {
+            flex-direction: column-reverse;
+
+            .divider {
+               &:first-child,
+               &:nth-child(2),
+               &:last-child {
+                  max-width: unset;
+               }
+            }
+         }
+
+         &__package {
+            &-list {
+               &_item {
+                  font-size: 12px;
+               }
+            }
+         }
       }
    }
 </style>
