@@ -1,8 +1,9 @@
 <template>
    <div class="agreementPage">
       <div class="container">
+         <ComeBack :text="$t('contract')" v-if="isMobileBreakpoint" />
+
          <breadcrumbs :crumbs="crumbs" />
-<!--         <pre>{{getAgreements}}</pre>-->
 
          <h4 class="agreementPage__title">{{ $t('agreements') }}</h4>
 
@@ -159,10 +160,14 @@
 
 <script>
    import { mapGetters } from "vuex";
+   import ComeBack from "~/components/elements/ComeBack.vue";
    import aaa from "~/components/aaa.vue";
 
    export default {
-      components: {aaa},
+      components: {
+         aaa,
+         ComeBack
+      },
       data() {
          return {
             activeAgreement: 1

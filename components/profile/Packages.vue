@@ -68,7 +68,6 @@
 
       methods: {
          async nextStep(item) {
-            console.log(item)
             localStorage.setItem('selectedPackage', JSON.stringify(item));
             // await this.$store.dispatch('packages/getSelectedPackage', item);
             await this.$router.push(this.$localePath('/profile/packages/buy'));
