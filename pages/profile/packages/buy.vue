@@ -50,7 +50,7 @@
 
                   <form-text-input
                      v-model="salon_name"
-                     :placeholder="'Salon name'"
+                     :placeholder="$t('salon_name')"
                      :invalid="$v.salon_name.$error"
                      :disabled="(this.user?.autosalon?.name) ? true : false"
                      type="text"
@@ -276,7 +276,8 @@
 
       mounted() {
          this.selectedPackage = JSON.parse(localStorage.getItem('selectedPackage'));
-         this.salon_name = this.user?.autosalon?.name;
+
+         if (this.user?.autosalon?.name) this.salon_name = this.user?.autosalon?.name;
       },
 
       validations: {
