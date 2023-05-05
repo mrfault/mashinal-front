@@ -12,7 +12,7 @@ export const SocketMixin = {
         cluster: 'eu',
         //wsHost: this.$env.WS_HOST,
         forceTLS: true,
-        authEndpoint: this.$env.BROADCAST_URL,
+        authEndpoint: '/broadcasting/auth',
         auth: {
           headers: {
             Authorization: this.$auth.$storage.getUniversal('_token.local')
