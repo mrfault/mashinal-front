@@ -52,6 +52,7 @@
                      v-model="salon_name"
                      :placeholder="'Salon name'"
                      :invalid="$v.salon_name.$error"
+                     :disabled="(this.user?.autosalon?.name) ? true : false"
                      type="text"
                   />
                </div>
@@ -232,7 +233,7 @@
                   console.log('2222222')
                } else {
                   await this.handlePayment(res, this.$localePath('/agreement'), this.$t('announcement_paid'));
-                  this.pending = false;
+                  this.pending = this.openModal = false;
 
                   console.log('33333333')
                }
@@ -275,6 +276,7 @@
 
       mounted() {
          this.selectedPackage = JSON.parse(localStorage.getItem('selectedPackage'));
+         this.salon_name = this.user?.autosalon?.name;
       },
 
       validations: {

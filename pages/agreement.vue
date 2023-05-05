@@ -1,8 +1,9 @@
 <template>
    <div class="agreementPage">
       <div class="container">
+         <ComeBack :text="$t('contract')" v-if="isMobileBreakpoint" />
+
          <breadcrumbs :crumbs="crumbs" />
-         <pre>{{getAgreements}}</pre>
 
          <h4 class="agreementPage__title">{{ $t('agreements') }}</h4>
 
@@ -11,11 +12,11 @@
          <table class="agreementPage__table">
             <thead class="agreementPage__table-thead">
                <tr>
-                  <th>Hesab - Faktura tarixi</th>
-                  <th>Hesab - Faktura nömrəsi</th>
-                  <th>Xidmətin növü</th>
-                  <th>Məbləğ</th>
-                  <th>Status və tarix</th>
+                  <th>{{ $t('invoice_date') }}</th>
+                  <th>{{ $t('invoice_number') }}</th>
+                  <th>{{ $t('type_of_service') }}</th>
+                  <th>{{ $t('payment_amount') }}</th>
+                  <th>{{ $t('status_and_date') }}</th>
                </tr>
             </thead>
 
@@ -36,7 +37,7 @@
                      <div class="btns">
                         <inline-svg :src="'/icons/download.svg'" />
 
-                        <button class="btn">{{ $t('pay') }}</button>
+                        <button class="btn" v-if="!agreement.payment.is_paid">{{ $t('pay') }}</button>
 
                         <icon :name="'chevron-down'" />
                      </div>
@@ -49,17 +50,17 @@
                         <div class="divider">
                            <div class="agreementDetails__content-head">
                               <div class="agreementDetails__content-head_item">
-                                 <span>Ödənişli elanlar:</span>
+                                 <span>{{ $t('paid_ads') }}:</span>
                                  <span>{{ agreement.package.announce_count }}</span>
                               </div>
 
                               <div class="agreementDetails__content-head_item">
-                                 <span>Ödənişli xidmətlər:</span>
+                                 <span>{{ $t('paid_services') }}:</span>
                                  <span>{{ agreement.package.service_price }} AZN</span>
                               </div>
 
                               <div class="agreementDetails__content-head_item">
-                                 <span>Paket müddəti:</span>
+                                 <span>{{ $t('package_duration') }}:</span>
                                  <span>{{ $moment(agreement.start_date).format('DD.MM.YYYY') }} - {{ $moment(agreement.end_date).format('DD.MM.YYYY') }}</span>
                               </div>
                            </div>
@@ -68,13 +69,13 @@
                         <div class="divider">
                            <div class="agreementDetails__content-price">
                               <div class="agreementDetails__content-price_item">
-                                 <span>ƏDV:</span>
-                                 <span>54.00 AZN</span>
+                                 <span>{{ $t('vat') }}:</span>
+                                 <span>{{ agreement.package.price }} AZN</span>
                               </div>
 
                               <div class="agreementDetails__content-price_item">
-                                 <span>Cəmi:</span>
-                                 <span>300.00 AZN</span>
+                                 <span>{{ $t('total') }}:</span>
+                                 <span>{{ agreement.package.price }} AZN</span>
                               </div>
                            </div>
                         </div>
@@ -83,14 +84,90 @@
                </tr>
             </tbody>
          </table>
+
+
+<!--         <table class="invoiceTable">-->
+<!--&lt;!&ndash;            <thead class="invoiceTable__thead">&ndash;&gt;-->
+<!--&lt;!&ndash;               <tr>&ndash;&gt;-->
+<!--&lt;!&ndash;                  <th>Hesab - Faktura tarixi</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                  <th>Hesab - Faktura nömrəsi</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                  <th>Xidmətin növü</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                  <th>Məbləğ</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                  <th>Status və tarix</th>&ndash;&gt;-->
+<!--&lt;!&ndash;               </tr>&ndash;&gt;-->
+<!--&lt;!&ndash;            </thead>&ndash;&gt;-->
+
+<!--            <tbody class="invoiceTable__tbody">-->
+<!--               <tr>-->
+<!--                  <td>asdasdasd</td>-->
+<!--               </tr>-->
+<!--            </tbody>-->
+<!--         </table>-->
+
+<!--         <aaa/>-->
+
+<!--         <div-->
+<!--            class="invoice"-->
+<!--            style="-->
+<!--               width: 100%;-->
+<!--               max-width: 600px;-->
+<!--               padding: 20px;-->
+<!--               background: url('/images/invoice_bg.png') center center / cover no-repeat-->
+<!--            "-->
+<!--         >-->
+<!--            <div-->
+<!--               class="invoice__head"-->
+<!--               style="-->
+<!--                  display: flex;-->
+<!--                  align-items: center;-->
+<!--                  justify-content: space-between;-->
+<!--                  padding-bottom: 10px;-->
+<!--                  border-bottom: 2px solid #EE2539;-->
+<!--               "-->
+<!--            >-->
+<!--               <div class="divider">-->
+<!--                  <img src="/icons/alv-logo.svg" alt="alv-logo">-->
+<!--               </div>-->
+
+<!--               <div-->
+<!--                  class="divider"-->
+<!--                  style="-->
+<!--                     display: flex;-->
+<!--                     align-items: center;-->
+<!--                  "-->
+<!--               >-->
+<!--                  <ul-->
+<!--                     style="-->
+<!--                        list-style: none;-->
+<!--                        margin: 0 8px 0 0;-->
+<!--                        padding: 0 8px 0 0;-->
+<!--                        border-right: 1px solid #0A1B3D;-->
+<!--                        text-align: right;-->
+<!--                     "-->
+<!--                  >-->
+<!--                     <li>*8787</li>-->
+<!--                     <li>Park Azure, Blok 6, Mərtəbə 3</li>-->
+<!--                     <li>www.al.ventures</li>-->
+<!--                  </ul>-->
+
+<!--                  <img src="/icons/alv-logo.svg" alt="alv-logo" style="width: 50px; height: 50px">-->
+<!--               </div>-->
+<!--            </div>-->
+<!--         </div>-->
       </div>
    </div>
 </template>
 
 <script>
    import { mapGetters } from "vuex";
+   import ComeBack from "~/components/elements/ComeBack.vue";
+   import aaa from "~/components/aaa.vue";
 
    export default {
+      components: {
+         aaa,
+         ComeBack
+      },
       data() {
          return {
             activeAgreement: 1
@@ -118,6 +195,8 @@
 
 <style lang="scss" scoped>
    .agreementPage {
+      .invoice {
+         margin-top: 100px;}
       &__title {
          margin: 36px 0 8px 0;
          font-weight: 500;
@@ -185,13 +264,14 @@
                      .btns {
                         display: flex;
                         align-items: center;
+                        gap: 40px;
+                        margin-left: 40px;
 
                         svg {
                            cursor: pointer;
                         }
 
                         .btn {
-                           margin: 0 40px;
                            padding: 12px 36px;
                            color: #FFFFFF;
                            background-color: #246EB2;

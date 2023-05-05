@@ -1,13 +1,15 @@
 <template>
    <div class="pages-dashboard-statistics pt-2 pt-lg-5">
       <div class="container">
+         <ComeBack :text="$t('statistics')" v-if="isMobileBreakpoint" />
+
          <breadcrumbs :crumbs="crumbs"/>
 
-         <div class="card mb-2 mb-lg-3" v-if="isMobileBreakpoint">
-            <h2 class="title-with-line mb-n1 mt-n1">
-               <span>{{ $t('statistics') }}</span>
-            </h2>
-         </div>
+<!--         <div class="card mb-2 mb-lg-3" v-if="isMobileBreakpoint">-->
+<!--            <h2 class="title-with-line mb-n1 mt-n1">-->
+<!--               <span>{{ $t('statistics') }}</span>-->
+<!--            </h2>-->
+<!--         </div>-->
 
          <div class="pages-dashboard-statistics__inner">
             <div class="divider">
@@ -60,6 +62,7 @@
    import {StatsMixin} from '~/mixins/statistics';
    import Grid from '~/components/announcements/Grid';
    import CustomRadio from "~/components/elements/CustomRadio.vue";
+   import ComeBack from "~/components/elements/ComeBack.vue";
 
    export default {
       name: 'pages-dashboard-statistics',
@@ -67,7 +70,8 @@
       mixins: [StatsMixin],
       components: {
          Grid,
-         CustomRadio
+         CustomRadio,
+         ComeBack
       },
 
       nuxtI18n: {
@@ -91,7 +95,7 @@
            ]
         }
       },    async asyncData({store, route, app}) {
-      await store.dispatch('getAnnouncementStats', app.$getDashboardId(route.params.type));},
+      await store.dispatch('getAnnouncementStats', { id: app.$getDashboardId(route.params.type) });},
 
       computed: {
          ...mapGetters([]),
@@ -105,8 +109,16 @@
     },
     methods: {
       ...mapActions([]),
-    }
-  }
+    },
+watch: {
+         sorting() {
+            this.$store.dispatch('getAnnouncementStats', {
+               id: this.$getDashboardId(this.$route.params.type),
+               params: `?sorting=${this.sorting}`
+            });
+         }
+      }
+   }
 </script>
 
 <style lang="scss" scoped>
@@ -118,7 +130,7 @@
 
          .divider {
             width: 100%;
-            max-width: 220px;
+            max-width: 260px;
          }
       }
 
@@ -157,7 +169,58 @@
 
       .card {
          width: 100%;
-         max-width: 956px;
+         max-width: 920px;
+         padding: 25px 0;
+      }
+   }
+
+   @media (max-width: 1250px) {
+      .pages-dashboard-statistics {
+         &__inner {
+            .statistics-announcements {
+               padding-bottom: 0 !important;
+            }
+
+            .circle-bar {
+               margin-bottom: 40px;
+            }
+         }
+      }
+   }
+
+   @media (max-width: 1025px) {
+      .pages-dashboard-statistics {
+         &__inner {
+            flex-direction: column;
+
+            .card {
+               margin: 0;
+            }
+         }
+
+         .divider {
+            max-width: unset;
+         }
+
+         &__content {
+            padding: 18px 100px;
+         }
+      }
+   }
+
+   @media (max-width: 500px) {
+      .pages-dashboard-statistics {
+         &__content {
+            padding: 18px 50px;
+         }
+      }
+   }
+
+   @media (max-width: 425px) {
+      .pages-dashboard-statistics {
+         &__content {
+            padding: 20px;
+         }
       }
    }
 </style>

@@ -127,7 +127,7 @@
       },
 
       async asyncData({store, route, app}) {
-         await store.dispatch('getAnnouncementStats', app.$getDashboardId(route.params.type));
+         await store.dispatch('getAnnouncementStats', { id: app.$getDashboardId(route.params.type) });
 
          return {
             pending: false,

@@ -467,6 +467,16 @@
    }
 }
 
+@media (max-width: 576px) {
+   .modal-popup {
+      &.packages {
+         .radio-container {
+            width: 100%;
+         }
+      }
+   }
+}
+
 textarea {
    @include mal-scrollbar-2;
 }
