@@ -276,7 +276,7 @@
 
       mounted() {
          this.selectedPackage = JSON.parse(localStorage.getItem('selectedPackage'));
-         this.salon_name = this.user.autosalon.name;
+         this.salon_name = this.user?.autosalon?.name;
       },
 
       validations: {
