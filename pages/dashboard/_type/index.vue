@@ -239,8 +239,8 @@
                   key: 'salon',
                   title: `${this.$t('salon_profile')}`,
                   url: '/dashboard/' + type + '/settings',
-                  icon: 'user',
-                  image: 'account',
+                  icon: 'salon_profile',
+                  image: 'salon_profile',
                   description: `${this.$t('salon')} “${this.salonDetails.name}”`
                },
                {

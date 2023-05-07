@@ -50,7 +50,7 @@
 
                   <form-text-input
                      v-model="salon_name"
-                     :placeholder="$t('salon_name')"
+                     :placeholder="$t('autosalon_name')"
                      :invalid="$v.salon_name.$error"
                      :disabled="(this.user?.autosalon?.name) ? true : false"
                      type="text"
@@ -132,7 +132,7 @@
                <span class="checkmark"></span>
             </label>
 
-            <label class="radio-container" v-if="this.$auth.loggedIn">
+            <label class="radio-container" v-if="this.$auth.loggedIn && totalBalance > 0">
                {{$t('balans')}}
                <input type="radio" name="payment_type" @change="payment_type = 'balance'">
                <span class="checkmark"></span>
@@ -214,8 +214,11 @@
          async handleSubmit() {
             this.pending = true;
 
+            let api = '/payment/package';
+            // if (this.selectedPackage.id === this.getAgreements[0].package.id) api = '/payment/renew-package';
+
             try {
-               const res = await this.$axios.$post(`/payment/package?is_mobile=${this.isMobileBreakpoint}`, {
+               const res = await this.$axios.$post(`${api}?is_mobile=${this.isMobileBreakpoint}`, {
                   package_id: this.selectedPackage.id,
                   payment_type: this.payment_type,
                   name: this.salon_name,
@@ -229,13 +232,9 @@
                      text: this.$t('announcement_paid'),
                      title: this.$t('success_payment')
                   });
-
-                  console.log('2222222')
                } else {
                   await this.handlePayment(res, this.$localePath('/agreement'), this.$t('announcement_paid'));
                   this.pending = this.openModal = false;
-
-                  console.log('33333333')
                }
             } catch (error) {
                this.pending = false;
@@ -250,9 +249,13 @@
          }
       },
 
+      async asyncData({ store }) {
+         await store.dispatch('fetchAgreements');
+      },
+
       computed: {
          ...mapGetters({
-            // selectedPackage: 'packages/getSelectedPackage',
+            getAgreements: 'getAgreements',
             getResetForm: 'getResetForm'
          }),
 

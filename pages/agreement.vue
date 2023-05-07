@@ -3,6 +3,7 @@
       <div class="container">
          <ComeBack :text="$t('contract')" v-if="isMobileBreakpoint" />
 
+         <pre>{{getAgreements}}</pre>
          <breadcrumbs :crumbs="crumbs" />
 
          <h4 class="agreementPage__title">{{ $t('agreements') }}</h4>

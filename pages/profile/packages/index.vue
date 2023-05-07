@@ -9,9 +9,11 @@
 <!--            :title="$t('unpaid_invoice')"-->
 <!--         />-->
 
-         <h4 class="myPackages__title">{{ $t('not_active_package') }}</h4>
+         <div v-if="!getAgreements.length">
+            <h4 class="myPackages__title">{{ $t('not_active_package') }}</h4>
 
-         <h5 class="myPackages__subtitle">{{ $t('get_new_package') }}</h5>
+            <h5 class="myPackages__subtitle">{{ $t('get_new_package') }}</h5>
+         </div>
 
          <Packages :packages="getPackages" />
       </div>
@@ -41,7 +43,8 @@
 
       computed: {
          ...mapGetters({
-            getPackages: 'packages/getPackages'
+            getPackages: 'packages/getPackages',
+            getAgreements: 'getAgreements'
          }),
 
          crumbs() {
@@ -54,6 +57,12 @@
 
       async asyncData({ store }) {
          await store.dispatch('packages/getPackages');
+
+         try {
+            await store.dispatch('fetchAgreements');
+         } catch (e) {
+            console.log(e)
+         }
       }
    }
 </script>

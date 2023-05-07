@@ -61,7 +61,7 @@ export default function({ app, route, store }, inject) {
     app.router.push({ query: {...query, [param.key]: param.value } });
   });
   inject('getDashboardId', (type) => {
-    return type == 3 ? store.state.auth?.user?.external_salon.id :
+    return type == 3 ? store.state.auth?.user?.external_salon?.id :
       (type == 2 ? store.state.auth?.user?.part_salon?.id : store.state.auth?.user?.autosalon?.id);
   });
   // formatting
