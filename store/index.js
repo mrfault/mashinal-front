@@ -1369,7 +1369,7 @@ export const actions = {
       await this.$axios.$get(`/announce/${id}/show/phone`);
    },
    async getAnnouncementStats({commit}, data) {
-      const res = await this.$axios.$get(`/my/dashboard/statistics/${data.id}${data.params ? data.params : ''}`);
+      const res = await this.$axios.$get(`/my/dashboard/statistics/${data?.id}${data.params ? data.params : ''}`);
       commit("mutate", {property: "myAnnouncementStats", value: res});
    },
    updateSalonsFiltered({commit}, list) {

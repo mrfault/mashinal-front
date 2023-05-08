@@ -126,7 +126,7 @@
          })
       },
 
-      async asyncData({store, route, app}) {
+      async asyncData({ store, route, app }) {
          await store.dispatch('getAnnouncementStats', { id: app.$getDashboardId(route.params.type) });
 
          return {

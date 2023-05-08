@@ -152,7 +152,7 @@
             this.pending = true;
             await this.getGridSearch({...this.searchParams, post, page});
             await this.$store.dispatch('fetchInfiniteMainMonetized', { type: 'cars', data: post });
-            console.log('post', post)
+            // console.log('post', post)
             this.pending = false;
             if (page === 1) {
                this.scrollTo('.announcements-sorting');

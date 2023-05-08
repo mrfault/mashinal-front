@@ -3,6 +3,7 @@
       <div class="container">
          <ComeBack :text="$t('contract')" v-if="isMobileBreakpoint" />
 
+<!--         <pre>{{getAgreements}}</pre>-->
          <breadcrumbs :crumbs="crumbs" />
 
          <h4 class="agreementPage__title">{{ $t('agreements') }}</h4>
@@ -30,7 +31,7 @@
                   <td>{{ $moment(agreement.start_date).format('DD.MM.YYYY') }}</td>
                   <td>{{ agreement.id }}</td>
                   <td>{{ agreement.package.name[locale] }} {{ $t('package3') }}</td>
-                  <td>{{ agreement.package.price }} AZN</td>
+                  <td>{{ agreement.price }} AZN</td>
                   <td :class="['status', {'not_paid' : !agreement.payment.is_paid}]">
                      <span>{{ agreement.payment.is_paid ? $t('already_paid') : $t('not_paid') }}</span>
 
@@ -70,12 +71,12 @@
                            <div class="agreementDetails__content-price">
                               <div class="agreementDetails__content-price_item">
                                  <span>{{ $t('vat') }}:</span>
-                                 <span>{{ agreement.package.price }} AZN</span>
+                                 <span>{{ agreement.price }} AZN</span>
                               </div>
 
                               <div class="agreementDetails__content-price_item">
                                  <span>{{ $t('total') }}:</span>
-                                 <span>{{ agreement.package.price }} AZN</span>
+                                 <span>{{ agreement.price }} AZN</span>
                               </div>
                            </div>
                         </div>
@@ -181,7 +182,7 @@
 
          crumbs() {
             return [
-               { name: this.$t('dashboard'), route: '/dashboard/3' },
+               { name: this.$t('dashboard'), route: '/dashboard/1' },
                { name: this.$t('contract') }
             ]
          }
@@ -289,8 +290,10 @@
                   }
 
                   &.not_paid {
-                     color: #081A3E;
-                     opacity: 0.3;
+                     span {
+                        color: #081A3E;
+                        opacity: 0.3;
+                     }
                   }
 
                   &.agreementDetails {

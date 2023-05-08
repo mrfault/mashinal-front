@@ -50,7 +50,7 @@
 
                   <form-text-input
                      v-model="salon_name"
-                     :placeholder="$t('salon_name')"
+                     :placeholder="$t('autosalon_name')"
                      :invalid="$v.salon_name.$error"
                      :disabled="(this.user?.autosalon?.name) ? true : false"
                      type="text"
@@ -132,15 +132,15 @@
                <span class="checkmark"></span>
             </label>
 
-            <label class="radio-container" v-if="this.$auth.loggedIn">
+            <label class="radio-container" v-if="this.$auth.loggedIn && totalBalance > 0">
                {{$t('balans')}}
                <input type="radio" name="payment_type" @change="payment_type = 'balance'">
                <span class="checkmark"></span>
             </label>
 
-            <hr/>
+            <hr v-if="totalBalance > 0" />
 
-            <div class="terminal-section">Balans: <span>{{ totalBalance }}</span></div>
+            <div class="terminal-section" v-if="totalBalance > 0">Balans: <span>{{ totalBalance }}</span></div>
 
             <div class="modal-sticky-bottom">
                <hr />
@@ -214,28 +214,34 @@
          async handleSubmit() {
             this.pending = true;
 
+            let api = '/payment/package',
+                data = {
+                   package_id: this.selectedPackage.id,
+                   payment_type: this.payment_type,
+                   name: this.salon_name,
+                   days_type: this.duration
+                };
+
+            if (this.selectedPackage.id === this.getAgreements[0]?.package?.id) {
+               api = '/payment/renew-package';
+               data.autosalon_id = this.user.autosalon.id;
+               data.agreement_id = this.findActiveAgreement.id;
+               delete data.name;
+            }
+
             try {
-               const res = await this.$axios.$post(`/payment/package?is_mobile=${this.isMobileBreakpoint}`, {
-                  package_id: this.selectedPackage.id,
-                  payment_type: this.payment_type,
-                  name: this.salon_name,
-                  days_type: this.duration
-               });
+               const res = await this.$axios.$post(`${api}?is_mobile=${this.isMobileBreakpoint}`, data);
 
                if (!res?.data?.redirect_url) {
                   await this.$nuxt.refresh();
                   await this.updatePaidStatus({
                      type: 'success',
-                     text: this.$t('announcement_paid'),
+                     // text: this.$t('announcement_paid'),
                      title: this.$t('success_payment')
                   });
-
-                  console.log('2222222')
                } else {
-                  await this.handlePayment(res, this.$localePath('/agreement'), this.$t('announcement_paid'));
+                  await this.handlePayment(res, this.$localePath('/agreement'));
                   this.pending = this.openModal = false;
-
-                  console.log('33333333')
                }
             } catch (error) {
                this.pending = false;
@@ -250,9 +256,17 @@
          }
       },
 
+      async asyncData({ store }) {
+         try {
+            await store.dispatch('fetchAgreements');
+         } catch (e) {
+            console.log(e)
+         }
+      },
+
       computed: {
          ...mapGetters({
-            // selectedPackage: 'packages/getSelectedPackage',
+            getAgreements: 'getAgreements',
             getResetForm: 'getResetForm'
          }),
 
@@ -272,6 +286,10 @@
                this.user.external_salon?.balance || 0,
             )
          },
+
+         findActiveAgreement() {
+            return this.getAgreements.find(item => item.payment.is_paid === true);
+         }
       },
 
       mounted() {

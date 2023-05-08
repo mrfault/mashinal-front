@@ -1242,8 +1242,8 @@ export default {
       window.location.href = "https://dev.mashin.al/alvcp/resources/announcements"
     },
     getSellLastStepRejectObj(value) {
-      console.log('value', value)
-      console.log('this.rejectObj.rejectArray', this.rejectObj.rejectArray)
+      // console.log('value', value)
+      // console.log('this.rejectObj.rejectArray', this.rejectObj.rejectArray)
       if (!this.rejectObj.rejectArray.includes(value)) {
         this.rejectObj.rejectArray.push(value)
       } else {
@@ -1411,8 +1411,8 @@ export default {
         .then((res) => {
           if (res.status == 200) {
             this.$toast.success(this.$t('video_360_successfully_upload'))
-            console.log(" res.data.url", res.data.data.id)
-            console.log(" res.data.id", res.data.data.url)
+            // console.log(" res.data.url", res.data.data.id)
+            // console.log(" res.data.id", res.data.data.url)
             this.form.video_360_url = res.data.data.url
             this.form.video_360_id = res.data.data.id
           }

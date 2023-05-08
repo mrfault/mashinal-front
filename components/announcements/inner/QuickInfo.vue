@@ -86,7 +86,11 @@
                 "
             >
                <span v-if="announcement.is_part_salon">{{ $t('go_to_shop') }}</span>
-               <span v-else-if="announcement.is_autosalon || announcement.is_external_salon">{{ $t('go_to_salon') }}</span>
+
+               <span v-else-if="announcement.is_autosalon || announcement.is_external_salon">
+                  {{ $t('go_to_salon') }}
+               </span>
+
                <span v-else>{{ $t('other_announcements_of_user') }}</span>
                <icon name="chevron-right" />
                <!-- <inline-svg src="/icons/chevron-right.svg" :height="14" /> -->
