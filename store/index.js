@@ -770,7 +770,6 @@ export const actions = {
       const res = await this.$axios.$get(
          `/brand/${data.brand}/model/${data.model}/generations`
       );
-
       commit("mutate", {property: "generations", value: res.generations});
       commit("mutate", {
          property: "modelDescription",
