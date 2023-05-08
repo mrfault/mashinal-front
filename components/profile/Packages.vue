@@ -16,7 +16,7 @@
 
                      <h5 class="customPackages__title">{{ item.name }}</h5>
 
-                     <h3 class="customPackages__subtitle">{{ item.price }} AZN<span>/ {{ $t('month') }}</span></h3>
+                     <h3 class="customPackages__subtitle">{{ item.price }} AZN <span>/ {{ $t('month') }}</span> </h3>
 
                      <ul class="customPackages__info">
                         <li
@@ -32,7 +32,7 @@
                      </ul>
 
                      <button
-                        :class="['btn', {'disabled' : item.id !== disableBtn.id}]"
+                        :class="['btn', {'disabled' : disableBtn && disableBtn.id !== item.id}]"
                         @click="nextStep(item)"
                      >{{ $t('join_package', { package: item.name }) }}</button>
                   </div>
@@ -83,8 +83,7 @@
          },
 
          disableBtn: {
-            type: Boolean,
-            default: false
+            required: false
          }
       },
 
