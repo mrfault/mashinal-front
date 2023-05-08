@@ -15,7 +15,20 @@ const getInitialState = () => ({
    temporaryLazyData: [],
    temporaryLazyDataB: [],
    menus: [],
-   staticPages: [],
+   staticPages: [
+      {
+         id:1,
+         title: {},
+         text: {},
+         slug: {}
+      },
+      {
+         id:1,
+         title: {},
+         text: {},
+         slug: {}
+      }
+   ],
    pageRef: "",
    pageRefs: ["", ""],
    hideFooter: false,
@@ -66,6 +79,7 @@ const getInitialState = () => ({
    catalogForm: {},
    // brands
    brands: [],
+   existsBrands: [],
    commercialBrands: {0: [], 1: [], 2: [], 3: [], 4: []},
    // models
    models: [],
@@ -291,6 +305,7 @@ export const getters = {
    catalogForm: s => s.catalogForm,
    // brands
    brands: s => s.brands,
+   existsBrands: s => s.existsBrands,
    commercialBrands: s => s.commercialBrands,
    // models
    models: s => s.models,
@@ -456,19 +471,6 @@ export const actions = {
    },
 
    async nuxtServerInit({dispatch, commit}) {
-      if (this.$auth.loggedIn) {
-         await Promise.all([
-            dispatch("getNotifications"),
-            dispatch("getFavorites"),
-            dispatch("getNotViewedFavorites"),
-            dispatch("getNotViewedSavedSearch")
-         ]);
-      }
-      await Promise.all([
-         dispatch("getStaticPages"),
-         dispatch("getCommercialTypes")
-      ]);
-
       let ptk =
          this.$cookies.get("ptk") ||
          "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx"
@@ -516,10 +518,20 @@ export const actions = {
       const res = await this.$axios.$get("/menus");
       commit("mutate", {property: "menus", value: res});
    },
+
    async getStaticPages({commit}) {
-      const res = await this.$axios.$get("/get_static_pages");
-      commit("mutate", {property: "staticPages", value: res});
+      let static_pages;
+
+      if (localStorage.getItem('static_pages')) {
+         static_pages = localStorage.getItem('static_pages');
+         commit("mutate", { property: "staticPages", value: JSON.parse(static_pages) });
+      } else {
+         const res = await this.$axios.$get("/get_static_pages");
+         commit("mutate", { property: "staticPages", value: res });
+         localStorage.setItem('static_pages', JSON.stringify(res));
+      }
    },
+
    setPageRefs({commit}, {index, path}) {
       commit("mutate", {property: "pageRefs", key: index, value: path});
    },
@@ -677,6 +689,12 @@ export const actions = {
       const res = await this.$axios.$get("/brands");
       commit("mutate", {property: "brands", value: res});
    },
+
+   async getBrandsOnlyExists({commit, state}) {
+      if (objectNotEmpty(state, commit, "existsBrands")) return;
+      const res = await this.$axios.$get("/brands?whereHas=1");
+      commit("mutate", {property: "existsBrands", value: res});
+   },
    async getCommercialBrands({commit}, data) {
       const res = await this.$axios.$get(
          `/commercial/get_brands/${data.category}`
@@ -752,7 +770,6 @@ export const actions = {
       const res = await this.$axios.$get(
          `/brand/${data.brand}/model/${data.model}/generations`
       );
-
       commit("mutate", {property: "generations", value: res.generations});
       commit("mutate", {
          property: "modelDescription",

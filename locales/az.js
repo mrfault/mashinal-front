@@ -298,6 +298,7 @@ export default {
       "Avtomat (Variator)",
       "Reduktor"
    ],
+   reduktor: "Reduktor",
    brand_country: "Marka ölkəsi",
    brand_country_values: [
       "-",
@@ -2377,6 +2378,7 @@ export default {
    dashboard_external_salon: "Salon profili",
    external_salon: "Sifarişlə avto",
    "external-salons": "Sifarişlə avto",
+   registration2: "Rəsmiləşdirmə",
    registration_marks: "Qeydiyyat nişanları",
    registration_marks_text: "Qeydiyyat nişanı elanı yerləşdirmək <span>ödənişlidir.</span> 1 elanın qiyməti <span>2 AZN</span>-dir",
    external_commercial: "Sifarişlə ticari",

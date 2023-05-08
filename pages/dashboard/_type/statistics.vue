@@ -94,28 +94,23 @@
               { key: 2, name: this.$t('sorting_call') }
            ]
         }
-      },
-
-      async asyncData({store, route, app}) {
-         await store.dispatch('getAnnouncementStats', { id: app.$getDashboardId(route.params.type) });
-      },
+      },    async asyncData({store, route, app}) {
+      await store.dispatch('getAnnouncementStats', { id: app.$getDashboardId(route.params.type) });},
 
       computed: {
          ...mapGetters([]),
 
-         crumbs() {
-            return [
-               {name: this.$t('dashboard'), route: '/dashboard/' + this.$route.params.type},
-               {name: this.$t('statistics')}
-            ]
-         }
-      },
-
-      methods: {
-         ...mapActions([]),
-      },
-
-      watch: {
+      crumbs() {
+        return [
+          { name: this.$t('dashboard'), route: '/dashboard/' + this.$route.params.type },
+          { name: this.$t('statistics') }
+        ]
+      }
+    },
+    methods: {
+      ...mapActions([]),
+    },
+watch: {
          sorting() {
             this.$store.dispatch('getAnnouncementStats', {
                id: this.$getDashboardId(this.$route.params.type),

@@ -1007,10 +1007,12 @@
 .radio-items {
    width: 100%;
    display: flex;
+   flex-wrap: wrap;
+   gap: 15px;
 }
 
 .radio-container {
-   width: 33%;
+   width: calc(33.33% - 15px);
    position: relative;
    padding-left: 35px;
    margin-bottom: 12px;
@@ -1108,18 +1110,16 @@
    }
 
    .info-text {
-      padding-left: 22px;
+      padding-left: 0px;
    }
 
    .icon-alert-circle {
       left: 3px;
    }
 }
-
-.terminal-info-popup {
-   width: 590px;
-
-   .phone-section {
+.terminal-info-popup{
+    width: 590px;
+   .phone-section{
       display: flex;
       align-items: center;
 

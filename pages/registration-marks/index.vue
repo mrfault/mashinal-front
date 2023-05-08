@@ -152,6 +152,12 @@
          });
       },
 
+      nuxtI18n: {
+         paths: {
+            az: '/qeydiyyat-nisanlari'
+         }
+      },
+
       components: {
          RegistrationMarksGrid,
          NoResults,

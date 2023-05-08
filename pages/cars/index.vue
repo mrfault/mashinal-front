@@ -98,7 +98,7 @@
          if (!store.state.carsAnnouncements.total)
             await store.dispatch('getGridSearch', {...searchParams, post, page})
             await Promise.all([
-               store.dispatch('getBrands'),
+               store.dispatch('getBrandsOnlyExists'),
                store.dispatch('getBodyOptions'),
                store.dispatch('getOptions'),
 
