@@ -12,7 +12,7 @@
                   class="swiper-slide"
                >
                   <div :class="['customPackages__item', {'popular' : item.is_popular}]">
-                     <div class="customPackages__hat" v-if="item.is_popular">Ən Populyar</div>
+                     <div class="customPackages__hat" v-if="item.is_popular">{{ $t('most_popular') }}</div>
 
                      <h5 class="customPackages__title">{{ item.name }}</h5>
 

@@ -165,8 +165,8 @@
               </div>
             </div>
           </nuxt-link>
-          <div class="langs-menu btn">
-            <span @click="changeLoc">{{ locale === 'ru' ? 'AZ' : 'RU' }}</span>
+          <div class="langs-menu btn" @click="changeLoc">
+            <span>{{ locale === 'ru' ? 'AZ' : 'RU' }}</span>
 
 <!--            <icon name="chevron-down" />-->
 

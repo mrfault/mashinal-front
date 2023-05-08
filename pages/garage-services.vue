@@ -1,8 +1,8 @@
 <template>
    <div class="pages-dashboard pt-2 pt-lg-5 mb-5 pb-5">
       <div class="container d-flex flex-wrap">
-         <breadcrumbs :crumbs="crumbs"/>
-<!--         <pre>{{this.$auth.user.can_be_autosalon}}</pre>-->
+         <breadcrumbs :crumbs="crumbs" />
+<!--         <pre>{{$auth.user.autosalon}}</pre>-->
 <!--         <pre>{{positions}}</pre>-->
          <template v-for="(item, index) in garageServices">
             <div class="col-12 col-lg-4 mb-2 mb-xl-3" :key="index" v-if="item.isAvailable">
@@ -248,7 +248,7 @@
                   url: '/profile/packages',
                   hasAction: true,
                   image: 'packages',
-                  isAvailable: this.$auth.user.can_be_autosalon ? true : false,
+                  isAvailable: !!this.$auth.user.can_be_autosalon,
                   actionName: `${this.$t('get_package')}`,
                },
             ]

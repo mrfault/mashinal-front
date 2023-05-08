@@ -5,17 +5,19 @@
 
          <div class="customNotification-text">
             <p>{{ title }}</p>
-            <p>{{ subtitle }} <span>{{ price }} AZN</span></p>
+            <p v-html="subtitle" />
          </div>
       </div>
 
       <div class="divider">
          <button
             class="btn"
-            @click="handleSubmit"
+            @click="openModal = true"
          >{{ $t('pay') }}</button>
       </div>
-      <pre>{{unpaidAgreement}}</pre>
+
+<!--      <pre>{{unpaidAgreement}}</pre>-->
+
       <modal-popup
          :toggle="openModal"
          :title="$t('ads_balans')"
@@ -75,7 +77,7 @@
                <div class="col-12 col-lg-12 mt-2 mt-lg-0">
                   <button
                      :class="['btn btn--green full-width', { pending }]"
-                     @click="handleSubmit"
+                     @click="submit"
                   >
                      {{ $t('pay') }}
                   </button>
@@ -87,60 +89,72 @@
 </template>
 
 <script>
+   import {mapGetters} from "vuex";
+   import {PaymentMixin} from "~/mixins/payment";
+
    export default {
+      mixins: [PaymentMixin],
+
       data() {
          return {
             openModal: false,
-            pending: false
+            pending: false,
+            payment_type: 'card',
+            duration: 1
          }
       },
+
       methods: {
-         // async handleSubmit() {
-         //    this.pending = true;
-         //
-         //    let api = '/payment/package',
-         //       data = {
-         //          package_id: this.unpaidAgreement.package.id,
-         //          payment_type: this.payment_type,
-         //          name: this.user.autosalon.name,
-         //          days_type: this.duration
-         //       };
-         //
-         //    if (this.selectedPackage.id === this.getAgreements[0].package.id) {
-         //       api = '/payment/renew-package';
-         //       data.autosalon_id = this.user.autosalon.id;
-         //       data.agreement_id = this.findActiveAgreement.id;
-         //       delete data.name;
-         //    }
-         //
-         //    try {
-         //       const res = await this.$axios.$post(`${api}?is_mobile=${this.isMobileBreakpoint}`, data);
-         //
-         //       if (!res?.data?.redirect_url) {
-         //          await this.$nuxt.refresh();
-         //          await this.updatePaidStatus({
-         //             type: 'success',
-         //             // text: this.$t('announcement_paid'),
-         //             title: this.$t('success_payment')
-         //          });
-         //       } else {
-         //          await this.handlePayment(res, this.$localePath('/agreement'));
-         //          this.pending = this.openModal = false;
-         //       }
-         //    } catch (error) {
-         //       this.pending = false;
-         //
-         //       // const response = error.response.data;
-         //       // if (response.data && Object.keys(response.data).length) {
-         //       //    for (let key in response.data) {
-         //       //       this.$toast.error(response.data[key][0])
-         //       //    }
-         //       // }
-         //    }
-         // }
+         async submit() {
+            this.pending = true;
+
+            let api = '/payment/package',
+               data = {
+                  package_id: this.unpaidAgreement.package.id,
+                  payment_type: this.payment_type,
+                  name: this.user.autosalon.name,
+                  days_type: this.duration
+               };
+
+            if (this.selectedPackage.id === this.getAgreements[0]?.package?.id) {
+               api = '/payment/renew-package';
+               data.autosalon_id = this.user.autosalon.id;
+               data.agreement_id = this.unpaidAgreement.id;
+               delete data.name;
+            }
+
+            try {
+               const res = await this.$axios.$post(`${api}?is_mobile=${this.isMobileBreakpoint}`, data);
+
+               if (!res?.data?.redirect_url) {
+                  await this.$nuxt.refresh();
+                  await this.updatePaidStatus({
+                     type: 'success',
+                     // text: this.$t('announcement_paid'),
+                     title: this.$t('success_payment')
+                  });
+               } else {
+                  await this.handlePayment(res, this.$localePath('/agreement'));
+                  this.pending = this.openModal = false;
+               }
+            } catch (error) {
+               this.pending = false;
+
+               // const response = error.response.data;
+               // if (response.data && Object.keys(response.data).length) {
+               //    for (let key in response.data) {
+               //       this.$toast.error(response.data[key][0])
+               //    }
+               // }
+            }
+         }
       },
 
       computed: {
+         ...mapGetters({
+            getAgreements: 'getAgreements',
+         }),
+
          totalBalance() {
             return this.$sum(
                this.user.balance,
@@ -148,7 +162,7 @@
                this.user.part_salon?.balance || 0,
                this.user.external_salon?.balance || 0,
             )
-         },
+         }
       },
 
       props: {
@@ -162,20 +176,19 @@
             default: 'Subtitle'
          },
 
-         price: {
-            type: [String, Number],
-            default: 100
-         },
-
          unpaidAgreement: {
             type: Object,
             default() { return {} }
          }
+      },
+
+      mounted() {
+         this.selectedPackage = JSON.parse(localStorage.getItem('selectedPackage'));
       }
    }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
    .customNotification {
       display: flex;
       align-items: center;
@@ -202,6 +215,7 @@
                color: #246EB2;
 
                span {
+                  font-weight: 600;
                   color: red;
                }
             }
