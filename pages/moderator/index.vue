@@ -122,7 +122,7 @@ export default {
   methods: {
     async getAnnouncementsList(){
       await this.$store.dispatch('moderator/getAnnouncements',this.form)
-      console.log("getAnnouncementsList")
+      // console.log("getAnnouncementsList")
     }
   },
 

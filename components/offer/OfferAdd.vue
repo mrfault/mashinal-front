@@ -263,13 +263,13 @@ export default {
   },
   methods: {
     changeGearBox(values) {
-      console.log(this.form[this.index].box)
+      // console.log(this.form[this.index].box)
       this.form[this.index].gearBoxes = values;
 
     },
 
     changeFuelTypes(values) {
-      console.log(values)
+      // console.log(values)
       this.form[this.index].fuelTypes = values
 
     },
@@ -357,7 +357,7 @@ export default {
       })
     },
     changeGenerations(values) {
-      console.log(values)
+      // console.log(values)
       if (values[0]) {
         this.form[this.index].generations = values
 

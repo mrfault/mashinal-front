@@ -5,9 +5,13 @@
 
          <breadcrumbs :crumbs="crumbs" />
 
-<!--         <CustomNotifications-->
-<!--            :title="$t('unpaid_invoice')"-->
-<!--         />-->
+         <CustomNotifications
+            :title="$t('unpaid_invoice')"
+            :subtitle="`'${unpaidAgreement.package.name[locale]}' paketi, ${$moment(unpaidAgreement.start_date).format('DD.MM.YYYY')}-dən ${$moment(unpaidAgreement.end_date).format('DD.MM.YYYY')}-dək,`"
+            :price="unpaidAgreement.price"
+            :unpaidAgreement="unpaidAgreement"
+            v-if="!!unpaidAgreement"
+         />
 
          <div v-if="!getAgreements.length">
             <h4 class="myPackages__title">{{ $t('not_active_package') }}</h4>
@@ -15,7 +19,10 @@
             <h5 class="myPackages__subtitle">{{ $t('get_new_package') }}</h5>
          </div>
 
-         <Packages :packages="getPackages" />
+         <Packages
+            :packages="getPackages"
+            :disableBtn="disableBtn"
+         />
       </div>
    </div>
 </template>
@@ -49,9 +56,17 @@
 
          crumbs() {
             return [
-               { name: this.$t('dashboard'), route: '/dashboard/3' },
+               { name: this.$t('dashboard'), route: `/dashboard/1` },
                { name: this.$t('my_packages') }
             ]
+         },
+
+         unpaidAgreement() {
+            return this.getAgreements.find(item => item.payment.is_paid === false);
+         },
+
+         disableBtn() {
+            return this.getPackages.find(item => item.id === this.getAgreements[0].package.id);
          }
       },
 

@@ -132,9 +132,14 @@
                     <img :src="getUserAvatar" :alt="user.full_name" />
                     <span class="text-truncate">{{ user.full_name }}</span>
                   </nuxt-link>
+
                   <hr />
+
                   <ul>
-                    <template v-for="menu in userMenus" v-if="menu.isAvailable && ((user.parent_id || (user.children && user.children.length)) ? menu.title !== 'garage':true )" >
+                    <template
+                       v-for="menu in userMenus"
+                       v-if="menu.isAvailable && ((user.parent_id || (user.children && user.children.length)) ? menu.title !== 'garage':true )"
+                    >
                       <li v-if="menu.title === 'my_account' ? !user.parent_id: true" :key="menu.title">
                         <nuxt-link :to="$localePath(menu.route)">
                           {{ $t(menu.title) }}

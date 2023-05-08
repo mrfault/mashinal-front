@@ -31,7 +31,10 @@
                         </li>
                      </ul>
 
-                     <button class="btn" @click="nextStep(item)">{{ $t('join_package', { package: item.name }) }}</button>
+                     <button
+                        :class="['btn', {'disabled' : item.id !== disableBtn.id}]"
+                        @click="nextStep(item)"
+                     >{{ $t('join_package', { package: item.name }) }}</button>
                   </div>
                </div>
             </div>
@@ -69,7 +72,6 @@
       methods: {
          async nextStep(item) {
             localStorage.setItem('selectedPackage', JSON.stringify(item));
-            // await this.$store.dispatch('packages/getSelectedPackage', item);
             await this.$router.push(this.$localePath('/profile/packages/buy'));
          }
       },
@@ -78,6 +80,11 @@
          packages: {
             type: Array,
             default() { return [] }
+         },
+
+         disableBtn: {
+            type: Boolean,
+            default: false
          }
       },
 
