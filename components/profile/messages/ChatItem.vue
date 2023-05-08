@@ -15,7 +15,7 @@
         </div>
         <div class="chat-announcement">
           <span v-if="isChatBot">{{ $t('bot') }}</span>
-          <span class="text-truncate" v-else>{{ getAnnouncementTitle(chatAnnouncement) }}</span>
+          <span class="text-truncate" v-else>{{ getAnnouncementTitle(chatAnnouncement) || chatAnnouncement.car_number }}</span>
           <span class="text-dark-blue-2">
             <template v-if="!chatAnnouncement.is_negotiable">{{ chatAnnouncement.price || '' }}</template>
             <icon name="handshake" v-else />
