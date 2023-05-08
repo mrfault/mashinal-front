@@ -179,16 +179,6 @@
 
             return [
                {
-                  key: 'packages',
-                  title: `${this.$t('my_packages')}`,
-                  url: '/profile/packages',
-                  icon: 'packages',
-                  image: 'packages',
-                  hasAction: true,
-                  actionName: `${this.$t('get_package')}`,
-                  // actionLink: '/sell',
-               },
-               {
                   key: 'announcements',
                   title: `${this.$t('my_announces')}`,
                   url: '/profile/announcements?type=' + type,
@@ -226,15 +216,15 @@
                   isMessage: true,
                   messageCounts: [this.myAnnouncementStats.message_count, this.myAnnouncementStats.message_count_not_read]
                },
-               // {
-               //    key: 'calls',
-               //    title: `${this.$t('phone_call_count')}`,
-               //    url: '/dashboard/' + type + '/calls',
-               //    icon: 'phone',
-               //    image: 'phone',
-               //    description: `${this.$t('transition_count_to_number')}`,
-               //    value: this.myAnnouncementStats.call_count,
-               // },
+               {
+                  key: 'calls',
+                  title: `${this.$t('phone_call_count')}`,
+                  url: '/dashboard/' + type + '/calls',
+                  icon: 'phone',
+                  image: 'phone',
+                  description: `${this.$t('transition_count_to_number')}`,
+                  value: this.myAnnouncementStats.call_count,
+               },
                {
                   key: 'salon',
                   title: `${this.$t('salon_profile')}`,

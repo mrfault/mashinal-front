@@ -26,7 +26,6 @@
          <div class="more-data d-flex">
             <span class="text-data">№ {{ announcement.id_unique }}</span>
             <span class="text-data">
-<!--               <pre>{{announcement}}</pre>-->
           <icon name="eye"/>
           {{ announcement.view_count }}
           <icon name="cursor"/>
@@ -49,9 +48,10 @@
          </div>
          <div class="d-flex">
             <share-it type="publish" class="btns"/>
+
             <button
                class="btn btn--dark-blue-2-outline full-width"
-               @click.stop="copyToClipboard($env.WEBSITE_URL + $route.path)"
+               @click.stop="copyToClipboard($route.path)"
             >
                <icon name="link"/>
                {{ $t('copy_to_clipboard') }}
@@ -59,7 +59,7 @@
          </div>
       </template>
 
-      <hr />
+      <hr/>
 
       <div
          :class="['contact', { 'cursor-pointer': !!contact.link }]"
@@ -70,24 +70,29 @@
          </div>
          <div class="info">
             <h2>{{ contact.name }}</h2>
+
             <address v-if="announcement.status != 3">{{ getAddress }}</address>
+
             <span class="text-red" v-else>{{ $t('sold') }}</span>
+
             <nuxt-link
                :to="contact.link"
                class="all-announcements text-dark-blue-2 text-medium"
                v-if="
-            contact.user.active_announcements_count > 1 ||
-            announcement.is_part_salon ||
-            announcement.is_autosalon ||
-            announcement.is_external_salon
-          "
+                  contact.user.active_announcements_count > 1 ||
+                  announcement.is_part_salon ||
+                  announcement.is_autosalon ||
+                  announcement.is_external_salon
+                "
             >
                <span v-if="announcement.is_part_salon">{{ $t('go_to_shop') }}</span>
+
                <span v-else-if="announcement.is_autosalon || announcement.is_external_salon">
                   {{ $t('go_to_salon') }}
                </span>
+
                <span v-else>{{ $t('other_announcements_of_user') }}</span>
-               <icon name="chevron-right"/>
+               <icon name="chevron-right" />
                <!-- <inline-svg src="/icons/chevron-right.svg" :height="14" /> -->
             </nuxt-link>
          </div>
@@ -101,7 +106,7 @@
             <chat-button :announcement="announcement" has-after-login/>
          </div>
          <div class="col-12 mt-2 mt-lg-3" v-if="!isMobileBreakpoint">
-            <call-button-multiple v-if="announcement.is_autosalon" :phones="announcement.user.autosalon.phones" />
+            <call-button-multiple v-if="announcement.is_autosalon" :phones="announcement.user.autosalon.phones"/>
             <call-button v-else :phone="contact.phone"/>
          </div>
          <div class="col-12 mt-2 mt-lg-3" v-if="!isMobileBreakpoint && announcement.status === 2">
@@ -109,7 +114,8 @@
          </div>
       </div>
 
-      <template v-if="!brief &&((!this.isMobileBreakpoint &&(announcement.status == 1 || announcement.has_monetization)) || needToPay)">
+      <template
+         v-if="!brief &&((!this.isMobileBreakpoint &&(announcement.status == 1 || announcement.has_monetization)) || needToPay)">
          <hr class="mt-3"
              v-if="needToPay ||
              (!this.isMobileBreakpoint && announcement.has_monetization && $auth.loggedIn) ||
@@ -163,6 +169,7 @@
             </div>
          </div>
       </template>
+
       <modal-popup :toggle="showModal" @close="showModal = false">
          <login-tabs></login-tabs>
       </modal-popup>
@@ -200,15 +207,15 @@ export default {
    },
    components: {
       CallButtonMultiple,
-    RestoreButton,
-    DeactivateButton,
-    EditButton,
-    ChatButton,
-    CallButton,
-    ShowMapButton,
-    MonetizationButton,
-    MonetizationStatsButton,
-    PayAnnouncementButton,AddFavorite
+      RestoreButton,
+      DeactivateButton,
+      EditButton,
+      ChatButton,
+      CallButton,
+      ShowMapButton,
+      MonetizationButton,
+      MonetizationStatsButton,
+      PayAnnouncementButton, AddFavorite
    },
    computed: {
       ...mapGetters(['announcement']),
@@ -233,7 +240,7 @@ export default {
          }
       },
       showDeactivateButton(item) {
-         if(this.$auth.user) {
+         if (this.$auth.user) {
             if (this.$auth.user.id == item.user.id) {
                if (item.status == 0 || item.status == 1) {
                   return true
@@ -265,54 +272,54 @@ export default {
 </script>
 
 <style lang="scss">
-   .quick-info {
-      &.registration-marks {
-         .registration-marks__number {
+.quick-info {
+   &.registration-marks {
+      .registration-marks__number {
+         position: absolute;
+         top: 0;
+         left: 0;
+         display: flex;
+         align-items: center;
+         width: 100%;
+         padding: 0 11px;
+         border: 7px solid #121926;
+         border-bottom-width: 22px;
+         margin-bottom: 24px;
+
+         &-description {
             position: absolute;
-            top: 0;
-            left: 0;
-            display: flex;
-            align-items: center;
-            width: 100%;
-            padding: 0 11px;
-            border: 7px solid #121926;
-            border-bottom-width: 22px;
-            margin-bottom: 24px;
-
-            &-description {
-               position: absolute;
-               left: 50%;
-               bottom: -19px;
-               transform: translateX(-50%);
-               font-family: 'DinMittelschriftgepraegt', sans-serif;
-               font-size: 15px;
-               line-height: 17px;
-               color: #FFFFFF;
-            }
-
-            .divider {
-               &:not(:first-child) {
-                  margin: 0 auto;
-               }
-
-               img {
-                  width: 30px;
-               }
-
-               p {
-                  font-family: 'DinMittelschriftgepraegt', sans-serif;
-                  font-weight: 400;
-                  font-size: 56px;
-                  line-height: 68px;
-                  letter-spacing: -1px;
-                  margin: 0;
-               }
-            }
+            left: 50%;
+            bottom: -19px;
+            transform: translateX(-50%);
+            font-family: 'DinMittelschriftgepraegt', sans-serif;
+            font-size: 15px;
+            line-height: 17px;
+            color: #FFFFFF;
          }
 
-         .price {
-            margin-top: 90px;
+         .divider {
+            &:not(:first-child) {
+               margin: 0 auto;
+            }
+
+            img {
+               width: 30px;
+            }
+
+            p {
+               font-family: 'DinMittelschriftgepraegt', sans-serif;
+               font-weight: 400;
+               font-size: 56px;
+               line-height: 68px;
+               letter-spacing: -1px;
+               margin: 0;
+            }
          }
       }
+
+      .price {
+         margin-top: 90px;
+      }
    }
+}
 </style>

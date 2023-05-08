@@ -649,12 +649,6 @@ export default {
     }
   },
 
-  async created() {
-    await this.$auth.setUserToken(`Bearer ${this.$route.query.token}`);
-    this.$axios.setHeader('Authorization', `Bearer ${this.$route.query.token}`)
-
-
-  },
 
   beforeDestroy() {
     this.$toasted.clear();
@@ -674,7 +668,10 @@ export default {
       this.loading = true;
       await this.$auth.setUserToken(`Bearer ${this.$route.query.token}`);
 
-      const admin_user = await this.$axios.$get('/user');
+      this.$axios.setHeader('Authorization', `Bearer ${this.$route.query.token}`)
+
+
+       const admin_user = await this.$axios.$get('/user');
 
       if (!admin_user.user.is_admin) {
         return false;

@@ -6,40 +6,42 @@
              transparent @input="handleSelectAll" @change="handleSelectAll"/>
          </div> -->
          <div class="col d-flex align-items-center justify-content-end">
-            <span v-if="false" :class="['control-icon cursor-pointer text-hover-red', {'disabled-ui': !selected.length}]"
-               @click="showChatModal = true">
-           <span>MashinAL Business</span>
-         </span>
+            <span v-if="false"
+                  :class="['control-icon cursor-pointer text-hover-red', {'disabled-ui': !selected.length}]"
+                  @click="showChatModal = true">
+               <span>MashinAL Business</span>
+            </span>
 
             <span v-if="user.autosalon && user.autosalon.id" style="border-right: 1px solid #ccc6;"
-               :class="['control-icon cursor-pointer text-hover-red', {'disabled-ui': !selectedAnnouncements.length}]">
-          <monetization-button
-             :multiple="true"
-             :multiple-announcements="selectedAnnouncements"
-             tag="span"
-             classes=" "
-             :announcement="myAnnouncements.data[0]"
-          />
-        </span>
+                  :class="['control-icon cursor-pointer text-hover-red', {'disabled-ui': !selectedAnnouncements.length}]">
+               <monetization-button
+                  :multiple="true"
+                  :multiple-announcements="selectedAnnouncements"
+                  tag="span"
+                  classes=" "
+                  :announcement="myAnnouncements.data[0]"
+               />
+           </span>
 
             <span :class="['control-icon cursor-pointer text-hover-red', {'disabled-ui': !selected.length}]"
-               @click="showDeactivateModal = true">
+                  @click="showDeactivateModal = true">
           <!-- <icon name="minus-circle" /> -->
                <inline-svg src="/icons/minus-circle.svg" :height="14"/>
 
                <span>{{ $t('inactive_make') }}</span>
 
                <modal-popup
-                :toggle="showDeactivateModal"
-                :title="$t('are_you_sure_you_want_to_deactivate_the_announcements')"
-                @close="showDeactivateModal = false"
-             >
+                  :toggle="showDeactivateModal"
+                  :title="$t('are_you_sure_you_want_to_deactivate_the_announcements')"
+                  @close="showDeactivateModal = false"
+               >
                <form class="form" @submit.prevent="deactivateAnouncement" novalidate>
                  <button type="submit" :class="['btn btn--green full-width', { pending }]">
                    {{ $t('confirm') }}
                  </button>
                </form>
              </modal-popup>
+
              <modal-popup
                 :toggle="showChatModal"
                 :title="'MashinAL Business'"
@@ -77,21 +79,21 @@
 
             <span :class="['control-icon cursor-pointer text-hover-red', {'disabled-ui': !selected.length}]"
                   @click="showDeleteModal = true">
-          <icon name="garbage"/>
-               <!-- <inline-svg src="/icons/garbage.svg" :height="14" /> -->
-          <span>{{ $t('delete') }}</span>
-          <modal-popup
-             :toggle="showDeleteModal"
-             :title="$t('are_you_sure_you_want_to_delete_the_announcements')"
-             @close="showDeleteModal = false"
-          >
-            <form class="form" @submit.prevent="deleteAnouncement" novalidate>
-              <button type="submit" :class="['btn btn--green full-width', { pending }]">
-                {{ $t('confirm') }}
-              </button>
-            </form>
-          </modal-popup>
-        </span>
+             <icon name="garbage"/>
+                  <!-- <inline-svg src="/icons/garbage.svg" :height="14" /> -->
+             <span>{{ $t('delete') }}</span>
+             <modal-popup
+                :toggle="showDeleteModal"
+                :title="$t('are_you_sure_you_want_to_delete_the_announcements')"
+                @close="showDeleteModal = false"
+             >
+               <form class="form" @submit.prevent="deleteAnouncement" novalidate>
+                 <button type="submit" :class="['btn btn--green full-width', { pending }]">
+                   {{ $t('confirm') }}
+                 </button>
+               </form>
+             </modal-popup>
+            </span>
          </div>
       </div>
    </div>
@@ -182,11 +184,13 @@ export default {
       handleSelectAnnouncementObject(id) {
          let item = this.myAnnouncements.data.find(item => item.id_unique == id);
          let isSelected = this.selectedAnnouncements.findIndex(item => item.id_unique == id);
+
          if (isSelected !== -1) {
             this.selectedAnnouncements.splice(isSelected, 1);
          } else {
-            if (item.status == 1 && !item.has_monetization) this.selectedAnnouncements.push(item);
+            if (item.status == 1 && !item.has_monetization && !!item.car_number) this.selectedAnnouncements.push(item);
          }
+         console.log('sssssss', this.myAnnouncements.data)
       },
       async deactivateAnouncement() {
          if (this.pending) return;
