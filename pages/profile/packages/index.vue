@@ -66,7 +66,11 @@
          },
 
          disableBtn() {
-            return this.getPackages.find(item => item.id === this.getAgreements[0].package.id);
+            // if (this.getAgreements.length > 0) {
+               return this.getPackages.find(item => item.id === this.getAgreements[0]?.package?.id);
+            // } else {
+            //    return false;
+            // }
          }
       },
 
