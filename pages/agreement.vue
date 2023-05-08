@@ -86,75 +86,7 @@
             </tbody>
          </table>
 
-
-<!--         <table class="invoiceTable">-->
-<!--&lt;!&ndash;            <thead class="invoiceTable__thead">&ndash;&gt;-->
-<!--&lt;!&ndash;               <tr>&ndash;&gt;-->
-<!--&lt;!&ndash;                  <th>Hesab - Faktura tarixi</th>&ndash;&gt;-->
-<!--&lt;!&ndash;                  <th>Hesab - Faktura nömrəsi</th>&ndash;&gt;-->
-<!--&lt;!&ndash;                  <th>Xidmətin növü</th>&ndash;&gt;-->
-<!--&lt;!&ndash;                  <th>Məbləğ</th>&ndash;&gt;-->
-<!--&lt;!&ndash;                  <th>Status və tarix</th>&ndash;&gt;-->
-<!--&lt;!&ndash;               </tr>&ndash;&gt;-->
-<!--&lt;!&ndash;            </thead>&ndash;&gt;-->
-
-<!--            <tbody class="invoiceTable__tbody">-->
-<!--               <tr>-->
-<!--                  <td>asdasdasd</td>-->
-<!--               </tr>-->
-<!--            </tbody>-->
-<!--         </table>-->
-
 <!--         <aaa/>-->
-
-<!--         <div-->
-<!--            class="invoice"-->
-<!--            style="-->
-<!--               width: 100%;-->
-<!--               max-width: 600px;-->
-<!--               padding: 20px;-->
-<!--               background: url('/images/invoice_bg.png') center center / cover no-repeat-->
-<!--            "-->
-<!--         >-->
-<!--            <div-->
-<!--               class="invoice__head"-->
-<!--               style="-->
-<!--                  display: flex;-->
-<!--                  align-items: center;-->
-<!--                  justify-content: space-between;-->
-<!--                  padding-bottom: 10px;-->
-<!--                  border-bottom: 2px solid #EE2539;-->
-<!--               "-->
-<!--            >-->
-<!--               <div class="divider">-->
-<!--                  <img src="/icons/alv-logo.svg" alt="alv-logo">-->
-<!--               </div>-->
-
-<!--               <div-->
-<!--                  class="divider"-->
-<!--                  style="-->
-<!--                     display: flex;-->
-<!--                     align-items: center;-->
-<!--                  "-->
-<!--               >-->
-<!--                  <ul-->
-<!--                     style="-->
-<!--                        list-style: none;-->
-<!--                        margin: 0 8px 0 0;-->
-<!--                        padding: 0 8px 0 0;-->
-<!--                        border-right: 1px solid #0A1B3D;-->
-<!--                        text-align: right;-->
-<!--                     "-->
-<!--                  >-->
-<!--                     <li>*8787</li>-->
-<!--                     <li>Park Azure, Blok 6, Mərtəbə 3</li>-->
-<!--                     <li>www.al.ventures</li>-->
-<!--                  </ul>-->
-
-<!--                  <img src="/icons/alv-logo.svg" alt="alv-logo" style="width: 50px; height: 50px">-->
-<!--               </div>-->
-<!--            </div>-->
-<!--         </div>-->
       </div>
    </div>
 </template>
@@ -196,8 +128,8 @@
 
 <style lang="scss" scoped>
    .agreementPage {
-      .invoice {
-         margin-top: 100px;}
+      .invoice {margin-top: 100px;}
+
       &__title {
          margin: 36px 0 8px 0;
          font-weight: 500;

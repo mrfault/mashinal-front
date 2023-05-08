@@ -7,8 +7,13 @@
 
          <CustomNotifications
             :title="$t('unpaid_invoice')"
-            :subtitle="`'${unpaidAgreement.package.name[locale]}' paketi, ${$moment(unpaidAgreement.start_date).format('DD.MM.YYYY')}-dən ${$moment(unpaidAgreement.end_date).format('DD.MM.YYYY')}-dək,`"
-            :price="unpaidAgreement.price"
+            :subtitle="$t('unpaid_params',
+               {
+                  package_type: unpaidAgreement.package.name[locale],
+                  start_date: $moment(unpaidAgreement.start_date).format('DD.MM.YYYY'),
+                  end_date: $moment(unpaidAgreement.end_date).format('DD.MM.YYYY'),
+                  price: unpaidAgreement.price
+               })"
             :unpaidAgreement="unpaidAgreement"
             v-if="!!unpaidAgreement"
          />
@@ -56,7 +61,7 @@
 
          crumbs() {
             return [
-               { name: this.$t('dashboard'), route: `/dashboard/1` },
+               { name: this.$t('dashboard'), route: `${this.user.autosalon ? '/dashboard/1' : '/garage-services'}` },
                { name: this.$t('my_packages') }
             ]
          },
