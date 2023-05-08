@@ -16,14 +16,14 @@
 
             <add-favorite :announcement="item" v-if="showFavoriteBtn" />
 
-<!--            <form-checkbox-->
-<!--               v-if="checkbox"-->
-<!--               :value="check"-->
-<!--               :input-name="`selected_${item.id_unique}`"-->
-<!--               :stop-propagation="true"-->
-<!--               transparent-->
-<!--               @input="handleChange"-->
-<!--            />-->
+            <form-checkbox
+               v-if="checkbox"
+               :value="check"
+               :input-name="`selected_${item.id_unique}`"
+               :stop-propagation="true"
+               transparent
+               @input="handleChange(item)"
+            />
          </div>
 
          <div class="divider" v-if="!moreInfo">
@@ -123,6 +123,7 @@
          },
 
          handleChange(value) {
+            console.log(value)
             // console.log('this.item.id_unique', this.item.id_unique)
             // this.check = value;
             // this.$nuxt.$emit('select-announcement', this.item.id_unique, value, true);

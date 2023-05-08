@@ -124,6 +124,7 @@ Vue.use({
           let img = item.user.avatar,
               name = item.user.full_name,
               link = false;
+
           if (item.is_autosalon) {
             img = item.user.autosalon?.logo;
             link = this.$localePath(`/salons/${item.user.autosalon.slug}`);
@@ -132,15 +133,16 @@ Vue.use({
             img = item.user.external_salon?.logo;
             link = this.$localePath(`/external-salons/${item.user.external_salon.slug}`);
             name = item.user.external_salon.name || item.user.full_name;
-          }
-
-          else if (item.is_part_salon) {
+          } else if (item.is_part_salon) {
             img = item.user.part_salon?.logo;
             link = this.$localePath(`/parts/shops/${item.user.part_salon.slug}`);
             name = item.user.part_salon.name || item.user.full_name;
           } else if (item.user.active_announcements_count > 1) {
             link = this.$localePath(`/user/${item.user.id}/announcements`);
+          } else {
+             link = this.$localePath(`/user/${item.user.id}/announcements`);
           }
+
           return {
             type: 'user',
             user: item.user,
