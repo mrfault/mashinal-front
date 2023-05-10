@@ -252,6 +252,20 @@
       }
    }
 
+   .dark-mode {
+      .customNotification {
+         background-color: #242426;
+
+         &-text {
+            p {
+               &:first-child {
+                  color: #FFFFFF;
+               }
+            }
+         }
+      }
+   }
+
    @media (max-width: 992px) {
       .customNotification {
          flex-direction: column;

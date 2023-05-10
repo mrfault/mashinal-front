@@ -486,6 +486,46 @@
       }
    }
 
+   .dark-mode {
+      .myPackagesBuy {
+         &__cart {
+            background-color: #242426;
+
+            &-title {
+               color: #FFFFFF;
+            }
+         }
+
+         &__package {
+            &-list {
+               &_item {
+                  color: #A4A4A5;
+
+                  &.opacity {
+                     svg {
+                        path {
+                           stroke: #FFFFFF;
+                        }
+                     }
+                  }
+               }
+            }
+         }
+
+         &__receipt {
+            &-list {
+               &_item {
+                  span {
+                     &:last-child {
+                        color: #A4A4A5;
+                     }
+                  }
+               }
+            }
+         }
+      }
+   }
+
    @media (max-width: 1250px) {
       .myPackagesBuy {
          &__package {

@@ -342,4 +342,63 @@
          }
       }
    }
+
+   .dark-mode {
+      .agreementPage {
+         &__title {
+            color: #FFFFFF;
+         }
+
+         &__table {
+            background-color: #242426;
+
+            &-thead {
+               tr {
+                  th {
+                     color: #FFFFFF;
+                  }
+               }
+            }
+
+            &-tbody {
+               tr {
+                  border-color: #A4A4A5;
+
+                  td {
+                     color: #A4A4A5;
+
+                     &.not_paid {
+                        span {
+                           color: #e17e7e;
+                           opacity: 1;
+                        }
+                     }
+
+                     .agreementDetails {
+                        &__title {
+                           color: #FFFFFF;
+                        }
+
+                        &__content {
+                           &-head {
+                              background-color: #b9b9b9;
+                           }
+
+                           &-price {
+                              border-color: #A4A4A5;
+
+                              &_item {
+                                 span {
+                                    color: #A4A4A5;
+                                 }
+                              }
+                           }
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      }
+   }
 </style>
