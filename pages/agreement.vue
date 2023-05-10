@@ -1,7 +1,7 @@
 <template>
    <div class="agreementPage">
       <div class="container">
-         <ComeBack :text="$t('contract')" v-if="isMobileBreakpoint" />
+         <ComeBack :text="$t('agreements')" v-if="isMobileBreakpoint" />
 
          <breadcrumbs :crumbs="crumbs" />
 
@@ -37,9 +37,17 @@
                      <div class="btns">
                         <inline-svg :src="'/icons/download.svg'" @click="downloadInvoice(agreement.id)" />
 
-                        <button class="btn" v-if="!agreement.payment.is_paid">{{ $t('pay') }}</button>
+                        <button
+                           class="btn"
+                           v-if="!agreement.payment.is_paid"
+                           @click="openModal = true"
+                        >{{ $t('pay') }}</button>
 
                         <icon :name="'chevron-down'" />
+                     </div>
+
+                     <div class="detailsMobile">
+                        <button class="btn">{{ $t('details') }}</button>
                      </div>
                   </td>
 
@@ -85,6 +93,54 @@
             </tbody>
          </table>
 
+         <modal-popup
+            :toggle="openModal"
+            :title="$t('ads_balans')"
+            :modal-class="'larger packages'"
+            @close="openModal = false"
+         >
+            <h4 class="paymentMethods mb-3">{{ $t('payment_method') }}</h4>
+
+            <label class="radio-container">
+               {{$t('pay_with_card')}}
+               <input type="radio" name="payment_type" checked @change="payment_type = 'card'">
+               <span class="checkmark"></span>
+            </label>
+
+            <label class="radio-container" v-if="this.$auth.loggedIn && totalBalance > 0">
+               {{$t('balans')}}
+               <input type="radio" name="payment_type" @change="payment_type = 'balance'">
+               <span class="checkmark"></span>
+            </label>
+
+            <hr v-if="totalBalance > 0" />
+
+            <div class="terminal-section" v-if="totalBalance > 0">
+               {{ $t('balans') }}: <span style="margin-right: 20px;">{{ totalBalance }}</span>
+               {{ $t('package_price') }}: {{ selectedPackage?.price * duration }} AZN
+            </div>
+
+            <hr v-if="totalBalance < 1" />
+            <div class="terminal-section" v-if="totalBalance < 1">
+               {{ $t('package_price') }} {{ selectedPackage?.price * duration }} AZN
+            </div>
+
+            <div class="modal-sticky-bottom">
+               <hr />
+
+               <div class="row">
+                  <div class="col-12 col-lg-12 mt-2 mt-lg-0">
+                     <button
+                        :class="['btn btn--green full-width', { pending }]"
+                        @click="handleSubmit"
+                     >
+                        {{ $t('pay') }}
+                     </button>
+                  </div>
+               </div>
+            </div>
+         </modal-popup>
+
 <!--         <aaa />-->
       </div>
    </div>
@@ -94,6 +150,7 @@
    import { mapGetters } from "vuex";
    import ComeBack from "~/components/elements/ComeBack.vue";
    import aaa from "~/components/aaa.vue";
+   import {PaymentMixin} from "~/mixins/payment";
 
    export default {
       components: {
@@ -101,14 +158,70 @@
          ComeBack
       },
 
+      head() {
+         return this.$headMeta({
+            title: this.$t('agreements')
+         });
+      },
+
+      mixins: [PaymentMixin],
+
       data() {
          return {
             activeAgreement: 1,
-            link: ''
+            openModal: false,
+            pending: false,
+            duration: 1,
+            payment_type: 'card',
+            selectedPackage: {}
          }
       },
 
       methods: {
+         async handleSubmit() {
+            this.pending = true;
+
+            let api = '/payment/package',
+               data = {
+                  package_id: this.findUnpaid.package.id,
+                  payment_type: this.payment_type,
+                  name: this.user.autosalon.name,
+                  days_type: this.duration
+               };
+
+            if (this.selectedPackage.id === this.getAgreements[0]?.package?.id) {
+               api = '/payment/renew-package';
+               data.autosalon_id = this.user.autosalon.id;
+               data.agreement_id = this.findUnpaid.id;
+               delete data.name;
+            }
+
+            try {
+               const res = await this.$axios.$post(`${api}?is_mobile=${this.isMobileBreakpoint}`, data);
+
+               if (!res?.data?.redirect_url) {
+                  await this.$nuxt.refresh();
+                  await this.updatePaidStatus({
+                     type: 'success',
+                     // text: this.$t('announcement_paid'),
+                     title: this.$t('success_payment')
+                  });
+               } else {
+                  await this.handlePayment(res, this.$localePath('/agreement'));
+                  this.pending = this.openModal = false;
+               }
+            } catch (error) {
+               this.pending = false;
+
+               // const response = error.response.data;
+               // if (response.data && Object.keys(response.data).length) {
+               //    for (let key in response.data) {
+               //       this.$toast.error(response.data[key][0])
+               //    }
+               // }
+            }
+         },
+
          downloadInvoice(id) {
             this.$axios.$get(`/invoice/${id}/download`, { responseType: 'blob' })
                .then(res => {
@@ -130,9 +243,26 @@
          crumbs() {
             return [
                { name: this.$t('dashboard'), route: '/dashboard/1' },
-               { name: this.$t('contract') }
+               { name: this.$t('agreements') }
             ]
+         },
+
+         totalBalance() {
+            return this.$sum(
+               this.user.balance,
+               this.user.autosalon?.balance || 0,
+               this.user.part_salon?.balance || 0,
+               this.user.external_salon?.balance || 0,
+            )
+         },
+
+         findUnpaid() {
+            return this.getAgreements.find(item => item.payment.is_paid === false);
          }
+      },
+
+      mounted() {
+         this.selectedPackage = JSON.parse(localStorage.getItem('selectedPackage'));
       },
 
       async asyncData({ store }) {
@@ -143,7 +273,7 @@
 
 <style lang="scss" scoped>
    .agreementPage {
-      .invoice {margin-top: 100px;}
+      padding-bottom: 100px;
 
       &__title {
          margin: 36px 0 8px 0;
@@ -234,6 +364,17 @@
                            }
                         }
                      }
+
+                     .detailsMobile {
+                        display: none;
+
+                        .btn {
+                           height: 34px;
+                           padding: 0 36px;
+                           color: #FFFFFF;
+                           background-color: #246EB2;
+                        }
+                     }
                   }
 
                   &.not_paid {
@@ -265,7 +406,7 @@
 
                         .divider {
                            width: 100%;
-                           max-width: 784px;
+                           max-width: 800px;
 
                            &:last-child {
                               width: 100%;
@@ -296,14 +437,16 @@
                         }
 
                         &-price {
-                           //display: flex;
-                           //align-items: center;
-                           //flex-direction: column;
-                           padding: 32px 75px;
+                           display: flex;
+                           align-items: center;
+                           flex-direction: column;
+                           padding: 32px 0;
                            border-radius: 4px;
                            border: 1px solid #D6E4F8;
 
                            &_item {
+                              min-width: 120px;
+
                               &:not(:first-child) {
                                  margin-top: 24px;
                               }
@@ -390,6 +533,128 @@
                               &_item {
                                  span {
                                     color: #A4A4A5;
+                                 }
+                              }
+                           }
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      }
+   }
+
+   @media (max-width: 1250px) {
+      .agreementPage {
+         &__table {
+            &-thead {
+               tr {
+                  th {
+                     font-size: 14px;
+                  }
+               }
+            }
+
+            &-tbody {
+               tr {
+                  td {
+                     &.agreementDetails {
+                        .agreementDetails {
+                           &__content {
+                              .divider {
+                                 max-width: 850px;
+
+                                 &:last-child {
+                                    max-width: 250px;
+                                 }
+                              }
+
+                              &-head {
+                                 padding: 16px 13px;
+
+                                 &_item {
+                                    span {
+                                       font-size: 13px;
+                                    }
+                                 }
+                              }
+
+                              &-price {
+                                 padding: 25px 0;
+
+                                 &_item {
+                                    &:not(:first-child) {
+                                       margin-top: 15px;
+                                    }
+                                 }
+                              }
+                           }
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      }
+   }
+
+   @media (max-width: 1025px) {
+      .agreementPage {
+         &__table {
+            &-thead {
+               tr {
+                  th {
+                     &:nth-child(1),
+                     &:nth-child(2),
+                     &:nth-child(3) {
+                        display: none;
+                     }
+                  }
+               }
+            }
+
+            &-tbody {
+               tr {
+                  td {
+                     &:nth-child(1),
+                     &:nth-child(2),
+                     &:nth-child(3) {
+                        display: none;
+                     }
+
+                     &.status {
+                        .btns {
+                           display: none;
+                        }
+
+                        .detailsMobile {
+                           display: block;
+                        }
+                     }
+
+                     &.agreementDetails {
+                        //padding: 15px;
+
+                        .agreementDetails {
+                           &__content {
+                              &-head {
+                                 //padding: 16px 13px;
+
+                                 &_item {
+                                    span {
+                                       //font-size: 13px;
+                                    }
+                                 }
+                              }
+
+                              &-price {
+                                 //padding: 25px 0;
+
+                                 &_item {
+                                    &:not(:first-child) {
+                                       //margin-top: 15px;
+                                    }
                                  }
                               }
                            }

@@ -61,16 +61,16 @@ export const PaymentMixin = {
               if (data.payment.operation_key === 'attorney_pay') {
                 return this.$router.push({path: this.$localePath('/garage'), query: { tab: 'attorney-list' }})
               }
-              if (this.loggedIn)
-                await this.$auth.fetchUser();
+
+              if (this.loggedIn) await this.$auth.fetchUser();
+
               if (!route) {
                 await this.$nuxt.refresh();
                 this.callUpdatePaidStatus(paid, text);
               }
-
+               localStorage.removeItem('selectedPackage');
             } else {
               this.callUpdatePaidStatus(paid);
-              localStorage.removeItem('selectedPackage');
             }
 
             const stopListening = () => {
@@ -83,8 +83,7 @@ export const PaymentMixin = {
                      this.callUpdatePaidStatus(paid, text);
                      stopListening();
                   });
-               }
-               else {
+               } else {
                   this.$store.dispatch('fetchResetForm', false);
                   this.callUpdatePaidStatus(paid, text);
                   stopListening();

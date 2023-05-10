@@ -294,10 +294,6 @@
                this.user.part_salon?.balance || 0,
                this.user.external_salon?.balance || 0,
             )
-         },
-
-         findActiveAgreement() {
-            return this.getAgreements.find(item => item.payment.is_paid === true);
          }
       },
 
@@ -494,6 +490,18 @@
             &-title {
                color: #FFFFFF;
             }
+
+            &-subtitle {
+               color: #7dc1ff;
+            }
+
+            .form-group {
+               .text-input {
+                  input {
+                     background-color: #f3f7fc33;
+                  }
+               }
+            }
          }
 
          &__package {
@@ -516,6 +524,8 @@
             &-list {
                &_item {
                   span {
+                     color: #7dc1ff;
+
                      &:last-child {
                         color: #A4A4A5;
                      }
