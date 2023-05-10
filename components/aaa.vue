@@ -1,33 +1,40 @@
 <template>
-   <table class="invoice">
+   <table class="invoiceTable">
       <tbody>
-         <tr class="headLine">
-            <td class="headLine__logo text-left">
-               <img src="/icons/alv-logo.svg" alt="logo.svg">
+         <tr class="invoiceTable__head">
+            <td class="invoiceTable__head-item">
+               <img class="invoiceTable__logo" src="https://dev.mashin.al/icons/alv-logo.svg" alt="logo">
             </td>
 
-            <td class="headLine__info text-right">
-               <div>
-                  <p class="headLine__call">*8787</p>
-                  <p class="headLine__address">park Azure,Blok 6 Mertebe 3</p>
-                  <a class="headLine__link" href="#">www.al.ventures</a>
-               </div>
+            <td class="invoiceTable__head-item">
+               <table>
+                  <tbody>
+                     <tr>
+                        <td class="invoiceTable__head-left">
+                           <p>*8787</p>
+                           <p>park Azure,Blok 6 Mertebe 3</p>
+                           <p>www.al.ventures</p>
+                        </td>
 
-               <div class="headLine__borderLong"></div>
-               <!--            <img class="headLine__image" src="../assets/invoice/QR.svg" alt="QR.svg">-->
+                        <td>
+                           <img class="invoiceTable__barcode" src="https://dev.mashin.al/images/invoice_barcode.jpg" alt="barcode">
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
             </td>
          </tr>
 
-         <br>
-         <br>
-
-         <tr class="voin">
-            <td class="voinLeftSide text-left">
-               <strong>"ALVENTURES" MMC</strong>
-               <p><span>VÖEN:</span> 2006113431</p>
+         <tr class="invoiceTable__company">
+            <td class="invoiceTable__company-left">
+               <p>ALVENTURES" MMC</p>
+               <p>
+                  <span>VÖEN:</span>
+                  2006113431
+               </p>
             </td>
 
-            <td class="voinRightSide text-right">
+            <td class="invoiceTable__company-right">
                <p>KapitalBank</p>
                <p>VÖEN: 2006113431</p>
                <p>Hesab №: AZ97AIIB40060019440819871103</p>
@@ -36,40 +43,41 @@
             </td>
          </tr>
 
-         <br>
-         <br>
+         <tr class="invoiceTable__details">
+            <td colspan="2">
+               <h5>Hesab - faktura №7383</h5>
 
-         <tr>
-            <td class="account">
-               <strong>Hesab - faktura №7383</strong>
-               <br><br>
+               <span>Tarix:</span>
+               <p>14.04.2023-cü il</p>
 
                <span>Xidmətin təsviri:</span>
-               <p>14.04.2023-cü il</p>
-               <span>Tarix:</span>
                <p>Reklam paketinin (Mashin.al - Standart paketi) təqdim olunması üçün avans ödənişi</p>
+
                <span>Xidmətin müddəti:</span>
                <p>14.04.2023 - 14.05.2023</p>
+
                <span>Elan sayı:</span>
                <p>50</p>
+
                <span>Ödənişli xidmətlər:</span>
                <p>150.00 AZN</p>
+
+               <br>
             </td>
          </tr>
 
-         <tr>
-            <td class="invoiceBanner">
-               <p> Məbləğ: <span>246.00 AZN</span></p>
-               <p> ƏDV: <span>246.00 AZN</span></p>
-               <p> Ümumi məbləğ: <span class="total">246.00 AZN</span></p>
+         <tr class="invoiceTable__price">
+            <td>
+               <p> <span>Məbləğ:</span> <span>246.00 AZN</span> </p>
+               <p> <span>ƏDV:</span> <span>246.00 AZN</span> </p>
+               <p> <span>Ümumi məbləğ:</span> <span>246.00 AZN</span> </p>
             </td>
          </tr>
       </tbody>
 
-      <tfoot class="tfoot">
-         <tr>
-            <td>
-               <div class="tfoot__top"></div>
+      <tfoot>
+         <tr class="invoiceTable__footer">
+            <td colspan="2">
                <span>"ALVENTURES" MMC-nin İcraçı Direktoru:</span>
                <p>Elçin Məmmədov</p>
             </td>
@@ -78,162 +86,154 @@
    </table>
 </template>
 
-
 <style>
-   .tfoot span {
-      font-size: 10px;
-      font-weight: 500;
-      line-height: 12px;
-      color: #9C9C9C;
-   }
-
-   .tfoot p {
-      font-size: 12px;
-      font-weight: 600;
-      line-height: 15px;
-      color: #0A1A3D;
-   }
-
-
-   .tfoot__top {
-      width: 180px;
-      margin-top: 72px;
-      border: 1px solid #FFE9EC;
-   }
-
-   table {
+   .invoiceTable {
+      margin-top: 100px;
       width: 600px;
+      background: url("https://dev.mashin.al/images/invoice_bg.png") center center / cover no-repeat;
    }
 
-   .invoiceBanner {
-      background-image: url("/images/invoice_price_bg.svg");
-      height: 150px;
-      background-repeat: no-repeat;
+   .invoiceTable tbody tr td,
+   .invoiceTable tfoot tr td {
+      padding: 20px;
    }
 
-   .invoiceBanner p {
-      color: #fff;
-      margin-left: 22px;
-      margin-bottom: 5px;
+   .invoiceTable p {
+      margin: 0;
    }
 
-   .invoiceBanner p span {
-      margin-left: 68px;
+   .invoiceTable .invoiceTable__logo {
+      width: 105px;
    }
 
-   .invoiceBanner p span.total {
-      font-size: 16px;
+   .invoiceTable .invoiceTable__barcode {
+      width: 55px;
+   }
+
+   .invoiceTable .invoiceTable__head .invoiceTable__head-item {
+      border-bottom: 2px solid #EE2539;
+   }
+
+   .invoiceTable .invoiceTable__head .invoiceTable__head-left {
+      text-align: right;
+      border-right: 1px solid #0A1B3D;
+   }
+   .invoiceTable .invoiceTable__head .invoiceTable__head-left p {
+      white-space: nowrap;
+   }
+   .invoiceTable .invoiceTable__head .invoiceTable__head-left p:first-child {
       font-weight: 700;
+      font-size: 16px;
       line-height: 20px;
-
+      color: #F81734;
    }
-
-   .account strong {
-      font-size: 14px;
-      font-weight: 600;
-      line-height: 17px;
-      color: #0A1A3D;
-      margin-bottom: 20px;
-   }
-
-   .account span {
-      font-size: 12px;
+   .invoiceTable .invoiceTable__head .invoiceTable__head-left p:nth-child(2) {
       font-weight: 500;
-      line-height: 15px;
-      color: #9c9c9c;
-      margin-bottom: 8px;
-
-   }
-
-   .account p {
-      font-size: 12px;
-      font-weight: 400;
-      line-height: 14px;
-      color: #0A1A3D;
-      margin-bottom: 20px;
-   }
-
-   .voin strong {
-      font-size: 14px;
-      font-weight: 600;
-      line-height: 17px;
-      color: #0A1A3D;
-   }
-
-   .voin p {
-      margin-top: 8px;
-      font-size: 12px;
-      font-weight: 400;
-      line-height: 14px;
-      color: #0A1A3D;
-   }
-
-   .voinRightSide p {
       font-size: 10px;
-      font-weight: 400;
       line-height: 12px;
-
+      color: #081A3E;
+      margin: 6px 0;
+   }
+   .invoiceTable .invoiceTable__head .invoiceTable__head-left p:last-child {
+      font-weight: 700;
+      font-size: 10px;
+      line-height: 12px;
+      color: #081A3E;
    }
 
-   .voin p span {
+   .invoiceTable .invoiceTable__company .invoiceTable__company-left p:first-child {
+      margin-top: -46px;
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 17px;
+      color: #0A1A3D;
+   }
+   .invoiceTable .invoiceTable__company .invoiceTable__company-left p:last-child {
+      margin-top: 8px;
+      font-weight: 400;
+      line-height: 14px;
+      color: #0A1A3D;
+   }
+   .invoiceTable .invoiceTable__company .invoiceTable__company-left p:last-child span {
       font-weight: 500;
+      font-size: 12px;
       line-height: 15px;
-
       color: #9C9C9C;
    }
 
-   .headLine {
-      border-bottom: 2px solid red;
-   }
-
-   .headLine__info {
-      display: flex;
-      align-items: center;
-   }
-
-   .headLine__borderLong {
-      width: 2px;
-      background: red;
-      margin: 0 8px;
-      height: 50px;
-   }
-
-   .headLine__image {
-      width: 55px;
-      height: 55px;
-   }
-
-   .headLine__call {
-      font-size: 16px;
-      font-weight: 700;
-      line-height: 20px;
-      color: red;
-   }
-
-   .headLine__address {
-      font-size: 10px;
-      font-weight: 500;
-      line-height: 12px;
-      color: #081A3E;
-   }
-
-
-   .headLine__link {
-      font-size: 10px;
-      font-weight: 700;
-      line-height: 12px;
-      color: #081A3E;
-
-   }
-
-   .text-right {
+   .invoiceTable .invoiceTable__company .invoiceTable__company-right {
       text-align: right;
-      float: right;
+   }
+   .invoiceTable .invoiceTable__company .invoiceTable__company-right p {
+      font-weight: 400;
+      font-size: 10px;
+      line-height: 12px;
+      color: #0A1A3D;
+   }
+   .invoiceTable .invoiceTable__company .invoiceTable__company-right p:not(:first-child) {
+      margin-top: 8px;
    }
 
-   .text-left {
-      text-align: left;
-      float: left;
+   .invoiceTable .invoiceTable__details h5 {
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 17px;
+      color: #0A1A3D;
+      margin: 0;
+   }
+   .invoiceTable .invoiceTable__details span {
+      display: inline-block;
+      font-weight: 500;
+      font-size: 12px;
+      line-height: 15px;
+      color: #9C9C9C;
+      margin: 20px 0 8px 0;
+   }
+   .invoiceTable .invoiceTable__details p {
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 14px;
+      color: #0A1A3D;
+   }
 
+   .invoiceTable .invoiceTable__price td {
+      background: url("https://dev.mashin.al/images/invoice_barcode.png") center center / cover no-repeat;
+      padding: 25px;
+   }
+   .invoiceTable .invoiceTable__price p {
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 17px;
+      color: #FFFFFF;
+   }
+   .invoiceTable .invoiceTable__price p span:first-child {
+      display: inline-block;
+      width: 115px;
+   }
+   .invoiceTable .invoiceTable__price p:not(:first-child) {
+      margin-top: 15px;
+   }
+   .invoiceTable .invoiceTable__price p:last-child span:last-child {
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 20px;
+   }
+
+   .invoiceTable .invoiceTable__footer span {
+      display: inline-block;
+      border-top: 1px solid #FFE9EC;
+      padding-top: 8px;
+      margin-top: 70px;
+      font-weight: 500;
+      font-size: 10px;
+      line-height: 12px;
+      color: #9C9C9C;
+   }
+   .invoiceTable .invoiceTable__footer p {
+      margin-top: 8px;
+      font-weight: 600;
+      font-size: 12px;
+      line-height: 15px;
+      color: #0A1A3D;
    }
 </style>

@@ -133,14 +133,16 @@
             </label>
 
             <label class="radio-container" v-if="this.$auth.loggedIn && totalBalance > 0">
-               {{$t('balans')}}
+               {{ $t('balans') }}
                <input type="radio" name="payment_type" @change="payment_type = 'balance'">
                <span class="checkmark"></span>
             </label>
 
             <hr v-if="totalBalance > 0" />
 
-            <div class="terminal-section" v-if="totalBalance > 0">Balans: <span>{{ totalBalance }}</span></div>
+            <div class="terminal-section" v-if="totalBalance > 0">
+               {{ $t('balans') }}: <span>{{ totalBalance }}</span>
+            </div>
 
             <div class="modal-sticky-bottom">
                <hr />
