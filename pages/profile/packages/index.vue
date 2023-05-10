@@ -71,11 +71,7 @@
          },
 
          disableBtn() {
-            // if (this.getAgreements.length > 0) {
-               return this.getPackages.find(item => item.id === this.getAgreements[0]?.package?.id);
-            // } else {
-            //    return false;
-            // }
+            return this.getPackages.find(item => item.id === this.getAgreements[0]?.package?.id);
          }
       },
 
@@ -126,6 +122,14 @@
 
       * {
          box-sizing: border-box;
+      }
+   }
+
+   .dark-mode {
+      .myPackages {
+         &__title {
+            color: #A4A4A5;
+         }
       }
    }
 

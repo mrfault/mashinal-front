@@ -142,16 +142,22 @@
             &--icon {
                 color: $grey-1;
 
-               svg {
-                  g {
-                     opacity: .8 !important;
-                  }
-
-                  path {
-                     fill: $grey-1;
-                     stroke: $grey-1;
+               i {
+                  &:before {
+                     color: $grey-1;
                   }
                }
+
+               //svg {
+               //   g {
+               //      opacity: .8 !important;
+               //   }
+               //
+               //   path {
+               //      fill: $grey-1;
+               //      stroke: $grey-1;
+               //   }
+               //}
             }
         }
 

@@ -3,7 +3,6 @@
       <div class="container">
          <ComeBack :text="$t('contract')" v-if="isMobileBreakpoint" />
 
-<!--         <pre>{{getAgreements}}</pre>-->
          <breadcrumbs :crumbs="crumbs" />
 
          <h4 class="agreementPage__title">{{ $t('agreements') }}</h4>
@@ -36,7 +35,7 @@
                      <span>{{ agreement.payment.is_paid ? $t('already_paid') : $t('not_paid') }}</span>
 
                      <div class="btns">
-                        <inline-svg :src="'/icons/download.svg'" />
+                        <inline-svg :src="'/icons/download.svg'" @click="downloadInvoice(agreement.id)" />
 
                         <button class="btn" v-if="!agreement.payment.is_paid">{{ $t('pay') }}</button>
 
@@ -86,7 +85,7 @@
             </tbody>
          </table>
 
-         <aaa />
+<!--         <aaa />-->
       </div>
    </div>
 </template>
@@ -101,9 +100,25 @@
          aaa,
          ComeBack
       },
+
       data() {
          return {
-            activeAgreement: 1
+            activeAgreement: 1,
+            link: ''
+         }
+      },
+
+      methods: {
+         downloadInvoice(id) {
+            this.$axios.$get(`/invoice/${id}/download`, { responseType: 'blob' })
+               .then(res => {
+                  const blob = new Blob([res], { type: 'application/pdf' });
+                  const link = document.createElement('a');
+                  link.href = URL.createObjectURL(blob);
+                  link.download = `invoice.pdf`;
+                  link.click();
+                  URL.revokeObjectURL(link.href);
+               })
          }
       },
 
