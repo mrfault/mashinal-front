@@ -1170,6 +1170,7 @@ export default {
    "my_favorites_remove": "Удалить из избранных",
    "my_favorites_removed": "Удалено из избранных",
    "my_packages": "Пакеты",
+   "package_price": "Стоимость пакета",
    "get_package": "Купить пакет",
    "my_profile": "Мой профиль",
    "salon_profile": "Мой профиль",

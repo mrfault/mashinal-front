@@ -27,7 +27,7 @@
 
                   <h4 class="pages-dashboard-statistics__content-text">{{ $t('total_calls') }}</h4>
 
-                  <h4 class="pages-dashboard-statistics__content-subtext">192</h4>
+                  <h4 class="pages-dashboard-statistics__content-subtext">{{ mostViewedCount }}</h4>
                </div>
             </div>
 
@@ -100,12 +100,21 @@
       computed: {
          ...mapGetters([]),
 
-      crumbs() {
-        return [
-          { name: this.$t('dashboard'), route: '/dashboard/' + this.$route.params.type },
-          { name: this.$t('statistics') }
-        ]
-      }
+         crumbs() {
+           return [
+             { name: this.$t('dashboard'), route: '/dashboard/' + this.$route.params.type },
+             { name: this.$t('statistics') }
+           ]
+         },
+
+         mostViewedCount() {
+            let count = 0;
+            this.mostViewed.forEach(item => {
+               count += item.show_phone_number_count;
+            })
+
+            return count;
+         }
     },
     methods: {
       ...mapActions([]),
