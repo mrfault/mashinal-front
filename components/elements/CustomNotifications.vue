@@ -16,7 +16,7 @@
          >{{ $t('pay') }}</button>
       </div>
 
-      <pre>{{unpaidAgreement}}</pre>
+<!--      <pre>{{unpaidAgreement}}</pre>-->
 
       <modal-popup
          :toggle="openModal"
