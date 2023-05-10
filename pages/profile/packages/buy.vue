@@ -92,7 +92,7 @@
 
          <modal-popup
             :toggle="openModal"
-            :title="$t('ads_balans')"
+            :title="$t('balans')"
             :modal-class="'larger packages'"
             @close="openModal = false"
          >
@@ -141,7 +141,13 @@
             <hr v-if="totalBalance > 0" />
 
             <div class="terminal-section" v-if="totalBalance > 0">
-               {{ $t('balans') }}: <span>{{ totalBalance }}</span>
+               {{ $t('balans') }}: <span style="margin-right: 20px;">{{ totalBalance }}</span>
+               {{ $t('package_price') }}: {{ selectedPackage.price * duration }} AZN
+            </div>
+
+            <hr v-if="totalBalance < 1" />
+            <div class="terminal-section" v-if="totalBalance < 1">
+               {{ $t('package_price') }} {{ selectedPackage.price * duration }} AZN
             </div>
 
             <div class="modal-sticky-bottom">

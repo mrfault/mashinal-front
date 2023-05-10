@@ -87,10 +87,50 @@
 </template>
 
 <style>
+   @font-face {
+      font-family: 'Gilroy';
+      src: url('https://dev.mashin.al/fonts/gilroy/Gilroy-Regular.woff2') format('woff2'),
+           url('https://dev.mashin.al/fonts/gilroy/Gilroy-Regular.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+   }
+
+   @font-face {
+      font-family: 'Gilroy';
+      src: url('https://dev.mashin.al/fonts/gilroy/Gilroy-Medium.woff2') format('woff2'),
+      url('https://dev.mashin.al/fonts/gilroy/Gilroy-Medium.woff') format('woff');
+      font-weight: 500;
+      font-style: normal;
+      font-display: swap;
+   }
+
+   @font-face {
+      font-family: 'Gilroy';
+      src: url('https://dev.mashin.al/fonts/gilroy/Gilroy-Semibold.woff2') format('woff2'),
+      url('https://dev.mashin.al/fonts/gilroy/Gilroy-Semibold.woff') format('woff');
+      font-weight: 600;
+      font-style: normal;
+      font-display: swap;
+   }
+
+   @font-face {
+      font-family: 'Gilroy';
+      src: url('https://dev.mashin.al/fonts/gilroy/Gilroy-Bold.woff2') format('woff2'),
+      url('https://dev.mashin.al/fonts/gilroy/Gilroy-Bold.woff') format('woff');
+      font-weight: bold;
+      font-style: normal;
+      font-display: swap;
+   }
+
+   * {
+      font-family: 'Gilroy', sans-serif;
+   }
+
    .invoiceTable {
       margin-top: 100px;
       width: 600px;
-      background: url("https://dev.mashin.al/images/invoice_bg.png") center center / cover no-repeat;
+      background: url("https://dev.mashin.al/images/invoice_price_bg.jpg") center center / cover no-repeat;
    }
 
    .invoiceTable tbody tr td,

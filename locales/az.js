@@ -1239,6 +1239,7 @@ export default {
    my_favorites_remove: "Seçilmişlərdən sil",
    my_favorites_removed: "Seçilmişlərdən silindi",
    my_packages: "Paketlər",
+   package_price: "Paketin qiyməti",
    get_package: "Paket əldə et",
    my_profile: "Profilim",
    salon_profile: "Avtosalon profili",
