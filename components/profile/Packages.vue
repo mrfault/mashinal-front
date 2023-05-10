@@ -32,7 +32,7 @@
                      </ul>
 
                      <button
-                        :class="['btn', {'disabled' : disableBtn && disableBtn.id !== item.id}]"
+                        :class="['btn', {'disabled' : disableBtn && disableBtn.id !== item.id && user.autosalon}]"
                         @click="nextStep(item)"
                      >{{ $t('join_package', { package: item.name }) }}</button>
                   </div>
@@ -213,6 +213,16 @@
          margin: 0;
          padding: 0;
          list-style: none;
+      }
+   }
+
+   .dark-mode {
+      .customPackages {
+         &__item {
+            color: #FFFFFF;
+            border-color: #242426;
+            background-color: #242426;
+         }
       }
    }
 </style>
