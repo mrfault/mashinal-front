@@ -24,34 +24,6 @@
          :modal-class="'larger packages'"
          @close="openModal = false"
       >
-         <!--            <div class="radio-items">-->
-         <!--               <label class="radio-container">-->
-         <!--                  300.00 <inline-svg :src="'/icons/currency.svg'" />-->
-         <!--                  <input type="radio" checked="checked" name="package" @change="price = 300">-->
-         <!--                  <span class="checkmark"></span>-->
-         <!--               </label>-->
-
-         <!--               <label class="radio-container">-->
-         <!--                  500.00 <inline-svg :src="'/icons/currency.svg'" />-->
-         <!--                  <input type="radio" name="package" @change="price = 500">-->
-         <!--                  <span class="checkmark"></span>-->
-         <!--               </label>-->
-
-         <!--               <label class="radio-container">-->
-         <!--                  1000.00 <inline-svg :src="'/icons/currency.svg'" />-->
-         <!--                  <input type="radio" name="package" @change="price = 1000">-->
-         <!--                  <span class="checkmark"></span>-->
-         <!--               </label>-->
-
-         <!--               <form-text-input-->
-         <!--                  v-model="price"-->
-         <!--                  :placeholder="'Məbləğ'"-->
-         <!--                  type="text"-->
-         <!--               />-->
-         <!--            </div>-->
-
-         <!--            <hr>-->
-
          <h4 class="paymentMethods mb-3">{{ $t('payment_method') }}</h4>
 
          <label class="radio-container">
@@ -260,6 +232,10 @@
             p {
                &:first-child {
                   color: #FFFFFF;
+               }
+
+               &:last-child {
+                  color: #7dc1ff;
                }
             }
          }

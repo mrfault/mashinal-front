@@ -1142,6 +1142,7 @@ export default {
    "monthly_payment": "Ежемесячный платеж",
    "more": "Еще",
    "More": "Показать все",
+   "details": "Детали",
    "more_details": "Подробнее",
    "moshchnost": "Мощность",
    "most_viewed_announcements": "Самые просматриваемые",

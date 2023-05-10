@@ -1209,6 +1209,7 @@ export default {
    more: "daha çox",
    More: "Daha çox",
    more_than_one_year: "1 ildən çox",
+   details: "Detallar",
    more_details: "Ətraflı",
    moshchnost: "Mühərrik gücü",
    moshchnost_ls: "Mühərrik gücü, a.g.",
