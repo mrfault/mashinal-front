@@ -27,6 +27,7 @@
             </div>
 
             <div class="divider">
+<!--               <pre>{{getAgreements}}</pre>-->
                <div class="myPackagesBuy__duration myPackagesBuy__cart">
                   <h4 class="myPackagesBuy__cart-title">{{ $t('duration_package') }}</h4>
                   <h4 class="myPackagesBuy__cart-subtitle">{{ $t('choose') }}</h4>
@@ -233,7 +234,7 @@
             if (this.selectedPackage.id === this.getAgreements[0]?.package?.id) {
                api = '/payment/renew-package';
                data.autosalon_id = this.user.autosalon.id;
-               data.agreement_id = this.findActiveAgreement.id;
+               data.agreement_id = this.getAgreements[0].id;
                delete data.name;
             }
 
@@ -280,7 +281,7 @@
 
          crumbs() {
             return [
-               { name: this.$t('dashboard'), route: '/dashboard/3' },
+               { name: this.$t('dashboard'), route: '/dashboard/1' },
                { name: this.$t('my_packages'), route: '/profile/packages' },
                { name: this.$t('registration2') }
             ]
