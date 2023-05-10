@@ -220,8 +220,39 @@
       .customPackages {
          &__item {
             color: #FFFFFF;
-            border-color: #242426;
             background-color: #242426;
+
+            &:not(.popular) {
+               border-color: #242426;
+
+               .btn {
+                  color: #a5fc65;
+               }
+            }
+         }
+
+         &__title,
+         &__subtitle {
+            color: #FFFFFF;
+
+            span {
+               color: silver;
+               opacity: 1;
+            }
+         }
+
+         &__info {
+            &-item {
+               color: #A4A4A5;
+
+               &.opacity {
+                  svg {
+                     path {
+                        stroke: #FFFFFF;
+                     }
+                  }
+               }
+            }
          }
       }
    }
