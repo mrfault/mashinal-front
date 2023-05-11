@@ -97,34 +97,6 @@
             :modal-class="'larger packages'"
             @close="openModal = false"
          >
-<!--            <div class="radio-items">-->
-<!--               <label class="radio-container">-->
-<!--                  300.00 <inline-svg :src="'/icons/currency.svg'" />-->
-<!--                  <input type="radio" checked="checked" name="package" @change="price = 300">-->
-<!--                  <span class="checkmark"></span>-->
-<!--               </label>-->
-
-<!--               <label class="radio-container">-->
-<!--                  500.00 <inline-svg :src="'/icons/currency.svg'" />-->
-<!--                  <input type="radio" name="package" @change="price = 500">-->
-<!--                  <span class="checkmark"></span>-->
-<!--               </label>-->
-
-<!--               <label class="radio-container">-->
-<!--                  1000.00 <inline-svg :src="'/icons/currency.svg'" />-->
-<!--                  <input type="radio" name="package" @change="price = 1000">-->
-<!--                  <span class="checkmark"></span>-->
-<!--               </label>-->
-
-<!--               <form-text-input-->
-<!--                  v-model="price"-->
-<!--                  :placeholder="'Məbləğ'"-->
-<!--                  type="text"-->
-<!--               />-->
-<!--            </div>-->
-
-<!--            <hr>-->
-
             <h4 class="paymentMethods mb-3">{{ $t('payment_method') }}</h4>
 
             <label class="radio-container">
@@ -141,14 +113,19 @@
 
             <hr v-if="totalBalance > 0" />
 
-            <div class="terminal-section" v-if="totalBalance > 0">
-               {{ $t('balans') }}: <span style="margin-right: 20px;">{{ totalBalance }}</span>
-               {{ $t('package_price') }}: {{ selectedPackage.price * duration }} AZN
+            <div class="wrapp">
+               <div class="terminal-section" v-if="totalBalance > 0">
+                  {{ $t('balans') }}: <span style="margin-right: 20px;">{{ totalBalance }}</span>
+               </div>
+
+               <div class="terminal-section" v-if="totalBalance > 0">
+                  {{ $t('package_price') }}: <span>{{ selectedPackage?.price * duration }} AZN</span>
+               </div>
             </div>
 
             <hr v-if="totalBalance < 1" />
             <div class="terminal-section" v-if="totalBalance < 1">
-               {{ $t('package_price') }} {{ selectedPackage.price * duration }} AZN
+               {{ $t('package_price') }} {{ selectedPackage?.price * duration }} AZN
             </div>
 
             <div class="modal-sticky-bottom">
@@ -422,6 +399,7 @@
                   color: #246EB2;
 
                   &:last-child {
+                     margin-left: 3px;
                      color: #081A3E;
                   }
                }

@@ -476,6 +476,20 @@
       &.packages {
          .radio-container {
             width: 100%;
+
+            &:not(:first-child) {
+               margin-bottom: 12px;
+            }
+         }
+
+         .wrapp {
+            display: block !important;
+
+            .terminal-section {
+               &:not(:first-child) {
+                  margin-top: 12px;
+               }
+            }
          }
       }
    }

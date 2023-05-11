@@ -678,11 +678,13 @@
                   border-color: #A4A4A5;
 
                   td {
-                     color: #A4A4A5;
+                     &:not(.status) {
+                        color: #A4A4A5;
+                     }
 
                      &.not_paid {
                         span {
-                           color: #e17e7e;
+                           color: #ffe400;
                            opacity: 1;
                         }
                      }
@@ -725,9 +727,9 @@
                               }
                            }
 
-                           //&-info, &-price {
-                              //background-color: rgba(224, 204, 204, 10%);
-                           //}
+                           &-info, &-price {
+                              background-color: #454b50;
+                           }
                         }
                      }
                   }

@@ -51,4 +51,18 @@
          background-color: #081A3E;
       }
    }
+
+   .dark-mode {
+      .comeBack {
+         background-color: #242426;
+
+         &__text {
+            color: #FFFFFF;
+         }
+
+         &__line {
+            background-color: #FFFFFF;
+         }
+      }
+   }
 </style>

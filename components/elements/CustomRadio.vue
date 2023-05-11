@@ -239,4 +239,12 @@
          }
       }
    }
+
+   .dark-mode {
+      .customRadio {
+         &__title {
+            color: #FFFFFF;
+         }
+      }
+   }
 </style>

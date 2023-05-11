@@ -16,8 +16,6 @@
          >{{ $t('pay') }}</button>
       </div>
 
-<!--      <pre>{{unpaidAgreement}}</pre>-->
-
       <modal-popup
          :toggle="openModal"
          :title="$t('ads_balans')"
@@ -242,7 +240,7 @@
       }
    }
 
-   @media (max-width: 992px) {
+   @media (max-width: 1025px) {
       .customNotification {
          flex-direction: column;
          align-items: flex-start;
@@ -251,6 +249,11 @@
          .divider {
             &:last-child {
                margin-top: 20px;
+            }
+
+            .btn {
+               margin: 20px 0 0 30px;
+               height: 34px;
             }
          }
       }
