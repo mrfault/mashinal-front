@@ -708,6 +708,28 @@
                            }
                         }
                      }
+
+                     .agreementDetailsMobile {
+                        &__content {
+                           background-color: #d6e4f826;
+
+                           ul {
+                              li {
+                                 h5 {
+                                    color: #FFFFFF;
+                                 }
+
+                                 span {
+                                    color: #A4A4A5;
+                                 }
+                              }
+                           }
+
+                           //&-info, &-price {
+                              //background-color: rgba(224, 204, 204, 10%);
+                           //}
+                        }
+                     }
                   }
                }
             }
