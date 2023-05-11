@@ -183,6 +183,18 @@ watch: {
       }
    }
 
+   .dark-mode {
+      .pages-dashboard-statistics {
+         &__content {
+            background-color: #242426;
+
+            &-text {
+               color: #FFFFFF;
+            }
+         }
+      }
+   }
+
    @media (max-width: 1250px) {
       .pages-dashboard-statistics {
          &__inner {
