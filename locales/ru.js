@@ -432,6 +432,7 @@ export default {
    "clear_search": "Очистить",
    "cleared": "Растаможен",
    "close": "Закрыть",
+   "close2": "Закрыть",
    "co2_emissions": "Выбросы CO2 г/км",
    "code_has_been_sent": "Код отправлен",
    "collapse": "Свернуть",
