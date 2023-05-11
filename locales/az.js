@@ -461,6 +461,7 @@ export default {
    clear_search: "Sıfırla",
    cleared: "Gömrükdən keçmiş",
    close: "Bağlamaq",
+   close2: "Bağla",
    co2_emissions: "Emissiyalar CO2 q/km",
    code_has_been_sent: "Kod göndərildi",
    collapse: "Gizlət",

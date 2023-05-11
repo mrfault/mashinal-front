@@ -47,10 +47,12 @@
                      </div>
 
                      <div class="detailsMobile">
-                        <button class="btn">{{ $t('details') }}</button>
+                        <button class="btn">
+                           {{ $t('details') }}
+<!--                           {{ activeAgreement === agreement.package.id ? $t('close2') : $t('details') }}-->
+                        </button>
                      </div>
                   </td>
-
                   <td class="agreementDetails">
                      <h5 class="agreementDetails__title">{{ agreement.package.name[locale] }} {{ $t('package2') }}</h5>
 
@@ -87,6 +89,67 @@
                               </div>
                            </div>
                         </div>
+                     </div>
+                  </td>
+                  <td class="agreementDetailsMobile">
+                     <inline-svg
+                        class="agreementDetailsMobile__downloadIcon"
+                        :src="'/icons/download.svg'"
+                        @click="downloadInvoice(agreement.id)"
+                     />
+
+                     <div class="agreementDetailsMobile__content">
+                        <ul class="agreementDetailsMobile__content-list">
+                           <li>
+                              <h5>{{ $t('invoice_date') }}</h5>
+                              <span>{{ $moment(agreement.start_date).format('DD.MM.YYYY') }}</span>
+                           </li>
+
+                           <li>
+                              <h5>{{ $t('invoice_number') }}</h5>
+                              <span>{{ agreement.id }}</span>
+                           </li>
+
+                           <li>
+                              <h5>{{ $t('type_of_service') }}</h5>
+                              <span>{{ agreement.package.name[locale] }} {{ $t('package3') }}</span>
+                           </li>
+                        </ul>
+
+                        <ul class="agreementDetailsMobile__content-info">
+                           <li>
+                              <h5>{{ $t('paid_ads') }}:</h5>
+                              <span>{{ agreement.package.announce_count }}</span>
+                           </li>
+
+                           <li>
+                              <h5>{{ $t('paid_services') }}:</h5>
+                              <span>{{ agreement.package.service_price }} AZN</span>
+                           </li>
+
+                           <li>
+                              <h5>{{ $t('package_duration') }}:</h5>
+                              <span>{{ $moment(agreement.start_date).format('DD.MM.YYYY') }} - {{ $moment(agreement.end_date).format('DD.MM.YYYY') }}</span>
+                           </li>
+                        </ul>
+
+                        <ul class="agreementDetailsMobile__content-price">
+                           <li>
+                              <span>{{ $t('vat') }}:</span>
+                              <span>{{ agreement.price }} AZN</span>
+                           </li>
+
+                           <li>
+                              <span>{{ $t('total') }}:</span>
+                              <span>{{ agreement.price }} AZN</span>
+                           </li>
+                        </ul>
+
+                        <button
+                           v-if="!agreement.payment.is_paid"
+                           class="btn full-width"
+                           @click="openModal = true"
+                        >{{ $t('pay') }}</button>
                      </div>
                   </td>
                </tr>
@@ -274,6 +337,12 @@
 <style lang="scss" scoped>
    .agreementPage {
       padding-bottom: 100px;
+
+      ul, h5, p {
+         list-style: none;
+         margin: 0;
+         padding: 0;
+      }
 
       &__title {
          margin: 36px 0 8px 0;
@@ -467,6 +536,107 @@
                         }
                      }
                   }
+
+                  &.agreementDetailsMobile {
+                     display: none;
+                     position: absolute;
+                     width: 100%;
+                     left: 0;
+                     top: 60px;
+
+                     .agreementDetailsMobile__downloadIcon {
+                        position: absolute;
+                        top: 32px;
+                        right: 36px;
+                     }
+
+                     .agreementDetailsMobile__content {
+                        padding: 16px;
+                        border-radius: 4px;
+                        background-color: #D6E4F8;
+
+                        &-list {
+                           li {
+                              &:not(:first-child) {
+                                 margin-top: 20px;
+                              }
+
+                              h5 {
+                                 font-weight: 500;
+                                 font-size: 14px;
+                                 line-height: 17px;
+                                 color: #081A3E;
+                                 margin-bottom: 10px;
+                              }
+
+                              span {
+                                 font-weight: 400;
+                                 font-size: 12px;
+                                 line-height: 14px;
+                                 color: #081A3E;
+                              }
+                           }
+                        }
+
+                        &-info {
+                           margin: 16px 0;
+
+                           li {
+                              display: flex;
+                              align-items: center;
+
+                              &:not(:first-child) {
+                                 margin-top: 16px;
+                              }
+
+                              h5, span {
+                                 font-weight: 400;
+                                 font-size: 12px;
+                                 line-height: 14px;
+                                 color: #081A3E;
+                              }
+
+                              span {
+                                 color: #246EB2;
+                                 margin-left: 5px;
+                              }
+                           }
+                        }
+
+                        &-price {
+                           display: flex;
+                           align-items: center;
+                           justify-content: space-around;
+
+                           li {
+                              span {
+                                 font-size: 12px;
+                                 line-height: 14px;
+                                 color: #081A3E;
+
+                                 &:last-child {
+                                    font-weight: 600;
+                                    color: #F81734;
+                                 }
+                              }
+                           }
+                        }
+
+                        &-info, &-price {
+                           padding: 16px;
+                           border-radius: 4px;
+                           background-color: #FFFFFF;
+                        }
+
+                        .btn {
+                           margin-top: 16px;
+                           height: 34px;
+                           padding: 0 36px;
+                           color: #FFFFFF;
+                           background-color: #246EB2;
+                        }
+                     }
+                  }
                }
 
                &.expired {
@@ -616,6 +786,16 @@
 
             &-tbody {
                tr {
+                  &.active {
+                     td {
+                        padding-bottom: 490px;
+                     }
+
+                     .agreementDetailsMobile {
+                        display: block;
+                     }
+                  }
+
                   td {
                      &:nth-child(1),
                      &:nth-child(2),
@@ -634,31 +814,7 @@
                      }
 
                      &.agreementDetails {
-                        //padding: 15px;
-
-                        .agreementDetails {
-                           &__content {
-                              &-head {
-                                 //padding: 16px 13px;
-
-                                 &_item {
-                                    span {
-                                       //font-size: 13px;
-                                    }
-                                 }
-                              }
-
-                              &-price {
-                                 //padding: 25px 0;
-
-                                 &_item {
-                                    &:not(:first-child) {
-                                       //margin-top: 15px;
-                                    }
-                                 }
-                              }
-                           }
-                        }
+                        display: none !important;
                      }
                   }
                }
