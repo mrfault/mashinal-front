@@ -122,10 +122,8 @@
             return `${date.split(' ')[0]} ${date.split(' ')[1].slice(0, 3)}`;
          },
 
-         handleChange(value) {
-            console.log(value)
-            // console.log('this.item.id_unique', this.item.id_unique)
-            // this.check = value;
+         handleChange(item) {
+            this.$nuxt.$emit('select-mark', item.id_unique);
             // this.$nuxt.$emit('select-announcement', this.item.id_unique, value, true);
          }
       }
