@@ -44,7 +44,7 @@
 
                         <button
                            class="btn"
-                           v-if="!agreement.payment.is_paid && agreement.is_expired"
+                           v-if="!agreement.payment.is_paid || agreement.is_expired"
                            @click="openModal = true"
                         >{{ $t('pay') }}</button>
 
@@ -189,8 +189,9 @@
             </div>
 
             <hr v-if="totalBalance < 1" />
+
             <div class="terminal-section" v-if="totalBalance < 1">
-               {{ $t('package_price') }} {{ selectedPackage?.price * duration }} AZN
+               {{ $t('package_price') }} {{ getAgreements[0]?.price || selectedPackage?.price * duration }} AZN
             </div>
 
             <div class="modal-sticky-bottom">
