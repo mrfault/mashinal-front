@@ -32,7 +32,7 @@
                      </ul>
 
                      <button
-                        :class="['btn', {'disabled' : disableBtn && disableBtn.id !== item.id && user.autosalon}]"
+                        :class="['btn', { 'disabled' : disableBtn && !disableBtn?.is_expired && disableBtn?.hasPackage?.id !== item.id && user.autosalon }]"
                         @click="nextStep(item)"
                      >{{ $t('join_package', { package: item.name }) }}</button>
                   </div>
@@ -243,7 +243,7 @@
 
          &__info {
             &-item {
-               color: #A4A4A5;
+               color: #FFFFFF;
 
                &.opacity {
                   svg {

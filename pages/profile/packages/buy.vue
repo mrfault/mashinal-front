@@ -27,7 +27,6 @@
             </div>
 
             <div class="divider">
-<!--               <pre>{{getAgreements}}</pre>-->
                <div class="myPackagesBuy__duration myPackagesBuy__cart">
                   <h4 class="myPackagesBuy__cart-title">{{ $t('duration_package') }}</h4>
                   <h4 class="myPackagesBuy__cart-subtitle">{{ $t('choose') }}</h4>
@@ -38,10 +37,7 @@
                      v-model="duration"
                   />
 
-                  <p class="myPackagesBuy__duration-description">
-                     “Ödəniş et” düyməsini sıxmaqla siz <span>Mashin.al istifadəçi razılaşmasını və
-                     ofertasını</span> qəbul etdiyinizi təsdiqləmiş olursunuz.
-                  </p>
+                  <p class="myPackagesBuy__duration-description" v-html="$t('my_packages_duration')"></p>
                </div>
 
                <div class="myPackagesBuy__salon myPackagesBuy__cart">
@@ -105,26 +101,26 @@
                <span class="checkmark"></span>
             </label>
 
-            <label class="radio-container" v-if="this.$auth.loggedIn && totalBalance > 0">
+            <label class="radio-container" v-if="this.$auth.loggedIn && $readNumber(user.balance) > 0">
                {{ $t('balans') }}
                <input type="radio" name="payment_type" @change="payment_type = 'balance'">
                <span class="checkmark"></span>
             </label>
 
-            <hr v-if="totalBalance > 0" />
+            <hr v-if="$readNumber(user.balance) > 0" />
 
             <div class="wrapp">
-               <div class="terminal-section" v-if="totalBalance > 0">
-                  {{ $t('balans') }}: <span style="margin-right: 20px;">{{ totalBalance }}</span>
+               <div class="terminal-section" v-if="$readNumber(user.balance) > 0">
+                  {{ $t('balans') }}: <span style="margin-right: 20px;">{{ $readNumber(user.balance) }}</span>
                </div>
 
-               <div class="terminal-section" v-if="totalBalance > 0">
+               <div class="terminal-section" v-if="$readNumber(user.balance) > 0">
                   {{ $t('package_price') }}: <span>{{ selectedPackage?.price * duration }} AZN</span>
                </div>
             </div>
 
-            <hr v-if="totalBalance < 1" />
-            <div class="terminal-section" v-if="totalBalance < 1">
+            <hr v-if="$readNumber(user.balance) < 1" />
+            <div class="terminal-section" v-if="$readNumber(user.balance) < 1">
                {{ $t('package_price') }} {{ selectedPackage?.price * duration }} AZN
             </div>
 
@@ -485,7 +481,7 @@
          &__package {
             &-list {
                &_item {
-                  color: #A4A4A5;
+                  color: #FFFFFF;
 
                   &.opacity {
                      svg {
@@ -505,8 +501,24 @@
                      color: #7dc1ff;
 
                      &:last-child {
-                        color: #A4A4A5;
+                        color: #FFFFFF;
                      }
+                  }
+               }
+            }
+         }
+
+         &__duration {
+            &-description {
+               color: #FFFFFF;
+            }
+         }
+
+         &__salon {
+            .form-group {
+               .text-input {
+                  input {
+                     color: #FFFFFF;
                   }
                }
             }
