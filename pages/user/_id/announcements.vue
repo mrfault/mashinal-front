@@ -63,6 +63,12 @@
    export default {
       name: 'pages-user-id-announcements',
 
+      head() {
+         return this.$headMeta({
+            title: this.$t('all_announcements_of_user', { name: this.userFullName })
+         });
+      },
+
       nuxtI18n: {
          paths: {
             az: '/istifadeci/:id/elanlar'
