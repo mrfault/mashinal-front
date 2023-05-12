@@ -71,7 +71,10 @@
          },
 
          disableBtn() {
-            return this.getPackages.find(item => item.id === this.getAgreements[0]?.package?.id);
+            return {
+               hasPackage: this.getPackages.find(item => item.id === this.getAgreements[0]?.package?.id),
+               is_expired: this.getAgreements[0]?.is_expired
+            }
          }
       },
 

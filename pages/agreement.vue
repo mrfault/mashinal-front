@@ -31,15 +31,20 @@
                   <td>{{ agreement.id }}</td>
                   <td>{{ agreement.package.name[locale] }} {{ $t('package3') }}</td>
                   <td>{{ agreement.price }} AZN</td>
-                  <td :class="['status', {'not_paid' : !agreement.payment.is_paid}]">
-                     <span>{{ agreement.payment.is_paid ? $t('already_paid') : $t('not_paid') }}</span>
+                  <td :class="['status', {
+                        'not_paid' : !agreement.payment.is_paid && !agreement.is_expired,
+                        'is_expired' : agreement.is_expired
+                        }]"
+                  >
+                     <span v-if="agreement.is_expired === false">{{ agreement.payment.is_paid ? $t('already_paid') : $t('not_paid') }}</span>
+                     <span v-else>{{ $t('overdue') }} | {{ $moment(agreement.end_date).format('DD.MM.YYYY') }}</span>
 
                      <div class="btns">
                         <inline-svg :src="'/icons/download.svg'" @click="downloadInvoice(agreement.id)" />
 
                         <button
                            class="btn"
-                           v-if="!agreement.payment.is_paid"
+                           v-if="!agreement.payment.is_paid && agreement.is_expired"
                            @click="openModal = true"
                         >{{ $t('pay') }}</button>
 
@@ -453,6 +458,13 @@
                      }
                   }
 
+                  &.is_expired {
+                     span {
+                        color: #F81734;
+                        opacity: 1;
+                     }
+                  }
+
                   &.agreementDetails {
                      display: none;
                      position: absolute;
@@ -680,6 +692,16 @@
                   td {
                      &:not(.status) {
                         color: #A4A4A5;
+                     }
+
+                     &.status {
+                        .btns {
+                           i {
+                              &:before {
+                                 color: #FFFFFF;
+                              }
+                           }
+                        }
                      }
 
                      &.not_paid {

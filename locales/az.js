@@ -1241,6 +1241,7 @@ export default {
    my_favorites_remove: "Seçilmişlərdən sil",
    my_favorites_removed: "Seçilmişlərdən silindi",
    my_packages: "Paketlər",
+   my_packages_duration: "“Ödəniş et” düyməsini sıxmaqla siz <span>Mashin.al istifadəçi razılaşmasını və ofertasını</span> qəbul etdiyinizi təsdiqləmiş olursunuz.",
    package_price: "Paketin qiyməti",
    get_package: "Paket əldə et",
    my_profile: "Profilim",
@@ -1274,6 +1275,7 @@ export default {
    "no spikes": "Tikansız",
    no_active_cards: "Aktiv kartınız yoxdur",
    no_active_cars: "Sizin heç bir aktiv avtomobiliniz yoxdur",
+   no_announcements: "İstifadəçinin nəqliyyat vasitəsi elanı yoxdur",
    no_announcements_found: "Elan tapılmadı",
    no_announcements_on_balance: "Siz elan yerləşdirmə limitini keçmisiniz.",
    no_announcements_on_balance_parts:
@@ -1993,6 +1995,7 @@ export default {
    unpaid_params: "“{package_type}” paketi, {start_date}-dən {end_date}-dək, <span>{price} AZN</span>",
    not_active_package: "Sizin aktiv paketiniz yoxdur!",
    get_new_package: "Yeni paket əldə et",
+   overdue: "Vaxtı keçib",
    update: "Düzəltmək",
    updated: "Yeniləndi",
    invoice_date: "Hesab - Faktura tarixi",
