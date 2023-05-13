@@ -1,6 +1,6 @@
 <template>
    <div class="languageChange" @click="changeLanguage">
-      <span>{{ locale === 'az' ? 'ru' : 'az' }}</span>
+      <span>{{ locale === 'az' ? 'RU' : 'AZ' }}</span>
    </div>
 </template>
 
