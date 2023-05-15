@@ -209,8 +209,6 @@
                </div>
             </div>
          </modal-popup>
-
-<!--         <aaa />-->
       </div>
    </div>
 </template>
@@ -218,12 +216,10 @@
 <script>
    import { mapGetters } from "vuex";
    import ComeBack from "~/components/elements/ComeBack.vue";
-   import aaa from "~/components/aaa.vue";
    import {PaymentMixin} from "~/mixins/payment";
 
    export default {
       components: {
-         aaa,
          ComeBack
       },
 
@@ -258,12 +254,12 @@
                   days_type: this.duration
                };
 
-            if ((this.selectedPackage.id === this.getAgreements[0]?.package?.id) && this.getAgreements[0].payment.is_paid === true) {
-               api = '/payment/renew-package';
-               data.autosalon_id = this.user.autosalon.id;
-               data.agreement_id = this.findUnpaid.id;
-               delete data.name;
-            }
+            // if ((this.selectedPackage.id === this.getAgreements[0]?.package?.id) && this.getAgreements[0]?.payment.is_paid === true) {
+            //    api = '/payment/renew-package';
+            //    data.autosalon_id = this.user.autosalon.id;
+            //    data.agreement_id = this.findUnpaid.id;
+            //    delete data.name;
+            // }
 
             try {
                const res = await this.$axios.$post(`${api}?is_mobile=${this.isMobileBreakpoint}`, data);
@@ -276,7 +272,7 @@
                      title: this.$t('success_payment')
                   });
                } else {
-                  await this.handlePayment(res, this.$localePath('/agreement'));
+                  await this.handlePayment(res, false, this.$t('success_payment'));
                   this.pending = this.openModal = false;
                }
             } catch (error) {
@@ -311,7 +307,7 @@
 
          crumbs() {
             return [
-               { name: this.$t('dashboard'), route: '/dashboard/1' },
+               { name: this.$t('dashboard'), route: `${this.user.autosalon ? '/dashboard/1' : '/garage-services'}` },
                { name: this.$t('agreements') }
             ]
          },

@@ -150,9 +150,7 @@
    import ComeBack from "~/components/elements/ComeBack.vue";
 
    export default {
-      components: {
-         ComeBack
-      },
+      components: { ComeBack },
 
       head() {
          return this.$headMeta({
@@ -207,7 +205,7 @@
             if (this.selectedPackage.id === this.getAgreements[0]?.package?.id) {
                api = '/payment/renew-package';
                data.autosalon_id = this.user.autosalon.id;
-               data.agreement_id = this.getAgreements[0].id;
+               data.agreement_id = this.getAgreements[0]?.id;
                delete data.name;
             }
 
@@ -239,11 +237,7 @@
       },
 
       async asyncData({ store }) {
-         // try {
-            await store.dispatch('fetchAgreements');
-         // } catch (e) {
-         //    console.log(e)
-         // }
+         await store.dispatch('fetchAgreements');
       },
 
       computed: {
@@ -254,19 +248,10 @@
 
          crumbs() {
             return [
-               { name: this.$t('dashboard'), route: '/dashboard/1' },
+               { name: this.$t('dashboard'), route: `${this.user.autosalon ? '/dashboard/1' : '/garage-services'}` },
                { name: this.$t('my_packages'), route: '/profile/packages' },
                { name: this.$t('registration2') }
             ]
-         },
-
-         totalBalance() {
-            return this.$sum(
-               this.user.balance,
-               this.user.autosalon?.balance || 0,
-               this.user.part_salon?.balance || 0,
-               this.user.external_salon?.balance || 0,
-            )
          }
       },
 
