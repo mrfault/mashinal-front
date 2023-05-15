@@ -22,10 +22,10 @@
 
             <tbody class="agreementPage__table-tbody">
                <tr
-                  :class="['', { 'active' : activeAgreement === agreement.package.id }]"
+                  :class="{ 'active' : activeAgreement === agreement.id }"
                   v-for="agreement in getAgreements"
                   :key="agreement.id"
-                  @click="activeAgreement = agreement.package.id"
+                  @click="activeAgreement = agreement.id"
                >
                   <td>{{ $moment(agreement.start_date).format('DD.MM.YYYY') }}</td>
                   <td>{{ agreement.id }}</td>
@@ -45,7 +45,7 @@
                         <button
                            class="btn"
                            v-if="!agreement.payment.is_paid || agreement.is_expired"
-                           @click="openModal = true"
+                           @click="modalOpen(agreement)"
                         >{{ $t('pay') }}</button>
 
                         <icon :name="'chevron-down'" />
@@ -84,13 +84,18 @@
                         <div class="divider">
                            <div class="agreementDetails__content-price">
                               <div class="agreementDetails__content-price_item">
-                                 <span>{{ $t('vat') }}:</span>
+                                 <span>{{ $t('total') }}:</span>
                                  <span>{{ agreement.price }} AZN</span>
                               </div>
 
                               <div class="agreementDetails__content-price_item">
-                                 <span>{{ $t('total') }}:</span>
-                                 <span>{{ agreement.price }} AZN</span>
+                                 <span>{{ $t('is_main_price') }}:</span>
+                                 <span>{{ Math.round(agreement.price / 1.18) }} AZN</span>
+                              </div>
+
+                              <div class="agreementDetails__content-price_item">
+                                 <span>{{ $t('vat') }}:</span>
+                                 <span>{{ Math.round(agreement.price - (agreement.price / 1.18)) }} AZN</span>
                               </div>
                            </div>
                         </div>
@@ -140,20 +145,25 @@
 
                         <ul class="agreementDetailsMobile__content-price">
                            <li>
-                              <span>{{ $t('vat') }}:</span>
+                              <span>{{ $t('total') }}:</span>
                               <span>{{ agreement.price }} AZN</span>
                            </li>
 
                            <li>
-                              <span>{{ $t('total') }}:</span>
-                              <span>{{ agreement.price }} AZN</span>
+                              <span>{{ $t('is_main_price') }}:</span>
+                              <span>{{ Math.round(agreement.price / 1.18) }} AZN</span>
+                           </li>
+
+                           <li>
+                              <span>{{ $t('vat') }}:</span>
+                              <span>{{ Math.round(agreement.price - (agreement.price / 1.18)) }} AZN</span>
                            </li>
                         </ul>
 
                         <button
                            v-if="!agreement.payment.is_paid"
                            class="btn full-width"
-                           @click="openModal = true"
+                           @click="modalOpen(agreement)"
                         >{{ $t('pay') }}</button>
                      </div>
                   </td>
@@ -175,22 +185,22 @@
                <span class="checkmark"></span>
             </label>
 
-            <label class="radio-container" v-if="this.$auth.loggedIn && totalBalance > 0">
+            <label class="radio-container" v-if="this.$auth.loggedIn && $readNumber(user.balance) > 0">
                {{$t('balans')}}
                <input type="radio" name="payment_type" @change="payment_type = 'balance'">
                <span class="checkmark"></span>
             </label>
 
-            <hr v-if="totalBalance > 0" />
+            <hr v-if="$readNumber(user.balance) > 0" />
 
-            <div class="terminal-section" v-if="totalBalance > 0">
-               {{ $t('balans') }}: <span style="margin-right: 20px;">{{ totalBalance }}</span>
+            <div class="terminal-section" v-if="$readNumber(user.balance) > 0">
+               {{ $t('balans') }}: <span style="margin-right: 20px;">{{ $readNumber(user.balance) }}</span>
                {{ $t('package_price') }}: {{ selectedPackage?.price * duration }} AZN
             </div>
 
-            <hr v-if="totalBalance < 1" />
+            <hr v-if="$readNumber(user.balance) < 1" />
 
-            <div class="terminal-section" v-if="totalBalance < 1">
+            <div class="terminal-section" v-if="$readNumber(user.balance) < 1">
                {{ $t('package_price') }} {{ getAgreements[0]?.price || selectedPackage?.price * duration }} AZN
             </div>
 
@@ -243,6 +253,11 @@
       },
 
       methods: {
+         modalOpen(item) {
+            this.selectedPackage = item;
+            this.openModal = true;
+         },
+
          async handleSubmit() {
             this.pending = true;
 
@@ -253,13 +268,6 @@
                   name: this.user.autosalon.name,
                   days_type: this.duration
                };
-
-            // if ((this.selectedPackage.id === this.getAgreements[0]?.package?.id) && this.getAgreements[0]?.payment.is_paid === true) {
-            //    api = '/payment/renew-package';
-            //    data.autosalon_id = this.user.autosalon.id;
-            //    data.agreement_id = this.findUnpaid.id;
-            //    delete data.name;
-            // }
 
             try {
                const res = await this.$axios.$post(`${api}?is_mobile=${this.isMobileBreakpoint}`, data);
@@ -312,22 +320,9 @@
             ]
          },
 
-         totalBalance() {
-            return this.$sum(
-               this.user.balance,
-               this.user.autosalon?.balance || 0,
-               this.user.part_salon?.balance || 0,
-               this.user.external_salon?.balance || 0,
-            )
-         },
-
          findUnpaid() {
             return this.getAgreements.find(item => item.payment.is_paid === false);
          }
-      },
-
-      mounted() {
-         this.selectedPackage = JSON.parse(localStorage.getItem('selectedPackage'));
       },
 
       async asyncData({ store }) {
@@ -386,7 +381,7 @@
 
                &.active {
                   td {
-                     padding-bottom: 230px;
+                     padding-bottom: 250px;
                   }
 
                   .agreementDetails {
@@ -516,9 +511,9 @@
 
                         &-price {
                            display: flex;
-                           align-items: center;
+                           //align-items: center;
                            flex-direction: column;
-                           padding: 32px 0;
+                           padding: 32px;
                            border-radius: 4px;
                            border: 1px solid #D6E4F8;
 
@@ -534,11 +529,13 @@
                                  font-size: 16px;
                                  line-height: 19px;
                                  color: #081A3E;
+                                 width: 135px;
 
                                  &:last-child {
                                     font-weight: 600;
                                     color: #F81734;
                                     margin-left: 8px;
+                                    width: unset;
                                  }
                               }
                            }
@@ -615,7 +612,7 @@
                         &-price {
                            display: flex;
                            align-items: center;
-                           justify-content: space-around;
+                           justify-content: space-between;
 
                            li {
                               span {
@@ -794,7 +791,7 @@
                               }
 
                               &-price {
-                                 padding: 25px 0;
+                                 padding: 25px 15px;
 
                                  &_item {
                                     &:not(:first-child) {
@@ -858,6 +855,41 @@
 
                      &.agreementDetails {
                         display: none !important;
+                     }
+                  }
+               }
+            }
+         }
+      }
+   }
+
+   @media (max-width: 500px) {
+      .agreementPage {
+         &__table {
+            &-tbody {
+               tr {
+                  &.active {
+                     td {
+                        padding-bottom: 550px;
+                     }
+                  }
+
+                  td {
+                     &.agreementDetailsMobile {
+                        .agreementDetailsMobile {
+                           &__content {
+                              &-price {
+                                 align-items: unset;
+                                 flex-direction: column;
+
+                                 li {
+                                    &:not(:first-child) {
+                                       margin-top: 10px;
+                                    }
+                                 }
+                              }
+                           }
+                        }
                      }
                   }
                }

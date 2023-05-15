@@ -959,6 +959,7 @@ export default {
    "insurance_info": "Информация об обязательных страховых случаях",
    "is_in_credit": "В кредите",
    "is_main": "Основной",
+   "is_main_price": "Основная сумма",
    "is_negotiable": "Договорная",
    "is_new": "Новый",
    "is_original": "Оригинальный",

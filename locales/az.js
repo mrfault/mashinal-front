@@ -1006,6 +1006,7 @@ export default {
    insurance_info: "İcbari Sığorta hadisələri haqqında məlumat",
    is_in_credit: "Kreditdədir",
    is_main: "Əsas",
+   is_main_price: "Əsas məbləğ",
    is_negotiable: "Razılaşma yolu ilə",
    is_new: "Yeni",
    is_original: "Orijinal",
