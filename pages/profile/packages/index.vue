@@ -81,11 +81,11 @@
       async asyncData({ store }) {
          await store.dispatch('packages/getPackages');
 
-         try {
+         // try {
             await store.dispatch('fetchAgreements');
-         } catch (e) {
-            console.log(e)
-         }
+         // } catch (e) {
+         //    console.log(e)
+         // }
       }
    }
 </script>
