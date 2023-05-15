@@ -239,11 +239,11 @@
       },
 
       async asyncData({ store }) {
-         try {
+         // try {
             await store.dispatch('fetchAgreements');
-         } catch (e) {
-            console.log(e)
-         }
+         // } catch (e) {
+         //    console.log(e)
+         // }
       },
 
       computed: {

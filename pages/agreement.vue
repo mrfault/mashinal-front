@@ -258,7 +258,7 @@
                   days_type: this.duration
                };
 
-            if (this.selectedPackage.id === this.getAgreements[0]?.package?.id) {
+            if ((this.selectedPackage.id === this.getAgreements[0]?.package?.id) && this.getAgreements[0].payment.is_paid === true) {
                api = '/payment/renew-package';
                data.autosalon_id = this.user.autosalon.id;
                data.agreement_id = this.findUnpaid.id;
