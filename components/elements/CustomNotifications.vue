@@ -91,16 +91,16 @@
                data = {
                   package_id: this.unpaidAgreement.package.id,
                   payment_type: this.payment_type,
-                  name: this.user?.autosalon.name,
+                  name: this.user?.autosalon?.name,
                   days_type: this.duration
                };
 
-            if ((this.selectedPackage.id === this.getAgreements[0]?.package?.id) && this.unpaidAgreement.payment.is_paid === true) {
-               api = '/payment/renew-package';
-               data.autosalon_id = this.user.autosalon.id;
-               data.agreement_id = this.unpaidAgreement.id;
-               delete data.name;
-            }
+            // if ((this.selectedPackage.id === this.getAgreements[0]?.package?.id) && this.unpaidAgreement.payment.is_paid === true) {
+            //    api = '/payment/renew-package';
+            //    data.autosalon_id = this.user.autosalon.id;
+            //    data.agreement_id = this.unpaidAgreement.id;
+            //    delete data.name;
+            // }
 
             try {
                const res = await this.$axios.$post(`${api}?is_mobile=${this.isMobileBreakpoint}`, data);

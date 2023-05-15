@@ -32,7 +32,9 @@
                      </ul>
 
                      <button
-                        :class="['btn', { 'disabled' : disableBtn && !disableBtn?.is_expired && disableBtn?.hasPackage?.id !== item.id && user.autosalon }]"
+                        :class="['btn',
+                           { 'disabled' : disableBtn && !disableBtn?.is_expired && disableBtn?.hasPackage?.id !== item.id && (user?.autosalon && user?.autosalon?.status !== 0) }
+                        ]"
                         @click="nextStep(item)"
                      >{{ $t('join_package', { package: item.name }) }}</button>
                   </div>
@@ -143,7 +145,7 @@
          position: absolute;
          top: -25px;
          left: -1px;
-         width: 101%;
+         width: 100.6%;
          height: 36px;
          font-weight: 500;
          font-size: 16px;

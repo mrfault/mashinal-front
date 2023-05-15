@@ -79,13 +79,10 @@
       },
 
       async asyncData({ store }) {
-         await store.dispatch('packages/getPackages');
-
-         // try {
-            await store.dispatch('fetchAgreements');
-         // } catch (e) {
-         //    console.log(e)
-         // }
+         await Promise.all([
+            store.dispatch('packages/getPackages'),
+            store.dispatch('fetchAgreements')
+         ]);
       }
    }
 </script>
