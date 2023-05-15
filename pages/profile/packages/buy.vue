@@ -202,12 +202,12 @@
                    days_type: this.duration
                 };
 
-            if (this.selectedPackage.id === this.getAgreements[0]?.package?.id) {
-               api = '/payment/renew-package';
-               data.autosalon_id = this.user.autosalon.id;
-               data.agreement_id = this.getAgreements[0]?.id;
-               delete data.name;
-            }
+            // if (this.selectedPackage.id === this.getAgreements[0]?.package?.id) {
+            //    api = '/payment/renew-package';
+            //    data.autosalon_id = this.user.autosalon.id;
+            //    data.agreement_id = this.getAgreements[0]?.id;
+            //    delete data.name;
+            // }
 
             try {
                const res = await this.$axios.$post(`${api}?is_mobile=${this.isMobileBreakpoint}`, data);

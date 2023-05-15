@@ -30,22 +30,27 @@
             <span class="checkmark"></span>
          </label>
 
-         <label class="radio-container" v-if="this.$auth.loggedIn && totalBalance > 0">
+         <label class="radio-container" v-if="this.$auth.loggedIn && $readNumber(user.balance) > 0">
             {{$t('balans')}}
             <input type="radio" name="payment_type" @change="payment_type = 'balance'">
             <span class="checkmark"></span>
          </label>
 
-         <hr v-if="totalBalance > 0" />
+         <hr v-if="$readNumber(user.balance) > 0" />
 
-         <div class="terminal-section" v-if="totalBalance > 0">
-            {{ $t('balans') }}: <span style="margin-right: 20px;">{{ totalBalance }}</span>
-            {{ $t('package_price') }}: {{ selectedPackage?.price * duration }} AZN
+         <div class="wrapp">
+            <div class="terminal-section" v-if="$readNumber(user.balance) > 0">
+               {{ $t('balans') }}: <span style="margin-right: 20px;">{{ $readNumber(user.balance) }}</span>
+            </div>
+
+            <div class="terminal-section" v-if="$readNumber(user.balance) > 0">
+               {{ $t('package_price') }}: <span>{{ unpaidAgreement?.price * duration }} AZN</span>
+            </div>
          </div>
 
-         <hr v-if="totalBalance < 1" />
-         <div class="terminal-section" v-if="totalBalance < 1">
-            {{ $t('package_price') }} {{ getAgreements[0]?.price || selectedPackage?.price * duration }} AZN
+         <hr v-if="$readNumber(user.balance) < 1" />
+         <div class="terminal-section" v-if="$readNumber(user.balance) < 1">
+            {{ $t('package_price') }} {{ unpaidAgreement?.price * duration }} AZN
          </div>
 
          <div class="modal-sticky-bottom">
@@ -78,8 +83,7 @@
             openModal: false,
             pending: false,
             payment_type: 'card',
-            duration: 1,
-            selectedPackage: {}
+            duration: ''
          }
       },
 
@@ -92,15 +96,8 @@
                   package_id: this.unpaidAgreement.package.id,
                   payment_type: this.payment_type,
                   name: this.user?.autosalon?.name,
-                  days_type: this.duration
+                  days_type: this.unpaidAgreement.days_type
                };
-
-            // if ((this.selectedPackage.id === this.getAgreements[0]?.package?.id) && this.unpaidAgreement.payment.is_paid === true) {
-            //    api = '/payment/renew-package';
-            //    data.autosalon_id = this.user.autosalon.id;
-            //    data.agreement_id = this.unpaidAgreement.id;
-            //    delete data.name;
-            // }
 
             try {
                const res = await this.$axios.$post(`${api}?is_mobile=${this.isMobileBreakpoint}`, data);
@@ -159,10 +156,6 @@
             type: Object,
             default() { return {} }
          }
-      },
-
-      mounted() {
-         this.selectedPackage = JSON.parse(localStorage.getItem('selectedPackage'));
       }
    }
 </script>
@@ -175,6 +168,10 @@
       padding: 21px 24px;
       border-radius: 4px;
       background-color: #FFFFFF;
+
+      &:not(:first-child) {
+         margin-top: 20px;
+      }
 
       &-text {
          p {
