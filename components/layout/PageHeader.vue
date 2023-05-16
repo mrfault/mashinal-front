@@ -1,46 +1,46 @@
 <template>
    <div class="page-header">
-<!--       <div-->
-<!--          v-if="!isMobileBreakpoint && !close && !$cookies.get('smartbanner_exited')"-->
-<!--          :style="(!isMobileBreakpoint ? 'height: 96px;': ''),!isMobileBreakpoint ? ($cookies.get('smartbanner_exited')  ? 'margin-bottom: 70px;' :'margin-bottom:70px;') : ''"-->
-<!--       >-->
-<!--         <div class="top-promotion-row">-->
-<!--           <div class="container">-->
-<!--             <div class="top-promotion">-->
-<!--               <div class="top-promotion-row-item">-->
-<!--                 <img src="/img/logo-red.svg" />-->
-<!--                 <p>-->
-<!--                   Mashin.al-dan çoxfunksiyalı yeni əlavə-->
-<!--                 </p>-->
-<!--               </div>-->
-<!--               <div class="top-promotion-row-item">-->
-<!--                 <a-->
-<!--                   target="_blank"-->
-<!--                   href="https://apps.apple.com/tn/app/mashin-al/id1588371190?l=az"-->
-<!--                 >-->
-<!--                   <img src="/img/app-store.svg" class="app-store-img" />-->
-<!--                 </a>-->
-<!--                 <a-->
-<!--                   target="_blank"-->
-<!--                   href="https://play.google.com/store/apps/details?id=ventures.al.mashinal&hl=az&gl=US"-->
-<!--                 >-->
-<!--                   <img src="/img/google-play.svg" class="google-play-img" />-->
-<!--                 </a>-->
-<!--               </div>-->
-<!--               <div class="top-promotion-row-item">-->
-<!--                 <img src="/img/mobile-app.png" class="mobile-app" />-->
-<!--                 <a-->
-<!--                   style="margin-left: 10px; cursor: pointer;"-->
-<!--                   @click.prevent="closePromotion"-->
-<!--                 >-->
-<!--                   <icon style="color: #081a3e;" name="cross" />-->
-<!--                   &lt;!&ndash; <inline-svg src="/icons/cross.svg" height="14" style="color: #081a3e;"/> &ndash;&gt;-->
-<!--                 </a>-->
-<!--               </div>-->
-<!--             </div>-->
-<!--           </div>-->
-<!--         </div>-->
-<!--       </div>-->
+      <!--       <div-->
+      <!--          v-if="!isMobileBreakpoint && !close && !$cookies.get('smartbanner_exited')"-->
+      <!--          :style="(!isMobileBreakpoint ? 'height: 96px;': ''),!isMobileBreakpoint ? ($cookies.get('smartbanner_exited')  ? 'margin-bottom: 70px;' :'margin-bottom:70px;') : ''"-->
+      <!--       >-->
+      <!--         <div class="top-promotion-row">-->
+      <!--           <div class="container">-->
+      <!--             <div class="top-promotion">-->
+      <!--               <div class="top-promotion-row-item">-->
+      <!--                 <img src="/img/logo-red.svg" />-->
+      <!--                 <p>-->
+      <!--                   Mashin.al-dan çoxfunksiyalı yeni əlavə-->
+      <!--                 </p>-->
+      <!--               </div>-->
+      <!--               <div class="top-promotion-row-item">-->
+      <!--                 <a-->
+      <!--                   target="_blank"-->
+      <!--                   href="https://apps.apple.com/tn/app/mashin-al/id1588371190?l=az"-->
+      <!--                 >-->
+      <!--                   <img src="/img/app-store.svg" class="app-store-img" />-->
+      <!--                 </a>-->
+      <!--                 <a-->
+      <!--                   target="_blank"-->
+      <!--                   href="https://play.google.com/store/apps/details?id=ventures.al.mashinal&hl=az&gl=US"-->
+      <!--                 >-->
+      <!--                   <img src="/img/google-play.svg" class="google-play-img" />-->
+      <!--                 </a>-->
+      <!--               </div>-->
+      <!--               <div class="top-promotion-row-item">-->
+      <!--                 <img src="/img/mobile-app.png" class="mobile-app" />-->
+      <!--                 <a-->
+      <!--                   style="margin-left: 10px; cursor: pointer;"-->
+      <!--                   @click.prevent="closePromotion"-->
+      <!--                 >-->
+      <!--                   <icon style="color: #081a3e;" name="cross" />-->
+      <!--                   &lt;!&ndash; <inline-svg src="/icons/cross.svg" height="14" style="color: #081a3e;"/> &ndash;&gt;-->
+      <!--                 </a>-->
+      <!--               </div>-->
+      <!--             </div>-->
+      <!--           </div>-->
+      <!--         </div>-->
+      <!--       </div>-->
 
       <header :class="['header-menu d-none d-lg-block', { 'no-border-radius': hoverMenu }]">
          <!-- topbar -->
@@ -64,7 +64,7 @@
                </nuxt-link>
 
                <div class="call-center">
-                  <inline-svg :src="'/icons/subtract.svg'" />
+                  <inline-svg :src="'/icons/subtract.svg'"/>
                   <span>*8787</span>
                </div>
 
@@ -73,7 +73,7 @@
                      <li v-for="menu in topbarMenus" :key="menu.title">
                         <nuxt-link :to="$localePath(menu.route)">
                            <icon
-                              v-if="!['favorites','templates'].includes(menu.title)"
+                              v-if="!['comparisons', 'favorites', 'templates'].includes(menu.title)"
                               :name="menu.icon"
                               v-b-tooltip="$t('tooltip_' + menu.title)"
                            />
@@ -91,11 +91,11 @@
                            </template>
 
                            <template v-else-if="menu.title === 'favorites' && notViewedFavorites > 0">
-                              <span class="badge-counter" style="top: -3px;right:-12px;">{{ notViewedFavorites }}</span>
+                              <span class="badge-counter" style="top: -3px; right:-12px;">{{ notViewedFavorites }}</span>
                            </template>
 
                            <template v-else-if="menu.title === 'templates' && notViewedSavedSearch > 0">
-                              <span class="badge-counter" style="top: -3px;right:-12px;">{{ notViewedSavedSearch }}</span>
+                              <span class="badge-counter" style="top: -3px; right:-12px;">{{notViewedSavedSearch }}</span>
                            </template>
                         </nuxt-link>
                      </li>
@@ -103,7 +103,7 @@
 
                   <nuxt-link custom :to="getUserSettingsLink" v-slot="{ navigate }">
                      <div class="user-menu btn rotatable_hover" @click="navigate">
-                        <icon name="garage-tab" v-if="loggedIn" />
+                        <icon name="garage-tab" v-if="loggedIn"/>
 
                         <p v-if="loggedIn" class="user-menu__title mb-0 pr-3">{{ $t('profile') }}</p>
 
@@ -121,7 +121,7 @@
                                  :to="getUserSettingsLink"
                                  class="d-inline-flex align-items-center align-top"
                               >
-                                 <img :src="getUserAvatar" :alt="user.full_name" />
+                                 <img :src="getUserAvatar" :alt="user.full_name"/>
 
                                  <span class="text-truncate">{{ user.full_name }}</span>
                               </nuxt-link>
@@ -141,7 +141,9 @@
                                     </li>
 
                                     <li v-else>
-                                       <a href="javascript:void(0);" @click="logoutToParent">{{ $t('logout_to_parent') }}</a>
+                                       <a href="javascript:void(0);" @click="logoutToParent">{{
+                                             $t('logout_to_parent')
+                                          }}</a>
                                     </li>
                                  </template>
 
@@ -158,7 +160,7 @@
                      </div>
                   </nuxt-link>
 
-                  <LanguageChange />
+                  <LanguageChange/>
 
                   <!--                        <div class="langs-menu btn btn&#45;&#45;dark-white-outline">-->
                   <!--                            <span class="langs-menu__selected">{{ locale }}</span>-->
@@ -177,7 +179,7 @@
                   <!--                            </div>-->
                   <!--                        </div>-->
 
-                  <theme-switch />
+                  <theme-switch/>
                </nav>
             </div>
          </div>
@@ -218,9 +220,9 @@
 
                                  {{ $t(menu.title) }}
 
-                                 <icon name="chevron-down" v-if="menu.children" />
+                                 <icon name="chevron-down" v-if="menu.children"/>
 
-                                 <IconNovelties v-if="menu.icon === 'external-tab'" />
+                                 <IconNovelties v-if="menu.with_badge" />
 
 <!--                                 <span style="position: absolute; top: 3px; right: 0; display: flex;">-->
 <!--                                    <inline-svg style="width: 31px;" v-if="menu.icon === 'external-tab'" src="/img/new_badge.svg"/>-->
@@ -249,7 +251,7 @@
                                                 >
                                                    {{ $t(category.title) }}
 
-                                                   <icon name="chevron-right" />
+                                                   <icon name="chevron-right"/>
 
                                                    <!-- <inline-svg src="/icons/chevron-right.svg" :height="14" /> -->
                                                 </nuxt-link>
@@ -275,7 +277,7 @@
                                                       src="/img/camera360.svg"
                                                    />
 
-                                                   <icon v-else :name="submenu.icon" />
+                                                   <icon v-else :name="submenu.icon"/>
 
                                                    {{ $t(submenu.title) }}
                                                 </nuxt-link>
@@ -297,8 +299,9 @@
                                  :to="$localePath('/sell')"
                                  @click.native="handleBtnClick('sell')"
                               >
-<!--                                 <icon name="plus-circle"/>-->
-                                 {{ $t('to_sell') }}
+                                 {{ $t('new_announce') }}
+
+                                 <icon name="plus" />
                               </nuxt-link>
                            </div>
                         </div>
@@ -312,131 +315,131 @@
 </template>
 
 <script>
-   import { mapGetters, mapActions } from 'vuex'
-   import { MenusDataMixin } from '~/mixins/menus-data'
-   import { UserDataMixin } from '~/mixins/user-data'
+import {mapGetters, mapActions} from 'vuex'
+import {MenusDataMixin} from '~/mixins/menus-data'
+import {UserDataMixin} from '~/mixins/user-data'
 
-   import ThemeSwitch from '~/components/elements/ThemeSwitch'
-   import SiteBanner from "~/components/banners/SiteBanner";
-   import CustomDropdown from "~/components/elements/CustomDropdown.vue";
-   import IconNovelties from "~/components/elements/IconNovelties.vue";
-   import LanguageChange from "~/components/elements/languageChange.vue";
+import ThemeSwitch from '~/components/elements/ThemeSwitch'
+import SiteBanner from "~/components/banners/SiteBanner";
+import CustomDropdown from "~/components/elements/CustomDropdown.vue";
+import IconNovelties from "~/components/elements/IconNovelties.vue";
+import LanguageChange from "~/components/elements/languageChange.vue";
 
-   export default {
-      mixins: [MenusDataMixin, UserDataMixin],
+export default {
+   mixins: [MenusDataMixin, UserDataMixin],
 
-      components: {
-         LanguageChange,
-         IconNovelties,
-         CustomDropdown,
-         SiteBanner,
-         ThemeSwitch,
+   components: {
+      LanguageChange,
+      IconNovelties,
+      CustomDropdown,
+      SiteBanner,
+      ThemeSwitch,
+   },
+
+   data() {
+      return {
+         close: false,
+         hoverMenu: false,
+         activeCategory: 0,
+         topAdsVisible: true,
+         closeDropdownMenu: false,
+      }
+   },
+
+   methods: {
+      ...mapActions(['changeLocale']),
+
+      closePromotion() {
+         this.$cookies.set('smartbanner_exited', 1)
+         this.close = true
+         this.$store.commit('closeSmartBanner', false)
       },
 
-      data() {
-         return {
-            close: false,
-            hoverMenu: false,
-            activeCategory: 0,
-            topAdsVisible: true,
-            closeDropdownMenu: false,
+      handleBtnClick(name) {
+         if (this.routeName === name) {
+            this.scrollTo(9, 9)
          }
       },
+   },
 
-      methods: {
-         ...mapActions(['changeLocale']),
+   computed: {
+      ...mapGetters([
+         'notViewedFavorites',
+         'notViewedSavedSearch',
+         'homePageSliders',
+      ])
+   },
 
-         closePromotion() {
-            this.$cookies.set('smartbanner_exited', 1)
-            this.close = true
-            this.$store.commit('closeSmartBanner', false)
-         },
-
-         handleBtnClick(name) {
-            if (this.routeName === name) {
-               this.scrollTo(9, 9)
-            }
-         },
-      },
-
-      computed: {
-         ...mapGetters([
-            'notViewedFavorites',
-            'notViewedSavedSearch',
-            'homePageSliders',
-         ])
-      },
-
-      watch: {
-         $route(to, from) {
-            this.closeDropdownMenu = true
-            setTimeout(() => {
-               this.closeDropdownMenu = false
-            }, 1000)
-         }
+   watch: {
+      $route(to, from) {
+         this.closeDropdownMenu = true
+         setTimeout(() => {
+            this.closeDropdownMenu = false
+         }, 1000)
       }
    }
+}
 </script>
 
 <style lang="scss" scoped>
-   .resize-icon {
-      i {
-         font-size: 35px !important;
-      }
+.resize-icon {
+   i {
+      font-size: 35px !important;
    }
+}
 
-   .external_salon_hover:hover, .external_salon_hover.exact-active {
-      svg, path {
-         fill: #F81734 !important;
-      }
+.external_salon_hover:hover, .external_salon_hover.exact-active {
+   svg, path {
+      fill: #F81734 !important;
    }
+}
 
-   .topbar-nav {
-      position: relative;
+.topbar-nav {
+   position: relative;
 
-      &__menu {
-         display: flex;
-         align-items: center;
-         margin-bottom: 0;
-         justify-content: space-between;
-         padding-left: 0;
+   &__menu {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0;
+      justify-content: space-between;
+      padding-left: 0;
 
-         li {
-            list-style-type: none;
+      li {
+         list-style-type: none;
 
-            &:not(:first-child) {
-               margin-left: 40px;
+         &:not(:first-child) {
+            margin-left: 40px;
+         }
+
+         a {
+            //width: 24px;
+            //height: 24px;
+            position: relative;
+
+            i {
+               color: #fff;
+               font-size: 24px;
             }
 
-            a {
-               //width: 24px;
+            //svg {
                //height: 24px;
-               position: relative;
+            //}
 
-               i {
-                  color: #fff;
-                  font-size: 24px;
-               }
-
-               svg {
-                  height: 24px;
-               }
-
-               span {
-                  position: absolute;
-                  top: -14px;
-                  right: -9px;
-               }
+            span {
+               position: absolute;
+               top: -14px;
+               right: -9px;
             }
          }
       }
-
-      .languageChange {
-         margin-right: 15px;
-         //position: absolute;
-         //top: 0;
-         //right: 50px;
-         //margin-left: 10px;
-      }
    }
+
+   .languageChange {
+      margin-right: 15px;
+      //position: absolute;
+      //top: 0;
+      //right: 50px;
+      //margin-left: 10px;
+   }
+}
 </style>

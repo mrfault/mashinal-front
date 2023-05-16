@@ -19,20 +19,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.languageChange {
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   width: 40px;
-   height: 40px;
-   border-radius: 4px;
-   border: 1px solid #9AA4B2;
-   background-color: #081A3E;
-   cursor: pointer;
-   span {
-      font-weight: 500;
-      font-size: 16px;
-      color: #FFFFFF;
+   .languageChange {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 46px;
+      height: 40px;
+      border-radius: 4px;
+      border: 1px solid #9AA4B2;
+      cursor: pointer;
+
+      span {
+         font-weight: 500;
+         font-size: 16px;
+         color: #FFFFFF;
+      }
    }
-}
 </style>

@@ -2,7 +2,7 @@
    position: sticky;
    z-index: 20;
    top: 0;
-   margin-bottom: 108px;
+   margin-bottom: 140px;
 
    .topbar {
       display: flex;
@@ -346,14 +346,14 @@
          }
       }
 
-      .btn {
-         height: 44px;
-         font-size: 16px;
-         line-height: 20px;
-         color: $white;
-         background-color: #32B878;
-         //backdrop-filter: blur(10px);
-      }
+      //.btn {
+      //   height: 44px;
+      //   font-size: 16px;
+      //   line-height: 20px;
+      //   color: $white;
+      //   background-color: #32B878;
+      //   //backdrop-filter: blur(10px);
+      //}
    }
 }
 

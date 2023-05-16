@@ -42,27 +42,28 @@ export const MenusDataMixin = {
          return [
             {
                icon: 'car-manat',
-               title: 'announcements',
+               title: 'dealer_all_announcements',
                route: '/cars',
-               children: [],
-               categories: announcementCategories
+               // children: [],
+               // categories: announcementCategories
             },
-            {icon: 'salons-tab', title: 'salons', route: '/salons'},
-            {icon: 'shops-tab', title: 'shops', route: '/parts/shops'},
-            {icon: 'catalog-tab', title: 'autocatalog', route: '/catalog'},
-            {icon: 'globe', title: 'eservices', route: '/e-services'},
-            {icon: 'external-tab', title: 'external-salons', route: '/external-salons', with_badge: true},
-            {title: 'registration_marks', route: '/registration-marks', with_badge: true}
+            { icon: 'salons-tab', title: 'auto_salons', route: '/salons' },
+            { icon: '', title: 'parts', route: '/parts' },
+            // {icon: 'shops-tab', title: 'shops', route: '/parts/shops'},
+            // {icon: 'catalog-tab', title: 'autocatalog', route: '/catalog'},
+            // {icon: 'external-tab', title: 'external-salons', route: '/external-salons', with_badge: true},
+            { title: 'registration_marks', route: '/registration-marks', with_badge: true },
+            { icon: 'globe', title: 'eservices', route: '/e-services' }
          ]
       },
 
       topbarMenus() {
          return [
-            //{ title: 'comparisons', route: '/comparison', icon: 'compare' },
-            {title: 'favorites', route: '/profile/favorites', icon: 'favorite.svg'},
-            {title: 'templates', route: '/profile/templates', icon: 'receipt-search.svg'},
-            {title: 'messages', route: '/profile/messages', icon: 'chat'},
-            {title: 'notifications', route: '/notifications', icon: 'bell'},
+            { title: 'comparisons', route: '/comparison', icon: 'compare-icon-new.svg' },
+            { title: 'favorites', route: '/profile/favorites', icon: 'favorite.svg' },
+            { title: 'templates', route: '/profile/templates', icon: 'receipt-search.svg' },
+            { title: 'messages', route: '/profile/messages', icon: 'chat' },
+            { title: 'notifications', route: '/notifications', icon: 'bell' }
          ];
       },
 

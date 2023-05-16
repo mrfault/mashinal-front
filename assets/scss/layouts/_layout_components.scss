@@ -145,8 +145,11 @@
    cursor: pointer;
    overflow: hidden;
    position: relative;
-   width: 40px;
+   width: 46px;
    height: 40px;
+
+   border-radius: 4px;
+   border: 1px solid #9AA4B2;
 
    &.floating {
       position: fixed;

@@ -2297,6 +2297,7 @@ export default {
    electric: "Elektrik",
    search_and_save: "Axtar və yadda saxla",
    search_result: "Axtarış nəticələri",
+   tooltip_comparisons: "Müqayisələr ",
    tooltip_favorites: "Seçilmişlər ",
    tooltip_templates: "Axtarış şablonları ",
    tooltip_messages: "Mesajlar  ",

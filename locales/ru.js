@@ -2216,6 +2216,7 @@ export default {
    "notification_not_found": "Нет уведомлений.",
    "search_and_save": "Искать и сохранить",
    "search_result": "Результаты поиска",
+   "tooltip_comparisons": "Сравнения ",
    "tooltip_favorites": "Избранные ",
    "tooltip_templates": "Сохраненные поиски",
    "tooltip_messages": "Сообщения   ",
