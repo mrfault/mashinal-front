@@ -3,13 +3,13 @@
       <div class="container">
          <ComeBack :text="$t('statistics')" v-if="isMobileBreakpoint" />
 
-         <breadcrumbs :crumbs="crumbs"/>
+         <breadcrumbs :crumbs="crumbs" />
 
-<!--         <div class="card mb-2 mb-lg-3" v-if="isMobileBreakpoint">-->
-<!--            <h2 class="title-with-line mb-n1 mt-n1">-->
-<!--               <span>{{ $t('statistics') }}</span>-->
-<!--            </h2>-->
-<!--         </div>-->
+         <!--         <div class="card mb-2 mb-lg-3" v-if="isMobileBreakpoint">-->
+         <!--            <h2 class="title-with-line mb-n1 mt-n1">-->
+         <!--               <span>{{ $t('statistics') }}</span>-->
+         <!--            </h2>-->
+         <!--         </div>-->
 
          <div class="pages-dashboard-statistics__inner">
             <div class="divider">
@@ -23,7 +23,7 @@
                </div>
 
                <div class="pages-dashboard-statistics__content">
-                  <inline-svg :src="'/icons/phone-3.svg'" />
+                  <inline-svg :src="'/icons/phone-3.svg'"/>
 
                   <h4 class="pages-dashboard-statistics__content-text">{{ $t('total_calls') }}</h4>
 
@@ -87,24 +87,27 @@
       },
 
       data() {
-        return {
-           sorting: 2,
-           radioOptions: [
-              { key: 1, name: this.$t('sorting_view') },
-              { key: 2, name: this.$t('sorting_call') }
-           ]
-        }
-      },    async asyncData({store, route, app}) {
-      await store.dispatch('getAnnouncementStats', { id: app.$getDashboardId(route.params.type) });},
+         return {
+            sorting: 1,
+            radioOptions: [
+               {key: 1, name: this.$t('sorting_view')},
+               {key: 2, name: this.$t('sorting_call')}
+            ]
+         }
+      },
+
+      async asyncData({store, route, app}) {
+         await store.dispatch('getAnnouncementStats', {id: app.$getDashboardId(route.params.type)});
+      },
 
       computed: {
          ...mapGetters([]),
 
          crumbs() {
-           return [
-             { name: this.$t('dashboard'), route: '/dashboard/' + this.$route.params.type },
-             { name: this.$t('statistics') }
-           ]
+            return [
+               {name: this.$t('dashboard'), route: '/dashboard/' + this.$route.params.type},
+               {name: this.$t('statistics')}
+            ]
          },
 
          mostViewedCount() {
@@ -115,11 +118,13 @@
 
             return count;
          }
-    },
-    methods: {
-      ...mapActions([]),
-    },
-watch: {
+      },
+
+      methods: {
+         ...mapActions([]),
+      },
+
+      watch: {
          sorting() {
             this.$store.dispatch('getAnnouncementStats', {
                id: this.$getDashboardId(this.$route.params.type),
