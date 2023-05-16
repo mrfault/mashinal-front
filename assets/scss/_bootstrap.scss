@@ -6,15 +6,16 @@ $container-max-widths: (
   sm: 540px,
   md: 740px,
   lg: 960px,
-  xl: 1250px
+  xl: 1134px
+  //xl: 1250px
 );
 
 $grid-breakpoints: (
   xs: 0,
   sm: 540px,
   md: 768px,
-  lg: 1025px,
-  xl: 1250px
+  lg: 1134px,
+  //xl: 1250px
 );
 
 $grid-gutter-width: 20px;
