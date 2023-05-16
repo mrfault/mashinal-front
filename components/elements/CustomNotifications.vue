@@ -44,13 +44,13 @@
             </div>
 
             <div class="terminal-section" v-if="$readNumber(user.balance) > 0">
-               {{ $t('package_price') }}: <span>{{ unpaidAgreement?.price * duration }} AZN</span>
+               {{ $t('package_price') }}: <span>{{ item?.price }} AZN</span>
             </div>
          </div>
 
          <hr v-if="$readNumber(user.balance) < 1" />
          <div class="terminal-section" v-if="$readNumber(user.balance) < 1">
-            {{ $t('package_price') }} {{ unpaidAgreement?.price * duration }} AZN
+            {{ $t('package_price') }} {{ item?.price }} AZN
          </div>
 
          <div class="modal-sticky-bottom">
@@ -83,7 +83,7 @@
             openModal: false,
             pending: false,
             payment_type: 'card',
-            duration: ''
+            // duration: 1
          }
       },
 
@@ -93,10 +93,11 @@
 
             let api = '/payment/package',
                data = {
-                  package_id: this.unpaidAgreement.package.id,
+                  package_id: this.item.package.id,
                   payment_type: this.payment_type,
                   name: this.user?.autosalon?.name,
-                  days_type: this.unpaidAgreement.days_type
+                  days_type: this.item.days_type,
+                  agreement_id: this.item.id
                };
 
             try {
@@ -152,7 +153,7 @@
             default: 'Subtitle'
          },
 
-         unpaidAgreement: {
+         item: {
             type: Object,
             default() { return {} }
          }

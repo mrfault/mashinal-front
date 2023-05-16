@@ -15,7 +15,7 @@
                   end_date: $moment(notification.end_date).format('DD.MM.YYYY'),
                   price: notification.price
                })"
-            :unpaidAgreement="notification"
+            :item="notification"
             v-if="!!unpaidAgreement"
          />
 
