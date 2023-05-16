@@ -42,7 +42,7 @@
       <!--         </div>-->
       <!--       </div>-->
 
-      <header :class="['header-menu d-none d-lg-block', { 'no-border-radius': hoverMenu }]">
+      <header :class="['header-menu container d-none d-lg-block', { 'no-border-radius': hoverMenu }]">
          <!-- topbar -->
          <div class="topbar">
             <div class="container">
@@ -224,7 +224,7 @@
 
                                  <icon name="chevron-down" v-if="menu.children"/>
 
-                                 <IconNovelties v-if="menu.icon === 'external-tab'"/>
+                                 <IconNovelties v-if="menu.with_badge" />
 
                                  <!--                                 <span style="position: absolute; top: 3px; right: 0; display: flex;">-->
                                  <!--                                    <inline-svg style="width: 31px;" v-if="menu.icon === 'external-tab'" src="/img/new_badge.svg"/>-->

@@ -263,10 +263,11 @@
 
             let api = '/payment/package',
                data = {
-                  package_id: this.findUnpaid.package.id,
+                  package_id: this.selectedPackage.package.id,
                   payment_type: this.payment_type,
                   name: this.user.autosalon.name,
-                  days_type: this.duration
+                  days_type: this.duration,
+                  agreement_id: this.selectedPackage.id
                };
 
             try {
