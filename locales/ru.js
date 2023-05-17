@@ -1846,6 +1846,7 @@ export default {
    "Third rear headset": "Третий задний подголовник",
    "third_sticker": "Третий стикер",
    "this_announce_inactive": "Объявление неактивное",
+   "announce_inactive": "Неактивно",
    "this_car_already_added_last_90_days_for_new_added_need_payment": "Эта машина уже была добавлена на сайте за последние 90 дней",
    "this_package_has_no_options": "У данной комплектации нет ни одной опции",
    "this_will_increase_customer_confidence_and_make_your_ads_more_attractive": "Это повысит доверие покупателей и сделает ваши объявления привлекательнее.",

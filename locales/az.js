@@ -1897,6 +1897,7 @@ export default {
    "Third rear headset": "Üçüncü arxa başlıq",
    third_sticker: "Üçüncü stiker",
    this_announce_inactive: "Bu elan aktiv deyil",
+   announce_inactive: "Aktiv deyil",
    this_car_already_added_last_90_days_for_new_added_need_payment:
       "Bu avtomobil artıq son 90 gün ərzində əlavə edilib",
    this_package_has_no_options: "Bu komplektasiyada heç bir opsiya mövcud deyil",

@@ -100,7 +100,7 @@
                   type: 5,
                   title: this.$t('balans'),
                   description: this.$t('wallet_balance') + ':',
-                  value: this.$auth.user.balance + ' ALManat',
+                  value: this.$auth.user.balance + ' AZN',
                   icon: 'wallet',
                   url: '/profile/balance',
                   hasAction: true,
