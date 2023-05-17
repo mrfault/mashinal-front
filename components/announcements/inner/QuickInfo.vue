@@ -73,7 +73,7 @@
 
             <address v-if="announcement.status != 3">{{ getAddress }}</address>
 
-            <span class="text-red" v-else>{{ $t('sold') }}</span>
+            <span class="text-red" v-else>{{ $t('announce_inactive') }}</span>
 
             <nuxt-link
                :to="contact.link"
