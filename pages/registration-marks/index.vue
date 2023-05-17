@@ -21,8 +21,8 @@
 
                <div class="registrationMarks__filters">
                   <div class="divider">
+<!--                     :className="'new'"-->
                      <form-select
-                        :className="'new'"
                         :label="'01 - Abşeron'"
                         :options="getRegionNumbers"
                         :clearPlaceholder="true"
@@ -30,8 +30,8 @@
                         has-search
                      />
 
+<!--                     :className="'new'"-->
                      <form-select
-                        :className="'new'"
                         :label="'A'"
                         :options="numbers"
                         :clearPlaceholder="true"
@@ -39,8 +39,8 @@
                         has-search
                      />
 
+<!--                     :className="'new'"-->
                      <form-select
-                        :className="'new'"
                         :label="'A'"
                         :options="numbers"
                         :clearPlaceholder="true"
@@ -73,8 +73,8 @@
                   </div>
 
                   <div class="divider">
+<!--                     :className="'new'"-->
                      <form-select
-                        :className="'new'"
                         :label="$t('currency')"
                         :options="currency"
                         :clearPlaceholder="true"
@@ -82,8 +82,8 @@
                         has-search
                      />
 
+<!--                     :className="'new'"-->
                      <form-select
-                        :className="'new'"
                         :label="$t('city')"
                         :options="cities.regions"
                         :clearPlaceholder="true"
@@ -103,8 +103,8 @@
                   <template #head>
                      <h4 class="registrationMarksGrid__title">{{ $t('search_result') }}</h4>
 
+<!--                     :className="'new bg'"-->
                      <form-select
-                        :className="'new bg'"
                         :label="$t('show_cheap_first')"
                         :options="sortItems"
                         :clearPlaceholder="true"
@@ -374,9 +374,9 @@
          display: flex;
          align-items: center;
          width: 100%;
-         padding: 31px 32px;
-         border-radius: 8px;
-         border: 1px solid #9AA4B2;
+         padding: 24px;
+         border-radius: 12px;
+         //border: 1px solid #9AA4B2;
          background-color: #FFFFFF;
          margin: 40px 0;
 
@@ -386,21 +386,21 @@
             justify-content: space-between;
 
             &:not(:first-child) {
-               margin-left: 16px;
+               margin-left: 20px;
             }
 
             .form-group {
                &:not(:first-child) {
-                  margin-left: 16px;
+                  margin-left: 20px;
                }
             }
 
             &:first-child {
                .form-group {
-                  width: 80px;
+                  width: 72px;
 
                   &:first-child {
-                     width: 224px;
+                     width: 160px;
                   }
                }
             }
@@ -413,10 +413,10 @@
 
             &:last-child {
                .form-group {
-                  width: 122px;
+                  width: 128px;
 
                   &:last-child {
-                     width: 198px;
+                     width: 152px;
                   }
                }
             }
@@ -424,20 +424,20 @@
       }
 
       &.index {
-         margin-top: 20px;
-         .select-menu_label {
-            padding: 26px 15px;
-         }
+         //margin-top: 20px;
+         //.select-menu_label {
+            //padding: 26px 15px;
+         //}
 
-         .text-input {
-            input {
-               height: 52px;
-                border-radius: 6px;
-               &::placeholder {
-                  color: #697586;
-               }
-            }
-         }
+         //.text-input {
+         //   input {
+         //      height: 52px;
+         //       border-radius: 6px;
+         //      &::placeholder {
+         //         color: #697586;
+         //      }
+         //   }
+         //}
 
          .pagination {
             li {

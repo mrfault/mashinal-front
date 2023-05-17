@@ -118,10 +118,10 @@ input::-webkit-inner-spin-button {
    input,
    textarea {
       width: 100%;
-      border: 0;
-      background-color: $greyish-blue-2;
+      background-color: $white;
       padding: 9px 15px 7px;
-      border-radius: 4px;
+      border-radius: 8px;
+      border: 1px solid #CDD5DF;
 
       &.invalid {
          &:not(:focus) {
@@ -159,7 +159,7 @@ input::-webkit-inner-spin-button {
    }
 
    input {
-      height: 34px;
+      height: 52px;
       overflow: hidden;
       text-overflow: ellipsis;
 
@@ -481,13 +481,16 @@ input::-webkit-inner-spin-button {
       user-select: none;
       position: relative;
 
-      //&.selected,
-      //&.active {
-      //   color: $dark-blue-2;
-      //}
+      .title {
+         position: absolute;
+         top: 0;
+         left: 0;
+      }
 
-      &:hover {
-         border-color: #84ADFF;
+      &:not(.disabled) {
+         &:hover {
+            border-color: #84ADFF;
+         }
       }
 
       &.active {
@@ -495,6 +498,10 @@ input::-webkit-inner-spin-button {
          border-bottom-left-radius: unset;
          border-bottom-right-radius: unset;
          border-color: #155EEF;
+
+         &:hover {
+            border-color: #155EEF;
+         }
       }
 
       &.active .icon-chevron-down {
