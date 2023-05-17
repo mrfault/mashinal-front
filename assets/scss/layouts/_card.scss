@@ -1,8 +1,8 @@
 .card {
   position: relative;
   background-color: $white;
-  border-radius: 4px;
-  padding: 25px;
+  border-radius: 12px;
+  padding: 24px;
   transition: box-shadow 0.2s ease-out;
 
   &.no-bg {
