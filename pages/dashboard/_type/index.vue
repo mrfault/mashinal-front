@@ -251,7 +251,7 @@
                   image: 'calendar',
                   hasAction: true,
                   isContract: true,
-                  contractName: package_name,
+                  contractName: this.myAnnouncementStats.package.name[this.locale],
                   contractEndDate: this.myAnnouncementStats.agreement_end_date
                },
             ]
