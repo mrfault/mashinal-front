@@ -11,7 +11,10 @@
                   :key="item.id"
                   class="swiper-slide"
                >
-                  <div :class="['customPackages__item', {'popular' : item.is_popular}]">
+                  <div
+                     :class="['customPackages__item', {'popular' : item.is_popular, 'active' : activePackage === item.id}]"
+                     @click="activePackage = item.id"
+                  >
                      <div class="customPackages__hat" v-if="item.is_popular">{{ $t('most_popular') }}</div>
 
                      <h5 class="customPackages__title">{{ item.name }}</h5>
@@ -28,11 +31,12 @@
                            <inline-svg :src="'/icons/close2.svg'" v-else />
 
                            <span>{{ info.text }}</span>
+<!--                           <span>{{ item.id }}</span>-->
                         </li>
                      </ul>
 
                      <button
-                        :class="['btn', {'disabled' : disableBtn && disableBtn.id !== item.id}]"
+                        class="btn"
                         @click="nextStep(item)"
                      >{{ $t('join_package', { package: item.name }) }}</button>
                   </div>
@@ -47,6 +51,7 @@
    export default {
       data() {
          return {
+            activePackage: 17,
             swiperOps: {
                init: false,
                slidesPerView: 1.3,
@@ -80,10 +85,6 @@
          packages: {
             type: Array,
             default() { return [] }
-         },
-
-         disableBtn: {
-            required: false
          }
       },
 
@@ -108,15 +109,28 @@
          background-color: #FFFFFF;
 
          &.popular {
-            border-color: #246EB2;
-
             .btn {
                color: #FFFFFF;
                background-color: #29A53E;
             }
          }
 
+         &.active {
+            border-color: #246EB2;
+
+            .btn {
+               display: block;
+            }
+         }
+
+         &:not(.active) {
+            .customPackages__hat {
+               display: none;
+            }
+         }
+
          .btn {
+            display: none;
             position: absolute;
             left: 20px;
             bottom: 36px;
@@ -143,7 +157,7 @@
          position: absolute;
          top: -25px;
          left: -1px;
-         width: 101%;
+         width: 100.6%;
          height: 36px;
          font-weight: 500;
          font-size: 16px;
@@ -213,6 +227,47 @@
          margin: 0;
          padding: 0;
          list-style: none;
+      }
+   }
+
+   .dark-mode {
+      .customPackages {
+         &__item {
+            color: #FFFFFF;
+            background-color: #242426;
+
+            &:not(.popular) {
+               border-color: #242426;
+
+               .btn {
+                  color: #a5fc65;
+               }
+            }
+         }
+
+         &__title,
+         &__subtitle {
+            color: #FFFFFF;
+
+            span {
+               color: silver;
+               opacity: 1;
+            }
+         }
+
+         &__info {
+            &-item {
+               color: #FFFFFF;
+
+               &.opacity {
+                  svg {
+                     path {
+                        stroke: #FFFFFF;
+                     }
+                  }
+               }
+            }
+         }
       }
    }
 </style>

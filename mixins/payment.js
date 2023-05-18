@@ -61,13 +61,14 @@ export const PaymentMixin = {
               if (data.payment.operation_key === 'attorney_pay') {
                 return this.$router.push({path: this.$localePath('/garage'), query: { tab: 'attorney-list' }})
               }
-              if (this.loggedIn)
-                await this.$auth.fetchUser();
+
+              if (this.loggedIn) await this.$auth.fetchUser();
+
               if (!route) {
                 await this.$nuxt.refresh();
                 this.callUpdatePaidStatus(paid, text);
               }
-
+               localStorage.removeItem('selectedPackage');
             } else {
               this.callUpdatePaidStatus(paid);
             }
@@ -82,8 +83,7 @@ export const PaymentMixin = {
                      this.callUpdatePaidStatus(paid, text);
                      stopListening();
                   });
-               }
-               else {
+               } else {
                   this.$store.dispatch('fetchResetForm', false);
                   this.callUpdatePaidStatus(paid, text);
                   stopListening();
@@ -91,6 +91,7 @@ export const PaymentMixin = {
             } else {
               stopListening();
             }
+
             if (data.payment.operation_key=='offer_payment_key' && paid) {
               setTimeout(() => {
                 this.$router.push('/offer');
@@ -101,8 +102,6 @@ export const PaymentMixin = {
       }
       else {
         // redirect to kapital bank page
-        //  console.log(this.$route.path)
-        //  console.log(this.$route.path.split('/').includes('ru'))
         this.$nuxt.$loading.start();
 
         setTimeout(() => this.$nuxt.$loading.finish(), 500);

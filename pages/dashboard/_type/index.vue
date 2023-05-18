@@ -163,6 +163,15 @@
             ]
          },
 
+         totalBalance() {
+            return this.$sum(
+               this.user.balance,
+               this.user.autosalon?.balance || 0,
+               this.user.part_salon?.balance || 0,
+               this.user.external_salon?.balance || 0,
+            )
+         },
+
          cards() {
             let type = Number(this.$route.params.type)
             var balance;
@@ -208,7 +217,7 @@
                   actionName: `${this.$t('replenish')}`,
                   actionLink: '/profile/balance',
                   description: `${this.$t('balance_of_wallet')}`,
-                  value: `${balance} ALManat`,
+                  value: `${this.totalBalance} AZN`,
                },
                {
                   key: 'statistics',
@@ -251,7 +260,7 @@
                   image: 'calendar',
                   hasAction: true,
                   isContract: true,
-                  contractName: package_name,
+                  contractName: this.myAnnouncementStats.package.name[this.locale],
                   contractEndDate: this.myAnnouncementStats.agreement_end_date
                },
             ]

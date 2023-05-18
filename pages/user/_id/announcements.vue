@@ -21,6 +21,11 @@
                   :announcements="userAnnouncements"
                   escape-duplicates
                />
+
+               <no-results
+                  v-if="!userAnnouncements.length"
+                  :text="$t('no_announcements')"
+               ></no-results>
             </div>
 
             <div class="tabContent__item" v-if="activeTab === 2">
@@ -57,6 +62,12 @@
 
    export default {
       name: 'pages-user-id-announcements',
+
+      head() {
+         return this.$headMeta({
+            title: this.$t('all_announcements_of_user', { name: this.userFullName })
+         });
+      },
 
       nuxtI18n: {
          paths: {

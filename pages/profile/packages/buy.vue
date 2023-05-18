@@ -37,10 +37,7 @@
                      v-model="duration"
                   />
 
-                  <p class="myPackagesBuy__duration-description">
-                     “Ödəniş et” düyməsini sıxmaqla siz <span>Mashin.al istifadəçi razılaşmasını və
-                     ofertasını</span> qəbul etdiyinizi təsdiqləmiş olursunuz.
-                  </p>
+                  <p class="myPackagesBuy__duration-description" v-html="$t('my_packages_duration')"></p>
                </div>
 
                <div class="myPackagesBuy__salon myPackagesBuy__cart">
@@ -96,34 +93,6 @@
             :modal-class="'larger packages'"
             @close="openModal = false"
          >
-<!--            <div class="radio-items">-->
-<!--               <label class="radio-container">-->
-<!--                  300.00 <inline-svg :src="'/icons/currency.svg'" />-->
-<!--                  <input type="radio" checked="checked" name="package" @change="price = 300">-->
-<!--                  <span class="checkmark"></span>-->
-<!--               </label>-->
-
-<!--               <label class="radio-container">-->
-<!--                  500.00 <inline-svg :src="'/icons/currency.svg'" />-->
-<!--                  <input type="radio" name="package" @change="price = 500">-->
-<!--                  <span class="checkmark"></span>-->
-<!--               </label>-->
-
-<!--               <label class="radio-container">-->
-<!--                  1000.00 <inline-svg :src="'/icons/currency.svg'" />-->
-<!--                  <input type="radio" name="package" @change="price = 1000">-->
-<!--                  <span class="checkmark"></span>-->
-<!--               </label>-->
-
-<!--               <form-text-input-->
-<!--                  v-model="price"-->
-<!--                  :placeholder="'Məbləğ'"-->
-<!--                  type="text"-->
-<!--               />-->
-<!--            </div>-->
-
-<!--            <hr>-->
-
             <h4 class="paymentMethods mb-3">{{ $t('payment_method') }}</h4>
 
             <label class="radio-container">
@@ -132,22 +101,27 @@
                <span class="checkmark"></span>
             </label>
 
-            <label class="radio-container" v-if="this.$auth.loggedIn && totalBalance > 0">
+            <label class="radio-container" v-if="this.$auth.loggedIn && $readNumber(user.balance) > 0">
                {{ $t('balans') }}
                <input type="radio" name="payment_type" @change="payment_type = 'balance'">
                <span class="checkmark"></span>
             </label>
 
-            <hr v-if="totalBalance > 0" />
+            <hr v-if="$readNumber(user.balance) > 0" />
 
-            <div class="terminal-section" v-if="totalBalance > 0">
-               {{ $t('balans') }}: <span style="margin-right: 20px;">{{ totalBalance }}</span>
-               {{ $t('package_price') }}: {{ selectedPackage.price * duration }} AZN
+            <div class="wrapp">
+               <div class="terminal-section" v-if="$readNumber(user.balance) > 0">
+                  {{ $t('balans') }}: <span style="margin-right: 20px;">{{ $readNumber(user.balance) }}</span>
+               </div>
+
+               <div class="terminal-section" v-if="$readNumber(user.balance) > 0">
+                  {{ $t('package_price') }}: <span>{{ selectedPackage?.price * duration }} AZN</span>
+               </div>
             </div>
 
-            <hr v-if="totalBalance < 1" />
-            <div class="terminal-section" v-if="totalBalance < 1">
-               {{ $t('package_price') }} {{ selectedPackage.price * duration }} AZN
+            <hr v-if="$readNumber(user.balance) < 1" />
+            <div class="terminal-section" v-if="$readNumber(user.balance) < 1">
+               {{ $t('package_price') }} {{ selectedPackage?.price * duration }} AZN
             </div>
 
             <div class="modal-sticky-bottom">
@@ -176,9 +150,7 @@
    import ComeBack from "~/components/elements/ComeBack.vue";
 
    export default {
-      components: {
-         ComeBack
-      },
+      components: { ComeBack },
 
       head() {
          return this.$headMeta({
@@ -230,13 +202,6 @@
                    days_type: this.duration
                 };
 
-            if (this.selectedPackage.id === this.getAgreements[0]?.package?.id) {
-               api = '/payment/renew-package';
-               data.autosalon_id = this.user.autosalon.id;
-               data.agreement_id = this.findActiveAgreement.id;
-               delete data.name;
-            }
-
             try {
                const res = await this.$axios.$post(`${api}?is_mobile=${this.isMobileBreakpoint}`, data);
 
@@ -265,11 +230,7 @@
       },
 
       async asyncData({ store }) {
-         try {
-            await store.dispatch('fetchAgreements');
-         } catch (e) {
-            console.log(e)
-         }
+         await store.dispatch('fetchAgreements');
       },
 
       computed: {
@@ -280,23 +241,10 @@
 
          crumbs() {
             return [
-               { name: this.$t('dashboard'), route: '/dashboard/3' },
+               { name: this.$t('dashboard'), route: `${this.user.autosalon ? '/dashboard/1' : '/garage-services'}` },
                { name: this.$t('my_packages'), route: '/profile/packages' },
                { name: this.$t('registration2') }
             ]
-         },
-
-         totalBalance() {
-            return this.$sum(
-               this.user.balance,
-               this.user.autosalon?.balance || 0,
-               this.user.part_salon?.balance || 0,
-               this.user.external_salon?.balance || 0,
-            )
-         },
-
-         findActiveAgreement() {
-            return this.getAgreements.find(item => item.payment.is_paid === true);
          }
       },
 
@@ -425,6 +373,7 @@
                   color: #246EB2;
 
                   &:last-child {
+                     margin-left: 3px;
                      color: #081A3E;
                   }
                }
@@ -482,6 +431,76 @@
          margin: 0;
          padding: 0;
          list-style: none;
+      }
+   }
+
+   .dark-mode {
+      .myPackagesBuy {
+         &__cart {
+            background-color: #242426;
+
+            &-title {
+               color: #FFFFFF;
+            }
+
+            &-subtitle {
+               color: #7dc1ff;
+            }
+
+            .form-group {
+               .text-input {
+                  input {
+                     background-color: #f3f7fc33;
+                  }
+               }
+            }
+         }
+
+         &__package {
+            &-list {
+               &_item {
+                  color: #FFFFFF;
+
+                  &.opacity {
+                     svg {
+                        path {
+                           stroke: #FFFFFF;
+                        }
+                     }
+                  }
+               }
+            }
+         }
+
+         &__receipt {
+            &-list {
+               &_item {
+                  span {
+                     color: #7dc1ff;
+
+                     &:last-child {
+                        color: #FFFFFF;
+                     }
+                  }
+               }
+            }
+         }
+
+         &__duration {
+            &-description {
+               color: #FFFFFF;
+            }
+         }
+
+         &__salon {
+            .form-group {
+               .text-input {
+                  input {
+                     color: #FFFFFF;
+                  }
+               }
+            }
+         }
       }
    }
 

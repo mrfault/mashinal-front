@@ -64,7 +64,7 @@
                <span v-if="item.status === 0">{{ $t('rejected_2') }}</span>
                <span v-else-if="item.status === 1">{{ $t('active_2') }}</span>
                <span v-else-if="item.status === 2">{{ $t('under_consideration') }}</span>
-               <span v-else-if="item.status === 3">{{ $t('sold') }}</span>
+               <span v-else-if="item.status === 3">{{ $t('announce_inactive') }}</span>
                <span v-else-if="item.status === 7">{{ $t('need_pay') }}</span>
             </div>
          </div>
@@ -122,10 +122,8 @@
             return `${date.split(' ')[0]} ${date.split(' ')[1].slice(0, 3)}`;
          },
 
-         handleChange(value) {
-            console.log(value)
-            // console.log('this.item.id_unique', this.item.id_unique)
-            // this.check = value;
+         handleChange(item) {
+            this.$nuxt.$emit('select-mark', item.id_unique);
             // this.$nuxt.$emit('select-announcement', this.item.id_unique, value, true);
          }
       }

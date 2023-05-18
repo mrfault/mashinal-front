@@ -345,6 +345,13 @@
    &.modal-container {
       width: 1200px;
    }
+
+   &.packages {
+      .wrapp {
+         display: flex;
+         align-items: center;
+      }
+   }
 }
 
 .card-bordered {

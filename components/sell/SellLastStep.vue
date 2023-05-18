@@ -131,8 +131,8 @@
           </div>
           <div v-if="!user.external_salon" class="col-lg-auto mb-2 mb-lg-0">
             <div class="d-flex flex-wrap flex-lg-nowrap">
-              <form-checkbox transparent :label="$t('tradeable')" v-model="form.tradeable" input-name="tradeable" />
-              <form-checkbox transparent :label="$t('credit_possible')" v-model="form.credit" input-name="credit" />
+              <form-checkbox transparent :label="$t('barter')" v-model="form.tradeable" input-name="tradeable" />
+              <form-checkbox transparent :label="$t('credit')" v-model="form.credit" input-name="credit" />
             </div>
           </div>
         </div>

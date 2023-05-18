@@ -39,7 +39,7 @@
                   @input="setValue = radio.key"
                   :checked="radio.key == setValue"
                >
-               <label :for="`radio_${radio.key}`">
+                  <label :for="`radio_${radio.key}`">
                   <!--                              <icon-->
                   <!--                                 :class="`type-of-drive-${radio.key}`"-->
                   <!--                                 :name="getIcon('type_of_drive', radio.key)"-->
@@ -68,8 +68,8 @@
 
       props: {
          value: {
-            type: [String, Number],
-            default: 'template-1'
+            type: Number,
+            default: 1
          },
 
          type: {
@@ -236,6 +236,14 @@
             span {
                margin-left: 40px;
             }
+         }
+      }
+   }
+
+   .dark-mode {
+      .customRadio {
+         &__title {
+            color: #FFFFFF;
          }
       }
    }

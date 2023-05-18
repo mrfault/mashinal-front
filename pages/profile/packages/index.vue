@@ -6,15 +6,16 @@
          <breadcrumbs :crumbs="crumbs" />
 
          <CustomNotifications
+            v-for="notification in unpaidAgreement"
             :title="$t('unpaid_invoice')"
             :subtitle="$t('unpaid_params',
                {
-                  package_type: unpaidAgreement.package.name[locale],
-                  start_date: $moment(unpaidAgreement.start_date).format('DD.MM.YYYY'),
-                  end_date: $moment(unpaidAgreement.end_date).format('DD.MM.YYYY'),
-                  price: unpaidAgreement.price
+                  package_type: notification.package.name[locale],
+                  start_date: $moment(notification.start_date).format('DD.MM.YYYY'),
+                  end_date: $moment(notification.end_date).format('DD.MM.YYYY'),
+                  price: notification.price
                })"
-            :unpaidAgreement="unpaidAgreement"
+            :item="notification"
             v-if="!!unpaidAgreement"
          />
 
@@ -24,10 +25,7 @@
             <h5 class="myPackages__subtitle">{{ $t('get_new_package') }}</h5>
          </div>
 
-         <Packages
-            :packages="getPackages"
-            :disableBtn="disableBtn"
-         />
+         <Packages :packages="getPackages" />
       </div>
    </div>
 </template>
@@ -67,26 +65,22 @@
          },
 
          unpaidAgreement() {
-            return this.getAgreements.find(item => item.payment.is_paid === false);
+            return this.getAgreements.filter(item => item.payment.is_paid === false);
          },
 
-         disableBtn() {
-            // if (this.getAgreements.length > 0) {
-               return this.getPackages.find(item => item.id === this.getAgreements[0]?.package?.id);
-            // } else {
-            //    return false;
-            // }
-         }
+         // disableBtn() {
+         //    return {
+         //       hasPackage: this.getPackages.find(item => item.id === this.getAgreements[0]?.package?.id),
+         //       is_expired: this.getAgreements[0]?.is_expired
+         //    }
+         // }
       },
 
       async asyncData({ store }) {
-         await store.dispatch('packages/getPackages');
-
-         try {
-            await store.dispatch('fetchAgreements');
-         } catch (e) {
-            console.log(e)
-         }
+         await Promise.all([
+            store.dispatch('packages/getPackages'),
+            store.dispatch('fetchAgreements')
+         ]);
       }
    }
 </script>
@@ -126,6 +120,14 @@
 
       * {
          box-sizing: border-box;
+      }
+   }
+
+   .dark-mode {
+      .myPackages {
+         &__title {
+            color: #A4A4A5;
+         }
       }
    }
 
