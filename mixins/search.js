@@ -121,23 +121,30 @@ export const SearchMixin = {
          }
       },
       async submitForm(scroll = true) {
-         this.beforeSubmitForm();
+         console.log('1')
+         await this.beforeSubmitForm();
+         console.log('2')
 
          try {
             // tracking
-            this.fbTrack('Search Api');
-            this.gtagTrack('AW-600951956/Qeu4CILAyPIBEJSZx54C');
+            await this.fbTrack('Search Api');
+            await this.gtagTrack('AW-600951956/Qeu4CILAyPIBEJSZx54C');
          } catch (e) {}
 
          // update route query params and search announcements
-         let searchQuery = `${this.meta.param}=${encodeURI(JSON.stringify(this.getFormData()))}`;
-         let searchUrl = `${this.$localePath(this.meta.path)}?${searchQuery}`;
-         let searchSame = decodeURIComponent(searchUrl) === decodeURIComponent(this.$route.fullPath);
+         let searchQuery = await `${this.meta.param}=${encodeURI(JSON.stringify(this.getFormData()))}`;
+         let searchUrl = await `${this.$localePath(this.meta.path)}?${searchQuery}`;
+         let searchSame = await  decodeURIComponent(searchUrl) === decodeURIComponent(this.$route.fullPath);
 
-         this.$emit('pending');
+         console.log('22', searchUrl)
+         await this.$emit('pending');
          if (searchSame) {
             this.$emit('submit');
+            console.log('3')
+
          } else {
+            console.log('4')
+
             let prevRouteName = this.routeName;
             this.$router.push(searchUrl, () => {
                this.$emit('submit');
@@ -152,6 +159,8 @@ export const SearchMixin = {
                // look for a saved search
                if (this.loggedIn && this.meta.type === 'cars') {
                   this.fetchSavedSearch({search_url: `${this.meta.path}?${searchQuery}`});
+                  console.log('5')
+
                }
             });
          }

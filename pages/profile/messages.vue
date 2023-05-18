@@ -370,8 +370,13 @@ export default {
             }
 
             h3 {
-               font-size: 30px;
+               font-size: 20px;
             }
+         }
+
+         .chat-inner-info,
+         .chat-inner-announcement {
+            padding: 17px 15px;
          }
       }
    }
