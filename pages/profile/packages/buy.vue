@@ -186,7 +186,10 @@
       methods: {
          nextStep() {
             this.$v.$touch();
-            if (this.$v.$error) return;
+            if (this.$v.$error) {
+               this.scrollTo('.myPackagesBuy__salon', [-15, -20]);
+               return;
+            }
 
             this.openModal = true;
          },

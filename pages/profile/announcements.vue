@@ -10,7 +10,7 @@
          </div>
 
          <controls-panel
-            :show-toolbar="!!myAnnouncements.data.length"
+            :show-toolbar="!!myAnnouncements.data.length || !!getMyPlates.data.length"
             :clearSelected="activeTab"
             :type="activeTab"
          />
