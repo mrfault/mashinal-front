@@ -478,40 +478,40 @@
       }
    }
 
-   @media (max-width: 1250px) {
-      .registrationMarks {
-         &__filters {
-            padding: 27px 23px;
-            .divider {
-               &:first-child {
-                  .form-group {
-                     width: 60px;
-
-                     &:first-child {
-                        width: 140px;
-                     }
-                  }
-               }
-
-               &:nth-child(2) {
-                  .form-group {
-                     width: 100px;
-                  }
-               }
-
-               &:last-child {
-                  .form-group {
-                     width: 100px;
-
-                     &:last-child {
-                        width: 130px;
-                     }
-                  }
-               }
-            }
-         }
-      }
-   }
+   //@media (max-width: 1250px) {
+   //   .registrationMarks {
+   //      &__filters {
+   //         padding: 27px 23px;
+   //         .divider {
+   //            &:first-child {
+   //               .form-group {
+   //                  width: 60px;
+   //
+   //                  &:first-child {
+   //                     width: 140px;
+   //                  }
+   //               }
+   //            }
+   //
+   //            &:nth-child(2) {
+   //               .form-group {
+   //                  width: 100px;
+   //               }
+   //            }
+   //
+   //            &:last-child {
+   //               .form-group {
+   //                  width: 100px;
+   //
+   //                  &:last-child {
+   //                     width: 130px;
+   //                  }
+   //               }
+   //            }
+   //         }
+   //      }
+   //   }
+   //}
 
    @media (max-width: 1025px) {
       .registrationMarks {

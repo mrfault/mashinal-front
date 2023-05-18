@@ -1,11 +1,3 @@
-@include media-max-width('lg') {
-   .map-switch {
-      position: fixed !important;
-      right: 25px;
-      bottom: 90px !important;
-   }
-}
-
 /** Responsive */
 
 @include media-max-width('lg') {
@@ -20,12 +12,15 @@
    [class^='pages-'] {
       padding: 0 0 30px;
    }
+   .page-header {
+      margin-bottom: 0;
+   }
    .pages-dashboard {
       margin-bottom: 80px;
    }
-   .container {
-      max-width: 540px;
-   }
+   //.container {
+   //   max-width: 540px;
+   //}
 
    .row:not(.no-gutters) {
       margin-right: -$grid-gutter-width * 0.375;
@@ -43,6 +38,7 @@
    }
 
    .card {
+      background-color: red;
       margin: 0 -25px;
 
       &.with-margins {
@@ -78,6 +74,12 @@
 
    .pagination {
       margin: 15px auto 20px;
+   }
+
+   .map-switch {
+      position: fixed !important;
+      right: 25px;
+      bottom: 90px !important;
    }
 }
 
@@ -214,20 +216,20 @@
    }
 }
 
-@media only screen and (max-width: 1279px) {
-   .page-header {
-      .navbar {
-         .menu {
-            li {
-               a {
-                  font-size: 13px;
-                  padding: 0 12px !important;
-               }
-            }
-         }
-      }
-   }
-}
+//@media only screen and (max-width: 1279px) {
+//   .page-header {
+//      .navbar {
+//         .menu {
+//            li {
+//               a {
+//                  font-size: 13px;
+//                  padding: 0 12px !important;
+//               }
+//            }
+//         }
+//      }
+//   }
+//}
 
 @media (min-width: 356px) and (max-width: 450px) {
    .btn {

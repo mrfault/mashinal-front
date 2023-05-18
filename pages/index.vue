@@ -1,5 +1,5 @@
 <template>
-   <div class="pages-index" :style="!isMobileBreakpoint ? 'margin-top: -40px;' : ''">
+   <div class="pages-index">
       <!-- slider desktop -->
       <div class="container p-0">
          <client-only>
@@ -104,7 +104,7 @@
       </div>
 
       <!-- car search form -->
-      <div class="container position-relative p-lg-0">
+      <div class="container position-relative">
          <car-search-form
             :inMobileScreen="absoluteMobileScreen"
             :pending="pending"

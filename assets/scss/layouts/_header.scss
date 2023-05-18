@@ -2,7 +2,7 @@
    position: sticky;
    z-index: 20;
    top: 0;
-   margin-bottom: 140px;
+   margin-bottom: 100px;
 
    .topbar {
       display: flex;
@@ -252,9 +252,13 @@
 
       .menu {
          display: flex;
-         margin: 0 -25px;
+         margin: 0;
 
          & > li {
+            &:not(:first-child) {
+               margin-left: 56px;
+            }
+
             a {
                display: inline-flex;
                align-items: center;
@@ -270,9 +274,9 @@
             }
 
             & > a {
-               line-height: 50px;
+               line-height: 52px;
                white-space: nowrap;
-               padding: 0 25px;
+               //padding: 0 25px;
             }
          }
       }
