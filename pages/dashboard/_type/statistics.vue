@@ -47,8 +47,9 @@
          </div>
 
          <grid
-            v-if="mostViewed.length"
-            :announcements="mostViewed"
+            v-if="sortMostViewed.length"
+            :announcements="sortMostViewed"
+            :key="sorting"
             :title="$t('most_viewed_announcements')"
             :show-phone-count="true"
             :track-views="false"
@@ -110,6 +111,18 @@
             ]
          },
 
+         sortMostViewed() {
+            if (this.sorting === 1) {
+               return this.mostViewed.sort((a, b) => {
+                  return b.view_count - a.view_count;
+               })
+            } else {
+               return this.mostViewed.sort((a, b) => {
+                  return b.show_phone_number_count - a.show_phone_number_count;
+               })
+            }
+         },
+
          mostViewedCount() {
             let count = 0;
             this.mostViewed.forEach(item => {
@@ -122,15 +135,6 @@
 
       methods: {
          ...mapActions([]),
-      },
-
-      watch: {
-         sorting() {
-            this.$store.dispatch('getAnnouncementStats', {
-               id: this.$getDashboardId(this.$route.params.type),
-               params: `?sorting=${this.sorting}`
-            });
-         }
       }
    }
 </script>
