@@ -359,6 +359,7 @@
       }
 
       &__table {
+         position: relative;
          margin-top: 20px;
          width: 100%;
          border-radius: 4px;
