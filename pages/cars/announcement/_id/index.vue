@@ -125,7 +125,6 @@ export default {
    async asyncData({store, route}) {
       await Promise.all([
          store.dispatch('getAnnouncementInner', route.params.id),
-         store.dispatch('getComplaintOptions'),
          store.dispatch('getOptions'),
          store.dispatch('getAllOtherOptions'),
          store.dispatch('getPopularOptions')
