@@ -140,7 +140,7 @@
       async mounted() {
          if (this.$auth.loggedIn) {
             await Promise.all([
-               this.$store.dispatch("getNotifications"),
+               this.$store.dispatch("getNotificationsNew"),
                this.$store.dispatch("getNotViewedFavorites"),
                this.$store.dispatch("getNotViewedSavedSearch")
             ]);

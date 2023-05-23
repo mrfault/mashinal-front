@@ -127,7 +127,7 @@
       },
 
       async asyncData({ store, route, app }) {
-         await store.dispatch('getAnnouncementStats', { id: app.$getDashboardId(route.params.type) });
+         await store.dispatch('getAnnouncementStatsNew', { id: app.$getDashboardId(route.params.type) });
 
          return {
             pending: false,
@@ -260,7 +260,7 @@
                   image: 'calendar',
                   hasAction: true,
                   isContract: true,
-                  contractName: this.myAnnouncementStats.package.name[this.locale],
+                  contractName: this.myAnnouncementStats?.package?.name[this.locale],
                   contractEndDate: this.myAnnouncementStats.agreement_end_date
                },
             ]
