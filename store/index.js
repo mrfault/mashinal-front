@@ -42,6 +42,7 @@ const getInitialState = () => ({
    // messages
    messages: [],
    notifications: [],
+   notificationsNew: [],
    suggestedMessages: [],
    // services
    services: [],
@@ -147,6 +148,7 @@ const getInitialState = () => ({
    homePageSliders: {},
    myAnnouncementCalls: {},
    myAnnouncementStats: {},
+   myAnnouncementStatsNew: {},
    mapView: false,
    // balance
    balanceHasAnimation: false,
@@ -253,6 +255,7 @@ export const getters = {
    // profile
    messages: s => s.messages,
    notifications: s => s.notifications,
+   notificationsNew: s => s.notificationsNew,
    messagesByGroup: s => id => s.messages.find(group => group.id == id),
    messagesByDate: s => id => {
       let messages = s.messages.find(group => group.id == id).messages;
@@ -370,6 +373,7 @@ export const getters = {
    mySalon: s => s.mySalon,
    myAnnouncementCalls: s => s.myAnnouncementCalls,
    myAnnouncementStats: s => s.myAnnouncementStats,
+   myAnnouncementStatsNew: s => s.myAnnouncementStatsNew,
    mapView: s => s.mapView,
    // banner
    smartBanner: s => s.smartBannerIsOn,
@@ -544,6 +548,11 @@ export const actions = {
          "/notifications?with_pagination=true&" + page
       );
       commit("mutate", {property: "notifications", value: data});
+   },
+
+   async getNotificationsNew({commit}) {
+      const data = await this.$axios.$get("/new-notifications-count");
+      commit("mutate", {property: "notificationsNew", value: data});
    },
    // Messages
    async getMessages({commit, state}, groupId) {
@@ -1371,6 +1380,10 @@ export const actions = {
    async getAnnouncementStats({commit}, data) {
       const res = await this.$axios.$get(`/my/dashboard/statistics/${data?.id}${data.params ? data.params : ''}`);
       commit("mutate", {property: "myAnnouncementStats", value: res});
+   },
+   async getAnnouncementStatsNew({commit}, data) {
+      const res = await this.$axios.$get(`/my/dashboard/dashboard-statistics/${data?.id}`);
+      commit("mutate", {property: "myAnnouncementStatsNew", value: res});
    },
    updateSalonsFiltered({commit}, list) {
       commit("mutate", {property: "salonsFiltered", value: list});

@@ -23,6 +23,7 @@ export const LayoutMixin = {
       'paidStatusData',
       'hideFooter',
       'notifications',
+      'notificationsNew',
     ]),
   },
   watch: {
@@ -40,7 +41,8 @@ export const LayoutMixin = {
       'setLoading',
       'setGridBreakpoint',
       'getMessages',
-      'getNotifications',
+      // 'getNotifications',
+      'getNotificationsNew',
       'getFavorites',
       'resetSellTokens',
       'resetUserData',
@@ -205,7 +207,7 @@ export const LayoutMixin = {
     async getUserData() {
       if (!this.loggedIn) return
       if (!this.messages.length) await this.getMessages()
-      if (!this.notifications.length) await this.getNotifications()
+      if (!this.notificationsNew.length) await this.getNotificationsNew()
       await Promise.all([
         this.getNotViewedSavedSearch(),
         this.getNotViewedFavorites(),
