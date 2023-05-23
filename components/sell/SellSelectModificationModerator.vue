@@ -403,7 +403,7 @@ export default {
         } else if (this.isMobileBreakpoint) {
           this.timeout = setTimeout(() => {
             this.scrollTo(this.$refs[`sell-${nextKey}`], -34, 500)
-            console.log(this)
+            // console.log(this)
             $container.style.minHeight = ''
           }, 100)
         }

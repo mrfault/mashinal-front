@@ -54,7 +54,8 @@ export const UserDataMixin = {
             this.$auth.setUser(false);
             await this.$auth.logout();
             this.$nuxt.$emit('login', false);
-            if (window.localStorage.getItem('registrationCount')) await localStorage.removeItem('registrationCount');
+            await localStorage.removeItem('registrationCount');
+            await localStorage.removeItem('selectedPackage');
          });
       }
    },

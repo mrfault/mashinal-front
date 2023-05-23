@@ -42,6 +42,7 @@ const getInitialState = () => ({
    // messages
    messages: [],
    notifications: [],
+   notificationsNew: [],
    suggestedMessages: [],
    // services
    services: [],
@@ -147,6 +148,7 @@ const getInitialState = () => ({
    homePageSliders: {},
    myAnnouncementCalls: {},
    myAnnouncementStats: {},
+   myAnnouncementStatsNew: {},
    mapView: false,
    // balance
    balanceHasAnimation: false,
@@ -206,6 +208,7 @@ const getInitialState = () => ({
    partCategories: [],
 
    regionNumbers: [],
+   agreements: [],
    resetForm: false,
    registrationMarks: [],
    myPlates: [],
@@ -217,7 +220,7 @@ const getInitialState = () => ({
 export const state = () => getInitialState();
 
 export const getters = {
-   getHandleIds: s => s.handleIds,
+   getAgreements: s => s.agreements,
    getResetForm: s => s.resetForm,
    getMainMonetized: s => s.mainMonetized,
    getUserRegistrationMarks: s => s.userRegistrationMarks,
@@ -252,6 +255,7 @@ export const getters = {
    // profile
    messages: s => s.messages,
    notifications: s => s.notifications,
+   notificationsNew: s => s.notificationsNew,
    messagesByGroup: s => id => s.messages.find(group => group.id == id),
    messagesByDate: s => id => {
       let messages = s.messages.find(group => group.id == id).messages;
@@ -369,6 +373,7 @@ export const getters = {
    mySalon: s => s.mySalon,
    myAnnouncementCalls: s => s.myAnnouncementCalls,
    myAnnouncementStats: s => s.myAnnouncementStats,
+   myAnnouncementStatsNew: s => s.myAnnouncementStatsNew,
    mapView: s => s.mapView,
    // banner
    smartBanner: s => s.smartBannerIsOn,
@@ -412,6 +417,11 @@ const objectNotEmpty = (state, commit, property) => {
    );
 };
 export const actions = {
+   async fetchAgreements({commit}) {
+      const res = await this.$axios.$get("/agreements")
+      commit("mutate", {property: "agreements", value: res.data || []})
+   },
+
    async fetchHandleIds({ commit }, data) {
       let announcementIds = data.ids.map(a => a.id),
           link = 'announcement-view';
@@ -512,10 +522,20 @@ export const actions = {
       const res = await this.$axios.$get("/menus");
       commit("mutate", {property: "menus", value: res});
    },
+
    async getStaticPages({commit}) {
-      const res = await this.$axios.$get("/get_static_pages");
-      commit("mutate", {property: "staticPages", value: res});
+      let static_pages;
+
+      if (localStorage.getItem('static_pages')) {
+         static_pages = localStorage.getItem('static_pages');
+         commit("mutate", { property: "staticPages", value: JSON.parse(static_pages) });
+      } else {
+         const res = await this.$axios.$get("/get_static_pages");
+         commit("mutate", { property: "staticPages", value: res });
+         localStorage.setItem('static_pages', JSON.stringify(res));
+      }
    },
+
    setPageRefs({commit}, {index, path}) {
       commit("mutate", {property: "pageRefs", key: index, value: path});
    },
@@ -528,6 +548,11 @@ export const actions = {
          "/notifications?with_pagination=true&" + page
       );
       commit("mutate", {property: "notifications", value: data});
+   },
+
+   async getNotificationsNew({commit}) {
+      const data = await this.$axios.$get("/new-notifications-count");
+      commit("mutate", {property: "notificationsNew", value: data});
    },
    // Messages
    async getMessages({commit, state}, groupId) {
@@ -754,7 +779,6 @@ export const actions = {
       const res = await this.$axios.$get(
          `/brand/${data.brand}/model/${data.model}/generations`
       );
-
       commit("mutate", {property: "generations", value: res.generations});
       commit("mutate", {
          property: "modelDescription",
@@ -1353,9 +1377,13 @@ export const actions = {
    async incrementAnnouncementCalls({}, id) {
       await this.$axios.$get(`/announce/${id}/show/phone`);
    },
-   async getAnnouncementStats({commit}, id) {
-      const res = await this.$axios.$get(`/my/dashboard/statistics/${id}`);
+   async getAnnouncementStats({commit}, data) {
+      const res = await this.$axios.$get(`/my/dashboard/statistics/${data?.id}${data.params ? data.params : ''}`);
       commit("mutate", {property: "myAnnouncementStats", value: res});
+   },
+   async getAnnouncementStatsNew({commit}, data) {
+      const res = await this.$axios.$get(`/my/dashboard/dashboard-statistics/${data?.id}`);
+      commit("mutate", {property: "myAnnouncementStatsNew", value: res});
    },
    updateSalonsFiltered({commit}, list) {
       commit("mutate", {property: "salonsFiltered", value: list});

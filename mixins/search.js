@@ -121,7 +121,9 @@ export const SearchMixin = {
          }
       },
       async submitForm(scroll = true) {
+         // console.log('1')
          this.beforeSubmitForm();
+         // console.log('2')
 
          try {
             // tracking
@@ -132,12 +134,21 @@ export const SearchMixin = {
          // update route query params and search announcements
          let searchQuery = `${this.meta.param}=${encodeURI(JSON.stringify(this.getFormData()))}`;
          let searchUrl = `${this.$localePath(this.meta.path)}?${searchQuery}`;
-         let searchSame = decodeURIComponent(searchUrl) === decodeURIComponent(this.$route.fullPath);
+         let searchSame =  decodeURIComponent(searchUrl) === decodeURIComponent(this.$route.fullPath);
 
          this.$emit('pending');
+
+         // console.log('q', decodeURIComponent(searchUrl))
+         // console.log('w', decodeURIComponent(this.$route.fullPath))
+
+         // console.log('3', searchSame)
+
          if (searchSame) {
             this.$emit('submit');
+            // console.log('4')
          } else {
+            // console.log('5')
+
             let prevRouteName = this.routeName;
             this.$router.push(searchUrl, () => {
                this.$emit('submit');
@@ -152,6 +163,7 @@ export const SearchMixin = {
                // look for a saved search
                if (this.loggedIn && this.meta.type === 'cars') {
                   this.fetchSavedSearch({search_url: `${this.meta.path}?${searchQuery}`});
+                  // console.log('6')
                }
             });
          }

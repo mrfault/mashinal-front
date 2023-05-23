@@ -9,7 +9,11 @@
             </h2>
          </div>
 
-         <controls-panel :show-toolbar="!!myAnnouncements.data.length"/>
+         <controls-panel
+            :show-toolbar="!!myAnnouncements.data.length || !!getMyPlates.data.length"
+            :clearSelected="activeTab"
+            :type="activeTab"
+         />
          <!-- <div class="row flex-row-reverse" v-if="!(statusReady === '' && !myAnnouncements.data.length)">
            <div class="col-lg-auto col-lg-1-5 mb-lg-n1">
              <form-select :label="$t('status')" :options="getStatusOptions" v-model="form.status"

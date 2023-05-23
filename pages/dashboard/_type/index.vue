@@ -126,8 +126,8 @@
          })
       },
 
-      async asyncData({store, route, app}) {
-         await store.dispatch('getAnnouncementStats', app.$getDashboardId(route.params.type));
+      async asyncData({ store, route, app }) {
+         await store.dispatch('getAnnouncementStatsNew', { id: app.$getDashboardId(route.params.type) });
 
          return {
             pending: false,
@@ -163,6 +163,15 @@
             ]
          },
 
+         totalBalance() {
+            return this.$sum(
+               this.user.balance,
+               this.user.autosalon?.balance || 0,
+               this.user.part_salon?.balance || 0,
+               this.user.external_salon?.balance || 0,
+            )
+         },
+
          cards() {
             let type = Number(this.$route.params.type)
             var balance;
@@ -178,6 +187,16 @@
             }
 
             return [
+               {
+                  key: 'packages',
+                  title: this.$t('my_packages'),
+                  url: '/profile/packages',
+                  icon: 'packages',
+                  image: 'packages',
+                  // hasAction: true,
+                  actionName: `${this.$t('get_package')}`,
+                  // actionLink: '/sell',
+               },
                {
                   key: 'announcements',
                   title: `${this.$t('my_announces')}`,
@@ -198,7 +217,7 @@
                   actionName: `${this.$t('replenish')}`,
                   actionLink: '/profile/balance',
                   description: `${this.$t('balance_of_wallet')}`,
-                  value: `${balance} ALManat`,
+                  value: `${this.totalBalance} AZN`,
                },
                {
                   key: 'statistics',
@@ -216,15 +235,15 @@
                   isMessage: true,
                   messageCounts: [this.myAnnouncementStats.message_count, this.myAnnouncementStats.message_count_not_read]
                },
-               {
-                  key: 'calls',
-                  title: `${this.$t('phone_call_count')}`,
-                  url: '/dashboard/' + type + '/calls',
-                  icon: 'phone',
-                  image: 'phone',
-                  description: `${this.$t('transition_count_to_number')}`,
-                  value: this.myAnnouncementStats.call_count,
-               },
+               // {
+               //    key: 'calls',
+               //    title: `${this.$t('phone_call_count')}`,
+               //    url: '/dashboard/' + type + '/calls',
+               //    icon: 'phone',
+               //    image: 'phone',
+               //    description: `${this.$t('transition_count_to_number')}`,
+               //    value: this.myAnnouncementStats.call_count,
+               // },
                {
                   key: 'salon',
                   title: `${this.$t('salon_profile')}`,
@@ -236,11 +255,12 @@
                {
                   key: 'contract',
                   title: `${this.$t('contract')}`,
-                  url: '/business-profile?type=' + type,
+                  url: '/agreement',
                   icon: 'calendar-1',
                   image: 'calendar',
+                  hasAction: true,
                   isContract: true,
-                  contractName: package_name,
+                  contractName: this.myAnnouncementStats?.package?.name[this.locale],
                   contractEndDate: this.myAnnouncementStats.agreement_end_date
                },
             ]

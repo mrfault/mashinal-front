@@ -1,7 +1,7 @@
 <template>
   <div class="pages-sell">
     <div class="container">
-      <breadcrumbs :crumbs="crumbs" />
+<!--      <breadcrumbs :crumbs="crumbs" />-->
       <sell-progress :form="form" />
       <div class="sell_cards-row row">
         <div class="col-auto">

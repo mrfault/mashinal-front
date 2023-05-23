@@ -87,6 +87,7 @@ export default {
     if (process.client) {
       let { page, filter } = route.query;
       let post = JSON.parse(filter || '{}');
+      console.log('test');
       await Promise.all([
         store.dispatch('getBrands'),
         store.dispatch('getBodyOptions'),

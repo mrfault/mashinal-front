@@ -108,7 +108,7 @@
                         :label="$t('show_cheap_first')"
                         :options="sortItems"
                         :clearPlaceholder="true"
-                        :clear-option="false"
+                        :allowClear="false"
                         v-model="form.sorting"
                         has-search
                      />
@@ -250,7 +250,7 @@
                if (this.form.car_number) queryArray.push(`&car_number=${this.form.car_number}`);
                if (this.form.price_from) queryArray.push(`&price_from=${this.form.price_from}`);
                if (this.form.price_to) queryArray.push(`&price_to=${this.form.price_to}`);
-               if (this.form.currency_id) queryArray.push(`&currency_id=${this.form.currency_id}`);
+               if (this.form.currency_id) queryArray.push(`&currency=${this.form.currency_id}`);
                if (this.form.region_id) queryArray.push(`&region_id=${this.form.region_id}`);
                if (this.form.sorting) queryArray.push(`&sorting=${this.form.sorting}`);
 

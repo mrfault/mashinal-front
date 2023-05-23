@@ -25,10 +25,10 @@
     <template v-if="!mapView">
       <div class="container">
         <breadcrumbs :crumbs="crumbs" />
-        <template v-if="!isMobileBreakpoint">
-          <salon-search-form />
-          <salon-filters-form :count="salonsFiltered.length" />
-        </template>
+<!--        <template v-if="!isMobileBreakpoint">-->
+<!--          <salon-search-form />-->
+<!--          <salon-filters-form :count="salonsFiltered.length" />-->
+<!--        </template>-->
         <banners type="2" class="mt-5" />
         <div class="title grid-title mt-2" v-if="isMobileBreakpoint">
           <h2>
@@ -50,6 +50,7 @@
             class="col-lg-4 mb-2 mb-lg-3"
             v-for="salon in officialSalons"
             :key="salon.id"
+            v-if="salon.announcement_count"
           >
             <nuxt-link
               class="keep-colors"
@@ -73,6 +74,7 @@
             class="col-lg-4 mb-2 mb-lg-3"
             v-for="salon in nonOfficialSalons"
             :key="salon.id"
+            v-if="salon.announcement_count"
           >
             <nuxt-link
               class="keep-colors"
@@ -85,6 +87,7 @@
         <no-results v-else-if="!officialSalons.length" />
       </div>
     </template>
+
     <div
       :class="`map-${isMobileBreakpoint ? 'fh' : 'fw'}-container`"
       v-show="mapView"
