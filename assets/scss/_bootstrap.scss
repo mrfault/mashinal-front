@@ -3,18 +3,17 @@
 // override default variables
 
 $container-max-widths: (
-  xs: 0,
-  sm: 540px,
-  md: 740px,
-  lg: 960px,
+  sm: 570px,
+  md: 960px,
+  //lg: 960px,
   //xl: 1104px
   //xl: 1250px
 );
 
 $grid-breakpoints: (
   xs: 0,
-  sm: 540px,
-  md: 768px,
+  sm: 600px,
+  md: 992px,
   lg: 1150px,
   //xl: 1250px
 );

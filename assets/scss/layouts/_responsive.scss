@@ -38,8 +38,7 @@
    }
 
    .card {
-      background-color: red;
-      margin: 0 -25px;
+      //margin: 0 -25px;
 
       &.with-margins {
          margin: 0;
@@ -54,7 +53,7 @@
    .toasted-container.top-right {
       right: auto !important;
       left: calc(50% - 270px + 24px) !important;
-      min-width: 0px !important;
+      min-width: 0 !important;
 
       .toasted.toasted-primary {
          width: 540px;
@@ -101,7 +100,8 @@
    }
 }
 
-@media only screen and (min-width: 1164px) {
+//@media only screen and (min-width: 1164px) {
+@media only screen and (min-width: 1150px) {
    .layout,
    .container {
       //min-width: 1250px;

@@ -101,17 +101,23 @@
                   v-if="getRegistrationMarks?.data.length"
                >
                   <template #head>
-                     <h4 class="registrationMarksGrid__title">{{ $t('search_result') }}</h4>
+                     <Cap :className="'mb40'">
+                        <template #left>
+                           <h3>{{ $t('search_result') }}</h3>
+                        </template>
 
-<!--                     :className="'new bg'"-->
-                     <form-select
-                        :label="$t('show_cheap_first')"
-                        :options="sortItems"
-                        :clearPlaceholder="true"
-                        :allowClear="false"
-                        v-model="form.sorting"
-                        has-search
-                     />
+                        <template #right>
+                           <form-select
+                              :label="$t('show_cheap_first')"
+                              :options="sortItems"
+                              :clearPlaceholder="true"
+                              :allowClear="false"
+                              :hasSearch="false"
+                              v-model="form.sorting"
+                              has-search
+                           />
+                        </template>
+                     </Cap>
                   </template>
                </RegistrationMarksGrid>
 
@@ -143,6 +149,7 @@
    import RegistrationMarksGrid from "~/components/announcements/RegistrationMarksGrid.vue";
    import NoResults from "~/components/elements/NoResults.vue";
    import HandleIds from "~/components/announcements/HandleIds.vue";
+   import Cap from "~/components/elements/Cap.vue";
 
    export default {
       head() {
@@ -159,6 +166,7 @@
       },
 
       components: {
+         Cap,
          RegistrationMarksGrid,
          NoResults,
          HandleIds
@@ -376,7 +384,6 @@
          width: 100%;
          padding: 24px;
          border-radius: 12px;
-         //border: 1px solid #9AA4B2;
          background-color: #FFFFFF;
          margin: 40px 0;
 
@@ -385,14 +392,14 @@
             align-items: center;
             justify-content: space-between;
 
-            &:not(:first-child) {
-               margin-left: 20px;
-            }
-
             .form-group {
                &:not(:first-child) {
                   margin-left: 20px;
                }
+            }
+
+            &:not(:first-child) {
+               margin-left: 20px;
             }
 
             &:first-child {
@@ -478,86 +485,93 @@
       }
    }
 
-   //@media (max-width: 1250px) {
-   //   .registrationMarks {
-   //      &__filters {
-   //         padding: 27px 23px;
-   //         .divider {
-   //            &:first-child {
-   //               .form-group {
-   //                  width: 60px;
-   //
-   //                  &:first-child {
-   //                     width: 140px;
-   //                  }
-   //               }
-   //            }
-   //
-   //            &:nth-child(2) {
-   //               .form-group {
-   //                  width: 100px;
-   //               }
-   //            }
-   //
-   //            &:last-child {
-   //               .form-group {
-   //                  width: 100px;
-   //
-   //                  &:last-child {
-   //                     width: 130px;
-   //                  }
-   //               }
-   //            }
-   //         }
-   //      }
-   //   }
-   //}
+   @media (max-width: 1150px) {
+      .registrationMarks {
+         &__filters {
+            padding: 20px;
 
-   @media (max-width: 1025px) {
+            .divider {
+               .form-group {
+                  &:not(:first-child) {
+                     margin-left: 16px;
+                  }
+               }
+
+               &:first-child {
+                  .form-group {
+                     width: 65px;
+
+                     &:first-child {
+                        width: 140px;
+                     }
+                  }
+               }
+
+               &:nth-child(2) {
+                  .form-group {
+                     width: 105px;
+                  }
+               }
+
+               &:last-child {
+                  .form-group {
+                     width: 105px;
+
+                     &:last-child {
+                        width: 130px;
+                     }
+                  }
+               }
+            }
+         }
+      }
+   }
+
+   @media (max-width: 992px) {
       .registrationMarks {
          &__hero {
-            height: 230px;
+            //height: 230px;
             &-text {
-               left: 40px;
-               bottom: 30px;
+               //left: 40px;
+               //bottom: 30px;
 
                .breadcrumbs {
-                  display: flex !important;
+                  //display: flex !important;
 
                   ul {
-                     height: 40px;
+                     //height: 40px;
                   }
                }
             }
 
             &-title {
-               font-size: 30px;
+               //font-size: 30px;
             }
          }
 
          &__filters {
-            flex-wrap: wrap;
+            //flex-wrap: wrap;
             .divider {
                &:not(:first-child) {
-                  margin-left: unset;
-                  margin-top: 15px;
+                  //margin-left: unset;
+                  //margin-top: 15px;
                }
 
                &:first-child {
                   .form-group {
-                     width: 80px;
+                     //width: 80px;
 
                      &:first-child {
-                        width: 154px;
+                        //width: 154px;
                      }
                   }
                }
 
                &:last-child {
-                  margin-left: 10px;
+                  //margin-left: 10px;
                   .form-group {
                      &:last-child {
-                        width: 100px;
+                        //width: 100px;
                      }
                   }
                }
@@ -565,146 +579,146 @@
          }
 
          .pagination {
-            margin: 0 0 65px 0;
+            //margin: 0 0 65px 0;
          }
       }
    }
 
-   @media (max-width: 540px) {
-      .registrationMarks {
-         &__hero {
-            display: none;
+   //@media (max-width: 540px) {
+   //   .registrationMarks {
+   //      &__hero {
+   //         display: none;
+   //
+   //         &.mobile {
+   //            display: block;
+   //            border-radius: unset;
+   //
+   //            .breadcrumbs {
+   //               ul {
+   //                  height: 20px;
+   //
+   //                  li {
+   //                     font-size: 12px;
+   //
+   //                     .icon-home {
+   //                        &:before {
+   //                           font-size: 12px;
+   //                        }
+   //                     }
+   //
+   //                     .icon-chevron-right {
+   //                        &:before {
+   //                           font-size: 8px;
+   //                        }
+   //                     }
+   //                  }
+   //               }
+   //            }
+   //
+   //            .registrationMarks__hero-text {
+   //               left: 20px;
+   //               bottom: 20px;
+   //            }
+   //
+   //            .registrationMarks__hero-title {
+   //               font-size: 24px;
+   //            }
+   //         }
+   //      }
+   //
+   //      &__filters {
+   //         position: absolute;
+   //         top: 231px;
+   //         left: 0;
+   //         margin: 0;
+   //         border: none;
+   //         border-radius: unset;
+   //         .divider {
+   //            &:not(:first-child) {
+   //               margin-left: 0;
+   //            }
+   //
+   //            &:first-child {
+   //               width: 100%;
+   //               .form-group {
+   //                  width: 40%;
+   //
+   //                  &:first-child {
+   //                     width: 75%;
+   //                  }
+   //               }
+   //            }
+   //
+   //            &:nth-child(2), &:last-child {
+   //               width: 100%;
+   //               gap: 16px;
+   //               .form-group {
+   //                  width: 100%;
+   //                  &:last-child {
+   //                     width: 100%;
+   //                     margin-left: 0;
+   //                  }
+   //               }
+   //            }
+   //         }
+   //      }
+   //
+   //      &.index {
+   //         position: relative;
+   //         margin-top: 0;
+   //
+   //         .col {
+   //            position: unset;
+   //         }
+   //
+   //         .registrationMarksGrid {
+   //            margin-top: 300px;
+   //         }
+   //
+   //         .no-results {
+   //            margin: 280px 0 80px 0;
+   //         }
+   //      }
+   //   }
+   //}
 
-            &.mobile {
-               display: block;
-               border-radius: unset;
+   //@media (max-width: 430px) {
+   //   .registrationMarks {
+   //      &__filters {
+   //         padding: 24px 16px;
+   //         .divider {
+   //            &:first-child {
+   //               .form-group {
+   //                  &:not(:first-child) {
+   //                     margin-left: 8px;
+   //                  }
+   //               }
+   //            }
+   //            .select-menu_label {
+   //               padding: 26px 12px;
+   //            }
+   //
+   //            .text-input {
+   //               input {
+   //                  padding: 12px;
+   //               }
+   //            }
+   //         }
+   //      }
+   //
+   //      &.index {
+   //         .container {
+   //            padding: 0 10px;
+   //         }
+   //      }
+   //   }
+   //}
 
-               .breadcrumbs {
-                  ul {
-                     height: 20px;
-
-                     li {
-                        font-size: 12px;
-
-                        .icon-home {
-                           &:before {
-                              font-size: 12px;
-                           }
-                        }
-
-                        .icon-chevron-right {
-                           &:before {
-                              font-size: 8px;
-                           }
-                        }
-                     }
-                  }
-               }
-
-               .registrationMarks__hero-text {
-                  left: 20px;
-                  bottom: 20px;
-               }
-
-               .registrationMarks__hero-title {
-                  font-size: 24px;
-               }
-            }
-         }
-
-         &__filters {
-            position: absolute;
-            top: 231px;
-            left: 0;
-            margin: 0;
-            border: none;
-            border-radius: unset;
-            .divider {
-               &:not(:first-child) {
-                  margin-left: 0;
-               }
-
-               &:first-child {
-                  width: 100%;
-                  .form-group {
-                     width: 40%;
-
-                     &:first-child {
-                        width: 75%;
-                     }
-                  }
-               }
-
-               &:nth-child(2), &:last-child {
-                  width: 100%;
-                  gap: 16px;
-                  .form-group {
-                     width: 100%;
-                     &:last-child {
-                        width: 100%;
-                        margin-left: 0;
-                     }
-                  }
-               }
-            }
-         }
-
-         &.index {
-            position: relative;
-            margin-top: 0;
-
-            .col {
-               position: unset;
-            }
-
-            .registrationMarksGrid {
-               margin-top: 300px;
-            }
-
-            .no-results {
-               margin: 280px 0 80px 0;
-            }
-         }
-      }
-   }
-
-   @media (max-width: 430px) {
-      .registrationMarks {
-         &__filters {
-            padding: 24px 16px;
-            .divider {
-               &:first-child {
-                  .form-group {
-                     &:not(:first-child) {
-                        margin-left: 8px;
-                     }
-                  }
-               }
-               .select-menu_label {
-                  padding: 26px 12px;
-               }
-
-               .text-input {
-                  input {
-                     padding: 12px;
-                  }
-               }
-            }
-         }
-
-         &.index {
-            .container {
-               padding: 0 10px;
-            }
-         }
-      }
-   }
-
-   @media (max-width: 365px) {
-      .registrationMarks {
-         &__filters {
-            padding: 20px 12px;
-         }
-      }
-   }
+   //@media (max-width: 365px) {
+   //   .registrationMarks {
+   //      &__filters {
+   //         padding: 20px 12px;
+   //      }
+   //   }
+   //}
 </style>

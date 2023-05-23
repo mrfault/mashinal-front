@@ -133,12 +133,12 @@
 <style lang="scss">
    .registrationMarksGridItem {
       display: inline-block;
-      width: 224px;
+      width: 256px;
       border-radius: 12px;
       border: 1px solid #CDD5DF;
       background-color: #FFFFFF;
       height: max-content;
-      margin: 0 0 45px 20px;
+      margin: 0 0 24px 20px;
       cursor: pointer;
 
       &__head {
@@ -278,105 +278,105 @@
       }
    }
 
-   @media (max-width: 1250px) {
+   @media (max-width: 1150px) {
       .registrationMarksGridItem {
-         width: 212px;
+         width: 220px;
 
          &__head {
             h3 {
-               font-size: 34px;
+               //font-size: 34px;
             }
          }
       }
    }
 
-   @media (max-width: 1025px) {
-      .registrationMarksGridItem {
-         width: 235px;
-
-         &__head {
-            h3 {
-               font-size: 38px;
-            }
-         }
-      }
-   }
-
-   @media (max-width: 540px) {
+   @media (max-width: 992px) {
       .registrationMarksGridItem {
          justify-content: unset;
          margin: 0 0 25px 0;
          width: 48%;
 
-         &__head {
-            h3 {
-               font-size: 35px;
-            }
-         }
+         //&__head {
+         //   h3 {
+         //      font-size: 38px;
+         //   }
+         //}
       }
    }
 
-   @media (max-width: 500px) {
+   @media (max-width: 540px) {
       .registrationMarksGridItem {
-         &__head {
-            h3 {
-               font-size: 32px;
-            }
-         }
+
+
+         //&__head {
+         //   h3 {
+         //      font-size: 35px;
+         //   }
+         //}
       }
    }
 
-   @media (max-width: 470px) {
-      .registrationMarksGridItem {
-         &__head {
-            h3 {
-               font-size: 30px;
-            }
-         }
-      }
-   }
-
-   @media (max-width: 450px) {
-      .registrationMarksGridItem {
-         &__head {
-            h3 {
-               font-size: 28px;
-            }
-         }
-      }
-   }
-
-   @media (max-width: 425px) {
-      .registrationMarksGridItem {
-         margin: 0 0 15px 0;
-
-         &__head {
-            height: 40px;
-
-            svg {
-               width: 18px;
-            }
-
-            h3 {
-               font-size: 25px;
-            }
-         }
-
-         &__main {
-            padding: 18px 12px 12px 12px;
-         }
-      }
-   }
-
-   @media (max-width: 370px) {
-      .registrationMarksGridItem {
-         width: 47%;
-
-         &__head {
-            h3 {
-               font-size: 20px;
-            }
-         }
-      }
-   }
+   //@media (max-width: 500px) {
+   //   .registrationMarksGridItem {
+   //      &__head {
+   //         h3 {
+   //            font-size: 32px;
+   //         }
+   //      }
+   //   }
+   //}
+   //
+   //@media (max-width: 470px) {
+   //   .registrationMarksGridItem {
+   //      &__head {
+   //         h3 {
+   //            font-size: 30px;
+   //         }
+   //      }
+   //   }
+   //}
+   //
+   //@media (max-width: 450px) {
+   //   .registrationMarksGridItem {
+   //      &__head {
+   //         h3 {
+   //            font-size: 28px;
+   //         }
+   //      }
+   //   }
+   //}
+   //
+   //@media (max-width: 425px) {
+   //   .registrationMarksGridItem {
+   //      margin: 0 0 15px 0;
+   //
+   //      &__head {
+   //         height: 40px;
+   //
+   //         svg {
+   //            width: 18px;
+   //         }
+   //
+   //         h3 {
+   //            font-size: 25px;
+   //         }
+   //      }
+   //
+   //      &__main {
+   //         padding: 18px 12px 12px 12px;
+   //      }
+   //   }
+   //}
+   //
+   //@media (max-width: 370px) {
+   //   .registrationMarksGridItem {
+   //      width: 47%;
+   //
+   //      &__head {
+   //         h3 {
+   //            font-size: 20px;
+   //         }
+   //      }
+   //   }
+   //}
 </style>

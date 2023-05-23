@@ -5,21 +5,37 @@
       { 'loading-content': pending, paginated: paginate },
     ]"
    >
-      <div :class="{ container: hasContainer }">
-         <div class="title grid-title" v-if="title && showTitle">
-            <h2>
-               <icon :name="iconName" v-if="iconName"/>
-               <span>{{ title }}</span>
-               <span v-if="numberOfAds">: {{ numberOfAds }} {{ $t('things') }}</span>
-            </h2>
-            <nuxt-link v-if="showAll" :to="showAll">
-               {{ $t('all') }}
-               <icon name="arrow-right"/>
-            </nuxt-link>
-         </div>
+      <div class="container">
+         <Cap :className="'mb40 px-1'" v-if="title && showTitle">
+            <template #left>
+               <h3>{{ $t('featured_ads') }}</h3>
+            </template>
+
+            <template #right>
+               <nuxt-link to="">
+                  <span>{{ $t('see_all') }}</span>
+                  <icon name="arrow-right"/>
+
+               </nuxt-link>
+            </template>
+         </Cap>
       </div>
 
-      <div :class="{ container: hasContainer }">
+<!--      <div :class="['px-3 px-sm-1', { container: hasContainer }]">-->
+<!--         <div class="title grid-title" v-if="title && showTitle">-->
+<!--            <h2>-->
+<!--               <icon :name="iconName" v-if="iconName"/>-->
+<!--               <span>{{ title }}</span>-->
+<!--               <span v-if="numberOfAds">: {{ numberOfAds }} {{ $t('things') }}</span>-->
+<!--            </h2>-->
+<!--            <nuxt-link v-if="showAll" :to="showAll">-->
+<!--               {{ $t('all') }}-->
+<!--               <icon name="arrow-right"/>-->
+<!--            </nuxt-link>-->
+<!--         </div>-->
+<!--      </div>-->
+
+      <div :class="['px-3 px-sm-1', { container: hasContainer }]">
          <div class="row mb-n2 mb-lg-n3">
             <!-- <span class="test" ref="scrollToMe"></span> -->
             <template v-for="(announcement, index) in announcements">
@@ -40,8 +56,8 @@
                            'col-lg-mid': checkItemIndex(index + 2, announcement) || (announcement.external && !isMobileBreakpoint),
                            'pt-4 mt-1': checkItemTop(index, announcement) || (announcement.external && !isMobileBreakpoint),
                            'pb-4 mb-4': checkItemBottom(index, announcement) || (announcement.external && !isMobileBreakpoint),
-                           'col-6 col-xs-12 col-lg-3 col-xl-auto': !isProfilePage,
-                           'col-6 col-xs-6 col-lg-3 col-xl-auto': isProfilePage,
+                           'col-6 col-md-4 col-xs-12 col-lg-3 col-xl-auto': !isProfilePage,
+                           'col-6 col-md-4 col-xs-6 col-lg-3 col-xl-auto': isProfilePage,
                          },
                          checkItemB(index, announcement)
                            ? 'col-b mb-0 pb-2 mb-lg-4 mt-lg-6 pt-lg-4 pb-lg-4'
@@ -168,6 +184,7 @@
 </template>
 
 <script>
+import Cap from "~/components/elements/Cap.vue";
 import GridItem from '~/components/announcements/GridItem';
 import SiteBanner from "~/components/banners/SiteBanner";
 import RegistrationMarksGrid from "~/components/announcements/RegistrationMarksGrid.vue";
@@ -226,6 +243,7 @@ export default {
    },
 
    components: {
+      Cap,
       SiteBanner,
       GridItem,
       RegistrationMarksGrid,
