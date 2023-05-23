@@ -49,4 +49,28 @@
          }
       }
    }
+
+   @media (max-width: 992px) {
+      .cap {
+         h3 {
+            font-size: 25px;
+         }
+      }
+   }
+
+   @media (max-width: 570px) {
+      .cap {
+         h3 {
+            font-size: 22px;
+         }
+      }
+   }
+
+   @media (max-width: 375px) {
+      .cap {
+         h3 {
+            font-size: 20px;
+         }
+      }
+   }
 </style>

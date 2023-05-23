@@ -111,10 +111,8 @@
                               :label="$t('show_cheap_first')"
                               :options="sortItems"
                               :clearPlaceholder="true"
-                              :allowClear="false"
-                              :hasSearch="false"
+                              :clear-option="false"
                               v-model="form.sorting"
-                              has-search
                            />
                         </template>
                      </Cap>
@@ -530,195 +528,206 @@
    @media (max-width: 992px) {
       .registrationMarks {
          &__hero {
-            //height: 230px;
+            height: 230px;
+
             &-text {
-               //left: 40px;
-               //bottom: 30px;
+               left: 40px;
+               bottom: 30px;
 
                .breadcrumbs {
-                  //display: flex !important;
+                  display: flex !important;
 
                   ul {
-                     //height: 40px;
+                     height: 40px;
                   }
                }
             }
 
             &-title {
-               //font-size: 30px;
+               font-size: 30px;
             }
          }
 
          &__filters {
-            //flex-wrap: wrap;
+            flex-wrap: wrap;
+
             .divider {
                &:not(:first-child) {
-                  //margin-left: unset;
-                  //margin-top: 15px;
+                  margin-left: unset;
+                  margin-top: 15px;
                }
 
                &:first-child {
                   .form-group {
-                     //width: 80px;
+                     width: 69px;
 
                      &:first-child {
-                        //width: 154px;
+                        width: 255px;
                      }
                   }
                }
 
-               &:last-child {
-                  //margin-left: 10px;
+               &:nth-child(2) {
                   .form-group {
+                     width: 119px;
+                  }
+               }
+
+               &:last-child {
+                  margin-left: 16px;
+
+                  .form-group {
+                     width: 112px;
+
                      &:last-child {
-                        //width: 100px;
+                        width: 112px;
                      }
                   }
                }
             }
          }
 
-         .pagination {
-            //margin: 0 0 65px 0;
+         //.pagination {
+         //   margin: 0 0 65px 0;
+         //}
+      }
+   }
+
+   @media (max-width: 570px) {
+      .registrationMarks {
+         &__hero {
+            display: none;
+
+            &.mobile {
+               display: block;
+               border-radius: unset;
+
+               .breadcrumbs {
+                  ul {
+                     height: 20px;
+
+                     li {
+                        font-size: 12px;
+
+                        .icon-home {
+                           &:before {
+                              font-size: 12px;
+                           }
+                        }
+
+                        .icon-chevron-right {
+                           &:before {
+                              font-size: 8px;
+                           }
+                        }
+                     }
+                  }
+               }
+
+               .registrationMarks__hero-text {
+                  left: 20px;
+                  bottom: 20px;
+               }
+
+               .registrationMarks__hero-title {
+                  font-size: 24px;
+               }
+            }
+         }
+
+         &__filters {
+            position: absolute;
+            top: 231px;
+            left: 0;
+            margin: 0;
+            border: none;
+            border-radius: unset;
+            .divider {
+               &:not(:first-child) {
+                  margin-left: 0;
+               }
+
+               &:first-child {
+                  width: 100%;
+                  .form-group {
+                     width: 40%;
+
+                     &:first-child {
+                        width: 75%;
+                     }
+                  }
+               }
+
+               &:nth-child(2), &:last-child {
+                  width: 100%;
+                  gap: 16px;
+                  .form-group {
+                     width: 100%;
+                     &:last-child {
+                        width: 100%;
+                        margin-left: 0;
+                     }
+                  }
+               }
+            }
+         }
+
+         &.index {
+            position: relative;
+            margin-top: -32px;
+
+            .col {
+               position: unset;
+            }
+
+            .registrationMarksGrid {
+               margin-top: 270px;
+            }
+
+            .no-results {
+               margin: 280px 0 80px 0;
+            }
          }
       }
    }
 
-   //@media (max-width: 540px) {
-   //   .registrationMarks {
-   //      &__hero {
-   //         display: none;
-   //
-   //         &.mobile {
-   //            display: block;
-   //            border-radius: unset;
-   //
-   //            .breadcrumbs {
-   //               ul {
-   //                  height: 20px;
-   //
-   //                  li {
-   //                     font-size: 12px;
-   //
-   //                     .icon-home {
-   //                        &:before {
-   //                           font-size: 12px;
-   //                        }
-   //                     }
-   //
-   //                     .icon-chevron-right {
-   //                        &:before {
-   //                           font-size: 8px;
-   //                        }
-   //                     }
-   //                  }
-   //               }
-   //            }
-   //
-   //            .registrationMarks__hero-text {
-   //               left: 20px;
-   //               bottom: 20px;
-   //            }
-   //
-   //            .registrationMarks__hero-title {
-   //               font-size: 24px;
-   //            }
-   //         }
-   //      }
-   //
-   //      &__filters {
-   //         position: absolute;
-   //         top: 231px;
-   //         left: 0;
-   //         margin: 0;
-   //         border: none;
-   //         border-radius: unset;
-   //         .divider {
-   //            &:not(:first-child) {
-   //               margin-left: 0;
-   //            }
-   //
-   //            &:first-child {
-   //               width: 100%;
-   //               .form-group {
-   //                  width: 40%;
-   //
-   //                  &:first-child {
-   //                     width: 75%;
-   //                  }
-   //               }
-   //            }
-   //
-   //            &:nth-child(2), &:last-child {
-   //               width: 100%;
-   //               gap: 16px;
-   //               .form-group {
-   //                  width: 100%;
-   //                  &:last-child {
-   //                     width: 100%;
-   //                     margin-left: 0;
-   //                  }
-   //               }
-   //            }
-   //         }
-   //      }
-   //
-   //      &.index {
-   //         position: relative;
-   //         margin-top: 0;
-   //
-   //         .col {
-   //            position: unset;
-   //         }
-   //
-   //         .registrationMarksGrid {
-   //            margin-top: 300px;
-   //         }
-   //
-   //         .no-results {
-   //            margin: 280px 0 80px 0;
-   //         }
-   //      }
-   //   }
-   //}
+   @media (max-width: 430px) {
+      .registrationMarks {
+         &__filters {
+            padding: 24px 16px;
+            .divider {
+               &:first-child {
+                  .form-group {
+                     &:not(:first-child) {
+                        margin-left: 8px;
+                     }
+                  }
+               }
+               .select-menu_label {
+                  padding: 26px 12px;
+               }
 
-   //@media (max-width: 430px) {
-   //   .registrationMarks {
-   //      &__filters {
-   //         padding: 24px 16px;
-   //         .divider {
-   //            &:first-child {
-   //               .form-group {
-   //                  &:not(:first-child) {
-   //                     margin-left: 8px;
-   //                  }
-   //               }
-   //            }
-   //            .select-menu_label {
-   //               padding: 26px 12px;
-   //            }
-   //
-   //            .text-input {
-   //               input {
-   //                  padding: 12px;
-   //               }
-   //            }
-   //         }
-   //      }
-   //
-   //      &.index {
-   //         .container {
-   //            padding: 0 10px;
-   //         }
-   //      }
-   //   }
-   //}
+               .text-input {
+                  input {
+                     padding: 12px;
+                  }
+               }
+            }
+         }
 
-   //@media (max-width: 365px) {
-   //   .registrationMarks {
-   //      &__filters {
-   //         padding: 20px 12px;
-   //      }
-   //   }
-   //}
+         &.index {
+            .container {
+               padding: 0 10px;
+            }
+         }
+      }
+   }
+
+   @media (max-width: 365px) {
+      .registrationMarks {
+         &__filters {
+            padding: 20px 12px;
+         }
+      }
+   }
 </style>

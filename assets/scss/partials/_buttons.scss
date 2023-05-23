@@ -148,7 +148,7 @@
    outline: none;
    width: 24px;
    height: 24px;
-   background-image: url('../../static/icons/star-favorite.svg');
+   background-image: url('../../static/icons/star-favorite2.svg');
    background-position: center;
    background-repeat: no-repeat;
 
@@ -161,13 +161,13 @@
 @media (min-width: 800px) {
    .btn-favorite {
       &:hover {
-         background-image: url('../../static/icons/star-favorite-active.svg');
+         background-image: url('../../static/icons/star-favorite2-active.svg');
       }
    }
 }
 
 .btn-favorite-active {
-   background-image: url('../../static/icons/star-favorite-active.svg');
+   background-image: url('../../static/icons/star-favorite2-active.svg');
 }
 
 .btn-compare {
