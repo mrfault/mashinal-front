@@ -118,7 +118,11 @@ export default {
       });
    },
    mounted() {
+      if (this.$route.query.active_tab &&  this.$route.query.active_tab=='registration_badges'){
+         this.activeTab=2
+      }
       this.$nuxt.$on('refresh-my-announcements', () => this.refresh++);
+
    },
    async asyncData({store, route}) {
       let status = ['0', '1', '2', '3'].includes(route.query.status) ? parseInt(route.query.status) : '';
@@ -182,7 +186,8 @@ export default {
             { id: 2, name: this.$t('registration_badges') }
          ]
       }
-   }
+   },
+
 }
 </script>
 
