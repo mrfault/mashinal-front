@@ -1,5 +1,6 @@
 <template>
-   <nav class="breadcrumbs d-none d-lg-flex align-items-center full-width">
+<!--   class="breadcrumbs d-none d-lg-flex align-items-center full-width"-->
+   <nav class="breadcrumbs d-flex align-items-center full-width">
       <ul aria-label="breadcrumb">
          <li :key="-1">
             <nuxt-link :to="$localePath('/')">
