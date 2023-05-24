@@ -256,13 +256,10 @@
         <hr class="mt-1" v-if="showMonetizationActions && showCheckbox && announcement.status === 1"/>
         <div class="item-details__actions" style="z-index: 1" v-if="showMonetizationActions">
           <template v-if="showCheckbox && announcement.status === 1">
-
               <monetization-button
                 :announcement="announcement"
                 class-name="red-outline"
               />
-
-
           </template>
         </div>
       </div>
