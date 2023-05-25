@@ -40,9 +40,7 @@
           </label>
 
 
-
-
-          <label class="radio-container" v-if="this.$auth.loggedIn && this.user.balance>10 && this.user.balance>this.price.value">
+          <label class="radio-container" v-if="this.$auth.loggedIn && this.user.balance > minimumPrice  && this.user.balance>this.price.value">
              {{$t('balans')}}
              <input type="radio"   name="payment_type" :checked="paymentMethod=='balance'" @change="paymentMethod='balance'">
              <span class="checkmark"></span>
@@ -66,10 +64,7 @@
         <div class="row">
 
           <div class="col-12 col-lg-12 mt-2 mt-lg-0">
-            <button
-              :class="['btn btn--green full-width', { pending }]"
-              @click="getAnAd"
-            >
+            <button :class="['btn btn--green full-width', { pending }]" @click="getAnAd" >
               {{ $t('pay') }}
             </button>
           </div>
@@ -114,6 +109,7 @@ export default {
     return {
       pending: false,
       priceList: [],
+       minimumPrice:null,
       day: {
         value: 7,
         min: 1,
@@ -124,12 +120,12 @@ export default {
         min: 0.5,
         max: 1,
       },
+
     }
   },
   computed: {
     ...mapGetters(['user']),
     ...mapGetters({
-      bankingCards: 'bankingCards/bankingCards'
     }),
     totalBalance() {
       let balance = this.user ? this.user.balance : 0;
@@ -194,13 +190,10 @@ export default {
         this.paymentMethod = 'card'
       }
 
-       console.log(this.selectedPlan)
-
       let form = {
         id_unique: this.announcement.id_unique,
         monetize_id: this.selectedPlan.id,
         type: this.paymentMethod,
-        card_id: this.bankingCard
       };
 
       if(this.multiple) {
@@ -244,10 +237,21 @@ export default {
        this.showPaymentModal = true
     },
   },
-  created() {
+  beforeCreate() {
     this.$axios.$get('/monetization/price/list').then((res) => {
 
       this.priceList = res
+
+       this.minimumPrice=this.priceList[0].price
+       for (let i = 1; i < this.priceList.length; i++) {
+          const price = parseFloat(this.priceList[i].price);
+
+          if (price < this.minimumPrice) {
+
+             this.minimumPrice = price;
+          }
+       }
+
 
 
        this.price.value=res[0].price

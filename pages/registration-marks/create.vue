@@ -47,7 +47,7 @@
                               v-model="region_letter2"
                               has-search
                            />
-<!--                           :invalid="$v.region_letter2.$error"-->
+                           <!--                           :invalid="$v.region_letter2.$error"-->
                         </div>
 
                         <div class="col-1 col-md-2" style="width: 19.4%; flex: 0 0 19.4%; max-width: 19.4%">
@@ -109,7 +109,7 @@
                            <h5 class="registrationMarks__create-note">
                               <inline-svg src="/icons/reason.svg"/>
 
-                              <p v-html="$t('registration_marks_text')" />
+                              <p v-html="$t('registration_marks_text')"/>
                            </h5>
                         </div>
                      </div>
@@ -136,146 +136,163 @@
 </template>
 
 <script>
-   import {mapGetters} from "vuex";
-   import {required, minLength} from "vuelidate/lib/validators";
+import {mapGetters} from "vuex";
+import {minLength, required} from "vuelidate/lib/validators";
 
-   import {PaymentMixin} from '~/mixins/payment';
 
-   export default {
-      head() {
-         return this.$headMeta({
-            title: this.$t('registration_marks'),
-         });
-      },
+import {PaymentMixin} from '~/mixins/payment';
 
-      mixins: [PaymentMixin],
+export default {
+   head() {
+      return this.$headMeta({
+         title: this.$t('registration_marks'),
+      });
+   },
 
-      data() {
-         return {
-            pending: false,
+   mixins: [PaymentMixin],
 
-            region_id: '',
-            region_letter1: '',
-            region_letter2: '',
-            region_number: '',
+   data() {
+      return {
+         pending: false,
 
-            numbers: [
-               {name: 'A'},
-               {name: 'B'},
-               {name: 'C'},
-               {name: 'D'},
-               {name: 'E'},
-               {name: 'F'},
-               {name: 'G'},
-               {name: 'H'},
-               {name: 'I'},
-               {name: 'J'},
-               {name: 'K'},
-               {name: 'L'},
-               {name: 'M'},
-               {name: 'N'},
-               {name: 'O'},
-               {name: 'P'},
-               {name: 'Q'},
-               {name: 'R'},
-               {name: 'S'},
-               {name: 'T'},
-               {name: 'U'},
-               {name: 'V'},
-               {name: 'W'},
-               {name: 'X'},
-               {name: 'Y'},
-               {name: 'Z'}
-            ],
-            currency: [
-               {id: 1, name: 'AZN'},
-               {id: 2, name: 'USD'},
-               // { id: 3, name: 'EUR' }
-            ],
+         region_id: '',
+         region_letter1: '',
+         region_letter2: '',
+         region_number: '',
 
-            form: {
-               car_number: '',
-               price: '',
-               currency_id: 1,
-               region_id: 1,
-               comment: ''
-            }
-         }
-      },
+         numbers: [
+            {name: 'A'},
+            {name: 'B'},
+            {name: 'C'},
+            {name: 'D'},
+            {name: 'E'},
+            {name: 'F'},
+            {name: 'G'},
+            {name: 'H'},
+            {name: 'I'},
+            {name: 'J'},
+            {name: 'K'},
+            {name: 'L'},
+            {name: 'M'},
+            {name: 'N'},
+            {name: 'O'},
+            {name: 'P'},
+            {name: 'Q'},
+            {name: 'R'},
+            {name: 'S'},
+            {name: 'T'},
+            {name: 'U'},
+            {name: 'V'},
+            {name: 'W'},
+            {name: 'X'},
+            {name: 'Y'},
+            {name: 'Z'}
+         ],
+         currency: [
+            {id: 1, name: 'AZN'},
+            {id: 2, name: 'USD'},
+            // { id: 3, name: 'EUR' }
+         ],
 
-      methods: {
-         resetForm() {
-            for (const item in this.form) {
-               this.form[item] = '';
-            }
-
-            this.region_id = '';
-            this.region_letter1 = '';
-            this.region_letter2 = '';
-            this.region_number = '';
-
-            this.$v.$reset();
-         },
-
-         async handleSubmit() {
-            this.$v.$touch();
-            if (this.$v.$error) return;
-
-            this.pending = true;
-
-            this.form.car_number = `${this.region_id.split('-')[0].slice(0, -1)} - ${this.region_letter1}${this.region_letter2} - ${this.region_number}`;
-
-            try {
-               const res = await this.$axios.$post(`/sell/plate/post/publish?is_mobile=${this.isMobileBreakpoint}`, this.form);
-
-               if (!res?.data?.redirect_url) {
-                  await this.$nuxt.refresh();
-                  this.updatePaidStatus({
-                     type: 'success',
-                     text: this.$t('announcement_paid'),
-                     title: this.$t('success_payment')
-                  });
-               } else {
-                  await this.handlePayment(res, this.$localePath('/profile/announcements'), this.$t('announcement_paid'));
-                  if (this.getResetForm) await this.resetForm();
-                  this.pending = false;
-               }
-            } catch (error) {
-               this.pending = false;
-            }
-         }
-      },
-
-      computed: {
-         ...mapGetters({
-            getRegionNumbers: 'getRegionNumbers',
-            cities: 'sellOptions',
-            getResetForm: 'getResetForm'
-         }),
-
-         crumbs() {
-            return [
-               { name: this.$t('place_an_ad'), route: '/sell' },
-               { name: this.$t('place_an_ad') }
-            ]
-         }
-      },
-
-      async fetch({store}) {
-         await store.dispatch('fetchRegionNumbers');
-         await store.dispatch('getOptions');
-      },
-
-      validations: {
-         region_id: {required},
-         region_letter1: {required},
-         // region_letter2: {required},
-         region_number: {required, minLength: minLength(3)},
          form: {
-            price: {required},
-            currency_id: {required},
-            region_id: {required}
+            car_number: '',
+            price: '',
+            currency_id: 1,
+            region_id: 1,
+            comment: ''
          }
       }
+   },
+
+   methods: {
+      isCookieSet(cookieName) {
+         const cookies = document.cookie.split(';');
+         for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Check if the cookie starts with the desired name
+            if (cookie.indexOf(cookieName + '=') === 0) {
+               return true;
+            }
+         }
+         return false;
+      },
+      resetForm() {
+         for (const item in this.form) {
+            this.form[item] = '';
+         }
+
+         this.region_id = '';
+         this.region_letter1 = '';
+         this.region_letter2 = '';
+         this.region_number = '';
+
+         this.$v.$reset();
+      },
+
+      async handleSubmit() {
+
+         this.$v.$touch();
+         if (this.$v.$error) return;
+
+         this.pending = true;
+
+         this.form.car_number = `${this.region_id.split('-')[0].slice(0, -1)} - ${this.region_letter1}${this.region_letter2} - ${this.region_number}`;
+
+         try {
+            const res = await this.$axios.$post(`/sell/plate/post/publish?is_mobile=${this.isMobileBreakpoint}`, this.form);
+
+            if (!res?.data?.redirect_url) {
+               await this.$nuxt.refresh();
+               this.updatePaidStatus({
+                  type: 'success',
+                  text: this.$t('announcement_paid'),
+                  title: this.$t('success_payment')
+               });
+               if(this.isCookieSet('btl_token')){
+                  this.$router.push('/profile/announcements?active_tab=registration_badges')
+               }
+
+            } else {
+               await this.handlePayment(res, this.$localePath('/profile/announcements'), this.$t('announcement_paid'));
+               if (this.getResetForm) await this.resetForm();
+               this.pending = false;
+            }
+         } catch (error) {
+            this.pending = false;
+         }
+      }
+   },
+
+   computed: {
+      ...mapGetters({
+         getRegionNumbers: 'getRegionNumbers',
+         cities: 'sellOptions',
+         getResetForm: 'getResetForm'
+      }),
+
+      crumbs() {
+         return [
+            {name: this.$t('place_an_ad'), route: '/sell'},
+            {name: this.$t('place_an_ad')}
+         ]
+      }
+   },
+
+   async fetch({store}) {
+      await store.dispatch('fetchRegionNumbers');
+      await store.dispatch('getOptions');
+   },
+
+   validations: {
+      region_id: {required},
+      region_letter1: {required},
+      // region_letter2: {required},
+      region_number: {required, minLength: minLength(3)},
+      form: {
+         price: {required},
+         currency_id: {required},
+         region_id: {required}
+      }
    }
+}
 </script>
