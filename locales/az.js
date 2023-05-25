@@ -2555,4 +2555,5 @@ export default {
    "ad_sorting": "Elanların sıralanması",
    "terminal_popup_title" : "terminalları vasitəsilə balans artırılması aşağıdakı qaydadadır:",
    "plate_announce_key" : "Elan yerləşdirildi",
+   "announcement_monetization_is_paid" : "{date} tarixinə  kimi ödənilib. "
 }

@@ -249,7 +249,7 @@ export default {
                   title: this.$t('success_payment')
                });
                if(this.isCookieSet('btl_token')){
-                  this.$router.push('/profile/announcements?active_tab=registration_badges')
+                  this.$router.push(this.$localePath('/profile/announcements?active_tab=registration_badges'))
                }
 
             } else {
