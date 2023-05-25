@@ -4,6 +4,7 @@
     @click.stop="openPaymentModal()"
   >
     {{ $t('featured_ads_2') }}
+
     <modal-popup
       :toggle="showPaymentModal"
       :title="$t('featured_ads_2')"
@@ -11,8 +12,13 @@
       @close="showPaymentModal = false"
     >
 
+
       <div class="ads_statics">
-        <div>{{$t('ads_title')}}</div>
+        <div>
+           <span  v-if="announcement.monetization && announcement.monetization.end_at">{{$t('announcement_monetization_is_paid',{date:getOnlyDate(announcement.monetization.end_at)})}}</span>
+           <br>
+        {{$t('ads_title')}}</div>
+
       </div>
 
       <hr />
@@ -171,6 +177,14 @@ export default {
     },
   },
   methods: {
+
+   getOnlyDate(dateTime){
+      let date = new Date(dateTime);
+      let year = date.getFullYear();
+      let month = (date.getMonth() + 1).toString().padStart(2, '0');
+      let day = date.getDate().toString().padStart(2, '0');
+      return year + '-' + month + '-' + day;
+   },
 
     selectPackage(day,price){
     this.day.value=day

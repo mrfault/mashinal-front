@@ -2419,4 +2419,5 @@ export default {
    "ad_sorting":"Сортировка объявлений",
    "terminal_popup_title" : "Правила пополнения баланса через терминалы:",
    "plate_announce_key" : "Размещено объявление",
+   "announcement_monetization_is_paid" : "Оплачено до {date}."
 }
