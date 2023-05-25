@@ -182,7 +182,7 @@ export default {
                name: this.$translateHard(this.catalog?.generation?.name[this.locale]),
                route: this.getFilterLink('brand-model-generation')
             },
-            {name: '#' + this.announcement.id_unique}
+            {name: this.announcement.id_unique}
          ]
       }
    },

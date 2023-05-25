@@ -135,7 +135,7 @@ export default {
           route: `/parts/${this.announcement.category.slug[this.locale]}?parts_filter={"brand_ids":[${this.announcement.brand?.id}]}`
         },
         {
-          name: '#' + this.announcement.id_unique
+          name: this.announcement.id_unique
         }
       ]
 
