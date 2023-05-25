@@ -172,7 +172,7 @@ export default {
     background-repeat: no-repeat;
     position: absolute;
     z-index: 50;
-    top: 60px;
+    top: 35%;
     padding: 20px;
     min-width: 550px;
 

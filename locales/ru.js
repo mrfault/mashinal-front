@@ -520,7 +520,7 @@ export default {
    "create_online_store_desc": "Все запчасти, относящиеся к автомобилю, находятся по одному адресу",
    "credit": "Кредит",
    "credit_amount": "Сумма кредита",
-   "credit_possible": "В кредите",
+   "credit_possible": "Возможен",
    "credit_term": "Срок кредита",
    "credits": "Кредиты",
    "Cruise control": "Круиз-контроль",
