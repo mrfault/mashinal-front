@@ -129,7 +129,7 @@ export default {
         { name: this.$t('commercial'), route: '/commercial' },
         { name: this.$translateSoft(this.announcement.commercial_brand.name), route: this.getFilterLink('brand') },
         { name: this.$translateSoft(this.announcement.commercial_model.name), route: this.getFilterLink('brand-model') },
-        { name: '#'+this.announcement.id_unique }
+        { name: this.announcement.id_unique }
       ]
     }
   },
