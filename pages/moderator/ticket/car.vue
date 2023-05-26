@@ -425,7 +425,7 @@
                               <photo-reject-reason
                                  v-if="imageModal.isOpen"
                                  :default_data="rejectObj.rejectArray"
-                                 :modal__title="$t('image_reject_reason')"
+                                 :modal__title="'Car number reject reasons'"
                                  :type="'car'"
                                  @close="imageModal.isOpen = false"
                                  @save="savePhotoIssues"
@@ -704,6 +704,7 @@ export default {
                'left_error',],
             modalToggled: false,
          },
+
 
 
          //  360

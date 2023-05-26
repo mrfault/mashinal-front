@@ -2419,5 +2419,10 @@ export default {
    "ad_sorting":"Сортировка объявлений",
    "terminal_popup_title" : "Правила пополнения баланса через терминалы:",
    "plate_announce_key" : "Размещено объявление",
-   "announcement_monetization_is_paid" : "Оплачено до {date}."
+   "announcement_monetization_is_paid" : "Оплачено до {date}.",
+   "car_number_reject_1": "Бейдж регистрации уже доступен на сайте",
+   "car_number_reject_2": "Неправильно зарегистрирован номерной знак",
+   "car_number_reject_model_title": "Причины отклонения регистрационного номера",
+   "vin_reject_1": "Vin уже доступен на сайте",
+   "vin_reject_2": "Vin больше не регистрируется правильно",
 }

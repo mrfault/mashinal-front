@@ -2555,5 +2555,10 @@ export default {
    "ad_sorting": "Elanların sıralanması",
    "terminal_popup_title" : "terminalları vasitəsilə balans artırılması aşağıdakı qaydadadır:",
    "plate_announce_key" : "Elan yerləşdirildi",
-   "announcement_monetization_is_paid" : "{date} tarixinə  kimi ödənilib. "
+   "announcement_monetization_is_paid" : "{date} tarixinə  kimi ödənilib. ",
+   "car_number_reject_1" : "Qeydiyyat nişanı artıq saytda mövcuddur",
+   "car_number_reject_2" : "Qeydiyyat nişanı düzgün qeyd olunmayıb",
+   "car_number_reject_model_title" : "Qeydiyyat nömrəsinin imtina səbəbləri",
+   "vin_reject_1" : "Vin artıq saytda mövcuddur",
+   "vin_reject_2" : "Vin artıq düzgün qeyd olunmayıbr",
 }
