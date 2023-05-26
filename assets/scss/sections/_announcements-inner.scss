@@ -976,7 +976,6 @@
    }
    .announcements-inner {
       padding-bottom: 50px;
-
       .quick-info {
          border-radius: 0;
       }
@@ -992,12 +991,15 @@
    border-radius: 4px;
    color: white;
    font-size: 14px;
-
+   height: 45px;
    display: flex;
    align-items: center;
    justify-content: center;
    padding: 12px;
-
+   span {
+      text-align: center;
+      font-weight: 600;
+   }
 }
 
 .radio-items {

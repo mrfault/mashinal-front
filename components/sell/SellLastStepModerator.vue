@@ -461,7 +461,7 @@
                <title-with-line-and-reject-reason
 
                   hideRejectReason
-                  title="anchor-car_or_vin"
+     title="vin_carcase_number"
                   v-if="
               !loggedIn ||
               (loggedIn && !user.autosalon) ||
