@@ -82,7 +82,6 @@
                      <nuxt-link to="">
                         <span>{{ nonOfficialSalons.length }}</span>
                         <span>{{ $t('autosalon') }}</span>
-
                      </nuxt-link>
                   </template>
                </Cap>

@@ -20,7 +20,7 @@
    }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
    .cap {
       display: flex;
       align-items: center;
@@ -62,6 +62,15 @@
       .cap {
          h3 {
             font-size: 22px;
+         }
+
+         .form-group {
+            .select-menu {
+               &_label {
+                  font-size: 15px;
+                  height: 48px;
+               }
+            }
          }
       }
    }

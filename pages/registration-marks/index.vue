@@ -108,7 +108,7 @@
 
                         <template #right>
                            <form-select
-                              :label="$t('show_cheap_first')"
+                              :label="$t('show_by_date')"
                               :options="sortItems"
                               :clearPlaceholder="true"
                               :clear-option="false"

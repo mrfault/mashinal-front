@@ -1337,9 +1337,8 @@ export const actions = {
       commit("mutate", {property: "salonsFiltered", value: res});
    },
    async getSalonById({commit}, data) {
-      const res = await this.$axios.$get(
-         "/auto_salon/" + data.slug + "?page=" + (data.page || 1)
-      );
+      const res = await this.$axios.$get(`/auto_salon/${data.slug}?page=${(data.page || 1)}'&sorting=${data.sorting}`);
+      // const res = await this.$axios.$get("/auto_salon/" + data.slug + "?page=" + (data.page || 1) + '&sorting: '+ data.sorting);
       commit("mutate", {property: "salonSingle", value: res});
    },
    async getMySalon({commit}, {id}) {
