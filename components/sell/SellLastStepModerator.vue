@@ -489,6 +489,7 @@
                      @close="vinModal.vinModalIsOpen= false"
                      @save="saveVinReject"
                   />
+
                </transition>
 
 
