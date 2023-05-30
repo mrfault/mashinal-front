@@ -2560,5 +2560,5 @@ export default {
    "car_number_reject_2" : "Qeydiyyat nişanı düzgün qeyd olunmayıb",
    "car_number_reject_model_title" : "Qeydiyyat nömrəsinin imtina səbəbləri",
    "vin_reject_1" : "Vin artıq saytda mövcuddur",
-   "vin_reject_2" : "Vin artıq düzgün qeyd olunmayıbr",
+   "vin_reject_2" : "Vin  düzgün qeyd olunmayıb",
 }

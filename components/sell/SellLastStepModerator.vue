@@ -403,7 +403,7 @@
                <transition name="fade">
                   <car-number-reject-reason
                      v-if="carNumberModal.carNumberModalIsOpen"
-
+                     :default_data="rejectObj.rejectArray"
                      :modal__title="$t('car_number_reject_model_title')"
                      :type="'car'"
                      @close="carNumberModal.carNumberModalIsOpen= false"
@@ -465,9 +465,7 @@
                   v-if="
               !loggedIn ||
               (loggedIn && !user.autosalon) ||
-              (loggedIn && user.autosalon && user.autosalon.is_official) ||
-              user.external_salon
-            "
+              (loggedIn && user.autosalon && user.autosalon.is_official) || user.external_salon "
                >
                   <div class="mb-2 ml-2" style="display: inline-block; z-index: 0;">
                      <reject-reason
@@ -483,7 +481,7 @@
                <transition name="fade">
                   <vin-reject-reason
                      v-if="vinModal.vinModalIsOpen"
-
+                     :default_data="rejectObj.rejectArray"
                      :modal__title="$t('vin_carcase_number')"
                      :type="'vin'"
                      @close="vinModal.vinModalIsOpen= false"
@@ -757,7 +755,7 @@ export default {
    },
    computed: {
       ...mapState(['sellPhoneEntered']),
-      ...mapGetters(['sellOptions', 'sellSalonRights', 'staticPages', 'popularOptions',]),
+      ...mapGetters(['sellOptions', 'sellSalonRights', 'staticPages', 'popularOptions','loggedIn']),
       isModerator() {
          return this.user.admin_group && (this.user.admin_group == 2);
       },

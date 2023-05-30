@@ -16,13 +16,15 @@
                          class="overlay-checkbox__search"
                          item_key="car_number_reject_1"
                          @select-checked="handleChange"
+                         :default-checked="data.car_number_reject_1"
         />
 
        <search-checkbox :day="$t('car_number_reject_2')"
 
                         class="overlay-checkbox__search"
-                        item_key="car_number_reject_1"
+                        item_key="car_number_reject_2"
                         @select-checked="handleChange"
+                        :default-checked="data.car_number_reject_2"
        />
 
 
@@ -53,8 +55,8 @@ export default {
     return {
       data:
         {
-           car_number_reject_1: this.$t('car_number_reject_1'),
-           car_number_reject_2: this.$t('car_number_reject_2'),
+           car_number_reject_1: this.default_data.includes('car_number_reject_1'),
+           car_number_reject_2: this.default_data.includes('car_number_reject_2'),
 
         }
     }
