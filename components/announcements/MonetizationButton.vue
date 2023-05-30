@@ -12,7 +12,6 @@
       @close="showPaymentModal = false"
     >
 
-
       <div class="ads_statics p-5">
         <div>
            <span  v-if=" loggedIn &&  announcement.user_id== $auth.user.id && announcement.monetization && announcement.monetization.end_at">{{$t('announcement_monetization_is_paid',{date:getOnlyDate(announcement.monetization.end_at)})}} <br></span>
@@ -253,26 +252,31 @@ export default {
   beforeCreate() {
     this.$axios.$get('/monetization/price/list').then((res) => {
 
-      this.priceList = res
+
+       res.forEach((item)=>{
+          console.log(this.getAnnouncementType(this.announcement))
+          console.log(this.getAnnouncementType(this.announcement) == 'Part' ? 2 : 1)
+          let type= this.getAnnouncementType(this.announcement) == 'Part' ? 2 : 1
+          if (item.type ==type){
+             this.priceList.push(item)
+          }
+       })
 
        this.minimumPrice=this.priceList[0].price
+
        for (let i = 1; i < this.priceList.length; i++) {
           const price = parseFloat(this.priceList[i].price);
 
           if (price < this.minimumPrice) {
-
              this.minimumPrice = price;
           }
        }
 
 
-
        this.price.value=res[0].price
        this.day.value=res[0].days
 
-/*      this.price.min = this.pricesForPlan[0]
-      this.price.value = this.pricesForPlan[2]
-      this.price.max = this.pricesForPlan[this.pricesForPlan.length - 1]*/
+
     })
   },
 }
