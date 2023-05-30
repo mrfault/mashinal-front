@@ -13,10 +13,9 @@
     >
 
 
-      <div class="ads_statics">
+      <div class="ads_statics p-5">
         <div>
-           <span  v-if="announcement.monetization && announcement.monetization.end_at">{{$t('announcement_monetization_is_paid',{date:getOnlyDate(announcement.monetization.end_at)})}}</span>
-           <br>
+           <span  v-if="announcement.monetization && announcement.monetization.end_at">{{$t('announcement_monetization_is_paid',{date:getOnlyDate(announcement.monetization.end_at)})}} <br></span>
         {{$t('ads_title')}}</div>
 
       </div>
@@ -183,7 +182,7 @@ export default {
       let year = date.getFullYear();
       let month = (date.getMonth() + 1).toString().padStart(2, '0');
       let day = date.getDate().toString().padStart(2, '0');
-      return year + '-' + month + '-' + day;
+      return  day + '-' + month + '-' + year;
    },
 
     selectPackage(day,price){
