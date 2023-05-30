@@ -15,7 +15,7 @@
 
       <div class="ads_statics p-5">
         <div>
-           <span  v-if="announcement.monetization && announcement.monetization.end_at">{{$t('announcement_monetization_is_paid',{date:getOnlyDate(announcement.monetization.end_at)})}} <br></span>
+           <span  v-if=" loggedIn &&  announcement.user_id== $auth.user.id && announcement.monetization && announcement.monetization.end_at">{{$t('announcement_monetization_is_paid',{date:getOnlyDate(announcement.monetization.end_at)})}} <br></span>
         {{$t('ads_title')}}</div>
 
       </div>
