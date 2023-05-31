@@ -264,9 +264,9 @@ export const LayoutMixin = {
       window.addEventListener('resize', this.handleScroll)
       window.addEventListener('scroll', this.handleScroll)
       // window.addEventListener('load', this.registerSW);
-
+       this.handleResize()
       setTimeout(() => {
-        this.handleResize()
+
         this.handleScroll()
         this.pickColorMode()
         // check payment status
