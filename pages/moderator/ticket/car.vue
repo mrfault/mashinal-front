@@ -1258,6 +1258,8 @@ export default {
          window.location.href = "https://dev.mashin.al/alvcp/resources/announcements"
       },
       getSellLastStepRejectObj(value) {
+         console.log('//////////')
+         console.log(value)
          // console.log('value', value)
          // console.log('this.rejectObj.rejectArray', this.rejectObj.rejectArray)
          if (!this.rejectObj.rejectArray.includes(value)) {

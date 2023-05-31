@@ -20,7 +20,6 @@
         />
 
        <search-checkbox :day="$t('vin_reject_2')"
-
                         class="overlay-checkbox__search"
                         item_key="vin_reject_2"
                         @select-checked="handleChange"
@@ -55,7 +54,6 @@ export default {
         {
            vin_reject_1: this.default_data.includes('vin_reject_1'),
            vin_reject_2: this.default_data.includes('vin_reject_2'),
-
         }
     }
   },
@@ -76,7 +74,8 @@ export default {
 
       let key = Object.keys(v)[0];
       this.data[key] = v[key];
-       console.log(this.data)
+       this.$emit('getRejectObj', v)
+
 
     }
   },
