@@ -486,6 +486,7 @@
                      :type="'vin'"
                      @close="vinModal.vinModalIsOpen= false"
                      @save="saveVinReject"
+
                   />
 
                </transition>
@@ -827,11 +828,16 @@ export default {
                this.rejectObj.rejectArray.splice(this.rejectObj.rejectArray.indexOf(key), 1)
             }
             if (v.data[key]) {
+               console.log('---')
+               console.log(key)
                validCheckbox = false
                this.rejectObj.rejectArray.push(key)
+               this.$emit('getRejectObj', key)
             }
          })
          this.$nuxt.$emit('vin-checkbox-change', validCheckbox)
+
+
       },
 
 
@@ -845,6 +851,7 @@ export default {
             if (v.data[key]) {
                validCheckbox = false
                this.rejectObj.rejectArray.push(key)
+               this.$emit('getRejectObj', key)
             }
          })
          this.$nuxt.$emit('carNumber-checkbox-change', validCheckbox)
@@ -1080,7 +1087,11 @@ export default {
          if (rejectKey == 'vin') {
             this.vinModal.vinModalIsOpen=true
          }
-         this.$emit('getRejectObj', rejectKey)
+         if (rejectKey!='car_number' && rejectKey!='vin'){
+            this.$emit('getRejectObj', rejectKey)
+         }
+
+
          if (rejectKey === '360') {
             this.rejectObj.show360Reject = true
          } else {
@@ -1153,12 +1164,12 @@ export default {
 
    },
    watch: {
-      // rejectObj: {
-      //   deep: true,
-      //   handler() {
-      //     this.$emit('getRejectObj', this.rejectObj)
-      //   }
-      // },
+/*       rejectObj: {
+         deep: true,
+         handler() {
+           this.$emit('getRejectObj', this.rejectObj)
+         }
+       },*/
       smsRadarData: {
          deep: true,
          handler() {
