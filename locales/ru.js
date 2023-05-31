@@ -957,7 +957,7 @@ export default {
    "inspection_info": "Информация о техническом осмотре транспортного средства",
    "insurance_fee_of_vehicle": 'Стоимость страховки',
    "insurance_info": "Информация об обязательных страховых случаях",
-   "is_in_credit": "В кредите",
+   "is_in_credit": "Возможен",
    "is_main": "Основной",
    "is_main_price": "Основная сумма",
    "is_negotiable": "Договорная",

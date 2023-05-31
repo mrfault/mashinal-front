@@ -1004,7 +1004,7 @@ export default {
    insure_against_car_accidents: "Avtomobil qəzalarından sığortalanın",
    insurance_fee_of_vehicle: "Avtomobilinizin sığorta haqqı",
    insurance_info: "İcbari Sığorta hadisələri haqqında məlumat",
-   is_in_credit: "Kreditdədir",
+   is_in_credit: "Mümkündür",
    is_main: "Əsas",
    is_main_price: "Əsas məbləğ",
    is_negotiable: "Razılaşma yolu ilə",
