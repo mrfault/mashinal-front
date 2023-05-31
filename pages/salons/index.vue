@@ -24,14 +24,14 @@
 
         <template v-if="!mapView">
             <div class="container">
-                <SalonBanner
+                <Banner
                     :bg="'/img/salon-bg.png'"
-                    :title="'Avtosalonlar'"
+                    :title="$t('auto_salons')"
                 >
                     <template #content>
                         <breadcrumbs :crumbs="crumbs"/>
                     </template>
-                </SalonBanner>
+                </Banner>
 
                <Cap>
                   <template #left>
@@ -183,14 +183,16 @@
    import NoResults from '~/components/elements/NoResults'
    import ClusteredMap from '~/components/elements/ClusteredMap'
    import Banners from '~/components/parts/Banners'
-   import SalonBanner from "~/components/salons/SalonBanner.vue";
+   import Banner from "~/components/elements/Banner.vue";
    import Cap from "~/components/elements/Cap.vue";
 
    export default {
        name: 'pages-salons',
 
+      transition: 'fade-y-20',
+
        components: {
-           SalonBanner,
+           Banner,
            SalonSearchForm,
            SalonFiltersForm,
            SalonCard,

@@ -758,6 +758,7 @@ export default {
    error_payment_msg: "Sizin ödəməniz həyata keçmədi.",
    ESP: "Elektrik əyləc sistemi (EBS)",
    eservices: "E-xidmətlər",
+   eservices2: "Elektron xidmətlər",
    excavators: "Ekskavatorlar",
    exchange: "Barter",
    vehicles: "Nəqliyyat vasitələri",

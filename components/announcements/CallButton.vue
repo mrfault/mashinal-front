@@ -45,6 +45,10 @@
                this.showPhone = true;
                this.trackCall(1);
             }
+
+            // window.getManualClassifiedNumber('ad_id', function () {
+            //    console.log('number onclick', this.phone)
+            // },0, this.phone);
          },
 
          trackCall(n) {

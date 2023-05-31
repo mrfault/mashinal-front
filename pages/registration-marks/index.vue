@@ -170,6 +170,8 @@
          HandleIds
       },
 
+      transition: 'fade-y-20',
+
       data() {
          return {
             timeout: null,

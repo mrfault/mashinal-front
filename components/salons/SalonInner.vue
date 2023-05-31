@@ -1,9 +1,9 @@
 <template>
    <div class="salon-inner">
       <div :class="['profile-card salon-single-card overflow-hidden']">
-         <div class="cover-with-avatar">
+         <div class="cover-with-avatar position-relative">
              <img
-                 :class="['cover-with-avatar__img', {full : !salonSingle.gallery_thumbs.length}]"
+                 :class="['cover-with-avatar__img z-index-1', {full : !salonSingle.gallery_thumbs.length}]"
                  :src="getCover(salonSingle.cover, salonSingle.type_id)"
                  alt="img"
              >
@@ -53,16 +53,6 @@
             </div>
 
             <div class="salon-inner__details-right">
-               <div class="d-md-none" v-if="salonSingle.gallery_urls.length">
-                  <gallery
-                     where="salon"
-                     :media="[salonSingle.gallery_urls, salonSingle.gallery_thumbs]"
-                     :show-slider="false"
-                  />
-
-                  <thumbs-gallery where="salon" :media="salonSingle.gallery_thumbs" />
-               </div>
-
                <div class="salon-inner__details-time">
                   <icon name="time"/>
 
@@ -125,6 +115,13 @@
          @change-page="changePage"
          escape-duplicates
          :needAutoScroll="true"
+      />
+
+      <gallery
+         v-if="salonSingle.gallery_urls.length"
+         where="salon"
+         :media="[salonSingle.gallery_urls, salonSingle.gallery_thumbs]"
+         :show-slider="false"
       />
    </div>
 </template>
@@ -363,12 +360,6 @@
 
       .cap {
          margin: 56px 0 40px 0;
-
-         .select-menu_label {
-            .text-truncate {
-               margin-right: 15px;
-            }
-         }
       }
    }
 

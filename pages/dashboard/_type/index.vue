@@ -1,7 +1,7 @@
 <template>
    <div class="pages-dashboard pt-2 pt-lg-5">
       <div class="container">
-         <breadcrumbs :crumbs="crumbs"/>
+         <breadcrumbs :crumbs="crumbs" />
 
          <div class="row mb-n2 mb-lg-n3">
             <div

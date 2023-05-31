@@ -156,179 +156,191 @@
          getter-b="mainPartsAnnouncements"
       />
 
-      <HandleIds v-if="getMainMonetized.length" :items="getMainMonetized" :watchIds="false" />
+      <HandleIds v-if="getMainMonetized.length" :items="getMainMonetized" :watchIds="false"/>
    </div>
 </template>
 
 <script>
-import {mapGetters, mapActions} from 'vuex'
-import CarSearchForm from '~/components/cars/CarSearchForm'
-import Grid from '~/components/announcements/Grid'
-import HandleIds from "~/components/announcements/HandleIds.vue";
+   import {mapGetters, mapActions} from 'vuex'
+   import CarSearchForm from '~/components/cars/CarSearchForm'
+   import Grid from '~/components/announcements/Grid'
+   import HandleIds from "~/components/announcements/HandleIds.vue";
 
-export default {
-   name: 'pages-index',
-   layout: 'search',
-   middleware: 'payment_redirect',
-   components: {
-      CarSearchForm,
-      Grid,
-      HandleIds
-   },
-   head() {
-      return this.$headMeta({
-         title: this.$t('meta-title_main-page'),
-         description: this.$t('meta-descr_main-page'),
-      })
-   },
-   data() {
-      return {
-         currentSlide: 0,
-         swiperOps: {
-            init: false,
-            speed: 1000,
-            autoplay: {
-               delay: 8000,
-            },
-            videoAutoplay: false,
-            fadeEffect: {
-               crossFade: true,
-            },
-            navigation: {
-               nextEl: '.swiper-button-next',
-               prevEl: '.swiper-button-prev',
-            },
-            lazy: true,
-            pagination: {
-               el: '.swiper-pagination',
-               type: 'bullets',
-               clickable: true,
-            },
-            loop: true,
-            preloadImages: false,
-            /*        lazy: {
-                      loadPrevNext: false,
-                      preloaderClass: 'loader',
-                    },*/
-         },
-         absoluteMobileScreen: true,
+   export default {
+      name: 'pages-index',
 
-         //video
-         cld: null,
-         video: "https://dev.mashin.al/storage/1504928/Xaliq-Video.mp4?_=1669299016",
-         player: null,
-      }
-   },
-   async asyncData({store}) {
-      await Promise.all([
-         store.dispatch('getBrandsOnlyExists'),
-         store.dispatch('getOptions'),
-         store.dispatch('getBodyOptions'),
-         store.dispatch('clearSavedSearch'),
-      ])
-      return {
-         pending: false,
-      }
-   },
-   computed: {
-      ...mapGetters(['mainAnnouncements', 'homePageSliders', 'getMainMonetized', 'singleSavedSearch']),
+      transition: 'fade-y-20',
 
-      photos() {
+      layout: 'search',
+
+      middleware: 'payment_redirect',
+
+      components: {
+         CarSearchForm,
+         Grid,
+         HandleIds
+      },
+
+      head() {
+         return this.$headMeta({
+            title: this.$t('meta-title_main-page'),
+            description: this.$t('meta-descr_main-page'),
+         })
+      },
+
+      data() {
          return {
-            photo1_sm: require('@/static/test-images/1-480w.jpg'),
-            photo1_lg: require('@/static/test-images/1-800w.jpg'),
+            currentSlide: 0,
+            swiperOps: {
+               init: false,
+               speed: 1000,
+               autoplay: {
+                  delay: 8000,
+               },
+               videoAutoplay: false,
+               fadeEffect: {
+                  crossFade: true,
+               },
+               navigation: {
+                  nextEl: '.swiper-button-next',
+                  prevEl: '.swiper-button-prev',
+               },
+               lazy: true,
+               pagination: {
+                  el: '.swiper-pagination',
+                  type: 'bullets',
+                  clickable: true,
+               },
+               loop: true,
+               preloadImages: false,
+               /*        lazy: {
+                         loadPrevNext: false,
+                         preloaderClass: 'loader',
+                       },*/
+            },
+            absoluteMobileScreen: true,
+
+            //video
+            cld: null,
+            video: "https://dev.mashin.al/storage/1504928/Xaliq-Video.mp4?_=1669299016",
+            player: null,
          }
       },
-   },
-   methods: {
-      ...mapActions(['getInfiniteMainSearch', 'clearSavedSearch', 'fetchInfiniteMainMonetizedHome']),
-      async handleLogoClick() {
-         this.$scrollTo('body')
-         this.$nuxt.$emit('reset-search-form')
-         this.pending = true
-         await Promise.all([this.getInfiniteMainSearch(), this.clearSavedSearch(), this.fetchInfiniteMainMonetizedHome()])
-         this.pending = false
-      },
-      gotoRoute(link) {
-         if (this.loggedIn) {
-            // this.$route.push(link)
-            this.$router.push({path: '/qaraj'})
-         } else {
-            // this.$route.push(link)
-            this.$router.push({path: '/login'})
-            localStorage.setItem('loginFromSlider', true)
+      async asyncData({store}) {
+         await Promise.all([
+            store.dispatch('getBrandsOnlyExists'),
+            store.dispatch('getOptions'),
+            store.dispatch('getBodyOptions'),
+            store.dispatch('clearSavedSearch'),
+         ])
+         return {
+            pending: false,
          }
+      },
+      computed: {
+         ...mapGetters(['mainAnnouncements', 'homePageSliders', 'getMainMonetized', 'singleSavedSearch']),
+
+         photos() {
+            return {
+               photo1_sm: require('@/static/test-images/1-480w.jpg'),
+               photo1_lg: require('@/static/test-images/1-800w.jpg'),
+            }
+         },
       },
 
-      async getSliderData() {
-         if (this.homePageSliders && this.homePageSliders.length) {
-            return;
-         } else {
-            await this.$store.dispatch('getHomePageSliders');
-            this.homePageSliders.forEach(el => {
-               if (el.video) {
-                  this.video = el.video;
-               }
-            })
-         }
-      },
-      //video
-      playVideo(url) {
-         if (document) {
-            var vid = document.getElementById('sliderVideo')
-         }
-         if (vid) {
-            vid.pause();
-            vid.play()
-         }
-         return url
-      },
-      onElementObserved() {
-         const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-               if (entry.intersectionRatio > 0) {
-                  this.player.play();
-               } else {
-                  this.player.pause();
-               }
+      methods: {
+         ...mapActions(['getInfiniteMainSearch', 'clearSavedSearch', 'fetchInfiniteMainMonetizedHome']),
+
+         async handleLogoClick() {
+            this.$scrollTo('body')
+            this.$nuxt.$emit('reset-search-form')
+            this.pending = true
+            await Promise.all([this.getInfiniteMainSearch(), this.clearSavedSearch(), this.fetchInfiniteMainMonetizedHome()])
+            this.pending = false
+         },
+
+         gotoRoute(link) {
+            if (this.loggedIn) {
+               // this.$route.push(link)
+               this.$router.push({path: '/qaraj'})
+            } else {
+               // this.$route.push(link)
+               this.$router.push({path: '/login'})
+               localStorage.setItem('loginFromSlider', true)
+            }
+         },
+
+         async getSliderData() {
+            if (this.homePageSliders && this.homePageSliders.length) {
+               return;
+            } else {
+               await this.$store.dispatch('getHomePageSliders');
+               this.homePageSliders.forEach(el => {
+                  if (el.video) {
+                     this.video = el.video;
+                  }
+               })
+            }
+         },
+         //video
+         playVideo(url) {
+            if (document) {
+               var vid = document.getElementById('sliderVideo')
+            }
+            if (vid) {
+               vid.pause();
+               vid.play()
+            }
+            return url
+         },
+         onElementObserved() {
+            const observer = new IntersectionObserver((entries) => {
+               entries.forEach((entry) => {
+                  if (entry.intersectionRatio > 0) {
+                     this.player.play();
+                  } else {
+                     this.player.pause();
+                  }
+               });
             });
-         });
-         observer.observe(this.$refs.theVideo);
+            observer.observe(this.$refs.theVideo);
+         },
       },
-   },
 
-   mounted() {
-      this.$store.dispatch('getInfiniteMainSearch')
-      this.$store.dispatch('fetchInfiniteMainMonetizedHome');
+      mounted() {
+         this.$store.dispatch('getInfiniteMainSearch')
+         this.$store.dispatch('fetchInfiniteMainMonetizedHome');
 
-      if (window.innerWidth < 769) this.absoluteMobileScreen = true
-      else this.absoluteMobileScreen = false
-      window.addEventListener('resize', (e) => {
          if (window.innerWidth < 769) this.absoluteMobileScreen = true
          else this.absoluteMobileScreen = false
-      })
-      setTimeout(() => {
-         this.gallerySwiper.init()
-         this.gallerySwiper.on('slideChange', () => {
-            this.currentSlide = this.gallerySwiper.realIndex
+         window.addEventListener('resize', (e) => {
+            if (window.innerWidth < 769) this.absoluteMobileScreen = true
+            else this.absoluteMobileScreen = false
          })
-      }, 100)
-      this.$nuxt.$on('logo-click', this.handleLogoClick)
+         setTimeout(() => {
+            this.gallerySwiper.init()
+            this.gallerySwiper.on('slideChange', () => {
+               this.currentSlide = this.gallerySwiper.realIndex
+            })
+         }, 100)
+         this.$nuxt.$on('logo-click', this.handleLogoClick)
 
-      this.getSliderData()
+         this.getSliderData()
 
-      if (this.$route.query.page === 'plate-announce') {
-         this.$router.push(this.$localePath('/profile/announcements'));
-      }
-   },
-   beforeDestroy() {
-      this.$nuxt.$off('logo-click', this.handleLogoCkick)
-   },
-   beforeRouteLeave(to, from, next) {
-      this.$nuxt.$emit('prevent-popstate')
-      next()
-   },
-}
+         if (this.$route.query.page === 'plate-announce') {
+            this.$router.push(this.$localePath('/profile/announcements'));
+         }
+      },
+
+      beforeDestroy() {
+         this.$nuxt.$off('logo-click', this.handleLogoCkick)
+      },
+
+      beforeRouteLeave(to, from, next) {
+         this.$nuxt.$emit('prevent-popstate')
+         next()
+      },
+   }
 </script>
 
 <style lang="scss">

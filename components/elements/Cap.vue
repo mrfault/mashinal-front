@@ -48,6 +48,12 @@
             color: #004EEB;
          }
       }
+
+      .select-menu_label {
+         .text-truncate {
+            margin-right: 15px;
+         }
+      }
    }
 
    @media (max-width: 992px) {

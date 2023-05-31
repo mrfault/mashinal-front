@@ -1,8 +1,8 @@
 <template>
-   <div class="salonBanner" :style="`background: url('${bg}') center center / cover no-repeat`">
+   <div class="banner" :style="`background: url('${bg}') center center / cover no-repeat`">
       <slot name="content" />
 
-      <h4 class="salonBanner__title">{{ title }}</h4>
+      <h4 class="banner__title">{{ title }}</h4>
    </div>
 </template>
 
@@ -23,7 +23,7 @@ export default {
 </script>
 
 <style lang="scss">
-   .salonBanner {
+   .banner {
       position: relative;
       width: 100%;
       height: 280px;
@@ -74,7 +74,7 @@ export default {
    }
 
    @media (max-width: 992px) {
-      .salonBanner {
+      .banner {
          padding: 24px 36px;
 
          &__title {
@@ -88,7 +88,7 @@ export default {
    }
 
    @media (max-width: 600px) {
-      .salonBanner {
+      .banner {
          width: 105%;
          height: 240px;
          margin: 0 -10px;
@@ -97,7 +97,7 @@ export default {
    }
 
    @media (max-width: 460px) {
-      .salonBanner {
+      .banner {
          height: 200px;
          padding: 16px;
 

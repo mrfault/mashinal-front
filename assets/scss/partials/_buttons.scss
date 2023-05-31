@@ -363,6 +363,18 @@
       );
    }
 
+   &--blue-new {
+      @include btn-style(
+         $color: $grey-2-new,
+         $color-hover: $white,
+         $bg-color: $white,
+         $bg-hover: $blue-new,
+         $border-color: $white,
+         $active-bg: $blue-new,
+         $outline: false
+      );
+   }
+
    &--grey {
       @include btn-style($bg-color: $grey-10, $bg-hover: $grey-8);
    }
