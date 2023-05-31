@@ -98,9 +98,9 @@ export default {
       }
    },
    mounted() {
+      this.$store.dispatch('fetchInfiniteMainMonetized', { type: 'parts' });
       if (this.$route.query.parts_filter) {
          this.searchParts();
-         this.$store.dispatch('fetchInfiniteMainMonetized', { type: 'parts' });
       }
       //window.addEventListener('scroll', this.getNextAnnouncements)
    },

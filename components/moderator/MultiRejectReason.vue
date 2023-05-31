@@ -97,18 +97,12 @@ export default {
     },
     // reject key
     openPhotoIssuePopup() {
-
-       console.log(this.rejectKey)
       if (this.rejectKey === 'image') {
         this.$emit('change', this.rejectKey)
       }
       if (this.rejectKey === '360') {
         this.$emit('change', this.rejectKey)
       }
-       if (this.rejectKey === 'car_number') {
-          this.$emit('change', this.rejectKey)
-       }
-
     },
     click() {
       if (this.imageReject) {

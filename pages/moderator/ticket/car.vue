@@ -67,7 +67,7 @@
                                        v-model="form.brand_id"
                                        :allow-clear="false"
                                        :clearOption="false"
-                                       :disabled="isModerator"
+
                                        :label="$t('mark')"
                                        :options="brands"
                                        has-search
@@ -107,7 +107,7 @@
                                        v-model="form.model_id"
                                        :allow-clear="false"
                                        :clearOption="false"
-                                       :disabled="isModerator"
+
                                        :label="$t('model')"
                                        :options="data.models"
                                        :value="form.model_id"
@@ -139,7 +139,7 @@
                                        v-model="form.year"
                                        :allow-clear="false"
                                        :clearOption="false"
-                                       :disabled="isModerator"
+
                                        :label="$t('prod_year')"
                                        :options="data.sellYears"
                                        :value="form.year"
@@ -179,7 +179,6 @@
                                        v-model="form.car_body_type"
                                        :allow-clear="false"
                                        :clearOption="false"
-                                       :disabled="isModerator"
                                        :label="$t('body_type')"
                                        :options="data.sellBodies"
                                        has-search
@@ -221,7 +220,6 @@
                                        v-model="form.generation_id"
                                        :allow-clear="false"
                                        :clearOption="false"
-                                       :disabled="isModerator"
                                        :label="$t('generation')"
                                        :options="data.generations"
                                        has-search
@@ -253,7 +251,6 @@
                                                 v-model="form.engine"
                                                 :allow-clear="false"
                                                 :clearOption="false"
-                                                :disabled="isModerator"
                                                 :label="$t('engine')"
                                                 :options="
                                            data.engines.map((o) => ({
@@ -298,7 +295,6 @@
                                        v-model="form.gearing"
                                        :allow-clear="false"
                                        :clearOption="false"
-                                       :disabled="isModerator"
                                        :label="$t('type_of_drive')"
                                        :options="data.gearings.map((o) => ({
                             name: $t('type_of_drive_values')[o.type_of_drive] || '',
@@ -332,7 +328,6 @@
                                        v-model="form.transmission"
                                        :allow-clear="false"
                                        :clearOption="false"
-                                       :disabled="isModerator"
                                        :label="$t('box')"
                                        :options="
                       data.transmissions.map((o) => ({
@@ -373,7 +368,7 @@
                                        v-model="form.car_catalog_id"
                                        :allow-clear="false"
                                        :clearOption="false"
-                                       :disabled="isModerator"
+
                                        :label="$t('modification')"
                                        :options="
                             data.modifications.map((o) => ({
@@ -425,7 +420,7 @@
                               <photo-reject-reason
                                  v-if="imageModal.isOpen"
                                  :default_data="rejectObj.rejectArray"
-                                 :modal__title="$t('image_reject_reason')"
+                                 :modal__title="'Car number reject reasons'"
                                  :type="'car'"
                                  @close="imageModal.isOpen = false"
                                  @save="savePhotoIssues"
@@ -704,6 +699,7 @@ export default {
                'left_error',],
             modalToggled: false,
          },
+
 
 
          //  360
@@ -1262,6 +1258,8 @@ export default {
          window.location.href = "https://dev.mashin.al/alvcp/resources/announcements"
       },
       getSellLastStepRejectObj(value) {
+         console.log('//////////')
+         console.log(value)
          // console.log('value', value)
          // console.log('this.rejectObj.rejectArray', this.rejectObj.rejectArray)
          if (!this.rejectObj.rejectArray.includes(value)) {

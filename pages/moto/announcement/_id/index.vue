@@ -138,7 +138,7 @@ export default {
         { name: this.$t('moto'), route: '/moto' },
         { name: this.motoBrand.name, route: this.getFilterLink('brand') },
         { name: this.motoModel.name, route: this.getFilterLink('brand-model') },
-        { name: '#'+this.announcement.id_unique }
+        { name: this.announcement.id_unique }
       ]
     }
   },

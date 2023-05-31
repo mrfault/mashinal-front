@@ -976,7 +976,6 @@
    }
    .announcements-inner {
       padding-bottom: 50px;
-
       .quick-info {
          border-radius: 0;
       }
@@ -998,7 +997,7 @@
    justify-content: center;
    padding: 12px;
    span {
-      font-size: 18px;
+      text-align: center;
       font-weight: 600;
    }
 }
