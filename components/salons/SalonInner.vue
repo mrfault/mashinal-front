@@ -8,7 +8,7 @@
                  alt="img"
              >
 
-            <div class="cover-with-avatar__gallery d-none d-md-flex" v-if="salonSingle.gallery_thumbs">
+            <div class="cover-with-avatar__gallery d-none d-md-flex" v-if="salonSingle.gallery_thumbs.length">
                <div
                   class="cover-with-avatar__gallery-item"
                   v-for="(item, i) in salonSingle.gallery_thumbs"
@@ -72,7 +72,7 @@
                         </li>
                         <li v-for="(item, i) in salonSingle.phones.slice(0, 1)" :key="i">
                            <a :href="`tel:${item}`">
-                              +{{ normalize(item) }}
+<!--                              +{{ normalize(item) }}-->
                            </a>
                         </li>
                      </ul>
@@ -81,7 +81,7 @@
                   <ul>
                      <li v-for="(item, i) in salonSingle.phones.slice(1, 10)" :key="i">
                         <a :href="`tel:${item}`">
-                           +{{ normalize(item) }}
+<!--                           +{{ normalize(item) }}-->
                         </a>
                      </li>
                   </ul>

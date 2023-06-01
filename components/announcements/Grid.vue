@@ -35,7 +35,7 @@
 <!--         </div>-->
 <!--      </div>-->
 
-      <div :class="['px-3 px-sm-1', { container: hasContainer }]">
+      <div :class="['px-1', { container: hasContainer }]">
          <div class="row mb-n2 mb-lg-n3">
             <!-- <span class="test" ref="scrollToMe"></span> -->
             <template v-for="(announcement, index) in announcements">

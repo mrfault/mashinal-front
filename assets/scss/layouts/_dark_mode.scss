@@ -172,6 +172,17 @@
          border-color: $dark-1;
       }
 
+      .navbar {
+         background-color: $dark-light-new !important;
+         .menu {
+            & > li  {
+               a {
+                  color: $white-2-new;
+               }
+            }
+         }
+      }
+
       .topbar {
          .menu > li a.active,
          .menu > li a:hover {
@@ -690,9 +701,66 @@
 
 .dark-mode {
    .form-group {
+      .select-menu_label {
+         .text-truncate {
+            color: $white-2-new;
+         }
+      }
       &_inputs {
          .form-group {
             border-color: $dark-2;
+         }
+      }
+   }
+
+   .white-background {
+      background-color: transparent;
+   }
+
+   .mobile-menu {
+      .logo {
+         &:after {
+            display: none;
+         }
+      }
+   }
+
+   .salon-card {
+      .salon-logo {
+         border-color: #697586;
+      }
+
+      .salon-info {
+         h3 {
+            color: $grey-1-new;
+         }
+      }
+
+      .salon-announce {
+         color: #528BFF;
+      }
+   }
+
+   .pages-salons-id {
+      .salon-inner {
+         &__details {
+            background-color: $dark-light-new;
+
+            &-name {
+               color: $grey-1-new;
+            }
+
+            &-description {
+               color: $white-2-new;
+            }
+
+            &-address {
+               color: $blue-2-new;
+            }
+
+            &-time, &-tels {
+               background-color: $grey-3-new;
+            }
          }
       }
    }
@@ -720,6 +788,7 @@
    .radio-input label,
    .form-info {
       background-color: $dark-1;
+      border-color: transparent;
    }
 
    .text-input.no-bg input,
@@ -772,6 +841,7 @@
 
       &_label {
          background-color: $dark-1;
+         border-color: transparent;
 
          &.selected,
          &.active {

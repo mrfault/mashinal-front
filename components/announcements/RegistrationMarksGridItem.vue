@@ -411,7 +411,7 @@
       }
    }
 
-   @media (max-width: 370px) {
+   @media (max-width: 385px) {
       .registrationMarksGridItem {
          width: 47%;
 

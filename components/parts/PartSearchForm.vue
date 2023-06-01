@@ -73,6 +73,16 @@
 <!--                       </form-select>-->
                   </div>
 
+                  <div class="col-lg-3">
+                     <button
+                        type="button"
+                        :class="['btn h-52', 'full-width', 'btn--new-dark-green']"
+                        @click="submitForm"
+                     >
+                        {{ $t('find') }}
+                     </button>
+                  </div>
+
                   <!-- Announcement count -->
                   <!--            <div class="col-12 col-lg-2" v-if="!isMobileBreakpoint && pagination.total !== undefined">-->
                   <!--              <div class="form-info text-green">-->
@@ -279,8 +289,8 @@
          },
 
          minMaxValue(val) {
-            this.form.price_to = val[0].value;
-            this.form.price_from = val[1].value;
+            this.form.price_from = val[0].value;
+            this.form.price_to = val[1].value;
          }
       },
 

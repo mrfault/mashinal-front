@@ -56,6 +56,14 @@
       }
    }
 
+   .dark-mode {
+      .cap {
+         h3 {
+            color: #CDD5DF;
+         }
+      }
+   }
+
    @media (max-width: 992px) {
       .cap {
          h3 {
@@ -68,6 +76,7 @@
       .cap {
          h3 {
             font-size: 22px;
+            padding-right: 8px;
          }
 
          .form-group {

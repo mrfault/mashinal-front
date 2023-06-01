@@ -25,7 +25,6 @@
          <Cap>
             <template #left>
                <h3>{{ $t('announcements') }}</h3>
-<!--               <h3 class="salons-count d-none">({{ officialSalons.length }})</h3>-->
             </template>
 
             <template #right>

@@ -518,7 +518,7 @@
                      width: 105px;
 
                      &:last-child {
-                        width: 130px;
+                        width: 119px;
                      }
                   }
                }
@@ -564,14 +564,14 @@
                      width: 69px;
 
                      &:first-child {
-                        width: 255px;
+                        width: 243px;
                      }
                   }
                }
 
                &:nth-child(2) {
                   .form-group {
-                     width: 119px;
+                     width: 113px;
                   }
                }
 

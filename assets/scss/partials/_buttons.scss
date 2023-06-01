@@ -244,6 +244,10 @@
    cursor: pointer;
    font-weight: 500;
 
+   &.h-52 {
+      height: 52px !important;
+   }
+
    &.full-width {
       width: 100%;
    }
@@ -308,6 +312,10 @@
 
    &--green {
       @include btn-style($bg-color: $green-1, $bg-hover: $green-2);
+   }
+
+   &--new-dark-green {
+      @include btn-style($bg-color: $green-dark-new, $bg-hover: $green-2);
    }
 
    &--green-outline {

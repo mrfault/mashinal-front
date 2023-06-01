@@ -68,11 +68,14 @@
          >
             <span class="label" v-if="item.value">{{ item.placeholder }}</span>
             <input
-               type="number"
+               type="text"
+               maxlength="5"
+               oninput="this.value = this.value.replace(/[a-zа-я]/gi, '')"
                :placeholder="item.placeholder"
                v-model.trim="item.value"
-               @input="$emit('change', options)"
+               @input="numberWithSpaces"
             >
+<!--            @input="$emit('change', options)"-->
          </div>
       </template>
    </div>
@@ -88,8 +91,8 @@ export default {
          },
          initialOptions: [],
          items: [
-            {id: 1, placeholder: '', value: ''},
-            {id: 2, placeholder: '', value: ''}
+            { id: 1, placeholder: '', value: '' },
+            { id: 2, placeholder: '', value: '' }
          ]
       }
    },
@@ -99,8 +102,11 @@ export default {
       //     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
       //     // this.$emit('change', this.items);
       // },
-      numberWithSpaces(num) {
-         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+      numberWithSpaces(value) {
+         // console.log(value.target.value)
+         this.changeValue =value.target.value
+         console.log(value.target.value.toString().replace(/\D+/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ' '))
+         // return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
       },
       addActive(e) {
          e.target.closest('.minMaxSearch__divider').classList.toggle('active');
@@ -144,6 +150,18 @@ export default {
          }
       }
    },
+
+   computed: {
+      changeValue: {
+         get() {
+            return this.readValue(this.value);
+         },
+         set(value) {
+            this.$emit('input', value);
+         }
+      }
+   },
+
    // watch: {
    //     dropdownItems: {
    //         handler(newVal, oldVan) {
@@ -159,6 +177,7 @@ export default {
    //         // this.$emit('change', this.items);
    //     },
    // },
+
    mounted() {
       this.items[0].placeholder = this.placeholder[0];
       this.items[1].placeholder = this.placeholder[1];
@@ -173,6 +192,7 @@ export default {
 
       window.addEventListener('click', this.close);
    },
+
    beforeDestroy() {
       window.addEventListener('click', this.close);
    }

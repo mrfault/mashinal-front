@@ -24,7 +24,7 @@ export const SalonsMixin = {
     ) {
       return (
         (shortNumber
-          ? `<a style="font-weight: 500;" onclick="event.stopPropagation()" href="tel:${shortNumber}">${shortNumber}</a>`
+          ? `<a onclick="event.stopPropagation()" href="tel:${shortNumber}">${shortNumber}</a>`
           : '') +
         (phones || [])
           .filter((phone) => phone)
@@ -33,7 +33,7 @@ export const SalonsMixin = {
             `${phone}`
               .replace(
                 /(\d{3})(\d{2})(\d{3})(\d{2})(\d{2})/g,
-                '<span class="d-flex flex-row"><a style="font-weight: 500;" ' +
+                '<span class="d-flex flex-row"><a ' +
                   (clickable
                     ? 'onclick="event.stopPropagation()" href="tel:+' +
                       phone +

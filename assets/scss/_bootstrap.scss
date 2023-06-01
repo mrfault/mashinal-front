@@ -30,6 +30,10 @@ $spacers: (
   6: 1rem * 0.3125
 );
 
+.container, .container-fluid, .container-sm, .container-md {
+   padding-right: 16px !important;
+   padding-left: 16px !important;
+}
 
 @import '~bootstrap/scss/functions';
 @import '~bootstrap/scss/variables';

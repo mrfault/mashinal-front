@@ -89,9 +89,9 @@ export default {
 
    @media (max-width: 600px) {
       .banner {
-         width: 105%;
+         width: 106%;
          height: 240px;
-         margin: 0 -10px;
+         margin: 0 -15px;
          border-radius: unset;
       }
    }

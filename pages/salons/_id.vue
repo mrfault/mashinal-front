@@ -131,8 +131,8 @@
             }
 
             .profile-card {
-               width: 105%;
-               margin: 0 -10px;
+               width: 106%;
+               margin: 0 -15px;
 
                .cover-with-avatar {
                   height: 200px;
