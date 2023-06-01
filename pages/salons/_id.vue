@@ -92,6 +92,14 @@
                &-right {
                   max-width: unset;
                }
+
+               .inner-thumbs-gallery {
+                  margin: 20px 0;
+
+                  .swiper-slide {
+                     width: 100px;
+                  }
+               }
             }
          }
       }
@@ -122,12 +130,6 @@
                &-tels {
                   padding: 12px 18px;
                }
-
-               .inner-thumbs-gallery {
-                  .swiper-slide {
-                     width: 100px;
-                  }
-               }
             }
 
             .profile-card {
@@ -141,6 +143,16 @@
                      border-radius: unset;
                   }
                }
+            }
+         }
+      }
+   }
+
+   @media (max-width: 500px) {
+      .pages-salons-id {
+         .salon-inner {
+            .profile-card {
+               width: 108%;
             }
          }
       }
@@ -171,6 +183,10 @@
                      }
                   }
                }
+            }
+
+            .profile-card {
+               width: 110%;
             }
          }
       }

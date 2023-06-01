@@ -4,6 +4,8 @@
    padding: 32px;
    background: $white;
    border-radius: 12px;
+   border: 1px solid $white;
+   transition: all .3s;
 
    &__body {
       margin-top: 24px;
@@ -22,6 +24,10 @@
       font-size: 15px;
       line-height: 20px;
       color: $grey-2-new;
+   }
+
+   &:hover {
+      border-color: $blue-new;
    }
    //height: 230px;
    // display: flex;
@@ -152,65 +158,52 @@
 
 .dark-mode {
    .e-service {
-      background: $dark-2;
+      border-color: $dark-light-new;
+      background-color: $dark-light-new;
 
       &__header {
-         &--title {
-            color: #fff;
-         }
+         //&--title {
+         //   color: #fff;
+         //}
+         //
+         //&--icon {
+         //   color: $grey-1;
+         //
+         //   i {
+         //      &:before {
+         //         color: $grey-1;
+         //      }
+         //   }
+         //
+         //   //svg {
+         //   //   g {
+         //   //      opacity: .8 !important;
+         //   //   }
+         //   //
+         //   //   path {
+         //   //      fill: $grey-1;
+         //   //      stroke: $grey-1;
+         //   //   }
+         //   //}
+         //}
+      }
 
-         &--icon {
-            color: $grey-1;
+      &__title {
+         color: $grey-1-new;
+      }
 
-            i {
-               &:before {
-                  color: $grey-1;
-               }
-            }
+      &__description {
+         color: $white-2-new;
+      }
 
-            //svg {
-            //   g {
-            //      opacity: .8 !important;
-            //   }
-            //
-            //   path {
-            //      fill: $grey-1;
-            //      stroke: $grey-1;
-            //   }
-            //}
+      svg {
+         rect {
+            fill: $grey-3-new;
          }
       }
 
-      &__body {
-         &--description {
-            .key {
-               color: #fff
-            }
-
-            .value {
-               color: #fff;
-            }
-         }
-      }
-
-      &__actions {
-         &--left {
-            a {
-               color: #fff;
-            }
-         }
-
-         &--right {
-            color: #fff;
-
-            a {
-               color: #fff !important;
-            }
-         }
-
-         &--button {
-            color: #fff;
-         }
+      &:hover {
+         border-color: $blue-new;
       }
    }
 }

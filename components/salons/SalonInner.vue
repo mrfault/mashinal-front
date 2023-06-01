@@ -53,6 +53,10 @@
             </div>
 
             <div class="salon-inner__details-right">
+               <div class="d-md-none">
+                  <thumbs-gallery where="salon" :media="salonSingle.gallery_thumbs"/>
+               </div>
+
                <div class="salon-inner__details-time">
                   <icon name="time"/>
 
@@ -72,7 +76,7 @@
                         </li>
                         <li v-for="(item, i) in salonSingle.phones.slice(0, 1)" :key="i">
                            <a :href="`tel:${item}`">
-<!--                              +{{ normalize(item) }}-->
+                              +{{ normalize(item) }}
                            </a>
                         </li>
                      </ul>
@@ -81,7 +85,7 @@
                   <ul>
                      <li v-for="(item, i) in salonSingle.phones.slice(1, 10)" :key="i">
                         <a :href="`tel:${item}`">
-<!--                           +{{ normalize(item) }}-->
+                           +{{ normalize(item) }}
                         </a>
                      </li>
                   </ul>
@@ -207,7 +211,7 @@
          },
 
          normalize(num) {
-            return num.substr(0, 3) + ' ' + num.substr(3, 3) + ' ' + num.substr(6, 2) + ' ' + num.substr(8, 2) + ' ' + num.substr(10, 2);
+            return num?.substr(0, 3) + ' ' + num?.substr(3, 3) + ' ' + num?.substr(6, 2) + ' ' + num?.substr(8, 2) + ' ' + num?.substr(10, 2);
          },
       },
 

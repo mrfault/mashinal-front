@@ -760,6 +760,10 @@
 
             &-time, &-tels {
                background-color: $grey-3-new;
+
+               span, a {
+                  color: $white-2-new;
+               }
             }
          }
       }
