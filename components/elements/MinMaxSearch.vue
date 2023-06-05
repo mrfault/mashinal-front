@@ -69,13 +69,12 @@
             <span class="label" v-if="item.value">{{ item.placeholder }}</span>
             <input
                type="text"
-               maxlength="5"
+               maxlength="9"
                oninput="this.value = this.value.replace(/[a-zа-я]/gi, '')"
                :placeholder="item.placeholder"
-               v-model.trim="item.value"
-               @input="numberWithSpaces"
+               :value="item.value.replace(/\B(?=(\d{3})+(?!\d))/g, ' ')"
+               @input="updateNumber($event, item)"
             >
-<!--            @input="$emit('change', options)"-->
          </div>
       </template>
    </div>
@@ -98,15 +97,9 @@ export default {
    },
 
    methods: {
-      // aaa(value) {
-      //     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
-      //     // this.$emit('change', this.items);
-      // },
-      numberWithSpaces(value) {
-         // console.log(value.target.value)
-         this.changeValue =value.target.value
-         console.log(value.target.value.toString().replace(/\D+/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ' '))
-         // return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+      updateNumber(event, item) {
+         item.value = event.target.value.replace(/\s/g, '');
+         this.$emit('change', this.options);
       },
       addActive(e) {
          e.target.closest('.minMaxSearch__divider').classList.toggle('active');
@@ -150,33 +143,6 @@ export default {
          }
       }
    },
-
-   computed: {
-      changeValue: {
-         get() {
-            return this.readValue(this.value);
-         },
-         set(value) {
-            this.$emit('input', value);
-         }
-      }
-   },
-
-   // watch: {
-   //     dropdownItems: {
-   //         handler(newVal, oldVan) {
-   //             console.log('newVal', newVal)
-   //             console.log('oldVan', oldVan)
-   //         },
-   //         deep: true
-   //     }
-   // },
-   // computed: {
-   //     aaa(value) {
-   //         return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
-   //         // this.$emit('change', this.items);
-   //     },
-   // },
 
    mounted() {
       this.items[0].placeholder = this.placeholder[0];

@@ -226,7 +226,8 @@ Vue.use({
           return new Date().getFullYear();
         },
         isMobileBreakpoint() {
-          return ['xs', 'sm', 'md'].includes(this.breakpoint);
+          return ['xs', 'sm'].includes(this.breakpoint);
+          // return ['xs', 'sm', 'md'].includes(this.breakpoint);
         },
         isMobileDevice() {
           if (!navigator.userAgent) return false;

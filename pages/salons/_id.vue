@@ -62,9 +62,10 @@
 
 <style lang="scss">
    @media (max-width: 1150px) {
-      .pages-salons-id {
+      .pages-salons-id,
+      .pages-parts-shops-id {
          .salon-single-card {
-            padding: 0;
+            padding: 0 !important;
          }
 
          .cover-with-avatar {
@@ -78,13 +79,17 @@
                &-item {
                   height: 92px;
                }
+               .count {
+                  bottom: 38px;
+               }
             }
          }
       }
    }
 
    @media (max-width: 992px) {
-      .pages-salons-id {
+      .pages-salons-id,
+      .pages-parts-shops-id {
          .salon-inner {
             &__details {
                flex-direction: column;
@@ -106,7 +111,8 @@
    }
 
    @media (max-width: 600px) {
-      .pages-salons-id {
+      .pages-salons-id,
+      .pages-parts-shops-id {
          .salon-inner {
             &__details {
                position: relative;
@@ -149,7 +155,8 @@
    }
 
    @media (max-width: 500px) {
-      .pages-salons-id {
+      .pages-salons-id,
+      .pages-parts-shops-id {
          .salon-inner {
             .profile-card {
                width: 108%;
@@ -159,7 +166,8 @@
    }
 
    @media (max-width: 385px) {
-      .pages-salons-id {
+      .pages-salons-id,
+      .pages-parts-shops-id {
          .salon-inner {
             &__details {
 

@@ -55,7 +55,7 @@ export default {
       .breadcrumbs {
          position: absolute;
          z-index: 2;
-         bottom: 104px;
+         bottom: 90px;
          margin: 0;
 
          ul {

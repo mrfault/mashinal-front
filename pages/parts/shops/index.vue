@@ -52,6 +52,8 @@
                   class="col-12 col-md-6 col-lg-4 mb-2 mb-lg-3"
                   v-for="salon in salonsFiltered"
                   :key="salon.id"
+                  v-if="salon.announcement_count"
+
                >
                   <nuxt-link
                      class="keep-colors"

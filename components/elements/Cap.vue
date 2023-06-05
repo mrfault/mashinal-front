@@ -49,6 +49,31 @@
          }
       }
 
+      p {
+         cursor: pointer;
+
+         &:hover {
+            span {
+               color: #004EEB;
+            }
+
+            svg {
+               path {
+                  fill: #004EEB;
+               }
+            }
+         }
+
+         span {
+            font-weight: 600;
+            font-size: 20px;
+            line-height: 24px;
+            text-decoration-line: underline;
+            color: #4B5565;
+            margin-right: 10px;
+         }
+      }
+
       .select-menu_label {
          .text-truncate {
             margin-right: 15px;
@@ -58,8 +83,34 @@
 
    .dark-mode {
       .cap {
-         h3 {
+         a {
+            &:hover {
+               color: #84ADFF;
+            }
+         }
+
+         p {
+            &:hover {
+               span {
+                  color: #84ADFF;
+               }
+
+               svg {
+                  path {
+                     fill:#84ADFF;
+                  }
+               }
+            }
+         }
+
+         h3, span {
             color: #CDD5DF;
+         }
+
+         svg {
+            path {
+               fill: #CDD5DF;
+            }
          }
       }
    }
@@ -75,7 +126,7 @@
    @media (max-width: 570px) {
       .cap {
          h3 {
-            font-size: 22px;
+            font-size: 20px;
             padding-right: 8px;
          }
 
@@ -93,7 +144,7 @@
    @media (max-width: 375px) {
       .cap {
          h3 {
-            font-size: 20px;
+            font-size: 18px;
          }
       }
    }

@@ -40,7 +40,7 @@
     border: 1px solid transparent;
     transition: all .3s;
     &:hover {
-        border: 1px solid #528BFF;
+        border: 1px solid #528BFF !important;
     }
 
     .salon {

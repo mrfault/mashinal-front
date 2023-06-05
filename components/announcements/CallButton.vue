@@ -46,7 +46,7 @@
                this.trackCall(1);
             }
 
-            // window.getManualClassifiedNumber(ringostat_announce, function () {
+            // window.getManualClassifiedNumber('ringostat_announce', function () {
             //    console.log('number onclick', this.phone)
             // },0, this.phone);
          },

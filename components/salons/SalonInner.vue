@@ -8,15 +8,19 @@
                  alt="img"
              >
 
-            <div class="cover-with-avatar__gallery d-none d-md-flex" v-if="salonSingle.gallery_thumbs.length">
+            <div
+               class="cover-with-avatar__gallery d-none"
+               :class="{'big-img' : salonSingle.gallery_thumbs.length === 2}"
+               v-if="salonSingle.gallery_thumbs.length"
+            >
                <div
                   class="cover-with-avatar__gallery-item"
                   v-for="(item, i) in salonSingle.gallery_thumbs"
                   :style="{background: `url('${item}') center center / cover no-repeat`}"
                   @click="$nuxt.$emit('show-lightbox', i)"
                >
-                  <span v-if="i === 5">+ {{ salonSingle.gallery_thumbs.length - 6 }} {{ $t('image_small') }}</span>
                </div>
+               <span class="count pointer-events-none" v-if="salonSingle.gallery_thumbs.length > 6">+ {{ salonSingle.gallery_thumbs.length - 6 }} {{ $t('image_small') }}</span>
             </div>
          </div>
 
@@ -61,7 +65,11 @@
                   <icon name="time"/>
 
                   <span class="working-time"
+                        v-if="salonSingle.working_days && salonSingle.working_hours"
                         v-html="getWorkingDays(salonSingle.working_days, salonSingle.working_hours)"/>
+                  <span class="working-time" v-else>
+                        {{ $t('everyday') }} : 09:00 - 18:00
+                  </span>
                </div>
 
                <div class="salon-inner__details-tels justify-content-between" v-if="salonSingle.phones && salonSingle.phones.length">
@@ -69,12 +77,13 @@
                      <icon name="phone-call"/>
 
                      <ul>
-                        <li>
-                           <a :href="`tel:${salonSingle.short_number}`">
-                              {{ salonSingle.short_number }}
+                        <li v-if="salonSingle?.short_number">
+                           <a :href="`tel:${salonSingle?.short_number}`">
+                              {{ salonSingle?.short_number }}
                            </a>
                         </li>
-                        <li v-for="(item, i) in salonSingle.phones.slice(0, 1)" :key="i">
+
+                        <li v-for="(item, i) in salonSingle?.phones?.slice(0, 1)" :key="i" v-if="!!salonSingle?.phones?.slice(0, 1).length">
                            <a :href="`tel:${item}`">
                               +{{ normalize(item) }}
                            </a>
@@ -82,8 +91,9 @@
                      </ul>
                   </div>
 
-                  <ul>
-                     <li v-for="(item, i) in salonSingle.phones.slice(1, 10)" :key="i">
+                  <ul v-if="!!salonSingle?.phones?.slice(1, 3).length">
+                     <li v-for="(item, i) in salonSingle?.phones?.slice(1, 10)" :key="i">
+<!--                     <li v-for="(item, i) in salonSingle?.phones" :key="i" v-if="salonSingle?.phones">-->
                         <a :href="`tel:${item}`">
                            +{{ normalize(item) }}
                         </a>
@@ -211,7 +221,11 @@
          },
 
          normalize(num) {
-            return num?.substr(0, 3) + ' ' + num?.substr(3, 3) + ' ' + num?.substr(6, 2) + ' ' + num?.substr(8, 2) + ' ' + num?.substr(10, 2);
+            let number = num.toString();
+            // console.log(typeof number)
+            // this.$nextTick(() => {
+               return number?.substr(0, 3) + ' ' + number?.substr(3, 3) + ' ' + number?.substr(6, 2) + ' ' + number?.substr(8, 2) + ' ' + number?.substr(10, 2);
+            // });
          },
       },
 
@@ -276,17 +290,19 @@
          }
 
          &-description {
+            height: 72px;
             font-weight: 400;
             font-size: 16px;
             line-height: 24px;
             color: #364152;
             margin: 8px 0 !important;
-
-            display: -webkit-box;
-            line-clamp: 3;
-            -webkit-line-clamp: 3;
             overflow: hidden;
-            -webkit-box-orient: vertical;
+
+            //display: -webkit-box;
+            //line-clamp: 3;
+            //-webkit-line-clamp: 3;
+            //overflow: hidden;
+            //-webkit-box-orient: vertical;
          }
 
          &-address {
@@ -365,6 +381,19 @@
       .cap {
          margin: 56px 0 40px 0;
       }
+
+      .cover-with-avatar {
+         &__gallery {
+            &.big-img {
+               grid-template-columns: repeat(1, 228px) !important;
+
+               .cover-with-avatar__gallery-item {
+                  width: 100%;
+                  height: 100%;
+               }
+            }
+         }
+      }
    }
 
    .border-padding-none {
@@ -378,5 +407,36 @@
       left: 25px !important;
       font-size: 14px !important;
       font-weight: 500;
+   }
+
+   @media (min-width: 992px) {
+      .salon-inner {
+         .cover-with-avatar {
+            &__gallery {
+               display: grid !important;
+               grid-template-columns: repeat(2, 108px);
+               grid-template-rows: repeat(3, 92px);
+               gap: 12px;
+
+               &.big-img {
+                  grid-template-rows: repeat(2, 143px);
+               }
+            }
+         }
+      }
+   }
+
+   @media (min-width: 1150px) {
+      .salon-inner {
+         .cover-with-avatar {
+            &__gallery {
+               grid-template-rows: repeat(3, 106px);
+
+               &.big-img {
+                  grid-template-rows: repeat(2, 166px);
+               }
+            }
+         }
+      }
    }
 </style>

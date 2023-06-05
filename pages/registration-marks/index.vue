@@ -26,6 +26,7 @@
                         :label="'01 - Abşeron'"
                         :options="getRegionNumbers"
                         :clearPlaceholder="true"
+                        :clear-option="false"
                         v-model="form.region"
                         has-search
                      />
@@ -35,6 +36,7 @@
                         :label="'A'"
                         :options="numbers"
                         :clearPlaceholder="true"
+                        :clear-option="false"
                         v-model="form.serial_letter1"
                         has-search
                      />
@@ -44,6 +46,7 @@
                         :label="'A'"
                         :options="numbers"
                         :clearPlaceholder="true"
+                        :clear-option="false"
                         v-model="form.serial_letter2"
                         has-search
                      />
@@ -78,6 +81,7 @@
                         :label="$t('currency')"
                         :options="currency"
                         :clearPlaceholder="true"
+                        :clear-option="false"
                         v-model="form.currency_id"
                         has-search
                      />
@@ -87,6 +91,7 @@
                         :label="$t('city')"
                         :options="cities.regions"
                         :clearPlaceholder="true"
+                        :clear-option="false"
                         :valueType="'string'"
                         v-model="form.region_id"
                         has-search

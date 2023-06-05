@@ -22,7 +22,7 @@
             <div class="col-12">
                <div class="row">
                   <!-- Part name -->
-                  <div class="col" :class="{'mb-3': isMobileBreakpoint}">
+                  <div class="col-12 col-md-6" :class="{'mb-3': isMobileBreakpoint}">
                      <form-text-input
                         :placeholder="$t('part_name')"
                         v-model="form.text"
@@ -30,20 +30,21 @@
                      />
                   </div>
                   <!-- Subcategory -->
-                  <div class="col-lg-2" :class="{'mb-3': isMobileBreakpoint}" v-if="showSubcategories">
-                     <form-select
-                        :label="$t('category')"
-                        v-model="form.sub_category_id"
-                        :options="subcategories"
-                        has-search
-                     />
-                  </div>
+<!--                  <div class="col col-lg-2" :class="{'mb-3': isMobileBreakpoint}" v-if="showSubcategories">-->
+<!--                     <form-select-->
+<!--                        :label="$t('category')"-->
+<!--                        v-model="form.sub_category_id"-->
+<!--                        :options="subcategories"-->
+<!--                        has-search-->
+<!--                     />-->
+<!--                  </div>-->
                   <!-- Price -->
-                  <div class="col-lg-3">
+                  <div class="col-6 col-md-3">
                      <MinMaxSearch
                         :options="minMaxOptions"
                         @change="minMaxValue"
                      />
+
 <!--                       <form-select-->
 <!--                         :label="$t('price')"-->
 <!--                         custom-->
@@ -73,7 +74,7 @@
 <!--                       </form-select>-->
                   </div>
 
-                  <div class="col-lg-3">
+                  <div class="col-6 col-md-3">
                      <button
                         type="button"
                         :class="['btn h-52', 'full-width', 'btn--new-dark-green']"
@@ -90,60 +91,60 @@
                   <!--              </div>-->
                   <!--            </div>-->
 
-                  <div class="col-12" v-if="showDynamicFilter">
-                     <transition-expand>
-                        <div v-if="!collapsed" class="row">
-                           <!-- Dynamic filters -->
-                           <div class="col-lg-12" v-if="showDynamicFilter">
-                              <hr/>
+<!--                  <div class="col-12" v-if="showDynamicFilter">-->
+<!--                     <transition-expand>-->
+<!--                        <div v-if="!collapsed" class="row">-->
+<!--                           &lt;!&ndash; Dynamic filters &ndash;&gt;-->
+<!--                           <div class="col-lg-12" v-if="showDynamicFilter">-->
+<!--                              <hr/>-->
 
-                              <div class="row">
-                                 <div class="col-lg-2 mb-3">
-                                    <form-select
-                                       :label="$t('select_brand')"
-                                       v-model="form.brand_ids"
-                                       has-search
-                                       multiple
-                                       :options="brands"
-                                    />
-                                 </div>
-                                 <div
-                                    v-for="filter in dynamicFilters"
-                                    :key="filter.id"
-                                    class="col-lg-2 mb-3"
-                                 >
-                                    <!-- Select -->
-                                    <form-select
-                                       v-if="filter.component === 'multiselect-component'"
-                                       v-model="form[filter.key]"
-                                       :label="$t(filter.key)"
-                                       :options="filter.values"
-                                       translateOptions
-                                       multiple
-                                    />
+<!--                              <div class="row">-->
+<!--                                 <div class="col-lg-2 mb-3">-->
+<!--                                    <form-select-->
+<!--                                       :label="$t('select_brand')"-->
+<!--                                       v-model="form.brand_ids"-->
+<!--                                       has-search-->
+<!--                                       multiple-->
+<!--                                       :options="brands"-->
+<!--                                    />-->
+<!--                                 </div>-->
+<!--                                 <div-->
+<!--                                    v-for="filter in dynamicFilters"-->
+<!--                                    :key="filter.id"-->
+<!--                                    class="col-lg-2 mb-3"-->
+<!--                                 >-->
+<!--                                    &lt;!&ndash; Select &ndash;&gt;-->
+<!--                                    <form-select-->
+<!--                                       v-if="filter.component === 'multiselect-component'"-->
+<!--                                       v-model="form[filter.key]"-->
+<!--                                       :label="$t(filter.key)"-->
+<!--                                       :options="filter.values"-->
+<!--                                       translateOptions-->
+<!--                                       multiple-->
+<!--                                    />-->
 
-                                    <!-- Checkbox -->
-                                    <form-checkbox
-                                       v-if="filter.component === 'checkbox-component'"
-                                       v-model="form[filter.key]"
-                                       :label="$t(filter.key)"
-                                       :checked-value="form[filter.key]"
-                                       :id="'dynamic-filter-' + filter.key"
-                                    />
+<!--                                    &lt;!&ndash; Checkbox &ndash;&gt;-->
+<!--                                    <form-checkbox-->
+<!--                                       v-if="filter.component === 'checkbox-component'"-->
+<!--                                       v-model="form[filter.key]"-->
+<!--                                       :label="$t(filter.key)"-->
+<!--                                       :checked-value="form[filter.key]"-->
+<!--                                       :id="'dynamic-filter-' + filter.key"-->
+<!--                                    />-->
 
-                                    <!-- Input -->
-                                    <form-text-input
-                                       v-if="filter.component === 'filter-single-input'"
-                                       v-model="form[filter.key]"
-                                       :id="'dynamic-filter-' + filter.key"
-                                       :placeholder="$t(filter.key === 'capacity' ? 'battery_capacity' : filter.key)"
-                                    />
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </transition-expand>
-                  </div>
+<!--                                    &lt;!&ndash; Input &ndash;&gt;-->
+<!--                                    <form-text-input-->
+<!--                                       v-if="filter.component === 'filter-single-input'"-->
+<!--                                       v-model="form[filter.key]"-->
+<!--                                       :id="'dynamic-filter-' + filter.key"-->
+<!--                                       :placeholder="$t(filter.key === 'capacity' ? 'battery_capacity' : filter.key)"-->
+<!--                                    />-->
+<!--                                 </div>-->
+<!--                              </div>-->
+<!--                           </div>-->
+<!--                        </div>-->
+<!--                     </transition-expand>-->
+<!--                  </div>-->
 <!--                  <div class="col-12">-->
 <!--                     <div class="row">-->
 <!--                        <div class="col-lg-8" v-if="!isMobileBreakpoint"></div>-->
@@ -261,8 +262,8 @@
             showAllBrands: false,
 
             minMaxOptions: [
-               { id: 1, placeholder: 'Qiymət, min.', value: '' },
-               { id: 2, placeholder: 'maks.', value: '' }
+               { id: 1, placeholder: this.$t('price_from'), value: '' },
+               { id: 2, placeholder: this.$t('price_to'), value: '' }
             ]
          }
       },

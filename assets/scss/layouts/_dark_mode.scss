@@ -121,7 +121,7 @@
    }
 
    .card {
-      background-color: $dark-2;
+      background-color: $dark-light-new;
 
       &.underline {
          box-shadow: $shadow-dark-6;
@@ -705,6 +705,12 @@
          .text-truncate {
             color: $white-2-new;
          }
+
+         .icon-chevron-down {
+            &:before {
+               color: $white-2-new;
+            }
+         }
       }
       &_inputs {
          .form-group {
@@ -741,7 +747,8 @@
       }
    }
 
-   .pages-salons-id {
+   .pages-salons-id,
+   .pages-parts-shops-id {
       .salon-inner {
          &__details {
             background-color: $dark-light-new;
@@ -768,6 +775,22 @@
          }
       }
    }
+
+   .minMaxSearch {
+      border-color: $dark-1 !important;
+
+      div {
+         background-color: $dark-1;
+
+         &:first-child {
+            border-color: $grey-3-new !important;
+         }
+      }
+
+      input {
+         background-color: $dark-1;
+      }
+   }
 }
 
 .dark-mode {
@@ -791,7 +814,7 @@
    .checkbox-input label,
    .radio-input label,
    .form-info {
-      background-color: $dark-1;
+      background-color: $dark-new !important;
       border-color: transparent;
    }
 
@@ -799,7 +822,7 @@
    .checkbox-input.no-bg label,
    .radio-input.no-bg label,
    .form-info.no-bg {
-      background-color: $dark-2;
+      background-color: $dark-new !important;
    }
 
    .text-input input.disabled {

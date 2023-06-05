@@ -445,30 +445,33 @@
    }
 
    &__gallery {
-      display: flex;
+      position: relative;
+      //display: flex;
       justify-content: space-between;
       flex-wrap: wrap;
       width: 228px;
       height: 100%;
       overflow: hidden;
 
+      .count {
+         position: absolute;
+         left: calc(50% + 20px);
+         bottom: 45px;
+         text-align: center;
+         font-weight: 600;
+         font-size: 20px;
+         line-height: 20px;
+         color: #FFFFFF;
+         z-index: 2;
+      }
+
       &-item {
          width: 108px;
          height: 106px;
          border-radius: 12px;
-         margin-bottom: 12px;
+         //margin-bottom: 12px;
          cursor: pointer;
          overflow: hidden;
-
-         span {
-            position: relative;
-            text-align: center;
-            font-weight: 600;
-            font-size: 20px;
-            line-height: 20px;
-            color: #FFFFFF;
-            z-index: 2;
-         }
 
          &:nth-child(6) {
             position: relative;

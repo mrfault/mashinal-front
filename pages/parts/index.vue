@@ -183,9 +183,9 @@
       watch: {
          sorting(val) {
             if (val === '') {
-               this.$store.dispatch('getInfiniteMainPartsPageSearch', { sorting: 'created_at_desc' });
+               this.$store.dispatch('getInfiniteMainPartsPageSearch', { params: { sorting: 'created_at_desc' }});
             } else {
-               this.$store.dispatch('getInfiniteMainPartsPageSearch', { sorting: this.sorting });
+               this.$store.dispatch('getInfiniteMainPartsPageSearch', { params: {sorting: this.sorting} });
             }
          }
       },
@@ -198,10 +198,31 @@
    }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
    .pages-parts-index {
       .announcements-grid {
          margin: 32px -15px 0 -15px;
+      }
+   }
+
+   @media (max-width: 1150px) {
+      .pages-parts-index {
+         .banner {
+            background-position-x: right !important;
+         }
+      }
+   }
+
+   @media (max-width: 600px) {
+      .pages-parts-index {
+         .part-search-form {
+            margin: -30px -20px 0 -20px;
+
+            .cart {
+               padding: 24px 16px !important;
+               border-radius: unset;
+            }
+         }
       }
    }
 </style>

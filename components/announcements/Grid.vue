@@ -12,10 +12,9 @@
             </template>
 
             <template #right>
-               <nuxt-link to="">
+               <nuxt-link :to="$localePath('/cars')">
                   <span>{{ $t('see_all') }}</span>
                   <icon name="arrow-right"/>
-
                </nuxt-link>
             </template>
          </Cap>

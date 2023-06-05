@@ -153,7 +153,7 @@
               <form-text-input type="url" placeholder="Facebook URL" icon-name="link" v-model="form.facebook" block-class="placeholder-dark-blue-3" />
             </div>
             <div class="col-lg-12 mb-2 mb-lg-3" id="anchor-description">
-              <form-textarea :maxlength="1000" :placeholder="$t('general_information')" v-model="form.description"
+              <form-textarea :maxlength="130" :placeholder="$t('general_information')" v-model="form.description"
                 @change="removeError('description')" :invalid="isInvalid('description')" />
             </div>
             <div class="col-lg-12" id="anchor-saved_gallery">
