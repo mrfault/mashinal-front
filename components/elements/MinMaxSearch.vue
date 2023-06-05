@@ -332,4 +332,28 @@ export default {
          }
       }
    }
+
+   @media (max-width: 1150px) {
+      .minMaxSearch {
+         div {
+            padding: 14px;
+         }
+
+         input {
+            font-size: 14px;
+         }
+      }
+   }
+
+   @media (max-width: 1150px) {
+      .minMaxSearch {
+         div {
+            padding: 14px;
+         }
+
+         input {
+            font-size: 14px;
+         }
+      }
+   }
 </style>
