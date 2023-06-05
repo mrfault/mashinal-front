@@ -702,6 +702,7 @@
 .dark-mode {
    .form-group {
       .select-menu_label {
+         background-color: $dark-new;
          .text-truncate {
             color: $white-2-new;
          }
@@ -867,7 +868,7 @@
       }
 
       &_label {
-         background-color: $dark-light-new !important;
+         background-color: $dark-new !important;
          border-color: transparent;
 
          &.selected,

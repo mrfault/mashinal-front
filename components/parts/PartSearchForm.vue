@@ -1,9 +1,9 @@
 <template>
    <div :class="['part-search-form mb-5', { 'pb-2': showDynamicFilter }]">
-      <div class="card pt-2 pt-lg-4">
+      <div class="card p-2 p-sm-3 p-md-4">
          <div class="row">
             <!-- Mileage options -->
-            <div class="col-lg-4 mb-3 mb-lg-3" v-if="showMilageOptions">
+            <div class="col-12 col-md-5 mb-3 mb-lg-3" v-if="showMilageOptions">
                <form-buttons
                   :options="getMileageOptions"
                   :group-by="3"

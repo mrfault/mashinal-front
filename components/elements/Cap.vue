@@ -112,6 +112,14 @@
                fill: #CDD5DF;
             }
          }
+
+         .form-group {
+            .select-menu {
+               &_label {
+                  background-color: #1B2434 !important;
+               }
+            }
+         }
       }
    }
 
