@@ -415,7 +415,7 @@
    .dark-mode {
       .pages-salons {
          &.autosalon {
-            background-color: #1C1C1E;
+            background-color: #1B2434;
 
             .salon-card {
                border-color: transparent;
