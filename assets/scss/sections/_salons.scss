@@ -95,6 +95,13 @@
     }
 }
 
+@media (max-width: 600px) {
+   .salon-card {
+      padding: 16px;
+      border-color: $white-2-new;
+   }
+}
+
 .balloon-content {
     a {
         color: $dark-blue-1;

@@ -189,7 +189,7 @@
             <div class="container">
                <nav class="full-width">
                   <div class="row align-items-center">
-                     <div class="col-lg-9 position-static">
+                     <div class="col-lg-10 position-static">
                         <ul class="menu position-relative">
                            <li
                               v-for="menu in navbarMenus"
@@ -291,9 +291,9 @@
                         </ul>
                      </div>
 
-                     <div class="col-lg-2 ml-auto">
-                        <div class="row justify-content-end top-header-right">
-                           <div class="col-5 col-lg-12 col-xl-12">
+                     <div class="col-lg-2">
+                        <div class="row">
+                           <div class="col-5 col-lg-12 col-xl-12 d-flex justify-content-end">
                               <nuxt-link
                                  class="btn full-width btn--pale-green-outline"
                                  :to="$localePath('/sell')"

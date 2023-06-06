@@ -48,11 +48,11 @@ export const MenusDataMixin = {
                // categories: announcementCategories
             },
             { icon: 'salons-tab', title: 'auto_salons', route: '/salons' },
+            { icon: 'shops-tab', title: 'shops', route: '/parts/shops' },
+            { title: 'registration_marks', route: '/registration-marks' },
             { icon: '', title: 'parts', route: '/parts' },
-            // {icon: 'shops-tab', title: 'shops', route: '/parts/shops'},
             // {icon: 'catalog-tab', title: 'autocatalog', route: '/catalog'},
             // {icon: 'external-tab', title: 'external-salons', route: '/external-salons', with_badge: true},
-            { title: 'registration_marks', route: '/registration-marks', with_badge: true },
             { icon: 'globe', title: 'eservices', route: '/e-services' }
          ]
       },
