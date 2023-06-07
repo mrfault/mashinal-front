@@ -303,26 +303,22 @@ export default {
     ...mapState(['savedImageUrls']),
     fancyBoxMedia() {
       if (!this.active_box) return [];
-      let _return = [];
-      let img = this.savedImageUrls;
-      for (const key in this.savedImageUrls) {
+      const images = this.saved_images.map(id => {
 
-        let original = img[key].replace('-main', '-thumb').replace('-upload_thumb', '-thumb');
-        //   if (!this.imageExists(original)) original = original.replace('.jpg', '.png')
-        /*
-        if (img[key].includes('-upload_thumb')){
-          let original = img[key].replace('-upload_thumb', '-thumb');
-        }else{
-          let original = this.img[key].replace('/conversions', '').replace('-thumb', '');
-        }*/
-
-        _return.push({
-          thumb: img[key],
-          src: original
-        });
-      }
-
-      return _return;
+         if(this.announce.original_media[id]) {
+            return this.announce.original_media[id];
+         }else {
+           let item = this.setSavedImageUrls.find(item => item.includes(id));
+           if(item) item = item.replace('-upload_thumb','-thumb')
+            return item;
+         }
+      } )
+      return images.map((item) => {
+         return {
+            thumb: item,
+            src: item
+         };
+      })
     },
     sellImageCount() {
       if (this.isCar) return [1, 2, 3, 4, 5];
