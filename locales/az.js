@@ -561,7 +561,7 @@ export default {
       "Avtomobilə aid bütün ehtiyat hissələri bir ünvanda",
    credit: "Kredit",
    credit_amount: "Kreditin məbləği",
-   credit_possible: "Mümkündür",
+   credit_possible: "Kredit",
    credit_term: "Kredit müddəti",
    credits: "Kreditlər",
    "Cruise control": "Kruiz-kontrol",
