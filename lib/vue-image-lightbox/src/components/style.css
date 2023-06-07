@@ -70,8 +70,7 @@
 
 img.vue-lb-modal-image {
   cursor: pointer;
-  max-height: calc(100vh - 140px);
-  cursor: pointer;
+  max-height: calc(100vh - 322px);
   display: block;
   height: auto;
   margin: 0 auto;
