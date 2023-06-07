@@ -1600,6 +1600,7 @@ export default {
    refine_map_location: "Xəritədə yerini dəqiqləşdir",
    refuse: "İmtina etmək",
    region: "Satış şəhəri",
+   region_2: "Rayon",
    region_and_place_of_inspection: "Region və baxış yeri",
    register: "Qeydiyyatdan keç",
    register_and_publish: "Qeydiyyatdan keç və elan yerləşdir",

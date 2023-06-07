@@ -1570,6 +1570,7 @@ export default {
    "refine_map_location": "Уточнить расположение на карте",
    "refuse": "Отказать",
    "region": "Регион",
+   "region_2": "Регион",
    "region_and_place_of_inspection": "Регион и место осмотра",
    "register": "Зарегистрироваться",
    "register_and_publish": "Зарегистрироваться и опубликовать",

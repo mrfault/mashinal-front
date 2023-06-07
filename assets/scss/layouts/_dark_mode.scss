@@ -817,6 +817,10 @@
    .form-info {
       background-color: $dark-new !important;
       border-color: transparent;
+
+      &::placeholder {
+         color: #9AA4B2;
+      }
    }
 
    .text-input.no-bg input,

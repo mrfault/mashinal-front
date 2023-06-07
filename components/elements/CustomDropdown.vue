@@ -1,29 +1,32 @@
 <template>
    <div
-      :class="[
-         'customDropdown', className,
+      :class="['customDropdown',
          {
+            'active' : isActive,
             'selected' : value,
             'disabled' : disabled,
             'search' : search,
             'color' : color,
          }
       ]"
-      @click.stop="onClick($event)"
+      @keyup.esc="isActive = false"
+      @click="isActive = !isActive"
+      v-click-outside="close"
    >
       <template>
-         <div class="customDropdown__head">
-            <span class="customDropdown__placeholder">{{ placeholder }}</span>
+         <div class="customDropdown__head" @keyup.esc="isActive = false">
+            <span class="customDropdown__placeholder" v-if="!search || !isActive">{{ placeholder }}</span>
 
             <input
-               v-if="search"
-               ref="input"
+               v-if="search && isActive"
                type="text"
-               :placeholder="`${placeholder}`"
+               ref="input"
+               :placeholder="inputPlaceholder"
                v-model="searchValue"
+               @click.stop
             >
 
-            <span class="customDropdown__selected">
+            <span class="customDropdown__selected" v-if="!search || !isActive">
                <template v-if="translateLocale">
                   {{ value && value.name[locale] }}
                </template>
@@ -40,451 +43,514 @@
             <icon name="chevron-down"/>
          </div>
 
-         <ul class="customDropdown__main">
-            <li
-               class="customDropdown__main-item remove"
-               @click="removeValue"
-            >
-               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 4L4 12" stroke="#697586" stroke-width="1.6" stroke-linecap="round"
-                        stroke-linejoin="round"/>
-                  <path d="M4 4L12 12" stroke="#697586" stroke-width="1.6" stroke-linecap="round"
-                        stroke-linejoin="round"/>
-               </svg>
+         <Transition name="opacity">
+            <ul class="customDropdown__main" v-if="isActive" @keyup.esc="isActive = false">
+               <li
+                  class="customDropdown__main-item remove"
+                  @click="removeValue"
+               >
+                  <inline-svg :src="'/icons/close.svg'" :width="'10px'" :height="'10px'" />
 
-               <span>Sıfırla</span>
-            </li>
+                  <span v-if="!hideClearSearch">{{ $t('clear_search') }}</span>
+               </li>
 
-            <li
-               class="customDropdown__main-item"
-               v-for="(item, i) in filteredItems"
-               :key="i"
-               @click="selectItem(item)"
-            >
-               <div
-                  v-if="color"
-                  class="customDropdown__main-itemColor"
-                  :style="{ backgroundColor: `${item.code }`}"
-               ></div>
+               <li
+                  :class="['customDropdown__main-item', {'selected' : item.name === value}]"
+                  v-for="(item, i) in filteredOptions"
+                  :key="i"
+                  @click="selectItem(item)"
+               >
+                  <div
+                     v-if="color"
+                     class="customDropdown__main-itemColor"
+                     :style="{ backgroundColor: `${item.code }`}"
+                  ></div>
 
-               <template v-if="translateLocale">
-                  {{ item && item.name[locale] }}
-               </template>
+                  <template v-if="translateLocale">
+                     {{ item && item.name[locale] }}
+                  </template>
 
-               <template v-else-if="translate">
-                  {{ (item.name) ? $t(item.name) : $t(item) }}
-               </template>
+                  <template v-else-if="translate">
+                     {{ (item.name) ? $t(item.name) : $t(item) }}
+                  </template>
 
-               <template v-else>
-                  {{ (item.name) ? item.name : item }}
-               </template>
-            </li>
-         </ul>
+                  <template v-else>
+                     {{ (item.name) ? item.name : item }}
+                  </template>
+               </li>
+            </ul>
+         </Transition>
       </template>
    </div>
 </template>
 
 <script>
-export default {
-   data() {
-      return {
-         searchValue: ''
-      }
-   },
-
-   methods: {
-      onClick(e) {
-         document.querySelectorAll('.customDropdown').forEach(dropdown => {
-            dropdown.classList.remove('active');
-         });
-         e.currentTarget.classList.toggle('active');
-
-         if (this.$refs.input) this.$refs.input.focus();
-
-         // if (this.search) {
-         //    if (this.translate) {
-         //       console.log('this.translate', this.translate)
-         //       console.log('this.value', this.value)
-         //    if (this.value.name) {
-         //       this.setPlaceholder = this.$t(this.value.name);
-         //    } else {
-         //       this.setPlaceholder = this.$t(this.value);
-         //    }
-         // } else {
-         //    (this.value.name) ? this.setPlaceholder = this.value.name : this.setPlaceholder = this.value;
-         // }
-         // }
-         // }
-      },
-
-      selectItem(item) {
-         if (this.getFullDetails) {
-            this.setValue = item;
-         } else {
-            (item.name) ? this.setValue = item.name : this.setValue = item;
-         }
-
-         this.searchValue = '';
-
-         setTimeout(() => this.close(), 0);
-      },
-
-      removeValue() {
-         this.setValue = this.searchValue = '';
-      },
-
-      close() {
-         document.querySelectorAll('.customDropdown').forEach(dropdown => {
-            dropdown.classList.remove('active');
-         });
-      }
-   },
-
-   computed: {
-      setValue: {
-         get() {
-            return this.value;
-         },
-         set(value) {
-            this.$emit('input', value);
+   export default {
+      data() {
+         return {
+            isActive: false,
+            searchValue: '',
          }
       },
 
-      setPlaceholder: {
-         get() {
-            return this.placeholder;
-         },
-         set(value) {
-            this.$emit('input', value);
-         }
-      },
+      methods: {
+         // onClick(e) {
+         //    document.querySelectorAll('.customDropdown').forEach(dropdown => {
+         //       dropdown.classList.remove('active');
+         //    });
+         //    e.currentTarget.classList.toggle('active');
+         //
+         //    if (this.$refs.input) this.$refs.input.focus();
+         //
+         //    // if (this.search) {
+         //    //    if (this.translate) {
+         //    //       console.log('this.translate', this.translate)
+         //    //       console.log('this.value', this.value)
+         //    //    if (this.value.name) {
+         //    //       this.setPlaceholder = this.$t(this.value.name);
+         //    //    } else {
+         //    //       this.setPlaceholder = this.$t(this.value);
+         //    //    }
+         //    // } else {
+         //    //    (this.value.name) ? this.setPlaceholder = this.value.name : this.setPlaceholder = this.value;
+         //    // }
+         //    // }
+         //    // }
+         // },
 
-      filteredItems() {
-         if (this.search) {
-            return this.items?.filter(item => {
-               if (item.name) {
-                  return String(item.name).toLowerCase().includes(this.searchValue.toLowerCase());
-                  // return item?.name.includes(this.searchValue);
-               } else {
-                  return String(item).toLowerCase().includes(this.searchValue.toLowerCase());
-                  // return console.log(String(item))
-               }
-               // setTimeout(() => {
-               //    document.querySelectorAll('.customDropdown__main-item').forEach(li => {
-               //       this.selectedItems.forEach(selectedItem => {
-               //          if (li.getAttribute('data-id') == selectedItem.id) {
-               //             li.classList.add('selected')
-               //          }
-               //       })
-               //    })
-               // }, 0)
-            })
-         } else {
-            return this.items;
-         }
-      },
-   },
-
-   props: {
-      className: {
-         type: String,
-         default: ''
-      },
-
-      value: {
-         default: ''
-      },
-
-      placeholder: {
-         type: String,
-         default: ''
-      },
-
-      getFullDetails: {
-         type: Boolean,
-         default: false
-      },
-
-      disabled: {
-         type: Boolean,
-         default: false
-      },
-
-      clearValue: {
-         required: false
-      },
-
-      translate: {
-         type: Boolean,
-         default: false
-      },
-
-      translateLocale: {
-         type: Boolean,
-         default: false
-      },
-
-      color: {
-         type: Boolean,
-         default: false
-      },
-
-      search: {
-         type: Boolean,
-         default: false
-      },
-
-      items: {
-         type: Array,
-         default() {
-            return []
-         }
-      }
-   },
-
-   watch: {
-      disabled(val) {
-         if (val) this.removeValue();
-      },
-
-      clearValue(newVal, oldVal) {
-         if (oldVal) {
-            if (typeof newVal === 'object') {
-               if (newVal.id !== oldVal.id) {
-                  this.removeValue();
-               } else if (newVal.key !== oldVal.key) {
-                  this.removeValue();
-               }
+         selectItem(item) {
+            if (this.getFullDetails) {
+               this.setValue = item;
             } else {
-               if (newVal !== oldVal) {
-                  this.removeValue();
-               }
+               item.name ? this.setValue = item.name : this.setValue = item;
+            }
+
+            this.searchValue = '';
+         },
+
+         removeValue() {
+            this.setValue = this.searchValue = '';
+         },
+
+         close() {
+            this.isActive = false;
+         }
+      },
+
+      computed: {
+         setValue: {
+            get() {
+               return this.value;
+            },
+            set(value) {
+               this.$emit('input', value);
+            }
+         },
+
+         setPlaceholder: {
+            get() {
+               return this.placeholder;
+            },
+            set(value) {
+               this.$emit('input', value);
+            }
+         },
+
+         filteredOptions() {
+            if (this.search) {
+               return this.options?.filter(item => {
+                  if (item.name) {
+                     return String(item.name).toLowerCase().includes(this.searchValue.toLowerCase());
+                     // return item?.name.includes(this.searchValue);
+                  } else {
+                     return String(item).toLowerCase().includes(this.searchValue.toLowerCase());
+                     // return console.log(String(item))
+                  }
+                  // setTimeout(() => {
+                  //    document.querySelectorAll('.customDropdown__main-item').forEach(li => {
+                  //       this.selectedItems.forEach(selectedItem => {
+                  //          if (li.getAttribute('data-id') == selectedItem.id) {
+                  //             li.classList.add('selected')
+                  //          }
+                  //       })
+                  //    })
+                  // }, 0)
+               })
+            } else {
+               return this.options;
+            }
+         },
+      },
+
+      props: {
+         value: {
+            default: ''
+         },
+
+         placeholder: {
+            type: String,
+            default: ''
+         },
+
+         inputPlaceholder: {
+            type: String,
+            default: ''
+         },
+
+         getFullDetails: {
+            type: Boolean,
+            default: false
+         },
+
+         hideClearSearch: {
+            type: Boolean,
+            default: false
+         },
+
+         disabled: {
+            type: Boolean,
+            default: false
+         },
+
+         translate: {
+            type: Boolean,
+            default: false
+         },
+
+         translateLocale: {
+            type: Boolean,
+            default: false
+         },
+
+         color: {
+            type: Boolean,
+            default: false
+         },
+
+         search: {
+            type: Boolean,
+            default: false
+         },
+
+         options: {
+            type: Array,
+            default() {
+               return []
+            }
+         }
+      },
+
+      watch: {
+         disabled(val) {
+            if (val) this.removeValue();
+         },
+
+         isActive() {
+            this.$nextTick(() => this.$refs?.input?.focus());
+         }
+
+         // clearValue(newVal, oldVal) {
+         //    if (oldVal) {
+         //       if (typeof newVal === 'object') {
+         //          if (newVal.id !== oldVal.id) {
+         //             this.removeValue();
+         //          } else if (newVal.key !== oldVal.key) {
+         //             this.removeValue();
+         //          }
+         //       } else {
+         //          if (newVal !== oldVal) {
+         //             this.removeValue();
+         //          }
+         //       }
+         //    }
+         // }
+      },
+
+      mounted() {
+         window.addEventListener("keyup", (e) => {
+            if (e.keyCode === 27) this.close();
+         });
+      },
+
+      beforeDestroy() {
+         window.addEventListener('click', this.close);
+      }
+   }
+</script>
+
+<style lang="scss">
+   .customDropdown {
+      position: relative;
+      min-width: 66px;
+      z-index: 10;
+      border-radius: 8px;
+
+      &__head {
+         position: relative;
+         display: flex;
+         align-items: center;
+         justify-content: space-between;
+         height: 52px;
+         padding: 15px 16px;
+         border-radius: 8px;
+         border: 1px solid #CDD5DF;
+         transition: all .3s;
+
+         input {
+            width: 95%;
+            border: none;
+            outline: none;
+            padding: 0 10px 0 0;
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 20px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            background-color: transparent;
+
+            &::placeholder {
+               color: #697586;
+            }
+
+            &:focus{
+               text-overflow: ellipsis;
+               overflow: hidden;
+               white-space: nowrap;
+            }
+         }
+
+         .icon-chevron-down {
+            position: absolute;
+            top: 50%;
+            right: 16px;
+            transform: translateY(-50%);
+            transition: all .3s;
+
+            &:before {
+               margin-left: 0;
             }
          }
       }
-   },
 
-   mounted() {
-      window.addEventListener('click', this.close);
-   },
-
-   beforeDestroy() {
-      window.addEventListener('click', this.close);
-   }
-}
-</script>
-
-<style lang="scss" scoped>
-.customDropdown {
-   position: relative;
-   min-width: 66px;
-   z-index: 10;
-   border-radius: 8px;
-
-   &__head {
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 52px;
-      padding: 15px 16px;
-      border-radius: 8px;
-      border: 1px solid #CDD5DF;
-      transition: all .3s;
-
-      input {
-         width: 95%;
-         display: none;
-         border: none;
-         outline: none;
-         padding: 0;
+      &__placeholder {
+         font-size: 16px;
+         color: #1B2434;
+         user-select: none;
       }
 
-      .icon-chevron-down {
-         position: absolute;
-         top: 50%;
-         right: 16px;
-         transform: translateY(-50%);
-         transition: all .3s;
-
-         &:before {
-            margin-left: 0;
-         }
-      }
-   }
-
-   &__selected {
-      font-weight: 400;
-      font-size: 16px;
-      line-height: 20px;
-      color: #202939;
-      padding-right: 20px;
-
-      text-overflow: ellipsis;
-      overflow: hidden;
-      white-space: nowrap;
-   }
-
-   &__main {
-      position: absolute;
-      top: 62px;
-      left: 0;
-      width: 100%;
-      max-height: 240px;
-      margin: 0;
-      padding: 8px 2px 8px 8px;
-      list-style: none;
-      overflow-y: auto;
-      border-radius: 8px;
-      border: 1px solid #CDD5DF;
-      background-color: #FFFFFF;
-      z-index: 13;
-
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity .1s, visibility .1s;
-
-      &::-webkit-scrollbar {
-         width: 15px; // Ширина скролла.
-      }
-
-      &::-webkit-scrollbar-track {
-         background-color: transparent; // Цвет трека.
-      }
-
-      &::-webkit-scrollbar-thumb:vertical {
-         height: 30px;
-      }
-
-      &::-webkit-scrollbar-thumb {
-         border: 4px solid transparent;
-         background-clip: padding-box;
-         border-radius: 9999px;
-         background-color: #9AA4B2;
-      }
-
-      //&::-webkit-scrollbar-thumb:hover {
-      //   background-color: #9AA4B2; // Цвет скролла при наведении.
-      //}
-
-      &-item {
-         padding: 12px 8px;
+      &__selected {
          font-weight: 400;
          font-size: 16px;
          line-height: 20px;
          color: #202939;
-         border-radius: 8px;
-         cursor: pointer;
-         transition: all .3s;
+         padding-right: 20px;
+         user-select: none;
 
-         &:hover {
-            background-color: #EEF2F6;
+         text-overflow: ellipsis;
+         overflow: hidden;
+         white-space: nowrap;
+      }
+
+      &__main {
+         position: absolute;
+         top: 62px;
+         left: 0;
+         width: 100%;
+         max-height: 240px;
+         padding: 8px ;
+         list-style: none;
+         overflow-x: hidden;
+         overflow-y: auto;
+         border-radius: 8px;
+         border: 1px solid #CDD5DF;
+         background-color: #FFFFFF;
+         z-index: 13;
+
+         &::-webkit-scrollbar {
+            width: 15px; // Ширина скролла.
          }
 
-         &.remove {
-            display: flex;
-            align-items: center;
+         &::-webkit-scrollbar-track {
+            background-color: transparent; // Цвет трека.
+         }
 
-            svg {
-               margin: 1px 6px 0 0;
+         &::-webkit-scrollbar-thumb:vertical {
+            height: 50px;
+         }
+
+         &::-webkit-scrollbar-thumb {
+            border: 4px solid transparent;
+            background-clip: padding-box;
+            border-radius: 9999px;
+            background-color: #9AA4B2;
+         }
+
+         //&::-webkit-scrollbar-thumb:hover {
+         //   background-color: #9AA4B2; // Цвет скролла при наведении.
+         //}
+
+         &-item {
+            padding: 12px 8px;
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 20px;
+            color: #1B2434;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all .3s;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+
+            &:hover {
+               background-color: #EEF2F6;
+            }
+
+            &.remove {
+               display: flex;
+               align-items: center;
+
+               svg {
+                  margin: 1px 6px 0 0;
+
+                  path {
+                     stroke: #697586;
+                  }
+               }
+            }
+
+            &.selected {
+               background-color: #EEF2F6;
             }
          }
+
+         &-itemColor {
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+            border-radius: 50%;
+         }
       }
 
-      &-itemColor {
-         width: 24px;
-         height: 24px;
-         margin-right: 10px;
-         border-radius: 50%;
-      }
-   }
+      &.active {
+         z-index: 11;
 
-   &.active {
-      z-index: 11;
+         &:hover {
+            .customDropdown__head {
+               border-color: #155EEF;
 
-      &:hover {
+            }
+         }
+
          .customDropdown__head {
             border-color: #155EEF;
 
+            i {
+               transform: translateY(-50%) rotate(-180deg);
+            }
+         }
+
+         .customDropdown__main {
+            border-color: #155EEF;
          }
       }
 
-      .customDropdown__head {
-         border-color: #155EEF;
-
-         input {
-            display: block;
+      &.selected {
+         .customDropdown__placeholder {
+            position: absolute;
+            top: 9px;
+            font-weight: 400;
+            font-size: 12px;
+            line-height: 14px;
+            color: #4B5565;
          }
 
-         i {
-            transform: translateY(-50%) rotate(-180deg);
+         .customDropdown__selected {
+            //position: absolute;
+            //bottom: 9px;
+            margin-top: 15px;
          }
       }
 
-      .customDropdown__main {
-         border-color: #155EEF;
+      &.disabled {
+         pointer-events: none;
 
-         opacity: 1;
-         visibility: visible;
-         transition: opacity .3s, visibility;
-      }
+         .customDropdown__head {
+            .icon-chevron-down {
+               &:before {
+                  color: #CDD5DF;
+               }
+            }
+         }
 
-      &.search {
-         .customDropdown__placeholder, .customDropdown__selected {
-            display: none;
+         .customDropdown__placeholder {
+            color: #4B5565;
          }
       }
-   }
 
-   &.selected {
-      .customDropdown__placeholder {
-         position: absolute;
-         top: 9px;
-         font-weight: 400;
-         font-size: 12px;
-         line-height: 14px;
-         color: #4B5565;
-      }
-
-      .customDropdown__selected {
-         //position: absolute;
-         //bottom: 9px;
-         margin-top: 15px;
-      }
-   }
-
-   &.disabled {
-      pointer-events: none;
-
-      .customDropdown__head {
-         .icon-chevron-down {
-            &:before {
-               color: #CDD5DF;
+      &.color {
+         .customDropdown__main {
+            &-item {
+               display: flex;
             }
          }
       }
 
-      .customDropdown__placeholder {
-         color: #4B5565;
+      &:hover {
+         .customDropdown__head {
+            border-color: #84ADFF;
+         }
+      }
+
+      &::-webkit-scrollbar {
+         width: 0; // Ширина скролла.
       }
    }
 
-   &.color {
-      .customDropdown__main {
-         &-item {
-            display: flex;
+   .dark-mode {
+      .customDropdown {
+         &__placeholder {
+            color: #9AA4B2 !important;
+         }
+
+         &__selected {
+            color: #FFFFFF;
+         }
+
+         &__head {
+            border: unset;
+            background-color: #121926;
+
+            .icon-chevron-down {
+               &:before {
+                  color: #9AA4B2;
+               }
+            }
+         }
+
+         &__main {
+            border: unset;
+            background-color: #121926;
+            &-item {
+               color: #9AA4B2;
+
+               &.selected {
+                  background-color: #eef2f62b;
+               }
+
+               &:hover {
+                  background-color: #eef2f62b;
+               }
+
+               svg {
+                  path {
+                     fill: #9AA4B2;
+                     stroke: #9AA4B2;
+                  }
+               }
+            }
          }
       }
    }
-
-   &:hover {
-      .customDropdown__head {
-         border-color: #84ADFF;
-      }
-   }
-
-   &::-webkit-scrollbar {
-      width: 0; // Ширина скролла.
-   }
-}
 </style>

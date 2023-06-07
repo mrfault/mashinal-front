@@ -14,6 +14,7 @@ import ShareIt from '~/components/elements/ShareIt';
 import Loader from '~/components/elements/Loader';
 import InfiniteLoading from '~/components/elements/InfiniteLoading';
 import Popover from '~/components/elements/Popover';
+
 // forms
 import FormNumericInput from '~/components/forms/FormNumericInput';
 import FormPriceInput from '~/components/forms/FormPriceInput';

@@ -21,34 +21,30 @@
 
                <div class="registrationMarks__filters">
                   <div class="divider">
-<!--                     :className="'new'"-->
-                     <form-select
-                        :label="'01 - Abşeron'"
+                     <CustomDropdown
+                        :placeholder="$t('region_2')"
+                        :inputPlaceholder="'Markanı daxil edin'"
                         :options="getRegionNumbers"
-                        :clearPlaceholder="true"
-                        :clear-option="false"
+                        :search="true"
                         v-model="form.region"
-                        has-search
                      />
 
-<!--                     :className="'new'"-->
-                     <form-select
-                        :label="'A'"
+                     <CustomDropdown
+                        :placeholder="'A'"
+                        :inputPlaceholder="'Markanı daxil edin'"
                         :options="numbers"
-                        :clearPlaceholder="true"
-                        :clear-option="false"
+                        :search="true"
+                        :hideClearSearch="true"
                         v-model="form.serial_letter1"
-                        has-search
                      />
 
-<!--                     :className="'new'"-->
-                     <form-select
-                        :label="'A'"
+                     <CustomDropdown
+                        :placeholder="'A'"
+                        :inputPlaceholder="'Markanı daxil edin'"
                         :options="numbers"
-                        :clearPlaceholder="true"
-                        :clear-option="false"
+                        :search="true"
+                        :hideClearSearch="true"
                         v-model="form.serial_letter2"
-                        has-search
                      />
 
                      <form-numeric-input
@@ -76,25 +72,18 @@
                   </div>
 
                   <div class="divider">
-<!--                     :className="'new'"-->
-                     <form-select
-                        :label="$t('currency')"
+                     <CustomDropdown
+                        :placeholder="$t('currency')"
                         :options="currency"
-                        :clearPlaceholder="true"
-                        :clear-option="false"
                         v-model="form.currency_id"
-                        has-search
                      />
 
-<!--                     :className="'new'"-->
-                     <form-select
-                        :label="$t('city')"
+                     <CustomDropdown
+                        :placeholder="$t('city')"
+                        :inputPlaceholder="'Markanı daxil edin'"
                         :options="cities.regions"
-                        :clearPlaceholder="true"
-                        :clear-option="false"
-                        :valueType="'string'"
+                        :search="true"
                         v-model="form.region_id"
-                        has-search
                      />
                   </div>
                </div>
@@ -153,6 +142,7 @@
    import NoResults from "~/components/elements/NoResults.vue";
    import HandleIds from "~/components/announcements/HandleIds.vue";
    import Cap from "~/components/elements/Cap.vue";
+   import CustomDropdown from "~/components/elements/CustomDropdown.vue";
 
    export default {
       head() {
@@ -172,7 +162,8 @@
          Cap,
          RegistrationMarksGrid,
          NoResults,
-         HandleIds
+         HandleIds,
+         CustomDropdown
       },
 
       transition: 'fade-y-20',
@@ -397,34 +388,35 @@
             align-items: center;
             justify-content: space-between;
 
-            .form-group {
-               &:not(:first-child) {
-                  margin-left: 20px;
-               }
-            }
-
             &:not(:first-child) {
                margin-left: 20px;
             }
 
             &:first-child {
-               .form-group {
+               .customDropdown {
                   width: 72px;
 
                   &:first-child {
                      width: 160px;
                   }
                }
+
+               .form-group {
+                  width: 72px;
+                  margin-left: 20px;
+               }
             }
 
             &:nth-child(2) {
+               gap: 20px;
+
                .form-group {
                   width: 120px;
                }
             }
 
             &:last-child {
-               .form-group {
+               .customDropdown {
                   width: 128px;
 
                   &:last-child {
@@ -432,25 +424,16 @@
                   }
                }
             }
+
+            .customDropdown {
+               &:not(:first-child) {
+                  margin-left: 20px;
+               }
+            }
          }
       }
 
       &.index {
-         //margin-top: 20px;
-         //.select-menu_label {
-            //padding: 26px 15px;
-         //}
-
-         //.text-input {
-         //   input {
-         //      height: 52px;
-         //       border-radius: 6px;
-         //      &::placeholder {
-         //         color: #697586;
-         //      }
-         //   }
-         //}
-
          .pagination {
             li {
                button {
@@ -496,30 +479,40 @@
             padding: 20px;
 
             .divider {
-               .form-group {
+               .customDropdown {
                   &:not(:first-child) {
                      margin-left: 16px;
                   }
                }
 
+               &:not(:first-child) {
+                  margin-left: 16px;
+               }
+
                &:first-child {
-                  .form-group {
+                  .customDropdown {
                      width: 65px;
 
                      &:first-child {
                         width: 140px;
                      }
                   }
+
+                  .form-group {
+                     margin-left: 16px;
+                  }
                }
 
                &:nth-child(2) {
+                  gap: 16px;
+
                   .form-group {
                      width: 105px;
                   }
                }
 
                &:last-child {
-                  .form-group {
+                  .customDropdown {
                      width: 105px;
 
                      &:last-child {
@@ -565,25 +558,25 @@
                }
 
                &:first-child {
-                  .form-group {
+                  .customDropdown {
                      width: 69px;
 
                      &:first-child {
-                        width: 243px;
+                        width: 240px;
                      }
                   }
                }
 
                &:nth-child(2) {
                   .form-group {
-                     width: 113px;
+                     width: 112px;
                   }
                }
 
                &:last-child {
-                  margin-left: 16px;
+                  margin-left: 17px;
 
-                  .form-group {
+                  .customDropdown {
                      width: 112px;
 
                      &:last-child {
@@ -593,10 +586,6 @@
                }
             }
          }
-
-         //.pagination {
-         //   margin: 0 0 65px 0;
-         //}
       }
    }
 
@@ -649,6 +638,7 @@
             margin: 0;
             border: none;
             border-radius: unset;
+
             .divider {
                &:not(:first-child) {
                   margin-left: 0;
@@ -656,24 +646,35 @@
 
                &:first-child {
                   width: 100%;
-                  .form-group {
+
+                  .customDropdown {
                      width: 40%;
 
                      &:first-child {
                         width: 75%;
                      }
                   }
+
+                  .form-group {
+                     width: 40%;
+                  }
                }
 
                &:nth-child(2), &:last-child {
                   width: 100%;
                   gap: 16px;
-                  .form-group {
+
+                  .customDropdown {
                      width: 100%;
+
                      &:last-child {
                         width: 100%;
                         margin-left: 0;
                      }
+                  }
+
+                  .form-group {
+                     width: 100%;
                   }
                }
             }
@@ -702,16 +703,24 @@
       .registrationMarks {
          &__filters {
             padding: 24px 16px;
+
             .divider {
                &:first-child {
-                  .form-group {
+                  .customDropdown {
                      &:not(:first-child) {
                         margin-left: 8px;
                      }
                   }
+
+                  .form-group {
+                     margin-left: 8px;
+                  }
                }
-               .select-menu_label {
-                  padding: 26px 12px;
+
+               .customDropdown {
+                  &__head {
+                     padding: 15px 12px;
+                  }
                }
 
                .text-input {

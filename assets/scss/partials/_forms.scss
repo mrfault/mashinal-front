@@ -481,6 +481,12 @@ input::-webkit-inner-spin-button {
       user-select: none;
       position: relative;
 
+      .icon-chevron-down {
+         &:before {
+            font-size: 14px;
+         }
+      }
+
       .title {
          position: absolute;
          top: 0;

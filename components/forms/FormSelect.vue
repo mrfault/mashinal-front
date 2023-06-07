@@ -117,11 +117,11 @@
                         <div class="row pt-3" v-if="popularOptions && !search">
                            <div
                               v-for="option in $sortBy(
-                      getFilteredOptions,
-                      (a, b) =>
-                        popularOptions.indexOf(b.id) -
-                        popularOptions.indexOf(a.id),
-                    ).slice(0, 6)"
+                                  getFilteredOptions,
+                                  (a, b) =>
+                                    popularOptions.indexOf(b.id) -
+                                    popularOptions.indexOf(a.id),
+                                ).slice(0, 6)"
                               :key="option.id"
                               class="col-4 popular-option"
                               @click.stop="selectValue = option"

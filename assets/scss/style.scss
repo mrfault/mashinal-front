@@ -10,14 +10,5 @@
 @import 'partials';
 @import 'sections';
 @import 'default';
+@import 'transitions';
 
-
-.fade-y-20-enter,
-.fade-y-20-leave-to {
-   opacity: 0;
-   transform: translateY(-20px);
-}
-.fade-y-20-enter-active,
-.fade-y-20-leave-to {
-   transition: opacity 0.3s, transform 0.3s;
-}
