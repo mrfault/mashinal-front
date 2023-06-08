@@ -16,32 +16,36 @@
 
             <span :class="['text-truncate', { 'full-width': hasSearch }]">
                <template v-if="hasCards && getSelectedOptions[0]">
-               <span class="d-flex align-items-center" v-if="getSelectedOptions[0]">
-                 <img
-                    :src="getSelectedOptions[0].icon"
-                    :alt="getSelectedOptions[0].brand"
-                    width="32"
-                    height="16"
-                    class="mr-1"
-                 />
-                 <span class="placeholder">{{ getSelectedOptions[0].name.slice(10) }}</span>
+                  <span class="d-flex align-items-center" v-if="getSelectedOptions[0]">
+                     <img
+                        :src="getSelectedOptions[0].icon"
+                        :alt="getSelectedOptions[0].brand"
+                        width="32"
+                        height="16"
+                        class="mr-1"
+                     />
+                     <span class="placeholder">{{ getSelectedOptions[0].name.slice(10) }}</span>
                </span>
-             </template>
+               </template>
                <template v-else-if="hasCards">{{ clearOptionText }}</template>
                <template v-else-if="hasSearch && showOptions && !isMobileBreakpoint">
-               <span class="search-input">
-                 <span class="placeholder">{{ label }}</span>
+                  <span class="search-input">
+<!--                     <span class="placeholder">{{ label }}</span>-->
 
-                 <input
-                    type="text"
-                    @click.stop
-                    v-model="search"
-                    ref="searchInput"
-                    @keyup.enter="handleSearchSubmit"
-                 />
-               </span>
-             </template>
-               <template v-else>{{ getLabelText }}</template>
+                    <input
+                       type="text"
+                       ref="searchInput"
+                       v-model="search"
+                       :placeholder="inputPlaceholder"
+                       @click.stop
+                       @keyup.enter="handleSearchSubmit"
+                    />
+                  </span>
+               </template>
+               <template v-else>
+                  <span class="label" v-if="label !== getLabelText">{{ label }}</span>
+                  <span :class="['value', {'top' : label !== getLabelText}]">{{ getLabelText }}</span>
+               </template>
             </span>
 
            <span
@@ -53,14 +57,14 @@
            <span class="counter" v-else-if="custom && values.count">
              {{ values.count }}
            </span>
-           <icon
-              name="cross"
-              v-if="allowClear && !hasNoValue"
-              @click.native.stop="clearSelect"
-              class="cursor-pointer"
-           />
+            <!--           <icon-->
+            <!--              name="cross"-->
+            <!--              v-if="allowClear && !hasNoValue"-->
+            <!--              @click.native.stop="clearSelect"-->
+            <!--              class="cursor-pointer"-->
+            <!--           />-->
             <!-- <inline-svg src="/icons/cross.svg" height="14" v-if="allowClear && !hasNoValue" @click.native.stop="clearSelect" class="cursor-pointer" /> -->
-           <icon :name="iconName" v-else/>
+           <icon :name="iconName"/>
          </span>
          <!--         <icon-->
          <!--            :class="[-->
@@ -82,14 +86,13 @@
             />
             <div
                :class="[
-            'select-menu_dropdown responsive',
-            `anchor-${anchor}`,
-            {
-              show: showOptions,
-              custom,
-              'custom-checkboxes': customCheckboxes,
-            },
-          ]"
+               'select-menu_dropdown responsive',
+               `anchor-${anchor}`,
+               {
+                 show: showOptions,
+                 custom,
+                 'custom-checkboxes': customCheckboxes,
+               }]"
             >
                <template v-if="showOptions">
                   <div class="my-3" v-if="hasSearch && !hasGenerations" @click.stop>
@@ -114,14 +117,20 @@
                      @handle-scroll="handleScroll"
                   >
                      <div class="container">
+                        marat
+                        <div class="select-menu_dropdown-option clear-search" @click="selectGeneration = ''">
+                           <div class="text-truncate">
+                              <inline-svg :src="'/icons/close.svg'" :width="'10px'" :height="'10px'"/>
+                              <span>{{ $t('clear_search') }}</span>
+                           </div>
+                        </div>
+
                         <div class="row pt-3" v-if="popularOptions && !search">
                            <div
-                              v-for="option in $sortBy(
-                                  getFilteredOptions,
-                                  (a, b) =>
+                              v-for="option in $sortBy(getFilteredOptions, (a, b) =>
                                     popularOptions.indexOf(b.id) -
                                     popularOptions.indexOf(a.id),
-                                ).slice(0, 6)"
+                              ).slice(0, 6)"
                               :key="option.id"
                               class="col-4 popular-option"
                               @click.stop="selectValue = option"
@@ -169,21 +178,18 @@
                            <template v-for="(option, index) in getFilteredOptions">
                               <div
                                  :key="index"
-                                 :class="[
-                        'select-menu_dropdown-option',
-                        {
-                          selected: isSelected(option),
-                          anchor: isAnchor(index),
-                          'card-option': hasCards && option.brand,
-                        },
-                      ]"
+                                 :class="['select-menu_dropdown-option',
+                                    {
+                                      selected: isSelected(option),
+                                      anchor: isAnchor(index),
+                                      'card-option': hasCards && option.brand,
+                                    }
+                                  ]"
                                  @click.stop="selectValue = option"
                               >
                                  <div
                                     class="img"
-                                    v-if="
-                          imgKey && (!hasCards || (hasCards && option[imgKey]))
-                        "
+                                    v-if="imgKey && (!hasCards || (hasCards && option[imgKey]))"
                                  >
                                     <img
                                        :src="$withBaseUrl(option[imgKey]) || imgPlaceholder"
@@ -225,6 +231,7 @@
                   <div v-if="custom">
                      <slot/>
                   </div>
+
                   <vue-scroll
                      :ops="scrollOps"
                      ref="vs"
@@ -236,11 +243,11 @@
                      <div class="row pt-3" v-if="popularOptions && !search">
                         <div
                            v-for="option in $sortBy(
-                    getFilteredOptions,
-                    (a, b) =>
-                      popularOptions.indexOf(b.id) -
-                      popularOptions.indexOf(a.id),
-                  ).slice(0, 6)"
+                             getFilteredOptions,
+                             (a, b) =>
+                               popularOptions.indexOf(b.id) -
+                               popularOptions.indexOf(a.id),
+                           ).slice(0, 6)"
                            :key="option.id"
                            class="col-4 popular-option"
                            @click.stop="selectValue = option"
@@ -256,27 +263,37 @@
                            </div>
                         </div>
                      </div>
+
+                     <div class="select-menu_dropdown-option clear-search" @click="selectGeneration = ''">
+                        <div class="text-truncate" v-if="!clearOptionMin">
+                           <inline-svg :src="'/icons/close.svg'" :width="'10px'" :height="'10px'"/>
+                           <span>{{ $t('clear_search') }}</span>
+                        </div>
+                        <div class="text-truncate" v-else>
+                           <span>{{ $t('delete') }}</span>
+                        </div>
+                     </div>
+
                      <template v-for="(option, index) in getFilteredOptions">
                         <template v-if="hasCards && index !== 0">
                            <div
-                              :class="{
-                      'pl-2 pr-2': index !== getFilteredOptions.length - 1,
-                    }"
+                              :class="{'pl-2 pr-2': index !== getFilteredOptions.length - 1}"
                               :key="`hr_${index}`"
                            >
                               <hr class="mb-0 mt-0"/>
                            </div>
                         </template>
+
                         <div
                            :key="index"
                            :class="[
-                    'select-menu_dropdown-option',
-                    {
-                      selected: isSelected(option),
-                      anchor: isAnchor(index),
-                      'card-option': hasCards && option.brand,
-                    },
-                  ]"
+                                'select-menu_dropdown-option',
+                                {
+                                  selected: isSelected(option),
+                                  anchor: isAnchor(index),
+                                  'card-option': hasCards && option.brand,
+                                },
+                              ]"
                            @click.stop="selectValue = option"
                         >
                            <template v-if="hasCards">
@@ -293,16 +310,14 @@
                                     </div>
                                  </div>
                                  <div
-                                    :class="[
-                          'text-truncate',
-                          { 'full-width text-center': !option.brand },
-                        ]"
+                                    :class="['text-truncate', { 'full-width text-center': !option.brand }]"
                                  >
                                     <span v-if="option.brand">{{ option.brand }}</span>
                                     <span>{{ getOptionName(option) }}</span>
                                  </div>
                               </div>
                            </template>
+
                            <template v-else>
                               <div class="img" v-if="imgKey">
                                  <img
@@ -369,6 +384,10 @@ export default {
          type: Boolean,
          default: false,
       },
+      inputPlaceholder: {
+         type: String,
+         default: ''
+      },
       iconName: {
          type: String,
          default: 'chevron-down',
@@ -380,6 +399,10 @@ export default {
       clearOption: {
          type: Boolean,
          default: true,
+      },
+      clearOptionMin: {
+         type: Boolean,
+         default: false,
       },
       clearOptionText: String,
       clearOptionPullDown: Boolean,
@@ -552,7 +575,7 @@ export default {
          },
       },
       getOptions() {
-         let addons = this.clearOption ? [{key: -1, name: this.clearOptionText || this.$t('any')}] : []
+         let addons = this.clearOption ? [{key: -1, name: this.clearOptionText || this.$t('clear_search')}] : []
          if (this.hasGenerations && this.isMobileBreakpoint) return this.options
          return this.clearOptionPullDown ? [...this.options, ...addons] : [...addons, ...this.options]
       },
@@ -621,8 +644,8 @@ export default {
 
          return selected.length === 1
             ? `${this.showLabelOnSelect && this.allowClear
-                  ? this.label + ': ' + (this.suffix ? ', ' + this.suffix : '')
-                  : ''
+               ? this.label + ': ' + (this.suffix ? ', ' + this.suffix : '')
+               : ''
             }${this.getOptionName(selected[0])}`
             : this.label
       },
@@ -675,7 +698,7 @@ export default {
       scrollOps() {
          return {
             scrollPanel: {
-               maxHeight: this.isMobileBreakpoint ? undefined : 238,
+               maxHeight: this.isMobileBreakpoint ? undefined : 260,
             },
          }
       },

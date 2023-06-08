@@ -21,30 +21,36 @@
 
                <div class="registrationMarks__filters">
                   <div class="divider">
-                     <CustomDropdown
-                        :placeholder="$t('region_2')"
-                        :inputPlaceholder="'Markanı daxil edin'"
+                     <form-select
+                        :label="$t('region_2')"
+                        :input-placeholder="$t('region_search')"
                         :options="getRegionNumbers"
-                        :search="true"
+                        :clear-placeholder="true"
+                        :clear-option="false"
                         v-model="form.region"
+                        has-search
                      />
 
-                     <CustomDropdown
-                        :placeholder="'A'"
-                        :inputPlaceholder="'Markanı daxil edin'"
+                     <form-select
+                        :label="$t('letter')"
+                        :input-placeholder="$t('letter_search')"
                         :options="numbers"
-                        :search="true"
-                        :hideClearSearch="true"
+                        :clear-placeholder="true"
+                        :clear-option="false"
+                        :clear-option-min="true"
                         v-model="form.serial_letter1"
+                        has-search
                      />
 
-                     <CustomDropdown
-                        :placeholder="'A'"
-                        :inputPlaceholder="'Markanı daxil edin'"
+                     <form-select
+                        :label="$t('letter')"
+                        :input-placeholder="$t('letter_search')"
                         :options="numbers"
-                        :search="true"
-                        :hideClearSearch="true"
+                        :clear-placeholder="true"
+                        :clear-option="false"
+                        :clear-option-min="true"
                         v-model="form.serial_letter2"
+                        has-search
                      />
 
                      <form-numeric-input
@@ -72,18 +78,22 @@
                   </div>
 
                   <div class="divider">
-                     <CustomDropdown
-                        :placeholder="$t('currency')"
-                        :options="currency"
-                        v-model="form.currency_id"
+                     <form-select
+                        :label="$t('currency')"
+                        :options="currencies"
+                        :clearPlaceholder="true"
+                        :clear-option="false"
+                        v-model="form.currency"
                      />
 
-                     <CustomDropdown
-                        :placeholder="$t('city')"
-                        :inputPlaceholder="'Markanı daxil edin'"
+                     <form-select
+                        :label="$t('city')"
+                        :input-placeholder="$t('city_search')"
                         :options="cities.regions"
-                        :search="true"
+                        :clear-placeholder="true"
+                        :clear-option="false"
                         v-model="form.region_id"
+                        has-search
                      />
                   </div>
                </div>
@@ -143,6 +153,7 @@
    import HandleIds from "~/components/announcements/HandleIds.vue";
    import Cap from "~/components/elements/Cap.vue";
    import CustomDropdown from "~/components/elements/CustomDropdown.vue";
+   import tr from "vue2-datepicker/locale/es/tr";
 
    export default {
       head() {
@@ -180,7 +191,7 @@
                car_number: '',
                price_from: '',
                price_to: '',
-               currency_id: '',
+               currency: '',
                region_id: '',
                sorting: 'created_at_desc',
                page: 1
@@ -214,9 +225,9 @@
                { name: 'Y' },
                { name: 'Z' }
             ],
-            currency: [
-               { id: '1', name: 'AZN' },
-               { id: '2', name: 'USD' },
+            currencies: [
+               { id: 1, name: 'AZN' },
+               { id: 2, name: 'USD' },
                // { id: 3, name: 'EUR' }
             ],
             sortItems: [
@@ -254,7 +265,7 @@
                if (this.form.car_number) queryArray.push(`&car_number=${this.form.car_number}`);
                if (this.form.price_from) queryArray.push(`&price_from=${this.form.price_from}`);
                if (this.form.price_to) queryArray.push(`&price_to=${this.form.price_to}`);
-               if (this.form.currency_id) queryArray.push(`&currency_id=${this.form.currency_id}`);
+               if (this.form.currency) queryArray.push(`&currency=${this.form.currency}`);
                if (this.form.region_id) queryArray.push(`&region_id=${this.form.region_id}`);
                if (this.form.sorting) queryArray.push(`&sorting=${this.form.sorting}`);
 
@@ -288,6 +299,9 @@
       },
 
       computed: {
+         tr() {
+            return tr
+         },
          ...mapGetters({
             getRegionNumbers: 'getRegionNumbers',
             getRegistrationMarks: 'getRegistrationMarks',
@@ -387,47 +401,34 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 20px;
 
             &:not(:first-child) {
                margin-left: 20px;
             }
 
             &:first-child {
-               .customDropdown {
+               .form-group {
                   width: 72px;
-
                   &:first-child {
                      width: 160px;
                   }
                }
-
-               .form-group {
-                  width: 72px;
-                  margin-left: 20px;
-               }
             }
 
             &:nth-child(2) {
-               gap: 20px;
-
                .form-group {
                   width: 120px;
                }
             }
 
             &:last-child {
-               .customDropdown {
+               .form-group {
                   width: 128px;
 
                   &:last-child {
                      width: 152px;
                   }
-               }
-            }
-
-            .customDropdown {
-               &:not(:first-child) {
-                  margin-left: 20px;
                }
             }
          }
@@ -479,40 +480,30 @@
             padding: 20px;
 
             .divider {
-               .customDropdown {
-                  &:not(:first-child) {
-                     margin-left: 16px;
-                  }
-               }
+               gap: 16px;
 
                &:not(:first-child) {
                   margin-left: 16px;
                }
 
                &:first-child {
-                  .customDropdown {
-                     width: 65px;
+                  .form-group {
+                     width: 67px;
 
                      &:first-child {
                         width: 140px;
                      }
                   }
-
-                  .form-group {
-                     margin-left: 16px;
-                  }
                }
 
                &:nth-child(2) {
-                  gap: 16px;
-
                   .form-group {
                      width: 105px;
                   }
                }
 
                &:last-child {
-                  .customDropdown {
+                  .form-group {
                      width: 105px;
 
                      &:last-child {
@@ -558,9 +549,8 @@
                }
 
                &:first-child {
-                  .customDropdown {
+                  .form-group {
                      width: 69px;
-
                      &:first-child {
                         width: 240px;
                      }
@@ -575,10 +565,8 @@
 
                &:last-child {
                   margin-left: 17px;
-
-                  .customDropdown {
+                  .form-group {
                      width: 112px;
-
                      &:last-child {
                         width: 112px;
                      }
@@ -646,35 +634,23 @@
 
                &:first-child {
                   width: 100%;
-
-                  .customDropdown {
+                  .form-group {
                      width: 40%;
-
                      &:first-child {
                         width: 75%;
                      }
-                  }
-
-                  .form-group {
-                     width: 40%;
                   }
                }
 
                &:nth-child(2), &:last-child {
                   width: 100%;
-                  gap: 16px;
 
-                  .customDropdown {
+                  .form-group {
                      width: 100%;
-
                      &:last-child {
                         width: 100%;
                         margin-left: 0;
                      }
-                  }
-
-                  .form-group {
-                     width: 100%;
                   }
                }
             }
@@ -706,20 +682,11 @@
 
             .divider {
                &:first-child {
-                  .customDropdown {
+                  gap: 5px;
+                  .form-group {
                      &:not(:first-child) {
                         margin-left: 8px;
                      }
-                  }
-
-                  .form-group {
-                     margin-left: 8px;
-                  }
-               }
-
-               .customDropdown {
-                  &__head {
-                     padding: 15px 12px;
                   }
                }
 
