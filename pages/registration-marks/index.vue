@@ -32,23 +32,21 @@
                      />
 
                      <form-select
-                        :label="$t('letter')"
-                        :input-placeholder="$t('letter_search')"
+                        :label="'A'"
                         :options="numbers"
                         :clear-placeholder="true"
                         :clear-option="false"
-                        :clear-option-min="true"
+                        :new-label="false"
                         v-model="form.serial_letter1"
                         has-search
                      />
 
                      <form-select
-                        :label="$t('letter')"
-                        :input-placeholder="$t('letter_search')"
+                        :label="'A'"
                         :options="numbers"
                         :clear-placeholder="true"
                         :clear-option="false"
-                        :clear-option-min="true"
+                        :new-label="false"
                         v-model="form.serial_letter2"
                         has-search
                      />
@@ -112,7 +110,7 @@
 
                         <template #right>
                            <form-select
-                              :label="$t('show_by_date')"
+                              :label="$t('sorting_2')"
                               :options="sortItems"
                               :clearPlaceholder="true"
                               :clear-option="false"

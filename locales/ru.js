@@ -1774,6 +1774,7 @@ export default {
    "snaryazhennaya-massa-kg": "Снаряженная масса, кг",
    "sold": "Продано",
    "sorting": "Сортировка",
+   "sorting_2": "Сортировка",
    "sorting_view": "По просмотрам",
    "sorting_call": "По вызовам",
    "Sound system": "Аудиоподготовка",

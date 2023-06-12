@@ -43,8 +43,14 @@
                   </span>
                </template>
                <template v-else>
-                  <span class="label" v-if="label !== getLabelText">{{ label }}</span>
-                  <span :class="['value', {'top' : label !== getLabelText}]">{{ getLabelText }}</span>
+                  <template v-if="newLabel">
+                     <span class="label" v-if="label !== getLabelText">{{ label }}</span>
+                     <span :class="['value', {'top' : label !== getLabelText}]">{{ getLabelText }}</span>
+                  </template>
+
+                  <template v-else>
+                     <span>{{ getLabelText }}</span>
+                  </template>
                </template>
             </span>
 
@@ -58,14 +64,14 @@
              {{ values.count }}
            </span>
 
-<!--           <icon-->
-<!--              name="cross"-->
-<!--              v-if="allowClear && !hasNoValue"-->
-<!--              @click.native.stop="clearSelect"-->
-<!--              class="cursor-pointer"-->
-<!--           />-->
+           <icon
+              name="cross"
+              v-if="allowClear && !hasNoValue"
+              @click.native.stop="clearSelect"
+              class="cursor-pointer"
+           />
 <!--             <inline-svg src="/icons/cross.svg" height="14" v-if="allowClear && !hasNoValue" @click.native.stop="clearSelect" class="cursor-pointer" />-->
-           <icon :name="iconName" />
+           <icon :name="iconName" v-if="hasNoValue" />
          </span>
          <!--         <icon-->
          <!--            :class="[-->
@@ -119,12 +125,12 @@
                   >
                      <div class="container">
 <!--                        marat-->
-                        <div class="select-menu_dropdown-option clear-search" @click="selectGeneration = ''">
-                           <div class="text-truncate">
-                              <inline-svg :src="'/icons/close.svg'" :width="'10px'" :height="'10px'"/>
-                              <span>{{ $t('clear_search') }}</span>
-                           </div>
-                        </div>
+<!--                        <div class="select-menu_dropdown-option clear-search" @click="selectGeneration = ''">-->
+<!--                           <div class="text-truncate">-->
+<!--                              <inline-svg :src="'/icons/close.svg'" :width="'10px'" :height="'10px'"/>-->
+<!--                              <span>{{ $t('clear_search') }}</span>-->
+<!--                           </div>-->
+<!--                        </div>-->
 
                         <div class="row pt-3" v-if="popularOptions && !search">
                            <div
@@ -265,15 +271,15 @@
                         </div>
                      </div>
 
-                     <div class="select-menu_dropdown-option clear-search" @click="selectGeneration = ''">
-                        <div class="text-truncate" v-if="!clearOptionMin">
-                           <inline-svg :src="'/icons/close.svg'" :width="'10px'" :height="'10px'"/>
-                           <span>{{ $t('clear_search') }}</span>
-                        </div>
-                        <div class="text-truncate" v-else>
-                           <span>{{ $t('delete') }}</span>
-                        </div>
-                     </div>
+<!--                     <div class="select-menu_dropdown-option clear-search" @click="selectGeneration = ''">-->
+<!--                        <div class="text-truncate" v-if="!clearOptionMin">-->
+<!--                           <inline-svg :src="'/icons/close.svg'" :width="'10px'" :height="'10px'"/>-->
+<!--                           <span>{{ $t('clear_search') }}</span>-->
+<!--                        </div>-->
+<!--                        <div class="text-truncate" v-else>-->
+<!--                           <span>{{ $t('delete') }}</span>-->
+<!--                        </div>-->
+<!--                     </div>-->
 
                      <template v-for="(option, index) in getFilteredOptions">
                         <template v-if="hasCards && index !== 0">
@@ -384,6 +390,10 @@ export default {
       clearPlaceholder: {
          type: Boolean,
          default: false,
+      },
+      newLabel: {
+         type: Boolean,
+         default: true,
       },
       inputPlaceholder: {
          type: String,

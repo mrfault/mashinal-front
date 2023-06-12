@@ -831,7 +831,7 @@
       border-color: transparent;
 
       &::placeholder {
-         color: #9AA4B2;
+         color: $grey-5-new;
       }
    }
 
@@ -855,7 +855,7 @@
       i,
       input::placeholder,
       textarea::placeholder {
-         color: $grey-5;
+         color: $grey-5-new;
       }
    }
 
@@ -931,7 +931,12 @@
 
          &.responsive {
             .select-menu_dropdown-option {
-               border-top-color: $dark-2;
+               //border-top-color: $dark-2;
+               border: none !important;
+
+               .text-truncate {
+                  color: $white-2-new;
+               }
             }
 
             .select-menu_label,

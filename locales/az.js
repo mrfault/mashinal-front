@@ -1812,6 +1812,7 @@ export default {
    "snaryazhennaya-massa-kg": "Boş ağırlıq, kq",
    sold: "Satılıb",
    sorting: "Çeşidləmə",
+   sorting_2: "Sıralama",
    sorting_view: "Baxışa görə",
    sorting_call: "Zəngə görə",
    "Sound system": "Audio hazırlıq",

@@ -228,6 +228,7 @@
          img {
             width: 100%;
             height: 100%;
+            object-fit: cover;
          }
       }
 
@@ -237,6 +238,24 @@
          a, span {
             font-size: 16px;
             line-height: 24px;
+         }
+      }
+   }
+
+   .dark-mode {
+      .pages-contact-us {
+         .contact-us_info {
+            &-details {
+               .icon {
+                  background-color: #EEF2F6;
+               }
+
+               .text {
+                  h5 {
+                     color: #FFFFFF;
+                  }
+               }
+            }
          }
       }
    }
