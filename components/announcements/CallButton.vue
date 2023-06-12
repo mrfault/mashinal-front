@@ -44,9 +44,12 @@
             } else {
                this.showPhone = true;
                this.trackCall(1);
-               console.log('1112',this.phone)
 
-               window.getManualClassifienNumber(ringostat_announce)
+               console.log('ringostat_announce', ringostat_announce);
+
+               window.getManualClassifiedNumber(ringostat_announce, function () {
+                  console.log('Hello')
+               },0, this.phone);
             }
          },
 
