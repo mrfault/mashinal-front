@@ -159,6 +159,10 @@ input::-webkit-inner-spin-button {
    }
 
    input {
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 20px;
+      color: $grey-4-new;
       height: 52px;
       overflow: hidden;
       text-overflow: ellipsis;

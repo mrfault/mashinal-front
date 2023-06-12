@@ -29,10 +29,11 @@
 
             <template #right>
                <form-select
-                  :label="$t('show_by_date')"
+                  :label="$t('sorting_2')"
                   :options="sortItems"
                   :clearPlaceholder="true"
                   :clear-option="false"
+                  :allowClear="false"
                   v-model="sorting"
                />
             </template>

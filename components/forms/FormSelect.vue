@@ -71,7 +71,7 @@
               class="cursor-pointer"
            />
 <!--             <inline-svg src="/icons/cross.svg" height="14" v-if="allowClear && !hasNoValue" @click.native.stop="clearSelect" class="cursor-pointer" />-->
-           <icon :name="iconName" v-if="hasNoValue" />
+           <icon :name="iconName" v-if="hasNoValue || !allowClear" />
          </span>
          <!--         <icon-->
          <!--            :class="[-->
