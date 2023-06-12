@@ -44,6 +44,9 @@
             } else {
                this.showPhone = true;
                this.trackCall(1);
+               console.log('1112',this.phone)
+
+               window.getManualClassifienNumber(ringostat_announce)
             }
          },
 
