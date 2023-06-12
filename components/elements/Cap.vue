@@ -104,7 +104,7 @@
          }
 
          h3, span {
-            color: #CDD5DF;
+            color: #EEF2F6;
          }
 
          svg {

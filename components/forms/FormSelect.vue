@@ -57,14 +57,15 @@
            <span class="counter" v-else-if="custom && values.count">
              {{ values.count }}
            </span>
-            <!--           <icon-->
-            <!--              name="cross"-->
-            <!--              v-if="allowClear && !hasNoValue"-->
-            <!--              @click.native.stop="clearSelect"-->
-            <!--              class="cursor-pointer"-->
-            <!--           />-->
-            <!-- <inline-svg src="/icons/cross.svg" height="14" v-if="allowClear && !hasNoValue" @click.native.stop="clearSelect" class="cursor-pointer" /> -->
-           <icon :name="iconName"/>
+
+<!--           <icon-->
+<!--              name="cross"-->
+<!--              v-if="allowClear && !hasNoValue"-->
+<!--              @click.native.stop="clearSelect"-->
+<!--              class="cursor-pointer"-->
+<!--           />-->
+<!--             <inline-svg src="/icons/cross.svg" height="14" v-if="allowClear && !hasNoValue" @click.native.stop="clearSelect" class="cursor-pointer" />-->
+           <icon :name="iconName" />
          </span>
          <!--         <icon-->
          <!--            :class="[-->
@@ -100,9 +101,9 @@
                         <form-text-input
                            v-model="search"
                            :placeholder="$t('search')"
-                           icon-name="search"
                            block-class="placeholder-lighter"
                         />
+<!--                        icon-name="search"-->
                      </div>
                   </div>
                   <div class="container" v-if="custom">
@@ -117,7 +118,7 @@
                      @handle-scroll="handleScroll"
                   >
                      <div class="container">
-                        marat
+<!--                        marat-->
                         <div class="select-menu_dropdown-option clear-search" @click="selectGeneration = ''">
                            <div class="text-truncate">
                               <inline-svg :src="'/icons/close.svg'" :width="'10px'" :height="'10px'"/>
@@ -585,17 +586,17 @@ export default {
       getFilteredOptions() {
          if (!this.search || !this.hasSearch) return this.getOptions;
 
-         // return this.options.filter((option) =>
-         //   this.$search(this.getOptionName(option), this.search),
-         // )
+         return this.options.filter((option) =>
+           this.$search(this.getOptionName(option), this.search),
+         )
 
          // console.log('this.search', this.search)
-         let searchLength = this.search.length;
-         return this.options?.filter(item => {
-            let itemName = item?.name.toLowerCase().split('').slice(0, searchLength).join('');
-            if (itemName === this.search.toLowerCase()) return item?.name;
-            // console.log('itemName', itemName)
-         })
+         // let searchLength = this.search.length;
+         // return this.options?.filter(item => {
+         //    let itemName = item?.name.toLowerCase().split('').slice(0, searchLength).join('');
+         //    if (itemName === this.search.toLowerCase()) return item?.name;
+         //    // console.log('itemName', itemName)
+         // })
       },
       getLabelText() {
          if (this.custom) {

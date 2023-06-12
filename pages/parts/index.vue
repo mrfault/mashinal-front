@@ -205,6 +205,23 @@
       }
    }
 
+   .dark-mode {
+      .pages-parts-index {
+         .form-buttons {
+            .btn {
+               &:not(.active) {
+                  color: #EEF2F6;
+                  border-color: transparent;
+                  background-color: transparent;
+                  &:hover {
+                     background-color: #155EEF;
+                  }
+               }
+            }
+         }
+      }
+   }
+
    @media (max-width: 1150px) {
       .pages-parts-index {
          .banner {

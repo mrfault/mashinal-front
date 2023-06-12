@@ -49,7 +49,7 @@ export const MenusDataMixin = {
             },
             { icon: 'salons-tab', title: 'auto_salons', route: '/salons' },
             { icon: 'shops-tab', title: 'shops', route: '/parts/shops' },
-            { title: 'registration_marks', route: '/registration-marks' },
+            { title: 'registration_marks_min', route: '/registration-marks' },
             { icon: '', title: 'parts', route: '/parts' },
             // {icon: 'catalog-tab', title: 'autocatalog', route: '/catalog'},
             // {icon: 'external-tab', title: 'external-salons', route: '/external-salons', with_badge: true},

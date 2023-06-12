@@ -40,7 +40,7 @@
                </template>
              </span>
 
-            <icon name="chevron-down"/>
+            <icon name="chevron-down" />
          </div>
 
          <Transition name="opacity">
@@ -273,7 +273,7 @@
       },
 
       beforeDestroy() {
-         window.addEventListener('click', this.close);
+         window.addEventListener('keyup', this.close);
       }
    }
 </script>

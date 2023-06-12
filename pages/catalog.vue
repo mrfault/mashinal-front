@@ -119,9 +119,9 @@
          return this.$headMeta({title, description, image});
       },
 
-      async asyncData({store, route}) {
+      async asyncData({ store, route }) {
          if (process.client) {
-            let {page, filter} = route.query;
+            let { page, filter } = route.query;
             let post = JSON.parse(filter || '{}');
 
             await Promise.all([
@@ -250,8 +250,15 @@
       }
 
       .catalog-search-form {
+         //.btnWrapper {
+         //   .btn {
+         //      width: 80px;
+         //   }
+         //}
+
          .btn {
             height: 52px;
+            border-radius: 8px;
          }
 
          .clearSearch, .moreSearch {
@@ -295,6 +302,23 @@
       }
    }
 
+   .dark-mode {
+      .pages-catalog {
+         .catalog-search-form {
+            .btn {
+               &:not(.active) {
+                  color: #EEF2F6;
+                  border-color: transparent;
+                  background-color: transparent;
+                  &:hover {
+                     background-color: #155EEF;
+                  }
+               }
+            }
+         }
+      }
+   }
+
    @media (min-width: 992px) {
       .pages-catalog {
          .catalog-search-form {
@@ -302,8 +326,16 @@
                justify-content: flex-end;
                background-color: unset;
                border: unset;
+               cursor: pointer;
+
+               &:hover {
+                  span {
+                     border-color: #F04438;
+                  }
+               }
+
                span {
-                  border-bottom: 1px solid #F04438;
+                  border-bottom: 1px solid transparent;
                }
             }
          }

@@ -704,13 +704,25 @@
       .select-menu_label {
          background-color: $dark-new;
          .text-truncate {
-            color: $white-2-new;
+            color: $grey-5-new;
+            .label {
+               //color: $white-2-new;
+            }
+
+            .value {
+               color: $grey-5-new;
+            }
          }
 
          .icon-chevron-down {
             &:before {
-               color: $white-2-new;
+               color: $grey-5-new;
             }
+         }
+      }
+      .select-menu_dropdown {
+         .text-truncate {
+            color: $white-2-new;
          }
       }
       &_inputs {
@@ -778,18 +790,18 @@
    }
 
    .minMaxSearch {
-      border-color: $dark-1 !important;
+      background-color: $dark-new !important;
+      border-color: $dark-new !important;
 
       div {
-         background-color: $dark-1;
-
          &:first-child {
             border-color: $grey-3-new !important;
          }
       }
 
       input {
-         background-color: $dark-1;
+         color: $grey-5-new !important;
+         background-color: $dark-new;
       }
    }
 }
@@ -898,6 +910,7 @@
          &-option {
             &.selected {
                color: $yellow-1;
+               background-color: $grey-3-new !important;
             }
 
             &.card-option {
@@ -912,7 +925,7 @@
             }
 
             &:hover {
-               background-color: lighten($dark-1, 2%);
+               background-color: $grey-3-new !important;
             }
          }
 

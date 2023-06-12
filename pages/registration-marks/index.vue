@@ -635,9 +635,9 @@
                &:first-child {
                   width: 100%;
                   .form-group {
-                     width: 40%;
+                     width: 20%;
                      &:first-child {
-                        width: 75%;
+                        width: 40%;
                      }
                   }
                }
@@ -682,12 +682,7 @@
 
             .divider {
                &:first-child {
-                  gap: 5px;
-                  .form-group {
-                     &:not(:first-child) {
-                        margin-left: 8px;
-                     }
-                  }
+                  gap: 8px;
                }
 
                .text-input {

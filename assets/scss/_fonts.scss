@@ -161,3 +161,31 @@
     font-style: normal;
     font-display: swap;
 }
+
+// Din --------------------------------------------------------------------
+@font-face {
+   font-family: 'Din';
+   src: url('../fonts/din/din.woff2') format('woff2'),
+        url('../fonts/din/din.woff') format('woff');
+   font-weight: 400;
+   font-style: normal;
+   font-display: swap;
+}
+
+@font-face {
+   font-family: 'DinMittelschrift';
+   src: url('../fonts/din/AlteDIN1451Mittelschrift.woff2') format('woff2'),
+        url('../fonts/din/AlteDIN1451Mittelschrift.woff') format('woff');
+   //font-weight: 400;
+   font-style: normal;
+   font-display: swap;
+}
+
+@font-face {
+   font-family: 'DinMittelschriftgepraegt';
+   src: url('../fonts/din/AlteDIN1451Mittelschriftgepraegt.woff2') format('woff2'),
+        url('../fonts/din/AlteDIN1451Mittelschriftgepraegt.woff') format('woff');
+   //font-weight: 400;
+   font-style: normal;
+   font-display: swap;
+}
