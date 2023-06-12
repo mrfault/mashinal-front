@@ -34,14 +34,15 @@
    &_item {
       display: block;
       color: inherit;
-      transition: color .2s, box-shadow .2s ease-out;
+      transition: .3s all;
 
       .card {
+         border-radius: unset;
          background-color: transparent;
       }
 
       &:hover {
-         box-shadow: $shadow-light-6;
+         filter: drop-shadow($shadow-light-6);
       }
 
       .card {
