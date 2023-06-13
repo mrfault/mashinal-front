@@ -1,9 +1,9 @@
 <template>
-  <page-layout>
-    <template #nuxt>
-      <nuxt />
-    </template>
-  </page-layout>
+   <page-layout>
+      <template #nuxt>
+         <nuxt/>
+      </template>
+   </page-layout>
 </template>
 
 <script>
@@ -14,6 +14,9 @@ export default {
   middleware: ['main'],
   components: {
     PageLayout
-  }
+  },
+   mounted() {
+     window.ringostat_announce = parseInt(this.$route.params?.id);
+   }
 }
 </script>
