@@ -10,7 +10,10 @@
 
             <div
                class="cover-with-avatar__gallery d-none"
-               :class="{'big-img' : salonSingle.gallery_thumbs.length === 2}"
+               :class="{
+                  'big-img' : salonSingle.gallery_thumbs.length === 2,
+                  'more' : salonSingle.gallery_thumbs.length > 6,
+               }"
                v-if="salonSingle.gallery_thumbs.length"
             >
                <div
@@ -222,10 +225,7 @@
 
          normalize(num) {
             let number = num.toString();
-            // console.log(typeof number)
-            // this.$nextTick(() => {
-               return number?.substr(0, 3) + ' ' + number?.substr(3, 3) + ' ' + number?.substr(6, 2) + ' ' + number?.substr(8, 2) + ' ' + number?.substr(10, 2);
-            // });
+            return number?.substr(0, 3) + ' ' + number?.substr(3, 2) + ' ' + number?.substr(5, 3) + ' ' + number?.substr(8, 2) + ' ' + number?.substr(10, 2);
          },
       },
 

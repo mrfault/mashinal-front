@@ -277,6 +277,7 @@
             const path = this.wheelCategoryTypes.find(({key}) => key === value).path
             this.$router.push(this.$localePath(path))
          },
+
          brandsOnChange(id) {
             if (this.form.brand_ids.includes(id)) {
                this.form.brand_ids = this.form.brand_ids.filter(brand => brand.id !== id)
@@ -284,6 +285,7 @@
                this.form.brand_ids.push(id)
             }
          },
+
          reset() {
             this.resetForm()
             this.$store.dispatch('parts/setSearchActive', false)
@@ -299,6 +301,7 @@
          // ...mapGetters({
          //   pagination: 'parts/pagination'
          // }),
+
          pagination() {
             return this.$store.getters.partAnnouncements;
          },
@@ -313,6 +316,7 @@
                   return '€';
             }
          },
+
          // meta data
          meta() {
             return {
@@ -321,24 +325,28 @@
                param: 'parts_filter'
             }
          },
+
          subcategories() {
             if (this.filters) {
                return this.filters.sub_categories || []
             }
             return []
          },
+
          dynamicFilters() {
             if (this.filters) {
                return this.filters.filters || []
             }
             return []
          },
+
          brands() {
             if (this.filters) {
                return this.filters.brands || []
             }
             return []
          },
+
          visibleBrands() {
             if (!this.showAllBrands) {
                return this.brands.slice(0, 23)
@@ -351,18 +359,23 @@
             // Category ids of tyres and rims
             return [18, 19, 20].includes(this.category?.id)
          },
+
          showMilageOptions() {
             return !this.isWheelCategory
          },
+
          showWheelCategoryTypes() {
             return this.isWheelCategory
          },
+
          showSubcategories() {
             return Boolean(this.subcategories.length)
          },
+
          showSorting() {
             return this.isWheelCategory
          },
+
          showDynamicFilter() {
             return this.dynamicFilters.length
          }
