@@ -1,9 +1,9 @@
 <template>
-  <page-layout>
-    <template #nuxt>
-      <nuxt />
-    </template>
-  </page-layout>
+   <page-layout>
+      <template #nuxt>
+         <nuxt/>
+      </template>
+   </page-layout>
 </template>
 
 <script>
