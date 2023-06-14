@@ -1256,6 +1256,7 @@ export default {
    my_packages: "Paketlər",
    my_packages_duration: "“Ödəniş et” düyməsini sıxmaqla siz <span>Mashin.al istifadəçi razılaşmasını və ofertasını</span> qəbul etdiyinizi təsdiqləmiş olursunuz.",
    package_price: "Paketin qiyməti",
+   user_agreement: "İstifadəçi razılaşması",
    get_package: "Paket əldə et",
    my_profile: "Profilim",
    salon_profile: "Avtosalon profili",

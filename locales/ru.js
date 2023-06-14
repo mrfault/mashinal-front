@@ -1187,6 +1187,7 @@ export default {
    "my_packages": "Пакеты",
    "my_packages_duration": `Нажимая  на кнопку “Оплатить” <span>вы принимаете пользовательское соглашение и оферту Mashin.al.</span>`,
    "package_price": "Стоимость пакета",
+   "user_agreement": "Пользовательское соглашение",
    "get_package": "Купить пакет",
    "my_profile": "Мой профиль",
    "salon_profile": "Мой профиль",
