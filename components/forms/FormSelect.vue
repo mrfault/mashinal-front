@@ -60,7 +60,7 @@
                   </template>
 
                   <template v-else>
-                     <span>{{ getLabelText }}</span>
+                     <span class="text">{{ getLabelText }}</span>
                   </template>
                </template>
             </span>

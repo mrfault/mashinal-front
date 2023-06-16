@@ -514,6 +514,12 @@ input::-webkit-inner-spin-button {
          opacity: .4;
       }
 
+      &.selected {
+         .text {
+            color: $dark-light-new;
+         }
+      }
+
       .icon-cross {
          position: absolute;
          top: calc(50% + 1px);
