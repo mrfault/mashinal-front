@@ -12,7 +12,7 @@
                />
             </div>
 
-            <div class="col-12 col-md-3 mb-2 mb-lg-3 offset-md-6">
+            <div class="col-12 col-md-2 mb-2 mb-lg-3 offset-md-7">
                <div class="clearSearch" @click="resetForm(true)">
                   <span>{{ $t('clear_search2') }}</span>
 
@@ -30,6 +30,7 @@
                             @change="form.model = '', form.generation = '', submitForm(true, false)"
                             has-search
                             :clear-option="false"
+                            :clear-placeholder="true"
                             :popular-options="isMobileBreakpoint ? [129,483,8,1,767,117] : undefined"
                             slug-in-value
                             :img-key="isMobileBreakpoint ? 'transformed_media' : ''"
@@ -43,6 +44,7 @@
                             :input-placeholder="$t('model_search')"
                             v-model="form.model"
                             :clear-option="false"
+                            :clear-placeholder="true"
                             :disabled="!form.name || !$route.params.brand"
                             @change="form.generation = '', submitForm(true, false)"
                             has-search
@@ -58,9 +60,12 @@
                             :options="generations"
                             :input-placeholder="$t('generation_search')"
                             v-model="form.generation"
-                            :disabled="!form.model || !$route.params.model" @change="submitForm(true, false)" has-search
+                            :disabled="!form.model || !$route.params.model"
+                            @change="submitForm(true, false)"
+                            has-search
                             has-generations
                             :clear-option="false"
+                            :clear-placeholder="true"
                />
             </div>
 
@@ -78,6 +83,7 @@
                             translate-options
                             @change="submitForm()"
                             :clear-option="false"
+                            :clear-placeholder="true"
                />
             </div>
 
@@ -85,17 +91,26 @@
                <div class="col-6 col-lg-1-5 mb-2 mb-lg-3">
                   <form-select :label="$t('korobka')" v-model="form['korobka']"
                                :options="bodyOptions.main.default_options['korobka'].values"
-                               multiple name-in-value object-in-value translate-options @change="submitForm()"/>
+                               multiple name-in-value object-in-value translate-options @change="submitForm()"
+                               :clear-option="false"
+                               :clear-placeholder="true"
+                  />
                </div>
                <div class="col-6 col-lg-1-5 mb-2 mb-lg-3">
                   <form-select :label="$t('fuel')" v-model="form['tip-dvigatelya']"
                                :options="bodyOptions.main.default_options['tip-dvigatelya'].values"
-                               multiple name-in-value object-in-value translate-options @change="submitForm()"/>
+                               multiple name-in-value object-in-value translate-options @change="submitForm()"
+                               :clear-option="false"
+                               :clear-placeholder="true"
+                  />
                </div>
                <div class="col-6 col-lg-1-5 mb-2 mb-lg-3">
                   <form-select :label="$t('privod')" v-model="form['privod']"
                                :options="bodyOptions.main.default_options['privod'].values"
-                               multiple name-in-value object-in-value translate-options @change="submitForm()"/>
+                               multiple name-in-value object-in-value translate-options @change="submitForm()"
+                               :clear-option="false"
+                               :clear-placeholder="true"
+                  />
                </div>
                <div class="col-6 col-lg-1-5 mb-2 mb-lg-3">
                   <form-select :label="$t('capacity')" custom :suffix="$t('char_litre')"
@@ -164,7 +179,10 @@
                <div class="col-6 col-lg-1-5 mb-2 mb-lg-3">
                   <form-select :label="$t('kolichestvo-mest')" v-model="form['kolichestvo-mest']"
                                :options="bodyOptions.specifications['kolichestvo-mest'].values"
-                               name-in-value object-in-value translate-options @change="submitForm()"/>
+                               name-in-value object-in-value translate-options @change="submitForm()"
+                               :clear-option="false"
+                               :clear-placeholder="true"
+                  />
                </div>
             </template>
 

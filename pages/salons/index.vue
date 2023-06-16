@@ -418,7 +418,7 @@
             background-color: #1B2434;
 
             .salon-card {
-               border-color: transparent;
+               //border-color: transparent;
 
                &:hover {
                   background-color: unset;

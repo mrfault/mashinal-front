@@ -64,16 +64,6 @@ input::-webkit-inner-spin-button {
    }
 }
 
-.dark-mode {
-   .form-group {
-      &_inputs {
-         .form-group {
-            border-color: $dark-2;
-         }
-      }
-   }
-}
-
 .form-info {
    user-select: none;
    display: flex;
@@ -480,10 +470,11 @@ input::-webkit-inner-spin-button {
       background-color: $white;
       border: 1px solid #CDD5DF;
       height: 52px;
-      padding: 16px;
+      padding: 0 16px;
       border-radius: 8px;
       user-select: none;
       position: relative;
+      overflow: hidden;
 
       .icon-chevron-down {
          &:before {
@@ -524,27 +515,34 @@ input::-webkit-inner-spin-button {
       }
 
       .icon-cross {
+         position: absolute;
+         top: calc(50% + 1px);
+         transform: translateY(-50%);
+         right: 16px;
          font-size: 11px;
-         margin: 2px 0 0 4px;
+         //margin: 2px 0 0 4px;
       }
 
       .counter {
          position: relative;
-         right: 2px;
-         display: flex;
-         align-items: center;
-         justify-content: center;
-         width: 20px;
+         top: 10px;
+         //display: flex;
+         //align-items: center;
+         //justify-content: center;
+         //width: 20px;
          height: 20px;
          font-size: 12px;
          border-radius: 4px;
-         background-color: $white;
-         margin: 0 auto 0 10px;
-         padding-top: 1px;
+         //background-color: $white;
+         //margin: 0 auto 0 0px;
+         //padding-top: 1px;
       }
 
       .text-truncate {
-         margin-bottom: -1px;
+         width: 100%;
+         padding-top: 1px;
+         padding-right: 15px;
+         overflow: initial;
 
          .label {
             position: absolute;
@@ -557,11 +555,15 @@ input::-webkit-inner-spin-button {
          }
 
          .value {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
             color: $dark-light-new;
 
             &.top {
                display: inline-block;
-               margin-top: 18px;
+               margin-top: 20px;
+               width: 100%;
             }
          }
       }
@@ -629,7 +631,7 @@ input::-webkit-inner-spin-button {
 
       &.custom {
          padding: 0;
-         width: auto;
+         //width: auto;
       }
 
       &.custom-checkboxes {
@@ -834,15 +836,6 @@ input::-webkit-inner-spin-button {
       color: $red-1;
    }
 }
-@media (max-width: 992px) {
-   .select-menu {
-      &_dropdown {
-         &.show {
-            border: none;
-         }
-      }
-   }
-}
 
 .form-switch {
    display: flex;
@@ -896,6 +889,14 @@ input::-webkit-inner-spin-button {
 }
 
 .dark-mode {
+   .form-group {
+      &_inputs {
+         .form-group {
+            border-color: $dark-2;
+         }
+      }
+   }
+
    .form-switch {
       background-color: $dark-1;
 
@@ -914,16 +915,25 @@ input::-webkit-inner-spin-button {
    display: flex;
    align-items: center;
 
-   .form-group:not(:last-child) {
-      border-right: 1px solid $greyish-blue-6;
-   }
+   //.form-group:not(:last-child) {
+   //   border-right: 1px solid $greyish-blue-6;
+   //}
 
    .text-input {
       width: 141px;
    }
 
+   .form-group {
+      width: 50%;
+   }
+
    .select-menu {
-      width: 88px;
+      //width: 88px;
+
+      &_label {
+         border-radius: unset;
+         border: none;
+      }
 
       &.wider {
          width: 186px;
@@ -1237,32 +1247,6 @@ input::-webkit-inner-spin-button {
    }
 }
 
-@include media-min-width('lg') {
-   .form-group {
-      .text-input {
-         input {
-            &.w-133 {
-               width: 133px;
-            }
-         }
-      }
-   }
-
-   .dark-mode {
-      .select-menu {
-         &_dropdown {
-            &.custom-checkboxes {
-               .form-merged {
-                  .checkbox-input label {
-                     background-color: $dark-1;
-                  }
-               }
-            }
-         }
-      }
-   }
-}
-
 .form-buttons {
    .label {
       font-size: 14px;
@@ -1346,12 +1330,6 @@ input::-webkit-inner-spin-button {
    }
 }
 
-@include media-max-width('lg') {
-   .range-slider {
-      padding: 10px 25px 0;
-   }
-}
-
 .ma-input {
    width: 100%;
    border: 0;
@@ -1375,5 +1353,47 @@ input::-webkit-inner-spin-button {
       color: $grey-3;
       -webkit-text-fill-color: $grey-3;
       opacity: 1;
+   }
+}
+
+@include media-max-width('lg') {
+   .range-slider {
+      padding: 10px 25px 0;
+   }
+}
+
+@include media-min-width('lg') {
+   .form-group {
+      .text-input {
+         input {
+            &.w-133 {
+               width: 133px;
+            }
+         }
+      }
+   }
+
+   .dark-mode {
+      .select-menu {
+         &_dropdown {
+            &.custom-checkboxes {
+               .form-merged {
+                  .checkbox-input label {
+                     background-color: $dark-1;
+                  }
+               }
+            }
+         }
+      }
+   }
+}
+
+@media (max-width: 992px) {
+   .select-menu {
+      &_dropdown {
+         &.show {
+            border: none;
+         }
+      }
    }
 }

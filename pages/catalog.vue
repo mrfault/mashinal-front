@@ -245,7 +245,7 @@
          margin: 56px 0 32px 0;
 
          span {
-            color: #4B5565;
+            //color: #4B5565;
          }
       }
 

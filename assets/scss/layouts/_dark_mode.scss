@@ -745,6 +745,7 @@
    }
 
    .salon-card {
+      border-color: $white;
       .salon-logo {
          border-color: #697586;
       }
@@ -803,6 +804,11 @@
          color: $grey-5-new !important;
          background-color: $dark-new;
       }
+   }
+
+   .btn--new-dark-green {
+      color: $white !important;
+      background-color: $green-new-2 !important;
    }
 }
 

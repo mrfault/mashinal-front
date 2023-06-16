@@ -25,9 +25,11 @@
                         class="mr-1"
                      />
                      <span class="placeholder">{{ getSelectedOptions[0].name.slice(10) }}</span>
-               </span>
+                  </span>
                </template>
+
                <template v-else-if="hasCards">{{ clearOptionText }}</template>
+
                <template v-else-if="hasSearch && showOptions && !isMobileBreakpoint">
                   <span class="search-input">
 <!--                     <span class="placeholder">{{ label }}</span>-->
@@ -45,7 +47,16 @@
                <template v-else>
                   <template v-if="newLabel">
                      <span class="label" v-if="label !== getLabelText">{{ label }}</span>
-                     <span :class="['value', {'top' : label !== getLabelText}]">{{ getLabelText }}</span>
+
+                     <span
+                        class="counter"
+                        v-if="multiple && selectValue.length > 1 && !shortNamesLabel"
+                     >{{ $t('selected') }}: {{ selectValue.length }}</span>
+
+                     <span
+                        :class="['value', {'top' : label !== getLabelText}]"
+                        v-else
+                     >{{ getLabelText }}</span>
                   </template>
 
                   <template v-else>
@@ -54,15 +65,15 @@
                </template>
             </span>
 
-           <span
-              class="counter"
-              v-if="multiple && selectValue.length > 1 && !shortNamesLabel"
-           >
-             {{ selectValue.length }}
-           </span>
-           <span class="counter" v-else-if="custom && values.count">
-             {{ values.count }}
-           </span>
+<!--           <span-->
+<!--              class="counter"-->
+<!--              v-if="multiple && selectValue.length > 1 && !shortNamesLabel"-->
+<!--           >-->
+<!--             {{ $t('selected') }}: {{ selectValue.length }}-->
+<!--           </span>-->
+<!--           <span class="counter" v-else-if="custom && values.count">-->
+<!--             {{ values.count }}-->
+<!--           </span>-->
 
            <icon
               name="cross"
@@ -649,7 +660,11 @@ export default {
             if (!selected.length) {
                return this.label
             } else {
-               return selected[0]?.name;
+               if (typeof selected[0]?.name === 'object') {
+                  return selected[0]?.name[this.locale];
+               } else {
+                  return selected[0]?.name;
+               }
             }
          }
 

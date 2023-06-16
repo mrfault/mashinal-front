@@ -81,88 +81,94 @@
 </template>
 
 <script>
-export default {
-   data() {
-      return {
-         dropdownItems: {
-            min: '',
-            max: ''
+   export default {
+      data() {
+         return {
+            dropdownItems: {
+               min: '',
+               max: ''
+            },
+            initialOptions: [],
+            items: [
+               { id: 1, placeholder: '', value: '' },
+               { id: 2, placeholder: '', value: '' }
+            ]
+         }
+      },
+
+      methods: {
+         updateNumber(event, item) {
+            item.value = event.target.value.replace(/\s/g, '');
+            this.$emit('change', this.options);
          },
-         initialOptions: [],
-         items: [
-            { id: 1, placeholder: '', value: '' },
-            { id: 2, placeholder: '', value: '' }
-         ]
-      }
-   },
 
-   methods: {
-      updateNumber(event, item) {
-         item.value = event.target.value.replace(/\s/g, '');
-         this.$emit('change', this.options);
-      },
-      addActive(e) {
-         e.target.closest('.minMaxSearch__divider').classList.toggle('active');
-      },
-      selectItem(type, item) {
-         (type === 'min') ? this.dropdownItems.min = item : this.dropdownItems.max = item;
-         this.$emit('change', this.dropdownItems);
+         addActive(e) {
+            e.target.closest('.minMaxSearch__divider').classList.toggle('active');
+         },
 
-         this.close();
-      },
-      close() {
-         setTimeout(() => {
-            document.querySelectorAll('.minMaxSearch__divider').forEach(item => {
-               item.classList.remove('active');
-            });
-         }, 10);
-      }
-   },
+         selectItem(type, item) {
+            (type === 'min') ? this.dropdownItems.min = item : this.dropdownItems.max = item;
+            this.$emit('change', this.dropdownItems);
 
-   props: {
-      className: {
-         type: String,
-         default: ''
-      },
-      placeholder: {
-         type: Array,
-         default() {
-            return []
+            this.close();
+         },
+
+         close() {
+            setTimeout(() => {
+               document.querySelectorAll('.minMaxSearch__divider').forEach(item => {
+                  item.classList.remove('active');
+               });
+            }, 10);
          }
       },
-      options: {
-         type: Array,
-         default() {
-            return []
+
+      props: {
+         className: {
+            type: String,
+            default: ''
+         },
+
+         placeholder: {
+            type: Array,
+            default() {
+               return []
+            }
+         },
+
+         options: {
+            type: Array,
+            default() {
+               return []
+            }
+         },
+
+         selectedValue: {
+            type: Object,
+            default() {
+               return {}
+            }
          }
       },
-      selectedValue: {
-         type: Object,
-         default() {
-            return {}
-         }
+
+      mounted() {
+         this.items[0].placeholder = this.placeholder[0];
+         this.items[1].placeholder = this.placeholder[1];
+
+         this.initialOptions = this.options;
+
+         this.items[0].value = this.selectedValue.min;
+         this.items[1].value = this.selectedValue.max;
+
+         this.dropdownItems.min = this.selectedValue.min;
+         this.dropdownItems.max = this.selectedValue.max;
+
+         window.addEventListener('click', this.close);
+      },
+
+      beforeDestroy() {
+         window.addEventListener('click', this.close);
       }
-   },
-
-   mounted() {
-      this.items[0].placeholder = this.placeholder[0];
-      this.items[1].placeholder = this.placeholder[1];
-
-      this.initialOptions = this.options;
-
-      this.items[0].value = this.selectedValue.min;
-      this.items[1].value = this.selectedValue.max;
-
-      this.dropdownItems.min = this.selectedValue.min;
-      this.dropdownItems.max = this.selectedValue.max;
-
-      window.addEventListener('click', this.close);
-   },
-
-   beforeDestroy() {
-      window.addEventListener('click', this.close);
    }
-}
 </script>
 
 <style lang="scss" scoped>
@@ -345,14 +351,14 @@ export default {
       }
    }
 
-   @media (max-width: 1150px) {
+   @media (max-width: 600px) {
       .minMaxSearch {
-         div {
-            padding: 14px;
+         .label {
+            display: none;
          }
 
-         input {
-            font-size: 14px;
+         div {
+            justify-content: center !important;
          }
       }
    }
