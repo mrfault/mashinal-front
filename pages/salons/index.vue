@@ -23,7 +23,7 @@
          <!--            </div>-->
          <!--        </mobile-screen>-->
 
-         <template v-if="!mapView">
+<!--         <template>-->
             <div class="container">
                <Banner
                   :bg="'/img/salon-bg.png'"
@@ -33,217 +33,151 @@
                      <breadcrumbs :crumbs="crumbs"/>
                   </template>
                </Banner>
+               <template v-if="!mapView">
+                  <Cap>
+                     <template #left>
+                        <h3>{{ $t('official_salons_3') }} ({{ officialSalons.length }})</h3>
+                        <!--                  <h3 class="salons-count">({{ officialSalons.length }})</h3>-->
+                     </template>
 
-               <Cap>
-                  <template #left>
-                     <h3>{{ $t('official_salons_3') }} ({{ officialSalons.length }})</h3>
-                     <!--                  <h3 class="salons-count">({{ officialSalons.length }})</h3>-->
-                  </template>
+                     <template #right>
+                        <p class="d-flex align-items-center" @click="setMapView(!mapView), callEvent()">
+                           <span v-if="!isMobileBreakpoint">{{ $t('show_on_map') }}</span>
+                           <span v-else>{{ $t('map') }}</span>
 
-                  <template #right>
-                     <p class="d-flex align-items-center" @click="setMapView(!mapView), callEvent()">
-                        <span v-if="!isMobileBreakpoint">{{ $t('show_on_map') }}</span>
-                        <span v-else>{{ $t('map') }}</span>
+                           <inline-svg :src="'/icons/location_2.svg'" />
+                        </p>
+                     </template>
+                  </Cap>
 
-                        <inline-svg :src="'/icons/location_2.svg'" />
-                     </p>
-                  </template>
-               </Cap>
-
-               <div class="mb-lg-4 mt-4 mt-lg-5 row salon-card-list" v-if="officialSalons.length">
-                  <div
-                     class="col-12 col-md-6 col-lg-4 mb-2 mb-lg-3"
-                     v-for="salon in officialSalons"
-                     :key="salon.id"
-                     v-if="salon.announcement_count"
-                  >
-                     <nuxt-link
-                        class="keep-colors"
-                        :to="$localePath(`/salons/${salon.slug}`)"
+                  <div class="mb-lg-4 mt-4 mt-lg-5 row salon-card-list" v-if="officialSalons.length">
+                     <div
+                        class="col-12 col-md-6 col-lg-4 mb-2 mb-lg-3"
+                        v-for="salon in officialSalons"
+                        :key="salon.id"
+                        v-if="salon.announcement_count"
                      >
-                        <salon-card :salon="salon"/>
-                     </nuxt-link>
-                  </div>
-               </div>
-
-               <no-results v-else-if="!officialSalons.length"/>
-            </div>
-         </template>
-
-         <div
-            :class="`map-${isMobileBreakpoint ? 'fh' : 'fw'}-container`"
-            v-show="mapView"
-         >
-            <template v-if="!isMobileBreakpoint">
-               <template v-if="mapView">
-                  <!-- ././././././././././ -->
-                  <!-- ././././././././././ -->
-                  <!-- ././././././././././ -->
-                  <!-- ././././././././././ -->
-                  <div
-                     :class="['map-sidebar', { collapse: !disableCollapse && collapse }]"
-                  >
-                     <div class="map-sidebar_content">
-                        <breadcrumbs :crumbs="crumbs"/>
-                        <salon-filters-form
-                           :count="salonsInView.length"
-                           :short="!isMobileBreakpoint"
-                        />
-                        <div class="salon-card-list" v-if="salonsInView.length">
-                           <div class="salon-card-list__item" v-for="salon in salonsInView" :key="salon.id">
-                              <nuxt-link
-                                 class="keep-colors"
-                                 :to="$localePath(`/salons/${salon.slug}`)"
-                              >
-                                 <salon-card :salon="salon"/>
-                              </nuxt-link>
-                           </div>
-                        </div>
-                        <no-results v-else/>
+                        <nuxt-link
+                           class="keep-colors"
+                           :to="$localePath(`/salons/${salon.slug}`)"
+                        >
+                           <salon-card :salon="salon"/>
+                        </nuxt-link>
                      </div>
+                  </div>
+
+                  <no-results v-else-if="!officialSalons.length"/>
+               </template>
+
+            </div>
+<!--         </template>-->
+
+         <div class="container">
+            <div
+               :class="`map-${isMobileBreakpoint ? 'fh' : 'fw'}-container`"
+               v-show="mapView"
+            >
+               <template v-if="!isMobileBreakpoint">
+                  <template v-if="mapView">
                      <!-- ././././././././././ -->
                      <!-- ././././././././././ -->
                      <!-- ././././././././././ -->
                      <!-- ././././././././././ -->
                      <div
-                        class="map-sidebar_toggle"
-                        @click="collapse = !collapse"
-                        v-if="!disableCollapse"
+                        :class="['map-sidebar', { collapse: !disableCollapse && collapse }]"
                      >
-                        <icon :name="collapse ? 'chevron-right' : 'chevron-left'"/>
+                        <div class="map-sidebar_content">
+                           <breadcrumbs :crumbs="crumbs"/>
+                           <salon-filters-form
+                              :count="salonsInView.length"
+                              :short="!isMobileBreakpoint"
+                           />
+                           <div class="salon-card-list" v-if="salonsInView.length">
+                              <div class="salon-card-list__item" v-for="salon in salonsInView" :key="salon.id">
+                                 <nuxt-link
+                                    class="keep-colors"
+                                    :to="$localePath(`/salons/${salon.slug}`)"
+                                 >
+                                    <salon-card :salon="salon"/>
+                                 </nuxt-link>
+                              </div>
+                           </div>
+                           <no-results v-else/>
+                        </div>
+                        <!-- ././././././././././ -->
+                        <!-- ././././././././././ -->
+                        <!-- ././././././././././ -->
+                        <!-- ././././././././././ -->
+                        <div
+                           class="map-sidebar_toggle"
+                           @click="collapse = !collapse"
+                           v-if="!disableCollapse"
+                        >
+                           <icon :name="collapse ? 'chevron-right' : 'chevron-left'"/>
+                        </div>
                      </div>
-                  </div>
 
-                  <div class="map-topbar">
-                     <div class="container">
-                        <salon-search-form
-                           :short="!isMobileBreakpoint && (!collapse || disableCollapse)"
-                        />
-                     </div>
-                  </div>
+<!--                     <div class="map-topbar">-->
+<!--                        <div class="container">-->
+<!--                           <salon-search-form-->
+<!--                              :short="!isMobileBreakpoint && (!collapse || disableCollapse)"-->
+<!--                           />-->
+<!--                        </div>-->
+<!--                     </div>-->
+                  </template>
+                  <clustered-map
+                     :key="'desktop-map_' + mapKey"
+                     :margin-left="{ left: 0, top: 0, width: '360px', height: '100%' }"
+                     :margin-top="{ top: 0, left: 0, width: '100%', height: '150px' }"
+                     :use-margin-left="!disableCollapse && !collapse"
+                     @balloon-click="$router.push($localePath(`/salons/${$event}`))"
+                  />
                </template>
-               <clustered-map
-                  :key="'desktop-map_' + mapKey"
-                  :margin-left="{ left: 0, top: 0, width: '360px', height: '100%' }"
-                  :margin-top="{ top: 0, left: 0, width: '100%', height: '150px' }"
-                  :use-margin-left="!disableCollapse && !collapse"
-                  @balloon-click="$router.push($localePath(`/salons/${$event}`))"
-               />
-            </template>
-            <template v-else>
-               <clustered-map
-                  :key="'mobile-map_' + mapKey"
-                  @balloon-click="$router.push($localePath(`/salons/${$event}`))"
-               />
-            </template>
+               <template v-else>
+                  <clustered-map
+                     :key="'mobile-map_' + mapKey"
+                     @balloon-click="$router.push($localePath(`/salons/${$event}`))"
+                  />
+               </template>
+            </div>
          </div>
       </div>
 
-      <div :class="['pages-salons autosalon', `${mapView ? 'map' : 'list'}-view`]">
-         <template v-if="!mapView">
-            <div class="container">
-               <Cap>
-                  <template #left>
-                     <h3>{{ $t('auto_salons') }} ({{ nonOfficialSalons.length }})</h3>
-                     <!--                  <h3 class="salons-count">({{ nonOfficialSalons.length }}) {{ nonOfficialSalons.length }}</h3>-->
-                  </template>
-
-                  <template #right>
-                     <p class="d-flex align-items-center" @click="setMapView(!mapView), callEvent()">
-                        <span v-if="!isMobileBreakpoint">{{ $t('show_on_map') }}</span>
-                        <span v-else>{{ $t('map') }}</span>
-
-                        <inline-svg :src="'/icons/location_2.svg'" />
-                     </p>
-                  </template>
-               </Cap>
-
-               <div class="mb-lg-0 mb-n2 mt-4 mt-lg-5 row salon-card-list" v-if="nonOfficialSalons.length">
-                  <div
-                     class="col-12 col-md-6 col-lg-4 mb-2 mb-lg-3"
-                     v-for="salon in nonOfficialSalons"
-                     :key="salon.id"
-                     v-if="salon.announcement_count"
-                  >
-                     <nuxt-link
-                        class="keep-colors"
-                        :to="$localePath(`/salons/${salon.slug}`)"
-                     >
-                        <salon-card :salon="salon"/>
-                     </nuxt-link>
-                  </div>
-               </div>
-
-               <no-results v-else-if="!officialSalons.length"/>
-            </div>
-         </template>
-
-         <div
-            :class="`map-${isMobileBreakpoint ? 'fh' : 'fw'}-container`"
-            v-show="mapView"
-         >
-            <template v-if="!isMobileBreakpoint">
-               <template v-if="mapView">
-                  <!-- ././././././././././ -->
-                  <!-- ././././././././././ -->
-                  <!-- ././././././././././ -->
-                  <!-- ././././././././././ -->
-                  <div
-                     :class="['map-sidebar', { collapse: !disableCollapse && collapse }]"
-                  >
-                     <div class="map-sidebar_content">
-                        <breadcrumbs :crumbs="crumbs"/>
-                        <salon-filters-form
-                           :count="salonsInView.length"
-                           :short="!isMobileBreakpoint"
-                        />
-                        <div class="salon-card-list" v-if="salonsInView.length">
-                           <div class="salon-card-list__item" v-for="salon in salonsInView" :key="salon.id">
-                              <nuxt-link
-                                 class="keep-colors"
-                                 :to="$localePath(`/salons/${salon.slug}`)"
-                              >
-                                 <salon-card :salon="salon"/>
-                              </nuxt-link>
-                           </div>
-                        </div>
-                        <no-results v-else/>
-                     </div>
-                     <!-- ././././././././././ -->
-                     <!-- ././././././././././ -->
-                     <!-- ././././././././././ -->
-                     <!-- ././././././././././ -->
-                     <div
-                        class="map-sidebar_toggle"
-                        @click="collapse = !collapse"
-                        v-if="!disableCollapse"
-                     >
-                        <icon :name="collapse ? 'chevron-right' : 'chevron-left'"/>
-                     </div>
-                  </div>
-
-                  <div class="map-topbar">
-                     <div class="container">
-                        <salon-search-form
-                           :short="!isMobileBreakpoint && (!collapse || disableCollapse)"
-                        />
-                     </div>
-                  </div>
+      <div :class="['pages-salons autosalon list-view']" v-if="!mapView">
+         <div class="container">
+            <Cap>
+               <template #left>
+                  <h3>{{ $t('auto_salons') }} ({{ nonOfficialSalons.length }})</h3>
+                  <!--                  <h3 class="salons-count">({{ nonOfficialSalons.length }}) {{ nonOfficialSalons.length }}</h3>-->
                </template>
-               <clustered-map
-                  :key="'desktop-map_' + mapKey"
-                  :margin-left="{ left: 0, top: 0, width: '360px', height: '100%' }"
-                  :margin-top="{ top: 0, left: 0, width: '100%', height: '150px' }"
-                  :use-margin-left="!disableCollapse && !collapse"
-                  @balloon-click="$router.push($localePath(`/salons/${$event}`))"
-               />
-            </template>
-            <template v-else>
-               <clustered-map
-                  :key="'mobile-map_' + mapKey"
-                  @balloon-click="$router.push($localePath(`/salons/${$event}`))"
-               />
-            </template>
+
+               <template #right>
+                  <p class="d-flex align-items-center" @click="setMapView(!mapView), callEvent()">
+                     <span v-if="!isMobileBreakpoint">{{ $t('show_on_map') }}</span>
+                     <span v-else>{{ $t('map') }}</span>
+
+                     <inline-svg :src="'/icons/location_2.svg'" />
+                  </p>
+               </template>
+            </Cap>
+
+            <div class="mb-lg-0 mb-n2 mt-4 mt-lg-5 row salon-card-list" v-if="nonOfficialSalons.length">
+               <div
+                  class="col-12 col-md-6 col-lg-4 mb-2 mb-lg-3"
+                  v-for="salon in nonOfficialSalons"
+                  :key="salon.id"
+                  v-if="salon.announcement_count"
+               >
+                  <nuxt-link
+                     class="keep-colors"
+                     :to="$localePath(`/salons/${salon.slug}`)"
+                  >
+                     <salon-card :salon="salon"/>
+                  </nuxt-link>
+               </div>
+            </div>
+
+            <no-results v-else-if="!officialSalons.length"/>
          </div>
       </div>
    </div>

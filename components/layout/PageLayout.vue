@@ -15,8 +15,8 @@
             <slot name="after-header"/>
 
             <main
-               :class="{'min-height-if-notification':  !cookiesHasNotificationOn || storeBannerIsOn, 'min-height-if-not-notification':  cookiesHasNotificationOn || !storeBannerIsOn, 'positionInitial' : checkRouteIfSalon}">
-
+               :class="{'min-height-if-notification':  !cookiesHasNotificationOn || storeBannerIsOn, 'min-height-if-not-notification':  cookiesHasNotificationOn || !storeBannerIsOn, }">
+<!--               'positionInitial' : checkRouteIfSalon-->
                <site-banner
                   v-if="windowWidth > 1800"
                   :check-emitting="checkEmitting"
