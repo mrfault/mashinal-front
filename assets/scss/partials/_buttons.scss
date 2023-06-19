@@ -540,6 +540,18 @@
             $override: false
          );
       }
+
+      &--red-opacity {
+         @include btn-style(
+            $color: $white,
+            $bg-color: transparent,
+            $bg-hover: $red-new,
+            $border-color: $grey-2-new,
+            $border-hover: $red-new,
+            $outline: true,
+            $override: false
+         );
+      }
    }
 }
 

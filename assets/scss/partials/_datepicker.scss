@@ -530,10 +530,11 @@
    }
 
    .mx-datepicker svg {
-      fill: $white;
+      fill: $grey-2-new;
+      stroke: $grey-5-new;
 
-      line {
-         stroke: $white;
+      path {
+         stroke: $grey-5-new;
       }
    }
 

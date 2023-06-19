@@ -126,6 +126,10 @@
       &.underline {
          box-shadow: $shadow-dark-6;
       }
+
+      h4 {
+         color: $grey-1-new !important;
+      }
    }
 
    .text-dark-blue-2,
@@ -561,6 +565,12 @@
 }
 
 .dark-mode {
+   .mx-input-wrapper {
+      input {
+         color: $grey-5-new;
+      }
+   }
+
    .mx-btn {
       color: $white;
    }
@@ -570,29 +580,29 @@
       color: $yellow-1;
    }
 
-   .mx-datepicker svg {
-      fill: $white;
+   //.mx-datepicker svg {
+   //   fill: $white;
+   //
+   //   line {
+   //      stroke: $white;
+   //   }
+   //}
 
-      line {
-         stroke: $white;
-      }
-   }
+   //.mx-datepicker .mx-input:not(:placeholder-shown) ~ i svg {
+   //   fill: $yellow-1;
+   //
+   //   line {
+   //      stroke: $yellow-1;
+   //   }
+   //}
 
-   .mx-datepicker .mx-input:not(:placeholder-shown) ~ i svg {
-      fill: $yellow-1;
-
-      line {
-         stroke: $yellow-1;
-      }
-   }
-
-   .mx-icon-clear svg {
-      fill: $yellow-1;
-
-      line {
-         stroke: $yellow-1;
-      }
-   }
+   //.mx-icon-clear svg {
+   //   fill: $yellow-1;
+   //
+   //   line {
+   //      stroke: $yellow-1;
+   //   }
+   //}
 
    .mx-datepicker-main {
       width: 100%;
@@ -833,6 +843,7 @@
    .checkbox-input label,
    .radio-input label,
    .form-info {
+      color: $grey-5-new;
       background-color: $dark-new !important;
       border-color: transparent;
 
@@ -1625,99 +1636,6 @@
                color: $white;
             }
          }
-      }
-   }
-}
-
-.dark-mode {
-   .calculator {
-      &__inputs {
-         background: $dark-2;
-
-         .secondary--heading {
-            color: #fff;
-         }
-
-         .dollar__exchange {
-            span {
-               font: 400 16px Gilroy;
-
-               &:nth-child(1) {
-                  color: #fff;
-               }
-
-               &:nth-child(2) {
-                  color: #fff;
-               }
-            }
-         }
-      }
-
-      &__results {
-         &--heading {
-            background: $dark-2;
-            color: #fff;
-
-            h3 {
-               color: #fff;
-            }
-
-            h4 {
-               color: #fff;
-            }
-
-            .label {
-               background: $red-1;
-               position: absolute;
-               //top: 50%;
-               transform: translateY(-50%);
-               right: -17px;
-               color: #fff;
-               padding: 8px 14px 7px 41px;
-               font: 400 14px Gilroy;
-               clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 10% 50%);
-
-               &-flip {
-                  position: absolute;
-                  bottom: 5px;
-                  right: -17px;
-                  width: 17px;
-                  height: 17px;
-                  background: #c6021c;
-                  clip-path: polygon(0 0, 0% 100%, 100% 0);
-               }
-            }
-         }
-
-         &--content {
-            border-radius: 4px;
-            background: $dark-2;
-            padding: 22px 25px 25px 25px;
-
-            .self-end {
-               justify-self: flex-end;
-            }
-
-            .sum {
-               span {
-                  &:nth-child(1) {
-                     color: #fff;
-                  }
-
-                  &:nth-child(2) {
-                     color: #fff;
-                  }
-               }
-            }
-         }
-
-         .vehicle-specs li span:first-child {
-            width: calc(100% - 200px) !important;
-         }
-      }
-
-      &__empty-results {
-         background: $dark-2;
       }
    }
 }

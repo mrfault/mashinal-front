@@ -1,80 +1,86 @@
 .height-100 {
-  height: 100%;
+   height: 100%;
 }
 
 .tabs-filter {
-  filter: blur(1px);
+   filter: blur(1px);
 }
 
 .checkbox-input,
 .letter_permissions_can_be_given {
-  span {
-    white-space: nowrap !important;
-  }
+   span {
+      white-space: nowrap !important;
+   }
 }
 
 .white-space-break {
-  white-space: break-spaces !important;
+   white-space: break-spaces !important;
 }
 
 .override-disabled {
-  input {
-    background: $greyish-blue-2 !important;
-    color: $dark-blue-1 !important;
-    &:disabled {
+   pointer-events: none;
+
+   input {
+      background: $greyish-blue-2 !important;
       color: $dark-blue-1 !important;
-      -webkit-text-fill-color: $dark-blue-1 !important;
-    }
-  }
-}
-.dark-mode {
-  .override-disabled {
-    input {
-      background: $dark-1 !important;
-      color: #fff !important;
+
       &:disabled {
-        color: #fff !important;
-        -webkit-text-fill-color: #fff !important;
+         color: $dark-blue-1 !important;
+         -webkit-text-fill-color: $dark-blue-1 !important;
       }
-    }
-  }
+   }
+}
+
+.dark-mode {
+   .override-disabled {
+      input {
+         //background: $dark-1 !important;
+         color: $grey-5-new !important;
+
+         &:disabled {
+            color: $grey-5-new !important;
+            -webkit-text-fill-color: $grey-5-new !important;
+         }
+      }
+   }
 }
 
 .min-height-if-notification {
-  min-height: calc(100vh - 572px);
+   min-height: calc(100vh - 572px);
 }
+
 .min-height-if-not-notification {
-  min-height: calc(100vh - 470px);
+   min-height: calc(100vh - 470px);
 }
 
 .safari-popup {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translate(-50%);
-  width: 300px;
-  height: 300px;
-  max-width: 80%;
+   position: absolute;
+   top: 0;
+   left: 50%;
+   transform: translate(-50%);
+   width: 300px;
+   height: 300px;
+   max-width: 80%;
 }
 
 .dropdown-menu-click {
-  visibility: hidden !important;
+   visibility: hidden !important;
 }
 
 .positionInitial {
-  padding: initial;
-  top: -161px;
-  left: 0;
-  min-height: 100vh;
-  box-sizing: border-box;
-  // overflow-y: visible;
-  overflow: hidden;
+   padding: initial;
+   top: -161px;
+   left: 0;
+   min-height: 100vh;
+   box-sizing: border-box;
+   // overflow-y: visible;
+   overflow: hidden;
 }
 
 .layoutForMap {
-  height: 100vh;
-  box-sizing: border-box;
-  overflow: hidden;
+   height: 100vh;
+   box-sizing: border-box;
+   overflow: hidden;
 }
 
 

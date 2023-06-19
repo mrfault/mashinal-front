@@ -1405,6 +1405,18 @@ input::-webkit-inner-spin-button {
             }
          }
       }
+
+      .checkbox-input {
+         .checkbox {
+            border-color: $grey-5-new;
+         }
+
+         label {
+            .text-truncate {
+               color: $grey-5-new;
+            }
+         }
+      }
    }
 }
 

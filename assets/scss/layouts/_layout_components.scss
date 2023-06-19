@@ -37,7 +37,10 @@
 /** Breadcrumbs */
 
 .breadcrumbs {
+   overflow-x: auto;
+
    ul {
+      min-width: 400px;
       margin: 0 auto 0 0;
       padding: 0;
       display: flex;

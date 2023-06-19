@@ -5,7 +5,7 @@
       </breadcrumbs>
 
       <div class="calculator">
-         <div class="row mt-5 mt-md-0">
+         <div class="row">
             <div class="col-12 col-md-12 col-lg-6">
                <div class="calculator__inputs">
                   <h4 class="calculator__inputs--heading">{{ $t('customs_calculator') }}</h4>
@@ -53,7 +53,7 @@
                         />
                      </div>
 
-                     <div class="col-6">
+                     <div class="col-12 col-sm-6">
                         <form-select
                            :label="$t('production_country')"
                            :options="countries"
@@ -63,7 +63,7 @@
                         />
                      </div>
 
-                     <div class="col-6">
+                     <div class="col-12 col-sm-6">
                         <form-select
                            :label="$t('sender_country')"
                            :options="countries"
@@ -73,7 +73,7 @@
                         />
                      </div>
 
-                     <div class="col-6">
+                     <div class="col-12 col-sm-6">
                         <form-numeric-input
                            :placeholder="$t('customs_value_of_vehicle')"
                            :invalid="$v.filled.customsValueOfVehicle.$error"
@@ -81,7 +81,7 @@
                         />
                      </div>
 
-                     <div class="col-6" v-if="filled.engineType !== 4">
+                     <div class="col-12 col-sm-6" v-if="filled.engineType !== 4">
                         <form-numeric-input
                            :placeholder="$t('engine_volume2')"
                            :invalid="$v.filled.engineVolume.$error"
@@ -89,7 +89,7 @@
                         />
                      </div>
 
-                     <div class="col-6">
+                     <div class="col-12 col-sm-6">
                         <form-text-input
                            input-date
                            :placeholder="$t('production_year')"
@@ -97,7 +97,7 @@
                         />
                      </div>
 
-                     <div class="col-6">
+                     <div class="col-12 col-sm-6">
                         <form-checkbox
                            :label="$t('more_than_one_year')"
                            v-model="filled.isMoreThanOneYear"
@@ -147,76 +147,58 @@
             <div class="col-12 col-md-12 col-lg-6" v-if="hasResult">
                <div class="calculator__results">
                   <div class="calculator__results--content">
-                     <div>
-                        <h2 class="title-with-line">
-                           <span>{{ $t('result') }}</span>
-                        </h2>
-                        <div class="vehicle-specs">
-                           <div class="row">
-                              <div class="col">
-                                 <ul>
-                                    <li>
-                                       <span>{{ $t('excise_tax') }}</span>
-                                       <span>{{ result.aksizvergi || 0 }} ₼</span>
-                                    </li>
-                                    <li>
-                                       <span>{{ $t('custom_duty') }}</span>
-                                       <span>{{ result.rusum }} ₼</span>
-                                    </li>
-                                    <li>
-                                       <span>{{ $t('operating_fee') }}</span>
-                                       <span>{{ result.sbor }} ₼</span>
-                                    </li>
-                                    <li>
-                                       <span>{{ $t('license_fee') }}</span>
-                                       <span>{{ result.vesiqe }} ₼</span>
-                                    </li>
-                                    <li>
-                                       <span>{{ $t('vat') }}</span>
-                                       <span>{{ result.edv || 0 }} ₼</span>
-                                    </li>
-                                    <li>
-                          <span>
-                            {{
-                                $t(
-                                   'for_the_provision_of_electronic_customs_service',
-                                )
-                             }}
-                          </span>
-                                       <span>{{ result.elprice }} ₼</span>
-                                    </li>
-                                    <li>
-                          <span>
-                            {{
-                                $t(
-                                   'vat_for_the_provision_of_electronic_customs_services',
-                                )
-                             }}
-                          </span>
-                                       <span>{{ result.gomrukedv }} ₼</span>
-                                    </li>
-                                 </ul>
-                                 <hr/>
-                                 <div class="sum">
-                                    <span>{{ $t('total') }}</span>
-                                    <span>{{ result.cem }} ₼</span>
-                                 </div>
-                              </div>
-                           </div>
+                     <h2 class="calculator__results--title">{{ $t('result') }}</h2>
+
+                     <div class="vehicle-specs">
+                        <ul>
+                           <li>
+                              <span>{{ $t('excise_tax') }}</span>
+                              <span>{{ result.aksizvergi || 0 }}</span>
+                           </li>
+                           <li>
+                              <span>{{ $t('custom_duty') }}</span>
+                              <span>{{ result.rusum }}</span>
+                           </li>
+                           <li>
+                              <span>{{ $t('operating_fee') }}</span>
+                              <span>{{ result.sbor }}</span>
+                           </li>
+                           <li>
+                              <span>{{ $t('license_fee') }}</span>
+                              <span>{{ result.vesiqe }}</span>
+                           </li>
+                           <li>
+                              <span>{{ $t('vat') }}</span>
+                              <span>{{ result.edv || 0 }}</span>
+                           </li>
+                           <li>
+                              <span>{{$t('for_the_provision_of_electronic_customs_service') }}</span>
+                              <span>{{ result.elprice }}</span>
+                           </li>
+                           <li>
+                              <span>{{$t('vat_for_the_provision_of_electronic_customs_services') }}</span>
+                              <span>{{ result.gomrukedv }}</span>
+                           </li>
+                        </ul>
+
+                        <div class="sum">
+                           <span>{{ $t('total') }}</span>
+                           <span>{{ result.cem }} AZN</span>
                         </div>
                      </div>
                   </div>
                </div>
             </div>
 
-            <div class="col-12 col-md-12 col-lg-6 mt-4 mt-lg-0" v-else>
+            <div class="col-12 col-md-12 col-lg-6 d-none d-sm-block mt-4 mt-lg-0" v-else>
                <div class="calculator__empty-results">
                   <div class="calculator__empty-results--image">
-                     <img src="/images/customs-empty-result.png" alt="image"/>
+                     <img class="light-mode" src="/images/calculator.svg" alt="image"/>
+                     <img class="dark-mode" src="/images/calculator_dark.svg" alt="image"/>
                   </div>
-                  <p class="calculator__empty-results--message">
-                     {{ $t('learn_customs_duty') }}
-                  </p>
+<!--                  <p class="calculator__empty-results&#45;&#45;message">-->
+<!--                     {{ $t('learn_customs_duty') }}-->
+<!--                  </p>-->
                </div>
             </div>
          </div>
@@ -226,16 +208,9 @@
          <div class="col-12">
             <div class="card">
                <h4>{{ $t('customs_info_title') }}</h4>
-               <hr/>
-               <p class="calculator__info--paragraph">
-                  {{ $t('customs_info_part_1') }}
-               </p>
-               <p class="calculator__info--paragraph">
-                  {{ $t('customs_info_part_2') }}
-               </p>
-               <p class="calculator__info--paragraph mb-0">
-                  {{ $t('customs_info_part_3') }}
-               </p>
+               <p class="calculator__info--paragraph">{{ $t('customs_info_part_1') }}</p>
+               <p class="calculator__info--paragraph">{{ $t('customs_info_part_2') }}</p>
+               <p class="calculator__info--paragraph mb-0">{{ $t('customs_info_part_3') }}</p>
             </div>
          </div>
       </div>
@@ -616,7 +591,15 @@
 <style lang="scss" scoped>
    .calculator-customs {
       .card {
+         padding: 32px 24px 24px;
 
+         h4 {
+            font-weight: 600;
+            font-size: 24px;
+            line-height: 28px;
+            color: #1B2434;
+            margin-bottom: 20px;
+         }
       }
    }
 </style>

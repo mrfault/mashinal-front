@@ -26,108 +26,19 @@
       .btn {
          height: 52px;
       }
-
-      //.secondary--heading {
-      //   font: 400 14px Gilroy !important;
-      //   color: $dark-blue-1;
-      //}
-
-      //.dollar__exchange {
-      //   span {
-      //      font: 400 16px Gilroy;
-      //
-      //      &:nth-child(1) {
-      //         color: $dark-blue-1;
-      //      }
-      //
-      //      &:nth-child(2) {
-      //         color: $dark-blue-2;
-      //      }
-      //   }
-      //}
    }
 
    &__results {
-      &--heading {
-         padding: 24px 240px 20px 25px;
-         border-radius: 4px;
-         background: #fff;
-         color: $dark-blue-1;
-         display: flex;
-         justify-content: space-between;
-         align-items: center;
-         position: relative;
-         margin-bottom: 20px;
+      padding: 32px;
+      border-radius: 12px;
+      background-color: $white;
 
-         h3 {
-            font: 400 18px Gilroy;
-         }
-
-         h4 {
-            color: $dark-blue-2;
-            font: 400 18px Gilroy;
-         }
-
-         .label {
-            background: $red-1;
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            right: -17px;
-            color: #fff;
-            padding: 8px 14px 7px 28px;
-            font: 400 14px Gilroy;
-            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 10% 50%);
-
-            &-flip {
-               position: absolute;
-               top: 52px;
-               right: -17px;
-               width: 17px;
-               height: 17px;
-               background: #c6021c;
-               clip-path: polygon(0 0, 0% 100%, 100% 0);
-            }
-
-            @media screen and (max-width: 480px) {
-               &-flip {
-
-                  top: 52px;
-
-               }
-            }
-
-         }
-      }
-
-      &--content {
-         border-radius: 4px;
-         background: #fff;
-         padding: 22px 25px 25px 25px;
-
-         .self-end {
-            justify-self: flex-end;
-         }
-
-         .sum {
-            display: flex;
-            justify-content: space-between;
-            font: 400 18px Gilroy;
-
-            span {
-               &:nth-child(1) {
-                  color: $dark-blue-1;
-               }
-
-               &:nth-child(2) {
-                  color: $dark-blue-2;
-               }
-            }
-         }
-      }
-
-      .vehicle-specs li span:first-child {
-         width: calc(100% - 200px) !important;
+      &--title {
+         font-weight: 600;
+         font-size: 24px;
+         line-height: 28px;
+         color: $dark-light-new;
+         margin-bottom: 24px;
       }
    }
 
@@ -138,138 +49,135 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      border-radius: 4px;
+      border-radius: 12px;
+      padding: 50px;
 
       &--image {
-         width: 50%;
+         width: 90%;
 
          img {
             width: 100%;
             height: 100%;
             object-fit: contain;
-         }
-      }
 
-      &--message {
-         font: 400 18px Gilroy;
-         color: $red-1;
+            &.dark-mode {
+               display: none;
+            }
+         }
       }
    }
 
    &__info {
       &--paragraph {
-         font: 400 14px Gilroy;
-         line-height: 19px;
+         font-size: 16px;
+         line-height: 28px;
       }
    }
 }
-
 
 .dark-mode {
    .calculator {
       &__inputs {
-         background: $dark-2;
+         background: $dark-light-new;
 
-         .secondary--heading {
-            color: #fff;
+         &--heading {
+            color: $grey-1-new;
          }
 
          .dollar__exchange {
             span {
-               font: 400 16px Gilroy;
-
-               &:nth-child(1) {
-                  color: #fff;
-               }
-
-               &:nth-child(2) {
-                  color: #fff;
-               }
+               color: $white-2-new;
             }
          }
       }
 
+      &__info {
+         &--paragraph {
+            color: $white-2-new;
+         }
+      }
+
       &__results {
-         &--heading {
-            background: $dark-2;
-            color: #fff;
+         background: $dark-light-new;
 
-            h3 {
-               color: #fff;
-            }
-
-            h4 {
-               color: #fff;
-            }
-
-            .label {
-               background: $red-1;
-               position: absolute;
-               //top: 50%;
-               transform: translateY(-50%);
-               right: -17px;
-               color: #fff;
-               padding: 8px 14px 7px 41px;
-               font: 400 14px Gilroy;
-               clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 10% 50%);
-
-               &-flip {
-                  position: absolute;
-                  bottom: 5px;
-                  right: -17px;
-                  width: 17px;
-                  height: 17px;
-                  background: #c6021c;
-                  clip-path: polygon(0 0, 0% 100%, 100% 0);
-               }
-            }
+         &--title {
+            color: $grey-1-new;
          }
 
          &--content {
-            border-radius: 4px;
-            background: $dark-2;
-            padding: 22px 25px 25px 25px;
+            .vehicle-specs {
+               ul {
+                  li {
+                     border-color: $grey-2-new;
 
-            .self-end {
-               justify-self: flex-end;
-            }
+                     span {
+                        &:first-child {
+                           color: $white-2-new;
+                        }
 
-            .sum {
-               span {
-                  &:nth-child(1) {
-                     color: #fff;
+                        &:last-child {
+                           color: $grey-1-new;
+                        }
+                     }
                   }
+               }
 
-                  &:nth-child(2) {
-                     color: #fff;
+               .sum {
+                  span {
+                     color: $grey-1-new;
                   }
                }
             }
-         }
-
-         .vehicle-specs li span:first-child {
-            width: calc(100% - 200px) !important;
          }
       }
 
       &__empty-results {
-         background: $dark-2;
+         background: $dark-light-new;
+
+         &--image {
+            img {
+               &.light-mode {
+                  display: none;
+               }
+
+               &.dark-mode {
+                  display: block;
+               }
+            }
+         }
       }
    }
 }
 
-@media screen and (max-width: 1024px) {
+@media (max-width: 1150px) {
    .calculator {
       &__results {
-         margin-top: 40px;
+         margin-top: 20px;
+      }
+
+      &__empty-results {
+         &--image {
+            width: 50%;
+         }
+      }
+   }
+}
+
+@media (max-width: 600px) {
+   .calculator {
+      &__inputs {
+         padding: 0;
+         background-color: transparent;
 
          &--heading {
-            padding: 80px 25px 20px 25px;
-
-            .label {
-               top: 37px;
-            }
+            font-weight: 600;
+            font-size: 24px;
+            line-height: 28px;
          }
+      }
+
+      &__results {
+         padding: 20px 16px;
       }
    }
 }
