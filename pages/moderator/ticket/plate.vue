@@ -278,9 +278,9 @@
                      this.$toasted.success(this.$t('success_payment'));
 
                      if (this.user.admin_group == 2) {
-                        location.href = '/alvcp/resources/announce-moderators';
+                        location.href = 'https://admin.mashin.al/alvcp/resources/announce-moderators';
                      } else {
-                        location.href = '/alvcp/resources/plates';
+                        location.href = 'https://admin.mashin.al/alvcp/resources/plates';
                      }
                   })
                   .catch(() => {
@@ -294,10 +294,10 @@
          async back() {
             if (this.user.admin_group == 2) {
                await this.$axios.$post('/ticket/detach/' + this.announce_id + '/car');
-               location.href = '/alvcp/resources/announce-moderators';
+               location.href = 'https://admin.mashin.al/alvcp/resources/announce-moderators';
             } else {
                await this.$axios.$post('/ticket/detach/' + this.announce_id + '/car');
-               location.href = '/alvcp/resources/plates';
+               location.href = 'https://admin.mashin.al/alvcp/resources/plates';
             }
          }
       },

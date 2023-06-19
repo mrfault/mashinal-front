@@ -1061,14 +1061,14 @@ export default {
     },
     handleBackList() {
       if (this.admin_user.admin_group == 2) {
-        location.href = '/alvcp/resources/announcements';
+        location.href = 'https://admin.mashin.al/alvcp/resources/announcements';
       } else {
-        location.href = '/alvcp/resources/announcements';
+        location.href = 'https://admin.mashin.al/alvcp/resources/announcements';
       }
     },
     async handleBackToList() {
       await this.$axios.$post('/ticket/detach/' + this.announceId + '/' + this.getRedirectUrl)
-      location.href = '/alvcp/resources/' + this.getRedirectUrl;
+      location.href = 'https://admin.mashin.al/alvcp/resources/' + this.getRedirectUrl;
     },
 
     ifPopularCommentsEmpty() {
@@ -1318,9 +1318,9 @@ export default {
       };
 
       if (this.user.admin_group == 2) {
-        location.href = '/alvcp/resources/announce-moderators';
+        location.href = 'https://admin.mashin.al/alvcp/resources/announce-moderators';
       } else {
-        location.href = '/alvcp/resources/' + moto[this.$route.query.type];
+        location.href = 'https://admin.mashin.al/alvcp/resources/' + moto[this.$route.query.type];
       }
     },
 
@@ -1368,9 +1368,9 @@ export default {
         };
 
         if (this.admin_user.admin_group == 2) {
-          location.href = '/alvcp/resources/announce-moderators';
+          location.href = 'https://admin.mashin.al/alvcp/resources/announce-moderators';
         } else {
-          location.href = '/alvcp/resources/' + moto[this.$route.query.type];
+          location.href = 'https://admin.mashin.al/alvcp/resources/' + moto[this.$route.query.type];
         }
         this.loading = false;
 
