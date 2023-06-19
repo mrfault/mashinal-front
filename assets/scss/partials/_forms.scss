@@ -1,12 +1,12 @@
 input,
 textarea {
    font: inherit;
-   color: inherit;
+   color: $dark-light-new;
    appearance: none;
 
    &::placeholder {
       font: inherit;
-      color: inherit;
+      color: $grey-4-new;
       opacity: 1;
    }
 
@@ -105,6 +105,12 @@ input::-webkit-inner-spin-button {
    position: relative;
    width: 100%;
 
+   &:hover {
+      input {
+         border-color: $blue-new;
+      }
+   }
+
    input,
    textarea {
       width: 100%;
@@ -112,6 +118,7 @@ input::-webkit-inner-spin-button {
       padding: 9px 15px 7px;
       border-radius: 8px;
       border: 1px solid #CDD5DF;
+      transition: .3s all;
 
       &.invalid {
          &:not(:focus) {
@@ -152,7 +159,7 @@ input::-webkit-inner-spin-button {
       font-weight: 400;
       font-size: 16px;
       line-height: 20px;
-      color: $grey-4-new;
+      color: $dark-light-new;
       height: 52px;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -256,12 +263,14 @@ input::-webkit-inner-spin-button {
    label {
       display: flex;
       align-items: center;
-      margin: 0;
+      //margin: 0;
       width: 100%;
-      background-color: $greyish-blue-2;
-      border-radius: 4px;
-      height: 34px;
-      padding: 0 15px;
+      background-color: $white;
+      border-radius: 8px;
+      height: 52px;
+      padding: 0 16px;
+      border: 1px solid $white-2-new;
+      transition: .3s all;
 
       img {
          width: 16px;
@@ -288,12 +297,12 @@ input::-webkit-inner-spin-button {
       }
 
       .text-truncate {
-         margin-bottom: -1px;
-
-         span {
-            overflow: hidden;
-            text-overflow: ellipsis;
-         }
+         font-weight: 400;
+         font-size: 16px;
+         line-height: 20px;
+         color: $grey-3-new;
+         overflow: hidden;
+         text-overflow: ellipsis;
       }
 
       &.pr-0 .text-truncate {
@@ -302,6 +311,10 @@ input::-webkit-inner-spin-button {
          align-items: center;
          height: 100%;
       }
+
+      &:hover {
+         border-color: $blue-new;
+      }
    }
 
    .checkbox {
@@ -309,11 +322,11 @@ input::-webkit-inner-spin-button {
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      margin-right: 10px;
-      border: 1px solid $greyish-blue-5;
+      margin-right: 8px;
+      border: 1px solid $white-2-new;
       border-radius: 4px;
-      width: 18px;
-      height: 18px;
+      width: 24px;
+      height: 24px;
 
       &-icon {
          font-size: 12px;
@@ -323,7 +336,7 @@ input::-webkit-inner-spin-button {
 
       i {
          color: $white;
-         font-size: 6px;
+         font-size: 9px;
          font-weight: bold;
          opacity: 0;
          transition: opacity .2s ease-in-out;
@@ -475,6 +488,7 @@ input::-webkit-inner-spin-button {
       user-select: none;
       position: relative;
       overflow: hidden;
+      transition: .3s all;
 
       .icon-chevron-down {
          &:before {

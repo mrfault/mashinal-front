@@ -1,0 +1,124 @@
+@media (max-width: 1150px) {
+   .salon-inner {
+      .salon-single-card {
+         padding: 0 !important;
+      }
+
+      .cover-with-avatar {
+         height: 300px;
+
+         &__img {
+            max-width: 680px;
+         }
+
+         &__gallery {
+            &-item {
+               height: 92px;
+            }
+            .count {
+               bottom: 38px;
+            }
+         }
+      }
+   }
+}
+
+@media (max-width: 992px) {
+   .salon-inner {
+      &__details {
+         flex-direction: column;
+
+         &-right {
+            max-width: unset !important;
+         }
+
+         .inner-thumbs-gallery {
+            margin: 20px 0;
+
+            .swiper-slide {
+               width: 100px;
+            }
+         }
+      }
+   }
+}
+
+@media (max-width: 600px) {
+   .salon-inner {
+      &__details {
+         position: relative;
+         margin-top: unset !important;
+         overflow: unset !important;
+         padding: 61px 16px 16px !important;
+
+         &-logo {
+            position: absolute;
+            top: -110px;
+            left: 0;
+            max-width: 88px !important;
+            height: 88px !important;
+            margin-right: unset !important;
+         }
+
+         &-right {
+            margin-top: -20px;
+         }
+
+         &-tels {
+            padding: 12px 18px !important;
+         }
+      }
+
+      .profile-card {
+         width: 106%;
+         margin: 0 -15px;
+
+         .cover-with-avatar {
+            height: 200px;
+
+            img {
+               border-radius: unset;
+            }
+         }
+      }
+   }
+}
+
+@media (max-width: 500px) {
+   .salon-inner {
+      .profile-card {
+         width: 108%;
+      }
+   }
+}
+
+@media (max-width: 385px) {
+   .salon-inner {
+      &__details {
+         &-tels {
+            padding: 12px !important;
+
+            .icon-phone-call {
+               font-size: 20px !important;
+               margin-right: 10px !important;
+            }
+
+            .divider {
+               padding-right: 15px !important;
+            }
+
+            ul {
+               li {
+                  a {
+                     font-size: 13px !important;
+                  }
+               }
+            }
+         }
+      }
+
+      .profile-card {
+         width: 110%;
+      }
+   }
+}

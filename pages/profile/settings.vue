@@ -21,7 +21,7 @@
                      <form-text-input :maxlength="30" :placeholder="$t('name')" v-model="form.name"/>
                   </div>
                   <div class="col-lg-4 mb-3 mb-lg-3">
-                     <form-text-input :placeholder="$t('birthday')" v-model="form.birthday" input-date/>
+                     <form-text-input :placeholder="$t('birthday')" v-model="form.birthday" input-date />
                   </div>
                   <div class="col-lg-4 mb-3 mb-lg-3">
                      <form-buttons v-model="form.gender" :options="getGenderOptions" :group-by="3"

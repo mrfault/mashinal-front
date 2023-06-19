@@ -4,14 +4,17 @@
       <ul aria-label="breadcrumb">
          <li :key="-1">
             <nuxt-link :to="$localePath('/')">
-               <icon name="home" />
+               {{ $t('is_main') }}
+<!--               <icon name="home" />-->
             </nuxt-link>
+
             <!-- <inline-svg
               v-if="index !== crumbs.length - 1"
               src="/icons/chevron-right.svg"
               :height="10"
               class="mx-1"
             /> -->
+
             <icon name="chevron-right"/>
          </li>
 
@@ -20,7 +23,9 @@
                <nuxt-link :to="$localePath(crumb.route || '/')">
                   {{ crumb.name }}
                </nuxt-link>
-               <icon v-if="index !== crumbs.length - 1" name="chevron-right"/>
+
+               <icon v-if="index !== crumbs.length - 1" name="chevron-right" />
+
                <!-- <inline-svg
                  v-if="index !== crumbs.length - 1"
                  src="/icons/chevron-right.svg"
@@ -29,7 +34,7 @@
                /> -->
             </li>
 
-            <li v-else :key="index" class="active" aria-current="page">
+            <li v-else :key="index" aria-current="page">
                <span>{{ crumb.name }}</span>
             </li>
          </template>
@@ -42,6 +47,6 @@
    export default {
       props: {
          crumbs: Array,
-      },
+      }
    }
 </script>

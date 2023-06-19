@@ -51,6 +51,12 @@
 <!--               escape-duplicates-->
 <!--            />-->
 
+            <Cap v-if="showNotFound">
+               <template #left>
+                  <h3>{{ $t('other_announcements') }}</h3>
+               </template>
+            </Cap>
+
             <grid
                v-if="showNotFound ? otherAnnouncements.length : partAnnouncements.total"
                :announcements="showNotFound ? otherAnnouncements : partAnnouncements.data"

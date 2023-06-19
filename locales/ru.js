@@ -1699,6 +1699,7 @@ export default {
    "send_the_code": "Отправить код",
    "serial_number": "№ серии",
    "series": "серия",
+   "preventive_work": "На сайте ведутся профилактические работы",
    "server_error": "Ошибка сервера",
    "service": "Сервис",
    "services": "Сервисы",

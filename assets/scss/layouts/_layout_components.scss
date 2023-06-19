@@ -51,7 +51,8 @@
          vertical-align: top;
 
          a {
-            color: $dark-blue-1;
+            color: $grey-6-new;
+            opacity: 0.9;
 
             &:hover {
                color: $dark-blue-2;
@@ -63,7 +64,7 @@
          }
 
          .icon-chevron-right {
-            margin: 0 8px;
+            margin: 3px 8px 0 8px;
          }
 
          .icon-home {

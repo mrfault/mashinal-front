@@ -82,11 +82,11 @@
    .registrationMarksGrid {
       position: relative;
 
-      &__head {
-         .form-group {
-            width: 170px;
-         }
-      }
+      //&__head {
+      //   .form-group {
+      //      width: 170px;
+      //   }
+      //}
 
       &__items {
          margin: 40px 0 0 -20px;

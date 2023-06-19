@@ -167,9 +167,9 @@ export const MenusDataMixin = {
       },
 
       hasSearchFilters() {
-         // 'salons',
+         // 'salons','external-salons'
          return [
-            'parts-shops', 'external-salons'
+            'parts-shops',
          ].includes(this.routeName);
       },
 
