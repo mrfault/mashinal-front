@@ -30,7 +30,7 @@
                   :title="$t('auto_salons')"
                >
                   <template #content>
-                     <breadcrumbs :crumbs="crumbs"/>
+                     <breadcrumbs class="light-color" :crumbs="crumbs"/>
                   </template>
                </Banner>
                <template v-if="!mapView">
@@ -148,7 +148,7 @@
             <Cap>
                <template #left>
                   <h3>{{ $t('auto_salons') }} ({{ nonOfficialSalons.length }})</h3>
-                  <!--                  <h3 class="salons-count">({{ nonOfficialSalons.length }}) {{ nonOfficialSalons.length }}</h3>-->
+<!--                  <h3 class="salons-count">({{ nonOfficialSalons.length }}) {{ nonOfficialSalons.length }}</h3>-->
                </template>
 
                <template #right>

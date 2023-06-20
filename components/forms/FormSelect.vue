@@ -37,6 +37,7 @@
                     <input
                        type="text"
                        ref="searchInput"
+                       :maxlength="searchInputLength"
                        v-model="search"
                        :placeholder="inputPlaceholder"
                        @click.stop
@@ -424,6 +425,10 @@ export default {
       clearOptionMin: {
          type: Boolean,
          default: false,
+      },
+      searchInputLength: {
+         type: Number,
+         default: 10,
       },
       clearOptionText: String,
       clearOptionPullDown: Boolean,

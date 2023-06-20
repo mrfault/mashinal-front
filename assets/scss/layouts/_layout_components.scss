@@ -52,6 +52,8 @@
          display: inline-flex;
          align-items: center;
          white-space: nowrap;
+         color: $grey-6-new;
+         opacity: 0.9;
 
          a {
             color: $grey-6-new;
@@ -68,6 +70,11 @@
 
          .icon-chevron-right {
             margin: 3px 8px 0 8px;
+
+            &:before {
+               color: $grey-6-new;
+               opacity: 0.9;
+            }
          }
 
          .icon-home {
@@ -79,6 +86,25 @@
    .socials {
       a:not(:last-child) {
          margin-right: 25px;
+      }
+   }
+
+   &.light-color {
+      ul {
+         li {
+            color: #FFFFFF;
+
+            a {
+               color: #FFFFFF;
+            }
+
+            .icon-chevron-right {
+               &:before {
+                  color: #FFFFFF;
+                  opacity: 1;
+               }
+            }
+         }
       }
    }
 }

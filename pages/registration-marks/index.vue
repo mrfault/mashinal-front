@@ -13,7 +13,7 @@
             <div class="col">
                <div class="registrationMarks__hero">
                   <div class="registrationMarks__hero-text">
-                     <breadcrumbs :crumbs="crumbs" />
+                     <breadcrumbs class="light-color" :crumbs="crumbs" />
 
                      <h4 class="registrationMarks__hero-title">{{ $t('registration_marks') }}</h4>
                   </div>
@@ -37,6 +37,7 @@
                         :clear-placeholder="true"
                         :clear-option="false"
                         :new-label="false"
+                        :searchInputLength="1"
                         v-model="form.serial_letter1"
                         has-search
                      />
@@ -47,6 +48,7 @@
                         :clear-placeholder="true"
                         :clear-option="false"
                         :new-label="false"
+                        :searchInputLength="1"
                         v-model="form.serial_letter2"
                         has-search
                      />
@@ -226,8 +228,7 @@
             ],
             currencies: [
                { id: 1, name: 'AZN' },
-               { id: 2, name: 'USD' },
-               // { id: 3, name: 'EUR' }
+               { id: 2, name: 'USD' }
             ],
             sortItems: [
                { id: 'created_at_desc', name: this.$t('show_by_date') },
@@ -252,6 +253,7 @@
                    query;
 
                if (this.form.page) queryArray.push(`?page=${this.form.page}`);
+
                if (this.form.region) {
                   queryArray.push(`&region=${this.form.region}`);
                   this.form.serial_number = this.form.region.split('-')[0];
@@ -287,7 +289,7 @@
          this.$route.query?.filters?.split('&').forEach(query => {
             for (const item in this.form) {
                if (query.split('=')[0] === item) {
-                  if (item === 'region_id') {
+                  if (item === 'region_id' || item === 'currency') {
                      this.form[item] = Number(query.split('=')[1]);
                   } else {
                      this.form[item] = query.split('=')[1];
@@ -301,6 +303,7 @@
          tr() {
             return tr
          },
+
          ...mapGetters({
             getRegionNumbers: 'getRegionNumbers',
             getRegistrationMarks: 'getRegistrationMarks',

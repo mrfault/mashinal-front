@@ -32,7 +32,7 @@
                :title="$t('external_salon')"
             >
                <template #content>
-                  <breadcrumbs :crumbs="crumbs"/>
+                  <breadcrumbs class="light-color" :crumbs="crumbs"/>
                </template>
             </Banner>
 

@@ -11,7 +11,7 @@
             :title="$t('autocatalog')"
          >
             <template #content>
-               <breadcrumbs :crumbs="crumbs"/>
+               <breadcrumbs class="light-color" :crumbs="crumbs"/>
             </template>
          </Banner>
 
