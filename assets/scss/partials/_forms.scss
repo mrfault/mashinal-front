@@ -535,10 +535,10 @@ input::-webkit-inner-spin-button {
       }
 
       .icon-cross {
-         position: absolute;
-         top: calc(50% + 1px);
-         transform: translateY(-50%);
-         right: 16px;
+         //position: absolute;
+         //top: calc(50% + 1px);
+         //transform: translateY(-50%);
+         //right: 16px;
          font-size: 11px;
          //margin: 2px 0 0 4px;
       }
@@ -546,22 +546,13 @@ input::-webkit-inner-spin-button {
       .counter {
          position: relative;
          top: 10px;
-         //display: flex;
-         //align-items: center;
-         //justify-content: center;
-         //width: 20px;
          height: 20px;
          font-size: 12px;
          border-radius: 4px;
-         //background-color: $white;
-         //margin: 0 auto 0 0px;
-         //padding-top: 1px;
       }
 
       .text-truncate {
-         width: 90%;
          padding-top: 1px;
-         overflow: initial;
 
          .label {
             position: absolute;
@@ -574,15 +565,17 @@ input::-webkit-inner-spin-button {
          }
 
          .value {
+            width: 100%;
             text-overflow: ellipsis;
             overflow: hidden;
             white-space: nowrap;
+            padding-right: 10px;
             color: $dark-light-new;
 
             &.top {
                display: inline-block;
                margin-top: 20px;
-               width: 90%;
+               //width: 90%;
             }
          }
 
@@ -592,7 +585,11 @@ input::-webkit-inner-spin-button {
             white-space: nowrap;
             overflow: hidden;
             display: inline-block;
-            width: 90%;
+            width: 100%;
+         }
+
+         &:has(.counter) {
+            overflow: initial;
          }
       }
 
