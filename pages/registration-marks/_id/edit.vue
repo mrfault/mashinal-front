@@ -127,6 +127,8 @@
 
       mixins: [ PaymentMixin ],
 
+      middleware: ['auth_general'],
+
       data() {
          return {
             pending: false,

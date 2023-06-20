@@ -912,6 +912,12 @@
          .counter {
             background-color: $dark-2;
          }
+
+         .search-input {
+            input {
+               color: $white-2-new;
+            }
+         }
       }
 
       &_dropdown {

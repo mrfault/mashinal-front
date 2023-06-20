@@ -98,6 +98,8 @@
          });
       },
 
+      middleware: ['auth_general'],
+
       components: {
          QuickInfo,
          Comment,
