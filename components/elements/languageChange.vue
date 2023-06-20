@@ -25,7 +25,7 @@ export default {
       justify-content: center;
       width: 46px;
       height: 40px;
-      border-radius: 4px;
+      border-radius: 6px;
       border: 1px solid #9AA4B2;
       cursor: pointer;
 

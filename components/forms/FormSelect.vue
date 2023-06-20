@@ -44,6 +44,7 @@
                     />
                   </span>
                </template>
+
                <template v-else>
                   <template v-if="newLabel">
                      <span class="label" v-if="label !== getLabelText">{{ label }}</span>
@@ -262,10 +263,7 @@
                         <div
                            v-for="option in $sortBy(
                              getFilteredOptions,
-                             (a, b) =>
-                               popularOptions.indexOf(b.id) -
-                               popularOptions.indexOf(a.id),
-                           ).slice(0, 6)"
+                             (a, b) => popularOptions.indexOf(b.id) - popularOptions.indexOf(a.id)).slice(0, 6)"
                            :key="option.id"
                            class="col-4 popular-option"
                            @click.stop="selectValue = option"
@@ -350,6 +348,7 @@
                            <icon name="check" v-if="isSelected(option)"/>
                         </div>
                      </template>
+
                      <div
                         class="select-menu_dropdown-option disabled"
                         v-if="!getFilteredOptions.length"
@@ -625,13 +624,9 @@ export default {
             let read = this.values.read !== false;
 
             if (this.values.from && this.values.to)
-               value = `${this.$readNumber(
-                  this.values.from,
-                  read,
-               )} — ${this.$readNumber(this.values.to, read)}`
+               value = `${this.$readNumber(this.values.from, read)} — ${this.$readNumber(this.values.to, read)}`
             else if (this.values.from || this.values.to)
-               value = `${
-                  this.values.showPreposition
+               value = `${this.values.showPreposition
                      ? this.$t(!this.values.from ? 'to' : 'from') + ' '
                      : ''
                }${this.$readNumber(this.values.from || this.values.to, read)}`
@@ -663,7 +658,7 @@ export default {
                if (typeof selected[0]?.name === 'object') {
                   return selected[0]?.name[this.locale];
                } else {
-                  return selected[0]?.name;
+                  return this.getOptionName(selected[0])
                }
             }
          }

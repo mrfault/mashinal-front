@@ -559,9 +559,8 @@ input::-webkit-inner-spin-button {
       }
 
       .text-truncate {
-         width: 100%;
+         width: 90%;
          padding-top: 1px;
-         padding-right: 15px;
          overflow: initial;
 
          .label {
@@ -583,8 +582,17 @@ input::-webkit-inner-spin-button {
             &.top {
                display: inline-block;
                margin-top: 20px;
-               width: 100%;
+               width: 90%;
             }
+         }
+
+         .text {
+            margin-top: 6px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            display: inline-block;
+            width: 90%;
          }
       }
 
@@ -676,8 +684,7 @@ input::-webkit-inner-spin-button {
       &.show {
          visibility: visible;
          opacity: 1;
-
-         border-color: #155EEF;
+         border-color: $blue-new;
       }
 
       &-option {
@@ -939,9 +946,9 @@ input::-webkit-inner-spin-button {
    //   border-right: 1px solid $greyish-blue-6;
    //}
 
-   .text-input {
-      width: 141px;
-   }
+   //.text-input {
+   //   width: 141px;
+   //}
 
    .form-group {
       width: 50%;
@@ -951,8 +958,9 @@ input::-webkit-inner-spin-button {
       //width: 88px;
 
       &_label {
-         border-radius: unset;
-         border: none;
+         border-color: transparent;
+         border-radius: 8px;
+         overflow: hidden;
       }
 
       &.wider {

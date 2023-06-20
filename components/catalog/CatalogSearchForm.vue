@@ -89,9 +89,14 @@
 
             <template v-if="!collapsed">
                <div class="col-6 col-lg-1-5 mb-2 mb-lg-3">
-                  <form-select :label="$t('korobka')" v-model="form['korobka']"
+                  <form-select :label="$t('korobka')"
+                               v-model="form['korobka']"
                                :options="bodyOptions.main.default_options['korobka'].values"
-                               multiple name-in-value object-in-value translate-options @change="submitForm()"
+                               multiple
+                               name-in-value
+                               object-in-value
+                               translate-options
+                               @change="submitForm()"
                                :clear-option="false"
                                :clear-placeholder="true"
                   />
@@ -115,6 +120,7 @@
                <div class="col-6 col-lg-1-5 mb-2 mb-lg-3">
                   <form-select :label="$t('capacity')" custom :suffix="$t('char_litre')"
                                :values="{from: form.min_capacity, to: form.max_capacity }"
+                               :newLabel="false"
                                @clear="form.min_capacity = '', form.max_capacity = '', submitForm()"
                   >
                      <div class="form-merged">
@@ -149,6 +155,7 @@
                <div class="col-6 col-lg-1-5 mb-2 mb-lg-3">
                   <form-select :label="$t('acceleration')" custom anchor="right" :suffix="$t('char_second')"
                                :values="{from: form.min_racing, to: form.max_racing }"
+                               :newLabel="false"
                                @clear="form.min_racing = '', form.max_racing = '', submitForm()"
                   >
                      <div class="form-merged">
@@ -164,6 +171,7 @@
                <div class="col-6 col-lg-1-5 mb-2 mb-lg-3">
                   <form-select :label="$t('power')" custom anchor="right" :suffix="$t('char_h_power')"
                                :values="{from: form.min_power, to: form.max_power }"
+                               :newLabel="false"
                                @clear="form.min_power = '', form.max_power = '', submitForm()"
                   >
                      <div class="form-merged">
