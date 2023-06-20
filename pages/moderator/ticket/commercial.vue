@@ -1031,13 +1031,13 @@ export default {
     },
     async handleBackToList() {
       await this.$axios.$post('/ticket/detach/' + this.announceId + '/commercials')
-      location.href = '/alvcp/resources/commercials';
+      location.href = 'https://admin.mashin.al/alvcp/resources/commercials';
     },
     handleBackList() {
       if (this.admin_user.admin_group == 2) {
-        location.href = '/alvcp/resources/announce-moderators';
+        location.href = 'https://admin.mashin.al/alvcp/resources/announce-moderators';
       } else {
-        location.href = '/alvcp/resources/announcements';
+        location.href = 'https://admin.mashin.al/alvcp/resources/announcements';
       }
     },
     ifPopularCommentsEmpty() {
@@ -1271,9 +1271,9 @@ export default {
       await this.$axios.$post('/ticket/transfer/commercial/' + this.announceId, {comment: this.transferComment});
 
       if (this.admin_user.admin_group == 2) {
-        location.href = '/alvcp/resources/announce-moderators';
+        location.href = 'https://admin.mashin.al/alvcp/resources/announce-moderators';
       } else {
-        location.href = '/alvcp/resources/commercials';
+        location.href = 'https://admin.mashin.al/alvcp/resources/commercials';
       }
     },
     //sendData
@@ -1323,9 +1323,9 @@ export default {
         );
 
         if (this.user.admin_group == 2) {
-          location.href = '/alvcp/resources/announce-moderators';
+          location.href = 'https://admin.mashin.al/alvcp/resources/announce-moderators';
         } else {
-          location.href = '/alvcp/resources/commercials';
+          location.href = 'https://admin.mashin.al/alvcp/resources/commercials';
         }
 
       } catch ({response: {data: {data}}}) {

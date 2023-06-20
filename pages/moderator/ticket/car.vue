@@ -1255,7 +1255,7 @@ export default {
 
       },
       gotoList() {
-         window.location.href = "https://dev.mashin.al/alvcp/resources/announcements"
+         window.location.href = "https://admin.mashin.al/alvcp/resources/announcements"
       },
       getSellLastStepRejectObj(value) {
          console.log('//////////')
@@ -1559,9 +1559,9 @@ export default {
          })
 
          if (this.user.admin_group == 2) {
-            location.href = '/alvcp/resources/announce-moderators';
+            location.href = 'https://admin.mashin.al/alvcp/resources/announce-moderators';
          } else {
-            location.href = '/alvcp/resources/announcements'
+            location.href = 'https://admin.mashin.al/alvcp/resources/announcements'
          }
       },
       async sendData(status = 2) {
@@ -1622,9 +1622,9 @@ export default {
             await this.$axios.$post('/ticket/car/' + this.single_announce.id, formData)
 
             if (this.user.admin_group == 2) {
-               location.href = '/alvcp/resources/announce-moderators';
+               location.href = 'https://admin.mashin.al/alvcp/resources/announce-moderators';
             } else {
-               location.href = '/alvcp/resources/announcements';
+               location.href = 'https://admin.mashin.al/alvcp/resources/announcements';
             }
 
             if (status == 0) {

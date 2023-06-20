@@ -5,7 +5,7 @@
       <div style="text-align: center">
         <br><br>
         <h2>{{$t('not_have_panding_cars')}}</h2>
-        <a href="/alvcp/resources/announce-moderators">
+        <a href="https://admin.mashin.al/alvcp/resources/announce-moderators">
           <button class="section-post__btn add_announce">{{$t('back_to_moderator_page')}}</button>
         </a>
         <br><br>
