@@ -127,7 +127,7 @@
                <pagination
                   v-if="getRegistrationMarks?.meta?.last_page > 1"
                   :page-count="getRegistrationMarks?.meta?.last_page"
-                  :value="form.page"
+                  :value="page"
                   @change-page="changePage"
                />
 
@@ -183,6 +183,7 @@
       data() {
          return {
             timeout: null,
+            page: 1,
 
             form: {
                region: '',
@@ -195,7 +196,6 @@
                currency: '',
                region_id: '',
                sorting: 'created_at_desc',
-               page: 1
             },
 
             numbers: [
@@ -241,18 +241,27 @@
       methods: {
          changePage(e) {
             this.$store.commit('mutate',{ property: 'loadingData', value: true });
-            this.form.page = e;
+            this.page = e;
             this.scrollTo('.registrationMarks__filters', [-15, -20]);
          }
       },
 
       watch: {
+         page() {
+            this.$store.dispatch('fetchRegistrationMarks', `?page=${this.page}`);
+
+            this.$router.push({
+               query: { filters: `?page=${this.page}` }
+            })
+         },
          form: {
             handler() {
+               // Нужно поменять этот алгоритм! Сделать по быстрому! ---------------------------
                let queryArray = [],
                    query;
 
-               if (this.form.page) queryArray.push(`?page=${this.form.page}`);
+               this.page = 1;
+               queryArray.push(`?page=1`);
 
                if (this.form.region) {
                   queryArray.push(`&region=${this.form.region}`);
@@ -282,11 +291,14 @@
                })
             },
             deep: true
+            // Нужно поменять этот алгоритм! Сделать по быстрому! ---------------------------
          },
       },
 
       mounted() {
          this.$route.query?.filters?.split('&').forEach(query => {
+            this.page = Number(query.split('=')[1]);
+
             for (const item in this.form) {
                if (query.split('=')[0] === item) {
                   if (item === 'region_id' || item === 'currency') {
