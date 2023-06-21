@@ -2,7 +2,6 @@
    <div class="pages-dashboard pt-2 pt-lg-5 mb-5 pb-5">
       <div class="container d-flex flex-wrap">
          <breadcrumbs :crumbs="crumbs" />
-<!--         <pre>{{$auth.user.autosalon}}</pre>-->
 <!--         <pre>{{positions}}</pre>-->
          <template v-for="(item, index) in garageServices">
             <div class="col-12 col-lg-4 mb-2 mb-xl-3" :key="index" v-if="item.isAvailable">
@@ -17,13 +16,16 @@
    import EServiceCard from '~/components/eservices/EServiceCard.vue'
 
    export default {
-      components: {EServiceCard},
+      components: { EServiceCard },
+
       middleware: ['auth_general'],
+
       head() {
          return this.$headMeta({
             title: this.$t('garage_services'),
          })
       },
+
       async asyncData({$axios}) {
          const data = await $axios.$get('/garage-positions')
 
@@ -31,6 +33,7 @@
             positions: data
          }
       },
+
       computed: {
          crumbs() {
             return [{name: this.$t('garage_services')}]
@@ -251,14 +254,28 @@
                   isAvailable: !!this.$auth.user.can_be_autosalon,
                   actionName: `${this.$t('get_package')}`,
                },
+               {
+                  type: 16,
+                  title: this.$t('eservices'),
+                  description: null,
+                  value: null,
+                  icon: 'globe',
+                  url: '/e-services',
+                  hasAction: true,
+                  image: 'globe',
+                  isAvailable: true,
+                  // actionName: `${this.$t('get_package')}`,
+               },
             ]
          },
+
          garageServices() {
             return this.positions.map(item => {
                return this.garageServiceList.find(g_item => g_item.type === item.type) || {}
             })
          },
       },
+
       nuxtI18n: {
          paths: {
             az: '/qaraj-xidmetleri',
