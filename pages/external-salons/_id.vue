@@ -1,9 +1,9 @@
 <template>
    <div class="pages-salons-id">
       <div class="container">
-         <breadcrumbs :crumbs="crumbs"/>
+<!--         <breadcrumbs :crumbs="crumbs"/>-->
 
-         <salon-inner/>
+         <salon-inner />
       </div>
    </div>
 </template>

@@ -505,7 +505,7 @@ export default {
    "contact_number": "Номер моб. телефона",
    "contact_phones": "Контактные телефоны",
    "contact_us": "Связаться с нами",
-   "send_an_application": "Отправить заявку",
+   "send_an_application": "Отправить обращение",
    "title_application": "Тип обращения",
    "content_component_error_block": "Добавьте минимум один блок",
    "content_component_error_heading": "Заполните заголовок",

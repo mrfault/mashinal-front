@@ -331,19 +331,29 @@
    }
 
    .breadcrumbs {
-      color: $grey-5;
 
-      ul li {
-         a {
-            color: $grey-5;
 
-            &:hover {
-               color: $yellow-1;
+      ul {
+         li {
+            color: $white-2-new;
+
+            a {
+               color: $white-2-new;
+
+               &:hover {
+                  color: $yellow-1;
+               }
             }
-         }
 
-         &.active {
-            color: $white;
+            .icon-chevron-right {
+               &:before {
+                  color: $white-2-new;
+               }
+            }
+
+            //&.active {
+            //   color: $white;
+            //}
          }
       }
 
@@ -726,6 +736,12 @@
 
          .icon-chevron-down {
             &:before {
+               color: $grey-5-new;
+            }
+         }
+
+         &.selected {
+            .text {
                color: $grey-5-new;
             }
          }

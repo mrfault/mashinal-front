@@ -86,7 +86,7 @@ export default {
       ...mapActions(['updateSalonsFiltered', 'updateSalonsFilters']),
 
       filterAutosalons(runOnMobile = false) {
-         if (this.isMobileBreakpoint && !runOnMobile) return;
+         // if (this.isMobileBreakpoint && !runOnMobile) return;
          this.updateSalonsFilters({...this.form});
          let list = this.salonsSearched.filter((salon) => {
             let matches = true;

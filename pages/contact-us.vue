@@ -160,6 +160,7 @@
                await this.$axios.$post('/save_mail', this.form);
                this.pending = false;
                this.form.email = '';
+               this.form.type = '';
                this.form.message = '';
                this.form.phone = '';
                this.$v.$reset();

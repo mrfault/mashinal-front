@@ -102,73 +102,73 @@
          </div>
       </template>
 
-      <div
-         :class="`map-${isMobileBreakpoint ? 'fh' : 'fw'}-container`"
-         v-show="mapView"
-      >
-         <template v-if="!isMobileBreakpoint">
-            <template v-if="mapView">
-               <!-- ././././././././././ -->
-               <!-- ././././././././././ -->
-               <!-- ././././././././././ -->
-               <!-- ././././././././././ -->
-               <div
-                  :class="['map-sidebar', { collapse: !disableCollapse && collapse }]"
-               >
-                  <div class="map-sidebar_content">
-                     <breadcrumbs :crumbs="crumbs"/>
-                     <salon-filters-form
-                        :count="salonsInView.length"
-                        :short="!isMobileBreakpoint"
-                     />
-                     <div class="salon-card-list" v-if="salonsInView.length">
-                        <div class="salon-card-list__item" v-for="salon in salonsInView" :key="salon.id">
-                           <nuxt-link
-                              class="keep-colors"
-                              :to="$localePath(`/external-salons/${salon.slug}`)"
-                           >
-                              <salon-card :salon="salon"/>
-                           </nuxt-link>
-                        </div>
-                     </div>
-                     <no-results v-else/>
-                  </div>
-                  <!-- ././././././././././ -->
-                  <!-- ././././././././././ -->
-                  <!-- ././././././././././ -->
-                  <!-- ././././././././././ -->
-                  <div
-                     class="map-sidebar_toggle"
-                     @click="collapse = !collapse"
-                     v-if="!disableCollapse"
-                  >
-                     <icon :name="collapse ? 'chevron-right' : 'chevron-left'"/>
-                  </div>
-               </div>
+<!--      <div-->
+<!--         :class="`map-${isMobileBreakpoint ? 'fh' : 'fw'}-container`"-->
+<!--         v-show="mapView"-->
+<!--      >-->
+<!--         <template v-if="!isMobileBreakpoint">-->
+<!--            <template v-if="mapView">-->
+<!--               &lt;!&ndash; ././././././././././ &ndash;&gt;-->
+<!--               &lt;!&ndash; ././././././././././ &ndash;&gt;-->
+<!--               &lt;!&ndash; ././././././././././ &ndash;&gt;-->
+<!--               &lt;!&ndash; ././././././././././ &ndash;&gt;-->
+<!--               <div-->
+<!--                  :class="['map-sidebar', { collapse: !disableCollapse && collapse }]"-->
+<!--               >-->
+<!--                  <div class="map-sidebar_content">-->
+<!--                     <breadcrumbs :crumbs="crumbs"/>-->
+<!--                     <salon-filters-form-->
+<!--                        :count="salonsInView.length"-->
+<!--                        :short="!isMobileBreakpoint"-->
+<!--                     />-->
+<!--                     <div class="salon-card-list" v-if="salonsInView.length">-->
+<!--                        <div class="salon-card-list__item" v-for="salon in salonsInView" :key="salon.id">-->
+<!--                           <nuxt-link-->
+<!--                              class="keep-colors"-->
+<!--                              :to="$localePath(`/external-salons/${salon.slug}`)"-->
+<!--                           >-->
+<!--                              <salon-card :salon="salon"/>-->
+<!--                           </nuxt-link>-->
+<!--                        </div>-->
+<!--                     </div>-->
+<!--                     <no-results v-else/>-->
+<!--                  </div>-->
+<!--                  &lt;!&ndash; ././././././././././ &ndash;&gt;-->
+<!--                  &lt;!&ndash; ././././././././././ &ndash;&gt;-->
+<!--                  &lt;!&ndash; ././././././././././ &ndash;&gt;-->
+<!--                  &lt;!&ndash; ././././././././././ &ndash;&gt;-->
+<!--                  <div-->
+<!--                     class="map-sidebar_toggle"-->
+<!--                     @click="collapse = !collapse"-->
+<!--                     v-if="!disableCollapse"-->
+<!--                  >-->
+<!--                     <icon :name="collapse ? 'chevron-right' : 'chevron-left'"/>-->
+<!--                  </div>-->
+<!--               </div>-->
 
-               <div class="map-topbar">
-                  <div class="container">
-                     <salon-search-form
-                        :short="!isMobileBreakpoint && (!collapse || disableCollapse)"
-                     />
-                  </div>
-               </div>
-            </template>
-            <clustered-map
-               :key="'desktop-map_' + mapKey"
-               :margin-left="{ left: 0, top: 0, width: '360px', height: '100%' }"
-               :margin-top="{ top: 0, left: 0, width: '100%', height: '150px' }"
-               :use-margin-left="!disableCollapse && !collapse"
-               @balloon-click="$router.push($localePath(`/external-salons/${$event}`))"
-            />
-         </template>
-         <template v-else>
-            <clustered-map
-               :key="'mobile-map_' + mapKey"
-               @balloon-click="$router.push($localePath(`/external-salons/${$event}`))"
-            />
-         </template>
-      </div>
+<!--               <div class="map-topbar">-->
+<!--                  <div class="container">-->
+<!--                     <salon-search-form-->
+<!--                        :short="!isMobileBreakpoint && (!collapse || disableCollapse)"-->
+<!--                     />-->
+<!--                  </div>-->
+<!--               </div>-->
+<!--            </template>-->
+<!--            <clustered-map-->
+<!--               :key="'desktop-map_' + mapKey"-->
+<!--               :margin-left="{ left: 0, top: 0, width: '360px', height: '100%' }"-->
+<!--               :margin-top="{ top: 0, left: 0, width: '100%', height: '150px' }"-->
+<!--               :use-margin-left="!disableCollapse && !collapse"-->
+<!--               @balloon-click="$router.push($localePath(`/external-salons/${$event}`))"-->
+<!--            />-->
+<!--         </template>-->
+<!--         <template v-else>-->
+<!--            <clustered-map-->
+<!--               :key="'mobile-map_' + mapKey"-->
+<!--               @balloon-click="$router.push($localePath(`/external-salons/${$event}`))"-->
+<!--            />-->
+<!--         </template>-->
+<!--      </div>-->
    </div>
 </template>
 

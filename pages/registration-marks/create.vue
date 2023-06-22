@@ -150,7 +150,7 @@
 
       mixins: [PaymentMixin],
 
-      middleware: ['auth_general'],
+      middleware: ['sell_tokens'],
 
       data() {
          return {
