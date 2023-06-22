@@ -755,7 +755,7 @@
    }
 
    .salon-card {
-      border-color: $white;
+      //border-color: $white;
       .salon-logo {
          border-color: #697586;
       }
@@ -796,6 +796,14 @@
                   color: $white-2-new;
                }
             }
+         }
+      }
+   }
+
+   .pages-salons {
+      &.autosalon {
+         .salon-card {
+            border-color: $grey-2-new;
          }
       }
    }

@@ -38,6 +38,7 @@
                         :clear-option="false"
                         :new-label="false"
                         :searchInputLength="1"
+                        :inputSearchType="'text'"
                         v-model="form.serial_letter1"
                         has-search
                      />
@@ -49,6 +50,7 @@
                         :clear-option="false"
                         :new-label="false"
                         :searchInputLength="1"
+                        :inputSearchType="'text'"
                         v-model="form.serial_letter2"
                         has-search
                      />

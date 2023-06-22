@@ -37,9 +37,10 @@
                         <form-select
                            :label="$t('engine_type')"
                            :options="engineTypes"
-                           v-model="filled.engineType"
-                           :invalid="$v.filled.engineType.$error"
+                           :clear-placeholder="true"
                            :clearOption="false"
+                           :invalid="$v.filled.engineType.$error"
+                           v-model="filled.engineType"
                         />
                      </div>
 
@@ -49,6 +50,7 @@
                            :options="hybridEngineTypes"
                            v-model="filled.hybridEngineType"
                            :invalid="$v.filled.hybridEngineType.$error"
+                           :clear-placeholder="true"
                            :clearOption="false"
                         />
                      </div>
@@ -59,6 +61,7 @@
                            :options="countries"
                            v-model="filled.producerCountry"
                            :invalid="$v.filled.producerCountry.$error"
+                           :clear-placeholder="true"
                            :clearOption="false"
                         />
                      </div>
@@ -69,6 +72,7 @@
                            :options="countries"
                            v-model="filled.senderCountry"
                            :invalid="$v.filled.senderCountry.$error"
+                           :clear-placeholder="true"
                            :clearOption="false"
                         />
                      </div>

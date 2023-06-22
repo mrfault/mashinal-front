@@ -37,11 +37,12 @@
                     <input
                        type="text"
                        ref="searchInput"
+                       :placeholder="inputPlaceholder"
                        :maxlength="searchInputLength"
                        v-model="search"
-                       :placeholder="inputPlaceholder"
-                       @click.stop
                        @keyup.enter="handleSearchSubmit"
+                       @input="handleInput"
+                       @click.stop
                     />
                   </span>
                </template>
@@ -430,6 +431,10 @@ export default {
          type: Number,
          default: 10,
       },
+      inputSearchType: {
+         type: String,
+         default: '',
+      },
       clearOptionText: String,
       clearOptionPullDown: Boolean,
       nameInValue: Boolean,
@@ -557,6 +562,13 @@ export default {
          const body = document.body
          //body.classList.remove('ma-stop-scroll')
       },
+      handleInput() {
+         if (this.inputSearchType === 'text') {
+            this.search = this.search.replace(/[^a-zA-Z]/g, '');
+         } else if (this.inputSearchType === 'number') {
+            this.search = this.search.replace(/\D/g, '');
+         }
+      }
    },
    computed: {
       selectValue: {
@@ -727,7 +739,7 @@ export default {
                maxHeight: this.isMobileBreakpoint ? undefined : 260,
             },
          }
-      },
+      }
    },
    watch: {
       breakpoint() {
@@ -799,7 +811,3 @@ export default {
    },
 }
 </script>
-
-<style lang="scss" scoped>
-
-</style>

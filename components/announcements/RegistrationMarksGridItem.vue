@@ -287,7 +287,7 @@
 
    @media (max-width: 1150px) {
       .registrationMarksGridItem {
-         width: 220px;
+         width: 217px;
 
          &__head {
             h3 {
