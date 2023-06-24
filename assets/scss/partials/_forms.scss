@@ -856,8 +856,10 @@ input::-webkit-inner-spin-button {
       //}
    }
 
-   &.invalid &_label:not(.active) {
-      color: $red-1;
+   &.invalid {
+      .select-menu_label {
+         border-color: $red-new;
+      }
    }
 }
 

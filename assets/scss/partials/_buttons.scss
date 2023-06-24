@@ -393,6 +393,10 @@
       @include btn-style($bg-color: $grey-10, $bg-hover: $grey-8);
    }
 
+   &--grey-new {
+      @include btn-style($bg-color: $grey-1-new, $bg-hover: $grey-4-new, $color: $dark-light-new);
+   }
+
    &--grey-outline {
       @include btn-style($bg-color: $grey-8, $bg-hover: $grey-8, $outline: true);
    }
@@ -551,6 +555,10 @@
             $outline: true,
             $override: false
          );
+      }
+
+      &--grey-new {
+         @include btn-style($bg-color: $grey-3-new, $bg-hover: $grey-4-new, $color: $white-2-new, $border-color: $grey-4-new);
       }
    }
 }

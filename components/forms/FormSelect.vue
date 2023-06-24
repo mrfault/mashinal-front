@@ -1,6 +1,6 @@
 <template>
    <div :class="['form-group', className]">
-      <div :class="['select-menu', { 'no-bg': hasNoBg, invalid, wider }]">
+      <div :class="['select-menu', { 'no-bg': hasNoBg, wider, 'invalid' : invalid }]">
          <span
             :class="[
              'select-menu_label',

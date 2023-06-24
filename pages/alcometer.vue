@@ -6,220 +6,178 @@
          </breadcrumbs>
 
          <div class="row">
-            <div class="col-5">
-               <div class="alco-form" >
-                  <!--            :class="{ 'mb-5': !showGraphs }"-->
-                  <h2 class="title-with-line full-width my-2 d-lg-none">
+            <div class="col-12 col-md-5 mb-5 mb-md-0">
+               <div class="alco-form dropdowns">
+                  <h2 class="alco-form__title mb-5">
                      <span>{{ $t('alcometer') }}</span>
                   </h2>
 
-                  <div class="form-items row">
-                     <div class="col-lg-4" id="drink1">
-                        <div class="alc-logo d-flex justify-content-center flex-column align-items-center">
-                           <img src="/img/alco.svg"/>
-                           <span class="alco-num">1</span>
-                        </div>
-                        <div class="alc-inputs">
-                           <h4 class="alco-h4 pl-1 pr-1">{{ $t('drink_amount') }} (1)</h4>
-                           <div class="d-flex">
-                              <form-select
-                                 class="col-6"
-                                 v-model="form.drinkType1"
-                                 :options="drinkTypes"
-                                 :label="$t('drink_type')"
-                                 :clearOption="false"
-                                 :allowClear="false"
-                                 :invalid="$v.form.drinkType1.$error"
-                              />
+                  <form-select
+                     v-model="form.drinkType1"
+                     :options="drinkTypes"
+                     :label="$t('drink_type')"
+                     :clearOption="false"
+                     :allowClear="false"
+                     :invalid="$v.form.drinkType1.$error"
+                  />
 
-                              <form-select
-                                 class="col-6"
-                                 v-model="form.drinkValue1"
-                                 :options="drinkAmounts"
-                                 :label="$t('amount_of_ml')"
-                                 :clearOption="false"
-                                 :disabled="disabledDrinkValue1"
-                                 :allowClear="false"
-                                 :invalid="$v.form.drinkValue1.$error && !disabledDrinkValue1"
-                              />
-                           </div>
-                        </div>
-                     </div>
-                     <div class="col-lg-4" id="drink2">
-                        <div
-                           class="alc-logo d-flex justify-content-center flex-column align-items-center"
-                        >
-                           <img src="/img/alco.svg"/>
-                           <span class="alco-num">2</span>
-                        </div>
-                        <div class="alc-inputs">
-                           <h4 class="alco-h4 pl-1 pr-1">{{ $t('drink_amount') }} (2)</h4>
-                           <div class="d-flex">
-                              <form-select
-                                 class="col-6"
-                                 v-model="form.drinkType2"
-                                 :options="drinkTypes"
-                                 :label="$t('drink_type')"
-                                 :clearOption="false"
-                                 :disabled="
-                 form.drinkType1 == null ||
-                 form.drinkType1 == '' ||
-                 form.drinkValue1 == null ||
-                 form.drinkValue1 == ''
-               "
-                                 :allowClear="form.drinkType3 == null || form.drinkType3 == ''"
-                                 :showLabelOnSelect="false"
-                              />
-                              <form-select
-                                 class="col-6"
-                                 v-model="form.drinkValue2"
-                                 :options="drinkAmounts"
-                                 :label="$t('amount_of_ml')"
-                                 :clearOption="false"
-                                 :disabled="disabledDrinkValue2"
-                                 :allowClear="false"
-                                 :invalid="$v.form.drinkValue2.$error && !disabledDrinkValue2"
-                                 :showLabelOnSelect="false"
-                              />
-                           </div>
-                        </div>
-                     </div>
-                     <div class="col-lg-4" id="drink3">
-                        <div
-                           class="alc-logo d-flex justify-content-center flex-column align-items-center"
-                        >
-                           <img src="/img/alco.svg"/>
-                           <span class="alco-num">3</span>
-                        </div>
-                        <div class="alc-inputs">
-                           <h4 class="alco-h4 pl-1 pr-1">{{ $t('drink_amount') }} (3)</h4>
-                           <div class="d-flex">
-                              <form-select
-                                 class="col-6"
-                                 v-model="form.drinkType3"
-                                 :options="drinkTypes"
-                                 :label="$t('drink_type')"
-                                 :clearOption="false"
-                                 :disabled="
-                 form.drinkType2 == null ||
-                 form.drinkType2 == '' ||
-                 form.drinkValue2 == null ||
-                 form.drinkValue2 == ''
-               "
-                                 :showLabelOnSelect="false"
-                              />
-                              <form-select
-                                 class="col-6"
-                                 v-model="form.drinkValue3"
-                                 :options="drinkAmounts"
-                                 :label="$t('amount_of_ml')"
-                                 :allowClear="false"
-                                 :clearOption="false"
-                                 :disabled="disabledDrinkValue3"
-                                 :invalid="$v.form.drinkValue3.$error && !disabledDrinkValue3"
-                                 :showLabelOnSelect="false"
-                              />
-                           </div>
-                        </div>
-                     </div>
+                  <form-select
+                     v-model="form.drinkValue1"
+                     :options="drinkAmounts"
+                     :label="$t('amount_of_ml')"
+                     :clearOption="false"
+                     :disabled="disabledDrinkValue1"
+                     :allowClear="false"
+                     :invalid="$v.form.drinkValue1.$error && !disabledDrinkValue1"
+                  />
+
+                  <template v-if="drinksCount > 1">
+                     <form-select
+                        v-model="form.drinkType2"
+                        :options="drinkTypes"
+                        :label="$t('drink_type')"
+                        :clearOption="false"
+                        :disabled="
+                          form.drinkType1 == null ||
+                          form.drinkType1 == '' ||
+                          form.drinkValue1 == null ||
+                          form.drinkValue1 == ''
+                        "
+                        :allowClear="form.drinkType3 == null || form.drinkType3 == ''"
+                        :showLabelOnSelect="false"
+                     />
+
+                     <form-select
+                        v-model="form.drinkValue2"
+                        :options="drinkAmounts"
+                        :label="$t('amount_of_ml')"
+                        :clearOption="false"
+                        :disabled="disabledDrinkValue2"
+                        :allowClear="false"
+                        :invalid="$v.form.drinkValue2.$error && !disabledDrinkValue2"
+                        :showLabelOnSelect="false"
+                     />
+                  </template>
+
+                  <template v-if="drinksCount > 2">
+                     <form-select
+                        v-model="form.drinkType3"
+                        :options="drinkTypes"
+                        :label="$t('drink_type')"
+                        :clearOption="false"
+                        :disabled="
+                       form.drinkType2 == null ||
+                       form.drinkType2 == '' ||
+                       form.drinkValue2 == null ||
+                       form.drinkValue2 == ''
+                     "
+                        :showLabelOnSelect="false"
+                     />
+
+                     <form-select
+                        v-model="form.drinkValue3"
+                        :options="drinkAmounts"
+                        :label="$t('amount_of_ml')"
+                        :allowClear="false"
+                        :clearOption="false"
+                        :disabled="disabledDrinkValue3"
+                        :invalid="$v.form.drinkValue3.$error && !disabledDrinkValue3"
+                        :showLabelOnSelect="false"
+                     />
+                  </template>
+
+                  <div class="row mt-3">
+                     <form-select
+                        class="col-6"
+                        v-model="form.gender"
+                        :options="genders"
+                        :label="$t('your_gender')"
+                        :allowClear="false"
+                        :clearOption="false"
+                        :showLabelOnSelect="false"
+                        :invalid="$v.form.gender.$error"
+                     />
+
+                     <form-select
+                        class="col-6 mt-0"
+                        v-model="form.mass"
+                        :options="massOptions"
+                        :allow-clear="false"
+                        :label="$t('your_weight')"
+                        :clear-option="false"
+                        :invalid="$v.form.mass.$error"
+                     />
                   </div>
 
-                  <div class="form-item row">
-                     <div class="col-lg-4">
-                        <div class="mx-1 mt-3">
-                           <h4 class="alco-h4 pr-1">{{ $t('your_gender') }}:</h4>
-                           <form-switch
-                              class="gender-switcher text-transform-normal"
-                              v-model="form.gender"
-                              :options="genders"
-                              :allowClear="false"
-                           />
-                        </div>
-                     </div>
-                     <div class="col-lg-4">
-                        <div class="mx-1 mt-3">
-                           <h4 class="alco-h4 pr-1">{{ $t('your_weight') }}:</h4>
-                           <form-select
-                              class=""
-                              v-model="form.mass"
-                              :options="massOptions"
-                              :allow-clear="false"
-                              :label="$t('weight')"
-                              :clear-option="false"
-                           />
-                        </div>
-                     </div>
-                     <div class="col-lg-4">
-                        <div class="mx-1 mt-3">
-                           <h4 class="alco-h4 pr-1">{{ $t('how_many_hours_passed') }}?</h4>
-                           <form-select
-                              v-model="form.time"
-                              :options="hours"
-                              :label="$t('hour')"
-                              :allowClear="false"
-                              :clear-option="false"
-                           />
-                        </div>
-                     </div>
-                  </div>
+                  <form-select
+                     v-model="form.time"
+                     :options="hours"
+                     :label="$t('hour_2')"
+                     :allowClear="false"
+                     :clear-option="false"
+                     :invalid="$v.form.time.$error"
+                  />
 
-                  <div class="submit-button mt-3 d-flex justify-content-end mr-1 pb-2">
-                     <button class="btn btn--green" @click="submit()">
-                        {{ $t('when_may_i_can_drive') }}?
-                     </button>
-                  </div>
+                  <button class="btn btn--grey-new full-width mt-3" @click="showDrinks" v-if="drinksCount < 3">
+                     {{ $t('add_another_drink') }}
+                     <span>+</span>
+                  </button>
+
+                  <button class="btn btn--pale-green-outline full-width mt-3" @click="submit()">
+                     {{ $t('when_may_i_can_drive') }}
+                  </button>
                </div>
             </div>
 
-            <div class="col-7">
+            <div class="col-12 col-md-7">
                <!-- results -->
-               <div class="alco-form" v-show="showGraphs">
-                  <div class="row">
-                     <div class="col-12 col-lg-5">
-                        <div class="ma-alco-card__bottom">
-                           <h3 class="ma-alcometer-title-dotted">
-                              {{ $t('indications_of_breathalyzer') }}
-                           </h3>
-                           <div class="ma-alco-card__bottom--body">
-                              <alcometer-promil
-                                 :promilValue="parseFloat(concentrProm)"
-                                 :isRussian="isRussian"
-                              ></alcometer-promil>
-                              <h3 class="ma-alco-card__bottom--body--desc">
-                                 {{ $t('alcohol_concentration') }}:
-                              </h3>
-                              <h3 class="ma-alco-card__bottom--body--value">
-                                 {{ concentration }}
-                              </h3>
-                              <h3 class="ma-alco-card__bottom--body--desc">
-                                 {{ $t('milligrams_per_liter_of_inhaled_air') }}
-                              </h3>
-                           </div>
-                        </div>
-                     </div>
+               <div class="alco-form info" v-show="!showGraphs">
+                  <img
+                     class="alco-form__img d-none d-sm-block"
+                     :src="`/images/${isDarkMode ? 'alcometer_img_dark': 'alcometer_img'}.png`"
+                     alt="alcometer_img"
+                  >
 
-                     <div class="col-12 col-lg-7" id="alcometerResult">
-                        <div class="ma-alco-card__bottom">
-                           <h3 class="ma-alcometer-title-dotted">
-                              {{ $t('degree_of_intoxication') }}
-                           </h3>
-                           <div class="ma-alco-card__bottom--body">
-                              <alcometer-speedometer
-                                 :speedometerValue="diagValue"
-                                 :isRussian="isRussian"
-                              ></alcometer-speedometer>
-                              <h3 class="ma-alco-card__bottom--body--desc">
-                                 {{ $t('may_drive') }}:
-                              </h3>
-                              <h3 class="ma-alco-card__bottom--body--value">
-                                 {{ timeToDrive }}
-                              </h3>
-                              <h3 class="ma-alco-card__bottom--body--desc">
-                                 {{ $t('after_hours') }}
-                              </h3>
-                           </div>
-                        </div>
-                     </div>
+                  <h5 class="d-sm-none">{{ $t('customs_info_title') }}</h5>
+
+                  <div class="alco-form__description">
+                     <inline-svg :src="'/icons/info.svg'" />
+                     <p>{{ $t('alcometer_descr') }}</p>
+                  </div>
+               </div>
+
+               <div class="alco-form result" v-show="showGraphs">
+                  <div class="ma-alco-card">
+                     <alcometer-speedometer
+                        :speedometerValue="diagValue"
+                        :isRussian="isRussian"
+                     />
+
+                     <ul class="ma-alco-card__list">
+                        <li class="ma-alco-card__list-item">
+                           <h5>{{ $t('may_drive') }}</h5>
+
+                           <p>{{ timeToDrive }} {{ $t('after_hours') }}</p>
+                        </li>
+
+                        <li class="ma-alco-card__list-item">
+                           <h5>
+                              {{ $t('indications_of_breathalyzer') }}
+                              <inline-svg :src="'/icons/info.svg'" />
+                           </h5>
+
+                           <p>{{ parseFloat(concentrProm) }} {{ $t('promil') }}</p>
+                        </li>
+
+                        <li class="ma-alco-card__list-item">
+                           <h5>
+                              {{ $t('alcohol_concentration') }}.
+                              <inline-svg :src="'/icons/info.svg'" />
+                           </h5>
+
+                           <p>{{ concentration }} {{ $t('milligram') }}</p>
+                        </li>
+                     </ul>
                   </div>
                </div>
             </div>
@@ -247,6 +205,7 @@
 
       data() {
          return {
+            drinksCount: 1,
             showInterior: true,
             crumbs: [
                { name: this.$t('eservices2'), route: '/e-services' },
@@ -478,9 +437,9 @@
             concentration: 0,
             concentrProm: 0,
             form: {
-               gender: 'm',
-               mass: 40,
-               time: 0,
+               gender: '',
+               mass: '',
+               time: null,
                drinkValue1: null,
                drinkType1: null,
                drinkValue2: null,
@@ -500,7 +459,7 @@
 
       validations: {
          form: {
-            drinkType1: {required},
+            drinkType1: { required },
             drinkValue1: {
                required: requiredIf(function () {
                   if (this.form.drinkType1 !== null || this.form.drinkType1 !== '') {
@@ -518,6 +477,9 @@
                   return this.form.drinkType3
                }),
             },
+            gender: { required },
+            mass: { required },
+            time: { required }
          },
       },
 
@@ -556,6 +518,10 @@
       },
 
       methods: {
+         showDrinks() {
+            this.drinksCount ++;
+         },
+
          calculate() {
             this.showGraphs = true
             try {
@@ -609,20 +575,20 @@
                this.timeToDrive = rul
                //if (Cor > 8) f.rul.value = f.rul.value + '';
 
-               if (this.showGraphs && !this.isMobileBreakpoint) {
-                  setTimeout(() => {
-                     window.scrollTo({top: 500, behavior: 'smooth'})
-                  }, 1000)
-               } else if (this.showGraphs && this.isMobileBreakpoint) {
-                  setTimeout(() => {
-                     window.scrollTo({top: 2500, behavior: 'smooth'})
-                     // window.scrollTo({ top: 1200, behavior: 'smooth' })
-                     // window.location.href = '#alcometerResult'
-                     // document.querySelector(this.getAttribute('href')).scrollIntoView({
-                     //   behavior: 'smooth',
-                     // })
-                  }, 1000)
-               }
+               // if (this.showGraphs && !this.isMobileBreakpoint) {
+               //    setTimeout(() => {
+               //       window.scrollTo({top: 500, behavior: 'smooth'})
+               //    }, 1000)
+               // } else if (this.showGraphs && this.isMobileBreakpoint) {
+               //    setTimeout(() => {
+               //       window.scrollTo({top: 2500, behavior: 'smooth'})
+               //       // window.scrollTo({ top: 1200, behavior: 'smooth' })
+               //       // window.location.href = '#alcometerResult'
+               //       // document.querySelector(this.getAttribute('href')).scrollIntoView({
+               //       //   behavior: 'smooth',
+               //       // })
+               //    }, 1000)
+               // }
             } catch (error) {
                this.$toasted.error(this.$t('info_is_not_correct'))
             }
@@ -643,12 +609,17 @@
          },
 
          submit() {
-            this.$v.$touch()
-            if (this.$v.$error) {
-               this.scrollIntoError()
-            } else {
-               this.calculate()
-            }
+            this.$v.form.$touch();
+            if (this.$v.$invalid) return;
+
+            this.calculate();
+
+            // this.$v.$touch();
+            // if (this.$v.$error) {
+            //    this.scrollIntoError()
+            // } else {
+            //    this.calculate()
+            // }
          },
 
          scrollIntoError() {
@@ -722,25 +693,426 @@
 </script>
 
 <style lang="scss">
-   .gender-switcher {
-      width: 100% !important;
+   .alcometer-page {
+      .alco-form {
+         height: 100%;
+         padding: 32px;
+         border-radius: 12px;
+         background-color: #FFFFFF;
 
-      .form-switch {
-         text-transform: normal !important;
+         &__title {
+            font-weight: 700;
+            font-size: 28px;
+            line-height: 32px;
+            color: #121926;
+         }
 
-         button {
-            width: calc(50% - 2px) !important;
-            text-align: center;
-            text-transform: normal !important;
+         &__img {
+            width: 80%;
+            margin: 52px auto 0 auto;
+         }
+
+         &__description {
+            display: flex;
+            align-items: center;
+            //margin-top: 104px;
+
+            svg {
+               min-width: 22px;
+               height: 22px;
+            }
+
+            p {
+               font-weight: 400;
+               font-size: 15px;
+               line-height: 22px;
+               color: #4B5565;
+               margin-left: 11px;
+            }
+         }
+
+         h5 {
+            font-weight: 600;
+            font-size: 24px;
+            line-height: 28px;
+            color: #1B2434;
+            margin-bottom: 16px;
+         }
+
+         .form-group {
+            &:not(:first-child) {
+               margin-top: 20px;
+            }
+         }
+
+         .btn {
+            height: 52px;
+
+            span {
+               font-size: 30px;
+               font-weight: 300;
+               margin-top: -5px;
+               margin-left: 10px;
+            }
+         }
+
+         &.info {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 32px 22px 22px;
+         }
+      }
+
+      .ma-alco-card {
+         display: flex;
+         flex-direction: column;
+         justify-content: space-between;
+         height: 100%;
+
+         &__list {
+            display: flex;
+            justify-content: space-between;
+
+            &-item {
+               padding: 18px 16px;
+               border-radius: 12px;
+               background-color: #EEF2F6;
+
+               &:first-child {
+                  background-color: #D1FADF;
+
+                  p {
+                     font-weight: 600;
+                     color: #039855;
+                  }
+               }
+
+               h5 {
+                  display: flex;
+                  align-items: center;
+                  white-space: nowrap;
+                  font-weight: 400;
+                  font-size: 14px;
+                  line-height: 16px;
+                  color: #364152;
+                  height: 24px;
+                  margin-bottom: 4px;
+
+                  svg {
+                     min-width: 20px;
+                     max-width: 20px;
+                     margin-left: 7px;
+                     cursor: pointer;
+                  }
+               }
+
+               p {
+                  font-weight: 500;
+                  font-size: 18px;
+                  line-height: 22px;
+                  color: #121926;
+               }
+            }
          }
       }
    }
 
-   .text-transform-normal button {
-      text-transform: initial !important;
+   .dark-mode {
+      .alcometer-page {
+         .alco-form {
+            background-color: #1b2434;
+
+            &__title, h5 {
+               color: #eef2f6;
+            }
+
+            &__description {
+               svg {
+                  path {
+                     fill: #697586;
+                  }
+               }
+            }
+
+            p {
+               color: #9AA4B2;
+            }
+         }
+
+         .ma-alco-card {
+            &__list {
+               &-item {
+                  background-color: #364152;
+
+                  &:first-child {
+                     background-color: rgba(5, 96, 58, 0.5);
+
+                     h5 {
+                        color: #12B76A;
+                     }
+
+                     p {
+                        color: #32D583;
+                     }
+                  }
+
+                  h5 {
+                     color: #9AA4B2;
+                  }
+
+                  p {
+                     color: #EEF2F6;
+                  }
+
+                  svg {
+                     path {
+                        fill: #9AA4B2;
+                     }
+                  }
+               }
+            }
+         }
+
+         .ma-alcometer__graph {
+            .speedometer-division {
+               path {
+                  fill: #4B5565;
+               }
+            }
+
+            .ma-speedometer-arrow {
+               svg {
+                  g {
+                     fill: #9AA4B2;
+                  }
+               }
+            }
+         }
+
+         .ma-alcometer__promil--title {
+            fill: #E3E8EF;
+         }
+
+         .ma-alcometer__promil--text {
+            fill: #FFFFFF;
+         }
+      }
    }
 
-   .border-red {
-      border: 1px solid red;
+   @media (max-width: 1150px) {
+      .alcometer-page {
+         .ma-alcometer__graph {
+            .ma-speedometer-arrow {
+               bottom: 30px;
+            }
+         }
+
+         .ma-alco-card {
+            &__list {
+               margin-top: 50px;
+               flex-wrap: wrap;
+
+               &-item {
+                  width: 48%;
+
+                  &:first-child {
+                     width: 100%;
+                     text-align: center;
+                     margin-bottom: 20px;
+                  }
+               }
+            }
+         }
+      }
+   }
+
+   @media (max-width: 992px) {
+      .alcometer-page {
+         .alco-form {
+            &__img {
+               margin-top: 0;
+               margin-bottom: 80px;
+            }
+         }
+      }
+   }
+
+   @media (max-width: 600px) {
+      .alcometer-page {
+         .alco-form {
+            &__title {
+               font-weight: 600;
+               font-size: 24px;
+               line-height: 28px;
+            }
+
+            &__description {
+               margin-top: 0;
+
+               svg {
+                  display: none;
+               }
+
+               p {
+                  margin-left: 0;
+               }
+            }
+
+            &.dropdowns {
+               padding: 10px 0 0;
+               background-color: transparent;
+            }
+
+            .btn--grey-new {
+               border-color: #9AA4B2;
+            }
+         }
+
+         .ma-alco-card {
+            &__list {
+               &-item {
+                  width: 47%;
+
+                  h5 {
+                     white-space: initial;
+                     margin-bottom: 8px;
+                  }
+               }
+            }
+         }
+      }
+   }
+
+   @media (max-width: 530px) {
+      .alcometer-page {
+         .ma-alcometer__graph {
+            margin-top: -30px;
+
+            .ma-speedometer-arrow {
+               bottom: 40px;
+
+               svg {
+                  width: 70pt;
+               }
+            }
+         }
+      }
+   }
+
+   @media (max-width: 500px) {
+      .alcometer-page {
+         .ma-alcometer__graph {
+            .ma-speedometer-arrow {
+               bottom: 50px;
+            }
+         }
+
+         .ma-alco-card {
+            &__list {
+               margin-top: 30px;
+            }
+         }
+      }
+   }
+
+   @media (max-width: 460px) {
+      .alcometer-page {
+         .alco-form {
+            &.result {
+               padding: 16px;
+            }
+         }
+
+         .ma-alcometer__graph {
+            .ma-speedometer-arrow {
+               bottom: 60px;
+            }
+         }
+
+         .ma-alco-card {
+            &__list {
+               margin-top: 20px;
+
+               &-item {
+                  padding: 16px;
+               }
+            }
+         }
+      }
+   }
+
+   @media (max-width: 430px) {
+      .alcometer-page {
+         .ma-alcometer__graph {
+            .ma-speedometer-arrow {
+               bottom: 65px;
+
+               svg {
+                  width: 65pt;
+               }
+            }
+         }
+
+         .ma-alco-card {
+            &__list {
+               margin-top: 10px;
+            }
+         }
+      }
+   }
+
+   @media (max-width: 400px) {
+      .alcometer-page {
+         .ma-alcometer__graph {
+            .ma-speedometer-arrow {
+               svg {
+                  width: 60pt;
+               }
+            }
+         }
+
+         .ma-alco-card {
+            &__list {
+               margin-top: 0;
+            }
+         }
+      }
+   }
+
+   @media (max-width: 375px) {
+      .alcometer-page {
+         .ma-alcometer__graph {
+            .ma-speedometer-arrow {
+               svg {
+                  width: 50pt;
+               }
+            }
+         }
+
+         .ma-alco-card {
+            &__list {
+               margin-top: -10px;
+            }
+         }
+      }
+   }
+
+   @media (max-width: 340px) {
+      .alcometer-page {
+         .ma-alcometer__graph {
+            .ma-speedometer-arrow {
+               svg {
+                  width: 45pt;
+               }
+            }
+         }
+
+         .ma-alco-card {
+            &__list {
+               margin-top: -20px;
+            }
+         }
+      }
    }
 </style>
