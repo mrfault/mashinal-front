@@ -138,6 +138,7 @@ export default {
    "agricultural": "Сельско-хозяйственные",
    "Airbags": "Подушки безопасности",
    "akkumulyatory": "Аккумуляторы",
+   "auto": "Авто",
    "akpp": "АКПП",
    "Alcantara": "Алькантара",
    "all": "Все",

@@ -1,107 +1,107 @@
 <template>
    <div class="pages-index">
       <!-- slider desktop -->
-      <div class="container p-0">
-         <client-only>
-            <div
-               v-swiper:gallerySwiper="swiperOps"
-               class="swiper-container swiper-container-desktop"
-            >
-               <div class="swiper-wrapper">
-                  <div
-                     v-for="(homePageSlider, index) in homePageSliders"
-                     :key="index"
-                     class="swiper-slide"
-                     @click="$router.push($localePath(homePageSlider.button_link))"
-                  >
-                     <div class="homePage-slide-item">
-                        <div
-                           v-if="homePageSlider.video"
-                           class="homePage-slide-item-left"
-                        >
-                           <video
-                              v-if="homePageSlider.video"
-                              id="sliderVideo"
-                              autoplay
-                              controls
-                              loop
-                              playsinline
-                              muted
-                              width="400">
-                              <source :src="homePageSlider.video" type="video/mp4">
-                           </video>
-                        </div>
-                        <div v-else class="homePage-slide-item-left">
-                           <img
-                              :src="
-                      isMobileBreakpoint
-                        ? `${homePageSlider.media.image[0]} 640w`
-                        : `${homePageSlider.media.image[1]} 1024w`
-                    "
-                              alt="mashinal cover image"
-                              sizes="(min-width: 36em) 33.3vw, 100vw"
-                           />
-                        </div>
-                        <div
-                           :style="
-                    !isDarkMode
-                      ? `background:${homePageSlider.overlay_color}`
-                      : ''
-                  "
-                           class="homePage-slide-item-right"
-                        >
-                           <div
-                              :style="` border-top: 600px solid ${
-                      !isDarkMode ? homePageSlider.overlay_color : '#D0DBF9'
-                    };`"
-                              class="before-slider-right"
-                           ></div>
-                           <div
-                              :style="!isMobileBreakpoint ? `margin-left: -150px;` : ''"
-                              class="homePage-text-section"
-                           >
-                              <div
-                                 class="homePage-text-section-title"
-                                 style="margin-left: -3px;"
-                              >
-                                 <!-- <img :src="homePageSlider.icon" /> -->
-                                 <img class="swiper-lazy"
-                                      :data-src="
-                          isDarkMode
-                            ? homePageSlider.icon_dark
-                            : homePageSlider.icon
-                        "/>
+<!--      <div class="container p-0">-->
+<!--         <client-only>-->
+<!--            <div-->
+<!--               v-swiper:gallerySwiper="swiperOps"-->
+<!--               class="swiper-container swiper-container-desktop"-->
+<!--            >-->
+<!--               <div class="swiper-wrapper">-->
+<!--                  <div-->
+<!--                     v-for="(homePageSlider, index) in homePageSliders"-->
+<!--                     :key="index"-->
+<!--                     class="swiper-slide"-->
+<!--                     @click="$router.push($localePath(homePageSlider.button_link))"-->
+<!--                  >-->
+<!--                     <div class="homePage-slide-item">-->
+<!--                        <div-->
+<!--                           v-if="homePageSlider.video"-->
+<!--                           class="homePage-slide-item-left"-->
+<!--                        >-->
+<!--                           <video-->
+<!--                              v-if="homePageSlider.video"-->
+<!--                              id="sliderVideo"-->
+<!--                              autoplay-->
+<!--                              controls-->
+<!--                              loop-->
+<!--                              playsinline-->
+<!--                              muted-->
+<!--                              width="400">-->
+<!--                              <source :src="homePageSlider.video" type="video/mp4">-->
+<!--                           </video>-->
+<!--                        </div>-->
+<!--                        <div v-else class="homePage-slide-item-left">-->
+<!--                           <img-->
+<!--                              :src="-->
+<!--                      isMobileBreakpoint-->
+<!--                        ? `${homePageSlider.media.image[0]} 640w`-->
+<!--                        : `${homePageSlider.media.image[1]} 1024w`-->
+<!--                    "-->
+<!--                              alt="mashinal cover image"-->
+<!--                              sizes="(min-width: 36em) 33.3vw, 100vw"-->
+<!--                           />-->
+<!--                        </div>-->
+<!--                        <div-->
+<!--                           :style="-->
+<!--                    !isDarkMode-->
+<!--                      ? `background:${homePageSlider.overlay_color}`-->
+<!--                      : ''-->
+<!--                  "-->
+<!--                           class="homePage-slide-item-right"-->
+<!--                        >-->
+<!--                           <div-->
+<!--                              :style="` border-top: 600px solid ${-->
+<!--                      !isDarkMode ? homePageSlider.overlay_color : '#D0DBF9'-->
+<!--                    };`"-->
+<!--                              class="before-slider-right"-->
+<!--                           ></div>-->
+<!--                           <div-->
+<!--                              :style="!isMobileBreakpoint ? `margin-left: -150px;` : ''"-->
+<!--                              class="homePage-text-section"-->
+<!--                           >-->
+<!--                              <div-->
+<!--                                 class="homePage-text-section-title"-->
+<!--                                 style="margin-left: -3px;"-->
+<!--                              >-->
+<!--                                 &lt;!&ndash; <img :src="homePageSlider.icon" /> &ndash;&gt;-->
+<!--                                 <img class="swiper-lazy"-->
+<!--                                      :data-src="-->
+<!--                          isDarkMode-->
+<!--                            ? homePageSlider.icon_dark-->
+<!--                            : homePageSlider.icon-->
+<!--                        "/>-->
 
-                                 <h3>{{ homePageSlider.title[locale] }}</h3>
-                              </div>
-                              <p>{{ homePageSlider.description[locale] }}</p>
+<!--                                 <h3>{{ homePageSlider.title[locale] }}</h3>-->
+<!--                              </div>-->
+<!--                              <p>{{ homePageSlider.description[locale] }}</p>-->
 
-                              <nuxt-link
-                                 v-if="homePageSlider.button_link"
-                                 :to="$localePath(homePageSlider.button_link)"
-                                 class="btn btn--green text-left"
-                              >
-                                 <icon name="plus-circle"/>
-                                 {{ homePageSlider.button_text[locale] }}
-                              </nuxt-link>
-                              <button
-                                 v-if="false"
-                                 class="btn btn--green text-left"
-                                 @click="
-                        gotoRoute($localePath(homePageSlider.button_link))
-                      "
-                              >
-                                 {{ homePageSlider.button_text[locale] }}
-                              </button>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <div slot="pagination" class="swiper-pagination"></div>
-            </div>
-         </client-only>
-      </div>
+<!--                              <nuxt-link-->
+<!--                                 v-if="homePageSlider.button_link"-->
+<!--                                 :to="$localePath(homePageSlider.button_link)"-->
+<!--                                 class="btn btn&#45;&#45;green text-left"-->
+<!--                              >-->
+<!--                                 <icon name="plus-circle"/>-->
+<!--                                 {{ homePageSlider.button_text[locale] }}-->
+<!--                              </nuxt-link>-->
+<!--                              <button-->
+<!--                                 v-if="false"-->
+<!--                                 class="btn btn&#45;&#45;green text-left"-->
+<!--                                 @click="-->
+<!--                        gotoRoute($localePath(homePageSlider.button_link))-->
+<!--                      "-->
+<!--                              >-->
+<!--                                 {{ homePageSlider.button_text[locale] }}-->
+<!--                              </button>-->
+<!--                           </div>-->
+<!--                        </div>-->
+<!--                     </div>-->
+<!--                  </div>-->
+<!--               </div>-->
+<!--               <div slot="pagination" class="swiper-pagination"></div>-->
+<!--            </div>-->
+<!--         </client-only>-->
+<!--      </div>-->
 
       <!-- car search form -->
       <div class="container position-relative">

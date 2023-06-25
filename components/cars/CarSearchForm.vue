@@ -2,12 +2,26 @@
    <div class="cars-search-form form" :class="{'pt-0': inMobileScreen}">
       <div class="card pt-2 pt-lg-4 mb-2 mb-lg-0">
          <div class="row">
-            <div class="col-lg-4 mb-2 mb-lg-3">
-               <form-buttons
-                  :options="getMileageOptions"
-                  :group-by="3"
-                  v-model="form.announce_type"
-               />
+            <div class="col-12 mb-2 mb-lg-3">
+               <div class="row">
+                  <div class="col-5">
+                     <form-buttons
+                        :options="getMileageOptions"
+                        :group-by="3"
+                        :btnClass="'blue-new'"
+                        v-model="form.announce_type"
+                     />
+                  </div>
+
+                  <div class="offset-3 col-4">
+                     <form-buttons
+                        :options="getSearchTabs"
+                        :group-by="2"
+                        :btnClass="'blue-new'"
+                        v-model="form.searchType"
+                     />
+                  </div>
+               </div>
             </div>
 
             <div class="col-lg-12 col-xl-6 offset-xl-2 mb-2 mb-lg-3 d-none d-lg-block">
@@ -75,6 +89,7 @@
                <div class="col-12">
                   <car-body-shortcuts v-model="formAssistant.body"/>
                </div>
+
                <div class="col-12">
                   <car-option-packs v-model="formAssistant.packs"/>
                </div>
@@ -122,10 +137,11 @@
                      />
                   </div>
                </template>
+
                <template v-else>
                   <div class="col-12 mb-3" v-for="(key, index) in rows" :key="key">
                      <div class="row">
-                        <div class="col-4">
+                        <div class="col-3">
                            <form-select
                               :label="$t('mark')"
                               :options="existsBrands"
@@ -134,93 +150,79 @@
                               has-search
                            />
                         </div>
-                        <div class="col-4">
+
+                        <div class="col-3">
                            <form-select
                               :label="$t('model')"
                               :options="carModels[key]"
                               v-model="form.additional_brands[key]['model']"
-                              :disabled="
-                      form.additional_brands[key]['brand'] &&
-                      !carModels[key].length
-                    "
+                              :disabled="form.additional_brands[key]['brand'] && !carModels[key].length"
                               @change="setModel($event, key)"
                               has-search
                            />
                         </div>
-                        <div class="col-4">
-                           <div
-                              :class="[
-                      'row',
-                      {
-                        'has-add-btn': canAddRow(index),
-                        'has-remove-btn': canRemoveRow(),
-                      },
-                    ]"
-                           >
-                              <div class="col">
-                                 <form-select
-                                    :label="$t('generation')"
-                                    :options="carGenerations[key]"
-                                    v-model="form.additional_brands[key]['generation']"
-                                    :disabled="
-                          form.additional_brands[key]['model'] &&
-                          !carGenerations[key].length
-                        "
-                                    @change="setGeneration($event, key)"
-                                    has-search
-                                    has-generations
-                                 />
-                              </div>
-                              <div class="col-auto">
-                                 <div class="form-counter">
-                                    <div
-                                       class="form-info"
-                                       v-if="canAddRow(index)"
-                                       @click="addSearchRow(key)"
-                                    >
-                                       <icon name="plus"/>
-                                    </div>
-                                    <div
-                                       class="form-info"
-                                       v-if="canRemoveRow()"
-                                       @click="removeSearchRow(key)"
-                                    >
-                                       <icon name="minus"/>
-                                    </div>
-                                 </div>
-                              </div>
+
+                        <div class="col-3">
+                           <form-select
+                              :label="$t('generation')"
+                              :options="carGenerations[key]"
+                              v-model="form.additional_brands[key]['generation']"
+                              :disabled="form.additional_brands[key]['model'] &&!carGenerations[key].length"
+                              @change="setGeneration($event, key)"
+                              has-search
+                              has-generations
+                           />
+                        </div>
+
+                        <div class="col-3">
+                           <div class="form-merged">
+                              <form-select
+                                 :label="$t('from')"
+                                 :options="getYearOptions(false, form.max_year)"
+                                 v-model="form.min_year"
+                                 :show-label-on-select="false"
+                                 :clear-option="false"
+                                 in-select-menu
+                              />
+                              <form-select
+                                 :label="$t('to')"
+                                 :options="getYearOptions(form.min_year, false)"
+                                 v-model="form.max_year"
+                                 :show-label-on-select="false"
+                                 :clear-option="false"
+                                 in-select-menu
+                              />
                            </div>
+<!--                           <form-select-->
+<!--                              :label="$t('years')"-->
+<!--                              custom-->
+<!--                              :values="{ from: form.min_year, to: form.max_year, read: false }"-->
+<!--                              @clear=";(form.min_year = ''), (form.max_year = '')"-->
+<!--                           >-->
+<!--                              <div class="form-merged">-->
+<!--                                 <form-select-->
+<!--                                    :label="$t('from')"-->
+<!--                                    :options="getYearOptions(false, form.max_year)"-->
+<!--                                    v-model="form.min_year"-->
+<!--                                    :show-label-on-select="false"-->
+<!--                                    :clear-option="false"-->
+<!--                                    in-select-menu-->
+<!--                                 />-->
+<!--                                 <form-select-->
+<!--                                    :label="$t('to')"-->
+<!--                                    :options="getYearOptions(form.min_year, false)"-->
+<!--                                    v-model="form.max_year"-->
+<!--                                    :show-label-on-select="false"-->
+<!--                                    :clear-option="false"-->
+<!--                                    in-select-menu-->
+<!--                                 />-->
+<!--                              </div>-->
+<!--                           </form-select>-->
                         </div>
                      </div>
                   </div>
                </template>
-               <div class="col-6 col-lg-2 mb-2 mb-lg-3">
-                  <form-select
-                     :label="$t('years')"
-                     custom
-                     :values="{ from: form.min_year, to: form.max_year, read: false }"
-                     @clear=";(form.min_year = ''), (form.max_year = '')"
-                  >
-                     <div class="form-merged">
-                        <form-select
-                           :label="$t('from')"
-                           :options="getYearOptions(false, form.max_year)"
-                           v-model="form.min_year"
-                           :show-label-on-select="false"
-                           :clear-option="false"
-                           in-select-menu
-                        />
-                        <form-select
-                           :label="$t('to')"
-                           :options="getYearOptions(form.min_year, false)"
-                           v-model="form.max_year"
-                           :show-label-on-select="false"
-                           :clear-option="false"
-                           in-select-menu
-                        />
-                     </div>
-                  </form-select>
-               </div>
+
                <div class="col-12 col-lg-8">
                   <component :is="isMobileBreakpoint && !advanced ? 'transition-expand' : 'div'">
                      <div
@@ -344,6 +346,7 @@
                      </div>
                   </component>
                </div>
+
                <template v-if="advanced">
                   <div class="col-6 col-lg-2 mb-2 mb-lg-3">
                      <form-select
@@ -508,6 +511,7 @@
                      />
                   </div>
                </template>
+
                <div class="col-6 col-lg-2 mb-2 mb-lg-3" v-if="!isMobileBreakpoint && !advanced">
                   <form-checkbox
                      :label="$t('with_video')"
@@ -837,7 +841,6 @@
                         </div>
                      </div>
                   </div>
-
                </div>
             </div>
             <div class="d-flex justify-content-end mr-1 mt-2">
@@ -934,6 +937,7 @@
                exclude_additional_brands: {0: {}, 1: {}, 2: {}, 3: {}, 4: {}},
                all_options: {},
                announce_type: 1,
+               searchType: 1,
                external_salon: false,
                currency: 1,
                min_capacity: '',

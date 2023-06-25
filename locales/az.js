@@ -150,6 +150,7 @@ export default {
    agricultural: "Kənd təsərrüfatı maşınları",
    Airbags: "Təhlükəsizlik yastıqları",
    akkumulyatory: "Akkumulyatorlar",
+   auto: "Avto",
    akpp: "Avtomatik",
    Alcantara: "Alkantara",
    all: "Bütün",

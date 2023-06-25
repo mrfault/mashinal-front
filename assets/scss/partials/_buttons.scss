@@ -158,14 +158,6 @@
    }
 }
 
-@media (min-width: 800px) {
-   .btn-favorite {
-      &:hover {
-         background-image: url('../../static/icons/star-favorite2-active.svg');
-      }
-   }
-}
-
 .btn-favorite-active {
    background-image: url('../../static/icons/star-favorite2-active.svg');
 }
@@ -623,18 +615,6 @@
    }
 }
 
-@include media-max-width('lg') {
-   .card.with-btns {
-      margin-top: 0;
-
-      .card-btns {
-         width: 100%;
-         margin: 0 0 15px;
-         max-width: none;
-      }
-   }
-}
-
 .btn.disabled {
    opacity: 0.4;
    pointer-events: none;
@@ -698,6 +678,83 @@
             10014px 0 0 0 rgba($white, 1);
             animation: button-loading-green 1s infinite linear;
          }
+      }
+   }
+}
+
+button:focus {
+   outline: none;
+}
+
+.button--scaner {
+   width: 170px;
+   height: 50px;
+   border-radius: 10px;
+   border: 2px solid #fff;
+   color: #fff;
+   display: flex;
+   align-items: center;
+   background: transparent;
+   outline: none;
+
+   .icon {
+      width: 25px;
+      height: 25px;
+
+      img {
+         width: 100%;
+         height: 100%;
+         object-fit: contain;
+      }
+   }
+
+   .text {
+      text-align-last: left;
+      margin-left: 8px;
+
+      &__action {
+         margin: 0;
+         font: 400 12px Gilroy;
+      }
+
+      &__brand {
+         margin: 0;
+         font: 500 18px Gilroy;
+      }
+   }
+}
+
+.button-new-tab {
+   border: 1px solid #dadada;
+   border-radius: 6px;
+   font-weight: 500;
+   width: 30px;
+   height: 30px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+
+   i {
+      color: #000;
+   }
+}
+
+.form-buttons {
+   .form-group {
+      button {
+         height: 48px;
+      }
+   }
+}
+
+@include media-max-width('lg') {
+   .card.with-btns {
+      margin-top: 0;
+
+      .card-btns {
+         width: 100%;
+         margin: 0 0 15px;
+         max-width: none;
       }
    }
 }
@@ -770,59 +827,10 @@
    }
 }
 
-button:focus {
-   outline: none;
-}
-
-.button--scaner {
-   width: 170px;
-   height: 50px;
-   border-radius: 10px;
-   border: 2px solid #fff;
-   color: #fff;
-   display: flex;
-   align-items: center;
-   background: transparent;
-   outline: none;
-
-   .icon {
-      width: 25px;
-      height: 25px;
-
-      img {
-         width: 100%;
-         height: 100%;
-         object-fit: contain;
+@media (min-width: 800px) {
+   .btn-favorite {
+      &:hover {
+         background-image: url('../../static/icons/star-favorite2-active.svg');
       }
-   }
-
-   .text {
-      text-align-last: left;
-      margin-left: 8px;
-
-      &__action {
-         margin: 0;
-         font: 400 12px Gilroy;
-      }
-
-      &__brand {
-         margin: 0;
-         font: 500 18px Gilroy;
-      }
-   }
-}
-
-.button-new-tab {
-   border: 1px solid #dadada;
-   border-radius: 6px;
-   font-weight: 500;
-   width: 30px;
-   height: 30px;
-   display: flex;
-   justify-content: center;
-   align-items: center;
-
-   i {
-      color: #000;
    }
 }

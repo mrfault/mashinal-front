@@ -299,6 +299,14 @@ export const SearchMixin = {
             {name: this.$t(this.meta.type === 'parts' ? 'S_H' : 'with_mileage'), key: zeroFirst ? 2 : 3}
          ];
       },
+
+      getSearchTabs() {
+         return [
+            { name: this.$t('auto'), key: 1 },
+            { name: this.$t('category_moto'), key: 2 }
+         ];
+      },
+
       getCurrencyOptions() {
          return [
             {key: 1, name: 'AZN', sign: '₼'},

@@ -4,11 +4,12 @@
          <h4 class="label">{{ label }}</h4>
       </div>
 
-      <div :class="['d-flex',
-         `col${groupBy > 0 ? ('-' + ([1,2,3,4,6,12].includes(groupBy) ? 12 / groupBy : 'auto')) : ''}`,
-         {'mb-2 mb-lg-3': isMultirow},
-         {'active': isActive(option)},
-         {'flex-column':  !singleRow},
+      <div
+         :class="[
+            'd-flex',
+            `col${groupBy > 0 ? ('-' + ([1,2,3,4,6,12].includes(groupBy) ? 12 / groupBy : 'auto')) : ''}`,
+            {'mb-2 mb-lg-3': isMultirow},
+            {'active': isActive(option)}
          ]"
         v-for="(option, index) in formattedOptions"
         :key="index"
@@ -21,8 +22,7 @@
                      {
                         'active': isActive(option),
                         'disabled':isDisabled(option),
-                        'height-auto': heightAuto,
-                        'min-w-136':singleRow
+                        'height-auto': heightAuto
                      }
                   ]"
                type="button"
@@ -75,10 +75,12 @@
          isActive(option) {
             return this.selectedValue === option.key;
          },
+
          isDisabled(option) {
             if (option.disabled) return true;
             return this.disabled;
          },
+
          changeOptionKey(key) {
             if (this.user.admin_group == 2) {
                return
@@ -98,6 +100,7 @@
                }
             })
          },
+
          selectedValue: {
             get() {
                return this.value;
@@ -107,6 +110,7 @@
                this.$emit('input', value);
             }
          },
+
          isMultirow() {
             return this.formattedOptions.length > this.groupBy;
          }
@@ -123,9 +127,3 @@
       }
    }
 </script>
-
-<style>
-   .min-w-136 {
-      min-width: 136px;
-   }
-</style>
