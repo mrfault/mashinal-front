@@ -1247,6 +1247,7 @@ export default {
    get_package: "Paket əldə et",
    my_profile: "Profilim",
    salon_profile: "Avtosalon profili",
+   part_salon_profile: "Mağaza profili",
    my_reports: "Hesabatlarım",
    my_searches: "Axtarış şablonları",
    my_stores: "Mənim salonlarım",

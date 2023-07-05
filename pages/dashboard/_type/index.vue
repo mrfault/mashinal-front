@@ -246,11 +246,11 @@
                // },
                {
                   key: 'salon',
-                  title: `${this.$t('salon_profile')}`,
+                  title: this.salonDetails.isShop ? this.$t('part_salon_profile'): `${this.$t('salon_profile')}`,
                   url: '/dashboard/' + type + '/settings',
                   icon: 'salon_profile',
                   image: 'salon_profile',
-                  description: `${this.$t('salon')} “${this.salonDetails.name}”`
+                  description: `${this.salonDetails.isShop ? this.$t('shop') :this.$t('salon')} “${this.salonDetails.name}”`
                },
                {
                   key: 'contract',
