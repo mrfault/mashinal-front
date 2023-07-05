@@ -1,6 +1,6 @@
 <template>
   <portal to="backdrop">
-    <div :class="backdropClass" class="backdrop" @click.stop="$emit('click')">
+    <div :class="backdropClass" class="backdrop" @click.stop="$emit('click')" tabindex="0">
       <div class="container">
         <slot :show="show" />
       </div>
