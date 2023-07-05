@@ -1,18 +1,19 @@
 <template>
-   <div :class="['form-buttons', `row ${rowClass}`, {'mb-n2 mb-lg-n3': isMultirow}]">
+<!--   , `row ${rowClass}`-->
+   <div :class="['form-buttons d-flex', {'mb-n2 mb-lg-n3': isMultirow}]">
       <div class="col-12" v-if="label">
          <h4 class="label">{{ label }}</h4>
       </div>
 
+<!--      `col${groupBy > 0 ? ('-' + ([1,2,3,4,6,12].includes(groupBy) ? 12 / groupBy : 'auto')) : ''}`,-->
       <div
          :class="[
             'd-flex',
-            `col${groupBy > 0 ? ('-' + ([1,2,3,4,6,12].includes(groupBy) ? 12 / groupBy : 'auto')) : ''}`,
             {'mb-2 mb-lg-3': isMultirow},
             {'active': isActive(option)}
          ]"
-        v-for="(option, index) in formattedOptions"
-        :key="index"
+         v-for="(option, index) in formattedOptions"
+         :key="index"
       >
          <div class="form-group flex-grow-1 d-flex flex-column">
             <button
@@ -127,3 +128,13 @@
       }
    }
 </script>
+
+<style lang="scss" scoped>
+   .form-buttons {
+      .btn {
+         font-size: 15px;
+         padding: 0 12px;
+         border-radius: 8px;
+      }
+   }
+</style>

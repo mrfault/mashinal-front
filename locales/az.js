@@ -823,6 +823,7 @@ export default {
    form_rating: "Xarici görünüş",
    frequently_asked_questions: "Tez-tez verilən suallar",
    friday: "Cümə",
+   from_year: "İl, min.",
    from: "min.",
    from_l: "l-dən",
    from_possible_left: "Qalan",
@@ -1066,6 +1067,7 @@ export default {
    length: "Uzunluq",
    lens: "Linza",
    less: "Daha az",
+   less_2: "Qısalt",
    license_plate: "Dövlət nişanı",
    license_plate_number_vin_or_carcase_number:
       "Qeydiyyat nişanı və ya ban nömrəsi",
@@ -1664,7 +1666,7 @@ export default {
    rust_converter: "Növ",
    ryadnoe: "Sıralanmış",
    s_h: "işlənmiş",
-   S_H: "İşlənmiş",
+   S_H: "Sürülmüş",
    safe_type: "Növ",
    sale: "Satış",
    salon: "Salon",
@@ -2107,7 +2109,7 @@ export default {
    with_new: "yenilərin",
    with_significant_damage_to_body_elements_that_do_not_move_on_their_own:
       "Öz-özünə hərəkət etməyən ban hissələrinə əhəmiyyətli dərəcədə ziyan vurmaqla.",
-   with_video: "Panorama 360&deg;",
+   with_video: "360&deg;",
    without_beaten: "Vurulmamış",
    without_discount: "Endirimsiz",
    without_store: "Mağazasız",

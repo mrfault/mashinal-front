@@ -313,7 +313,7 @@ input::-webkit-inner-spin-button {
       }
 
       &:hover {
-         border-color: $blue-new;
+         border-color: $blue-2-new;
       }
    }
 
@@ -344,6 +344,8 @@ input::-webkit-inner-spin-button {
    }
 
    input:checked ~ label {
+      border-color: $blue-4-new;
+
       .checkbox {
          border-color: $green-1;
          background-color: $green-1;
@@ -816,6 +818,10 @@ input::-webkit-inner-spin-button {
          }
       }
 
+      .form-merged {
+         border: unset;
+      }
+
       .popular-option {
          text-align: center;
          margin-bottom: 24px;
@@ -940,17 +946,34 @@ input::-webkit-inner-spin-button {
 .form-merged {
    display: flex;
    align-items: center;
+   border-radius: 8px;
+   transition: all .3s;
+   border: 1px solid $white-2-new;
 
-   //.form-group:not(:last-child) {
-   //   border-right: 1px solid $greyish-blue-6;
-   //}
+   &:hover {
+      border-color: $blue-2-new;
+   }
 
-   //.text-input {
-   //   width: 141px;
-   //}
+   &:has(.form-group .select-menu .select-menu_label.active) {
+      border-color: $blue-new;
+   }
+
+   &:has(.form-buttons) {
+      padding: 16px;
+   }
 
    .form-group {
       width: 50%;
+
+      input {
+         border: none;
+      }
+
+      &:not(.text-input) {
+         &:first-child {
+            border-right: 1px solid $white-2-new;;
+         }
+      }
    }
 
    .select-menu {
@@ -960,10 +983,45 @@ input::-webkit-inner-spin-button {
          border-color: transparent;
          border-radius: 8px;
          overflow: hidden;
+
+         &:hover {
+            border-color: transparent;
+         }
       }
 
       &.wider {
          width: 186px;
+      }
+   }
+
+   .form-buttons {
+      justify-content: space-around;
+      width: 100%;
+      margin-bottom: 8px;
+
+      .form-group {
+         width: 100%;
+      }
+   }
+
+   &.price {
+      .form-buttons {
+         .form-group {
+            border-right: none;
+            .btn {
+               height: 34px;
+            }
+         }
+      }
+
+      .form-merged__inputs {
+         border-radius: 8px;
+         overflow: hidden;
+
+         input {
+            border-radius: 0;
+            background-color: $grey-7-new;
+         }
       }
    }
 }

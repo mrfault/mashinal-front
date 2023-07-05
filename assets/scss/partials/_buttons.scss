@@ -257,8 +257,24 @@
       }
    }
 
+   svg {
+      margin: 0 8px;
+   }
+
    &.text-left {
       justify-content: flex-start;
+   }
+
+   &--white {
+      @include btn-style(
+         $color: $grey-4-new,
+         $color-hover: $grey-4-new,
+         $bg-color: transparent,
+         $bg-hover: transparent,
+         $active-bg: transparent,
+         $border-color: $white-2-new,
+         $border-hover: $blue-2-new
+      );
    }
 
    &--white-outline {
@@ -342,7 +358,7 @@
    }
 
    &--red-opacity {
-      @include btn-style($bg-color: $red-new-opacity, $bg-hover: $red-2, $color: $red-1);
+      @include btn-style($bg-color: $red-new-opacity, $bg-hover: $red-2, $color: $red-1, $border-color: $red-new-2);
    }
 
    &--red-outline {
@@ -381,12 +397,49 @@
       );
    }
 
+   &--blue-new-light {
+      @include btn-style(
+         $color: $grey-2-new,
+         $color-hover: $blue-new,
+         $bg-color: $white,
+         $bg-hover: $blue-3-new,
+         $border-color: $white,
+         $active-color: $blue-new,
+         $active-bg: $blue-3-new,
+         $outline: false
+      );
+   }
+
+   &--blue-new-light-2 {
+      @include btn-style(
+         $color: $blue-5-new,
+         $color-hover: $blue-5-new,
+         $bg-color: $blue-3-new,
+         $bg-hover: $blue-3-new,
+         $border-color: $blue-6-new,
+         $border-hover: $blue-6-new,
+         $active-color: $blue-3-new,
+         $active-bg: $blue-3-new,
+      );
+   }
+
    &--grey {
       @include btn-style($bg-color: $grey-10, $bg-hover: $grey-8);
    }
 
    &--grey-new {
       @include btn-style($bg-color: $grey-1-new, $bg-hover: $grey-4-new, $color: $dark-light-new);
+   }
+
+   &--grey-new-2 {
+      @include btn-style(
+         $bg-color: $grey-7-new,
+         $bg-hover: $blue-5-new,
+         $color: $grey-2-new,
+         $color-hover: $white,
+         $border-color: $blue-5-new,
+         $border-hover: $blue-5-new,
+      );
    }
 
    &--grey-outline {
@@ -740,6 +793,9 @@ button:focus {
 }
 
 .form-buttons {
+   display: flex;
+   gap: 5px;
+
    .form-group {
       button {
          height: 48px;

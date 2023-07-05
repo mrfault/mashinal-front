@@ -124,33 +124,39 @@
                                @clear="form.min_capacity = '', form.max_capacity = '', submitForm()"
                   >
                      <div class="form-merged">
-                        <form-select :label="$t('from')" v-model="form.min_capacity"
-                                     :options="bodyOptions.main.custom_options['capacity'].values"
-                                     @change="submitForm()"
-                                     :show-label-on-select="false" :clear-option="false" in-select-menu
-                                     :suffix="$t('char_litre')"/>
-                        <form-select :label="$t('to')" v-model="form.max_capacity"
-                                     :options="bodyOptions.main.custom_options['capacity'].values"
-                                     @change="submitForm()"
-                                     :show-label-on-select="false" :clear-option="false" in-select-menu
-                                     :suffix="$t('char_litre')"/>
+                        <form-numeric-input :placeholder="$t('from')" v-model="form.min_capacity"
+                                            :suffix="$t('char_h_power')"
+                                            @change="submitForm()"/>
+                        <form-numeric-input :placeholder="$t('to')" v-model="form.max_capacity"
+                                            :suffix="$t('char_h_power')"
+                                            @change="submitForm()"/>
+<!--                        <form-select :label="$t('from')" v-model="form.min_capacity"-->
+<!--                                     :options="bodyOptions.main.custom_options['capacity'].values"-->
+<!--                                     @change="submitForm()"-->
+<!--                                     :show-label-on-select="false" :clear-option="false" in-select-menu-->
+<!--                                     :suffix="$t('char_litre')"/>-->
+<!--                        <form-select :label="$t('to')" v-model="form.max_capacity"-->
+<!--                                     :options="bodyOptions.main.custom_options['capacity'].values"-->
+<!--                                     @change="submitForm()"-->
+<!--                                     :show-label-on-select="false" :clear-option="false" in-select-menu-->
+<!--                                     :suffix="$t('char_litre')"/>-->
                      </div>
                   </form-select>
                </div>
                <div class="col-6 col-lg-1-5 mb-2 mb-lg-3">
-                  <form-select :label="$t('years')" custom
-                               :values="{from: form.min_years, to: form.max_years, read: false }"
-                               @clear="form.min_years = '', form.max_years = '', submitForm()"
-                  >
+<!--                  <form-select :label="$t('years')" custom-->
+<!--                               :values="{from: form.min_years, to: form.max_years, read: false }"-->
+<!--                               @clear="form.min_years = '', form.max_years = '', submitForm()"-->
+<!--                  >-->
                      <div class="form-merged">
-                        <form-select :label="$t('from')" v-model="form.min_years" @change="submitForm()"
+                        <form-select :label="$t('from_year')" v-model="form.min_years" @change="submitForm()"
                                      :options="getYearOptions(false, form.max_years)" :show-label-on-select="false"
-                                     :clear-option="false" in-select-menu/>
+                                     :clear-option="false" in-select-menu />
                         <form-select :label="$t('to')" v-model="form.max_years" @change="submitForm()"
                                      :options="getYearOptions(form.min_years, false)" :show-label-on-select="false"
-                                     :clear-option="false" in-select-menu/>
+                                     :clear-option="false" in-select-menu />
                      </div>
-                  </form-select>
+<!--                  </form-select>-->
                </div>
                <div class="col-6 col-lg-1-5 mb-2 mb-lg-3">
                   <form-select :label="$t('acceleration')" custom anchor="right" :suffix="$t('char_second')"
