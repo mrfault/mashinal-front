@@ -281,69 +281,69 @@ export default {
       if (this.user.admin_group == 1) {
         if (this.type == 'cars') {
           await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/car')
-          location.href = '/alvcp/resources/announcements';
+          location.href = 'https://admin.mashin.al/alvcp/resources/announcements';
         }
         if (this.type == 'moto') {
           await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/motorcycles')
-          location.href = '/alvcp/resources/motorcycles';
+          location.href = 'https://admin.mashin.al/alvcp/resources/motorcycles';
         }
         if (this.type == 'commercial') {
           await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/commercials')
-          location.href = '/alvcp/resources/commercials';
+          location.href = 'https://admin.mashin.al/alvcp/resources/commercials';
         }
         if (this.type == 'moto_atv') {
           await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/moto-atvs')
-          location.href = '/alvcp/resources/moto-atvs';
+          location.href = 'https://admin.mashin.al/alvcp/resources/moto-atvs';
         }
         if (this.type == 'part') {
           await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/parts')
-          location.href = '/alvcp/resources/parts';
+          location.href = 'https://admin.mashin.al/alvcp/resources/parts';
         }
         if (this.type == 'scooters') {
           await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/scooters')
-          location.href = '/alvcp/resources/scooters';
+          location.href = 'https://admin.mashin.al/alvcp/resources/scooters';
         }
 
       } else {
         if (this.type == 'cars') {
           await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/car')
           if (!this.single_announce.transferred) {
-            location.href = '/alvcp/resources/announce-moderators';
+            location.href = 'https://admin.mashin.al/alvcp/resources/announce-moderators';
           }
         }
         if (this.type == 'moto') {
           await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/motorcycles')
           if (!this.single_announce.transferred) {
-            location.href = '/alvcp/resources/announce-moderators';
+            location.href = 'https://admin.mashin.al/alvcp/resources/announce-moderators';
           }
         }
         if (this.type == 'commercial') {
           await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/commercials')
           if (!this.single_announce.transferred) {
-            location.href = '/alvcp/resources/announce-moderators';
+            location.href = 'https://admin.mashin.al/alvcp/resources/announce-moderators';
           }
         }
         if (this.type == 'moto_atv') {
           await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/moto-atvs')
           if (!this.single_announce.transferred) {
-            location.href = '/alvcp/resources/announce-moderators';
+            location.href = 'https://admin.mashin.al/alvcp/resources/announce-moderators';
           }
         }
         if (this.type == 'part') {
           await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/parts')
           if (!this.single_announce.transferred) {
-            location.href = '/alvcp/resources/announce-moderators';
+            location.href = 'https://admin.mashin.al/alvcp/resources/announce-moderators';
           }
         }
         if (this.type == 'scooters') {
           await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/scooters')
           if (!this.single_announce.transferred) {
-            location.href = '/alvcp/resources/announce-moderators';
+            location.href = 'https://admin.mashin.al/alvcp/resources/announce-moderators';
           }
         }
       }
       if (this.single_announce.transferred) {
-        location.href = '/alvcp/resources/transferred-announces';
+        location.href = 'https://admin.mashin.al/alvcp/resources/transferred-announces';
       }
     },
 
