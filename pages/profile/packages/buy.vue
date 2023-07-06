@@ -217,8 +217,9 @@
                   });
                } else {
                   await this.handlePayment(res, this.$localePath('/agreement'));
-                  this.pending = this.openModal = false;
+
                }
+               this.pending = this.openModal = false;
             } catch (error) {
                this.pending = false;
 
