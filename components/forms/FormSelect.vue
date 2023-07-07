@@ -33,17 +33,16 @@
                <template v-else-if="hasSearch && showOptions && !isMobileBreakpoint">
                   <span class="search-input">
 <!--                     <span class="placeholder">{{ label }}</span>-->
-
-                    <input
-                       type="text"
-                       ref="searchInput"
-                       :placeholder="inputPlaceholder"
-                       :maxlength="searchInputLength"
-                       v-model="search"
-                       @keyup.enter="handleSearchSubmit"
-                       @input="handleInput"
-                       @click.stop
-                    />
+                     <input
+                        type="text"
+                        ref="searchInput"
+                        :placeholder="inputPlaceholder"
+                        :maxlength="searchInputLength"
+                        v-model="search"
+                        @keyup.enter="handleSearchSubmit"
+                        @input="handleInput"
+                        @click.stop
+                     />
                   </span>
                </template>
 
@@ -186,43 +185,42 @@
                         ]"
                                  ></div>
                                  <div class="generation-info">
-                        <span>
-                          {{ button.start_year }} —
-                          {{ button.end_year || currentYear }}
-                        </span>
+                                    <span>
+                                      {{ button.start_year }} —
+                                      {{ button.end_year || currentYear }}
+                                    </span>
                                     <span>{{ button.short_name[locale] }}</span>
                                  </div>
                               </template>
                            </form-buttons>
                         </div>
                         <template v-else-if="getFilteredOptions.length">
-                           <template v-for="(option, index) in getFilteredOptions">
+                           <div
+                              v-for="(option, index) in getFilteredOptions"
+                              :key="index"
+                              :class="['select-menu_dropdown-option',
+                                 {
+                                   selected: isSelected(option),
+                                   anchor: isAnchor(index),
+                                   'card-option': hasCards && option.brand,
+                                 }
+                               ]"
+                              @click.stop="selectValue = option"
+                           >
                               <div
-                                 :key="index"
-                                 :class="['select-menu_dropdown-option',
-                                    {
-                                      selected: isSelected(option),
-                                      anchor: isAnchor(index),
-                                      'card-option': hasCards && option.brand,
-                                    }
-                                  ]"
-                                 @click.stop="selectValue = option"
+                                 class="img"
+                                 v-if="imgKey && (!hasCards || (hasCards && option[imgKey]))"
                               >
-                                 <div
-                                    class="img"
-                                    v-if="imgKey && (!hasCards || (hasCards && option[imgKey]))"
-                                 >
-                                    <img
-                                       :src="$withBaseUrl(option[imgKey]) || imgPlaceholder"
-                                       :alt="getOptionName(option)"
-                                    />
-                                 </div>
-                                 <div class="text-truncate">
-                                    <span>{{ getOptionName(option) }}</span>
-                                 </div>
-                                 <icon name="check" v-if="isSelected(option)"/>
+                                 <img
+                                    :src="$withBaseUrl(option[imgKey]) || imgPlaceholder"
+                                    :alt="getOptionName(option)"
+                                 />
                               </div>
-                           </template>
+                              <div class="text-truncate">
+                                 <span>{{ getOptionName(option) }}</span>
+                              </div>
+                              <icon name="check" v-if="isSelected(option)"/>
+                           </div>
                         </template>
                         <div class="select-menu_dropdown-option disabled" v-else>
                            <div class="text-truncate">
@@ -343,6 +341,13 @@
                                     :alt="getOptionName(option)"
                                  />
                               </div>
+
+                              <div
+                                 class="color"
+                                 v-if="option?.code"
+                                 :style="{ backgroundColor: `${option.code }`}"
+                              ></div>
+
                               <div class="text-truncate">
                                  <span>{{ getOptionName(option) }}</span>
                               </div>

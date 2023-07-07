@@ -429,6 +429,9 @@
                            <form-select
                               :label="$t('city')"
                               :options="sellOptions.regions"
+                              :clear-placeholder="true"
+                              :clear-option="false"
+                              :input-placeholder="$t('city_search')"
                               v-model="form.region"
                               has-search
                            />
@@ -439,6 +442,8 @@
                               :label="$t('korobka')"
                               v-model="form.korobka"
                               :options="bodyOptions.main.default_options['korobka'].values"
+                              :clear-placeholder="true"
+                              :clear-option="false"
                               multiple
                               name-in-value
                               translate-options
@@ -450,6 +455,8 @@
                               :label="$t('fuel')"
                               v-model="form.engine_type"
                               :options="bodyOptions.main.default_options['tip-dvigatelya'].values"
+                              :clear-placeholder="true"
+                              :clear-option="false"
                               multiple
                               name-in-value
                               translate-options
@@ -483,6 +490,8 @@
                               :label="$t('carcase')"
                               v-model="form.body"
                               :options="bodyOptions.main.default_options['body'].values"
+                              :clear-placeholder="true"
+                              :clear-option="false"
                               multiple
                               name-in-value
                               translate-options
@@ -494,6 +503,8 @@
                               :label="$t('privod')"
                               v-model="form.gearing"
                               :options="bodyOptions.main.default_options['privod'].values"
+                              :clear-placeholder="true"
+                              :clear-option="false"
                               multiple
                               name-in-value
                               translate-options
@@ -505,7 +516,8 @@
                               :label="$t('customs')"
                               v-model="form.customs"
                               :options="getCustomsOptions"
-                              :show-label-on-select="true"
+                              :clear-placeholder="true"
+                              :clear-option="false"
                            />
                         </div>
 
@@ -514,8 +526,75 @@
                               :label="$t('damage')"
                               v-model="form.damage"
                               :options="getDamageOptions"
-                              :show-label-on-select="true"
+                              :clear-placeholder="true"
+                              :clear-option="false"
                            />
+                        </div>
+                     </div>
+                  </div>
+
+                  <div class="col-12 mb-2">
+                     <div class="row">
+                        <div class="col-1 col-lg-3">
+                           <form-select
+                              :label="$t('count_of_seats')"
+                              v-model="form.n_of_seats"
+                              multiple
+                              name-in-value
+                              translate-options
+                              :options="allSellOptions2?.n_of_seats?.options"
+                              :clear-placeholder="true"
+                              :clear-option="false"
+                           />
+                        </div>
+
+                        <div class="col-1 col-lg-3">
+                           <form-select
+                              :label="$t('color')"
+                              v-model="form.colors"
+                              multiple
+                              translate-options
+                              :options="colors"
+                              :clear-placeholder="true"
+                              :clear-option="false"
+                           />
+
+<!--                           <color-options-->
+<!--                              v-model="form.colors"-->
+<!--                              :matt="form.is_matte"-->
+<!--                              @change-matt="form.is_matte = $event"-->
+<!--                           />-->
+                        </div>
+
+                        <div class="col-1 col-lg-3">
+                           <form-select
+                              :label="$t('color')"
+                              v-model="form.colors"
+                              multiple
+                              translate-options
+                              :options="colors"
+                              :clear-placeholder="true"
+                              :clear-option="false"
+                           />
+                        </div>
+
+                        <div class="col-1 col-lg-3">
+<!--                           <div class="form-counter">-->
+<!--                              <div-->
+<!--                                 class="form-info"-->
+<!--                                 v-if="canAddRow(index)"-->
+<!--                                 @click="addSearchRow(key)"-->
+<!--                              >-->
+<!--                                 <icon name="plus" />-->
+<!--                              </div>-->
+<!--                              <div-->
+<!--                                 class="form-info"-->
+<!--                                 v-if="canRemoveRow()"-->
+<!--                                 @click="removeSearchRow(key)"-->
+<!--                              >-->
+<!--                                 <icon name="minus" />-->
+<!--                              </div>-->
+<!--                           </div>-->
                         </div>
                      </div>
                   </div>
@@ -569,23 +648,6 @@
 
                            <inline-svg :src="'/icons/save-search.svg'" />
                         </button>
-
-<!--                        <template v-if="!onlySavedSearch">-->
-<!--                           <div-->
-<!--                              class="col-lg-3 mt-2 mt-lg-0 mb-3"-->
-<!--                              v-show="searchApplied"-->
-<!--                           >-->
-<!--                              <form-checkbox-->
-<!--                                 :label="$t('search_save')"-->
-<!--                                 v-model="savedSearch"-->
-<!--                                 skip-truncate-->
-<!--                                 input-name="savedSearch"-->
-<!--                                 transparent-->
-<!--                                 :disabled="!loggedIn"-->
-<!--                                 @try="$nuxt.$emit('login-popup', 'saved-search')"-->
-<!--                              />-->
-<!--                           </div>-->
-<!--                        </template>-->
                      </div>
 
                      <div class="col-1 col-lg-3">
@@ -665,33 +727,14 @@
                      <form-select
                         :label="$t('fuel')"
                         v-model="form.engine_type"
-                        :options="
-                  bodyOptions.main.default_options['tip-dvigatelya'].values
-                "
+                        :options="bodyOptions.main.default_options['tip-dvigatelya'].values"
                         multiple
                         name-in-value
                         translate-options
                      />
                   </div>
 
-                  <div class="col-6 col-lg-2 mb-2 mb-lg-3">
-                     <form-select
-                        :label="$t(allSellOptions2.n_of_seats.placeholder)"
-                        v-model="form.n_of_seats"
-                        multiple
-                        name-in-value
-                        translate-options
-                        :options="allSellOptions2.n_of_seats.options"
-                     />
-                  </div>
 
-                  <div class="col-12">
-                     <color-options
-                        v-model="form.colors"
-                        :matt="form.is_matte"
-                        @change-matt="form.is_matte = $event"
-                     />
-                  </div>
 
                   <div class="col-12">
                      <car-filters
@@ -1098,6 +1141,7 @@
             'sellOptions',
             'allSellOptions2',
             'singleSavedSearch',
+            'colors'
          ]),
 
          getExcludeCount() {

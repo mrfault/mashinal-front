@@ -61,6 +61,7 @@ const getInitialState = () => ({
    myAnnouncement: {},
    mainAnnouncements: {},
    mainMonetized: [],
+   carShowroom: [],
    mainPartsAnnouncements: {},
    carsAnnouncements: [],
    motoAnnouncements: [],
@@ -291,6 +292,7 @@ export const getters = {
    },
    partAnnouncements: s => s.partAnnouncements,
    mainAnnouncements: s => s.mainAnnouncements,
+   carShowroom: s => s.carShowroom,
    mainPartsAnnouncements: s => s.mainPartsAnnouncements,
    myAnnouncements: s => s.myAnnouncements,
    myAnnouncement: s => s.myAnnouncement,
@@ -413,6 +415,28 @@ const objectNotEmpty = (state, commit, property) => {
    );
 };
 export const actions = {
+   // New API ++++++++++++++++++++
+   async fetchMonetizedAnnouncementsHome({ commit }) {
+      const res = await this.$axios.$get('https://v2dev.mashin.al/api/v2/monetized-announcements/home');
+      commit("mutate", { property: "mainMonetized", value: res });
+   },
+
+   async fetchAllAnnouncementsHome({ commit }) {
+      const res = await this.$axios.$get('https://v2dev.mashin.al/api/v2/all-announcements/home');
+      commit("mutate", { property: "mainAnnouncements", value: res });
+   },
+
+   async fetchCarShowroomAnnouncementsHome({ commit }) {
+      const res = await this.$axios.$get('https://v2dev.mashin.al/api/v2/autosalon/announcements/home');
+      commit("mutate", { property: "carShowroom", value: res });
+   },
+
+   async fetchPartsAnnouncementsHome({ commit }) {
+      const res = await this.$axios.$get('https://v2dev.mashin.al/api/v2/all-announcements/parts/home');
+      commit("mutate", { property: "carShowroom", value: res });
+   },
+   // New API --------------------
+
    async fetchAgreements({commit}) {
       const res = await this.$axios.$get("/agreements")
       commit("mutate", {property: "agreements", value: res.data || []})
@@ -978,20 +1002,6 @@ export const actions = {
       } else {
          commit("mutate", {property: "needResetOptions", value: arr});
       }
-   },
-   // Search
-   async getInfiniteMainSearch({commit, dispatch}, data = {}) {
-      const res = await this.$axios.$get(
-         `/grid/home_page_all?page=${data.page || 1}`
-      );
-
-      commit("mutate", {property: "mainAnnouncements", value: res});
-
-   },
-
-   async fetchInfiniteMainMonetizedHome({ commit }, data = {}) {
-      const res = await this.$axios.$get(`/grid/home_page_monetized`);
-      commit("mutate", {property: "mainMonetized", value: res});
    },
 
    async fetchInfiniteMainMonetized({ commit }, data = {}) {

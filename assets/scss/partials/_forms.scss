@@ -760,6 +760,10 @@ input::-webkit-inner-spin-button {
             background-color: $grey-1-new;
          }
 
+         &:not(:first-child) {
+            margin-top: 8px;
+         }
+
          .icon-check {
             display: none;
             position: absolute;
@@ -769,8 +773,11 @@ input::-webkit-inner-spin-button {
             font-size: 8px;
          }
 
-         &:not(:first-child) {
-            margin-top: 8px;
+         .color {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            margin-right: 10px;
          }
       }
 

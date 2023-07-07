@@ -113,58 +113,114 @@
          />
       </div>
 
-      <!-- grid -->
       <div class="overflow-hidden" v-if="getMainMonetized.length">
          <grid
             :announcements="getMainMonetized"
-            :banner="'/img/parts-{count}-{locale}.jpg'"
-            :banner-count="4"
-            :banner-for="'Part'"
-            :banner-link="'/parts'"
-            :banner-place="24"
             :escape-duplicates="true"
             :has-container="true"
             :pending="pending"
-            :title="$t('featured_ads')"
-            :show-title="true"
-         />
+         >
+            <template #cap>
+               <Cap :className="'mb40'">
+                  <template #left>
+                     <h3>{{ $t('featured_ads') }}</h3>
+                  </template>
+
+                  <template #right>
+                     <nuxt-link :to="$localePath('/cars')">
+                        <span>{{ $t('see_all') }}</span>
+                        <icon name="arrow-right"/>
+                     </nuxt-link>
+                  </template>
+               </Cap>
+            </template>
+         </grid>
       </div>
 
-      <div class="overflow-hidden">
+      <div class="overflow-hidden bg-white" v-if="mainAnnouncements.length">
          <grid
-            :announcements="mainAnnouncements.data"
-            :banner="'/img/parts-{count}-{locale}.jpg'"
-            :banner-count="4"
-            :banner-for="'Part'"
-            :banner-link="'/parts'"
-            :banner-place="24"
+            :announcements="mainAnnouncements"
             :escape-duplicates="true"
             :has-container="true"
             :pending="pending"
-            :title="$t('recent_uploads')"
-            :show-title="true"
-         />
+         >
+            <template #cap>
+               <Cap :className="'mb40'">
+                  <template #left>
+                     <h3>{{ $t('recent_uploads') }}</h3>
+                  </template>
+
+                  <template #right>
+                     <nuxt-link :to="$localePath('/cars')">
+                        <span>{{ $t('see_all') }}</span>
+                        <icon name="arrow-right"/>
+                     </nuxt-link>
+                  </template>
+               </Cap>
+            </template>
+         </grid>
       </div>
 
-      <infinite-loading
-         :per-page="20"
-         :per-page-b="4"
-         :offset="5000"
-         action="getInfiniteMainSearchWithoutMutate"
-         action-b="getInfiniteMainPartsSearchWithoutMutate"
-         getter="mainAnnouncements"
-         getter-b="mainPartsAnnouncements"
-      />
+      <div class="overflow-hidden bg-white" v-if="carShowroom.length">
+         <grid
+            :announcements="carShowroom"
+            :escape-duplicates="true"
+            :has-container="true"
+            :pending="pending"
+         >
+            <template #cap>
+               <Cap :className="'mb40'">
+                  <template #left>
+                     <h3>{{ $t('external_salon') }}</h3>
+                  </template>
+
+                  <template #right>
+                     <nuxt-link :to="$localePath('/cars')">
+                        <span>{{ $t('see_all') }}</span>
+                        <icon name="arrow-right"/>
+                     </nuxt-link>
+                  </template>
+               </Cap>
+            </template>
+         </grid>
+      </div>
+
+<!--      <div class="overflow-hidden">-->
+<!--         <grid-->
+<!--            :announcements="mainAnnouncements.data"-->
+<!--            :banner="'/img/parts-{count}-{locale}.jpg'"-->
+<!--            :banner-count="4"-->
+<!--            :banner-for="'Part'"-->
+<!--            :banner-link="'/parts'"-->
+<!--            :banner-place="24"-->
+<!--            :escape-duplicates="true"-->
+<!--            :has-container="true"-->
+<!--            :pending="pending"-->
+<!--            :title="$t('recent_uploads')"-->
+<!--            :show-title="true"-->
+<!--         />-->
+<!--      </div>-->
+
+<!--      <infinite-loading-->
+<!--         :per-page="20"-->
+<!--         :per-page-b="4"-->
+<!--         :offset="5000"-->
+<!--         action="getInfiniteMainSearchWithoutMutate"-->
+<!--         action-b="getInfiniteMainPartsSearchWithoutMutate"-->
+<!--         getter="mainAnnouncements"-->
+<!--         getter-b="mainPartsAnnouncements"-->
+<!--      />-->
 
       <HandleIds v-if="getMainMonetized.length" :items="getMainMonetized" :watchIds="false"/>
    </div>
 </template>
 
 <script>
-   import {mapGetters, mapActions} from 'vuex'
+   import { mapGetters, mapActions } from 'vuex'
    import CarSearchForm from '~/components/cars/CarSearchForm'
    import Grid from '~/components/announcements/Grid'
    import HandleIds from "~/components/announcements/HandleIds.vue";
+   import Cap from "~/components/elements/Cap.vue";
 
    export default {
       name: 'pages-index',
@@ -178,7 +234,8 @@
       components: {
          CarSearchForm,
          Grid,
-         HandleIds
+         HandleIds,
+         Cap
       },
 
       head() {
@@ -226,19 +283,22 @@
             player: null,
          }
       },
+
       async asyncData({store}) {
          await Promise.all([
             store.dispatch('getBrandsOnlyExists'),
             store.dispatch('getOptions'),
             store.dispatch('getBodyOptions'),
             store.dispatch('clearSavedSearch'),
+            store.dispatch('getAllOtherOptions', '2'),
+            store.dispatch('getColors'),
          ])
          return {
             pending: false,
          }
       },
       computed: {
-         ...mapGetters(['mainAnnouncements', 'homePageSliders', 'getMainMonetized', 'singleSavedSearch']),
+         ...mapGetters(['mainAnnouncements', 'homePageSliders', 'getMainMonetized', 'singleSavedSearch', 'carShowroom']),
 
          photos() {
             return {
@@ -249,13 +309,23 @@
       },
 
       methods: {
-         ...mapActions(['getInfiniteMainSearch', 'clearSavedSearch', 'fetchInfiniteMainMonetizedHome']),
+         ...mapActions([
+            'fetchAllAnnouncementsHome',
+            'clearSavedSearch',
+            'fetchMonetizedAnnouncementsHome',
+            'fetchCarShowroomAnnouncementsHome'
+         ]),
 
          async handleLogoClick() {
             this.$scrollTo('body')
             this.$nuxt.$emit('reset-search-form')
             this.pending = true
-            await Promise.all([this.getInfiniteMainSearch(), this.clearSavedSearch(), this.fetchInfiniteMainMonetizedHome()])
+            await Promise.all([
+               this.fetchAllAnnouncementsHome(),
+               this.clearSavedSearch(),
+               this.fetchMonetizedAnnouncementsHome(),
+               this.fetchCarShowroomAnnouncementsHome()
+            ])
             this.pending = false
          },
 
@@ -308,8 +378,9 @@
       },
 
       mounted() {
-         this.$store.dispatch('getInfiniteMainSearch')
-         this.$store.dispatch('fetchInfiniteMainMonetizedHome');
+         this.$store.dispatch('fetchAllAnnouncementsHome')
+         this.$store.dispatch('fetchMonetizedAnnouncementsHome');
+         this.$store.dispatch('fetchCarShowroomAnnouncementsHome');
 
          if (window.innerWidth < 769) this.absoluteMobileScreen = true
          else this.absoluteMobileScreen = false

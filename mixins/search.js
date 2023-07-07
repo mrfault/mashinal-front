@@ -219,10 +219,7 @@ export const SearchMixin = {
          return years;
       },
       goToSearch(path) {
-
-
          this.$router.push(`${path}?${this.meta.param}=${encodeURI(JSON.stringify(this.getFormData()))}`);
-
       },
       extendOptions() {
          this.collapsed = false;

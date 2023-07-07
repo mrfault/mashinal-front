@@ -155,7 +155,7 @@
       },
 
       methods: {
-         ...mapActions(['getInfiniteMainSearch']),
+         ...mapActions(['fetchAllAnnouncementsHome']),
 
          async searchParts() {
             this.refreshInfinity++;

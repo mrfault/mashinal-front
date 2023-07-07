@@ -37,7 +37,7 @@
         </div>
       </div>
     </div>
-    <div class="announcements-grid_item" :class="'id'+announcement.id_unique" @click="goToAnnouncement">
+    <div class="announcements-grid__item" :class="'id'+announcement.id_unique" @click="goToAnnouncement">
       <a
         v-if="clickable && !isMobileBreakpoint && !$env.DEV"
         target="_blank"
@@ -45,7 +45,7 @@
         class="abs-link"
         @click.stop
       >
-        <span class="sr-only">{{ getAnnouncementTitle(announcement) }}</span>
+<!--        <span class="sr-only">{{ getAnnouncementTitle(announcement) }}</span>-->
       </a>
 
       <div
@@ -58,76 +58,77 @@
         <div class="item-overlay" v-if="showOverlay">
           <div class="item-overlay__top">
             <div class="item-overlay__top--left">
-<!--               <pre style="background-color: white">{{announcement}}</pre>-->
-                <add-favorite
-                  v-if="!isProfilePage"
-                  :announcement="announcement"
-                />
+               <div
+                  class="item-overlay__isСarShowroom"
+                  v-if="announcement.is_auto_salon"
+               >
+                  <template v-if="announcement.is_auto_salon">{{ $t('salon') }}</template>
+                  <template v-else>{{ $t('salon') }}</template>
+               </div>
             </div>
+
             <div
               class="item-overlay__top--right"
-              :class="{
-                'pending-badge-centered': checkPendingBadge(announcement),
-              }"
+              :class="{'pending-badge-centered': checkPendingBadge(announcement)}"
             >
-              <span
-                class="btn-sq btn-sq--color-red active"
-                v-if="announcement.has_monetization && !isMobileBreakpoint"
-              >
-                <icon name="speaker" v-tooltip="$t('featured_ads_3')"/>
-              </span>
-              <template
-                v-if="announcement.is_autosalon || announcement.is_part_salon"
-              >
-                <span class="badge badge-blue">{{ announcement.is_autosalon ? 'SALON': 'SHOP'}}</span>
-              </template>
-              <template
-                v-if="announcement.is_external_salon && !showStatus"
-              >
-                <span class="badge badge-blue badge-external">
-                  <inline-svg v-if="!isMobileBreakpoint" class="badge-icon" src="/img/auction.svg" />
-                  Sifarişlə
-                </span>
-              </template>
-              <template v-if="showStatus">
-                <span class="badge active" v-if="announcement.status == 1">
-                  {{ $t('accepted') }}
-                </span>
-                <span
-                  class="badge pending"
-                  v-else-if="
-                    announcement.status == 2 &&
-                    announcement.system_paid_announce &&
-                    !announcement.system_paid_announce.is_paid
-                  "
-                >
-                  {{ $t('need_pay') }}
-                </span>
-                <span
-                  class="badge pending"
-                  v-else-if="announcement.status == 2"
-                >
-                  {{ $t('under_consideration') }}
-                </span>
-                <span
-                  class="badge pending"
-                  v-else-if="announcement.status == 5"
-                >
-                  {{ $t('is_loading') }}
-                </span>
-                <span
-                  class="badge rejected"
-                  v-else-if="announcement.status == 0"
-                >
-                  {{ $t('rejected') }}
-                </span>
-                <span
-                  class="badge inactive"
-                  v-else-if="announcement.status == 3"
-                >
-                  {{ $t('inactive') }}
-                </span>
-              </template>
+               <add-favorite
+                  v-if="!isProfilePage"
+                  :announcement="announcement"
+               />
+<!--              <span-->
+<!--                class="btn-sq btn-sq&#45;&#45;color-red active"-->
+<!--                v-if="announcement.has_monetization && !isMobileBreakpoint"-->
+<!--              >-->
+<!--                <icon name="speaker" v-tooltip="$t('featured_ads_3')"/>-->
+<!--              </span>-->
+
+<!--              <template-->
+<!--                v-if="announcement.is_external_salon && !showStatus"-->
+<!--              >-->
+<!--                <span class="badge badge-blue badge-external">-->
+<!--                  <inline-svg v-if="!isMobileBreakpoint" class="badge-icon" src="/img/auction.svg" />-->
+<!--                  Sifarişlə-->
+<!--                </span>-->
+<!--              </template>-->
+<!--              <template v-if="showStatus">-->
+<!--                <span class="badge active" v-if="announcement.status == 1">-->
+<!--                  {{ $t('accepted') }}-->
+<!--                </span>-->
+<!--                <span-->
+<!--                  class="badge pending"-->
+<!--                  v-else-if="-->
+<!--                    announcement.status == 2 &&-->
+<!--                    announcement.system_paid_announce &&-->
+<!--                    !announcement.system_paid_announce.is_paid-->
+<!--                  "-->
+<!--                >-->
+<!--                  {{ $t('need_pay') }}-->
+<!--                </span>-->
+<!--                <span-->
+<!--                  class="badge pending"-->
+<!--                  v-else-if="announcement.status == 2"-->
+<!--                >-->
+<!--                  {{ $t('under_consideration') }}-->
+<!--                </span>-->
+<!--                <span-->
+<!--                  class="badge pending"-->
+<!--                  v-else-if="announcement.status == 5"-->
+<!--                >-->
+<!--                  {{ $t('is_loading') }}-->
+<!--                </span>-->
+<!--                <span-->
+<!--                  class="badge rejected"-->
+<!--                  v-else-if="announcement.status == 0"-->
+<!--                >-->
+<!--                  {{ $t('rejected') }}-->
+<!--                </span>-->
+<!--                <span-->
+<!--                  class="badge inactive"-->
+<!--                  v-else-if="announcement.status == 3"-->
+<!--                >-->
+<!--                  {{ $t('inactive') }}-->
+<!--                </span>-->
+<!--              </template>-->
             </div>
           </div>
           <div class="item-overlay__bottom">
@@ -348,15 +349,17 @@ export default {
     getImage() {
       let item = this.announcement
 
-      if (item.has_360 == false || !item.has_360) {
-        if (item.media && item.media.thumb && item.media.thumb.length)
-          return this.$withBaseUrl(item.media.thumb[0])
-        else if (item.media && item.media.length)
-          return this.$withBaseUrl(item.media[0].thumb || item.media[0])
-        return false
-      } else {
-        return this.$withBaseUrl(item.has_360)
-      }
+      return this.$withBaseUrl(item.image);
+
+      // if (item.has_360 == false || !item.has_360) {
+      //   if (item.media && item.media.thumb && item.media.thumb.length)
+      //     return this.$withBaseUrl(item.image)
+      //   else if (item.media && item.media.length)
+      //     return this.$withBaseUrl(item.media[0].thumb || item.media[0])
+      //   return false
+      // } else {
+      //   return this.$withBaseUrl(item.has_360)
+      // }
     },
     getCapacity() {
       let item = this.announcement,
