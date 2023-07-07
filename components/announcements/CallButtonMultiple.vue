@@ -1,26 +1,25 @@
 <template>
   <button v-if="!showPhone" :class="['btn full-width', `btn--${callAtOnce ? '' : 'pale-'}green`]" @click.stop="handleClick">
     <icon name="phone-call" />
-    <template v-if="callAtOnce">
-      <template v-for="phone in phones" v-if="!isMobileBreakpoint">
-        <span  v-mask="$maskPhone(true)" >+{{ phone }}</span>
-        <br>
-      </template>
-
-      <span v-else>{{ $t('make_a_call') }}</span>
-    </template>
-    <template v-else>
+    <template>
       +994 *******
     </template>
   </button>
   <div v-else>
     <template v-if="callAtOnce">
-      <template v-for="phone in phones" v-if="!isMobileBreakpoint">
-        <a class="call-a" style="" :href="`tel:+${phone}`" v-mask="$maskPhone(true)" >+{{ phone }}</a>
-        <br>
+      <template v-if="!showSinglePhone">
+          <template v-for="phone in phones" v-if="!isMobileBreakpoint">
+             <a class="call-a" style="" :href="`tel:+${phone}`" v-mask="$maskPhone(true)" >+{{ phone }}</a>
+             <br>
+          </template>
+          <span v-else>{{ $t('make_a_call') }}</span>
+       </template>
+
+      <template v-else-if="showSinglePhone">
+         <a class="call-a" style="" :href="`tel:+${singlePhone}`" v-mask="$maskPhone(true)" >+{{ singlePhone }}</a>
+         <br>
       </template>
 
-      <span v-else>{{ $t('make_a_call') }}</span>
     </template>
   </div>
 </template>
@@ -45,7 +44,9 @@ export default {
   },
   data() {
     return {
-      showPhone: false
+      showPhone: false,
+      showSinglePhone: false,
+      singlePhone: '',
     }
   },
   computed: {
@@ -63,7 +64,17 @@ export default {
         this.trackCall(2);
       } else {
         this.showPhone = true;
+        this.showSinglePhone = true;
         this.trackCall(1);
+
+         window.getManualClassifiedNumber(
+            ringostat_announce,
+            (number) => {
+               this.singlePhone = number
+            },
+            0,
+            this.phones[Math.floor(Math.random()*this.phones.length)]
+         );
       }
     },
     trackCall(n) {
