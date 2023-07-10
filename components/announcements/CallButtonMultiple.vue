@@ -16,7 +16,7 @@
        </template>
 
       <template v-else-if="showSinglePhone">
-         <a class="call-a" style="" :href="`tel:+${singlePhone}`" v-mask="$maskPhone(true)" >+{{ singlePhone }}</a>
+         <a v-if="singlePhone" class="call-a" style="" :href="`tel:+${singlePhone}`" v-mask="$maskPhone(true)" >+{{ singlePhone }}</a>
          <br>
       </template>
 
@@ -70,10 +70,12 @@ export default {
          window.getManualClassifiedNumber(
             ringostat_announce,
             (number) => {
-               this.singlePhone = number
+               console.log(number);
+               this.singlePhone = number?.numberWithoutMask.replace('+','')
+
             },
             0,
-            this.phones[Math.floor(Math.random()*this.phones.length)]
+            994555501571
          );
       }
     },
