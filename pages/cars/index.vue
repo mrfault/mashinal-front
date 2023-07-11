@@ -21,10 +21,11 @@
             <grid
                v-if="getMainMonetized.length"
                :announcements="getMainMonetized"
-               :title="$t('featured_ads')"
+
                :numberOfAds="getMainMonetized.length"
                escape-duplicates
             />
+<!--            :title="$t('featured_ads')"-->
          </template>
 
          <template v-if="!$route.query.saved">
@@ -32,12 +33,13 @@
                v-if="carsAnnouncements.total > 0"
                :announcements="carsAnnouncements.data"
                :paginate="$paginate(carsAnnouncements)"
-               :title="$t('announcements')"
+
                :numberOfAds="carsAnnouncements.total"
                :pending="pending"
                @change-page="searchCars"
                escape-duplicates
             />
+<!--            :title="$t('announcements')"-->
             <no-results v-else/>
          </template>
 

@@ -4,7 +4,7 @@
       <breadcrumbs :crumbs="crumbs" />
       <grid
         v-if="myAnnouncementCalls.items.length"
-        :title="$t('phone_call_count')"
+
         :announcements="myAnnouncementCalls.items"
         :paginate="$paginate(myAnnouncementCalls)"
         :show-title="isMobileBreakpoint"
@@ -14,6 +14,7 @@
         :track-views="false"
         @change-page="changePage"
       />
+<!--       :title="$t('phone_call_count')"-->
       <no-results v-else
         :type="$route.params.type == 2 ? 'part' : 'car'"
         :text="$t('add_an_ad_and_thousands_of_potential_buyers_will_see_it')"

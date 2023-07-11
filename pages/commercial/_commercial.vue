@@ -14,20 +14,22 @@
          <grid
             v-if="getMainMonetized.length"
             :announcements="getMainMonetized"
-            :title="$t('featured_ads')"
+
             :show-title="true"
             escape-duplicates
          />
+<!--         :title="$t('featured_ads')"-->
 
          <grid
             v-if="commercialAnnouncements.data.length"
             :announcements="commercialAnnouncements.data"
             :paginate="$paginate(commercialAnnouncements)"
-            :title="$t('announcements')"
+
             :pending="pending"
             @change-page="searchCommercial"
             escape-duplicates
          />
+<!--         :title="$t('announcements')"-->
 
          <no-results v-else/>
       </div>

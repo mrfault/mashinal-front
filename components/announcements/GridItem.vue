@@ -47,7 +47,6 @@
       >
 <!--        <span class="sr-only">{{ getAnnouncementTitle(announcement) }}</span>-->
       </a>
-
       <div
         class="item-bg"
         role="img"

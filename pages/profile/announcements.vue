@@ -38,13 +38,14 @@
                   :paginate="$paginate(myAnnouncements)"
                   :pending="pending"
                   :push-into-router="false"
-                  :title="$t('my_announces')"
+
                   :show-title="false"
                   :show-checkbox="true"
                   :show-status="true"
                   @change-page="changePage"
                   isProfilePage
                />
+<!--               :title="$t('my_announces')"-->
 
                <no-results v-else
                            :type="$route.query.type == 2 ? 'part' : 'car'"

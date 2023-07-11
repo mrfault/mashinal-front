@@ -1632,6 +1632,8 @@ export default {
    "rust_converter": "Тип",
    "ryadnoe": "Рядное",
    "S_H": "Б/У",
+   "add_next": "Добавить {count} поиск",
+   "remove_search": "Удалить поиск",
    "safe_type": "Тип",
    "sale": "Продажа",
    "salon": "Салон",

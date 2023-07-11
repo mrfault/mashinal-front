@@ -4,15 +4,17 @@
       <grid
         v-if="shopAnnouncements.data && shopAnnouncements.data.length"
         :announcements="shopAnnouncements.data"
-        :title="title"
+
       />
+<!--       :title="title"-->
     </template>
     <template v-else>
       <grid
         v-if="relativeAnnouncements.data && relativeAnnouncements.data.length"
         :announcements="relativeAnnouncements.data"
-        :title="title"
+
       />
+<!--       :title="title"-->
     </template>
   </div>
 </template>

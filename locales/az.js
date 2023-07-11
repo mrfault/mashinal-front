@@ -1667,6 +1667,8 @@ export default {
    ryadnoe: "Sıralanmış",
    s_h: "işlənmiş",
    S_H: "Sürülmüş",
+   add_next: "{count}-ci axtarış əlavə et",
+   remove_search: "Axtarışı sil",
    safe_type: "Növ",
    sale: "Satış",
    salon: "Salon",

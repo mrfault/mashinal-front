@@ -175,7 +175,7 @@ export const SearchMixin = {
          if (this.rows.length === 5) return;
          let keys = Object.keys(this.form.additional_brands);
          let index = this.rows.indexOf(key);
-         this.rows.splice(index + 1, 0, keys.filter(key => this.rows.indexOf(key) === -1)[0]);
+         this.rows.splice(index, 0, keys.filter(key => this.rows.indexOf(key) === -1)[0]);
       },
       removeSearchRow(key) {
          if (this.rows.length === 1) return;

@@ -17,10 +17,11 @@
             <grid
                v-if="getMainMonetized.length"
                :announcements="getMainMonetized"
-               :title="$t('featured_ads')"
+
                :show-title="true"
                escape-duplicates
             />
+<!--            :title="$t('featured_ads')"-->
          </div>
 
          <div class="announcements-content">
@@ -29,11 +30,12 @@
                :announcements="announcements"
                :paginate="$paginate(pagination)"
                :pending="pending"
-               :title="$t('announcements')"
+
                :show-title="true"
                @change-page="searchParts"
                escape-duplicates
             />
+<!--            :title="$t('announcements')"-->
 
             <no-results v-else type="part"/>
          </div>

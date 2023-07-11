@@ -14,20 +14,22 @@
          <grid
             v-if="getMainMonetized.length"
             :announcements="getMainMonetized"
-            :title="$t('featured_ads')"
+
             :show-title="true"
             escape-duplicates
          />
+<!--         :title="$t('featured_ads')"-->
 
          <grid
             v-if="motoAnnouncements.data.length"
             :announcements="motoAnnouncements.data"
             :paginate="$paginate(motoAnnouncements)"
-            :title="$t('announcements')"
+
             :pending="pending"
             @change-page="searchMoto"
             escape-duplicates
          />
+<!--         :title="$t('announcements')"-->
 
          <no-results v-else/>
 

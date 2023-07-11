@@ -16,11 +16,12 @@
                v-if="carsAnnouncements.data.length"
                :announcements="carsAnnouncements.data"
                :paginate="$paginate(carsAnnouncements)"
-               :title="$t('announcements')"
+
                :pending="pending"
                @change-page="searchCars"
                escape-duplicates
             />
+<!--            :title="$t('announcements')"-->
             <no-results v-else/>
          </template>
       </div>

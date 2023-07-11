@@ -49,10 +49,11 @@
          <grid
             v-if="mostViewed.length"
             :announcements="mostViewed"
-            :title="$t('most_viewed_announcements')"
+
             :show-phone-count="true"
             :track-views="false"
          />
+<!--         :title="$t('most_viewed_announcements')"-->
       </div>
    </div>
 </template>
