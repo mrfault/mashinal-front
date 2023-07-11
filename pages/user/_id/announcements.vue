@@ -29,11 +29,11 @@
             </div>
 
             <div class="tabContent__item" v-if="activeTab === 2">
-               <RegistrationMarksGrid
+               <PlatesGrid
                   :items="getUserRegistrationMarks.data"
                   :showFavoriteBtn="true"
                >
-               </RegistrationMarksGrid>
+               </PlatesGrid>
 
                <pagination
                   v-if="getUserRegistrationMarks?.meta?.last_page > 1"
@@ -57,7 +57,7 @@
 <script>
    import { mapGetters } from 'vuex';
    import Grid from '~/components/announcements/Grid';
-   import RegistrationMarksGrid from "~/components/announcements/RegistrationMarksGrid.vue";
+   import PlatesGrid from "~/components/announcements/PlatesGrid.vue";
    import NoResults from "~/components/elements/NoResults.vue";
 
    export default {
@@ -77,7 +77,7 @@
 
       components: {
          Grid,
-         RegistrationMarksGrid,
+         PlatesGrid,
          NoResults
       },
 

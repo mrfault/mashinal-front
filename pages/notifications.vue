@@ -97,7 +97,7 @@ export default {
          if (n?.notifiable?.type) {
             switch (n.notifiable.type) {
                case 6 :
-                  return this.$localePath('/registration-marks/' + n.value)
+                  return this.$localePath('/plates/' + n.value)
             }
             return '/';
          } else {

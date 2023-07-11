@@ -62,6 +62,7 @@ const getInitialState = () => ({
    mainAnnouncements: {},
    mainMonetized: [],
    carShowroom: [],
+   plateNumbers: [],
    mainPartsAnnouncements: {},
    carsAnnouncements: [],
    motoAnnouncements: [],
@@ -293,6 +294,7 @@ export const getters = {
    partAnnouncements: s => s.partAnnouncements,
    mainAnnouncements: s => s.mainAnnouncements,
    carShowroom: s => s.carShowroom,
+   plateNumbers: s => s.plateNumbers,
    mainPartsAnnouncements: s => s.mainPartsAnnouncements,
    myAnnouncements: s => s.myAnnouncements,
    myAnnouncement: s => s.myAnnouncement,
@@ -429,6 +431,11 @@ export const actions = {
    async fetchCarShowroomAnnouncementsHome({ commit }) {
       const res = await this.$axios.$get('https://v2dev.mashin.al/api/v2/autosalon/announcements/home');
       commit("mutate", { property: "carShowroom", value: res });
+   },
+
+   async fetchPlateNumbersHome({ commit }) {
+      const res = await this.$axios.$get('https://v2dev.mashin.al/api/v2/plate-numbers/home');
+      commit("mutate", { property: "plateNumbers", value: res });
    },
 
    async fetchPartsAnnouncementsHome({ commit }) {

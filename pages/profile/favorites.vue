@@ -35,11 +35,11 @@
             </div>
 
             <div class="tabContent__item" v-if="activeTab === 2">
-               <RegistrationMarksGrid
+               <PlatesGrid
                   :items="getMySavedPlates.data"
                   :showFavoriteBtn="true"
                >
-               </RegistrationMarksGrid>
+               </PlatesGrid>
 
                <pagination
                   v-if="getMySavedPlates?.meta?.last_page > 1"
@@ -56,7 +56,7 @@
                >
                   <nuxt-link class="active btn btn--pale-green-outline d-flex full-width mt-2"
                              style="max-width: 200px;"
-                             :to="$localePath('/registration-marks')"
+                             :to="$localePath('/plates')"
                   >
                      <i aria-hidden="true" class="icon-plus-circle"></i>
                      {{ $t('my_favorites_add') }}
@@ -73,7 +73,7 @@
 
    import Grid from '~/components/announcements/Grid';
    import NoResults from '~/components/elements/NoResults';
-   import RegistrationMarksGrid from "~/components/announcements/RegistrationMarksGrid.vue";
+   import PlatesGrid from "~/components/announcements/PlatesGrid.vue";
 
    export default {
       name: 'pages-profile-favorites',
@@ -82,7 +82,7 @@
       components: {
          Grid,
          NoResults,
-         RegistrationMarksGrid
+         PlatesGrid
       },
 
       nuxtI18n: {

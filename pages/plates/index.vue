@@ -100,7 +100,7 @@
                   </div>
                </div>
 
-               <RegistrationMarksGrid
+               <PlatesGrid
                   :items="getRegistrationMarks?.data"
                   :showFavoriteBtn="true"
                   v-model="loading"
@@ -124,7 +124,7 @@
                         </template>
                      </Cap>
                   </template>
-               </RegistrationMarksGrid>
+               </PlatesGrid>
 
                <pagination
                   v-if="getRegistrationMarks?.meta?.last_page > 1"
@@ -151,12 +151,11 @@
 <script>
    import { mapGetters } from "vuex";
    import { minLength } from "vuelidate/lib/validators";
-   import RegistrationMarksGrid from "~/components/announcements/RegistrationMarksGrid.vue";
+   import PlatesGrid from "~/components/announcements/PlatesGrid.vue";
    import NoResults from "~/components/elements/NoResults.vue";
    import HandleIds from "~/components/announcements/HandleIds.vue";
    import Cap from "~/components/elements/Cap.vue";
    import CustomDropdown from "~/components/elements/CustomDropdown.vue";
-   import tr from "vue2-datepicker/locale/es/tr";
 
    export default {
       head() {
@@ -174,7 +173,7 @@
 
       components: {
          Cap,
-         RegistrationMarksGrid,
+         PlatesGrid,
          NoResults,
          HandleIds,
          CustomDropdown
@@ -314,10 +313,6 @@
       },
 
       computed: {
-         tr() {
-            return tr
-         },
-
          ...mapGetters({
             getRegionNumbers: 'getRegionNumbers',
             getRegistrationMarks: 'getRegistrationMarks',
@@ -411,7 +406,7 @@
          padding: 24px;
          border-radius: 12px;
          background-color: #FFFFFF;
-         margin: 40px 0;
+         margin-top: 40px;
 
          .divider {
             display: flex;

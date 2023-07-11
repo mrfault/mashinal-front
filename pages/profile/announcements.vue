@@ -57,13 +57,13 @@
             </div>
 
             <div class="tabContent__item" v-if="activeTab === 2">
-               <RegistrationMarksGrid
+               <PlatesGrid
                   :items="getMyPlates.data"
                   :moreInfo="true"
                   :short-date="true"
                   :checkbox="true"
                >
-               </RegistrationMarksGrid>
+               </PlatesGrid>
 
                <pagination
                   v-if="getMyPlates?.meta?.last_page > 1"
@@ -91,7 +91,7 @@ import {mapGetters, mapActions} from 'vuex';
 import Grid from '~/components/announcements/Grid';
 import NoResults from '~/components/elements/NoResults';
 import ControlsPanel from '~/components/announcements/ControlsPanel';
-import RegistrationMarksGrid from "~/components/announcements/RegistrationMarksGrid.vue";
+import PlatesGrid from "~/components/announcements/PlatesGrid.vue";
 // import tr from "vue2-datepicker/locale/es/tr";
 
 export default {
@@ -106,7 +106,7 @@ export default {
       Grid,
       NoResults,
       ControlsPanel,
-      RegistrationMarksGrid
+      PlatesGrid
    },
    nuxtI18n: {
       paths: {

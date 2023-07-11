@@ -54,7 +54,7 @@
                </div>
             </div>
 
-            <RegistrationMarksGrid
+            <PlatesGrid
                :items="registrationMarks?.data"
                :showFavoriteBtn="true"
                v-if="registrationMarks?.data.length"
@@ -62,13 +62,13 @@
                <template #head>
                   <h4 class="registrationMarksGrid__title">{{ $t('registration_marks') }}</h4>
 
-                  <nuxt-link :to="$localePath('/registration-marks')">
+                  <nuxt-link :to="$localePath('/plates')">
                      <span>{{ $t('see_all') }}</span>
 
                      <inline-svg :src="'/icons/arrow-right.svg'" :width="'15px'" />
                   </nuxt-link>
                </template>
-            </RegistrationMarksGrid>
+            </PlatesGrid>
 
             <div v-if="isMobileBreakpoint && registrationMark.status != 3" class="mt-3 mt-lg-0">
                <floating-cta :announcement="registrationMark"/>
@@ -85,7 +85,7 @@
    import QuickInfo from '~/components/announcements/inner/QuickInfo.vue';
    import Comment from '~/components/announcements/inner/Comment.vue';
    import AddFavorite from "~/components/announcements/AddFavorite.vue";
-   import RegistrationMarksGrid from "~/components/announcements/RegistrationMarksGrid.vue";
+   import PlatesGrid from "~/components/announcements/PlatesGrid.vue";
    import FloatingCta from "~/components/announcements/inner/FloatingCta.vue";
    import HandleIds from "~/components/announcements/HandleIds.vue";
 
@@ -104,7 +104,7 @@
          QuickInfo,
          Comment,
          AddFavorite,
-         RegistrationMarksGrid,
+         PlatesGrid,
          FloatingCta,
          HandleIds
       },
@@ -154,7 +154,7 @@
 
          crumbs() {
             return [
-               { name: this.$t('registration_marks'), route: '/registration-marks' },
+               { name: this.$t('registration_marks'), route: '/plates' },
                { name: this.registrationMark.car_number }
             ]
          }

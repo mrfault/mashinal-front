@@ -195,7 +195,7 @@
                   </template>
 
                   <template v-if="row.operation_key === 'plate_announce_key'">
-                     ( <nuxt-link :to="$localePath('/registration-marks/'+row.what_bought.id_unique)"> {{row.what_bought.id_unique }}</nuxt-link> )
+                     ( <nuxt-link :to="$localePath('/plates/'+row.what_bought.id_unique)"> {{row.what_bought.id_unique }}</nuxt-link> )
                   </template>
                 </span>
 
