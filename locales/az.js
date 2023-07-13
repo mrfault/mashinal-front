@@ -181,6 +181,7 @@ export default {
    announcement: "Elan",
    announcement_count: "Elan sayı",
    announcement_name: "Elanın adı",
+   announcement_type: "Elanın növü",
    announcement_not_found: "Elan tapılmayıb",
    announcement_paid: "Elan moderasiyaya göndərilib",
    announcement_pending: "Elan yoxlanılır",
@@ -300,7 +301,7 @@ export default {
       "Avtomat",
       "Avtomat (Robot)",
       "Avtomat (Variator)",
-      "Reduktor"
+      "Reduktor",
    ],
    reduktor: "Reduktor",
    brand_country: "Marka ölkəsi",
@@ -335,7 +336,7 @@ export default {
       "İsveçrə",
       "İsveç",
       "Şimali Koreya",
-      "Yaponiya"
+      "Yaponiya",
    ],
    brand_model: "Marka/model",
    brand_name: "Markanın adı",
@@ -466,6 +467,7 @@ export default {
    clear_search: "Sıfırla",
    clear_search2: "Axtarışı sıfırla",
    cleared: "Gömrükdən keçmiş",
+   not_cleared: "Gömrükdən keçməyib",
    close: "Bağlamaq",
    close2: "Bağla",
    co2_emissions: "Emissiyalar CO2 q/km",
@@ -551,7 +553,8 @@ export default {
    content_component_error_heading: "Başlıq əlavə et",
    content_component_error_image: "Minimum 1 şəkil yükləyin",
    content_component_error_ratings: "Qiymətləndirməni göstərin",
-   content_component_error_text: "Təsvir minimum 500 simvoldan ibarət olmalıdır",
+   content_component_error_text:
+      "Təsvir minimum 500 simvoldan ibarət olmalıdır",
    contract: "Müqavilə",
    contract_end_time: "Müqavilənin bitmə vaxtı",
    control_panel_desc:
@@ -588,7 +591,7 @@ export default {
       "W-şəkilli",
       "Oppozit",
       "Rotorlu",
-      "Sıralı"
+      "Sıralı",
    ],
    daily_budget: "Günlük büdcə",
    daily_budget_and_duration: "Günlük büdcə və müddəti",
@@ -614,7 +617,7 @@ export default {
       "Cümə axşamı",
       "Cümə",
       "Şənbə",
-      "Bazar"
+      "Bazar",
    ],
    "days-short": ["B.e.", "Ç.a.", "Ç.", "C.a.", "C.", "Ş.", "B."],
    everyday: "Hər gün",
@@ -730,7 +733,7 @@ export default {
       "Birləşdirilmiş püskürtmə ",
       "Birbaşa\tpüskürtmə",
       "Paylanmış püskürtmə",
-      "Mərkəzi püskürtmə "
+      "Mərkəzi püskürtmə ",
    ],
    engine_values: [
       "-",
@@ -740,7 +743,7 @@ export default {
       "Qaz",
       "Elektro",
       "Qaz-turbin",
-      "Plug-in Hibrid"
+      "Plug-in Hibrid",
    ],
 
    engine_volume: "Mühərrikin işçi həcmi (sm3)",
@@ -843,7 +846,7 @@ export default {
       "Diskli",
       "Havalandırılan diskli",
       "Keramik diskli",
-      "Keramik diskli havalandırılan"
+      "Keramik diskli havalandırılan",
    ],
    front_side_of_id_card: "Şəxsiyyət vəsiqəsinin ön tərəfi",
    front_suspensions: "Ön asqı",
@@ -855,7 +858,7 @@ export default {
       "Sərbəst, pnevmatik element",
       "Sərbəst, yaylı",
       "Sərbəst, ressorlu",
-      "Sərbəst, torsionlu"
+      "Sərbəst, torsionlu",
    ],
    fuel: "Yanacaq növü",
    fuel_consumption_city: "Yanacaq sərfiyyatı, şəhər",
@@ -879,7 +882,7 @@ export default {
       "E85",
       "E100",
       "Elektrik",
-      "Hidrogen"
+      "Hidrogen",
    ],
    "Full size": "Tam ölçülü",
    furgon: "Furqon ",
@@ -919,7 +922,7 @@ export default {
       "Hər əlavə etdiyiniz NV-nə görə aylıq 1 ₼ (ƏDV daxil) məbləğ tutulacaq.",
    garage_register_pay: "NV qaraja əlavə olunub",
    garage_terms_points: [
-      "Ödəniş etməlisiniz ki, qaraja NV əlavə edə biləsiniz."
+      "Ödəniş etməlisiniz ki, qaraja NV əlavə edə biləsiniz.",
    ],
    garage_terms_title: "Qaraja NV əlavə etməyin şərtləri",
    gas: "Qaz",
@@ -1028,7 +1031,8 @@ export default {
    "Isofix mounting system": "İsofix bərkitmə sistemi",
    it_is_forbidden_to_give_links_indicate_email_addresses_mail_address_of_the_place_of_inspection_telephones_price_offer_services:
       "Məlumat bölməsində qeyd olunması qadağa olunmuş məlumatlar(link,e-poçt,qiymət və xidmət təklifi).",
-   it_will_not_be_possible_to_change_the_city_after_accommodation: "Elanı paylaşandan sonra şəhəri deyişdirmək mümkün olmayacaq",
+   it_will_not_be_possible_to_change_the_city_after_accommodation:
+      "Elanı paylaşandan sonra şəhəri deyişdirmək mümkün olmayacaq",
    jack_type: "Avtomobil aləti",
    journal: "Jurnallar",
    kabriolet: "Kabriolet",
@@ -1191,7 +1195,7 @@ export default {
       "Kuzovlar",
       "Xüsusiyyətlər",
       "Modifikasiya",
-      "Kompektasiya"
+      "Kompektasiya",
    ],
    "meta-words_moto-types": ["Motosiklet", "Skuter", "Kvadrosikl"],
    "meta-words_part-categories": [
@@ -1200,7 +1204,7 @@ export default {
       "Yağ və avtokimya",
       "Akkumulyatorlar",
       "Avtoaksesuarlar",
-      "Təmir alətləri"
+      "Təmir alətləri",
    ],
    promil: "promil",
    metal: "Pas",
@@ -1259,7 +1263,8 @@ export default {
    my_favorites_remove: "Seçilmişlərdən sil",
    my_favorites_removed: "Seçilmişlərdən silindi",
    my_packages: "Paketlər",
-   my_packages_duration: "“Ödəniş et” düyməsini sıxmaqla siz <span>Mashin.al istifadəçi razılaşmasını və ofertasını</span> qəbul etdiyinizi təsdiqləmiş olursunuz.",
+   my_packages_duration:
+      "“Ödəniş et” düyməsini sıxmaqla siz <span>Mashin.al istifadəçi razılaşmasını və ofertasını</span> qəbul etdiyinizi təsdiqləmiş olursunuz.",
    package_price: "Paketin qiyməti",
    user_agreement: "İstifadəçi razılaşması",
    get_package: "Paket əldə et",
@@ -1453,7 +1458,8 @@ export default {
    phone_type: "Növ",
    phone_visited_n_times:
       "Elanlarınız üzərindən nömrənizə <span>{count}</span> keçid edilib.",
-   phone_visited_zero_times: "Elanlarınız üzərindən nömrənizə keçid edilimiyib.",
+   phone_visited_zero_times:
+      "Elanlarınız üzərindən nömrənizə keçid edilimiyib.",
    photos: "Şəkillər",
    photos_and_video: "Şəkillər və video",
    pickup: "Pikap",
@@ -1579,7 +1585,7 @@ export default {
       "Diskli",
       "Havalandırılan diskli",
       "Keramik diskli",
-      "Keramik diskli havalandırılan"
+      "Keramik diskli havalandırılan",
    ],
    rear_suspensions: "Arxa asqı",
    rear_suspensions_values: [
@@ -1593,7 +1599,7 @@ export default {
       "Sərbəst, ressorlu",
       "Sərbəst, torsionlu",
       "Yarımsərbəst, yaylı",
-      "Yarımsərbəst, torsionlu"
+      "Yarımsərbəst, torsionlu",
    ],
    rear_wheel_drive_with_plug_in_front: "Arxa və ön ötürücü qoşulmaqla",
    receive_notifications: "Bildirişlər",
@@ -1907,7 +1913,7 @@ export default {
       "Qeydiyyat zamanı istifadə etdiyiniz mobil nömrəni daxil edin",
       "Nömrənin düzgünlüyünə əmin olun",
       '"Nağd pulla ödəniş" üsulunu seçin',
-      'Əsginasları terminala daxil edin, "İrəli" düyməsini sıxın və çeki götürün'
+      'Əsginasları terminala daxil edin, "İrəli" düyməsini sıxın və çeki götürün',
    ],
    terminals: "Klemalar",
    terms_of_image_attachment: "Şəkil əlavə etmə şərtləri",
@@ -1931,7 +1937,8 @@ export default {
    this_announce_inactive: "Bu elan aktiv deyil",
    this_car_already_added_last_90_days_for_new_added_need_payment:
       "Bu avtomobil artıq son 90 gün ərzində əlavə edilib",
-   this_package_has_no_options: "Bu komplektasiyada heç bir opsiya mövcud deyil",
+   this_package_has_no_options:
+      "Bu komplektasiyada heç bir opsiya mövcud deyil",
    this_will_increase_customer_confidence_and_make_your_ads_more_attractive:
       "Alıcıların güvənini artıracag və elanınızı daha cəlbedici edəcək.",
    thorns: "Şiplər",
@@ -2006,12 +2013,13 @@ export default {
       "Kompressor",
       "Atmosfer",
       "Turbo yükləmə",
-      "Elektrikli qızdırıcı"
+      "Elektrikli qızdırıcı",
    ],
    type_of_brakes: "Əyləclərin növləri",
    type_of_drive: "Ötürücü növü",
    type_of_drive_values: ["-", "Arxa", "Ön", "Tam"],
    type_of_motos: "Moto növü",
+   type_of_commercial_vehicle: "Ticari avtomobilin növü",
    type_of_mount: "Bərkitmə növü",
    type_useful: "Faydalı",
    type_your_email: "E-poçt ünvanını daxil et.",
@@ -2025,7 +2033,8 @@ export default {
    paid_services: "Ödənişli xidmətlər",
    unpaid_protocols: "Ödənilməmiş cərimələr",
    unpaid_invoice: "Ödənilməmiş invoysunuz var!",
-   unpaid_params: "“{package_type}” paketi, {start_date}-dən {end_date}-dək, <span>{price} AZN</span>",
+   unpaid_params:
+      "“{package_type}” paketi, {start_date}-dən {end_date}-dək, <span>{price} AZN</span>",
    not_active_package: "Sizin aktiv paketiniz yoxdur!",
    get_new_package: "Yeni paket əldə et",
    overdue: "Vaxtı keçib",
@@ -2214,7 +2223,7 @@ export default {
    learn_customs_duty: "Gömrük rüsumunu öyrənin",
    letter_type_options: [
       "Nəqliyyat vasitəsindən istifadə edilməsinə dair etibarnamə",
-      "Nəqliyyat vasitəsinə sərəncam verilməsinə dair etibarnamə"
+      "Nəqliyyat vasitəsinə sərəncam verilməsinə dair etibarnamə",
    ],
    letter_permission_options: [
       "Sür. hüququ olduqda idarə etmək",
@@ -2223,7 +2232,7 @@ export default {
       "Sərəncam vermək və digər hərəkətlər",
       "Qeydiyyata salmaq",
       "Qeydiyyatdan çıxarmaq",
-      "Ərizə vermək"
+      "Ərizə vermək",
    ],
    vehicle_id_mark: "Nəqliyyat vasitəsinin markası",
    vehicle_id_sign: "Nəqliyyat vasitəsinin dövlət qeydiyyat nişanı",
@@ -2430,14 +2439,16 @@ export default {
    "external-salons": "Sifarişlə avto",
    registration_marks: "Qeydiyyat nişanları",
    registration_marks_min: "Qeydiyyat nişanları",
-   registration_marks_text: "Qeydiyyat nişanı elanı yerləşdirmək <span>ödənişlidir.</span> 1 elanın qiyməti <span>2 AZN</span>-dir",
+   registration_marks_text:
+      "Qeydiyyat nişanı elanı yerləşdirmək <span>ödənişlidir.</span> 1 elanın qiyməti <span>2 AZN</span>-dir",
    external_commercial: "Sifarişlə ticari",
    external_moto: "Sifarişlə moto",
    ml: "ml",
    amount_of_ml: "Miqdarı, ml",
    drink_type: "İçkinin növü",
    alcometer: "Alkotest",
-   alcometer_descr: "İçkili vəziyyətdə avtomobili idarə etmək qadağandır. Bu, sizin və başqalarının həyatını riskə atır. Lorem ipsum dolor sit amet consectur emprario merbaken ",
+   alcometer_descr:
+      "İçkili vəziyyətdə avtomobili idarə etmək qadağandır. Bu, sizin və başqalarının həyatını riskə atır. Lorem ipsum dolor sit amet consectur emprario merbaken ",
 
    visual_tire_calculator: "Vizual şin kalkulyatoru",
    size_of_old_tire: "Köhnə şinin ölçüsü",
@@ -2501,7 +2512,8 @@ export default {
       "Çuxurlarda disk və ya təkər zədələnməsi riski artacaq",
    visual_tire_size_change_result_16:
       "Arxa görünüşü yaxşılaşacaq (subyektiv olaraq)",
-   visual_tire_size_change_result_17: "Yolt utumu və əyləc (yayda) yaxşılaşacaq",
+   visual_tire_size_change_result_17:
+      "Yolt utumu və əyləc (yayda) yaxşılaşacaq",
    visual_tire_size_change_result_18: "Təkərlərin ömrü artacaq",
    visual_tire_size_change_result_19: "Yanacaq sərfiyyatı cüzi artacaq",
    visual_tire_size_change_result_20:
@@ -2532,72 +2544,85 @@ export default {
    plug_in_hybrid: "Plug-in Hibrid",
    "360_interior": "360 interyer",
    "360_exterior": "360 eksteryer",
-   "transfer_to_supervisor": "Supervayzerə ötür",
-   "moderation": "Moderasiya",
-   "user_type": "İstifadəçi növü",
-   "transfer_comment": "Transfer rəyi",
-   "max_50_symbol_can_be_added": "Maksimum 50 simvol yazıla bilər",
-   "max_150_symbol_can_be_added": "Maksimum 150 simvol yazıla bilər",
-   "deactive_announce": "Elanı deaktiv et",
-   "reject": "İmtina et",
-   "file_size_50": "Faylın maksimal həcmi 50 mb ola bilər",
-   "anyone": "İstənilən",
-   "anyone_other": "İstənilən",
-   "anyone_other2": "İstənilən",
-   "announcement_created_at": "Elan yaradılıb",
-   "owner_type": "Sahibin tipi",
-   "image_reject_reason": "Şəklin imtina səbəbi",
-   "front_error": "Nəqliyyat vasitəsinin qabaq hissəsi tapılmadı və ya uyğun gəlmir",
-   "back_error": "Nəqliyyat vasitəsinin arxa hissəsi tapılmadı və ya uyğun gəlmir",
-   "left_error": "Nəqliyyat vasitəsinin sol hissəsi tapılmadı və ya uyğun gəlmir",
-   "right_error": "Nəqliyyat vasitəsinin sağ hissəsi tapılmadı və ya uyğun gəlmir",
-   "interior_error": "Avtomobilin salonu aşkar olunmur və ya uyğun gəlmir",
-   "not_this_car_error": "Göstərilən şəkillər elandakı maşına aid deyil",
-   "logo_on_the_picture": "Şəkilin üzərində loqo var",
-   "edit_image": "Şəkli redaktə et",
-   "deavtive_announce": "Elanı deaktiv et",
-   "sale_region_country": "Satış ölkəsi",
-   "your_announce_rejected": "Elanın dərc edilməsindən imtina edildi",
-   "show_logs": "Loqları göstər",
-   "logs": "Loqlar",
-   "old_value": "Əvvəlki məna",
-   "old_value_2": "Əvvəlki dəyər",
-   "new_value": "Yeni məna",
-   "created_at": "Yaradılıb",
-   "interior_360_successfully_upload": "İnteryer 360 uğurla yükləndi",
-   "add_video_360": "360 (video) Əlavə et",
-   "add_interior_360": "360 interior əlavə et",
+   transfer_to_supervisor: "Supervayzerə ötür",
+   moderation: "Moderasiya",
+   user_type: "İstifadəçi növü",
+   transfer_comment: "Transfer rəyi",
+   max_50_symbol_can_be_added: "Maksimum 50 simvol yazıla bilər",
+   max_150_symbol_can_be_added: "Maksimum 150 simvol yazıla bilər",
+   deactive_announce: "Elanı deaktiv et",
+   reject: "İmtina et",
+   file_size_50: "Faylın maksimal həcmi 50 mb ola bilər",
+   anyone: "İstənilən",
+   anyone_other: "İstənilən",
+   anyone_other2: "İstənilən",
+   announcement_created_at: "Elan yaradılıb",
+   owner_type: "Sahibin tipi",
+   image_reject_reason: "Şəklin imtina səbəbi",
+   front_error:
+      "Nəqliyyat vasitəsinin qabaq hissəsi tapılmadı və ya uyğun gəlmir",
+   back_error:
+      "Nəqliyyat vasitəsinin arxa hissəsi tapılmadı və ya uyğun gəlmir",
+   left_error: "Nəqliyyat vasitəsinin sol hissəsi tapılmadı və ya uyğun gəlmir",
+   right_error:
+      "Nəqliyyat vasitəsinin sağ hissəsi tapılmadı və ya uyğun gəlmir",
+   interior_error: "Avtomobilin salonu aşkar olunmur və ya uyğun gəlmir",
+   not_this_car_error: "Göstərilən şəkillər elandakı maşına aid deyil",
+   logo_on_the_picture: "Şəkilin üzərində loqo var",
+   edit_image: "Şəkli redaktə et",
+   deavtive_announce: "Elanı deaktiv et",
+   sale_region_country: "Satış ölkəsi",
+   your_announce_rejected: "Elanın dərc edilməsindən imtina edildi",
+   show_logs: "Loqları göstər",
+   logs: "Loqlar",
+   old_value: "Əvvəlki məna",
+   old_value_2: "Əvvəlki dəyər",
+   new_value: "Yeni məna",
+   created_at: "Yaradılıb",
+   interior_360_successfully_upload: "İnteryer 360 uğurla yükləndi",
+   add_video_360: "360 (video) Əlavə et",
+   add_interior_360: "360 interior əlavə et",
 
-   "cars_with_damage_sentence": "ban elementlərində zədə mövcud olan avtomobillər",
-   "second_or_more": "Xeyr",
-   "forbidden_give_links_text": "Məlumatda linklərinin göstərilməsi, elektron poçt ünvanının, baxış keçirmə məkanın ünvanının, telefon nömrəsinin, qiymətin və xidmətlərin təklifi qadağandır.",
-   "user_add_successfully": "İstifadəçi uğurla əlavə edildi",
-   "delay_comment": "Şərh yazmaq",
-   "comment_to_supervisor": "Supervayzerə rəy ver və ötür",
-   "part_photo_reject_1": "Fotoşəkillər saytın qaydalarına uyğun deyil.",
-   "part_photo_reject_2": "Şəkillərdə görüntü aydın deyil.",
-   "part_photo_reject_3": "Şəkil qeyd olunan ehtiyyat hissəsinə aid deyil.",
-   "part_photo_reject_4": "Təsvirdə ətraflı məlumat qeyd olunmayıb.",
-   "recheck_sms_radar": "SMS Radarda yenidən yoxla",
-   "at_least_3_photos": "Ən azı 3 şəkil",
-   "category_id": "Kateqoriya ID",
-   "brand_id": "Marka ID",
-   "show_comment": "Rəyi göstər",
-   "show_transfer_comment": "Transfer rəyini göstər",
-   "not_commented": "Rəy verilməyib",
-   "announce_is_exist": "Elan artıq mövcuddur",
-   "this_announce_opened_with_another_user": "Bu elan başqa istifadəçi tərəfindən açılıb",
-   "after_seconds_auto_reload_with": "saniyə sonra avtomatik yenilənəcəkdir",
-   "terminal_payment_rules" : "terminalları vasitəsilə balans artırılması aşağıdakı qaydadadır.",
-   "ads_statistics" : "Elanınız təqribən {count} dəfə alıcılara göstəriləcək",
-   "ads_title" : "Elanınız ana səhifədə önə çıxarılacaq və daha çox müştəriyə göstəriləcək.",
-   "terminal_help_description" : "Xidmət dərhal tətbiq olunacaq. Hər hansı çətinlik yarandıqda *8787 Çağrı Mərkəzi ilə əlaqə saxlayın.",
-   "ads_description" : "Reklam işə salındıqdan sonra istənilən vaxt xərcləri dayandıra bilərsiniz",
-   "ads_day": "gün",
-   "ad_sorting": "Elanların sıralanması",
-   "terminal_popup_title" : "terminalları vasitəsilə balans artırılması aşağıdakı qaydadadır:",
-   "plate_announce_key" : "Elan yerləşdirildi",
-   "sign_in_to_account": "Hesaba daxil ol",
+
+   cars_with_damage_sentence:
+      "ban elementlərində zədə mövcud olan avtomobillər",
+   second_or_more: "Xeyr",
+   forbidden_give_links_text:
+      "Məlumatda linklərinin göstərilməsi, elektron poçt ünvanının, baxış keçirmə məkanın ünvanının, telefon nömrəsinin, qiymətin və xidmətlərin təklifi qadağandır.",
+   user_add_successfully: "İstifadəçi uğurla əlavə edildi",
+   delay_comment: "Şərh yazmaq",
+   comment_to_supervisor: "Supervayzerə rəy ver və ötür",
+   part_photo_reject_1: "Fotoşəkillər saytın qaydalarına uyğun deyil.",
+   part_photo_reject_2: "Şəkillərdə görüntü aydın deyil.",
+   part_photo_reject_3: "Şəkil qeyd olunan ehtiyyat hissəsinə aid deyil.",
+   part_photo_reject_4: "Təsvirdə ətraflı məlumat qeyd olunmayıb.",
+   recheck_sms_radar: "SMS Radarda yenidən yoxla",
+   at_least_3_photos: "Ən azı 3 şəkil",
+   category_id: "Kateqoriya ID",
+   brand_id: "Marka ID",
+   show_comment: "Rəyi göstər",
+   show_transfer_comment: "Transfer rəyini göstər",
+   not_commented: "Rəy verilməyib",
+   announce_is_exist: "Elan artıq mövcuddur",
+   this_announce_opened_with_another_user:
+      "Bu elan başqa istifadəçi tərəfindən açılıb",
+   after_seconds_auto_reload_with: "saniyə sonra avtomatik yenilənəcəkdir",
+   terminal_payment_rules:
+      "terminalları vasitəsilə balans artırılması aşağıdakı qaydadadır.",
+   ads_statistics: "Elanınız təqribən {count} dəfə alıcılara göstəriləcək",
+   ads_title:
+      "Elanınız ana səhifədə önə çıxarılacaq və daha çox müştəriyə göstəriləcək.",
+   terminal_help_description:
+      "Xidmət dərhal tətbiq olunacaq. Hər hansı çətinlik yarandıqda *8787 Çağrı Mərkəzi ilə əlaqə saxlayın.",
+   ads_description:
+      "Reklam işə salındıqdan sonra istənilən vaxt xərcləri dayandıra bilərsiniz",
+   ads_day: "gün",
+   ad_sorting: "Elanların sıralanması",
+   terminal_popup_title:
+      "terminalları vasitəsilə balans artırılması aşağıdakı qaydadadır:",
+   plate_announce_key: "Elan yerləşdirildi",
+  "sign_in_to_account": "Hesaba daxil ol",
    "my_balance": "Balansım",
    "sign_out": "Çıxış",
-}
+};
+
