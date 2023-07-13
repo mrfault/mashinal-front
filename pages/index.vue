@@ -116,8 +116,6 @@
       <div class="overflow-hidden" v-if="getMainMonetized.length">
          <grid
             :announcements="getMainMonetized"
-            :escape-duplicates="true"
-            :has-container="true"
             :pending="pending"
          >
             <template #cap>
@@ -140,8 +138,6 @@
       <div class="overflow-hidden bg-white" v-if="mainAnnouncements.length">
          <grid
             :announcements="mainAnnouncements"
-            :escape-duplicates="true"
-            :has-container="true"
             :pending="pending"
          >
             <template #cap>
@@ -161,11 +157,35 @@
          </grid>
       </div>
 
+      <div class="overflow-hidden" v-if="plateNumbers.length">
+<!--         <pre>{{plateNumbers}}</pre>-->
+
+         <div class="container">
+            <PlatesGrid
+               :items="plateNumbers"
+               :showFavoriteBtn="true"
+            >
+               <template #head>
+                  <Cap>
+                     <template #left>
+                        <h3>{{ $t('registration_marks') }}</h3>
+                     </template>
+
+                     <template #right>
+                        <nuxt-link :to="$localePath('/plates')">
+                           <span>{{ $t('see_all') }}</span>
+                           <icon name="arrow-right"/>
+                        </nuxt-link>
+                     </template>
+                  </Cap>
+               </template>
+            </PlatesGrid>
+         </div>
+      </div>
+
       <div class="overflow-hidden bg-white" v-if="carShowroom.length">
          <grid
             :announcements="carShowroom"
-            :escape-duplicates="true"
-            :has-container="true"
             :pending="pending"
          >
             <template #cap>
@@ -219,6 +239,7 @@
    import { mapGetters, mapActions } from 'vuex'
    import CarSearchForm from '~/components/cars/CarSearchForm'
    import Grid from '~/components/announcements/Grid'
+   import PlatesGrid from "~/components/announcements/PlatesGrid.vue";
    import HandleIds from "~/components/announcements/HandleIds.vue";
    import Cap from "~/components/elements/Cap.vue";
 
@@ -235,7 +256,8 @@
          CarSearchForm,
          Grid,
          HandleIds,
-         Cap
+         Cap,
+         PlatesGrid
       },
 
       head() {
@@ -287,6 +309,7 @@
       async asyncData({store}) {
          await Promise.all([
             store.dispatch('getBrandsOnlyExists'),
+            store.dispatch('fetchPlateNumbersHome'),
             store.dispatch('getOptions'),
             store.dispatch('getBodyOptions'),
             store.dispatch('clearSavedSearch'),
@@ -298,7 +321,14 @@
          }
       },
       computed: {
-         ...mapGetters(['mainAnnouncements', 'homePageSliders', 'getMainMonetized', 'singleSavedSearch', 'carShowroom']),
+         ...mapGetters([
+            'mainAnnouncements',
+            'homePageSliders',
+            'getMainMonetized',
+            'singleSavedSearch',
+            'carShowroom',
+            'plateNumbers'
+         ]),
 
          photos() {
             return {

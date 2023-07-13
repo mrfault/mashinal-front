@@ -19,7 +19,7 @@ export default function ({app, $auth, store, redirect}) {
          return redirect(app.$localePath('/sell'));
       }
    }
-   if (app.getRouteBaseName() === 'registration-marks-create') redirect(app.$localePath('/sell'));
+   if (app.getRouteBaseName() === 'plates-create') redirect(app.$localePath('/sell'));
 
    return true;
 }

@@ -266,8 +266,7 @@
         </div>
         <div class="form_navigation"></div>
       </div>
-    </div>
-  </div>
+   </div>
 </template>
 
 <script>
@@ -473,13 +472,13 @@ export default {
         display: flex;
         gap: 16px;
       }
+    }
 
-      .beaten_suffix {
-        position: relative;
-        z-index: 600;
-        margin-left: auto;
-        cursor: progress;
-      }
+    .beaten_suffix {
+      position: relative;
+      z-index: 600;
+      margin-left: auto;
+      cursor: progress;
     }
   }
 }

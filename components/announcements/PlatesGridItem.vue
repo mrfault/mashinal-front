@@ -122,7 +122,7 @@
 
       methods: {
          goToRegistrationMark(id) {
-            this.$router.push(this.localePath(`/registration-marks/${id}`));
+            this.$router.push(this.localePath(`/plates/${id}`));
          },
 
          modifiedDate(date) {
@@ -139,13 +139,9 @@
 
 <style lang="scss">
    .registrationMarksGridItem {
-      display: inline-block;
-      width: 256px;
       border-radius: 8px;
       border: 1px solid #CDD5DF;
       background-color: #FFFFFF;
-      height: max-content;
-      margin: 0 0 24px 20px;
       cursor: pointer;
 
       &__head {
@@ -287,21 +283,11 @@
 
    @media (max-width: 1150px) {
       .registrationMarksGridItem {
-         width: 217px;
-
          &__head {
             h3 {
                font-size: 33px;
             }
          }
-      }
-   }
-
-   @media (max-width: 992px) {
-      .registrationMarksGridItem {
-         justify-content: unset;
-         margin: 0 0 25px 0;
-         width: 48%;
       }
    }
 
@@ -364,7 +350,6 @@
                      font-weight: 600;
                      font-size: 15px;
                      line-height: 18px;
-
                   }
                }
             }
@@ -391,8 +376,6 @@
 
    @media (max-width: 425px) {
       .registrationMarksGridItem {
-         margin: 0 0 15px 0;
-
          &__head {
             height: 40px;
 
@@ -413,8 +396,6 @@
 
    @media (max-width: 385px) {
       .registrationMarksGridItem {
-         width: 47%;
-
          &__head {
             h3 {
                font-size: 20px;

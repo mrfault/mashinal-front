@@ -32,8 +32,8 @@
 <script>
    import GridItem from '~/components/announcements/GridItem';
    import SiteBanner from "~/components/banners/SiteBanner";
-   import RegistrationMarksGrid from "~/components/announcements/RegistrationMarksGrid.vue";
-   import RegistrationMarksGridItem from "~/components/announcements/RegistrationMarksGridItem.vue";
+   import PlatesGrid from "~/components/announcements/PlatesGrid.vue";
+   import PlatesGridItem from "~/components/announcements/PlatesGridItem.vue";
 
    export default {
       props: {
@@ -93,8 +93,8 @@
       components: {
          SiteBanner,
          GridItem,
-         RegistrationMarksGrid,
-         RegistrationMarksGridItem
+         PlatesGrid,
+         PlatesGridItem
       },
 
       data() {

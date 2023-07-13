@@ -5,7 +5,7 @@
       </div>
 
       <div class="registrationMarksGrid__items">
-         <RegistrationMarksGridItem
+         <PlatesGridItem
             v-for="item in filteredItems"
             :key="item.id"
             :item="item"
@@ -19,10 +19,10 @@
 </template>
 
 <script>
-   import RegistrationMarksGridItem from "~/components/announcements/RegistrationMarksGridItem.vue";
+   import PlatesGridItem from "~/components/announcements/PlatesGridItem.vue";
 
    export default {
-      components: { RegistrationMarksGridItem },
+      components: { PlatesGridItem },
 
       data() {
          return {
@@ -81,15 +81,13 @@
 <style lang="scss">
    .registrationMarksGrid {
       position: relative;
-
-      //&__head {
-      //   .form-group {
-      //      width: 170px;
-      //   }
-      //}
+      margin: 56px 0;
 
       &__items {
-         margin: 40px 0 0 -20px;
+         display: grid;
+         gap: 20px;
+         grid-template-columns: repeat(4, 1fr);
+         margin-top: 48px;
       }
 
       &.loading {
@@ -119,10 +117,7 @@
    @media (max-width: 992px) {
       .registrationMarksGrid {
          &__items {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 14px;
-            margin: 40px 0 0 0;
+            grid-template-columns: repeat(2, 1fr);
          }
       }
    }
@@ -138,31 +133,10 @@
                padding: 22px 10px !important;
             }
          }
+
+         &__items {
+            gap: 18px;
+         }
       }
    }
-
-   //@media (max-width: 400px) {
-   //   .registrationMarksGrid {
-   //      &__head {
-   //         //margin: 0 -10px;
-   //
-   //         a {
-   //            font-size: 16px !important;
-   //         }
-   //      }
-   //
-   //      //&__title {
-   //      //   font-size: 20px;
-   //      //   line-height: 22px;
-   //      //}
-   //   }
-   //}
-
-   //@media (max-width: 370px) {
-   //   .registrationMarksGrid {
-   //      //&__title {
-   //      //   font-size: 17px;
-   //      //}
-   //   }
-   //}
 </style>
