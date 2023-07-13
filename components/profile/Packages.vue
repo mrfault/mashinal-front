@@ -24,8 +24,8 @@
                            v-for="info in item.items"
                            :key="info.id"
                         >
-                           <inline-svg :src="'/icons/check2.svg'" v-if="info.checked" />
-                           <inline-svg :src="'/icons/close2.svg'" v-else />
+                           <inline-svg :src="'/icons/check3.svg'" v-if="info.checked" />
+                           <inline-svg :src="'/icons/close3.svg'" v-else />
 
                            <span>{{ info.text }}</span>
                         </li>
@@ -104,14 +104,13 @@
          height: 100%;
          max-width: 387px;
          padding: 36px 20px 100px 20px !important;
-         border-radius: 4px;
          text-align: center;
          border: 1px solid #D6E4F8;
          background-color: #FFFFFF;
-
+         border-radius: 12px;
          &.popular {
-            border-color: #246EB2;
-
+            border-color: #155EEF;
+            overflow: hidden;
             .btn {
                color: #FFFFFF;
                background-color: #29A53E;
@@ -123,13 +122,13 @@
             left: 20px;
             bottom: 36px;
             width: calc(100% - 40px);
-
             font-size: 14px;
             line-height: 18px;
-            color: #29A53E;
+            color: #039855;
             height: 42px;
-            border: 1px solid #29A53E;
+            border: 1px solid #039855;
             background-color: transparent;
+            border-radius: 8px;
          }
 
          svg {
@@ -143,17 +142,18 @@
          align-items: center;
          justify-content: center;
          position: absolute;
-         top: -25px;
-         left: -1px;
-         width: 100.6%;
-         height: 36px;
-         font-weight: 500;
-         font-size: 16px;
-         line-height: 19px;
+         top: 50px;
+         left: 100px;
+         width: 100%;
+         height: 56px;
+         font-weight: 600;
+         font-size: 20px;
+         line-height: 24px;
          color: #FFFFFF;
          border-top-left-radius: 4px;
          border-top-right-radius: 4px;
-         background-color: #246EB2;
+         background-color: #155EEF;
+         transform: rotate(45deg);
       }
 
       &__title {
@@ -162,22 +162,24 @@
          line-height: 25px;
          color: #081A3E;
          margin-bottom: 20px !important;
+         text-align: left;
       }
 
       &__subtitle {
          display: flex;
          align-items: center;
-         justify-content: center;
+         justify-content: start;
          font-weight: 700;
-         font-size: 40px;
-         line-height: 50px;
+         font-size: 34px;
+         line-height: 46px;
          color: #081A3E;
+         text-align: left;
 
          span {
             margin-left: 9px;
             font-weight: 500;
-            font-size: 16px;
-            line-height: 19px;
+            font-size: 18px;
+            line-height: 22px;
             color: #081A3E;
             opacity: 0.3;
          }

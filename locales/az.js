@@ -1496,7 +1496,7 @@ export default {
    polnyy: "Tam",
    polnyy_podkluchayemiy: "Tam qoşulan",
    popular: "Populyar",
-   most_popular: "Ən Populyar",
+   most_popular: "Populyar",
    popular_options: "Populyar seçimlər",
    position: "Yerləşim",
    post_for_free: "Pulsuz yerləşdir",
