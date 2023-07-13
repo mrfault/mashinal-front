@@ -448,6 +448,7 @@ export default {
       "Elanlarınızı yoxlamaq üçün nömrənizi daxil edin.",
    "chislo-klapanov-na-tsilindr": "Silindrdə olan klapanların sayı",
    choose_a_place_of_inspection_on_the_map: "Baxış yerini xəritədən seç",
+   choose_on_map: "Xəritədən seç",
    choose_a_service: "Xidməti seç",
    choose_from_main: "Əsas seçmək",
    choose_no_more_than: "Saydan artığ olmadan",
@@ -1073,6 +1074,7 @@ export default {
    less: "Daha az",
    less_2: "Qısalt",
    license_plate: "Dövlət nişanı",
+   license_plate_number: "Qeydiyyat nişanı",
    license_plate_number_vin_or_carcase_number:
       "Qeydiyyat nişanı və ya ban nömrəsi",
    liftback: "Liftbek",
@@ -2620,4 +2622,5 @@ export default {
    terminal_popup_title:
       "terminalları vasitəsilə balans artırılması aşağıdakı qaydadadır:",
    plate_announce_key: "Elan yerləşdirildi",
+   other_parameters: "Digər parametrlər",
 };

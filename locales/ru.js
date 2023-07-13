@@ -444,6 +444,7 @@ export default {
       "Введите номер телефона для проверки на наличие объявлений.",
    "chislo-klapanov-na-tsilindr": "Число клапанов на цилиндр",
    choose_a_place_of_inspection_on_the_map: "Выберите место осмотра на карте",
+   choose_on_map: "Выбрать на карте",
    choose_a_service: "Выбрать услугу",
    choose_from_main: "Выбрать основным",
    choose_no_more_than: "Выберите не больше",
@@ -1061,6 +1062,7 @@ export default {
    less: "Скрыть",
    less_2: "Меньше",
    license_plate: "Госномер",
+   license_plate_number: "Регистрационный номер",
    license_plate_number_vin_or_carcase_number: "Госномер, VIN или номер кузова",
    liftback: "Лифтбек",
    lifting_height: "Подъем",
@@ -2565,4 +2567,5 @@ export default {
    ad_sorting: "Сортировка объявлений",
    terminal_popup_title: "Правила пополнения баланса через терминалы:",
    plate_announce_key: "Размещено объявление",
+   other_parameters: "Прочее параметры",
 };
