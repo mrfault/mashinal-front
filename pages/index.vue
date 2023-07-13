@@ -205,31 +205,31 @@
          </grid>
       </div>
 
-<!--      <div class="overflow-hidden">-->
-<!--         <grid-->
-<!--            :announcements="mainAnnouncements.data"-->
-<!--            :banner="'/img/parts-{count}-{locale}.jpg'"-->
-<!--            :banner-count="4"-->
-<!--            :banner-for="'Part'"-->
-<!--            :banner-link="'/parts'"-->
-<!--            :banner-place="24"-->
-<!--            :escape-duplicates="true"-->
-<!--            :has-container="true"-->
-<!--            :pending="pending"-->
-<!--            :title="$t('recent_uploads')"-->
-<!--            :show-title="true"-->
-<!--         />-->
-<!--      </div>-->
+      <div class="overflow-hidden" v-if="partsHome.length">
+         <grid
+            :announcements="partsHome"
+            :pending="pending"
+         >
+            <template #cap>
+               <Cap :className="'mb40'">
+                  <template #left>
+                     <h3>{{ $t('parts') }}</h3>
+                  </template>
 
-<!--      <infinite-loading-->
-<!--         :per-page="20"-->
-<!--         :per-page-b="4"-->
-<!--         :offset="5000"-->
-<!--         action="getInfiniteMainSearchWithoutMutate"-->
-<!--         action-b="getInfiniteMainPartsSearchWithoutMutate"-->
-<!--         getter="mainAnnouncements"-->
-<!--         getter-b="mainPartsAnnouncements"-->
-<!--      />-->
+                  <template #right>
+                     <nuxt-link :to="$localePath('/cars')">
+                        <span>{{ $t('see_all') }}</span>
+                        <icon name="arrow-right"/>
+                     </nuxt-link>
+                  </template>
+               </Cap>
+            </template>
+         </grid>
+      </div>
+
+<!--      <div class="overflow-hidden bg-white" v-if="brandsList.length">-->
+<!--         <BrandsList :options="brandsList" />-->
+<!--      </div>-->
 
       <HandleIds v-if="getMainMonetized.length" :items="getMainMonetized" :watchIds="false"/>
    </div>
@@ -257,7 +257,7 @@
          Grid,
          HandleIds,
          Cap,
-         PlatesGrid
+         PlatesGrid,
       },
 
       head() {
@@ -308,18 +308,24 @@
 
       async asyncData({store}) {
          await Promise.all([
-            store.dispatch('getBrandsOnlyExists'),
-            store.dispatch('fetchPlateNumbersHome'),
-            store.dispatch('getOptions'),
-            store.dispatch('getBodyOptions'),
-            store.dispatch('clearSavedSearch'),
+            store.dispatch('fetchCarShowroomAnnouncementsHome'),
+            store.dispatch('fetchMonetizedAnnouncementsHome'),
+            store.dispatch('fetchPartsAnnouncementsHome'),
+            store.dispatch('fetchAllAnnouncementsHome'),
             store.dispatch('getAllOtherOptions', '2'),
-            store.dispatch('getColors'),
+            store.dispatch('fetchPlateNumbersHome'),
+            store.dispatch('getBrandsOnlyExists'),
+            store.dispatch('clearSavedSearch'),
+            store.dispatch('fetchBrandsList'),
+            store.dispatch('getBodyOptions'),
+            store.dispatch('getOptions'),
+            store.dispatch('getColors')
          ])
          return {
             pending: false,
          }
       },
+
       computed: {
          ...mapGetters([
             'mainAnnouncements',
@@ -327,7 +333,8 @@
             'getMainMonetized',
             'singleSavedSearch',
             'carShowroom',
-            'plateNumbers'
+            'plateNumbers',
+            'partsHome',
          ]),
 
          photos() {
@@ -343,7 +350,8 @@
             'fetchAllAnnouncementsHome',
             'clearSavedSearch',
             'fetchMonetizedAnnouncementsHome',
-            'fetchCarShowroomAnnouncementsHome'
+            'fetchCarShowroomAnnouncementsHome',
+            'fetchPartsAnnouncementsHome',
          ]),
 
          async handleLogoClick() {
@@ -408,10 +416,6 @@
       },
 
       mounted() {
-         this.$store.dispatch('fetchAllAnnouncementsHome')
-         this.$store.dispatch('fetchMonetizedAnnouncementsHome');
-         this.$store.dispatch('fetchCarShowroomAnnouncementsHome');
-
          if (window.innerWidth < 769) this.absoluteMobileScreen = true
          else this.absoluteMobileScreen = false
          window.addEventListener('resize', (e) => {
@@ -440,65 +444,65 @@
       beforeRouteLeave(to, from, next) {
          this.$nuxt.$emit('prevent-popstate')
          next()
-      },
+      }
    }
 </script>
 
 <style lang="scss">
-.swiper-container {
-   .btn--green {
-      height: 25px !important;
-   }
-
-   @media screen and (max-width: 1024px) {
-      .btn--green {
-         height: 12px !important;
-      }
-   }
-   @media screen and (max-width: 768px) {
-      .swiper-pagination {
-         left: 0 !important;
-         bottom: 14px !important;
-      }
-      .swiper-pagination-bullet {
-         position: absolute;
-         top: -6px;
-         left: 44%;
-         z-index: 111;
-
-         &:first-child {
-            top: -6px;
-            left: 49%;
-         }
-      }
-   }
-}
-
-.mobileHomePage-slide-item {
-   height: 170px;
-   position: relative;
-   justify-content: flex-start;
-
-   .mobileHomePage-slide-left {
-      width: 50%;
-   }
-
-   .mobileHomePage-slide-right {
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 50%;
-      height: 100%;
-      box-sizing: border-box;
-      overflow: hidden;
-      clip-path: polygon(43% 0, 100% 0, 100% 100%, 0% 100%);
-
-      img {
-         width: 100%;
-         height: 100%;
-         object-fit: cover;
-      }
-   }
-}
+   //.swiper-container {
+   //   .btn--green {
+   //      height: 25px !important;
+   //   }
+   //
+   //   @media screen and (max-width: 1024px) {
+   //      .btn--green {
+   //         height: 12px !important;
+   //      }
+   //   }
+   //   @media screen and (max-width: 768px) {
+   //      .swiper-pagination {
+   //         left: 0 !important;
+   //         bottom: 14px !important;
+   //      }
+   //      .swiper-pagination-bullet {
+   //         position: absolute;
+   //         top: -6px;
+   //         left: 44%;
+   //         z-index: 111;
+   //
+   //         &:first-child {
+   //            top: -6px;
+   //            left: 49%;
+   //         }
+   //      }
+   //   }
+   //}
+   //
+   //.mobileHomePage-slide-item {
+   //   height: 170px;
+   //   position: relative;
+   //   justify-content: flex-start;
+   //
+   //   .mobileHomePage-slide-left {
+   //      width: 50%;
+   //   }
+   //
+   //   .mobileHomePage-slide-right {
+   //      position: absolute;
+   //      top: 0;
+   //      right: 0;
+   //      width: 50%;
+   //      height: 100%;
+   //      box-sizing: border-box;
+   //      overflow: hidden;
+   //      clip-path: polygon(43% 0, 100% 0, 100% 100%, 0% 100%);
+   //
+   //      img {
+   //         width: 100%;
+   //         height: 100%;
+   //         object-fit: cover;
+   //      }
+   //   }
+   //}
 </style>
 
