@@ -25,7 +25,7 @@
                            :key="info.id"
                         >
                            <inline-svg :src="'/icons/check3.svg'" v-if="info.checked" />
-                           <inline-svg :src="'/icons/close3.svg'" v-else />
+                           <inline-svg :src="'/icons/close2.svg'" v-else />
 
                            <span>{{ info.text }}</span>
                         </li>
