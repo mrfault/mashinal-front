@@ -1,10 +1,16 @@
 <template>
-   <div class="myPackagesBuy">
-      <div class="container">
-         <ComeBack :text="$t('registration2')" v-if="isMobileBreakpoint" />
+   <div class="pt-4 pb-5">
 
+      <portal to="breadcrumbs">
          <breadcrumbs :crumbs="crumbs" />
+      </portal>
 
+      <component
+         :is="isMobileBreakpoint ? 'mobile-screen' : 'div'"
+         :bar-title="$t('registration2')"
+         @back="$router.push(pageRef || $localePath('/profile/packages/buy'))"
+         height-auto
+      >
          <div class="row">
             <div class="col-md-8 col-lg-8 col-xs-12 p-0 p-1">
                <div class="myPackagesBuy__cart">
@@ -69,60 +75,60 @@
 
             </div>
          </div>
+      </component>
 
-         <modal-popup
-            :toggle="openModal"
-            :title="$t('balans')"
-            :modal-class="'larger packages'"
-            @close="openModal = false"
-         >
-            <h4 class="paymentMethods mb-3">{{ $t('payment_method') }}</h4>
+      <modal-popup
+         :toggle="openModal"
+         :title="$t('balans')"
+         :modal-class="'larger packages'"
+         @close="openModal = false"
+      >
+         <h4 class="paymentMethods mb-3">{{ $t('payment_method') }}</h4>
 
-            <label class="radio-container">
-               {{$t('pay_with_card')}}
-               <input type="radio" name="payment_type" checked @change="payment_type = 'card'">
-               <span class="checkmark"></span>
-            </label>
+         <label class="radio-container">
+            {{$t('pay_with_card')}}
+            <input type="radio" name="payment_type" checked @change="payment_type = 'card'">
+            <span class="checkmark"></span>
+         </label>
 
-            <label class="radio-container" v-if="this.$auth.loggedIn && $readNumber(user.balance) > 0">
-               {{ $t('balans') }}
-               <input type="radio" name="payment_type" @change="payment_type = 'balance'">
-               <span class="checkmark"></span>
-            </label>
+         <label class="radio-container" v-if="this.$auth.loggedIn && $readNumber(user.balance) > 0">
+            {{ $t('balans') }}
+            <input type="radio" name="payment_type" @change="payment_type = 'balance'">
+            <span class="checkmark"></span>
+         </label>
 
-            <hr v-if="$readNumber(user.balance) > 0" />
+         <hr v-if="$readNumber(user.balance) > 0" />
 
-            <div class="wrapp">
-               <div class="terminal-section" v-if="$readNumber(user.balance) > 0">
-                  {{ $t('balans') }}: <span style="margin-right: 20px;">{{ $readNumber(user.balance) }}</span>
-               </div>
-
-               <div class="terminal-section" v-if="$readNumber(user.balance) > 0">
-                  {{ $t('package_price') }}: <span>{{ selectedPackage?.price * duration }} AZN</span>
-               </div>
+         <div class="wrapp">
+            <div class="terminal-section" v-if="$readNumber(user.balance) > 0">
+               {{ $t('balans') }}: <span style="margin-right: 20px;">{{ $readNumber(user.balance) }}</span>
             </div>
 
-            <hr v-if="$readNumber(user.balance) < 1" />
-            <div class="terminal-section" v-if="$readNumber(user.balance) < 1">
-               {{ $t('package_price') }} {{ selectedPackage?.price * duration }} AZN
+            <div class="terminal-section" v-if="$readNumber(user.balance) > 0">
+               {{ $t('package_price') }}: <span>{{ selectedPackage?.price * duration }} AZN</span>
             </div>
+         </div>
 
-            <div class="modal-sticky-bottom">
-               <hr />
+         <hr v-if="$readNumber(user.balance) < 1" />
+         <div class="terminal-section" v-if="$readNumber(user.balance) < 1">
+            {{ $t('package_price') }} {{ selectedPackage?.price * duration }} AZN
+         </div>
 
-               <div class="row">
-                  <div class="col-12 col-lg-12 mt-2 mt-lg-0">
-                     <button
-                        :class="['btn btn--green full-width', { pending }]"
-                        @click="handleSubmit"
-                     >
-                        {{ $t('pay') }}
-                     </button>
-                  </div>
+         <div class="modal-sticky-bottom">
+            <hr />
+
+            <div class="row">
+               <div class="col-12 col-lg-12 mt-2 mt-lg-0">
+                  <button
+                     :class="['btn btn--green full-width', { pending }]"
+                     @click="handleSubmit"
+                  >
+                     {{ $t('pay') }}
+                  </button>
                </div>
             </div>
-         </modal-popup>
-      </div>
+         </div>
+      </modal-popup>
    </div>
 </template>
 
@@ -135,6 +141,8 @@
 
    export default {
       components: {Alert, ComeBack },
+
+      layout: 'profileFullWidthLayout',
 
       head() {
          return this.$headMeta({

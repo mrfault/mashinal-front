@@ -3,163 +3,170 @@
       <div class="container">
          <ComeBack :text="$t('agreements')" v-if="isMobileBreakpoint" />
 
-         <breadcrumbs :crumbs="crumbs" />
+         <portal to="breadcrumbs">
+            <breadcrumbs :crumbs="crumbs" />
+         </portal>
 
-         <h4 class="agreementPage__title">{{ $t('agreements') }}</h4>
+         <component
+            :is="isMobileBreakpoint ? 'mobile-screen' : 'div'"
+            :bar-title="$t('agreements')"
+            @back="$router.push(pageRef || $localePath('/profile/agreement'))"
+            height-auto
+         >
+            <h4 class="agreementPage__title">{{ $t('agreements') }}</h4>
 
-<!--         <h5 class="agreementPage__subtitle">{{ $t('get_new_package') }}</h5>-->
+            <table class="agreementPage__table">
+               <thead class="agreementPage__table-thead">
+                  <tr>
+                     <th>{{ $t('invoice_date') }}</th>
+                     <th>{{ $t('invoice_number') }}</th>
+                     <th>{{ $t('type_of_service') }}</th>
+                     <th>{{ $t('payment_amount') }}</th>
+                     <th>{{ $t('status_and_date') }}</th>
+                  </tr>
+               </thead>
 
-         <table class="agreementPage__table">
-            <thead class="agreementPage__table-thead">
-               <tr>
-                  <th>{{ $t('invoice_date') }}</th>
-                  <th>{{ $t('invoice_number') }}</th>
-                  <th>{{ $t('type_of_service') }}</th>
-                  <th>{{ $t('payment_amount') }}</th>
-                  <th>{{ $t('status_and_date') }}</th>
-               </tr>
-            </thead>
-
-            <tbody class="agreementPage__table-tbody">
-               <tr
-                  :class="['', { 'active' : activeAgreement === agreement.package.id }]"
-                  v-for="agreement in getAgreements"
-                  :key="agreement.id"
-                  @click="activeAgreement = agreement.package.id"
-               >
-                  <td>{{ $moment(agreement.start_date).format('DD.MM.YYYY') }}</td>
-                  <td>{{ agreement.id }}</td>
-                  <td>{{ agreement.package.name[locale] }} {{ $t('package3') }}</td>
-                  <td>{{ agreement.price }} AZN</td>
-                  <td :class="['status', {
-                        'not_paid' : !agreement.payment.is_paid && !agreement.is_expired,
-                        'is_expired' : agreement.is_expired
-                        }]"
+               <tbody class="agreementPage__table-tbody">
+                  <tr
+                     :class="['', { 'active' : activeAgreement === agreement.package.id }]"
+                     v-for="agreement in getAgreements"
+                     :key="agreement.id"
+                     @click="activeAgreement = agreement.package.id"
                   >
-                     <span v-if="agreement.is_expired === false">{{ agreement.payment.is_paid ? $t('already_paid') : $t('not_paid') }}</span>
-                     <span v-else>{{ $t('overdue') }} | {{ $moment(agreement.end_date).format('DD.MM.YYYY') }}</span>
+                     <td>{{ $moment(agreement.start_date).format('DD.MM.YYYY') }}</td>
+                     <td>{{ agreement.id }}</td>
+                     <td>{{ agreement.package.name[locale] }} {{ $t('package3') }}</td>
+                     <td>{{ agreement.price }} AZN</td>
+                     <td :class="['status', {
+                           'not_paid' : !agreement.payment.is_paid && !agreement.is_expired,
+                           'is_expired' : agreement.is_expired
+                           }]"
+                     >
+                        <span v-if="agreement.is_expired === false">{{ agreement.payment.is_paid ? $t('already_paid') : $t('not_paid') }}</span>
+                        <span v-else>{{ $t('overdue') }} | {{ $moment(agreement.end_date).format('DD.MM.YYYY') }}</span>
 
-                     <div class="btns">
-                        <inline-svg :src="'/icons/download.svg'" @click="downloadInvoice(agreement.id)" />
+                        <div class="btns">
+                           <inline-svg :src="'/icons/download.svg'" @click="downloadInvoice(agreement.id)" />
 
-                        <button
-                           class="btn"
-                           v-if="!agreement.payment.is_paid || agreement.is_expired"
-                           @click="openModal = true"
-                        >{{ $t('pay') }}</button>
+                           <button
+                              class="btn"
+                              v-if="!agreement.payment.is_paid || agreement.is_expired"
+                              @click="openModal = true"
+                           >{{ $t('pay') }}</button>
 
-                        <icon :name="'chevron-down'" />
-                     </div>
+                           <icon :name="'chevron-down'" />
+                        </div>
 
-                     <div class="detailsMobile">
-                        <button class="btn">
-                           {{ $t('details') }}
-<!--                           {{ activeAgreement === agreement.package.id ? $t('close2') : $t('details') }}-->
-                        </button>
-                     </div>
-                  </td>
-                  <td class="agreementDetails">
-                     <h5 class="agreementDetails__title">{{ agreement.package.name[locale] }} {{ $t('package2') }}</h5>
+                        <div class="detailsMobile">
+                           <button class="btn">
+                              {{ $t('details') }}
+   <!--                           {{ activeAgreement === agreement.package.id ? $t('close2') : $t('details') }}-->
+                           </button>
+                        </div>
+                     </td>
+                     <td class="agreementDetails">
+                        <h5 class="agreementDetails__title">{{ agreement.package.name[locale] }} {{ $t('package2') }}</h5>
 
-                     <div class="agreementDetails__content">
-                        <div class="divider">
-                           <div class="agreementDetails__content-head">
-                              <div class="agreementDetails__content-head_item">
-                                 <span>{{ $t('paid_ads') }}:</span>
-                                 <span>{{ agreement.package.announce_count }}</span>
+                        <div class="agreementDetails__content">
+                           <div class="divider">
+                              <div class="agreementDetails__content-head">
+                                 <div class="agreementDetails__content-head_item">
+                                    <span>{{ $t('paid_ads') }}:</span>
+                                    <span>{{ agreement.package.announce_count }}</span>
+                                 </div>
+
+                                 <div class="agreementDetails__content-head_item">
+                                    <span>{{ $t('paid_services') }}:</span>
+                                    <span>{{ agreement.package.service_price }} AZN</span>
+                                 </div>
+
+                                 <div class="agreementDetails__content-head_item">
+                                    <span>{{ $t('package_duration') }}:</span>
+                                    <span>{{ $moment(agreement.start_date).format('DD.MM.YYYY') }} - {{ $moment(agreement.end_date).format('DD.MM.YYYY') }}</span>
+                                 </div>
                               </div>
+                           </div>
 
-                              <div class="agreementDetails__content-head_item">
-                                 <span>{{ $t('paid_services') }}:</span>
-                                 <span>{{ agreement.package.service_price }} AZN</span>
-                              </div>
+                           <div class="divider">
+                              <div class="agreementDetails__content-price">
+                                 <div class="agreementDetails__content-price_item">
+                                    <span>{{ $t('vat') }}:</span>
+                                    <span>{{ agreement.price }} AZN</span>
+                                 </div>
 
-                              <div class="agreementDetails__content-head_item">
-                                 <span>{{ $t('package_duration') }}:</span>
-                                 <span>{{ $moment(agreement.start_date).format('DD.MM.YYYY') }} - {{ $moment(agreement.end_date).format('DD.MM.YYYY') }}</span>
+                                 <div class="agreementDetails__content-price_item">
+                                    <span>{{ $t('total') }}:</span>
+                                    <span>{{ agreement.price }} AZN</span>
+                                 </div>
                               </div>
                            </div>
                         </div>
+                     </td>
+                     <td class="agreementDetailsMobile">
+                        <inline-svg
+                           class="agreementDetailsMobile__downloadIcon"
+                           :src="'/icons/download.svg'"
+                           @click="downloadInvoice(agreement.id)"
+                        />
 
-                        <div class="divider">
-                           <div class="agreementDetails__content-price">
-                              <div class="agreementDetails__content-price_item">
+                        <div class="agreementDetailsMobile__content">
+                           <ul class="agreementDetailsMobile__content-list">
+                              <li>
+                                 <h5>{{ $t('invoice_date') }}</h5>
+                                 <span>{{ $moment(agreement.start_date).format('DD.MM.YYYY') }}</span>
+                              </li>
+
+                              <li>
+                                 <h5>{{ $t('invoice_number') }}</h5>
+                                 <span>{{ agreement.id }}</span>
+                              </li>
+
+                              <li>
+                                 <h5>{{ $t('type_of_service') }}</h5>
+                                 <span>{{ agreement.package.name[locale] }} {{ $t('package3') }}</span>
+                              </li>
+                           </ul>
+
+                           <ul class="agreementDetailsMobile__content-info">
+                              <li>
+                                 <h5>{{ $t('paid_ads') }}:</h5>
+                                 <span>{{ agreement.package.announce_count }}</span>
+                              </li>
+
+                              <li>
+                                 <h5>{{ $t('paid_services') }}:</h5>
+                                 <span>{{ agreement.package.service_price }} AZN</span>
+                              </li>
+
+                              <li>
+                                 <h5>{{ $t('package_duration') }}:</h5>
+                                 <span>{{ $moment(agreement.start_date).format('DD.MM.YYYY') }} - {{ $moment(agreement.end_date).format('DD.MM.YYYY') }}</span>
+                              </li>
+                           </ul>
+
+                           <ul class="agreementDetailsMobile__content-price">
+                              <li>
                                  <span>{{ $t('vat') }}:</span>
                                  <span>{{ agreement.price }} AZN</span>
-                              </div>
+                              </li>
 
-                              <div class="agreementDetails__content-price_item">
+                              <li>
                                  <span>{{ $t('total') }}:</span>
                                  <span>{{ agreement.price }} AZN</span>
-                              </div>
-                           </div>
+                              </li>
+                           </ul>
+
+                           <button
+                              v-if="!agreement.payment.is_paid"
+                              class="btn full-width"
+                              @click="openModal = true"
+                           >{{ $t('pay') }}</button>
                         </div>
-                     </div>
-                  </td>
-                  <td class="agreementDetailsMobile">
-                     <inline-svg
-                        class="agreementDetailsMobile__downloadIcon"
-                        :src="'/icons/download.svg'"
-                        @click="downloadInvoice(agreement.id)"
-                     />
-
-                     <div class="agreementDetailsMobile__content">
-                        <ul class="agreementDetailsMobile__content-list">
-                           <li>
-                              <h5>{{ $t('invoice_date') }}</h5>
-                              <span>{{ $moment(agreement.start_date).format('DD.MM.YYYY') }}</span>
-                           </li>
-
-                           <li>
-                              <h5>{{ $t('invoice_number') }}</h5>
-                              <span>{{ agreement.id }}</span>
-                           </li>
-
-                           <li>
-                              <h5>{{ $t('type_of_service') }}</h5>
-                              <span>{{ agreement.package.name[locale] }} {{ $t('package3') }}</span>
-                           </li>
-                        </ul>
-
-                        <ul class="agreementDetailsMobile__content-info">
-                           <li>
-                              <h5>{{ $t('paid_ads') }}:</h5>
-                              <span>{{ agreement.package.announce_count }}</span>
-                           </li>
-
-                           <li>
-                              <h5>{{ $t('paid_services') }}:</h5>
-                              <span>{{ agreement.package.service_price }} AZN</span>
-                           </li>
-
-                           <li>
-                              <h5>{{ $t('package_duration') }}:</h5>
-                              <span>{{ $moment(agreement.start_date).format('DD.MM.YYYY') }} - {{ $moment(agreement.end_date).format('DD.MM.YYYY') }}</span>
-                           </li>
-                        </ul>
-
-                        <ul class="agreementDetailsMobile__content-price">
-                           <li>
-                              <span>{{ $t('vat') }}:</span>
-                              <span>{{ agreement.price }} AZN</span>
-                           </li>
-
-                           <li>
-                              <span>{{ $t('total') }}:</span>
-                              <span>{{ agreement.price }} AZN</span>
-                           </li>
-                        </ul>
-
-                        <button
-                           v-if="!agreement.payment.is_paid"
-                           class="btn full-width"
-                           @click="openModal = true"
-                        >{{ $t('pay') }}</button>
-                     </div>
-                  </td>
-               </tr>
-            </tbody>
-         </table>
+                     </td>
+                  </tr>
+               </tbody>
+            </table>
+         </component>
 
          <modal-popup
             :toggle="openModal"
@@ -222,6 +229,7 @@
       components: {
          ComeBack
       },
+      layout: 'profileLayout',
 
       head() {
          return this.$headMeta({
@@ -347,7 +355,7 @@
       }
 
       &__title {
-         margin: 36px 0 8px 0;
+         margin: 0px 0 8px 0;
          font-weight: 500;
          font-size: 18px;
          line-height: 22px;

@@ -1315,7 +1315,6 @@ export default {
       "По данному запросу запчастей не найдено",
    no_templates: "Вы еще не сохраняли шаблоны поисков",
    no_unpaid_protocols: "У вас нет неоплаченных штрафов.",
-   not_cleared: "Не растаможен",
    not_found: "Не найдено",
    not_set: "Не указано",
    not_studded: "Нешипованные",
@@ -2565,4 +2564,7 @@ export default {
    ad_sorting: "Сортировка объявлений",
    terminal_popup_title: "Правила пополнения баланса через терминалы:",
    plate_announce_key: "Размещено объявление",
+   "sign_in_to_account": "Hesaba daxil ol",
+   "my_balance": "Balansım",
+   "sign_out": "Çıxış",
 };

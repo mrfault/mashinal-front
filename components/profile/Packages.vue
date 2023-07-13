@@ -3,7 +3,7 @@
       <client-only>
          <div
             v-swiper:gallerySwiper="swiperOps"
-            class="swiper-container"
+            class="swiper-container pt-0"
          >
             <div class="swiper-wrapper">
                <div
@@ -103,7 +103,7 @@
          position: relative;
          height: 100%;
          max-width: 387px;
-         padding: 36px 20px 100px 20px !important;
+         padding: 36px 20px 30px 20px !important;
          text-align: center;
          border: 1px solid #D6E4F8;
          background-color: #FFFFFF;
@@ -118,10 +118,7 @@
          }
 
          .btn {
-            position: absolute;
-            left: 20px;
-            bottom: 36px;
-            width: calc(100% - 40px);
+            width: auto;
             font-size: 14px;
             line-height: 18px;
             color: #039855;
@@ -142,8 +139,8 @@
          align-items: center;
          justify-content: center;
          position: absolute;
-         top: 50px;
-         left: 100px;
+         top: 25px;
+         left: 90px;
          width: 100%;
          height: 56px;
          font-weight: 600;
@@ -188,7 +185,7 @@
       &__info {
          margin-top: 23px !important;
          text-align: initial;
-
+         min-height: 700px;
          &-item {
             display: flex;
             align-items: center;

@@ -1331,7 +1331,6 @@ export default {
       "Bu sorğu ilə bağlı ehtiyat hissələri tapılmadı",
    no_templates: "Axtarış şablonları hələ yadda saxlamamısınız",
    no_unpaid_protocols: "Sizin ödənilməmiş cəriməniz yoxdur.",
-   not_cleared: "Gömrükdən keçməmiş",
    not_found: "Tapılmadı",
    not_set: "Qeyd edilməmişdir",
    not_studded: "Şipsiz",

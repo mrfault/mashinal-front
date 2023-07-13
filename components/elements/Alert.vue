@@ -46,8 +46,7 @@ export default {
    align-items: center;
    padding: 10px 16px 10px 16px;
    border-radius: 8px;
-   height: 60px;
-
+   min-height: 60px;
 }
 .alert.alert-success {
    background-color: #E6F4EA;

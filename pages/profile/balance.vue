@@ -1,8 +1,17 @@
 <template>
-   <div class="pages-profile-balance pt-2 pt-lg-5">
+   <div class="pages-profile-balance">
       <div class="container">
-         <breadcrumbs :crumbs="crumbs"/>
 
+         <portal to="breadcrumbs">
+            <breadcrumbs :crumbs="crumbs" />
+         </portal>
+
+         <component
+            :is="isMobileBreakpoint ? 'mobile-screen' : 'div'"
+            :bar-title="$t('my_balance')"
+            @back="$router.push(pageRef || $localePath('/profile/balance'))"
+            height-auto
+         >
          <div class="row">
             <div class="col-lg-4">
                <div class="card mb-2 mb-lg-3">
@@ -237,6 +246,7 @@
                />
             </div>
          </div>
+         </component>
       </div>
    </div>
 </template>
@@ -251,13 +261,15 @@
 import {mapGetters, mapState} from 'vuex'
 import BankingCards from '~/components/payments/BankingCards'
 import {PaymentMixin} from '~/mixins/payment'
+import ComeBack from "~/components/elements/ComeBack.vue";
 
 export default {
    name: 'pages-profile-balance',
    middleware: 'auth_general',
    mixins: [PaymentMixin],
-   layout: 'garageLayout',
+   layout: 'profileLayout',
    components: {
+      ComeBack,
       BankingCards,
    },
    nuxtI18n: {
@@ -299,7 +311,10 @@ export default {
       ...mapGetters(['myBalanceHistory']),
 
       crumbs() {
-         return [{name: this.$t('balans')}]
+         return [
+            { name: this.$t('dashboard'), route: `${this.user.autosalon ? '/dashboard/1' : '/garage-services'}` },
+            {name: this.$t('balans')}
+         ]
       },
       totalBalance() {
          return this.$sum(
