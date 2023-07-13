@@ -465,9 +465,14 @@
          align-items: center;
          cursor: pointer;
          &:hover{
-            color: $red-1;
-            h6{
+            h6 {
                color: $red-1 !important;
+
+            }
+            svg {
+               path, ellipse, circle {
+                  stroke: $red-1 !important;
+               }
             }
          }
 
@@ -521,4 +526,18 @@
    &__content {
       width: calc(100% - 184px);
    }
+}
+
+
+.ma-garage-link-active {
+   h6 {
+      color: $red-1 !important;
+
+   }
+   svg {
+      path, ellipse, circle {
+         stroke: $red-1 !important;
+      }
+   }
+
 }

@@ -15,13 +15,17 @@
                      <h5 class="ma-garage__nav--profile__name"> {{ user.full_name }}</h5>
                   </div>
                   <template v-for="(item, index) in garageNavs">
-                     <nuxt-link v-if="!item.isButton" :to="item.link" class="ma-garage__nav--item">
-                        <icon :name="item.icon"/>
+                     <nuxt-link
+                        v-if="!item.isButton"
+                        :class="{'ma-garage-link-active': isRouteActive(item.link) }"
+                        :to="item.link"
+                        class="ma-garage__nav--item"
+                     >
+                        <inline-svg :src="`/new-icons/${item.icon}-new.svg`"/>
                         <h6 class="ma-garage__nav--item__title">{{ item.title }}</h6>
-                        <!--                  <pre>{{item}}</pre>-->
                      </nuxt-link>
                      <a v-else class="ma-garage__nav--item" href="javascript:void(0);" @click="logout">
-                        <icon :name="item.icon"/>
+                        <inline-svg :src="`/new-icons/${item.icon}-new.svg`"/>
                         <h6 class="ma-garage__nav--item__title">{{ item.title }}</h6>
                      </a>
                   </template>
@@ -54,33 +58,45 @@ export default {
          return [
             {
                title: this.$t('my_announces'),
-               icon: 'line-chart',
+               icon: 'layers',
                link: '/profile/announcements',
             },
             {
                title: this.$t('garage'),
-               icon: 'line-chart',
+               icon: 'invoice',
                link: '/garage',
             },
             {
                title: this.$t('my_balance'),
-               icon: 'line-chart',
+               icon: 'wallet',
                link: '/profile/balance/',
             },
             {
                title: this.$t('my_account'),
-               icon: 'line-chart',
+               icon: 'user',
                link: '/profile/settings/',
             },
             {
                title: this.$t('sign_out'),
-               icon: 'line-chart',
+               icon: 'logout',
                link: 'announces',
                isButton: true,
             },
          ]
       },
    },
+   methods: {
+      isRouteActive(link) {
+         console.log("this.$route.path", this.$route.path, link)
+         if (this.$route.path == this.$localePath(link)) {
+            return true
+         } else {
+            return false
+         }
+      },
+   }
 
 }
 </script>
+
+
