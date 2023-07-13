@@ -9,7 +9,7 @@
       >
         <h2 class="title-with-line full-width">
           <span>
-            {{ $t('carcase') }}
+            {{ $t("carcase") }}
             <span class="star">*</span>
           </span>
         </h2>
@@ -30,7 +30,7 @@
                 'sellTransmissions',
                 'sellModifications',
               ],
-              'generation_id',
+              'generation_id'
             )
           "
         >
@@ -52,7 +52,7 @@
       >
         <h2 class="title-with-line full-width">
           <span>
-            {{ $t('generation') }}
+            {{ $t("generation") }}
             <span class="star">*</span>
           </span>
         </h2>
@@ -72,7 +72,7 @@
                 'sellTransmissions',
                 'sellModifications',
               ],
-              'gearing',
+              'gearing'
             )
           "
         >
@@ -101,7 +101,7 @@
       >
         <h2 class="title-with-line full-width">
           <span>
-            {{ $t('fuel') }}
+            {{ $t("fuel") }}
             <span class="star">*</span>
           </span>
         </h2>
@@ -121,7 +121,7 @@
               'getSellGearing',
               ['car_body_type', 'generation_id', 'gearing'],
               ['sellGearing', 'sellTransmissions', 'sellModifications'],
-              'transmission',
+              'transmission'
             )
           "
         >
@@ -152,7 +152,7 @@
       >
         <h2 class="title-with-line full-width">
           <span>
-            {{ $t('type_of_drive') }}
+            {{ $t("type_of_drive") }}
             <span class="star">*</span>
           </span>
         </h2>
@@ -172,7 +172,7 @@
               'getSellTransmissions',
               ['car_body_type', 'generation_id', 'gearing', 'transmission'],
               ['sellTransmissions', 'sellModifications'],
-              'modification',
+              'modification'
             )
           "
         >
@@ -192,7 +192,7 @@
       >
         <h2 class="title-with-line full-width">
           <span>
-            {{ $t('box') }}
+            {{ $t("box") }}
             <span class="star">*</span>
           </span>
         </h2>
@@ -219,7 +219,7 @@
                 'modification',
               ],
               ['sellModifications'],
-              'car_catalog_id',
+              'car_catalog_id'
             )
           "
         >
@@ -239,7 +239,7 @@
       >
         <h2 class="title-with-line full-width">
           <span>
-            {{ $t('modification') }}
+            {{ $t("modification") }}
             <span class="star">*</span>
           </span>
         </h2>
@@ -261,7 +261,7 @@
 </template>
 
 <script>
-import {mapGetters, mapActions} from 'vuex'
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   props: {
@@ -271,156 +271,154 @@ export default {
   data() {
     return {
       timeout: -1,
-    }
+    };
   },
   computed: {
     ...mapGetters([
-      'sellBody',
-      'sellGenerations',
-      'sellEngines',
-      'sellGearing',
-      'sellTransmissions',
-      'sellModifications',
+      "sellBody",
+      "sellGenerations",
+      "sellEngines",
+      "sellGearing",
+      "sellTransmissions",
+      "sellModifications",
     ]),
   },
   methods: {
     ...mapActions([
-      'getSellBody',
-      'getSellGenerations',
-      'getSellEngines',
-      'getSellGearing',
-      'getSellTransmissions',
-      'getSellModifications',
+      "getSellBody",
+      "getSellGenerations",
+      "getSellEngines",
+      "getSellGearing",
+      "getSellTransmissions",
+      "getSellModifications",
     ]),
     getFormValues(keys) {
-      let form = {}
+      let form = {};
       keys.map((key) => {
         let formKey = key
-          .replace('car_body_type', 'body')
-          .replace('generation_id', 'generation')
-          .replace('gearing', 'engine')
-          .replace('transmission', 'gearing')
-          .replace('modification', 'transmission')
-        form[formKey] = this.form[key]
-      })
-      return form
+          .replace("car_body_type", "body")
+          .replace("generation_id", "generation")
+          .replace("gearing", "engine")
+          .replace("transmission", "gearing")
+          .replace("modification", "transmission");
+        form[formKey] = this.form[key];
+      });
+      return form;
     },
     getModificationName(o) {
       let generation = this.sellGenerations.find(
-        (o) => o.id === this.form.generation_id,
-      )
-      let name = `${this.$t('box_mode_values')[o.box]}/${
+        (o) => o.id === this.form.generation_id
+      );
+      let name = `${this.$t("box_mode_values")[o.box]}/${
         generation.start_year
-      } - ${generation.end_year || this.currentYear}`
-      if (o.capacity) name = `${o.capacity} ${name}`
-      if (o.power) name = `${o.power} ${this.$t('char_h_power')}/${name}`
-      if (o.complect_type) name += `/${o.complect_type}`
-      return name
+      } - ${generation.end_year || this.currentYear}`;
+      if (o.capacity) name = `${o.capacity} ${name}`;
+      if (o.power) name = `${o.power} ${this.$t("char_h_power")}/${name}`;
+      if (o.complect_type) name += `/${o.complect_type}`;
+      return name;
     },
     getGenerationStyle(o) {
       const getImage = (media) =>
-        media && media.length > 0 ? this.$withBaseUrl(media[0]) : false
+        media && media.length > 0 ? this.$withBaseUrl(media[0]) : false;
       let carType = o.car_type_generation.find(
-        (type) => type.car_type_id === o.pivot.car_type_id,
-      )
-      let imgUrl = getImage(carType && carType.transformed_media.thumb)
-      return imgUrl ? {backgroundImage: `url('${imgUrl}')`} : {noImg: true}
+        (type) => type.car_type_id === o.pivot.car_type_id
+      );
+      let imgUrl = getImage(carType && carType.transformed_media.thumb);
+      return imgUrl ? { backgroundImage: `url('${imgUrl}')` } : { noImg: true };
     },
     getIcon(key, value) {
       return {
         engine: {
-          1: 'fuel-station',
-          2: 'battery-charge',
-          3: 'diesel',
-          4: 'gas',
-          5: 'plug',
+          1: "fuel-station",
+          2: "battery-charge",
+          3: "diesel",
+          4: "gas",
+          5: "plug",
         },
-        type_of_drive: {1: 'drive', 2: 'drive', 3: 'drive'},
+        type_of_drive: { 1: "drive", 2: "drive", 3: "drive" },
         box: {
-          1: 'mechanical',
-          2: 'automatic',
-          3: 'robot',
-          4: 'variator',
-          5: 'reductor',
+          1: "mechanical",
+          2: "automatic",
+          3: "robot",
+          4: "variator",
+          5: "reductor",
         },
-      }[key][value]
+      }[key][value];
     },
     async handleChange(value, action, keys, props, nextKey) {
-
       if (!this.disableScroll) {
-        if (keys[0] === 'car_catalog_id' && !this.isMobileBreakpoint) {
+        if (keys[0] === "car_catalog_id" && !this.isMobileBreakpoint) {
           setTimeout(() => {
-            window.scrollTo({top: 1000, behavior: 'smooth'})
-          }, 500)
-        } else if (keys[0] === 'car_catalog_id' && this.isMobileBreakpoint) {
-          window.scrollTo({top: 1200, behavior: 'smooth'})
+            window.scrollTo({ top: 1000, behavior: "smooth" });
+          }, 500);
+        } else if (keys[0] === "car_catalog_id" && this.isMobileBreakpoint) {
+          window.scrollTo({ top: 1200, behavior: "smooth" });
           setTimeout(() => {
             // window.location.href = '#sellLastStepUploadImage'
-            const el = document.querySelector('#anchor-saved_images')
-            el.scrollIntoView({block: 'start', behavior: 'smooth'})
-          }, 500)
+            const el = document.querySelector("#anchor-saved_images");
+            el.scrollIntoView({ block: "start", behavior: "smooth" });
+          }, 500);
         }
       }
 
-      clearTimeout(this.timeout)
-      let $container
+      clearTimeout(this.timeout);
+      let $container;
       if (this.isMobileBreakpoint) {
-        $container = document.querySelector('.mobile-screen .container')
-        if (action) $container.style.minHeight = `${$container.scrollHeight}px`
+        $container = document.querySelector(".mobile-screen .container");
+        if (action) $container.style.minHeight = `${$container.scrollHeight}px`;
       }
       // clean store props
       props.map((property) => {
-        this.mutate({property, value: []})
-      })
+        this.mutate({ property, value: [] });
+      });
       // update form prop
-      this.$emit('update-form', {key: keys[keys.length - 1], value})
+      this.$emit("update-form", { key: keys[keys.length - 1], value });
       // skip step for the last input
-      if (!action) return // clean form props
-        ;
+      if (!action) return; // clean form props
       [
-        'car_body_type',
-        'generation_id',
-        'gearing',
-        'transmission',
-        'modification',
-        'car_catalog_id',
+        "car_body_type",
+        "generation_id",
+        "gearing",
+        "transmission",
+        "modification",
+        "car_catalog_id",
       ].map((key) => {
-        if (!keys.includes(key)) this.$emit('update-form', {key, value: ''})
-      })
+        if (!keys.includes(key)) this.$emit("update-form", { key, value: "" });
+      });
       // get values for the next input
-      let values = this.getFormValues([...keys, 'brand', 'model', 'year'])
-      await this[action](values)
+      let values = this.getFormValues([...keys, "brand", "model", "year"]);
+      await this[action](values);
       // move next if only one option available
       this.$nextTick(() => {
-        let options = this[action.replace('getSell', 'sell')]
-        if (options.length === 1 && nextKey !== 'car_catalog_id') {
+        let options = this[action.replace("getSell", "sell")];
+        if (options.length === 1 && nextKey !== "car_catalog_id") {
           let nextValue =
             options[0].engine ||
             options[0].type_of_drive ||
             options[0].box ||
-            options[0].id
-          this.$emit('update-form', {key: nextKey, value: nextValue})
+            options[0].id;
+          this.$emit("update-form", { key: nextKey, value: nextValue });
         } else if (this.isMobileBreakpoint) {
           this.timeout = setTimeout(() => {
-            this.scrollTo(this.$refs[`sell-${nextKey}`], -34, 500)
+            this.scrollTo(this.$refs[`sell-${nextKey}`], -34, 500);
 
-            $container.style.minHeight = ''
-          }, 100)
+            $container.style.minHeight = "";
+          }, 100);
         }
         if (!this.isMobileBreakpoint) {
           this.timeout = setTimeout(() => {
-            this.scrollTo(this.$refs[`sell-${nextKey}`], -20, 500)
-          }, 100)
+            this.scrollTo(this.$refs[`sell-${nextKey}`], -20, 500);
+          }, 100);
         }
-      })
+      });
     },
   },
   async fetch() {
     if (!this.sellBody.length)
-      await this.getSellBody(this.getFormValues(['brand', 'model', 'year']))
+      await this.getSellBody(this.getFormValues(["brand", "model", "year"]));
   },
   created() {
-    this.getSellBody(this.getFormValues(['brand', 'model', 'year']))
+    this.getSellBody(this.getFormValues(["brand", "model", "year"]));
   },
-}
+};
 </script>

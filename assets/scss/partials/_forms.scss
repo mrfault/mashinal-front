@@ -101,7 +101,8 @@ input::-webkit-inner-spin-button {
    }
 }
 
-.text-input, .ma-input {
+.text-input,
+.ma-input {
    position: relative;
    width: 100%;
 
@@ -117,8 +118,8 @@ input::-webkit-inner-spin-button {
       background-color: $white;
       padding: 9px 15px 7px;
       border-radius: 8px;
-      border: 1px solid #CDD5DF;
-      transition: .3s all;
+      border: 1px solid #cdd5df;
+      transition: 0.3s all;
 
       &.invalid {
          &:not(:focus) {
@@ -143,7 +144,7 @@ input::-webkit-inner-spin-button {
       i,
       input::placeholder,
       textarea::placeholder {
-         opacity: .4;
+         opacity: 0.4;
       }
    }
 
@@ -164,7 +165,7 @@ input::-webkit-inner-spin-button {
       overflow: hidden;
       text-overflow: ellipsis;
 
-      &[type=password] {
+      &[type="password"] {
          padding-right: 24px;
       }
 
@@ -179,7 +180,8 @@ input::-webkit-inner-spin-button {
       }
    }
 
-   i, img {
+   i,
+   img {
       position: absolute;
       top: 50%;
       transform: translate(0, -50%);
@@ -221,7 +223,8 @@ input::-webkit-inner-spin-button {
    }
 
    &.textarea {
-      i, img {
+      i,
+      img {
          top: 17px;
          transform: translate(0, -50%);
       }
@@ -270,7 +273,7 @@ input::-webkit-inner-spin-button {
       height: 52px;
       padding: 0 16px;
       border: 1px solid $white-2-new;
-      transition: .3s all;
+      transition: 0.3s all;
 
       img {
          width: 16px;
@@ -335,11 +338,11 @@ input::-webkit-inner-spin-button {
       }
 
       i {
-         color: $white;
+         color: $blue-new;
          font-size: 9px;
          font-weight: bold;
          opacity: 0;
-         transition: opacity .2s ease-in-out;
+         transition: opacity 0.2s ease-in-out;
       }
    }
 
@@ -347,8 +350,8 @@ input::-webkit-inner-spin-button {
       border-color: $blue-4-new;
 
       .checkbox {
-         border-color: $green-1;
-         background-color: $green-1;
+         border-color: $blue-new;
+         background-color: $blue-3-new;
 
          i {
             opacity: 1;
@@ -372,9 +375,10 @@ input::-webkit-inner-spin-button {
       align-items: center;
       margin: 0;
       width: 100%;
-      background-color: $greyish-blue-2;
-      border-radius: 4px;
-      height: 34px;
+      border: 1px solid $white-2-new;
+      background-color: white;
+      border-radius: 8px;
+      height: 52px;
       padding: 0 15px;
 
       &.transparent {
@@ -398,18 +402,20 @@ input::-webkit-inner-spin-button {
       height: 18px;
 
       &::after {
-         content: '';
+         content: "";
          display: block;
          width: 12px;
          height: 12px;
          border-radius: 50%;
-         background-color: $green-1;
+         background-color: $blue-new;
          opacity: 0;
-         transition: opacity .2s ease-in-out;
+         transition: opacity 0.2s ease-in-out;
       }
    }
 
    input:checked ~ label {
+      border-color: $blue-new;
+
       .radio-point {
          &::after {
             opacity: 1;
@@ -483,14 +489,14 @@ input::-webkit-inner-spin-button {
       font-weight: 400;
       color: $grey-4-new;
       background-color: $white;
-      border: 1px solid #CDD5DF;
+      border: 1px solid #cdd5df;
       height: 52px;
       padding: 0 16px;
       border-radius: 8px;
       user-select: none;
       position: relative;
       overflow: hidden;
-      transition: .3s all;
+      transition: 0.3s all;
 
       .icon-chevron-down {
          &:before {
@@ -515,10 +521,10 @@ input::-webkit-inner-spin-button {
          //border-bottom: unset;
          //border-bottom-left-radius: unset;
          //border-bottom-right-radius: unset;
-         border-color: #155EEF;
+         border-color: #155eef;
 
          &:hover {
-            border-color: #155EEF;
+            border-color: #155eef;
          }
       }
 
@@ -527,7 +533,7 @@ input::-webkit-inner-spin-button {
       }
 
       &.disabled {
-         opacity: .4;
+         opacity: 0.4;
       }
 
       &.selected {
@@ -633,7 +639,7 @@ input::-webkit-inner-spin-button {
       //border-bottom-left-radius: 8px;
       //border-bottom-right-radius: 8px;
       padding: 8px;
-      border: 1px solid #CDD5DF;
+      border: 1px solid #cdd5df;
       //border-top: unset;
 
       &.anchor-top {
@@ -924,7 +930,6 @@ input::-webkit-inner-spin-button {
          color: $dark-blue-1;
       }
    }
-
 }
 
 .dark-mode {
@@ -954,7 +959,7 @@ input::-webkit-inner-spin-button {
    display: flex;
    align-items: center;
    border-radius: 8px;
-   transition: all .3s;
+   transition: all 0.3s;
    border: 1px solid $white-2-new;
 
    &:hover {
@@ -978,7 +983,7 @@ input::-webkit-inner-spin-button {
 
       &:not(.text-input) {
          &:first-child {
-            border-right: 1px solid $white-2-new;;
+            border-right: 1px solid $white-2-new;
          }
       }
    }
@@ -1404,7 +1409,8 @@ input::-webkit-inner-spin-button {
       background-color: transparent;
       flex: 1;
 
-      &:focus, &:active {
+      &:focus,
+      &:active {
          background-color: transparent;
          border: none;
          outline: none;
@@ -1448,13 +1454,13 @@ input::-webkit-inner-spin-button {
    }
 }
 
-@include media-max-width('lg') {
+@include media-max-width("lg") {
    .range-slider {
       padding: 10px 25px 0;
    }
 }
 
-@include media-min-width('lg') {
+@include media-min-width("lg") {
    .form-group {
       .text-input {
          input {
