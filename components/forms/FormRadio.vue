@@ -8,12 +8,17 @@
         :name="inputName"
         :value="radioValue"
         :disabled="disabled"
-        :class="{invalid, disabled}"
+        :class="{ invalid, disabled }"
         v-model="inputValue"
       />
-      <label :for="id || `${inputName}_${radioValue}`" :class="{transparent}" @click="handleClick">
+      <label
+        :for="id || `${inputName}_${radioValue}`"
+        :class="{ transparent }"
+        @click="handleClick"
+      >
         <span class="radio-point"></span>
         <span class="text-truncate">{{ label }}</span>
+        <slot name="suffix" />
       </label>
 
       <slot />
@@ -22,63 +27,63 @@
 </template>
 
 <script>
-  export default {
-    props: {
-      value: {},
-      id: String,
-      type: {
-        type: String,
-        default: 'radio'
-      },
-      label: {
-        type: String,
-        default: ' '
-      },
-      radioValue: {
-        default: 1
-      },
-      inputName: {
-        type: String,
-        default: ''
-      },
-      disabled: {
-        type: Boolean,
-        default: false
-      },
-      invalid: {
-        type: Boolean,
-        default: false
-      },
-      transparent: {
-        type: Boolean,
-        default: false
-      }
+export default {
+  props: {
+    value: {},
+    id: String,
+    type: {
+      type: String,
+      default: "radio",
     },
-    data() {
-      return {
-        prevValue: this.value
-      }
+    label: {
+      type: String,
+      default: " ",
     },
-    computed: {
-      inputValue: {
-        get() {
-          return this.value;
-        },
-        set(value) {
-          value = this.disabled ? this.value : value;
-          this.$emit('input', value);
-          // check if value was changed
-          if (value !== this.prevValue) {
-            this.$emit('change', value);
-            this.prevValue = value;
-          }
+    radioValue: {
+      default: 1,
+    },
+    inputName: {
+      type: String,
+      default: "",
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
+    invalid: {
+      type: Boolean,
+      default: false,
+    },
+    transparent: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  data() {
+    return {
+      prevValue: this.value,
+    };
+  },
+  computed: {
+    inputValue: {
+      get() {
+        return this.value;
+      },
+      set(value) {
+        value = this.disabled ? this.value : value;
+        this.$emit("input", value);
+        // check if value was changed
+        if (value !== this.prevValue) {
+          this.$emit("change", value);
+          this.prevValue = value;
         }
-      }
+      },
     },
-    methods: {
-      handleClick() {
-        if (this.disabled) this.$emit('try');
-      }
-    }
-  }
+  },
+  methods: {
+    handleClick() {
+      if (this.disabled) this.$emit("try");
+    },
+  },
+};
 </script>

@@ -1,295 +1,491 @@
 <template>
-   <div class="pages-sell">
-      <div class="container">
-         <breadcrumbs :crumbs="crumbs"/>
-         <sell-progress v-if="!isMobileBreakpoint"/>
-         <div class="row">
-            <div class="col-lg-5">
-               <div class="card mt-5 mt-lg-0">
-                  <!-- title -->
-                  <h2 class="title-with-line full-width">
-                     <span v-if="loggedIn">{{ $t('new_announce') }}</span>
-                     <span v-if="!loggedIn">{{ $t('login') }}</span>
-                  </h2>
-
-                  <!--  -->
-                  <div class="sell_tokens-info">
-                     <client-only>
-                        <template v-if="loggedIn || sellTokens !== false">
-                           <p
-                              v-html="getTextLines(sellPhoneEntered)"
-                              v-if="!loggedIn"
-                           ></p>
-                           <p v-html="getTextLines($parsePhone(user.phone))" v-else></p>
-                        </template>
-                        <template v-else>
-                           <p
-                              v-html="
+  <div class="add_announce">
+    <div class="container">
+      <h1>Yeni elan</h1>
+      <div class="announce_container">
+        <div class="card">
+          <form class="add_announce_form">
+            <form-select
+              :label="$t('announcement_type')"
+              :options="
+                searchMenus.map((menu) => ({
+                  ...menu,
+                  name: $t(menu.title),
+                }))
+              "
+              :clear-placeholder="true"
+              :clear-option="false"
+              :new-label="false"
+              v-model="form.announce_type"
+            />
+            <form-select
+              :label="$t('type_of_motos')"
+              :options="
+                searchMenus.map((menu) => ({
+                  ...menu,
+                  name: $t(menu.title),
+                }))
+              "
+              :clear-placeholder="true"
+              :clear-option="false"
+              v-model="form.moto_type"
+            />
+            <form-select
+              :label="$t('type_of_commercial_vehicle')"
+              :options="
+                searchMenus.map((menu) => ({
+                  ...menu,
+                  name: $t(menu.title),
+                }))
+              "
+              :clear-placeholder="true"
+              :clear-option="false"
+              :new-label="false"
+              v-model="form.commercial_vehicle_type"
+            />
+            <form-select
+              :label="$t('brand_name')"
+              :options="
+                searchMenus.map((menu) => ({
+                  ...menu,
+                  name: $t(menu.title),
+                }))
+              "
+              :clear-placeholder="true"
+              :clear-option="false"
+              :new-label="false"
+              v-model="form.brand"
+            />
+            <form-select
+              :label="$t('model_name')"
+              :options="
+                searchMenus.map((menu) => ({
+                  ...menu,
+                  name: $t(menu.title),
+                }))
+              "
+              :clear-placeholder="true"
+              :clear-option="false"
+              :new-label="false"
+              v-model="form.model"
+            />
+            <form-select
+              :label="$t('prod_year')"
+              :options="
+                searchMenus.map((menu) => ({
+                  ...menu,
+                  name: $t(menu.title),
+                }))
+              "
+              :clear-placeholder="true"
+              :clear-option="false"
+              :new-label="false"
+              v-model="form.year"
+            />
+            <grid-radio
+              :label="$t('body_type')"
+              :items="bodyTypes"
+              v-slot="{ item }"
+            >
+              <div class="body_type_grid_item_inner">
+                <inline-svg :src="item.icon" width="104px" />
+                <p>{{ item.name[locale] }}</p>
+              </div>
+            </grid-radio>
+            <grid-radio
+              :label="$t('generation')"
+              :items="bodyTypes"
+              v-slot="{ item }"
+            >
+              <div class="generation_grid_item">
+                <img
+                  src="https://static.mashin.al/media/3896062/BMW_5_5_Sed_1.jpg"
+                  alt=""
+                  class="generation_img"
+                />
+                <div class="generation_grid_item_inner">
+                  <p>{{ item.name[locale] }}</p>
+                </div>
+              </div>
+            </grid-radio>
+            <form-select
+              :label="$t('fuel_type')"
+              :options="
+                searchMenus.map((menu) => ({
+                  ...menu,
+                  name: $t(menu.title),
+                }))
+              "
+              :clear-placeholder="true"
+              :clear-option="false"
+              :new-label="false"
+              v-model="form.fuel_type"
+            />
+            <form-checkbox
+              v-model="form.autogas"
+              :disabled="false"
+              :label="$t('gas_equipment')"
+              input-name="autogas"
+              transparent
+            />
+            <toggle-group
+              :label="$t('type_of_drive')"
+              :items="gearingTypes"
+              v-slot="{ item }"
+            >
+              <div class="gearing_grid_item">
+                <inline-svg :src="item.icon" />
+                <p>{{ item.name[locale] }}</p>
+              </div>
+            </toggle-group>
+            <form-select
+              :label="$t('box')"
+              :options="
+                searchMenus.map((menu) => ({
+                  ...menu,
+                  name: $t(menu.title),
+                }))
+              "
+              :clear-placeholder="true"
+              :clear-option="false"
+              :new-label="false"
+              v-model="form.gearing"
+            />
+            <form-select
+              :label="$t('modification')"
+              :options="
+                searchMenus.map((menu) => ({
+                  ...menu,
+                  name: $t(menu.title),
+                }))
+              "
+              :clear-placeholder="true"
+              :clear-option="false"
+              :new-label="false"
+              v-model="form.modification"
+            />
+            <form-select
+              :label="$t('color')"
+              :options="
+                searchMenus.map((menu) => ({
+                  ...menu,
+                  name: $t(menu.title),
+                }))
+              "
+              :clear-placeholder="true"
+              :clear-option="false"
+              :new-label="false"
+              v-model="form.color"
+            />
+            <div class="divider">
+              <form-numeric-input
+                :placeholder="$t('mileage')"
+                v-model="form.mileage"
+              />
+              <div class="mileage_types">
+                <form-radio
+                  :id="'1'"
+                  :label="$t('km')"
+                  input-name="milage"
+                  v-model="form.mileage_type"
+                  radio-value="km"
+                />
+                <form-radio
+                  :id="'2'"
+                  :label="$t('ml')"
+                  input-name="milage"
+                  v-model="form.mileage_type"
+                  radio-value="mile"
+                />
+              </div>
+            </div>
+            <div class="divider">
+              <form-radio
+                :id="'3'"
+                :label="$t('new')"
+                input-name="beaten"
+                v-model="form.beaten"
+                radio-value="new"
+              />
+              <form-radio
+                :id="'4'"
+                :label="$t('broken')"
+                input-name="beaten"
+                v-model="form.beaten"
+                radio-value="beaten"
+              >
+                <template v-slot:suffix>
+                  <inline-svg
+                    :src="'/icons/info.svg'"
+                    class="beaten_suffix"
+                    v-tooltip="
                       $t(
-                        'you_can_only_have_some_free_announcement_within_30_days',
+                        'with_significant_damage_to_body_elements_that_do_not_move_on_their_own'
                       )
                     "
-                           ></p>
-                           <!-- login -->
-                           <login-tabs
-                              :tabOptions="tabOptions"
-                              :sellCheckTokens="true"
-                           ></login-tabs>
-                           <!-- <sell-check-tokens /> -->
-                        </template>
-                     </client-only>
-                  </div>
-                  <!-- qrcode -->
-                  <qrcode-box :inSellPage="true"></qrcode-box>
-               </div>
-            </div>
-
-            <div class="col-lg-7">
-               <div class="card mt-2 mt-lg-0">
-                  <h2 class="title-with-line full-width">
-                     <span>{{ $t('vehicle_type') }}</span>
-                  </h2>
-                  <!--             <pre>{{vehicleOptions}}</pre>-->
-                  <vehicle-options
-                     :group-by="2"
-                     :options="vehicleOptions"
-                     :value="vehicleType"
-                     @change="handleVehicleType"
                   />
-                  <template v-if="hasCategories">
-                     <h2 class="title-with-line full-width mt-3" ref="categories">
-                        <span>{{ $t(vehicleOptions[selectedIndex].title) }}</span>
-                     </h2>
-                     <vehicle-options
-                        :group-by="2"
-                        :options="vehicleOptions[selectedIndex].children"
-                        :value="vehicleCategory"
-                        @change="handleVehicleCategory"
-                     />
-                  </template>
-               </div>
+                </template>
+              </form-radio>
             </div>
-         </div>
+            <div class="divider">
+              <form-checkbox
+                v-model="form.customs_clearance"
+                :label="$t('not_cleared')"
+                input-name="customs_clearance"
+                transparent
+              />
+              <form-checkbox
+                v-model="form.guaranty"
+                :label="$t('guaranty')"
+                input-name="guaranty"
+                transparent
+              />
+            </div>
+            <form-select
+              :label="$t('city_of_sale')"
+              :options="
+                searchMenus.map((menu) => ({
+                  ...menu,
+                  name: $t(menu.title),
+                }))
+              "
+              :clear-placeholder="true"
+              :clear-option="false"
+              :new-label="false"
+              v-model="form.region_id"
+            />
+            <div class="divider">
+              <form-text-input
+                key="address"
+                v-model="form.address"
+                :placeholder="$t('address')"
+              />
+            </div>
+          </form>
+          <div class="vehicle_card_info"></div>
+        </div>
+        <div class="form_navigation"></div>
       </div>
    </div>
 </template>
 
 <script>
-import {mapGetters, mapActions} from 'vuex'
-
-import {MenusDataMixin} from '~/mixins/menus-data'
-
-import SellCheckTokens from '~/components/sell/SellCheckTokens'
-import VehicleOptions from '~/components/options/VehicleOptions'
-import SellProgress from '~/components/sell/SellProgress'
-import QrcodeBox from '~/components/login/Qrcode-box.vue'
-import SignInForm from '~/components/login/SignInForm.vue'
+import GridRadio from "~/components/elements/GridRadio.vue";
+import ToggleGroup from "~/components/elements/ToggleGroup.vue";
+import FormNumericInput from "~/components/forms/FormNumericInput.vue";
+import FormRadio from "~/components/forms/FormRadio.vue";
+import { MenusDataMixin } from "~/mixins/menus-data";
 
 export default {
-   name: 'pages-sell-index',
-   components: {
-      SellCheckTokens,
-      VehicleOptions,
-      SellProgress,
-      QrcodeBox,
-      SignInForm,
-   },
-   mixins: [MenusDataMixin],
-   nuxtI18n: {
-      paths: {
-         az: '/satmaq',
+  name: "add-announce",
+  mixins: [MenusDataMixin],
+  components: { GridRadio, ToggleGroup, FormNumericInput, FormRadio },
+  data() {
+    return {
+      bodyTypes: [
+        {
+          id: 1,
+          name: { az: "Sedan az", ru: "Sedan ru", en: "Sedan en" },
+          icon: "/icons/calendar.svg",
+        },
+        {
+          id: 2,
+          name: { az: "Kupe az", ru: "Kupe ru", en: "Kupe en" },
+          icon: "/icons/calendar.svg",
+        },
+        {
+          id: 3,
+          name: { az: "Kabriolet az", ru: "Kabriolet ru", en: "Kabriolet en" },
+          icon: "/icons/calendar.svg",
+        },
+      ],
+      gearingTypes: [
+        {
+          id: 1,
+          name: { az: "Ön az", ru: "Ön ru", en: "Ön en" },
+          icon: "/icons/front-transmission.svg",
+        },
+        {
+          id: 2,
+          name: { az: "Arxa az", ru: "Arxa ru", en: "Arxa en" },
+          icon: "/icons/rear-transmission.svg",
+        },
+        {
+          id: 3,
+          name: { az: "Tam az", ru: "Tam ru", en: "Tam en" },
+          icon: "/icons/full-transmission.svg",
+        },
+      ],
+      form: {
+        announce_type: "",
+        moto_type: "",
+        commercial_vehicle_type: "",
+        brand: "",
+        model: "",
+        year: "",
+        body_type: "",
+        fuel_type: "",
+        autogas: "",
+        transmission: "",
+        gearing: "",
+        modification: "",
+        color: "",
+        mileage: 0,
+        mileage_type: "",
+        beaten: "",
+        customs_clearance: "",
+        guaranty: "",
+        region_id: "",
+        address: "",
       },
-   },
-   data() {
-      return {
-         tabOptions: {
-            header: false,
-            signInForm: true,
-            confirmPhone: true,
-            qrCode: false,
-         },
-      }
-   },
-   head() {
-      return this.$headMeta({
-         title: this.$t('meta-title_sell'),
-         description: this.$t('meta-descr_sell'),
-      })
-   },
-   async asyncData({store, route}) {
-      if (!route.query.phone) store.dispatch('resetSellTokens')
-      return {
-         vehicleType: '',
-         vehicleCategory: '',
-         selectedIndex: '',
-      }
-   },
-   computed: {
-      ...mapGetters(['sellTokens', 'sellPhoneEntered']),
-
-      crumbs() {
-         return [{name: this.$t('place_an_ad')}]
-      },
-
-      tokens() {
-         let tokens = {
-            cars: 0,
-            moto: 0,
-            commercial: 0,
-            parts: 0,
-            registration_marks: 0,
-
-            parts_unlimited: this.loggedIn
-               ? true
-               : this.sellTokens.parts_unlimited,
-            salon_unlimited: this.loggedIn
-               ? this.user?.autosalon?.status === 1 &&
-               this.user?.autosalon?.is_unlimited
-               : this.sellTokens.salon_unlimited,
-         }
-
-         for (let type of ['cars', 'moto', 'commercial', 'parts', 'registration_marks']) {
-            let tokenKey = `announce_left_${type}`;
-
-            if (type === 'cars') tokenKey = tokenKey.slice(0, -1);
-            else if (type === 'parts') tokenKey = 'part_announce_left';
-
-            if (this.loggedIn) tokens[type] = this.user[tokenKey];
-            else if (this.sellTokens) tokens[type] = this.sellTokens[type];
-         }
-
-         return tokens
-      },
-      hasCategories() {
-         return ['moto', 'commercial'].includes(this.vehicleType)
-      },
-      vehicleOptions() {
-         return this.searchMenus.map((menu) => ({
-            ...menu,
-            disabled: (this.user?.external_salon ? menu.title === 'parts' : false) || this.tokens[menu.title] <= 0 && !this.tokens[menu.title === 'parts' ? 'parts_unlimited' : 'salon_unlimited']
-         }))
-      },
-   },
-   methods: {
-      handleVehicleType(e) {
-         this.vehicleCategory = ''
-         e.value === "registration_marks" ? this.vehicleType = '/plates/create' : this.vehicleType = e.value;
-         this.selectedIndex = e.index
-         if (this.hasCategories) {
-            this.$nextTick(() => {
-               if (this.isMobileBreakpoint) this.scrollTo(this.$refs.categories, -20)
-            })
-         } else {
-            this.nextSteps()
-         }
-      },
-      handleVehicleCategory(e) {
-         this.vehicleCategory = e.value
-         this.nextSteps()
-      },
-      nextSteps() {
-         let path;
-         if (this.vehicleType === '/plates/create') {
-            path = this.$localePath(`${this.vehicleType}${this.vehicleCategory ? `?category=${this.vehicleCategory}` : ''}`);
-         } else {
-            path = this.$localePath(`/sell/${this.vehicleType}${this.vehicleCategory ? `?category=${this.vehicleCategory}` : ''}`);
-         }
-         this.$router.push(path);
-      },
-      getTextLines(phone) {
-         let isSalon = this.loggedIn && this.user.autosalon || this.user.external_salon;
-         let isShop = this.loggedIn && this.user.part_salon
-
-         let firstLine, secondLine, thirdLine
-
-         let transportTokens = this.$maxInArray([
-            this.tokens.cars,
-            this.tokens.moto,
-            this.tokens.commercial,
-            0,
-         ])
-         let partTokens = this.$maxInArray([this.tokens.parts, 0])
-
-         let hasTransportTokens =
-            transportTokens > 0 || this.tokens.salon_unlimited
-         let hasPartsTokens = this.user.external_salon ? 0 : (partTokens > 0 || this.tokens.parts_unlimited);
-
-         let firstLocaleEnding =
-            hasTransportTokens && hasPartsTokens
-               ? ''
-               : hasTransportTokens
-                  ? '_transport'
-                  : '_parts'
-         let secondLocaleEnding =
-            !hasTransportTokens && !hasPartsTokens
-               ? ''
-               : !hasTransportTokens
-                  ? '_transport'
-                  : '_parts'
-
-         if (hasTransportTokens || hasPartsTokens) {
-            firstLine = this.$t(`you_can_create_announcement${firstLocaleEnding}`, {
-               phone: phone.replace('+994 (', '(0'),
-               plural: this.$readPlural(
-                  this.tokens.salon_unlimited ? 1000 : transportTokens,
-                  this.$t('plural_forms_announcements'),
-                  false,
-               ),
-               plural_parts: this.$readPlural(
-                  this.tokens.parts_unlimited ? 1000 : partTokens,
-                  this.$t('plural_forms_announcements'),
-                  false,
-               ),
-               left: this.tokens.salon_unlimited
-                  ? this.$t('unlimited_count')
-                  : transportTokens,
-               left_parts: this.tokens.parts_unlimited
-                  ? this.$t('unlimited_count')
-                  : partTokens,
-            })
-         }
-         if (!hasTransportTokens || !hasPartsTokens) {
-            if (!(secondLocaleEnding && this.user.external_salon) || !this.user.external_salon) {
-               secondLine =
-                  '<strong class="text-red">*</strong> ' +
-                  this.$t(`no_announcements_on_balance${secondLocaleEnding}`)
-            }
-            thirdLine = this.$t('contact_for_more_info', {
-               phone: '*8787',
-               email:
-                  isSalon || isShop ? 'sales@al.ventures' : 'office@al.ventures',
-            })
-         }
-
-         return [firstLine, secondLine, thirdLine]
-            .filter((line) => line)
-            .map((line) => `${line}`)
-            .join('<br/><br/>')
-      },
-   },
-}
+    };
+    // {"end_date":"","auction":1,"country_id":null,"car_catalog_id":46273,"brand":"bmw","model":"5-series","generation_id":4782,"car_body_type":2,"gearing":"1","modification":"2","transmission":"1","capacity":"","power":"","year":2006,"youtube":{"id":"","thumb":""},"selectedColor":[23],"is_matte":false,"mileage":287000,"mileage_measure":1,"region_id":1,"address":"","lat":0,"lng":0,"vin":"","price":20000,"owner_type":0,"currency":1,"car_number":"77 - BZ - 351","show_car_number":1,"show_vin":0,"part":{},"all_options":{"camera":true,"usb":true,"luke":true,"abs":true,"headlights":1,"c_locking":true},"comment":"test test","autogas":false,"is_new":false,"beaten":false,"customs_clearance":false,"tradeable":false,"credit":false,"guaranty":false,"saved_images":[1512580,1512581,1512582,1512583],"btl_cookie":"","is_autosalon":false}
+  },
+  methods: {
+    setBodyType(id) {
+      this.form.body_type = id;
+    },
+  },
+};
 </script>
 
-<style lang="scss">
-.pages-sell {
-   .card {
-      .item {
-         .selectable-block {
-            &.custom-width {
-               justify-content: center;
-               width: calc(200% + 20px);
+<style scoped lang="scss">
+.add_announce {
+  .announce_container {
+    display: flex;
+    column-gap: 16px;
 
-               .block-info {
-                  width: unset;
-               }
+    .card {
+      flex-grow: 3;
+      display: flex;
+      gap: 68px;
+
+      .add_announce_form {
+        display: flex;
+        flex-grow: 1;
+        flex-direction: column;
+        gap: 20px;
+
+        .body_type_grid_item {
+          position: relative;
+          background-color: #eff4ff;
+          border-radius: 8px;
+          padding: 12px 12px 16px 12px;
+          cursor: pointer;
+
+          &_inner {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+
+            .check_icon {
+              position: absolute;
+              left: 16px;
+              top: 16px;
+              width: 16px;
+              height: 16px;
+              color: #155eef;
             }
-         }
-      }
-   }
+          }
+        }
+        .body_type_grid_item_inner {
+          padding: 12px 12px 16px 12px;
+        }
 
-   .login-forms {
-      margin: 0;
-      width: 100%;
-   }
+        .generation_grid_item {
+          position: relative;
+          display: flex;
+          align-items: flex-end;
+          aspect-ratio: 1.48;
+          border-radius: 8px;
+          padding: 12px 12px 16px 12px;
+          cursor: pointer;
+          overflow: hidden;
+
+          &::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background: linear-gradient(
+              180deg,
+              rgba(0, 0, 0, 0) 0%,
+              #081a3e 100%
+            );
+          }
+
+          .generation_img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+
+          &_inner {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 10;
+
+            p {
+              color: white;
+            }
+          }
+        }
+
+        .gearing_grid_item {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          height: 52px;
+          padding: 0 16px;
+        }
+      }
+
+      .vehicle_card_info {
+        position: sticky;
+        top: 128px;
+        width: 260px;
+        height: 300px;
+        background-color: green;
+      }
+    }
+
+    .form_navigation {
+      height: 300px;
+      background-color: red;
+      flex-grow: 1;
+    }
+
+    .divider {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+
+      .mileage_types {
+        display: flex;
+        gap: 16px;
+      }
+    }
+
+    .beaten_suffix {
+      position: relative;
+      z-index: 600;
+      margin-left: auto;
+      cursor: progress;
+    }
+  }
+}
+
+@media (max-width: 1150px) {
+  .form_navigation {
+    display: none;
+  }
 }
 </style>
