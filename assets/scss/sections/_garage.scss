@@ -448,3 +448,77 @@
    font-size: 20px;
    font-weight: 550;
 }
+
+.ma-garage {
+   width: 100%;
+   display: flex;
+   flex-wrap: nowrap;
+
+   &__nav {
+      width: 184px;
+      padding-right: 20px;
+
+      &--item {
+         width: 100%;
+         padding: 16px 8px;
+         display: flex;
+         align-items: center;
+         cursor: pointer;
+         &:hover{
+            color: $red-1;
+            h6{
+               color: $red-1 !important;
+            }
+         }
+
+         &__icon {
+            font-size: 48px;
+            width: 24px;
+            height: 24px;
+            box-sizing: border-box;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+         }
+
+         &__title {
+            font: 500 16px/20px 'TTHoves';
+            color: #364152;
+            padding-left: 12px;
+         }
+
+
+      }
+
+      &--profile {
+         display: flex;
+         align-items: center;
+         padding: 10px 0;
+
+         &__name {
+            font: 600 16px/24px 'TTHoves';
+            color: #121926;
+         }
+
+         &__avatar {
+            margin-right: 8px;
+            width: 36px;
+            height: 36px;
+            box-sizing: border-box;
+            overflow: hidden;
+            border-radius: 50%;
+            background: #E3E8EF;
+            font: 700 16px/20px 'TTHoves';
+            display: flex;
+            justify-content: center;
+            align-items: center;
+         }
+      }
+   }
+
+   &__content {
+      width: calc(100% - 184px);
+   }
+}

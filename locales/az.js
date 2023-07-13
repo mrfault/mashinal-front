@@ -2597,4 +2597,7 @@ export default {
    "ad_sorting": "Elanların sıralanması",
    "terminal_popup_title" : "terminalları vasitəsilə balans artırılması aşağıdakı qaydadadır:",
    "plate_announce_key" : "Elan yerləşdirildi",
+   "sign_in_to_account": "Hesaba daxil ol",
+   "my_balance": "Balansım",
+   "sign_out": "Çıxış",
 }

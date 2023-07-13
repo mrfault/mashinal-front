@@ -68,6 +68,7 @@ import ChangePhone from '~/components/elements/ChangePhone';
 export default {
    name: 'pages-profile-settings',
    mixins: [UserDataMixin],
+   layout: 'garageLayout',
    middleware: ['auth_general', ({$auth, redirect}) => {
       if ($auth.user.parent_id) {
          return redirect('/garage-services')

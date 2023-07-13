@@ -1,0 +1,11 @@
+.ma-title{
+   &--sm, &--md, &--lg{
+      font-family: 'TTHoves';
+      font-weight: 700;
+      color: $dark-light-new;
+   }
+   &--md{
+      font-size: 28px;
+      line-height: 32px;
+   }
+}
