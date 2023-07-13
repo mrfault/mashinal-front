@@ -256,6 +256,7 @@ export default {
    name: 'pages-profile-balance',
    middleware: 'auth_general',
    mixins: [PaymentMixin],
+   layout: 'garageLayout',
    components: {
       BankingCards,
    },
