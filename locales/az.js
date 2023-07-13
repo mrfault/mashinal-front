@@ -2583,6 +2583,7 @@ export default {
    add_video_360: "360 (video) Əlavə et",
    add_interior_360: "360 interior əlavə et",
 
+
    cars_with_damage_sentence:
       "ban elementlərində zədə mövcud olan avtomobillər",
    second_or_more: "Xeyr",
@@ -2620,4 +2621,8 @@ export default {
    terminal_popup_title:
       "terminalları vasitəsilə balans artırılması aşağıdakı qaydadadır:",
    plate_announce_key: "Elan yerləşdirildi",
+  "sign_in_to_account": "Hesaba daxil ol",
+   "my_balance": "Balansım",
+   "sign_out": "Çıxış",
 };
+

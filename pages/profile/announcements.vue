@@ -97,6 +97,7 @@ import PlatesGrid from "~/components/announcements/PlatesGrid.vue";
 export default {
    name: 'pages-profile-announcements',
    middleware: 'auth_general',
+   layout: 'garageLayout',
    data() {
       return {
          activeTab: 1
