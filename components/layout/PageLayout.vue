@@ -147,7 +147,8 @@
                this.$store.dispatch("getNotifications"),
                this.$store.dispatch("getNotViewedFavorites"),
                this.$store.dispatch("getNotViewedSavedSearch"),
-               this.$store.dispatch("fetchBrandsList")
+               this.$store.dispatch("fetchBrandsList"),
+               this.$store.dispatch("getFavorites")
             ]);
          }
          await Promise.all([

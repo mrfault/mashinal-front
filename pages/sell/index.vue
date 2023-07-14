@@ -267,6 +267,7 @@
         <div class="form_navigation"></div>
       </div>
    </div>
+   </div>
 </template>
 
 <script>
