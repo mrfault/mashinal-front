@@ -468,7 +468,7 @@ export default {
    clear_search: "Sıfırla",
    clear_search2: "Axtarışı sıfırla",
    cleared: "Gömrükdən keçmiş",
-   not_cleared: "Gömrükdən keçməyib",
+   not_cleared2: "Gömrükdən keçməyib",
    close: "Bağlamaq",
    close2: "Bağla",
    co2_emissions: "Emissiyalar CO2 q/km",
@@ -2623,4 +2623,7 @@ export default {
       "terminalları vasitəsilə balans artırılması aşağıdakı qaydadadır:",
    plate_announce_key: "Elan yerləşdirildi",
    other_parameters: "Digər parametrlər",
+   additional_info: "Əlavə məlumatlar",
+   additional_info_warning:
+      "Məlumat bölməsində link, e-mail, qiymət və xidmət təklifi yazmaq qadağandır.",
 };
