@@ -495,7 +495,7 @@
       &--profile {
          display: flex;
          align-items: center;
-         padding: 10px 0;
+         padding: 0px 0;
 
          &__name {
             font: 600 16px/24px 'TTHoves';
@@ -520,5 +520,9 @@
 
    &__content {
       width: calc(100% - 184px);
+   }
+
+   &__content-full {
+      width: 100%;
    }
 }
