@@ -3,7 +3,7 @@
     <backdrop :class="backdropClass" :backdrop-class="backdropClass" @click="handleBackdropClick" v-if="toggle">
       <template #default="{ show }">
         <transition name="translate-fade">
-          <div :class="['modal-popup white-scroll-bg', {[modalClass]: modalClass}]" v-if="show"
+          <div :class="['modal-popup white-scroll-bg border-12', {[modalClass]: modalClass}]" v-if="show"
                @click.stop="$nuxt.$emit('modal-popup-click', $event)">
             <div class="modal-popup_content">
               <div class="title d-flex">
@@ -78,3 +78,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.border-12{
+   border-radius: 12px;
+}
+</style>

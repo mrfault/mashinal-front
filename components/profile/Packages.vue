@@ -58,7 +58,6 @@
                centeredSlides: true,
                initialSlide: 1,
                autoHeight: true,
-
                breakpoints: {
                   1024: {
                      slidesPerView: 3,

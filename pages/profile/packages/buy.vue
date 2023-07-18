@@ -27,7 +27,7 @@
                      <tr class="w-100">
                         <td class="text-left">{{ $t('period_time') }}</td>
                         <td class="text-right">
-                           <form-select :options="durations" v-model="duration"></form-select>
+                           <form-select :options="durations" v-model="duration"  :new-label="false"></form-select>
                         </td>
                      </tr>
                      <tr class="w-100">
@@ -40,31 +40,34 @@
                      </tr>
                   </table>
                </div>
+               <div class="d-flex justify-content-center align-items-center pt-4" v-if="isMobileBreakpoint">
+                  <Alert :type="'info'" :content="$t('my_packages_duration')"/>
+               </div>
                <div class="d-flex justify-content-center align-items-center pt-4">
-                  <div>
-                     <button
-                        class="btn btn--green full-width"
-                        @click="nextStep"
-                     >{{ $t('pay') }}</button>
+                  <div class="full-width-xs">
+                     <button class="btn btn--green full-width" @click="nextStep">
+                        {{ $t('pay') }}
+                     </button>
                   </div>
-                  <div class="ml-2">
+                  <div class="ml-2" v-if="!isMobileBreakpoint">
                      <Alert :type="'info'" :content="$t('my_packages_duration')"/>
                   </div>
                </div>
             </div>
-            <div class="col-md-4 col-lg-4 col-xs-12 p-0 p-1">
+            <div class="col-md-4 col-lg-4 col-xs-12 p-0 p-1" v-if="!isMobileBreakpoint">
 
                <div class="myPackagesBuy__package myPackagesBuy__cart">
                   <h4 class="myPackagesBuy__title">{{ selectedPackage.name }} {{ $t('package2') }}</h4>
 
-                  <h3 class="myPackagesBuy__subtitle">{{ selectedPackage.price }} AZN <span>/ {{ $t('month') }}</span> </h3>
+                  <h3 class="myPackagesBuy__subtitle">
+                     {{ selectedPackage.price }} AZN <span>/ {{ $t('month') }}</span>
+                  </h3>
 
                   <ul class="myPackagesBuy__package-list">
-                     <li
-                        :class="['myPackagesBuy__package-list_item', {'opacity' : !option.checked}]"
+                     <li :class="['myPackagesBuy__package-list_item', {'opacity' : !option.checked}]"
                         v-for="option in selectedPackage.items"
-                        :key="option.id"
-                     >
+                        :key="option.id">
+
                         <inline-svg :src="'/icons/check3.svg'" v-if="option.checked" />
                         <inline-svg :src="'/icons/close2.svg'" v-else />
 
@@ -81,8 +84,8 @@
          :toggle="openModal"
          :title="$t('balans')"
          :modal-class="'larger packages'"
-         @close="openModal = false"
-      >
+         @close="openModal = false">
+
          <h4 class="paymentMethods mb-3">{{ $t('payment_method') }}</h4>
 
          <label class="radio-container">
@@ -110,6 +113,7 @@
          </div>
 
          <hr v-if="$readNumber(user.balance) < 1" />
+
          <div class="terminal-section" v-if="$readNumber(user.balance) < 1">
             {{ $t('package_price') }} {{ selectedPackage?.price * duration }} AZN
          </div>
@@ -119,10 +123,7 @@
 
             <div class="row">
                <div class="col-12 col-lg-12 mt-2 mt-lg-0">
-                  <button
-                     :class="['btn btn--green full-width', { pending }]"
-                     @click="handleSubmit"
-                  >
+                  <button  :class="['btn btn--green full-width', { pending }]"  @click="handleSubmit">
                      {{ $t('pay') }}
                   </button>
                </div>
@@ -183,7 +184,7 @@
             this.openModal = true;
          },
 
-         async handleSubmit() {
+         async handleSubmit({commit}, value) {
             this.pending = true;
 
             let api = '/payment/package',
@@ -210,20 +211,13 @@
                      type: 'success',
                      // text: this.$t('announcement_paid'),
                      title: this.$t('success_payment')
-                  });
+                  }, value);
                } else {
                   await this.handlePayment(res, this.$localePath('/agreement'));
                   this.pending = this.openModal = false;
                }
             } catch (error) {
                this.pending = false;
-
-               // const response = error.response.data;
-               // if (response.data && Object.keys(response.data).length) {
-               //    for (let key in response.data) {
-               //       this.$toast.error(response.data[key][0])
-               //    }
-               // }
             }
          }
       },
@@ -262,8 +256,6 @@
 <style lang="scss">
    .myPackagesBuy {
       padding-bottom: 100px;
-
-
       &__package {
          &-list {
             margin-top: 23px !important;
@@ -422,7 +414,7 @@
          font-size: 16px;
          font-weight: 500;
          line-height: 20px;
-         letter-spacing: 0em;
+         letter-spacing: 0;
          text-align: center;
       }
 
@@ -504,14 +496,65 @@
    }
 
    @media (max-width: 1250px) {
-      .myPackagesBuy {
+      .myPackagesBuy__cart__table {
+         border: 0!important;
+         tr {
+            border-bottom: 1px solid #E3E8EF;
 
+            &:last-child {
+               border: 0!important;
+            }
+
+            td {
+               border: 0!important;
+
+               &:first-child {
+                  border: 0!important;
+               }
+
+               &:last-child {
+                  border: 0!important;
+               }
+            }
+         }
       }
    }
 
    @media (max-width: 1025px) {
-      .myPackagesBuy {
+      .myPackagesBuy__cart__table {
+         border: 0!important;
+         tr {
+            border-bottom: 1px solid #E3E8EF;
+            &:last-child {
+               border: 0!important;
+            }
+            td {
+               border: 0!important;
 
+               &:first-child {
+                  border: 0!important;
+               }
+
+               &:last-child {
+                  border: 0!important;
+               }
+            }
+         }
+      }
+      .full-width-xs{
+         width: 100%;
+      }
+      .full-width{
+         width: 100%;
+      }
+   }
+
+   @media (max-width: 740px) {
+      .full-width-xs{
+         width: 100%;
+      }
+      .full-width{
+         width: 100%;
       }
    }
 </style>

@@ -1440,7 +1440,7 @@ export default {
    pay_with_card: "Bank kartı",
    pay_with_terminal: "Terminallarda ödəniş",
    payment: "Ödəniş",
-   payment_amount: "Məbləğ",
+   payment_amount: "Məbləğ (AZN)",
    payment_history: "Ödəniş tarixçəsi",
    payment_method: "Ödəniş üsulları",
    payments: "Ödənişlər",
@@ -2039,8 +2039,8 @@ export default {
    overdue: "Vaxtı keçib",
    update: "Düzəltmək",
    updated: "Yeniləndi",
-   invoice_date: "Hesab - Faktura tarixi",
-   invoice_number: "Hesab - Faktura nömrəsi",
+   invoice_date: "Faktura tarixi",
+   invoice_number: "Faktura nömrəsi",
    type_of_service: "Xidmətin növü",
    status_and_date: "Status və tarix",
    USB: "USB",
@@ -2623,5 +2623,11 @@ export default {
   "sign_in_to_account": "Hesaba daxil ol",
    "my_balance": "Balansım",
    "sign_out": "Çıxış",
+   "saved_cards": "Saxlanılan kartlar",
+   "no_agreements": "Heç bir müqavilə tapılmadı",
+   "transactions": "Əməliyyatlar",
+   "agreement_details": "Müqavilə barədə ətraflı",
+   "view": "Baxış",
+   "download_invoice": "Endir"
 };
 

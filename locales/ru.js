@@ -2567,4 +2567,10 @@ export default {
    "sign_in_to_account": "Hesaba daxil ol",
    "my_balance": "Balansım",
    "sign_out": "Çıxış",
+   "saved_card": "Saxlanılan kartlar",
+   "no_agreements": "Heç bir müqavilə tapılmadı",
+   "transactions": "Əməliyyatlar",
+   "agreement_details": "Müqavilə barədə ətraflı",
+   "view": "Baxış",
+   "download_invoice": "Endir"
 };

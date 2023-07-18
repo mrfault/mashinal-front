@@ -34,13 +34,13 @@ export default {
 }
 </script>
 
-<style lang="scss">
-.container-fluid{
-   background-color: #fff!important;
-   margin-bottom: -112px;
-   min-height: 900px;
-}
-.breadcrumbs_main{
-   background-color: #EEF2F6;
-}
-</style>
+<!--<style lang="scss">-->
+<!--.container-fluid{-->
+<!--   background-color: #fff!important;-->
+<!--   margin-bottom: -112px;-->
+<!--   min-height: 900px;-->
+<!--}-->
+<!--.breadcrumbs_main{-->
+<!--   background-color: #EEF2F6;-->
+<!--}-->
+<!--</style>-->

@@ -161,7 +161,7 @@ export default {
 
    nuxtI18n: {
       paths: {
-         az: '/profil/paketler/resmilesdirme'
+         az: '/profil/paketler/resmilesdirme-old'
       }
    },
 
