@@ -90,12 +90,12 @@
                   <div class="item-overlay__bottom--right">
                      <inline-svg
                         src="/icons/vin.svg"
-                        v-if="announcement.has_monetization"
+                        v-if="announcement.show_vin"
                      />
 
                      <inline-svg
                         src="/icons/360_deg.svg"
-                        v-if="announcement.show_vin"
+                        v-if="announcement.has_360"
                      />
                   </div>
 
