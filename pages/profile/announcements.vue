@@ -1,85 +1,160 @@
 <template>
-   <div class="pages-annoucements pt-2 pt-lg-6" :key="refresh">
+   <div :key="refresh" class="pages-annoucements pt-2 pt-lg-6">
       <div class="container">
-         <breadcrumbs :crumbs="crumbs" />
-
-         <div class="card" v-if="isMobileBreakpoint">
-            <h2 class="title-with-line mb-0">
-               <span>{{ $t('my_announces') }}</span>
-            </h2>
+         <div class="ma-announcements">
+            <h2 class="ma-title--md">{{ $t('my_announces') }}</h2>
+            <div class="ma-announcements__head">
+               <button
+                  v-for="(item,index) in announceItems"
+                  :class="{'ma-announcements__head--item--active': item.id == activeTab}"
+                  class="ma-announcements__head--item"
+                  @click="activeTab = item.id"
+               >
+                  {{ $t(item.title) }}
+               </button>
+            </div>
          </div>
+         <div class="ma-announcements__body">
+            <h4 class="ma-subtitle--lg">{{ $t('my_vehicle_announcements') }}</h4>
+            <div id="announcementsContainer" class="ma-announcements__body--row" @mousedown="startDragging">
+               <div v-if="myAnnouncements.data.length" class="ma-announcements__body--row__inner">
+                  <template v-for="(announcement,index) in myAnnouncements.data">
+                     <div
+                        v-if="activeTab == null || activeTab == announcement.status"
+                        class="ma-announcements__body--row__inner--item-plate"
+                     >
+                        <grid-item
+                           :key="announcement.id_unique +  '_' + index"
+                           :announcement="announcement"
+                           clickable
+                           isProfilePage
+                           show-monetization-actions
+                           show-overlay
+                           show-phone-count
+                           show-status
+                           track-views
 
-         <controls-panel
-            :show-toolbar="!!myAnnouncements.data.length"
-            :clearSelected="activeTab"
-            :type="activeTab"
-         />
-         <!-- <div class="row flex-row-reverse" v-if="!(statusReady === '' && !myAnnouncements.data.length)">
-           <div class="col-lg-auto col-lg-1-5 mb-lg-n1">
-             <form-select :label="$t('status')" :options="getStatusOptions" v-model="form.status"
-               @change="changePage(1)" :clear-option="false" :allow-clear="false" has-no-bg />
-           </div>
-         </div> -->
+                        />
+                     </div>
+                  </template>
+               </div>
 
-         <ul class="tabs">
-            <li
-               :class="['tabs__item', {'active' : tab.id === activeTab }]"
-               v-for="tab in tabs"
-               :key="tab.id"
-               @click="activeTab = tab.id"
-            >{{ tab.name }}</li>
-         </ul>
-
-         <div class="tabContent">
-            <div class="tabContent__item" v-if="activeTab === 1">
-               <grid
-                  v-if="myAnnouncements.data.length"
-                  :announcements="myAnnouncements.data"
-                  :paginate="$paginate(myAnnouncements)"
-                  :pending="pending"
-                  :push-into-router="false"
-
-                  :show-title="false"
-                  :show-checkbox="true"
-                  :show-status="true"
-                  @change-page="changePage"
-                  isProfilePage
-               />
-<!--               :title="$t('my_announces')"-->
-
-               <no-results v-else
-                           :type="$route.query.type == 2 ? 'part' : 'car'"
-                           :text="statusReady !== '' ? '' : $t('add_an_ad_and_thousands_of_potential_buyers_will_see_it')"
+               <no-results
+                  v-if="myAnnouncements.data.length === 0 || (activeTab !== null && !myAnnouncements.data.some(item => activeTab === item.status))"
+                  :text="statusReady !== '' ? '' : $t('add_an_ad_and_thousands_of_potential_buyers_will_see_it')"
+                  :type="$route.query.type == 2 ? 'part' : 'car'"
                >
                   <nuxt-link v-if="statusReady === ''" :to="$localePath('/sell')" class="btn btn--green mt-2 mt-lg-3"
                              v-html="$t('to_sell')"/>
                </no-results>
             </div>
+            <h4 class="ma-subtitle--lg">{{ $t('my_car_number_announcements') }}</h4>
+            <div id="platesContainer" class="ma-announcements__body--row" @mousedown="startDragging">
+               <div v-if="getMyPlates.data.length" class="ma-announcements__body--row__inner">
+                  <template v-for="(item,index) in getMyPlates.data">
+                     <div
+                        v-if="activeTab == null || activeTab == item.status"
+                        class="ma-announcements__body--row__inner--item-plate"
+                     >
+                        <plates-grid-item
+                           :key="index"
+                           :item="item"
+                           moreInfo
+                        />
+                     </div>
+                  </template>
 
-            <div class="tabContent__item" v-if="activeTab === 2">
-               <PlatesGrid
-                  :items="getMyPlates.data"
-                  :moreInfo="true"
-                  :short-date="true"
-                  :checkbox="true"
-               >
-               </PlatesGrid>
-
-               <pagination
-                  v-if="getMyPlates?.meta?.last_page > 1"
-                  :page-count="getMyPlates?.meta?.last_page"
-                  :value="getMyPlates?.meta?.current_page"
-                  @change-page="changePageMarks"
-               />
-
+               </div>
                <no-results
-                  v-if="!getMyPlates.data.length"
-                  :text="$t('empty_plates')"
+                  v-if="
+                     getMyPlates.data.length === 0 ||
+                     (activeTab !== null && !getMyPlates.data.some(item => activeTab === item.status))"
                   :template="'new-img'"
+                  :text="$t('empty_plates')"
                   :url="'/img/empty_plates.png'"
                   :urlDarkMode="'/img/empty_plates_dark-mode.png'"
                ></no-results>
             </div>
+         </div>
+
+
+         <div v-if="false">
+            <breadcrumbs :crumbs="crumbs"/>
+
+            <div v-if="isMobileBreakpoint" class="card">
+               <h2 class="title-with-line mb-0">
+                  <span>{{ $t('my_announces') }}</span>
+               </h2>
+            </div>
+
+            <controls-panel
+               :clearSelected="activeTab"
+               :show-toolbar="!!myAnnouncements.data.length"
+               :type="activeTab"
+            />
+
+            <ul class="tabs">
+               <li
+                  v-for="tab in tabs"
+                  :key="tab.id"
+                  :class="['tabs__item', {'active' : tab.id === activeTab }]"
+                  @click="activeTab = tab.id"
+               >{{ tab.name }}
+               </li>
+            </ul>
+
+            <div class="tabContent">
+               <div v-if="activeTab === 1" class="tabContent__item">
+                  <grid
+                     v-if="myAnnouncements.data.length"
+                     :announcements="myAnnouncements.data"
+                     :paginate="$paginate(myAnnouncements)"
+                     :pending="pending"
+                     :push-into-router="false"
+
+                     :show-checkbox="true"
+                     :show-status="true"
+                     :show-title="false"
+                     isProfilePage
+                     @change-page="changePage"
+                  />
+                  <!--               :title="$t('my_announces')"-->
+
+                  <no-results v-else
+                              :text="statusReady !== '' ? '' : $t('add_an_ad_and_thousands_of_potential_buyers_will_see_it')"
+                              :type="$route.query.type == 2 ? 'part' : 'car'"
+                  >
+                     <nuxt-link v-if="statusReady === ''" :to="$localePath('/sell')" class="btn btn--green mt-2 mt-lg-3"
+                                v-html="$t('to_sell')"/>
+                  </no-results>
+               </div>
+
+               <div v-if="activeTab === 2" class="tabContent__item">
+                  <PlatesGrid
+                     :checkbox="true"
+                     :items="getMyPlates.data"
+                     :moreInfo="true"
+                     :short-date="true"
+                  >
+                  </PlatesGrid>
+
+                  <pagination
+                     v-if="getMyPlates?.meta?.last_page > 1"
+                     :page-count="getMyPlates?.meta?.last_page"
+                     :value="getMyPlates?.meta?.current_page"
+                     @change-page="changePageMarks"
+                  />
+
+                  <no-results
+                     v-if="!getMyPlates.data.length"
+                     :template="'new-img'"
+                     :text="$t('empty_plates')"
+                     :url="'/img/empty_plates.png'"
+                     :urlDarkMode="'/img/empty_plates_dark-mode.png'"
+                  ></no-results>
+               </div>
+            </div>
+
          </div>
       </div>
    </div>
@@ -92,6 +167,9 @@ import Grid from '~/components/announcements/Grid';
 import NoResults from '~/components/elements/NoResults';
 import ControlsPanel from '~/components/announcements/ControlsPanel';
 import PlatesGrid from "~/components/announcements/PlatesGrid.vue";
+import GridItem from "~/components/announcements/GridItem";
+import AnnouncementCard from "~/components/cards/AnnouncementCard";
+import PlatesGridItem from "~/components/announcements/PlatesGridItem";
 // import tr from "vue2-datepicker/locale/es/tr";
 
 export default {
@@ -100,14 +178,45 @@ export default {
    layout: 'garageLayout',
    data() {
       return {
-         activeTab: 1
+         activeTab: null,
+         announceItems: [
+            {
+               id: null,
+               title: "all2",
+               link: "/",
+            },
+            {
+               id: 1,
+               title: 'active',
+               link: "/",
+            },
+            {
+               id: 2,
+               title: 'under_consideration_2',
+               link: "/",
+            },
+            {
+               id: 3,
+               title: 'inactive',
+               link: "/",
+            },
+            {
+               id: 0,
+               title: 'timed_out',
+               link: "/",
+            },
+         ],
+         escapeDuplicates: false,
       }
    },
    components: {
+      GridItem,
       Grid,
       NoResults,
       ControlsPanel,
-      PlatesGrid
+      PlatesGrid,
+      AnnouncementCard,
+      PlatesGridItem,
    },
    nuxtI18n: {
       paths: {
@@ -121,6 +230,11 @@ export default {
    },
    mounted() {
       this.$nuxt.$on('refresh-my-announcements', () => this.refresh++);
+      const announcementsContainer = document.getElementById('announcementsContainer');
+      announcementsContainer.addEventListener('mousedown', this.startDragging);
+
+      const platesContainer = document.getElementById('platesContainer');
+      platesContainer.addEventListener('mousedown', this.startDragging);
    },
    async asyncData({store, route}) {
       let status = ['0', '1', '2', '3'].includes(route.query.status) ? parseInt(route.query.status) : '';
@@ -155,7 +269,30 @@ export default {
       },
       isValid(status) {
          return [0, 1, 2, 3].includes(status);
-      }
+      },
+      startDragging(event) {
+         event.preventDefault(); // Disable content selection while dragging
+
+         const container = event.currentTarget;
+         let startX = event.clientX;
+         let scrollLeft = container.scrollLeft;
+
+         const scrollByDragging = (event) => {
+            const distance = event.clientX - startX;
+            container.scrollLeft = scrollLeft - distance;
+         };
+
+         const stopDragging = () => {
+            document.removeEventListener('mousemove', scrollByDragging);
+            document.removeEventListener('mouseup', stopDragging);
+            container.style.userSelect = ''; // Restore default content selection behavior
+         };
+
+         document.addEventListener('mousemove', scrollByDragging);
+         document.addEventListener('mouseup', stopDragging);
+         container.style.userSelect = 'none'; // Disable content selection during dragging
+      },
+
    },
    computed: {
       // tr() {
@@ -180,42 +317,11 @@ export default {
 
       tabs() {
          return [
-            { id: 1, name: this.$t('my_vehicles') },
-            { id: 2, name: this.$t('registration_badges') }
+            {id: 1, name: this.$t('my_vehicles')},
+            {id: 2, name: this.$t('registration_badges')}
          ]
       }
    }
 }
 </script>
 
-<style lang="scss">
-   @media (max-width: 500px) {
-      .pages-annoucements {
-         .tabContent {
-            &__item {
-               .no-results {
-                  svg {
-                     width: 300px;
-                     height: 80px;
-                  }
-               }
-            }
-         }
-      }
-   }
-
-   @media (max-width: 375px) {
-      .pages-annoucements {
-         .tabContent {
-            &__item {
-               .no-results {
-                  svg {
-                     width: 260px;
-                     height: 55px;
-                  }
-               }
-            }
-         }
-      }
-   }
-</style>
