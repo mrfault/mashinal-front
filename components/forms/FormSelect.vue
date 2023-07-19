@@ -499,6 +499,9 @@ export default {
          if (!onlykey && this.nameInValue) {
             return {key: key, name: name}
          }
+         if (this.objectInValue) {
+            return option
+         }
          return this.$notUndefined(key, name)
       },
       getKey(value) {
@@ -641,6 +644,10 @@ export default {
          // })
       },
       getLabelText() {
+         if (this.objectInValue) {
+            const selectKey = this.value.title ? "title" : "name"
+            return this.value ? this.$t(this.value[selectKey]) : this.label
+         }
          if (this.custom) {
             let value;
             let read = this.values.read !== false;

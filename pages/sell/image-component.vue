@@ -32,6 +32,7 @@ export default {
    },
    data() {
       return {
+         form: this.$clone(this.initialForm),
          files: (this.announcement?.media || []).map((media, i) => ({media, key: this.initialForm.saved_images[i]})),
          minFiles: this.type === 'moto' ? 2 : 3,
          maxFiles: 20,
@@ -42,8 +43,13 @@ export default {
    },
    computed: {
       helperImages() {
-         let imgs = this.type === 'cars' ? [1, 2, 3, 4, 5] : (this.type === 'commercial' ? [1, 2, 3, 4] : [1, 2, 3]);
-         return imgs.map(n => `/img/sell-helpers/${this.type}_${n}.png`);
+         let imgs = [1, 2, 3];
+         return imgs.map(n => {
+            return {
+               url: `/img/sell-helpers/${this.type}_${n}.png`,
+               name: this.$t(`sell_item_${this.type}_${n}`)
+            }
+         });
       }
    },
    methods: {

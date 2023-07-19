@@ -112,6 +112,7 @@ const getInitialState = () => ({
    popularOptions: [],
    bodyOptions: {},
    motoOptions: [],
+   motoOptionsV2: [],
    scooterOptions: [],
    complaintOptions: [],
    badges: [],
@@ -337,6 +338,7 @@ export const getters = {
    popularOptions: s => s.popularOptions,
    bodyOptions: s => s.bodyOptions,
    motoOptions: s => s.motoOptions,
+   motoOptionsV2: s => s.motoOptionsV2,
    scooterOptions: s => s.scooterOptions,
    complaintOptions: s => s.complaintOptions,
    badges: s => s.badges,
@@ -939,6 +941,11 @@ export const actions = {
    async getMotoOptions({state, commit}) {
       if (objectNotEmpty(state, commit, "motoOptions")) return;
       const res = await this.$axios.$get(`/moto/search_options`);
+      commit("mutate", {property: "motoOptions", value: res});
+   },
+   async getMotoOptionsV2({state, commit}) {
+      if (objectNotEmpty(state, commit, "motoOptionsV2")) return;
+      const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/moto/types`);
       commit("mutate", {property: "motoOptions", value: res});
    },
    async getScooterOptions({commit}) {

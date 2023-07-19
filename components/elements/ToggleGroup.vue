@@ -30,7 +30,7 @@ export default {
   methods: {
     setSelected(id) {
       this.selected = id;
-      this.$emit("onChange", id);
+      this.$emit("change", id);
     },
   },
 };

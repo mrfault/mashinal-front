@@ -746,7 +746,6 @@ export default {
       "Qaz-turbin",
       "Plug-in Hibrid",
    ],
-
    engine_volume: "Mühərrikin işçi həcmi (sm3)",
    engine_type: "Mühərrikin növü",
    enter_name: "Adı daxil edin",
@@ -2626,4 +2625,18 @@ export default {
    additional_info: "Əlavə məlumatlar",
    additional_info_warning:
       "Məlumat bölməsində link, e-mail, qiymət və xidmət təklifi yazmaq qadağandır.",
+   sell_item_cars_1: "Ön görünüş",
+   sell_item_cars_2: "Arxa görünüş",
+   sell_item_cars_3: "Salon görünüşü",
+   sell_item_moto_1: "Ön görünüş",
+   sell_item_moto_2: "Sağdan sola görünüş",
+   sell_item_moto_3: "Soldan sağa görünüş",
+   sell_item_commercial_1: "Ön görünüş",
+   sell_item_commercial_2: "Arxa görünüş",
+   sell_item_commercial_3: "Yan görünüşü",
+   add_image_section_warning: "Minimum – 3 şəkil (ön, sağ və sol görüntüsü mütləqdir).",
+   contacts_registration_info: "Nömrə SMS-kod ilə təsdiqləndikdən sonra elan yoxlamaya göndəriləcək və kabinetə əlavə olunacaq.",
+   enter_sms_code: "SMS-kodu göndər",
+   add_announce_info: "Siz 1 ay ərzində minik, moto və ticari avtomobillər kateqoriyasında <strong>3 pulsuz elan</strong>, ehtiyat hissələri kateqoriyasında limitsiz sayda <strong>pulsuz elan</strong> yerləşdirə bilərsiniz. Qeydiyyat nişanı elanının qiyməti 1 AZN-dir.",
+   mobile_info: "Siz <strong>({phone})</strong> telefon nömrəsindən elan yerləşdirirsiniz"
 };

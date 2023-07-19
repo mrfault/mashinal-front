@@ -4,7 +4,7 @@
       v-model="orderdedKeys"
       :handle="isMobileBreakpoint ? '.handle' : ''"
       :sort="true"
-      class="row"
+      class="upload-image_draggable"
       draggable=".draggable"
       group="people"
       @end="dragFile"
@@ -12,7 +12,7 @@
       <div
         v-for="(key, index) in orderdedKeys"
         :key="key"
-        class="col-6 col-lg-1-5 mb-2 mb-lg-3 draggable"
+        class="draggable_item draggable"
       >
         <div class="upload-image_thumbnail">
           <img v-if="image[key]" :src="image[key]" alt=""/>
@@ -50,30 +50,30 @@
                 <!-- <inline-svg src="/icons/cross.svg" height="14"/> -->
               </button>
             </div>
-            <button
-              v-if="isMobileBreakpoint"
-              :class="['btn-transparent-drag handle']"
-              type="button"
-            >
-              <icon name="burger" style="color: #fff;"/>
-            </button>
+<!--            <button-->
+<!--              v-if="isMobileBreakpoint"-->
+<!--              :class="['btn-transparent-drag handle']"-->
+<!--              type="button"-->
+<!--            >-->
+<!--              <icon name="burger" style="color: #fff;"/>-->
+<!--            </button>-->
           </div>
         </div>
       </div>
-      <template v-if="isMobileBreakpoint">
-        <div
-          v-if="filesLength !== filesLoadedLength"
-          key="loading"
-          class="col-6 col-lg-1-5 mb-2 mb-lg-3"
-        >
-          <div class="upload-image_thumbnail">
-            <loader/>
-          </div>
-        </div>
-      </template>
-      <template v-else>
+<!--      <template v-if="isMobileBreakpoint">-->
+<!--        <div-->
+<!--          v-if="filesLength !== filesLoadedLength"-->
+<!--          key="loading"-->
+<!--          class="col-6 col-lg-1-5 mb-2 mb-lg-3"-->
+<!--        >-->
+<!--          <div class="upload-image_thumbnail">-->
+<!--            <loader/>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </template>-->
+      <template >
         <template v-for="(img, index) in helpers.slice(filesLoadedLength)">
-          <div :key="img" class="col-6 col-lg-1-5 mb-2 mb-lg-3">
+          <div :key="img.url" class="draggable_item">
             <div
               v-if="index + 1 <= filesLength - filesLoadedLength"
               class="upload-image_thumbnail"
@@ -85,7 +85,11 @@
               class="upload-image_thumbnail helper"
               @click.stop="input.click()"
             >
-              <img :src="img" alt=""/>
+               <div class="upload-image_thumbnail_item">
+              <img :src="img.url" alt=""/>
+
+               </div>
+               <p>{{img.name}}</p>
             </div>
           </div>
         </template>
@@ -93,9 +97,9 @@
           <div
             v-for="i in (filesLength - filesLoadedLength - helpers.slice(filesLoadedLength).length)"
             :key="'loading_' + i"
-            class="col-6 col-lg-1-5 mb-2 mb-lg-3"
+            class="upload-image_thumbnail"
           >
-            <div class="upload-image_thumbnail">
+            <div class="upload-image_thumbnail draggable_item">
               <loader/>
             </div>
           </div>
@@ -106,9 +110,9 @@
           canUpload && (isMobileBreakpoint || filesLength >= helpers.length)
         "
       >
-        <div key="add-image" class="col-6 col-lg-1-5 mb-2 mb-lg-3">
+        <div key="add-image" class="upload-image_thumbnail">
           <div
-            class="upload-image_thumbnail add-image"
+            class="upload-image_thumbnail add-image draggable_item"
             @click.stop="input.click()"
           >
             <div class="overlay">

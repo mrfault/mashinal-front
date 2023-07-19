@@ -784,18 +784,47 @@
 }
 
 .upload-image {
+
+   &_draggable {
+   display: grid;
+   grid-template-columns: repeat(2, 1fr);
+   gap: 16px;
+
+      .draggable_item {
+         width: 100%;
+         display: flex;
+         flex-direction: column;
+         justify-content: center;
+         gap: 12px;
+         aspect-ratio: 1.33;
+         border-radius: 12px;
+         border: 1px dashed $grey-5-new;
+         background-color: $grey-7-new;
+         overflow: hidden;
+         user-select: none;
+      }
+
+   }
+
    .draggable &_thumbnail {
       cursor: move;
    }
 
    &_thumbnail {
-      width: 100%;
-      padding-bottom: 76.36%;
       position: relative;
-      border-radius: 4px;
-      background-color: $greyish-blue-2;
-      overflow: hidden;
-      user-select: none;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 12px;
+
+      &_item {
+      height: 72px;
+
+      }
+      p {
+         text-align: center;
+      }
 
       .overlay {
          @include abs-zero;
@@ -854,14 +883,16 @@
 
       &.helper {
          img {
-            @include abs-middle;
-            width: auto;
-            height: auto;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
          }
       }
 
       img {
-         @include abs-zero;
+         //@include abs-zero;
+         width: 100%;
+         height: 100%;
          object-fit: cover;
       }
    }

@@ -1,7 +1,7 @@
 <template>
   <div class="show-map-button">
-    <button class="btn btn--dark-blue full-width" @click="showMap = true">
-      <icon name="placeholder" /> {{ $t('map') }}
+    <button class="btn full-width btn--blue-new-light-2" @click="showMap = true" type="button">
+       <inline-svg :src="'/icons/map.svg'" class="map_btn"/> {{ $t('choose_on_map') }}
     </button>
     <portal to="modals">
       <backdrop @click="closeMap" v-if="showMap" @mount="beforeInit">
@@ -96,7 +96,7 @@ export default {
       const geolocationControl = new ymaps.control.GeolocationControl({
         options: { noPlacemark: true }
       });
-      
+
       geolocationControl.events.add('locationchange', (e) => {
         const coords = e.get('position');
         this.placemark.geometry.setCoordinates(coords);
