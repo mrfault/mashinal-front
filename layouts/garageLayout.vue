@@ -62,8 +62,8 @@ export default {
                link: '/profile/announcements',
             },
             {
-               title: this.$t('garage'),
-               icon: 'line-chart',
+               icon: 'invoice',
+               title: this.$t('penalties'),
                link: '/garage',
             },
             {
