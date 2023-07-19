@@ -8,4 +8,24 @@
       font-size: 28px;
       line-height: 32px;
    }
+   &--sm{
+      font-size: 16px;
+      line-height: 24px;
+   }
+}
+
+.ma-subtitle{
+   &--sm, &--md, &--lg{
+      font-family: 'TTHoves';
+      font-weight: 600;
+      color: $dark-light-new;
+   }
+   &--lg{
+      font-size: 24px;
+      line-height: 28px;
+   }
+   &--sm{
+      font-size: 16px;
+      line-height: 24px;
+   }
 }

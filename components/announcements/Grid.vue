@@ -3,7 +3,7 @@
       <div class="container" v-if="title">
          <slot name="cap" />
 
-         <div class="announcements-grid__inner">
+         <div class="announcements-grid__inner" :class="{'my-announcements-grid__inner':myAnnouncementsPage}">
             <grid-item
                v-for="(announcement, index) in announcements"
                :key="announcement.id_unique + (escapeDuplicates ? '_' + index : '')"
@@ -88,6 +88,7 @@
          },
          isProfilePage: Boolean,
          needAutoScroll: Boolean,
+         myAnnouncementsPage: Boolean,
       },
 
       components: {

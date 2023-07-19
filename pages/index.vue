@@ -318,7 +318,7 @@
             else this.absoluteMobileScreen = false
          })
          setTimeout(() => {
-            this.gallerySwiper.init()
+            // this.gallerySwiper.init()
             this.gallerySwiper.on('slideChange', () => {
                this.currentSlide = this.gallerySwiper.realIndex
             })
