@@ -1,81 +1,73 @@
-/** Footer */
+.footer {
+   background-color: $dark-blue-1;
 
-.page-footer {
-  background-color: $dark-blue-1;
-  color: $white;
-  padding: 40px 0px;
-  margin-top: 20px;
+   &__content {
+      display: flex;
+      justify-content: space-between;
+      padding: 64px 0;
 
-  .logo {
-    img {
-      height: 30px;
-    }
-  }
+      &-link {
+         display: block;
+         font-size: 16px;
+         font-weight: 500;
+         line-height: 20px;
+         color: $white;
+         white-space: nowrap;
+         transition: all .3s;
 
-  p {
-    margin-top: 20px;
-    max-width: 400px;
-  }
+         &:not(:first-child) {
+            margin-top: 32px;
+         }
 
-  mark {
-    display: block;
-    margin-top: 20px;
-    background: none;
-    color: inherit;
-
-    a {
-      color: $yellow-1;
-      font-weight: 500;
-
-      &:hover {
-        text-decoration: underline;
+         &:hover {
+            color: $blue-4-new;
+         }
       }
-    }
-  }
 
-  h4 {
-    color: $yellow-1;
-    font-weight: 500;
-    font-size: 18px;
-    margin-bottom: 4px;
-  }
+      .logo {
+         &:after {
+            right: -20px;
+         }
 
-  .menu {
-    margin: 0;
-
-    li {
-      margin-top: 15px;
-
-      a {
-        color: $white;
-        font-weight: 500;
-
-        &:hover {
-          color: $yellow-1;
-        }
+         svg {
+            width: 200px;
+         }
       }
-    }
-  }
 
-  .socials {
-    margin: 25px -10px 20px;
+      .call-center {
+         margin-left: 40px;
+      }
+   }
 
-    a {
-      display: inline-flex;
+   &__copyright {
+      display: flex;
       align-items: center;
       justify-content: center;
-      color: $white;
-      border: 1px solid $white;
-      border-radius: 4px;
-      width: 34px;
-      height: 34px;
-      margin: 0 10px;
-      transition: 0.1s ease-out;
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 20px;
+      height: 52px;
+      color: $grey-5-new;
+      border-top: 1px solid $grey-3-new;
+   }
+}
 
-      &:hover {
-        color: $dark-blue-1;
-        background-color: $white;
+@media (max-width: 1150px) {
+   .footer {
+      margin-bottom: 60px;
+   }
+}
+
+@media (max-width: 992px) {
+   .footer {
+      &__content {
+         justify-content: center;
+
+         &-item {
+            &:not(:first-child) {
+               display: none;
+            }
+         }
       }
-    }
-  }
+   }
 }

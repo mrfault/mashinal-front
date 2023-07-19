@@ -1,33 +1,41 @@
 <template>
    <div class="myPackages">
-      <div class="container">
-         <ComeBack :text="$t('my_packages')" v-if="isMobileBreakpoint" />
-
-         <breadcrumbs :crumbs="crumbs" />
-
-         <CustomNotifications
-            :title="$t('unpaid_invoice')"
-            :subtitle="$t('unpaid_params',
+      <div class="myPackages__container">
+         <portal to="breadcrumbs">
+            <breadcrumbs :crumbs="crumbs" />
+         </portal>
+         <component
+            :is="isMobileBreakpoint ? 'mobile-screen' : 'div'"
+            :bar-title="$t('my_packages')"
+            @back="$router.push(pageRef || $localePath('/profile/packages'))"
+            height-auto
+         >
+            <div>
+               <CustomNotifications
+                  :title="$t('unpaid_invoice')"
+                  :subtitle="$t('unpaid_params',
                {
                   package_type: unpaidAgreement.package.name[locale],
                   start_date: $moment(unpaidAgreement.start_date).format('DD.MM.YYYY'),
                   end_date: $moment(unpaidAgreement.end_date).format('DD.MM.YYYY'),
                   price: unpaidAgreement.price
                })"
-            :unpaidAgreement="unpaidAgreement"
-            v-if="!!unpaidAgreement"
-         />
+                  :unpaidAgreement="unpaidAgreement"
+                  v-if="!!unpaidAgreement"
+               />
 
-         <div v-if="!getAgreements.length">
-            <h4 class="myPackages__title">{{ $t('not_active_package') }}</h4>
+               <div v-if="!getAgreements.length">
+                  <h4 class="myPackages__title">{{ $t('not_active_package') }}</h4>
 
-            <h5 class="myPackages__subtitle">{{ $t('get_new_package') }}</h5>
-         </div>
+                  <h5 class="myPackages__subtitle">{{ $t('get_new_package') }}</h5>
+               </div>
 
-         <Packages
-            :packages="getPackages"
-            :disableBtn="disableBtn"
-         />
+               <Packages
+                  :packages="getPackages"
+                  :disableBtn="disableBtn"
+               />
+            </div>
+         </component>
       </div>
    </div>
 </template>
@@ -41,6 +49,7 @@
    export default {
       components: { Packages, CustomNotifications, ComeBack },
 
+      layout: 'profileLayout',
       head() {
          return this.$headMeta({
             title: this.$t('my_packages'),
@@ -52,6 +61,7 @@
             az: '/profil/paketler'
          }
       },
+
 
       computed: {
          ...mapGetters({
@@ -89,7 +99,6 @@
 
 <style lang="scss">
    .myPackages {
-      padding-bottom: 100px;
 
       &__title {
          margin: 36px 0 8px 0;
@@ -108,7 +117,7 @@
       }
 
       .customPackages {
-         margin: 45px -25px 0 -25px;
+         margin: 0px -25px 0 -25px;
       }
 
       .swiper-container {
@@ -186,7 +195,7 @@
    @media (min-width: 550px) {
       .myPackages {
          .customPackages {
-            margin: 45px 0 0 0;
+            margin: 0px 0 0 0;
          }
       }
    }

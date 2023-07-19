@@ -152,6 +152,10 @@
    background-position: center;
    background-repeat: no-repeat;
 
+   &.white-border {
+      background-image: url('../../static/icons/star-favorite2-white-border.svg');
+   }
+
    span {
       width: 100%;
       height: 100%;
@@ -159,7 +163,7 @@
 }
 
 .btn-favorite-active {
-   background-image: url('../../static/icons/star-favorite2-active.svg');
+   background-image: url('../../static/icons/star-favorite2-active.svg') !important;
 }
 
 .btn-compare {
@@ -364,6 +368,10 @@
       @include btn-style($bg-color: $red-new-opacity, $bg-hover: $red-2, $color: $red-1, $border-color: $red-new-2);
    }
 
+   &--red-opacity-2 {
+      @include btn-style($bg-color: $red-new-opacity, $bg-hover: $red-2, $color: $red-1, $border-color: $red-1);
+   }
+
    &--red-outline {
       @include btn-style($bg-color: $red-1, $bg-hover: $red-2, $outline: true);
    }
@@ -424,6 +432,24 @@
          $active-color: $blue-3-new,
          $active-bg: $blue-3-new,
       );
+   }
+
+   &--blue-new-light-3 {
+      @include btn-style(
+         $color: $grey-3-new,
+         $color-hover: $blue-5-new,
+         $bg-color: $blue-3-new,
+         $bg-hover: $blue-3-new,
+         $border-color: $blue-3-new,
+         $border-hover: $blue-6-new,
+         $active-color: $blue-3-new,
+         $active-bg: $blue-3-new,
+      );
+
+      .icon-chat {
+         color: $blue-5-new;
+         font-weight: 600;
+      }
    }
 
    &--grey {

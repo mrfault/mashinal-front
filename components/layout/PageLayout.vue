@@ -70,7 +70,9 @@
             <!-- /portal targets -->
             <comparison-badge :window-width="windowWidth" />
             <mobile-nav/>
-<!--            <brands-list />-->
+
+            <BrandsList :options="brandsList" />
+
             <page-footer v-if="!hideFooter"/>
 <!--            <template v-if="isMobileBreakpoint && showPopupBanner">
                <modal-popup
@@ -106,7 +108,7 @@
 
 <script>
    import {LayoutMixin} from '~/mixins/layout';
-   import {mapState} from 'vuex'
+   import {mapGetters, mapState} from 'vuex'
    import PageHeader from '~/components/layout/PageHeader';
    import PageFooter from '~/components/layout/PageFooter';
    import MobileMenu from '~/components/layout/MobileMenu';
@@ -121,7 +123,6 @@
    export default {
       mixins: [LayoutMixin],
       components: {
-         BrandsList,
          SiteBanner,
          PageHeader,
          PageFooter,
@@ -130,7 +131,8 @@
          PaidStatus,
          ScrollTop,
          ComparisonBadge,
-         MapSwitch
+         MapSwitch,
+         BrandsList
       },
       data() {
          return {
@@ -144,7 +146,9 @@
             await Promise.all([
                this.$store.dispatch("getNotifications"),
                this.$store.dispatch("getNotViewedFavorites"),
-               this.$store.dispatch("getNotViewedSavedSearch")
+               this.$store.dispatch("getNotViewedSavedSearch"),
+               this.$store.dispatch("fetchBrandsList"),
+               this.$store.dispatch("getFavorites")
             ]);
          }
          await Promise.all([
@@ -172,6 +176,9 @@
       },
       computed: {
          ...mapState(['mapView', 'timestamp']),
+         ...mapGetters({
+            brandsList: 'brandsList'
+         }),
          cookiesHasNotificationOn() {
             var cookie = this.$cookies.get('smartbanner_exited');
             if (cookie) {
