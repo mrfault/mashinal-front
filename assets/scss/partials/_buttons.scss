@@ -323,6 +323,9 @@
    &--green {
       @include btn-style($bg-color: $green-1, $bg-hover: $green-2);
    }
+   &--light-green {
+      @include btn-style($bg-color: #12B76A, $bg-hover: $green-2);
+   }
 
    &--new-dark-green {
       @include btn-style($bg-color: $green-dark-new, $bg-hover: $green-2);
@@ -801,6 +804,19 @@ button:focus {
          height: 48px;
       }
    }
+}
+
+.btn-dark-text{
+   color: #1b2434;
+}
+
+.ma-btn-green-outlined{
+   border: 1px solid #039855;
+   color:  #039855;
+   border-radius: 6px;
+   background: #ecfdf3;
+   font:  500 15px/18px 'TTHoves';
+   padding: 10px 20px;
 }
 
 @include media-max-width('lg') {

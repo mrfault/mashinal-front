@@ -707,3 +707,124 @@
       }
    }
 }
+
+@media (max-width: 500px) {
+   .pages-annoucements {
+      .tabContent {
+         &__item {
+            .no-results {
+               svg {
+                  width: 300px;
+                  height: 80px;
+               }
+            }
+         }
+      }
+   }
+}
+
+@media (max-width: 375px) {
+   .pages-annoucements {
+      .tabContent {
+         &__item {
+            .no-results {
+               svg {
+                  width: 260px;
+                  height: 55px;
+               }
+            }
+         }
+      }
+   }
+}
+
+
+.ma-announcements{
+   .ma-title--md{
+      margin-bottom: 28px;
+   }
+   &__head{
+      width: 100%;
+      display: flex;
+      align-items: center;
+      border-radius: 12px;
+      background: $grey-1-new;
+      padding: 0px 24px;
+      margin-bottom: 32px;
+      &--item{
+         padding: 20px 12px 20px 12px;
+         border: none;
+         background: transparent;
+         &:hover{
+            background: rgba(#155EEF,0.1);
+         }
+         &--active{
+            position: relative;
+            &:before{
+               position: absolute;
+               bottom: 0;
+               left: 0;
+               width: 100%;
+               height: 3px;
+               content: '';
+               background: #155EEF;
+               border-radius: 3px 3px 0 0;
+            }
+         }
+      }
+   }
+   &__body{
+      .ma-subtitle--lg{
+         margin-bottom: 24px;
+      }
+      &--row{
+         width: auto;
+         box-sizing: border-box;
+         overflow-x: scroll;
+         overflow-y: hidden;
+         @include customScrollbar1;
+         margin-bottom: 40px;
+         cursor: grab;
+         &:active{
+            cursor: grabbing;
+         }
+         &__inner{
+            display: flex;
+            flex-wrap: nowrap;
+            width: fit-content;
+            padding-bottom: 10px;
+            &--item{
+               width: 256px;
+               height: 392px;
+               //background: rgba(#a9afbb,.3);
+               border-radius: 12px;
+               margin-right: 20px;
+            }
+            &--item-plate{
+               width: 256px;
+               margin-right: 20px;
+            }
+         }
+         .announcements-grid{
+            margin: 0 !important;
+         }
+         .ma-announcement-card{
+            &:not(last-of-type){
+               margin-right: 20px;
+            }
+         }
+      }
+   }
+
+}
+
+.my-announcements-grid__inner{
+   display: flex;
+   flex-wrap: nowrap;
+   width: fit-content;
+   .stratch-child-block{
+      width: 256px;
+   }
+
+}
+

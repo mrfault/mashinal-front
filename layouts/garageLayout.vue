@@ -4,7 +4,7 @@
          <div class="container">
             <div class="ma-garage">
                <div class="ma-garage__nav">
-                  <div class="ma-garage__nav--profile">
+                  <NuxtLink :to="$localePath('garage-services')" class="ma-garage__nav--profile">
 
                      <div class="ma-garage__nav--profile__avatar">
                         <template v-if="user.avatar">
@@ -13,7 +13,7 @@
                         <h5 v-else class="ma-garage__nav--profile__name">{{ user.full_name.charAt(0) }}</h5>
                      </div>
                      <h5 class="ma-garage__nav--profile__name"> {{ user.full_name }}</h5>
-                  </div>
+                  </NuxtLink>
                   <template v-for="(item, index) in garageNavs">
                      <nuxt-link v-if="!item.isButton" :to="item.link" class="ma-garage__nav--item">
                         <icon :name="item.icon"/>
@@ -58,7 +58,7 @@ export default {
                link: '/profile/announcements',
             },
             {
-               title: this.$t('garage'),
+               title: this.$t('penalties'),
                icon: 'line-chart',
                link: '/garage',
             },
