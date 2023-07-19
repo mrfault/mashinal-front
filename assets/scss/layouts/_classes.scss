@@ -144,10 +144,14 @@ hr {
 
 .overflow-hidden {
    overflow: hidden;
+}
 
-   &.bg-white {
-      background-color: #FFFFFF;
-   }
+.bg-white {
+   background-color: #FFFFFF;
+}
+
+.h-56 {
+   height: 56px;
 }
 
 .stratch-child-block {

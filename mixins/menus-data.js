@@ -18,8 +18,8 @@ export const MenusDataMixin = {
 
       pageMenus() {
          return [
-            {title: 'feedback', route: '/contact-us', icon: 'contact-tab'},
-            {title: 'policy', route: '/policy', icon: 'policy', showOnCard: true}
+            { title: 'feedback', route: '/contact-us', icon: 'contact-tab' },
+            { title: 'policy', route: '/policy', icon: 'policy', showOnCard: true }
          ];
       },
 
@@ -54,6 +54,19 @@ export const MenusDataMixin = {
             // {icon: 'catalog-tab', title: 'autocatalog', route: '/catalog'},
             // {icon: 'external-tab', title: 'external-salons', route: '/external-salons', with_badge: true},
             { icon: 'globe', title: 'eservices', route: '/e-services' }
+         ]
+      },
+
+      footerMenus() {
+         return [
+            { title: 'announcements', route: '/cars' },
+            { title: 'salons', route: '/salons' },
+            { title: 'shops', route: '/parts/shops' },
+            { title: 'autocatalog', route: '/catalog' },
+            { title: 'eservices', route: '/e-services' },
+            { title: 'external_salon', route: '/external-salons' },
+            { title: 'policy', route: '/policy' },
+            { title: 'feedback', route: '/contact-us' }
          ]
       },
 

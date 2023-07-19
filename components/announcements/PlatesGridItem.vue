@@ -14,7 +14,7 @@
          <div class="divider">
             <p>{{ item?.price }}</p>
 
-            <add-favorite :announcement="item" v-if="showFavoriteBtn" />
+            <add-favorite :announcement="item" :whiteBorder="false" v-if="showFavoriteBtn" />
 
             <form-checkbox
                v-if="checkbox"
