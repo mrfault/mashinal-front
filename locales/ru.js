@@ -1316,7 +1316,6 @@ export default {
       "По данному запросу запчастей не найдено",
    no_templates: "Вы еще не сохраняли шаблоны поисков",
    no_unpaid_protocols: "У вас нет неоплаченных штрафов.",
-   not_cleared: "Не растаможен",
    not_found: "Не найдено",
    not_set: "Не указано",
    not_studded: "Нешипованные",
@@ -2584,4 +2583,13 @@ export default {
    enter_sms_code: "Отправьте SMS-код",
    add_announce_info: "Вы можете разместить <strong>3 бесплатных объявления</strong> в категории легковые, мотоциклетные и коммерческие автомобили и неограниченное количество <strong>бесплатных объявлений</strong> в категории запчастей в течение 1 месяца. Стоимость объявления регистрационного бейджа составляет 1 AZN.",
    mobile_info: "Вы размещаете объявление с номера телефона <strong>({phone})</strong>"
+   "sign_in_to_account": "Hesaba daxil ol",
+   "my_balance": "Balansım",
+   "sign_out": "Çıxış",
+   "saved_card": "Saxlanılan kartlar",
+   "no_agreements": "Heç bir müqavilə tapılmadı",
+   "transactions": "Əməliyyatlar",
+   "agreement_details": "Müqavilə barədə ətraflı",
+   "view": "Baxış",
+   "download_invoice": "Endir"
 };

@@ -70,6 +70,7 @@ import ListOfAttorneys from '~/components/garage/loa/ListOfAttorneys'
 export default {
   name: 'pages-garage-index',
   mixins: [UserDataMixin, MenusDataMixin],
+   layout: 'garageLayout',
   components: {
     ListOfAttorneys,
     GarageNav,

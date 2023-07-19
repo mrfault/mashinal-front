@@ -84,7 +84,7 @@
     </div>
     <div class="text-center">
       <button :class="['btn btn--green mt-1', { pending: pending && !showDeleteModal }]" @click="addCard">
-        <icon name="plus-circle" />
+        <icon name="plus-circle" class="btn-plus" />
         {{ $t('add_new_card') }}
       </button>
     </div>
@@ -210,3 +210,9 @@ export default {
   },
 }
 </script>
+
+<style>
+.btn-plus{
+   margin-right: 10px;
+}
+</style>
