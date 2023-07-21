@@ -784,12 +784,16 @@
 }
 
 .upload-image {
+   &.single {
+      .upload-image_draggable {
+         grid-template-columns: 1fr;
+      }
+   }
 
    &_draggable {
    display: grid;
    grid-template-columns: repeat(2, 1fr);
    gap: 16px;
-
       .draggable_item {
          width: 100%;
          display: flex;
@@ -803,6 +807,7 @@
          overflow: hidden;
          user-select: none;
       }
+
 
    }
 

@@ -1,5 +1,5 @@
 <template>
-  <div :class="{ dragover: onDragover }" class="upload-image">
+  <div :class="{ dragover: onDragover, 'single' : !helpers.length && !Object.values(files).length }" class="upload-image">
     <draggable
       v-model="orderdedKeys"
       :handle="isMobileBreakpoint ? '.handle' : ''"
@@ -105,10 +105,10 @@
           </div>
         </template>
       </template>
+<!--        v-if="-->
+<!--          canUpload && (isMobileBreakpoint || filesLength >= helpers.length)-->
+<!--        "-->
       <template
-        v-if="
-          canUpload && (isMobileBreakpoint || filesLength >= helpers.length)
-        "
       >
         <div key="add-image" class="upload-image_thumbnail">
           <div

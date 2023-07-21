@@ -12,7 +12,7 @@
                      />
                      <p v-html="$t('add_announce_info')"/>
                   </div>
-                  <div class="mobile_info">
+                  <div class="mobile_info" v-if="Object.values(user).length">
                      <inline-svg
                         :src="'/icons/mobile_2.svg'"
                         class="mobile_info_svg"
@@ -29,43 +29,96 @@
                      :new-label="false"
                      v-model="form.announce_type"
                   />
-<!--                  <form-select-->
-<!--                     :label="$t('type_of_motos')"-->
-<!--                     :options="-->
-<!--                searchMenus.map((menu) => ({-->
-<!--                  ...menu,-->
-<!--                  name: $t(menu.title),-->
-<!--                }))-->
-<!--              "-->
-<!--                     :clear-placeholder="true"-->
-<!--                     :clear-option="false"-->
-<!--                     v-model="form.moto_type"-->
-<!--                  />-->
-<!--                  <form-select-->
-<!--                     :label="$t('type_of_commercial_vehicle')"-->
-<!--                     :options="-->
-<!--                searchMenus.map((menu) => ({-->
-<!--                  ...menu,-->
-<!--                  name: $t(menu.title),-->
-<!--                }))-->
-<!--              "-->
-<!--                     :clear-placeholder="true"-->
-<!--                     :clear-option="false"-->
-<!--                     :new-label="false"-->
-<!--                     v-model="form.commercial_vehicle_type"-->
-<!--                  />-->
+                  <!--                  <form-select-->
+                  <!--                     :label="$t('type_of_motos')"-->
+                  <!--                     :options="-->
+                  <!--                searchMenus.map((menu) => ({-->
+                  <!--                  ...menu,-->
+                  <!--                  name: $t(menu.title),-->
+                  <!--                }))-->
+                  <!--              "-->
+                  <!--                     :clear-placeholder="true"-->
+                  <!--                     :clear-option="false"-->
+                  <!--                     v-model="form.moto_type"-->
+                  <!--                  />-->
+                  <!--                  <form-select-->
+                  <!--                     :label="$t('type_of_commercial_vehicle')"-->
+                  <!--                     :options="-->
+                  <!--                searchMenus.map((menu) => ({-->
+                  <!--                  ...menu,-->
+                  <!--                  name: $t(menu.title),-->
+                  <!--                }))-->
+                  <!--              "-->
+                  <!--                     :clear-placeholder="true"-->
+                  <!--                     :clear-option="false"-->
+                  <!--                     :new-label="false"-->
+                  <!--                     v-model="form.commercial_vehicle_type"-->
+                  <!--                  />-->
 
-<car_form />
+                  <car_form v-if="form.announce_type.title === 'cars'" :announcement="announcement"/>
+                  <moto_form v-if="form.announce_type.title === 'moto'" />
+                  <part_form v-if="form.announce_type.title === 'parts'"/>
+                  <registration_mark v-if="form.announce_type.title === 'registration_marks'"/>
+                  <div class="contacts">
+                     <h2>{{ $t("contact_information") }}</h2>
+                     <form-text-input
+                        v-model="form.name"
+                        :placeholder="$t('your_name') + '*'"
+                     />
+                     <form-text-input
+                        v-model="form.email"
+                        :placeholder="$t('email')"
+                        :mask="$maskEmail()"
+                     />
+                     <form-numeric-input
+                        v-if="!user"
+                        :placeholder="$t('mobile_phone_number') + '*'"
+                        v-model="form.phone"
+                     />
+                     <div class="contacts_info" v-if="!user">
+                        <inline-svg class="contacts_info_svg" :src="'/icons/info.svg'"/>
+                        <p>{{ $t("contacts_registration_info") }}</p>
+                     </div>
+                     <button class="btn full-width btn--pale-green-outline active">{{ $t("enter_sms_code") }}</button>
+                  </div>
+                  <div class="comment_info">
+                     <p>{{ $t("by_posting_an_ad_you_confirm_your_agreement_with_the_rules") }}:
+                        <nuxt-link :to="`/page/${getRulesPage.slug[locale]}`"
+                                   @click.native.prevent="showRules = true"
+                                   event="">
+                           <strong>{{ $t('general_rules') }}</strong>
+                        </nuxt-link>
+                     </p>
+                  </div>
+                  <modal-popup
+                     :modal-class="'wider'"
+                     :toggle="showRules"
+                     :title="getRulesPage.title[locale]"
+                     @close="showRules = false"
+                  >
+                     <div v-html="getRulesPage.text[locale]"></div>
+                  </modal-popup>
+
                </form>
                <div class="vehicle_card_info" v-if="!isMobileBreakpoint">
-                  <grid-item :announcement="announcement" />
+                  <grid-item :announcement="announcement"/>
+                  <div class="vehicle_card_info_description">
+                     <p>{{ $t('announce_looks_like') }}</p>
+                  </div>
+                  <div class="vehicle_card_info_help">
+                     <div class="vehicle_card_info_help_inner">
+                        <inline-svg
+                           :src="'/icons/info.svg'"
+                        />
+                        <p>{{ $t('announce_help_text') }}</p>
+                     </div>
+                     <button class="btn btn--red">{{ $t("let_us_know") }}</button>
+                  </div>
                </div>
             </div>
             <div class="form_navigation" v-if="!isMobileBreakpoint"></div>
          </div>
       </div>
-
-
    </div>
 </template>
 
@@ -81,25 +134,41 @@ import PickOnMapButton from "~/components/elements/PickOnMapButton.vue";
 import {ToastErrorsMixin} from '~/mixins/toast-errors';
 import GridItem from "~/components/announcements/GridItem.vue";
 import Car_form from "~/components/sell/car_form.vue";
+import Part_form from "~/components/sell/part_form.vue";
+import Registration_mark from "~/components/sell/registration_mark.vue";
+import Moto_form from "~/components/sell/moto_form.vue";
 
 export default {
    name: "add-announce",
    mixins: [MenusDataMixin, ToastErrorsMixin],
-   components: {Car_form, GridItem, PickOnMapButton, ImageComponent, GridRadio, ToggleGroup, FormNumericInput, FormRadio},
+   components: {
+      Moto_form,
+      Registration_mark,
+      Part_form,
+      Car_form, GridItem, PickOnMapButton, ImageComponent, GridRadio, ToggleGroup, FormNumericInput, FormRadio
+   },
+   computed: {
+      ...mapGetters(['staticPages']),
+      getRulesPage() {
+         return this.staticPages.find(page => page.id == 1);
+      },
+   },
    data() {
       return {
+         showRules: false,
          announcement: {
+            image: "https://devstatic.mashin.al/media/1512632/conversions/b223c18e-87ce-4b89-b897-35f0d6b76868-thumb.jpg?_=1689744983?width=308",
             show_vin: true,
             has_360: true,
-            price: "48000",
-            tradeable: true,
-            credit: true,
-            brand: "BMW",
-            model: "5 series",
-            year: 2006,
-            mileage: 287000,
-            car_catalog: {capacity: "3.0"},
-            created_at: "19, July"
+            price: "0 AZN",
+            tradeable: false,
+            credit: false,
+            brand: "Marka",
+            model: "Model",
+            year: "0000",
+            mileage: 0,
+            car_catalog: {capacity: "0"},
+            created_at: this.$moment(new Date()).format('DD.MM.YYYY')
          },
          form: {
             announce_type: "",
@@ -143,7 +212,19 @@ export default {
       async handleAnnounceType(payload) {
          await this.$store.dispatch(payload.api_key)
       },
+
+      getMainImage(img) {
+         this.announcement.image = img
+      }
    },
+   async mounted() {
+      this.$nuxt.$on("get-main-image", this.getMainImage)
+      await this.$store.dispatch("getOptions")
+   },
+   updated() {
+      console.log(this.form.announce_type)
+   },
+
 };
 </script>
 
@@ -206,16 +287,70 @@ export default {
                }
             }
 
+            .contacts {
+               display: flex;
+               flex-direction: column;
+               gap: 16px;
+               margin-top: 24px;
+
+               svg {
+                  min-width: 24px;
+                  min-height: 24px;
+               }
+
+               h2 {
+                  margin-bottom: 24px;
+               }
+
+               &_info {
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                  padding: 12px 16px;
+                  background-color: #EEF2F6;
+                  border-radius: 8px;
+               }
+            }
 
          }
 
          .vehicle_card_info {
             position: sticky;
             top: 128px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            height: min-content;
             width: 260px;
-            height: 300px;
-            min-width: 200px;
-            background-color: green;
+            min-width: 260px;
+
+            &_description {
+               background-color: #EEF2F6;
+               border-radius: 8px;
+               padding: 10px;
+               text-align: center;
+            }
+
+            &_help {
+               display: flex;
+               padding: 16px 12px;
+               flex-direction: column;
+               gap: 16px;
+               border-radius: 12px;
+               border: 1px solid #CDD5DF;
+               background-color: #F8FAFC;
+
+               &_inner {
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+
+                  svg {
+                     min-width: 24px;
+                     min-height: 24px;
+                  }
+               }
+            }
          }
       }
 
@@ -270,7 +405,6 @@ export default {
       .comment {
          &_info {
             display: flex;
-            margin-top: 12px;
             align-items: center;
             gap: 10px;
          }

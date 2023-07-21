@@ -971,7 +971,7 @@ export default {
       "Nəqliyyat vasitəsinin girov vəya kredit/lizinq müqaviləsi mövcuddur",
    hatchback: "Hetçbek",
    have: "Var",
-   have_delivery: "Çatdırılma mövcuddur",
+   have_delivery: "Çatdırılma var",
    have_warranty: "Zəmanət",
    "Head-up display": "Proyeksiya ekranı",
    "Headlight control system": "Uzaq işığın tənzimləmə sistemi",
@@ -1535,6 +1535,7 @@ export default {
    production_country: "Mənşə(istehsal) ölkəsi",
    prod_years: "Buraxılış illəri",
    product_code: "Məhsul kodu",
+   product_code_not_required: "Məhsul kodu (istəyə bağlı)",
    profile_image_saved_successfully: "Şəkil uğurla yadda saxlanıldı",
    "Programmable preheater": "Proqramlaşdırılan qızdırıcı",
    promoting: "Daha tez sat",
@@ -2647,6 +2648,12 @@ export default {
    "transactions": "Əməliyyatlar",
    "agreement_details": "Müqavilə barədə ətraflı",
    "view": "Baxış",
-   "download_invoice": "Endir"
+   "download_invoice": "Endir",
+   announce_looks_like: "Elanınız saytda belə görünəcək",
+   announce_help_text: "Nə isə düz deyil? Vəya axtardığın marka, model siyahıda yoxdur? Bizə xəbər et, anında həll edək!",
+   let_us_know: "Bizə məlumat ver",
+   negotiable_price: "Qiymət razılaşma yolu ilə",
+   enter_keywords: "Açar sözləri daxil edin",
+   part_images_info: "Minimum - 1 şəkil, maksimum - 22 şəkil, minimal ölçü - 500x500 px"
 };
 

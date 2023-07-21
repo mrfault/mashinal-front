@@ -134,10 +134,12 @@ const getInitialState = () => ({
    sellYears: {},
    sellBody: [],
    sellGenerations: [],
+   sellGenerationsV2: [],
    sellEngines: [],
    sellGearing: [],
    sellTransmissions: [],
    sellModifications: [],
+   sellModificationsV2: [],
    sellPreviewData: {},
    // salons
    salonsList: [],
@@ -209,6 +211,7 @@ const getInitialState = () => ({
    savedImageUrls: [],
    single_announce: {},
    partCategories: [],
+   partFilters: {},
 
    regionNumbers: [],
    agreements: [],
@@ -362,12 +365,14 @@ export const getters = {
    sellYears: s => s.sellYears,
    sellBody: s => s.sellBody,
    sellGenerations: s => s.sellGenerations,
+   sellGenerationsV2: s => s.sellGenerationsV2,
    sellEngines: s => Object.keys(s.sellEngines).map(key => s.sellEngines[key]),
    sellGearing: s => Object.keys(s.sellGearing).map(key => s.sellGearing[key]),
    sellTransmissions: s =>
       Object.keys(s.sellTransmissions).map(key => s.sellTransmissions[key]),
    sellModifications: s =>
       Object.keys(s.sellModifications).map(key => s.sellModifications[key]),
+   sellModificationsV2: s => s.sellModificationsV2,
    sellPreviewData: s => s.sellPreviewData,
    // salons
    salonsList: s => s.salonsList,
@@ -408,7 +413,8 @@ export const getters = {
    getActiveMyOffers: s => s.active_my_offers,
    offerGenerations: s => s.offer_generations,
 //  moderator
-   partCategories: s => s.partCategories
+   partCategories: s => s.partCategories,
+   partFilters: s => s.partFilters
 };
 
 const objectNotEmpty = (state, commit, property) => {
@@ -800,6 +806,21 @@ export const actions = {
          key: data.index || 0
       });
    },
+   //Parts
+   async getPartCategories({commit}) {
+      const res = await this.$axios.$get(`/part/categories`);
+      commit("mutate", {
+         property: "partCategories",
+         value: res
+      });
+   },
+   async getPartFilters({commit}, id) {
+      const res = await this.$axios.$get(`/part/category/${id}/filters`);
+      commit("mutate", {
+         property: "partFilters",
+         value: res
+      });
+   },
    async popularComments({commit}) {
       let data = await this.$axios.$get("/get-popular-comments");
       commit("mutate", {
@@ -955,7 +976,7 @@ export const actions = {
    async getMotoOptionsV2({state, commit}) {
       if (objectNotEmpty(state, commit, "motoOptionsV2")) return;
       const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/moto/types`);
-      commit("mutate", {property: "motoOptions", value: res});
+      commit("mutate", {property: "motoOptionsV2", value: res});
    },
    async getScooterOptions({commit}) {
       const data = await this.$axios.$get(`/moto/scooter_options`);
@@ -1300,6 +1321,12 @@ export const actions = {
       );
       commit("mutate", {property: "sellGenerations", value: res});
    },
+   async getSellGenerationsV2({commit}, data) {
+      const res = await this.$axios.$get(
+         `https://v2dev.mashin.al/api/v2/${data.brand}/${data.model}/year/${data.year}/body/${data.body}/generations`
+      );
+      commit("mutate", {property: "sellGenerationsV2", value: res});
+   },
    async getSellEngines({commit}, data) {
       const res = await this.$axios.$get(
          `/sell/${data.brand}/${data.model}/year/${data.year}/body/${data.body}/generation/${data.generation}/engines`
@@ -1323,6 +1350,11 @@ export const actions = {
          `/sell/${data.brand}/${data.model}/body/${data.body}/generation/${data.generation}/engine/${data.engine}/gearing/${data.gearing}/trns/${data.transmission}/modifications`
       );
       commit("mutate", {property: "sellModifications", value: res});
+   },async getSellModificationsV2({commit}, data) {
+      const res = await this.$axios.$get(
+         `https://v2dev.mashin.al/api/v2/car-catalog/${data.brand}/${data.model}/body/${data.body}/generation/${data.generation}/engine/${data.engine}/gearing/${data.gearing}/trns/${data.transmission}/modifications`
+      );
+      commit("mutate", {property: "sellModificationsV2", value: res});
    },
    // Services
    async getServices({commit}) {

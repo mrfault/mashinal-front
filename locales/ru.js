@@ -1518,6 +1518,7 @@ export default {
    prod_year: "Год выпуска",
    prod_years: "Годы выпуска",
    product_code: "Код продукта",
+   product_code_not_required: "Код продукта (необязательно)",
    profile_image_saved_successfully: "Фото успешно сохранено",
    "Programmable preheater": "Программируемый предпусковой отопитель",
    promoting: "Продать быстрее",
@@ -2582,7 +2583,7 @@ export default {
    contacts_registration_info: "После подтверждения номера смс-кодом объявление будет отправлено на проверку и добавлено в кабинет.",
    enter_sms_code: "Отправьте SMS-код",
    add_announce_info: "Вы можете разместить <strong>3 бесплатных объявления</strong> в категории легковые, мотоциклетные и коммерческие автомобили и неограниченное количество <strong>бесплатных объявлений</strong> в категории запчастей в течение 1 месяца. Стоимость объявления регистрационного бейджа составляет 1 AZN.",
-   mobile_info: "Вы размещаете объявление с номера телефона <strong>({phone})</strong>"
+   mobile_info: "Вы размещаете объявление с номера телефона <strong>({phone})</strong>",
    "sign_in_to_account": "Hesaba daxil ol",
    "my_balance": "Balansım",
    "sign_out": "Çıxış",
@@ -2591,5 +2592,11 @@ export default {
    "transactions": "Əməliyyatlar",
    "agreement_details": "Müqavilə barədə ətraflı",
    "view": "Baxış",
-   "download_invoice": "Endir"
+   "download_invoice": "Endir",
+   announce_looks_like: "Так ваше объявление будет отображаться на сайте",
+   announce_help_text: "Что-то не так? Или марки или модели, которую вы ищете, нет в списке? Сообщите нам, и мы исправим это прямо сейчас!",
+   let_us_know: "Дайте нам знать",
+   negotiable_price: "Цена договорная",
+   enter_keywords: "Введите ключевые слова",
+   part_images_info: "Минимум - 1 изображение, максимум - 22 изображения, минимальный размер - 500x500 px"
 };

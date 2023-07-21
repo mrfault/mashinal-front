@@ -6,7 +6,7 @@
         :class="['toggle_item', { active: selected === item.id }]"
         v-for="item in items"
         :key="item.id"
-        @click="setSelected(item.id)"
+        @click="setSelected(item)"
       >
         <slot :item="item" />
       </div>
@@ -28,9 +28,9 @@ export default {
     };
   },
   methods: {
-    setSelected(id) {
-      this.selected = id;
-      this.$emit("change", id);
+    setSelected(item) {
+      this.selected = item.id;
+      this.$emit("change", item);
     },
   },
 };

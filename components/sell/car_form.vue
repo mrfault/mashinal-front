@@ -46,8 +46,9 @@
          </div>
       </grid-radio>
       <grid-radio
+         v-if="sellGenerationsV2.length"
          :label="$t('generation')"
-         :items="priceTypes"
+         :items="sellGenerationsV2"
          v-slot="{ item }"
          @change="onChangeGeneration($event)"
       >
@@ -58,7 +59,7 @@
                class="generation_img"
             />
             <div class="generation_grid_item_inner">
-               <p>{{ item.name[locale] }}</p>
+               <p>{{ item.name }}</p>
             </div>
          </div>
       </grid-radio>
@@ -104,26 +105,23 @@
          @change="onChangeTransmission($event)"
       />
       <form-select
-         v-if="sellModifications.length"
+         v-if="sellModificationsV2.length"
          :label="$t('modification')"
-         :options="sellModifications.map((o) => ({
-              name: getModificationName(o),
+         :options="sellModificationsV2.map((o) => ({
+              name: o.title,
               key: o.id,
             }))"
          :clear-placeholder="true"
          :clear-option="false"
+         :translate-options="false"
          :new-label="false"
          v-model="form.modification"
       />
-      <template v-if="form.modification">
+      <!--      v-if="form.modification"-->
+      <template>
          <form-select
             :label="$t('color')"
-            :options="
-                searchMenus.map((menu) => ({
-                  ...menu,
-                  name: $t(menu.title),
-                }))
-              "
+            :options="colors"
             :clear-placeholder="true"
             :clear-option="false"
             :new-label="false"
@@ -133,6 +131,7 @@
             <form-numeric-input
                :placeholder="$t('mileage')"
                v-model="form.mileage"
+               @change="this.announcement.mileage = $event || 0"
             />
             <div class="mileage_types">
                <form-radio
@@ -221,6 +220,7 @@
             <form-numeric-input
                :placeholder="$t('price')"
                v-model="form.price"
+               @change="announcement.price = $event ? $event + (form.currency.name?.[locale] || 'AZN') : 0"
             />
             <div class="price_types">
                <toggle-group :items="priceTypes" v-slot="{ item }" @change="($event) => form.currency = $event">
@@ -236,12 +236,14 @@
                :label="$t('tradeable')"
                input-name="tradeable"
                transparent
+               @change="announcement.tradeable = $event"
             />
             <form-checkbox
                v-model="form.credit"
                :label="$t('credit_possible')"
                input-name="credit"
                transparent
+               @change="announcement.credit = $event"
             />
          </div>
          <div>
@@ -299,23 +301,28 @@
                   v-model="form.show_vin"
                   :label="$t('show_on_site')"
                   input-name="show_vin"
+                  @change="this.announcement.show_vin = $event"
                   transparent
                />
             </div>
          </div>
-         <form-select
-            :label="$t('other_parameters')"
-            :options="
-                searchMenus.map((menu) => ({
-                  ...menu,
-                  name: $t(menu.title),
-                }))
-              "
-            :clear-placeholder="true"
-            :clear-option="false"
-            :new-label="false"
-            v-model="form.region_id"
-         />
+                  <form-select
+                     :label="$t('other_parameters')"
+                     :options="popularOptions.map((p) => ({...p, key: $t(p.label), name: $t(p.label)}))"
+                     :clear-placeholder="true"
+                     :clear-option="false"
+                     name-in-value
+                     multiple
+                     v-model="form.other_parameters"
+                  />
+<!--         <form-select-->
+<!--            :label="$t('fuel')"-->
+
+<!--                      v-model="form.other_parameters" :options="popularOptions.map((p) => ({...p, key: $t(p.label), name: $t(p.label)}))"-->
+<!--                      :clear-placeholder="true" :clear-option="false"-->
+<!--                      multiple name-in-value-->
+<!--                      translate-options />-->
+<!--         <pre>{{popularOptions.map((p) => ({...p, id: $t(p.label), name: $t(p.label)}))}}</pre>-->
          <div class="comment">
             <form-textarea
                v-model="form.comment"
@@ -336,45 +343,7 @@
          </div>
          <button class="btn full-width btn--pale-green-outline mt-4 active">{{ $t("place_an_ad") }}</button>
       </template>
-      <div class="contacts">
-         <h2>{{ $t("contact_information") }}</h2>
-         <form-text-input
-            v-model="form.name"
-            :placeholder="$t('your_name') + '*'"
-         />
-         <form-text-input
-            v-model="form.email"
-            :placeholder="$t('email')"
-            :mask="$maskEmail()"
-         />
-         <form-numeric-input
-            :placeholder="$t('mobile_phone_number') + '*'"
-            v-model="form.phone"
-         />
-         <div class="contacts_info">
-            <inline-svg class="contacts_info_svg" :src="'/icons/info.svg'"/>
-            <p>{{ $t("contacts_registration_info") }}</p>
-         </div>
-         <button class="btn full-width btn--pale-green-outline active">{{ $t("enter_sms_code") }}</button>
-      </div>
-      <div class="comment_info">
-         <inline-svg class="comment_svg" :src="'/icons/info.svg'"/>
-         <p>{{ $t("by_posting_an_ad_you_confirm_your_agreement_with_the_rules") }}:
-            <nuxt-link :to="`/page/${getRulesPage.slug[locale]}`"
-                       @click.native.prevent="showRules = true"
-                       event="">
-               <strong>{{ $t('general_rules') }}</strong>
-            </nuxt-link>
-         </p>
-      </div>
-      <modal-popup
-         :modal-class="'wider'"
-         :toggle="showRules"
-         :title="getRulesPage.title[locale]"
-         @close="showRules = false"
-      >
-         <div v-html="getRulesPage.text[locale]"></div>
-      </modal-popup>
+
    </div>
 </template>
 
@@ -391,14 +360,16 @@ export default {
    components: {PickOnMapButton, ToggleGroup, ImageComponent, GridRadio},
    mixins: [MenusDataMixin, ToastErrorsMixin],
    computed: {
-      ...mapGetters(['staticPages', 'brands', 'models', 'sellYears', 'sellBody', "sellGenerations", "sellEngines", "sellGearing", "sellTransmissions", "sellModifications"]),
-      getRulesPage() {
-         return this.staticPages.find(page => page.id == 1);
-      },
+      ...mapGetters(['brands', 'models', 'sellYears', 'sellBody', "sellGenerationsV2", "sellEngines", "sellGearing", "sellTransmissions", "sellModificationsV2", "colors", "popularOptions"]),
+   },
+   props: {
+      announcement: {
+         type: Object,
+         required: true
+      }
    },
    data() {
       return {
-         showRules: false,
          gearingIcons: ["-", "/icons/rear-transmission.svg", "/icons/front-transmission.svg", "/icons/full-transmission.svg"],
          priceTypes: [
             {
@@ -445,6 +416,7 @@ export default {
             show_car_number: "",
             vin: "",
             show_vin: "",
+            other_parameters: [],
             comment: "",
             saved_images: [],
             name: "",
@@ -454,19 +426,22 @@ export default {
       }
    },
    methods: {
-      ...mapActions(['getModels', 'getSellYears', 'getSellBody', 'getSellGenerations', 'getSellEngines', 'getSellGearing', 'getSellTransmissions', 'getSellModifications']),
+      ...mapActions(['getModels', 'getSellYears', 'getSellBody', 'getSellGenerationsV2', 'getSellEngines', 'getSellGearing', 'getSellTransmissions', 'getSellModificationsV2']),
       async onChangeBrand({slug}) {
+         this.announcement.brand = this.form.brand.name
          await this.getModels(slug);
       },
       async onChangeModel() {
          const brand = this.form.brand.slug
          const model = this.form.model.slug
+         this.announcement.model = this.form.model.name
          await this.getSellYears({brand, model});
       },
       async onChangeYear() {
          const brand = this.form.brand.slug
          const model = this.form.model.slug
          const year = this.form.year
+         this.announcement.year = this.form.year
          await this.getSellBody({brand, model, year});
       },
       async onChangeBody(body) {
@@ -474,15 +449,15 @@ export default {
          const model = this.form.model.slug
          const year = this.form.year
          this.form.body_type = body
-         await this.getSellGenerations({brand, model, year, body});
+         await this.getSellGenerationsV2({brand, model, year, body});
       },
       async onChangeGeneration(generation) {
          const brand = this.form.brand.slug
          const model = this.form.model.slug
          const year = this.form.year
          const body = this.form.body_type
-         this.form.generation = 4782 //generation
-         await this.getSellEngines({brand, model, year, body, generation: 4782});
+         this.form.generation = generation
+         await this.getSellEngines({brand, model, year, body, generation});
       },
       async onChangeFuelType(engine) {
          const brand = this.form.brand.slug
@@ -500,8 +475,8 @@ export default {
          const body = this.form.body_type
          const engine = this.form.fuel_type
          const generation = this.form.generation
-         this.form.gearing = gearing
-         await this.getSellTransmissions({brand, model, year, body, generation, engine, gearing});
+         this.form.gearing = gearing.id
+         await this.getSellTransmissions({brand, model, year, body, generation, engine, gearing: gearing.id});
       },
       async onChangeTransmission(transmission) {
          const brand = this.form.brand.slug
@@ -511,20 +486,20 @@ export default {
          const engine = this.form.fuel_type
          const generation = this.form.generation
          const gearing = this.form.gearing
-         await this.getSellModifications({brand, model, year, body, generation, engine, gearing, transmission});
+         await this.getSellModificationsV2({brand, model, year, body, generation, engine, gearing, transmission});
       },
-      getModificationName(o) {
-         let generation = this.sellGenerations.find(
-            (o) => o.id === this.form.generation
-         );
-         let name = `${this.$t("box_mode_values")[o.box]}/${
-            generation.start_year
-         } - ${generation.end_year || this.currentYear}`;
-         if (o.capacity) name = `${o.capacity} ${name}`;
-         if (o.power) name = `${o.power} ${this.$t("char_h_power")}/${name}`;
-         if (o.complect_type) name += `/${o.complect_type}`;
-         return name;
-      },
+      // getModificationName(o) {
+      //    let generation = this.sellGenerations.find(
+      //       (o) => o.id === this.form.generation
+      //    );
+      //    let name = `${this.$t("box_mode_values")[o.box]}/${
+      //       generation.start_year
+      //    } - ${generation.end_year || this.currentYear}`;
+      //    if (o.capacity) name = `${o.capacity} ${name}`;
+      //    if (o.power) name = `${o.power} ${this.$t("char_h_power")}/${name}`;
+      //    if (o.complect_type) name += `/${o.complect_type}`;
+      //    return name;
+      // },
       updateAddress(address) {
          this.form.address = address;
          this.removeError('address');
@@ -534,15 +509,13 @@ export default {
          this.form.lng = lng;
       },
    },
-   mounted() {
-      console.log(this.sellYears)
-   },
+   async fetch() {
+      await Promise.all([
+         this.$store.dispatch("getColors"),
+         this.$store.dispatch("getPopularOptions")
+      ]);
 
-   watch: {
-      "form.currency"() {
-         console.log(this.form)
-      }
-   }
+   },
 }
 </script>
 
@@ -635,24 +608,6 @@ export default {
       padding: 0 16px;
    }
 
-   .contacts {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      margin-top: 24px;
 
-      h2 {
-         margin-bottom: 24px;
-      }
-
-      &_info {
-         display: flex;
-         align-items: center;
-         gap: 10px;
-         padding: 12px 16px;
-         background-color: #EEF2F6;
-         border-radius: 8px;
-      }
-   }
 }
 </style>

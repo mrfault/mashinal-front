@@ -38,13 +38,13 @@ export default {
          maxFiles: 20,
          savedFiles: [...this.initialForm.saved_images],
          uploading: 0,
-         date: Math.floor(Date.now() / 1000),
+         date: Math.floor(Date.now() / 1000)
       }
    },
    computed: {
       helperImages() {
          let imgs = [1, 2, 3];
-         return imgs.map(n => {
+         return this.type === 'parts' ? [] : imgs.map(n => {
             return {
                url: `/img/sell-helpers/${this.type}_${n}.png`,
                name: this.$t(`sell_item_${this.type}_${n}`)
@@ -79,6 +79,7 @@ export default {
                   this.$nuxt.$emit('image-uploaded', image.key, false, data.images[0], data.ids[0]);
                   this.$nuxt.$emit('hide-image-preloader-by-key', image.key);
                   this.savedFiles = [...this.savedFiles, ...data.ids];
+                  this.initialForm.saved_images = this.savedFiles;
                } catch ({response: {data: {data}}}) {
                   this.uploading--;
                   this.$nuxt.$emit('delete-image-by-key', image.key);
@@ -97,6 +98,7 @@ export default {
             else this.$axios.$post('/remove_temporary_image/' + this.savedFiles[index]);
             this.$delete(this.savedFiles, index);
          }
+         this.initialForm.saved_images.filter((image) => image !== this.savedFiles[index])
       },
       async rotateImage(index, key) {
          if (this.savedFiles[index]) {
@@ -118,12 +120,18 @@ export default {
       },
       changeOrder(sorted, preview) {
          this.$set(this, 'savedFiles', sorted);
+         this.initialForm.saved_images = sorted
+         this.$nuxt.$emit('get-main-image', preview);
          this.setSellPreviewData({value: preview, key: 'image'});
       },
    },
 
-   mounted() {
-      console.log(this.type)
+   watch: {
+      files() {
+         if (this.files.length) {
+            this.$nuxt.$emit('get-main-image', this.files[0].image);
+         }
+      }
    }
 }
 </script>
