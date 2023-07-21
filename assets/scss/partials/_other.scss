@@ -288,15 +288,20 @@
 
          h4 {
             width: 100%;
-            font-size: 18px;
-            font-weight: 500;
+            font: 600 24px/28px 'TTHoves';
             margin-bottom: 0;
+            color: #121926;
          }
 
          .close {
             padding-top: 6px;
             margin-left: 10px;
             flex-shrink: 0;
+            border-radius: 50%;
+            background: #E3E8EF;
+            width: 32px;
+            height: 32px;
+            @include flexCenter;
 
             &:first-child {
                margin-left: auto;
@@ -542,6 +547,7 @@
             path {
                fill: $white;
             }
+
             rect {
                stroke: $white;
             }

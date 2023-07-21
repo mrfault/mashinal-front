@@ -1,13 +1,13 @@
 <template>
    <div class="pages-annoucements pt-2 pt-lg-6" :key="refresh">
       <div class="container">
+         <breadcrumbs :crumbs="crumbs" />
 
-         <ComeBack :text="$t('my_announces')" v-if="isMobileBreakpoint" />
-
-         <portal to="breadcrumbs">
-            <breadcrumbs :crumbs="crumbs" />
-         </portal>
-         <breadcrumbs :crumbs="crumbs" v-if="isMobileBreakpoint"/>
+         <div class="card" v-if="isMobileBreakpoint">
+            <h2 class="title-with-line mb-0">
+               <span>{{ $t('my_announces') }}</span>
+            </h2>
+         </div>
 
          <controls-panel
             :show-toolbar="!!myAnnouncements.data.length"
@@ -92,20 +92,18 @@ import Grid from '~/components/announcements/Grid';
 import NoResults from '~/components/elements/NoResults';
 import ControlsPanel from '~/components/announcements/ControlsPanel';
 import PlatesGrid from "~/components/announcements/PlatesGrid.vue";
-import ComeBack from "~/components/elements/ComeBack.vue";
 // import tr from "vue2-datepicker/locale/es/tr";
 
 export default {
    name: 'pages-profile-announcements',
    middleware: 'auth_general',
-   layout: 'profileLayout',
+   layout: 'garageLayout',
    data() {
       return {
          activeTab: 1
       }
    },
    components: {
-      ComeBack,
       Grid,
       NoResults,
       ControlsPanel,
@@ -167,7 +165,6 @@ export default {
 
       crumbs() {
          return [
-            { name: this.$t('dashboard'), route: `${this.user.autosalon ? '/dashboard/1' : '/garage-services'}` },
             {name: this.$t('my_announces')}
          ]
       },

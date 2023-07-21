@@ -1,0 +1,242 @@
+.ma-penalties {
+   .ma-title--md {
+      margin-bottom: 24px;
+      margin-top: 10px;
+   }
+
+   &__top {
+      width: 100%;
+      display: flex;
+      //align-items: center;
+      margin-bottom: 24px;
+
+
+      &--search {
+         width: 228px;
+         margin-right: 8px;
+         box-sizing: border-box;
+         overflow: hidden;
+
+      }
+
+      &--numbers {
+         width: calc(100% - 236px);
+         display: flex;
+         align-items: center;
+         box-sizing: border-box;
+         position: relative;
+
+         .ma-penalty-number-chip {
+            width: 100px;
+            height: 48px;
+            border-radius: 8px;
+            background: #eef2f6;
+            @include flexCenter;
+            margin-right: 8px;
+            font: 500 15px/18px 'TTHoves';
+            cursor: pointer;
+
+            &--active {
+               background: #155EEF;
+               color: #fff;
+
+            }
+
+            &__list {
+               display: flex;
+               flex-wrap: nowrap;
+               width: -moz-fit-content;
+               width: fit-content;
+               padding-bottom: 10px;
+               padding-right: 36px;
+            }
+
+            &__container {
+               width: auto;
+               box-sizing: border-box;
+               overflow-x: scroll;
+               overflow-y: hidden;
+               overflow-y: scroll;
+               //margin-bottom: 40px;
+               cursor: grab;
+               position: relative;
+               @include customScrollbar1;
+               scroll-behavior: smooth;
+
+            }
+         }
+
+         &__scrollButton {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 40px;
+            background: #fff;
+
+            button {
+               width: 32px;
+               height: 48px;
+               border-radius: 12px;
+               @include flexCenter;
+               border: none;
+               color: #364152;
+               background: #EEF2F6;
+               cursor: pointer;
+
+               &:hover {
+                  background: #d5d8de;
+               }
+            }
+         }
+
+      }
+   }
+
+   &__card {
+      width: 100%;
+      border: 1px solid #cdd5df;
+      border-radius: 12px;
+      min-height: 634px;
+      height: 100%;
+      padding: 16px 24px;
+
+      &--header {
+         display: flex;
+         align-items: center;
+
+         &__item {
+            padding: 12px;
+            font: 500 15px/18px 'TTHoves';
+            display: inline;
+            cursor: pointer;
+            color: #4B5565;
+
+            &--active {
+               border-bottom: 2px solid #155EEF;
+            }
+         }
+      }
+
+      &--body {
+         &__no-results {
+            @include flexCenter;
+            flex-direction: column;
+            padding-top: 151px;
+
+            img {
+               height: 160px;
+               object-fit: contain;
+            }
+
+            p {
+               font: 500 20px/24px 'TTHoves';
+               color: #364152;
+               text-align: center;
+               margin-top: 32px;
+            }
+         }
+
+         &__penalties {
+            &--item {
+               border: 1px solid #CDD5DF;
+               border-radius: 10px;
+               padding: 15px;
+               margin-top: 20px;
+               display: flex;
+               justify-content: space-between;
+
+               strong {
+
+               }
+               &.no-borders{
+                  border: none;
+               }
+
+               .ma-left {
+                  display: flex;
+                  align-items: center;
+
+                  &__checkbox {
+
+                     //padding-right: 12px;
+                  }
+
+                  p {
+                     font: 500 16px/20px 'TTHoves';
+                  }
+               }
+
+               .ma-right {
+                  display: flex;
+                  align-items: center;
+                  button{
+                     margin-left: 8px;
+                  }
+                  &__amount{
+                     font: 500 16px/20px 'TTHoves';
+                     color: #121926;
+                  }
+               }
+
+               &.all-items {
+                  border: none;
+                  padding-left: 0;
+               }
+               &.total{
+                  strong{
+                     font: 600 20px/24px 'TTHoves' !important;
+                     color: #121926;
+                  }
+               }            }
+         }
+      }
+
+      &--car-specs {
+
+         &__item {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 0;
+
+            &:not(:last-of-type) {
+               border-bottom: 1px solid #E3E8EF;
+            }
+
+            &:focus {
+               border: 1px solid #155EEF;
+            }
+
+            p {
+               font: 400 16px/20px 'TTHoves';
+               color: #364152;
+            }
+
+            strong {
+               font: 500 16px/20px 'TTHoves';
+               color: #121926;
+            }
+
+         }
+      }
+   }
+}
+
+
+.protocol-details-button{
+   &__content{
+
+   }
+   &__actions{
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 24px;
+      button{
+         width: calc(50% - 6px);
+      }
+   }
+}
+
+

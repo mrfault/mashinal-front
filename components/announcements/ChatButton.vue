@@ -44,5 +44,6 @@
 <style lang="scss" scoped>
    .chat-button {
       font-size: 13px;
+      height: 56px;
    }
 </style>

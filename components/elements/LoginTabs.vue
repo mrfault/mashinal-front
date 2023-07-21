@@ -4,57 +4,34 @@
       'login-forms': !inAttorney,
       'login-forms--popup': popup,
       'login-in-attorney': inAttorney,
+      'mx-0': true,
+      'w-100': true,
     }"
       @click.stop
    >
       <div class="login-forms-with-dots">
-         <h2
-            v-if="tabOptions.header && !inAttorney"
-            :class="{ 'title-with-line': !isMobileBreakpoint }"
-         >
-            <span>{{ $t('login') }}</span>
-         </h2>
          <sign-in-form
-            @check-user="isNewUser = $event"
-            @update-tab="updateTab"
             v-if="tabOptions.signInForm && action !== 'sms'"
+            :action-text="actionText && actionText.login"
             :form="form"
             :popup="popup"
-            :validator="$v.form"
-            :action-text="actionText && actionText.login"
             :sellCheckTokens="sellCheckTokens"
+            :validator="$v.form"
+            @check-user="isNewUser = $event"
+            @update-tab="updateTab"
          />
          <confirm-phone
+            v-else-if="tabOptions.confirmPhone && action === 'sms'"
+            :action-text="actionText && actionText.confirm"
+            :form="form"
             :is-new-user="isNewUser"
+            :resend-data="resendData"
+            :skip-sign-in="skipSignIn"
+            :validator="$v.form"
             @setFinished="finished = $event"
             @update-tab="updateTab"
-            v-else-if="tabOptions.confirmPhone && action === 'sms'"
-            :form="form"
-            :validator="$v.form"
-            :action-text="actionText && actionText.confirm"
-            :skip-sign-in="skipSignIn"
-            :resend-data="resendData"
          />
-         <QrcodeBox v-if="tabOptions.qrCode"/>
-      </div>
-      <div
-         class="swiper-pagination-bullets"
-         v-if="!isMobileBreakpoint && !inAttorney"
-      >
-      <span
-         class="swiper-pagination-bullet"
-         :class="{
-          'swiper-pagination-bullet-active':
-            action === 'sign-in' && !form.staticPhone,
-        }"
-      ></span>
-         <span
-            class="swiper-pagination-bullet"
-            :class="{
-          'swiper-pagination-bullet-active':
-            action === 'sms' || form.staticPhone,
-        }"
-         ></span>
+         <why-register/>
       </div>
    </div>
 </template>
@@ -69,6 +46,7 @@ import StepsProgress from '~/components/garage/loa/StepsProgress'
 import SignInForm from '~/components/login/SignInForm'
 import ConfirmPhone from '~/components/login/ConfirmPhone'
 import QrcodeBox from '~/components/login/Qrcode-box'
+import WhyRegister from "~/components/login/WhyRegister";
 
 export default {
    components: {
@@ -76,6 +54,7 @@ export default {
       StepsProgress,
       SignInForm,
       ConfirmPhone,
+      WhyRegister
    },
    props: {
       inAttorney: {

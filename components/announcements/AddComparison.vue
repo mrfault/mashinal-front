@@ -11,7 +11,7 @@
         class=" btn-compare btn-transparent"
         :class="{ 'btn-compare-active': isActive }"
         @click.prevent.stop="handleClick()"
-      ><i></i></button>
+      ></button>
     </div>
 
 </template>
