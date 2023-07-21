@@ -465,9 +465,14 @@
          align-items: center;
          cursor: pointer;
          &:hover{
-            color: $red-1;
-            h6{
+            h6 {
                color: $red-1 !important;
+
+            }
+            svg {
+               path, ellipse, circle {
+                  stroke: $red-1 !important;
+               }
             }
          }
 
@@ -495,7 +500,7 @@
       &--profile {
          display: flex;
          align-items: center;
-         padding: 10px 0;
+         padding: 0px 0;
 
          &__name {
             font: 600 16px/24px 'TTHoves';
@@ -520,5 +525,32 @@
 
    &__content {
       width: calc(100% - 184px);
+      box-sizing: border-box;
+      overflow: hidden;
+      .pages-garage-index{
+         width: 100%;
+      }
+      .container{
+         width: 100%;
+         min-width: 100%;
+      }
    }
+
+   &__content-full {
+      width: 100%;
+   }
+}
+
+
+.ma-garage-link-active {
+   h6 {
+      color: $red-1 !important;
+
+   }
+   svg {
+      path, ellipse, circle {
+         stroke: $red-1 !important;
+      }
+   }
+
 }

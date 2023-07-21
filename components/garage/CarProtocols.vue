@@ -29,7 +29,7 @@ export default {
   },
   methods: {
     ...mapActions({
-      getProtocols: 'garage/getProtocols',
+       getProtocols: 'garage/getProtocols',
       resetCarData: 'garage/resetCarData'
     })
   },

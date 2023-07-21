@@ -1,7 +1,9 @@
 <template>
-   <div class="pages-profile-settings pt-2 pt-lg-5">
+   <div class="pages-profile-settings">
       <div class="container">
-         <breadcrumbs :crumbs="crumbs"/>
+         <portal to="breadcrumbs">
+            <breadcrumbs :crumbs="crumbs" />
+         </portal>
 
          <component
             :is="isMobileBreakpoint ? 'mobile-screen' : 'div'"
@@ -68,7 +70,7 @@ import ChangePhone from '~/components/elements/ChangePhone';
 export default {
    name: 'pages-profile-settings',
    mixins: [UserDataMixin],
-   layout: 'garageLayout',
+   layout: 'profileLayout',
    middleware: ['auth_general', ({$auth, redirect}) => {
       if ($auth.user.parent_id) {
          return redirect('/garage-services')
