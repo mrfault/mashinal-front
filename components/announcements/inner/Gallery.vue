@@ -91,7 +91,8 @@
                            :id="announcement.id_unique"
                            v-if="announcement.car_catalog"
                         />
-                        <add-favorite :announcement="announcement"/>
+
+<!--                        <add-favorite :announcement="announcement"/>-->
                      </template>
                   </div>
 

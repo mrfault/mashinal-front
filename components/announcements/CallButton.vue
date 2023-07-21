@@ -1,12 +1,14 @@
 <template>
-   <button :class="['btn full-width', `btn--${callAtOnce ? '' : 'pale-'}green`]" @click.stop="handleClick">
+   <button :class="['call-button btn full-width', `btn--${callAtOnce ? '' : 'new-'}green`]" @click.stop="handleClick">
 <!--      <icon name="phone-call"/>-->
       <template v-if="callAtOnce">
          <span v-mask="$maskPhone(true)" v-if="!isMobileBreakpoint">+{{ phone }}</span>
          <span v-else>{{ $t('make_a_call') }}</span>
       </template>
+
       <template v-else>
-         +994 {{ String(phone).slice(3, 8).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') }} ** **
+        <span>{{ $t('show_number') }}</span>
+        <span>+994 {{ String(phone).slice(3, 8).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') }} ** **</span>
       </template>
    </button>
 </template>
@@ -67,3 +69,10 @@
       // }
    }
 </script>
+
+<style lang="scss" scoped>
+   .call-button {
+      flex-direction: column;
+      height: 56px;
+   }
+</style>

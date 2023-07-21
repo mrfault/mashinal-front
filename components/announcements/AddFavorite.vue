@@ -1,13 +1,29 @@
 <template>
    <button
+      v-if="template === 'icon'"
       class="btn-transparent btn-favorite"
-      :class="{ 'btn-favorite-active': isAdded, 'white-border' : whiteBorder }"
+      :class="{'btn-favorite-active': isAdded, 'white-border' : whiteBorder}"
       @click.stop="handleClick()"
-   ></button>
+   />
+
+   <div
+      v-else-if="template === 'btn'"
+      class="favorite-btn btn"
+      :class="[`btn--${btnClass}`]"
+      @click.stop="handleClick()"
+   >
+      <span>{{ text }}</span>
+
+      <button
+         v-if="template === 'btn'"
+         class="btn-transparent btn-favorite white-border"
+         :class="{'btn-favorite-active': isAdded, 'white-border' : whiteBorder}"
+      />
+   </div>
 </template>
 
 <script>
-   import { mapGetters, mapActions } from 'vuex'
+   import { mapGetters, mapActions } from 'vuex';
 
    export default {
       props: {
@@ -16,6 +32,20 @@
          type: {
             type: String,
             default: 'announcement'
+         },
+
+         btnClass: {
+            type: String,
+            default: 'white'
+         },
+
+         template: {
+            type: String,
+            default: 'icon'
+         },
+
+         text: {
+            type: String
          },
 
          whiteBorder: {
@@ -76,7 +106,45 @@
       },
 
       beforeDestroy() {
-         this.$nuxt.$off('after-login', this.handleAfterLogin)
+         this.$nuxt.$off('after-login', this.handleAfterLogin);
       }
    }
 </script>
+
+<style lang="scss">
+   .btn-favorite {
+      pointer-events: all;
+      border: none;
+      outline: none;
+      width: 24px;
+      height: 24px;
+      background-image: url('../../static/icons/star-favorite2.svg');
+      background-position: center;
+      background-repeat: no-repeat;
+
+      &.white-border {
+         background-image: url('../../static/icons/star-favorite2-white-border.svg');
+      }
+
+      span {
+         width: 100%;
+         height: 100%;
+      }
+   }
+
+   .btn-favorite-active {
+      background-image: url('../../static/icons/star-favorite2-active.svg') !important;
+   }
+
+   .favorite-btn {
+      button {
+         background-image: url('../../static/icons/star-favorite2-black-border.svg') !important;
+      }
+
+      &:hover {
+         button {
+            background-image: url('../../static/icons/star-favorite2-active-min.svg') !important;
+         }
+      }
+   }
+</style>
