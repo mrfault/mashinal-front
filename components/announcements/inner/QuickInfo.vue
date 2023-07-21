@@ -27,27 +27,27 @@
             </div>
          </div>
 
-         <div class="quick-info__details">
-            <span>
+         <ul class="quick-info__details">
+            <li>
                <inline-svg src="/icons/calendar-2.svg" />
                {{ announcement.humanize_created_at }}
-            </span>
+            </li>
 
-            <span>
+            <li>
                <inline-svg src="/icons/eye-2.svg" />
                {{ announcement.view_count }}
-            </span>
+            </li>
 
-            <span>
+            <li>
                <inline-svg src="/icons/favorite_2.svg" />
                {{ announcement.favorites_count }}
-            </span>
+            </li>
 
-            <span class="text-data">
+            <li>
                <inline-svg src="/icons/cursor.svg" />
                {{ announcement.open_count }}
-            </span>
-         </div>
+            </li>
+         </ul>
 
          <div
             :class="['quick-info__contact', { 'cursor-pointer': !!contact.link }]"
@@ -89,7 +89,7 @@
 
          <div class="row" v-if="announcement.status != 3">
             <div class="col mt-2 mt-lg-3" v-if="contact.lat && contact.lng">
-               <show-map-button :lat="contact.lat" :lng="contact.lng"/>
+               <show-map-button :lat="contact.lat" :lng="contact.lng" />
             </div>
 
             <div class="col-5 mt-2 mt-lg-3" v-if="canSendMessage(announcement)">
@@ -97,8 +97,8 @@
             </div>
 
             <div class="col-7 mt-2 mt-lg-3" v-if="!isMobileBreakpoint">
-               <call-button-multiple v-if="announcement.is_autosalon" :phones="announcement.user.autosalon.phones"/>
-               <call-button v-else :phone="contact.phone"/>
+               <call-button-multiple v-if="announcement.is_autosalon" :phones="announcement.user.autosalon.phones" />
+               <call-button v-else :phone="contact.phone" />
             </div>
 
             <div class="col-12 mt-2 mt-lg-3" v-if="!isMobileBreakpoint && announcement.status === 2">
@@ -164,12 +164,25 @@
             />
 
             <monetization-button
-               class="mt-2"
+               class="mt-3 h-52"
                :announcement="announcement"
                @openModal="openModal"
             />
          </div>
       </template>
+
+      <div class="btns">
+         <add-favorite
+            class="h-52"
+            :template="'btn'"
+            :text="'Seçilmiş et'"
+            :announcement="announcement"
+         />
+
+         <add-comparison
+            :id="announcement.id_unique"
+         />
+      </div>
 
       <template v-if="!brief && announcement.status != 2 && !(announcement.is_autosalon && announcement.status == 3)">
          <hr :class="{ 'mt-3': announcement.status == 3 }"
@@ -219,6 +232,7 @@
    import PayAnnouncementButton from '~/components/announcements/PayAnnouncementButton'
    import ShowMapButton from '~/components/elements/ShowMapButton'
    import AddFavorite from "~/components/announcements/AddFavorite.vue";
+   import AddComparison from "~/components/announcements/AddComparison.vue";
    import CallButtonMultiple from "~/components/announcements/CallButtonMultiple.vue";
    import QuickInfoPrice from "~/components/announcements/inner/QuickInfoPrice.vue";
    import { mapGetters } from 'vuex'
@@ -236,7 +250,8 @@
          MonetizationStatsButton,
          PayAnnouncementButton,
          AddFavorite,
-         QuickInfoPrice
+         QuickInfoPrice,
+         AddComparison
       },
 
       data() {
@@ -352,10 +367,16 @@
       }
 
       &__details {
+         display: flex;
+         align-items: center;
          padding: 12px 0 20px 0;
          border-bottom: 1px solid #E3E8EF;
 
-         span {
+         li {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+
             &:not(:first-child) {
                margin-left: 12px;
             }
@@ -392,6 +413,23 @@
                line-height: 16px;
                text-decoration-line: underline;
                color: #155EEF;
+            }
+         }
+      }
+
+      .btns {
+         display: flex;
+         align-items: center;
+         justify-content: space-between;
+         gap: 12px;
+
+         .btn {
+            width: 100%;
+            font-size: 14px;
+            color: #364152;
+
+            span {
+               margin-right: 5px;
             }
          }
       }
