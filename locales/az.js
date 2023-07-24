@@ -2646,7 +2646,11 @@ export default {
    "transactions": "Əməliyyatlar",
    "agreement_details": "Müqavilə barədə ətraflı",
    "view": "Baxış",
-   "download_invoice": "Endir"
+   "download_invoice": "Endir",
+
+   "change_profile_pictures_text": "Profil şəklini dəyişdir",
+   "change_profile_pictures_validation": "JPG, PNG, Bitmap, 3 MB-dan çox olmayan",
+   "upload_file": "Fayl yüklə",
 
 };
 

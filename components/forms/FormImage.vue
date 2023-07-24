@@ -24,9 +24,9 @@
                <icon name="garbage"/>
            </span>
 
-           <span @click="croppaValue.chooseFile()">
-              <inline-svg src="/icons/camera.svg" :height="14"/>
-           </span>
+            <!--<span @click="croppaValue.chooseFile()">-->
+            <!--  <inline-svg src="/icons/camera.svg" :height="14"/>-->
+            <!--</span>-->
          </span>
       </croppa>
 
@@ -56,7 +56,7 @@
                   </button>
                </div>
                <div class="col">
-                  <button type="submit" :class="['btn btn--green full-width', { pending }]">
+                  <button type="submit" :class="['btn btn--green full-width']">
                      {{ $t('yes') }}
                   </button>
                </div>
@@ -70,6 +70,9 @@
 import {ImageResizeMixin} from '~/mixins/img-resize';
 
 export default {
+   created() {
+      this.$root.$refs.FormImage = this;
+   },
    props: {
       refreshCroppa: 0,
       value: {},
