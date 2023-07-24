@@ -53,18 +53,9 @@
                   </strong>
                </div>
             </div>
+
             <div class="protocol-details-button__actions">
-               <button
-                  :class="[
-                  'btn',
-                  'btn--white',
-                  'btn-dark-text',
-                  { 'pointer-events-none': pending },
-               ]"
-                  type="button"
-               >
-                  {{ $t('show_image_or_video') }}
-               </button>
+               <slot/>
                <button
                   v-if="protocol.isSelected && !history"
                   :class="['btn', 'btn--light-green', { pending }]"
@@ -92,6 +83,7 @@ export default {
    },
    components: {
       ProtocolPayment,
+
    },
    data() {
       return {
@@ -117,7 +109,13 @@ export default {
       showPaymentModal() {
          this.showProtocolDetails = false;
          this.$emit('showPaymentModal', true)
-      }
+      },
+
+      getPayLink(protocol) {
+         let agency = protocol.protocol_series === 'BNA' ? 'bna' : 'din';
+         return `https://pay.api.az/${agency}/${protocol.protocol_series}${protocol.protocol_number}`;
+      },
+
    }
 }
 </script>

@@ -2,7 +2,7 @@
    <div
       :class="{'ma-penalties__card--body__penalties--item--active': protocol.isSelected}"
       class="ma-penalties__card--body__penalties--item"
-      @click.prevent="selectProtocol(protocol.protocol_number)"
+      @click.prevent="selectProtocol(protocol)"
    >
       <div class="ma-left">
          <div class="ma-left__checkbox">
@@ -18,7 +18,7 @@
             {{ protocol.total }} AZN
          </p>
 
-         <protocol-details :history="history" style="margin-right: 8px !important;" v-if="protocol.isSelected" :protocol="protocol" @showPaymentModal="showPaymentModal"/>
+       <slot></slot>
 
          <button
             v-if="protocol.isSelected && !history"
@@ -55,8 +55,8 @@ export default {
       ProtocolPayment
    },
    methods: {
-      selectProtocol(num) {
-         this.$emit('selectProtocol', num)
+      selectProtocol(prot) {
+         this.$emit('selectProtocol', prot)
       },
       showPaymentModal() {
          this.$emit('openPaymentModal');

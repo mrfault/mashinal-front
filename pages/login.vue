@@ -4,7 +4,7 @@
 
          <breadcrumbs :crumbs="crumbs"/>
 
-         <div  class="login-card card no-pd mb-5">
+         <div v-if="false"  class="login-card card no-pd mb-5">
 
             <div class="row no-gutters scrolling-box">
                <div v-if="isMobileBreakpoint" class="col-12 col-lg-6 col-xl-4">

@@ -71,7 +71,7 @@
             <comparison-badge :window-width="windowWidth" />
             <mobile-nav/>
 
-            <BrandsList :options="brandsList" />
+<!--            <BrandsList :options="brandsList" />-->
 
             <page-footer v-if="!hideFooter"/>
 <!--            <template v-if="isMobileBreakpoint && showPopupBanner">
