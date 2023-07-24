@@ -1,63 +1,77 @@
+<!--suppress ALL -->
 <template>
-   <div class="pages-profile-settings">
-      <div class="container">
-         <portal to="breadcrumbs">
-            <breadcrumbs :crumbs="crumbs" />
-         </portal>
+   <div class="pages-dashboard-settings">
+      <portal to="breadcrumbs">
+         <breadcrumbs :crumbs="crumbs"/>
+      </portal>
 
-         <component
-            :is="isMobileBreakpoint ? 'mobile-screen' : 'div'"
-            :bar-title="$t('user_information_edit')"
-            @back="$router.push(pageRef || $localePath('/profile/settings'))"
-            height-auto
-         >
-            <div class="card profile-settings-card">
-               <div class="avatar_edit">
-                  <form-image v-model="form.avatar" :initial-image="getUserAvatar"
-                              croppable :width="100" :height="100"/>
-                  <p class="text-center">100x100px</p>
-               </div>
-
-               <div class="row profile_edit">
-                  <div class="col-lg-4 mb-3 mb-lg-3">
-                     <form-text-input :maxlength="30" :placeholder="$t('name')" v-model="form.name"/>
+      <component
+         :is="isMobileBreakpoint ? 'mobile-screen' : 'div'"
+         :bar-title="$t('user_information_edit')"
+         @back="$router.push(pageRef || $localePath('/profile/settings'))"
+         height-auto>
+         <div class="row">
+            <div class="col-md-12 pb-5">
+               <div class="row">
+                  <div class="col-md-6 pb-5">
+                     <div class="row">
+                        <div class="col-md-12 pb-3">
+                           <form-text-input :maxlength="30" :placeholder="$t('name')" v-model="form.name"/>
+                        </div>
+                        <div class="col-md-12 pb-3">
+                           <form-text-input :maxlength="30" :placeholder="$t('surname')" v-model="form.lastname"/>
+                        </div>
+                        <div class="col-md-12 pb-3">
+                           <change-email :placeholder="$t('email')"/>
+                        </div>
+                        <div class="col-md-12 pb-3">
+                           <change-phone :placeholder="$t('contact_number')"/>
+                        </div>
+                        <div class="col-md-12 pb-3">
+                           <form-text-input :placeholder="$t('birthday')" v-model="form.birthday" input-date />
+                        </div>
+                        <div class="col-md-12 pb-3">
+                           <form-select :options="getGenderOptions" v-model="form.gender" :new-label="false"></form-select>
+                        </div>
+                        <div class="col-md-12 pb-3">
+                           <div class="col-md-12 pb-3">
+                              <button
+                                 type="submit"
+                                 @click="submit"
+                                 :class="['btn btn--green full-width', { pending: pending && showPasswordModal }]">
+                                 {{ $t('save') }}
+                              </button>
+                           </div>
+                        </div>
+                     </div>
                   </div>
-                  <div class="col-lg-4 mb-3 mb-lg-3">
-                     <form-text-input :placeholder="$t('birthday')" v-model="form.birthday" input-date />
-                  </div>
-                  <div class="col-lg-4 mb-3 mb-lg-3">
-                     <form-buttons v-model="form.gender" :options="getGenderOptions" :group-by="3"
-                                   btn-class="primary-outline"/>
-                  </div>
-                  <div class="col-lg-4 mb-3 mb-lg-3">
-                     <change-email :placeholder="$t('email')"/>
-                  </div>
-                  <div class="col-lg-4 mb-3 mb-lg-3 ">
-                     <change-phone :placeholder="$t('contact_number')"/>
-                  </div>
-                  <div class="full-width"></div>
-                  <!--            <div class="col-lg-4 mb-3 mb-lg-3">-->
-                  <!--              <form-text-input type="password" autocomplete="old-password" :maxlength="255" -->
-                  <!--                :placeholder="$t('current_password')"  v-model="form.old"-->
-                  <!--              />-->
-                  <!--            </div>-->
-                  <!--            <div class="col-lg-4 mb-3 mb-lg-3">-->
-                  <!--              <form-text-input type="password" autocomplete="new-password" :maxlength="255" -->
-                  <!--                :placeholder="$t('new_password')"  v-model="form.password"-->
-                  <!--              />-->
-                  <!--            </div>-->
-                  <!--            <div class="col-lg-4 mb-3 mb-lg-3">-->
-                  <!--              <form-text-input type="password" autocomplete="new-password" :maxlength="255" -->
-                  <!--                :placeholder="$t('confirm_new_password')"  v-model="form.password_confirmation"-->
-                  <!--              />-->
-                  <!--            </div>-->
-                  <div class="col-lg-2 offset-lg-10">
-                     <button class="btn btn--green full-width" @click="submit">{{ $t('confirm') }}</button>
+                  <div class="col-md-6">
+                     <div class="row">
+                        <div class="col-md-12 pb-3">
+                           <div class="change-avatar d-flex justify-content-center">
+                              <div class="avatar-image">
+                                 <form-image
+                                    v-model="form.avatar"
+                                    :initial-image="getUserAvatar"
+                                    croppable
+                                    :width="isMobileBreakpoint ? 72 : 72"
+                                    :height="isMobileBreakpoint ? 72 : 72"/>
+                              </div>
+                              <div class="avatar-content">
+                                 <h4>{{$t('change_profile_pictures_text')}}</h4>
+                                 <p>{{$t('change_profile_pictures_validation')}}</p>
+                                 <button class="upload-image" @click="clickAvatar()">
+                                    <inline-svg :src="'/icons/upload.svg'"/> {{$t('upload_file')}}
+                                 </button>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
                   </div>
                </div>
             </div>
-         </component>
-      </div>
+         </div>
+      </component>
    </div>
 </template>
 
@@ -82,7 +96,7 @@ export default {
    },
    nuxtI18n: {
       paths: {
-         az: '/profil/parametrler'
+         az: '/profil/parametrler-old'
       }
    },
    head() {
@@ -128,6 +142,9 @@ export default {
          return (date !== null && date !== '' && date !== 'Invalid date')
             ? this.$moment(date, 'DD.MM.YYYY').format('DD-MM-YYYY') : null;
       },
+      clickAvatar() {
+         this.$root.$refs.FormImage.croppaValue.chooseFile();
+      },
       async submit() {
          let formData = new FormData();
          let pwdKeys = ['old', 'password', 'password_confirmation'];
@@ -158,3 +175,88 @@ export default {
    }
 }
 </script>
+
+<style>
+.change-avatar {
+   padding: 24px;
+   border-radius: 12px;
+   gap: 16px;
+   border: 1px solid #CDD5DF;
+   background-color: #FFF;
+   align-items: center;
+}
+.avatar-image{
+   min-height: 72px;
+   width: 20%;
+   display: flex;
+   justify-content: center;
+}
+.avatar-image img{
+   height: 72px;
+   width: 72px;
+   border-radius: 50%;
+   object-fit: contain;
+}
+.avatar-content{
+   width: 80%;
+   min-height: 72px;
+}
+.avatar-content h4{
+   font-size: 16px;
+   font-weight: 500;
+   line-height: 20px;
+   letter-spacing: 0;
+   text-align: left;
+   color: #1B2434;
+   margin-bottom: 5px;
+}
+.avatar-content p {
+   font-size: 14px;
+   font-weight: 400;
+   line-height: 16px;
+   letter-spacing: 0em;
+   text-align: left;
+   color: #697586;
+   margin-bottom: 5px;
+}
+.avatar-content .upload-image{
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   border: none;
+   background-color: transparent;
+   font-size: 14px;
+   font-weight: 500;
+   line-height: 16px;
+   letter-spacing: 0;
+   text-align: left;
+   color: #155EEF;
+   padding: 0;
+   margin: 0;
+}
+.avatar-content .upload-image svg{
+   margin-right: 10px;
+}
+.form-image{
+   border-radius: 50%;
+   padding: 0!important;
+}
+.croppa-container{
+   height: 72px;
+   width: 72px;
+}
+.dark-mode{
+   .change-avatar {
+      border: 1px solid #1B2434!important;
+      background-color: #1B2434 !important;
+   }
+
+   .avatar-content h4{
+      color: #bcc2c9;
+   }
+   .avatar-content p {
+      color: #CDD5DF;
+   }
+
+}
+</style>
