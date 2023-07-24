@@ -137,8 +137,21 @@
    }
 
    .favorite-btn {
+      width: 100%;
+      border-radius: 8px;
+
+      span {
+         font-size: 14px;
+         color: #364152;
+         margin-right: 5px;
+      }
+
       button {
          background-image: url('../../static/icons/star-favorite2-black-border.svg') !important;
+
+         &.btn-favorite-active {
+            background-image: url('../../static/icons/star-favorite2-active-min.svg') !important;
+         }
       }
 
       &:hover {
