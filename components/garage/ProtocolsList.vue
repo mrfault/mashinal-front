@@ -4,7 +4,7 @@
       {{ $t('no_'+(tab || 'protocols')) }}
     </p>
     <template v-else>
-      <div class="mt-3" v-for="(protocol, index) in protocols" :key="tab+'_'+protocol.id">
+      <div class="mt-3" v-for="(protocol, index) in protocols" :key="index +'_'+protocol.id + '123'">
         <collapse-content
           :title="getTitle(protocol)"
           :first-collapsed="index !== 0 && where === 'car-protocols'"
@@ -12,10 +12,10 @@
         >
           <div class="vehicle-specs">
             <div class="row">
-              <div class="col" v-for="(specs, i) in mainSpecs(protocol)" :key="i">
+              <div class="col" v-for="(specs, i) in mainSpecs(protocol)" :key="i + 98745">
                 <ul>
                   <template v-for="(spec, key) in specs">
-                    <li :key="key" v-if="spec">
+                    <li :key="key + '123845'" v-if="spec">
                       <span class="w-auto">{{ $t(key) }}</span>
                       <span :style="key === 'pay_status' ? 'color:#1C9831;' : ''">{{ spec }}</span>
                     </li>
@@ -29,7 +29,7 @@
                 <div class="col">
                   <ul>
                     <template v-for="(spec, key) in restSpecs(protocol)">
-                      <li :key="key" v-if="spec">
+                      <li :key="key + '6545656'" v-if="spec">
                         <span class="w-auto">{{ $t(key) }}</span>
                         <span>{{ spec }}</span>
                       </li>
@@ -42,7 +42,7 @@
                 <div class="row">
                   <template v-if="protocol.has_files">
                     <div :class="['col-12 col-lg-auto ml-auto order-lg-2', {'mb-2 mb-lg-0': protocol.can_pay && protocol.total > 0}]">
-                      <protocol-files-button :protocol="protocol">
+                      <protocol-files :protocol="protocol">
                         <div class="card garage_protocol-info">
                           <div class="garage_protocol-titles">
                             <h3 class="text-normal">{{ $readCarNumber(protocol.car_number) }}</h3>
@@ -51,10 +51,10 @@
                           </div>
                           <div class="vehicle-specs">
                             <div class="row">
-                              <div class="col" v-for="(specs, i) in mainSpecs(protocol, true)" :key="i">
+                              <div class="col" v-for="(specs, i) in mainSpecs(protocol, true)" :key="i + '6545'">
                                 <ul>
                                   <template v-for="(spec, key) in specs">
-                                    <li :key="key" v-if="spec">
+                                    <li :key="key + '1546786'" v-if="spec + 218">
                                       <span class="w-auto">{{ $t(key) }}</span>
                                       <span >{{ spec }}</span>
                                     </li>
@@ -80,7 +80,7 @@
                             </div>
                           </template>
                         </div>
-                      </protocol-files-button>
+                      </protocol-files>
                     </div>
                   </template>
                   <template v-if="protocol.can_pay && protocol.total > 0">
@@ -108,12 +108,12 @@
 
 <script>
 import CollapseContent from '~/components/elements/CollapseContent';
-import ProtocolFilesButton from '~/components/garage/ProtocolFilesButton';
+import ProtocolFiles from '~/components/garage/ProtocolFiles';
 
 export default {
   components: {
     CollapseContent,
-    ProtocolFilesButton
+     ProtocolFiles
   },
   props: {
     history: {

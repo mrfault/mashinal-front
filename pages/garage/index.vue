@@ -2,9 +2,6 @@
    <div class="pages-garage-index ma-penalties">
       <div class="container">
          <h2 class="ma-title--md">{{ $t('penalties') }}</h2>
-         <!--         top ----------------------------------------------------------------------------------------------------------------------- -->
-         <!--         top ----------------------------------------------------------------------------------------------------------------------- -->
-         <!--         top ----------------------------------------------------------------------------------------------------------------------- -->
          <div class="ma-penalties__top">
             <div class="ma-penalties__top--search">
                <form-text-input
@@ -20,7 +17,7 @@
 
                <div id="carNumberContainer" class="ma-penalty-number-chip__container" @mousedown="startDragging">
                   <div class="ma-penalty-number-chip__list">
-                     <div v-for="(car, index) in carsList" :key="index"
+                     <div v-for="(car, index) in carsList" :key="index + 98237492"
                           :class="{'ma-penalty-number-chip--active': selectedCar == car}"
                           class="ma-penalty-number-chip"
                           @click="selectCar(car)"
@@ -36,133 +33,184 @@
                </div>
             </div>
          </div>
-         <!--         top ----------------------------------------------------------------------------------------------------------------------- -->
-         <!--         body ----------------------------------------------------------------------------------------------------------------------- -->
+
          <div class="row">
+            <!--            left-->
             <div class="col-12 col-md-6">
                <div class="ma-penalties__card">
                   <div class="ma-penalties__card--header">
-                     <div v-for="(item,index) in cardTabs" :key="index"
+                     <div v-for="(item,index) in cardTabs" :key="index + 23974"
                           :class="{'ma-penalties__card--header__item--active': activeCardTab ==  item.id}"
                           class="ma-penalties__card--header__item"
-                          @click="activeCardTab = item.id"
+                          @click="switchCardTab(item.id)"
                      >
                         {{ $t(item.title) }}
                      </div>
                   </div>
                   <div class="ma-penalties__card--body">
-                     <div v-if="activeCardTab == 1" class="ma-penalties__card--body__penalties">
-                        <div v-if="false" class="ma-penalties__card--body__no-results">
-                           <img alt="" src="/images/penalty-no-result.png">
-                           <p>{{ $t('no_protocols') }}</p>
+                     <div v-if="activeCardTab == 0" class="ma-penalties__card--body__penalties">
+                        <div v-if="loading">
+                           <loader/>
                         </div>
-                        <div class="ma-penalties__card--body__penalties--item all-items">
-                           <div class="ma-left">
-                              <custom-checkbox v-model="checkboxtest"/>
-                              <p>{{ $t('select_all') }}</p>
-                           </div>
-                           <div class="ma-right">
-                              <button class="ma-btn-green-outlined">{{ $t('pay_for_selected') }}</button>
-                           </div>
-                        </div>
-                        <div class="ma-penalties__card--body__penalties--item">
-                           <div class="ma-left">
-                              <div class="ma-left__checkbox">
-                                 <custom-checkbox v-model="checkboxtest"/>
+                        <template v-else>
+                           <template v-if="protocols && protocols.data && protocols.data.length">
+                              <div
+                                 class="ma-penalties__card--body__penalties--item all-items">
+                                 <div class="ma-left">
+                                    <custom-checkbox v-model="protocol.allSelected"/>
+                                    <p>{{ $t('select_all') }}</p>
+                                 </div>
+                                 <div class="ma-right">
+                                    <button class="ma-btn-green-outlined">{{ $t('pay_for_selected') }}</button>
+                                 </div>
                               </div>
-                              <div class="ma-left__content">
-                                 <p>EQ12114578</p>
-                                 <strong>110.80 AZN</strong>
-                              </div>
+                              <template v-for="(protocol,index) in protocol.filteredList">
+                                 <protocol-list-item :protocol="protocol"
+                                                     @openPaymentModal="showPaymentModal = true"
+                                                     @selectProtocol="selectProtocol(protocol.protocol_number)"
+                                 />
+                              </template>
+                           </template>
+                           <div v-else class="ma-penalties__card--body__no-results">
+                              <img alt="" src="/images/penalty-no-result.png">
+                              <p>{{ $t('no_protocols') }}</p>
                            </div>
-                           <div class="ma-right">
-                              <p class="ma-right__amount">
-                                 11.80 AZN
-                              </p>
-                           </div>
-                        </div>
-                        <div class="ma-penalties__card--body__penalties--item">
-                           <div class="ma-left">
-                              <div class="ma-left__checkbox">
-                                 <custom-checkbox v-model="checkboxtest"/>
-                              </div>
-                              <div class="ma-left__content">
-                                 <p>EQ12114578</p>
-                              </div>
-                           </div>
-                           <div class="ma-right">
-                              <protocol-details-button/>
-
-                              <protocol-payment-button style="margin-left: 8px"/>
-                           </div>
-                        </div>
+                        </template>
                      </div>
-                     <div v-if="activeCardTab == 2" class="ma-penalties__card--body__penalty_history">
-                        <div class="ma-penalties__card--body__penalties--item">
-                           <div class="ma-left">
-                              <div class="ma-left__checkbox">
-                                 <custom-checkbox v-model="checkboxtest"/>
-                              </div>
-                              <div class="ma-left__content">
-                                 <p>EQ12114578</p>
-                                 <strong>110.80 AZN</strong>
-                              </div>
-                           </div>
-                           <div class="ma-right">
-                              <p class="ma-right__amount">
-                                 11.80 AZN
-                              </p>
-                           </div>
+                     <div v-if="activeCardTab == 1" class="ma-penalties__card--body__penalty_history">
+                        <div v-if="loading">
+                           <loader/>
                         </div>
-                        <div class="ma-penalties__card--body__penalties--item">
-                           <div class="ma-left">
-                              <div class="ma-left__checkbox">
-                                 <custom-checkbox v-model="checkboxtest"/>
+                        <template v-else>
+                           <template v-if="protocols && protocols.data && protocols.data.length">
+                              <div
+                                 class="ma-penalties__card--body__penalties--item all-items">
+                                 <div class="ma-left">
+                                    <custom-checkbox v-model="protocol.allSelected"/>
+                                    <p>{{ $t('select_all') }}</p>
+                                 </div>
+                                 <div class="ma-right">
+                                    <button class="ma-btn-green-outlined">{{ $t('pay_for_selected') }}</button>
+                                 </div>
                               </div>
-                              <div class="ma-left__content">
-                                 <p>EQ12114578</p>
-                              </div>
+                              <template v-for="(protocol,index) in protocol.filteredList">
+                                 <protocol-list-item
+                                    :protocol="protocol"
+                                    history
+                                    @selectProtocol="selectProtocol(protocol.protocol_number)"
+                                    @openPaymentModal="openPaymentModal"
+                                 />
+                              </template>
+                           </template>
+                           <div v-else class="ma-penalties__card--body__no-results">
+                              <img alt="" src="/images/penalty-no-result.png">
+                              <p>{{ $t('no_protocols') }}</p>
                            </div>
-                           <div class="ma-right">
-                              <button
-                                 :class="[
-                                        'btn',
-                                        'full-width',
-                                        'btn--white',
-                                        'btn-dark-text',
-                                        { 'pointer-events-none': pending },
-                                      ]"
-                                 type="button"
-                              >
-                                 {{ $t('detail') }}
-                              </button>
-                           </div>
-                        </div>
+                        </template>
                      </div>
                   </div>
                </div>
             </div>
 
+            <!--            right-->
             <div class="col-12 col-md-6">
                <div class="ma-penalties__card">
                   <h2 class="ma-title--md">{{ $t('my_vehicle_info') }}</h2>
-                  <template v-if="selectedCar && mainSpecs">
-                     <div v-for="(spec,index) in mainSpecs" :key="index + 654" class="ma-penalties__card--car-specs">
-                        <div v-for="(value,key) in spec" class="ma-penalties__card--car-specs__item">
-                           <p>{{ $t(key) }}</p>
-                           <strong>{{ value }}</strong>
+                  <div class="ma-penalties__right-card__body">
+                     <template v-if="selectedCar && mainSpecs">
+                        <div v-for="(spec,index) in mainSpecs" :key="index + 213654"
+                             class="ma-penalties__card--car-specs">
+                           <div v-for="(value,key) in spec" class="ma-penalties__card--car-specs__item">
+                              <p>{{ $t(key) }}</p>
+                              <strong>{{ value }}</strong>
+                           </div>
                         </div>
-                     </div>
-                  </template>
+                     </template>
+                  </div>
+                  <div class="ma-penalties__card--actions">
+                     <remove-vehicle :vehicle="selectedCar" @selectedCarDeleted="getAllCarsList"/>
+                     <stop-subsribtion :vehicle="selectedCar"/>
+                  </div>
                </div>
             </div>
          </div>
-         <!--         body ----------------------------------------------------------------------------------------------------------------------- -->
-         <!--         body ----------------------------------------------------------------------------------------------------------------------- -->
-         <!--         body ----------------------------------------------------------------------------------------------------------------------- -->
+
+
+         <modal-popup
+            :modal-class="'midsize packages'"
+            :title="$t('payment')"
+            :toggle="showPaymentModal"
+            @close="showPaymentModal = false"
+         >
+            <div class="protocol-payment-modal">
+               <div class="protocol-payment-modal__top">
+                  <div v-for="(item,index) in paymentOptions" class="protocol-payment-modal__top--item">
+                     <form-radio :id="item.id.toString()"
+                                 :key="index + 56"
+                                 v-model="item.id"
+                                 :label="$t(item.label)"
+                                 :radio-value="item.id"
+                                 class="full-width"
+                                 input-name="buy_condition"
+                                 style="max-width: unset !important;"
+                     />
+                  </div>
+               </div>
+               <div class="protocol-payment-modal__body">
+                  <div class="">
+                     <form-select
+                        v-model="selectedCard"
+                        :clearOption="false"
+                        :clearPlaceholder="true"
+                        :disabled="false"
+                        :label="name"
+                        :options="cardOptions"
+                        class="full-width"
+                        style="max-width: unset"
+                     />
+
+
+                  </div>
+                  <div class="protocol-payment-modal__body--total-amount">
+                     <p>{{ $t('total_payment_amount') }}</p>
+                     <strong>{{ 1.00 }} AZN</strong>
+                  </div>
+               </div>
+
+               <div class="protocol-payment-modal__actions">
+                  <button
+                     :class="[
+                                        'btn',
+                                        'btn--white',
+                                        'btn-dark-text',
+                                      ]"
+                     type="button"
+                     @click="showPaymentModal = false"
+                  >
+                     {{ $t('reject') }}
+                  </button>
+                  <button
+                     :class="['btn', 'btn--light-green']"
+                     type="button"
+                     @click="showPaymentModal = false"
+                  >
+                     {{ $t('go_further') }}
+
+                  </button>
+
+               </div>
+
+            </div>
+         </modal-popup>
+
          <no-ssr>
             <template v-if="cars.data && cars.data.length">
-
+               <garage-nav
+                  v-show="showNav || !isMobileBreakpoint"
+                  :tab="tab"
+                  @filterCarNumber="filterCarNumber"
+                  @change-tab="tab = $event"
+               />
                <cars-list v-if="tab === 'cars'" :filter_car_number="car_number" @show-nav="showNav = $event"/>
                <cars-list v-if="tab === 'penalty_history'" key="history_key" :filter_car_number="car_number" history
                           @show-nav="showNav = $event"/>
@@ -176,8 +224,10 @@
                   @show-nav="showNav = $event"
                />
             </template>
-
-            <template v-if="true">
+            <template v-else>
+               <garage-empty :default-vehicle-list="vehicleList"/>
+            </template>
+            <template v-if="false">
                <template v-if="tab === 'cars' && (showNav || !isMobileBreakpoint)">
                   <div
                      v-if="isMobileBreakpoint"
@@ -219,22 +269,28 @@ import CarsList from '~/components/garage/CarsList'
 import CheckDriverPoints from '~/components/garage/CheckDriverPoints'
 import ListOfAttorneys from '~/components/garage/loa/ListOfAttorneys'
 import CustomCheckbox from "~/components/forms/CustomCheckbox";
-import ProtocolDetailsButton from "~/components/garage/ProtocolDetailsButton";
-import ProtocolPaymentButton from "~/components/garage/ProtocolPaymentButton";
+import ProtocolDetails from "~/components/garage/ProtocolDetails";
+import ProtocolPayment from "~/components/garage/ProtocolPayment";
+import ProtocolListItem from "~/components/garage/ProtocolListItem";
+import RemoveVehicle from "~/components/garage/RemoveVehicle";
+import StopSubsribtion from "~/components/garage/StopSubsribtion";
 
 export default {
    name: 'pages-garage-index',
    mixins: [UserDataMixin, MenusDataMixin],
    layout: 'garageLayout',
    components: {
-      ProtocolPaymentButton,
-      ProtocolDetailsButton,
+      StopSubsribtion,
+      ProtocolPayment,
+      ProtocolDetails,
       CustomCheckbox,
       ListOfAttorneys,
       GarageNav,
       GarageEmpty,
       CarsList,
       CheckDriverPoints,
+      ProtocolListItem,
+      RemoveVehicle,
    },
    middleware: ['auth_general'],
    nuxtI18n: {
@@ -327,19 +383,58 @@ export default {
       getInsuranceText(id) {
          return this.companies.find(item => item.key == id)?.name
       },
-      getCarProtocols() {
-         this.$store.dispatch('garage/getProtocols', {id: this.selectedCar.car_id, history: 0})
+      async getCarProtocols() {
+         await this.$store.dispatch('garage/getProtocols', {id: this.selectedCar.id, history: this.activeCardTab})
+
+         this.protocol.filteredList = [];
+         if (this.protocols && this.protocols.data && this.protocols.data.length) {
+            this.protocols.data.forEach(el => {
+               el.isSelected = false;
+               el.isChecked = false;
+               this.protocol.filteredList.push(el);
+            })
+         }
+         this.loading = false;
+
       },
       selectCar(car) {
+         this.loading = true;
          this.selectedCar = car;
          this.getCarProtocols();
+      },
+      selectProtocol(id) {
+         const updatedArrayOfObjects = this.protocol.filteredList.map((obj) => ({
+            ...obj,
+            isSelected: obj.protocol_number === id,
+         }));
+
+         this.protocol.filteredList = updatedArrayOfObjects;
+
+      },
+      switchCardTab(id) {
+         this.loading = true;
+         this.activeCardTab = id;
+         this.getCarProtocols()
+      },
+      getAllCarsList() {
+         this.$store.dispatch('garage/getCarList');
+         this.selectedCar = this.carsList[0];
+      },
+      async activatePaymentModal() {
+         this.showPaymentModal = true;
+      },
+      openPaymentModal(){
+         this.showPaymentModal = true;
+         alert("ahey")
       }
+
    },
    computed: {
       ...mapGetters({
          cars: 'garage/cars',
          attorneys: 'garage/attorneys',
          protocols: 'garage/protocols',
+         bankingCards: 'bankingCards/bankingCards',
       }),
       crumbs() {
          return [{name: this.$t('garage')}]
@@ -347,11 +442,11 @@ export default {
       cardTabs() {
          return [
             {
-               id: '1',
+               id: '0',
                title: 'penalties'
             },
             {
-               id: '2',
+               id: '1',
                title: 'penalty_history'
             },
          ]
@@ -383,8 +478,9 @@ export default {
    },
    data() {
       return {
+         loading: true,
          searchNumber: "",
-         activeCardTab: 1,
+         activeCardTab: 0,
          selectedCar: null,
          companies: [
             {key: 1, name: 'Azsığorta'},
@@ -404,7 +500,56 @@ export default {
             {key: 15, name: 'Paşa Sığorta'},
          ],
          carsList: [],
-         checkboxtest: true,
+         protocol: {
+            selected: null,
+            filteredList: [],
+            allSelected: true,
+         },
+         history: {
+            selected: null,
+            filteredList: [],
+         },
+         showPaymentModal: false,
+         pending: false,
+         name: 'pay_with_card',
+         paymentOptions: [
+            {
+               label: 'pay_with_card',
+               id: 0,
+            },
+            {
+               label: 'balans',
+               id: 1,
+            },
+         ],
+         pay_with_card: false,
+         balance: false,
+         index: 1,
+         selectedCard: null,
+         cardOptions: [
+            {
+               name: 'payment_with_other_card',
+               value: null,
+            },
+            {
+               name: 'Pasha Bank card',
+               value: '1234 5678 7897 3454'
+            }
+         ]
+
+      }
+   },
+   watch: {
+      'protocol.allSelected': {
+         deep: true,
+         handler() {
+            if (this.protocol.allSelected) {
+               this.protocol.filteredList.forEach(el => el.isChecked = true)
+            } else {
+               this.protocol.filteredList.forEach(el => el.isChecked = false)
+
+            }
+         }
 
       }
    }
