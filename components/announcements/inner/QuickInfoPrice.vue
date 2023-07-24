@@ -40,10 +40,15 @@
       border-top-right-radius: 8px;
       margin-left: -20px;
       cursor: pointer;
-      z-index: 20;
 
       &:hover {
          box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.08);
+
+         .quickInfoPrice__head {
+            svg {
+               transform: rotate(180deg);
+            }
+         }
 
          .quickInfoPrice__main {
             display: block;
@@ -61,6 +66,10 @@
             line-height: 25px;
             color: #1B2434;
             margin-right: 8px;
+         }
+
+         svg {
+            transition: all .3s;
          }
       }
 

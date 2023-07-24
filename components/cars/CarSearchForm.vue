@@ -285,6 +285,7 @@
                      translate-options
                   />
 
+
                   <form-select
                      :label="$t('fuel')"
                      v-model="form.engine_type"
