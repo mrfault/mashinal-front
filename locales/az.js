@@ -2647,9 +2647,23 @@ export default {
    "view": "Baxış",
    "download_invoice": "Endir",
 
+
+   "protocol_amount": "Cərimə məbləği",
+   "payment_with_other_card": "Başqa kartla ödəniş",
+   "total_payment_amount": "Cəmi məbləğ",
+   "remove_vehicle": "NV-ni sil",
+   "remove_vehicle1": "Nəqliyyat vasitəsini sil",
+   "remove_vehicle_desc1": "Seçilmiş NV-ni silmək istədiyinizə əminsiniz?",
+   "remove_vehicle_desc2": "Ödənilmiş məbləğ geri qaytarılmır",
+   "stop_subscription_desc1": "Seçilmiş NV-nin abunəliyini dayandırmaq istədiyinizə əminsiniz?",
+   "stop_subscription_desc2": "Ödənilmiş məbləğ geri qaytarılmır",
+   "remove_bookmark": "Şablonu sil",
+   "stop_subsciption": "Abunəliyi dayandır",
+
    "change_profile_pictures_text": "Profil şəklini dəyişdir",
    "change_profile_pictures_validation": "JPG, PNG, Bitmap, 3 MB-dan çox olmayan",
    "upload_file": "Fayl yüklə",
+
 
 };
 

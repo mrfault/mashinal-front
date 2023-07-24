@@ -554,3 +554,60 @@
    }
 
 }
+
+.protocol-payment-modal{
+   &__top{
+      display: flex;
+      align-items: center;
+      flex-wrap: nowrap;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      &--item{
+         width: calc(50% - 8px);
+
+      }
+   }
+   &__body{
+      &--total-amount{
+         border-radius: 8px;
+         background: #eef2f6;
+         padding: 20px 16px;
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+         margin: 20px 0;
+         p{
+            font: 400 16px/20px 'TTHoves';
+            color: #364152;
+         }
+         strong{
+            font: 500 16px/20px 'TTHoves';
+            color: #121926;
+         }
+      }
+   }
+   &__actions{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      button{
+         width: calc(50% - 8px);
+      }
+   }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
