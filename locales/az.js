@@ -2641,8 +2641,7 @@ export default {
    "make_payment": "Ödə",
    "protocol_details": "Protokolun detalları",
    "show_image_or_video": "Şəkil / videoya bax",
-
-   "saved_cards": "Saxlanılan kartlar",
+   "saved_card": "Saxlanılan kartlar",
    "no_agreements": "Heç bir müqavilə tapılmadı",
    "transactions": "Əməliyyatlar",
    "agreement_details": "Müqavilə barədə ətraflı",
