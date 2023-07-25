@@ -37,20 +37,20 @@
             </div>
 
          </div>
-         <div class="container-fluid">
+         <div class="container-fluid max-container">
             <div v-if="!isMobileBreakpoint" class="row breadcrumbs_main">
                <div class="container">
                   <portal-target name="breadcrumbs"/>
                </div>
             </div>
             <div class="row">
-               <div class="container">
+               <div class="container garage-layout-container">
                   <div class="ma-garage pt-5 pb-5">
                      <div v-if="!isMobileBreakpoint" class="ma-garage__nav">
                         <div class="ma-garage__nav--profile">
                            <div class="ma-garage__nav--profile__avatar">
                               <template v-if="user.avatar">
-                                 <img :src="`${user.avatar}`" alt="avatar"/>
+                                 <img :src="`${user.avatar}`" alt=""/>
                               </template>
                               <h5 v-else class="ma-garage__nav--profile__name">{{ user.full_name.charAt(0) }}</h5>
                            </div>
@@ -173,6 +173,33 @@ export default {
 
 }
 </script>
+
+<style lang="scss">
+.max-container{
+   background-color: #fff!important;
+   min-height: 900px;
+}
+.breadcrumbs_main{
+   background-color: #EEF2F6;
+}
+.ma-garage__nav--profile{
+   margin-bottom: 30px;
+}
+.dark-mode{
+   .breadcrumbs_main{
+      background-color: #121926;
+   }
+   .max-container{
+      background-color: #121926!important;
+   }
+   .ma-garage__nav--item__title{
+      color: #9AA4B2!important;
+   }
+   .ma-garage__nav--profile__name{
+      color: #fff!important;
+   }
+}
+</style>
 
 
 
