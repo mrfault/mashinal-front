@@ -12,7 +12,7 @@
          height-auto>
          <div class="row">
             <div class="col-md-12 pb-5">
-               <div class="row">
+               <div class="row flex-column-reverse flex-lg-row pt-lg-0 pt-5">
                   <div class="col-md-6 pb-5">
                      <div class="row">
                         <div class="col-md-12 pb-3">
@@ -31,17 +31,24 @@
                            <form-text-input :placeholder="$t('birthday')" v-model="form.birthday" input-date />
                         </div>
                         <div class="col-md-12 pb-3">
-                           <form-select :options="getGenderOptions" v-model="form.gender" :new-label="false"></form-select>
+                           <form-select
+                              :label="$t('gender')"
+                              :options="getGenderOptions"
+                              :clear-placeholder="true"
+                              :clear-option="false"
+                              :input-placeholder="$t('your_gender')"
+                              v-model="form.gender"
+                              :new-label="false"
+                              has-search
+                           />
                         </div>
                         <div class="col-md-12 pb-3">
-                           <div class="col-md-12 pb-3">
-                              <button
-                                 type="submit"
-                                 @click="submit"
-                                 :class="['btn btn--green full-width', { pending: pending && showPasswordModal }]">
-                                 {{ $t('save') }}
-                              </button>
-                           </div>
+                           <button
+                              type="submit"
+                              @click="submit"
+                              :class="['btn btn--green full-width', { pending: pending && showPasswordModal }]">
+                              {{ $t('save') }}
+                           </button>
                         </div>
                      </div>
                   </div>
@@ -96,7 +103,7 @@ export default {
    },
    nuxtI18n: {
       paths: {
-         az: '/profil/parametrler-old'
+         az: '/profil/parametrler'
       }
    },
    head() {
@@ -248,6 +255,9 @@ export default {
 .croppa-container{
    height: 72px;
    width: 72px;
+}
+.btn--green{
+   height: 52px;
 }
 .dark-mode{
    .change-avatar {

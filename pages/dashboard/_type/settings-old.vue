@@ -211,7 +211,7 @@ export default {
    middleware: ['auth_general', 'auth_salon'],
    nuxtI18n: {
       paths: {
-         az: '/idareetme-paneli/:type/parametrler'
+         az: '/idareetme-paneli/:type/parametrler-old'
       }
    },
    head() {

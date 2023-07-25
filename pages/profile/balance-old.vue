@@ -271,7 +271,7 @@ export default {
    },
    nuxtI18n: {
       paths: {
-         az: '/profil/x-old',
+         az: '/profil/balans-old',
       },
    },
    beforeDestroy() {
