@@ -2,12 +2,11 @@
    <div>
       <button
          :class="[
-            'btn',
-            'full-width',
-            'btn--white',
-            'btn-dark-text',
-            { 'pointer-events-none': pending },
-         ]"
+                                        'btn',
+                                        'btn--white',
+                                        'btn-dark-text',
+                                        'full-width',
+                  { 'pointer-events-none': pending }                  ]"
          type="button"
          @click="showProtocolDetails = true"
       >
@@ -60,16 +59,16 @@
                      <div class="garage_protocol-titles">
                         <h3 class="text-normal">{{ $readCarNumber(protocol.car_number) }}</h3>
                         <h3 class="text-normal text-dark-blue-2">{{ getTitle(protocol) }}</h3>
-                        <hr />
+                        <hr/>
                      </div>
                      <div class="vehicle-specs">
                         <div class="row">
-                           <div class="col" v-for="(specs, i) in mainSpecs(protocol, true)" :key="i + '6545'">
+                           <div v-for="(specs, i) in mainSpecs(protocol, true)" :key="i + '6545'" class="col">
                               <ul>
                                  <template v-for="(spec, key) in specs">
-                                    <li :key="key + '1546786'" v-if="spec + 218">
+                                    <li v-if="spec + 218" :key="key + '1546786'">
                                        <span class="w-auto">{{ $t(key) }}</span>
-                                       <span >{{ spec }}</span>
+                                       <span>{{ spec }}</span>
                                     </li>
                                  </template>
                               </ul>
@@ -77,16 +76,17 @@
                         </div>
                      </div>
                      <template v-if="protocol.can_pay && protocol.total > 0">
-                        <hr class="mb-auto" />
+                        <hr class="mb-auto"/>
                         <div class="row">
-                           <div class="col-6" >
-                                <span class="total-price" >
-                                  <span>{{ $t('total')}}</span>
+                           <div class="col-6">
+                                <span class="total-price">
+                                  <span>{{ $t('total') }}</span>
                                   <strong>{{ protocol.total }} ₼</strong>
                                 </span>
                            </div>
                            <div class="col-6">
-                              <a :href="getPayLink(protocol)" target="_blank" rel="noopener" class="btn btn--green full-width" >
+                              <a :href="getPayLink(protocol)" class="btn btn--green full-width" rel="noopener"
+                                 target="_blank">
                                  {{ $t('pay_online') }}
                               </a>
                            </div>
@@ -174,7 +174,7 @@ export default {
             status: protocol.has_decision !== undefined && (protocol.has_decision ? this.$t('has_decision') : this.$t('no_decision')),
             date_decided: getDate(protocol.decision_date),
             date_expire: getDate(protocol.expiry_date),
-            date: getDate(protocol.date)|| getDate(protocol.action_date),
+            date: getDate(protocol.date) || getDate(protocol.action_date),
             protocol_took_place: unite && protocol.address
          }, this.isMobileBreakpoint || unite);
       },

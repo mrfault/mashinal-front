@@ -1,6 +1,6 @@
 <template>
    <div style="width: calc(50% - 6px)">
-      <button :class="['btn btn--green-outline full-width', { pending }]" type="button" @click="openFiles">
+      <button :class="['btn btn--light-outline full-width', { pending }]" type="button" @click="openFiles">
          {{ $t('watch_files') }}
       </button>
       <div v-if="slides.main" v-touch:swipe.top="handleSwipeTop" class="inner-gallery-lightbox">

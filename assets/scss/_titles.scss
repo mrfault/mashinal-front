@@ -1,30 +1,40 @@
-.ma-title{
-   &--sm, &--md, &--lg{
+.ma-title {
+   &--sm, &--md, &--lg {
       font-family: 'TTHoves';
       font-weight: 700;
       color: $dark-light-new;
    }
-   &--md{
+
+   &--md {
       font-size: 28px;
       line-height: 32px;
    }
-   &--sm{
+
+   &--sm {
       font-size: 16px;
       line-height: 24px;
    }
 }
 
-.ma-subtitle{
-   &--sm, &--md, &--lg{
+.dark-mode {
+   h1,h2,h3,h4,h5,h6[class^="ma-title"] {
+      color: #fff;
+   }
+}
+
+.ma-subtitle {
+   &--sm, &--md, &--lg {
       font-family: 'TTHoves';
       font-weight: 600;
       color: $dark-light-new;
    }
-   &--lg{
+
+   &--lg {
       font-size: 24px;
       line-height: 28px;
    }
-   &--sm{
+
+   &--sm {
       font-size: 16px;
       line-height: 24px;
    }

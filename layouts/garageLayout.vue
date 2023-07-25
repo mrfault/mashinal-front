@@ -242,7 +242,7 @@ export default {
       }
 
       .container {
-         background: #1B2434;
+         //background: #1B2434;
          border-radius: 8px;
          padding-bottom: 40px;
       }

@@ -64,8 +64,9 @@
                         <template v-else>
                            <template v-if="protocols && protocols.data && protocols.data.length">
                               <div
+                                 v-if="false"
                                  class="ma-penalties__card--body__penalties--item all-items">
-                                 <div class="ma-left">
+                                 <div class="ma-left" >
                                     <custom-checkbox v-model="protocol.allSelected"/>
                                     <p>{{ $t('select_all') }}</p>
                                  </div>
