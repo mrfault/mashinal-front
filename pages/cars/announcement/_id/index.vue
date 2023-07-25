@@ -116,7 +116,7 @@
 
       async asyncData({store, route}) {
          await Promise.all([
-            store.dispatch('getAnnouncementInner', route.params.id),
+            store.dispatch('getAnnouncementInnerV2', route.params.id),
             store.dispatch('getComplaintOptions'),
             store.dispatch('getOptions'),
             store.dispatch('getAllOtherOptions'),

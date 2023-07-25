@@ -8,41 +8,41 @@
             v-if="showSlider"
          >
             <div class="swiper-wrapper">
-               <div
-                  class="swiper-slide"
-                  :key="index"
-                  v-for="(slide, index) in slides.main"
-               >
-                  <div
-                     style="width: 100%;"
-                     v-if="
-                index === 0 &&
-                announcement.images_360 &&
-                announcement.images_360.length
-              "
-                  >
-                     <div class="position-relative">
-                        <no-ssr>
-                           <Interior360Viewer :url="announcement.interior_360" v-if="showInterior"/>
-                           <vue-three-sixty
-                              v-else
-                              :amount="announcement.images_360.length"
-                              buttonClass="d-none"
-                              disableZoom
-                              :files="announcement.images_360"
-                           />
-                        </no-ssr>
-                     </div>
-                  </div>
+<!--               <div-->
+<!--                  class="swiper-slide"-->
+<!--                  :key="index"-->
+<!--                  v-for="(slide, index) in slides.main"-->
+<!--               >-->
+<!--                  <div-->
+<!--                     style="width: 100%;"-->
+<!--                     v-if="-->
+<!--                index === 0 &&-->
+<!--                announcement.images_360 &&-->
+<!--                announcement.images_360.length-->
+<!--              "-->
+<!--                  >-->
+<!--                     <div class="position-relative">-->
+<!--                        <no-ssr>-->
+<!--                           <Interior360Viewer :url="announcement.interior_360" v-if="showInterior"/>-->
+<!--                           <vue-three-sixty-->
+<!--                              v-else-->
+<!--                              :amount="announcement.images_360.length"-->
+<!--                              buttonClass="d-none"-->
+<!--                              disableZoom-->
+<!--                              :files="announcement.images_360"-->
+<!--                           />-->
+<!--                        </no-ssr>-->
+<!--                     </div>-->
+<!--                  </div>-->
 
-                  <div
-                     v-else
-                     :class="['swiper-slide-bg', { 'youtube-play': showYtVideo(index) }]"
-                     :style="`background-image:url(${showYtVideo(index) ? getYtVideoImage('hq') : slide}?width=834)`"
-                  >
-                     <!--              <loader />-->
-                  </div>
-               </div>
+<!--                  <div-->
+<!--                     v-else-->
+<!--                     :class="['swiper-slide-bg', { 'youtube-play': showYtVideo(index) }]"-->
+<!--                     :style="`background-image:url(${showYtVideo(index) ? getYtVideoImage('hq') : slide}?width=834)`"-->
+<!--                  >-->
+<!--                     &lt;!&ndash;              <loader />&ndash;&gt;-->
+<!--                  </div>-->
+<!--               </div>-->
             </div>
          </div>
 
@@ -87,18 +87,18 @@
 
          <div class="inner-gallery-lightbox" v-touch:swipe.top="handleSwipeTop">
             <template v-if="isMobileBreakpoint">
-               <FsLightbox
-                  :zoomIncrement="0"
-                  :toggler="toggleFsLightbox"
-                  :sources="getSourcesFsLightbox"
-                  :types="slides.types"
-                  :slide="currentSlide + 1"
-                  :key="lightboxKey"
-                  :onClose="refreshLightbox"
-                  :onBeforeClose="onBeforeClose"
-                  :disableThumbs="true"
-                  :onSlideChange="changeLightboxSlide"
-               />
+<!--               <FsLightbox-->
+<!--                  :zoomIncrement="0"-->
+<!--                  :toggler="toggleFsLightbox"-->
+<!--                  :sources="getSourcesFsLightbox"-->
+<!--                  :types="slides.types"-->
+<!--                  :slide="currentSlide + 1"-->
+<!--                  :key="lightboxKey"-->
+<!--                  :onClose="refreshLightbox"-->
+<!--                  :onBeforeClose="onBeforeClose"-->
+<!--                  :disableThumbs="true"-->
+<!--                  :onSlideChange="changeLightboxSlide"-->
+<!--               />-->
             </template>
 
             <transition-group name="fade">
@@ -136,18 +136,18 @@
                   </div>
 
                   <div class="blur-bg_slider" :key="2" v-else>
-                     <images-slider
-                        :announcement="announcement"
-                        :current-slide="currentSlide"
-                        :slides="slides"
-                        :has-sidebar="where === 'announcement'"
-                        @close="closeLightbox"
-                        @slide-change="currentSlide = $event"
-                     >
-                        <template #sidebar v-if="where === 'announcement'">
-                           <slot/>
-                        </template>
-                     </images-slider>
+<!--                     <images-slider-->
+<!--                        :announcement="announcement"-->
+<!--                        :current-slide="currentSlide"-->
+<!--                        :slides="slides"-->
+<!--                        :has-sidebar="where === 'announcement'"-->
+<!--                        @close="closeLightbox"-->
+<!--                        @slide-change="currentSlide = $event"-->
+<!--                     >-->
+<!--                        <template #sidebar v-if="where === 'announcement'">-->
+<!--                           <slot/>-->
+<!--                        </template>-->
+<!--                     </images-slider>-->
                   </div>
                </template>
             </transition-group>
