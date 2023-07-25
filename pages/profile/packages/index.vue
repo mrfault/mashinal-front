@@ -49,7 +49,7 @@
    export default {
       components: { Packages, CustomNotifications, ComeBack },
 
-      layout: 'profileLayout',
+      layout: 'garageLayout',
       head() {
          return this.$headMeta({
             title: this.$t('my_packages'),

@@ -257,7 +257,7 @@ export default {
          az: '/idareetme-paneli/:type/parametrler'
       }
    },
-   layout: 'profileLayout',
+   layout: 'garageLayout',
    head() {
       return this.$headMeta({
          title: this.$t('user_information_edit')

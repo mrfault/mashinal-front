@@ -1,5 +1,8 @@
 <template>
    <div :key="refresh" class="pages-annoucements pt-2 pt-lg-6">
+      <portal to="breadcrumbs">
+         <breadcrumbs :crumbs="crumbs"/>
+      </portal>
       <div class="container">
          <div class="ma-announcements">
             <h2 class="ma-title--md">{{ $t('my_announces') }}</h2>
@@ -79,7 +82,9 @@
 
 
          <div v-if="false">
-            <breadcrumbs :crumbs="crumbs"/>
+            <portal to="breadcrumbs">
+               <breadcrumbs :crumbs="crumbs"/>
+            </portal>
 
             <div v-if="isMobileBreakpoint" class="card">
                <h2 class="title-with-line mb-0">

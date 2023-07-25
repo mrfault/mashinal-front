@@ -101,6 +101,7 @@ export default {
             this.pending = false;
             this.showModal = false;
             this.scrollReset();
+            this.$emit("carDeactivated",true)
          } catch (err) {
             this.pending = false;
          }
@@ -119,7 +120,7 @@ export default {
       margin-bottom: 25px;
    }
 
-   &__ {
+   &__text-with-info{
       display: flex;
       align-items: center;
 

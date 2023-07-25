@@ -2621,7 +2621,7 @@ export default {
    terminal_popup_title:
       "terminalları vasitəsilə balans artırılması aşağıdakı qaydadadır:",
    plate_announce_key: "Elan yerləşdirildi",
-  "sign_in_to_account": "Hesaba daxil ol",
+   "sign_in_to_account": "Hesaba daxil ol",
    "my_balance": "Balansım",
    "sign_out": "Çıxış",
 
@@ -2666,6 +2666,8 @@ export default {
    "change_profile_pictures_validation": "JPG, PNG, Bitmap, 3 MB-dan çox olmayan",
    "upload_file": "Fayl yüklə",
 
-
+   "add_vehicle": "Nəqliyyat vasitəsi əlavə et",
+   "add_vehicle_desc": "Hər əlavə etdiyiniz NV-nə görə aylıq 1 AZN ₼ (ƏDV daxil) məbləğ tutulacaq.",
+   "no_vehicle_found": "Sizin əlavə edilmiş nəqliyyat vasitəniz yoxdur",
 };
 

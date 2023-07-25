@@ -792,6 +792,24 @@ button:focus {
    color: #1b2434;
 }
 
+.btn__blue-outlined{
+   border-radius: 8px;
+   font: 500 16px/20px 'TTHoves';
+   color: #155EEF;
+   border: 1px solid #155EEF;
+   background: #EFF4FF;
+   padding: 15px 19px;
+   display: flex;
+   align-items: center;
+   height: 52px;
+   i{
+      margin-left: 8px;
+   }
+   &:hover{
+   background: #dbe5ff;
+   }
+}
+
 .ma-btn-green-outlined{
    border: 1px solid #039855;
    color:  #039855;
