@@ -4,38 +4,38 @@
          <div class="container">
             <breadcrumbs :crumbs="crumbs" />
 
-            <div class="pages-cars-id__announcements">
-               <div>
+            <div class="pages-cars-id__info">
+               <div class="pages-cars-id__info-left">
                   <client-only>
                      <gallery>
-                        <quick-info type="cars" brief/>
+                        <quick-info type="cars" brief />
 
-                        <announcement-specs type="cars" brief/>
+                        <announcement-specs type="cars" brief />
                      </gallery>
                   </client-only>
 
-                  <comment :comment="announcement.comment" v-if="!isMobileBreakpoint">
-                     <template #before>
-                        <thumbs-gallery/>
-                     </template>
-                     <template #after v-if="hasComplects || getCarHealth">
-                        <hr v-if="announcement.comment"/>
-                        <template v-if="getCarHealth">
-                           <damage-options :selected="getCarHealth" read-only :imageIsActive="imageIsActive"
-                                           v-if="false"/>
-                           <hr v-if="hasComplects"/>
-                        </template>
-                        <car-complects :options="getComplectOptions" v-if="hasComplects"/>
-                     </template>
-                  </comment>
+                  <thumbs-gallery />
+
+                  <announcement-specs type="cars"/>
+
+                  <comment :comment="announcement.comment" />
+
+                  <car-complects :options="getComplectOptions" v-if="hasComplects"/>
+
+                  <template v-if="getCarHealth">
+                     <damage-options
+                        :selected="getCarHealth"
+                        read-only
+                        :imageIsActive="imageIsActive"
+                        v-if="false"
+                     />
+                  </template>
                </div>
 
-               <div>
+               <div class="pages-cars-id__info-right">
                   <quick-info type="cars"/>
 
                   <site-banner v-if="!isMobileBreakpoint" class="mb-3" type="in-announcement"/>
-
-                  <announcement-specs type="cars"/>
 
                   <comment :comment="announcement.comment" v-if="isMobileBreakpoint">
                      <template #after v-if="hasComplects || getCarHealth">
@@ -50,10 +50,6 @@
                </div>
             </div>
          </div>
-      </div>
-
-      <div class="pages-cars-id__col">
-
       </div>
 
       <relatives />
@@ -88,7 +84,7 @@
          CarComplects,
          DamageOptions,
          Relatives,
-         HandleIds
+         HandleIds,
       },
 
       nuxtI18n: {
@@ -120,7 +116,7 @@
 
       async asyncData({store, route}) {
          await Promise.all([
-            store.dispatch('getAnnouncementInner', route.params.id),
+            store.dispatch('getAnnouncementInnerV2', route.params.id),
             store.dispatch('getComplaintOptions'),
             store.dispatch('getOptions'),
             store.dispatch('getAllOtherOptions'),
@@ -190,12 +186,21 @@
 
 <style lang="scss">
    .pages-cars-id {
-      margin-top: -25px;
+      .bg-white {
+         padding: 5px 0 32px 0;
+      }
 
-      &__announcements {
+      &__info {
          display: grid;
          grid-template-columns: 716px 348px;
          gap: 20px;
+
+         .inner-thumbs-gallery,
+         .vehicle-specs,
+         .announcement-comment,
+         .car-complects {
+            margin-top: 20px;
+         }
       }
    }
 </style>

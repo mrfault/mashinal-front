@@ -146,11 +146,11 @@
 
       <template
          v-if="!brief &&((!this.isMobileBreakpoint &&(announcement.status == 1 || announcement.has_monetization)) || needToPay)">
-         <hr class="mt-3"
-             v-if="needToPay ||
-             (!this.isMobileBreakpoint && announcement.has_monetization && $auth.loggedIn) ||
-             (!this.isMobileBreakpoint && !announcement.has_monetization) && this.type !== 'registration-marks'"
-         />
+<!--         <hr class="mt-3"-->
+<!--             v-if="needToPay ||-->
+<!--             (!this.isMobileBreakpoint && announcement.has_monetization && $auth.loggedIn) ||-->
+<!--             (!this.isMobileBreakpoint && !announcement.has_monetization) && this.type !== 'registration-marks'"-->
+<!--         />-->
 
          <div :class="{ 'mb-2 mb-lg-3': !needToPay }" v-if="type !== 'registration-marks'">
             <pay-announcement-button
@@ -180,40 +180,42 @@
          />
 
          <add-comparison
+            class="h-52"
+            :template="'btn'"
+            :text="$t('compare')"
             :id="announcement.id_unique"
          />
       </div>
 
-      <template v-if="!brief && announcement.status != 2 && !(announcement.is_autosalon && announcement.status == 3)">
-         <hr :class="{ 'mt-3': announcement.status == 3 }"
-             v-if="showEditButton(announcement) ||
-             showDeactivateButton(announcement) ||
-             announcement.status == 3 &&
-             !announcement.is_external_salon"
-         />
+<!--      <template v-if="!brief && announcement.status != 2 && !(announcement.is_autosalon && announcement.status == 3)">-->
+<!--         <div class="row mt-n2 mt-lg-n3">-->
+<!--            <div class="col mt-2 mt-lg-3">-->
+<!--               <restore-button-->
+<!--                  :announcement="announcement"-->
+<!--                  v-if="userIsOwner(announcement) && announcement.status == 3 && !announcement.is_external_salon"-->
+<!--                  :free="true"-->
+<!--               />-->
+<!--               -->
+<!--               <deactivate-button-->
+<!--                  :announcement="announcement"-->
+<!--                  v-if="showDeactivateButton(announcement)"-->
+<!--               />-->
+<!--            </div>-->
+<!--            -->
+<!--            <div class="col mt-2 mt-lg-3">-->
+<!--               <edit-button-->
+<!--                  :announcement="announcement"-->
+<!--                  :type="type"-->
+<!--                  v-if="showEditButton(announcement)"-->
+<!--                  @openModal="openModal"-->
+<!--               />-->
+<!--            </div>-->
+<!--         </div>-->
+<!--      </template>-->
 
-         <div class="row mt-n2 mt-lg-n3">
-            <div class="col mt-2 mt-lg-3">
-               <restore-button
-                  :announcement="announcement"
-                  v-if="userIsOwner(announcement) && announcement.status == 3 && !announcement.is_external_salon"
-                  :free="true"
-               />
-               <deactivate-button
-                  :announcement="announcement"
-                  v-if="showDeactivateButton(announcement)"
-               />
-            </div>
-            <div class="col mt-2 mt-lg-3">
-               <edit-button
-                  :announcement="announcement"
-                  :type="type"
-                  v-if="showEditButton(announcement)"
-                  @openModal="openModal"
-               />
-            </div>
-         </div>
-      </template>
+      <VinCode class="mt-4" />
+
+      <InsureCar class="mt-4" />
 
       <modal-popup :toggle="showModal" @close="showModal = false">
          <login-tabs></login-tabs>
@@ -235,6 +237,8 @@
    import AddComparison from "~/components/announcements/AddComparison.vue";
    import CallButtonMultiple from "~/components/announcements/CallButtonMultiple.vue";
    import QuickInfoPrice from "~/components/announcements/inner/QuickInfoPrice.vue";
+   import VinCode from "~/components/elements/VinCode.vue";
+   import InsureCar from "~/components/elements/InsureCar.vue";
    import { mapGetters } from 'vuex'
 
    export default {
@@ -251,7 +255,9 @@
          PayAnnouncementButton,
          AddFavorite,
          QuickInfoPrice,
-         AddComparison
+         AddComparison,
+         VinCode,
+         InsureCar
       },
 
       data() {
@@ -418,20 +424,9 @@
       }
 
       .btns {
-         display: flex;
-         align-items: center;
-         justify-content: space-between;
+         display: grid;
+         grid-template-columns: repeat(2, 1fr);
          gap: 12px;
-
-         .btn {
-            width: 100%;
-            font-size: 14px;
-            color: #364152;
-
-            span {
-               margin-right: 5px;
-            }
-         }
       }
 
       &.registration-marks {
