@@ -1,42 +1,6 @@
 <template>
    <page-layout>
       <template #nuxt>
-         <div v-if="false" class="container">
-            <portal-target name="breadcrumbs"/>
-            <div class="ma-garage">
-               <div class="ma-garage__nav">
-                  <NuxtLink :to="$localePath('garage-services')" class="ma-garage__nav--profile">
-
-                     <div class="ma-garage__nav--profile__avatar">
-                        <template v-if="user.avatar">
-                           <img :src="user.avatar"/>
-                        </template>
-                        <h5 v-else class="ma-garage__nav--profile__name">{{ user.full_name.charAt(0) }}</h5>
-                     </div>
-                     <h5 class="ma-garage__nav--profile__name"> {{ user.full_name }}</h5>
-                  </NuxtLink>
-                  <template v-for="(item, index) in garageNavs">
-                     <nuxt-link
-                        v-if="!item.isButton"
-                        :class="{'ma-garage-link-active': isRouteActive(item.link) }"
-                        :to="item.link"
-                        class="ma-garage__nav--item"
-                     >
-                        <inline-svg :src="`/new-icons/${item.icon}-new.svg`"/>
-                        <h6 class="ma-garage__nav--item__title">{{ item.title }}</h6>
-                     </nuxt-link>
-                     <a v-else class="ma-garage__nav--item" href="javascript:void(0);" @click="logout">
-                        <inline-svg :src="`/new-icons/${item.icon}-new.svg`"/>
-                        <h6 class="ma-garage__nav--item__title">{{ item.title }}</h6>
-                     </a>
-                  </template>
-               </div>
-               <div class="ma-garage__content">
-                  <nuxt/>
-               </div>
-            </div>
-
-         </div>
          <div class="container-fluid">
             <div v-if="!isMobileBreakpoint" class="row breadcrumbs_main">
                <div class="container">
@@ -173,6 +137,56 @@ export default {
 
 }
 </script>
+
+<style lang="scss">
+.dark-mode {
+   .layout {
+      background: #121926 !important;
+
+   }
+
+   .ma-announcements{
+      .no-results{
+         background: #1b2434 !important;
+      }
+   }
+   .ma-announcements__head{
+      background: #1B2434;
+      button{
+         color: #fff;
+      }
+   }
+
+   .ma-garage {
+      &__nav {
+         &--profile{
+            h5{
+               color: #fff;
+            }
+         }
+         &--item {
+            h6,h5 {
+               color: #fff;
+            }
+
+            svg {
+               path {
+
+                  stroke: #fff;
+               }
+            }
+         }
+      }
+
+      .container {
+         background: #1B2434;
+         border-radius: 8px;
+         padding-bottom: 40px;
+      }
+   }
+}
+
+</style>
 
 
 
