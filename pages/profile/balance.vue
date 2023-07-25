@@ -219,7 +219,7 @@
       name: 'pages-profile-balance',
       middleware: 'auth_general',
       mixins: [PaymentMixin],
-      layout: 'profileLayout',
+      layout: 'garageLayout',
       components: {
          ComeBack,
          BankingCards,

@@ -100,7 +100,7 @@ export default {
       handleLogin(auth) {
          if (!auth) return
          this.resetSellTokens()
-         let path = '/garage-services'
+         let path = '/profile/announcements'
          if (this.$route.query.param) path += '?' + this.$route.query.param
          if (this.loggedIn && [3, 4].includes(this.user.user_type))
             path = '/profile/btl'

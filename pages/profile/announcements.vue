@@ -180,7 +180,7 @@ import PlatesGridItem from "~/components/announcements/PlatesGridItem";
 export default {
    name: 'pages-profile-announcements',
    middleware: 'auth_general',
-   layout: 'profileLayout',
+   layout: 'garageLayout',
    data() {
       return {
          activeTab: null,

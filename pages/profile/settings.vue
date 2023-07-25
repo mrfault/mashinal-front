@@ -84,7 +84,7 @@ import ChangePhone from '~/components/elements/ChangePhone';
 export default {
    name: 'pages-profile-settings',
    mixins: [UserDataMixin],
-   layout: 'profileLayout',
+   layout: 'garageLayout',
    middleware: ['auth_general', ({$auth, redirect}) => {
       if ($auth.user.parent_id) {
          return redirect('/garage-services')
@@ -135,7 +135,11 @@ export default {
             {key: 1, name: this.$t('male')},
             {key: 2, name: this.$t('female')}
          ];
+      },
+      pending(){
+         return false
       }
+
    },
    methods: {
       escapeDate(date) {
