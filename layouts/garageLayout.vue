@@ -44,13 +44,13 @@
                </div>
             </div>
             <div class="row">
-               <div class="container garage-layout-container">
+               <div class="container">
                   <div class="ma-garage pt-5 pb-5">
                      <div v-if="!isMobileBreakpoint" class="ma-garage__nav">
                         <div class="ma-garage__nav--profile">
                            <div class="ma-garage__nav--profile__avatar">
                               <template v-if="user.avatar">
-                                 <img :src="`${user.avatar}`" alt=""/>
+                                 <img :src="`${user.avatar}`" alt="avatar"/>
                               </template>
                               <h5 v-else class="ma-garage__nav--profile__name">{{ user.full_name.charAt(0) }}</h5>
                            </div>
@@ -199,6 +199,56 @@ export default {
       color: #fff!important;
    }
 }
+</style>
+
+<style lang="scss">
+.dark-mode {
+   .layout {
+      background: #121926 !important;
+
+   }
+
+   .ma-announcements{
+      .no-results{
+         background: #1b2434 !important;
+      }
+   }
+   .ma-announcements__head{
+      background: #1B2434;
+      button{
+         color: #fff;
+      }
+   }
+
+   .ma-garage {
+      &__nav {
+         &--profile{
+            h5{
+               color: #fff;
+            }
+         }
+         &--item {
+            h6,h5 {
+               color: #fff;
+            }
+
+            svg {
+               path {
+
+                  stroke: #fff;
+               }
+            }
+         }
+      }
+
+      .container {
+         background: #1B2434;
+         border-radius: 8px;
+         padding-bottom: 40px;
+      }
+   }
+}
+
 </style>
 
 
