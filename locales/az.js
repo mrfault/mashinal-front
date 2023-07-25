@@ -531,6 +531,7 @@ export default {
    compulsory_insurance_sert_num:
       "Nəqliyyat vasitəsinin qeydiyyat şəhadətnaməsi nömrəsi:",
    condition: "Vəziyyət",
+   condition_2: "Vəziyyəti",
    Conditioner: "Kondisioner",
    confirm: "Təsdiqlə",
    penalty_history: "Ödəniş tarixçəsi",
@@ -2534,6 +2535,7 @@ export default {
    result_of_tire_size_change_title_1: "Təkərin xarici diametri ",
    result_of_tire_size_change_title_2: "və yerin təmizlənməsi INCREASE",
    new_1: "Yeni",
+   new_2: "Yeni / Zəmanətli",
    will_increase: "artacaq",
    will_diminish: "azalacaq",
    video_360_successfully_upload: "Video uğurla yükləndi",

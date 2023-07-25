@@ -285,7 +285,6 @@
                      translate-options
                   />
 
-
                   <form-select
                      :label="$t('fuel')"
                      v-model="form.engine_type"
@@ -296,6 +295,7 @@
                      name-in-value
                      translate-options
                   />
+               <pre>{{bodyOptions.main.default_options['tip-dvigatelya'].values}}</pre>
 
                   <div class="btns">
                      <form-checkbox

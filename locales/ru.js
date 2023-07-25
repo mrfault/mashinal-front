@@ -528,6 +528,7 @@ export default {
    compulsory_insurance_sert_num:
       "Номер свидетельства о регистрации транспортного средства:",
    condition: "Состояние",
+   condition_2: "Состояние",
    Conditioner: "Кондиционер",
    confirm: "Подтвердить",
    confirm_and_publish: "Подтвердить и опубликовать",
@@ -2545,6 +2546,7 @@ export default {
    result_of_tire_size_change_title_1: " INCREASE внешний диаметр колеса",
    result_of_tire_size_change_title_2: " и дорожный просвет",
    new_1: "Новый",
+   new_2: "Новый / С гарантией",
    will_increase: "увеличится",
    will_diminish: "уменьшится ",
    file_size_50: "Максимальный размер файла может быть: 50 мб",
