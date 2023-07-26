@@ -792,6 +792,12 @@ button:focus {
    color: #1b2434;
 }
 
+.dark-mode{
+   .btn-dark-text{
+      color: #fff;
+   }
+}
+
 .btn__blue-outlined{
    border-radius: 8px;
    font: 500 16px/20px 'TTHoves';
@@ -807,6 +813,21 @@ button:focus {
    }
    &:hover{
    background: #dbe5ff;
+   }
+}
+
+.dark-mode{
+   .btn__blue-outlined{
+      color: #fff;
+      border: 1px solid #fff;
+      background: #364152;
+      i{
+         margin-left: 8px;
+         color: #ffff;
+      }
+      &:hover{
+         background: #dbe5ff;
+      }
    }
 }
 

@@ -1,13 +1,17 @@
 <template>
-   <nuxt-link class="e-service" :to="$localePath(item.url)">
+   <nuxt-link class="e-service e-service__card" :to="$localePath(item.url)">
       <div class="e-service__header">
          <inline-svg :src="`/card-icons/new/${item.image}.svg`" />
       </div>
 
       <div class="e-service__body">
-         <h5 class="e-service__title">{{ item.title }}</h5>
 
-         <p class="e-service__description">{{ item.description }}</p>
+         <div class="e-service__card--image">
+            <img :src="`/new-icons/profile/${item.image}`" alt="">
+         </div>
+         <h5 class="e-service__title">{{ $t(item.title) }}</h5>
+
+         <p class="e-service__description">{{ $t(item.description) }}</p>
 
 <!--         <div class="e-service__body&#45;&#45;image">-->
 <!--            <img :src="`/card-icons/${item.image}.svg`"/>-->

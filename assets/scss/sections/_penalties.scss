@@ -289,6 +289,8 @@
 }
 
 
+
+
 .dark-mode {
    .ma-penalties {
       .ma-title--md {
@@ -309,13 +311,14 @@
 
             .ma-penalty-number-chip {
                color: #fff;
+               background: #364152;
 
                &--active {
                   color: #fff;
                }
 
                &--disabled {
-                  color: #fff;
+                  color: #9AA4B2;
                }
 
                &__list {
@@ -329,8 +332,10 @@
 
             &__scrollButton {
                color: #fff;
+
                button {
                   color: #fff;
+
                   &:hover {
                      color: #fff;
                   }
@@ -342,6 +347,7 @@
 
       &__card {
          color: #fff;
+         background: #1B2434;
 
          &--header {
             color: #fff;
@@ -357,8 +363,6 @@
 
          &--body {
             &__no-results {
-
-
 
 
                p {
@@ -379,9 +383,7 @@
                   }
 
 
-
                   .ma-left {
-
 
 
                      &__checkbox {

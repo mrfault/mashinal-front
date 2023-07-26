@@ -3,7 +3,7 @@
       :is="tag"
       :class="
       tag === 'button'
-        ? [`btn__blue-outlined`, { 'full-width': isMobileBreakpoint }]
+        ? [{ 'btn full-width flex-center btn--green': isMobileBreakpoint, 'btn btn__blue-outlined': !isMobileBreakpoint }]
         : 'add-item'
     "
       @click="showModal = true"
@@ -11,7 +11,7 @@
       <template v-if="tag === 'button'">
          {{ $t('add_vehicle') }}
          <icon v-if="!isMobileBreakpoint" name="plus"/>
-         <icon v-if="isMobileBreakpoint" class="ml-1" name="arrow-right"/>
+         <icon v-if="isMobileBreakpoint" class="ml-1" name="plus"/>
       </template>
       <div v-else class="add-item_inner">
          <icon name="plus"></icon>
@@ -20,7 +20,7 @@
       <modal-popup
          :title="$t('add_vehicle')"
          :toggle="showModal"
-         modal-class="midsize"
+         :modal-class="!isMobileBreakpoint ? 'midsize': 'larger'"
          @close="showModal = false"
       >
          <asan-login-button
@@ -84,8 +84,8 @@
          :overflow-hidden="isMobileBreakpoint"
          :title="$t('payment')"
          :toggle="showPaymentModal"
+         :modal-class="!isMobileBreakpoint ? 'midsize': 'larger'"
          @close="showPaymentModal = false"
-         modal-class="midsize"
       >
          <h4 class="mb-2">{{ $t('payment_method') }}</h4>
          <div class="d-flex align-items-center justify-content-between">
@@ -110,9 +110,9 @@
             <p>{{ $t('total_payment_amount') }}</p>
             <strong>{{ price }} AZN</strong>
          </div>
-<!--         <terminal-info-button popup-name="garage-add-popup"/>-->
+         <!--         <terminal-info-button popup-name="garage-add-popup"/>-->
          <div :class="{ 'modal-sticky-bottom': isMobileBreakpoint }">
-<!--            <hr/>-->
+            <!--            <hr/>-->
             <div class="row">
                <div class="col-6">
                   <button

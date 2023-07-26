@@ -5,13 +5,17 @@
          <portal to="breadcrumbs">
             <breadcrumbs :crumbs="crumbs"/>
          </portal>
-         <div class="d-flex  justify-content-between">
-            <h2 class="ma-title--md" style="margin-bottom: 32px">{{ $t('penalties') }}</h2>
+         <div :class="{'flex-wrap': isMobileBreakpoint}" class="d-flex  justify-content-between">
+            <h2 :class="{'w-100 text-center': isMobileBreakpoint}" class="ma-title--md" style="margin-bottom: 32px">
+               {{ $t('penalties') }}</h2>
             <!--            <button class="btn__blue-outlined" >{{ $t('add_vehicle') }} <icon name="plus"></icon></button>-->
-            <add-car @newVehicleAdded="getAllCarsList"/>
+            <div :class="{'mt-2 w-100':isMobileBreakpoint}">
+               <add-car @newVehicleAdded="getAllCarsList"/>
+            </div>
          </div>
+         <!--         numbers/search-->
          <div class="ma-penalties__top">
-            <div v-if="carsList.length" class="ma-penalties__top--search">
+            <div v-if="carsList.length" :class="{'mr-0 mt-3' : isMobileBreakpoint}" class="ma-penalties__top--search">
                <form-text-input
                   v-model="searchNumber"
                   :placeholder="$t('search_number')"
@@ -43,37 +47,39 @@
             </div>
          </div>
 
+
+         <!--         tabs-->
          <div class="row">
             <!--            left-->
             <div class="col-12 col-md-6">
                <div class="ma-penalties__card">
                   <div v-if="carsList.length" class="ma-penalties__card--header">
-                     <div v-for="(item,index) in cardTabs" :key="index + 23974"
-                          :class="{'ma-penalties__card--header__item--active': activeCardTab ==  item.id}"
-                          class="ma-penalties__card--header__item"
-                          @click="switchCardTab(item.id)"
-                     >
-                        {{ $t(item.title) }}
-                     </div>
+                     <template v-for="(item,index) in cardTabs">
+
+                        <div
+                           :key="index + 23974"
+                           :class="{'ma-penalties__card--header__item--active': activeCardTab ==  item.id}"
+                           class="ma-penalties__card--header__item"
+                           @click="switchCardTab(item.id)"
+                        >
+                           {{ $t(item.title) }}
+                        </div>
+                     </template>
                   </div>
+
                   <div class="ma-penalties__card--body">
                      <div v-if="activeCardTab == 0" class="ma-penalties__card--body__penalties">
+
+                        <!--                                loading-->
                         <div v-if="loading && carsList.length">
                            <loader/>
                         </div>
+
+                        <!--                                content-->
                         <template v-else>
                            <template v-if="protocols && protocols.data && protocols.data.length">
-                              <div
-                                 class="ma-penalties__card--body__penalties--item all-items">
-                                 <div class="ma-left">
-                                    <custom-checkbox v-model="protocol.allSelected"/>
-                                    <p>{{ $t('select_all') }}</p>
-                                 </div>
-                                 <div class="ma-right">
-                                    <button class="ma-btn-green-outlined">{{ $t('pay_for_selected') }}</button>
-                                 </div>
-                              </div>
                               <template v-for="(protocol,index) in protocol.filteredList">
+
                                  <protocol-list-item
                                     :protocol="protocol"
                                     @openPaymentModal="showPaymentModal = true"
@@ -85,55 +91,14 @@
                                        style="margin-right: 8px !important;"
                                        @showPaymentModal="openPaymentModal"
                                     >
-                                       <protocol-files
-                                          :protocol="protocol"
-                                       >
-                                          <div class="card garage_protocol-info">
-                                             <div class="garage_protocol-titles">
-                                                <h3 class="text-normal">{{ $readCarNumber(protocol.car_number) }}</h3>
-                                                <h3 class="text-normal text-dark-blue-2">{{ getTitle(protocol) }}</h3>
-                                                <hr/>
-                                             </div>
-                                             <div class="vehicle-specs">
-                                                <div class="row">
-                                                   <div v-for="(specs, i) in mainMediaSpecs(protocol, true)"
-                                                        :key="i + '6545'"
-                                                        class="col">
-                                                      <ul>
-                                                         <template v-for="(spec, key) in specs">
-                                                            <li v-if="spec + 218" :key="key + '1546786'">
-                                                               <span class="w-auto">{{ $t(key) }}</span>
-                                                               <span>{{ spec }}</span>
-                                                            </li>
-                                                         </template>
-                                                      </ul>
-                                                   </div>
-                                                </div>
-                                             </div>
-                                             <template v-if="protocol.can_pay && protocol.total > 0">
-                                                <hr class="mb-auto"/>
-                                                <div class="row">
-                                                   <div class="col-6">
-                                                                 <span class="total-price">
-                                                                   <span>{{ $t('total') }}</span>
-                                                                   <strong>{{ protocol.total }} ₼</strong>
-                                                                 </span>
-                                                   </div>
-                                                   <div class="col-6">
-                                                      <a :href="getPayLink(protocol)" class="btn btn--green full-width"
-                                                         rel="noopener"
-                                                         target="_blank">
-                                                         {{ $t('pay_online') }}
-                                                      </a>
-                                                   </div>
-                                                </div>
-                                             </template>
-                                          </div>
-                                       </protocol-files>
+
+
                                     </protocol-details>
                                  </protocol-list-item>
                               </template>
                            </template>
+
+                           <!--                           no results-->
                            <div v-else class="ma-penalties__card--body__no-results">
                               <img alt="" src="/images/penalty-no-result.png">
                               <p v-if="carsList.length">{{ $t('no_protocols') }}</p>
@@ -141,6 +106,7 @@
                            </div>
                         </template>
                      </div>
+
                      <div v-if="activeCardTab == 1" class="ma-penalties__card--body__penalty_history">
                         <div v-if="loading && carsList.length">
                            <loader/>
@@ -148,7 +114,7 @@
                         <template v-else>
                            <template v-if="protocols && protocols.data && protocols.data.length">
                               <div
-                                 class="ma-penalties__card--body__penalties--item all-items">
+                                 v-if="false" class="ma-penalties__card--body__penalties--item all-items">
                                  <div class="ma-left">
                                     <custom-checkbox v-model="protocol.allSelected"/>
                                     <p>{{ $t('select_all') }}</p>
@@ -181,17 +147,37 @@
                            </div>
                         </template>
                      </div>
+
+                     <div v-if="activeCardTab == 2" class="ma-penalties__card--body__penalty_history">
+                        <div>
+                           <div class="ma-penalties__right-card__body">
+                              <template v-if="selectedCar && mainVehicleSpecs">
+                                 <div v-for="(spec,index) in mainVehicleSpecs" :key="index + 213654"
+                                      class="ma-penalties__card--car-specs">
+                                    <div v-for="(value,key) in spec" class="ma-penalties__card--car-specs__item">
+                                       <p>{{ $t(key) }}</p>
+                                       <strong>{{ value }}</strong>
+                                    </div>
+                                 </div>
+                              </template>
+                           </div>
+                           <div class="ma-penalties__card--actions">
+                              <remove-vehicle :vehicle="selectedCar" @selectedCarDeleted="getAllCarsList"/>
+                              <stop-subsribtion :vehicle="selectedCar" @carDeactivated="getAllCarsList"/>
+                           </div>
+                        </div>
+                     </div>
                   </div>
                </div>
             </div>
 
             <!--            right-->
-            <div v-if="carsList.length" class="col-12 col-md-6">
+            <div v-if="carsList.length && !isMobileBreakpoint" class="col-12 col-md-6">
                <div class="ma-penalties__card">
                   <h2 class="ma-title--md">{{ $t('my_vehicle_info') }}</h2>
                   <div class="ma-penalties__right-card__body">
-                     <template v-if="selectedCar && mainSpecs">
-                        <div v-for="(spec,index) in mainSpecs" :key="index + 213654"
+                     <template v-if="selectedCar && mainVehicleSpecs">
+                        <div v-for="(spec,index) in mainVehicleSpecs" :key="index + 213654"
                              class="ma-penalties__card--car-specs">
                            <div v-for="(value,key) in spec" class="ma-penalties__card--car-specs__item">
                               <p>{{ $t(key) }}</p>
@@ -213,7 +199,7 @@
             :overflow-hidden="isMobileBreakpoint"
             :title="$t('payment')"
             :toggle="showPaymentModal"
-            modal-class="midsize"
+            :modal-class="!isMobileBreakpoint ? 'midsize': 'larger'"
             @close="showPaymentModal = false"
          >
             <h4 class="mb-2">{{ $t('payment_method') }}</h4>
@@ -272,56 +258,6 @@
             </div>
          </modal-popup>
 
-         <no-ssr>
-            <template v-if="cars.data && cars.data.length">
-               <garage-nav
-                  v-show="showNav || !isMobileBreakpoint"
-                  :tab="tab"
-                  @filterCarNumber="filterCarNumber"
-                  @change-tab="tab = $event"
-               />
-               <cars-list v-if="tab === 'cars'" :filter_car_number="car_number" @show-nav="showNav = $event"/>
-               <cars-list v-if="tab === 'penalty_history'" key="history_key" :filter_car_number="car_number" history
-                          @show-nav="showNav = $event"/>
-               <check-driver-points
-                  v-show="tab === 'check-points'"
-                  @show-nav="showNav = $event"
-               />
-               <list-of-attorneys
-                  v-show="tab === 'attorney-list'"
-                  :attorneys="attorneys"
-                  @show-nav="showNav = $event"
-               />
-            </template>
-            <template v-else>
-               <garage-empty :default-vehicle-list="vehicleList"/>
-            </template>
-            <template v-if="false">
-               <template v-if="tab === 'cars' && (showNav || !isMobileBreakpoint)">
-                  <div
-                     v-if="isMobileBreakpoint"
-                     :class="[
-                'card profile-links-card with-margins',
-                { 'mt-3': !cars.data || !cars.data.length },
-              ]"
-                  >
-                     <div
-                        v-for="menu in userMenus.filter((menu) => menu.showOnCard)"
-                        :key="menu.title"
-                        class="link-block"
-                     >
-                        <nuxt-link :to="$localePath(menu.route)">
-                           <icon :name="menu.icon"/>
-                           {{ $t(menu.title) }}
-                           <icon name="chevron-right"/>
-                           <!-- <inline-svg src="/icons/chevron-right.svg" :height="14" /> -->
-                        </nuxt-link>
-                        <hr/>
-                     </div>
-                  </div>
-               </template>
-            </template>
-         </no-ssr>
 
       </div>
    </div>
@@ -522,33 +458,7 @@ export default {
       },
 
 
-
       //===================
-      getTitle(protocol) {
-         return `${protocol.protocol_series || ''}${protocol.protocol_number}`;
-      },
-      mainMediaSpecs(protocol, unite) {
-         let getDate = (date) => date && this.$moment(this.$parseDate(date)).format('DD.MM.YYYY');
-
-         return this.$dataRows({
-            pay_status: this.history ? this.$t('already_paid') : '',
-            car_number: !unite && protocol.car_number,
-            fined_fullname: protocol.fullname,
-            point: protocol.point,
-            fine: protocol.amount && `${protocol.amount} ₼`,
-            discount: protocol.discount && `${protocol.discount} ₼`,
-            penalty: protocol.penalty && `${protocol.penalty} ₼`,
-            total_amount: !unite && protocol.total && `${protocol.total} ₼`,
-            speed_max: protocol.speed_max && `${protocol.speed_max} ${this.$t('char_kilometre_hour')}`,
-            speed_real: protocol.speed_real && `${protocol.speed_real} ${this.$t('char_kilometre_hour')}`,
-
-            status: protocol.has_decision !== undefined && (protocol.has_decision ? this.$t('has_decision') : this.$t('no_decision')),
-            date_decided: getDate(protocol.decision_date),
-            date_expire: getDate(protocol.expiry_date),
-            date: getDate(protocol.date)|| getDate(protocol.action_date),
-            protocol_took_place: unite && protocol.address
-         }, this.isMobileBreakpoint || unite);
-      },
 
 
    },
@@ -563,18 +473,36 @@ export default {
          return [{name: this.$t('garage')}]
       },
       cardTabs() {
-         return [
-            {
-               id: '0',
-               title: 'penalties'
-            },
-            {
-               id: '1',
-               title: 'penalty_history'
-            },
-         ]
+         if (this.isMobileBreakpoint) {
+
+            return [
+               {
+                  id: '0',
+                  title: 'penalties',
+               },
+               {
+                  id: '1',
+                  title: 'penalty_history',
+               },
+               {
+                  id: '2',
+                  title: 'my_vehicle_info',
+               }
+            ]
+         } else {
+            return [
+               {
+                  id: '0',
+                  title: 'penalties',
+               },
+               {
+                  id: '1',
+                  title: 'penalty_history',
+               },
+            ]
+         }
       },
-      mainSpecs() {
+      mainVehicleSpecs() {
          let getDate = (date) => date && this.$moment((date)).format('DD.MM.YYYY');
 
          return this.$dataRows({
@@ -597,7 +525,6 @@ export default {
             return formattedNumber;
          };
       },
-
    },
    data() {
       return {
@@ -683,5 +610,201 @@ export default {
    }
 }
 </script>
+
+
+<style lang="scss">
+@media (max-width: 991px) {
+   .ma-penalties {
+      &__top {
+         flex-wrap: wrap;
+
+         &--search {
+            width: 100%;
+            margin-bottom: 16px;
+         }
+
+         &--numbers {
+            width: 100%;
+
+            .ma-penalty-number-chip {
+
+
+               &--active {
+               }
+
+               &--disabled {
+               }
+
+               &__list {
+               }
+
+               &__container {
+               }
+            }
+
+            &__scrollButton {
+            }
+
+         }
+      }
+
+      &__card {
+         border: none;
+         padding: 0;
+
+         &--header {
+            display: flex;
+            align-items: center;
+
+            &__item {
+               padding: 12px;
+               font: 500 15px/18px 'TTHoves';
+               display: inline;
+               cursor: pointer;
+               color: #4B5565;
+
+               &--active {
+                  border-bottom: 2px solid #155EEF;
+               }
+            }
+         }
+
+         &--body {
+            &__no-results {
+               flex-direction: column;
+               padding-top: 151px;
+
+               img {
+                  height: 160px;
+                  object-fit: contain;
+               }
+
+               p {
+                  font: 500 20px/24px 'TTHoves';
+                  color: #364152;
+                  text-align: center;
+                  margin-top: 32px;
+               }
+            }
+
+            &__penalties {
+               &--item {
+                  border: 1px solid #CDD5DF;
+                  border-radius: 10px;
+                  padding: 15px;
+                  margin-top: 20px;
+                  display: flex;
+                  justify-content: space-between;
+                  cursor: pointer;
+
+                  &--active {
+                     border: 1px solid #528BFF;
+                  }
+
+                  strong {
+
+                  }
+
+                  &.no-borders {
+                     border: none;
+                  }
+
+                  .ma-left {
+                     display: flex;
+                     align-items: center;
+
+                     &__checkbox {
+
+                        //padding-right: 12px;
+                     }
+
+                     p {
+                        font: 500 16px/20px 'TTHoves';
+                     }
+                  }
+
+                  .ma-right {
+                     display: flex;
+                     align-items: center;
+
+                     button {
+                        margin-left: 8px;
+                     }
+
+                     &__amount {
+                        font: 500 16px/20px 'TTHoves';
+                        color: #121926;
+                     }
+                  }
+
+                  &.all-items {
+                     border: none;
+                     padding-left: 0;
+                     cursor: default;
+                  }
+
+                  &.total {
+                     strong {
+                        font: 600 20px/24px 'TTHoves' !important;
+                        color: #121926;
+                     }
+                  }
+               }
+            }
+         }
+
+         &--car-specs {
+
+
+            &__item {
+               width: 100%;
+               display: flex;
+               justify-content: space-between;
+               padding: 20px 0;
+
+               &:not(:last-of-type) {
+                  border-bottom: 1px solid #E3E8EF;
+               }
+
+               &:focus {
+                  border: 1px solid #155EEF;
+               }
+
+               p {
+                  font: 400 16px/20px 'TTHoves';
+                  color: #364152;
+               }
+
+               strong {
+                  font: 500 16px/20px 'TTHoves';
+                  color: #121926;
+               }
+
+            }
+         }
+
+         &--actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 16px;
+
+            button {
+               width: calc(50% - 8px);
+            }
+
+            .protocol-payment-button {
+               width: calc(50% - 8px);
+            }
+         }
+
+
+         .ma-penalties__right-card__body {
+            min-height: calc(100% - 130px);
+         }
+      }
+   }
+}
+</style>
 
 

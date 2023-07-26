@@ -79,8 +79,15 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 .border-12{
    border-radius: 12px;
+}
+.dark-mode{
+   .modal-popup{
+      h4{
+         color: #fff;
+      }
+   }
 }
 </style>
