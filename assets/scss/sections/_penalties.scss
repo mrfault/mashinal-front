@@ -289,6 +289,8 @@
 }
 
 
+
+
 .dark-mode {
    .ma-penalties {
       .ma-title--md {
@@ -329,8 +331,10 @@
 
             &__scrollButton {
                color: #fff;
+
                button {
                   color: #fff;
+
                   &:hover {
                      color: #fff;
                   }
@@ -360,8 +364,6 @@
             &__no-results {
 
 
-
-
                p {
                   color: #fff;
                }
@@ -380,9 +382,7 @@
                   }
 
 
-
                   .ma-left {
-
 
 
                      &__checkbox {

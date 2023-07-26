@@ -13,7 +13,7 @@
          {{ $t('detail') }}
       </button>
       <modal-popup
-         :modal-class="'wider'"
+         :modal-class="!mediaIsOpen ? 'wider'  : 'full-screen'"
          :title="$t('protocol_details')"
          :toggle="showProtocolDetails"
          @close="showProtocolDetails = false"
@@ -54,46 +54,9 @@
             </div>
 
             <div class="protocol-details-button__actions">
-               <protocol-files :protocol="protocol" @closeDetailsWindow="showProtocolDetails = false">
-                  <div class="card garage_protocol-info">
-                     <div class="garage_protocol-titles">
-                        <h3 class="text-normal">{{ $readCarNumber(protocol.car_number) }}</h3>
-                        <h3 class="text-normal text-dark-blue-2">{{ getTitle(protocol) }}</h3>
-                        <hr/>
-                     </div>
-                     <div class="vehicle-specs">
-                        <div class="row">
-                           <div v-for="(specs, i) in mainSpecs(protocol, true)" :key="i + '6545'" class="col">
-                              <ul>
-                                 <template v-for="(spec, key) in specs">
-                                    <li v-if="spec + 218" :key="key + '1546786'">
-                                       <span class="w-auto">{{ $t(key) }}</span>
-                                       <span>{{ spec }}</span>
-                                    </li>
-                                 </template>
-                              </ul>
-                           </div>
-                        </div>
-                     </div>
-                     <template v-if="protocol.can_pay && protocol.total > 0">
-                        <hr class="mb-auto"/>
-                        <div class="row">
-                           <div class="col-6">
-                                <span class="total-price">
-                                  <span>{{ $t('total') }}</span>
-                                  <strong>{{ protocol.total }} ₼</strong>
-                                </span>
-                           </div>
-                           <div class="col-6">
-                              <a :href="getPayLink(protocol)" class="btn btn--green full-width" rel="noopener"
-                                 target="_blank">
-                                 {{ $t('pay_online') }}
-                              </a>
-                           </div>
-                        </div>
-                     </template>
-                  </div>
-               </protocol-files>
+
+               <protocol-files :protocol="protocol"  @mediaOpened="mediaIsOpen = true" @mediaClosed="mediaIsOpen = false"></protocol-files>
+
                <button
                   v-if="protocol.isSelected && !history"
                   :class="['btn', 'btn--light-green', { pending }]"
@@ -128,6 +91,7 @@ export default {
       return {
          showProtocolDetails: false,
          pending: false,
+         mediaIsOpen: false,
       }
    },
    computed: {
@@ -149,41 +113,13 @@ export default {
          this.showProtocolDetails = false;
          this.$emit('showPaymentModal', true)
       },
-      getTitle(protocol) {
-         return `${protocol.protocol_series || ''}${protocol.protocol_number}`;
-      },
-      getPayLink(protocol) {
-         let agency = protocol.protocol_series === 'BNA' ? 'bna' : 'din';
-         return `https://pay.api.az/${agency}/${protocol.protocol_series}${protocol.protocol_number}`;
-      },
-      mainSpecs(protocol, unite) {
-         let getDate = (date) => date && this.$moment(this.$parseDate(date)).format('DD.MM.YYYY');
-
-         return this.$dataRows({
-            pay_status: this.history ? this.$t('already_paid') : '',
-            car_number: !unite && protocol.car_number,
-            fined_fullname: protocol.fullname,
-            point: protocol.point,
-            fine: protocol.amount && `${protocol.amount} ₼`,
-            discount: protocol.discount && `${protocol.discount} ₼`,
-            penalty: protocol.penalty && `${protocol.penalty} ₼`,
-            total_amount: !unite && protocol.total && `${protocol.total} ₼`,
-            speed_max: protocol.speed_max && `${protocol.speed_max} ${this.$t('char_kilometre_hour')}`,
-            speed_real: protocol.speed_real && `${protocol.speed_real} ${this.$t('char_kilometre_hour')}`,
-
-            status: protocol.has_decision !== undefined && (protocol.has_decision ? this.$t('has_decision') : this.$t('no_decision')),
-            date_decided: getDate(protocol.decision_date),
-            date_expire: getDate(protocol.expiry_date),
-            date: getDate(protocol.date) || getDate(protocol.action_date),
-            protocol_took_place: unite && protocol.address
-         }, this.isMobileBreakpoint || unite);
-      },
-      restSpecs(protocol) {
-         return {
-            protocol_took_place: protocol.address,
-            protocol_article: protocol.law_item,
-         }
-      }
    }
 }
 </script>
+
+<style lang="scss">
+.full-screen{
+   width: 100%;
+   height: 100%;
+}
+</style>

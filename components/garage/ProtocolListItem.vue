@@ -5,7 +5,7 @@
       @click.prevent="selectProtocol(protocol)"
    >
       <div class="ma-left">
-         <div class="ma-left__checkbox">
+         <div class="ma-left__checkbox" v-if="false">
             <custom-checkbox v-model="protocol.isChecked"/>
          </div>
          <div class="ma-left__content">
