@@ -7,8 +7,7 @@
             :clear-placeholder="true"
             :clear-option="false"
             :new-label="false"
-            :object-in-value="true"
-            v-model="form.category"
+            v-model="form.category_id"
             @change="onChangeCategory()"
          />
          <template v-if="Object.values(partFilters).length">
@@ -19,8 +18,7 @@
                :clear-placeholder="true"
                :clear-option="false"
                :new-label="false"
-               :object-in-value="true"
-               v-model="form.sub_category"
+               v-model="form.brand_id"
                @change="onChangeSubCategory()"
             />
             <form-select
@@ -30,8 +28,7 @@
                :clear-placeholder="true"
                :clear-option="false"
                :new-label="false"
-               :object-in-value="true"
-               v-model="form.brand"
+               v-model="form.brand_id"
                @change="onChangeSubCategory()"
             />
          </template>
@@ -52,14 +49,14 @@
             :label="$t('new')"
             input-name="is_new"
             v-model="form.is_new"
-            radio-value="new"
+            :radio-value="1"
          />
          <form-radio
             :id="'2'"
             :label="$t('s_h')"
             input-name="is_new"
             v-model="form.is_new"
-            radio-value="s_h"
+            :radio-value="0"
          />
       </div>
       <div class="divider">
@@ -68,14 +65,14 @@
             :label="$t('original')"
             input-name="is_original"
             v-model="form.is_original"
-            radio-value="original"
+            :radio-value="1"
          />
          <form-radio
             :id="'4'"
             :label="$t('duplicate')"
             input-name="is_original"
             v-model="form.is_original"
-            radio-value="duplicate"
+            :radio-value="0"
          />
       </div>
       <form-checkbox
@@ -93,7 +90,6 @@
             :clear-placeholder="true"
             :clear-option="false"
             :new-label="false"
-            :object-in-value="true"
             v-model="form.thorns"
          />
          <form-select
@@ -103,7 +99,6 @@
             :clear-placeholder="true"
             :clear-option="false"
             :new-label="false"
-            :object-in-value="true"
             v-model="form.height"
          />
       </div>
@@ -115,7 +110,6 @@
             :clear-placeholder="true"
             :clear-option="false"
             :new-label="false"
-            :object-in-value="true"
             v-model="form.number_of_mounting_holes"
          />
          <form-select
@@ -125,7 +119,6 @@
             :clear-placeholder="true"
             :clear-option="false"
             :new-label="false"
-            :object-in-value="true"
             v-model="form.shine_width"
          />
          <form-select
@@ -135,19 +128,18 @@
             :clear-placeholder="true"
             :clear-option="false"
             :new-label="false"
-            :object-in-value="true"
             v-model="form.diameter"
          />
       </div>
       <div class="divider">
          <form-checkbox
-            v-model="form.delivery"
+            v-model="form.have_delivery"
             :label="$t('have_delivery')"
             input-name="have_delivery"
             transparent
          />
          <form-checkbox
-            v-model="form.warranty"
+            v-model="form.have_warranty"
             :label="$t('have_warranty')"
             input-name="have_warranty"
             transparent
@@ -157,10 +149,11 @@
          <form-numeric-input
             :placeholder="$t('price')"
             v-model="form.price"
+            :invalid="$v.form.price.$error"
          />
          <!--            @change="announcement.price = $event ? $event + (form.currency.name?.[locale] || 'AZN') : 0"-->
          <div class="price_types">
-            <toggle-group :items="priceTypes" v-slot="{ item }" @change="($event) => form.currency = $event">
+            <toggle-group :items="priceTypes" v-slot="{ item }" @change="form.currency = $event">
                <div class="price_item">
                   <p>{{ item.name[locale] }}</p>
                </div>
@@ -168,18 +161,19 @@
          </div>
       </div>
       <form-checkbox
-         v-model="form.negotiable_price"
+         v-model="form.is_negotiable"
          :label="$t('negotiable_price')"
-         input-name="negotiable_price"
+         input-name="is_negotiable"
          transparent
       />
       <form-select v-if="Object.values(partFilters).length" :label="$t('region')" :options="partFilters?.regions"
                    v-model="form.region_id"
                    has-search
+                   :invalid="$v.form.region_id.$error"
       />
       <div class="part_form_with_info">
          <form-textarea
-            v-model="form.comment"
+            v-model="form.description"
             :placeholder="$t('additional_info')"
             :maxlength="600"
          />
@@ -189,11 +183,7 @@
          </div>
       </div>
       <div class="part_form_with_info">
-         <form-textarea
-            v-model="form.keywords"
-            :placeholder="$t('enter_keywords')"
-            :maxlength="600"
-         />
+         <form-keywords v-model="form.keywords"/>
          <div class="part_form_with_info_inner">
             <inline-svg class="comment_svg" :src="'/icons/info.svg'"/>
             <p>{{ $t("sell_parts_keywords_info") }}</p>
@@ -213,9 +203,11 @@
 import {mapActions, mapGetters} from "vuex";
 import ToggleGroup from "~/components/elements/ToggleGroup.vue";
 import ImageComponent from "~/pages/sell/image-component.vue";
+import {maxLength, minLength, required, requiredIf} from "vuelidate/lib/validators";
+import FormKeywords from "~/components/forms/FormKeywords.vue";
 
 export default {
-   components: {ImageComponent, ToggleGroup},
+   components: {FormKeywords, ImageComponent, ToggleGroup},
    computed: {
       ...mapGetters(['partCategories', 'partFilters']),
    },
@@ -236,8 +228,8 @@ export default {
             },
          ],
          form: {
-            category: "",
-            sub_category: "",
+            category_id: "",
+            brand_id: "",
             brand: "",
             title: "",
             product_code: "",
@@ -249,21 +241,23 @@ export default {
             diameter: "",
             height: "",
             shine_width: "",
-            delivery: "",
-            warranty: "",
-            negotiable_price: "",
-            comment: "",
+            have_delivery: "",
+            have_warranty: "",
+            price: "",
+            currency: 1,
+            is_negotiable: false,
+            region_id: "",
+            description: "",
+            keywords: [],
             saved_images: [],
-            name: "",
-            email: "",
-            phone: ""
          }
       }
    },
    methods: {
       ...mapActions(['getPartFilters']),
       async onChangeCategory() {
-         await this.getPartFilters(this.form.category.id);
+         this.$emit('changeType', this.form.category_id)
+         await this.getPartFilters(this.form.category_id);
       },
       onChangeSubCategory() {
          console.log('miyau2')
@@ -272,10 +266,73 @@ export default {
          return this.partFilters?.filters?.map((ftr) => ftr.key).includes(key)
       }
    },
-   updated() {
-      console.log(this.form.category)
-   }
+   watch: {
+      isReady() {
+         this.$v.form.$touch()
+         const newForm = {
+            product_code: this.form.product_code,
+            title: this.form.title,
+            description: this.form.description,
+            category_id: this.form.category_id,
+            region_id: this.form.region_id,
+            currency: this.form.currency,
+            is_new: this.form.is_new === 1,
+            is_original: this.form.is_original === 1,
+            have_delivery: this.form.have_delivery,
+            have_warranty: this.form.have_warranty,
+            price: this.form.is_negotiable ? 0 : this.form.price,
+            is_negotiable: this.form.is_negotiable,
+            brand_id: this.form.brand_id,
+            diameter: this.form.diameter,
+            shine_width: this.form.shine_width,
+            height: this.form.height,
+            number_of_mounting_holes: this.form.number_of_mounting_holes,
+            tags: this.form.keywords.map((k) => ({text: k})),
+            saved_images: this.form.saved_images
+         }
+         const formData = new FormData()
+         formData.append('data', JSON.stringify(newForm))
+         this.$emit("getForm", formData)
+      }
+// {"product_code":"eewrwe","title":"wq","commercial_part":true,"commercial_size":"245x45x18","description":"gretgertertt","category_id":20,"region_id":1,"currency":1,"is_new":true,"is_original":true,"have_delivery":true,"have_warranty":true,"price":"123","is_negotiable":false,"btl_cookie":"","brand_id":258,"diameter":6,"number_of_mounting_holes":5,"tags":[{"text":"qunduz"},{"text":"miyau"}],"saved_images":[1512771,1512770],"deletedIds":[]}
 
+// {"data":{"category":{"id":19,"parent_id":0,"name":"Şinlər","slug":{"az":"sinler","ru":"siny"},"show_on_search":false,"show_on_form":true,"created_at":"2021-06-29T10:19:13.000000Z","updated_at":"2021-06-29T10:19:13.000000Z","deleted_at":null,"child":[]},"sub_category":"","brand":{"id":4,"name":"Advan"},"title":"wder","product_code":"reth","is_new":"new","is_original":"original","run_flat":true,"thorns":2,"number_of_mounting_holes":"","diameter":10,"height":3,"shine_width":3,"delivery":true,"warranty":true,"price":15,"currency":1,"is_negotiable":false,"region_id":1,"comment":"2wert","keywords":[{"text":"wqregb"},{"text":"t5 b"},{"text":"ytry"},{"text":"grggr"}],"saved_images":[1512784,1512785]}}:
+   },
+   props: {
+      isReady: {
+         type: Boolean,
+         default: false
+      }
+   },
+   validations: {
+      form: {
+         // category: "",
+         // sub_category: "",
+         // brand: "",
+         title: {maxLength: maxLength(25)},
+         // product_code: "",
+         is_new: {required},
+         is_original: {required},
+         // run_flat: "",
+         // thorns: "",
+         // number_of_mounting_holes: "",
+         // diameter: "",
+         // height: "",
+         // shine_width: "",
+         price: {
+            required: requiredIf(function () {
+               return !this.form.is_negotiable
+            })
+         },
+         region_id: {required},
+         // negotiable_price: "",
+         // delivery: "",
+         // warranty: "",
+         // comment: "",
+         // saved_images: [],
+         // comment: {required},
+      }
+   }
 }
 </script>
 
@@ -303,6 +360,8 @@ export default {
    }
 
    &_with_info {
+      position: relative;
+
       &_inner {
          display: flex;
          margin-top: 12px;

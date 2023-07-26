@@ -1,13 +1,13 @@
 <template>
    <div class="registration_mark_form">
       <form-select
-         :label="$t('region')"
-         :options="getRegionNumbers"
+         :label="$t('region_2')"
+         :options="getRegionNumbers.map((rn) => ({...rn, id: rn.serial_number}))"
          :clear-placeholder="true"
          :clear-option="false"
          :new-label="false"
-         :object-in-value="true"
          v-model="form.car_number.region_id"
+         :invalid="$v.form.car_number.region_id.$error"
       />
       <div class="car_number">
          <form-select
@@ -17,6 +17,7 @@
             :clear-option="false"
             :new-label="false"
             v-model="form.car_number.first"
+            :invalid="$v.form.car_number.first.$error"
          />
          <form-select
             :label="$t('letter')"
@@ -29,7 +30,8 @@
          <form-numeric-input
             :placeholder="$t('000')"
             v-model="form.car_number.number"
-            maxlength="3"
+            :maxlength="3"
+            :invalid="$v.form.car_number.number.$error"
          />
       </div>
       <div class="divider">
@@ -39,7 +41,7 @@
          />
          <!--            @change="announcement.price = $event ? $event + (form.currency.name?.[locale] || 'AZN') : 0"-->
          <div class="price_types">
-            <toggle-group :items="priceTypes" v-slot="{ item }" @change="($event) => form.currency = $event">
+            <toggle-group :items="priceTypes" v-slot="{ item }" :defaultValue="2" @change="form.currency_id = $event.id">
                <div class="price_item">
                   <p>{{ item.name[locale] }}</p>
                </div>
@@ -47,14 +49,15 @@
          </div>
       </div>
       <form-checkbox
-         v-model="form.negotiable_price"
+         v-model="negotiable_price"
          :label="$t('negotiable_price')"
          input-name="negotiable_price"
          transparent
       />
-      <form-select :label="$t('region')" :options="sellOptions.years"
+      <form-select :label="$t('region')" :options="sellOptions.regions"
                    v-model="form.region_id"
                    has-search
+                   :invalid="$v.form.region_id.$error"
       />
       <div class="registration_mark_form_with_info">
          <form-textarea
@@ -73,14 +76,22 @@
 <script>
 import {mapGetters} from "vuex";
 import ToggleGroup from "~/components/elements/ToggleGroup.vue";
+import {email, required} from "vuelidate/lib/validators";
 
 export default {
    components: {ToggleGroup},
+   props: {
+      isReady: {
+         type: Boolean,
+         default: false
+      }
+   },
    computed: {
       ...mapGetters(['getRegionNumbers', "sellOptions"]),
    },
    data() {
       return {
+         negotiable_price: false,
          form: {
             car_number: {
                region_id: "",
@@ -88,7 +99,11 @@ export default {
                second: "",
                number: ""
             },
-            region_id: ""
+            price: "",
+            currency_id: "",
+            region_id: "",
+            comment: ""
+
          },
          numbers: [
             {name: 'A'},
@@ -132,6 +147,28 @@ export default {
                name: {az: "EUR", ru: "EUR ru", en: "EUR en"},
             },
          ],
+      }
+   },
+   methods: {},
+   watch: {
+      isReady() {
+         this.$v.form.$touch()
+         if (this.$v.form.$error) return;
+         const {region_id, first, second, number} = this.form.car_number;
+         const car_number = `${region_id} -  ${first + second} - ${number}`
+         const body = {...this.form, price: this.negotiable_price ? null : this.form.price, car_number}
+         this.$emit("getForm", body)
+      }
+   },
+   validations: {
+      form: {
+         car_number: {
+            region_id: {required},
+            first: {required},
+            number: {required}
+         },
+         price: {required},
+         region_id: {required},
       }
    }
 }

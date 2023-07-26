@@ -124,29 +124,30 @@
             :options="colors"
             :clear-placeholder="true"
             :clear-option="false"
-            :new-label="false"
             v-model="form.color"
+            multiple
+            :limit="2"
          />
          <div class="divider">
             <form-numeric-input
                :placeholder="$t('mileage')"
                v-model="form.mileage"
-               @change="this.announcement.mileage = $event || 0"
+               @change="announcement.mileage = $event || 0"
             />
             <div class="mileage_types">
                <form-radio
                   :id="'1'"
                   :label="$t('km')"
-                  input-name="milage"
+                  input-name="mileage"
                   v-model="form.mileage_type"
-                  radio-value="km"
+                  :radio-value="1"
                />
                <form-radio
                   :id="'2'"
                   :label="$t('ml')"
-                  input-name="milage"
+                  input-name="mileage"
                   v-model="form.mileage_type"
-                  radio-value="ml"
+                  :radio-value="2"
                />
             </div>
          </div>
@@ -154,16 +155,16 @@
             <form-radio
                :id="'3'"
                :label="$t('new')"
-               input-name="beaten"
-               v-model="form.beaten"
-               radio-value="new"
+               input-name="is_new"
+               v-model="form.is_new"
+               :radio-value="1"
             />
             <form-radio
                :id="'4'"
                :label="$t('broken')"
                input-name="beaten"
                v-model="form.beaten"
-               radio-value="beaten"
+               :radio-value="1"
             >
                <template v-slot:suffix>
                   <inline-svg
@@ -194,12 +195,7 @@
          </div>
          <form-select
             :label="$t('city_of_sale')"
-            :options="
-                searchMenus.map((menu) => ({
-                  ...menu,
-                  name: $t(menu.title),
-                }))
-              "
+            :options="sellOptions.regions"
             :clear-placeholder="true"
             :clear-option="false"
             :new-label="false"
@@ -301,28 +297,21 @@
                   v-model="form.show_vin"
                   :label="$t('show_on_site')"
                   input-name="show_vin"
-                  @change="this.announcement.show_vin = $event"
+                  @change="announcement.show_vin = $event"
                   transparent
                />
             </div>
          </div>
-                  <form-select
-                     :label="$t('other_parameters')"
-                     :options="popularOptions.map((p) => ({...p, key: $t(p.label), name: $t(p.label)}))"
-                     :clear-placeholder="true"
-                     :clear-option="false"
-                     name-in-value
-                     multiple
-                     v-model="form.other_parameters"
-                  />
-<!--         <form-select-->
-<!--            :label="$t('fuel')"-->
-
-<!--                      v-model="form.other_parameters" :options="popularOptions.map((p) => ({...p, key: $t(p.label), name: $t(p.label)}))"-->
-<!--                      :clear-placeholder="true" :clear-option="false"-->
-<!--                      multiple name-in-value-->
-<!--                      translate-options />-->
-<!--         <pre>{{popularOptions.map((p) => ({...p, id: $t(p.label), name: $t(p.label)}))}}</pre>-->
+         <form-select
+            :label="$t('other_parameters')"
+            v-model="form.other_parameters"
+            :options="popularOptions.map((p) => ({...p, key: $t(p.label), name: $t(p.label)}))"
+            :clear-placeholder="true"
+            :clear-option="false"
+            object-in-value
+            translate-options
+            multiple
+         />
          <div class="comment">
             <form-textarea
                v-model="form.comment"
@@ -341,7 +330,6 @@
                <p>{{ $t("add_image_section_warning") }}</p>
             </div>
          </div>
-         <button class="btn full-width btn--pale-green-outline mt-4 active">{{ $t("place_an_ad") }}</button>
       </template>
 
    </div>
@@ -360,12 +348,16 @@ export default {
    components: {PickOnMapButton, ToggleGroup, ImageComponent, GridRadio},
    mixins: [MenusDataMixin, ToastErrorsMixin],
    computed: {
-      ...mapGetters(['brands', 'models', 'sellYears', 'sellBody', "sellGenerationsV2", "sellEngines", "sellGearing", "sellTransmissions", "sellModificationsV2", "colors", "popularOptions"]),
+      ...mapGetters(['brands', 'models', 'sellYears', 'sellBody', "sellGenerationsV2", "sellEngines", "sellGearing", "sellTransmissions", "sellModificationsV2", "colors", "popularOptions", 'sellOptions']),
    },
    props: {
       announcement: {
          type: Object,
          required: true
+      },
+      isReady: {
+         type: Boolean,
+         default: false
       }
    },
    data() {
@@ -386,21 +378,20 @@ export default {
             },
          ],
          form: {
-            moto_type: "",
-            commercial_vehicle_type: "",
             brand: "",
             model: "",
             year: "",
             body_type: "",
             generation: "",
             fuel_type: "",
-            autogas: "",
+            autogas: false,
             transmission: "",
             gearing: "",
             modification: "",
-            color: "",
+            color: [],
             mileage: 0,
             mileage_type: "",
+            is_new: "",
             beaten: "",
             customs_clearance: "",
             guaranty: "",
@@ -488,18 +479,6 @@ export default {
          const gearing = this.form.gearing
          await this.getSellModificationsV2({brand, model, year, body, generation, engine, gearing, transmission});
       },
-      // getModificationName(o) {
-      //    let generation = this.sellGenerations.find(
-      //       (o) => o.id === this.form.generation
-      //    );
-      //    let name = `${this.$t("box_mode_values")[o.box]}/${
-      //       generation.start_year
-      //    } - ${generation.end_year || this.currentYear}`;
-      //    if (o.capacity) name = `${o.capacity} ${name}`;
-      //    if (o.power) name = `${o.power} ${this.$t("char_h_power")}/${name}`;
-      //    if (o.complect_type) name += `/${o.complect_type}`;
-      //    return name;
-      // },
       updateAddress(address) {
          this.form.address = address;
          this.removeError('address');
@@ -511,10 +490,58 @@ export default {
    },
    async fetch() {
       await Promise.all([
-         this.$store.dispatch("getColors"),
          this.$store.dispatch("getPopularOptions")
       ]);
 
+   },
+   watch: {
+      "form.color"() {
+         console.log(this.form.color)
+      },
+      isReady() {
+         // this.$v.form.$touch()
+         const newForm = {
+            brand: this.form.brand.slug,
+            model: this.form.model.slug,
+            generation_id: this.form.generation,
+            car_body_type: this.form.body_type,
+            gearing: this.form.gearing,
+            modification: this.form.modification,
+            transmission: this.form.transmission,
+            year: this.form.year,
+            mileage: this.form.mileage,
+            mileage_measure: this.form.mileage_type,
+            address: this.form.address,
+            lat: this.form.lat,
+            lng: this.form.lng,
+            vin: this.form.vin,
+            price: this.form.price,
+            currency: this.form.currency,
+            car_number: this.form.car_number,
+            show_car_number: this.form.show_car_number,
+            show_vin: this.form.show_vin,
+            comment: this.form.comment,
+            autogas: this.form.autogas,
+            is_new: this.form.is_new === 1,
+            beaten: this.form.beaten === 1,
+            customs_clearance: this.form.customs_clearance,
+            tradeable: this.form.tradeable,
+            credit: this.form.credit,
+            guaranty: this.form.guaranty,
+            saved_images: this.form.saved_images,
+            all_options: this.form.other_parameters.reduce((acc, curr) => {
+               acc[curr.name] = curr.selected_key ? curr.selected_key : true;
+               return acc;
+            }, {}),
+            selectedColor: this.form.color,
+            owner_type: 0,
+            region_id: this.form.region_id
+         }
+         const formData = new FormData()
+         formData.append('data', JSON.stringify(newForm))
+         this.$emit("getForm", formData)
+      }
+// {"end_date":"","auction":1,"country_id":null,"car_catalog_id":46273,"brand":"bmw","model":"5-series","generation_id":4782,"car_body_type":2,"gearing":"1","modification":"2","transmission":"1","capacity":"","power":"","year":2006,"youtube":{"id":"","thumb":""},"selectedColor":[23],"is_matte":false,"mileage":400,"mileage_measure":1,"region_id":1,"address":"","lat":0,"lng":0,"vin":"QWERTYUIASDFGHJJI","price":17500,"owner_type":0,"currency":1,"car_number":"","show_car_number":0,"show_vin":0,"part":{},"all_options":{"disc_types":2,"headlights":1,"usb":true,"camera_360":true,"a_headlights":true,"r_sensor":true,"bluetooth":true,"camera":true,"conditioner":1,"salon_material":6,"p_windows":1,"h_seats":1,"side_curtain":true,"tire_pressure_sensor":true,"p_assist_system":1,"abs":true,"luke":true,"c_locking":true,"n_of_seats":5,"s_ventilation":1,"opening_trunk_without_hands":true},"comment":"test test test","autogas":true,"is_new":true,"beaten":true,"customs_clearance":true,"tradeable":true,"credit":true,"guaranty":true,"saved_images":[1512806,1512808,1512807],"btl_cookie":"","is_autosalon":false}
    },
 }
 </script>
@@ -607,7 +634,5 @@ export default {
       height: 52px;
       padding: 0 16px;
    }
-
-
 }
 </style>

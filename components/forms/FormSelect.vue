@@ -474,6 +474,7 @@ export default {
       checkOptionsOffset: Boolean,
       wider: Boolean,
       hasCards: Boolean,
+      limit: Number,
    },
    data() {
       return {
@@ -526,7 +527,7 @@ export default {
             : this.selectValue === value
          const hasSameObj =
             this.selectValue instanceof Array &&
-            (this.nameInValue
+            (this.nameInValue || this.objectInValue
                ? this.selectValue.findIndex((val) => val && val.key == value.key) !==
                -1
                : this.selectValue.includes(value))
@@ -595,13 +596,14 @@ export default {
                   return
                } else {
                   value = this.isSelected(option)
+
                      ? this.multiple
                         ? (this.value || []).filter(
                            (v) => this.getKey(v) !== this.getKey(value),
                         )
                         : value
                      : this.multiple
-                        ? [...(this.value || []), value]
+                        ? this.limit && [...(this.value || [])].length === this.limit ? [...(this.value || [])] : [...(this.value || []), value]
                         : value
                }
             }
