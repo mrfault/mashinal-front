@@ -13,10 +13,11 @@
       >
          {{ $t('remove_vehicle') }}
       </button>
-      <modal-popup :modal-class="'midsize packages'"
-                   :title="$t('remove_vehicle1')"
-                   :toggle="showModal"
-                   @close="showModal = false">
+      <modal-popup
+         :modal-class="!isMobileBreakpoint ? 'midsize': 'larger'"
+         :title="$t('remove_vehicle1')"
+         :toggle="showModal"
+         @close="showModal = false">
          <div class="remove-vehicle-modal">
             <p>{{ $t('remove_vehicle_desc1') }}</p>
             <p class="remove-vehicle-modal__text-with-info">
@@ -101,7 +102,7 @@ export default {
             this.pending = false;
             this.showModal = false;
             this.scrollReset();
-            this.$emit("selectedCarDeleted",true)
+            this.$emit("selectedCarDeleted", true)
          } catch (err) {
             this.pending = false;
          }

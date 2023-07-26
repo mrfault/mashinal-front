@@ -5,14 +5,17 @@
          <portal to="breadcrumbs">
             <breadcrumbs :crumbs="crumbs"/>
          </portal>
-         <div class="d-flex  justify-content-between">
-            <h2 class="ma-title--md" style="margin-bottom: 32px">{{ $t('penalties') }}</h2>
+         <div :class="{'flex-wrap': isMobileBreakpoint}" class="d-flex  justify-content-between">
+            <h2 :class="{'w-100 text-center': isMobileBreakpoint}" class="ma-title--md" style="margin-bottom: 32px">
+               {{ $t('penalties') }}</h2>
             <!--            <button class="btn__blue-outlined" >{{ $t('add_vehicle') }} <icon name="plus"></icon></button>-->
-            <add-car @newVehicleAdded="getAllCarsList"/>
+            <div :class="{'mt-2 w-100':isMobileBreakpoint}">
+               <add-car @newVehicleAdded="getAllCarsList"/>
+            </div>
          </div>
          <!--         numbers/search-->
          <div class="ma-penalties__top">
-            <div v-if="carsList.length" class="ma-penalties__top--search">
+            <div v-if="carsList.length" :class="{'mr-0 mt-3' : isMobileBreakpoint}" class="ma-penalties__top--search">
                <form-text-input
                   v-model="searchNumber"
                   :placeholder="$t('search_number')"
@@ -51,13 +54,17 @@
             <div class="col-12 col-md-6">
                <div class="ma-penalties__card">
                   <div v-if="carsList.length" class="ma-penalties__card--header">
-                     <div v-for="(item,index) in cardTabs" :key="index + 23974"
-                          :class="{'ma-penalties__card--header__item--active': activeCardTab ==  item.id}"
-                          class="ma-penalties__card--header__item"
-                          @click="switchCardTab(item.id)"
-                     >
-                        {{ $t(item.title) }}
-                     </div>
+                     <template v-for="(item,index) in cardTabs">
+
+                        <div
+                           :key="index + 23974"
+                           :class="{'ma-penalties__card--header__item--active': activeCardTab ==  item.id}"
+                           class="ma-penalties__card--header__item"
+                           @click="switchCardTab(item.id)"
+                        >
+                           {{ $t(item.title) }}
+                        </div>
+                     </template>
                   </div>
 
                   <div class="ma-penalties__card--body">
@@ -86,7 +93,6 @@
                                     >
 
 
-
                                     </protocol-details>
                                  </protocol-list-item>
                               </template>
@@ -108,7 +114,7 @@
                         <template v-else>
                            <template v-if="protocols && protocols.data && protocols.data.length">
                               <div
-                                 class="ma-penalties__card--body__penalties--item all-items">
+                                 v-if="false" class="ma-penalties__card--body__penalties--item all-items">
                                  <div class="ma-left">
                                     <custom-checkbox v-model="protocol.allSelected"/>
                                     <p>{{ $t('select_all') }}</p>
@@ -141,12 +147,32 @@
                            </div>
                         </template>
                      </div>
+
+                     <div v-if="activeCardTab == 2" class="ma-penalties__card--body__penalty_history">
+                        <div>
+                           <div class="ma-penalties__right-card__body">
+                              <template v-if="selectedCar && mainVehicleSpecs">
+                                 <div v-for="(spec,index) in mainVehicleSpecs" :key="index + 213654"
+                                      class="ma-penalties__card--car-specs">
+                                    <div v-for="(value,key) in spec" class="ma-penalties__card--car-specs__item">
+                                       <p>{{ $t(key) }}</p>
+                                       <strong>{{ value }}</strong>
+                                    </div>
+                                 </div>
+                              </template>
+                           </div>
+                           <div class="ma-penalties__card--actions">
+                              <remove-vehicle :vehicle="selectedCar" @selectedCarDeleted="getAllCarsList"/>
+                              <stop-subsribtion :vehicle="selectedCar" @carDeactivated="getAllCarsList"/>
+                           </div>
+                        </div>
+                     </div>
                   </div>
                </div>
             </div>
 
             <!--            right-->
-            <div v-if="carsList.length" class="col-12 col-md-6">
+            <div v-if="carsList.length && !isMobileBreakpoint" class="col-12 col-md-6">
                <div class="ma-penalties__card">
                   <h2 class="ma-title--md">{{ $t('my_vehicle_info') }}</h2>
                   <div class="ma-penalties__right-card__body">
@@ -173,7 +199,7 @@
             :overflow-hidden="isMobileBreakpoint"
             :title="$t('payment')"
             :toggle="showPaymentModal"
-            modal-class="midsize"
+            :modal-class="!isMobileBreakpoint ? 'midsize': 'larger'"
             @close="showPaymentModal = false"
          >
             <h4 class="mb-2">{{ $t('payment_method') }}</h4>
@@ -231,7 +257,6 @@
                </div>
             </div>
          </modal-popup>
-
 
 
       </div>
@@ -436,7 +461,6 @@ export default {
       //===================
 
 
-
    },
    computed: {
       ...mapGetters({
@@ -449,16 +473,34 @@ export default {
          return [{name: this.$t('garage')}]
       },
       cardTabs() {
-         return [
-            {
-               id: '0',
-               title: 'penalties'
-            },
-            {
-               id: '1',
-               title: 'penalty_history'
-            },
-         ]
+         if (this.isMobileBreakpoint) {
+
+            return [
+               {
+                  id: '0',
+                  title: 'penalties',
+               },
+               {
+                  id: '1',
+                  title: 'penalty_history',
+               },
+               {
+                  id: '2',
+                  title: 'my_vehicle_info',
+               }
+            ]
+         } else {
+            return [
+               {
+                  id: '0',
+                  title: 'penalties',
+               },
+               {
+                  id: '1',
+                  title: 'penalty_history',
+               },
+            ]
+         }
       },
       mainVehicleSpecs() {
          let getDate = (date) => date && this.$moment((date)).format('DD.MM.YYYY');
@@ -483,7 +525,6 @@ export default {
             return formattedNumber;
          };
       },
-
    },
    data() {
       return {
@@ -574,8 +615,6 @@ export default {
 <style lang="scss">
 @media (max-width: 991px) {
    .ma-penalties {
-
-
       &__top {
          flex-wrap: wrap;
 
@@ -588,80 +627,30 @@ export default {
             width: 100%;
 
             .ma-penalty-number-chip {
-               width: 100px;
-               height: 48px;
-               border-radius: 8px;
-               background: #eef2f6;
-               margin-right: 8px;
-               font: 500 15px/18px 'TTHoves';
-               cursor: pointer;
+
 
                &--active {
-                  background: #155EEF;
-                  color: #fff;
-
                }
 
                &--disabled {
-                  color: #9AA4B2;
-                  cursor: context-menu;
                }
 
                &__list {
-                  display: flex;
-                  flex-wrap: nowrap;
-                  width: -moz-fit-content;
-                  width: fit-content;
-                  padding-bottom: 10px;
-                  padding-right: 36px;
                }
 
                &__container {
-                  width: auto;
-                  box-sizing: border-box;
-                  overflow-x: scroll;
-                  overflow-y: hidden;
-                  overflow-y: scroll;
-                  //margin-bottom: 40px;
-                  cursor: grab;
-                  position: relative;
-                  scroll-behavior: smooth;
-
                }
             }
 
             &__scrollButton {
-               position: absolute;
-               top: 0;
-               right: 0;
-               width: 40px;
-               background: #fff;
-
-               button {
-                  width: 32px;
-                  height: 48px;
-                  border-radius: 12px;
-                  border: none;
-                  color: #364152;
-                  background: #EEF2F6;
-                  cursor: pointer;
-
-                  &:hover {
-                     background: #d5d8de;
-                  }
-               }
             }
 
          }
       }
 
       &__card {
-         width: 100%;
-         border: 1px solid #cdd5df;
-         border-radius: 12px;
-         min-height: 634px;
-         height: 100%;
-         padding: 16px 24px;
+         border: none;
+         padding: 0;
 
          &--header {
             display: flex;

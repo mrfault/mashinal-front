@@ -233,7 +233,7 @@ export default {
             }
 
             svg {
-               path {
+               path,ellipse,circle {
 
                   stroke: #fff;
                }
