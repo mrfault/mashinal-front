@@ -97,7 +97,7 @@ export const MenusDataMixin = {
          let menus = [
             {
                title: 'garage',
-               route: '/garage-services',
+               route: '/profile/announcements',
                icon: 'garage-tab',
                showOnCard: !this.isMobileBreakpoint,
                isAvailable: true

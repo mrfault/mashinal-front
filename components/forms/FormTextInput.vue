@@ -1,7 +1,7 @@
 <template>
    <div class="form-group" :class="{'ma-input--white': isPromotionsPage}">
       <div :class="['text-input', {[`${blockClass}`]:blockClass}]">
-         <img :src="imgSrc" v-if="imgSrc" :class="{disabled}"/>
+         <img :src="imgSrc" v-if="imgSrc" :class="{disabled}" :alt="placeholder"/>
 
          <template v-if="inputDate">
             <date-picker
@@ -22,17 +22,17 @@
                :disabled-date="disabledDate"
             >
                <template #icon-calendar>
-                  <inline-svg src="/icons/calendar-4.svg" />
+                  <inline-svg src="/icons/calendar-4.svg"/>
                </template>
 
                <template #icon-clear>
-<!--                  <icon name="cross"/>-->
-                   <inline-svg src="/icons/close.svg" />
+                  <!--<icon name="cross"/>-->
+                  <inline-svg src="/icons/close.svg"/>
                </template>
             </date-picker>
          </template>
 
-         <template v-else>
+         <template v-else >
             <input
                ref="input"
                :id="id"
@@ -186,3 +186,9 @@ export default {
    }
 }
 </script>
+<style>
+.show-password {
+   width: 52px !important;
+   height: 52px !important;
+}
+</style>

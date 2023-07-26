@@ -463,6 +463,11 @@ export const actions = {
       const res = await this.$axios.$get('https://v2dev.mashin.al/api/v2/brands/list-with-count');
       commit("mutate", { property: "brandsList", value: res });
    },
+
+   async getAnnouncementInnerV2({commit}, id) {
+      const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/car/${id}`);
+      commit("mutate", {property: "announcement", value: res});
+   },
    // New API --------------------
 
    async fetchAgreements({commit}) {
@@ -1188,10 +1193,12 @@ export const actions = {
       );
       commit("mutate", {property: "myAnnouncements", value: res});
    },
+
    async getAnnouncementInner({commit}, id) {
       const res = await this.$axios.$get(`/announce/${id}`);
       commit("mutate", {property: "announcement", value: res});
    },
+
    async getMyAnnouncement({commit}, id) {
       const res = await this.$axios.$get(`/announcement/edit/${id}`);
       commit("mutate", {property: "myAnnouncement", value: res});

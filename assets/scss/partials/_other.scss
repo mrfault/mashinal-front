@@ -294,7 +294,6 @@
          }
 
          .close {
-            padding-top: 6px;
             margin-left: 10px;
             flex-shrink: 0;
             border-radius: 50%;
@@ -343,6 +342,9 @@
       }
    }
 
+   &.midsize{
+      width: 476px;
+   }
    &.larger {
       width: 590px;
    }
@@ -447,6 +449,11 @@
       background-color: $dark-2;
 
       &_content {
+         .close{
+            i{
+               color: #000;
+            }
+         }
          .form {
             .total-price {
                strong {

@@ -127,8 +127,6 @@
 
 .profile-settings-card {
    .cover-with-avatar_edit {
-      margin-bottom: 75px;
-
       .avatar_edit:not(.cover) {
          position: absolute;
          z-index: 1;
@@ -163,7 +161,6 @@
 
    .avatar {
       &_edit {
-         margin-bottom: 40px;
 
          .form-image {
             width: 100px;
@@ -176,12 +173,14 @@
 
             .form-image {
                width: 100%;
-               height: 0;
-               padding-bottom: 25%;
+               min-height: 320px;
+               object-fit: cover;
+               border-radius: 12px;
             }
 
             .avatar_edit-inner {
-               min-height: 100px;
+               min-height: 320px;
+               border-radius: 12px;
             }
          }
 
@@ -202,7 +201,6 @@
 @include media-max-width('lg') {
    .profile-settings-card {
       .cover-with-avatar_edit {
-         margin-bottom: 45px;
 
          .avatar_edit:not(.cover) {
             border-width: 3px;

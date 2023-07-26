@@ -38,7 +38,7 @@
          </div>
       </div>
 
-      <div class="announcements-grid__item" :class="'id'+announcement.id_unique" @click="goToAnnouncement">
+      <div class="announcements-grid__item" :class="'id'+announcement.id" @click="goToAnnouncement">
          <a
             v-if="clickable && !isMobileBreakpoint && !$env.DEV"
             target="_blank"
@@ -205,7 +205,7 @@
             if (['Motorcycle', 'Scooter', 'Atv'].includes(this.getType)) type = 'moto'
             else if (['Commercial'].includes(this.getType)) type = 'commercial'
             else if (['Part'].includes(this.getType)) type = 'parts'
-            let path = `/${type}/announcement/${this.announcement.id_unique}`
+            let path = `/${type}/announcement/${this.announcement.id}`
             return this.$localePath(path)
          },
 
@@ -226,8 +226,7 @@
          },
 
          getImage() {
-            let item = this.announcement
-
+            let item = this.announcement;
             return this.$withBaseUrl(item.image);
 
             // if (item.has_360 == false || !item.has_360) {
@@ -274,7 +273,7 @@
                this.fbTrack('ViewContent', {
                   content_type: 'product',
                   content_category: this.getType,
-                  content_ids: [this.announcement.id_unique],
+                  content_ids: [this.announcement.id],
                   content_name: this.getAnnouncementTitle(this.announcement) + ', ' + this.announcement.year
                })
             }
@@ -286,11 +285,11 @@
 
          handleChange(value) {
             this.selected = value;
-            this.$nuxt.$emit('select-announcement', this.announcement.id_unique, value, true);
+            this.$nuxt.$emit('select-announcement', this.announcement.id, value, true);
          },
 
          selectAnnouncement(id, value, controls = false) {
-            if (controls || id != this.announcement.id_unique) return
+            if (controls || id != this.announcement.id) return
             this.handleChange(value)
          },
 

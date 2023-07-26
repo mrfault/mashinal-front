@@ -1,197 +1,239 @@
+<!--suppress ALL -->
 <template>
-   <div class="pages-dashboard-settings pt-2 pt-lg-5">
-      <div class="container">
+   <div class="pages-dashboard-settings">
+      <portal to="breadcrumbs">
          <breadcrumbs :crumbs="crumbs"/>
+      </portal>
 
-         <component
-            :is="isMobileBreakpoint ? 'mobile-screen' : 'div'"
-            :bar-title="$t('user_information_edit')"
-            @back="$router.push(pageRef || $localePath('/dashboard/'+$route.params.type))"
-            height-auto
-         >
-            <div class="card profile-settings-card">
-               <div class="row flex-wrap position-relative cover-with-avatar_edit">
-                  <div class="avatar_edit col-auto mb-2" id="anchor-logo">
-                     <div class="avatar_edit-inner">
-                        <form-image
-                           :refreshCroppa="refreshCroppa"
-                           @removeImage="removeImage"
-                           type="logo"
-                           v-model="form.logo"
-                           :initial-image="getSalonImg('logo')"
-                           :no-image="!hasLogo"
-                           :width="isMobileBreakpoint ? 80 : 100"
-                           :height="isMobileBreakpoint ? 80 : 100"
-                           croppable
-                           @new-image="hasLogo = true"
-                           :autoSizing="false"
-                        />
-                     </div>
-                  </div>
-
-                  <div class="avatar_edit col-auto mb-2 cover" id="anchor-cover">
-                     <div class="avatar_edit-inner">
-                        <form-image
-                           :refreshCroppa="refreshCroppa"
-                           @removeImage="removeImage"
-                           type="cover"
-                           v-model="form.cover"
-                           :initial-image="getSalonImg('cover')"
-                           :no-image="!hasCover"
-                           croppable
-                           auto-sizing
-                           @new-image="hasCover = true"
-                        />
-                     </div>
-                  </div>
-
-                  <p v-html="$t('logo_and_cover_sizing_info')" v-if="!isMobileBreakpoint"></p>
-               </div>
-
-               <p v-html="$t('logo_and_cover_sizing_info')" v-if="isMobileBreakpoint"></p>
-
-               <div class="row">
-                  <div class="col-lg-4 mb-2 mb-lg-3">
-                     <form-text-input
-                        :maxlength="30"
-                        :placeholder="$t('name')"
-                        v-model="form.name"
-                        :invalid="isInvalid('name')"
-                        @change="removeError('name')"
-                        disabled
-                     />
-                  </div>
-                  <div class="col-lg-4 mb-2 mb-lg-3" v-for="i in 3" :key="i" :id="'anchor-phones'+(i === 1 ? '' : i)">
-                     <form-text-input v-if="i === 1 || typeof form.phones[i - 1] === 'string'"
-                                      v-model="form.phones[i - 1]"
-                                      autocomplete="tel"
-                                      has-inputs
-                                      :id="'phone_'+i"
-                                      :placeholder="$t('contact_number')"
-                                      :mask="$maskPhone()"
-                                      :invalid="isInvalid('phones')"
-                                      @change="removeError('phones')"
-                     >
-                        <template #inputs>
-                           <form-checkbox v-model="form.telegram[i - 1]"
-                                          :input-name="'telegram_'+i" transparent
-                                          label="<img src='/icons/telegram-circle.svg' alt='' />"/>
-                           <form-checkbox v-model="form.whatsapp[i - 1]"
-                                          :input-name="'whatsapp_'+i" transparent
-                                          label="<img src='/icons/whatsapp-circle.svg' alt='' />"/>
-                        </template>
-                     </form-text-input>
-                     <button v-else class="btn btn--primary-outline full-width text-left"
-                             @click="$set(form.phones, i - 1, ''), focusOnPhoneInput(i)">
-                        <icon name="plus-circle"/>
-                        {{ $t(i == 2 ? 'add_second_number' : 'add_third_number') }}
-                     </button>
-                  </div>
-                  <div class="col-lg-4 mb-2 mb-lg-3" id="anchor-facebook">
-                     <form-text-input :placeholder="$t('short_number')" v-model="form.short_number"/>
-                  </div>
-                  <div class="col-lg-4 mb-2 mb-lg-3" id="anchor-region_id">
-                     <form-select :label="$t('region')" :options="sellOptions.regions" v-model="form.region_id"
-                                  has-search
-                                  :invalid="isInvalid('region_id')" @change="removeError('region_id')"/>
-                  </div>
-                  <div class="col-lg-4 mb-2 mb-lg-3" id="anchor-address">
-                     <form-text-input :placeholder="$t('address')" icon-name="placeholder" v-model="form.address"
-                                      :invalid="isInvalid('address')" @change="removeError('address')"/>
-                  </div>
-                  <div class="col-lg-2 mb-2 mb-lg-3">
-                     <pick-on-map-button :lat="form.lat" :lng="form.lng" :address="form.address"
-                                         @change-address="updateAddress" @change-latlng="updateLatLng">
-                        <form-text-input :placeholder="$t('address')" icon-name="placeholder" v-model="form.address"
-                                         :invalid="isInvalid('address')" @change="removeError('address')"/>
-                     </pick-on-map-button>
-                  </div>
-                  <div class="col-lg-2 mb-2 mb-lg-3">
-                     <button class="btn btn--dark-blue-2-outline full-width" @click="showPasswordModal = true">
-                        {{ $t('change_password') }}
-                     </button>
-                     <modal-popup
-                        :toggle="showPasswordModal"
-                        :title="$t('change_password_title')"
-                        @close="showPasswordModal = false"
-                     >
-                        <form class="form" @submit.prevent="changePassword" novalidate>
-                           <div class="mb-2 mb-lg-3">
-                              <form-text-input type="password" autocomplete="old-password" :maxlength="255"
-                                               :placeholder="$t('current_password')" v-model="pwdForm.old"
-                              />
-                           </div>
-                           <div class="mb-2 mb-lg-3">
-                              <form-text-input type="password" autocomplete="new-password" :maxlength="255"
-                                               :placeholder="$t('new_password')" v-model="pwdForm.password"
-                              />
-                           </div>
-                           <div class="mb-2 mb-lg-3">
-                              <form-text-input type="password" autocomplete="new-password" :maxlength="255"
-                                               :placeholder="$t('confirm_new_password')"
-                                               v-model="pwdForm.password_confirmation"
-                              />
-                           </div>
-                           <button type="submit"
-                                   :class="['btn btn--green full-width', { pending: pending && showPasswordModal }]">
-                              {{ $t('confirm') }}
-                           </button>
-                        </form>
-                     </modal-popup>
-                  </div>
-                  <div class="col-lg-4 mb-2 mb-lg-3" id="anchor-working_days">
-                     <form-select :label="$t('work_days')" :options="daysOptions" v-model="form.working_days"
-                                  :clear-option="false"
-                                  :invalid="isInvalid('working_days')" @change="removeError('working_days')" multiple
-                                  short-names-label/>
-                  </div>
-                  <div class="col-lg-4 mb-2 mb-lg-3" id="anchor-working_hours">
-                     <form-select :label="$t('work_hours')" custom
-                                  :values="{from: form.working_hours.start, to: form.working_hours.end, showPreposition: false }"
-                                  :allow-clear="false"
-                     >
-                        <div class="form-merged">
-                           <form-select :label="$t('from_time')" :options="hoursOptions"
-                                        v-model="form.working_hours.start"
-                                        @change="removeError('working_time')" :show-label-on-select="false"
-                                        :clear-option="false" :allow-clear="false" wider/>
-                           <form-select :label="$t('to_time')" :options="hoursOptions" v-model="form.working_hours.end"
-                                        @change="removeError('working_time')" :show-label-on-select="false"
-                                        :clear-option="false" :allow-clear="false" wider/>
+      <component
+         :is="isMobileBreakpoint ? 'mobile-screen' : 'div'"
+         :bar-title="$t('user_information_edit')"
+         @back="$router.push(pageRef || $localePath('/dashboard/'+$route.params.type))"
+         height-auto>
+         <div class="row">
+            <div class="col-md-12">
+               <div class="card profile-settings-card p-0">
+                  <div class="row flex-wrap position-relative cover-with-avatar_edit">
+                     <div class="avatar_edit col-auto cover" id="anchor-cover">
+                        <div class="avatar_edit-inner">
+                           <form-image
+                              :refreshCroppa="refreshCroppa"
+                              @removeImage="removeImage"
+                              type="cover"
+                              v-model="form.cover"
+                              :initial-image="getSalonImg('cover')"
+                              :no-image="!hasCover"
+                              croppable
+                              auto-sizing
+                              @new-image="hasCover = true"
+                           />
                         </div>
-                     </form-select>
-                  </div>
-                  <div class="col-lg-4 mb-2 mb-lg-3" id="anchor-instagram">
-                     <form-text-input type="url" placeholder="Instagram URL" icon-name="link" v-model="form.instagram"
-                                      block-class="placeholder-dark-blue-3"/>
-                  </div>
-                  <div class="col-lg-4 mb-2 mb-lg-3" id="anchor-facebook">
-                     <form-text-input type="url" placeholder="Facebook URL" icon-name="link" v-model="form.facebook"
-                                      block-class="placeholder-dark-blue-3"/>
-                  </div>
-                  <div class="col-lg-12 mb-2 mb-lg-3" id="anchor-description">
-                     <form-textarea :maxlength="130" :placeholder="$t('general_information')" v-model="form.description"
-                                    @change="removeError('description')" :invalid="isInvalid('description')"/>
-                  </div>
-                  <div class="col-lg-12" id="anchor-saved_gallery">
-                     <form-gallery
-                        itemClass="col-4 col-lg-1-8 mb-lg-3 mt-2 mb-2"
-                        :maxFiles="24"
-                        :initialFiles="initialFiles"
-                        @change="filesOnChange"
-                        @loading="pending = $event"
-                     />
-                  </div>
-                  <div class="col-lg-2 offset-lg-10 mt-2">
-                     <button :class="['btn btn--green full-width', {pending}]" @click="submit">{{
-                           $t('confirm')
-                        }}
-                     </button>
+                     </div>
                   </div>
                </div>
             </div>
-         </component>
-      </div>
+            <div class="col-md-12 pt-5">
+               <div class="row">
+                  <div class="col-md-6 pb-5">
+                     <div class="row">
+                        <div class="col-md-12 pb-3">
+                           <form-text-input
+                              :maxlength="30"
+                              :placeholder="$t('name')"
+                              v-model="form.name"
+                              :invalid="isInvalid('name')"
+                              @change="removeError('name')"
+                              disabled
+                           />
+                        </div>
+                        <div class="col-md-12 pb-3">
+                           <div class="row">
+                              <div class="col-md-12 d-flex justify-content-between align-items-center">
+                                 <form-text-input
+                                    class="pr-2"
+                                    :placeholder="$t('address')"
+                                    v-model="form.address"
+                                    :invalid="isInvalid('address')"
+                                    @change="removeError('address')"/>
+
+                                 <pick-on-map-button
+                                    :lat="form.lat"
+                                    :lng="form.lng"
+                                    :address="form.address"
+                                    @change-address="updateAddress"
+                                    @change-latlng="updateLatLng">
+                                    <form-text-input
+                                       :placeholder="$t('address')"
+                                       v-model="form.address"
+                                       :invalid="isInvalid('address')"
+                                       @change="removeError('address')"/>
+                                 </pick-on-map-button>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="col-lg-12 pb-3 mb-lg-12"
+                             v-for="i in 3"
+                             :key="i"
+                             :id="'anchor-phones'+(i === 1 ? '' : i)">
+                           <form-text-input
+                              v-if="i === 1 || typeof form.phones[i - 1] === 'string'"
+                              v-model="form.phones[i - 1]"
+                              autocomplete="tel"
+                              has-inputs
+                              :id="'phone_'+i"
+                              :placeholder="$t('contact_number')"
+                              :mask="$maskPhone()"
+                              :invalid="isInvalid('phones')"
+                              @change="removeError('phones')">
+                              <!--<template #inputs>
+                                 <form-checkbox
+                                    v-model="form.telegram[i - 1]"
+                                    :input-name="'telegram_'+i"
+                                    transparent
+                                    label="<img src='/icons/telegram-circle.svg' alt='' />"/>
+                                 <form-checkbox
+                                    v-model="form.whatsapp[i - 1]"
+                                    :input-name="'whatsapp_'+i"
+                                    transparent
+                                    label="<img src='/icons/whatsapp-circle.svg' alt='' />"/>
+                              </template>-->
+                           </form-text-input>
+                           <button
+                              v-else class="btn btn--primary-outline full-width text-left"
+                              @click="$set(form.phones, i - 1, ''), focusOnPhoneInput(i)">
+                              <icon name="plus-circle" class="mr-3"/>
+                              {{ $t(i == 2 ? 'add_second_number' : 'add_third_number') }}
+                           </button>
+                        </div>
+                        <div class="col-md-12 pb-3" id="anchor-working_days">
+                           <form-select
+                              :label="$t('work_days')"
+                              :options="daysOptions"
+                              v-model="form.working_days"
+                              :clear-option="false"
+                              :invalid="isInvalid('working_days')"
+                              @change="removeError('working_days')"
+                              multiple
+                              short-names-label/>
+                        </div>
+                        <div class="col-md-12 pb-3" id="anchor-working_hours">
+                           <form-select
+                              :label="$t('work_hours')"
+                              custom
+                              :values="{from: form.working_hours.start, to: form.working_hours.end, showPreposition: false }"
+                              :allow-clear="false">
+                              <div class="form-merged">
+                                 <form-select
+                                    :label="$t('from_time')"
+                                    :options="hoursOptions"
+                                    v-model="form.working_hours.start"
+                                    @change="removeError('working_time')"
+                                    :show-label-on-select="false"
+                                    :clear-option="false"
+                                    :allow-clear="false"
+                                    wider/>
+                                 <form-select
+                                    :label="$t('to_time')"
+                                    :options="hoursOptions"
+                                    v-model="form.working_hours.end"
+                                    @change="removeError('working_time')"
+                                    :show-label-on-select="false"
+                                    :clear-option="false"
+                                    :allow-clear="false"
+                                    wider/>
+                              </div>
+                           </form-select>
+                        </div>
+                        <div class="col-md-12 pb-3">
+                           <form-textarea
+                              :maxlength="130"
+                              :placeholder="$t('general_information')"
+                              v-model="form.description"
+                              @change="removeError('description')"
+                              :invalid="isInvalid('description')"/>
+                        </div>
+
+                        <div class="col-md-12">
+                           <div class="row">
+                              <div class="col-md-12 pb-3">
+                                 <form-text-input
+                                    type="password"
+                                    autocomplete="old-password"
+                                    :maxlength="255"
+                                    :placeholder="$t('current_password')"
+                                    v-model="pwdForm.old"/>
+                              </div>
+                              <div class="col-md-12 pb-3">
+                                 <form-text-input
+                                    type="password"
+                                    autocomplete="new-password"
+                                    :maxlength="255"
+                                    :placeholder="$t('new_password')"
+                                    v-model="pwdForm.password"/>
+                              </div>
+                              <div class="col-md-12 pb-3">
+                                 <form-text-input
+                                    type="password"
+                                    autocomplete="new-password"
+                                    :maxlength="255"
+                                    :placeholder="$t('confirm_new_password')"
+                                    v-model="pwdForm.password_confirmation"/>
+                              </div>
+                              <div class="col-md-12 pb-3">
+                                 <button
+                                    type="submit"
+                                    @click="submit"
+                                    :class="['btn btn--green full-width', { pending: pending && showPasswordModal }]">
+                                    {{ $t('save') }}
+                                 </button>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-md-6">
+                     <div class="row">
+                        <div class="col-md-12 pb-3">
+                           <div class="change-avatar d-flex justify-content-center">
+                              <div class="avatar-image">
+                                 <form-image
+                                    :refreshCroppa="refreshCroppa"
+                                    @removeImage="removeImage"
+                                    type="logo"
+                                    v-model="form.logo"
+                                    :initial-image="getSalonImg('logo')"
+                                    :no-image="!hasLogo"
+                                    :width="isMobileBreakpoint ? 72 : 72"
+                                    :height="isMobileBreakpoint ? 72 : 72"
+                                    croppable
+                                    @new-image="hasLogo = true"
+                                    :autoSizing="false"
+                                 />
+                              </div>
+                              <div class="avatar-content">
+                                 <h4>{{$t('change_profile_pictures_text')}}</h4>
+                                 <p>{{$t('change_profile_pictures_validation')}}</p>
+                                 <button class="upload-image" @click="clickAvatar()">
+                                    <inline-svg :src="'/icons/upload.svg'"/> {{$t('upload_file')}}
+                                 </button>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="col-md-12" id="anchor-saved_gallery">
+                           <form-gallery
+                              itemClass="col-12 col-lg-1-8 mb-lg-3 mt-2 mb-2"
+                              :maxFiles="24"
+                              :initialFiles="initialFiles"
+                              @change="filesOnChange"
+                              @loading="pending = $event"
+                           />
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </component>
    </div>
 </template>
 
@@ -215,6 +257,7 @@ export default {
          az: '/idareetme-paneli/:type/parametrler'
       }
    },
+   layout: 'garageLayout',
    head() {
       return this.$headMeta({
          title: this.$t('user_information_edit')
@@ -306,6 +349,9 @@ export default {
 
          }
          this.refreshCroppa++;
+      },
+      clickAvatar() {
+         this.$root.$refs.FormImage.croppaValue.chooseFile();
       },
       async submit() {
          if (this.pending) return;
@@ -458,3 +504,87 @@ export default {
    }
 }
 </script>
+
+
+<style>
+.change-avatar {
+   padding: 24px;
+   border-radius: 12px;
+   gap: 16px;
+   border: 1px solid #CDD5DF;
+   background-color: #FFF;
+   align-items: center;
+}
+.avatar-image{
+   min-height: 72px;
+   width: 20%;
+   display: flex;
+   justify-content: center;
+}
+.avatar-image img{
+   height: 72px;
+   width: 72px;
+   border-radius: 50%;
+   object-fit: contain;
+}
+.avatar-content{
+   width: 80%;
+   min-height: 72px;
+}
+.avatar-content h4{
+   font-size: 16px;
+   font-weight: 500;
+   line-height: 20px;
+   letter-spacing: 0;
+   text-align: left;
+   color: #1B2434;
+   margin-bottom: 5px;
+}
+.avatar-content p {
+   font-size: 14px;
+   font-weight: 400;
+   line-height: 16px;
+   letter-spacing: 0em;
+   text-align: left;
+   color: #697586;
+   margin-bottom: 5px;
+}
+.avatar-content .upload-image{
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   border: none;
+   background-color: transparent;
+   font-size: 14px;
+   font-weight: 500;
+   line-height: 16px;
+   letter-spacing: 0;
+   text-align: left;
+   color: #155EEF;
+   padding: 0;
+   margin: 0;
+}
+.avatar-content .upload-image svg{
+   margin-right: 10px;
+}
+.form-image{
+   border-radius: 50%;
+   padding: 0!important;
+}
+.croppa-container{
+   height: 72px;
+   width: 72px;
+}
+.dark-mode{
+   .change-avatar {
+      border: 1px solid #1B2434!important;
+      background-color: #1B2434 !important;
+   }
+   .avatar-content h4{
+      color: #bcc2c9;
+   }
+   .avatar-content p {
+      color: #CDD5DF;
+   }
+}
+</style>

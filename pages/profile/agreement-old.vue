@@ -229,7 +229,7 @@
       components: {
          ComeBack
       },
-      layout: 'profileLayout',
+      layout: 'garageLayout',
 
       head() {
          return this.$headMeta({

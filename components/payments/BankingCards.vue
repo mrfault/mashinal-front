@@ -57,8 +57,8 @@
                   v-html="cardNumber(card.masked_pan)">
                 </div>
                 <div class="card-bottom d-flex">
-                  <span>**/**</span>
-<!--                  <img class="ml-auto" :src="`/img/cards/${card.brand.toLowerCase()}-white.svg`" :alt="card.brand" />-->
+                   <span>**/**</span>
+                   <!-- <img class="ml-auto" :src="`/img/cards/${card.brand.toLowerCase()}-white.svg`" :alt="card.brand" />-->
                 </div>
               </div>
             </div>
@@ -83,8 +83,8 @@
       </div>
     </div>
     <div class="text-center">
-      <button :class="['btn btn--green mt-1', { pending: pending && !showDeleteModal }]" @click="addCard">
-        <icon name="plus-circle" class="btn-plus" />
+      <button :class="['btn p-2 mt-1', { pending: pending && !showDeleteModal }]" @click="addCard">
+        <icon name="plus-circle" class="btn-plus mr-1" />
         {{ $t('add_new_card') }}
       </button>
     </div>

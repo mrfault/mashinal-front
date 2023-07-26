@@ -264,14 +264,14 @@ export default {
    name: 'pages-profile-balance',
    middleware: 'auth_general',
    mixins: [PaymentMixin],
-   layout: 'profileLayout',
+   layout: 'garageLayout',
    components: {
       ComeBack,
       BankingCards,
    },
    nuxtI18n: {
       paths: {
-         az: '/profil/x-old',
+         az: '/profil/balans-old',
       },
    },
    beforeDestroy() {

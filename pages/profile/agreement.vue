@@ -288,7 +288,7 @@ export default {
       ComeBack,
       CollapseContent
    },
-   layout: 'profileLayout',
+   layout: 'garageLayout',
 
    head() {
       return this.$headMeta({
