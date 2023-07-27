@@ -46,7 +46,6 @@
                               />
 
                               <select-banking-card
-                                 v-if="bankingCards.length"
                                  :show-card-image="false"
                                  :value="bankingCard"
                                  @input="bankingCard = $event"
