@@ -6,7 +6,7 @@
       <div class="container">
          <div class="ma-announcements">
             <h2 class="ma-title--md">{{ $t('my_announces') }}</h2>
-            <div class="ma-announcements__top-cards" v-if="showTopCards">
+            <div v-if="showTopCards" class="ma-announcements__top-cards">
                <div v-for="(item,index) in topCards" :key="index + 8923764" class="ma-announcements__top-card">
                   <div class="ma-announcements__top-card--image">
                      <inline-svg :src="`/new-icons/announcements/${item.image}.svg`"/>
@@ -285,7 +285,7 @@ export default {
          ]
       },
 
-      showTopCards(){
+      showTopCards() {
          return !this.isMobileBreakpoint && (this.$route.query.type == 1)
       }
    }
@@ -330,11 +330,67 @@ export default {
    }
 }
 
-.dark-mode{
+@media (max-width: 991px) {
+   .ma-announcements {
+      &__body{
+         h4{
+            font: 600 19px/22px 'TTHoves';
+         }
+      }
+
+      &__head {
+         background: #fff;
+         padding-left: 0;
+         box-sizing: border-box;
+         overflow-y: scroll;
+         margin-bottom: 10px;
+         padding-bottom: 12px;
+
+         &--item {
+            background: #fff;
+            border-radius: 50px;
+            border: 1px solid #cdd5df;
+            color: #697586;
+            font: 500 14px/16px 'TTHoves';
+            padding: 12px 16px;
+            margin-right: 20px;
+            white-space: nowrap;
+
+            &:hover {
+               background: rgba(#155EEF, 1);
+            }
+
+            &--active {
+               position: relative;
+               background: #155EEF;
+               color: #fff;
+
+
+               &:before {
+                  position: relative;
+                  bottom: 0;
+                  left: 0;
+                  width: 0;
+                  height: 3px;
+                  content: '';
+                  background: #155EEF;
+                  border-radius: 3px 3px 0 0;
+
+               }
+            }
+         }
+      }
+
+
+   }
+}
+
+.dark-mode {
    .ma-announcements__top-cards {
       .ma-announcements__top-card {
          background: #1B2434;
          border: 1px solid #1b2434;
+
          &--title {
             color: #fff;
          }
