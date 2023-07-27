@@ -319,9 +319,9 @@
    .pages-salons {
       &.autosalon {
          padding-top: 56px;
-         padding-bottom: 120px;
+         padding-bottom: 100px;
          background-color: #FFFFFF;
-         margin-bottom: -112px;
+         //margin-bottom: -112px;
 
          .salon-card {
             border-color: #CDD5DF;
