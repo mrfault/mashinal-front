@@ -131,12 +131,7 @@
                <button
                   :key="'4' +i"
                   type="button"
-                  :class="[
-                               'btn',
-                               'full-width',
-                               'btn--white',
-                               { 'pointer-events-none': pending },
-                             ]"
+                  :class="['btn', 'full-width', 'btn--white', { 'pointer-events-none': pending }]"
                   @click="removeSearchRow(key)"
                >
                   {{ $t('remove_search') }}
@@ -295,7 +290,7 @@
                      name-in-value
                      translate-options
                   />
-               <pre>{{bodyOptions.main.default_options['tip-dvigatelya'].values}}</pre>
+<!--               <pre>{{bodyOptions.main.default_options['tip-dvigatelya'].values}}</pre>-->
 
                   <div class="btns">
                      <form-checkbox
@@ -862,7 +857,10 @@
                    this.form.mileage_from || this.form.mileage_to ||
                    this.form.min_capacity || this.form.max_capacity ||
                    this.form.exchange_possible || this.form.credit ||
-                   this.form.with_video)
+                   this.form.with_video || this.form.region || this.form.korobka.length ||
+                   this.form.engine_type.length || this.form.in_garanty || this.form.external_salon ||
+                   this.form.body.length || this.form.gearing.length || this.form.customs ||
+                   this.form.damage || this.form.n_of_seats.length || this.form.colors.length)
          }
       },
 
@@ -870,9 +868,9 @@
          form: {
             handler() {
                if (!this.firstTimeUpdated) {
-                  this.searchAppliedCustom = true
+                  this.searchAppliedCustom = true;
                } else {
-                  this.firstTimeUpdated = false
+                  this.firstTimeUpdated = false;
                }
             },
             deep: true,
@@ -1036,7 +1034,7 @@
          this.$nuxt.$off('extend-options', this.goToSearch)
          if (this.routeName === 'index')
             this.$nuxt.$off('reset-search-form', this.resetForm)
-      },
+      }
    }
 </script>
 
@@ -1091,6 +1089,12 @@
 
       .form-group {
          height: max-content;
+      }
+   }
+
+   .dark-mode {
+      .cars-search-form {
+         background-color: #1B2434;
       }
    }
 

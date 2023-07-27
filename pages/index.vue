@@ -9,7 +9,7 @@
          />
       </div>
 
-      <div class="overflow-hidden" v-if="getMainMonetized.length">
+      <div class="overflow-hidden" v-if="getMainMonetized?.length">
          <grid
             :announcements="getMainMonetized"
             :pending="pending"
@@ -344,6 +344,9 @@
 </script>
 
 <style lang="scss">
+   .pages-index {
+      margin-top: 32px;
+   }
    //.swiper-container {
    //   .btn--green {
    //      height: 25px !important;

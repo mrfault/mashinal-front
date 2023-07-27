@@ -891,13 +891,13 @@
 
 @include media-max-width('lg') {
    .inner-gallery {
-      margin: 0 -25px;
+      //margin: 0 -25px;
 
-      .swiper-slide-bg {
-         border-radius: 0;
-         padding-bottom: 73.6%;
-         background-position: center;
-      }
+      //.swiper-slide-bg {
+      //   border-radius: 0;
+      //   padding-bottom: 73.6%;
+      //   background-position: center;
+      //}
 
       .gallery-overlay {
          &_top,
@@ -936,9 +936,9 @@
       .swiper-slide {
          width: 150px;
          // margin-right: 20px;
-         &-bg {
-            padding-bottom: 74.66%;
-         }
+         //&-bg {
+         //   padding-bottom: 74.66%;
+         //}
       }
    }
    .announcements-inner {

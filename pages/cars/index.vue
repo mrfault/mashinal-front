@@ -96,7 +96,7 @@
             post = {...post, with_video: true}
          }
          let page = route.query.page || 1;
-         let searchParams = {url: '/grid/cars', prefix: 'cars'}
+         let searchParams = {url: '/car', prefix: 'cars'}
          if (!store.state.carsAnnouncements.total)
             await store.dispatch('getGridSearch', {...searchParams, post, page})
             await Promise.all([
@@ -213,6 +213,8 @@
 
 <style lang="scss">
    .pages-cars-index {
+      margin-top: 32px;
+
       &__title {
          font-weight: 600;
          font-size: 32px;
