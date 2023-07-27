@@ -67,11 +67,11 @@
          </div>
 
          <div class="divider" v-if="moreInfo">
-            <div class="registrationMarksGridItem__status">
+            <div class="registrationMarksGridItem__status" :class="{'green': item.status === 1,'yellow': item.status === 2,'pink': item.status === 3,'pink': item.status === 7}">
                <span v-if="item.status === 0">{{ $t('rejected_2') }}</span>
-               <span v-else-if="item.status === 1">{{ $t('active_2') }}</span>
-               <span v-else-if="item.status === 2">{{ $t('under_consideration') }}</span>
-               <span v-else-if="item.status === 3">{{ $t('sold') }}</span>
+               <span v-else-if="item.status === 1" >{{ $t('active_2') }}</span>
+               <span v-else-if="item.status === 2" >{{ $t('under_consideration_2') }}</span>
+               <span v-else-if="item.status === 3" >{{ $t('inactive') }}</span>
                <span v-else-if="item.status === 7">{{ $t('need_pay') }}</span>
             </div>
          </div>
@@ -277,6 +277,19 @@
             font-size: 15px;
             line-height: 18px;
             color: #121926;
+         }
+
+         &.pink{
+            background-color: #FEE4E2;
+         }
+         &.green{
+            background-color: #D1FADF;
+         }
+         &.yellow{
+            background-color: #FEF0C7;
+         }
+         &.gray{
+            background-color: #EEF2F6;
          }
       }
    }
