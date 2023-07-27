@@ -204,6 +204,7 @@
          >
             <h4 class="mb-2">{{ $t('payment_method') }}</h4>
             <div class="d-flex align-items-center justify-content-between">
+<!--               <form-buttons v-model="paymentMethod" :options="paymentMethodOptions" :group-by="2"/>-->
                <template v-for="(item,index) in paymentMethodOptions">
                   <form-radio
                      v-model="paymentMethod"
@@ -211,6 +212,7 @@
                      :label="$t(item.name)"
                      :radio-value="item.key"
                      style="width: calc(50% - 8px)"
+                     :disabled="!user.balance"
                   />
                </template>
             </div>
