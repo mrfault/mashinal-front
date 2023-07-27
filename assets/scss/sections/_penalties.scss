@@ -42,6 +42,11 @@
 
             }
 
+            &--disabled {
+               color: #9AA4B2;
+               cursor: context-menu;
+            }
+
             &__list {
                display: flex;
                flex-wrap: nowrap;
@@ -248,7 +253,7 @@
       }
 
 
-      .ma-penalties__right-card__body{
+      .ma-penalties__right-card__body {
          min-height: calc(100% - 130px);
          //box-sizing: border-box;
          //overflow-y: scroll;
@@ -283,4 +288,177 @@
    }
 }
 
+
+
+
+.dark-mode {
+   .ma-penalties {
+      .ma-title--md {
+         color: #fff;
+      }
+
+      &__top {
+         color: #fff;
+
+
+         &--search {
+            color: #fff;
+
+         }
+
+         &--numbers {
+            color: #fff;
+
+            .ma-penalty-number-chip {
+               color: #fff;
+               background: #364152;
+
+               &--active {
+                  color: #fff;
+               }
+
+               &--disabled {
+                  color: #9AA4B2;
+               }
+
+               &__list {
+                  color: #fff;
+               }
+
+               &__container {
+                  color: #fff;
+               }
+            }
+
+            &__scrollButton {
+               color: #fff;
+
+               button {
+                  color: #fff;
+
+                  &:hover {
+                     color: #fff;
+                  }
+               }
+            }
+
+         }
+      }
+
+      &__card {
+         color: #fff;
+         background: #1B2434;
+
+         &--header {
+            color: #fff;
+
+            &__item {
+               color: #fff;
+
+               &--active {
+                  color: #fff;
+               }
+            }
+         }
+
+         &--body {
+            &__no-results {
+
+
+               p {
+                  color: #fff;
+               }
+            }
+
+            &__penalties {
+               &--item {
+
+
+                  &--active {
+                     border: 1px solid #fff;
+                  }
+
+                  strong {
+                     color: #fff;
+                  }
+
+
+                  .ma-left {
+
+
+                     &__checkbox {
+
+                     }
+
+                     p {
+                        color: #fff;
+                     }
+                  }
+
+                  .ma-right {
+
+                     button {
+                        color: #fff;
+                     }
+
+                     &__amount {
+                        color: #fff;
+                     }
+                  }
+
+                  &.all-items {
+                     color: #fff;
+                  }
+
+                  &.total {
+                     strong {
+                        color: #fff;
+                     }
+                  }
+               }
+            }
+         }
+
+         &--car-specs {
+
+
+            &__item {
+
+               &:not(:last-of-type) {
+                  border-bottom: 1px solid #fff;
+               }
+
+               &:focus {
+                  border: 1px solid #fff;
+               }
+
+               p {
+                  color: #fff;
+               }
+
+               strong {
+                  color: #fff;
+               }
+
+            }
+         }
+
+         &--actions {
+
+            button {
+               color: #fff;
+            }
+
+            .protocol-payment-button {
+               color: #fff;
+            }
+         }
+
+
+         .ma-penalties__right-card__body {
+            color: #fff;
+         }
+      }
+   }
+}
 

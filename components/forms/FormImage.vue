@@ -12,7 +12,7 @@
               :height="height || 200"
               :quality="2"
               :prevent-white-space="true"
-              :show-remove-button="false"
+              :show-remove-button="true"
               :replace-drop="true"
               :auto-sizing="autoSizing"
               :disable-drag-to-move="noImage"
@@ -24,9 +24,13 @@
                <icon name="garbage"/>
            </span>
 
-            <!--<span @click="croppaValue.chooseFile()">-->
-            <!--  <inline-svg src="/icons/camera.svg" :height="14"/>-->
-            <!--</span>-->
+            <button class="btn btn-white bg-white"  v-if="type === 'cover'" @click="croppaValue.chooseFile()">
+               <inline-svg src="/icons/camera.svg" :height="14"/> Örtük şəklini dəyiş
+            </button>
+
+<!--            <button class="btn btn-white bg-white ml-2" v-if="type === 'cover'" @click="croppable = !croppable">-->
+<!--               <inline-svg src="/icons/move.svg" :height="14"/> Sürüşdür-->
+<!--            </button>-->
          </span>
       </croppa>
 
@@ -68,7 +72,6 @@
 
 <script>
 import {ImageResizeMixin} from '~/mixins/img-resize';
-
 export default {
    created() {
       this.$root.$refs.FormImage = this;

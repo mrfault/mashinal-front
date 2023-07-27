@@ -160,6 +160,11 @@
     .popover {
       &-content {
         background-color: $dark-1;
+         .close{
+            i{
+               color: #000;
+            }
+         }
         &_triangle {
           color: $dark-1;
         }

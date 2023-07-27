@@ -3,7 +3,7 @@
       <client-only>
          <div
             v-swiper:gallerySwiper="swiperOps"
-            class="swiper-container pt-0"
+            class="swiper-container pt-lg-0 pt-5"
          >
             <div class="swiper-wrapper">
                <div
@@ -106,7 +106,7 @@
          text-align: center;
          border: 1px solid #D6E4F8;
          background-color: #FFFFFF;
-         border-radius: 12px;
+         border-radius: 12px!important;
          &.popular {
             border-color: #155EEF;
             overflow: hidden;
@@ -221,7 +221,7 @@
          &__item {
             color: #FFFFFF;
             background-color: #242426;
-
+            border-radius: 12px!important;
             &:not(.popular) {
                border-color: #242426;
 
@@ -254,6 +254,9 @@
                }
             }
          }
+      }
+      .swiper-slide{
+         border-radius: 12px!important;
       }
    }
 </style>

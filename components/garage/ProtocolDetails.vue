@@ -2,19 +2,18 @@
    <div>
       <button
          :class="[
-            'btn',
-            'full-width',
-            'btn--white',
-            'btn-dark-text',
-            { 'pointer-events-none': pending },
-         ]"
+                                        'btn',
+                                        'btn--white',
+                                        'btn-dark-text',
+                                        'full-width',
+                  { 'pointer-events-none': pending }                  ]"
          type="button"
          @click="showProtocolDetails = true"
       >
          {{ $t('detail') }}
       </button>
       <modal-popup
-         :modal-class="'wider'"
+         :modal-class="!mediaIsOpen ? 'wider'  : 'full-screen'"
          :title="$t('protocol_details')"
          :toggle="showProtocolDetails"
          @close="showProtocolDetails = false"
@@ -53,18 +52,11 @@
                   </strong>
                </div>
             </div>
+
             <div class="protocol-details-button__actions">
-               <button
-                  :class="[
-                  'btn',
-                  'btn--white',
-                  'btn-dark-text',
-                  { 'pointer-events-none': pending },
-               ]"
-                  type="button"
-               >
-                  {{ $t('show_image_or_video') }}
-               </button>
+
+               <protocol-files :protocol="protocol"  @mediaOpened="mediaIsOpen = true" @mediaClosed="mediaIsOpen = false"></protocol-files>
+
                <button
                   v-if="protocol.isSelected && !history"
                   :class="['btn', 'btn--light-green', { pending }]"
@@ -84,6 +76,7 @@
 
 <script>
 import ProtocolPayment from "~/components/garage/ProtocolPayment";
+import ProtocolFiles from "~/components/garage/ProtocolFiles";
 
 export default {
    props: {
@@ -92,11 +85,13 @@ export default {
    },
    components: {
       ProtocolPayment,
+      ProtocolFiles
    },
    data() {
       return {
          showProtocolDetails: false,
          pending: false,
+         mediaIsOpen: false,
       }
    },
    computed: {
@@ -117,7 +112,14 @@ export default {
       showPaymentModal() {
          this.showProtocolDetails = false;
          this.$emit('showPaymentModal', true)
-      }
+      },
    }
 }
 </script>
+
+<style lang="scss">
+.full-screen{
+   width: 100%;
+   height: 100%;
+}
+</style>

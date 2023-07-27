@@ -13,11 +13,11 @@
             height-auto>
 
             <div class="row" v-if="!isMobileBreakpoint">
-               <div class="col-md-12 mb-4">
+               <div class="col-md-12 mb-0 mb-lg-4">
                   <h1>{{ $t('my_balance') }}</h1>
                </div>
             </div>
-            <div class="row">
+            <div class="row pt-lg-0 pt-5">
                <div class="col-md-5 col-xs-12 p-0 p-1">
                   <div class="card card-gray d-flex justify-content-start align-items-center">
                      <div class="icon-cashier">
@@ -53,7 +53,7 @@
                                  class="mt-2 mt-lg-3"
                               />
 
-                              <button type="submit" :class="['btn btn--green full-width', { pending, disabled: form.money < this.minAmount }]">
+                              <button type="submit" :class="['btn btn--green ml-2 full-width', { pending, disabled: form.money < this.minAmount }]">
                                  {{ $t('replenish') }}
                               </button>
                            </div>
@@ -219,7 +219,7 @@
       name: 'pages-profile-balance',
       middleware: 'auth_general',
       mixins: [PaymentMixin],
-      layout: 'profileLayout',
+      layout: 'garageLayout',
       components: {
          ComeBack,
          BankingCards,
@@ -430,7 +430,6 @@
 .btn--green{
    height: 52px;
    width: 160px;
-   margin-left: 15px;
    border-radius: 8px;
 }
 

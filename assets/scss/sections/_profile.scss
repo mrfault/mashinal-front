@@ -127,8 +127,6 @@
 
 .profile-settings-card {
    .cover-with-avatar_edit {
-      margin-bottom: 30px;
-
       .avatar_edit:not(.cover) {
          position: absolute;
          z-index: 1;
@@ -203,7 +201,6 @@
 @include media-max-width('lg') {
    .profile-settings-card {
       .cover-with-avatar_edit {
-         margin-bottom: 30px;
 
          .avatar_edit:not(.cover) {
             border-width: 3px;

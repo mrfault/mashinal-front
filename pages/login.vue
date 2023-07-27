@@ -4,7 +4,7 @@
 
          <breadcrumbs :crumbs="crumbs"/>
 
-         <div  class="login-card card no-pd mb-5">
+         <div v-if="false"  class="login-card card no-pd mb-5">
 
             <div class="row no-gutters scrolling-box">
                <div v-if="isMobileBreakpoint" class="col-12 col-lg-6 col-xl-4">
@@ -100,7 +100,7 @@ export default {
       handleLogin(auth) {
          if (!auth) return
          this.resetSellTokens()
-         let path = '/garage-services'
+         let path = '/profile/announcements'
          if (this.$route.query.param) path += '?' + this.$route.query.param
          if (this.loggedIn && [3, 4].includes(this.user.user_type))
             path = '/profile/btl'

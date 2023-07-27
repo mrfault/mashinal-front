@@ -459,3 +459,15 @@ hr {
    color: $dark-blue-1;
    margin-bottom: 4px;
 }
+
+
+.flex-center{
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+
+
+.no-borders{
+   border: none !important;
+}

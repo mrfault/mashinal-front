@@ -26,7 +26,6 @@
 
                <div v-if="!getAgreements.length">
                   <h4 class="myPackages__title">{{ $t('not_active_package') }}</h4>
-
                   <h5 class="myPackages__subtitle">{{ $t('get_new_package') }}</h5>
                </div>
 
@@ -49,7 +48,7 @@
    export default {
       components: { Packages, CustomNotifications, ComeBack },
 
-      layout: 'profileLayout',
+      layout: 'garageLayout',
       head() {
          return this.$headMeta({
             title: this.$t('my_packages'),

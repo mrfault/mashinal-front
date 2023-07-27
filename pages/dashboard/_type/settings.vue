@@ -32,7 +32,7 @@
                   </div>
                </div>
             </div>
-            <div class="col-md-12">
+            <div class="col-md-12 pt-5">
                <div class="row">
                   <div class="col-md-6 pb-5">
                      <div class="row">
@@ -257,7 +257,7 @@ export default {
          az: '/idareetme-paneli/:type/parametrler'
       }
    },
-   layout: 'profileLayout',
+   layout: 'garageLayout',
    head() {
       return this.$headMeta({
          title: this.$t('user_information_edit')
@@ -580,13 +580,11 @@ export default {
       border: 1px solid #1B2434!important;
       background-color: #1B2434 !important;
    }
-
    .avatar-content h4{
       color: #bcc2c9;
    }
    .avatar-content p {
       color: #CDD5DF;
    }
-
 }
 </style>

@@ -1,8 +1,20 @@
 <template>
    <div :key="refresh" class="pages-annoucements pt-2 pt-lg-6">
+      <portal to="breadcrumbs">
+         <breadcrumbs :crumbs="crumbs"/>
+      </portal>
       <div class="container">
          <div class="ma-announcements">
             <h2 class="ma-title--md">{{ $t('my_announces') }}</h2>
+            <div class="ma-announcements__top-cards" v-if="showTopCards">
+               <div v-for="(item,index) in topCards" :key="index + 8923764" class="ma-announcements__top-card">
+                  <div class="ma-announcements__top-card--image">
+                     <inline-svg :src="`/new-icons/announcements/${item.image}.svg`"/>
+                  </div>
+                  <div class="ma-announcements__top-card--title">{{ $t(item.name) }}</div>
+                  <div class="ma-announcements__top-card--count">{{ $t(item.value) }}</div>
+               </div>
+            </div>
             <div class="ma-announcements__head">
                <button
                   v-for="(item,index) in announceItems"
@@ -75,86 +87,6 @@
                   :urlDarkMode="'/img/empty_plates_dark-mode.png'"
                ></no-results>
             </div>
-         </div>
-
-
-         <div v-if="false">
-            <breadcrumbs :crumbs="crumbs"/>
-
-            <div v-if="isMobileBreakpoint" class="card">
-               <h2 class="title-with-line mb-0">
-                  <span>{{ $t('my_announces') }}</span>
-               </h2>
-            </div>
-
-            <controls-panel
-               :clearSelected="activeTab"
-               :show-toolbar="!!myAnnouncements.data.length"
-               :type="activeTab"
-            />
-
-            <ul class="tabs">
-               <li
-                  v-for="tab in tabs"
-                  :key="tab.id"
-                  :class="['tabs__item', {'active' : tab.id === activeTab }]"
-                  @click="activeTab = tab.id"
-               >{{ tab.name }}
-               </li>
-            </ul>
-
-            <div class="tabContent">
-               <div v-if="activeTab === 1" class="tabContent__item">
-                  <grid
-                     v-if="myAnnouncements.data.length"
-                     :announcements="myAnnouncements.data"
-                     :paginate="$paginate(myAnnouncements)"
-                     :pending="pending"
-                     :push-into-router="false"
-
-                     :show-checkbox="true"
-                     :show-status="true"
-                     :show-title="false"
-                     isProfilePage
-                     @change-page="changePage"
-                  />
-                  <!--               :title="$t('my_announces')"-->
-
-                  <no-results v-else
-                              :text="statusReady !== '' ? '' : $t('add_an_ad_and_thousands_of_potential_buyers_will_see_it')"
-                              :type="$route.query.type == 2 ? 'part' : 'car'"
-                  >
-                     <nuxt-link v-if="statusReady === ''" :to="$localePath('/sell')" class="btn btn--green mt-2 mt-lg-3"
-                                v-html="$t('to_sell')"/>
-                  </no-results>
-               </div>
-
-               <div v-if="activeTab === 2" class="tabContent__item">
-                  <PlatesGrid
-                     :checkbox="true"
-                     :items="getMyPlates.data"
-                     :moreInfo="true"
-                     :short-date="true"
-                  >
-                  </PlatesGrid>
-
-                  <pagination
-                     v-if="getMyPlates?.meta?.last_page > 1"
-                     :page-count="getMyPlates?.meta?.last_page"
-                     :value="getMyPlates?.meta?.current_page"
-                     @change-page="changePageMarks"
-                  />
-
-                  <no-results
-                     v-if="!getMyPlates.data.length"
-                     :template="'new-img'"
-                     :text="$t('empty_plates')"
-                     :url="'/img/empty_plates.png'"
-                     :urlDarkMode="'/img/empty_plates_dark-mode.png'"
-                  ></no-results>
-               </div>
-            </div>
-
          </div>
       </div>
    </div>
@@ -306,6 +238,37 @@ export default {
          ]
       },
 
+      topCards() {
+         return [
+            {
+               name: 'announcements',
+               value: 14,
+               image: 'doc'
+            },
+            {
+               name: 'views_count',
+               value: 14,
+               image: 'eye'
+            },
+            {
+               name: 'favorites',
+               value: 14,
+               image: 'favorite'
+            },
+            {
+               name: 'messages',
+               value: 14,
+               image: 'message-text'
+            },
+            {
+               name: 'total_calls',
+               value: 14,
+               image: 'call'
+            },
+
+         ]
+      },
+
       getStatusOptions() {
          return [
             {key: 1, name: this.$t('active')},
@@ -320,8 +283,67 @@ export default {
             {id: 1, name: this.$t('my_vehicles')},
             {id: 2, name: this.$t('registration_badges')}
          ]
+      },
+
+      showTopCards(){
+         return !this.isMobileBreakpoint && (this.$route.query.type == 1)
       }
    }
 }
 </script>
+
+
+<style lang="scss">
+.ma-announcements__top-cards {
+   display: flex;
+   justify-content: space-between;
+   margin-bottom: 40px;
+
+   .ma-announcements__top-card {
+      min-height: 100%;
+      width: calc((100% - 80px) / 5);
+      border-radius: 12px;
+      border: 1px solid #D8DCE0;
+      padding: 16px;
+
+      &--image {
+         width: 40px;
+         height: 40px;
+         border-radius: 50%;
+         background: #EFF4FF;
+         margin-bottom: 16px;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+      }
+
+      &--title {
+         color: #3c4f65;
+         font: 500 16px/20px 'TTHoves';
+         margin-bottom: 4px;
+      }
+
+      &--count {
+         font: 600 18px/22px 'TTHoves';
+         color: #10243C;
+      }
+   }
+}
+
+.dark-mode{
+   .ma-announcements__top-cards {
+      .ma-announcements__top-card {
+         background: #1B2434;
+         border: 1px solid #1b2434;
+         &--title {
+            color: #fff;
+         }
+
+         &--count {
+            color: #fff;
+         }
+      }
+   }
+}
+</style>
 

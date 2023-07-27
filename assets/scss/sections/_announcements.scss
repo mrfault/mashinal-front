@@ -55,7 +55,7 @@
             overflow: hidden;
             white-space: nowrap;
 
-            & >  * {
+            & > * {
                text-overflow: ellipsis;
                overflow: hidden;
                white-space: nowrap;
@@ -707,11 +707,12 @@
 }
 
 
-.ma-announcements{
-   .ma-title--md{
+.ma-announcements {
+   .ma-title--md {
       margin-bottom: 28px;
    }
-   &__head{
+
+   &__head {
       width: 100%;
       display: flex;
       align-items: center;
@@ -719,16 +720,20 @@
       background: $grey-1-new;
       padding: 0px 24px;
       margin-bottom: 32px;
-      &--item{
+
+      &--item {
          padding: 20px 12px 20px 12px;
          border: none;
          background: transparent;
-         &:hover{
-            background: rgba(#155EEF,0.1);
+
+         &:hover {
+            background: rgba(#155EEF, 0.1);
          }
-         &--active{
+
+         &--active {
             position: relative;
-            &:before{
+
+            &:before {
                position: absolute;
                bottom: 0;
                left: 0;
@@ -741,11 +746,13 @@
          }
       }
    }
-   &__body{
-      .ma-subtitle--lg{
+
+   &__body {
+      .ma-subtitle--lg {
          margin-bottom: 24px;
       }
-      &--row{
+
+      &--row {
          width: auto;
          box-sizing: border-box;
          overflow-x: scroll;
@@ -753,31 +760,37 @@
          @include customScrollbar1;
          margin-bottom: 40px;
          cursor: grab;
-         &:active{
+
+         &:active {
             cursor: grabbing;
          }
-         &__inner{
+
+         &__inner {
             display: flex;
             flex-wrap: nowrap;
             width: fit-content;
             padding-bottom: 10px;
-            &--item{
+
+            &--item {
                width: 256px;
                height: 392px;
                //background: rgba(#a9afbb,.3);
                border-radius: 12px;
                margin-right: 20px;
             }
-            &--item-plate{
+
+            &--item-plate {
                width: 256px;
                margin-right: 20px;
             }
          }
-         .announcements-grid{
+
+         .announcements-grid {
             margin: 0 !important;
          }
-         .ma-announcement-card{
-            &:not(last-of-type){
+
+         .ma-announcement-card {
+            &:not(last-of-type) {
                margin-right: 20px;
             }
          }
@@ -786,13 +799,30 @@
 
 }
 
-.my-announcements-grid__inner{
+.my-announcements-grid__inner {
    display: flex;
    flex-wrap: nowrap;
    width: fit-content;
-   .stratch-child-block{
+
+   .stratch-child-block {
       width: 256px;
    }
 
 }
+
+
+//@media(max-width: 991px) {
+//   .ma-announcements {
+//      &__body--row {
+//         overflow: hidden;
+//         &__inner {
+//            flex-wrap: wrap;
+//            flex-direction: row;
+//            &--item-plate{
+//               width: calc(50% - 9px);
+//            }
+//         }
+//      }
+//   }
+//}
 

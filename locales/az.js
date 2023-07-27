@@ -2621,7 +2621,7 @@ export default {
    terminal_popup_title:
       "terminalları vasitəsilə balans artırılması aşağıdakı qaydadadır:",
    plate_announce_key: "Elan yerləşdirildi",
-  "sign_in_to_account": "Hesaba daxil ol",
+   "sign_in_to_account": "Hesaba daxil ol",
    "my_balance": "Balansım",
    "sign_out": "Çıxış",
 
@@ -2641,8 +2641,7 @@ export default {
    "make_payment": "Ödə",
    "protocol_details": "Protokolun detalları",
    "show_image_or_video": "Şəkil / videoya bax",
-
-   "saved_cards": "Saxlanılan kartlar",
+   "saved_card": "Saxlanılan kartlar",
    "no_agreements": "Heç bir müqavilə tapılmadı",
    "transactions": "Əməliyyatlar",
    "agreement_details": "Müqavilə barədə ətraflı",
@@ -2666,6 +2665,13 @@ export default {
    "change_profile_pictures_validation": "JPG, PNG, Bitmap, 3 MB-dan çox olmayan",
    "upload_file": "Fayl yüklə",
 
+   "add_vehicle": "Nəqliyyat vasitəsi əlavə et",
+   "add_vehicle_desc": "Hər əlavə etdiyiniz NV-nə görə aylıq 1 AZN ₼ (ƏDV daxil) məbləğ tutulacaq.",
+   "no_vehicle_found": "Sizin əlavə edilmiş nəqliyyat vasitəniz yoxdur",
 
+   "profile_balance_desc": "Rəsmi salonlardan avtomobil sifariş et",
+   "logout_account_desc": "Hesabdan çıxış et",
+   "garage_penalties_desc": "Cərimələr, gömrük kalkulyatoru, bələdçi, alkotester, vizual şin kalkulyatoru",
+   "garage_account_desc": "Rəsmi nümayəndə və digər avtosalonlar",
 };
 

@@ -13,10 +13,11 @@
       >
          {{ $t('stop_subsciption') }}
       </button>
-      <modal-popup :modal-class="'midsize packages'"
-                   :title="$t('remove_vehicle1')"
-                   :toggle="showModal"
-                   @close="showModal = false">
+      <modal-popup
+         :modal-class="!isMobileBreakpoint ? 'midsize': 'larger'"
+         :title="$t('remove_vehicle1')"
+         :toggle="showModal"
+         @close="showModal = false">
          <div class="remove-vehicle-modal">
             <p>{{ $t('stop_subscription_desc1') }}</p>
             <p class="remove-vehicle-modal__text-with-info">
@@ -101,6 +102,7 @@ export default {
             this.pending = false;
             this.showModal = false;
             this.scrollReset();
+            this.$emit("carDeactivated", true)
          } catch (err) {
             this.pending = false;
          }
@@ -119,7 +121,7 @@ export default {
       margin-bottom: 25px;
    }
 
-   &__ {
+   &__text-with-info {
       display: flex;
       align-items: center;
 

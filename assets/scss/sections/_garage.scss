@@ -464,11 +464,13 @@
          display: flex;
          align-items: center;
          cursor: pointer;
-         &:hover{
+
+         &:hover {
             h6 {
                color: $red-1 !important;
 
             }
+
             svg {
                path, ellipse, circle {
                   stroke: $red-1 !important;
@@ -527,10 +529,12 @@
       width: calc(100% - 184px);
       box-sizing: border-box;
       overflow: hidden;
-      .pages-garage-index{
+
+      .pages-garage-index {
          width: 100%;
       }
-      .container{
+
+      .container {
          width: 100%;
          min-width: 100%;
       }
@@ -542,11 +546,14 @@
 }
 
 
+
+
 .ma-garage-link-active {
    h6 {
       color: $red-1 !important;
 
    }
+
    svg {
       path, ellipse, circle {
          stroke: $red-1 !important;
@@ -555,20 +562,22 @@
 
 }
 
-.protocol-payment-modal{
-   &__top{
+.protocol-payment-modal {
+   &__top {
       display: flex;
       align-items: center;
       flex-wrap: nowrap;
       justify-content: space-between;
       margin-bottom: 20px;
-      &--item{
+
+      &--item {
          width: calc(50% - 8px);
 
       }
    }
-   &__body{
-      &--total-amount{
+
+   &__body {
+      &--total-amount {
          border-radius: 8px;
          background: #eef2f6;
          padding: 20px 16px;
@@ -576,21 +585,25 @@
          justify-content: space-between;
          align-items: center;
          margin: 20px 0;
-         p{
+
+         p {
             font: 400 16px/20px 'TTHoves';
             color: #364152;
          }
-         strong{
+
+         strong {
             font: 500 16px/20px 'TTHoves';
             color: #121926;
          }
       }
    }
-   &__actions{
+
+   &__actions {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      button{
+
+      button {
          width: calc(50% - 8px);
       }
    }
