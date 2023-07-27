@@ -85,9 +85,18 @@ export default {
 }
 .dark-mode{
    .modal-popup{
+
+      background: #1B2434;
+
       h4{
          color: #fff;
       }
+   }
+   .modal-popup_content .title .close{
+      background: #364152;
+   }
+   .modal-popup_content .title .close i{
+      color: #000;
    }
 }
 </style>

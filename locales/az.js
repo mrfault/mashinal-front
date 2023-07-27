@@ -1440,7 +1440,7 @@ export default {
    pay_with_card: "Bank kartı",
    pay_with_terminal: "Terminallarda ödəniş",
    payment: "Ödəniş",
-   payment_amount: "Məbləğ (AZN)",
+   payment_amount: "Məbləğ",
    payment_history: "Ödəniş tarixçəsi",
    payment_method: "Ödəniş üsulları",
    payments: "Ödənişlər",

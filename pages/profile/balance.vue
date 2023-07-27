@@ -37,25 +37,27 @@
                      </div>
                      <div class="mt-3">
                         <form class="form" @submit.prevent="increaseBalance" novalidate>
-                           <div class="form-group d-flex justify-content-between align-items-center">
+                           <div class="form-group row m-0">
                               <form-text-input
                                  type="number"
                                  v-model="form.money"
                                  :placeholder="$t('payment_amount')"
+                                 class="col-md-3 p-0 mb-2 mb-lg-0"
                               />
 
                               <select-banking-card
-                                 style="display: none"
                                  v-if="bankingCards.length"
                                  :show-card-image="false"
                                  :value="bankingCard"
                                  @input="bankingCard = $event"
-                                 class="mt-2 mt-lg-3"
+                                 class="col-md-5 pr-0 pl-lg-2 pl-0 mb-2 mb-lg-0"
                               />
 
-                              <button type="submit" :class="['btn btn--green ml-2 full-width', { pending, disabled: form.money < this.minAmount }]">
-                                 {{ $t('replenish') }}
-                              </button>
+                              <div class="col-md-4 pr-0 pl-lg-2 pl-0 mb-2 mb-lg-0">
+                                 <button type="submit" :class="['btn btn--green full-width', { pending, disabled: form.money < this.minAmount }]">
+                                    {{ $t('replenish') }}
+                                 </button>
+                              </div>
                            </div>
                         </form>
                      </div>
@@ -197,7 +199,14 @@
             :modal-class="'larger cards'"
             @close="openModal = false">
             <div>
-               <banking-cards
+<!--               <banking-cards-->
+<!--                  :cards="bankingCards"-->
+<!--                  :selected-card="bankingCard"-->
+<!--                  @input="bankingCard = $event"-->
+<!--                  @close="openModal = false"-->
+<!--               />-->
+
+               <BankingCardNew
                   :cards="bankingCards"
                   :selected-card="bankingCard"
                   @input="bankingCard = $event"
@@ -212,6 +221,7 @@
 <script>
    import {mapGetters, mapState} from 'vuex'
    import BankingCards from '~/components/payments/BankingCards'
+   import BankingCardNew from '~/components/payments/BankingCardNew'
    import {PaymentMixin} from '~/mixins/payment'
    import ComeBack from "~/components/elements/ComeBack.vue";
 
@@ -223,6 +233,7 @@
       components: {
          ComeBack,
          BankingCards,
+         BankingCardNew,
       },
       nuxtI18n: {
          paths: {
@@ -429,7 +440,6 @@
 
 .btn--green{
    height: 52px;
-   width: 160px;
    border-radius: 8px;
 }
 
@@ -543,6 +553,14 @@ td:first-child, th:first-child {
    }
 }
 
+
+.select-menu_dropdown-option.card-option{
+   width: 100%!important;
+}
+.select-menu_dropdown{
+   width: 140%!important;
+}
+
 @media (max-width: 1250px) {
    td, th {
       padding: 12px;
@@ -553,6 +571,10 @@ td:first-child, th:first-child {
    td, th {
       padding: 12px;
    }
+   .select-menu_dropdown{
+      width: 100%!important;
+   }
+
 }
 
 @media (max-width: 370px) {
@@ -560,6 +582,5 @@ td:first-child, th:first-child {
       padding: 12px;
    }
 }
-
 
 </style>

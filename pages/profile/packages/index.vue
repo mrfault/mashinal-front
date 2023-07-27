@@ -22,6 +22,7 @@
                })"
                   :unpaidAgreement="unpaidAgreement"
                   v-if="!!unpaidAgreement"
+                  style="margin-bottom: 15px;"
                />
 
                <div v-if="!getAgreements.length">

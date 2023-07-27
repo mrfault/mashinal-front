@@ -14,41 +14,43 @@
             <div class="col-md-12 pb-5">
                <div class="row flex-column-reverse flex-lg-row pt-lg-0 pt-5">
                   <div class="col-md-6 pb-5">
-                     <div class="row">
-                        <div class="col-md-12 pb-3">
-                           <form-text-input :maxlength="30" :placeholder="$t('name')" v-model="form.name"/>
-                        </div>
-                        <div class="col-md-12 pb-3">
-                           <form-text-input :maxlength="30" :placeholder="$t('surname')" v-model="form.lastname"/>
-                        </div>
-                        <div class="col-md-12 pb-3">
-                           <change-email :placeholder="$t('email')"/>
-                        </div>
-                        <div class="col-md-12 pb-3">
-                           <change-phone :placeholder="$t('contact_number')"/>
-                        </div>
-                        <div class="col-md-12 pb-3">
-                           <form-text-input :placeholder="$t('birthday')" v-model="form.birthday" input-date />
-                        </div>
-                        <div class="col-md-12 pb-3">
-                           <form-select
-                              :label="$t('gender')"
-                              :options="getGenderOptions"
-                              :clear-placeholder="true"
-                              :clear-option="false"
-                              :input-placeholder="$t('your_gender')"
-                              v-model="form.gender"
-                              :new-label="false"
-                              has-search
-                           />
-                        </div>
-                        <div class="col-md-12 pb-3">
-                           <button
-                              type="submit"
-                              @click="submit"
-                              :class="['btn btn--green full-width', { pending: pending && showPasswordModal }]">
-                              {{ $t('save') }}
-                           </button>
+                     <div class="card">
+                        <div class="row">
+                           <div class="col-md-12 pb-3">
+                              <form-text-input :maxlength="30" :placeholder="$t('name')" v-model="form.name"/>
+                           </div>
+                           <div class="col-md-12 pb-3">
+                              <form-text-input :maxlength="30" :placeholder="$t('surname')" v-model="form.lastname"/>
+                           </div>
+                           <div class="col-md-12 pb-3">
+                              <change-email :placeholder="$t('email')"/>
+                           </div>
+                           <div class="col-md-12 pb-3">
+                              <change-phone :placeholder="$t('contact_number')"/>
+                           </div>
+                           <div class="col-md-12 pb-3">
+                              <form-text-input :placeholder="$t('birthday')" v-model="form.birthday" input-date />
+                           </div>
+                           <div class="col-md-12 pb-3">
+                              <form-select
+                                 :label="$t('gender')"
+                                 :options="getGenderOptions"
+                                 :clear-placeholder="true"
+                                 :clear-option="false"
+                                 :input-placeholder="$t('your_gender')"
+                                 v-model="form.gender"
+                                 :new-label="false"
+                                 has-search
+                              />
+                           </div>
+                           <div class="col-md-12 pb-3">
+                              <button
+                                 type="submit"
+                                 @click="submit"
+                                 :class="['btn btn--green full-width', { pending: pending && showPasswordModal }]">
+                                 {{ $t('save') }}
+                              </button>
+                           </div>
                         </div>
                      </div>
                   </div>
@@ -188,6 +190,14 @@ export default {
 </script>
 
 <style>
+
+.pages-dashboard-settings{
+   min-height: 900px;
+}
+.card {
+   border: 1px solid #CDD5DF;
+   border: 1px solid #CDD5DF;
+}
 .change-avatar {
    padding: 24px;
    border-radius: 12px;
@@ -264,7 +274,10 @@ export default {
       border: 1px solid #1B2434!important;
       background-color: #1B2434 !important;
    }
-
+   .card {
+      border: 1px solid #1B2434!important;
+      background-color: #1B2434 !important;
+   }
    .avatar-content h4{
       color: #bcc2c9;
    }
