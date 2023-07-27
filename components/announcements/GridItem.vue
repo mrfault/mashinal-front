@@ -143,6 +143,15 @@
             <div class="item-details__item">
                {{ announcement.created_at }}
             </div>
+
+
+         </div>
+
+         <div class="item-details" v-if="isProfilePage">
+            <monetization-button
+               :announcement="announcement"
+               :disabled="announcement.status !== 1"
+            />
          </div>
       </div>
    </div>
@@ -172,7 +181,7 @@
          isProfilePage: {
             type: Boolean,
             default: false,
-         }
+         },
       },
 
       components: {
