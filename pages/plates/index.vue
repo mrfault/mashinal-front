@@ -58,7 +58,6 @@
                      <form-numeric-input
                         :maxlength="3"
                         :float="true"
-                        :defaultValue="''"
                         :invalid="$v.car_number.$error"
                         @change="$v.$touch()"
                         v-model="form.car_number"
@@ -68,13 +67,11 @@
                   <div class="divider">
                      <form-numeric-input
                         :placeholder="$t('price_from')"
-                        :defaultValue="''"
                         v-model="form.price_from"
                      />
 
                      <form-numeric-input
                         :placeholder="$t('price_to')"
-                        :defaultValue="''"
                         v-model="form.price_to"
                      />
                   </div>

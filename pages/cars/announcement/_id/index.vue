@@ -203,4 +203,18 @@
          }
       }
    }
+
+   @media (max-width: 1150px) {
+      .pages-cars-id {
+         &__info {
+            grid-template-columns: 560px 348px;
+
+            .inner-gallery {
+               .swiper-slide-bg {
+                  height: 400px;
+               }
+            }
+         }
+      }
+   }
 </style>
