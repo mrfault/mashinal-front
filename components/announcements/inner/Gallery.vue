@@ -8,41 +8,37 @@
             v-if="showSlider"
          >
             <div class="swiper-wrapper">
-<!--               <div-->
-<!--                  class="swiper-slide"-->
-<!--                  :key="index"-->
-<!--                  v-for="(slide, index) in slides.main"-->
-<!--               >-->
-<!--                  <div-->
-<!--                     style="width: 100%;"-->
-<!--                     v-if="-->
-<!--                index === 0 &&-->
-<!--                announcement.images_360 &&-->
-<!--                announcement.images_360.length-->
-<!--              "-->
-<!--                  >-->
-<!--                     <div class="position-relative">-->
-<!--                        <no-ssr>-->
-<!--                           <Interior360Viewer :url="announcement.interior_360" v-if="showInterior"/>-->
-<!--                           <vue-three-sixty-->
-<!--                              v-else-->
-<!--                              :amount="announcement.images_360.length"-->
-<!--                              buttonClass="d-none"-->
-<!--                              disableZoom-->
-<!--                              :files="announcement.images_360"-->
-<!--                           />-->
-<!--                        </no-ssr>-->
-<!--                     </div>-->
-<!--                  </div>-->
+               <div
+                  class="swiper-slide"
+                  :key="index"
+                  v-for="(slide, index) in announcement?.media?.main"
+               >
+                  <div
+                     style="width: 100%;"
+                     v-if="index === 0 && announcement?.media?.images_360 && announcement?.media?.images_360.length"
+                  >
+                     <div class="position-relative">
+                        <no-ssr>
+                           <Interior360Viewer :url="announcement?.media?.interior_360" v-if="showInterior"/>
+                           <vue-three-sixty
+                              v-else
+                              :amount="announcement?.media?.images_360.length"
+                              buttonClass="d-none"
+                              disableZoom
+                              :files="announcement?.media?.images_360"
+                           />
+                        </no-ssr>
+                     </div>
+                  </div>
 
-<!--                  <div-->
-<!--                     v-else-->
-<!--                     :class="['swiper-slide-bg', { 'youtube-play': showYtVideo(index) }]"-->
-<!--                     :style="`background-image:url(${showYtVideo(index) ? getYtVideoImage('hq') : slide}?width=834)`"-->
-<!--                  >-->
-<!--                     &lt;!&ndash;              <loader />&ndash;&gt;-->
-<!--                  </div>-->
-<!--               </div>-->
+                  <div
+                     v-else
+                     :class="['swiper-slide-bg', { 'youtube-play': showYtVideo(index) }]"
+                     :style="`background-image:url(${showYtVideo(index) ? getYtVideoImage('hq') : slide.main_inner}?width=716)`"
+                  >
+                     <!--              <loader />-->
+                  </div>
+               </div>
             </div>
          </div>
 
@@ -87,18 +83,18 @@
 
          <div class="inner-gallery-lightbox" v-touch:swipe.top="handleSwipeTop">
             <template v-if="isMobileBreakpoint">
-<!--               <FsLightbox-->
-<!--                  :zoomIncrement="0"-->
-<!--                  :toggler="toggleFsLightbox"-->
-<!--                  :sources="getSourcesFsLightbox"-->
-<!--                  :types="slides.types"-->
-<!--                  :slide="currentSlide + 1"-->
-<!--                  :key="lightboxKey"-->
-<!--                  :onClose="refreshLightbox"-->
-<!--                  :onBeforeClose="onBeforeClose"-->
-<!--                  :disableThumbs="true"-->
-<!--                  :onSlideChange="changeLightboxSlide"-->
-<!--               />-->
+               <FsLightbox
+                  :zoomIncrement="0"
+                  :toggler="toggleFsLightbox"
+                  :sources="getSourcesFsLightbox"
+                  :types="announcement?.media?.main"
+                  :slide="currentSlide + 1"
+                  :key="lightboxKey"
+                  :onClose="refreshLightbox"
+                  :onBeforeClose="onBeforeClose"
+                  :disableThumbs="true"
+                  :onSlideChange="changeLightboxSlide"
+               />
             </template>
 
             <transition-group name="fade">
@@ -128,6 +124,7 @@
                               </div>
                            </div>
                         </template>
+
                         <template v-else-if="where === 'catalog'">
                            <h3 v-html="title"></h3>
                            <h4 v-html="subtitle"></h4>
@@ -136,18 +133,18 @@
                   </div>
 
                   <div class="blur-bg_slider" :key="2" v-else>
-<!--                     <images-slider-->
-<!--                        :announcement="announcement"-->
-<!--                        :current-slide="currentSlide"-->
-<!--                        :slides="slides"-->
-<!--                        :has-sidebar="where === 'announcement'"-->
-<!--                        @close="closeLightbox"-->
-<!--                        @slide-change="currentSlide = $event"-->
-<!--                     >-->
-<!--                        <template #sidebar v-if="where === 'announcement'">-->
-<!--                           <slot/>-->
-<!--                        </template>-->
-<!--                     </images-slider>-->
+                     <images-slider
+                        :announcement="announcement"
+                        :current-slide="currentSlide"
+                        :slides="announcement?.media?.main"
+                        :has-sidebar="where === 'announcement'"
+                        @close="closeLightbox"
+                        @slide-change="currentSlide = $event"
+                     >
+                        <template #sidebar v-if="where === 'announcement'">
+                           <slot/>
+                        </template>
+                     </images-slider>
                   </div>
                </template>
             </transition-group>
@@ -212,8 +209,7 @@
                   crossFade: true,
                },
                loop: false,
-               preloadImages: false,
-
+               preloadImages: false
             }
          }
       },
@@ -254,13 +250,13 @@
          slidePrev() {
             if (!this.showSlider) return
             if (this.gallerySwiper.activeIndex === 0) {
-               this.gallerySwiper.slideTo(this.slides.main.length - 1)
+               this.gallerySwiper.slideTo(this.announcement?.media?.main.length - 1)
             } else this.gallerySwiper.slidePrev()
             this.updateTouchEvents()
          },
          slideNext() {
             if (!this.showSlider) return
-            if (this.slides.main.length - 1 === this.gallerySwiper.activeIndex) {
+            if (this.announcement?.media?.main.length - 1 === this.gallerySwiper.activeIndex) {
                this.gallerySwiper.slideTo(0)
             } else this.gallerySwiper.slideNext()
             this.updateTouchEvents()
@@ -271,20 +267,14 @@
          },
          getMediaByKey(media, key) {
             key = media[key] ? key : Object.keys(media)[0]
-            return media[key] instanceof Array
-               ? media[key].map((item) => this.$withBaseUrl(item))
-               : []
+            return media[key] instanceof Array ? media[key].map((item) => this.$withBaseUrl(item)) : []
          },
          closeLightbox() {
             if (this.isMobileBreakpoint) {
-               if (this.showLightbox) {
-                  this.toggleFsLightbox = !this.toggleFsLightbox
-               }
-            } else {
+               if (this.showLightbox) this.toggleFsLightbox = !this.toggleFsLightbox;
+            } else this.showImagesSlider = false;
 
-               this.showImagesSlider = false
-            }
-            this.setBodyOverflow('scroll')
+            this.setBodyOverflow('scroll');
          },
          handleSwipeTop() {
             if (document.body.classList.contains('zooming')) return
@@ -318,22 +308,22 @@
          },
 
          getSourcesFsLightbox() {
-            if (this.slides.types[0] === 'custom') {
-               return [
-                  {
-                     component: this.showInterior ? 'interior360-viewer' : 'vue-three-sixty',
-                     props: {
-                        onFsLightBox: true,
-                        url: this.announcement.interior_360,
-                        files: this.announcement.images_360,
-                        amount: this.announcement.images_360.length,
-                        fromFsPopup: true,
-                     },
-                  },
-                  ...this.slides.main.slice(1, this.slides.main.length),
-               ]
-            }
-            return this.slides.main
+            // if (this.slides.types[0] === 'custom') {
+            //    return [
+            //       {
+            //          component: this.showInterior ? 'interior360-viewer' : 'vue-three-sixty',
+            //          props: {
+            //             onFsLightBox: true,
+            //             url: this.announcement?.media?.interior_360,
+            //             files: this.announcement?.media?.images_360,
+            //             amount: this.announcement?.media?.images_360.length,
+            //             fromFsPopup: true,
+            //          },
+            //       },
+            //       ...this.announcement?.media?.main.slice(1, this.announcement?.media?.main.length),
+            //    ]
+            // }
+            return this.announcement?.media?.main
          },
 
          slides() {
@@ -405,12 +395,14 @@
       },
 
       mounted() {
+         console.log(this.announcement)
          let swiperTouchStartX
 
          this.$nextTick(() => {
             this.$nuxt.$on('switchInterior', () => {
                this.switchInterior();
-            })
+            });
+
             if (this.showSlider) {
                setTimeout(() => {
                   this.gallerySwiper.init()

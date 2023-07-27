@@ -111,7 +111,7 @@
             <div class="item-details__item d-flex align-items-center justify-content-between">
                <h3>{{ announcement.price }}</h3>
 
-               <div v-if="announcement.tradeable || announcement.credit">
+               <div class="item-details__icons" v-if="announcement.tradeable || announcement.credit">
                   <inline-svg
                      src="/icons/barter.svg"
                      v-if="announcement.tradeable"

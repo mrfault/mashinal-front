@@ -1102,10 +1102,9 @@ export const actions = {
       commit("mutate", {property: "partAnnouncements", value: res});
    },
    async getGridSearch({commit, dispatch}, data) {
-      const res = await this.$axios.$post(
-         `${data.url}?page=${data.page || 1}`,
-         data.post
-      );
+      console.log(data)
+      const res = await this.$axios.$get(
+         `https://v2dev.mashin.al/api/v2${data.url}?page=${data.page || 1}`, data.post);
 
       commit("mutate", {property: data.prefix + "Announcements", value: res});
    },
