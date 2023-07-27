@@ -11,7 +11,6 @@
             :bar-title="$t('my_balance')"
             @back="$router.push(pageRef || $localePath('/profile/balance'))"
             height-auto>
-
             <div class="row" v-if="!isMobileBreakpoint">
                <div class="col-md-12 mb-0 mb-lg-4">
                   <h1>{{ $t('my_balance') }}</h1>
@@ -198,13 +197,12 @@
             :modal-class="'larger cards'"
             @close="openModal = false">
             <div>
-<!--               <banking-cards-->
-<!--                  :cards="bankingCards"-->
-<!--                  :selected-card="bankingCard"-->
-<!--                  @input="bankingCard = $event"-->
-<!--                  @close="openModal = false"-->
-<!--               />-->
-
+               <!--<banking-cards-->
+               <!--   :cards="bankingCards"-->
+               <!--   :selected-card="bankingCard"-->
+               <!--   @input="bankingCard = $event"-->
+               <!--   @close="openModal = false"-->
+               <!--/>-->
                <BankingCardNew
                   :cards="bankingCards"
                   :selected-card="bankingCard"
@@ -239,7 +237,6 @@
             az: '/profil/balans',
          },
       },
-
       beforeDestroy() {
          this.mutate({property: 'temporaryLazyData', value: {}});
       },
@@ -260,8 +257,7 @@
             store.dispatch('getMyBalanceHistory'),
             store.dispatch('bankingCards/getBankingCards'),
             $auth.fetchUser(),
-         ])
-
+         ]);
          return {
             pending: false,
             minAmount: app.$env.DEV ? 0.01 : 1,
@@ -273,7 +269,6 @@
       computed: {
          ...mapState(['balanceHasAnimation']),
          ...mapGetters(['myBalanceHistory']),
-
          crumbs() {
             return [
                {name: this.$t('dashboard'), route: `${this.user.autosalon ? '/dashboard/1' : '/garage-services'}`},
@@ -333,7 +328,6 @@
                   value: false
                });
             }, 1000)
-
          },
       },
       mounted() {
@@ -351,8 +345,8 @@
                      this.$el?.querySelector('.text-input input')?.focus()
                   }, 300)
             }
-         })
-         this.removeAnimationbalanceIncrement()
+         });
+         this.removeAnimationbalanceIncrement();
       },
    }
 </script>

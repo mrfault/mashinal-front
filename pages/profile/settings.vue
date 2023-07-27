@@ -63,8 +63,8 @@
                                     v-model="form.avatar"
                                     :initial-image="getUserAvatar"
                                     croppable
-                                    :width="isMobileBreakpoint ? 72 : 72"
-                                    :height="isMobileBreakpoint ? 72 : 72"/>
+                                    :width="72"
+                                    :height="72"/>
                               </div>
                               <div class="avatar-content">
                                  <h4>{{$t('change_profile_pictures_text')}}</h4>
@@ -207,8 +207,8 @@ export default {
    align-items: center;
 }
 .avatar-image{
-   min-height: 72px;
-   width: 20%;
+   height: 72px;
+   width: 72px;
    display: flex;
    justify-content: center;
 }
@@ -284,6 +284,5 @@ export default {
    .avatar-content p {
       color: #CDD5DF;
    }
-
 }
 </style>
