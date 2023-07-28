@@ -1364,10 +1364,11 @@ input::-webkit-inner-spin-button {
 }
 
 .form-keywords {
+   width: 100%;
    min-height: 200px;
    margin-top: 20px;
    padding: 20px 15px;
-   background-color: $greyish-blue-2;
+   border: 1px solid $white-2-new;
    border-radius: 4px;
    cursor: text;
 
