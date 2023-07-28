@@ -9,7 +9,7 @@ import * as rive from 'rive-js';
 import { VueHammer } from 'vue2-hammer';
 import Interior360Viewer from "~/components/Interior360Viewer";
 import VueScrollStop from 'vue-scroll-stop'
- 
+
 Vue.use(VueScrollStop)
 Vue.use(VueHammer)
 //import VueThreeSixty from 'vue-360'
@@ -20,7 +20,8 @@ Vue.use(Vue2TouchEvents)
 Vue.use(VueAwesomeSwiper);
 Vue.use(VueLazyload);
 Vue.use(VTooltip, {
-  defaultContainer: false
+  // defaultContainer: false,
+   defaultTrigger: 'hover focus click'
 });
 
 Vue.use({

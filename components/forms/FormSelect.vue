@@ -474,6 +474,7 @@ export default {
       checkOptionsOffset: Boolean,
       wider: Boolean,
       hasCards: Boolean,
+      limit: Number,
    },
    data() {
       return {
@@ -499,6 +500,9 @@ export default {
          if (!onlykey && this.nameInValue) {
             return {key: key, name: name}
          }
+         if (this.objectInValue) {
+            return option
+         }
          return this.$notUndefined(key, name)
       },
       getKey(value) {
@@ -523,7 +527,7 @@ export default {
             : this.selectValue === value
          const hasSameObj =
             this.selectValue instanceof Array &&
-            (this.nameInValue
+            (this.nameInValue || this.objectInValue
                ? this.selectValue.findIndex((val) => val && val.key == value.key) !==
                -1
                : this.selectValue.includes(value))
@@ -592,13 +596,14 @@ export default {
                   return
                } else {
                   value = this.isSelected(option)
+
                      ? this.multiple
                         ? (this.value || []).filter(
                            (v) => this.getKey(v) !== this.getKey(value),
                         )
                         : value
                      : this.multiple
-                        ? [...(this.value || []), value]
+                        ? this.limit && [...(this.value || [])].length === this.limit ? [...(this.value || [])] : [...(this.value || []), value]
                         : value
                }
             }
@@ -641,6 +646,10 @@ export default {
          // })
       },
       getLabelText() {
+         if (this.objectInValue) {
+            const selectKey = this.value.title ? "title" : "name"
+            return this.value ? this.$t(this.value[selectKey]) : this.label
+         }
          if (this.custom) {
             let value;
             let read = this.values.read !== false;
