@@ -23,7 +23,7 @@ export const YMapsMixin = {
         } = settings;
 
         const mode = debug ? 'debug' : 'release';
-        const params = `lang=${lang}${apiKey && `&apikey=${apiKey}`}&mode=${mode}&coordorder=${coordorder}`;
+        const params = `lang=${lang}&apikey=${apiKey}&mode=${mode}&coordorder=${coordorder}`;
         const link = `https://${enterprise ? 'enterprise.' : ''}api-maps.yandex.ru/${version}/?${params}`;
 
         yandexMapScript.setAttribute('src', link);
