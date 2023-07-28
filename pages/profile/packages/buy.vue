@@ -27,7 +27,15 @@
                      <tr class="w-100">
                         <td class="text-left">{{ $t('period_time') }}</td>
                         <td class="text-right">
-                           <form-select :options="durations" v-model="duration"  :new-label="false"></form-select>
+                           <form-select
+                              :label="$t('period_time')"
+                              :options="durations"
+                              :clear-placeholder="false"
+                              :clear-option="false"
+                              :input-placeholder="$t('period_time')"
+                              v-model="duration"
+                              :new-label="false"
+                           />
                         </td>
                      </tr>
                      <tr class="w-100">
@@ -45,7 +53,7 @@
                </div>
                <div class="d-flex justify-content-center align-items-center pt-4">
                   <div class="full-width-xs">
-                     <button class="btn btn--green full-width" @click="nextStep">
+                     <button class="btn btn--green height-60 full-width" @click="nextStep">
                         {{ $t('pay') }}
                      </button>
                   </div>
@@ -123,7 +131,7 @@
 
             <div class="row">
                <div class="col-12 col-lg-12 mt-2 mt-lg-0">
-                  <button  :class="['btn btn--green full-width', { pending }]"  @click="handleSubmit">
+                  <button :class="['btn btn--green  full-width', { pending }]"  @click="handleSubmit">
                      {{ $t('pay') }}
                   </button>
                </div>
@@ -365,7 +373,7 @@
          .myPackagesBuy__cart__table {
             width: 100%;
             border-collapse: collapse;
-
+            border: 0;
             tr {
                border-bottom: 1px solid #E3E8EF;
                padding: 10px 0;
@@ -407,7 +415,7 @@
 
       .btn--green{
          width: 230px;
-         height: 60px;
+         height: 60px!important;
          padding: 14px 16px 14px 16px;
          border-radius: 8px;
          gap: 8px;
@@ -425,10 +433,16 @@
       }
    }
 
+   .height-60{
+      height: 60px!important;;
+   }
+
+
    .dark-mode {
       .myPackagesBuy {
          &__cart {
-            background-color: #242426;
+            background: #1B2434;
+            border: 1px solid #364152;
 
             &-title {
                color: #FFFFFF;
@@ -442,6 +456,25 @@
                .text-input {
                   input {
                      background-color: #f3f7fc33;
+                  }
+               }
+            }
+
+            .myPackagesBuy__cart__table {
+               tr {
+                  border-bottom: 1px solid #364152;
+
+
+                  td {
+                     color: #CDD5DF;
+
+                     &:first-child {
+                        color: #CDD5DF;
+                     }
+
+                     &:last-child {
+                        color: #CDD5DF;
+                     }
                   }
                }
             }
@@ -493,6 +526,11 @@
             }
          }
       }
+
+     .select-menu_label.selected {
+        background-color: #1B2434!important;
+        border: 1px solid #364152;
+     }
    }
 
    @media (max-width: 1250px) {

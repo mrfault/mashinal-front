@@ -173,7 +173,7 @@
       align-items: center;
       justify-content: space-between;
       padding: 21px 24px;
-      border-radius: 4px;
+      border-radius: 12px;
       background-color: #FFFFFF;
 
       &-text {

@@ -81,4 +81,12 @@ export default {
 .alert .alert_content span{
    color: #155EEF;
 }
+
+.dark-mode{
+   .alert.alert-info {
+      border: 1px solid #1B2434;
+      background: linear-gradient(0deg, #1B2434, #1B2434),
+      linear-gradient(0deg, #1B2434, #1B2434);
+   }
+}
 </style>

@@ -54,12 +54,13 @@
                                     {{ $t('pay') }}
                                  </button>
 
-                                 <button
-                                    class="btn btn-download"
-                                    v-if="!isMobileBreakpoint"
-                                    @click="downloadInvoice(agreement.id)">
-                                    {{ $t('download_invoice') }} <inline-svg :src="'/icons/download1.svg'"/>
-                                 </button>
+                                 <template v-else>
+                                    <button
+                                       class="btn btn-download"
+                                       @click="downloadInvoice(agreement.id)">
+                                       {{ $t('download_invoice') }} <inline-svg :src="'/icons/download1.svg'"/>
+                                    </button>
+                                 </template>
 
                                  <button class="btn btn-view" @click="openViewPopup(agreement)">
                                     {{ $t('view') }} <inline-svg :src="'/icons/eye1.svg'"/>
@@ -141,18 +142,17 @@
                                     <tr>
                                        <td>
                                           <div class="d-flex w-100 align-items-center justify-content-start">
-                                             <button
-                                                class="btn btn-pay"
+                                             <button class="btn btn-pay"
                                                 v-if="!agreement.payment.is_paid || agreement.is_expired"
                                                 @click="openModal = true">
                                                 {{ $t('pay') }}
                                              </button>
-                                             <button
-                                                class="btn btn-download"
-                                                v-else
-                                                @click="downloadInvoice(agreement.id)">
-                                                {{ $t('download_invoice') }} <inline-svg :src="'/icons/download1.svg'"/>
-                                             </button>
+                                             <template v-else>
+                                                <button class="btn btn-download"
+                                                   @click="downloadInvoice(agreement.id)">
+                                                   {{ $t('download_invoice') }} <inline-svg :src="'/icons/download1.svg'"/>
+                                                </button>
+                                             </template>
                                           </div>
                                        </td>
                                        <td>

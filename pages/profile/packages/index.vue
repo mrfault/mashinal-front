@@ -2,37 +2,37 @@
    <div class="myPackages">
       <div class="myPackages__container">
          <portal to="breadcrumbs">
-            <breadcrumbs :crumbs="crumbs" />
+            <breadcrumbs :crumbs="crumbs"/>
          </portal>
          <component
             :is="isMobileBreakpoint ? 'mobile-screen' : 'div'"
             :bar-title="$t('my_packages')"
             @back="$router.push(pageRef || $localePath('/profile/packages'))"
-            height-auto
-         >
+            height-auto>
             <div>
-               <CustomNotifications
-                  :title="$t('unpaid_invoice')"
-                  :subtitle="$t('unpaid_params',
-               {
-                  package_type: unpaidAgreement.package.name[locale],
-                  start_date: $moment(unpaidAgreement.start_date).format('DD.MM.YYYY'),
-                  end_date: $moment(unpaidAgreement.end_date).format('DD.MM.YYYY'),
-                  price: unpaidAgreement.price
-               })"
-                  :unpaidAgreement="unpaidAgreement"
-                  v-if="!!unpaidAgreement"
-               />
-
-               <div v-if="!getAgreements.length">
-                  <h4 class="myPackages__title">{{ $t('not_active_package') }}</h4>
-                  <h5 class="myPackages__subtitle">{{ $t('get_new_package') }}</h5>
+               <div v-if="showPackage">
+                  sfds
                </div>
+               <template v-else>
+                  <CustomNotifications
+                     :title="$t('unpaid_invoice')"
+                     :subtitle="$t('unpaid_params',
+                     {
+                        package_type: unpaidAgreement.package.name[locale],
+                        start_date: $moment(unpaidAgreement.start_date).format('DD.MM.YYYY'),
+                        end_date: $moment(unpaidAgreement.end_date).format('DD.MM.YYYY'),
+                        price: unpaidAgreement.price
+                     })"
+                     :unpaidAgreement="unpaidAgreement"
+                     v-if="!!unpaidAgreement"
+                     style="margin-bottom: 15px;"
+                  />
 
-               <Packages
-                  :packages="getPackages"
-                  :disableBtn="disableBtn"
-               />
+                  <Packages
+                     :packages="getPackages"
+                     :disableBtn="disableBtn"
+                  />
+               </template>
             </div>
          </component>
       </div>
@@ -40,162 +40,167 @@
 </template>
 
 <script>
-   import Packages from "~/components/profile/Packages.vue";
-   import CustomNotifications from "~/components/elements/CustomNotifications.vue";
-   import ComeBack from "~/components/elements/ComeBack.vue";
-   import { mapGetters } from "vuex";
+import Packages from "~/components/profile/Packages.vue";
+import CustomNotifications from "~/components/elements/CustomNotifications.vue";
+import ComeBack from "~/components/elements/ComeBack.vue";
+import {mapGetters} from "vuex";
 
-   export default {
-      components: { Packages, CustomNotifications, ComeBack },
-
-      layout: 'garageLayout',
-      head() {
-         return this.$headMeta({
-            title: this.$t('my_packages'),
-         });
-      },
-
-      nuxtI18n: {
-         paths: {
-            az: '/profil/paketler'
-         }
-      },
-
-
-      computed: {
-         ...mapGetters({
-            getPackages: 'packages/getPackages',
-            getAgreements: 'getAgreements'
-         }),
-
-         crumbs() {
-            return [
-               { name: this.$t('dashboard'), route: `${this.user.autosalon ? '/dashboard/1' : '/garage-services'}` },
-               { name: this.$t('my_packages') }
-            ]
-         },
-
-         unpaidAgreement() {
-            return this.getAgreements.find(item => item.payment.is_paid === false);
-         },
-
-         disableBtn() {
-            return {
-               hasPackage: this.getPackages.find(item => item.id === this.getAgreements[0]?.package?.id),
-               is_expired: this.getAgreements[0]?.is_expired
-            }
-         }
-      },
-
-      async asyncData({ store }) {
-         await Promise.all([
-            store.dispatch('packages/getPackages'),
-            store.dispatch('fetchAgreements')
-         ]);
+export default {
+   layout: 'garageLayout',
+   components: {Packages, CustomNotifications, ComeBack},
+   head() {
+      return this.$headMeta({
+         title: this.$t('my_packages'),
+      });
+   },
+   data() {
+      return {
+         showPackage: false
       }
+   },
+   nuxtI18n: {
+      paths: {
+         az: '/profil/paketler'
+      }
+   },
+   methods: {
+
+   },
+   computed: {
+      ...mapGetters({
+         getPackages: 'packages/getPackages',
+         getAgreements: 'getAgreements'
+      }),
+      getPackage() {
+         if (this.getAgreements.length) {
+            this.showPackage = false;
+         }
+      },
+      crumbs() {
+         return [
+            {name: this.$t('dashboard'), route: `${this.user.autosalon ? '/dashboard/1' : '/garage-services'}`},
+            {name: this.$t('my_packages')}
+         ]
+      },
+      unpaidAgreement() {
+         return this.getAgreements.find(item => item.payment.is_paid === false);
+      },
+      disableBtn() {
+         return {
+            hasPackage: this.getPackages.find(item => item.id === this.getAgreements[0]?.package?.id),
+            is_expired: this.getAgreements[0]?.is_expired
+         }
+      }
+   },
+   async asyncData({store}) {
+      await Promise.all([
+         store.dispatch('packages/getPackages'),
+         store.dispatch('fetchAgreements')
+      ]);
    }
+}
 </script>
 
 <style lang="scss">
+.myPackages {
+
+   &__title {
+      margin: 36px 0 8px 0;
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 22px;
+      color: #081A3E;
+   }
+
+   &__subtitle {
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 17px;
+      color: #246EB2;
+      margin: 0;
+   }
+
+   .customPackages {
+      margin: 0px -25px 0 -25px;
+   }
+
+   .swiper-container {
+      padding-top: 25px;
+
+      .swiper-wrapper {
+         align-items: stretch;
+         height: unset !important;
+      }
+   }
+
+   * {
+      box-sizing: border-box;
+   }
+}
+
+.dark-mode {
    .myPackages {
-
       &__title {
-         margin: 36px 0 8px 0;
-         font-weight: 500;
-         font-size: 18px;
-         line-height: 22px;
-         color: #081A3E;
+         color: #A4A4A5;
       }
+   }
+}
 
-      &__subtitle {
-         font-weight: 400;
-         font-size: 14px;
-         line-height: 17px;
-         color: #246EB2;
-         margin: 0;
-      }
-
+@media (max-width: 1250px) {
+   .myPackages {
       .customPackages {
-         margin: 0px -25px 0 -25px;
-      }
-
-      .swiper-container {
-         padding-top: 25px;
-
-         .swiper-wrapper {
-            align-items: stretch;
-            height: unset !important;
-         }
-      }
-
-      * {
-         box-sizing: border-box;
-      }
-   }
-
-   .dark-mode {
-      .myPackages {
-         &__title {
-            color: #A4A4A5;
+         &__info {
+            &-item {
+               font-size: 13px;
+            }
          }
       }
    }
+}
 
-   @media (max-width: 1250px) {
-      .myPackages {
-         .customPackages {
-            &__info {
-               &-item {
-                  font-size: 13px;
+@media (max-width: 992px) {
+   .myPackages {
+      .customPackages {
+         &__info {
+            &-item {
+               font-size: 12px;
+
+               svg {
+                  max-width: 20px;
+                  width: 100%;
                }
             }
          }
       }
    }
+}
 
-   @media (max-width: 992px) {
-      .myPackages {
-         .customPackages {
-            &__info {
-               &-item {
-                  font-size: 12px;
+@media (max-width: 370px) {
+   .myPackages {
+      .customPackages {
+         &__subtitle {
+            font-size: 35px;
+         }
 
-                  svg {
-                     max-width: 20px;
-                     width: 100%;
-                  }
+         &__info {
+            &-item {
+               font-size: 12px;
+
+               svg {
+                  max-width: 20px;
+                  width: 100%;
                }
             }
          }
       }
    }
+}
 
-   @media (max-width: 370px) {
-      .myPackages {
-         .customPackages {
-            &__subtitle {
-               font-size: 35px;
-            }
-
-            &__info {
-               &-item {
-                  font-size: 12px;
-
-                  svg {
-                     max-width: 20px;
-                     width: 100%;
-                  }
-               }
-            }
-         }
+@media (min-width: 550px) {
+   .myPackages {
+      .customPackages {
+         margin: 0px 0 0 0;
       }
    }
-
-   @media (min-width: 550px) {
-      .myPackages {
-         .customPackages {
-            margin: 0px 0 0 0;
-         }
-      }
-   }
+}
 </style>
