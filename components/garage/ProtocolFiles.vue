@@ -17,6 +17,7 @@
                :types="slides.types"
             />
          </template>
+
          <transition-group name="fade">
             <template v-if="(showLightbox && isMobileBreakpoint) || (!isMobileBreakpoint && showImagesSlider)">
                <div :key="0" class="blur-bg">
@@ -24,13 +25,14 @@
                        alt=""/>
                </div>
                <div v-if="!isMobileBreakpoint" :key="1" class="blur-bg_slider">
-                  <images-slider
+                  <protocol-images-slider
                      :current-slide="currentSlide"
                      :has-sidebar="true"
                      :slides="slides"
                      @close="closeLightbox"
                      @slide-change="currentSlide = $event"
                   >
+
                      <template #sidebar>
                         <div class="card garage_protocol-info">
                            <div class="garage_protocol-titles">
@@ -73,7 +75,8 @@
                            </template>
                         </div>
                      </template>
-                  </images-slider>
+                  </protocol-images-slider>
+
                </div>
             </template>
          </transition-group>
@@ -87,12 +90,14 @@ import {mapGetters, mapActions} from 'vuex';
 import FsLightbox from 'fslightbox-vue';
 
 import ImagesSlider from '~/components/elements/ImagesSlider';
+import ProtocolImagesSlider from "~/components/elements/ProtocolImagesSlider";
 
 export default {
    props: {
       protocol: {}
    },
    components: {
+      ProtocolImagesSlider,
       FsLightbox,
       ImagesSlider
    },

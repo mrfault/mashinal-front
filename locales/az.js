@@ -1442,6 +1442,7 @@ export default {
    payment: "Ödəniş",
    payment_amount: "Məbləğ (AZN)",
    payment_history: "Ödəniş tarixçəsi",
+   no_payment_history: "Ödəniş tarixçəsi yoxdur",
    payment_method: "Ödəniş üsulları",
    payments: "Ödənişlər",
    penalty: "Cərimə faizı",
@@ -2673,5 +2674,9 @@ export default {
    "logout_account_desc": "Hesabdan çıxış et",
    "garage_penalties_desc": "Cərimələr, gömrük kalkulyatoru, bələdçi, alkotester, vizual şin kalkulyatoru",
    "garage_account_desc": "Rəsmi nümayəndə və digər avtosalonlar",
+   "vehicle_is_not_active": "Nəqliyyat vasitəsi prosesdədir",
+   "have_paid": "Ödənildi",
+
+   "pay_from_balance": "Balansdan ödə",
 };
 
