@@ -34,7 +34,7 @@ export default {
       return {
          form: this.$clone(this.initialForm),
          files: (this.announcement?.media || []).map((media, i) => ({media, key: this.initialForm.saved_images[i]})),
-         minFiles: this.type === 'moto' ? 2 : 3,
+         minFiles: 3,
          maxFiles: 20,
          savedFiles: [...this.initialForm.saved_images],
          uploading: 0,

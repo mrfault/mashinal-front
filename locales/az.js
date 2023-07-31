@@ -2672,10 +2672,8 @@ export default {
    let_us_know: "Bizə məlumat ver",
    negotiable_price: "Qiymət razılaşma yolu ilə",
    enter_keywords: "Açar sözləri daxil edin",
-   part_images_info: "Minimum - 1 şəkil, maksimum - 22 şəkil, minimal ölçü - 500x500 px"
+   part_images_info: "Minimum - 1 şəkil, maksimum - 22 şəkil, minimal ölçü - 500x500 px",
    "download_invoice": "Endir",
-
-
    "protocol_amount": "Cərimə məbləği",
    "payment_with_other_card": "Başqa kartla ödəniş",
    "total_payment_amount": "Cəmi məbləğ",
