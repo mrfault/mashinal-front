@@ -1418,6 +1418,7 @@ export default {
    password_will_be_sent_by_email:
       "Для изменения пароля на ваш мобильный номер будет отправлен 5-ти значный код.",
    pay: "Оплатить",
+   make_payment: "Оплатить",
    pay_money: "Оплатить - {n} ₼",
    pay_online: "Оплатить",
    pay_till_date: "Необходимо сделать платеж до <strong>{date}</strong>.",
@@ -2617,4 +2618,29 @@ export default {
    "change_profile_pictures_validation": "JPG, PNG, Bitmap, не более 3 МБ",
    "upload_file": "Загрузить файл",
 
+<<<<<<< HEAD
+
+   "go_ahead":"Войти",
+   "your_phone_number":"Номер моб.телефона",
+   "my_vehicle_announcements":"Мои транспортные средства",
+   "my_car_number_announcements":"Мои регистрационные номера",
+   "under_consideration_2":"На рассмотрении",
+   "timed_out":"Истëкшие",
+   "my_vehicle_info":"Инфо о ТС",
+   "search_number":"Номер автомобиля",
+   "add_vehicle":"Добавить ТС",
+   "penalties":"Штрафы",
+   "remove_vehicle":"Удалить ТС",
+   "stop_subsciption":"Отписаться",
+   "protocol_amount":"Сумма штрафа",
+   "make_payment":"Оплатить",
+   "protocol_details":"Детали протокола",
+   "total_payment_amount":"Сумма оплаты",
+   "reject":"Отменить",
+   "garage_account_desc":"Измени данные профиля",
+   "profile_balance_desc":"Проверь баланс",
+   "logout_account_desc":"Выйти из аккаунта",
+   "garage_penalties_desc":"Проверь и оплати штрафы"
+=======
+>>>>>>> new-design
 };
