@@ -3,7 +3,7 @@
     <div class="message-textarea" :class="{disabled}">
       <div class="textarea-attach">
         <span class="cursor-pointer">
-          <icon name="attachment" />
+          <inline-svg src="/icons/file.svg"/>
         </span>
         <input ref="input"
           type="file"
@@ -29,7 +29,7 @@
       </div>
       <div class="textarea-submit">
         <button type="submit" class="btn-reset">
-          <icon name="send" />
+           <inline-svg src="/icons/send.svg"/>
         </button>
       </div>
     </div>

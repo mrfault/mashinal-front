@@ -1444,7 +1444,6 @@ export default {
    payment: "Ödəniş",
    payment_amount: "Məbləğ",
    payment_history: "Ödəniş tarixçəsi",
-   no_payment_history: "Ödəniş tarixçəsi yoxdur",
    payment_method: "Ödəniş üsulları",
    payments: "Ödənişlər",
    penalty: "Cərimə faizı",
@@ -2648,7 +2647,6 @@ export default {
    transactions: "Əməliyyatlar",
    agreement_details: "Müqavilə barədə ətraflı",
    view: "Baxış",
-
    other_parameters: "Digər parametrlər",
    additional_info: "Əlavə məlumatlar",
    additional_info_warning:
@@ -2672,6 +2670,17 @@ export default {
    let_us_know: "Bizə məlumat ver",
    negotiable_price: "Qiymət razılaşma yolu ilə",
    enter_keywords: "Açar sözləri daxil edin",
+   part_images_info: "Minimum - 1 şəkil, maksimum - 22 şəkil, minimal ölçü - 500x500 px",
+   change_profile_pictures_text: "Profil şəklini dəyişdir",
+   change_profile_pictures_validation: "JPG, PNG, Bitmap, 3 MB-dan çox olmayan",
+   upload_file: "Fayl yüklə",
+   add_vehicle: "Nəqliyyat vasitəsi əlavə et",
+   add_vehicle_desc: "Hər əlavə etdiyiniz NV-nə görə aylıq 1 AZN ₼ (ƏDV daxil) məbləğ tutulacaq.",
+   no_vehicle_found: "Sizin əlavə edilmiş nəqliyyat vasitəniz yoxdur",
+   profile_balance_desc: "Rəsmi salonlardan avtomobil sifariş et",
+   logout_account_desc: "Hesabdan çıxış et",
+   garage_penalties_desc: "Cərimələr, gömrük kalkulyatoru, bələdçi, alkotester, vizual şin kalkulyatoru",
+   garage_account_desc: "Rəsmi nümayəndə və digər avtosalonlar",
    "download_invoice": "Endir",
    "protocol_amount": "Cərimə məbləği",
    "payment_with_other_card": "Başqa kartla ödəniş",
@@ -2684,17 +2693,9 @@ export default {
    "stop_subscription_desc2": "Ödənilmiş məbləğ geri qaytarılmır",
    "remove_bookmark": "Şablonu sil",
    "stop_subsciption": "Abunəliyi dayandır",
-
-
-
-
-
-
    "vehicle_is_not_active": "Nəqliyyat vasitəsi prosesdədir",
    "have_paid": "Ödənildi",
-
    "pay_from_balance": "Balansdan ödə",
-
    "part_images_info": "Minimum - 1 şəkil, maksimum - 22 şəkil, minimal ölçü - 500x500 px",
    "change_profile_pictures_text": "Profil şəklini dəyişdir",
    "change_profile_pictures_validation": "JPG, PNG, Bitmap, 3 MB-dan çox olmayan",
@@ -2706,6 +2707,5 @@ export default {
    "logout_account_desc": "Hesabdan çıxış et",
    "garage_penalties_desc": "Cərimələr, gömrük kalkulyatoru, bələdçi, alkotester, vizual şin kalkulyatoru",
    "garage_account_desc": "Rəsmi nümayəndə və digər avtosalonlar",
-
 };
 

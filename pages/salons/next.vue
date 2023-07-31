@@ -304,11 +304,9 @@ export default {
 .salon-card-list__item:last-child{
    margin-bottom: 0;
 }
-
 .salon-card-list.maps-list:not(.row) > div:not(:last-child) .salon-card::after{
    border: 0!important;
 }
-
 .salon-card-list.maps-list .salon-card-list__item{
    border-radius: 12px;
    border: 1px solid var(--gray-300, #CDD5DF);
@@ -325,7 +323,6 @@ export default {
 .ymaps-2-1-79-events-pane {
    border-radius: 12px!important;
 }
-
 .ymaps-2-1-79-balloon__tail{
    display: none!important;
 }
@@ -349,13 +346,16 @@ export default {
    padding: 0!important;
    border-radius: 8px!important;
 }
-
 .dark-mode{
    .map-view{
       background-color: var(--gray-900, #121926);
    }
    .ymaps-2-1-79-balloon__close-button{
       color: #FFF!important;
+   }
+   .cap svg path {
+      stroke: #FFF!important;
+      fill: #FFF!important;
    }
 }
 </style>
