@@ -23,18 +23,17 @@
             </span>
 
             <template v-if="!isChatBot">
-               <span class="cursor-pointer text-dark-blue-2" @click.stop="$emit('block-chat', group)">
+               <span class="cursor-pointer" @click.stop="$emit('block-chat', group)">
                   <icon :name="blocked ? 'unblock' : 'block'"/>
                </span>
 
-               <span class="cursor-pointer text-red" @click.stop="removeItem = group; showRemoveModal = true;">
+               <span class="cursor-pointer" @click.stop="removeItem = group; showRemoveModal = true;">
                   <icon name="garbage"/>
-                  <!-- <inline-svg src="/icons/garbage.svg" :height="14" /> -->
                </span>
             </template>
          </div>
 
-         <template v-if="!isMobileBreakpoint && !isChatBot && group.announce">
+         <!--<template v-if="!isMobileBreakpoint && !isChatBot && group.announce">
             <span class="divider"></span>
 
             <div class="chat-inner-announcement user-select-none">
@@ -69,7 +68,7 @@
                   >{{ chatAnnouncement.price || '' }}</span>
                </span>
             </div>
-         </template>
+         </template>-->
       </div>
 
       <hr class="mt-0 mb-0"/>
@@ -228,7 +227,7 @@ export default {
          return !this.isChatBot && this.chatUser.is_online;
       },
       isChatBot() {
-         return this.chatUser.id == 3;
+         return this.chatUser.id === 3;
       },
       filteredSuggestedMessages() {
          return this.suggestedMessages
