@@ -15,7 +15,7 @@
                <div class="col-auto" v-if="!isMobileBreakpoint || activeGroupId === false">
                   <div class="card messages-card">
                      <template>
-                        <div class="pl-0 pr-0 pb-2 pt-2 pl-lg-3 pb-lg-0 pr-lg-3 pt-lg-3">
+                        <div class="pl-2 pr-2 pb-2 pt-2 pl-lg-3 pb-lg-0 pr-lg-3 pt-lg-3">
                            <form-text-input
                               v-model="searchValue"
                               icon-name="search"
