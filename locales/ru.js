@@ -2603,5 +2603,18 @@ export default {
    let_us_know: "Дайте нам знать",
    negotiable_price: "Цена договорная",
    enter_keywords: "Введите ключевые слова",
-   part_images_info: "Минимум - 1 изображение, максимум - 22 изображения, минимальный размер - 500x500 px"
+   part_images_info: "Минимум - 1 изображение, максимум - 22 изображения, минимальный размер - 500x500 px",
+   "sign_in_to_account": "Войдите в свой аккаунт",
+   "my_balance": "Мой баланс",
+   "sign_out": "Выход",
+   "saved_card": "Сохраненные карты",
+   "no_agreements": "Контракты не найдены",
+   "transactions": "Операции",
+   "agreement_details": "Подробнее о контракте",
+   "view": "Вид",
+   "download_invoice": "Скачать",
+   "change_profile_pictures_text": "Изменить изображение профиля",
+   "change_profile_pictures_validation": "JPG, PNG, Bitmap, не более 3 МБ",
+   "upload_file": "Загрузить файл",
+
 };

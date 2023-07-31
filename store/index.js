@@ -1449,6 +1449,9 @@ export const actions = {
    async carsPost({}, form) {
       await this.$axios.$post(`/sell/post/publish?is_mobile=false`, form);
    },
+   async motoPost({}, form) {
+      await this.$axios.$post(`/sell/moto/post/publish?is_mobile=false`, form);
+   },
 
 
    updateSalonsFilters({commit}, form) {

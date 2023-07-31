@@ -2682,7 +2682,32 @@ export default {
    let_us_know: "Bizə məlumat ver",
    negotiable_price: "Qiymət razılaşma yolu ilə",
    enter_keywords: "Açar sözləri daxil edin",
-   part_images_info: "Minimum - 1 şəkil, maksimum - 22 şəkil, minimal ölçü - 500x500 px"
+   "download_invoice": "Endir",
+   "protocol_amount": "Cərimə məbləği",
+   "payment_with_other_card": "Başqa kartla ödəniş",
+   "total_payment_amount": "Cəmi məbləğ",
+   "remove_vehicle": "NV-ni sil",
+   "remove_vehicle1": "Nəqliyyat vasitəsini sil",
+   "remove_vehicle_desc1": "Seçilmiş NV-ni silmək istədiyinizə əminsiniz?",
+   "remove_vehicle_desc2": "Ödənilmiş məbləğ geri qaytarılmır",
+   "stop_subscription_desc1": "Seçilmiş NV-nin abunəliyini dayandırmaq istədiyinizə əminsiniz?",
+   "stop_subscription_desc2": "Ödənilmiş məbləğ geri qaytarılmır",
+   "remove_bookmark": "Şablonu sil",
+   "stop_subsciption": "Abunəliyi dayandır",
+
+   "change_profile_pictures_text": "Profil şəklini dəyişdir",
+   "change_profile_pictures_validation": "JPG, PNG, Bitmap, 3 MB-dan çox olmayan",
+   "upload_file": "Fayl yüklə",
+
+   "add_vehicle": "Nəqliyyat vasitəsi əlavə et",
+   "add_vehicle_desc": "Hər əlavə etdiyiniz NV-nə görə aylıq 1 AZN ₼ (ƏDV daxil) məbləğ tutulacaq.",
+   "no_vehicle_found": "Sizin əlavə edilmiş nəqliyyat vasitəniz yoxdur",
+
+   "profile_balance_desc": "Rəsmi salonlardan avtomobil sifariş et",
+   "logout_account_desc": "Hesabdan çıxış et",
+   "garage_penalties_desc": "Cərimələr, gömrük kalkulyatoru, bələdçi, alkotester, vizual şin kalkulyatoru",
+   "garage_account_desc": "Rəsmi nümayəndə və digər avtosalonlar",
+   part_images_info: "Minimum - 1 şəkil, maksimum - 22 şəkil, minimal ölçü - 500x500 px",
    change_profile_pictures_text: "Profil şəklini dəyişdir",
    change_profile_pictures_validation: "JPG, PNG, Bitmap, 3 MB-dan çox olmayan",
    upload_file: "Fayl yüklə",
@@ -2693,5 +2718,6 @@ export default {
    logout_account_desc: "Hesabdan çıxış et",
    garage_penalties_desc: "Cərimələr, gömrük kalkulyatoru, bələdçi, alkotester, vizual şin kalkulyatoru",
    garage_account_desc: "Rəsmi nümayəndə və digər avtosalonlar",
+
 };
 
