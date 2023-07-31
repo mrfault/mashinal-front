@@ -10,11 +10,16 @@
          :bar-title="$t('user_information_edit')"
          @back="$router.push(pageRef || $localePath('/profile/settings'))"
          height-auto>
+         <div class="row" v-if="!isMobileBreakpoint">
+            <div class="col-md-12 mb-0 mb-lg-4">
+               <h1>{{ $t('my_account') }}</h1>
+            </div>
+         </div>
          <div class="row">
             <div class="col-md-12 pb-5">
                <div class="row flex-column-reverse flex-lg-row pt-lg-0 pt-5">
                   <div class="col-md-6 pb-5">
-                     <div class="card">
+                     <div class="">
                         <div class="row">
                            <div class="col-md-12 pb-3">
                               <form-text-input :maxlength="30" :placeholder="$t('name')" v-model="form.name"/>
@@ -270,6 +275,15 @@ export default {
    height: 52px;
 }
 .dark-mode{
+   .pages-dashboard-settings{
+      background: #121926!important;
+   }
+   .pages-dashboard-settings input,
+   .pages-dashboard-settings .select-menu,
+   .pages-dashboard-settings .select-menu .select-menu_label{
+      background: #1B2434!important;
+      border-radius: 8px;
+   }
    .change-avatar {
       border: 1px solid #1B2434!important;
       background-color: #1B2434 !important;
