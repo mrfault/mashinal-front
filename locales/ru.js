@@ -1418,7 +1418,6 @@ export default {
    password_will_be_sent_by_email:
       "Для изменения пароля на ваш мобильный номер будет отправлен 5-ти значный код.",
    pay: "Оплатить",
-   make_payment: "Оплатить",
    pay_money: "Оплатить - {n} ₼",
    pay_online: "Оплатить",
    pay_till_date: "Необходимо сделать платеж до <strong>{date}</strong>.",
@@ -2569,18 +2568,6 @@ export default {
    ad_sorting: "Сортировка объявлений",
    terminal_popup_title: "Правила пополнения баланса через терминалы:",
    plate_announce_key: "Размещено объявление",
-   sign_in_to_account: "Войдите в свой аккаунт",
-   my_balance: "Мой баланс",
-   sign_out: "Выход",
-   saved_card: "Сохраненные карты",
-   no_agreements: "Контракты не найдены",
-   transactions: "Операции",
-   agreement_details: "Подробнее о контракте",
-   view: "Вид",
-   download_invoice: "Скачать",
-   change_profile_pictures_text: "Изменить изображение профиля",
-   change_profile_pictures_validation: "JPG, PNG, Bitmap, не более 3 МБ",
-   upload_file: "Загрузить файл",
    other_parameters: "Прочее параметры",
    additional_info: "Дополнительная информация",
    additional_info_warning:
@@ -2618,7 +2605,7 @@ export default {
    "change_profile_pictures_validation": "JPG, PNG, Bitmap, не более 3 МБ",
    "upload_file": "Загрузить файл",
 
-<<<<<<< HEAD
+
 
    "go_ahead":"Войти",
    "your_phone_number":"Номер моб.телефона",
@@ -2641,6 +2628,5 @@ export default {
    "profile_balance_desc":"Проверь баланс",
    "logout_account_desc":"Выйти из аккаунта",
    "garage_penalties_desc":"Проверь и оплати штрафы"
-=======
->>>>>>> new-design
+
 };
