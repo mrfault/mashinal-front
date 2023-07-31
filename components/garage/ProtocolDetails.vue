@@ -1,5 +1,5 @@
 <template>
-   <div>
+   <div class="protocol-details-component">
       <button
          :class="[
                                         'btn',
@@ -55,17 +55,24 @@
 
             <div class="protocol-details-button__actions">
 
-               <protocol-files :protocol="protocol"  @mediaOpened="mediaIsOpen = true" @mediaClosed="mediaIsOpen = false"></protocol-files>
+               <protocol-files :protocol="protocol" @mediaClosed="mediaIsOpen = false"
+                               @mediaOpened="mediaIsOpen = true"></protocol-files>
 
-               <button
-                  v-if="protocol.isSelected && !history"
-                  :class="['btn', 'btn--light-green', { pending }]"
-                  style="margin-left: 8px"
-                  type="button"
-                  @click="showPaymentModal"
-               >
+               <!--               <button-->
+               <!--                  v-if="protocol.isSelected && !history"-->
+               <!--                  :class="['btn', 'btn&#45;&#45;light-green', { pending }]"-->
+               <!--                  style="margin-left: 8px"-->
+               <!--                  type="button"-->
+               <!--                  @click="showPaymentModal"-->
+               <!--               >-->
+               <!--                  {{ $t('make_payment') }}-->
+               <!--               </button>-->
+
+               <a v-if="protocol.isSelected && !history" :href="getPayLink(protocol)" class="btn btn--green"
+                  rel="noopener"
+                  style="margin-left: 8px" target="_blank">
                   {{ $t('make_payment') }}
-               </button>
+               </a>
 
             </div>
          </div>
@@ -113,12 +120,16 @@ export default {
          this.showProtocolDetails = false;
          this.$emit('showPaymentModal', true)
       },
+      getPayLink(protocol) {
+         let agency = protocol.protocol_series === 'BNA' ? 'bna' : 'din';
+         return `https://pay.api.az/${agency}/${protocol.protocol_series}${protocol.protocol_number}`;
+      },
    }
 }
 </script>
 
 <style lang="scss">
-.full-screen{
+.full-screen {
    width: 100%;
    height: 100%;
 }

@@ -25,7 +25,7 @@
             :class="['btn', 'btn--light-green', { pending }]"
 
             type="button"
-            @click="showPaymentModal"
+            @click="getPayLink(protocol)"
          >
             {{ $t('make_payment') }}
          </button>
@@ -60,7 +60,13 @@ export default {
       },
       showPaymentModal() {
          this.$emit('openPaymentModal');
-      }
+      },
+
+      getPayLink(protocol) {
+         let agency = protocol.protocol_series === 'BNA' ? 'bna' : 'din';
+         window.open(`https://pay.api.az/${agency}/${protocol.protocol_series}${protocol.protocol_number}`);
+      },
+
    }
 }
 </script>

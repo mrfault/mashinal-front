@@ -30,65 +30,69 @@
                      v-model="form.announce_type"
                   />
 
-                  <car_form v-if="form.announce_type.title === 'cars'" :announcement="announcement" :isReady="isReady" @getForm="getCarForm($event)" />
-                  <moto_form v-if="form.announce_type.title === 'moto'"/>
+                  <car_form v-if="form.announce_type.title === 'cars'" :announcement="announcement" :isReady="isReady"
+                            @getForm="getCarForm($event)" @done="submitShow = $event"/>
+                  <moto_form v-if="form.announce_type.title === 'moto'" :announcement="announcement" :isReady="isReady"
+                             @getForm="getMotoForm($event)"/>
                   <part_form v-if="form.announce_type.title === 'parts'" @changeType="onChangePartType($event)"
                              :isReady="isReady" @getForm="getPartForm($event)"/>
                   <registration_mark v-if="form.announce_type.title === 'registration_marks'" :isReady="isReady"
                                      @getForm="getRegistrationMarksForm($event)"/>
-                  <div class="contacts">
-                     <h2>{{ $t("contact_information") }}</h2>
-                     <form-text-input
-                        v-model="authForm.name"
-                        :placeholder="$t('your_name') + '*'"
-                        :invalid="$v.authForm.name.$error"
-                     />
-                     <form-text-input
-                        v-model="authForm.email"
-                        :placeholder="$t('email')"
-                        :mask="$maskEmail()"
-                        :invalid="$v.authForm.email.$error"
-                     />
+                  <template v-if="submitShow">
+                     <div class="contacts">
+                        <h2>{{ $t("contact_information") }}</h2>
+                        <form-text-input
+                           v-model="authForm.name"
+                           :placeholder="$t('your_name') + '*'"
+                           :invalid="$v.authForm.name.$error"
+                        />
+                        <form-text-input
+                           v-model="authForm.email"
+                           :placeholder="$t('email')"
+                           :mask="$maskEmail()"
+                           :invalid="$v.authForm.email.$error"
+                        />
 
-                     <form-text-input
-                        v-if="!Object.values(user).length"
-                        key="phone"
-                        :placeholder="$t('mobile_phone_number') + '*'"
-                        v-model="authForm.phone"
-                        :mask="$maskPhone()"
-                        :invalid="$v.authForm.phone.$error"
-                     />
-                     <form-text-input
-                        v-if="authStep === 'handleOTP'"
-                        :placeholder="$t('otp') + '*'"
-                        v-model="authForm.code"
-                        :invalid="$v.authForm.code.$error"
-                     />
-                     <div class="contacts_info" v-if="!Object.values(user).length">
-                        <inline-svg class="contacts_info_svg" :src="'/icons/info.svg'"/>
-                        <p>{{ $t("contacts_registration_info") }}</p>
+                        <form-text-input
+                           v-if="!Object.values(user).length"
+                           key="phone"
+                           :placeholder="$t('mobile_phone_number') + '*'"
+                           v-model="authForm.phone"
+                           :mask="$maskPhone()"
+                           :invalid="$v.authForm.phone.$error"
+                        />
+                        <form-text-input
+                           v-if="authStep === 'handleOTP'"
+                           :placeholder="$t('otp') + '*'"
+                           v-model="authForm.code"
+                           :invalid="$v.authForm.code.$error"
+                        />
+                        <div class="contacts_info" v-if="!Object.values(user).length">
+                           <inline-svg class="contacts_info_svg" :src="'/icons/info.svg'"/>
+                           <p>{{ $t("contacts_registration_info") }}</p>
+                        </div>
+                        <button type="button" @click="onClick()" class="btn full-width btn--pale-green-outline active">
+                           {{ authStep === "notLoggedIn" ? $t("enter_sms_code") : $t("place_announcement") }}
+                        </button>
                      </div>
-                     <button type="button" @click="onClick()" class="btn full-width btn--pale-green-outline active">
-                        {{ $t("enter_sms_code") }}
-                     </button>
-                  </div>
-                  <div class="comment_info">
-                     <p>{{ $t("by_posting_an_ad_you_confirm_your_agreement_with_the_rules") }}:
-                        <nuxt-link :to="`/page/${getRulesPage.slug[locale]}`"
-                                   @click.native.prevent="showRules = true"
-                                   event="">
-                           <strong>{{ $t('general_rules') }}</strong>
-                        </nuxt-link>
-                     </p>
-                  </div>
-                  <modal-popup
-                     :modal-class="'wider'"
-                     :toggle="showRules"
-                     :title="getRulesPage.title[locale]"
-                     @close="showRules = false"
-                  >
-                     <div v-html="getRulesPage.text[locale]"></div>
-                  </modal-popup>
+                     <div class="comment_info">
+                        <p>{{ $t("by_posting_an_ad_you_confirm_your_agreement_with_the_rules") }}:
+                           <nuxt-link :to="`/page/${getRulesPage.slug[locale]}`"
+                                      @click.native.prevent="showRules = true"
+                                      event="">
+                              <strong>{{ $t('general_rules') }}</strong>
+                           </nuxt-link>
+                        </p>
+                     </div>
+                     <modal-popup
+                        :modal-class="'wider'"
+                        :toggle="showRules"
+                        :title="getRulesPage.title[locale]"
+                        @close="showRules = false"
+                     >
+                        <div v-html="getRulesPage.text[locale]"></div>
+                     </modal-popup>
+                  </template>
 
                </form>
                <div class="vehicle_card_info" v-if="!isMobileBreakpoint">
@@ -149,6 +153,7 @@ export default {
    },
    data() {
       return {
+         submitShow: false,
          showRules: false,
          isReady: false,
          announcement: {
@@ -211,7 +216,7 @@ export default {
       // {"end_date":"","auction":1,"country_id":null,"car_catalog_id":46273,"brand":"bmw","model":"5-series","generation_id":4782,"car_body_type":2,"gearing":"1","modification":"2","transmission":"1","capacity":"","power":"","year":2006,"youtube":{"id":"","thumb":""},"selectedColor":[23],"is_matte":false,"mileage":287000,"mileage_measure":1,"region_id":1,"address":"","lat":0,"lng":0,"vin":"","price":20000,"owner_type":0,"currency":1,"car_number":"77 - BZ - 351","show_car_number":1,"show_vin":0,"part":{},"all_options":{"camera":true,"usb":true,"luke":true,"abs":true,"headlights":1,"c_locking":true},"comment":"test test","autogas":false,"is_new":false,"beaten":false,"customs_clearance":false,"tradeable":false,"credit":false,"guaranty":false,"saved_images":[1512580,1512581,1512582,1512583],"btl_cookie":"","is_autosalon":false}
    },
    methods: {
-      ...mapActions(['carsPost', 'partsPost', 'plateNumbersPost']),
+      ...mapActions(['carsPost', 'motoPost', 'partsPost', 'plateNumbersPost']),
       async handleAnnounceType(payload) {
          await this.$store.dispatch(payload.api_key)
       },
@@ -238,6 +243,12 @@ export default {
          } catch (e) {
          }
       },
+      async getMotoForm(form) {
+         try {
+            await this.motoPost(form);
+         } catch (e) {
+         }
+      },
       async getRegistrationMarksForm(form) {
          try {
             await this.plateNumbersPost(form);
@@ -245,7 +256,6 @@ export default {
          }
       },
       async getPartForm(form) {
-         console.log(form)
          try {
             await this.partsPost(form);
          } catch (e) {
@@ -256,13 +266,13 @@ export default {
          this.$v.authForm.$touch()
          // if (this.$v.authForm.$error) return;
          if (this.authStep === "loggedIn") {
-            console.log('logged')
+            this.isReady = !this.isReady
          } else if (this.authStep === "notLoggedIn") {
             this.onPhoneVerification()
          } else {
             this.onOTPVerification()
          }
-         this.isReady = !this.isReady
+
       },
       async onPhoneVerification() {
          try {
@@ -289,7 +299,6 @@ export default {
             this.authStep = 'loggedIn'
             this.$v.authForm.$reset()
          } catch (e) {
-            console.log(e)
          }
       }
    },

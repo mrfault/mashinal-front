@@ -1,61 +1,65 @@
 <template>
    <div class="cars_form">
-
       <form-select
          :label="$t('brand_name')"
-         :options="this.brands"
+         :options="brands"
          :clear-placeholder="true"
          :clear-option="false"
          :new-label="false"
          :object-in-value="true"
          has-search
          v-model="form.brand"
+         @clear="clearFields(['model', 'year', 'body_type', 'generation', 'fuel_type', 'transmission', 'gearing', 'modification'])"
          @change="onChangeBrand($event)"
       />
       <form-select
-         v-if="models.length"
+         v-if="form.brand && models.length"
          :label="$t('model_name')"
          :options="models"
          :clear-placeholder="true"
          :clear-option="false"
          :new-label="false"
          :object-in-value="true"
+         has-search
          v-model="form.model"
+         @clear="clearFields(['year', 'body_type', 'generation', 'fuel_type', 'transmission', 'gearing', 'modification'])"
          @change="onChangeModel()"
       />
       <form-select
-         v-if="sellYears.years"
+         v-if="form.model && sellYears.years"
          :label="$t('prod_year')"
          :options="sellYears?.years?.map((year) => ({name: year}))"
          :clear-placeholder="true"
          :clear-option="false"
          :new-label="false"
+         has-search
          v-model="form.year"
+         @clear="clearFields(['body_type', 'generation', 'fuel_type', 'transmission', 'gearing', 'modification'])"
          @change="onChangeYear()"
       />
       <grid-radio
-         v-if="sellBody.length"
+         v-if="form.year && sellBody.length"
          :label="$t('body_type')"
-         :items="sellBody"
+         :items="form.year ? sellBody : []"
          v-slot="{ item }"
          @change="onChangeBody($event)"
       >
          <div class="body_type_grid_item_inner">
-            <img :src="item.transformed_media"/>
+            <img class="body_imgs" :src="item.transformed_media" :alt="item.name[locale]"/>
             <p>{{ item.name[locale] }}</p>
          </div>
       </grid-radio>
       <grid-radio
-         v-if="sellGenerationsV2.length"
+         v-if="form.body_type && sellGenerationsV2.length"
          :label="$t('generation')"
-         :items="sellGenerationsV2"
+         :items="form.body_type ? sellGenerationsV2 : []"
          v-slot="{ item }"
          @change="onChangeGeneration($event)"
       >
          <div class="generation_grid_item">
             <img
-               src="https://static.mashin.al/media/3896062/BMW_5_5_Sed_1.jpg"
-               alt=""
+               :src="item.image"
+               :alt="item.name"
                class="generation_img"
             />
             <div class="generation_grid_item_inner">
@@ -64,7 +68,7 @@
          </div>
       </grid-radio>
       <form-select
-         v-if="sellEngines.length"
+         v-if="form.generation && sellEngines.length"
          :label="$t('fuel_type')"
          :options="sellEngines.map((engine) => ({id: engine.engine, name: $t('engine_values')[engine.engine]}))"
          :clear-placeholder="true"
@@ -75,7 +79,7 @@
          @change="onChangeFuelType($event)"
       />
       <form-checkbox
-         v-if="sellEngines.length"
+         v-if="form.generation && sellEngines.length"
          v-model="form.autogas"
          :disabled="false"
          :label="$t('gas_equipment')"
@@ -83,7 +87,7 @@
          transparent
       />
       <toggle-group
-         v-if="sellGearing.length"
+         v-if="form.fuel_type && sellGearing.length"
          :label="$t('type_of_drive')"
          :items="sellGearing.map((typeOfDrive) => ({id: typeOfDrive.type_of_drive, name: $t('type_of_drive_values')[typeOfDrive.type_of_drive]}))"
          v-slot="{ item }"
@@ -95,7 +99,7 @@
          </div>
       </toggle-group>
       <form-select
-         v-if="sellTransmissions.length"
+         v-if="form.gearing && sellTransmissions.length"
          :label="$t('box')"
          :options="sellTransmissions.map((transmission) => ({id: transmission.box, name: $t('box_values')[transmission.box]}))"
          :clear-placeholder="true"
@@ -105,7 +109,7 @@
          @change="onChangeTransmission($event)"
       />
       <form-select
-         v-if="sellModificationsV2.length"
+         v-if="form.transmission && sellModificationsV2.length"
          :label="$t('modification')"
          :options="sellModificationsV2.map((o) => ({
               name: o.title,
@@ -118,7 +122,8 @@
          v-model="form.modification"
       />
       <!--      v-if="form.modification"-->
-      <template>
+
+      <template v-if="form.modification && sellModificationsV2.length">
          <form-select
             :label="$t('color')"
             :options="colors"
@@ -343,12 +348,17 @@ import PickOnMapButton from "~/components/elements/PickOnMapButton.vue";
 import {MenusDataMixin} from "~/mixins/menus-data";
 import {ToastErrorsMixin} from "~/mixins/toast-errors";
 import {mapActions, mapGetters} from "vuex";
+import {required} from "vuelidate/lib/validators";
 
 export default {
    components: {PickOnMapButton, ToggleGroup, ImageComponent, GridRadio},
    mixins: [MenusDataMixin, ToastErrorsMixin],
    computed: {
       ...mapGetters(['brands', 'models', 'sellYears', 'sellBody', "sellGenerationsV2", "sellEngines", "sellGearing", "sellTransmissions", "sellModificationsV2", "colors", "popularOptions", 'sellOptions']),
+
+      done() {
+         return
+      }
    },
    props: {
       announcement: {
@@ -419,57 +429,79 @@ export default {
    methods: {
       ...mapActions(['getModels', 'getSellYears', 'getSellBody', 'getSellGenerationsV2', 'getSellEngines', 'getSellGearing', 'getSellTransmissions', 'getSellModificationsV2']),
       async onChangeBrand({slug}) {
-         this.announcement.brand = this.form.brand.name
-         await this.getModels(slug);
+         this.clearFields(['model', 'year', 'body_type', 'generation', 'fuel_type', 'transmission', 'gearing', 'modification'])
+         this.announcement.brand = this.form.brand.name || this.$t('mark')
+         if (slug) {
+               await this.getModels(slug);
+         }
       },
       async onChangeModel() {
+         this.clearFields(['year', 'body_type', 'generation', 'fuel_type', 'transmission', 'gearing', 'modification'])
          const brand = this.form.brand.slug
          const model = this.form.model.slug
-         this.announcement.model = this.form.model.name
-         await this.getSellYears({brand, model});
+         this.announcement.model = this.form.model.name || this.$t('model')
+         if (this.form.model.name) {
+            await this.getSellYears({brand, model});
+         }
       },
       async onChangeYear() {
+         this.clearFields(['body_type', 'generation', 'fuel_type', 'transmission', 'gearing', 'modification'])
          const brand = this.form.brand.slug
          const model = this.form.model.slug
          const year = this.form.year
-         this.announcement.year = this.form.year
-         await this.getSellBody({brand, model, year});
+         this.announcement.year = this.form.year || "0000"
+         if (this.form.year) {
+            await this.getSellBody({brand, model, year});
+         }
       },
       async onChangeBody(body) {
+         this.clearFields(['generation', 'fuel_type', 'transmission', 'gearing', 'modification'])
          const brand = this.form.brand.slug
          const model = this.form.model.slug
          const year = this.form.year
-         this.form.body_type = body
-         await this.getSellGenerationsV2({brand, model, year, body});
+         this.form.body_type = body || ""
+         if (body) {
+            await this.getSellGenerationsV2({brand, model, year, body});
+         }
       },
       async onChangeGeneration(generation) {
+         this.clearFields(['fuel_type', 'transmission', 'gearing', 'modification'])
          const brand = this.form.brand.slug
          const model = this.form.model.slug
          const year = this.form.year
          const body = this.form.body_type
-         this.form.generation = generation
-         await this.getSellEngines({brand, model, year, body, generation});
+         this.form.generation = generation || "";
+         if (generation) {
+            await this.getSellEngines({brand, model, year, body, generation});
+         }
       },
       async onChangeFuelType(engine) {
+         this.clearFields(['transmission', 'gearing', 'modification'])
          const brand = this.form.brand.slug
          const model = this.form.model.slug
          const year = this.form.year
          const body = this.form.body_type
          const generation = this.form.generation
-         this.form.fuel_type = engine
-         await this.getSellGearing({brand, model, year, body, generation, engine});
+         this.form.fuel_type = engine || "";
+         if (engine) {
+            await this.getSellGearing({brand, model, year, body, generation, engine});
+         }
       },
       async onChangeGearing(gearing) {
+         this.clearFields(['gearing', 'modification'])
          const brand = this.form.brand.slug
          const model = this.form.model.slug
          const year = this.form.year
          const body = this.form.body_type
          const engine = this.form.fuel_type
          const generation = this.form.generation
-         this.form.gearing = gearing.id
-         await this.getSellTransmissions({brand, model, year, body, generation, engine, gearing: gearing.id});
+         this.form.gearing = gearing.id || ""
+         if (gearing.id) {
+            await this.getSellTransmissions({brand, model, year, body, generation, engine, gearing: gearing.id});
+         }
       },
       async onChangeTransmission(transmission) {
+         this.clearFields(['modification'])
          const brand = this.form.brand.slug
          const model = this.form.model.slug
          const year = this.form.year
@@ -477,7 +509,9 @@ export default {
          const engine = this.form.fuel_type
          const generation = this.form.generation
          const gearing = this.form.gearing
-         await this.getSellModificationsV2({brand, model, year, body, generation, engine, gearing, transmission});
+         if (transmission) {
+            await this.getSellModificationsV2({brand, model, year, body, generation, engine, gearing, transmission});
+         }
       },
       updateAddress(address) {
          this.form.address = address;
@@ -487,6 +521,11 @@ export default {
          this.form.lat = lat;
          this.form.lng = lng;
       },
+      clearFields(keys) {
+         keys.forEach((key) => {
+            this.form[key] = ""
+         })
+      }
    },
    async fetch() {
       await Promise.all([
@@ -495,6 +534,9 @@ export default {
 
    },
    watch: {
+      'form.modification'() {
+            this.$emit("done", !!(this.form.modification && this.sellModificationsV2.length))
+      },
       "form.color"() {
          console.log(this.form.color)
       },
@@ -540,9 +582,18 @@ export default {
          const formData = new FormData()
          formData.append('data', JSON.stringify(newForm))
          this.$emit("getForm", formData)
-      }
+      },
 // {"end_date":"","auction":1,"country_id":null,"car_catalog_id":46273,"brand":"bmw","model":"5-series","generation_id":4782,"car_body_type":2,"gearing":"1","modification":"2","transmission":"1","capacity":"","power":"","year":2006,"youtube":{"id":"","thumb":""},"selectedColor":[23],"is_matte":false,"mileage":400,"mileage_measure":1,"region_id":1,"address":"","lat":0,"lng":0,"vin":"QWERTYUIASDFGHJJI","price":17500,"owner_type":0,"currency":1,"car_number":"","show_car_number":0,"show_vin":0,"part":{},"all_options":{"disc_types":2,"headlights":1,"usb":true,"camera_360":true,"a_headlights":true,"r_sensor":true,"bluetooth":true,"camera":true,"conditioner":1,"salon_material":6,"p_windows":1,"h_seats":1,"side_curtain":true,"tire_pressure_sensor":true,"p_assist_system":1,"abs":true,"luke":true,"c_locking":true,"n_of_seats":5,"s_ventilation":1,"opening_trunk_without_hands":true},"comment":"test test test","autogas":true,"is_new":true,"beaten":true,"customs_clearance":true,"tradeable":true,"credit":true,"guaranty":true,"saved_images":[1512806,1512808,1512807],"btl_cookie":"","is_autosalon":false}
    },
+   validations: {
+      form: {
+         color: { required },
+         mileage: { required },
+         price: {required},
+         region_id: {required},
+      }
+   }
+
 }
 </script>
 
@@ -566,6 +617,11 @@ export default {
          justify-content: center;
          align-items: center;
          gap: 8px;
+
+         .body_imgs {
+            width: 150px;
+            height: 50px;
+         }
 
          .check_icon {
             position: absolute;
