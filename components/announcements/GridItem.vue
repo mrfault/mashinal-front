@@ -111,7 +111,7 @@
             <div class="item-details__item d-flex align-items-center justify-content-between">
                <h3>{{ announcement.price }}</h3>
 
-               <div v-if="announcement.tradeable || announcement.credit">
+               <div class="item-details__icons" v-if="announcement.tradeable || announcement.credit">
                   <inline-svg
                      src="/icons/barter.svg"
                      v-if="announcement.tradeable"
@@ -143,6 +143,15 @@
             <div class="item-details__item">
                {{ announcement.created_at }}
             </div>
+
+
+         </div>
+
+         <div class="item-details" v-if="isProfilePage">
+            <monetization-button
+               :announcement="announcement"
+               :disabled="announcement.status !== 1"
+            />
          </div>
       </div>
    </div>
@@ -172,7 +181,7 @@
          isProfilePage: {
             type: Boolean,
             default: false,
-         }
+         },
       },
 
       components: {

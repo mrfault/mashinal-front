@@ -715,6 +715,10 @@
       color: $grey-1;
       background-color: $greyish-blue-1;
    }
+
+   .bg-white {
+      background-color: $dark-light-new;
+   }
 }
 
 .dark-mode {
@@ -896,6 +900,10 @@
       textarea::placeholder {
          color: $grey-5-new;
       }
+   }
+
+   .form-merged {
+      border-color: $dark-new !important;
    }
 
    .checkbox-input .checkbox,

@@ -260,3 +260,10 @@
       }
    }
 </script>
+
+<style lang="scss" scoped>
+   .pages-parts-shops {
+      margin-top: 32px;
+      padding-bottom: 100px;
+   }
+</style>

@@ -48,6 +48,7 @@
 
       .item-details {
          padding: 16px;
+         height: 132px;
 
          &__item {
             text-overflow: ellipsis;
@@ -61,6 +62,8 @@
             }
 
             &:first-child {
+               gap: 15px;
+
                h3 {
                   font-size: 20px;
                   font-weight: 700;
@@ -113,6 +116,10 @@
             &:not(:first-child) {
                margin-top: 4px;
             }
+         }
+
+         &__icons {
+            overflow: visible;
          }
 
          &__options {
@@ -369,38 +376,6 @@
          }
       }
    }
-
-   //&__title {
-   //   margin-bottom: 32px;
-   //
-   //   h2 {
-   //      font-weight: 600;
-   //      font-size: 24px;
-   //      line-height: 28px;
-   //      color: #202939;
-   //      margin: 0;
-   //   }
-   //}
-
-   //&_banner {
-   //   height: 100%;
-   //   background-color: $white;
-   //   border-radius: 4px;
-   //   transition: box-shadow 0.2s ease-out;
-   //   cursor: pointer;
-   //   position: relative;
-   //
-   //   &:hover {
-   //      box-shadow: $shadow-light-6;
-   //   }
-   //
-   //   .banner-bg {
-   //      @include abs-zero;
-   //      background-size: cover;
-   //      background-position: center;
-   //      border-radius: 4px;
-   //   }
-   //}
 }
 
 .grid-title {
@@ -531,10 +506,6 @@
 }
 
 .dark-mode {
-   .grid-title {
-      background-color: $dark-2;
-   }
-
    .announcements-grid {
       &_gallery {
          .item-bg {
@@ -554,35 +525,43 @@
          }
       }
 
-      &_item {
+      &__item {
          background-color: $dark-2;
 
-         &:hover {
-            box-shadow: $shadow-dark-6;
-         }
-
-         .item-bg {
-            background-color: $dark-3;
-         }
-
-         .item-details .item-info,
-         .call-count {
-            color: $grey-4;
-         }
-
-         .item-price span {
-            color: $white;
-         }
-
-         .item-overlay .badge {
-            background-color: rgba($dark-2, 0.35);
-         }
-
+         //&:hover {
+         //   box-shadow: $shadow-dark-6;
+         //}
+         //
+         //.item-bg {
+         //   background-color: $dark-3;
+         //}
+         //
+         //.item-details .item-info,
+         //.call-count {
+         //   color: $grey-4;
+         //}
+         //
+         //.item-price span {
+         //   color: $white;
+         //}
+         //
+         //.item-overlay .badge {
+         //   background-color: rgba($dark-2, 0.35);
+         //}
+         //
          .item-details {
-            &__price,
-            &--infos,
-            &__year {
-               color: #fff;
+            background-color: $dark-light-new;
+
+            &__item {
+               color: $white-2-new;
+
+               h3 {
+                  color: $white-2-new;
+               }
+
+               &:last-child {
+                  color: $grey-4-new;
+               }
             }
          }
       }
@@ -819,6 +798,8 @@
    }
 
 }
+
+
 
 .my-announcements-grid__inner {
    display: flex;

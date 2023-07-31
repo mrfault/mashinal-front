@@ -25,7 +25,7 @@
                   @input="filterCarNumber"
                />
             </div>
-            <div class="ma-penalties__top--numbers">
+            <div v-show="carsList.length" class="ma-penalties__top--numbers">
 
                <div id="carNumberContainer" class="ma-penalty-number-chip__container" @mousedown="startDragging">
                   <div class="ma-penalty-number-chip__list">
@@ -204,6 +204,7 @@
          >
             <h4 class="mb-2">{{ $t('payment_method') }}</h4>
             <div class="d-flex align-items-center justify-content-between">
+<!--               <form-buttons v-model="paymentMethod" :options="paymentMethodOptions" :group-by="2"/>-->
                <template v-for="(item,index) in paymentMethodOptions">
                   <form-radio
                      v-model="paymentMethod"
@@ -211,6 +212,7 @@
                      :label="$t(item.name)"
                      :radio-value="item.key"
                      style="width: calc(50% - 8px)"
+                     :disabled="!user.balance"
                   />
                </template>
             </div>
@@ -610,201 +612,5 @@ export default {
    }
 }
 </script>
-
-
-<style lang="scss">
-@media (max-width: 991px) {
-   .ma-penalties {
-      &__top {
-         flex-wrap: wrap;
-
-         &--search {
-            width: 100%;
-            margin-bottom: 16px;
-         }
-
-         &--numbers {
-            width: 100%;
-
-            .ma-penalty-number-chip {
-
-
-               &--active {
-               }
-
-               &--disabled {
-               }
-
-               &__list {
-               }
-
-               &__container {
-               }
-            }
-
-            &__scrollButton {
-            }
-
-         }
-      }
-
-      &__card {
-         border: none;
-         padding: 0;
-
-         &--header {
-            display: flex;
-            align-items: center;
-
-            &__item {
-               padding: 12px;
-               font: 500 15px/18px 'TTHoves';
-               display: inline;
-               cursor: pointer;
-               color: #4B5565;
-
-               &--active {
-                  border-bottom: 2px solid #155EEF;
-               }
-            }
-         }
-
-         &--body {
-            &__no-results {
-               flex-direction: column;
-               padding-top: 151px;
-
-               img {
-                  height: 160px;
-                  object-fit: contain;
-               }
-
-               p {
-                  font: 500 20px/24px 'TTHoves';
-                  color: #364152;
-                  text-align: center;
-                  margin-top: 32px;
-               }
-            }
-
-            &__penalties {
-               &--item {
-                  border: 1px solid #CDD5DF;
-                  border-radius: 10px;
-                  padding: 15px;
-                  margin-top: 20px;
-                  display: flex;
-                  justify-content: space-between;
-                  cursor: pointer;
-
-                  &--active {
-                     border: 1px solid #528BFF;
-                  }
-
-                  strong {
-
-                  }
-
-                  &.no-borders {
-                     border: none;
-                  }
-
-                  .ma-left {
-                     display: flex;
-                     align-items: center;
-
-                     &__checkbox {
-
-                        //padding-right: 12px;
-                     }
-
-                     p {
-                        font: 500 16px/20px 'TTHoves';
-                     }
-                  }
-
-                  .ma-right {
-                     display: flex;
-                     align-items: center;
-
-                     button {
-                        margin-left: 8px;
-                     }
-
-                     &__amount {
-                        font: 500 16px/20px 'TTHoves';
-                        color: #121926;
-                     }
-                  }
-
-                  &.all-items {
-                     border: none;
-                     padding-left: 0;
-                     cursor: default;
-                  }
-
-                  &.total {
-                     strong {
-                        font: 600 20px/24px 'TTHoves' !important;
-                        color: #121926;
-                     }
-                  }
-               }
-            }
-         }
-
-         &--car-specs {
-
-
-            &__item {
-               width: 100%;
-               display: flex;
-               justify-content: space-between;
-               padding: 20px 0;
-
-               &:not(:last-of-type) {
-                  border-bottom: 1px solid #E3E8EF;
-               }
-
-               &:focus {
-                  border: 1px solid #155EEF;
-               }
-
-               p {
-                  font: 400 16px/20px 'TTHoves';
-                  color: #364152;
-               }
-
-               strong {
-                  font: 500 16px/20px 'TTHoves';
-                  color: #121926;
-               }
-
-            }
-         }
-
-         &--actions {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding-top: 16px;
-
-            button {
-               width: calc(50% - 8px);
-            }
-
-            .protocol-payment-button {
-               width: calc(50% - 8px);
-            }
-         }
-
-
-         .ma-penalties__right-card__body {
-            min-height: calc(100% - 130px);
-         }
-      }
-   }
-}
-</style>
 
 

@@ -43,7 +43,13 @@
             swiperOps: {
                slidesPerView: 6.5,
                spaceBetween: 16,
-               init: false
+               init: false,
+               breakpoints: {
+                  1024: {
+                     slidesPerView: 5,
+                     spaceBetween: 20,
+                  },
+               },
             }
          }
       },
@@ -85,7 +91,6 @@
       },
 
       mounted() {
-         console.log('announcement', this.announcement)
          this.$nextTick(() => {
             setTimeout(() => {
                this.thumbsSwiper.init();

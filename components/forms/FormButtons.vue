@@ -8,14 +8,15 @@
 <!--      `col${groupBy > 0 ? ('-' + ([1,2,3,4,6,12].includes(groupBy) ? 12 / groupBy : 'auto')) : ''}`,-->
       <div
          :class="[
-            'd-flex',
+            'd-flex w-100',
             {'mb-2 mb-lg-3': isMultirow},
             {'active': isActive(option)}
          ]"
          v-for="(option, index) in formattedOptions"
          :key="index"
+         style="width: calc(50% - 8px)"
       >
-         <div class="form-group flex-grow-1 d-flex flex-column">
+         <div class="form-group flex-grow-1 d-flex flex-column" style="width: calc(100% - 8px)">
             <button
                :class="
                   [

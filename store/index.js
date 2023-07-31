@@ -1147,9 +1147,7 @@ export const actions = {
    },
    async getGridSearch({commit, dispatch}, data) {
       const res = await this.$axios.$post(
-         `${data.url}?page=${data.page || 1}`,
-         data.post
-      );
+         `https://v2dev.mashin.al/api/v2${data.url}?page=${data.page || 1}`, data.post);
 
       commit("mutate", {property: data.prefix + "Announcements", value: res});
    },

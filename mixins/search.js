@@ -134,6 +134,9 @@ export const SearchMixin = {
          let searchUrl = `${this.$localePath(this.meta.path)}?${searchQuery}`;
          let searchSame = decodeURIComponent(searchUrl) === decodeURIComponent(this.$route.fullPath);
 
+         // console.log('searchQuery', searchQuery)
+         // console.log('searchUrl', searchUrl)
+
          this.$emit('pending');
          if (searchSame) {
             this.$emit('submit');

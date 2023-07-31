@@ -96,6 +96,7 @@
                   :label="$t(item.name)"
                   :radio-value="item.key"
                   style="width: calc(50% - 8px)"
+                  :disabled="!user.balance"
                />
             </template>
          </div>
