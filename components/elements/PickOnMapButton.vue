@@ -1,6 +1,6 @@
 <template>
    <div class="show-map-button">
-      <button class="btn btn--dark-blue full-width" @click="showMap = true">
+      <button type="button" class="btn btn--dark-blue full-width" @click="showMap = true">
          {{ $t('map') }}
          <icon name="placeholder"/>
       </button>

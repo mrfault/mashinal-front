@@ -69,10 +69,26 @@
             line-height: 30px;
             color: inherit;
             cursor: pointer;
-            transition: all .3s;
+            //transition: all .3s;
 
             &:hover {
                color: #F81734;
+            }
+         }
+      }
+   }
+
+   .dark-mode {
+      .brandsList {
+         background-color: #1B2434;
+
+         &__list {
+            &-link {
+               color: #EEF2F6;
+
+               &:hover {
+                  color: #F81734;
+               }
             }
          }
       }

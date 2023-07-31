@@ -3,11 +3,11 @@
       <div class="container">
          <breadcrumbs :crumbs="crumbs"/>
 
-         <h1 class="pages-cars-index__title" v-if="getCarDetails && getCarDetails.brand">
-            {{ getCarDetails && getCarDetails.brand }}
-            {{ getCarDetails && getCarDetails.model }}
-            {{ getCarDetails && getCarDetails.generation && getCarDetails.generation[locale] }}
-         </h1>
+<!--         <h1 class="pages-cars-index__title" v-if="getCarDetails && getCarDetails.brand">-->
+<!--            {{ getCarDetails && getCarDetails.brand }}-->
+<!--            {{ getCarDetails && getCarDetails.model }}-->
+<!--            {{ getCarDetails && getCarDetails.generation && getCarDetails.generation[locale] }}-->
+<!--         </h1>-->
 
          <car-search-form
             :only-saved-search="!!$route.query.saved || false"
@@ -21,7 +21,6 @@
             <grid
                v-if="getMainMonetized.length"
                :announcements="getMainMonetized"
-
                :numberOfAds="getMainMonetized.length"
                escape-duplicates
             />
@@ -30,7 +29,7 @@
 
          <template v-if="!$route.query.saved">
             <grid
-               v-if="carsAnnouncements.total > 0"
+               v-if="carsAnnouncements.meta.total > 0"
                :announcements="carsAnnouncements.data"
                :paginate="$paginate(carsAnnouncements)"
 
@@ -96,9 +95,10 @@
             post = {...post, with_video: true}
          }
          let page = route.query.page || 1;
-         let searchParams = {url: '/car', prefix: 'cars'}
+         let searchParams = { url: '/car', prefix: 'cars' }
          if (!store.state.carsAnnouncements.total)
             await store.dispatch('getGridSearch', {...searchParams, post, page})
+
             await Promise.all([
                store.dispatch('getBrandsOnlyExists'),
                store.dispatch('getBodyOptions'),

@@ -35,7 +35,7 @@ export default {
   methods: {
     setSelected(id) {
       this.selected = id;
-      this.$emit("onChange", id);
+      this.$emit("change", id);
     },
   },
 };
@@ -74,7 +74,7 @@ export default {
         width: 16px;
         height: 16px;
         color: #155eef;
-        z-index: 10;
+        z-index: 1;
       }
     }
   }
