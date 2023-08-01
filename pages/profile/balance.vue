@@ -9,7 +9,7 @@
          <component
             :is="isMobileBreakpoint ? 'mobile-screen' : 'div'"
             :bar-title="$t('my_balance')"
-            @back="$router.push(pageRef || $localePath('/profile/balance'))"
+            @back="$router.push(pageRef || $localePath('/garage-services'))"
             height-auto>
             <div class="row" v-if="!isMobileBreakpoint">
                <div class="col-md-12 mb-0 mb-lg-4">
@@ -41,7 +41,7 @@
                                  type="number"
                                  v-model="form.money"
                                  :placeholder="$t('payment_amount')"
-                                 class="col-md-3 p-0 mb-2 mb-lg-0"
+                                 class="col-md-3 p-0 mb-2 mb-lg-0 amount-input"
                               />
 
                               <select-banking-card
@@ -436,14 +436,14 @@
    border-radius: 8px;
 }
 
-table {
+.table  {
    border-collapse:separate;
    border:solid #CDD5DF 1px;
    border-radius: 12px;
    width: 100%;
 }
 
-td, th {
+.table td, .table th {
    border-top:solid #CDD5DF 1px;
    font-size: 16px;
    font-weight: 500;
@@ -453,15 +453,15 @@ td, th {
    padding: 24px;
 }
 
-td:last-child, th:last-child {
+.table td:last-child, .table th:last-child {
    text-align: right;
 }
 
-th {
+.table th {
    border-top: none;
 }
 
-td:first-child, th:first-child {
+.table td:first-child, .table th:first-child {
    border-left: none;
 }
 
@@ -479,7 +479,6 @@ td:first-child, th:first-child {
    text-align: left;
    color: #4B5565;
    cursor: pointer;
-   transition: all .3s ease;
    background-color: transparent;
    border-bottom: 3px solid transparent;
    border-radius: 0;
@@ -521,8 +520,7 @@ td:first-child, th:first-child {
       width: 100%;
       background: #1B2434;
    }
-
-   td, th {
+   .table td, .table th {
       border-top: 1px solid #364152;
       font-size: 16px;
       font-weight: 500;
@@ -532,17 +530,18 @@ td:first-child, th:first-child {
       padding: 24px;
       color: #CDD5DF;
    }
-
-   td:last-child, th:last-child {
+   .table td:last-child, .table th:last-child {
       text-align: right;
    }
-
-   th {
+   .table th {
       border-top: none;
    }
-
-   td:first-child, th:first-child {
+   .table td:first-child, .table th:first-child {
       border-left: none;
+   }
+   .amount-input{
+      background: #121926!important;
+      border-radius: 8px;
    }
 }
 
@@ -555,24 +554,101 @@ td:first-child, th:first-child {
 }
 
 @media (max-width: 1250px) {
-   td, th {
+   .table td, .table th {
       padding: 12px;
    }
 }
 
 @media (max-width: 992px) {
-   td, th {
+   .table td, .table th {
       padding: 12px;
    }
    .select-menu_dropdown{
       width: 100%!important;
    }
+   .tabs{
+      background: #EEF2F6;
+      padding: 4px;
+      border-radius: 12px;
+      margin: 0 0 20px;
+      display: flex;
+      justify-content: space-between;
+   }
+   .tabs .tabs__item {
+      width: 25%;
+      text-align: center;
+      color: #4B5565;
+      margin-left: 2.5px!important;
+      margin-right: 2.5px!important;
+      font-size: 11px;
+      border: 1px solid #EEF2F6;
+   }
+   .tabs .tabs__item.active {
+      border: 1px solid #fff;
+      border-radius: 12px;
+      background: #fff;
+   }
+   .tabs .tabs__item:hover,
+   .tabs .tabs__item:focus {
+      border: 1px solid #fff;
+      background: #fff;
+      color: #4B5565;
+      border-radius: 12px;
+   }
+   .dark-mode {
+      .tabs{
+         background: #1B2434;
+      }
 
+      .tabs .tabs__item {
+         background: #1B2434;
+         color: #9AA4B2;
+         border: 1px solid #1B2434;
+      }
+
+      .tabs .tabs__item.active {
+         border: 1px solid #364152;
+         background: #364152;
+         color: #EEF2F6;
+         border-radius: 12px;
+      }
+
+      .tabs .tabs__item:hover,
+      .tabs .tabs__item:focus {
+         border: 1px solid #364152;
+         background: #364152;
+         color: #EEF2F6;
+         border-radius: 12px;
+      }
+   }
 }
 
 @media (max-width: 370px) {
-   td, th {
+   .table td, .table th {
       padding: 12px;
+   }
+   .tabs{
+      background: #EEF2F6;
+      padding: 4px;
+      border-radius: 12px;
+      margin: 0 0 20px;
+      display: flex;
+      justify-content: space-between;
+   }
+   .tabs .tabs__item {
+      width: 25%;
+      text-align: center;
+      color: #4B5565;
+      margin-left: 2.5px!important;
+      margin-right: 2.5px!important;
+      font-size: 11px;
+   }
+   .tabs .tabs__item:focus,
+   .tabs .tabs__item:hover,
+   .tabs .tabs__item.active {
+      border: 1px solid #fff;
+      border-radius: 12px;
+      background: #fff;
    }
 }
 

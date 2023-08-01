@@ -2025,7 +2025,7 @@ export default {
    overdue: "Просрочено",
    update: "Исправить",
    updated: "Обновлено",
-   invoice_date: "Дата - выставленного счета",
+   invoice_date: "Дата счета",
    invoice_number: "Номер - выставленного счета",
    type_of_service: "Тип обслуживания",
    status_and_date: "Статус и дата",
@@ -2599,7 +2599,7 @@ export default {
    "no_agreements": "Контракты не найдены",
    "transactions": "Операции",
    "agreement_details": "Подробнее о контракте",
-   "view": "Вид",
+   "view": "Смотреть",
    "download_invoice": "Скачать",
    "change_profile_pictures_text": "Изменить изображение профиля",
    "change_profile_pictures_validation": "JPG, PNG, Bitmap, не более 3 МБ",
@@ -2627,6 +2627,9 @@ export default {
    "garage_account_desc":"Измени данные профиля",
    "profile_balance_desc":"Проверь баланс",
    "logout_account_desc":"Выйти из аккаунта",
-   "garage_penalties_desc":"Проверь и оплати штрафы"
-
+   "garage_penalties_desc":"Проверь и оплати штрафы",
+   package_type: "Тип пакете",
+   package_information: "Информация о моем пакете",
+   package_refresh: "Обновить пакет",
+   package_current: "Доступный пакет",
 };

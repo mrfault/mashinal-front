@@ -209,7 +209,6 @@ export default {
 .dark-mode {
    .layout {
       background: #121926 !important;
-
    }
 
    .ma-announcements{
