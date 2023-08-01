@@ -199,6 +199,7 @@
                .ma-right {
                   display: flex;
                   align-items: center;
+                  justify-content: flex-end;
 
                   button {
                      margin-left: 8px;
@@ -389,7 +390,8 @@
             align-items: center;
             box-sizing: border-box;
             overflow-x: scroll;
-            padding-bottom: 10px;
+            padding-bottom: 20px;
+            margin-bottom: -10px;
 
 
             &__item {

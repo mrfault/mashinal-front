@@ -747,6 +747,7 @@ export default {
       "Qaz-turbin",
       "Plug-in Hibrid",
    ],
+
    engine_volume: "Mühərrikin işçi həcmi (sm3)",
    engine_type: "Mühərrikin növü",
    enter_name: "Adı daxil edin",
@@ -2707,5 +2708,10 @@ export default {
    "garage_penalties_desc": "Cərimələr, gömrük kalkulyatoru, bələdçi, alkotester, vizual şin kalkulyatoru",
    "garage_account_desc": "Rəsmi nümayəndə və digər avtosalonlar",
 
+
+   "subscription_registration_date_on_site" : "Saytda abunəliyin qeydiyyat tarixi",
+   "subscription_registration_end_date_on_site" : "Saytda abunəliyin bitmə tarixi",
+
+   "edition": "Düzəliş",
 };
 

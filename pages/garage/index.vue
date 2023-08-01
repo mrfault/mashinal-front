@@ -8,7 +8,6 @@
          <div :class="{'flex-wrap': isMobileBreakpoint}" class="d-flex  justify-content-between">
             <h2 :class="{'w-100 text-center': isMobileBreakpoint}" class="ma-title--md" style="margin-bottom: 32px">
                {{ $t('penalties') }}</h2>
-            <!--            <button class="btn__blue-outlined" >{{ $t('add_vehicle') }} <icon name="plus"></icon></button>-->
             <div :class="{'mt-2 w-100':isMobileBreakpoint}">
                <add-car @newVehicleAdded="getAllCarsList"/>
             </div>
@@ -32,23 +31,34 @@
                </div>
             </div>
             <div v-show="carsList.length" class="ma-penalties__top--numbers">
-
-               <div id="carNumberContainer"
-                    :class="{'overflow-x-hidden': (carsList.length < 5 && !isMobileBreakpoint),'overflow-x-hidden': (carsList.length < 3 && isMobileBreakpoint)}"
-                    class="ma-penalty-number-chip__container"
-                    @mousedown="startDragging">
+               <div
+                  id="carNumberContainer"
+                  :class="{
+                    'overflow-x-hidden': carsList.length < 5 && !isMobileBreakpoint,
+                    'overflow-x-hidden-mobile': carsList.length < 3 && isMobileBreakpoint
+                  }"
+                  class="ma-penalty-number-chip__container"
+                  @mousedown="startDragging"
+               >
                   <div class="ma-penalty-number-chip__list">
-                     <div v-for="(car, index) in carsList" :key="index + 98237492"
-                          :class="{'ma-penalty-number-chip--active': selectedCar == car, 'ma-penalty-number-chip--disabled': car.sync_status !== 1, 'ma-penalty-number-chip--active--disabled': (selectedCar == car && car.sync_status !== 1 ),}"
-                          class="ma-penalty-number-chip"
-                          @click="selectCar(car)"
-
+                     <div
+                        v-for="(car, index) in carsList"
+                        :key="index + 98237492"
+                        :class="{
+            'ma-penalty-number-chip--active': selectedCar == car,
+            'ma-penalty-number-chip--disabled': car.sync_status !== 1,
+            'ma-penalty-number-chip--active--disabled':
+              selectedCar == car && car.sync_status !== 1
+          }"
+                        class="ma-penalty-number-chip"
+                        @click="selectCar(car)"
                      >
                         {{ formattedCarNumber(car.car_number) }}
                      </div>
                   </div>
                </div>
-               <div v-if="carsList.length > 4" class="ma-penalties__top--numbers__scrollButton">
+               <div v-if="(carsList.length > 4 && isMobileBreakpoint) || (carsList.length > 5 && !isMobileBreakpoint)"
+                    class="ma-penalties__top--numbers__scrollButton">
                   <button @click="scrollToRight">
                      <icon name="chevron-right"/>
                   </button>
@@ -60,7 +70,7 @@
          <!--         tabs-->
          <div class="row">
             <!--            left-->
-            <div v-if="this.selectedCar && this.selectedCar.sync_status !== 0" class="col-12 col-md-6">
+            <div v-if="selectedCar && selectedCar.sync_status == 1" class="col-12 col-md-6">
                <div class="ma-penalties__card">
                   <div v-if="carsList.length" class="ma-penalties__card--header">
                      <template v-for="(item,index) in cardTabs">
@@ -85,37 +95,38 @@
                         </div>
 
                         <!--                                content-->
-                        <template v-else>
-                           <template v-if="protocols && protocols.data && protocols.data.length">
-                              <template v-for="(protocol,index) in protocol.filteredList">
 
-                                 <protocol-list-item
+                        <template v-else-if="protocols && protocols.data && protocols.data.length">
+                           <template v-for="(protocol,index) in protocol.filteredList">
+
+                              <protocol-list-item
+                                 :protocol="protocol"
+                                 @openPaymentModal="openPaymentModal"
+                                 @selectProtocol="selectProtocol(protocol)"
+                              >
+                                 <protocol-details
+                                    v-if="protocol.isSelected"
                                     :protocol="protocol"
-                                    @openPaymentModal="openPaymentModal"
-                                    @selectProtocol="selectProtocol(protocol)"
+                                    style="margin-right: 8px !important;"
+                                    @showPaymentModal="openPaymentModal"
                                  >
-                                    <protocol-details
-                                       v-if="protocol.isSelected"
-                                       :protocol="protocol"
-                                       style="margin-right: 8px !important;"
-                                       @showPaymentModal="openPaymentModal"
-                                    >
 
 
-                                    </protocol-details>
-                                 </protocol-list-item>
-                              </template>
+                                 </protocol-details>
+                              </protocol-list-item>
                            </template>
-
-                           <!--                           no results-->
-                           <div v-else class="ma-penalties__card--body__no-results">
-                              <img alt="" src="/images/penalty-no-result.png">
-                              <p v-if="carsList.length">{{ $t('no_protocols') }}</p>
-                              <p v-else>{{ $t('no_vehicle_found') }}</p>
-                           </div>
                         </template>
+
+                        <!--                           no results-->
+                        <div v-else class="ma-penalties__card--body__no-results">
+                           <img alt="" src="/images/penalty-no-result.png">
+                           <p v-if="carsList.length">{{ $t('no_protocols') }}</p>
+                           <p v-else>{{ $t('no_vehicle_found') }}</p>
+                        </div>
+
                      </div>
 
+                     <!--                     history-->
                      <div v-if="activeCardTab == 1" class="ma-penalties__card--body__penalty_history">
                         <div v-if="loading && carsList.length && protocols && protocols.data && protocols.data.length">
                            <loader/>
@@ -157,6 +168,7 @@
                         </template>
                      </div>
 
+                     <!--                     vehicle info-->
                      <div v-if="activeCardTab == 2" class="ma-penalties__card--body__penalty_history">
                         <div>
                            <div class="ma-penalties__right-card__body">
@@ -195,14 +207,24 @@
                         <div v-for="(spec,index) in mainVehicleSpecs" :key="index + 213654"
                              class="ma-penalties__card--car-specs">
                            <div v-for="(value,key) in spec" class="ma-penalties__card--car-specs__item">
-                              <p v-html="$t(key)"></p>
-                              <strong>{{ value }}</strong>
+                              <p v-if="key == 'auth_date'">{{ $t('subscription_registration_date_on_site') }}</p>
+                              <p v-else-if="key == 'auth_end_date'">{{
+                                    $t('subscription_registration_end_date_on_site')
+                                 }}</p>
+                              <p v-else v-html="$t(key)"></p>
+                              <strong>
+                                    <span v-if="key ==='insurance_end_date'"
+                                          style="color: #2970FF; text-decoration: underline; font: 500 16px/20px 'TTHoves'; margin-right: 8px; cursor: pointer"
+                                          @click="openDateChangeModal = true">{{ $t('edition') }}
+                                 </span>
+                                 {{ value }}</strong>
                            </div>
-                           <hr v-if="index < mainVehicleSpecs.length - 1" class="m-0">
+                           <hr v-if="index < mainVehicleSpecs.length - 1"
+                               class="m-0 ma-penalties__card--car-specs__item--divider">
                         </div>
                      </template>
                   </div>
-                  <div class="ma-penalties__card--actions">
+                  <div v-if="selectedCar && selectedCar.sync_status == 1" class="ma-penalties__card--actions">
                      <remove-vehicle :vehicle="selectedCar" @selectedCarDeleted="getAllCarsList"/>
                      <stop-subsribtion :vehicle="selectedCar" @carDeactivated="getAllCarsList"/>
                   </div>
@@ -245,7 +267,6 @@
             </div>
             <!--         <terminal-info-button popup-name="garage-add-popup"/>-->
             <div :class="{ 'modal-sticky-bottom': isMobileBreakpoint }">
-               <!--            <hr/>-->
                <div class="row">
                   <div class="col-6">
                      <button
@@ -287,12 +308,120 @@
          </modal-popup>
 
 
+         <!--         date change modal-->
+         <modal-popup
+            :overflow-hidden="false"
+            :title="$t('insurance_end_date_text')"
+            :toggle="openDateChangeModal"
+            modal-class="car-info-modal"
+            @close="openDateChangeModal = false"
+         >
+            <form-select
+               v-model="dateChangeForm.company"
+               :allow-clear="false"
+               :clear-option="false"
+               :label="$t('insurance_company')"
+               :options="companies"
+               class="mb-2"
+            />
+            <span>{{ $t('date') }}</span>
+            <div class="d-flex">
+               <form-select
+                  v-model="dateChangeForm.year"
+                  :allow-clear="false"
+                  :clear-option="false"
+                  :label="$t('year_first_letter')"
+                  :options="years"
+                  class="mr-1"
+               />
+               <form-select
+                  v-model="dateChangeForm.month"
+                  :allow-clear="false"
+                  :clear-option="false"
+                  :label="capitalizeFirstLetter($t('plural_forms_month')[0])"
+                  :options="months"
+                  class="mr-1"
+               />
+               <form-select
+                  v-model="dateChangeForm.day"
+                  :allow-clear="false"
+                  :clear-option="false"
+                  :label="$t('day')"
+                  :options="days"
+               />
+            </div>
+
+            <button
+               :class="{ 'disabled' : !dateChangeForm.company || !dateChangeForm.year ||  !dateChangeForm.month ||  !dateChangeForm.day  }"
+               :disabled="!dateChangeForm.company || !dateChangeForm.year ||  !dateChangeForm.month ||  !dateChangeForm.day  "
+               class="btn btn--green mt-2 w-100"
+               @click="confirmInsurance"
+            >
+               {{
+                  $t('confirm')
+               }}
+            </button>
+         </modal-popup>
+
+
       </div>
+
+
+      <no-ssr>
+         <template v-if="cars.data && cars.data.length">
+            <garage-nav
+               v-show="showNav || !isMobileBreakpoint"
+               :tab="tab"
+               @filterCarNumber="filterCarNumber"
+               @change-tab="tab = $event"
+            />
+            <cars-list v-if="tab === 'cars'" :filter_car_number="car_number" @show-nav="showNav = $event"/>
+            <cars-list v-if="tab === 'penalty_history'" key="history_key" :filter_car_number="car_number" history
+                       @show-nav="showNav = $event"/>
+            <check-driver-points
+               v-show="tab === 'check-points'"
+               @show-nav="showNav = $event"
+            />
+            <list-of-attorneys
+               v-show="tab === 'attorney-list'"
+               :attorneys="attorneys"
+               @show-nav="showNav = $event"
+            />
+         </template>
+         <template v-else>
+            <garage-empty :default-vehicle-list="vehicleList"/>
+         </template>
+         <template v-if="false">
+            <template v-if="tab === 'cars' && (showNav || !isMobileBreakpoint)">
+               <div
+                  v-if="isMobileBreakpoint"
+                  :class="[
+                'card profile-links-card with-margins',
+                { 'mt-3': !cars.data || !cars.data.length },
+              ]"
+               >
+                  <div
+                     v-for="menu in userMenus.filter((menu) => menu.showOnCard)"
+                     :key="menu.title"
+                     class="link-block"
+                  >
+                     <nuxt-link :to="$localePath(menu.route)">
+                        <icon :name="menu.icon"/>
+                        {{ $t(menu.title) }}
+                        <icon name="chevron-right"/>
+                        <!-- <inline-svg src="/icons/chevron-right.svg" :height="14" /> -->
+                     </nuxt-link>
+                     <hr/>
+                  </div>
+               </div>
+            </template>
+         </template>
+      </no-ssr>
    </div>
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import {mapGetters, mapActions} from 'vuex'
 
 import {UserDataMixin} from '~/mixins/user-data'
 import {MenusDataMixin} from '~/mixins/menus-data'
@@ -374,15 +503,9 @@ export default {
       if (this.cars && this.cars.data && this.cars.data.length) {
          this.carsList = this.cars.data;
 
-         const carWithSyncStatus1 = this.cars.data.find(el => el.sync_status === 1);
 
-         // If an element with sync_status: 1 exists, set selectedCar to that element
-         if (carWithSyncStatus1) {
-            this.selectedCar = carWithSyncStatus1;
-         } else {
-            // If no element with sync_status: 1, set selectedCar to the first element of the first element of the cars array
-            this.selectedCar = this.cars.data[0];
-         }
+         this.setInitialSelectedCar();
+
       }
       this.getCarProtocols();
 
@@ -393,6 +516,18 @@ export default {
       getPayLink(protocol) {
          let agency = protocol.protocol_series === 'BNA' ? 'bna' : 'din';
          return `https://pay.api.az/${agency}/${protocol.protocol_series}${protocol.protocol_number}`;
+      },
+
+      setInitialSelectedCar() {
+         const carWithSyncStatus1 = this.cars.data.find(el => el.sync_status === 1);
+
+         // If an element with sync_status: 1 exists, set selectedCar to that element
+         if (carWithSyncStatus1) {
+            this.selectedCar = carWithSyncStatus1;
+         } else {
+            // If no element with sync_status: 1, set selectedCar to the first element of the first element of the cars array
+            this.selectedCar = this.cars.data[0];
+         }
       },
 
 
@@ -494,13 +629,18 @@ export default {
 
       },
       selectCar(car) {
-         if (car.sync_status == 1) {
+         this.resetFields();
+         // if (car.sync_status == 0) {
+         //    return
+         // } else {
 
-            this.loading = true;
-            this.selectedCar = car;
-            this.getCarProtocols();
-            this.protocol.selected = {};
-         } else return
+         this.loading = true;
+         this.selectedCar = car;
+         this.getCarProtocols();
+         this.protocol.selected = {};
+         this.activeCardTab = 0;
+         this.protocol.filteredList = [];
+         // }
       },
       selectProtocol(protocol) {
          this.protocol.selected = protocol;
@@ -515,13 +655,16 @@ export default {
       },
       switchCardTab(id) {
          this.loading = true;
+         this.pending = true;
          this.activeCardTab = id;
          this.getCarProtocols()
          this.protocol.selected = {};
       },
-      getAllCarsList() {
-         this.$store.dispatch('garage/getCarList');
-         this.selectedCar = this.carsList[0];
+      async getAllCarsList() {
+         console.log("--------------sadhajsdhjaks", "dispacth")
+         const res = await this.$store.dispatch('garage/getCarList', {})
+         this.carsList = res.data;
+         this.setInitialSelectedCar();
       },
       async activatePaymentModal() {
          this.openPaymentModal();
@@ -532,6 +675,8 @@ export default {
       },
       resetFields() {
          this.protocol.selected = {};
+         this.pending = true;
+         this.loading = true;
       },
 
 
@@ -556,6 +701,35 @@ export default {
       },
       haveBalanceToPay() {
          return parseFloat(this.protocol.selected.total) <= this.user.balance
+      },
+
+      async confirmInsurance() {
+         console.log("confirmInsurance")
+         this.pending = true;
+         try {
+            console.log("confirmInsurance try")
+            await this.$axios.$post('/garage/insurance/set-enddate', {
+               car_id: this.selectedCar.id,
+               end_date: `${this.dateChangeForm.year}-${this.dateChangeForm.month}-${this.dateChangeForm.day}`,
+               insurance_company_id: this.dateChangeForm.company
+            })
+            console.log("confirmInsurance response")
+            this.$emit('refresh-data')
+            this.openDateChangeModal = false;
+            this.getAllCarsList();
+            this.dateChangeForm = {
+               day: null,
+               month: null,
+               year: null,
+               company: null,
+            }
+         } catch (e) {
+            console.log("confirmInsurance catch", e)
+         }
+         this.pending = false;
+      },
+      capitalizeFirstLetter(string) {
+         return string.charAt(0).toUpperCase() + string.slice(1);
       },
 
    },
@@ -614,6 +788,36 @@ export default {
             tech_exp_date: getDate(this.selectedCar.tech_exp_date),
             has_arrest: this.selectedCar.has_arrest ? this.$t('have') : this.$t('dont_have')
          }, this.isMobileBreakpoint);
+      },
+      years() {
+         const years = (back) => {
+            const year = new Date().getFullYear();
+            return Array.from({length: back}, (v, i) => year - back + i + 1).reverse();
+         }
+         return years(50).map(item => {
+            return {
+               name: item,
+               key: item
+            }
+         })
+      },
+      months() {
+         this.$moment.locale(this.locale)
+         return this.$moment.months().map((item, code) => {
+            return {
+               name: this.capitalizeFirstLetter(item),
+               key: code + 1
+            }
+         });
+      },
+      days() {
+         let days = Array.from({length: 31}, (v, i) => 31 - i).reverse();
+         return days.map((item) => {
+            return {
+               name: item,
+               key: item
+            }
+         });
       },
    },
    data() {
@@ -682,7 +886,13 @@ export default {
          bankingCard: '',
          price: 0,
          showProtocolDetails: false,
-
+         openDateChangeModal: false,
+         dateChangeForm: {
+            day: null,
+            month: null,
+            year: null,
+            company: null,
+         }
       }
    },
    watch: {
@@ -701,5 +911,42 @@ export default {
    }
 }
 </script>
+
+<style lang="scss">
+.dark-mode {
+   .ma-penalties__card--car-specs__item--divider {
+      background: #fff;
+   }
+
+   .ma-penalty-number-chip--active {
+      background: #155EEF !important;
+      color: #fff !important;
+   }
+
+   .ma-penalties {
+      .btn__blue-outlined {
+         &:hover {
+            background: #1b2434;
+         }
+      }
+   }
+
+   .remove-vehicle-modal {
+      p {
+         color: rgba(205, 213, 223, 1);
+      }
+   }
+
+   .ma-penalties__top--numbers__scrollButton {
+      background: #121926 !important;
+
+      button {
+         color: #fff;
+         background: #364152;
+
+      }
+   }
+}
+</style>
 
 

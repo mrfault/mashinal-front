@@ -1,6 +1,6 @@
 <template>
    <div style="width: calc(50% - 6px)">
-      <button :class="['btn btn--light-outline full-width', { pending }]" type="button" @click="openFiles">
+      <button :class="['btn btn--light-outline full-width',{'d-none': hideButton }, { pending }]" type="button" @click="openFiles" style="min-height: 52px;border-radius: 8px">
          {{ $t('watch_files') }}
       </button>
       <div v-if="slides.main" v-touch:swipe.top="handleSwipeTop" class="inner-gallery-lightbox">
@@ -109,6 +109,7 @@ export default {
          showImagesSlider: false,
          lightboxKey: 0,
          currentSlide: 0,
+         hideButton: false,
       }
    },
    computed: {
@@ -140,6 +141,8 @@ export default {
       }),
 
       async openFiles() {
+         this.hideButton = true;
+         this.$emit('mediaOpened',true);
          if (this.files.din_id === this.protocol.din_id) {
             this.openLightbox();
             return;
@@ -152,7 +155,7 @@ export default {
             if (res.status === 'success') {
                this.openLightbox();
 
-               this.$emit('mediaOpened',true)
+
             }
 
          } catch (err) {
@@ -189,6 +192,7 @@ export default {
          this.currentSlide = fsBox.stageIndexes.current;
       },
       closeLightbox() {
+         this.hideButton = false;
          if (this.isMobileBreakpoint) {
             if (this.showLightbox) {
                this.toggleFsLightbox = !this.toggleFsLightbox;

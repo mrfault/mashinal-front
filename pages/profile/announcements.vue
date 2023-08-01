@@ -55,6 +55,7 @@
                   v-if="myAnnouncements.data.length === 0 || (activeTab !== null && !myAnnouncements.data.some(item => activeTab === item.status))"
                   :text="statusReady !== '' ? '' : $t('add_an_ad_and_thousands_of_potential_buyers_will_see_it')"
                   :type="$route.query.type == 2 ? 'part' : 'car'"
+                  darker
                >
                   <nuxt-link v-if="statusReady === ''" :to="$localePath('/sell')" class="btn btn--green mt-2 mt-lg-3"
                              v-html="$t('to_sell')"/>
@@ -85,6 +86,7 @@
                   :text="$t('empty_plates')"
                   :url="'/img/empty_plates.png'"
                   :urlDarkMode="'/img/empty_plates_dark-mode.png'"
+                  darker
                ></no-results>
             </div>
          </div>

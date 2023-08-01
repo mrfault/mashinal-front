@@ -18,9 +18,9 @@
       </div>
 
       <modal-popup
+         :modal-class="!isMobileBreakpoint ? 'midsize': 'larger'"
          :title="$t('add_vehicle')"
          :toggle="showModal"
-         :modal-class="!isMobileBreakpoint ? 'midsize': 'larger'"
          @close="showModal = false"
       >
          <asan-login-button
@@ -47,10 +47,6 @@
                :placeholder="$t('tech_id')"
                class="mb-2 mb-lg-3"
             />
-            <!--            <div class="info-text mb-2">-->
-            <!--               <icon name="alert-circle"/>-->
-            <!--               <span>{{ $t('garage_payment_info') }}</span>-->
-            <!--            </div>-->
             <p class="remove-vehicle-modal__text-with-info" style="margin-bottom: 24px">
                <inline-svg src="/icons/info-1.svg"/>
                {{ $t('add_vehicle_desc') }}
@@ -81,10 +77,10 @@
       </modal-popup>
 
       <modal-popup
+         :modal-class="!isMobileBreakpoint ? 'midsize': 'larger'"
          :overflow-hidden="isMobileBreakpoint"
          :title="$t('payment')"
          :toggle="showPaymentModal"
-         :modal-class="!isMobileBreakpoint ? 'midsize': 'larger'"
          @close="showPaymentModal = false"
       >
          <h4 class="mb-2">{{ $t('payment_method') }}</h4>
@@ -92,11 +88,11 @@
             <template v-for="(item,index) in paymentMethodOptions">
                <form-radio
                   v-model="paymentMethod"
+                  :disabled="!user.balance"
                   :group-by="2"
                   :label="$t(item.name)"
                   :radio-value="item.key"
                   style="width: calc(50% - 8px)"
-                  :disabled="!user.balance"
                />
             </template>
          </div>
@@ -123,8 +119,9 @@
                                         'btn-dark-text',
                                         'full-width',
                                       ]"
+                     style="height: 52px"
                      type="button"
-                     @click="showModal = false"
+                     @click="showPaymentModal = false"
                   >
                      {{ $t('reject') }}
                   </button>
@@ -132,6 +129,7 @@
                <div class="col-6">
                   <button
                      :class="['btn btn--green full-width', { pending }]"
+                     style="height: 52px"
                      @click="payForCar"
                   >
                      {{ $t('pay') }}
@@ -283,6 +281,7 @@ export default {
             this.form.car_number = ''
             this.form.tech_id = ''
             this.form.card_id = ''
+
             if (this.paymentMethod === 'card' && !this.bankingCard) {
                this.pending = false
                this.showPaymentModal = false
@@ -292,13 +291,14 @@ export default {
                this.pending = false
                this.showPaymentModal = false
                this.bankingCard = ''
+               this.$emit('newVehicleAdded', true)
                this.updatePaidStatus({
                   type: 'success',
                   text: this.$t('car_added'),
                   title: this.$t('success_payment'),
                })
             }
-            this.$emit('newVehicleAdded', true)
+
          } catch (err) {
             this.pending = false
          }
@@ -322,3 +322,16 @@ export default {
    },
 }
 </script>
+
+<style lang="scss">
+.dark-mode {
+   .protocol-payment-modal__body--total-amount {
+      background: #364152;
+
+      p, strong {
+         color: #fff;
+
+      }
+   }
+}
+</style>
