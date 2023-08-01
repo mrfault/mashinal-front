@@ -56,9 +56,12 @@
 
                                  <template v-else>
                                     <button
-                                       class="btn btn-download"
+                                       :class="['btn', 'btn-download', { pending }]"
+                                       :disabled="downloadInvoiceIsDisabled === 1"
                                        @click="downloadInvoice(agreement.id)">
-                                       {{ $t('download_invoice') }} <inline-svg :src="'/icons/download1.svg'"/>
+                                       {{ $t('download_invoice') }}
+                                       <inline-svg :src="'/icons/loader1.svg'" v-if="downloadInvoiceIsDisabled === 1"/>
+                                       <inline-svg :src="'/icons/download1.svg'" v-if="downloadInvoiceIsDisabled === 0"/>
                                     </button>
                                  </template>
 
@@ -148,9 +151,13 @@
                                                 {{ $t('pay') }}
                                              </button>
                                              <template v-else>
-                                                <button class="btn btn-download"
+                                                <button
+                                                   :class="['btn', 'btn-download', { pending }]"
+                                                   :disabled="downloadInvoiceIsDisabled === 1"
                                                    @click="downloadInvoice(agreement.id)">
-                                                   {{ $t('download_invoice') }} <inline-svg :src="'/icons/download1.svg'"/>
+                                                   {{ $t('download_invoice') }}
+                                                   <inline-svg :src="'/icons/loader1.svg'" v-if="downloadInvoiceIsDisabled === 1"/>
+                                                   <inline-svg :src="'/icons/download1.svg'" v-if="downloadInvoiceIsDisabled === 0"/>
                                                 </button>
                                              </template>
                                           </div>
@@ -216,10 +223,13 @@
                         </button>
 
                         <button
-                           class="btn btn-download"
+                           :class="['btn', 'btn-download', { pending }]"
                            v-else
+                           :disabled="downloadInvoiceIsDisabled === 1"
                            @click="downloadInvoice(activeAgreementDetail.id)">
-                           {{ $t('download_invoice') }} <inline-svg :src="'/icons/download1.svg'"/>
+                           {{ $t('download_invoice') }}
+                           <inline-svg :src="'/icons/loader1.svg'" v-if="downloadInvoiceIsDisabled === 1"/>
+                           <inline-svg :src="'/icons/download1.svg'" v-if="downloadInvoiceIsDisabled === 0"/>
                         </button>
                      </div>
 
@@ -288,6 +298,12 @@ export default {
       ComeBack,
       CollapseContent
    },
+
+   nuxtI18n: {
+      paths: {
+         az: '/profil/muqavileler'
+      }
+   },
    layout: 'garageLayout',
 
    head() {
@@ -302,6 +318,7 @@ export default {
       return {
          activeAgreement: 1,
          activeAccordionIndex: null,
+         downloadInvoiceIsDisabled: 0,
          activeAgreementDetail: {
             id: 0,
             is_expired: false,
@@ -364,6 +381,9 @@ export default {
       },
 
       downloadInvoice(id) {
+
+         this.downloadInvoiceIsDisabled = 1;
+
          this.$axios.$get(`/invoice/${id}/download`, {responseType: 'blob'})
             .then(res => {
                const blob = new Blob([res], {type: 'application/pdf'});
@@ -372,6 +392,8 @@ export default {
                link.download = `invoice.pdf`;
                link.click();
                URL.revokeObjectURL(link.href);
+
+               this.downloadInvoiceIsDisabled = 0;
             })
       },
       openViewPopup(agreement) {
@@ -420,7 +442,7 @@ export default {
 
 <style lang="scss" scoped>
 
-table {
+.table  {
    border-collapse: separate;
    border:solid #CDD5DF 1px;
    border-radius: 12px;
@@ -428,7 +450,7 @@ table {
    background: #FFF;
 }
 
-td, th {
+.table td, .table th {
    border-top: 1px solid #CDD5DF;
    font-size: 14px;
    font-weight: 500;
@@ -437,15 +459,15 @@ td, th {
    padding: 20px 12px;
 }
 
-td:last-child, th:last-child {
+.table td:last-child, th:last-child {
    text-align: right;
 }
 
-th {
+.table th {
    border-top: none;
 }
 
-td:first-child, th:first-child {
+.table td:first-child, .table th:first-child {
    border-left: none;
 }
 
@@ -470,6 +492,14 @@ td:first-child, th:first-child {
    background-color: #fff;
    border: 1px solid #9b9fa7;
    color: #1F2937;
+}
+.btn-download:disabled{
+   background-color: #eee;
+   cursor: not-allowed;
+}
+.btn-download svg{
+   width: 20px;
+   height: 20px;
 }
 
 .agreementDetails {
@@ -670,21 +700,21 @@ td:first-child, th:first-child {
       background: #1B2434;
    }
 
-   td, th {
+   .table td, .table th {
       border-top: 1px solid #364152;
       font-size: 14px;
       color: #CDD5DF;
    }
 
-   td:last-child, th:last-child {
+   .table td:last-child, .table th:last-child {
       text-align: right;
    }
 
-   th {
+   .table th {
       border-top: none;
    }
 
-   td:first-child, th:first-child {
+   .table td:first-child, .table th:first-child {
       border-left: none;
    }
 

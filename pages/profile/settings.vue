@@ -8,8 +8,13 @@
       <component
          :is="isMobileBreakpoint ? 'mobile-screen' : 'div'"
          :bar-title="$t('user_information_edit')"
-         @back="$router.push(pageRef || $localePath('/profile/settings'))"
+         @back="$router.push(pageRef || $localePath('/garage-services'))"
          height-auto>
+         <div class="row" v-if="!isMobileBreakpoint">
+            <div class="col-md-12 mb-0 mb-lg-4">
+               <h1>{{ $t('my_account') }}</h1>
+            </div>
+         </div>
          <div class="row">
             <div class="col-md-12 pb-5">
                <div class="row flex-column-reverse flex-lg-row pt-lg-0 pt-5">
@@ -195,6 +200,7 @@ export default {
    min-height: 900px;
 }
 .card {
+   padding: 22px;
    border: 1px solid #CDD5DF;
    border: 1px solid #CDD5DF;
 }
@@ -269,7 +275,12 @@ export default {
 .btn--green{
    height: 52px;
 }
+
+
 .dark-mode{
+   .pages-dashboard-settings{
+      background: #121926!important;
+   }
    .change-avatar {
       border: 1px solid #1B2434!important;
       background-color: #1B2434 !important;
@@ -283,6 +294,41 @@ export default {
    }
    .avatar-content p {
       color: #CDD5DF;
+   }
+   .mobile-screen {
+      background: #121926!important;
+   }
+}
+
+@media (max-width: 740px) {
+   .dark-mode{
+      .pages-dashboard-settings{
+         background: #121926!important;
+      }
+      .change-avatar {
+         border: 1px solid #1B2434!important;
+         background-color: #1B2434 !important;
+      }
+      .card {
+         border: 1px solid #1B2434!important;
+         background-color: #1B2434 !important;
+      }
+      .avatar-content h4{
+         color: #bcc2c9;
+      }
+      .avatar-content p {
+         color: #CDD5DF;
+      }
+      .mobile-screen {
+         background: #121926!important;
+      }
+      .mobile-screen .container{
+         min-height: 100%!important;
+      }
+      .action-bar{
+         background: #121926!important;
+         border-bottom-color: #353537;
+      }
    }
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
-  <div :class="['chat-item pt-0', {active}]" @click="$emit('select-group', group.id)">
-    <hr class="mt-0"/>
+  <div :class="active ? 'chat-item active' : 'chat-item'" @click="$emit('select-group', group.id)">
+
     <div class="d-flex">
       <div :class="{'is-online': isOnline}">
         <img class="chat-avatar" :src="chatAvatar" alt="" >

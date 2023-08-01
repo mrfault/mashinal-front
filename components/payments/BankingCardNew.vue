@@ -303,5 +303,13 @@ export default {
          fill: #CDD5DF!important;
          stroke: #CDD5DF!important;
       }
+      .banking-card-list .banking-card-list-item:hover{
+         background-color: #1b2434;
+         opacity: .8;
+         cursor: pointer;
+      }
+      .delete-text {
+         color: #9AA4B2;
+      }
    }
 </style>

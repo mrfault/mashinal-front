@@ -4,7 +4,7 @@
               v-if="croppable"
               :key="refreshCroppa"
               v-model="croppaValue" placeholder=""
-              :initial-image="initialImage+'?v=2'"
+              :initial-image="'https://dev.mashin.al/' +initialImage+'?v=2'"
               :accept="'image/*'"
               :canvas-color="'transparent'"
               :zoom-speed="15"
@@ -37,7 +37,7 @@
       <template v-else>
          <input class="sr-only" type="file" accept="image/*" @change="filesDrop"/>
          <loader v-if="preview === '' && !initialImage"/>
-         <img :src="preview || initialImage" alt="" v-else/>
+         <img :src="preview || 'https://dev.mashin.al'+initialImage" alt="" v-else/>
 
          <span class="drop-file">
 

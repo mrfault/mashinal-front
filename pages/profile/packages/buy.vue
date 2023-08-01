@@ -26,11 +26,11 @@
                      </tr>
                      <tr class="w-100">
                         <td class="text-left">{{ $t('period_time') }}</td>
-                        <td class="text-right">
+                        <td class="text-right" style="width: 12%">
                            <form-select
                               :label="$t('period_time')"
                               :options="durations"
-                              :clear-placeholder="false"
+                              :clear-placeholder="true"
                               :clear-option="false"
                               :input-placeholder="$t('period_time')"
                               v-model="duration"

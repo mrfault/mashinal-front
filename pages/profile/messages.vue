@@ -1,13 +1,21 @@
 <template>
-   <div class="pages-profile-messages pt-0 pt-lg-5 pb-0 pb-lg-5">
-      <div class="container">
+   <div class="pages-profile-messages pt-3 pb-0 pb-lg-5">
+      <portal to="breadcrumbs">
          <breadcrumbs :crumbs="crumbs"/>
+      </portal>
+
+      <component
+         :is="isMobileBreakpoint ? 'mobile-screen' : 'div'"
+         :bar-title="$t('messages')"
+         @back="$router.push(pageRef || $localePath('/profile/messages'))"
+         height-auto>
+
          <div :class="['messages', {'empty': !messages.length, 'no-send-input': activeGroupInterlocutor.id == 3}]">
             <div class="row flex-lg-nowrap">
                <div class="col-auto" v-if="!isMobileBreakpoint || activeGroupId === false">
                   <div class="card messages-card">
-                     <template v-if="messages.length">
-                        <div class="pl-3 pr-3 pt-2 pb-2 pl-lg-4 pr-lg-4 pt-lg-3 pb-lg-3">
+                     <template>
+                        <div class="pl-2 pr-2 pb-2 pt-2 pl-lg-3 pb-lg-0 pr-lg-3 pt-lg-3">
                            <form-text-input
                               v-model="searchValue"
                               icon-name="search"
@@ -15,59 +23,57 @@
                               :placeholder="$t('message_or_name')"
                            />
                         </div>
+                        <div class="chat-list-switch cursor-pointer"
+                             v-if="!isMobileBreakpoint"
+                             @click="showBlockedGroups = !showBlockedGroups">
+                           <template v-if="showBlockedGroups">
+                              <span class="switch-icon"><icon name="chat"/></span>
+                              <span class="switch-text">{{ $t('chat_list') }}</span>
+                              <span class="switch-count text-dark-blue-3">{{ countGroups(false) }}</span>
+                           </template>
+                           <template v-else>
+                              <span class="switch-icon text-dark-blue-2">
+                                 <inline-svg src="/icons/block-user.svg"/>
+                              </span>
+                              <span class="switch-text text-dark-blue-2">{{ $t('blocked_users') }}</span>
+                              <span class="switch-count text-dark-blue-3">{{ countGroups(true) }}</span>
+                           </template>
+                        </div>
                         <hr class="mt-0 mb-0"/>
                      </template>
                      <div class="messages_chat-list">
                         <client-only>
                            <vue-scroll class="white-scroll-bg">
-                              <div class="chat-list-switch cursor-pointer"
-                                   @click="showBlockedGroups = !showBlockedGroups">
-                                 <template v-if="showBlockedGroups">
-                                    <span class="switch-icon"><icon name="chat"/></span>
-                                    <span class="switch-text">{{ $t('chat_list') }}</span>
-                                    <span class="switch-count text-dark-blue-3">{{ countGroups(false) }}</span>
-                                 </template>
-                                 <template v-else>
-                                    <span class="switch-icon text-dark-blue-2"><icon name="block"/></span>
-                                    <span class="switch-text text-dark-blue-2">{{ $t('blocked_users') }}</span>
-                                    <span class="switch-count text-dark-blue-3">{{ countGroups(true) }}</span>
-                                 </template>
-                              </div>
-                              <div class="chat-list-items">
-                                 <template v-if="messages.length">
-                                    <chat-item v-for="group in filteredGroups"
-                                               @select-group="selectActiveGroup"
-                                               @show-modal="activeModalGroup = group, showControlsModal = true;"
-                                               :group="messagesByGroup(group.id)"
-                                               :blocked="isBlocked(group)"
-                                               :active="activeGroupId == group.id"
-                                               :key="group.id"
-                                    />
-                                    <template v-if="!filteredGroups.length">
-                                       <div class="pl-4 pr-1">
-                                          <hr class="mt-0"/>
-                                          <p class="text-center mt-2">
-                                             {{ searchValue ? $t('no_results_found') : $t('no_blocked_users') }}
-                                          </p>
-                                       </div>
-                                    </template>
-                                 </template>
-                                 <template v-else>
-                                    <nuxt-link :to="$localePath('/')" class="chat-item d-block">
-                                       <div class="d-flex">
-                                          <img class="chat-avatar" src="/img/user.jpg" :alt="$t('no_messages')"/>
-                                          <div class="chat-info">
-                                             <div class="chat-first-line">
-                                                <span class="text-medium">{{ $t('no_messages') }}</span>
-                                             </div>
-                                             <div class="chat-details">
-                                                <span>{{ $t('start_conversation_from_announcement') }}</span>
-                                             </div>
-                                          </div>
-                                       </div>
-                                    </nuxt-link>
+                              <div class="chat-list-items" v-if="messages.length">
+                                 <chat-item v-for="group in filteredGroups"
+                                            @select-group="selectActiveGroup"
+                                            @show-modal="activeModalGroup = group, showControlsModal = true;"
+                                            :group="messagesByGroup(group.id)"
+                                            :blocked="isBlocked(group)"
+                                            :active="activeGroupId === group.id"
+                                            :key="group.id"
+                                 />
+                                 <template v-if="!filteredGroups.length">
+                                    <div class="pl-4 pr-1">
+                                       <p class="text-center mt-2">
+                                          {{ searchValue ? $t('no_results_found') : $t('no_blocked_users') }}
+                                       </p>
+                                    </div>
                                  </template>
                               </div>
+                              <template v-else>
+                                 <div v-if="isMobileBreakpoint" class="no-messages">
+                                    <div class="row">
+                                       <div class="col-md-12 d-flex justify-content-center align-items-center">
+                                          <inline-svg src="/icons/no-message.svg"/>
+                                       </div>
+                                       <div class="col-md-12 no-messages-content">
+                                          <h3>Mesaj yoxdur</h3>
+                                          <p>Sizə mesaj gəlsə vəya kiməsə mesaj yazsanız burada görünəcək</p>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </template>
                            </vue-scroll>
                         </client-only>
                      </div>
@@ -109,7 +115,8 @@
                </ul>
             </modal-popup>
          </div>
-      </div>
+
+      </component>
    </div>
 </template>
 
@@ -130,6 +137,7 @@ export default {
       ChatItem,
       ChatMessages
    },
+   layout: 'profileFullWidthLayout',
    nuxtI18n: {
       paths: {
          az: '/profil/mesajlar'
@@ -224,7 +232,7 @@ export default {
 
       async selectActiveGroup(groupId, messageId = false) {
          await this.getGroupMessages(groupId);
-         this.$router.push({query: {group: groupId}});
+         await this.$router.push({query: {group: groupId}});
          this.activeMessage = messageId;
       },
 
@@ -358,6 +366,73 @@ export default {
       }
    }
 
+   .messages-card{
+      border-radius: 12px;
+   }
+   .placeholder-lighter{
+      width: 100%;
+   }
+   .messages-list-items_group .btn--grey{
+      border-radius: 8px;
+      background: var(--gray-400, #9AA4B2);
+   }
+   .placeholder-lighter input{
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      align-self: stretch;
+      border-radius: 8px;
+      background: var(--gray-100, #EEF2F6);
+      padding: 12px 16px 12px 50px;
+      color: var(--gray-500, #697586);
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 20px;
+   }
+   .placeholder-lighter .icon-search{
+      width: 20px;
+      height: 20px;
+      font-size: 20px;
+      position: absolute;
+      left: 15px;
+   }
+   .placeholder-lighter .icon-search:before{
+      font-size: 20px;
+   }
+
+   .chat-inner-info i{
+      width: 24px;
+      height: 24px;
+      font-size: 24px;
+   }
+
+   .no-messages{
+      min-height: 500px;
+      margin: auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+   }
+   .no-messages-content h3{
+      font-size: 24px;
+      font-weight: 600;
+      line-height: 28px;
+      letter-spacing: 0em;
+      text-align: center;
+      color: #121926;
+      margin-top: 15px;
+      margin-bottom: 15px;
+   }
+   .no-messages-content p{
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 24px;
+      letter-spacing: 0em;
+      text-align: center;
+      color: #697586;
+   }
+
    @media (max-width: 1250px) {
       .pages-profile-messages {
          .registrationMarks__number {
@@ -373,6 +448,74 @@ export default {
                font-size: 30px;
             }
          }
+      }
+   }
+
+   @media (max-width: 740px) {
+      .messages{
+         margin-left: -15px;
+         margin-right: -15px;
+      }
+      .chat-inner-info{
+         border-radius: 0;
+      }
+      .message-textarea{
+         border-radius: 0;
+      }
+   }
+
+   .dark-mode{
+      .chat-item{
+         background: #1b2434;
+         border-bottom: 1px solid #1C1C1E;
+      }
+
+      .chat-inner-info, .chat-inner-announcement{
+         background: #1b2434;
+      }
+      .chat-inner-info .username span:first-child{
+         color: #FFF;
+      }
+      .message-content.sent-by-me {
+         background-color: #697586;
+      }
+      .message-content {
+         background-color: #484e56;
+      }
+      .message-textarea {
+         background: #1b2434;
+      }
+      .message-textarea .textarea-text textarea {
+         border: 1px solid #121926;
+         background: #121926;
+         color: #FFF;
+      }
+      .message-textarea .textarea-text textarea::placeholder {
+         color: #454d5a;
+         opacity: 1;
+         font-size: 16px;
+         font-style: normal;
+         font-weight: 400;
+         line-height: 20px;
+      }
+
+      .message-textarea .textarea-text textarea:-ms-input-placeholder {
+         color: #454d5a;
+         font-size: 16px;
+         font-style: normal;
+         font-weight: 400;
+         line-height: 20px;
+      }
+
+      .message-textarea .textarea-text textarea::-ms-input-placeholder {
+         color: #454d5a;
+         font-size: 16px;
+         font-style: normal;
+         font-weight: 400;
+         line-height: 20px;
+      }
+      .dark-mode hr {
+         background-color: #46454c!important;
       }
    }
 </style>

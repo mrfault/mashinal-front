@@ -76,7 +76,6 @@
       user-select: none;
       width: 100%;
       padding: 13px 25px 15px 25px;
-      font-size: 14px;
 
       .switch-count {
          margin-left: auto;
@@ -84,9 +83,13 @@
       }
 
       .switch-text {
-         font-weight: 500;
          width: 100%;
          transition: color .15s ease-out;
+         color: var(--gray-800, #1B2434);
+         font-size: 16px;
+         font-style: normal;
+         font-weight: 400;
+         line-height: 20px; /* 125% */
       }
 
       .switch-icon {
@@ -94,12 +97,22 @@
          flex-shrink: 0;
          align-items: center;
          justify-content: center;
-         width: 28px;
+         width: 16px;
          height: 28px;
          border-radius: 50%;
-         background-color: rgba($dark-blue-1, .15);
+         //background-color: rgba($dark-blue-1, .15);
          margin-right: 9px;
+         color: var(--gray-800, #1B2434);
+         font-size: 16px;
+         font-style: normal;
+         font-weight: 400;
+         line-height: 20px; /* 125% */
          transition: background-color .15s ease-out;
+      }
+
+      .switch-icon svg{
+         width: 24px;
+         height: 24px;
       }
    }
 
@@ -109,9 +122,13 @@
       margin-right: -11px;
       user-select: none;
       cursor: pointer;
+      border-bottom: 1px solid var(--gray-200, $grey-8-new);
+      background: var(--main-white, #FFF);
 
       &.active {
-         background-color: $greyish-blue-8;
+         background-color: $grey-8-new;
+         border-radius: 12px;
+         border-bottom: 1px solid $grey-1-new;
 
          hr,
          & + .chat-item hr {
@@ -224,11 +241,13 @@
 
    &-inner-info,
    &-inner-announcement {
-      width: 50%;
+      width: 100%;
       display: flex;
       align-items: center;
       height: 74px;
       padding: 17px 25px;
+      background: var(--gray-200, #E3E8EF);
+      border-radius: 12px 12px 0 0;
    }
 
    &-inner-info {
@@ -243,9 +262,12 @@
       }
 
       .username {
-         font-size: 13px;
-         font-weight: 500;
          margin-right: auto;
+         color: $dark-new;
+         font-size: 18px;
+         font-style: normal;
+         font-weight: 600;
+         line-height: 22px;
 
          span:first-child {
             margin-right: 5px;
@@ -335,15 +357,12 @@
    width: 100%;
 
    .scroll-container {
-      height: calc(100% - 76px);
-      margin-bottom: 2px;
+      min-height: 600px;
+      max-height: 600px;
+      height: 100%;
+      overflow: auto;
    }
 
-   &.attachments-preview-active {
-      .scroll-container {
-         height: calc(100% - 76px - 70px);
-      }
-   }
 
    &-items {
       padding: 25px;
@@ -355,7 +374,6 @@
 
    &-send {
       flex-shrink: 0;
-      height: 74px;
    }
 }
 
@@ -372,12 +390,12 @@
    &-content {
       display: inline-block;
       background-color: $greyish-blue-2;
-      border-radius: 4px;
-      text-align: left;
+      border-radius: 12px 12px 12px 0px;
 
       &.sent-by-me {
          color: $white;
-         background-color: $dark-blue-2;
+         background-color: $grey-4-new;
+         border-radius: 12px 12px 0 12px;
       }
    }
 
@@ -521,11 +539,10 @@
    &-textarea {
       display: flex;
       align-items: center;
-      position: relative;
-      border-radius: 2px;
       height: 100%;
-      padding: 0 10px;
-
+      padding: 16px;
+      border-radius: 0 0 12px 12px;
+      background: var(--gray-200, #E3E8EF);
       .textarea-text {
          width: 100%;
 
@@ -653,7 +670,12 @@
       height: 11px;
    }
 }
-
+.messages_chat-list{
+   min-height: 610px;
+   max-height: 610px;
+   height: 100%;
+   overflow: auto;
+}
 .chat {
    &-inner-info .is-online::after {
       bottom: 1px;
@@ -704,8 +726,9 @@
 
    .chat {
       &-list-switch {
-         .switch-icon {
-            background-color: rgba($white, .15);
+         .switch-icon svg path{
+            fill: #FFF;
+            stroke: #FFF;
          }
 
          .text-dark-blue-2 {
@@ -744,10 +767,11 @@
 
    .message {
       &-content {
-         background-color: $dark-1;
+         background-color: $grey-1-new;
 
          &.sent-by-me {
-            background-color: $dark-4;
+            background-color: $grey-4-new;
+            border-radius: 12px 12px 0 12px;
          }
       }
 
@@ -811,17 +835,9 @@
 
       &_chat-list,
       &_msg-list {
-         height: calc(100vh - 201px - 25px - 69px);
-         margin-top: 2px;
-         max-height: 699px;
-         min-height: 399px;
+         height: 100%;
       }
 
-      &.empty &_chat-list,
-      &.empty &_msg-list {
-         height: calc(100vh - 201px - 25px);
-         max-height: 768px;
-      }
 
       .divider {
          height: 34px;
@@ -842,15 +858,7 @@
 @include media-max-width('lg') {
    .messages {
       &_chat-list,
-      &_msg-list {
-         @include calc-vh(height, calc(100vh - 120px - 69px));
-         margin-top: 2px;
-      }
 
-      &.empty &_chat-list,
-      &.empty &_msg-list {
-         @include calc-vh(height, calc(100vh - 120px));
-      }
 
       &-card {
          border-radius: 0;
@@ -877,7 +885,14 @@
 
 
 .message-textarea .textarea-text textarea {
-   height: 70px;
-   margin: 5px 0;
+   height: 48px;
+   border: 1px solid var(--gray-200, #E3E8EF);
+   background: var(--main-white, #FFF);
+   border-radius: 12px;
+   overflow: hidden;
+   padding: 13px;
+   -moz-apporance: unset;
 
+   -moz-appearance: none;
+   -webkit-appearance: none;
 }

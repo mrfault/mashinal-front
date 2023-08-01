@@ -230,7 +230,11 @@
          ComeBack
       },
       layout: 'garageLayout',
-
+      nuxtI18n: {
+         paths: {
+            az: '/profil/muqavileler-old'
+         }
+      },
       head() {
          return this.$headMeta({
             title: this.$t('agreements')

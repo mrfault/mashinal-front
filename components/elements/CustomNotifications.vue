@@ -1,5 +1,5 @@
 <template>
-   <div class="customNotification">
+   <div class="customNotification mt-3 mt-lg-0">
       <div class="divider">
          <icon name="notification" />
 
@@ -224,7 +224,8 @@
 
    .dark-mode {
       .customNotification {
-         background-color: #242426;
+         background: #1B2434;
+         border: 1px solid #364152;
 
          &-text {
             p {
@@ -244,7 +245,6 @@
       .customNotification {
          flex-direction: column;
          align-items: flex-start;
-         padding: 20px 15px;
 
          .divider {
             &:last-child {
@@ -253,6 +253,7 @@
 
             .btn {
                margin: 20px 0 0 30px;
+               width: 100%;
                height: 34px;
             }
          }
@@ -277,6 +278,7 @@
          .divider {
             .btn {
                height: 34px;
+               width: 100%;
             }
          }
       }
