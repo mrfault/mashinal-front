@@ -55,7 +55,7 @@
          </template>
 
          <icon :name="iconName" v-if="iconName && !isSearchInput" :class="{invalid, disabled}"/>
-  
+
          <icon name="alert-circle" v-if="invalid && !inputDate && !hasPopover" class="invalid"/>
          <icon name="check-circle" v-else-if="valid && type !== 'password'" class="valid"/>
          <slot name="default"/>
@@ -139,6 +139,7 @@ export default {
       isPromotionsPage: Boolean,
       lighterOnDarkMode: Boolean,
       isSearchInput: Boolean,
+      preventRussian: Boolean,
    },
 
    components: {

@@ -276,6 +276,7 @@
                            </div>
                            <div class="text-truncate">
                               <span>{{ getOptionName(option) }}</span>
+
                            </div>
                         </div>
                      </div>
@@ -339,6 +340,7 @@
                                  <img
                                     :src="$withBaseUrl(option[imgKey]) || imgPlaceholder"
                                     :alt="getOptionName(option)"
+
                                  />
                               </div>
 

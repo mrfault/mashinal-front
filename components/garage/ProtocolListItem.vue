@@ -5,7 +5,7 @@
       @click.prevent="selectProtocol(protocol)"
    >
       <div class="ma-left">
-         <div class="ma-left__checkbox" v-if="false">
+         <div v-if="false" class="ma-left__checkbox">
             <custom-checkbox v-model="protocol.isChecked"/>
          </div>
          <div class="ma-left__content">
@@ -13,12 +13,12 @@
             <strong v-if="protocol.isSelected">{{ protocol.total }} AZN</strong>
          </div>
       </div>
-      <div class="ma-right">
+      <div class="ma-right mt-0">
          <p v-if="!protocol.isSelected" class="ma-right__amount">
             {{ protocol.total }} AZN
          </p>
 
-       <slot></slot>
+         <slot></slot>
 
          <button
             v-if="protocol.isSelected && !history"
