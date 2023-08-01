@@ -2707,5 +2707,9 @@ export default {
    "logout_account_desc": "Hesabdan çıxış et",
    "garage_penalties_desc": "Cərimələr, gömrük kalkulyatoru, bələdçi, alkotester, vizual şin kalkulyatoru",
    "garage_account_desc": "Rəsmi nümayəndə və digər avtosalonlar",
+   package_type: "Paket növü",
+   package_information: "Paket məlumatlarım",
+   package_refresh: "Paketi yenilə",
+   package_current: "Mövcud paket",
 };
 

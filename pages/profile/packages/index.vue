@@ -7,31 +7,107 @@
          <component
             :is="isMobileBreakpoint ? 'mobile-screen' : 'div'"
             :bar-title="$t('my_packages')"
-            @back="$router.push(pageRef || $localePath('/profile/packages'))"
+            @back="$router.push($localePath('/garage-services'))"
             height-auto>
             <div>
-               <div v-if="showPackage">
-                  sfds
-               </div>
-               <template v-else>
-                  <CustomNotifications
-                     :title="$t('unpaid_invoice')"
-                     :subtitle="$t('unpaid_params',
-                     {
+               <div v-if="showPackage === false">
+                  <div class="row">
+                     <div class="col-md-12">
+                        <CustomNotifications
+                           v-if="!!unpaidAgreement"
+                           class="mb-3"
+                           :title="$t('unpaid_invoice')"
+                           :unpaidAgreement="unpaidAgreement"
+                           :subtitle="$t('unpaid_params', {
                         package_type: unpaidAgreement.package.name[locale],
                         start_date: $moment(unpaidAgreement.start_date).format('DD.MM.YYYY'),
                         end_date: $moment(unpaidAgreement.end_date).format('DD.MM.YYYY'),
-                        price: unpaidAgreement.price
-                     })"
-                     :unpaidAgreement="unpaidAgreement"
+                        price: unpaidAgreement.price })"/>
+                     </div>
+                  </div>
+                  <div class="row">
+                     <div class="col-md-7">
+                        <div class="package-card mt-3 mt-lg-0">
+                           <div class="row">
+                              <div class="col-md-12">
+                                 <h2 class="package-card-title mb-3">{{ $t('package_information') }}</h2>
+                              </div>
+                           </div>
+                           <div class="row">
+                              <div class="col-md-12">
+                                 <table class="package-card-table mb-5">
+                                    <tr>
+                                       <td class="text-left">{{ $t('package_type') }}</td>
+                                       <td class="text-right">{{getAgreements[0].package.name}}</td>
+                                    </tr>
+                                    <tr>
+                                       <td class="text-left">{{$t('package_price')}}</td>
+                                       <td class="text-right">{{getAgreements[0].price}} AZN</td>
+                                    </tr>
+                                    <tr>
+                                       <td class="text-left">{{$t('duration_package')}}</td>
+                                       <td class="text-right">{{getAgreements[0].days_type}} {{$t('month')}}</td>
+                                    </tr>
+                                    <tr>
+                                       <td class="text-left">{{$t('start_date')}}</td>
+                                       <td class="text-right">{{ $moment(new Date(getAgreements[0].start_date)).format('DD.MM.YYYY') }}</td>
+                                    </tr>
+                                    <tr>
+                                       <td class="text-left">{{$t('end_date')}}</td>
+                                       <td class="text-right">{{$moment(new Date(getAgreements[0].end_date)).format('DD.MM.YYYY')}}</td>
+                                    </tr>
+                                 </table>
+                              </div>
+                           </div>
+                           <div class="row">
+                              <div class="col-md-12">
+                                 <button class="btn btn-refresh-package mt-5"  @click="setShowPackage(true)">{{$t('package_refresh')}}</button>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="col-md-5" v-if="!isMobileBreakpoint">
+                        <div class="package-card mt-3 mt-lg-0">
+                           <div class="row">
+                              <div class="col-md-12">
+                                 <h2 class="package-card-subtitle mb-2">{{ $t('package_current') }}</h2>
+                              </div>
+                              <div class="col-md-12">
+                                 <h2 class="package-card-title mb-5">{{getAgreements[0].package.name}}</h2>
+                              </div>
+                           </div>
+                           <div class="row">
+                              <div class="col-md-12">
+                                 <ul class="package-card-list">
+                                    <li v-for="option in getAgreements[0].package.items" :key="option.id" :class="option.checked ? 'checked' : 'unchecked'">
+                                       <div>
+                                          <inline-svg :src="'/icons/check3.svg'" v-if="option.checked" />
+                                          <inline-svg :src="'/icons/close2.svg'" v-else />
+                                       </div>
+                                       <div>
+                                          {{ option.text }}
+                                       </div>
+                                    </li>
+                                 </ul>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="clearfix"></div>
+                  </div>
+               </div>
+               <template v-else>
+                  <CustomNotifications
                      v-if="!!unpaidAgreement"
-                     style="margin-bottom: 15px;"
-                  />
-
-                  <Packages
-                     :packages="getPackages"
-                     :disableBtn="disableBtn"
-                  />
+                     class="mb-3"
+                     :title="$t('unpaid_invoice')"
+                     :unpaidAgreement="unpaidAgreement"
+                     :subtitle="$t('unpaid_params', {
+                        package_type: unpaidAgreement.package.name[locale],
+                        start_date: $moment(unpaidAgreement.start_date).format('DD.MM.YYYY'),
+                        end_date: $moment(unpaidAgreement.end_date).format('DD.MM.YYYY'),
+                        price: unpaidAgreement.price })"/>
+                  <Packages :packages="getPackages" :disableBtn="disableBtn"/>
                </template>
             </div>
          </component>
@@ -55,7 +131,7 @@ export default {
    },
    data() {
       return {
-         showPackage: false
+         showPackage: true
       }
    },
    nuxtI18n: {
@@ -64,18 +140,21 @@ export default {
       }
    },
    methods: {
-
+      setShowPackage(params) {
+         this.showPackage = params;
+      }
+   },
+   mounted() {
+      if (this.getAgreements.length) {
+         console.log(this.getAgreements)
+         this.showPackage = false;
+      }
    },
    computed: {
       ...mapGetters({
          getPackages: 'packages/getPackages',
          getAgreements: 'getAgreements'
       }),
-      getPackage() {
-         if (this.getAgreements.length) {
-            this.showPackage = false;
-         }
-      },
       crumbs() {
          return [
             {name: this.$t('dashboard'), route: `${this.user.autosalon ? '/dashboard/1' : '/garage-services'}`},
@@ -102,8 +181,127 @@ export default {
 </script>
 
 <style lang="scss">
-.myPackages {
+.package-card{
+   padding: 32px 24px;
+   border-radius: 12px;
+   border: 1px solid var(--gray-300, #CDD5DF);
+   background: var(--main-white, #FFF);
+   min-height: 535px;
+}
+.package-card-title {
+   color: var(--gray-800, #1B2434);
+   font-size: 28px;
+   font-style: normal;
+   font-weight: 700;
+   line-height: 32px;
+}
+.package-card-subtitle{
+   color: var(--gray-600, #4B5565);
+   font-size: 16px;
+   font-style: normal;
+   font-weight: 600;
+   line-height: 24px;
+}
+.package-card-table{
+   width: 100%;
+}
+.package-card-table tr {
+   border-bottom: 1px solid var(--gray-200, #E3E8EF);
+}
+.package-card-table tr:last-child {
+   border-bottom: 1px solid transparent;
+}
+.package-card-table tr td{
+   padding: 20px 0;
+}
+.package-card-table tr td.text-left{
+   color: var(--gray-700, #364152);
+   font-size: 16px;
+   font-style: normal;
+   font-weight: 400;
+   line-height: 20px;
+}
+.package-card-table tr td.text-right{
+   color: var(--gray-900, #121926);
+   text-align: right;
+   font-size: 16px;
+   font-style: normal;
+   font-weight: 500;
+   line-height: 20px;
+}
+.package-card .btn-refresh-package{
+   display: flex;
+   padding: 14px 16px;
+   justify-content: center;
+   align-items: center;
+   gap: 8px;
+   align-self: stretch;
+   border-radius: 8px;
+   background: var(--success-600, #039855);
+   color: var(--main-white, #FFF);
+   text-align: center;
+   font-size: 16px;
+   font-style: normal;
+   font-weight: 500;
+   line-height: 20px;
+   width: 100%;
+}
+.package-card-list{
+   padding: 0;
+   margin: 0;
+   list-style: none;
+}
+.package-card-list li {
+   color: var(--gray-900, #121926);
+   font-size: 16px;
+   font-style: normal;
+   font-weight: 400;
+   line-height: 20px;
+   margin-bottom: 10px;
+   display: flex;
+   justify-content: start;
+   align-items: center;
+}
+.package-card-list li:last-child{
+   margin-bottom: 0;
+}
+.package-card-list li.unchecked{
+   display: none;
+}
+.package-card-list li svg{
+   margin-right: 10px;
+   width: 24px;
+   height: 24px;
+}
 
+.dark-mode{
+   .package-card{
+      background: #1B2434;
+      border: 1px solid #364152;
+   }
+   .package-card-table tr td.text-left{
+      color: #CDD5DF;
+   }
+   .package-card-table tr td.text-right{
+      color: #CDD5DF;
+   }
+   .package-card-table tr {
+      border-bottom: 1px solid #E3E8EF;
+   }
+   .package-card-table tr:last-child {
+      border-bottom: 1px solid transparent;
+   }
+   .package-card-list li {
+      color: #CDD5DF;
+   }
+
+   .package-card-list li.unchecked svg path{
+      stroke: #CDD5DF;
+      fill: #CDD5DF;
+   }
+}
+
+.myPackages {
    &__title {
       margin: 36px 0 8px 0;
       font-weight: 500;
