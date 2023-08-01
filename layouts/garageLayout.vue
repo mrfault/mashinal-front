@@ -6,10 +6,9 @@
             <div class="ma-garage">
                <div class="ma-garage__nav">
                   <NuxtLink :to="$localePath('garage-services')" class="ma-garage__nav--profile">
-
                      <div class="ma-garage__nav--profile__avatar">
                         <template v-if="user.avatar">
-                           <img :src="user.avatar"/>
+                           <img :src="'https://dev.mashin.al/storage/'+user.avatar"/>
                         </template>
                         <h5 v-else class="ma-garage__nav--profile__name">{{ user.full_name.charAt(0) }}</h5>
                      </div>
@@ -50,7 +49,7 @@
                         <div class="ma-garage__nav--profile">
                            <div class="ma-garage__nav--profile__avatar">
                               <template v-if="user.avatar">
-                                 <img :src="`${user.avatar}`" alt="avatar"/>
+                                 <img :src="`https://dev.mashin.al/storage/${user.avatar}`" alt="avatar"/>
                               </template>
                               <h5 v-else class="ma-garage__nav--profile__name">{{ user.full_name.charAt(0) }}</h5>
                            </div>
@@ -184,6 +183,11 @@ export default {
 }
 .ma-garage__nav--profile{
    margin-bottom: 30px;
+}
+.ma-garage__nav--profile__avatar img{
+   height: 36px;
+   width: 36px;
+   object-fit: contain;
 }
 .dark-mode{
    .breadcrumbs_main{

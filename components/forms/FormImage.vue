@@ -4,7 +4,7 @@
               v-if="croppable"
               :key="refreshCroppa"
               v-model="croppaValue" placeholder=""
-              :initial-image="this.$env.BASE_URL? 'https://mashin.al' : 'https://dev.mashin.al' +initialImage+'?v=2'"
+              :initial-image="'https://dev.mashin.al/' +initialImage+'?v=2'"
               :accept="'image/*'"
               :canvas-color="'transparent'"
               :zoom-speed="15"
