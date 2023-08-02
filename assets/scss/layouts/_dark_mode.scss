@@ -26,6 +26,19 @@
       }
    }
 
+   .checkbox-input {
+      input {
+         &:checked ~ label {
+            border-color: $blue-5-new;
+            background-color: $blue-5-new !important;
+
+            .text-truncate {
+               color: $white;
+            }
+         }
+      }
+   }
+
    a {
       color: $yellow-1;
 
