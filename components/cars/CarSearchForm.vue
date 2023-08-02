@@ -394,7 +394,7 @@
                                'btn--white',
                                { 'pointer-events-none': pending },
                                { 'disabled': rows.length > 4 },
-                              ]"
+                     ]"
                      @click="addSearchRow(rows.length - 1)"
                   >
                      {{ $t('add_next', { count: rows.length + 1 }) }}
@@ -974,7 +974,7 @@
                    this.form.with_video || this.form.region || this.form.korobka.length ||
                    this.form.engine_type.length || this.form.in_garanty || this.form.external_salon ||
                    this.form.body.length || this.form.gearing.length || this.form.customs ||
-                   this.form.damage || this.form.n_of_seats.length || this.form.colors.length)
+                   this.form.damage || this.form.n_of_seats.length || this.form.colors.length || this.form.all_options)
          },
 
          popularOptions2() {
