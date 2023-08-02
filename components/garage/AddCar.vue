@@ -33,13 +33,15 @@
             @closeAddCarPopup="manageModalsInLoading()"
          ></asan-login-button>
          <form class="form" @submit.prevent="checkCarNumber">
-            <form-text-input
-               v-model="form.car_number"
-               :invalid="$v.form.car_number.$error"
-               :mask="'99 - A{1,2} - 999'"
-               :placeholder="$t('car_number')"
-               class="mb-2 mb-lg-3"
-            />
+            <div class="form-group mb-2 mb-lg-3">
+               <div class="text-input">
+                  <input
+                     v-model="form.car_number"
+                         v-mask="'99 - A{1,2} - 999'"
+                         :placeholder="$t('car_number')"
+                         @input="filterRussianLetters">
+               </div>
+            </div>
             <form-text-input
                v-model="form.tech_id"
                :invalid="$v.form.tech_id.$error"
@@ -190,34 +192,6 @@ export default {
       },
    },
    mixins: [PaymentMixin, asan_login],
-
-   data() {
-      return {
-         bankingCardRefresh: 0,
-         showModal: false,
-         pending: false,
-         price: 0,
-         hasAsanLoginCopy: false,
-         redirectPath: 'garage',
-         form: {
-            car_number: '',
-            tech_id: '',
-         },
-      }
-   },
-   validations: {
-      form: {
-         car_number: {required},
-         tech_id: {required},
-      },
-   },
-   computed: {
-      ...mapGetters({bankingCards: 'bankingCards/bankingCards'}),
-      haveBalanceToPay() {
-         return parseFloat(this.price) <= this.user.balance
-      },
-
-   },
    methods: {
       ...mapActions({
          checkNewCar: 'garage/checkNewCar',
@@ -306,7 +280,42 @@ export default {
       manageModalsInLoading() {
          this.showModal = false
       },
+
+      filterRussianLetters(event) {
+         const inputValue = event.target.value;
+         // Remove Russian letters from the input value using a regular expression
+         const filteredValue = inputValue.replace(/[а-яА-Я]/g, '');
+         this.form.car_number = filteredValue;
+      },
    },
+   data() {
+      return {
+         bankingCardRefresh: 0,
+         showModal: false,
+         pending: false,
+         price: 0,
+         hasAsanLoginCopy: false,
+         redirectPath: 'garage',
+         form: {
+            car_number: '',
+            tech_id: '',
+         },
+      }
+   },
+   validations: {
+      form: {
+         car_number: {required},
+         tech_id: {required},
+      },
+   },
+   computed: {
+      ...mapGetters({bankingCards: 'bankingCards/bankingCards'}),
+      haveBalanceToPay() {
+         return parseFloat(this.price) <= this.user.balance
+      },
+
+   },
+
    async mounted() {
       if (await this.checkTokenOnly()) {
          this.hasAsanLoginCopy = true
