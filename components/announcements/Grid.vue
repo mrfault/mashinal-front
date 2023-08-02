@@ -1,9 +1,9 @@
 <template>
    <div :class="['announcements-grid', { 'loading-content': pending, paginated: paginate }]">
-      <div class="container" v-if="title">
+      <div :class="{'container' : hasContainer}" v-if="title">
          <slot name="cap" />
 
-         <div class="announcements-grid__inner" :class="{'my-announcements-grid__inner':myAnnouncementsPage}">
+         <div class="announcements-grid__inner" :class="{'my-announcements-grid__inner': myAnnouncementsPage}">
             <grid-item
                v-for="(announcement, index) in announcements"
                :key="announcement.id_unique + (escapeDuplicates ? '_' + index : '')"
@@ -71,7 +71,10 @@
          pending: Boolean,
          watchRoute: Boolean,
          escapeDuplicates: Boolean,
-         hasContainer: Boolean,
+         hasContainer: {
+            type: Boolean,
+            default: true
+         },
          banner: String,
          bannerPlace: Number,
          bannerCount: Number,

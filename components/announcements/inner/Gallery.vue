@@ -66,16 +66,25 @@
 
             <div class="gallery-overlay_bottom">
                <ul class="gallery-overlay__characteristics">
-                  <li
-                     class="gallery-overlay__characteristics-item"
-                     v-for="item in characteristics"
-                     :key="item.id"
-                  >
-                     <inline-svg :src="item.icon" />
+                  <li class="gallery-overlay__characteristics-item" v-if="announcement.tradeable">
+                     <inline-svg src="/icons/barter.svg" />
+                     <span>{{ $t('tradeable') }}</span>
+                  </li>
 
-                     <span>{{ item.name }}</span>
+                  <li class="gallery-overlay__characteristics-item" v-if="announcement.credit">
+                     <inline-svg src="/icons/credit.svg" />
+                     <span>{{ $t('credit_possible') }}</span>
+                  </li>
 
-                     <span :class="{'badgeMin' : item.badge}" v-if="item.badge">{{ $t('is_new') }}</span>
+                  <li class="gallery-overlay__characteristics-item" v-if="announcement.has_360">
+                     <inline-svg src="/icons/credit.svg" />
+                     <span>360 foto</span>
+                  </li>
+
+                  <li class="gallery-overlay__characteristics-item" v-if="announcement.show_vin">
+                     <inline-svg src="/icons/vin_2.svg" />
+                     <span>VIN kod</span>
+                     <span class="badgeMin">{{ $t('is_new') }}</span>
                   </li>
                </ul>
             </div>
@@ -376,14 +385,14 @@
             ]
          },
 
-         characteristics() {
-            return [
-               { id: 1, icon: '/icons/barter.svg', name: this.$t('tradeable') },
-               { id: 2, icon: '/icons/credit.svg', name: this.$t('credit_possible') },
-               { id: 3, icon: '/icons/360_deg_2.svg', name: '360 foto' },
-               { id: 4, icon: '/icons/vin_2.svg', name: 'VIN kod', badge: true },
-            ]
-         },
+         // characteristics() {
+         //    return [
+         //       { id: 1, icon: '/icons/barter.svg', name: this.$t('tradeable') },
+         //       { id: 2, icon: '/icons/credit.svg', name: this.$t('credit_possible') },
+         //       { id: 3, icon: '/icons/360_deg_2.svg', name: '360 foto' },
+         //       { id: 4, icon: '/icons/vin_2.svg', name: 'VIN kod', badge: true },
+         //    ]
+         // },
       },
 
       watch: {

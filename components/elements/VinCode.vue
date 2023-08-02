@@ -2,7 +2,7 @@
    <div class="vinCode">
       <h4 class="vinCode__title">
          <span>VIN-kod:</span>
-         <span>JHMFA36278S016910</span>
+         <span>{{ vin }}</span>
       </h4>
 
       <p class="vinCode__subtitle">Avtomobil almazdan əvvəl VIN kodunu yoxlamaq tövsiyyə olunur</p>
@@ -17,7 +17,9 @@
 
 <script>
    export default {
-
+      props: {
+         vin: ''
+      }
    }
 </script>
 

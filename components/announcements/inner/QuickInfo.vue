@@ -21,10 +21,10 @@
                :type="type"
             />
 
-            <div class="customsDuty">
-               <p>Təqribi gömrük rüs.</p>
-               <h4>+4500 AZN</h4>
-            </div>
+<!--            <div class="customsDuty">-->
+<!--               <p>Təqribi gömrük rüs.</p>-->
+<!--               <h4>+4500 AZN</h4>-->
+<!--            </div>-->
          </div>
 
          <ul class="quick-info__details">
@@ -152,7 +152,7 @@
 <!--             (!this.isMobileBreakpoint && !announcement.has_monetization) && this.type !== 'registration-marks'"-->
 <!--         />-->
 
-         <div :class="{ 'mb-2 mb-lg-3': !needToPay }" v-if="type !== 'registration-marks'">
+         <div :class="{'mb-2 mb-lg-3': !needToPay }" v-if="type !== 'registration-marks'">
             <pay-announcement-button
                :announcement="announcement"
                v-if="needToPay"
@@ -164,7 +164,7 @@
             />
 
             <monetization-button
-               class="mt-3 h-52"
+               class="h-52"
                :announcement="announcement"
                @openModal="openModal"
             />
@@ -213,9 +213,13 @@
 <!--         </div>-->
 <!--      </template>-->
 
-      <VinCode class="mt-4" />
+      <VinCode
+         class="mt-4"
+         :vin="announcement.vin"
+         v-if="announcement.vin"
+      />
 
-      <InsureCar class="mt-4" />
+<!--      <InsureCar class="mt-4" />-->
 
       <modal-popup :toggle="showModal" @close="showModal = false">
          <login-tabs></login-tabs>
@@ -340,6 +344,7 @@
          padding: 24px 20px;
          border-radius: 12px;
          border: 1px solid #CDD5DF;
+         margin-bottom: 20px;
       }
 
       &__title {

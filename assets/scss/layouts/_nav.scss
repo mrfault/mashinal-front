@@ -28,106 +28,125 @@
 
 .mobile-nav {
    position: fixed;
-   z-index: 9;
    bottom: 0;
    left: 0;
-   background-color: $white;
-   height: 60px;
    width: 100%;
-   border-top: 2px solid $greyish-blue-1;
-   margin-top: auto;
+   height: 72px;
+   background-image: url("/images/mobile-nav-bg.svg");
+   background-position: center;
+   background-repeat: no-repeat;
+   //background-size: cover;
+   z-index: 9;
 
-   ul {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      list-style: none;
-      padding: 0;
-      margin: 0;
+   &:before,
+   &:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      width: 33%;
+      height: 65px;
+      background-color: #FFFFFF;
+   }
 
-      a {
+   &:before {
+      left: 0;
+   }
+
+   &:after {
+      right: 0;
+   }
+
+   .container {
+      position: relative;
+      z-index: 10;
+      height: 100%;
+
+      ul {
          display: flex;
-         flex-direction: column;
          align-items: center;
-         justify-content: flex-end;
-         height: 58px;
-         padding-bottom: 9px;
-         color: $greyish-blue-4;
-         font-size: 11px;
-         font-weight: 500;
-         text-align: center;
+         justify-content: space-between;
+         height: 100%;
+         padding: 15px 15px 0 15px;
 
-         &.pseudo-active,
-         &.exact-active {
-            color: $red-1;
-         }
+         a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            color: $greyish-blue-4;
+            font-size: 11px;
+            font-weight: 500;
+            text-align: center;
 
-         span {
-            margin-top: 6px;
-         }
+            &.pseudo-active,
+            &.exact-active {
+               color: $dark-blue-1;
 
-         i {
-            &::before {
-               font-size: 18px;
-            }
-
-            &.icon-star,
-            &.icon-chat,
-            &.icon-user,
-            &.icon-settings {
-               font-weight: bold;
-            }
-         }
-      }
-
-      li {
-         position: relative;
-
-         .badge-counter {
-            position: absolute;
-            top: 0;
-            border: 1px solid $white;
-         }
-
-         &:nth-child(1),
-         &:nth-child(5) {
-            width: 45px;
-         }
-
-         &:nth-child(2),
-         &:nth-child(3),
-         &:nth-child(4) {
-            width: 60px;
-
-            .badge-counter {
-               right: 14px;
-            }
-         }
-
-         &:nth-child(3) {
-            a {
-               color: $green-1;
-
-               &.exact-active {
-                  color: $green-2;
-
-                  i {
-                     background-color: $green-2;
+               svg {
+                  path {
+                     fill: $dark-blue-1;
                   }
                }
             }
 
-            i {
-               align-items: center;
-               justify-content: center;
-               border-radius: 50%;
-               width: 51px;
-               height: 51px;
-               border: 6px solid $greyish-blue-1;
-               background-color: $green-1;
-               color: $white;
-               font-size: 16px;
+            span {
+               margin-top: 4px;
+               font-size: 12px;
+               font-weight: 500;
+               line-height: 14px;
             }
+         }
+
+         li {
+            position: relative;
+
+            .badge-counter {
+               position: absolute;
+               top: 0;
+               border: 1px solid $white;
+            }
+
+            &:nth-child(3) {
+               margin: -45px 0 0 -10px;
+
+               span {
+                  margin-top: 15px;
+               }
+            }
+
+            &:nth-child(2),
+            &:nth-child(3),
+            &:nth-child(4) {
+               .badge-counter {
+                  right: 14px;
+               }
+            }
+
+            //&:nth-child(3) {
+            //   a {
+            //      color: $green-1;
+
+                  //&.exact-active {
+                  //   color: $green-2;
+                  //
+                  //   i {
+                  //      background-color: $green-2;
+                  //   }
+                  //}
+               //}
+
+               //i {
+               //   align-items: center;
+               //   justify-content: center;
+               //   border-radius: 50%;
+               //   width: 51px;
+               //   height: 51px;
+               //   border: 6px solid $greyish-blue-1;
+               //   background-color: $green-1;
+               //   color: $white;
+               //   font-size: 16px;
+               //}
+            //}
          }
       }
    }
@@ -138,7 +157,7 @@
    z-index: 10;
    top: 0;
    left: 0;
-   margin-bottom: 32px;
+   //margin-bottom: 32px;
 
    .menu-header {
       background-color: $white;
@@ -157,9 +176,9 @@
       }
 
       span {
-         &:first-of-type {
-            color: $red-1;
-         }
+         //&:first-of-type {
+         //   color: $red-1;
+         //}
 
          i::before {
             font-size: 16px;

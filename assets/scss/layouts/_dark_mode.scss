@@ -4,6 +4,28 @@
 }
 
 .dark-mode {
+   .form-buttons {
+      &.no-bg {
+         .btn {
+            &.active {
+               color: $white !important;
+            }
+         }
+      }
+
+      & > div {
+         &:not(:has(.active)) {
+            .form-group {
+               .btn {
+                  color: $white-2-new;
+                  border-color: transparent;
+                  background-color: transparent;
+               }
+            }
+         }
+      }
+   }
+
    a {
       color: $yellow-1;
 
