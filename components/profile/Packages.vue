@@ -19,7 +19,7 @@
                            <span>{{ info.text }}</span>
                         </li>
                      </ul>
-                     <button @click="nextStep(item)" :class="['btn']">
+                     <button @click="nextStep(item)" :class="['btn', { 'disabled' : disableBtn && !disableBtn?.is_expired && disableBtn?.hasPackage?.id !== item.id && (user?.autosalon && user?.autosalon?.status !== 0) }]">
                         {{ $t('join_package', {package: item.name}) }}
                      </button>
                   </div>
