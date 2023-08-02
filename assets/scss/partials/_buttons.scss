@@ -521,6 +521,12 @@
          @include btn-style($bg-color: $grey-2, $bg-hover: $grey-1);
       }
 
+      &--blue-new-light-2 {
+         @include btn-style(
+            $bg-color: transparent,
+            $border-color: $grey-1,
+         );
+      }
       &--dark-blue-2-outline,
       &--dark-blue-outline {
          @include btn-style(
