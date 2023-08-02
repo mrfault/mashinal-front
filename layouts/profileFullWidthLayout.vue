@@ -1,7 +1,7 @@
 <template>
    <page-layout>
       <template #nuxt>
-         <div class="container-fluid">
+         <div class="container-fluid max-container">
             <div class="row breadcrumbs_main" v-if="!isMobileBreakpoint">
                <div class="container">
                   <portal-target name="breadcrumbs"/>
@@ -34,13 +34,27 @@ export default {
 }
 </script>
 
-<!--<style lang="scss">-->
-<!--.container-fluid{-->
-<!--   background-color: #fff!important;-->
-<!--   margin-bottom: -112px;-->
-<!--   min-height: 900px;-->
-<!--}-->
-<!--.breadcrumbs_main{-->
-<!--   background-color: #EEF2F6;-->
-<!--}-->
-<!--</style>-->
+<style lang="scss">
+.container-fluid{
+   background-color: #fff!important;
+   min-height: 900px;
+}
+.breadcrumbs_main{
+   background-color: #EEF2F6;
+}
+
+.dark-mode{
+   .breadcrumbs_main{
+      background-color: #121926;
+   }
+   .max-container{
+      background-color: #121926!important;
+   }
+   .ma-garage__nav--item__title{
+      color: #9AA4B2!important;
+   }
+   .ma-garage__nav--profile__name{
+      color: #fff!important;
+   }
+}
+</style>

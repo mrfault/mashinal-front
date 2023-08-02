@@ -14,7 +14,7 @@ export const YMapsMixin = {
         const yandexMapScript = document.createElement('SCRIPT');
 
         const {
-          apiKey = this.$env.YANDEX_MAPS_API,
+          apiKey = '606cbf2e-0ebb-48e4-b785-a39f959143ef',
           lang = 'az_AZ',
           version = '2.1',
           coordorder = 'latlong',
@@ -23,7 +23,7 @@ export const YMapsMixin = {
         } = settings;
 
         const mode = debug ? 'debug' : 'release';
-        const params = `lang=${lang}${apiKey && `&apikey=${apiKey}`}&mode=${mode}&coordorder=${coordorder}`;
+        const params = `lang=${lang}&apikey=${apiKey}&mode=${mode}&coordorder=${coordorder}`;
         const link = `https://${enterprise ? 'enterprise.' : ''}api-maps.yandex.ru/${version}/?${params}`;
 
         yandexMapScript.setAttribute('src', link);

@@ -37,7 +37,7 @@
                   :class="{ 'pointer-events-none': pending }"
                   class="btn btn--white btn-dark-text"
                   type="button"
-                  @click="showModal = false"
+                  @click="removeVehicle"
                >
                   {{ $t('stop_subsciption') }}
                </button>
@@ -51,6 +51,7 @@
 <script>
 import RadioGroup from "~/components/moderator/RadioGroup";
 import CustomRadio from "~/components/elements/CustomRadio";
+import {mapActions} from "vuex";
 
 export default {
    props: {
@@ -93,17 +94,24 @@ export default {
       }
    },
    methods: {
+      ...mapActions({
+         deactivate: 'garage/deactivateCar'
+      }),
       async removeVehicle() {
          if (this.pending) return;
          this.pending = true;
+         console.log("removeVehicle")
          try {
-            await this.$store.dispatch("garage/deactivateCar ", {id: this.vehicle.id});
+            console.log("removeVehicle try")
+            await this.deactivate({ id: this.vehicle.id });
+            console.log("removeVehicle response")
             this.$toasted.success(this.$t('car_deactivated'));
             this.pending = false;
             this.showModal = false;
             this.scrollReset();
             this.$emit("carDeactivated", true)
          } catch (err) {
+            console.log("removeVehicle catch")
             this.pending = false;
          }
       }

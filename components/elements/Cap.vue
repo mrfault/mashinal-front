@@ -28,10 +28,11 @@
       width: 100%;
 
       h3 {
-         font-weight: 700;
+         color: var(--gray-900, #121926);
          font-size: 28px;
+         font-style: normal;
+         font-weight: 700;
          line-height: 32px;
-         color: #121926;
       }
 
       a {
@@ -44,33 +45,35 @@
          gap: 10px;
          transition: all .2s;
 
-         &:hover {
-            color: #004EEB;
-         }
+         //&:hover {
+         //   color: #004EEB;
+         //}
       }
 
       p {
          cursor: pointer;
 
-         &:hover {
-            span {
-               color: #004EEB;
-            }
-
-            svg {
-               path {
-                  fill: #004EEB;
-               }
-            }
-         }
+         //&:hover {
+         //   span {
+         //      color: #004EEB;
+         //   }
+         //
+         //   svg {
+         //      path {
+         //         fill: #004EEB;
+         //      }
+         //   }
+         //}
 
          span {
-            font-weight: 600;
+            color: var(--gray-600, #4B5565);
+            text-align: right;
             font-size: 20px;
+            font-style: normal;
+            font-weight: 600;
             line-height: 24px;
-            text-decoration-line: underline;
-            color: #4B5565;
             margin-right: 10px;
+            text-decoration-line: underline;
          }
       }
 
@@ -84,23 +87,23 @@
    .dark-mode {
       .cap {
          a {
-            &:hover {
-               color: #84ADFF;
-            }
+            //&:hover {
+            //   color: #84ADFF;
+            //}
          }
 
          p {
-            &:hover {
-               span {
-                  color: #84ADFF;
-               }
-
-               svg {
-                  path {
-                     fill:#84ADFF;
-                  }
-               }
-            }
+            //&:hover {
+            //   span {
+            //      color: #84ADFF;
+            //   }
+            //
+            //   svg {
+            //      path {
+            //         fill:#84ADFF;
+            //      }
+            //   }
+            //}
          }
 
          h3, span {

@@ -92,6 +92,7 @@ const getInitialState = () => ({
    motorcycleModels: {0: [], 1: [], 2: [], 3: [], 4: []},
    commercialModels: {0: [], 1: [], 2: [], 3: [], 4: []},
    scooterModels: {0: [], 1: [], 2: [], 3: [], 4: []},
+   motoModelsV2: [],
    carModels: {0: [], 1: [], 2: [], 3: [], 4: []},
    carModelsExclude: {0: [], 1: [], 2: [], 3: [], 4: []},
    modelDescription: false,
@@ -115,6 +116,8 @@ const getInitialState = () => ({
    popularOptions: [],
    bodyOptions: {},
    motoOptions: [],
+   motoOptionsV2: [],
+   motoBrands: [],
    scooterOptions: [],
    complaintOptions: [],
    badges: [],
@@ -134,10 +137,12 @@ const getInitialState = () => ({
    sellYears: {},
    sellBody: [],
    sellGenerations: [],
+   sellGenerationsV2: [],
    sellEngines: [],
    sellGearing: [],
    sellTransmissions: [],
    sellModifications: [],
+   sellModificationsV2: [],
    sellPreviewData: {},
    // salons
    salonsList: [],
@@ -209,6 +214,7 @@ const getInitialState = () => ({
    savedImageUrls: [],
    single_announce: {},
    partCategories: [],
+   partFilters: {},
 
    regionNumbers: [],
    agreements: [],
@@ -323,6 +329,7 @@ export const getters = {
    motorcycleModels: s => s.motorcycleModels,
    commercialModels: s => s.commercialModels,
    scooterModels: s => s.scooterModels,
+   motoModelsV2: s => s.motoModelsV2,
    carModels: s => s.carModels,
    modelDescription: s => s.modelDescription,
    getPopularComments: s => s.popularComments,
@@ -343,6 +350,8 @@ export const getters = {
    popularOptions: s => s.popularOptions,
    bodyOptions: s => s.bodyOptions,
    motoOptions: s => s.motoOptions,
+   motoOptionsV2: s => s.motoOptionsV2,
+   motoBrands: s => s. motoBrands,
    scooterOptions: s => s.scooterOptions,
    complaintOptions: s => s.complaintOptions,
    badges: s => s.badges,
@@ -362,12 +371,14 @@ export const getters = {
    sellYears: s => s.sellYears,
    sellBody: s => s.sellBody,
    sellGenerations: s => s.sellGenerations,
+   sellGenerationsV2: s => s.sellGenerationsV2,
    sellEngines: s => Object.keys(s.sellEngines).map(key => s.sellEngines[key]),
    sellGearing: s => Object.keys(s.sellGearing).map(key => s.sellGearing[key]),
    sellTransmissions: s =>
       Object.keys(s.sellTransmissions).map(key => s.sellTransmissions[key]),
    sellModifications: s =>
       Object.keys(s.sellModifications).map(key => s.sellModifications[key]),
+   sellModificationsV2: s => s.sellModificationsV2,
    sellPreviewData: s => s.sellPreviewData,
    // salons
    salonsList: s => s.salonsList,
@@ -408,7 +419,8 @@ export const getters = {
    getActiveMyOffers: s => s.active_my_offers,
    offerGenerations: s => s.offer_generations,
 //  moderator
-   partCategories: s => s.partCategories
+   partCategories: s => s.partCategories,
+   partFilters: s => s.partFilters
 };
 
 const objectNotEmpty = (state, commit, property) => {
@@ -794,6 +806,13 @@ export const actions = {
          key: data.index || 0
       });
    },
+   async getMotoModelsV2({commit}, data) {
+      const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/moto/${data.value}/brand/${data.id}/models?whereHas=${data.whereHas || 1}`);
+      commit("mutate", {
+         property: "motoModelsV2",
+         value: res,
+      });
+   },
    async getAtvModels({commit}, data) {
       const res = await this.$axios.$get(`/moto/atv/brand/${data.id}/models`);
       commit("mutate", {
@@ -808,6 +827,21 @@ export const actions = {
          property: "scooterModels",
          value: res,
          key: data.index || 0
+      });
+   },
+   //Parts
+   async getPartCategories({commit}) {
+      const res = await this.$axios.$get(`/part/categories`);
+      commit("mutate", {
+         property: "partCategories",
+         value: res
+      });
+   },
+   async getPartFilters({commit}, id) {
+      const res = await this.$axios.$get(`/part/category/${id}/filters`);
+      commit("mutate", {
+         property: "partFilters",
+         value: res
       });
    },
    async popularComments({commit}) {
@@ -961,6 +995,16 @@ export const actions = {
       if (objectNotEmpty(state, commit, "motoOptions")) return;
       const res = await this.$axios.$get(`/moto/search_options`);
       commit("mutate", {property: "motoOptions", value: res});
+   },
+   async getMotoOptionsV2({state, commit}) {
+      if (objectNotEmpty(state, commit, "motoOptionsV2")) return;
+      const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/moto/types`);
+      commit("mutate", {property: "motoOptionsV2", value: res});
+   },
+   async getMotoBrandsV2({state, commit}, data) {
+      // if (objectNotEmpty(state, commit, "motoBrands")) return;
+      const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/moto/${data.value}/brands?whereHas=${data.whereHas || 1}`);
+      commit("mutate", {property: "motoBrands", value: res});
    },
    async getScooterOptions({commit}) {
       const data = await this.$axios.$get(`/moto/scooter_options`);
@@ -1303,6 +1347,12 @@ export const actions = {
       );
       commit("mutate", {property: "sellGenerations", value: res});
    },
+   async getSellGenerationsV2({commit}, data) {
+      const res = await this.$axios.$get(
+         `https://v2dev.mashin.al/api/v2/${data.brand}/${data.model}/year/${data.year}/body/${data.body}/generations`
+      );
+      commit("mutate", {property: "sellGenerationsV2", value: res});
+   },
    async getSellEngines({commit}, data) {
       const res = await this.$axios.$get(
          `/sell/${data.brand}/${data.model}/year/${data.year}/body/${data.body}/generation/${data.generation}/engines`
@@ -1326,6 +1376,11 @@ export const actions = {
          `/sell/${data.brand}/${data.model}/body/${data.body}/generation/${data.generation}/engine/${data.engine}/gearing/${data.gearing}/trns/${data.transmission}/modifications`
       );
       commit("mutate", {property: "sellModifications", value: res});
+   },async getSellModificationsV2({commit}, data) {
+      const res = await this.$axios.$get(
+         `https://v2dev.mashin.al/api/v2/car-catalog/${data.brand}/${data.model}/body/${data.body}/generation/${data.generation}/engine/${data.engine}/gearing/${data.gearing}/trns/${data.transmission}/modifications`
+      );
+      commit("mutate", {property: "sellModificationsV2", value: res});
    },
    // Services
    async getServices({commit}) {
@@ -1389,6 +1444,21 @@ export const actions = {
    async updateMySalon({}, {id, form}) {
       await this.$axios.$post(`/my/autosalon/${id}/edit`, form);
    },
+   //SELL POSTS
+   async plateNumbersPost({}, form) {
+      await this.$axios.$post(`https://v2dev.mashin.al/api/v2/plate-numbers/post`, form);
+   },
+   async partsPost({}, form) {
+      await this.$axios.$post(`/sell/part/post/publish`, form);
+   },
+   async carsPost({}, form) {
+      await this.$axios.$post(`/sell/post/publish?is_mobile=false`, form);
+   },
+   async motoPost({}, form) {
+      await this.$axios.$post(`/sell/moto/post/publish?is_mobile=false`, form);
+   },
+
+
    updateSalonsFilters({commit}, form) {
       commit("mutate", {property: "salonsFilters", value: form});
    },

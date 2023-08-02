@@ -9,9 +9,8 @@
          <component
             :is="isMobileBreakpoint ? 'mobile-screen' : 'div'"
             :bar-title="$t('my_balance')"
-            @back="$router.push(pageRef || $localePath('/profile/balance'))"
+            @back="$router.push(pageRef || $localePath('/garage-services'))"
             height-auto>
-
             <div class="row" v-if="!isMobileBreakpoint">
                <div class="col-md-12 mb-0 mb-lg-4">
                   <h1>{{ $t('my_balance') }}</h1>
@@ -37,25 +36,26 @@
                      </div>
                      <div class="mt-3">
                         <form class="form" @submit.prevent="increaseBalance" novalidate>
-                           <div class="form-group d-flex justify-content-between align-items-center">
+                           <div class="form-group row m-0">
                               <form-text-input
                                  type="number"
                                  v-model="form.money"
                                  :placeholder="$t('payment_amount')"
+                                 class="col-md-3 p-0 mb-2 mb-lg-0 amount-input"
                               />
 
                               <select-banking-card
-                                 style="display: none"
-                                 v-if="bankingCards.length"
                                  :show-card-image="false"
                                  :value="bankingCard"
                                  @input="bankingCard = $event"
-                                 class="mt-2 mt-lg-3"
+                                 class="col-md-5 pr-0 pl-lg-2 pl-0 mb-2 mb-lg-0"
                               />
 
-                              <button type="submit" :class="['btn btn--green ml-2 full-width', { pending, disabled: form.money < this.minAmount }]">
-                                 {{ $t('replenish') }}
-                              </button>
+                              <div class="col-md-4 pr-0 pl-lg-2 pl-0 mb-2 mb-lg-0">
+                                 <button type="submit" :class="['btn btn--green full-width', { pending, disabled: form.money < this.minAmount }]">
+                                    {{ $t('replenish') }}
+                                 </button>
+                              </div>
                            </div>
                         </form>
                      </div>
@@ -197,7 +197,13 @@
             :modal-class="'larger cards'"
             @close="openModal = false">
             <div>
-               <banking-cards
+               <!--<banking-cards-->
+               <!--   :cards="bankingCards"-->
+               <!--   :selected-card="bankingCard"-->
+               <!--   @input="bankingCard = $event"-->
+               <!--   @close="openModal = false"-->
+               <!--/>-->
+               <BankingCardNew
                   :cards="bankingCards"
                   :selected-card="bankingCard"
                   @input="bankingCard = $event"
@@ -212,6 +218,7 @@
 <script>
    import {mapGetters, mapState} from 'vuex'
    import BankingCards from '~/components/payments/BankingCards'
+   import BankingCardNew from '~/components/payments/BankingCardNew'
    import {PaymentMixin} from '~/mixins/payment'
    import ComeBack from "~/components/elements/ComeBack.vue";
 
@@ -223,13 +230,13 @@
       components: {
          ComeBack,
          BankingCards,
+         BankingCardNew,
       },
       nuxtI18n: {
          paths: {
             az: '/profil/balans',
          },
       },
-
       beforeDestroy() {
          this.mutate({property: 'temporaryLazyData', value: {}});
       },
@@ -250,8 +257,7 @@
             store.dispatch('getMyBalanceHistory'),
             store.dispatch('bankingCards/getBankingCards'),
             $auth.fetchUser(),
-         ])
-
+         ]);
          return {
             pending: false,
             minAmount: app.$env.DEV ? 0.01 : 1,
@@ -263,7 +269,6 @@
       computed: {
          ...mapState(['balanceHasAnimation']),
          ...mapGetters(['myBalanceHistory']),
-
          crumbs() {
             return [
                {name: this.$t('dashboard'), route: `${this.user.autosalon ? '/dashboard/1' : '/garage-services'}`},
@@ -323,7 +328,6 @@
                   value: false
                });
             }, 1000)
-
          },
       },
       mounted() {
@@ -341,8 +345,8 @@
                      this.$el?.querySelector('.text-input input')?.focus()
                   }, 300)
             }
-         })
-         this.removeAnimationbalanceIncrement()
+         });
+         this.removeAnimationbalanceIncrement();
       },
    }
 </script>
@@ -429,18 +433,17 @@
 
 .btn--green{
    height: 52px;
-   width: 160px;
    border-radius: 8px;
 }
 
-table {
+.table  {
    border-collapse:separate;
    border:solid #CDD5DF 1px;
    border-radius: 12px;
    width: 100%;
 }
 
-td, th {
+.table td, .table th {
    border-top:solid #CDD5DF 1px;
    font-size: 16px;
    font-weight: 500;
@@ -450,15 +453,15 @@ td, th {
    padding: 24px;
 }
 
-td:last-child, th:last-child {
+.table td:last-child, .table th:last-child {
    text-align: right;
 }
 
-th {
+.table th {
    border-top: none;
 }
 
-td:first-child, th:first-child {
+.table td:first-child, .table th:first-child {
    border-left: none;
 }
 
@@ -476,7 +479,6 @@ td:first-child, th:first-child {
    text-align: left;
    color: #4B5565;
    cursor: pointer;
-   transition: all .3s ease;
    background-color: transparent;
    border-bottom: 3px solid transparent;
    border-radius: 0;
@@ -518,8 +520,7 @@ td:first-child, th:first-child {
       width: 100%;
       background: #1B2434;
    }
-
-   td, th {
+   .table td, .table th {
       border-top: 1px solid #364152;
       font-size: 16px;
       font-weight: 500;
@@ -529,37 +530,126 @@ td:first-child, th:first-child {
       padding: 24px;
       color: #CDD5DF;
    }
-
-   td:last-child, th:last-child {
+   .table td:last-child, .table th:last-child {
       text-align: right;
    }
-
-   th {
+   .table th {
       border-top: none;
    }
-
-   td:first-child, th:first-child {
+   .table td:first-child, .table th:first-child {
       border-left: none;
+   }
+   .amount-input{
+      background: #121926!important;
+      border-radius: 8px;
    }
 }
 
+
+.select-menu_dropdown-option.card-option{
+   width: 100%!important;
+}
+.select-menu_dropdown{
+   width: 140%!important;
+}
+
 @media (max-width: 1250px) {
-   td, th {
+   .table td, .table th {
       padding: 12px;
    }
 }
 
 @media (max-width: 992px) {
-   td, th {
+   .table td, .table th {
       padding: 12px;
+   }
+   .select-menu_dropdown{
+      width: 100%!important;
+   }
+   .tabs{
+      background: #EEF2F6;
+      padding: 4px;
+      border-radius: 12px;
+      margin: 0 0 20px;
+      display: flex;
+      justify-content: space-between;
+   }
+   .tabs .tabs__item {
+      width: 25%;
+      text-align: center;
+      color: #4B5565;
+      margin-left: 2.5px!important;
+      margin-right: 2.5px!important;
+      font-size: 11px;
+      border: 1px solid #EEF2F6;
+   }
+   .tabs .tabs__item.active {
+      border: 1px solid #fff;
+      border-radius: 12px;
+      background: #fff;
+   }
+   .tabs .tabs__item:hover,
+   .tabs .tabs__item:focus {
+      border: 1px solid #fff;
+      background: #fff;
+      color: #4B5565;
+      border-radius: 12px;
+   }
+   .dark-mode {
+      .tabs{
+         background: #1B2434;
+      }
+
+      .tabs .tabs__item {
+         background: #1B2434;
+         color: #9AA4B2;
+         border: 1px solid #1B2434;
+      }
+
+      .tabs .tabs__item.active {
+         border: 1px solid #364152;
+         background: #364152;
+         color: #EEF2F6;
+         border-radius: 12px;
+      }
+
+      .tabs .tabs__item:hover,
+      .tabs .tabs__item:focus {
+         border: 1px solid #364152;
+         background: #364152;
+         color: #EEF2F6;
+         border-radius: 12px;
+      }
    }
 }
 
 @media (max-width: 370px) {
-   td, th {
+   .table td, .table th {
       padding: 12px;
    }
+   .tabs{
+      background: #EEF2F6;
+      padding: 4px;
+      border-radius: 12px;
+      margin: 0 0 20px;
+      display: flex;
+      justify-content: space-between;
+   }
+   .tabs .tabs__item {
+      width: 25%;
+      text-align: center;
+      color: #4B5565;
+      margin-left: 2.5px!important;
+      margin-right: 2.5px!important;
+      font-size: 11px;
+   }
+   .tabs .tabs__item:focus,
+   .tabs .tabs__item:hover,
+   .tabs .tabs__item.active {
+      border: 1px solid #fff;
+      border-radius: 12px;
+      background: #fff;
+   }
 }
-
 
 </style>

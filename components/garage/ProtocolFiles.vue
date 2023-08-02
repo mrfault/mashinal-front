@@ -1,6 +1,6 @@
 <template>
    <div style="width: calc(50% - 6px)">
-      <button :class="['btn btn--light-outline full-width', { pending }]" type="button" @click="openFiles">
+      <button :class="['btn btn--light-outline full-width',{'d-none': hideButton }, { pending }]" type="button" @click="openFiles" style="min-height: 52px;border-radius: 8px">
          {{ $t('watch_files') }}
       </button>
       <div v-if="slides.main" v-touch:swipe.top="handleSwipeTop" class="inner-gallery-lightbox">
@@ -17,6 +17,7 @@
                :types="slides.types"
             />
          </template>
+
          <transition-group name="fade">
             <template v-if="(showLightbox && isMobileBreakpoint) || (!isMobileBreakpoint && showImagesSlider)">
                <div :key="0" class="blur-bg">
@@ -24,13 +25,14 @@
                        alt=""/>
                </div>
                <div v-if="!isMobileBreakpoint" :key="1" class="blur-bg_slider">
-                  <images-slider
+                  <protocol-images-slider
                      :current-slide="currentSlide"
                      :has-sidebar="true"
                      :slides="slides"
                      @close="closeLightbox"
                      @slide-change="currentSlide = $event"
                   >
+
                      <template #sidebar>
                         <div class="card garage_protocol-info">
                            <div class="garage_protocol-titles">
@@ -73,7 +75,8 @@
                            </template>
                         </div>
                      </template>
-                  </images-slider>
+                  </protocol-images-slider>
+
                </div>
             </template>
          </transition-group>
@@ -87,12 +90,14 @@ import {mapGetters, mapActions} from 'vuex';
 import FsLightbox from 'fslightbox-vue';
 
 import ImagesSlider from '~/components/elements/ImagesSlider';
+import ProtocolImagesSlider from "~/components/elements/ProtocolImagesSlider";
 
 export default {
    props: {
       protocol: {}
    },
    components: {
+      ProtocolImagesSlider,
       FsLightbox,
       ImagesSlider
    },
@@ -104,6 +109,7 @@ export default {
          showImagesSlider: false,
          lightboxKey: 0,
          currentSlide: 0,
+         hideButton: false,
       }
    },
    computed: {
@@ -135,6 +141,8 @@ export default {
       }),
 
       async openFiles() {
+         this.hideButton = true;
+         this.$emit('mediaOpened',true);
          if (this.files.din_id === this.protocol.din_id) {
             this.openLightbox();
             return;
@@ -147,7 +155,7 @@ export default {
             if (res.status === 'success') {
                this.openLightbox();
 
-               this.$emit('mediaOpened',true)
+
             }
 
          } catch (err) {
@@ -184,6 +192,7 @@ export default {
          this.currentSlide = fsBox.stageIndexes.current;
       },
       closeLightbox() {
+         this.hideButton = false;
          if (this.isMobileBreakpoint) {
             if (this.showLightbox) {
                this.toggleFsLightbox = !this.toggleFsLightbox;

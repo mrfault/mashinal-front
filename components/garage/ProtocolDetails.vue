@@ -1,5 +1,5 @@
 <template>
-   <div>
+   <div class="protocol-details-component">
       <button
          :class="[
                                         'btn',
@@ -13,23 +13,26 @@
          {{ $t('detail') }}
       </button>
       <modal-popup
-         :modal-class="!mediaIsOpen ? 'wider'  : 'full-screen'"
+         :modal-class="!mediaIsOpen ? 'wider'  : 'background-transparent full-screen '"
          :title="$t('protocol_details')"
          :toggle="showProtocolDetails"
          @close="showProtocolDetails = false"
       >
          <div class="protocol-details-button__content--container">
-            <div class="protocol-details-button__content">
+            <div :class="{'visibility-hidden': mediaIsOpen}" class="protocol-details-button__content">
                <div v-for="(value, key) in filteredProtocol"
-                    class="ma-penalties__card--body__penalties--item no-borders">
+                    class="ma-penalties__card--body__penalties--item bottom-border">
                   <div class="ma-left">
                      <div class="ma-left__content">
                         <p>{{ $t(key) }}</p>
                      </div>
                   </div>
+
                   <div class="ma-right" style="padding-left: 24px; text-align: right;">
-                     <strong v-if="key !== 'pay_status'" class="ma-right__amount">
-                        {{ $t(value) }}
+
+
+                     <strong v-if="key == 'protocol_amount' " class="ma-right__amount">
+                        {{ value }} AZN
                      </strong>
                      <strong v-if="key == 'pay_status' && value == false" class="ma-right__amount"
                              style="color: #039855">
@@ -39,12 +42,14 @@
                              style="color: #F81734">
                         {{ $t('not_paid') }}
                      </strong>
+                     <strong v-else class="ma-right__amount">
+                        {{ $t(value) }}
+                     </strong>
                   </div>
                </div>
+
                <div
-                  class="ma-penalties__card--body__penalties--item
-               total
-               no-borders"
+                  class="ma-penalties__card--body__penalties--item total no-borders"
                >
                   <strong class="">{{ $t('total') }}</strong>
                   <strong>
@@ -53,19 +58,26 @@
                </div>
             </div>
 
-            <div class="protocol-details-button__actions">
+            <div v-if="!history" class="protocol-details-button__actions">
 
-               <protocol-files :protocol="protocol"  @mediaOpened="mediaIsOpen = true" @mediaClosed="mediaIsOpen = false"></protocol-files>
+               <protocol-files v-if="!history" :protocol="protocol" @mediaClosed="mediaIsOpen = false"
+                               @mediaOpened="openMedia"></protocol-files>
 
-               <button
-                  v-if="protocol.isSelected && !history"
-                  :class="['btn', 'btn--light-green', { pending }]"
-                  style="margin-left: 8px"
-                  type="button"
-                  @click="showPaymentModal"
-               >
-                  {{ $t('make_payment') }}
-               </button>
+               <!--               <button-->
+               <!--                  v-if="protocol.isSelected && !history"-->
+               <!--                  :class="['btn', 'btn&#45;&#45;light-green', { pending }]"-->
+               <!--                  style="margin-left: 8px"-->
+               <!--                  type="button"-->
+               <!--                  @click="showPaymentModal"-->
+               <!--               >-->
+               <!--                  {{ $t('make_payment') }}-->
+               <!--               </button>-->
+
+               <a v-if="protocol.isSelected && !history && !mediaIsOpen" :href="getPayLink(protocol)" class="btn btn--green"
+                  rel="noopener"
+                  style="margin-left: 8px" target="_blank">
+                  {{ $t('pay_online') }}
+               </a>
 
             </div>
          </div>
@@ -113,13 +125,43 @@ export default {
          this.showProtocolDetails = false;
          this.$emit('showPaymentModal', true)
       },
+      getPayLink(protocol) {
+         let agency = protocol.protocol_series === 'BNA' ? 'bna' : 'din';
+         return `https://pay.api.az/${agency}/${protocol.protocol_series}${protocol.protocol_number}`;
+      },
+      openMedia(){
+         console.log("this.mediaIsOpen = true;")
+         this.mediaIsOpen = true;
+      }
    }
 }
 </script>
 
 <style lang="scss">
-.full-screen{
+.full-screen {
    width: 100%;
    height: 100%;
+}
+
+.bottom-border {
+   border-top: none;
+   border-left: none;
+   border-right: none;
+   border-bottom: 1px solid #E3E8EF !important;
+   border-radius: 0;
+   margin-top: 0;
+   padding: 20px 15px;
+}
+
+.dark-mode {
+   .bottom-border {
+      border-bottom: 1px solid #364152;
+   }
+}
+.visibility-hidden{
+   visibility: hidden !important;
+}
+.background-transparent{
+   background: transparent !important;
 }
 </style>

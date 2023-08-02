@@ -291,7 +291,7 @@
 <style lang="scss">
    .pages-salons {
       .salon-card-list {
-         margin-top: 32px !important;
+         //margin-top: 32px !important;
       }
 
       .form-group {

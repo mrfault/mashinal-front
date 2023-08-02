@@ -1,5 +1,5 @@
 <template>
-   <div class="form-group" :class="{'ma-input--white': isPromotionsPage}">
+   <div class="form-group" :class="{'ma-input--white': isPromotionsPage, 'lighterOnDarkMode': lighterOnDarkMode, 'isSearchInput':isSearchInput}">
       <div :class="['text-input', {[`${blockClass}`]:blockClass}]">
          <img :src="imgSrc" v-if="imgSrc" :class="{disabled}" :alt="placeholder"/>
 
@@ -54,7 +54,8 @@
             </span>
          </template>
 
-         <icon :name="iconName" v-if="iconName" :class="{invalid, disabled}"/>
+         <icon :name="iconName" v-if="iconName && !isSearchInput" :class="{invalid, disabled}"/>
+
          <icon name="alert-circle" v-if="invalid && !inputDate && !hasPopover" class="invalid"/>
          <icon name="check-circle" v-else-if="valid && type !== 'password'" class="valid"/>
          <slot name="default"/>
@@ -136,6 +137,9 @@ export default {
          })
       },
       isPromotionsPage: Boolean,
+      lighterOnDarkMode: Boolean,
+      isSearchInput: Boolean,
+      preventRussian: Boolean,
    },
 
    components: {
@@ -186,9 +190,36 @@ export default {
    }
 }
 </script>
-<style>
+<style lang="scss">
 .show-password {
    width: 52px !important;
    height: 52px !important;
+}
+
+.dark-mode{
+   .lighterOnDarkMode {
+      input {
+         border: 1px solid #4B5565;
+         border-radius: 8px;
+         background-color: #1B2434 !important;
+
+      }
+   }
+
+}
+.isSearchInput{
+   input{
+      height: 48px;
+   }
+
+   i{
+      right: 16px;
+   }
+   svg{
+      position: absolute;
+      top: 50%;
+      right: 16px;
+      transform: translate(0px, -50%);
+   }
 }
 </style>

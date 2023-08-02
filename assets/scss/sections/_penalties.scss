@@ -16,6 +16,7 @@
          margin-right: 8px;
          box-sizing: border-box;
          overflow: hidden;
+         padding-bottom: 4px;
 
       }
 
@@ -40,6 +41,9 @@
                background: #155EEF;
                color: #fff;
 
+               &--disabled {
+                  background: #b8c6e2 !important;
+               }
             }
 
             &--disabled {
@@ -153,6 +157,21 @@
 
                &--active {
                   border: 1px solid #528BFF;
+
+
+                  .ma-left {
+                     width: 100%;
+                  }
+
+                  .ma-right {
+                     width: 100%;
+                     margin-top: 12px;
+                     display: flex;
+                     justify-content: space-between;
+                     .btn--light-green, .protocol-details-component{
+                        width: calc(50% - 8px);
+                     }
+                  }
                }
 
                strong {
@@ -180,6 +199,7 @@
                .ma-right {
                   display: flex;
                   align-items: center;
+                  justify-content: flex-end;
 
                   button {
                      margin-left: 8px;
@@ -276,7 +296,7 @@
       justify-content: space-between;
       margin-top: 24px;
 
-      button {
+      a,button {
          width: calc(50% - 6px);
       }
 
@@ -289,8 +309,8 @@
 }
 
 
-@media (max-width: 991px){
-   .ma-penalties{
+@media (max-width: 991px) {
+   .ma-penalties {
       &--numbers {
          .ma-penalty-number-chip {
 
@@ -320,6 +340,13 @@
 
 
 @media (max-width: 991px) {
+   .protocol-details-button{
+      &__actions{
+         button{
+            white-space: initial;
+         }
+      }
+   }
    .ma-penalties {
       &__top {
          flex-wrap: wrap;
@@ -356,11 +383,16 @@
 
       &__card {
          border: none;
-         padding: 0;
+         padding: 0 12px;
 
          &--header {
             display: flex;
             align-items: center;
+            box-sizing: border-box;
+            overflow-x: scroll;
+            padding-bottom: 20px;
+            margin-bottom: -10px;
+
 
             &__item {
                padding: 12px;
@@ -368,6 +400,7 @@
                display: inline;
                cursor: pointer;
                color: #4B5565;
+               white-space: nowrap;
 
                &--active {
                   border-bottom: 2px solid #155EEF;
@@ -405,6 +438,14 @@
 
                   &--active {
                      border: 1px solid #528BFF;
+                     flex-wrap: wrap;
+                     .ma-left{
+                        &__content{
+                           width: 100%;
+                           display: flex;
+                           justify-content: space-between;
+                        }
+                     }
                   }
 
                   strong {
@@ -593,7 +634,6 @@
 
             &__penalties {
                &--item {
-
 
                   &--active {
                      border: 1px solid #fff;

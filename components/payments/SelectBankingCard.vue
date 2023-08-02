@@ -10,14 +10,14 @@
       img-key="icon"
       v-model="activeCardId"
     />
-    <div class="banking-cards_item mt-3" v-if="activeCard && showCardImage">
+    <div class="banking-cards_item mt-3" v-if="activeCard && showCardImage && false">
       <div class="card-img">
         <img :src="`/img/cards/card-${activeCard.brand.toLowerCase()}-${activeCard.img}.png`" :alt="activeCard.brand" />
       </div>
-      <div class="card-details d-flex flex-column justify-content-between">
+      <div class="card-details d-flex flex-column justify-content-between" v-if="false">
         <div class="card-top d-flex">
         </div>
-        <div class="card-number d-flex justify-content-between"
+        <div class="card-number d-flex justify-content-between" v-if="false"
           v-html="cardNumber(activeCard.masked_pan)">
         </div>
         <div class="card-bottom d-flex">

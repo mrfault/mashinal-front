@@ -39,7 +39,7 @@
                   type="button"
                   @click="removeVehicle"
                >
-                  {{ $t('remove_bookmark') }}
+                  {{ $t('remove_vehicle') }}
                </button>
             </div>
 
@@ -51,6 +51,7 @@
 <script>
 import RadioGroup from "~/components/moderator/RadioGroup";
 import CustomRadio from "~/components/elements/CustomRadio";
+import {mapActions} from "vuex";
 
 export default {
    props: {
@@ -93,11 +94,16 @@ export default {
       }
    },
    methods: {
+      ...mapActions({
+         delete: 'garage/deleteCar',
+      }),
       async removeVehicle() {
          if (this.pending) return;
          this.pending = true;
          try {
-            await this.$store.dispatch("garage/deleteCar", {id: this.vehicle.id});
+            console.log("remove vehicle")
+            await this.delete({id: this.car.id});
+            console.log("response remove vehicle")
             this.$toasted.success(this.$t('car_deleted'));
             this.pending = false;
             this.showModal = false;
@@ -105,6 +111,7 @@ export default {
             this.$emit("selectedCarDeleted", true)
          } catch (err) {
             this.pending = false;
+            console.log("not remove vehicle")
          }
       }
    }

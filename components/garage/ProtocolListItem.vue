@@ -5,7 +5,7 @@
       @click.prevent="selectProtocol(protocol)"
    >
       <div class="ma-left">
-         <div class="ma-left__checkbox" v-if="false">
+         <div v-if="false" class="ma-left__checkbox">
             <custom-checkbox v-model="protocol.isChecked"/>
          </div>
          <div class="ma-left__content">
@@ -13,19 +13,19 @@
             <strong v-if="protocol.isSelected">{{ protocol.total }} AZN</strong>
          </div>
       </div>
-      <div class="ma-right">
+      <div class="ma-right mt-0">
          <p v-if="!protocol.isSelected" class="ma-right__amount">
             {{ protocol.total }} AZN
          </p>
 
-       <slot></slot>
+         <slot></slot>
 
          <button
             v-if="protocol.isSelected && !history"
             :class="['btn', 'btn--light-green', { pending }]"
 
             type="button"
-            @click="showPaymentModal"
+            @click="getPayLink(protocol)"
          >
             {{ $t('make_payment') }}
          </button>
@@ -60,7 +60,13 @@ export default {
       },
       showPaymentModal() {
          this.$emit('openPaymentModal');
-      }
+      },
+
+      getPayLink(protocol) {
+         let agency = protocol.protocol_series === 'BNA' ? 'bna' : 'din';
+         window.open(`https://pay.api.az/${agency}/${protocol.protocol_series}${protocol.protocol_number}`);
+      },
+
    }
 }
 </script>
