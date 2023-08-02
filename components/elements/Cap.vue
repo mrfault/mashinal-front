@@ -123,6 +123,10 @@
                }
             }
          }
+
+         .icon-arrow-right {
+            color: #EEF2F6;
+         }
       }
    }
 
