@@ -145,7 +145,7 @@
       </template>
 
       <template
-         v-if="!brief &&((!this.isMobileBreakpoint &&(announcement.status == 1 || announcement.has_monetization)) || needToPay)">
+         v-if="!brief &&(((announcement.status == 1 || announcement.has_monetization)) || needToPay)">
 <!--         <hr class="mt-3"-->
 <!--             v-if="needToPay ||-->
 <!--             (!this.isMobileBreakpoint && announcement.has_monetization && $auth.loggedIn) ||-->

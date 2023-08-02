@@ -1,5 +1,5 @@
 <template>
-   <div class="pages-dashboard pt-2 pb-lg-5 pt-lg-5">
+   <div class="pages-dashboard pt-2 pb-lg-5 pt-lg-0">
       <div class="container d-flex flex-wrap">
          <breadcrumbs :crumbs="crumbs"/>
 

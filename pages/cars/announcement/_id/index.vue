@@ -217,4 +217,15 @@
          }
       }
    }
+
+   @media (max-width: 992px) {
+      .pages-cars-id {
+         &__info {
+            display: flex;
+            flex-direction: column;
+            grid-template-columns: unset;
+
+         }
+      }
+   }
 </style>

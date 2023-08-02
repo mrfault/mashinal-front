@@ -1,116 +1,166 @@
 .monetization-card {
-  background-color: $red-1 !important;
+   background-color: $red-1 !important;
 }
 
 .monetization-popup {
-  h4 {
-    font-size: 18px;
-    font-weight: 500;
-  }
-  p {
-    margin-bottom: .3em;
-  }
-  .row {
-    p {
-      margin-bottom: 0;
-    }
-  }
-  .range-slider {
-    padding: 50px 15px 15px 0;
-    .vue-slider {
-      &-rail {
-        background-color: $greyish-blue-3;
+   max-width: 490px !important;
+   width: 100% !important;
+
+   .title {
+      margin-bottom: 26px !important;
+
+      h4 {
+         font-size: 24px !important;
+         font-weight: 600;
+         line-height: 28px;
+         color: $dark-new;
       }
-      &-process {
-        background-color: $red-1;
+   }
+
+   &__inner {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+   }
+
+   &__title {
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 24px;
+      color: $grey-3-new;
+   }
+
+   .range-slider {
+      padding: 50px 15px 15px 0;
+
+      .vue-slider {
+         &-rail {
+            background-color: $greyish-blue-3;
+         }
+
+         &-process {
+            background-color: $red-1;
+         }
+
+         &-dot {
+            &:nth-child(2) {
+               margin-left: 8px;
+            }
+         }
+
+         &-dot-handle {
+            border: 2px solid $red-1;
+            background-color: $red-1;
+
+            &::after {
+               content: '';
+               border-left: 6px solid transparent;
+               border-right: 6px solid transparent;
+               border-bottom: 8px solid $red-1;
+               position: absolute;
+               left: 50%;
+               bottom: 73%;
+               margin-left: -6px;
+            }
+         }
+
+         &-dot-tooltip {
+            background-color: transparent !important;
+            top: -15px;
+         }
       }
-      &-dot {
-        &:nth-child(2) {
-          margin-left: 8px;
-        }
+
+      .tooltip {
+         display: flex !important;
+         align-items: center;
+         justify-content: center;
+         width: 80px;
+         height: 34px;
+         color: $red-1;
+         font-size: 14px;
+         font-weight: 500;
+         border: 1px solid $red-3;
+         border-radius: 4px;
+         transition: transform .3s;
+
+         &.in-right {
+            transform: translate(-50%);
+            margin-left: 14px;
+         }
+
+         &.in-left {
+            transform: translate(50%);
+            margin-left: -14px;
+         }
       }
-      &-dot-handle {
-        border: 2px solid $red-1;
-        background-color: $red-1;
-        &::after {
-          content: '';
-          border-left: 6px solid transparent;
-          border-right: 6px solid transparent;
-          border-bottom: 8px solid $red-1;
-          position: absolute;
-          left: 50%;
-          bottom: 73%;
-          margin-left: -6px;
-        }
-      }
-      &-dot-tooltip {
-        background-color: transparent !important;
-        top: -15px;
-      }
-    }
-    .tooltip {
-      display: flex !important;
+   }
+
+   .info-text {
+      display: flex;
       align-items: center;
       justify-content: center;
-      width: 80px;
-      height: 34px;
-      color: $red-1;
-      font-size: 14px;
-      font-weight: 500;
-      border: 1px solid $red-3;
-      border-radius: 4px;
-      transition: transform .3s;
-      &.in-right {
-        transform: translate(-50%);
-        margin-left: 14px;
+      width: 100%;
+      max-width: unset;
+      padding-left: 0;
+      height: 52px;
+      border-radius: 8px;
+      background-color: $red-1;
+
+      span {
+         pointer-events: none;
+         color: $white !important;
       }
-      &.in-left {
-        transform: translate(50%);
-        margin-left: -14px;
-      }
-    }
-  }
-   
+   }
+
+   .btn {
+      height: 52px;
+   }
 }
 
 .dark-mode {
-  .monetization-popup {
-    .range-slider {
-      .vue-slider {
-        &-rail {
-          background-color: $grey-1;
-        }
-        &-process {
-          background-color: $white;
-        }
-        &-dot-handle {
-          border-color: $white;
-          background-color: $white;
-          &::after {
-            border-bottom-color: $white;
-          }
-        }
+   .monetization-popup {
+      .range-slider {
+         .vue-slider {
+            &-rail {
+               background-color: $grey-1;
+            }
+
+            &-process {
+               background-color: $white;
+            }
+
+            &-dot-handle {
+               border-color: $white;
+               background-color: $white;
+
+               &::after {
+                  border-bottom-color: $white;
+               }
+            }
+         }
+
+         .tooltip {
+            color: $white;
+            border-color: $grey-5;
+         }
       }
-      .tooltip {
-        color: $white;
-        border-color: $grey-5;
-      }
-    }
-  }
+   }
 }
 
 .ad-huge-stat {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  strong {
-    font-size: 30px;
-    font-weight: 500;
-  }
-  i {
-    font-size: 50px;
-    margin-bottom: 15px;
-  }
+   text-align: center;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+
+   strong {
+      font-size: 30px;
+      font-weight: 500;
+   }
+
+   i {
+      font-size: 50px;
+      margin-bottom: 15px;
+   }
 }

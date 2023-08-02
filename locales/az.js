@@ -821,6 +821,7 @@ export default {
    featured_ads: "Önə çəkilmiş elanlar",
    featured_ads_2: "Önə çək",
    featured_ads_3: "Önə çəkilmiş elan",
+   featured_ads_4: "Elanı irəli çək",
    for_the_provision_of_electronic_customs_service:
       "Elektron gömrük xidmətinin göstərilməsinə görə",
    forgot_your_password: "Şifrəni bərpa et",
@@ -1442,6 +1443,7 @@ export default {
    pay_with_balance: "Balans",
    pay_with_card: "Bank kartı",
    pay_with_terminal: "Terminallarda ödəniş",
+   pay_with_terminal_2: "Terminaldan",
    payment: "Ödəniş",
    payment_amount: "Məbləğ",
    payment_history: "Ödəniş tarixçəsi",
@@ -1911,7 +1913,7 @@ export default {
    terminal_pay_info:
       "Milliön terminalları vasitəsilə aşağıdakı qaydada balans artıra bilərsiniz.",
    terminal_pay_steps: [
-      '"Elanlar və kuponlar" bölməsini seçin',
+      'Elanlar və kuponlar" bölməsini seçin',
       'Açılan bölmədə "Mashin.AL"-ı seçin',
       "Qeydiyyat zamanı istifadə etdiyiniz mobil nömrəni daxil edin",
       "Nömrənin düzgünlüyünə əmin olun",
