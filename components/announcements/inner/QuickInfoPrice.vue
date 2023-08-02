@@ -40,6 +40,7 @@
       border-top-right-radius: 8px;
       margin-left: -20px;
       cursor: pointer;
+      z-index: 10;
 
       &:hover {
          box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.08);
@@ -65,7 +66,7 @@
             font-weight: 700;
             line-height: 25px;
             color: #1B2434;
-            margin-right: 8px;
+            margin-right: 10px;
          }
 
          svg {
@@ -92,6 +93,28 @@
 
             &:not(:first-child) {
                margin-top: 10px;
+            }
+         }
+      }
+   }
+
+   .dark-mode {
+      .quickInfoPrice {
+         &__head {
+            span {
+               color: #EEF2F6;
+            }
+
+            svg {
+               color: #364152;
+            }
+         }
+
+         &__main {
+            background-color: #364152;
+
+            p {
+               color: #EEF2F6;
             }
          }
       }

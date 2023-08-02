@@ -105,8 +105,8 @@
          background: #364152;
       }
 
-      .modal-popup_content .title .close i {
-         color: #000;
-      }
+      //.modal-popup_content .title .close i {
+      //   color: #000;
+      //}
    }
 </style>

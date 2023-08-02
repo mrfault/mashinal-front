@@ -186,6 +186,8 @@
 
 <style lang="scss">
    .pages-cars-id {
+      margin-top: -30px;
+
       .bg-white {
          padding: 5px 0 32px 0;
       }
@@ -200,6 +202,14 @@
          .announcement-comment,
          .car-complects {
             margin-top: 20px;
+         }
+      }
+   }
+
+   .dark-mode {
+      .pages-cars-id {
+         .bg-white {
+            background-color: transparent;
          }
       }
    }
