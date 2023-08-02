@@ -6,6 +6,7 @@
          :clear-placeholder="true"
          :clear-option="false"
          :new-label="false"
+         has-search
          v-model="form.car_number.region_id"
          :invalid="$v.form.car_number.region_id.$error"
       />
@@ -16,6 +17,7 @@
             :clear-placeholder="true"
             :clear-option="false"
             :new-label="false"
+            has-search
             v-model="form.car_number.first"
             :invalid="$v.form.car_number.first.$error"
          />
@@ -25,6 +27,7 @@
             :clear-placeholder="true"
             :clear-option="false"
             :new-label="false"
+            has-search
             v-model="form.car_number.second"
          />
          <form-numeric-input
@@ -41,7 +44,7 @@
          />
          <!--            @change="announcement.price = $event ? $event + (form.currency.name?.[locale] || 'AZN') : 0"-->
          <div class="price_types">
-            <toggle-group :items="priceTypes" v-slot="{ item }" :defaultValue="2" @change="form.currency_id = $event.id">
+            <toggle-group :items="priceTypes" v-slot="{ item }" :defaultValue="form.currency_id" @change="form.currency_id = $event.id">
                <div class="price_item">
                   <p>{{ item.name[locale] }}</p>
                </div>
@@ -100,7 +103,7 @@ export default {
                number: ""
             },
             price: "",
-            currency_id: "",
+            currency_id: 1,
             region_id: "",
             comment: ""
 

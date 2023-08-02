@@ -31,9 +31,9 @@
                   />
 
                   <car_form v-if="form.announce_type.title === 'cars'" :announcement="announcement" :isReady="isReady"
-                            @getForm="getCarForm($event)" @done="submitShow = $event"/>
+                            @getForm="getCarForm($event)" @done="submitShow = $event" />
                   <moto_form v-if="form.announce_type.title === 'moto'" :announcement="announcement" :isReady="isReady"
-                             @getForm="getMotoForm($event)"/>
+                             @getForm="getMotoForm($event)" @done="submitShow = $event" />
                   <part_form v-if="form.announce_type.title === 'parts'" @changeType="onChangePartType($event)"
                              :isReady="isReady" @getForm="getPartForm($event)"/>
                   <registration_mark v-if="form.announce_type.title === 'registration_marks'" :isReady="isReady"
@@ -135,10 +135,11 @@ import Part_form from "~/components/sell/part_form.vue";
 import Registration_mark from "~/components/sell/registration_mark.vue";
 import Moto_form from "~/components/sell/moto_form.vue";
 import {required, email} from "vuelidate/lib/validators";
+import {PaymentMixin} from "~/mixins/payment";
 
 export default {
    name: "add-announce",
-   mixins: [MenusDataMixin, ToastErrorsMixin],
+   mixins: [MenusDataMixin, ToastErrorsMixin, PaymentMixin],
    components: {
       Moto_form,
       Registration_mark,
@@ -216,7 +217,7 @@ export default {
       // {"end_date":"","auction":1,"country_id":null,"car_catalog_id":46273,"brand":"bmw","model":"5-series","generation_id":4782,"car_body_type":2,"gearing":"1","modification":"2","transmission":"1","capacity":"","power":"","year":2006,"youtube":{"id":"","thumb":""},"selectedColor":[23],"is_matte":false,"mileage":287000,"mileage_measure":1,"region_id":1,"address":"","lat":0,"lng":0,"vin":"","price":20000,"owner_type":0,"currency":1,"car_number":"77 - BZ - 351","show_car_number":1,"show_vin":0,"part":{},"all_options":{"camera":true,"usb":true,"luke":true,"abs":true,"headlights":1,"c_locking":true},"comment":"test test","autogas":false,"is_new":false,"beaten":false,"customs_clearance":false,"tradeable":false,"credit":false,"guaranty":false,"saved_images":[1512580,1512581,1512582,1512583],"btl_cookie":"","is_autosalon":false}
    },
    methods: {
-      ...mapActions(['carsPost', 'motoPost', 'partsPost', 'plateNumbersPost']),
+      ...mapActions(['carsPost', 'motoPost', 'partsPost', 'plateNumbersPost', 'updatePaidStatus']),
       async handleAnnounceType(payload) {
          await this.$store.dispatch(payload.api_key)
       },
@@ -249,9 +250,22 @@ export default {
          } catch (e) {
          }
       },
+
       async getRegistrationMarksForm(form) {
          try {
-            await this.plateNumbersPost(form);
+            const res = await this.plateNumbersPost({is_mobile: false, form});
+            if (res?.redirect_url) {
+               this.handlePayment(res, false, this.$t('car_added'), 'v2')
+            } else {
+               this.$router.push(this.$localePath('/profile/announcements'), () => {
+                  this.updatePaidStatus({
+                     type: 'success',
+                     text: this.$t('announcement_paid'),
+                     title: this.$t('success_payment')
+                  });
+
+               });
+            }
          } catch (e) {
          }
       },
@@ -314,11 +328,14 @@ export default {
    },
    watch: {
       'form.announce_type'() {
+         this.submitShow = false
          switch (this.form.announce_type.title) {
             case "cars":
                return this.announcement.image = "/img/car.svg"
             case "moto":
                return this.announcement.image = "/img/motorbike.svg"
+            case "registration_marks":
+               return this.submitShow = true
          }
       }
    },

@@ -1,6 +1,7 @@
 <template>
    <div class="moto_form">
       <form-select
+         v-if="!isEdit"
          :label="$t('type_of_motos')"
          :options="motoOptionsV2"
          :clear-placeholder="true"
@@ -12,7 +13,7 @@
          @change="onChangeMotoType($event)"
       />
       <form-select
-         v-if="form.type_of_moto && motoBrands.length"
+         v-if="!isEdit && form.type_of_moto && motoBrands.length"
          :label="$t('brand_name')"
          :options="form.type_of_moto ? motoBrands : []"
          :clear-placeholder="true"
@@ -24,18 +25,18 @@
          @change="onChangeMotoBrand($event)"
       />
       <form-select
-         v-if="form.brand && motoModelsV2.length "
+         v-if="!isEdit && form.brand && motoModelsV2.length "
          :label="$t('model_name')"
          :options="form.brand ? motoModelsV2 : []"
          :clear-placeholder="true"
          :clear-option="false"
          :new-label="false"
+         :object-in-value="true"
          has-search
          v-model="form.model"
+         @change="onChangeMotoModel($event)"
       />
-      <!--         @change="onChangeMotoModel($event)"-->
-
-      <template v-if="form.model && motoModelsV2.length">
+      <template v-if="isEdit || form.model && motoModelsV2.length">
          <form-select
             v-if="sellOptions.years"
             :label="$t('prod_year')"
@@ -64,7 +65,6 @@
                :new-label="false"
                v-model="form.fuel"
             />
-
             <form-select
                v-if="motoOptions?.config?.box?.sell_values[form.type_of_moto.id]?.length"
                :label="$t('box')"
@@ -316,7 +316,7 @@
             </div>
          </div>
          <div class="comment">
-            <image-component :type="'moto'" :initial-form="form"/>
+            <image-component :type="'moto'" :initial-form="form" :announcement="announcement" />
             <div class="comment_info">
                <inline-svg class="comment_svg" :src="'/icons/info.svg'"/>
                <p>{{ $t("add_image_section_warning") }}</p>
@@ -349,11 +349,16 @@ export default {
       isReady: {
          type: Boolean,
          default: false
+      },
+      isEdit: {
+         type: Boolean,
+         default: false
       }
    },
    data() {
       return {
          motoTypeKey: "",
+         initialAnnouncement: {...this.announcement},
          priceTypes: [
             {
                id: 1,
@@ -392,11 +397,11 @@ export default {
             price: "",
             currency: "",
             tradeable: "",
-            credit: "",
+            credit: false,
             car_number: "",
-            show_car_number: "",
+            show_car_number: false,
             vin: "",
-            show_vin: "",
+            show_vin: false,
             engine: "",
             cylinders: "",
             number_of_vehicles: "",
@@ -406,13 +411,17 @@ export default {
       }
    },
    watch: {
+      'form.model'() {
+         this.$emit("done", !!(this.form.model && this.motoModelsV2.length))
+      },
       isReady() {
          // this.$v.form.$touch()
          const newForm = {
             selectedBrand: this.form.brand.id,
-            selectedModel: this.form.model,
+            selectedModel: this.form.model.id,
             selectedYear: this.form.year,
             selectedColor: this.form.color,
+            box: this.form.box,
             mileage: this.form.mileage,
             mileage_measure: this.form.mileage_type,
             region_id: this.form.region_id,
@@ -433,6 +442,8 @@ export default {
             credit: this.form.credit,
             guaranty: this.form.guaranty,
             saved_images: this.form.saved_images,
+            drive: this.form.gearing,
+            fuel_type: this.form.fuel,
             owner_type: 0,
             volume: this.form.volume,
             power: this.form.power,
@@ -461,7 +472,13 @@ export default {
       async onChangeMotoBrand(val) {
          this.clearFields(['model'])
          const value = this.form.type_of_moto.value;
-         await this.getMotoModelsV2({value, id: val.id, whereHas: 1});
+         this.announcement.brand = this.form.brand.name || this.$t('mark')
+         if (this.form.brand.name) {
+            await this.getMotoModelsV2({value, id: val.id, whereHas: 1});
+         }
+      },
+      onChangeMotoModel() {
+         this.announcement.model = this.form.model.name || this.$t('model')
       },
       updateAddress(address) {
          this.form.address = address;
@@ -473,11 +490,22 @@ export default {
       },
       clearFields(keys) {
          keys.forEach((key) => {
-            this.form[key] = ""
+            this.form[key] = "";
+            this.announcement[key] = this.initialAnnouncement[key]
          })
       }
    },
    async mounted() {
+      if (this.isEdit) {
+         this.form.type_of_moto = {id: this.announcement.type_of_moto}
+         this.form.year = this.announcement.year
+         this.form.volume = this.announcement.capacity
+         this.form.power = this.announcement.power
+         this.form.fuel = this.announcement.engine_type_id
+         this.form.box = this.announcement.box_id
+         this.form.mileage = this.announcement.mileage
+         this.form.saved_images = this.announcement.media
+      }
       await this.getMotoOptions();
       await this.$store.dispatch("getPopularOptions")
    },
@@ -501,6 +529,49 @@ export default {
 
    .full_grid {
       grid-column: 1/3;
+   }
+
+   .divider {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+
+      .mileage_types {
+         display: flex;
+         gap: 16px;
+      }
+
+      .price_types {
+         .price_item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 52px;
+            padding: 0 16px;
+         }
+      }
+
+      .car_number_suffix {
+         position: absolute;
+         top: 50%;
+         transform: translateY(-50%);
+         right: 16px;
+      }
+
+      .beaten_suffix {
+         position: relative;
+         z-index: 1;
+         margin-left: auto;
+         cursor: progress;
+      }
+   }
+
+   .comment {
+      &_info {
+         display: flex;
+         align-items: center;
+         gap: 10px;
+      }
    }
 }
 </style>

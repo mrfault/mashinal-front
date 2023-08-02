@@ -165,7 +165,7 @@ export default {
             return this.value;
          },
          set(value) {
-            value = (this.disabled || (this.value.length > this.maxlength)) ? this.value : value;
+            value = (this.disabled || (this.value?.length > this.maxlength)) ? this.value : value;
             this.$emit('input', value);
             // check if value was changed
             if (value !== this.prevValue) {
