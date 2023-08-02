@@ -545,6 +545,34 @@
          }
       }
    }
+
+   .ads_statics {
+      background-color: $dark-new;
+
+      span {
+         color: $grey-5-new;
+      }
+   }
+
+   .radio-container {
+      border-color: $grey-2-new;
+
+      &__description {
+         h6 {
+            color: $grey-5-new;
+         }
+      }
+   }
+
+   .terminal-info-popup {
+      .steps {
+         .step-item {
+            .step-text {
+               color: $grey-5-new;
+            }
+         }
+      }
+   }
 }
 
 .iframe {

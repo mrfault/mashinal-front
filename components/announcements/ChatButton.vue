@@ -46,4 +46,16 @@
       font-size: 13px;
       height: 56px;
    }
+
+   .dark-mode {
+      .chat-button {
+         color: #EEF2F6;
+         border-color: #121926;
+         background-color: #121926;
+
+         &:hover {
+            border-color: #155EEF;
+         }
+      }
+   }
 </style>

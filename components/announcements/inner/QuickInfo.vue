@@ -483,4 +483,21 @@
          }
       }
    }
+
+   .dark-mode {
+      .quick-info {
+         &__item {
+            border-color: #1B2434;
+            background-color: #1B2434;
+         }
+
+         &__contact {
+            &-info {
+               h2 {
+                  color: #EEF2F6;
+               }
+            }
+         }
+      }
+   }
 </style>

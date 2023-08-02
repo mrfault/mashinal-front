@@ -75,4 +75,15 @@
       flex-direction: column;
       height: 56px;
    }
+
+   .dark-mode {
+      .call-button {
+         border-color: #05603A;
+         background-color: #05603A;
+
+         &:hover {
+            border-color: #29A53E;
+         }
+      }
+   }
 </style>
