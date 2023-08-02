@@ -974,7 +974,8 @@
                    this.form.with_video || this.form.region || this.form.korobka.length ||
                    this.form.engine_type.length || this.form.in_garanty || this.form.external_salon ||
                    this.form.body.length || this.form.gearing.length || this.form.customs ||
-                   this.form.damage || this.form.n_of_seats.length || this.form.colors.length || this.form.all_options)
+                   this.form.damage || this.form.n_of_seats.length ||
+                   this.form.colors.length || Object.values(this.form.all_options).length)
          },
 
          popularOptions2() {
