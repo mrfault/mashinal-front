@@ -65,13 +65,14 @@ const getInitialState = () => ({
    partsHome: [],
    plateNumbers: [],
    brandsList: [],
+   monetizedCars: [],
    mainPartsAnnouncements: {},
    carsAnnouncements: [],
    motoAnnouncements: [],
    commercialAnnouncements: [],
    shopAnnouncements: {},
    announcement: {},
-   relativeAnnouncements: {},
+   relativeAnnouncements: [],
    userAnnouncements: [],
    userRegistrationMarks: [],
    // catalog
@@ -251,6 +252,7 @@ export const getters = {
    pageRefs: s => s.pageRefs,
    pageRef: s => s.pageRef,
    hideFooter: s => s.hideFooter,
+   monetizedCars: s => s.monetizedCars,
    // saved search & favorites
    savedSearchList: s => s.savedSearchList,
    carModelsExclude: s => s.carModelsExclude,
@@ -462,6 +464,11 @@ export const actions = {
    async fetchBrandsList({ commit }) {
       const res = await this.$axios.$get('https://v2dev.mashin.al/api/v2/brands/list-with-count');
       commit("mutate", { property: "brandsList", value: res });
+   },
+
+   async fetchMonetizedCars({ commit }) {
+      const res = await this.$axios.$get('https://v2dev.mashin.al/api/v2/car/monetized-cars');
+      commit("mutate", { property: "monetizedCars", value: res });
    },
 
    async getAnnouncementInnerV2({commit}, id) {
@@ -1152,10 +1159,8 @@ export const actions = {
       commit("mutate", {property: data.prefix + "Announcements", value: res});
    },
    // Announcements
-   async getRelativeAnnouncements({commit}, data) {
-      const res = await this.$axios.$get(
-         `/grid/same/announcements_new/${data.id}`
-      );
+   async getRelativeAnnouncements({commit}, id) {
+      const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/car/similar/${id}`);
       commit("mutate", {property: "relativeAnnouncements", value: res});
    },
    async getRelativeAnnouncementsWithoutMutate({commit, state}, data) {

@@ -212,6 +212,7 @@
             store.dispatch('clearSavedSearch'),
             store.dispatch('fetchBrandsList'),
             store.dispatch('getBodyOptions'),
+            store.dispatch('getPopularOptions'),
             // store.dispatch('getFavorites'),
             store.dispatch('getOptions'),
             store.dispatch('getColors'),

@@ -1,14 +1,6 @@
 <template>
    <div class="pages-cars-index">
       <div class="container">
-         <breadcrumbs :crumbs="crumbs"/>
-
-<!--         <h1 class="pages-cars-index__title" v-if="getCarDetails && getCarDetails.brand">-->
-<!--            {{ getCarDetails && getCarDetails.brand }}-->
-<!--            {{ getCarDetails && getCarDetails.model }}-->
-<!--            {{ getCarDetails && getCarDetails.generation && getCarDetails.generation[locale] }}-->
-<!--         </h1>-->
-
          <car-search-form
             :only-saved-search="!!$route.query.saved || false"
             :total-count="$paginate(carsAnnouncements).total"
@@ -17,30 +9,62 @@
             @submit="searchCars"
          />
 
-         <template v-if="getMainMonetized.length">
-            <grid
-               v-if="getMainMonetized.length"
-               :announcements="getMainMonetized"
-               :numberOfAds="getMainMonetized.length"
-               escape-duplicates
-            />
-<!--            :title="$t('featured_ads')"-->
-         </template>
+         <breadcrumbs :crumbs="crumbs" />
 
-         <template v-if="!$route.query.saved">
+         <grid
+            class="mt-2"
+            v-if="monetizedCars.length"
+            :announcements="monetizedCars"
+            :numberOfAds="monetizedCars.length"
+            :hasContainer="false"
+            escape-duplicates
+         >
+            <template #cap>
+               <Cap :className="'mb40'">
+                  <template #left>
+                     <h3>{{ $t('featured_ads') }}</h3>
+                  </template>
+               </Cap>
+            </template>
+         </grid>
+
+<!--         <template v-if="!$route.query.saved">-->
             <grid
                v-if="carsAnnouncements.meta.total > 0"
                :announcements="carsAnnouncements.data"
                :paginate="$paginate(carsAnnouncements)"
-
+               :hasContainer="false"
                :numberOfAds="carsAnnouncements.total"
                :pending="pending"
                @change-page="searchCars"
                escape-duplicates
-            />
-<!--            :title="$t('announcements')"-->
-            <no-results v-else/>
-         </template>
+            >
+               <template #cap>
+                  <Cap :className="'mb40'">
+                     <template #left>
+                        <h3 v-if="getCarDetails && getCarDetails.brand">
+                           {{ getCarDetails && getCarDetails.brand }}
+                           {{ getCarDetails && getCarDetails.model }}
+                           {{ getCarDetails && getCarDetails.generation && getCarDetails.generation[locale] }}
+                        </h3>
+                     </template>
+
+                     <template #right>
+                        <form-select
+                           :label="$t('sorting_2')"
+                           :options="sortItems"
+                           :clearPlaceholder="true"
+                           :clear-option="false"
+                           :allowClear="false"
+                           v-model="sorting"
+                        />
+                     </template>
+                  </Cap>
+               </template>
+            </grid>
+
+            <no-results v-else />
+<!--         </template>-->
 
          <HandleIds :items="carsAnnouncements.data" />
       </div>
@@ -54,15 +78,19 @@
    import NoResults from '~/components/elements/NoResults';
    import brand from "../../components/moderator/brand.vue";
    import HandleIds from "~/components/announcements/HandleIds.vue";
+   import Cap from "~/components/elements/Cap.vue";
 
    export default {
       name: 'pages-cars-index',
+
       layout: 'search',
+
       components: {
          CarSearchForm,
          Grid,
          NoResults,
-         HandleIds
+         HandleIds,
+         Cap
       },
 
       nuxtI18n: {
@@ -79,6 +107,12 @@
             title: this.getHeadDetails,
             description: this.getHeadDetails
          });
+      },
+
+      data() {
+        return {
+           sorting: ''
+        }
       },
 
       watch: {
@@ -103,6 +137,8 @@
                store.dispatch('getBrandsOnlyExists'),
                store.dispatch('getBodyOptions'),
                store.dispatch('getOptions'),
+               store.dispatch('fetchBrandsList'),
+               store.dispatch('fetchMonetizedCars'),
 
                // get model options for brands
                ...Object.keys(post?.additional_brands || {})
@@ -165,7 +201,7 @@
       },
 
       computed: {
-         ...mapGetters(['carsAnnouncements', 'brands', 'getMainMonetized', 'singleSavedSearch']),
+         ...mapGetters(['carsAnnouncements', 'getMainMonetized', 'singleSavedSearch', 'brandsList', 'monetizedCars']),
 
          brand() {
             return brand
@@ -178,12 +214,12 @@
          },
 
          getCarDetails() {
-            const carInfo = JSON.parse(this.$route.query.car_filter || '{}');
-            if(!carInfo?.additional_brands) return {};
-            for (let i = 0; i < this.brands.length; i++) {
-               if (this.brands[i].id == carInfo.additional_brands[0].brand) {
+            const carInfo = JSON.parse(this.$route.query.car_filter);
+
+            for (let i = 0; i < this.brandsList.length; i++) {
+               if (this.brandsList[i].id === carInfo.additional_brands[0].brand) {
                   return {
-                     brand: this.brands[i].name,
+                     brand: this.brandsList[i].name,
                      model: carInfo?.additional_brands[0]?.model_name,
                      generation: carInfo?.additional_brands[0]?.generation_name
                   }
@@ -201,6 +237,14 @@
             } else {
                return this.$t('meta-title_cars');
             }
+         },
+
+         sortItems() {
+            return [
+               { id: 'created_at_desc', name: this.$t('show_by_date') },
+               { id: 'price_asc', name: this.$t('show_cheap_first') },
+               { id: 'price_desc', name: this.$t('show_expensive_first') }
+            ]
          }
       },
 

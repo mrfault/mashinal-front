@@ -6,11 +6,10 @@ export const SalonsMixin = {
         : `/img/salon-logo-${this.colorMode}.jpg`
     },
     getCover(cover, type) {
+       console.log(`/img/salon-cover-${type}-${this.colorMode}${this.isMobileBreakpoint ? '-m' : ''}`)
       return cover
         ? this.$withBaseUrl(cover)
-        : `/img/salon-cover-${type}-${this.colorMode}${
-            this.isMobileBreakpoint ? '-m' : ''
-          }.jpg`
+        : `/img/salon-cover-${type}-${this.colorMode}${this.isMobileBreakpoint ? '-m' : ''}.jpg`
     },
     getTotalCount(salon) {
       return salon.announcements?.total || salon.announcement_count || 0
