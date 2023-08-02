@@ -1,8 +1,8 @@
 <template>
   <page-layout>
-    <template #after-header>
-      <search-nav v-if="isMobileBreakpoint" />
-    </template>
+<!--    <template #after-header>-->
+<!--      <search-nav v-if="isMobileBreakpoint" />-->
+<!--    </template>-->
     <template #nuxt>
       <nuxt />
     </template>

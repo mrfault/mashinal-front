@@ -17,13 +17,13 @@ const getInitialState = () => ({
    menus: [],
    staticPages: [
       {
-         id:1,
+         id: 1,
          title: {},
          text: {},
          slug: {}
       },
       {
-         id:1,
+         id: 1,
          title: {},
          text: {},
          slug: {}
@@ -67,13 +67,14 @@ const getInitialState = () => ({
    partsHome: [],
    plateNumbers: [],
    brandsList: [],
+   monetizedCars: [],
    mainPartsAnnouncements: {},
    carsAnnouncements: [],
    motoAnnouncements: [],
    commercialAnnouncements: [],
    shopAnnouncements: {},
    announcement: {},
-   relativeAnnouncements: {},
+   relativeAnnouncements: [],
    userAnnouncements: [],
    userRegistrationMarks: [],
    // catalog
@@ -253,6 +254,7 @@ export const getters = {
    pageRefs: s => s.pageRefs,
    pageRef: s => s.pageRef,
    hideFooter: s => s.hideFooter,
+   monetizedCars: s => s.monetizedCars,
    // saved search & favorites
    savedSearchList: s => s.savedSearchList,
    carModelsExclude: s => s.carModelsExclude,
@@ -353,7 +355,7 @@ export const getters = {
    bodyOptions: s => s.bodyOptions,
    motoOptions: s => s.motoOptions,
    motoOptionsV2: s => s.motoOptionsV2,
-   motoBrands: s => s. motoBrands,
+   motoBrands: s => s.motoBrands,
    scooterOptions: s => s.scooterOptions,
    complaintOptions: s => s.complaintOptions,
    badges: s => s.badges,
@@ -438,34 +440,39 @@ const objectNotEmpty = (state, commit, property) => {
 };
 export const actions = {
    // New API ++++++++++++++++++++
-   async fetchMonetizedAnnouncementsHome({ commit }) {
+   async fetchMonetizedAnnouncementsHome({commit}) {
       const res = await this.$axios.$get('https://v2dev.mashin.al/api/v2/monetized-announcements/home');
-      commit("mutate", { property: "mainMonetized", value: res });
+      commit("mutate", {property: "mainMonetized", value: res});
    },
 
-   async fetchAllAnnouncementsHome({ commit }) {
+   async fetchAllAnnouncementsHome({commit}) {
       const res = await this.$axios.$get('https://v2dev.mashin.al/api/v2/all-announcements/home');
-      commit("mutate", { property: "mainAnnouncements", value: res });
+      commit("mutate", {property: "mainAnnouncements", value: res});
    },
 
-   async fetchCarShowroomAnnouncementsHome({ commit }) {
+   async fetchCarShowroomAnnouncementsHome({commit}) {
       const res = await this.$axios.$get('https://v2dev.mashin.al/api/v2/autosalon/announcements/home');
-      commit("mutate", { property: "carShowroom", value: res });
+      commit("mutate", {property: "carShowroom", value: res});
    },
 
-   async fetchPlateNumbersHome({ commit }) {
+   async fetchPlateNumbersHome({commit}) {
       const res = await this.$axios.$get('https://v2dev.mashin.al/api/v2/plate-numbers/home');
-      commit("mutate", { property: "plateNumbers", value: res });
+      commit("mutate", {property: "plateNumbers", value: res});
    },
 
-   async fetchPartsAnnouncementsHome({ commit }) {
+   async fetchPartsAnnouncementsHome({commit}) {
       const res = await this.$axios.$get('https://v2dev.mashin.al/api/v2/parts/home');
-      commit("mutate", { property: "partsHome", value: res });
+      commit("mutate", {property: "partsHome", value: res});
    },
 
-   async fetchBrandsList({ commit }) {
+   async fetchBrandsList({commit}) {
       const res = await this.$axios.$get('https://v2dev.mashin.al/api/v2/brands/list-with-count');
-      commit("mutate", { property: "brandsList", value: res });
+      commit("mutate", {property: "brandsList", value: res});
+   },
+
+   async fetchMonetizedCars({ commit }) {
+      const res = await this.$axios.$get('https://v2dev.mashin.al/api/v2/car/monetized-cars');
+      commit("mutate", { property: "monetizedCars", value: res });
    },
 
    async getAnnouncementInnerV2({commit}, id) {
@@ -479,17 +486,17 @@ export const actions = {
       commit("mutate", {property: "agreements", value: res.data || []})
    },
 
-   async fetchHandleIds({ commit }, data) {
+   async fetchHandleIds({commit}, data) {
       let announcementIds = data.ids.map(a => a.id),
-          link = 'announcement-view';
+         link = 'announcement-view';
 
       if (data.single) {
          link = 'announcement-open';
          announcementIds = data.ids;
       }
 
-      const res = await this.$axios.$post(link, { ids: announcementIds, type: data.type });
-      commit("mutate", { property: "resetForm", value: res });
+      const res = await this.$axios.$post(link, {ids: announcementIds, type: data.type});
+      commit("mutate", {property: "resetForm", value: res});
    },
 
    async fetchResetForm({commit}, data) {
@@ -510,7 +517,7 @@ export const actions = {
       const res = await this.$axios.$get(`/plates${data}`);
 
       if (res.data.length) {
-         commit("mutate", { property: "loadingData", value: false });
+         commit("mutate", {property: "loadingData", value: false});
       }
 
       commit("mutate", {property: "registrationMarks", value: res || []});
@@ -592,10 +599,10 @@ export const actions = {
 
       if (localStorage.getItem('static_pages')) {
          static_pages = localStorage.getItem('static_pages');
-         commit("mutate", { property: "staticPages", value: JSON.parse(static_pages) });
+         commit("mutate", {property: "staticPages", value: JSON.parse(static_pages)});
       } else {
          const res = await this.$axios.$get("/get_static_pages");
-         commit("mutate", { property: "staticPages", value: res });
+         commit("mutate", {property: "staticPages", value: res});
          localStorage.setItem('static_pages', JSON.stringify(res));
       }
    },
@@ -1080,7 +1087,7 @@ export const actions = {
       }
    },
 
-   async fetchInfiniteMainMonetized({ commit }, data = {}) {
+   async fetchInfiniteMainMonetized({commit}, data = {}) {
       const res = await this.$axios.$post(`/grid/monetized-${data.type}`, data.data);
       commit("mutate", {property: "mainMonetized", value: res});
    },
@@ -1092,18 +1099,18 @@ export const actions = {
       commit("mutate", {property: "temporaryLazyData", value: res});
    },
 
-  async getInfiniteMainPartsSearchWithoutMutate({ commit }, data = {}) {
-    const res = await this.$axios.$get(
-      `/grid/home_page_parts?per_page=4&page=${data.page || 1}`
-    );
-    commit("mutate", { property: "temporaryLazyDataB", value: res });
-  },
-  async getInfiniteMainPartsSearch({ commit }, data = {}) {
-    const res = await this.$axios.$get(
-      `/grid/home_page_parts?per_page=4&page=${data.page || 1}`
-    );
-    commit("mutate", { property: "mainPartsAnnouncements", value: res });
-  },
+   async getInfiniteMainPartsSearchWithoutMutate({commit}, data = {}) {
+      const res = await this.$axios.$get(
+         `/grid/home_page_parts?per_page=4&page=${data.page || 1}`
+      );
+      commit("mutate", {property: "temporaryLazyDataB", value: res});
+   },
+   async getInfiniteMainPartsSearch({commit}, data = {}) {
+      const res = await this.$axios.$get(
+         `/grid/home_page_parts?per_page=4&page=${data.page || 1}`
+      );
+      commit("mutate", {property: "mainPartsAnnouncements", value: res});
+   },
 
    async getInfiniteMainPartsPageSearchWithoutMutate({commit}, payload = {}) {
       const body = payload ? {...payload} : {};
@@ -1163,10 +1170,8 @@ export const actions = {
       commit("mutate", {property: data.prefix + "Announcements", value: res});
    },
    // Announcements
-   async getRelativeAnnouncements({commit}, data) {
-      const res = await this.$axios.$get(
-         `/grid/same/announcements_new/${data.id}`
-      );
+   async getRelativeAnnouncements({commit}, id) {
+      const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/car/similar/${id}`);
       commit("mutate", {property: "relativeAnnouncements", value: res});
    },
    async getRelativeAnnouncementsWithoutMutate({commit, state}, data) {
@@ -1390,7 +1395,7 @@ export const actions = {
          `/sell/${data.brand}/${data.model}/body/${data.body}/generation/${data.generation}/engine/${data.engine}/gearing/${data.gearing}/trns/${data.transmission}/modifications`
       );
       commit("mutate", {property: "sellModifications", value: res});
-   },async getSellModificationsV2({commit}, data) {
+   }, async getSellModificationsV2({commit}, data) {
       const res = await this.$axios.$get(
          `https://v2dev.mashin.al/api/v2/car-catalog/${data.brand}/${data.model}/body/${data.body}/generation/${data.generation}/engine/${data.engine}/gearing/${data.gearing}/trns/${data.transmission}/modifications`
       );
@@ -1459,8 +1464,13 @@ export const actions = {
       await this.$axios.$post(`/my/autosalon/${id}/edit`, form);
    },
    //SELL POSTS
-   async plateNumbersPost({}, form) {
-      await this.$axios.$post(`https://v2dev.mashin.al/api/v2/plate-numbers/post`, form);
+   async plateNumbersPost({}, {is_mobile, form}) {
+      try {
+         const res = await this.$axios.$post(`https://v2dev.mashin.al/api/v2/plate-numbers/post?is_mobile=${is_mobile}`, form);
+         return res;
+      } catch (e) {
+
+      }
    },
    async partsPost({}, form) {
       await this.$axios.$post(`/sell/part/post/publish`, form);

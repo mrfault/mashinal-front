@@ -4,6 +4,41 @@
 }
 
 .dark-mode {
+   .form-buttons {
+      &.no-bg {
+         .btn {
+            &.active {
+               color: $white !important;
+            }
+         }
+      }
+
+      & > div {
+         &:not(:has(.active)) {
+            .form-group {
+               .btn {
+                  color: $white-2-new;
+                  border-color: transparent;
+                  background-color: transparent;
+               }
+            }
+         }
+      }
+   }
+
+   .checkbox-input {
+      input {
+         &:checked ~ label {
+            border-color: $blue-5-new;
+            background-color: $blue-5-new !important;
+
+            .text-truncate {
+               color: $white;
+            }
+         }
+      }
+   }
+
    a {
       color: $yellow-1;
 

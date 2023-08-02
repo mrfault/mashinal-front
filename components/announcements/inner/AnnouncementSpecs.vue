@@ -17,6 +17,7 @@
                <inline-svg
                   width="32px"
                   height="32px"
+                  v-if="spec.icon"
                   :src="spec.icon"
                />
 

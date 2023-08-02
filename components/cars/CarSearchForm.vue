@@ -11,7 +11,7 @@
             />
 
             <form-buttons
-               class="justify-content-end"
+               class="no-bg"
                :options="getSearchTabs"
                :group-by="2"
                :btnClass="'blue-new'"
@@ -145,9 +145,10 @@
                <form-select
                   :label="$t('price')"
                   custom
+                  :new-label="false"
                   :suffix="getOptionValue('Currency', form.currency)"
                   :values="{from: form.price_from, to: form.price_to, suffix: getSuffix}"
-                  @clear=";(form.price_from = ''), (form.price_to = '')"
+                  @clear="(form.price_from = ''), (form.price_to = '')"
                >
                   <div class="form-merged flex-column price">
                      <form-buttons
@@ -184,6 +185,7 @@
                <form-select
                   :label="$t('mileage')"
                   custom
+                  :new-label="false"
                   :suffix="$t('char_kilometre')"
                   :values="{ from: form.mileage_from, to: form.mileage_to }"
                   @clear=";(form.mileage_from = ''), (form.mileage_to = '')"
@@ -205,6 +207,7 @@
                <form-select
                   :label="$t('capacity')"
                   custom
+                  :new-label="false"
                   :suffix="$t('char_litre')"
                   :values="{ from: form.min_capacity, to: form.max_capacity }"
                   @clear=";(form.min_capacity = ''), (form.max_capacity = '')"
@@ -365,21 +368,22 @@
                   <form-select
                      :label="$t('color')"
                      v-model="form.colors"
-                     multiple
                      translate-options
                      :options="colors"
                      :clear-placeholder="true"
                      :clear-option="false"
+                     multiple
                   />
 
+<!--                  <pre>{{popularOptions}}</pre>-->
+
                   <form-select
-                     :label="$t('color')"
-                     v-model="form.colors"
-                     multiple
-                     translate-options
-                     :options="colors"
+                     :label="$t('parameters')"
+                     v-model="form.all_options"
+                     :options="popularOptions.map((p) => ({...p, key: $t(p.label), name: $t(p.label)}))"
                      :clear-placeholder="true"
                      :clear-option="false"
+                     multiple
                   />
 
                   <button
@@ -390,7 +394,7 @@
                                'btn--white',
                                { 'pointer-events-none': pending },
                                { 'disabled': rows.length > 4 },
-                              ]"
+                     ]"
                      @click="addSearchRow(rows.length - 1)"
                   >
                      {{ $t('add_next', { count: rows.length + 1 }) }}
@@ -417,12 +421,7 @@
                   <button
                      v-if="!hasValue"
                      type="button"
-                     :class="[
-                               'btn',
-                               'full-width',
-                               'btn--white',
-                               { 'pointer-events-none': pending },
-                             ]"
+                     :class="['btn', 'full-width', 'btn--white', { 'pointer-events-none': pending }]"
                      @click="resetForm(!(advanced || assistant))"
                   >
                      {{ $t('clear_search2') }}
@@ -904,7 +903,8 @@
             'sellOptions',
             'allSellOptions2',
             'singleSavedSearch',
-            'colors'
+            'colors',
+            'popularOptions'
          ]),
 
          getExcludeCount() {
@@ -974,7 +974,12 @@
                    this.form.with_video || this.form.region || this.form.korobka.length ||
                    this.form.engine_type.length || this.form.in_garanty || this.form.external_salon ||
                    this.form.body.length || this.form.gearing.length || this.form.customs ||
-                   this.form.damage || this.form.n_of_seats.length || this.form.colors.length)
+                   this.form.damage || this.form.n_of_seats.length ||
+                   this.form.colors.length || Object.values(this.form.all_options).length)
+         },
+
+         popularOptions2() {
+            return this.popularOptions.map((p) => ({...p, key: this.$t(p.label), name: this.$t(p.label)}))
          }
       },
 
@@ -1160,14 +1165,11 @@
 
       &__grid {
          display: grid;
-         grid-template-columns: repeat(1, 1fr);
          grid-gap: 20px;
 
-         //&-item {
-         //   display: grid;
-         //   grid-template-columns: repeat(1, 1fr);
-         //   grid-gap: 20px;
-         //}
+         .form-group {
+            min-width: 0;
+         }
       }
 
       .form-buttons {
@@ -1223,7 +1225,7 @@
    @media (min-width: 1150px) {
       .cars-search-form {
          &__grid {
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: 230px 230px 230px 285px;
          }
       }
    }

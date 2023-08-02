@@ -151,8 +151,10 @@
             </div>
 
             <div class="item-details__item">
-               <span>{{ announcement.year }} {{ $t('year') }}</span>
-               <span>{{ announcement?.car_catalog?.capacity }} {{ $t('char_litre') }}</span>
+               <span v-if="announcement.year">{{ announcement.year }} {{ $t('year') }}</span>
+               <span v-if="announcement?.car_catalog?.capacity">
+                  {{ announcement?.car_catalog?.capacity }} {{ $t('char_litre') }}
+               </span>
                <span>
                   {{ announcement.mileage }}
 
@@ -165,8 +167,6 @@
             <div class="item-details__item">
                {{ announcement.created_at }}
             </div>
-
-
          </div>
 
          <div v-if="isProfilePage" class="item-monetization">

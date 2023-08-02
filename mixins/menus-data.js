@@ -82,12 +82,12 @@ export const MenusDataMixin = {
 
       bottomMenus() {
          return [
-            {title: 'main', route: '/', icon: 'home-tab'},
-            {title: 'catalog', route: '/catalog', icon: 'catalog-tab'},
-            {title: 'new_announce', route: '/sell', icon: 'plus'},
-            {title: 'messages', route: '/profile/messages', icon: 'chat-tab'},
+            {title: 'main', route: '/', icon: '/icons/home_2.svg'},
+            {title: 'favorites', route: '/profile/favorites', icon: '/icons/favorites.svg'},
+            {title: 'new_announce', route: '/sell', icon: '/icons/plus-circle-2.svg'},
+            {title: 'messages', route: '/profile/messages', icon: '/icons/message.svg'},
             {title: 'garage', route: '/garage-services', icon: 'garage-tab', hide: !this.loggedIn},
-            {title: 'login', route: '/login', icon: 'user', hide: this.loggedIn}
+            {title: 'login', route: '/login', icon: '/icons/user_2.svg', hide: this.loggedIn}
          ];
       },
 
