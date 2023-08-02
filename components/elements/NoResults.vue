@@ -1,7 +1,7 @@
 <template>
    <div class="no-results" v-if="!template" :class="{'darker-no-results': darker}">
       <img :src="`/img/${type}.svg`" alt=""/>
-      <span>{{ text || $t('no_results_found') }}</span>
+<!--      <span>{{ text || $t('no_results_found') }}</span>-->
       <slot/>
    </div>
 
@@ -12,9 +12,9 @@
    </div>
 
    <div class="no-results" v-else-if="template === 'new-img'" :class="{'darker-no-results': darker}">
-      <img class="light-mode" :src="url" alt="img">
-      <img class="dark-mode" :src="urlDarkMode" alt="img">
-      <span>{{ text || $t('no_results_found') }}</span>
+      <img v-if="!isDarkMode" class="light-mode" :src="url" alt="img">
+      <img v-if="isDarkMode" class="dark-mode" :src="urlDarkMode" alt="img">
+<!--      <span>{{ text || $t('no_results_found') }}</span>-->
       <slot/>
    </div>
 </template>
