@@ -7,7 +7,7 @@
       'disabled': disabled
     }"
 
-      @click.stop="openPaymentModal()"
+      @click.prevent="openPaymentModal()"
    >
       <div :class="{'disabled': disabled}">
 

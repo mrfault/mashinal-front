@@ -58,6 +58,8 @@ const getInitialState = () => ({
    paidStatusData: false,
    // announcements
    myAnnouncements: {},
+   myAnnouncementsV2: [],
+   myPlatesV2:[],
    myAnnouncement: {},
    mainAnnouncements: {},
    mainMonetized: [],
@@ -307,6 +309,8 @@ export const getters = {
    brandsList: s => s.brandsList,
    mainPartsAnnouncements: s => s.mainPartsAnnouncements,
    myAnnouncements: s => s.myAnnouncements,
+   myAnnouncementsV2: s => s.myAnnouncementsV2,
+   myPlatesV2: s => s.myPlatesV2,
    myAnnouncement: s => s.myAnnouncement,
    relativeAnnouncements: s => {
       return s.relativeAnnouncements;
@@ -520,6 +524,13 @@ export const actions = {
    async fetchPlates({commit}, data = '') {
       const res = await this.$axios.$get(`/my/plates${data}`)
       commit("mutate", {property: "myPlates", value: res || []})
+   },
+   async fetchPlatesV2({commit}, data = {}) {
+
+      const res = await this.$axios.$get(
+         `https://v2dev.mashin.al/api/v2/me/announcements/plate-numbers?status=${data.status}`
+      );
+      commit("mutate", {property: "myPlatesV2", value: res});
    },
 
    async fetchMySavedPlates({commit}, data = '') {
@@ -1191,6 +1202,14 @@ export const actions = {
       );
       commit("mutate", {property: "myAnnouncements", value: res});
    },
+   async getMyAllAnnouncementsV2({commit}, data = {}) {
+
+      const res = await this.$axios.$get(
+         `https://v2dev.mashin.al/api/v2/me/announcements?status=${data.status}`
+      );
+      commit("mutate", {property: "myAnnouncementsV2", value: res});
+   },
+
 
    async getAnnouncementInner({commit}, id) {
       const res = await this.$axios.$get(`/announce/${id}`);

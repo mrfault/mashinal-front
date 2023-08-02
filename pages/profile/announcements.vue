@@ -20,7 +20,7 @@
                   v-for="(item,index) in announceItems"
                   :class="{'ma-announcements__head--item--active': item.id == activeTab}"
                   class="ma-announcements__head--item"
-                  @click="activeTab = item.id"
+                  @click="changeTab(item)"
                >
                   {{ $t(item.title) }}
                </button>
@@ -28,9 +28,10 @@
          </div>
          <div class="ma-announcements__body">
             <h4 class="ma-subtitle--lg">{{ $t('my_vehicle_announcements') }}</h4>
-            <div id="announcementsContainer" class="ma-announcements__body--row" @mousedown="startDragging">
-               <div v-if="myAnnouncements.data.length" class="ma-announcements__body--row__inner">
-                  <template v-for="(announcement,index) in myAnnouncements.data">
+            <div id="announcementsContainer" :class="{'overflow-x-hidden': !myAnnouncements.length}"
+                 class="ma-announcements__body--row" @mousedown.prevent="startDragging">
+               <div v-if="myAnnouncements.length" class="ma-announcements__body--row__inner">
+                  <template v-for="(announcement,index) in myAnnouncements">
                      <div
                         v-if="activeTab == null || activeTab == announcement.status"
                         class="ma-announcements__body--row__inner--item-plate"
@@ -52,19 +53,23 @@
                </div>
 
                <no-results
-                  v-if="myAnnouncements.data.length === 0 || (activeTab !== null && !myAnnouncements.data.some(item => activeTab === item.status))"
-                  :text="statusReady !== '' ? '' : $t('add_an_ad_and_thousands_of_potential_buyers_will_see_it')"
+                  v-if="myAnnouncements.length === 0 || (activeTab !== null && !myAnnouncements.some(item => activeTab === item.status))"
                   :type="$route.query.type == 2 ? 'part' : 'car'"
+                  :url="'/new-icons/no-car.svg'"
                   darker
                >
-                  <nuxt-link v-if="statusReady === ''" :to="$localePath('/sell')" class="btn btn--green mt-2 mt-lg-3"
-                             v-html="$t('to_sell')"/>
+                  <!--                  :text="statusReady !== '' ? '' : $t('add_an_ad_and_thousands_of_potential_buyers_will_see_it')"-->
+                  <!--                  <nuxt-link v-if="statusReady === ''" :to="$localePath('/sell')" class="btn btn&#45;&#45;green mt-2 mt-lg-3"-->
+                  <!--                             v-html="$t('to_sell')"/>-->
                </no-results>
             </div>
+
+            <!--            number plates-->
             <h4 class="ma-subtitle--lg">{{ $t('my_car_number_announcements') }}</h4>
-            <div id="platesContainer" class="ma-announcements__body--row" @mousedown="startDragging">
-               <div v-if="getMyPlates.data.length" class="ma-announcements__body--row__inner">
-                  <template v-for="(item,index) in getMyPlates.data">
+            <div id="platesContainer" :class="{'overflow-x-hidden': !allMyPlates.length}"
+                 class="ma-announcements__body--row" @mousedown.prevent="startDragging">
+               <div v-if="allMyPlates.length" class="ma-announcements__body--row__inner">
+                  <template v-for="(item,index) in allMyPlates">
                      <div
                         v-if="activeTab == null || activeTab == item.status"
                         class="ma-announcements__body--row__inner--item-plate"
@@ -80,8 +85,8 @@
                </div>
                <no-results
                   v-if="
-                     getMyPlates.data.length === 0 ||
-                     (activeTab !== null && !getMyPlates.data.some(item => activeTab === item.status))"
+                     allMyPlates.length === 0 ||
+                     (activeTab !== null && !allMyPlates.some(item => activeTab === item.status))"
                   :template="'new-img'"
                   :text="$t('empty_plates')"
                   :url="'/img/empty_plates.png'"
@@ -175,8 +180,8 @@ export default {
       let shop = ['1', '2'].includes(route.query.type) ? (route.query.type == 2 ? 'part' : 'salon') : false;
 
       await Promise.all([
-         store.dispatch('getMyAllAnnouncements', {status, shop}),
-         store.dispatch('fetchPlates'),
+         store.dispatch('getMyAllAnnouncementsV2', {status, shop}),
+         store.dispatch('fetchPlatesV2', {status}),
       ]);
 
       return {
@@ -187,16 +192,25 @@ export default {
       }
    },
    methods: {
-      ...mapActions(['getMyAllAnnouncements']),
+      ...mapActions({
+         getMyAllAnnouncements: 'getMyAllAnnouncementsV2',
+         getMyPlates: 'fetchPlatesV2',
+      }),
 
       changePageMarks(page) {
-         this.$store.dispatch('fetchPlates', `?page=${page}`);
+         this.$store.dispatch('fetchPlatesV2', `?page=${page}`);
          this.scrollTo('.pages-annoucements', [-15, -20]);
+      },
+
+      changeTab(item) {
+         this.activeTab = item.id;
+         this.getMyAllAnnouncements({status: item.id});
+         this.getMyPlates({status: item.id});
       },
 
       async changePage(page = 1) {
          this.pending = true;
-         await this.getMyAllAnnouncements({page, ...this.form});
+         await this.getMyAllAnnouncements({status: this.activeTab});
          this.statusReady = this.form.status;
          this.pending = false;
          this.scrollTo('.announcements-grid.paginated', [-15, -20]);
@@ -206,7 +220,7 @@ export default {
       },
       startDragging(event) {
          event.preventDefault(); // Disable content selection while dragging
-
+         event.stopPropagation();
          const container = event.currentTarget;
          let startX = event.clientX;
          let scrollLeft = container.scrollLeft;
@@ -229,10 +243,10 @@ export default {
 
    },
    computed: {
-      // tr() {
-      //    return tr
-      // },
-      ...mapGetters(['myAnnouncements', 'getMyPlates']),
+      ...mapGetters({
+         myAnnouncements: 'myAnnouncementsV2',
+         allMyPlates: 'myPlatesV2'
+      }),
 
       crumbs() {
          return [
@@ -334,9 +348,15 @@ export default {
 
 @media (max-width: 991px) {
    .ma-announcements {
-      &__body{
-         h4{
+      &__body {
+         h4 {
             font: 600 19px/22px 'TTHoves';
+         }
+
+         .no-results {
+            img {
+               width: calc(100% - 100px);
+            }
          }
       }
 
@@ -385,23 +405,52 @@ export default {
 
 
    }
-}
 
-.dark-mode {
-   .ma-announcements__top-cards {
-      .ma-announcements__top-card {
-         background: #1B2434;
-         border: 1px solid #1b2434;
+   .dark-mode {
+      .ma-announcements {
+         &__head {
+            background: #1B2434;
+            padding: 4px;
+            border-radius: 8px;
 
-         &--title {
-            color: #fff;
-         }
+            &--item {
+               background: transparent;
+               color: #697586;
+               border: none;
+               //margin-bottom: -15px;
 
-         &--count {
-            color: #fff;
+               &--active {
+                  background: rgba(#718096, .8);
+                  border: none;
+                  border-radius: 8px;
+                  height: 40px;
+               }
+            }
          }
       }
    }
+}
+
+.dark-mode {
+   .ma-announcements {
+      &__top-cards {
+         .ma-announcements__top-card {
+            background: #1B2434;
+            border: 1px solid #1b2434;
+
+            &--title {
+               color: #fff;
+            }
+
+            &--count {
+               color: #fff;
+            }
+         }
+      }
+
+
+   }
+
 }
 </style>
 
