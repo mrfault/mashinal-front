@@ -2713,5 +2713,7 @@ export default {
    package_refresh: "Paketi yenilə",
    package_current: "Mövcud paket",
 
+   "remove_announcement": "Elanı sil"
+
 };
 

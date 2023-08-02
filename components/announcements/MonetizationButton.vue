@@ -7,7 +7,7 @@
       'disabled': disabled
     }"
 
-      @click.stop="openPaymentModal()"
+      @click.prevent="openPaymentModal()"
    >
       <div :class="['d-flex align-items-center', {'disabled': disabled}]">
          {{ $t('featured_ads_2') }}

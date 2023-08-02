@@ -44,10 +44,11 @@ export const PaymentMixin = {
       this.updatePaidStatus({ type, text, title: this.$t(`${type}_payment`) });
     },
     handlePayment(res, route = false, text = '', version = 'v1') {
+         console.log(res)
       if (!this.isMobileBreakpoint) {
         let size = ({ v1: 'width=494,height=718', v2: 'width=1042,height=725' })[version];
-        window.open((res?.data?.redirect_url || res), 'purchaseservice', 'toolbar=yes,scrollbars=yes,resizable=yes,top=50,left=100,'+size);
-        let payment_id = res?.data?.payment_id;
+        window.open((res?.redirect_url || res), 'purchaseservice', 'toolbar=yes,scrollbars=yes,resizable=yes,top=50,left=100,'+size);
+        let payment_id = res?.payment_id;
 
         if (payment_id) {
           this.connectEcho(`purchase.${payment_id}`, false).listen('PurchaseInitiated', async (data) => {

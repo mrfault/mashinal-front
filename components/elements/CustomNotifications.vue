@@ -9,11 +9,8 @@
          </div>
       </div>
 
-      <div class="divider">
-         <button
-            class="btn"
-            @click="openModal = true"
-         >{{ $t('pay') }}</button>
+      <div class="divider full-width-mobile mt-3 mt-lg-0">
+         <button class="btn full-width-mobile" @click="openModal = true">{{ $t('pay') }}</button>
       </div>
 
       <modal-popup
@@ -22,24 +19,44 @@
          :modal-class="'larger packages'"
          @close="openModal = false"
       >
-         <h4 class="paymentMethods mb-3">{{ $t('payment_method') }}</h4>
+         <!--<h4 class="paymentMethods mb-3">{{ $t('payment_method') }}</h4>-->
 
-         <label class="radio-container">
-            {{$t('pay_with_card')}}
-            <input type="radio" name="payment_type" checked @change="payment_type = 'card'">
-            <span class="checkmark"></span>
-         </label>
+         <div class="d-flex justify-content-between align-items-center">
+            <form-radio
+               :id="'1'"
+               :value="'card'"
+               :label="$t('pay_with_card')"
+               input-name="payment_type"
+               v-model="payment_type"
+               @change="payment_type = 'card'"
+            />
+            <form-radio
+               :id="'2'"
+               :value="'balance'"
+               :label="$t('balans') +' ('+totalBalance+' AZN)'"
+               input-name="payment_type"
+               v-model="payment_type"
+               class="ml-2"
+               @change="payment_type = 'balance'"
+            />
+         </div>
 
-         <label class="radio-container" v-if="this.$auth.loggedIn && totalBalance > 0">
-            {{$t('balans')}}
-            <input type="radio" name="payment_type" @change="payment_type = 'balance'">
-            <span class="checkmark"></span>
-         </label>
+<!--         <label class="radio-container">-->
+<!--            {{$t('pay_with_card')}}-->
+<!--            <input type="radio" name="payment_type" checked @change="payment_type = 'card'">-->
+<!--            <span class="checkmark"></span>-->
+<!--         </label>-->
 
-         <hr v-if="totalBalance > 0" />
+<!--         <label class="radio-container" v-if="this.$auth.loggedIn && totalBalance > 0">-->
+<!--            {{$t('balans')}}-->
+<!--            <input type="radio" name="payment_type" @change="payment_type = 'balance'">-->
+<!--            <span class="checkmark"></span>-->
+<!--         </label>-->
+
+         <hr/>
 
          <div class="terminal-section" v-if="totalBalance > 0">
-            {{ $t('balans') }}: <span style="margin-right: 20px;">{{ totalBalance }}</span>
+<!--            {{ $t('balans') }}: <span style="margin-right: 20px;">{{ totalBalance }}</span>-->
             {{ $t('package_price') }}: {{ selectedPackage?.price * duration }} AZN
          </div>
 
@@ -50,13 +67,9 @@
 
          <div class="modal-sticky-bottom">
             <hr />
-
             <div class="row">
                <div class="col-12 col-lg-12 mt-2 mt-lg-0">
-                  <button
-                     :class="['btn btn--green full-width', { pending }]"
-                     @click="submit"
-                  >
+                  <button :class="['btn btn--green full-width', { pending }]"  @click="submit">
                      {{ $t('pay') }}
                   </button>
                </div>
@@ -69,9 +82,10 @@
 <script>
    import {mapGetters} from "vuex";
    import {PaymentMixin} from "~/mixins/payment";
+   import FormRadio from "~/components/forms/FormRadio.vue";
 
    export default {
-      mixins: [PaymentMixin],
+      mixins: [PaymentMixin, FormRadio],
 
       data() {
          return {
@@ -174,8 +188,8 @@
       justify-content: space-between;
       padding: 21px 24px;
       border-radius: 12px;
-      background-color: #FFFFFF;
-
+      border: 1px solid var(--gray-300, #CDD5DF);
+      background: var(--main-white, #FFF);
       &-text {
          p {
             font-weight: 500;
@@ -217,9 +231,17 @@
             height: 42px;
             padding: 0 36px;
             color: #FFFFFF;
-            background-color: #246EB2;
+            background: #039855;
          }
       }
+
+      .btn--green{
+         background: #039855;
+      }
+   }
+
+   .modal-popup.packages .form-group{
+      max-width: 100%;
    }
 
    .dark-mode {
@@ -252,7 +274,6 @@
             }
 
             .btn {
-               margin: 20px 0 0 30px;
                width: 100%;
                height: 34px;
             }
@@ -260,6 +281,11 @@
       }
    }
 
+   @media (max-width: 740px) {
+      .full-width-mobile{
+         width: 100%;
+      }
+   }
    @media (max-width: 576px) {
       .customNotification {
          &-text {

@@ -131,6 +131,7 @@
             :clear-option="false"
             v-model="form.color"
             multiple
+            :invalid="$v.form.color.$error"
             :limit="2"
          />
          <div class="divider">
@@ -138,6 +139,7 @@
                :placeholder="$t('mileage')"
                v-model="form.mileage"
                @change="announcement.mileage = $event || 0"
+                  :invalid="$v.form.mileage.$error"
             />
             <div class="mileage_types">
                <form-radio
@@ -205,12 +207,14 @@
             :clear-option="false"
             :new-label="false"
             v-model="form.region_id"
+            :invalid="$v.form.region_id.$error"
          />
          <div class="divider">
             <form-text-input
                key="address"
                v-model="form.address"
                :placeholder="$t('address')"
+               :invalid="$v.form.address.$error"
             />
             <pick-on-map-button :lat="form.lat" :lng="form.lng" :address="form.address"
                                 @change-address="updateAddress" @change-latlng="updateLatLng">
@@ -222,6 +226,7 @@
                :placeholder="$t('price')"
                v-model="form.price"
                @change="announcement.price = $event ? $event + (form.currency.name?.[locale] || 'AZN') : 0"
+               :invalid="$v.form.price.$error"
             />
             <div class="price_types">
                <toggle-group :items="priceTypes" v-slot="{ item }" @change="($event) => form.currency = $event">
@@ -348,17 +353,14 @@ import PickOnMapButton from "~/components/elements/PickOnMapButton.vue";
 import {MenusDataMixin} from "~/mixins/menus-data";
 import {ToastErrorsMixin} from "~/mixins/toast-errors";
 import {mapActions, mapGetters} from "vuex";
-import {required} from "vuelidate/lib/validators";
+import { required } from "vuelidate/lib/validators";
+import MaxLength from "vuelidate/lib/validators/maxLength";
 
 export default {
    components: {PickOnMapButton, ToggleGroup, ImageComponent, GridRadio},
    mixins: [MenusDataMixin, ToastErrorsMixin],
    computed: {
       ...mapGetters(['brands', 'models', 'sellYears', 'sellBody', "sellGenerationsV2", "sellEngines", "sellGearing", "sellTransmissions", "sellModificationsV2", "colors", "popularOptions", 'sellOptions']),
-
-      done() {
-         return
-      }
    },
    props: {
       announcement: {
@@ -432,7 +434,7 @@ export default {
          this.clearFields(['model', 'year', 'body_type', 'generation', 'fuel_type', 'transmission', 'gearing', 'modification'])
          this.announcement.brand = this.form.brand.name || this.$t('mark')
          if (slug) {
-               await this.getModels(slug);
+            await this.getModels(slug);
          }
       },
       async onChangeModel() {
@@ -535,13 +537,13 @@ export default {
    },
    watch: {
       'form.modification'() {
-            this.$emit("done", !!(this.form.modification && this.sellModificationsV2.length))
+         this.$emit("done", !!(this.form.modification && this.sellModificationsV2.length))
       },
       "form.color"() {
          console.log(this.form.color)
       },
       isReady() {
-         // this.$v.form.$touch()
+         this.$v.form.$touch()
          const newForm = {
             brand: this.form.brand.slug,
             model: this.form.model.slug,
@@ -587,10 +589,16 @@ export default {
    },
    validations: {
       form: {
-         color: { required },
-         mileage: { required },
-         price: {required},
+         color: {required},
+         mileage: {
+            required,
+            maxLength: MaxLength(function () {
+               return this.is_new && 500
+            }),
+         },
          region_id: {required},
+         address: {required},
+         price: {required},
       }
    }
 

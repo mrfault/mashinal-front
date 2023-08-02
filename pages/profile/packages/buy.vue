@@ -108,12 +108,32 @@
             <span class="checkmark"></span>
          </label>
 
+<!--         <div class="d-flex justify-content-between align-items-center">-->
+<!--            <form-radio-->
+<!--               :id="'1'"-->
+<!--               :value="'card'"-->
+<!--               :label="$t('pay_with_card')"-->
+<!--               input-name="payment_type"-->
+<!--               v-model="payment_type"-->
+<!--               @change="payment_type = 'card'"-->
+<!--            />-->
+<!--            <form-radio-->
+<!--               :id="'2'"-->
+<!--               :value="'balance'"-->
+<!--               :label="$t('balans') +' ('+$readNumber(user.balance)+' AZN)'"-->
+<!--               input-name="payment_type"-->
+<!--               v-model="payment_type"-->
+<!--               class="ml-2"-->
+<!--               @change="payment_type = 'balance'"-->
+<!--            />-->
+<!--         </div>-->
+
          <hr v-if="$readNumber(user.balance) > 0" />
 
          <div class="wrapp">
-            <div class="terminal-section" v-if="$readNumber(user.balance) > 0">
-               {{ $t('balans') }}: <span style="margin-right: 20px;">{{ $readNumber(user.balance) }}</span>
-            </div>
+<!--            <div class="terminal-section" v-if="$readNumber(user.balance) > 0">-->
+<!--               {{ $t('balans') }}: <span style="margin-right: 20px;">{{ $readNumber(user.balance) }}</span>-->
+<!--            </div>-->
 
             <div class="terminal-section" v-if="$readNumber(user.balance) > 0">
                {{ $t('package_price') }}: <span>{{ selectedPackage?.price * duration }} AZN</span>

@@ -2634,4 +2634,14 @@ export default {
    package_information: "Информация о моем пакете",
    package_refresh: "Обновить пакет",
    package_current: "Доступный пакет",
+
+
+   "subscription_registration_date_on_site":"Дата начала подписки на сайте",
+   "subscription_registration_end_date_on_site":"Дата окончания подписик на сайте",
+   "edition":"Изменить",
+   "remove_vehicle1":"Удалить транспортное средство",
+
+   "remove_vehicle_desc1":"Вы уверенны что хотите удалить выбранное ТС?",
+
+   "remove_vehicle_desc2":"Оплаченная сумма не подлежит возврату",
 };

@@ -115,7 +115,7 @@ export default {
                {
                   title: this.$t('my_profile'),
                   icon: 'store',
-                  link: '/profile/settings/',
+                  link: '/dashboard/1/settings/',
                },
                {
                   title: this.$t('agreements'),
@@ -128,35 +128,47 @@ export default {
                   link: '/logout',
                   isButton: true,
                },
-            ]
-         } else return [
-            {
-               title: this.$t('my_announces'),
-               icon: 'layers',
-               link: '/profile/announcements',
-            },
-            {
-               icon: 'invoice',
-               title: this.$t('penalties'),
-               link: '/garage',
-            },
-            {
-               title: this.$t('my_balance'),
-               icon: 'wallet',
-               link: '/profile/balance/',
-            },
-            {
-               title: this.$t('my_account'),
-               icon: 'user',
-               link: '/profile/settings/',
-            },
-            {
-               title: this.$t('sign_out'),
-               icon: 'logout',
-               link: 'announces',
-               isButton: true,
-            },
-         ]
+            ];
+         } else {
+            let data =  [
+               {
+                  title: this.$t('my_announces'),
+                  icon: 'layers',
+                  link: '/profile/announcements',
+               },
+               {
+                  icon: 'invoice',
+                  title: this.$t('penalties'),
+                  link: '/garage',
+               },
+               {
+                  title: this.$t('my_balance'),
+                  icon: 'wallet',
+                  link: '/profile/balance/',
+               },
+               {
+                  title: this.$t('my_account'),
+                  icon: 'user',
+                  link: '/profile/settings/',
+               },
+               {
+                  title: this.$t('sign_out'),
+                  icon: 'logout',
+                  link: 'announces',
+                  isButton: true,
+               },
+            ];
+
+            if (this.user.can_be_autosalon) {
+               data.unshift({
+                  title: this.$t('my_packages'),
+                  icon: 'packages',
+                  link: '/profile/packages/',
+               });
+            }
+
+            return data;
+         }
       },
    },
    methods: {
