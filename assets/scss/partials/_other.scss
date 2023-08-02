@@ -1186,3 +1186,11 @@
       }
    }
 }
+
+@media (max-width: 500px) {
+   .modal-popup {
+      &_content {
+         padding: 12px;
+      }
+   }
+}

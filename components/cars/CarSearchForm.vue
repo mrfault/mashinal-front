@@ -375,7 +375,7 @@
                      multiple
                   />
 
-<!--                  <pre>{{popularOptions}}</pre>-->
+                  <!--                  <pre>{{popularOptions}}</pre>-->
 
                   <form-select
                      :label="$t('parameters')"
@@ -662,12 +662,12 @@
                   {{ $readPlural(totalCount, $t('plural_forms_announcements')) }}
                </div>
             </div>
-<!--            <div class="col-6 col-lg-2 mt-3 mt-lg-5 mb-n6 mb-lg-n1">-->
-<!--               <button @click="showExcludeModal = true;" type="button" class="btn btn&#45;&#45;dark-blue full-width">-->
-<!--                  {{ $t('exclude') }}-->
-<!--                  <template v-if="getExcludeCount">({{ getExcludeCount }})</template>-->
-<!--               </button>-->
-<!--            </div>-->
+            <!--            <div class="col-6 col-lg-2 mt-3 mt-lg-5 mb-n6 mb-lg-n1">-->
+            <!--               <button @click="showExcludeModal = true;" type="button" class="btn btn&#45;&#45;dark-blue full-width">-->
+            <!--                  {{ $t('exclude') }}-->
+            <!--                  <template v-if="getExcludeCount">({{ getExcludeCount }})</template>-->
+            <!--               </button>-->
+            <!--            </div>-->
             <div class="col-6 col-lg-2 mt-3 mt-lg-5 mb-n6 mb-lg-n1">
                <form-select
                   :label="$t('sorting')"
@@ -798,435 +798,435 @@
 </template>
 
 <script>
-   import {mapGetters, mapActions} from 'vuex'
-   import {SearchMixin} from '~/mixins/search'
-   import ColorOptions from '~/components/options/ColorOptions'
-   import CarFilters from '~/components/cars/CarFilters'
-   import CarBodyShortcuts from '~/components/cars/CarBodyShortcuts'
-   import CarOptionPacks from '~/components/cars/CarOptionPacks'
-   import QrcodeBox from '~/components/login/Qrcode-box'
+import {mapGetters, mapActions} from 'vuex'
+import {SearchMixin} from '~/mixins/search'
+import ColorOptions from '~/components/options/ColorOptions'
+import CarFilters from '~/components/cars/CarFilters'
+import CarBodyShortcuts from '~/components/cars/CarBodyShortcuts'
+import CarOptionPacks from '~/components/cars/CarOptionPacks'
+import QrcodeBox from '~/components/login/Qrcode-box'
 
-   export default {
-      components: {
-         QrcodeBox,
-         ColorOptions,
-         CarFilters,
-         CarBodyShortcuts,
-         CarOptionPacks,
+export default {
+   components: {
+      QrcodeBox,
+      ColorOptions,
+      CarFilters,
+      CarBodyShortcuts,
+      CarOptionPacks,
+   },
+
+   mixins: [SearchMixin],
+
+   props: {
+      totalCount: {
+         type: Number,
+         default: 0,
       },
-
-      mixins: [SearchMixin],
-
-      props: {
-         totalCount: {
-            type: Number,
-            default: 0,
-         },
-         isSearchPage: {
-            type: Boolean,
-            default: false,
-         },
-         onlySavedSearch: {
-            default: false,
-            type: Boolean,
-         },
-         pending: Boolean,
-         advanced: Boolean,
-         assistant: Boolean,
-         inMobileScreen: {
-            type: Boolean,
-            default: false
-         }
+      isSearchPage: {
+         type: Boolean,
+         default: false,
       },
-
-      data() {
-         return {
-            showMore: false,
-            showExcludeModal: false,
-            showIntervalModal: false,
-            rows: ['0'],
-            excludeRows: ['0'],
-            selected: [],
-            pending2: false,
-            searchAppliedCustom: false,
-            firstTimeUpdated: true,
-            interval: 1440,
-            form: {
-               sorting: 'created_at_desc',
-               additional_brands: {0: {}, 1: {}, 2: {}, 3: {}, 4: {}},
-               exclude_additional_brands: {0: {}, 1: {}, 2: {}, 3: {}, 4: {}},
-               all_options: {},
-               announce_type: 1,
-               searchType: 1,
-               external_salon: false,
-               currency: 1,
-               min_capacity: '',
-               max_capacity: '',
-               min_year: '',
-               max_year: '',
-               price_from: '',
-               price_to: '',
-               mileage_from: '',
-               mileage_to: '',
-               region: '',
-               damage: '',
-               customs: '',
-               body: [],
-               korobka: [],
-               engine_type: [],
-               gearing: [],
-               n_of_seats: [],
-               colors: [],
-               is_matte: false,
-               in_garanty: false,
-               with_video: false,
-               exchange_possible: false,
-               credit: false,
-            },
-            formAssistant: {
-               body: {},
-               packs: [],
-               price: [5000, 100000],
-            },
-         }
+      onlySavedSearch: {
+         default: false,
+         type: Boolean,
       },
-
-      computed: {
-         ...mapGetters([
-            'brands',
-            'existsBrands',
-            'carModels',
-            'carModelsExclude',
-            'carGenerations',
-            'carGenerationsExclude',
-            'bodyOptions',
-            'sellOptions',
-            'allSellOptions2',
-            'singleSavedSearch',
-            'colors',
-            'popularOptions'
-         ]),
-
-         getExcludeCount() {
-            return Object.values(this.form.exclude_additional_brands).filter(item => item.brand).length;
-         },
-
-         getSuffix() {
-            switch (this.form.currency) {
-               case 1:
-                  return '₼';
-               case 2:
-                  return '$';
-               case 3:
-                  return '€';
-            }
-         },
-
-         getNotificationOptions() {
-            return [
-               {
-                  name: this.$t('do_not_receive_notifications'),
-                  selected_name: this.$t('do_not_receive_notifications_selected'),
-                  key: 0,
-               },
-               {
-                  name: this.$t('receive_notifications_every_hour'),
-                  selected_name: this.$t('receive_notifications_every_hour_selected'),
-                  key: 60,
-               },
-               {
-                  name: this.$t('receive_notifications_every_3_hours'),
-                  selected_name: this.$t(
-                     'receive_notifications_every_3_hours_selected',
-                  ),
-                  key: 180,
-               },
-               {
-                  name: this.$t('receive_notifications_once_a_day'),
-                  selected_name: this.$t('receive_notifications_once_a_day_selected'),
-                  key: 1440,
-               },
-               {
-                  name: this.$t('receive_notifications_once_a_weak'),
-                  selected_name: this.$t('receive_notifications_once_a_weak_selected'),
-                  key: 10080,
-               },
-            ]
-         },
-         // meta data
-         meta() {
-            return {
-               type: 'cars',
-               path: '/cars',
-               param: 'car_filter',
-            }
-         },
-
-         hasValue() {
-            return !!(this.form.additional_brands[0].brand ||
-                   this.form.additional_brands[0].model ||
-                   this.form.additional_brands[0].generation ||
-                   this.form.min_year || this.form.max_year ||
-                   this.form.price_from || this.form.price_to ||
-                   this.form.mileage_from || this.form.mileage_to ||
-                   this.form.min_capacity || this.form.max_capacity ||
-                   this.form.exchange_possible || this.form.credit ||
-                   this.form.with_video || this.form.region || this.form.korobka.length ||
-                   this.form.engine_type.length || this.form.in_garanty || this.form.external_salon ||
-                   this.form.body.length || this.form.gearing.length || this.form.customs ||
-                   this.form.damage || this.form.n_of_seats.length ||
-                   this.form.colors.length || Object.values(this.form.all_options).length)
-         },
-
-         popularOptions2() {
-            return this.popularOptions.map((p) => ({...p, key: this.$t(p.label), name: this.$t(p.label)}))
-         }
-      },
-
-      watch: {
-         form: {
-            handler() {
-               if (!this.firstTimeUpdated) {
-                  this.searchAppliedCustom = true;
-               } else {
-                  this.firstTimeUpdated = false;
-               }
-            },
-            deep: true,
-         }
-      },
-
-      mounted() {
-         this.$nuxt.$on('saved-search-created', () => {
-            if (this.singleSavedSearch.id) {
-               this.selected.push(this.singleSavedSearch.id)
-               this.showIntervalModal = true
-            }
-         })
-      },
-
-      methods: {
-         ...mapActions([
-            'getModelsArray',
-            'getModelsArrayExclude',
-            'getModelGenerationsArray',
-            'getModelGenerationsArrayExclude',
-            'updateSavedSearchNotificationsInterval',
-         ]),
-         handleExclude() {
-
-         },
-         saveSearch() {
-            if (this.searchAppliedCustom) {
-               this.submitForm()
-               this.savedSearch = true
-            }
-         },
-         async updateNotifications() {
-            if (this.pending2) return
-            this.pending2 = true
-            try {
-               await this.updateSavedSearchNotificationsInterval({
-                  id: this.selected,
-                  type: this.interval,
-               })
-               this.pending2 = false
-               this.showIntervalModal = false
-               this.$toasted.success(this.$t('saved_changes'))
-               this.handleSelectAll(false)
-            } catch (err) {
-               this.pending2 = false
-            }
-         },
-         async setBrand(id, index) {
-            let brand = this.existsBrands.find((option) => option.id == id)
-            let slug = brand?.slug || ''
-            this.$set(this.form.additional_brands[index], 'brand', id)
-            this.$set(this.form.additional_brands[index], 'brand_slug', slug);
-            [
-               'model',
-               'model_slug',
-               'model_name',
-               'generation',
-               'generation_slug',
-               'generation_name',
-            ].map((key) => {
-               this.$set(this.form.additional_brands[index], key, '')
-            })
-
-            if (id) {
-               this.getModelsArray({value: slug, index})
-            }
-         },
-
-         async setBrandExclude(id, index) {
-            let brand = this.existsBrands.find((option) => option.id == id)
-            let slug = brand?.slug || ''
-            this.$set(this.form.exclude_additional_brands[index], 'brand', id)
-            this.$set(this.form.exclude_additional_brands[index], 'brand_slug', slug);
-            [
-               'model',
-               'model_slug',
-               'model_name',
-               'generation',
-               'generation_slug',
-               'generation_name',
-            ].map((key) => {
-               this.$set(this.form.exclude_additional_brands[index], key, '')
-            })
-            if (id) await this.getModelsArrayExclude({value: slug, index})
-         },
-         async setModel(id, index) {
-            let model = this.carModels[index].find((option) => option.id == id)
-            let slug = model?.slug || '',
-               name = model?.name || ''
-            let brand_slug = this.form.additional_brands[index].brand_slug
-            this.$set(this.form.additional_brands[index], 'model', id)
-            this.$set(this.form.additional_brands[index], 'model_slug', slug)
-            this.$set(this.form.additional_brands[index], 'model_name', name)
-            ;['generation', 'generation_slug', 'generation_name'].map((key) => {
-               this.$set(this.form.additional_brands[index], key, '')
-            })
-            if (id) {
-               this.getModelGenerationsArray({value: slug, brand_slug, index})
-            }
-         },
-         async setModelExclude(id, index) {
-            let model = this.carModelsExclude[index].find((option) => option.id == id)
-            let slug = model?.slug || '',
-               name = model?.name || ''
-            let brand_slug = this.form.exclude_additional_brands[index].brand_slug
-            this.$set(this.form.exclude_additional_brands[index], 'model', id)
-            this.$set(this.form.exclude_additional_brands[index], 'model_slug', slug)
-            this.$set(this.form.exclude_additional_brands[index], 'model_name', name)
-            ;['generation', 'generation_slug', 'generation_name'].map((key) => {
-               this.$set(this.form.exclude_additional_brands[index], key, '')
-            })
-            if (id)
-               await this.getModelGenerationsArrayExclude({value: slug, brand_slug, index})
-         },
-         async setGeneration(id, index = 0) {
-            let generation = this.carGenerations[index].find(
-               (option) => option.id == id,
-            )
-            this.$set(this.form.additional_brands[index], 'generation', id)
-            this.$set(
-               this.form.additional_brands[index],
-               'generation_slug',
-               generation?.short_name || '',
-            )
-            this.$set(
-               this.form.additional_brands[index],
-               'generation_name',
-               generation?.name || '',
-            )
-         },
-         async setGenerationExclude(id, index) {
-            let generation = this.carGenerationsExclude[index].find(
-               (option) => option.id == id,
-            )
-            this.$set(this.form.exclude_additional_brands[index], 'generation', id)
-            this.$set(
-               this.form.exclude_additional_brands[index],
-               'generation_name',
-               generation?.name || '',
-            )
-         },
-         setCarFilter(key, value) {
-            if (
-               value === false ||
-               value === '' ||
-               (typeof value === 'object' && !Object.keys(value).length)
-            )
-               this.$delete(this.form.all_options, key)
-            else this.$set(this.form.all_options, key, value)
-         },
-      },
-
-      created() {
-         this.$nuxt.$on('extend-options', this.goToSearch)
-         if (this.routeName === 'index')
-            this.$nuxt.$on('reset-search-form', this.resetForm)
-      },
-
-      beforeDestroy() {
-         this.$nuxt.$off('extend-options', this.goToSearch)
-         if (this.routeName === 'index')
-            this.$nuxt.$off('reset-search-form', this.resetForm)
+      pending: Boolean,
+      advanced: Boolean,
+      assistant: Boolean,
+      inMobileScreen: {
+         type: Boolean,
+         default: false
       }
+   },
+
+   data() {
+      return {
+         showMore: false,
+         showExcludeModal: false,
+         showIntervalModal: false,
+         rows: ['0'],
+         excludeRows: ['0'],
+         selected: [],
+         pending2: false,
+         searchAppliedCustom: false,
+         firstTimeUpdated: true,
+         interval: 1440,
+         form: {
+            sorting: 'created_at_desc',
+            additional_brands: {0: {}, 1: {}, 2: {}, 3: {}, 4: {}},
+            exclude_additional_brands: {0: {}, 1: {}, 2: {}, 3: {}, 4: {}},
+            all_options: {},
+            announce_type: 1,
+            searchType: 1,
+            external_salon: false,
+            currency: 1,
+            min_capacity: '',
+            max_capacity: '',
+            min_year: '',
+            max_year: '',
+            price_from: '',
+            price_to: '',
+            mileage_from: '',
+            mileage_to: '',
+            region: '',
+            damage: '',
+            customs: '',
+            body: [],
+            korobka: [],
+            engine_type: [],
+            gearing: [],
+            n_of_seats: [],
+            colors: [],
+            is_matte: false,
+            in_garanty: false,
+            with_video: false,
+            exchange_possible: false,
+            credit: false,
+         },
+         formAssistant: {
+            body: {},
+            packs: [],
+            price: [5000, 100000],
+         },
+      }
+   },
+
+   computed: {
+      ...mapGetters([
+         'brands',
+         'existsBrands',
+         'carModels',
+         'carModelsExclude',
+         'carGenerations',
+         'carGenerationsExclude',
+         'bodyOptions',
+         'sellOptions',
+         'allSellOptions2',
+         'singleSavedSearch',
+         'colors',
+         'popularOptions'
+      ]),
+
+      getExcludeCount() {
+         return Object.values(this.form.exclude_additional_brands).filter(item => item.brand).length;
+      },
+
+      getSuffix() {
+         switch (this.form.currency) {
+            case 1:
+               return '₼';
+            case 2:
+               return '$';
+            case 3:
+               return '€';
+         }
+      },
+
+      getNotificationOptions() {
+         return [
+            {
+               name: this.$t('do_not_receive_notifications'),
+               selected_name: this.$t('do_not_receive_notifications_selected'),
+               key: 0,
+            },
+            {
+               name: this.$t('receive_notifications_every_hour'),
+               selected_name: this.$t('receive_notifications_every_hour_selected'),
+               key: 60,
+            },
+            {
+               name: this.$t('receive_notifications_every_3_hours'),
+               selected_name: this.$t(
+                  'receive_notifications_every_3_hours_selected',
+               ),
+               key: 180,
+            },
+            {
+               name: this.$t('receive_notifications_once_a_day'),
+               selected_name: this.$t('receive_notifications_once_a_day_selected'),
+               key: 1440,
+            },
+            {
+               name: this.$t('receive_notifications_once_a_weak'),
+               selected_name: this.$t('receive_notifications_once_a_weak_selected'),
+               key: 10080,
+            },
+         ]
+      },
+      // meta data
+      meta() {
+         return {
+            type: 'cars',
+            path: '/cars',
+            param: 'car_filter',
+         }
+      },
+
+      hasValue() {
+         return !!(this.form.additional_brands[0].brand ||
+            this.form.additional_brands[0].model ||
+            this.form.additional_brands[0].generation ||
+            this.form.min_year || this.form.max_year ||
+            this.form.price_from || this.form.price_to ||
+            this.form.mileage_from || this.form.mileage_to ||
+            this.form.min_capacity || this.form.max_capacity ||
+            this.form.exchange_possible || this.form.credit ||
+            this.form.with_video || this.form.region || this.form.korobka.length ||
+            this.form.engine_type.length || this.form.in_garanty || this.form.external_salon ||
+            this.form.body.length || this.form.gearing.length || this.form.customs ||
+            this.form.damage || this.form.n_of_seats.length ||
+            this.form.colors.length || Object.values(this.form.all_options).length)
+      },
+
+      popularOptions2() {
+         return this.popularOptions.map((p) => ({...p, key: this.$t(p.label), name: this.$t(p.label)}))
+      }
+   },
+
+   watch: {
+      form: {
+         handler() {
+            if (!this.firstTimeUpdated) {
+               this.searchAppliedCustom = true;
+            } else {
+               this.firstTimeUpdated = false;
+            }
+         },
+         deep: true,
+      }
+   },
+
+   mounted() {
+      this.$nuxt.$on('saved-search-created', () => {
+         if (this.singleSavedSearch.id) {
+            this.selected.push(this.singleSavedSearch.id)
+            this.showIntervalModal = true
+         }
+      })
+   },
+
+   methods: {
+      ...mapActions([
+         'getModelsArray',
+         'getModelsArrayExclude',
+         'getModelGenerationsArray',
+         'getModelGenerationsArrayExclude',
+         'updateSavedSearchNotificationsInterval',
+      ]),
+      handleExclude() {
+
+      },
+      saveSearch() {
+         if (this.searchAppliedCustom) {
+            this.submitForm()
+            this.savedSearch = true
+         }
+      },
+      async updateNotifications() {
+         if (this.pending2) return
+         this.pending2 = true
+         try {
+            await this.updateSavedSearchNotificationsInterval({
+               id: this.selected,
+               type: this.interval,
+            })
+            this.pending2 = false
+            this.showIntervalModal = false
+            this.$toasted.success(this.$t('saved_changes'))
+            this.handleSelectAll(false)
+         } catch (err) {
+            this.pending2 = false
+         }
+      },
+      async setBrand(id, index) {
+         let brand = this.existsBrands.find((option) => option.id == id)
+         let slug = brand?.slug || ''
+         this.$set(this.form.additional_brands[index], 'brand', id)
+         this.$set(this.form.additional_brands[index], 'brand_slug', slug);
+         [
+            'model',
+            'model_slug',
+            'model_name',
+            'generation',
+            'generation_slug',
+            'generation_name',
+         ].map((key) => {
+            this.$set(this.form.additional_brands[index], key, '')
+         })
+
+         if (id) {
+            this.getModelsArray({value: slug, index})
+         }
+      },
+
+      async setBrandExclude(id, index) {
+         let brand = this.existsBrands.find((option) => option.id == id)
+         let slug = brand?.slug || ''
+         this.$set(this.form.exclude_additional_brands[index], 'brand', id)
+         this.$set(this.form.exclude_additional_brands[index], 'brand_slug', slug);
+         [
+            'model',
+            'model_slug',
+            'model_name',
+            'generation',
+            'generation_slug',
+            'generation_name',
+         ].map((key) => {
+            this.$set(this.form.exclude_additional_brands[index], key, '')
+         })
+         if (id) await this.getModelsArrayExclude({value: slug, index})
+      },
+      async setModel(id, index) {
+         let model = this.carModels[index].find((option) => option.id == id)
+         let slug = model?.slug || '',
+            name = model?.name || ''
+         let brand_slug = this.form.additional_brands[index].brand_slug
+         this.$set(this.form.additional_brands[index], 'model', id)
+         this.$set(this.form.additional_brands[index], 'model_slug', slug)
+         this.$set(this.form.additional_brands[index], 'model_name', name)
+         ;['generation', 'generation_slug', 'generation_name'].map((key) => {
+            this.$set(this.form.additional_brands[index], key, '')
+         })
+         if (id) {
+            this.getModelGenerationsArray({value: slug, brand_slug, index})
+         }
+      },
+      async setModelExclude(id, index) {
+         let model = this.carModelsExclude[index].find((option) => option.id == id)
+         let slug = model?.slug || '',
+            name = model?.name || ''
+         let brand_slug = this.form.exclude_additional_brands[index].brand_slug
+         this.$set(this.form.exclude_additional_brands[index], 'model', id)
+         this.$set(this.form.exclude_additional_brands[index], 'model_slug', slug)
+         this.$set(this.form.exclude_additional_brands[index], 'model_name', name)
+         ;['generation', 'generation_slug', 'generation_name'].map((key) => {
+            this.$set(this.form.exclude_additional_brands[index], key, '')
+         })
+         if (id)
+            await this.getModelGenerationsArrayExclude({value: slug, brand_slug, index})
+      },
+      async setGeneration(id, index = 0) {
+         let generation = this.carGenerations[index].find(
+            (option) => option.id == id,
+         )
+         this.$set(this.form.additional_brands[index], 'generation', id)
+         this.$set(
+            this.form.additional_brands[index],
+            'generation_slug',
+            generation?.short_name || '',
+         )
+         this.$set(
+            this.form.additional_brands[index],
+            'generation_name',
+            generation?.name || '',
+         )
+      },
+      async setGenerationExclude(id, index) {
+         let generation = this.carGenerationsExclude[index].find(
+            (option) => option.id == id,
+         )
+         this.$set(this.form.exclude_additional_brands[index], 'generation', id)
+         this.$set(
+            this.form.exclude_additional_brands[index],
+            'generation_name',
+            generation?.name || '',
+         )
+      },
+      setCarFilter(key, value) {
+         if (
+            value === false ||
+            value === '' ||
+            (typeof value === 'object' && !Object.keys(value).length)
+         )
+            this.$delete(this.form.all_options, key)
+         else this.$set(this.form.all_options, key, value)
+      },
+   },
+
+   created() {
+      this.$nuxt.$on('extend-options', this.goToSearch)
+      if (this.routeName === 'index')
+         this.$nuxt.$on('reset-search-form', this.resetForm)
+   },
+
+   beforeDestroy() {
+      this.$nuxt.$off('extend-options', this.goToSearch)
+      if (this.routeName === 'index')
+         this.$nuxt.$off('reset-search-form', this.resetForm)
    }
+}
 </script>
 
 <style lang="scss">
-   .cars-search-form {
-      padding: 24px;
-      border-radius: 12px;
-      background-color: #FFFFFF;
+.cars-search-form {
+   padding: 24px;
+   border-radius: 12px;
+   background-color: #FFFFFF;
 
-      &__grid {
-         display: grid;
-         grid-gap: 20px;
-
-         .form-group {
-            min-width: 0;
-         }
-      }
-
-      .form-buttons {
-         &.announce_types {
-            .btn {
-               width: 110px;
-            }
-         }
-      }
-
-      .btns {
-         display: flex;
-         grid-gap: 12px;
-         height: 52px;
-
-         i {
-            &:before {
-               font-size: 14px;
-            }
-         }
-      }
-
-      .btn {
-         height: 52px;
-      }
-
-      .checkboxes {
-         display: flex;
-         align-items: center;
-         column-gap: 12px;
-         height: max-content;
-      }
+   &__grid {
+      display: grid;
+      grid-gap: 20px;
 
       .form-group {
-         height: max-content;
+         min-width: 0;
       }
    }
 
-   .dark-mode {
-      .cars-search-form {
-         background-color: #1B2434;
-      }
-   }
-
-   @media (min-width: 992px) {
-      .cars-search-form {
-         &__grid {
-            grid-template-columns: repeat(3, 1fr);
+   .form-buttons {
+      &.announce_types {
+         .btn {
+            width: 110px;
          }
       }
    }
 
-   @media (min-width: 1150px) {
-      .cars-search-form {
-         &__grid {
-            grid-template-columns: 230px 230px 230px 285px;
+   .btns {
+      display: flex;
+      grid-gap: 12px;
+      height: 52px;
+
+      i {
+         &:before {
+            font-size: 14px;
          }
       }
    }
+
+   .btn {
+      height: 52px;
+   }
+
+   .checkboxes {
+      display: flex;
+      align-items: center;
+      column-gap: 12px;
+      height: max-content;
+   }
+
+   .form-group {
+      height: max-content;
+   }
+}
+
+.dark-mode {
+   .cars-search-form {
+      background-color: #1B2434;
+   }
+}
+
+@media (min-width: 992px) {
+   .cars-search-form {
+      &__grid {
+         grid-template-columns: repeat(3, 1fr);
+      }
+   }
+}
+
+@media (min-width: 1150px) {
+   .cars-search-form {
+      &__grid {
+         grid-template-columns: 230px 230px 230px 285px;
+      }
+   }
+}
 </style>
