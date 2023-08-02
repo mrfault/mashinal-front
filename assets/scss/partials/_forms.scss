@@ -380,7 +380,7 @@ input::-webkit-inner-spin-button {
       border-radius: 8px;
       height: 52px;
       padding: 0 15px;
-
+      cursor: pointer;
       &.transparent {
          background: transparent !important;
       }
