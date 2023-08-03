@@ -68,7 +68,7 @@ export default {
       position: absolute;
       top: 12px;
       right: 12px;
-      z-index: 150;
+      z-index: 49;
 
       &__button {
          background: #fff;
